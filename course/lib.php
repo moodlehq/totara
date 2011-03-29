@@ -93,6 +93,12 @@ function make_log_url($module, $url) {
         case 'facetoface':
             $url = '/blocks/facetoface/'.$url;
             break;
+        case 'priorities':
+            $url = '/local/plan/priorityscales/'.$url;
+            break;
+        case 'objectives':
+            $url = '/local/plan/objectivescales/'.$url;
+            break;
         default:
             $url = "/mod/$module/$url";
             break;

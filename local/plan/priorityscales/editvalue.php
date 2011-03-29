@@ -114,7 +114,7 @@ if ($valueform->is_cancelled()) {
     $valuenew = get_record('dp_priority_scale_value', 'id', $valuenew->id);
 
     // Log
-    add_to_log(SITEID, 'priorityscalevalue', 'updated', "view.php?id={$valuenew->priorityscaleid}");
+    add_to_log(SITEID, 'priorities', 'scale value updated', "view.php?id={$valuenew->priorityscaleid}");
 
     redirect("$CFG->wwwroot/local/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}");
     // never reached

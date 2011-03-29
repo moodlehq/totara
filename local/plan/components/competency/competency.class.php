@@ -181,7 +181,7 @@ class dp_competency_component extends dp_base_component {
                 totara_set_notification(get_string('confirmsesskeybad', 'error'), $currenturl);
             }
             if($this->remove_competency_assignment($delete)) {
-                add_to_log(SITEID, 'plan', 'deleted competency', "component.php?id={$this->plan->id}&c=competency", "Competency (ID:{$delete})");
+                add_to_log(SITEID, 'plan', 'removed competency', "component.php?id={$this->plan->id}&c=competency", "Competency (ID:{$delete})");
                 totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
             } else {
                 totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);

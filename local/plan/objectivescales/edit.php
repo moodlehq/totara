@@ -134,7 +134,7 @@ if ($mform->is_cancelled()) {
     $objectivenew = get_record('dp_objective_scale', 'id', $objectivenew->id);
 
     // Log
-    add_to_log(SITEID, 'priorities', 'updated', "view.php?id=$objectivenew->id");
+    add_to_log(SITEID, 'objectives', 'updated', "view.php?id=$objectivenew->id");
     redirect("$CFG->wwwroot/local/plan/objectivescales/view.php?id={$objectivenew->id}");
 }
 
