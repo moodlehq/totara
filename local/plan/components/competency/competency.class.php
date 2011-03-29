@@ -814,7 +814,7 @@ class dp_competency_component extends dp_base_component {
                         $this->send_component_approval_alert($approval);
 
                         $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';
-                        add_to_log(SITEID, 'plan', "{$action} competency", "component.php?id={$record->planid}&amp;c=competency", $record->fullname);
+                        add_to_log(SITEID, 'plan', "{$action} competency", "component.php?id={$this->plan->id}&amp;c=competency", $approval->itemname);
                     }
                 }
             } else {
