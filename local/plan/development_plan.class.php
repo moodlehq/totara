@@ -1303,8 +1303,9 @@ class development_plan {
 
         commit_sql();
 
-        $action = ($status == DP_PLAN_STATUS_APPROVED) ? 'approved' : 'completed';
-        add_to_log(SITEID, 'plan', $action, "view.php?id={$this->id}", $this->name);
+        if ($status == DP_PLAN_STATUS_APPROVED) {
+            add_to_log(SITEID, 'plan', 'approved', "view.php?id={$this->id}", $this->name);
+        }
 
         return true;
     }
