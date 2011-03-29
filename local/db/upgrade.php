@@ -1695,6 +1695,7 @@ function xmldb_local_upgrade($oldversion) {
         if($CFG->dbfamily != 'mssql') {
             $table = new XMLDBTable('report_builder_saved');
             $field = new XMLDBField('public');
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
             if(field_exists($table, $field)) {
                 $result = $result && rename_field($table, $field, 'ispublic');
             }
@@ -2140,6 +2141,7 @@ function xmldb_local_upgrade($oldversion) {
     if ($result && $oldversion < 2011032801) {
         $table = new XMLDBTable('report_builder_filters');
         $field = new XMLDBField('ispublic');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
         if (field_exists($table, $field)) {
             $result = $result && rename_field($table, $field, 'advanced');
         }
