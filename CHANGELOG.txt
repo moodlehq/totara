@@ -1,5 +1,41 @@
 Totara LMS Changelog
 
+Release 1.0.5 (29 March 2011):
+==================================================
+
+Security fixes:
+    7989    Data not escaped when updating competency evidence count                    Prevented users from assigning evidence items in some cases. Only exploitable by users who were able to create/delete competencies
+
+Improvements:
+    7988    Fix out of date lang string in Team Members page                            No long reads "Clicking the notepad icon to the right..."
+    8006    Handle completion data in user profile report better                        Improves display and completion status checks
+    7855    Add site logs to Learning Plans                                             Improve coverage of site logs
+    7993    Modify "topic" course format to remove unnecessary elements                 Remove title and topic numbers to make layout look cleaner
+    8011    Rename submit button when creating a report in Report Builder
+    7825    Updating default course icon PNGs                                           Update PNGs and set IE6/7 margins
+    8009    Styling fixes for dialogs and forms in IE6/7
+    7973    Tidy up dashlet background and heading styling                              Fixes misaligned backgrounds on dashlets in IE6
+    7976    Improved fix for overlapping text in IE6 text fields                        Stops Report Builder filters overlapping
+    7972    Move Recent Learning completion status icon styling into Standard theme
+    8005    Make sure notification preferences are up-to-date                           Previously there could be cases where a user's preference changes did not take affect immediately
+    7982    Improve 'morethanonerecordinfetch' error message to include debug data
+
+Bug fixes:
+    8001    Fix Report Builder bug introduce in previous upgrade                        Advanced filters were not being hidden
+    7977    Certificate module edit form conflicts with completion form elements
+    7974    Fix UTF8 character display in dialogs                                       Fixes issues with displaying international characters
+    7953    Remove all relevant data when deleting hierarchy items
+    7986    Default columns and filters are missing from Report Builder "user" source   Only affects reports created after this fix is applied
+    7934    Show message if attempting to signup to a Face-to-face session but without correct permissions
+                                                                                        Used to just throw an ambiguous permissions error
+    8008    Managers cannot view their staff's completion details                       Managers no longer have to be enrolled in the course, or have capabilities manually added
+    7990    Prevent divide by zero error when calculating Learning plan progress        Only appeared when debugging was turned on, and didn't affect behaviour
+    5879    Fix misspellings of "enrolled"                                              Replaced "enroled" with "enrolled"
+    5879    Fix inconsistent capitalisation on menu items
+    7983    Remove unused capability 'local:recievenotification'
+    5734    Misc PHP notices during installation
+
+
 Release 1.0.4 (22 March 2011):
 ==================================================
 Security fixes:
