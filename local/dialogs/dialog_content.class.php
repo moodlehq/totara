@@ -298,7 +298,10 @@ class totara_dialog_content {
 
             if ($total > $maxitems) {
                 $html .= '<li class="last"><span class="empty dialog-nobind">';
-                $html .= 'There are more than ' . $maxitems . ' items at this level. Try <a href="#search-tab" onclick="$(\'#dialog-tabs\').tabs(\'select\', 1);return false;">searching</a> instead.';
+                $html .= get_string('error:morethanxitemsatthislevel', 'dialog', $maxitems);
+                $html .= ' <a href="#search-tab" onclick="$(\'#dialog-tabs\').tabs(\'select\', 1);return false;">';
+                $html .= get_string('trysearchinginstead', 'dialog');
+                $html .= '</a>';
                 $html .= '</span></li>'.PHP_EOL;
             }
             else {
