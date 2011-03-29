@@ -129,7 +129,13 @@ abstract class data_object {
         if ($instances = self::fetch_all_helper($table, $classname, $params)) {
             if (count($instances) > 1) {
                 // we should not tolerate any errors here - problems might appear later
-                print_error('morethanonerecordinfetch','debug');
+
+                // Log specific data
+                $data = var_export($params, true);
+                debugging("More than one record in fetch returned (table '{$table}'): {$data}");
+
+                // Print error
+                print_error('morethanonerecordinfetch', 'moodle', '', $table);
             }
             return reset($instances);
         } else {
