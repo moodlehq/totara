@@ -20,6 +20,8 @@ $managers = get_records_sql(
             ".sql_fullname('u.firstname', 'u.lastname')." AS fullname
         FROM
             {$CFG->prefix}user u
+        WHERE
+            u.deleted = 0
         ORDER BY
             u.firstname,
             u.lastname
