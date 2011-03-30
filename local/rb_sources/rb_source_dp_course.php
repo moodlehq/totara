@@ -26,7 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
+// needed for approval constants etc
 require_once($CFG->dirroot . '/local/plan/lib.php');
+// needed to access completion status codes
+require_once($CFG->dirroot . '/lib/completion/completion_completion.php');
 
 /**
  * A report builder source for DP courses
@@ -296,30 +299,16 @@ from
                 'course_completion',
                 'status',
                 get_string('completionstatus', 'rb_source_dp_course'),
-                /*
-                 * @todo use something like the following once completion
-                 * status is being saved upon plan completion
-                 * need to write a display function to manage this
+                // use 'live' values except for completed plans
                 "CASE WHEN dp_course.planstatus = " . DP_PLAN_STATUS_COMPLETE . "
                 THEN
                     dp_course.completionstatus
                 ELSE
-                    CASE WHEN course_completion.timecompleted IS NOT NULL
-                    THEN
-                        'Completed'
-                    ELSE
-                        'Not Completed'
-                    END
+                    course_completion.status
                 END",
-                 */
-                "CASE WHEN course_completion.timecompleted IS NOT NULL THEN 'Completed' " .
-                    "ELSE 'Not Completed' END",
                 array(
-                    'joins' => 'course_completion',
-                    /*
                     'joins' => array('course_completion','dp_course'),
-                     */
-                    'displayfunc' => 'course_completion_icon',
+                    'displayfunc' => 'course_completion_progress',
                     'defaultheading' => get_string('progress', 'rb_source_dp_course'),
                 )
             );
@@ -328,11 +317,15 @@ from
                 'course_completion',
                 'statusandapproval',
                 get_string('completionstatusandapproval', 'rb_source_dp_course'),
-                "CASE WHEN course_completion.timecompleted IS NOT NULL THEN 'Completed' " .
-                    "ELSE 'Not Completed' END",
+                "CASE WHEN dp_course.planstatus = " . DP_PLAN_STATUS_COMPLETE . "
+                THEN
+                    dp_course.completionstatus
+                ELSE
+                    course_completion.status
+                END",
                 array(
                     'joins' => array('course_completion', 'dp_course'),
-                    'displayfunc' => 'course_completion_icon_and_approval',
+                    'displayfunc' => 'course_completion_progress_and_approval',
                     'defaultheading' => get_string('progress', 'rb_source_dp_course'),
                     'extrafields' => array('approved' => 'dp_course.approved')
                 )
@@ -375,16 +368,16 @@ from
                 get_string('coursetitle', 'rb_source_dp_course'),
                 'text'
         );
-        //TODO select options for the course status filter
-        /*$filteroptions[] = new rb_filter_option(
-                'course',
+        $filteroptions[] = new rb_filter_option(
+                'course_completion',
                 'status',
-                get_string('coursestatus', 'rb_source_dp_course'),
+                get_string('completionstatus', 'rb_source_dp_course'),
                 'select',
                 array(
-                    'selectfunc' => '',
+                    'selectfunc' => 'coursecompletion_status',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
                 )
-        );*/
+        );
         $filteroptions[] = new rb_filter_option(
                 'plan',
                 'name',
@@ -414,7 +407,6 @@ from
 
     private function define_paramoptions() {
         global $CFG;
-        require_once($CFG->dirroot.'/local/plan/lib.php');
         $paramoptions = array();
 
         $paramoptions[] = new rb_param_option(
@@ -458,46 +450,30 @@ from
         return $icon;
     }
 
-    function rb_display_course_completion_icon($status) {
-        global $CFG;
+    function rb_display_course_completion_progress($status) {
+        global $CFG, $COMPLETION_STATUS;
 
-        switch ($status) {
-        case null:
-            return null;
-            break;
-        case 'Not Completed':
-            $statusstring = 'inprogress';
-            break;
-        case 'Completed':
-            $statusstring = 'complete';
-            break;
+        if (isset($status) && array_key_exists($status, $COMPLETION_STATUS)) {
+            $statusstring = $COMPLETION_STATUS[$status];
+            $status = get_string($statusstring, 'completion');
+        } else {
+            // no valid completion record
+            return '';
         }
+
+        // if valid, display progress bar
         $content = "<span class=\"coursecompletionstatus\">";
         $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
-
         return $content;
     }
 
-    function rb_display_course_completion_icon_and_approval($status, $row) {
+    function rb_display_course_completion_progress_and_approval($status, $row) {
         global $CFG;
-        // needed for approval constants
-        require_once($CFG->dirroot . '/local/plan/lib.php');
 
         $approved = isset($row->approved) ? $row->approved : null;
 
-        switch ($status) {
-        case null:
-            return null;
-            break;
-        case 'Not Completed':
-            $statusstring = 'inprogress';
-            break;
-        case 'Completed':
-            $statusstring = 'complete';
-            break;
-        }
-        $content = "<span class=\"coursecompletionstatus\">";
-        $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
+        // get the progress bar
+        $content = $this->rb_display_course_completion_progress($status);
 
         // highlight if the item has not yet been approved
         if($approved == DP_APPROVAL_UNAPPROVED ||
@@ -507,4 +483,14 @@ from
         return $content;
     }
 
+    function rb_filter_coursecompletion_status() {
+        global $CFG, $COMPLETION_STATUS;
+
+        $out = array();
+        foreach ($COMPLETION_STATUS as $code => $statusstring) {
+            $out[$code] = get_string($statusstring, 'completion');
+        }
+        return $out;
+
+    }
 }
