@@ -41,7 +41,7 @@ if (!$id && !$objectivescaleid) {
 }
 
 // Page setup and check permissions
-admin_externalpage_setup('priorityscales');
+admin_externalpage_setup('objectivescales');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
@@ -69,7 +69,7 @@ if (!$scale = get_record('dp_objective_scale', 'id', $value->objscaleid)) {
     error(get_string('error:objectivescaleidincorrect','local_plan'));
 }
 
-// Save priority scale name for display in the form
+// Save objective scale name for display in the form
 $value->scalename = format_string($scale->name);
 
 
@@ -97,7 +97,7 @@ if ($valueform->is_cancelled()) {
     }
 
     // Save
-    // New priority scale value
+    // New objective scale value
     if ($valuenew->id == 0) {
         unset($valuenew->id);
 
@@ -105,7 +105,7 @@ if ($valueform->is_cancelled()) {
             error(get_string('error:createobjectivevalue', 'local_plan'));
         }
 
-    // Updating priority scale value
+    // Updating objective scale value
     } else {
         if (!update_record('dp_objective_scale_value', $valuenew)) {
             error(get_string('error:updateobjectivevalue', 'local_plan'));
