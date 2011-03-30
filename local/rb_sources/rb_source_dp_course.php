@@ -416,12 +416,25 @@ from
         );
         $paramoptions[] = new rb_param_option(
                 'planstatus',
-                '(case '.
-                    'when dp_course.planstatus='. DP_PLAN_STATUS_COMPLETE . ' then \'completed\' '.
-                    'when dp_course.planstatus in ('. DP_PLAN_STATUS_APPROVED .','. DP_PLAN_STATUS_UNAPPROVED.') then \'active\' '.
-                    'else \'disapproved\' '.
-                'end)',
-                'dp_course',
+                // if plan complete use completion status from within plan
+                // otherwise use 'live' completion status
+                "(CASE WHEN dp_course.planstatus = " . DP_PLAN_STATUS_COMPLETE . "
+                THEN
+                    CASE WHEN dp_course.completionstatus >= " . COMPLETION_STATUS_COMPLETE . "
+                    THEN
+                        'completed'
+                    ELSE
+                        'active'
+                    END
+                ELSE
+                    CASE WHEN course_completion.status >= " . COMPLETION_STATUS_COMPLETE . "
+                    THEN
+                        'completed'
+                    ELSE
+                        'active'
+                    END
+                END)",
+                array('course_completion', 'dp_course'),
                 'string'
         );
         return $paramoptions;

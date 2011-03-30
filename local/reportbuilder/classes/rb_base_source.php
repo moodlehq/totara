@@ -330,6 +330,25 @@ abstract class rb_base_source {
         }
     }
 
+
+    /**
+     * Convert 1 and 0 to 'Yes' and 'No'
+     *
+     * @param integer $value input value
+     *
+     * @return string yes or no, or null for values other than 1 or 0
+     */
+    function rb_display_yes_or_no($value, $row) {
+        if($value == 1) {
+            return get_string('yes');
+        } else if ($value == 0) {
+            return get_string('no');
+        } else {
+            return '';
+        }
+    }
+
+
     /**
      * Convert first letters of each word to uppercase
      *

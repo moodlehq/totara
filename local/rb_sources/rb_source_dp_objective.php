@@ -286,6 +286,18 @@ class rb_source_dp_objective extends rb_base_source {
                 )
         );
 
+
+        $columnoptions[] = new rb_column_option(
+                'objective',
+                'isproficient',
+                get_string('objproficient', 'rb_source_dp_objective'),
+                'objective_scale_value.achieved',
+                array(
+                    'joins' => 'objective_scale_value',
+                    'displayfunc' => 'yes_or_no'
+                )
+        );
+
         $columnoptions[] = new rb_column_option(
                 'objective',
                 'proficiencyandapproval',
@@ -380,12 +392,9 @@ class rb_source_dp_objective extends rb_base_source {
         );
         $paramoptions[] = new rb_param_option(
                 'planstatus',
-                '(case '.
-                    'when dp.status='. DP_PLAN_STATUS_COMPLETE . ' then \'completed\' '.
-                    'when dp.status in ('. DP_PLAN_STATUS_APPROVED .','. DP_PLAN_STATUS_UNAPPROVED.') then \'active\' '.
-                    'else \'disapproved\' '.
-                'end)',
-                'dp',
+                'CASE WHEN objective_scale_value.achieved = 1
+                THEN \'completed\' ELSE \'active\' END',
+                'objective_scale_value',
                 'string'
         );
         return $paramoptions;
