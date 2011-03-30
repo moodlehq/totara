@@ -176,15 +176,21 @@ class organisation extends hierarchy {
         require $CFG->dirroot.'/hierarchy/type/organisation/view-hierarchy-items.html';
     }
 
-    function get_assigned_competencies($item, $frameworkid=0) {
+    /**
+     * Returns an array of assigned competencies that are assigned to the organisation
+     * @param $item object|int Organisation being viewed
+     * @param $frameworkid int If set only return competencies for this framework
+     * @param $excluded_ids array an optional set of ids of competencies to exclude
+     * @return array List of assigned competencies
+     */
+    function get_assigned_competencies($item, $frameworkid=0, $excluded_ids=false) {
         global $CFG;
-
         if (is_object($item)) {
             $itemid = $item->id;
         } else if (is_numeric($item)) {
             $itemid = $item;
         } else {
-            $itemid = 0;
+            return false;
         }
 
         $sql = "SELECT
@@ -210,6 +216,10 @@ class organisation extends hierarchy {
             ";
         if (!empty($frameworkid)) {
             $sql .= " AND c.frameworkid = {$frameworkid}";
+        }
+        if (is_array($excluded_ids) && !empty($excluded_ids)) {
+            $ids = implode(',', $excluded_ids);
+            $sql .= " AND c.id NOT IN({$ids})";
         }
 
         return get_records_sql($sql);

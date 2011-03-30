@@ -129,6 +129,7 @@ $string['notemplates'] = 'No plan templates have been created';
 $string['autoassign'] = 'Automatic assignment';
 $string['autoassignpos'] = 'Automatically assign by position';
 $string['autoassignorg'] = 'Automatically assign by organisation';
+$string['includecompleted'] = 'Include completed competencies';
 $string['autoassigncourses'] = 'Include linked courses';
 $string['error:dateformat'] = 'Please enter a date in the format dd/mm/yyyy';
 

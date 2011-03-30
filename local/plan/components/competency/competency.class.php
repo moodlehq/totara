@@ -68,6 +68,7 @@ class dp_competency_component extends dp_base_component {
             $settings[$this->component.'_priorityscale'] = $competencysettings->priorityscale;
             $settings[$this->component.'_autoassignorg'] = $competencysettings->autoassignorg;
             $settings[$this->component.'_autoassignpos'] = $competencysettings->autoassignpos;
+            $settings[$this->component.'_includecompleted'] = $competencysettings->includecompleted;
             $settings[$this->component.'_autoassigncourses'] = $competencysettings->autoassigncourses;
         }
     }
@@ -1002,6 +1003,7 @@ class dp_competency_component extends dp_base_component {
     function assign_from_pos() {
         global $CFG;
         $includecourses = $this->get_setting('autoassigncourses');
+        $includecompleted = $this->get_setting('includecompleted');
 
         require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
         // Get primary position
@@ -1016,7 +1018,14 @@ class dp_competency_component extends dp_base_component {
             return true;
         }
         $position = new position();
-        if ($competencies = $position->get_assigned_competencies($position_assignment->positionid)) {
+        if ($includecompleted) {
+            $competencies = $position->get_assigned_competencies($position_assignment->positionid);
+        } else {
+            $completed_competency_ids = competency::get_user_completed_competencies($this->plan->userid);
+            $competencies = $position->get_assigned_competencies($position_assignment->positionid, 0, $completed_competency_ids);
+        }
+
+        if ($competencies) {
             if($this->assign_competencies($competencies)) {
                 // assign courses
                 if($includecourses) {
@@ -1039,6 +1048,7 @@ class dp_competency_component extends dp_base_component {
     function assign_from_org() {
         global $CFG;
         $includecourses = $this->get_setting('autoassigncourses');
+        $includecompleted = $this->get_setting('includecompleted');
 
         require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
         // Get primary position
@@ -1055,7 +1065,14 @@ class dp_competency_component extends dp_base_component {
 
         require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
         $org = new organisation();
-        if ($competencies = $org->get_assigned_competencies($position_assignment->organisationid)) {
+        if ($includecompleted) {
+            $competencies = $org->get_assigned_competencies($position_assignment->organisationid);
+        } else {
+            $completed_competency_ids = competency::get_user_completed_competencies($this->plan->userid);
+            $competencies = $org->get_assigned_competencies($position_assignment->organisationid, 0, $completed_competency_ids);
+        }
+
+        if ($competencies) {
             if($this->assign_competencies($competencies)) {
                 // assign courses
                 if($includecourses) {

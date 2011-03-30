@@ -738,4 +738,32 @@ SQL;
         return $out;
     }
 
+    /**
+     * Returns an array of competency ids that have completed by the specified user
+     * @param int $userid user to get competencies for
+     * @return array list of ids of completed competencies
+     */
+    static function get_user_completed_competencies($userid) {
+        global $CFG;
+
+        $proficient_sql = "SELECT
+            ce.id,
+            ce.competencyid
+            FROM
+                {$CFG->prefix}comp_evidence ce
+            JOIN
+                {$CFG->prefix}comp_scale_values csv ON csv.id = ce.proficiency
+            JOIN
+                {$CFG->prefix}comp_scale cs
+              ON csv.scaleid = cs.id
+            JOIN
+                {$CFG->prefix}comp_scale_values AS csvp
+              ON csvp.id = cs.proficient
+            WHERE csvp.sortorder >= csv.sortorder
+              AND ce.userid={$userid}
+              ";
+        $completed = get_records_sql_menu($proficient_sql);
+
+        return is_array($completed) ? array_values($completed) : array();
+    }
 }  // class

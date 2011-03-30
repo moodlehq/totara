@@ -127,7 +127,14 @@ class position extends hierarchy {
         require $CFG->dirroot.'/hierarchy/type/position/view-hierarchy-items.html';
     }
 
-    function get_assigned_competencies($item, $frameworkid=0) {
+    /**
+     * Returns a list of competencies that are assigned to a position
+     * @param $item object|int Position being viewed
+     * @param $frameworkid int If set only return competencies for this framework
+     * @param $excluded_ids array an optional set of ids of competencies to exclude
+     * @return array List of assigned competencies
+     */
+    function get_assigned_competencies($item, $frameworkid=0, $excluded_ids=false) {
         global $CFG;
 
         if (is_object($item)) {
@@ -135,7 +142,7 @@ class position extends hierarchy {
         } else if (is_numeric($item)) {
             $itemid = $item;
         } else {
-            $itemid = 0;
+            return false;
         }
 
         $sql = "SELECT
@@ -161,6 +168,10 @@ class position extends hierarchy {
 
         if (!empty($frameworkid)) {
             $sql .= " AND c.frameworkid = {$frameworkid}";
+        }
+        if (is_array($excluded_ids) && !empty($excluded_ids)) {
+            $ids = implode(',', $excluded_ids);
+            $sql .= " AND c.id NOT IN({$ids})";
         }
 
         return get_records_sql($sql);
