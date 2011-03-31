@@ -174,7 +174,6 @@ abstract class dp_base_component {
             $can = $this->can_update_settings_extra($can);
         }
 
-
         // If user has no permissions, return false
         $noperms = true;
         foreach ($can as $c) {

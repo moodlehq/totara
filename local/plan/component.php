@@ -85,13 +85,15 @@ print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />
 
 print '<div id="dp-component-update-table">'.$component->display_list().'</div>';
 
-if ($component->can_update_settings(LP_CHECK_ITEMS_EXIST)) {
-    $display = 'block';
-} else {
-    $display = 'none';
-}
+if ($component->can_update_settings(false)) {
+    if (!$component->get_assigned_items()) {
+        $display = 'none';
+    } else {
+        $display = 'block';
+    }
 
-print '<div id="dp-component-update-submit" style="display: '.$display.';"><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" /></div>';
+    print '<div id="dp-component-update-submit" style="display: '.$display.';"><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" /></div>';
+}
 
 print '</form>';
 print_container_end();

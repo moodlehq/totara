@@ -20,6 +20,7 @@
  *
  * @author Eugene Venter <eugene@catalyst.net.nz>
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
+ * @author Alastair Munro <alastair@catalyst.net.nz>
  * @package totara
  * @subpackage plan 
  */
@@ -208,17 +209,25 @@ totaraDialog_handler_lpCompetency.prototype._update = function(response) {
     // Check for no items msg
     var noitems = $(response).filter('span.noitems-assigncompetencies');
 
+    // Define update setting button div
+    var updatesettings = $('div#content div#dp-component-update-submit');
+
     if (noitems.size()) {
         // If no items, just display message
         $('div#content form#dp-component-update div#dp-component-update-table').append(noitems);
         // Replace table with nothing
         table.empty();
+        // Hide update setting button when there are no items
+        updatesettings.hide();
     } else if (table.size()) {
         // If table found
         table.replaceWith(new_table);
+        updatesettings.show();
     } else {
         // Add new table
         $('div#content form#dp-component-update div#dp-component-update-table').append(new_table);
+        // Show update setting button there are now rows
+        updatesettings.show();
     }
 
     //Replace plan message box
@@ -228,16 +237,8 @@ totaraDialog_handler_lpCompetency.prototype._update = function(response) {
         require_once($CFG->dirroot.'/local/plan/development_plan.class.php');
         $plan = new development_plan(required_param('planid', PARAM_INT), optional_param('viewas', null, PARAM_INT));
 
-        if ($plan->get_component('competency')->can_update_settings(LP_CHECK_ITEMS_EXIST)) {
+        if ($plan->get_component('competency')->can_update_settings(false)) {
     ?>
-    // show the update settings button
-    var updatesettings = $('div#content div#dp-component-update-submit');
-    if (noitems.size()) {
-        updatesettings.hide();
-    }
-    else {
-        updatesettings.show();
-    }
 
     <?php if ($plan->get_component('competency')->get_setting('duedatemode') && $plan->get_component('competency')->get_setting('setduedate') >= DP_PERMISSION_ALLOW) { ?>
         // Add duedate datepicker
