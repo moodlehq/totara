@@ -193,7 +193,9 @@ abstract class data_object {
 
     /**
      * Updates this object in the Database, based on its object variables. ID must be set.
-     * @return boolean success
+     *
+     * @access  public
+     * @return  bool
      */
     public function update() {
 
@@ -204,7 +206,9 @@ abstract class data_object {
 
         $data = $this->get_record_data();
 
-        update_record($this->table, $data);
+        if (!update_record($this->table, $data)) {
+            return false;
+        }
 
         $this->notify_changed(false);
         return true;
@@ -268,10 +272,15 @@ abstract class data_object {
 
         $data = $this->get_record_data();
 
-        $this->id = insert_record($this->table, $data);
+        // Set returned id for new record or return false
+        if (!$this->id = insert_record($this->table, $data)) {
+            return false;
+        }
 
-        // set all object properties from real db data
-        $this->update_from_db();
+        // Set all object properties from real db data
+        if (!$this->update_from_db()) {
+            return false;
+        }
 
         $this->notify_changed(false);
         return $this->id;
