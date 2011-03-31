@@ -12,6 +12,9 @@ $userid = required_param('userid', PARAM_INT);
 // Setup page
 require_login();
 
+//get guest user for exclusion purposes
+$guest = guest_user();
+
 // Load potential managers for this user
 $managers = get_records_sql(
     "
@@ -22,6 +25,8 @@ $managers = get_records_sql(
             {$CFG->prefix}user u
         WHERE
             u.deleted = 0
+        AND
+            u.id != {$guest->id}
         ORDER BY
             u.firstname,
             u.lastname

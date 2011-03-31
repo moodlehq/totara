@@ -163,8 +163,11 @@ function user_search_get_keyword_where_clause($keywords) {
     // fields to search
     $fields = array(sql_fullname('u.firstname', 'u.lastname'));
 
-    // exclude deleted users
-    $queries = array(' u.deleted = 0 ');
+    //get guest user
+    $guest = guest_user();
+
+    // exclude deleted users and guest user
+    $queries = array(' u.deleted = 0 ', ' u.id != '.$guest->id);
     foreach($keywords as $keyword) {
         $matches = array();
         foreach($fields as $field) {
