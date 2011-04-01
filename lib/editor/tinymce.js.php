@@ -9,6 +9,7 @@ $editorlanguage = substr(current_language(), 0, 2);
 $directionality = get_string('thisdirection');
 $strtime        = get_string('strftimetime');
 $strdate        = get_string('strftimedaydate');
+$theme          = current_theme();
 
 /*
  * This section configures the TinyMCE toolbar buttons on and off
@@ -199,6 +200,8 @@ echo <<<EOF
         theme_advanced_statusbar_location : "bottom",
         file_browser_callback : "mce_moodlefilemanager",
         width : "100%",
+        content_css : "$CFG->wwwroot/theme/$theme/styles.php",
+        spellchecker_rpc_url : "$CFG->wwwroot/lib/editor/tinymce/jscripts/tiny_mce/plugins/spellchecker/rpc.php",
 
 EOF;
 // the xhtml ruleset must be the last one - no comma at the end of the file

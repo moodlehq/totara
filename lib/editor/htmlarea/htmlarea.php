@@ -2371,7 +2371,6 @@ HTMLArea.is_mac_ie = (HTMLArea.is_ie && HTMLArea.is_mac);
 HTMLArea.is_win_ie = (HTMLArea.is_ie && !HTMLArea.is_mac);
 HTMLArea.is_gecko  = (navigator.product == "Gecko");
 HTMLArea.is_safari = (HTMLArea.agt.indexOf("safari") != -1);
-HTMLArea.is_webkit = (HTMLArea.agt.indexOf("applewebkit") != -1); // eg: chrome
 
 // variable used to pass the object to the popup editor window.
 HTMLArea._object = null;
@@ -2399,9 +2398,6 @@ HTMLArea.cloneObject = function(obj) {
 
 // FIXME!!! this should return false for IE < 5.5
 HTMLArea.checkSupportedBrowser = function() {
-    if (HTMLArea.is_webkit) {
-        return true;
-    }
     if (HTMLArea.is_gecko) {
         if (navigator.productSub < 20021201) {
             alert("You need at least Mozilla-1.3 Alpha.\n" +
