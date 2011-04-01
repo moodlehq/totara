@@ -2009,8 +2009,7 @@ function xmldb_local_upgrade($oldversion) {
         foreach($tablenames as $tablename) {
 
             $sql = "UPDATE {$CFG->prefix}{$tablename} SET fullname=" .
-                sql_substr() . "(fullname, 1, 1024) WHERE " .
-                sql_length('fullname') . " > 1024";
+                sql_substr() . "(fullname, 1, 1024)";
             $result = $result && execute_sql($sql);
 
             $table = new XMLDBTable($tablename);
@@ -2113,13 +2112,11 @@ function xmldb_local_upgrade($oldversion) {
     if ($result && $oldversion < 2011033000) {
         // truncate any text after 1024 chars
         $sql = "UPDATE {$CFG->prefix}pos SET fullname=" . sql_substr() .
-            "(fullname, 1, 1024) WHERE " . sql_length('fullname') .
-            " > 1024";
+            "(fullname, 1, 1024)";
         $result = $result && execute_sql($sql);
 
         $sql = "UPDATE {$CFG->prefix}comp SET fullname=" . sql_substr() .
-            "(fullname, 1, 1024) WHERE " . sql_length('fullname') .
-            " > 1024";
+            "(fullname, 1, 1024)";
         $result = $result && execute_sql($sql);
 
         $table = new XMLDBTable('pos');
