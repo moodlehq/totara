@@ -291,7 +291,7 @@
     }
 
     // Position tab
-    if (!empty($user)) {
+    if (!empty($user) && !empty($showpositions)) {  // $showpositions controls whether this tab is shown, only user/view should set it
 
         // Check permissions
         $personalcontext = get_context_instance(CONTEXT_USER, $user->id);
@@ -334,7 +334,7 @@
     }
 
     // Messages tab
-    if (!empty($user)) {
+    if (!empty($user) && !empty($showmessages)) {  // $showmessages controls whether this tab is shown, only user/view should set it
 
         // Check permissions
         $personalcontext = get_context_instance(CONTEXT_USER, $user->id);
