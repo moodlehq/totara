@@ -1313,11 +1313,18 @@ abstract class dp_base_component {
             }
         }
 
-        $choose = ($priorityrequired) ? $defaultchoose : get_string('none','local_plan');
-        $chooseval = ($priorityrequired) ? $defaultchooseval : 0;
+        // only include 'none' option if priorities are optional
+        $choose = ($priorityrequired) ? null : get_string('none','local_plan');
+        $chooseval = ($priorityrequired) ? null : 0;
+
+        if($priorityid) {
+            $selected = $priorityid;
+        } else {
+            $selected = ($priorityrequired) ? $defaultchooseval : 0;
+        }
 
 
-        return choose_from_menu($options, $name, $priorityid, $choose, '', $chooseval, true);
+        return choose_from_menu($options, $name, $selected, $choose, '', $chooseval, true);
 
     }
 
