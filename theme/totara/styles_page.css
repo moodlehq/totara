@@ -43,6 +43,17 @@
     display: none;
 }
 
+/**
+* IE6 multiple-class bug
+* This gets hidden by .sideblock.hidden in ie6
+**/
+#middle-column table.topics tr.hidden td.content,
+#middle-column table.weeks tr.hidden td.content,
+#middle-column ul.weekscss li.hidden div.content {
+    display: block;
+}
+
+
 .sideblock.hidden .header,
 .dashlet.hidden .header {
   border-bottom-width: 1px;
