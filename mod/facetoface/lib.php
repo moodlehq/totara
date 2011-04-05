@@ -3074,15 +3074,17 @@ function facetoface_grade_item_delete($facetoface) {
 /**
  * Return number of attendees signed up to a facetoface session
  *
- * @param integer $session_id
+ * @param   integer     $session_id
+ * @param   integer     $status     MDL_F2F_STATUS_* constant (optional)
  * @return integer
  */
-function facetoface_get_num_attendees($session_id) {
+function facetoface_get_num_attendees($session_id, $status=MDL_F2F_STATUS_BOOKED) {
     global $CFG;
+
     // for the session, pick signups that haven't been superceded, or cancelled
     return (int) count_records_sql("select count(ss.id) from {$CFG->prefix}facetoface_signups su
         JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id = ss.signupid
-        WHERE sessionid=$session_id AND ss.superceded=0 AND ss.statuscode >= ".MDL_F2F_STATUS_BOOKED);
+        WHERE sessionid=$session_id AND ss.superceded=0 AND ss.statuscode >= ".$status);
 }
 
 /**

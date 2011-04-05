@@ -186,7 +186,7 @@ function print_session_list($courseid, $facetofaceid, $location)
             $sessionrow[] = $allsessiontimes;
 
             // Capacity
-            $signupcount = facetoface_get_num_attendees($session->id);
+            $signupcount = facetoface_get_num_attendees($session->id, MDL_F2F_STATUS_APPROVED);
             $stats = $session->capacity - $signupcount;
             if ($viewattendees){
                 $stats = $signupcount.' / '.$session->capacity;
