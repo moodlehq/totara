@@ -1,5 +1,33 @@
 Totara LMS Changelog
 
+Release 1.0.6 (5 April 2011):
+==================================================
+
+New features:
+    7981    Add option to only auto assign incomplete competencies to a new Learning Plan       A new checkbox available in Template > Advanced Workflow > Competencies. When unchecked, completed competencies will not be automatically assigned to new learning plans.
+
+Improvements:
+    7948    Changing definition of active/completed in the Record of Learning                   See http://community.totaralms.com/mod/forum/discuss.php?d=328
+    7978    Upgrading TinyMCE to the latest major version (3.4)                                 If you have problems after the upgrade, clearing your caches should fix them
+    7889    Updated screen shots for sector themes
+    7946    Improve styling of next/previous links in Face-to-face calendar                     Arrows no longer overlap text
+
+Bug fixes:
+    8013    Cannot sort by text fields in MSSQL                                                 A database upgrade will shorten competency and position names to a maximum of 1024 characters
+    8018    Course completion progress in Record Learning sometimes incorrect
+    8014    Deleted users appear in Manager assignment dialog box
+    8020    Local module language strings not translatable                                      Local module language files now appear in translation section
+    8016    Hard coded text appearing in dialogs                                                Text is now inside a language file and able to be modified
+            Mediaplugin filter regex matching problematic                                       Fix from Moodle upstream
+    8002    Guest user appears in Manager assignment dialog box                                 Exclude guest from user list
+    8029    Position and Messaging tabs appear outside of a user's profile                      On the Course Participants page for instance
+    7982    Duplicate records can appear in course completion under the right circumstances     Added unique indexes to prevent this occuring. Records with duplicate keys will have be removed manually from the database.
+    7265    "Update settings" button not always appearing in Learning Plans                     Javascript that shows/hides 'Update settings' button now works correctly
+    7982    Check for success before sending "Course completed" Alerts                          Previously if the database update had failed, the Alerts were still sent
+    8040    Default priority appearing twice inside drop down in Learning Plans
+    7916    Certain columns and filters not appearing in Report Builder
+
+
 Release 1.0.5 (29 March 2011):
 ==================================================
 
