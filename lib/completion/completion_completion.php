@@ -254,9 +254,11 @@ class completion_completion extends data_object {
 
         }
 
-        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+        if (!$this->_save()) {
+            return false;
+        }
 
-        $this->_save();
+        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
     }
 
     /**
@@ -286,11 +288,15 @@ class completion_completion extends data_object {
 
         }
 
-        if (!$this->timeenrolled) {
-            totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+        $wasenrolled = $this->timeenrolled;
+
+        if (!$this->_save()) {
+            return false;
         }
 
-        $this->_save();
+        if (!$wasenrolled) {
+            totara_stats_add_event($timenow, $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+        }
     }
 
     /**
@@ -317,19 +323,20 @@ class completion_completion extends data_object {
             $this->timecompleted = $timecomplete;
         }
 
-        //
-        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);
-
         // Save record
-        $this->_save();
+        if (!$this->_save()) {
+            return false;
+        }
+
+        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);
     }
 
     /**
      * Save course completion status
      *
      * This method creates a course_completions record if none exists
-     * @access  public
-     * @return  void
+     * @access  private
+     * @return  bool
      */
     private function _save() {
         global $COMPLETION_STATUS;
@@ -353,7 +360,8 @@ class completion_completion extends data_object {
 
         // Save record
         if ($this->id) {
-            $this->update();
+            // Attempt to update, and return the results
+            return $this->update();
         } else {
             // Make sure reaggregate field is not null
             if (!$this->reaggregate) {
@@ -365,7 +373,8 @@ class completion_completion extends data_object {
                 $this->timestarted = 0;
             }
 
-            $this->insert();
+            // Attempt to insert, and return the results
+            return $this->insert();
         }
     }
 }

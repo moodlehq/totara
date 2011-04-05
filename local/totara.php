@@ -592,7 +592,7 @@ function totara_get_staff($userid=null) {
           ON u.id=c.instanceid
         WHERE ra.roleid={$managerroleid}
           AND ra.userid={$userid}
-          AND c.contextlevel=30";
+          AND c.contextlevel=" . CONTEXT_USER;
 
     // no matches
     if(!$res = get_records_sql($sql)) {

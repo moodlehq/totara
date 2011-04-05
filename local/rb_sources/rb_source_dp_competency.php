@@ -122,6 +122,15 @@ class rb_source_dp_competency extends rb_base_source {
         );
 
         $joinlist[] = new rb_join(
+                'scale_value_scale',
+                'LEFT',
+                $CFG->prefix . 'comp_scale',
+                'scale_value_scale.id = scale_value.scaleid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                array('scale_value')
+        );
+
+        $joinlist[] = new rb_join(
                 'linkedcourses',
                 'LEFT',
                 "(SELECT itemid1 AS compassignid,
@@ -151,6 +160,15 @@ class rb_source_dp_competency extends rb_base_source {
                 'comp_evidence.proficiency = evidence_scale_value.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
                 array('comp_evidence')
+        );
+
+        $joinlist[] = new rb_join(
+                'evidence_scale_value_scale',
+                'LEFT',
+                $CFG->prefix . 'comp_scale',
+                'evidence_scale_value_scale.id = evidence_scale_value.scaleid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                array('evidence_scale_value')
         );
 
         $this->add_user_table_to_joinlist($joinlist, 'dp','userid');
@@ -306,7 +324,31 @@ class rb_source_dp_competency extends rb_base_source {
                     evidence_scale_value.name
                 END',
                 array(
-                    'joins' => array('dp', 'scale_value', 'evidence_scale_value')
+                    'joins' => array('dp', 'scale_value_scale', 'evidence_scale_value_scale')
+                )
+        );
+
+        // returns 1 for 'proficient' competencies, 0 otherwise
+        $columnoptions[] = new rb_column_option(
+                'competency',
+                'proficient',
+                get_string('competencyproficient', 'rb_source_dp_competency'),
+                // source of proficient status depends on plan status
+                // take 'live' value for active plans and static
+                // stored value for completed plans
+                'CASE WHEN dp.status = ' . DP_PLAN_STATUS_COMPLETE . '
+                THEN
+                    CASE WHEN scale_value_scale.proficient = scale_value.id
+                    THEN 1 ELSE 0
+                    END
+                ELSE
+                    CASE WHEN evidence_scale_value_scale.proficient = evidence_scale_value.id
+                    THEN 1 ELSE 0
+                    END
+                END',
+                array(
+                    'joins' => array('dp', 'scale_value', 'scale_value_scale', 'evidence_scale_value', 'evidence_scale_value_scale'),
+                    'displayfunc' => 'yes_or_no'
                 )
         );
 
@@ -407,12 +449,17 @@ class rb_source_dp_competency extends rb_base_source {
         );
         $paramoptions[] = new rb_param_option(
                 'planstatus',
-                '(case '.
-                    'when dp.status='. DP_PLAN_STATUS_COMPLETE . ' then \'completed\' '.
-                    'when dp.status in ('. DP_PLAN_STATUS_APPROVED .','. DP_PLAN_STATUS_UNAPPROVED.') then \'active\' '.
-                    'else \'disapproved\' '.
-                'end)',
-                'dp',
+                'CASE WHEN dp.status = ' . DP_PLAN_STATUS_COMPLETE . '
+                THEN
+                    CASE WHEN scale_value_scale.proficient = scale_value.id
+                    THEN \'completed\' ELSE \'active\'
+                    END
+                ELSE
+                    CASE WHEN evidence_scale_value_scale.proficient = evidence_scale_value.id
+                    THEN \'completed\' ELSE \'active\'
+                    END
+                END',
+                array('dp', 'scale_value', 'scale_value_scale', 'evidence_scale_value', 'evidence_scale_value_scale'),
                 'string'
         );
         return $paramoptions;
@@ -423,16 +470,21 @@ class rb_source_dp_competency extends rb_base_source {
         // needed for approval constants
         require_once($CFG->dirroot . '/local/plan/lib.php');
 
+        $content = array();
         $approved = isset($row->approved) ? $row->approved : null;
 
-        $content = $status;
+        if($status) {
+            $content[] = $status;
+        }
 
         // highlight if the item has not yet been approved
-        if($approved == DP_APPROVAL_UNAPPROVED ||
-            $approved == DP_APPROVAL_REQUESTED) {
-            $content .= '<br />' . $this->rb_display_plan_item_status($approved);
+        if($approved != DP_APPROVAL_APPROVED) {
+            $itemstatus = $this->rb_display_plan_item_status($approved);
+            if($itemstatus) {
+                $content[] = $itemstatus;
+            }
         }
-        return $content;
+        return implode('<br />', $content);
     }
 }
 

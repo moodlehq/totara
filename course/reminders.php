@@ -255,7 +255,6 @@ if (!$completion->is_enabled()) {
         print_tabs(array($tabs), $reminder->id);
     }
 
-    echo 'WTF';
     // Show form
     $reminderform->display();
 }

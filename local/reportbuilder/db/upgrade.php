@@ -183,7 +183,7 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
     if($result && $oldversion < 2011031400) {
         $custom_field_locations = array(
             'session' => 'facetoface_session_field',
-            'user' => 'user_info_field',
+            'user_profile' => 'user_info_field',
             'competency' => 'comp_depth_info_field',
             'position' => 'pos_depth_info_field',
             'organisation' => 'org_depth_info_field',
@@ -197,9 +197,10 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
                     if($columns) {
                         foreach($columns as $col) {
                             if($col->value == $c->shortname) {
+                                $prefix = ($type == 'user_profile') ? 'user' : $type;
                                 $newrec = new object();
                                 $newrec->id = $col->id;
-                                $newrec->value = $type . '_' . $c->id;
+                                $newrec->value = $prefix . '_' . $c->id;
                                 $result = $result && update_record('report_builder_columns', $newrec);
                             }
                         }
@@ -209,5 +210,68 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         }
     }
 
+
+    if ($result && $oldversion < 2011040400) {
+        $sql = "SELECT * FROM {$CFG->prefix}report_builder_columns WHERE type='user' AND value like 'user_%'";
+        $rb_columns_result = get_records_sql($sql);
+
+        //Revert incorrect upgrade on user fields
+        if($rb_columns_result){
+            foreach($rb_columns_result as $r) {
+                if($title = get_field('user_info_field', 'shortname', 'id', (int)substr($r->value, 5))) {
+                    $newrec = new object();
+                    $newrec->id = $r->id;
+                    $newrec->value = $title;
+                    $result = $result && update_record('report_builder_columns', $newrec);
+                }
+            }
+        }
+
+        //Update user_profile fields correctly
+        if($cust_fields = get_records('user_info_field')) {
+            foreach($cust_fields as $c) {
+                $columns = get_records('report_builder_columns', 'type', 'user_profile');
+                if($columns) {
+                    foreach($columns as $col) {
+                        if($col->value == $c->shortname) {
+                            $newrec = new object();
+                            $newrec->id = $col->id;
+                            $newrec->value = 'user_' . $c->id;
+                            $result = $result && update_record('report_builder_columns', $newrec);
+                        }
+                    }
+                }
+            }
+        }
+
+        //Update report builder filters
+        $custom_field_locations = array(
+            'session' => 'facetoface_session_field',
+            'user_profile' => 'user_info_field',
+            'competency' => 'comp_depth_info_field',
+            'position' => 'pos_depth_info_field',
+            'organisation' => 'org_depth_info_field',
+            'course' => 'course_info_field'
+        );
+
+        foreach($custom_field_locations as $type => $location){
+            if($cust_fields = get_records($location)) {
+                foreach($cust_fields as $c) {
+                    $columns = get_records('report_builder_filters', 'type', $type);
+                    if($columns) {
+                        foreach($columns as $col) {
+                            if($col->value == $c->shortname) {
+                                $prefix = ($type == 'user_profile') ? 'user' : $type;
+                                $newrec = new object();
+                                $newrec->id = $col->id;
+                                $newrec->value = $prefix . '_' . $c->id;
+                                $result = $result && update_record('report_builder_filters', $newrec);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     return $result;
 }

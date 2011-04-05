@@ -1999,77 +1999,25 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2011020700) {
         // change fullname to varchar so it can be sorted in MSSQL
-        $table = new XMLDBTable('org_framework');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-        $result = $result && change_field_type($table, $field, true, true);
+        // 31/03/11 Added code to truncate any fields longer than new length
+        //          and converted to a loop
+        $tablenames = array('org_framework', 'org_depth',
+            'org_depth_info_field', 'org', 'pos_framework', 'pos_depth',
+            'pos_depth_info_field', 'pos', 'comp_framework', 'comp_depth',
+            'comp_depth_info_field', 'comp');
 
-        $table = new XMLDBTable('org_depth');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-        $result = $result && change_field_type($table, $field, true, true);
+        foreach($tablenames as $tablename) {
 
-        $table = new XMLDBTable('org_depth_info_field');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-        $result = $result && change_field_type($table, $field, true, true);
+            $sql = "UPDATE {$CFG->prefix}{$tablename} SET fullname=" .
+                sql_substr() . "(fullname, 1, 1024)";
+            $result = $result && execute_sql($sql);
 
-        $table = new XMLDBTable('org');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-
-        $result = $result && change_field_type($table, $field, true, true);
-        // change fullname to varchar so it can be sorted in MSSQL
-        $table = new XMLDBTable('pos_framework');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-        $result = $result && change_field_type($table, $field, true, true);
-
-        $table = new XMLDBTable('pos_depth');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-        $result = $result && change_field_type($table, $field, true, true);
-
-        $table = new XMLDBTable('pos_depth_info_field');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-        $result = $result && change_field_type($table, $field, true, true);
-
-        $table = new XMLDBTable('pos');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-
-        // change fullname to varchar so it can be sorted in MSSQL
-        $table = new XMLDBTable('comp_framework');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-        $result = $result && change_field_type($table, $field, true, true);
-
-        $table = new XMLDBTable('comp_depth');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-        $result = $result && change_field_type($table, $field, true, true);
-
-        $table = new XMLDBTable('comp_depth_info_field');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
-        $result = $result && change_field_type($table, $field, true, true);
-
-        $table = new XMLDBTable('comp');
-        $field = new XMLDBField('fullname');
-        $field->setType(XMLDB_TYPE_CHAR);
-        $field->setLength(1024);
+            $table = new XMLDBTable($tablename);
+            $field = new XMLDBField('fullname');
+            $field->setType(XMLDB_TYPE_CHAR);
+            $field->setLength(1024);
+            $result = $result && change_field_type($table, $field, true, true);
+        }
     }
 
     if ($result && $oldversion < 2011021500) {
@@ -2158,6 +2106,99 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_type($table, $field);
     }
 
+    // change types of fields that were missed previously by bad upgrade
+    // in entry 2011020700 of this file (now fixed)
+    // fixes sorting issues in MSSQL
+    if ($result && $oldversion < 2011033000) {
+        // truncate any text after 1024 chars
+        $sql = "UPDATE {$CFG->prefix}pos SET fullname=" . sql_substr() .
+            "(fullname, 1, 1024)";
+        $result = $result && execute_sql($sql);
+
+        $sql = "UPDATE {$CFG->prefix}comp SET fullname=" . sql_substr() .
+            "(fullname, 1, 1024)";
+        $result = $result && execute_sql($sql);
+
+        $table = new XMLDBTable('pos');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('comp');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+    }
+
+    if ($result && $oldversion < 2011033100) {
+
+        // Course completions
+        // Check for duplicates
+        $sql = "
+            SELECT
+                COUNT(*)
+            FROM
+            (
+                SELECT
+                    userid, course
+                FROM
+                    {$CFG->prefix}course_completions
+                GROUP BY
+                    userid, course
+                HAVING
+                    COUNT(id) > 1
+            )
+            dups
+        ";
+
+        // If any, fail the upgrade until they are removed
+        if ($count = count_records_sql($sql)) {
+            notify("{$count} duplicate records exist in the 'course_completions' table. These must be repaired before the upgrade can continue.");
+            $result = false;
+        }
+        else {
+            // Add unique index
+            $table = new XMLDBTable('course_completions');
+            $index = new XMLDBIndex('courseuserid');
+            $index->setAttributes(XMLDB_INDEX_UNIQUE, array('userid', 'course'));
+            $result = $result && add_index($table, $index);
+        }
+
+
+        // Course completion criteria completions
+        // Check for duplicates
+        $sql = "
+            SELECT
+                COUNT(*)
+            FROM
+            (
+                SELECT
+                    userid, course, criteriaid
+                FROM
+                    {$CFG->prefix}course_completion_crit_compl
+                GROUP BY
+                    userid, course, criteriaid
+                HAVING
+                    COUNT(id) > 1
+            )
+            dups
+        ";
+
+        // If any, fail the upgrade until they are removed
+        if ($count = count_records_sql($sql)) {
+            notify("{$count} duplicate records exist in the 'course_completion_crit_compl' table. These must be repaired before the upgrade can continue.");
+            $result = false;
+        }
+        else {
+            // Add unique index
+            $table = new XMLDBTable('course_completion_crit_compl');
+            $index = new XMLDBIndex('courseuseridcritid');
+            $index->setAttributes(XMLDB_INDEX_UNIQUE, array('userid', 'course', 'criteriaid'));
+            $result = $result && add_index($table, $index);
+        }
+    }
+
     return $result;
 }
-?>

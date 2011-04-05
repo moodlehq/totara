@@ -99,3 +99,43 @@ body#blocks-facetoface-calendar .yui-panel-container {
     visibility:hidden;
     z-index:2;
 }
+
+body#blocks-facetoface-calendar div.calendar-controls {
+	width: 100%;
+}
+
+body#blocks-facetoface-calendar div.calendar-controls td{
+	padding: 0 12px 0 0;
+	width: 30%;
+}
+
+body#blocks-facetoface-calendar table.calendarmonth .weekdays th {
+	text-align: center;
+	border-right: 1px solid #CA1E9E;
+}
+
+div#calendarcontainer div.monthlycalendar table.calendarmonth td {
+	border: 1px solid #DDDDDD;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous{
+  padding-left: 10px;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.next{
+  padding-right: 10px;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a span{
+	display: none;
+}
+
+body#blocks-facetoface-calendar table.calendarmonth td.today  {
+	border: 2px solid #CA1E9E !important;
+}
+
+body#blocks-facetoface-calendar .yui-tt .bd {
+	border: 1px solid #CA1E9E;
+	padding: 10px;
+}
+

@@ -44,6 +44,7 @@ class dp_basic_workflow extends dp_base_workflow {
         // competency specific settings
         $this->cfg_competency_autoassignpos = 0;
         $this->cfg_competency_autoassignorg = 0;
+        $this->cfg_competency_includecompleted = 1;
         $this->cfg_competency_autoassigncourses = 0;
         $this->cfg_competency_duedatemode = DP_DUEDATES_NONE;
         $this->cfg_competency_prioritymode = DP_PRIORITY_OPTIONAL;

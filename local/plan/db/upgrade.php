@@ -348,5 +348,13 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         $result = $result && execute_sql("UPDATE {$CFG->prefix}dp_permissions SET action='complete' WHERE action='signoff'",false);
     }
 
+    if($result && $oldversion < 2011033101) {
+        $table = new XMLDBTable('dp_competency_settings');
+        $field = new XMLDBField('includecompleted');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '1', 'autoassignpos');
+
+        $result = $result && add_field($table, $field);
+    }
+
     return $result;
 }

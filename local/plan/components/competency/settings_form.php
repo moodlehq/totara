@@ -56,6 +56,7 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
         $defaultpriorityscale = $templatesettings->priorityscale;
         $defaultautoassignpos = $templatesettings->autoassignpos;
         $defaultautoassignorg = $templatesettings->autoassignorg;
+        $defaultincludecompleted = $templatesettings->includecompleted;
         $defaultautoassigncourses = $templatesettings->autoassigncourses;
     } else {
         $defaultduedatesmode = null;
@@ -63,6 +64,7 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
         $defaultpriorityscale = null;
         $defaultautoassignpos = null;
         $defaultautoassignorg = null;
+        $defaultincludecompleted = 1;
         $defaultautoassigncourses = null;
     }
     // due date mode options
@@ -107,11 +109,13 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
     $autoassigngroup = array();
     $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassignpos', null, get_string('autoassignpos', 'local_plan'));
     $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassignorg', null, get_string('autoassignorg', 'local_plan'));
+    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'includecompleted', null, get_string('includecompleted', 'local_plan'));
     $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassigncourses', null, get_string('autoassigncourses', 'local_plan'));
 
     $mform->addGroup($autoassigngroup, 'autoassign', get_string('autoassign', 'local_plan'), array('<br />'), false);
     $mform->setDefault('autoassignpos', $defaultautoassignpos);
     $mform->setDefault('autoassignorg', $defaultautoassignorg);
+    $mform->setDefault('includecompleted', $defaultincludecompleted);
     $mform->setDefault('autoassigncourses', $defaultautoassigncourses);
 
     //Permissions
@@ -174,6 +178,7 @@ function dp_competency_component_process_settings_form($fromform, $id) {
     }
     $todb->autoassignorg = $fromform->autoassignorg;
     $todb->autoassignpos = $fromform->autoassignpos;
+    $todb->includecompleted = $fromform->includecompleted;
     $todb->autoassigncourses = $fromform->autoassigncourses;
     // @todo add scale info
     if($competencysettings = get_record('dp_competency_settings', 'templateid', $id)) {
