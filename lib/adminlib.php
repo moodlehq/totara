@@ -4881,40 +4881,6 @@ function format_admin_setting($setting, $title='', $form='', $description='', $l
     return $str;
 }
 
-/**
- * Try to upgrade the given language pack (or current language)
- * If it doesn't work, fail silently and return false
- */
-function upgrade_language_pack($lang='') {
-    global $CFG;
-
-    if (empty($lang)) {
-        $lang = current_language();
-    }
-
-    if ($lang == 'en_utf8') {
-        return true;  // Nothing to do
-    }
-
-    notify(get_string('langimport', 'admin').': '.$lang.' ... ', 'notifysuccess');
-
-    @mkdir ($CFG->dataroot.'/temp/');    //make it in case it's a fresh install, it might not be there
-    @mkdir ($CFG->dataroot.'/lang/');
-
-    require_once($CFG->libdir.'/componentlib.class.php');
-
-    if ($cd = new component_installer('http://download.moodle.org', 'lang16', $lang.'.zip', 'languages.md5', 'lang')) {
-        $status = $cd->install(); //returns COMPONENT_(ERROR | UPTODATE | INSTALLED)
-
-        if ($status == COMPONENT_INSTALLED) {
-            debugging('Downloading successful: '.$lang);
-            @unlink($CFG->dataroot.'/cache/languages');
-            return true;
-        }
-    }
-
-    return false;
-}
 
 /**
  * Based on find_new_settings{@link ()}  in upgradesettings.php
