@@ -49,28 +49,7 @@ if ($userid) {
 
 
 // Check permissions
-require_login();
-
-$coursecontext   = get_context_instance(CONTEXT_COURSE, $course->id);
-$personalcontext = get_context_instance(CONTEXT_USER, $user->id);
-
-$can_view = false;
-
-// Can view own report
-if ($USER->id == $user->id) {
-    $can_view = true;
-}
-elseif (has_capability('moodle/user:viewuseractivitiesreport', $personalcontext)) {
-    $can_view = true;
-}
-elseif (has_capability('coursereport/completion:view', $coursecontext)) {
-    $can_view = true;
-}
-elseif (has_capability('coursereport/completion:view', $personalcontext)) {
-    $can_view = true;
-}
-
-if (!$can_view) {
+if (!completion_can_view_data($user->id, $course->id)) {
     print_error('cannotviewreport', 'block_completionstatus');
 }
 

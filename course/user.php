@@ -82,12 +82,9 @@
     }
 
     // Course completion tab
-    if (completion_info::is_enabled_for_site()) {
-        $cinfo = new completion_info($course);
-
-        if (($course->id == SITEID || $cinfo->is_enabled()) &&
-            ($myreports || $anyreport || ($course->id == SITEID || has_capability('coursereport/completion:view', $coursecontext)))) { // permissions to view the report
-
+    if (completion_can_view_data($user->id, $course->id)) {
+        // If not the frontpage course, check if reports are enabled
+        if ($course->id == SITEID || $course->showreports) {
             // Decide if singular or plural
             $modes[] = $course->id == SITEID ? 'coursecompletions' : 'coursecompletion';
         }
