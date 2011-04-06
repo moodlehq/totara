@@ -59,4 +59,25 @@ class reminderlib_test extends UnitTestCase {
 
         $this->assertTrue(reminder_check_businessdays($timestamp, $period, $check));
     }
+
+    /**
+     * Test for reminder_is_businessday
+     *
+     * Check if the function correctly determines that Friday is a business day
+     */
+    function test_reminder_is_businessday_friday(){
+        $timestamp = strtotime('2011-04-08 10:27');
+        $this->assertTrue(reminder_is_businessday($timestamp));
+    }
+
+    /**
+     * Test for reminder_is_businessday
+     *
+     * Check if the function correctly determines that Saturday is not a business
+     * day
+     */
+    function test_reminder_is_businessday_saturday(){
+        $timestamp = strtotime('2011-04-09 10:27');
+        $this->assertFalse(reminder_is_businessday($timestamp));
+    }
 }
