@@ -189,6 +189,11 @@ class completion_info {
             return COMPLETION_DISABLED;
         }
 
+        // Load data if we do not have enough
+        if (!isset($this->course->enablecompletion)) {
+            $this->course->enablecompletion = get_field('course', 'enablecompletion', 'id', $this->course->id);
+        }
+
         // Check course completion
         if ($this->course->enablecompletion == COMPLETION_DISABLED) {
             return COMPLETION_DISABLED;
