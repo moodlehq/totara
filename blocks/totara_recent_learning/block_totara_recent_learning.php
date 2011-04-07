@@ -70,17 +70,11 @@ class block_totara_recent_learning extends block_base {
                 $id = $course->id;
                 $name = $course->fullname;
 
-                if(array_key_exists($id, $completions)) {
-                    $comp = $completions[$id];
-                    $statusstring = completion_completion::get_status($completions[$id]);
-                    $status = get_string($statusstring, 'completion');
-                } else {
-                    $statusstring = 'notyetstarted';
-                    $status = get_string($statusstring, 'completion');
-                }
+                $status = array_key_exists($id, $completions) ? $completions[$id]->status : null;
+                $completion = totara_display_course_progress_icon($USER->id, $course->id, $status);
 
                 $html .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
-                $html .= "<td class=\"status\"><span class=\"completion-$statusstring\" title=\"$status\"></span></td></tr>";
+                $html .= "<td class=\"status\">{$completion}</td></tr>";
             }
 
             $html .= '</table>';

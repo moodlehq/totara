@@ -129,7 +129,7 @@ class dp_course_component extends dp_base_component {
             $completion_field = 'cc.status AS coursecompletion,';
             // save same value again with a new alias so the column
             // can be sorted
-            $completion_field .= 'a.completionstatus AS progress,';
+            $completion_field .= 'cc.status AS progress,';
             $completion_joins = "LEFT JOIN
                 {$CFG->prefix}course_completions cc
                 ON ( cc.course = a.courseid
@@ -512,28 +512,11 @@ class dp_course_component extends dp_base_component {
     /**
      * Displays an items status as a progress bar
      *
-     * @param object $ca the item to check
+     * @param object $item the item to check
      * @return string $out display markup
      */
-    function display_status_as_progress_bar($ca) {
-        // get the completion string, if there is a record
-        $completionstatus = $this->get_item_completion_status($ca);
-
-        $plancompleted = $this->plan->is_complete();
-        $canupdatecoursestatus = $this->get_setting('setcompletionstatus') == DP_PERMISSION_ALLOW;
-        $out = '';
-
-        // don't print a status bar if there is no completion record
-        if($completionstatus !== false) {
-            $completionstring = $completionstatus == '' ?
-                get_string('notyetstarted','completion') :
-                get_string($completionstatus, 'completion');
-            $out .= "<span class=\"coursecompletionstatus\">
-                <span class=\"completion-{$completionstatus}\" title=\"{$completionstring}\"></span>
-                </span>";
-        }
-
-        return $out;
+    function display_status_as_progress_bar($item) {
+        return totara_display_course_progress_icon($this->plan->userid, $item->courseid, $item->coursecompletion);
     }
 
 
@@ -545,31 +528,7 @@ class dp_course_component extends dp_base_component {
      * @return  boolean
      */
     protected function is_item_complete($item) {
-        global $CFG;
-        require_once($CFG->dirroot . '/lib/completion/completion_completion.php');
         return in_array($item->coursecompletion, array(COMPLETION_STATUS_COMPLETE, COMPLETION_STATUS_COMPLETEVIARPL));
-    }
-
-
-    /**
-     * Get an items completion status
-     *
-     * @access  public
-     * @param   object  $item
-     * @return  string|false
-     */
-    public function get_item_completion_status($item) {
-        global $CFG, $COMPLETION_STATUS;
-        // needed to access completion status codes
-        require_once($CFG->dirroot . '/lib/completion/completion_completion.php');
-
-        // get the completion string, if there is a record
-        if (isset($item->coursecompletion) && array_key_exists($item->coursecompletion, $COMPLETION_STATUS)) {
-            return $COMPLETION_STATUS[$item->coursecompletion];
-        } else {
-            // No completion record
-            return false;
-        }
     }
 
 
@@ -900,17 +859,16 @@ class dp_course_component extends dp_base_component {
                     continue;
                 }
                 // Determine course completion
-                $completionstatus = $this->get_item_completion_status($c);
-                if (empty($completionstatus)) {
+                if (empty($c->coursecompletion)) {
                     continue;
                 }
-                switch ($completionstatus) {
-                    case 'complete' :
-                    case 'completeviarpl' :
+                switch ($c->coursecompletion) {
+                    case COMPLETION_STATUS_COMPLETE:
+                    case COMPLETION_STATUS_COMPLETEVIARPL:
                         $completionsum += 1;
                         $completedcount++;
                         break;
-                    case 'inprogress' :
+                    case COMPLETION_STATUS_INPROGRESS:
                     default:
                         $completionsum += 0.5;
                         $inprogresscount++;

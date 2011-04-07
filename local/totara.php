@@ -26,6 +26,8 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+require_once("{$CFG->libdir}/completionlib.php");
+
 
 /**
  * Save a notification message for displaying on the subsequent page view
@@ -188,6 +190,42 @@ function totara_reset_frontpage_blocks() {
     return 1;
 
 }
+
+
+/**
+ * Returns markup for displaying a progress bar for a user's course progress
+ *
+ * Optionally with a link to the user's profile if they have the correct permissions
+ *
+ * @access  public
+ * @param   $userid     int
+ * @param   $courseid   int
+ * @param   $status     int     COMPLETION_STATUS_ constant
+ * @return  string
+ */
+function totara_display_course_progress_icon($userid, $courseid, $status) {
+    global $CFG, $COMPLETION_STATUS;
+
+    if (!isset($status) || !array_key_exists($status, $COMPLETION_STATUS)) {
+        return '';
+    }
+
+    $statusstring = $COMPLETION_STATUS[$status];
+    $status = get_string($statusstring, 'completion');
+
+    // Display progress bar
+    $content = "<span class=\"coursecompletionstatus\">";
+    $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
+
+    // Check if user has permissions to see details
+    if (completion_can_view_data($userid, $courseid)) {
+        $content = "<a href=\"{$CFG->wwwroot}/blocks/completionstatus/details.php?course={$courseid}&user={$userid}\">{$content}</a>";
+    }
+
+    return $content;
+}
+
+
 
 /**
  * adds guides block on the site admin pages.  designed to be called from local_postinst
@@ -471,9 +509,6 @@ function totara_print_my_courses() {
             $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;
 
-            $statusstring = completion_completion::get_status($course);
-            $status = get_string($statusstring, 'completion');
-
             $starteddate = '';
             if ($course->timestarted != 0) {
                 $starteddate = userdate($course->timestarted, '%e %b %y');
@@ -486,7 +521,11 @@ function totara_print_my_courses() {
             } else {
                 $content .= "<tr><td class=\"course\">" . get_string('deletedcourse', 'completion') . "</td>";
             }
-            $content .=     "<td class=\"status\"><span class=\"completion-$statusstring\" title=\"$status\"></span></td><td class=\"enroldate\">$enroldate</td>";
+
+            $status = array_key_exists($id, $courses) ? $courses[$id]->status : COMPLETION_STATUS_NOTYETSTARTED;
+            $completion = totara_display_course_progress_icon($USER->id, $course->id, $status);
+
+            $content .=     "<td class=\"status\">{$completion}</td><td class=\"enroldate\">$enroldate</td>";
             $content .=     "<td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";
         }
         $content .= "</table>\n";

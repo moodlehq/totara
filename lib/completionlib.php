@@ -352,6 +352,7 @@ class completion_info {
                 cc.timeenrolled,
                 cc.timestarted,
                 cc.timecompleted,
+                cc.status,
                 cc.rpl
             FROM
                 {$CFG->prefix}course_completions cc
