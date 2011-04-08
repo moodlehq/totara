@@ -241,6 +241,8 @@ $navlinks = array();
 // prints the tabs
 if ($filtertype=='user') {
     $showroles = true;
+    $showpositions = 1;
+    $showmessages = 1;
 } else {
     $showroles = false;
 }

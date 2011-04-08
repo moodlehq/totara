@@ -126,6 +126,8 @@ require_js(
 ///     /user/edit.php
 ///     /course/user.php
 $currenttab = 'position'.$type;
+$showpositions = 1;
+$showmessages = 1;
 $showroles = 1;
 if($nojs) {
     $currenturl = "{$CFG->wwwroot}/user/positions.php?user={$user->id}&courseid={$course->id}&type={$type}&nojs=1";

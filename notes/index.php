@@ -80,6 +80,8 @@
     print_header($course->shortname . ': ' . $strnotes, $course->fullname, build_navigation($nav));
 
     $showroles = 1;
+    $showpositions = 1;
+    $showmessages = 1;
     $currenttab = 'notes';
     require($CFG->dirroot .'/user/tabs.php');
 
