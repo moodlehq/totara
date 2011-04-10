@@ -406,7 +406,7 @@ class report_builder_edit_columns_form extends moodleform {
                     get_string('options','local_reportbuilder'). '</th><tr>');
                 foreach($report->badcolumns as $bad) {
 
-                    $mform->addElement('html','<tr><td>' . $bad['type'] .
+                    $mform->addElement('html','<tr colid='.$bad['id'].'><td>' . $bad['type'] .
                         '</td><td>' . $bad['value'] .
                         '</td><td>' .$bad['heading'] . '</td><td>' .
                         '<a href="' . $CFG->wwwroot .
