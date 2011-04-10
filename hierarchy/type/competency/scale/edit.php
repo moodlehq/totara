@@ -73,7 +73,7 @@ if ($mform->is_cancelled()) {
                 throw new Exception('Error creating new competency scale');
             }
 
-            $scalevalues = array_reverse(explode(PHP_EOL, trim($scalenew->scalevalues)));
+            $scalevalues = explode(PHP_EOL, trim($scalenew->scalevalues));
             unset($scalenew->scalevalues);
 
             $sortorder = 1;
@@ -86,6 +86,7 @@ if ($mform->is_cancelled()) {
                     $scalevalrec->sortorder = $sortorder;
                     $scalevalrec->timemodified = time();
                     $scalevalrec->usermodified = $USER->id;
+                    $scalevalrec->proficient = ($sortorder == 1) ? 1 : 0;
 
                     $result = insert_record('comp_scale_values', $scalevalrec);
                     if (!$result) {
@@ -111,18 +112,25 @@ if ($mform->is_cancelled()) {
         }
     // Existing scale
     } else {
-        if (!update_record('comp_scale', $scalenew)) {
+        if (update_record('comp_scale', $scalenew)) {
+            // Log
+            add_to_log(SITEID, 'competencyscales', 'update', "view.php?id=$scalenew->id&amp;typ=competency", '');
+
+            totara_set_notification(get_string('scaleupdated', 'competency', format_string(stripslashes($scalenew->name))),
+                "$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scalenew->id}&amp;type=competency",
+            array('style' => 'notifysuccess'));
+
+        } else {
             error('Error updating competency scale');
         }
     }
 
-    // Reload from db
-    $scalenew = get_record('comp_scale', 'id', $scalenew->id);
-
     // Log
-    add_to_log(SITEID, 'competencyscales', 'update', "view.php?id=$scalenew->id&amp;typ=competency", '');
+    add_to_log(SITEID, 'competencyscales', 'added', "view.php?id=$scalenew->id&amp;typ=competency", '');
 
-    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scalenew->id}&amp;type=competency");
+    totara_set_notification(get_string('scaleadded', 'competency', format_string(stripslashes($scalenew->name))),
+        "$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scalenew->id}&amp;type=competency",
+        array('style' => 'notifysuccess'));
 }
 
 /// Print Page

@@ -616,19 +616,21 @@ SQL;
      * record for, keyed on the competencyid. Also returns the required
      * proficiency value and isproficient, which is 1 if the user meets the
      * proficiency and 0 otherwise
-     *
-     * @todo move this method into the competency libraries
      */
     static function get_proficiencies($userid) {
         global $CFG;
-        $sql = "SELECT ce.competencyid, ce.proficiency, cs.proficient,
-                CASE WHEN ce.proficiency=cs.proficient THEN 1
-                ELSE 0 END AS isproficient
+        $sql = "SELECT ce.competencyid, prof.proficiency, csv.proficient AS isproficient
             FROM {$CFG->prefix}comp_evidence ce
             LEFT JOIN {$CFG->prefix}comp c ON c.id=ce.competencyid
             LEFT JOIN {$CFG->prefix}comp_scale_assignments csa
                 ON c.frameworkid = csa.frameworkid
-            LEFT JOIN {$CFG->prefix}comp_scale cs ON cs.id=csa.scaleid
+            LEFT JOIN {$CFG->prefix}comp_scale_values csv ON csv.scaleid=csa.scaleid
+            LEFT JOIN (
+                SELECT scaleid, MAX(id) AS proficiency
+                FROM {$CFG->prefix}comp_scale_values
+                WHERE proficient=1
+                GROUP BY scaleid
+            ) prof on prof.scaleid=csa.scaleid
             WHERE ce.userid=$userid";
         return get_records_sql($sql);
     }
@@ -747,23 +749,16 @@ SQL;
         global $CFG;
 
         $proficient_sql = "SELECT
-            ce.id,
             ce.competencyid
             FROM
                 {$CFG->prefix}comp_evidence ce
             JOIN
                 {$CFG->prefix}comp_scale_values csv ON csv.id = ce.proficiency
-            JOIN
-                {$CFG->prefix}comp_scale cs
-              ON csv.scaleid = cs.id
-            JOIN
-                {$CFG->prefix}comp_scale_values AS csvp
-              ON csvp.id = cs.proficient
-            WHERE csvp.sortorder >= csv.sortorder
+            WHERE csv.proficient = 1
               AND ce.userid={$userid}
               ";
-        $completed = get_records_sql_menu($proficient_sql);
+        $completed = get_records_sql($proficient_sql);
 
-        return is_array($completed) ? array_values($completed) : array();
+        return is_array($completed) ? array_keys($completed) : array();
     }
 }  // class

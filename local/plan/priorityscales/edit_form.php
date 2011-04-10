@@ -42,10 +42,10 @@ class edit_priority_form extends moodleform {
         if ( $this->_customdata['priorityid'] == 0 ){
             $mform->addElement('static', 'priorityvaluesexplain', '', get_string('explainpriorityscalevals', 'local_plan'));
             $mform->addElement('textarea', 'priorityvalues', get_string('priorityvalues', 'local_plan'), 'rows="5" cols="30"');
+            $mform->addRule('priorityvalues', get_string('required'), 'required', null, 'server');
             $mform->setHelpButton('priorityvalues', array('priorityscalevalues', get_string('priority', 'local_plan'), 'local_plan'));
             $mform->setType('priorityvalues', PARAM_TEXT);
         } else {
-            //TODO: make this work for priority
             $mform->addElement('html', '<div class="fitem"><div class="fitemtitle">&nbsp;</div><div class="felement">'.get_string('linktopriorityvalues','local_plan',clean_param($this->_customdata['priorityid'], PARAM_INT))."</div></div>\n");
         }
 
@@ -59,4 +59,22 @@ class edit_priority_form extends moodleform {
         // buttons
         $this->add_action_buttons();
     }
+
+
+    function validation($valuenew) {
+        $err = array();
+        $valuenew = (object) $valuenew;
+
+        // make sure at least one priority scale value is defined
+        if(isset($valuenew->priorityvalues) && trim($valuenew->priorityvalues) == '') {
+            $err['priorityvalues'] = get_string('required');
+        }
+
+        if(count($err) > 0) {
+            return $err;
+        }
+
+        return true;
+    }
+
 }

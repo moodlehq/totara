@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
  * @subpackage plan
  */
@@ -32,6 +33,7 @@ class dp_objective_scale_value_edit_form extends moodleform {
         global $CFG;
 
         $mform =& $this->_form;
+        $scaleid = $this->_customdata['scaleid'];
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
@@ -60,8 +62,12 @@ class dp_objective_scale_value_edit_form extends moodleform {
         $mform->setHelpButton('numericscore', array('objectivescalevaluenumeric', get_string('objectivescalevaluenumericalvalue', 'local_plan'), 'local_plan'), true);
         $mform->setType('numericscore', PARAM_RAW);
 
-        $mform->addElement('advcheckbox', 'achieved', get_string('achieved', 'local_plan'));
+        $note = (dp_objective_scale_is_used($scaleid)) ? '<span class="notifyproblem">'.get_string('achievedvaluefrozen', 'local_plan') . '</span>' : '';
+        $mform->addElement('advcheckbox', 'achieved', get_string('achieved', 'local_plan'), $note);
         $mform->setHelpButton('achieved', array('objectivescalevalueachieved', get_string('achieved', 'local_plan'), 'local_plan'), true);
+        if(dp_objective_scale_is_used($scaleid)) {
+            $mform->hardFreeze('achieved');
+        }
 
         $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);

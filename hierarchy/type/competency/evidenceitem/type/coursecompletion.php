@@ -90,6 +90,16 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
 
         // Only select course completions that have changed
         // since an evidence item evidence was last changed
+        //
+        // A note on the sub-query, it returns:
+        //   scaleid | proficient
+        // where proficient is the ID of the lowest scale
+        // value in that scale that has the proficient flag
+        // set to 1
+        //
+        // The sub-sub-query is needed to allow us to return
+        // the ID, when the actual item is determined by
+        // the sortorder
         $sql = "
             SELECT DISTINCT
                 ceie.id AS id,
@@ -98,7 +108,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
                 cc.userid,
                 ceie.timecreated,
                 cc.timecompleted,
-                cs.proficient,
+                proficient.proficient,
                 cs.defaultid
             FROM
                 {$CFG->prefix}comp_evidence_items cei
@@ -117,6 +127,20 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
             INNER JOIN
                 {$CFG->prefix}comp_scale cs
                 ON csa.scaleid = cs.id
+            INNER JOIN
+            (
+                SELECT csv.scaleid, csv.id AS proficient
+                FROM {$CFG->prefix}comp_scale_values csv
+                INNER JOIN
+                (
+                    SELECT scaleid, MAX(sortorder) AS maxsort
+                    FROM {$CFG->prefix}comp_scale_values
+                    WHERE proficient = 1
+                    GROUP BY scaleid
+                ) grouped
+                ON csv.scaleid = grouped.scaleid AND csv.sortorder = grouped.maxsort
+            ) proficient
+            ON cs.id = proficient.scaleid
             LEFT JOIN
                 {$CFG->prefix}comp_evidence_items_evidence ceie
              ON ceie.itemid = cei.id
@@ -124,11 +148,11 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
             WHERE
                 cei.itemtype = 'coursecompletion'
             AND cc.id IS NOT NULL
-            AND cs.proficient IS NOT NULL
+            AND proficient.proficient IS NOT NULL
             AND
             (
                 (
-                ceie.proficiencymeasured <> cs.proficient
+                ceie.proficiencymeasured <> proficient.proficient
                 AND
                     (
                         ceie.timemodified < cc.timecompleted

@@ -23,7 +23,6 @@ def get_comp_scale_record number
     'description' => 'Description for Competency Scale ' + number.to_s,
     'timemodified' => Time.now.to_i,
     'usermodified' => 0,
-    'proficient' => 1,
     'defaultid' => 1,
   }
 end
@@ -38,6 +37,7 @@ def get_comp_scale_values_record number
     'sortorder' => get_next_sequence($prefix+'comp_scale_values', 'sortorder'),
     'timemodified' => Time.now.to_i,
     'usermodified' => 0,
+    'proficient' => 0,
   }
 end
 

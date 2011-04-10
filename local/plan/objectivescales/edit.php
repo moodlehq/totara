@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
  * @subpackage plan
  */
@@ -101,6 +102,8 @@ if ($mform->is_cancelled()) {
                     $objectivevalrec->sortorder = $sortorder;
                     $objectivevalrec->timemodified = time();
                     $objectivevalrec->usermodified = $USER->id;
+                    // Set the "achieved" objective value to the most competent one
+                    $objectivevalrec->achieved = ($sortorder == 1) ? 1 : 0;
 
                     $result = insert_record('dp_objective_scale_value', $objectivevalrec);
                     if (!$result){
@@ -111,8 +114,7 @@ if ($mform->is_cancelled()) {
                 }
             }
 
-            // Set the default objective value to the least competent one, and the
-            // "proficient" objective value to the most competent one
+            // Set the default objective value to the least competent one
             if ( count($objectiveidlist) ){
                 $objectivenew->defaultid = $objectiveidlist[count($objectiveidlist)-1];
                 update_record('dp_objective_scale', $objectivenew);
@@ -125,17 +127,22 @@ if ($mform->is_cancelled()) {
         }
     // Existing objective
     } else {
-        if (!update_record('dp_objective_scale', $objectivenew)) {
+        if (update_record('dp_objective_scale', $objectivenew)) {
+            add_to_log(SITEID, 'objectives', 'updated', "view.php?id=$objectivenew->id");
+            totara_set_notification(get_string('objectivescaleupdated', 'local_plan',
+                format_string(stripslashes($objectivenew->name))),
+                "$CFG->wwwroot/local/plan/objectivescales/view.php?id={$objectivenew->id}",
+                array('style' => 'notifysuccess'));
+        } else {
             error(get_string('error:updateobjectivescale', 'local_plan'));
         }
     }
 
-    // Reload from db
-    $objectivenew = get_record('dp_objective_scale', 'id', $objectivenew->id);
-
     // Log
-    add_to_log(SITEID, 'objectives', 'updated', "view.php?id=$objectivenew->id");
-    redirect("$CFG->wwwroot/local/plan/objectivescales/view.php?id={$objectivenew->id}");
+    add_to_log(SITEID, 'objectives', 'added', "view.php?id=$objectivenew->id");
+    totara_set_notification(get_string('objectivescaleadded', 'local_plan', format_string(stripslashes($objectivenew->name))),
+        "$CFG->wwwroot/local/plan/objectivescales/view.php?id={$objectivenew->id}",
+        array('style' => 'notifysuccess'));
 }
 
 /// Print Page

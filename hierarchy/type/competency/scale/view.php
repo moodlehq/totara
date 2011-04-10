@@ -3,10 +3,6 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
-require_js(array(
-    $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
-));
-
 
 ///
 /// Setup / loading data
@@ -17,8 +13,6 @@ $id = required_param('id', PARAM_INT);
 // Move up / down
 $moveup = optional_param('moveup', 0, PARAM_INT);
 $movedown = optional_param('movedown', 0, PARAM_INT);
-// Set proficient value
-$proficient = optional_param('proficient', 0, PARAM_INT);
 // Set default value
 $default = optional_param('default', 0, PARAM_INT);
 $type = required_param ('type', PARAM_TEXT);
@@ -34,6 +28,8 @@ if (!$scale = get_record('comp_scale', 'id', $id)) {
 
 // Cache user capabilities
 $can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);
+
+$scale_used = competency_scale_is_used($id);
 
 // Cache text
 $str_edit = get_string('edit');
@@ -104,23 +100,17 @@ if ($can_edit) {
         }
     }
 
-    // Handle proficient/default settings
-    if ($proficient || $default) {
-
-        $value = max($proficient, $default);
+    // Handle default settings
+    if ($default) {
 
         // Check value exists
-        if (!get_record('comp_scale_values', 'id', $value)) {
+        if (!get_record('comp_scale_values', 'id', $default)) {
             error('Incorrect scale value id supplied');
         }
 
         // Update
         $s = new object();
         $s->id = $scale->id;
-
-        if ($proficient) {
-            $s->proficient = $proficient;
-        }
 
         if ($default) {
             $s->defaultid = $default;
@@ -131,6 +121,7 @@ if ($can_edit) {
         } else {
             // Fetch the update scale record so it'll show up to the user.
             $scale = get_record('comp_scale', 'id', $id);
+            totara_set_notification(get_string('scaledefaultupdated', 'competency'), null, array('style' => 'notifysuccess'));
         }
     }
 }
@@ -150,9 +141,25 @@ $navlinks[] = array('name'=>format_string($scale->name), 'link'=>'', 'type'=>'mi
 
 admin_externalpage_print_header('', $navlinks);
 
+print_single_button($CFG->wwwroot . '/hierarchy/framework/index.php', array('type' => 'competency'), get_string('allcompetencyscales', 'competency'));
+
 // Display info about scale
-print_heading(format_string($scale->name), 'left', 1);
+print_heading(get_string('scalex', 'competency', format_string($scale->name)), 'left', 1);
 echo '<p>'.format_string($scale->description, FORMAT_HTML).'</p>';
+
+// Display warning if scale is in use
+if($scale_used) {
+    print_container(get_string('competencyscaleinuse', 'competency'), true, 'notifysuccess');
+}
+
+
+// Display warning if proficient values don't make sense
+$maxprof = get_field('comp_scale_values', 'MAX(sortorder)', 'proficient', 1, 'scaleid', $scale->id);
+$minnoneprof = get_field('comp_scale_values', 'MIN(sortorder)', 'proficient', 0, 'scaleid', $scale->id);
+if(isset($maxprof) && isset($minnoneprof) && $maxprof > $minnoneprof) {
+    print_container(get_string('nonsensicalproficientvalues', 'competency'), true, 'notifyproblem');
+}
+
 
 // Display scale values
 if ($values) {
@@ -186,39 +193,52 @@ if ($values) {
 
     // Add rows to table
     $count = 0;
+    // get ID of the proficient scale value, if there is only one
+    $onlyprof = competency_scale_only_proficient_value($scale->id);
     foreach ($values as $value) {
         $count++;
 
         $row = array();
-        $row[] = $value->name;
+        $row[] = format_string($value->name);
 
         $buttons = array();
         if ($can_edit) {
 
             // Is this the default value?
+            $disabled = ($numvalues == 1) ? ' disabled="disabled"' : '';
             if ($value->id == $scale->defaultid) {
-                $row[] = '<input type="radio" name="default" value="'.$value->id.'" checked="checked" />';
+                $row[] = '<input type="radio" name="default" value="'.$value->id.'" checked="checked" ' . $disabled . ' />';
             }
             else {
-                $row[] = '<input type="radio" name="default" value="'.$value->id.'" />';
+                $row[] = '<input type="radio" name="default" value="'.$value->id.'" ' . $disabled . ' />';
             }
 
             // Is this the proficient value?
-            if ($value->id == $scale->proficient) {
-                $row[] = '<input type="radio" name="proficient" value="'.$value->id.'" checked="checked" />';
+            if ($value->proficient) {
+                $row[] = get_string('yes');
             }
             else {
-                $row[] = '<input type="radio" name="proficient" value="'.$value->id.'" />';
+                $row[] = get_string('no');
             }
 
             $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/editvalue.php?id={$value->id}&amp;type=competency\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/deletevalue.php?id={$value->id}&amp;type=competency\" title=\"$str_delete\">".
-                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+            if (!$scale_used) {
+                /// prevent deleting default value
+                if($value->id == $scale->defaultid) {
+                    $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeletecompetencyscalevaluedefault', 'competency') . "\" title=\"" . get_string('error:nodeletecompetencyscalevaluedefault', 'competency') . "\" /></a>";
+                // prevent deleting last proficient value
+                } else if ($value->id == $onlyprof) {
+                    $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeletecompetencyscalevalueonlyprof', 'competency') . "\" title=\"" . get_string('error:nodeletecompetencyscalevalueonlyprof', 'competency') . "\" /></a>";
+                } else {
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/deletevalue.php?id={$value->id}&amp;type=competency\" title=\"$str_delete\">".
+                        "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+                }
+            }
 
             // If value can be moved up
-            if ($count > 1) {
+            if ($count > 1 && !$scale_used) {
                 $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&moveup={$value->id}&amp;type=competency\" title=\"$str_moveup\">".
                              "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
             } else {
@@ -226,7 +246,7 @@ if ($values) {
             }
 
             // If value can be moved down
-            if ($count < $numvalues) {
+            if ($count < $numvalues && !$scale_used) {
                 $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&movedown={$value->id}&amp;type=competency\" title=\"$str_movedown\">".
                              "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
             } else {
@@ -241,33 +261,17 @@ if ($values) {
         $table->data[] = $row;
     }
 
-    print_heading(get_string('scales', 'competency'));
-
-    if ($can_edit ){
+    if ($can_edit && $numvalues != 1){
         $row = array();
         $row[] = '';
-        $row[] = '<noscript><input type="submit" value="Update" /></noscript>';
-        $row[] = '<noscript><input type="submit" value="Update" /></noscript>';
+        $row[] = '<input type="submit" value="Update" />';
+        $row[] = '';
         $row[] = '';
         $table->data[] = $row;
     }
     print_table($table);
     if ($can_edit){
         echo "</form>\n";
-        ?>
-<script type="text/javascript">
-    $("#compscaledefaultprofform input:radio").change(
-        function(eventObject){
-            $("#compscaledefaultprofform").submit();
-        }
-    );
-
-    // On page load, remove last row in table (it's for non-js users only)
-    $(function() {
-        $('form#compscaledefaultprofform table.generaltable tr.lastrow').remove();
-    });
-</script>
-<?php
     }
 } else {
     echo '<br /><div>'.get_string('noscalevalues','competency').'</div><br />';
@@ -278,7 +282,7 @@ if ($values) {
 echo '<div class="buttons">';
 
 // Print button for creating new scale value
-if ($can_edit) {
+if ($can_edit && !$scale_used) {
     $options = array('scaleid' => $scale->id, 'type' => 'competency');
     print_single_button($CFG->wwwroot.'/hierarchy/type/competency/scale/editvalue.php', $options, get_string('addnewscalevalue', 'competency'), 'get');
 }

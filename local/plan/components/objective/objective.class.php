@@ -571,6 +571,25 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
+     * Returns true if any objectives use the scale given
+     *
+     * @param integer $scaleid
+     * return boolean
+     */
+    public static function is_priority_scale_used($scaleid) {
+        global $CFG;
+        $sql = "
+            SELECT o.id
+            FROM {$CFG->prefix}dp_plan_objective o
+            LEFT JOIN
+                {$CFG->prefix}dp_priority_scale_value psv
+            ON o.priority = psv.id
+            WHERE psv.priorityscaleid = {$scaleid}";
+        return record_exists_sql($sql);
+    }
+
+
+    /**
      * Completely delete an objective
      * @param int $caid
      * @return boolean success or failure

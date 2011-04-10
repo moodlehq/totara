@@ -774,6 +774,25 @@ class dp_course_component extends dp_base_component {
 
 
     /**
+     * Returns true if any courses use the scale given
+     *
+     * @param integer $scaleid
+     * return boolean
+     */
+    public static function is_priority_scale_used($scaleid) {
+        global $CFG;
+        $sql = "
+            SELECT ca.id
+            FROM {$CFG->prefix}dp_plan_course_assign ca
+            LEFT JOIN
+                {$CFG->prefix}dp_priority_scale_value psv
+            ON ca.priority = psv.id
+            WHERE psv.priorityscaleid = {$scaleid}";
+        return record_exists_sql($sql);
+    }
+
+
+    /**
      * Unassign an item from a plan
      *
      * @access  public

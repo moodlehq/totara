@@ -216,6 +216,7 @@ $string['confirmlinkedcoursesdesc'] = 'Some of those competencies have linked co
 $string['alreadyassignedtoplan'] = 'Already assigned to this plan';
 
 //Objective Strings
+$string['allobjectivescales'] = 'All objective scales';
 $string['objective'] = 'Objective';
 $string['objectiveplural'] = 'Objectives';
 $string['objectives'] = 'Objectives';
@@ -233,6 +234,12 @@ $string['error:objectiveupdated'] = 'Objective not updated';
 $string['error:objectivesupdated'] = 'Objectives not updated';
 $string['error:objectivedeleted'] = 'Objective not deleted';
 $string['error:objectiveidincorrect'] = 'Objective ID incorrect';
+$string['nonsensicalachievedvalues'] = 'Warning: You have achieved values below non-achieved values in this scale. Remember that your scale should be ordered from most accomplished at the top, to least accomplished at the bottom.';
+$string['objectivescaledefaultupdated'] = 'The scale\'s default value has been updated';
+$string['objectivescaleadded'] = 'Objective scale \"{$a}\" added';
+$string['objectivescalevalueadded'] = 'Objective scale value \"{$a}\" added';
+$string['objectivescaleupdated'] = 'Objective scale \"{$a}\" updated';
+$string['objectivescalevalueupdated'] = 'Objective scale value \"{$a}\" updated';
 $string['objectivetitle'] = 'Objective Title';
 $string['objectivedescription'] = 'Objective Description';
 $string['objectivepriority'] = 'Objective Priority';
@@ -241,6 +248,7 @@ $string['objectivecourse'] = 'Assigned courses';
 $string['objectiveduedate'] = 'Objective Due Date';
 $string['objectiveapproved'] = 'Objective Approval';
 $string['error:cannotupdateobjectives'] = 'Cannot update objectives';
+$string['objectivescalex'] = 'Objective scale \"{$a}\"';
 $string['objectivesnotupdated'] = 'Objectives not updated';
 $string['deleteobjective'] = 'Delete objective';
 $string['deleteobjectiveareyousure'] = 'Are you sure you want to delete this objective?';
@@ -327,7 +335,7 @@ $string['deletecheckdptemplate'] = 'Are you sure you want to delete this learnin
 
 $string['error:templateid'] = 'Invalid plan template ID';
 
-$string['cannotdeletetemplate_inuse'] = 'Cannot detele template when it is in use';
+$string['cannotdeletetemplate_inuse'] = 'Cannot delete template when it is in use';
 
 $string['couldnotinsertnewrecord'] = 'Could not insert new record';
 $string['unabletoassigncompsfromorg'] = 'Unable to assign competencies from position organisation';
@@ -400,23 +408,34 @@ $string['noteduedateswrongformatorrequired'] = 'NOTE: The indicated duedate fiel
 
 
 // Priority Scales
+$string['allpriorityscales'] = 'All priority scales';
+$string['assignedonly'] = 'Assigned but not used';
 $string['priorityscales'] = 'Priority scales';
 $string['priorityscale'] = 'Priority scale';
+$string['priorityscalex'] = 'Priority scale \"{$a}\"';
 $string['noprioritiesdefined'] = 'No priorities defined';
 $string['priorityscalecreate'] = 'Add a new priority scale';
+$string['priorityscaleadded'] = 'Priority scale \"{$a}\" added';
+$string['priorityscalevalueadded'] = 'Priority scale value \"{$a}\" added';
+$string['priorityscaleupdated'] = 'Priority scale \"{$a}\" updated';
+$string['priorityscalevalueupdated'] = 'Priority scale value \"{$a}\" updated';
+$string['priorityscaledefaultupdated'] = 'The scale\'s default value has been updated';
 $string['priorityvalues'] = 'Priority values';
 $string['priority'] = 'Priority';
 $string['addnewpriorityvalue'] = 'Add new priority scale value';
-$string['error:nodeletepriorityscaleinuse'] = 'You cannot delete a priority scale that is in use';
+$string['error:nodeletepriorityscalevalueinuse'] = 'You cannot delete that scale value because it\'s scale is in use';
+$string['error:nodeletepriorityscaleinuse'] = 'You cannot delete that priority scale because it is in use';
+$string['error:nodeletepriorityscaleassigned'] = 'You cannot delete that priority scale because it is already assigned in one or more plan templates';
+$string['error:nodeletepriorityscalevaluedefault'] = 'You cannot delete that priority scale value because it is the default value';
 $string['deletecheckpriority'] = 'Are you absolutely sure you want to completely delete this priority scale?';
 $string['deletecheckpriorityvalue'] = 'Are you absolutely sure you want to delete this priority scale value?';
-$string['deletedpriorityscale'] = 'The priority scale $a has been completely deleted.';
-$string['deletedpriorityscalevalue'] = 'The priority scale value $a has been deleted.';
+$string['deletedpriorityscale'] = 'The priority scale \"{$a}\" has been completely deleted.';
+$string['deletedpriorityscalevalue'] = 'The priority scale value \"{$a}\" has been deleted.';
 $string['error:deletedpriorityscalevalue'] = 'Could not delete priority scale value.';
 $string['error:updatepriorityscalevalue'] = 'Could not update priority scale value.';
-$string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale that is in use. To reorder this priority scale, it must not be assigned to any IDP\'s.';
-$string['error:nodeletepriorityvalueinuse'] = 'You cannot delete a priority scale value from a scale that is in use. To delete this priority scale value, the priority scale must not be assigned to any IDP.';
+$string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale that is in use.';
 $string['linktopriorityvalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
+$string['priorityscaleinuse'] = 'This scale is in use (i.e. users have items marked with values from this scale). Scale values cannot be created, re-ordered or deleted to preserve data integrity. You can still rename scale values but this may confuse users when their priorities changes without warning.';
 $string['explainpriorityscalevals'] = 'One priority per line (highest to lowest)';
 $string['changeto'] = 'Change to';
 $string['set'] = 'Set';
@@ -459,7 +478,13 @@ $string['editobjectivevalue'] = 'Edit objective value';
 $string['linktoobjectivevalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this objective scale.';
 $string['explainobjscalevals'] = 'One value per line (highest to lowest)';
 $string['missingobjectivescalevaluename'] = 'Objective Scale Value name is Required';
-$string['error:nodeleteobjectivescaleinuse'] = 'You cannot delete an objective scale that is in use';
+$string['objectivescaleinuse'] = 'This scale is in use (i.e. users have objectives marked with values from this scale). Scale values cannot be created, re-ordered or deleted to preserve data integrity. You can still rename scale values but this may confuse users when their objective status changes without warning.';
+$string['achievedvaluefrozen'] = 'You cannot change this setting because the scale is in use';
+$string['error:nodeleteobjectivescalevalueinuse'] = 'You cannot delete that scale value because it\'s scale is in use';
+$string['error:nodeleteobjectivescaleinuse'] = 'You cannot delete that objective scale because it is in use';
+$string['error:nodeleteobjectivescaleassigned'] = 'You cannot delete that objective scale because it is already assigned in one or more plan templates';
+$string['error:nodeleteobjectivescalevaluedefault'] = 'You cannot delete that objective scale value because it is the default value';
+$string['error:noreorderobjectiveinuse'] = 'You cannot reorder an objective scale that is in use.';
 $string['error:objectivescaleidincorrect'] = 'Objective Scale ID was incorrect';
 $string['error:objectivescalevalueidincorrect'] = 'Objective Scale value ID was incorrect';
 $string['error:createnewobjectivescale'] = 'An error occured while creating new objective scale';
@@ -475,8 +500,8 @@ $string['objectivescalevalueidnumber'] = 'Scale value ID number';
 $string['objectivescalevaluenumericalvalue'] = 'Objective scale numerical value';
 $string['deletecheckobjective'] = 'Are you absolutely sure you want to completely delete this objective scale?';
 $string['deletecheckobjectivevalue'] = 'Are you absolutely sure you want to delete this objective scale value?';
-$string['deletedobjectivescale'] = 'The objective scale $a has been completely deleted.';
-$string['deletedobjectivescalevalue'] = 'The objective scale value $a has been deleted.';
+$string['deletedobjectivescale'] = 'The objective scale \"{$a}\" has been completely deleted.';
+$string['deletedobjectivescalevalue'] = 'The objective scale value \"{$a}\" has been deleted.';
 $string['noobjectivescales'] = 'To use objectives setup an objective scale';
 
 

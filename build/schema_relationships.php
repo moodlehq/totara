@@ -51,7 +51,6 @@ $relations = array(
     'comp_depth_info_data#competencyid' => 'comp#id',
     'comp_relations#id1' => 'comp#id',
     'comp_relations#id2' => 'comp#id',
-    'comp_scale#proficient' => 'comp_scale_values#id',
     'comp_scale#defaultid' => 'comp_scale_values#id',
     'comp_scale_values#scaleid' => 'comp_scale#id',
     'comp_scale_assignments#frameworkid' => 'comp_framework#id',

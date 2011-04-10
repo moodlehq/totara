@@ -26,22 +26,27 @@ if (!$value = get_record('comp_scale_values', 'id', $id)) {
     error('Competency scale value ID was incorrect');
 }
 
+$scale = get_record('comp_scale', 'id', $value->scaleid);
 
 ///
 /// Display page
 ///
 
-admin_externalpage_print_header();
 
 $returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$value->scaleid}&amp;type=competency";
 $deleteurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/deletevalue.php?id={$value->id}&amp;delete=".md5($value->timemodified)."&amp;sesskey={$USER->sesskey}&amp;type=competency";
 
 // Can't delete if the scale is in use
 if ( competency_scale_is_used($value->scaleid) ) {
-    print_error('error:nodeletescalevalueinuse', 'hierarchy', $returnurl);
+    totara_set_notification(get_string('error:nodeletescalevalueinuse', 'hierarchy'), $returnurl);
+}
+
+if ($value->id == $scale->defaultid) {
+    totara_set_notification(get_string('error:nodeletecompetencyscalevaluedefault', 'competency'), $returnurl);
 }
 
 if (!$delete) {
+    admin_externalpage_print_header();
     $strdelete = get_string('deletecheckscalevalue', 'competency');
 
     notice_yesno(
@@ -60,17 +65,17 @@ if (!$delete) {
 ///
 
 if ($delete != md5($value->timemodified)) {
-    error("The check variable was wrong - try again");
+    totara_set_notification("The check variable was wrong - try again", $returnurl);
 }
 
 if (!confirm_sesskey()) {
-    print_error('confirmsesskeybad', 'error');
+    totara_set_notification(get_string('confirmsesskeybad', 'error'), $returnurl);
 }
 
-add_to_log(SITEID, 'competencyscalesvalu', 'delete', "view.php?id=$value->scaleid&amp;type=competency", "$value->name (ID $value->id)");
+if(delete_records('comp_scale_values', 'id', $value->id)) {
+    add_to_log(SITEID, 'competencyscalevalue', 'delete', "view.php?id=$value->scaleid&amp;type=competency", "$value->name (ID $value->id)");
+    totara_set_notification(get_string('deletedcompetencyscalevalue', 'competency', format_string($value->name)), $returnurl, array('style' => 'notifysuccess'));
+} else {
+    totara_set_notification(get_string('couldnotdeletescalevalue', 'competency'), $returnurl);
+}
 
-delete_records('comp_scale_values', 'id', $value->id);
-
-print_heading(get_string('deletedcompetencyscalevalue', 'competency', format_string($value->name)));
-print_continue($returnurl);
-print_footer();
