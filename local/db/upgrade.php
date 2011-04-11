@@ -2229,9 +2229,18 @@ function xmldb_local_upgrade($oldversion) {
         }
 
         // now remove the old field from comp_scale table
+        // MSSQL requires index be dropped first
+        $table = new XMLDBTable('comp_scale');
+        $index = new XMLDBIndex('proficient');
+        if(index_exists($table, $index)) {
+            $result = $result && drop_index($table, $index);
+        }
+
         $table = new XMLDBTable('comp_scale');
         $field = new XMLDBField('proficient');
-        $result = $result && drop_field($table, $field);
+        if(field_exists($table, $field)) {
+            $result = $result && drop_field($table, $field);
+        }
     }
 
     return $result;
