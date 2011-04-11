@@ -22,7 +22,7 @@
     <TABLE NAME="oauth_access_token" COMMENT="Access tokens per user per site" PREVIOUS="oauth_site_directory">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="siteid"/>
-        <FIELD NAME="siteid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="siteid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="siteid" NEXT="access_token"/>
         <FIELD NAME="access_token" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="access token" PREVIOUS="userid"/>
       </FIELDS>
