@@ -78,10 +78,11 @@ if (!empty($file)) {
             }
             if ($type == 'local_') {
                 $locations[$CFG->dirroot . "/local/$plugin/lang/"] = "$file";
-            }
-            if (!empty($rules[$type])) {
-                foreach ($rules[$type] as $location) {
-                    $locations[$CFG->dirroot . "/$location/$plugin/lang/"] = "$plugin/$file";
+            } else {
+                if (!empty($rules[$type])) {
+                    foreach ($rules[$type] as $location) {
+                        $locations[$CFG->dirroot . "/$location/$plugin/lang/"] = "$plugin/$file";
+                    }
                 }
             }
         }
