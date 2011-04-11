@@ -869,10 +869,9 @@ class dp_course_component extends dp_base_component {
                         $completedcount++;
                         break;
                     case COMPLETION_STATUS_INPROGRESS:
-                    default:
-                        $completionsum += 0.5;
                         $inprogresscount++;
                         break;
+                    default:
                 }
             }
         }
