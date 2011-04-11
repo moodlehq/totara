@@ -30,7 +30,7 @@ define('MDL_F2F_CANCEL_ICAL',		9);	    // Send just a combined text/ical message
 define('MDL_MANAGER_ROLEID','manager');
 
 // Custom field related constants
-define('CUSTOMFIELD_DELIMITTER', ';');
+define('CUSTOMFIELD_DELIMITTER', '##SEPARATOR##');
 define('CUSTOMFIELD_TYPE_TEXT',        0);
 define('CUSTOMFIELD_TYPE_SELECT',      1);
 define('CUSTOMFIELD_TYPE_MULTISELECT', 2);

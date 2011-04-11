@@ -32,7 +32,7 @@ class mod_facetoface_customfield_form extends moodleform {
         $mform->addElement('text', 'defaultvalue', get_string('setting:defaultvalue', 'facetoface'), 'maxlength="255" size="30"');
         $mform->setType('defaultvalue', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'possiblevalues', get_string('setting:possiblevalues', 'facetoface'), 'size="50"');
+        $mform->addElement('textarea', 'possiblevalues', get_string('setting:possiblevalues', 'facetoface'), 'rows="5" cols="30"');
         $mform->setType('possiblevalues', PARAM_MULTILANG);
         $mform->disabledIf('possiblevalues', 'type', 'eq', 0);
 
