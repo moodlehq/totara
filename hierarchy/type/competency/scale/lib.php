@@ -81,7 +81,7 @@ function competency_scale_only_proficient_value($scaleid) {
         SELECT csv.id
         FROM {$CFG->prefix}comp_scale_values csv
         INNER JOIN (
-            SELECT scaleid, SUM(proficient)
+            SELECT scaleid, SUM(proficient) AS sum
             FROM {$CFG->prefix}comp_scale_values
             GROUP BY scaleid
         ) count
