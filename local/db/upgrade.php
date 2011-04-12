@@ -2232,6 +2232,7 @@ function xmldb_local_upgrade($oldversion) {
         // MSSQL requires index be dropped first
         $table = new XMLDBTable('comp_scale');
         $index = new XMLDBIndex('proficient');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('proficient'));
         if(index_exists($table, $index)) {
             $result = $result && drop_index($table, $index);
         }
