@@ -79,6 +79,9 @@ add_to_log($course->id, "user", "message settings view", "edit.php?id=$user->id&
 ///     /user/view.php
 ///     /user/edit.php
 ///     /course/user.php
+$showpositions = 1;
+$showmessages = 1;
+$showroles = 1;
 $currenttab = 'messages';
 $currenturl = "{$CFG->wwwroot}/local/totara_msg/edit.php?id={$user->id}&course={$course->id}";
 

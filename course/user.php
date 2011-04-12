@@ -82,12 +82,9 @@
     }
 
     // Course completion tab
-    if (completion_info::is_enabled_for_site()) {
-        $cinfo = new completion_info($course);
-
-        if (($course->id == SITEID || $cinfo->is_enabled()) &&
-            ($myreports || $anyreport || ($course->id == SITEID || has_capability('coursereport/completion:view', $coursecontext)))) { // permissions to view the report
-
+    if (completion_can_view_data($user->id, $course->id)) {
+        // If not the frontpage course, check if reports are enabled
+        if ($course->id == SITEID || $course->showreports) {
             // Decide if singular or plural
             $modes[] = $course->id == SITEID ? 'coursecompletions' : 'coursecompletion';
         }
@@ -134,6 +131,8 @@
 ///     /course/user.php
     $currenttab = $mode;
     $showroles = 1;
+    $showpositions = 1;
+    $showmessages = 1;
     include($CFG->dirroot.'/user/tabs.php');
 
     switch ($mode) {
@@ -410,7 +409,7 @@
                 if (!empty($infos)) {
 
                     echo '<h1 align="center">'.get_string($type, 'coursereport_completion').'</h1>';
-                    echo '<table class="generalbox boxaligncenter course-completion-table">';
+                    echo '<table class="generalbox logtable boxaligncenter course-completion-table" width="100%">';
                     echo '<tr class="ccheader">';
                     echo '<th class="c0 header" scope="col">'.get_string('course').'</th>';
                     echo '<th class="c1 header" scope="col">'.get_string('requiredcriteria', 'completion').'</th>';
@@ -422,7 +421,7 @@
                     }
 
                     echo '</tr>';
-                    $oddeven = 1;
+                    $oddeven = 0;
 
                     // For each course
                     foreach ($infos as $c_info) {
@@ -449,9 +448,6 @@
                         foreach ($completions as $completion) {
                             $criteria = $completion->get_criteria();
                             $complete = $completion->is_complete();
-
-                            // for row striping (per course)
-                            $oddeven = ++$oddeven % 2;
 
                             // Activities are a special case, so cache them and leave them till last
                             if ($criteria->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
@@ -504,18 +500,20 @@
                         // Print table
                         foreach ($rows as $row) {
 
-                            $oddeven = ++$oddeven % 2;
+                            $oddeven = $oddeven % 2;
 
                             // Display course name on first row
                             if ($first_row) {
-                                echo '<tr class="r' . $oddeven .'"><td class="c0"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$c_course->id.'">'.format_string($course_name).'</a></td>';
+                                echo '<tr class="r' . $oddeven .'"><td class="cell c0"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$c_course->id.'">'.format_string($course_name).'</a></td>';
                             } else {
-                                echo '<tr class="r' . $oddeven .'"><td class="c0"></td>';
+                                echo '<tr class="r' . $oddeven .'"><td class="cell c0"></td>';
                             }
 
-                            echo '<td class="c1">';
+                            ++$oddeven;
+
+                            echo '<td class="cell c1">';
                             echo $row['title'];
-                            echo '</td><td class="c2">';
+                            echo '</td><td class="cell c2">';
 
                             switch ($row['status']) {
                                 case 'Yes':
@@ -531,7 +529,7 @@
                             }
 
                             // Display link on first row
-                            echo '</td><td class="c3">';
+                            echo '</td><td class="cell c3">';
                             if ($first_row) {
                                 echo '<a href="'.$CFG->wwwroot.'/blocks/completionstatus/details.php?course='.$c_course->id.'&user='.$user->id.'">'.get_string('detailedview', 'coursereport_completion').'</a>';
                             }
@@ -545,7 +543,7 @@
                                 );
 
                                 $ccompletion = new completion_completion($params);
-                                echo '<td class="c4">'.userdate($ccompletion->timecompleted, '%e %B %G').'</td>';
+                                echo '<td class="cell c4">'.userdate($ccompletion->timecompleted, '%e %B %G').'</td>';
                             }
 
                             $first_row = false;

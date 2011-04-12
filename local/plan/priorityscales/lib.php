@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
  * @subpackage plan
  */
@@ -27,17 +28,21 @@
  * Library of functions related to Learning Plan priorities.
  */
 
+require_once($CFG->dirroot . '/local/plan/lib.php');
+
 /**
- * A function to determine whether a priority is in use or not. (In this context,
- * "in use" means that if we change this priority or its values, it'll cause
- * the data in the database to become corrupt)
+ * Determine whether an priority scale is assigned to any components of
+ * any plan templates
  *
- * @param <type> $priorityid
+ * There is a less strict version of this function:
+ * {@link dp_priority_scale_is_used()} which tells you if the scale
+ * values are actually assigned.
+ *
+ * @param int $scaleid The scale to check
  * @return boolean
  */
-function dp_priority_scale_is_used($scaleid) {
+function dp_priority_scale_is_assigned($scaleid) {
     global $CFG;
-    require_once($CFG->dirroot.'/local/plan/lib.php');
     global $DP_AVAILABLE_COMPONENTS;
 
     $count = 0;
@@ -45,6 +50,34 @@ function dp_priority_scale_is_used($scaleid) {
         $count += count_records("dp_{$c}_settings", 'priorityscale', $scaleid);
     }
     return $count > 0 ? true : false;
+}
+
+
+/**
+ * Determine whether a scale is in use or not.
+ *
+ * "in use" means that items are assigned any of the scale's values.
+ * Therefore if we delete this scale or alter its values, it'll cause
+ * the data in the database to become corrupt
+ *
+ * There is an even stricter version of this function:
+ * {@link dp_priority_scale_is_assigned()} which tells you if the scale
+ * even is assigned to any components of any plan templates.
+ *
+ * @param int $scaleid The scale to check
+ * @return boolean
+ */
+function dp_priority_scale_is_used($scaleid) {
+    global $CFG, $DP_AVAILABLE_COMPONENTS;
+
+    $used = false;
+    foreach($DP_AVAILABLE_COMPONENTS as $component) {
+        // @todo look at how done elsewhere (more error checking)
+        $component_class = "dp_{$component}_component";
+        require_once($CFG->dirroot . "/local/plan/components/{$component}/{$component}.class.php");
+        $used = $used || $component_class::is_priority_scale_used($scaleid);
+    }
+    return $used;
 }
 
 
@@ -93,6 +126,8 @@ function dp_priority_display_table($priorities, $editingon=0) {
         $count = 0;
         $numvalues = count($priorities);
         foreach($priorities as $priority) {
+            $scale_used = dp_priority_scale_is_used($priority->id);
+            $scale_assigned = dp_priority_scale_is_assigned($priority->id);
             $count++;
             $line = array();
 
@@ -102,8 +137,10 @@ function dp_priority_display_table($priorities, $editingon=0) {
             }
             $line[] = $title;
 
-            if ( dp_priority_scale_is_used( $priority->id ) ) {
+            if ($scale_used) {
                 $line[] = get_string('yes');
+            } else if ($scale_assigned) {
+                $line[] = get_string('assignedonly', 'local_plan');
             } else {
                 $line[] = get_string('no');
             }
@@ -116,8 +153,14 @@ function dp_priority_display_table($priorities, $editingon=0) {
                 }
 
                 if ($can_delete) {
-                    $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/local/plan/priorityscales/index.php?delete=$priority->id\"><img".
-                                " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+                    if($scale_used) {
+                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeletepriorityscaleinuse', 'local_plan') . "\" title=\"" . get_string('error:nodeletepriorityscaleinuse', 'local_plan') . "\" /></a>";
+                    } else if ($scale_assigned) {
+                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeletepriorityscaleassigned', 'local_plan') . "\" title=\"" . get_string('error:nodeletepriorityscaleassigned', 'local_plan') . "\" /></a>";
+                    } else {
+                        $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/local/plan/priorityscales/index.php?delete=$priority->id\"><img".
+                            " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+                    }
                 }
                 // If value can be moved up
                 if ($can_edit && $count > 1) {

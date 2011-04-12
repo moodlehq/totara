@@ -9,6 +9,8 @@ class competencyscalevalue_edit_form extends moodleform {
         global $CFG;
 
         $mform =& $this->_form;
+        $scaleid = $this->_customdata['scaleid'];
+        $id = $this->_customdata['id'];
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
@@ -39,6 +41,23 @@ class competencyscalevalue_edit_form extends moodleform {
         $mform->setHelpButton('numericscore', array('competencyscalevaluenumeric', get_string('scalevaluenumericalvalue', 'competency')), true);
         $mform->setType('numericscore', PARAM_CLEAN);
 
+        if (competency_scale_is_used($scaleid)) {
+           $note = '<span class="notifyproblem">'.get_string('proficientvaluefrozen', 'competency') . '</span>';
+           $freeze = true;
+        } else if ($id != 0 && competency_scale_only_proficient_value($scaleid) == $id) {
+
+           $note = '<span class="notifyproblem">'.get_string('proficientvaluefrozenonlyprof', 'competency') . '</span>';
+            $freeze = true;
+        } else {
+            $note = '';
+            $freeze = false;
+        }
+        $mform->addElement('advcheckbox', 'proficient', get_string('proficientvalue', 'competency'), $note);
+        $mform->setHelpButton('proficient', array('competency/scale/proficient', get_string('proficientvalue', 'competency'), 'moodle'), true);
+        if($freeze) {
+            $mform->hardFreeze('proficient');
+        }
+
         $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
         $mform->setType('description', PARAM_CLEAN);
@@ -58,10 +77,20 @@ class competencyscalevalue_edit_form extends moodleform {
                 $valuenew->numericscore = (float)$valuenew->numericscore;
             } else {
                 $err['numericscore'] = get_string('invalidnumeric', 'competency');
-                return $err;
             }
         } else {
             $valuenew->numericscore = null;
+        }
+
+        // Check that we're not removing the last proficient value from this scale
+        if ($valuenew->proficient == 0) {
+            if(!record_exists_select('comp_scale_values', "scaleid={$valuenew->scaleid} AND proficient=1 AND id != {$valuenew->id}")) {
+                $err['proficient'] = get_string('error:onescalevaluemustbeproficient', 'competency');
+            }
+        }
+
+        if(count($err) > 0) {
+            return $err;
         }
 
         return true;

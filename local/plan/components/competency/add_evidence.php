@@ -120,7 +120,7 @@ if($fromform = $mform->get_data()) { // Form submitted
     $data2 = $fromform->competencyid;
     $time = $todb->reaggregate;
     $count = count_records('block_totara_stats', 'userid', $currentuser, 'eventtype', $event, 'data2', $data2);
-    $isproficient = get_record('comp_scale', 'proficient', $proficiency);
+    $isproficient = get_field('comp_scale_values', 'proficient', 'id', $proficiency);
 
     // check the proficiency is set to "proficient" and check for duplicate data
     if ($isproficient && $count == 0) {
@@ -132,7 +132,7 @@ if($fromform = $mform->get_data()) { // Form submitted
         $component->send_component_complete_alert($alert_detail);
     }
     // check record exists for removal and is set to "not proficient"
-    else if (empty($isproficient) && $count > 0) {
+    else if ($isproficient == 0 && $count > 0) {
         totara_stats_remove_event($currentuser, $event, $data2);
     }
 

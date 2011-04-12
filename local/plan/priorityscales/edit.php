@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
  * @subpackage plan
  */
@@ -123,17 +124,21 @@ if ($mform->is_cancelled()) {
         }
     // Existing priority
     } else {
-        if (!update_record('dp_priority_scale', $prioritynew)) {
+        if (update_record('dp_priority_scale', $prioritynew)) {
+            add_to_log(SITEID, 'priorities', 'updated', "view.php?id=$prioritynew->id");
+            totara_set_notification(get_string('priorityscaleupdated', 'local_plan', format_string(stripslashes($prioritynew->name))),
+                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$prioritynew->id}",
+                array('style' => 'notifysuccess'));
+        } else {
             error(get_string('error:updatingpriorityscale', 'local_plan'));
         }
     }
 
-    // Reload from db
-    $prioritynew = get_record('dp_priority_scale', 'id', $prioritynew->id);
-
     // Log
-    add_to_log(SITEID, 'priorities', 'updated', "view.php?id=$prioritynew->id");
-    redirect("$CFG->wwwroot/local/plan/priorityscales/view.php?id={$prioritynew->id}");
+    add_to_log(SITEID, 'priorities', 'added', "view.php?id=$prioritynew->id");
+    totara_set_notification(get_string('priorityscaleadded', 'local_plan', format_string(stripslashes($prioritynew->name))),
+        "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$prioritynew->id}",
+        array('style' => 'notifysuccess'));
 }
 
 /// Print Page

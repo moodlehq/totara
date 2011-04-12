@@ -31,11 +31,12 @@ class edit_scale_form extends moodleform {
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_TEXT);
 
-        // If it's a new scale, give them the option to define scale values.
+        // If it's a new scale, get them to define scale values.
         if ( $this->_customdata['scaleid'] == 0 ){
             $mform->addElement('textarea', 'scalevalues', get_string('scalevalues', 'competency').
                 '<br><i>('.get_string('notescalevalueentry', 'competency').')</i>', 'rows="5" cols="30"');
             $mform->setHelpButton('scalevalues', array('competency/scale/scalevalues', get_string('scale')));
+            $mform->addRule('scalevalues', get_string('required'), 'required', null, 'server');
             $mform->setType('scalevalues', PARAM_TEXT);
         } else {
             $mform->addELement('html', '<div class="fitem"><div class="fitemtitle">&nbsp;</div><div class="felement">'.get_string('linktoscalevalues','competency',clean_param($this->_customdata['scaleid'], PARAM_INT))."</div></div>\n");
@@ -52,5 +53,21 @@ class edit_scale_form extends moodleform {
 //-------------------------------------------------------------------------------
         // buttons
         $this->add_action_buttons();
+    }
+
+    function validation($valuenew) {
+        $err = array();
+        $valuenew = (object) $valuenew;
+
+        // make sure at least one scale value is defined
+        if(isset($valuenew->scalevalues) && trim($valuenew->scalevalues) == '') {
+            $err['scalevalues'] = get_string('required');
+        }
+
+        if(count($err) > 0) {
+            return $err;
+        }
+
+        return true;
     }
 }

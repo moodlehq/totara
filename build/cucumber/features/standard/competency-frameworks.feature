@@ -161,7 +161,7 @@ Feature: Manage Competency Frameworks
       And I am on the manage competency frameworks page with editing on
       And I click the "Competency Scale 1" link
       And I delete the 1st scale value table entry and confirm
-    Then I should see "Competency Scale Value" 2 times
+    Then I should see "Competency Scale Value" 2 times within the scale value table
 
   @store_comp_framework
   @store_comp_scale

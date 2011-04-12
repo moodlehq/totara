@@ -526,60 +526,6 @@ if (!file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
     }
 
 
-    //==============================================================================//
-    //download the language pack if it doesn't exist
-
-    if ( ( $interactive == CLI_FULL ) || ($interactive == CLI_SEMI && ( !isset($INSTALL['downloadlangaugepack']) ))) {
-        $site_langs=get_list_of_languages();
-        if (!key_exists($INSTALL['lang'],$site_langs)) {
-            console_write(STDOUT,'downloadlanguagepack','install');
-            $download_lang_pack=read_yes_no();
-            if($download_lang_pack == 'yes'){
-
-                $downloadsuccess = false;
-
-                /// Create necessary lang dir
-                if (!make_upload_directory('lang', false)) {
-                    console_write(STDERR,get_string('cannotcreatelangdir','error'),false);
-                }
-
-                /// Download and install component
-                if (($cd = new component_installer('http://download.moodle.org', 'lang16',
-                $INSTALL['lang'].'.zip', 'languages.md5', 'lang')) && empty($errormsg)) {
-                    $status = $cd->install(); //returns ERROR | UPTODATE | INSTALLED
-                    switch ($status) {
-                        case ERROR:
-                        if ($cd->get_error() == 'remotedownloadnotallowed') {
-                            $a = new stdClass();
-                            $a->url = 'http://download.moodle.org/lang16/'.$pack.'.zip';
-                            $a->dest= $CFG->dataroot.'/lang';
-                            console_write(STDOUT,get_string($cd->get_error(), 'error', $a),false);
-                        } else {
-                            $downloaderror = get_string($cd->get_error(), 'error');
-                            console_write(STDOUT,get_string($cd->get_error(), 'error'),false);
-                        }
-                        break;
-                        case UPTODATE:
-                        case INSTALLED:
-                        $downloadsuccess = true;
-                        break;
-                        default:
-                        //We shouldn't reach this point
-                    }
-                } else {
-                    //We shouldn't reach this point
-                }
-
-                if ( $verbose > CLI_NO && $downloadsuccess) {
-                    //print success message if language pack download is successful
-                    console_write(STDOUT,'downloadsuccess');
-                    print_newline();
-                }
-
-            }
-        }
-    }
-
     $CONFFILE = array();
     //==================================================================================//
     //set INSTALL array values to CONFFILE array
@@ -999,9 +945,6 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
             $CFG->debug = $origdebug;
             error_reporting($CFG->debug);
             upgrade_log_start();
-
-            /// Upgrade current language pack if we can
-            upgrade_language_pack();
 
             if ( $verbose > CLI_NO ) {
                 console_write(STDOUT,$strdatabasechecking,'',false);

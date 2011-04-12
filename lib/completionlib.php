@@ -101,13 +101,78 @@ define('COMPLETION_AGGREGATION_ANY',        2);
 
 
 /**
+ * Utility function for checking if the logged in user can view
+ * another's completion data for a particular course
+ *
+ * @access  public
+ * @param   int         $userid     Completion data's owner
+ * @param   int         $courseid   Course ID (optional)
+ * @return  boolean
+ */
+function completion_can_view_data($userid, $courseid = null) {
+    global $USER;
+
+    if (!isloggedin()) {
+        return false;
+    }
+
+    // Check if this is the site course
+    if ($courseid == SITEID) {
+        $courseid = null;
+    }
+
+    // Check if completion is enabled
+    if ($courseid) {
+        $course = new object();
+        $course->id = $courseid;
+        $cinfo = new completion_info($course);
+        if (!$cinfo->is_enabled()) {
+            return false;
+        }
+    }
+    else {
+        if (!completion_info::is_enabled_for_site()) {
+            return false;
+        }
+    }
+
+    // Is own user's data?
+    if ($USER->id == $userid) {
+        return true;
+    }
+
+    // Check capabilities
+    $personalcontext = get_context_instance(CONTEXT_USER, $userid);
+
+    if (has_capability('moodle/user:viewuseractivitiesreport', $personalcontext)) {
+        return true;
+    }
+    elseif (has_capability('coursereport/completion:view', $personalcontext)) {
+        return true;
+    }
+
+    if ($courseid) {
+        $coursecontext = get_context_instance(CONTEXT_COURSE, $courseid);
+    }
+    else {
+        $coursecontext = get_system_context();
+    }
+
+    if (has_capability('coursereport/completion:view', $coursecontext)) {
+        return true;
+    }
+
+    return false;
+}
+
+
+/**
  * Class represents completion information for a course.
  *
  * Does not contain any data, so you can safely construct it multiple times
  * without causing any problems.
  *
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @package moodlecore
+ * @package totara
  */
 class completion_info {
     /**
@@ -187,6 +252,11 @@ class completion_info {
         // First check global completion
         if (!completion_info::is_enabled_for_site()) {
             return COMPLETION_DISABLED;
+        }
+
+        // Load data if we do not have enough
+        if (!isset($this->course->enablecompletion)) {
+            $this->course->enablecompletion = get_field('course', 'enablecompletion', 'id', $this->course->id);
         }
 
         // Check course completion
@@ -282,6 +352,7 @@ class completion_info {
                 cc.timeenrolled,
                 cc.timestarted,
                 cc.timecompleted,
+                cc.status,
                 cc.rpl
             FROM
                 {$CFG->prefix}course_completions cc

@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
  * @subpackage plan
  */
@@ -26,13 +27,14 @@
 require_once('../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('editvalue_form.php');
+require_once('lib.php');
 
 ///
 /// Setup / loading data
 ///
 
 $id = optional_param('id', 0, PARAM_INT); // Scale value id; 0 if inserting
-$priorityscaleid = optional_param('priorityscaleid', 0, PARAM_INT); // Competency scale id
+$priorityscaleid = optional_param('priorityscaleid', PARAM_INT); // Priority scale id
 
 // Make sure we have at least one or the other
 if (!$id && !$priorityscaleid) {
@@ -67,9 +69,15 @@ if (!$scale = get_record('dp_priority_scale', 'id', $value->priorityscaleid)) {
     error(get_string('error:priorityscaleidincorrect', 'local_plan'));
 }
 
+$scale_used = dp_priority_scale_is_used($scale->id);
+
 // Save priority scale name for display in the form
 $value->scalename = format_string($scale->name);
 
+// check scale isn't being used when adding new scale values
+if($value->id == 0 && $scale_used) {
+    error('You cannot add a scale value to a scale that is in use.');
+}
 
 ///
 /// Display page
@@ -99,25 +107,35 @@ if ($valueform->is_cancelled()) {
     if ($valuenew->id == 0) {
         unset($valuenew->id);
 
-        if (!$valuenew->id = insert_record('dp_priority_scale_value', $valuenew)) {
-            error(get_string('error:createpriorityvalue', 'local_plan'));
+        if ($valuenew->id = insert_record('dp_priority_scale_value', $valuenew)) {
+            // Log
+            add_to_log(SITEID, 'priorities', 'scale value added', "view.php?id={$valuenew->priorityscaleid}");
+
+            totara_set_notification(get_string('priorityscalevalueadded', 'local_plan', format_string(stripslashes($valuenew->name))),
+                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}",
+                array('style' => 'notifysuccess'));
+        } else {
+            totara_set_notification(get_string('error:createpriorityvalue', 'local_plan'),
+                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$priorityscaleid}");
         }
 
     // Updating priority scale value
     } else {
-        if (!update_record('dp_priority_scale_value', $valuenew)) {
-            error(get_string('error:updatepriorityvalue', 'local_plan'));
+        if (update_record('dp_priority_scale_value', $valuenew)) {
+
+            // Log
+            add_to_log(SITEID, 'priorities', 'scale value updated', "view.php?id={$valuenew->priorityscaleid}");
+
+            totara_set_notification(get_string('priorityscalevalueupdated', 'local_plan', format_string(stripslashes($valuenew->name))),
+                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}",
+                array('style' => 'notifysuccess'));
+
+        } else {
+            totara_set_notification(get_string('error:updatepriorityvalue', 'local_plan'),
+                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$priorityscaleid}");
         }
     }
 
-    // Reload from database
-    $valuenew = get_record('dp_priority_scale_value', 'id', $valuenew->id);
-
-    // Log
-    add_to_log(SITEID, 'priorities', 'scale value updated', "view.php?id={$valuenew->priorityscaleid}");
-
-    redirect("$CFG->wwwroot/local/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}");
-    // never reached
 }
 
 // Display page header
@@ -127,6 +145,11 @@ if ($id == 0) {
     print_heading(get_string('addnewpriorityvalue', 'local_plan'));
 } else {
     print_heading(get_string('editpriorityvalue', 'local_plan'));
+}
+
+// Display warning if scale is in use
+if($scale_used) {
+    print_container(get_string('priorityscaleinuse', 'local_plan'), true, 'notifysuccess');
 }
 
 $valueform->display();

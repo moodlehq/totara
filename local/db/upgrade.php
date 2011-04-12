@@ -2198,6 +2198,50 @@ function xmldb_local_upgrade($oldversion) {
             $index->setAttributes(XMLDB_INDEX_UNIQUE, array('userid', 'course', 'criteriaid'));
             $result = $result && add_index($table, $index);
         }
+
+    }
+
+    if($result && $oldversion < 2011040600) {
+        // add proficient field to comp_scale_values table
+        $table = new XMLDBTable('comp_scale_values');
+        $field = new XMLDBField('proficient');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $result = $result && add_field($table, $field);
+
+        // copy proficient value from comp_scale to new location in comp_scale_values
+        $scales = get_records('comp_scale');
+        if($scales) {
+            // loop through each scale
+            foreach($scales as $scale) {
+                // if proficient not set, leave all scale values as not proficient
+                if(empty($scale->proficient)) {
+                    continue;
+                }
+                // find the sort order of the proficient value
+                $minprofsort = get_field('comp_scale_values', 'sortorder', 'id', $scale->proficient);
+                // set proficient to 1 for all scale values with an equal or lower sortorder
+                if($minprofsort) {
+                    $sql = "UPDATE {$CFG->prefix}comp_scale_values SET proficient=1
+                        WHERE scaleid={$scale->id} AND sortorder <= $minprofsort";
+                    $result = $result && execute_sql($sql);
+                }
+            }
+        }
+
+        // now remove the old field from comp_scale table
+        // MSSQL requires index be dropped first
+        $table = new XMLDBTable('comp_scale');
+        $index = new XMLDBIndex('proficient');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('proficient'));
+        if(index_exists($table, $index)) {
+            $result = $result && drop_index($table, $index);
+        }
+
+        $table = new XMLDBTable('comp_scale');
+        $field = new XMLDBField('proficient');
+        if(field_exists($table, $field)) {
+            $result = $result && drop_field($table, $field);
+        }
     }
 
     return $result;

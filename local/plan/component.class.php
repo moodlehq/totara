@@ -273,6 +273,18 @@ abstract class dp_base_component {
      */
     abstract public function process_settings_update();
 
+    /**
+     * Returns true if any items from this component uses the scale given
+     *
+     * You should override this method in each child class.
+     *
+     * @param integer $scaleid
+     * return boolean
+     */
+    public static function is_priority_scale_used($scaleid) {
+        debugging('The component "' . $this->component . '" has not defined the method "is_priority_scale_used()". This should be defined to ensure that priority scales remain consistent. If not required, just return false.', DEBUG_DEVELOPER);
+        return false;
+    }
 
     /**
      * Code to run before after header is displayed

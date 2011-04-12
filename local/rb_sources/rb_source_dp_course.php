@@ -310,6 +310,7 @@ from
                     'joins' => array('course_completion','dp_course'),
                     'displayfunc' => 'course_completion_progress',
                     'defaultheading' => get_string('progress', 'rb_source_dp_course'),
+                    'extrafields' => array('userid' => 'base.userid', 'courseid' => 'base.courseid'),
                 )
             );
 
@@ -327,7 +328,7 @@ from
                     'joins' => array('course_completion', 'dp_course'),
                     'displayfunc' => 'course_completion_progress_and_approval',
                     'defaultheading' => get_string('progress', 'rb_source_dp_course'),
-                    'extrafields' => array('approved' => 'dp_course.approved')
+                    'extrafields' => array('approved' => 'dp_course.approved', 'userid' => 'base.userid', 'courseid' => 'base.courseid'),
                 )
             );
 
@@ -463,21 +464,8 @@ from
         return $icon;
     }
 
-    function rb_display_course_completion_progress($status) {
-        global $CFG, $COMPLETION_STATUS;
-
-        if (isset($status) && array_key_exists($status, $COMPLETION_STATUS)) {
-            $statusstring = $COMPLETION_STATUS[$status];
-            $status = get_string($statusstring, 'completion');
-        } else {
-            // no valid completion record
-            return '';
-        }
-
-        // if valid, display progress bar
-        $content = "<span class=\"coursecompletionstatus\">";
-        $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
-        return $content;
+    function rb_display_course_completion_progress($status, $row) {
+        return totara_display_course_progress_icon($row->userid, $row->courseid, $status);
     }
 
     function rb_display_course_completion_progress_and_approval($status, $row) {
@@ -486,7 +474,7 @@ from
         $approved = isset($row->approved) ? $row->approved : null;
 
         // get the progress bar
-        $content = $this->rb_display_course_completion_progress($status);
+        $content = $this->rb_display_course_completion_progress($status, $row);
 
         // highlight if the item has not yet been approved
         if($approved == DP_APPROVAL_UNAPPROVED ||

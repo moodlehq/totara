@@ -167,6 +167,8 @@
             print_header("$course->fullname: $fullname", $course->fullname, $navigation, "", "", true, "&nbsp;", navmenu($course));
         }
         $showroles = 1;
+        $showpositions = 1;
+        $showmessages = 1;
         $currenttab = 'override';
         include_once($CFG->dirroot.'/user/tabs.php');
     } else if ($context->contextlevel==CONTEXT_COURSE and $context->instanceid == SITEID) {

@@ -26,6 +26,8 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+require_once("{$CFG->libdir}/completionlib.php");
+
 
 /**
  * Save a notification message for displaying on the subsequent page view
@@ -188,6 +190,42 @@ function totara_reset_frontpage_blocks() {
     return 1;
 
 }
+
+
+/**
+ * Returns markup for displaying a progress bar for a user's course progress
+ *
+ * Optionally with a link to the user's profile if they have the correct permissions
+ *
+ * @access  public
+ * @param   $userid     int
+ * @param   $courseid   int
+ * @param   $status     int     COMPLETION_STATUS_ constant
+ * @return  string
+ */
+function totara_display_course_progress_icon($userid, $courseid, $status) {
+    global $CFG, $COMPLETION_STATUS;
+
+    if (!isset($status) || !array_key_exists($status, $COMPLETION_STATUS)) {
+        return '';
+    }
+
+    $statusstring = $COMPLETION_STATUS[$status];
+    $status = get_string($statusstring, 'completion');
+
+    // Display progress bar
+    $content = "<span class=\"coursecompletionstatus\">";
+    $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
+
+    // Check if user has permissions to see details
+    if (completion_can_view_data($userid, $courseid)) {
+        $content = "<a href=\"{$CFG->wwwroot}/blocks/completionstatus/details.php?course={$courseid}&user={$userid}\">{$content}</a>";
+    }
+
+    return $content;
+}
+
+
 
 /**
  * adds guides block on the site admin pages.  designed to be called from local_postinst
@@ -471,9 +509,6 @@ function totara_print_my_courses() {
             $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;
 
-            $statusstring = completion_completion::get_status($course);
-            $status = get_string($statusstring, 'completion');
-
             $starteddate = '';
             if ($course->timestarted != 0) {
                 $starteddate = userdate($course->timestarted, '%e %b %y');
@@ -486,7 +521,11 @@ function totara_print_my_courses() {
             } else {
                 $content .= "<tr><td class=\"course\">" . get_string('deletedcourse', 'completion') . "</td>";
             }
-            $content .=     "<td class=\"status\"><span class=\"completion-$statusstring\" title=\"$status\"></span></td><td class=\"enroldate\">$enroldate</td>";
+
+            $status = array_key_exists($id, $courses) ? $courses[$id]->status : COMPLETION_STATUS_NOTYETSTARTED;
+            $completion = totara_display_course_progress_icon($USER->id, $course->id, $status);
+
+            $content .=     "<td class=\"status\">{$completion}</td><td class=\"enroldate\">$enroldate</td>";
             $content .=     "<td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";
         }
         $content .= "</table>\n";
@@ -526,97 +565,95 @@ function totara_print_user_profile_field($userid=null, $fieldshortname=null) {
  * Check if a user is a manager of another user
  *
  * @param int $userid       ID of user
- * @param int $managerid    ID of a potential manager to check
+ * @param int $managerid    ID of a potential manager to check (optional)
+ * @param mixed $postype    Type of the position to check (POSITION_TYPE_* constant). Can be an int or an array of ints (optional)
  * @return boolean true if user $userid is managed by user $managerid
  *
  * If managerid is not set, uses the current user
 **/
-function totara_is_manager($userid, $managerid=null) {
-    global $USER;
+function totara_is_manager($userid, $managerid=null, $postype=null) {
+    global $CFG, $USER;
 
-    // User logged in user as default
+    $userid = (int) $userid;
+
     if (!isset($managerid)) {
+        // Use logged in user as default
         $managerid = $USER->id;
     }
 
-    // Setup caches
-    static $cache;
-    static $managerroleid;
-    if (!isset($cache)) {
-        $cache = array();
-        $managerroleid = get_field('role', 'id', 'shortname', 'manager');
+    require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+    if ( $postype === null ){
+        $postype = POSITION_TYPE_PRIMARY;
     }
 
-    // Generate cache key
-    $key = $managerid.'|'.$userid;
+    if ( is_array( $postype ) && count( $postype ) ){
+        $postypewhere = "pa.type in (";
+        $postypewhere .= implode(',', $postype);
+        $postypewhere .= ")";
 
-    // Check if no cache hit
-    if (!isset($cache[$key])) {
-        $context = get_context_instance(CONTEXT_USER, $userid);
-
-        // If a record exists, they are a manager to the user
-        $result = record_exists(
-            'role_assignments',
-            'roleid', $managerroleid,
-            'contextid', $context->id,
-            'userid', $managerid
-        );
-
-        // Cache result
-        $cache[$key] = $result;
+    } else {
+        $postypewhere = "pa.type = " . ((int) $postype);
     }
+    $postype = (int) $postype;
+    $sql = "SELECT DISTINCT u.id
+        FROM
+            {$CFG->prefix}pos_assignment pa
+            INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
+            INNER JOIN {$CFG->prefix}user u ON ra.userid = u.id
+        WHERE
+            ra.userid = {$managerid} AND pa.userid = {$userid}
+            AND {$postypewhere}";
 
-    return $cache[$key];
+    return record_exists_sql($sql);
 }
 
 /**
- * @param int $userid ID of a user to get the staff of
- * @return array Array of userids of staff who are managed by user $userid, or false if none
+ * Returns the staff of the specified user
  *
- * if $userid is not set, returns staff of current user
+ * @param int $userid ID of a user to get the staff of
+ * @param mixed $postype Type of the position to check (POSITION_TYPE_* constant). Can be an int or an array of ints (optional)
+ * @return array Array of userids of staff who are managed by user $userid, or false if none (optional)
+ *
+ * If $userid is not set, returns staff of current user
 **/
-function totara_get_staff($userid=null) {
-    global $USER,$CFG;
-
-    if(!isset($userid)) {
-        $userid = $USER->id;
+function totara_get_staff($userid=null, $postype=null) {
+    global $CFG, $USER;
+    require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+    if ( $postype === null ){
+        $postype = POSITION_TYPE_PRIMARY;
     }
-    $managerroleid = get_field('role','id','shortname','manager');
 
-    // return users with this user as manager
-    $sql = "SELECT c.instanceid as userid
-        FROM {$CFG->prefix}role_assignments ra
-        LEFT JOIN {$CFG->prefix}context c
-          ON c.id=ra.contextid
-        JOIN {$CFG->prefix}user u
-          ON u.id=c.instanceid
-        WHERE ra.roleid={$managerroleid}
-          AND ra.userid={$userid}
-          AND c.contextlevel=" . CONTEXT_USER;
+    $userid = !empty($userid) ? (int) $userid : $USER->id;
+    if ( is_array( $postype ) && count( $postype ) ){
+        $postypewhere = "pa.type in (";
+        $postypewhere .= implode(',', $postype);
+        $postypewhere .= ")";
+    } else {
+        $postypewhere = "pa.type = " . ((int) $postype);
+    }
+    $postype = (int) $postype;
+    $sql = "SELECT DISTINCT u.id
+        FROM
+            {$CFG->prefix}pos_assignment pa
+            INNER JOIN {$CFG->prefix}user u ON pa.userid = u.id
+            INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
+        WHERE
+            ra.userid = {$userid}
+            AND {$postypewhere}";
 
-    // no matches
     if(!$res = get_records_sql($sql)) {
+        // no matches
         return false;
     }
 
-    $staff = array();
-    if(is_array($res)) {
-        foreach($res as $record) {
-            $staff[] = $record->userid;
-        }
-    }
-
-    return $staff;
+    return array_keys($res);
 }
 
 /**
  * Find out a user's manager.
- * (todo: Currently this is returning their position-based manager(s) only. Do we want to
- * add an option to return everyone with the "manager" role in their context? Existing
- * role/context functionality could do this, but note that the role/context method
- * is what's being used in totara_is_manager() and totara_get_staff())
+ *
  * @param int $userid Id of users whose manager we want
- * @param mixed $postype Type of the position we want the manager for (POSITION_TYPE_* constant). Can be an int or an array of ints
+ * @param mixed $postype Type of the position we want the manager for (POSITION_TYPE_* constant). Can be an int or an array of ints (optional)
  * @return mixed False if no manager. One database row object from mdl_user if the user has managers.
  */
 function totara_get_manager($userid, $postype=null){
@@ -629,25 +666,21 @@ function totara_get_manager($userid, $postype=null){
     $userid = (int) $userid;
     if ( is_array( $postype ) && count( $postype ) ){
         $postypewhere = "pa.type in (";
-        foreach( $postype as $p ){
-            $postypewhere .= ((int) $p) . ", ";
-        }
-        $postypewhere = substr($postypewhere, 0, strlen($postypewhere-2));
+        $postypewhere .= implode(',', $postype);
         $postypewhere .= ")";
     } else {
         $postypewhere = "pa.type = " . ((int) $postype);
     }
     $postype = (int) $postype;
-    $sql = <<<SQL
-        select distinct u.*
-        from
+    $sql = "SELECT DISTINCT u.*
+        FROM
             {$CFG->prefix}pos_assignment pa
-            inner join {$CFG->prefix}role_assignments ra on pa.reportstoid = ra.id
-            inner join {$CFG->prefix}user u on ra.userid = u.id
-        where
+            INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
+            INNER JOIN {$CFG->prefix}user u ON ra.userid = u.id
+        WHERE
             pa.userid = {$userid}
-            and {$postypewhere}
-SQL;
+            AND {$postypewhere}";
+
     return get_record_sql($sql);
 }
 

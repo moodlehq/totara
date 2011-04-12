@@ -464,63 +464,6 @@ if ($INSTALL['stage'] == ENVIRONMENT) {
 
 //==========================================================================//
 
-// Try to download the lang pack if it has been selected
-
-if ($INSTALL['stage'] == DOWNLOADLANG && $INSTALL['downloadlangpack']) {
-
-    $downloadsuccess = false;
-    $downloaderror = '';
-
-    error_reporting(0);  // Hide errors
-
-/// Create necessary lang dir
-    if (!make_upload_directory('lang', false)) {
-        $downloaderror = get_string('cannotcreatelangdir', 'error');
-    }
-
-/// Download and install component
-    if (($cd = new component_installer('http://download.moodle.org', 'lang16',
-        $INSTALL['language'].'.zip', 'languages.md5', 'lang')) && empty($errormsg)) {
-        $status = $cd->install(); //returns COMPONENT_(ERROR | UPTODATE | INSTALLED)
-        switch ($status) {
-            case COMPONENT_ERROR:
-                if ($cd->get_error() == 'remotedownloaderror') {
-                    $a = new stdClass();
-                    $a->url = 'http://download.moodle.org/lang16/'.$INSTALL['language'].'.zip';
-                    $a->dest= $CFG->dataroot.'/lang';
-                    $downloaderror = get_string($cd->get_error(), 'error', $a);
-                } else {
-                    $downloaderror = get_string($cd->get_error(), 'error');
-                }
-            break;
-            case COMPONENT_UPTODATE:
-            case COMPONENT_INSTALLED:
-                $downloadsuccess = true;
-            break;
-            default:
-                //We shouldn't reach this point
-        }
-    } else {
-        //We shouldn't reach this point
-    }
-
-    error_reporting(7);  // Show errors
-
-    if ($downloadsuccess) {
-        $INSTALL['downloadlangpack']       = false;
-        $INSTALL['showdownloadlangpack']   = false;
-        $INSTALL['downloadlangpackerror']  = $downloaderror;
-    } else {
-        $INSTALL['downloadlangpack']       = false;
-        $INSTALL['showdownloadlangpack']   = false;
-        $INSTALL['downloadlangpackerror']  = $downloaderror;
-    }
-}
-
-
-
-//==========================================================================//
-
 /// Display or print the data
 /// Put the data into a string
 /// Try to open config file for writing.

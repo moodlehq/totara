@@ -76,15 +76,10 @@ class grade_export_fusion extends grade_export {
     public function export_grades($oauth) {
         global $CFG;
 
-        //echo "<pre>";
         $export_tracking = $this->track_exports();
 
         $tables = $oauth->show_tables();
-        if ($oauth->table_exists($this->tablename)) {
-            //echo "Allready there\n";
-            // tell them to delete it
-        }
-        else {
+        if (!$oauth->table_exists($this->tablename)) {
             $columns = array(
                          "firstname" => 'STRING',
                          "lastname" => 'STRING',
@@ -95,22 +90,12 @@ class grade_export_fusion extends grade_export {
                          );
 
             foreach ($this->columns as $grade_item) {
-                //echo ' | '.$this->format_column_name($grade_item);
                 $column = self::clean_column_name($this->format_column_name($grade_item));
                 $columns[$column] = 'NUMBER';
             }
-            //echo "Creating table\n";
             $result = $oauth->create_table($this->tablename, $columns);
-
-            //var_dump($result);
+            $tables = $oauth->show_tables();
         }
-
-
-        $tables = $oauth->show_tables();
-        if ($oauth->table_exists($this->tablename)) {
-            //echo "Allready there\n";
-        }
-        //var_dump($tables);
 
 
 /// Print all the lines of data.
@@ -123,7 +108,6 @@ class grade_export_fusion extends grade_export {
 
             $user = $userdata->user;
 
-            //echo $user->firstname.$separator.$user->lastname.$separator.$user->idnumber.$separator.$user->institution.$separator.$user->department.$separator.$user->email;
             $row = array($user->firstname, $user->lastname, $user->idnumber, $user->institution, $user->department, $user->email,);
 
             $grades = array();
@@ -132,12 +116,9 @@ class grade_export_fusion extends grade_export {
             }
 
             ksort($grades);
-            //var_dump($grades);
             foreach ($grades as $itemid => $grade) {
-                //echo $separator."($itemid)".$separator.$grade;
                 $row[]=  $grade;
             }
-            //echo "\n";
             $rows[]= $row;
         }
         $gui->close();

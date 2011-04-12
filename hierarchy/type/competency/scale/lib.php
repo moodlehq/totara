@@ -9,14 +9,36 @@
  *
  * @copyright Catalyst IT Limited
  * @author Aaron Wells
+ * @author Simon Coggins <simonc@catalyst.net.nz>
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara
  */
 
 /**
- * A function to determine whether a scale is in use or not. (In this context,
- * "in use" means that if we change this scale or its values, it'll cause
- * the data in the database to become corrupt)
+ * Determine whether an competency scale is assigned to any frameworks
+ *
+ * There is a less strict version of this function:
+ * {@link competency_scale_is_used()} which tells you if the scale
+ * values are actually assigned.
+ *
+ * @param int $objectiveid
+ * @return boolean
+ */
+function competency_scale_is_assigned($scaleid) {
+    return record_exists('comp_scale_assignments', 'scaleid', $scaleid);
+}
+
+
+/**
+ * Determine whether a scale is in use or not.
+ *
+ * "in use" means that items are assigned any of the scale's values.
+ * Therefore if we delete this scale or alter its values, it'll cause
+ * the data in the database to become corrupt
+ *
+ * There is an even stricter version of this function:
+ * {@link competency_scale_is_assigned()} which tells you if the scale
+ * even is assigned to any frameworks
  *
  * @param <type> $scaleid
  * @return boolean
@@ -30,8 +52,7 @@ function competency_scale_is_used( $scaleid ){
                 {$CFG->prefix}comp_evidence ce
             LEFT JOIN {$CFG->prefix}comp_scale_values csv
               ON csv.id = ce.proficiency
-            WHERE csv.scaleid = {$scaleid};
-        ";
+            WHERE csv.scaleid = {$scaleid}";
 
 
     $sql2 = "SELECT
@@ -43,7 +64,37 @@ function competency_scale_is_used( $scaleid ){
             WHERE
                 csv.scaleid = {$scaleid}";
 
-    return ((count_records_sql($sql) > 0) || (count_records_sql($sql2) > 0));
+    return (record_exists_sql($sql) || record_exists_sql($sql2));
+}
+
+
+/**
+ * Returns the ID of the scale value that is marked as proficient, if
+ * there is only one. If there are none, or multiple it returns false
+ *
+ * @param integer $scaleid ID of the scale to check
+ * @return integer|false The ID of the sole proficient scale value or false
+ */
+function competency_scale_only_proficient_value($scaleid) {
+    global $CFG;
+    $sql = "
+        SELECT csv.id
+        FROM {$CFG->prefix}comp_scale_values csv
+        INNER JOIN (
+            SELECT scaleid, SUM(proficient) AS sum
+            FROM {$CFG->prefix}comp_scale_values
+            GROUP BY scaleid
+        ) count
+        ON count.scaleid = csv.scaleid
+        WHERE proficient = 1
+            AND sum = 1
+            AND csv.scaleid={$scaleid}";
+
+    if($id = get_field_sql($sql)) {
+        return $id;
+    } else {
+        return false;
+    }
 }
 
 
@@ -117,10 +168,14 @@ function competency_scale_display_table($scales, $editingon=0) {
 
         $table->data = array();
         foreach($scales as $scale) {
+            $scale_used = competency_scale_is_used($scale->id);
+            $scale_assigned = competency_scale_is_assigned($scale->id);
             $line = array();
             $line[] = "<a href=\"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scale->id}&amp;type=competency\">".format_string($scale->name)."</a>";
-            if ( competency_scale_is_used( $scale->id ) ) {
+            if ($scale_used) {
                 $line[] = get_string('yes');
+            } else if ($scale_assigned) {
+                $line[] = get_string('assignedonly', 'competency');
             } else {
                 $line[] = get_string('no');
             }
@@ -133,8 +188,14 @@ function competency_scale_display_table($scales, $editingon=0) {
                 }
 
                 if ($can_delete) {
-                    $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/hierarchy/type/competency/scale/delete.php?id=$scale->id&amp;type=competency\"><img".
-                                " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+                    if($scale_used) {
+                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeletecompetencyscaleinuse', 'competency') . "\" title=\"" . get_string('error:nodeletecompetencyscaleinuse', 'competency') . "\" /></a>";
+                    } else if($scale_assigned) {
+                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeletecompetencyscaleassigned', 'competency') . "\" title=\"" . get_string('error:nodeletecompetencyscaleassigned', 'competency') . "\" /></a>";
+                    } else {
+                        $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/hierarchy/type/competency/scale/delete.php?id=$scale->id&amp;type=competency\"><img".
+                            " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+                    }
                 }
                 $line[] = implode($buttons, ' ');
             }

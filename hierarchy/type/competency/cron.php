@@ -124,7 +124,7 @@ function competency_cron_evidence_items() {
 /**
  * Aggregate competency's evidence items
  *
- * @param   $imtestarted    int         Time we started aggregating
+ * @param   $timestarted    int         Time we started aggregating
  * @param   $depth          object      Depth level record
  * @return  void
  */
@@ -179,7 +179,7 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
             c.id AS competencyid,
             c.path,
             c.aggregationmethod,
-            cs.proficient AS proficiencyexpected,
+            proficient.proficient AS proficiencyexpected,
             cei.evidenceid AS itemid,
             ceie.status AS itemstatus,
             ceie.proficiencymeasured AS itemproficiency,
@@ -217,8 +217,19 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
             {$CFG->prefix}comp_scale_assignments csa
          ON c.frameworkid = csa.frameworkid
         INNER JOIN
-            {$CFG->prefix}comp_scale cs
-         ON csa.scaleid = cs.id
+        (
+            SELECT csv.scaleid, csv.id AS proficient
+            FROM {$CFG->prefix}comp_scale_values csv
+            INNER JOIN
+            (
+                SELECT scaleid, MAX(sortorder) AS maxsort
+                FROM {$CFG->prefix}comp_scale_values
+                WHERE proficient = 1
+                GROUP BY scaleid
+            ) grouped
+            ON csv.scaleid = grouped.scaleid AND csv.sortorder = grouped.maxsort
+        ) proficient
+        ON csa.scaleid = proficient.scaleid
         LEFT JOIN
             {$CFG->prefix}comp_evidence_items_evidence ceie
          ON cei.evidenceid = ceie.itemid
@@ -302,8 +313,8 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
                 // Handle different aggregation types
                 switch ($params->aggregationmethod) {
                     case $COMP_AGGREGATION['ALL']:
-                        // Check for no proficiency, or a higher sortorder (which equals lower item)
-                        if (!$item_value || $item_value->sortorder > $min_value->sortorder) {
+                        // Check for no proficient flag
+                        if (!$item_value || $item_value->proficient == 0) {
                             $aggregated_status = null;
                             $stop_agg = true;
                         }
@@ -314,8 +325,8 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
                         break;
 
                     case $COMP_AGGREGATION['ANY']:
-                        // Check for a lower sortorder (which equals higher item)
-                        if ($item_value && $item_value->sortorder <= $min_value->sortorder) {
+                        // Check for a proficient flag
+                        if ($item_value && $item_value->proficient == 1) {
                             $aggregated_status = $min_value->id;
                             $stop_agg = true;
                         }

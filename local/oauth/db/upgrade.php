@@ -28,31 +28,24 @@
  */
 
 function xmldb_local_oauth_upgrade($oldversion) {
-    global $CFG, $USER, $DB, $OUTPUT;
-
-    //require_once($CFG->libdir.'/db/upgradelib.php'); // Core Upgrade-related functions
+    global $CFG, $USER, $db, $OUTPUT;
 
     $result = true;
 
-    //$dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
-
-
-/*
-    if ($result && $oldversion < 2010031610) {
-
-    /// Define field sitecourseid to be added to oauth_site_directory
-        $table = new xmldb_table('oauth_site_directory');
-        $field = new xmldb_field('sitecourseid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 0, 'siteid');
-
-    /// Conditionally launch add field sitecourseid
-        if (!$dbman->field_exists($table, $field)) {
-            $dbman->add_field($table, $field);
+    // tables for scheduled reports
+    if ($result && $oldversion < 2010060903) {
+        $table = new XMLDBTable('oauth_access_token');
+        if(!table_exists($table)) {
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('siteid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('access_token', XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null);
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $table->addKeyInfo('siteid', XMLDB_INDEX_NOTUNIQUE, array('siteid'));
+            $table->addKeyInfo('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+            $result = $result && create_table($table);
         }
-
-    /// oauth savepoint reached
-        upgrade_plugin_savepoint($result, 2010031610, 'local', 'oauth');
     }
-    */
 
     return $result;
 }

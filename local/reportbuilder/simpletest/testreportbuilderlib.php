@@ -127,10 +127,10 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     );
 
     var $comp_scale_values_data = array(
-        array('id', 'name', 'idnumber', 'description', 'scaleid', 'numericscore', 'sortorder', 'timemodified', 'usermodified'),
-        array(1, 'Competent', '', '', 1, '', 1, 0, 2),
-        array(2, 'Partially Competent', '', '', 1, '', 2, 0, 2),
-        array(3, 'Not Competent', '', '', 1, '', 3, 0, 2),
+        array('id', 'name', 'idnumber', 'description', 'scaleid', 'numericscore', 'sortorder', 'timemodified', 'usermodified', 'proficient'),
+        array(1, 'Competent', '', '', 1, '', 1, 0, 2, 1),
+        array(2, 'Partially Competent', '', '', 1, '', 2, 0, 2, 0),
+        array(3, 'Not Competent', '', '', 1, '', 3, 0, 2, 0),
     );
 
     var $comp_evidence_data = array(

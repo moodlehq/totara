@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
  * @subpackage plan
  */
@@ -92,6 +93,9 @@ if($delete) {
     if ( dp_priority_scale_is_used($delete) ){
         print_error('error:nodeletepriorityscaleinuse', 'local_plan');
     }
+    if ( dp_priority_scale_is_assigned($delete) ){
+        print_error('error:nodeletepriorityscaleassigned', 'local_plan');
+    }
 
     if($confirm) {
         if (!confirm_sesskey()) {
@@ -100,7 +104,7 @@ if($delete) {
 
         delete_records('dp_priority_scale_value', 'priorityscaleid', $scale->id); // Delete scale values
         delete_records('dp_priority_scale', 'id', $scale->id); // Delete scale itself
-        totara_set_notification(get_string('deletedpriorityscalevalue', 'local_plan'), $CFG->wwwroot.'/local/plan/priorityscales/index.php');
+        totara_set_notification(get_string('deletedpriorityscale', 'local_plan', format_string($scale->name)), $CFG->wwwroot.'/local/plan/priorityscales/index.php', array('style' => 'notifysuccess'));
 
     } else {
         $returnurl = "{$CFG->wwwroot}/local/plan/priorityscales/index.php";

@@ -318,8 +318,12 @@ function tm_alert_send($eventdata) {
     if (empty($eventdata->subject)) {
         $eventdata->subject       = '';
     }
-    $eventdata->fullmessageformat = FORMAT_PLAIN;
-    $eventdata->fullmessagehtml   = nl2br($eventdata->fullmessage);
+    if (empty($eventdata->fullmessageformat)) {
+        $eventdata->fullmessageformat = FORMAT_PLAIN;
+    }
+    if (empty($eventdata->fullmessagehtml)) {
+        $eventdata->fullmessagehtml   = nl2br($eventdata->fullmessage);
+    }
     $eventdata->alert      = 1;
 
     if (!isset($eventdata->contexturl)) {
@@ -329,16 +333,18 @@ function tm_alert_send($eventdata) {
 
     $result = tm_message_send($eventdata);
 
+
     if ($result && get_user_preferences('totara_msg_send_alrt_emails', 1, $eventdata->userto->id) && $eventdata->sendemail == TOTARA_MSG_EMAIL_YES) {
         // Send alert email
         if (empty($eventdata->subject)) {
             $eventdata->subject = strlen($eventdata->fullmessage) > 80 ? substr($eventdata->fullmessage, 0, 78).'...' : $eventdata->fullmessage;
         }
-        $result = email_to_user($eventdata->userto, $eventdata->userfrom,
-            format_string($eventdata->subject), format_string($eventdata->fullmessage),
-            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl)
+        $eventdata->fullmessagehtml = $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl).
             // Add footer to email
-            .'<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1"));
+            '<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1");
+
+        $result = email_to_user($eventdata->userto, $eventdata->userfrom,
+            format_string($eventdata->subject), format_text($eventdata->fullmessage, FORMAT_PLAIN), format_text($eventdata->fullmessagehtml, FORMAT_HTML));
     }
 
     return $result;
@@ -379,8 +385,12 @@ function tm_task_send($eventdata) {
     if (!isset($eventdata->subject)) {
         $eventdata->subject       = '';
     }
-    $eventdata->fullmessageformat = FORMAT_PLAIN;
-    $eventdata->fullmessagehtml   = nl2br($eventdata->fullmessage);
+    if (empty($eventdata->fullmessageformat)) {
+        $eventdata->fullmessageformat = FORMAT_PLAIN;
+    }
+    if (empty($eventdata->fullmessagehtml)) {
+        $eventdata->fullmessagehtml   = nl2br($eventdata->fullmessage);
+    }
     $eventdata->alert      = 1;
 
     if (!isset($eventdata->contexturl)) {
@@ -395,11 +405,12 @@ function tm_task_send($eventdata) {
         if (empty($eventdata->subject)) {
             $eventdata->subject = strlen($eventdata->fullmessage) > 40 ? substr($eventdata->fullmessage, 0, 40).'...' : $eventdata->fullmessage;
         }
-        $result = email_to_user($eventdata->userto, $eventdata->userfrom,
-            format_string($eventdata->subject), format_string($eventdata->fullmessage),
-            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl)
+        $eventdata->fullmessagehtml = $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl).
             // Add footer to email
-            .'<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1"));
+            '<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1");
+
+        $result = email_to_user($eventdata->userto, $eventdata->userfrom,
+            format_string($eventdata->subject), format_text($eventdata->fullmessage, FORMAT_PLAIN), format_text($eventdata->fullmessagehtml, FORMAT_HTML));
     }
     return $result;
 }
@@ -458,8 +469,12 @@ function tm_workflow_send($eventdata) {
     if (!isset($eventdata->subject)) {
         $eventdata->subject       = '';
     }
-    $eventdata->fullmessageformat = FORMAT_PLAIN;
-    $eventdata->fullmessagehtml   = $eventdata->fullmessage;
+    if (empty($eventdata->fullmessageformat)) {
+        $eventdata->fullmessageformat = FORMAT_PLAIN;
+    }
+    if (empty($eventdata->fullmessagehtml)) {
+        $eventdata->fullmessagehtml   = nl2br($eventdata->fullmessage);
+    }
     $eventdata->alert      = 1;
 
     if (!isset($eventdata->contexturl)) {
@@ -499,11 +514,12 @@ function tm_workflow_send($eventdata) {
         if (empty($eventdata->subject)) {
             $eventdata->subject = strlen($eventdata->fullmessage) > 40 ? substr($eventdata->fullmessage, 0, 40).'...' : $eventdata->fullmessage;
         }
-        $result = email_to_user($eventdata->userto, $eventdata->userfrom,
-            format_string($eventdata->subject), format_string($eventdata->fullmessage),
-            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl)
+        $eventdata->fullmessagehtml = $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl).
             // Add footer to email
-            .'<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1"));
+            '<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1");
+
+        $result = email_to_user($eventdata->userto, $eventdata->userfrom,
+            format_string($eventdata->subject), format_text($eventdata->fullmessage, FORMAT_PLAIN), format_text($eventdata->fullmessagehtml, FORMAT_HTML));
     }
 
     return $result;

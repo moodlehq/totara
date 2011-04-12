@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
  * @subpackage plan
  */
@@ -26,7 +27,6 @@
 require_once('../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
-require_js(array($CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',));
 
 ///
 /// Setup / loading data
@@ -49,10 +49,20 @@ if (!$priority = get_record('dp_priority_scale', 'id', $id)) {
     error(get_string('error:priorityscaleidincorrect', 'local_plan'));
 }
 
+$scale_used = dp_priority_scale_is_used($id);
+
 // Delete logic
 if($delete) {
     if(!$value = get_record('dp_priority_scale_value', 'id', $delete)) {
        print_error('error:invalidpriorityscalevalueid', 'local_plan');
+    }
+
+    if($scale_used) {
+        print_error('error:nodeletepriorityscalevalueinuse', 'local_plan');
+    }
+
+    if($value->id == $priority->defaultid) {
+        print_error('error:nodeletepriorityscalevaluedefault', 'local_plan');
     }
 
     if($confirm) {
@@ -73,7 +83,7 @@ if($delete) {
         }
 
         commit_sql();
-        totara_set_notification(get_string('deletedpriorityscalevalue', 'local_plan'), $CFG->wwwroot.'/local/plan/priorityscales/view.php?id='.$priority->id, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('deletedpriorityscalevalue', 'local_plan', format_string($value->name)), $CFG->wwwroot.'/local/plan/priorityscales/view.php?id='.$priority->id, array('style' => 'notifysuccess'));
     } else {
         $returnurl = "{$CFG->wwwroot}/local/plan/priorityscales/view.php?id={$priority->id}";
         $deleteurl = "{$CFG->wwwroot}/local/plan/priorityscales/view.php?id={$priority->id}&amp;delete={$delete}&amp;confirm=1&amp;sesskey=" . sesskey();
@@ -110,7 +120,7 @@ $str_set = get_string('set', 'local_plan');
 if ((!empty($moveup) or !empty($movedown))) {
 
     // Can't reorder a scale that's in use
-    if ( dp_priority_scale_is_used($priority->id) ) {
+    if  ($scale_used) {
         $returnurl = "{$CFG->wwwroot}/local/plan/priorityscales/view.php?id={$priority->id}";
         print_error('error:noreorderpriorityinuse', 'local_plan', $returnurl);
     }
@@ -178,6 +188,7 @@ if ($default) {
     if (!update_record('dp_priority_scale', $s)) {
         error(get_string('error:updatingpriorityscale', 'local_plan'));
     } else {
+        totara_set_notification(get_string('priorityscaledefaultupdated', 'local_plan'), null, array('style' => 'notifysuccess'));
         // Fetch the update scale record so it'll show up to the user.
         $priority = get_record('dp_priority_scale', 'id', $id);
     }
@@ -198,9 +209,16 @@ $navlinks[] = array('name'=>format_string($priority->name), 'link'=>'', 'type'=>
 
 admin_externalpage_print_header('', $navlinks);
 
+print_single_button($CFG->wwwroot . '/local/plan/priorityscales/index.php', null, get_string('allpriorityscales', 'local_plan'));
+
 // Display info about scale
-print_heading(format_string($priority->name), 'left', 1);
+print_heading(get_string('priorityscalex', 'local_plan', format_string($priority->name)),'left', 1);
 echo '<p>'.format_string($priority->description, FORMAT_HTML).'</p>';
+
+// Display warning if scale is in use
+if($scale_used) {
+    print_container(get_string('priorityscaleinuse', 'local_plan'), true, 'notifysuccess');
+}
 
 // Display priority scale values
 if ($values) {
@@ -236,21 +254,28 @@ if ($values) {
         $buttons = array();
 
         // Is this the default value?
+        $disabled = ($numvalues == 1) ? ' disabled="disabled"' : '';
         if ($value->id == $priority->defaultid) {
-            $row[] = '<input type="radio" name="default" value="'.$value->id.'" checked="checked" />';
+            $row[] = '<input type="radio" name="default" value="'.$value->id.'" checked="checked" ' . $disabled . ' />';
         }
         else {
-            $row[] = '<input type="radio" name="default" value="'.$value->id.'" />';
+            $row[] = '<input type="radio" name="default" value="'.$value->id.'" ' . $disabled . ' />';
         }
 
         $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/priorityscales/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
-        $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/priorityscales/view.php?id={$priority->id}&amp;delete={$value->id}\" title=\"$str_delete\">".
-            "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+        if(!$scale_used) {
+            if($value->id == $priority->defaultid) {
+                $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteprioritycalevaluedefault', 'local_plan') . "\" title=\"" . get_string('error:nodeletepriorityscalevaluedefault', 'local_plan') . "\" /></a>";
+            } else {
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/priorityscales/view.php?id={$priority->id}&amp;delete={$value->id}\" title=\"$str_delete\">".
+                    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+            }
+        }
 
         // If value can be moved up
-        if ($count > 1) {
+        if ($count > 1 && !$scale_used) {
             $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/priorityscales/view.php?id={$priority->id}&moveup={$value->id}\" title=\"$str_moveup\">".
                 "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
         } else {
@@ -258,7 +283,7 @@ if ($values) {
         }
 
         // If value can be moved down
-        if ($count < $numvalues) {
+        if ($count < $numvalues && !$scale_used) {
             $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/priorityscales/view.php?id={$priority->id}&movedown={$value->id}\" title=\"$str_movedown\">".
                 "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
         } else {
@@ -269,31 +294,16 @@ if ($values) {
         $table->data[] = $row;
     }
 
-    print_heading(get_string('scales', 'local_plan'));
-
-    $row = array();
-    $row[] = '';
-    $row[] = '<noscript><input type="submit" value="Update" /></noscript>';
-    $row[] = '';
-    $row[] = '';
-    $table->data[] = $row;
+    if($numvalues != 1) {
+        $row = array();
+        $row[] = '';
+        $row[] = '<input type="submit" value="Update" />';
+        $row[] = '';
+        $table->data[] = $row;
+    }
 
     print_table($table);
-        echo "</form>\n";
-        ?>
-<script type="text/javascript">
-    $("#dppriorityscaledefaultform input:radio").change(
-        function(eventObject){
-            $("#dppriorityscaledefaultform").submit();
-        }
-    );
-
-    // On page load, remove last row in table (it's for non-js users only)
-    $(function() {
-        $('form#dppriorityscaledefaultform table.generaltable tr.lastrow').remove();
-    });
-</script>
-<?php
+    echo "</form>\n";
 } else {
     echo '<br /><div>'.get_string('nopriorityscalevalues','local_plan').'</div><br />';
 }
@@ -302,8 +312,10 @@ if ($values) {
 echo '<div class="buttons">';
 
 // Print button for creating new priority scale value
-$options = array('priorityscaleid' => $priority->id);
-print_single_button($CFG->wwwroot.'/local/plan/priorityscales/editvalue.php', $options, get_string('addnewpriorityvalue', 'local_plan'), 'get');
+if(!$scale_used) {
+    $options = array('priorityscaleid' => $priority->id);
+    print_single_button($CFG->wwwroot.'/local/plan/priorityscales/editvalue.php', $options, get_string('addnewpriorityvalue', 'local_plan'), 'get');
+}
 
 echo '</div>';
 

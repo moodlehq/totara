@@ -64,6 +64,8 @@
 
     $currenttab = $mode;
     $showroles = 1;
+    $showpositions = 1;
+    $showmessages = 1;
     include($CFG->dirroot.'/user/tabs.php');   /// Prints out tabs as part of user page
 
 

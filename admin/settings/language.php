@@ -22,7 +22,6 @@ if ($hassiteconfig
     $ADMIN->add('language', $temp);
 
     $ADMIN->add('language', new admin_externalpage('langedit', get_string('langedit', 'admin'), "$CFG->wwwroot/$CFG->admin/lang.php", array('moodle/site:langeditmaster', 'moodle/site:langeditlocal') ));
-    $ADMIN->add('language', new admin_externalpage('langimport', get_string('langpacks', 'admin'), "$CFG->wwwroot/$CFG->admin/langimport.php"));
 
 } // end of speedup
 

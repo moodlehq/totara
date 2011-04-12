@@ -102,8 +102,8 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $comp_scale_values_data = array(
-        array('id', 'name', 'idnumber', 'description', 'scaleid', 'numericscore', 'sortorder', 'timemodified', 'usermodified'),
-        array(1, 'Competent', '', '', 1, '', 1, 0, 2),
+        array('id', 'name', 'idnumber', 'description', 'scaleid', 'numericscore', 'sortorder', 'timemodified', 'usermodified', 'proficient'),
+        array(1, 'Competent', '', '', 1, '', 1, 0, 2, 1),
     );
 
     // reduced version of user table
@@ -130,8 +130,8 @@ class columns_test extends prefix_changing_test_case {
 
     var $course_completions_data = array(
         array('id', 'userid', 'course', 'organisationid', 'positionid', 'deleted', 'timenotified', 'timestarted',
-            'timeenrolled', 'timecompleted', 'reaggregate', 'rpl'),
-        array(1, 1, 1, 1, 1, 0, 0, 1140606000, 1140606000, 1140606000, 0, ''),
+            'timeenrolled', 'timecompleted', 'reaggregate', 'rpl', 'status'),
+        array(1, 1, 1, 1, 1, 0, 0, 1140606000, 1140606000, 1140606000, 0, '', 0),
     );
 
     var $course_completion_criteria_data = array(

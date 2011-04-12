@@ -3,6 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('editvalue_form.php');
+require_once($CFG->dirroot . '/hierarchy/type/competency/scale/lib.php');
 
 
 ///
@@ -19,6 +20,7 @@ $scaleid = optional_param('scaleid', 0, PARAM_INT);
 if (!$id && !$scaleid) {
     error('Incorrect parameters');
 }
+
 
 // Page setup and check permissions
 admin_externalpage_setup($type.'frameworkmanage');
@@ -50,16 +52,22 @@ if (!$scale = get_record('comp_scale', 'id', $value->scaleid)) {
     error('Competency scale ID was incorrect');
 }
 
+$scale_used = competency_scale_is_used($scale->id);
+
 // Save scale name for display in the form
 $value->scalename = $scale->name;
 
+// check scale isn't being used when adding new scale values
+if($value->id == 0 && $scale_used) {
+    error('You cannot add a scale value to a scale that is in use.');
+}
 
 ///
 /// Display page
 ///
 
 // Create form
-$valueform = new competencyscalevalue_edit_form();
+$valueform = new competencyscalevalue_edit_form(null, array('scaleid' => $scale->id, 'id' => $id));
 $valueform->set_data($value);
 
 // cancelled
@@ -82,25 +90,26 @@ if ($valueform->is_cancelled()) {
     if ($valuenew->id == 0) {
         unset($valuenew->id);
 
-        if (!$valuenew->id = insert_record('comp_scale_values', $valuenew)) {
+        if ($valuenew->id = insert_record('comp_scale_values', $valuenew)) {
+            // Log
+            add_to_log(SITEID, 'competencyscalevalue', 'added', "view.php?id={$valuenew->scaleid}&amp;type=competency");
+
+            totara_set_notification(get_string('scalevalueadded', 'competency', format_string(stripslashes($valuenew->name))),"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$valuenew->scaleid}&amp;type=competency", array('style' => 'notifysuccess'));
+        } else {
             error('Error creating scale value record');
         }
 
     // Updating scale value
     } else {
-        if (!update_record('comp_scale_values', $valuenew)) {
+        if (update_record('comp_scale_values', $valuenew)) {
+            // Log
+            add_to_log(SITEID, 'competencyscalevalue', 'update', "view.php?id={$valuenew->scaleid}&amp;type=competency");
+
+            totara_set_notification(get_string('scalevalueupdated', 'competency', format_string(stripslashes($valuenew->name))),"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$valuenew->scaleid}&amp;type=competency", array('style' => 'notifysuccess'));
+        } else {
             error('Error updating scale value record');
         }
     }
-
-    // Reload from database
-    $valuenew = get_record('comp_scale_values', 'id', $valuenew->id);
-
-    // Log
-    add_to_log(SITEID, 'competencyscalevalue', 'update', "view.php?id={$valuenew->scaleid}&amp;type=competency");
-
-    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$valuenew->scaleid}&amp;type=competency");
-    // never reached
 }
 
 // Display page header
@@ -110,6 +119,11 @@ if ($id == 0) {
     print_heading(get_string('addnewscalevalue', 'competency'));
 } else {
     print_heading(get_string('editscalevalue', 'competency'));
+}
+
+// Display warning if scale is in use
+if($scale_used) {
+    print_container(get_string('competencyscaleinuse', 'competency'), true, 'notifysuccess');
 }
 
 $valueform->display();

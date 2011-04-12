@@ -4881,40 +4881,6 @@ function format_admin_setting($setting, $title='', $form='', $description='', $l
     return $str;
 }
 
-/**
- * Try to upgrade the given language pack (or current language)
- * If it doesn't work, fail silently and return false
- */
-function upgrade_language_pack($lang='') {
-    global $CFG;
-
-    if (empty($lang)) {
-        $lang = current_language();
-    }
-
-    if ($lang == 'en_utf8') {
-        return true;  // Nothing to do
-    }
-
-    notify(get_string('langimport', 'admin').': '.$lang.' ... ', 'notifysuccess');
-
-    @mkdir ($CFG->dataroot.'/temp/');    //make it in case it's a fresh install, it might not be there
-    @mkdir ($CFG->dataroot.'/lang/');
-
-    require_once($CFG->libdir.'/componentlib.class.php');
-
-    if ($cd = new component_installer('http://download.moodle.org', 'lang16', $lang.'.zip', 'languages.md5', 'lang')) {
-        $status = $cd->install(); //returns COMPONENT_(ERROR | UPTODATE | INSTALLED)
-
-        if ($status == COMPONENT_INSTALLED) {
-            debugging('Downloading successful: '.$lang);
-            @unlink($CFG->dataroot.'/cache/languages');
-            return true;
-        }
-    }
-
-    return false;
-}
 
 /**
  * Based on find_new_settings{@link ()}  in upgradesettings.php
@@ -4991,10 +4957,14 @@ function db_replace($search, $replace) {
 function print_plugin_tables() {
     $plugins_standard = array();
     $plugins_standard['mod'] = array('assignment',
+                                     'book',
+                                     'certificate',
                                      'chat',
                                      'choice',
                                      'data',
                                      'exercise',
+                                     'facetoface',
+                                     'feedback',
                                      'forum',
                                      'glossary',
                                      'hotpot',
@@ -5017,10 +4987,15 @@ function print_plugin_tables() {
                                         'blog_tags',
                                         'calendar_month',
                                         'calendar_upcoming',
+                                        'completionstatus',
                                         'course_list',
                                         'course_summary',
+                                        'facetoface',
+                                        'feedback',
                                         'glossary_random',
+                                        'guides',
                                         'html',
+                                        'quicklinks',
                                         'loancalc',
                                         'login',
                                         'mentees',
@@ -5035,11 +5010,19 @@ function print_plugin_tables() {
                                         'search',
                                         'search_forums',
                                         'section_links',
+                                        'selfcompletion',
                                         'site_main_menu',
                                         'social_activities',
                                         'tag_flickr',
                                         'tag_youtube',
-                                        'tags');
+                                        'tags',
+                                        'totara_alerts',
+                                        'totara_my_learning_nav',
+                                        'totara_my_team_nav',
+                                        'totara_recent_learning',
+                                        'totara_report_manager',
+                                        'totara_stats',
+                                        'totara_tasks');
     
     $plugins_standard['filter'] = array('activitynames',
                                         'algebra',

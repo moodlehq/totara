@@ -122,15 +122,6 @@ class rb_source_dp_competency extends rb_base_source {
         );
 
         $joinlist[] = new rb_join(
-                'scale_value_scale',
-                'LEFT',
-                $CFG->prefix . 'comp_scale',
-                'scale_value_scale.id = scale_value.scaleid',
-                REPORT_BUILDER_RELATION_ONE_TO_ONE,
-                array('scale_value')
-        );
-
-        $joinlist[] = new rb_join(
                 'linkedcourses',
                 'LEFT',
                 "(SELECT itemid1 AS compassignid,
@@ -160,15 +151,6 @@ class rb_source_dp_competency extends rb_base_source {
                 'comp_evidence.proficiency = evidence_scale_value.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
                 array('comp_evidence')
-        );
-
-        $joinlist[] = new rb_join(
-                'evidence_scale_value_scale',
-                'LEFT',
-                $CFG->prefix . 'comp_scale',
-                'evidence_scale_value_scale.id = evidence_scale_value.scaleid',
-                REPORT_BUILDER_RELATION_ONE_TO_ONE,
-                array('evidence_scale_value')
         );
 
         $this->add_user_table_to_joinlist($joinlist, 'dp','userid');
@@ -324,7 +306,7 @@ class rb_source_dp_competency extends rb_base_source {
                     evidence_scale_value.name
                 END',
                 array(
-                    'joins' => array('dp', 'scale_value_scale', 'evidence_scale_value_scale')
+                    'joins' => array('dp', 'scale_value', 'evidence_scale_value')
                 )
         );
 
@@ -338,16 +320,12 @@ class rb_source_dp_competency extends rb_base_source {
                 // stored value for completed plans
                 'CASE WHEN dp.status = ' . DP_PLAN_STATUS_COMPLETE . '
                 THEN
-                    CASE WHEN scale_value_scale.proficient = scale_value.id
-                    THEN 1 ELSE 0
-                    END
+                    scale_value.proficient
                 ELSE
-                    CASE WHEN evidence_scale_value_scale.proficient = evidence_scale_value.id
-                    THEN 1 ELSE 0
-                    END
+                    evidence_scale_value.proficient
                 END',
                 array(
-                    'joins' => array('dp', 'scale_value', 'scale_value_scale', 'evidence_scale_value', 'evidence_scale_value_scale'),
+                    'joins' => array('dp', 'scale_value', 'evidence_scale_value'),
                     'displayfunc' => 'yes_or_no'
                 )
         );
@@ -451,15 +429,15 @@ class rb_source_dp_competency extends rb_base_source {
                 'planstatus',
                 'CASE WHEN dp.status = ' . DP_PLAN_STATUS_COMPLETE . '
                 THEN
-                    CASE WHEN scale_value_scale.proficient = scale_value.id
+                    CASE WHEN scale_value.proficient = 1
                     THEN \'completed\' ELSE \'active\'
                     END
                 ELSE
-                    CASE WHEN evidence_scale_value_scale.proficient = evidence_scale_value.id
+                    CASE WHEN evidence_scale_value.proficient = 1
                     THEN \'completed\' ELSE \'active\'
                     END
                 END',
-                array('dp', 'scale_value', 'scale_value_scale', 'evidence_scale_value', 'evidence_scale_value_scale'),
+                array('dp', 'scale_value', 'evidence_scale_value'),
                 'string'
         );
         return $paramoptions;

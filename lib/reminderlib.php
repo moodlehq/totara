@@ -442,6 +442,10 @@ function reminder_cron() {
                 // Process each message
                 foreach ($messages as $message) {
 
+                    // If it's a weekend, send no reminders except "Same day" ones.
+                    if ($message->period && !reminder_is_businessday(time())){
+                        continue;
+                    }
                     // # of seconds after completion (for timestamp comparison)
                     if ($message->period) {
                         $periodsecs = (int) $message->period * 24 * 60 * 60;
@@ -498,7 +502,7 @@ function reminder_cron() {
                     );
 
                     // Calculate days from now
-                    $message->deadline = $escalationtime - $reminder->period;
+                    $message->deadline = $escalationtime - $message->period;
 
                     // Message sent counts
                     $msent = 0;
@@ -664,8 +668,7 @@ function reminder_check_businessdays($timestamp, $period, $check = null) {
         // Saturdays and Sundays are not included in the
         // reminder period as entered by the user, extend
         // that period by 1
-        $reminderdaycheck = userdate($timestamp, '%u');
-        if ($reminderdaycheck > 5) {
+        if (!reminder_is_businessday($timestamp)) {
             $period++;
         }
 
@@ -678,4 +681,15 @@ function reminder_check_businessdays($timestamp, $period, $check = null) {
 
     // Timestamp must still be in the past
     return true;
+}
+
+/**
+ * Determines whether or not the given timestamp was on a business day.
+ *
+ * @param $timestamp
+ * @return boolean
+ */
+function reminder_is_businessday($timestamp){
+    // Converts the timestamp to the day of the week with 1 = Monday, 7 = Sunday
+    return (userdate($timestamp, '%u') <= 5);
 }

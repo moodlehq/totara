@@ -42,6 +42,7 @@ class edit_objective_form extends moodleform {
         if ( $this->_customdata['objectiveid'] == 0 ){
             $mform->addElement('static', 'objectivevaluesexplain', '', get_string('explainobjscalevals', 'local_plan'));
             $mform->addElement('textarea', 'objectivevalues', get_string('objectivevalues', 'local_plan'), 'rows="5" cols="30"');
+            $mform->addRule('objectivevalues', get_string('required'), 'required', null, 'server');
             $mform->setHelpButton('objectivevalues', array('objectivescalevalues', get_string('objective', 'local_plan'), 'local_plan'));
             $mform->setType('objectivevalues', PARAM_TEXT);
         } else {
@@ -57,5 +58,21 @@ class edit_objective_form extends moodleform {
 //-------------------------------------------------------------------------------
         // buttons
         $this->add_action_buttons();
+    }
+
+    function validation($valuenew) {
+        $err = array();
+        $valuenew = (object) $valuenew;
+
+        // make sure at least one objective value is defined
+        if(isset($valuenew->objectivevalues) && trim($valuenew->objectivevalues) == '') {
+            $err['objectivevalues'] = get_string('required');
+        }
+
+        if(count($err) > 0) {
+            return $err;
+        }
+
+        return true;
     }
 }

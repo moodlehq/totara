@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
  * @subpackage plan
  */
@@ -29,19 +30,50 @@
  * Library of functions related to Objective priorities.
  */
 
+
 /**
- * A function to determine whether an objective is in use or not. (In this context,
- * "in use" means that if we change this objective or its values, it'll cause
- * the data in the database to become corrupt)
+ * Determine whether an objective scale is assigned to any plan templates
  *
- * @param int $objectiveid
+ * There is a less strict version of this function:
+ * {@link dp_objective_scale_is_used()} which tells you if the scale
+ * values are actually assigned.
+ *
+ * @param int $scaleid The scale to check
+ * @return boolean
+ */
+function dp_objective_scale_is_assigned($scaleid) {
+    return record_exists('dp_objective_settings', 'objectivescale', $scaleid);
+}
+
+/**
+ * Determine whether a scale is in use or not.
+ *
+ * "in use" means that items are assigned any of the scale's values.
+ * Therefore if we delete this scale or alter its values, it'll cause
+ * the data in the database to become corrupt
+ *
+ * There is an even stricter version of this function:
+ * {@link dp_objective_scale_is_assigned()} which tells you if the scale
+ * even is assigned to any plan templates.
+ *
+ * @param int $scaleid The scale to check
  * @return boolean
  */
 function dp_objective_scale_is_used($scaleid) {
-    // Just check whether it's assigned to any templates.
-    return count_records('dp_objective_settings', 'objectivescale', $scaleid);
-}
+    global $CFG;
 
+    $sql = "SELECT
+                o.id
+            FROM
+                {$CFG->prefix}dp_plan_objective o
+            LEFT JOIN
+                {$CFG->prefix}dp_objective_scale_value osv
+            ON osv.id = o.scalevalueid
+            WHERE osv.objscaleid = {$scaleid}
+    ";
+
+    return record_exists_sql($sql);
+}
 
 /**
  * A function to display a table list of competency scales
@@ -88,6 +120,8 @@ function dp_objective_display_table($objectives, $editingon=0) {
         $count = 0;
         $numvalues = count($objectives);
         foreach($objectives as $objective) {
+            $scale_used = dp_objective_scale_is_used($objective->id);
+            $scale_assigned = dp_objective_scale_is_assigned($objective->id);
             $count++;
             $line = array();
 
@@ -97,8 +131,10 @@ function dp_objective_display_table($objectives, $editingon=0) {
             }
             $line[] = $title;
 
-            if ( dp_objective_scale_is_used( $objective->id ) ) {
+            if ($scale_used) {
                 $line[] = get_string('yes');
+            } else if ($scale_assigned) {
+                $line[] = get_string('assignedonly', 'local_plan');
             } else {
                 $line[] = get_string('no');
             }
@@ -111,8 +147,14 @@ function dp_objective_display_table($objectives, $editingon=0) {
                 }
 
                 if ($can_delete) {
-                    $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/local/plan/objectivescales/index.php?delete=$objective->id\"><img".
+                    if($scale_used) {
+                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteobjectivescaleinuse', 'local_plan') . "\" title=\"" . get_string('error:nodeleteobjectivescaleinuse', 'local_plan') . "\" /></a>";
+                    } else if ($scale_assigned) {
+                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteobjectivescaleassigned', 'local_plan') . "\" title=\"" . get_string('error:nodeleteobjectivescaleassigned', 'local_plan') . "\" /></a>";
+                    } else {
+                        $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/local/plan/objectivescales/index.php?delete=$objective->id\"><img".
                                 " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+                    }
                 }
 
                 // If value can be moved up

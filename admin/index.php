@@ -290,20 +290,10 @@
                 print_heading(get_string('environment', 'admin'));
                 remove_dir($CFG->dataroot . '/environment'); /// Always delete downloaded env. info to force use of the released one. MDL-9796
                 if (!check_moodle_environment($release, $environment_results, true)) {
-                    if (empty($CFG->skiplangupgrade)) {
-                        print_box_start('generalbox', 'notice'); // MDL-8330
-                        print_string('langpackwillbeupdated', 'admin');
-                        print_box_end();
-                    }
                     notice_yesno(get_string('environmenterrorupgrade', 'admin'),
                                  'index.php?confirmupgrade=1&amp;confirmrelease=1', 'index.php');
                 } else {
                     notify(get_string('environmentok', 'admin'), 'notifysuccess');
-                    if (empty($CFG->skiplangupgrade)) {
-                        print_box_start('generalbox', 'notice'); // MDL-8330
-                        print_string('langpackwillbeupdated', 'admin');
-                        print_box_end();
-                    }
                     echo '<form action="index.php"><div>';
                     echo '<input type="hidden" name="confirmupgrade" value="1" />';
                     echo '<input type="hidden" name="confirmrelease" value="1" />';
@@ -349,11 +339,6 @@
                 $CFG->debug = $origdebug;
                 error_reporting($CFG->debug);
                 upgrade_log_start();
-
-            /// Upgrade current language pack if we can
-                if (empty($CFG->skiplangupgrade)) {
-                    upgrade_language_pack();
-                }
 
                 print_heading($strdatabasechecking);
                 $db->debug=true;
