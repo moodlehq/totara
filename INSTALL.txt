@@ -13,5 +13,6 @@ Before installing Totara you should have a server with:
 1. Create directories on your server for www files ('wwwroot' - allow for 1GB) and sitedata files ('sitedata' - allow for 10GB). Ensure the sitedata directory is outside the wwwroot.
 2. Configure your webserver to serve requests for your domain from the wwwroot directory.
 3. Move the Totara source code into the wwwroot directory.
-4. Using your web browser, visit your domain and step through the installation process.
-5. Set up a cron task to call the file admin/cron.php every fifteen minutes.
+4. Create an empty database using the UTF8 character set. See http://docs.moodle.org/en/Create_Moodle_site_database for details
+5. Using your web browser, visit your domain and step through the installation process.
+6. Set up a cron task to call the file admin/cron.php every fifteen minutes.
