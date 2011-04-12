@@ -1,5 +1,30 @@
 Totara LMS Changelog
 
+Release 1.0.7 (12 April 2011):
+==================================================
+
+Improvements:
+    8023    Fix inconsistencies in competency/proficiency/objective scales  Better notification messages, less strict restrictions on changing scales in use.
+    7987    Remove language pack downloader/installer                       Language download from moodle.org no longer included. Language packs will be included with Totara releases automatically
+    8022    Add a generic function for displaying course progress           Course progress now links to course completion details report if user has sufficient privileges.
+    8048    Explicity ensure reminders aren't sent on weekends
+    7991    Add upstream improvements to local/oauth
+    6399    Classes missing from completion reports                         Improves styling of various course completion related reports
+    6399    Remove odd Report Builder cell styling
+    8007    Add generic permissions check for viewing completion data
+
+Bug fixes:
+    8060    Added missing tinyMCE plugin                                Fixes error when adding images via rich-text editor
+    8047    Help buttons broken in local modules
+    7140    Capacity display does not include waitlisted users in Face-to-face
+    8044    Fullmessage formatting issues in Alerts/Tasks               Email formatting improved
+    8059    Tabs disappear and reappear in user profile
+    8043    Inconsistencies between results from totara_get_manager(), totara_is_manager(), totara_get_staff()
+    8041    Hidden topic's content never displays for teachers in IE6
+    8058    Reminder's were using the wrong period for their deadline
+    7800    Totara blocks/modules appear as "non-standard"  Warning messages will no longer appear during upgrades
+
+
 Release 1.0.6 (5 April 2011):
 ==================================================
 
