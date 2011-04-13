@@ -469,11 +469,9 @@ class moodleform_mod extends moodleform {
             $mform->setHelpButton('showavailability', array('showavailability', get_string('help_showavailability', 'condition'), 'condition'));
         }
 
-        // Conditional activities: completion tracking section 
-        require_once($CFG->libdir.'/completionlib.php');
-
+        // Conditional activities: completion tracking section
         if (!isset($completion)) {
-            $completion=new completion_info($COURSE);
+            $completion = new completion_info($COURSE);
         }
 
         if($completion->is_enabled()) {

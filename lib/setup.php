@@ -222,7 +222,8 @@ global $HTTPSPAGEREQUIRED;
     require_once($CFG->libdir .'/deprecatedlib.php');   // Deprecated functions included for backward compatibility
     require_once($CFG->libdir .'/moodlelib.php');       // Other general-purpose functions
     require_once($CFG->libdir .'/eventslib.php');       // Events functions
-    require_once($CFG->libdir .'/grouplib.php');        // Groups functionsa
+    require_once($CFG->libdir .'/grouplib.php');        // Groups functions
+    require_once($CFG->libdir .'/completionlib.php');   // Completion functions
     if (file_exists($CFG->dirroot .'/local/lib.php')) { // Local libraries (custom sites only)
         require_once($CFG->dirroot .'/local/lib.php');
     }

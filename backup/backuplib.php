@@ -1303,8 +1303,7 @@
                     }
                }
                // write completion data if enabled and user data enabled
-               require_once($CFG->libdir.'/completionlib.php');
-               $completion=new completion_info($course);
+               $completion = new completion_info($course);
                if($completion->is_enabled($course_module) &&
                    backup_userdata_selected($preferences,$moduletype,$course_module->instance)) {
                    fwrite ($bf,start_tag("COMPLETIONDATA",6,true));
@@ -1610,9 +1609,6 @@
 
     //Backup course completion info
     function backup_course_completion_info($bf, $preferences) {
-        global $CFG;
-        require_once($CFG->libdir.'/completionlib.php');
-
         $status = true;
 
         // Check if course completion is enabled

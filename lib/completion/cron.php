@@ -24,7 +24,6 @@
  * @author    Aaron Barnes <aaronb@catalyst.net.nz>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once $CFG->libdir.'/completionlib.php';
 require_once $CFG->dirroot.'/blocks/totara_stats/locallib.php';
 
 /**

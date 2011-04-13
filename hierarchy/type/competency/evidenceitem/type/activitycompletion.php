@@ -29,7 +29,6 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara
  */
-require_once($CFG->libdir.'/completionlib.php');
 
 /**
  * Activity completion competency evidence type

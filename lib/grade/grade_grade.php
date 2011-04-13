@@ -745,8 +745,8 @@ class grade_grade extends grade_object {
      */
     function notify_changed($deleted) {
         // Grades may be cached in user session
-        global $USER,$SESSION;
-        if($USER->id==$this->userid) {
+        global $USER, $SESSION, $COURSE;
+        if ($USER->id == $this->userid) {
             unset($SESSION->gradescorecache[$this->itemid]);
         }
 
@@ -755,8 +755,6 @@ class grade_grade extends grade_object {
         if(!empty($restore->backup_unique_code)) {
             return;
         }
-        global $CFG,$COURSE;
-        require_once($CFG->libdir.'/completionlib.php');
 
         // Bail out immediately if completion is not enabled for site (saves loading
         // grade item below)
