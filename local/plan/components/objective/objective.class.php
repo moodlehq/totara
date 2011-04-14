@@ -621,13 +621,16 @@ class dp_objective_component extends dp_base_component {
 
     /**
      * Create a new objective. (Does not check for permissions)
-     * @param string $fullname
-     * @param string $description
-     * @param int $priority
-     * @param int $duedate
-     * @return boolean
+     *
+     * @param string $fullname Name of the objective
+     * @param string $description A description of the objective (optional)
+     * @param int $priority The objective's priority scale value (optional)
+     * @param int $duedate The objective's due date (optional)
+     * @param int $scalevalueid The objective's objective scale value (optional)
+     *
+     * @return boolean True on success
      */
-    public function create_objective($fullname, $description=null, $priority=null, $duedate=null) {
+    public function create_objective($fullname, $description=null, $priority=null, $duedate=null, $scalevalueid=null) {
         global $USER;
         if ( !$this->can_update_items() ){
             return false;
@@ -639,7 +642,7 @@ class dp_objective_component extends dp_base_component {
         $rec->description = $description;
         $rec->priority = $priority;
         $rec->duedate = $duedate;
-        $rec->scalevalueid = get_field('dp_objective_scale', 'defaultid', 'id', $this->get_setting('objectivescale'));
+        $rec->scalevalueid = $scalevalueid ? $scalevalueid : get_field('dp_objective_scale', 'defaultid', 'id', $this->get_setting('objectivescale'));
         $rec->approved = $this->approval_status_after_update();
 
         if($result = insert_record('dp_plan_objective', $rec)) {
