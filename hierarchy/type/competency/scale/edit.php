@@ -73,13 +73,13 @@ if ($mform->is_cancelled()) {
                 throw new Exception('Error creating new competency scale');
             }
 
-            $scalevalues = explode(PHP_EOL, trim($scalenew->scalevalues));
+            $scalevalues = explode("\n", trim($scalenew->scalevalues));
             unset($scalenew->scalevalues);
 
             $sortorder = 1;
             $scaleidlist = array();
-            foreach($scalevalues as $scaleval) {
-                if (trim($scaleval) != '') {
+            foreach ($scalevalues as $scaleval) {
+                if (strlen(trim($scaleval)) != 0) {
                     $scalevalrec = new stdClass();
                     $scalevalrec->scaleid = $scalenew->id;
                     $scalevalrec->name = trim($scaleval);

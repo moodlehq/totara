@@ -94,8 +94,8 @@ if ($mform->is_cancelled()) {
 
             $sortorder = 1;
             $objectiveidlist = array();
-            foreach( $objectivevalues as $objectiveval ){
-                if ( trim($objectiveval) != '' ){
+            foreach ($objectivevalues as $objectiveval){
+                if (strlen(trim($objectiveval)) != 0){
                     $objectivevalrec = new stdClass();
                     $objectivevalrec->objscaleid = $objectivenew->id;
                     $objectivevalrec->name = trim($objectiveval);

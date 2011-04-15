@@ -91,8 +91,8 @@ if ($mform->is_cancelled()) {
 
             $sortorder = 1;
             $priorityidlist = array();
-            foreach( $priorityvalues as $priorityval ){
-                if ( trim($priorityval) != '' ){
+            foreach ($priorityvalues as $priorityval){
+                if (strlen(trim($priorityval)) != 0){
                     $priorityvalrec = new stdClass();
                     $priorityvalrec->priorityscaleid = $prioritynew->id;
                     $priorityvalrec->name = trim($priorityval);
