@@ -71,11 +71,18 @@ function dp_priority_scale_is_used($scaleid) {
     global $CFG, $DP_AVAILABLE_COMPONENTS;
 
     $used = false;
-    foreach($DP_AVAILABLE_COMPONENTS as $component) {
-        // @todo look at how done elsewhere (more error checking)
+    foreach ($DP_AVAILABLE_COMPONENTS as $component) {
         $component_class = "dp_{$component}_component";
-        require_once($CFG->dirroot . "/local/plan/components/{$component}/{$component}.class.php");
-        $used = $used || $component_class::is_priority_scale_used($scaleid);
+        $component_class_file = $CFG->dirroot . "/local/plan/components/{$component}/{$component}.class.php";
+        if (!is_readable($component_class_file)) {
+            continue;
+        }
+        require_once($component_class_file);
+        if (!class_exists($component_class)) {
+            continue;
+        }
+        $used = $used || call_user_func(array($component_class,
+            'is_priority_scale_used'), $scaleid);
     }
     return $used;
 }
