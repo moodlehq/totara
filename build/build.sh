@@ -39,6 +39,9 @@ php -f build/checkhelp.php . local hierarchy guides customfield
 echo "STEP 6: Run php syntax check";
 php build/lint.php
 
+echo "STEP 7: Run miscellaneous syntax check";
+php -f build/syntax_check.php
+
 # too slow
 #echo "Count lines of code";
 #sloccount --wide --details . > build/logs/sloccount.sc
