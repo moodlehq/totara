@@ -3961,7 +3961,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
 
                 // Check if competency exists
                 $competency_db = get_record(
-                    'competency',
+                    'comp',
                     'fullname', $competency_fullname,
                     'idnumber', $competency_idnumber,
                     'frameworkid', $framework_db->id
@@ -4003,8 +4003,6 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                             echo '<li>New competency evidence item insert failed</li>';
                         }
                     }
-
-                    var_dump($evidence);
                 }
             }
         }
@@ -9354,7 +9352,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
         }
 
-        //Now create course completion data
+        //Now create course format data
         if ($status) {
             //If we are deleting and bringing into a course or making a new course, same situation
             if ($restore->restoreto == RESTORETO_CURRENT_DELETING ||
@@ -9402,7 +9400,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         //Now create competency evidence items as needed
         if ($status && isset($info->backup_competency_evidence_items) && $info->backup_competency_evidence_items == "true") {
             if (!defined('RESTORE_SILENTLY')) {
-                echo "<li>".get_string("createcompetencyevidencedata");
+                echo "<li>".get_string("creatingcompetencyevidencedata");
             }
             if (!$status = restore_create_competency_evidence_items($restore, $xml_file)) {
                 if (!defined('RESTORE_SILENTLY')) {
