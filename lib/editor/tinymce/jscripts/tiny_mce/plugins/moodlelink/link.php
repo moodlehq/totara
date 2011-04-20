@@ -29,7 +29,9 @@ var FileBrowserDialogue = {
        var win = tinyMCEPopup.getWindowArg("window");
 
        // insert information now
-       win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = link_url;
+       field = win.document.getElementById(tinyMCEPopup.getWindowArg("input"));
+       field.value = link_url;
+       if (field.onchange) field.onchange();
 
        // for image browsers: update image dimensions
        if (win.getImageData) win.getImageData();
