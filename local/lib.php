@@ -44,20 +44,20 @@ function local_postinst() {
     $defaultdir = $CFG->dirroot.'/local/db/default';
     $includes = array();
     if (is_dir($defaultdir)) {
-        if ($dh = opendir($defaultdir)) {
-            $timenow = time();
-            while (($file = readdir($dh)) !== false) {
-                // exclude directories
-                if (is_dir($file)) {
-                    continue;
-                }
-                // not a php file
-                if (substr($file, -4) != '.php') {
-                    continue;
-                }
-                // include default data file
-                $includes[] = $CFG->dirroot.'/local/db/default/'.$file;
+        // files installed in alphabetical order so use
+        // number prefix to set desired order
+        foreach (scandir($defaultdir) as $file) {
+
+            // exclude dot directories
+            if ($file == '.' || $file == '..') {
+                continue;
             }
+            // not a php file
+            if (substr($file, -4) != '.php') {
+                continue;
+            }
+            // include default data file
+            $includes[] = $CFG->dirroot.'/local/db/default/'.$file;
         }
     }
     // sort so order of includes is known
