@@ -1572,7 +1572,13 @@ class development_plan {
      */
     public function get_display_url(){
         global $CFG;
-        return "{$CFG->wwwroot}/local/plan/view.php?id={$this->id}";
+        if (record_exists('dp_plan', 'id', $this->id)) {
+            return "{$CFG->wwwroot}/local/plan/view.php?id={$this->id}";
+        } else {
+            //If plan doesnt exist show plan index page for that user
+            return "{$CFG->wwwroot}/local/plan/index.php?userid={$this->userid}";
+        }
+
     }
 
 
