@@ -25,7 +25,6 @@
 
 require_once('../config.php');
 require_once($CFG->dirroot.'/course/lib.php');
-require_once($CFG->libdir.'/completionlib.php');
 require_once($CFG->dirroot.'/local/dialogs/dialog_content_courses.class.php');
 
 

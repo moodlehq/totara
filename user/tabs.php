@@ -2,8 +2,6 @@
 /// This file to be included so we can assume config.php has already been included.
 /// We also assume that $user, $course, $currenttab have been set
 
-    require_once("{$CFG->libdir}/completionlib.php");
-
     if (!isset($filtertype)) {
         $filtertype = '';
     }

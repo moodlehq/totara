@@ -38,6 +38,15 @@ $notice = optional_param('notice', 0, PARAM_INT); // notice flag
 $component = optional_param('component', 'plan', PARAM_TEXT);
 $currentcomponent = $component;
 
+if ($currentcomponent == 'competency') {
+    require_js(
+        array(
+            $CFG->wwwroot . '/local/js/lib/jquery-1.3.2.min.js',
+            $CFG->wwwroot .  '/local/plan/components/competency/competency.settings.js'
+        )
+    );
+}
+
 admin_externalpage_setup('managetemplates');
 
 if(!$template = get_record('dp_template', 'id', $id)){

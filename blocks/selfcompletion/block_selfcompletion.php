@@ -23,7 +23,6 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 
-require_once($CFG->libdir.'/completionlib.php');
 
 /**
  * Self course completion marking

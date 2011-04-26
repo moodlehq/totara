@@ -3,7 +3,6 @@
 // user.
 
 require_once('../config.php');
-require_once($CFG->libdir.'/completionlib.php');
 
 // Parameters
 $cmid = optional_param('id', 0, PARAM_INT);

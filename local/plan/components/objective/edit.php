@@ -124,7 +124,8 @@ if ( $deleteyes ){
                 $data->fullname,
                 isset($data->description)?$data->description:null,
                 isset($data->priority)?$data->priority:null,
-                isset($data->duedate)?$data->duedate:null
+                isset($data->duedate)?$data->duedate:null,
+                isset($data->scalevalueid)?$data->scalevalueid:null
         );
         if (!$result){
             print_error('error:objectiveupdated', 'local_plan');

@@ -15,7 +15,6 @@ if (!defined('MOODLE_INTERNAL')) {
  * Required includes
  */
 require_once("{$CFG->libdir}/simpletestlib.php");
-require_once("{$CFG->libdir}/completionlib.php");
 require_once("{$CFG->libdir}/completion/cron.php");
 
 

@@ -118,6 +118,7 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
     $mform->setDefault('includecompleted', $defaultincludecompleted);
     $mform->setDefault('autoassigncourses', $defaultautoassigncourses);
 
+
     //Permissions
     $mform->addElement('header', 'competencypermissions', get_string('competencypermissions', 'local_plan'));
     $mform->setHelpButton('competencypermissions', array('advancedsettingscompetencypermissions', get_string('competencypermissions', 'local_plan'), 'local_plan'), true);

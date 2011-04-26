@@ -487,8 +487,14 @@ function local_dashboard_get_dashboards() {
 
 /**
  * Inserts a default set of dashboards into the database
+ *
+ * Intentionally not called local_dashboard_install() as this
+ * causes it to run before the manager role has been created
+ * when upgrading moodle -> totara.
+ *
+ * Instead it is called by local_postinst()
  */
-function local_dashboard_install() {
+function local_dashboard_initial_install() {
 
     $status = true;
 

@@ -2,7 +2,6 @@
 
 
     require_once '../../../config.php';
-    require_once $CFG->libdir.'/completionlib.php';
 
     ///
     /// Parameters

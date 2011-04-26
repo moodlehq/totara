@@ -1,5 +1,27 @@
 Totara LMS Changelog
 
+Release 1.0.8 (26 April 2011):
+==================================================
+
+Improvements:
+    8057    Exclude "in progress" courses from Learning Plan's progress             Only complete items count towards plan progress.
+    8062    Improve scale value parsing in multi-edit input
+    8073    Make Learning Plan descriptions optional
+    8049    Update Face-to-face custom field interface to be more like scales       Menu of choices are input one-per line, instead of separated by semi-colons
+    8161    jQuery unnecessarily included on every page
+
+Bug fixes:
+    8072    Remove PHP 5.3 syntax from priority scale code                  Fixes blank screens in learning plans for sites not running PHP 5.3
+    8118    Install dashboard after roles when upgrading from Moodle        My Team dashboard will now appear following upgrades
+    8065    Unescaped % in Feedback language string
+    8123    Competency evidence restore referencing old table name          Fixes problem with course restore.
+    8082    Use specified status when creating an Objective                 Objective status can now be set when objective created.
+    8074    Disable unused checkboxes in Learning Plan template settings
+    8111    TinyMCE spell checker missing
+    8110    TinyMCE image preview broken in Firefox
+    8081    Include completion code library on all pages
+
+
 Release 1.0.7 (12 April 2011):
 ==================================================
 

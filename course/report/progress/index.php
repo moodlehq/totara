@@ -1,6 +1,5 @@
 <?php
 require_once('../../../config.php');
-require_once($CFG->libdir . '/completionlib.php');
 
 define('COMPLETION_REPORT_PAGE', 25);
 

@@ -390,8 +390,7 @@ class course_edit_form extends moodleform {
         $mform->addElement('select', 'lang', get_string('forcelanguage'), $languages);
 
 //--------------------------------------------------------------------------------
-        require_once($CFG->libdir.'/completionlib.php');
-        if(completion_info::is_enabled_for_site()) {
+        if (completion_info::is_enabled_for_site()) {
             $mform->addElement('header', '', get_string('progress', 'completion'));
             $mform->addElement('select', 'enablecompletion', get_string('completion', 'completion'),
                 array(0 => get_string('completiondisabled', 'completion'), 1 => get_string('completionenabled', 'completion')));

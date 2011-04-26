@@ -13,7 +13,6 @@
 
 require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
-require_once($CFG->libdir . '/completionlib.php');
 require_once($CFG->dirroot . '/local/dialogs/search_form.php');
 require_once($CFG->dirroot . '/local/dialogs/dialog_content_hierarchy.class.php');
 

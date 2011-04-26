@@ -1,8 +1,6 @@
 <?php  // $Id$
    // Library of useful functions
 
-require_once($CFG->libdir.'/completionlib.php');
-
 define('COURSE_MAX_LOG_DISPLAY', 150);          // days
 define('COURSE_MAX_LOGS_PER_PAGE', 1000);       // records
 define('COURSE_LIVELOG_REFRESH', 60);           // Seconds

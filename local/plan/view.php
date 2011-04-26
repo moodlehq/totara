@@ -64,7 +64,7 @@ require_once('edit_form.php');
 $form = new plan_edit_form($currenturl, array('plan'=>$plan, 'action'=>$action));
 
 if ($form->is_cancelled()) {
-    totara_set_notification(get_string('planupdatecancelled', 'local_plan'), $viewurl);
+    totara_set_notification(get_string('planupdatecancelled', 'local_plan'), $viewurl, array('style' => 'notifysuccess'));
 }
 
 if ($plan->get_setting('view') != DP_PERMISSION_ALLOW) {

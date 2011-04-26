@@ -88,12 +88,21 @@ if ($fromform = $mform->get_data()) { // Form submitted
         $fromform->possiblevalues = '';
     }
 
+    $values_list = explode("\n", trim($fromform->possiblevalues));
+    $pos_vals = array();
+    foreach ($values_list as $val) {
+        $trimmed_val = trim($val);
+        if (strlen($trimmed_val) != 0) {
+            $pos_vals[] = $trimmed_val;
+        }
+    }
+
     $todb = new object();
     $todb->name = trim($fromform->name);
     $todb->shortname = trim($fromform->shortname);
     $todb->type = $fromform->type;
     $todb->defaultvalue = trim($fromform->defaultvalue);
-    $todb->possiblevalues = trim($fromform->possiblevalues);
+    $todb->possiblevalues = implode(CUSTOMFIELD_DELIMITTER, $pos_vals);
     $todb->required = $fromform->required;
     $todb->isfilter = $fromform->isfilter;
     $todb->showinsummary = $fromform->showinsummary;
@@ -119,7 +128,9 @@ elseif ($field != null) { // Edit mode
     $toform->shortname = $field->shortname;
     $toform->type = $field->type;
     $toform->defaultvalue = $field->defaultvalue;
-    $toform->possiblevalues = $field->possiblevalues;
+    $value_array = explode(CUSTOMFIELD_DELIMITTER, $field->possiblevalues);
+    $possible_values = implode(PHP_EOL, $value_array);
+    $toform->possiblevalues = $possible_values;
     $toform->required = ($field->required == 1);
     $toform->isfilter = ($field->isfilter == 1);
     $toform->showinsummary = ($field->showinsummary == 1);

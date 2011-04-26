@@ -624,7 +624,9 @@ SQL;
             LEFT JOIN {$CFG->prefix}comp c ON c.id=ce.competencyid
             LEFT JOIN {$CFG->prefix}comp_scale_assignments csa
                 ON c.frameworkid = csa.frameworkid
-            LEFT JOIN {$CFG->prefix}comp_scale_values csv ON csv.scaleid=csa.scaleid
+            LEFT JOIN {$CFG->prefix}comp_scale_values csv
+                ON csv.scaleid=csa.scaleid
+                AND csv.id=ce.proficiency
             LEFT JOIN (
                 SELECT scaleid, MAX(id) AS proficiency
                 FROM {$CFG->prefix}comp_scale_values
