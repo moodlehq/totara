@@ -93,8 +93,8 @@ function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
         print '<form action="save_rpl.php?type='.$type.'&course='.$course->id.'&sort='.$sort.'&start='.$start.'&redirect=1" method="post">';
         print '<input type="hidden" name="user" value="'.$user->id.'" />';
         print '<input type="text" name="rpl" value="'.htmlentities($rpl).'" maxlength="255" />';
-        print '<input type="submit" name="saverpl" value="Save" /></form> ';
-        print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'">Cancel</a>';
+        print '<input type="submit" name="saverpl" value="'.get_string('save').'" /></form> ';
+        print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'">'.get_string('cancel').'</a>';
     } else {
         // Show RPL status icon
         $rplicon = strlen($rpl) ? 'completion-rpl-y' : 'completion-rpl-n';
@@ -103,7 +103,7 @@ function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
 
         // Show status text
         if (strlen($rpl)) {
-            print '<a href="#" class="rplshow" title="Show RPL">...</a>';
+            print '<a href="#" class="rplshow" title="'.get_string('showrpl', 'completion').'">...</a>';
         }
 
         // Rrpl value
@@ -432,7 +432,7 @@ if(!$csv) {
                 // Try load a aggregation method
                 $method = $completion->get_aggregation_method($current_group->criteriatype);
 
-                $method = $method == 1 ? 'All' : 'Any';
+                $method = $method == 1 ? get_string('all') : get_string('any');
 
             } else {
                 $method = '-';
@@ -457,12 +457,12 @@ if(!$csv) {
     // Print
     if (COMPLETION_REPORT_RPL) {
         if ($method == 1) {
-            print 'RPL for course or<br /> all criteria groups';
+            print get_string('courserplorallcriteriagroups', 'completion');
         } else {
-            print 'RPL for course or<br /> any criteria group';
+            print get_string('courserploranycriteriagroup', 'completion');
         }
     } else {
-        print $method == 1 ? 'All' : 'Any';
+        print $method == 1 ? get_string('all') : get_string('any');
     }
     print '</th>';
 
@@ -576,8 +576,8 @@ if(!$csv) {
         print ($iconlink ? '</a>' : '');
 
         if ($criterion->module == 'facetoface' && COMPLETION_REPORT_RPL) {
-            print '<img src="'.$CFG->pixpath.'/i/course.gif" class="icon" alt="RPL" title="Activity RPL" />';
-            print '<a href="#" class="rplexpand rpl-'.$criterion->id.'" title="Show RPLs"><img src="'.$CFG->pixpath.'/i/one.gif" class="icon" alt="+"/></a>';
+            print '<img src="'.$CFG->pixpath.'/i/course.gif" class="icon" alt="RPL" title="'.get_string('activityrpl', 'completion').'" />';
+            print '<a href="#" class="rplexpand rpl-'.$criterion->id.'" title="'.get_string('showrpls', 'completion').'"><img src="'.$CFG->pixpath.'/i/one.gif" class="icon" alt="+"/></a>';
         }
 
         print '</th>';
@@ -585,11 +585,11 @@ if(!$csv) {
 
     // Overall course completion status
     print '<th class="criteriaicon">';
-    print '<img src="'.$CFG->pixpath.'/i/course.gif" class="icon" alt="Course" title="Course Complete" />';
+    print '<img src="'.$CFG->pixpath.'/i/course.gif" class="icon" alt="'.get_string('course').'" title="'.get_string('coursecomplete', 'completion').'" />';
 
     if (COMPLETION_REPORT_RPL) {
-        print '<img src="'.$CFG->pixpath.'/i/course.gif" class="icon" alt="RPL" title="Course RPL" />';
-        print '<a href="#" class="rplexpand rpl-course" title="Show RPLs"><img src="'.$CFG->pixpath.'/i/one.gif" class="icon" alt="+"/></a>';
+        print '<img src="'.$CFG->pixpath.'/i/course.gif" class="icon" alt="'.get_string('rpl', 'completion').'" title="'.get_string('courserpl', 'completion').'" />';
+        print '<a href="#" class="rplexpand rpl-course" title="'.get_string('showrpls', 'completion').'"><img src="'.$CFG->pixpath.'/i/one.gif" class="icon" alt="+"/></a>';
     }
 
     print '</th>';
@@ -714,7 +714,7 @@ foreach ($progress as $user) {
                 print '<td class="completion-progresscell">'.
                     '<a href="'.$CFG->wwwroot.'/course/togglecompletion.php?user='.$user->id.'&course='.$course->id.'&rolec='.$allow_marking_criteria.'&sesskey='.sesskey().'">'.
                     '<img src="'.$CFG->pixpath.'/i/completion-manual-'.($is_complete ? 'y' : 'n').'.gif'.
-                    '" alt="'.$describe.'" class="icon" title="Mark as complete" /></a></td>';
+                    '" alt="'.$describe.'" class="icon" title="'.get_string('markcomplete', 'completion').'" /></a></td>';
             } else {
                 print '<td class="completion-progresscell">'.
                     '<img src="'.$CFG->pixpath.'/i/'.$completionicon.'.gif'.
