@@ -81,7 +81,7 @@
 
     $showroles = 1;
     $showpositions = 1;
-    $showmessages = 1;
+    $showtasksalerts = 1;
     $currenttab = 'notes';
     require($CFG->dirroot .'/user/tabs.php');
 

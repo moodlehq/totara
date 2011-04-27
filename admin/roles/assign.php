@@ -142,7 +142,7 @@
 
         $showroles = 1;
         $showpositions = 1;
-        $showmessages = 1;
+        $showtasksalerts = 1;
         $currenttab = 'assign';
         include_once($CFG->dirroot.'/user/tabs.php');
     } else if ($context->contextlevel == CONTEXT_SYSTEM) {

@@ -224,7 +224,7 @@
     /// Print tabs at the top
     $showroles = 1;
     $showpositions = 1;
-    $showmessages = 1;
+    $showtasksalerts = 1;
     $currenttab = 'editprofile';
     require('tabs.php');
 

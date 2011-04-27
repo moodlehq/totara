@@ -330,8 +330,8 @@
         }
     }
 
-    // Messages tab
-    if (!empty($user) && !empty($showmessages)) {  // $showmessages controls whether this tab is shown, only user/view should set it
+    // Tasks/Alerts tab
+    if (!empty($user) && !empty($showtasksalerts)) {  // $showtasksalerts controls whether this tab is shown, only user/view should set it
 
         // Check permissions
         $personalcontext = get_context_instance(CONTEXT_USER, $user->id);
@@ -341,11 +341,11 @@
             has_capability('moodle/user:viewdetails', $coursecontext) ||
             has_capability('moodle/user:viewdetails', $personalcontext)) {
 
-            $toprow[] = new tabobject('messages', $CFG->wwwroot.'/local/totara_msg/edit.php?id='.$user->id.'&amp;course='.$course->id, get_string('messages', 'local_totara_msg'));
+            $toprow[] = new tabobject('tasksalerts', $CFG->wwwroot.'/local/totara_msg/edit.php?id='.$user->id.'&amp;course='.$course->id, get_string('tasksalerts', 'local_totara_msg'));
 
             // Are we currently in the messages tab?
-            if (substr($currenttab, 0, 8) == 'messages') {
-                $currenttab = 'messages';
+            if (substr($currenttab, 0, 11) == 'tasksalerts') {
+                $currenttab = 'tasksalerts';
             }
         }
     }
