@@ -359,7 +359,7 @@ class columns_test extends prefix_changing_test_case {
 
     var $dp_plan_data = array(
         array('id', 'templateid', 'userid', 'name', 'description', 'startdate', 'enddate', 'status'),
-        array(1,1,1,'DP','',0,0,1),
+        array(1,1,2,'DP','',0,0,1),
     );
 
     var $dp_plan_competency_assign_data = array(
