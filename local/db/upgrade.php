@@ -189,7 +189,7 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('module', XMLDB_TYPE_CHAR, '100', null, null, null, null);
         $table->addFieldInfo('moduleinstance', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('enrolperiod', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('date', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('completedate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('gradepass', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
         $table->addFieldInfo('role', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('lock', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
@@ -2241,6 +2241,17 @@ function xmldb_local_upgrade($oldversion) {
         $field = new XMLDBField('proficient');
         if(field_exists($table, $field)) {
             $result = $result && drop_field($table, $field);
+        }
+    }
+
+    // Rename field (if not already) to avoid reserved word
+    if ($result && $oldversion < 2011042700) {
+        $table = new XMLDBTable('course_completion_criteria');
+        $field = new XMLDBField('date');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+
+        if (field_exists($table, $field)) {
+            $result = $result && rename_field($table, $field, 'completedate');
         }
     }
 

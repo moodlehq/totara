@@ -64,7 +64,7 @@ class completion_criteria_date extends completion_criteria {
         // If instance of criteria exists
         if ($this->id) {
             $mform->setDefault('criteria_date', 1);
-            $mform->setDefault('criteria_date_value', $this->date);
+            $mform->setDefault('criteria_date_value', $this->completedate);
         } else {
             $mform->setDefault('criteria_date_value', time() + 3600 * 24);
         }
@@ -81,7 +81,7 @@ class completion_criteria_date extends completion_criteria {
         if (!empty($data->criteria_date))
         {
             $this->course = $data->id;
-            $this->date = $data->criteria_date_value;
+            $this->completedate = $data->criteria_date_value;
             $this->insert();
         }
     }
@@ -96,7 +96,7 @@ class completion_criteria_date extends completion_criteria {
     public function review($completion, $mark = true)
     {
         // If date is past date
-        if ($this->date && $this->date < time()) {
+        if ($this->completedate && $this->completedate < time()) {
             if ($mark) {
                 $completion->mark_complete();
             }
@@ -122,7 +122,7 @@ class completion_criteria_date extends completion_criteria {
      * @return  string
      */
     public function get_title_detailed() {
-        return userdate($this->date, '%d-%h-%y');
+        return userdate($this->completedate, '%d-%h-%y');
     }
 
     /**
@@ -142,7 +142,7 @@ class completion_criteria_date extends completion_criteria {
      * @return  string
      */
     public function get_status($completion) {
-        return $completion->is_complete() ? get_string('yes') : userdate($this->date, '%d-%h-%y');
+        return $completion->is_complete() ? get_string('yes') : userdate($this->completedate, '%d-%h-%y');
     }
 
     /**
@@ -157,7 +157,7 @@ class completion_criteria_date extends completion_criteria {
         $sql = "
             SELECT DISTINCT
                 c.id AS course,
-                cr.date AS date,
+                cr.completedate AS completedate,
                 cr.id AS criteriaid,
                 ra.userid AS userid
             FROM
@@ -180,14 +180,14 @@ class completion_criteria_date extends completion_criteria {
             AND con.contextlevel = ".CONTEXT_COURSE."
             AND c.enablecompletion = 1
             AND cc.id IS NULL
-            AND cr.date < ".time()."
+            AND cr.completedate < ".time()."
         ";
 
         // Loop through completions, and mark as complete
         if ($rs = get_recordset_sql($sql)) {
             foreach ($rs as $record) {
                 $completion = new completion_criteria_completion($record);
-                $completion->mark_complete($record['date']);
+                $completion->mark_complete($record['completedate']);
             }
 
             $rs->close();
@@ -204,7 +204,7 @@ class completion_criteria_date extends completion_criteria {
         $details = array();
         $details['type'] = get_string('datepassed', 'completion');
         $details['criteria'] = get_string('remainingenroleduntildate', 'completion');
-        $details['requirement'] = userdate($this->date, '%d %B %Y');
+        $details['requirement'] = userdate($this->completedate, '%d %B %Y');
         $details['status'] = '';
 
         return $details;

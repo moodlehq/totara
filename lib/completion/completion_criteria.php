@@ -70,7 +70,7 @@ abstract class completion_criteria extends data_object {
      * Array of required table fields, must start with 'id'.
      * @var array $required_fields
      */
-    public $required_fields = array('id', 'course', 'criteriatype', 'module', 'moduleinstance', 'courseinstance', 'enrolperiod', 'date', 'gradepass', 'role');
+    public $required_fields = array('id', 'course', 'criteriatype', 'module', 'moduleinstance', 'courseinstance', 'enrolperiod', 'completedate', 'gradepass', 'role');
 
     /**
      * Course id
@@ -107,7 +107,7 @@ abstract class completion_criteria extends data_object {
      * Date of course completion (for date criteria)
      * @var     int     (timestamp)
      */
-    public $date;
+    public $completedate;
 
     /**
      * Passing grade required to complete course (for grade completion)
