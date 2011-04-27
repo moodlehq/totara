@@ -335,7 +335,7 @@ class dp_course_component extends dp_base_component {
 
         // get courses assigned to this plan
         // and related details
-        $from = "FROM {$CFG->prefix}dp_plan_course_assign ca
+        $from = " FROM {$CFG->prefix}dp_plan_course_assign ca
                 LEFT JOIN
                     {$CFG->prefix}course c ON c.id = ca.courseid
                 LEFT JOIN
@@ -343,10 +343,10 @@ class dp_course_component extends dp_base_component {
                     ON (ca.priority = psv.id
                     AND psv.priorityscaleid = $priorityscaleid)
                     {$completion_joins}";
-        $where = "WHERE ca.id IN (" . implode(',', $list) . ")
+        $where = " WHERE ca.id IN (" . implode(',', $list) . ")
             AND ca.approved = ".DP_APPROVAL_APPROVED;
 
-        $sort = "ORDER BY c.fullname";
+        $sort = " ORDER BY c.fullname";
 
 
         $tableheaders = array(
