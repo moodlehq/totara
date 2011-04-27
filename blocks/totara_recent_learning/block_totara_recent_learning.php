@@ -61,6 +61,7 @@ class block_totara_recent_learning extends block_base {
 
         $courses = get_records_sql($sql);
         if(!$courses) {
+            $this->content->text = get_string('norecentlearning', 'block_recentlearning');
             return $this->content;
         }
         if ($courses) {
