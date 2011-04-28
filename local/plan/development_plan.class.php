@@ -1546,6 +1546,7 @@ class development_plan {
             $event->userto = $manager;
             $event->userfrom = $learner;
             $event->icon = 'learningplan-complete';
+            $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
             $a = new stdClass();
             $a->learner = fullname($learner);
             $a->plan = $this->name;
@@ -1559,6 +1560,7 @@ class development_plan {
         $event = new stdClass();
         $event->userto = $learner;
         $event->icon = 'learningplan-complete';
+        $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
         $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));
         tm_alert_send($event);
     }
