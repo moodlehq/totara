@@ -1,5 +1,12 @@
 Totara LMS Changelog
 
+Release 1.0.8.1 (28 April 2011):
+==================================================
+
+Bug fixes:
+    8049    Existing Face-to-face select type custom fields not updated to new separator syntax     Select type Face-to-face custom fields were broken after 1.0.8 release
+
+
 Release 1.0.8 (26 April 2011):
 ==================================================
 
