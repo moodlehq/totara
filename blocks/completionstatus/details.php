@@ -138,7 +138,7 @@ echo '</td></tr>';
 
 // Show RPL
 if (isset($ccompletion) && strlen($ccompletion->rpl)) {
-    echo '<tr><td colspan="2"><b>Course RPL:</b> '.format_string($ccompletion->rpl).'</td></tr>';
+    echo '<tr><td colspan="2"><b>'.get_string('courserpl', 'completion').':</b> '.format_string($ccompletion->rpl).'</td></tr>';
 }
 
 echo '<tr><td colspan="2"><b>'.get_string('required').':</b> ';
@@ -173,12 +173,11 @@ global $COMPLETION_CRITERIA_TYPES;
 // Loop through course criteria
 foreach ($completions as $completion) {
     $criteria = $completion->get_criteria();
-    $complete = $completion->is_complete();
 
     $row = array();
     $row['type'] = $criteria->criteriatype;
     $row['title'] = $criteria->get_title();
-    $row['status'] = $completion->get_status();
+    $row['status'] = $completion->is_complete();
     $row['timecompleted'] = $completion->timecompleted;
     $row['details'] = $criteria->get_details($completion);
     $rows[] = $row;
@@ -237,7 +236,7 @@ foreach ($rows as $row) {
 
     // Is complete
     echo '<td class="cell c4">';
-    echo ($row['status'] === 'Yes') ? 'Yes' : 'No';
+    echo $row['status'] ? get_string('yes') : get_string('no');
     echo '</td>';
 
     // Completion data
