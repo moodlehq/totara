@@ -461,12 +461,26 @@ class dp_course_component extends dp_base_component {
         $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
         $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
 
-        $sql = 'SELECT ca.*, course.*, psv.name AS priorityname ' .
-            "FROM {$CFG->prefix}dp_plan_course_assign ca
+        if ($this->plan->is_complete()) {
+            $completion_field = 'ca.completionstatus AS coursecompletion';
+
+            $completion_joins = '';
+        } else {
+            $completion_field = 'cc.status AS coursecompletion';
+
+            $completion_joins = "LEFT JOIN {$CFG->prefix}course_completions cc
+                    ON (cc.course = ca.courseid
+                    AND cc.userid = {$this->plan->userid})";
+        }
+
+        $sql = "SELECT ca.*, course.*, psv.name AS priorityname, {$completion_field}
+            FROM {$CFG->prefix}dp_plan_course_assign ca
                 LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
                     ON (ca.priority = psv.id
                     AND psv.priorityscaleid = {$priorityscaleid})
-                LEFT JOIN {$CFG->prefix}course course ON course.id = ca.courseid
+                LEFT JOIN {$CFG->prefix}course course
+                    ON course.id = ca.courseid
+                {$completion_joins}
             WHERE ca.id = $caid";
         $item = get_record_sql($sql);
 
