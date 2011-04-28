@@ -53,7 +53,13 @@ class completion_criteria_date extends completion_criteria {
     public function config_form_display(&$mform, $data = null)
     {
         $mform->addElement('checkbox', 'criteria_date', get_string('enable'));
-        $mform->addElement('date', 'criteria_date_value', get_string('afterspecifieddate', 'completion'));
+
+        $options = array(
+            'startyear' => date('Y'),
+            'optional'  => false
+        );
+
+        $mform->addElement('date_selector', 'criteria_date_value', get_string('afterspecifieddate', 'completion'), $options);
 
         // If instance of criteria exists
         if ($this->id) {
@@ -75,8 +81,7 @@ class completion_criteria_date extends completion_criteria {
         if (!empty($data->criteria_date))
         {
             $this->course = $data->id;
-            $date = $data->criteria_date_value;
-            $this->date = strtotime($date['Y'].'-'.$date['M'].'-'.$date['d']);
+            $this->date = $data->criteria_date_value;
             $this->insert();
         }
     }
