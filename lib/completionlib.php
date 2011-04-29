@@ -288,7 +288,7 @@ class completion_info {
     }
 
     /**
-     * Get a course completion for a user
+     * Get a course criteria completion for a user
      * @access  public
      * @param   $user_id        int     User id
      * @param   $criteriatype   int     Specific criteria type to return
@@ -1074,13 +1074,29 @@ class completion_info {
 
 
     /**
-     * Checks to see if the userid supplied has a tracked role in
-     * this course
+     * Checks to see if the userid has a completion_completions record
+     * or a tracked role in this course.
+     *
+     * We do this because some users could have received a RPL via
+     * a Learning Plan without being enrolled in the course at all.
      *
      * @param   $userid     User id
      * @return  bool
      */
     function is_tracked_user($userid) {
+
+        // Check for course_completions records
+        $data = array(
+            'userid'    => $userid,
+            'course'    => $this->course_id
+        );
+
+        $ccompletion = new completion_completion($data, true);
+        if ($ccompletion->id) {
+            return true;
+        }
+
+        // Otherwise check for role assignments
         $sql  = "SELECT u.id ";
         $sql .= $this->generate_tracked_user_sql();
         $sql .= ' AND u.id = '.(int)$userid;
