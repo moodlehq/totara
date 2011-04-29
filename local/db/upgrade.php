@@ -2201,7 +2201,7 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
-    if($result && $oldversion < 2011040600) {
+    if ($result && $oldversion < 2011040600) {
         // add proficient field to comp_scale_values table
         $table = new XMLDBTable('comp_scale_values');
         $field = new XMLDBField('proficient');
@@ -2210,17 +2210,17 @@ function xmldb_local_upgrade($oldversion) {
 
         // copy proficient value from comp_scale to new location in comp_scale_values
         $scales = get_records('comp_scale');
-        if($scales) {
+        if ($scales) {
             // loop through each scale
-            foreach($scales as $scale) {
+            foreach ($scales as $scale) {
                 // if proficient not set, leave all scale values as not proficient
-                if(empty($scale->proficient)) {
+                if (empty($scale->proficient)) {
                     continue;
                 }
                 // find the sort order of the proficient value
                 $minprofsort = get_field('comp_scale_values', 'sortorder', 'id', $scale->proficient);
                 // set proficient to 1 for all scale values with an equal or lower sortorder
-                if($minprofsort) {
+                if ($minprofsort) {
                     $sql = "UPDATE {$CFG->prefix}comp_scale_values SET proficient=1
                         WHERE scaleid={$scale->id} AND sortorder <= $minprofsort";
                     $result = $result && execute_sql($sql);
@@ -2233,13 +2233,13 @@ function xmldb_local_upgrade($oldversion) {
         $table = new XMLDBTable('comp_scale');
         $index = new XMLDBIndex('proficient');
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('proficient'));
-        if(index_exists($table, $index)) {
+        if (index_exists($table, $index)) {
             $result = $result && drop_index($table, $index);
         }
 
         $table = new XMLDBTable('comp_scale');
         $field = new XMLDBField('proficient');
-        if(field_exists($table, $field)) {
+        if (field_exists($table, $field)) {
             $result = $result && drop_field($table, $field);
         }
     }
@@ -2253,6 +2253,15 @@ function xmldb_local_upgrade($oldversion) {
         if (field_exists($table, $field)) {
             $result = $result && rename_field($table, $field, 'completedate');
         }
+    }
+
+    if ($result && $oldversion < 2011042900) {
+
+        // Run the old completion cron code one more time before setting up the role_assign()
+        // trigger for future enrollments
+        require_once($CFG->libdir.'/completion/completion_completion.php');
+
+        completion_mark_users_started();
     }
 
     return $result;
