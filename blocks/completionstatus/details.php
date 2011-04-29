@@ -138,7 +138,7 @@ echo '</td></tr>';
 
 // Show RPL
 if (isset($ccompletion) && strlen($ccompletion->rpl)) {
-    echo '<tr><td colspan="2"><b>Course RPL:</b> '.htmlentities($ccompletion->rpl).'</td></tr>';
+    echo '<tr><td colspan="2"><b>Course RPL:</b> '.format_string($ccompletion->rpl).'</td></tr>';
 }
 
 echo '<tr><td colspan="2"><b>'.get_string('required').':</b> ';
