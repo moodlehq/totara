@@ -178,11 +178,24 @@ class totara_competency_evidence_form extends moodleform {
             $mform->addElement('select', 'proficiency', get_string('status','local_plan'), $selectoptions);
         } else if ($competencyid != 0) {
             // competency set but validation failed. Refill scale options
-            $frameworkid = get_field('comp','frameworkid','id',$competencyid);
-            $scaleid = get_field('comp_scale_assignments','scaleid','frameworkid',$frameworkid);
+            $sql = "SELECT
+                        cs.defaultid as defaultid, cs.id as scaleid
+                    FROM {$CFG->prefix}comp c
+                    JOIN {$CFG->prefix}comp_scale_assignments csa
+                        ON c.frameworkid = csa.frameworkid
+                    JOIN {$CFG->prefix}comp_scale cs
+                        ON csa.scaleid = cs.id
+                    WHERE c.id={$competencyid}";
+            if (!$scaledetails = get_record_sql($sql)) {
+                print_error('error:scaledetails', 'competency');
+            }
+            $defaultid = $scaledetails->defaultid;
+            $scaleid = $scaledetails->scaleid;
             $selectoptions = get_records_menu('comp_scale_values','scaleid',$scaleid,'sortorder');
             $mform->addElement('select', 'proficiency', get_string('status', 'local_plan'), $selectoptions);
             $mform->setType('proficiency', PARAM_INT);
+            $mform->setDefault('proficiency', $defaultid);
+
         } else {
             // new competency evidence item
             // create a placeholder element to be filled when competency is selected

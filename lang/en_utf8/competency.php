@@ -202,3 +202,4 @@ $string['linkcourses'] = 'Link courses';
 $string['competent'] = 'Competent';
 $string['competentwithsupervision'] = 'Competent with supervision';
 $string['notcompetent'] = 'Not competent';
+$string['error:scaledetails'] = 'Error getting scale details.';
