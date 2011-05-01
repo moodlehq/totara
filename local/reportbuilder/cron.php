@@ -189,10 +189,10 @@ function process_scheduled_reports(){
 
     require_once($CFG->dirroot . '/calendar/lib.php');
 
-    $sql = 'SELECT rbs.*, rb.fullname
-        FROM mdl_report_builder_schedule rbs
-        JOIN mdl_report_builder rb
-        ON rbs.reportid=rb.id';
+    $sql = "SELECT rbs.*, rb.fullname
+        FROM {$CFG->prefix}report_builder_schedule rbs
+        JOIN {$CFG->prefix}report_builder rb
+            ON rbs.reportid=rb.id";
 
     if(!$scheduledreports = get_records_sql($sql)) {
         $scheduledreports = array();
