@@ -1955,7 +1955,7 @@ function xmldb_local_upgrade($oldversion) {
         begin_sql();
 
         // Get all records
-        $rs = get_recordset_sql('SELECT * FROM mdl_course_completions');
+        $rs = get_recordset_sql("SELECT * FROM {$CFG->prefix}course_completions");
 
         if ($rs) {
             while ($record = rs_fetch_next_record($rs)) {

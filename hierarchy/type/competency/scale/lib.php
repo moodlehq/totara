@@ -58,8 +58,8 @@ function competency_scale_is_used( $scaleid ){
     $sql2 = "SELECT
                 pca.scalevalueid
              FROM
-                mdl_dp_plan_competency_assign pca
-             JOIN mdl_comp_scale_values csv
+                {$CFG->prefix}dp_plan_competency_assign pca
+             JOIN {$CFG->prefix}comp_scale_values csv
                 ON pca.scalevalueid = csv.id
             WHERE
                 csv.scaleid = {$scaleid}";
