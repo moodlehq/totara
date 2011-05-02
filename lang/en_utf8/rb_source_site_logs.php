@@ -1,5 +1,5 @@
 <?php
-// lang file for local/rb_sources/rb_source_site_logs.php
+// lang file for local/reportbuilder/rb_sources/rb_source_site_logs.php
 $string['sourcetitle'] = 'Site Logs';
 // columns
 $string['time'] = 'Time';

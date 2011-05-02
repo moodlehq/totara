@@ -1,5 +1,5 @@
 <?php
-// lang string for local/rb_sources/rb_source_course_completion_by_org.php
+// lang string for local/reportbuilder/rb_sources/rb_source_course_completion_by_org.php
 $string['sourcetitle'] = 'Course Completion by Organisation';
 // columns
 $string['completionorgid'] = 'Completion Organisation ID';

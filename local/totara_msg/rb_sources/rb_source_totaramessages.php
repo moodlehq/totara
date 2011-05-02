@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(dirname(dirname(__FILE__)).'/totara_msg/lib.php');
+require_once(dirname(dirname(dirname(__FILE__))).'/totara_msg/lib.php');
 
 class rb_source_totaramessages extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;

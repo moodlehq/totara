@@ -47,11 +47,6 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 /**
- * Name of directories containing report builder source files
- */
-define('SOURCE_DIR_NAME', 'rb_sources');
-
-/**
  * Content mode options
  */
 define('REPORT_BUILDER_CONTENT_MODE_NONE', 0);
@@ -450,51 +445,42 @@ var comptree = [' . implode(', ', $comptrees) . '];
     }
 
     /**
-     * Recursively locates source directories with in the current source search paths
-     *
-     * Uses $SOURCE_SEARCH_PATH and SOURCE_DIR_NAME to choose where to look
-     * and what to match against.
+     * Gets list of source directories to look in for source files
      *
      * @return array An array of paths to source directories
      */
     static function find_source_dirs() {
         global $CFG;
-        // list of directories to look in for source classes
-        // from dirroot, include leading and trailing slashes
-        $SOURCE_SEARCH_PATH = array('/local/','/mod/');
+
         $sourcepaths = array();
-        foreach($SOURCE_SEARCH_PATH as $path) {
-            $sourcepaths = array_merge($sourcepaths,
-                (array) self::glob_r(SOURCE_DIR_NAME, GLOB_ONLYDIR|GLOB_MARK, $CFG->dirroot.$path));
+
+        // search for mod/*/rb_sources/ directories
+        foreach (get_list_of_plugins('mod') as $mod) {
+            $dir = "{$CFG->dirroot}/mod/$mod/rb_sources/";
+            if (file_exists($dir) && is_dir($dir)) {
+                $sourcepaths[] = $dir;
+            }
+        }
+
+        // search for blocks/*/rb_sources/ directories
+        foreach (get_list_of_plugins('blocks', 'db') as $block) {
+            $dir = "{$CFG->dirroot}/blocks/$block/rb_sources/";
+            if (file_exists($dir) && is_dir($dir)) {
+                $sourcepaths[] = $dir;
+            }
+        }
+
+        // search for local/*/rb_sources/ directories
+        foreach (get_list_of_plugins('local', 'db') as $localmod) {
+            $dir = "{$CFG->dirroot}/local/$localmod/rb_sources/";
+            if (file_exists($dir) && is_dir($dir)) {
+                $sourcepaths[] = $dir;
+            }
         }
 
         return $sourcepaths;
     }
 
-    /**
-     * Recursive version of the glob() function
-     *
-     * Finds files or directories the match a pattern by recursively searching the
-     * specified path
-     *
-     * @param string $pattern Pattern to match against
-     * @param integer $flags Flags to pass to glob function
-     * @param string $path Path to start search from
-     * @returns array An array of matching paths
-     */
-    static function glob_r($pattern='*', $flags = 0, $path='') {
-        $paths = glob($path.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
-        $files = glob($path.$pattern, $flags);
-        if($files === false) {
-            $files = array();
-        }
-        if(is_array($paths) && count($paths) > 0) {
-            foreach ($paths as $path) {
-                $files = array_merge($files, (array) self::glob_r($pattern, $flags, $path));
-            }
-        }
-        return $files;
-    }
 
     /**
      * Reduces an array of objects to those that match all specified conditions

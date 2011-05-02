@@ -1,5 +1,5 @@
 <?php
-// lang file for local/rb_sources/rb_source_dp_course.php
+// lang file for local/plan/rb_sources/rb_source_dp_course.php
 $string['sourcetitle'] = 'Record of Learning: Courses';
 // columns
 $string['planname'] = 'Plan name';

@@ -1,5 +1,5 @@
 <?php
-// lang file for local/rb_sources/rb_sources_dp_competency.php
+// lang file for local/plan/rb_sources/rb_sources_dp_competency.php
 $string['sourcetitle'] = 'Record of Learning: Competencies';
 // columns
 $string['planname'] = 'Plan name';
