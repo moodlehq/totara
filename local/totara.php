@@ -521,7 +521,7 @@ function totara_print_my_courses() {
             }
 
             $status = array_key_exists($id, $courses) ? $courses[$id]->status : COMPLETION_STATUS_NOTYETSTARTED;
-            $completion = totara_display_course_progress_icon($USER->id, $course->id, $status);
+            $completion = totara_display_course_progress_icon($USER->id, $course->course, $status);
 
             $content .=     "<td class=\"status\">{$completion}</td><td class=\"enroldate\">$enroldate</td>";
             $content .=     "<td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";
