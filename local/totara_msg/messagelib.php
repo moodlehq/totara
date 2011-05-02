@@ -745,7 +745,7 @@ function tm_messages_get($type, $order_by=false, $userto=false, $limit=true, $ro
  * @return int count of messages
  */
 function tm_messages_count($type, $userto=false, $roleid=false) {
-        global $USER;
+        global $USER, $CFG;
 
         // select only particular type
         $processor = get_record('message_processors20', 'name', $type);
@@ -769,8 +769,10 @@ function tm_messages_count($type, $userto=false, $roleid=false) {
 
         // hunt for messages
         $msgs = get_records_sql("SELECT count(m.id) AS count
-                                        FROM (mdl_message20 m INNER JOIN  mdl_message_working20 w ON m.id = w.unreadmessageid) LEFT JOIN mdl_message_metadata d ON (d.messageid = m.id)
-                                        WHERE m.useridto = ".$userid .' AND w.processorid = '.$processor->id.$role_filter);
+            FROM ({$CFG->prefix}message20 m
+            INNER JOIN {$CFG->prefix}message_working20 w ON m.id = w.unreadmessageid)
+            LEFT JOIN {$CFG->prefix}message_metadata d ON (d.messageid = m.id)
+            WHERE m.useridto = ".$userid .' AND w.processorid = '.$processor->id.$role_filter);
         if ($msgs) {
             $msg = array_pop($msgs);
             return $msg->count;
