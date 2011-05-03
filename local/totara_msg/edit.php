@@ -41,21 +41,17 @@ if (!$user = get_record('user', 'id', $user)) {
 
 
 // Check permissions
-$personalcontext = get_context_instance(CONTEXT_USER, $user->id);
+$systemcontext = get_context_instance(CONTEXT_SYSTEM);
 $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
 
 // Check logged in user can view this profile
 require_login($course);
 
 $canview = false;
-if (!empty($USER->id) && ($user->id == $USER->id)) {
+if ( (!empty($USER->id) && ($user->id == $USER->id)) ||
+     has_capability('moodle/site:doanything', $systemcontext) ){
     // Can view own profile
-    $canview = true;
-}
-elseif (has_capability('moodle/user:viewdetails', $coursecontext)) {
-    $canview = true;
-}
-elseif (has_capability('moodle/user:viewdetails', $personalcontext)) {
+    // Or is sysadmin
     $canview = true;
 }
 
