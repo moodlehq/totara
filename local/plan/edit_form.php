@@ -79,7 +79,7 @@ class plan_edit_form extends moodleform {
         }
 
         $mform->addElement('date_selector', 'startdate', get_string('datecreated', 'local_plan'));
-        $mform->hardFreeze('startdate');
+        $mform->freeze('startdate');
 
         $mform->addElement('text', 'name', get_string('planname', 'local_plan'), array('size'=>50));
         $mform->setType('name', PARAM_TEXT);
