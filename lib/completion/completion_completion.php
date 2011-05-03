@@ -339,7 +339,6 @@ class completion_completion extends data_object {
      * @return  bool
      */
     private function _save() {
-        global $COMPLETION_STATUS;
 
         if (!$this->timeenrolled) {
             // Get users timenrolled
