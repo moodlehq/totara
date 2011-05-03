@@ -397,11 +397,11 @@ function totara_print_scheduled_reports($return=false) {
     require_once($CFG->dirroot.'/local/reportbuilder/scheduled_forms.php');
 
 
-    $sql = 'SELECT rbs.*, rb.fullname
-            FROM mdl_report_builder_schedule rbs
-            JOIN mdl_report_builder rb
+    $sql = "SELECT rbs.*, rb.fullname
+            FROM {$CFG->prefix}report_builder_schedule rbs
+            JOIN {$CFG->prefix}report_builder rb
             ON rbs.reportid=rb.id
-            WHERE rbs.userid='.$USER->id;
+            WHERE rbs.userid={$USER->id}";
 
     if($scheduledreports = get_records_sql($sql)){
         $columns[] = 'reportname';
@@ -521,7 +521,7 @@ function totara_print_my_courses() {
             }
 
             $status = array_key_exists($id, $courses) ? $courses[$id]->status : COMPLETION_STATUS_NOTYETSTARTED;
-            $completion = totara_display_course_progress_icon($USER->id, $course->id, $status);
+            $completion = totara_display_course_progress_icon($USER->id, $course->course, $status);
 
             $content .=     "<td class=\"status\">{$completion}</td><td class=\"enroldate\">$enroldate</td>";
             $content .=     "<td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";

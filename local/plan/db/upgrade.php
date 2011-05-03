@@ -303,7 +303,7 @@ function xmldb_local_plan_upgrade($oldversion=0) {
     if ($result && $oldversion < 2010121300) {
         // We were using mdl_course.id as the course id in mdl_dp_plan_component_relation
         // when linking a course to an objective. We are switching to using
-        // mdl_dp_plan_course_assign.id
+        // dp_plan_course_assign.id
         $reclist = get_records_select('dp_plan_component_relation', "component1='course' and component2='objective'");
         if($reclist) {
             foreach( $reclist as $rel ){

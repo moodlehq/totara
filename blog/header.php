@@ -242,7 +242,7 @@ $navlinks = array();
 if ($filtertype=='user') {
     $showroles = true;
     $showpositions = 1;
-    $showmessages = 1;
+    $showtasksalerts = 1;
 } else {
     $showroles = false;
 }

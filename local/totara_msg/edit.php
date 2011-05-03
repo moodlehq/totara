@@ -80,9 +80,9 @@ add_to_log($course->id, "user", "message settings view", "edit.php?id=$user->id&
 ///     /user/edit.php
 ///     /course/user.php
 $showpositions = 1;
-$showmessages = 1;
+$showtasksalerts = 1;
 $showroles = 1;
-$currenttab = 'messages';
+$currenttab = 'tasksalerts';
 $currenturl = "{$CFG->wwwroot}/local/totara_msg/edit.php?id={$user->id}&course={$course->id}";
 
 $navlinks = array();
@@ -95,7 +95,7 @@ if ($course->id != SITEID && has_capability('moodle/course:viewparticipants', $c
 $fullname = fullname($user, true);
 
 $navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}/user/view.php?id={$user->id}&amp;course={$course->id}", 'type' => 'misc');
-$navlinks[] = array('name' => get_string('messagesettings', 'local_totara_msg'), 'link' => null, 'type' => 'misc');
+$navlinks[] = array('name' => get_string('tasksalerts', 'local_totara_msg'), 'link' => null, 'type' => 'misc');
 $navigation = build_navigation($navlinks);
 
 
@@ -117,7 +117,7 @@ $current_settings->totara_msg_send_task_emails = get_user_preferences('totara_ms
 
 $form->set_data($current_settings);
 
-print_header("{$course->fullname}: {$fullname}: ".get_string('messagesettings', 'local_totara_msg'), $course->fullname, $navigation);
+print_header("{$course->fullname}: {$fullname}: ".get_string('tasksalertssettings', 'local_totara_msg'), $course->fullname, $navigation);
 
 include($CFG->dirroot.'/user/tabs.php');
 

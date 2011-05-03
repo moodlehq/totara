@@ -318,8 +318,8 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $rb = new reportbuilder(null, $this->shortname, $this->embed);
         $paramoption = new object();
         $paramoption->name = 'userid';
-        $paramoption->field = 'dp.userid';
-        $paramoption->joins = 'dp';
+        $paramoption->field = 'base.userid';
+        $paramoption->joins = '';
         $paramoption->type = 'int';
         $param = new rb_param('userid',array($paramoption));
         $param->value = 2;
@@ -364,7 +364,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     function test_reportbuilder_get_param_restrictions() {
         $rb = new reportbuilder(null, $this->shortname, $this->embed);
         // should return the correct SQL fragment if a parameter restriction is set
-        $this->assertEqual($rb->get_param_restrictions(),'(dp.userid = 2)');
+        $this->assertEqual($rb->get_param_restrictions(),'(base.userid = 2)');
     }
 
     function test_reportbuilder_get_content_restrictions() {

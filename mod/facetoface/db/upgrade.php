@@ -510,5 +510,38 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2011042700) {
+        // Update existing select fields to use new seperator
+        $badrows = get_records_sql(
+            "
+                SELECT
+                    *
+                FROM
+                    {$CFG->prefix}facetoface_session_field
+                WHERE
+                    possiblevalues LIKE '%;%'
+                AND possiblevalues NOT LIKE '%##SEPARATOR##%'
+                AND type IN (".CUSTOMFIELD_TYPE_SELECT.",".CUSTOMFIELD_TYPE_MULTISELECT.")
+            "
+        );
+
+        if ($badrows) {
+            begin_sql();
+
+            foreach ($badrows as $bad) {
+                $fixedrow = new object();
+                $fixedrow->id = $bad->id;
+                $fixedrow->possiblevalues = addslashes(str_replace(';', '##SEPARATOR##', $bad->possiblevalues));
+                $result = $result && update_record('facetoface_session_field', $fixedrow);
+            }
+
+            if ($result) {
+                commit_sql();
+            } else {
+                rollback_sql();
+            }
+        }
+    }
+
     return $result;
 }

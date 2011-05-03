@@ -347,7 +347,7 @@ abstract class dp_base_component {
         $table->define_baseurl($this->get_url());
 
         $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
-        $table->sortable(true);
+        $table->sortable(true, 'name');
         $table->no_sorting('status');
         $table->no_sorting('actions');
         $table->setup();

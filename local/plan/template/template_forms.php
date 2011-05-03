@@ -150,11 +150,11 @@ class dp_template_workflow_form extends moodleform {
                 throw new PlanException(get_string('noclassforworkflow', 'local_plan', $string_parameters));
             }
             $wf = new $classname();
-            $radiogroup[] =& $mform->createElement('radio', 'workflow', '', $wf->name . '<br />' . $wf->description, $wf->classname);
+            $radiogroup[] =& $mform->createElement('radio', 'workflow', '', '<b>' .$wf->name . '</b><br />' . $wf->description, $wf->classname);
 
         }
 
-        $radiogroup[] =& $mform->createElement('radio', 'workflow', '', get_string('customworkflowname', 'local_plan') . '<br />' . get_string('customworkflowdesc', 'local_plan'), 'custom');
+        $radiogroup[] =& $mform->createElement('radio', 'workflow', '', '<b>' .get_string('customworkflowname', 'local_plan') . '</b><br />' . get_string('customworkflowdesc', 'local_plan'), 'custom');
         $mform->addGroup($radiogroup, 'radiogroup', '', '<br /><br />', false);
         $mform->setDefault('workflow', $defaultworkflow);
 

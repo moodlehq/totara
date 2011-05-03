@@ -183,7 +183,7 @@
     $currenttab = 'profile';
     $showroles = 1;
     $showpositions = 1;
-    $showmessages = 1;
+    $showtasksalerts = 1;
     if (!$user->deleted) {
         include('tabs.php');
     }

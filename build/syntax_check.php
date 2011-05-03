@@ -36,16 +36,16 @@ function scan_file($filepath){
     while ( !feof($file) ){
         $line = fgets($file);
         $line_number++;
-        if(preg_match('|^\s*//|', $line)) {
-            // skip comments
-            continue;
+        if (preg_match('|^(.*)//.*$|', $line, $matches)) {
+            // remove comment part of lines
+            $line = $matches[1];
         }
-        if(preg_match('|^\s*\*|', $line)) {
+        if (preg_match('|^\s*\*|', $line)) {
             // probably a multi-line comment, skip
             continue;
         }
         $matches = array();
-        if(preg_match(
+        if (preg_match(
             // match $var::method(
             '/(\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*::[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]* *\()/',
             $line,
@@ -55,6 +55,27 @@ function scan_file($filepath){
             print '    '.trim($line)."\n";
             print "File '$filepath', line $line_number\n\n";
         }
+
+        // don't check for mdl_ in:
+        // - the build/ directory
+        // - the blocks/search directory (as this block uses mdl_
+        //   in the index names and it's too hard to exclude)
+        if (preg_match('|blocks/search|', $filepath) ||
+           preg_match('|build/|', $filepath)) {
+            continue;
+        }
+
+        // search for hard-coded mdl_[something]
+        // ignore references to $mdl_[something]
+        if (preg_match('/[^$]mdl_[a-zA-Z]/',
+            $line,
+            $matches
+        )) {
+            print "ERROR: hard-coded reference to 'mdl_':\n";
+            print '    '.trim($line)."\n";
+            print "File '$filepath', line $line_number\n\n";
+        }
+
     }
 }
 

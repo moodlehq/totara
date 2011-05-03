@@ -131,7 +131,7 @@
     $currenttab = $mode;
     $showroles = 1;
     $showpositions = 1;
-    $showmessages = 1;
+    $showtasksalerts = 1;
     include($CFG->dirroot.'/user/tabs.php');
 
     switch ($mode) {

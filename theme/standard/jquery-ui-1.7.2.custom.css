@@ -496,6 +496,7 @@ div.totara-dialog {
 				text-decoration: none;
 				width: 80%;
 				outline:none;
+				word-break:normal ;
 		    }
 		    div.totara-dialog .selected span span.addbutton,
 		    div.totara-dialog .selected span span.deletebutton {

@@ -3121,7 +3121,7 @@ function send_scheduled_report($sched){
         return false;
     }
 
-    if($sched->savedreportid!=0) {
+    if($sched->savedsearchid!=0) {
         $attachment = create_attachment($sched->reportid, $sched->format, $user->id, $sched->savedsearchid);
     } else {
         $attachment = create_attachment($sched->reportid, $sched->format, $user->id);
@@ -3150,6 +3150,7 @@ function send_scheduled_report($sched){
     $messagedetails->reporturl = $reporturl;
     $messagedetails->scheduledreportsindex = $CFG->wwwroot . '/my/reports.php#scheduled';
 
+    $schedule = '';
     switch($sched->frequency) {
         case REPORT_BUILDER_SCHEDULE_DAILY:
             $schedule .= get_string('daily', 'local_reportbuilder') . ' ' .  get_string('at', 'local_reportbuilder');

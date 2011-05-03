@@ -117,7 +117,7 @@ class dp_course_component extends dp_base_component {
             $orderby = "ORDER BY $orderby";
         }
 
-        if($this->plan->is_complete()) {
+        if ($this->plan->is_complete()) {
             // Use the 'snapshot' status value
             $completion_field = 'a.completionstatus AS coursecompletion,';
             // save same value again with a new alias so the column
@@ -252,14 +252,19 @@ class dp_course_component extends dp_base_component {
      * Assign a new item to this plan
      *
      * @access  public
-     * @param   $itemid     integer
+     * @param   integer $itemid
+     * @param   boolean $checkpermissions If false user permission checks are skipped (optional)
      * @return  added item's name
      */
-    public function assign_new_item($itemid) {
+    public function assign_new_item($itemid, $checkpermissions=true) {
 
-        // Get approval value for new item
-        if (!$permission = $this->can_update_items()) {
-            print_error('error:cannotupdatecourses', 'local_plan');
+        // Get approval value for new item if required
+        if ($checkpermissions) {
+            if (!$permission = $this->can_update_items()) {
+                print_error('error:cannotupdatecourses', 'local_plan');
+            }
+        } else {
+            $permission = DP_PERMISSION_ALLOW;
         }
 
         $item = new object();
@@ -301,7 +306,7 @@ class dp_course_component extends dp_base_component {
     function display_linked_courses($list) {
         global $CFG;
 
-        if(!is_array($list)|| count($list) == 0) {
+        if (!is_array($list)|| count($list) == 0) {
             return false;
         }
 
@@ -312,7 +317,7 @@ class dp_course_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
-        if($this->plan->is_complete()) {
+        if ($this->plan->is_complete()) {
             // Use the 'snapshot' status value
             $completion_field = 'ca.completionstatus AS coursecompletion,';
             // save same value again with a new alias so the column
@@ -335,7 +340,7 @@ class dp_course_component extends dp_base_component {
 
         // get courses assigned to this plan
         // and related details
-        $from = "FROM {$CFG->prefix}dp_plan_course_assign ca
+        $from = " FROM {$CFG->prefix}dp_plan_course_assign ca
                 LEFT JOIN
                     {$CFG->prefix}course c ON c.id = ca.courseid
                 LEFT JOIN
@@ -343,10 +348,10 @@ class dp_course_component extends dp_base_component {
                     ON (ca.priority = psv.id
                     AND psv.priorityscaleid = $priorityscaleid)
                     {$completion_joins}";
-        $where = "WHERE ca.id IN (" . implode(',', $list) . ")
+        $where = " WHERE ca.id IN (" . implode(',', $list) . ")
             AND ca.approved = ".DP_APPROVAL_APPROVED;
 
-        $sort = "ORDER BY c.fullname";
+        $sort = " ORDER BY c.fullname";
 
 
         $tableheaders = array(
@@ -356,12 +361,12 @@ class dp_course_component extends dp_base_component {
             'fullname',
         );
 
-        if($showpriorities) {
+        if ($showpriorities) {
             $tableheaders[] = get_string('priority', 'local_plan');
             $tablecolumns[] = 'priority';
         }
 
-        if($showduedates) {
+        if ($showduedates) {
             $tableheaders[] = get_string('duedate', 'local_plan');
             $tablecolumns[] = 'duedate';
         }
@@ -385,11 +390,11 @@ class dp_course_component extends dp_base_component {
                 $row = array();
                 $row[] = $this->display_item_name($ca);
 
-                if($showpriorities) {
+                if ($showpriorities) {
                     $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
                 }
 
-                if($showduedates) {
+                if ($showduedates) {
                     $row[] = $this->display_duedate_as_text($ca->duedate);
                 }
 
@@ -423,7 +428,7 @@ class dp_course_component extends dp_base_component {
         global $CFG;
         $approved = $this->is_item_approved($item->approved);
 
-        if($approved) {
+        if ($approved) {
             $class = '';
             $launch = '<div class="plan-launch-course-button">' .
                 '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">' .
@@ -456,16 +461,30 @@ class dp_course_component extends dp_base_component {
         $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
         $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
 
-        $sql = 'SELECT ca.*, course.*, psv.name AS priorityname ' .
-            "FROM {$CFG->prefix}dp_plan_course_assign ca
+        if ($this->plan->is_complete()) {
+            $completion_field = 'ca.completionstatus AS coursecompletion';
+
+            $completion_joins = '';
+        } else {
+            $completion_field = 'cc.status AS coursecompletion';
+
+            $completion_joins = "LEFT JOIN {$CFG->prefix}course_completions cc
+                    ON (cc.course = ca.courseid
+                    AND cc.userid = {$this->plan->userid})";
+        }
+
+        $sql = "SELECT ca.*, course.*, psv.name AS priorityname, {$completion_field}
+            FROM {$CFG->prefix}dp_plan_course_assign ca
                 LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
                     ON (ca.priority = psv.id
                     AND psv.priorityscaleid = {$priorityscaleid})
-                LEFT JOIN {$CFG->prefix}course course ON course.id = ca.courseid
+                LEFT JOIN {$CFG->prefix}course course
+                    ON course.id = ca.courseid
+                {$completion_joins}
             WHERE ca.id = $caid";
         $item = get_record_sql($sql);
 
-        if(!$item) {
+        if (!$item) {
             return get_string('coursenotfound', 'local_plan');
         }
 
@@ -479,14 +498,14 @@ class dp_course_component extends dp_base_component {
         $out .= '<h3>' . $icon . $item->fullname . '</h3>';
         $out .= '<table border="0" class="planiteminfobox">';
         $out .= "<tr>";
-        if($priorityenabled && !empty($item->priority)) {
+        if ($priorityenabled && !empty($item->priority)) {
             $out .= '<td>';
             $out .= get_string('priority', 'local_plan') . ': ';
             $out .= $this->display_priority_as_text($item->priority,
                 $item->priorityname, $priorityvalues);
             $out .= '</td>';
         }
-        if($duedateenabled && !empty($item->duedate)) {
+        if ($duedateenabled && !empty($item->duedate)) {
             $out .= '<td>';
             $out .= get_string('duedate', 'local_plan') . ': ';
             $out .= $this->display_duedate_as_text($item->duedate);
@@ -557,11 +576,11 @@ class dp_course_component extends dp_base_component {
         $currenturl = qualified_me();
         $stored_records = array();
 
-        if(!empty($duedates) && $cansetduedates) {
+        if (!empty($duedates) && $cansetduedates) {
             $badduedates = array();  // Record naughty duedates
-            foreach($duedates as $id => $duedate) {
+            foreach ($duedates as $id => $duedate) {
                 // allow empty due dates
-                if($duedate == '' || $duedate == 'dd/mm/yy') {
+                if ($duedate == '' || $duedate == 'dd/mm/yy') {
                     // set all empty due dates to the plan due date
                     // if they are required
                     if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
@@ -591,10 +610,10 @@ class dp_course_component extends dp_base_component {
             }
         }
 
-        if(!empty($priorities)) {
-            foreach($priorities as $pid => $priority) {
+        if (!empty($priorities)) {
+            foreach ($priorities as $pid => $priority) {
                 $priority = (int) $priority;
-                if(array_key_exists($pid, $stored_records)) {
+                if (array_key_exists($pid, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$pid]->priority = $priority;
                 } else {
@@ -613,7 +632,7 @@ class dp_course_component extends dp_base_component {
                     continue;
                 }
                 $approval = (int) $approval;
-                if(array_key_exists($id, $stored_records)) {
+                if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$id]->approved = $approval;
                 } else {
@@ -633,7 +652,7 @@ class dp_course_component extends dp_base_component {
             $updates = '';
             $approvals = array();
             begin_sql();
-            foreach($stored_records as $itemid => $record) {
+            foreach ($stored_records as $itemid => $record) {
                 // Update the record
                 $status = $status & update_record('dp_plan_course_assign', $record);
             }
@@ -642,7 +661,7 @@ class dp_course_component extends dp_base_component {
                 commit_sql();
 
                 // Process update alerts
-                foreach($stored_records as $itemid => $record) {
+                foreach ($stored_records as $itemid => $record) {
                     // Record the updates for later use
                     $course = get_record('course', 'id', $oldrecords[$itemid]->courseid);
                     $courseheader = '<p><strong>'.format_string($course->fullname).": </strong><br>";
@@ -683,7 +702,7 @@ class dp_course_component extends dp_base_component {
                 }  // foreach
 
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
-                    foreach($approvals as $approval) {
+                    foreach ($approvals as $approval) {
                         $this->send_component_approval_alert($approval);
 
                         $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';

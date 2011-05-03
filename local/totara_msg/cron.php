@@ -104,7 +104,7 @@ function totara_msg_cron() {
  * @return array of messages
  */
 function tm_messages_get_by_time($type, $time_created) {
-        global $USER;
+        global $USER, $CFG;
 
         // select only particular type
         $processor = get_record('message_processors20', 'name', $type);
@@ -114,7 +114,7 @@ function tm_messages_get_by_time($type, $time_created) {
 
         // hunt for messages
         $msgs = get_records_sql("SELECT m.id
-                                        FROM (mdl_message20 m INNER JOIN  mdl_message_working20 w ON m.id = w.unreadmessageid)
+                                        FROM ({$CFG->prefix}message20 m INNER JOIN  {$CFG->prefix}message_working20 w ON m.id = w.unreadmessageid)
                                         WHERE w.processorid = ".$processor->id.' AND m.timecreated < '.$time_created);
         return $msgs ? $msgs : array();
 }

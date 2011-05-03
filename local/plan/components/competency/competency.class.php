@@ -178,10 +178,10 @@ class dp_competency_component extends dp_base_component {
         $currenturl = $this->get_url();
 
         if ($delete && $confirm) {
-            if(!confirm_sesskey()) {
+            if (!confirm_sesskey()) {
                 totara_set_notification(get_string('confirmsesskeybad', 'error'), $currenturl);
             }
-            if($this->remove_competency_assignment($delete)) {
+            if ($this->remove_competency_assignment($delete)) {
                 add_to_log(SITEID, 'plan', 'removed competency', "component.php?id={$this->plan->id}&c=competency", "Competency (ID:{$delete})");
                 totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
             } else {
@@ -227,7 +227,7 @@ class dp_competency_component extends dp_base_component {
         $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
         $currenturl = $this->get_url();
 
-        if($delete) {
+        if ($delete) {
             notice_yesno(get_string('confirmitemdelete','local_plan'), $currenturl.'&amp;d='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(), $currenturl);
             print_footer();
             die();
@@ -255,12 +255,12 @@ class dp_competency_component extends dp_base_component {
         require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
         // invalid input
-        if(!is_array($competencies)) {
+        if (!is_array($competencies)) {
             return false;
         }
 
         // no competencies, return empty array
-        if(count($competencies) == 0) {
+        if (count($competencies) == 0) {
             return array();
         }
 
@@ -277,11 +277,11 @@ class dp_competency_component extends dp_base_component {
 
         // restructure into 2d array for easy access
         $out = array();
-        if($records) {
-            foreach($records as $record) {
+        if ($records) {
+            foreach ($records as $record) {
                 $compid = $record->competencyid;
 
-                if(!array_key_exists($compid, $out)) {
+                if (!array_key_exists($compid, $out)) {
                     // start an array
                     $out[$compid] = array($record);
                 } else {
@@ -302,7 +302,7 @@ class dp_competency_component extends dp_base_component {
      */
     function display_approval_list($pendingitems) {
         $competencies = array();
-        foreach($pendingitems as $item) {
+        foreach ($pendingitems as $item) {
             $competencies[] = $item->competencyid;
         }
         $evidence = $this->get_course_evidence_items($competencies);
@@ -310,18 +310,18 @@ class dp_competency_component extends dp_base_component {
         $table = new object();
         $table->class = 'generaltable learning-plan-pending-approval-table';
         $table->data = array();
-        foreach($pendingitems as $item) {
+        foreach ($pendingitems as $item) {
             $row = array();
             // @todo write abstracted display_item_name() and use here
             $name = $item->fullname;
 
             // if there is competency evidence, display it below the
             // competency with checkboxes and a description
-            if(array_key_exists($item->competencyid, $evidence)) {
+            if (array_key_exists($item->competencyid, $evidence)) {
                 // @todo lang string
                 $name .= '<br /><div class="related-courses"><strong>Include related courses:</strong>';
-                foreach($evidence[$item->competencyid] as $course) {
-                    if($this->plan->get_component('course')->is_item_assigned($course->courseid)) {
+                foreach ($evidence[$item->competencyid] as $course) {
+                    if ($this->plan->get_component('course')->is_item_assigned($course->courseid)) {
                         $message = ' (' .
                             get_string('alreadyassignedtoplan', 'local_plan'). ')';
                     } else {
@@ -354,7 +354,7 @@ class dp_competency_component extends dp_base_component {
     function display_linked_competencies($list) {
         global $CFG;
 
-        if(!is_array($list) || count($list) == 0) {
+        if (!is_array($list) || count($list) == 0) {
             return false;
         }
 
@@ -402,12 +402,12 @@ class dp_competency_component extends dp_base_component {
             'proficiency',
         );
 
-        if($showpriorities) {
+        if ($showpriorities) {
             $tableheaders[] = get_string('priority', 'local_plan');
             $tablecolumns[] = 'priority';
         }
 
-        if($showduedates) {
+        if ($showduedates) {
             $tableheaders[] = get_string('duedate', 'local_plan');
             $tablecolumns[] = 'duedate';
         }
@@ -423,7 +423,7 @@ class dp_competency_component extends dp_base_component {
         $priorityvalues = get_records('dp_priority_scale_value',
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
-        if($records = get_recordset_sql($select.$from.$where.$sort)) {
+        if ($records = get_recordset_sql($select.$from.$where.$sort)) {
 
             while($ca = rs_fetch_next_record($records)) {
                 $proficient = $this->is_item_complete($ca);
@@ -433,11 +433,11 @@ class dp_competency_component extends dp_base_component {
 
                 $row[] = $this->display_status($ca);
 
-                if($showpriorities) {
+                if ($showpriorities) {
                     $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
                 }
 
-                if($showduedates) {
+                if ($showduedates) {
                     $row[] = $this->display_duedate_as_text($ca->duedate);
                 }
 
@@ -574,7 +574,7 @@ class dp_competency_component extends dp_base_component {
                 WHERE ca.id = $caid";
         $item = get_record_sql($sql);
 
-        if(!$item) {
+        if (!$item) {
             return get_string('error:competencynotfound','local_plan');
         }
 
@@ -589,14 +589,14 @@ class dp_competency_component extends dp_base_component {
         $out .= '<h3>' . $icon . $item->fullname . '</h3>';
         $out .= '<table border="0" class="planiteminfobox">';
         $out .= '<tr>';
-        if($priorityenabled && !empty($item->priority)) {
+        if ($priorityenabled && !empty($item->priority)) {
             $out .= "<td>";
             $out .= get_string('priority', 'local_plan') . ': ';
             $out .= $this->display_priority_as_text($item->priority,
                 $item->priorityname, $priorityvalues);
             $out .= '</td>';
         }
-        if($duedateenabled && !empty($item->duedate)) {
+        if ($duedateenabled && !empty($item->duedate)) {
             $out .= '<td>';
             $out .= get_string('duedate', 'local_plan') . ': ';
             $out .= $this->display_duedate_as_text($item->duedate);
@@ -656,12 +656,12 @@ class dp_competency_component extends dp_base_component {
         $stored_records = array();
 
         $status = true;
-        if(!empty($duedates) && $cansetduedates) {
+        if (!empty($duedates) && $cansetduedates) {
             $badduedates = array();  // Record naughty duedates
             // Update duedates
-            foreach($duedates as $id => $duedate) {
+            foreach ($duedates as $id => $duedate) {
                 // allow empty due dates
-                if($duedate == '' || $duedate == 'dd/mm/yy') {
+                if ($duedate == '' || $duedate == 'dd/mm/yy') {
                     // set all empty due dates to the plan due date
                     // if they are required
                     if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
@@ -691,10 +691,10 @@ class dp_competency_component extends dp_base_component {
             }
         }
 
-        if(!empty($priorities) && $cansetpriorities) {
-            foreach($priorities as $id => $priority) {
+        if (!empty($priorities) && $cansetpriorities) {
+            foreach ($priorities as $id => $priority) {
                 $priority = (int) $priority;
-                if(array_key_exists($id, $stored_records)) {
+                if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$id]->priority = $priority;
                 } else {
@@ -713,7 +713,7 @@ class dp_competency_component extends dp_base_component {
                 if (!$approval) {
                     continue;
                 }
-                if(array_key_exists($id, $stored_records)) {
+                if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$id]->approved = $approval;
                 } else {
@@ -732,24 +732,24 @@ class dp_competency_component extends dp_base_component {
             $updates = '';
             $approvals = null;
             begin_sql();
-            foreach($stored_records as $itemid => $record) {
+            foreach ($stored_records as $itemid => $record) {
                 // Update the record
                 $status = $status & update_record('dp_plan_competency_assign', $record);
                 // if the record was updated check for linked courses
-                if(isset($record->approved) && $record->approved == DP_APPROVAL_APPROVED) {
-                    if(isset($linkedcourses[$record->id]) &&
+                if (isset($record->approved) && $record->approved == DP_APPROVAL_APPROVED) {
+                    if (isset($linkedcourses[$record->id]) &&
                         is_array($linkedcourses[$record->id])) {
                         //   add the linked courses
-                        foreach($linkedcourses[$record->id] as $course => $unused) {
+                        foreach ($linkedcourses[$record->id] as $course => $unused) {
                             // add course if it's not already in this plan
                             // @todo what if course is assigned but not approved?
-                            if(!$this->plan->get_component('course')->is_item_assigned($course)) {
+                            if (!$this->plan->get_component('course')->is_item_assigned($course)) {
                                 $this->plan->get_component('course')->assign_new_item($course);
                             }
                             // now we need to grab the assignment ID
                             $assignmentid = get_field('dp_plan_course_assign',
                                 'id', 'planid', $this->plan->id, 'courseid', $course);
-                            if(!$assignmentid) {
+                            if (!$assignmentid) {
                                 // something went wrong trying to assign the course
                                 // don't attempt to create a relation
                                 $status = false;
@@ -897,14 +897,19 @@ class dp_competency_component extends dp_base_component {
      * Assign a new item to this component of the plan
      *
      * @access  public
-     * @param   $itemid     integer
+     * @param   integer $itemid
+     * @param   boolean $checkpermissions If false user permission checks are skipped (optional)
      * @return  added item's name
      */
-    public function assign_new_item($itemid) {
+    public function assign_new_item($itemid, $checkpermissions=true) {
 
-        // Get approval value for new item
-        if (!$permission = $this->can_update_items()) {
-            print_error('error:cannotupdatecompetencies', 'local_plan');
+        // Get approval value for new item if required
+        if ($checkpermissions) {
+            if (!$permission = $this->can_update_items()) {
+                print_error('error:cannotupdatecompetencies', 'local_plan');
+            }
+        } else {
+            $permission = DP_PERMISSION_ALLOW;
         }
 
         $item = new object();
@@ -942,9 +947,10 @@ class dp_competency_component extends dp_base_component {
      * Assigns competencies to a plan
      *
      * @param  array  the competencies to be assigned
+     * @param  boolean $checkpermissions If false user permission checks are skipped (optional)
      * @return boolean
      */
-    function assign_competencies($competencies) {
+    function assign_competencies($competencies, $checkpermissions=true) {
         // Get all currently-assigned competencies
         $assigned = get_records('dp_plan_competency_assign', 'planid', $this->plan->id, '', 'competencyid');
         $assigned = !empty($assigned) ? array_keys($assigned) : array();
@@ -955,7 +961,7 @@ class dp_competency_component extends dp_base_component {
             }
 
             // Assign competency item
-            if (!$this->assign_new_item($c->id)) {
+            if (!$this->assign_new_item($c->id, $checkpermissions)) {
                 return false;
             }
         }
@@ -968,29 +974,30 @@ class dp_competency_component extends dp_base_component {
      * Assigns linked courses to competencies
      *
      * @param array $competencies the competencies to be assigned
+     * @param  boolean $checkpermissions If false user permission checks are skipped (optional)
      * @return void
      */
-    function assign_linked_courses($competencies) {
+    function assign_linked_courses($competencies, $checkpermissions=true) {
         // get array of competency ids
         $cids = array();
-        foreach($competencies as $competency) {
+        foreach ($competencies as $competency) {
             $cids[] = $competency->id;
         }
         $comp_assignments = $this->get_item_assignments();
 
         $evidence = $this->get_course_evidence_items($cids);
-        if($evidence) {
-            foreach($evidence as $compid => $linkedcourses) {
-                foreach($linkedcourses as $linkedcourse) {
+        if ($evidence) {
+            foreach ($evidence as $compid => $linkedcourses) {
+                foreach ($linkedcourses as $linkedcourse) {
                     $courseid = $linkedcourse->courseid;
-                    if(!$this->plan->get_component('course')->is_item_assigned($courseid)) {
+                    if (!$this->plan->get_component('course')->is_item_assigned($courseid)) {
                         // assign the course if not already assigned
-                        $this->plan->get_component('course')->assign_new_item($courseid);
+                        $this->plan->get_component('course')->assign_new_item($courseid, $checkpermissions);
                     }
 
                     $assignmentid = get_field('dp_plan_course_assign',
                         'id', 'planid', $this->plan->id, 'courseid', $courseid);
-                    if(!$assignmentid) {
+                    if (!$assignmentid) {
                         // something went wrong trying to assign the course
                         // don't attempt to create a relation
                         continue;
@@ -999,7 +1006,7 @@ class dp_competency_component extends dp_base_component {
                     // also lookup the competency assignment id
                     $comp_assign_id = array_search($compid, $comp_assignments);
                     // competency doesn't seem to be assigned
-                    if(!$comp_assign_id) {
+                    if (!$comp_assign_id) {
                         continue;
                     }
 
@@ -1045,10 +1052,10 @@ class dp_competency_component extends dp_base_component {
         }
 
         if ($competencies) {
-            if($this->assign_competencies($competencies)) {
+            if ($this->assign_competencies($competencies, false)) {
                 // assign courses
-                if($includecourses) {
-                    $this->assign_linked_courses($competencies);
+                if ($includecourses) {
+                    $this->assign_linked_courses($competencies, false);
                 }
             } else {
                 return false;
@@ -1092,10 +1099,10 @@ class dp_competency_component extends dp_base_component {
         }
 
         if ($competencies) {
-            if($this->assign_competencies($competencies)) {
+            if ($this->assign_competencies($competencies, false)) {
                 // assign courses
-                if($includecourses) {
-                    $this->assign_linked_courses($competencies);
+                if ($includecourses) {
+                    $this->assign_linked_courses($competencies, false);
                 }
             } else {
                 return false;

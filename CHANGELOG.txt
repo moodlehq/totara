@@ -1,5 +1,43 @@
 Totara LMS Changelog
 
+Release 1.0.9 (3 May 2011):
+==================================================
+
+Improvements:
+    8075    Include competencies not attached to a Learning Plan in Record of Learning
+    8069    Display completion details for a course even if the user is no longer enrolled  Fixes issues when viewing an RPL's completion status
+    8069    Display completion details for course's without criteria                        Fixes issues when viewing an RPL's completion status
+    8019    Rename "Messages" tab in user profile to "Tasks/Alerts"                         Make distinction between Tasks/Alerts and Moodle messaging
+    8119    Set default sort of components list in Learning Plans to be by name
+    7893    Add message to Recent Learning block when no recent learning                    Show message instead of hiding block when empty
+    7970    Move course and category icons into the Standard theme                          Remove duplicate icons and use theme hierarchy
+    6399    Add emphasis to Learning Plan workflow types in selection form
+    7835    Correct word-break behaviour in dialogs in IE                                   Stop breaking in the middle of words when line wrapping in dialogs
+    8186    Default to default proficiency value when adding evidence to a Competency       Selector shows correct default value when adding competency evidence
+
+Bug fixes:
+    8184    Course completion by date criteria would not let you select a date in the future
+    8191    Replace hardcoded references to "mdl_" with $CFG->prefix                        Fixes some cross-database issues
+    7589    Broken SQL statement in Learning Plans                                          Prevented linked courses displaying on some databases
+    8138    Fix permissions check when auto adding items to Learning Plans                  Under some conditions the Learning Plans would throw an error on creation
+    8094    Completion status icon not appearing when viewing Course's details
+    8095    Do not link to a Learning Plan in a "Plan deleted" alert                        Link to the owner's Learning Plan index
+    8195    My Course Completions block using wrong ID for link to course status
+    5734    International characters display issue for RPLs
+    8175    Course Completion detail reports would display no status for some criteria
+    8172    Renaming column in Course Completion using a reserved word                      Fixes issues for some databases
+    8124    Add link to Learning Plan in "Plan completed" alerts
+    8190    Fix errors in Scheduled Reports cron job
+    8172    Fix hardcoded language strings in Course Completion                             This prevented the translated strings being used
+
+
+Release 1.0.8.1 (28 April 2011):
+==================================================
+
+Bug fixes:
+    8049    Existing Face-to-face select type custom fields not updated to new separator syntax     Select type Face-to-face custom fields were broken after 1.0.8 release
+
+
 Release 1.0.8 (26 April 2011):
 ==================================================
 
