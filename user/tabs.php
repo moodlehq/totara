@@ -334,12 +334,10 @@
     if (!empty($user) && !empty($showtasksalerts)) {  // $showtasksalerts controls whether this tab is shown, only user/view should set it
 
         // Check permissions
-        $personalcontext = get_context_instance(CONTEXT_USER, $user->id);
-        $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+        $systemcontext = get_context_instance(CONTEXT_USER, $user->id);
 
         if ((!empty($USER->id) && ($user->id == $USER->id)) ||
-            has_capability('moodle/user:viewdetails', $coursecontext) ||
-            has_capability('moodle/user:viewdetails', $personalcontext)) {
+            has_capability('moodle/site:doanything', $systemcontext)) {
 
             $toprow[] = new tabobject('tasksalerts', $CFG->wwwroot.'/local/totara_msg/edit.php?id='.$user->id.'&amp;course='.$course->id, get_string('tasksalerts', 'local_totara_msg'));
 
