@@ -41,11 +41,11 @@ class totara_msg_settings_form extends moodleform {
 
         $mform->addElement('header', 'general', get_string('settings'));
 
-        $mform->addElement('checkbox', 'totara_msg_send_alrt_emails', get_string('sendalertemails', 'local_totara_msg'));
+        $mform->addElement('advcheckbox', 'totara_msg_send_alrt_emails', get_string('sendalertemails', 'local_totara_msg'));
         $mform->setType('totara_msg_send_alrt_emails', PARAM_BOOL);
         //$mform->setHelpButton('totara_msg_send_alrt_emails', array('userpositionfullname', get_string('titlefullname', 'position')), true);
 
-        $mform->addElement('checkbox', 'totara_msg_send_task_emails', get_string('sendtaskemails', 'local_totara_msg'));
+        $mform->addElement('advcheckbox', 'totara_msg_send_task_emails', get_string('sendtaskemails', 'local_totara_msg'));
         $mform->setType('totara_msg_send_task_emails', PARAM_BOOL);
         //$mform->setHelpButton('totara_msg_send_task_emails', array('userpositionfullname', get_string('titlefullname', 'position')), true);
 
