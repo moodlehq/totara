@@ -339,7 +339,7 @@
         if ((!empty($USER->id) && ($user->id == $USER->id)) ||
             has_capability('moodle/site:doanything', $systemcontext)) {
 
-            $toprow[] = new tabobject('tasksalerts', $CFG->wwwroot.'/local/totara_msg/edit.php?id='.$user->id.'&amp;course='.$course->id, get_string('tasksalerts', 'local_totara_msg'));
+            $toprow[] = new tabobject('tasksalerts', $CFG->wwwroot.'/local/totara_msg/edit.php?id='.$user->id.'&amp;course='.$course->id, get_string('emailnotifications', 'local_totara_msg'));
 
             // Are we currently in the messages tab?
             if (substr($currenttab, 0, 11) == 'tasksalerts') {

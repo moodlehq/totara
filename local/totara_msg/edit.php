@@ -91,16 +91,14 @@ if ($course->id != SITEID && has_capability('moodle/course:viewparticipants', $c
 $fullname = fullname($user, true);
 
 $navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}/user/view.php?id={$user->id}&amp;course={$course->id}", 'type' => 'misc');
-$navlinks[] = array('name' => get_string('tasksalerts', 'local_totara_msg'), 'link' => null, 'type' => 'misc');
+$navlinks[] = array('name' => get_string('emailnotifications', 'local_totara_msg'), 'link' => null, 'type' => 'misc');
 $navigation = build_navigation($navlinks);
 
 
 // Form
 $form = new totara_msg_settings_form($currenturl, array('user'=>$user->id));
 
-if ($form->is_cancelled()){
-    // Do nothing
-} elseif ($data = $form->get_data()) {
+if($data = $form->get_data()) {
     set_user_preference('totara_msg_send_alrt_emails', $data->totara_msg_send_alrt_emails ? 1 : 0, $user->id);
     set_user_preference('totara_msg_send_task_emails', $data->totara_msg_send_task_emails ? 1 : 0, $user->id);
     // Display success message
@@ -113,7 +111,7 @@ $current_settings->totara_msg_send_task_emails = get_user_preferences('totara_ms
 
 $form->set_data($current_settings);
 
-print_header("{$course->fullname}: {$fullname}: ".get_string('tasksalertssettings', 'local_totara_msg'), $course->fullname, $navigation);
+print_header("{$course->fullname}: {$fullname}: ".get_string('emailnotifications', 'local_totara_msg'), $course->fullname, $navigation);
 
 include($CFG->dirroot.'/user/tabs.php');
 
