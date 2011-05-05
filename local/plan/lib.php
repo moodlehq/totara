@@ -548,9 +548,11 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
  * @param  int    $userid     the id of the current user
  * @param  int    $selectedid the selected id
  * @param  string $role       the role of the user
+ * @param  string $rolpage    the record of learning page (to keep track of which tab is selected)
+ * @param  string $rolstatus  the record of learning status (to keep track of which menu item is selected)
  * @return string $out        the form to display
  */
-function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
+function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage='courses', $rolstatus='none') {
     global $CFG;
 
     $out = '<div id="dp-plans-menu">';
@@ -629,29 +631,8 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
         }
     }
 
-    // Display record of learning (rol)
-    if ($role == 'manager' && $userid) {
-        $rolstatus = optional_param('status', 'none', PARAM_TEXT);
-        $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('recordoflearning', 'local') . '</h4>';
-        $out .= "<ul>";
-        $class = $rolstatus == 'all' ? 'class="dp-menu-selected"' : '';
-        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&amp;status=all\">" . get_string('alllearning', 'local_plan') . "</a></li>";
-        $class = $rolstatus == 'active' ? 'class="dp-menu-selected"' : '';
-        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&amp;status=active\">" . get_string('activelearning', 'local_plan') . "</a></li>";
-        $class = $rolstatus == 'completed' ? 'class="dp-menu-selected"' : '';
-        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&amp;status=completed\">" . get_string('completedlearning', 'local_plan') . "</a></li>";
-        $out .= "</ul>";
-        $out .= "</div>";
-    }
-    else if ($role == 'manager') {
-        // for displaying instructional text in the sidebar
-        // not currently necessary as links are self explanatory
-        //$out .='<p class="sidebar-content">' . get_string('myteaminstructionaltext', 'local') . '</p>';
-    }
-    else {
-        // Show for learners?
-        //$out .= print_heading(get_string('recordoflearning', 'local'), 'left', 3, 'main', true);
-    }
+    // Print Record of Learning menu
+    $out .= dp_record_status_menu($rolpage, $rolstatus, $userid);
 
     $out .= '</div>';
 
@@ -815,8 +796,7 @@ function dp_record_status_menu($pagename, $status, $userid=null) {
     // pass the userid if set
     $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
 
-    $out='<div id="recordoflearning-menu">';
-    $out .= print_heading(get_string('recordoflearning', 'local'), 'left', 3, 'main', true);
+    $out = print_heading(get_string('recordoflearning', 'local'), 'left', 3, 'main', true);
 
     // generate options for menu display
     $filter = array();
@@ -830,7 +810,6 @@ function dp_record_status_menu($pagename, $status, $userid=null) {
         $out .= "\">" . $filter[$s];
         $out .= "</a></li></ul>";
     }
-    $out .= '</div>';
     return $out;
 }
 

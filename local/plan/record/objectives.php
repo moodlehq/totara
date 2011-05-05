@@ -39,6 +39,7 @@
     $userid     = optional_param('userid', null, PARAM_INT);                       // which user to show
     $format     = optional_param('format','',PARAM_TEXT); //export format
     $planstatus = optional_param('status', 'all', PARAM_ALPHANUM);
+    $rolstatus  = optional_param('status', 'none', PARAM_TEXT);
     if ( !in_array($planstatus, array('active','completed','all')) ){
         $planstatus = 'all';
     }
@@ -101,15 +102,12 @@
 
     print_header($strheading, $strheading, build_navigation($navlinks));
 
-   $print_plans_menu = $USER->id != $userid && (totara_is_manager($userid) ||
-        has_capability('moodle/site:doanything',$context));
+    $ownplan = $USER->id == $userid;
 
-    if ($print_plans_menu) {
-        // Only show plans menu for managers and admins
-        echo dp_display_plans_menu($userid, 0, 'manager');
-    } else {
-        echo dp_record_status_menu('objectives', $planstatus, $userid);
-    }
+    $usertype = ($ownplan) ? 'learner' : 'manager';
+
+    echo dp_display_plans_menu($userid, 0, $usertype, 'objectives', $rolstatus);
+
     print_container_start(false, '', 'dp-plan-content');
 
     echo '<h1>'.$strheading.'</h1>';
