@@ -67,6 +67,7 @@ print $component->display_back_to_index_link();
 print $component->display_course_detail($caid);
 
 if($competenciesenabled) {
+    print '<br />';
     print '<h3>' . get_string('linkedx', 'local_plan', $competencyname) . '</h3>';
     if($linkedcomps = $component->get_linked_components($caid, 'competency')) {
         print $plan->get_component('competency')->display_linked_competencies($linkedcomps);
@@ -76,6 +77,7 @@ if($competenciesenabled) {
 }
 
 if ($objectivesenabled){
+    print '<br />';
     print '<h3>' . get_string('linkedx', 'local_plan', $objectivename) . '</h3>';
     if ( $linkedobjectives = $component->get_linked_components( $caid, 'objective' )){
         print $plan->get_component('objective')->display_linked_objectives($linkedobjectives);
