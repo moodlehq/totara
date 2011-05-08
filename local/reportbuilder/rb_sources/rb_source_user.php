@@ -106,8 +106,9 @@ class rb_source_user extends rb_base_source {
             )
         );
 
-        $this->add_position_tables_to_joinlist($joinlist, 'base', 'id');
         $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'id');
+        $this->add_position_tables_to_joinlist($joinlist, 'base', 'id');
+        $this->add_manager_tables_to_joinlist($joinlist, 'position_assignment', 'reportstoid');
 
         return $joinlist;
     }
@@ -122,6 +123,7 @@ class rb_source_user extends rb_base_source {
         $columnoptions = array();
         $this->add_user_fields_to_columns($columnoptions, 'base');
         $this->add_position_fields_to_columns($columnoptions);
+        $this->add_manager_fields_to_columns($columnoptions);
 
         // A column to display a user's profile picture
         $columnoptions[] = new rb_column_option(
@@ -219,17 +221,12 @@ class rb_source_user extends rb_base_source {
      * @return array
      */
     private function define_filteroptions() {
-        // No filter options!
-        $filteroptions = array(
-            new rb_filter_option(
-                'user',
-                'fullname',
-                get_string('usersname', 'rb_source_user'),
-                'text'
-            )
-        );
+        $filteroptions = array();
 
+        $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
+        $this->add_position_fields_to_filters($filteroptions);
+        $this->add_manager_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }
