@@ -52,6 +52,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
+
 /**
  * Interface marking other classes as suitable for renderer_base::render()
  * @author 2010 Petr Skoda (skodak) info@skodak.org

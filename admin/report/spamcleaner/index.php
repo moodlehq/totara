@@ -31,6 +31,7 @@ $autokeywords = array(
 
 require_once('../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
 
 require_js(array('yui_dom-event', 'yui_connection', 'yui_json'));
 

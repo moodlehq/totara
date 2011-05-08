@@ -11,6 +11,7 @@
 //    {'name': 3, 'value' : 'Competent'} ]}
 
 require_once('../../../../config.php');
+require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // needed for PHP5.2 JSON support
 
 $competencyid = required_param('competencyid',PARAM_INT);
 

@@ -30,6 +30,7 @@
 
     require_once('../../config.php');
     require_once($CFG->dirroot . '/mod/forum/lib.php');
+    require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
 
 /// In developer debug mode, when there is a debug=1 in the URL send as plain text
 /// for easier debugging.
