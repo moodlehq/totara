@@ -75,7 +75,7 @@ if($m && isset($cid)) {
 }
 
 // form definition
-$mform =& new report_heading_columns_form(null, compact('heading'));
+$mform = new report_heading_columns_form(null, compact('heading'));
 
 // form results check
 if ($mform->is_cancelled()) {

@@ -55,7 +55,7 @@ else{
 }
 
 // form definition
-$mform =& new scheduled_reports_new_form(
+$mform = new scheduled_reports_new_form(
     null,
     array(
         'id' => $id,

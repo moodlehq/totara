@@ -40,7 +40,7 @@ if(!$report->is_capable($id)) {
     error(get_string('nopermission','local_reportbuilder'));
 }
 
-$mform =& new report_builder_save_form(null, compact('id','report'));
+$mform = new report_builder_save_form(null, compact('id','report'));
 
 // form results check
 if ($mform->is_cancelled()) {
