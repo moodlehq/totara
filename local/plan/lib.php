@@ -550,9 +550,10 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
  * @param  string $role       the role of the user
  * @param  string $rolpage    the record of learning page (to keep track of which tab is selected)
  * @param  string $rolstatus  the record of learning status (to keep track of which menu item is selected)
+ * @param  bool   $showrol    determines if the record of learning should be shown
  * @return string $out        the form to display
  */
-function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage='courses', $rolstatus='none') {
+function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage='courses', $rolstatus='none', $showrol=true) {
     global $CFG;
 
     $out = '<div id="dp-plans-menu">';
@@ -632,7 +633,9 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
     }
 
     // Print Record of Learning menu
-    $out .= dp_record_status_menu($rolpage, $rolstatus, $userid);
+    if ($showrol) {
+        $out .= dp_record_status_menu($rolpage, $rolstatus, $userid);
+    }
 
     $out .= '</div>';
 

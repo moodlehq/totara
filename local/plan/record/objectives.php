@@ -38,12 +38,10 @@
 
     $userid     = optional_param('userid', null, PARAM_INT);                       // which user to show
     $format     = optional_param('format','',PARAM_TEXT); //export format
-    $planstatus = optional_param('status', 'all', PARAM_ALPHANUM);
-    $rolstatus  = optional_param('status', 'none', PARAM_TEXT);
-    if ( !in_array($planstatus, array('active','completed','all')) ){
-        $planstatus = 'all';
+    $rolstatus = optional_param('status', 'all', PARAM_ALPHANUM);
+    if (!in_array($rolstatus, array('active','completed','all'))) {
+        $rolstatus = 'all';
     }
-    $ustatus = ucfirst($planstatus);
 
     // default to current user
     if(empty($userid)) {
@@ -66,16 +64,15 @@
     } else {
         $strheading = get_string('recordoflearning', 'local');
     }
-    // set first char of $planstatus to upper case for display
-    $strsubheading = $ustatus . ' ';
-    $strsubheading .= get_string('objectiveplural', 'local_plan');
+    // get subheading name for display
+    $strsubheading = get_string($rolstatus.'objectives', 'local_plan');
 
     $shortname = 'plan_objectives';
     $data = array(
         'userid' => $userid,
     );
-    if ( $planstatus !== 'all' ){
-        $data['planstatus'] = $planstatus;
+    if ($rolstatus !== 'all'){
+        $data['rolstatus'] = $rolstatus;
     }
     $report = reportbuilder_get_embedded_report($shortname, $data);
 
