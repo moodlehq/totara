@@ -97,8 +97,15 @@ function make_log_url($module, $url) {
         case 'objectives':
             $url = '/local/plan/objectivescales/'.$url;
             break;
+        case 'totara_msg':
+            $url = '/local/totara_msg/'.$url;
+            break;
         default:
-            $url = "/mod/$module/$url";
+            if (substr($module, 0, 6) == 'local_') {
+                $url = '/local/'.substr($module, 6).'/'.$url;
+            } else {
+                $url = "/mod/$module/$url";
+            }
             break;
     }
 

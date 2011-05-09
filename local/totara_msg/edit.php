@@ -67,9 +67,6 @@ if ($user->deleted) {
     die;
 }
 
-// Log
-add_to_log($course->id, "user", "message settings view", "edit.php?id=$user->id&amp;course=$course->id", "$user->id");
-
 /// Print tabs at top
 /// This same call is made in:
 ///     /user/view.php
@@ -101,9 +98,16 @@ $form = new totara_msg_settings_form($currenturl, array('user'=>$user->id));
 if($data = $form->get_data()) {
     set_user_preference('totara_msg_send_alrt_emails', $data->totara_msg_send_alrt_emails ? 1 : 0, $user->id);
     set_user_preference('totara_msg_send_task_emails', $data->totara_msg_send_task_emails ? 1 : 0, $user->id);
+
+    // Log
+    add_to_log($course->id, "totara_msg", "message settings update", "edit.php?id=$user->id&amp;course=$course->id", fullname($user)." (ID: {$user->id})");
+
     // Display success message
     totara_set_notification(get_string('settingssaved','local_totara_msg'), $currenturl, array('style' => 'notifysuccess'));
 }
+
+// Log
+add_to_log($course->id, "totara_msg", "message settings view", "edit.php?id=$user->id&amp;course=$course->id", fullname($user)." (ID: {$user->id})");
 
 $current_settings = new stdClass;
 $current_settings->totara_msg_send_alrt_emails = get_user_preferences('totara_msg_send_alrt_emails', 1, $user->id);
