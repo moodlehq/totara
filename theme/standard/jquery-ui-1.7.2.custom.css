@@ -569,12 +569,10 @@ a.noscript-button {
 
 /** Competencies lightbox styling **/
 #evidence #available-evidence {
-    float: right;
     width: 40%;
     border-left: 1px solid #ccc;
-    height: 322px;
     overflow: auto;
-    padding: 0 10px;
+    padding-left: 10px;
 }
 
 #evidence #available-evidence h3 {
