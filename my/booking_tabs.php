@@ -19,4 +19,3 @@ $tabs[] = $row;
 
 $activated[] = $currenttab;
 print_tabs($tabs, $currenttab);
-

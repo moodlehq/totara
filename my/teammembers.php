@@ -48,8 +48,7 @@ $strheading = get_string('teammembers', 'local');
 $shortname = 'team_members';
 $report = reportbuilder_get_embedded_report($shortname);
 
-add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_id,
-    $report->fullname);
+add_to_log(SITEID, 'my', 'teammembers report view', 'teammembers.php');
 
 /**
  * End of defining the report
