@@ -79,15 +79,16 @@
     }
     $report = reportbuilder_get_embedded_report($shortname, $data);
 
+    $query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
+    $log_url = 'record/objectives.php'.$query_string;
+
     if($format!='') {
-        add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id='. $report->_id,
-            $report->fullname);
+        add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
         $report->export_data($format);
         die;
     }
 
-    add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_id,
-        $report->fullname);
+    add_to_log(SITEID, 'plan', 'record view', $log_url, $report->fullname);
 
     $report->include_js();
 
