@@ -41,21 +41,17 @@ if (!$user = get_record('user', 'id', $user)) {
 
 
 // Check permissions
-$personalcontext = get_context_instance(CONTEXT_USER, $user->id);
+$systemcontext = get_context_instance(CONTEXT_SYSTEM);
 $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
 
 // Check logged in user can view this profile
 require_login($course);
 
 $canview = false;
-if (!empty($USER->id) && ($user->id == $USER->id)) {
+if ( (!empty($USER->id) && ($user->id == $USER->id)) ||
+     has_capability('moodle/site:doanything', $systemcontext) ){
     // Can view own profile
-    $canview = true;
-}
-elseif (has_capability('moodle/user:viewdetails', $coursecontext)) {
-    $canview = true;
-}
-elseif (has_capability('moodle/user:viewdetails', $personalcontext)) {
+    // Or is sysadmin
     $canview = true;
 }
 
@@ -70,9 +66,6 @@ if ($user->deleted) {
     print_footer();
     die;
 }
-
-// Log
-add_to_log($course->id, "user", "message settings view", "edit.php?id=$user->id&amp;course=$course->id", "$user->id");
 
 /// Print tabs at top
 /// This same call is made in:
@@ -95,21 +88,26 @@ if ($course->id != SITEID && has_capability('moodle/course:viewparticipants', $c
 $fullname = fullname($user, true);
 
 $navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}/user/view.php?id={$user->id}&amp;course={$course->id}", 'type' => 'misc');
-$navlinks[] = array('name' => get_string('tasksalerts', 'local_totara_msg'), 'link' => null, 'type' => 'misc');
+$navlinks[] = array('name' => get_string('emailnotifications', 'local_totara_msg'), 'link' => null, 'type' => 'misc');
 $navigation = build_navigation($navlinks);
 
 
 // Form
 $form = new totara_msg_settings_form($currenturl, array('user'=>$user->id));
 
-if ($form->is_cancelled()){
-    // Do nothing
-} elseif ($data = $form->get_data()) {
+if($data = $form->get_data()) {
     set_user_preference('totara_msg_send_alrt_emails', $data->totara_msg_send_alrt_emails ? 1 : 0, $user->id);
     set_user_preference('totara_msg_send_task_emails', $data->totara_msg_send_task_emails ? 1 : 0, $user->id);
+
+    // Log
+    add_to_log($course->id, "totara_msg", "message settings update", "edit.php?id=$user->id&amp;course=$course->id", fullname($user)." (ID: {$user->id})");
+
     // Display success message
     totara_set_notification(get_string('settingssaved','local_totara_msg'), $currenturl, array('style' => 'notifysuccess'));
 }
+
+// Log
+add_to_log($course->id, "totara_msg", "message settings view", "edit.php?id=$user->id&amp;course=$course->id", fullname($user)." (ID: {$user->id})");
 
 $current_settings = new stdClass;
 $current_settings->totara_msg_send_alrt_emails = get_user_preferences('totara_msg_send_alrt_emails', 1, $user->id);
@@ -117,7 +115,7 @@ $current_settings->totara_msg_send_task_emails = get_user_preferences('totara_ms
 
 $form->set_data($current_settings);
 
-print_header("{$course->fullname}: {$fullname}: ".get_string('tasksalertssettings', 'local_totara_msg'), $course->fullname, $navigation);
+print_header("{$course->fullname}: {$fullname}: ".get_string('emailnotifications', 'local_totara_msg'), $course->fullname, $navigation);
 
 include($CFG->dirroot.'/user/tabs.php');
 

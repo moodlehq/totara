@@ -4,18 +4,6 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
-$coursename = get_config(null, 'dp_course');
-$coursename = $coursename ?
-    $coursename : get_string('courseplural', 'local_plan');
-
-$competencyname = get_config(null, 'dp_competency');
-$competencyname = $competencyname ?
-    $competencyname : get_string('competencyplural', 'local_plan');
-
-$objectivename = get_config(null, 'dp_objective');
-$objectivename = $objectivename ?
-    $objectivename : get_string('objectiveplural', 'local_plan');
-
 // tab bar
 $tabs = array();
 $row = array();
@@ -24,20 +12,20 @@ $row = array();
 $row[] = new tabobject(
     'courses',
     $CFG->wwwroot . '/local/plan/record/courses.php?' . $userstr .
-    'status=' . $planstatus,
-    "{$ustatus} " . $coursename
+    'status=' . $rolstatus,
+    get_string($rolstatus.'courses', 'local_plan')
 );
 $row[] = new tabobject(
     'competencies',
     $CFG->wwwroot . '/local/plan/record/competencies.php?' . $userstr .
-    'status=' . $planstatus,
-    "{$ustatus} " . $competencyname
+    'status=' . $rolstatus,
+    get_string($rolstatus.'competencies', 'local_plan')
 );
 $row[] = new tabobject(
     'objectives',
     $CFG->wwwroot . '/local/plan/record/objectives.php?' . $userstr .
-    'status=' . $planstatus,
-    "{$ustatus} " . $objectivename
+    'status=' . $rolstatus,
+    get_string($rolstatus.'objectives', 'local_plan')
 );
 $tabs[] = $row;
 

@@ -80,6 +80,7 @@ print $component->display_back_to_index_link();
 print $component->display_competency_detail($caid);
 
 if($coursesenabled) {
+    print '<br />';
     print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
     print '<div id="dp-competency-courses-container">';
     if($linkedcourses =

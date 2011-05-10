@@ -135,6 +135,11 @@ $THEME->custompix = true;
 /// files from the moodle/pix directory, plus a
 /// "pix/mod" directory containing all the icons 
 /// for all the activity modules.
+
+$THEME->unselectable = true;
+
+/// If true, then this theme cannot be selected in
+/// the "Theme Selector"
 ////////////////////////////////////////////////////////////////////////////////
 
 ?>

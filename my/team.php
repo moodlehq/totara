@@ -75,6 +75,7 @@ $navigation = build_navigation($navlinks);
 $navbaritem = !empty($canedit) ? $dashb->get_editing_button($edit) : '';
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
+add_to_log(SITEID, 'my', 'team dashboard', 'team.php');
 
 echo '<table id="layout-table">';
 echo '<tr valign="top">';

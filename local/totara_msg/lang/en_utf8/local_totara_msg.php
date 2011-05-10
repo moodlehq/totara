@@ -39,16 +39,15 @@ $string['reject'] = 'Reject';
 $string['task_description'] = 'Listed below are all the tasks you\'ve received. You can click links in the task title to view more detail or dismiss an task by clicking the dismiss icon to the right of the list. You may also choose to filter which tasks are shown in the list by making use of the \"Search by\" functionality.';
 $string['unknown'] = 'Unknown';
 $string['withselected'] = 'With selected: ';
-$string['sendalertemails'] = 'Send alert emails';
-$string['sendtaskemails'] = 'Send task emails';
+$string['sendalertemails'] = 'Email me about alerts';
+$string['sendtaskemails'] = 'Email me about tasks';
 $string['settingssaved'] = 'Settings saved';
 $string['messagesettings'] = 'Message settings';
 $string['viewdetailshere'] = 'More details can be found at:<br /><br /><a href=\"$a\">$a</a>';
 $string['cannotsavemessage'] = 'Cannot save message';
 $string['alertfooter'] = 'To change your preferences for receiving these emails, go to your <a href=\"$a\">Profile -> Messages</a> tab.';
 $string['error:redirecttoexternal'] = 'Error: trying to redirect to external domain';
-$string['tasksalerts'] = 'Tasks/Alerts';
-$string['tasksalertssettings'] = 'Tasks/Alerts Settings';
+$string['emailnotifications'] = 'Email notifications';
 
 // message types
 $string['blended'] = 'Blended';

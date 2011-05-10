@@ -27,15 +27,26 @@ echo './build*
 ./webrat*
 ' > $IGNOREFILE
 
+# try and figure out the totara version
+VERSION=`grep '\$TOTARA->version\s*=' version.php | sed "s/^[^']*'\(.*\)'[^']*$/\1/g" | sed 's/[^0-9A-Za-z.]//g'`
+if [[ $VERSION = '' ]]
+then
+    # just use 'totaralms' if that didn't work
+    VERSION='totaralms';
+else
+    VERSION="totaralms-$VERSION";
+fi
+
 # set default name for tar file
 if [ -z $1 ]
 then
-    OUTFILE='../out.tar.gz'
+    OUTFILE="../$VERSION.tar.gz"
 else
     OUTFILE=$1
 fi
 
-tar -cz --transform='s|^./|./totara/|g' -f $OUTFILE --exclude-from $IGNOREFILE .
+
+tar -cz --transform="s|^./|./$VERSION/|g" -f $OUTFILE --exclude-from $IGNOREFILE .
 
 rm -f $IGNOREFILE
 

@@ -30,8 +30,7 @@
 global $CFG;
 
 require_once($CFG->libdir.'/eventslib.php');
-
-define ('MESSAGE_SHORTLENGTH', 300);
+require_once($CFG->dirroot.'/message/lib.php');
 
 if (!isset($CFG->message_contacts_refresh)) {  // Refresh the contacts list every 60 seconds
     $CFG->message_contacts_refresh = 60;

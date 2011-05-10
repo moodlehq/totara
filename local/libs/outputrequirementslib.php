@@ -50,6 +50,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
+
 // note: you can find history of this file in lib/ajax/ajaxlib.php
 
 /**

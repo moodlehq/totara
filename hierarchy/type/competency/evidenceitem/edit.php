@@ -102,6 +102,7 @@ if($nojs) {
 
     // Turn on multi-select
     $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
+    $dialog->selected_title = 'currentlyselected';
 
     // Setup search
     $dialog->search_code = '/hierarchy/type/competency/evidenceitem/search.php';

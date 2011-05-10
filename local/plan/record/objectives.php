@@ -38,11 +38,10 @@
 
     $userid     = optional_param('userid', null, PARAM_INT);                       // which user to show
     $format     = optional_param('format','',PARAM_TEXT); //export format
-    $planstatus = optional_param('status', 'all', PARAM_ALPHANUM);
-    if ( !in_array($planstatus, array('active','completed','all')) ){
-        $planstatus = 'all';
+    $rolstatus = optional_param('status', 'all', PARAM_ALPHANUM);
+    if (!in_array($rolstatus, array('active','completed','all'))) {
+        $rolstatus = 'all';
     }
-    $ustatus = ucfirst($planstatus);
 
     // default to current user
     if(empty($userid)) {
@@ -65,28 +64,28 @@
     } else {
         $strheading = get_string('recordoflearning', 'local');
     }
-    // set first char of $planstatus to upper case for display
-    $strsubheading = $ustatus . ' ';
-    $strsubheading .= get_string('objectiveplural', 'local_plan');
+    // get subheading name for display
+    $strsubheading = get_string($rolstatus.'objectives', 'local_plan');
 
     $shortname = 'plan_objectives';
     $data = array(
         'userid' => $userid,
     );
-    if ( $planstatus !== 'all' ){
-        $data['planstatus'] = $planstatus;
+    if ($rolstatus !== 'all'){
+        $data['rolstatus'] = $rolstatus;
     }
     $report = reportbuilder_get_embedded_report($shortname, $data);
 
+    $query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
+    $log_url = 'record/objectives.php'.$query_string;
+
     if($format!='') {
-        add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id='. $report->_id,
-            $report->fullname);
+        add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
         $report->export_data($format);
         die;
     }
 
-    add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_id,
-        $report->fullname);
+    add_to_log(SITEID, 'plan', 'record view', $log_url, $report->fullname);
 
     $report->include_js();
 
@@ -101,15 +100,12 @@
 
     print_header($strheading, $strheading, build_navigation($navlinks));
 
-   $print_plans_menu = $USER->id != $userid && (totara_is_manager($userid) ||
-        has_capability('moodle/site:doanything',$context));
+    $ownplan = $USER->id == $userid;
 
-    if ($print_plans_menu) {
-        // Only show plans menu for managers and admins
-        echo dp_display_plans_menu($userid, 0, 'manager');
-    } else {
-        echo dp_record_status_menu('objectives', $planstatus, $userid);
-    }
+    $usertype = ($ownplan) ? 'learner' : 'manager';
+
+    echo dp_display_plans_menu($userid, 0, $usertype, 'objectives', $rolstatus);
+
     print_container_start(false, '', 'dp-plan-content');
 
     echo '<h1>'.$strheading.'</h1>';

@@ -1,5 +1,5 @@
 <?php
-// lang file for local/rb_sources/rb_source_dp_objective.php
+// lang file for local/plan/rb_sources/rb_source_dp_objective.php
 $string['sourcetitle'] = 'Record of Learning: Objectives';
 // columns
 $string['planname'] = 'Plan name';

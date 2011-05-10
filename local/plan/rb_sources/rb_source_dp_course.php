@@ -416,7 +416,7 @@ from
                 'base'
         );
         $paramoptions[] = new rb_param_option(
-                'planstatus',
+                'rolstatus',
                 // if plan complete use completion status from within plan
                 // otherwise use 'live' completion status
                 "(CASE WHEN dp_course.planstatus = " . DP_PLAN_STATUS_COMPLETE . "

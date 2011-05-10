@@ -391,7 +391,7 @@ class rb_source_dp_objective extends rb_base_source {
                 'dp'
         );
         $paramoptions[] = new rb_param_option(
-                'planstatus',
+                'rolstatus',
                 'CASE WHEN objective_scale_value.achieved = 1
                 THEN \'completed\' ELSE \'active\' END',
                 'objective_scale_value',

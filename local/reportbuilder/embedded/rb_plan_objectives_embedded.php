@@ -30,7 +30,7 @@ class rb_plan_objectives_embedded extends rb_base_embedded {
 
     public function __construct($data) {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
-        $planstatus = array_key_exists('planstatus', $data) ? $data['planstatus'] : null;
+        $rolstatus = array_key_exists('rolstatus', $data) ? $data['rolstatus'] : null;
 
         $this->url = '/local/plan/record/objectives.php';
         $this->source = 'dp_objective';
@@ -104,8 +104,8 @@ class rb_plan_objectives_embedded extends rb_base_embedded {
         if(isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
         }
-        if(isset($planstatus)) {
-            $this->embeddedparams['planstatus'] = $planstatus;
+        if(isset($rolstatus)) {
+            $this->embeddedparams['rolstatus'] = $rolstatus;
         }
 
         parent::__construct();

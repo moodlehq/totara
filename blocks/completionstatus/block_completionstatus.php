@@ -206,7 +206,7 @@ class block_completionstatus extends block_base {
 
         // If RPL
         if (isset($ccompletion) && strlen($ccompletion->rpl)) {
-            $this->content->text .= '<tr><td colspan="2"><b>Course RPL:</b> '.htmlentities($ccompletion->rpl).'</td></tr>';
+            $this->content->text .= '<tr><td colspan="2"><b>'.get_string('courserpl', 'completion').':</b> '.format_string($ccompletion->rpl).'</td></tr>';
         }
 
         $this->content->text .= '<tr><td colspan="2">';

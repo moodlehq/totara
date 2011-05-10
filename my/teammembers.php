@@ -48,8 +48,7 @@ $strheading = get_string('teammembers', 'local');
 $shortname = 'team_members';
 $report = reportbuilder_get_embedded_report($shortname);
 
-add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_id,
-    $report->fullname);
+add_to_log(SITEID, 'my', 'teammembers report view', 'teammembers.php');
 
 /**
  * End of defining the report
@@ -69,7 +68,7 @@ $staff_f2f = get_field('report_builder','id','shortname','staff_facetoface_sessi
 $PAGE->print_header($strheading, $strheading);
 
 // Plan menu
-echo dp_display_plans_menu(0,0,'manager');
+echo dp_display_plans_menu(0,0,'manager', null, null, false);
 
 // Plan page content
 print_container_start(false, '', 'dp-plan-content');

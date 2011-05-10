@@ -472,7 +472,7 @@ from
                 'base.userid'
         );
         $paramoptions[] = new rb_param_option(
-                'planstatus',
+                'rolstatus',
                 'CASE WHEN dp_competency.planstatus = ' . DP_PLAN_STATUS_COMPLETE . '
                 THEN
                     CASE WHEN scale_value.proficient = 1

@@ -1,6 +1,7 @@
 <?php  // $Id$
 
 require_once($CFG->libdir.'/filelib.php');
+require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
 
 /// CONSTANTS ///////////////////////////////////////////////////////////
 

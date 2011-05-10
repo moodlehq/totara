@@ -136,12 +136,12 @@ class question_dataset_dependent_questiontype extends default_questiontype {
         switch($wizardnow) {
             case 'datasetdefinitions':
                 require("$CFG->dirroot/question/type/datasetdependent/datasetdefinitions_form.php");
-                $mform =& new question_dataset_dependent_definitions_form("$submiturl?wizardnow=datasetdefinitions", $question);
+                $mform = new question_dataset_dependent_definitions_form("$submiturl?wizardnow=datasetdefinitions", $question);
                 break;
             case 'datasetitems':
                 require("$CFG->dirroot/question/type/datasetdependent/datasetitems_form.php");
                 $regenerate = optional_param('forceregeneration', 0, PARAM_BOOL);
-                $mform =& new question_dataset_dependent_items_form("$submiturl?wizardnow=datasetitems", $question, $regenerate);
+                $mform = new question_dataset_dependent_items_form("$submiturl?wizardnow=datasetitems", $question, $regenerate);
                 break;
             default:
                 error('Incorrect or no wizard page specified!');

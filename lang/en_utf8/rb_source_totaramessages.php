@@ -1,5 +1,5 @@
 <?php
-// lang file for local/rb_sources/rb_source_totaramessage.php
+// lang file for local/totara_msg/rb_sources/rb_source_totaramessage.php
 $string['sourcetitle'] = 'Messages';
 // columns
 $string['statement'] = 'Statement';

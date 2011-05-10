@@ -651,3 +651,16 @@ $string['todb_objectivesettingerror'] = 'Error updating objective settings';
 $string['todb_updatepermissionserror'] = 'Error updating template permissions';
 
 $string['scaleslocked'] = 'This template is in use and changing the scales will impact data integrity. Therefore Priority and Objective scales are locked and will not be updated when the workflow is changed.';
+
+//ROL Strings
+$string['activecourses'] = 'Active Courses';
+$string['activecompetencies'] = 'Active Competencies';
+$string['activeobjectives'] = 'Active Objectives';
+
+$string['allcourses'] = 'All Courses';
+$string['allcompetencies'] = 'All Competencies';
+$string['allobjectives'] = 'All Objectives';
+
+$string['completedcourses'] = 'Completed Courses';
+$string['completedcompetencies'] = 'Completed Competencies';
+$string['completedobjectives'] = 'Completed Objectives';

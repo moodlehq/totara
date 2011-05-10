@@ -90,6 +90,7 @@ $component->display_objective_detail($caid, true);
 
 
 if ( $plan->get_component('course')->get_setting('enabled') ){
+    print '<br />';
     print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
     if ( !$plancompleted ){
         print $component->display_course_picker($caid);

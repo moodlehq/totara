@@ -78,6 +78,10 @@
 
         include($CFG->themedir.'/'.$theme.'/config.php');
 
+        if (!empty($THEME->unselectable)) {
+            continue;
+        }
+
         $readme = '';
         $screenshot = '';
         $screenshotpath = '';

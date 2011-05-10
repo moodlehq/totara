@@ -25,6 +25,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once($CFG->libdir.'/data_object.php');
+require_once($CFG->libdir.'/completionlib.php');
 require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
 
 
@@ -339,7 +340,6 @@ class completion_completion extends data_object {
      * @return  bool
      */
     private function _save() {
-        global $COMPLETION_STATUS;
 
         if (!$this->timeenrolled) {
             // Get users timenrolled
@@ -377,4 +377,154 @@ class completion_completion extends data_object {
             return $this->insert();
         }
     }
+}
+
+
+/**
+ * Role assigned event handler for creating a user's completion record when
+ * enroling in a course
+ *
+ * @global  $CFG
+ * @access  public
+ * @param   object  $eventdata  Matches the row from mdl_role_assignments
+ * @return  true
+ */
+function completion_eventhandler_role_assigned($eventdata) {
+
+    // Get course context
+    $context = get_context_instance_by_id($eventdata->contextid);
+
+    // Check if this is during installation
+    if ($context->instanceid == 0) {
+        return true;
+    }
+
+    // Load course
+    if (!$course = get_record('course', 'id', $context->instanceid)) {
+        debugging('Could not load course id '.$context->instanceid);
+        return true;
+    }
+
+    // Create completion object
+    $completion_info = new completion_info($course);
+
+    // Check completion is enabled for this site and course
+    if (!$completion_info->is_enabled()) {
+        return true;
+    }
+
+    // If completion not set to start on enrollment, do nothing
+    if (empty($course->completionstartonenrol)) {
+        return true;
+    }
+
+    // Check if this user is not in a tracked role in the course
+    if (!$completion_info->is_tracked_user($eventdata->userid)) {
+        return true;
+    }
+
+    // Create completion record
+    $data = array(
+        'userid'    => $eventdata->userid,
+        'course'    => $course->id
+    );
+    $completion = new completion_completion($data);
+
+    // Completion start on enrollment needs timestarted set
+    $completion->timeenrolled = $eventdata->timestart;
+    $completion->timestarted = $completion->timeenrolled;
+
+    // Update record
+    $completion->mark_enrolled();
+
+    return true;
+}
+
+
+/**
+ * Scan a course (or the entire site) for tracked users who
+ * do not have completion records in courses with completion
+ * enabled and completionstartonenrol set
+ *
+ * @access  public
+ * @param   int     $courseid   (optional)
+ * @return  void
+ */
+function completion_mark_users_started($courseid = null) {
+    global $CFG;
+
+    $roles = '';
+    if (!empty($CFG->progresstrackedroles)) {
+        $roles = 'AND ra.roleid IN ('.$CFG->progresstrackedroles.')';
+    }
+
+    // Save calls to time()
+    $time = time();
+
+    // Course where clause
+    $cwhere = '';
+    if ($courseid !== null) {
+        $cwhere = 'AND c.id = '.(int)$courseid;
+    }
+
+    // Generate SQL
+    $sql = "
+        SELECT DISTINCT
+            c.id AS course,
+            ra.userid AS userid,
+            crc.id AS completionid,
+            MIN(ra.timestart) AS timestarted
+        FROM
+            {$CFG->prefix}course c
+        INNER JOIN
+            {$CFG->prefix}context con
+        ON con.instanceid = c.id
+        INNER JOIN
+            {$CFG->prefix}role_assignments ra
+        ON ra.contextid = con.id
+        LEFT JOIN
+            {$CFG->prefix}course_completions crc
+        ON crc.course = c.id
+        AND crc.userid = ra.userid
+        WHERE
+            con.contextlevel = ".CONTEXT_COURSE."
+        AND c.enablecompletion = 1
+        AND c.completionstartonenrol = 1
+        AND crc.timeenrolled IS NULL
+        AND (ra.timeend = 0 OR ra.timeend > {$time})
+        {$cwhere}
+        {$roles}
+        GROUP BY
+            c.id,
+            ra.userid,
+            crc.id
+        ORDER BY
+            course,
+            userid
+    ";
+
+    // Check if result is empty
+    if (!$rs = get_recordset_sql($sql)) {
+        return;
+    }
+
+    // Grab records for current user/course
+    while ($record = rs_fetch_next_record($rs)) {
+        $completion = new completion_completion();
+        $completion->userid = $record->userid;
+        $completion->course = $record->course;
+        $completion->timeenrolled = $record->timestarted;
+
+        if ($record->completionid) {
+            $completion->id = $record->completionid;
+        }
+
+        // Completion start on enrollment needs timestarted set
+        $completion->timestarted = $completion->timeenrolled;
+
+        // Update record
+        $completion->mark_enrolled();
+    }
+
+    $rs->close();
 }

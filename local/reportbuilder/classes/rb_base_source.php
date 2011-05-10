@@ -823,7 +823,7 @@ abstract class rb_base_source {
             'user',
             'lastlogin',
             get_string('userlastlogin', 'local_reportbuilder'),
-            sql_fullname("$join.lastlogin"),
+            "$join.lastlogin",
             array(
                 'joins' => $join,
                 'displayfunc' => 'nice_date',

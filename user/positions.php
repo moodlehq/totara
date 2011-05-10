@@ -86,9 +86,6 @@ $position_assignment = new position_assignment(
 );
 
 
-// Log
-add_to_log($course->id, "user", "position view", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", "$user->id");
-
 $strparticipants    = get_string('participants');
 $positions          = get_string('positions', 'position');
 $positiontype       = get_string('type'.$type, 'position');
@@ -191,9 +188,15 @@ else {
 
         commit_sql();
 
+        // Log
+        add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");
+
         // Display success message
         totara_set_notification(get_string('positionsaved','position'), $currenturl, array('style' => 'notifysuccess'));
     }
+
+    // Log
+    add_to_log($course->id, "user", "position view", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");
 
     if (!$can_edit) {
         $form->freezeForm();

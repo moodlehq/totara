@@ -51,6 +51,7 @@ $staff_f2f = get_field('report_builder','id','shortname','staff_facetoface_sessi
 
 $PAGE->print_header($strheading, $strheading);
 
+add_to_log(SITEID, 'my', 'reports', 'reports.php');
 
 echo '<h1>'.$strheading.'</h1>';
 print_container_start(false, '', 'myreports_section');

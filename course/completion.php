@@ -142,6 +142,9 @@ if ($form->is_cancelled()){
         $grade_item->update('course/completion.php');
     }
 
+    // Recreate completion records for enroled users
+    completion_mark_users_started($course->id);
+
     add_to_log($course->id, 'course', 'completion updated', 'completion.php?id='.$course->id);
 
     redirect($CFG->wwwroot."/course/view.php?id=$course->id");

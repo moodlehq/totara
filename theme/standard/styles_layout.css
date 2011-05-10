@@ -4938,3 +4938,8 @@ table.planiteminfobox td {
 table.dp-template-instances {
     width: 100%;
 }
+
+/* Spacing for checkbox on the Email notifiations page  */
+div span.emailnotifycheckbox {
+    padding-right:10px;
+}
