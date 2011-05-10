@@ -92,7 +92,7 @@ function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
         // Show edit form
         print '<form action="save_rpl.php?type='.$type.'&course='.$course->id.'&sort='.$sort.'&start='.$start.'&redirect=1" method="post">';
         print '<input type="hidden" name="user" value="'.$user->id.'" />';
-        print '<input type="text" name="rpl" value="'.htmlentities($rpl).'" maxlength="255" />';
+        print '<input type="text" name="rpl" value="'.format_string($rpl).'" maxlength="255" />';
         print '<input type="submit" name="saverpl" value="'.get_string('save').'" /></form> ';
         print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'">'.get_string('cancel').'</a>';
     } else {
@@ -107,7 +107,7 @@ function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
         }
 
         // Rrpl value
-        print '<span class="rplvalue">'.stripslashes(htmlentities($rpl)).'</span>';
+        print '<span class="rplvalue">'.stripslashes(format_string($rpl)).'</span>';
     }
 }
 

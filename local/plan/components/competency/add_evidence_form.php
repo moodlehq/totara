@@ -215,7 +215,7 @@ class totara_competency_evidence_form extends moodleform {
             // position selector
             $mform->addElement('static', 'positionselector', get_string('positionatcompletion', 'local'),
                 '
-                <span id="positiontitle">'.htmlentities($position_title).'</span>
+                <span id="positiontitle">'.format_string($position_title).'</span>
                 <input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />
                 ');
             $mform->setHelpButton('positionselector',array('competencyevidenceposition',get_string('positionatcompletion','local'),'moodle'));
@@ -235,7 +235,7 @@ class totara_competency_evidence_form extends moodleform {
             // organisation selector
             $mform->addElement('static', 'organisationselector', get_string('organisationatcompletion', 'local'),
                 '
-                <span id="organisationtitle">'.htmlentities($organisation_title).'</span>
+                <span id="organisationtitle">'.format_string($organisation_title).'</span>
                 <input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />
                 ');
             $mform->setHelpButton('organisationselector',array('competencyevidenceorganisation',get_string('organisationatcompletion','local'),'moodle'));
