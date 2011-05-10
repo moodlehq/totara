@@ -31,10 +31,10 @@ echo './build*
 VERSION=`grep '\$TOTARA->version\s*=' version.php | sed "s/^[^']*'\(.*\)'[^']*$/\1/g" | sed 's/[^0-9A-Za-z.]//g'`
 if [[ $VERSION = '' ]]
 then
-    # just use 'totara' if that didn't work
-    VERSION='totara';
+    # just use 'totaralms' if that didn't work
+    VERSION='totaralms';
 else
-    VERSION="totara-$VERSION";
+    VERSION="totaralms-$VERSION";
 fi
 
 # set default name for tar file
