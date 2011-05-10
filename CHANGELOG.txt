@@ -1,5 +1,37 @@
 Totara LMS Changelog
 
+Release 1.0.10 (10 May 2011):
+==================================================
+
+Security fixes:
+    MDL-25122   Quiz review page does not check and enforce separate groups mode
+    MDL-26966   Improve self URL validation
+    8061        A user's Tasks/Alerts email notification settings could be edited by other users    Anyone with the capabilities to view a user's profile could edit their notification settings
+
+Improvements:
+    8077    Move Course Completion enrollment out of the cron                                       Fixes some timing related bugs, and make completion more responsive
+    8209    Improve Record of Learning menu                                                         Links to Record of Learning now included on Learning plan pages.
+    8019    Rename "Tasks/Alerts" to "Email notifications" and improve UI
+    7896    Improve appearance of detail pages in Learning Plans
+    7889    Updated theme screenshots, make the totara_install theme unselectable
+    7855    Improve site log coverage
+    8243    Add position columns and filters to more Report Builder sources                         The 'Users' and 'Totara Messages' sources now have user position and manager columns available
+
+Bug fixes:
+    8214    TinyMCE modifies HTML input, removing some tags
+    8188    Problems displaying Report Builder Manage reports page                                  The page would not appear on Windows servers in certain circumstances
+    8213    Learning Plan start date resets when updated                                            Start date would be reset to current date if plan details were edited
+    8163    Cannot add/edit blocks on admin pages
+    8263    Competency evidence dialog styling incorrect
+    8220    json_encode/json_decode functions unavailable in older versions of PHP                  Certain pages would fail with a syntax error if the server's PHP version was older than 5.2.0
+    8277    Unicode characters not printed correctly                                                Issues were with RPLs in the course report and position data in competency evidence
+    7978    Revert previous changes incorrectly made to HTMLeditor
+    8192    PHP warnings when updating Tasks/Alerts
+    8021    Messaging constants duplicated
+    8203    Deprecated code warnings from PHP
+    6710    Missing lang string in Completion Status block
+
+
 Release 1.0.9 (3 May 2011):
 ==================================================
 
