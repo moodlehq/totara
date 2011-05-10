@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Jonathan Newman <jonathan.newman@catalyst.net.nz>
  * @package totara
- * @subpackage local 
+ * @subpackage local
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -194,10 +194,12 @@ function local_get_stock_icons($type) {
     $icons = array('none' => get_string('none', 'local'));
 
     if ($path = local_get_stock_icon_dir($type)) {
-        foreach(scandir($path.'/large') as $icon) {
-            if (is_file($path.'/large/'.$icon)) {
+        $large_path = $path.'/large/';
+        foreach(scandir($large_path) as $icon) {
+            if (is_file($large_path.$icon) && (clean_param($icon, PARAM_FILE) == $icon)) {
 
-                $icons[$icon] = ucwords(strtr($icon, array('_' => ' ', '-' => ' ', '.png' => '')));
+                $replace = array('_' => ' ', '-' => ' ', '.png' => '');
+                $icons[$icon] = ucwords(strtr($icon, $replace));
             }
         }
     }
