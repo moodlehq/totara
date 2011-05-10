@@ -334,7 +334,7 @@
     if (!empty($user) && !empty($showtasksalerts)) {  // $showtasksalerts controls whether this tab is shown, only user/view should set it
 
         // Check permissions
-        $systemcontext = get_context_instance(CONTEXT_USER, $user->id);
+        $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 
         if ((!empty($USER->id) && ($user->id == $USER->id)) ||
             has_capability('moodle/site:doanything', $systemcontext)) {
