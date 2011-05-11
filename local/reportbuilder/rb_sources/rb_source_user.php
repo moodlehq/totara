@@ -196,11 +196,11 @@ class rb_source_user extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                         'user',
                         'namewithlinks',
-                        'User Fullname (with links to learning components)',
+                        get_string('usernamewithlearninglinks', 'rb_source_user'),
                         sql_fullname("base.firstname", "base.lastname"),
                         array(
                             'displayfunc' => 'user_with_links',
-                            'defaultheading' => 'User',
+                            'defaultheading' => get_string('user', 'rb_source_user'),
                             'extrafields' => array(
                                 'user_id' => 'base.id',
                                 'userpic_picture' => 'base.picture',

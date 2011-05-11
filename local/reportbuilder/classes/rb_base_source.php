@@ -820,7 +820,7 @@ abstract class rb_base_source {
             array(
                 'joins' => $join,
                 'displayfunc' => 'link_user',
-                'defaultheading' => 'User Fullname',
+                'defaultheading' => get_string('userfullname', 'local_reportbuilder'),
                 'extrafields' => array('user_id' => "$join.id"),
             )
         );
@@ -832,7 +832,7 @@ abstract class rb_base_source {
             array(
                 'joins' => $join,
                 'displayfunc' => 'link_user_icon',
-                'defaultheading' => 'User Fullname',
+                'defaultheading' => get_string('userfullname', 'local_reportbuilder'),
                 'extrafields' => array(
                     'user_id' => "$join.id",
                     'userpic_picture' => "$join.picture",
@@ -1042,7 +1042,7 @@ abstract class rb_base_source {
             array(
                 'joins' => $join,
                 'displayfunc' => 'link_course',
-                'defaultheading' => 'Course Name',
+                'defaultheading' => get_string('coursename', 'local_reportbuilder'),
                 'extrafields' => array('course_id' => "$join.id")
             )
         );
@@ -1054,7 +1054,7 @@ abstract class rb_base_source {
             array(
                 'joins' => $join,
                 'displayfunc' => 'link_course_icon',
-                'defaultheading' => 'Course Name',
+                'defaultheading' => get_string('coursename', 'local_reportbuilder'),
                 'extrafields' => array(
                     'course_id' => "$join.id",
                     'course_icon' => "$join.icon"
@@ -1069,7 +1069,7 @@ abstract class rb_base_source {
             array(
                 'joins' => $join,
                 'displayfunc' => 'course_icon',
-                'defaultheading' => 'Icon',
+                'defaultheading' => get_string('courseicon', 'local_reportbuilder'),
                 'extrafields' => array(
                     'course_name' => "$join.fullname",
                     'course_id' => "$join.id",

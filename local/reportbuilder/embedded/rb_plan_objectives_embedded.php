@@ -40,37 +40,37 @@ class rb_plan_objectives_embedded extends rb_base_embedded {
             array(
                 'type' => 'plan',
                 'value' => 'planlink',
-                'heading' => 'Plan',
+                'heading' => get_string('plan', 'rb_source_dp_objective'),
             ),
             array(
                 'type' => 'plan',
                 'value' => 'status',
-                'heading' => 'Plan status'
+                'heading' => get_string('planstatus', 'rb_source_dp_objective'),
             ),
             array(
                 'type' => 'objective',
                 'value' => 'fullnamelink',
-                'heading' => 'Objective Name',
+                'heading' => get_string('objname', 'rb_source_dp_objective'),
             ),
             array(
                 'type' => 'objective',
                 'value' => 'description',
-                'heading' => 'Objective Description',
+                'heading' => get_string('objdescription', 'rb_source_dp_objective'),
             ),
             array(
                 'type' => 'objective',
                 'value' => 'priority',
-                'heading' => 'Priority',
+                'heading' => get_string('priority', 'rb_source_dp_objective'),
             ),
             array(
                 'type' => 'objective',
                 'value' => 'duedate',
-                'heading' => 'Due date',
+                'heading' => get_string('duedate', 'rb_source_dp_objective'),
             ),
             array(
                 'type' => 'objective',
                 'value' => 'proficiencyandapproval',
-                'heading' => 'Status'
+                'heading' => get_string('status', 'rb_source_dp_objective'),
             ),
         );
 

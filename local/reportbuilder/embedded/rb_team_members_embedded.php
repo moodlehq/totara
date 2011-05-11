@@ -37,27 +37,27 @@ class rb_team_members_embedded extends rb_base_embedded {
             array(
                 'type' => 'user',
                 'value' => 'namewithlinks',
-                'heading' => 'Name'
+                'heading' => get_string('name', 'rb_source_user'),
             ),
             array(
                 'type' => 'user',
                 'value' => 'lastlogin',
-                'heading' => 'Last Login'
+                'heading' => get_string('lastlogin', 'rb_source_user'),
             ),
             array(
                 'type' => 'statistics',
                 'value' => 'coursesstarted',
-                'heading' => 'Courses Started'
+                'heading' => get_string('coursesstarted', 'rb_source_user'),
             ),
             array(
                 'type' => 'statistics',
                 'value' => 'coursescompleted',
-                'heading' => 'Courses Completed'
+                'heading' => get_string('coursescompleted', 'rb_source_user'),
             ),
             array(
                 'type' => 'statistics',
                 'value' => 'competenciesachieved',
-                'heading' => 'Competencies Achieved'
+                'heading' => get_string('competenciesachieved', 'rb_source_user'),
             ),
         );
 

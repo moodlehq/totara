@@ -2,11 +2,13 @@
 // lang file for local/plan/rb_sources/rb_source_dp_course.php
 $string['sourcetitle'] = 'Record of Learning: Courses';
 // columns
+$string['plan'] = 'Plan';
 $string['planname'] = 'Plan name';
 $string['plannamelink'] = 'Plan name (linked to plan page)';
 $string['planstartdate'] = 'Plan start date';
 $string['planenddate'] = 'Plan end date';
 $string['planstatus'] = 'Plan status';
+$string['plantemplate'] = 'Plan template';
 $string['courseduedate'] = 'Course due date';
 $string['coursepriority'] = 'Course priority';
 $string['coursestatus'] = 'Course status';

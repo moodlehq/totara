@@ -541,6 +541,7 @@ $string['nolinkedcourses'] = 'No linked courses.';
 $string['linkedcourses'] = 'Linked courses';
 
 $string['planname'] = 'Plan name';
+$string['planstatus'] = 'Plan status';
 $string['plandescription'] = 'Plan description';
 $string['datestarted'] = 'Date started';
 $string['datecreated'] = 'Date created';

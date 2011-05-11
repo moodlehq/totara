@@ -131,7 +131,7 @@ class rb_source_dp_objective extends rb_base_source {
                 get_string('planname', 'rb_source_dp_objective'),
                 'dp.name',
                 array(
-                    'defaultheading' => 'Plan',
+                    'defaultheading' => get_string('plan', 'rb_source_dp_objective'),
                     'joins' => 'dp'
                 )
         );
@@ -141,7 +141,7 @@ class rb_source_dp_objective extends rb_base_source {
                 get_string('plannamelink', 'rb_source_dp_objective'),
                 'dp.name',
                 array(
-                    'defaultheading' => 'Plan',
+                    'defaultheading' => get_string('plan', 'rb_source_dp_objective'),
                     'joins' => 'dp',
                     'displayfunc' => 'planlink',
                     'extrafields' => array( 'plan_id'=>'dp.id' )
@@ -184,7 +184,7 @@ class rb_source_dp_objective extends rb_base_source {
                 get_string('templatename', 'rb_source_dp_objective'),
                 'template.fullname',
                 array(
-                    'defaultheading' => 'Plan template',
+                    'defaultheading' => get_string('plantemplate', 'rb_source_dp_objective'),
                     'joins' => 'template'
                 )
         );

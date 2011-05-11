@@ -63,9 +63,9 @@ class block_guides extends block_list {
                 $inprogresscontent .= '</form>';
                 $this->content->items[] = $inprogresscontent;
             }
-            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">More detail</a>';
+            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">' . get_string('moredetail', 'block/guides') . '</a>';
         } else {
-            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">View all guides</a>';
+            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">' . get_string('viewallguides', 'block/guides') . '</a>';
         }
         return $this->content;
     }

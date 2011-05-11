@@ -207,7 +207,7 @@ totaraDialog_handler_lpCompetency.prototype._update = function(response) {
     var table = $('div#content form#dp-component-update table.dp-plan-component-items');
 
     // Check for no items msg
-    var noitems = $(response).filter('span.noitems-assigncompetencies');
+    var noitems = $(response).filter('span.noitems-assigncompetency');
 
     // Define update setting button div
     var updatesettings = $('div#content div#dp-component-update-submit');

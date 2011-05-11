@@ -328,13 +328,10 @@ abstract class dp_base_component {
     public function display_list($restrict = null) {
         global $CFG;
 
-        // Plural
-        $plural = strtolower(get_string($this->component.'plural', 'local_plan'));
-
         // If no items, return message instead of table
         if (!$count = $this->count_assigned_items($restrict)) {
-            // Generate plural lang key
-            return '<span class="noitems-assign'.$plural.'">'.get_string('no'.$plural, 'local_plan').'</span>';
+            $plural = strtolower(get_string($this->component.'plural', 'local_plan'));
+            return '<span class="noitems-assign'.$this->component.'">'.get_string('nox', 'local_plan', $plural).'</span>';
         }
 
         // Get table headers/columns

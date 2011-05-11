@@ -184,7 +184,7 @@ from
                 get_string('planname', 'rb_source_dp_course'),
                 'dp_course.planname',
                 array(
-                    'defaultheading' => 'Plan',
+                    'defaultheading' => get_string('plan', 'rb_source_dp_course'),
                     'joins' => 'dp_course'
                 )
         );
@@ -194,7 +194,7 @@ from
                 get_string('plannamelink', 'rb_source_dp_course'),
                 'dp_course.planname',
                 array(
-                    'defaultheading' => 'Plan',
+                    'defaultheading' => get_string('plan', 'rb_source_dp_course'),
                     'joins' => 'dp_course',
                     'displayfunc' => 'planlink',
                     'extrafields' => array( 'plan_id'=>'dp_course.planid' )
@@ -271,7 +271,7 @@ from
                 get_string('templatename', 'rb_source_dp_course'),
                 'dp_template.shortname',
                 array(
-                    'defaultheading' => 'Plan template',
+                    'defaultheading' => get_string('plantemplate', 'rb_source_dp_course'),
                     'joins' => 'dp_template'
                 )
         );
