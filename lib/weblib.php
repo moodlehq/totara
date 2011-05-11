@@ -471,10 +471,10 @@ class moodle_url {
  */
 function data_submitted($url='') {
 
-    if (empty($_POST)) {
-        return false;
+    if ((isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') || !empty($_POST)) {
+             return (object)$_POST;
     } else {
-        return (object)$_POST;
+        return false;
     }
 }
 
