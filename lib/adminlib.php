@@ -4468,7 +4468,7 @@ function admin_externalpage_print_footer() {
 
     define('ADMIN_EXT_FOOTER_PRINTED', 'true');
 
-    if (!empty($SITE->fullname)) {
+    if (!empty($SITE->fullname) && !defined('BLOCK_CONFIG_PRINTED')) {
         $pageblocks = blocks_setup($PAGE);
         $preferred_width_left = bounded_number(BLOCK_L_MIN_WIDTH,
                                                blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]),

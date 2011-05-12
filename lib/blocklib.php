@@ -531,6 +531,7 @@ function blocks_execute_action($page, &$pageblocks, $blockaction, $instanceorid,
                 // And nothing more, continue with displaying the page
             }
             else {
+                define('BLOCK_CONFIG_PRINTED',true);
                 // We need to show the config screen, so we highjack the display logic and then die
                 $strheading = get_string('blockconfiga', 'moodle', $blocktitle);
                 $page->print_header(get_string('pageheaderconfigablock', 'moodle'), array($strheading => ''));
