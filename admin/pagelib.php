@@ -136,6 +136,7 @@ class page_admin extends page_base {
 
         // The search page currently doesn't handle block editing
         if ($this->section != 'search' and $this->user_allowed_editing()) {
+            $path = $this->url_get_path(); //this call is needed to initialize extra params
             $options = $this->url_get_parameters();
             if ($this->user_is_editing()) {
                 $caption = get_string('blockseditoff');
@@ -144,7 +145,7 @@ class page_admin extends page_base {
                 $caption = get_string('blocksediton');
                 $options['adminedit'] = 'on';
             }
-            $buttons = print_single_button($this->url_get_path(), $options, $caption, 'get', '', true);
+            $buttons = print_single_button($path, $options, $caption, 'get', '', true);
         } else {
             $buttons = '&nbsp;';
         }
