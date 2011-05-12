@@ -23,3 +23,7 @@ $string['completedorg'] = 'The organisation when completed';
 $string['user'] = 'The user';
 $string['date'] = 'The completion date';
 $string['msgcategory'] = 'Message Category';
+
+// column types for this source, as strings
+$string['type_message_values'] = 'Message Values';
+

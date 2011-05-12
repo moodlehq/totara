@@ -30,3 +30,6 @@ $string['currentpos'] = 'The user\'s current position';
 $string['orgwhencompleted'] = 'The organisation when completed';
 $string['user'] = 'The user';
 $string['completiondate'] = 'The completion date';
+
+// column types for this source, as strings
+$string['type_course_completion'] = 'Course Completion';

@@ -37,3 +37,7 @@ $string['currentpos'] = 'The user\'s current position';
 $string['completedorg'] = 'The organisation when completed';
 $string['user'] = 'The user';
 $string['completiondate'] = 'The completion date';
+
+// column types for this source, as strings
+$string['type_competency_evidence'] = 'Competency Evidence';
+$string['type_competency'] = 'Competency';

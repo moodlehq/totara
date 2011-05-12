@@ -439,6 +439,30 @@ abstract class rb_base_source {
         return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=".urlencode($icon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\" />";
     }
 
+    // display an icon for the course type
+    function rb_display_course_type_icon($type) {
+        global $CFG;
+
+        switch ($type) {
+        case null:
+            return null;
+            break;
+        case 0:
+            $image = 'elearning';
+            break;
+        case 1:
+            $image = 'blended';
+            break;
+        case 2:
+            $image = 'facetoface';
+            break;
+        }
+        $alt = get_string($image, 'rb_source_dp_course');
+        $icon = "<img title=\"{$alt}\" src=\"{$CFG->pixpath}/msgicons/{$image}" . '-regular.png' . "\"></img>";
+
+        return $icon;
+    }
+
     // convert a course category name into a link to that category's page
     function rb_display_link_course_category($category, $row) {
         global $CFG;
@@ -1094,6 +1118,18 @@ abstract class rb_base_source {
                     "$join.summary") . ' END',
             array(
                 'joins' => $join,
+            )
+        );
+
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'coursetypeicon',
+            get_string('coursetypeicon', 'local_reportbuilder'),
+            "$join.coursetype",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'course_type_icon',
+                'defaultheading' => get_string('coursetypeicon', 'local_reportbuilder'),
             )
         );
         return true;

@@ -10,3 +10,6 @@ $string['usersname'] = 'User\'s Name';
 $string['users'] = 'Users';
 $string['picture'] = 'Picture';
 $string['options'] = 'Options';
+
+// column types for this source, as strings
+$string['type_statistics'] = 'Statistics';

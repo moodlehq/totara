@@ -332,18 +332,6 @@ from
                 )
             );
 
-        $columnoptions[] = new rb_column_option(
-                'course_info_data',
-                'coursetypeicon',
-                get_string('coursetypeicon', 'rb_source_dp_course'),
-                'course.coursetype',
-                array(
-                    'joins' => 'course',
-                    'displayfunc' => 'course_type_icon',
-                    'defaultheading' => get_string('coursetypeicon', 'rb_source_dp_course'),
-                )
-            );
-
         return $columnoptions;
     }
 
@@ -441,28 +429,6 @@ from
         return $paramoptions;
     }
 
-    function rb_display_course_type_icon($type) {
-        global $CFG;
-
-        switch ($type) {
-        case null:
-            return null;
-            break;
-        case 0:
-            $image = 'elearning';
-            break;
-        case 1:
-            $image = 'blended';
-            break;
-        case 2:
-            $image = 'facetoface';
-            break;
-        }
-        $alt = get_string($image, 'rb_source_dp_course');
-        $icon = "<img title=\"{$alt}\" src=\"{$CFG->pixpath}/msgicons/{$image}" . '-regular.png' . "\"></img>";
-
-        return $icon;
-    }
 
     function rb_display_course_completion_progress($status, $row) {
         return totara_display_course_progress_icon($row->userid, $row->courseid, $status);

@@ -26,3 +26,10 @@ $string['sessroom'] = 'Session Room';
 $string['pilot'] = 'Pilot';
 $string['audit'] = 'Audit';
 $string['coursedelivery'] = 'Course Delivery';
+
+// column types for this source, as strings
+$string['type_session'] = 'Session';
+$string['type_status'] = 'Status';
+$string['type_role'] = 'Role';
+$string['type_facetoface'] = 'Face-to-face';
+$string['type_date'] = 'Session Date';

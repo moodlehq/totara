@@ -15,7 +15,6 @@ $string['templatestartdate'] = 'Plan template start date';
 $string['templateenddate'] = 'Plan template end date';
 $string['completionstatus'] = 'Completion status';
 $string['completionstatusandapproval'] = 'Completion status (and approval status)';
-$string['coursetypeicon'] = 'Type';
 $string['progress'] = 'Progress';
 // filters
 $string['userid'] = 'User ID';
@@ -24,3 +23,8 @@ $string['coursetitle'] = 'Course Title';
 $string['elearning'] = 'E-Learning';
 $string['blended'] = 'Blended';
 $string['facetoface'] = 'Face-to-Face';
+
+// column types for this source, as strings
+$string['type_plan'] = 'Plan';
+$string['type_template'] = 'Plan Template';
+$string['type_course_completion'] = 'Course Completion';

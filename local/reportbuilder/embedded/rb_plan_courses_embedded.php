@@ -38,7 +38,7 @@ class rb_plan_courses_embedded extends rb_base_embedded {
         $this->fullname = get_string('recordoflearningcourses', 'local_plan');
         $this->columns = array(
             array(
-                'type' => 'course_info_data',
+                'type' => 'course',
                 'value' => 'coursetypeicon',
                 'heading' => 'Type',
             ),

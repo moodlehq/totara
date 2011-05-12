@@ -273,5 +273,16 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
             }
         }
     }
+
+    if ($result && $oldversion < 2011051200) {
+        // move course type icon columnoption from its own section into 'course' section
+        $sql = "UPDATE {$CFG->prefix}report_builder_columns
+            SET type='course'
+            WHERE type='course_info_data' AND value='coursetypeicon'";
+        $result = $result && execute_sql($sql);
+    }
+
     return $result;
+
+
 }

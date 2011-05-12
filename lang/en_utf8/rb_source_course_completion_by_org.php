@@ -23,3 +23,6 @@ $string['currentorg'] = 'The user\'s current organisation';
 $string['orgwhencompleted'] = 'The organisation when completed';
 $string['user'] = 'The user';
 $string['completiondate'] = 'The completion date';
+
+// column types for this source, as strings
+$string['type_course_completion'] = 'Course Completion';

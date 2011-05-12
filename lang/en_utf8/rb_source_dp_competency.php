@@ -19,3 +19,8 @@ $string['competencyproficiency'] = 'Competency proficiency';
 $string['competencyproficient'] = 'Proficient at Competency?';
 $string['competencyproficiencyandapproval'] = 'Competency proficiency (and approval status)';
 $string['coursetypeicon'] = 'Type';
+
+// column types for this source, as strings
+$string['type_plan'] = 'Plan';
+$string['type_template'] = 'Plan Template';
+$string['type_competency'] = 'Competency';
