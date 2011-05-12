@@ -208,6 +208,15 @@
                 // um will take care of error reporting.
                 displaydir($wdir);
             } else {
+
+                if (data_submitted() && empty($_POST)) {
+                    /*
+                        This situation is likely the result of the user
+                        attempting to upload a file larger than POST_MAX_SIZE
+                     */
+                    notify(get_string('uploadserverlimit'));
+                }
+
                 $upload_max_filesize = get_max_upload_file_size($CFG->maxbytes);
                 $filesize = display_size($upload_max_filesize);
 
@@ -216,14 +225,19 @@
                 $strmaxsize = get_string("maxsize", "", $filesize);
                 $strcancel = get_string("cancel");
 
+                /*
+                    It is necessary to send these details via GET as if the user
+                    submits a file larger than POST_MAX_SIZE, all post data will
+                    be lost.
+                */
+                $frm_action  = "{$CFG->wwwroot}/files/index.php?";
+                $frm_action .= "choose=".urlencode($choose)."&amp;wdir=".urlencode($wdir);
+                $frm_action .= "&amp;id={$id}&amp;action=upload";
+
                 echo "<p>$struploadafile ($strmaxsize) --> <b>$wdir</b></p>";
-                echo "<form enctype=\"multipart/form-data\" method=\"post\" action=\"index.php\">";
+                echo "<form enctype=\"multipart/form-data\" method=\"post\" action=\"$frm_action\">";
                 echo "<div>";
                 echo "<table><tr><td colspan=\"2\">";
-                echo ' <input type="hidden" name="choose" value="'.$choose.'" />';
-                echo " <input type=\"hidden\" name=\"id\" value=\"$id\" />";
-                echo " <input type=\"hidden\" name=\"wdir\" value=\"$wdir\" />";
-                echo " <input type=\"hidden\" name=\"action\" value=\"upload\" />";
                 echo " <input type=\"hidden\" name=\"sesskey\" value=\"$USER->sesskey\" />";
                 upload_print_form_fragment(1,array('userfile'),null,false,null,$upload_max_filesize,0,false);
                 echo " </td></tr></table>";

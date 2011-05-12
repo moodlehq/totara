@@ -73,7 +73,8 @@
     }
 
     //create form
-    $userform = new user_editadvanced_form();
+    $url = "{$CFG->wwwroot}/user/editadvanced.php?id={$user->id}&course={$course->id}";
+    $userform = new user_editadvanced_form($url);
     $userform->set_data($user);
 
     if ($usernew = $userform->get_data()) {
@@ -217,6 +218,11 @@
         $showtasksalerts = 1;
         $currenttab = 'editprofile';
         require('tabs.php');
+    }
+
+    // Display warning if file upload was over maximum allowed
+    if (empty($usernew) && data_submitted()) {
+        notify(get_string('uploadserverlimit'));
     }
 
 /// Finally display THE form
