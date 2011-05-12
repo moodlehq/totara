@@ -181,10 +181,9 @@ function dp_competency_component_process_settings_form($fromform, $id) {
     $todb->autoassignpos = $fromform->autoassignpos;
     $todb->includecompleted = $fromform->includecompleted;
     $todb->autoassigncourses = $fromform->autoassigncourses;
-    // @todo add scale info
+
     if($competencysettings = get_record('dp_competency_settings', 'templateid', $id)) {
         // update
-        begin_sql();
         $todb->id = $competencysettings->id;
         if(!update_record('dp_competency_settings', $todb)) {
             rollback_sql();
@@ -192,7 +191,6 @@ function dp_competency_component_process_settings_form($fromform, $id) {
         }
     } else {
         // insert
-        begin_sql();
         if(!insert_record('dp_competency_settings', $todb)) {
             rollback_sql();
             totara_set_notification(get_string('error:update_competency_settings','local_plan'), $currenturl);
