@@ -69,9 +69,23 @@ function local_js($options = array()) {
     // If datepicker enabled
     if (in_array(TOTARA_JS_DATEPICKER, $options)) {
 
-        require_js(array(
+        $files = array(
             $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
-	));
+        );
+
+        // get current lang code (without _utf8 suffix)
+        $lang = current_language();
+        if(substr($lang, -5) == '_utf8') {
+            $lang = substr($lang, 0, strlen($lang) - 5);
+        }
+
+        // include datepicker localization file if present for current language
+        $file = "/local/js/lib/jquery.ui.datepicker-{$lang}.js";
+        if(is_readable($CFG->dirroot . $file)) {
+            $files[] = $CFG->wwwroot . $file;
+        }
+
+        require_js($files);
     }
 }
 
