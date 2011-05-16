@@ -432,7 +432,7 @@ if(!$csv) {
                 // Try load a aggregation method
                 $method = $completion->get_aggregation_method($current_group->criteriatype);
 
-                $method = $method == 1 ? get_string('all') : get_string('any');
+                $method = $method == 1 ? get_string('aggregateall', 'completion') : get_string('aggregateany', 'completion');
 
             } else {
                 $method = '-';
@@ -462,7 +462,7 @@ if(!$csv) {
             print get_string('courserploranycriteriagroup', 'completion');
         }
     } else {
-        print $method == 1 ? get_string('all') : get_string('any');
+        print $method == 1 ? get_string('aggregateall', 'completion') : get_string('aggregateany', 'completion');
     }
     print '</th>';
 

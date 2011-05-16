@@ -204,8 +204,8 @@ class completion_info {
      */
     public static function get_aggregation_methods() {
         return array(
-            COMPLETION_AGGREGATION_ALL       => get_string('all'),
-            COMPLETION_AGGREGATION_ANY       => get_string('any', 'completion'),
+            COMPLETION_AGGREGATION_ALL       => get_string('aggregateall', 'completion'),
+            COMPLETION_AGGREGATION_ANY       => get_string('aggregateany', 'completion'),
         );
     }
 
