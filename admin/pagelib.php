@@ -74,7 +74,7 @@ class page_admin extends page_base {
         $root =& $adminroot->locate($this->section);
         if (is_a($root, 'admin_externalpage')) {
             $url = new moodle_url($root->url,$this->extraurlparams);
-            $this->extraurlparams = $url->params;
+            $this->extraurlparams = $url->params();
             return $url->out(true);
         } else {
             return ($CFG->wwwroot . '/' . $CFG->admin . '/settings.php');
