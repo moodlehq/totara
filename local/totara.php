@@ -564,7 +564,7 @@ function totara_print_user_profile_field($userid=null, $fieldshortname=null) {
  *
  * @param int $userid       ID of user
  * @param int $managerid    ID of a potential manager to check (optional)
- * @param mixed $postype    Type of the position to check (POSITION_TYPE_* constant). Can be an int or an array of ints (optional)
+ * @param int $postype      Type of the position to check (POSITION_TYPE_* constant). Defaults to all positions (optional)
  * @return boolean true if user $userid is managed by user $managerid
  *
  * If managerid is not set, uses the current user
@@ -580,19 +580,13 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
     }
 
     require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
-    if ( $postype === null ){
-        $postype = POSITION_TYPE_PRIMARY;
-    }
 
-    if ( is_array( $postype ) && count( $postype ) ){
-        $postypewhere = "pa.type in (";
-        $postypewhere .= implode(',', $postype);
-        $postypewhere .= ")";
-
+    if ($postype) {
+        $postypewhere = "AND pa.type = {$postype}";
     } else {
-        $postypewhere = "pa.type = " . ((int) $postype);
+        $postypewhere = '';
     }
-    $postype = (int) $postype;
+
     $sql = "SELECT DISTINCT u.id
         FROM
             {$CFG->prefix}pos_assignment pa
@@ -600,7 +594,7 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
             INNER JOIN {$CFG->prefix}user u ON ra.userid = u.id
         WHERE
             ra.userid = {$managerid} AND pa.userid = {$userid}
-            AND {$postypewhere}";
+            {$postypewhere}";
 
     return record_exists_sql($sql);
 }
@@ -609,7 +603,7 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
  * Returns the staff of the specified user
  *
  * @param int $userid ID of a user to get the staff of
- * @param mixed $postype Type of the position to check (POSITION_TYPE_* constant). Can be an int or an array of ints (optional)
+ * @param mixed $postype Type of the position to check (POSITION_TYPE_* constant). Defaults to primary position(optional)
  * @return array Array of userids of staff who are managed by user $userid, or false if none (optional)
  *
  * If $userid is not set, returns staff of current user
@@ -617,19 +611,9 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
 function totara_get_staff($userid=null, $postype=null) {
     global $CFG, $USER;
     require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
-    if ( $postype === null ){
-        $postype = POSITION_TYPE_PRIMARY;
-    }
+    $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
 
     $userid = !empty($userid) ? (int) $userid : $USER->id;
-    if ( is_array( $postype ) && count( $postype ) ){
-        $postypewhere = "pa.type in (";
-        $postypewhere .= implode(',', $postype);
-        $postypewhere .= ")";
-    } else {
-        $postypewhere = "pa.type = " . ((int) $postype);
-    }
-    $postype = (int) $postype;
     $sql = "SELECT DISTINCT u.id
         FROM
             {$CFG->prefix}pos_assignment pa
@@ -637,7 +621,7 @@ function totara_get_staff($userid=null, $postype=null) {
             INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
         WHERE
             ra.userid = {$userid}
-            AND {$postypewhere}";
+            AND pa.type = {$postype}";
 
     if(!$res = get_records_sql($sql)) {
         // no matches
@@ -651,34 +635,25 @@ function totara_get_staff($userid=null, $postype=null) {
  * Find out a user's manager.
  *
  * @param int $userid Id of users whose manager we want
- * @param mixed $postype Type of the position we want the manager for (POSITION_TYPE_* constant). Can be an int or an array of ints (optional)
- * @return mixed False if no manager. One database row object from mdl_user if the user has managers.
+ * @param int $postype Type of the position we want the manager for (POSITION_TYPE_* constant). Defaults to primary position(optional)
+ * @return mixed False if no manager. Manager user object from mdl_user if the user has a manager.
  */
 function totara_get_manager($userid, $postype=null){
     global $CFG;
     require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
-    if ( $postype === null ){
-        $postype = POSITION_TYPE_PRIMARY;
-    }
+    $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
 
     $userid = (int) $userid;
-    if ( is_array( $postype ) && count( $postype ) ){
-        $postypewhere = "pa.type in (";
-        $postypewhere .= implode(',', $postype);
-        $postypewhere .= ")";
-    } else {
-        $postypewhere = "pa.type = " . ((int) $postype);
-    }
-    $postype = (int) $postype;
-    $sql = "SELECT DISTINCT u.*
+    $sql = "SELECT u.*
         FROM
             {$CFG->prefix}pos_assignment pa
             INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
             INNER JOIN {$CFG->prefix}user u ON ra.userid = u.id
         WHERE
             pa.userid = {$userid}
-            AND {$postypewhere}";
+            AND pa.type = {$postype}";
 
+    //Return a manager if they have one otherwise false
     return get_record_sql($sql);
 }
 
