@@ -3433,9 +3433,11 @@ function reportbuilder_sortbyfullname($a, $b) {
  */
 function reportbuilder_get_embedded_id_from_shortname($shortname, $embedded_ids) {
     // return existing ID if a database record exists already
-    foreach ($embedded_ids as $id => $embed_shortname) {
-        if($shortname == $embed_shortname) {
-            return $id;
+    if(is_array($embedded_ids)) {
+        foreach ($embedded_ids as $id => $embed_shortname) {
+            if($shortname == $embed_shortname) {
+                return $id;
+            }
         }
     }
     // otherwise, create a new embedded report and return the new ID
