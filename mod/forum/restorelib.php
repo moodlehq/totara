@@ -387,15 +387,12 @@
             $read->firstread = backup_todb($rea_info['#']['FIRSTREAD']['0']['#']);
             $read->lastread = backup_todb($rea_info['#']['LASTREAD']['0']['#']);
 
-            //Some recoding and check are performed now
-            $toinsert = true;
-
             //We have to recode the userid field
             $user = backup_getid($restore->backup_unique_code,"user",$read->userid);
             if ($user) {
                 $read->userid = $user->new_id;
             } else {
-                $toinsert = false;
+                continue; // Skip this forum_read record
             }
 
             //We have to recode the discussionid field
@@ -403,7 +400,7 @@
             if ($discussion) {
                 $read->discussionid = $discussion->new_id;
             } else {
-                $toinsert = false;
+                continue; // Skip this forum_read record
             }
 
             //We have to recode the postid field
@@ -411,14 +408,12 @@
             if ($post) {
                 $read->postid = $post->new_id;
             } else {
-                $toinsert = false;
+                continue; // Skip this forum_read record
             }
 
-            //The structure is equal to the db, so insert the forum_read
+            // Arrived here, the structure is equal to the db, so insert the forum_read
             $newid = 0;
-            if ($toinsert) {
-                $newid = insert_record ("forum_read",$read);
-            }
+            $newid = insert_record ("forum_read",$read);
 
             //Do some output
             if (($i+1) % 50 == 0) {
