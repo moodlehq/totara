@@ -27,3 +27,8 @@ $string['completed'] = 'Completed';
 $string['notattempted'] = 'Not Attempted';
 $string['incomplete'] = 'Incomplete';
 $string['failed'] = 'Failed';
+
+// column types for this source, as strings
+$string['type_scorm'] = 'SCORM';
+$string['type_sco'] = 'SCO';
+

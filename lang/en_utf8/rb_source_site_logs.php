@@ -15,3 +15,7 @@ $string['currentorg'] = 'The user\'s current organisation';
 $string['currentpos'] = 'The user\'s current position';
 $string['user'] = 'The user';
 $string['date'] = 'The date';
+
+// column types for this source, as strings
+$string['type_log'] = 'Log';
+

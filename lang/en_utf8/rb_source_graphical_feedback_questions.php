@@ -36,3 +36,9 @@ $string['currentpos'] = 'The user\'s current position';
 $string['currentorg'] = 'The user\'s current organisation';
 $string['course'] = 'The course';
 $string['responsetime'] = 'The response time';
+
+// column types for this source, as strings
+$string['type_feedback'] = 'Feedback';
+$string['type_responses'] = 'Responses';
+$string['type_trainer'] = 'Trainer';
+

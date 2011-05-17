@@ -204,7 +204,7 @@ class mod_scorm_mod_form extends moodleform_mod {
         $coursescorm = current($scorms);
         if (($COURSE->format == 'scorm') && ((count($scorms) == 0) || ($default_values['instance'] == $coursescorm->id))) {
             $default_values['redirect'] = 'yes';
-            $default_values['redirecturl'] = '../course/view.php?id='.$default_values['course'];    
+            $default_values['redirecturl'] = '../course/view.php?id='.$default_values['course'];
         } else {
             $default_values['redirect'] = 'no';
             $default_values['redirecturl'] = '../mod/scorm/view.php?id='.$default_values['coursemodule'];
@@ -215,6 +215,24 @@ class mod_scorm_mod_form extends moodleform_mod {
         if (isset($default_values['instance'])) {
             $default_values['datadir'] = $default_values['instance'];
         }
+
+        // Set some completion default data
+        if (!empty($default_values['completionstatusrequired']) && !is_array($default_values['completionstatusrequired'])) {
+            // Unpack values
+            $cvalues = array();
+            foreach (scorm_status_options() as $key => $value) {
+                if (($default_values['completionstatusrequired'] & $key) == $key) {
+                    $cvalues[$key] = 1;
+                }
+            }
+
+            $default_values['completionstatusrequired'] = $cvalues;
+        }
+
+        if (!isset($default_values['completionscorerequired']) || !strlen($default_values['completionscorerequired'])) {
+            $default_values['completionscoredisabled'] = 1;
+        }
+
     }
 
     function validation($data, $files) {
@@ -228,6 +246,7 @@ class mod_scorm_mod_form extends moodleform_mod {
 
         return $errors;
     }
+
     //need to translate the "options" field.
     function set_data($default_values) {
         if (is_object($default_values)) {
@@ -242,8 +261,83 @@ class mod_scorm_mod_form extends moodleform_mod {
             }
             $default_values = (array)$default_values;
         }
+
         $this->data_preprocessing($default_values);
         parent::set_data($default_values); //never slashed for moodleform_mod
+    }
+
+    function add_completion_rules() {
+        $mform =& $this->_form;
+        $items = array();
+
+        // Require score
+        $group = array();
+        $group[] =& $mform->createElement('text', 'completionscorerequired', '', array('size' => 5));
+        $group[] =& $mform->createElement('checkbox', 'completionscoredisabled', null, get_string('disable'));
+        $mform->setType('completionscorerequired', PARAM_INT);
+        $mform->addGroup($group, 'completionscoregroup', get_string('completionscorerequired', 'scorm'), '', false);
+        $mform->setHelpButton('completionscoregroup', array('completionscore', get_string('completionscoreshelp', 'scorm'), 'scorm'));
+        $mform->disabledIf('completionscorerequired', 'completionscoredisabled', 'checked');
+        $mform->setDefault('completionscorerequired', 0);
+
+        $items[] = 'completionscoregroup';
+
+
+        // Require status
+        $first = true;
+        $firstkey = null;
+        foreach (scorm_status_options(true) as $key => $value) {
+            $name = null;
+            $key = 'completionstatusrequired['.$key.']';
+            if ($first) {
+                $name = get_string('completionstatusrequired', 'scorm');
+                $first = false;
+                $firstkey = $key;
+            }
+            $mform->addElement('checkbox', $key, $name, $value);
+            $mform->setType($key, PARAM_BOOL);
+            $items[] = $key;
+        }
+        $mform->setHelpButton($firstkey, array('completionstatus', get_string('completionstatushelp', 'scorm'), 'scorm'));
+
+        return $items;
+    }
+
+    function completion_rule_enabled($data) {
+        $status = !empty($data['completionstatusrequired']);
+        $score = empty($data['completionscoredisabled']) && strlen($data['completionscorerequired']);
+
+        return $status || $score;
+    }
+
+    function get_data($slashed = true) {
+        $data = parent::get_data($slashed);
+
+        if (!$data) {
+            return false;
+        }
+
+        // Turn off completion settings if the checkboxes aren't ticked
+        $autocompletion = !empty($data->completion) && $data->completion == COMPLETION_TRACKING_AUTOMATIC;
+
+        if (isset($data->completionstatusrequired) && is_array($data->completionstatusrequired)) {
+            $total = 0;
+            foreach (array_keys($data->completionstatusrequired) as $state) {
+                $total |= $state;
+            }
+
+            $data->completionstatusrequired = $total;
+        }
+
+        if (!$autocompletion) {
+            $data->completionstatusrequired = null;
+        }
+
+        if (!empty($data->completionscoredisabled) || !$autocompletion) {
+            $data->completionscorerequired = null;
+        }
+
+        return $data;
     }
 }
 ?>

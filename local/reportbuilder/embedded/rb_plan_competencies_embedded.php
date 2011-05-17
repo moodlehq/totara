@@ -40,32 +40,32 @@ class rb_plan_competencies_embedded extends rb_base_embedded {
             array(
                 'type' => 'plan',
                 'value' => 'planlink',
-                'heading' => 'Plan',
+                'heading' => get_string('plan', 'local_plan'),
             ),
             array(
                 'type' => 'plan',
                 'value' => 'status',
-                'heading' => 'Plan status'
+                'heading' => get_string('planstatus', 'local_plan'),
             ),
             array(
                 'type' => 'competency',
                 'value' => 'fullname',
-                'heading' => 'Competency',
+                'heading' => get_string('competency', 'competency'),
             ),
             array(
                 'type' => 'competency',
                 'value' => 'priority',
-                'heading' => 'Priority',
+                'heading' => get_string('priority', 'rb_source_dp_competency'),
             ),
             array(
                 'type' => 'competency',
                 'value' => 'duedate',
-                'heading' => 'Due date',
+                'heading' => get_string('duedate', 'rb_source_dp_competency'),
             ),
             array(
                 'type' => 'competency',
                 'value' => 'proficiencyandapproval',
-                'heading' => 'Status'
+                'heading' => get_string('status', 'rb_source_dp_competency'),
             ),
         );
 

@@ -210,9 +210,9 @@ if (empty($completions)) {
                 echo '(<i>';
 
                 if ($agg == COMPLETION_AGGREGATION_ALL) {
-                    echo strtolower(get_string('all', 'completion'));
+                    echo strtolower(get_string('aggregateall', 'completion'));
                 } else {
-                    echo strtolower(get_string('any', 'completion'));
+                    echo strtolower(get_string('aggregateany', 'completion'));
                 }
 
                 echo '</i> '.strtolower(get_string('required')).')';

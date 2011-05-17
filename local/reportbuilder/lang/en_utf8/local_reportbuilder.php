@@ -387,3 +387,15 @@ $string['managername'] = 'Manager\'s Name';
 // add course tag fields
 $string['coursetagids'] = 'Course Tag IDs';
 $string['taggedx'] = 'Tagged \'{$a}\'';
+
+// course type icon
+$string['coursetypeicon'] = 'Type';
+
+// common column types, as strings
+// you can override these in individual source lang files if you want
+$string['type_user'] = 'User';
+$string['type_user_profile'] = 'User Profile';
+$string['type_course'] = 'Course';
+$string['type_course_custom_fields'] = 'Course Custom Fields';
+$string['type_course_category'] = 'Category';
+$string['type_tags'] = 'Tags';

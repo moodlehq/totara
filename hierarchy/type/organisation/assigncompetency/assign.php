@@ -110,22 +110,6 @@ foreach ($add as $addition) {
         $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
         redirect($url);
     } else {
-        // Return html
-        echo "<tr class=\"r{$rc}\">";
-
-        echo '<td class="cell c0">';
-        echo $depths[$related->depthid]->fullname;
-        echo '</td>';
-
-        echo '<td class="cell c0">';
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$related->id}\">{$related->fullname}</a>";
-        echo '</td>';
-
-        echo "<td class=\"cell c0\">";
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/organisation/assigncompetency/remove.php?id={$relationship->id}&organisation={$organisation->id}\" title=\"$str_remove\">".
-             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-        echo '</td>';
-
-        echo '</tr>'.PHP_EOL;
+        echo " ~~~RELOAD PAGE~~~ ";  // Indicate that a page reload is required
     }
 }

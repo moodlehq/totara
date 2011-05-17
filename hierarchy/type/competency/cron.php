@@ -243,6 +243,7 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
         AND ce.reaggregate <= {$timestarted}
         AND ce.manual = 0
         AND c.depthid = {$depth->id}
+        AND c.aggregationmethod <> {$COMP_AGGREGATION['OFF']}
         ORDER BY
             competencyid,
             userid

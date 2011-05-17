@@ -37,22 +37,22 @@ class rb_findcourses_embedded extends rb_base_embedded {
             array(
                 'type' => 'course',
                 'value' => 'courselinkicon',
-                'heading' => 'Course Name',
+                'heading' => get_string('coursename', 'local_reportbuilder'),
             ),
             array(
                 'type' => 'course_category',
                 'value' => 'namelinkicon',
-                'heading' => 'Category',
+                'heading' => get_string('category', 'local_reportbuilder'),
             ),
             array(
                 'type' => 'course',
                 'value' => 'startdate',
-                'heading' => 'Start date',
+                'heading' => get_string('report:startdate', 'local_reportbuilder'),
             ),
             array(
                 'type' => 'course',
                 'value' => 'mods',
-                'heading' => 'Content',
+                'heading' => get_string('content', 'local_reportbuilder'),
             ),
         );
 

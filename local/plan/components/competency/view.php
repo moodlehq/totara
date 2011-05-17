@@ -87,7 +87,7 @@ if($coursesenabled) {
         $component->get_linked_components($caid, 'course')) {
         print $plan->get_component('course')->display_linked_courses($linkedcourses);
     } else {
-        print '<p class="noitems-assigncourses">' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
+        print '<p class="noitems-assigncourse">' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
     }
     print '</div>';
 

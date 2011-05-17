@@ -45,11 +45,12 @@ global $COMP_AGGREGATION;
 $COMP_AGGREGATION = array(
     'ALL'       => 1,
     'ANY'       => 2,
+    'OFF'       => 3,
 /*
-    'UNIT'      => 3,
-    'FRACTION'  => 4,
-    'SUM'       => 5,
-    'AVERAGE'   => 6,
+    'UNIT'      => 4,
+    'FRACTION'  => 5,
+    'SUM'       => 6,
+    'AVERAGE'   => 7,
 */
 );
 

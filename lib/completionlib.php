@@ -204,8 +204,8 @@ class completion_info {
      */
     public static function get_aggregation_methods() {
         return array(
-            COMPLETION_AGGREGATION_ALL       => get_string('all'),
-            COMPLETION_AGGREGATION_ANY       => get_string('any', 'completion'),
+            COMPLETION_AGGREGATION_ALL       => get_string('aggregateall', 'completion'),
+            COMPLETION_AGGREGATION_ANY       => get_string('aggregateany', 'completion'),
         );
     }
 
@@ -1348,6 +1348,23 @@ WHERE
         } else {
             // Not displaying pass/fail, but we know grade exists b/c we got here
             return COMPLETION_COMPLETE;
+        }
+    }
+
+    /**
+     * Aggregate activity completion state
+     *
+     * @access  public
+     * @param   int     $type   Aggregation type (COMPLETION_* constant)
+     * @param   bool    $old    Old state
+     * @param   bool    $new    New state
+     * @return  bool
+     */
+    public static function aggregate_completion_states($type, $old, $new) {
+        if ($type == COMPLETION_AND) {
+            return $old && $new;
+        } else {
+            return $old || $new;
         }
     }
 

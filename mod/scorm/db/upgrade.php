@@ -325,6 +325,22 @@ function xmldb_scorm_upgrade($oldversion=0) {
     
 //===== 1.9.0 upgrade line ======//
 
+    // Adding completion fields to scorm table
+    if ($result && $oldversion < 2011041402) {
+        $table = new XMLDBTable('scorm');
+        $field = new XMLDBField('completionstatusrequired');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null, 'timemodified');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+        $field = new XMLDBField('completionscorerequired');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, null, null, null, null, null, 'completionstatusrequired');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+    }
+
     return $result;
 }
 

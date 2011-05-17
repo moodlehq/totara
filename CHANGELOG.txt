@@ -1,5 +1,28 @@
 Totara LMS Changelog
 
+Release 1.0.11 (17 May 2011):
+==================================================
+
+New features:
+    7840    Track SCORM data points in activity completion                                      Add support for tracking activity completion of SCORM content
+
+Improvements:
+    8317    Adding "Off" method to competency aggregation                                       Now possible to disable the competency aggregation feature
+    8333    Include datepicker localisation file if present                                     Now possible to localise the pop-up calendar for other languages.
+    6710    Provide lang strings for column grouping fields                                     For improved multi-lingual support.
+
+Bug fixes:
+    6710    Miscellaneous language string fixes For better cross-language support
+    8079    Updating framework picker after ajax call                                           On position/organisation details page, framework filter now shows correct value after changes to assigned competencies.
+    8276    Fix error when editing blocks on admin pages
+    8324    Fix bug in plan template competency settings                                        Resolves problem saving changes in MSSQL
+    8068    Hide icons with invalid characters in their names                                   No longer possible to select course or category icons, if the icon filename is invalid
+    8282    Fix error when adding blocks to auth plugin pages
+    8221    Fix issue with data_object api                                                      Prevents the creation of invalid duplicate records
+    7589    Fix error on Learning Plan page for MSSQL
+    7589    Fix error with manager assignment for MSSQL
+
+
 Release 1.0.10 (10 May 2011):
 ==================================================
 

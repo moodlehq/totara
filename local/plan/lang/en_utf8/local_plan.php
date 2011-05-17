@@ -338,7 +338,7 @@ $string['error:templateid'] = 'Invalid plan template ID';
 $string['cannotdeletetemplate_inuse'] = 'Cannot delete template when it is in use';
 
 $string['couldnotinsertnewrecord'] = 'Could not insert new record';
-$string['unabletoassigncompsfromorg'] = 'Unable to assign competencies from position organisation';
+$string['unabletoassigncompsfromorg'] = 'Unable to assign competencies from organisation';
 $string['unabletoassigncompsfrompos'] = 'Unable to assign competencies from position';
 
 // Workflows
@@ -541,6 +541,7 @@ $string['nolinkedcourses'] = 'No linked courses.';
 $string['linkedcourses'] = 'Linked courses';
 
 $string['planname'] = 'Plan name';
+$string['planstatus'] = 'Plan status';
 $string['plandescription'] = 'Plan description';
 $string['datestarted'] = 'Date started';
 $string['datecreated'] = 'Date created';

@@ -38,29 +38,29 @@ class rb_plan_courses_embedded extends rb_base_embedded {
         $this->fullname = get_string('recordoflearningcourses', 'local_plan');
         $this->columns = array(
             array(
-                'type' => 'course_info_data',
+                'type' => 'course',
                 'value' => 'coursetypeicon',
-                'heading' => 'Type',
+                'heading' => get_string('coursetypeicon', 'rb_source_dp_course'),
             ),
             array(
                 'type' => 'course',
                 'value' => 'courselink',
-                'heading' => 'Course Title',
+                'heading' => get_string('coursetitle', 'rb_source_dp_course'),
             ),
             array(
                 'type' => 'plan',
                 'value' => 'planlink',
-                'heading' => 'Plan',
+                'heading' => get_string('plan', 'rb_source_dp_course'),
             ),
             array(
                 'type' => 'plan',
                 'value' => 'courseduedate',
-                'heading' => 'Course due date',
+                'heading' => get_string('courseduedate', 'rb_source_dp_course'),
             ),
             array(
                 'type' => 'course_completion',
                 'value' => 'statusandapproval',
-                'heading' => 'Progress',
+                'heading' => get_string('progress', 'rb_source_dp_course'),
             ),
         );
 

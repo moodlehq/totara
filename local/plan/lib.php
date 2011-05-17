@@ -433,21 +433,23 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
 
     // Construct sql query
     $count = 'SELECT COUNT(*) ';
-    $select = 'SELECT p.id, p.name AS "name_'.$statuses_undrsc.'",';
+    $select = 'SELECT p.id, p.name AS "name_'.$statuses_undrsc.'"';
     foreach ($cols as $c) {
         if ($c == 'completed') {
             continue;
         }
-        $select .= 'p.'.$c.' AS "'.$c.'_'.$statuses_undrsc.'",';
+        $select .= ", p.{$c} AS \"{$c}_{$statuses_undrsc}\"";
     }
     if (in_array('completed', $cols)) {
-        $select .= "(SELECT timemodified FROM {$CFG->prefix}dp_plan_history ph WHERE ph.planid = p.id ORDER BY id DESC LIMIT 1)
+        $select .= ", phmax.timemodified
             AS \"timemodified_{$statuses_undrsc}\" ";
-    } else {
-        $select .= '1=1 ';
     }
+
     $from = "FROM {$CFG->prefix}dp_plan p ";
     $where = "WHERE userid = {$userid} AND status IN ({$statuses}) ";
+    if (in_array('completed', $cols)) {
+        $from .= "LEFT JOIN (SELECT planid, max(timemodified) as timemodified FROM {$CFG->prefix}dp_plan_history GROUP BY planid) phmax ON p.id=phmax.planid ";
+    }
     $count = count_records_sql($count.$from.$where);
 
     // Set up table

@@ -211,7 +211,9 @@
                 '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" /></a>';
             $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.$report->fullname.'</a>' .
                 ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
-            $row[] = $report->source;
+            $src = reportbuilder::get_source_object($report->source);
+            $srcname = $src->sourcetitle;
+            $row[] = $srcname;
             $row[] = "$settings &nbsp; $delete";
             $data[] = $row;
         }
@@ -247,14 +249,15 @@
             $fullname = $embed->fullname;
             $shortname = $embed->shortname;
             $url = $embed->url;
-            $source = $embed->source;
             $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$id.'" title="'.$strsettings.'">' .
                 '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'" /></a>';
             $reload = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?em=1&amp;d=1&amp;id='.$id.'" title="'.$strreload.'">' .
                 '<img src="'.$CFG->pixpath.'/t/reload.gif" alt="'.$strreload.'" /></a>';
             $row = array();
             $row[] = '<a href="' . $CFG->wwwroot . '/local/reportbuilder/general.php?id=' . $id . '">' . $fullname . '</a> (<a href="' . $CFG->wwwroot . $url . '">' . get_string('view') . '</a>)';
-            $row[] = $source;
+            $src = reportbuilder::get_source_object($embed->source);
+            $srcname = $src->sourcetitle;
+            $row[] = $srcname;
             $row[] = "$settings &nbsp; $reload";
             $data[] = $row;
         }

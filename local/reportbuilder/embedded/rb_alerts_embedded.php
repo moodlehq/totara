@@ -40,22 +40,22 @@ class rb_alerts_embedded extends rb_base_embedded {
             array(
                 'type' => 'message_values',
                 'value' => 'msgtype',
-                'heading' => 'Type',
+                'heading' => get_string('type', 'rb_source_totaramessages'),
             ),
             array(
                 'type' => 'user',
                 'value' => 'namelink',
-                'heading' => 'Name',
+                'heading' => get_string('name', 'rb_source_totaramessages'),
             ),
             array(
                 'type' => 'message_values',
                 'value' => 'statement',
-                'heading' => 'Details',
+                'heading' => get_string('details', 'rb_source_totaramessages'),
             ),
             array(
                 'type' => 'message_values',
                 'value' => 'sent',
-                'heading' => 'Sent',
+                'heading' => get_string('sent', 'rb_source_totaramessages'),
             ),
         );
 

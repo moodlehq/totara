@@ -184,7 +184,7 @@ from
                 get_string('planname', 'rb_source_dp_course'),
                 'dp_course.planname',
                 array(
-                    'defaultheading' => 'Plan',
+                    'defaultheading' => get_string('plan', 'rb_source_dp_course'),
                     'joins' => 'dp_course'
                 )
         );
@@ -194,7 +194,7 @@ from
                 get_string('plannamelink', 'rb_source_dp_course'),
                 'dp_course.planname',
                 array(
-                    'defaultheading' => 'Plan',
+                    'defaultheading' => get_string('plan', 'rb_source_dp_course'),
                     'joins' => 'dp_course',
                     'displayfunc' => 'planlink',
                     'extrafields' => array( 'plan_id'=>'dp_course.planid' )
@@ -271,7 +271,7 @@ from
                 get_string('templatename', 'rb_source_dp_course'),
                 'dp_template.shortname',
                 array(
-                    'defaultheading' => 'Plan template',
+                    'defaultheading' => get_string('plantemplate', 'rb_source_dp_course'),
                     'joins' => 'dp_template'
                 )
         );
@@ -329,18 +329,6 @@ from
                     'displayfunc' => 'course_completion_progress_and_approval',
                     'defaultheading' => get_string('progress', 'rb_source_dp_course'),
                     'extrafields' => array('approved' => 'dp_course.approved', 'userid' => 'base.userid', 'courseid' => 'base.courseid'),
-                )
-            );
-
-        $columnoptions[] = new rb_column_option(
-                'course_info_data',
-                'coursetypeicon',
-                get_string('coursetypeicon', 'rb_source_dp_course'),
-                'course.coursetype',
-                array(
-                    'joins' => 'course',
-                    'displayfunc' => 'course_type_icon',
-                    'defaultheading' => get_string('coursetypeicon', 'rb_source_dp_course'),
                 )
             );
 
@@ -441,28 +429,6 @@ from
         return $paramoptions;
     }
 
-    function rb_display_course_type_icon($type) {
-        global $CFG;
-
-        switch ($type) {
-        case null:
-            return null;
-            break;
-        case 0:
-            $image = 'elearning';
-            break;
-        case 1:
-            $image = 'blended';
-            break;
-        case 2:
-            $image = 'facetoface';
-            break;
-        }
-        $alt = get_string($image, 'rb_source_dp_course');
-        $icon = "<img title=\"{$alt}\" src=\"{$CFG->pixpath}/msgicons/{$image}" . '-regular.png' . "\"></img>";
-
-        return $icon;
-    }
 
     function rb_display_course_completion_progress($status, $row) {
         return totara_display_course_progress_icon($row->userid, $row->courseid, $status);

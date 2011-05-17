@@ -318,7 +318,7 @@ function scorm_insert_track($userid,$scormid,$scoid,$attempt,$element,$value) {
     }
 
     if (strstr($element, '.score.raw') ||
-        (($element == 'cmi.core.lesson_status' || $element == 'cmi.completion_status') && ($track->value == 'completed' || $track->value == 'passed'))) {
+        (($element == 'cmi.core.lesson_status' || $element == 'cmi.completion_status') && in_array($track->value, array('completed', 'passed', 'failed')))) {
         $scorm = get_record('scorm', 'id', $scormid);
         include_once($CFG->dirroot.'/mod/scorm/lib.php');
         scorm_update_grades($scorm, $userid);
@@ -730,6 +730,11 @@ function scorm_simple_play($scorm,$user, $context) {
     $result = false;
 
     if ($scorm->updatefreq == UPDATE_EVERYTIME) {
+        if (strpos($scorm->version, 'AICC') !== false) {
+            $scorm->pkgtype = 'AICC';
+        } else {
+            $scorm->pkgtype = 'SCORM';
+        }
         scorm_parse($scorm);
     }
     if (has_capability('mod/scorm:viewreport', $context)) { //if this user can view reports, don't skipview so they can see links to reports. 

@@ -39,27 +39,27 @@ class rb_pastbookings_embedded extends rb_base_embedded {
             array(
                 'type' => 'course',
                 'value' => 'courselink',
-                'heading' => 'Course Name',
+                'heading' => get_string('coursename', 'local_reportbuilder'),
             ),
             array(
                 'type' => 'facetoface',
                 'value' => 'name',
-                'heading' => 'Session Name',
+                'heading' => get_string('sessionname', 'rb_source_facetoface_session'),
             ),
             array(
                 'type' => 'date',
                 'value' => 'sessiondate',
-                'heading' => 'Session Date',
+                'heading' => get_string('sessiondate', 'rb_source_facetoface_session'),
             ),
             array(
                 'type' => 'date',
                 'value' => 'timestart',
-                'heading' => 'Start Time',
+                'heading' => get_string('starttime', 'rb_source_facetoface_session'),
             ),
             array(
                 'type' => 'date',
                 'value' => 'timefinish',
-                'heading' => 'End Time',
+                'heading' => get_string('endtime', 'rb_source_facetoface_session'),
             ),
         );
 
@@ -68,7 +68,7 @@ class rb_pastbookings_embedded extends rb_base_embedded {
             $this->columns[] = array(
                 'type' => 'role',
                 'value' => 'facilitator',
-                'heading' => 'Facilitator',
+                'heading' => get_string('facilitator', 'rb_source_facetoface_session'),
             );
         }
 

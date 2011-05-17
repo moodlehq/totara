@@ -218,7 +218,7 @@ from
                 get_string('planname', 'rb_source_dp_competency'),
                 'dp_competency.planname',
                 array(
-                    'defaultheading' => 'Plan',
+                    'defaultheading' => get_string('plan', 'rb_source_dp_competency'),
                     'joins' => 'dp_competency'
                 )
         );
@@ -228,7 +228,7 @@ from
                 get_string('plannamelinked', 'rb_source_dp_competency'),
                 'dp_competency.planname',
                 array(
-                    'defaultheading' => 'Plan',
+                    'defaultheading' => get_string('plan', 'rb_source_dp_competency'),
                     'joins' => 'dp_competency',
                     'displayfunc' => 'planlink',
                     'extrafields' => array( 'plan_id'=>'dp_competency.planid' )
@@ -271,7 +271,7 @@ from
                 get_string('templatename', 'rb_source_dp_competency'),
                 'template.shortname',
                 array(
-                    'defaultheading' => 'Plan template',
+                    'defaultheading' => get_string('plantemplate', 'rb_source_dp_competency'),
                     'joins' => 'template'
                 )
         );

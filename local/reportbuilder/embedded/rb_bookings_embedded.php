@@ -39,27 +39,27 @@ class rb_bookings_embedded extends rb_base_embedded {
             array(
                 'type' => 'course',
                 'value' => 'courselink',
-                'heading' => 'Course Name',
+                'heading' => get_string('coursename', 'local_reportbuilder'),
             ),
             array(
                 'type' => 'facetoface',
                 'value' => 'name',
-                'heading' => 'Session Name',
+                'heading' => get_string('ftfname', 'rb_source_facetoface_sessions'),
             ),
             array(
                 'type' => 'date',
                 'value' => 'sessiondate',
-                'heading' => 'Session Date',
+                'heading' => get_string('sessdate', 'rb_source_facetoface_sessions'),
             ),
             array(
                 'type' => 'date',
                 'value' => 'timestart',
-                'heading' => 'Start Time',
+                'heading' => get_string('starttime', 'rb_source_facetoface_sessions'),
             ),
             array(
                 'type' => 'date',
                 'value' => 'timefinish',
-                'heading' => 'End Time',
+                'heading' => get_string('endtime', 'rb_source_facetoface_sessions'),
             ),
         );
 
@@ -68,7 +68,7 @@ class rb_bookings_embedded extends rb_base_embedded {
             $this->columns[] = array(
                 'type' => 'role',
                 'value' => 'facilitator',
-                'heading' => 'Facilitator',
+                'heading' => get_string('facilitator', 'rb_source_facetoface_sessions'),
             );
         }
 

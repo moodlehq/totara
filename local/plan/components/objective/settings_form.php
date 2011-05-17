@@ -165,10 +165,8 @@ function dp_objective_component_process_settings_form($fromform, $id) {
     if (($fromform->prioritymode != DP_PRIORITY_NONE) && isset($fromform->priorityscale)){
         $todb->priorityscale = $fromform->priorityscale;
     }
-    // @todo add scale info
     if($objectivesettings = get_record('dp_objective_settings', 'templateid', $id)) {
         // update
-        begin_sql();
         $todb->id = $objectivesettings->id;
         if(!update_record('dp_objective_settings', $todb)) {
             rollback_sql();
@@ -176,7 +174,6 @@ function dp_objective_component_process_settings_form($fromform, $id) {
         }
     } else {
         // insert
-        begin_sql();
         if(!insert_record('dp_objective_settings', $todb)) {
             rollback_sql();
             totara_set_notification(get_string('error:update_objective_settings','local_plan'), $currenturl);

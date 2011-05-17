@@ -41,6 +41,7 @@ require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_filter_option.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_param.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_param_option.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_content_option.php');
+require_once($CFG->dirroot.'/local/utils.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -2440,8 +2441,29 @@ var comptree = [' . implode(', ', $comptrees) . '];
         if(!isset($this->columnoptions)) {
             return $ret;
         }
-        foreach($columns as $column) {
-            $section = ucwords(str_replace(array('_','-'),array(' ',' '), $column->type));
+
+        // are we handling a 'group' source?
+        if (preg_match('/^(.+)_grp_([0-9]+|all)$/', $this->source, $matches)) {
+            // use original source name (minus any suffix)
+            $sourcename = $matches[1];
+        } else {
+            // standard source
+            $sourcename = $this->source;
+        }
+
+        foreach ($columns as $column) {
+            $langstr = 'type_' . $column->type;
+            // is there a type string in the source file?
+            if (check_string($langstr, 'rb_source_' . $sourcename)) {
+                $section = get_string($langstr, 'rb_source_' . $sourcename);
+            // how about in report builder?
+            } else if (check_string($langstr, 'local_reportbuilder')) {
+                $section = get_string($langstr, 'local_reportbuilder');
+            } else {
+            // fall back on original approach to cope with dynamic types in feedback sources
+                $section = ucwords(str_replace(array('_','-'),array(' ',' '), $column->type));
+            }
+
             $key = $column->type . '-' . $column->value;
             $ret[$section][$key] = $column->name;
         }
@@ -3411,9 +3433,11 @@ function reportbuilder_sortbyfullname($a, $b) {
  */
 function reportbuilder_get_embedded_id_from_shortname($shortname, $embedded_ids) {
     // return existing ID if a database record exists already
-    foreach ($embedded_ids as $id => $embed_shortname) {
-        if($shortname == $embed_shortname) {
-            return $id;
+    if(is_array($embedded_ids)) {
+        foreach ($embedded_ids as $id => $embed_shortname) {
+            if($shortname == $embed_shortname) {
+                return $id;
+            }
         }
     }
     // otherwise, create a new embedded report and return the new ID

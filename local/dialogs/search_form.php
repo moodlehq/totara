@@ -89,7 +89,7 @@ class dialog_search_form extends moodleform {
         // Show framework selector
         if ($hierarchy && $showpicker) {
 
-            $options = array(0 => 'All frameworks') +
+            $options = array(0 => get_string('allframeworks', 'hierarchy')) +
                 get_records_select_menu($shortprefix . '_framework', '', 'sortorder, fullname', 'id, fullname');
 
             $attr = array(
