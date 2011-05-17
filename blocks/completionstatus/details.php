@@ -174,12 +174,12 @@ if (empty($completions)) {
     // Loop through course criteria
     foreach ($completions as $completion) {
         $criteria = $completion->get_criteria();
-        $complete = $completion->is_complete();
 
         $row = array();
         $row['type'] = $criteria->criteriatype;
         $row['title'] = $criteria->get_title();
         $row['status'] = $completion->get_status();
+        $row['complete'] = $completion->is_complete();
         $row['timecompleted'] = $completion->timecompleted;
         $row['details'] = $criteria->get_details($completion);
         $rows[] = $row;
@@ -238,7 +238,7 @@ if (empty($completions)) {
 
         // Is complete
         echo '<td class="cell c4">';
-        echo ($row['status'] === 'Yes') ? 'Yes' : 'No';
+        echo $row['complete'] ? get_string('yes') : get_string('no');
         echo '</td>';
 
         // Completion data
