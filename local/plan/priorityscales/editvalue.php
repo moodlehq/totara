@@ -131,7 +131,7 @@ if ($valueform->is_cancelled()) {
                 array('style' => 'notifysuccess'));
 
         } else {
-            totara_set_notification(get_string('error:updatepriorityvalue', 'local_plan'),
+            totara_set_notification(get_string('error:updatepriorityscalevalue', 'local_plan'),
                 "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$priorityscaleid}");
         }
     }
