@@ -63,8 +63,8 @@ class completion_completion extends data_object {
      * Array of required table fields, must start with 'id'.
      * @var array $required_fields
      */
-    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified',
-        'timeenrolled', 'timestarted', 'timecompleted', 'rpl', 'reaggregate', 'status');
+    public $required_fields = array('id', 'userid', 'course', 'organisationid', 'positionid',
+        'deleted', 'timenotified', 'timeenrolled', 'timestarted', 'timecompleted', 'rpl', 'reaggregate', 'status');
 
     /**
      * Array of optional table fields
@@ -85,6 +85,24 @@ class completion_completion extends data_object {
      * @var     int
      */
     public $course;
+
+    /**
+     * ID of the user's organisation when they achieved this course completion
+     *
+     * This is taken from their primary position assignment (if any)
+     * @access  public
+     * @var     int
+     */
+    public $organisationid;
+
+    /**
+     * ID of the user's position when they achieved this course completion
+     *
+     * This is taken from their primary position assignment (if any)
+     * @access  public
+     * @var     int
+     */
+    public $positionid;
 
     /**
      * Set to 1 if this record has been deleted
@@ -311,6 +329,7 @@ class completion_completion extends data_object {
      * @return  void
      */
     public function mark_complete($timecomplete = null) {
+        global $CFG;
 
         // Never change a completion time
         if (!$this->timecompleted) {
@@ -322,6 +341,24 @@ class completion_completion extends data_object {
 
             // Set time complete
             $this->timecompleted = $timecomplete;
+        }
+
+        // Get user's positionid and organisationid if not already set
+        if ($this->positionid === null) {
+            require_once("{$CFG->dirroot}/hierarchy/type/position/lib.php");
+
+            // Attempt to load user's position assignment
+            $pa = new position_assignment(array('userid' => $this->userid, 'type' => POSITION_TYPE_PRIMARY));
+
+            // If no position assignment present, set values to 0
+            if (!$pa->id) {
+                $this->positionid = 0;
+                $this->organisationid = 0;
+            }
+            else {
+                $this->positionid = $pa->positionid ? $pa->positionid : 0;
+                $this->organisationid = $pa->organisationid ? $pa->organisationid : 0;
+            }
         }
 
         // Save record
@@ -356,7 +393,6 @@ class completion_completion extends data_object {
         }
 
         $this->status = $status;
-
 
         // Save record
         if ($this->id) {
