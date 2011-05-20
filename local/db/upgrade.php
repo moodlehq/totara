@@ -2136,67 +2136,53 @@ function xmldb_local_upgrade($oldversion) {
 
         // Course completions
         // Check for duplicates
-        $sql = "
-            SELECT
-                COUNT(*)
-            FROM
+        $cc_sql = "
+            WHERE
+                id NOT IN
             (
                 SELECT
-                    userid, course
+                    MAX(cc.id)
                 FROM
-                    {$CFG->prefix}course_completions
+                    {$CFG->prefix}course_completions cc
                 GROUP BY
-                    userid, course
-                HAVING
-                    COUNT(id) > 1
+                    cc.userid, cc.course
             )
-            dups
         ";
 
-        // If any, fail the upgrade until they are removed
-        if ($count = count_records_sql($sql)) {
-            notify("{$count} duplicate records exist in the 'course_completions' table. These must be repaired before the upgrade can continue.");
-            $result = false;
-        }
-        else {
+        // If any duplicates, keep newest version of course completion
+        $result = $result && totara_data_object_duplicate_fix('course_completions', $cc_sql);
+        if ($result) {
             // Add unique index
             $table = new XMLDBTable('course_completions');
             $index = new XMLDBIndex('courseuserid');
             $index->setAttributes(XMLDB_INDEX_UNIQUE, array('userid', 'course'));
-            $result = $result && add_index($table, $index);
+            $result = $result && (index_exists($table, $index) || add_index($table, $index));
         }
 
 
         // Course completion criteria completions
         // Check for duplicates
-        $sql = "
-            SELECT
-                COUNT(*)
-            FROM
+        $ccc_sql = "
+            WHERE
+                id NOT IN
             (
                 SELECT
-                    userid, course, criteriaid
+                    MAX(ccc.id)
                 FROM
-                    {$CFG->prefix}course_completion_crit_compl
+                    {$CFG->prefix}course_completion_crit_compl ccc
                 GROUP BY
-                    userid, course, criteriaid
-                HAVING
-                    COUNT(id) > 1
+                    ccc.userid, ccc.course, ccc.criteriaid
             )
-            dups
         ";
 
-        // If any, fail the upgrade until they are removed
-        if ($count = count_records_sql($sql)) {
-            notify("{$count} duplicate records exist in the 'course_completion_crit_compl' table. These must be repaired before the upgrade can continue.");
-            $result = false;
-        }
-        else {
+        // If any duplicates, keep newest version of course completion criteria completion
+        $result = $result && totara_data_object_duplicate_fix('course_completion_crit_compl', $ccc_sql);
+        if ($result) {
             // Add unique index
             $table = new XMLDBTable('course_completion_crit_compl');
             $index = new XMLDBIndex('courseuseridcritid');
             $index->setAttributes(XMLDB_INDEX_UNIQUE, array('userid', 'course', 'criteriaid'));
-            $result = $result && add_index($table, $index);
+            $result = $result && (index_exists($table, $index) || add_index($table, $index));
         }
 
     }
@@ -2262,6 +2248,113 @@ function xmldb_local_upgrade($oldversion) {
         require_once($CFG->libdir.'/completion/completion_completion.php');
 
         completion_mark_users_started();
+    }
+
+    if ($result && $oldversion < 2011051705) {
+
+        // Position assignments
+        // Where clause to find duplicates
+        $pa_sql = "
+            WHERE
+                id NOT IN
+            (
+                SELECT
+                    MAX(pa.id)
+                FROM
+                    {$CFG->prefix}pos_assignment pa
+                GROUP BY
+                    pa.userid, pa.type
+            )
+        ";
+
+        // If any duplicates, keep newest version of a duplicate position assignment
+        $result = $result && totara_data_object_duplicate_fix('pos_assignment', $pa_sql);
+        if ($result) {
+            // Add unique index
+            $table = new XMLDBTable('pos_assignment');
+            $index = new XMLDBIndex('typeuserid');
+            $index->setAttributes(XMLDB_INDEX_UNIQUE, array('userid', 'type'));
+            $result = $result && (index_exists($table, $index) || add_index($table, $index));
+        }
+
+        // Course completion aggregation methods
+        // Where clause to find duplicates
+        $ccam_sql = "
+            WHERE
+                id NOT IN
+            (
+                SELECT
+                    MAX(ccam.id)
+                FROM
+                    {$CFG->prefix}course_completion_aggr_methd ccam
+                GROUP BY
+                    ccam.course, ccam.criteriatype
+            )
+        ";
+
+        // If any duplicates, keep newest version of a duplicate completion aggregation method
+        $result = $result && totara_data_object_duplicate_fix('course_completion_aggr_methd', $ccam_sql);
+        if ($result) {
+            // Add unique index
+            $table = new XMLDBTable('course_completion_aggr_methd');
+            $index = new XMLDBIndex('coursecriteriatype');
+            $index->setAttributes(XMLDB_INDEX_UNIQUE, array('course', 'criteriatype'));
+            $result = $result && (index_exists($table, $index) || add_index($table, $index));
+        }
+
+        // Competency evidence items evidence
+        // Add index if no duplicates
+        $ceie_sql = "
+            SELECT
+                COUNT(id)
+            FROM
+                {$CFG->prefix}comp_evidence_items_evidence
+            WHERE
+                id NOT IN
+            (
+                SELECT
+                    MAX(ceie.id)
+                FROM
+                    {$CFG->prefix}comp_evidence_items_evidence ceie
+                GROUP BY
+                    ceie.userid, ceie.competencyid, ceie.itemid
+            )
+        ";
+
+        if ($result && !count_records_sql($ceie_sql)) {
+            // Add unique index
+            $table = new XMLDBTable('comp_evidence_items_evidence');
+            $index = new XMLDBIndex('useridcompetencyiditemid');
+            $index->setAttributes(XMLDB_INDEX_UNIQUE, array('userid', 'competencyid', 'itemid'));
+            $result = $result && (index_exists($table, $index) || add_index($table, $index));
+        }
+
+        // Competency evidence
+        // Add index if no duplicates
+        $ce_sql = "
+            SELECT
+                COUNT(id)
+            FROM
+                {$CFG->prefix}comp_evidence
+            WHERE
+                id NOT IN
+            (
+                SELECT
+                    MAX(ce.id)
+                FROM
+                    {$CFG->prefix}comp_evidence ce
+                GROUP BY
+                    ce.userid, ce.competencyid
+            )
+        ";
+
+        if ($result && !count_records_sql($ce_sql)) {
+            // Add unique index
+            $table = new XMLDBTable('comp_evidence');
+            $index = new XMLDBIndex('useridcompetencyid');
+            $index->setAttributes(XMLDB_INDEX_UNIQUE, array('userid', 'competencyid'));
+            $result = $result && (index_exists($table, $index) || add_index($table, $index));
+        }
     }
 
     return $result;

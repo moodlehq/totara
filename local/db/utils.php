@@ -265,3 +265,51 @@ function totara_migrate_old_report_builder_reports(&$result) {
     $field = new XMLDBField('restriction');
     $result = $result && drop_field($table, $field);
 }
+
+
+function totara_data_object_duplicate_fix($tablename, $where_sql) {
+    global $CFG;
+
+    // Check for duplicates
+    $count_sql = "
+        SELECT
+            COUNT(*)
+        FROM
+            {$CFG->prefix}{$tablename}
+        {$where_sql}
+    ";
+
+    // If any duplicates, keep correct version of record
+    if (!$count = count_records_sql($count_sql)) {
+        return true;
+    }
+
+    notify("{$count} duplicate record(s) found in the {$tablename} table... fixing (see error log for details)");
+
+    $select_sql = "
+        SELECT
+            *
+        FROM
+            {$CFG->prefix}{$tablename}
+        {$where_sql}
+    ";
+
+    // Select rows to be deleted, and dump their contents to the error log
+    $duplicates = get_records_sql($select_sql);
+    foreach ($duplicates as $dup) {
+        error_log("Duplicate {$tablename} record deleted: ".var_export((array)$dup, true));
+    }
+
+    // Delete duplicate rows
+    $delete_sql = "
+        DELETE FROM
+            {$CFG->prefix}{$tablename}
+        {$where_sql}
+    ";
+
+    if (!execute_sql($delete_sql)) {
+        return false;
+    }
+
+    return true;
+}

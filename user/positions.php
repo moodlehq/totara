@@ -186,8 +186,6 @@ else {
 
         assign_user_position($position_assignment, $managerid);
 
-        commit_sql();
-
         // Log
         add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");
 
