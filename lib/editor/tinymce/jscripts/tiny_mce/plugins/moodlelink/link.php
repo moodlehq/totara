@@ -155,18 +155,12 @@ form { margin-bottom: 0px; margin-top: 0px; }
           <input name="name" type="text" id="foldername" size="35" />
           <input name="btnCfolder" type="submit" id="btnCfolder" value="<?php print_string("createfolder","editor");?>" onclick="return checkvalue('foldername','cfolder');" />
           </form>
-            <?php
-
-                $upload_url  = "{$CFG->wwwroot}/lib/editor/tinymce/coursefiles.php?";
-                $upload_url .= "id={$id}&amp;wdir=&amp;action=upload";
-
-                $upload_max_filesize = get_max_upload_file_size($CFG->maxbytes);
-                $filesize = display_size($upload_max_filesize);
-                $strmaxsize = get_string('maxsize', '', $filesize);
-            ?>
-          <?php echo "<p>".get_string('uploadafile')." ({$strmaxsize})</p>"; ?>
-          <form action="<?php echo $upload_url ?>" method="post" enctype="multipart/form-data" target="fbrowser" id="uploader">
+          <form action="../../../../coursefiles.php?id=<?php print($id);?>" method="post" enctype="multipart/form-data" target="fbrowser" id="uploader">
+          <?php $upload_max_filesize = get_max_upload_file_size($CFG->maxbytes); ?>
           <input type="hidden" name="MAX_FILE_SIZE" value="<?php print($upload_max_filesize);?>" />
+          <input type="hidden" name="id" VALUE="<?php print($id);?>" />
+          <input type="hidden" name="wdir" value="" />
+          <input type="hidden" name="action" value="upload" />
           <input type="hidden" name="sesskey" value="<?php p($USER->sesskey) ?>" />
           <input type="file" name="userfile" id="userfile" size="35" />
           <input name="save" type="submit" id="save" onclick="return checkvalue('userfile','uploader');" value="<?php print_string("upload","editor");?>" />

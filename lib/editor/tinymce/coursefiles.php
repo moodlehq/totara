@@ -216,14 +216,33 @@
                 // um will take care of error reporting.
                 displaydir($wdir);
             } else {
+                $upload_max_filesize = get_max_upload_file_size($CFG->maxbytes);
+                $filesize = display_size($upload_max_filesize);
 
-                if (data_submitted() && empty($_POST)) {
-                    /*
-                        This situation is likely the result of the user
-                        attempting to upload a file larger than POST_MAX_SIZE
-                     */
-                    notify(get_string('uploadserverlimit'));
-                }
+                $struploadafile = get_string("uploadafile");
+                $struploadthisfile = get_string("uploadthisfile");
+                $strmaxsize = get_string("maxsize", "", $filesize);
+                $strcancel = get_string("cancel");
+
+                echo "<p>$struploadafile ($strmaxsize) --> <strong>$wdir</strong>";
+                echo "<table border=\"0\"><tr><td colspan=\"2\">\n";
+                echo "<form enctype=\"multipart/form-data\" method=\"post\" action=\"coursefiles.php\">\n";
+                upload_print_form_fragment(1,array('userfile'),null,false,null,$course->maxbytes,0,false);
+                echo " <input type=\"hidden\" name=\"id\" value=\"$id\" />\n";
+                echo " <input type=\"hidden\" name=\"wdir\" value=\"$wdir\" />\n";
+                echo " <input type=\"hidden\" name=\"action\" value=\"upload\" />\n";
+                echo " <input type=\"hidden\" name=\"sesskey\" value=\"$USER->sesskey\" />\n";
+                echo " </td><tr><td align=\"right\">";
+                echo " <input type=\"submit\" name=\"save\" value=\"$struploadthisfile\" />\n";
+                echo "</form>\n";
+                echo "</td>\n<td>\n";
+                echo "<form action=\"coursefiles.php\" method=\"get\">\n";
+                echo " <input type=\"hidden\" name=\"id\" value=\"$id\" />\n";
+                echo " <input type=\"hidden\" name=\"wdir\" value=\"$wdir\" />\n";
+                echo " <input type=\"hidden\" name=\"action\" value=\"cancel\" />\n";
+                echo " <input type=\"submit\" value=\"$strcancel\" />\n";
+                echo "</form>\n";
+                echo "</td>\n</tr>\n</table>\n";
             }
             html_footer();
             break;
