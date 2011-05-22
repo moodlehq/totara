@@ -1,5 +1,15 @@
 Totara LMS Changelog
 
+Release 1.0.11.1 (23 May 2011):
+==================================================
+
+Bug fixes:
+    8310    Course enrollments broken                                                           Caused by an unrelated fix in a previous release
+    8310    Revert change "Forms behave unexpectedly when file uploads exceed post_max_size"
+    8069    "Complete" column in completion reports sometimes blank
+    6710    Miscellaneous language string fixes                                                 For better cross-language support
+
+
 Release 1.0.11 (17 May 2011):
 ==================================================
 
