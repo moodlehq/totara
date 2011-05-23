@@ -12,8 +12,8 @@ $edit=optional_param('edit', -1, PARAM_BOOL);
 
 // Check user capabilities
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('local/dashboard:view', $sitecontext, $USER->id);
-$canedit = (has_capability('local/dashboard:edit', $sitecontext, $USER->id));
+require_capability('local/dashboard:view', $sitecontext);
+$canedit = (has_capability('local/dashboard:edit', $sitecontext));
 //TODO: maybe add some dashboard-specific caps here
 
 $dashb = new Dashboard('mylearning', $USER->id, 'user');
