@@ -276,7 +276,11 @@ function totara_data_object_duplicate_fix($tablename, $where_sql) {
             COUNT(*)
         FROM
             {$CFG->prefix}{$tablename}
-        {$where_sql}
+        WHERE
+            id NOT IN
+            (
+                {$where_sql}
+            )
     ";
 
     // If any duplicates, keep correct version of record
@@ -291,20 +295,29 @@ function totara_data_object_duplicate_fix($tablename, $where_sql) {
             *
         FROM
             {$CFG->prefix}{$tablename}
-        {$where_sql}
+        WHERE
+            id NOT IN
+            (
+                {$where_sql}
+            )
     ";
 
     // Select rows to be deleted, and dump their contents to the error log
     $duplicates = get_records_sql($select_sql);
+    $ids = array();
     foreach ($duplicates as $dup) {
         error_log("Duplicate {$tablename} record deleted: ".var_export((array)$dup, true));
+        $ids[] = $dup->id;
     }
 
     // Delete duplicate rows
+    $ids = implode(',', $ids);
+
     $delete_sql = "
         DELETE FROM
             {$CFG->prefix}{$tablename}
-        {$where_sql}
+        WHERE
+            id IN ({$ids})
     ";
 
     if (!execute_sql($delete_sql)) {

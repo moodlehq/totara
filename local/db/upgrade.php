@@ -2137,16 +2137,12 @@ function xmldb_local_upgrade($oldversion) {
         // Course completions
         // Check for duplicates
         $cc_sql = "
-            WHERE
-                id NOT IN
-            (
-                SELECT
-                    MAX(cc.id)
-                FROM
-                    {$CFG->prefix}course_completions cc
-                GROUP BY
-                    cc.userid, cc.course
-            )
+            SELECT
+                MAX(cc.id)
+            FROM
+                {$CFG->prefix}course_completions cc
+            GROUP BY
+                cc.userid, cc.course
         ";
 
         // If any duplicates, keep newest version of course completion
@@ -2163,16 +2159,12 @@ function xmldb_local_upgrade($oldversion) {
         // Course completion criteria completions
         // Check for duplicates
         $ccc_sql = "
-            WHERE
-                id NOT IN
-            (
-                SELECT
-                    MAX(ccc.id)
-                FROM
-                    {$CFG->prefix}course_completion_crit_compl ccc
-                GROUP BY
-                    ccc.userid, ccc.course, ccc.criteriaid
-            )
+            SELECT
+                MAX(ccc.id)
+            FROM
+                {$CFG->prefix}course_completion_crit_compl ccc
+            GROUP BY
+                ccc.userid, ccc.course, ccc.criteriaid
         ";
 
         // If any duplicates, keep newest version of course completion criteria completion
@@ -2250,21 +2242,17 @@ function xmldb_local_upgrade($oldversion) {
         completion_mark_users_started();
     }
 
-    if ($result && $oldversion < 2011051705) {
+    if ($result && $oldversion < 2011051706) {
 
         // Position assignments
         // Where clause to find duplicates
         $pa_sql = "
-            WHERE
-                id NOT IN
-            (
-                SELECT
-                    MAX(pa.id)
-                FROM
-                    {$CFG->prefix}pos_assignment pa
-                GROUP BY
-                    pa.userid, pa.type
-            )
+            SELECT
+                MAX(pa.id)
+            FROM
+                {$CFG->prefix}pos_assignment pa
+            GROUP BY
+                pa.userid, pa.type
         ";
 
         // If any duplicates, keep newest version of a duplicate position assignment
@@ -2280,16 +2268,12 @@ function xmldb_local_upgrade($oldversion) {
         // Course completion aggregation methods
         // Where clause to find duplicates
         $ccam_sql = "
-            WHERE
-                id NOT IN
-            (
-                SELECT
-                    MAX(ccam.id)
-                FROM
-                    {$CFG->prefix}course_completion_aggr_methd ccam
-                GROUP BY
-                    ccam.course, ccam.criteriatype
-            )
+            SELECT
+                MAX(ccam.id)
+            FROM
+                {$CFG->prefix}course_completion_aggr_methd ccam
+            GROUP BY
+                ccam.course, ccam.criteriatype
         ";
 
         // If any duplicates, keep newest version of a duplicate completion aggregation method
