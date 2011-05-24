@@ -17,6 +17,81 @@
 // The commands in here will all be database-neutral,
 // using the functions defined in lib/ddllib.php
 
+
+/**
+ *
+ * Get duplicate values of a field in a table
+ * @param string $table
+ * @param string $field
+ * @param int $limitfrom
+ * @param int $limitnum
+ * @return mixed ADORecordSet or false
+ */
+function facetoface_tbl_duplicate_values($table,$field,$limitfrom=null,$limitnum=null) {
+    global $CFG;
+    $sql = "
+            SELECT
+                l.id,
+                l.{$field}
+            FROM
+                {$CFG->prefix}{$table} l,
+                ( SELECT
+                        MIN(id) AS id,
+                        {$field}
+                  FROM
+                        {$CFG->prefix}{$table}
+                  GROUP BY
+                        {$field}
+                  HAVING COUNT(*)>1
+                 ) a
+            WHERE
+                l.id<>a.id
+            AND l.{$field}=a.{$field}
+    ";
+
+    return get_recordset_sql($sql,$limitfrom,$limitnum);
+}
+
+/**
+ *
+ * Sends message to administrator listing all updated
+ * duplicate custom fields
+ * @param array $data
+ */
+function facetoface_send_admin_upgrade_msg($data) {
+    global $SITE;
+    //No data - no need to send email
+    if (empty($data)) {
+        return;
+    }
+
+    $table = new stdClass();
+    $table->head = array('Custom field ID',
+                         'Custom field original shortname',
+                         'Custom field new shortname');
+    $table->data = $data;
+    $table->align = array ('center', 'center', 'center');
+
+    $title    = "$SITE->fullname: Face to Face upgrade info";
+    $note = 'During the last site upgrade the face-to-face module has been modified. It now
+requires session custom fields to have unique shortnames. Since some of your
+custom fields had duplicate shortnames, they have been renamed to remove
+duplicates (see table below). This could impact on your email messages if you
+reference those custom fields in the message templates.';
+    $message  = "<html><head><title>{$title}</title></head>";
+    $message .= '<body><p>' . $note . '</p>' .
+        print_table($table,true).'<body></html>';
+
+    $admin = get_admin();
+
+    email_to_user($admin,
+                  $admin,
+                  $title,
+                  '',
+                  $message);
+
+}
+
 function xmldb_facetoface_upgrade($oldversion=0) {
 
     global $CFG, $USER, $db;
@@ -539,6 +614,47 @@ function xmldb_facetoface_upgrade($oldversion=0) {
                 commit_sql();
             } else {
                 rollback_sql();
+            }
+        }
+    }
+
+
+    if ($result && $oldversion < 2011051900) {
+        $table = new XMLDBTable('facetoface_session_field');
+        $index = new XMLDBIndex('ind_session_field_unique');
+        $index->setAttributes(XMLDB_INDEX_UNIQUE, array('shortname'));
+
+        if (table_exists($table)) {
+            //do we need to check for duplicates?
+            if (!index_exists($table, $index)) {
+
+                //check for duplicate records and make them unique
+                $replacements = array();
+                begin_sql();
+                $rs = facetoface_tbl_duplicate_values('facetoface_session_field','shortname');
+                if ($rs !== false) {
+                    global $db;
+                    foreach ($rs as $item) {
+                        $data = (object)$item;
+                        //randomize the value
+                        $data->shortname = $db->escape($data->shortname.'_'.$data->id);
+                        $result = update_record('facetoface_session_field', $data);
+                        if (!$result) {
+                            break;
+                        }
+                        $replacements[]=array($item['id'], $item['shortname'], $data->shortname);
+                    }
+                }
+
+                if ($result) {
+                    commit_sql();
+                    facetoface_send_admin_upgrade_msg($replacements);
+                } else {
+                    rollback_sql();
+                }
+
+                //Apply the index
+                $result = $result && add_index($table, $index);
             }
         }
     }

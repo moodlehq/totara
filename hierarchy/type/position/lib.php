@@ -397,6 +397,15 @@ class position_assignment extends data_object {
         'timevalidto'
     );
 
+    /**
+     * Unique fields to be used in where clauses
+     * when the ID is not known
+     *
+     * @access  public
+     * @var     array       $unique fields
+    */
+    public $unique_fields = array('userid', 'type');
+
     public $userid;
     public $type;
     public $fullname;

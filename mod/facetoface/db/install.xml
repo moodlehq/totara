@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/facetoface/db" VERSION="20100510" COMMENT="XMLDB file for Moodle mod/facetoface"
+<XMLDB PATH="mod/facetoface/db" VERSION="20110512" COMMENT="XMLDB file for Moodle mod/facetoface"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -98,13 +98,13 @@
         <KEY NAME="sessionid" TYPE="foreign" FIELDS="sessionid" REFTABLE="facetoface_sessions" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="facetoface_signups_status" COMMENT="User/session signup status" NEXT="facetoface_session_field" PREVIOUS="facetoface_signups">
+    <TABLE NAME="facetoface_signups_status" COMMENT="User/session signup status" PREVIOUS="facetoface_signups" NEXT="facetoface_session_field">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" ENUM="false" NEXT="signupid"/>
         <FIELD NAME="signupid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="statuscode"/>
         <FIELD NAME="statuscode" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="signupid" NEXT="superceded"/>
         <FIELD NAME="superceded" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="statuscode" NEXT="grade"/>
-        <FIELD NAME="grade" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="superceded" NEXT="note"/>
+        <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" ENUM="false" DECIMALS="5" PREVIOUS="superceded" NEXT="note"/>
         <FIELD NAME="note" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="grade" NEXT="advice"/>
         <FIELD NAME="advice" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="note" NEXT="createdby"/>
         <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="advice" NEXT="timecreated"/>
@@ -130,6 +130,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="ind_session_field_unique" UNIQUE="true" FIELDS="shortname" COMMENT="Guarantees that all short names are actually unique"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="facetoface_session_data" COMMENT="Contents of custom info fields for Face-to-face session" PREVIOUS="facetoface_session_field" NEXT="facetoface_notice">
       <FIELDS>

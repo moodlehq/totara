@@ -460,7 +460,6 @@ $string['error:priorityscalevalueidincorrect'] = 'Priority Scale value ID was in
 $string['error:createnewpriorityscale'] = 'An error occured while creating new priority scale';
 $string['error:updatingpriorityscale'] = 'An error occured while updating priority scale';
 $string['error:createpriorityvalue'] = 'Error creating priority scale value record';
-$string['error:updatepriorityvalue'] = 'Error updating priority scale value record';
 $string['nopriorityscales'] = 'To use priorities setup a priority scale';
 
 // Objective Scales
@@ -491,7 +490,6 @@ $string['error:createnewobjectivescale'] = 'An error occured while creating new 
 $string['error:createobjectivescale'] = 'An error occured while creating an objective scale';
 $string['error:updateobjectivescale'] = 'An error occured while updating objective scale';
 $string['error:createobjectivevalue'] = 'Error creating objective scale value record';
-$string['error:updateobjectivevalue'] = 'Error updating objective scale value record';
 $string['error:creatingobjectivescalevalues'] = 'An error occured when creating objective scale values';
 $string['error:deletedobjectivescalevalue'] = 'An error occured when deleting objective scale value';
 

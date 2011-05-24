@@ -1091,7 +1091,7 @@ class completion_info {
             'course'    => $this->course_id
         );
 
-        $ccompletion = new completion_completion($data, true);
+        $ccompletion = new completion_completion($data);
         if ($ccompletion->id) {
             return true;
         }

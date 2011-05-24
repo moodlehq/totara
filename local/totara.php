@@ -885,3 +885,17 @@ function get_totara_menu($header=true) {
     global $CFG, $USER;
     include($CFG->dirroot.'/local/totara_menu.php');
 }
+
+
+/**
+ * Check if the HTTP request was of type POST
+ *
+ * This function is useful as sometimes the $_POST array can be empty
+ * if it's size exceeded post_max_size
+ *
+ * @access  public
+ * @return  boolean
+ */
+function totara_is_post_request() {
+    return isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST';
+}

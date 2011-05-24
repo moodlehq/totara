@@ -126,7 +126,7 @@ if ($valueform->is_cancelled()) {
 
             totara_set_notification(get_string('objectivescalevalueupdated', 'local_plan', format_string(stripslashes($valuenew->name))), "$CFG->wwwroot/local/plan/objectivescales/view.php?id={$valuenew->objscaleid}", array('style' => 'notifysuccess'));
         } else {
-            error(get_string('error:updateobjectivevalue', 'local_plan'));
+            error(get_string('error:updateobjectivescalevalue', 'local_plan'));
         }
     }
 }

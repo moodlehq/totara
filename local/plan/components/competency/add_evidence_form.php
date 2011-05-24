@@ -64,6 +64,9 @@ class totara_competency_evidence_form extends moodleform {
                 $organisation_title = get_field('org', 'fullname', 'id', $ce->organisationid);
             }
 
+            $competency_title = ($competencyid != 0) ?
+                get_field('comp', 'fullname', 'id', $competencyid) : '';
+
         } else {
             // for new record, userid must also be passed to form
             $userid = $this->_customdata['userid'];
@@ -118,7 +121,7 @@ class totara_competency_evidence_form extends moodleform {
         if($editing) {
             $mform->addElement('hidden', 'competencyid', $ce->competencyid);
             $mform->setType('competencyid', PARAM_INT);
-            $mform->addElement('static', 'compname', get_string('competency','competency'));
+            $mform->addElement('static', 'compname', get_string('competency','competency'), '<span id="competencytitle1">'.format_string($competency_title).'</span>');
             $mform->setHelpButton('compname',array('competencyevidencecompetency',get_string('competency','competency'),'moodle'));
         } else {
             if($nojs) {
@@ -136,6 +139,7 @@ class totara_competency_evidence_form extends moodleform {
             }
 
         }
+
         $mform->addRule('competencyid',null,'required');
         $mform->addRule('competencyid',null,'numeric');
 
@@ -170,7 +174,7 @@ class totara_competency_evidence_form extends moodleform {
         $mform->setType('assessmenttype', PARAM_TEXT);
         $mform->setHelpButton('assessmenttype',array('competencyevidenceassessmenttype',get_string('assessmenttype','local'),'moodle'));
 
-        if(!empty($ce)) {
+        if(!empty($ce) && $ce->proficiency) {
             // editing existing competency evidence item
             // get id of the scale referred to by the evidence's proficiency
             $scaleid = get_field('comp_scale_values','scaleid','id',$ce->proficiency);

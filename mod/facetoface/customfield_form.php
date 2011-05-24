@@ -45,4 +45,18 @@ class mod_facetoface_customfield_form extends moodleform {
 
         $this->add_action_buttons();
     }
+
+    function validation($data, $files) {
+        global $db;
+
+        $errors = array();
+        $shortname = $db->Quote($data['shortname']);
+        $where     = "id<>{$data['id']} AND shortname={$shortname}";
+
+        if (record_exists_select('facetoface_session_field',$where)) {
+            $errors['shortname']= get_string('error:shortnametaken', 'facetoface');
+        }
+
+        return $errors;
+    }
 }

@@ -513,3 +513,4 @@ $string['xhours'] = '$a hours';
 $string['xminutes'] = '$a minutes';
 $string['youarebooked'] = 'You are booked for the following session';
 $string['youremailaddress'] = 'Your email address';
+$string['error:shortnametaken'] = 'Custom field with this short name already exists.';
