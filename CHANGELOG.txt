@@ -1,5 +1,20 @@
 Totara LMS Changelog
 
+Release 1.0.12 (24 May 2011):
+==================================================
+
+Improvements:
+    8283    Log a user's Position and Organisation on course completion                         This data is then available in Report Builder
+    6710    Removing duplicate lang strings from Learning Plans
+
+Bug fixes:
+    8392    Fix duplicate record errors in various tables
+    8004    Face-to-face custom fields can have non-unique shortnames                           This could cause unexpected behaviour with notification emails
+    8313    Failed uploads give wrong error message                                             Large uploads threw an unclear error
+    8293    Default proficiency value does not always load when adding Competency evidence
+    8422    Stats dashlet should not be available for the "My Learning" dashboard               Makes unavailable and removes any existing instances
+
+
 Release 1.0.11.1 (23 May 2011):
 ==================================================
 
