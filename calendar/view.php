@@ -316,7 +316,7 @@ function calendar_show_month_detailed($m, $y, $courses, $groups, $users, $course
 
     $getvars = 'from=month&amp;cal_d='.$day.'&amp;cal_m='.$mon.'&amp;cal_y='.$yr; // For filtering
 
-    $display = &New stdClass;
+    $display = new stdClass;
     $display->minwday = get_user_preferences('calendar_startwday', CALENDAR_STARTING_WEEKDAY);
     $display->maxwday = $display->minwday + 6;
 
