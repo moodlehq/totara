@@ -31,14 +31,19 @@ print_heading(get_string('relatedcompetencies', $this->prefix));
 <?php
 
 if ($related) {
+    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    $can_manage_fw = has_capability('moodle/local:update'.$this->prefix.'frameworks', $sitecontext);
 
     $oddeven = 1;
     foreach ($related as $ritem) {
+        $framework_text = ($can_manage_fw) ?
+            "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$this->prefix}&amp;frameworkid={$ritem->fid}\">" .
+            format_string($ritem->framework) . "</a>" : format_string($ritem->framework);
 
         $oddeven = ++$oddeven % 2;
 
         echo '<tr class="r'.$oddeven.'">';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$this->prefix}&amp;frameworkid={$ritem->fid}\">{$ritem->framework}</a></td>";
+            echo "<td>{$framework_text}</td>";
         echo '<td>'.$ritem->depth.'</td>';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$this->prefix}&amp;id={$ritem->id}\">{$ritem->fullname}</a></td>";
 

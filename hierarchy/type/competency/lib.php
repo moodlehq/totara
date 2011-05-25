@@ -649,6 +649,7 @@ SQL;
         global $CFG;
 
         $can_edit = has_capability('moodle/local:updatecompetency', get_context_instance(CONTEXT_SYSTEM));
+        $can_manage_fw = has_capability('moodle/local:updatecompetencyframeworks', get_context_instance(CONTEXT_SYSTEM));
 
         if (!$course = get_record('course', 'id', $courseid)) {
             print_error('invalidcourseid');
@@ -692,11 +693,14 @@ SQL;
             $activities = array();
 
             foreach ($competencies as $competency) {
+                $framework_text = ($can_manage_fw) ?
+                    "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&amp;frameworkid={$competency->fid}\">" .
+                    format_string($competency->framework) . "</a>" : format_string($competency->framework);
 
                 $out .= '<tr class="r' . $oddeven . '">';
-                $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
+                $out .= "<td>{$framework_text}</td>";
                 $out .= '<td>'.$competency->depth.'</td>';
-                $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
+                $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&amp;id={$competency->id}\">{$competency->fullname}</a></td>";
 
                 // Create evidence object
                 $evidence = new object();
