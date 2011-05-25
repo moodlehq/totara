@@ -41,7 +41,7 @@ def parse_config
       out['username'] = res[1]
       out['password'] = res[2]
       out['name'] = res[3]
-      out['location'] = 'localhost'
+      out['location'] = ''
     end
   end
   out
