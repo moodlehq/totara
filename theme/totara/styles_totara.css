@@ -2125,7 +2125,8 @@ div.yuimenu .yuichildtree .yuimenuitem {
 /*****************************************************************************/
 
 body#message-index div#wrapper,
-body#help div#wrapper {
+body#help div#wrapper,
+body#files-index div#wrapper {
 	background-image: none;
 	background-color: #FFFFFF;
 	width: auto ;
@@ -2133,12 +2134,14 @@ body#help div#wrapper {
 	padding-top: 30px;
 	border-left: 1px solid #666;
 	border-right: 1px solid #666;
-
 }
 body#message-index div#wrapper .login-container,
-body#help div#wrapper .login-container {
+body#help div#wrapper .login-container,
+body#files-index div#wrapper .login-container {
     display:none;
 }
+
+
 
 /*****************************************************************************/
 /** Calendar  **/
@@ -3684,4 +3687,11 @@ img.percentImage {
  */
 div.block_totara_recent_learning table {
     width: 100%;
+}
+
+/*
+ * Small Change to file upload dialog
+ */
+body#files-index div#wrapper div#page div#nav-bar{
+    padding-left:30px;
 }
