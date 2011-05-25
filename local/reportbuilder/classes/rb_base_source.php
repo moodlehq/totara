@@ -496,6 +496,16 @@ abstract class rb_base_source {
     public function rb_display_planlink($planname, $row){
         global $CFG;
 
+        // no text
+        if (strlen($planname) == 0) {
+            return '';
+        }
+
+        // invalid id - show without a link
+        if (empty($row->plan_id)) {
+            return $planname;
+        }
+
         return "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$row->plan_id}\">$planname</a>";
     }
 
