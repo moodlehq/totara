@@ -57,15 +57,45 @@ class dp_course_component extends dp_base_component {
 
 
     /**
+     * Get a single assignment
+     *
+     * @access  public
+     * @param integer $assignmentid ID of the course assignment
+     * @return  object|false
+     */
+    public function get_assignment($assignmentid) {
+        global $CFG;
+
+        $assignment = get_record_sql(
+            "
+            SELECT
+                a.*,
+                c.fullname
+            FROM
+                {$CFG->prefix}dp_plan_course_assign a
+            INNER JOIN
+                {$CFG->prefix}course c
+             ON c.id = a.courseid
+            WHERE
+                a.planid = {$this->plan->id}
+            AND a.id = {$assignmentid}
+            "
+        );
+
+        return $assignment;
+    }
+
+    /**
      * Get a single assigned item
      *
      * @access  public
+     * @param integer $itemid ID of a course that is assigned to this plan
      * @return  object|false
      */
     public function get_assigned_item($itemid) {
         global $CFG;
 
-        $assigned = get_record_sql(
+        $item = get_record_sql(
             "
             SELECT
                 a.id,
@@ -81,11 +111,11 @@ class dp_course_component extends dp_base_component {
              ON c.id = a.courseid
             WHERE
                 a.planid = {$this->plan->id}
-            AND a.id = {$itemid}
+            AND c.id = {$itemid}
             "
         );
 
-        return $assigned;
+        return $item;
     }
 
 
@@ -188,7 +218,7 @@ class dp_course_component extends dp_base_component {
             }
 
             // Load item
-            if (!$deleteitem = $this->get_assigned_item($delete)) {
+            if (!$deleteitem = $this->get_assignment($delete)) {
                 print_error('error:couldnotfindassigneditem', 'local_plan');
             }
 
