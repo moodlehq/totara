@@ -80,7 +80,7 @@ function local_js($options = array()) {
         }
 
         // include datepicker localization file if present for current language
-        $file = "/local/js/lib/jquery.ui.datepicker-{$lang}.js";
+        $file = "/local/js/lib/i18n/jquery.ui.datepicker-{$lang}.js";
         if(is_readable($CFG->dirroot . $file)) {
             $files[] = $CFG->wwwroot . $file;
         }
