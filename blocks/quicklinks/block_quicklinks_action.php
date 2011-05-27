@@ -5,7 +5,8 @@
  *
  * @package   totara
  * @copyright 2010 Totara Learning Solutions Ltd
- * @author    Eugene Venter <aaronb@catalyst.net.nz>
+ * @author    Eugene Venter <eugene@catalyst.net.nz>
+ * @author    Alastair Munro <alastair.munro@totaralms.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -15,7 +16,7 @@ require_login();
 global $USER;
 
 if (!$referer = get_referer(false)) {
-    $referrer = $CFG->wwwroot.'/';
+    $referer = $CFG->wwwroot.'/';
 }
 
 if (!confirm_sesskey() || isguest()) {
@@ -26,8 +27,26 @@ $id = required_param('id', PARAM_ALPHANUM);
 $blockinstanceid = required_param('blockinstance', PARAM_INT);
 $action = required_param('blockaction', PARAM_ALPHANUM);
 
+// Is this a dashlet or a standard block
 $isdashlet = get_record('dashb_instance_dashlet', 'block_instance_id', $blockinstanceid);
-$userid = $isdashlet ? $USER->id : 0;
+
+if ($isdashlet) {
+    $dashletuserid = get_field_sql("SELECT dbi.userid FROM {$CFG->prefix}dashb_instance_dashlet dbid JOIN {$CFG->prefix}dashb_instance dbi ON dbi.id=dbid.dashb_instance_id WHERE dbid.block_instance_id={$blockinstanceid}");
+    if ($dashletuserid === false) {
+        error('fail');
+    }
+
+    if ($dashletuserid != $USER->id) {
+        require_capability('local/dashboard:admin', get_context_instance(CONTEXT_SYSTEM));
+        $userid = 0;
+    } else {
+       $userid = $USER->id;
+    }
+} else {
+    // If this is being used as a standard block not on a dashboard
+    $userid = $USER->id;
+}
+
 if (!$blockinstance = get_record('block_instance', 'id', $blockinstanceid)) {
     print_error('accessdenied', 'block_quicklinks');
 }
@@ -42,16 +61,18 @@ if ($userid == 0) {
 
 switch ($action) {
     case 'deletelink' :
-        delete_records('block_quicklinks', 'id', $id, 'userid', $userid);
-        $links = get_records_select('block_quicklinks', "userid={$userid} AND block_instance_id={$blockinstanceid}", 'displaypos');
+        if (!delete_records('block_quicklinks', 'id', $id)) {
+            print_error('error:deletequicklink', 'block_quicklinks');
+        }
+        $links = get_records_select('block_quicklinks', "block_instance_id={$blockinstanceid}", 'displaypos');
         $links = array_keys($links);
         block_quicklinks_reorder_links($links);
         break;
     case 'movelinkup' :
-        block_quicklinks_move_vertical($id, 'up', $userid);
+        block_quicklinks_move_vertical($id, 'up');
         break;
     case 'movelinkdown' :
-        block_quicklinks_move_vertical($id, 'down', $userid);
+        block_quicklinks_move_vertical($id, 'down');
         break;
     default:
         break;
@@ -61,12 +82,12 @@ redirect($referer);
 
 
 /** HELPER FUNCTIONS **/
-function block_quicklinks_move_vertical($id, $direction, $userid) {
-    if (!$link = get_record('block_quicklinks', 'id', $id, 'userid', $userid)) {
+function block_quicklinks_move_vertical($id, $direction) {
+    if (!$link = get_record('block_quicklinks', 'id', $id)) {
         return;
     }
 
-    $links = get_records_select('block_quicklinks', "userid={$userid} AND block_instance_id={$link->block_instance_id}", 'displaypos');
+    $links = get_records('block_quicklinks', 'block_instance_id', $link->block_instance_id, 'displaypos');
     $links = array_keys($links);
     $itemkey = array_search($link->id, $links);
 

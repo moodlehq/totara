@@ -129,31 +129,58 @@ class block_quicklinks extends block_base {
         // Add some default quicklinks
         $links = array();
         if (instance_is_dashlet($this)) {
+
+
             // Insert default links, according to role
             $role = get_dashlet_role($this->instance->pageid);
+            $shortname = ($role == 'manager') ? 'myteam' : 'mylearning';
 
             switch ($role) {
-                case 'admin' :
+                case 'admin':
                 case 'administrator' :
-                    $links = array('Home'=>"{$CFG->wwwroot}/index.php",
-                        'Logs'=>"{$CFG->wwwroot}/course/report/log/index.php",
-                        'Manage Reports'=>"{$CFG->wwwroot}/local/reportbuilder/index.php");
+                    $links = array(get_string('home','block_quicklinks')=>"{$CFG->wwwroot}/index.php",
+                        get_string('logs','block_quicklinks')=>"{$CFG->wwwroot}/course/report/log/index.php",
+                        get_string('managereports','block_quicklinks')=>"{$CFG->wwwroot}/local/reportbuilder/index.php");
                     break;
                 case 'manager' :
-                case 'teacher' :
-                case 'trainer' :
                 case 'student' :
+                    $sql = "SELECT blocki.id FROM
+                        {$CFG->prefix}dashb_instance i
+                        JOIN
+                            {$CFG->prefix}dashb db
+                                ON i.dashb_id=db.id
+                        JOIN
+                            {$CFG->prefix}dashb_instance_dashlet dbid
+                                ON dbid.dashb_instance_id = i.id
+                        JOIN
+                            {$CFG->prefix}block_instance blocki
+                                ON blocki.id = dbid.block_instance_id
+                        JOIN
+                            {$CFG->prefix}block b
+                                ON b.id = blocki.blockid
+                        WHERE shortname='{$shortname}'
+                          AND userid=0
+                          AND b.name='quicklinks'";
+
+                    if ($default_block_instance_id = get_field_sql($sql)) {
+                        $links = get_records_menu('block_quicklinks', 'block_instance_id', $default_block_instance_id, 'displaypos', 'title, url');
+                    } else {
+                        $links = array(get_string('home','block_quicklinks')=>"{$CFG->wwwroot}/index.php",
+                            get_string('reports','block_quicklinks')=>"{$CFG->wwwroot}/my/reports.php",
+                            get_string('courses','block_quicklinks')=>"{$CFG->wwwroot}/course/find.php");
+                    }
+                    break;
                 default:
-                    $links = array('Home'=>"{$CFG->wwwroot}/index.php",
-                        'Reports'=>"{$CFG->wwwroot}/my/reports.php",
-                        'Courses'=>"{$CFG->wwwroot}/course/find.php");
+                    $links = array(get_string('home','block_quicklinks')=>"{$CFG->wwwroot}/index.php",
+                        get_string('reports','block_quicklinks')=>"{$CFG->wwwroot}/my/reports.php",
+                        get_string('courses','block_quicklinks')=>"{$CFG->wwwroot}/course/find.php");
                     break;
             }
         } else {
             // Insert global default links
-            $links = array('Home'=>"{$CFG->wwwroot}/index.php",
-                'Reports'=>"{$CFG->wwwroot}/my/reports.php",
-                'Courses'=>"{$CFG->wwwroot}/course/find.php");
+            $links = array(get_string('home','block_quicklinks')=>"{$CFG->wwwroot}/index.php",
+                get_string('reports','block_quicklinks')=>"{$CFG->wwwroot}/my/reports.php",
+                get_string('courses','block_quicklinks')=>"{$CFG->wwwroot}/course/find.php");
         }
 
         $poscount = 0;
