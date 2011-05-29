@@ -1,0 +1,62 @@
+<?PHP // $Id$ 
+      // local_oauth.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+      // local modifications from http://translate.totaralms.com
+
+
+$string['access'] = 'accès';
+$string['authentication'] = 'Authentification OAuth';
+$string['authenticationfailed'] = 'Authentification OAuth échoué';
+$string['authorize'] = 'Autoriser';
+$string['consumer_key'] = 'Clé consommateur';
+$string['consumer_key_help'] = 'Saisir le clé consommateur OAuth';
+$string['consumer_secret'] = 'Secret consommateur';
+$string['consumer_secret_help'] = 'Saisir le secret consommateur OAuth partager avec le fournisseur de service';
+$string['consumerkey'] = 'Clé consommateur';
+$string['consumersecret'] = 'Secret consommateur';
+$string['deleteconfirmation'] = 'Etes-vous sûr de vouloir supprimer le site {$a}?';
+$string['edit'] = 'Modifier';
+$string['enabled'] = 'Activé';
+$string['error_noaccessurl'] = 'Veuillez saisir l\'URL jeton d\'accès valide pour mise à niveau';
+$string['error_noauthorizeurl'] = 'Veuillez saisir l\'URL jeton d\'autorisation valide';
+$string['error_nokey'] = 'Veuillez saisir la clé consommateur';
+$string['error_noname'] = 'Veuillez choisir un nom';
+$string['error_norequesturl'] = 'Veuillez saisir l\'URL jeton de demande valide';
+$string['error_nosecret'] = 'Veuillez saisir le secret consommateur';
+$string['fusiontables'] = 'Table de fusion';
+$string['manageregistrations'] = 'Gérer les inscriptions';
+$string['norequest'] = 'Aucun demande d\'authentification OAuth';
+$string['noreturnto'] = 'Aucun wantsurl n\'est défini pour la voie de retour';
+$string['nosite'] = 'Ou aucun site n\'a été enregistré ou aucun site ne correspondant à la recherche.';
+$string['notallowed'] = 'L\'utilisateur n\'a aucun permission de négociation OAuth';
+$string['notconfigured'] = 'Le site OAuth {$a} n\'est pas configuré';
+$string['oauth'] = 'OAuth';
+$string['oauth:negotiate'] = 'Utiliser l\'authentification OAuth';
+$string['oauthdisabled'] = 'L\'authentification OAuth a été désactivée';
+$string['oauthfailed'] = 'Echec d\'authentification OAuth';
+$string['oauthinvalidid'] = 'Identifiant OAuth de site non valide';
+$string['operation'] = 'Opération';
+$string['registration'] = 'Enregistrement au service OAuth';
+$string['registrations'] = 'Enregistrements';
+$string['request'] = 'Demande';
+$string['search'] = 'Rechercher des sites enregistrés';
+$string['settings'] = 'Paramètres';
+$string['settingsupdated'] = 'Les paramètres ont été modifier';
+$string['siteaccess'] = 'L\'URL jeton d\'accès';
+$string['siteaccess_help'] = 'Veuillez saisir l\'URL OAuth pour la modification du jeton de demande en jeton d\'accès';
+$string['siteaddduplicate'] = 'Impossible de ajouter le site {$a}. Il existe déjà un site avec cette appellation';
+$string['siteadded'] = 'Site {$a} a été ajouté';
+$string['siteadderrors'] = 'Veuillez corriger les erreurs de saisie';
+$string['siteaddfailed'] = 'Le site {$a} n\'a pas pu être ajouté';
+$string['siteauthorize'] = 'URL jeton d\'autorisation';
+$string['siteauthorize_help'] = 'Veuillez saisir l\'URL OAuth afin d\'autoriser le jeton de demande';
+$string['sitedisabled'] = 'Le site OAuth est désactivé';
+$string['sitelist'] = 'Liste globale';
+$string['sitename'] = 'Nom';
+$string['sitename_help'] = 'Veuillez choisir un nom unique pour la configuration OAuth';
+$string['siterequest'] = 'URL jeton de demande';
+$string['siterequest_help'] = 'Veuillez saisir l\'URL jeton de demande OAuth';
+$string['sitetokenurls'] = 'Les URLs jeton de site';
+$string['siteupdated'] = 'Le site {$a} a été modifié';
+$string['tablename'] = 'Nom de tableau';
+
+?>
