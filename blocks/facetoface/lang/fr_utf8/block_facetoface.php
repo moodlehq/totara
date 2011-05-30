@@ -1,8 +1,26 @@
-<?PHP // $Id$ 
-      // block_facetoface.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://translate.totaralms.com
+<?PHP // $Id$
 
+$string['allsessions'] = 'Toutes les sessions';
+$string['allfuturesessions'] = 'Toutes les sessions futures';
+$string['apply'] = 'Appliquer';
+$string['daterange'] = 'Plage de dates:';
+$string['exportsessiondates'] = 'Exporter les dates de sessions';
+$string['fixdates'] = 'Corriger les dates de sessions';
+$string['formaltitle'] = 'Face-to-face';
+$string['listsessiondates'] = 'Liste des dates de sesions Face-to-face';
+$string['nbbookings'] = 'Réservations';
+$string['sessiondatesviewattendees'] = 'Vous pouvez voir les utilisateurs qui assisteront aux sessions suivantes:';
+$string['sessiondatesviewattendeeszero'] = 'Vous ne pouvez pas voir la liste des réservations d\'aucune session dans cette plage de dates.';
+$string['sessiondatestable'] = 'Liste des détails de chaque session';
+$string['sessionlist'] = 'Liste des sessions';
+$string['signedupin'] = 'Vous avez réservé dans les sessions suivantes :';
+$string['signedupinzero'] = 'Aucune réservation trouvée dans cette plage de dates.';
+$string['upcomingsessions'] = 'Prochaines sessions';
+$string['viewexportsessions'] = 'Afficher/exporter les sessions';
+$string['xrecords'] = '$a entrées';
 
+// block_facetoface.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+// local modifications from http://translate.totaralms.com
 $string['allfuturesessions'] = 'Toutes les prochaines sessions';
 $string['attended'] = 'a participé';
 $string['bookinghistory'] = 'Historique des réservations';
