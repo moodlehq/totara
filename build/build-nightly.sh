@@ -27,6 +27,6 @@ then
 fi
 
 echo "STEP 5: Run link checker script as a learner";
-php build/link_checker $1 learner 'passworD1!'
+php build/link_checker.php $1 learner 'passworD1!'
 
 
