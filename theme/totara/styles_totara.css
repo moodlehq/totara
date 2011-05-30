@@ -3695,3 +3695,7 @@ div.block_totara_recent_learning table {
 body#files-index div#wrapper div#page div#nav-bar{
     padding-left:30px;
 }
+
+table.topics tr.section span.topicnumber {
+    display:none;
+}
