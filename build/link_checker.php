@@ -16,13 +16,14 @@
  *
  */
 
-if (count($_SERVER['argv']) > 4 || count($_SERVER['argv']) < 2) {
+if (count($_SERVER['argv']) > 5 || count($_SERVER['argv']) < 2) {
     echo "Syntax:\n";
-    echo 'php ' . basename($_SERVER['argv'][0]) . " siteurl [moodle_username] [moodle_password]\n\n";
+    echo 'php ' . basename($_SERVER['argv'][0]) . " siteurl [moodle_username] [moodle_password] [startpage]\n\n";
     echo "where:\n";
     echo "siteurl is the full URL with trailing slash  (http://www.my-site.com/)\n";
     echo "moodle_username is the moodle username to login with\n";
     echo "moodle_password is the password for that user (wrap in single quotes if it includes shell characters like '!')\n";
+    echo "startpage is the page for the checking to start on\n";
     exit;
 }
 
@@ -33,8 +34,8 @@ $site_url = $_SERVER['argv'][1];
 $MOODLE_USERNAME = isset($_SERVER['argv'][2]) ? $_SERVER['argv'][2] : 'learner';
 $MOODLE_PASSWORD = isset($_SERVER['argv'][3]) ? $_SERVER['argv'][3] : 'passworD1!';
 
-// page to start from
-$start_page = 'course/view.php?id=2';
+// page to start from (default index.php)
+$start_page = isset($_SERVER['argv'][4]) ? $_SERVER['argv'][4] : 'index.php';
 
 // list of URLs not to scan
 // everything after the site URL, e.g: 'login/logout.php'
