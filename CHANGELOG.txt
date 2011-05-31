@@ -1,5 +1,29 @@
 Totara LMS Changelog
 
+Release 1.0.13 (31 May 2011):
+==================================================
+
+Improvements:
+    8485    Add French Totara language pack                                                     First version only, some strings are still missing
+    8485    Add German Totara language pack                                                     First version only, there are some known display issues to be resolved
+    8333    Add translations for the Javascript date picker
+    8042    Add translations for the TinyMCE editor
+    8083    Make file picker window styling consistent                                          Only affects the "Totara" theme
+    8487    Add explanatory comments in the code for plan item statuses
+
+Bug fixes:
+    8445    Face-to-face multi select custom field not displaying data correctly
+    8465    Role assignments to non-course contexts throwing errors                             Also happening when updating position assignments
+    8414    Fix multiple issues when managing the Quicklinks block
+    7589    "LIMIT" SQL usage breaking "My Course Completions" block in MSSQL
+    8466    "LIMIT" SQL usage breaking dashboards in MSSQL
+    8506    Cannot move items within course using "topics" format using drag and drop
+    8463    Replace PHP 5.2.9+ specific function call from Alerts/Tasks                         Affects Totara installations using a version of PHP earlier than 5.2.9 only
+    8458    Links in hierarchies visible to users without permission to click
+    8459    Report Builder will link to missing Learning Plans                                  Remove broken link
+    5734    Deprecated PHP syntax notice in calendar
+
+
 Release 1.0.12 (24 May 2011):
 ==================================================
 
