@@ -767,7 +767,11 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
         $placeholder = "[session:{$field->shortname}]";
         $value = '';
         if (!empty($customdata[$field->id])) {
-            $value = $customdata[$field->id]->data;
+            if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
+                $value = str_replace(CUSTOMFIELD_DELIMITTER, ', ', $customdata[$field->id]->data);
+            } else {
+                $value = $customdata[$field->id]->data;
+            }
         }
 
         $msg = str_replace($placeholder, $value, $msg);
@@ -1457,7 +1461,11 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
 
                         $data = '-';
                         if (!empty($customdata[$field->id])) {
-                            $data = $customdata[$field->id]->data;
+                            if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
+                                $data = str_replace(CUSTOMFIELD_DELIMITTER, "\n", $customdata[$field->id]->data);
+                            } else {
+                                $data = $customdata[$field->id]->data;
+                            }
                         }
                         $worksheet->write_string($i, $j++, $data);
                     }
@@ -1548,7 +1556,11 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
 
                     $data = '-';
                     if (!empty($customdata[$field->id])) {
-                        $data = $customdata[$field->id]->data;
+                        if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
+                            $data = str_replace(CUSTOMFIELD_DELIMITTER, "\n", $customdata[$field->id]->data);
+                        } else {
+                            $data = $customdata[$field->id]->data;
+                        }
                     }
                     $worksheet->write_string($i, $j++, $data);
                 }
@@ -3460,14 +3472,14 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
         $data = '';
         if (!empty($customdata[$field->id])) {
             if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
-                $values = explode(CUSTOMFIELD_DELIMITTER, $customdata[$field->id]->data);
-                $data = implode(', ', $values);
+                $values = explode(CUSTOMFIELD_DELIMITTER, format_string($customdata[$field->id]->data));
+                $data = implode('<br />', $values);
             }
             else {
-                $data = $customdata[$field->id]->data;
+                $data = format_string($customdata[$field->id]->data);
             }
         }
-        $table->data[] = array(str_replace(' ', '&nbsp;', format_string($field->name)), format_string($data));
+        $table->data[] = array(str_replace(' ', '&nbsp;', format_string($field->name)), $data);
     }
 
     $strdatetime = str_replace(' ', '&nbsp;', get_string('sessiondatetime', 'facetoface'));
