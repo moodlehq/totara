@@ -435,6 +435,11 @@ function completion_eventhandler_role_assigned($eventdata) {
         return true;
     }
 
+    // Check if this is a course context role assignment
+    if ($context->contextlevel != CONTEXT_COURSE) {
+        return true;
+    }
+
     // Load course
     if (!$course = get_record('course', 'id', $context->instanceid)) {
         debugging('Could not load course id '.$context->instanceid);
