@@ -98,8 +98,9 @@ class scheduled_reports_new_form extends moodleform {
         }
 
         $monthlyselect = array();
+        $dateformat = ($USER->lang == 'en_utf8') ? 'jS' : 'j';
         for($i=1; $i<=31; $i++){
-            $monthlyselect[$i] = date('jS', mktime(0,0,0,0,$i));
+            $monthlyselect[$i] = date($dateformat, mktime(0,0,0,0,$i));
         }
 
 
