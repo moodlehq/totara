@@ -1913,9 +1913,9 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             tm_alert_send($newevent);
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
-                $user = get_record('user', 'id', $managerid);
+                $userto = get_record('user', 'id', $managerid);
                 $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
-                $newevent->userto           = $user;
+                $newevent->userto           = $userto;
                 $newevent->subject          = 'Cancelled for '.$usermsg.' session <a href="'.$url.'">'.$facetoface->name.'</a>';
                 $newevent->fullmessage      = $newevent->subject;
                 tm_alert_send($newevent);
@@ -1925,9 +1925,9 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
         case MDL_F2F_STATUS_REQUESTED:
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
-                $user = get_record('user', 'id', $managerid);
+                $userto = get_record('user', 'id', $managerid);
                 $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
-                $newevent->userto           = $user;
+                $newevent->userto           = $userto;
                 $newevent->fullmessage      = facetoface_email_substitutions(
                                                         $facetoface->requestinstrmngr,
                                                         $facetoface->name,
