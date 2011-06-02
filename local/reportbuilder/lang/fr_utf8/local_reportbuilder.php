@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_reportbuilder.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php // $Id$
+// local_reportbuilder.php - created with Totara langimport script version 1.0
 
 $string['access'] = 'Accès';
 $string['accessbyrole'] = 'Limiter l\'accès par rôle';
@@ -233,7 +231,7 @@ $string['report:completiondate'] = 'Date d\'achèvement';
 $string['report:coursetitle'] = 'Titre du cours';
 $string['report:enddate'] = 'Date de fin';
 $string['report:learner'] = 'Participant';
-$string['report:learningrecords'] = 'Archives de formation';
+$string['report:learningrecords'] = 'Registres de formation';
 $string['report:nodata'] = 'Aucun donnée ne corresponde aux critères et dates choisi';
 $string['report:organisation'] = 'Bureau';
 $string['report:startdate'] = 'Date de début';

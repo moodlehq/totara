@@ -1,27 +1,9 @@
-<?PHP // $Id$
+<?php // $Id$
+// block_facetoface.php - created with Totara langimport script version 1.0
 
-$string['allsessions'] = 'Toutes les sessions';
-$string['allfuturesessions'] = 'Toutes les sessions futures';
-$string['apply'] = 'Appliquer';
-$string['daterange'] = 'Plage de dates:';
-$string['exportsessiondates'] = 'Exporter les dates de sessions';
-$string['fixdates'] = 'Corriger les dates de sessions';
-$string['formaltitle'] = 'Face-to-face';
-$string['listsessiondates'] = 'Liste des dates de sesions Face-to-face';
-$string['nbbookings'] = 'Réservations';
-$string['sessiondatesviewattendees'] = 'Vous pouvez voir les utilisateurs qui assisteront aux sessions suivantes:';
-$string['sessiondatesviewattendeeszero'] = 'Vous ne pouvez pas voir la liste des réservations d\'aucune session dans cette plage de dates.';
-$string['sessiondatestable'] = 'Liste des détails de chaque session';
-$string['sessionlist'] = 'Liste des sessions';
-$string['signedupin'] = 'Vous avez réservé dans les sessions suivantes :';
-$string['signedupinzero'] = 'Aucune réservation trouvée dans cette plage de dates.';
-$string['upcomingsessions'] = 'Prochaines sessions';
-$string['viewexportsessions'] = 'Afficher/exporter les sessions';
-$string['xrecords'] = '$a entrées';
-
-// block_facetoface.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-// local modifications from http://translate.totaralms.com
 $string['allfuturesessions'] = 'Toutes les prochaines sessions';
+$string['allsessions'] = 'Toutes les sessions';
+$string['apply'] = 'Appliquer';
 $string['attended'] = 'a participé';
 $string['bookinghistory'] = 'Historique des réservations';
 $string['bookinghistoryfor'] = 'Historique des réservations pour $a';
@@ -30,20 +12,25 @@ $string['calendar:tablesummary'] = 'Calendrier mensuel des évenements quotidien
 $string['cancelled'] = 'Annulé';
 $string['coursefullname'] = 'Nom complet du cour';
 $string['date'] = 'Date(s)';
+$string['daterange'] = 'Plage de dates:';
 $string['didntattend'] = 'n\'a pas participé';
 $string['enrolled'] = 'inscrit';
 $string['error:invalidcourseid'] = 'No d\'identification du cours non valide';
 $string['error:invalidfacetofaceid'] = 'No d\'identification de l\'activité face à face n\'est pas valide';
 $string['error:invalidsessionid'] = 'No d\'identification';
 $string['error:invaliduserid'] = 'No d\'identification de l\'utilisateur';
+$string['exportsessiondates'] = 'Exporter les dates de sessions';
 $string['facetoface:viewbookings'] = 'Face à face réservations des utilisateurs';
 $string['filters'] = 'Filtres';
 $string['filters:tablesummary'] = 'Filtres des événements affichés dans le  calendrier mensuel ci-dessous.';
 $string['finishdate'] = 'Date de termination';
+$string['fixdates'] = 'Corriger les dates de sessions';
 $string['formaltitle'] = 'Face à face';
 $string['futurebookings'] = 'Réservations futures';
 $string['futurebookingsfor'] = 'Réservations futures pour $a';
+$string['listsessiondates'] = 'Liste des dates de sesions Face-to-face';
 $string['mybookings'] = 'Mes réservations';
+$string['nbbookings'] = 'Réservations';
 $string['nobookinghistory'] = 'Aucun historique des réservations';
 $string['nobookinghistoryfor'] = 'Aucun historique des réservations pour $a';
 $string['nosessions'] = '<p><i>Aucune session ne correspond aux parametres choisis.</i></p>';
@@ -52,10 +39,12 @@ $string['pastbookings'] = 'Réservations passées';
 $string['pastbookingsfor'] = 'Réservations passées pour $a';
 $string['searchedusers'] = '$a utilisateurs correspondent aux parametres choisis';
 $string['searchusers'] = 'Rechercher des utilisateurs';
+$string['sessiondatestable'] = 'Liste des détails de chaque session';
 $string['sessiondatesview'] = 'Vous êtes enregistrés aux sessions suivantes';
 $string['sessiondatesviewattendees'] = 'Vous pouvez visualiser les participants des sessions suivantes:';
 $string['sessiondatesviewattendeeszero'] = 'Vous ne pouvez pas visualiser les participants enregistrer aux sessions entre ces dates.';
 $string['sessiondetails'] = 'Détails de la session';
+$string['sessionlist'] = 'Liste des sessions';
 $string['sessions'] = 'Sessions';
 $string['showingallwaitlistedsessions'] = '<p><i>Tout les cours correspondant aux parametres choisis sont affichés</i></p>';
 $string['signedupin'] = 'Vous êtes inscrit dans les sessions suivantes :';
@@ -70,6 +59,8 @@ $string['toomanywaitlistedsessions'] = '<p><i>$a des cours correspondant aux par
 $string['trainer'] = 'Formateur';
 $string['trainers'] = 'Formateurs';
 $string['trainingcalendar'] = 'Calendrier de formations';
+$string['upcomingsessions'] = 'Prochaines sessions';
+$string['viewexportsessions'] = 'Afficher/exporter les sessions';
 $string['xevents'] = '<i>et $a autres...</i>';
 $string['xrecords'] = '$a données';
 

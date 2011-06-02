@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_totara_msg.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php // $Id$
+// local_totara_msg.php - created with Totara langimport script version 1.0
 
 $string['accept'] = 'Accepter';
 $string['alert_description'] = 'Toutes les alertes que vous avez reçues sont affichées ci-dessous. Cliquez une titre d\'alerte afin de voir plus de détails ou pour rejeter l\'alerte. Vous pouvez également appliquer une filtre à la liste en utilisant la fonction \"Rechercher par\"';
