@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // organisation.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // organisation.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['adddepthlevel'] = 'Neues Level hinzufügen';

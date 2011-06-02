@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // block_totara_tasks.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://translate.totaralms.com
-
+<?php // $Id$
+// block_totara_tasks.php - created with Totara langimport script version 1.0
 
 $string['blockname'] = 'Totara Aufgaben';
 $string['clickformoreinfo'] = 'Für mehr Informationen klicken';

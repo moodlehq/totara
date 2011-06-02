@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_totara_msg.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://translate.totaralms.com
-
+<?php // $Id$
+// local_totara_msg.php - created with Totara langimport script version 1.0
 
 $string['accept'] = 'Akzeptieren';
 $string['alert_description'] = 'Hier sind alle Benachrichtigungen aufgelistet, die Sie erhalten haben. Sie erhalten Zusatzinformationen, wenn Sie auf den Benachrichtigungstitel klicken. Sie können eine Benachrichtigung ablehnen, indem Sie auf das Ablehnen-Symbol klicken. Die \"Suchen nach\" Funktionalität erlaubt es Ihnen Benachrichtigungen, die angezeigt werden sollen, zu filtern.';
