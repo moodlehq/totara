@@ -3954,3 +3954,112 @@ function facetoface_add_customfields_to_form(&$mform, $customfields, $alloptiona
         }
     }
 }
+
+
+/**
+ * Get session cancellations
+ *
+ * @access  public
+ * @param   integer $sessionid
+ * @return  array|false
+ */
+function facetoface_get_cancellations($sessionid)
+{
+    global $CFG;
+
+    $fullname = sql_fullname('u.firstname', 'u.lastname');
+
+    // Nasty SQL follows:
+    // Load currently cancelled users,
+    // include most recent booked/waitlisted time also
+    $sql = "
+            SELECT
+                u.id,
+                su.id AS signupid,
+                u.firstname,
+                u.lastname,
+                MAX(ss.timecreated) AS timesignedup,
+                c.timecreated AS timecancelled,
+                c.note AS cancelreason
+            FROM
+                {$CFG->prefix}facetoface_signups su
+            JOIN
+                {$CFG->prefix}user u
+             ON u.id = su.userid
+            JOIN
+                {$CFG->prefix}facetoface_signups_status c
+             ON su.id = c.signupid
+            AND c.statuscode = ".MDL_F2F_STATUS_USER_CANCELLED."
+            AND c.superceded = 0
+            LEFT JOIN
+                {$CFG->prefix}facetoface_signups_status ss
+             ON su.id = ss.signupid
+             AND ss.statuscode IN (
+                 ".MDL_F2F_STATUS_BOOKED.",
+                 ".MDL_F2F_STATUS_WAITLISTED.",
+                 ".MDL_F2F_STATUS_REQUESTED."
+             )
+            AND ss.superceded = 1
+            WHERE
+                su.sessionid = {$sessionid}
+            GROUP BY
+                su.id,
+                u.id,
+                u.firstname,
+                u.lastname,
+                c.timecreated,
+                c.note
+            ORDER BY
+                {$fullname},
+                c.timecreated
+    ";
+    return get_records_sql($sql);
+}
+
+
+/**
+ * Get session unapproved requests
+ *
+ * @access  public
+ * @param   integer $sessionid
+ * @return  array|false
+ */
+function facetoface_get_requests($sessionid)
+{
+    global $CFG;
+
+    $fullname = sql_fullname('u.firstname', 'u.lastname');
+
+    $sql = "SELECT u.id, su.id AS signupid, u.firstname, u.lastname,
+                   ss.timecreated AS timerequested
+              FROM {$CFG->prefix}facetoface_signups su
+              JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
+              JOIN {$CFG->prefix}user u ON u.id = su.userid
+             WHERE su.sessionid = $sessionid AND ss.superceded != 1 AND ss.statuscode = ".MDL_F2F_STATUS_REQUESTED."
+          ORDER BY $fullname, ss.timecreated";
+    return get_records_sql($sql);
+}
+
+
+/**
+ * Get session declined requests
+ *
+ * @access  public
+ * @param   integer $sessionid
+ * @return  array|false
+ */
+function facetoface_get_declines($sessionid)
+{
+    global $CFG;
+
+    $fullname = sql_fullname('u.firstname', 'u.lastname');
+
+    $sql = "SELECT u.id, su.id AS signupid, u.firstname, u.lastname,
+                   ss.timecreated AS timerequested
+              FROM {$CFG->prefix}facetoface_signups su
+              JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
+              JOIN {$CFG->prefix}user u ON u.id = su.userid
+             WHERE su.sessionid = $sessionid AND ss.superceded != 1 AND ss.statuscode = ".MDL_F2F_STATUS_DECLINED."
+          ORDER BY $fullname, ss.timecreated";
+    return get_records_sql($sql);
+}
