@@ -3647,6 +3647,10 @@ function delete_course($courseorid, $showfeedback = true) {
         $result = false;
     }
 
+    // Remove course completion records
+    $cc = new completion_info($course);
+    $cc->clear_criteria();
+
     if (!remove_course_contents($courseid, $showfeedback)) {
         if ($showfeedback) {
             notify("An error occurred while deleting some of the course contents.");

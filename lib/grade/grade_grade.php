@@ -752,13 +752,13 @@ class grade_grade extends grade_object {
 
         // Ignore during restore
         global $restore;
-        if(!empty($restore->backup_unique_code)) {
+        if (!empty($restore->backup_unique_code)) {
             return;
         }
 
         // Bail out immediately if completion is not enabled for site (saves loading
         // grade item below)
-        if(!completion_info::is_enabled_for_site()) {
+        if (!completion_info::is_enabled_for_site()) {
             return;
         }
 
@@ -766,36 +766,49 @@ class grade_grade extends grade_object {
         $this->load_grade_item();
 
         // Only course-modules have completion data
-        if($this->grade_item->itemtype!='mod') {
+        if ($this->grade_item->itemtype != 'mod') {
             return;
         }
 
         // Use $COURSE if available otherwise get it via item fields
-        if(!empty($COURSE) && $COURSE->id==$this->grade_item->courseid) {
-            $course=$COURSE;
+        if (!empty($COURSE) && $COURSE->id == $this->grade_item->courseid) {
+            $course = $COURSE;
         } else {
-            $course=get_record('course','id',$grade_item->courseid);
+            $course = get_record('course', 'id', $this->grade_item->courseid);
+        }
+
+        // Check the course object exists
+        if (!$course) {
+            return;
         }
 
         // Bail out if completion is not enabled for course
-        $completion=new completion_info($course);
-        if(!$completion->is_enabled()) {
+        $completion = new completion_info($course);
+        if (!$completion->is_enabled()) {
             return;
         }
 
         // Get course-module
-        $cm=get_coursemodule_from_instance($this->grade_item->itemmodule,
-            $this->grade_item->iteminstance,$this->grade_item->courseid);
+        $cm = get_coursemodule_from_instance(
+            $this->grade_item->itemmodule,
+            $this->grade_item->iteminstance,
+            $this->grade_item->courseid
+        );
 
-        if(!$cm) {
-            debugging("Couldn't find course-module for module
-                '{$this->grade_item->itemmodule}', instance '{$this->grade_item->iteminstance}',
-                course '{$this->grade_item->courseid}'");
+        if (!$cm) {
+            // Only show the debug message if we are not deleting the information.
+            // This is because when deleting a course, the course modules get deleted before
+            // the grades...
+            if (!$deleted) {
+                debugging("Couldn't find course-module for module
+                    '{$this->grade_item->itemmodule}', instance '{$this->grade_item->iteminstance}',
+                    course '{$this->grade_item->courseid}'");
+            }
             return;
         }
 
         // Pass information on to completion system
-        $completion->inform_grade_changed($cm,$this->grade_item,$this,$deleted);
+        $completion->inform_grade_changed($cm, $this->grade_item, $this, $deleted);
      }
 }
 ?>
