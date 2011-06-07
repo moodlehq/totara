@@ -3158,6 +3158,7 @@ function send_scheduled_report($sched){
     $messagedetails->reporturl = $reporturl;
     $messagedetails->scheduledreportsindex = $CFG->wwwroot . '/my/reports.php#scheduled';
 
+    $dateformat = ($user->lang == 'en_utf8') ? 'jS' : 'j';
     $schedule = '';
     switch($sched->frequency) {
         case REPORT_BUILDER_SCHEDULE_DAILY:
@@ -3170,7 +3171,7 @@ function send_scheduled_report($sched){
             break;
         case REPORT_BUILDER_SCHEDULE_MONTHLY:
             $schedule .= get_string('monthly', 'local_reportbuilder') . ' ' . get_string('onthe', 'local_reportbuilder');
-            $schedule .= date('jS' ,mktime(0,0,0,0,$sched->schedule));
+            $schedule .= date($dateformat ,mktime(0,0,0,0,$sched->schedule));
             break;
     }
     $messagedetails->schedule = $schedule;
