@@ -287,7 +287,7 @@
                 //check, if there exists required-elements
                 $countreq = count_records('feedback_item', 'feedback', $feedback->id, 'required', 1);
                 if($countreq > 0) {
-                    echo '<tr><td colspan="3"><font color="red">(*)' . get_string('items_are_required', 'feedback') . '</font></td></tr>';
+                    echo '<tr><td colspan="3"><font color="red" align="left">(*)' . get_string('items_are_required', 'feedback') . '</font></td></tr>';
                 }
                 
                 unset($startitem);
