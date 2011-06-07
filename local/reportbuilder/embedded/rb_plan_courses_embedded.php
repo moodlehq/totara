@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; eithr version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 class rb_plan_courses_embedded extends rb_base_embedded {
@@ -27,6 +27,7 @@ class rb_plan_courses_embedded extends rb_base_embedded {
     public $url, $source, $fullname, $filters, $columns;
     public $contentmode, $contentsettings, $embeddedparams;
     public $hidden, $accessmode, $accesssettings, $shortname;
+    public $defaultsortcolumn, $defaultsortorder;
 
     public function __construct($data) {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
@@ -35,6 +36,7 @@ class rb_plan_courses_embedded extends rb_base_embedded {
         $this->url = '/local/plan/record/courses.php';
         $this->source = 'dp_course';
         $this->shortname = 'plan_courses';
+        $this->defaultsortcolumn = 'course_courselink';
         $this->fullname = get_string('recordoflearningcourses', 'local_plan');
         $this->columns = array(
             array(

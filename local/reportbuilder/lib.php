@@ -3486,6 +3486,9 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
     $embed->accesssettings = isset($embed->accesssettings) ? $embed->accesssettings : array();
     $embed->contentsettings = isset($embed->contentsettings) ? $embed->contentsettings : array();
 
+    $embed->defaultsortcolumn = isset($embed->defaultsortcolumn) ? $embed->defaultsortcolumn : '';
+    $embed->defaultsortorder = isset($embed->defaultsortorder) ? $embed->defaultsortorder : SORT_ASC;
+
     $todb = new object();
     $todb->shortname = $shortname;
     $todb->fullname = $embed->fullname;
@@ -3494,6 +3497,8 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
     $todb->accessmode = $embed->accessmode;
     $todb->contentmode = $embed->contentmode;
     $todb->embedded = 1;
+    $todb->defaultsortcolumn = $embed->defaultsortcolumn;
+    $todb->defaultsortorder = $embed->defaultsortorder;
 
     begin_sql();
     if (!$newid = insert_record('report_builder', $todb)) {
