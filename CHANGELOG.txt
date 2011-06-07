@@ -1,5 +1,26 @@
 Totara LMS Changelog
 
+Release 1.0.14 (7 June 2011):
+==================================================
+
+Improvements:
+    8485    Add Spanish Totara language pack
+    8485    Add missing files to French and German language packs
+    8528    Add default sort to embedded Report Builder reports
+    8495    Correct some capability defaults to make hierarchies consistent                     Does not alter any existing capability settings
+    8575    Make "simpleselect" filter in Report Builder more flexible
+
+Bug fixes:
+    8580    Check permissions correctly when manager attempts to approve staff's Face-to-face signups
+    8553    Some Face-to-face Tasks referencing manager rather than staff member in content
+    8461    Delete Course Completion data on course deletion
+    8319    MSSQL specific bug in Feedback summary report                                       Report not appearing when Trainer Name column used
+    8280    Validation error when updating Course Completion criteria
+    8536    Missing SCORM icon from theme
+    8334    Remove English data suffix from dates in Report Builder
+    8590    Remove broken icon references in Totara theme
+
+
 Release 1.0.13 (31 May 2011):
 ==================================================
 
