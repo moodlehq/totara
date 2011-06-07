@@ -1942,7 +1942,9 @@ div.add-linked-course {
     text-align:right;
 }
 
-
+.reportbuilder-navbuttons .singlebutton{
+    float:left;
+}
 
 /***
  *** Blogs
