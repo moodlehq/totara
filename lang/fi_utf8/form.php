@@ -1,0 +1,37 @@
+<?PHP // $Id: form.php,v 1.7 2008/11/21 01:32:24 samulik Exp $
+$string['addfields'] = 'Lisää lomakkeeseen $a kenttää';
+$string['advancedelement'] = 'Lisätietokenttä';
+$string['day'] = 'Päivää';
+$string['denotesreq'] = '$a merkitsee pakollista kenttää';
+$string['display'] = 'Näyttö';
+$string['err_alphanumeric'] = 'Kenttä saa sisältää vain kirjaimia ja numeroita.';
+$string['err_email'] = 'Kentän on sisällettävä kelvollinen sähköpostiosoite.';
+$string['err_lettersonly'] = 'Kenttä saa sisältää vain kirjaimia.';
+$string['err_maxlength'] = 'Kenttä saa olla enintään $a->format merkkiä pitkä.';
+$string['err_minlength'] = 'Kentän on oltava vähintään $a->format merkkiä pitkä.';
+$string['err_nonzero'] = 'Kentän on oltava luku, joka ei saa alkaa numerolla 0.';
+$string['err_nopunctuation'] = 'Kenttä ei saa sisältää välimerkkejä.';
+$string['err_numeric'] = 'Kentän on oltava luku.';
+$string['err_rangelength'] = 'Kentän on sisällettävä vähintään {$a->format[0]} ja enintään {$a->format[1]} merkkiä.';
+$string['err_required'] = 'Pakollinen kenttä puuttuu.';
+$string['general'] = 'Yleiset';
+$string['hideadvanced'] = 'Piilota lisäkentät';
+$string['hour'] = 'Tuntia';
+$string['minute'] = 'Minuuttia';
+$string['miscellaneoussettings'] = 'Muut asetukset';
+$string['modstandardels'] = 'Moduulien yleiset asetukset';
+$string['month'] = 'Kuukautta';
+$string['nomethodforaddinghelpbutton'] = 'Ohjepainiketta ei pysty lisäämään lomakkeen kenttään $a->name (class $a->classname)';
+$string['nonexistentformelements'] = 'Yritys lisätä ohjepainike olemattomiin lomakkeen kenttiin : $a';
+$string['optional'] = 'Valinnainen kenttä';
+$string['othersettings'] = 'Muut asetukset';
+$string['requiredelement'] = 'Pakollinen kenttä.';
+$string['revealpassword'] = 'Näytä';
+$string['security'] = 'Suojaus';
+$string['selectallornone'] = 'Valitse kaikki/ei mitään';
+$string['showadvanced'] = 'Näytä lisäkentät';
+$string['somefieldsrequired'] = 'Pakolliset kentät on merkitty symbolilla $a.';
+$string['timing'] = 'Ajastus';
+$string['unmaskpassword'] = 'Näytä';
+$string['year'] = 'Vuotta';
+?>

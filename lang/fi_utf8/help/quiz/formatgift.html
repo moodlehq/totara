@@ -1,0 +1,195 @@
+<p align=center><b>"GIFT" tiedostojen tuominen</b></p>
+<p>GIFT on kattavin tiedoston vienti- tai tuontimuoto, jolla voi siirtää Moodle tenttikysymyksiä tekstitiedostoon. GIFT on alunperin suunniteltu helpoksi työkaluksi, jolla opettaja voi kirjoittaa kysymyksiä tekstitiedostoon. GIFT tukee monivalintaa, oikein/väärin -kysymyksiä, lyhytvastauksia, yhdistelyä ja numeerisia kysymyksiä, sekä "puuttuva sana" -aukkotehtäviä. Huomaa, että Cloze-aukkotehtäviä ei tällä hetkellä tueta. Erilaisia kysymystyyppejä voi tallentaa samaan tiedostoon ja tietostotyyppi tukee myös rivien kommentointia, kysymysten nimiä, palautetta ja prosentuaalisesti painotettua arvostelua. </p>
+
+    <p>Tekstitiedoston koodauksen on oltava sama kuin Moodleversiosi koodauksen. Esimerkki kysymystekstitiedostosta:
+	
+     <a href="../../../../mod/quiz/format/gift/examples.txt">gift/examples.txt</a>.</p>
+
+
+<h3>KYSYMYSTYYPIT</h3>
+
+<p><u>Monivalintakysymykset</u><br />
+    Vastaukset erotetaan toisistaan tildellä (~), oikean vastauksen edessä on yhtäläisyysmerkki (=).</p>
+    <pre>     Kuka oli Sepeteuksen poikien isä? {~Ei kukaan ~Virtanen =Sepeteus}</pre>
+    <p><b>Puuttuva sana</b> -muoto automaattisesti lisää täytettävän aukon (näin: ________) lauseen keskelle. Puuttuvaa sanaa käyttäessä vastaus laitetaan siihen kohtaan, mihin lauseeseen tuleva aukko halutaan. 
+    </p>
+    <pre>     Sepeteus oli poikiensa {~veli =isä ~äiti}.</pre>
+    <p>Jos vastaukset annetaan ennen kysymyksen sulkevaa välimerkkiä, aukko liitetään puuttuva sana -muotoon. Kaikissa kysymystyypeissä voidaan käyttää puuttuva sana -muotoa.
+	</p>
+    <p>Kysymysten välillä on oltava tyhjä rivi (kaksi rivinvaihtoa). Selkeyden vuoksi vastaukset voidaan kirjoittaa eri riveille tai ne voidaan sisentää. Esimerkiksi: </p>
+    <pre>     Suomen itsenäisyyspäivä on {
+         ~neljäs
+         ~viides
+         =kuudes
+     } joulukuuta.
+     
+     Mistä maasta japanilaiset kirjainmerkit ovat kotoisin? {
+         ~Intiasta
+         =Kiinasta
+         ~Koreasta
+         ~Egyptistä}</pre>
+
+<p><u>Lyhytvastaus:</u><br />
+	Lyhytvastauksissa vastaukset merkitään yhtäsuuruusmerkillä (=), joka tarkoittaa sitä, että kaikki määritellyt ovat oikeita vastauksia. Tildeä (~) ei saa käyttää.
+	</p>
+    <pre>     Mitä sukua Sepeteuksen pojat ovat Sepeteukselle?{=poikia =lapsia}
+
+     Kaksi plus kaksi on {=neljä =4}.</pre>
+    <p>Jos oikeita vastauksia on vain <u>yksi</u> se voidaan kirjoittaa ilman yhtäsuuruusmerkkiä, kunhan sitä ei voi sekoittaa oikein/väärin kysymykseen. 
+
+<p><u>Oikein/väärin:</u><br />
+    Tämäntyyppisessä kysymyksessä vastaus kertoo onko esitetty väite oikein vai väärin. Vastaus pitää kirjoittaa muotoon {TRUE} tai {FALSE} tai lyhenteinä {T} tai {F}.
+</p>
+    <pre>     Sepeteus oli poikiensa äiti.{F}
+
+     Aurinko nousee idästä.{T}</pre>
+
+<p><u>Yhdistely:</u><br />
+    Yhdistelytehtävän väitteet aloitetaan yhtäsuuruusmerkillä (=) ja parit yhdistetään symbolilla "->". Yhdistelytehtävässä on oltava ainakin kolme yhdistettävää paria. </p>
+    <pre>     Yhdistelytehtävän ohjeistus. {
+         =kysymys1 -> vastaus1
+         =kysymys2 -> vastaus2
+         =kysymys3 -> vastaus3
+         }
+     
+     Yhdistä seuraavat maat ja pääkaupungit {
+         =Kanada -> Ottawa
+         =Italia  -> Rooma
+         =Japani  -> Tokio
+         =Intia  -> Delhi
+         }</pre>
+    <p>Yhdistelytehtävät eivät tue palautteen antoa tai prosentuaalisesti painotettua arvostalua.</p>
+
+<p><u>Numeeriset:</u><br />
+    Numeeristen kysymysten vastausten on alettava ristikkomerkillä (#).
+	Numeerisissa kysymyksissä voi olla mukana virhemarginaali, joka kirjoitetaan oikean vastauksen jälkeen kaksoispisteellä erotettuna. Esimerkiksi: jos oikea vastaus on välillä 1,5 ja 2,5, se kirjoitettaisiin:
+    <u>{#2:0.5}</u>. 
+	Tämä tarkoittaa sitä, että 2 on oikein ja virhemarginaali on 0,5 (väli 1,5 - 2,5). Jos virhemarginaalia ei määritellä, sen oletetaan olevan nolla.    
+	</p>
+    <pre>     Koska Suomi itsenäistyi? {#1917}
+
+     Mikä on piin arvo? (3 desimaalin tarkkuudella)? {#3,1415:0,0005}.</pre>
+    <p>Numeeriset vastaukset voidaan kirjoittaa myös seuraavanlaiseen muotoon {#<i>MinimiArvo</i>..<i>MaksimiArvo</i>}. 
+	</p>
+    <pre>     Mikä on piin arvo (3 desimaalin tarkkuudella)? {#3,141..3,142}.</pre>
+    <p>Moodlen selainkäyttöliittymä ei tue useita vastauksia numeerisiin tehtäviin mutta Moodlen koodi ja GIFT tukevat. Tätä ominaisuutta voi käyttää määritelläkseen useita numeerisia välejä ja voi olla erityisen hyödyllinen jos sen yhdistää prosentuaalisesti painotetun arvostelun kanssa.
+	Jos useampia numeerisia vastauksia käytetään, ne pitää erottaa yhtäsuuruusmerkillä, aivan kuten lyhytvastauksetkin.
+    </p>
+    <pre>     Koska Suomi itsenäistyi? {#
+         =1917:0
+         =%50%1917:2}</pre>
+    <p>Koska Moodlen selainkäyttöliittymä ei tue useita vastauksia numeerisiin tehtäviin, niitä ei voi nähdä tai muokata Moodlen kautta. Ainoa tapa muuttaa numeerista vastausta (ensimmäisen vastauksen jälkeen) on poistaa kysymys ja tuoda se uudestaan Moodleen (tai käyttää phpMyAdmin -työkalua tms.).
+</p>
+
+
+<h3>VAIHTOEHTOJA</h3>
+    <p>Näiden peruskysymystyyppien lisäksi tämä suodatin tarjoaa myös seuraavat vaihtoehdot:
+    rivikommentit, kysymysten nimet, palaute ja prosentuaalisesti painotettu arvostelu.
+	</p>
+
+<p><u>Rivikommentit:</u><br />
+    Tekstitiedostoon voidaan lisätä kommentteja, joita ei siirretä Moodleen. Näin voidaan lisätä esimerkiksi otsikoita tai lisätietoa kysymyksistä. Rivejä, jotka alkavat kahdella kauttaviivalla (tabulaattori- tai välilyöntejä ei lasketa) ei oteta huomioon.
+	</p>
+    <pre>     // Alaotsikko: Numeerisia kysymyksiä
+     Paljonko on 2 plus 2? {#4}</pre>
+
+<p><u>Kysymyksen nimi:</u><br />
+    Kysymyksen nimi voidaan määritellä kirjoittamalla se ensin ja pistämällä sen molemmille puolille kaksi kaksoispistettä.</p>
+    <pre>     ::Kanji-merkkien alkuperä::Mistä maasta japanilaiset kirjainmerkit ovat kotoisin? 
+		{=Kiinasta}
+
+     ::Itsenäisyyspäivä::Suomen itsenäisyyspäivä on  {~neljäs ~viides =kuudes} joulukuuta.</pre>
+    <p>Jos kysymyksen nimeä ei ole määritelty, oletusarvoisesti käytetään koko kysymystä nimenä.
+	</p>
+
+<p><u>Palaute:</u><br />
+  	Jokaiseen vastaukseen voi lisätä palautetta kirjoittamalla kysymyksen perään ristikkomerkin (#) ja palautteen.
+   </p>
+    <pre>     Mikä on vastaus tähän monivalintakysymykseen?{
+     ~väärä vastaus#palautetta väärästä vastauksesta
+     ~toinen väärä vastaus#palautetta toisesta väärästä vastauksesta
+     =oikea vastaus#Hyvin vastattu!}
+     
+     Mitä sukua Sepeteuksen pojat ovat Sepeteukselle?{
+     =poikia#hyvä vastaus!
+     =lapsia#hyvä vastaus!}
+     
+     Sepeteus on poikiensa äiti.{FALSE#Sepeteus on poikiensa isä.}</pre>
+    <p>Monivalintatehtävissä palaute näytetään vain sille vaihtoehdolle, jonka vastaaja valitsi. Lyhytvastauksissa palaute näytetään vain jos vastaaja vastaa oikein. Oikein/väärin -kysymyksissä palaute näytetään vain jos vastaaja  vastaa väärin. Viimeisessä esimerkissä vastaaja näkisi palautteen siis vain jos hän olisi vastannut "OIKEIN".
+	</p>
+
+<p><u>Prosentuaalisesti painotettu arvostelu:</u><br />
+    Prosentuaalisesti painotettua arvostelua voi käyttää monivalinta- ja lyhytvastaustehtävissä. Prosentuaalisesti painotettu arvostelu merkitään monivalinnoissa tildemerkillä (~) ja lyhytvastauksissa yhtäsuuruusmerkillä (=). Merkin jälkeen kirjoitetaan haluttu painoarvo prosenttimerkkien (%) sisään.
+	Tämän vaihtoehdon voi yhdistää palautekommentteihin.
+	</p>
+    <pre>     Vaikea kysymys.{~väärä vastaus ~%50%puolet pisteistä antava vastaus =täysien pisteiden vastaus}
+          
+     ::Jeesuksen kotikaupunki::Jeesus oli kotoisin {
+     ~Jerusalemista#Tärkeä kaupunki, mutta väärä vastaus.
+     ~%25%Betlehemistä#Hän syntyi siellä, mutta ei kasvanut siellä.
+     ~%50%Galileasta#Hieman tarkemmin!
+     =Nasaretista#Aivan oikein!}.
+     
+     ::Jeesuksen kotikaupunki:: Jeesus oli kotoisin {
+     =Nasaretista#Aivan oikein!
+     =%75%Nazeretista#Oikein, mutta väärin kirjoitettu.
+     =%25%Betlehemistä#Hän syntyi siellä, mutta ei kasvanut siellä.}</pre>
+    <p>Huomaa että esimerkkikysymykset ovat käytännössä samat: ensimmäinen monivalintakysymys ja toinen lyhytvastaus.
+	</p>
+
+    <p><font size="-1">
+	Huomaa, että vastauksille on mahdollista määritellä painoarvoja, joita ei voisi määritellä selainkäyttöliittymän kautta. Nämä painoarvot lasketaan normaalisti (niille annetuin arvoin) ja ne näkyvät tentin käyttäjälle tavalliseen tapaan. Nämä arvot eivät kuitenkaan näy tentin laatijalle, jos hän muokkaa kysymyksiä Moodlen "Muokkaa kysymyksiä" -työkalun avulla. Työkalun alasvetovalikosta voi valita vain tiettyjä arvoja, ja jos kysymyksen painoarvo ei vastaa näitä tiettyjä arvoja, painoarvoa ei näytetä oikein. Jos muokkaa tällaisia kysymyksiä selainkäyttöliittymän kautta, vastauksen painoarvo muuttuu näytetyksi (ennaltamääritetyksi).
+</font></p>
+
+<p><u>Useampia vastauksia:</u><br />
+    Useampia vastauksia käytetään monivalintatehtävissä, joissa käyttäjän pitää valita kaksi tai useampia vastauksia saadaksen täydet pisteet. Useammat vastaukset mahdollistetaan antamalla useammalle vastaukselle osittainen pistemäärä eikä yhdellekään vastaukselle täysiä pisteitä.
+</p>
+    <pre>     Ketkä olivat Sepeteuksen poikien vanhemmat? {
+          ~Eivät ketkään
+          ~%50%Sepeteus
+          ~%50%Sepeteuksen vaimo
+          ~Sepeteuksen pojanpoika }</pre>
+    <p>Huomaa, että yhtäsuuruusmerkkiä (=) ei käytetä yhdessäkään vastauksessa ja vastausten kokonaisarvoksi ei saa tulla enempää kuin 100%, muuten Moodle antaa virheilmoituksen.
+	Jotta opiskelijat eivät automaattisesti saisi 100% oikein valitsemalla kaikki mahdolliset vastaukset, kannattaa liittää vääriin vastauksiin negatiivinen painoarvo. 
+    </p>
+    <pre>     Ketkä olivat Sepeteuksen poikien vanhemmat? {
+          ~%-50Eivät ketkään
+          ~%50%Sepeteus
+          ~%50%Sepeteuksen vaimo
+          ~%-50%Sepeteuksen pojanpoika }</pre>
+
+<p><u>Erikoismerkit ~ = # { } :</u><br />
+    Nämä merkit <b> ~ = # { } </b> muokkaavat toimintoja eikä niitä voi käyttää kysymysteksteissä. Koska näillä merkeillä on oma tehtävänsä eri toimintojen muokkaajina, niitä kutsutaan ohjausmerkeiksi. Joskus kuitenkin saattaa tulla tarve käyttää jotakin näistä merkeistä, esimerkiksi jos kysymyksessä esitetään matemaattinen kaava. Ohjausmerkin ongelma voidaan kiertää "koodinvaihtomerkillä" (escape character). Koodinvaihtomerkki kenoviiva (\) kirjoitetaan ennen ohjausmerkkiä, ja siten suodatin ymmärtää, että merkkiä halutaan käyttää itseisarvoisesti eikä ohjausmerkkinä.
+	
+	
+    Esimerkiksi:</p>
+    <pre>     Minkä laskutoimituksen lopputulos on  5? {
+          ~ \= 2 + 2
+          = \= 2 + 3
+          ~ \= 2 + 4  }
+
+     ::GIFT ohjausmerkit::
+     Mikä seuraavista ei ole GIFT tiedostontuontimuodon ohjausmerkki? {
+        ~ \~     # \~ on ohjausmerkki.
+        ~ \=     # \= on ohjausmerkki.
+        ~ \#     # \# on ohjausmerkki.
+        ~ \{     # \{ on ohjausmerkki.
+        ~ \}     # \} on ohjausmerkki.
+        = \     # Oikein! \ (kenoviiva) ei ole ohjausmerkki. MUTTA sitä käytetään ohjausmerkkien koodinvaihtomerkkinä.
+     }</pre>
+    <p>Kun kysymys on käsitelty, kenoviiva poistetaan eikä sitä tallenneta Moodleen.
+	</p>
+
+<p><u>Muita vaihtoehtoja:</u><br />
+	Lyhytvastauksissa voidaan tehdä ero isojen ja pienien kirjainten välillä muuttamalla &quot;0&quot; &quot;1&quot; seuraavalla rivillä:   
+	<br />
+    <tt>$question-&gt;usecase = 0;  // Jätä kirjaisinkoko huomioimatta</tt></p>
+    <p>Muita vaihtoehtoja voi valita muokkamalla tiedostontuontisuodantinta 
+	<b>gift/format.php</b>. </p>
+<p></p>
+
+<h3>CREDITS</h3>
+    <p>Tämä suodatin luotiin yhteistyössä Moodleyhteisössä. Alunperin se perustui puuttuva sana -formaattiin, jossa oli mukana koodia Martin Dougiamasilta ja Thomas Robbilta. Paul Tsuchido Shew kirjoitti tämän suodattimen joulukuussa 2003 ja otti mukaan yhteisön ehdotuksia saadakseen aikaan tehokkaamman kysymystyypin. Nimi on akronyymi sanoista &quot;General Import Format Technology&quot; , tai jotain sinne päin, mutta se on aivan liian pitkä nimi tällaiselle yksinkertaiselle suodattimelle, eli lopputulos on vain GIFT:
+	
+	</p>
+    <p><font size="-1">GIFT suodatin ja dokumentaatio: Paul Tsuchido Shew http://ac.shew.jp. Viimeisin päivitys 27.2 2004.</font></p>

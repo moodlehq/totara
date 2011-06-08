@@ -1,0 +1,76 @@
+<?PHP // $Id$ 
+      // organisation.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+
+
+$string['adddepthlevel'] = 'Lisää uusi taso';
+$string['addnewframework'] = 'Lisää uusi organisaatiorakenne';
+$string['addneworganisation'] = 'Lisää uusi organisaatio';
+$string['chooseorganisation'] = 'Valitse organisaatio';
+$string['competencyassigndeletecheck'] = 'Oletko varma, että haluat poistaa tämän kompetenssitehtävän?';
+$string['currentlyselected'] = 'Nyt valittuna';
+$string['deletecheck'] = 'Oletko varma, että haluat poistaa tämän organisaation, kaikki sen lapsiobjektit ja tiedon mitä niissä saattaa olla?';
+$string['deletecheckframework'] = 'Oletko varma, että haluat poistaa rakenteen \"$a\"?';
+$string['deletedassignedcompetency'] = 'Kompetenssi on poistettu tältä organisaatiolta';
+$string['deletedepth'] = 'Poista \"$a\"';
+$string['deletedframework'] = 'Organisaatiorakenne \"$a\" ja kaikki sen sisältämän tieto on poistettu.';
+$string['deletedorganisation'] = 'Organisaaatio $a ja kaikki sen lapsiobjektit on lopullisesti poistettu';
+$string['deleteframework'] = 'Poista \"$a\"';
+$string['depthlevel'] = 'Taso';
+$string['depthlevels'] = 'Tasot';
+$string['depths'] = 'Tasot';
+$string['descriptionview'] = 'Kuvaus kohteelle $a';
+$string['editdepthlevel'] = 'Muokkaa tasoa';
+$string['editframework'] = 'Muokkaa organisaatiorakennetta';
+$string['editgeneric'] = 'Muokkaa objektia $a';
+$string['editorganisation'] = 'Muokkaa organisaatiota';
+$string['error:deletedframework'] = 'Organisaatiorakennetta $a ja sen tietoja poistettaessa tapahtui virhe';
+$string['error:dialognotreeitems'] = 'Tässä rakenteessa ei ole organisaatioita';
+$string['featureplural'] = 'Organisaatiot';
+$string['framework'] = 'Organisaatiorakenne';
+$string['frameworks'] = 'Organisaatiorakenteet';
+$string['fullname'] = 'Organisaation koko nimi';
+$string['fullnamedepth'] = 'Tason koko nimi';
+$string['fullnameframework'] = 'Koko nimi';
+$string['fullnameview'] = 'Koko nimi';
+$string['idnumber'] = 'Organisaation id-numero';
+$string['idnumberframework'] = 'ID-numero';
+$string['idnumberview'] = '$a id-numero';
+$string['invalidnumeric'] = 'Numeroarvon tulee olla numero (tai ei mitään)';
+$string['manageorganisation'] = 'Hallinnoi organisaatioita';
+$string['manageorganisations'] = 'Hallinnoi organisaatioita';
+$string['missingfullname'] = 'Organisaatiolta puuttuu täydellinen nimi';
+$string['missingfullnamedepth'] = 'Tasolta puuttuu täydellinen nimi';
+$string['missingfullnameframework'] = 'Rakenteelta puuttuu täydellinen nimi';
+$string['missingshortname'] = 'Organisaatiolta puuttuu lyhenne';
+$string['missingshortnamedepth'] = 'Tasolta puuttuu lyhenne';
+$string['missingshortnameframework'] = 'Rakenteelta puuttuu lyhenne';
+$string['name'] = 'Nimi';
+$string['nochildorganisations'] = 'Lapsiorganisaatioita ei ole määritelty';
+$string['nodepthlevels'] = 'Tässä rakenteessa ei ole tasoja';
+$string['noframeworks'] = 'Organisaatiorakenteita ei ole';
+$string['noorganisation'] = 'Yhtään organisaatiota ei ole määritelty';
+$string['noorganisationsinframework'] = 'Tässä rakenteessa ei ole yhtään organisaatiota';
+$string['nounassignedcompetencies'] = 'Jakamattomia kompetensseja ei löydy';
+$string['nounassignedcompetencytemplates'] = 'Jakamattomia kompetenssimallipohjia ei löydy';
+$string['numericalvalue'] = 'Numero';
+$string['organisation'] = 'Organisaatio';
+$string['organisationaddnew'] = 'Lisää uusi organisaatio';
+$string['organisationbulkaction'] = 'Massatoimenpiteet';
+$string['organisationcustomfields'] = 'Lisäkentät';
+$string['organisationdepthcustomfields'] = 'Organisaatiotasojen lisäkentät';
+$string['organisationframework'] = 'Organisaatiorakenne';
+$string['organisationframeworkmanage'] = 'Hallinnoi rakenteita';
+$string['organisationframeworks'] = 'Organisaatiorakenteet';
+$string['organisationmanage'] = 'Hallinnoi organisaatioita';
+$string['organisationplural'] = 'Organisaatiot';
+$string['organisations'] = 'Organisaatiot';
+$string['parent'] = 'Yläorganisaatio';
+$string['returntoframework'] = 'Palaa organisaatiorakenteeseen';
+$string['shortname'] = 'Organisaation lyhenne';
+$string['shortnamedepth'] = 'Tason lyhenne';
+$string['shortnameframework'] = 'Lyhenne';
+$string['shortnameview'] = 'lyhenne';
+$string['type'] = 'Tyyppi';
+$string['weight'] = 'Painotus';
+
+?>

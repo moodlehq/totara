@@ -1,0 +1,94 @@
+<h2><IMG VALIGN=absmiddle SRC="<?php echo $CFG->wwwroot?>/mod/dfwiki/images/logonormal.gif">
+Ylläpitäjän työkalut</h2>
+<!--Administration tools block help-->
+
+<p>Tämän lohkon toiminnot on jaettu kahteen ryhmään:</p>
+<ul>
+	<li>Ensimmäisenä on hyödyllisiä tietoja wikistä. Klikkaamalla toiminnon
+	nimeä tieto avautuu sivun keskiosaan.
+	<li>Toisena on toimintoja, jotka ovat vain opettajien ja
+	ylläpitäjien nähtävissä. Ne sisältävät mahdollisuuksia poistaa ja
+	nimetä uudelleen sivuja sekä muuttaa sivujen asetuksia.
+</ul>
+<!--<p>This block called EAD contains two type of useful tools
+for your dfwiki separated by a line:</p>
+<ul>
+	<li>Estadistical Tools: contains useful information
+	of your dfwiki. By clicking in the tool name, the wanted
+	information will be dysplayed in the main space.
+	<li>Administration tools: this tools are only available
+	for teachers and administrator and contains the functions to
+	delete, rename or make editable the current page.
+</ul>
+-->
+
+<h3>Yleiset toiminnot</h3>
+<!--<h2>Estadistical Tools</h2>-->
+
+<ul>
+	<li><b>Katsotuimmat sivut</b> listaa kaikki sivut sen mukaan, kuinka usein niillä on vierailtu.</li>
+	<li><b>Eniten päivitetyt sivut</b> listaa kaikki sivut viimeisimmän muokkausajan mukaan.</li>
+	<li><b>Uusimmat sivut</b> listaa kaikki sivut luomispäivän mukaan.</li>
+	<li><b>Puuttuvat sivut</b> listaa kaikki sivut, joilla ei ole sisältöä, samalla tavalla kuin
+	<a href="<?php echo $CFG->wwwroot; ?>/help.php?module=wiki&file=wanted.html">Puuttuvat sivut -lohko</a>.</li>
+	<li><b>Orposivut</b> listaa kaikki orposivut samalla tavalla kuin
+	<a href="<?php echo $CFG->wwwroot; ?>/help.php?module=wiki&file=orphaned.html">Orposivut-lohko</a>.</li>
+	<li><b>Aktiivisimmat käyttäjät</b> listaa kaikki sivujen muokkaamiseen osallistuneet käyttäjät
+	muokkaamiskertojen mukaan.</li>
+</ul>
+<!--<p>In the current version of dfwiki this point contains
+six tools:</p>
+<ul>
+	<li>Most viewed pages: displays a list with all pages
+	ordered by the times they're visited.
+	<li>More updated pages: displays all pages oredered by
+	it's last modified time.
+	<li>Newest pages: displays all pages list ordered by
+	it's creation date.
+	<li>Wanted pages: displays the list of wanted pages like
+	<a href="<?php echo $CFG->wwwroot; ?>/help.php?module=dfwiki&file=wanted.html">wanted pages block</a>.
+	<li>Orphaned pages: displays the list of orphaned pages like
+	<a href="<?php echo $CFG->wwwroot; ?>/help.php?module=dfwiki&file=orphaned.html">orphaned pages block</a>.
+	<li>Activest Users: Return the list of all users that edit
+	some page ordered by the number of his contributions.
+</ul>
+-->
+
+<h3>Opettajien ja ylläpitäjien toiminnot</h3>
+<!--<h2>Administration tools</h2>-->
+
+<ul>
+	<li><b>Poista sivu:</b> tämän toiminnon avulla voidaan poistaa koko wikisivu, mukaan lukien
+	sen vanhat versiot. Sivun poistaminen on peruuttamatonta.</li>
+	<li><b>Päivitä sivu:</b> tämän toiminnon avulla voidaan muuttaa wikisivun nimi.
+	Sivun nimeäminen uudelleen ohjaa automaattisesti sen synonyymit uuteen nimeen.
+	Sivun nimen muuttaminen ei kuitenkaan muuta muilla sivuilla olevia linkkejä. Tämä tarkoittaa,
+	että kaikista sivulle osoittavista linkeistä tulee virheellisiä. Virheelliset linkit
+	voi jäljittää 
+	<a href="<?php echo $CFG->wwwroot; ?>/help.php?module=wiki&file=wanted.html">Puuttuvat sivut -lohkon</a>
+	avulla etsimällä sieltä sivun entiseen nimeen osoittavia linkkejä.</li>
+	<li><b>Estä/Salli sivun muokkaaminen:</b> tämän toiminnon avulla voidaan
+	estää tai sallia opiskelijoille wikisivun muokkaaminen. Käytä tätä toimintoa,
+	kun haluat laittaa wikiin muuttumatonta tekstiä.</li>
+</ul>
+<!--<p>This point contains some tools only available for teachers
+ans administrators:<p>
+<ul>
+	<li>Delete page: this option will ask you for delete a whole
+	page content, including it's old version. Deleting a page will
+	be irreversible.
+	<li>Update page: this tool si for renaming pages. Renaming a
+	page name will automatically redirect it's synonymous and, if
+	it's the first page of the dfwiki, will rename the first page too.
+	Althrough, renaming a page will NOT redirect all internal links,
+	this means that if you rename a page, all old links will be erroneous.
+	To detect if there's some link a renamed page, you only have to find the
+	old name into the
+	<a href="<?php echo $CFG->wwwroot; ?>/help.php?module=dfwiki&file=wanted.html">wanted pages</a>
+	list.
+	<li>Disable/Enable Edition: this tool change the actual
+	'editable' propierty of the current page. Modifing the editable
+	propierty of a page, you make it editable/undeditable for the students.
+	Use this tool when you want to put an static text (for the students)
+	into the dfwiki.
+</ul>-->

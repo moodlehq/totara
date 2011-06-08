@@ -1,0 +1,203 @@
+<h2><IMG VALIGN=absmiddle SRC="<?php echo $CFG->wwwroot?>/mod/dfwiki/images/logonormal.gif">
+Kuinka käytän dfwikiä?</h2>
+
+<p>Dfwiki mahdollistaa yksinkertaisen yhteiskirjoittamisen ja verkkosivujen luomisen.<p>
+<!--In Moodle's DFwiki you can choose the sintax of DFwiki
+which is an implementation of the team developed by David Castro & Ferran Recio.
+It allows simple collaborative editing and creation of web pages.</p>-->
+
+<p>
+<ul>
+<li>Opi <a href="#createpages">luomaan sivuja</a></li>
+<li>Valitse Muokkaa-välilehti muuttaksesi sivun sisältöä</li>
+<li>Voit muokata sivuja käyttämällä <a href="#wikimarkup">DFwikin kuvauskieltä</a> tai HTML:ää</li>
+<li>Sivulla on erilaisia lohkoja, joiden avulla voit mm. etsiä sivuja tai tarkastella
+listaa uusimmista sivuista</li>
+</ul>
+</p>
+<!--<li>learn how to <a href="#createpages">CreatePages</a></li>
+<li>select "Edit" from the tabs to change the contents of a page</li>
+<li>you can format your pages with <a href="#wikimarkup">DFwiki Markup</a>, or with HTML</li>
+<li>there are diferent kind of blocks to help you to SearchPages or go to the list of NewestPages</li>
+<li>there are also the options of the MostVisitedPages, MostOftenChangedPages and a large etc.</li>-->
+
+<a name="createpages"></a><h3>Sivujen luominen</h3>
+Voit luoda uuden wikisivun kirjoittamalla sen nimen olemassa olevan sivun sisällön joukkoon.
+Uusi wikisivu nimetään ympäröimällä se hakasulkeilla, esimerkiksi [[Minun wikisivu]].
+<!--<a name="createpages"></a><b>Create Pages</b>:<br />
+You create a page by naming it in the text of an existing page.
+A wiki page is named enclosing it in square brackets ( [[]] ).-->
+
+<!--<p>For example:
+<ul><li>[[My Wiki Page]] (enclosed in square brackets)</li></ul></p>-->
+
+<p>Tekstin, jolle on annettu wikisivunimi, perään tulee kysymysmerkki (?).
+Napsauttamalla kysymysmerkkiä avautuu sivun muokkaustila. Kirjota teksti, tallenna, ja sinulla on uusi wikisivu.</p>
+<!--Text that has been given a wiki page name will have a '?' after it. Clicking on the '?', will
+enter edit mode for that page. Enter your text, save and you have a new wiki page.-->
+
+<a name="wikimarkup"></a><h3>Wikin kuvauskieli</h3>
+Wikin sisällä sivuja voi muokata helposti wikin kuvauskielen avulla.
+<!--Each page inside a Wiki can be edited easily, using dfwiki markup.-->
+
+<h4>Kappaleet</h4>
+<ul type="circle">
+	<li>erota kappaleet tekstin sisällä tyhjillä riveillä</li>
+	<li>välilyönti rivin alussa muuttaa rivin &lt;pre&gt;-muotoon, eli riville ei tehdä
+	automaattisia muotoiluja, vaan se näkyy sivun tallentamisen jälkeen samanlaisena kuin muokkaustilassa</li>
+</ul>
+<!--<li>separate paragraphs inside the text with empty lines</li>
+	<li> if you prepend text with spaces or tabs it will get indented  </li>
+	<li> one space at the beginning of a new line converts all the text with format &lt;pre&gt; until the next carry return</li>-->
+
+<h4>Otsikot</h4>
+<ul type="circle">
+	<li>käytä =-merkkiä rivin alussa ja lopussa luodaksesi suuren otsikon (tyyppiä &lt;h1&gt;)</li>
+	<li> == keskikokoinen otsikko == (tyyppiä &lt;h2&gt;)</li>
+	<li> === pieni otsikko === (tyyppiä &lt;h3&gt;)</li>
+</ul>
+<!--<h4> !! Headlines</h4>
+<ul type="circle">
+	<li> use three equals marks ==== at the beginning and the end of a line to create a large headline, type &lt;h1&gt;</li>
+	<li> == for medium ==, type&lt;h2&gt;</li>
+	<li> = for small headlines =, type &lt;h3&gt;  </li>
+</ul>-->
+
+<h4>Tyylit</h4>
+<ul type="circle">
+	<li>teksti <i>kursivoidaan</i> ympäröimällä se kahdella puolilainausmerkillä, ''kursivoitava teksti''</li>
+	<li>teksti <b>lihavoidaan</b> kolmella puolilainausmerkillä, '''lihavoitava teksti'''</li>
+	<li>vaakasuora viiva (&lt;hr&gt;) saadaan aikaiseksi neljällä viivalla: ----</li>
+</ul>
+<!--<h4> text style</h4>
+<ul type="circle">
+	<li> if you want to <i>emphasize text</i> enclose it in two single-quotes ''text'' (it's italic)</li>
+	<li> <b>text gets bold</b> with three single-quotes '''text'''</li>
+	<li> to make an Horizontal line like &lt;hr&gt; we could type ---- </li>
+</ul>-->
+  
+<h4>Luettelo</h4>
+<ul type="circle">
+	<li>luettelo aloitetaan laittamalla rivin alkuun *-merkki</li>
+	<li>numeroitu lista aloitetaan #-merkillä
+		<ol>
+		<li>alaluetteloiden luominen on myös mahdollista lisäämällä useampi *- tai #-merkki rivin alkuun</li>
+		<li>esimerkiksi ** sisentää tekstiä yhden pykälän, *** kaksi jne.</li>
+		</ol>
+	</li>
+</ul>
+<!--<h4> Lists</h4>
+<ul type="circle">
+	<li> start a line with an asterisk * or  with hash # to begin a list</li>
+	<li> use * for no-numerated lists
+	<li> use # for numerated lists
+		<ol>
+		<li> you can create sublists</li>
+		<li> subsequent list points should start with the same mix of * and #    </li>
+		</ol>
+	</li>
+</ul>-->
+
+<h4>Hyperlinkit</h4>
+<ul type="circle">
+	<li>hyperlinkkejä luodaan lisäämällä hakasulut tekstin ympärille</li>
+	<li>any valid internal page address (starting with [[ and endind by
+	]] where type is separated by : of the page name and also separated by | of the addicional name)</li>
+	<li>www-osoite ympäröidään hakasuluilla [<a href="http://www.moodle.org/">http://www.moodle.org</a> Moodle]
+		<ul type="circle">
+		<li>[http://esimerkki.fi otsikko]</li>
+		<li> [[wikisivun nimi | linkissä näkyvä nimi]]</li>
+		<li> [[wikisivun nimi]] </li>
+		</ul>
+	</li>
+	<li>jos hakasulkeiden sisällöstä ei haluta hyperlinkkiä, ympäröidään se &lt;nowiki&gt;- ja &lt;/nowiki&gt;-tageilla
+		<ul type="circle">
+		<li> &lt;nowiki&gt;[ei hyperlinkkiä]&lt;/nowiki&gt;</li>
+		</ul>
+	</li>
+</ul>
+<!--<h4> HyperLinks</h4>
+<ul type="circle">
+	<li> enclose some <b>words in square brackets</b> to create a HyperLink</li>
+	<li> any valid internal page address (starting with [[ and endind by ]] where type is separated by : of the page name and also separated by | of the addicional name)</li>
+	<li> enclose a www address inside square brackets [<a href="http://www.moodle.org/">http://www.moodle.org</a> Moodle]
+		<ul type="circle">
+		<li> [http://example.com example]</li>
+		<li> [[dfwiki page | addicional name]]</li>
+		<li> [[Name of the page]] </li>
+		</ul>
+	</li>
+	<li> if you don't want a WikiWord (or [anything] inside square brackets) to become a HyperLink then just prepend it with &lt;nowiki&gt; and ended by &lt;/nowiki&gt;
+		<ul type="circle">
+		<li> &lt;nowiki&gt;NoHyperLink&lt;/nowiki&gt;</li>
+		<li> &lt;nowiki&gt;[no hyperlink]&lt;/nowiki&gt;</li>
+		</ul>
+	</li>
+</ul>-->
+
+<h4>Taulukot</h4>
+<table cellpadding="2" border="1" cellspacing="0">
+	<tr>
+		<th valign="top" class="header c0">liittämällä tekstiä</th>
+		<th valign="top" class="header c0">huutomerkillä yhteen</th>
+		<th valign="top" class="header c0">luodaan taulukolle otsikkosolut</th>
+	</tr>
+	<tr>
+		<td>|-merkillä luodaan</td>
+		<td>muu taulukkorakenne</td>
+	</tr>
+	<tr>
+		<td>selaimet yleensä</td>
+		<td>jättävät puuttuvat solut</td>
+		<td>näyttämättä</td>
+	</tr>
+</table>
+
+<p>! liittämällä tekstiä ! huutomerkillä yhteen ! luodaan taulukolle otsikkosolut !<br />
+| |-merkillä luodaan | muu taulukkorakenne |<br />
+| selaimet yleensä | jättävät puuttuvat solut | näyttämättä</p>
+
+<p>Ennen taulukkoa ja sen jälkeen on laitettava tyhjä rivi,
+jotta taulukko eroaa muusta tekstistä omaksi kappaleekseen.</p>
+<!--<h4> Tables with |</h4>
+<table cellpadding="2" border="1" cellspacing="0">
+	<tr>
+		<th valign="top" class="header c0"> just enclose </th>
+		<th valign="top" class="header c0"> text with the exclamation !</th>
+		<th valign="top" class="header c0"> when it was headline</th>
+	</tr>
+	<tr>
+		<td> and enclose </td>
+		<td> things with the dash </td>
+		<td> character </td>
+	</tr>
+	<tr>
+		<td> to build a </td>
+		<td> table structure  </td>
+	</tr>
+	<tr>
+		<td> browsers usually </td>
+		<td> leave out the missing </td>
+		<td> cells </td>
+	</tr>
+</table>
+
+<p>Please always put an empty line before and after a table, so it stands out from other text in its own paragraph.</p>-->
+
+<h4>Kuvat ja tiedostot</h4>
+<ul type="circle">
+	<li>lisää kuva sivulle ympäröimällä sen täydellinen www-osoite hakasuluilla,
+	esimerkiksi [http://www.esimerkki.fi/kuvat/kuva.png] </li>
+	<li>kuvat voivat olla tiedostomuodoltaan jpg, jpeg, bmp, png, gif tai swf </li>
+	<li>toinen vaihtoehto on käyttää Lisää tiedosto -valikkoa editorin alapuolella</li>
+</ul>
+<!--<h4> Pictures and Files</h4>
+<ul type="circle">
+	<li> to include an image into a page enclose its absolute www-address in square brackets, like [http://www.example.com/pics/image.png] </li>
+	<li> the type of inserts with external links can be of format: jpg, jpeg, bmp, png, gif y swf </li>
+	<li> alternatively you could use the ImageUploading function and  after realize an attach in the page [[attach: name_of_file]].</li>
+	<li> in this way we can put into Dfwiki page all kind of files.</li>
+</ul>
+
+<p>While language purists hate Wikis for that naming scheme, it is very common in the
+computing world and well known to most programmers.</p>-->
