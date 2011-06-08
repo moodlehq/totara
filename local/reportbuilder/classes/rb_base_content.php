@@ -89,21 +89,32 @@ class rb_current_pos_content extends rb_base_content {
             return '1=0';
         }
 
-        if($settings['recursive']) {
+        if ($settings['recursive']) {
             // get list of positions to find users for
             $hierarchy = new position();
             $children = $hierarchy->get_item_descendants($posid);
             $plist = array();
-            foreach($children as $child) {
+            foreach ($children as $child) {
+                // exclude the user's position (descendants only)
+                if ($settings['recursive'] == 2 && $child->id == $posid) {
+                    continue;
+                }
                 $plist[] = "'{$child->id}'";
             }
         } else {
             $plist = array($posid);
         }
 
+        // no positions found
+        if (count($plist) == 0) {
+            // using 1=0 instead of FALSE for MSSQL support
+            return '1=0';
+        }
+
         // return users who are in a position in that list
         $users = get_records_select('pos_assignment',
             "positionid IN (" . implode(',', $plist) . ")", '', 'userid');
+
         $ulist = array();
         foreach ($users as $user) {
             $ulist[] = $user->userid;
@@ -129,10 +140,20 @@ class rb_current_pos_content extends rb_base_content {
         $posid = get_field('pos_assignment', 'positionid',
             'userid', $userid, 'type', 1);
         $posname = get_field('pos','fullname','id', $posid);
-        $children = $settings['recursive'] ?
-            ' ' . get_string('orsubpos','local_reportbuilder') : '';
-        return $title . ' ' . get_string('is','local_reportbuilder') .' "' . $posname . '"' .
-            $children;
+
+        switch ($settings['recursive']) {
+        case 0:
+            return $title . ' ' . get_string('is', 'local_reportbuilder') .
+                ': "' . $posname . '"';
+        case 1:
+            return $title . ' ' . get_string('is', 'local_reportbuilder') .
+                ': "' . $posname . '" ' . get_string('orsubpos', 'local_reportbuilder');
+        case 2:
+            return $title . ' ' . get_string('isbelow', 'local_reportbuilder') .
+                ': "' . $posname . '"';
+        default:
+            return '';
+        }
     }
 
     /**
@@ -157,9 +178,11 @@ class rb_current_pos_content extends rb_base_content {
         $mform->disabledIf('current_pos_enable','contentenabled', 'eq', 0);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'current_pos_recursive',
-            '', get_string('yes'), 1);
+            '', get_string('showrecordsinposandbelow', 'local_reportbuilder'), 1);
         $radiogroup[] =& $mform->createElement('radio', 'current_pos_recursive',
-            '', get_string('no'), 0);
+            '', get_string('showrecordsinpos', 'local_reportbuilder'), 0);
+        $radiogroup[] =& $mform->createElement('radio', 'current_pos_recursive',
+            '', get_string('showrecordsbelowposonly', 'local_reportbuilder'), 2);
         $mform->addGroup($radiogroup, 'current_pos_recursive_group',
             get_string('includechildpos','local_reportbuilder'), '<br />', false);
         $mform->setDefault('current_pos_recursive', $recursive);
@@ -194,6 +217,7 @@ class rb_current_pos_content extends rb_base_content {
         // recursive radio option
         $recursive = isset($fromform->current_pos_recursive) ?
             $fromform->current_pos_recursive : 0;
+
         $status = $status && reportbuilder::update_setting($reportid, $type,
             'recursive', $recursive);
 
@@ -237,16 +261,26 @@ class rb_current_org_content extends rb_base_content {
             return '1=0';
         }
 
-        if($settings['recursive']) {
+        if ($settings['recursive']) {
             // get list of organisations to find users for
             $hierarchy = new organisation();
             $children = $hierarchy->get_item_descendants($orgid);
             $olist = array();
-            foreach($children as $child) {
+            foreach ($children as $child) {
+                // exclude the user's organisation (descendants only)
+                if ($settings['recursive'] == 2 && $child->id == $orgid) {
+                    continue;
+                }
                 $olist[] = "'{$child->id}'";
             }
         } else {
             $olist = array($orgid);
+        }
+
+        // no orgs found
+        if (count($olist) == 0) {
+            // using 1=0 instead of FALSE for MSSQL support
+            return '1=0';
         }
 
         // return users who are in an organisation in that list
@@ -277,10 +311,20 @@ class rb_current_org_content extends rb_base_content {
         $orgid = get_field('pos_assignment', 'organisationid',
             'userid', $userid, 'type', 1);
         $orgname = get_field('org','fullname','id', $orgid);
-        $children = $settings['recursive'] ?
-            ' ' . get_string('orsuborg','local_reportbuilder') : '';
-        return $title . ' ' . get_string('is','local_reportbuilder') .' "' . $orgname . '"' .
-            $children;
+
+        switch ($settings['recursive']) {
+        case 0:
+            return $title . ' ' . get_string('is', 'local_reportbuilder') .
+                ': "' . $orgname . '"';
+        case 1:
+            return $title . ' ' . get_string('is', 'local_reportbuilder') .
+                ': "' . $orgname . '" ' . get_string('orsuborg', 'local_reportbuilder');
+        case 2:
+            return $title . ' ' . get_string('isbelow', 'local_reportbuilder') .
+                ': "' . $orgname . '"';
+        default:
+            return '';
+        }
     }
 
 
@@ -306,9 +350,11 @@ class rb_current_org_content extends rb_base_content {
         $mform->disabledIf('current_org_enable','contentenabled', 'eq', 0);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive',
-            '', get_string('yes'), 1);
+            '', get_string('showrecordsinorgandbelow', 'local_reportbuilder'), 1);
         $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive',
-            '', get_string('no'), 0);
+            '', get_string('showrecordsinorg', 'local_reportbuilder'), 0);
+        $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive',
+            '', get_string('showrecordsbeloworgonly', 'local_reportbuilder'), 2);
         $mform->addGroup($radiogroup, 'current_org_recursive_group',
             get_string('includechildorgs','local_reportbuilder'), '<br />', false);
         $mform->setDefault('current_org_recursive', $recursive);
@@ -384,13 +430,22 @@ class rb_completed_org_content extends rb_base_content {
             // using 1=0 instead of FALSE for MSSQL support
             return '1=0';
         }
-        if($settings['recursive']) {
+        if ($settings['recursive']) {
             // get list of organisations to match against
             $hierarchy = new organisation();
             $children = $hierarchy->get_item_descendants($orgid);
             $olist = array();
-            foreach($children as $child) {
+            foreach ($children as $child) {
+                // exclude the user's organisation (decendants only)
+                if ($settings['recursive'] == 2 && $child->id == $orgid) {
+                    continue;
+                }
                 $olist[] = "'{$child->id}'";
+            }
+            // no organisations found
+            if (count($olist) == 0) {
+                // using 1=0 instead of FALSE for MSSQL support
+                return '1=0';
             }
             return $field.' IN ('. implode(',',$olist).')';
         } else {
@@ -420,10 +475,20 @@ class rb_completed_org_content extends rb_base_content {
             return $title . ' ' . get_string('is','local_reportbuilder') . ' "UNASSIGNED"';
         }
         $orgname = get_field('org','fullname','id', $orgid);
-        $children = $settings['recursive']
-            ? ' ' . get_string('orsuborg','local_reportbuilder') : '';
-        return $title . ' ' . get_string('is','local_reportbuilder') . ' "' . $orgname . '"' .
-            $children;
+
+        switch ($settings['recursive']) {
+        case 0:
+            return $title . ' ' . get_string('is', 'local_reportbuilder') .
+                ': "' . $orgname . '"';
+        case 1:
+            return $title . ' ' . get_string('is', 'local_reportbuilder') .
+                ': "' . $orgname . '" ' . get_string('orsuborg', 'local_reportbuilder');
+        case 2:
+            return $title . ' ' . get_string('isbelow', 'local_reportbuilder') .
+                ': "' . $orgname . '"';
+        default:
+            return '';
+        }
     }
 
 
@@ -449,9 +514,11 @@ class rb_completed_org_content extends rb_base_content {
         $mform->disabledIf('completed_org_enable','contentenabled', 'eq', 0);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive',
-            '', get_string('yes'), 1);
+            '', get_string('showrecordsinorgandbelow', 'local_reportbuilder'), 1);
         $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive',
-            '', get_string('no'), 0);
+            '', get_string('showrecordsinorg', 'local_reportbuilder'), 0);
+        $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive',
+            '', get_string('showrecordsbeloworgonly', 'local_reportbuilder'), 2);
         $mform->addGroup($radiogroup, 'completed_org_recursive_group',
             get_string('includechildorgs','local_reportbuilder'), '<br />', false);
         $mform->setDefault('completed_org_recursive', $recursive);
