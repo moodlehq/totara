@@ -1,0 +1,95 @@
+<div DIR=RTL LANG=HE>
+<p align="center"><b>Format overview</b></p>
+<p>להלן מדריך פשוט למבנה בסיסי של קובץ נתונים אופייני של IMS Enterprise. מידע נוסף ומורחב
+<a href="http://www.imsglobal.org/enterprise/">
+באתר הרשמי של ה-IMS Enterprise
+</a>.
+</p>
+
+<p>תרצה אולי לקרוא את <a href="./enrol/imsenterprise/entv1p1_conformance_summary.html">תקציר ההתאמה</a> אשר מתארת אילו יסודות נתוני IMS ההתקן הזה יכול לעבד.</p>
+
+<p align="center"><b>מדריך בסיסי לפורמט קובץ ה-IMS Enterprise</b></p>
+
+<p>עבור כל רישום IMS-style תצטרך תג &lt;group&gt; אשר מציין את הקורס, תג &lt;person&gt; המציין את חשבון המשתמש, ותג &lt;membership&gt; המכיל תגי &lt;member&gt; המציינים תפקיד המשתמש בהינתן קורס.</p><p>
+</p>
+
+<p>
+זכור כי המפתחות הנומרים שמשתמשים במסד הנתונים של Moodle אינם נתונם בעלי יכולת פעולה הדדית - מערכת נתוני סטודנט לעולם לא יידע מראש ש-Joe הוא המשתמש ה-20 שנוסף למסד הנתונים של Moodle - כך שאלו אינם המפתחות המוחלפים בסוג נתונים זה.
+</p><p>
+</p>
+
+<p>
+בצורה אופיינית לקורס יהיה קיים קוד אזכור בנוסף לשם, אם נניח שהקוד שלו הוא MOODLE101. בכדי להגדיר את הקורס תוכל להשתמש ב-
+</p><p>
+</p>
+
+<p>
+&nbsp; &lt;group&gt;<br />
+&nbsp; &nbsp; &lt;sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;source&gt;MyDataSystem&lt;/source&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;id&gt;MOODLE101&lt;/id&gt;<br />
+&nbsp; &nbsp; &lt;/sourcedid&gt;<br />
+&nbsp; &nbsp; &lt;description&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;short&gt;Moodle 101&lt;/short&gt;<br />
+&nbsp; &nbsp; &lt;/description&gt;<br />
+&nbsp; &lt;/group&gt;<br />
+</p>
+
+<p>
+תסריט (script) הרישום יחפש קורס עם הקוד MOODLE101, ויצור אותו  (ובצורה אופציונאלית) אם הוא לא קיים. באופן דומה עבוד משתמש - נניח כי שמו הוא "jmoodle":
+
+</p><p>
+</p>
+
+<p>
+&nbsp; &lt;person&gt;<br />
+&nbsp; &nbsp; &lt;sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;source&gt;MyDataSystem&lt;/source&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;id&gt;jmoodle&lt;/id&gt;<br />
+&nbsp; &nbsp; &lt;/sourcedid&gt;<br />
+&nbsp; &nbsp; &lt;userid&gt;jmoodle&lt;/userid&gt;<br />
+&nbsp; &nbsp; &lt;name&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;fn&gt;Joe Moodle&lt;/fn&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;n&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;family&gt;MOODLE&lt;/family&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;given&gt;JOE&lt;/given&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;/n&gt;<br />
+&nbsp; &nbsp; &lt;/name&gt;<br />
+&nbsp; &lt;/person&gt;<br />
+</p>
+
+<p>
+אם ל-Joe אין עדיין חשבון, התסריט (script) יכול ליצור חשבון עבורו (בצורה אופציונאלית).</p>
+
+<p>
+כעת נסתכל על ה-membership, בהוספת משתמש לקורס:</p><p>
+</p>
+
+<p>
+&nbsp; &lt;membership&gt;<br />
+&nbsp; &nbsp; &lt;sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;source&gt;MyDataSystem&lt;/source&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;id&gt;MOODLE101&lt;/id&gt;<br />
+&nbsp; &nbsp; &lt;/sourcedid&gt;<br />
+&nbsp; &nbsp; &lt;member&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;source&gt;MyDataSystem&lt;/source&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;id&gt;jmoodle&lt;/id&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;/sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;role roletype=&quot;01&quot;&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;status&gt;1&lt;/status&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;extension&gt;&lt;cohort&gt;unit 2&lt;/cohort&gt;&lt;/extension&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;/role&gt;<br />
+&nbsp; &nbsp; &lt;/member&gt;<br />
+&nbsp; &lt;/membership&gt;<br />
+</p>
+
+<p>
+פירוט ה-IMS Enterprise לא מציע כלי לציון התחלה/סוף של תאריכים עבור רישומים, אלו יכולים להיות מוכלים ע"י שימוש בתג ה-&lt;timeframe&gt; אם יש בכך צורך.
+</p><p>
+</p>
+
+<p>
+אם משתמשים מוספים כבר לקבוצה בתוך קורס, התסריט (script) לא ישנה זאת. אם הם אינם בקבוצה , בכל אופן, הקיבוץ המסויים יהיה בר תוקף.
+</p><p>
+</div>

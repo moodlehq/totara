@@ -1,0 +1,81 @@
+<?PHP // $Id$
+      // chat.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
+
+
+$string['autoscroll'] = 'גלילה אוטומטית';
+$string['beep'] = 'ציפצוף';
+$string['chat:chat'] = 'דבר ברב-שיח';
+$string['chat:deletelog'] = 'מחק את יומני המעקב של הרב-שיח';
+$string['chat:readlog'] = 'קרא את יומני המעקב של הרב-שיח';
+$string['chat:talk'] = 'דבר ברב-שיח';
+$string['chatintro'] = 'הנחייה לסטודנטים';
+$string['chatname'] = 'שמו של חדר רב-שיח זה';
+$string['chatreport'] = 'מפגש רב-שיח מקוון';
+$string['chattime'] = 'זמן רב-השיח הבא';
+$string['configmethod'] = 'בשיטה הרגילה לעריכת רבי-שיח, הלקוחות נדרשים
+ליצור קשר עם השרת כדי לקבל עדכונים על בסיס קבוע. שיטה זו לא דורשת הגדרת תצורה והיא עובדת בכל מקום, אבל היא עלולה לגרום עומס רב על השרת ברגע שיש מספר גדול של משתתפים. שימוש בתוכנת \"daemon\" דורשת גישת מעטפת (shell) ל-Unix, אבל התוצאה היא סביבת רב-השיח מהירה שניתן להתאים את גודלה לפי הנדרש.';
+$string['confignormalupdatemode'] = 'לרוב, עידכונים לחדר הרב-שיח מוגשים ביעילות על ידי תכונת ה<em> (שמור בחיים)Keep-Alive</em> של HTTP 1.1, אבל הדבר עדיין גורם לעומס כבד על השרת. שיטה יותר מתקדמת היא להשתמש באזטרטגיית ה-<em>Stream</em> כדי להזין עדכונים מהמשתמשים. באמצעות <em>Stream</em> ניתן להתאים את הגודל באופו טוב יותר (בדומה לשיטת ה-chatd), אבל ישנה האפשרות שהשרת שלכם לא יתמוך בה.';
+$string['configoldping'] = 'אחרי כמה זמן שלא שומעים ממשתמש צריך להחשיבו כמנותק (בשניות)? זהו רק גבול עליון, מפני שלרוב מבחינים בניתוקים מהר מאוד. ערכים נמוכים יהיו תובעניים יותר כלפי השרת שלכם. אם אתם משתמשים בשיטה הרגילה, <strong>לעולם</strong> אל תקבעו את הערך הזה מתחת ל-2 * chat_refresh_room.';
+$string['configrefreshroom'] = 'כל כמה זמן חדר הרב-שיח עצמו צריך להתחדש? (בשניות). קביעת זמן קצר תגרום לחדר הרב-שיח להראות מהיר יותר, אך זה גם יכול להעמיס יותר על שרת האינטרנט שלך כאשר אנשים רבים מדברים ברב-שיח.';
+$string['configrefreshuserlist'] = 'כל כמה זמן צריכה רשימת המשתמשים להתחדש? (בשניות)';
+$string['configserverhost'] = 'שם המחשב המאחר בו נימצאת תוכנת \"daemon\".';
+$string['configserverip'] = 'כתובת IP מספרית שתואמת לשם המחשב המארח לעיל.';
+$string['configservermax'] = 'המספר המירבי המותר של לקוחות';
+$string['configserverport'] = 'פתחה בה ניתן להשתמש בשביל תוכנת \"daemon\".';
+$string['currentchats'] = 'אסיפות רב-שיח אקטיביות';
+$string['currentusers'] = 'משתמשים נוכחיים';
+$string['deletesession'] = 'מחק מפגש זה';
+$string['deletesessionsure'] = 'האם אתה בטוח שאתה רוצה למחוק מפגש מקוון זה?';
+$string['donotusechattime'] = 'אל תפרסם זמני רב-שיח כלשהם';
+$string['enterchat'] = 'לחץ כאן כדי להיכנס לרב-שיח עכשיו';
+$string['errornousers'] = 'לא יכול היה למצוא משתמשים!';
+$string['explaingeneralconfig'] = 'הגדרות אלה <strong>תמיד</strong> משפיעות.';
+$string['explainmethoddaemon'] = 'הגדרות אלה משפיעות <strong>רק </strong> אם בחרתם ב-\"תוכנת \"daemon\" השוהה בשרת רב-שיח\" ב-chat_method.';
+$string['explainmethodnormal'] = 'הגדרות אלה משפיעות <strong>רק</strong> במידה ובחרתם ב\"רב-שיח רגיל\" ב-chat_method.';
+$string['generalconfig'] = 'תצורה כללית';
+$string['helpchatting'] = 'עזרה עם שיחה ברב-שיח';
+$string['idle'] = 'ביטול';
+$string['list_all_sessions'] = 'רשימות כל המפגשים המקוונים';
+$string['list_complete_sessions'] = 'רשימת המפגשים המקוונים שזה עתה הושלמו';
+$string['listing_all_sessions'] = 'הרשמת כל המפגשים המקוונים';
+$string['messagebeepseveryone'] = '$a ציפצף לכולם!';
+$string['messagebeepsyou'] = '$a ציפצף לך הרגע!';
+$string['messageenter'] = '$a כרגע נכנס לרב-שיח זה';
+$string['messageexit'] = '$a עזב רב-שיח זה';
+$string['messages'] = 'הודעות';
+$string['method'] = 'שיטת הרב-שיח';
+$string['methoddaemon'] = 'תוכנת \"daemon\" השוהה בשרת רב-שיח';
+$string['methodnormal'] = 'שיטה רגילה';
+$string['modulename'] = 'רב-שיח';
+$string['modulenameplural'] = 'רבי-שיח';
+$string['neverdeletemessages'] = 'לא למחוק תוכן';
+$string['nextsession'] = 'המפגש המקוון המתוכן הבא';
+$string['no_complete_sessions_found'] = 'לא נמצא אף מפגש מקוון שהושלם.';
+$string['noguests'] = 'רב-שיח זה לא פתוח לאורחים';
+$string['nomessages'] = 'אין הודעות עדיין';
+$string['normalkeepalive'] = 'KeepAlive (שמור בחיים)';
+$string['normalstream'] = 'זרם';
+$string['noscheduledsession'] = 'אין מפגשים מקוונים מתוכננים';
+$string['notallowenter'] = 'אינך רשאי להיכנס לחדר הרב-שיח';
+$string['oldping'] = 'פסק-זמן לניתוק';
+$string['pastchats'] = 'מפגשי הרב-שיח שעברו';
+$string['refreshroom'] = 'רענן חדר';
+$string['refreshuserlist'] = 'רענן רשימת משתתפים';
+$string['removemessages'] = 'הסר את כל ההודעות';
+$string['repeatdaily'] = 'באותו זמן בכל יום';
+$string['repeatnone'] = 'ללא חזרות - פרסם את הזמן המפורט בלבד';
+$string['repeattimes'] = 'חזור על המפגשים המקוונים';
+$string['repeatweekly'] = 'באותו הזמן בכל שבוע';
+$string['savemessages'] = 'שמור תוכן מפגשים מקוונים';
+$string['seesession'] = 'הצג מפגש זה';
+$string['serverhost'] = 'שם השרת';
+$string['serverip'] = 'ip השרת';
+$string['servermax'] = 'מקסימום משתתפים';
+$string['serverport'] = 'פורט השרת';
+$string['sessions'] = 'מפגשי רב-שיח';
+$string['strftimemessage'] = '%%H:%%M';
+$string['studentseereports'] = 'כולם יכולים לראות מפגשים מקוונים ישנים';
+$string['updatemethod'] = 'עדכן שיטה';
+$string['viewreport'] = 'הצג מפגשי רב-שיח ישנים';
+
+?>

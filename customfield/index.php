@@ -154,7 +154,7 @@ switch ($action) {
         $fieldcount = count_records($tableprefix.'_info_field', 'categoryid', $id);
         $optionsyes = array ('categoryid'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
         admin_externalpage_print_header('', $navlinks);
-        print_heading(get_string('deletecategory', 'customfields'), 'left', '1');
+        print_heading(get_string('deletecategory', 'customfields'), '', '1');
         notice_yesno(get_string('confirmcategorydeletion', 'customfields', $fieldcount), $redirect, $redirect, $optionsyes, $redirectoptions, 'post', 'get');
         print_footer();
         die;
@@ -173,7 +173,7 @@ switch ($action) {
         $datacount = count_records($tableprefix . '_info_data', 'fieldid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
         admin_externalpage_print_header('', $navlinks);
-        print_heading(get_string('deletefield', 'customfields'), 'left', '1');
+        print_heading(get_string('deletefield', 'customfields'), '', '1');
         notice_yesno(get_string('confirmfielddeletion', 'customfields', $datacount), $redirect, $redirect, $optionsyes, $redirectoptions, 'post', 'get');
         print_footer();
         die;
@@ -207,9 +207,9 @@ if($type == 'course') {
     if($categoryid) {
         $heading .= ' : ' . format_string($category->name);
     }
-    print_heading($heading, 'left', 1);
+    print_heading($heading, '', 1);
 } else {
-    print_heading(format_string($depth->fullname)." : ".format_string($category->name), 'left', 1);
+    print_heading(format_string($depth->fullname)." : ".format_string($category->name), '', 1);
 }
 
 print_heading(get_string('customfields', 'customfields'));

@@ -110,7 +110,7 @@ admin_externalpage_print_header('', $navlinks);
 if ($framework->id == 0) {
     print_heading(get_string('addnewframework', $type));
 } else {
-    print_heading(format_string($framework->fullname), 'left', 1);
+    print_heading(format_string($framework->fullname), '', 1);
 }
 
 /// Finally display THE form

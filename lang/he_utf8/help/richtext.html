@@ -1,0 +1,160 @@
+<p align="center"><b>על עורך טקסט עשיר של  HTML (Richtext)</b></p>
+
+<p>זמינות: <b>
+<?php  if (!$CFG->htmleditor) {
+       print_string("htmleditordisabledadmin");
+   } else if (!$USER->htmleditor) {
+       print_string("htmleditordisabled");
+   } else if (!can_use_html_editor()) {
+       print_string("htmleditordisabledbrowser");
+   } else {
+       print_string("htmleditoravailable");
+   }
+?>
+</b></p>
+
+<p>עורך הטקסט העשיר של HTML מספק ממשק מעבד תמלילים שמשובץ לתוך עמוד הרשת שלכם ומאפשר לכם לערוך טקסט באופן אינטואיטיבי, ובכך לייצר קוד HTML רגיל.
+</p>
+
+<p>בנוסף לעיצוב הטקסט, עורך זה מספק מספר תכונות נוספות שיכולות לשמש אתכם.
+
+<p><b>הדבק טקסט שמקורו ביישום אחר</b></p>
+<ul>
+<p>באפשרותכם לגזור ולהדביק טקסט עשיר מיישומים אחרים ב-Windows (כמו Microsoft Word) ישירות לתוך עורך זה, והעיצוב שלכם יישמר כפי שהוא. פשוט השתמשו בתפריטי הגזירה וההדבקה הרגילים שנמצאים בדפדפן שלכם (או ב- Control-C ו- Control-V).
+</p>
+</ul>
+
+<p><b>הכנסת תמונות<img alt="" border="0" hspace="10" src="lib/editor/htmlarea/images/ed_image.gif" /></b></p>
+<ul>
+<p>אם יש בידכם תמונות שכבר פורסמו באתר אינטרנט וניתן לגשת אליהן באמצעות כתובת URL, אתם יכולים לכלול את התמונות הללו בתוך הטקסטים שלכם באמצעות הכפתור: "הכנס תמונה".
+</p>
+</ul>
+
+<p><b>הכנסת טבלות<img alt="" border="0" hspace="10" src="lib/editor/htmlarea/images/insert_table.gif" /></b></p>
+<ul>
+<p>כדי להוסיף מערך לטקסטים שלכם, אתם יכולים להשתמש בכפתור: "הכנס טבלה" שנמצא בסרגל הכלים שלכם.
+</ul>
+
+<p><b>הכנסת קישורים<img alt="" border="0" hspace="10" src="lib/editor/htmlarea/images/ed_link.gif" /> /</b></p>
+<ul>
+<p>כדי ליצור קישור חדש, תחילה עליכם להקליד את הטקסט שברצונכם ישמש כקישור. לאחר מכן ביחרו אותו וליחצו על כפתור ה"צור קישור" בסרגל הכלים. הקלידו את כתובת ה-URL אליה אתם רוצים ליצור קישור וסיימתם!
+</p>
+</ul>
+
+<p><b>הכנסת סמיילים (פרצופונים) <img alt="" border="0" hspace="10" src="pix/s/smiley.gif" width="15" height="15" /></b></p>
+<ul>
+<p>כדי לשבץ את הסמלים הקטנים הללו לתוך הטקסט שלכם, ליחצו על סמל הסמיילי שנמצא בסרגל הכלים. על המסך יקפוץ חלון של דיאלוג שיאפשר לכם לבחור מבין אייקוני הסמיילים הבאים. (לחילופין, אתם יכולים פשוט להקליד את הקוד המתאים ישר לתוך הטקסט ומאוחר יותר, כשהטקסט שלכם יוצג, הוא יומר לאייקון המבוקש.)
+</p>
+
+    <table border="1">
+      <tr valign="top">
+        <td>
+        <table border="0" align="center" cellpadding="10">
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/smiley.gif" width="15" height="15" /></td>
+            <td>חיוך</td>
+            <td nowrap="nowrap"><font face="Courier">:-)</font></td>
+          </tr>
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/biggrin.gif" width="15" height="15" /></td>
+            <td>חיוך גדול</td>
+            <td nowrap="nowrap"><font face="Courier">:-D</font></td>
+          </tr>
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/wink.gif" width="15" height="15" /></td>
+            <td>קריצה</td>
+            <td nowrap="nowrap"><font face="Courier">;-)</font></td>
+          </tr>
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/mixed.gif" width="15" height="15" /></td>
+            <td>מעורב</td>
+            <td nowrap="nowrap"><font face="Courier">:-/</font></td>
+          </tr>
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/thoughtful.gif" width="15" height="15" /></td>
+              <td>מהורהר</td>
+              <td nowrap="nowrap"><font face="Courier">V-.</font></td>
+            </tr>
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/tongueout.gif" width="15" height="15" /></td>
+            <td>לשון בחוץ</td>
+            <td nowrap="nowrap"><font face="Courier">:-P</font></td>
+         </tr>
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/cool.gif" width="15" height="15" /></td>
+            <td>מגניב</td>
+            <td nowrap="nowrap"><font face="Courier">B-)</font></td>
+          </tr>
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/approve.gif" width="15" height="15" /></td>
+              <td>מאשר</td>
+              <td nowrap="nowrap"><font face="Courier">^-)</font></td>
+            </tr>
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/wideeyes.gif" width="15" height="15" /></td>
+              <td>עיניים פקוחות לרווחה</td>
+              <td nowrap="nowrap"><font face="Courier">8-)</font></td>
+            </tr>
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/surprise.gif" width="15" height="15" /></td>
+              <td>הפתעה</td>
+              <td nowrap="nowrap"><font face="Courier">8-o</font></td>
+            </tr>
+        </table>
+        </td>
+        <td>
+        <table border="0" align="center" cellpadding="10">
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/sad.gif" width="15" height="15" /></td>
+              <td>עצוב</td>
+              <td nowrap="nowrap"><font face="Courier">:-(</font></td>
+            </tr>
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/shy.gif" width="15" height="15" /></td>
+              <td>ביישן</td>
+              <td nowrap="nowrap"><font face="Courier">8-.</font></td>
+            </tr>
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/blush.gif" width="15" height="15" /></td>
+            <td>מסמיק</td>
+            <td nowrap="nowrap"><font face="Courier">:-I</font></td>
+          </tr>
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/kiss.gif" width="15" height="15" /></td>
+              <td>נשיקות</td>
+              <td nowrap="nowrap"><font face="Courier">:-X</font></td>
+            </tr>
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/clown.gif" width="15" height="15" /></td>
+            <td>ליצן</td>
+            <td nowrap="nowrap"><font face="Courier">:o)</font></td>
+          </tr>
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/blackeye.gif" width="15" height="15" /></td>
+            <td>פנס בעין</td>
+            <td nowrap="nowrap"><font face="Courier">P-|</font></td>
+          </tr>
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/angry.gif" width="15" height="15" /></td>
+              <td>כועס</td>
+              <td nowrap="nowrap"><font face="Courier">8-[</font></td>
+            </tr>
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/dead.gif" width="15" height="15" /></td>
+              <td>מת</td>
+              <td nowrap="nowrap"><font face="Courier">xx-P</font></td>
+            </tr>
+            <tr>
+              <td><img alt="" border="0" hspace="10" src="pix/s/sleepy.gif" width="15" height="15" /></td>
+              <td>ישנוני</td>
+              <td nowrap="nowrap"><font face="Courier">|-.</font></td>
+            </tr>
+          <tr>
+            <td><img alt="" border="0" hspace="10" src="pix/s/evil.gif" width="15" height="15" /></td>
+            <td>רשע</td>
+            <td nowrap="nowrap"><font face="Courier">}-]</font></td>
+          </tr>
+        </table>
+    </table>
+
+</ul>

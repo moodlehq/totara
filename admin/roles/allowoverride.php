@@ -56,7 +56,7 @@
     $table->cellpadding = 5;
     $table->cellspacing = 0;
     $table->width = '90%';
-    $table->align[] = 'right';
+    $table->align[] = '';
 
 /// get all the roles identifier
     foreach ($roles as $role) {

@@ -461,8 +461,8 @@ class dp_course_component extends dp_base_component {
         if ($approved) {
             $class = '';
             $launch = '<div class="plan-launch-course-button">' .
-                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">' .
-                '<img src="' . $CFG->pixpath . '/launch-course.png" width="56" height="18" alt="' . get_string('launchcourse', 'local_plan') . '" /></a></div>';
+                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">'. get_string('launchcourse', 'local_plan') .'</a>' .
+                '</div>';
         } else {
             $class = ' class="dimmed"';
             $launch = '';
@@ -525,9 +525,9 @@ class dp_course_component extends dp_base_component {
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
         if ($this->is_item_approved($item->approved)) {
-            $out .= '<div class="plan-launch-course-button">' .
-                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">' .
-                '<img src="' . $CFG->pixpath . '/launch-course.png" width="56" height="18" alt="' . get_string('launchcourse', 'local_plan') . '" /></a></div>';
+            $out =  '<div class="plan-launch-course-button">' .
+                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">'. get_string('launchcourse', 'local_plan') .'</a>' .
+                '</div>';
         }
 
         $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon={$item->icon}&amp;id={$item->courseid}&amp;size=small&amp;type=course\" alt=\"{$item->fullname}\">";

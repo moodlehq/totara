@@ -1,0 +1,15 @@
+<h1>יבא מדדי־הערכה</h1>
+<p>תוכל לייבא מדדי־הערכה בטופס ע"י קבצי csv ,התבנית צריכה להיות כדלקמן:</p>
+<table class="generaltable" cellpadding="4">
+ <tr> <th class="header">שם שדה</th> <th class="header">תאור</th> <th class="header">נדרש</th> <th class="header">תבנית</th> </tr>
+    <tr> <td class="cell">outcome_name</td> <td class="cell">השם המלא של המדד־הערכה </td> <td class="cell">כן</td><td class="cell">מחרוזת</td> </tr>
+    <tr> <td class="cell">outcome_shortname</td><td class="cell">השם הקצר של המדד־הערכה </td> <td class="cell">כן</td> <td class="cell">מחרוזת</td> </tr>
+    <tr> <td class="cell">outcome_description</td><td class="cell">תאור המדד־הערכה </td> <td class="cell">כן</td> <td class="cell">מחרוזת</td> </tr>
+    <tr> <td class="cell">scale_name</td><td class="cell">שם הסולם בשימוש</td> <td class="cell">לא</td> <td class="cell">מחרוזת</td> </tr>
+    <tr> <td class="cell">scale_items</td><td class="cell">רשימה מופרדת בפסיק של פריטי סולם</td> <td class="cell">כן</td> <td class="cell">מחרוזת</td> </tr>
+    <tr> <td class="cell">scale_description</td><td class="cell">תאור הסולם </td> <td class="cell">לא</td> <td class="cell">מחזורת</td> </tr>
+</table>
+
+<p>הינה דוגמא:</p>
+<pre>outcome_name;outcome_shortname;outcome_description;scale_name;scale_items;scale_description
+Participation;participation;;Participation scale;"Little or no participation, Satisfactory participation, Full participation";</pre>

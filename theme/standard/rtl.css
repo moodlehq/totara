@@ -10,6 +10,7 @@
 
 body, td, li, div {
     direction: rtl;
+    margin:auto;
 }
 
 /* required for chat windows */
@@ -48,7 +49,7 @@ body, td, li, div {
 }
 
 .navbar {
-    margin-left: 5px;
+    margin-left: 0px;
     margin-right: 0px;
 }
 
@@ -80,11 +81,7 @@ body, td, li, div {
 }
 
 .categorylist .category.number {
-	text-align: left;
-}
-
-.calendar-controls .previous, .calendar-controls .current, .calendar-controls .next {
-    float: right;
+    text-align: left;
 }
 
 .coursebox .summary {
@@ -99,14 +96,6 @@ body, td, li, div {
 
 .categorylist .category.number {
     text-align:left;
-}
-
-.calendar-controls .previous {
-    text-align: right;
-}
-
-.calendar-controls .next {
-    text-align: left;
 }
 
 .reportlink {
@@ -237,20 +226,36 @@ h1.main, h2.main, h3.main, h4.main, h5.main, h6.main {
     direction: ltr;
 }
 
+#calendar .maincalendar .calendar-controls .previous, #calendar .maincalendar .calendar-controls .next, div#calendarcontainer div.monthlycalendar div.calendar-controls {
+	direction: rtl;
+}
+
+.calendar-controls .previous, .calendar-controls .current {
+	float: right;
+}
+
+.calendar-controls .next {
+	text-align: left;
+}
+
+.calendar-controls .previous {
+    text-align: right;
+}
+
 .block_admin_tree .admintree .depth1 {
-	padding-right:16px;
+    padding-right:16px;
 }
 
 .block_admin_tree .admintree .depth2 {
-	padding-right:32px;
+    padding-right:32px;
 }
 
 .block_admin_tree .admintree .depth3 {
-	padding-right:48px;
+    padding-right:48px;
 }
 
 .block_admin_tree .admintree .depth4 {
-	padding-right:64px;
+    padding-right:64px;
 }
 
 .block_admin_tree .admintree {
@@ -371,16 +376,15 @@ form.mform .fitemtitle {
 /* IE6 requires overflow: auto. IE7 requires overflow: hidden.
    exploit IE's "star html selector bug" to apply to IE6 ONLY */
 .tabrow0 {
-	#overflow: hidden; /* for IE7. to eliminate extra scroll bars . the # hides from firefox */
+    #overflow: hidden; /* for IE7. to eliminate extra scroll bars . the # hides from firefox */
     * html overflow: auto; /* for IE6 only **** */
 }
 
 .tabrow0  LI {
     float: right;
-    MARGIN: 0px;
-    width: 130px;
-    BACKGROUND: url(pix/tab/rtlbg.gif) no-repeat right top;
-	overflow: hidden; /* for IE7. to prevent long titles from 'falling' 3cm down */
+    margin-right: 5px;
+    /*BACKGROUND: url(pix/tab/rtlbg.gif) no-repeat right top;*/
+    overflow: hidden; /* for IE7. to prevent long titles from 'falling' 3cm down */
 }
 
 .tabrow0 A SPAN {
@@ -418,7 +422,6 @@ div.tabrow1 {
 
 UL.tabrow1 {
     right: 0px;
-    width: 800px;
 
 /* must have absolute width here, otherwise IE makes a total mess */
 	min-width: 100%;
@@ -463,6 +466,99 @@ FORM.mform INPUT {
 }
 
 .htmlarea * select {
-	max-width: 100px;
+    max-width: 100px;
 }
 
+
+.logininfo a:link {
+    margin-right: 3px;
+}
+
+body#mod-facetoface-view div#content div.generalbox div#description {
+    text-align: right;
+}
+
+div#totara-header-notifications .notifysuccess,
+div#totara-header-notifications .notifyproblem {
+    text-align: right !important;
+}
+
+#blocks-facetoface-calendar div.calendar-controls td {
+    vertical-align: top;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.next{
+	padding-left: 15px;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous{
+	padding-right: 15px;
+}
+
+#calendar .maincalendar .buttons {
+	float: left;
+}
+
+/* TreeView */
+
+.treeview .hitarea {
+	background: url(images/treeview/rtl-treeview-default-c.gif) 0 2px no-repeat;
+	height: 16px;
+	width: 16px;
+	margin-right: -16px;
+	float: right;
+	cursor: pointer;
+}
+/* fix for IE6 */
+* html .hitarea {
+	display: inline;
+	float:none;
+}
+
+.treeview li {
+	margin: 0;
+	padding: 0px 16px 2px 0px;
+}
+
+.treeview a.selected {
+	background-color: #eee;
+}
+
+#treecontrol { margin: 1em 0; display: none; }
+
+.treeview .hover { color: red; cursor: pointer; }
+
+.treeview li { background: url(images/treeview/rtl-treeview-default-line.gif) 100% -2px no-repeat; }
+.treeview li.collapsable, .treeview li.expandable { background-position: 100% -177px; }
+
+.treeview .expandable-hitarea { background: url(images/treeview/rtl-treeview-default-e.gif) 0 2px no-repeat; }
+.treeview li.last { background-position: 100% -1768px }
+.treeview li.lastCollapsable, .treeview li.lastExpandable { background: url(); }
+.treeview div.lastCollapsable-hitarea { background: url(images/treeview/rtl-treeview-default-lc.gif) 0 0 no-repeat; }
+.treeview div.lastExpandable-hitarea { background: url(images/treeview/rtl-treeview-default-le.gif) 0 0 no-repeat; }
+
+.treeview-red li { background-image: url(images/treeview/rtl-treeview-red-line.gif); }
+.treeview-red .hitarea { background-image: url(images/treeview/rtl-treeview-red-c.gif); }
+.treeview-red .expandable-hitarea { background-image: url(images/treeview/rtl-treeview-red-e.gif); }
+.treeview-red div.lastCollapsable-hitarea { background-image: url(images/treeview/rtl-treeview-red-lc.gif); }
+.treeview-red div.lastExpandable-hitarea { background-image: url(images/treeview/rtl-treeview-red-le.gif); }
+
+.treeview-black li { background-image: url(images/treeview/rtl-treeview-black-line.gif); }
+.treeview-black .hitarea { background-image: url(images/treeview/rtl-treeview-black-c.gif); }
+.treeview-black .expandable-hitarea { background-image: url(images/treeview/rtl-treeview-black-e.gif); }
+.treeview-black div.lastCollapsable-hitarea { background-image: url(images/treeview/rtl-treeview-black-lc.gif); }
+.treeview-black div.lastExpandable-hitarea { background-image: url(images/treeview/rtl-treeview-black-le.gif); }
+
+.treeview-gray li { background-image: url(images/treeview/rtl-treeview-gray-line.gif); }
+.treeview-gray .hitarea { background-image: url(images/treeview/rtl-treeview-gray-c.gif); }
+.treeview-gray .expandable-hitarea { background-image: url(images/treeview/rtl-treeview-gray-e.gif); }
+.treeview-gray div.lastCollapsable-hitarea { background-image: url(images/treeview/rtl-treeview-gray-lc.gif); }
+.treeview-gray div.lastExpandable-hitarea { background-image: url(images/treeview/rtl-treeview-gray-le.gif); }
+
+.filetree li { padding: 0px 16px 2px 0; }
+.filetree span.folder, .filetree span.file { padding: 0px 16px 2px 0; display: block; }
+.filetree span.folder { background: url(images/treeview/rtl-folder.gif) 100% 0 no-repeat; }
+.filetree li.expandable span.folder { background: url(images/treeview/rtl-folder-closed.gif) 100% 0 no-repeat; }
+.filetree span.file { background: url(images/treeview/rtl-file.gif) 100% 0 no-repeat; }
+
+/* TreeView */

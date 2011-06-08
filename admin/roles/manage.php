@@ -507,7 +507,7 @@
         $table = new object;
 
         $table->tablealign = 'center';
-        $table->align = array('right', 'left', 'left', 'left');
+        $table->align = array('', '', '', '');
         $table->wrap = array('nowrap', '', 'nowrap','nowrap');
         $table->cellpadding = 5;
         $table->cellspacing = 0;

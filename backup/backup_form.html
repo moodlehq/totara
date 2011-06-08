@@ -361,7 +361,7 @@ function selectItemInCheckboxByName(formId, checkName, checked ) {
         $roles = get_records('role', '', '', 'sortorder');
         foreach ($roles as $role) {
             print_checkbox('backupassignments_' . $role->shortname, 1, true, strip_tags(format_string($role->name, true)));
-            echo "<br />";
+            echo "<br style=\"clear: both;\"/>";
         }
         echo "<a href=\"#\" onclick=\"selectItemInCheckboxByName('form1', 'backupassignments_', true); return false;\">". get_string("all")."</a>/";
         echo "<a href=\"#\" onclick=\"selectItemInCheckboxByName('form1', 'backupassignments_', false); return false;\">". get_string("none")."</a>";
