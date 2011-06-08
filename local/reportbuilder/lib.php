@@ -3158,6 +3158,7 @@ function send_scheduled_report($sched){
     $messagedetails->reporturl = $reporturl;
     $messagedetails->scheduledreportsindex = $CFG->wwwroot . '/my/reports.php#scheduled';
 
+    $dateformat = ($user->lang == 'en_utf8') ? 'jS' : 'j';
     $schedule = '';
     switch($sched->frequency) {
         case REPORT_BUILDER_SCHEDULE_DAILY:
@@ -3170,7 +3171,7 @@ function send_scheduled_report($sched){
             break;
         case REPORT_BUILDER_SCHEDULE_MONTHLY:
             $schedule .= get_string('monthly', 'local_reportbuilder') . ' ' . get_string('onthe', 'local_reportbuilder');
-            $schedule .= date('jS' ,mktime(0,0,0,0,$sched->schedule));
+            $schedule .= date($dateformat ,mktime(0,0,0,0,$sched->schedule));
             break;
     }
     $messagedetails->schedule = $schedule;
@@ -3486,6 +3487,9 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
     $embed->accesssettings = isset($embed->accesssettings) ? $embed->accesssettings : array();
     $embed->contentsettings = isset($embed->contentsettings) ? $embed->contentsettings : array();
 
+    $embed->defaultsortcolumn = isset($embed->defaultsortcolumn) ? $embed->defaultsortcolumn : '';
+    $embed->defaultsortorder = isset($embed->defaultsortorder) ? $embed->defaultsortorder : SORT_ASC;
+
     $todb = new object();
     $todb->shortname = $shortname;
     $todb->fullname = $embed->fullname;
@@ -3494,6 +3498,8 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
     $todb->accessmode = $embed->accessmode;
     $todb->contentmode = $embed->contentmode;
     $todb->embedded = 1;
+    $todb->defaultsortcolumn = $embed->defaultsortcolumn;
+    $todb->defaultsortorder = $embed->defaultsortorder;
 
     begin_sql();
     if (!$newid = insert_record('report_builder', $todb)) {

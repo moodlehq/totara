@@ -58,7 +58,9 @@ class completion_criteria_grade extends completion_criteria {
      */
     public function config_form_display(&$mform, $data = null) {
         $mform->addElement('checkbox', 'criteria_grade', get_string('enable'));
+        $mform->setType('criteria_grade', PARAM_BOOL);
         $mform->addElement('text', 'criteria_grade_value', get_string('passinggrade', 'completion'));
+        $mform->setType('criteria_grade_value', PARAM_NUMBER);
         $mform->setHelpButton('criteria_grade_value', array('completionpassinggrade', get_string('passinggrade', 'completion')), true);
         $mform->setDefault('criteria_grade_value', $data);
 

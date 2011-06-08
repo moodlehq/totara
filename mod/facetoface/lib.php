@@ -767,7 +767,11 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
         $placeholder = "[session:{$field->shortname}]";
         $value = '';
         if (!empty($customdata[$field->id])) {
-            $value = $customdata[$field->id]->data;
+            if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
+                $value = str_replace(CUSTOMFIELD_DELIMITTER, ', ', $customdata[$field->id]->data);
+            } else {
+                $value = $customdata[$field->id]->data;
+            }
         }
 
         $msg = str_replace($placeholder, $value, $msg);
@@ -1457,7 +1461,11 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
 
                         $data = '-';
                         if (!empty($customdata[$field->id])) {
-                            $data = $customdata[$field->id]->data;
+                            if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
+                                $data = str_replace(CUSTOMFIELD_DELIMITTER, "\n", $customdata[$field->id]->data);
+                            } else {
+                                $data = $customdata[$field->id]->data;
+                            }
                         }
                         $worksheet->write_string($i, $j++, $data);
                     }
@@ -1548,7 +1556,11 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
 
                     $data = '-';
                     if (!empty($customdata[$field->id])) {
-                        $data = $customdata[$field->id]->data;
+                        if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
+                            $data = str_replace(CUSTOMFIELD_DELIMITTER, "\n", $customdata[$field->id]->data);
+                        } else {
+                            $data = $customdata[$field->id]->data;
+                        }
                     }
                     $worksheet->write_string($i, $j++, $data);
                 }
@@ -1901,9 +1913,9 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             tm_alert_send($newevent);
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
-                $user = get_record('user', 'id', $managerid);
+                $userto = get_record('user', 'id', $managerid);
                 $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
-                $newevent->userto           = $user;
+                $newevent->userto           = $userto;
                 $newevent->subject          = 'Cancelled for '.$usermsg.' session <a href="'.$url.'">'.$facetoface->name.'</a>';
                 $newevent->fullmessage      = $newevent->subject;
                 tm_alert_send($newevent);
@@ -1913,9 +1925,9 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
         case MDL_F2F_STATUS_REQUESTED:
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
-                $user = get_record('user', 'id', $managerid);
+                $userto = get_record('user', 'id', $managerid);
                 $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
-                $newevent->userto           = $user;
+                $newevent->userto           = $userto;
                 $newevent->fullmessage      = facetoface_email_substitutions(
                                                         $facetoface->requestinstrmngr,
                                                         $facetoface->name,
@@ -3460,14 +3472,14 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
         $data = '';
         if (!empty($customdata[$field->id])) {
             if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
-                $values = explode(CUSTOMFIELD_DELIMITTER, $customdata[$field->id]->data);
-                $data = implode(', ', $values);
+                $values = explode(CUSTOMFIELD_DELIMITTER, format_string($customdata[$field->id]->data));
+                $data = implode('<br />', $values);
             }
             else {
-                $data = $customdata[$field->id]->data;
+                $data = format_string($customdata[$field->id]->data);
             }
         }
-        $table->data[] = array(str_replace(' ', '&nbsp;', format_string($field->name)), format_string($data));
+        $table->data[] = array(str_replace(' ', '&nbsp;', format_string($field->name)), $data);
     }
 
     $strdatetime = str_replace(' ', '&nbsp;', get_string('sessiondatetime', 'facetoface'));
@@ -3941,4 +3953,113 @@ function facetoface_add_customfields_to_form(&$mform, $customfields, $alloptiona
             $mform->addRule($fieldname, null, 'required', null, 'client');
         }
     }
+}
+
+
+/**
+ * Get session cancellations
+ *
+ * @access  public
+ * @param   integer $sessionid
+ * @return  array|false
+ */
+function facetoface_get_cancellations($sessionid)
+{
+    global $CFG;
+
+    $fullname = sql_fullname('u.firstname', 'u.lastname');
+
+    // Nasty SQL follows:
+    // Load currently cancelled users,
+    // include most recent booked/waitlisted time also
+    $sql = "
+            SELECT
+                u.id,
+                su.id AS signupid,
+                u.firstname,
+                u.lastname,
+                MAX(ss.timecreated) AS timesignedup,
+                c.timecreated AS timecancelled,
+                c.note AS cancelreason
+            FROM
+                {$CFG->prefix}facetoface_signups su
+            JOIN
+                {$CFG->prefix}user u
+             ON u.id = su.userid
+            JOIN
+                {$CFG->prefix}facetoface_signups_status c
+             ON su.id = c.signupid
+            AND c.statuscode = ".MDL_F2F_STATUS_USER_CANCELLED."
+            AND c.superceded = 0
+            LEFT JOIN
+                {$CFG->prefix}facetoface_signups_status ss
+             ON su.id = ss.signupid
+             AND ss.statuscode IN (
+                 ".MDL_F2F_STATUS_BOOKED.",
+                 ".MDL_F2F_STATUS_WAITLISTED.",
+                 ".MDL_F2F_STATUS_REQUESTED."
+             )
+            AND ss.superceded = 1
+            WHERE
+                su.sessionid = {$sessionid}
+            GROUP BY
+                su.id,
+                u.id,
+                u.firstname,
+                u.lastname,
+                c.timecreated,
+                c.note
+            ORDER BY
+                {$fullname},
+                c.timecreated
+    ";
+    return get_records_sql($sql);
+}
+
+
+/**
+ * Get session unapproved requests
+ *
+ * @access  public
+ * @param   integer $sessionid
+ * @return  array|false
+ */
+function facetoface_get_requests($sessionid)
+{
+    global $CFG;
+
+    $fullname = sql_fullname('u.firstname', 'u.lastname');
+
+    $sql = "SELECT u.id, su.id AS signupid, u.firstname, u.lastname,
+                   ss.timecreated AS timerequested
+              FROM {$CFG->prefix}facetoface_signups su
+              JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
+              JOIN {$CFG->prefix}user u ON u.id = su.userid
+             WHERE su.sessionid = $sessionid AND ss.superceded != 1 AND ss.statuscode = ".MDL_F2F_STATUS_REQUESTED."
+          ORDER BY $fullname, ss.timecreated";
+    return get_records_sql($sql);
+}
+
+
+/**
+ * Get session declined requests
+ *
+ * @access  public
+ * @param   integer $sessionid
+ * @return  array|false
+ */
+function facetoface_get_declines($sessionid)
+{
+    global $CFG;
+
+    $fullname = sql_fullname('u.firstname', 'u.lastname');
+
+    $sql = "SELECT u.id, su.id AS signupid, u.firstname, u.lastname,
+                   ss.timecreated AS timerequested
+              FROM {$CFG->prefix}facetoface_signups su
+              JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
+              JOIN {$CFG->prefix}user u ON u.id = su.userid
+             WHERE su.sessionid = $sessionid AND ss.superceded != 1 AND ss.statuscode = ".MDL_F2F_STATUS_DECLINED."
+          ORDER BY $fullname, ss.timecreated";
+    return get_records_sql($sql);
 }

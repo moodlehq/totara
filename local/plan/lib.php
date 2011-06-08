@@ -60,10 +60,16 @@ define('DP_PRIORITY_REQUIRED', 2);
 // Maximum number of priority options
 define('DP_MAX_PRIORITY_OPTIONS', 5);
 
-// Approval
+//// Plan item Approval status (Note that you should usually check *Plan status* as well as item status)
+// Item was added to an approved plan, but declined by manager
 define('DP_APPROVAL_DECLINED',          10);
+// Item was added to an approved plan by a user with "Request" permission
 define('DP_APPROVAL_UNAPPROVED',        20);
+// Item was added to an approved plan by a user with "Request" permission, and a
+// request for approval was sent to their manager
 define('DP_APPROVAL_REQUESTED',         30);
+// Item was added to an Unapproved plan, or added to an Approved plan by a user
+// with Allow or Approve permission
 define('DP_APPROVAL_APPROVED',          50);
 
 // Plan notices

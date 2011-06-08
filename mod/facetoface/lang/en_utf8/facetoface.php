@@ -107,6 +107,7 @@ $string['error:cannotsendconfirmationuser'] = 'There was a problem sending the c
 $string['error:cannotsendrequestuser'] = 'There was a problem sending the signup request message to your email account.';
 $string['error:cannotsendrequestmanager'] = 'There was a problem sending the signup request message to your manager\'s email account.';
 $string['error:cannotsendconfirmationusermanager'] = 'A confirmation message could not be sent to your email address and to your manager\'s email address.';
+$string['error:canttakeattendanceforunstartedsession'] = 'Can not take attendance for a session that has yet to start.';
 $string['error:couldnotaddfield'] = 'Could not add custom session field.';
 $string['error:couldnotaddnotice'] = 'Could not add site notice.';
 $string['error:couldnotaddsession'] = 'Could not add session';

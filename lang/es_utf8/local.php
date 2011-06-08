@@ -1,0 +1,64 @@
+<?php // $Id$
+// local.php - created with Totara langimport script version 1.0
+
+$string['addanothercolumn'] = 'Añadir otra columna...';
+$string['addcompetencyevidence'] = 'Agregar registro evidencia de competencia';
+$string['addforthisuser'] = 'Añadir nuevo registro evidencia de competencia para este usuario';
+$string['allf2fbookings'] = 'Todas las inscripciones para Cara a Cara';
+$string['alllearningrecords'] = 'Todos los registros de Aprendizaje';
+$string['allmycourses'] = 'Todos mis cursos';
+$string['allteammembers'] = 'Todos los miembros del equipo';
+$string['alreadyselected'] = '(ya seleccionado)';
+$string['assessments'] = 'Evaluaciones';
+$string['assessmenttype'] = 'Tipo de evaluación';
+$string['assessor'] = 'Asesor';
+$string['assessorname'] = 'Nombre del Asesor';
+$string['blended'] = 'Mezclado';
+$string['bookings'] = 'Inscripciones';
+$string['bookingsfor'] = 'Inscripciones para';
+$string['browse'] = 'Examinar';
+$string['browsecategories'] = 'Examinar las categorías';
+$string['calendar'] = 'Calendario';
+$string['column'] = 'Columna';
+$string['completed'] = 'Completado';
+$string['confirmdeletece'] = '¿Está seguro que desea eliminar este registro evidencia de competencia?';
+$string['couldnotdeletece'] = 'No se pudo eliminar este registro evidencia de competencia.';
+$string['coursecompletionsfor'] = 'Terminaciones del curso para';
+$string['courseicon'] = 'Icono del Curso';
+$string['currenticon'] = 'Icono actual';
+$string['delete'] = 'Eliminar';
+$string['deletecompetencyevidence'] = 'Eliminar evidencia de capacidad';
+$string['developmentplan'] = 'Planificador de desarrollo';
+$string['editcompetencyevidence'] = 'Editar Registro evidencia de competencia';
+$string['editheading'] = 'Editar el encabezado del bloque del Informe';
+$string['elearning'] = 'E-learning';
+$string['enrolled'] = 'Inscrito';
+$string['error:columntypenotfound'] = 'La columna de tipo \'$a\' fue definida, pero no es una opción válida. Esto puede ocurrir si ha eliminado un campo personalizado o el nivel de profundidad de la jerarquía. La mejor alternativa consiste en eliminar esta columna pulsando la cruz roja a la derecha.';
+$string['error:couldnotcreatedefaultfields'] = 'No se pudo crear campos predeterminados';
+$string['error:couldnotupdatereport'] = 'No se pudo actualizar informe';
+$string['error:norolesfound'] = 'No encontró ningún Rol';
+$string['error:notificationsparamtypewrong'] = 'Tipo de parámetro incorrecto enviado a las notificaciones Totara';
+$string['error:unknownbuttonclicked'] = 'Botón oprimido desconocido';
+$string['error:usernotfound'] = 'Usuario no encontrado';
+$string['f2fbookings'] = 'Inscripciones Cara a Cara';
+$string['facetoface'] = 'Cara a cara';
+$string['findcourses'] = 'Buscar Cursos';
+$string['firstselectcompetency'] = 'Primero, seleccione una competencia';
+$string['framework'] = 'Framework';
+$string['heading'] = 'Cabecera';
+$string['hierarchies'] = 'Jerarquías';
+$string['mybookings'] = 'Mis inscripciones';
+$string['mycoursecompletions'] = 'Mis Cursos completados';
+$string['myfuturebookings'] = 'Mis inscripciones futuras';
+$string['mylearning'] = 'Mi aprendizaje';
+$string['myprofile'] = 'Mi perfil';
+$string['myrecordoflearning'] = 'Mi Registro de Aprendizaje';
+$string['myreports'] = 'Mis informes';
+$string['notenrolled'] = '<i>Usted actualmente no está inscrito en ningún curso.</i>';
+$string['recordoflearning'] = 'Registro de Aprendizaje';
+$string['recordoflearningfor'] = 'Registro de Aprendizaje para';
+$string['tab:futurebookings'] = 'Inscripciones futuras';
+$string['tab:pastbookings'] = 'Inscripciones Pasadas';
+$string['teammembers'] = 'Miembros del equipo';
+
+?>

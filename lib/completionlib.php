@@ -373,13 +373,9 @@ class completion_info {
                 cc.timecompleted DESC
         ";
 
-        if ($limit) {
-            $sql .= " LIMIT $limit";
-        }
-
         $completions = array();
 
-        if ($ccompletions = get_records_sql($sql)) {
+        if ($ccompletions = get_records_sql($sql, 0, $limit)) {
             foreach ($ccompletions as $course) {
                 // Create completion_completion instance (without reloading from db)
                 $completions[$course->course] = new completion_completion($course, false);

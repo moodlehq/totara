@@ -27,10 +27,12 @@ class rb_team_members_embedded extends rb_base_embedded {
     public $url, $source, $fullname, $filters, $columns;
     public $contentmode, $contentsettings, $embeddedparams;
     public $hidden, $accessmode, $accesssettings, $shortname;
+    public $defaultsortcolumn, $defaultsortorder;
 
     public function __construct($data) {
         $this->url = '/my/teammembers.php';
         $this->source = 'user';
+        $this->defaultsortcolumn = 'user_namewithlinks';
         $this->shortname = 'team_members';
         $this->fullname = get_string('teammembers', 'local');
         $this->columns = array(

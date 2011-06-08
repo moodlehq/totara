@@ -5,7 +5,7 @@
 /// how Moodle uses this theme.
 ////////////////////////////////////////////////////////////////////////////////
 
-$THEME->sheets = array('jquery-ui-1.7.2.custom','jquery.treeview','styles_menu','styles_page','styles_buttons','styles_totara');
+$THEME->sheets = array('jquery-ui-1.7.2.custom','jquery.treeview','styles_page','styles_buttons','styles_totara');
 
 /// This variable is an array containing the names of all the 
 /// stylesheet files you want included in this theme, and in what order

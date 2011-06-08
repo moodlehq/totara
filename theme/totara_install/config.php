@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->sheets = array('styles_menu','styles_page','styles_buttons','styles_totara','styles_totara_common');
+$THEME->sheets = array('styles_page','styles_buttons','styles_totara','styles_totara_common');
 
 /// This variable is an array containing the names of all the 
 /// stylesheet files you want included in this theme, and in what order

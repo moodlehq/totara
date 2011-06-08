@@ -1,0 +1,76 @@
+<?PHP // $Id$ 
+      // organisation.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+
+
+$string['adddepthlevel'] = 'Neues Level hinzufügen';
+$string['addnewframework'] = 'Neues Organisationsprofil anlegen';
+$string['addneworganisation'] = 'Neue Organisation anlegen';
+$string['chooseorganisation'] = 'Organisation auswählen';
+$string['competencyassigndeletecheck'] = 'Sind Sie sicher, dass Sie diese Kompetenzzuweisung löschen möchten?';
+$string['currentlyselected'] = 'Ausgewählt';
+$string['deletecheck'] = 'Sind Sie sicher, dass Sie diese Organisation, all Ihre Töchter und Daten löschen möchten?';
+$string['deletecheckframework'] = 'Sind Sie sicher, dass Sie das Profil \"$a\" löschen möchten?';
+$string['deletedassignedcompetency'] = 'Die Zuweisung der Kompetenz wurde erfolgreich von dieser Organisation ausgelöst';
+$string['deletedepth'] = '$a löschen';
+$string['deletedframework'] = 'Das Organisationsprofil $a und seine Daten wurden vollständig gelöscht';
+$string['deletedorganisation'] = 'Die Organisation $a und ihre Töchter wurden vollständig gelöscht';
+$string['deleteframework'] = '$a löschen';
+$string['depthlevel'] = 'Level';
+$string['depthlevels'] = 'Level';
+$string['depths'] = 'Level';
+$string['descriptionview'] = '$a Beschreibung';
+$string['editdepthlevel'] = 'Level ändern';
+$string['editframework'] = 'Organisationsprofil ändern';
+$string['editgeneric'] = '$a ändern';
+$string['editorganisation'] = 'Organisation ändern';
+$string['error:deletedframework'] = 'Fehler beim Löschen des Organisationsprofils $a und den dazugehörigen Daten.';
+$string['error:dialognotreeitems'] = 'Keine Organisationen in diesem Profil';
+$string['featureplural'] = 'Organisationen';
+$string['framework'] = 'Organisationsprofil';
+$string['frameworks'] = 'Organisationsprofile';
+$string['fullname'] = 'Organisation vollständiger Name';
+$string['fullnamedepth'] = 'Level vollständiger Name';
+$string['fullnameframework'] = 'Vollständiger Name';
+$string['fullnameview'] = 'Vollständiger Name';
+$string['idnumber'] = 'Organisation ID';
+$string['idnumberframework'] = 'ID';
+$string['idnumberview'] = '$a ID';
+$string['invalidnumeric'] = 'Der numerische Wert muss numerisch (oder leer) sein.';
+$string['manageorganisation'] = 'Organisationen verwalten';
+$string['manageorganisations'] = 'Organisation verwalten';
+$string['missingfullname'] = 'Fehlende Organisation vollständiger Name';
+$string['missingfullnamedepth'] = 'Fehlendes Level vollständiger Name';
+$string['missingfullnameframework'] = 'Fehlendes Profil vollständiger Name';
+$string['missingshortname'] = 'Fehlende Organisation Kurzname';
+$string['missingshortnamedepth'] = 'Fehlendes Level Kurzname';
+$string['missingshortnameframework'] = 'Fehlendes Profil Kurzname';
+$string['name'] = 'Name';
+$string['nochildorganisations'] = 'Keine Tochterorganisationen definiert';
+$string['nodepthlevels'] = 'Keine Level in diesem Profil';
+$string['noframeworks'] = 'Keine Organisationsprofile vorhanden';
+$string['noorganisation'] = 'Keine Organisation definiert';
+$string['noorganisationsinframework'] = 'Keine Organisationen in diesem Profil';
+$string['nounassignedcompetencies'] = 'Keine nicht zugewiesenen Kompetenzen';
+$string['nounassignedcompetencytemplates'] = 'Keine nicht zugewiesenen Kompetenzvorlagen';
+$string['numericalvalue'] = 'Numerischer Wert';
+$string['organisation'] = 'Organisation';
+$string['organisationaddnew'] = 'Neue Organisation hinzufügen';
+$string['organisationbulkaction'] = 'Bulk Aktionen';
+$string['organisationcustomfields'] = 'Benutzerdefinierte Felder';
+$string['organisationdepthcustomfields'] = 'Organisationslevel benutzerdefinierte Felder';
+$string['organisationframework'] = 'Organisationsprofil';
+$string['organisationframeworkmanage'] = 'Profile verwalten';
+$string['organisationframeworks'] = 'Organisationsprofile';
+$string['organisationmanage'] = 'Organisationen verwalten';
+$string['organisationplural'] = 'Organisationen';
+$string['organisations'] = 'Organisationen';
+$string['parent'] = 'Mutterorganisation';
+$string['returntoframework'] = 'Zurück zum Organisationsprofil';
+$string['shortname'] = 'Organisation Kurzname';
+$string['shortnamedepth'] = 'Level Kurzname';
+$string['shortnameframework'] = 'Kurzname';
+$string['shortnameview'] = 'Kurzname';
+$string['type'] = 'Type';
+$string['weight'] = 'Gewicht';
+
+?>

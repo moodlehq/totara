@@ -86,7 +86,8 @@ function totara_msg_cron() {
             $ids []= $msg->id;
         }
     }
-    $ids = array_unique($ids, SORT_NUMERIC);
+    asort($ids, SORT_NUMERIC);
+    $ids = array_unique($ids);
     if (count($ids) > 0) {
         delete_records_select('message_metadata', 'messageid NOT IN ('.implode(',', $ids).')');
     }

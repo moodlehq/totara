@@ -424,6 +424,7 @@ function totara_print_scheduled_reports($return=false) {
         $table->column_class('options', 'options');
 
         $table->setup();
+        $dateformat = ($USER->lang == 'en_utf8') ? 'jS' : 'j';
 
         foreach($scheduledreports as $sched) {
             if(isset($sched->frequency) && isset($sched->schedule)){
@@ -440,7 +441,7 @@ function totara_print_scheduled_reports($return=false) {
                     break;
                 case 'monthly':
                     $schedule .= get_string('monthly', 'local_reportbuilder') . ' ' . get_string('onthe', 'local_reportbuilder') . ' ';
-                    $schedule .= date('jS' ,mktime(0,0,0,0,$sched->schedule));
+                    $schedule .= date($dateformat ,mktime(0,0,0,0,$sched->schedule));
                     break;
                 }
             }

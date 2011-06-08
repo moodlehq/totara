@@ -724,15 +724,14 @@ function tm_messages_get($type, $order_by=false, $userto=false, $limit=true, $ro
 
         // do we apply a limit?
         if ($limit) {
-            $limit = ' LIMIT '.TOTARA_MSG_ALERT_LIMIT;
+            $limit = TOTARA_MSG_ALERT_LIMIT;
         }
-        else {
-            $limit = ' ';
-        }
+
         // hunt for messages
         $msgs = get_records_sql("SELECT m.id, m.useridfrom, m.subject, m.fullmessage, m.timecreated, d.msgstatus, d.msgtype, d.urgency, d.icon, m.contexturl, m.contexturlname
                                         FROM ({$CFG->prefix}message20 m INNER JOIN  {$CFG->prefix}message_working20 w ON m.id = w.unreadmessageid) LEFT JOIN {$CFG->prefix}message_metadata d ON (d.messageid = m.id)
-                                        WHERE m.useridto = ".$userid .' AND w.processorid = '.$processor->id.$role_filter.$order_by.$limit);
+                                        WHERE m.useridto = ".$userid .' AND w.processorid = '.$processor->id.$role_filter.$order_by, 0, $limit);
+
         return $msgs;
 }
 

@@ -157,7 +157,11 @@ function print_session_list($courseid, $facetofaceid, $location)
                     $sessionrow[] = '&nbsp;';
                 }
                 else {
-                    $sessionrow[] = format_string($customdata[$field->id]->data);
+                    if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
+                        $sessionrow[] = str_replace(CUSTOMFIELD_DELIMITTER, '<br />', format_string($customdata[$field->id]->data));
+                    } else {
+                        $sessionrow[] = format_string($customdata[$field->id]->data);
+                    }
                 }
             }
 
