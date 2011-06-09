@@ -274,22 +274,22 @@ if ($can_view_attendees || $can_take_attendance) {
 
         if ($takeattendance) {
             $table->head[] = get_string('currentstatus', 'facetoface');
-            $table->align[] = array('center');
+            $table->align[] = 'center';
             $table->head[] = get_string('attendedsession', 'facetoface');
-            $table->align[] = array('center');
+            $table->align[] = 'center';
         }
         else {
             if (!get_config(null, 'facetoface_hidecost')) {
                 $table->head[] = get_string('cost', 'facetoface');
-                $table->align[] = array('center');
+                $table->align[] = 'center';
                 if (!get_config(null, 'facetoface_hidediscount')) {
                     $table->head[] = get_string('discountcode', 'facetoface');
-                    $table->align[] = array('center');
+                    $table->align[] = 'center';
                 }
             }
 
             $table->head[] = get_string('attendance', 'facetoface');
-            $table->align[] = array('center');
+            $table->align[] = 'center';
         }
 
         foreach($attendees as $attendee) {

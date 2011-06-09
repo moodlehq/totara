@@ -162,8 +162,8 @@ function competency_scale_display_table($scales, $editingon=0) {
         $table->width = '95%';
         if ($editingon) {
             $table->head[] = $stroptions;
-            $table->align[] = array('center');
-            $table->size[] = array('10%');
+            $table->align[] = 'center';
+            $table->size[] = '10%';
         }
 
         $table->data = array();

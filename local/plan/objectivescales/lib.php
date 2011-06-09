@@ -111,8 +111,8 @@ function dp_objective_display_table($objectives, $editingon=0) {
         $table->width = '95%';
         if ($editingon) {
             $table->head[] = $stroptions;
-            $table->align[] = array('center');
-            $table->size[] = array('10%');
+            $table->align[] = 'center';
+            $table->size[] = '10%';
         }
 
         $table->data = array();
