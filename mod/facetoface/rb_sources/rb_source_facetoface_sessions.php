@@ -201,8 +201,8 @@ class rb_source_facetoface_sessions extends rb_base_source {
         $this->add_manager_fields_to_columns($columnoptions);
         $this->add_course_tag_fields_to_columns($columnoptions);
 
-        $this->add_facetoface_session_custom_fields_to_columns(&$columnoptions);
-        $this->add_facetoface_session_roles_to_columns(&$columnoptions);
+        $this->add_facetoface_session_custom_fields_to_columns($columnoptions);
+        $this->add_facetoface_session_roles_to_columns($columnoptions);
 
         return $columnoptions;
     }
