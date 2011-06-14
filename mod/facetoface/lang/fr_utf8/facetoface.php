@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 // facetoface.php - created with Totara langimport script version 1.0
 
 $string['addingsession'] = 'Ajouter une nouvelle session';
@@ -44,7 +44,7 @@ $string['cancellationsent'] = 'Vous devriez recevoir un courriel d\'annulation i
 $string['cancellationsentmgr'] = 'Vous et votre responsable devriez recevoir un courriel d\'annulation immédiatement.';
 $string['cancellationstablesummary'] = 'Liste de personnes qui se sont désinscrit de la session';
 $string['cancelreason'] = 'Raison';
-$string['capacity'] = 'Places réservées';
+$string['capacity'] = 'Capacité';
 $string['changemanageremailaddress'] = 'Changer l\'adresse courriel du responsable';
 $string['changemanageremailinstruction'] = 'Merci d\'entrer l\'adresse courriel de votre responsable ci-dessous.';
 $string['clearall'] = 'Tout effacer';
@@ -105,6 +105,7 @@ $string['error:cannotsendconfirmationuser'] = 'Il y a eu un problème pour envoy
 $string['error:cannotsendconfirmationusermanager'] = 'Le message d confirmation n\'a pu être envoyé ni sur votre adresse courriel, ni sur celle de votre responsable.';
 $string['error:cannotsendrequestmanager'] = 'Un problème est survenu pendant l\'envoie du message de demande d\'inscription au courriel de votre manager.';
 $string['error:cannotsendrequestuser'] = 'Un problème est survenu pendant l\'envoie du message de demande d\'inscription à votre courriel.';
+$string['error:canttakeattendanceforunstartedsession'] = 'Impossible de noter la participation car la session n\'a pas encore commencée.';
 $string['error:couldnotaddfield'] = 'Impossible d\'ajouter un champs personalisé pour la session.';
 $string['error:couldnotaddnotice'] = 'Impossible d\'ajouter une notification globale.';
 $string['error:couldnotaddsession'] = 'Echec de l\'ajout de session';
@@ -140,6 +141,7 @@ $string['error:nopermissiontosignup'] = 'Vous n\'avez pas l\'autorisation de vou
 $string['error:problemsigningup'] = 'Il y a eu un problème pour vous inscrire';
 $string['error:removeattendee'] = 'Impossible d\'enlever $a de cette session.';
 $string['error:sessionstartafterend'] = 'Echec: La date et heure du début de la session ne peuvent pas avoir lieu après sa fin.';
+$string['error:shortnametaken'] = 'Il existe déjà un champ personnalisé utilisant ce nom abrègé.';
 $string['error:signedupinothersession'] = 'Vous êtes déjà inscrit dans une autre session. Il est impossible de s\'inscrire à plusieurs sessions de la même activité face à face.';
 $string['error:unknownbuttonclicked'] = 'Erreur : ce bouton n\'a aucun effet';
 $string['excelformat'] = 'Excel';
@@ -355,6 +357,9 @@ $string['setting:defaultremindermessagedefault'] = 'Ce message vous rappelle que
 
 Participant: [firstname] [lastname]
 Formation: [facetofacename]';
+$string['setting:defaultremindersubject'] = 'Sujet par défaut pour les méls de rappel';
+$string['setting:defaultremindersubject_caption'] = 'Sujet du rappel';
+$string['setting:defaultremindersubjectdefault'] = 'Rappel de réservation de cours: [facetofacename], [starttime]-[finishtime], [sessiondate]';
 $string['setting:defaultrequestinstrmngrdefault'] = 'Ce message vous informe que votre coéquipier [firstname] [lastname] a demandé une réservation au cours affiché ci-dessous.
 
 Cours: [facetofacename]
@@ -375,16 +380,47 @@ Veuillez suivre le lien suivant afin d\'approuver la demande:
 *** La demande de réservation de l\'utilisateur [firstname] [lastname] se trouve en copie ci-dessous ****';
 $string['setting:defaultrequestsubjectdefault'] = 'Demande de réservation de cours : [facetofacename], [starttime]-[finishtime]';
 $string['setting:defaultvalue'] = 'Valeur par défaut';
+$string['setting:defaultwaitlistedmessage'] = 'Message par défaut pour les utilisateurs en liste d\'attente.';
+$string['setting:defaultwaitlistedmessage_caption'] = 'Message pour la liste d\'attente';
+$string['setting:defaultwaitlistedmessagedefault'] = 'Ce message vous informe que vous êtes sur la liste d\'attente pour:
+
+Cours: [facetofacename]
+Situation: [session:location]
+Participant: [firstname] [lastname]
+
+***Attention, ceci ne s\'agit pas d\'une confirmation de réservation.***
+
+Vous serez contacter par la suite quand des places se libère.
+
+Si vous souhaitez vous retirer de la liste d\'attente, veuillez retourner au cours puis cliquez Annuler la réservation. Attention, l\'annulation n\'est pas accompagné d\'un courriel.';
+$string['setting:defaultwaitlistedsubject'] = 'Sujet de défaut pour les méls de liste d\'attente';
+$string['setting:defaultwaitlistedsubject_caption'] = 'Sujet de liste d\'attente';
+$string['setting:defaultwaitlistedsubjectdefault'] = 'Conseils liste d\'attente pour [facetofacename]';
+$string['setting:disableicalcancel'] = 'Désactiver les méls d\'annulation avec une pièce joint iCal';
+$string['setting:disableicalcancel_caption'] = 'Désactiver les annulations iCal :';
+$string['setting:fromaddress'] = 'Affiché dans le champ de l\'expéditeur du mél de rappel.';
+$string['setting:fromaddress_caption'] = 'Adresse de l\'expéditeur';
+$string['setting:fromaddressdefault'] = 'moodle@example.com';
+$string['setting:hidecost'] = 'Cacher les champs de coût et code de réduction';
+$string['setting:hidecost_caption'] = 'Cacher coût et réduction';
+$string['setting:hidediscount'] = 'Cacher le champs code de réduction seulement.';
+$string['setting:hidediscount_caption'] = 'Cacher réduction :';
 $string['setting:isfilter'] = 'Affichage comme filtre';
+$string['setting:manageraddressformat_caption'] = 'Suffixe requise :';
+$string['setting:manageraddressformatreadable_caption'] = 'Exemple du format :';
+$string['setting:manageraddressformatreadabledefault'] = 'firstname.lastname@company.com';
+$string['setting:oneemailperday_caption'] = 'Un message par jour :';
 $string['setting:possiblevalues'] = 'Liste de valeurs possibles';
 $string['setting:sessionroles'] = 'Les utilisateurs ayant un des rôles sélectionner peuvent être suivi avec chaque session face à face';
 $string['setting:sessionroles_caption'] = 'Rôles de la session';
 $string['setting:showinsummary'] = 'Afficher dans les listes et les exportation';
 $string['setting:type'] = 'Genre de champ';
+$string['showbylocation'] = 'Afficher par lieu';
 $string['showoncalendar'] = 'Afficher au calendrier';
 $string['signupforthissession'] = 'M\'inscrire à cette session face à face';
 $string['signups'] = 'Inscriptions';
 $string['sitenoticesheading'] = 'Notifications globales';
+$string['status'] = 'Statut';
 $string['status_approved'] = 'Approuvé';
 $string['status_booked'] = 'Réservé';
 $string['status_declined'] = 'Refusé';
@@ -395,10 +431,31 @@ $string['status_requested'] = 'Requis';
 $string['status_session_cancelled'] = 'Session annulée';
 $string['status_user_cancelled'] = 'Annulation par l\'utilisateur';
 $string['status_waitlisted'] = 'Mis sur la liste d\'attente';
+$string['submissions'] = 'Soumissions';
+$string['submit'] = 'Soumettre';
+$string['submitted'] = 'Soumis';
+$string['summary'] = 'Résumé';
+$string['suppressemail'] = 'Arrêter les notifications par mél';
+$string['takeattendance'] = 'Noter la participation';
+$string['time'] = 'Heure';
+$string['timecancelled'] = 'Heure annulé';
+$string['timefinish'] = 'Heure de la fin';
 $string['timerequested'] = 'Heure demandée';
+$string['timesignedup'] = 'Heure d\'inscription';
+$string['timestart'] = 'Heure de début';
 $string['unapprovedrequests'] = 'Demandes non approuvées';
+$string['upcomingsessions'] = 'Sessions à venir';
 $string['upcomingsessionslist'] = 'Afficher toutes les sessions futures de cette activité face à face';
 $string['userwillbewaitlisted'] = 'Cette session est complète. Veuillez cliquer le bouton \"M\'inscrire\" afin d\'être mis sur la liste d\'attente.';
 $string['validation:needatleastonedate'] = 'Il faut donner une date ou activer la liste d\'attente.';
+$string['venue'] = 'Lieu';
+$string['viewallsessions'] = 'Voir toutes les sessions';
+$string['viewsubmissions'] = 'Voir';
+$string['wait-list'] = 'Liste d\'attente';
+$string['wait-listed'] = 'Sur liste d\'attente';
+$string['waitlistedmessage'] = 'Message liste d\'attente';
+$string['xhours'] = '$a heures';
+$string['xminutes'] = '$a minutes';
+$string['youremailaddress'] = 'Votre adresse e-mail';
 
 ?>

@@ -1,5 +1,23 @@
 Totara LMS Changelog
 
+Release 1.0.15 (14 June 2011):
+==================================================
+
+New features:
+    8242    Add 'Show records below this level' option to hierarchy content restrictions in Report Builder
+
+Improvements:
+    8485    Add Finnish Totara language pack
+    8485    Updated French, German and Spanish language packs
+    8618    Add extra markup to Face-to-face modinfo                                            To help with theming.
+    8032    Align "All Reports" and "View this Report" buttons next to each other
+
+Bug fixes:
+    8638    Update API location for reCAPTCHA
+    5734    Fix broken table cell alignments
+    7236    Alignment fixes for IE6 in Feedback module
+
+
 Release 1.0.14 (7 June 2011):
 ==================================================
 

@@ -1955,6 +1955,9 @@ div.reportbuilderform table td div.fitem div.felement {
     margin: 0px;
 }
 
+.reportbuilder-navbuttons .singlebutton{
+    float:left;
+}
 
 /***
  *** Blogs

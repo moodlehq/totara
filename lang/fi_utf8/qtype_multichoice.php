@@ -1,0 +1,32 @@
+<?PHP // $Id: qtype_multichoice.php,v 1.10 2008/11/21 01:32:26 samulik Exp $
+$string['addingmultichoice'] = 'Lisätään monivalinta';
+$string['addmorechoiceblanks'] = 'Lisää kenttiä {no} vaihtoehdolle';
+$string['answerhowmany'] = 'Yksi vai useita vaihtoehtoja?';
+$string['answernumbering'] = 'Vaihtoehtojen numerointi';
+$string['answernumbering123'] = '1., 2., 3., ...';
+$string['answernumberingABCD'] = 'A., B., C., ...';
+$string['answernumberingabc'] = 'a., b., c., ...';
+$string['answernumberingnone'] = 'Ei numerointia';
+$string['answersingleno'] = 'Salli useampi vaihtoehto';
+$string['answersingleyes'] = 'Vain yksi vaihtoehto';
+$string['choiceno'] = 'Vaihtoehto';
+$string['choices'] = 'Vaihtoehdot';
+$string['clozeaid'] = 'Lisää puuttuva sana';
+$string['correctfeedback'] = 'Mille tahansa oikealle vastaukselle';
+$string['editingmultichoice'] = 'Muokataan monivalintaa';
+$string['errfractionsaddwrong'] = 'Valitsemiesi positiivisten arvoasanojen summa on $a%%, sen pitäisi olla 100%%';
+$string['errfractionsnomax'] = 'Yhden vastausvaihtoehdon arviointi pitäisi olla 100%%, jotta kysymyksestä olisi mahdollista saada täydet pisteet.';
+$string['feedback'] = 'Palaute';
+$string['fillouttwochoices'] = 'Valitse ainakin kaksi vaihtoehtoa.';
+$string['fractionsaddwrong'] = 'Vaihtoehdot eivät voi antaa yhteensä 100%% tulosta, vaan ainoastaan $a%%. Haluatko muuttaa kysymystä?';
+$string['fractionsnomax'] = 'Yhden vaihtoehdon arvon pitäisi olla 100%%, jotta kysymyksestä voi saada täyden arvosanan. Haluatko muuttaa kysymystä?';
+$string['incorrectfeedback'] = 'Mille tahansa väärälle vastaukselle';
+$string['notenoughanswers'] = 'Kysymyksen tyyppi tarvitsee vähintään $a vaihtoehtoa';
+$string['overallcorrectfeedback'] = 'Palaute oikeasta vastauksesta';
+$string['overallfeedback'] = 'Yleinen palaute';
+$string['overallincorrectfeedback'] = 'Palaute väärästä vastauksesta';
+$string['overallpartiallycorrectfeedback'] = 'Palaute osittain oikeasta vastauksesta';
+$string['partiallycorrectfeedback'] = 'Mille tahansa osittain oikealle vastaukselle';
+$string['shuffleanswers'] = 'Sekoita vaihtoehdot';
+$string['singleanswer'] = 'Valitse yksi vaihtoehto';
+?>

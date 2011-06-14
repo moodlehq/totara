@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 // block_facetoface.php - created with Totara langimport script version 1.0
 
 $string['allfuturesessions'] = 'Toutes les prochaines sessions';

@@ -2677,7 +2677,7 @@ function facetoface_print_coursemodule_info($coursemodule)
     $htmlactivitynameonly = '<img src="'.$CFG->pixpath.'/mod/facetoface/icon.gif" class="activityicon" alt="'.$facetoface->name.'" /> '
             .$facetoface->name;
     $strviewallsessions = get_string('viewallsessions', 'facetoface');
-    $htmlviewallsessions = '<a class="f2fsessionlinks" href="'.$facetofacepath.'/view.php?f='.$facetofaceid.'" title="'.$strviewallsessions.'">'
+    $htmlviewallsessions = '<a class="f2fsessionlinks f2fviewallsessions" href="'.$facetofacepath.'/view.php?f='.$facetofaceid.'" title="'.$strviewallsessions.'">'
         .$strviewallsessions.'</a>';
 
     if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
@@ -2710,7 +2710,7 @@ function facetoface_print_coursemodule_info($coursemodule)
             $cancellink = '';
             if (!facetoface_has_session_started($session, $timenow)) {
                 $strcancelbooking = get_string('cancelbooking', 'facetoface');
-                $cancellink = "<tr><td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/cancelsignup.php?s={$session->id}\" title=\"$strcancelbooking\">$strcancelbooking</a></td></tr>";
+                $cancellink = "<tr><td><a class=\"f2fsessionlinks f2fcancelbooking\" href=\"$facetofacepath/cancelsignup.php?s={$session->id}\" title=\"$strcancelbooking\">$strcancelbooking</a></td></tr>";
             }
 
             $strmoreinfo = get_string('moreinfo', 'facetoface');
@@ -2729,23 +2729,23 @@ function facetoface_print_coursemodule_info($coursemodule)
             // don't include the link to view attendees if user is lacking capability
             $attendeeslink = '';
             if ($viewattendees) {
-                $attendeeslink = "<tr><td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/attendees.php?s=$session->id\" title=\"$strseeattendees\">$strseeattendees</a></td></tr>";
+                $attendeeslink = "<tr><td><a class=\"f2fsessionlinks f2fviewattendees\" href=\"$facetofacepath/attendees.php?s=$session->id\" title=\"$strseeattendees\">$strseeattendees</a></td></tr>";
             }
 
             $table = '<table border="0" cellpadding="1" cellspacing="0" width="90%" summary="" style="display:inline-table">'
-                .'<tr>'
+                .'<tr class="f2factivityname">'
                 .'<td class="f2fsessionnotice" colspan="4">'.$htmlactivitynameonly.'</td>'
                 .'</tr>'
                 .'<tr>'
                 .'<td class="f2fsessionnotice" colspan="4">'.get_string('bookingstatus', 'facetoface').':</td>'
                 .'<td><span class="f2fsessionnotice" >'.get_string('options', 'facetoface').':</span></td>'
                 .'</tr>'
-                .'<tr>'
+                .'<tr class="f2fsessioninfo">'
                 .'<td>'.$location.'</td>'
                 .'<td>'.$venue.'</td>'
                 .'<td>'.$sessiondate.'</td>'
                 .'<td>'.$sessiontime.'</td>'
-                ."<td><table border=\"0\" summary=\"\"><tr><td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/signup.php?s=$session->id\" title=\"$strmoreinfo\">$strmoreinfo</a></td>"
+                ."<td><table border=\"0\" summary=\"\"><tr><td><a class=\"f2fsessionlinks f2fsessioninfolink\" href=\"$facetofacepath/signup.php?s=$session->id\" title=\"$strmoreinfo\">$strmoreinfo</a></td>"
                 .'</tr>'
                 .$attendeeslink
                 .$cancellink
@@ -2759,7 +2759,7 @@ function facetoface_print_coursemodule_info($coursemodule)
     elseif ($facetoface->display > 0 && $sessions = facetoface_get_sessions($facetofaceid) ) {
 
         $table = '<table border="0" cellpadding="1" cellspacing="0" width="100%" summary="" style="display:inline-table">'
-            .'   <tr>'
+            .'   <tr class="f2factivityname">'
             .'       <td class="f2fsessionnotice" colspan="2">'.$htmlactivitynameonly.'</td>'
             .'   </tr>'
             .'   <tr>'
@@ -2816,7 +2816,7 @@ function facetoface_print_coursemodule_info($coursemodule)
                 $locationstring = $customfielddata['location']->data . ', ';
             }
 
-            $table .= "      <td><a href=\"$facetofacepath/signup.php?s=$session->id\">{$locationstring}$sessiondate<br />{$sessiontime}$multiday</a></td>";
+            $table .= "      <td><a class=\"f2fsessiontime\" href=\"$facetofacepath/signup.php?s=$session->id\">{$locationstring}$sessiondate<br />{$sessiontime}$multiday</a></td>";
         }
         if ($i++ % 2 == 0) {
             $table .= '<td>&nbsp;</td>';
@@ -2829,7 +2829,7 @@ function facetoface_print_coursemodule_info($coursemodule)
             .'</table>';
     }
     elseif (has_capability('mod/facetoface:viewemptyactivities', $contextmodule)) {
-        return '<span class="f2fsessionnotice" style="line-height:1.5">'.$htmlactivitynameonly.'<br />'.$htmlviewallsessions.'</span>';
+        return '<span class="f2fsessionnotice f2factivityname" style="line-height:1.5">'.$htmlactivitynameonly.'<br />'.$htmlviewallsessions.'</span>';
     }
     else {
         // Nothing to display to this user

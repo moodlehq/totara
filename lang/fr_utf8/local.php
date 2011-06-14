@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 // local.php - created with Totara langimport script version 1.0
 
 $string['addanothercolumn'] = 'Ajouter une colonne supplimentaire...';

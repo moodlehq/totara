@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_plan.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// local_plan.php - created with Totara langimport script version 1.0
 
 $string['achieved'] = 'Alcanzados';
 $string['achievedvaluefrozen'] = 'Usted no puede cambiar esta opción ya que la escala se encuentra en uso';

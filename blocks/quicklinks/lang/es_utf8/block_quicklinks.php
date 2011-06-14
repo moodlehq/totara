@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // block_quicklinks.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// block_quicklinks.php - created with Totara langimport script version 1.0
 
 $string['accessdenied'] = 'Acceso denegado';
 $string['actions'] = 'Acciones';
