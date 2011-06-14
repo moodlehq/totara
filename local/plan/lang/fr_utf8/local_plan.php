@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 // local_plan.php - created with Totara langimport script version 1.0
 
 $string['achieved'] = 'Atteint';

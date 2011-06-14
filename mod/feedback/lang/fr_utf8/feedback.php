@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 // feedback.php - created with Totara langimport script version 1.0
 
 $string['add_item'] = 'Ajouter une question';
@@ -157,6 +157,7 @@ $string['relateditemsdeleted'] = 'Toutes les réponses à la question seront ég
 $string['required'] = 'Obligatoire';
 $string['resetting_data'] = 'Réinitialiser les réponses au formulaire';
 $string['resetting_feedbacks'] = 'Réinitialisation des formulaires';
+$string['response_nr'] = 'Résponse Nr.';
 $string['responses'] = 'Réponses';
 $string['responsetime'] = 'Durée des réponses';
 $string['save_as_new_template'] = 'Enregistrer comme nouveau modèle';

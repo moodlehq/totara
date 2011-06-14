@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 // book.php - created with Totara langimport script version 1.0
 
 $string['addafter'] = 'Agregar un nuevo Cápitulo';

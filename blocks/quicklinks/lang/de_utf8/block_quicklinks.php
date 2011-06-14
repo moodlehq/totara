@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 // block_quicklinks.php - created with Totara langimport script version 1.0
 
 $string['accessdenied'] = 'Zugriff verweigert';

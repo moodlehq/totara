@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 // local_dashboard.php - created with Totara langimport script version 1.0
 
 $string['activedashlets'] = 'Aktive Dashlets';

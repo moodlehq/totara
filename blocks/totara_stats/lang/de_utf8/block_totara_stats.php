@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 // block_totara_stats.php - created with Totara langimport script version 1.0
 
 $string['blockname'] = 'Statistik';
