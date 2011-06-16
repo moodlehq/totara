@@ -94,7 +94,7 @@
     else {
 #### END MOODLE CHANGES
 
-    define("EWIKI_CHARS_L", "a-z_µ¤$\337-\377");
+    define("EWIKI_CHARS_L", "a-z_µ€$\337-\377");
     define("EWIKI_CHARS_U", "A-Z0-9\300-\336");
 
 #### BEGIN MOODLE CHANGES   
