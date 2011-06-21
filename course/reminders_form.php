@@ -31,7 +31,7 @@ class reminder_edit_form extends moodleform {
 
         // Get feedback activities in the course
         $mods = get_coursemodules_in_course('feedback', $course->id);
-        $rchoices = array();
+        $rchoices = array('' => get_string('select').'...');
         if ($mods) {
             foreach ($mods as $mod) {
                 $rchoices[$mod->id] = $mod->name;
@@ -54,7 +54,7 @@ class reminder_edit_form extends moodleform {
 
         $mform->addElement('select', 'requirement', get_string('requirement', 'reminders'), $rchoices);
         $mform->setHelpButton('requirement', array('reminderrequirement', get_string('requirement', 'reminders')), true);
-        $mform->addRule('requirement', get_string('missingfullname'), 'required', null, 'client');
+        $mform->addRule('requirement', get_string('required'), 'required', null, 'client');
         $mform->setType('requirement', PARAM_INT);
 
 //--------------------------------------------------------------------------------
