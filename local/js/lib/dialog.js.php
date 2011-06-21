@@ -1,14 +1,14 @@
-// Temp fix to sniff browser
-/*
+<?php
+/* Temp fix to sniff browser
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -23,6 +23,12 @@
  * @package totara
  * @subpackage plan
  */
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
+$ok_string = get_string('ok');
+$cancel_string = get_string('cancel');
+?>
+
+
 $(function() {
     if ($.browser.mozilla) {
         $('body').addClass('mozilla');
@@ -1295,8 +1301,8 @@ totaraSingleSelectDialog = function(name, title, find_url, value_element, text_e
         'show-'+name+'-dialog',
         {
             buttons: {
-                'Cancel': function() { handler._cancel() },
-                'Ok': function() { handler._save(); }
+                '<?php echo $cancel_string ?>': function() { handler._cancel() },
+                '<?php echo $ok_string ?>': function() { handler._save(); }
             },
             title: '<h2>'+title+'</h2>'
         },
@@ -1324,8 +1330,8 @@ totaraMultiSelectDialog = function(name, title, find_url, save_url) {
         'show-'+name+'-dialog',
         {
             buttons: {
-                'Cancel': function() { handler._cancel() },
-                'Ok': function() { handler._save(save_url) }
+                '<?php echo $cancel_string ?>': function() { handler._cancel() },
+                '<?php echo $ok_string ?>': function() { handler._save(save_url) }
             },
             title: '<h2>'+title+'</h2>'
         },

@@ -27,7 +27,9 @@
 
 require_once '../../../../config.php';
 require_login();
-
+$ok_string = get_string('ok');
+$cancel_string = get_string('cancel');
+$cont_string = get_string('continue');
 ?>
 
 // Bind functionality to page on load
@@ -52,18 +54,18 @@ $(function() {
         handler.continueskipurl = continueskipurl;
 
         handler.standard_buttons = {
-            'Cancel': function() { handler._cancel() },
-            'Ok': function() { handler._save(saveurl) }
+            '<?php echo $cancel_string ?>': function() { handler._cancel() },
+            '<?php echo $ok_string ?>': function() { handler._save(saveurl) }
         };
 
         handler.continue_buttons = {
-            'Cancel': function() { handler._cancel() },
-            'Continue': function() { handler._continue(continueurl) }
+            '<?php echo $cancel_string ?>': function() { handler._cancel() },
+            '<?php echo $cont_string ?>': function() { handler._continue(continueurl) }
         };
 
         handler.continuesave_buttons = {
-            'Cancel': function() { handler._cancel() },
-            'Ok': function() { handler._continueSave(continuesaveurl) }
+            '<?php echo $cancel_string ?>': function() { handler._cancel() },
+            '<?php echo $ok_string ?>': function() { handler._continueSave(continuesaveurl) }
         };
 
         totaraDialogs['evidence'] = new totaraDialog(

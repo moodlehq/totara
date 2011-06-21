@@ -154,6 +154,10 @@ function totara_msg_dismiss_action($id) {
     global $CFG, $FULLME;
 
     $str = get_string('dismiss', 'block_totara_alerts');
+    // Button Lang Strings
+    $cancel_string = get_string('cancel');
+    $dismiss_string = get_string('dismiss', 'local_totara_msg');
+
     return
     '<script type="text/javascript"> '.
     "// bind functionality to page on load
@@ -169,8 +173,8 @@ function totara_msg_dismiss_action($id) {
                 name+'-dialog',
                 {
                     buttons: {
-                        'Cancel': function() { handler._cancel() },
-                        'Dismiss': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }
+                        '{$cancel_string}': function() { handler._cancel() },
+                        '{$dismiss_string}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }
                     },
                     title: '<h2>{$str}</h2>',
                     width: 600,
@@ -208,6 +212,10 @@ function totara_msg_alert_popup($id, $extrabuttons=array()) {
     global $CFG, $FULLME;
 
     $str = get_string('reviewitems', 'block_totara_alerts');
+    // Button Lang Strings
+    $cancel_string = get_string('cancel');
+    $dismiss_string = get_string('dismiss', 'local_totara_msg');
+
     $return =
     '<script type="text/javascript"> '.
     "// bind functionality to page on load
@@ -223,8 +231,8 @@ function totara_msg_alert_popup($id, $extrabuttons=array()) {
                 name+'-dialog',
                 {
                     buttons: {
-                        'Cancel': function() { handler._cancel() },
-                        'Dismiss': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }";
+                        '{$cancel_string}': function() { handler._cancel() },
+                        '{$dismiss_string}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }";
                         foreach ($extrabuttons as $btn) {
                             $return .= ",
                         '{$btn->text}': function() { handler._confirm('{$btn->action}', '{$btn->redirect}') }";
@@ -293,6 +301,9 @@ function totara_msg_action_button($action) {
     global $CFG, $FULLME;
 
     $str = get_string($action, 'local_totara_msg');
+    // Button Lang Strings
+    $cancel_string = get_string('cancel');
+
     return
     '<script type="text/javascript">
         '.
@@ -309,7 +320,7 @@ function totara_msg_action_button($action) {
                 'totara-{$action}',
                 {
                     buttons: {
-                        'Cancel': function() { handler._cancel() },
+                        '{$cancel_string}': function() { handler._cancel() },
                         '{$str}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/action.php?{$action}={$action}', '{$FULLME}') }
                     },
                     title: '<h2>{$str}</h2>',
@@ -352,6 +363,9 @@ function totara_msg_action_button($action) {
 function totara_msg_accept_reject_action($id) {
     global $CFG, $FULLME;
 
+    // Button Lang Strings
+    $cancel_string = get_string('cancel');
+
     $msg = get_record('message20', 'id', $id);
     $msgmeta = get_record('message_metadata', 'messageid', $id);
     $msgacceptdata = totara_msg_eventdata($id, 'onaccept');
@@ -390,8 +404,8 @@ function totara_msg_accept_reject_action($id) {
                 name_accept+'-dialog',
                 {
                     buttons: {
-                        'Cancel': function() { handler_accept._cancel() },
-                        '".$onaccept_str."': function() { handler_accept._confirm('{$CFG->wwwroot}/local/totara_msg/accept.php?id={$id}', '{$returnto}') }
+                        '{$cancel_string}': function() { handler_accept._cancel() },
+                        '{$onaccept_str}': function() { handler_accept._confirm('{$CFG->wwwroot}/local/totara_msg/accept.php?id={$id}', '{$returnto}') }
                     },
                     title: '<h2>{$subject}</h2>',
                     width: 600,
@@ -405,8 +419,8 @@ function totara_msg_accept_reject_action($id) {
                 name_reject+'-dialog',
                 {
                     buttons: {
-                        'Cancel': function() { handler_reject._cancel() },
-                        'Reject': function() { handler_reject._confirm('{$CFG->wwwroot}/local/totara_msg/reject.php?id={$id}', '{$FULLME}') }
+                        '{$cancel_string}': function() { handler_reject._cancel() },
+                        '{$onaccept_str}': function() { handler_reject._confirm('{$CFG->wwwroot}/local/totara_msg/reject.php?id={$id}', '{$FULLME}') }
                     },
                     title: '<h2>{$onreject_str}</h2>',
                     width: 600,

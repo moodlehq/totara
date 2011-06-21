@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -51,7 +51,7 @@ function local_js($options = array()) {
 
         require_js(array(
             $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
-            $CFG->wwwroot.'/local/js/lib/dialog.js',
+            $CFG->wwwroot.'/local/js/lib/dialog.js.php',
             // fix for IE6 select z-index problem
             // TODO only include for IE6 - conditional comments?
             $CFG->wwwroot.'/local/js/lib/jquery.bgiframe.min.js',
