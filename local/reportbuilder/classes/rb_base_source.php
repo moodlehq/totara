@@ -585,6 +585,15 @@ abstract class rb_base_source {
         }
     }
 
+    // convert a 2 digit country code into the country name
+    function rb_display_country_code($code, $row) {
+        $countries = get_list_of_countries();
+
+        if (isset($countries[$code])) {
+            return $countries[$code];
+        }
+        return $code;
+    }
 
     //
     //
@@ -870,8 +879,13 @@ abstract class rb_base_source {
             'username' => get_string('username', 'local_reportbuilder'),
             'idnumber' => get_string('useridnumber', 'local_reportbuilder'),
             'id' => get_string('userid', 'local_reportbuilder'),
+            'phone1' => get_string('userphone', 'local_reportbuilder'),
+            'institution' => get_string('userinstitution', 'local_reportbuilder'),
+            'department' => get_string('userdepartment', 'local_reportbuilder'),
+            'address' => get_string('useraddress', 'local_reportbuilder'),
+            'city' => get_string('usercity', 'local_reportbuilder'),
         );
-        foreach($fields as $field => $name) {
+        foreach ($fields as $field => $name) {
             $columnoptions[] = new rb_column_option(
                 'user',
                 $field,
@@ -880,6 +894,19 @@ abstract class rb_base_source {
                 array('joins' => $join)
             );
         }
+
+        // add country option
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'country',
+            get_string('usercountry', 'local_reportbuilder'),
+            "$join.country",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'country_code'
+            )
+        );
+
         return true;
     }
 
@@ -900,8 +927,13 @@ abstract class rb_base_source {
             'lastname' => get_string('lastname'),
             'username' => get_string('username'),
             'idnumber' => get_string('useridnumber', 'local_reportbuilder'),
+            'phone1' => get_string('userphone', 'local_reportbuilder'),
+            'institution' => get_string('userinstitution', 'local_reportbuilder'),
+            'department' => get_string('userdepartment', 'local_reportbuilder'),
+            'address' => get_string('useraddress', 'local_reportbuilder'),
+            'city' => get_string('usercity', 'local_reportbuilder'),
         );
-        foreach($fields as $field => $name) {
+        foreach ($fields as $field => $name) {
             $filteroptions[] = new rb_filter_option(
                 'user',
                 $field,
@@ -909,6 +941,20 @@ abstract class rb_base_source {
                 'text'
             );
         }
+
+        // pulldown with list of countries
+        $select_width_options = rb_filter_option::select_width_limiter();
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'country',
+            get_string('usercountry', 'local_reportbuilder'),
+            'simpleselect',
+            array(
+                'selectchoices' => get_list_of_countries(),
+                'selectoptions' => array_merge($select_width_options, array('datatype' => 'text')),
+            )
+        );
+
         return true;
     }
 
