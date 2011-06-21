@@ -242,31 +242,23 @@ div#header {
 
 .navbar {
     font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
-    background: url("images/breadcrumb_bg_blue.jpg") no-repeat scroll right bottom #5ED6F1;
+    background: url("images/breadcrumb_bg_blue.jpg") no-repeat scroll right bottom #45C1E5;
 }
 
 .navbar .breadcrumb {
-  width:100%;
+  width:96%;
+  padding-left:20px;
 }
 
 .navbar .breadcrumb span.first {
   float:left;
   color:#08A3D5;
   font-weight:normal;
-  padding-right:12px;
-  margin-right: 3px;
-  background: url('images/sep.gif') no-repeat right 4px;
-}
-
-.navbar .breadcrumb ul {
-    float: left;
 }
 
 span.youarehere {
-  display: list-item;
   float: left;
-  list-style-type: disc;
-  margin: 0px 20px;
+  margin-right:20px;
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   color: white;
   font-weight: normal;
@@ -277,20 +269,14 @@ span.youarehere {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   font-weight:normal;
   color: #FFFFFF;
-  float:left;
 }
 
 .navbar .breadcrumb ul li a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .navbar .breadcrumb .sep {
-  text-indent: -1000px;
-  width: 15px;
-  overflow:hidden;
-  display:block;
-  float:left;
-  background: url('images/sep_blue.gif') no-repeat center bottom;
+  color:#ffffff;
 }
 
 .navbar .navbutton, .navbar .menu {
@@ -298,7 +284,7 @@ span.youarehere {
 }
 
 .navbar .navbutton .popupform {
-	padding-top: 0px !important;
+  padding-top: 0px !important;
 }
 
 .login-container {

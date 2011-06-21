@@ -25,6 +25,9 @@ div#totara_menu ul {
 .header-search{
     margin-right:0px;
 }
+.navbar .breadcrumb{
+    padding-left:0px;
+}
 
 /**
  * Element default fixes
