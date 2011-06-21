@@ -163,6 +163,16 @@ function book_scale_used ($bookid,$scaleid) {
     return $return;
 }
 
+/**
+ * Checks if scale is being used by any instance of book
+ *
+ * This is used to find out if scale used anywhere
+ * @param $scaleid int
+ * @return boolean True if the scale is used by any journal
+ */
+function book_scale_used_anywhere($scaleid) {
+    return false;
+}
 //////////////////////////////////////////////////////////////////////////////////////
 /// Any other book functions go here.  Each of them must have a name that
 /// starts with book_
