@@ -56,7 +56,7 @@
         if($add=='resource' || $add=='glossary' || $add=='label') {
             $form->groupingid=0;
         }
-        
+
         if (!empty($type)) {
             $form->type = $type;
         }
@@ -283,11 +283,6 @@
                 error($returnfromfunc, "view.php?id=$course->id");
             }
 
-            set_coursemodule_visible($fromform->coursemodule, $fromform->visible);
-            set_coursemodule_groupmode($fromform->coursemodule, $fromform->groupmode);
-            set_coursemodule_groupingid($fromform->coursemodule, $fromform->groupingid);
-            set_coursemodule_groupmembersonly($fromform->coursemodule, $fromform->groupmembersonly);
-
             // Handle completion settings. If necessary, wipe existing completion
             // data first.
             if(!empty($fromform->completionunlocked)) {
@@ -301,21 +296,30 @@
                 $cm->completionexpected = $fromform->completionexpected;
                 if ($fromform->completionexpected == null) {
                     $cm->completionexpected = 0;
-		} else {
+                } else {
                     $cm->completionexpected = $fromform->completionexpected;
                 }
                 $cm->completiongradeitemnumber = $fromform->completiongradeitemnumber;
             }
 
-            if (isset($fromform->cmidnumber)) { //label
-                // set cm idnumber
-                set_coursemodule_idnumber($fromform->coursemodule, $fromform->cmidnumber);
-            }
             if(!empty($CFG->enableavailability)) {
                 $cm->availablefrom             = $fromform->availablefrom;
                 $cm->availableuntil            = $fromform->availableuntil;
                 $cm->showavailability          = $fromform->showavailability;
                 condition_info::update_cm_from_form($cm,$fromform,true);
+            }
+
+            //Valid update of General activity settings
+            $cm->visible = $fromform->visible;
+            $cm->groupmode = $fromform->groupmode;
+            $cm->groupingid = $fromform->groupingid;
+            $cm->groupmembersonly = $fromform->groupmembersonly;
+            if (isset($fromform->cmidnumber)) {
+                $cm->idnumber = $fromform->cmidnumber;
+            } else {
+                if (isset($cm->idnumber)) {
+                    unset($cm->idnumber);
+                }
             }
 
             if (!update_record('course_modules', $cm)) {
@@ -487,7 +491,7 @@
         rebuild_course_cache($course->id);
         grade_regrade_final_grades($course->id);
 
-        if (isset($fromform->submitbutton)) { 
+        if (isset($fromform->submitbutton)) {
             redirect("$CFG->wwwroot/mod/$module->name/view.php?id=$fromform->coursemodule");
         } else {
             redirect("$CFG->wwwroot/course/view.php?id=$course->id");
