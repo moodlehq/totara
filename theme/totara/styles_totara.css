@@ -2560,6 +2560,12 @@ table.allmyteam td a {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   color: #34b9e4;
 }
+.learning-plan-pending-approval-table .lastcol{
+    width:250px;
+}
+#local-plan-approve .tabtree .tabrow0{
+    padding-bottom:10px;
+}
 
 
 /*****************************************************************************/
