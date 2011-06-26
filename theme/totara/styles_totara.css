@@ -1544,7 +1544,7 @@ div.block_calendar_month div.header .title input   {
 }
 
 div.block_totara_my_team_nav .content td img {
- display:none;
+ display:block;
 }
 
 div.block_totara_my_team_nav .content a {
