@@ -376,7 +376,7 @@ class rb_source_dp_objective extends rb_base_source {
         $contentoptions = array();
 
         // Include the rb_user_content content options for this report
-        $contentoptions[] = new rb_content_option('user', 'Users', 'dp.userid', 'dp');
+        $contentoptions[] = new rb_content_option('user', get_string('users'), 'dp.userid', 'dp');
         return $contentoptions;
     }
 

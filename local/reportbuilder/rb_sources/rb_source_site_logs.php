@@ -189,7 +189,7 @@ class rb_source_site_logs extends rb_base_source {
             new rb_content_option(
                 'date',
                 get_string('date', 'rb_source_site_logs'),
-                'base.timemodified'
+                'base.time'
             ),
         );
         return $contentoptions;
