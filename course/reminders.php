@@ -107,7 +107,7 @@ if ($reminderform->is_cancelled()){
     $reminder->timemodified = time();
     $reminder->modifierid = $USER->id;
     $reminder->deleted = '0';
-    $reminder->title = stripslashes($data->title);
+    $reminder->title = $data->title;
     $reminder->type = 'completion';
     $reminder->config = serialize($config);
     $reminder->timecreated = $reminder->timecreated ? $reminder->timecreated : $reminder->timemodified;
