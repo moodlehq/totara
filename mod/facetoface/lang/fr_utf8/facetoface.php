@@ -82,7 +82,7 @@ $string['description'] = 'Texte d\'introduction';
 $string['details'] = 'Détails';
 $string['discountcode'] = 'Code de réduction';
 $string['discountcost'] = 'Coût réduit';
-$string['due'] = 'du';
+$string['due'] = 'limite';
 $string['duration'] = 'Durée';
 $string['early'] = '$a tôt';
 $string['edit'] = 'Modifier';
@@ -378,6 +378,19 @@ Veuillez suivre le lien suivant afin d\'approuver la demande:
 
 
 *** La demande de réservation de l\'utilisateur [firstname] [lastname] se trouve en copie ci-dessous ****';
+$string['setting:defaultrequestmessagedefault'] = 'Votre demande de réservation du cours suivant a été envoyé à votre manager :
+
+Participant: [firstname] [lastname]
+Cours: [facetofacename]
+Coût: [cost]
+
+Durée: [duration]
+Date(s):
+[alldates]
+
+Situation: [session:location]
+Lieu: [session:venue]
+Salle: [session:room]';
 $string['setting:defaultrequestsubjectdefault'] = 'Demande de réservation de cours : [facetofacename], [starttime]-[finishtime]';
 $string['setting:defaultvalue'] = 'Valeur par défaut';
 $string['setting:defaultwaitlistedmessage'] = 'Message par défaut pour les utilisateurs en liste d\'attente.';
@@ -417,6 +430,10 @@ $string['setting:showinsummary'] = 'Afficher dans les listes et les exportation'
 $string['setting:type'] = 'Genre de champ';
 $string['showbylocation'] = 'Afficher par lieu';
 $string['showoncalendar'] = 'Afficher au calendrier';
+$string['sign-ups'] = 'Inscriptions';
+$string['signup'] = 'Inscription';
+$string['signupfor'] = 'Inscription pour $a';
+$string['signupforsession'] = 'Inscription pour une session à venir';
 $string['signupforthissession'] = 'M\'inscrire à cette session face à face';
 $string['signups'] = 'Inscriptions';
 $string['sitenoticesheading'] = 'Notifications globales';
@@ -431,21 +448,31 @@ $string['status_requested'] = 'Requis';
 $string['status_session_cancelled'] = 'Session annulée';
 $string['status_user_cancelled'] = 'Annulation par l\'utilisateur';
 $string['status_waitlisted'] = 'Mis sur la liste d\'attente';
+$string['subject'] = 'Modification d\'une reservation dans le cours $a->coursename ($a->duedate)';
 $string['submissions'] = 'Soumissions';
 $string['submit'] = 'Soumettre';
 $string['submitted'] = 'Soumis';
 $string['summary'] = 'Résumé';
 $string['suppressemail'] = 'Arrêter les notifications par mél';
 $string['takeattendance'] = 'Noter la participation';
+$string['thirdpartyemailaddress'] = 'Adresse(s) e-mail de tiers';
+$string['thirdpartywaitlist'] = 'Avertisser les tiers de sessions en liste d\'attente';
 $string['time'] = 'Heure';
 $string['timecancelled'] = 'Heure annulé';
+$string['timedue'] = 'Limite pour les inscriptions';
 $string['timefinish'] = 'Heure de la fin';
 $string['timerequested'] = 'Heure demandée';
 $string['timesignedup'] = 'Heure d\'inscription';
 $string['timestart'] = 'Heure de début';
 $string['unapprovedrequests'] = 'Demandes non approuvées';
+$string['unknowndate'] = '(date inconnue)';
+$string['unknowntime'] = '(heure inconnue)';
 $string['upcomingsessions'] = 'Sessions à venir';
 $string['upcomingsessionslist'] = 'Afficher toutes les sessions futures de cette activité face à face';
+$string['usercancelledon'] = 'L\'utilisateur a annulé le $a';
+$string['usernotsignedup'] = 'Statut : non inscrit';
+$string['usersignedup'] = 'Statut : inscrit';
+$string['usersignedupon'] = 'L\'utilisateur s\'est inscrit le $a';
 $string['userwillbewaitlisted'] = 'Cette session est complète. Veuillez cliquer le bouton \"M\'inscrire\" afin d\'être mis sur la liste d\'attente.';
 $string['validation:needatleastonedate'] = 'Il faut donner une date ou activer la liste d\'attente.';
 $string['venue'] = 'Lieu';
@@ -456,6 +483,7 @@ $string['wait-listed'] = 'Sur liste d\'attente';
 $string['waitlistedmessage'] = 'Message liste d\'attente';
 $string['xhours'] = '$a heures';
 $string['xminutes'] = '$a minutes';
+$string['youarebooked'] = 'Vous êtes inscrit à la session suivante';
 $string['youremailaddress'] = 'Votre adresse e-mail';
 
 ?>

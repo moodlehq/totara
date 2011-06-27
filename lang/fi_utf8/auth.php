@@ -2,49 +2,85 @@
       // auth.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
+$string['CASform'] = 'Käyttäjäntunnistuksen vaihtoehdot';
 $string['accesCAS'] = 'CAS-käyttäjät';
 $string['accesNOCAS'] = 'muut käyttäjät';
+$string['actauthhdr'] = 'Aktiiviset käyttäjäntunnistuksen lisäosat';
 $string['alternatelogin'] = 'Jos kirjoitat tähän URL:n, sitä käytetään kirjautumissivuna tälle sivustolle. Sivun pitäisi sisältää lomake, jonak ominaisuudet on asetettu <strong>\'$a\'</strong> ja joko antaa paluukentät <strong>käyttäjänimi</strong> and <strong>salasana</strong>.<br />
 
 Ole varovainen, ettet syötä virheellistä URL:ää, koska siten voit lukita itsesi ulos sivustoltasi.<br />
 
 Jätä tämä kohta tyhjäksi käyttääksesi oletuskirjautumissivua.';
 $string['alternateloginurl'] = 'Vaihtoehtoinen kirjautumis-URL';
+$string['auth_cas_auth_user_create'] = 'Luo käyttäjät ulkopuolelta';
 $string['auth_cas_baseuri'] = 'Palvelimen URI (tyhjä, jos ei baseURIa)<br /> Esimerkiksi, jos CAS-palvelin on ´host.domaine.fr/CAS/´, niin tällöin<br />
 cas_baseuri = CAS/';
+$string['auth_cas_baseuri_key'] = 'baseURI';
+$string['auth_cas_broken_password'] = 'Et voi jatkaa vaihtamatta salasanaasi. Sivua, jolla voisit sen vaihtaa ei ole. Ota yhteyttä sivuston hallinnoijaan.';
+$string['auth_cas_cantconnect'] = 'CAS-moduulin LDAP-osa ei saa yhteyttä serveriin: $a';
 $string['auth_cas_casversion'] = 'Versio';
-$string['auth_cas_create_user'] = 'Laita tämä asetus päälle, jos haluat lisätä CAsvarmistetut käyttäjät Moodlen tietokantaan. Jos näin ei tehdä, vain jo ennestään Moodlen tietokannassa olevat käyttäjät voivat kirjautua sisään.';
+$string['auth_cas_certificate_check'] = 'Valitse \"kyllä\", mikäli haluat validoida serverisertifikaatin';
+$string['auth_cas_certificate_check_key'] = 'Serverin validointi';
+$string['auth_cas_certificate_path'] = 'CA-ketjutiedoston (PEM-muotoinen) sijainti serverisertifikaatin validointia varten';
+$string['auth_cas_certificate_path_empty'] = 'Jos oata käyttöön serverin validoinnin, sinun pitää määritellä serifikaatin sijainti';
+$string['auth_cas_certificate_path_key'] = 'Sertifikaatin sijainti';
+$string['auth_cas_changepasswordurl'] = 'URL salasanan vaihtoon';
+$string['auth_cas_create_user'] = 'Laita tämä asetus päälle, jos haluat lisätä CAS-varmistetut käyttäjät Moodlen tietokantaan. Jos näin ei tehdä, vain jo ennestään Moodlen tietokannassa olevat käyttäjät voivat kirjautua sisään.';
 $string['auth_cas_create_user_key'] = 'Luo käyttäjä';
 $string['auth_cas_enabled'] = 'Laita tämä asetus päälle, jos haluat käyttää CAS-varmennusta';
 $string['auth_cas_hostname'] = 'CAS-palvelimen palvelinnimi 
 <br />Esim. host.domain.fr';
+$string['auth_cas_hostname_key'] = 'Host-nimi';
 $string['auth_cas_invalidcaslogin'] = 'Kirjautumisesi ei onnistunut - sinua ei voitu varmentaa';
 $string['auth_cas_language'] = 'Valitse kieli';
 $string['auth_cas_language_key'] = 'Kieli';
 $string['auth_cas_logincas'] = 'Suojatun yhteyden muodostus';
+$string['auth_cas_logoutcas'] = 'Valitse tähän \"kyllä\" mikäli haluat CAS:in kirjautuvan ulos kun katkaiset yhteyden Moodleen';
+$string['auth_cas_logoutcas_key'] = 'Kirjaa CAS ulos';
+$string['auth_cas_multiauth'] = 'Valitse tähän \"kyllä\" mikäli haluat moninkertaisen käyttäjäntunnistuksen (CAS ja joku muu tunnistustapa)';
+$string['auth_cas_multiauth_key'] = 'Moninkertainen käyttäjäntunnistus';
 $string['auth_cas_port'] = 'CAS-palvelimen käyttämä portti';
+$string['auth_cas_port_key'] = 'Portti';
+$string['auth_cas_proxycas'] = 'Valitse tähän \"kyllä\" mikäli käytät CAS:in proxy-tilaa';
+$string['auth_cas_proxycas_key'] = 'Proxy-tila';
 $string['auth_cas_server_settings'] = 'CAS-palvelimen asetukset';
 $string['auth_cas_text'] = 'Suojattu yhteys';
+$string['auth_cas_use_cas'] = 'Käytä CAS:ia';
 $string['auth_cas_version'] = 'CAS:in versio';
 $string['auth_casdescription'] = 'Tässä menetelmässä käytetään CAS-palvelinta (Central Authentication Service) käyttäjien varmennukseen käyttämällä yhden kirjautumisen ympäristöä, Single Sign On environment (SSO). Voit myös käyttää yksinkertaista LDAP-varmistusta. Jos annettu käyttäjänimi ja salasana ovat kelvollisia CAS:n mukaan Moodle luo uuden käyttäjätiedon tietokantaan ottaen käyttäjätiedot LDAP:stä, jos se  on tarpeen. Seuraavilla kirjautumiskerroilla vain käyttäjänimi ja salasana tarkistetaan.';
+$string['auth_casnotinstalled'] = 'CAS-käyttäjäntunnistusta ei voida käyttää. PHP LDAP-moduulia ei ole asennettu.';
 $string['auth_castitle'] = 'Käytä CAS-palvelinta (SSO)';
 $string['auth_changepasswordhelp'] = 'Salasanan vaihto-ohjeet';
 $string['auth_changepasswordurl'] = 'Salasanan vaihto URL-osoite';
+$string['auth_changepasswordurl_expl'] = 'Syötä url, joka lähetetään käyttäjille, jotka ovat hävittäneet \$a-salasanansa. Aseta <strong>Käytä oletussivua salasanan vaihdolle </strong>-valintaan <strong>Ei</strong>.';
 $string['auth_changingemailaddress'] = 'Olet vaihtamassa sähköpostiosoitettasi osoitteesta $a->oldemail osoitteeseen $a->newemail. Turvallisuuden takia uuteen osoitteeseen lähetetään varmistusviesti, jotta voit osoittaa sen kuuluvan sinulle. Osoitteesi päivitetään heti, kun käyt viestin ilmoittamassa URL-osoitteessa.';
 $string['auth_common_settings'] = 'Yleiset asetukset';
 $string['auth_data_mapping'] = 'Tietojen yhdistäminen';
+$string['auth_dbcantconnect'] = 'Ei saatu yhteyttä pyydettyyn käyttäjäntunnistustietokantaan...';
+$string['auth_dbchangepasswordurl_key'] = 'URL salasanan vaihdolle';
+$string['auth_dbdebugauthdb'] = 'Debug ADOdb';
+$string['auth_dbdeleteuser'] = 'Käyttäjä $a[0], id $a[1] poistettiin';
+$string['auth_dbdeleteusererror'] = 'Käyttäjää $a poistettaessa tapahtui virhe';
 $string['auth_dbdescription'] = 'Tämä moduuli tarkistaa ulkoisen tietokannan taulusta käyttäjätunnuksen ja salasanan. Jos käyttäjätunnus on uusi, myös muita tietoja voidaan kopioida Moodleen.';
+$string['auth_dbextencoding'] = 'Ulkoisen tietokannan koodaus';
+$string['auth_dbextencodinghelp'] = 'Ulkoisessa tietokannassa käytetty koodaustapa';
 $string['auth_dbextrafields'] = 'Nämä kentät ovat valinnaisia. Voit asettaa Moodlen hakemaan valmiiksi joitakin käyttäjätietoja <b>ulkoisesta tietokannasta</b>.<p>Jos jätät nämä kentät tyhjiksi, käytetään oletusasetusarvoja.</p> <p>Käyttäjä voi joka tapauksessa muuttaa omia henkilötietojaan myöhemmin.</p>';
 $string['auth_dbfieldpass'] = 'Salasanakentän nimi';
 $string['auth_dbfieldpass_key'] = 'Salasanakenttä';
 $string['auth_dbfielduser'] = 'Käyttäjätunnuskentän nimi';
 $string['auth_dbfielduser_key'] = 'Käyttäjätunnuskenttä';
 $string['auth_dbhost'] = 'Tietokantapalvelin';
+$string['auth_dbhost_key'] = 'Host';
+$string['auth_dbinsertuser'] = 'Käyttäjä $a[0], id $a[1] lisättiin';
+$string['auth_dbinsertusererror'] = 'Käyttäjää $a lisätessä tapahtui virhe';
 $string['auth_dbname'] = 'Tietokannan nimi';
+$string['auth_dbname_key'] = 'Tietokannan nimi';
 $string['auth_dbpass'] = 'Salasana käyttäjätunnukselle';
 $string['auth_dbpass_key'] = 'Salasana';
 $string['auth_dbpasstype'] = 'Määritä salasanakentän käyttämä muoto. MD5-salaus on hyödyllinen, jos haluat käyttää muita web-sovelluksia kuten PostNukea.';
 $string['auth_dbpasstype_key'] = 'Salasanamuoto';
+$string['auth_dbreviveduser'] = 'Käyttäjä $a[0], id $a[1] elvytettiin';
+$string['auth_dbrevivedusererror'] = 'Käyttäjää $a elvytettäessä tapahtui virhe';
 $string['auth_dbtable'] = 'Tietokannan taulun nimi';
 $string['auth_dbtitle'] = 'Käytä ulkoista tietokantaa';
 $string['auth_dbtype'] = 'Tietokannan tyyppi (Katso <a href=\"../lib/adodb/readme.htm#drivers\">ADOdb dokumentoinnista</a> yksityiskohdat)';

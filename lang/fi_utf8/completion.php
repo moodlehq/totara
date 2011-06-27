@@ -1,0 +1,76 @@
+<?PHP // $Id$ 
+      // completion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+
+
+$string['activities'] = 'Aktiviteetit';
+$string['activitiescompleted'] = 'Aktiviteetit on suoritettu';
+$string['activitycompletion'] = 'Aktiviteettien suorittaminen';
+$string['activitycompletionreport'] = 'Aktiviteettien suorittamisen seurantaraportti';
+$string['addcoursedependency'] = 'Lisää kurssiriippuvaisuus';
+$string['afterspecifieddate'] = 'Määritellyn päivän jälkeen';
+$string['aggregateall'] = 'Kaikki';
+$string['aggregateany'] = 'Mikä tahansa';
+$string['aggregationmethod'] = 'Kokoamismenetelmä';
+$string['approval'] = 'Hyväksyntä';
+$string['badautocompletion'] = 'Kun valitset automaattisen suorittamisen, vähintään yksi vaatimus on oltava voimassa (alla).';
+$string['complete'] = 'Valmis';
+$string['completed'] = 'Suoritettu';
+$string['completedunlocked'] = 'Suoritusasetukset ovat muokattavissa';
+$string['completedunlockedtext'] = 'Kun tallennat muutokset, kaikkien käyttäjien suoritusten tila pyyhkiytyy. Jos et halua näin tapahtuvan, älä tallenna tätä lomaketta.';
+$string['completedwarning'] = 'Suoritusasetukset lukittu';
+$string['completedwarningtext'] = 'Yksi tai useampi käyttäjä ($a) on jo merkinnyt suorittaneensa tämän aktiviteetin. Suoritusasetusten muuttaminen pyyhkii käyttäjien suoritustiedot ja saattaa aiheuttaa epäselvyyksiä. Asetukset ovat lukittuna eikä niiden avaamista suositella ellei se ole välttämätöntä.';
+$string['completion'] = 'Suorituksen tilan seuraaminen';
+$string['completion-alt-auto-enabled'] = 'Järjestelmä merkitsee tämän osion suoritetuksi ehtojen perusteella';
+$string['completion-alt-auto-n'] = 'Keskeneräinen';
+$string['completion-alt-auto-y'] = 'Suoritettu';
+$string['completion-alt-manual-enabled'] = 'Käyttäjät voivat itse merkitä tämän osion suoritetuksi';
+$string['completion-alt-manual-n'] = 'Keskeneräinen; valitse tämä merkitäksesi osion suoritetuksi';
+$string['completion-alt-manual-y'] = 'Suoritettu; valitse tämä merkitäksesi osion keskeneräiseksi';
+$string['completion-title-manual-n'] = 'Merkitse suoritetuksi';
+$string['completion-title-manual-y'] = 'Merkitse keskeneräiseksi';
+$string['completion_automatic'] = 'Näytä akiviteetti suoritettuna kun ehdot täyttyvät';
+$string['completion_manual'] = 'Käyttäjät voivat itse merkitä tämän osion suoritetuksi';
+$string['completion_none'] = 'Älä viittaa aktiviteetin suoritusasteeseen';
+$string['completiondisabled'] = 'Pois käytöstä, ei näy aktiviteettiasetuksissa';
+$string['completionenabled'] = 'Käytössä, hallinnoi suoritus- ja aktiviteettiasetusten kautta';
+$string['completionusegrade'] = 'Vaadi arvosana';
+$string['coursealreadycompleted'] = 'Olet suorittanut jo tämän kurssin';
+$string['coursecomplete'] = 'Kurssi on valmis';
+$string['coursecompleted'] = 'Kurssi suoritettu';
+$string['coursegrade'] = 'Kurssiarvosana';
+$string['courseprogress'] = 'Kurssin tila';
+$string['courseprogresshelp'] = 'Tämä määrittää sen, näkyykö kurssin tila aloitussivulla';
+$string['coursesavailable'] = 'Kurssit';
+$string['criteria'] = 'Kriteerit';
+$string['csvdownload'] = 'Lataa taulukkona (UTF-8 .csv)';
+$string['deletedcourse'] = 'Poistettu kurssi';
+$string['editcoursecompletionsettings'] = 'Muokkaa kurssin suorittamisasetuksia';
+$string['markcomplete'] = 'Merkitse suoritetuksi';
+$string['markedcompleteby'] = 'Käyttäjä $a on merkinnyt tämän suoritetuksi';
+$string['markingyourselfcomplete'] = 'Omatoiminen suoritetuksi merkitseminen';
+$string['moredetails'] = 'Lisätietoja';
+$string['notcompleted'] = 'Keskeneräinen';
+$string['notenroled'] = 'Et ole ilmoittautuneena opiskelijaksi tällä kurssilla';
+$string['notyetstarted'] = 'Ei aloitettu';
+$string['pending'] = 'Keskeneräinen';
+$string['progress'] = 'Opiskelijan eteneminen';
+$string['progress-title'] = '$a->user, $a->activity: $a->state $a->date';
+$string['recognitionofpriorlearning'] = 'Aiemman oppimisen hyväksilukeminen';
+$string['saved'] = 'Tallennettu';
+$string['seedetails'] = 'Tarkastele tarkemmin';
+$string['self'] = 'Itse';
+$string['showinguser'] = 'Näytetään käyttäjä';
+$string['unenrolingfromcourse'] = 'Eroaminen kurssilta';
+$string['unenrolment'] = 'Eroaminen';
+$string['unit'] = 'Yksikkö';
+$string['unlockcompletion'] = 'Avaa suoritusasetukset';
+$string['unlockcompletiondelete'] = 'Avaa suoritusasetukset ja poista käyttäjien suoritusten tila';
+$string['usealternateselector'] = 'Käytä vaihtoehtoista kurssinvalintaa';
+$string['usernotenroled'] = 'Käyttäjä ei ole opiskelijana tällä kurssilla';
+$string['viewcoursereport'] = 'Tarkastele kurssiraporttia';
+$string['viewingactivity'] = 'Tarkastellaan kohdetta $a';
+$string['writingcompletiondata'] = 'Kirjataan suorittamistietoja';
+$string['xdays'] = '$a päivää';
+$string['yourprogress'] = 'Sinun tilasi';
+
+?>
