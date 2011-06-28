@@ -317,10 +317,10 @@ function totara_print_my_team_nav($return=false) {
          <table>
              <tr>
                  <td align="left">
-                     <a href="'.$CFG->wwwroot.'/my/team.php"><img src="'.$CFG->wwwroot.'/pix/i/teammembers.png" width="32" height="32" alt="'.get_string('viewmyteam','local').'" /></a>
+                     <a href="'.$CFG->wwwroot.'/my/teammembers.php"><img src="'.$CFG->wwwroot.'/pix/i/teammembers.png" width="32" height="32" alt="'.get_string('viewmyteam','local').'" /></a>
                  </td>
                  <td align="left">
-                     <a href="'.$CFG->wwwroot.'/my/team.php">'.get_string('viewmyteam','local').'</a><br />('.count($teammembers).' staff)
+                     <a href="'.$CFG->wwwroot.'/my/teammembers.php">'.get_string('viewmyteam','local').'</a><br />('.count($teammembers).' staff)
                  </td>
              </tr>
          </table>
