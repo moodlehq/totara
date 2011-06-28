@@ -1,5 +1,35 @@
 Totara LMS Changelog
 
+Release 1.0.16 (28 June 2011):
+==================================================
+
+Security fixes:
+    8895    Add additional parameter validation to course reminders
+    8561    Feedback: Added variable cleanup where needed
+
+Improvements:
+    8485    Updates to language packs (French, German and Finnish)
+    8183    Replaced table sort arrows with more suitable images
+    8804    Added extra user fields to base source in Report Builder                            Phone, Institution, Department, Address, City and Country now available in reports
+    8026    Updated column width for Pending Approvals in Learning Plans
+    8820    Compress all PNG image files                                                        Theme files will download quicker
+
+Bug fixes:
+    8581    Fixed incorrect update code for activities                                          Wasn't saving general activity settings
+    8584    Remove links on Alerts/Tasks that do not have specified links
+    8896    Fix bug in get_item_descendants()
+    8639    Removed text color for HTML Block header and fixed padding
+    8657    SCORM activity completion settings sometimes not saving
+    8337    Updated dialogs to use translated strings for buttons
+    8898    Fix bug with content restrictions and missing lang strings in report sources
+    8645    Hierarchy: Fixed incorrectly updating the "evidencecount" value                     Count was being reset to 0 when item was edited
+    8737    Fix lowercase letters regex                                                         Solves issue with Finnish words being converted to links
+    8640    Fixed unwanted notice from appearing when resorting courses by name
+    8744    Book: Added missing function causing errors
+    8900    Show icon in Totara My Team Nav block and update link to point to correct page
+    8642    Face to face: Removing deprecated warning from report
+
+
 Release 1.0.15 (14 June 2011):
 ==================================================
 
