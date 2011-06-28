@@ -953,7 +953,7 @@ h6 {
 .tabrow0{
   line-height: 2.5em;
   text-align:left;
-  padding-bottom: 1em;
+  padding-bottom: 4.5em;
 }
 .tabrow0 li a:link,
 .tabrow0 li a:hover,
@@ -1003,7 +1003,7 @@ ul.tabrow1 {
     background: url("images/tab/tabrow1.gif") top left repeat-x !important;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
-    padding-bottom: 0.3em;
+    padding-bottom: 0.5em;
 }
 .tabrow1 li a:link,
 .tabrow1 li a:hover,
@@ -1083,7 +1083,7 @@ ul.tabrow1 li a:visited {
 
 .tabrow0 div, .tabrow0 ul {
   border-color: #cccccc;
-  padding-top: .3em;
+  padding-top: .55em;
   background: #FFFFFF;
   border-bottom: 1px solid #cccccc;
 }
