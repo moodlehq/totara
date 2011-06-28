@@ -42,6 +42,14 @@
         error(get_string('error'));
     }
 
+    //variable cleanup
+    if (isset($formdata->userid)) {
+        $formdata->userid = ($userid !== false) ? $userid : (int)$formdata->userid;
+    }
+    $formdata->id = isset($formdata->id) ? (int)$formdata->id : $id;
+    if (isset($formdata->completedid)) {
+        $formdata->completedid = (int)$formdata->completedid;
+    }
 
     //get the completeds
     // if a new anonymous record has not been assigned a random response number

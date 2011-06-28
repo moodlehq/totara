@@ -89,6 +89,10 @@ class item_edit_form extends moodleform {
         $mform->setType('sortorder', PARAM_INT);
         $mform->addElement('hidden', 'spage', $spage);
         $mform->setType('spage', PARAM_INT);
+        $mform->addElement('hidden', 'evidencecount');
+        $mform->setType('evidencecount', PARAM_INT);
+        $mform->addElement('hidden', 'proficiencyexpected');
+        $mform->setType('proficiencyexpected', PARAM_INT);
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);

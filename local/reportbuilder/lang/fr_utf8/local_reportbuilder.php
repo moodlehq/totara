@@ -118,6 +118,8 @@ $string['error:invaliduserid'] = 'Identifiant d\'utilisateur non valide';
 $string['error:joinsforfiltertypexandvalueynotfoundinz'] = 'Les jointures du filtre \"{$a->type}\" et \"{$a->value}\" n\'ont pas été trouvées dans la source \"{$a->source}\"';
 $string['error:joinsfortypexandvalueynotfoundinz'] = 'Les jointures de la colonne \"{$a->type}\" et \"{$a->value}\" n\'ont pas été trouvées dans la source \"{$a->source}\"';
 $string['error:joinxhasdependencyyinz'] = 'La jointure \"{$a->join}\" depénde de \"{$a->dependency}\" et ceci n\'est pas présent dans la liste de jointures de la source \"{$a->source}\"';
+$string['error:joinxisreservediny'] = 'La jointure \"{$a->join}\" de la source \"{$a->source}\" s\'agit d\'un môt réservé dans le SQL. Veuillez choisir un autre nom';
+$string['error:joinxusedmorethanonceiny'] = 'La jointure \"{$a->join}\" est utilisée plusieurs fois dans la source \"{$a->source}\"';
 $string['error:mustselectsource'] = 'Vous devez choisir la source de rapport';
 $string['error:nocolumns'] = 'Aucune colonne trouvée. Demander à votre développeur d\'ajouter des options de colonne à la source \'$a';
 $string['error:nocolumnsdefined'] = 'Il n\'existe aucune colonne dans ce rapport. Demandez à l\'administrateur du site d\'en ajouter.';
@@ -164,6 +166,7 @@ $string['includerecordsfrom'] = 'Inclure les entrés de';
 $string['includetrainerrecords'] = 'Inclure les entrés de formateurs spécifiques';
 $string['includeuserrecords'] = 'Inclure les entrés d\'utilisateurs spécifiques';
 $string['is'] = 'est';
+$string['isbelow'] = 'se trouve ci-dessous';
 $string['isnt'] = 'n\'est pas';
 $string['isnttaggedwith'] = 'ne porte pas le mot-clé';
 $string['istaggedwith'] = 'porte le mot-clé';
@@ -266,6 +269,16 @@ $string['savedsearchmessage'] = 'Seulement les données correspondantes à la re
 $string['savesearch'] = 'Sauvegarder cette recherche';
 $string['schedule'] = 'Programmer';
 $string['scheduledaily'] = 'Quotidien';
+$string['scheduledreportmessage'] = 'Veuillez trouver ci-joint une copie du rapport \'$a->reportname\' dans $a->exporttype. $a->savedtext
+
+Vous pouvez également voir ce rapport en ligne:
+
+$a->reporturl
+
+Vous êtes programmer de recevoir ce rapport chaque $a->schedule.
+Si vous souhaitez supprimer ou modifier ces alertes, rendez vous à:
+
+$a->scheduledreportsindex';
 $string['scheduledreports'] = 'Rapports ponctuels';
 $string['scheduledreportsettings'] = 'Paramètres du rapport ponctuel';
 $string['schedulemonthly'] = 'Mensuel';
@@ -290,6 +303,12 @@ $string['showbyuser'] = 'Afficher par utilisateur';
 $string['showbyx'] = 'Afficher par $a';
 $string['showhidecolumns'] = 'Afficher/Cacher des colonnes';
 $string['showing'] = 'Affichage';
+$string['showrecordsbeloworgonly'] = 'Uniquement les employés en dessous du structure de l\'utilisateur';
+$string['showrecordsbelowposonly'] = 'Uniquement les employés en dessous du poste de l\'utilisateur';
+$string['showrecordsinorg'] = 'Uniquement les employés du même structure que l\'utilisateur';
+$string['showrecordsinorgandbelow'] = 'Les employés du même structure que l\'utilisateur ou des structures en dessous';
+$string['showrecordsinpos'] = 'Uniquement les employés du même poste que l\'utilisateur';
+$string['showrecordsinposandbelow'] = 'Les employés du même poste que l\'utilisateur ou des postes en dessous';
 $string['sorting'] = 'Triage';
 $string['source'] = 'Source';
 $string['systemcontext'] = 'Les utilisateurs doivent posséder un rôle du contexte système';
@@ -323,8 +342,10 @@ $string['usersjobtitle'] = 'Poste de l\'utilisateur';
 $string['usersmanagername'] = 'Manager de l\'utilisateur';
 $string['usersorgid'] = 'Identifiant du structure de l\'utilisateur';
 $string['usersorgname'] = 'Nom du structure de l\'utilisateur';
+$string['usersorgpathids'] = 'Identifiants du chemin de structures des utilisateurs';
 $string['userspos'] = 'Poste de l\'utilisateur';
 $string['usersposid'] = 'Identifiant de la poste de l\'utilisateur';
+$string['userspospathids'] = 'Identifiants du chemin de postes des utilisateurs';
 $string['userstaffrecords'] = 'Les entrées des utilisateurs qui rendent compte à d\'autres utilisateurs';
 $string['value'] = 'Valeur';
 $string['viewreport'] = 'Visualiser ce rapport';

@@ -316,7 +316,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_content_option(
                 'date',
                 get_string('completiondate', 'rb_source_course_completion_by_org'),
-                'base.timemodified'
+                'base.timecompleted'
             ),
         );
         return $contentoptions;

@@ -327,6 +327,8 @@ class mod_scorm_mod_form extends moodleform_mod {
             }
 
             $data->completionstatusrequired = $total;
+        } else {
+            $data->completionstatusrequired = null;
         }
 
         if (!$autocompletion) {

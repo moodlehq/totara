@@ -16,7 +16,7 @@ $shortprefix = hierarchy::get_short_prefix($type);
 // item id; 0 if creating new item
 $id   = optional_param('id', 0, PARAM_INT);
 
-// framework id; required when creating a new framework item 
+// framework id; required when creating a new framework item
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 $spage       = optional_param('spage', 0, PARAM_INT);
 
@@ -98,8 +98,12 @@ if ($itemform->is_cancelled()) {
     $itemnew->timemodified = time();
     $itemnew->usermodified = $USER->id;
 
-    $itemnew->proficiencyexpected = 1;
-    $itemnew->evidencecount = 0;
+    if (!isset($itemnew->proficiencyexpected)) {
+        $itemnew->proficiencyexpected = 1;
+    }
+    if (!isset($itemnew->evidencecount)) {
+        $itemnew->evidencecount = 0;
+    }
 
     // Load parent item if set
     if ($itemnew->parentid) {

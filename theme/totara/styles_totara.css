@@ -1544,7 +1544,7 @@ div.block_calendar_month div.header .title input   {
 }
 
 div.block_totara_my_team_nav .content td img {
- display:none;
+ display:block;
 }
 
 div.block_totara_my_team_nav .content a {
@@ -1559,8 +1559,6 @@ div.block_totara_report_manager .content td {
 }
 
 div.block_html .header .title h2 {
-  color: #322F2C;
-  padding:0;
   background: transparent;
 }
 
@@ -2561,6 +2559,12 @@ table.allmyteam td a {
 #my-teammembers #middle-column table.flexible th {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   color: #34b9e4;
+}
+.learning-plan-pending-approval-table .lastcol{
+    width:250px;
+}
+#local-plan-approve .tabtree .tabrow0{
+    padding-bottom:10px;
 }
 
 

@@ -43,6 +43,7 @@ class reminder_edit_form extends moodleform {
         $mform->addElement('header', 'general', get_string('reminder', 'reminders'));
 
         $mform->addElement('text', 'title', get_string('title', 'reminders'));
+        $mform->setType('title', PARAM_TEXT);
         $mform->setHelpButton('title', array('remindertitle', get_string('title', 'reminders')), true);
         $mform->addRule('title', get_string('missingtitle', 'reminders'), 'required', null, 'client');
 
@@ -63,6 +64,7 @@ class reminder_edit_form extends moodleform {
         array_unshift($options, get_string('nextday', 'reminders'));
         array_unshift($options, get_string('sameday', 'reminders'));
         $mform->addElement('select', 'invitationperiod', get_string('period', 'reminders'), $options);
+        $mform->setType('invitationperiod', PARAM_INT);
         $mform->setHelpButton('invitationperiod', array('reminderperioduntilreminder', get_string('period', 'reminders')), true);
         $mform->setDefault('invitationperiod', 0);
 
@@ -80,6 +82,7 @@ class reminder_edit_form extends moodleform {
         $mform->addElement('header', 'reminder', get_string('reminder', 'reminders'));
 
         $mform->addElement('select', 'reminderperiod', get_string('period', 'reminders'), $options);
+        $mform->setType('reminderperiod', PARAM_INT);
         $mform->setHelpButton('reminderperiod', array('reminderperioduntilreminder', get_string('period', 'reminders')), true);
         $mform->setDefault('reminderperiod', 1);
 
@@ -97,13 +100,16 @@ class reminder_edit_form extends moodleform {
         $mform->addElement('header', 'escalation', get_string('escalation', 'reminders'));
 
         $mform->addElement('checkbox', 'escalationdontsend', get_string('dontsend', 'reminders'));
+        $mform->setType('escalationdontsend', PARAM_INT);
         $mform->setDefault('escalationdontsend', 0);
 
         $mform->addElement('checkbox', 'escalationskipmanager', get_string('skipmanager', 'reminders'));
+        $mform->setType('escalationskipmanager', PARAM_INT);
         $mform->setDefault('escalationskipmanager', 0);
         $mform->disabledIf('escalationskipmanager', 'escalationdontsend', 'checked');
 
         $mform->addElement('select', 'escalationperiod', get_string('period', 'reminders'), $options);
+        $mform->setType('escalationperiod', PARAM_INT);
         $mform->setHelpButton('escalationperiod', array('reminderperioduntilreminder', get_string('period', 'reminders')), true);
         $mform->setDefault('escalationperiod', 1);
         $mform->disabledIf('escalationperiod', 'escalationdontsend', 'checked');

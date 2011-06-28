@@ -390,7 +390,7 @@ from
         $contentoptions = array();
 
         // Include the rb_user_content content options for this report
-        $contentoptions[] = new rb_content_option('user', 'Users', 'base.userid', 'base');
+        $contentoptions[] = new rb_content_option('user', get_string('users'), 'base.userid', 'base');
         return $contentoptions;
     }
 

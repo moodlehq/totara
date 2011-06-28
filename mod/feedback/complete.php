@@ -27,17 +27,19 @@
         error('no sesskey defined');
     }
 
+    //variable cleanup
+    $formdata->id = isset($formdata->id) ? (int)$formdata->id : $id;
+
     //if the use hit enter into a textfield so the form should not submit
-    if(isset($formdata->sesskey) AND !isset($formdata->savevalues) AND !isset($formdata->gonextpage) AND !isset($formdata->gopreviouspage)) {
+    if(isset($formdata->sesskey)
+       AND !isset($formdata->savevalues)
+       AND !isset($formdata->gonextpage)
+       AND !isset($formdata->gopreviouspage)) {
         $gopage = $formdata->lastpage;
     }
 
-    if(isset($formdata->savevalues)) {
-        $savevalues = true;
-    }else {
-        $savevalues = false;
-    }
-    
+    $savevalues = isset($formdata->savevalues);
+
     if($gopage < 0 AND !$savevalues) {
         if(isset($formdata->gonextpage)){
             $gopage = $lastpage + 1;

@@ -263,7 +263,7 @@ class hierarchy {
             $paths = explode('/', substr($path, 1));
             $sql = "SELECT id, fullname, parentid, path, sortorder
                     FROM {$CFG->prefix}{$this->shortprefix}
-                    WHERE path LIKE '{$path}%' ORDER BY path";
+                    WHERE path='{$path}' OR path LIKE '{$path}/%' ORDER BY path";
             return get_records_sql($sql);
         } else {
             print_error('nopathfoundforid', 'hierarchy', '', (object)array('prefix'=>$this->prefix, 'id'=>$id));

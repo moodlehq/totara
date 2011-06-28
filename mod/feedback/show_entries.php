@@ -23,10 +23,6 @@
     ////////////////////////////////////////////////////////
     //get the objects
     ////////////////////////////////////////////////////////
-    
-    if($userid) {
-        $formdata->userid = intval($userid);
-    }
 
     if ($id) {
         if (! $cm = get_coursemodule_from_id('feedback', $id)) {
@@ -53,6 +49,13 @@
     if(!$capabilities->viewreports){
         error(get_string('error'));
     }
+
+    //variable cleanup
+    if (isset($formdata->userid)) {
+        $formdata->userid = ($userid !== false) ? $userid : (int)$formdata->userid;
+    }
+    $formdata->id = isset($formdata->id) ? (int)$formdata->id : $id;
+
 
     ////////////////////////////////////////////////////////
     //get the responses of given user

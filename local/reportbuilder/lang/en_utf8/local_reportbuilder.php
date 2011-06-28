@@ -372,6 +372,12 @@ $string['userfirstname'] = 'User First Name';
 $string['userlastname'] = 'User Last Name';
 $string['username'] = 'Username';
 $string['useridnumber'] = 'User ID Number';
+$string['userphone'] = 'User\'s Phone number';
+$string['userinstitution'] = 'User\'s Institution';
+$string['userdepartment'] = 'User\'s Department';
+$string['useraddress'] = 'User\'s Address';
+$string['usercity'] = 'User\'s City';
+$string['usercountry'] = 'User\'s Country';
 $string['userid'] = 'User ID';
 
 // add positions
