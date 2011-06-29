@@ -806,26 +806,6 @@ class dp_course_component extends dp_base_component {
 
 
     /**
-     * Unassign an item from a plan
-     *
-     * @access  public
-     * @return  boolean
-     */
-    public function unassign_item($item) {
-        // Run parent method
-        $result = parent::unassign_item($item);
-
-        // Delete mappings
-        if ($result) {
-            $result = delete_records('dp_plan_component_relation', 'component1', 'course', 'itemid1', $item->id);
-            $result = $result && delete_records('dp_plan_component_relation', 'component2', 'course', 'itemid2', $item->id);
-        }
-
-        return $result;
-    }
-
-
-    /**
      * Get headers for a list
      *
      * @return array $headers
