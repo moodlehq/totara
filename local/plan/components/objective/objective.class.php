@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,7 +19,7 @@
  *
  * @author Aaron Wells <aaronw@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -1022,7 +1021,7 @@ class dp_objective_component extends dp_base_component {
         }
 
         $coursename = get_string('courseplural', 'local_plan');
-        $btntext = get_string('updatelinkedx', 'local_plan', $coursename);
+        $btntext = get_string('updatelinkedx', 'local_plan', strtolower($coursename));
 
         $html  = '<div class="buttons">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';
