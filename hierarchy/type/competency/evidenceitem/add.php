@@ -82,16 +82,15 @@ if($nojs) {
         $assigned = get_records('comp_evidence_items', 'competencyid', $id);
         $assigned = !empty($assigned) ? $assigned : array();
 
-
-        $removeditems = array_diff(array_keys($assigned), $idlist);
-
-        foreach ($removeditems as $ritem) {
-            $data = new object();
-            $data->id = $ritem;
-            $data->itemtype = $assigned[$ritem]->itemtype;
-            $evidence = competency_evidence_type::factory($data);
-            $evidence->iteminstance = $assigned[$ritem]->iteminstance;
-            $evidence->delete($competency);
+        foreach ($assigned as $ritem) {
+            if (!in_array($ritem->iteminstance, $idlist)){
+                $data = new object();
+                $data->id = $ritem->id;
+                $data->itemtype = $ritem->itemtype;
+                $evidence = competency_evidence_type::factory($data);
+                $evidence->iteminstance = $ritem->iteminstance;
+                $evidence->delete($competency);
+            }
         }
     }
 
