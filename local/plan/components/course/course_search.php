@@ -1,7 +1,7 @@
 <?php // $Id$
 
 /**
- * Page containing search results
+ * Page containing dependency search results
  *
  * @copyright Totara Learning Solution Limited
  * @author Simon Coggins
@@ -11,10 +11,10 @@
  * @subpackage dialog
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/local/dialogs/search_form.php');
-require_once($CFG->dirroot . '/local/dialogs/dialog_content.class.php');
+require_once($CFG->dirroot . '/local/dialogs/dialog_content_hierarchy.class.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
@@ -42,7 +42,7 @@ $query = urldecode(trim($query));
 $hidden = array();
 
 // Create form
-$mform = new dialog_search_form($CFG->wwwroot. '/hierarchy/type/competency/evidenceitem/search.php',
+$mform = new dialog_search_form($CFG->wwwroot. '/local/plan/components/course/course_search.php',
     compact('hidden', 'query'));
 
 // Display form
@@ -74,7 +74,7 @@ if (strlen($query)) {
 
     // Only show courses with completion enabled
     $where .= "
-        AND c.enablecompletion = ".COMPLETION_ENABLED."
+        AND c.id <> ".SITEID."
         AND c.visible = 1
     ";
 
@@ -86,7 +86,7 @@ if (strlen($query)) {
 
             $data = array('query' => urlencode(stripslashes($query)));
 
-            $url = new moodle_url($CFG->wwwroot . '/hierarchy/type/competency/evidenceitem/search.php', $data);
+            $url = new moodle_url($CFG->wwwroot . '/local/plan/components/course/course_search.php', $data);
             print '<div class="search-paging">';
             print print_paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url, 'page', false, true, 5);
             print '</div>';

@@ -72,9 +72,10 @@ if (strlen($query)) {
     // Match search terms
     $where = course_search_get_keyword_where_clause($keywords);
 
-    // Only show managers
+    // Only show courses with completion enabled
     $where .= "
         AND c.enablecompletion = ".COMPLETION_ENABLED."
+        AND c.visible = 1
     ";
 
     $total = count_records_sql($count . $from . $where);

@@ -136,10 +136,14 @@ class totara_dialog_content_courses extends totara_dialog_content {
      * Load courses to display
      *
      * @access  public
+     * @param   string  $where  Alternate where clause
      */
-    public function load_courses() {
+    public function load_courses($where = false) {
         if ($this->categoryid) {
-            $this->courses = get_courses($this->categoryid, "fullname ASC", 'c.id, c.fullname, c.sortorder');
+            if ($where === false) {
+                $where = "category = '{$this->categoryid}' AND visible = 1";
+            }
+            $this->courses = get_records_select('course', $where, 'fullname ASC', 'id, fullname, sortorder');
         }
     }
 
@@ -153,7 +157,10 @@ class totara_dialog_content_courses extends totara_dialog_content {
     public function generate_markup() {
 
         // Merge categories and courses (courses to follow categories)
-        $this->items = array_merge($this->categories, $this->courses);
+        $categories = is_array($this->categories) ? $this->categories : array();
+        $courses = is_array($this->courses) ? $this->courses : array();
+
+        $this->items = array_merge($categories, $courses);
 
         return parent::generate_markup();
     }
