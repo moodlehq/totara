@@ -95,8 +95,9 @@ class rb_source_totaramessages extends rb_base_source {
                 'message_values',         // type
                 'statement',              // value
                 get_string('statement', 'rb_source_totaramessages'),              // name
-                'msg.fullmessage',        // field
+                'msg.fullmessagehtml',        // field
                 array('joins' => 'msg')   // options
+
             ),
             new rb_column_option(
                 'message_values',         // type
