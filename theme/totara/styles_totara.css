@@ -1167,6 +1167,16 @@ ul.tabrow1 li a:visited {
   border-bottom: 1px solid #DDDDDD;
 }
 
+/* Tab row height */
+.tabtree.numrows_1{
+  height:30px;
+}
+.tabtree.numrows_2{
+  height:50px;
+}
+.tabtree.numrows_3{
+  height:65px;
+}
 
 /******************************************
  * Frontpage
