@@ -607,7 +607,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
             foreach ($badrows as $bad) {
                 $fixedrow = new object();
                 $fixedrow->id = $bad->id;
-                $fixedrow->possiblevalues = addslashes(str_replace(';', '##SEPARATOR##', $bad->possiblevalues));
+                $fixedrow->possiblevalues = addslashes(str_replace(';', CUSTOMFIELD_DELIMITTER, $bad->possiblevalues));
                 $result = $result && update_record('facetoface_session_field', $fixedrow);
             }
 
