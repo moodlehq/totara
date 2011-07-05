@@ -948,6 +948,7 @@ h6 {
 
 .tabtree {
   margin-top: 15px;
+  padding-bottom:10px;
 }
 .tabrow0 div,
 .tabrow0 ul {
@@ -956,7 +957,6 @@ h6 {
 .tabrow0{
   line-height: 2.5em;
   text-align:left;
-  padding-bottom: 4.5em;
 }
 .tabrow0 li a:link,
 .tabrow0 li a:hover,
