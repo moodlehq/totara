@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,17 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @author Eugene Venter <eugene@catalyst.net.nz>
- * @author Aaron Barnes <aaronb@catalyst.net.nz>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
  * @subpackage plan
  */
 
-    require_once '../../config.php';
-
-
-    $id = optional_param('id', 0, PARAM_INT);
+require_once '../../config.php';
+$id = optional_param('id', 0, PARAM_INT);
+$ok_string = get_string('ok');
+$cancel_string = get_string('cancel');
 
 ?>
 
@@ -63,7 +63,7 @@ $(function() {
             'show-evidence-dialog',
             {
                 buttons: {
-                    'Cancel': function() { handler._cancel() }
+                    '<?php echo $cancel_string ?>': function() { handler._cancel() }
                 },
                 title: '<?php echo '<h2>'.get_string('assignnewevidenceitem', 'competency').'</h2>'; ?>'
             },
@@ -149,8 +149,8 @@ $(function() {
                 'show-evidence-dialog',
                 {
                      buttons: {
-                        'Cancel': function() { handler._cancel() },
-                        'Ok': function() { handler._save(saveurl) }
+                        '<?php echo $cancel_string ?>': function() { handler._cancel() },
+                        '<?php echo $ok_string ?>': function() { handler._save(saveurl) }
                      },
                     title: '<?php
                         echo '<h2>';
