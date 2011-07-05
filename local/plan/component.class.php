@@ -407,7 +407,7 @@ abstract class dp_base_component {
 
         if(($this->component == 'competency' || $this->component == 'objective')
             && $this->plan->get_component('course')->get_setting('enabled')) {
-            $tableheaders[] = get_string('courses');
+            $tableheaders[] = get_string('numberoflinkedcourses','local_plan');
             $tablecolumns[] = 'linkedcourses';
             $tablehide[] = 'linkedcourses';
         }
