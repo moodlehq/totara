@@ -390,7 +390,10 @@ div#totara_menu {
 
 /* Unselected primary navigation */
 div#totara_menu ul {
-	padding: 0 0 0 25px;
+    height: 72px;
+    overflow: hidden;
+    padding: 0 0 0 25px;
+    width: 672px;
 }
 
 div#totara_menu ul li {
@@ -415,9 +418,9 @@ div#totara_menu ul li a {
     color: #4C4C4C;
     text-decoration: none;
     font-size: 1.1em;
-	padding: 14px 20px 3px;
-	height: 30px;
-	margin-left: 0;
+    padding: 14px 11px 3px;
+    height: 30px;
+    margin-left: 0;
 }
 
 /* Unselected primary navigation, hover state */
