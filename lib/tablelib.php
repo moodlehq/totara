@@ -634,22 +634,22 @@ class flexible_table {
                     if($primary_sort_column == 'firstname') {
                         $lsortorder = get_string('asc');
                         if($primary_sort_order == SORT_ASC) {
-                            $icon_sort_first = ' <img src="'.$CFG->pixpath.'/t/search_down15.gif" alt="'.get_string('asc').'" />';
+                            $icon_sort_first = ' <img src="'.$CFG->pixpath.'/t/sort_down.gif" alt="'.get_string('asc').'" />';
                             $fsortorder = get_string('asc');
                         }
                         else {
-                            $icon_sort_first = ' <img src="'.$CFG->pixpath.'/t/search_up15.gif" alt="'.get_string('desc').'" />';
+                            $icon_sort_first = ' <img src="'.$CFG->pixpath.'/t/sort_up.gif" alt="'.get_string('desc').'" />';
                             $fsortorder = get_string('desc');
                         }
                     }
                     else if($primary_sort_column == 'lastname') {
                         $fsortorder = get_string('asc');
                         if($primary_sort_order == SORT_ASC) {
-                            $icon_sort_last = ' <img src="'.$CFG->pixpath.'/t/search_down15.gif" alt="'.get_string('asc').'" />';
+                            $icon_sort_last = ' <img src="'.$CFG->pixpath.'/t/sort_down.gif" alt="'.get_string('asc').'" />';
                             $lsortorder = get_string('asc');
                         }
                         else {
-                            $icon_sort_last = ' <img src="'.$CFG->pixpath.'/t/search_up15.gif" alt="'.get_string('desc').'" />';
+                            $icon_sort_last = ' <img src="'.$CFG->pixpath.'/t/sort_up.gif" alt="'.get_string('desc').'" />';
                             $lsortorder = get_string('desc');
                         }
                     } else {
@@ -661,36 +661,36 @@ class flexible_table {
                     $override->firstname = 'firstname';
                     $override->lastname = 'lastname';
                     $fullnamelanguage = get_string('fullnamedisplay', '', $override);
-                    
+
                     if (($CFG->fullnamedisplay == 'firstname lastname') or
                         ($CFG->fullnamedisplay == 'firstname') or
                         ($CFG->fullnamedisplay == 'language' and $fullnamelanguage == 'firstname lastname' )) {
                         $this->headers[$index] = '<a href="'.$this->baseurl.$this->request[TABLE_VAR_SORT].'=firstname">'.get_string('firstname').get_accesshide(get_string('sortby').' '.get_string('firstname').' '.$fsortorder).'</a> '.$icon_sort_first.' / '.
                                                  '<a href="'.$this->baseurl.$this->request[TABLE_VAR_SORT].'=lastname">'.get_string('lastname').get_accesshide(get_string('sortby').' '.get_string('lastname').' '.$lsortorder).'</a> '.$icon_sort_last;
-                    } else { 
+                    } else {
                         $this->headers[$index] = '<a href="'.$this->baseurl.$this->request[TABLE_VAR_SORT].'=lastname">'.get_string('lastname').get_accesshide(get_string('sortby').' '.get_string('lastname').' '.$lsortorder).'</a> '.$icon_sort_last.' / '.
                                                  '<a href="'.$this->baseurl.$this->request[TABLE_VAR_SORT].'=firstname">'.get_string('firstname').get_accesshide(get_string('sortby').' '.get_string('firstname').' '.$fsortorder).'</a> '.$icon_sort_first;
-                    } 
+                    }
                 }
                 break;
 
                 case 'userpic':
-                    // do nothing, do not display sortable links      
+                    // do nothing, do not display sortable links
                 break;
 
                 default:
                 if($this->is_sortable($column)) {
                     if($primary_sort_column == $column) {
                         if($primary_sort_order == SORT_ASC) {
-                            $icon_sort = ' <img src="'.$CFG->pixpath.'/t/search_down15.gif" alt="'.get_string('asc').'" />';
+                            $icon_sort = ' <img src="'.$CFG->pixpath.'/t/sort_down.gif" alt="'.get_string('asc').'" />';
                             $localsortorder = get_string('asc');
                         }
                         else {
-                            $icon_sort = ' <img src="'.$CFG->pixpath.'/t/search_up15.gif" alt="'.get_string('desc').'" />';
+                            $icon_sort = ' <img src="'.$CFG->pixpath.'/t/sort_up.gif" alt="'.get_string('desc').'" />';
                             $localsortorder = get_string('desc');
                         }
                     } else {
-                        $localsortorder = get_string('asc');  
+                        $localsortorder = get_string('asc');
                     }
                     $this->headers[$index] = '<a href="'.$this->baseurl.$this->request[TABLE_VAR_SORT].'='.$column.'">'.$this->headers[$index].get_accesshide(get_string('sortby').' '.$this->headers[$index].' '.$localsortorder).'</a>';
                 }
@@ -711,7 +711,12 @@ class flexible_table {
                     // $usestyles = $this->column_style[$column]+array('white-space'=>'nowrap');
                     $usestyles = $this->column_style[$column];
                  }
-                echo '<th class="header c'.$index.$this->column_class[$column].'" '.$this->make_styles_string($usestyles).' scope="col">'.$this->headers[$index].$icon_sort.'<div class="commands">'.$icon_hide.'</div></th>';
+                echo '<th class="header c'.$index.$this->column_class[$column].'" '.$this->make_styles_string($usestyles).' scope="col">'.$this->headers[$index];
+                // Only show icon and link if column is sortable
+                if ($this->is_sortable($column)) {
+                    echo '<a href="'.$this->baseurl.$this->request[TABLE_VAR_SORT].'='.$column.'">'.$icon_sort.'</a>';
+                }
+                echo '<div class="commands">'.$icon_hide.'</div></th>';
             }
 
         }

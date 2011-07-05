@@ -82,7 +82,11 @@ if ($currenttab == 'workflowplan') {
     }
 }
 
-$tabs = array($toprow, $secondrow);
+if (!empty($secondrow)) {
+    $tabs = array($toprow, $secondrow);
+} else {
+    $tabs = array($toprow);
+}
 
 // print out tabs
 print_tabs($tabs, $currenttab, $inactive, $activated);

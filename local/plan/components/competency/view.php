@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
@@ -81,17 +80,17 @@ print $component->display_competency_detail($caid);
 
 if($coursesenabled) {
     print '<br />';
-    print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
+    print '<h3>'.get_string('linkedx', 'local_plan', $coursename).'</h3>';
     print '<div id="dp-competency-courses-container">';
-    if($linkedcourses =
-        $component->get_linked_components($caid, 'course')) {
+
+    if ($linkedcourses = $component->get_linked_components($caid, 'course')) {
         print $plan->get_component('course')->display_linked_courses($linkedcourses);
     } else {
-        print '<p class="noitems-assigncourse">' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
+        print '<p class="noitems-assigncourses">'.get_string('nolinkedx', 'local_plan', strtolower($coursename)).'</p>';
     }
     print '</div>';
 
-    if ( !$plancompleted ){
+    if (!$plancompleted) {
         print $component->display_course_picker($caid);
     }
 }

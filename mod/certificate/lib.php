@@ -610,7 +610,7 @@ function certificate_get_borders () {
 /// load border files
     $my_path = "$CFG->dirroot/mod/certificate/pix/borders";
     $borderstyleoptions = array();
-    if ($handle = opendir($my_path)) {
+    if (is_dir($my_path) && $handle = opendir($my_path)) {
         while (false !== ($file = readdir($handle))) {
         if (strpos($file, '.png',1)||strpos($file, '.jpg',1) ) {
                 $i = strpos($file, '.'); 
@@ -640,7 +640,7 @@ function certificate_get_seals () {
 
     $my_path = "$CFG->dirroot/mod/certificate/pix/seals";
         $sealoptions = array();
-        if ($handle = opendir($my_path)) {
+        if (is_dir($my_path) && $handle = opendir($my_path)) {
         while (false !== ($file = readdir($handle))) {
         if (strpos($file, '.png',1)||strpos($file, '.jpg',1) ) {
                 $i = strpos($file, '.');
@@ -665,7 +665,7 @@ function certificate_get_watermarks () {
 /// load watermark files
     $my_path = "$CFG->dirroot/mod/certificate/pix/watermarks";
     $wmarkoptions = array();
-    if ($handle = opendir($my_path)) {
+    if (is_dir($my_path) && $handle = opendir($my_path)) {
         while (false !== ($file = readdir($handle))) {
         if (strpos($file, '.png',1)||strpos($file, '.jpg',1) ) {
             $i = strpos($file, '.');
@@ -695,7 +695,7 @@ function certificate_get_signatures () {
 /// load signature files
     $my_path = "$CFG->dirroot/mod/certificate/pix/signatures";
     $signatureoptions = array();
-    if ($handle = opendir($my_path)) {
+    if (is_dir($my_path) && $handle = opendir($my_path)) {
         while (false !== ($file = readdir($handle))) {
             if (strpos($file, '.png',1)||strpos($file, '.jpg',1) ) {
                 $i = strpos($file, '.');

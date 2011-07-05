@@ -66,7 +66,12 @@ if ($id) { // editing course
 /// Load data
 ///
 
-// Load courses in category
+// Load courses in category that are:
+// - not hidden
+// - have completin enabled
+// - are not the current course
+// - are not already a dependency of this course
+// - do not have this course as a dependency
 $sql = "
     SELECT
         c.id,
@@ -77,14 +82,17 @@ $sql = "
         {$CFG->prefix}course_completion_criteria cc
      ON cc.courseinstance = c.id
     AND cc.course = {$id}
-    INNER JOIN
+    LEFT JOIN
         {$CFG->prefix}course_completion_criteria ccc
      ON ccc.course = c.id
+    AND cc.courseinstance = {$id}
     WHERE
         c.enablecompletion = ".COMPLETION_ENABLED."
     AND c.id <> {$id}
     AND c.category = {$categoryid}
+    AND ccc.id IS NULL
     AND cc.id IS NULL
+    AND c.visible = 1
     ORDER BY
         c.sortorder ASC
 ";

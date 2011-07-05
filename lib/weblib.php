@@ -6793,7 +6793,7 @@ function print_tabs($tabrows, $selected=NULL, $inactive=NULL, $activated=NULL, $
 
     $output = convert_tree_to_html($tree);
 
-    $output = "\n\n".'<div class="tabtree">'.$output.'</div><div class="clearer"> </div>'."\n\n";
+    $output = "\n\n".'<div class="tabtree numrows_' .  count($tabrows)  . '">'.$output.'</div><div class="clearer"> </div>'."\n\n";
 
 /// We're done!
 

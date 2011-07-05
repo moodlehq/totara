@@ -96,6 +96,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
 
     global $CFG, $USER, $db;
 
+    require_once($CFG->dirroot . '/mod/facetoface/lib.php');
 
     $result = true;
 
@@ -595,7 +596,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
                     {$CFG->prefix}facetoface_session_field
                 WHERE
                     possiblevalues LIKE '%;%'
-                AND possiblevalues NOT LIKE '%##SEPARATOR##%'
+                AND possiblevalues NOT LIKE '%" . CUSTOMFIELD_DELIMITTER . "%'
                 AND type IN (".CUSTOMFIELD_TYPE_SELECT.",".CUSTOMFIELD_TYPE_MULTISELECT.")
             "
         );
@@ -655,6 +656,42 @@ function xmldb_facetoface_upgrade($oldversion=0) {
 
                 //Apply the index
                 $result = $result && add_index($table, $index);
+            }
+        }
+    }
+
+    if ($result && $oldversion < 2011070500) {
+        // Fix existing data for new separator
+        $bad_data_rows = get_records_sql(
+            "
+                SELECT
+                    sd.id, sd.data
+                FROM
+                    {$CFG->prefix}facetoface_session_field sf
+                JOIN
+                    {$CFG->prefix}facetoface_session_data sd
+                  ON
+                    sd.fieldid=sf.id
+                WHERE
+                    sd.data LIKE '%;%'
+                AND sd.data NOT LIKE '%". CUSTOMFIELD_DELIMITTER ."%'
+                AND sf.type = ".CUSTOMFIELD_TYPE_MULTISELECT
+        );
+
+        if ($bad_data_rows) {
+            begin_sql();
+
+            foreach ($bad_data_rows as $bad) {
+                $fixedrow = new object();
+                $fixedrow->id = $bad->id;
+                $fixedrow->data = addslashes(str_replace(';', CUSTOMFIELD_DELIMITTER, $bad->data));
+                $result = $result && update_record('facetoface_session_data', $fixedrow);
+            }
+
+            if ($result) {
+                commit_sql();
+            } else {
+                rollback_sql();
             }
         }
     }

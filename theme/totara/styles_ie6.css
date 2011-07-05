@@ -22,6 +22,9 @@ div#totara_menu ul li div a {
 div#totara_menu ul {
 	height:72px;
 }
+.header-search{
+    margin-right:0px;
+}
 
 /**
  * Element default fixes

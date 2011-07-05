@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,12 +19,14 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @author Aaron Wells <aaronw@catalyst.net.nz>
+ * @author Aaron Barnes <aaronb@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 require_login();
 
@@ -41,6 +42,7 @@ if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_se
         print_error('error:nopermissions', 'local_plan');
 }
 
+$plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'course';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/course/view.php?id='.$id.'&amp;itemid='.$caid;
@@ -58,6 +60,21 @@ $navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/v
 $navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
 $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
 
+/// Javascript stuff
+// If we are showing dialog
+if ($component->can_update_items()) {
+    // Setup lightbox
+    local_js(array(
+        TOTARA_JS_DIALOG,
+        TOTARA_JS_TREEVIEW
+    ));
+
+    // Get competency picker
+    require_js(array(
+        $CFG->wwwroot.'/local/plan/components/course/find-competency.js.php'
+    ));
+}
+
 $navigation = build_navigation($navlinks);
 
 $plan->print_header($componentname, $navlinks, false);
@@ -69,20 +86,27 @@ print $component->display_course_detail($caid);
 if($competenciesenabled) {
     print '<br />';
     print '<h3>' . get_string('linkedx', 'local_plan', $competencyname) . '</h3>';
+    print '<div id="dp-course-competencies-container">';
     if($linkedcomps = $component->get_linked_components($caid, 'competency')) {
         print $plan->get_component('competency')->display_linked_competencies($linkedcomps);
     } else {
-        print '<p>' . get_string('nolinkedx', 'local_plan', $competencyname). '</p>';
+        print '<p class="noitems-assigncompetencies">' . get_string('nolinkedx', 'local_plan', strtolower($competencyname)). '</p>';
+    }
+    print '</div>';
+
+    if (!$plancompleted) {
+        print $component->display_competency_picker($caid);
     }
 }
 
 if ($objectivesenabled){
     print '<br />';
     print '<h3>' . get_string('linkedx', 'local_plan', $objectivename) . '</h3>';
-    if ( $linkedobjectives = $component->get_linked_components( $caid, 'objective' )){
+
+    if ($linkedobjectives = $component->get_linked_components( $caid, 'objective')) {
         print $plan->get_component('objective')->display_linked_objectives($linkedobjectives);
     } else {
-        print '<p>' . get_string('nolinkedx', 'local_plan', $objectivename) . '</p>';
+        print '<p>'.get_string('nolinkedx', 'local_plan', strtolower($objectivename)).'</p>';
     }
 }
 

@@ -179,7 +179,7 @@ class mod_certificate_mod_form extends moodleform_mod {
         $linkentry = array();
 
         if (empty($fdata)) {
-            if ($linkedacts = certificate_get_linked_activities($form->instance)) {
+            if ($form->instance && $linkedacts = certificate_get_linked_activities($form->instance)) {
                 foreach ($linkedacts as $idx => $linkedact) {
                     if ($idx != CERTCOURSETIMEID) {
                         $linkids[] = $linkedact->linkid;

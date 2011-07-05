@@ -1,14 +1,15 @@
 <?php
+
 /*
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +20,7 @@
  *
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
  * @package totara
- * @subpackage dialogs 
+ * @subpackage dialogs
  */
 
 /**
@@ -135,10 +136,14 @@ class totara_dialog_content_courses extends totara_dialog_content {
      * Load courses to display
      *
      * @access  public
+     * @param   string  $where  Alternate where clause
      */
-    public function load_courses() {
+    public function load_courses($where = false) {
         if ($this->categoryid) {
-            $this->courses = get_courses($this->categoryid, "fullname ASC", 'c.id, c.fullname, c.sortorder');
+            if ($where === false) {
+                $where = "category = '{$this->categoryid}' AND visible = 1";
+            }
+            $this->courses = get_records_select('course', $where, 'fullname ASC', 'id, fullname, sortorder');
         }
     }
 
@@ -152,7 +157,10 @@ class totara_dialog_content_courses extends totara_dialog_content {
     public function generate_markup() {
 
         // Merge categories and courses (courses to follow categories)
-        $this->items = array_merge($this->categories, $this->courses);
+        $categories = is_array($this->categories) ? $this->categories : array();
+        $courses = is_array($this->courses) ? $this->courses : array();
+
+        $this->items = array_merge($categories, $courses);
 
         return parent::generate_markup();
     }

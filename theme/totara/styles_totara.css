@@ -390,7 +390,10 @@ div#totara_menu {
 
 /* Unselected primary navigation */
 div#totara_menu ul {
-	padding: 0 0 0 25px;
+    height: 72px;
+    overflow: hidden;
+    padding: 0 0 0 25px;
+    width: 672px;
 }
 
 div#totara_menu ul li {
@@ -415,9 +418,9 @@ div#totara_menu ul li a {
     color: #4C4C4C;
     text-decoration: none;
     font-size: 1.1em;
-	padding: 14px 20px 3px;
-	height: 30px;
-	margin-left: 0;
+    padding: 14px 11px 3px;
+    height: 30px;
+    margin-left: 0;
 }
 
 /* Unselected primary navigation, hover state */
@@ -965,45 +968,54 @@ h6 {
   color:#FFFFFF;
   padding-bottom:2px;
 }
-.tabrow0 li a.nolink {
-  font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif;
-  font-size: 1.3em;
-  padding-bottom: 2px !important;
+.tabrow0 li a.nolink,
+.tabrow0 li a.nolink:hover,
+.tabrow0 li a.nolink:visited{
+  font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif ;
+  font-size: 1.3em ;
+  background: url("images/tab/left_dark.gif") no-repeat scroll left top transparent;
+  padding-top:4px;
+  color:#FFFFFF;
+  padding-bottom:2px;
+  opacity:0.5;
+
 }
 .tabrow0 li {
-    font-weight: bold;
-    margin-left: 4px;
+  font-weight: bold;
+  margin-left: 4px;
 }
 .tabrow0 li a span {
-    background: url("images/tab/right_dark.gif") no-repeat scroll right top transparent;
-    padding-top:4px;
-    padding-bottom:2px;
+  background: url("images/tab/right_dark.gif") no-repeat scroll right top transparent;
+  padding-top:4px;
+  padding-bottom:2px;
 }
 
 .tabrow0 li.selected a:hover span,
 .tabrow0 li.selected span,
 .tabrow0 li.active a:hover span,
 .tabrow0 li.active span {
-	background: url("images/tab/right_white.gif") top right;
-	padding-top:8px;
+  background: url("images/tab/right_white.gif") top right;
+  padding-top:8px;
 }
 .tabrow0 li.selected a:hover,
 .tabrow0 li.selected a,
 .tabrow0 li.active a:hover,
 .tabrow0 li.active a {
-	background: url("images/tab/left_white.gif") top left no-repeat;
-	padding-top:8px;
+  background: url("images/tab/left_white.gif") top left no-repeat;
+  padding-top:8px;
+  opacity:1;
+  color:#444444;
 }
 
 .tabrow0 li.active ul.tabrow1 li a {
-	background: none !important;
+  background: none !important;
 }
 
 ul.tabrow1 {
-    background: url("images/tab/tabrow1.gif") top left repeat-x !important;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    padding-bottom: 0.5em;
+  background: url("images/tab/tabrow1.gif") top left repeat-x !important;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding-bottom: 0.5em;
 }
 .tabrow1 li a:link,
 .tabrow1 li a:hover,
@@ -1023,6 +1035,24 @@ ul.tabrow1 {
 .tabrow0 a:visited:hover span,
 .tabrow0 .last a:hover span,
 .tabrow0 a:hover span {
+  background-image: url(images/tab/right_white.gif);
+  color: #333333;
+}
+.tabrow0 a.nolink:link:hover span,
+.tabrow0 a.nolink:visited:hover span,
+.tabrow0 .last a.nolink:hover span,
+.tabrow0 a.nolink:hover span {
+  background: url("images/tab/right_dark.gif") no-repeat scroll right top transparent;
+  color: #ffffff;
+}
+.tabrow0 .active a:link:hover span,
+.tabrow0 .active a:visited:hover span,
+.tabrow0 .active.last a:hover span,
+.tabrow0 .active a:hover span,
+.tabrow0 .selected a:link:hover span,
+.tabrow0 .selected a:visited:hover span,
+.tabrow0 .selected.last a:hover span,
+.tabrow0 .selected a:hover span{
   background-image: url(images/tab/right_white.gif);
   color: #333333;
 }
@@ -1140,6 +1170,16 @@ ul.tabrow1 li a:visited {
   border-bottom: 1px solid #DDDDDD;
 }
 
+/* Tab row height */
+.tabtree.numrows_1{
+  height:30px;
+}
+.tabtree.numrows_2{
+  height:50px;
+}
+.tabtree.numrows_3{
+  height:65px;
+}
 
 /******************************************
  * Frontpage
@@ -2563,10 +2603,6 @@ table.allmyteam td a {
 .learning-plan-pending-approval-table .lastcol{
     width:250px;
 }
-#local-plan-approve .tabtree .tabrow0{
-    padding-bottom:10px;
-}
-
 
 /*****************************************************************************/
 /** Tables **/

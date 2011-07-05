@@ -1,5 +1,31 @@
 Totara LMS Changelog
 
+Release 1.0.17 (5 July 2011):
+==================================================
+
+Improvements:
+    8963    Add the ability to link competencies to courses on the course view in Learning Plans
+    8946    Flexible table sort icons are not clickable                                         These icons are now clickable, and have changed in all of the themes (except the Totara theme)
+    8591    Add line breaks when displaying Alert/Task messages in reports
+    8974    Create dedicated lang string for "number of linked courses" column in Learning Plan
+
+Bug fixes:
+    8049    Mutli-select delimiters not updated in Face-to-face custom fields                   Database upgrade required
+    8961    Course reminders breaks cron when feedback requirement not set or deleted
+    8964    Hidden reports should not be shown in scheduled report pulldown
+    8947    Course dialogs display courses that should be hidden
+    8947    Course dialogs not displaying subcategories correctly
+    8285    Main Totara navigation overflowing in some languages
+    8960    Component relations not always deleted when unassigning a component from a plan
+    8965    Evidence items unnecessarily recreated when updating competencies
+    7896    Remove excess whitespace under tabs in Totara theme
+    8962    Tabs in Quiz do not appear inactive when no quiz item has been selected
+    5734    Code warnings in Certificate module
+    8826    Code warnings when creating a Forum
+    8963    Incorrect uppercasing in Learning Plan linked item strings
+    6399    Remove Photoshop files left in some themes
+
+
 Release 1.0.16 (28 June 2011):
 ==================================================
 

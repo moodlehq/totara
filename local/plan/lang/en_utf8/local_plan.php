@@ -537,6 +537,7 @@ $string['linkedobjectives'] = 'Linked objectives';
 $string['nocourses'] = 'No courses.';
 $string['nolinkedcourses'] = 'No linked courses.';
 $string['linkedcourses'] = 'Linked courses';
+$string['numberoflinkedcourses'] = 'Courses';
 
 $string['planname'] = 'Plan name';
 $string['planstatus'] = 'Plan status';

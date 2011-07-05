@@ -407,6 +407,11 @@ function reminder_cron() {
                     'id', $config['requirement']
                 );
 
+                if (empty($requirementid)) {
+                    mtrace('ERROR: No feedback requirement found for this reminder... SKIPPING');
+                    continue;
+                }
+
                 // Check if we are tracking the course
                 if ($config['tracking'] == 0) {
                     $tsql = "
@@ -482,7 +487,8 @@ function reminder_cron() {
 
                     // Check if any users found
                     if (!$rs = get_recordset_sql($sql)) {
-                        return;
+                        mtrace("WARNING: no users to send reminder message to (message id {$message->id})... SKIPPING");
+                        continue;
                     }
 
                     // Get manager location
