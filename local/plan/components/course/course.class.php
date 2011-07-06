@@ -635,7 +635,7 @@ class dp_course_component extends dp_base_component {
                     $mon = $matches[2];
                     $year = $matches[3];
 
-                    $duedateout = mktime(0, 0, 0, $mon, $day, $year);
+                    $duedateout = make_timestamp($year, $mon, $day);
                 }
 
                 $todb = new object();
