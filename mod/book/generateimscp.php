@@ -71,7 +71,7 @@ add_to_log($course->id, 'book', 'generateimscp', 'generateimscp.php?id='.$cm->id
 /// Now delete all the temp dirs
     delete_dir_contents($CFG->dataroot . "/$cm->course/moddata/book/$book->id");
 /// Now serve the file
-    send_file($zipfile, clean_filename($book->name) . '.zip', 86400, 0, false, true);
+    send_file($zipfile, clean_filename($book->name) . '.zip', -1, 0, false, true);
 
 /**
  * This function will create the default imsmanifest plus contents for the book chapters passed as array
