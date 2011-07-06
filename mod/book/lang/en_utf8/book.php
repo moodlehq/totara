@@ -49,4 +49,6 @@ $string['importinfo'] = 'Import selected HTML file or directory.<br />Chapters a
 $string['maindirectory'] = 'Main directory';
 $string['fileordir'] = 'File or directory';
 
+$string['generateimscp'] = 'Generate IMSCP';
+
 ?>
