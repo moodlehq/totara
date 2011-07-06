@@ -336,9 +336,9 @@ padding-left: 23px;
 .header-search #coursesearchbox {
   float: left;
   border: none;
-	padding: 5px;
-	width: 150px;
-  background: url('images/search_bg_field.gif') no-repeat top left;
+  padding: 5px;
+  width: 150px;
+  background: url('images/search_bg_field.gif') no-repeat top right;
 }
 
 .header-search #coursesubmit {
@@ -349,7 +349,7 @@ padding-left: 23px;
 	text-indent: -10000px;
 	width: 28px;
 	height: 21px;
-  background: url('images/search_bg_submit.gif') no-repeat top left;
+  background: url('images/search_bg_submit.gif') no-repeat top right;
   font-size: 0;
   line-height: 0;
 }

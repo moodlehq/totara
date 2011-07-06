@@ -36,7 +36,10 @@ div#totara_menu ul {
 input, select, button {
   padding-left:3px;
   padding-right:3px;
-  overflow:visible;
+}
+
+select, button {
+    overflow:visible;
 }
 
 
