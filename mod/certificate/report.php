@@ -39,7 +39,7 @@ add_to_log($course->id, "certificate", "view", "report.php?id=$cm->id", "$certif
         /// Check to see if groups are being used
         $groupmode = groups_get_activity_groupmode($cm);
         groups_get_activity_group($cm, true);
-        groups_print_activity_menu($cm, 'report.php?id='.$id);
+        groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/certificate/report.php?id='.$id);
     } else {
         $groupmode = groups_get_activity_groupmode($cm);
         groups_get_activity_group($cm, true);
