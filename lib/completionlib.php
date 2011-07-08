@@ -167,6 +167,52 @@ function completion_can_view_data($userid, $courseid = null) {
 
 
 /**
+ * Check if a module type has RPL enabled for it
+ *
+ * RPLs for modules are enabled/disabled via $CFG->enablemodulerpl, which can
+ * be set on the Site Administration settings page "Grades -> General settings"
+ *
+ * @access  public
+ * @param   mixed   $module     Can either be the (string) name of the module,
+ *                              or the module type id (int).
+ * @return  bool
+ */
+function completion_module_rpl_enabled($module) {
+    global $CFG;
+
+    // If supplied module id, this is easy
+    if (is_integer($module)) {
+        // Check if RPL is enabled for this module
+        return in_array($module, explode(',', $CFG->enablemodulerpl));
+    }
+
+    // If supplied the module string name
+    if (is_string($module)) {
+
+        // Cache modules list
+        static $modules;
+        if ($modules == null) {
+            $modules = get_records('modules', '', '', '', 'name, id');
+            if (!$modules) {
+                $modules = array();
+            }
+        }
+
+        // Check if module exists in DB
+        if (!array_key_exists($module, $modules)) {
+            return false;
+        }
+
+        // Check if RPL is enabled for this module
+        return in_array($modules[$module]->id, explode(',', $CFG->enablemodulerpl));
+    }
+
+    // Incorrect input
+    print_error('error:incorrectdatatypesupplied', 'completion');
+}
+
+
+/**
  * Class represents completion information for a course.
  *
  * Does not contain any data, so you can safely construct it multiple times

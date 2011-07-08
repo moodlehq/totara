@@ -2341,5 +2341,29 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    // Set RPL config options to match the site's configuration before they were configurable
+    if ($result && $oldversion < 2011070801) {
+        // Create default settings
+        $result = $result && set_config('enablecourserpl', 1);
+
+        // For upgrades
+        if (isset($CFG->local_postinst_hasrun)) {
+            // Default to module RPLs for Face-to-face only (if module installed)
+            if ($f2fid = get_field('modules', 'id', 'name', 'facetoface')) {
+                // Only set config variable if has not been set already
+                if (!isset($CFG->enablemodulerpl)) {
+                    $result = $result && set_config('enablemodulerpl', $f2fid);
+                }
+            }
+        // For fresh installs
+        } else {
+            // Default to RPLs for all modules available
+            $modules = get_records('modules', '', '', 'id', 'id');
+            if ($modules) {
+                $result = $result && set_config('enablemodulerpl', implode(',', array_keys($modules)));
+            }
+        }
+    }
+
     return $result;
 }

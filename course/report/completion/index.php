@@ -20,19 +20,19 @@
  * Course completion progress report
  *
  * @package   moodlecore
- * @copyright 2009 Catalyst IT Ltd
+ * @copyright 2009-2011 Catalyst IT Ltd
  * @author    Aaron Barnes <aaronb@catalyst.net.nz>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once('../../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
 
 
 /**
  * Configuration
  */
 define('COMPLETION_REPORT_PAGE',        20);
-define('COMPLETION_REPORT_RPL',         true);
 define('COMPLETION_REPORT_COL_TITLES',  true);
+$criteria_with_rpl = array();
 
 
 /**
@@ -82,10 +82,6 @@ function csv_quote($value) {
 ///
 function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
     global $CFG, $edituser, $course, $sort, $start;
-
-    if (!COMPLETION_REPORT_RPL) {
-        return;
-    }
 
     // If editing a user
     if ($edituser == $user->id) {
@@ -145,6 +141,9 @@ foreach ($completion->get_criteria(COMPLETION_CRITERIA_TYPE_COURSE) as $criterio
 
 foreach ($completion->get_criteria(COMPLETION_CRITERIA_TYPE_ACTIVITY) as $criterion) {
     $criteria[] = $criterion;
+    if ($criterion->module && completion_module_rpl_enabled($criterion->module)) {
+        $criteria_with_rpl[] = $criterion->id;
+    }
 }
 
 foreach ($completion->get_criteria() as $criterion) {
@@ -455,7 +454,7 @@ if(!$csv) {
     $method = $completion->get_aggregation_method();
 
     // Print
-    if (COMPLETION_REPORT_RPL) {
+    if ($CFG->enablecourserpl) {
         if ($method == 1) {
             print get_string('courserplorallcriteriagroups', 'completion');
         } else {
@@ -481,7 +480,7 @@ if(!$csv) {
             print '<th scope="col" class="colheader criterianame">';
             print '<span class="completion-criterianame">'.$details.'</span>';
 
-            if ($criterion->module == 'facetoface' && COMPLETION_REPORT_RPL) {
+            if (in_array($criterion->id, $criteria_with_rpl)) {
                 print '<span class="completion-rplheader completion-criterianame">'.get_string('recognitionofpriorlearning', 'completion').'</span>';
             }
 
@@ -492,7 +491,7 @@ if(!$csv) {
         print '<th scope="col" class="colheader criterianame">';
 
         print '<span class="completion-criterianame">'.get_string('coursecomplete', 'completion').'</span>';
-        if (COMPLETION_REPORT_RPL) {
+        if ($CFG->enablecourserpl) {
             print '<span class="completion-rplheader completion-criterianame">'.get_string('recognitionofpriorlearning', 'completion').'</span>';
         }
 
@@ -575,7 +574,7 @@ if(!$csv) {
         print '<img src="'.$icon.'" class="icon" alt="'.$iconalt.'" '.(!$iconlink ? 'title="'.$iconalt.'"' : '').' />';
         print ($iconlink ? '</a>' : '');
 
-        if ($criterion->module == 'facetoface' && COMPLETION_REPORT_RPL) {
+        if (in_array($criterion->id, $criteria_with_rpl)) {
             print '<img src="'.$CFG->pixpath.'/i/course.gif" class="icon" alt="RPL" title="'.get_string('activityrpl', 'completion').'" />';
             print '<a href="#" class="rplexpand rpl-'.$criterion->id.'" title="'.get_string('showrpls', 'completion').'"><img src="'.$CFG->pixpath.'/i/one.gif" class="icon" alt="+"/></a>';
         }
@@ -587,7 +586,7 @@ if(!$csv) {
     print '<th class="criteriaicon">';
     print '<img src="'.$CFG->pixpath.'/i/course.gif" class="icon" alt="'.get_string('course').'" title="'.get_string('coursecomplete', 'completion').'" />';
 
-    if (COMPLETION_REPORT_RPL) {
+    if ($CFG->enablecourserpl) {
         print '<img src="'.$CFG->pixpath.'/i/course.gif" class="icon" alt="'.get_string('rpl', 'completion').'" title="'.get_string('courserpl', 'completion').'" />';
         print '<a href="#" class="rplexpand rpl-course" title="'.get_string('showrpls', 'completion').'"><img src="'.$CFG->pixpath.'/i/one.gif" class="icon" alt="+"/></a>';
     }
@@ -678,7 +677,7 @@ foreach ($progress as $user) {
                       '" alt="'.$describe.'" class="icon" title="'.$fulldescribe.'" />';
 
                 // Decide if we need to display an RPL
-                if ($criterion->module == 'facetoface') {
+                if (in_array($criterion->id, $criteria_with_rpl)) {
                     show_rpl($criterion->id, $user, $criteria_completion->rpl, $describe, $fulldescribe);
                 }
 
@@ -753,7 +752,9 @@ foreach ($progress as $user) {
         print '<img src="'.$CFG->pixpath.'/i/completion-auto-'.$completiontype.'.gif'.
                '" alt="'.$describe.'" class="icon" title="'.$fulldescribe.'" />';
 
-        show_rpl('course', $user, $ccompletion->rpl, $describe, $fulldescribe);
+        if ($CFG->enablecourserpl) {
+            show_rpl('course', $user, $ccompletion->rpl, $describe, $fulldescribe);
+        }
 
         print '</td>';
     }

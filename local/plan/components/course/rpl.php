@@ -47,6 +47,11 @@ if($component->get_setting('setcompletionstatus') != DP_PERMISSION_ALLOW) {
     error(get_string('error:coursecompletionpermission', 'local_plan'));
 }
 
+// Check course RPLs are enabled
+if (!$CFG->enablecourserpl) {
+    print_error('error:courserplsaredisabled', 'completion', $component->get_url());
+}
+
 if($rpl = get_record('course_completions', 'userid', $userid, 'course', $courseid)){
     $rpltext = stripslashes($rpl->rpl);
     $rplid = $rpl->id;
