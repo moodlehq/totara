@@ -126,7 +126,7 @@ if ($frm = data_submitted()) {
 $pagetitle = format_string($facetoface->name);
 $navlinks[] = array('name' => $strfacetofaces, 'link' => "index.php?id=$course->id", 'type' => 'title');
 $navlinks[] = array('name' => $pagetitle, 'link' => "view.php?f=$facetoface->id", 'type' => 'activityinstance');
-$navlinks[] = array('name' => get_string('attendees', 'facetoface'), 'link' => "attendees.php?s=$session->id", 'type' => 'activityinstance');
+$navlinks[] = array('name' => get_string('attendees', 'facetoface'), 'link' => "attendees.php?s=$session->id&amp;backtoallsessions=$backtoallsessions", 'type' => 'activityinstance');
 $navlinks[] = array('name' => get_string('addremoveattendees', 'facetoface'), 'link' => '', 'type' => 'title');
 $navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', '', true,
