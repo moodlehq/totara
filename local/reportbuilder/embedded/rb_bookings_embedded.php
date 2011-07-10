@@ -61,6 +61,11 @@ class rb_bookings_embedded extends rb_base_embedded {
                 'value' => 'timefinish',
                 'heading' => get_string('endtime', 'rb_source_facetoface_sessions'),
             ),
+            array(
+                'type' => 'status',
+                'value' => 'statuscode',
+                'heading' => get_string('status', 'rb_source_facetoface_sessions'),
+            ),
         );
 
         // only add facilitator column if role exists
@@ -85,7 +90,9 @@ class rb_bookings_embedded extends rb_base_embedded {
         );
 
         // also limited to single user by embedded params
-        $this->embeddedparams = array();
+        $this->embeddedparams = array(
+            'status' => '!10',
+        );
         if(isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
         }
