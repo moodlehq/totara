@@ -198,14 +198,7 @@ class completion_criteria_completion extends data_object {
 
         if (!$this->_criteria)
         {
-            global $DB;
-
-            $params = array(
-                'id'    => $this->criteriaid
-            );
-
-            $record = $DB->get_record('course_completion_criteria', $params);
-
+            $record = get_record('course_completion_criteria', 'id', $this->criteriaid);
             $this->attach_criteria(completion_criteria::factory($record));
         }
 
