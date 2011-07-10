@@ -1,10 +1,11 @@
-<?PHP // $Id: qtype_match.php,v 1.2 2008/11/21 19:32:43 samulik Exp $ 
-      // qtype_match.php - created with Moodle 1.9.2+ (Build: 20080813) (2007101521)
-      // local modifications from https://www.moodle.fi/demo/moodle
+<?PHP // $Id$ 
+      // qtype_match.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['addmoreqblanks'] = 'Lisää {no} kysymyskenttää';
+$string['filloutthreeqsandtwoas'] = 'Anna vähintään kaksi kysymystä ja kolme vastausta. Voit antaa ylimääräisiä vääriä vastauksia lisäämällä vastauksen tyhjään kysykseen. Syötteitä, joissa sekä kysymykset että vastaukset ovat tyhjiä, ei otetan huomioon.';
 $string['nomatchinganswerforq'] = 'Tälle kysymykselle pitää antaa vastaus.';
+$string['notenoughqsandas'] = 'Anna vähintään $a->q kysymystä ja $a->a vastausta.';
 $string['notenoughquestions'] = 'Anna vähintään $a kysymys-vastaus-paria.';
 
 ?>

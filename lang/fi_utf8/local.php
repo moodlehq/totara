@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // local.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // local.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['addanothercolumn'] = 'Lisää uusi sarake';
@@ -162,6 +162,6 @@ $string['teammembers_text'] = 'Kaikki tiimisi jäsenet näkyvät alla.';
 $string['template'] = 'Templaatti';
 $string['timecompleted'] = 'Suoritettu';
 $string['type'] = 'Tyyppi';
-$string['viewmyteam'] = 'Tarkastelee omaa tiimiä';
+$string['viewmyteam'] = 'Tarkastele omaa tiimiä';
 
 ?>
