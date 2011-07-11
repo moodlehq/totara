@@ -173,7 +173,8 @@ class dp_course_component extends dp_base_component {
                 $completion_field
                 c.fullname,
                 c.fullname AS name,
-                c.icon
+                c.icon,
+                c.enablecompletion
             FROM
                 {$CFG->prefix}dp_plan_course_assign a
                 $completion_joins
@@ -851,6 +852,16 @@ class dp_course_component extends dp_base_component {
 
         // Get permissions
         $cansetcompletion = !$this->plan->is_complete() && $this->get_setting('setcompletionstatus') >= DP_PERMISSION_ALLOW;
+
+        // Check course has completion enabled
+        $course = new object();
+        $course->id = $item->courseid;
+        $course->enablecompletion = $item->enablecompletion;
+        $cinfo = new completion_info($course);
+
+        // Only allow setting an RPL if completion is enabled for the site and course
+        $cansetcompletion = $cansetcompletion && $cinfo->is_enabled();
+
         $approved = $this->is_item_approved($item->approved);
 
         // Actions
