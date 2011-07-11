@@ -5,8 +5,12 @@
     and return it as an associative array
 */
 function get_registration_data() {
-    global $CFG, $SITE;
+    global $CFG, $SITE, $db;
     include($CFG->dirroot . '/version.php');
+    require_once($CFG->dirroot.'/lib/environmentlib.php');
+    $dbinfo = $db->ServerInfo();
+    $db_version = normalize_version($dbinfo['version']);
+
     $data['siteidentifier'] = $CFG->siteidentifier;
     $data['wwwroot'] = $CFG->wwwroot;
     $data['siteshortname'] = $SITE->shortname;
@@ -19,6 +23,7 @@ function get_registration_data() {
     $data['totarabuild'] = $TOTARA->build;
     $data['totararelease'] = $TOTARA->release;
     $data['phpversion'] = phpversion();
+    $data['dbtype'] = $CFG->dbfamily . ' ' . $db_version;
     $data['webserversoftware'] = $_SERVER['SERVER_SOFTWARE'];
     $data['usercount'] = count_records('user', 'deleted', '0');
     $data['coursecount'] = count_records('course');
