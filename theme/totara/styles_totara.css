@@ -391,7 +391,6 @@ div#totara_menu {
 /* Unselected primary navigation */
 div#totara_menu ul {
     height: 72px;
-    overflow: hidden;
     padding: 0 0 0 25px;
 }
 
