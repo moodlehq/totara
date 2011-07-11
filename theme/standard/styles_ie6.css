@@ -5,6 +5,16 @@
 div#totara_menu {
 	height:42px;
 }
+
+.dir-rtl div.header-search{
+    float:left;
+    width:220px;
+}
+
+.dir-rtl div#totara_menu ul{
+    width:657px;
+}
+
 .tabtree {
   height: 100%;
 }
