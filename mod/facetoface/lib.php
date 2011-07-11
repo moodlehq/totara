@@ -1747,7 +1747,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
 
     if (!$success) {
         rollback_sql();
-        error('Could not update face-to-face signup record in database');
+        print_error('error:couldnotupdatef2frecord', 'facetoface');
         return false;
     }
 
@@ -1772,9 +1772,9 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
     }
 
     // Update status
-    if (!facetoface_update_signup_status($usersignup->id, $new_status, $userid)) {
+    if (!facetoface_update_signup_status($usersignup->id, $new_status, $userid, null, null, false)) {
         rollback_sql();
-        error('Face-to-face failed to update the user\'s status');
+        print_error('error:f2ffailedupdatestatus', 'facetoface');
         return false;
     }
 
@@ -1813,7 +1813,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
 
         if (!update_record('facetoface_signups', $usersignup)) {
             rollback_sql();
-            error('Face-to-face failed to update the user\'s signup');
+            print_error('error:couldnotupdatef2frecord', 'facetoface');
             return false;
         }
     }
@@ -2073,11 +2073,12 @@ function facetoface_send_request_notice($facetoface, $session, $userid) {
  * @param integer $createdby User ID of the user causing the status update
  * @param string $note Cancellation reason or other notes
  * @param int $grade Grade
+ * $param bool $usetransaction Set to true if database transactions are to be used
  *
  * @returns integer ID of newly created signup status, or false
  *
  */
-function facetoface_update_signup_status($signupid, $statuscode, $createdby, $note='', $grade=NULL) {
+function facetoface_update_signup_status($signupid, $statuscode, $createdby, $note='', $grade=NULL, $usetransaction=true) {
     $timenow = time();
 
     $signupstatus = new stdclass;
@@ -2090,19 +2091,27 @@ function facetoface_update_signup_status($signupid, $statuscode, $createdby, $no
     $signupstatus->superceded = 0;
     $signupstatus->mailed = 0;
 
-    begin_sql();
+    if ($usetransaction) {
+        begin_sql();
+    }
     if ($statusid = insert_record('facetoface_signups_status', $signupstatus)) {
         // mark any previous signup_statuses as superceded
         $where = "signupid = $signupid AND ( superceded = 0 OR superceded IS NULL ) AND id != $statusid";
         if(set_field_select('facetoface_signups_status', 'superceded', 1, $where)) {
-            commit_sql();
+            if ($usetransaction) {
+                commit_sql();
+            }
             return $statusid;
         } else {
-            rollback_sql();
+            if ($usetransaction) {
+                rollback_sql();
+            }
             return false;
         }
     } else {
-        rollback_sql();
+        if ($usetransaction) {
+            rollback_sql();
+        }
         return false;
     }
 }
