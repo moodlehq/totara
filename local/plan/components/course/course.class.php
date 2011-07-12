@@ -173,7 +173,8 @@ class dp_course_component extends dp_base_component {
                 $completion_field
                 c.fullname,
                 c.fullname AS name,
-                c.icon
+                c.icon,
+                c.enablecompletion
             FROM
                 {$CFG->prefix}dp_plan_course_assign a
                 $completion_joins
@@ -461,8 +462,8 @@ class dp_course_component extends dp_base_component {
         if ($approved) {
             $class = '';
             $launch = '<div class="plan-launch-course-button">' .
-                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">' .
-                '<img src="' . $CFG->pixpath . '/launch-course.png" width="56" height="18" alt="' . get_string('launchcourse', 'local_plan') . '" /></a></div>';
+                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">'. get_string('launchcourse', 'local_plan') .'</a>' .
+                '</div>';
         } else {
             $class = ' class="dimmed"';
             $launch = '';
@@ -525,9 +526,9 @@ class dp_course_component extends dp_base_component {
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
         if ($this->is_item_approved($item->approved)) {
-            $out .= '<div class="plan-launch-course-button">' .
-                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">' .
-                '<img src="' . $CFG->pixpath . '/launch-course.png" width="56" height="18" alt="' . get_string('launchcourse', 'local_plan') . '" /></a></div>';
+            $out =  '<div class="plan-launch-course-button">' .
+                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">'. get_string('launchcourse', 'local_plan') .'</a>' .
+                '</div>';
         }
 
         $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon={$item->icon}&amp;id={$item->courseid}&amp;size=small&amp;type=course\" alt=\"{$item->fullname}\">";
@@ -635,7 +636,7 @@ class dp_course_component extends dp_base_component {
                     $mon = $matches[2];
                     $year = $matches[3];
 
-                    $duedateout = mktime(0, 0, 0, $mon, $day, $year);
+                    $duedateout = make_timestamp($year, $mon, $day);
                 }
 
                 $todb = new object();
@@ -851,6 +852,16 @@ class dp_course_component extends dp_base_component {
 
         // Get permissions
         $cansetcompletion = !$this->plan->is_complete() && $this->get_setting('setcompletionstatus') >= DP_PERMISSION_ALLOW;
+
+        // Check course has completion enabled
+        $course = new object();
+        $course->id = $item->courseid;
+        $course->enablecompletion = $item->enablecompletion;
+        $cinfo = new completion_info($course);
+
+        // Only allow setting an RPL if completion is enabled for the site and course
+        $cansetcompletion = $cansetcompletion && $cinfo->is_enabled();
+
         $approved = $this->is_item_approved($item->approved);
 
         // Actions
@@ -861,7 +872,7 @@ class dp_course_component extends dp_base_component {
             $markup .= $delete;
         }
 
-        if ($cansetcompletion && $approved) {
+        if ($cansetcompletion && $approved && $CFG->enablecourserpl) {
             $strrpl = get_string('addrpl', 'local_plan');
             $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/course/rpl.php?id='.$this->plan->id.'&courseid='.$item->courseid.'" title="'.$strrpl.'">
                 <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';

@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,9 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 require_once('../../../../config.php');
@@ -47,6 +47,20 @@ if($component->get_setting('setcompletionstatus') != DP_PERMISSION_ALLOW) {
     error(get_string('error:coursecompletionpermission', 'local_plan'));
 }
 
+// Check completion is enabled for course
+$course = new object();
+$course->id = $courseid;
+$info = new completion_info($course);
+
+if (!$info->is_enabled()) {
+    print_error('completionnotenabled', 'completion', $component->get_url());
+}
+
+// Check course RPLs are enabled
+if (!$CFG->enablecourserpl) {
+    print_error('error:courserplsaredisabled', 'completion', $component->get_url());
+}
+
 if($rpl = get_record('course_completions', 'userid', $userid, 'course', $courseid)){
     $rpltext = stripslashes($rpl->rpl);
     $rplid = $rpl->id;
@@ -67,9 +81,6 @@ if ($fromform = $mform->get_data()) {
         totara_set_notification(get_string('error:unknownbuttonclicked', 'local_plan'), $returnurl);
     }
 
-    $course = new object();
-    $course->id = $courseid;
-    $info = new completion_info($course);
     $rpl = $fromform->rpl;
 
     // Get completion object

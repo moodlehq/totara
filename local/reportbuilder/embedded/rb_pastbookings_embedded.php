@@ -22,6 +22,8 @@
  * @subpackage reportbuilder 
  */
 
+require_once($CFG->dirroot . '/mod/facetoface/lib.php');
+
 class rb_pastbookings_embedded extends rb_base_embedded {
 
     public $url, $source, $fullname, $filters, $columns;
@@ -61,6 +63,11 @@ class rb_pastbookings_embedded extends rb_base_embedded {
                 'value' => 'timefinish',
                 'heading' => get_string('endtime', 'rb_source_facetoface_session'),
             ),
+            array(
+                'type' => 'status',
+                'value' => 'statuscode',
+                'heading' => get_string('status', 'rb_source_facetoface_sessions'),
+            ),
         );
 
         // only add facilitator column if role exists
@@ -85,7 +92,9 @@ class rb_pastbookings_embedded extends rb_base_embedded {
         );
 
         // also limited to single user by embedded params
-        $this->embeddedparams = array();
+        $this->embeddedparams = array(
+            'status' => '!' . MDL_F2F_STATUS_USER_CANCELLED,
+        );
         if(isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
         }

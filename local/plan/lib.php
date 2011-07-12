@@ -568,14 +568,14 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
 
     if ($role == 'manager') {
         // Print out the All team members link
-        $out .= print_heading(get_string('teammembers', 'local_plan'), 'left', 3, 'main', true);
+        $out .= print_heading(get_string('teammembers', 'local_plan'), '', 3, 'main', true);
         $class = $userid == 0 ? 'class="dp-menu-selected"' : '';
         $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/my/teammembers.php\">";
         $out .= get_string('allteammembers', 'local_plan');
         $out .= "</a></li></ul>";
         if ($userid) {
             // Display who we are currently viewing if appropriate
-            $out .= print_heading(get_string('currentlyviewing', 'local_plan'), 'left', 3, 'main', true);
+            $out .= print_heading(get_string('currentlyviewing', 'local_plan'), '', 3, 'main', true);
             // TODO: make this more efficient
             $user = get_record('user','id',$userid);
             $class = $selectedid == 0 ? 'class="dp-menu-selected"' : '';
@@ -589,7 +589,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
             $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('activeplans', 'local_plan') . '</h4>';
         }
         else {
-            $out .= print_heading(get_string('activeplans', 'local_plan'), 'left', 3, 'main', true);
+            $out .= print_heading(get_string('activeplans', 'local_plan'), '', 3, 'main', true);
         }
             $out .= "<ul>";
             foreach ($plans as $p) {
@@ -608,7 +608,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
             $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('unapprovedplans', 'local_plan') . '</h4>';
         }
         else {
-            $out .= print_heading(get_string('unapprovedplans', 'local_plan'), 'left', 3, 'main', true);
+            $out .= print_heading(get_string('unapprovedplans', 'local_plan'), '', 3, 'main', true);
         }
         $out .= "<ul>";
         foreach ($plans as $p) {
@@ -627,7 +627,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
             $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('completedplans', 'local_plan') . '</h4>';
         }
         else {
-            $out .= print_heading(get_string('completedplans', 'local_plan'), 'left', 3, 'main', true);
+            $out .= print_heading(get_string('completedplans', 'local_plan'), '', 3, 'main', true);
         }
             $out .= "<ul>";
             foreach ($plans as $p) {
@@ -807,7 +807,7 @@ function dp_record_status_menu($pagename, $status, $userid=null) {
     // pass the userid if set
     $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
 
-    $out = print_heading(get_string('recordoflearning', 'local'), 'left', 3, 'main', true);
+    $out = print_heading(get_string('recordoflearning', 'local'), '', 3, 'main', true);
 
     // generate options for menu display
     $filter = array();

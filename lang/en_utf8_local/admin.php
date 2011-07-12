@@ -29,6 +29,8 @@ $string['totararegistrationinfo'] = '<p>This page configures registration update
 These updates allow Totara to know what versions of Totaralms and support software you are running.
 This information will allow Totara to better examine and resolve any support issues you face in the future.</p>
 <p>This information will be securely transmitted and held in confidence.</p>';
+$string['checksum'] = 'Checksum';
+$string['dbtype'] = 'Database type';
 $string['totararelease'] = 'Totara release identifier';
 $string['totaraversion'] = 'Totara version number';
 $string['usercount'] = 'Number of site users';

@@ -1,5 +1,33 @@
 Totara LMS Changelog
 
+Release 1.0.18 (12 July 2011):
+==================================================
+
+New features:
+    8654    Support for right-to-left languages
+    8989    Add configuration options to enable/disable RPL for courses and module types
+    8654    Add Hebrew language pack to Totara
+
+Improvements:
+    8973    Hidden courses are now dimmed in Report Builder reports
+    8996    Add signup status column to Face-to-face reports
+    8343    Added more protocols to TinyMCE url checker                                         Now links to protocols such as skype: or meet: will be made into links correctly
+    8445    Use constant rather than hardcoded separator in Face-to-face
+    8485    Updates to Finnish language pack
+
+Bug fixes:
+    8984    Due dates decrement when updating settings in Learning Plans                        Only for certain timezone settings
+    8996    Cancelled sessions appear in Face-to-face reports
+    8979    Language selection box on language editing page can't be clicked
+    6710    Missing languages strings in dialogs
+    8995    Parameter missing from Face-to-face breadcrumbs                                     Links pointed to the wrong page
+    8654    IE6 top navigation breaks for RTL languages
+    8987    Code warning on Certificate report page
+    8983    Exported books cached in Book module                                                Only affected certain server setups
+    5734    Remove some Moodle 2.0 code from Course Completion
+    6710    Missing language string in Book module
+
+
 Release 1.0.17 (5 July 2011):
 ==================================================
 

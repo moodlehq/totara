@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>מסמכי מוודל: לשדרג את מוודל</title>
+    <link rel="stylesheet" href="docstyles.css" type="TEXT/CSS" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h1>לשדרג את מוודל</h1>
+
+<blockquote>
+  <p> מוודל מתוכנן כדי לאפשר שידרוג מכל גירסא ישנה שלו לכל גירסא מאוחרת יותר, ללא כל בעיה.
+ </p>
+  <p>כשאתם משדרגים התקנה של מוודל, צריך לעקוב אחרי הצעדים הבאים:
+</p>
+  <h3 class="sectionheading">1. עשו גיבוי לנתונים חשובים</h3>
+  <blockquote>
+    <p> למרות שהדבר לא הכרחי לחלוטין, תמיד רצוי להכין גיבוי של כל מערכת ייצור לפני שידרוג רציני, רק למקרה שתצטרכו לחזור לגירסא הישנה מכל סיבה שהיא. למעשה, זהו רעיון טוב לקבוע שהשרת שלכם יעשה גיבוי למוודל באופן אוטומטי על בסיס יומי, כך שתוכלו לדלג על הצעד הזה. </p>
+    <p> ישנם שלושה תחומים שדורשים גיבוי:</p>
+    <blockquote>
+      <p><strong>1. תיקיית התוכנה של מוודל</strong></p>
+      <blockquote>
+        <p>עשו העתק נפרד של הקבצים האלה לפני השידרוג, כך שתוכלו לאחזר את הconfig.php שלכם, וכל רכיב שהוספתם כמו נושא, שפה וכו'.<strong><br />
+        </strong></p>
+      </blockquote>
+      <p><strong>2. תיקיית הנתונים שלכם.</strong></p>
+      <blockquote>
+        <p>כאן שוכן תוכן שהועלה לאתר שלכם (כמו משאבים של קורסים ומטלות של סטודנטים) כך שבכל מקרה מאוד חשוב שיהיה לכם גיבוי של הקבצים הללו. לפעמים, שידרוגים יכולים לשנות את מיקומים או שמות בתוך תיקיית הנתונים שלכם. <strong><br />
+        </strong></p>
+      </blockquote>
+      <p><strong>3.בסיס הנתונים שלכם</strong></p>
+      <blockquote>
+        <p>רוב השידרוגים של מוודל ישנו את טבלאות בסיס הנתונים על ידי הוספה או שינוי של שדות. ישנן דרכים שונות לגבות כל בסיס נתונים. דרך אחת לעשות גיבוי לבסיס נתונים MySQL היא "לזרוק" אותו לתוך קובץ SQL יחיד. הדוגמא הבאה מראה הוראות של UNIX ל"זריקת" בסיס הנתונים שנקרא
+       &quot;moodle&quot;:</p>
+        <blockquote>
+          <p><font face="Courier New, Courier, mono">mysqldump moodle &gt; moodle-backup-2002-10-26.sql</font></p>
+        </blockquote>
+        <p>בנוסף, אתם יכולים להשתמש במאפיין ה&quot;יצוא&quot; שנמצא בממשק הרשת >quot;בסיס נתונים&quot; האופציונלי של מוודל כדי שיעשה את אותו הדבר בכל מערכות ההפעלה.</p>
+        <p>&nbsp;</p>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+  <h3 class="sectionheading">2. התקינו את התוכנה החדשה של מוודל</h3>
+  <blockquote>
+    <p><strong>שימוש בארכיון שהורדתם</strong></p>
+    <blockquote>
+      <p> אל תתקינו התקנה חדשה על התקנה ישנה אלא אם כן אתם בטוחים במה שאתם עושים. לפעמים, קבצים ישנים יכולים לגרום בעיות בהתקנות חדשות. הדרך הטובה ביותר היא לתת שם אחר לתיקייה הנוכחית של מוודל, ואז לפתוח את הארכיון החדש של מוודל לתוך המיקום הישן.</p>
+      <blockquote>
+        <p><font face="Courier New, Courier, mono">mv moodle moodle.backup<br />
+        tar xvzf moodle-1.1.tgz</font></p>
+      </blockquote>
+      <p>עכשיו, העתיקו לשם את כל קבצי הconfig.php שלכם ושאר התקנות כמו נושאים שהתאמתם באופן אישי.:</p>
+      <blockquote>
+        <p><font face="Courier New, Courier, mono">cp moodle.backup/config.php moodle<br />
+        cp -pr moodle.backup/theme/mytheme moodle/theme/mytheme</font></p>
+      </blockquote>
+    </blockquote>
+    <p><strong>CVS שימוש ב</strong></p>
+    <blockquote>
+      <p>אם אתם משתמשים ב CVS, פשוט לכו לספריית השורש של מוודל ועדכנו לקבצים החדשים:</p>
+      <blockquote>
+        <p><font face="Courier New, Courier, mono">cvs update -dP</font></p>
+      </blockquote>
+      <p>וודאו שאתם משתמשים בפרמטר &quot;d&quot; ליצירת התיקיות החדשות, אם הדבר נדרש, ובפרמטר &quot;P&quot; כדי לסלק תיקיות ריקות.</p>
+      <p> עם ערכתם בעבר את קבצי מוודל, עקבו אחרי ההודעות בתשומת לב וחפשו אחר קונפליקטים אפשריים. כל הנושאים האישיים שלכם וההתקנות הלא-סטנדרטיות, יישארו ללא שינוי.</p>
+    </blockquote>
+    <p>&nbsp;</p>
+  </blockquote>
+  <h3 class="sectionheading">3. סיום השידרוג</h3>
+  <blockquote>
+    <p>הצעד האחרון הוא להפעיל את תהליך השידרוג בתוך מוודל. </p>
+    <p>כדי לעשות את זה, פשוט בקרו ב <a target="_top" href="../admin/index.php">עמוד המנהל של ההתקנה
+    שלכם</a>.</p>
+    <blockquote>
+      <p><font face="Courier New, Courier, mono">http://example.com/moodle/admin</font></p>
+    </blockquote>
+    <p>זה לא משנה אם אתם מחוברים כמנהל או כמישהו אחר. </p>
+    <p> מוודל ישים לב לגירסא החדשה באופן אוטומטי ויוציא לפועל את כל השידרוגים הנחוצים לבסיס הנתונים או מערכת הקבצים. אם יש משהו שהוא לא יכול לעשות בכוחות עצמו (מקרה מאוד נדיר) אז אתם תראו הודעות שיסבירו לכם מה אתם צריכים לעשות.  </p>
+  </blockquote>
+  <p>&nbsp; </p>
+  <p> בהנחה שהכל הולך כמו שצריך (ואתם לא מקבלים הודעות שגיאה) אז אתם יכולים להתחיל להשתמש בגירסא החדשה שלכם של מוודל ולהנות מהמאפיינים החדשים!</p>
+  <p>אם אתם נתקלים בבעיות עם השידרוג, בקרו ב <a target="_top" href="http://moodle.org/">moodle.org</a>
+  ותפרסמו הודעה ב<a target="_top" href="http://moodle.org/mod/forum/view.php?id=28">Installation
+  פורום תמיכה</a> שנמצא בקורס "משתמשים במוודל".</p>
+</blockquote>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p align="center"><font size="1"><a href="." target="_top">תיעוד מוודל</a></font></p>
+<p align="center"><font size="1">Version: $Id: upgrade.html,v 1.3 2010/11/07 14:20:01 emanuel1 Exp $</font></p>
+
+</body>
+</html>

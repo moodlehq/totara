@@ -162,7 +162,7 @@ if($type == 'course') {
 
     admin_externalpage_print_header('', $navlinks);
 
-    print_heading($depth->fullname, 'left', 1);
+    print_heading($depth->fullname, '', 1);
     echo "<p>{$depth->description}</p>";
 }
 

@@ -45,7 +45,7 @@ if (!$delete) {
     admin_externalpage_print_header('', $navlinks);
     $strdelete = get_string('deletecheckframework', $type, format_string($framework->fullname));
 
-    print_heading(get_string('deleteframework', $type, format_string($framework->fullname)), 'left', 1);
+    print_heading(get_string('deleteframework', $type, format_string($framework->fullname)), '', 1);
 
     notice_yesno("$strdelete<br /><br />",
                  "{$CFG->wwwroot}/hierarchy/framework/delete.php?type={$type}&id={$framework->id}&amp;delete=".md5($framework->timemodified)."&amp;sesskey={$USER->sesskey}",

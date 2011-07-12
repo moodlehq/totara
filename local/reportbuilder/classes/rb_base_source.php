@@ -420,7 +420,8 @@ abstract class rb_base_source {
     function rb_display_link_course($course, $row) {
         global $CFG;
         $courseid = $row->course_id;
-        return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
+        $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
+        return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
     }
 
     // convert a course name into a link to that course and shows
@@ -429,7 +430,8 @@ abstract class rb_base_source {
         global $CFG;
         $courseid = $row->course_id;
         $courseicon = $row->course_icon;
-        return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
+        $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
+        return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
     }
 
     // display an icon based on the course icon field
@@ -471,7 +473,8 @@ abstract class rb_base_source {
         if($catid == 0 || !$catid) {
             return '';
         }
-        return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\">{$category}</a>";
+        $cssclass = (isset($row->cat_visible) && $row->cat_visible == 0) ? ' class="dimmed"' : '';
+        return "<a $cssclass href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\">{$category}</a>";
     }
 
     // convert a course name into a link to that course and shows
@@ -483,7 +486,8 @@ abstract class rb_base_source {
         if($catid == 0 || !$catid) {
             return '';
         }
-        return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=".urlencode($caticon)."&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\" />{$category}</a>";
+        $cssclass = (isset($row->cat_visible) && $row->cat_visible == 0) ? ' class="dimmed"' : '';
+        return "<a $cssclass href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=".urlencode($caticon)."&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\" />{$category}</a>";
     }
 
 
@@ -1100,7 +1104,7 @@ abstract class rb_base_source {
                 'joins' => $join,
                 'displayfunc' => 'link_course',
                 'defaultheading' => get_string('coursename', 'local_reportbuilder'),
-                'extrafields' => array('course_id' => "$join.id")
+                'extrafields' => array('course_id' => "$join.id", 'course_visible' => "$join.visible")
             )
         );
         $columnoptions[] = new rb_column_option(
@@ -1114,7 +1118,8 @@ abstract class rb_base_source {
                 'defaultheading' => get_string('coursename', 'local_reportbuilder'),
                 'extrafields' => array(
                     'course_id' => "$join.id",
-                    'course_icon' => "$join.icon"
+                    'course_icon' => "$join.icon",
+                    'course_visible' => "$join.visible"
                 )
             )
         );
@@ -1384,7 +1389,7 @@ abstract class rb_base_source {
                     'joins' => $catjoin,
                     'displayfunc' => 'link_course_category',
                     'defaultheading' => get_string('category', 'local_reportbuilder'),
-                    'extrafields' => array('cat_id' => "$catjoin.id")
+                    'extrafields' => array('cat_id' => "$catjoin.id", 'cat_visible' => "$catjoin.visible")
                 )
         );
         $columnoptions[] = new rb_column_option(
@@ -1399,6 +1404,7 @@ abstract class rb_base_source {
                     'extrafields' => array(
                         'cat_id' => "$catjoin.id",
                         'cat_icon' => "$catjoin.icon",
+                        'cat_visible' => "$catjoin.visible"
                     )
                 )
         );

@@ -307,6 +307,11 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'course.id',
                 'course'
             ),
+            new rb_param_option(
+                'status',
+                'status.statuscode',
+                'status'
+            ),
         );
 
         return $paramoptions;

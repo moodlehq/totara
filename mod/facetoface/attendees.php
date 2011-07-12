@@ -202,9 +202,11 @@ add_to_log($course->id, 'facetoface', 'view attendees', "view.php?id=$cm->id", $
 
 $pagetitle = format_string($facetoface->name);
 
+$link = "{$CFG->wwwroot}/course/view.php?id={$course->id}";
+$navlinks[] = array('name' => $course->shortname, 'link' => $link, 'type' => 'title');
 $link = "{$CFG->wwwroot}/mod/facetoface/index.php?id={$course->id}";
 $navlinks[] = array('name' => get_string('modulenameplural', 'facetoface'), 'link' => $link, 'type' => 'title');
-$link = "{$CFG->wwwroot}/mod/facetoface/view.php?id={$facetoface->id}";
+$link = "{$CFG->wwwroot}/mod/facetoface/view.php?f={$facetoface->id}";
 $navlinks[] = array('name' => $pagetitle, 'link' => $link, 'type' => 'activityinstance');
 $navlinks[] = array('name' => get_string('attendees', 'facetoface'), 'link' => '', 'type' => 'title');
 

@@ -128,7 +128,7 @@ print_header($gi->name. ": ", $gi->name . ": ", $navigation, "", "", true);
 print "<div class=guideheadings>";
 print_heading($gi->name);
 if(isset($gi->description)) {
-    print_heading($gi->description,'left',3);
+    print_heading($gi->description,'',3);
 }
 print "Showing steps $showfrom to $showto of " . count($stepnames) . "<br />\n";
 if (!empty($finishfailed)) {

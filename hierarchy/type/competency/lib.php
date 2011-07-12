@@ -658,26 +658,26 @@ SQL;
         $out = '<table width="95%" cellpadding="5" cellspacing="1" id="list-coursecompetency"
             class="generalbox editcompetency boxaligncenter">
             <tr>
-                <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">'.
+                <th style="vertical-align:top; white-space:nowrap;" class="header c0" scope="col">'.
                     get_string('framework', 'competency').
                 '</th>
 
-                <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c1" scope="col">'.
+                <th style="vertical-align:top; white-space:nowrap;" class="header c1" scope="col">'.
                     get_string('depthlevel', 'competency').
                 '</th>
 
-                <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c2" scope="col">'.
+                <th style="vertical-align:top; white-space:nowrap;" class="header c2" scope="col">'.
                     get_string('name').
                 '</th>';
 
         if (!empty($CFG->competencyuseresourcelevelevidence)) {
-            $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c3" scope="col">'.
+            $out .= '<th style="vertical-align:top; white-space:nowrap;" class="header c3" scope="col">'.
                 get_string('evidence', 'competency').
             '</th>';
         }
 
         if ($can_edit) {
-            $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c4" scope="col">'.
+            $out .= '<th style="vertical-align:top; white-space:nowrap;" class="header c4" scope="col">'.
                 get_string('options', 'competency').
             '</th>';
         } // if ($can_edit)

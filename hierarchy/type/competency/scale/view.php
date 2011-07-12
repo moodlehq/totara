@@ -144,7 +144,7 @@ admin_externalpage_print_header('', $navlinks);
 print_single_button($CFG->wwwroot . '/hierarchy/framework/index.php', array('type' => 'competency'), get_string('allcompetencyscales', 'competency'));
 
 // Display info about scale
-print_heading(get_string('scalex', 'competency', format_string($scale->name)), 'left', 1);
+print_heading(get_string('scalex', 'competency', format_string($scale->name)), '', 1);
 echo '<p>'.format_string($scale->description, FORMAT_HTML).'</p>';
 
 // Display warning if scale is in use

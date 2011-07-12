@@ -1,4 +1,7 @@
-<?PHP // $Id: question.php,v 1.6 2008/11/21 01:32:26 samulik Exp $
+<?PHP // $Id$ 
+      // question.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+
+
 $string['adminreport'] = 'Raportoi mahdollisista ongelmista kysymystietokannassasi.';
 $string['broken'] = 'Tämä linkki on \"hajonnut\". Tiedosto, johon se osoittaa ei ole olemassa';
 $string['byandon'] = '<em>$a->user</em> - <em>$a->time</em>';
@@ -23,6 +26,7 @@ $string['deletecoursecategorywithquestions'] = 'Tähän kurssikategoriaan on yhd
 $string['donothing'] = 'Älä kopioi, siirrä tai vaihda linkkejä.';
 $string['editingcategory'] = 'Editoi kategoriaa';
 $string['editingquestion'] = 'Editoi kysymystä';
+$string['editthiscategory'] = 'Muokkaa tätä kategoriaa';
 $string['erroraccessingcontext'] = 'Ei pääse asiayhteyteen';
 $string['errordeletingquestionsfromcategory'] = 'Virhe poistaessa kysymyksiä kategoriasta $a';
 $string['errorfilecannotbecopied'] = 'Virhe, ei voi kopioida tiedostoa $a.';
@@ -34,6 +38,8 @@ $string['errorprocessingresponses'] = 'Vastauksiasi käsitellessä tapahtui virh
 $string['errorsavingcomment'] = 'Virhe tietokanssa tallentaessa kommenttia kysymykseen $a->name.';
 $string['errorupdatingattempt'] = 'Virhe $a->id yrittäessä päivittää tietokantaan.';
 $string['exportcategory'] = 'Siirrä ulos kategoria.';
+$string['filecantmovefrom'] = 'Kysymystiedostoja ei voida siirtää koska sinulla ei ole oikeuksia poistaa tiedostoja kyseisestä paikasta.';
+$string['filecantmoveto'] = 'Kysymystiedostoja ei voida siirtää tai kopioida koska sinulla ei ole oikeuksia poistaa tiedostoja kyseisestä paikasta.';
 $string['filesareacourse'] = 'Kurssin tiedostoalue';
 $string['filesareasite'] = 'Sivuston tiedostoalue';
 $string['filestomove'] = 'Siirrä/kopioi tiedostoja $a?';
@@ -62,9 +68,10 @@ olemme havainneet <strong>{$a->urlcount} tiedostojen</strong> olevan linkitettyn
 $string['movingquestionsnofiles'] = 'Oletko varma, että haluat siirtää kysymykset {$a->questions} asiayhteyteen <strong>\"{$a->tocontext}\"</strong>? Yhtään tiedostoa ei ole linkitettynä näistä kysymyksistä {$a->fromareaname}.';
 $string['needtochoosecat'] = 'Siirtääksesi tämän kysymyksen sinun täytyy valita kategoria tai paina Peruuta.';
 $string['nopermissionadd'] = 'Sinulla ei ole lupaa lisätä kysymyksiä tänne.';
+$string['nopermissionmove'] = 'Sinulla ei ole oikeuksia siirtää kysymyksiä tästä paikasta. Sinun täytyy tallentaa kysymys tässä kategoriassa tai tallentaa se uutena kysymyksenä.';
 $string['noprobs'] = 'Tietokannastasi ei löytynyt ongelmia.';
 $string['notenoughdatatoeditaquestion'] = 'Kysymyksen id tai kategorian id ja kysymyksen tyyppiä ei ole määritelty.';
-$string['notenoughdatatomovequestions'] = 'Sinun täytyy hankkia kysymys id:t kysymyksille jotka halluat siirtää.';
+$string['notenoughdatatomovequestions'] = 'Sinun täytyy hankkia kysymys id:t kysymyksille, jotka haluat siirtää.';
 $string['permissionedit'] = 'Muokata tätä kysymystä';
 $string['permissionmove'] = 'Siirtää tämä kysymys';
 $string['permissionsaveasnew'] = 'Tallentaa tämä kysymys uutena kysymyksenä';
@@ -85,5 +92,9 @@ $string['tofilecontext'] = 'Kirjoita asiayhteys tiedostoon';
 $string['unknown'] = 'Tuntematon';
 $string['unknownquestiontype'] = 'Tuntematon kysymystyyppi';
 $string['unpublished'] = 'Jakamaton';
+$string['upgradeproblemcategoryloop'] = 'Kysymyskategorioita päivitettäessä havaittiin virhe. Kategoriapuussa on silmukka. Kyseiset kategoria-id:t ovat: $a.';
+$string['upgradeproblemcouldnotupdatecategory'] = 'Kysymyskategoriaa $a->name ($a->id)ei voitu päivittää.';
+$string['upgradeproblemunknowncategory'] = 'Kysymyskategorioita päivitettäessä havaittiin virhe. Kategoriassa $a->id on viite yläkategoriaan $a->parent, jota ei ole olemassa. Yläkategoria vaihdettu.';
 $string['yourfileshoulddownload'] = 'Vientitiedostosi lataaminen alkaa pian. Jos ei, napsauta <a href=\"$a\">tästä</a>.';
+
 ?>

@@ -212,7 +212,7 @@ admin_externalpage_print_header('', $navlinks);
 print_single_button($CFG->wwwroot . '/local/plan/priorityscales/index.php', null, get_string('allpriorityscales', 'local_plan'));
 
 // Display info about scale
-print_heading(get_string('priorityscalex', 'local_plan', format_string($priority->name)),'left', 1);
+print_heading(get_string('priorityscalex', 'local_plan', format_string($priority->name)),'', 1);
 echo '<p>'.format_string($priority->description, FORMAT_HTML).'</p>';
 
 // Display warning if scale is in use

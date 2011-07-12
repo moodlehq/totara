@@ -213,7 +213,7 @@ admin_externalpage_print_header('', $navlinks);
 print_single_button($CFG->wwwroot . '/local/plan/objectivescales/index.php', null, get_string('allobjectivescales', 'local_plan'));
 
 // Display info about scale
-print_heading(get_string('objectivescalex', 'local_plan', format_string($objective->name)), 'left', 1);
+print_heading(get_string('objectivescalex', 'local_plan', format_string($objective->name)), '', 1);
 echo '<p>'.format_string($objective->description, FORMAT_HTML).'</p>';
 
 // Display warning if scale is in use

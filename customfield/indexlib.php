@@ -439,7 +439,7 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
         } else {
             print_header_simple($pagetitle, '', $navigation, '', null, true, null);
         }
-        print_heading($strheading, 'left', 1);
+        print_heading($strheading, '', 1);
         $categoryform->display();
         print_footer();
         die;
@@ -502,7 +502,7 @@ function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tablepre
         } else {
             print_header_simple($pagetitle, '', $navigation, '', null, true);
         }
-        print_heading($strheading, 'left', '1');
+        print_heading($strheading, '', '1');
         $fieldform->display();
         print_footer();
         die;

@@ -43,7 +43,7 @@ admin_externalpage_print_header();
 
 // User hasn't confirmed deletion yet
 if (!$delete) {
-    print_heading(get_string('deletedepth', $type, format_string($depth->fullname)), 'left', 1);
+    print_heading(get_string('deletedepth', $type, format_string($depth->fullname)), '', 1);
 
     // Check whether the depth level even can be deleted
     $safetodelete = $hierarchy->is_safe_to_delete_depth($depth->id);

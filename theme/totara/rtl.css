@@ -1,0 +1,395 @@
+div#totara_menu ul li {
+    background:transparent url('images/nav_main_spacer.gif') no-repeat left 8px;
+    float: right;
+    margin-left: -2px;
+}
+
+div#totara_menu ul {
+    padding-right: 25px;
+    float: right;
+}
+
+.header-search {
+    background: url('images/nav_main_spacer.gif') no-repeat right 8px;
+}
+
+div.block_calendar_month div.header .title input   {
+    background: #ca1e9e;
+    float: left;
+}
+
+div.header-search {
+    float:left;
+}
+
+.header-search #coursesearchbox {
+    float: right;
+}
+
+.header-search #coursesubmit {
+    margin-right: 5px;
+}
+
+div#totara_menu ul li.selected ul li {
+    float: right;
+}
+
+div#totara_menu ul li ul {
+    right: 0;
+}
+
+div#totara_menu ul li.selected ul li {
+    background: url("images/nav_sub_spacer.gif") no-repeat scroll left center transparent;
+}
+
+#left-column .block_admin_tree div.header {
+    background: url("images/left_menu_header_bg_rtl.gif") no-repeat scroll right top transparent;
+}
+
+#left-column .block_admin_tree {
+    background: url("images/left_menu_bg_rtl.gif") repeat-y scroll right top transparent;
+}
+
+#left-column .block_admin_tree div.header {
+    background: url("images/left_menu_header_bg_rtl.gif") no-repeat scroll right top transparent;
+}
+
+div.block_admin_tree div.content {
+    padding-left: 10px !important;
+    padding-right: 20px !important;
+}
+
+form.mform input {
+    margin-left: -5px !important;
+    margin-right: 5px !important;
+}
+
+span.youarehere {
+    float: right;
+}
+
+.navbar .breadcrumb ul {
+    float: right;
+}
+
+.dashboardcol {
+    float: right;
+}
+
+.dashboard .dashlet .header {
+    background: url("images/left_menu_header_bg_rtl.gif") no-repeat scroll right top transparent;
+}
+
+.dashboard .dashlet_container {
+    background: url("images/left_menu_bg_rtl.gif") repeat-y scroll -724px 0 transparent;
+}
+
+.dashboardcol .dashlet .content {
+    padding: 7px 20px 7px 7px;
+}
+
+.dashlet .content tr td {
+    text-align: right;
+}
+
+#dp-plan-content h2.main {
+    text-align: right;
+}
+
+#dp-plan-content #dp-plans-description .instructional_text {
+    float: right;
+}
+
+.tabrow0 li.selected a:hover, .tabrow0 li.selected a, .tabrow0 li.active a:hover, .tabrow0 li.active a {
+    padding-top: 4px;
+}
+
+.tabrow0 li.selected a:hover span, .tabrow0 li.selected span, .tabrow0 li.active a:hover span, .tabrow0 li.active span {
+    margin-left: 5px;
+    padding-right: 5px;
+}
+
+.tabrow0 li.selected a:hover span, .tabrow0 li.selected span, .tabrow0 li.active a:hover span, .tabrow0 li.active span {
+    padding-top: 4px;
+}
+
+.tabrow0 li a span {
+    margin-left: 5px;
+    padding-right: 5px;
+}
+
+#recordoflearning-menu h3, #dp-plans-menu h3 {
+    background: url("images/left_menu_header_bg_rtl.gif") no-repeat scroll right top transparent;
+    text-align: right;
+}
+
+#recordoflearning-menu, #dp-plans-menu {
+    background: url("images/left_menu_bg_rtl.gif") repeat-y scroll right top transparent;
+}
+
+#recordoflearning-menu, #dp-plans-menu {
+    float: right;
+}
+
+#recordoflearning-menu ul li, #dp-plans-menu ul li {
+    background: url("images/arw_grn_rtl.gif") no-repeat scroll right center transparent;
+}
+
+#recordoflearning-menu ul li.dp-menu-selected, #dp-plans-menu ul li.dp-menu-selected {
+    background-image: url("images/arw_grey_rtl.gif");
+}
+
+#recordoflearning-menu ul, #dp-plans-menu ul {
+    padding-right: 15px;
+}
+
+#dp-plan-content {
+    margin-right: 10px;
+}
+
+form.mform fieldset legend {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+form.mform .fitemtitle {
+    text-align: right;
+}
+
+form.mform input {
+    margin-left: 5px !important;
+}
+
+.dashlet div.header .title .commands {
+    margin-top: -1.2em;
+    float: left;
+    background: none;
+}
+
+#myreports_section {
+    float: right;
+}
+
+th.header {
+    text-align: right;
+}
+
+td.c0 {
+    text-align: right;
+}
+
+.block_news_items .newlink, .activitydate, .activityhead, .sideblock .content div.info, .sideblock .content .message, .sideblock .content .footer, .dashlet .content div.info, .dashlet .content .message, .dashlet .content .footer, .block_search_forums .searchform {
+    text-align: right;
+}
+
+.dashboardcol .dashlet .content {
+    text-align: right;
+}
+
+.blockconfigtable td.label {
+    text-align: right;
+}
+
+.blockconfigtable td.value {
+    text-align: right;
+}
+
+#calendar .sideblock h2, #calendar .dashlet h2 {
+    text-align: right;
+}
+
+table.minicalendar th {
+    text-align: center;
+}
+
+#calendar .maincalendar .eventlist .event .name {
+    float: right;
+}
+
+#calendar .maincalendar .eventlist .event .description .commands {
+    text-align: left;
+}
+
+.sideblock .header .hide-show-image {
+    float: left;
+}
+
+.sideblock div.column.c1 {
+    float: right;
+}
+
+.sideblock .content .list li {
+    clear: right;
+}
+
+.userinfobox td.label {
+    text-align: right;
+}
+
+.sideblock .content .list li {
+    text-align: right;
+}
+
+#adminsettings .form-label {
+    text-align: right;
+}
+
+#adminsettings .form-shortname {
+    text-align: right;
+}
+
+div.totara-dialog div.ui-dialog-titlebar span.ui-dialog-title {
+    background: url("images/dialog_header_left_rtl.gif") no-repeat scroll right top transparent;
+    float: right;
+    right: -20px;
+}
+
+div.totara-dialog div.ui-dialog-titlebar span.ui-dialog-title h2 {
+    background: url("images/dialog_header_right_rtl.gif") no-repeat scroll left top transparent;
+}
+
+div.ui-dialog .ui-dialog-buttonpane button {
+    float: left;
+    text-align: center;
+}
+
+div.totara-dialog div.treeview-wrapper, div.totara-dialog div#column-checkboxes {
+    direction: ltr;
+    text-align: right;
+}
+
+.mform br {
+    clear: both;
+}
+
+.clearer {
+    margin-top: 45px;
+}
+
+table.centerblock td, th {
+    text-align: right;
+}
+
+.navbar .breadcrumb ul li, .navbar .breadcrumb ul li a {
+    float: right;
+}
+
+.navbar .breadcrumb .sep {
+    float: right;
+    background: url('images/sep_blue_rtl.gif') no-repeat center bottom;
+}
+
+body#tag-manage table#tag-management-list td, body#tag-manage table#tag-management-list th, body#user-index table#participants td, body#user-index table#participants th {
+    text-align: right;
+}
+
+.login-container a, .login-container a:link, .login-container a:visited, .login-container a:hover {
+    margin-right: 3px;
+}
+
+html body#backup-backup.backup div#wrapper div#container div#page div.box form#form1 table tbody tr td span.checkbox {
+    float: right;
+    clear: both;
+}
+
+html body#local-reportbuilder-globalsettings.local-reportbuilder div#wrapper div#container div#content.clearfix form#mform1.mform fieldset#settings.clearfix div.fcontainer div.fitem fieldset.felement span {
+    float: right;
+    clear: both;
+}
+
+div#header .logo {
+    text-align: left;
+}
+
+.block_calendar_month div.content div#overDiv {
+    text-align: right;
+}
+
+.cal_popup_bg tbody tr td table tbody tr td a font {
+    float: left;
+}
+
+body.hierarchy-item h2.main {
+    text-align: right;
+}
+
+table.viewhierarchyitem th.header {
+    text-align: right;
+}
+
+#list-related.generalbox tbody tr th.header {
+    text-align: right;
+}
+
+.hierarchy-framework div#wrapper div#container div#content.clearfix table.generaltable tbody tr th.header {
+    text-align: right;
+}
+
+#list-assignedcompetencies.flexible tbody tr th.header {
+    text-align: right;
+}
+
+div#totara-header-notifications .notifysuccess {
+    background: url("images/tick.gif") no-repeat scroll 97% center #CFF1B4;
+}
+
+div#totara-header-notifications .notifyproblem {
+    background: url("images/cross.gif") no-repeat scroll 97% center #F6BEBF;
+}
+
+#footer .footerlinks ul li {
+    background: url('images/nav_ftr_spacer.gif') no-repeat left center;
+}
+
+div.totara-dialog div.ui-dialog-content table.dialog-content td.select {
+    padding-right: 0px;
+    padding-left: 10px;
+}
+
+div.totara-dialog table.dialog-content td.selected {
+    border-right: 1px solid #CCCCCC;
+    border-left: 0px;
+    padding-right: 10px;
+    padding-left: 0px;
+}
+
+div.totara-dialog .selected span span.addbutton, div.totara-dialog .selected span span.deletebutton {
+    float: right
+}
+
+div.totara-dialog .selected span a {
+    float: right;
+}
+
+div.totara-dialog td.select div#dialog-tabs li.ui-tabs-selected {
+    float: right;
+}
+
+.ui-tabs .ui-tabs-nav li {
+    float: right;
+}
+
+#evidence #available-evidence {
+    border-left: 0px;
+    width: 90%;
+}
+
+.plan-launch-course-button {
+    float: left;
+}
+
+.block_calendar_month .calendar-controls a.previous {
+    background: transparent url('images/cal_bg_previous_rtl.gif') no-repeat left center;
+}
+
+.block_calendar_month .calendar-controls a.next {
+    background: transparent url('images/cal_bg_next_rtl.gif') no-repeat left center;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous {
+    background: url("images/cal_bg_previous_rtl.gif") no-repeat scroll right center transparent;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.next {
+    background: url("images/cal_bg_next_rtl.gif") no-repeat scroll left center transparent;
+}

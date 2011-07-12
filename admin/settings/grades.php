@@ -69,6 +69,35 @@ if (has_capability('moodle/grade:manage', $systemcontext)
 
         // Condition system
         $temp->add(new admin_setting_configcheckbox('enableavailability', get_string('enableavailability', 'condition'), get_string('configenableavailability', 'condition'), 0));
+
+        // Course RPL
+        $temp->add(new admin_setting_configcheckbox('enablecourserpl', get_string('enablecourserpl', 'completion'), get_string('configenablecourserpl', 'completion'), 1));
+
+        // Module RPLs
+        // Get module list
+        if ($modules = get_records("modules")) {
+            // Default to all
+            $defaultmodules = array();
+
+            foreach ($modules as $module) {
+                $strmodulename = get_string("modulename", "$module->name");
+                // Deal with modules which are lacking the language string
+                if ($strmodulename == '[[modulename]]') {
+                    $strmodulename = $module->name;
+                }
+                $modulebyname[$module->id] = $strmodulename;
+                $defaultmodules[] = $module->id;
+            }
+            asort($modulebyname, SORT_LOCALE_STRING);
+
+            $temp->add(new admin_setting_configmulticheckbox(
+                            'enablemodulerpl',
+                            get_string('enablemodulerpl', 'completion'),
+                            get_string('configenablemodulerpl', 'completion'),
+                            $defaultmodules,
+                            $modulebyname
+            ));
+        }
     }
     $ADMIN->add('grades', $temp);
 

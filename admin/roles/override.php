@@ -226,7 +226,7 @@
         $table->width = '60%';
         $table->head = array(get_string('roles', 'role'), get_string('description'), get_string('overrides', 'role'));
         $table->wrap = array('nowrap', '', 'nowrap');
-        $table->align = array('right', 'left', 'center');
+        $table->align = array('', '', 'center');
 
         foreach ($overridableroles as $roleid => $rolename) {
             $countusers = 0;

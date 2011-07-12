@@ -106,7 +106,7 @@ $navlinks[] = array('name'=>format_string($framework->fullname), 'link'=>'', 'ty
 
 admin_externalpage_print_header('', $navlinks);
 
-print_heading($framework->fullname, 'left', 1);
+print_heading($framework->fullname, '', 1);
 echo "<p>{$framework->description}</p>";
 
 // Display Depths

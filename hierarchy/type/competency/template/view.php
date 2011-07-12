@@ -68,7 +68,7 @@ if ($editingon) {
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 }
 
-print_heading($heading, 'left', 1);
+print_heading($heading, '', 1);
 
 $depthstr = get_string('template', $hierarchy->prefix);
 

@@ -391,9 +391,7 @@ div#totara_menu {
 /* Unselected primary navigation */
 div#totara_menu ul {
     height: 72px;
-    overflow: hidden;
     padding: 0 0 0 25px;
-    width: 672px;
 }
 
 div#totara_menu ul li {
@@ -948,6 +946,7 @@ h6 {
 
 .tabtree {
   margin-top: 15px;
+  padding-bottom:10px;
 }
 .tabrow0 div,
 .tabrow0 ul {
@@ -956,7 +955,6 @@ h6 {
 .tabrow0{
   line-height: 2.5em;
   text-align:left;
-  padding-bottom: 4.5em;
 }
 .tabrow0 li a:link,
 .tabrow0 li a:hover,
@@ -1581,6 +1579,7 @@ div.block_admin div.header .title input{
 
 div.block_calendar_month div.header .title input   {
   background: #ca1e9e;
+  float: right;
 }
 
 div.block_totara_my_team_nav .content td img {
@@ -2165,14 +2164,15 @@ div.yuimenu .yuichildtree .yuimenuitem {
 body#message-index div#wrapper,
 body#help div#wrapper,
 body#files-index div#wrapper {
-	background-image: none;
-	background-color: #FFFFFF;
-	width: auto ;
-	margin: 30px 20px 0px;
-	padding-top: 30px;
-	border-left: 1px solid #666;
-	border-right: 1px solid #666;
+    background-image: none;
+    background-color: #FFFFFF;
+    width: auto ;
+    margin: 30px 20px 0px;
+    padding-top: 30px;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666;
 }
+
 body#message-index div#wrapper .login-container,
 body#help div#wrapper .login-container,
 body#files-index div#wrapper .login-container {
@@ -2240,12 +2240,7 @@ th.header,
     border:0 none;
     border-left:1px solid #DBDBDB;
 }
-td.cell.c0,
-th.header.c0,
-.generaltable td.cell.c0,
-.generaltable th.header.c0 {
-    border-left:0 none;
-}
+
 /* Course edit screen */
 table.editcourse th.header {
     border:0 none;
@@ -2295,15 +2290,16 @@ body#admin-user table.generaltable td.c7 {
 #dp-plans-menu h3 {
     background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
     color: #FFFFFF;
-	margin-left:-6px;
-	padding:5px 20px;
+    margin-left:-6px;
+    padding:5px 20px;
+    text-align: left;
 }
 #dp-plans-menu ul {
-	padding: 2px 2px 2px 20px;
+    padding: 2px 2px 2px 20px;
 }
-	#dp-plans-menu ul li {
-		background: url("images/arw_grn.gif") no-repeat scroll left center transparent;
-	}
+    #dp-plans-menu ul li {
+        background: url("images/arw_grn.gif") no-repeat scroll left center transparent;
+    }
 #dp-plans-menu .dp-plans-menu-section {
     padding-left:30px;
     margin-bottom:10px;
@@ -2377,9 +2373,26 @@ span.dp-summary-widget-component-name {
 	padding:5px 0;
 }
 
+.plan-launch-course-button a {
+    color: white;
+}
+
 .plan-launch-course-button {
     float: right;
-    margin-top: 2px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    background: url("images/button_repeat.jpg") repeat-x scroll left top #2399A5;
+    border: 1px solid #0DA7B2;
+    color: white;
+    cursor: pointer;
+    margin: 5px 1px;
+    padding: 3px 6px;
+    border-top-left-radius: 4px 4px;
+    border-top-right-radius: 4px 4px;
+    border-bottom-right-radius: 4px 4px;
+    border-bottom-left-radius: 4px 4px;
+    font-size: 11px !important;
 }
 
 table#dpcomponents {
@@ -2399,8 +2412,9 @@ table#dpcomponents {
 #recordoflearning-menu h3 {
     background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
     color: #FFFFFF;
-	margin-left:-6px;
-	padding:5px 20px;
+    margin-left:-6px;
+    padding:5px 20px;
+    text-align: left;
 }
 #recordoflearning-menu ul li {
     background: url("images/arw_grn.gif") no-repeat scroll left center transparent;
@@ -3451,6 +3465,38 @@ a.noscript-button {
     text-align: center;
 }
 
+/* fix for add competency display width */
+#hierarchy-type-competency-evidence-add #mform1 {
+    width: 95%;
+}
+
+/** Competencies lightbox styling **/
+#evidence #available-evidence {
+    float: right;
+    width: 40%;
+    border-left: 1px solid #ccc;
+    height: 322px;
+    overflow: auto;
+    padding: 0 10px;
+}
+
+#evidence #available-evidence h3 {
+    margin: 0 0 0.5em;
+}
+
+#evidence #available-evidence ul {
+    font-size: 0.8em;
+    margin: 0.25em 0 1em;
+    list-style: none;
+    padding: 0;
+}
+
+#evidence #available-evidence ul li {
+    font-size: 1em;
+    padding-bottom: 0.25em;
+}
+
+
 
 /*****************************************************************************/
 /** Dashboards **/
@@ -3734,8 +3780,22 @@ div.block_totara_recent_learning table {
  */
 body#files-index div#wrapper div#page div#nav-bar{
     padding-left:30px;
+
 }
 
 table.topics tr.section span.topicnumber {
-    display:none;
+    display: none;
+}
+
+
+#list-related.generalbox tbody tr th.header {
+    text-align: left;
+}
+
+.hierarchy-framework div#wrapper div#container div#content.clearfix table.generaltable tbody tr th.header {
+    text-align: left;
+}
+
+#list-assignedcompetencies.flexible tbody tr th.header {
+    text-align: left;
 }
