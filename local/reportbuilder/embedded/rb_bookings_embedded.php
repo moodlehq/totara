@@ -22,6 +22,8 @@
  * @subpackage reportbuilder 
  */
 
+require_once($CFG->dirroot . '/mod/facetoface/lib.php');
+
 class rb_bookings_embedded extends rb_base_embedded {
 
     public $url, $source, $fullname, $filters, $columns;
@@ -91,7 +93,7 @@ class rb_bookings_embedded extends rb_base_embedded {
 
         // also limited to single user by embedded params
         $this->embeddedparams = array(
-            'status' => '!10',
+            'status' => '!' . MDL_F2F_STATUS_USER_CANCELLED,
         );
         if(isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
