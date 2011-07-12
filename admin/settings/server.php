@@ -292,4 +292,7 @@ if ($CFG->dbfamily === 'mysql') {
 
 } // end of speedup
 
+//New cron administrative page
+$ADMIN->add('server', new admin_externalpage('cron_settings', get_string('cron_settings', 'admin'), "$CFG->wwwroot/$CFG->admin/cronsettings.php"));
+
 ?>

@@ -38,4 +38,24 @@ $string['webserversoftware'] = 'Web server software identifier';
 $string['wwwroot'] = 'Site www root';
 $string['configpasswordreuselimit'] = 'Number of times a user must change their password before they are allowed to reuse a password';
 
+$string['cron_settings'] = 'Cron';
+$string['cron_max_time'] = 'Maximum execution time';
+$string['cron_max_time_info'] = 'Specifies maximum execution time allowed for cron expressed in hours. Default is 0 which means no time limit.';
+$string['cron_max_time_mail_notify'] = 'Notify Admin';
+$string['cron_max_time_mail_notify_info'] = 'If checked system will notify the administrator by sending an email should the cron ever execute over maximum set time. For this to work you must setup cron watcher.';
+$string['cron_execution_status'] = 'Status';
+$string['cron_terminate'] = 'Terminate';
+$string['cron_execute'] = 'Execute';
+$string['cron_refresh'] = 'Refresh status';
+$string['cron_execution_watch'] = 'Cron Execution';
+$string['cron_execution_running'] = 'Cron is running';
+$string['cron_execution_stopped'] = 'Cron is stopped';
+$string['cron_execution_crashed'] = 'Cron crashed';
+$string['cron_max_time_kill'] = 'Terminate cron automatically';
+$string['cron_max_time_kill_info'] = 'If checked watching process will terminate cron if it is overdue in configured execution. For this to work you must setup cron watcher.';
+$string['cron_max_time_mail_notify_title'] = 'Warning: Cron execution overdue!';
+$string['cron_max_time_mail_notify_msg'] = 'The cron execution is taking more time than specified! Please check your server settings.';
+$string['cron_watcher_info'] = 'Cron Watcher';
+$string['cron_status_info'] = 'Cron Execution Status';
+
 ?>

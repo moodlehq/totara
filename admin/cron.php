@@ -1,5 +1,17 @@
 <?php // $Id$
 
+/// Cron locking check
+    require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'cron_lockfile.php');
+
+    //Lock the cron file itself
+    //No other instance will run with this
+    //We do this here before including anything else to make it faster
+    $cronlock = new cron_lockfile(__FILE__);
+    if (!$cronlock->locked()) {
+        echo 'Already being executed. Quitting.'.PHP_EOL;
+        return;
+    }
+
 /// This script looks through all the module directories for cron.php files
 /// and runs them.  These files can contain cleanup functions, email functions
 /// or anything that needs to be run on a regular basis.
@@ -33,6 +45,19 @@
     require_once(dirname(__FILE__) . '/../config.php');
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->libdir.'/gradelib.php');
+    require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'cron_procfile.php');
+
+//// Set time limit for cron
+    set_time_limit(cron_get_max_time());
+
+/// Set the process file - it will be deleted once the cron finishes execution
+/// default location is <moodledata>/cron.pid
+/// in case process file can not be created process ends
+    $procfile = new cron_process_file();
+    if (!$procfile->ok()) {
+        error_log('Unable to create process file!');
+        return;
+    }
 
 /// Extra debugging (set in config.php)
     if (!empty($CFG->showcronsql)) {

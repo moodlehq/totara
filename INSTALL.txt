@@ -16,3 +16,5 @@ Before installing Totara you should have a server with:
 4. Create an empty database using the UTF8 character set. See http://docs.moodle.org/en/Create_Moodle_site_database for details
 5. Using your web browser, visit your domain and step through the installation process.
 6. Set up a cron task to call the file admin/cron.php every fifteen minutes.
+7. Set up a cron task to call the file admin/cron_watcher.php every five minutes.
+

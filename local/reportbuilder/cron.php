@@ -25,11 +25,6 @@
 require_once($CFG->dirroot . '/local/reportbuilder/lib.php');
 require_once($CFG->dirroot . '/local/reportbuilder/groupslib.php');
 
-// how many locked crons to ignore before starting to print errors
-define('REPORT_BUILDER_CRON_WAIT_NUM', 10);
-// how often to print errors (1 for every time, 2 every other time, etc)
-define('REPORT_BUILDER_CRON_ERROR_FREQ', 10);
-
 /**
  * Run the cron functions required by report builder
  *
@@ -38,12 +33,6 @@ define('REPORT_BUILDER_CRON_ERROR_FREQ', 10);
  * @return boolean True if completes successfully, false otherwise
  */
 function reportbuilder_cron($grp=null) {
-    if(!rb_lock_cron()) {
-        // don't run if already in progress
-        mtrace('Report Builder cron locked. Skipping this time.');
-        return false;
-    }
-
     // if no ID provided, run on all groups
     if(!$grp) {
         $groups = get_records('report_builder_group', '', '' ,'id');
@@ -113,7 +102,6 @@ function reportbuilder_cron($grp=null) {
 
     process_scheduled_reports();
 
-    rb_unlock_cron();
     return true;
 }
 
@@ -133,50 +121,6 @@ function rb_get_active_sources() {
         }
     }
     return $out;
-}
-
-/**
- * Attempt to lock the report builder cron.
- *
- * If it is already locked, track how long for and start printing
- * warnings to the error log if it remains locked for too long.
- *
- * @return boolean True if cron successfully locked
- */
-function rb_lock_cron() {
-
-    $cronlock = get_config('reportbuilder', 'cron_lock');
-    // cron is not locked, lock and return true
-    if($cronlock === false || $cronlock == 0) {
-        set_config('cron_lock', 1, 'reportbuilder');
-        return true;
-    }
-
-    // increment cron lock count
-    $cronlock++;
-    set_config('cron_lock', $cronlock, 'reportbuilder');
-
-    // report errors every so often after a set delay
-    // this is to give time to let a long cron complete
-    // and to avoid filling up the error log with too many
-    // messages
-    if($cronlock >= REPORT_BUILDER_CRON_WAIT_NUM) {
-        if($cronlock % REPORT_BUILDER_CRON_ERROR_FREQ == 0) {
-            error_log('Report Builder cron still locked on attempt '.$cronlock);
-        }
-    }
-
-    return false;
-}
-
-/**
- * Unlock the report builder cron.
- *
- * @return True
- */
-function rb_unlock_cron() {
-    set_config('cron_lock', 0, 'reportbuilder');
-    return true;
 }
 
 
