@@ -46,7 +46,7 @@ class rb_bookings_embedded extends rb_base_embedded {
             array(
                 'type' => 'facetoface',
                 'value' => 'name',
-                'heading' => get_string('ftfname', 'rb_source_facetoface_sessions'),
+                'heading' => get_string('sessname', 'rb_source_facetoface_sessions'),
             ),
             array(
                 'type' => 'date',
@@ -56,12 +56,12 @@ class rb_bookings_embedded extends rb_base_embedded {
             array(
                 'type' => 'date',
                 'value' => 'timestart',
-                'heading' => get_string('starttime', 'rb_source_facetoface_sessions'),
+                'heading' => get_string('sessstart', 'rb_source_facetoface_sessions'),
             ),
             array(
                 'type' => 'date',
                 'value' => 'timefinish',
-                'heading' => get_string('endtime', 'rb_source_facetoface_sessions'),
+                'heading' => get_string('sessfinish', 'rb_source_facetoface_sessions'),
             ),
             array(
                 'type' => 'status',

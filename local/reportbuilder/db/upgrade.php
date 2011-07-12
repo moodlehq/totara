@@ -282,6 +282,28 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         $result = $result && execute_sql($sql);
     }
 
+
+    if ($result && $oldversion < 2011071200) {
+        // correct bad lang strings saved to columns table
+        $fixheading = array(
+            'sessionname' => 'sessname',
+            'sessiondate' => 'sessdate',
+            'starttime' => 'sessstart',
+            'endtime' => 'sessfinish',
+        );
+        foreach ($fixheading as $before => $after) {
+            $sql = "UPDATE {$CFG->prefix}report_builder_columns
+                SET heading='" . get_string($after, 'rb_source_facetoface_sessions') . "'
+                WHERE heading='[[$before]]'
+                AND reportid IN (
+                    SELECT id FROM {$CFG->prefix}report_builder
+                    WHERE source = 'facetoface_sessions'
+                )";
+            $result = $result && execute_sql($sql);
+
+        }
+    }
+
     return $result;
 
 
