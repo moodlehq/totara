@@ -461,6 +461,7 @@ div#totara_menu ul ul {
 	top:47px;
 	left:0px;
 	z-index: 1000;
+    height: auto;
 }
 
 
