@@ -36,10 +36,6 @@ if (isguestuser()) {
     redirect($CFG->wwwroot);
 }
 
-if (empty($CFG->messaging)) {
-    print_error('disabled', 'message');
-}
-
 $id = required_param('id', PARAM_INT);
 $msg = get_record('message20', 'id', $id);
 if (!$msg || $msg->useridto != $USER->id) {

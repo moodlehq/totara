@@ -36,9 +36,6 @@ if (isguestuser()) {
     redirect($CFG->wwwroot);
 }
 
-if (empty($CFG->messaging)) {
-    print_error('disabled', 'message');
-}
 /// Script parameters
 $returnto = optional_param('returnto', $CFG->wwwroot, PARAM_RAW);
 $dismiss = optional_param('dismiss', NULL, PARAM_RAW);
