@@ -2365,5 +2365,23 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2011072201) {
+        $table = new XMLDBTable('comp_evidence_items_evidence');
+        if (table_exists($table)) {
+            $index = new XMLDBIndex('useriditemid_ix');
+            $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('userid', 'itemid'));
+
+            $result = $result && add_index($table, $index);
+        }
+
+        $table = new XMLDBTable('course_completion_crit_compl');
+        if (table_exists($table)) {
+            $index = new XMLDBIndex('useidcriteriaid_ix');
+            $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('userid', 'criteriaid'));
+
+            $result = $result && add_index($table, $index);
+        }
+    }
+
     return $result;
 }
