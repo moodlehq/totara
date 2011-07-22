@@ -11,7 +11,9 @@ require_login();
 $strheading = get_string('searchcourses', 'local');
 $shortname = 'findcourses';
 
-$report = reportbuilder_get_embedded_report($shortname);
+if (!$report = reportbuilder_get_embedded_report($shortname)) {
+    print_error('error:couldnotgenerateembeddedreport', 'local_reportbuilder');
+}
 
 if($format!='') {
     add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id='. $report->_id,

@@ -58,7 +58,9 @@
     if(isset($roleid)) {
         $data['roleid'] = $roleid;
     }
-    $report = reportbuilder_get_embedded_report($shortname, $data);
+    if (!$report = reportbuilder_get_embedded_report($shortname, $data)) {
+        print_error('error:couldnotgenerateembeddedreport', 'local_reportbuilder');
+    }
 
     $report->defaultsortcolumn = 'message_values_sent';
     $report->defaultsortorder = 3;
