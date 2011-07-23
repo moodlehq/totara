@@ -5794,6 +5794,12 @@ function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocat
         }
     }
 
+    // when printing an error the continue button should never link offsite
+    if (stripos($link, $CFG->wwwroot) === false &&
+        stripos($link, $CFG->httpswwwroot) === false) {
+        $link = $CFG->wwwroot.'/';
+    }
+
     if (!empty($CFG->errordocroot)) {
         $errordocroot = $CFG->errordocroot;
     } else if (!empty($CFG->docroot)) {
