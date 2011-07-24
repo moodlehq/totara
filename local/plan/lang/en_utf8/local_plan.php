@@ -155,6 +155,7 @@ $string['commenton'] = 'Comment On';
 $string['setpriority'] = 'Set Priority';
 $string['setduedate'] = 'Set Due Date';
 $string['setcompletionstatus'] = 'Set Completion Status';
+$string['completereactivate'] = 'Complete/reactivate';
 $string['add'] = 'Add $a';
 $string['remove'] = 'Remove $a';
 $string['competency'] = 'Competency';
@@ -287,6 +288,12 @@ $string['objectiveincompletelongmanager'] = '$a->userfrom has changed objective 
 //Plan Settings strings
 $string['autocompleteplan'] = 'Automatic plan completion';
 $string['autocompleteplantext'] = 'Automatically set approved plans to complete after end date';
+
+$string['manualcomplete'] = 'Manually, by a user with \'complete\' permission';
+$string['autobyitems'] = 'Automatically, when all items have been completed';
+$string['autobyplandate'] = 'Automatically, when the plan completion date has past';
+
+$string['planmarkedcomplete'] = 'Plan marked as complete';
 
 
 // Statuses
@@ -517,11 +524,14 @@ $string['thefollowingitemsarepending_p'] = 'This plan contains the following pen
 $string['thefollowingitemsrequireyourapproval_p'] = 'This plan contains new items that require your approval:';
 $string['xitemsunapproved'] = '<a href=\"{$a->uri}\">{$a->number} {$a->name}</a>';
 $string['plancompleted'] = 'This plan has been marked as complete. It can no longer be edited, and all status indicators show the status at the time of the plan\'s completion.';
+$string['planautocompleteditems'] = 'This plan has been automatically completed because all the items in it have been completed.';
+$string['planautocompleteddate'] = 'This plan has be automatically completed because the end date for the plan has passed.';
 $string['plandeclinedtryagain'] = 'This plan has been declined. If desired, you can make changes and request plan approval again.';
 $string['plannotapproved'] = 'This plan has not yet been approved';
 $string['awaitingapproval'] = 'Awaiting approval';
 $string['youareviewingxsplan'] = '<strong>You are viewing <a href=\"{$a->site}/user/view.php?id={$a->userid}\">{$a->name}\'s</a> plan.</strong>';
 $string['youareviewingxsplans'] = '<strong>You are viewing <a href=\"{$a->site}/user/view.php?id={$a->userid}\">{$a->name}\'s</a> plans.</strong>';
+$string['reactivateplantext'] = 'If you want to make changes or continue using this plan is must be reactivated.<br /><a href=\"{$a}\">Reactivate</a> this plan.';
 $string['notcompleted'] = 'Not completed';
 $string['coursescomplete'] = 'Courses complete';
 $string['inprogress'] = 'In progress';
@@ -570,9 +580,13 @@ $string['planapproved'] = 'Plan \"$a\" has been approved';
 $string['plandeclined'] = 'Plan \"$a\" has been declined';
 $string['approvalrequestsent'] = 'Approval request sent for plan \"$a\"';
 $string['plancomplete'] = 'Complete plan';
-$string['checkplancomplete'] = 'Are you sure you want to mark the plan \"$a\" as complete?<br /><br />Once a plan is marked complete then no further changes can be made. This operation cannot be undone. Are you sure you want to proceed?';
+$string['checkplancomplete'] = 'Are you sure you want to mark the plan \"$a\" as complete?<br /><br /> Once the plan is marked complete it will be locked and will have to be reactivated to make any further changes. Are you sure you want to proceed?';
 $string['plancompletesuccess'] = 'Successfully completed plan $a';
 $string['plancompletefail'] = 'There was a problem while trying to mark plan \"$a\" as complete';
+$string['planreactivate'] = 'Reactivate plan';
+$string['checkplanreactivate'] = 'Are you sure you want to reactivate the plan \"$a\"?<br /><br />Are you sure you want to proceed?';
+$string['planreactivatesuccess'] = 'Successfully reactivated plan $a';
+$string['planreactivatefail'] = 'There was a problem while trying to reactivate plan \"$a\"';
 $string['cannotdelete_inuse'] = 'You cannot delete this template because there are plans using it.';
 $string['planapprovalrequested'] = 'Plan approval requested for <a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
 $string['requestremoval'] = 'Request removal';
@@ -614,6 +628,12 @@ $string['plan-remove-manager-short'] = '$a->learner has deleted plan';
 $string['plan-remove-manager-long'] = '$a->learner has deleted the learning plan \"$a->plan\"';
 $string['item-request-manager-short'] = 'Item approval request by $a->learner';
 $string['item-request-manager-long'] = '$a->learner has requested approval for new learning plan items in \"$a->plan\": $a->data';
+
+// Reactivate plan
+$string['plan-reactivate-learner-short'] = 'Plan \"$a->plan\" has been reactivated';
+$string['plan-reactivate-learner-long'] = 'Learning plan \"$a->plan\" has been reactivated by $a->manager';
+$string['plan-reactivate-manager-short'] = '$a->learner has reactivated plan';
+$string['plan-reactivate-manager-long'] = '$a->learner has reactivated the learning plan \"$a->plan\"';
 
 // Component messages
 $string['addedx'] = 'Added \"$a\"';

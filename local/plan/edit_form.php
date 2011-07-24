@@ -100,7 +100,7 @@ class plan_edit_form extends moodleform {
             if ($plan->get_setting('delete') == DP_PERMISSION_ALLOW) {
                 $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteplan', 'local_plan'));
             }
-            if ($plan->get_setting('complete') >= DP_PERMISSION_ALLOW && $plan->status == DP_PLAN_STATUS_APPROVED) {
+            if ($plan->get_setting('completereactivate') >= DP_PERMISSION_ALLOW && $plan->status == DP_PLAN_STATUS_APPROVED) {
                 $buttonarray[] = $mform->createElement('submit', 'complete', get_string('plancomplete', 'local_plan'));
             }
 

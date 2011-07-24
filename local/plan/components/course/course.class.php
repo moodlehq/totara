@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,8 +20,9 @@
  * @author Eugene Venter <eugene@catalyst.net.nz>
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -931,6 +931,52 @@ class dp_course_component extends dp_base_component {
         $progress->text = $progress_str;
 
         return $progress;
+    }
+
+
+    /**
+     * Reactivates course when re-activating a plan
+     *
+     * @return bool
+     */
+    public function reactivate_items() {
+        global $CFG;
+        $sql = "UPDATE {$CFG->prefix}dp_plan_course_assign SET completionstatus=null WHERE planid={$this->plan->id}";
+        if (!execute_sql($sql, false)) {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Gets all plans containing specified course
+     *
+     * @param int $courseid
+     * @param int $userid
+     * @return array|false $plans ids of plans with specified course
+     */
+    public static function get_plans_containing_item($courseid, $userid) {
+        global $CFG;
+        $sql = "SELECT DISTINCT
+                planid
+            FROM
+                {$CFG->prefix}dp_plan_course_assign ca
+            JOIN
+                {$CFG->prefix}dp_plan p
+              ON
+                ca.planid = p.id
+            WHERE
+                ca.courseid = {$courseid}
+            AND
+                p.userid = {$userid}";
+
+        if (!$plans = get_records_sql($sql)) {
+            // There are no plans with this course
+            return false;
+        }
+
+        return array_keys($plans);
     }
 
     /*

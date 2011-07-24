@@ -95,15 +95,15 @@ if ($data = $form->get_data()) {
     } elseif (isset($data->deleteno)) {
         redirect($viewurl);
     } elseif (isset($data->complete)) {
-        if ($plan->get_setting('complete') < DP_PERMISSION_ALLOW) {
+        if ($plan->get_setting('completereactivate') < DP_PERMISSION_ALLOW) {
             print_error('error:nopermissions', 'local_plan');
         }
         redirect(strip_querystring(qualified_me())."?id={$id}&action=complete");
     } elseif (isset($data->completeyes)) {
-        if ($plan->get_setting('complete') < DP_PERMISSION_ALLOW) {
+        if ($plan->get_setting('completereactivate') < DP_PERMISSION_ALLOW) {
             print_error('error:nopermissions', 'local_plan');
         }
-        if ($plan->set_status(DP_PLAN_STATUS_COMPLETE)) {
+        if ($plan->set_status(DP_PLAN_STATUS_COMPLETE, DP_PLAN_REASON_MANUAL_COMPLETE)) {
             $plan->send_completion_alert();
             totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $viewurl, array('style' => 'notifysuccess'));
         } else {
@@ -138,7 +138,11 @@ $plan->print_header('plan');
 add_to_log(SITEID, 'plan', 'view', "view.php?id={$plan->id}", $plan->name);
 
 // Plan details
-$plan->enddate = userdate($plan->enddate, '%d/%m/%Y', $CFG->timezone, false);
+if ($plan->timecompleted) {
+    $plan->enddate = userdate($plan->timecompleted, '%d/%m/%Y', $CFG->timezone, false);
+} else {
+    $plan->enddate = userdate($plan->enddate, '%d/%m/%Y', $CFG->timezone, false);
+}
 $form->set_data($plan);
 $form->display();
 

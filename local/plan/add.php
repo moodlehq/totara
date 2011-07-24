@@ -94,7 +94,7 @@ if ($data = $form->get_data()) {
         $plan = new development_plan($newid);
 
         // Update plan status and plan history
-        $plan->set_status(DP_PLAN_STATUS_UNAPPROVED);
+        $plan->set_status(DP_PLAN_STATUS_UNAPPROVED, DP_PLAN_REASON_CREATE);
 
         if ($plan->get_component('competency')->get_setting('enabled')) {
             // Auto-assign competencies

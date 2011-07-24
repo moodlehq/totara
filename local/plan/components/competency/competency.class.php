@@ -1270,5 +1270,50 @@ class dp_competency_component extends dp_base_component {
         return $progress;
     }
 
+
+    /**
+     * Reactivates competency when re-activating a plan
+     *
+     * @return bool
+     */
+    public function reactivate_items() {
+        global $CFG;
+        $sql = "UPDATE {$CFG->prefix}dp_plan_competency_assign SET scalevalueid=0 WHERE planid={$this->plan->id}";
+        if (!execute_sql($sql, false)) {
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * Gets all plans containing specified competency
+     *
+     * @param int $competencyid
+     * @param int $userid
+     * @return array|false $plans ids of plans with specified competency
+     */
+    public static function get_plans_containing_item($competencyid, $userid) {
+        global $CFG;
+        $sql = "SELECT DISTINCT
+                planid
+            FROM
+                {$CFG->prefix}dp_plan_competency_assign ca
+            JOIN
+                {$CFG->prefix}dp_plan p
+              ON
+                ca.planid = p.id
+            WHERE
+                ca.competencyid = {$competencyid}
+            AND
+                p.userid = {$userid}";
+
+        if (!$plans = get_records_sql($sql)) {
+            // There are no plans with this competency
+            return false;
+        }
+
+        return array_keys($plans);
+    }
 }
 

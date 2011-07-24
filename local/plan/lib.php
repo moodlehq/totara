@@ -77,6 +77,14 @@ define('DEVELOPMENT_PLAN_UNKNOWN_BUTTON_CLICKED', 1);
 define('DEVELOPMENT_PLAN_GENERAL_CONFIRM_UPDATE', 2);
 define('DEVELOPMENT_PLAN_GENERAL_FAILED_UPDATE', 3);
 
+// Plan reasons
+define('DP_PLAN_REASON_CREATE', 10);
+define('DP_PLAN_REASON_MANUAL_APPROVE', 20);
+define('DP_PLAN_REASON_MANUAL_COMPLETE', 40);
+define('DP_PLAN_REASON_AUTO_COMPLETE_DATE', 50);
+define('DP_PLAN_REASON_AUTO_COMPLETE_ITEMS', 60);
+define('DP_PLAN_REASON_MANUAL_REACTIVATE', 80);
+
 
 // roles available to development plans
 // each must have a class definition in
@@ -989,3 +997,39 @@ function dp_create_template($templatename, $enddate, &$error) {
     return $newtemplateid;
 }
 
+/**
+ * Find all plans a specified item is part of
+ *
+ * @param int $userid
+ * @param string $component
+ * @param int $componentid
+ *
+ */
+function dp_plan_item_updated($userid, $component, $componentid) {
+    global $CFG;
+    // Include component class file
+    $component_include = $CFG->dirroot . '/local/plan/components/' . $component . '/' . $component . '.class.php';
+    if (file_exists($component_include)) {
+        require_once($component_include);
+    }
+    $plans = call_user_func("dp_{$component}_component::get_plans_containing_item", $componentid, $userid);
+    dp_plan_check_plan_complete($plans);
+}
+
+/**
+ * Checks if any of the plans is complete and if the auto completion by plans option is set
+ * then the plan is completed
+ *
+ * @param array $plans list of plans to be checked
+ *
+ */
+function dp_plan_check_plan_complete($plans) {
+    if ($plans) {
+        foreach ($plans as $planid) {
+            $plan = new development_plan($planid);
+            if ($plan->is_plan_complete() && $plan->get_setting('autobyitems') && $plan->is_active()) {
+                $plan->set_status(DP_PLAN_STATUS_COMPLETE, DP_PLAN_REASON_AUTO_COMPLETE_ITEMS);
+            }
+        }
+    }
+}

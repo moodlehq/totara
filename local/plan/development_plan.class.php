@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -38,10 +38,10 @@ class development_plan {
         'update' => false,
         'delete' => false,
         'approve' => true,
-        'complete' => false
+        'completereactivate' => false
     );
     public $id, $templateid, $userid, $name, $description;
-    public $startdate, $enddate, $status, $role, $settings;
+    public $startdate, $enddate, $timecompleted, $status, $role, $settings;
     public $viewas;
 
     /**
@@ -70,6 +70,7 @@ class development_plan {
         $this->description = $plan->description;
         $this->startdate = $plan->startdate;
         $this->enddate = $plan->enddate;
+        $this->timecompleted = $plan->timecompleted;
         $this->status = $plan->status;
 
         // default to viewing as the current user
@@ -342,6 +343,13 @@ class development_plan {
             }
             $this->get_component($component)->initialize_settings($this->settings);
         }
+
+        // Initialise plan specific settings
+        if ($plansettings = get_record('dp_plan_settings', 'templateid', $this->templateid)) {
+            $this->settings['plan_manualcomplete'] = $plansettings->manualcomplete;
+            $this->settings['plan_autobyitems'] = $plansettings->autobyitems;
+            $this->settings['plan_autobyplandate'] = $plansettings->autobyplandate;
+        }
     }
 
 
@@ -595,9 +603,16 @@ class development_plan {
         }
 
         // Complete
-        if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('complete') >= DP_PERMISSION_ALLOW) {
+        if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('completereactivate') >= DP_PERMISSION_ALLOW  && $this->get_setting('manualcomplete')) {
             echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;complete=1&amp;sesskey='.sesskey().'" title="'.get_string('plancomplete', 'local_plan').'">
                 <img src="'.$CFG->pixpath.'/t/favourite_on.gif" alt="'.get_string('plancomplete', 'local_plan').'" />
+                </a>';
+        }
+
+        // Reactivate
+        if ($this->status == DP_PLAN_STATUS_COMPLETE && $this->get_setting('completereactivate') >= DP_PERMISSION_ALLOW) {
+            echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;reactivate=1&amp;sesskey='.sesskey().'" title="'.get_string('planreactivate', 'local_plan').'">
+                <img src="'.$CFG->pixpath.'/t/plan_reactivate.gif" alt="'.get_string('planreactivate', 'local_plan').'" />
                 </a>';
         }
 
@@ -962,7 +977,34 @@ class development_plan {
      * @return string
      */
     function display_completed_plan_message() {
-        return '<p>' . get_string('plancompleted', 'local_plan') . '</p>';
+        global $CFG;
+        $sql = "SELECT * FROM {$CFG->prefix}dp_plan_history WHERE planid={$this->id} ORDER BY timemodified DESC";
+        if ($history = get_record_sql($sql, true)) {
+            switch ($history->reason) {
+            case DP_PLAN_REASON_MANUAL_COMPLETE:
+                $message = get_string('plancompleted', 'local_plan');
+                break;
+
+            case DP_PLAN_REASON_AUTO_COMPLETE_ITEMS:
+                $message = get_string('planautocompleteditems', 'local_plan');
+                break;
+
+            case DP_PLAN_REASON_AUTO_COMPLETE_DATE:
+                $message = get_string('planautocompleteddate', 'local_plan');
+                break;
+            }
+
+            if (!$message) {
+                $message = get_string('plancompleted', 'local_plan');
+            }
+
+            $extramessage = '';
+            if ($this->get_setting('completereactivate') == DP_PERMISSION_ALLOW) {
+                $url = "{$CFG->wwwroot}/local/plan/action.php?id={$this->id}&amp;reactivate=1&amp;sesskey=".sesskey();
+                $extramessage = '<p>' . get_string('reactivateplantext', 'local_plan', $url) . '</p>';
+            }
+            return '<p>' . $message . '</p>'. $extramessage;
+        }
     }
 
 
@@ -1244,9 +1286,10 @@ class development_plan {
      *
      * @access  public
      * @param   integer $status
+     * @param       $autocomplete
      * @return  bool
      */
-    public function set_status($status) {
+    public function set_status($status, $reason=DP_PLAN_REASON_MANUAL_APPROVE) {
         global $USER;
 
         $todb = new stdClass;
@@ -1258,8 +1301,10 @@ class development_plan {
         // Handle some status triggers
         switch ($status) {
             case DP_PLAN_STATUS_APPROVED:
-                // Set the plan startdate to the approval time
-                $todb->startdate = time();
+                // Set the plan startdate to the approval time if not being reactivate
+                if ($reason != DP_PLAN_REASON_MANUAL_REACTIVATE) {
+                    $todb->startdate = time();
+                }
                 break;
             case DP_PLAN_STATUS_COMPLETE:
                 if ($assigned = $this->get_component('competency')->get_assigned_items()) {
@@ -1268,7 +1313,9 @@ class development_plan {
                         $snap = new stdClass;
                         $snap->id = $a->id;
                         $snap->scalevalueid = !empty($a->profscalevalueid) ? $a->profscalevalueid : 0;
-                        update_record('dp_plan_competency_assign', $snap);
+                        if (!update_record('dp_plan_competency_assign', $snap)) {
+                            return false;
+                        }
                     }
                 }
                 if ($assigned = $this->get_component('course')->get_assigned_items()) {
@@ -1277,8 +1324,16 @@ class development_plan {
                         $snap = new stdClass;
                         $snap->id = $a->id;
                         $snap->completionstatus = !empty($a->coursecompletion) ? $a->coursecompletion : null;
-                        update_record('dp_plan_course_assign', $snap);
+                        if (!update_record('dp_plan_course_assign', $snap)) {
+                            return false;
+                        }
                     }
+                }
+                $plantodb = new stdClass;
+                $plantodb->id = $this->id;
+                $plantodb->timecompleted = time();
+                if (!update_record('dp_plan', $plantodb)) {
+                    return false;
                 }
                 break;
             default:
@@ -1290,6 +1345,7 @@ class development_plan {
             $todb = new stdClass;
             $todb->planid = $this->id;
             $todb->status = $status;
+            $todb->reason = $reason;
             $todb->timemodified = time();
             $todb->usermodified = $USER->id;
 
@@ -1645,6 +1701,66 @@ class development_plan {
     public function print_header($currenttab, $navlinks = array(), $printinstructions=true) {
         global $CFG;
         require("{$CFG->dirroot}/local/plan/header.php");
+    }
+
+
+    /**
+     * Reactivates a completed plan
+     *
+     * @access public
+     * @return bool
+     */
+    public function reactivate_plan() {
+        global $USER;
+
+        begin_sql();
+
+        $plan_todb = new stdClass;
+        $plan_todb->id = $this->id;
+        $plan_todb->timecompleted = null;
+        if (!update_record('dp_plan', $plan_todb)) {
+            rollback_sql();
+            return false;
+        }
+
+        $this->set_status(DP_PLAN_STATUS_APPROVED, DP_PLAN_REASON_MANUAL_REACTIVATE);
+        $components = $this->get_components();
+        // Reactivates items for all components
+        foreach ($components as $component) {
+            if (!$component->reactivate_items()) {
+                rollback_sql();
+                return false;
+            }
+        }
+
+        // Send alerts to notify of reactivation
+        $manager = totara_get_manager($this->userid);
+        if ($manager && $manager->id != $USER->id) {
+            $subjectstring = 'plan-reactivate-manager-short';
+            $fullmessagestring = 'plan-reactivate-manager-long';
+        } else {
+            $subjectstring = 'plan-reactivate-learner-short';
+            $fullmessagestring = 'plan-reactivate-learner-long';
+        }
+        $this->send_alert(true, 'learningplan-regular', $subjectstring, $fullmessagestring);
+
+        commit_sql();
+        return true;
+
+    }
+
+    /**
+     * Returns true if all items in a plan are complete
+     *
+     * @return bool $complete returns true if all items in plan are completed
+     */
+    public function is_plan_complete(){
+        $complete = true;
+        $components = $this->get_components();
+        foreach ($components as $component) {
+            $complete = $complete && $component->items_all_complete();
+        }
+        return $complete;
     }
 }
 

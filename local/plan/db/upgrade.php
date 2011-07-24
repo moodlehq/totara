@@ -21,6 +21,8 @@ function xmldb_local_plan_upgrade($oldversion=0) {
 
     global $CFG, $db;
 
+    require_once($CFG->dirroot . '/local/plan/lib.php');
+
     $result = true;
 
     if ($result && $oldversion < 2010102700) {
@@ -355,6 +357,78 @@ function xmldb_local_plan_upgrade($oldversion=0) {
 
         $result = $result && add_field($table, $field);
     }
+
+    if ($result && $oldversion < 2011072800) {
+        $table = new XMLDBTable('dp_plan_settings');
+
+        /// Adding fields to table dp_objective_settings
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('templateid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('manualcomplete', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '1');
+        $table->addFieldInfo('autobyitems', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $table->addFieldInfo('autobyplandate', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+
+        /// Adding keys to table dp_objective_settings
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        /// Launch create table for dp_plan_objective_assign
+        $result = $result && create_table($table);
+
+        // Add Column reason to dp_plan_history
+        $table = new XMLDBTable('dp_plan_history');
+        $field = new XMLDBField('reason');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 10, 'status');
+
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+        // Add reason for existing records in dp_plan_history table
+        begin_sql();
+        if (!$result = $result && execute_sql("UPDATE {$CFG->prefix}dp_plan_history SET reason=".DP_PLAN_REASON_CREATE . " WHERE status=" . DP_PLAN_STATUS_UNAPPROVED)) {
+            rollback_sql();
+        }
+        if (!$result = $result && execute_sql("UPDATE {$CFG->prefix}dp_plan_history SET reason=" . DP_PLAN_REASON_MANUAL_APPROVE . " WHERE status=".DP_PLAN_STATUS_APPROVED)) {
+            rollback_sql();
+        }
+        if (!$result = $result && execute_sql("UPDATE {$CFG->prefix}dp_plan_history SET reason=" . DP_PLAN_REASON_MANUAL_COMPLETE . " WHERE status=".DP_PLAN_STATUS_COMPLETE)) {
+            rollback_sql();
+        }
+        commit_sql();
+
+        // Add entries in the plan settings table for each template
+        if ($templates = get_records('dp_template')) {
+            foreach ($templates as $template) {
+                $todb->templateid = $template->id;
+                $todb->manualcomplete = 1;
+                $todb->autobyitems = 0;
+                $auto->autobyplandate = 0;
+
+                $result = $result && insert_record('dp_plan_settings', $todb);
+            }
+        }
+
+        // hack to get cron working via admin/cron.php
+        set_config('local_plan_cron', 60);
+
+        // update plan->complete settings to plan->completereactivate
+        $result = $result && execute_sql("UPDATE {$CFG->prefix}dp_permissions SET action='completereactivate' WHERE component='plan' AND action='complete'");
+
+        // add completed column to plans
+        $table = new XMLDBTable('dp_plan');
+        $field = new XMLDBField('timecompleted');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+
+        $result = $result && add_field($table, $field);
+
+        if ($plans = get_records('dp_plan', 'status', 100)) {
+            foreach ($plans as $plan) {
+                $updateplansql = "UPDATE {$CFG->prefix}dp_plan set timecompleted=(SELECT timemodified FROM {$CFG->prefix}dp_plan_history WHERE planid={$plan->id} AND status=100) WHERE id={$plan->id}";
+                $result = $result && execute_sql($updateplansql);
+            }
+        }
+    }
+
 
     return $result;
 }

@@ -36,6 +36,11 @@ class dp_userdriven_workflow extends dp_base_workflow {
 
         // workflow settings
 
+        // plan specific settings
+        $this->cfg_plan_manualcomplete = 1;
+        $this->cfg_plan_autobyitems = 0;
+        $this->cfg_plan_autobyplandate = 0;
+
         // course specific settings
         $this->cfg_course_duedatemode = DP_DUEDATES_OPTIONAL;
         $this->cfg_course_prioritymode = DP_PRIORITY_OPTIONAL;

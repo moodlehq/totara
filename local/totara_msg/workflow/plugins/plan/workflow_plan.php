@@ -41,7 +41,7 @@ class totara_msg_workflow_plan extends totara_msg_workflow_plugin_base {
         }
 
         // Change status
-        if (!$plan->set_status(DP_PLAN_STATUS_APPROVED)) {
+        if (!$plan->set_status(DP_PLAN_STATUS_APPROVED, DP_PLAN_REASON_MANUAL_APPROVE)) {
             return false;
         }
 

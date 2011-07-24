@@ -113,6 +113,9 @@ if($show) {
             totara_set_notification(get_string('error:update_components_enabled', 'local_plan'), $returnurl);
         } else {
             commit_sql();
+            if ($plans = get_records('dp_plan', 'templateid', $template->id, '', 'id')) {
+                dp_plan_check_plan_complete(array_keys($plans));
+            }
         }
     }
 }
@@ -127,6 +130,9 @@ if($hide) {
             totara_set_notification(get_string('error:update_components_enabled', 'local_plan'), $returnurl);
         } else {
             commit_sql();
+            if ($plans = get_records('dp_plan', 'templateid', $template->id, '', 'id')) {
+                dp_plan_check_plan_complete(array_keys($plans));
+            }
         }
     }
 }

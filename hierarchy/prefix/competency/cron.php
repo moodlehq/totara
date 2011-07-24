@@ -361,6 +361,9 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
                     )
                 );
                 $cevidence->update_proficiency($aggregated_status);
+
+                //hook for plan auto completion
+                dp_plan_item_updated($current_user, 'competency', $current_competency);
             }
         }
 

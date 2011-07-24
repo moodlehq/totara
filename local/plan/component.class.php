@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -976,6 +976,42 @@ abstract class dp_base_component {
      */
     abstract protected function is_item_complete($item);
 
+
+    /**
+     * Reactivates item when re-activating a plan
+     *
+     * @return bool $success
+     */
+    abstract public function reactivate_items();
+
+
+    /**
+     * Gets ids of all plans that contain this item
+     *
+     * @param int $itemid id of item
+     * @param int $userid id of user to find plans for
+     * @return array|false $plans an array of plans or false if there are no plans
+     */
+    public static function get_plans_containing_item($itemid, $userid) {
+        debugging('The component "' . $this->component . '" has not defined the method "get_plans_containing_item($itemid, $userid)". This should be defined in order for auto completion of plans to work correctly. Any component that doen\'t define this method will assume that all items in that component are complete when auto completion is turned on.', DEBUG_DEVELOPER);
+        return true;
+    }
+
+    /**
+     * Returns true if all items in a component are complete
+     *
+     * @return boolean $complete returns true if all assigned items are complete
+     */
+    public function items_all_complete() {
+        $complete = true;
+        $items = $this->get_assigned_items();
+
+        foreach($items as $i) {
+            $complete = $complete && $this->is_item_complete($i);
+        }
+
+        return $complete;
+    }
 
     /**
      * Returns true if the item is assigned to the current plan

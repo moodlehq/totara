@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -42,6 +42,31 @@ if (!defined('MOODLE_INTERNAL')) {
 
 function development_plan_build_settings_form(&$mform, $customdata) {
     global $CFG, $DP_AVAILABLE_ROLES;
+
+    //Settings
+    $mform->addElement('header', 'competencysettings', get_string('competencysettings', 'local_plan'));
+    $mform->setHelpButton('competencysettings', array('advancedsettingscompetencysettings', get_string('competencysettings', 'local_plan'), 'local_plan'), true);
+
+    if($templatesettings = get_record('dp_plan_settings', 'templateid', $customdata['id'])) {
+        $defaultmanualcomplete = $templatesettings->manualcomplete;
+        $defaultautobyitems = $templatesettings->autobyitems;
+        $defaultautobyplandate = $templatesettings->autobyplandate;
+    } else {
+        $defaultmanualcomplete = 1;
+        $defaultautobyitems = null;
+        $defaultautobyplandate = null;
+    }
+
+    $plancompletiongroup = array();
+    $plancompletiongroup[] =& $mform->createElement('advcheckbox', 'manualcomplete', null, get_string('manualcomplete', 'local_plan'));
+    $plancompletiongroup[] =& $mform->createElement('advcheckbox', 'autobyitems', null, get_string('autobyitems', 'local_plan'));
+    $plancompletiongroup[] =& $mform->createElement('advcheckbox', 'autobyplandate', null, get_string('autobyplandate', 'local_plan'));
+
+    $mform->addGroup($plancompletiongroup, 'plancomplete', get_string('planmarkedcomplete', 'local_plan'), array('<br />'), false);
+    $mform->setDefault('manualcomplete', $defaultmanualcomplete);
+    $mform->setDefault('autobyitems', $defaultautobyitems);
+    $mform->setDefault('autobyplandate', $defaultautobyplandate);
+
 
     //Permissions
     $mform->addElement('header', 'planpermissions', get_string('planpermissions', 'local_plan'));
@@ -78,10 +103,11 @@ function development_plan_build_settings_form(&$mform, $customdata) {
 function development_plan_process_settings_form($fromform, $id) {
     global $CFG, $DP_AVAILABLE_ROLES;
 
-    // process plan settings here
+    $currenturl = qualified_me() . '?id='.$id.'&amp;component=plan';
     begin_sql();
 
-    $currenturl = qualified_me() . '?id='.$id.'&amp;component=plan';
+    // process plan settings here
+
     $currentworkflow = get_field('dp_template', 'workflow', 'id', $id);
     if($currentworkflow != 'custom') {
         $template_update = new object();
@@ -89,7 +115,28 @@ function development_plan_process_settings_form($fromform, $id) {
         $template_update->workflow = 'custom';
         if(!update_record('dp_template', $template_update)){
             rollback_sql();
-            totara_set_notification(get_string('error:update_competency_settings','local_plan'), $currenturl);
+            totara_set_notification(get_string('error:update_plan_settings','local_plan'), $currenturl);
+        }
+    }
+
+    $todb = new object();
+    $todb->templateid = $id;
+    $todb->manualcomplete = $fromform->manualcomplete;
+    $todb->autobyitems = $fromform->autobyitems;
+    $todb->autobyplandate = $fromform->autobyplandate;
+
+    if ($plansettings = get_record('dp_plan_settings', 'templateid', $id)) {
+        //update
+        $todb->id = $plansettings->id;
+        if (!update_record('dp_plan_settings', $todb)) {
+            rollback_sql();
+            totara_set_notification(get_string('error:update_plan_settings', 'local_plan'), $currenturl);
+        }
+    } else {
+        //insert
+        if (!insert_record('dp_plan_settings', $todb)) {
+            rollback_sql();
+            totara_set_notification(get_string('error:update_plan_settings','local_plan'), $currenturl);
         }
     }
 
@@ -110,13 +157,13 @@ function development_plan_process_settings_form($fromform, $id) {
                 $permission_todb->id = $permission_setting->id;
                 if(!update_record('dp_permissions', $permission_todb)) {
                     rollback_sql();
-                    totara_set_notification(get_string('error:update_competency_settings','local_plan'), $currenturl);
+                    totara_set_notification(get_string('error:update_plan_settings','local_plan'), $currenturl);
                 }
             } else {
                 //insert
                 if(!insert_record('dp_permissions', $permission_todb)) {
                     rollback_sql();
-                    totara_set_notification(get_string('error:update_competency_settings','local_plan'), $currenturl);
+                    totara_set_notification(get_string('error:update_plan_settings','local_plan'), $currenturl);
                 }
             }
         }

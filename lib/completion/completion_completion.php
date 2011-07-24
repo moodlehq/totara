@@ -27,7 +27,7 @@
 require_once($CFG->libdir.'/data_object.php');
 require_once($CFG->libdir.'/completionlib.php');
 require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
-
+require_once($CFG->dirroot.'/local/plan/lib.php');
 
 /**
  * Course completion status constants
@@ -367,6 +367,9 @@ class completion_completion extends data_object {
         }
 
         totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);
+
+        //Auto plan completion hook
+        dp_plan_item_updated($this->userid, 'course', $this->course);
     }
 
     /**

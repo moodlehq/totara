@@ -26,6 +26,8 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+require_once($CFG->dirroot.'/local/plan/lib.php');
+
 class dp_objective_component extends dp_base_component {
 
     public static $permissions = array(
@@ -463,6 +465,10 @@ class dp_objective_component extends dp_base_component {
             foreach ($stored_records as $itemid => $record) {
                 $record = addslashes_recursive($record);
                 $status = $status & update_record('dp_plan_objective', $record);
+                $scale_value_record = get_record('dp_objective_scale_value', 'id', $record->scalevalueid);
+                if ($scale_value_record->achieved == 1) {
+                    dp_plan_item_updated($currentuser, 'objective', $id);
+                }
             }
             if ($status) {
                 commit_sql();
@@ -613,6 +619,7 @@ class dp_objective_component extends dp_base_component {
         if ($result) {
             add_to_log(SITEID, 'plan', 'deleted objective', "component.php?id={$this->plan->id}&amp;c=objective", "{$objective->fullname} (ID:{$caid})");
             $this->send_deletion_alert($objective);
+            dp_plan_check_plan_complete(array($this->plan->id));
         }
 
         return $result;
@@ -647,6 +654,7 @@ class dp_objective_component extends dp_base_component {
         if($result = insert_record('dp_plan_objective', $rec)) {
             $this->send_creation_alert($result, $fullname);
             add_to_log(SITEID, 'plan', 'added objective', "component.php?id={$rec->planid}&amp;c=objective", $rec->fullname);
+            dp_plan_item_updated($USER->id, 'objective', $result);
         }
 
         return $result;
@@ -1230,5 +1238,43 @@ SQL;
         return $progress;
     }
 
+
+    /**
+     * Reactivates objective when re-activating a plan (stub to satisfy abstract method)
+     *
+     * @return bool $success
+     */
+    public function reactivate_items() {
+        return true;
+    }
+
+
+    /**
+     * Gets all plans containing specified objective
+     *
+     * @param int $objectiveid
+     * @param int $userid
+     * @return array|false $plans ids of plans with specified objective
+     */
+    public static function get_plans_containing_item($objectiveid, $userid) {
+        global $CFG;
+        $sql = "SELECT DISTINCT
+                planid
+            FROM
+                {$CFG->prefix}dp_plan_objective obj
+            JOIN
+                {$CFG->prefix}dp_plan p
+              ON
+                obj.planid = p.id
+            WHERE
+                p.userid = {$userid}";
+
+        if (!$plans = get_records_sql($sql)) {
+            // There are no plans with this objective
+            return false;
+        }
+
+        return array_keys($plans);
+    }
 }
 

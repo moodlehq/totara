@@ -130,6 +130,9 @@ if($fromform = $mform->get_data()) { // Form submitted
         $alert_detail->itemname = get_field('comp', 'fullname', 'id', $data2);
         $alert_detail->text = get_string('competencycompleted', 'local_plan');
         $component->send_component_complete_alert($alert_detail);
+
+        //Auto plan completion hook
+        dp_plan_item_updated($currentuser, 'competency', $data2);
     }
     // check record exists for removal and is set to "not proficient"
     else if ($isproficient == 0 && $count > 0) {

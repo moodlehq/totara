@@ -232,18 +232,23 @@ abstract class dp_base_workflow {
             error(get_string('error:templateid', 'local_plan'));
         }
 
+        $plan_todb = new object();
+        if ($plan_settings = get_record('dp_plan_settings', 'templateid', $templateid)) {
+            $plan_todb->id = $plan_settings->id;
+        }
+
         $course_todb = new object();
-        if($course_settings = get_record('dp_course_settings', 'templateid', $templateid)){
+        if ($course_settings = get_record('dp_course_settings', 'templateid', $templateid)) {
             $course_todb->id = $course_settings->id;
         }
 
         $competency_todb = new object();
-        if($competency_settings = get_record('dp_competency_settings', 'templateid', $templateid)){
+        if ($competency_settings = get_record('dp_competency_settings', 'templateid', $templateid)) {
             $competency_todb->id = $competency_settings->id;
         }
 
         $objective_todb = new object();
-        if($objective_settings = get_record('dp_objective_settings', 'templateid', $templateid)){
+        if ($objective_settings = get_record('dp_objective_settings', 'templateid', $templateid)) {
             $objective_todb->id = $objective_settings->id;
         }
 
@@ -254,6 +259,9 @@ abstract class dp_base_workflow {
             $parts = explode('_', $property);
             if($parts[0] == 'cfg') {
                 switch($parts[1]){
+                case 'plan':
+                    $plan_todb->$parts[2] = $value;
+                    break;
                 case 'course':
                     if($parts[2] == 'priorityscale'){
                         if(!$template_in_use) {
@@ -312,6 +320,22 @@ abstract class dp_base_workflow {
         }
 
         //Write settings to tables
+        if ($plan_settings) {
+            if (!update_record('dp_plan_settings', $plan_todb)) {
+                rollback_sql();
+                totara_set_notification(get_string('todb_plansettingerror', 'local_plan'), $returnurl);
+                return false;
+            }
+        } else {
+            $plan_todb->templateid = $templateid;
+            if (!insert_record('dp_plan_settings', $plan_todb)){
+                rollback_sql();
+                totara_set_notification(get_string('todb_plansettingerror', 'local_plan'), $returnurl);
+                return false;
+            }
+        }
+
+
         if($course_settings) {
             if(!update_record('dp_course_settings', $course_todb)) {
                 rollback_sql();

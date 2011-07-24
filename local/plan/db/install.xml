@@ -27,8 +27,9 @@
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Name of this development plan" PREVIOUS="userid" NEXT="description"/>
         <FIELD NAME="description" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Description of this development plan" PREVIOUS="name" NEXT="startdate"/>
         <FIELD NAME="startdate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Timestamp of the start date of this plan" PREVIOUS="description" NEXT="enddate"/>
-        <FIELD NAME="enddate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Timestamp of the end date of this plan" PREVIOUS="startdate" NEXT="status"/>
-        <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Integer code indicating the state of the plan" PREVIOUS="enddate"/>
+        <FIELD NAME="enddate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Timestamp of the end date of this plan" PREVIOUS="startdate" NEXT="timecompleted"/>
+        <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Timestamp of the completed date plan" PREVIOUS="enddate" NEXT="status"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Integer code indicating the state of the plan" PREVIOUS="timecompleted"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -205,8 +206,9 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="planid"/>
         <FIELD NAME="planid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="The related plan's id" PREVIOUS="id" NEXT="status"/>
-        <FIELD NAME="status" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="The plan's status" PREVIOUS="planid" NEXT="timemodified"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Modification time" PREVIOUS="status" NEXT="usermodified"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="The plan's status" PREVIOUS="planid" NEXT="reason"/>
+        <FIELD NAME="reason" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="The reason for the status change" PREVIOUS="status" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Modification time" PREVIOUS="reason" NEXT="usermodified"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="The id of the user who made the modification" PREVIOUS="timemodified"/>
       </FIELDS>
       <KEYS>
@@ -259,7 +261,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="dp_plan_objective" COMMENT="One row for each objective in a plan" PREVIOUS="dp_objective_settings">
+    <TABLE NAME="dp_plan_objective" COMMENT="One row for each objective in a plan" PREVIOUS="dp_objective_settings" NEXT="dp_plan_settings">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="planid"/>
         <FIELD NAME="planid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="fullname"/>
@@ -274,6 +276,21 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+    </TABLE>
+    <TABLE NAME="dp_plan_settings" COMMENT="Contains settings for the plan" PREVIOUS="dp_plan_objective">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="templateid"/>
+        <FIELD NAME="templateid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Identifies the template these settings should be applied to" PREVIOUS="id" NEXT="manualcomplete"/>
+        <FIELD NAME="manualcomplete" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" COMMENT="Flag to identify if a plan must be completed manually" PREVIOUS="templateid" NEXT="autobyitems"/>
+        <FIELD NAME="autobyitems" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Flag to identify if a plan should autocomplete when all items have been completed" PREVIOUS="manualcomplete" NEXT="autobyplandate"/>
+        <FIELD NAME="autobyplandate" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Flag to identify if a plan should autocomplete when due date has passed" PREVIOUS="autobyitems"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="templateid" UNIQUE="true" FIELDS="templateid" COMMENT="Ensure that plan settings are only applied to each template once"/>
+      </INDEXES>
     </TABLE>
   </TABLES>
 </XMLDB>
