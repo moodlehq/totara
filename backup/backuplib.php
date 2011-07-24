@@ -1693,7 +1693,6 @@
                 fwrite ($bf,full_tag("COMPLETEDATE",5,false,$criterion->completedate));
                 fwrite ($bf,full_tag("GRADEPASS",5,false,$criterion->gradepass));
                 fwrite ($bf,full_tag("ROLE",5,false,$criterion->role));
-                fwrite ($bf,full_tag("LOCK",5,false,$criterion->lock));
 
                 //End completion_criterion
                 fwrite ($bf,end_tag("COMPLETION_CRITERIA",4,true));

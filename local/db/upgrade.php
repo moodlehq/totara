@@ -2383,5 +2383,15 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2011072401) {
+        $table = new XMLDBTable('course_completion_criteria');
+        if (table_exists($table)) {
+            $lockfield = new XMLDBField('lock');
+            if (field_exists($table, $lockfield)) {
+                $result = $result && drop_field($table, $lockfield);
+            }
+        }
+    }
+
     return $result;
 }
