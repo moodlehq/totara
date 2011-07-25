@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // competency.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // competency.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['achieved'] = 'Abgeschlossen';
@@ -14,10 +14,11 @@ $string['addnewtemplate'] = 'Neue Kompetenzvorlage hinzufügen';
 $string['aggregationmethod'] = 'Methode zur Zusammenfassung';
 $string['aggregationmethod1'] = 'Alle';
 $string['aggregationmethod2'] = 'Irgendein';
-$string['aggregationmethod3'] = 'Einheit';
-$string['aggregationmethod4'] = 'Bruch';
-$string['aggregationmethod5'] = 'Gewichtete Summe';
-$string['aggregationmethod6'] = 'Gewichteter Durchschnitt';
+$string['aggregationmethod3'] = 'Aus';
+$string['aggregationmethod4'] = 'Einheit';
+$string['aggregationmethod5'] = 'Bruch';
+$string['aggregationmethod6'] = 'Gewichtete Summe';
+$string['aggregationmethod7'] = 'Gewichteter Durchschnitt';
 $string['aggregationmethodview'] = 'Methode zur Zusammenfassung';
 $string['allcompetencyscales'] = 'Alle Kompetenzskalen';
 $string['assigncompetencies'] = 'Kompetenzen zuweisen';
@@ -98,6 +99,7 @@ $string['error:nodeletecompetencyscaleinuse'] = 'Diese Skala kann nicht gelösch
 $string['error:nodeletecompetencyscalevaluedefault'] = 'Diese Skala kann nicht gelöscht werden, weil sie der Standard ist.';
 $string['error:nodeletecompetencyscalevalueonlyprof'] = 'Diese Skala kann nicht gelöscht werden, weil sie die einzige Kenntniswert der Skala ist. Ein anderer Wert muss als bekannt, bevor der Wert gelöscht werden kann.';
 $string['error:onescalevaluemustbeproficient'] = 'Mindestens ein Wert muss als bekannt markiert werden. Bevor dieser Wert abgewählt wird, muss ein anderer Wert ausgewählt werden.';
+$string['error:scaledetails'] = 'Fehler beim Lesen der Skalendetails';
 $string['evidence'] = 'Nachweise';
 $string['evidenceactivitycompletion'] = 'Aktivitätsabschluss';
 $string['evidencecount'] = 'Nachweisbelege';

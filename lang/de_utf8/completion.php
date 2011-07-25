@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // completion.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // completion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['achievinggrade'] = 'Erreichen der Bewertung';
@@ -7,11 +7,12 @@ $string['activities'] = 'Aktivitäten';
 $string['activitiescompleted'] = 'Abgeschlossene Aktivitäten';
 $string['activitycompletion'] = 'Aktivitäten abgeschlossen';
 $string['activitycompletionreport'] = 'Fortschrittsbericht Aktivitätenabschluss';
+$string['activityrpl'] = 'Aktivität Anerkennung von Vorkenntnissen';
 $string['addcoursedependency'] = 'Kursbedingung hinzufügen';
 $string['afterspecifieddate'] = 'Nach dem angegebenen Zeitpunkt';
+$string['aggregateall'] = 'Alle';
+$string['aggregateany'] = 'Einige';
 $string['aggregationmethod'] = 'Methode zur Zusammenfassung';
-$string['all'] = 'Irgendein';
-$string['any'] = 'Alle';
 $string['approval'] = 'Freigabe';
 $string['badautocompletion'] = 'Wenn Sie den automatischen Abschluss auswählen, müssen Sie auch zumindest (im Folgenden) eine Bedingung eingeben.';
 $string['complete'] = 'Vollständig';
@@ -62,6 +63,7 @@ $string['coursedependencies'] = 'Kursbedingungen';
 $string['coursegrade'] = 'Kursbewertung';
 $string['courseprogress'] = 'Kursfortschritt';
 $string['courseprogresshelp'] = 'Dies gibt an, ob der Kursfortschrittsblock auf der Homepage erscheint.';
+$string['courserpl'] = 'Kurs Anerkennung von Vorkenntnissen';
 $string['coursesavailable'] = 'Kurse verfügbar';
 $string['coursesavailableexplaination'] = '<i>Kursabschlusskriterien müssen festgelegt sein, damit ein Kurs in dieser Liste erscheint</i>';
 $string['criteria'] = 'Kriterien';
@@ -135,5 +137,7 @@ $string['viewingactivity'] = '$a ansehen';
 $string['writingcompletiondata'] = 'Schreibe Abschluss-Daten';
 $string['xdays'] = '\$ Tage';
 $string['yourprogress'] = 'Ihre Fortschritte';
+$string['all'] = 'Irgendein'; // ORPHANED
+$string['any'] = 'Alle'; // ORPHANED
 
 ?>
