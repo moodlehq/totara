@@ -997,6 +997,7 @@ function dp_create_template($templatename, $enddate, &$error) {
     return $newtemplateid;
 }
 
+
 /**
  * Find all plans a specified item is part of
  *
@@ -1032,4 +1033,209 @@ function dp_plan_check_plan_complete($plans) {
             }
         }
     }
+}
+
+
+///
+/// Comments callback functions
+///
+
+function plan_comment_permissions($details) {
+    $planid = 0;
+
+    switch ($details->commentarea) {
+        case 'plan-overview' :
+            $planid = $details->itemid;
+            break;
+        case 'plan-course-item':
+            $planid = get_field('dp_plan_course_assign', 'planid', 'id', $details->itemid);
+            break;
+        case 'plan-competency-item':
+            $planid = get_field('dp_plan_competency_assign', 'planid', 'id', $details->itemid);
+            break;
+        case 'plan-objective-item':
+            $planid = get_field('dp_plan_objective', 'planid', 'id', $details->itemid);
+            break;
+        default:
+            break;
+
+    }
+
+    if (!$planid) {
+        return array('post' => false, 'view' => false);
+    }
+
+    $plan = new development_plan($planid);
+
+    if(!has_capability('local/plan:accessanyplan', $details->context) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+        return array('post' => false, 'view' => false);
+    } else {
+        return array('post' => true, 'view' => true);
+    }
+}
+
+function plan_comment_template() {
+    $template = <<<EOD
+<div class="comment-userpicture">___picture___</div>
+<div class="comment-content">
+    <span class="comment-user-name">___name___</span>
+    ___content___
+    <div class="comment-datetime">___time___</div>
+</div>
+<div class="comment-footer"></div>
+EOD;
+
+    return $template;
+}
+
+function plan_comment_add($comment) {
+    global $CFG;
+
+    /// Get the right message data
+    $commentuser = get_record('user', 'id', $comment->userid);
+    switch ($comment->commentarea) {
+        case 'plan-overview':
+            $plan = get_record('dp_plan', 'id', $comment->itemid);
+
+            $msgobj = new stdClass;
+            $msgobj->plan = $plan->name;
+            $msgobj->planowner = fullname(get_record('user', 'id', $plan->userid));
+            $msgobj->comment = format_text($comment->content);
+            $msgobj->commentby = fullname($commentuser);
+            $msgobj->commentdate = userdate($comment->timecreated);
+
+            $subject = get_string('commentmsg:planoverview', 'local_plan', $msgobj);
+            $fullmsg = get_string('commentmsg:planoverviewdetail', 'local_plan', $msgobj);
+            $contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$plan->id.'#comments';
+            $contexturlname = $plan->name;
+            $icon = 'elearning-newcomment';
+            break;
+        case 'plan-course-item':
+            $sql = "SELECT ca.id, ca.planid, c.fullname
+                FROM {$CFG->prefix}dp_plan_course_assign ca
+                INNER JOIN {$CFG->prefix}course c ON ca.courseid = c.id
+                WHERE ca.id = {$comment->itemid}";
+            if (!$record = get_record_sql($sql)) {
+                print_error('commenterror:itemnotfound', 'local_plan');
+            }
+            $plan = get_record('dp_plan', 'id', $record->planid);
+
+            $msgobj = new stdClass;
+            $msgobj->plan = $plan->name;
+            $msgobj->planowner = fullname(get_record('user', 'id', $plan->userid));
+            $msgobj->component = get_string('course', 'local_plan');
+            $msgobj->componentname = $record->fullname;
+            $msgobj->comment = format_text($comment->content);
+            $msgobj->commentby = fullname($commentuser);
+            $msgobj->commentdate = userdate($comment->timecreated);
+            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj);
+            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj);
+
+            $contexturl = $CFG->wwwroot.'/local/plan/components/course/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
+            $contexturlname = $record->fullname;
+            $icon = 'course-newcomment';
+            break;
+        case 'plan-competency-item':
+            $sql = "SELECT ca.id, ca.planid, c.fullname
+                FROM {$CFG->prefix}dp_plan_competency_assign ca
+                INNER JOIN {$CFG->prefix}comp c ON ca.competencyid = c.id
+                WHERE ca.id = {$comment->itemid}";
+            if (!$record = get_record_sql($sql)) {
+                print_error('commenterror:itemnotfound', 'local_plan');
+            }
+            $plan = get_record('dp_plan', 'id', $record->planid);
+
+            $msgobj = new stdClass;
+            $msgobj->plan = $plan->name;
+            $msgobj->planowner = fullname(get_record('user', 'id', $plan->userid));
+            $msgobj->component = get_string('competency', 'local_plan');
+            $msgobj->componentname = $record->fullname;
+            $msgobj->comment = format_text($comment->content);
+            $msgobj->commentby = fullname($commentuser);
+            $msgobj->commentdate = userdate($comment->timecreated);
+            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj);
+            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj);
+
+            $contexturl = $CFG->wwwroot.'/local/plan/components/competency/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
+            $contexturlname = $record->fullname;
+            $icon = 'competency-newcomment';
+            break;
+        case 'plan-objective-item':
+            if (!$record = get_record('dp_plan_objective', 'id', $comment->itemid)) {
+                print_error('commenterror:itemnotfound', 'local_plan');
+            }
+            $plan = get_record('dp_plan', 'id', $record->planid);
+
+            $msgobj = new stdClass;
+            $msgobj->plan = $plan->name;
+            $msgobj->planowner = fullname(get_record('user', 'id', $plan->userid));
+            $msgobj->component = get_string('objective', 'local_plan');
+            $msgobj->componentname = $record->fullname;
+            $msgobj->comment = format_text($comment->content);
+            $msgobj->commentby = fullname($commentuser);
+            $msgobj->commentdate = userdate($comment->timecreated);
+            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj);
+            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj);
+
+            $contexturl = $CFG->wwwroot.'/local/plan/components/objective/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
+            $contexturlname = $record->fullname;
+            $icon = 'objective-newcomment';
+            break;
+        default:
+            print_error('commenterror:unsupportedcomment', 'local_plan');
+            break;
+    }
+
+    /// Get subscribers
+    $subscribers = get_records_select('comments', "commentarea = '{$comment->commentarea}' AND itemid = {$comment->itemid} AND userid != {$comment->userid}", '', 'DISTINCT userid');
+    $subscribers = !empty($subscribers) ? array_keys($subscribers) : array();
+    $subscriberkeys = array();
+    foreach ($subscribers as $s) {
+        $subscriberkeys[$s] = $s;
+    }
+    $subscribers = $subscriberkeys;
+    unset($subscriberkeys);
+
+    $manager = totara_get_manager($plan->userid);
+    $learner = get_record('user', 'id', $plan->userid);
+    if ($comment->userid == $learner->id) {
+        // Make sure manager is added to subscriber list
+        if (!empty($manager)) {
+            $subscribers[$manager->id] = $manager->id;
+        }
+    } elseif (!empty($manager) && $comment->userid == $manager->id) {
+        // Make sure learner is added to subscriber list
+        $subscribers[$learner->id] = $learner->id;
+    } else {
+        // Other commenter, so ensure learner and manager are added
+        $subscribers[$learner->id] = $learner->id;
+        if (!empty($manager)) {
+            $subscribers[$manager->id] = $manager->id;
+        }
+    }
+
+    /// Send message
+    require_once($CFG->dirroot.'/local/totara_msg/eventdata.class.php');
+    require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+    $result = true;
+    foreach ($subscribers as $sid) {
+        $userto = get_record('user', 'id', $sid);
+        $event = new stdClass;
+        $event->userfrom = $commentuser;
+        $event->userto = $userto;
+        $event->contexturl = $contexturl;
+        $event->contexturlname = $contexturlname;
+        if (!empty($manager) && $sid == $manager->id) {
+            $event->roleid = get_field('role', 'id', 'shortname', 'manager');
+        }
+        $event->icon = $icon;
+        $event->subject = $subject;
+        $event->fullmessage = format_text_email($fullmsg, FORMAT_HTML);
+        $event->fullmessagehtml = $fullmsg;
+        $event->fullmessageformat = FORMAT_HTML;
+
+        $result = $result && tm_alert_send($event);
+    }
+
+    return $result;
 }

@@ -27,6 +27,8 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+require_once($CFG->dirroot.'/local/comment/lib.php');
+
 /**
  * Flag for dp_base_component::can_update_settings()
  */
@@ -347,6 +349,7 @@ abstract class dp_base_component {
         $table->sortable(true, 'name');
         $table->no_sorting('status');
         $table->no_sorting('actions');
+        $table->no_sorting('comments');
         $table->setup();
         $table->pagesize(20, $count);
 
@@ -429,6 +432,11 @@ abstract class dp_base_component {
             $tablecolumns[] = 'status';
             $tablehide[] = 'status';
         }
+
+        // Comments
+        $tableheaders[] = get_string('comments');
+        $tablecolumns[] = 'comments';
+        $tablehide[] = 'comments';
 
         $tableheaders[] = get_string('actions', 'local_plan');
         $tablecolumns[] = 'actions';
@@ -1131,6 +1139,43 @@ abstract class dp_base_component {
      */
     protected function display_list_item_duedate($item) {
         return $this->display_duedate($item->id, $item->duedate);
+    }
+
+    /**
+     * Display comments on list items
+     *
+     * @access protected
+     * @param object $item
+     * @return string html
+     */
+    protected function display_list_item_comments($item) {
+        global $CFG;
+
+        $options = new stdClass;
+        $options->area    = 'plan-'.$this->component.'-item';
+        $options->context = get_context_instance(CONTEXT_SYSTEM);
+        $options->itemid  = $item->id;
+        $options->component = 'local_plan';
+
+        $comment = new comment($options);
+
+        if ($count = $comment->count()) {
+            $latestcomment = $comment->get_latest_comment();
+            $tooltip = get_string('latestcommentby', 'local_plan').' '.$latestcomment->firstname.' '.get_string('on', 'local_plan').' '.userdate($latestcomment->ctimecreated).': '.format_string(substr($latestcomment->ccontent, 0, 50));
+            $tooltip = format_string(strip_tags($tooltip));
+            return '<a href="'.$CFG->wwwroot.'/local/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
+                class="comments-icon" title="'.$tooltip.'">
+                    <img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/t/comments.gif" title="'.$tooltip.'" alt="" />
+                    <span class="comments-count" title="'.$tooltip.'">'.$count.'</span>
+                </a>';
+        } else {
+            $tooltip = get_string('nocomments', 'local_plan');
+            return '<a href="'.$CFG->wwwroot.'/local/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
+                class="comments-icon" title="'.$tooltip.'">
+                    <img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/t/comments-none.gif" title="'.$tooltip.'" alt=""/>
+                    <span class="comments-count" title="'.$tooltip.'">0</span>
+                </a>';
+        }
     }
 
 

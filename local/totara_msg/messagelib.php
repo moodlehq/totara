@@ -103,6 +103,11 @@ function tm_message_send($eventdata) {
     //global $CFG, $DB;
     global $CFG;
 
+    if (empty($CFG->messaging)) {
+        // Messaging currently disabled
+        return true;
+    }
+
     //TODO: this function is very slow and inefficient, it would be a major bottleneck in cron processing, this has to be improved in 2.0
     //      probably we could add two parameters with user messaging preferences and we could somehow preload/cache them in cron
 
@@ -299,6 +304,12 @@ function tm_message_send($eventdata) {
  */
 function tm_alert_send($eventdata) {
     global $CFG;
+
+    if (empty($CFG->messaging)) {
+        // Messaging currently disabled
+        return true;
+    }
+
     if (!isset($eventdata->userto)) {
         // cant send without a target user
         debugging('tm_alert_send() userto is not set');
@@ -368,6 +379,11 @@ function tm_alert_send($eventdata) {
  */
 function tm_task_send($eventdata) {
     global $CFG;
+
+    if (empty($CFG->messaging)) {
+        // Messaging currently disabled
+        return true;
+    }
 
     if (!isset($eventdata->userto)) {
         // cant send without a target user
@@ -459,6 +475,11 @@ function tm_task_send($eventdata) {
  */
 function tm_workflow_send($eventdata) {
     global $CFG;
+
+    if (empty($CFG->messaging)) {
+        // Messaging currently disabled
+        return true;
+    }
 
     if (!isset($eventdata->userto)) {
         // cant send without a target user

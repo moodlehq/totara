@@ -284,6 +284,8 @@ define('FEATURE_COMPLETION_TRACKS_VIEWS', 'completion_tracks_views');
 /** True if module has custom completion rules */
 define('FEATURE_COMPLETION_HAS_RULES', 'completion_has_rules');
 
+define('FEATURE_COMMENT', 'comment');
+
 
 /// PARAMETER HANDLING ////////////////////////////////////////////////////
 
@@ -6410,6 +6412,318 @@ function get_list_of_plugins($plugin='mod', $exclude='', $basedir='') {
         asort($plugins);
     }
     return $plugins;
+}
+
+/**
+ * invoke plugin's callback functions
+ *
+ * @param string $type Plugin type e.g. 'mod'
+ * @param string $name Plugin name
+ * @param string $feature Feature code (FEATURE_xx constant)
+ * @param string $action Feature's action
+ * @param string $options parameters of callback function, should be an array
+ * @param mixed $default default value if callback function hasn't been defined
+ * @return mixed
+ */
+function plugin_callback($type, $name, $feature, $action, $options = null, $default=null) {
+    global $CFG;
+
+    $name = clean_param($name, PARAM_SAFEDIR);
+    $function = $name.'_'.$feature.'_'.$action;
+    $file = get_plugin_directory($type, $name) . '/lib.php';
+
+    // Load library and look for function
+    if (file_exists($file)) {
+        require_once($file);
+    }
+    if (function_exists($function)) {
+        // Function exists, so just return function result
+        $ret = call_user_func_array($function, (array)$options);
+        if (is_null($ret)) {
+            return $default;
+        } else {
+            return $ret;
+        }
+    }
+    return $default;
+}
+
+/**
+ * Normalize the component name using the "frankenstyle" names.
+ * @param string $component
+ * @return array $type+$plugin elements
+ */
+function normalize_component($component) {
+    if ($component === 'moodle' or $component === 'core') {
+        $type = 'core';
+        $plugin = NULL;
+
+    } else if (strpos($component, '_') === false) {
+        $subsystems = get_core_subsystems();
+        if (array_key_exists($component, $subsystems)) {
+            $type   = 'core';
+            $plugin = $component;
+        } else {
+            // everything else is a module
+            $type   = 'mod';
+            $plugin = $component;
+        }
+
+    } else {
+        list($type, $plugin) = explode('_', $component, 2);
+        $plugintypes = get_plugin_types(false);
+        if ($type !== 'core' and !array_key_exists($type, $plugintypes)) {
+            $type   = 'mod';
+            $plugin = $component;
+        }
+    }
+
+    return array($type, $plugin);
+}
+
+
+/**
+ * Returns the exact absolute path to plugin directory.
+ *
+ * @param string $plugintype type of plugin
+ * @param string $name name of the plugin
+ * @return string full path to plugin directory; NULL if not found
+ */
+function get_plugin_directory($plugintype, $name) {
+    if ($plugintype === '') {
+        $plugintype = 'mod';
+    }
+
+    $types = get_plugin_types(true);
+    if (!array_key_exists($plugintype, $types)) {
+        return NULL;
+    }
+    $name = clean_param($name, PARAM_SAFEDIR); // just in case ;-)
+
+    return $types[$plugintype].'/'.$name;
+}
+
+/**
+ * Lists all plugin types
+ * @param bool $fullpaths false means relative paths from dirroot
+ * @return array Array of strings - name=>location
+ */
+function get_plugin_types($fullpaths=true) {
+    global $CFG;
+
+    static $info     = null;
+    static $fullinfo = null;
+
+    if (!$info) {
+        $info = array('mod'           => 'mod',
+                      'auth'          => 'auth',
+                      'enrol'         => 'enrol',
+                      'message'       => 'message/output',
+                      'block'         => 'blocks',
+                      'filter'        => 'filter',
+                      'editor'        => 'lib/editor',
+                      'format'        => 'course/format',
+                      'profilefield'  => 'user/profile/field',
+                      'report'        => $CFG->admin.'/report',
+                      'coursereport'  => 'course/report', // must be after system reports
+                      'gradeexport'   => 'grade/export',
+                      'gradeimport'   => 'grade/import',
+                      'gradereport'   => 'grade/report',
+                      'mnetservice'   => 'mnet/service',
+                      'webservice'    => 'webservice',
+                      'repository'    => 'repository',
+                      'portfolio'     => 'portfolio',
+                      'qtype'         => 'question/type',
+                      'qformat'       => 'question/format',
+                      'plagiarism'    => 'plagiarism',
+                      'theme'         => 'theme'); // this is a bit hacky, themes may be in dataroot too
+
+        $mods = get_plugin_list('mod');
+        foreach ($mods as $mod => $moddir) {
+            if (file_exists("$moddir/db/subplugins.php")) {
+                $subplugins = array();
+                include("$moddir/db/subplugins.php");
+                foreach ($subplugins as $subtype=>$dir) {
+                    $info[$subtype] = $dir;
+                }
+            }
+        }
+
+        // local is always last!
+        $info['local'] = 'local';
+
+        $fullinfo = array();
+        foreach ($info as $type => $dir) {
+            $fullinfo[$type] = $CFG->dirroot.'/'.$dir;
+        }
+    }
+
+    return ($fullpaths ? $fullinfo : $info);
+}
+
+/**
+ * Simplified version of get_list_of_plugins()
+ * @param string $plugintype type of plugin
+ * @return array name=>fulllocation pairs of plugins of given type
+ */
+function get_plugin_list($plugintype) {
+    global $CFG;
+
+    $ignored = array('CVS', '_vti_cnf', 'simpletest', 'db', 'yui', 'phpunit');
+    if ($plugintype == 'auth') {
+        // Historically we have had an auth plugin called 'db', so allow a special case.
+        $key = array_search('db', $ignored);
+        if ($key !== false) {
+            unset($ignored[$key]);
+        }
+    }
+
+    if ($plugintype === '') {
+        $plugintype = 'mod';
+    }
+
+    $fulldirs = array();
+
+    if ($plugintype === 'mod') {
+        // mod is an exception because we have to call this function from get_plugin_types()
+        $fulldirs[] = $CFG->dirroot.'/mod';
+
+    } else if ($plugintype === 'theme') {
+        $fulldirs[] = $CFG->dirroot.'/theme';
+        // themes are special because they may be stored also in separate directory
+        if (!empty($CFG->themedir) and file_exists($CFG->themedir) and is_dir($CFG->themedir) ) {
+            $fulldirs[] = $CFG->themedir;
+        }
+
+    } else {
+        $types = get_plugin_types(true);
+        if (!array_key_exists($plugintype, $types)) {
+            return array();
+        }
+        $fulldir = $types[$plugintype];
+        if (!file_exists($fulldir)) {
+            return array();
+        }
+        $fulldirs[] = $fulldir;
+    }
+
+    $result = array();
+
+    foreach ($fulldirs as $fulldir) {
+        if (!is_dir($fulldir)) {
+            continue;
+        }
+        $items = new DirectoryIterator($fulldir);
+        foreach ($items as $item) {
+            if ($item->isDot() or !$item->isDir()) {
+                continue;
+            }
+            $pluginname = $item->getFilename();
+            if (in_array($pluginname, $ignored)) {
+                continue;
+            }
+            if ($pluginname !== clean_param($pluginname, PARAM_SAFEDIR)) {
+                // better ignore plugins with problematic names here
+                continue;
+            }
+            $result[$pluginname] = $fulldir.'/'.$pluginname;
+            unset($item);
+        }
+        unset($items);
+    }
+
+    //TODO: implement better sorting once we migrated all plugin names to 'pluginname', ksort does not work for unicode, that is why we have to sort by the dir name, not the strings!
+    ksort($result);
+    return $result;
+}
+
+/**
+ * List all core subsystems and their location
+ *
+ * This is a whitelist of components that are part of the core and their
+ * language strings are defined in /lang/en/<<subsystem>>.php. If a given
+ * plugin is not listed here and it does not have proper plugintype prefix,
+ * then it is considered as course activity module.
+ *
+ * The location is dirroot relative path. NULL means there is no special
+ * directory for this subsystem. If the location is set, the subsystem's
+ * renderer.php is expected to be there.
+ *
+ * @return array of (string)name => (string|null)location
+ */
+function get_core_subsystems() {
+    global $CFG;
+
+    static $info = null;
+
+    if (!$info) {
+        $info = array(
+            'access'      => NULL,
+            'admin'       => $CFG->admin,
+            'auth'        => 'auth',
+            'backup'      => 'backup/util/ui',
+            'block'       => 'blocks',
+            'blog'        => 'blog',
+            'bulkusers'   => NULL,
+            'calendar'    => 'calendar',
+            'cohort'      => 'cohort',
+            'condition'   => NULL,
+            'completion'  => NULL,
+            'countries'   => NULL,
+            'course'      => 'course',
+            'currencies'  => NULL,
+            'dbtransfer'  => NULL,
+            'debug'       => NULL,
+            'dock'        => NULL,
+            'editor'      => 'lib/editor',
+            'edufields'   => NULL,
+            'enrol'       => 'enrol',
+            'error'       => NULL,
+            'filepicker'  => NULL,
+            'files'       => 'files',
+            'filters'     => NULL,
+            'flashdetect' => NULL,
+            'fonts'       => NULL,
+            'form'        => 'lib/form',
+            'grades'      => 'grade',
+            'group'       => 'group',
+            'help'        => NULL,
+            'hub'         => NULL,
+            'imscc'       => NULL,
+            'install'     => NULL,
+            'iso6392'     => NULL,
+            'langconfig'  => NULL,
+            'license'     => NULL,
+            'message'     => 'message',
+            'mimetypes'   => NULL,
+            'mnet'        => 'mnet',
+            'moodle.org'  => NULL, // the dot is nasty, watch out! should be renamed to moodleorg
+            'my'          => 'my',
+            'notes'       => 'notes',
+            'pagetype'    => NULL,
+            'pix'         => NULL,
+            'plagiarism'  => 'plagiarism',
+            'portfolio'   => 'portfolio',
+            'publish'     => 'course/publish',
+            'question'    => 'question',
+            'rating'      => 'rating',
+            'register'    => 'admin/registration',
+            'repository'  => 'repository',
+            'rss'         => 'rss',
+            'role'        => $CFG->admin.'/role',
+            'simpletest'  => NULL,
+            'search'      => 'search',
+            'table'       => NULL,
+            'tag'         => 'tag',
+            'timezones'   => NULL,
+            'user'        => 'user',
+            'userkey'     => NULL,
+            'webservice'  => 'webservice',
+            'xmldb'       => NULL,
+        );
+    }
+
+    return $info;
 }
 
 /**

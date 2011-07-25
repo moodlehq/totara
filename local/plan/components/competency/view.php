@@ -95,6 +95,20 @@ if($coursesenabled) {
     }
 }
 
+// Comments
+require_once($CFG->dirroot.'/local/comment/lib.php');
+comment::init();
+$options = new stdClass;
+$options->area    = 'plan-competency-item';
+$options->context = $systemcontext;
+$options->itemid  = $caid;
+$options->showcount = true;
+$options->component = 'local_plan';
+$options->autostart = true;
+$options->notoggle = true;
+$comment = new comment($options);
+echo $comment->output(true);
+
 print_container_end();
 
 print_footer();

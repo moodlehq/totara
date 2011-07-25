@@ -684,3 +684,23 @@ $string['allobjectives'] = 'All Objectives';
 $string['completedcourses'] = 'Completed Courses';
 $string['completedcompetencies'] = 'Completed Competencies';
 $string['completedobjectives'] = 'Completed Objectives';
+$string['on'] = 'on';
+
+// Comments
+$string['latestcommentby'] = 'Latest comment by';
+$string['nocomments'] = 'No comments';
+$string['commenterror:itemnotfound'] = 'Comment error: Comment item not found';
+$string['commenterror:unsupportedcomment'] = 'Comment error: Unsupported comment';
+$string['commentmsg:planoverview'] = 'New comment on $a->planowner\'s plan \"$a->plan\"';
+$string['commentmsg:planoverviewdetail'] = 'There has been a new comment on the plan.<br><br>
+<strong>Learner: </strong> $a->planowner<br>
+<strong>Plan: </strong> $a->plan<br>
+<strong>Comment: </strong>$a->comment - <em>Comment by $a->commentby on $a->commentdate</em>';
+$string['commentmsg:componentitem'] = 'New comment on $a->component item of $a->planowner\'s plan \"$a->plan\"';
+$string['commentmsg:componentitemdetail'] = 'There has been a new comment on $a->component item of the plan.<br><br>
+<strong>Learner: </strong> $a->planowner<br>
+<strong>Plan:</strong> $a->plan<br>
+<strong>$a->component:</strong> $a->componentname<br>
+<strong>Comment:</strong>$a->comment - <em>Comment by $a->commentby on $a->commentdate</em>';
+$string['latestcommentby'] = 'Latest comment by';
+$string['nocomments'] = 'No comments';

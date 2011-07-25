@@ -163,7 +163,6 @@ div.totara-dialog #dialog-search-table select#id_frameworkid.totara-expanded-wid
 	height:32px;
 }
 
-
 /**
  * Report builder
  **/
@@ -171,4 +170,26 @@ div.totara-dialog #dialog-search-table select#id_frameworkid.totara-expanded-wid
 .reportbuilder-table .c1 img {
 	float:left;
 	margin-top:2px;
+
+/** Comments **/
+
+.comment-area {
+    width: expression(this.offsetWidth > 360 ? "360px": "true");
 }
+
+div#comments {
+    width: expression(this.offsetWidth > 440 ? "440px": "true");
+}
+
+ul.comment-list li.comment-own-post .comment-content,
+ul.comment-list li.comment-others-post .comment-content {
+    width: 100%;
+    display: inline-block;
+}
+
+ul.comment-list li.comment-own-post,
+ul.comment-list li.comment-others-post {
+    width: 100%;
+    display: inline-block;
+}
+

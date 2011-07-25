@@ -4928,6 +4928,41 @@ table.viewhierarchyitem th {
     vertical-align: top;
 }
 
+/**
+ * Comments
+ */
+.comment-ctrl {font-size: 12px;display: none;margin:0;padding:0;}
+.comment-ctrl h5 {margin:0;padding: 5px;}
+.comment-area {max-width: 400px;padding: 5px;margin-left: 27px;}
+.comment-area textarea {width:100%;overflow:auto;}
+.comment-area .fd {text-align:right;}
+.comment-meta span {color:gray;}
+.comment-list {font-size: 11px;overflow:auto;list-style:none;padding:0;margin:0;}
+.comment-list li {margin: 2px;list-style:none;margin-bottom:5px;clear:both;background-color:#F6FAC8;}
+.comment-list li.first {display:none}
+.comment-list .comment-userpicture img {
+    width: 18px;
+    height: 18px;
+}
+.comment-paging{text-align:center;}
+.comment-paging .pageno{padding:2px;}
+.comment-paging .curpage{border:1px solid #CCC;}
+.comment-userpicture {width: 20px;float:left;}
+.comment-content {margin-left: 22px;}
+.comment-content div {margin:0;padding:0;}
+.comment-content p {padding:0;margin:0 20px 0 0; display: inline;}
+.comment-content a {font-weight:bold;}
+.comment-content .comment-datetime {color:gray; padding: 3px 0px;}
+.comment-delete {float:right;text-align:right;}
+.comment-delete-confirm {background: #eee; padding: 1px; width: 12em;text-align:center;}
+.comment-delete-confirm a {padding: 0px 3px;}
+.comment-container {float:left;margin: 4px;}
+.comment-report-selectall{display:none}
+.comment-link {display:none}
+.jsenabled .comment-link {display:block}
+.jsenabled .showcommentsnonjs{display:none}
+.jsenabled .comment-report-selectall{display:inline}
+
 
 /**
  * Course completion status

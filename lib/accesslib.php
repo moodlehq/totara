@@ -2627,6 +2627,51 @@ function get_context_instance_by_id($id) {
     return false;
 }
 
+/**
+ * Returns context instance plus related course and cm instances
+ * @param int $contextid
+ * @return array of ($context, $course, $cm)
+ */
+function get_context_info_array($contextid) {
+
+    if (!$context = get_context_instance_by_id($contextid)) {
+        print_error('context_info_array: could not get context');
+    }
+    $course  = null;
+    $cm      = null;
+
+    if ($context->contextlevel == CONTEXT_COURSE) {
+        if (!$course = get_record('course', 'id', $context->instanceid)) {
+            print_error('context_info_array: could not get course');
+        }
+    } else if ($context->contextlevel == CONTEXT_MODULE) {
+        if (!$cm = get_coursemodule_from_id('', $context->instanceid, 0)) {
+            print_error('context_info_array: could not get course module');
+        }
+        if (!$course = get_record('course', 'id', $cm->course)) {
+            print_error('context_info_array: could not get course');
+        }
+    } else if ($context->contextlevel == CONTEXT_BLOCK) {
+        $parentcontexts = get_parent_contexts($context);
+        $parent = reset($parentcontexts);
+        $parent = get_context_instance_by_id($parent);
+
+        if ($parent->contextlevel == CONTEXT_COURSE) {
+            if (!$course = get_record('course', 'id', $parent->instanceid)) {
+                print_error('context_info_array: could not get course');
+            }
+        } else if ($parent->contextlevel == CONTEXT_MODULE) {
+            if (!$cm = get_coursemodule_from_id('', $parent->instanceid, 0)) {
+                print_error('context_info_array: could not get course module');
+            }
+            if (!$course = get_record('course', 'id', $cm->course)) {
+                print_error('context_info_array: could not get course');
+            }
+        }
+    }
+
+    return array($context, $course, $cm);
+}
 
 /**
  * Get the local override (if any) for a given capability in a role in a context
