@@ -22,7 +22,12 @@ button,
     line-height: 2.9em;
 }
 .tabrow0 div, .tabrow0 ul {
-    top: 3.3em;
+  top: 4.5em;
+}
+.tabrow0 li a.nolink,
+.tabrow0 li a.nolink:hover,
+.tabrow0 li a.nolink:visited {
+    padding-bottom:0px;
 }
 .tabrow0 a:link,
 .tabrow0 a:visited,
