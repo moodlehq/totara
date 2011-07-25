@@ -132,6 +132,13 @@ class totara_dialog_content {
 
 
     /**
+     * Place for storing custom data, potentially useful for sharing
+     * with the search code
+     */
+    public $customdata = array();
+
+
+    /**
      * Array of items that are parents (e.g. have children)
      *
      * Used for rendering the treeview
