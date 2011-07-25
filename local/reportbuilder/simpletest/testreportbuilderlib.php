@@ -101,14 +101,14 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     );
 
     var $comp_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthid', 'parentid',
+        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid',
             'sortorder', 'visible', 'aggregationmethod', 'scaleid', 'proficencyexpected', 'evidencecount', 'timecreated',
             'timemodified', 'usermodified'),
         array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 1, 0, 1, 1, 1, -1, 1, 0,
             1265963591, 1265963591, 2),
         array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 2, 1, 2, 1, 1, -1, 1, 0,
             1265963591, 1265963591, 2),
-        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 3, 0, 1, 1, 1, -1, 1, 0,
+        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 1, 0, 1, 1, 1, -1, 1, 0,
             1265963591, 1265963591, 2),
         array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 2, 1, 3, 1, 1, -1, 1, 0,
             1265963591, 1265963591, 2),
@@ -117,12 +117,12 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     );
 
     var $org_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthid', 'parentid', 'sortorder', 'visible', 'timecreated', 'timemodified', 'usermodified'),
+        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortorder', 'visible', 'timecreated', 'timemodified', 'usermodified'),
         array(1, 'District Office', 'DO', '', '', 1, '/1', 1, 0, 1, 1, 0, 0, 2),
     );
 
     var $pos_data = array(
-        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthid', 'parentid', 'sortorder', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified'),
+        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortorder', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified'),
         array(1, 'Data Analyst', 'Data Analyst', '', '', 1, '/1', 1, 0, 1, 1, 0, 0, 0, 0, 2),
     );
 

@@ -1,20 +1,36 @@
-<?php // $Id$
-
-/**
- * Page containing hierarchy item search results
+<?php
+/*
+ * This file is part of Totara LMS
  *
- * @copyright Totara Learning Solution Limited
- * @author Simon Coggins
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage dialog
+ * @subpackage hierarchy
  */
 
+/*
+ * Page containing hierarchy item search results
+ */
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/hierarchy/lib.php');
 require_once($CFG->dirroot . '/local/dialogs/search_form.php');
 require_once($CFG->dirroot . '/local/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot . '/local/searchlib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
@@ -29,16 +45,16 @@ define('HIERARCHY_SEARCH_NUM_PER_PAGE', 50);
 
 // these vars provided by build_search_interface initially, but
 // come from the form when it has been submitted
-if(!isset($type)) {
-    $type = required_param('type', PARAM_ALPHA); // type of hierarchy
+if (!isset($prefix)) {
+    $prefix = required_param('prefix', PARAM_ALPHA); // prefix of hierarchy
 }
-if(!isset($select)) {
+if (!isset($select)) {
     $select = optional_param('select', true, PARAM_BOOL); // show framework selector?
 }
-if(!isset($frameworkid)) {
+if (!isset($frameworkid)) {
     $frameworkid = optional_param('frameworkid', 0, PARAM_INT); // specify framework to search
 }
-if(!isset($disabledlist)) {
+if (!isset($disabledlist)) {
     $disabledlist = unserialize(stripslashes(optional_param('disabledlist', '', PARAM_TEXT))); // items to disable
 }
 if (!isset($templates)) {
@@ -49,18 +65,12 @@ $query = optional_param('query', null, PARAM_TEXT); // search query
 $page = optional_param('page', 0, PARAM_INT); // results page number
 
 $strsearch = get_string('search');
-$stritemplural = get_string($type . 'plural', $type);
+$stritemplural = get_string($prefix . 'plural', $prefix);
 $strqueryerror = get_string('queryerror', 'hierarchy');
 
-// Confirm the type exists
-if (file_exists($CFG->dirroot.'/hierarchy/type/' . $type . '/lib.php')) {
-    require_once($CFG->dirroot.'/hierarchy/type/' . $type . '/lib.php');
-} else {
-    print_error('error:hierarchytypenotfound', 'hierarchy', '', $type);
-}
+$hierarchy = hierarchy::load_hierarchy($prefix);
 
-$shortprefix = hierarchy::get_short_prefix($type);
-$hierarchy = new $type();
+$shortprefix = hierarchy::get_short_prefix($prefix);
 
 // Trim whitespace off seach query
 $query = urldecode(trim($query));
@@ -69,7 +79,7 @@ $query = urldecode(trim($query));
 // Data
 $disabledarray = $disabledlist;
 $disabledlist = serialize($disabledlist);
-$hidden = compact('type', 'select', 'templates', 'disabledlist');
+$hidden = compact('prefix', 'select', 'templates', 'disabledlist');
 
 // Create form
 $mform = new dialog_search_form($CFG->wwwroot. '/hierarchy/item/search.php',
@@ -82,7 +92,7 @@ $mform->display();
 if (strlen($query)) {
 
     // extract quoted strings from query
-    $keywords = hierarchy_search_parse_keywords($query);
+    $keywords = local_search_parse_keywords($query);
 
     $fields = 'SELECT id,fullname';
     $count = 'SELECT COUNT(*)';
@@ -96,10 +106,11 @@ if (strlen($query)) {
     }
 
     // match search terms
-    $where = hierarchy_search_get_keyword_where_clause($keywords);
+    $dbfields = array('fullname', 'shortname', 'description');
+    $where = ' WHERE ' . local_search_get_keyword_where_clause($keywords, $dbfields);
 
     // restrict by framework if required
-    if($frameworkid) {
+    if ($frameworkid) {
         $where .= " AND frameworkid=$frameworkid";
     }
 
@@ -109,11 +120,11 @@ if (strlen($query)) {
     $total = count_records_sql($count . $from . $where);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;
 
-    if($total) {
-        if($results = get_records_sql($fields . $from . $where .
+    if ($total) {
+        if ($results = get_records_sql($fields . $from . $where .
             $order, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
 
-            $data = array('type' => $type,
+            $data = array('prefix' => $prefix,
                     'frameworkid' => $frameworkid,
                     'select' => $select,
                     'query' => urlencode(stripslashes($query)),
@@ -128,12 +139,12 @@ if (strlen($query)) {
             $addbutton_html = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" />';
 
             // Generate some treeview data
-            $dialog = new totara_dialog_content_hierarchy($type, $frameworkid);
+            $dialog = new totara_dialog_content_hierarchy($prefix, $frameworkid);
             $dialog->items = array();
             $dialog->parent_items = array();
             $dialog->disabled_items = $disabledarray;
 
-            foreach($results as $result) {
+            foreach ($results as $result) {
                 $title = hierarchy_search_get_path($hierarchy, $result->id);
 
                 $item = new object();
@@ -154,7 +165,7 @@ if (strlen($query)) {
     } else {
         $params = new object();
         $params->query = stripslashes($query);
-        if($frameworkid) {
+        if ($frameworkid) {
             $errorstr = 'noresultsforinframework';
             $params->framework = get_field($shortprefix . '_framework',
                 'fullname', 'id', $frameworkid);
@@ -165,66 +176,6 @@ if (strlen($query)) {
     }
 } else {
     print '<br />';
-}
-
-
-/**
- * Parse a query into individual keywords, treating quoted phrases one item
- *
- * Pairs of matching double or single quotes are treated as a single keyword.
- *
- * @param string $query Text from user search field
- *
- * @return array Array of individual keywords parsed from input string
- */
-function hierarchy_search_parse_keywords($query) {
-    // query arrives with quotes escaped, but quotes have special meaning
-    // within a query. Strip out slashes, then re-add any that are left
-    // after parsing done (to protect against SQL injection)
-    $query = stripslashes($query);
-
-    $out = array();
-    // break query down into quoted and unquoted sections
-    $split_quoted = preg_split('/(\'[^\']+\')|("[^"]+")/', $query, 0,
-        PREG_SPLIT_DELIM_CAPTURE);
-    foreach($split_quoted as $item) {
-        // strip quotes from quoted strings but leave spaces
-        if(preg_match('/^(["\'])(.*)\\1$/', trim($item), $matches)) {
-            $out[] = addslashes($matches[2]);
-        } else {
-            // split unquoted text on whitespace
-            $keyword = addslashes_recursive(preg_split('/\s/', $item, 0,
-                PREG_SPLIT_NO_EMPTY));
-            $out = array_merge($out, $keyword);
-        }
-    }
-    return $out;
-}
-
-
-/**
- * Return an SQL WHERE clause to search for the given keywords
- *
- * @param array $keywords Array of strings to search for
- *
- * @return string SQL WHERE clause to match the keywords provided
- */
-function hierarchy_search_get_keyword_where_clause($keywords) {
-
-    // fields to search
-    $fields = array('fullname', 'shortname', 'description');
-
-    $queries = array();
-    foreach($keywords as $keyword) {
-        $matches = array();
-        foreach($fields as $field) {
-            $matches[] = $field . ' ' . sql_ilike() . " '%" . $keyword . "%'";
-        }
-        // look for each keyword in any field
-        $queries[] = '(' . implode(' OR ', $matches) . ')';
-    }
-    // all keywords must be found in at least one field
-    return ' WHERE ' . implode(' AND ', $queries);
 }
 
 
@@ -250,11 +201,11 @@ function hierarchy_search_get_path($hierarchy, $id) {
 
     // start at top of tree
     $parentid = 0;
-    while(count($members) && $escape < 100) {
-        foreach($members as $key => $member) {
-            if($member->parentid == $parentid) {
+    while (count($members) && $escape < 100) {
+        foreach ($members as $key => $member) {
+            if ($member->parentid == $parentid) {
                 // add to path
-                if($parentid) {
+                if ($parentid) {
                     // include ' > ' before name except on top element
                     $path .= ' &gt; ';
                 }

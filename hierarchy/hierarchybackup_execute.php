@@ -108,7 +108,7 @@ if($userdata) {
 
 fwrite($bf, start_tag('HIERARCHIES',1,true));
 
-// for each type of hierarchy selected to backup run backup script
+// for each prefix of hierarchy selected to backup run backup script
 foreach($frameworks AS $hname => $fwid) {
     if (!defined('BACKUP_SILENTLY')) {
         print "<li>Backing up $hname hierarchy</li>";
@@ -122,7 +122,7 @@ foreach($frameworks AS $hname => $fwid) {
         continue;
     }
 
-    $hbackupfile = "$CFG->dirroot/hierarchy/type/$hname/backuplib.php";
+    $hbackupfile = "$CFG->dirroot/hierarchy/prefix/$hname/backuplib.php";
     $hbackup = $hname.'_backup';
     $getoptionsfunc = $hname.'_options';
 

@@ -6,7 +6,7 @@ class guide_totara_create_position_framework_step extends guide_default_step {
         global $CFG;
         return '<p>The first step is to set up a position framework.</p>
             <p>Setting up a position framework is like setting up a folder in which you create the job role structure.  You can set up multiple position frameworks.</p>
-            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/framework/index.php?type=position">Position frameworks</a>.</p>
+            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/framework/index.php?prefix=position">Position frameworks</a>.</p>
             <p>On completing your position framework return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
     }
 

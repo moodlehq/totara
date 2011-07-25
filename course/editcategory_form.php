@@ -1,5 +1,6 @@
-<?php 
+<?php
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
+require_once ($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
 class editcategory_form extends moodleform {
 
     // form definition
@@ -40,9 +41,8 @@ class editcategory_form extends moodleform {
         }
         $mform->setHelpButton('description', array('writing', 'richtext'), false, 'editorhelpbutton');
 
-        $this->set_upload_manager(new upload_manager('uploadicon', true, false, null, false, 0, true, true, false));
-        $mform->addElement('static', 'currenticon', get_string('currenticon', 'local'), local_coursecategory_icon_tag($category));
-        $mform->addElement('select', 'icon', get_string('icon', 'local'), local_get_stock_icons('coursecategory'));
+        $category_icon = new coursecategory_icon();
+        $category_icon->add_to_form($category, $mform);
 
         $mform->addElement('hidden', 'id', 0);
         $mform->setType('id', PARAM_INT);
@@ -50,5 +50,5 @@ class editcategory_form extends moodleform {
 
         $this->add_action_buttons(true, $strsubmit);
     }
-} 
+}
 ?>

@@ -113,7 +113,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         var obj = this;
 
         // Bind open event to button
-        $('#'+this.buttonid).click(function(event) {
+        $('#'+this.buttonid).live('click',function(event) {
 
             // Stop any default event occuring
             event.preventDefault();
@@ -472,35 +472,22 @@ totaraDialog_handler.prototype._load = function(dialog) {
  */
 totaraDialog_handler.prototype._update = function(response) {
 
-    // Hide dialog
-    this._dialog.hide();
-
     // Remove no item warning (if exists)
     $('.noitems-'+this._title).remove();
 
+    // Hide dialog
+    this._dialog.hide();
+
     // Sometimes we want to have two dialogs changing the same table,
     // so here we support tagging tables by id, or class
-    var table = $('table#list-'+this._title);
+    var content = $('div.list-'+this._title);
 
-    // If no table found by ID
-    if (table.size() < 1) {
-        table = $('table.list-'+this._title);
-    }
+    // Add replace div with updated data
+    content.replaceWith(response);
 
-    if (response.search(/~~~RELOAD PAGE~~~/) > 0 || table.size() < 1) {
-        // Reload the page
-        if ($('#middle-column').size()) {
-            $('#middle-column').html('<p><strong>Loading...</strong></p>');
-        } else {
-            $('#content').html('<p><strong>Loading...</strong></p>');
-        }
+    // Hide noscript objects
+    $('.totara-noscript', $('div.list-'+this._title)).hide();
 
-        location.reload();
-        return;
-    }
-
-    // Add row(s) to table
-    $('tbody', table).append(response);
 }
 
 

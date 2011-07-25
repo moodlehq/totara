@@ -5,7 +5,7 @@ class guide_totara_add_positions_step extends guide_default_step {
     function content_step_active () {
         global $CFG;
         return '<p>This step requires you to set up the positions for the position framework.</p>
-            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/index.php?type=position">Manage positions</a>.</p>
+            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/index.php?prefix=position">Manage positions</a>.</p>
             <p>On completing your positions set up, return to this guide and click <b>Finish step</b>.</p>';
     }
 

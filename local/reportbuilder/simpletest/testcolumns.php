@@ -92,12 +92,12 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $org_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthid', 'parentid', 'sortorder', 'visible', 'timecreated', 'timemodified', 'usermodified'),
+        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortorder', 'visible', 'timecreated', 'timemodified', 'usermodified'),
         array(1, 'District Office', 'DO', '', '', 1, '/1', 1, 0, 1, 1, 0, 0, 2),
     );
 
     var $pos_data = array(
-        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthid', 'parentid', 'sortorder', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified'),
+        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortorder', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified'),
         array(1, 'Data Analyst', 'Data Analyst', '', '', 1, '/1', 1, 0, 1, 1, 0, 0, 0, 0, 2),
     );
 
@@ -108,8 +108,8 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of user table
     var $user_data = array(
-        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt', 'lastlogin'),
-        array(2, 'admin', 'Admin', 'User', 'ID2', 0, 'alt', 0),
+        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt', 'lastlogin', 'phone1', 'institution', 'department', 'address', 'city', 'country'),
+        array(2, 'admin', 'Admin', 'User', 'ID2', 0, 'alt', 0, 'phone', 'institution', 'department', 'address', 'city', 'nz'),
     );
 
     var $pos_assignment_data = array(
@@ -188,36 +188,36 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of course cats table
     var $course_categories_data = array(
-        array('id', 'name', 'parent','sortorder','icon'),
-        array(1, 'Misc', 0, 1,'icon.gif'),
+        array('id', 'name', 'parent','sortorder','icon','visible'),
+        array(1, 'Misc', 0, 1,'icon.gif',1),
     );
 
     // competency test data
 
     var $framework_data = array(
         array('id', 'fullname', 'shortname', 'idnumber','description','sortorder','visible',
-            'hidecustomfields','showitemfullname','showdepthfullname','timecreated','timemodified','usermodified'),
-        array(1, 'Framework 1', 'FW1', 'ID1','Description 1', 1, 1, 0, 1, 1, 1265963591, 1265963591, 2),
-        array(2, 'Framework 2', 'FW2', 'ID2','Description 2', 2, 1, 0, 1, 1, 1265963591, 1265963591, 2),
+            'hidecustomfields','timecreated','timemodified','usermodified'),
+        array(1, 'Framework 1', 'FW1', 'ID1','Description 1', 1, 1, 0, 1265963591, 1265963591, 2),
+        array(2, 'Framework 2', 'FW2', 'ID2','Description 2', 2, 1, 0, 1265963591, 1265963591, 2),
     );
 
-    var $depth_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'depthlevel', 'frameworkid', 'timecreated', 'timemodified',
+    var $type_data = array(
+        array('id', 'fullname', 'shortname', 'description', 'timecreated', 'timemodified',
             'usermodified'),
-        array(1, 'Depth Level 1', 'Depth 1', 'Description 1', 1, 1, 1265963591, 1265963591, 2),
-        array(2, 'Depth Level 2', 'Depth 2', 'Description 2', 2, 1, 1265963591, 1265963591, 2),
-        array(3, 'F2 Depth Level 1', 'F2 Depth 1', 'F2 Description 1', 1, 2, 1265963591, 1265963591, 2),
+        array(1, 'Depth Level 1', 'Depth 1', 'Description 1', 1265963591, 1265963591, 2),
+        array(2, 'Depth Level 2', 'Depth 2', 'Description 2', 1265963591, 1265963591, 2),
+        array(3, 'F2 Depth Level 1', 'F2 Depth 1', 'F2 Description 1', 1265963591, 1265963591, 2),
     );
 
     var $competency_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthid', 'parentid',
+        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid',
             'sortorder', 'visible', 'aggregationmethod', 'scaleid', 'proficencyexpected', 'evidencecount', 'timecreated',
             'timemodified', 'usermodified'),
         array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 1, 0, 1, 1, 1, -1, 1, 0,
             1265963591, 1265963591, 2),
         array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 2, 1, 2, 1, 1, -1, 1, 0,
             1265963591, 1265963591, 2),
-        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 3, 0, 1, 1, 1, -1, 1, 0,
+        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 1, 0, 1, 1, 1, -1, 1, 0,
             1265963591, 1265963591, 2),
         array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 2, 1, 3, 1, 1, -1, 1, 0,
             1265963591, 1265963591, 2),
@@ -225,19 +225,14 @@ class columns_test extends prefix_changing_test_case {
             1265963591, 1265963591, 2),
     );
 
-    var $depth_category_data = array(
-        array('id', 'name', 'sortorder', 'depthid'),
-        array(1, 'Custom Field Category 1', 1, 2),
-    );
-
-    var $depth_field_data = array(
-        array('id', 'fullname', 'shortname', 'depthid', 'datatype', 'description', 'sortorder', 'categoryid', 'hidden',
+    var $type_field_data = array(
+        array('id', 'fullname', 'shortname', 'classid', 'datatype', 'description', 'sortorder', 'categoryid', 'hidden',
             'locked', 'required', 'forceunique', 'defaultdata', 'param1', 'param2', 'param3', 'param4', 'param5'),
         array(1, 'Custom Field 1', 'CF1', 2, 'checkbox', 'Custom Field Description 1', 1, 1, 0, 0, 0, 0, 0, null, null,
             null, null, null),
     );
 
-    var $depth_data_data = array(
+    var $type_data_data = array(
         array('id', 'data', 'fieldid', 'competencyid'),
         array(1, 1, 1, 2),
     );
@@ -418,11 +413,10 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'course', $this->course_data, $db);
         load_test_table($CFG->prefix . 'course_categories', $this->course_categories_data, $db);
         load_test_table($CFG->prefix . 'comp_framework', $this->framework_data, $db);
-        load_test_table($CFG->prefix . 'comp_depth', $this->depth_data, $db);
+        load_test_table($CFG->prefix . 'comp_type', $this->type_data, $db);
         load_test_table($CFG->prefix . 'comp', $this->competency_data, $db);
-        load_test_table($CFG->prefix . 'comp_depth_info_category', $this->depth_category_data, $db);
-        load_test_table($CFG->prefix . 'comp_depth_info_field', $this->depth_field_data, $db);
-        load_test_table($CFG->prefix . 'comp_depth_info_data', $this->depth_data_data, $db);
+        load_test_table($CFG->prefix . 'comp_type_info_field', $this->type_field_data, $db);
+        load_test_table($CFG->prefix . 'comp_type_info_data', $this->type_data_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence_items', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence_items_evidence', $this->dummy_data, $db);
@@ -503,11 +497,10 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'comp_evidence_items_evidence', $db);
         remove_test_table($CFG->prefix . 'comp_evidence_items', $db);
         remove_test_table($CFG->prefix . 'comp_evidence', $db);
-        remove_test_table($CFG->prefix . 'comp_depth_info_data', $db);
-        remove_test_table($CFG->prefix . 'comp_depth_info_field', $db);
-        remove_test_table($CFG->prefix . 'comp_depth_info_category', $db);
+        remove_test_table($CFG->prefix . 'comp_type_info_data', $db);
+        remove_test_table($CFG->prefix . 'comp_type_info_field', $db);
         remove_test_table($CFG->prefix . 'comp', $db);
-        remove_test_table($CFG->prefix . 'comp_depth', $db);
+        remove_test_table($CFG->prefix . 'comp_type', $db);
         remove_test_table($CFG->prefix . 'comp_framework', $db);
         remove_test_table($CFG->prefix . 'course_categories', $db);
         remove_test_table($CFG->prefix . 'course', $db);

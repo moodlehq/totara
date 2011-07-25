@@ -12,7 +12,7 @@ Feature: Manage position Frameworks
   Scenario: No position frameworks
     Given there are no position framework records
       And I am logged in as admin
-      And I am on the manage position frameworks page
+      And I am on the manage positions page
     Then I should see "No position frameworks available"
       And I should see "Add new position framework"
       And I should not see "Test Position Framework"
@@ -22,7 +22,7 @@ Feature: Manage position Frameworks
   Scenario: Display the frameworks
     Given there are 4 position framework records
       And I am logged in as admin
-      And I am on the manage position frameworks page
+      And I am on the manage positions page
     Then I should see "Test Position Framework" 4 times within the edit position frameworks table
 
   # new, doc doesn't have an entry for this.
@@ -30,7 +30,7 @@ Feature: Manage position Frameworks
   Scenario: Check editing options
     Given there are 4 position framework records
       And I am logged in as admin
-      And I am on the manage position frameworks page with editing on
+      And I am on the manage positions page with editing on
     Then I should see "up.gif" 3 times within the edit position frameworks table
       And I should see "down.gif" 3 times within the edit position frameworks table
       And I should see "delete.gif" 4 times within the edit position frameworks table
@@ -44,9 +44,8 @@ Feature: Manage position Frameworks
     Given I am logged in as admin
       And I am on the add position framework page
       And I fill in "fullname" with "My position fullname"
-      And I fill in "shortname" with "My shortname"
       And I press "Save changes"
-    Then I should be on manage position frameworks page
+    Then I should be on manage positions page
       And I should see "My position fullname"
 
   # 3.8.2 page 92
@@ -54,12 +53,11 @@ Feature: Manage position Frameworks
   Scenario: Edit a position framework
     Given there are 1 position framework records
       And I am logged in as admin
-      And I am on the manage position frameworks page with editing on
+      And I am on the manage positions page with editing on
       And I edit the 1st edit position frameworks table entry
       And I fill in "fullname" with "My position changed"
-      And I fill in "shortname" with "My shortname"
       And I press "Save changes"
-    Then I should be on manage position frameworks page
+    Then I should be on manage positions page
       And I should see "My position changed"
 
 # example of a multi-line step using tables
@@ -73,7 +71,7 @@ Feature: Manage position Frameworks
 | New Framework 2 | Test 2  | ID2 |
 | New Framework 3 | Test 3  | ID3 |
       And I am logged in as admin
-      And I am on the manage position frameworks page with editing on
+      And I am on the manage positions page with editing on
       And I delete the 2nd position framework
     Then the edit position frameworks table should match:
 |Name|
@@ -88,15 +86,14 @@ Feature: Manage position Frameworks
       And I am logged in as admin
       And I am on the add position framework page
       And I press "Save changes"
-    Then I should see "Missing framework full name"
-      And I should see "Missing framework short name"
+    Then I should see "Missing position framework name"
       And there should be 0 position framework records
 
   @store_pos_framework
   Scenario: Hide a position framework
     Given there are 1 position framework records
       And I am logged in as admin
-      And I am on the manage position frameworks page with editing on
+      And I am on the manage positions page with editing on
       And I hide the 1st edit position frameworks table entry
     Then I should see "show.gif" within the edit position frameworks table
 
@@ -109,7 +106,7 @@ Feature: Manage position Frameworks
 | New Framework 2 | Test 2  | ID2 |
 | New Framework 3 | Test 3  | ID3 |
       And I am logged in as admin
-      And I am on the manage position frameworks page with editing on
+      And I am on the manage positions page with editing on
       And I Move up the 2nd edit position frameworks table entry
     Then the edit position frameworks table should match:
 |Name|
@@ -126,7 +123,7 @@ Feature: Manage position Frameworks
 | New Framework 2 | Test 2  | ID2 |
 | New Framework 3 | Test 3  | ID3 |
       And I am logged in as admin
-      And I am on the manage position frameworks page with editing on
+      And I am on the manage positions page with editing on
       And I Move down the 2nd edit position frameworks table entry
     Then the edit position frameworks table should match:
 |Name|
@@ -143,7 +140,7 @@ Feature: Manage position Frameworks
 | New Framework 2 | Test 2  | ID2 |
 | New Framework 3 | Test 3  | ID3 |
       And I am logged in as admin
-      And I am on the manage position frameworks page with editing on
+      And I am on the manage positions page with editing on
       And I Move down the 1st edit position frameworks table entry
     Then the edit position frameworks table should match:
 |Name|
@@ -160,7 +157,7 @@ Feature: Manage position Frameworks
 | New Framework 2 | Test 2  | ID2 |
 | New Framework 3 | Test 3  | ID3 |
       And I am logged in as admin
-      And I am on the manage position frameworks page with editing on
+      And I am on the manage positions page with editing on
       And I Move up the 3rd edit position frameworks table entry
     Then the edit position frameworks table should match:
 |Name|
@@ -168,52 +165,27 @@ Feature: Manage position Frameworks
 | New Framework 3 |
 | New Framework 2 |
 
-  @store_pos_framework
-  @store_pos_depth
-  Scenario: No position depth
-    Given there is 1 position framework record
-      And I am logged in as admin
-      And I am on the manage positions page
-    Then I should see "No depth levels in this framework"
-      And I should not see "Test position Depth"
-
-  @store_pos_framework
-  @store_pos_depth
-  Scenario: One position with 2 Position depth
-    Given there is 1 position framework record with 2 position depth each
-      And I am logged in as admin
-      And I am on the manage positions page
-    Then I should see "Test Position Depth" 2 times
-      And I should not see "No depth levels in this framework"
 
 # Requires to patch webrat, query params on get method are written incorrectly.
 # this similar to fix below, convert array of hashmap to just hashmaps
 # https://webrat.lighthouseapp.com/projects/10503/tickets/380-fix-for-query-string-building-when-using-mechanize-adapter
   @store_pos_framework
-  @store_pos_depth
-  Scenario: Add a position depth
-    Given there is 1 position framework record
+  @store_pos_type
+  Scenario: Add a position type with incomplete data, gives validation message
+    Given there are no organisation type records
       And I am logged in as admin
-      And I am on the manage position frameworks page
-      And I click the "Test position Framework 1" link
-      And I press "Add a new depth level"
-      And I fill in "fullname" with "My position depth fullname"
-      And I fill in "shortname" with "My org depth shortname"
-      And I press "Save changes" 
-  Then I should see "My position depth fullname"
-
+      And I am on the manage position types page
+      And I press "Add a new type"
+      And I press "Save changes"
+  Then I should see "Missing position type name"
+      And there should be 0 position type records
 
   @store_pos_framework
-  @store_pos_depth
-  Scenario: Add a position depth with incomplete data, gives validation message
-    Given there is 1 position framework record
-      And there are no position depth records 
-      And I am logged in as admin
-      And I am on the manage position frameworks page
-      And I click the "Test position Framework 1" link 
-      And I press "Add a new depth level"
-      And I press "Save changes" 
-  Then I should see "Missing depth level full name"
-      And I should see "Missing depth level short name"
-      And there should be 0 position depth records
-
+  @store_pos_type
+  Scenario: Add a position type
+    Given I am logged in as admin
+        And I am on the manage position types page
+        And I press "Add a new type"
+        And I fill in "Type full name" with "My position type fullname"
+        And I press "Save changes"
+    Then I should see "My position type fullname"

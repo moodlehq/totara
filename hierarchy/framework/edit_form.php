@@ -9,7 +9,7 @@ class framework_edit_form extends moodleform {
         global $CFG;
 
         $mform =& $this->_form;
-        $type  = $this->_customdata['type'];
+        $prefix  = $this->_customdata['prefix'];
 
         $strgeneral  = get_string('general');
 
@@ -22,32 +22,26 @@ class framework_edit_form extends moodleform {
         $mform->setType('sortorder', PARAM_INT);
         $mform->addElement('hidden', 'hidecustomfields');
         $mform->setType('hidecustomfields', PARAM_INT);
-        $mform->addElement('hidden', 'showitemfullname');
-        $mform->setType('showitemfullname', PARAM_INT);
-        $mform->addElement('hidden', 'showdepthfullname');
-        $mform->setType('showdepthfullname', PARAM_INT);
-        $mform->addElement('hidden', 'type', $type);
-        $mform->setType('type', PARAM_SAFEDIR);
+        $mform->addElement('hidden', 'prefix', $prefix);
+        $mform->setType('prefix', PARAM_ALPHA);
 
-        /// Print the required moodle fields first
-        $mform->addElement('header', 'moodle', $strgeneral);
-
-        $mform->addElement('text', 'fullname', get_string('fullnameframework', $type), 'maxlength="254" size="50"');
-        $mform->setHelpButton('fullname', array($type.'frameworkfullname', get_string('fullnameframework', $type)), true);
-        $mform->addRule('fullname', get_string('missingfullnameframework', $type), 'required', null, 'client');
+        $mform->addElement('text', 'fullname', get_string('name'), 'maxlength="254" size="50"');
+        $mform->addRule('fullname', get_string('missingnameframework', $prefix), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'shortname', get_string('shortnameframework', $type), 'maxlength="100" size="20"');
-        $mform->setHelpButton('shortname', array($type.'frameworkshortname', get_string('shortnameframework', $type)), true);
-        $mform->addRule('shortname', get_string('missingshortnameframework', $type), 'required', null, 'client');
-        $mform->setType('shortname', PARAM_MULTILANG);
+        if (HIERARCHY_DISPLAY_SHORTNAMES) {
+            $mform->addElement('text', 'shortname', get_string('shortnameframework', $prefix), 'maxlength="100" size="20"');
+            $mform->setHelpButton('shortname', array($prefix.'frameworkshortname', get_string('shortnameframework', $prefix)), true);
+            $mform->addRule('shortname', get_string('missingshortnameframework', $prefix), 'required', null, 'client');
+            $mform->setType('shortname', PARAM_MULTILANG);
+        }
 
-        $mform->addElement('text', 'idnumber', get_string('idnumberframework', $type), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('idnumber', array($type.'frameworkidnumber', get_string('idnumberframework', $type)), true);
+        $mform->addElement('text', 'idnumber', get_string('idnumberframework', $prefix), 'maxlength="100"  size="10"');
+        $mform->setHelpButton('idnumber', array($prefix.'frameworkidnumber', get_string('idnumberframework', $prefix)), true);
         $mform->setType('idnumber', PARAM_CLEAN);
 
         $mform->addElement('htmleditor', 'description', get_string('description'));
-        $mform->setHelpButton('description', array('text', get_string('helptext')), true);
+        $mform->setHelpButton('description', array($prefix.'frameworkdescription', get_string('description')), true);
         $mform->setType('description', PARAM_CLEAN);
 
         $this->add_action_buttons();

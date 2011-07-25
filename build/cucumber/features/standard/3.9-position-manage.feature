@@ -3,167 +3,49 @@
 
 # 3.9, page 96
 Feature: Manage Positions
-  In order to maintain the site positions 
+  In order to maintain the site positions
   As an administrator
   I want to be able to:
     add, edit, delete, reorder positions at different levels,
-    view custom field settings for a position/depth level, 
-    filter position hierarchies, 
-    Export position hierarchy data 
+    view custom field settings for a position/depth level,
+    filter position hierarchies,
+    Export position hierarchy data
 
   # 3.9.1#2
-  @store_pos_depth
-  Scenario: No position depth levels
-    Given there is 1 position framework record
-      And there are no position depth records
-      And I am logged in as admin
-      And I am on the manage positions page
-    Then I should see "No depth levels in this framework"
-      And I should see "Add a new depth level"
-      And I should not see "Test Position Depth"
+  #@store_pos_depth
+  #Scenario: No position depth levels
+  #  Given there is 1 position framework record
+  #    And there are no position depth records
+  #    And I am logged in as admin
+  #    And I am on the manage positions page
+  #  Then I should see "No depth levels in this framework"
+  #    And I should see "Add a new depth level"
+  #    And I should not see "Test Position Depth"
 
-  # 3.9.1#3
-  @store_pos_depth
-  Scenario: Add a new position depth level 
+  @store_pos_type
+  Scenario: Add a new position type
     Given I am logged in as admin
-      And there is 1 position framework record
-      And there are no position depth records
-      And I am on the manage positions page
-      And I press "Add a new depth level" 
-    Then I should see "General"
-      And I should see "Depth level"
-      And I should see "1"
-
-  # 3.9.1#4
-  @store_pos_depth
-  Scenario: Add a new position depth level but with empty mandatory fields
-    Given I am logged in as admin
-      And there is 1 position framework record
-      And there are no position depth records
-      And I am on the manage positions page
-      And I press "Add a new depth level" 
+      And I am on the manage position types page
+      And I press "Add a new type"
+      And I fill in "Type full name" with "My Position Type fullname"
       And I press "Save changes"
-    Then I should be on the edit position depth page
-      And I should see "Missing depth level full name"
-      And I should see "Missing depth level short name"
+    Then I should see "My Position Type fullname"
+
+  @store_pos_type
+  Scenario: Add a new position type but with empty mandatory fields
+    Given I am logged in as admin
+      And I am on the manage position types page
+      And I press "Add a new type"
+      And I press "Save changes"
+    Then I should see "Missing position type name"
 
   # 3.9.1#5
-  @store_pos_depth
-  Scenario: Add a new position depth level but with empty mandatory fields
-    Given I am logged in as admin
-      And there is 1 position framework record
+  #@store_pos_depth
+  #Scenario: Edit a position type
+  #  Given I am logged in as admin
+  #    And there is 1 position framework record
       #And there are no position depth records
-      And I am on the manage positions page
-      And I press "Add a new depth level" 
-      And I press "Cancel"
-    Then I should see "Description for Test Position Framework 1"
-
-  # 3.9.1#6
-  @store_pos_depth
-  Scenario: Add a new position depth level, normal case
-    Given I am logged in as admin
-      And there is 1 position framework record
-      And there are no position depth records
-      And I am on the manage positions page
-      And I press "Add a new depth level" 
-      And I fill in "fullname" with "My position depth fullname"
-      And I fill in "shortname" with "My posdepth shortname"
-      And I press "Save changes"
-    Then I should see "Description for Test Position Framework 1"
-      And I should see "My position depth fullname"
-      And I should see "Add a new depth level"
-
-  # 3.9.1#7.1
-  @store_pos_depth
-  Scenario: Add a second position depth level 
-    Given I am logged in as admin
-      And there is 1 position framework record
-      And there is 1 position depth record
-      And I am on the manage position frameworks page
-      Then I should see "Test Position Framework 1"
-    When  I click the "Test Position Framework 1" link
-    Then I should see "Description for Test Position Framework 1"
-      And I press "Add a new depth level"
-    Then I should see "General"
-      And I should see "Depth level"
-      And I should see "2"
-
-  # 3.9.1#7.2
-  @store_pos_depth
-  Scenario: Add a second position depth level 
-    Given I am logged in as admin
-      And there is 1 position framework record
-      And there is 1 position depth records
-      And I am on the manage position frameworks page
-    When I click the "Test Position Framework 1" link
-    Then I should see "Test Position Depth 1"
-      And I should see "Add a new depth level"
-    When I press "Add a new depth level" 
-    Then I should see "General"
-      And I should see "Depth level"
-      And I should see "2"
-
-  # 3.9.1#9
-  @store_pos_depth
-  Scenario: Add a new position depth level (third), normal case
-    Given I am logged in as admin
-      And there is 1 position framework record
-      And there are 2 position depth records
-      And I am on the manage position frameworks page
-    When I click the "Test Position Framework 1" link
-    Then I should see "Test Position Depth 1"
-      And I should see "Test Position Depth 2"
-      And I should see "Add a new depth level"
-    When I press "Add a new depth level" 
-      Then I should see "General"
-        And I should see "Depth level"
-        And I should see "3"
-      #And I fill in "fullname" with "My position depth fullname 3"
-      #And I fill in "shortname" with "My posdepth shortname 3"
-      #And I press "Save changes"
-
-  # 3.9.2#1-9
-  @store_pos_depth
-  Scenario: Deleting a depth level with no levels below it
-    Given I am logged in as admin
-      And there is 1 position framework record
-      And there are 3 position depth records
-      And I am on the manage position frameworks page with editing on
-    When I click the "Test Position Framework 1" link
-    Then I should see "Test Position Depth 1"
-      And I should see "Test Position Depth 2"
-      And I should see "Test Position Depth 3"
-    When I delete the 3rd position table entry
-    Then I should see "Delete Test Position Depth 3"
-      And I should see "Yes"
-      And I should see "No"
-    When I press "Yes"
-    Then I should see "The depth level Test Position Depth 3 has been deleted"
-      And I should see "Continue"
-    When I press "Continue"
-    Then I should see "Test Position Framework 1"
-      And I should see "Depth levels"
-      And I should see "Test Position Depth 1" within position table
-      And I should see "Test Position Depth 2" within position table
-      And I should not see "Test Position Depth 3" within position table
-
-  # 3.9.2#10-11
-  @store_pos_depth
-  @tiger
-  Scenario: Deleting a depth level that has levels below it
-    Given I am logged in as admin
-      And there is 1 position framework record
-      And there are 2 position depth records
-      And I am on the manage position frameworks page with editing on
-    When I click the "Test Position Framework 1" link
-    Then I should see "Test Position Depth 1"
-      And I should see "Test Position Depth 2"
-    When I delete the 1st position table entry
-    Then I should see "This depth level cannot be deleted because there are depth levels below it in this framework."
-      And I should see "Continue"
-
-
-      
-
-
-
+  #    And I am on the manage positions page
+  #    And I press "Add a new depth level"
+  #    And I press "Cancel"
+  #  Then I should see "Description for Test Position Framework 1"

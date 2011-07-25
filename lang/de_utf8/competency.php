@@ -123,7 +123,7 @@ $string['includecompetencyevidence'] = 'Kompetenznachweis einbeziehen';
 $string['invalidevidencetype'] = 'Ungültiger Nachweistyp';
 $string['invalidnumeric'] = 'Numerischer Wert muss numerisch sein (oder leer)';
 $string['linkcourses'] = 'Kurse verbinden';
-$string['linktoscalevalues'] = '<a href=\"view.php?id=$a&amp;type=competency\">Hier klicken</a>, um die Skalenwerte für diese Kompetenzskala zu sehen / ändern.';
+$string['linktoscalevalues'] = '<a href=\"view.php?id=$a&amp;prefix=competency\">Hier klicken</a>, um die Skalenwerte für diese Kompetenzskala zu sehen / ändern.';
 $string['locatecompetency'] = 'Kompetenz finden';
 $string['locatecompetencytemplate'] = 'Kompetenzvorlage finden';
 $string['managecompetencies'] = 'Kompetenzen verwalten';

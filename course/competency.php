@@ -26,7 +26,7 @@
 // View/add course competencies
 
 require_once('../config.php');
-require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 // Get paramaters
@@ -100,7 +100,7 @@ if ($can_edit) {
 </script>
 
 <div class="singlebutton centerbutton">
-    <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/course/add.php?id=<?php echo $id ?>" method="get">
+    <form action="<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/course/add.php?id=<?php echo $id ?>" method="get">
         <div>
             <?php if (!empty($CFG->competencyuseresourcelevelevidence)) { ?>
                 <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('addcourseevidencetocompetency', 'competency'); ?>" />

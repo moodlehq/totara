@@ -316,8 +316,6 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('visible', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('hidecustomfields', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('showitemfullname', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('showdepthfullname', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -509,8 +507,6 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('visible', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('hidecustomfields', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('showitemfullname', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('showdepthfullname', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -615,8 +611,6 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('visible', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('hidecustomfields', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('showitemfullname', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('showdepthfullname', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addIndexInfo('sortorder', XMLDB_INDEX_UNIQUE, array('sortorder'));
         $result = $result && create_table($table);
@@ -2242,6 +2236,7 @@ function xmldb_local_upgrade($oldversion) {
         completion_mark_users_started();
     }
 
+
     if ($result && $oldversion < 2011051706) {
 
         // Position assignments
@@ -2389,6 +2384,176 @@ function xmldb_local_upgrade($oldversion) {
             $lockfield = new XMLDBField('lock');
             if (field_exists($table, $lockfield)) {
                 $result = $result && drop_field($table, $lockfield);
+            }
+        }
+    }
+
+    if ($result && $oldversion < 2011072500) {
+        foreach (array('pos', 'comp', 'org') as $hierarchy) {
+            // UPDATE ITEM TABLE
+
+            // add depth level field to item table
+            $table = new XMLDBTable($hierarchy);
+            $field = new XMLDBField('depthlevel');
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'usermodified');
+            if (!field_exists($table, $field)) {
+                $result = $result && add_field($table, $field);
+            }
+
+            // calculate the depth level (based on the item's depthid) and store in new field
+            // should only update the depth level if it's empty
+            $updatesql = "
+                UPDATE {$CFG->prefix}{$hierarchy} orig
+                    SET depthlevel = d.depthlevel
+                FROM {$CFG->prefix}{$hierarchy} hierarchy
+                LEFT JOIN {$CFG->prefix}{$hierarchy}_depth d ON d.id=hierarchy.depthid
+                WHERE orig.id=hierarchy.id AND orig.depthlevel IS NULL";
+            $result = $result && execute_sql($updatesql);
+
+            // rename depthid column to typeid
+            $table = new XMLDBTable($hierarchy);
+            $field = new XMLDBField('depthid');
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            if (field_exists($table, $field)) {
+                $result = $result && rename_field($table, $field, 'typeid');
+            }
+
+            // default to zero (which represents no assigned type)
+            $table = new XMLDBTable($hierarchy);
+            $field = new XMLDBField('typeid');
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0);
+            if (field_exists($table, $field)) {
+                $result = $result && change_field_type($table, $field);
+            }
+
+            // UPDATE ITEM_DEPTH TABLE
+            $depthtable = $hierarchy . '_depth';
+
+            // remove depthlevel and frameworkid
+            $table = new XMLDBTable($depthtable);
+            $field = new XMLDBField('depthlevel');
+            if (field_exists($table, $field)) {
+                $result = $result && drop_field($table, $field);
+            }
+            $table = new XMLDBTable($depthtable);
+            $field = new XMLDBField('frameworkid');
+            if (field_exists($table, $field)) {
+                $result = $result && drop_field($table, $field);
+            }
+
+
+            //UPDATE ITEM_DEPTH_INFO_CATEGORY TABLE
+            $categorytable = $hierarchy . '_depth_info_category';
+
+            // rename depthid column to typeid
+            $table = new XMLDBTable($categorytable);
+            $field = new XMLDBField('depthid');
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            if (field_exists($table, $field)) {
+                $result = $result && rename_field($table, $field, 'typeid');
+            }
+
+
+            //UPDATE ITEM_DEPTH_INFO_FIELD TABLE
+            $fieldtable = $hierarchy . '_depth_info_field';
+
+            // rename depthid column to typeid
+            $table = new XMLDBTable($fieldtable);
+            $field = new XMLDBField('depthid');
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            if (field_exists($table, $field)) {
+                $result = $result && rename_field($table, $field, 'typeid');
+            }
+
+            // allow null categoryids
+            $table = new XMLDBTable($fieldtable);
+            $field = new XMLDBField('categoryid');
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+            if (field_exists($table, $field)) {
+                $result = $result && change_field_type($table, $field);
+            }
+
+            // allow null categoryids in course custom fields too
+            $table = new XMLDBTable('course_info_field');
+            $field = new XMLDBField('categoryid');
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+            if (field_exists($table, $field)) {
+                $result = $result && change_field_type($table, $field);
+            }
+
+            // UPDATE ITEM_FRAMEWORK TABLE
+            $frameworktable = $hierarchy . '_framework';
+
+            // drop showdepthfullname field
+            $table = new XMLDBTable($frameworktable);
+            $field = new XMLDBField('showdepthfullname');
+            if (field_exists($table, $field)) {
+                $result = $result && drop_field($table, $field);
+            }
+
+            // drop showitemfullname field
+            $table = new XMLDBTable($frameworktable);
+            $field = new XMLDBField('showitemfullname');
+            if (field_exists($table, $field)) {
+                $result = $result = drop_field($table, $field);
+            }
+
+
+            // RENAME *_DEPTH_* TABLES
+
+            $tables_to_rename = array(
+                $hierarchy.'_depth' => $hierarchy.'_type',
+                $hierarchy.'_depth_info_category' => $hierarchy.'_type_info_category',
+                $hierarchy.'_depth_info_field' => $hierarchy.'_type_info_field',
+                $hierarchy.'_depth_info_data' => $hierarchy.'_type_info_data',
+            );
+
+            foreach ($tables_to_rename as $before => $after) {
+                // rename category table
+                $table = new XMLDBTable($before);
+                if (table_exists($table)) {
+                    $result = $result && rename_table($table, $after);
+                }
+
+            }
+
+            // Custom field categories have been removed from code but
+            // left in DB for now. To remove entirely:
+            // - drop the tables:
+            //   - comp_type_info_category
+            //   - pos_type_info_category
+            //   - org_type_info_category
+            //   - course_type_info_category
+            // - drop the categoryid field in:
+            //   - comp_type_info_field
+            //   - pos_type_info_field
+            //   - org_type_info_field
+            //   - course_type_info_field
+
+
+            // allow null shortnames in hierarchy, hierarchy_type and hierarchy_framework tables
+            $table = new XMLDBTable($hierarchy);
+            $field = new XMLDBField('shortname');
+            $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
+            $result = $result && change_field_type($table, $field);
+
+            $table = new XMLDBTable($frameworktable);
+            $field = new XMLDBField('shortname');
+            $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
+            $result = $result && change_field_type($table, $field);
+
+            $table = new XMLDBTable($hierarchy.'_type');
+            $field = new XMLDBField('shortname');
+            $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
+            $result = $result && change_field_type($table, $field);
+
+            /// Define field icon to be added to each type
+            $table = new XMLDBTable($hierarchy.'_type');
+            $field = new XMLDBField('icon');
+            $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
+            if (!field_exists($table, $field)) {
+                /// Add icon field
+                $result = $result && add_field($table, $field);
             }
         }
     }

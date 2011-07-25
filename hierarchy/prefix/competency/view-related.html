@@ -1,0 +1,87 @@
+<?php
+
+// Display related competencies
+print_heading(get_string('relatedcompetencies', $this->prefix));
+
+?>
+<table width="95%" cellpadding="5" cellspacing="1" id="list-related" class="generalbox edit<?php echo $this->prefix ?> boxaligncenter">
+<tr>
+    <th style="vertical-align:top; white-space:nowrap;" class="header c0" scope="col">
+        <?php echo get_string('framework', $this->prefix); ?>
+    </th>
+
+    <th style="vertical-align:top; white-space:nowrap;" class="header c2" scope="col">
+        <?php echo get_string('name'); ?>
+    </th>
+
+<?php
+    if ($can_edit) {
+?>
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
+        <?php echo get_string('options', $this->prefix); ?>
+    </th>
+<?php
+    }
+?>
+</tr>
+<?php
+
+if ($related) {
+    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    $can_manage_fw = has_capability('moodle/local:update'.$this->prefix.'frameworks', $sitecontext);
+
+    $oddeven = 1;
+    foreach ($related as $ritem) {
+        $framework_text = ($can_manage_fw) ?
+            "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?prefix={$this->prefix}&amp;frameworkid={$ritem->fid}\">" .
+            format_string($ritem->framework) . "</a>" : format_string($ritem->framework);
+
+        $oddeven = ++$oddeven % 2;
+
+        echo '<tr class="r'.$oddeven.'">';
+        echo "<td>{$framework_text}</td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$this->prefix}&amp;id={$ritem->id}\">{$ritem->fullname}</a></td>";
+
+        if ($can_edit) {
+            echo "<td style=\"text-align: center;\">";
+
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/{$this->prefix}/related/remove.php?id={$item->id}&amp;related={$ritem->id}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+
+            echo "</td>";
+        }
+
+        echo '</tr>';
+    }
+
+} else {
+    // # cols varies
+    $cols = $can_edit ? 4 : 3;
+    echo '<tr class="noitems-related"><td colspan="'.$cols.'"><i>'.get_string('norelatedcompetencies', $this->prefix).'</i></td></tr>';
+}
+
+echo '</table>';
+
+// Add related competencies button
+if ($can_edit) {
+?>
+
+<div class="buttons">
+
+<div class="singlebutton">
+    <form action="<?php echo $CFG->wwwroot ?>/hierarchy/prefix/<?php echo $this->prefix ?>/related/find.php?id=<?php echo $item->id ?>&amp;frameworkid=<?php echo $item->frameworkid ?>" method="get">
+<div>
+    <input type="submit" id="show-related-dialog" value="<?php echo get_string('assignrelatedcompetencies', $this->prefix) ?>" />
+    <input type="hidden" name="id" value="<?php echo $item->id ?>">
+    <input type="hidden" name="nojs" value="1">
+    <input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">
+    <input type="hidden" name="s" value="<?php echo sesskey(); ?>">
+    <input type="hidden" name="frameworkid" value="<?php echo $item->frameworkid ?>">
+</div>
+</form>
+</div>
+
+</div>
+
+<?php
+}

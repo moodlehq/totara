@@ -25,12 +25,12 @@
  */
 
 require_once('../../../../config.php');
-require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
-require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once($CFG->dirroot.'/local/plan/lib.php');
 require_once('add_evidence_form.php');
-require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/evidence.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php');
 ///
 /// Setup / loading data
 ///
@@ -150,8 +150,8 @@ if($fromform = $mform->get_data()) { // Form submitted
 /// Display page
 ///
 
-$type = 'competency';
-$hierarchy = new $type();
+$prefix = 'competency';
+$hierarchy = new $prefix();
 $hierarchy->hierarchy_page_setup('item/add');
 
 $fullname = get_string('addcompetencyevidence', 'local');
@@ -173,7 +173,7 @@ print_container_start(false, '', 'dp-plan-content');
 print $plan->display_plan_message_box();
 
 print_heading($fullname);
-print $plan->display_tabs($type);
+print $plan->display_tabs($prefix);
 
 $mform->display();
 

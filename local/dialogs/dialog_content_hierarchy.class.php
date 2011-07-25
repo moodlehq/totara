@@ -100,22 +100,22 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
      * @see     totara_dialog_hierarchy::skip_access_checks
      *
      * @access  public
-     * @param   $type           string  Hierarchy type
+     * @param   $prefix           string  Hierarchy prefix
      * @param   $frameworkid    int     Framework id (optional)
      */
-    public function __construct($type, $frameworkid = 0) {
+    public function __construct($prefix, $frameworkid = 0) {
 
         // Make some capability checks
         if (!$this->skip_access_checks) {
             require_login();
-            require_capability("moodle/local:view{$type}", get_system_context());
+            require_capability("moodle/local:view{$prefix}", get_system_context());
         }
 
         // Load hierarchy instance
-        $this->hierarchy = hierarchy::load_hierarchy($type);
+        $this->hierarchy = hierarchy::load_hierarchy($prefix);
 
         // Set lang file
-        $this->lang_file = $type;
+        $this->lang_file = $prefix;
 
         // Load framework
         $this->set_framework($frameworkid);
@@ -196,7 +196,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
         global $CFG;
 
         // Setup variables for the search page
-        $type = $this->hierarchy->prefix;
+        $prefix = $this->hierarchy->prefix;
         $frameworkid = $this->framework->id;
         $select = !$this->disable_picker; # Only show select if picker isn't disabled
         $disabledlist = array_flip(array_keys($this->disabled_items)); # Return an array without values
@@ -224,22 +224,22 @@ class totara_dialog_content_hierarchy_multi extends totara_dialog_content_hierar
      * @see     totara_dialog_hierarchy::skip_access_checks
      *
      * @access  public
-     * @param   $type               string  Hierarchy type
+     * @param   $prefix               string  Hierarchy prefix
      * @param   $frameworkid        int     Framework id (optional)
      * @param   $skipaccesschecks   boolean Indicate whether access checks should be performed
      */
-    public function __construct($type, $frameworkid = 0, $skipaccesschecks=false) {
+    public function __construct($prefix, $frameworkid = 0, $skipaccesschecks=false) {
 
         $this->skip_access_checks = $skipaccesschecks;
 
         // Run parent constructor
-        parent::__construct($type, $frameworkid);
+        parent::__construct($prefix, $frameworkid);
 
         // Set to type multi
         $this->type = self::TYPE_CHOICE_MULTI;
 
         // Set titles
-        $this->select_title = 'locate'.$type;
+        $this->select_title = 'locate'.$prefix;
     }
 }
 

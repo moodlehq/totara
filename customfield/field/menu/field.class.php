@@ -9,9 +9,9 @@ class customfield_menu extends customfield_base {
      * Pulls out the options for the menu from the database and sets the
      * the corresponding key for the data if it exists
      */
-    function customfield_menu($fieldid=0, $itemid=0, $type, $tableprefix) {
+    function customfield_menu($fieldid=0, $itemid=0, $prefix, $tableprefix) {
         //first call parent constructor
-        $this->customfield_base($fieldid, $itemid, $type, $tableprefix);
+        $this->customfield_base($fieldid, $itemid, $prefix, $tableprefix);
 
         /// Param 1 for menu type is the options
         $options = explode("\n", $this->field->param1);

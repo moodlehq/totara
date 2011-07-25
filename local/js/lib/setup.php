@@ -23,7 +23,7 @@
  * @package totara
  * @subpackage plan
  */
-require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
 require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
 
 /**
@@ -32,6 +32,8 @@ require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
 define('TOTARA_JS_DIALOG',         1);
 define('TOTARA_JS_TREEVIEW',       2);
 define('TOTARA_JS_DATEPICKER',     3);
+define('TOTARA_JS_PLACEHOLDER',     4);
+define('TOTARA_JS_ICON_PREVIEW',    5);
 
 /**
  * Load appropriate JS and CSS files for lightbox
@@ -86,11 +88,28 @@ function local_js($options = array()) {
         }
 
         require_js($files);
+
+    }
+
+    // if placeholder enabled
+    if (in_array(TOTARA_JS_PLACEHOLDER, $options)) {
+        require_js(array(
+            $CFG->wwwroot.'/local/js/lib/jquery.placeholder.min.js',
+            $CFG->wwwroot.'/local/js/lib/load.placeholder.js',
+        ));
+    }
+
+    // If Icon preview is enabled
+    if (in_array(TOTARA_JS_ICON_PREVIEW, $options)) {
+
+        require_js(array(
+            $CFG->wwwroot.'/local/js/icon.preview.js',
+        ));
     }
 }
 
 
-function build_search_interface($type, $frameworkid=0, $select=true,
+function build_search_interface($prefix, $frameworkid=0, $select=true,
     $disabledlist=array()) {
 
     global $CFG;

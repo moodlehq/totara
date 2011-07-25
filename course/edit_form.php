@@ -5,6 +5,7 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 require_once($CFG->libdir.'/formslib.php');
+require_once($CFG->dirroot.'/local/icon/course_icon.class.php');
 
 class course_edit_form extends moodleform {
 
@@ -191,12 +192,10 @@ class course_edit_form extends moodleform {
         }
         $mform->addElement('select', 'coursetype', 'Course Type', $coursetypeoptions);
 
-
-// Course Icons
-        $mform->addElement('header', 'iconheader', get_string('courseicon', 'local'));
-        $mform->addElement('static', 'currenticon', get_string('currenticon', 'local'), local_course_icon_tag());
-        $mform->addElement('select', 'icon', get_string('icon', 'local'), local_get_stock_icons('course'));
-// END Course Icons
+        // Course Icons
+        $course_icon = new course_icon();
+        $course_icon->add_to_form($course, $mform);
+        // END Course Icons
 
 //--------------------------------------------------------------------------------
         $mform->addElement('header','enrolhdr', get_string('enrolments'));

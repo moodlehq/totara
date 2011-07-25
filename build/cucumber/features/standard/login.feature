@@ -37,9 +37,9 @@ Feature: Login
 
   Scenario: View protected page with permission
     Given I am logged in as admin
-    Then visiting the manage competency frameworks page should show "Manage frameworks"
+    Then visiting the manage competencies page should show "Competency Frameworks"
 
   Scenario: View protected page without permission
     Given I am logged in as a learner
-    Then visiting the manage competency frameworks page should show "Access denied"
+    Then visiting the manage competencies page should show "Access denied"
 

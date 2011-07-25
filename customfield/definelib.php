@@ -6,9 +6,9 @@ class customfield_define_base {
      * Prints out the form snippet for creating or editing a custom field
      * @param   object   instance of the moodleform class
      */
-    function define_form(&$form, $depthid=0, $tableprefix, $categoryid=0) {
+    function define_form(&$form, $typeid=0, $tableprefix) {
         $form->addElement('header', '_commonsettings', get_string('commonsettings', 'customfields'));
-        $this->define_form_common($form, $depthid, $tableprefix, $categoryid);
+        $this->define_form_common($form, $typeid, $tableprefix);
 
         $form->addElement('header', '_specificsettings', get_string('specificsettings', 'customfields'));
         $this->define_form_specific($form);
@@ -19,19 +19,19 @@ class customfield_define_base {
      * editing a custom field common to all data types
      * @param   object   instance of the moodleform class
      */
-    function define_form_common(&$form, $depthid=0, $tableprefix, $categoryid) {
+    function define_form_common(&$form, $typeid=0, $tableprefix) {
 
         $strrequired = get_string('required');
-
-        $form->addElement('text', 'shortname', get_string('shortname', 'customfields'), 'maxlength="100" size="25"');
-        $form->addRule('shortname', $strrequired, 'required', null, 'client');
-        $form->setType('shortname', PARAM_ALPHANUM);
-        $form->setHelpButton('shortname', array('customfieldshortname', get_string('shortname', 'customfields')), true);
 
         $form->addElement('text', 'fullname', get_string('fullname'), 'size="50"');
         $form->addRule('fullname', $strrequired, 'required', null, 'client');
         $form->setType('fullname', PARAM_MULTILANG);
         $form->setHelpButton('fullname', array('customfieldfullname', get_string('fullname')), true);
+
+        $form->addElement('text', 'shortname', get_string('shortname', 'customfields'), 'maxlength="100" size="25"');
+        $form->addRule('shortname', $strrequired, 'required', null, 'client');
+        $form->setType('shortname', PARAM_ALPHANUM);
+        $form->setHelpButton('shortname', array('customfieldshortname', get_string('shortname', 'customfields')), true);
 
         $form->addElement('htmleditor', 'description', get_string('description', 'customfields'));
         $form->setHelpButton('description', array('text', get_string('helptext')));
@@ -48,12 +48,6 @@ class customfield_define_base {
         $form->addElement('selectyesno', 'hidden', get_string('visible', 'customfields'));
         $form->setHelpButton('hidden', array('customfieldhidden', get_string('visible','customfields')), true);
 
-        $choices = customfield_list_categories($depthid, $tableprefix);
-        $form->addElement('select', 'categoryid', get_string('category', 'customfields'), $choices);
-        $form->setHelpButton('categoryid', array('customfieldcategory', get_string('category','customfields')), true);
-        if($categoryid) {
-            $form->setDefault('categoryid', $categoryid);
-        }
     }
 
     /**
@@ -72,12 +66,12 @@ class customfield_define_base {
      * @param   object   data from the add/edit custom field form
      * @return  array    associative array of error messages
      */
-    function define_validate($data, $files, $depthid, $tableprefix) {
+    function define_validate($data, $files, $typeid, $tableprefix) {
 
         $data = (object)$data;
         $err = array();
 
-        $err += $this->define_validate_common($data, $files, $depthid, $tableprefix);
+        $err += $this->define_validate_common($data, $files, $typeid, $tableprefix);
         $err += $this->define_validate_specific($data, $files, $tableprefix);
 
         return $err;
@@ -90,7 +84,7 @@ class customfield_define_base {
      * @param   object   data from the add/edit custom field form
      * @return  array    associative array of error messages
      */
-    function define_validate_common($data, $files, $depthid, $tableprefix) {
+    function define_validate_common($data, $files, $typeid, $tableprefix) {
 
         $err = array();
 
@@ -100,8 +94,8 @@ class customfield_define_base {
 
         } else {
         /// Fetch field-record from DB
-            if($depthid) {
-                $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname, 'depthid', $depthid);
+            if($typeid) {
+                $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname, 'typeid', $typeid);
             } else {
                 $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname);
             }
@@ -146,14 +140,11 @@ class customfield_define_base {
         if (!empty($data->id)) {
             $old = get_record($tableprefix.'_info_field', 'id', $data->id);
         }
-
-        /// check to see if the category has changed
-        if (!$old or $old->categoryid != $data->categoryid) {
-            $data->sortorder = count_records_select($tableprefix.'_info_field', 'categoryid='.$data->categoryid) + 1;
-        } else {
+        if(!$old) {
+            $data->sortorder = count_records_select($tableprefix.'_info_field') + 1;
+            } else {
             $data->sortorder = $old->sortorder;
         }
-
 
         if (empty($data->id)) {
             unset($data->id);

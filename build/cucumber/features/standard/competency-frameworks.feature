@@ -7,7 +7,7 @@ Feature: Manage Competency Frameworks
   Scenario: No competency frameworks
     Given there are no competency framework records
       And I am logged in as admin
-      And I am on the manage competency frameworks page
+      And I am on the manage competencies page
     Then I should see "No competency frameworks defined"
       And I should not see "Test Competency Framework"
 
@@ -15,14 +15,14 @@ Feature: Manage Competency Frameworks
   Scenario: Display the frameworks
     Given there are 4 competency framework records
       And I am logged in as admin
-      And I am on the manage competency frameworks page
+      And I am on the manage competencies page
     Then I should see "Test Competency Framework" 4 times within the edit competency frameworks table
 
   @store_comp_framework
   Scenario: Check editing options
     Given there are 4 competency framework records
       And I am logged in as admin
-      And I am on the manage competency frameworks page with editing on
+      And I am on the manage competencies page with editing on
     Then I should see "up.gif" 3 times within the edit competency frameworks table
       And I should see "down.gif" 3 times within the edit competency frameworks table
       And I should see "delete.gif" 4 times within the edit competency frameworks table
@@ -36,7 +36,7 @@ Feature: Manage Competency Frameworks
   Scenario Outline: Check wide range of editing options
     Given there are <frameworks> competency framework records
       And I am logged in as admin
-      And I am on the manage competency frameworks page with editing on
+      And I am on the manage competencies page with editing on
     Then I should see "up.gif" <up> times within the edit competency frameworks table
       And I should see "down.gif" <down> times within the edit competency frameworks table
       And I should see "delete.gif" <delete> times within the edit competency frameworks table
@@ -57,9 +57,8 @@ Feature: Manage Competency Frameworks
       And there is a competency scale
       And I am on the add competency framework page
       And I fill in "fullname" with "My competency fullname"
-      And I fill in "shortname" with "My shortname"
       And I press "Save changes"
-    Then I should be on manage competency frameworks page
+    Then I should be on manage competencies page
       And I should see "My competency fullname"
 
 # example of a multi-line step using tables
@@ -67,12 +66,12 @@ Feature: Manage Competency Frameworks
   @store_comp_framework
   Scenario: Delete a competency framework
     Given the competency framework table contains:
-|fullname|shortname|idnumber|
-| New Framework 1 | Test    | ID1 |
-| New Framework 2 | Test 2  | ID2 |
-| New Framework 3 | Test 3  | ID3 |
+|fullname|idnumber|
+| New Framework 1 | ID1 |
+| New Framework 2 | ID2 |
+| New Framework 3 | ID3 |
       And I am logged in as admin
-      And I am on the manage competency frameworks page with editing on
+      And I am on the manage competencies page with editing on
       And I delete the 2nd competency framework
     Then the edit competency frameworks table should match:
 |Name|
@@ -83,23 +82,22 @@ Feature: Manage Competency Frameworks
   Scenario: Edit a competency framework
     Given there are 1 competency framework record
       And I am logged in as admin
-      And I am on the manage competency frameworks page with editing on
+      And I am on the manage competencies page with editing on
       And I edit the 1st edit competency frameworks table entry
       And I fill in "fullname" with "My competency changed"
-      And I fill in "shortname" with "My shortname"
       And I press "Save changes"
-    Then I should be on manage competency frameworks page
+    Then I should be on manage competencies page
       And I should see "My competency changed"
 
   @store_comp_framework
   Scenario: Reordering by moving down a competency framework
     Given the competency framework table contains:
-|fullname|shortname|idnumber|
-| New Framework 1 | Test 1  | ID1 |
-| New Framework 2 | Test 2  | ID2 |
-| New Framework 3 | Test 3  | ID3 |
+|fullname|idnumber|
+| New Framework 1 | ID1 |
+| New Framework 2 | ID2 |
+| New Framework 3 | ID3 |
       And I am logged in as admin
-      And I am on the manage competency frameworks page with editing on
+      And I am on the manage competencies page with editing on
       And I Move down the 2nd edit competency frameworks table entry
     Then the edit competency frameworks table should match:
 |Name|
@@ -119,8 +117,7 @@ Feature: Manage Competency Frameworks
       And I am logged in as admin
       And I am on the add competency framework page
       And I press "Save changes"
-    Then I should see "Missing framework full name"
-      And I should see "Missing framework short name"
+    Then I should see "Missing competency framework name"
       And there should be 0 competency framework records
 
   @store_comp_framework
@@ -129,7 +126,7 @@ Feature: Manage Competency Frameworks
   Scenario: Add a competency scale value
     Given there are 1 competency framework record
       And I am logged in as admin
-      And I am on the manage competency frameworks page
+      And I am on the manage competencies page
       And I click the "Competency Scale 1" link
     When I press "Add new scale value"
       And I press "Save changes"
@@ -144,7 +141,7 @@ Feature: Manage Competency Frameworks
   Scenario: Edit a competency scale value
     Given there are 1 competency framework record
       And I am logged in as admin
-      And I am on the manage competency frameworks page with editing on
+      And I am on the manage competencies page with editing on
       And I click the "Competency Scale 1" link
       And I edit the 1st scale value table entry
     When I fill in "name" with "Test scale value edited"
@@ -158,7 +155,7 @@ Feature: Manage Competency Frameworks
     Given there are 1 competency framework record
       And I am logged in as admin
       And there is a competency scale
-      And I am on the manage competency frameworks page with editing on
+      And I am on the manage competencies page with editing on
       And I click the "Competency Scale 1" link
       And I delete the 1st scale value table entry and confirm
     Then I should see "Competency Scale Value" 2 times within the scale value table
@@ -170,7 +167,7 @@ Feature: Manage Competency Frameworks
     Given there are 1 competency framework record
       And I am logged in as admin
       And there is a competency scale
-      And I am on the manage competency frameworks page with editing on
+      And I am on the manage competencies page with editing on
       And I click the "Competency Scale 1" link
     When I Move up the 2nd scale value table entry
     Then the scale value table should match:

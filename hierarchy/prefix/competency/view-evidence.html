@@ -1,0 +1,107 @@
+<?php
+
+// Display evidence items
+print_heading(get_string('evidenceitems', 'competency'));
+
+?>
+<div id="evidence-list-container">
+<table width="95%" cellpadding="5" cellspacing="1" class="generalbox boxaligncenter list-evidence">
+<tr>
+    <th style="vertical-align:top; white-space:nowrap;" class="header c0" scope="col">
+        <?php echo get_string('name'); ?>
+    </th>
+<?php if (!empty($CFG->competencyuseresourcelevelevidence)) { ?>
+    <th style="vertical-align:top; white-space:nowrap;" class="header c1" scope="col">
+        <?php echo get_string('type', 'competency'); ?>
+    </th>
+
+    <th style="vertical-align:top; white-space:nowrap;" class="header c2" scope="col">
+        <?php echo get_string('activity'); ?>
+    </th>
+<?php
+    }
+
+    if ($can_edit) {
+?>
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
+        <?php echo get_string('options', 'competency'); ?>
+    </th>
+<?php
+    }
+?>
+
+</tr>
+<?php
+
+if ($evidence) {
+
+    $oddeven = 1;
+    foreach ($evidence as $eitem) {
+
+        $oddeven = ++$oddeven % 2;
+
+        $eitem = competency_evidence_type::factory($eitem);
+
+        echo '<tr class="r'.$oddeven.'">';
+        echo '<td>'.$eitem->get_name().'</td>';
+        if (!empty($CFG->competencyuseresourcelevelevidence)) {
+            echo '<td>'.$eitem->get_type().'</td>';
+            echo '<td>'.$eitem->get_activity_type().'</td>';
+        }
+
+        if ($can_edit) {
+            echo "<td style=\"text-align: center;\">";
+
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/evidenceitem/remove.php?id={$eitem->id}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+
+            echo "</td>";
+        }
+
+        echo '</tr>';
+    }
+
+} else {
+    // # cols varies
+    $cols = $can_edit ? 4 : 3;
+    echo '<tr class="noitems-evidence"><td colspan="'.$cols.'"><i>'.get_string('noevidenceitems', 'competency').'</i></td></tr>';
+}
+
+echo '</table>';
+echo '</div>';
+
+// Navigation / editing buttons
+echo '<div class="buttons">';
+
+$context = get_context_instance(CONTEXT_SYSTEM);
+$can_edit = has_capability('moodle/local:updatecompetency', $context);
+// Display add evidence item button
+if ($can_edit) {
+
+?>
+
+<div class="singlebutton">
+<form action="<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/evidenceitem/edit.php?id=<?php echo $item->id ?>" method="get">
+<div>
+
+<?php if (!empty($CFG->competencyuseresourcelevelevidence)) {
+    $btnstr = get_string('assignnewevidenceitem', 'competency');
+} else {
+   $btnstr = get_string('assigncoursecompletion', 'competency');
+}
+?>
+    <input type="submit" id="show-evidence-dialog" value="<?php echo $btnstr; ?>" />
+
+<input type="hidden" name="id" value="<?php echo $item->id ?>">
+<input type="hidden" name="nojs" value="1">
+<input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">
+<input type="hidden" name="s" value="<?php echo sesskey(); ?>">
+</div>
+</form>
+</div>
+
+<?php
+
+}
+
+echo '</div>';

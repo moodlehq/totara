@@ -32,9 +32,9 @@ $string['local:viewcompetency'] = 'View a competency';
 $string['local:createcompetency'] = 'Create a competency';
 $string['local:updatecompetency'] = 'Update a competency';
 $string['local:deletecompetency'] = 'Delete a competency';
-$string['local:createcompetencydepth'] = 'Create a competency depth';
-$string['local:updatecompetencydepth'] = 'Update a competency depth';
-$string['local:deletecompetencydepth'] = 'Delete a comptency depth';
+$string['local:createcompetencytype'] = 'Create a competency type';
+$string['local:updatecompetencytype'] = 'Update a competency type';
+$string['local:deletecompetencytype'] = 'Delete a comptency type';
 $string['local:createcompetencyframeworks'] = 'Create a competency framework';
 $string['local:updatecompetencyframeworks'] = 'Update a competency framework';
 $string['local:deletecompetencyframeworks'] = 'Delete a competency framework';
@@ -50,9 +50,9 @@ $string['local:viewposition'] = 'View a position';
 $string['local:createposition'] = 'Create a position';
 $string['local:updateposition'] = 'Update a position';
 $string['local:deleteposition'] = 'Delete a position';
-$string['local:createpositiondepth'] = 'Create a position depth';
-$string['local:updatepositiondepth'] = 'Update a position depth';
-$string['local:deletepositiondepth'] = 'Delete a position depth';
+$string['local:createpositiontype'] = 'Create a position type';
+$string['local:updatepositiontype'] = 'Update a position type';
+$string['local:deletepositiontype'] = 'Delete a position type';
 $string['local:createpositionframeworks'] = 'Create a position framework';
 $string['local:updatepositionframeworks'] = 'Update a position framework';
 $string['local:deletepositionframeworks'] = 'Delete a position framework';
@@ -63,9 +63,9 @@ $string['local:vieworganisation'] = 'View an organisation';
 $string['local:createorganisation'] = 'Create an organisation';
 $string['local:updateorganisation'] = 'Update an organisation';
 $string['local:deleteorganisation'] = 'Delete an organisation';
-$string['local:createorganisationdepth'] = 'Create an organisational depth';
-$string['local:updateorganisationdepth'] = 'Update an organisational depth';
-$string['local:deleteorganisationdepth'] = 'Delete an organisational depth';
+$string['local:createorganisationtype'] = 'Create an organisational type';
+$string['local:updateorganisationtype'] = 'Update an organisational type';
+$string['local:deleteorganisationtype'] = 'Delete an organisational type';
 $string['local:createorganisationframeworks'] = 'Create an organisational framework';
 $string['local:updateorganisationframeworks'] = 'Update an organisational framework';
 $string['local:deleteorganisationframeworks'] = 'Delete an organisational framework';
@@ -112,11 +112,6 @@ $string['framework'] = 'Framework';
 $string['template'] = 'Template';
 $string['type'] = 'Type';
 
-// These are used by the capabilities for editing classifications
-$string['local:editclassifications'] = 'Edit Course Classifications';
-$string['local:editcourseclassification'] = 'Edit Classification of a Course';
-$string['local:searchclassifications'] = 'Search Classifications';
-
 // Report Headings
 $string['reportheading'] = 'Report heading block';
 $string['headingcolumnsdescription'] = 'The fields below define which data appear in the Report Heading Block. This block contains information about a specific user, and can appear in many locations throughout the site.';
@@ -128,7 +123,7 @@ $string['error:columntypenotfound'] = 'Column with type of \'$a\' not found in c
 $string['managers'] = 'Manager\'s ';
 $string['positionsarrow'] = 'Positions > ';
 $string['organisationsarrow'] = 'Organisations > ';
-$string['error:columntypenotfound'] = 'The column type \'$a\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy depth level. The best course of action is to delete this column by pressing the red cross to the right.';
+$string['error:columntypenotfound'] = 'The column type \'$a\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy type. The best course of action is to delete this column by pressing the red cross to the right.';
 $string['error:couldnotcreatedefaultfields'] = 'Could not create default fields';
 
 // Add/Edit competency evidence
@@ -213,6 +208,11 @@ $string['icon'] = 'Icon';
 $string['none'] = 'None';
 $string['currenticon'] = 'Current icon';
 $string['courseicon'] = 'Course icon';
+$string['coursecategoryicon'] = 'Category icon';
+$string['typeicon'] = 'Type icon';
+$string['position_typeicon'] = 'Position type icon';
+$string['competency_typeicon'] = 'Competency type icon';
+$string['organisation_typeicon'] = 'Organisation type icon';
 
 //Errors
 $string['error:norolesfound'] = 'No roles found';

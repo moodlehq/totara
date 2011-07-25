@@ -6,7 +6,7 @@ class guide_totara_create_organisation_framework_step extends guide_default_step
         global $CFG;
         return '<p>The first step is to set up an organisational framework.</p>
             <p>Setting up an organisation framework is like setting up a folder in which you create the organisational structure.  You can set up multiple organisation frameworks.</p>
-            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/framework/edit.php?type=organisation">Organisation frameworks</a>.</p>
+            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/framework/edit.php?prefix=organisation">Organisation frameworks</a>.</p>
             <p>On completing your organisation framework return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
     }
 

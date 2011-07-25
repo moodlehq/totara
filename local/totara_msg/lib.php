@@ -80,7 +80,7 @@ function totara_msg_urgency_text($urgency) {
 
 function totara_msg_icon_url( $icon ){
     global $CFG;
-    return $CFG->wwwroot . '/local/icon.php?type=msg&amp;icon=' . urlencode($icon);
+    return $CFG->wwwroot . '/local/icon/icon.php?type=msg&amp;icon=' . urlencode($icon);
 }
 
 /**

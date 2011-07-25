@@ -13,11 +13,9 @@ class field_form extends moodleform {
         $mform =& $this->_form;
         $datasent = $this->_customdata;
 
-        $type        = $datasent['type'];
-        $subtype     = $datasent['subtype'];
-        $depthid     = $datasent['depthid'];
+        $prefix      = $datasent['prefix'];
+        $typeid      = $datasent['typeid'];
         $tableprefix = $datasent['tableprefix'];
-        $categoryid  = $datasent['categoryid'];
 
         require_once($CFG->dirroot.'/customfield/field/'.$datasent['datatype'].'/define.class.php');
         $newfield = 'customfield_define_'.$datasent['datatype'];
@@ -29,13 +27,11 @@ class field_form extends moodleform {
         $mform->addElement('hidden', 'id');
         $mform->addElement('hidden', 'action', 'editfield');
         $mform->addElement('hidden', 'datatype', $datasent['datatype']);
-        $mform->addElement('hidden', 'type', $datasent['type']);
-        $mform->addElement('hidden', 'subtype', $datasent['subtype']);
-        $mform->addElement('hidden', 'frameworkid', $datasent['frameworkid']);
-        $mform->addElement('hidden', 'depthid', $datasent['depthid']);
+        $mform->addElement('hidden', 'prefix', $datasent['prefix']);
+        $mform->addElement('hidden', 'typeid', $datasent['typeid']);
         $mform->addElement('hidden', 'tableprefix', $datasent['tableprefix']);
 
-        $this->field->define_form($mform, $depthid, $tableprefix, $categoryid);
+        $this->field->define_form($mform, $typeid, $tableprefix);
 
         $this->add_action_buttons(true);
     }
@@ -50,7 +46,7 @@ class field_form extends moodleform {
 
 /// perform some moodle validation
     function validation($data, $files) {
-        return $this->field->define_validate($data, $files, $data['depthid'], $data['tableprefix']);
+        return $this->field->define_validate($data, $files, $data['typeid'], $data['tableprefix']);
     }
 }
 

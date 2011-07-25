@@ -37,7 +37,7 @@ $(function() {
     /// Position dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/position/assign/';
 
         totaraSingleSelectDialog(
             'position',
@@ -56,7 +56,7 @@ $(function() {
     /// Organisation dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assign/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/organisation/assign/';
 
         totaraSingleSelectDialog(
             'organisation',
@@ -75,7 +75,7 @@ $(function() {
     /// Manager dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/position/assign/';
 
         totaraSingleSelectDialog(
             'manager',

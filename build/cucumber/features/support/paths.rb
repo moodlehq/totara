@@ -6,11 +6,11 @@ module NavigationHelpers
       'competency' => 'comp',
       'competency scale' => 'comp_scale',
       'competency scale value' => 'comp_scale_values',
-      'competency depth' => 'comp_depth',
+      'competency type' => 'comp_type',
       'organisation framework' => 'org_framework',
-      'organisation depth' => 'org_depth',
+      'organisation type' => 'org_type',
       'position framework' => 'pos_framework',
-      'position depth' => 'pos_depth',
+      'position type' => 'pos_type',
       'organisation' => 'org',
     }
   end
@@ -23,10 +23,11 @@ module NavigationHelpers
       'edit organisation frameworks table'     => 'table.editorganisation',
       'edit organisation table'                => 'table.editorganisation',
       'edit organisation depth table'          => 'table.editorganisation',
-      'organisation table'                     => '#organisation',
+      'organisation table'                     => 'table.hierarchy-index',
       'custom category table'                  => 'table.editorganisation',
       'scale value table'                      => 'table.generaltable',
       'position table'                         => 'table.editposition',
+      'organisation column'                    => 'td#middle-column',
     }
   end
 
@@ -40,16 +41,16 @@ module NavigationHelpers
       'my records'   => '/local/plan/record/courses.php',
       'a learners my records' => '/local/plan/record/courses.php?userid=' + get_username_id('learner').to_s,
       'an administrators my records' => '/local/plan/record/courses.php?userid=' + get_username_id('admin').to_s,
-      'manage competency frameworks' => '/hierarchy/framework/index.php?type=competency',
-      'manage organisation frameworks' => '/hierarchy/framework/index.php?type=organisation',
-      'manage position frameworks' => '/hierarchy/framework/index.php?type=position',
-      'add competency framework' => '/hierarchy/framework/edit.php?type=competency',
-      'add position framework' => '/hierarchy/framework/edit.php?type=position',
-      'add organisation framework' => '/hierarchy/framework/edit.php?type=organisation',
-      'manage competencies' => '/hierarchy/index.php?type=competency',
-      'manage positions' => '/hierarchy/index.php?type=position',
-      'manage organisations' => '/hierarchy/index.php?type=organisation',
-      
+      'manage competencies' => '/hierarchy/framework/index.php?prefix=competency',
+      'manage organisations' => '/hierarchy/framework/index.php?prefix=organisation',
+      'manage positions' => '/hierarchy/framework/index.php?prefix=position',
+      'add competency framework' => '/hierarchy/framework/edit.php?prefix=competency',
+      'add position framework' => '/hierarchy/framework/edit.php?prefix=position',
+      'add organisation framework' => '/hierarchy/framework/edit.php?prefix=organisation',
+      'manage position types' => '/hierarchy/type/index.php?prefix=position',
+      'manage competency types' => '/hierarchy/type/index.php?prefix=competency',
+      'manage organisation types' => '/hierarchy/type/index.php?prefix=organisation',
+
       # URL to delete a specified position depth
       'edit position depth' => '/hierarchy/depth/edit.php'
     }

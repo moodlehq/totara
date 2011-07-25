@@ -31,7 +31,5 @@ end
 Given /^I add a (\w+) with parent "([^"]*)"$/ do |framework_type, parent_name|
   Given "I press \"Add new #{framework_type}\""
   Given "I fill in \"fullname\" with \"My #{framework_type} fullname\""
-  Given "I fill in \"shortname\" with \"My shortname\""
   Given "I press \"Save changes\""
-  Given "I press \"Return to #{framework_type} framework\""
 end

@@ -5,6 +5,8 @@
 
     require_once("../config.php");
     require_once("lib.php");
+    require_once($CFG->dirroot.'/local/icon/course_icon.class.php');
+    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
 
     $id = required_param('id', PARAM_INT);          // Category id
     $page = optional_param('page', 0, PARAM_INT);     // which page to show
@@ -88,6 +90,9 @@
         // specifying theme here saves us some dbqs
         theme_setup($category->theme);
     }
+
+    $course_icon = new course_icon();
+    $category_icon = new coursecategory_icon();
 
 /// Print headings
     $numcategories = count_records('course_categories');
@@ -258,7 +263,7 @@
                 }
                 $catlinkcss = $subcategory->visible ? '' : 'class="dimmed" ';
                 echo '<a '.$catlinkcss.' href="category.php?id='.$subcategory->id.'">'.
-                     local_coursecategory_icon_tag($subcategory, 'small') .format_string($subcategory->name).'</a><br />';
+                     $category_icon->display($subcategory, 'small') .format_string($subcategory->name).'</a><br />';
             }
         }
         if (!$firstentry) {
@@ -349,7 +354,7 @@
 
             $linkcss = $acourse->visible ? '' : ' class="dimmed" ';
             echo '<tr>';
-            echo '<td>'. local_course_icon_tag($acourse, 'small'). '<a '.$linkcss.' href="view.php?id='.$acourse->id.'">'. format_string($acourse->fullname) .'</a></td>';
+            echo '<td>'. $course_icon->display($acourse, 'small'). '<a '.$linkcss.' href="view.php?id='.$acourse->id.'">'. format_string($acourse->fullname) .'</a></td>';
             if ($editingon) {
                 echo '<td>';
                 if (has_capability('moodle/course:update', $coursecontext)) {

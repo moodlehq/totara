@@ -5,7 +5,7 @@ class guide_totara_add_competencies_step extends guide_default_step {
     function content_step_active () {
         global $CFG;
         return '<p>This step requires you to set up the competencies for the competency framework.</p>
-            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/index.php?type=competency">Manage competencies</a>.</p>
+            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/index.php?prefix=competency">Manage competencies</a>.</p>
             <p>Refer to the <a href="">Setting up Competencies help file</a> for further instructions.</p>
             <p>On completing your competency set up, return to this guide and click <b>Finish step</b>.</p>';
     }

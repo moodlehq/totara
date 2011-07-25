@@ -9,6 +9,8 @@
 require_once('../config.php');
 require_once('lib.php');
 require_once('editcategory_form.php');
+require_once ($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 require_login();
 
@@ -35,6 +37,8 @@ if ($id) {
     require_capability('moodle/category:manage', $context);
     $strtitle = get_string("addnewcategory");
 }
+
+local_js(array(TOTARA_JS_ICON_PREVIEW));
 
 $mform = new editcategory_form('editcategory.php', $category);
 $mform->set_data($category);
@@ -82,7 +86,9 @@ if ($mform->is_cancelled()) {
         fix_course_sortorder(); // Required to build course_categories.depth and .path.
     }
 
-    local_update_coursecategory_icon($newcategory, $data, $mform);
+    // Update category icon
+    $category_icon = new category_icon();
+    $category_icon->process_form($data);
 
     redirect('category.php?id='.$newcategory->id.'&categoryedit=on');
 }

@@ -477,7 +477,7 @@ class rb_source_competency_evidence extends rb_base_source {
     function rb_display_link_competency($comp, $row) {
         global $CFG;
         $compid = $row->competency_id;
-        return "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$compid}\">{$comp}</a>";
+        return "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?prefix=competency&id={$compid}\">{$comp}</a>";
     }
 
     //

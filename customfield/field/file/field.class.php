@@ -21,5 +21,18 @@ class customfield_file extends customfield_base {
             $mform->setConstant($this->inputname, $this->data);
         }
     }
+
+    /**
+     * Display the data for this field
+     */
+    static function display_item_data($data) {
+        global $CFG;
+        if(empty($data)) {
+            return $data;
+        }
+        $strfile = get_string('file');
+        $icon = mimeinfo("icon", $data);
+        return "<a href=\"{$CFG->wwwroot}/file.php/1/{$data}\"/><img src=\"{$CFG->pixpath}/f/{$icon}\" class=\"icon\" alt=\"{$strfile}\" />{$data}</a>";
+    }
 }
 ?>

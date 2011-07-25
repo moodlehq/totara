@@ -31,7 +31,7 @@ $stradministration = get_string('administration');
 @ini_set("max_execution_time","3000");
 raise_memory_limit("192M");
 
-// check each hierarchy type for a backup script to determine
+// check each hierarchy prefix for a backup script to determine
 // which will be included in backup
 $hlist = array();
 // this also include()s hierarchy specific backup functions
@@ -40,9 +40,9 @@ $hlist = get_backup_list();
 $frameworks = new object();
 $items = new object();
 foreach ($hlist AS $index => $hname) {
-    $hlib = "$CFG->dirroot/hierarchy/type/$hname/lib.php";
+    $hlib = "$CFG->dirroot/hierarchy/prefix/$hname/lib.php";
     if(!file_exists($hlib)) {
-        error_log("Could not backup $hname because hierarchy/type/$hname/lib.php does not exist");
+        error_log("Could not backup $hname because hierarchy/prefix/$hname/lib.php does not exist");
         unset($hlist[$index]);
         continue;
     }

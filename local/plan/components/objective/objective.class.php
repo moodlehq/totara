@@ -276,7 +276,7 @@ class dp_objective_component extends dp_base_component {
 
         $icon = $this->determine_item_icon($item);
         return '<img class="objective_state_icon" src="' .
-            $CFG->wwwroot . '/local/icon.php?icon=' . $icon .
+            $CFG->wwwroot . '/local/icon/icon.php?icon=' . $icon .
             '&amp;size=small&amp;type=msg" alt="' . $item->fullname.
             '"><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
@@ -1084,7 +1084,7 @@ SQL;
 
         $out .= "<table><tr><td>";
         $icon = $this->determine_item_icon($item);
-        $icon = "<img class=\"objective_state_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"{$item->fullname}\">";
+        $icon = "<img class=\"objective_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"{$item->fullname}\">";
         $out .= '<h3>' . $icon . $item->fullname . '</h3>';
         $out .= "</td></tr></table>";
 

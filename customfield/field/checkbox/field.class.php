@@ -7,12 +7,12 @@ class customfield_checkbox extends customfield_base {
      * Pulls out the options for the checkbox from the database and sets the
      * the corresponding key for the data if it exists
      */
-    function customfield_checkbox($fieldid=0, $itemid=0, $type, $tableprefix) {
+    function customfield_checkbox($fieldid=0, $itemid=0, $prefix, $tableprefix) {
         //first call parent constructor
-        $this->customfield_base($fieldid, $itemid, $type, $tableprefix);
+        $this->customfield_base($fieldid, $itemid, $prefix, $tableprefix);
 
         if (!empty($this->field)) {
-            $datafield = get_field($tableprefix.'_info_data', 'data', $type.'id', $itemid, 'fieldid', $this->fieldid);
+            $datafield = get_field($tableprefix.'_info_data', 'data', $prefix.'id', $itemid, 'fieldid', $this->fieldid);
             if ($datafield !== false) {
                 $this->data = $datafield;
             } else {
@@ -36,10 +36,13 @@ class customfield_checkbox extends customfield_base {
     /**
      * Display the data for this field
      */
-    function display_data() {
+    static function display_item_data($data) {
         $options->para = false;
-        $checked = intval($this->data) === 1 ? 'checked="checked"' : '';
-        return '<input disabled="disabled" type="checkbox" name="'.$this->inputname.'" '.$checked.' />';
+        if (intval($data) === 1) {
+            return get_string('yes');
+        } else {
+            return get_string('no');
+        }
     }
 
 }

@@ -11,7 +11,7 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 require_once($CFG->dirroot . '/hierarchy/lib.php');
-require_once($CFG->dirroot . '/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot . '/hierarchy/prefix/competency/lib.php');
 
 require_once($CFG->libdir . '/simpletestlib.php');
 
@@ -19,48 +19,43 @@ class hierarchylib_test extends prefix_changing_test_case {
     // test data for database
     var $framework_data = array(
         array('id', 'fullname', 'shortname', 'idnumber','description','sortorder','visible',
-            'hidecustomfields','showitemfullname','showdepthfullname','timecreated','timemodified','usermodified'),
-        array(1, 'Framework 1', 'FW1', 'ID1','Description 1', 1, 1, 0, 1, 1, 1265963591, 1265963591, 2),
-        array(2, 'Framework 2', 'FW2', 'ID2','Description 2', 2, 1, 0, 1, 1, 1265963591, 1265963591, 2),
+            'timecreated','timemodified','usermodified'),
+        array(1, 'Framework 1', 'FW1', 'ID1','Description 1', 1, 1, 1265963591, 1265963591, 2),
+        array(2, 'Framework 2', 'FW2', 'ID2','Description 2', 2, 1, 1265963591, 1265963591, 2),
     );
 
-    var $depth_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'depthlevel', 'frameworkid', 'timecreated', 'timemodified',
+    var $type_data = array(
+        array('id', 'fullname', 'shortname', 'description', 'timecreated', 'timemodified',
             'usermodified'),
-        array(1, 'Depth Level 1', 'Depth 1', 'Description 1', 1, 1, 1265963591, 1265963591, 2),
-        array(2, 'Depth Level 2', 'Depth 2', 'Description 2', 2, 1, 1265963591, 1265963591, 2),
-        array(3, 'F2 Depth Level 1', 'F2 Depth 1', 'F2 Description 1', 1, 2, 1265963591, 1265963591, 2),
+        array(1, 'type 1', 'type 1', 'Description 1', 1265963591, 1265963591, 2),
+        array(2, 'type 2', 'type 2', 'Description 2', 1265963591, 1265963591, 2),
+        array(3, 'type 3', 'type 3', 'Description 3', 1265963591, 1265963591, 2),
     );
 
     var $competency_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthid', 'parentid',
-            'sortorder', 'visible', 'aggregationmethod', 'scaleid', 'proficencyexpected', 'evidencecount', 'timecreated',
-            'timemodified', 'usermodified'),
-        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 1, 0, 1, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
-        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 2, 1, 2, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
-        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 3, 0, 1, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
-        array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 2, 1, 3, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
-        array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 1, 0, 4, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
+        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'parentid',
+            'sortorder', 'visible', 'aggregationmethod', 'proficencyexpected', 'evidencecount', 'timecreated',
+            'timemodified', 'usermodified', 'depthlevel', 'typeid'),
+        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 0, 1, 1, 1, 1, 0,
+            1265963591, 1265963591, 2, 1, 1),
+        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 1, 2, 1, 1, 1, 0,
+            1265963591, 1265963591, 2, 2, 2),
+        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 0, 1, 1, 1, 1, 0,
+            1265963591, 1265963591, 2, 2, 2),
+        array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 1, 3, 1, 1, 1, 0,
+            1265963591, 1265963591, 2, 2, 2),
+        array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 0, 4, 1, 1, 1, 0,
+            1265963591, 1265963591, 2, 1, 1),
     );
 
-    var $depth_category_data = array(
-        array('id', 'name', 'sortorder', 'depthid'),
-        array(1, 'Custom Field Category 1', 1, 2),
-    );
-
-    var $depth_field_data = array(
-        array('id', 'fullname', 'shortname', 'depthid', 'datatype', 'description', 'sortorder', 'categoryid', 'hidden',
+    var $type_field_data = array(
+        array('id', 'fullname', 'shortname', 'typeid', 'datatype', 'description', 'sortorder', 'hidden',
             'locked', 'required', 'forceunique', 'defaultdata', 'param1', 'param2', 'param3', 'param4', 'param5'),
-        array(1, 'Custom Field 1', 'CF1', 2, 'checkbox', 'Custom Field Description 1', 1, 1, 0, 0, 0, 0, 0, null, null,
+        array(1, 'Custom Field 1', 'CF1', 2, 'checkbox', 'Custom Field Description 1', 1, 0, 0, 0, 0, 0, null, null,
             null, null, null),
     );
 
-    var $depth_data_data = array(
+    var $type_data_data = array(
         array('id', 'data', 'fieldid', 'competencyid'),
         array(1, 1, 1, 2),
     );
@@ -68,6 +63,11 @@ class hierarchylib_test extends prefix_changing_test_case {
     var $dummy_data = array(
         array('id', 'competency', 'competencyid','competencycount','instanceid','templateid','id1','id2'),
         array(1, 1, 1, 1, 1, 1, 1, 2),
+    );
+
+    var $comp_template_assignment_data = array(
+        array('id', 'templateid', 'type', 'instanceid', 'timecreated', 'usermodified'),
+        array(1, 1, 1, 1, 1265963591, 2),
     );
 
     var $comp_scale_assignments_data = array(
@@ -88,17 +88,17 @@ class hierarchylib_test extends prefix_changing_test_case {
         global $db,$CFG;
         parent::setup();
         load_test_table($CFG->prefix . 'comp_framework', $this->framework_data, $db);
-        load_test_table($CFG->prefix . 'comp_depth', $this->depth_data, $db);
+        load_test_table($CFG->prefix . 'comp_type', $this->type_data, $db);
         load_test_table($CFG->prefix . 'comp', $this->competency_data, $db);
-        load_test_table($CFG->prefix . 'comp_depth_info_category', $this->depth_category_data, $db);
-        load_test_table($CFG->prefix . 'comp_depth_info_field', $this->depth_field_data, $db);
-        load_test_table($CFG->prefix . 'comp_depth_info_data', $this->depth_data_data, $db);
+        load_test_table($CFG->prefix . 'comp_type_info_field', $this->type_field_data, $db);
+        load_test_table($CFG->prefix . 'comp_type_info_data', $this->type_data_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence_items', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence_items_evidence', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_template', $this->dummy_data, $db);
-        load_test_table($CFG->prefix . 'comp_template_assignment', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'comp_template_assignment', $this->comp_template_assignment_data, $db);
         load_test_table($CFG->prefix . 'pos_competencies', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'org_competencies', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_relations', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_scale_assignments', $this->comp_scale_assignments_data, $db);
         load_test_table($CFG->prefix . 'dp_plan_competency_assign', $this->dp_plan_competency_assign_data, $db);
@@ -119,24 +119,19 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->fw1->description = 'Description 1';
         $this->fw1->sortorder = '1';
         $this->fw1->visible = '1';
-        $this->fw1->hidecustomfields = '0';
-        $this->fw1->showitemfullname = '1';
-        $this->fw1->showdepthfullname = '1';
         $this->fw1->timecreated = '1265963591';
         $this->fw1->timemodified = '1265963591';
         $this->fw1->usermodified = '2';
-        $this->fw1->id = 1;
-        // depth level
-        $this->d1 = new stdClass();
-        $this->d1->id = 1;
-        $this->d1->fullname = 'Depth Level 1';
-        $this->d1->shortname = 'Depth 1';
-        $this->d1->description = 'Description 1';
-        $this->d1->depthlevel = '1';
-        $this->d1->frameworkid = '1';
-        $this->d1->timecreated = '1265963591';
-        $this->d1->timemodified = '1265963591';
-        $this->d1->usermodified = '2';
+        $this->fw1->id = '1';
+        // hierarchy type
+        $this->type1 = new stdClass();
+        $this->type1->id = 1;
+        $this->type1->fullname = 'type 1';
+        $this->type1->shortname = 'type 1';
+        $this->type1->description = 'Description 1';
+        $this->type1->timecreated = '1265963591';
+        $this->type1->timemodified = '1265963591';
+        $this->type1->usermodified = '2';
         // competency
         $this->c1 = new stdClass();
         $this->c1->id = '1';
@@ -146,17 +141,17 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->c1->idnumber = 'C1';
         $this->c1->frameworkid = '1';
         $this->c1->path = '/1';
-        $this->c1->depthid = '1';
         $this->c1->parentid = '0';
         $this->c1->sortorder = '1';
         $this->c1->visible = '1';
         $this->c1->aggregationmethod = '1';
-        $this->c1->scaleid = '-1';
-        $this->c1->evidencecount = '0';
         $this->c1->proficencyexpected = '1';
+        $this->c1->evidencecount = '0';
         $this->c1->timecreated = '1265963591';
         $this->c1->timemodified = '1265963591';
         $this->c1->usermodified = '2';
+        $this->c1->depthlevel = '1';
+        $this->c1->typeid = '1';
         // another competency
         $this->c2 = new stdClass();
         $this->c2->id = '1';
@@ -166,34 +161,26 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->c2->idnumber = 'C2';
         $this->c2->frameworkid = '1';
         $this->c2->path = '/1/2';
-        $this->c2->depthid = '2';
         $this->c2->parentid = '1';
         $this->c2->sortorder = '2';
         $this->c2->visible = '1';
         $this->c2->aggregationmethod = '1';
-        $this->c2->scaleid = '-1';
         $this->c2->evidencecount = '0';
         $this->c2->proficencyexpected = '1';
         $this->c2->timecreated = '1265963591';
         $this->c2->timemodified = '1265963591';
         $this->c2->usermodified = '2';
-
-        //Custom field category to test against
-        $this->cfcat1 = new stdClass();
-        $this->cfcat1->id = 1;
-        $this->cfcat1->name = 'Custom Field Category 1';
-        $this->cfcat1->sortorder = 1;
-        $this->cfcat1->depthid = 2;
+        $this->c2->depthlevel = '2';
+        $this->c2->typeid = '2';
 
         //Expected custom field return data for get_custom_fields
         $this->cf1->id = 1;
         $this->cf1->fullname = 'Custom Field 1';
         $this->cf1->shortname = 'CF1';
-        $this->cf1->depthid = 2;
+        $this->cf1->typeid = 2;
         $this->cf1->datatype = 'checkbox';
         $this->cf1->description = 'Custom Field Description 1';
         $this->cf1->sortorder = 1;
-        $this->cf1->categoryid = 1;
         $this->cf1->hidden = 0;
         $this->cf1->locked = 0;
         $this->cf1->required = 0;
@@ -213,16 +200,16 @@ class hierarchylib_test extends prefix_changing_test_case {
         global $db,$CFG;
         remove_test_table($CFG->prefix . 'comp_relations', $db);
         remove_test_table($CFG->prefix . 'pos_competencies', $db);
+        remove_test_table($CFG->prefix . 'org_competencies', $db);
         remove_test_table($CFG->prefix . 'comp_template_assignment', $db);
         remove_test_table($CFG->prefix . 'comp_template', $db);
         remove_test_table($CFG->prefix . 'comp_evidence_items_evidence', $db);
         remove_test_table($CFG->prefix . 'comp_evidence_items', $db);
         remove_test_table($CFG->prefix . 'comp_evidence', $db);
-        remove_test_table($CFG->prefix . 'comp_depth_info_data', $db);
-        remove_test_table($CFG->prefix . 'comp_depth_info_field', $db);
-        remove_test_table($CFG->prefix . 'comp_depth_info_category', $db);
+        remove_test_table($CFG->prefix . 'comp_type_info_data', $db);
+        remove_test_table($CFG->prefix . 'comp_type_info_field', $db);
         remove_test_table($CFG->prefix . 'comp', $db);
-        remove_test_table($CFG->prefix . 'comp_depth', $db);
+        remove_test_table($CFG->prefix . 'comp_type', $db);
         remove_test_table($CFG->prefix . 'comp_framework', $db);
         remove_test_table($CFG->prefix . 'comp_scale_assignments', $db);
         remove_test_table($CFG->prefix . 'dp_plan_competency_assign', $db);
@@ -246,16 +233,16 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertFalse($competency->get_framework(0, true));
     }
 
-    function test_hierarchy_get_depth_by_id() {
+    function test_hierarchy_get_type_by_id() {
         $competency = $this->competency;
-        $d1 = $this->d1;
+        $type1 = $this->type1;
 
-        // the depth level returned should contain all the necessary fields
-        $this->assertEqual($competency->get_depth_by_id(1), $d1);
-        // the depth level with the correct id should be returned
-        $this->assertEqual($competency->get_depth_by_id(2)->fullname, 'Depth Level 2');
-        // false should be returned if the depth level doesn't exist
-        $this->assertFalse($competency->get_depth_by_id(999));
+        // the type returned should contain all the necessary fields
+        $this->assertEqual($competency->get_type_by_id(1), $type1);
+        // the type with the correct id should be returned
+        $this->assertEqual($competency->get_type_by_id(2)->fullname, 'type 2');
+        // false should be returned if the type doesn't exist
+        $this->assertFalse($competency->get_type_by_id(999));
     }
 
     function test_hierarchy_get_frameworks() {
@@ -273,58 +260,19 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertFalse($competency->get_frameworks());
     }
 
-    function test_hierarchy_get_depths() {
+    function test_hierarchy_get_types() {
         $competency = $this->competency;
-        $d1 = $this->d1;
-        // should return an array of depth levels
-        $this->assertTrue(is_array($competency->get_depths()));
-        // the array should include all depth levels (in this framework)
-        $this->assertEqual(count($competency->get_depths()), 2);
-        // each array element should contain a depth level
-        $this->assertEqual(current($competency->get_depths()), $d1);
-        // clear out the depth levels
-        delete_records('comp_depth');
-        // if no depth levels exist should return false
-        $this->assertFalse($competency->get_depths());
-    }
-
-    function test_hierarchy_get_custom_field_categories() {
-        $competency = $this->competency;
-        $categories = $competency->get_custom_field_categories(2);
-
-        //Returned object is an array
-        $this->assertTrue(is_array($categories));
-
-        //Only one category was returned
-        $this->assertEqual(count($categories), 1);
-
-        //Make object match that returned from sql query
-        $this->cfcat1->custom_field_count = 1;
-
-        //The category returned is that which is expected
-        $this->assertEqual($categories, array($this->cfcat1->id => $this->cfcat1));
-
-        //An invalid depthid returns false
-        $this->assertFalse($competency->get_custom_field_categories(9000));
-    }
-
-    function test_hierarchy_get_custom_field_category_by_id() {
-        $competency = $this->competency;
-        $category = $competency->get_custom_field_category_by_id(1);
-
-        //The result is a single object
-        $this->assertTrue(is_object($category));
-
-        //All values are correct
-        $this->assertEqual($category, $this->cfcat1);
-
-        //False is returned for a non-existent category id
-        $this->assertFalse($competency->get_custom_field_category_by_id(9000));
-
-        //Error is raised when no id is given
-        $this->expectError(); //First call to catch Exception when expected argument is not passed
-        $this->expectError(); // Second call to catch PHP Exception for undefined variable inside the call itself
-        $competency->get_custom_field_category_by_id();
+        $type1 = $this->type1;
+        // should return an array of types
+        $this->assertTrue(is_array($competency->get_types()));
+        // the array should include all types (in this framework)
+        $this->assertEqual(count($competency->get_types()), 3);
+        // each array element should contain a type
+        $this->assertEqual(current($competency->get_types()), $type1);
+        // clear out the types
+        delete_records('comp_type');
+        // if no types exist should return false
+        $this->assertFalse($competency->get_types());
     }
 
     function test_hierarchy_get_custom_fields() {
@@ -343,7 +291,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         //Returned array is identical to expected data
         $this->assertEqual($customfields, array($this->cf1->id => $this->cf1));
 
-        //Empty array is returned for a non-existent category id
+        //Empty array is returned for a non-existent item id
         $this->assertEqual($competency->get_custom_fields(9000), array());
     }
 
@@ -482,7 +430,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         $obj = new stdClass();
         $obj->fullname = $c1->fullname;
         $obj->parentid = $c1->parentid;
-        $obj->depthlevel = get_field('comp_depth','depthlevel','id', $c1->depthid);
+        $obj->depthlevel = $c1->depthlevel;
         $obj->id = (int) $c1->id;
 
         // should return an array of items
@@ -505,7 +453,7 @@ class hierarchylib_test extends prefix_changing_test_case {
     // get_editing_button()
     // display_framework_selector()
     // display_add_item_button()
-    // display_add_depth_button()
+    // display_add_type_button()
     // validate_sortorder() (not implemented at hierarchy level)
 
     function test_hierarchy_get_item_sortorder_offset() {
@@ -607,7 +555,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // the item's children should also have been deleted
         $this->assertFalse($competency->get_items_by_parent(1));
         // custom field data for items and children should also be deleted
-        $this->assertFalse(get_records('comp_depth_info_data','competencyid', 2));
+        $this->assertFalse(get_records('comp_type_info_data','competencyid', 2));
         // non descendants in same framework should not be deleted
         $this->assertEqual(count($competency->get_items()), 1);
     }
@@ -618,54 +566,33 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertTrue($competency->delete_framework());
         // items should have been deleted
         $this->assertFalse($competency->get_items());
-        // depth levels should have been deleted
-        $this->assertFalse($competency->get_depths());
+        // types should still all exist because they are framework independant
+        $this->assertEqual(count($competency->get_types()), 3);
         // the framework should have been deleted
         $this->assertFalse(get_record('comp_framework', 'id', 1));
     }
 
-    function test_hierarchy_is_safe_to_delete_depth() {
-        $competency = $this->competency;
-        $nofwid = $this->nofwid;
-        // should return error if attempt to delete non-existant depth level
-        $this->assertEqual($competency->is_safe_to_delete_depth(999),'deletedepthnosuchdepth');
-        // should return error if attempt to delete depth level with children
-        $this->assertEqual($competency->is_safe_to_delete_depth(1),'deletedepthhaschildren');
-
-        // delete all items so depth levels don't have any children
-        delete_records('comp');
-
-        // should return error if attempt to delete depth level that isn't lowest in framework
-        $this->assertEqual($competency->is_safe_to_delete_depth(1), 'deletedepthnotdeepest');
-        // should return true if depth level is allowed to be deleted
-        $this->assertTrue($competency->is_safe_to_delete_depth(2));
-    }
-
-    function test_hierarchy_delete_depth() {
+    function test_hierarchy_delete_type() {
         $competency = $this->competency;
 
-        // delete all items to make deleting depth levels possible
+        // delete all items to make deleting types possible
         delete_records('comp');
 
-        // shouldn't be able to delete depth level if it is not the lowest
-        $this->assertEqual($competency->delete_depth(1),'deletedepthnotdeepest');
-        $before = count($competency->get_depths());
-        // should return true if depth level is deleted
-        $this->assertTrue($competency->delete_depth(2));
-        $after = count($competency->get_depths());
-        // should have deleted the depth level
+        $before = count($competency->get_types());
+        // should return true if type is deleted
+        $this->assertTrue($competency->delete_type(2));
+        $after = count($competency->get_types());
+        // should have deleted the type
         $this->assertNotEqual($before, $after);
     }
 
-    function test_hierarchy_delete_depth_metadata() {
+    function test_hierarchy_delete_type_metadata() {
         $competency = $this->competency;
 
         // function should return null
-        $this->assertTrue($competency->delete_depth_metadata(2));
-        // should have deleted all categories for the depth level
-        $this->assertFalse(get_records('comp_depth_info_category', 'depthid', 2));
-        // should have deleted all fields for the depth level
-        $this->assertFalse(get_records('comp_depth_info_field', 'depthid', 2));
+        $this->assertTrue($competency->delete_type_metadata(2));
+        // should have deleted all fields for the type
+        $this->assertFalse(get_records('comp_type_info_field', 'typeid', 2));
 
     }
 
@@ -674,13 +601,14 @@ class hierarchylib_test extends prefix_changing_test_case {
         $c1 = $this->c1;
         // should return an array of info
         $this->assertTrue(is_array($competency->get_item_data($c1)));
-        // if no params requested, should return default ones
-        $this->assertEqual(count($competency->get_item_data($c1)), 5);
+        // if no params requested, should return default ones (includes aggregation method which
+        // is specific to competencies)
+        $this->assertEqual(count($competency->get_item_data($c1)), 6);
         // should return the correct number of fields requested
-        $this->assertEqual(count($competency->get_item_data($c1, array('sortorder', 'description'))), 3);
+        $this->assertEqual(count($competency->get_item_data($c1, array('sortorder', 'description'))), 4);
         // should return the correct information based on fields requested
         $result = current($competency->get_item_data($c1, array('description')));
-        $this->assertEqual($result['title'], 'Depth Level 1 description');
+        $this->assertEqual($result['title'], 'Description');
         $this->assertEqual($result['value'], 'Competency Description 1');
     }
 

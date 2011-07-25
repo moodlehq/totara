@@ -5,7 +5,7 @@ class guide_totara_add_organisations_step extends guide_default_step {
     function content_step_active () {
         global $CFG;
         return '<p>The final step is to set up the organisational structure for the organisation framework.</p>
-            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/index.php?type=organisation">Manage organisations</a>.</p>
+            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/index.php?prefix=organisation">Manage organisations</a>.</p>
             <p>On completing your organisational structure return to this guide and click <b>Finish step</b>. You have now completed the set up of your organisation.</p>';
     }
 

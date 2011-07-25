@@ -7,56 +7,31 @@ require_once($CFG->dirroot.'/customfield/fieldlib.php');
 require_once($CFG->dirroot.'/customfield/definelib.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
 
-$type           = required_param('type', PARAM_SAFEDIR);        // hierarchy name or mod name
-$subtype        = optional_param('subtype', null, PARAM_ALPHA); // e.g., 'depth' or f2f 'session'
-$depthid        = optional_param('depthid', '0', PARAM_INT);    // depthid if hierarchy
-$frameworkid    = optional_param('frameworkid', '0', PARAM_INT);
-$categoryid     = optional_param('categoryid', '0', PARAM_INT);
+hierarchy::support_old_url_syntax();
+
+$prefix         = required_param('prefix', PARAM_ALPHA);        // hierarchy name or mod name
+$typeid         = optional_param('typeid', '0', PARAM_INT);    // typeid if hierarchy
 $action         = optional_param('action', '', PARAM_ALPHA);    // param for some action
 $id             = optional_param('id', 0, PARAM_INT); // id of a custom field
 
-// use $type and $subtype to determine where to get custom field data from
-if($type == 'course') {
+// use $prefix to determine where to get custom field data from
+if ($prefix == 'course') {
     $shortprefix = 'course';
     $adminpagename = 'coursecustomfields';
-} else {
-    // Confirm the hierarchy type exists
-    if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
-        require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
-        $hierarchy = new $type();
-    } else {
-        error('error:hierarchytypenotfound', 'hierarchy', $type);
-    }
-    $shortprefix = hierarchy::get_short_prefix($type);
-    $adminpagename = $type . 'frameworkmanage';
-}
-if ($subtype !== null && $subtype != '') {
-    $tableprefix = $shortprefix.'_'.$subtype;
-} else {
     $tableprefix = $shortprefix;
-}
-
-
-// work out where to redirect to after this page
-if($id || $action == 'editfield') {
-    $baseredirect = $CFG->wwwroot . '/customfield/index.php';
 } else {
-    $baseredirect = $CFG->wwwroot . '/customfield/custom_field_categories.php';
+    // Confirm the hierarchy prefix exists
+    $hierarchy = hierarchy::load_hierarchy($prefix);
+    $shortprefix = hierarchy::get_short_prefix($prefix);
+    $adminpagename = $prefix . 'typemanage';
+    $tableprefix = $shortprefix.'_type';
 }
-$redirect = $baseredirect.'?type='.$type;
-$redirectoptions = array('type'=>$type);
-if ($subtype !== null) {
-    $redirect .= '&amp;subtype='.$subtype;
-    $redirectoptions['subtype'] = $subtype;
-}
-if ($depthid) {
-    $redirect .= '&amp;depthid='.$depthid.'&amp;frameworkid='.$frameworkid;
-    $redirectoptions['depthid'] = $depthid;
-    $redirectoptions['frameworkid'] = $frameworkid;
-}
-if ($categoryid) {
-    $redirect .= "&amp;categoryid=$categoryid";
-    $redirectoptions['categoryid'] = $categoryid;
+
+$redirect = $CFG->wwwroot . '/customfield/index.php?prefix='.$prefix;
+$redirectoptions = array('prefix'=>$prefix);
+if ($typeid) {
+    $redirect .= '&amp;typeid='.$typeid;
+    $redirectoptions['typeid'] = $typeid;
 }
 if ($id) {
     $redirect .= "&amp;id=$id";
@@ -64,74 +39,40 @@ if ($id) {
 }
 
 // get some relevant data
-if($depthid) {
-    $depth = $hierarchy->get_depth_by_id($depthid);
-    $framework  = $hierarchy->get_framework($depth->frameworkid);
+if ($typeid) {
+    $type = $hierarchy->get_type_by_id($typeid);
 }
-if($categoryid) {
-    if($depthid) {
-        $category = $hierarchy->get_custom_field_category_by_id($categoryid);
-    }
-    if ($type == 'course') {
-        $category = get_course_custom_field_category_by_id($categoryid);
-    }
-}
-
 
 // set up breadcrumbs trail
-if ($depthid) {
-    $pagetitle = format_string(get_string($type.'depthcustomfields',$type));
+if ($typeid) {
+    $pagetitle = format_string(get_string($prefix.'depthcustomfields',$prefix));
+
     $navlinks = array();
-    $navlinks[] = array('name'=>get_string("{$type}frameworks", $type),
-                        'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}",
-                        'type'=>'misc');    // Framework List
-    $navlinks[] = array('name'=>format_string($framework->fullname),
-                        'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&amp;frameworkid={$framework->id}",
-                        'type'=>'misc');    // Framework View
-    $navlinks[] = array('name'=>format_string($depth->fullname),
-                        'link'=>"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&amp;frameworkid={$framework->id}&amp;depthid={$depth->id}",
-                        'type'=>'misc');    // Current page
-    if (isset($category)) {
-        $navlinks[] = array('name'=>format_string($category->name),
-                            'link'=>"{$CFG->wwwroot}/customfield/index.php?amp;type={$type}&amp;frameworkid={$framework->id}",
-                            'type'=>'misc');    // Category View
-    }
-} else if ($type == 'course') {
+    $navlinks[] = array('name'=>get_string("{$prefix}types", $prefix),
+                        'link'=>"{$CFG->wwwroot}/hierarchy/type/index.php?prefix={$prefix}",
+                        'class'=>'misc');    // types List
+
+    $navlinks[] = array('name'=>format_string($type->fullname),
+                        'link'=>'',
+                        'class'=>'title');
+
+} else if ($prefix == 'course') {
     $pagetitle = format_string(get_string('coursecustomfields','customfields'));
-    $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
-    $navlinks[] = array('name' => get_string('courses'), 'link'=> '', 'type'=>'title');
-    $navlinks[] = array('name' => get_string('coursecustomfields','customfields'), 'link'=> '', 'type'=>'title');
-    if (isset($category)) {
-        $navlinks[] = array('name'=>format_string($category->name),
-                            'link'=>"{$CFG->wwwroot}/customfield/index.php?type={$type}",
-                            'type'=>'misc');    // Category View
-    }
+    $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'class'=>'title');
+    $navlinks[] = array('name' => get_string('courses'), 'link'=> '', 'class'=>'title');
+    $navlinks[] = array('name' => get_string('coursecustomfields','customfields'), 'link'=> '', 'class'=>'title');
 } else {
-    $pagetitle = format_string(get_string($type.'depthcustomfields',$type));
-    $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
-    $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
-    $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+    $navlinks = array();
 }
 
-
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
-admin_externalpage_setup($adminpagename, '', array('type' => $type));
+require_capability('moodle/local:update'.$prefix.'customfield', $sitecontext);
+admin_externalpage_setup($adminpagename, '', array('prefix' => $prefix));
 
 // check if any actions need to be performed
 switch ($action) {
-    case 'movecategory':
-        require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
-        $id  = required_param('categoryid', PARAM_INT);
-        $dir = required_param('dir', PARAM_ALPHA);
-
-        if (confirm_sesskey()) {
-            customfield_move_category($id, $dir, $depthid, $tableprefix);
-        }
-        redirect($redirect);
-        break;
    case 'movefield':
-        require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
+        require_capability('moodle/local:update'.$prefix.'customfield', $sitecontext);
         $id  = required_param('id', PARAM_INT);
         $dir = required_param('dir', PARAM_ALPHA);
 
@@ -140,27 +81,8 @@ switch ($action) {
         }
         redirect($redirect);
         break;
-    case 'deletecategory':
-        require_capability('moodle/local:delete'.$type.'customfield', $sitecontext);
-        $id      = required_param('categoryid', PARAM_INT);
-        $confirm = optional_param('confirm', 0, PARAM_BOOL);
-
-        if (data_submitted() and $confirm and confirm_sesskey()) {
-            customfield_delete_category($id, $depthid, $tableprefix);
-            redirect($redirect);
-        }
-
-        //ask for confirmation
-        $fieldcount = count_records($tableprefix.'_info_field', 'categoryid', $id);
-        $optionsyes = array ('categoryid'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
-        admin_externalpage_print_header('', $navlinks);
-        print_heading(get_string('deletecategory', 'customfields'), '', '1');
-        notice_yesno(get_string('confirmcategorydeletion', 'customfields', $fieldcount), $redirect, $redirect, $optionsyes, $redirectoptions, 'post', 'get');
-        print_footer();
-        die;
-        break;
     case 'deletefield':
-        require_capability('moodle/local:delete'.$type.'customfield', $sitecontext);
+        require_capability('moodle/local:delete'.$prefix.'customfield', $sitecontext);
         $id      = required_param('id', PARAM_INT);
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
@@ -170,7 +92,6 @@ switch ($action) {
         }
 
         //ask for confirmation
-        $datacount = count_records($tableprefix . '_info_data', 'fieldid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
         admin_externalpage_print_header('', $navlinks);
         print_heading(get_string('deletefield', 'customfields'), '', '1');
@@ -179,62 +100,61 @@ switch ($action) {
         die;
         break;
     case 'editfield':
-        require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
+        require_capability('moodle/local:update'.$prefix.'customfield', $sitecontext);
         $id       = optional_param('id', 0, PARAM_INT);
         $datatype = optional_param('datatype', '', PARAM_ALPHA);
 
-        customfield_edit_field($id, $datatype, $depthid, $redirect, $tableprefix, $type, $subtype, $frameworkid, $categoryid, $navlinks);
-        die;
-        break;
-    case 'editcategory':
-        require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
-        $id = optional_param('categoryid', 0, PARAM_INT);
-
-        customfield_edit_category($id, $depthid, $redirect, $tableprefix, $type, $subtype, $frameworkid, $navlinks);
+        customfield_edit_field($id, $datatype, $typeid, $redirect, $tableprefix, $prefix, $navlinks);
         die;
         break;
     default:
 }
 // Display page header
 
-
-
-
 admin_externalpage_print_header('', $navlinks);
 
-if($type == 'course') {
+// Print return to type link
+if($prefix != 'course') {
+    echo '<p><a href="'.$CFG->wwwroot . '/hierarchy/type/index.php?prefix='.$prefix.'&amp;typeid='.$typeid.'">&laquo; '.get_string('alltypes', 'hierarchy').'</a></p>';
+}
+
+if($prefix == 'course') {
     $heading = get_string('coursecustomfields', 'customfields');
     if($categoryid) {
         $heading .= ' : ' . format_string($category->name);
     }
-    print_heading($heading, '', 1);
+    print_heading($heading, 'left', 1);
 } else {
-    print_heading(format_string($depth->fullname)." : ".format_string($category->name), '', 1);
+    print_heading(format_string($type->fullname), 'left', 1);
 }
 
-print_heading(get_string('customfields', 'customfields'));
-
-
-// show custom fields for the given depth and category
+// show custom fields for the given type
 $table = new object();
 $table->head  = array(get_string('customfield', 'customfields'), get_string('edit'));
 $table->align = array('left', 'right');
 $table->width = '95%';
 $table->class = 'generaltable customfields';
-if($type == 'course') {
+if($prefix == 'course') {
     $table->id = 'customfields_course';
 } else {
     $table->id = 'customfields_'.$hierarchy->prefix;
 }
 $table->data = array();
 
+if ($typeid) {
+    $field = 'typeid';
+    $value = $typeid;
+} else {
+    $field = '';
+    $value = '';
+}
 
-if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$categoryid", 'sortorder ASC')) {
+if ($fields = get_records($tableprefix.'_info_field', $field , $value , 'sortorder ASC')) {
 
     $fieldcount = count($fields);
 
     foreach ($fields as $field) {
-        $table->data[] = array($field->fullname, customfield_edit_icons($field, $fieldcount, $depthid, $type, $subtype, $frameworkid, $categoryid));
+        $table->data[] = array($field->fullname, customfield_edit_icons($field, $fieldcount, $typeid, $prefix));
     }
 }
 if (count($table->data)) {
@@ -246,31 +166,10 @@ echo "<br />";
 // Create a new custom field dropdown menu
 $options = customfield_list_datatypes();
 
-if($type == 'course') {
-    popup_form('index.php?type='.$type.'&amp;id=0&amp;action=editfield&amp;categoryid='.$categoryid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
+if($prefix == 'course') {
+    popup_form('index.php?prefix='.$prefix.'&amp;id=0&amp;action=editfield&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
 } else {
-    popup_form('index.php?type='.$type.'&amp;subtype='.$subtype.'&amp;id=0&amp;action=editfield&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
+    popup_form('index.php?prefix='.$prefix.'&amp;id=0&amp;action=editfield&amp;typeid='.$typeid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
 }
-
-// Add navigation buttons
-echo '<div class="buttons">';
-
-// Print return to framework button
-$data = array('type' => $type);
-if($type != 'course') {
-    $data['subtype'] = 'depth';
-    $data['frameworkid'] = $frameworkid;
-    $data['depthid'] = $depthid;
-    print_single_button(
-        $navlinks[1]['link'],
-        $data,
-        get_string('returntoframework', 'customfields'));
-}
-// Print return to categories button
-print_single_button($CFG->wwwroot.'/customfield/custom_field_categories.php',
-    $data,
-    get_string('returntocategories', 'customfields'));
-
-echo '</div>';
 
 print_footer();

@@ -472,10 +472,10 @@ class moodle_url {
  */
 function data_submitted($url='') {
 
-    if (empty($_POST)) {
-        return false;
+    if ((isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') || !empty($_POST)) {
+             return (object)$_POST;
     } else {
-        return (object)$_POST;
+        return false;
     }
 }
 
@@ -1328,7 +1328,7 @@ $targetwindow='self', $selectlabel='', $optionsextra=NULL, $gobutton=NULL) {
         $output .= '<input type="submit" value="'.
             ($gobutton===true ? $go : $gobutton).'" />';
     } else {
-        $output .= '<div id="noscript'.$formid.'" style="display: inline;">';
+        $output .= '<div id="noscript'.$formid.'" class="totara-noscript" style="display: inline;">';
         $output .= '<input type="submit" value="'.$go.'" /></div>';
         $output .= '<script type="text/javascript">'.
                    "\n//<![CDATA[\n".

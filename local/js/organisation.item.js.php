@@ -37,7 +37,7 @@ $(function() {
     /// Competency dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assigncompetency/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/organisation/assigncompetency/';
 
         totaraMultiSelectDialog(
             'assignedcompetencies',
@@ -51,7 +51,7 @@ $(function() {
     /// Template dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assigncompetencytemplate/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/organisation/assigncompetencytemplate/';
 
         totaraMultiSelectDialog(
             'assignedcompetencytemplates',

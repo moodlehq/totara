@@ -23,7 +23,7 @@
  * @subpackage plan
  */
 
-require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -251,7 +251,7 @@ class dp_competency_component extends dp_base_component {
     function get_course_evidence_items($competencies) {
         global $CFG;
         // for access to evidence item type constants
-        require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
 
         // invalid input
         if (!is_array($competencies)) {
@@ -527,7 +527,7 @@ class dp_competency_component extends dp_base_component {
         $class = ($approved) ? '' : ' class="dimmed"';
         $icon = $this->determine_item_icon($item);
         return '<img class="competency_state_icon" src="' .
-            $CFG->wwwroot . '/local/icon.php?icon=' . $icon .
+            $CFG->wwwroot . '/local/icon/icon.php?icon=' . $icon .
             '&amp;size=small&amp;type=msg" alt="' . $item->fullname.
             '"><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
@@ -584,7 +584,7 @@ class dp_competency_component extends dp_base_component {
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
         $icon = $this->determine_item_icon($item);
-        $icon = "<img class=\"competency_state_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"{$item->fullname}\">";
+        $icon = "<img class=\"competency_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"{$item->fullname}\">";
         $out .= '<h3>' . $icon . $item->fullname . '</h3>';
         $out .= '<table border="0" class="planiteminfobox">';
         $out .= '<tr>';
@@ -1030,7 +1030,7 @@ class dp_competency_component extends dp_base_component {
         $includecourses = $this->get_setting('autoassigncourses');
         $includecompleted = $this->get_setting('includecompleted');
 
-        require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
         // Get primary position
         $position_assignment = new position_assignment(
             array(
@@ -1075,7 +1075,7 @@ class dp_competency_component extends dp_base_component {
         $includecourses = $this->get_setting('autoassigncourses');
         $includecompleted = $this->get_setting('includecompleted');
 
-        require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
         // Get primary position
         $position_assignment = new position_assignment(
             array(
@@ -1088,7 +1088,7 @@ class dp_competency_component extends dp_base_component {
             return true;
         }
 
-        require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
         $org = new organisation();
         if ($includecompleted) {
             $competencies = $org->get_assigned_competencies($position_assignment->organisationid);

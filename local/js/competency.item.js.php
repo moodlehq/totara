@@ -38,7 +38,7 @@ $(function() {
     /// Add related competency dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/related/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/related/';
 
         totaraMultiSelectDialog(
             'related',
@@ -53,7 +53,7 @@ $(function() {
     /// Assign evidence item dialog (resource-level)
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidenceitem/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/evidenceitem/';
 
         var handler = new totaraDialog_handler_assignEvidence();
         handler.baseurl = url;
@@ -138,7 +138,7 @@ $(function() {
     $(function() {
 
         (function() {
-            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidenceitem/';
+            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/evidenceitem/';
             var saveurl = url + 'add.php?competency=<?php echo $id; ?>&type=coursecompletion&instance=0&deleteexisting=1&update=';
 
             var handler = new totaraDialog_handler_compEvidence();

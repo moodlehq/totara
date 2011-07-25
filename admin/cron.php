@@ -290,7 +290,7 @@
 
     // Competency cron
     mtrace('Starting the competency cron...');
-    require_once($CFG->dirroot . '/hierarchy/type/competency/cron.php');
+    require_once($CFG->dirroot . '/hierarchy/prefix/competency/cron.php');
     competency_cron();
     mtrace('done');
 

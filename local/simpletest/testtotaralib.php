@@ -13,7 +13,7 @@ if (!defined('MOODLE_INTERNAL')) {
 require_once($CFG->dirroot . '/local/totara.php');
 
 //Need constants for one of the tests...
-require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
 require_once($CFG->libdir . '/simpletestlib.php');
 
 class totaralib_session_test extends UnitTestCase {

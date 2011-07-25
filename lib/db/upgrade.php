@@ -3365,6 +3365,27 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101591.01);
     }
 
+    // rename some local capabilities
+    // put in core upgrade so it happens before local/db/access.php is checked
+    // as this would delete/add new capabilities and we want to rename them (to
+    // preserve existing permissions)
+    if ($result && $oldversion < 2007101591.03) {
+        foreach (array('competency', 'organisation', 'position') as $hierarchy) {
+            foreach (array('create', 'update', 'delete') as $action) {
+                $sql = "UPDATE {$CFG->prefix}capabilities
+                    SET name = 'moodle/local:{$action}{$hierarchy}class'
+                    WHERE name = 'moodle/local:{$action}{$hierarchy}depth'";
+                $result = $result && execute_sql($sql);
+
+                $sql = "UPDATE {$CFG->prefix}role_capabilities
+                    SET capability = 'moodle/local:{$action}{$hierarchy}class'
+                    WHERE capability = 'moodle/local:{$action}{$hierarchy}depth'";
+                $result = $result && execute_sql($sql);
+            }
+        }
+        upgrade_main_savepoint($result, 2007101591.03);
+    }
+
     return $result;
 }
 

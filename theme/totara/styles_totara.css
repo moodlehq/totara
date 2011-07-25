@@ -3078,16 +3078,6 @@ body.customfield .buttons .singlebutton
   display: inline;
 }
 
-body.hierarchy .buttons,
-body.hierarchy-framework .buttons,
-body.hierarchy-type-competency-template .buttons,
-body.hierarchy-type-competency-scale .buttons,
-body.customfield .buttons
-{
-  margin-top: 20px;
-  text-align: center;
-  margin-bottom: 30px;
-}
 
 body.hierarchy-item form.mform,
 body.hierarchy-framework form.mform,
@@ -3129,9 +3119,6 @@ div.nohierarchyitems {
     font-style: italic;
 }
 
-table.editcompetency {
-    width: 95%;
-}
 
 table.editcompetency th {
     text-align: center;
@@ -3762,6 +3749,14 @@ div.block_totara_recent_learning table {
     width: 100%;
 }
 
+/**
+ * Warning boxes on bulk actions page
+ */
+div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
+    background-color: #EEEEFF;
+    border: 1px solid #CCCCCC;
+}
+
 /*
  * Small Change to file upload dialog
  */
@@ -3786,3 +3781,4 @@ table.topics tr.section span.topicnumber {
 #list-assignedcompetencies.flexible tbody tr th.header {
     text-align: left;
 }
+

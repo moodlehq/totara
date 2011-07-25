@@ -53,7 +53,7 @@ class rb_source_feedback_questions extends rb_base_source {
         }
 
         // to get access to position type constants
-        require_once($CFG->dirroot . '/hierarchy/type/position/lib.php');
+        require_once($CFG->dirroot . '/hierarchy/prefix/position/lib.php');
 
         // joinlist for this source
         $joinlist = array(

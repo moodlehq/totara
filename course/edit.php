@@ -8,6 +8,8 @@
     require_once('edit_form.php');
     require_once($CFG->dirroot.'/customfield/fieldlib.php');
     require_once($CFG->dirroot.'/tag/lib.php');
+    require_once($CFG->dirroot.'/local/icon/course_icon.class.php');
+    require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
     $id         = optional_param('id', 0, PARAM_INT);       // course id
     $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
@@ -46,10 +48,7 @@
         error('Either course id or category must be specified');
     }
 
-    require_js(array(
-        "{$CFG->wwwroot}/local/js/lib/jquery-1.3.2.min.js",
-        "{$CFG->wwwroot}/course/course.edit.js",
-        ));
+    local_js(array(TOTARA_JS_ICON_PREVIEW));
 
 /// prepare course
     if (!empty($course)) {
@@ -107,6 +106,8 @@
 
         $data->timemodified = time();
 
+        $course_icon = new course_icon();
+
         if (empty($course)) {
             if (!$course = create_course($data)) {
                 print_error('coursenotcreated');
@@ -127,7 +128,8 @@
             // this means trigger a reload of accessinfo...
             mark_context_dirty($context->path);
 
-            local_update_course_icon($course, $data, $editform);
+            // process course icon part of form
+            $course_icon->process_form($data);
 
             if ($data->metacourse and has_capability('moodle/course:managemetacourse', $context)) {
                 // Redirect users with metacourse capability to student import
@@ -144,7 +146,8 @@
             add_tags_info($course->id);
 
             customfield_save_data($data, 'course', 'course');
-            local_update_course_icon($course, $data, $editform);
+            // process course icon part of form
+            $course_icon->process_form($data);
 
             redirect($CFG->wwwroot."/course/view.php?id=$course->id");
         }

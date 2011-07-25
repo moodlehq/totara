@@ -3,7 +3,7 @@
 // Display user position information
 require_once('../config.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
-require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
 require_once('positions_form.php');
 
 
@@ -185,6 +185,9 @@ else {
         }
 
         assign_user_position($position_assignment, $managerid);
+
+        // Log
+        add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");
 
         // Log
         add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");

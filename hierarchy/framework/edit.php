@@ -4,26 +4,30 @@ require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
 
-$type    = required_param('type', PARAM_SAFEDIR); // hierarchy type
-$shortprefix = hierarchy::get_short_prefix($type);
+hierarchy::support_old_url_syntax();
+
+$prefix    = required_param('prefix', PARAM_ALPHA); // hierarchy prefix
+$shortprefix = hierarchy::get_short_prefix($prefix);
 $id      = optional_param('id', 0, PARAM_INT);    // 0 if creating a new framework
 $context = get_context_instance(CONTEXT_SYSTEM);
 
-// If the hierarchy type has framework editing files use them else use the generic files
-if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/framework/edit.php')) {
-    require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/framework/edit_form.php');
-    require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/framework/edit.php');
+$hierarchy = hierarchy::load_hierarchy($prefix);
+
+// If the hierarchy prefix has framework editing files use them else use the generic files
+if (file_exists($CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/framework/edit.php')) {
+    require_once($CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/framework/edit_form.php');
+    require_once($CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/framework/edit.php');
     die;
 } else {
     require_once($CFG->dirroot.'/hierarchy/framework/edit_form.php');
 }
 
 // Make this page appear under the manage 'hierarchy' admin menu
-admin_externalpage_setup($type.'frameworkmanage', '', array('type'=>$type), $CFG->wwwroot.'/hierarchy/framework/edit.php?type='.$type);
+admin_externalpage_setup($prefix.'manage', '', array('prefix'=>$prefix, 'id' => $id), $CFG->wwwroot.'/hierarchy/framework/edit.php');
 
 if ($id == 0) {
     // Creating new framework
-    require_capability('moodle/local:create'.$type.'frameworks', $context);
+    require_capability('moodle/local:create'.$prefix.'frameworks', $context);
 
     $framework = new object();
     $framework->id = 0;
@@ -34,26 +38,24 @@ if ($id == 0) {
         $framework->sortorder = 1;
     }
     $framework->hidecustomfields = 0;
-    $framework->showitemfullname = 0;
-    $framework->showdepthfullname = 0;
 
 } else {
     // Editing existing framework
-    require_capability('moodle/local:update'.$type.'frameworks', $context);
+    require_capability('moodle/local:update'.$prefix.'frameworks', $context);
 
     if (!$framework = get_record($shortprefix.'_framework', 'id', $id)) {
-        error($type.' framework ID was incorrect');
+        error($prefix.' framework ID was incorrect');
     }
 }
 
 // create form
-$frameworkform = new framework_edit_form(null, array('type'=>$type));
+$frameworkform = new framework_edit_form(null, array('prefix'=>$prefix));
 $frameworkform->set_data($framework);
 
 // cancelled
 if ($frameworkform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/hierarchy/framework/index.php?type=$type");
+    redirect("$CFG->wwwroot/hierarchy/framework/index.php?prefix=$prefix");
 
 // Update data
 } else if ($frameworknew = $frameworkform->get_data()) {
@@ -70,45 +72,48 @@ if ($frameworkform->is_cancelled()) {
         $frameworknew->timecreated = $time;
 
         if (!$frameworknew->id = insert_record($shortprefix.'_framework', $frameworknew)) {
-            error('Error creating '.$type.' framework record');
+            error('Error creating '.$prefix.' framework record');
         }
 
         // Log
-        add_to_log(SITEID, 'hierarchy', $type.' framework create', "hierarchy/framework/view.php?type={$type}&amp;frameworkid=$frameworknew->id", "$frameworknew->fullname (ID $frameworknew->id)");
+        add_to_log(SITEID, $prefix, 'framework create', "index.php?prefix={$prefix}&amp;frameworkid={$frameworknew->id}", "$frameworknew->fullname (ID $frameworknew->id)");
 
+        totara_set_notification(get_string('addedframework', $prefix, format_string(stripslashes($frameworknew->fullname))), "$CFG->wwwroot/hierarchy/framework/index.php?prefix=$prefix", array('style' => 'notifysuccess'));
     // Existing framework
     } else {
         if (!update_record($shortprefix.'_framework', $frameworknew)) {
-            error('Error updating '.$type.' framework record');
+            error('Error updating '.$prefix.' framework record');
         }
 
         // Log
-        add_to_log(SITEID, 'hierarchy', $type.' framework update', "hierarchy/framework/view.php?type={$type}&amp;frameworkid=$frameworknew->id", "$framework->fullname (ID $framework->id)");
+        add_to_log(SITEID, $prefix, 'framework update', "framework/view.php?prefix={$prefix}&amp;frameworkid={$frameworknew->id}", "$framework->fullname (ID $framework->id)");
+
+        totara_set_notification(get_string('updatedframework', $prefix, format_string(stripslashes($frameworknew->fullname))), "$CFG->wwwroot/hierarchy/framework/index.php?prefix=$prefix", array('style' => 'notifysuccess'));
     }
 
     // Reload from db
     $frameworknew = get_record($shortprefix.'_framework', 'id', $frameworknew->id);
 
-    redirect("$CFG->wwwroot/hierarchy/framework/index.php?type=$type");
+    redirect("$CFG->wwwroot/hierarchy/framework/index.php?prefix=$prefix");
     //never reached
 }
 
 
 /// Display page header
 $navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("{$type}frameworks", $type),
-                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}",
+$navlinks[] = array('name'=>get_string("{$prefix}frameworks", $prefix),
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?prefix={$prefix}",
                     'type'=>'misc');
 if ($framework->id == 0) {
-    $navlinks[] = array('name'=>get_string('addnewframework', $type), 'link'=>'', 'type'=>'misc');
+    $navlinks[] = array('name'=>get_string('addnewframework', $prefix), 'link'=>'', 'type'=>'misc');
 } else {
-    $navlinks[] = array('name'=>get_string('editgeneric', $type, $framework->fullname), 'link'=>'', 'type'=>'misc');
+    $navlinks[] = array('name'=>get_string('editgeneric', $prefix, $framework->fullname), 'link'=>'', 'type'=>'misc');
 }
 
 admin_externalpage_print_header('', $navlinks);
 
 if ($framework->id == 0) {
-    print_heading(get_string('addnewframework', $type));
+    print_heading(get_string('addnewframework', $prefix));
 } else {
     print_heading(format_string($framework->fullname), '', 1);
 }

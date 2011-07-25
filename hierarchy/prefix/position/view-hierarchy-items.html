@@ -1,0 +1,95 @@
+<?php
+$defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
+$framework = optional_param('framework', $defaultframeworkid, PARAM_INT);
+require_once $CFG->libdir.'/tablelib.php';
+
+if ($displaytitle == 'assignedcompetencies') {
+    $columns = array('type', 'name');
+    $headers = array(
+        get_string('type', 'hierarchy'),
+        get_string('name', $displayprefix)
+    );
+} elseif ($displaytitle == 'assignedcompetencytemplates') {
+    $columns = array('name');
+    $headers = array(
+        get_string('name', $displayprefix),
+    );
+}
+
+if ($can_edit) {
+    $columns[] = 'options';
+    $headers[] = get_string('options', $displayprefix);
+}
+
+$table = new flexible_table($displaytitle);
+$table->define_columns($columns);
+$table->define_headers($headers);
+$table->set_attribute('id', 'list-'.$displaytitle);
+$table->set_attribute('cellspacing', '0');
+$table->set_attribute('class', 'generalbox edit'.$displayprefix.' boxaligncenter');
+$table->setup();
+
+// Add one blank line
+$table->add_data(NULL);
+
+
+//$framework = $this->frameworkid;
+
+if (is_array($items) && count($items)) {
+
+    foreach ($items as $ritem) {
+
+        $content = array();
+
+        $content[] = empty($ritem->type) ? get_string('unclassified','hierarchy') : $ritem->type;
+
+            if ($displaytitle == 'assignedcompetencies') {
+                $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$displayprefix}&id={$ritem->id}\">{$ritem->fullname}</a>";
+
+            } elseif ($displaytitle == 'assignedcompetencytemplates') {
+                $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/template/view.php?id={$ritem->id}\">{$ritem->fullname}</a>";
+            }
+
+            if ($can_edit) {
+            $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/position/assigncompetency/remove.php?id={$ritem->aid}&amp;position={$item->id}&amp;framework={$framework}\" title=\"$str_remove\">".
+                    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            }
+        $table->add_data($content);
+    }
+
+    $table->print_html();
+
+} else {
+
+    $table->print_html();
+
+    print_box_start('boxaligncenter boxwidthnormal centerpara nohierarchyitems noitems-'.$displaytitle);
+    print get_string('no'.$displaytitle, $displayprefix);
+    print_box_end();
+}
+
+// Add button
+if ($can_edit) {
+
+    $add_button_text = get_string('add'.$displaytitle, $displayprefix);
+    ?>
+
+<div class="buttons">
+
+    <div class="singlebutton">
+        <form action="<?php echo $addurl; ?>" method="get">
+            <div>
+                <input type="submit" id="show-<?php echo $displaytitle; ?>-dialog" value="<?php echo $add_button_text; ?>" />
+                <input type="hidden" name="assignto" value="<?php echo $item->id; ?>" />
+                <input type="hidden" name="nojs" value="1" />
+                <input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>" />
+                <input type="hidden" name="s" value="<?php echo sesskey(); ?>" />
+                <input type="hidden" name="frameworkid" value="<?php echo $item->frameworkid; ?>" />
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<?php
+}

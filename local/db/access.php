@@ -67,14 +67,14 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:createcompetencydepth' => array(
+    'moodle/local:createcompetencytype' => array(
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:updatecompetencydepth' => array(
+    'moodle/local:updatecompetencytype' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
@@ -82,7 +82,7 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:deletecompetencydepth' => array(
+    'moodle/local:deletecompetencytype' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
@@ -194,14 +194,14 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:createpositiondepth' => array(
+    'moodle/local:createpositiontype' => array(
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:updatepositiondepth' => array(
+    'moodle/local:updatepositiontype' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
@@ -209,7 +209,7 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:deletepositiondepth' => array(
+    'moodle/local:deletepositiontype' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
@@ -298,14 +298,14 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:createorganisationdepth' => array(
+    'moodle/local:createorganisationtype' => array(
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:updateorganisationdepth' => array(
+    'moodle/local:updateorganisationtype' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
@@ -313,7 +313,7 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:deleteorganisationdepth' => array(
+    'moodle/local:deleteorganisationtype' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,

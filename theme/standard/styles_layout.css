@@ -2524,6 +2524,22 @@ body.hierarchy-type-competency-template .buttons {
   margin-bottom: 30px;
 }
 
+body.hierarchy-type-competency-template .buttons,
+body.hierarchy-type-competency-scale .buttons,
+body.hierarchy .buttons,
+body.hierarchy-framework .buttons,
+body.customfield .buttons {
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+body.hierarchy-framework-index #middle-column .buttons{
+    margin-top: 0px;
+    text-align: center;
+    margin-bottom: 0px;
+}
+
 body#course-index #middle-column .editcourse {
   margin-left:auto;
   margin-right:auto;
@@ -4953,7 +4969,222 @@ table.dp-template-instances {
     width: 100%;
 }
 
+/*
+ * Hierarchy index styles
+ */
+
+/*
+ * Position and size the hierarchy index search form
+ */
+form#hierarchy-search-form {
+    float: right;
+}
+
+form#hierarchy-search-form input#hierarchy-search-text-field {
+    width: 150px;
+}
+
+div#hierarchy-buttons {
+    float:right;
+    padding-left: 10px;
+}
+
+div#hierarchy-buttons .singlebutton {
+    margin-top: 0px;
+}
+
+/*
+ * Used to indent the hierarchy items the correct amount
+ * More than 10 depths wouldn't fit anyway, so the
+ * indentation stops after that point
+ *
+ * Background image position is set here so that type icon
+ * appears to left of text. The background-image is set inline
+ * since it's stored in the DB
+ * */
+table.hierarchy-index .hierarchyitem {
+    background-repeat: no-repeat;
+}
+table.hierarchy-index .customfield {
+    width: 200px;
+    font-size: 85%;
+    float: left;
+}
+table.hierarchy-index .itemdescription, table.hierarchy-index .itemtype {
+    font-size: 85%;
+}
+table.hierarchy-index .depth1 {
+    background-position: 5px 0px;
+    padding-left: 25px;
+}
+table.hierarchy-index .depth2 {
+    background-position: 35px 0px;
+    padding-left: 55px;
+}
+table.hierarchy-index .depth3 {
+    background-position: 65px 0px;
+    padding-left: 85px;
+}
+table.hierarchy-index .depth4 {
+    background-position: 95px 0px;
+    padding-left: 115px;
+}
+table.hierarchy-index .depth5 {
+    background-position: 125px 0px;
+    padding-left: 145px;
+}
+table.hierarchy-index .depth6 {
+    background-position: 155px 0px;
+    padding-left: 175px;
+}
+table.hierarchy-index .depth7 {
+    background-position: 185px 0px;
+    padding-left: 205px;
+}
+table.hierarchy-index .depth8 {
+    background-position: 215px 0px;
+    padding-left: 235px;
+}
+table.hierarchy-index .depth9 {
+    background-position: 245px 0px;
+    padding-left: 265px;
+}
+table.hierarchy-index .depth10 {
+    background-position: 275px 0px;
+    padding-left: 295px;
+}
+
 /* Spacing for checkbox on the Email notifiations page  */
 div span.emailnotifycheckbox {
     padding-right:10px;
 }
+
+/* Layout Styling for hierarchy */
+div.list-assignedcompetencies table#list-assignedcompetencies {
+    width:95%;
+}
+
+div.list-assignedcompetencies table#list-assignedcompetencies td.c2 {
+    width:3%;
+    text-align: center;
+}
+
+/* Bulk type changes */
+
+/* improve spacing between existing and new type headings */
+h3.hierarchy-bulk-type {
+    align: left;
+    padding-top: 10px;
+}
+
+/* improve table contents alignment */
+table.hierarchy-bulk-type-table td {
+    vertical-align: middle;
+}
+
+/* allow a bit more room for title in form */
+form.hierarchy-bulk-type-form div.fitemtitle {
+    width: 35%;
+}
+form.hierarchy-bulk-type-form div.felement {
+    width: 55%;
+}
+
+/* bulk actions picker on hierarchy index page */
+div.hierarchy-bulk-actions-picker {
+    float: right;
+    padding-left: 10px
+}
+
+/* bulk actions warning notices */
+div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
+    margin: 10px;
+    padding: 5px;
+}
+
+#hierarchy-index div.back-link {
+    margin-bottom: 10px;
+}
+
+/*
+ * styling for bulk actions form
+ */
+table#hierarchy-bulk-actions-form {
+    border: 0px;
+    margin-top: 5px;
+}
+
+table#hierarchy-bulk-actions-form th.available-column,
+table#hierarchy-bulk-actions-form td.available-column {
+    width: 45%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+table#hierarchy-bulk-actions-form th.selected-column,
+table#hierarchy-bulk-actions-form td.selected-column {
+    width: 45%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+table#hierarchy-bulk-actions-form th.action-column,
+table#hierarchy-bulk-actions-form td.action-column {
+    width: 10%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+table#hierarchy-bulk-actions-form input.addbutton,
+table#hierarchy-bulk-actions-form input.removebutton {
+    margin: 10px;
+}
+
+table#hierarchy-bulk-actions-form fieldset.hidden {
+    padding: 0px;
+    margin: 0px;
+}
+
+table#hierarchy-bulk-actions-form select.itemslist {
+    min-width: 250px;
+    width: 100%;
+}
+
+table#hierarchy-bulk-actions-form input#id_search {
+    width: 145px;
+    margin: 5px 0px;
+}
+
+#hierarchy-item-bulkactions form.mform {
+    width: 100%;
+    text-align: center;
+}
+
+#hierarchy-item-bulkactions input#id_deletebutton {
+    margin: 15px auto;
+}
+
+/**
+ * Hierarchy styles
+ */
+
+table.editcompetency {
+    width: 100%;
+}
+
+body.hierarchy-framework div.hierarchy-index-buttons .singlebutton{
+    float: right;
+    margin-top: 0px;
+}
+
+body.hierarchy div.showhide-button .singlebutton {
+    float: right;
+    margin-top: 0px;
+    padding-left: 10px;
+}
+
+body.hierarchy-type div.add-type-button .singlebutton {
+    margin-top: 0px;
+    float: right;
+}
+

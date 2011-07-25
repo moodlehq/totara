@@ -76,8 +76,14 @@ function make_log_url($module, $url) {
         case 'role':
             $url = '/'.$url;
             break;
-        case 'hierarchy':
-            $url = '/'.$url;
+        case 'competency':
+            $url = '/hierarchy/'.$url;
+            break;
+        case 'position':
+            $url = '/hierarchy/'.$url;
+            break;
+        case 'organisation':
+            $url = '/hierarchy/'.$url;
             break;
         case 'plan':
             $url = '/local/plan/'.$url;
@@ -2036,8 +2042,15 @@ function print_category_info($category, $depth, $showcourses = false) {
 /// Prints the category info in indented fashion
 /// This function is only used by print_whole_category_list() above
 
+
     global $CFG;
     static $strallowguests, $strrequireskey, $strsummary;
+
+    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
+    require_once($CFG->dirroot.'/local/icon/course_icon.class.php');
+
+    $category_icon = new coursecategory_icon();
+    $course_icon = new course_icon();
 
     if (empty($strsummary)) {
         $strallowguests = get_string('allowguests');
@@ -2073,8 +2086,7 @@ function print_category_info($category, $depth, $showcourses = false) {
             print_spacer(10, $indent);
             echo '</td>';
         }
-
-        echo '<td valign="top" class="category image">'.local_coursecategory_icon_tag($category, 'small').'</td>';
+        echo '<td valign="top" class="category image">'.$category_icon->display($category, 'small').'</td>';
         echo '<td class="category name">';
         echo '<a '.$catlinkcss.' href="'.$CFG->wwwroot.'/course/category.php?id='.$category->id.'">'. format_string($category->name).'</a>';
         echo '</td>';
@@ -2091,7 +2103,7 @@ function print_category_info($category, $depth, $showcourses = false) {
                 $linkcss = $course->visible ? '' : ' class="dimmed" ';
                 echo '<tr><td valign="top">&nbsp;';
                 echo '</td><td valign="top" class="course name">';
-                echo local_course_icon_tag($course, 'small');
+                echo $course_icon->display($course, 'small');
                 echo ' <a '.$linkcss.' href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'. format_string($course->fullname).'</a>';
                 echo '</td><td align="right" valign="top" class="course info">';
                 if ($course->guest ) {
@@ -2251,6 +2263,8 @@ function print_courses($category) {
 function print_course($course, $highlightterms = '') {
 
     global $CFG, $USER;
+    require_once($CFG->dirroot.'/local/icon/course_icon.class.php');
+    $course_icon = new course_icon();
 
     if (isset($course->context)) {
         $context = $course->context;
@@ -2262,7 +2276,7 @@ function print_course($course, $highlightterms = '') {
 
     echo '<tr>';
     echo '<div class="coursebox clearfix">';
-    echo '<td class="name"> '. local_course_icon_tag($course, 'small'). '<a title="'.get_string('entercourse').'"'.
+    echo '<td class="name"> '.$course_icon->display($course, 'small').'<a title="'.get_string('entercourse').'"'.
          $linkcss.' href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.
          highlight($highlightterms, format_string($course->fullname)).'</a></div>';
 

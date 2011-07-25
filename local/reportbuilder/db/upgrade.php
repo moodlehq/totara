@@ -184,9 +184,6 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         $custom_field_locations = array(
             'session' => 'facetoface_session_field',
             'user_profile' => 'user_info_field',
-            'competency' => 'comp_depth_info_field',
-            'position' => 'pos_depth_info_field',
-            'organisation' => 'org_depth_info_field',
             'course' => 'course_info_field'
         );
 
@@ -248,9 +245,6 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         $custom_field_locations = array(
             'session' => 'facetoface_session_field',
             'user_profile' => 'user_info_field',
-            'competency' => 'comp_depth_info_field',
-            'position' => 'pos_depth_info_field',
-            'organisation' => 'org_depth_info_field',
             'course' => 'course_info_field'
         );
 

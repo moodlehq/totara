@@ -127,7 +127,7 @@ if($action == 'selectoptions') {
         //$inc_frameworks = array_keys($frameworks);
         print '<h2>'.get_string($hname.'plural',$hname).'</h2>';
 
-        $hbackupfile = "$CFG->dirroot/hierarchy/type/$hname/backuplib.php";
+        $hbackupfile = "$CFG->dirroot/hierarchy/prefix/$hname/backuplib.php";
         if(file_exists($hbackupfile)) {
             include_once($hbackupfile);
         }
@@ -210,7 +210,7 @@ if($action == 'selectoptions') {
     foreach ($hierarchies AS $hierarchy) {
         $hname = $hierarchy['#']['NAME']['0']['#'];
         print '<h2>Restoring '.get_string($hname.'plural',$hname).'</h2>';
-        $restorefile = "$CFG->dirroot/hierarchy/type/$hname/restorelib.php";
+        $restorefile = "$CFG->dirroot/hierarchy/prefix/$hname/restorelib.php";
         $restorefunc = $hname.'_restore';
         $hoptions = isset($options[$hname]) ? $options[$hname] : null;
         if(isset($tobackup[$hname])){
@@ -228,7 +228,7 @@ if($action == 'selectoptions') {
                 print "Function $restorefunc not found";
             }
         } else {
-            print "No restorelib.php file found in hiearchy/type/$hname";
+            print "No restorelib.php file found in hiearchy/prefix/$hname";
         }
     }
     // restore any global preferences setting

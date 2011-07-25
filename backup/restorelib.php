@@ -2,7 +2,7 @@
     //Functions used in restore
 
     require_once($CFG->libdir.'/gradelib.php');
-    require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
 
 /**
  * Group backup/restore constants, 0.

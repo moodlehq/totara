@@ -5,7 +5,7 @@
 $exclude = array(
     // doesn't like help files in subdirectories because of
     // clash with module regexp
-    'hierarchy/type/competency/scale/edit_form.php' => array(
+    'hierarchy/prefix/competency/scale/edit_form.php' => array(
         'competency/scale/scalename', 'competency/scale/scalevalues'
     ),
 );

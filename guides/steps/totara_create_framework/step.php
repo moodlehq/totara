@@ -5,7 +5,7 @@ class guide_totara_create_framework_step extends guide_default_step {
     function content_step_active () {
         global $CFG;
         return '<p>This step requires you to set up a competency framework.</p>
-            <p>When you are ready to start click <a href="' . $CFG->wwwroot  . '/hierarchy/framework/edit.php?type=competency">Competency Frameworks</a>.</p>
+            <p>When you are ready to start click <a href="' . $CFG->wwwroot  . '/hierarchy/framework/edit.php?prefix=competency">Competency Frameworks</a>.</p>
             <p>Refer to the <a href="">Setting up a competency framework help file</a> for further instructions.</p>
             <p>On completing your competency framework, return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
     }

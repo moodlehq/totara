@@ -43,7 +43,7 @@ $(function() {
         /// Position dialog
         ///
         (function() {
-            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
+            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/position/assign/';
 
             totaraSingleSelectDialog(
                 postree[i],
@@ -72,7 +72,7 @@ $(function() {
         /// Organisation dialog
         ///
         (function() {
-            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assign/';
+            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/organisation/assign/';
 
             totaraSingleSelectDialog(
                 orgtree[i],
@@ -101,7 +101,7 @@ $(function() {
         /// Competency dialog
         ///
         (function() {
-            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
+            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/assign/';
 
             totaraSingleSelectDialog(
                 comptree[i],

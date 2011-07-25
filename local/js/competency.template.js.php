@@ -37,7 +37,7 @@ $(function() {
     /// Add related competency dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/template/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/template/';
 
         totaraMultiSelectDialog(
             'assignment',

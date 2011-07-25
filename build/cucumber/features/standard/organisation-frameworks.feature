@@ -7,7 +7,7 @@ Feature: Manage Organisation Frameworks
   Scenario: No organisation frameworks
     Given there are no organisation framework records
       And I am logged in as admin
-      And I am on the manage organisation frameworks page
+      And I am on the manage organisations page
     Then I should see "No organisation frameworks available"
       And I should not see "Test Organisation Framework"
 
@@ -15,14 +15,14 @@ Feature: Manage Organisation Frameworks
   Scenario: Display the frameworks
     Given there are 4 organisation framework records
       And I am logged in as admin
-      And I am on the manage organisation frameworks page
+      And I am on the manage organisations page
     Then I should see "Test Organisation Framework" 4 times within the edit organisation frameworks table
 
   @store_org_framework
   Scenario: Check editing options
     Given there are 4 organisation framework records
       And I am logged in as admin
-      And I am on the manage organisation frameworks page with editing on
+      And I am on the manage organisations page with editing on
     Then I should see "up.gif" 3 times within the edit organisation frameworks table
       And I should see "down.gif" 3 times within the edit organisation frameworks table
       And I should see "delete.gif" 4 times within the edit organisation frameworks table
@@ -36,7 +36,7 @@ Feature: Manage Organisation Frameworks
   Scenario Outline: Check wide range of editing options
     Given there are <frameworks> organisation framework records
       And I am logged in as admin
-      And I am on the manage organisation frameworks page with editing on
+      And I am on the manage organisations page with editing on
     Then I should see "up.gif" <up> times within the edit organisation frameworks table
       And I should see "down.gif" <down> times within the edit organisation frameworks table
       And I should see "delete.gif" <delete> times within the edit organisation frameworks table
@@ -52,9 +52,8 @@ Feature: Manage Organisation Frameworks
     Given I am logged in as admin
       And I am on the add organisation framework page
       And I fill in "fullname" with "My organisation fullname"
-      And I fill in "shortname" with "My shortname"
       And I press "Save changes"
-    Then I should be on manage organisation frameworks page
+    Then I should be on manage organisations page
       And I should see "My organisation fullname"
 
 # example of a multi-line step using tables
@@ -67,7 +66,7 @@ Feature: Manage Organisation Frameworks
 | New Framework 2 | Test 2  | ID2 |
 | New Framework 3 | Test 3  | ID3 |
       And I am logged in as admin
-      And I am on the manage organisation frameworks page with editing on
+      And I am on the manage organisations page with editing on
       And I delete the 2nd organisation framework
     Then the edit organisation frameworks table should match:
 |Name|
@@ -84,27 +83,25 @@ Feature: Manage Organisation Frameworks
       And I am logged in as admin
       And I am on the add organisation framework page
       And I press "Save changes"
-    Then I should see "Missing framework full name"
-      And I should see "Missing framework short name"
+    Then I should see "Missing organisation framework name"
       And there should be 0 organisation framework records
 
   @store_org_framework
   Scenario: Edit a organisation framework
     Given there are 1 organisation framework records
       And I am logged in as admin
-      And I am on the manage organisation frameworks page with editing on
+      And I am on the manage organisations page with editing on
       And I edit the 1st edit organisation frameworks table entry
       And I fill in "fullname" with "My organisation changed"
-      And I fill in "shortname" with "My shortname"
       And I press "Save changes"
-    Then I should be on manage organisation frameworks page
+    Then I should be on manage organisations page
       And I should see "My organisation changed"
 
   @store_org_framework
   Scenario: Hide a organisation framework
     Given there are 1 organisation framework records
       And I am logged in as admin
-      And I am on the manage organisation frameworks page with editing on
+      And I am on the manage organisations page with editing on
       And I hide the 1st edit organisation frameworks table entry
     Then I should see "show.gif" within the edit organisation frameworks table
 
@@ -116,7 +113,7 @@ Feature: Manage Organisation Frameworks
 | New Framework 2 | Test 2  | ID2 |
 | New Framework 3 | Test 3  | ID3 |
       And I am logged in as admin
-      And I am on the manage organisation frameworks page with editing on
+      And I am on the manage organisations page with editing on
       And I Move up the 2nd edit organisation frameworks table entry
     Then the edit organisation frameworks table should match:
 |Name|
@@ -133,7 +130,7 @@ Feature: Manage Organisation Frameworks
 | New Framework 2 | Test 2  | ID2 |
 | New Framework 3 | Test 3  | ID3 |
       And I am logged in as admin
-      And I am on the manage organisation frameworks page with editing on
+      And I am on the manage organisations page with editing on
       And I Move down the 2nd edit organisation frameworks table entry
     Then the edit organisation frameworks table should match:
 |Name|
@@ -141,125 +138,28 @@ Feature: Manage Organisation Frameworks
 | New Framework 3 |
 | New Framework 2 |
 
-  @store_org_framework
-  @store_org_depth
-  Scenario: No organisation depth
-    Given there is 1 organisation framework record
-      And I am logged in as admin
-      And I am on the manage organisations page
-    Then I should see "No depth levels in this framework"
-      And I should not see "Test Organisation Depth"
-
-  @store_org_framework
-  @store_org_depth
-  Scenario: One organisation with 2 organisation depth
-    Given there is 1 organisation framework record with 2 organisation depth each
-      And I am logged in as admin
-      And I am on the manage organisations page
-    Then I should see "Test Organisation Depth" 2 times
-      And I should not see "No depth levels in this framework"
 
 # Requires to patch webrat, query params on get method are written incorrectly.
 # this similar to fix below, convert array of hashmap to just hashmaps
 # https://webrat.lighthouseapp.com/projects/10503/tickets/380-fix-for-query-string-building-when-using-mechanize-adapter
   @store_org_framework
-  @store_org_depth
-  Scenario: Add a organisation depth
-    Given there is 1 organisation framework record
-      And I am logged in as admin
-      And I am on the manage organisation frameworks page
-      And I click the "Test Organisation Framework 1" link
-      And I press "Add a new depth level"
-      And I fill in "fullname" with "My organisation depth fullname"
-      And I fill in "shortname" with "My org depth shortname"
-      And I press "Save changes" 
-  Then I should see "My organisation depth fullname"
+  @store_org_type
+  Scenario: Add a organisation type
+    Given I am logged in as admin
+      And I am on the manage organisation types page
+      And I press "Add a new type"
+      And I fill in "fullname" with "My organisation type fullname"
+      And I press "Save changes"
+  Then I should see "My organisation type fullname"
 
 
   @store_org_framework
-  @store_org_depth
-  Scenario: Add a organisation depth with incomplete data, gives validation message
-    Given there is 1 organisation framework record
-      And there are no organisation depth records 
+  @store_org_type
+  Scenario: Add a organisation type with incomplete data, gives validation message
+    Given there are no organisation type records
       And I am logged in as admin
-      And I am on the manage organisation frameworks page
-      And I click the "Test Organisation Framework 1" link 
-      And I press "Add a new depth level"
-      And I press "Save changes" 
-  Then I should see "Missing depth level full name"
-      And I should see "Missing depth level short name"
-      And there should be 0 organisation depth records
-
-  @store_org_framework
-  @store_org_depth
-  Scenario: Add 3rd organisation depth
-    Given there is 1 organisation framework record with 2 organisation depth each
-      And I am logged in as admin
-      And I am on the manage organisation frameworks page
-      And I click the "Test Organisation Framework 1" link
-      And I press "Add a new depth level"
-      And I fill in "fullname" with "Test Organisation Depth 3"
-      And I fill in "shortname" with "Test Org Depth 3"
-      And I press "Save changes" 
-  Then I should see "Test Organisation Depth" 3 times
-
-
-  @store_org_framework
-  @store_org_depth
-  Scenario: Deleting a organisation depth
-    Given there is 1 organisation framework record with 1 organisation depth each
-      And I am logged in as admin
-      And I am on the manage organisation frameworks page with editing on
-      And I click the "Test Organisation Framework 1" link
-      And I delete the 1st edit organisation depth table entry and confirm
-  Then I should not see "Test Organisation Depth"
-
-  @store_org
-  @store_org_framework
-  @store_org_depth
-  @store_org_depth_info_category
-  Scenario: Viewing a custom field category
-    Given there is 1 organisation framework record
-      And I am logged in as admin
-      And I am on the manage organisation frameworks page
-      And I click the "Test Organisation Framework 1" link
-      And I press "Add a new depth level"
-      And I fill in "fullname" with "Test Organisation Depth 1"
-      And I fill in "shortname" with "Test Org Depth 1"
-      And I press "Save changes" 
-    When I click the "Test Organisation Depth 1" link
-    Then I should see "Miscellaneous" within edit organisation table
-
-
-  @store_org
-  @store_org_framework
-  @store_org_depth
-  @store_org_depth_info_category
-  Scenario: Adding a custom field category
-    Given there is a organisation framework and 1 depth
-      And I am logged in as admin
-      And I am on the manage organisation frameworks page
-      And I click the "Test Organisation Framework 1" link
-      And I click the "Test Organisation Depth 1" link
-    When I press "Create custom field category"
-      And I fill in "name" with "Test Custom Category 1"
-      And I press "Save changes" 
-    Then I should see "Test Custom Category 1"
-
-
-  @store_org
-  @store_org_framework
-  @store_org_depth
-  @store_org_depth_info_category
-  Scenario: Deleting a custom field category
-    Given there is a organisation framework and 1 depth
-      And I am logged in as admin
-      And I am on the manage organisation frameworks page with editing on
-      And I click the "Test Organisation Framework 1" link
-      And I click the "Test Organisation Depth 1" link
-      And I press "Create custom field category"
-      And I fill in "name" with "Test Custom Category 1"
-      And I press "Save changes" 
-    When I delete the 1st custom category table entry and confirm
-    Then I should see "No custom field categories defined"
-
+      And I am on the manage organisation types page
+      And I press "Add a new type"
+      And I press "Save changes"
+  Then I should see "Missing organisation type name"
+      And there should be 0 organisation type records

@@ -6,10 +6,10 @@
  *
  * 1- See the list in hierarchy/backuplib.php, Some of the backup functions are
  *    also used in the restore process so probably best to have all that stuff
- *    for restore too. In particular hierarchy/type/[hname]/backuplib.php is
+ *    for restore too. In particular hierarchy/prefix/[hname]/backuplib.php is
  *    required.
  *
- * 2- Must have a file called hierarchy/type/[hname]/restorelib.php
+ * 2- Must have a file called hierarchy/prefix/[hname]/restorelib.php
  *
  * 3- restorelib.php must include a function called [hname]_restore(), which
  *    is the function that performs the restore for that hierarchy
@@ -247,7 +247,7 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
         $name = $hierarchy['#']['NAME']['0']['#'];
         $contents->$name = new object();
 
-        $hbackupfile = "$CFG->dirroot/hierarchy/type/$name/backuplib.php";
+        $hbackupfile = "$CFG->dirroot/hierarchy/prefix/$name/backuplib.php";
         if(file_exists($hbackupfile)) {
             include_once($hbackupfile);
         }
@@ -283,8 +283,8 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
         }
 
         // the rest of this function is hierarchy specific. We look for 
-        // specific tags based on the options set by [hierarchy-type]_options()
-        // in the file /hierarchy/type/[hierarchytype]/backuplib.php
+        // specific tags based on the options set by [hierarchy-prefix]_options()
+        // in the file /hierarchy/prefix/[hierarchyprefix]/backuplib.php
 
         // check to see if backup contains optional tags for this hierarchy
         $optionsfunc = $name.'_options';
@@ -393,7 +393,7 @@ function match_users($info, $backup_unique_code) {
 
 function match_items($frameworkinfo, $hname, $fwid, $tempitems, $backup_unique_code) {
     global $CFG;
-    $hbackupfile = "$CFG->dirroot/hierarchy/type/$hname/backuplib.php";
+    $hbackupfile = "$CFG->dirroot/hierarchy/prefix/$hname/backuplib.php";
     if(file_exists($hbackupfile)) {
         include_once($hbackupfile);
     }
@@ -407,7 +407,7 @@ function match_items($frameworkinfo, $hname, $fwid, $tempitems, $backup_unique_c
         $itemsingle = strtoupper($hname);
     }
     // figure out the table name based on the hierarchy
-    include_once($CFG->dirroot.'/hierarchy/type/'.$hname.'/lib.php');
+    include_once($CFG->dirroot.'/hierarchy/prefix/'.$hname.'/lib.php');
     $hierarchy = new $hname();
     $shorthname = $hierarchy->shortprefix;
 

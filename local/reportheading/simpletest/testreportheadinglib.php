@@ -61,25 +61,14 @@ class reportheadinglib_test extends prefix_changing_test_case {
     );
 
     var $org_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthid', 'parentid', 'sortorder', 'visible', 'timecreated', 'timemodified', 'usermodified'),
+        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortorder', 'visible', 'timecreated', 'timemodified', 'usermodified'),
         array(1, 'District Office', 'DO', '', '', 1, '/1', 1, 0, 1, 1, 0, 0, 2),
         array(2, 'Area Office', 'AO', '', '', 1, '/1/2', 2, 1, 2, 1, 0, 0, 2),
     );
 
     var $pos_data = array(
-        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthid', 'parentid', 'sortorder', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified'),
+        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortorder', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified'),
         array(1, 'Data Analyst', 'Data Analyst', '', '', 1, '/1', 1, 0, 1, 1, 0, 0, 0, 0, 2),
-    );
-
-    var $org_depth_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'depthlevel', 'frameworkid', 'timecreated', 'timemodified', 'usermodified'),
-        array(1, 'Org Depth Level 1', 'orgdepth1', 'Org Depth Level 1 Description', 1, 1, 0, 0, 2),
-        array(2, 'Org Depth Level 2', 'orgdepth2', 'Org Depth Level 2 Description', 2, 1, 0, 0, 2),
-    );
-
-    var $pos_depth_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'depthlevel', 'frameworkid', 'timecreated', 'timemodified', 'usermodified'),
-        array(1, 'Pos Depth Level 1', 'posdepth1', 'Pos Depth Level 1 Description', 1, 1, 0, 0, 2),
     );
 
     // reduced version of pos_assignment table
@@ -113,8 +102,6 @@ class reportheadinglib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'user_info_data', $this->user_info_data_data, $db);
         load_test_table($CFG->prefix . 'org', $this->org_data, $db);
         load_test_table($CFG->prefix . 'pos', $this->pos_data, $db);
-        load_test_table($CFG->prefix . 'org_depth', $this->org_depth_data, $db);
-        load_test_table($CFG->prefix . 'pos_depth', $this->pos_depth_data, $db);
         load_test_table($CFG->prefix . 'pos_assignment', $this->pos_assignment_data, $db);
         load_test_table($CFG->prefix . 'role_assignments', $this->role_assignments_data, $db);
         load_test_table($CFG->prefix . 'context', $this->context_data, $db);
@@ -129,8 +116,6 @@ class reportheadinglib_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'context', $db);
         remove_test_table($CFG->prefix . 'role_assignments', $db);
         remove_test_table($CFG->prefix . 'pos_assignment', $db);
-        remove_test_table($CFG->prefix . 'org_depth', $db);
-        remove_test_table($CFG->prefix . 'pos_depth', $db);
         remove_test_table($CFG->prefix . 'org', $db);
         remove_test_table($CFG->prefix . 'pos', $db);
         remove_test_table($CFG->prefix . 'user_info_data', $db);
@@ -155,7 +140,7 @@ class reportheadinglib_test extends prefix_changing_test_case {
         // column options should be an array
         $this->assertTrue(is_array($columnoptions));
         // it should have the right number of elements
-        $this->assertEqual(count($columnoptions), 42);
+        $this->assertEqual(count($columnoptions), 39);
         // it should contain the expected values
         $this->assertEqual(current($columnoptions), 'Fullname');
     }
@@ -179,7 +164,7 @@ class reportheadinglib_test extends prefix_changing_test_case {
         // column options should be an array
         $this->assertTrue(is_array($columnoptions));
         // it should have the right number of elements
-        $this->assertEqual(count($columnoptions), 42);
+        $this->assertEqual(count($columnoptions), 39);
         // it should contain the expected values
         $this->assertEqual(current($columnoptions), 'Fullname');
     }
@@ -279,19 +264,5 @@ class reportheadinglib_test extends prefix_changing_test_case {
 
     }
 
-    function test_reportheading_get_hierarchy_depth() {
-        $heading = $this->heading;
-        // it should return the correct value for valid depth levels
-        $this->assertEqual($heading->get_hierarchy_depth('position','posdepth1'), 'Data Analyst');
-        $this->assertEqual($heading->get_hierarchy_depth('organisation','orgdepth2'), 'Area Office');
-        // it should return the correct value when finding an assigned items parent
-        $this->assertEqual($heading->get_hierarchy_depth('organisation','orgdepth1'), 'District Office');
-        // it should return an empty string for invalid depth levels
-        $this->assertEqual($heading->get_hierarchy_depth('position','baddepth'), '');
-    }
-
-    // tests for wrapper functions not required:
-    // test_reportheading_get_position_depth()
-    // test_reportheading_get_organisation_depth()
 }
 

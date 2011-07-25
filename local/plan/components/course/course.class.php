@@ -469,7 +469,7 @@ class dp_course_component extends dp_base_component {
             $launch = '';
         }
         return '<img class="course_icon" src="' .
-            $CFG->wwwroot . '/local/icon.php?icon=' . $item->icon .
+            $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
             '&amp;id=' . $item->courseid .
             '&amp;size=small&amp;type=course" alt="' . format_string($item->fullname).
             '" /><a' . $class .' href="' . $CFG->wwwroot .
@@ -531,7 +531,7 @@ class dp_course_component extends dp_base_component {
                 '</div>';
         }
 
-        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon={$item->icon}&amp;id={$item->courseid}&amp;size=small&amp;type=course\" alt=\"{$item->fullname}\">";
+        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$item->icon}&amp;id={$item->courseid}&amp;size=small&amp;type=course\" alt=\"{$item->fullname}\">";
         $out .= '<h3>' . $icon . $item->fullname . '</h3>';
         $out .= '<table border="0" class="planiteminfobox">';
         $out .= "<tr>";

@@ -40,7 +40,7 @@ $(function() {
     /// Add course evidence to competency dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/course/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/course/';
 
         var handler = new totaraDialog_handler_assignCourseEvidence();
         handler.baseurl = url;
@@ -107,7 +107,7 @@ totaraDialog_handler_assignCourseEvidence.prototype.display_evidence = function(
     $(function() {
 
         (function() {
-            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/course/';
+            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/course/';
             var saveurl = url + 'save.php?course=<?php echo $courseid; ?>&type=coursecompletion&instance=<?php echo $courseid?>&deleteexisting=1&update=';
 
             var handler = new totaraDialog_handler_courseEvidence();

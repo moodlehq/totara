@@ -430,8 +430,7 @@ abstract class rb_base_source {
         global $CFG;
         $courseid = $row->course_id;
         $courseicon = $row->course_icon;
-        $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
-        return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
+        return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
     }
 
     // display an icon based on the course icon field
@@ -439,7 +438,7 @@ abstract class rb_base_source {
         global $CFG;
         $courseid = $row->course_id;
         $coursename = $row->course_name;
-        return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=".urlencode($icon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\" />";
+        return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($icon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\" />";
     }
 
     // display an icon for the course type
@@ -486,8 +485,7 @@ abstract class rb_base_source {
         if($catid == 0 || !$catid) {
             return '';
         }
-        $cssclass = (isset($row->cat_visible) && $row->cat_visible == 0) ? ' class="dimmed"' : '';
-        return "<a $cssclass href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=".urlencode($caticon)."&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\" />{$category}</a>";
+        return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($caticon)."&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\" />{$category}</a>";
     }
 
 
@@ -636,12 +634,12 @@ abstract class rb_base_source {
     function rb_filter_organisations_list($contentmode, $contentoptions, $reportid) {
         global $CFG,$USER;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
 
         // show all options if no content restrictions set
         if($contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
             $hierarchy = new organisation();
-            $hierarchy->make_hierarchy_list($orgs, null, true, true);
+            $hierarchy->make_hierarchy_list($orgs, null, true, false);
             return $orgs;
         }
 
@@ -687,7 +685,7 @@ abstract class rb_base_source {
         }
 
         $hierarchy = new organisation();
-        $hierarchy->make_hierarchy_list($orgs, $baseorg, true, true);
+        $hierarchy->make_hierarchy_list($orgs, $baseorg, true, false);
 
         return $orgs;
 
@@ -696,7 +694,7 @@ abstract class rb_base_source {
     function rb_filter_positions_list() {
         global $CFG;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
 
         $hierarchy = new position();
         $hierarchy->make_hierarchy_list($positions, null, true, false);
@@ -1458,7 +1456,7 @@ abstract class rb_base_source {
         global $CFG;
 
         // to get access to position type constants
-        require_once($CFG->dirroot . '/hierarchy/type/position/lib.php');
+        require_once($CFG->dirroot . '/hierarchy/prefix/position/lib.php');
 
         $joinlist[] =new rb_join(
             'position_assignment',

@@ -122,7 +122,7 @@ $string['includecompetencyevidence'] = 'Ota mukaan suoritusmerkintä';
 $string['invalidevidencetype'] = 'Suoritusmerkintä ei kelpaa';
 $string['invalidnumeric'] = 'Vain numero kelpaa (tai ei lainkaan merkintää)';
 $string['linkcourses'] = 'Linkitä kurssit';
-$string['linktoscalevalues'] = 'Tarkastele/muokkaa <a href=\"view.php?id=$a&amp;type=competency\">tästä</a> tämän kompetenssiasteikon arvoja.';
+$string['linktoscalevalues'] = 'Tarkastele/muokkaa <a href=\"view.php?id=$a&amp;prefix=competency\">tästä</a> tämän kompetenssiasteikon arvoja.';
 $string['locatecompetency'] = 'Etsi kompetenssi';
 $string['locatecompetencytemplate'] = 'Etsi kompetenssimallipohja';
 $string['managecompetencies'] = 'Hallinnoi kompetensseja';

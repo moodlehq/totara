@@ -6,7 +6,7 @@ Feature: Manage Competency
 
   @store_comp
   @store_comp_framework
-  @store_comp_depth
+  @store_comp_class
   Scenario: No competencies
     Given there are no competency framework records
       And I am logged in as admin
@@ -15,12 +15,12 @@ Feature: Manage Competency
 
   @store_comp
   @store_comp_framework
-  @store_comp_depth
+  @store_comp_class
   Scenario: Fail to create a competency without required fields
-    Given there is a competency framework and 1 depth
+    Given there is 1 competency framework record
       And I am logged in as admin
       And I am on the manage competencies page
+      And I click "Test Competency Framework 1"
       And I press "Add new competency"
       And I press "Save changes"
-    Then I should see "Missing competency full name"
-      And I should see "Missing competency short name"
+    Then I should see "Missing competency name"

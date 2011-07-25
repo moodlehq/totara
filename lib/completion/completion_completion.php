@@ -345,7 +345,7 @@ class completion_completion extends data_object {
 
         // Get user's positionid and organisationid if not already set
         if ($this->positionid === null) {
-            require_once("{$CFG->dirroot}/hierarchy/type/position/lib.php");
+            require_once("{$CFG->dirroot}/hierarchy/prefix/position/lib.php");
 
             // Attempt to load user's position assignment
             $pa = new position_assignment(array('userid' => $this->userid, 'type' => POSITION_TYPE_PRIMARY));

@@ -619,7 +619,6 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         }
     }
 
-
     if ($result && $oldversion < 2011051900) {
         $table = new XMLDBTable('facetoface_session_field');
         $index = new XMLDBIndex('ind_session_field_unique');

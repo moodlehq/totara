@@ -121,7 +121,7 @@ $string['includecompetencyevidence'] = 'Inclure un justificatif de compétence';
 $string['invalidevidencetype'] = 'Genre de justificatif non valide';
 $string['invalidnumeric'] = 'Une valeur numérique doit être composée de chiffres (ou non definie)';
 $string['linkcourses'] = 'Cours associés';
-$string['linktoscalevalues'] = '<a href=\"view.php?id=$a&amp;type=competency\">Cliquez-ici</a> pour gérer les valeurs pour cette échelle de compétences.';
+$string['linktoscalevalues'] = '<a href=\"view.php?id=$a&amp;prefix=competency\">Cliquez-ici</a> pour gérer les valeurs pour cette échelle de compétences.';
 $string['locatecompetency'] = 'Recherchez des compétences';
 $string['locatecompetencytemplate'] = 'Recherchez des modèles de compétences';
 $string['managecompetencies'] = 'Gérer les compétences';

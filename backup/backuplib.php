@@ -1,6 +1,6 @@
 <?php //$Id$
 
-    require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
 
     //This file contains all the function needed in the backup utility
     //except the mod-related funtions that are into every backuplib.php inside

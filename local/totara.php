@@ -580,7 +580,7 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
         $managerid = $USER->id;
     }
 
-    require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
 
     if ($postype) {
         $postypewhere = "AND pa.type = {$postype}";
@@ -611,7 +611,7 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
 **/
 function totara_get_staff($userid=null, $postype=null) {
     global $CFG, $USER;
-    require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
     $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
 
     $userid = !empty($userid) ? (int) $userid : $USER->id;
@@ -641,7 +641,7 @@ function totara_get_staff($userid=null, $postype=null) {
  */
 function totara_get_manager($userid, $postype=null){
     global $CFG;
-    require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
     $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
 
     $userid = (int) $userid;

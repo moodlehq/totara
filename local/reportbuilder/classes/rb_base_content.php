@@ -73,7 +73,7 @@ class rb_current_pos_content extends rb_base_content {
     function sql_restriction($field, $reportid) {
         global $CFG;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -245,7 +245,7 @@ class rb_current_org_content extends rb_base_content {
     function sql_restriction($field, $reportid) {
         global $CFG;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -415,7 +415,7 @@ class rb_completed_org_content extends rb_base_content {
     function sql_restriction($field, $reportid) {
         global $CFG;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);

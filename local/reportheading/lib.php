@@ -114,17 +114,6 @@ class reportheading {
             $headingoptions['manager-' . $field] = get_string('managers','local') . ucfirst($field);
         }
 
-        // dynamically assign org and pos depths
-        if($posdepths = get_records('pos_depth')) {
-            foreach($posdepths as $posdepth) {
-                $headingoptions['pos-' . $posdepth->shortname] = get_string('positionsarrow','local') . $posdepth->fullname;
-            }
-        }
-        if($orgdepths = get_records('org_depth')) {
-            foreach($orgdepths as $orgdepth) {
-                $headingoptions['org-' . $orgdepth->shortname] = get_string('organisationsarrow','local') . $orgdepth->fullname;
-            }
-        }
 
         return $headingoptions;
     }
@@ -241,8 +230,6 @@ class reportheading {
             $possibletypes = array(
                 'user-' => 'get_user_field',
                 'profile-' => 'get_profile_field',
-                'pos-' => 'get_position_depth',
-                'org-' => 'get_organisation_depth',
                 'manager-' => 'get_manager_field',
             );
             foreach($possibletypes as $possibletype => $func) {
@@ -383,60 +370,5 @@ class reportheading {
             WHERE d.userid = {$this->userid} AND f.shortname = '{$field}'");
     }
 
-    /*
-     * Returns the item at the specified depth level belonging to this user
-     *
-     * @param string $type The hierarchy type (position or organisation)
-     * @param string $depth Shortname of the depth level required
-     * @return string String containing the matching value or an empty string
-     */
-    function get_hierarchy_depth($type, $depth) {
-        global $CFG;
-        // only works for these hierarchies at the moment at does a lookup in
-        // pos_assignment table
-        if($type != 'position' && $type != 'organisation') {
-            return '';
-        }
-        // get short prefix
-        require_once($CFG->dirroot.'/hierarchy/lib.php');
-        $shortprefix = hierarchy::get_short_prefix($type);
-
-        $reqdepthlevel = get_field($shortprefix.'_depth', 'depthlevel', 'shortname', $depth);
-        $framework = get_field($shortprefix.'_depth', 'frameworkid', 'shortname', $depth);
-        $itemid = get_field('pos_assignment', $type.'id', 'userid', $this->userid, 'type', 1);
-        if(empty($reqdepthlevel) || empty ($itemid)) {
-            return '';
-        }
-        if(!$item = get_record($shortprefix, 'id', $itemid, 'frameworkid', $framework)) {
-            return '';
-        }
-        $descendants = explode('/', $item->path);
-        if(!array_key_exists($reqdepthlevel, $descendants)) {
-            return '';
-        }
-        if($requireditem = get_record($shortprefix, 'id', $descendants[$reqdepthlevel])) {
-            return $requireditem->fullname;
-        } else {
-            return '';
-        }
-    }
-
-    /*
-     * Wrapper function to return a position depth value
-     *
-     * See get_hierarchy_depth() for details
-     */
-    function get_position_depth($depth) {
-        return $this->get_hierarchy_depth('position', $depth);
-    }
-
-    /*
-     * Wrapper function to return an organisation depth value
-     *
-     * See get_hierarchy_depth() for details
-     */
-    function get_organisation_depth($depth) {
-        return $this->get_hierarchy_depth('organisation', $depth);
-    }
 }
 

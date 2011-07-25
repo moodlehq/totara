@@ -6,7 +6,7 @@ class guide_totara_create_proficiency_scale_step extends guide_default_step {
         global $CFG;
         return '<p>The first step is to set up a competency scale.</p>
             <p>A competency scale defines the criteria by which a competency can be measured.</p>
-            <p>When you are ready to start click <a href="'. $CFG->wwwroot . '/hierarchy/type/competency/scale/edit.php?type=competency">Competency Scale</a>.</p>
+            <p>When you are ready to start click <a href="'. $CFG->wwwroot . '/hierarchy/prefix/competency/scale/edit.php?prefix=competency">Competency Scale</a>.</p>
             <p>Refer to the <a href="">Setting up a Competency Scale help file</a> for further instructions.</p>
             <p>On completing your competency scale set up, return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
     }

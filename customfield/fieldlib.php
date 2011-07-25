@@ -9,7 +9,7 @@ class customfield_base {
     /// Everything else can be extracted from them
     var $fieldid;
     var $itemid;
-    var $type;
+    var $prefix;
     var $tableprefix;
     var $field;
     var $inputname;
@@ -20,10 +20,19 @@ class customfield_base {
      * @param   integer   field id from the _info_field table
      * @param   integer   id using the data
      */
-    function customfield_base($fieldid=0, $itemid=0, $type, $tableprefix) {
+    function customfield_base($fieldid=0, $itemid=0, $prefix, $tableprefix) {
         $this->set_fieldid($fieldid);
         $this->set_itemid($itemid);
-        $this->load_data($itemid, $type, $tableprefix);
+        $this->load_data($itemid, $prefix, $tableprefix);
+    }
+
+    /**
+     * Display the data for this field
+     */
+    function display_data() {
+        // call the static method belonging to this object's class
+        // or the one below if not re-defined by child class
+        return $this->display_item_data($this->data);
     }
 
 
@@ -37,15 +46,12 @@ class customfield_base {
         error('This abstract method must be overriden');
     }
 
-    
+
 /***** The following methods may be overwritten by child classes *****/
 
-    /**
-     * Display the data for this field
-     */
-    function display_data() {
+    static function display_item_data($data) {
         $options->para = false;
-        return format_text($this->data, FORMAT_MOODLE, $options);
+        return format_text($data, FORMAT_MOODLE, $options);
     }
     
     /**
@@ -81,10 +87,10 @@ class customfield_base {
     /**
      * Saves the data coming from form
      * @param   mixed   data coming from the form
-     * @param   string  name of the type (ie, competency)
+     * @param   string  name of the prefix (ie, competency)
      * @return  mixed   returns data id if success of db insert/update, false on fail, 0 if not permitted
      */
-    function edit_save_data($itemnew, $type, $tableprefix) {
+    function edit_save_data($itemnew, $prefix, $tableprefix) {
 
         if (!isset($itemnew->{$this->inputname})) {
             // field not present in form, probably locked and invisible - skip it
@@ -94,11 +100,11 @@ class customfield_base {
         $itemnew->{$this->inputname} = $this->edit_save_data_preprocess($itemnew->{$this->inputname});
 
         $data = new object();
-        $data->{$type.'id'} = $itemnew->id;
+        $data->{$prefix.'id'} = $itemnew->id;
         $data->fieldid      = $this->field->id;
         $data->data         = $itemnew->{$this->inputname};
 
-        if ($dataid = get_field($tableprefix.'_info_data', 'id', $type.'id', $data->{$type.'id'}, 'fieldid', $data->fieldid)) {
+        if ($dataid = get_field($tableprefix.'_info_data', 'id', $prefix.'id', $data->{$prefix.'id'}, 'fieldid', $data->fieldid)) {
             $data->id = $dataid;
             if (!update_record($tableprefix.'_info_data', $data)) {
                 error('Error updating custom field!');
@@ -112,11 +118,11 @@ class customfield_base {
      * Validate the form field from edit page
      * @return  string  contains error message otherwise NULL
      **/
-    function edit_validate_field($itemnew, $type, $tableprefix) {
+    function edit_validate_field($itemnew, $prefix, $tableprefix) {
         $errors = array();
         /// Check for uniqueness of data if required
         if ($this->is_unique()) {
-            if($type == 'course') {
+            if($prefix == 'course') {
                 // anywhere across the site
                 $data = $itemnew->{$this->inputname};
                 // check value, not key for menu items
@@ -133,7 +139,7 @@ class customfield_base {
                 }
             } else {
                 // within same depth level
-                if ($itemid = get_field($tableprefix.'_info_data', $type.'id', 'fieldid', $this->field->id, 'data', $itemnew->{$this->inputname})) {
+                if ($itemid = get_field($tableprefix.'_info_data', $prefix.'id', 'fieldid', $this->field->id, 'data', $itemnew->{$this->inputname})) {
                     if ($itemid != $itemnew->id) {
                         $errors["{$this->inputname}"] = get_string('valuealreadyused');
                     }
@@ -200,7 +206,7 @@ class customfield_base {
 
     /**
      * Check if the field data should be loaded into the object
-     * By default it is, but for field types where the data may be potentially
+     * By default it is, but for field prefixes where the data may be potentially
      * large, the child class should override this and return false
      * @return boolean
      */
@@ -213,7 +219,7 @@ class customfield_base {
    
     /**
      * Accessor method: set the itemid for this instance
-     * @param   integer   id from the type (competency etc) table
+     * @param   integer   id from the prefix (competency etc) table
      */
     function set_itemid($itemid) {
         $this->itemid = $itemid;
@@ -228,10 +234,10 @@ class customfield_base {
     }
 
     /**
-     * Accessor method: Load the field record and type data and tableprefix associated with the type
+     * Accessor method: Load the field record and prefix data and tableprefix associated with the prefix
      * object's fieldid and itemid
      */
-    function load_data($itemid, $type, $tableprefix) {
+    function load_data($itemid, $prefix, $tableprefix) {
         /// Load the field object
         if (($this->fieldid == 0) or (!($field = get_record($tableprefix.'_info_field', 'id', $this->fieldid)))) {
             $this->field = NULL;
@@ -241,7 +247,7 @@ class customfield_base {
             $this->inputname = 'customfield_'.$field->shortname;
         }
         if (!empty($this->field)) {
-            if ($datafield = get_field($tableprefix.'_info_data', 'data', $type.'id', $this->itemid, 'fieldid', $this->fieldid)) {
+            if ($datafield = get_field($tableprefix.'_info_data', 'data', $prefix.'id', $this->itemid, 'fieldid', $this->fieldid)) {
                 $this->data = $datafield;
             } else {
                 $this->data = $this->field->defaultdata;
@@ -301,132 +307,164 @@ class customfield_base {
 
 /***** General purpose functions for custom fields *****/
 
-function customfield_load_data(&$item, $type, $tableprefix) {
+function customfield_load_data(&$item, $prefix, $tableprefix) {
     global $CFG;
-    $depthstr = '';
-    if (isset($item->depthid)) {
-        $depthstr = "depthid='$item->depthid'";
+    $typestr = '';
+    if (isset($item->typeid)) {
+        $typestr = "typeid='$item->typeid'";
     }
-    if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
+    if ($fields = get_records_select($tableprefix.'_info_field', $typestr)) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/customfield/field/'.$field->datatype.'/field.class.php');
             $newfield = 'customfield_'.$field->datatype;
-            $formfield = new $newfield($field->id, $item->id, $type, $tableprefix);
+            $formfield = new $newfield($field->id, $item->id, $prefix, $tableprefix);
             $formfield->edit_load_item_data($item);
         }
     }
 }
 
 /**
- * Print out the customisable categories and fields
+ * Print out the customisable fields
  * @param  object  instance of the moodleform class
  */
-function customfield_definition(&$mform, $itemid, $type, $depthid=0, $tableprefix) {
+function customfield_definition(&$mform, $itemid, $prefix, $typeid=0, $tableprefix) {
     global $CFG;
 
-    $depthstr = '';
-    if ($depthid) {
-        $depthstr = "depthid='$depthid'";
+    $typestr = '';
+    if ($typeid) {
+        $typestr = "typeid='$typeid'";
     }
-    if ($categories = get_records_select($tableprefix.'_info_category', $depthstr, 'sortorder ASC')) {
-        foreach ($categories as $category) {
-            if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$category->id", 'sortorder ASC')) {
 
-                // check first if *any* fields will be displayed
-                $display = false;
-                foreach ($fields as $field) {
-                    if ($field->hidden == false) {
-                        $display = true;
-                    }   
-                }   
+    if ($fields = get_records_select($tableprefix.'_info_field', $typestr, 'sortorder ASC')) {
 
-                // display the header and the fields
-                if ($display) {
-                    $mform->addElement('header', 'category_'.$category->id, format_string($category->name));
-                    foreach ($fields as $field) {
-                        require_once($CFG->dirroot.'/customfield/field/'.$field->datatype.'/field.class.php');
-                        $newfield = 'customfield_'.$field->datatype;
-                        $formfield = new $newfield($field->id, $itemid, $type, $tableprefix);
-                        $formfield->edit_field($mform);
-                    }   
-                }   
-            }   
-        }   
-    }   
+        // check first if *any* fields will be displayed
+        $display = false;
+        foreach ($fields as $field) {
+            if ($field->hidden == false) {
+                $display = true;
+            }
+        }
+
+        // display the header and the fields
+        if ($display) {
+            $mform->addElement('header', 'customfields', get_string('customfields', 'customfields'));
+            foreach ($fields as $field) {
+                require_once($CFG->dirroot.'/customfield/field/'.$field->datatype.'/field.class.php');
+                $newfield = 'customfield_'.$field->datatype;
+                $formfield = new $newfield($field->id, $itemid, $prefix, $tableprefix);
+                $formfield->edit_field($mform);
+            }
+        }
+    }
 }
 
-function customfield_definition_after_data(&$mform, $itemid, $type, $depthid=0, $tableprefix) {
+function customfield_definition_after_data(&$mform, $itemid, $prefix, $typeid=0, $tableprefix) {
     global $CFG;
 
-    $depthstr = '';
-    if ($depthid) {
-        $depthstr = 'depthid='.$depthid;
+    $typestr = '';
+    if ($typeid) {
+        $typestr = 'typeid='.$typeid;
     }
 
-    if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
+    if ($fields = get_records_select($tableprefix.'_info_field', $typestr)) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/customfield/field/'.$field->datatype.'/field.class.php');
             $newfield = 'customfield_'.$field->datatype;
-            $formfield = new $newfield($field->id, $itemid, $type, $tableprefix);
+            $formfield = new $newfield($field->id, $itemid, $prefix, $tableprefix);
             $formfield->edit_after_data($mform);
         }
     }
 }
 
-function customfield_validation($itemnew, $type, $tableprefix) {
+function customfield_validation($itemnew, $prefix, $tableprefix) {
     global $CFG;
 
     $err = array();
 
-    $depthstr = '';
-    if (!empty($itemnew->depthid)) {
-        $depthstr = 'depthid='.$itemnew->depthid;
+    $typestr = '';
+    if (!empty($itemnew->typeid)) {
+        $typestr = 'typeid='.$itemnew->typeid;
     }
 
-    if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
+    if ($fields = get_records_select($tableprefix.'_info_field', $typestr)) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/customfield/field/'.$field->datatype.'/field.class.php');
             $newfield = 'customfield_'.$field->datatype;
-            $formfield = new $newfield($field->id, $itemnew->id, $type, $tableprefix);
-            $err += $formfield->edit_validate_field($itemnew, $type, $tableprefix);
+            $formfield = new $newfield($field->id, $itemnew->id, $prefix, $tableprefix);
+            $err += $formfield->edit_validate_field($itemnew, $prefix, $tableprefix);
         }
     }
     return $err;
 }
 
-function customfield_save_data($itemnew, $type, $tableprefix) {
+function customfield_save_data($itemnew, $prefix, $tableprefix) {
     global $CFG;
 
-    $depthstr = '';
-    if (isset($itemnew->depthid)) {
-        $depthstr = 'depthid='.$itemnew->depthid;
+    $typestr = '';
+    if (isset($itemnew->typeid)) {
+        $typestr = 'typeid='.$itemnew->typeid;
     }
 
-    if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
+    if ($fields = get_records_select($tableprefix.'_info_field', $typestr)) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/customfield/field/'.$field->datatype.'/field.class.php');
             $newfield = 'customfield_'.$field->datatype;
-            $formfield = new $newfield($field->id, $itemnew->id, $type, $tableprefix);
-            $formfield->edit_save_data($itemnew, $type, $tableprefix);
+            $formfield = new $newfield($field->id, $itemnew->id, $prefix, $tableprefix);
+            $formfield->edit_save_data($itemnew, $prefix, $tableprefix);
         }
     }
 }
 
-function customfield_display_fields($itemid, $tableprefix) {
+/**
+ * Return an associative array of custom field name/value pairs for display
+ *
+ * The array contains values formatted for printing to the page. Hidden and
+ * empty fields are not returned. Data has been passed through the appropriate
+ * display_data() method.
+ *
+ * @param integer $itemid ID of the item the fields belong to
+ * @param string $tableprefix Prefix to append '_info_field' to
+ * @param string $prefix Custom field prefix (e.g. 'course' or 'position')
+ *
+ * @return array Associate array of field names and data values
+ */
+function customfield_get_fields($itemid, $tableprefix, $prefix) {
     global $CFG;
-    if ($categories = get_records_select($tableprefix.'_info_category', '', 'sortorder ASC')) {
-        foreach ($categories as $category) {
-            if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$category->id", 'sortorder ASC')) {
-                foreach ($fields as $field) {
-                    require_once($CFG->dirroot.'/customfield/field/'.$field->datatype.'/field.class.php');
-                    $newfield = 'customfield_'.$field->datatype;
-                    $formfield = new $newfield($field->id, $itemid);
-                    if (!$formfield->is_hidden() and !$formfield->is_empty()) {
-                        print_row(s($formfield->field->name.':'), $formfield->display_data());
-                    }
-                }
+    $out = array();
+
+    if ($fields = get_records($tableprefix.'_info_field', '', '', 'sortorder ASC')) {
+        foreach ($fields as $field) {
+            require_once($CFG->dirroot.'/customfield/field/'.$field->datatype.'/field.class.php');
+            $newfield = 'customfield_'.$field->datatype;
+            $formfield = new $newfield($field->id, $itemid, $prefix, $tableprefix);
+            if (!$formfield->is_hidden() and !$formfield->is_empty()) {
+                $out[s($formfield->field->fullname)] = $formfield->display_data();
             }
         }
+    }
+    return $out;
+}
+
+
+/**
+ * Return the HTML to display a set of table rows containing the custom fields
+ *
+ * Just the table rows are returned, no HTML table tags
+ *
+ * @param integer $itemid ID of the item the fields belong to
+ * @param string $tableprefix Prefix to append '_info_field' to
+ * @param string $prefix Custom field prefix (e.g. 'course' or 'position')
+ *
+ * @return string HTML to display the table rows
+ */
+function customfield_display_fields($itemid, $tableprefix, $prefix) {
+    global $CFG;
+
+    $fields = customfield_get_fields($itemid, $tableprefix, $prefix);
+    foreach ($fields as $field => $data) {
+        echo "\n<tr><th class=\"label c0\">" .
+            $field . ":</th><td class=\"info c1\">" .
+            $data . "</td></tr>\n";
     }
 }
 

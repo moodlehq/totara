@@ -39,7 +39,7 @@ $(function() {
             'addcompetency',
             'show-add-dialog',
             {title: '<?php echo '<h2>'.get_string('selectacompetencyframework', 'competency').'</h2>'; ?>'},
-            '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?type=competency',
+            '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?prefix=competency',
             handler
         );
     })();
@@ -48,7 +48,7 @@ $(function() {
     /// Competency dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/assign/';
 
         totaraSingleSelectDialog(
             'competency',
@@ -57,10 +57,10 @@ $(function() {
             'competencyid',
             'competencytitle',
             function() {
-                var jsonurl = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/competency_scale.json.php';
+                var jsonurl = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/evidence/competency_scale.json.php';
                 compid = $('input[name=competencyid]').val();
 
-                var profinput = $('body.hierarchy-type-competency-evidence select#id_proficiency');
+                var profinput = $('body.hierarchy-prefix-competency-evidence select#id_proficiency');
                 // only do JSON request if a proficiency select found to fill
                 if(profinput) {
                     // used by add competency evidence page to populate proficiency pulldown based on competency chosen
@@ -126,8 +126,8 @@ totaraDialog_handler_addcompetency.prototype.submission = function(response) {
             $('input[name=competencyid]').val(compid);
             $('span#competencytitle').text(compname);
 
-            var profinput = $('body.hierarchy-type-competency-evidence select#id_proficiency');
-            var jsonurl = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/competency_scale.json.php';
+            var profinput = $('body.hierarchy-prefix-competency-evidence select#id_proficiency');
+            var jsonurl = '<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/evidence/competency_scale.json.php';
             // only do JSON request if a proficiency select found to fill
             if(profinput) {
                 // used by add competency evidence page to populate proficiency pulldown based on competency chosen

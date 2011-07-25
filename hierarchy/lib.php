@@ -33,6 +33,32 @@
  * @package totara
  */
 
+require_once(dirname(dirname(__FILE__)) . '/local/utils.php');
+require_once(dirname(dirname(__FILE__)) . '/customfield/fieldlib.php');
+
+/**
+ * Toggles the use of shortnames in addition to fullnames in hierarchy
+ * forms. When true, hierarchies will include a shortname field in the
+ * framework, item and type forms.
+ */
+define('HIERARCHY_DISPLAY_SHORTNAMES', false);
+
+/**
+ * Export option codes
+ *
+ * Bitwise flags, so new ones should be double highest value
+ */
+define('HIERARCHY_EXPORT_EXCEL', 1);
+define('HIERARCHY_EXPORT_CSV', 2);
+define('HIERARCHY_EXPORT_ODS', 4);
+
+global $HIERARCHY_EXPORT_OPTIONS;
+$HIERARCHY_EXPORT_OPTIONS = array(
+    'xls' => HIERARCHY_EXPORT_EXCEL,
+    'csv' => HIERARCHY_EXPORT_CSV,
+    'ods' => HIERARCHY_EXPORT_ODS,
+);
+
 /**
  * An abstract object that holds methods and attributes common to all hierarchy objects.
  * @abstract
@@ -95,18 +121,18 @@ class hierarchy {
     }
 
     /**
-     * Get depth by id
+     * Get type by id
      * @return object|false
      */
-    function get_depth_by_id($id) {
-        return get_record($this->shortprefix.'_depth', 'id', $id);
+    function get_type_by_id($id) {
+        return get_record($this->shortprefix.'_type', 'id', $id);
     }
 
     /**
      * Get framework
      * @var array $extra_data optional - specifying extra info to be fetched and returned
      * @return array|false
-     * @uses $CFG when extra_data specified 
+     * @uses $CFG when extra_data specified
      */
     function get_frameworks($extra_data=array()) {
         if (!count($extra_data)) {
@@ -117,19 +143,14 @@ class hierarchy {
 
         $sql = "SELECT f.* ";
         if (isset($extra_data['depth_count'])) {
-            $sql .= ",(SELECT COALESCE(MAX(depthlevel), 0) FROM {$CFG->prefix}{$this->shortprefix}_depth d1 
-                        WHERE d1.frameworkid = f.id) AS depth_count "; 
-        }
-        if (isset($extra_data['custom_field_count'])) {
-            $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth d2 
-                        JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field dif ON d2.id = dif.depthid
-                        WHERE d2.frameworkid=f.id) AS custom_field_count ";
+            $sql .= ",(SELECT COALESCE(MAX(depthlevel), 0) FROM {$CFG->prefix}{$this->shortprefix} item
+                        WHERE item.frameworkid = f.id) AS depth_count ";
         }
         if (isset($extra_data['item_count'])) {
             $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix} ic
                         WHERE ic.frameworkid=f.id) AS item_count ";
         }
-        $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f 
+        $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f
                  ORDER BY f.sortorder, f.fullname";
 
         return get_records_sql($sql);
@@ -137,57 +158,41 @@ class hierarchy {
     }
 
     /**
-     * Get depths for a framework
+     * Get types for a hierarchy
      * @var array $extra_data optional - specifying extra info to be fetched and returned
      * @return array|false
-     * @uses $CFG when extra_data specified 
+     * @uses $CFG when extra_data specified
      */
-    function get_depths($extra_data=array()) {
+    function get_types($extra_data=array()) {
         if (!count($extra_data)) {
-           return get_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid, 'depthlevel');
+           return get_records($this->shortprefix.'_type', '', '', 'fullname');
         }
 
         global $CFG;
 
-        $sql = "SELECT d.* ";
+        $sql = "SELECT c.* ";
         if (isset($extra_data['custom_field_count'])) {
-            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field dif
-                        WHERE dif.depthid = d.id) AS custom_field_count ";
+            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_type_info_field cif
+                        WHERE cif.typeid = c.id) AS custom_field_count ";
         }
         if (isset($extra_data['item_count'])) {
             $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix} ic
-                 WHERE ic.depthid = d.id) AS item_count";
+                 WHERE ic.typeid = c.id) AS item_count";
         }
-        $sql .= " FROM {$CFG->prefix}{$this->shortprefix}_depth d
-                  WHERE d.frameworkid = {$this->frameworkid}
-                  ORDER BY d.depthlevel";
+        $sql .= " FROM {$CFG->prefix}{$this->shortprefix}_type c
+                  ORDER BY c.fullname";
         return get_records_sql($sql);
     }
 
-    function get_custom_field_categories($depthid) {
+
+    function get_custom_fields($itemid) {
         global $CFG;
+        $prefix = $this->prefix;
 
-        $sql = "SELECT c.*,
-                (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field f 
-                    WHERE f.categoryid = c.id) AS custom_field_count
-                FROM {$CFG->prefix}{$this->shortprefix}_depth_info_category c 
-                WHERE c.depthid = {$depthid}
-                ORDER BY c.name";
-
-        return get_records_sql($sql);
-    }
-
-    function get_custom_field_category_by_id($id) {
-        return get_record($this->shortprefix.'_depth_info_category', 'id', $id);
-    }
-
-    function get_custom_fields($competencyid) {
-        global $CFG;
-
-        $sql = "SELECT d.*, f.*
-                FROM {$CFG->prefix}{$this->shortprefix}_depth_info_data d
-                INNER JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field f ON d.fieldid = f.id
-                WHERE d.competencyid = {$competencyid}
+        $sql = "SELECT c.*, f.*
+                FROM {$CFG->prefix}{$this->shortprefix}_type_info_data c
+                INNER JOIN {$CFG->prefix}{$this->shortprefix}_type_info_field f ON c.fieldid = f.id
+                WHERE c.{$prefix}id = {$itemid}
                 ORDER BY f.sortorder";
 
         $customfields = get_records_sql($sql);
@@ -241,7 +246,7 @@ class hierarchy {
      * @return array|false
      */
     function get_all_root_items($all=false) {
-        if(empty($this->frameworkid) || $all) {
+        if (empty($this->frameworkid) || $all) {
             // all root level items across frameworks
             return get_records_select($this->shortprefix, "parentid = 0 AND visible = 1", 'frameworkid, sortorder, fullname');
         } else {
@@ -260,10 +265,11 @@ class hierarchy {
         global $CFG;
         $path = get_field($this->shortprefix, 'path', 'id', $id);
         if ($path) {
-            $paths = explode('/', substr($path, 1));
+            // the WHERE clause must be like this to avoid /1% matching /10
             $sql = "SELECT id, fullname, parentid, path, sortorder
                     FROM {$CFG->prefix}{$this->shortprefix}
-                    WHERE path='{$path}' OR path LIKE '{$path}/%' ORDER BY path";
+                    WHERE path = '{$path}' OR path LIKE '{$path}/%'
+                    ORDER BY path";
             return get_records_sql($sql);
         } else {
             print_error('nopathfoundforid', 'hierarchy', '', (object)array('prefix'=>$this->prefix, 'id'=>$id));
@@ -273,7 +279,7 @@ class hierarchy {
     /**
      * Given an item id, returns the adjacent item at the same depth level
      * @param object $item An item object to find the peer for. Must include id,
-     *                     frameworkid, sortorder, parentid and depthid
+     *                     frameworkid, sortorder, parentid and depthlevel
      * @param boolean $above If true returns the item above, otherwise the item below
      * @return int|false Returns the ID of the peer or false if there isn't one
      *                   in the direction specified
@@ -281,12 +287,12 @@ class hierarchy {
     function get_item_adjacent_peer($item, $above=true) {
         global $CFG;
         // check that item has required properties
-        if( !isset($item->depthid) ||
+        if ( !isset($item->depthlevel) ||
             !isset($item->sortorder) || !isset($item->id)) {
             return false;
         }
         // try and use item's fwid if not set by hierarchy
-        if(isset($this->frameworkid)) {
+        if (isset($this->frameworkid)) {
             $frameworkid = $this->frameworkid;
         } else if (isset($item->frameworkid)) {
             $frameworkid = $item->frameworkid;
@@ -294,7 +300,7 @@ class hierarchy {
             return false;
         }
 
-        $depthid = $item->depthid;
+        $depthlevel = $item->depthlevel;
         $sortorder = $item->sortorder;
         $parentid = $item->parentid;
         $id = $item->id;
@@ -305,13 +311,13 @@ class hierarchy {
 
         $sql = "SELECT id FROM {$CFG->prefix}{$this->shortprefix}
             WHERE frameworkid = $frameworkid AND
-            depthid = $depthid AND
+            depthlevel = $depthlevel AND
             parentid = $parentid AND
             sortorder $sqlop $sortorder
             ORDER BY sortorder $sqlsort";
         // only return first match
         $dest = get_record_sql($sql, true);
-        if($dest) {
+        if ($dest) {
             return $dest->id;
         } else {
             // no peer in that direction
@@ -336,46 +342,46 @@ class hierarchy {
      */
     function make_hierarchy_list(&$list, $id = NULL, $showchildren=false, $shortname=false, $path = "", $records=null) {
         // initialize the array if needed
-        if(!is_array($list)) {
+        if (!is_array($list)) {
             $list = array();
         }
-        if(empty($id)) {
+        if (empty($id)) {
             // start at top level
             $id = 0;
         }
 
-        if(empty($records)) {
+        if (empty($records)) {
             // must be first time through function, get the records, and pass to
             // future uses to save db calls
             $records = get_records($this->shortprefix,'visible','1','path','id,fullname,shortname,parentid,sortorder,path');
         }
 
-        if($id == 0) {
+        if ($id == 0) {
             $children = $this->get_all_root_items(true);
         } else {
             $item = $records[$id];
             $name = ($shortname) ? $item->shortname : $item->fullname ;
-            if($path) {
+            if ($path) {
                 $path = $path.' / '.$name;
             } else {
                 $path = $name;
             }
             // add item
             $list[$item->id] = $path;
-            if($showchildren === true) {
+            if ($showchildren === true) {
                 // if children wanted and there are some
                 // show a second option with children
                 // does the same as:
                 //$descendants = $this->get_item_descendants($id);
                 // but without the db calls
                 $descendants = array();
-                foreach($records as $key => $record) {
-                    if(substr($record->path,0,strlen($item->path)) == $item->path) {
+                foreach ($records as $key => $record) {
+                    if (substr($record->path,0,strlen($item->path)) == $item->path) {
                     //print "{$record->path} child of {$item->path}<br>";
                         $descendants[$key] = $record;
                     }
                 }
-                if(count($descendants)>1) {
+                if (count($descendants)>1) {
                     // add comma separated list of all children too
                     $idstr = implode(',',array_keys($descendants));
                     $list[$idstr] = $path." (and all children)";
@@ -385,16 +391,16 @@ class hierarchy {
             // $children = $this->get_items_by_parent($id);
             // but without the db calls
             $children = array();
-            foreach($records as $key => $record) {
-                if($record->parentid == $id) {
+            foreach ($records as $key => $record) {
+                if ($record->parentid == $id) {
                     $children[$key] = $record;
                 }
             }
         }
 
         // now deal with children of this item
-        if($children) {
-            foreach($children as $child) {
+        if ($children) {
+            foreach ($children as $child) {
                 $this->make_hierarchy_list($list, $child->id, $showchildren, $shortname, $path, $records);
             }
         }
@@ -411,10 +417,8 @@ class hierarchy {
         $path = get_field($this->shortprefix, 'path', 'id', $id);
         if ($path) {
             $paths = explode('/', substr($path, 1));
-            $sql = "SELECT o.id, o.fullname, o.parentid, od.depthlevel
+            $sql = "SELECT o.id, o.fullname, o.parentid, o.depthlevel
                     FROM {$CFG->prefix}{$this->shortprefix} o
-                    JOIN {$CFG->prefix}{$this->shortprefix}_depth od
-                      ON o.depthid=od.id
                     WHERE o.id IN (".implode(",", $paths).")";
             return get_records_sql($sql);
         } else {
@@ -443,7 +447,7 @@ class hierarchy {
 
         // Generate the button HTML.
         $options['edit'] = $edit;
-        $options['type'] = $this->prefix;
+        $options['prefix'] = $this->prefix;
         return print_single_button(qualified_me(), $options, $label, 'get', '', true);
     }
 
@@ -473,7 +477,7 @@ class hierarchy {
                 $fwoptions[$fw->id] = $fw->fullname;
             }
 
-            popup_form($CFG->wwwroot.'/hierarchy/'.$page.'?type='.$this->prefix.'&amp;frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '', '', '', false, 'self', get_string('switchframework', 'hierarchy'));
+            popup_form($CFG->wwwroot.'/hierarchy/'.$page.'?prefix='.$this->prefix.'&amp;frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '', '', '', false, 'self', get_string('switchframework', 'hierarchy'));
 
             echo '</div>';
 
@@ -498,20 +502,73 @@ class hierarchy {
      * Display add item button
      * @return boolean success
      */
-    function display_add_item_button($spage=0) {
+    function display_add_item_button($page=0) {
         global $CFG;
-        $options = array('type' => $this->prefix, 'frameworkid' => $this->frameworkid, 'spage' => $spage);
+        $options = array('prefix' => $this->prefix, 'frameworkid' => $this->frameworkid, 'page' => $page);
         print_single_button($CFG->wwwroot.'/hierarchy/item/edit.php', $options, get_string('addnew'.$this->prefix, $this->prefix), 'get');
     }
 
     /**
-     * Display add depth button
+     * Display add mulitple items button
      * @return boolean success
      */
-    function display_add_depth_button($spage=0) {
+    function display_add_multiple_items_button($page=0) {
         global $CFG;
-        $options = array('type' => $this->prefix, 'frameworkid' => $this->frameworkid, 'spage' => $spage);
-        print_single_button($CFG->wwwroot.'/hierarchy/depth/edit.php', $options, get_string('adddepthlevel', $this->prefix), 'get');
+        $options = array('prefix' => $this->prefix, 'frameworkid' => $this->frameworkid, 'page' => $page);
+        print_single_button($CFG->wwwroot.'/hierarchy/item/bulkadd.php', $options, get_string('addmultiplenew'.$this->prefix, $this->prefix), 'get');
+    }
+
+    /**
+     * Displays a set of action buttons
+     */
+    function display_action_buttons($can_add_item, $page=0) {
+        global $CFG;
+
+        print_container_start(false, null, 'hierarchy-buttons');
+
+        // Add buttons
+        if ($can_add_item) {
+            $this->display_add_item_button($page);
+        }
+        print_container_end();
+    }
+
+    /**
+     * Displays a bulk actions selector
+     */
+    function display_bulk_actions_picker($can_add_item, $can_edit_item, $can_delete_item, $can_manage_type, $page=0) {
+        global $CFG;
+
+
+        $options = array();
+        if ($can_add_item) {
+            $options['item/bulkadd.php?prefix='.$this->prefix.'&amp;frameworkid='.$this->frameworkid.'&amp;page='.$page] = get_string('add');
+        }
+        if ($can_delete_item) {
+            $options['item/bulkactions.php?action=delete&amp;prefix='.$this->prefix.'&amp;frameworkid='.$this->frameworkid] = get_string('delete');
+        }
+        if ($can_edit_item) {
+            $options['item/bulkactions.php?action=move&amp;prefix='.$this->prefix.'&amp;frameworkid='.$this->frameworkid] = get_string('move');
+        }
+        if ($can_manage_type) {
+            $options['type/index.php?prefix='.$this->prefix] = get_string('reclassifyitems' ,'hierarchy');
+        }
+
+        if (count($options) > 0) {
+            print_container_start(false, 'hierarchy-bulk-actions-picker');
+            popup_form($CFG->wwwroot.'/hierarchy/', $options, 'bulkactions', '', get_string('bulkactions', 'hierarchy'), '', '', false, 'self', '');
+            print_container_end();
+        }
+    }
+
+    /**
+     * Display add type button
+     * @return boolean success
+     */
+    function display_add_type_button($page=0) {
+        global $CFG;
+        $options = array('prefix' => $this->prefix, 'frameworkid' => $this->frameworkid, 'page' => $page);
+        print_single_button($CFG->wwwroot.'/hierarchy/type/edit.php', $options, get_string('addtype', $this->prefix), 'get');
     }
 
     /**
@@ -543,7 +600,7 @@ class hierarchy {
         $source = get_record($this->shortprefix, 'id', $id);
         // get nearest neighbour in direction of move
         $destid = $this->get_item_adjacent_peer($source, $up);
-        if(!$destid) {
+        if (!$destid) {
             // source not a valid record or no peer in that direction
             notify(get_string('error:couldnotmoveitemnopeer','hierarchy',$this->prefix));
             return false;
@@ -559,11 +616,11 @@ class hierarchy {
         begin_sql();
 
         // update the sort orders
-        foreach($sourcetree as $item) {
+        foreach ($sourcetree as $item) {
             $id = $item->id;
             $sortorder = $item->sortorder;
             $newso = $up ? $sortorder - $destcount : $sortorder + $destcount;
-            if($newso < 0) {
+            if ($newso < 0) {
                 // something must be wrong with sort orders, abort
                 rollback_sql();
                 notify(get_string('error:badsortorder','hierarchy',$this->prefix));
@@ -572,11 +629,11 @@ class hierarchy {
                 $status = $status && set_field($this->shortprefix, 'sortorder', $newso, 'id', $id);
             }
         }
-        foreach($desttree as $item) {
+        foreach ($desttree as $item) {
             $id = $item->id;
             $sortorder = $item->sortorder;
             $newso = $up ? $sortorder + $sourcecount : $sortorder - $sourcecount;
-            if($newso < 0) {
+            if ($newso < 0) {
                 // something must be wrong with sort orders, abort
                 rollback_sql();
                 notify(get_string('error:badsortorder','hierarchy',$this->prefix));
@@ -587,7 +644,7 @@ class hierarchy {
         }
 
         // only commit if all changes worked
-        if($status) {
+        if ($status) {
             commit_sql();
             return true;
         } else {
@@ -712,54 +769,91 @@ class hierarchy {
         return false;
     }
 
+
     /**
-     * Recursively called function for deleting items and their children
-     * @var int $id the item id to delete
-     * @var boolean $transaction whether or not to wrap the DB calls in a transaction
+     * Delete a framework item and all its children and associated data
+     *
+     * @param integer $id the item id to delete
+     *
      * @return boolean success or failure
      */
-    function delete_framework_item($id, $usetransaction = true) {
+    function delete_framework_item($id) {
+        global $CFG;
 
-        if ( $usetransaction ){
-            begin_sql();
+        if (!record_exists($this->shortprefix, 'id', $id)) {
+            error('Attempting to delete nonexistent item ' . $id);
         }
 
-        // Delete all child items
-        $children = get_records($this->shortprefix, 'parentid', $id);
+        // get array of items to delete (the item specified *and* all its children)
+        $delete_list = $this->get_item_descendants($id);
 
-        if ($children) {
-            // Call this function recursively
-            foreach ($children as $child) {
-                if ( !$this->delete_framework_item($child->id, false) ){
-                    if ( $usetransaction ){
-                        rollback_sql();
-                    }
-                    return false;
-                }
-            }
+        // figure out the highest sort of the items to delete
+        // (needed to correct sort order of remaining items)
+        $maxsort = 0;
+        foreach ($delete_list as $item) {
+            $maxsort = max($maxsort, $item->sortorder);
         }
 
-        // delete any custom field data for this item
-        if(delete_records($this->shortprefix.'_depth_info_data', $this->prefix.'id', $id)) {
-            // Finally delete this item
-            if(delete_records($this->shortprefix, 'id', $id)) {
-                if ( $usetransaction ){
-                    commit_sql();
-                }
-                return true;
-            } else {
-                if ( $usetransaction ){
-                    rollback_sql();
-                }
+        // number of items being deleted
+        $delete_count = count($delete_list);
+
+        // make sure we know the item's framework id
+        $frameworkid = isset($this->frameworkid) ? $this->frameworkid :
+            get_field($this->shortprefix, 'frameworkid', 'id', $id);
+
+        begin_sql();
+
+        // iterate through 1000 items at a time, because oracle can't use
+        // more than 1000 items in an sql IN clause
+        while ($delete_items = totara_pop_n($delete_list, 1000)) {
+            $delete_ids = array_keys($delete_items);
+            if (!$this->_delete_framework_items($delete_ids)) {
+                rollback_sql();
                 return false;
             }
-        } else {
-            if ( $usetransaction ){
-                rollback_sql();
-            }
+        }
+
+        // fix the sort order of all items below the ones that were deleted
+        // we want to move them up by the number of deleted items
+        if (!$this->reorder_remaining_items(-1 * $delete_count, $maxsort, $frameworkid)) {
+            rollback_sql();
             return false;
         }
+
+        commit_sql();
+        return true;
     }
+
+
+    /**
+     * Delete all data associated with the framework items provided
+     *
+     * This method is protected because it deletes the items, but doesn't update the
+     * sortorder of the other framework items (or use transactions).
+     * Use {@link hierarchy::delete_framework_item()} to recursively delete an item and
+     * all its children. This method is extended or overridden in the lib file for each
+     * hierarchy prefix to remove specific data for that hierarchy prefix.
+     *
+     * @param array $items Array of IDs to be deleted
+     *
+     * @return boolean True if items and associated data were successfully deleted
+     */
+    protected function _delete_framework_items($items) {
+        // delete the actual items
+        $item_sql = 'id IN (' . implode(',', $items) . ') ';
+        if (!delete_records_select($this->shortprefix, $item_sql)) {
+            return false;
+        }
+
+        // delete custom field data associated with the items
+        $data_sql = $this->prefix . 'id IN (' . implode(',', $items) . ') ';
+        if (!delete_records_select($this->shortprefix.'_type_info_data', $data_sql)) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     /**
      * Delete a framework and its contents
@@ -775,9 +869,9 @@ class hierarchy {
 
         if ($items) {
             foreach ($items as $item) {
-                // Delete all info data for each framework item
-                if($item->parentid == 0) {
-                    if(!$this->delete_framework_item($item->id, false)) {
+                // Delete all top level items (which also deletes their children), and their info data
+                if ($item->parentid == 0) {
+                    if (!$this->delete_framework_item($item->id)) {
                         rollback_sql();
                         return false;
                     }
@@ -785,32 +879,8 @@ class hierarchy {
             }
         }
 
-        // Get all depths in the framework
-        $depths = $this->get_depths();
-
-        if ($depths) {
-            foreach ($depths as $depth) {
-                if(!$this->delete_depth_metadata($depth->id)) {
-                    rollback_sql();
-                    return false;
-                }
-            }
-        }
-
-        // Delete all depths in the framework
-        if(!delete_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid)) {
-            rollback_sql();
-            return false;
-        }
-
-        // Delete all items in the framework
-        if(!delete_records($this->shortprefix, 'frameworkid', $this->frameworkid)) {
-            rollback_sql();
-            return false;
-        }
-
         // Finally delete this framework
-        if(!delete_records($this->shortprefix.'_framework', 'id', $this->frameworkid)) {
+        if (!delete_records($this->shortprefix.'_framework', 'id', $this->frameworkid)) {
             rollback_sql();
             return false;
         }
@@ -819,8 +889,8 @@ class hierarchy {
         $sortorder = 1;
         $records = get_records_sql("SELECT id FROM {$CFG->prefix}{$this->shortprefix}_framework ORDER BY sortorder ASC");
         if (is_array($records)) {
-            foreach( $records as $rec ){
-                if(!set_field( "{$this->shortprefix}_framework", 'sortorder', $sortorder, 'id', $rec->id )) {
+            foreach ( $records as $rec ){
+                if (!set_field( "{$this->shortprefix}_framework", 'sortorder', $sortorder, 'id', $rec->id )) {
                     rollback_sql();
                     return false;
                 }
@@ -832,62 +902,60 @@ class hierarchy {
         return true;
     }
 
+
     /**
-     * Returns whether there are items at this depth level
+     * Delete a type.
      *
-     * @param int $id
-     * @return mixed A hierarchy error string index if it's not safe to delet, boolean true if it is safe
+     * @param int $id id of type to delete
+     * @return mixed Boolean true if successful, false otherwise
      */
-    function is_safe_to_delete_depth($id) {
+    function delete_type($id) {
+        global $CFG;
 
-        if ( !get_record($this->shortprefix.'_depth', 'id', $id) ){
-            return 'deletedepthnosuchdepth';
+        begin_sql();
+
+        // remove any custom fields data
+        if (!$this->delete_type_metadata($id)) {
+            rollback_sql();
+            return false;
         }
 
-        if ( count_records($this->shortprefix, 'depthid', $id) > 0 ){
-            return 'deletedepthhaschildren';
+        // unassign this type from all items (set to unclassified)
+        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
+            SET typeid = 0
+            WHERE typeid = {$id}";
+        if (!execute_sql($sql, false)) {
+            rollback_sql();
+            return false;
         }
 
-        if ( $id && $id != $this->get_max_depth() ){
-            return 'deletedepthnotdeepest';
+        // finally delete the type itself
+        if (!delete_records($this->shortprefix.'_type', 'id', $id)) {
+            rollback_sql();
+            return false;
         }
 
+        commit_sql();
         return true;
     }
 
-    /**
-     * Delete a depth level. Will fail if there are deeper depth levels for
-     * the framework, or if there are items at this depth level in the framework
-     *
-     * @param int $id id of depth level to delete
-     * @return mixed Boolean true if successful, a hierarchy error index string if not
-     */
-    function delete_depth($id) {
-
-        $safe_or_not = $this->is_safe_to_delete_depth($id);
-        if ( $safe_or_not === true ){
-            $this->delete_depth_metadata($id);
-            delete_records($this->shortprefix.'_depth', 'id', $id);
-        }
-        return $safe_or_not;
-    }
 
     /**
-     * Delete the metadata associated with a depth level (separated into a
-     * separate function so that it can be called when all depths are deleted
-     * with a whole framework, or when a single depth level is deleted
-     * individually)
+     * Delete the metadata associated with a type (separated into a
+     * separate function so that it can be called when all types are deleted
      *
-     * @param int $id id of depth level with metadata to delete
+     * @param int $id id of type with metadata to delete
      * @return void
      */
-    function delete_depth_metadata($id) {
+    function delete_type_metadata($id) {
         $result = true;
-        // Delete all info fields in a depth
-        $result = $result && delete_records($this->shortprefix.'_depth_info_field', 'depthid', $id);
-
-        // Delete all info categories in a depth
-        $result = $result && delete_records($this->shortprefix.'_depth_info_category', 'depthid', $id);
+        // delete all custom field data using fields in this type
+        if ($fields = get_records($this->shortprefix.'_type_info_field', 'typeid', $id)) {
+            $fields = array_keys($fields);
+            $result = $result && delete_records_select($this->shortprefix.'_type_info_data', 'fieldid IN (' . implode(',', $fields) . ')');
+        }
+        // Delete all info fields in a type
+        $result = $result && delete_records($this->shortprefix.'_type_info_field', 'typeid', $id);
 
         return $result;
     }
@@ -908,7 +976,7 @@ class hierarchy {
     function display_extra_view_info($item) {}
 
     /**
-     * Return hierarchy type specific data about an item
+     * Return hierarchy prefix specific data about an item
      *
      * The returned array should have the structure:
      * array(
@@ -922,9 +990,6 @@ class hierarchy {
      */
     function get_item_data($item, $cols = NULL) {
 
-        // Item's depth
-        $depth = $this->get_depth_by_id($item->depthid);
-
         // Cols to loop through
         if (!is_array($cols)) {
             $cols = array('fullname', 'shortname', 'idnumber', 'description');
@@ -935,10 +1000,18 @@ class hierarchy {
 
         foreach ($cols as $datatype) {
             $data[] = array(
-                'title' => get_string($datatype.'view', $this->prefix, $depth->fullname),
+                'title' => get_string($datatype.'view', $this->prefix),
                 'value' => $item->$datatype
             );
         }
+
+        // Item's type
+        $itemtype = $this->get_type_by_id($item->typeid);
+        $typename = ($itemtype) ? $itemtype->fullname : get_string('unclassified', 'hierarchy');
+        $data[] = array(
+            'title' => get_string('type', 'hierarchy'),
+            'value' => $typename,
+        );
 
         return $data;
     }
@@ -946,22 +1019,11 @@ class hierarchy {
     /**
      * Return the deepest depth in this framework
      *
-     * @return int|null
+     * @return int|false
      */
     function get_max_depth() {
 
-        // Get depths
-        $depths = $this->get_depths();
-
-        if (!$depths) {
-            return null;
-        }
-
-        // Get max depth level
-        end($depths);
-        $max_depth = current($depths)->id;
-
-        return $max_depth;
+        return get_field($this->shortprefix, 'MAX(depthlevel)', 'frameworkid', $this->frameworkid);
     }
 
     /**
@@ -984,7 +1046,7 @@ class hierarchy {
                 parentid != 0
             "
         );
-        if($parents) {
+        if ($parents) {
             return $parents;
         } else {
             return array();
@@ -992,17 +1054,17 @@ class hierarchy {
     }
 
     /**
-     * Returns the short prefix for the given type name. Note that it will error
-     * out if the typename is for a non-existent hierarchy type.
+     * Returns the short prefix for the given prefix name. Note that it will error
+     * out if the prefixname is for a non-existent hierarchy prefix.
      * 
-     * @param string $typename
+     * @param string $prefixname
      * @return string
      */
-    static function get_short_prefix($typename){
+    static function get_short_prefix($prefixname){
         global $CFG;
-        $cleantypename = clean_param($typename, PARAM_ALPHA);
-        require_once($CFG->dirroot . '/hierarchy/type/' . $cleantypename . '/lib.php');
-        $instance = new $typename();
+        $cleanprefixname = clean_param($prefixname, PARAM_ALPHA);
+        require_once($CFG->dirroot . '/hierarchy/prefix/' . $cleanprefixname . '/lib.php');
+        $instance = new $prefixname();
         return $instance->shortprefix;
     }
 
@@ -1012,29 +1074,1183 @@ class hierarchy {
      * return an instance
      *
      * @access  public
-     * @param   $type   string  Hierarchy type
-     * @return  $object Instance of the hierarchy type object
+     * @param   $prefix   string  Hierarchy prefix
+     * @return  $object Instance of the hierarchy prefix object
      */
-    static function load_hierarchy($type) {
+    static function load_hierarchy($prefix) {
         global $CFG;
 
-        // $type could be user input so sanitize
-        $type = clean_param($type, PARAM_ALPHA);
+        // $prefix could be user input so sanitize
+        $prefix = clean_param($prefix, PARAM_ALPHA);
 
         // Check file exists
-        $libpath = $CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php';
+        $libpath = $CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/lib.php';
         if (!file_exists($libpath)) {
-            error('error:hierarchytypenotfound', 'hierarchy', $type);
+            print_error('error:hierarchyprefixnotfound', 'hierarchy', $prefix);
         }
 
         // Load library
         require_once $libpath;
 
         // Check class exists
-        if (!class_exists($type)) {
-            error('error:hierarchytypenotfound', 'hierarchy', $type);
+        if (!class_exists($prefix)) {
+            print_error('error:hierarchyprefixnotfound', 'hierarchy', $prefix);
         }
 
-        return new $type();
+        return new $prefix();
+    }
+
+
+    /**
+     * Returns the html to print a row of the hierarchy index table
+     *
+     * @param object $record A hierarchy item record
+     * @param boolean $include_custom_fields Whether to display custom field info too (optional)
+     * @param boolean $indicate_depth Whether to indent to show the hierarchy or not (optional)
+     * @param array $cfields Array of custom fields associated with this hierarchy (optional)
+     * @param array $types Array of type information (optional)
+     * @return string HTML to display the item as a row in the hierarchy index table
+     */
+    function display_hierarchy_item($record, $include_custom_fields=false, $indicate_depth=true, $cfields=array(), $types=array()) {
+        global $CFG;
+        $out = '';
+
+        // never indent more than 10 levels as we only have 10 levels of CSS styles
+        // and the table format would break anyway if indented too much
+        $itemdepth = ($indicate_depth) ? 'depth' . min(10, $record->depthlevel) : 'depth1';
+        // @todo get based on item type or better still, don't use inline styles :-(
+        $itemicon = $CFG->pixpath . '/i/item.gif';
+        $cssclass = !$record->visible ? 'dimmed' : '';
+
+        $out .= '<div class="hierarchyitem ' . $itemdepth .
+            '" style="background-image: url(\'' . $itemicon . '\');">';
+        $out .= '<a href="' . $CFG->wwwroot . '/hierarchy/item/view.php?prefix=' . $this->prefix .
+            '&amp;id=' . $record->id . '" class="' . $cssclass . '">' . format_string($record->fullname) . '</a>';
+        if ($include_custom_fields) {
+            $out .= '<br />';
+            // print description if available
+            if ($record->description) {
+                $out .= '<div class="itemdescription ' . $cssclass . '"><strong>' .
+                    get_string('description') . ': </strong>' .
+                    format_string($record->description) . '</div>';
+            }
+            // print type, unless unclassified
+            if ($record->typeid !=0 && is_array($types) && array_key_exists($record->typeid, $types)) {
+                $out .= '<div class="itemtype ' . $cssclass . '"><strong>' .
+                    get_string('type', 'hierarchy') . ':</strong> ' .
+                    format_string($types[$record->typeid]->fullname) . '</div>';
+            }
+
+            $out .= $this->display_hierarchy_item_custom_field_data($record, $cfields);
+        }
+        $out .= '</div>';
+        return $out;
+    }
+
+
+    /**
+     * Returns the HTML to display the action icons for a hierarchy item on the index
+     *
+     * @param object $record A hierarchy item record
+     * @param boolean $canedit Edit and show/hide buttons only shown if user can edit
+     * @param boolean $candelete Delete button only shown if user can delete
+     * @param boolean $canmove Move button only shown if user can move (and edit)
+     * @param string $extraparam Additional string to append to action URLs (optional)
+     *
+     * @return string HTML to display action icons
+     */
+    function display_hierarchy_item_actions($record, $canedit=true, $candelete=true, $canmove=true, $extraparams='') {
+        global $CFG;
+        $buttons = array();
+        $str_edit = get_string('edit');
+        $str_hide = get_string('hide');
+        $str_show = get_string('show');
+        $str_moveup = get_string('moveup');
+        $str_movedown = get_string('movedown');
+        $str_delete = get_string('delete');
+        $str_spacer       = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" /> ";
+        $prefix = $this->prefix;
+        $extraparams = !empty($extraparams) ? '&amp;' . $extraparams : '';
+
+        if ($canedit) {
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/edit.php?prefix={$prefix}&amp;frameworkid={$record->frameworkid}&amp;id={$record->id}{$extraparams}\" title=\"$str_edit\">".
+                "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+
+            if ($record->visible) {
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;&amp;frameworkid={$record->frameworkid}&amp;hide={$record->id}{$extraparams}&amp;sesskey=".sesskey()."\" title=\"$str_hide\">".
+                    "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
+            } else {
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;frameworkid={$record->frameworkid}&amp;show={$record->id}{$extraparams}&amp;sesskey=".sesskey()."\" title=\"$str_show\">".
+                    "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
+            }
+
+            if ($canmove) {
+                if ($this->get_item_adjacent_peer($record, true)) {
+                    $buttons[] = "<a href=\"index.php?prefix={$prefix}&amp;moveup={$record->id}&amp;frameworkid={$record->frameworkid}{$extraparams}&amp;sesskey=".sesskey()."\" title=\"$str_moveup\">".
+                        "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a> ";
+                } else {
+                    $buttons[] = $str_spacer;
+                }
+                if ($this->get_item_adjacent_peer($record, false)) {
+                    $buttons[] = "<a href=\"index.php?prefix={$prefix}&amp;movedown=".$record->id."&amp;frameworkid={$record->frameworkid}{$extraparams}&amp;sesskey=".sesskey()."\" title=\"$str_movedown\">".
+                        "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
+                } else {
+                    $buttons[] = $str_spacer;
+                }
+            }
+        }
+        if ($candelete) {
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/delete.php?prefix={$prefix}&amp;frameworkid={$record->frameworkid}&amp;id={$record->id}{$extraparams}\" title=\"$str_delete\">".
+                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+        }
+        return implode($buttons, ' ');
+    }
+
+    /**
+     * Return the HTML needed to display custom field information
+     * @param object $record A hierarchy record containing item and custom field information
+     *                       The record must contain the hierarchy item's typeid field and
+     *                       also custom field data stored in fields called cf_[FIELDID]
+     * @param array $cfields Array of custom fields associated with this hierarchy
+     *                       Key is fieldid, value is custom field object
+     *                       Used to determine which field to display for this item
+     *
+     * @return HTML to display the custom field data
+     */
+    function display_hierarchy_item_custom_field_data($record, $cfields) {
+        global $CFG;
+        $out = '';
+        $cssclass = !$record->visible ? 'dimmed' : '';
+
+        if(!is_array($cfields)) {
+            return false;
+        }
+
+        foreach ($cfields as $cf) {
+            $cf_type = "customfield_{$cf->datatype}";
+            require_once($CFG->dirroot.'/customfield/field/'.$cf->datatype.'/field.class.php');
+            if ($record->typeid != $cf->typeid) {
+                // custom field not in this item's type
+                continue;
+            }
+            // don't display hidden fields
+            if ($cf->hidden) {
+                continue;
+            }
+            $property = "cf_{$cf->id}";
+            // only show if there's data
+            if ($record->$property) {
+                $out .= '<div class="customfield ' . $cssclass . '"><strong>' . format_string($cf->fullname) . ':</strong> ' . call_user_func(array($cf_type, 'display_item_data'), $record->$property) . '</div>';
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Returns names of any extra fields that may be contained in a hierarchy
+     * @return array array of extra fields
+     */
+    function get_extrafields() {
+        return $this->extrafields;
+    }
+
+    /**
+     * Displays the specified extrafield
+     * @param object $item hierarchy item record
+     * @param string $extrafield name of the extrafield to display
+     * @return string html to display the hierarchy item
+     */
+    function display_hierarchy_item_extrafield($item, $extrafield) {
+        global $CFG;
+        return "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$this->prefix}&amp;id={$item->id}\">{$item->$extrafield}</a>";
+    }
+
+    /**
+     * Add several new items to a particular hierarchy parent
+     *
+     * The $items_to_add array must contain a set of objects that are suitable for
+     * inserting into the hierarchy items table. Hierarchy related data (such as
+     * depthlevel, parentid, sortorder and path) will be added by this method.
+     *
+     * @param integer $parentid ID of the item to append the new children to
+     * @param array $items_to_add Array of objects suitable for inserting
+     * @param integer $frameworkid ID of the framework to add the items to (optional if set in hierarchy object)
+     */
+    function add_multiple_items($parentid, $items_to_add, $frameworkid=null) {
+        global $USER;
+        $now = time();
+
+        // we need the framework id to be set
+        if (!isset($frameworkid)) {
+            // try and get it from current hierarchy
+            if (isset($this->frameworkid)) {
+                $frameworkid = $this->frameworkid;
+            } else {
+                return false;
+            }
+        }
+
+        if(!is_array($items_to_add)) {
+            // items must be an array of objects
+            return false;
+        }
+
+        if ($parentid != 0) {
+            // get parent record
+
+            if (!$parent = get_record($this->shortprefix, 'id', $parentid, 'frameworkid', $frameworkid)) {
+                // parent not a valid record in this framework
+                return false;
+            }
+
+            $parentsort = $parent->sortorder;
+            $parentpath = $parent->path;
+            $itemdepth = $parent->depthlevel + 1;
+        } else {
+            // new top level elements - add to end of list
+            $parentsort = get_field($this->shortprefix, 'MAX(sortorder)', '', '');
+            $parentpath = '';
+            $itemdepth = 1;
+        }
+
+        $nextsort = $parentsort + 1;
+        $num_new_items = count($items_to_add);
+
+        begin_sql();
+
+        // make room for the new items (by moving all items below the parent down)
+        if (!$this->reorder_remaining_items($num_new_items, $parentsort, $frameworkid)) {
+            rollback_sql();
+            return false;
+        }
+
+        // now start adding them
+        $new_ids = array();
+        foreach ($items_to_add as $item) {
+            // add some additional meta data to the item
+            $item->parentid = $parentid;
+            $item->sortorder = $nextsort;
+            $item->depthlevel = $itemdepth;
+            $item->timecreated = $now;
+            $item->timemodified = $now;
+            $item->usermodified = $USER->id;
+            // we can't create the full path until the new ID is known
+            $item->path = $parentpath . '/';
+            $item->frameworkid = $frameworkid;
+            // default to visible items if not set
+            if (!isset($item->visible)) {
+                $item->visible = 1;
+            }
+
+            // add each new record in turn
+            if ($newid = insert_record($this->shortprefix, $item)) {
+                // update the path to include the item's ID now it's known
+                if (!set_field($this->shortprefix, 'path', $item->path.$newid, 'id', $newid)) {
+                    rollback_sql();
+                    return false;
+                }
+
+                // add to array of items added
+                $new_ids[] = $newid;
+            } else {
+                rollback_sql();
+                return false;
+            }
+
+            // increment the sort order
+            ++$nextsort;
+        }
+
+        // everything worked -return the IDs
+        commit_sql();
+        return $new_ids;
+    }
+
+
+    /**
+     * Move an item within a hierarchy framework
+     *
+     * Given an item and a new parent ID, attach the item as a child of the parent.
+     * Any children of the original item will move with it. This script handles updating:
+     * - parent ID of moved item
+     * - path of moved item and all descendants
+     * - depthlevel of moved item and all descendants
+     * - sortorder of all moved items and any that were displaced
+     *
+     * @param object $item The item to move
+     * @param integer $newparentid ID of the item to attach it to
+     */
+    function move_hierarchy_item($item, $newparentid, $usetransaction=true) {
+        global $CFG;
+
+        if (!is_object($item)) {
+            return false;
+        }
+
+        if ($item->parentid == 0) {
+            // create a 'fake' old parent item for items at the top level
+            $oldparent = new object();
+            $oldparent->id = 0;
+            $oldparent->path = '';
+            $oldparent->depthlevel = 0;
+        } else {
+            $oldparent = get_record($this->shortprefix, 'id', $item->parentid);
+            if (!$oldparent) {
+                // can't find the current parent item
+                return false;
+            }
+        }
+
+        if ($newparentid == 0) {
+            // create a 'fake' new parent item for attaching to the top level
+            $newparent = new object();
+            $newparent->id = 0;
+            $newparent->path = '';
+            $newparent->depthlevel = 0;
+            $newparent->sortorder = 0;
+            $newparent->frameworkid = $item->frameworkid;
+        } else {
+            $newparent = get_record($this->shortprefix, 'id', $newparentid);
+            if (!$newparent) {
+                // can't find the new parent item
+                return false;
+            }
+
+            if ($this->is_child_of($newparent, $item->id)) {
+                // you can't move an item into its own child
+                return false;
+            }
+        }
+        if ($newparent->frameworkid != $item->frameworkid) {
+            // can't move to a different framework
+            return false;
+        }
+
+        if ($usetransaction) {
+            begin_sql();
+        }
+        // update the sortorder first
+
+        // updating the sortorder is complex as we need to take into account
+        // the tree being moved, its destination and the items being displaced
+        $sourcetree = $this->get_item_descendants($item->id);
+        if (!$sourcetree) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+        $sourcecount = count($sourcetree);
+        $sourcesort = $item->sortorder;
+        $destsort = $newparent->sortorder+1; // always add as first child of new parent
+        $sortdiff = $destsort - $sourcesort;
+        $movingdown = ($destsort > $sourcesort);
+        if ($movingdown) {
+            // subtract the items that are moving
+            $sortdiff -= $sourcecount;
+        }
+
+        // first update the displaced items
+        if ($movingdown) {
+            $operator = '-';
+            $where = "sortorder < {$destsort} AND sortorder > {$sourcesort}";
+        } else {
+            $operator = '+';
+            $where = "sortorder >= {$destsort} AND sortorder < {$sourcesort}";
+        }
+        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
+            SET sortorder = sortorder {$operator} {$sourcecount}
+            WHERE {$where}
+            AND (path != '{$item->path}' AND path NOT LIKE '{$item->path}/%')
+            AND frameworkid = {$item->frameworkid}";
+        if (!execute_sql($sql, false)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+        // update items that are moving by adding $sortdiff to their sort order
+        // the WHERE clause must be like this to avoid /1% matching /10
+        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
+            SET sortorder = sortorder + {$sortdiff}
+            WHERE (path = '{$item->path}' OR path LIKE '{$item->path}/%')
+            AND frameworkid = {$item->frameworkid}";
+        if (!execute_sql($sql, false)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+
+        // update the item's parent ID
+        $todb = new object();
+        $todb->id = $item->id;
+        $todb->parentid = $newparentid;
+        if (!update_record($this->shortprefix, $todb)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+
+        // update the depthlevel of the item and its descendants
+        // figure out how much the level will change after move
+        $depthdiff = ($newparent->depthlevel + 1) - $item->depthlevel;
+        // update the depthlevel of all affected items
+        // the WHERE clause must be like this to avoid /1% matching /10
+        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
+            SET depthlevel=depthlevel + {$depthdiff}
+            WHERE (path = '{$item->path}' OR path LIKE '{$item->path}/%')
+            AND frameworkid = {$item->frameworkid}";
+        if (!execute_sql($sql, false)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+
+        // update the path of the item and its descendants
+        // we need to:
+        // - remove the 'old parent' segment of the path from the beginning of the path
+        // - add the 'new parent' segment of the path instead
+        // - do this for all items that start with the item's path
+        // unfortunately this is a bit messy to do in the SQL in a single statement
+        // in a cross platform way...
+        // the WHERE clause must be like this to avoid /1% matching /10
+        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
+            SET path=" . sql_concat("'{$newparent->path}'", sql_substr() . "(path, " . sql_length("'{$oldparent->path}'") . " + 1)") . "
+            WHERE (path = '{$item->path}' OR path LIKE '{$item->path}/%')
+            AND frameworkid = {$item->frameworkid}";
+        if (!execute_sql($sql, false)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+        if ($usetransaction) {
+            commit_sql();
+        }
+        return true;
+    }
+
+    /**
+     * Return items from this hierarchy that aren't assigned to a type
+     *
+     * @param boolean $countonly If true, only return how many items are unclassified
+     *
+     * @return array|integer|false Array of items, or the number of items, or false on failure
+     */
+    function get_unclassified_items($countonly=false) {
+        $select = "typeid IS NULL OR typeid = 0";
+        if ($countonly) {
+            return count_records_select($this->shortprefix, $select);
+        } else {
+            return get_records_select($this->shortprefix, $select);
+        }
+    }
+
+    /**
+     * Updates the sort order of the rest of the items to accomodate a change
+     *
+     * @param integer $sortdiff Change to apply to the items (positive to move down, negative to move up)
+     * @param integer $after Only apply to items with a current sortorder greater than this figure
+     *
+     * @return boolean Success if update was completed
+     */
+    function reorder_remaining_items($sortdiff, $after=null, $frameworkid=null) {
+        global $CFG;
+        // use the hierarchies framework id if available
+        // otherwise it must be provided
+        if(empty($this->frameworkid)) {
+            if(isset($frameworkid)) {
+                $fwid = $frameworkid;
+            } else {
+                // we need a framework id
+                return false;
+            }
+        } else {
+            $fwid = $this->frameworkid;
+        }
+        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
+            SET sortorder = sortorder + $sortdiff
+            WHERE frameworkid = {$fwid}";
+        if($after) {
+            $sql .= "AND sortorder > $after";
+        }
+        return execute_sql($sql, false);
+    }
+
+    /**
+     * Return the HTML to display a framework search form
+     *
+     * To get placeholder text to appear include the following in the source page:
+     *
+     * require_once($CFG->dirroot.'/local/js/lib/setup.php');
+     * local_js(array(TOTARA_JS_PLACEHOLDER));
+     *
+     * @param string $query An existing query to populate the search box with
+     * @param string $placeholdertext Placeholder text to appear when the box is empty (optional)
+     *
+     * @return string The HTML to print the form
+     *
+     */
+    function display_search_box($query, $placeholdertext=null) {
+        if(empty($placeholdertext)) {
+            $placeholdertext = get_string('search');
+        }
+        $out = '';
+        $out .= '<form id="hierarchy-search-form" action="" method="get">';
+        $out .= '<input type="hidden" name="prefix" value="' . $this->prefix . '" />';
+        $out .= '<input type="hidden" name="frameworkid" value="' . $this->frameworkid . '" />';
+        $out .= '<input id="hierarchy-search-text-field" class="search-box" placeholder="' . $placeholdertext . '" type="text" name="query" value="' . stripslashes($query) . '" />';
+        $out .= '<input type="submit" name="submit" value="' . get_string('go') . '" />';
+        $out .= '</form>';
+
+        return $out;
+    }
+
+    /**
+     * Return the HTML to display a button for showing or hiding hierarchy item details
+     *
+     * @param integer $displaymode If the page is currently hiding custom fields (1) or showing them (0)
+     * @param string $query Any active search query
+     * @param integer $page Page number so we return to the same place
+     *
+     * @return string The HTML to display the button
+     */
+    function display_showhide_detail_button($displaymode, $query='', $page=0) {
+        global $CFG;
+        $newdisplaymode = ($displaymode) ? 0 : 1;
+        $buttontext = ($displaymode) ? get_string('showdetails', 'hierarchy') :
+            get_string('hidedetails', 'hierarchy');
+        $params = array(
+            'prefix' => $this->prefix,
+            'frameworkid' => $this->frameworkid,
+            'query' => $query,
+            'page' => $page,
+            'setdisplay' => $newdisplaymode,
+        );
+        return '<div class="showhide-button">' . print_single_button($CFG->wwwroot . '/hierarchy/index.php', $params,
+            $buttontext, 'get', '_self', true). '</div>';
+
+    }
+
+
+    /**
+     * Override in child class to add extra form elements in the add/edit form for items of
+     * a particular prefix
+     */
+    function add_additional_item_form_fields(&$mform) {
+        return;
+    }
+
+
+
+    /** Prints select box and Export button to export current report.
+     *
+     * A select is shown if the global settings allow exporting in
+     * multiple formats. If only one format specified, prints a button.
+     * If no formats are set in global settings, no export options are shown
+     *
+     * for this to work page must contain:
+     * if($format!=''){$report->export_data($format);die;}
+     * before header printed
+     *
+     * @return No return value but prints export select form
+     */
+    function export_select() {
+        global $CFG;
+        require_once($CFG->dirroot.'/hierarchy/export_form.php');
+        $export = new hierarchy_export_form(qualified_me());
+        $export->display();
+    }
+
+    /**
+     * Exports the data from the current results, maintaining
+     * sort order and active filters but removing pagination
+     *
+     * @param string $format Format for the export ods/csv/xls
+     * @return No return but initiates save dialog
+     */
+    function export_data($format) {
+        global $CFG;
+
+        $query = optional_param('query', '', PARAM_TEXT);
+        $searchactive = (strlen(trim($query)) > 0);
+        $framework   = $this->get_framework($this->frameworkid, true);
+        $showcustomfields = ($framework->hidecustomfields != 1);
+
+        $select = "SELECT hierarchy.id, hierarchy.fullname as hierarchyname, type.fullname as typename, hierarchy.depthlevel";
+        $count = "SELECT COUNT(hierarchy.id)";
+        $from   = " FROM {$CFG->prefix}{$this->shortprefix} hierarchy LEFT JOIN {$CFG->prefix}{$this->shortprefix}_type type ON hierarchy.typeid = type.id";
+        $where  = " WHERE frameworkid={$this->frameworkid}";
+        $order  = " ORDER BY sortorder";
+
+        if ($searchactive) {
+            $headings = array('hierarchyname' => get_string('name'), 'typename' => get_string('type','hierarchy'));
+        } else {
+            $headings = array('typename' => get_string('type', 'hierarchy'));
+        }
+        //Add custom field data to select only if customfields are being shown
+        if ($showcustomfields) {
+            if ($custom_fields = get_records($this->shortprefix.'_type_info_field')) {
+                foreach ($custom_fields as $field) {
+                    $headings["cf_{$field->id}"] = $field->fullname;
+                    $select .= ", cf_{$field->id}.data as cf_{$field->id}";
+                    $from .= " LEFT JOIN {$CFG->prefix}{$this->shortprefix}_type_info_data cf_{$field->id} ON hierarchy.id = cf_{$field->id}.{$this->prefix}id AND cf_{$field->id}.fieldid = {$field->id}";
+                }
+            }
+        }
+
+        // If search is active add search conditions to query
+        if ($searchactive) {
+            // extract quoted strings from query
+            $keywords = local_search_parse_keywords($query);
+            // match search terms against the following fields
+            $dbfields = array('hierarchy.fullname', 'hierarchy.shortname', 'hierarchy.description', 'hierarchy.idnumber');
+            // Make sure custom fields are being displayed before searching them
+            if ($showcustomfields && is_array($custom_fields)) {
+                foreach ($custom_fields as $cf) {
+                    $dbfields[] = "cf_{$cf->id}.data";
+                }
+            }
+            $where .= ' AND (' . local_search_get_keyword_where_clause($keywords, $dbfields). ')';
+        }
+
+
+        $shortname = $this->prefix;
+        $sql = $select.$from.$where.$order;
+
+        $maxdepth = get_field_sql("SELECT max(depthlevel) FROM {$CFG->prefix}{$this->shortprefix} WHERE frameworkid={$this->frameworkid}");
+
+        // need to create flexible table object to get sort order
+        // from session var
+        $table = new flexible_table($shortname);
+
+        switch($format) {
+            case 'ods':
+                $this->download_ods($headings, $sql, $maxdepth, null, $searchactive);
+            case 'xls':
+                $this->download_xls($headings, $sql, $maxdepth, null, $searchactive);
+            case 'csv':
+                $this->download_csv($headings, $sql, $maxdepth, null, $searchactive);
+        }
+        die;
+    }
+
+
+    /** Download current table in ODS format
+     * @param array $fields Array of column headings
+     * @param string $query SQL query to run to get results
+     * @param integer $count Number of filtered records in query
+     * @return Returns the ODS file
+     */
+    function download_ods($fields, $query, $maxdepth, $file=null, $searchactive=false) {
+        global $CFG;
+        require_once("$CFG->libdir/odslib.class.php");
+        $shortname = $this->prefix;
+        $filename = clean_filename($shortname.'_hierarchy.ods');
+
+        if (!$file) {
+            header("Content-Type: application/download\n");
+            header("Content-Disposition: attachment; filename=$filename");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
+            header("Pragma: public");
+        }
+
+        if ($file) {
+            $workbook = new MoodleODSWorkbook($file, true);
+        }
+        else{
+            $workbook = new MoodleODSWorkbook('-');
+            $workbook->send($filename);
+        }
+
+        $worksheet = array();
+
+        $worksheet[0] =& $workbook->add_worksheet('');
+        $row = 0;
+        $col = 0;
+
+        if (!$searchactive) {
+            for ($depth = 1 ; $depth <= $maxdepth ; $depth++) {
+                $worksheet[0]->write($row, $col, get_string('depth', 'hierarchy', $depth));
+                $col++;
+            }
+        }
+
+        foreach ($fields as $fieldid => $fieldname) {
+            $worksheet[0]->write($row, $col, $fieldname);
+            $col++;
+        }
+        $row++;
+
+        $numfields = count($fields);
+
+        //Use recordset to keep memory use down
+        $data = get_recordset_sql($query);
+        if ($data) {
+            while ($datarow = rs_fetch_next_record($data)) {
+                $curcol = 0;
+                if(!$searchactive) {
+                    $curcol = $maxdepth;
+                    $worksheet[0]->write($row, $datarow->depthlevel-1, htmlspecialchars_decode($datarow->hierarchyname));
+                }
+                foreach ($fields as $fieldid => $fieldname) {
+                    $worksheet[0]->write($row, $curcol++, htmlspecialchars_decode($datarow->$fieldid));
+                }
+                $row++;
+            }
+        }
+
+        $workbook->close();
+        if(!$file){
+            die;
+        }
+    }
+
+
+    /** Download current table in XLS format
+     * @param array $fields Array of column headings
+     * @param string $query SQL query to run to get results
+     * @param integer $maxdepth Number of the deepest depth in this hierarchy
+     * @return Returns the Excel file
+     */
+    function download_xls($fields, $query, $maxdepth, $file=null, $searchactive=false) {
+        global $CFG;
+
+        require_once("$CFG->libdir/excellib.class.php");
+
+        $shortname = $this->prefix;
+        $filename = clean_filename($shortname.'_report.xls');
+
+        if (!$file) {
+            header("Content-Type: application/download\n");
+            header("Content-Disposition: attachment; filename=$filename");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
+            header("Pragma: public");
+
+            $workbook = new MoodleExcelWorkbook('-');
+            $workbook->send($filename);
+        }
+        else {
+            $workbook = new MoodleExcelWorkbook($file);
+        }
+
+        $worksheet = array();
+
+        $worksheet[0] =& $workbook->add_worksheet('');
+        $row = 0;
+        $col = 0;
+
+        if (!$searchactive) {
+            for ($depth = 1 ; $depth <= $maxdepth ; $depth++) {
+                $worksheet[0]->write($row, $col, get_string('depth', 'hierarchy', $depth));
+                $col++;
+            }
+        }
+
+        foreach ($fields as $fieldname) {
+            $worksheet[0]->write($row, $col, $fieldname);
+            $col++;
+        }
+        $row++;
+
+        $numfields = count($fields);
+
+        //Use recordset to keep memory use down
+        $data = get_recordset_sql($query);
+        if ($data) {
+            while ($datarow = rs_fetch_next_record($data)) {
+                $curcol = 0;
+                if (!$searchactive) {
+                    $curcol = $maxdepth;
+                    $worksheet[0]->write($row, $datarow->depthlevel-1, htmlspecialchars_decode($datarow->hierarchyname));
+                }
+                foreach ($fields as $fieldid => $fieldname) {
+                    $worksheet[0]->write($row, $curcol++, htmlspecialchars_decode($datarow->$fieldid));
+                }
+                $row++;
+            }
+        }
+
+        $workbook->close();
+        if (!$file) {
+            die;
+        }
+    }
+
+
+    /** Download current table in CSV format
+     * @param array $fields Array of column headings
+     * @param string $query SQL query to run to get results
+     * @param integer $maxdepth Number of the deepest depth in this hierarchy
+     * @return Returns the CSV file
+     */
+    function download_csv($fields, $query, $maxdepth, $file=null, $searchactive=false) {
+        global $CFG;
+        $shortname = $this->prefix;
+        $filename = clean_filename($shortname.'_report.csv');
+        $csv = '';
+
+        if (!$file) {
+            header("Content-Type: application/download\n");
+            header("Content-Disposition: attachment; filename=$filename");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
+            header("Pragma: public");
+        }
+
+        $delimiter = get_string('listsep');
+        $encdelim  = '&#'.ord($delimiter).';';
+        $row = array();
+
+        if (!$searchactive) {
+            $headers = array();
+            for ($depth = 1 ; $depth <= $maxdepth ; $depth++) {
+                $headers[] = get_string('depth', 'hierarchy' ,$depth);
+            }
+        }
+
+        foreach ($fields as $fieldname) {
+            $headers[] = str_replace($delimiter, $encdelim, $fieldname);
+        }
+
+        $csv .= implode($delimiter, $headers)."\n";
+
+        //Use recordset to keep memory use down
+        $data = get_recordset_sql($query);
+        if ($data) {
+            while ($datarow = rs_fetch_next_record($data)) {
+                $row = array();
+                if (!$searchactive) {
+                    $depthstring = str_repeat(',', $datarow->depthlevel-1);
+                    $depthstring .= str_replace($delimiter, $encdelim, $datarow->hierarchyname);
+                    $depthstring .= str_repeat(',', $maxdepth - ($datarow->depthlevel - 1));
+                }
+                foreach ($fields as $fieldid => $fieldname) {
+                    if ($fieldid == 'hierarchyname' && !$searchactive) {
+                        continue;
+                    } else if ($datarow->$fieldid) {
+                        $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $datarow->$fieldid));
+                    } else {
+                        $row[] = '';
+                    }
+                }
+                if (!$searchactive) {
+                    $csv .= $depthstring . implode($delimiter, $row)."\n";
+                } else {
+                    $csv .= implode($delimiter, $row)."\n";
+                }
+            }
+        }
+
+        if ($file) {
+            $fp = fopen ($file, "w");
+            fwrite($fp, $csv);
+            fclose($fp);
+        } else {
+            echo $csv;
+            die;
+        }
+    }
+
+
+    /**
+     * Returns various stats about an item, used for listed what will be deleted
+     *
+     * Overridden in child classes to add more specific info
+     *
+     * @param integer $id ID of the item to get stats for
+     * @return array Associative array containing stats
+     */
+    public function get_item_stats($id) {
+
+        // should always include at least one item (itself)
+        if(!$children = $this->get_item_descendants($id)) {
+            return false;
+        }
+
+        $data = array();
+
+        $data['itemname'] = $children[$id]->fullname;
+
+        // number of children (exclude item itself)
+        $data['children'] = count($children) - 1;
+
+        $ids = array_keys($children);
+
+        // number of custom field data records
+        $data['cf_data'] = count_records_select($this->shortprefix .
+            '_type_info_data', sql_sequence($this->prefix.'id', $ids));
+
+        return $data;
+    }
+
+
+    /**
+     * Given some stats about an item, return a formatted delete message
+     *
+     * Overridden in child classes to add more specific info
+     *
+     * @param array $stats Associative array of item stats
+     * @return string Formatted delete message
+     */
+    public function output_delete_message($stats) {
+        $message = '';
+
+        $a = new object();
+        $a->childcount = $stats['children'];
+        $a->children_string = $stats['children'] == 1 ? get_string('child', 'hierarchy') : get_string('children', 'hierarchy');
+
+        if (isset($stats['itemcount'])) {
+            $langstr = 'deletemulticheckwithchildren';
+            $a->num = $stats['itemcount'];
+        } else if ($stats['children'] > 0) {
+            $langstr = 'deletecheckwithchildren';
+            $a->itemname = $stats['itemname'];
+        } else {
+            $langstr = 'deletecheck';
+            $a = $stats['itemname'];
+        }
+        $message .= get_string($langstr, $this->prefix, $a) . '<br />';
+
+        if ($stats['cf_data'] > 0) {
+            $message .= get_string('deleteincludexcustomfields', $this->prefix, $stats['cf_data']) . '<br />';
+        }
+
+        return $message;
+    }
+
+
+    /**
+     * Returns a delete message to prompt the user when deleting one or more items
+     *
+     * @param integer|array ID or array of IDs to be deleted
+     *
+     * @return string Human-readable delete prompt text for the items given
+     */
+    public function get_delete_message($ids) {
+        if (is_array($ids)) {
+            // aggregate stats for multiple items
+            $itemstats = array();
+            foreach ($ids as $id) {
+                $itemstats[] = $this->get_item_stats($id);
+            }
+            foreach ($itemstats as $item) {
+                foreach ($item as $key => $value) {
+                    if ($key == 'itemname') {
+                        if (isset($stats['itemcount'])) {
+                            $stats['itemcount'] += 1;
+                        } else {
+                            $stats['itemcount'] = 1;
+                        }
+                    } else {
+                        if (isset($stats[$key])) {
+                            $stats[$key] += $value;
+                        } else {
+                            $stats[$key] = $value;
+                        }
+                    }
+                }
+            }
+        } else {
+            // stats for a single item
+            $stats = $this->get_item_stats($ids);
+        }
+
+        // output the stats
+        return $this->output_delete_message($stats);
+    }
+
+
+    /**
+     * Returns a move message to prompt the user when moving one or more items
+     *
+     * @param integer|array ID or array of IDs to be deleted
+     *
+     * @return string Human-readable move prompt text for the items given
+     */
+    public function get_move_message($ids, $parentid) {
+        if (is_array($ids) && count($ids) != 1) {
+            $itemstr = get_string($this->prefix.'plural', $this->prefix);
+            $num = count($ids);
+        } else {
+            $itemstr = get_string($this->prefix, $this->prefix);
+            $num = 1;
+        }
+
+        $parentname = ($parentid == 0) ? get_string('top', 'hierarchy') :
+            format_string(get_field($this->shortprefix, 'fullname', 'id', $parentid));
+
+        $a = new object();
+        $a->num = $num;
+        $a->items = strtolower($itemstr);
+        $a->parentname = $parentname;
+
+        return get_string('confirmmoveitems', 'hierarchy', $a);
+    }
+
+
+    /**
+     * Returns a list of items where none of the items are children of any of the others
+     *
+     * In cases where $ids contains both a parent and a child, the parent is retained.
+     *
+     * This method will also remove any duplicate IDs
+     *
+     * @param array $ids Array of item IDs
+     * @return array Array of item IDs
+     */
+    public function get_items_excluding_children($ids) {
+        $out = array();
+        $items = get_recordset_select($this->shortprefix, sql_sequence('id', $ids), 'id', 'id,depthlevel,path');
+        if ($items) {
+            // group records by their depthlevel
+            $items_by_depth = totara_group_records($items, 'depthlevel');
+            // sort ascending
+            ksort($items_by_depth);
+
+            $firstdepth = true;
+            foreach ($items_by_depth as $depth => $items) {
+                foreach ($items as $item) {
+                    // add all the first level items without further checks
+                    if ($firstdepth && !in_array($item->id, $out)) {
+                        $out[] = $item->id;
+                    }
+
+                    // exclude any duplicates, or items who's parents are already added
+                    if (!$this->is_child_of($item, $out) && !in_array($item->id, $out)) {
+                        $out[] = $item->id;
+                    }
+                }
+               $firstdepth = false;
+            }
+        }
+        sort($out);
+        return $out;
+    }
+
+    /**
+     * Returns true if $item is a child of any of the item IDs given
+     *
+     * @param object $item An item object (must contain a path property)
+     * @param integer|array $ids ID or array of IDs to check against the item
+     *
+     * @return boolean True if $item is a child of any of $ids
+     */
+    public function is_child_of($item, $ids) {
+        if (!isset($item->path)) {
+            return false;
+        }
+
+        $ids = (is_array($ids)) ? $ids : array($ids);
+
+        $parents = explode('/', substr($item->path, 1));
+
+        // remove the items ID
+        $itemid = array_pop($parents);
+
+        foreach ($parents as $parent) {
+            if (in_array($parent, $ids)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     * Generate a list of possible parents as an associative array
+     *
+     * The output is suitable for creating a pulldown for moving an item to a new
+     * parent
+     *
+     * @param array $items An array of items, as produced by {@link get_items()}
+     * @param integer|object $item The current item or its ID (optional)
+     *                     If provided then the pulldown will exclude items that
+     *                     the item can't be moved to (e.g. its own children)
+     * @param boolean $inctop If true include the 'top' level (optional - default true)
+     * @return array Returns an associative array of item names keyed on ID
+     *               or an empty array if no items found
+     */
+    public function get_parent_list($items, $item = null, $inctop = true) {
+
+        $out = array();
+
+        // fetch the record if only an ID is provided
+        if (isset($item) && is_int($item)) {
+            $item = $this->get_item($item);
+        }
+
+        if ($inctop) {
+            // Add 'top' as the first option
+            $out[0] = get_string('top', 'hierarchy');
+        }
+
+        if (is_array($items)) {
+            // Cache breadcrumbs
+            $breadcrumbs = array();
+
+            foreach ($items as $parent) {
+
+                // An item cannot be its own parent
+                if (isset($item) && $parent->id == $item->id) {
+                    continue;
+                }
+
+                // An item cannot be moved inside one of its own children
+                if (isset($item) && isset($item->path) && substr($parent->path, 0, strlen($item->path.'/')) == $item->path.'/') {
+                    continue;
+                }
+
+                // Grab parents and append this title
+                $breadcrumbs = array_slice($breadcrumbs, 0, ($parent->depthlevel - 1));
+                $breadcrumbs[] = $parent->fullname;
+
+                // Make display text
+                $display = implode(' / ', $breadcrumbs);
+                $out[$parent->id] = $display;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Redirect old URLs to the correct page
+     *
+     * Prior to version 1.1, 'type' was used to reference the hierarchy subclass (e.g. 'competency', 'organisation')
+     * This was changed to 'prefix' in 1.1 to be more consistent with usage in the class, and to free up 'type' to
+     * refer to the type of item in a hierarchy.
+     *
+     * This method provides backward compatibility by looking for 'old' URLs and silently redirects them to the correct page
+     *
+     * It should be called at the top of any page which used to rely on ?type=[prefix] in the URL (after includes, but before
+     * anything else)
+     */
+    static public function support_old_url_syntax() {
+        $prefix = optional_param('prefix', null, PARAM_SAFEDIR);
+        $type = optional_param('type', null, PARAM_SAFEDIR);
+
+        // only redirect if type is set but prefix is not
+        if (isset($type) && !isset($prefix)) {
+            $murl = new moodle_url(qualified_me());
+            $murl->remove_params('type');
+            $murl->param('prefix', $type);
+
+            $referrer = isset($_SERVER['HTTP_REFERRER']) ? $_SERVER['HTTP_REFERRER'] : 'none';
+            error_log('Visit to ' . qualified_me() . ' redirected to ' . $murl->out() . ' referrer: ' . $referrer);
+
+            redirect($murl->out());
+        }
     }
 }

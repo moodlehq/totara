@@ -91,6 +91,10 @@ table.formtable tbody th {
   color:#AA0000; /* highlight missing terms in forum search */
 }
 
+.dimmed {
+  color:#AAAAAA;
+}
+
 /* Alternate rows even */
 .r0 {
 }
@@ -1227,14 +1231,43 @@ table.quizreviewsummary td.cell {
 }
 
 form.mform .required label {
-  color:#a00;
+  color:#000;
 }
 form.mform .fdescription.required {
-  color:#a00;
+  color:#666;
 }
 form.mform .required .fgroup span label {
   color:#000;
 }
 
+/*
+ * Styles for 'placeholder' text used by local/js/lib/load.placeholder.js
+ */
+.placeholder {
+    color: #AAA;
+}
+
+/* Native HTML5 styling of placeholders */
+::-webkit-input-placeholder {color: #AAA;}
+:-moz-placeholder {color: #AAA;}
 
 
+/*
+ * Styles for a generic search box class
+ */
+input.search-box {
+    margin: 0px;
+    padding: 3px 3px 3px 25px;
+    background: #fff url(pix/t/preview.gif) no-repeat 3px 50%;
+    border: 1px solid #AAAAAA;
+}
+input.search-box:focus {
+    border: 1px solid #AAAAFF;
+}
+
+/**
+ * Warning box on bulk actions page
+ */
+div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
+	border: 1px solid #DDDDDD;
+}
