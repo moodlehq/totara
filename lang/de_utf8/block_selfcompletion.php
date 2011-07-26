@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // block_selfcompletion.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // block_selfcompletion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['alreadyselfcompleted'] = 'Sie haben den Kurs schon als selbst abgeschlossen markiert.';

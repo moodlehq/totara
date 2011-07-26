@@ -25,7 +25,9 @@ $shortname = 'bookings';
 $data = array(
     'userid' => $userid,
 );
-$report = reportbuilder_get_embedded_report($shortname, $data);
+if (!$report = reportbuilder_get_embedded_report($shortname, $data)) {
+    print_error('error:couldnotgenerateembeddedreport', 'local_reportbuilder');
+}
 
 $query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
 $log_url = 'bookings.php'.$query_string;

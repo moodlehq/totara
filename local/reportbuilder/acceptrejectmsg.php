@@ -39,10 +39,6 @@ if (isguestuser()) {
     redirect($CFG->wwwroot);
 }
 
-if (empty($CFG->messaging)) {
-    print_error('disabled', 'message');
-}
-
 if (!in_array($event, array('onaccept', 'onreject'))) {
     error('Invalid event type: '.$event);
 }

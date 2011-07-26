@@ -13,11 +13,12 @@ body {
 	margin:0;
 }
 div#wrapper {
-	width:950px;
+    width:950px;
+    margin:0px auto;
 }
-	div#wrapper a:link { color:blue; }
-	div#wrapper a:visited { color:navy; }
-	div#wrapper a:hover { color:green; }
+div#wrapper a:link { color:blue; }
+div#wrapper a:visited { color:navy; }
+div#wrapper a:hover { color:green; }
 
 /**
  * Header
@@ -363,5 +364,29 @@ h2.headingblock {
     margin:10px auto;
 }
 
+/**
+ * Course Completions
+ **/
+.mycourses .header .title h2{
+    padding-left:5px;
+    border-bottom:0px !important;
+    margin:4px 0px 0px 0px;
+}
+.mycourses .allmycourses{
+    text-align:right;
+    padding:10px 5px 0px 0px;
+}
+.mycourses .content{
+    padding-left:5px;
+}
+.mycourses .content table{
+    width:100%;
+}
+.mycourses .content table th{
+    text-align:left;
+}
+.mycourses .content table  th.course, table.centerblock td.course{
+    width:270px;
+}
 
 /***** page/styles_page.css end *****/

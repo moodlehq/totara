@@ -3313,8 +3313,11 @@ function reportbuilder_get_report_url($report) {
         return $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id;
     } else {
         // use report shortname to find appropriate embedded report object
-        $embed = reportbuilder_get_embedded_report_object($report->shortname);
-        return $CFG->wwwroot . $embed->url;
+        if ($embed = reportbuilder_get_embedded_report_object($report->shortname)) {
+            return $CFG->wwwroot . $embed->url;
+        } else {
+            return $CFG->wwwroot;
+        }
     }
 
 }

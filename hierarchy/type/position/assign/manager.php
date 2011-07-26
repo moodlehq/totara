@@ -25,8 +25,8 @@ $managers = get_records_sql(
             {$CFG->prefix}user u
         WHERE
             u.deleted = 0
-        AND
-            u.id != {$guest->id}
+        AND u.id != {$guest->id}
+        AND u.id != {$userid}
         ORDER BY
             u.firstname,
             u.lastname
@@ -42,6 +42,6 @@ $dialog = new totara_dialog_content();
 $dialog->search_code = '/hierarchy/type/position/assign/manager_search.php';
 $dialog->items = $managers;
 $dialog->lang_file = 'manager';
-$dialog->disabled_items = array($userid => true);
+$dialog->customdata['current_user'] = $userid;
 
 echo $dialog->generate_markup();

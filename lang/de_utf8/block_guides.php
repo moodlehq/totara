@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // block_guides.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // block_guides.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['action'] = 'Aktion';
@@ -18,6 +18,7 @@ $string['guides:viewothersguide'] = 'Andere Leitfaden ansehen';
 $string['guides:viewownguide'] = 'Eigenen Leitfaden ansehen';
 $string['guidesavailable'] = 'Verfügbare Leitfaden';
 $string['guidesinprogress'] = 'Laufende Leitfaden';
+$string['moredetail'] = 'Mehr Details';
 $string['noguidesavailable'] = 'Es stehen keine Leitfaden zur Verfügung die gestartet werden können';
 $string['noguidesinprogress'] = 'Keine laufenden Leitfaden';
 $string['options'] = 'Optionen';
@@ -25,6 +26,7 @@ $string['restartguide'] = 'Leitfaden neu starten';
 $string['startguide'] = 'Leitfaden starten';
 $string['status'] = 'Status';
 $string['unavailable'] = 'Nicht verfügbar';
+$string['viewallguides'] = 'Alles Leifäden ansehen';
 $string['viewguide'] = 'Leitfaden anzeigen';
 
 ?>

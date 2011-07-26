@@ -29,6 +29,7 @@ define('HIERARCHY_SEARCH_NUM_PER_PAGE', 50);
 
 $query = optional_param('query', null, PARAM_TEXT); // search query
 $page = optional_param('page', 0, PARAM_INT); // results page number
+$userid = optional_param('userid', -1, PARAM_INT); // user being assigned a manager
 
 $strsearch = get_string('search');
 #$stritemplural = get_string($type . 'plural', $type);
@@ -40,6 +41,13 @@ $query = urldecode(trim($query));
 // Search form
 // Data
 $hidden = array();
+
+// Grab data from dialog object (if applicable)
+if (isset($this) && isset($this->customdata['current_user'])) {
+    $hidden['userid'] = $this->customdata['current_user'];
+} else if ($userid) {
+    $hidden['userid'] = $userid;
+}
 
 // Create form
 $mform = new dialog_search_form($CFG->wwwroot. '/hierarchy/type/position/assign/manager_search.php',
@@ -71,6 +79,7 @@ if (strlen($query)) {
 
     // Match search terms
     $where = user_search_get_keyword_where_clause($keywords);
+    $where .= " AND u.id <> {$userid}";
 
     $total = count_records_sql($count . $from . $where);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;

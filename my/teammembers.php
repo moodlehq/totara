@@ -46,7 +46,9 @@ global $SESSION,$USER;
 $strheading = get_string('teammembers', 'local');
 
 $shortname = 'team_members';
-$report = reportbuilder_get_embedded_report($shortname);
+if (!$report = reportbuilder_get_embedded_report($shortname)) {
+    print_error('error:couldnotgenerateembeddedreport', 'local_reportbuilder');
+}
 
 add_to_log(SITEID, 'my', 'teammembers report view', 'teammembers.php');
 

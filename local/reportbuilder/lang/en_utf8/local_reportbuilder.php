@@ -105,6 +105,7 @@ $string['error:column_not_moved'] = 'There was a problem moving that column';
 $string['error:column_vis_not_updated'] = 'Column visibility could not be updated';
 $string['error:columns_not_updated'] = 'There was a problem updating the columns.';
 $string['error:couldnotcreatenewreport'] = 'Could not create new report';
+$string['error:couldnotgenerateembeddedreport'] = 'There was a problem generating that report';
 $string['error:couldnotsavesearch'] = 'Could not save search';
 $string['error:couldnotupdateglobalsettings'] = 'There was an error while updating the global settings';
 $string['error:couldnotupdatereport'] = 'Could not update report';

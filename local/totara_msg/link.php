@@ -35,10 +35,6 @@ if (isguestuser()) {
     redirect($CFG->wwwroot);
 }
 
-if (empty($CFG->messaging)) {
-    print_error('disabled', 'message');
-}
-
 /// Script parameters
 $msgid = required_param('id', PARAM_INT);
 $returnto = optional_param('returnto', NULL, PARAM_RAW);

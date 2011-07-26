@@ -113,7 +113,7 @@ class rb_current_pos_content extends rb_base_content {
 
         // return users who are in a position in that list
         $users = get_records_select('pos_assignment',
-            "positionid IN (" . implode(',', $plist) . ")", '', 'userid');
+            "positionid IN (" . implode(',', $plist) . ")", '', 'DISTINCT userid');
 
         $ulist = array();
         foreach ($users as $user) {
@@ -285,7 +285,7 @@ class rb_current_org_content extends rb_base_content {
 
         // return users who are in an organisation in that list
         $users = get_records_select('pos_assignment',
-            "organisationid IN (" . implode(',', $olist) . ")", '', 'userid');
+            "organisationid IN (" . implode(',', $olist) . ")", '', 'DISTINCT userid');
         $ulist = array();
         foreach ($users as $user) {
             $ulist[] = $user->userid;

@@ -137,4 +137,8 @@ $THEME->custompix = true;
 /// for all the activity modules.
 ////////////////////////////////////////////////////////////////////////////////
 
+$THEME->rarrow = ' >';
+$THEME->larrow = ' <';
+// Set the right arrow used in site breadcrumbs
+// e.g. $THEME->rarrow = '<img src="' . $CFG->wwwroot.'/theme/'.current_theme() . '/images/sep_blue.gif">';
 ?>
