@@ -1,5 +1,30 @@
 Totara LMS Changelog
 
+Release 1.0.19 (26 July 2011):
+==================================================
+
+Database upgrades:
+    9011    Indexes added to competency tables to improve cron performance
+    9016    Removed unused column in completion tables                                          Column name was a reserved word and was causing errors
+    9002    Missing language strings in Past Bookings embedded report
+
+Improvements:
+    8485    Finnish and German language packs updated
+    8015    Styling improved for My Course Completions table in sector themes
+
+Bug fixes:
+    9007    Secondary tabs in Totara page header make top of content unclickable
+    8970    Alerts/Tasks throwing errors if site-wide messaging disabled
+    6710    Hebrew language files in incorrect locations
+    8897    Some form input fields expand when content added in IE6
+    7754    Breadcrumbs in Totara theme do not wrap correctly
+    9004    Code warning in Report Builder org/pos content restriction
+    7992    User can be selected as their own manager when assigning a position
+    9005    Incorrect field name in Course Completion backup
+    9015    Deleted embedded reports not handled correctly                                      Now shows appropriate error message
+    9028    Tabs are misaligned in Totara theme in IE7
+
+
 Release 1.0.18 (12 July 2011):
 ==================================================
 
