@@ -104,8 +104,7 @@ class hierarchy {
 
     /**
      * Get framework
-     * @var array $extra_data optional - specifying extra data options that might affect
-     *                        the info to be fetched and returned
+     * @var array $extra_data optional - specifying extra info to be fetched and returned
      * @return array|false
      * @uses $CFG when extra_data specified 
      */
@@ -130,11 +129,8 @@ class hierarchy {
             $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix} ic
                         WHERE ic.frameworkid=f.id) AS item_count ";
         }
-        $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f ";
-        if (isset($extra_data['visible'])) {
-            $sql .= " WHERE visible = {$extra_data['visible']} ";
-        }
-        $sql .= " ORDER BY f.sortorder, f.fullname";
+        $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f 
+                 ORDER BY f.sortorder, f.fullname";
 
         return get_records_sql($sql);
 
@@ -461,7 +457,7 @@ class hierarchy {
     function display_framework_selector($page = 'index.php', $simple = false, $return = false) {
         global $CFG;
 
-        $frameworks = $this->get_frameworks(array('visible' => 1));
+        $frameworks = $this->get_frameworks();
 
         if (count($frameworks) <= 1) {
             return;
