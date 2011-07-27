@@ -1276,7 +1276,7 @@ abstract class dp_base_component {
         // only show a form if they have permission to change due dates
         if($cansetduedate) {
             $class = in_array($itemid, $baddates) ? 'dp-plan-component-input-error' : '';
-            $out .= $this->display_duedate_as_form($duedate, "duedate_{$this->component}[{$itemid}]", $class);
+            $out .= $this->display_duedate_as_form($duedate, "duedate_{$this->component}[{$itemid}]", $class, $itemid);
         } else {
             $out .= $this->display_duedate_as_text($duedate);
         }
@@ -1294,11 +1294,17 @@ abstract class dp_base_component {
      * @param string $inputclass
      * @return string
      */
-    function display_duedate_as_form($duedate, $name, $inputclass='') {
+    function display_duedate_as_form($duedate, $name, $inputclass='', $itemid) {
         global $CFG;
         $duedatestr = !empty($duedate) ?
             userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
-        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass.'"/>';
+        $js = $this->get_field_updating_ajax('duedate', $itemid);
+        if ( $js !== '' ){
+            $onchange = " onchange=\"{$js}\"";
+        } else {
+            $onchange = '';
+        }
+        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\"{$onchange} />";
     }
 
 
@@ -1372,7 +1378,7 @@ abstract class dp_base_component {
 
         if ($cansetpriority) {
             // show a pulldown menu of priority options
-            $out .= $this->display_priority_picker("priorities_{$this->component}[{$item->id}]", $item->priority, $priorityvalues, $prioritydefaultid, $priorityrequired);
+            $out .= $this->display_priority_picker("priorities_{$this->component}[{$item->id}]", $item->priority, $item->id, $priorityvalues, $prioritydefaultid, $priorityrequired);
         } else {
             // just display priority if no permissions to set it
             $out .= $this->display_priority_as_text($item->priority, $priorityname, $priorityvalues);
@@ -1387,12 +1393,13 @@ abstract class dp_base_component {
      *
      * @param string $name
      * @param int $priorityid
+     * @param int $itemid
      * @param array $priorityvalues
      * @param int $prioritydefaultid
      * @param boolean $priorityrequired
      * @return string
      */
-    function display_priority_picker($name, $priorityid, $priorityvalues, $prioritydefaultid, $priorityrequired=false) {
+    function display_priority_picker($name, $priorityid, $itemid, $priorityvalues, $prioritydefaultid, $priorityrequired=false) {
 
         if (!$priorityvalues) {
             return '';
@@ -1419,11 +1426,32 @@ abstract class dp_base_component {
             $selected = ($priorityrequired) ? $defaultchooseval : 0;
         }
 
+        $ajax = $this->get_field_updating_ajax('priorities', $itemid);
 
-        return choose_from_menu($options, $name, $selected, $choose, '', $chooseval, true);
-
+        return choose_from_menu($options, $name, $selected, $choose, $ajax, $chooseval, true);
     }
 
+    function get_field_updating_ajax($fieldname, $itemid){
+        global $CFG;
+        $sesskey = sesskey();
+        $js = <<<JS
+if ( this.value ){
+    var response;
+    response = $.post(
+        '{$CFG->wwwroot}/local/plan/component.php?id={$this->plan->id}&c={$this->component}',
+        {
+            submitbutton: "1",
+            ajax: "1",
+            sesskey: "{$sesskey}",
+            '{$fieldname}_{$this->component}[{$itemid}]': $(this).val()
+        }
+    );
+    }
+JS;
+        $js = preg_replace("/(\s+)/",' ',$js);
+        $js = htmlspecialchars($js);
+        return $js;
+    }
 
     /**
      * Display a priority for an item as text
