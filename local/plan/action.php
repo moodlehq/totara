@@ -52,6 +52,9 @@ $reactivate = optional_param('reactivate', 0, PARAM_BOOL);
 // Is this an ajax call?
 $ajax = optional_param('ajax', 0, PARAM_BOOL);
 $referer = optional_param('referer', get_referer(false), PARAM_URL);
+//making sure that we redirect to somewhere inside platform
+//in case passed param is invalid or even HTTP_REFERER is bogus
+$referer = clean_param($referer, PARAM_LOCALURL);
 
 if (!confirm_sesskey()) {
     if (empty($ajax)) {
