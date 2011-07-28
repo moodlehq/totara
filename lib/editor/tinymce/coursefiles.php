@@ -15,14 +15,14 @@
     require_once($CFG->libdir.'/filelib.php');
 
     $id      = required_param('id', PARAM_INT);
-    $file    = optional_param('file', '', PARAM_PATH);
+    $file    = optional_param('file', '', PARAM_FILE);
     $wdir    = optional_param('wdir', '', PARAM_PATH);
     $action  = optional_param('action', '', PARAM_ACTION);
     $name    = optional_param('name', '', PARAM_FILE);
     $oldname = optional_param('oldname', '', PARAM_FILE);
     $usecheckboxes  = optional_param('usecheckboxes', 1, PARAM_INT);
     $save    = optional_param('save', 0, PARAM_BOOL);
-    $text    = optional_param('text', '', PARAM_RAW);
+    $text    = optional_param('text', '', PARAM_TEXT);
     $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
 
@@ -554,9 +554,15 @@
 
 /// FILE FUNCTIONS ///////////////////////////////////////////////////////////
 
-
+/**
+ *
+ * Generates file list
+ * All filenames are cleaned and verified if they actually exist on the disk
+ * @param array $VARS
+ * @return int number of collected files
+ */
 function setfilelist($VARS) {
-    global $USER;
+    global $basedir, $USER;
 
     $USER->filelist = array ();
     $USER->fileop = "";
@@ -564,10 +570,10 @@ function setfilelist($VARS) {
     $count = 0;
     foreach ($VARS as $key => $val) {
         if (substr($key,0,4) == "file") {
-            $count++;
-            $val = rawurldecode($val);
-            if (!detect_munged_arguments($val, 0)) {
-                $USER->filelist[] = $val;
+            $clean_val = clean_param(rawurldecode($val), PARAM_FILE);
+            if (file_exists($basedir.$clean_val)) {
+                $count++;
+                $USER->filelist[] = $clean_val;
             }
         }
     }
