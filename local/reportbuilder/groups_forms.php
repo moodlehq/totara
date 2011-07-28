@@ -55,7 +55,7 @@ class report_builder_new_group_form extends moodleform {
         $grouped_activities = array();
         foreach($activities as $activity) {
             $course = ($activity->fullname === null) ?
-                get_string('notset', 'local_reportbuilder') : $activity->fullname;
+                get_string('coursenotset', 'local_reportbuilder') : $activity->fullname;
             $grouped_activities[$course][$activity->id] = $activity->name;
         }
 

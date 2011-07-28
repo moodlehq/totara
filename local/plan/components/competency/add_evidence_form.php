@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +20,7 @@
  * @author Eugene Venter <eugene@catalyst.net.nz>
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 require_once "$CFG->dirroot/lib/formslib.php";
@@ -41,6 +40,7 @@ class totara_competency_evidence_form extends moodleform {
         $competencyid = isset($this->_customdata['competencyid']) ? $this->_customdata['competencyid'] : 0;
         $positionid = isset($this->_customdata['positionid']) ? $this->_customdata['positionid'] : 0;
         $organisationid = isset($this->_customdata['organisationid']) ? $this->_customdata['organisationid'] : 0;
+        $returnurl = isset($this->_customdata['returnurl']) ? $this->_customdata['returnurl'] : '';
         $nojs = $this->_customdata['nojs'];
         $id = $this->_customdata['id'];
         $evidenceid = $this->_customdata['evidenceid'];
@@ -113,9 +113,11 @@ class totara_competency_evidence_form extends moodleform {
         $mform->setType('userid', PARAM_INT);
         $mform->addRule('userid', null, 'required');
         $mform->addRule('userid', null, 'numeric');
+        $mform->setType('userid', PARAM_INT);
         $mform->addElement('hidden', 'id', $id);
         $mform->addElement('hidden', 'evidenceid', $evidenceid);
-        $mform->setType('userid', PARAM_INT);
+        $mform->addElement('hidden', 'returnurl', $returnurl);
+        $mform->setType('returnurl', PARAM_LOCALURL);
 
 
         if($editing) {

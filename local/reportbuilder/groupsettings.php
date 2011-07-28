@@ -109,7 +109,7 @@
                 $row[] = '<a href="' . $CFG->wwwroot . '/course/view.php?id=' .
                    $activity->courseid . '">' . $activity->course . '</a>';
             } else {
-                $row[] = get_string('notset','local_reportbuilder');
+                $row[] = get_string('coursenotset','local_reportbuilder');
             }
 
             // print feedback name

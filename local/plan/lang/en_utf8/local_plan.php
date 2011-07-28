@@ -672,6 +672,7 @@ $string['todb_updatepermissionserror'] = 'Error updating template permissions';
 
 $string['scaleslocked'] = 'This template is in use and changing the scales will impact data integrity. Therefore Priority and Objective scales are locked and will not be updated when the workflow is changed.';
 
+
 //ROL Strings
 $string['activecourses'] = 'Active Courses';
 $string['activecompetencies'] = 'Active Competencies';

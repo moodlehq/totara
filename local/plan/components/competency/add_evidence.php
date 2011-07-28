@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +20,7 @@
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @author Alastair Munro <alastair@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 require_once('../../../../config.php');
@@ -41,6 +40,7 @@ $proficiency = optional_param('proficiency', null, PARAM_INT);
 $competencyid = optional_param('competencyid', 0, PARAM_INT);
 $positionid = optional_param('positionid', 0, PARAM_INT);
 $organisationid = optional_param('organisationid', 0, PARAM_INT);
+$returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 
 $nojs = optional_param('nojs', 0, PARAM_INT);
 
@@ -77,10 +77,12 @@ if($component->get_setting('setproficiency') != DP_PERMISSION_ALLOW) {
     error(get_string('error:competencystatuspermission', 'local_plan'));
 }
 
-$returnurl = $component->get_url();
+if (!$returnurl) {
+    $returnurl = $component->get_url();
+}
 
 $mform = new totara_competency_evidence_form(null, compact('id','evidenceid','competencyid','positionid',
-    'organisationid','userid','user','s','nojs'));
+    'organisationid','userid','user','s','nojs','returnurl'));
 $mform->set_data($evidence_record);
 
 if ($mform->is_cancelled()) {

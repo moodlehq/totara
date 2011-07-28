@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -392,9 +391,20 @@ from
                 END',
                 array(
                     'joins' => array('dp_competency', 'scale_value', 'evidence_scale_value'),
-                    'displayfunc' => 'proficiency_and_approval',
+                    'displayfunc' => 'proficiency_and_approval_menu',
                     'defaultheading' => get_string('competencyproficiency', 'rb_source_dp_competency'),
-                    'extrafields' => array('approved' => 'dp_competency.approved')
+                    'extrafields' => array(
+                        'approved' => 'dp_competency.approved',
+                        'compscaleid' => 'scale_value.scaleid',
+                        'compscalevalueid' => 'scale_value.id',
+                        'compevscaleid' => 'evidence_scale_value.scaleid',
+                        'compevscalevalueid' => 'evidence_scale_value.id',
+                        'compframeworkid' => 'competency.frameworkid',
+                        'plancompid' => 'dp_competency.id',
+                        'planid' => 'dp_competency.planid',
+                        'competencyid' => 'dp_competency.competencyid',
+                        'userid' => 'dp_competency.userid'
+                    )
                 )
         );
 
@@ -405,6 +415,19 @@ from
                 'linkedcourses.count',
                 array(
                     'joins' => 'linkedcourses'
+                )
+        );
+
+        $columnoptions[] = new rb_column_option(
+                'competency',
+                'addcompetencyevidencelink',
+                get_string('competencyevidence', 'competency'),
+                'dp_competency.competencyid',
+                array(
+                    'defaultheading' => 'Plan',
+                    'joins' => 'dp_competency',
+                    'displayfunc' => 'addcompetencyevidencelink',
+                    'extrafields' => array( 'planid' => 'dp_competency.planid' )
                 )
         );
 
@@ -505,6 +528,134 @@ from
         if($approved != DP_APPROVAL_APPROVED) {
             $itemstatus = $this->rb_display_plan_item_status($approved);
             if($itemstatus) {
+                $content[] = $itemstatus;
+            }
+        }
+        return implode('<br />', $content);
+    }
+
+    private $dp_plans = array();
+
+    /**
+     * Displays an icon linked to the "add competency evidence" page for this competency
+     * @param $competencyid
+     * @param $row
+     */
+    public function rb_display_addcompetencyevidencelink($competencyid, $row) {
+        global $CFG;
+
+        $planid = isset($row->planid) ? $row->planid : null;
+        if ($planid) {
+
+            // Store the plan object so that we don't have to generate one for each row
+            // of the report
+            if (array_key_exists($planid, $this->dp_plans)) {
+                $plan = $this->dp_plans[$planid];
+            } else {
+                $plan = new development_plan($planid);
+                $this->dp_plans[$planid] = $plan;
+            }
+
+            $competencycomponent = $plan->get_component('competency');
+
+            $row->competencyid = $competencyid;
+            return $competencycomponent->display_comp_add_evidence_icon($row, qualified_me());
+        }
+    }
+
+
+    /**
+     * A hash of competency scales. The key is the framework id, and the value
+     * is an array as returned by get_records_menu() of the competency scale
+     * for that framework
+     * @var array
+     */
+    private $compscales = array();
+
+    /**
+     * Displays the competency's proficiency/approval status, and if the current user would have permission
+     * to change the competency's status via the competency page of the learning plan, it gives them
+     * a drop-down menu to change the status, which saves changes via Javascript
+     * @param unknown_type $status
+     * @param unknown_type $row
+     */
+    public function rb_display_proficiency_and_approval_menu($status, $row) {
+        global $CFG;
+        // needed for approval constants
+        require_once($CFG->dirroot . '/local/plan/lib.php');
+
+        $content = array();
+        $approved = isset($row->approved) ? $row->approved : null;
+        $compframeworkid = isset($row->compframeworkid) ? $row->compframeworkid : null;
+        $planid = isset($row->planid) ? $row->planid : null;
+        $compevscalevalueid = isset($row->compevscalevalueid) ? $row->compevscalevalueid : null;
+        $plancompid = isset($row->plancompid) ? $row->plancompid : null;
+        $competencyid = isset($row->competencyid) ? $row->competencyid : null;
+        $userid = isset($row->userid) ? $row->userid : null;
+
+        if (!$planid) {
+            return '';
+        } else {
+            if (array_key_exists($planid, $this->dp_plans)) {
+                $plan = $this->dp_plans[$planid];
+            } else {
+                $plan = new development_plan($planid);
+                $this->dp_plans[$planid] = $plan;
+            }
+
+            $competencycomponent = $plan->get_component('competency');
+            if ($competencycomponent->can_update_competency_evidence($row)) {
+
+                // Get the info we need about the framework
+                if (array_key_exists( $compframeworkid, $this->compscales)) {
+                    $compscale = $this->compscales[$compframeworkid];
+                } else {
+                    $sql = "SELECT
+                                cs.defaultid as defaultid, cs.id as scaleid
+                            FROM {$CFG->prefix}comp c
+                            JOIN {$CFG->prefix}comp_scale_assignments csa
+                                ON c.frameworkid = csa.frameworkid
+                            JOIN {$CFG->prefix}comp_scale cs
+                                ON csa.scaleid = cs.id
+                            WHERE c.id={$competencyid}";
+                    if (!$scaledetails = get_record_sql($sql)) {
+                        // what should this do?
+                    }
+                    $compscale = get_records_menu('comp_scale_values','scaleid',$scaledetails->scaleid,'sortorder');
+                    $this->compscales[$compframeworkid] = $compscale;
+                }
+
+                require_js(array(
+                    "{$CFG->wwwroot}/local/js/lib/jquery-1.3.2.min.js",
+                    ));
+                $content[] = choose_from_menu(
+                    $compscale,
+                    'competencyevidencestatus'.$plancompid,
+                    $compevscalevalueid,
+                    ($compevscalevalueid ? '' : get_string('notset','local_reportbuilder')),
+                    "if (this.value > 0) { ".
+                        "var response; ".
+                        "response = \$.get(".
+                            "'{$CFG->wwwroot}/local/plan/components/competency/update-competency-setting.php".
+                            "?c={$competencyid}".
+                            "&amp;pl={$planid}".
+                            "&amp;u={$userid}".
+                            "&amp;p=' + $(this).val()".
+                        "); ".
+                        "$(this).children('[option[value=\'0\']').remove(); ".
+                    "}",
+                    ($compevscalevalueid ? '' : 0),
+                    true
+                ); //. $this->rb_display_addcompetencyevidencelink( $competencyid, $row );
+            } else if ($status) {
+                $content[] = $status;
+            }
+        }
+
+        // highlight if the item has not yet been approved
+        if ($approved != DP_APPROVAL_APPROVED) {
+            $itemstatus = $this->rb_display_plan_item_status($approved);
+            if ($itemstatus) {
                 $content[] = $itemstatus;
             }
         }

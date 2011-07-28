@@ -1120,9 +1120,56 @@ class dp_competency_component extends dp_base_component {
      * @return string the items status
      */
     protected function display_list_item_progress($item) {
-        return $this->is_item_approved($item->approved) ? $this->display_status($item) : '';
+        if ($this->can_update_competency_evidence($item)) {
+            return $this->get_competency_menu($item);
+        } else {
+            return $this->is_item_approved($item->approved) ? $this->display_status($item) : '';
+        }
     }
 
+    /**
+     * Gets the ajax-enabled dropdown menu to set the competency's proficiency
+     * TODO: This uses a lot of the same code as in rb_source_dp_competency::
+     * rb_display_proficiency_and_approval_menu. It would be good to abstract
+     * that out and make them both call the same function.
+     * @param $item
+     */
+    public function get_competency_menu($item){
+        global $CFG;
+        // Get the info we need about the framework
+        $sql = "SELECT
+                    cs.defaultid as defaultid, cs.id as scaleid
+                FROM {$CFG->prefix}comp c
+                JOIN {$CFG->prefix}comp_scale_assignments csa
+                    ON c.frameworkid = csa.frameworkid
+                JOIN {$CFG->prefix}comp_scale cs
+                    ON csa.scaleid = cs.id
+                WHERE c.id={$item->competencyid}";
+        if (!$scaledetails = get_record_sql($sql)) {
+            // what should this do?
+        }
+        $compscale = get_records_menu('comp_scale_values','scaleid',$scaledetails->scaleid,'sortorder');
+
+        return choose_from_menu(
+            $compscale,
+            "compprof_{$this->component}[{$item->id}]",
+            $item->profscalevalueid,
+            ($item->profscalevalueid ? '' : get_string('notset','local_reportbuilder')),
+            "if (this.value > 0) { ".
+                "var response; ".
+                "response = \$.get(".
+                    "'{$CFG->wwwroot}/local/plan/components/competency/update-competency-setting.php".
+                    "?c={$item->competencyid}".
+                    "&amp;pl={$this->plan->id}".
+                    "&amp;u={$this->plan->userid}".
+                    "&amp;p=' + $(this).val()".
+                "); ".
+                "$(this).children('[option[value=\'0\']').remove(); ".
+            "}",
+            ($item->profscalevalueid ? '' : 0),
+            true
+        );
+    }
 
     /**
      * Display an items available actions
@@ -1135,30 +1182,61 @@ class dp_competency_component extends dp_base_component {
         global $CFG;
 
         $markup = '';
+        $markup .= $this->display_comp_delete_icon($item);
+        $markup .= $this->display_comp_add_evidence_icon($item);
 
-        // Get permissions
-        $cansetproficiency = !$this->plan->is_complete() && $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
-        $approved = $this->is_item_approved($item->approved);
+        return $markup;
+    }
 
+    /**
+     * Display the icon to delete a competency.
+     *
+     * @param object $item
+     * @return string
+     */
+    protected function display_comp_delete_icon($item){
+        global $CFG;
         if ($this->can_delete_item($item)) {
             $currenturl = $this->get_url();
             $strdelete = get_string('delete', 'local_plan');
             $delete = '<a href="'.$currenturl.'&amp;d='.$item->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
 
-            $markup .= $delete;
+            return $delete;
         }
-
-        if ($cansetproficiency && $approved) {
-            $straddevidence = get_string('addevidence', 'local_plan');
-            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&amp;id='.$this->plan->id.'&amp;competencyid='.$item->competencyid.'"
-                title="'.$straddevidence.'">
-                <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';
-            $markup .= $proficient;
-        }
-
-        return $markup;
+        return '';
     }
 
+    /**
+     * Display the icon to add competency evidence
+     *
+     * @param object $item The competency (must include "approved" field)
+     * @param string $returnurl The URL to tell the add evidence page to return to
+     * @return $string
+     */
+    public function display_comp_add_evidence_icon($item, $returnurl=false){
+        global $CFG;
+        if ($this->can_update_competency_evidence($item)) {
+            $straddevidence = get_string('addevidence', 'local_plan');
+            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&amp;id='.$this->plan->id.'&amp;competencyid='.$item->competencyid.
+                '&amp;returnurl='.urlencode($returnurl).'"
+                title="'.$straddevidence.'">
+                <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';
+
+            return $proficient;
+        }
+        return '';
+    }
+
+    /**
+     * Can you add competency evidence to this competency?
+     * @param $item (must contain "approved" field)
+     */
+    public function can_update_competency_evidence($item){
+        // Get permissions
+        $cansetproficiency = !$this->plan->is_complete() && $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
+        $approved = $this->is_item_approved($item->approved);
+        return $cansetproficiency && $approved;
+    }
 
     /*
      * Display the course picker

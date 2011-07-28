@@ -92,7 +92,7 @@ if ($component->can_update_settings(false)) {
         $display = 'block';
     }
 
-    print '<div id="dp-component-update-submit" style="display: '.$display.';"><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" /></div>';
+    print '<noscript><div id="dp-component-update-submit" style="display: '.$display.';"><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" /></div></noscript>';
 }
 
 print '</form>';
