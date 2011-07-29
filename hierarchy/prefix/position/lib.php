@@ -154,7 +154,8 @@ class position extends hierarchy {
                     cf.id AS fid,
                     cf.fullname AS framework,
                     ct.fullname AS type,
-                    pc.id AS aid
+                    pc.id AS aid,
+                    pc.linktype as linktype
                 FROM
                     {$CFG->prefix}pos_competencies pc
                 INNER JOIN

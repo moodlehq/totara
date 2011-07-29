@@ -73,7 +73,7 @@ abstract class competency_evidence_type extends data_object {
      * @var array
      */
     public $required_fields = array(
-        'id', 'competencyid', 'itemtype', 'itemmodule', 'iteminstance', 'timecreated', 'timemodified', 'usermodified'
+        'id', 'competencyid', 'itemtype', 'itemmodule', 'iteminstance', 'timecreated', 'timemodified', 'usermodified', 'linktype'
     );
 
     /**

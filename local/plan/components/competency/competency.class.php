@@ -264,7 +264,7 @@ class dp_competency_component extends dp_base_component {
         }
 
         $sql = 'SELECT cei.id, cei.competencyid, cei.iteminstance AS ' .
-            " courseid, c.fullname
+            " courseid, c.fullname, cei.linktype
             FROM {$CFG->prefix}comp_evidence_items cei
             LEFT JOIN {$CFG->prefix}course c ON
                 cei.iteminstance = c.id
@@ -900,7 +900,7 @@ class dp_competency_component extends dp_base_component {
      * @param   boolean $checkpermissions If false user permission checks are skipped (optional)
      * @return  added item's name
      */
-    public function assign_new_item($itemid, $checkpermissions=true) {
+    public function assign_new_item($itemid, $checkpermissions=true, $mandatory=false) {
 
         // Get approval value for new item if required
         if ($checkpermissions) {
@@ -918,6 +918,7 @@ class dp_competency_component extends dp_base_component {
         $item->duedate = null;
         $item->completionstatus = null;
         $item->grade = null;
+        $item->mandatory = $mandatory;
         $competencyname = get_field('comp', 'fullname', 'id', $itemid);
 
         // Check required values for priority/due data
@@ -958,9 +959,9 @@ class dp_competency_component extends dp_base_component {
                 // Don't assign duplicate competencies
                 continue;
             }
-
+            $mandatory = isset($c->linktype) && $c->linktype == PLAN_LINKTYPE_MANDATORY;
             // Assign competency item
-            if (!$this->assign_new_item($c->id, $checkpermissions)) {
+            if (!$this->assign_new_item($c->id, $checkpermissions, $mandatory)) {
                 return false;
             }
         }
@@ -1236,6 +1237,19 @@ class dp_competency_component extends dp_base_component {
         $cansetproficiency = !$this->plan->is_complete() && $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
         $approved = $this->is_item_approved($item->approved);
         return $cansetproficiency && $approved;
+    }
+
+    public function can_delete_item($item){
+        global $CFG;
+        require_once($CFG->dirroot.'/local/plan/lib.php');
+        // Check whether this competency comes from the selected JE for this plan
+        //
+
+        if ($item->mandatory) {
+            return false;
+        }
+
+        return parent::can_delete_item($item);
     }
 
     /*

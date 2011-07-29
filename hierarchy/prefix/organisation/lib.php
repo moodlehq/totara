@@ -196,7 +196,8 @@ class organisation extends hierarchy {
                     cf.id AS fid,
                     cf.fullname AS framework,
                     ct.fullname AS type,
-                    oc.id AS aid
+                    oc.id AS aid,
+                    oc.linktype as linktype
                 FROM
                     {$CFG->prefix}org_competencies oc
                 INNER JOIN

@@ -361,7 +361,8 @@ class competency extends hierarchy {
                     f.fullname AS framework,
                     cei.itemtype AS evidencetype,
                     cei.iteminstance AS evidenceinstance,
-                    cei.itemmodule AS evidencemodule
+                    cei.itemmodule AS evidencemodule,
+                    cei.linktype as linktype
                 FROM
                     {$CFG->prefix}{$this->shortprefix}_evidence_items cei
                 INNER JOIN
@@ -571,7 +572,7 @@ SQL;
         }
     }
 
-    
+
     /*
      * Returns all items at the root level (parentid=0) for the current framework (obtained
      * from $this->frameworkid)
@@ -607,7 +608,7 @@ SQL;
                             and rc.competency = c.id
                     ) as disabled
                 from {$CFG->prefix}{$this->shortprefix} c
-                where 
+                where
                     c.parentid = 0
                     and c.frameworkid = {$this->frameworkid}
                     and c.visible = 1
@@ -650,7 +651,6 @@ SQL;
 
         add_to_log(SITEID, 'competency', 'template remove competency assignment',
                     "prefix/competency/template/view.php?id={$template->id}", "Competency ID $competencyid");
-
     }
 
 
@@ -715,7 +715,11 @@ SQL;
         }
 
         if ($can_edit) {
-            $out .= '<th style="vertical-align:top; white-space:nowrap;" class="header c4" scope="col">'.
+            require_once($CFG->dirroot.'/local/plan/lib.php');
+            $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c4" scope="col">'.
+                get_string('linktype', 'local_plan').
+            '</th>';
+            $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c4" scope="col">'.
                 get_string('options', 'competency').
             '</th>';
         } // if ($can_edit)
@@ -761,6 +765,28 @@ SQL;
 
                 // Options column
                 if ($can_edit) {
+                    $out .= '<td align="center">';
+                    require_js(array(
+                        "{$CFG->wwwroot}/local/js/lib/jquery-1.3.2.min.js",
+                        ));
+                    $out .= choose_from_menu(
+                        array(
+                            PLAN_LINKTYPE_MANDATORY => get_string('mandatory','hierarchy'),
+                            PLAN_LINKTYPE_OPTIONAL => get_string('optional','hierarchy'),
+                        ),
+                        'linktype', //$name,
+                        ($competency->linktype ? $competency->linktype : PLAN_LINKTYPE_MANDATORY), //$selected,
+                        '', //$nothing,
+                        "\$.get(".
+                            "'{$CFG->wwwroot}/local/plan/update-linktype.php".
+                            "?type=course&amp;c={$competency->evidenceid}".
+                            "&amp;sesskey=".sesskey().
+                            "&amp;t=' + $(this).val()".
+                        ");",
+                        '', //$nothingvalue,
+                        true //$return
+                    );
+                    $out .= '</td>';
                     $out .= '<td align="center">';
                     $out .= "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/evidenceitem/remove.php?id={$evidence->id}&course={$courseid}\" title=\"$str_remove\">".
                          "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";

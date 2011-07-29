@@ -705,3 +705,8 @@ $string['commentmsg:componentitemdetail'] = 'There has been a new comment on $a-
 <strong>Comment:</strong>$a->comment - <em>Comment by $a->commentby on $a->commentdate</em>';
 $string['latestcommentby'] = 'Latest comment by';
 $string['nocomments'] = 'No comments';
+
+// Manditory courses/competencies
+$string['linktype'] = 'Link type';
+$string['error:updateingrecord'] = 'Error, no such link type';
+$string['error:updatinglinktype'] = 'Error: could not update link type';

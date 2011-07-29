@@ -22,7 +22,7 @@
  * @subpackage plan
  */
 
-$plugin->version  = 2011072800;   // The (date) version of this module
+$plugin->version  = 2011072900;   // The (date) version of this module
 
 // This won't work yet as there is no local_modules table
 // To activate cron set the config variable local_<mod>_cron with set_config()

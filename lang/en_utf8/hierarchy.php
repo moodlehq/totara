@@ -122,3 +122,6 @@ $string['error:typenotfound'] = 'The $a type could not be found';
 $string['deletedataconfirmproceed'] = 'Since the new class has no custom fields, this will delete all the data related to the following custom fields:{$a}If you wish to transfer the data to the new type, create the appropriate custom fields in the new type before re-classifying. Are you sure you want to proceed?';
 $string['error:deletetypecheckvariable'] = 'The check variable was wrong - try again';
 $string['deletechecktype'] = 'Are you absolutely sure you want to delete this type?';
+
+$string['mandatory'] = 'Mandatory';
+$string['optional'] = 'Optional';

@@ -85,6 +85,9 @@ define('DP_PLAN_REASON_AUTO_COMPLETE_DATE', 50);
 define('DP_PLAN_REASON_AUTO_COMPLETE_ITEMS', 60);
 define('DP_PLAN_REASON_MANUAL_REACTIVATE', 80);
 
+// Types of competency evidence items
+define('PLAN_LINKTYPE_MANDATORY','mandatory');
+define('PLAN_LINKTYPE_OPTIONAL','optional');
 
 // roles available to development plans
 // each must have a class definition in
@@ -110,6 +113,11 @@ $DP_AVAILABLE_WORKFLOWS = array(
     'managerdriven',
 );
 
+global $PLAN_AVAILABLE_LINKTYPES;
+$PLAN_AVAILABLE_LINKTYPES = array(
+    PLAN_LINKTYPE_MANDATORY,
+    PLAN_LINKTYPE_OPTIONAL
+);
 
 /**
  * Can logged in user view user's plans
