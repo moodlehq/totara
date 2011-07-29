@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,8 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Newman <jonathan.newman@catalyst.net.nz>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage local 
+ * @subpackage local
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -899,4 +900,34 @@ function get_totara_menu($header=true) {
  */
 function totara_is_post_request() {
     return isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST';
+}
+
+
+/**
+ * Download stored errorlog as a zip
+ *
+ * @access  public
+ * @return  void
+ */
+function totara_errors_download() {
+
+    // Load errors from database
+    $errors = get_records('errorlog');
+    if (!$errors) {
+        $errors = array();
+    }
+
+    // Format them nicely as strings
+    $content = '';
+    foreach ($errors as $error) {
+        $error = (array) $error;
+        foreach ($error as $key => $value) {
+            $error[$key] = str_replace(array("\t", "\n"), ' ', $value);
+        }
+
+        $content .= implode("\t", $error);
+        $content .= "\n";
+    }
+
+    send_temp_file($content, 'totara-error.log', true);
 }

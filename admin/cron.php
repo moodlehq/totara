@@ -500,6 +500,21 @@
             }
         }
 
+        // Crop errorlog table at 100 entries
+        $errorlog_sql = "
+            DELETE FROM
+                {$CFG->prefix}errorlog
+            WHERE
+                id < (
+                    SELECT
+                        MAX(id) - 100
+                    FROM
+                        {$CFG->prefix}errorlog
+                )
+        ";
+        mtrace('Cropping errorlog table at 100 entries');
+        execute_sql($errorlog_sql, false);
+
         mtrace("Finished clean-up tasks...");
 
     } // End of occasional clean-up tasks

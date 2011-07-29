@@ -247,6 +247,11 @@ global $HTTPSPAGEREQUIRED;
 /// Load up any configuration from the config table
     $CFG = get_config();
 
+/// Now that config is loaded
+/// Setup Totara error handlers
+    require_once("{$CFG->dirroot}/local/error_handling.php");
+    totara_setup_error_handlers();
+
 /// Turn on SQL logging if required
     if (!empty($CFG->logsql)) {
         $db->LogSQL();

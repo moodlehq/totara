@@ -2558,5 +2558,26 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2011072900) {
+
+    /// Define table errorlog to be created
+        $table = new XMLDBTable('errorlog');
+
+    /// Adding fields to table errorlog
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('timeoccured', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('version', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('build', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('details', XMLDB_TYPE_TEXT, 'big', null, XMLDB_NOTNULL, null, null, null, null);
+
+    /// Adding keys to table errorlog
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        /// Launch create table for errorlog
+        if (!table_exists($table)) {
+            $result = $result && create_table($table);
+        }
+    }
+
     return $result;
 }

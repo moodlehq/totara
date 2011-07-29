@@ -32,6 +32,7 @@
     $autopilot      = optional_param('autopilot', 0, PARAM_BOOL);
     $ignoreupgradewarning = optional_param('ignoreupgradewarning', 0, PARAM_BOOL);
     $confirmplugincheck = optional_param('confirmplugincheck', 0, PARAM_BOOL);
+    $geterrors = optional_param('geterrors', 0, PARAM_BOOL);
 
 /// check upgrade status first
     if ($ignoreupgradewarning and !empty($_SESSION['upgraderunning'])) {
@@ -161,7 +162,6 @@
             print_footer('none');
             die;
         }
-
 
         $strdatabasesetup    = get_string("databasesetup");
         $strdatabasesuccess  = get_string("databasesuccess");
@@ -616,6 +616,12 @@
 
 /// Everything should now be set up, and the user is an admin
 
+/// Check to see if we are downloading latest errors
+    if ($geterrors) {
+        totara_errors_download();
+        die();
+    }
+
 /// Print default admin page with notifications.
 
     admin_externalpage_setup('adminnotifications');
@@ -697,6 +703,14 @@
         print_box_end();
     }
 
+// Check if any errors in log
+    $latesterror = get_record_sql("SELECT * FROM {$CFG->prefix}errorlog ORDER BY id DESC LIMIT 1", false, true);
+    if ($latesterror) {
+        print_box_start('generalbox adminnotice');
+        print_string('lasterroroccuredat', 'admin', userdate($latesterror->timeoccured));
+        print_single_button("{$CFG->wwwroot}/admin/index.php", array('geterrors' => 1), get_string('downloaderrorlog', 'admin'), 'post');
+        print_box_end();
+    }
 
 /// Display Totara version information
     $totarainfo  = '<div class="totara-copyright">';
