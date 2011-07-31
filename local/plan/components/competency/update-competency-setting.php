@@ -1,7 +1,7 @@
 <?php
 header("Content-Type:text/plain");
 require_once('../../../../config.php');
-require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
 // 1. Get information
 $competencyid = required_param('c', PARAM_INT);
 $prof = required_param('p', PARAM_INT);
@@ -50,7 +50,7 @@ if (!$component->can_update_competency_evidence($compassign)) {
 //add_to_log(...)
 
 // Update the competency
-require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/evidence.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php');
 $todb = new competency_evidence(
     array(
         'competencyid'  => $competencyid,
