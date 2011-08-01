@@ -30,6 +30,8 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once($CFG->dirroot.'/local/plan/lib.php');
 require_once('add_evidence_form.php');
 require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/lib.php');
+
 ///
 /// Setup / loading data
 ///
@@ -46,11 +48,13 @@ $nojs = optional_param('nojs', 0, PARAM_INT);
 
 require_login();
 $plan = new development_plan($id);
+$componentname = 'competency';
+$component = $plan->get_component($componentname);
 
 //Permissions check
-$systemcontext = get_system_context();
-if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
-        print_error('error:nopermissions', 'local_plan');
+$result = hierarchy_can_add_competency_evidence($plan, $component, $userid, $competencyid);
+if ($result !== true) {
+    error($result[0], $result[1]);
 }
 
 if($evidence_record = get_record('comp_evidence', 'userid', $userid, 'competencyid', $competencyid)) {
@@ -93,55 +97,24 @@ if($fromform = $mform->get_data()) { // Form submitted
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
 
-    $todb = new competency_evidence(
-        array(
-            'competencyid'  => $fromform->competencyid,
-            'userid'        => $fromform->userid,
-            'id'            => isset($fromform->evidenceid) ? $fromform->evidenceid : null
-        )
-    );
-
-    $todb->positionid = $fromform->positionid != 0 ? $fromform->positionid : null;
-    $todb->organisationid = $fromform->organisationid != 0 ? $fromform->organisationid : null;
-    $todb->assessorid = $fromform->assessorid != 0 ? $fromform->assessorid : null;
-    $todb->assessorname = $fromform->assessorname;
-    $todb->assessmenttype = $fromform->assessmenttype;
-    $todb->manual = 1;
-    $todb->reaggregate = time();
-
-    // proficiency not obtained by get_data() because form element is populated
-    // via javascript after page load. Get via optional POST parameter instead.
-    if (!$proficiency) {
-        print_error('error:noproficiencysupplied', 'local', $returnurl);
+    // Setup data
+    $details = new object();
+    if ($fromform->positionid != 0) {
+        $details->positionid = $fromform->positionid;
     }
-
-    $todb->update_proficiency($proficiency);
-    // update stats block
-    $currentuser = $fromform->userid;
-    $event = STATS_EVENT_COMP_ACHIEVED;
-    $data2 = $fromform->competencyid;
-    $time = $todb->reaggregate;
-    $count = count_records('block_totara_stats', 'userid', $currentuser, 'eventtype', $event, 'data2', $data2);
-    $isproficient = get_field('comp_scale_values', 'proficient', 'id', $proficiency);
-
-    // check the proficiency is set to "proficient" and check for duplicate data
-    if ($isproficient && $count == 0) {
-        totara_stats_add_event($time, $currentuser, $event, '', $data2);
-        //Send Alert
-        $alert_detail = new object();
-        $alert_detail->itemname = get_field('comp', 'fullname', 'id', $data2);
-        $alert_detail->text = get_string('competencycompleted', 'local_plan');
-        $component->send_component_complete_alert($alert_detail);
-
-        //Auto plan completion hook
-        dp_plan_item_updated($currentuser, 'competency', $data2);
+    if ($fromform->organisationid != 0) {
+        $details->organisationid = $fromform->organisationid;
     }
-    // check record exists for removal and is set to "not proficient"
-    else if ($isproficient == 0 && $count > 0) {
-        totara_stats_remove_event($currentuser, $event, $data2);
+    if ($fromform->assessorid != 0) {
+        $details->assessorid = $fromform->assessorid;
     }
+    $details->assessorname = $fromform->assessorname;
+    $details->assessmenttype = $fromform->assessmenttype;
 
-    if ($todb->id) {
+    // Add evidence
+    $result = hierarchy_add_competency_evidence($fromform->competencyid, $fromform->userid, $proficiency, $component, $details);
+
+    if ($result) {
         redirect($returnurl);
     } else {
         redirect($returnurl, get_string('recordnotcreated','local'));
