@@ -429,11 +429,21 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         }
     }
 
-    if($result && $oldversion < 2011072900) {
+    if ($result && $oldversion < 2011072900) {
         // Add autoassigned field to competency_assign table
         $table = new XMLDBTable('dp_plan_competency_assign');
         $field = new XMLDBField('mandatory');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0);
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+    }
+
+    if ($result && $oldversion < 2011080100) {
+        // Add column to auto add default competency evidence
+        $table = new XMLDBTable('dp_competency_settings');
+        $field = new XMLDBField('autoadddefaultevidence');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0);
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
         }

@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -1247,3 +1247,71 @@ function plan_comment_add($comment) {
 
     return $result;
 }
+
+
+/**
+ * Update an assigned competency with an evidence with a default proficiency
+ *
+ * @access  public
+ * @param   int     $competencyid
+ * @param   int     $userid
+ * @param   object  $component
+ * @return  bool
+ */
+function plan_mark_competency_default($competencyid, $userid, $component) {
+    global $CFG;
+
+    if (count_records('comp_evidence', 'userid', $userid, 'competencyid', $competencyid)) {
+        return;
+    }
+
+    // Identify the "default" value for this scale value
+    $sql = "
+        SELECT
+            scale.defaultid
+        FROM
+            {$CFG->prefix}comp comp
+        INNER JOIN
+            {$CFG->prefix}comp_scale_assignments scaleasn
+         ON scaleasn.frameworkid = comp.frameworkid
+        INNER JOIN
+            {$CFG->prefix}comp_scale scale
+         ON scale.id = scaleasn.scaleid
+        WHERE
+            comp.id = {$competencyid}
+    ";
+
+    $records = get_records_sql($sql);
+
+    // If no value, just keep on walking
+    if (!$records) {
+        return;
+    }
+
+    $rec = array_pop($records);
+    $default = $rec->defaultid;
+    require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/lib.php');
+
+    $details = new object();
+    $details->assessmenttype = get_string('automateddefault', 'local_plan');
+    hierarchy_add_competency_evidence($competencyid, $userid, $default, $component, $details, true, false);
+}
+
+
+/**
+ * Set "default" evidence for all the competencies in the plan when it changes to active status
+ *
+ * @access  public
+ * @param   object  $plan
+ * @return  void
+ */
+function plan_activate_plan($plan) {
+    $component = $plan->get_component('competency');
+    $items = $component->get_assigned_items(DP_APPROVAL_APPROVED);
+    foreach ($items as $compasn) {
+        if (!$compasn->profscalevalueid) {
+            plan_mark_competency_default($compasn->competencyid, $plan->userid, $component);
+        }
+    }
+}
+

@@ -1305,6 +1305,7 @@ class development_plan {
                 if ($reason != DP_PLAN_REASON_MANUAL_REACTIVATE) {
                     $todb->startdate = time();
                 }
+                plan_activate_plan($this);
                 break;
             case DP_PLAN_STATUS_COMPLETE:
                 if ($assigned = $this->get_component('competency')->get_assigned_items()) {

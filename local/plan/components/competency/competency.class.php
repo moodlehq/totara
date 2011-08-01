@@ -69,6 +69,7 @@ class dp_competency_component extends dp_base_component {
             $settings[$this->component.'_autoassignpos'] = $competencysettings->autoassignpos;
             $settings[$this->component.'_includecompleted'] = $competencysettings->includecompleted;
             $settings[$this->component.'_autoassigncourses'] = $competencysettings->autoassigncourses;
+            $settings[$this->component.'_autoadddefaultevidence'] = $competencysettings->autoadddefaultevidence;
         }
     }
 
@@ -863,6 +864,13 @@ class dp_competency_component extends dp_base_component {
                         $approval->before = $oldrecords[$itemid]->approved;
                         $approval->after = $record->approved;
                         $approvals[] = $approval;
+
+                        // Check if we are auto marking competencies with default evidence values
+                        if ($this->get_setting('autoadddefaultevidence')) {
+                            if ($record->approved == DP_APPROVAL_APPROVED && $this->plan->status == DP_PLAN_STATUS_APPROVED) {
+                                plan_mark_competency_default($oldrecords[$record->id]->competencyid, $this->plan->userid, $this);
+                            }
+                        }
                     }
                     // TODO: proficiencies ??
                     $updates .= $compprinted ? '</p>' : '';
@@ -1003,7 +1011,16 @@ class dp_competency_component extends dp_base_component {
         }
 
         add_to_log(SITEID, 'plan', 'added competency', "component.php?id={$this->plan->id}&amp;c=competency", $competencyname);
-        return insert_record('dp_plan_competency_assign', $item) ? $competencyname : false;
+        $result = insert_record('dp_plan_competency_assign', $item) ? $competencyname : false;
+
+        // Check if we are auto marking competencies with default evidence values
+        if ($this->get_setting('autoadddefaultevidence')) {
+            if ($result && $item->approved == DP_APPROVAL_APPROVED && $this->plan->status == DP_PLAN_STATUS_APPROVED) {
+                plan_mark_competency_default($item->competencyid, $this->plan->userid, $this);
+            }
+        }
+
+        return $result;
     }
 
 

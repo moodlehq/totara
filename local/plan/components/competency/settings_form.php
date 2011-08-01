@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +20,7 @@
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
  * @author Alastair Munro <alastair@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 /**
@@ -58,6 +57,7 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
         $defaultautoassignorg = $templatesettings->autoassignorg;
         $defaultincludecompleted = $templatesettings->includecompleted;
         $defaultautoassigncourses = $templatesettings->autoassigncourses;
+        $defaultautoadddefaultevidence = $templatesettings->autoadddefaultevidence;
     } else {
         $defaultduedatesmode = null;
         $defaultprioritymode = null;
@@ -66,6 +66,7 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
         $defaultautoassignorg = null;
         $defaultincludecompleted = 1;
         $defaultautoassigncourses = null;
+        $defaultautoadddefaultevidence = null;
     }
     // due date mode options
     $radiogroup = array();
@@ -117,6 +118,9 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
     $mform->setDefault('autoassignorg', $defaultautoassignorg);
     $mform->setDefault('includecompleted', $defaultincludecompleted);
     $mform->setDefault('autoassigncourses', $defaultautoassigncourses);
+
+    $mform->addElement('advcheckbox', 'autoadddefaultevidence', get_string('evidence', 'local_plan'), get_string('autoadddefaultevidence', 'local_plan'), null, array(0,1));
+    $mform->setDefault('autoadddefaultevidence', $defaultautoadddefaultevidence);
 
 
     //Permissions
@@ -181,6 +185,7 @@ function dp_competency_component_process_settings_form($fromform, $id) {
     $todb->autoassignpos = $fromform->autoassignpos;
     $todb->includecompleted = $fromform->includecompleted;
     $todb->autoassigncourses = $fromform->autoassigncourses;
+    $todb->autoadddefaultevidence = $fromform->autoadddefaultevidence;
 
     if($competencysettings = get_record('dp_competency_settings', 'templateid', $id)) {
         // update

@@ -35,7 +35,7 @@ require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php')
  * @return  true|array  True if you can add it, and if false an array where the first element is a lang
  *                      string name and the second element is the lang string file
  */
-function hierarchy_can_add_competency_evidence($plan, $component, $userid, $competencyid){
+function hierarchy_can_add_competency_evidence($plan, $component, $userid, $competencyid) {
 
     $systemcontext = get_system_context();
     if (!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
@@ -76,9 +76,10 @@ function hierarchy_can_add_competency_evidence($plan, $component, $userid, $comp
  * @param   object      $component      Full plan component class instance
  * @param   object      $details        Object containing the (all optional) params positionid, organisationid, assessorid, assessorname, assessmenttype, manual
  * @param   true|int    $reaggregate (optional) time() if set to true, otherwise timestamp supplied
+ * @param   bool        $notify (optional)
  * @return  int
  */
-function hierarchy_add_competency_evidence($competencyid, $userid, $prof, $component, $details, $reaggregate=true) {
+function hierarchy_add_competency_evidence($competencyid, $userid, $prof, $component, $details, $reaggregate = true, $notify = true) {
 
     $todb = new competency_evidence(
         array(
@@ -126,18 +127,20 @@ function hierarchy_add_competency_evidence($competencyid, $userid, $prof, $compo
     $count = count_records('block_totara_stats', 'userid', $currentuser, 'eventtype', $event, 'data2', $data2);
     $isproficient = get_field('comp_scale_values', 'proficient', 'id', $prof);
 
-    // check the proficiency is set to "proficient" and check for duplicate data
-    if ($isproficient && $count == 0) {
-        totara_stats_add_event($time, $currentuser, $event, '', $data2);
-        //Send Alert
-        $alert_detail = new object();
-        $alert_detail->itemname = get_field('comp', 'fullname', 'id', $data2);
-        $alert_detail->text = get_string('competencycompleted', 'local_plan');
-        $component->send_component_complete_alert($alert_detail);
-    }
-    // check record exists for removal and is set to "not proficient"
-    else if ($isproficient == 0 && $count > 0) {
-        totara_stats_remove_event($currentuser, $event, $data2);
+    if ($notify) {
+        // check the proficiency is set to "proficient" and check for duplicate data
+        if ($isproficient && $count == 0) {
+            totara_stats_add_event($time, $currentuser, $event, '', $data2);
+            //Send Alert
+            $alert_detail = new object();
+            $alert_detail->itemname = get_field('comp', 'fullname', 'id', $data2);
+            $alert_detail->text = get_string('competencycompleted', 'local_plan');
+            $component->send_component_complete_alert($alert_detail);
+        }
+        // check record exists for removal and is set to "not proficient"
+        else if ($isproficient == 0 && $count > 0) {
+            totara_stats_remove_event($currentuser, $event, $data2);
+        }
     }
 
     return $todb->id;
