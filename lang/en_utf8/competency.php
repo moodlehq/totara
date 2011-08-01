@@ -230,6 +230,7 @@ $string['error:createtype'] = 'Error creating completency type \"{$a}\"';
 $string['error:deletedtype'] = 'Error deleting competency type \"{$a}\".';
 $string['type'] = 'Type';
 $string['types'] = 'Types';
+$string['notypes'] = 'No competency types';
 $string['deletetype'] = 'Delete type \"{$a}\"';
 $string['edittype'] = 'Edit type';
 $string['fullnametype'] = 'Type full name';

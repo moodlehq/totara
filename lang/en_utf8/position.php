@@ -126,7 +126,7 @@ $string['edittype'] = 'Edit type';
 $string['fullnametype'] = 'Type full name';
 $string['missingfullnametype'] = 'Missing type full name';
 $string['missingshortnametype'] = 'Missing type short name';
-$string['notypes'] = 'No types in this framework';
+$string['notypes'] = 'No position types';
 $string['positiontypes'] = 'Position types';
 $string['shortnametype'] = 'Type short name';
 
