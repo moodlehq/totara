@@ -51,6 +51,7 @@ class dp_basic_workflow extends dp_base_workflow {
         $this->cfg_competency_autoassignorg = 0;
         $this->cfg_competency_includecompleted = 1;
         $this->cfg_competency_autoassigncourses = 0;
+        $this->cfg_competency_autoadddefaultevidence = 0;
         $this->cfg_competency_duedatemode = DP_DUEDATES_NONE;
         $this->cfg_competency_prioritymode = DP_PRIORITY_OPTIONAL;
         $this->cfg_competency_priorityscale = $defaultpriority;
@@ -72,8 +73,8 @@ class dp_basic_workflow extends dp_base_workflow {
         $this->perm_plan_delete_manager = DP_PERMISSION_ALLOW;
         $this->perm_plan_approve_learner = DP_PERMISSION_REQUEST;
         $this->perm_plan_approve_manager = DP_PERMISSION_APPROVE;
-        $this->perm_plan_complete_learner = DP_PERMISSION_DENY;
-        $this->perm_plan_complete_manager = DP_PERMISSION_ALLOW;
+        $this->perm_plan_completereactivate_learner = DP_PERMISSION_DENY;
+        $this->perm_plan_completereactivate_manager = DP_PERMISSION_ALLOW;
 
         // course permission settings
         $this->perm_course_updatecourse_learner = DP_PERMISSION_REQUEST;

@@ -62,8 +62,8 @@ abstract class dp_base_workflow {
             'perm_plan_delete_manager',
             'perm_plan_approve_learner',
             'perm_plan_approve_manager',
-            'perm_plan_complete_learner',
-            'perm_plan_complete_manager',
+            'perm_plan_completereactivate_learner',
+            'perm_plan_completereactivate_manager',
 
             //course permission settings
             'perm_course_updatecourse_learner',
