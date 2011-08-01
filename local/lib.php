@@ -184,7 +184,6 @@ function resize_image($originalfile, $destination, $newwidth, $newheight, $force
 }
 
 
-
 /**
  * hook to add extra sticky-able page types.
  */
@@ -199,7 +198,6 @@ function local_get_sticky_pagetypes() {
         ),
     );
 }
-
 
 
 /**

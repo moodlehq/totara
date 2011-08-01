@@ -225,7 +225,6 @@ function totara_display_course_progress_icon($userid, $courseid, $status) {
 }
 
 
-
 /**
  * adds guides block on the site admin pages.  designed to be called from local_postinst
  *
@@ -930,4 +929,98 @@ function totara_errors_download() {
     }
 
     send_temp_file($content, 'totara-error.log', true);
+}
+
+
+/**
+ * Generate markup for search box
+ *
+ * Gives ability to specify courses, programs and/or categories in the results
+ * as well as the ability to limit by category
+ *
+ * @access  public
+ * @param   string  $value      Search value
+ * @param   bool    $return     Return results rather than print
+ * @param   string  $type       Type of results ('all', 'course', 'program', 'category')
+ * @param   int     $category   Parent category (0 means all, -1 means global search)
+ * @return  string|void
+ */
+function print_totara_search($value = '', $return = false, $type = 'all', $category = -1) {
+
+    global $CFG;
+    static $count = 0;
+
+    $count++;
+
+    $id = 'totarasearch';
+
+    if ($count > 1) {
+        $id .= '_'.$count;
+    }
+
+    $action = "{$CFG->wwwroot}/course/search.php";
+
+    // If searching in a category, indicate which category
+    if ($category > 0) {
+        // Get category name
+        $categoryname = get_field('course_categories', 'name', 'id', $category);
+        if ($categoryname) {
+            $strsearch = get_string('searchx', 'moodle', $categoryname);
+        } else {
+            $strsearch = get_string('search');
+        }
+    } else {
+        if ($type == 'course') {
+            $strsearch = get_string('searchallcourses');
+        } elseif ($type == 'program') {
+            $strsearch = get_string('searchallprograms');
+        } elseif ($type == 'category') {
+            $strsearch = get_string('searchallcategories');
+        } else {
+            $strsearch = get_string('search');
+            $type = '';
+        }
+    }
+
+    $output  = '<form id="searchtotara" action="'.$action.'" method="get">';
+    $output .= '<fieldset class="coursesearchbox invisiblefieldset">';
+    $output .= '<input type="hidden" name="viewtype" value="'.$type.'" />';
+    $output .= '<input type="hidden" name="category" value="'.$category.'" />';
+    $output .= '<input type="text" class="search-box" id="navsearchbox" size="20" name="search" alt="'.s($strsearch).'" value="'.s($value, true).'" placeholder="'.s($strsearch).'" />';
+    $output .= '<input type="submit" value="'.get_string('go').'" />';
+    $output .= '</fieldset></form>';
+
+    if ($return) {
+        return $output;
+    }
+    echo $output;
+}
+
+
+/**
+ * Displays a generic editing on/off button suitable for any page
+ *
+ * @param string $settingname Name of the $USER property used to determine if the button should display on or off
+ * @param array $params Associative array of additional parameters to pass (optional)
+ *
+ * @return string HTML to display the button
+ */
+function totara_print_edit_button($settingname, $params = array()) {
+    global $CFG, $USER;
+
+    $currentstate = isset($USER->$settingname) ?
+        $USER->$settingname : null;
+
+    // Work out the appropriate action.
+    if (empty($currentstate)) {
+        $label = get_string('turneditingon');
+        $edit = 'on';
+    } else {
+        $label = get_string('turneditingoff');
+        $edit = 'off';
+    }
+
+    // Generate the button HTML.
+    $params[$settingname] = $edit;
+    return print_single_button(qualified_me(), $params, $label, 'get', '', true);
 }

@@ -27,6 +27,12 @@ $row[] = new tabobject(
     'status=' . $rolstatus,
     get_string($rolstatus.'objectives', 'local_plan')
 );
+$row[] = new tabobject(
+    'programs',
+    $CFG->wwwroot . '/local/plan/record/programs.php?' . $userstr .
+    'status=' . $rolstatus,
+    get_string($rolstatus.'programs', 'local_plan')
+);
 $tabs[] = $row;
 
 echo print_tabs($tabs, $currenttab, null, null, true);

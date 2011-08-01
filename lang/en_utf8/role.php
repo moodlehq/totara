@@ -193,6 +193,9 @@ $string['viewrole'] = 'View role details';
 $string['xuserswiththerole'] = 'Users with the role \"$a->role\"';
 $string['ingroup'] = 'in the group \"$a->group\"';
 $string['inactiveformorethan'] = 'inactive for more than $a->timeperiod';
+$string['cohort:assign'] = 'Assign cohorts';
+$string['cohort:manage'] = 'Manage cohorts';
+$string['cohort:view'] = 'View cohorts';
 
 // MNET
 $string['site:mnetlogintoremote'] = 'Roam to a remote Moodle';

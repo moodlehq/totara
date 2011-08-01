@@ -55,6 +55,7 @@ $string['rplupdated'] = 'Recognition of Prior Learning updated';
 $string['error:usernotfound'] = 'User not found';
 $string['error:cannotviewpage'] = 'You cannot view this page';
 $string['recordoflearningcourses'] = 'Record of Learning: Courses';
+$string['recordoflearningprograms'] = 'Record of Learning: Programs';
 $string['recordoflearningcompetencies'] = 'Record of Learning: Competencies';
 $string['recordoflearningobjectives'] = 'Record of Learning: Objectives';
 $string['teammembers'] = 'Team Members';
@@ -99,6 +100,12 @@ $string['course_instructions_learner'] = 'All the courses that form your learnin
 $string['course_instructions_detail'] = 'You can view any course by clicking the course title. ';
 $string['course_instructions_add'] = 'Clicking \"Add/remove Courses\" will allow you to add new courses to this learning plan.';
 $string['course_instructions_request'] = 'Clicking \"Update requested courses\" will allow you to request to add new courses to this learning plan.';
+
+$string['program_instructions_manager'] = 'All the programs that form your team member\'s learning plan are show below. ';
+$string['program_instructions_learner'] = 'All the programs that form your learning plan are shown below. ';
+$string['program_instructions_detail'] = 'You can view any program by clicking the program title. ';
+$string['program_instructions_add'] = 'Clicking \"Add/remove programs\" will allow you to add new programs to this learning plan.';
+$string['program_instructions_request'] = 'Clicking \"Update requested programs\" will allow you to request to add new programs to this learning plan.';
 
 $string['objective_instructions_manager'] = 'All the objectives that form your team member\'s learning plan are show below. ';
 $string['objective_instructions_learner'] = 'All the objectives that form your learning plan are shown below. ';
@@ -219,6 +226,20 @@ $string['confirmlinkedcourses'] = 'Confirm linked courses';
 $string['confirmlinkedcoursesdesc'] = 'Some of those competencies have linked courses. If checked below, these courses will also be added to this plan:';
 $string['alreadyassignedtoplan'] = 'Already assigned to this plan';
 
+// Program strings
+$string['error:cannotupdateprograms'] = 'Cannot update programs';
+$string['launchprogram'] = 'Launch program';
+$string['program'] = 'Program';
+$string['programplural'] = 'Programs';
+$string['programname'] = 'Program Name';
+$string['programnotfound'] = 'Program not found';
+$string['programsupdated'] = 'Program settings updated.';
+$string['updateprogram'] = 'Update';
+$string['updateprograms'] = 'Update programs';
+$string['addremoveprogram'] = 'Add/remove programs';
+$string['noprograms'] = 'No programs.';
+$string['noduedate'] = 'No due date';
+
 //Objective Strings
 $string['allobjectivescales'] = 'All objective scales';
 $string['objective'] = 'Objective';
@@ -318,6 +339,9 @@ $string['error:update_competency_settings'] = 'An error occured while updating t
 $string['update_course_settings'] = 'Course settings successfully updated';
 $string['error:update_course_settings'] = 'An error occured while updating the Course settings';
 
+$string['update_program_settings'] = 'Program settings successfully updated';
+$string['error:update_program_settings'] = 'An error occured while updating the program settings';
+
 $string['update_objective_settings'] = 'Objective settings successfully updated';
 $string['error:update_objective_settings'] = 'An error occured while updating the Objective settings';
 
@@ -367,6 +391,8 @@ $string['plansettings'] = 'Plan settings';
 $string['planpermissions'] = 'Plan permissions';
 $string['coursesettings'] = 'Course settings';
 $string['coursepermissions'] = 'Course permissions';
+$string['programsettings'] = 'Program settings';
+$string['programpermissions'] = 'Program permissions';
 $string['competencysettings'] = 'Competency settings';
 $string['competencypermissions'] = 'Competency permissions';
 $string['objectivesettings'] = 'Objective settings';
@@ -680,14 +706,17 @@ $string['scaleslocked'] = 'This template is in use and changing the scales will 
 $string['activecourses'] = 'Active Courses';
 $string['activecompetencies'] = 'Active Competencies';
 $string['activeobjectives'] = 'Active Objectives';
+$string['activeprograms'] = 'Active Programs';
 
 $string['allcourses'] = 'All Courses';
 $string['allcompetencies'] = 'All Competencies';
 $string['allobjectives'] = 'All Objectives';
+$string['allprograms'] = 'All Programs';
 
 $string['completedcourses'] = 'Completed Courses';
 $string['completedcompetencies'] = 'Completed Competencies';
 $string['completedobjectives'] = 'Completed Objectives';
+$string['completedprograms'] = 'Completed Programs';
 $string['on'] = 'on';
 
 // Comments

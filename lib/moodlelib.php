@@ -2066,6 +2066,16 @@ function require_login($courseorid=0, $autologinguest=true, $cm=null, $setwantsu
 
     } else {
 
+        // Check if the course that the user is trying to access is part of a program
+        // that the user is assigned to and, if it is and the user has completed
+        // all the pre-requisites in the program necessary to access the course
+        // then the user will be enrolled on to the course automatically (if they
+        // aren't already enrolled)
+        if(file_exists($CFG->dirroot.'/local/program/lib.php')) {
+            require_once($CFG->dirroot.'/local/program/lib.php');
+            prog_can_enter_course($USER->id, $COURSE->id, $COURSE->context);
+        }
+
         /// Check if the user can be in a particular course
         if (empty($USER->access['rsw'][$COURSE->context->path])) {
             //

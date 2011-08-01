@@ -374,7 +374,8 @@ div.totara-dialog td.select div#dialog-tabs li.ui-tabs-selected {
     width: 90%;
 }
 
-.plan-launch-course-button {
+.plan-launch-course-button,
+.program-launch-course-button {
     float: left;
 }
 

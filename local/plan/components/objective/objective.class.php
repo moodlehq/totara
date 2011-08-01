@@ -1212,7 +1212,7 @@ SQL;
         // Get courses assigned to this plan
         if ($objectives = $this->get_assigned_items()) {
             foreach ($objectives as $o) {
-                if (!$o->approved) {
+                if ($o->approved != DP_APPROVAL_APPROVED) {
                     continue;
                 }
 

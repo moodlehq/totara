@@ -206,14 +206,13 @@ if ($itemform->is_cancelled()) {
     // Log
     add_to_log(SITEID, $prefix, $add_or_update.' item', "item/view.php?id={$itemnew->id}&amp;prefix={$prefix}", "{$itemnew->fullname} (ID {$itemnew->id})");
 
-    // the form has been saved, now either confirm the change, or redirect to
-    // the change type page if 'Change Type' was pressed
-    $data = $itemform->get_submitted_data();
-    if(isset($data->changetype)) {
-        redirect($CFG->wwwroot . '/hierarchy/type/change.php?prefix='. $prefix . '&amp;typeid=' . $itemnew->typeid . '&amp;itemid=' . $itemnew->id . '&amp;page=' . $page);
-    } else {
-        totara_set_notification(get_string($add_or_update.$prefix, $prefix, format_string(stripslashes($itemnew->fullname))), "{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;frameworkid={$frameworkid}&amp;page={$page}", array('style' => 'notifysuccess'));
+    // Raise an event to let other parts of the system know
+    if ($itemnew->path != $item->path) {
+        $itemnew->oldpath = $item->path;
     }
+    events_trigger("{$type}_updated", $itemnew);
+
+    redirect("{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&id={$itemnew->id}");
     //never reached
 }
 

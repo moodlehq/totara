@@ -9,8 +9,7 @@
 require_once('../config.php');
 require_once('lib.php');
 require_once('editcategory_form.php');
-require_once ($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot."/local/program/lib.php"); // required to update programs in categories
 
 require_login();
 
@@ -74,6 +73,7 @@ if ($mform->is_cancelled()) {
             error( "Could not update the category '$newcategory->name' ");
         }
         fix_course_sortorder();
+        prog_fix_program_sortorder();
 
     } else {
         // Create a new category.
@@ -90,7 +90,7 @@ if ($mform->is_cancelled()) {
     $category_icon = new category_icon();
     $category_icon->process_form($data);
 
-    redirect('category.php?id='.$newcategory->id.'&categoryedit=on');
+    redirect('index.php?highlightid='.$newcategory->id.'&amp;categoryedit=on#category'.$newcategory->id);
 }
 
 // Print the form

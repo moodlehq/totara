@@ -8,10 +8,16 @@ if ($hassiteconfig
  or has_capability('moodle/course:create', $systemcontext)
  or has_capability('moodle/site:approvecourse', $systemcontext)) { // speedup for non-admins, add all caps used on this page
 
-    $ADMIN->add('courses', new admin_externalpage('coursemgmt', get_string('coursemgmt', 'admin'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
+    $ADMIN->add('courses', new admin_externalpage('managecourses', get_string('managecourses', 'admin'), $CFG->wwwroot . '/course/categorylist.php?viewtype=course&amp;categoryedit=on',
             array('moodle/category:manage', 'moodle/course:create')));
 
-    $ADMIN->add('courses', new admin_externalpage('coursecustomfields', get_string('customfields', 'customfields'), $CFG->wwwroot . '/customfield/index.php?type=course',
+    $ADMIN->add('courses', new admin_externalpage('manageprograms', get_string('manageprograms', 'admin'), $CFG->wwwroot . '/course/categorylist.php?viewtype=program&amp;categoryedit=on',
+            array('moodle/category:manage', 'moodle/course:create')));
+
+    $ADMIN->add('courses', new admin_externalpage('managecategories', get_string('managecategories'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
+            array('moodle/category:manage', 'local/program:createprogram')));
+
+    $ADMIN->add('courses', new admin_externalpage('coursecustomfields', get_string('customfields', 'customfields'), $CFG->wwwroot . '/customfield/custom_field_categories.php?type=course',
             array('moodle/local:createcoursecustomfield', 'moodle/local:updatecoursecustomfield', 'moodle/local:deletecoursecustomfield')));
 
     $ADMIN->add('courses', new admin_enrolment_page());

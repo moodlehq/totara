@@ -46,5 +46,3 @@ $iconname = $icondetails['icon'];
 $iconpath = $icondetails['path'];
 
 send_file($iconpath, $iconname);
-
-?>

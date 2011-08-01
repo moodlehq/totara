@@ -313,8 +313,9 @@ span.youarehere {
 .loginbox {
     background: url("images/content_bg_blue.jpg") no-repeat scroll left top #FFFFFF;
     border: 1px solid #DDDDDD;
-    -moz-border-radius: 8px;
     border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
 }
 
 .navigation {
@@ -746,11 +747,12 @@ div.totara-dialog .selected span span.deletebutton {
     overflow: hidden;
     text-indent: -999px;
     width: 16%;
+    padding:2px 0px;
 }
 		    /* Handle hovers */
 		    div.totara-dialog .selected span:hover span.deletebutton {
 			background-image: url("../../theme/totara/pix/t/delete.gif");
-			background-position: right center;
+			background-position: right top;
 			background-repeat: no-repeat;
 		    }
 		    div.totara-dialog .selected span:hover span.addbutton {
@@ -797,6 +799,7 @@ div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
 div.ui-dialog.ui-corner-all {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
+    border-radius: 10px;
 }
 .ui-tabs .ui-tabs-nav {
     position: static !important;
@@ -943,6 +946,7 @@ h6 {
   line-height: 2.5em;
   text-align:left;
 }
+
 .tabrow0 li a:link,
 .tabrow0 li a:hover,
 .tabrow0 li a:visited {
@@ -2067,17 +2071,7 @@ div.yuimenu .yuichildtree .yuimenuitem {
 .generaltable {
   width:100%;
 }
-.coursebox .summary {
-  font-size: 1.1em;
-}
-.categoryboxcontent, .coursebox {
-   border:none;
-   margin-bottom: 10px;
-}
-.coursebox h2.main {
-  font-size: 1.6em !important;
-}
-.categoryboxcontent, .coursebox,
+.categoryboxcontent,
 #adminsettings fieldset {
   border:none;
   color: #322f2c;
@@ -2264,6 +2258,7 @@ body#admin-user table.generaltable td.c7 {
     width: 70px;
 }
 
+#required-learning-list table th.header.c0 a,
 #dp-plans-list-active-plans table th.header.c0 a,
 #dp-plans-list-unapproved-plans table th.header.c0 a,
 #dp-plans-list-completed-plans table th.header.c0 a {
@@ -2346,7 +2341,7 @@ div.plan_box_completed {
 		display:inline; /* <IE7 margin-doubling fix */
 		width:70%;
 	}
-	
+
 .dp-summary-widget-title {
 	padding-top: 0;
 	font-size:1.1em;
@@ -2360,11 +2355,13 @@ span.dp-summary-widget-component-name {
 	padding:5px 0;
 }
 
-.plan-launch-course-button a {
+.plan-launch-course-button a,
+.program-launch-course-button a {
     color: white;
 }
 
-.plan-launch-course-button {
+.plan-launch-course-button,
+.program-launch-course-button {
     float: right;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -2380,6 +2377,11 @@ span.dp-summary-widget-component-name {
     border-bottom-right-radius: 4px 4px;
     border-bottom-left-radius: 4px 4px;
     font-size: 11px !important;
+}
+
+/* to override underline for button set by #program-content table a */
+div.program-launch-course-button a {
+    text-decoration: none !important;
 }
 
 table#dpcomponents {
@@ -2794,7 +2796,7 @@ img.percentImage {
 	margin: 0 201px;
 }
 
-.course_icon {
+.course_icon, .program_icon {
     padding-right: 5px;
     vertical-align: middle;
 }
@@ -3648,7 +3650,7 @@ body#hierarchy-index table#competency tr.r1 td.customfield {
     background: #f2f2f2;
 }
 
-body#hierarchy-index table#competency tr.r1 td
+body#hierarchy-index table#competency tr.r1 td {}
 
 /*****************************************************************************/
 /** Form **/
@@ -3756,6 +3758,433 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
     background-color: #EEEEFF;
     border: 1px solid #CCCCCC;
 }
+
+/*****************************************************************************/
+/** Program  **/
+/*****************************************************************************/
+.timeallowed{
+	color:#9e1775;
+}
+
+.programprogress .duedate, .programprogress .startdate{
+	background: none repeat scroll 0 0 #F2F2F2;
+}
+
+#program-content fieldset legend,
+#view-program-content fieldset legend{
+	font-family:'Myriad Pro', Arial;
+	font-weight:bold;
+	font-size:16px;
+}
+
+#program-content .nextsetoperator .operator-or,
+#program-content .nextsetoperator .operator-then,
+#view-program-content .nextsetoperator .operator-or,
+#view-program-content .nextsetoperator .operator-then{
+	font-size:36px;
+	font-family:'Myriad Pro', Arial;
+	font-weight:bold;
+	text-transform:uppercase;
+    float: left;
+    margin-bottom: 0;
+    margin-top: 26px;
+    width: 155px;
+}
+
+#program-content .nextsetoperator .operator-or,
+#view-program-content .nextsetoperator .operator-or{
+	background: url("images/progress_or.jpg") no-repeat scroll right center transparent;
+}
+
+#program-content .nextsetoperator .operator-then,
+#view-program-content .nextsetoperator .operator-then{
+	background: url("images/progress_then.jpg") no-repeat scroll right top transparent;
+}
+
+.nextsetoperator{
+	padding-bottom:20px;
+	height:70px;
+}
+
+#program-content .nextsetoperator .nextsethelp,
+#view-program-content .nextsetoperator .nextsethelp {
+	color:#777777;
+	margin-left: 16px;
+    margin-top: 26px;
+    width: 465px;
+    float:left;
+}
+
+#program-content .summary p,
+#view-program-content .summary p{
+	color:#777777;
+}
+
+#program-content table a,
+#view-program-content table a{
+	text-decoration: underline;
+}
+
+#local-program-view #program-content fieldset,
+#local-program-view #view-program-content fieldset{
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+}
+
+#program-content fieldset strong,
+#view-program-content fieldset strong{
+	color:#9E1775;
+}
+
+
+/***
+** Course Category Menu
+***/
+
+#course-category .viewtypepicker li a span, #course-category .viewtypepicker li span{
+	padding:0px;
+}
+
+#course-category .viewtypepicker li.selected{
+	padding-top:0px;
+}
+
+#course-category .viewtypepicker li span {
+	display:inline;
+	list-style: none;
+	background:url("images/tab/right_white.gif") repeat scroll right top transparent;
+    color: #000000;
+    font-family: 'Trebuchet ms',Verdana,Helvetica,sans-serif;
+    font-size: 15px;
+	padding:4px 10px 2px 0px;
+    margin-right:2px;
+}
+
+#course-category .viewtypepicker li{
+    padding-bottom: 3px;
+    padding-left: 3px;
+    color:#ffffff;
+	font-size:13px;
+	display:inline;
+}
+
+#course-category .viewtypepicker li.selected{
+    background: url("images/tab/left_white.gif") no-repeat scroll left top transparent;
+    padding-top:5px;
+    padding-bottom:4px;
+    margin-left:6px;
+}
+
+#course-category .viewtypepicker li a span {
+	background:url("images/tab/right_dark.gif") no-repeat scroll right top transparent;
+	color:#ffffff;
+	padding:5px 8px 3px 2px;
+}
+
+#course-category .viewtypepicker li a{
+    background: url("images/tab/left_dark.gif") no-repeat scroll left top transparent;
+	padding:6px 2px 3px 8px;
+}
+
+#course-category .viewtypepicker .selected span{
+	padding-bottom:4px;
+}
+
+#course-category .viewtypepicker ul{
+    border-bottom: 1px solid #000000;
+    margin-left: 40px;
+    padding-left: 8px;
+    text-align:left;
+    width:630px;
+    margin:0px;
+    margin-bottom:20px;
+    height:20px;
+}
+
+
+/*****************************************************************************/
+/** Program Overview **/
+/*****************************************************************************/
+#programstatus{
+	color:#ffffff;
+}
+
+#programstatus.programstatuslive p{
+	color:#9F187C;
+}
+
+#programstatus.programstatusnotlive p{
+
+}
+
+#exceptionsreport .exceptionscount{
+	font-weight: bold;
+}
+
+#exceptionsreport{
+	background:url('images/program_warning.gif') no-repeat left center transparent;
+}
+
+#program_page_links .overview a,
+#program_page_links .overview .notselected{
+	background:url('images/program_overview_under.gif') no-repeat center top transparent;
+}
+
+#program_page_links .details a,
+#program_page_links .details .notselected{
+	background:url('images/program_details.gif') no-repeat center top transparent;
+}
+
+#program_page_links .content a,
+#program_page_links .content .notselected{
+	background:url('images/program_content.gif') no-repeat center top transparent;
+}
+
+#program_page_links .assignments a,
+#program_page_links .assignments .notselected{
+	background:url('images/program_assig.gif') no-repeat center top transparent;
+}
+
+#program_page_links .messages a,
+#program_page_links .messages .notselected{
+	background:url('images/program_message.gif') no-repeat center top transparent;
+}
+
+#program_page_links .overview span{
+	background:url('images/program_overview.gif') no-repeat center top transparent;
+}
+
+#program_page_links .details span{
+	background:url('images/program_details_select.gif') no-repeat center top transparent;
+}
+
+#program_page_links .content span{
+	background:url('images/program_content_select.gif') no-repeat center top transparent;
+}
+
+#program_page_links .assignments span{
+	background:url('images/program_assig_select.gif') no-repeat center top transparent;
+}
+
+#program_page_links .messages span{
+	background:url('images/program_message_select.gif') no-repeat center top transparent;
+}
+
+#programstatus p .status{
+	font-weight:bold;
+}
+
+.local-program #programdetails .ftoggler{
+	background:url('images/program_details_small.gif') no-repeat 8px center transparent;
+}
+
+.local-program #programcontent .ftoggler{
+	background:url('images/program_content_small.gif') no-repeat 8px center transparent;
+}
+
+.local-program #programassignments .ftoggler{
+	background:url('images/program_assig_small.gif') no-repeat 10px center transparent;
+}
+
+.local-program #programmessages .ftoggler{
+	background:url('images/program_messages_small.gif') no-repeat 8px center transparent;
+}
+
+#program-overview label{
+	color:#6e6e6e;
+}
+
+#program-overview .felement{
+	color:#000000;
+}
+
+
+/*****************************************************************************/
+/** Program Edit **/
+/*****************************************************************************/
+.local-program fieldset legend{
+	font-family:'Myriad Pro', Arial;
+	font-weight:bold;
+}
+
+.local-program fieldset.course_set,
+.local-program fieldset.message{
+	position:relative;
+}
+
+.local-program fieldset.course_set label,
+.local-program fieldset.message label,
+#form_prog_content label{
+	font-family:'Myriad Pro', Arial;
+	font-weight:bold;
+}
+
+.local-program fieldset .setbuttons input,
+.local-program fieldset .messagebuttons input{
+	color:#00adef;
+}
+
+.local-program fieldset.course_set .course_table .operator{
+	border-right:1px solid #d7d7d7;
+	color:#000000;
+	font-weight:bold;
+}
+
+.local-program fieldset.course_set .course_table .course{
+	width:500px;
+	color:#000000;
+	font-weight:bold;
+}
+
+.local-program fieldset.course_set .course_table .action{
+	background:url('images/prog_edit_course_action_bgd.jpg') no-repeat left center;
+}
+
+.return-overview, .next-assignments, .next-messages, #id_saveandreturn, #id_saveandnext{
+	white-space: normal;
+	width:125px;
+	margin-top:20px;
+}
+
+
+.assignment_category{
+	border:2px groove #F0F0F0;
+}
+
+.local-program fieldset .setbuttons input[value="Move up"],
+.local-program fieldset .messagebuttons input[value="Move up"]{
+	background:url('pix/t/up.gif') no-repeat right center;
+}
+
+.local-program fieldset .setbuttons input[value="Move down"],
+.local-program fieldset .messagebuttons input[value="Move down"]{
+	background:url('pix/t/down.gif') no-repeat right center;
+}
+
+.local-program fieldset .setbuttons input[value="Delete"],
+.local-program fieldset .messagebuttons input[value="Delete"]{
+	background:url('pix/t/delete.gif') no-repeat right center;
+}
+
+.local-program fieldset .setbuttons input[value="Move down"][disabled],
+.local-program fieldset .messagebuttons input[value="Move down"][disabled]{
+	background:url('pix/t/disable_down.gif') no-repeat right center;
+	color:#BDBDC8;
+}
+
+.local-program fieldset .setbuttons input[value="Move up"][disabled],
+.local-program fieldset .messagebuttons input[value="Move up"][disabled]{
+	background:url('pix/t/disable_up.gif') no-repeat right center;
+	color:#BDBDC8;
+}
+
+#iconheader legend{
+	color:#6E6E6E;
+}
+
+#program-content #programcontent p,
+#program-assignments #programassignments p,
+#program-messages #programmessages p,
+#program-exceptions #programexceptions p{
+	color:#acacac;
+}
+
+#program-content #programcontent #course_sets p,
+#program-messages #programmessages #messages p,
+#program-assignments #programassignments #assignment_categories p{
+	color:#322F2C;
+}
+
+#programcontent #course_sets p{
+	color:#322F2C;
+}
+
+.nextsetoperator-or{
+	background:url('images/or.jpg') no-repeat right center;
+}
+
+.nextsetoperator-then{
+	background:url('images/then.jpg') no-repeat right center;
+}
+
+.local-program fieldset.course_set .coursedeletelink .delete_item,
+.local-program fieldset.course_set .course_item{
+    background-color: #F7F8E8;
+    border: 1px solid #D0D676;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    width: 100%;
+	color:#000000;
+}
+
+.local-program fieldset.course_set div.courselist td.course{
+    padding-left: 10px;
+    color: #000000;
+}
+
+.local-program fieldset.course_set div.courselist td.course div.delete_item {
+    padding: 6px 10px 6px 20px;
+    background-color: #F7F8E8;
+    border: 1px solid #D0D676;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    width: 100%;
+}
+
+span.cancel_program_blurb {
+    font-size: 85%;
+}
+
+
+/*****************************************************************************/
+/** Program Assignments **/
+/*****************************************************************************/
+#assignment_categories .assignment_category td.col0 .deletelink{
+	background-color:none;
+}
+
+#assignment_categories .assignment_category td.col1,
+#assignment_categories .assignment_category th.col1{
+    border-left:1px solid #2e2e2e;
+}
+
+#assignment_categories .assignment_category td.col2,
+#assignment_categories .assignment_category th.col2{
+	border-left:1px solid #2e2e2e;
+}
+
+#assignment_categories .assignment_category td.col3,
+#assignment_categories .assignment_category th.col3{
+	border-left:1px solid #2e2e2e;
+}
+
+#assignment_categories .assignment_category td.col0 div.item{
+	background-color: #F7F8E8;
+    border: 1px solid #E6EBBB;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+}
+
+
+/*****************************************************************************/
+/** Program Exceptions **/
+/*****************************************************************************/
+.local-program #programexceptions .ftoggler{
+	background:url("images/prog_exception_small.gif") no-repeat scroll 8px center transparent
+}
+
+.local-program #programexceptions .exceptionactions{
+  	background: none repeat scroll 0 0 #F0F0F0;
+}
+
+.local-program #programexceptions .exceptionactions p{
+	color:#9F187C;
+}
+
 
 /*
  * Small Change to file upload dialog
@@ -3902,4 +4331,30 @@ ul.comment-list li .comment-delete {
 	position: absolute;
 	top: 4px;
 	right: 4px;
+}
+
+/*
+ * Small Change to program category dialog 
+ */
+#local-program-info{
+	margin:0px;
+}
+#local-program-info #wrapper{
+	width:469px;
+	min-height:380px;
+}
+#local-program-info #wrapper #container #page{
+	padding:10px;
+}
+#addcompetency #search-tab #dialog-search-table{
+	width:478px;
+}
+/*
+ * Vertically align table content
+ */
+#course-search table td{
+  vertical-align:middle;
+}
+#local-program-view table td{
+  vertical-align:middle;
 }

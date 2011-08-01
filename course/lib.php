@@ -88,6 +88,9 @@ function make_log_url($module, $url) {
         case 'plan':
             $url = '/local/plan/'.$url;
             break;
+        case 'program':
+            $url = '/local/program/'.$url;
+            break;
         case 'reportbuilder':
             $url = '/local/reportbuilder/'.$url;
             break;
@@ -2236,9 +2239,7 @@ function print_courses($category) {
         foreach ($courses as $course) {
             if ($course->visible == 1
                 || has_capability('moodle/course:viewhiddencourses',$course->context)) {
-                echo '<table class="courselist">';
                 print_course($course);
-                echo "</table>\n";
             }
         }
     } else {
@@ -2274,9 +2275,9 @@ function print_course($course, $highlightterms = '') {
 
     $linkcss = $course->visible ? '' : ' class="dimmed" ';
 
-    echo '<tr>';
     echo '<div class="coursebox clearfix">';
-    echo '<td class="name"> '.$course_icon->display($course, 'small').'<a title="'.get_string('entercourse').'"'.
+    echo '<div class="info">';
+    echo '<div class="name"> '. $course_icon->display($course, 'small'). '<a title="'.get_string('entercourse').'"'.
          $linkcss.' href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.
          highlight($highlightterms, format_string($course->fullname)).'</a></div>';
 
@@ -2359,16 +2360,15 @@ function print_course($course, $highlightterms = '') {
 
     require_once("$CFG->dirroot/enrol/enrol.class.php");
     $enrol = enrolment_factory::factory($course->enrol);
-    echo '</td><td class="info">';
     echo $enrol->get_access_icons($course);
-    echo '</td>';
 
-    echo '<td class="summary">';
+    echo '</div><div class="summary">';
     $options = NULL;
     $options->noclean = true;
     $options->para = false;
     echo highlight($highlightterms, format_text($course->summary, FORMAT_MOODLE, $options,  $course->id));
-    echo '</tr>';
+    echo '</div>';
+    echo '</div>';
 }
 
 function print_my_moodle() {
@@ -2482,6 +2482,7 @@ function print_course_search($value="", $return=false, $format="plain") {
     }
     echo $output;
 }
+
 
 function print_remote_course($course, $width="100%") {
 
@@ -3347,6 +3348,13 @@ function category_delete_move($category, $newparentid, $showfeedback=true) {
         notify(get_string('coursesmovedout', '', format_string($category->name)), 'notifysuccess');
     }
 
+    if ($programs = get_records('prog', 'category', $category->id, 'sortorder ASC', 'id')) {
+        if (!prog_move_programs(array_keys($programs), $newparentid)) {
+            notify("Error moving programs");
+            return false;
+        }
+    }
+
     // now delete anything that may depend on course category context
     grade_course_category_delete($category->id, $newparentid, $showfeedback);
     if (!question_delete_course_category($category, $newparentcat, $showfeedback)) {
@@ -3710,5 +3718,240 @@ function get_course_custom_fields($courseid) {
         $options['type'] = 'course';
         return print_single_button(qualified_me(), $options, $label, 'get', '', true);
     }
+
+/**
+ * Get the number of visible items in or below the selected categories
+ *
+ * This function counts the number of items within a set of categories, only including
+ * items that are visible to the user.
+ *
+ * By default returns the course count, but will work for programs too.
+ *
+ * We need to jump through some hoops to do this efficiently:
+ *
+ * - To avoid having to do it recursively it relies on the context
+ *   path to find courses within a category
+ *
+ * - To avoid having to check capabilities for every item it only
+ *   checks hidden courses, and only if user doesn't have doanything
+ *
+ * @param integer|array $categoryids ID or IDs of the category/categories to fetch
+ * @param boolean $countcourses If true count number of courses, otherwise count programs
+ *
+ * @return integer|array Associative array, where keys are the sub-category IDs and value is the count. If $categoryids is a single integer, just returns the count as an integer
+ */
+function get_category_item_count($categoryids, $countcourses = true) {
+    global $CFG;
+
+    $where_sql = is_array($categoryids) ?
+        'id IN (' . implode(',', $categoryids) . ')' :
+        'id = ' . $categoryids;
+
+    if (!$categories = get_records_select('course_categories', $where_sql)) {
+        // no categories
+        return array();
+    }
+
+    // what items are we counting, courses or programs?
+    if ($countcourses) {
+        $itemcap = 'moodle/course:viewhiddencourses';
+        $itemtable = "{$CFG->prefix}course";
+        $itemcontext = CONTEXT_COURSE;
+    } else {
+        $itemcap = 'local/program:viewhiddenprograms';
+        $itemtable = "{$CFG->prefix}prog";
+        $itemcontext = CONTEXT_PROGRAM;
+    }
+
+    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    $doanything = has_capability('moodle/site:doanything', $sitecontext);
+
+    // save the context paths of all the categories
+    $contextpaths = get_records_sql_menu(
+        "SELECT instanceid, path
+        FROM {$CFG->prefix}context
+        WHERE contextlevel = " . CONTEXT_COURSECAT . "
+        AND instanceid IN (" .implode(',', array_keys($categories)).
+        ")
+        ORDER BY depth DESC"
+    );
+
+    // builds a WHERE snippet that matches any items inside the sub-category
+    // this won't match the category itself (because of the trailing slash),
+    // but that's okay as we're only interested in the items inside
+    $contextwhere = array();
+    foreach ($contextpaths as $path) {
+        $contextwhere[] = "cx.path LIKE '{$path}/%'";
+    }
+
+    // get all items inside all the categories
+    if (!$items = get_records_sql("
+        SELECT i.id as itemid, i.visible, cx.path
+        FROM {$CFG->prefix}context cx
+        JOIN $itemtable i
+        ON i.id = cx.instanceid AND contextlevel = {$itemcontext}
+        WHERE (" . implode(' OR ', $contextwhere) . ")"
+    )) {
+        // sub-categories are all empty
+        return array();
+    }
+
+    $results = array();
+    foreach ($items as $item) {
+        // if hidden, and they're not allowed to "doanything"
+        // check individual permission
+        // this will only perform the expensive capability check
+        // if required
+        if (!$item->visible &&
+            !$doanything &&
+            !has_capability($itemcap,
+                get_context_instance($itemcontext, $itemid))) {
+            continue;
+        }
+
+        // now we need to figure out which sub-category each item
+        // is a member of
+        foreach ($contextpaths as $categoryid => $contextpath) {
+            // it's a member if the beginning of the contextpath's
+            // match
+            if (substr($item->path, 0, strlen($contextpath.'/')) ==
+                $contextpath.'/') {
+                if (array_key_exists($categoryid, $results)) {
+                    $results[$categoryid]++;
+                } else {
+                    $results[$categoryid] = 1;
+                }
+                break;
+            }
+        }
+    }
+
+    if (is_array($categoryids)) {
+        return $results;
+    } else {
+        return current($results);
+    }
+
+}
+
+function print_main_subcategories($parentid, $secondarycats, $secondary_item_counts, $editingon, $numbertoshow = 3) {
+    //If there are no secondary items return
+    if ($secondary_item_counts <= 0) {
+        return '';
+    }
+    $subcats = array();
+    // add itemcount to the object
+    foreach ($secondarycats as $key => $category) {
+        if ($category->parent != $parentid) {
+            continue;
+        }
+        $subcats[$key] = $category;
+        if (array_key_exists($category->id, $secondary_item_counts)) {
+            $subcats[$key]->itemcount = $secondary_item_counts[$category->id];
+        } else {
+            $subcats[$key]->itemcount = 0;
+        }
+    }
+    // sort by item count
+    usort($subcats, 'course_cmp_by_count');
+
+    if (empty($subcats)) {
+        return '';
+    }
+    $out = '<ul class="course-subcat-listing">';
+
+    $numdisplayed = 0;
+    $showmorelink = false;
+    foreach ($subcats as $subcat) {
+        // don't show empty sub-categories unless viewing as admin
+        if (!$editingon && $subcat->itemcount == 0) {
+            continue;
+        }
+        // @todo check capabilities and hide if necessary
+
+        if ($numdisplayed < $numbertoshow) {
+            $out .= '<li><a href="category.php?id='.$subcat->id.'">'.format_string($subcat->name).' ('.
+                $subcat->itemcount.')</a></li>';
+            $numdisplayed++;
+        } else {
+            $showmorelink = true;
+            break;
+        }
+    }
+
+    // if there are some left, print a "more" link to the parent category
+    if ($showmorelink) {
+        $out .= '<li class="more"><a href="category.php?id='.$parentid.'">'.get_string('more').'&hellip;</a></li>';
+    }
+    $out .= '</ul>';
+    return $out;
+}
+
+/**
+ * Sorts a pair of objects based on the itemcount property (high to low)
+ *
+ * @param object $a The first object
+ * @param object $b The second object
+ * @return integer Returns 1/0/-1 depending on the relative values of the objects itemcount property
+ */
+function course_cmp_by_count($a, $b) {
+    if ($a->itemcount < $b->itemcount) {
+        return +1;
+    } else if ($a->itemcount > $b->itemcount) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+
+function print_category($category, $highlightterms) {
+    global $CFG;
+
+    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
+
+    $category_icon = new coursecategory_icon();
+
+    $catlinkcss = $category->visible ? '' : ' class="dimmed" ';
+
+    echo '<div class="coursebox clearfix">';
+    echo '<div class="info">';
+    echo '<div class="name">';
+    echo $category_icon->display($category, 'small');
+    echo "<a {$catlinkcss} href=\"{$CFG->wwwroot}/course/index.php?highlightid={$category->id}#category{$category->id}\">";
+    echo highlight($highlightterms, format_string($category->name));
+    echo '</a>';
+    echo '</div></div>';
+    echo '<div class="summary">';
+    $options = NULL;
+    $options->noclean = true;
+    $options->para = false;
+    echo highlight($highlightterms, format_text($category->description, FORMAT_MOODLE, $options,  $category->id));
+    echo '</div>';
+    echo '</div>';
+}
+
+/**
+ * Gets the tree of breadcrumbs for a category tree given a category id
+ *
+ * @param int $categoryid Id of the current category to get the tree of
+ * @return array Array of breadcrumbs for the category tree
+ *
+ */
+function get_category_breadcrumbs($categoryid) {
+    global $CFG;
+
+    $category = get_record('course_categories', 'id', $categoryid);
+    $bread = explode('/', $category->path);
+    $bread_ids = substr(implode(',', $bread), 1);
+    $sql = "SELECT id, name FROM {$CFG->prefix}course_categories WHERE id IN ({$bread_ids}) ORDER BY depth";
+    $cat_bread = array();
+    if($bread_info = get_records_sql($sql)) {
+        foreach($bread_info as $b) {
+            $cat_bread[] = array('name' => format_string($b->name), 'link' => $CFG->wwwroot . '/course/category.php?id='.$b->id, 'type' => 'misc');
+        }
+    }
+
+    return $cat_bread;
+}
 
 ?>

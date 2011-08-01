@@ -203,7 +203,7 @@ class dp_template_advanced_workflow_form extends moodleform {
             }
         }
         $build_form = "{$class}_build_settings_form";
-        $build_form(&$mform, $this->_customdata);
+        $build_form($mform, $this->_customdata);
 
         $mform->addElement('hidden', 'id', $id);
         $mform->addElement('hidden', 'component', $component);

@@ -304,6 +304,20 @@ table.flexible .r1 {
   background-color: #fafafa;
 }
 
+/* plain table with no striping or border */
+table.nostripes .r0 .cell,
+table.nostripes .r1 .cell,
+table.nostripes tr.r0 td,
+table.nostripes tr.r1 td {
+    background-color: #fff;
+}
+
+table.nostripes,
+table.nostripes tr,
+table.nostripes td {
+    border: 0px;
+}
+
 #admin-report-unittest-index span.notice {
   color: teal;
 }
@@ -1251,6 +1265,16 @@ form.mform .required .fgroup span label {
 ::-webkit-input-placeholder {color: #AAA;}
 :-moz-placeholder {color: #AAA;}
 
+/***
+ *** Cohort
+ ***/
+#cohort-editcriteria .criteria_section.grey {
+    background-color: #F2F2F2;
+}
+
+#cohort-view .mform div.fitem.alternate {
+    background-color: #e1e1e1;
+}
 
 /*
  * Styles for a generic search box class
@@ -1269,5 +1293,22 @@ input.search-box:focus {
  * Warning box on bulk actions page
  */
 div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
-	border: 1px solid #DDDDDD;
+    border: 1px solid #DDDDDD;
+}
+
+/***
+ *** Program
+ ***/
+.assignment_category {
+    border: 1px solid #d1d1d1;
+}
+.deletelink {
+    background-color: #F7F8E8;
+    border: 1px solid #E6EBBB;
+}
+a.deletelink,
+a.deletelink:link,
+a.deletelink:visited,
+a.deletelink:hover {
+    color: #000000;
 }

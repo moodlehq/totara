@@ -36,6 +36,7 @@
 
   various modules
   help files
+  program
 
 *******************************************************************/
 
@@ -397,7 +398,7 @@ table.formtable tbody .htmlarea th
 }
 
 .cell {
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .helplink img {
@@ -1739,76 +1740,95 @@ div.block_totara_report_manager {
  **/
 #recordoflearning-menu,
 #dp-plans-menu {
-	float:left;
-	width:28%;
+    float:left;
+    width:28%;
 }
-	#recordoflearning-menu h3,
-	#dp-plans-menu h3,
-	#recordoflearning-menu h4,
-	#dp-plans-menu h4 {
-		margin: 5px 0;
-		padding: 4px;
-	}
-	#recordoflearning-menu ul,
-	#dp-plans-menu ul {
-		list-style: none outside none;
-		margin:5px 0 10px 0;
-		padding:2px 2px 2px 20px;
-	}
-		#recordoflearning-menu ul li,
-		#dp-plans-menu ul li {
-			padding: 4px 20px 5px;
-		}
-#dp-plan-content {
-	float:right;
-	display:inline; /* <IE7 margin-doubling fix */
-	width:70%;
+
+#recordoflearning-menu h3,
+#dp-plans-menu h3,
+#recordoflearning-menu h4,
+#dp-plans-menu h4 {
+    margin: 5px 0;
+    padding: 4px;
 }
-	div.plan_box {
-		margin:10px 0;
-		padding: 10px;
-	}
-	#dp-plan-content h2.main {
-		text-align: left;
-	}
-	#dp-plan-content #dp-plans-description .instructional_text {
-		float: left;
-		width: 73%;
-		padding: 10px 0;
-	}
-	#dp-plan-content #dp-plans-description .dp-add-plan-link {
-		float: right;
-		text-align: right;
-		width: 25%;
-		padding-top: 10px;
-	}
-	#dp-plan-content #dp-plans-list-active-plans table td.c0,
-	#dp-plan-content #dp-plans-list-unapproved-plans table td.c0,
-	#dp-plan-content #dp-plans-list-completed-plans table td.c0 {
-		padding-left: 40px;
-	}
-	table.dp-templates {
-		width:100%;
-	}
-		table.dp-templates td.c0 {
-			width:70%;
-		}
-	
+
+#recordoflearning-menu ul,
+#dp-plans-menu ul {
+    list-style: none outside none;
+    margin:5px 0 10px 0;
+    padding:2px 2px 2px 20px;
+}
+
+#recordoflearning-menu ul li,
+#dp-plans-menu ul li {
+    padding: 4px 20px 5px;
+}
+
+#dp-plan-content,
+#program-content,
+#required-learning{
+    float:right;
+    display:inline; /* <IE7 margin-doubling fix */
+    width:70%;
+}
+
+#edit-program-content{
+    display:inline; /* <IE7 margin-doubling fix */
+    width:70%;
+}
+
+
+div.plan_box {
+    margin:10px 0;
+    padding: 10px;
+}
+
+#dp-plan-content h2.main {
+    text-align: left;
+}
+
+#dp-plan-content #dp-plans-description .instructional_text {
+    float: left;
+    width: 73%;
+    padding: 10px 0;
+}
+
+#dp-plan-content #dp-plans-description .dp-add-plan-link {
+    float: right;
+    text-align: right;
+    width: 25%;
+    padding-top: 10px;
+}
+
+#dp-plan-content #dp-plans-list-active-plans table td.c0,
+#dp-plan-content #dp-plans-list-unapproved-plans table td.c0,
+#dp-plan-content #dp-plans-list-completed-plans table td.c0 {
+    padding-left: 40px;
+}
+
+table.dp-templates {
+    width:100%;
+}
+
+table.dp-templates td.c0 {
+    width:70%;
+}
+
 #recordoflearning-menu .dp-menu-selected,
 #dp-plans-menu .dp-menu-selected {
-	font-weight:bold;
+    font-weight:bold;
 }
 
 .dp-summary-widget-title {
-	font-weight:bold;
-	padding:5px 0;
+    font-weight:bold;
+    padding:5px 0;
 }
 #dp-component-update {
- margin-top:10px;	
+    margin-top:10px;
 }
 
 .dp-plan-assign-button {
-	margin:10px 0;
+    margin:10px 0;
 }
 
 /**
@@ -2501,7 +2521,13 @@ body#course-index .courseboxes {
 
 body#course-category .rolelink {
   text-align:right;
-  padding:10px;
+  padding-right: 10px;
+  display: inline;
+  float: right;
+}
+
+body#course-category .toplinks {
+    padding-bottom: 20px;
 }
 
 body#course-category .addcategory {
@@ -2509,7 +2535,22 @@ body#course-category .addcategory {
   padding: 10px;
 }
 
+body#course-index .buttons,
+body#course-categorylist .buttons {
+    float: right;
+    padding: 0px 2px 0px 20px;
+}
+
+body#course-categorylist .buttons .singlebutton {
+    margin: 0px;
+}
+
+body#course-index .buttons {
+    float: right;
+}
+
 body#course-index .buttons .singlebutton,
+body#course-search .buttons .singlebutton,
 body#course-category .buttons .singlebutton,
 body.hierarchy-item .buttons .singlebutton,
 body.hierarchy-type-competency-template .buttons .singlebutton {
@@ -2517,11 +2558,17 @@ body.hierarchy-type-competency-template .buttons .singlebutton {
 }
 
 body#course-index .buttons,
+body#course-search .buttons,
 body#course-category .buttons,
 body.hierarchy-item .buttons,
 body.hierarchy-type-competency-template .buttons {
   text-align: center;
-  margin-bottom: 30px;
+}
+
+body#course-category .buttons,
+body#course-search .buttons {
+    float: right;
+    padding: 2px 2px 2px 20px;
 }
 
 body.hierarchy-type-competency-template .buttons,
@@ -2551,6 +2598,9 @@ body#course-index #middle-column .editcourse th,
 body#course-index #middle-column .editcourse td {
   padding-left:10px;
   padding-right:10px;
+}
+body#course-index .cell{
+	vertical-align: middle;
 }
 
 body#course-index #middle-column .editcourse .count {
@@ -2734,6 +2784,40 @@ body#course-info .generalbox.info {
 }
 
 .jumpmenu {text-align:center}
+
+#content .coursebox .summary .category {
+    text-align:right;
+}
+
+#searchtotara {
+    float: right;
+}
+
+a.search_alternate {
+    float: right;
+    margin-top: 10px;
+}
+
+
+/*
+ * Styles for totara search box
+ */
+#searchtotara input {
+    padding: 3px;
+    margin-left: 5px;
+}
+
+#searchtotara input.search-box {
+    padding: 3px 3px 3px 25px;
+    margin: 0px;
+    background: #fff url(pix/t/preview.gif) no-repeat 3px 50%;
+    border: 1px solid #AAAAAA;
+}
+
+#searchtotara input.search-box:focus {
+    border: 1px solid #AAAAFF;
+}
+
 
 /***
  *** Group
@@ -5089,6 +5173,143 @@ table.hierarchy-index .depth10 {
     padding-left: 295px;
 }
 
+/***
+ *** Cohort
+ ***/
+.userselector select {
+    width: 100%;
+}
+
+#cohort-editcriteria .criteria_description {
+    font-family: 'Trebuchet ms',verdana,helvetica,sans-serif;
+    color: #888888;
+
+}
+#cohort-editcriteria .criteria_section {
+    height: 80px;
+}
+
+#cohort-view .mform div.fitem {
+    padding: 10px 0;
+    overflow: hidden;
+}
+
+/***
+ *** Program
+ ***/
+.assignment_category {
+    padding: 10px;
+    margin: 8px 0;
+}
+.assignment_category h3 {
+    margin-top: 2px;
+}
+.assignment_category table td {
+    padding: 5px 3px;
+}
+.deletelink {
+    background-color: #F7F8E8;
+    border: 1px solid #E6EBBB;
+    padding: 4px 8px;
+}
+#confirmation-dialog {
+    text-align: center;
+}
+.programprogress .duedate, .programprogress .startdate{
+	height: 100%;
+	padding-top: 10px;
+    float: left;
+    text-align: center;
+    width: 205px;
+    margin-right:5px;
+}
+.programprogress .startdate img{
+	margin-top:0px !important;
+}
+#course-category .viewtypepicker li {
+   display: inline;
+    margin: 0 -4px 0 0;
+    padding: 0;
+}
+#course-category .viewtypepicker ul{
+    font-size: 84%;
+    line-height: 1.8em;
+    list-style: none outside none;
+    margin: 10px 0 0;
+    padding: 0 0 1.75em;
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+}
+#course-category .viewtypepicker li a span, #course-category .viewtypepicker li span {
+   	background: url("pix/tab/right.gif") no-repeat scroll right top transparent;
+    padding: 10px 14px 0.35em 0;
+}
+#course-category .viewtypepicker li a, #course-category .viewtypepicker li.selected{
+   	background: url("pix/tab/left.gif") no-repeat scroll left top transparent;
+	margin: 0 -1px 0 0;
+	padding: 10px 0 5px 13px;
+}
+#course-category .viewtypepicker li.selected{
+    padding: 10px 0 3px 13px;
+}
+#course-category .viewtypepicker .selected span{
+	padding-bottom:3px;
+}
+
+
+/*****************************************************************************/
+/** Program  **/
+/*****************************************************************************/
+
+.programprogress{
+    height: 30px;
+    width: 640px;
+    margin-bottom:30px;
+}
+#dp-plan-content fieldset legend{
+	margin-left:10px;
+	padding: 0px 6px;
+}
+
+#dp-plan-content .nextsetoperator .operator-or, #dp-plan-content .nextsetoperator .operator-then{
+	margin:10px 0px;
+	float:left;
+	padding-right:75px;
+	margin-right:10px;
+}
+#dp-plan-content .nextsetoperator .nextsethelp {
+	float:left;
+	width: 68%;
+}
+#dp-plan-content .nextsetoperator {
+	width:100%;
+	height:70px;
+	margin-top:15px;
+}
+#dp-plan-content fieldset table .lastcol{
+	width:95px;
+}
+#dp-plan-content fieldset table .c1{
+	width:80px;
+	text-align: center;
+}
+#dp-plan-content fieldset table .program-launch-course-button{
+	padding-top:5px;
+}
+#local-plan-components-program-view #dp-plan-content fieldset,
+#local-program-view #dp-plan-content fieldset{
+	padding: 5px 25px 20px 25px;
+}
+.completion-notyetstarted{
+    margin-top: 10px;
+}
+div.totara-dialog .selected span.unremovable span.deletebutton {
+    cursor: default;
+}
+
 /* Spacing for checkbox on the Email notifiations page  */
 div span.emailnotifycheckbox {
     padding-right:10px;
@@ -5223,3 +5444,485 @@ body.hierarchy-type div.add-type-button .singlebutton {
     float: right;
 }
 
+/*****************************************************************************/
+/** Program Overview **/
+/*****************************************************************************/
+#programstatus img {
+    display: block;
+    float: left;
+    padding-right: 5px;
+}
+
+#programstatus p {
+}
+
+#exceptionsreport .exceptionslink{
+	display:block;
+}
+
+#exceptionsreport{
+    padding-left:45px;
+	float:left;
+}
+
+#program_page_links a,
+#program_page_links span{
+	padding-top:45px;
+}
+
+#program_page_links{
+	margin-top:125px;
+}
+
+#program-add #program_page_links,
+#program-exceptions #program_page_links{
+	margin-top:75px;
+}
+
+#local-program-edit #program_page_links{
+	list-style:none;
+	padding-left:0px;
+}
+
+.local-program #program_page_links li{
+	display:inline;
+	padding-top:38px;
+	margin-right:75px;
+}
+
+#local-program-add #programdetails .ftoggler,
+#local-program-edit #programdetails .ftoggler,
+#local-program-edit #programcontent .ftoggler,
+#local-program-edit #programassignments .ftoggler,
+#local-program-edit #programmessages .ftoggler{
+	padding:4px 43px;
+}
+
+#program-overview .singlebutton {
+    margin-left: 22%;
+    margin-top: 0;
+    margin-bottom: 30px;
+    padding-left: 20px;
+}
+
+
+/*****************************************************************************/
+/** Program Edit **/
+/*****************************************************************************/
+body.local-program .rolelink {
+  float: right;
+  padding: 0 0 10px 10px;
+}
+
+.local-program fieldset legend{
+	font-size:16px;
+	margin-left:10px;
+	padding: 0px 6px;
+}
+
+.local-program fieldset.course_set div {
+	margin-top:5px;
+	margin-bottom:3px;
+}
+
+.local-program fieldset.course_set div.courselist {
+    clear:left;
+    width:100%;
+}
+
+.local-program fieldset.course_set div.courselist td.course{
+    padding-left: 10px;
+}
+
+.local-program fieldset.course_set .coursedeletelink .delete_item,
+.local-program fieldset.course_set .course_item{
+    padding: 6px 10px 6px 20px;
+}
+
+.local-program fieldset.course_set label,
+.local-program fieldset.message label,
+#form_prog_content label{
+	font-size:14px;
+	width:20px;
+}
+
+.local-program fieldset.course_set,
+.local-program fieldset.message{
+	margin-bottom:20px;
+	margin-top:20px;
+	min-height: 220px;
+}
+
+.local-program #set_1.course_set{
+	margin-top:0px;
+}
+
+.local-program fieldset.course_set .setbuttons,
+.local-program fieldset .messagebuttons{
+    margin-top: -10px;
+	height:100%;
+    width:100%;
+    text-align: right;
+}
+
+.local-program fieldset .setbuttons input,
+.local-program fieldset .messagebuttons input{
+	border:0px;
+	text-align:left;
+    padding-right:18px;
+}
+
+.local-program fieldset.course_set .flabel,
+.local-program fieldset.message .flabel,
+.local-program fieldset.course_set .fitem,
+.local-program fieldset.message .fitem{
+	width:220px;
+	float:left;
+}
+
+.local-program fieldset .helplink{
+	font-size: inherit;
+}
+
+.local-program fieldset.course_set .fline,
+.local-program fieldset.message .fline{
+    clear:both;
+}
+
+.local-program fieldset.message .fitem{
+	width:300px;
+}
+
+.local-program fieldset.course_set .course_table .operator{
+	width:60px;
+	text-align:center;
+}
+
+.local-program fieldset.course_set .course_table .course{
+    padding-left: 10px;
+}
+
+.local-program fieldset.course_set .course_table .action{
+	padding-left:0px;
+	width:60px;
+	padding-right:15px;
+}
+
+.local-program fieldset.course_set .course_table{
+	width:575px;
+}
+
+
+#cancelchanges {
+    clear:both;
+    float:left;
+    margin-top:10px;
+}
+
+#local-program-add #program-add .hidden .felement {
+	width:100%;
+}
+
+#id_saveandreturn{
+	float:left;
+}
+
+.assignments .typecount{
+	width:300px;
+	float:left;
+}
+
+.assignments  .usercount{
+	width:20px;
+	float:left
+}
+
+.next-messages, #id_saveandnext{
+	float:right;
+}
+
+.return-overview, .next-assignments{
+	margin-top:10px;
+}
+
+.assignment_category button, fieldset.message .messagebuttons{
+	margin-bottom:10px;
+}
+
+fieldset.message{
+	margin-bottom:10px;
+}
+
+input[type="submit"].return-overview,
+input[type="button"].return-overview,
+input.return-overview {
+	margin-top:20px;
+}
+
+#edit-program-content #form_prog_content #contenttype{
+	margin-bottom:20px;
+}
+
+div.prog-course-launch {
+    float:right;
+}
+
+.next-assignments{
+	float:right;
+}
+
+.local-program fieldset.course_set .fitem .select{
+	margin-left:10px;
+}
+
+.local-program fieldset.course_set .courseadder{
+	margin-left:78px;
+}
+
+#program-overview-details .hidden .fitem .felement{
+	width:100%;
+}
+
+#program-overview-details .fdescription.required{
+	padding-top:10px;
+}
+
+#local-program-edit_content.local-program #programcontent,
+#local-program-edit_assignments.local-program #programassignments,
+#local-program-edit_messages.local-program #programmessages,
+#local-program-exceptions.local-program #programexceptions{
+	background:none;
+	border:0px;
+    width:95%;
+}
+
+#iconheader legend{
+	font-size:0.9em;
+	font-weight:normal;
+	display:none;
+}
+
+#program-overview #iconheader{
+	margin-top:0px;
+	padding-top:0px;
+}
+
+#program-overview #programdetails{
+	margin-bottom: 0px;;
+}
+
+#edit-program-content #programcontent legend,
+#program-assignments #programassignments legend,
+#program-messages #programmessages legend,
+#program-exceptions #programexceptions legend{
+	padding-left:46px;
+	margin-left:0px;
+	padding-top:6px;
+	padding-bottom:6px;
+}
+
+#edit-program-content #programcontent #course_sets legend,
+#program-assignments #programassignments #assignment_categories legend,
+#program-messages #programmessages #messages legend{
+	padding-left:5px;
+}
+
+#edit-program-content #programcontent p,
+#program-assignments #programassignments p,
+#program-messages #programmessages p,
+#program-exceptions #programexceptions p{
+	margin-top:0px;
+	padding-left:5px;
+}
+
+#edit-program-content #programcontent #course_sets p,
+#program-messages #programmessages #messages p,
+#program-assignments #programassignments #assignment_categories p{
+	margin-top:12px;
+}
+
+#program-assignments #programassignments #assignment_categories a {
+    display: inline;
+    float: right;
+}
+
+#programcontent #course_sets p{
+	padding-left:0px;
+}
+
+.nextsetoperator-or{
+	width:130px;
+	padding:10px 0px;
+}
+
+.nextsetoperator-then{
+	width:130px;
+	padding:10px 0px;
+}
+
+input[type="submit"].return-overview,
+input[type="submit"].next-assignments,
+input[type="submit"].next-messages,
+input[type="submit"].program-savechanges{
+	margin-top:15px;
+    margin-bottom:15px;
+}
+
+.local-program fieldset.course_set .coursedeletelink .delete_item,
+.local-program fieldset.course_set .course_item{
+	width:100%;
+	padding-left:20px;
+	height:20px;
+	padding-top:6px;
+	padding-bottom:6px;
+	padding-right:0px;
+	font-weight:bold;
+}
+
+.local-program fieldset.course_set .delete_item a {
+    float: right;
+}
+
+
+/*****************************************************************************/
+/** Program Assignments **/
+/*****************************************************************************/
+#assignment_categories .assignment_category th.col0{
+	width:300px;
+}
+
+#assignment_categories .assignment_category td.col0{
+	width:340px;
+}
+
+#assignment_categories .assignment_category td.col0 .deletelink{
+	border:0px;
+	background:none;
+	padding:0px;
+	padding-bottom:5px;
+}
+
+#assignment_categories .assignment_category td.col1,
+#assignment_categories .assignment_category th.col1{
+	text-align: center;
+    width: 60px;
+}
+
+#assignment_categories .assignment_category td.col2,
+#assignment_categories .assignment_category th.col2{
+	width:170px;
+}
+
+#assignment_categories .assignment_category.individuals td.col2,
+#assignment_categories .assignment_category.individuals th.col2{
+	width:270px;
+}
+
+#assignment_categories .assignment_category td.col3,
+#assignment_categories .assignment_category th.col3{
+	width:80px;
+}
+
+#assignment_categories .assignment_category td.col3{
+	text-align:right;
+}
+
+#assignment_categories .assignment_category td,
+#assignment_categories .assignment_category th{
+	padding:0px 6px;
+}
+
+#assignment_categories .assignment_category th{
+	padding-bottom:9px;
+}
+
+#assignment_categories .assignment_category tr{
+	margin-bottom:5px;
+}
+
+#assignment_categories .assignment_category button{
+	margin-top:20px;
+}
+
+#assignment_categories .assignment_category td.col0 div.item{
+    padding-right:20px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin-bottom:5px;
+    padding-left:10px;
+}
+
+.total_user_count {
+    text-align: right;
+    padding-right: 6px;
+}
+
+.overall_total {
+    padding: 6px;
+    text-align: right;
+}
+
+
+/*****************************************************************************/
+/** Program Exceptions **/
+/*****************************************************************************/
+.local-program #programexceptions .exceptionactions div{
+	float:left;
+	padding-right:5px;
+}
+
+.local-program #programexceptions .exceptionactions{
+    float: none;
+    height: 35px;
+    margin-top: 10px;
+    padding-top: 10px;
+    margin-bottom:20px;
+}
+
+.local-program #programexceptions .exceptionactions p{
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+body.course h1.main,
+body.course h3.main {
+    text-align: left;
+}
+
+p.course-prog-alt-view {
+    float: right;
+}
+
+/**
+ * Course and program index page
+ */
+
+ul.course-subcat-listing {
+    margin: 0px;
+}
+ul.course-subcat-listing li {
+    padding: 2px;
+    margin: 0 0 0 25px;
+    list-style-image: url('pix/i/item.gif');
+    font-size: 120%;
+}
+ul.course-subcat-listing li.more {
+    list-style: none;
+    margin: 5px 0 0;
+    padding: 0px;
+    font-size: 100%;
+}
+
+/*
+ * Full width class that can be applied to elements
+ */
+.fullwidth {
+    width: 100%;
+}
+
+/*
+ * Used to highlight a specific row of the manage categories page
+ */
+div.highlight {
+    margin: -3px -10px;
+}

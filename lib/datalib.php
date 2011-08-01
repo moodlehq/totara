@@ -1072,9 +1072,10 @@ function get_my_courses($userid, $sort='visible DESC,sortorder ASC', $fields=NUL
  * @param int $page ?
  * @param int $recordsperpage ?
  * @param int $totalcount Passed in by reference. ?
+ * @param string $whereclause Addition where clause
  * @return object {@link $COURSE} records
  */
-function get_courses_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount) {
+function get_courses_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $whereclause = '') {
 
     global $CFG;
 
@@ -1144,25 +1145,39 @@ function get_courses_search($searchterms, $sort='fullname ASC', $page=0, $record
 
     }
 
+    // If search terms supplied, include in where
+    if (count($searchterms)) {
+        $where = "
+            WHERE (( $fullnamesearch ) OR ( $summarysearch ) OR ( $idnumbersearch ) OR ( $shortnamesearch ))
+            AND category > 0
+        ";
+    } else {
+        // Otherwise return everything
+        $where = " WHERE category > 0 ";
+    }
+
+    // Add any additional sql supplied to where clause
+    if ($whereclause) {
+        $where .= " AND {$whereclause}";
+    }
+
     $sql = "SELECT c.*,
                    ctx.id AS ctxid, ctx.path AS ctxpath,
                    ctx.depth AS ctxdepth, ctx.contextlevel AS ctxlevel
             FROM {$CFG->prefix}course c
             JOIN {$CFG->prefix}context ctx
-             ON (c.id = ctx.instanceid AND ctx.contextlevel=".CONTEXT_COURSE.")
-            WHERE (( $fullnamesearch ) OR ( $summarysearch ) OR ( $idnumbersearch ) OR ( $shortnamesearch ))
-                  AND category > 0
+                ON (c.id = ctx.instanceid AND ctx.contextlevel=".CONTEXT_COURSE.")
+            {$where}
             ORDER BY " . $sort;
 
     $courses = array();
 
+    // Tiki pagination
+    $limitfrom = $page * $recordsperpage;
+    $limitto   = $limitfrom + $recordsperpage;
+    $c = 0; // counts how many visible courses we've seen
+
     if ($rs = get_recordset_sql($sql)) {
-
-
-        // Tiki pagination
-        $limitfrom = $page * $recordsperpage;
-        $limitto   = $limitfrom + $recordsperpage;
-        $c = 0; // counts how many visible courses we've seen
 
         while ($course = rs_fetch_next_record($rs)) {
             $course = make_context_subobj($course);
@@ -2291,6 +2306,122 @@ function user_can_create_courses() {
         }
     }
     return false;
+}
+
+/**
+ * A list of categories that match a search
+ *
+ * @uses $CFG
+ * @param array $searchterms ?
+ * @param string $sort ?
+ * @param int $page ?
+ * @param int $recordsperpage ?
+ * @param int $totalcount Passed in by reference. ?
+ * @return object category records
+ */
+function get_categories_search($searchterms, $sort='name ASC', $page=0, $recordsperpage=50, &$totalcount) {
+
+    global $CFG;
+
+    //to allow case-insensitive search for postgesql
+    if ($CFG->dbfamily == 'postgres') {
+        $LIKE = 'ILIKE';
+        $NOTLIKE = 'NOT ILIKE';   // case-insensitive
+        $REGEXP = '~*';
+        $NOTREGEXP = '!~*';
+    } else {
+        $LIKE = 'LIKE';
+        $NOTLIKE = 'NOT LIKE';
+        $REGEXP = 'REGEXP';
+        $NOTREGEXP = 'NOT REGEXP';
+    }
+
+    $namesearch = '';
+    $descriptionsearch = '';
+
+    foreach ($searchterms as $searchterm) {
+
+        $NOT = ''; /// Initially we aren't going to perform NOT LIKE searches, only MSSQL and Oracle
+                   /// will use it to simulate the "-" operator with LIKE clause
+
+    /// Under Oracle and MSSQL, trim the + and - operators and perform
+    /// simpler LIKE (or NOT LIKE) queries
+        if ($CFG->dbfamily == 'oracle' || $CFG->dbfamily == 'mssql') {
+            if (substr($searchterm, 0, 1) == '-') {
+                $NOT = ' NOT ';
+            }
+            $searchterm = trim($searchterm, '+-');
+        }
+
+        if ($namesearch) {
+            $namesearch .= ' AND ';
+        }
+        if ($descriptionsearch) {
+            $descriptionsearch .= ' AND ';
+        }
+
+        if (substr($searchterm,0,1) == '+') {
+            $searchterm      = substr($searchterm,1);
+            $namesearch .= " c.name $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $descriptionsearch  .= " c.description $REGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+        } else if (substr($searchterm,0,1) == "-") {
+            $searchterm      = substr($searchterm,1);
+            $namesearch .= " c.name $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+            $descriptionsearch .= " c.description $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
+        } else {
+            $namesearch .= ' name '. $NOT . $LIKE .' \'%'. $searchterm .'%\' ';
+            $descriptionsearch .= ' description '. $NOT . $LIKE .' \'%'. $searchterm .'%\' ';
+        }
+
+    }
+
+    // If search terms supplied, include in where
+    if (count($searchterms)) {
+        $where = "
+            WHERE (( $namesearch ) OR ( $descriptionsearch ))
+        ";
+    } else {
+        // Otherwise return everything
+        $where = "";
+    }
+
+    $sql = "SELECT c.*,
+                   ctx.id AS ctxid, ctx.path AS ctxpath,
+                   ctx.depth AS ctxdepth, ctx.contextlevel AS ctxlevel
+            FROM {$CFG->prefix}course_categories c
+            JOIN {$CFG->prefix}context ctx
+                ON (c.id = ctx.instanceid AND ctx.contextlevel=".CONTEXT_COURSECAT.")
+            {$where}
+            ORDER BY " . $sort;
+
+    $cats = array();
+
+    // Tiki pagination
+    $limitfrom = $page * $recordsperpage;
+    $limitto   = $limitfrom + $recordsperpage;
+    $c = 0; // counts how many visible programs we've seen
+
+    if ($rs = get_recordset_sql($sql)) {
+        $context = get_system_context();
+
+        while ($cat = rs_fetch_next_record($rs)) {
+            $cat = make_context_subobj($cat);
+            if ($cat->visible || has_capability('moodle/category:viewhiddencategories', $context)) {
+                // Don't exit this loop till the end
+                // we need to count all the visible categories
+                // to update $totalcount
+                if ($c >= $limitfrom && $c < $limitto) {
+                    $cats[] = $cat;
+                }
+                $c++;
+            }
+        }
+    }
+
+    // our caller expects 2 bits of data - our return
+    // array, and an updated $totalcount
+    $totalcount = $c;
+    return $cats;
 }
 
 // vim:autoindent:expandtab:shiftwidth=4:tabstop=4:tw=140:

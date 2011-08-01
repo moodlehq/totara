@@ -77,7 +77,7 @@ if ($hassiteconfig
     $ADMIN->add('accounts', new admin_externalpage('uploadusers', get_string('uploadusers'), "$CFG->wwwroot/$CFG->admin/uploaduser.php", 'moodle/site:uploadusers'));
     $ADMIN->add('accounts', new admin_externalpage('uploadpictures', get_string('uploadpictures','admin'), "$CFG->wwwroot/$CFG->admin/uploadpicture.php", 'moodle/site:uploadusers'));
     $ADMIN->add('accounts', new admin_externalpage('profilefields', get_string('profilefields','admin'), "$CFG->wwwroot/user/profile/index.php", 'moodle/site:config'));
-
+    $ADMIN->add('accounts', new admin_externalpage('cohorts', get_string('cohorts','local_cohort'), "$CFG->wwwroot/cohort/index.php", 'local/cohort:manage'));
 
     // stuff under the "roles" subcategory
     $ADMIN->add('roles', new admin_externalpage('defineroles', get_string('defineroles', 'role'), "$CFG->wwwroot/$CFG->admin/roles/manage.php", 'moodle/role:manage'));

@@ -58,6 +58,28 @@ if ($currenttab != 'update') {
             }
             break;
 
+        case CONTEXT_PROGRAM:
+            require_once("{$CFG->dirroot}/local/program/lib.php");
+            $streditprogramettings = get_string('editprogramroleassignments', 'local_program');
+
+            $program = get_record('prog', 'id', $context->instanceid);
+
+            require_login();
+
+            $viewurl = "{$CFG->wwwroot}/local/program/edit.php?id={$program->id}";
+            prog_get_base_navlinks($navlinks);
+            $navlinks[] = array('name' => $program->shortname,
+                                'link' => $viewurl,
+                                'type' => 'title'
+            );
+            $navlinks[] = array('name' => get_string('roles'),
+                                'link' => "{$CFG->wwwroot}/{$CFG->admin}/roles/assign.php?contextid={$context->id}",
+                                'type' => 'misc');
+
+            $navigation = build_navigation($navlinks);
+            print_header($streditprogramettings, $program->fullname, $navigation);
+            break;
+
         case CONTEXT_MODULE:
             // get module type?
             if (!$cm = get_record('course_modules','id',$context->instanceid)) {

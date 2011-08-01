@@ -140,6 +140,7 @@ define('CAP_PROHIBIT', -1000);
 define('CONTEXT_SYSTEM', 10);
 define('CONTEXT_USER', 30);
 define('CONTEXT_COURSECAT', 40);
+define('CONTEXT_PROGRAM', 45);
 define('CONTEXT_COURSE', 50);
 define('CONTEXT_MODULE', 70);
 define('CONTEXT_BLOCK', 80);
@@ -2155,6 +2156,30 @@ function create_context($contextlevel, $instanceid) {
             }
             break;
 
+        case CONTEXT_PROGRAM:
+            $sql = "SELECT ctx.path, ctx.depth
+                    FROM {$CFG->prefix}context           ctx
+                    JOIN {$CFG->prefix}prog              p
+                      ON (p.category=ctx.instanceid AND ctx.contextlevel=".CONTEXT_COURSECAT.")
+                    WHERE p.id={$instanceid}";
+            if ($p = get_record_sql($sql)) {
+                $basepath  = $p->path;
+                $basedepth = $p->depth;
+            } else if ($program = get_record('prog', 'id', $instanceid)) {
+                if ($parent = get_context_instance(CONTEXT_COURSECAT, $program->category)) {
+                    $basepath  = $parent->path;
+                    $basedepth = $parent->depth;
+                } else {
+                    // wrong parent category of program - no big deal, this can be fixed later
+                    $basepath  = null;
+                    $basedepth = 0;
+                }
+            } else {
+                // incorrect program id
+                $result = false;
+            }
+            break;
+
         case CONTEXT_MODULE:
             $sql = "SELECT ctx.path, ctx.depth
                     FROM {$CFG->prefix}context           ctx
@@ -2513,7 +2538,7 @@ function preload_course_contexts($courseid) {
 function get_context_instance($contextlevel, $instance=0) {
 
     global $context_cache, $context_cache_id, $CFG;
-    static $allowed_contexts = array(CONTEXT_SYSTEM, CONTEXT_USER, CONTEXT_COURSECAT, CONTEXT_COURSE, CONTEXT_MODULE, CONTEXT_BLOCK);
+    static $allowed_contexts = array(CONTEXT_SYSTEM, CONTEXT_USER, CONTEXT_COURSECAT, CONTEXT_COURSE, CONTEXT_PROGRAM, CONTEXT_MODULE, CONTEXT_BLOCK);
 
     if ($contextlevel === 'clearcache') {
         // TODO: Remove for v2.0
@@ -3532,6 +3557,19 @@ function print_context_name($context, $withprefix = true, $short = false) {
             }
             break;
 
+        case CONTEXT_PROGRAM:
+            if ($program = get_record('prog', 'id', $context->instanceid)) {
+                if ($withprefix){
+                    $name = get_string('program', 'local_program').': ';
+                }
+                if (!$short){
+                    $name .= format_string($program->shortname);
+                } else {
+                    $name .= format_string($program->fullname);
+               }
+            }
+            break;
+
         case CONTEXT_MODULE: // 1 to 1 to course
             if ($cm = get_record('course_modules','id',$context->instanceid)) {
                 if ($module = get_record('modules','id',$cm->module)) {
@@ -4032,6 +4070,10 @@ function get_component_string($component, $contextlevel) {
             } else {
                 $string = get_string('course');
             }
+        break;
+
+        case CONTEXT_PROGRAM:
+            $string = get_string('program', 'local_program');
         break;
 
         case CONTEXT_MODULE:
@@ -5921,6 +5963,11 @@ function assign_user_position($assignment, $managerid = null) {
 
         $assignment->reportstoid = $raid;
     }
+
+    // Store the date of this assignment
+    global $CFG;
+    require_once($CFG->dirroot.'/local/program/lib.php');
+    prog_store_position_assignment($assignment);
 
     // Save assignment
     $assignment->save();

@@ -30,6 +30,7 @@ require_once($CFG->dirroot . '/local/plan/development_plan.class.php');
 require_once($CFG->dirroot . '/local/plan/role.class.php');
 require_once($CFG->dirroot . '/local/plan/component.class.php');
 require_once($CFG->dirroot . '/local/plan/workflow.class.php');
+require_once($CFG->dirroot . '/local/program/lib.php'); // needed to display required learning in plans menu
 require_once($CFG->libdir . '/tablelib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -103,6 +104,7 @@ $DP_AVAILABLE_COMPONENTS = array(
     'course',
     'competency',
     'objective',
+    'program',
 );
 
 // note that new templates will default to the first workflow in this list
@@ -569,15 +571,17 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
  * Displays the plan menu
  *
  * @access public
- * @param  int    $userid     the id of the current user
- * @param  int    $selectedid the selected id
- * @param  string $role       the role of the user
- * @param  string $rolpage    the record of learning page (to keep track of which tab is selected)
- * @param  string $rolstatus  the record of learning status (to keep track of which menu item is selected)
- * @param  bool   $showrol    determines if the record of learning should be shown
- * @return string $out        the form to display
+ * @param  int    $userid           the id of the current user
+ * @param  int    $selectedid       the selected id
+ * @param  string $role             the role of the user
+ * @param  string $rolpage          the record of learning page (to keep track of which tab is selected)
+ * @param  string $rolstatus        the record of learning status (to keep track of which menu item is selected)
+ * @param  bool   $showrol          determines if the record of learning should be shown
+ * @param  int    $selectedprogid   the selected program id
+ * @param  bool   $showrequired     determines if the record of learning should be shown
+ * @return string $out              the form to display
  */
-function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage='courses', $rolstatus='none', $showrol=true) {
+function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage='courses', $rolstatus='none', $showrol=true, $selectedprogid=0, $showrequired=true) {
     global $CFG;
 
     $out = '<div id="dp-plans-menu">';
@@ -654,6 +658,37 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
         if ($role == 'manager') {
             $out .= "</div>";
         }
+    }
+
+    // Print Required Learning menu
+    if ($showrequired) {
+        if($programs = prog_get_required_programs($userid, ' ORDER BY fullname ASC ')) {
+            if ($role == 'manager') {
+                $extraparams = '&amp;userid='.$userid;
+                $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('requiredlearning', 'local_program') . '</h4>';
+            }
+            else {
+                $extraparams = '';
+                $out .= print_heading(get_string('requiredlearning', 'local_program'), '', 3, 'main', true);
+            }
+            $out .= "<ul>";
+            $progcount = 1;
+            $maxprogstodisplay = 5;
+            foreach ($programs as $p) {
+                if ($progcount > $maxprogstodisplay) {
+                    $out .= "<li><a href=\"{$CFG->wwwroot}/local/program/required.php?{$extraparams}\">" . get_string('viewallrequiredlearning', 'local_program') . "</a></li>";
+                    break;
+                }
+                $class = $p->id == $selectedprogid ? 'class="dp-menu-selected"' : '';
+                $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/program/required.php?id={$p->id}{$extraparams}\">{$p->fullname}</a></li>";
+                $progcount++;
+            }
+            $out .= "</ul>";
+            if ($role == 'manager') {
+                $out .= "</div>";
+            }
+        }
+
     }
 
     // Print Record of Learning menu

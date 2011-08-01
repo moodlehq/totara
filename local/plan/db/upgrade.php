@@ -136,11 +136,11 @@ function xmldb_local_plan_upgrade($oldversion=0) {
                     }
                 }
 
-                $objset = new stdClass();
-                $objset->templateid = $t->templateid;
-                $objset->duedatemode=0;
-                $objset->prioritymode=0;
-                insert_record('dp_objective_settings', $objset);
+                $progset = new stdClass();
+                $progset->templateid = $t->templateid;
+                $progset->duedatemode=0;
+                $progset->prioritymode=0;
+                insert_record('dp_objective_settings', $progset);
                 commit_sql();
             }
         }
@@ -446,6 +446,114 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0);
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
+        }
+    }
+
+    if ($result && $oldversion < 2011080200) {
+
+    /// Define table dp_plan_program_assign to be created
+        $table = new XMLDBTable('dp_plan_program_assign');
+
+    /// Adding fields to table dp_plan_program_assign
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('planid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('programid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('priority', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('duedate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('approved', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $table->addFieldInfo('completionstatus', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+
+    /// Adding keys to table dp_plan_program_assign
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table dp_plan_program_assign
+        $table->addIndexInfo('planidprogramid', XMLDB_INDEX_UNIQUE, array('planid', 'programid'));
+        $table->addIndexInfo('planid', XMLDB_INDEX_NOTUNIQUE, array('planid'));
+
+    /// Launch create table for dp_plan_program_assign
+        $result = $result && create_table($table);
+    }
+
+    if ($result && $oldversion < 2011051002) {
+
+    /// Define table dp_program_settings to be created
+        $table = new XMLDBTable('dp_program_settings');
+
+    /// Adding fields to table dp_program_settings
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('templateid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('duedatemode', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $table->addFieldInfo('prioritymode', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $table->addFieldInfo('priorityscale', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+
+    /// Adding keys to table dp_program_settings
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table dp_program_settings
+        $table->addIndexInfo('templateid', XMLDB_INDEX_UNIQUE, array('templateid'));
+
+    /// Launch create table for dp_program_settings
+        $result = $result && create_table($table);
+
+    // Create program settings for existing templates so they don't break
+    // but disable programs by default in existing templates
+        $templates = get_records('dp_template', '', '', 'id', 'id');
+        if ( is_array($templates) ){
+            foreach( $templates as $t ){
+                begin_sql();
+                if($settings = get_record('dp_component_settings', 'templateid', $t->id, 'component', 'program')) {
+                    $settings->enabled=0;
+                    $settings->sortorder = 1 + count_records('dp_component_settings', 'templateid', $t->id);
+                    update_record('dp_component_settings', $settings);
+                } else {
+                    $settings = new stdClass();
+                    $settings->templateid=$t->id;
+                    $settings->component='program';
+                    $settings->enabled=0;
+                    $settings->sortorder = 1 + count_records('dp_component_settings', 'templateid', $t->id);
+                    insert_record('dp_component_settings', $settings);
+                }
+                commit_sql();
+            }
+
+            $roles = array('learner','manager');
+            $actions=array('updateprogram','commenton','setpriority','setduedate','setcompletionstatus');
+
+            foreach( $templates as $t ){
+                begin_sql();
+                $perm = new stdClass();
+                $perm->templateid = $t->id;
+                foreach( $roles as $r ){
+                    foreach( $actions as $a ){
+                        if ($rec = get_record_select('dp_permissions', "templateid={$perm->templateid} AND role='$r' AND component='program' AND action='$a'")) {
+                            $rec->value=50;
+                            update_record('dp_permissions', $rec);
+                        } else {
+                            $perm->role = $r;
+                            $perm->action = $a;
+                            $perm->value=50;
+                            $perm->component = 'program';
+                            insert_record('dp_permissions', $perm);
+                        }
+                    }
+                }
+
+                if($progset = get_record_select('dp_program_settings', "templateid={$t->id}")) {
+                    $progset->duedatemode=0;
+                    $progset->prioritymode=0;
+                    $progset->priorityscale=1;
+                    update_record('dp_program_settings', $progset);
+                } else {
+                    $progset = new stdClass();
+                    $progset->templateid = $t->id;
+                    $progset->duedatemode=0;
+                    $progset->prioritymode=0;
+                    $progset->priorityscale=1;
+                    insert_record('dp_program_settings', $progset);
+                }
+
+                commit_sql();
+            }
         }
     }
 

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/program/db" VERSION="20110630" COMMENT="XMLDB file for Moodle local/program"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="prog" COMMENT="Stores elemental details about programs" NEXT="prog_courseset">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="category"/>
+        <FIELD NAME="category" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the category that a program belongs to" PREVIOUS="id" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The position of this program within its category" PREVIOUS="category" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="254" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="The full name of the program" PREVIOUS="sortorder" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="The short name of the program" PREVIOUS="fullname" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="A code that can be used to identify the program" PREVIOUS="shortname" NEXT="summary"/>
+        <FIELD NAME="summary" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="A description of the program" PREVIOUS="idnumber" NEXT="endnote"/>
+        <FIELD NAME="endnote" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="A note that will be displayed on completion of the program" PREVIOUS="summary" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" COMMENT="Determines whether or not users can view the program" PREVIOUS="endnote" NEXT="availablefrom"/>
+        <FIELD NAME="availablefrom" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date from which the program is available" PREVIOUS="visible" NEXT="availableuntil"/>
+        <FIELD NAME="availableuntil" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date after which the program is no longer available" PREVIOUS="availablefrom" NEXT="availablerole"/>
+        <FIELD NAME="availablerole" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the role that this program is available to" PREVIOUS="availableuntil" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The time that this program was created" PREVIOUS="availablerole" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The time that this program was last modified" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the user who last modified the program" PREVIOUS="timemodified" NEXT="icon"/>
+        <FIELD NAME="icon" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="An icon file to represent the program" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="category"/>
+        <KEY NAME="category" TYPE="foreign" FIELDS="category" REFTABLE="course_categories" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="idnumber" UNIQUE="false" FIELDS="idnumber" NEXT="shortname"/>
+        <INDEX NAME="shortname" UNIQUE="false" FIELDS="shortname" PREVIOUS="idnumber"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="prog_courseset" COMMENT="Stores details of the sets of courses and competencies contained within a program" PREVIOUS="prog" NEXT="prog_courseset_course">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this course set relates to" PREVIOUS="id" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The position of this course set within the program" PREVIOUS="programid" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the competency that contains the courses for this course set (only contains a non-zero value if this course set relates to a competency, otherwise this course set contains individual courses)" PREVIOUS="sortorder" NEXT="nextsetoperator"/>
+        <FIELD NAME="nextsetoperator" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="An integer to indicate the type of operator that links this course set with the next set in the program" PREVIOUS="competencyid" NEXT="completiontype"/>
+        <FIELD NAME="completiontype" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates whether or not learners must complete all courses in a set, only one course, etc" PREVIOUS="nextsetoperator" NEXT="timeallowed"/>
+        <FIELD NAME="timeallowed" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Denotes the amount of time allowed to complete the course set" PREVIOUS="completiontype" NEXT="recurrencetime"/>
+        <FIELD NAME="recurrencetime" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The time period for retaking a recurring course" PREVIOUS="timeallowed" NEXT="recurcreatetime"/>
+        <FIELD NAME="recurcreatetime" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The length of time before a recurring course ends that the next course should be automatically created by the system" PREVIOUS="recurrencetime" NEXT="contenttype"/>
+        <FIELD NAME="contenttype" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Defines the type of the content (i.e. set of courses, competency, recurring, etc)" PREVIOUS="recurcreatetime" NEXT="label"/>
+        <FIELD NAME="label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="A name for the set" PREVIOUS="contenttype"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_courseset_course" COMMENT="Stores the details of the individual courses contained in a course set" PREVIOUS="prog_courseset" NEXT="prog_assignment">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="coursesetid"/>
+        <FIELD NAME="coursesetid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the course set that this course relates to" PREVIOUS="id" NEXT="courseid"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the course" PREVIOUS="coursesetid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="coursesetid"/>
+        <KEY NAME="coursesetid" TYPE="foreign" FIELDS="coursesetid" REFTABLE="prog_courseset" REFFIELDS="id" PREVIOUS="primary" NEXT="courseid"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id" PREVIOUS="coursesetid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_assignment" COMMENT="Stores details of the assignments defined within a program" PREVIOUS="prog_courseset_course" NEXT="prog_message">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this assignment relates to (FK=mdl_prog:id)" PREVIOUS="id" NEXT="assignmenttype"/>
+        <FIELD NAME="assignmenttype" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The type of this assignment (i.e. organisation, position, cohort, manager, individual)" PREVIOUS="programid" NEXT="assignmenttypeid"/>
+        <FIELD NAME="assignmenttypeid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the linked assignment" PREVIOUS="assignmenttype" NEXT="includechildren"/>
+        <FIELD NAME="includechildren" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates whether or not to include the children of the element (if the element has children) when assigning users to this program" PREVIOUS="assignmenttypeid" NEXT="completiontime"/>
+        <FIELD NAME="completiontime" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Time indicating either a fixed completion date or a time following a specified event. If no event is specified in the completionevent field, this value is a fixed date. Otherwise it is a time relative to the event." PREVIOUS="includechildren" NEXT="completionevent"/>
+        <FIELD NAME="completionevent" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Denotes an event by which time the assigned users must complete the program" PREVIOUS="completiontime" NEXT="completioninstance"/>
+        <FIELD NAME="completioninstance" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="completionevent"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_message" COMMENT="Stores details of the messages defined within a program" PREVIOUS="prog_assignment" NEXT="prog_exception">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this message relates to" PREVIOUS="id" NEXT="messagetype"/>
+        <FIELD NAME="messagetype" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Defines the type of message (i.e. program assigned, set due, program due, etc)" PREVIOUS="programid" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The position of this message within the list of messages" PREVIOUS="messagetype" NEXT="locked"/>
+        <FIELD NAME="locked" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Boolean indicating whether or not this message can be moved or deleted" PREVIOUS="sortorder" NEXT="messagesubject"/>
+        <FIELD NAME="messagesubject" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="The subject of the message" PREVIOUS="locked" NEXT="mainmessage"/>
+        <FIELD NAME="mainmessage" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="The body of the message to be sent to the learner" PREVIOUS="messagesubject" NEXT="notifymanager"/>
+        <FIELD NAME="notifymanager" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Boolean to indicate whether or not to send a notification to the manager" PREVIOUS="mainmessage" NEXT="managermessage"/>
+        <FIELD NAME="managermessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="The body of the message to the manager" PREVIOUS="notifymanager" NEXT="triggertime"/>
+        <FIELD NAME="triggertime" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The time at which this message is sent (this will be in relation to a specific event which will be dependent on the message type)" PREVIOUS="managermessage"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_exception" COMMENT="Stores details of any exceptions raised relating to a program" PREVIOUS="prog_message" NEXT="prog_exception_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this exception relates to" PREVIOUS="id" NEXT="exceptiontype"/>
+        <FIELD NAME="exceptiontype" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Denotes the type of this exception (e.g. time allowance, program already assigned, etc)" PREVIOUS="programid" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the user that this exception relates to" PREVIOUS="exceptiontype" NEXT="timeraised"/>
+        <FIELD NAME="timeraised" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The time that this exception was raised" PREVIOUS="userid" NEXT="assignmentid"/>
+        <FIELD NAME="assignmentid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the assignment" PREVIOUS="timeraised"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="programid"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="exceptiontype" UNIQUE="false" FIELDS="exceptiontype"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="prog_exception_data" COMMENT="Stores details of any data specific to the exceptions raised for a program" PREVIOUS="prog_exception" NEXT="prog_completion">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="exceptionid"/>
+        <FIELD NAME="exceptionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the exception that this data item relates to" PREVIOUS="id" NEXT="dataname"/>
+        <FIELD NAME="dataname" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="A string denoting the name of this data item" PREVIOUS="exceptionid" NEXT="datavalue"/>
+        <FIELD NAME="datavalue" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="The data relating to this data item" PREVIOUS="dataname"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="exceptionid"/>
+        <KEY NAME="exceptionid" TYPE="foreign" FIELDS="exceptionid" REFTABLE="prog_exception" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_completion" COMMENT="Stores details of user's program and course set completions" PREVIOUS="prog_exception_data" NEXT="prog_completion_history">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this completion relates to" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the user that this completion relates to" PREVIOUS="programid" NEXT="coursesetid"/>
+        <FIELD NAME="coursesetid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the course set that this completion relates to" PREVIOUS="userid" NEXT="status"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates the completion status of a program or course set" PREVIOUS="coursesetid" NEXT="timestarted"/>
+        <FIELD NAME="timestarted" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date/time that this program was started by the student" PREVIOUS="status" NEXT="timedue"/>
+        <FIELD NAME="timedue" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date/time that this program is due to be completed" PREVIOUS="timestarted" NEXT="timecompleted"/>
+        <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The time that this program or set was completed" PREVIOUS="timedue"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="programid" NEXT="coursesetid"/>
+        <KEY NAME="coursesetid" TYPE="foreign" FIELDS="coursesetid" REFTABLE="prog_courseset" REFFIELDS="id" PREVIOUS="userid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_completion_history" COMMENT="Stores details of user's program and course set completions history" PREVIOUS="prog_completion" NEXT="prog_messagelog">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this completion relates to" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the user that this completion relates to" PREVIOUS="programid" NEXT="coursesetid"/>
+        <FIELD NAME="coursesetid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the course set that this completion relates to" PREVIOUS="userid" NEXT="status"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates the completion status of a program or course set" PREVIOUS="coursesetid" NEXT="timestarted"/>
+        <FIELD NAME="timestarted" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date/time that this program was started by the student" PREVIOUS="status" NEXT="timedue"/>
+        <FIELD NAME="timedue" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date/time that this program is due to be completed" PREVIOUS="timestarted" NEXT="timecompleted"/>
+        <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The time that this program or set was completed" PREVIOUS="timedue"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="programid" NEXT="coursesetid"/>
+        <KEY NAME="coursesetid" TYPE="foreign" FIELDS="coursesetid" REFTABLE="prog_courseset" REFFIELDS="id" PREVIOUS="userid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_messagelog" COMMENT="Stores details of program-related messages that have been issued to a user" PREVIOUS="prog_completion_history" NEXT="prog_user_assignment">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="messageid"/>
+        <FIELD NAME="messageid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the message that this log item relates to" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the user that this log item relates to" PREVIOUS="messageid" NEXT="coursesetid"/>
+        <FIELD NAME="coursesetid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the course set that this log item relates to" PREVIOUS="userid" NEXT="timeissued"/>
+        <FIELD NAME="timeissued" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The time that the message was issued" PREVIOUS="coursesetid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="messageid"/>
+        <KEY NAME="messageid" TYPE="foreign" FIELDS="messageid" REFTABLE="prog_message" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="messageid" NEXT="coursesetid"/>
+        <KEY NAME="coursesetid" TYPE="foreign" FIELDS="coursesetid" REFTABLE="prog_courseset" REFFIELDS="id" PREVIOUS="userid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_user_assignment" COMMENT="Stores details of the user assignments that have been made for a program based on the program's assignment criteria" PREVIOUS="prog_messagelog" NEXT="prog_pos_assignment">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this user assignment relates to" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the user that this assignment relates to" PREVIOUS="programid" NEXT="assignmentid"/>
+        <FIELD NAME="assignmentid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the linked assignment type" PREVIOUS="userid" NEXT="timeassigned"/>
+        <FIELD NAME="timeassigned" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date/time at which this user assignment was made" PREVIOUS="assignmentid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="programid" NEXT="assignmentid"/>
+        <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="prog_assignment" REFFIELDS="id" PREVIOUS="userid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_pos_assignment" COMMENT="Stores when users were last assigned a position" PREVIOUS="prog_user_assignment" NEXT="prog_recurrence">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="userid" NEXT="type"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="positionid" NEXT="timeassigned"/>
+        <FIELD NAME="timeassigned" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="type"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="prog_recurrence" COMMENT="Store the id numbers of the courses that will replace existing courses in a recurring program so that the system can know which course will be used when the current course ends" PREVIOUS="prog_pos_assignment">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that contains the recurring course" PREVIOUS="id" NEXT="currentcourseid"/>
+        <FIELD NAME="currentcourseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the course that is the current course in the program" PREVIOUS="programid" NEXT="nextcourseid"/>
+        <FIELD NAME="nextcourseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the course that will replace the current course in the program when it has ended" PREVIOUS="currentcourseid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
+        <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id" PREVIOUS="primary" NEXT="currentcourseid"/>
+        <KEY NAME="currentcourseid" TYPE="foreign" FIELDS="currentcourseid" REFTABLE="course" REFFIELDS="id" PREVIOUS="programid" NEXT="nextcourseid"/>
+        <KEY NAME="nextcourseid" TYPE="foreign" FIELDS="nextcourseid" REFTABLE="course" REFFIELDS="id" PREVIOUS="currentcourseid"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

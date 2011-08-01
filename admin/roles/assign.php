@@ -464,12 +464,17 @@
             $table->data[] = $row;
         }
         print_table($table);
-		
-	   //Continue to Course Button
-	   echo "<br/>";
-	   echo "<div class='continuebutton'>";
-	   print_single_button($CFG->wwwroot.'/course/view.php', array('id' => $courseid), get_string('continuetocourse'));
-	   echo "</div>";
+
+        echo "<br/>";
+        echo "<div class='continuebutton'>";
+        if ($context->contextlevel == CONTEXT_PROGRAM) {
+            // Continue to program button
+            print_single_button("{$CFG->wwwroot}/local/program/edit.php", array('id' => $program->id), get_string('returntoprogram', 'local_program'));
+        } else {
+            // Continue to Course Button
+            print_single_button($CFG->wwwroot.'/course/view.php', array('id' => $courseid), get_string('continuetocourse'));
+        }
+        echo "</div>";
     }
 	
     print_footer($course);

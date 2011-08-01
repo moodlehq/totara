@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/cohort/db" VERSION="20110620" COMMENT="XMLDB file for Moodle local/cohort"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="cohort" COMMENT="Each record represents one cohort (aka site-wide group)." NEXT="cohort_members">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="contextid"/>
+        <FIELD NAME="contextid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Context is usually ignored in sync operations so that the cohorts may be moved freely around in the context tree without any side affects." PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="254" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="Short human readable name for the cohort, does not have to be unique" PREVIOUS="contextid" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Unique identifier of a cohort, useful especially for mapping to external entities" PREVIOUS="name" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Standard description text box" PREVIOUS="idnumber" NEXT="descriptionformat"/>
+        <FIELD NAME="descriptionformat" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="description" NEXT="component"/>
+        <FIELD NAME="component" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="Component (plugintype_pluignname) that manages the cohort, manual modifications are allowed only when set to NULL" PREVIOUS="descriptionformat" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="component" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timecreated" NEXT="cohorttype"/>
+        <FIELD NAME="cohorttype" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timemodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="context"/>
+        <KEY NAME="context" TYPE="foreign" FIELDS="contextid" REFTABLE="context" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="cohort_members" COMMENT="Link a user to a cohort." PREVIOUS="cohort" NEXT="cohort_criteria">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="cohortid"/>
+        <FIELD NAME="cohortid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="cohortid" NEXT="timeadded"/>
+        <FIELD NAME="timeadded" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="userid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="cohortid"/>
+        <KEY NAME="cohortid" TYPE="foreign" FIELDS="cohortid" REFTABLE="cohort" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="cohortid"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="cohortid-userid" UNIQUE="true" FIELDS="cohortid, userid" COMMENT="enforce unique index"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="cohort_criteria" COMMENT="Criteria for the dynamic cohorts" PREVIOUS="cohort_members">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="cohortid"/>
+        <FIELD NAME="cohortid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="profilefield"/>
+        <FIELD NAME="profilefield" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="cohortid" NEXT="profilefieldvalues"/>
+        <FIELD NAME="profilefieldvalues" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="profilefield" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="profilefieldvalues" NEXT="positionincludechildren"/>
+        <FIELD NAME="positionincludechildren" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="positionid" NEXT="organisationid"/>
+        <FIELD NAME="organisationid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="positionincludechildren" NEXT="orgincludechildren"/>
+        <FIELD NAME="orgincludechildren" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="organisationid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="cohortid" UNIQUE="true" FIELDS="cohortid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

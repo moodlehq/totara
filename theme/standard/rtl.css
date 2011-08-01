@@ -562,3 +562,13 @@ div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous{
 .filetree span.file { background: url(images/treeview/rtl-file.gif) 100% 0 no-repeat; }
 
 /* TreeView */
+
+
+body.course h1.main,
+body.course h3.main {
+    text-align: right;
+}
+
+p.course-prog-alt-view {
+    float: left;
+}

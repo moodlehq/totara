@@ -135,7 +135,7 @@ class dp_course_component extends dp_base_component {
         global $CFG;
 
         // Generate where clause
-        $where = "a.planid = {$this->plan->id}";
+        $where = "c.visible = 1 AND a.planid = {$this->plan->id}";
         if ($approved !== null) {
             if (is_array($approved)) {
                 $approved = implode(', ', $approved);
@@ -900,7 +900,7 @@ class dp_course_component extends dp_base_component {
         // Get courses assigned to this plan
         if ($courses = $this->get_assigned_items()) {
             foreach ($courses as $c) {
-                if (!$c->approved) {
+                if ($c->approved != DP_APPROVAL_APPROVED) {
                     continue;
                 }
                 // Determine course completion

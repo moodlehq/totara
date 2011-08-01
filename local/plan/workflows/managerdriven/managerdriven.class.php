@@ -45,6 +45,11 @@ class dp_managerdriven_workflow extends dp_base_workflow {
         $this->cfg_course_prioritymode = DP_PRIORITY_OPTIONAL;
         $this->cfg_course_priorityscale = $defaultpriority;
 
+        // program specific settings
+        $this->cfg_program_duedatemode = DP_DUEDATES_OPTIONAL;
+        $this->cfg_program_prioritymode = DP_PRIORITY_OPTIONAL;
+        $this->cfg_program_priorityscale = $defaultpriority;
+
         // competency specific settings
         $this->cfg_competency_autoassignpos = 0;
         $this->cfg_competency_autoassignorg = 0;
@@ -86,6 +91,14 @@ class dp_managerdriven_workflow extends dp_base_workflow {
         $this->perm_course_setduedate_manager = DP_PERMISSION_ALLOW;
         $this->perm_course_setcompletionstatus_learner = DP_PERMISSION_DENY;
         $this->perm_course_setcompletionstatus_manager = DP_PERMISSION_ALLOW;
+
+        // program permission settings
+        $this->perm_program_updateprogram_learner = DP_PERMISSION_REQUEST;
+        $this->perm_program_updateprogram_manager = DP_PERMISSION_APPROVE;
+        $this->perm_program_setpriority_learner = DP_PERMISSION_DENY;
+        $this->perm_program_setpriority_manager = DP_PERMISSION_ALLOW;
+        $this->perm_program_setduedate_learner = DP_PERMISSION_DENY;
+        $this->perm_program_setduedate_manager = DP_PERMISSION_ALLOW;
 
         //competency permission settings
         $this->perm_competency_updatecompetency_learner = DP_PERMISSION_REQUEST;

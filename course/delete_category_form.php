@@ -50,6 +50,15 @@ class delete_category_form extends moodleform {
             }
         }
 
+    /// Are there any programs in here, can they be deleted?
+        $containedprograms = get_records_sql("
+                SELECT id,1 FROM {$CFG->prefix}prog p
+                        WHERE p.category IN (" . implode(',', $categoryids) . ")");
+        $containsprograms = false;
+        if ($containedprograms) {
+            $containsprograms = true;
+        }
+
     /// Are there any questions in the question bank here?
         $containsquestions = question_context_has_any_questions($category->context);
 
@@ -57,6 +66,9 @@ class delete_category_form extends moodleform {
         $testcaps = array();
         if ($containscourses) {
             $testcaps[] = 'moodle/course:create';
+        }
+        if ($containsprograms) {
+            $testcaps[] = 'local/program:createprogram';
         }
         if ($containscategories || $containsquestions) {
             $testcaps[] = 'moodle/category:manage';
@@ -79,7 +91,7 @@ class delete_category_form extends moodleform {
     /// Now build the form.
         $mform->addElement('header','general', get_string('categorycurrentcontents', '', format_string($category->name)));
 
-        if ($containscourses || $containscategories || $containsquestions) {
+        if ($containscourses || $containscategories || $containsquestions || $containsprograms) {
             if (empty($options)) {
                 print_error('youcannotdeletecategory', 'error', 'index.php', format_string($category->name));
             }
@@ -91,6 +103,9 @@ class delete_category_form extends moodleform {
             }
             if ($containscourses) {
                 $contents .= '<li>' . get_string('courses') . '</li>';
+            }
+            if ($containsprograms) {
+                $contents .= '<li>' . get_string('programs') . '</li>';
             }
             if ($containsquestions) {
                 $contents .= '<li>' . get_string('questionsinthequestionbank') . '</li>';
