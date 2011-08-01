@@ -703,10 +703,13 @@ $string['commentmsg:componentitemdetail'] = 'There has been a new comment on $a-
 <strong>Plan:</strong> $a->plan<br>
 <strong>$a->component:</strong> $a->componentname<br>
 <strong>Comment:</strong>$a->comment - <em>Comment by $a->commentby on $a->commentdate</em>';
-$string['latestcommentby'] = 'Latest comment by';
-$string['nocomments'] = 'No comments';
 
 // Manditory courses/competencies
 $string['linktype'] = 'Link type';
 $string['error:updateingrecord'] = 'Error, no such link type';
 $string['error:updatinglinktype'] = 'Error: could not update link type';
+
+// Deleting linked courses
+$string['deletelinkedcoursesheader'] = 'Removing \"$a\" from plan';
+$string['deletelinkedcoursesinstructions'] = 'The following development activities are linked to this focus area in your plan. If checked, they will be removed from your plan at this time. If unchecked, they will remain in your plan.';
+$string['deletelinkedcoursessubmit'] = 'Remove from my plan';

@@ -182,6 +182,19 @@ class dp_competency_component extends dp_base_component {
             }
             if ($this->remove_competency_assignment($delete)) {
                 add_to_log(SITEID, 'plan', 'removed competency', "component.php?id={$this->plan->id}&c=competency", "Competency (ID:{$delete})");
+
+                $dropcourselist = optional_param('dropcourse', false, PARAM_INT);
+                if ($dropcourselist){
+                    if (!is_array($dropcourselist)){
+                        $dropcourselist = array($dropcourselist);
+                    }
+                    $coursecomponent = $this->plan->get_component('course');
+                    foreach( $dropcourselist as $courseid ){
+                        add_to_log(SITEID, 'plan', 'removed course', "component.php?id={$this->plan->id}&c=course", "Course (ID:{$courseid}) via Competency {$delete}");
+                        $coursecomponent->unassign_item($coursecomponent->get_assignment($courseid));
+                    }
+                }
+
                 totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
             } else {
                 totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);
@@ -222,14 +235,65 @@ class dp_competency_component extends dp_base_component {
      * @return  void
      */
     public function post_header_hook() {
+        global $CFG;
 
         $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
         $currenturl = $this->get_url();
 
         if ($delete) {
-            notice_yesno(get_string('confirmitemdelete','local_plan'), $currenturl.'&amp;d='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(), $currenturl);
-            print_footer();
-            die();
+            // Print a list of linked courses
+            $sql = "
+                select courseasn.id, course.fullname
+                from
+                    {$CFG->prefix}course as course
+                    inner join {$CFG->prefix}dp_plan_course_assign courseasn
+                        on course.id = courseasn.courseid
+                    inner join {$CFG->prefix}dp_plan_component_relation rel
+                        on rel.itemid2=courseasn.id
+                where
+                    rel.component1='competency'
+                    and rel.itemid1={$delete}
+                    and rel.component2='course'
+                    and not exists (
+                        select 1
+                        from {$CFG->prefix}dp_plan_component_relation rel2
+                        where
+                            rel2.component1='competency'
+                            and rel2.itemid1<>{$delete}
+                            and rel2.component2='course'
+                            and rel2.itemid2=courseasn.id
+                    )
+            ";
+            $courses = get_records_sql($sql);
+            if ($courses){
+                print_box_start('generalbox','notice');
+                $compname = get_field_sql("select comp.fullname from {$CFG->prefix}comp comp inner join {$CFG->prefix}dp_plan_competency_assign compasn on comp.id=compasn.competencyid where compasn.id={$delete}");
+                print_heading(get_string('deletelinkedcoursesheader','local_plan', s($compname)));
+                echo '<p>'.get_string('deletelinkedcoursesinstructions','local_plan').'</p>';
+                echo "<form method=\"get\" action=\"{$CFG->wwwroot}/local/plan/component.php\">";
+                echo "<input type=\"hidden\" name=\"d\" value=\"{$delete}\" />";
+                echo "<input type=\"hidden\" name=\"c\" value=\"competency\" />";
+                echo "<input type=\"hidden\" name=\"confirm\" value=\"1\" />";
+                echo "<input type=\"hidden\" name=\"sesskey\" value=\"".sesskey()."\" />";
+                echo "<input type=\"hidden\" name=\"id\" value=\"{$this->plan->id}\" />";
+                foreach( $courses as $rec ){
+                    echo "<p><input type=\"checkbox\" name=\"dropcourse[]\" value=\"{$rec->id}\" checked=\"checked\" /> {$rec->fullname}</p>\n";
+                }
+                echo "<div class=\"buttons\">";
+                echo "<input type=\"submit\" value=\"".s(get_string('deletelinkedcoursessubmit','local_plan'))."\" />";
+                echo "</div>";
+                echo "</form>";
+
+                print_box_end();
+                print_footer();
+                die();
+            } else {
+
+                notice_yesno(get_string('confirmitemdelete','local_plan'), $currenturl.'&amp;d='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(), $currenturl);
+                print_footer();
+                die();
+
+            }
         }
     }
 
