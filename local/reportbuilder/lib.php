@@ -3282,7 +3282,7 @@ function get_next_monthly($time, $day){
         $newyear = $currentyear;
     }
 
-    $daysinmonth = cal_days_in_month(CAL_GREGORIAN, $newmonth, $newyear);
+    $daysinmonth = date('t', mktime(0, 0, 0, $newmonth, 3, $newyear));
     // If the new day is greater than the days in the month
     // then set it to be the last day of the month
     if($day > $daysinmonth){
