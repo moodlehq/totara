@@ -1,6 +1,5 @@
 html, body {height: auto !important;}
-body, td, pre {color:#000; font-family:'Trebuchet ms', Verdana, Arial, Helvetica, sans-serif; font-size:0.9em; margin:8px;}
-body, body#tinymce {background:#FFF; padding: 5px;}
+body, body#tinymce {color:#000; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 76.5%; margin:8px; background:#FFF; padding: 5px;}
 body.mceForceColors {background:#FFF; color:#000;}
 h1 {font-size: 2em}
 h2 {font-size: 1.5em}
@@ -8,7 +7,7 @@ h3 {font-size: 1.17em}
 h4 {font-size: 1em}
 h5 {font-size: .83em}
 h6 {font-size: .75em}
-p, li, td {font-size: 0.9em !important;}
+p, li, td, table, tr {font-size: 1em !important;}
 .mceItemTable, .mceItemTable td, .mceItemTable th, .mceItemTable caption, .mceItemVisualAid {border: 1px dashed #BBB;}
 a.mceItemAnchor {display:inline-block; width:11px !important; height:11px  !important; background:url(../default/img/items.gif) no-repeat 0 0;}
 span.mceItemNbsp {background: #DDD}
