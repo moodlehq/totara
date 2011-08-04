@@ -115,6 +115,8 @@ class totara_dialog_content_manager extends totara_dialog_content {
      * @return array|false
      */
     function get_items_by_parent($parentid=false) {
+        global $CFG;
+
         if ($parentid) {
             // Parentid supplied, do not specify frameworkid as
             // sometimes it is not set correctly. And a parentid
@@ -122,8 +124,8 @@ class totara_dialog_content_manager extends totara_dialog_content {
         //return get_records('manager', 'parentid', $parentid, 'sortorder, id');
         return get_records_sql("
         SELECT u.id, " . sql_fullname() . " as fullname
-        FROM mdl_manager m
-        INNER JOIN mdl_user u on u.id = m.userid
+        FROM {$CFG->prefix}manager m
+        INNER JOIN {$CFG->prefix}user u on u.id = m.userid
         WHERE m.parentid = $parentid
         ORDER BY sortorder, id
         ");
@@ -136,11 +138,13 @@ class totara_dialog_content_manager extends totara_dialog_content {
 
 
     function get_all_root_items($all=false) {
+        global $CFG;
+
         //return get_records('manager', 'parentid', 0, 'sortorder, id');
         return get_records_sql("
             SELECT u.id, " . sql_fullname() . " as fullname
-            FROM mdl_manager m
-            INNER JOIN mdl_user u on u.id = m.userid
+            FROM {$CFG->prefix}manager m
+            INNER JOIN {$CFG->prefix}user u on u.id = m.userid
             WHERE m.parentid = 0
             ORDER BY sortorder, id
             ");
@@ -160,7 +164,7 @@ class totara_dialog_content_manager extends totara_dialog_content {
         $parents = get_records_sql("
             SELECT DISTINCT
             parentid AS id
-            FROM mdl_manager
+            FROM {$CFG->prefix}manager
             WHERE parentid != 0
             ");
 

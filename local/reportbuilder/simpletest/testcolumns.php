@@ -387,6 +387,31 @@ class columns_test extends prefix_changing_test_case {
         array(1, 1, 'competency', 1, 'course'),
     );
 
+    var $cohort_data = array(
+        array('id', 'name'),
+        array(1, 'cohort'),
+    );
+
+    var $cohort_members_data = array(
+        array('id', 'cohortid', 'userid'),
+        array(1, 1, 1),
+    );
+
+    var $prog_data = array(
+        array('id', 'category', 'fullname', 'shortname', 'idnumber', 'icon'),
+        array(1, 1, 'program', 'prog', '123', 'default.png'),
+    );
+
+    var $prog_completion_data = array(
+        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timedue'),
+        array(2, 1, 1, 0, 1, 1205445539),
+    );
+
+    var $prog_user_assignment_data = array(
+        array('id', 'programid', 'userid'),
+        array(1, 1, 1),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -458,6 +483,11 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'dp_plan_objective', $this->dp_plan_objective_data, $db);
         load_test_table($CFG->prefix . 'dp_objective_scale_value', $this->dp_objective_scale_value_data, $db);
         load_test_table($CFG->prefix . 'dp_plan_component_relation', $this->dp_plan_component_relation_data, $db);
+        load_test_table($CFG->prefix . 'cohort', $this->cohort_data, $db);
+        load_test_table($CFG->prefix . 'cohort_members', $this->cohort_members_data, $db);
+        load_test_table($CFG->prefix . 'prog', $this->prog_data, $db);
+        load_test_table($CFG->prefix . 'prog_completion', $this->prog_completion_data, $db);
+        load_test_table($CFG->prefix . 'prog_user_assignment', $this->prog_user_assignment_data, $db);
 
         // get rid of dummy records
         delete_records('report_builder_group');
@@ -536,6 +566,11 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'dp_template', $db);
         remove_test_table($CFG->prefix . 'dp_objective_scale_value', $db);
         remove_test_table($CFG->prefix . 'dp_plan_component_relation', $db);
+        remove_test_table($CFG->prefix . 'cohort', $db);
+        remove_test_table($CFG->prefix . 'cohort_members', $db);
+        remove_test_table($CFG->prefix . 'prog', $db);
+        remove_test_table($CFG->prefix . 'prog_completion', $db);
+        remove_test_table($CFG->prefix . 'prog_user_assignment', $db);
         parent::tearDown();
     }
 

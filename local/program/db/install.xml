@@ -66,7 +66,7 @@
     <TABLE NAME="prog_assignment" COMMENT="Stores details of the assignments defined within a program" PREVIOUS="prog_courseset_course" NEXT="prog_message">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
-        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this assignment relates to (FK=mdl_prog:id)" PREVIOUS="id" NEXT="assignmenttype"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this assignment relates to id in the prog table" PREVIOUS="id" NEXT="assignmenttype"/>
         <FIELD NAME="assignmenttype" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The type of this assignment (i.e. organisation, position, cohort, manager, individual)" PREVIOUS="programid" NEXT="assignmenttypeid"/>
         <FIELD NAME="assignmenttypeid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the linked assignment" PREVIOUS="assignmenttype" NEXT="includechildren"/>
         <FIELD NAME="includechildren" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates whether or not to include the children of the element (if the element has children) when assigning users to this program" PREVIOUS="assignmenttypeid" NEXT="completiontime"/>

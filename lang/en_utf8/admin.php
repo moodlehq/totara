@@ -643,6 +643,7 @@ $string['proxyport'] = 'Proxy port';
 $string['proxypassword'] = 'Proxy password';
 $string['proxyuser'] = 'Proxy username';
 $string['proxytype'] = 'Proxy type';
+$string['purgecachesfinished']= 'All caches were purged.';
 $string['qtyperqpwillberemoved'] = 'During the upgrade, the RQP question type will be removed. You were not using this question type, so you should not experience any problems.';
 $string['qtyperqpwillberemovedanyway'] = 'During the upgrade, the RQP question type will be removed. You have some RQP questions in your database, and these will stop working unless you reinstall the code from http://moodle.org/mod/data/view.php?d=13&amp;rid=797 before continuing with the upgrade.';
 $string['quarantinedir'] = 'Quarantine directory';

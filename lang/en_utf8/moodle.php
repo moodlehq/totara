@@ -895,6 +895,7 @@ $string['latestlanguagepack'] = 'Check for latest language pack on moodle.org';
 $string['latestnews'] = 'Latest News';
 $string['layouttable'] = 'Layout table';
 $string['leavetokeep'] = 'Leave blank to keep current password';
+$string['legacythemeinuse'] = 'This site is being displayed to you in compatibility mode because your browser is too old.';
 $string['license'] = 'GPL License';
 $string['liketologin'] = 'Would you like to log in now with a full user account?';
 $string['list'] = 'List';

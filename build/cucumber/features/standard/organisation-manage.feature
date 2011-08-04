@@ -46,6 +46,7 @@ Feature: Manage Organisation
       And I am on the manage organisations page
       And I click "Test Organisation Framework 1"
       And I add an organisation
+      And I press "Return to organisation framework"
       And I press "Add new organisation"
       And I select "My organisation fullname" from "parentid"
       And I fill in "fullname" with "My child organisation fullname"
@@ -61,6 +62,7 @@ Feature: Manage Organisation
       And I am on the manage organisations page
       And I click "Test Organisation Framework 1"
       And I add an organisation
+      And I press "Return to organisation framework"
       And I edit the 1st organisation table entry
       And I fill in "fullname" with "My organisation fullname revised"
       And I press "Save changes"
@@ -75,6 +77,7 @@ Feature: Manage Organisation
       And I am on the manage organisations page
       And I click "Test Organisation Framework 1"
       And I add an organisation
+      And I press "Return to organisation framework"
       And I delete the 1st organisation table entry and confirm
     Then I should not see "My organisation fullname" within the organisation column
 
