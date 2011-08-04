@@ -212,7 +212,7 @@ if ($itemform->is_cancelled()) {
     }
     events_trigger("{$type}_updated", $itemnew);
 
-    redirect("{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&id={$itemnew->id}");
+    redirect("{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$itemnew->id}");
     //never reached
 }
 
