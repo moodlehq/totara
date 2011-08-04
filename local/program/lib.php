@@ -750,9 +750,9 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
  * @param string $highlightterms (optional) some search terms that should be highlighted in the display.
  */
 function prog_print_program($program, $highlightterms = '') {
-    require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
-
     global $CFG, $USER;
+
+    require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
 
     if (isset($program->context)) {
         $context = $program->context;
