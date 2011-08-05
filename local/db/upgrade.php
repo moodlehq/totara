@@ -2381,6 +2381,13 @@ function xmldb_local_upgrade($oldversion) {
     if ($result && $oldversion < 2011072401) {
         $table = new XMLDBTable('course_completion_criteria');
         if (table_exists($table)) {
+            // Remove index
+            $lockindex = new XMLDBIndex('lock');
+            if (index_exists($table, $lockindex)) {
+                $result = $result && drop_index($table, $lockindex);
+            }
+
+            // Remove field
             $lockfield = new XMLDBField('lock');
             if (field_exists($table, $lockfield)) {
                 $result = $result && drop_field($table, $lockfield);
