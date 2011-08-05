@@ -192,14 +192,12 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('completedate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('gradepass', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
         $table->addFieldInfo('role', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('lock', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
 
     /// Adding keys to table course_completion_criteria
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
 
     /// Adding indexes to table course_completion_criteria
         $table->addIndexInfo('course', XMLDB_INDEX_NOTUNIQUE, array('course'));
-        $table->addIndexInfo('lock', XMLDB_INDEX_NOTUNIQUE, array('lock'));
 
     /// Conditionally launch create table for course_completion_criteria
         if (!table_exists($table)) {
