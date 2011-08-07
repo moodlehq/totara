@@ -2401,14 +2401,21 @@ function xmldb_local_upgrade($oldversion) {
             }
 
             // calculate the depth level (based on the item's depthid) and store in new field
-            // should only update the depth level if it's empty
-            $updatesql = "
-                UPDATE {$CFG->prefix}{$hierarchy} orig
-                    SET depthlevel = d.depthlevel
-                FROM {$CFG->prefix}{$hierarchy} hierarchy
-                LEFT JOIN {$CFG->prefix}{$hierarchy}_depth d ON d.id=hierarchy.depthid
-                WHERE orig.id=hierarchy.id AND orig.depthlevel IS NULL";
-            $result = $result && execute_sql($updatesql);
+            $originals = get_records_sql("
+                SELECT h.id, d.depthlevel
+                FROM {$CFG->prefix}{$hierarchy} h
+                LEFT JOIN {$CFG->prefix}{$hierarchy}_depth d
+                ON d.id=h.depthid");
+            if ($originals) {
+                foreach ($originals as $original) {
+                    // should only update the depth level if it's empty
+                    $updatesql = "
+                        UPDATE {$CFG->prefix}{$hierarchy}
+                        SET depthlevel = {$original->depthlevel}
+                        WHERE id={$original->id} AND depthlevel IS NULL";
+                    $result = $result && execute_sql($updatesql);
+                }
+            }
 
             // rename depthid column to typeid
             $table = new XMLDBTable($hierarchy);
