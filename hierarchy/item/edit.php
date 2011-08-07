@@ -106,6 +106,9 @@ if ($itemform->is_cancelled()) {
 // Update data
 } else if ($itemnew = $itemform->get_data()) {
 
+    if (isset($itemnew->changetype)) {
+        redirect($CFG->wwwroot . "/hierarchy/type/change.php?prefix={$prefix}&amp;frameworkid={$item->frameworkid}&amp;page={$page}&typeid={$itemnew->typeid}&amp;itemid={$itemnew->id}");
+    }
     $itemnew->timemodified = time();
     $itemnew->usermodified = $USER->id;
 
