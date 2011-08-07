@@ -210,7 +210,7 @@ if ($itemform->is_cancelled()) {
     if ($itemnew->path != $item->path) {
         $itemnew->oldpath = $item->path;
     }
-    events_trigger("{$type}_updated", $itemnew);
+    events_trigger("{$prefix}_updated", $itemnew);
 
     redirect("{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$itemnew->id}");
     //never reached
