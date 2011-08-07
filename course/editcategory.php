@@ -10,6 +10,7 @@ require_once('../config.php');
 require_once('lib.php');
 require_once('editcategory_form.php');
 require_once($CFG->dirroot."/local/program/lib.php"); // required to update programs in categories
+require_once($CFG->dirroot."/local/js/lib/setup.php");
 
 require_login();
 
