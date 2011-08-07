@@ -426,7 +426,7 @@
                 }
 
                 $tablerow[] = '<a '.$catlinkcss.' href="category.php?id='.$subcategory->id.'">'.
-                     $coursecategory->display($subcategory, 'small') .format_string($subcategory->name).' ('.$item_count.')</a>';
+                     $category_icon->display($subcategory, 'small') .format_string($subcategory->name).' ('.$item_count.')</a>';
             }
         }
         // add the last row
