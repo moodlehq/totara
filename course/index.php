@@ -361,6 +361,8 @@ function build_category_edit(&$table, $category, $displaylist, $parentslist, $de
 
     static $str = NULL;
 
+    require_once ($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
+
     $highlightid       = optional_param('highlightid', 0, PARAM_INT);
 
     if (is_null($str)) {
@@ -384,6 +386,7 @@ function build_category_edit(&$table, $category, $displaylist, $parentslist, $de
 
         $tablerow = array();
 
+        $category_icon = new coursecategory_icon();
         $cat_name = '';
         for ($i=0; $i<$depth;$i++) {
             $cat_name .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -391,7 +394,7 @@ function build_category_edit(&$table, $category, $displaylist, $parentslist, $de
         $linkcss = $category->visible ? '' : ' class="dimmed" ';
         $textcss = $category->visible ? '' : ' class="dimmed_text" ';
         $cat_name .= '<a name="category'.$category->id.'"></a>';
-        $cat_name .= '<span class="category image">'.local_coursecategory_icon_tag($category, 'small').'</span>';
+        $cat_name .= '<span class="category image">'.$category_icon->display($category, 'small').'</span>';
         $cat_name .= '<span '.$textcss.'>'.format_string($category->name).'</span>';
 
         if ($highlightid == $category->id) {

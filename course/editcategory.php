@@ -11,6 +11,7 @@ require_once('lib.php');
 require_once('editcategory_form.php');
 require_once($CFG->dirroot."/local/program/lib.php"); // required to update programs in categories
 require_once($CFG->dirroot."/local/js/lib/setup.php");
+require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
 
 require_login();
 
@@ -88,7 +89,7 @@ if ($mform->is_cancelled()) {
     }
 
     // Update category icon
-    $category_icon = new category_icon();
+    $category_icon = new coursecategory_icon();
     $category_icon->process_form($data);
 
     redirect('index.php?highlightid='.$newcategory->id.'&amp;categoryedit=on#category'.$newcategory->id);
