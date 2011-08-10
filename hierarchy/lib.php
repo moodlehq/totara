@@ -1565,10 +1565,11 @@ class hierarchy {
      */
     function reorder_remaining_items($sortdiff, $after=null, $frameworkid=null) {
         global $CFG;
+
         // use the hierarchies framework id if available
         // otherwise it must be provided
-        if(empty($this->frameworkid)) {
-            if(isset($frameworkid)) {
+        if (empty($this->frameworkid)) {
+            if (isset($frameworkid)) {
                 $fwid = $frameworkid;
             } else {
                 // we need a framework id
@@ -1577,12 +1578,20 @@ class hierarchy {
         } else {
             $fwid = $this->frameworkid;
         }
-        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
-            SET sortorder = sortorder + $sortdiff
-            WHERE frameworkid = {$fwid}";
-        if($after) {
-            $sql .= "AND sortorder > $after";
+
+        $sql = "
+            UPDATE
+                {$CFG->prefix}{$this->shortprefix}
+            SET
+                sortorder = sortorder + {$sortdiff}
+            WHERE
+                frameworkid = {$fwid}
+        ";
+
+        if (!is_null($after)) {
+            $sql .= " AND sortorder > {$after}";
         }
+
         return execute_sql($sql, false);
     }
 
