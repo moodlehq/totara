@@ -225,22 +225,22 @@ class program_edit_form extends moodleform {
         $mform = $this->_form;
         $errors = array();
 
-        if (isset($data['availablefromselector'])) {
+        if (!empty($data['availablefromselector'])) {
             $availablefrom = $data['availablefromselector'];
-            if ( ! empty($availablefrom) && ! prog_date_to_time($availablefrom)) {
+            if (!empty($availablefrom) && !prog_date_to_time($availablefrom)) {
                 $errors['availablefromselector'] = get_string('error:invaliddate', 'local_program');
             }
         }
 
-        if (isset($data['availableuntilselector'])) {
+        if (!empty($data['availableuntilselector'])) {
             $availableuntil = $data['availableuntilselector'];
-            if ( ! empty($availableuntil) &&  ! prog_date_to_time($availableuntil)) {
+            if (!empty($availableuntil) &&  !prog_date_to_time($availableuntil)) {
                 $errors['availableuntilselector'] = get_string('error:invaliddate', 'local_program');
             }
         }
 
-        if (isset($availablefrom) && isset($availableuntil)) {
-            if ($availablefrom > $availableuntil) {
+        if (!empty($availablefrom) && !empty($availableuntil)) {
+            if (prog_date_to_time($availablefrom) > prog_date_to_time($availableuntil)) {
                 $errors['availableuntilselector'] = get_string('error:availibileuntilearlierthanfrom', 'local_program');
             }
         }
