@@ -3941,6 +3941,9 @@ function get_category_breadcrumbs($categoryid) {
     global $CFG;
 
     $category = get_record('course_categories', 'id', $categoryid);
+    if (strpos($category->path, '/') === false) {
+        return array();
+    }
     $bread = explode('/', $category->path);
     $bread_ids = substr(implode(',', $bread), 1);
     $sql = "SELECT id, name FROM {$CFG->prefix}course_categories WHERE id IN ({$bread_ids}) ORDER BY depth";
