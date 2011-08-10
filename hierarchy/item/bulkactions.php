@@ -109,11 +109,10 @@ if ($count_selected_items > 0 && $soffset >= $count_selected_items) {
     $soffset = $spage * HIERARCHY_BULK_SELECTED_PER_PAGE;
 }
 
-
 // display the selected items, including any children they have
-if ($selected_items = get_records_sql("SELECT o.id, o.fullname, count(oo.id) AS children
-    FROM {$CFG->prefix}org o LEFT JOIN {$CFG->prefix}org oo ON oo.path LIKE o.path||'/%'
-    WHERE " . sql_sequence('o.id', $all_selected_item_ids) . "GROUP BY o.id, o.fullname",
+if ($selected_items = get_records_sql("SELECT h.id, h.fullname, count(hh.id) AS children
+    FROM {$CFG->prefix}{$shortprefix} h LEFT JOIN {$CFG->prefix}{$shortprefix} hh ON hh.path LIKE h.path||'/%'
+    WHERE " . sql_sequence('h.id', $all_selected_item_ids) . "GROUP BY h.id, h.fullname",
     $soffset, HIERARCHY_BULK_SELECTED_PER_PAGE)) {
 
     $displayed_selected_items = array();
@@ -131,7 +130,6 @@ if ($selected_items = get_records_sql("SELECT o.id, o.fullname, count(oo.id) AS 
 } else {
     $displayed_selected_items = array();
 }
-
 
 
 $available_items = get_records_select($shortprefix,
