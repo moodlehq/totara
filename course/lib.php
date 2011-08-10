@@ -3804,8 +3804,8 @@ function get_category_item_count($categoryids, $countcourses = true) {
         // if required
         if (!$item->visible &&
             !$doanything &&
-            !has_capability($itemcap,
-                get_context_instance($itemcontext, $itemid))) {
+            !has_capability($itemcap, get_context_instance($itemcontext, $item->itemid))
+           ) {
             continue;
         }
 
