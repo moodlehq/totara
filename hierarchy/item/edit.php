@@ -210,7 +210,7 @@ if ($itemform->is_cancelled()) {
     add_to_log(SITEID, $prefix, $add_or_update.' item', "item/view.php?id={$itemnew->id}&amp;prefix={$prefix}", "{$itemnew->fullname} (ID {$itemnew->id})");
 
     // Raise an event to let other parts of the system know
-    if ($itemnew->path != $item->path) {
+    if (isset($item->path) && $itemnew->path != $item->path) {
         $itemnew->oldpath = $item->path;
     }
     events_trigger("{$prefix}_updated", $itemnew);
