@@ -41,7 +41,8 @@ if ($action == 'edit') {
 
     //Javascript include
     local_js(array(
-        TOTARA_JS_DATEPICKER
+        TOTARA_JS_DATEPICKER,
+        TOTARA_JS_ICON_PREVIEW
     ));
     require_js(array(
         "{$CFG->wwwroot}/local/program/program.edit.js",
