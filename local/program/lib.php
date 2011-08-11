@@ -1259,7 +1259,11 @@ function prog_eventhandler_program_assigned($eventdata) {
     $programid = $eventdata->programid;
     $userid = $eventdata->userid;
 
-    $program = new program($programid);
+    try {
+        $program = new program($programid);
+    } catch (ProgramException $e) {
+        return true;
+    }
 
     $messagesmanager = $program->get_messagesmanager();
     $messages = $messagesmanager->get_messages();
@@ -1286,7 +1290,11 @@ function prog_eventhandler_program_unassigned($eventdata) {
     $programid = $eventdata->programid;
     $userid = $eventdata->userid;
 
-    $program = new program($programid);
+    try {
+        $program = new program($programid);
+    } catch (ProgramException $e) {
+        return true;
+    }
 
     $messagesmanager = $program->get_messagesmanager();
     $messages = $messagesmanager->get_messages();
