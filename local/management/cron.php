@@ -74,33 +74,35 @@ function management_cron() {
     $top_manager = new manager(0);
     $managers[0] = $top_manager;
 
-    foreach ($pos_assignments as $assignment) {
-        if (!isset($managers[$assignment->userid])) {
-            $managers[$assignment->userid] = new manager($assignment->userid);
-        }
+    if (is_array($pos_assignments)) {
+        foreach ($pos_assignments as $assignment) {
+            if (!isset($managers[$assignment->userid])) {
+                $managers[$assignment->userid] = new manager($assignment->userid);
+            }
 
-        if (empty($assignment->reportstoid)) {
-            $assignment->reportstoid = 0;
-        }
-        else {
-            // Lookup the managers id
-            $assignment->reportstoid = get_field('role_assignments', 'userid', 'id', $assignment->reportstoid);
-        }
+            if (empty($assignment->reportstoid)) {
+                $assignment->reportstoid = 0;
+            }
+            else {
+                // Lookup the managers id
+                $assignment->reportstoid = get_field('role_assignments', 'userid', 'id', $assignment->reportstoid);
+            }
 
-        if (!isset($managers[$assignment->reportstoid])) {
-            $managers[$assignment->reportstoid] = new manager($assignment->reportstoid);
-        }
+            if (!isset($managers[$assignment->reportstoid])) {
+                $managers[$assignment->reportstoid] = new manager($assignment->reportstoid);
+            }
 
-        // Get the user ids of the chain of parents, starting from the manager
-        $ids = get_ids_in_chain($managers[$assignment->reportstoid]);
+            // Get the user ids of the chain of parents, starting from the manager
+            $ids = get_ids_in_chain($managers[$assignment->reportstoid]);
 
-        // See if the user is in the chain of managers!
-        if (in_array($managers[$assignment->userid]->id, $ids)) {
-            $error = "ERROR: making user_$assignment->reportstoid the manager of user_$assignment->userid would cause a circular reference! ";
-            echo $error;
-        }
-        else {
-            $managers[$assignment->reportstoid]->addChild($managers[$assignment->userid]);
+            // See if the user is in the chain of managers!
+            if (in_array($managers[$assignment->userid]->id, $ids)) {
+                $error = "ERROR: making user_$assignment->reportstoid the manager of user_$assignment->userid would cause a circular reference! ";
+                echo $error;
+            }
+            else {
+                $managers[$assignment->reportstoid]->addChild($managers[$assignment->userid]);
+            }
         }
     }
 
