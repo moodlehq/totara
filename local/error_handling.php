@@ -36,7 +36,7 @@ require_once("{$CFG->dirroot}/version.php");
  */
 function totara_setup_error_handlers() {
     set_error_handler('totara_error_handler');
-#    set_exception_handler('totara_exception_handler');
+    set_exception_handler('totara_exception_handler');
 }
 
 
