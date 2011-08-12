@@ -1232,22 +1232,22 @@ class dp_competency_component extends dp_base_component {
         }
         $compscale = get_records_menu('comp_scale_values','scaleid',$scaledetails->scaleid,'sortorder');
 
+        $url  = "{$CFG->wwwroot}/local/plan/components/competency/update-competency-setting.php";
+        $url .= "?competencyid={$item->competencyid}&amp;planid={$this->plan->id}";
+
+        $javascript = "
+            if (this.value > 0) {
+                var response = \$.get('{$url}&amp;prof=' + $(this).val());
+                $(this).children('[option[value=\'0\']').remove();
+            }
+        ";
+
         return choose_from_menu(
             $compscale,
             "compprof_{$this->component}[{$item->id}]",
             $item->profscalevalueid,
             ($item->profscalevalueid ? '' : get_string('notset','local_reportbuilder')),
-            "if (this.value > 0) { ".
-                "var response; ".
-                "response = \$.get(".
-                    "'{$CFG->wwwroot}/local/plan/components/competency/update-competency-setting.php".
-                    "?c={$item->competencyid}".
-                    "&amp;pl={$this->plan->id}".
-                    "&amp;u={$this->plan->userid}".
-                    "&amp;p=' + $(this).val()".
-                "); ".
-                "$(this).children('[option[value=\'0\']').remove(); ".
-            "}",
+            $javascript,
             ($item->profscalevalueid ? '' : 0),
             true
         );

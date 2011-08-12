@@ -1044,9 +1044,9 @@ function dp_create_template($templatename, $enddate, &$error) {
 /**
  * Find all plans a specified item is part of
  *
- * @param int $userid
- * @param string $component
- * @param int $componentid
+ * @param int $userid ID of the user updating the item
+ * @param string $component Name of the component (eg. course, competency, objective)
+ * @param int $componentid ID of the component item (eg. competencyid, objectiveid)
  *
  */
 function dp_plan_item_updated($userid, $component, $componentid) {

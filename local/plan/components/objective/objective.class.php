@@ -465,9 +465,12 @@ class dp_objective_component extends dp_base_component {
             foreach ($stored_records as $itemid => $record) {
                 $record = addslashes_recursive($record);
                 $status = $status & update_record('dp_plan_objective', $record);
-                $scale_value_record = get_record('dp_objective_scale_value', 'id', $record->scalevalueid);
-                if ($scale_value_record->achieved == 1) {
-                    dp_plan_item_updated($currentuser, 'objective', $id);
+
+                if (isset($record->scalevalueid)) {
+                    $scale_value_record = get_record('dp_objective_scale_value', 'id', $record->scalevalueid);
+                    if ($scale_value_record->achieved == 1) {
+                        dp_plan_item_updated($currentuser, 'objective', $id);
+                    }
                 }
             }
             if ($status) {
@@ -1156,6 +1159,8 @@ SQL;
      * @return string
      */
     function display_proficiency($ca) {
+        global $CFG;
+
         // Get the proficiency values for this plan
         static $proficiencyvalues;
         if (!isset($proficiencyvalues)) {
@@ -1164,22 +1169,40 @@ SQL;
 
         $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
         $cansetprof = $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
-        $out = '';
 
         $selected = $ca->scalevalueid;
 
-        if ( !$plancompleted && $cansetprof ){
+        if (!$plancompleted && $cansetprof) {
             // Show the menu
             $options = array();
-            foreach( $proficiencyvalues as $id => $val){
+            foreach ($proficiencyvalues as $id => $val) {
                 $options[$id] = $val->name;
             }
-            return choose_from_menu($options, "proficiencies[{$ca->id}]", $selected, null, '', null, true);
+
+            $url  = "{$CFG->wwwroot}/local/plan/components/objective/update-objective-setting.php";
+            $url .= "?objectiveid={$ca->id}&amp;planid={$this->plan->id}&amp;userid={$this->plan->userid}";
+
+            $javascript = "
+                if (this.value > 0) {
+                    var response = \$.get('{$url}&amp;prof=' + $(this).val());
+                    $(this).children('[option[value=\'0\']').remove();
+                }
+            ";
+
+            return choose_from_menu(
+                $options,
+                "proficiencies[{$ca->id}]",
+                $selected,
+                null,
+                $javascript,
+                null,
+                true
+            );
 
         } else {
             // They can't change the setting, so show it as-is
             $out = format_string($proficiencyvalues[$selected]->name);
-            if ( $proficiencyvalues[$selected]->achieved ){
+            if ($proficiencyvalues[$selected]->achieved) {
                 $out = '<b>'.$out.'</b>';
             }
             return $out;
