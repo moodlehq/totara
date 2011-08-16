@@ -334,10 +334,15 @@ class rb_source_user extends rb_base_source {
         $picuser->lastname = $row->userpic_lastname;
         $user_pic = print_user_picture($picuser, 1, null, null, true);
 
-        $rol_link = "<a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}\">Records</a>";
-        $plan_link = "<a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">Plans</a>";
-        $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">Profile</a>";
-        $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">Bookings</a>";
+        $recordstr = get_string('records', 'rb_source_user');
+        $planstr = get_string('plans', 'rb_source_user');
+        $profilestr = get_string('profile', 'rb_source_user');
+        $bookingstr = get_string('bookings', 'rb_source_user');
+
+        $rol_link = "<a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}\">{$recordstr}</a>";
+        $plan_link = "<a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">{$planstr}</a>";
+        $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$profilestr}</a>";
+        $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">{$bookingstr}</a>";
 
         $show_plan_link = dp_can_view_users_plans($userid);
 

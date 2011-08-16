@@ -18,6 +18,11 @@ $string['coursesstarted'] = 'Courses Started';
 $string['coursescompleted'] = 'Courses Completed';
 $string['competenciesachieved'] = 'Competencies Achieved';
 
+$string['records'] = 'Records';
+$string['plans'] = 'Plans';
+$string['profile'] = 'Profile';
+$string['bookings'] = 'Bookings';
+
 // column types for this source, as strings
 $string['type_statistics'] = 'Statistics';
 
