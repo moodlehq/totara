@@ -226,6 +226,7 @@ class dp_course_component extends dp_base_component {
             // Unassign item
             if ($this->unassign_item($deleteitem)) {
                 add_to_log(SITEID, 'plan', 'removed course', "component.php?id={$this->plan->id}&amp;c=course", "{$deleteitem->fullname} (ID:{$deleteitem->id})");
+                dp_plan_check_plan_complete(array($this->plan->id));
                 totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
 
             } else {
