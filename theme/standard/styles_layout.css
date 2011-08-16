@@ -5173,6 +5173,10 @@ table.hierarchy-index .depth10 {
     padding-left: 295px;
 }
 
+form.hierarchy-export-form {
+    clear: both;
+}
+
 /***
  *** Cohort
  ***/

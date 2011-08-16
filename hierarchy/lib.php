@@ -1676,7 +1676,7 @@ class hierarchy {
     function export_select() {
         global $CFG;
         require_once($CFG->dirroot.'/hierarchy/export_form.php');
-        $export = new hierarchy_export_form(qualified_me());
+        $export = new hierarchy_export_form(qualified_me(), null, 'post', '', array('class' => 'hierarchy-export-form'));
         $export->display();
     }
 
