@@ -71,7 +71,12 @@ function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $err
     $error->version = addslashes($TOTARA->version);
     $error->build = addslashes($TOTARA->build);
     $error->details = addslashes(serialize(array($errno, $errstr, $errfile, $errline)));
-    insert_record('errorlog', $error);
+
+    // Only if table exists (in case of error during upgrade)
+    $table = new XMLDBTable('errorlog');
+    if (table_exists($table)) {
+        insert_record('errorlog', $error);
+    }
 
     switch ($errno) {
         case E_NOTICE:
