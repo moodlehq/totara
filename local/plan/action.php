@@ -253,7 +253,7 @@ if (!empty($complete)) {
 /// Reactivate
 ///
 if (!empty($reactivate)) {
-    if ($plan->get_setting('completereactivate') >= DP_PERMISSION_ALLOW && $plan->get_setting('manualcomplete')) {
+    if ($plan->get_setting('completereactivate') >= DP_PERMISSION_ALLOW) {
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
         if (!$confirm && empty($ajax)) {
