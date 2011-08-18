@@ -364,7 +364,6 @@ class prog_exceptions_manager {
 
             $out .= '</div>';
 
-            //$table = new flexible_table('exceptions');
             $table = new stdClass();
             $table->id = 'exceptions';
 

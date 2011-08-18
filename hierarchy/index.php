@@ -182,6 +182,7 @@ foreach ($headerdata as $key => $head) {
 $table->define_headers($headers);
 $table->define_columns($columns);
 
+$table->define_baseurl("{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&frameworkid={$frameworkid}");
 $table->column_style('actions','width','80px');
 $table->set_attribute('cellspacing', '0');
 $table->set_attribute('class', 'generaltable generalbox hierarchy-index');

@@ -369,38 +369,15 @@ class flexible_table {
             }
         }
 
-        if(empty($this->baseurl)) {
-            $getcopy  = $_GET;
-            unset($getcopy[$this->request[TABLE_VAR_SHOW]]);
-            unset($getcopy[$this->request[TABLE_VAR_HIDE]]);
-            unset($getcopy[$this->request[TABLE_VAR_SORT]]);
-            unset($getcopy[$this->request[TABLE_VAR_IFIRST]]);
-            unset($getcopy[$this->request[TABLE_VAR_ILAST]]);
-            unset($getcopy[$this->request[TABLE_VAR_PAGE]]);
-
-            $strippedurl = strip_querystring(qualified_me());
-
-            if(!empty($getcopy)) {
-                $first = false;
-                $querystring = '';
-                foreach($getcopy as $var => $val) {
-                    if(!$first) {
-                        $first = true;
-                        $querystring .= '?'.$var.'='.$val;
-                    }
-                    else {
-                        $querystring .= '&amp;'.$var.'='.$val;
-                    }
-                }
-                $this->reseturl =  $strippedurl.$querystring;
-                $querystring .= '&amp;';
+        // Require that baseurl is set using flexible_table->define_baseurl() if
+        // it is required by an enabled option.
+        // Flexible table used to generate the baseurl automatically if it was not
+        // set however the code was vulnerable to XSS attacks so has been removed.
+        if (empty($this->baseurl)) {
+            // Check if using baseurl before throwing error
+            if ($this->use_initials || $this->use_pages || $this->is_collapsible || $this->is_sortable) {
+                print_error('codingerrorbaseurlrequired');
             }
-            else {
-                $this->reseturl =  $strippedurl;
-                $querystring = '?';
-            }
-
-            $this->baseurl = strip_querystring(qualified_me()) . $querystring;
         }
 
         // If it's "the first time" we 've been here, forget the previous initials filters
