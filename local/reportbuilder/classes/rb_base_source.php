@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -1610,6 +1610,168 @@ abstract class rb_base_source {
         return true;
     }
 
+    /**
+     * Converts a list to an array given a list and a separator
+     * duplicate values are ignored
+     *
+     * @param string $list List of items
+     * @param string $sep Symbol or string that separates list items
+     * @return array $result array of list items
+     */
+    function list_to_array($list, $sep) {
+        $result = array();
+        $base = explode($sep, $list);
+        if (!empty($base)) {
+            $result = array_combine($base, $base);
+        }
+        return $result;
+    }
+
+    /**
+     * Generic function for adding custom hierarchy fields to the reports
+     * Intentionally optimized into one function to reduce number of db queries
+     *
+     * @param string $cf_prefix - prefix for custom field table e.g. everything before '_info_field' or '_info_data'
+     * @param string $join - join table in joinlist used as a link to main query
+     * @param string $joinfield - joinfield in data table used to link with main table
+     * @param array $joinlist - array of joins passed by reference
+     * @param array $columnoptions - array of columnoptions, passed by reference
+     * @param array $filteroptions - array of filters, passed by reference
+     */
+    protected function add_custom_fields_for($cf_prefix, $join, $joinfield,
+        array &$joinlist, array &$columnoptions, array &$filteroptions){
+
+        global $CFG;
+
+        $seek = false;
+        foreach ($joinlist as $object) {
+            $seek = ($object->name == $join);
+            if ($seek) {
+                break;
+            }
+        }
+        if (!$seek) {
+            throw new ReportBuilderException("Missing dependency table in joinlist: {$join}!");
+        }
+
+        // build the table names for this sort of custom field data
+        $fieldtable = $cf_prefix.'_info_field';
+        $datatable = $cf_prefix.'_info_data';
+
+        // check if there are any visible custom fields of this type
+        $items = get_recordset($fieldtable,'hidden','0');
+        if (empty($items)) {
+            return false;
+        }
+
+        $selfunc = rb_filter_option::select_width_limiter();
+        foreach ($items as $record) {
+            $id   = $record['id'];
+            $joinname = "{$cf_prefix}_{$id}";
+            $value = "custom_field_{$id}";
+            $name = $record['fullname'];
+            $column_options = array('joins' => $joinname);
+            $datatype = 'text';
+            $filter_options = array();
+
+            if ($record['datatype'] == 'menu') {
+                $datatype = 'simpleselect';
+                $filter_options['selectchoices'] = $this->list_to_array($record['param1'],"\n");
+                $filter_options['selectoptions'] = array('datatype' => 'text');
+            }
+
+            if ($record['datatype'] == 'checkbox') {
+                $datatype = 'simpleselect';
+                $filter_options['selectchoices'] = array(0 => get_string('no'), 1 => get_string('yes'));
+                $filter_options['selectoptions'] = array('datatype' => 'text');
+                $column_options['displayfunc'  ] = 'yes_no';
+            }
+
+            $joinlist[] = new rb_join($joinname,
+                                      'LEFT',
+                                      $CFG->prefix.$datatable,
+                                      "{$joinname}.{$joinfield} = {$join}.id AND {$joinname}.fieldid = {$id}",
+                                      REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                                      $join
+                                      );
+            $columnoptions[] = new rb_column_option($cf_prefix,
+                                                     $value,
+                                                     $name,
+                                                     "{$joinname}.data",
+                                                     $column_options
+                                                     );
+            $filteroptions[] = new rb_filter_option( $cf_prefix,
+                                                     $value,
+                                                     $name,
+                                                     $datatype,
+                                                     $filter_options
+                                                     );
+
+        }
+
+
+        return true;
+
+    }
+
+    /**
+     *
+     * Add's custom organisation fields to the report
+     *
+     * @param array $joinlist
+     * @param array $columnoptions
+     * @param array $filteroptions
+     * @return boolean
+     */
+    protected function add_custom_organisation_fields(array &$joinlist, array &$columnoptions,
+        array &$filteroptions) {
+        return $this->add_custom_fields_for('org_type',
+                                            'organisation',
+                                            'organisationid',
+                                            $joinlist,
+                                            $columnoptions,
+                                            $filteroptions);
+    }
+
+    /**
+     *
+     * Add's custom position fields to the report
+     *
+     * @param array $joinlist
+     * @param array $columnoptions
+     * @param array $filteroptions
+     * @return boolean
+     */
+    protected function add_custom_position_fields(array &$joinlist, array &$columnoptions,
+        array &$filteroptions) {
+        return $this->add_custom_fields_for('pos_type',
+                                            'position',
+                                            'positionid',
+                                            $joinlist,
+                                            $columnoptions,
+                                            $filteroptions);
+
+    }
+
+    /**
+     *
+     * Add's custom competency fields to the report
+     *
+     * @param array $joinlist
+     * @param array $columnoptions
+     * @param array $filteroptions
+     * @return boolean
+     */
+    protected function add_custom_competency_fields(array &$joinlist, array &$columnoptions,
+        array &$filteroptions) {
+        return $this->add_custom_fields_for('comp_type',
+                                            'competency',
+                                            'competencyid',
+                                            $joinlist,
+                                            $columnoptions,
+                                            $filteroptions);
+
+    }
 
     /**
      * Adds the manager_role_assignment and manager tables to the $joinlist

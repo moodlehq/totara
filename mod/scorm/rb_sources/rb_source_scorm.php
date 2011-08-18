@@ -20,6 +20,15 @@ class rb_source_scorm extends rb_base_source {
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_scorm');
+
+        //Adding custom fields
+        $this->add_custom_position_fields($this->joinlist,
+                                          $this->columnoptions,
+                                          $this->filteroptions);
+        $this->add_custom_organisation_fields($this->joinlist,
+                                              $this->columnoptions,
+                                              $this->filteroptions);
+
         parent::__construct();
     }
 
