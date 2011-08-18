@@ -298,6 +298,30 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2011081900) {
+
+        // fail upgrade if any settings are > 100 chars (only possible with local customisations)
+        if (record_exists_select('report_builder_settings', sql_length('type') . ' > 100')) {
+            notify("Record in report settings table 'type' field is longer than 100 characters");
+            return false;
+        }
+
+        if (record_exists_select('report_builder_settings', sql_length('name') . ' > 100')) {
+            notify("Record in report settings table 'name' field is longer than 100 characters");
+            return false;
+        }
+
+        // shorten the fields to a maximum of 100 characters
+        $table = new XMLDBTable('report_builder_settings');
+        $field = new XMLDBField('type');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_precision($table, $field);
+
+        $field = new XMLDBField('name');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_precision($table, $field);
+    }
+
     return $result;
 
 
