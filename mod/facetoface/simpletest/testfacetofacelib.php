@@ -649,7 +649,7 @@ class facetofacelib_test extends prefix_changing_test_case {
             load_test_table($CFG->prefix . 'facetoface', $this->facetoface_data, $db);
             load_test_table($CFG->prefix . 'facetoface_sessions_dates', $this->facetoface_sessions_dates_data, $db);
             load_test_table($CFG->prefix . 'facetoface_signups_status', $this->facetoface_signups_status_data, $db);
-            load_test_table($CFG->prefix . 'event', $this->event_data, $db);
+            load_test_table($CFG->prefix . 'event', $this->event_data, $db, 2000);
             load_test_table($CFG->prefix . 'role', $this->role_data, $db);
             load_test_table($CFG->prefix . 'role_assignments', $this->role_assignments_data, $db);
             load_test_table($CFG->prefix . 'pos_assignment', $this->pos_assignment_data, $db);
