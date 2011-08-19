@@ -35,7 +35,7 @@ class rb_tasks_embedded extends rb_base_embedded {
         $this->url = '/local/totara_msg/tasks.php';
         $this->source = 'totaramessages';
         $this->shortname = 'tasks';
-        $this->fullname = get_string('tasks', 'rb_source_totaramessages');
+        $this->fullname = get_string('tasks', 'local_totara_msg');
         $this->columns = array(
             array(
                 'type' => 'message_values',
