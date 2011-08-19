@@ -148,6 +148,7 @@ if ($searchactive) {
 $filteredcount = count_records_sql($count.$from.$where);
 
 $table = new flexible_table($prefix.'-framework-index-'.$frameworkid);
+$table->define_baseurl("{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&frameworkid={$frameworkid}");
 
 $headerdata = array();
 

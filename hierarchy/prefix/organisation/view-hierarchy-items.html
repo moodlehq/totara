@@ -25,6 +25,7 @@ if ($can_edit) {
 }
 
 $table = new flexible_table($displaytitle);
+$table->define_baseurl("{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$displayprefix}&id={$item->id}");
 $table->define_columns($columns);
 $table->define_headers($headers);
 $table->set_attribute('id', 'list-'.$displaytitle);

@@ -46,6 +46,7 @@ $headings = array(get_string('shortname', 'local_dashboard'),
     );
 
 $table = new flexible_table(get_string('dashboards', 'local_dashboard'));
+$table->define_baseurl($CFG->wwwroot.'/local/dashboard/admin/index.php');
 $table->define_columns($columns);
 $table->define_headers($headings);
 $table->set_attribute('id', 'list-managedashboards');
