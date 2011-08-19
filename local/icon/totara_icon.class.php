@@ -132,6 +132,17 @@ abstract class totara_icon {
             $iconurl = $CFG->themewww.'/standard/'.$this->icondir.'/'.$size.'/default.png';
         }
 
+        // Add css class
+        if (is_array($attributes)) {
+            if (!empty($attributes['class'])) {
+                $attributes['class'] .= ' '.get_class($this);
+            } else {
+                $attributes['class'] = get_class($this);
+            }
+        } else {
+            $attributes = array('class' => get_class($this));
+        }
+
         $extra_attributes = '';
         if (is_array($attributes)) {
             foreach($attributes as $attr_key => $attr_value) {
