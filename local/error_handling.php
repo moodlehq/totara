@@ -57,25 +57,28 @@ function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $err
     // Restore old error handler to prevent loop
     restore_error_handler();
 
+    // Only log error in database if it would recorded at "DEVELOPER" level
+    if ($errno & DEBUG_DEVELOPER) {
+        // Record error
+        $error = new object();
+        $error->timeoccured = time();
+        $error->version = addslashes($TOTARA->version);
+        $error->build = addslashes($TOTARA->build);
+        $error->details = addslashes(serialize(array($errno, $errstr, $errfile, $errline)));
+
+        // Only if table exists (in case of error during upgrade)
+        $table = new XMLDBTable('errorlog');
+        if (table_exists($table)) {
+            insert_record('errorlog', $error);
+        }
+    }
+
     // Respond to error appropriately
     if (!(error_reporting() & $errno)) {
         // This error code is not included in error_reporting
         // Restore this error handler
         set_error_handler('totara_error_handler');
         return false;
-    }
-
-    // Record error
-    $error = new object();
-    $error->timeoccured = time();
-    $error->version = addslashes($TOTARA->version);
-    $error->build = addslashes($TOTARA->build);
-    $error->details = addslashes(serialize(array($errno, $errstr, $errfile, $errline)));
-
-    // Only if table exists (in case of error during upgrade)
-    $table = new XMLDBTable('errorlog');
-    if (table_exists($table)) {
-        insert_record('errorlog', $error);
     }
 
     switch ($errno) {
