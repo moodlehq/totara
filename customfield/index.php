@@ -120,9 +120,6 @@ if($prefix != 'course') {
 
 if($prefix == 'course') {
     $heading = get_string('coursecustomfields', 'customfields');
-    if($categoryid) {
-        $heading .= ' : ' . format_string($category->name);
-    }
     print_heading($heading, 'left', 1);
 } else {
     print_heading(format_string($type->fullname), 'left', 1);
