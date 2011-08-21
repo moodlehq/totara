@@ -480,10 +480,12 @@ class program {
      */
     public function set_timedue($userid, $timedue) {
 
-        if($completion = get_record('prog_completion', 'programid', $this->id, 'userid', $userid, 'coursesetid', 0)) {
-            $completion->timedue = $timedue;
-            return update_record('prog_completion', $completion);
-        } else {
+        if ($completion = get_record('prog_completion', 'programid', $this->id, 'userid', $userid, 'coursesetid', 0)) {
+            $todb = new object();
+            $todb->id = $completion->id; // addslashes to any text fields from the db
+            $todb->timedue = $timedue;
+            return update_record('prog_completion', $todb);
+		} else {
             return false;
         }
 
