@@ -1286,9 +1286,11 @@ class competency_course_set extends course_set {
 
         $courses = $this->get_competency_courses();
 
-        foreach($courses as $course) {
-            if($course->id == $courseid) {
-                return true;
+        if ($courses) {
+            foreach ($courses as $course) {
+                if($course->id == $courseid) {
+                    return true;
+                }
             }
         }
 
@@ -1309,11 +1311,11 @@ class competency_course_set extends course_set {
         $completiontype = $this->get_completion_type();
 
         // check that the course set contains at least one course
-        if( ! count($courses)) {
+        if( !$courses || !count($courses)) {
             return false;
         }
 
-        foreach($courses as $course) {
+        foreach ($courses as $course) {
 
             $set_completed = false;
 
@@ -1371,7 +1373,7 @@ class competency_course_set extends course_set {
 
         $courses = $this->get_competency_courses();
 
-        if(count($courses) > 0) {
+        if ($courses && count($courses) > 0) {
             $table = new stdClass();
             $table->head = array(get_string('coursename', 'local_program'), '');
             if($userid) {
@@ -1446,7 +1448,7 @@ class competency_course_set extends course_set {
         $out .= '<div class="courseset">';
         $out .= '<div class="courses">';
 
-        if(count($courses)) {
+        if ($courses && count($courses) > 0) {
             $coursestr = '';
             foreach($courses as $course) {
                 $coursestr .= $course->fullname.' '.$completiontypestr.' ';
