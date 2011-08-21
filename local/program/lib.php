@@ -220,7 +220,7 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
 
     // Construct sql query
     $count = 'SELECT COUNT(*) ';
-    $select = 'SELECT DISTINCT(p.*) AS id, p.fullname AS progname, pc.timedue AS duedate ';
+    $select = 'SELECT DISTINCT(p.id) AS notid, p.*, p.fullname AS progname, pc.timedue AS duedate ';
 
     $from = "FROM {$CFG->prefix}prog AS p
             INNER JOIN {$CFG->prefix}prog_completion AS pc ON p.id = pc.programid
