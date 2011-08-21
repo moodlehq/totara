@@ -1233,10 +1233,8 @@ class program {
      */
     public function get_cancel_button($url='') {
         global $CFG;
-        $button_str = get_string('cancelprogrammanagement','local_program');
-        $cancelblurb = '<span class="cancel_program_blurb">'.get_string('cancelprogramblurb', 'local_program').'</span>';
-        $link = empty($url) ? $CFG->wwwroot.'/course/categorylist.php?viewtype=program&categoryedit=on' : $url;
-        return '<a href="'.$link.'" id="cancelprogramedits">'.$button_str.'</a><br />'.$cancelblurb;
+        $link = empty($url) ? $CFG->wwwroot : $url;
+        return '<a href="'.$link.'" id="cancelprogramedits">'.get_string('cancelprogrammanagement', 'local_program').'</a><br />';
     }
 }
 
