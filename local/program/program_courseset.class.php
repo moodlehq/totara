@@ -1965,6 +1965,16 @@ class recurring_course_set extends course_set {
         // include it in the form to avoid any problems when the data is submitted
         $templatehtml .= '<input type="hidden" name="'.$prefix.'nextsetoperator" value="0" />';
 
+        // Add the delete button for this set
+        $templatehtml .= '<div class="setbuttons">';
+
+        if($updateform) {
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
+            $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
+        }
+        $templatehtml .= '%'.$prefix.'delete%'."\n";
+        $templatehtml .= '</div>';
+
         // Add the course set id
         if($updateform) {
             $mform->addElement('hidden', $prefix.'id', $this->id);
@@ -2108,13 +2118,6 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'update%'] = array('name'=>$prefix.'update', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'update%'."\n";
-
-        // Add the delete button for this set
-        if($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
-            $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
-        }
-        $templatehtml .= '%'.$prefix.'delete%'."\n";
 
         $templatehtml .= '</div>';
 
