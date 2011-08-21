@@ -18,6 +18,9 @@ $string['sessstart'] = 'Session Start Time';
 $string['sessfinish'] = 'Session Finish Time';
 $string['sessionx'] = 'Session $a';
 $string['starttime'] = 'Start Time';
+$string['cancellationdate'] = 'Cancellation date';
+$string['cancellationreason'] = 'Cancellation reason';
+
 // content
 $string['currentorg'] = 'The user\'s current organisation';
 $string['currentpos'] = 'The user\'s current position';
