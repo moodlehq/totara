@@ -418,3 +418,6 @@ $string['prognamelinkedicon'] = 'Program name and linked icon';
 $string['novalidprograms'] = 'No valid programs';
 $string['noprogramsfound'] = 'No programs were found with the words \'$a\'';
 $string['moveselectedprogramsto'] = 'Move selected programs to...';
+
+$string['programidnotfound'] = 'Program does not exist for ID : $a';
+
