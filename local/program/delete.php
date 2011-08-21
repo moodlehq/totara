@@ -23,11 +23,17 @@ if (!$delete) {
     admin_externalpage_print_header();
     $strdelete = get_string('checkprogramdelete', 'local_program');
     $strdelete .= "<br /><br />".format_string($program->fullname);
+    $sql = "SELECT COUNT(DISTINCT pc.userid)
+        FROM {$CFG->prefix}user AS u
+        JOIN {$CFG->prefix}prog_completion AS pc ON u.id=pc.userid
+        JOIN {$CFG->prefix}prog_user_assignment AS pua ON pua.programid = pc.programid AND pua.userid = pc.userid
+        WHERE pc.programid = {$program->id}
+        AND pc.coursesetid = 0
+        AND pc.status = ".STATUS_PROGRAM_INCOMPLETE;
+    $incomplete_program_learners = count_records_sql($sql);
 
-    $incomplete_program_learners = $program->get_program_learners(STATUS_PROGRAM_INCOMPLETE);
-
-    if (count($incomplete_program_learners) > 0) {
-        $strdelete .= "<br /><br />".get_string('xlearnerscurrentlyenrolled', 'local_program', count($incomplete_program_learners));
+    if ($incomplete_program_learners && $incomplete_program_learners > 0) {
+        $strdelete .= "<br /><br />".get_string('xlearnerscurrentlyenrolled', 'local_program', $incomplete_program_learners);
     }
 
     notice_yesno(
