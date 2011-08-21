@@ -106,6 +106,7 @@ class rb_source_course_completion extends rb_base_source {
         $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
         $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
         $this->add_course_table_to_joinlist($joinlist, 'base', 'course');
+        $this->add_course_custom_fields_to_joinlist($joinlist, 'base', 'course');
         // requires the course join
         $this->add_course_category_table_to_joinlist($joinlist,
             'course', 'category');
@@ -226,6 +227,7 @@ class rb_source_course_completion extends rb_base_source {
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_user_custom_fields_to_columns($columnoptions);
         $this->add_course_fields_to_columns($columnoptions);
+        $this->add_course_custom_fields_to_columns($columnoptions);
         $this->add_course_category_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
         $this->add_manager_fields_to_columns($columnoptions);
@@ -324,6 +326,7 @@ class rb_source_course_completion extends rb_base_source {
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
         $this->add_course_fields_to_filters($filteroptions);
+        $this->add_course_custom_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);
