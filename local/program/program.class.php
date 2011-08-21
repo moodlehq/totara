@@ -932,10 +932,16 @@ class program {
             }
         }
 
-        $out .= '<div class="programendnote">';
-        $out .= '<h2>'.get_string('programends', 'local_program').'</h2>';
-        $out .= '<div class="endnote">'.$this->endnote.'</div>';
-        $out .= '</div>';
+        // only show end note when a program is complete
+        $prog_owners_id = ($userid) ? $userid : $USER->id;
+        $prog_completion = get_record('prog_completion', 'programid', $this->id, 'userid', $prog_owners_id, 'coursesetid', 0);
+
+        if ($prog_completion && $prog_completion->status == STATUS_PROGRAM_COMPLETE) {
+            $out .= '<div class="programendnote">';
+            $out .= '<h2>'.get_string('programends', 'local_program').'</h2>';
+            $out .= '<div class="endnote">'.$this->endnote.'</div>';
+            $out .= '</div>';
+        }
 
         return $out;
     }
