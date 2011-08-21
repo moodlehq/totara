@@ -115,6 +115,7 @@ $string['programupdatefail'] = 'Program update failed';
 $string['programupdatecancelled'] = 'Program update cancelled';
 $string['programscomplete'] = 'Programs complete';
 $string['programsinthiscategory'] = 'Programs in this category ({$a})';
+$string['programsmovedout'] = 'Programs moved out from $a';
 $string['progress'] = 'Progress';
 $string['rolprogramsourcename'] = 'Record of Learning: Programs';
 $string['reasonforextension'] = 'Reason for extension';

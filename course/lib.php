@@ -3353,6 +3353,7 @@ function category_delete_move($category, $newparentid, $showfeedback=true) {
             notify("Error moving programs");
             return false;
         }
+        notify(get_string('programsmovedout', 'local_program', format_string($category->name)), 'notifysuccess');
     }
 
     // now delete anything that may depend on course category context
