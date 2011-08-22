@@ -49,7 +49,7 @@ class rb_source_user extends rb_base_source {
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
         $this->contentoptions = $this->define_contentoptions();
-        $this->paramoptions = array();
+        $this->paramoptions = $this->define_paramoptions();
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = array();
@@ -354,6 +354,16 @@ class rb_source_user extends rb_base_source {
         return $result ? $result : 0;
     }
 
+    function define_paramoptions() {
+        $paramoptions = array(
+            new rb_param_option(
+                'deleted',
+                'base.deleted'
+            ),
+        );
+
+        return $paramoptions;
+    }
 }
 
 // end of rb_source_user class
