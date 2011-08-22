@@ -1364,6 +1364,7 @@ $string['restoreusersprecheckerror'] = 'Some problems were detected when checkin
 $string['restricted'] = 'Restricted';
 $string['restrictmodules'] = 'Restrict activity modules?';
 $string['returningtosite'] = 'Returning to this web site?';
+$string['returntocourse'] = 'Return to course';
 $string['revert'] = 'Revert';
 $string['role'] = 'Role';
 $string['rolemappings'] = 'Role mappings';

@@ -5929,3 +5929,8 @@ ul.course-subcat-listing li.more {
 div.highlight {
     margin: -3px -10px;
 }
+
+/* Generic center button class */
+div.center-buttons {
+    text-align: center;
+}
