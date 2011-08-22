@@ -876,7 +876,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 $value = $param->value;
                 $type = $param->type;
                 // don't include if param not set to anything
-                if(!isset($value) || $value=='') {
+                if (!isset($value) || strlen(trim($value)) == 0) {
                     continue;
                 }
 
