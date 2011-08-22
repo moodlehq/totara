@@ -134,6 +134,20 @@ if ($signedup and $signedup != $session->id) {
 print_box_start();
 print_heading($heading, 'center');
 
+$timenow = time();
+
+if ($session->datetimeknown && facetoface_has_session_started($session, $timenow)) {
+    $inprogress_str = get_string('cannotsignupsessioninprogress', 'facetoface');
+    $over_str = get_string('cannotsignupsessionover', 'facetoface');
+
+    $errorstring = facetoface_is_session_in_progress($session, $timenow) ? $inprogress_str : $over_str;
+
+    echo '<br />' . $errorstring;
+    print_box_end();
+    print_footer($course);
+    exit;
+}
+
 if (!$signedup && !facetoface_session_has_capacity($session, $context) && (!$session->allowoverbook)) {
     print_error('sessionisfull', 'facetoface', $returnurl);
     print_box_end();
@@ -144,7 +158,7 @@ if (!$signedup && !facetoface_session_has_capacity($session, $context) && (!$ses
 facetoface_print_session($session, $viewattendees);
 
 if ($signedup) {
-    if(!($session->datetimeknown && facetoface_has_session_started($session, time()))) {
+    if(!($session->datetimeknown && facetoface_has_session_started($session, $timenow))) {
         // Cancellation link
         echo '<a href="'.$CFG->wwwroot.'/mod/facetoface/cancelsignup.php?s='.$session->id.'&amp;backtoallsessions='.$backtoallsessions.'" title="'.get_string('cancelbooking','facetoface').'">'.get_string('cancelbooking', 'facetoface').'</a>';
         echo ' &ndash; ';
