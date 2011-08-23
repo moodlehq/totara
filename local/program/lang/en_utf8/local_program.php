@@ -82,6 +82,7 @@ $string['noprogramsyet'] = 'No programs in this category';
 $string['noprogramcontent'] = 'Program does not contain any content';
 $string['noprogramassignments'] = 'Program does not contain any assignments';
 $string['noprogrammessages'] = 'Program does not contain any messages';
+$string['noprograms'] = 'No programs';
 $string['norequiredlearning'] = 'No required learning';
 $string['notavailable'] = 'Not available';
 $string['orviewprograms'] = 'or view programs in this category ({$a})';

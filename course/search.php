@@ -170,6 +170,7 @@ $strdeselectall = get_string("deselectall");
 $stredit = get_string("edit");
 $strfrontpage = get_string('frontpage', 'admin');
 $strnocourses = get_string('nocourses');
+$strnoprograms = get_string('noprograms', 'local_program');
 
 if ($category > 0) {
     $categoryname = $displaylist[$category];
