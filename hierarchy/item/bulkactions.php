@@ -319,13 +319,17 @@ if ($mform->is_cancelled()) {
 
     // delete button - confirm step
     if (isset($formdata->deletebutton)) {
-        admin_externalpage_print_header('', $navlinks);
         $unique_ids = $hierarchy->get_items_excluding_children($all_selected_item_ids);
 
-        $strdelete = $hierarchy->get_delete_message($unique_ids);
-        notice_yesno($strdelete,
-                 "{$formurl}&amp;confirmdelete=1&amp;sesskey={$USER->sesskey}",
-                 $formurl);
+        if ((count($unique_ids) > 0)) {
+            admin_externalpage_print_header('', $navlinks);
+            $strdelete = $hierarchy->get_delete_message($unique_ids);
+            notice_yesno($strdelete,
+                "{$formurl}&amp;confirmdelete=1&amp;sesskey={$USER->sesskey}",
+                $formurl);
+        } else {
+            totara_set_notification(get_string('error:noitemsselected', 'hierarchy'), $formurl);
+        }
 
         print_footer();
         exit;
@@ -334,6 +338,11 @@ if ($mform->is_cancelled()) {
     // move button - confirm step
     if (isset($formdata->movebutton) && isset($formdata->newparent)) {
         $unique_ids = $hierarchy->get_items_excluding_children($all_selected_item_ids);
+
+        if (count($unique_ids) <= 0) {
+            totara_set_notification(get_string('error:noitemsselected', 'hierarchy'), $formurl);
+        }
+
         $invalidmove = false;
 
         if ($formdata->newparent != 0) {
