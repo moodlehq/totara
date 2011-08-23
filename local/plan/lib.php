@@ -1099,6 +1099,8 @@ function plan_comment_permissions($details) {
         case 'plan-objective-item':
             $planid = get_field('dp_plan_objective', 'planid', 'id', $details->itemid);
             break;
+        case 'plan-program-item':
+            $planid = get_field('dp_plan_program_assign', 'planid', 'id', $details->itemid);
         default:
             break;
 
@@ -1223,6 +1225,32 @@ function plan_comment_add($comment) {
             $contexturl = $CFG->wwwroot.'/local/plan/components/objective/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
             $icon = 'objective-newcomment';
+            break;
+        case 'plan-program-item':
+            $sql = "SELECT pa.id, pa.planid, p.fullname
+                FROM {$CFG->prefix}dp_plan_program_assign pa
+                INNER JOIN {$CFG->prefix}prog p ON pa.programid = p.id
+                WHERE pa.id = {$comment->itemid}";
+            if (!$record = get_record_sql($sql)) {
+                print_error('comment_error:itemnotfound', 'local_plan');
+            }
+            $plan = get_record('dp_plan', 'id', $record->planid);
+
+            $msgobj = new stdClass;
+            $msgobj->plan = $plan->name;
+            $msgobj->planowner = fullname(get_record('user', 'id', $plan->userid));
+            $msgobj->component = get_string('program', 'local_plan');
+            $msgobj->componentname = $record->fullname;
+            $msgobj->comment = format_text($comment->content);
+            $msgobj->commentby = fullname($commentuser);
+            $msgobj->commentdate = userdate($comment->timecreated);
+            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj);
+            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj);
+
+            $contexturl = $CFG->wwwroot.'/local/plan/components/program/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
+            $contexturlname = $record->fullname;
+            $icon = 'program-newcomment';
+
             break;
         default:
             print_error('commenterror:unsupportedcomment', 'local_plan');
