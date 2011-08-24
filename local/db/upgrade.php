@@ -2620,5 +2620,27 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && execute_sql("update {$CFG->prefix}comp_evidence_items set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
     }
 
+    if ($result && $oldversion < 2011082400) {
+        // Delete existing columns from table "errorlog"
+        $result = $result && delete_records('errorlog');
+
+        // Add "hash" column to table "errorlog"
+        $table = new XMLDBTable('errorlog');
+        $field = new XMLDBField('hash');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '32', null, XMLDB_NOTNULL);
+
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+        // Add index to "hash" column
+        $index = new XMLDBIndex('hash');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('hash'));
+
+        if (!index_exists($table, $index)) {
+            $result = $result && add_index($table, $index);
+        }
+    }
+
     return $result;
 }

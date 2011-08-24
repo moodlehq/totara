@@ -59,17 +59,39 @@ function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $err
 
     // Only log error in database if it would recorded at "DEVELOPER" level
     if ($errno & DEBUG_DEVELOPER) {
-        // Record error
-        $error = new object();
-        $error->timeoccured = time();
-        $error->version = addslashes($TOTARA->version);
-        $error->build = addslashes($TOTARA->build);
-        $error->details = addslashes(serialize(array($errno, $errstr, $errfile, $errline)));
 
-        // Only if table exists (in case of error during upgrade)
-        $table = new XMLDBTable('errorlog');
-        if (table_exists($table)) {
-            insert_record('errorlog', $error);
+        // Cache hashes of previous errors to prevent duplicates in table
+        static $previous_errors = null;
+        if (is_null($previous_errors)) {
+            // Load hashes from db if table exists (in case of error during upgrade)
+            $table = new XMLDBTable('errorlog');
+            if (table_exists($table)) {
+                $previous_errors = get_fieldset_select('errorlog', 'hash', '');
+            }
+
+            if (!$previous_errors) {
+                $previous_errors = array();
+            }
+        }
+
+        $description = serialize(array($errno, $errstr, $errfile, $errline));
+
+        // Check if hash does not already exists in database
+        if (!in_array(md5($description), $previous_errors)) {
+
+            // Record error
+            $error = new object();
+            $error->timeoccured = time();
+            $error->version = addslashes($TOTARA->version);
+            $error->build = addslashes($TOTARA->build);
+            $error->details = addslashes($description);
+            $error->hash = md5($description);
+
+            // Only if table exists (in case of error during upgrade)
+            $table = new XMLDBTable('errorlog');
+            if (table_exists($table)) {
+                insert_record('errorlog', $error);
+            }
         }
     }
 
