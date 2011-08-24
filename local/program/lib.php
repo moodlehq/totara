@@ -578,9 +578,7 @@ function prog_print_programs($category) {
         foreach ($programs as $program) {
             if ($program->visible == 1
                 || has_capability('local/program:viewhiddenprograms',$program->context)) {
-                echo '<table class="programlist">';
                 prog_print_program($program);
-                echo "</table>\n";
             }
         }
     } else {
