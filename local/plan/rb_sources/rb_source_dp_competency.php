@@ -390,7 +390,7 @@ from
                     evidence_scale_value.name
                 END',
                 array(
-                    'joins' => array('dp_competency', 'scale_value', 'evidence_scale_value'),
+                    'joins' => array('dp_competency', 'scale_value', 'evidence_scale_value', 'competency'),
                     'displayfunc' => 'proficiency_and_approval_menu',
                     'defaultheading' => get_string('competencyproficiency', 'rb_source_dp_competency'),
                     'extrafields' => array(

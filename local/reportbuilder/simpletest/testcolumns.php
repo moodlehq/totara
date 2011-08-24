@@ -269,8 +269,8 @@ class columns_test extends prefix_changing_test_case {
 
     // partial f2f table
     var $f2f_signup_status_data = array(
-        array('id', 'signupid', 'statuscode', 'superceded', 'grade'),
-        array(1, 1, 70, 0, 100),
+        array('id', 'signupid', 'statuscode', 'superceded', 'grade', 'note', 'timecreated'),
+        array(1, 1, 70, 0, 100, 'test note', 1205445539),
     );
 
     // partial f2f table
@@ -412,6 +412,35 @@ class columns_test extends prefix_changing_test_case {
         array(1, 1, 1),
     );
 
+    var $pos_type_info_data_data = array(
+        array('id', 'fieldid', 'positionid', 'data'),
+        array(1, 1, 1, 'test'),
+    );
+
+    var $org_type_info_data_data = array(
+        array('id', 'fieldid', 'organisationid', 'data'),
+        array(1, 1, 1, 'test'),
+    );
+
+    var $pos_type_info_field_data = array(
+        array('id', 'fullname', 'shortname', 'datatype', 'description',
+            'sortorder', 'categoryid', 'hidden', 'locked', 'required',
+            'forceunique', 'defaultdata', 'param1', 'param2', 'param3',
+            'param4', 'param5'),
+        array(1, 'Field Name', 'Field', 'text', 'Description', 1, 1, 0, 0,
+            0, 0, 'default', 'text', 'text', 'text', 'text', 'text'),
+    );
+
+    var $org_type_info_field_data = array(
+        array('id', 'fullname', 'shortname', 'datatype', 'description',
+            'sortorder', 'categoryid', 'hidden', 'locked', 'required',
+            'forceunique', 'defaultdata', 'param1', 'param2', 'param3',
+            'param4', 'param5'),
+        array(1, 'Field Name', 'Field', 'text', 'Description', 1, 1, 0, 0,
+            0, 0, 'default', 'text', 'text', 'text', 'text', 'text'),
+    );
+
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -488,6 +517,10 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'prog', $this->prog_data, $db);
         load_test_table($CFG->prefix . 'prog_completion', $this->prog_completion_data, $db);
         load_test_table($CFG->prefix . 'prog_user_assignment', $this->prog_user_assignment_data, $db);
+        load_test_table($CFG->prefix . 'pos_type_info_field', $this->pos_type_info_field_data, $db);
+        load_test_table($CFG->prefix . 'org_type_info_field', $this->org_type_info_field_data, $db);
+        load_test_table($CFG->prefix . 'pos_type_info_data', $this->pos_type_info_data_data, $db);
+        load_test_table($CFG->prefix . 'org_type_info_data', $this->org_type_info_data_data, $db);
 
         // get rid of dummy records
         delete_records('report_builder_group');
@@ -571,6 +604,10 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'prog', $db);
         remove_test_table($CFG->prefix . 'prog_completion', $db);
         remove_test_table($CFG->prefix . 'prog_user_assignment', $db);
+        remove_test_table($CFG->prefix . 'pos_type_info_field', $db);
+        remove_test_table($CFG->prefix . 'org_type_info_field', $db);
+        remove_test_table($CFG->prefix . 'pos_type_info_data', $db);
+        remove_test_table($CFG->prefix . 'org_type_info_data', $db);
         parent::tearDown();
     }
 
