@@ -34,17 +34,17 @@ class competencylib_test extends prefix_changing_test_case {
 
     var $competency_data = array(
         array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'parentid',
-            'sortorder', 'visible', 'aggregationmethod', 'proficencyexpected', 'evidencecount', 'timecreated',
+            'sortthread', 'visible', 'aggregationmethod', 'proficencyexpected', 'evidencecount', 'timecreated',
             'timemodified', 'usermodified', 'depthlevel', 'typeid'),
-        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 0, 1, 1, 1, 1, 0,
+        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 0, '01', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 1, 1),
-        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 1, 2, 1, 1, 1, 0,
+        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 1, '01.01', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 2, 2),
-        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 0, 1, 1, 1, 1, 0,
+        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 0, '01', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 3, 3),
-        array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 1, 3, 1, 1, 1, 0,
+        array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 1, '01.02', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 2, 2),
-        array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 0, 4, 1, 1, 1, 0,
+        array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 0, '02', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 1, 1),
     );
 
@@ -135,7 +135,7 @@ class competencylib_test extends prefix_changing_test_case {
         $this->c1->frameworkid = '1';
         $this->c1->path = '/1';
         $this->c1->parentid = '0';
-        $this->c1->sortorder = '1';
+        $this->c1->sortthread = '01';
         $this->c1->visible = '1';
         $this->c1->aggregationmethod = '1';
         $this->c1->evidencecount = '0';
@@ -155,7 +155,7 @@ class competencylib_test extends prefix_changing_test_case {
         $this->c2->frameworkid = '1';
         $this->c2->path = '/1/2';
         $this->c2->parentid = '1';
-        $this->c2->sortorder = '2';
+        $this->c2->sortthread= '01.01';
         $this->c2->visible = '1';
         $this->c2->aggregationmethod = '1';
         $this->c2->evidencecount = '0';

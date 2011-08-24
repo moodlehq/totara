@@ -64,7 +64,6 @@ if ($id == 0) {
     $item->id = 0;
     $item->frameworkid = $frameworkid;
     $item->visible = 1;
-    $item->sortorder = 1;
     $item->typeid = 0;
 
 } else {
@@ -119,104 +118,38 @@ if ($itemform->is_cancelled()) {
         $itemnew->evidencecount = 0;
     }
 
-    // Start db operations
-    begin_sql();
 
     // Save
     // New item
     if ($itemnew->id == 0) {
 
-        // Load parent item if set
-        if ($itemnew->parentid) {
-            if (!$parent = get_record($shortprefix, 'id', $itemnew->parentid)) {
-                rollback_sql();
-                error('Parent '.$prefix.' ID was incorrect');
-            }
-            $parent_depth = $parent->depthlevel;
-            // put new children directly below the parent
-            $parent_sort = $parent->sortorder;
+        if ($newitem = $hierarchy->add_hierarchy_item($itemnew, $itemnew->parentid, $itemnew->frameworkid, false)) {
+
+            add_to_log(SITEID, $prefix, 'added item', "item/view.php?id={$newitem->id}&amp;prefix={$prefix}", "{$newitem->fullname} (ID {$newitem->id})");
+            totara_set_notification(get_string('added'.$prefix, $prefix, $newitem->fullname), "{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$newitem->id}", array('style' => 'notifysuccess'));
 
         } else {
-            $parent_depth = 0;
-            // put new top level elements at the end of the list
-            $parent_sort = get_field($shortprefix, 'MAX(sortorder)', 'frameworkid', $itemnew->frameworkid);
-            // handle zero items in framework
-            if (!$parent_sort) {
-                $parent_sort = 0;
-            }
+
+            totara_set_notification(get_string('error:add'.$prefix, $prefix, $itemnew->fullname), "{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}");
+
         }
-
-        $itemnew->depthlevel = $parent_depth + 1;
-        $itemnew->sortorder = $parent_sort + 1;
-
-        // update the sort order of all subsequent items
-        // adds 1 to all items with a later sort order to make space for the new item
-        if (!$hierarchy->reorder_remaining_items(1, $parent_sort, $itemnew->frameworkid)) {
-            rollback_sql();
-            error('Could not re-order other items in hierarchy');
-        }
-
-        // Create path for finding ancestors
-        $itemnew->path = ($itemnew->parentid ? $parent->path : '') . '/' . ($itemnew->id != 0 ? $itemnew->id : '');
-
-        unset($itemnew->id);
-
-        $itemnew->timecreated = time();
-
-        if (!$itemnew->id = insert_record($shortprefix, $itemnew)) {
-            rollback_sql();
-            error('Error creating '.$prefix.' record');
-        }
-
-        // Can't set the full path till we know the id!
-        if (!set_field($shortprefix, 'path', $itemnew->path.$itemnew->id, 'id', $itemnew->id)) {
-            rollback_sql();
-            error('Error setting the item\'s path');
-        }
-        $add_or_update = 'added';
-
     // Existing item
     } else {
-        // if parent has changed, save item with old parent, then move afterwards
-        if ($item->parentid != $itemnew->parentid) {
-            $newparentid = $itemnew->parentid;
-            $oldparentid = $item->parentid;
-            $itemnew->parentid = $oldparentid;
-        }
-        if (update_record($shortprefix, $itemnew)) {
-            customfield_save_data($itemnew, $prefix, $shortprefix.'_type');
+        begin_sql();
 
-            if (isset($newparentid) && $updateditem = get_record($shortprefix, 'id', $itemnew->id)) {
-                $updateditem->parentid = $oldparentid;
-                if (!$hierarchy->move_hierarchy_item($updateditem, $newparentid, false)) {
-                    rollback_sql();
-                    error('Error moving item to new position in hierarchy');
-                }
-            }
-            $add_or_update = 'updated';
-        } else {
+        $updateditem = $hierarchy->update_hierarchy_item($itemnew->id, $itemnew, false, false);
+        customfield_save_data($itemnew, $prefix, $shortprefix.'_type');
+
+        if (!$updateditem) {
             rollback_sql();
-            error('Error updating '.$prefix.' record');
+            totara_set_notification(get_string('error:update'.$prefix, $prefix, $itemnew->fullname), "{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$itemnew->id}");
         }
+
+        commit_sql();
+
+        add_to_log(SITEID, $prefix, 'update item', "item/view.php?id={$updateditem->id}&amp;prefix={$prefix}", "{$updateditem->fullname} (ID {$updateditem->id})");
+        totara_set_notification(get_string('updated'.$prefix, $prefix, $updateditem->fullname), "{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$updateditem->id}", array('style' => 'notifysuccess'));
     }
-
-    // Commit db operations
-    commit_sql();
-
-    // Reload from db
-    $itemnew = get_record($shortprefix, 'id', $itemnew->id);
-
-    // Log
-    add_to_log(SITEID, $prefix, $add_or_update.' item', "item/view.php?id={$itemnew->id}&amp;prefix={$prefix}", "{$itemnew->fullname} (ID {$itemnew->id})");
-
-    // Raise an event to let other parts of the system know
-    if (isset($item->path) && $itemnew->path != $item->path) {
-        $itemnew->oldpath = $item->path;
-    }
-    events_trigger("{$prefix}_updated", $itemnew);
-
-    redirect("{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$itemnew->id}");
-    //never reached
 }
 
 $navlinks = array();    // Breadcrumbs

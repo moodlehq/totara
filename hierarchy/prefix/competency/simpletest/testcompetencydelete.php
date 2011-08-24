@@ -23,7 +23,7 @@
  */
 
 /**
- * Unit tests for delete_framework_item()
+ * Unit tests for delete_hierarchy_item()
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -45,27 +45,27 @@ class competencydelete_test extends prefix_changing_test_case {
 
     var $competency_data = array(
         array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'typeid', 'parentid',
-            'sortorder', 'visible', 'aggregationmethod', 'proficencyexpected', 'evidencecount', 'timecreated',
+            'sortthread', 'visible', 'aggregationmethod', 'proficencyexpected', 'evidencecount', 'timecreated',
             'timemodified', 'usermodified'),
-        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 1, 0, 0, 1, 1, 1, 1, 0,
+        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 1, 0, 0, '01', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
-        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 2, 0, 1, 2, 1, 1, 1, 0,
+        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 2, 0, 1, '01.01', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
-        array(3, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/2/3', 3, 0, 2, 3, 1, 1, 1, 0,
+        array(3, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/2/3', 3, 0, 2, '01.01.01', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
-        array(4, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/1/2/4', 3, 0, 2, 4, 1, 1, 1, 0,
+        array(4, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/1/2/4', 3, 0, 2, '01.01.02', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
-        array(5, 'Competency 5', 'Comp 5', 'Competency Description 5', 'C5', 1, '/5', 1, 0, 0, 5, 1, 1, 1, 0,
+        array(5, 'Competency 5', 'Comp 5', 'Competency Description 5', 'C5', 1, '/5', 1, 0, 0, '02', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
-        array(6, 'Competency 6', 'Comp 6', 'Competency Description 6', 'C6', 1, '/5/6', 2, 0, 5, 6, 1, 1, 1, 0,
+        array(6, 'Competency 6', 'Comp 6', 'Competency Description 6', 'C6', 1, '/5/6', 2, 0, 5, '02.01', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
-        array(7, 'Competency 7', 'Comp 7', 'Competency Description 7', 'C7', 1, '/5/6/7', 3, 0, 6, 7, 1, 1, 1, 0,
+        array(7, 'Competency 7', 'Comp 7', 'Competency Description 7', 'C7', 1, '/5/6/7', 3, 0, 6, '02.01.01', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
-        array(8, 'Competency 8', 'Comp 8', 'Competency Description 8', 'C8', 1, '/5/6/8', 3, 0, 6, 8, 1, 1, 1, 0,
+        array(8, 'Competency 8', 'Comp 8', 'Competency Description 8', 'C8', 1, '/5/6/8', 3, 0, 6, '02.01.02', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
-        array(9, 'Competency 9', 'Comp 9', 'Competency Description 9', 'C9', 1, '/5/6/8/9', 4, 0, 8, 9, 1, 1, 1, 0,
+        array(9, 'Competency 9', 'Comp 9', 'Competency Description 9', 'C9', 1, '/5/6/8/9', 4, 0, 8, '02.01.02.01', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
-        array(10, 'Competency 10', 'Comp 10', 'Competency Description 10', 'C10', 1, '/10', 1, 0, 0, 10, 1, 1, 1, 0,
+        array(10, 'Competency 10', 'Comp 10', 'Competency Description 10', 'C10', 1, '/10', 1, 0, 0, '03', 1, 1, 1, 0,
             1265963591, 1265963591, 2),
     );
 
@@ -151,18 +151,18 @@ class competencydelete_test extends prefix_changing_test_case {
         $hierarchy = new competency();
 
         // removing 1 item from template 1 should leave 2 left
-        $this->assertTrue($hierarchy->delete_framework_item(1));
+        $this->assertTrue($hierarchy->delete_hierarchy_item(1, false));
         $count = get_field('comp_template', 'competencycount', 'id', 1);
         $this->assertEqual($count, 2);
 
         // removing an item from a different template should have no effect
         // on a template's count
-        $this->assertTrue($hierarchy->delete_framework_item(6));
+        $this->assertTrue($hierarchy->delete_hierarchy_item(6, false));
         $count = get_field('comp_template', 'competencycount', 'id', 2);
         $this->assertEqual($count, 1);
 
         // removing 1 item from template 2 should leave 0 left
-        $this->assertTrue($hierarchy->delete_framework_item(10));
+        $this->assertTrue($hierarchy->delete_hierarchy_item(10, false));
         $count = get_field('comp_template', 'competencycount', 'id', 2);
         $this->assertEqual($count, 0);
 
@@ -171,43 +171,29 @@ class competencydelete_test extends prefix_changing_test_case {
     function test_ordering_after_delete() {
         $hierarchy = new competency();
 
-        $before = get_records_menu('comp', '', '', 'sortorder', 'id,sortorder');
-        $this->assertTrue($hierarchy->delete_framework_item(1));
-        $after = get_records_menu('comp', '', '', 'sortorder', 'id,sortorder');
+        $before = get_records_menu('comp', '', '', 'sortthread', 'id,sortthread');
+        $this->assertTrue($hierarchy->delete_hierarchy_item(1, false));
+        $after = get_records_menu('comp', '', '', 'sortthread', 'id,sortthread');
 
         // items 1-4 should have been deleted (all children of item 1)
         unset($before[1]);
         unset($before[2]);
         unset($before[3]);
         unset($before[4]);
-        // items 5-10 should now be sorted as 1-6
-        $before[5] = 1;
-        $before[6] = 2;
-        $before[7] = 3;
-        $before[8] = 4;
-        $before[9] = 5;
-        $before[10] = 6;
         $this->assertEqual($before, $after);
     }
 
     function test_ordering_after_delete2() {
         $hierarchy = new competency();
 
-        $before = get_records_menu('comp', '', '', 'sortorder', 'id,sortorder');
-        $this->assertTrue($hierarchy->delete_framework_item(2));
-        $after = get_records_menu('comp', '', '', 'sortorder', 'id,sortorder');
+        $before = get_records_menu('comp', '', '', 'sortthread', 'id,sortthread');
+        $this->assertTrue($hierarchy->delete_hierarchy_item(2, false));
+        $after = get_records_menu('comp', '', '', 'sortthread', 'id,sortthread');
 
         // items 2-4 should have been deleted (all children of item 2)
         unset($before[2]);
         unset($before[3]);
         unset($before[4]);
-        // items 5-10 should now be sorted as 2-7
-        $before[5] = 2;
-        $before[6] = 3;
-        $before[7] = 4;
-        $before[8] = 5;
-        $before[9] = 6;
-        $before[10] = 7;
         $this->assertEqual($before, $after);
     }
 
@@ -215,14 +201,12 @@ class competencydelete_test extends prefix_changing_test_case {
     function test_ordering_after_delete3() {
         $hierarchy = new competency();
 
-        $before = get_records_menu('comp', '', '', 'sortorder', 'id,sortorder');
-        $this->assertTrue($hierarchy->delete_framework_item(9));
-        $after = get_records_menu('comp', '', '', 'sortorder', 'id,sortorder');
+        $before = get_records_menu('comp', '', '', 'sortthread', 'id,sortthread');
+        $this->assertTrue($hierarchy->delete_hierarchy_item(9, false));
+        $after = get_records_menu('comp', '', '', 'sortthread', 'id,sortthread');
 
         // items 9 should have been deleted (no children)
         unset($before[9]);
-        // item 10 should still have moved up one
-        $before[10] = 9;
         $this->assertEqual($before, $after);
     }
 
@@ -230,13 +214,13 @@ class competencydelete_test extends prefix_changing_test_case {
     function test_ordering_after_delete4() {
         $hierarchy = new competency();
 
-        $before = get_records_menu('comp', '', '', 'sortorder', 'id,sortorder');
-        $this->assertTrue($hierarchy->delete_framework_item(10));
-        $after = get_records_menu('comp', '', '', 'sortorder', 'id,sortorder');
+        $before = get_records_menu('comp', '', '', 'sortthread', 'id,sortthread');
+        $this->assertTrue($hierarchy->delete_hierarchy_item(10, false));
+        $after = get_records_menu('comp', '', '', 'sortthread', 'id,sortthread');
 
         // items 10 should have been deleted (no children)
         unset($before[10]);
-        // last item so no sort changes expected
+        // no sort changes expected
         $this->assertEqual($before, $after);
     }
 

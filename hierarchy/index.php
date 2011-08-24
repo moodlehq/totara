@@ -82,9 +82,9 @@ if ($can_edit_item) {
     } elseif ($show && confirm_sesskey()) {
         $hierarchy->show_item($show);
     } elseif ($moveup && confirm_sesskey()) {
-        $hierarchy->move_item($moveup, true);
+        $hierarchy->reorder_hierarchy_item($moveup, HIERARCHY_ITEM_ABOVE);
     } elseif ($movedown && confirm_sesskey()) {
-        $hierarchy->move_item($movedown, false);
+        $hierarchy->reorder_hierarchy_item($movedown, HIERARCHY_ITEM_BELOW);
     }
 }
 
@@ -114,7 +114,7 @@ $select = "SELECT hierarchy.*";
 $count = "SELECT COUNT(hierarchy.id)";
 $from   = " FROM {$CFG->prefix}{$shortprefix} hierarchy";
 $where  = " WHERE frameworkid={$framework->id}";
-$order  = " ORDER BY sortorder";
+$order  = " ORDER BY sortthread";
 // if a search is happening, or custom fields are being displayed,
 // also join to get custom field data
 if ($searchactive || !$displaymode) {

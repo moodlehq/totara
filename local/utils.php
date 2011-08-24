@@ -162,3 +162,57 @@ function totara_group_records($rs, $field) {
     }
     return $out;
 }
+
+/**
+ * Convert an integer to a 'vancode'
+ *
+ * Vancodes are a system used by Drupal for sorting hierarchical comments they provide a way of efficiently sorting
+ * hierarchical structures.
+ *
+ * A vancode is a base 36 representation of an integer, prefixed by a base 36 digit: (length(base 36 string) - 1)
+ *
+ * The advantages of this format are:
+ *  - It automatically sorts in the correct order without natural order sorting
+ *
+ *    e.g. 2.1.4, 2.1.8, 2.1.200 sorts as: 2.1.200, 2.1.4, 2.1.8
+ *    but with vancodes:
+ *        02.01.04, 02.01.08, 02.01.15k sorts correctly as: 02.01.04, 02.01.08, 02.01.15k
+ *
+ *  - It is relatively compact, meaning the db field doesn't need to be too big
+ *    This is important as we need the field to be big enough to support long as well as deep trees
+ *
+ *  @param integer Integer to convert to a vancode. Must be < pow(36, 10)
+ *  @return string Vancode for the specified integer
+ */
+function totara_int2vancode($int = 0) {
+    $num = base_convert((int) $int, 10, 36);
+    $length = strlen($num);
+    return chr($length + ord('0') - 1) . $num;
+}
+
+/**
+ * Convert a vancode to an integer
+ *
+ * See {@link totara_int2vancode()} for details
+ *
+ * @param string $char Vancode to convert. Must be <= '9zzzzzzzzzz'
+ * @return integer The integer representation of the specified vancode
+ */
+function totara_vancode2int($char = '00') {
+    return base_convert(substr($char, 1), 36, 10);
+}
+
+/**
+ * Increment a vancode by N (or decrement if negative)
+ *
+ * Returns the vancode, incremented by the specified amount
+ *
+ * See {@link totara_int2vancode()} for details
+ *
+ * @param string $char Vancode to increment
+ * @param integer $inc Number to increment by (optional, defaults to 1)
+ * @return string Vancode of $char + increment
+ */
+function totara_increment_vancode($char, $inc = 1) {
+    return totara_int2vancode(totara_vancode2int($char) + (int) $inc);
+}

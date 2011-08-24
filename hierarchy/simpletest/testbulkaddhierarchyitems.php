@@ -1,6 +1,6 @@
 <?php
 /**
- * Unit tests for add_multiple_items()
+ * Unit tests for add_multiple_hierarchy_items()
  *
  * Testing hierarchy:
  *
@@ -36,37 +36,37 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
 
     var $org_data = array(
         array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid',
-        'path', 'parentid', 'sortorder', 'depthlevel',
+        'path', 'parentid', 'sortthread', 'depthlevel',
         'visible', 'timecreated', 'timemodified', 'usermodified', 'typeid'),
         array(1, 'Organisation A', 'Org A', 'Org Description A', 'OA', 1,
-        '/1', 0, 1, 1,
+        '/1', 0, '01', 1,
         1, 1234567890, 1234567890, 2, null),
         array(2, 'Organisation B', 'Org B', 'Org Description B', 'OB', 1,
-        '/1/2', 1, 2, 2,
+        '/1/2', 1, '01.01', 2,
         1, 1234567890, 1234567890, 2, null),
         array(3, 'Organisation C', 'Org C', 'Org Description C', 'OC', 1,
-        '/1/2/3', 2, 3, 3,
+        '/1/2/3', 2, '01.01.01', 3,
         1, 1234567890, 1234567890, 2, null),
         array(4, 'Organisation D', 'Org D', 'Org Description D', 'OD', 1,
-        '/1/2/4', 2, 4, 3,
+        '/1/2/4', 2, '01.01.02', 3,
         1, 1234567890, 1234567890, 2, null),
         array(5, 'Organisation E', 'Org E', 'Org Description E', 'OE', 1,
-        '/5', 0, 5, 1,
+        '/5', 0, '02', 1,
         1, 1234567890, 1234567890, 2, null),
         array(6, 'Organisation F', 'Org F', 'Org Description F', 'OF', 1,
-        '/5/6', 5, 6, 2,
+        '/5/6', 5, '02.01', 2,
         1, 1234567890, 1234567890, 2, null),
         array(7, 'Organisation G', 'Org G', 'Org Description G', 'OG', 1,
-        '/5/6/7', 6, 7, 3,
+        '/5/6/7', 6, '02.01.01', 3,
         1, 1234567890, 1234567890, 2, null),
         array(8, 'Organisation H', 'Org H', 'Org Description H', 'OH', 1,
-        '/5/6/8', 6, 8, 3,
+        '/5/6/8', 6, '02.01.02', 3,
         1, 1234567890, 1234567890, 2, null),
         array(9, 'Organisation I', 'Org I', 'Org Description I', 'OI', 1,
-        '/5/6/8/9', 8, 9, 4,
+        '/5/6/8/9', 8, '02.01.02.01', 4,
         1, 1234567890, 1234567890, 2, null),
         array(10, 'Organisation J', 'Org J', 'Org Description J', 'OJ', 1,
-        '/10', 0, 10, 1,
+        '/10', 0, '03', 1,
         1, 1234567890, 1234567890, 2, null),
     );
 
@@ -84,7 +84,7 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
     }
 
     // test adding to the top level of a hierarchy
-    function test_add_multiple_items_to_root() {
+    function test_add_multiple_hierarchy_items_to_root() {
         $org = new organisation();
 
         // test items to insert
@@ -103,14 +103,14 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
         $parent = 0;
 
         // check items are added in the right place
-        $before = get_records_menu('org', '', '', 'sortorder', 'id,sortorder');
-        $this->assertTrue($org->add_multiple_items($parent, $items, 1));
-        $after = get_records_menu('org', '', '', 'sortorder', 'id,sortorder');
+        $before = get_records_menu('org', '', '', 'sortthread', 'id,sortthread');
+        $this->assertTrue($org->add_multiple_hierarchy_items($parent, $items, 1, true, false));
+        $after = get_records_menu('org', '', '', 'sortthread', 'id,sortthread');
 
         // new items should have been added to the end
         // all others should stay the same
-        $before[11] = 11;
-        $before[12] = 12;
+        $before[11] = '04';
+        $before[12] = '05';
         $this->assertEqual($before, $after);
 
         // get the items
@@ -135,7 +135,7 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
     }
 
     // test adding to an item in the middle of a hierarchy
-    function test_add_multiple_items_to_branch() {
+    function test_add_multiple_hierarchy_items_to_branch() {
         $org = new organisation();
 
         // test items to insert
@@ -154,18 +154,14 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
         $parent = 6;
 
         // check items are added in the right place
-        $before = get_records_menu('org', '', '', 'sortorder', 'id,sortorder');
-        $this->assertTrue($org->add_multiple_items($parent, $items, 1));
-        $after = get_records_menu('org', '', '', 'sortorder', 'id,sortorder');
+        $before = get_records_menu('org', '', '', 'sortthread', 'id,sortthread');
+        $this->assertTrue($org->add_multiple_hierarchy_items($parent, $items, 1, true, false));
+        $after = get_records_menu('org', '', '', 'sortthread', 'id,sortthread');
 
-        // new items should have been inserted directly after parent
-        $before[11] = 7;
-        $before[12] = 8;
-        // all others should have moved down to make room
-        $before[7] = 9;
-        $before[8] = 10;
-        $before[9] = 11;
-        $before[10] = 12;
+        // new items should have been inserted after parent's last child
+        $before[11] = '02.01.03';
+        $before[12] = '02.01.04';
+        // all others should have stayed the same
         $this->assertEqual($before, $after);
 
         // get the items
@@ -190,7 +186,7 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
     }
 
     // test adding to an item at the tip of a hierarchy
-    function test_add_multiple_items_to_leaf() {
+    function test_add_multiple_hierarchy_items_to_leaf() {
         $org = new organisation();
 
         // test items to insert
@@ -209,20 +205,14 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
         $parent = 4;
 
         // check items are added in the right place
-        $before = get_records_menu('org', '', '', 'sortorder', 'id,sortorder');
-        $this->assertTrue($org->add_multiple_items($parent, $items, 1));
-        $after = get_records_menu('org', '', '', 'sortorder', 'id,sortorder');
+        $before = get_records_menu('org', '', '', 'sortthread', 'id,sortthread');
+        $this->assertTrue($org->add_multiple_hierarchy_items($parent, $items, 1, true, false));
+        $after = get_records_menu('org', '', '', 'sortthread', 'id,sortthread');
 
         // new items should have been inserted directly after parent
-        $before[11] = 5;
-        $before[12] = 6;
-        // all others should have moved down to make room
-        $before[5] = 7;
-        $before[6] = 8;
-        $before[7] = 9;
-        $before[8] = 10;
-        $before[9] = 11;
-        $before[10] = 12;
+        $before[11] = '01.01.02.01';
+        $before[12] = '01.01.02.02';
+        // all others should stay the same
         $this->assertEqual($before, $after);
 
         // get the items
@@ -248,7 +238,7 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
 
 
     // test adding to the end of a hierarchy
-    function test_add_multiple_items_to_end() {
+    function test_add_multiple_hierarchy_items_to_end() {
         $org = new organisation();
 
         // test items to insert
@@ -267,14 +257,14 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
         $parent = 10;
 
         // check items are added in the right place
-        $before = get_records_menu('org', '', '', 'sortorder', 'id,sortorder');
-        $this->assertTrue($org->add_multiple_items($parent, $items, 1));
-        $after = get_records_menu('org', '', '', 'sortorder', 'id,sortorder');
+        $before = get_records_menu('org', '', '', 'sortthread', 'id,sortthread');
+        $this->assertTrue($org->add_multiple_hierarchy_items($parent, $items, 1, true, false));
+        $after = get_records_menu('org', '', '', 'sortthread', 'id,sortthread');
 
         // new items should have been added to the end
         // all others should stay the same
-        $before[11] = 11;
-        $before[12] = 12;
+        $before[11] = '03.01';
+        $before[12] = '03.02';
         $this->assertEqual($before, $after);
 
         // get the items
@@ -297,6 +287,5 @@ class bulkaddhierarchyitems_test extends prefix_changing_test_case {
         $this->assertEqual($item1->typeid, 0);
         $this->assertEqual($item2->typeid, 1);
     }
-
 }
 

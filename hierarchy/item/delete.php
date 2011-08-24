@@ -71,7 +71,7 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-if ($hierarchy->delete_framework_item($item->id)) {
+if ($hierarchy->delete_hierarchy_item($item->id)) {
 
     add_to_log(SITEID, $prefix, 'delete item', "index.php?id={$framework->id}&amp;prefix={$prefix}", "$item->fullname (ID $item->id)");
     totara_set_notification(get_string('deleted'.$prefix, $prefix, format_string($item->fullname)),

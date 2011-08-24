@@ -34,17 +34,17 @@ class hierarchylib_test extends prefix_changing_test_case {
 
     var $competency_data = array(
         array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'parentid',
-            'sortorder', 'visible', 'aggregationmethod', 'proficencyexpected', 'evidencecount', 'timecreated',
+            'sortthread', 'visible', 'aggregationmethod', 'proficencyexpected', 'evidencecount', 'timecreated',
             'timemodified', 'usermodified', 'depthlevel', 'typeid'),
-        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 0, 1, 1, 1, 1, 0,
+        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 0, '01', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 1, 1),
-        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 1, 2, 1, 1, 1, 0,
+        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 1, '01.01', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 2, 2),
-        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 0, 1, 1, 1, 1, 0,
+        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 0, '01', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 2, 2),
-        array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 1, 3, 1, 1, 1, 0,
+        array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 1, '01.02', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 2, 2),
-        array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 0, 4, 1, 1, 1, 0,
+        array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 0, '02', 1, 1, 1, 0,
             1265963591, 1265963591, 2, 1, 1),
     );
 
@@ -142,7 +142,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->c1->frameworkid = '1';
         $this->c1->path = '/1';
         $this->c1->parentid = '0';
-        $this->c1->sortorder = '1';
+        $this->c1->sortthread = '01';
         $this->c1->visible = '1';
         $this->c1->aggregationmethod = '1';
         $this->c1->proficencyexpected = '1';
@@ -162,7 +162,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->c2->frameworkid = '1';
         $this->c2->path = '/1/2';
         $this->c2->parentid = '1';
-        $this->c2->sortorder = '2';
+        $this->c2->sortthread = '01.01';
         $this->c2->visible = '1';
         $this->c2->aggregationmethod = '1';
         $this->c2->evidencecount = '0';
@@ -366,7 +366,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         $obj->fullname = $c1->fullname;
         $obj->parentid = $c1->parentid;
         $obj->path = $c1->path;
-        $obj->sortorder = $c1->sortorder;
+        $obj->sortthread = $c1->sortthread;
         $obj->id = $c1->id;
 
         // should return an array of items
@@ -381,18 +381,18 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertEqual(count($nofwid->get_item_descendants(3)), 1);
     }
 
-    function test_hierarchy_get_item_adjacent_peer() {
+    function test_hierarchy_get_hierarchy_item_adjacent_peer() {
         $competency = $this->competency;
         $c1 = $this->c1;
         $c2 = $this->c2;
 
         // if an adjacent peer exists, should return its id
-        $this->assertEqual($competency->get_item_adjacent_peer($c2, false), 4);
+        $this->assertEqual($competency->get_hierarchy_item_adjacent_peer($c2, HIERARCHY_ITEM_BELOW), 4);
         // should return false if no adjacent peer exists in the direction specified
-        $this->assertFalse($competency->get_item_adjacent_peer($c2, true));
-        $this->assertFalse($competency->get_item_adjacent_peer($c1, true));
+        $this->assertFalse($competency->get_hierarchy_item_adjacent_peer($c2, HIERARCHY_ITEM_ABOVE));
+        $this->assertFalse($competency->get_hierarchy_item_adjacent_peer($c1, HIERARCHY_ITEM_ABOVE));
         // should return false if item is not valid
-        $this->assertFalse($competency->get_item_adjacent_peer(null));
+        $this->assertFalse($competency->get_hierarchy_item_adjacent_peer(null));
     }
 
     function test_hierarchy_make_hierarchy_list() {
@@ -454,51 +454,6 @@ class hierarchylib_test extends prefix_changing_test_case {
     // display_framework_selector()
     // display_add_item_button()
     // display_add_type_button()
-    // validate_sortorder() (not implemented at hierarchy level)
-
-    function test_hierarchy_get_item_sortorder_offset() {
-        $competency = $this->competency;
-        $this->assertEqual($competency->get_item_sortorder_offset(), 1004);
-    }
-
-    function test_hierarchy_move_item() {
-        $competency = $this->competency;
-        $item1_before = get_field('comp','sortorder','id',4);
-        $item2_before = get_field('comp','sortorder','id',2);
-        // should return if item is successfully moved
-        $this->assertTrue($competency->move_item(4, true));
-        $item1_after = get_field('comp','sortorder','id',4);
-        $item2_after = get_field('comp','sortorder','id',2);
-        // adjacent items should have swapped sort order after move
-        $this->assertEqual($item1_before, $item2_after);
-        $this->assertEqual($item2_before, $item1_after);
-
-        // sort orders before move
-        $p_before = get_field('comp','sortorder', 'id', 1);
-        $c1_before = get_field('comp','sortorder', 'id', 2);
-        $c2_before = get_field('comp','sortorder', 'id', 4);
-        $c1_diff_before = $c1_before - $p_before;
-        $c2_diff_before = $c2_before - $p_before;
-
-        // should be possible to swap items even if they have children
-        $this->assertTrue($competency->move_item(1, false));
-
-        // sort orders after move
-        $p_after = get_field('comp','sortorder', 'id', 1);
-        $c1_after = get_field('comp','sortorder', 'id', 2);
-        $c2_after = get_field('comp','sortorder', 'id', 4);
-        $c1_diff_after = $c1_after - $p_after;
-        $c2_diff_after = $c2_after - $p_after;
-
-        // the parent's and child's sort order should have changed
-        $this->assertNotEqual($p_before, $p_after);
-        $this->assertNotEqual($c1_before, $c1_after);
-        $this->assertNotEqual($c2_before, $c2_after);
-
-        // children's sort order should move the same amount as their parents
-        $this->assertEqual($c1_diff_before, $c1_diff_after);
-        $this->assertEqual($c2_diff_before, $c2_diff_after);
-    }
 
     function test_hierarchy_hide_item() {
         $competency = $this->competency;
@@ -546,10 +501,10 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertFalse($competency->move_framework(2, true));
     }
 
-    function test_hierarchy_delete_framework_item() {
+    function test_hierarchy_delete_hierarchy_item() {
         $competency = $this->competency;
         // function should return true
-        $this->assertTrue($competency->delete_framework_item(1));
+        $this->assertTrue($competency->delete_hierarchy_item(1, false));
         // the item should have be deleted
         $this->assertFalse($competency->get_item(1));
         // the item's children should also have been deleted
@@ -605,7 +560,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // is specific to competencies)
         $this->assertEqual(count($competency->get_item_data($c1)), 6);
         // should return the correct number of fields requested
-        $this->assertEqual(count($competency->get_item_data($c1, array('sortorder', 'description'))), 4);
+        $this->assertEqual(count($competency->get_item_data($c1, array('sortthread', 'description'))), 4);
         // should return the correct information based on fields requested
         $result = current($competency->get_item_data($c1, array('description')));
         $this->assertEqual($result['title'], 'Description');

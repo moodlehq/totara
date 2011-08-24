@@ -276,20 +276,20 @@ class position extends hierarchy {
     /**
      * Delete all data associated with the positions
      *
-     * This method is protected because it deletes the positions, but doesn't update the
-     * sortorder of the other framework items (or use transactions).
-     * Use {@link hierarchy::delete_framework_item()} to recursively delete an item and
+     * This method is protected because it deletes the positions, but doesn't use transactions
+     *
+     * Use {@link hierarchy::delete_hierarchy_item()} to recursively delete an item and
      * all its children
      *
      * @param array $items Array of IDs to be deleted
      *
      * @return boolean True if items and associated data were successfully deleted
      */
-    protected function _delete_framework_items($items) {
+    protected function _delete_hierarchy_items($items) {
         global $CFG;
 
         // First call the deleter for the parent class
-        if (!parent::_delete_framework_items($items)) {
+        if (!parent::_delete_hierarchy_items($items)) {
             return false;
         }
 

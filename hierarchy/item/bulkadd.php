@@ -50,7 +50,7 @@ if ($mform->is_cancelled()) {
         totara_set_notification(get_string('bulkaddfailed', 'hierarchy'), "{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;frameworkid={$frameworkid}&amp;page={$page}");
     }
 
-    if ($new_ids = $hierarchy->add_multiple_items($formdata->parentid, $items_to_add, $frameworkid)) {
+    if ($new_ids = $hierarchy->add_multiple_hierarchy_items($formdata->parentid, $items_to_add, $frameworkid, false)) {
         add_to_log(SITEID, $prefix, 'bulk add', "index.php?id={$frameworkid}&amp;prefix={$prefix}", 'New IDs '. implode(',', $new_ids));
         totara_set_notification(get_string('bulkaddsuccess', 'hierarchy', count($new_ids)), "{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;frameworkid={$frameworkid}&amp;page={$page}", array('style' => 'notifysuccess'));
     } else {
@@ -80,7 +80,7 @@ print_footer();
  *
  * Given the formdata from the bulkadd form, this function builds a set of skeleton objects that will
  * go into the database. They are still missing all the additional metadata such as hierarchy path,
- * depth, etc and timestamps. That data is added later by {@link hierarchy->add_multiple_items()}.
+ * depth, etc and timestamps. That data is added later by {@link hierarchy->add_multiple_hierarchy_items()}.
  *
  * @param object $formdata Form data from bulkadd form
  *

@@ -154,7 +154,7 @@ abstract class competency_evidence_type extends data_object {
      * @param   $competency Competency object
      * @return  void
      */
-    public function delete($competency) {
+    public function delete($competency = null) {
 
         // Delete evidence item from database
         if (!parent::delete()) {

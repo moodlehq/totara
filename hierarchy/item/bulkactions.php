@@ -110,10 +110,14 @@ if ($count_selected_items > 0 && $soffset >= $count_selected_items) {
 }
 
 // display the selected items, including any children they have
-if ($selected_items = get_records_sql("SELECT h.id, h.fullname, count(hh.id) AS children
-    FROM {$CFG->prefix}{$shortprefix} h LEFT JOIN {$CFG->prefix}{$shortprefix} hh ON hh.path LIKE h.path||'/%'
-    WHERE " . sql_sequence('h.id', $all_selected_item_ids) . "GROUP BY h.id, h.fullname",
-    $soffset, HIERARCHY_BULK_SELECTED_PER_PAGE)) {
+$sql = "SELECT h.id, h.fullname, count(hh.id) AS children
+    FROM {$CFG->prefix}{$shortprefix} h
+    LEFT JOIN {$CFG->prefix}{$shortprefix} hh
+    ON hh.path LIKE " . sql_concat('h.path', "'/%'") . "
+    WHERE " . sql_sequence('h.id', $all_selected_item_ids) . "
+    GROUP BY h.id, h.fullname, h.sortthread
+    ORDER BY h.sortthread";
+if ($selected_items = get_records_sql($sql, $soffset, HIERARCHY_BULK_SELECTED_PER_PAGE)) {
 
     $displayed_selected_items = array();
     foreach ($selected_items as $id => $item) {
@@ -131,9 +135,8 @@ if ($selected_items = get_records_sql("SELECT h.id, h.fullname, count(hh.id) AS 
     $displayed_selected_items = array();
 }
 
-
 $available_items = get_records_select($shortprefix,
-    'frameworkid='.$frameworkid . $searchquery, 'sortorder', 'id,fullname,depthlevel',
+    'frameworkid='.$frameworkid . $searchquery, 'sortthread', 'id,fullname,depthlevel',
     $aoffset, HIERARCHY_BULK_AVAILABLE_PER_PAGE);
 $available_items = ($available_items) ?
     $available_items : array();
@@ -172,7 +175,7 @@ if ($confirmdelete) {
     $status = true;
     $deleted = array();
     foreach ($unique_ids as $item_to_delete) {
-        if ($hierarchy->delete_framework_item($item_to_delete)) {
+        if ($hierarchy->delete_hierarchy_item($item_to_delete)) {
             $deleted[] = $item_to_delete;
         } else {
             $status = false;
@@ -299,7 +302,7 @@ if ($mform->is_cancelled()) {
     // add all
     if (isset($formdata->add_all_items)) {
         if ($all_records = get_records($shortprefix, 'frameworkid', $frameworkid,
-            'sortorder', 'id')) {
+            'sortthread', 'id')) {
 
             $SESSION->hierarchy_bulk_items[$action][$prefix][$frameworkid] =
                 array_keys($all_records);

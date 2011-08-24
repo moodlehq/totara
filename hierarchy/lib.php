@@ -60,6 +60,14 @@ $HIERARCHY_EXPORT_OPTIONS = array(
 );
 
 /**
+ * Hierarchy item adjacent peer
+ *
+ * References either the item above or below the current item
+ */
+define('HIERARCHY_ITEM_ABOVE', 1);
+define('HIERARCHY_ITEM_BELOW', -1);
+
+/**
  * An abstract object that holds methods and attributes common to all hierarchy objects.
  * @abstract
  */
@@ -214,7 +222,7 @@ class hierarchy {
      * @return array|false
      */
     function get_items() {
-        return get_records($this->shortprefix, 'frameworkid', $this->frameworkid, 'sortorder, fullname');
+        return get_records($this->shortprefix, 'frameworkid', $this->frameworkid, 'sortthread, fullname');
     }
 
     /**
@@ -227,7 +235,7 @@ class hierarchy {
             // Parentid supplied, do not specify frameworkid as
             // sometimes it is not set correctly. And a parentid
             // is enough to get the right results
-            return get_records_select($this->shortprefix, "parentid = {$parentid} AND visible = 1", 'frameworkid, sortorder, fullname');
+            return get_records_select($this->shortprefix, "parentid = {$parentid} AND visible = 1", 'frameworkid, sortthread, fullname');
         }
         else {
             // If no parentid, grab the root node of this framework
@@ -248,11 +256,11 @@ class hierarchy {
     function get_all_root_items($all=false) {
         if (empty($this->frameworkid) || $all) {
             // all root level items across frameworks
-            return get_records_select($this->shortprefix, "parentid = 0 AND visible = 1", 'frameworkid, sortorder, fullname');
+            return get_records_select($this->shortprefix, "parentid = 0 AND visible = 1", 'frameworkid, sortthread, fullname');
         } else {
             // root level items for current framework only
             $fwid = $this->frameworkid;
-            return get_records_select($this->shortprefix, "parentid = 0 AND frameworkid = $fwid AND visible = 1", 'sortorder, fullname');
+            return get_records_select($this->shortprefix, "parentid = 0 AND frameworkid = $fwid AND visible = 1", 'sortthread, fullname');
         }
     }
 
@@ -266,7 +274,7 @@ class hierarchy {
         $path = get_field($this->shortprefix, 'path', 'id', $id);
         if ($path) {
             // the WHERE clause must be like this to avoid /1% matching /10
-            $sql = "SELECT id, fullname, parentid, path, sortorder
+            $sql = "SELECT id, fullname, parentid, path, sortthread
                     FROM {$CFG->prefix}{$this->shortprefix}
                     WHERE path = '{$path}' OR path LIKE '{$path}/%'
                     ORDER BY path";
@@ -279,16 +287,17 @@ class hierarchy {
     /**
      * Given an item id, returns the adjacent item at the same depth level
      * @param object $item An item object to find the peer for. Must include id,
-     *                     frameworkid, sortorder, parentid and depthlevel
-     * @param boolean $above If true returns the item above, otherwise the item below
+     *                     frameworkid, sortthread, parentid and depthlevel
+     * @param integer $direction Which direction to look for a peer, relative to $item.
+     *                           Use constant HIERARCHY_ITEM_ABOVE or HIERARCHY_ITEM_BELOW
      * @return int|false Returns the ID of the peer or false if there isn't one
      *                   in the direction specified
      **/
-    function get_item_adjacent_peer($item, $above=true) {
+    function get_hierarchy_item_adjacent_peer($item, $direction = HIERARCHY_ITEM_ABOVE) {
         global $CFG;
         // check that item has required properties
         if ( !isset($item->depthlevel) ||
-            !isset($item->sortorder) || !isset($item->id)) {
+            !isset($item->sortthread) || !isset($item->id)) {
             return false;
         }
         // try and use item's fwid if not set by hierarchy
@@ -301,20 +310,20 @@ class hierarchy {
         }
 
         $depthlevel = $item->depthlevel;
-        $sortorder = $item->sortorder;
+        $sortthread = $item->sortthread;
         $parentid = $item->parentid;
         $id = $item->id;
 
         // are we looking above or below for a peer?
-        $sqlop = $above ? '<' : '>';
-        $sqlsort = $above ? 'DESC' : 'ASC';
+        $sqlop = ($direction == HIERARCHY_ITEM_ABOVE) ? '<' : '>';
+        $sqlsort = ($direction == HIERARCHY_ITEM_ABOVE) ? 'DESC' : 'ASC';
 
         $sql = "SELECT id FROM {$CFG->prefix}{$this->shortprefix}
             WHERE frameworkid = $frameworkid AND
             depthlevel = $depthlevel AND
             parentid = $parentid AND
-            sortorder $sqlop $sortorder
-            ORDER BY sortorder $sqlsort";
+            sortthread $sqlop '$sortthread'
+            ORDER BY sortthread $sqlsort";
         // only return first match
         $dest = get_record_sql($sql, true);
         if ($dest) {
@@ -353,7 +362,7 @@ class hierarchy {
         if (empty($records)) {
             // must be first time through function, get the records, and pass to
             // future uses to save db calls
-            $records = get_records($this->shortprefix,'visible','1','path','id,fullname,shortname,parentid,sortorder,path');
+            $records = get_records($this->shortprefix,'visible','1','path','id,fullname,shortname,parentid,sortthread,path');
         }
 
         if ($id == 0) {
@@ -571,89 +580,40 @@ class hierarchy {
         print_single_button($CFG->wwwroot.'/hierarchy/type/edit.php', $options, get_string('addtype', $this->prefix), 'get');
     }
 
-    /**
-     * Ensure the framework sortorder has no gaps and isn't at 0
-     * @return boolean success
-     */
-    function validate_sortorder() {
-        return true;
-    }
 
     /**
-     * Get the sortorder range for the framework
-     * @return boolean success
-     */
-    function get_item_sortorder_offset() {
-        global $CFG;
-        $max = get_record_sql('SELECT MAX(sortorder) AS max, 1
-                FROM ' . $CFG->prefix . $this->shortprefix .' WHERE frameworkid=' . $this->frameworkid);
-        return $max->max + 1000;
-    }
-
-    /**
-     * Move the item and its subtree in the sortorder
+     * Swap the order of two items
+     *
+     * The items must be in the same framework and have the same parent. The
+     * children of any items will be moved with them
+     *
+     * This method will fail if no item exists in the direction specified. Use
+     * {@link get_hierarchy_item_adjacent_peer()} to check first
+     *
      * @var int - the item id to move
-     * @var boolean $up - up if true, down if false
-     * @return boolean success
+     * @param integer $swapwith Which item to swap with, relative the the item id given.
+     *                          Use constant HIERARCHY_ITEM_ABOVE or HIERARCHY_ITEM_BELOW
+     * @var boolean $up - Direction to move: up if true, down if false
+     *
+     * @return boolean True if the reordering succeeds
      */
-    function move_item($id, $up) {
-        $source = get_record($this->shortprefix, 'id', $id);
+    function reorder_hierarchy_item($id, $swapwith) {
+        if (!$source = get_record($this->shortprefix, 'id', $id)) {
+            return false;
+        }
+
         // get nearest neighbour in direction of move
-        $destid = $this->get_item_adjacent_peer($source, $up);
+        $destid = $this->get_hierarchy_item_adjacent_peer($source, $swapwith);
         if (!$destid) {
             // source not a valid record or no peer in that direction
             notify(get_string('error:couldnotmoveitemnopeer','hierarchy',$this->prefix));
             return false;
         }
 
-        // how many members in each tree?
-        $sourcetree = $this->get_item_descendants($source->id);
-        $desttree = $this->get_item_descendants($destid);
-        $sourcecount = count($sourcetree);
-        $destcount = count($desttree);
-
-        $status = true;
-        begin_sql();
-
-        // update the sort orders
-        foreach ($sourcetree as $item) {
-            $id = $item->id;
-            $sortorder = $item->sortorder;
-            $newso = $up ? $sortorder - $destcount : $sortorder + $destcount;
-            if ($newso < 0) {
-                // something must be wrong with sort orders, abort
-                rollback_sql();
-                notify(get_string('error:badsortorder','hierarchy',$this->prefix));
-                return false;
-            } else {
-                $status = $status && set_field($this->shortprefix, 'sortorder', $newso, 'id', $id);
-            }
-        }
-        foreach ($desttree as $item) {
-            $id = $item->id;
-            $sortorder = $item->sortorder;
-            $newso = $up ? $sortorder + $sourcecount : $sortorder - $sourcecount;
-            if ($newso < 0) {
-                // something must be wrong with sort orders, abort
-                rollback_sql();
-                notify(get_string('error:badsortorder','hierarchy',$this->prefix));
-                return false;
-            } else {
-                $status = $status && set_field($this->shortprefix, 'sortorder', $newso, 'id', $id);
-            }
-        }
-
-        // only commit if all changes worked
-        if ($status) {
-            commit_sql();
-            return true;
-        } else {
-            rollback_sql();
-            notify(get_string('error:couldnotmoveitem','hierarchy',$this->prefix));
-            return false;
-        }
-
+        // update the sortthreads
+        return $this->swap_item_sortthreads($id, $destid);
     }
+
 
     /**
      * Hide the hierarchy item
@@ -736,7 +696,6 @@ class hierarchy {
         global $CFG;
         $move = NULL;
         $swap = NULL;
-        $this->validate_sortorder();
         $sortoffset = $this->get_framework_sortorder_offset();
         $move = get_record($this->shortprefix.'_framework', 'id', $id);
         if ($up) {
@@ -773,11 +732,15 @@ class hierarchy {
     /**
      * Delete a framework item and all its children and associated data
      *
+     * The exact data being deleted will depend on what sort of hierarchy it is
+     * See {@link _delete_hierarchy_items()} in the child class for details
+     *
      * @param integer $id the item id to delete
+     * @param boolean $triggerevent If true, this command will trigger a "{$prefix}_added" event handler
      *
      * @return boolean success or failure
      */
-    function delete_framework_item($id) {
+    public function delete_hierarchy_item($id, $triggerevent = true) {
         global $CFG;
 
         if (!record_exists($this->shortprefix, 'id', $id)) {
@@ -786,16 +749,8 @@ class hierarchy {
 
         // get array of items to delete (the item specified *and* all its children)
         $delete_list = $this->get_item_descendants($id);
-
-        // figure out the highest sort of the items to delete
-        // (needed to correct sort order of remaining items)
-        $maxsort = 0;
-        foreach ($delete_list as $item) {
-            $maxsort = max($maxsort, $item->sortorder);
-        }
-
-        // number of items being deleted
-        $delete_count = count($delete_list);
+        // make a copy for triggering events
+        $deleted_list = $delete_list;
 
         // make sure we know the item's framework id
         $frameworkid = isset($this->frameworkid) ? $this->frameworkid :
@@ -807,20 +762,21 @@ class hierarchy {
         // more than 1000 items in an sql IN clause
         while ($delete_items = totara_pop_n($delete_list, 1000)) {
             $delete_ids = array_keys($delete_items);
-            if (!$this->_delete_framework_items($delete_ids)) {
+            if (!$this->_delete_hierarchy_items($delete_ids)) {
                 rollback_sql();
                 return false;
             }
         }
 
-        // fix the sort order of all items below the ones that were deleted
-        // we want to move them up by the number of deleted items
-        if (!$this->reorder_remaining_items(-1 * $delete_count, $maxsort, $frameworkid)) {
-            rollback_sql();
-            return false;
+        commit_sql();
+
+        // Raise an event for each item deleted to let other parts of the system know
+        if ($triggerevent) {
+            foreach ($deleted_list as $deleted_item) {
+                events_trigger("{$this->prefix}_deleted", $deleted_item);
+            }
         }
 
-        commit_sql();
         return true;
     }
 
@@ -828,9 +784,8 @@ class hierarchy {
     /**
      * Delete all data associated with the framework items provided
      *
-     * This method is protected because it deletes the items, but doesn't update the
-     * sortorder of the other framework items (or use transactions).
-     * Use {@link hierarchy::delete_framework_item()} to recursively delete an item and
+     * This method is protected because it deletes the items, but doesn't use transactions.
+     * Use {@link hierarchy::delete_hierarchy_item()} to recursively delete an item and
      * all its children. This method is extended or overridden in the lib file for each
      * hierarchy prefix to remove specific data for that hierarchy prefix.
      *
@@ -838,7 +793,7 @@ class hierarchy {
      *
      * @return boolean True if items and associated data were successfully deleted
      */
-    protected function _delete_framework_items($items) {
+    protected function _delete_hierarchy_items($items) {
         // delete the actual items
         $item_sql = 'id IN (' . implode(',', $items) . ') ';
         if (!delete_records_select($this->shortprefix, $item_sql)) {
@@ -871,7 +826,7 @@ class hierarchy {
             foreach ($items as $item) {
                 // Delete all top level items (which also deletes their children), and their info data
                 if ($item->parentid == 0) {
-                    if (!$this->delete_framework_item($item->id)) {
+                    if (!$this->delete_hierarchy_item($item->id)) {
                         rollback_sql();
                         return false;
                     }
@@ -966,7 +921,7 @@ class hierarchy {
      * @param $page string Unique identifier for admin page
      * @return void
      */
-    function hierarchy_page_setup($page) {}
+    function hierarchy_page_setup($page, $item) {}
 
     /**
      * Print any extra markup to display on the hierarchy view item page
@@ -1185,13 +1140,13 @@ class hierarchy {
             }
 
             if ($canmove) {
-                if ($this->get_item_adjacent_peer($record, true)) {
+                if ($this->get_hierarchy_item_adjacent_peer($record, HIERARCHY_ITEM_ABOVE)) {
                     $buttons[] = "<a href=\"index.php?prefix={$prefix}&amp;moveup={$record->id}&amp;frameworkid={$record->frameworkid}{$extraparams}&amp;sesskey=".sesskey()."\" title=\"$str_moveup\">".
                         "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a> ";
                 } else {
                     $buttons[] = $str_spacer;
                 }
-                if ($this->get_item_adjacent_peer($record, false)) {
+                if ($this->get_hierarchy_item_adjacent_peer($record, HIERARCHY_ITEM_BELOW)) {
                     $buttons[] = "<a href=\"index.php?prefix={$prefix}&amp;movedown=".$record->id."&amp;frameworkid={$record->frameworkid}{$extraparams}&amp;sesskey=".sesskey()."\" title=\"$str_movedown\">".
                         "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
                 } else {
@@ -1271,13 +1226,18 @@ class hierarchy {
      *
      * The $items_to_add array must contain a set of objects that are suitable for
      * inserting into the hierarchy items table. Hierarchy related data (such as
-     * depthlevel, parentid, sortorder and path) will be added by this method.
+     * depthlevel, parentid and path) will be added when the record is created
      *
      * @param integer $parentid ID of the item to append the new children to
      * @param array $items_to_add Array of objects suitable for inserting
      * @param integer $frameworkid ID of the framework to add the items to (optional if set in hierarchy object)
+     * @param boolean $escapeitems If true, the objects in the $items_to_add array will be escaped before being passed to
+     *                            insert_record(). If passing data from a form that has already been escaped,
+     *                            this should be set to false. If passing in a raw object from a get_records()
+     *                            call, this should be true (the default)
+     * @param boolean $triggerevent If true, this command will trigger a "{$prefix}_added" event handler for each new item
      */
-    function add_multiple_items($parentid, $items_to_add, $frameworkid=null) {
+    function add_multiple_hierarchy_items($parentid, $items_to_add, $frameworkid = null, $escapeitems = true, $triggerevent = true) {
         global $USER;
         $now = time();
 
@@ -1296,75 +1256,235 @@ class hierarchy {
             return false;
         }
 
-        if ($parentid != 0) {
-            // get parent record
-
-            if (!$parent = get_record($this->shortprefix, 'id', $parentid, 'frameworkid', $frameworkid)) {
-                // parent not a valid record in this framework
-                return false;
-            }
-
-            $parentsort = $parent->sortorder;
-            $parentpath = $parent->path;
-            $itemdepth = $parent->depthlevel + 1;
-        } else {
-            // new top level elements - add to end of list
-            $parentsort = get_field($this->shortprefix, 'MAX(sortorder)', '', '');
-            $parentpath = '';
-            $itemdepth = 1;
-        }
-
-        $nextsort = $parentsort + 1;
-        $num_new_items = count($items_to_add);
-
         begin_sql();
 
-        // make room for the new items (by moving all items below the parent down)
-        if (!$this->reorder_remaining_items($num_new_items, $parentsort, $frameworkid)) {
-            rollback_sql();
-            return false;
-        }
-
-        // now start adding them
         $new_ids = array();
         foreach ($items_to_add as $item) {
-            // add some additional meta data to the item
-            $item->parentid = $parentid;
-            $item->sortorder = $nextsort;
-            $item->depthlevel = $itemdepth;
-            $item->timecreated = $now;
-            $item->timemodified = $now;
-            $item->usermodified = $USER->id;
-            // we can't create the full path until the new ID is known
-            $item->path = $parentpath . '/';
-            $item->frameworkid = $frameworkid;
-            // default to visible items if not set
             if (!isset($item->visible)) {
+                // default to visible if not set
                 $item->visible = 1;
             }
+            $item->timemodified = $now;
+            $item->usermodified = $USER->id;
 
-            // add each new record in turn
-            if ($newid = insert_record($this->shortprefix, $item)) {
-                // update the path to include the item's ID now it's known
-                if (!set_field($this->shortprefix, 'path', $item->path.$newid, 'id', $newid)) {
-                    rollback_sql();
-                    return false;
-                }
-
-                // add to array of items added
-                $new_ids[] = $newid;
+            if ($newitem = $this->add_hierarchy_item($item, $parentid, $frameworkid, $escapeitems, false, $triggerevent)) {
+                $new_ids[] = $newitem->id;
             } else {
+                // fail if any new items fail to be added
                 rollback_sql();
                 return false;
             }
-
-            // increment the sort order
-            ++$nextsort;
         }
 
-        // everything worked -return the IDs
         commit_sql();
+
+        // everything worked -return the IDs
         return $new_ids;
+
+    }
+
+
+    /**
+     * Add a new hierarchy item to an existing framework
+     *
+     * Given an object to insert and a parent id, create a new hierarchy item
+     * and attach it to the appropriate location in the hierarchy
+     *
+     * @param object $item The item to insert. This should contain all data describing the object *except*
+     *                     the information related to its location in the hierarchy:
+     *                      - depthlevel
+     *                      - path
+     *                      - frameworkid
+     *                      - sortthread
+     *                      - parentid
+     *                      - timecreated
+     * @param integer $parentid The ID of the parent to attach to, or 0 for top level
+     * @param integer $frameworkid ID of the parent's framework (optional, unless parentid == 0)
+     * @param boolean $escapeitem If true, the $item object will be escaped before being passed to
+     *                            insert_record(). If passing data from a form that has already been escaped,
+     *                            this should be set to false. If passing in a raw object from a get_records()
+     *                            call, this should be true (the default)
+     * @param boolean $usetransaction If true this function will use transactions (optional, default: true)
+     * @param boolean $triggerevent If true, this command will trigger a "{$prefix}_added" event handler
+     *
+     * @return object|false A copy of the new item, or false if it could not be added
+     */
+    function add_hierarchy_item($item, $parentid, $frameworkid = null, $escapeitem = true, $usetransaction = true, $triggerevent = true) {
+        // figure out the framework if not provided
+        if (!isset($frameworkid)) {
+            // try and use hierarchy's frameworkid, if not look it up based on parent
+            if (isset($this->frameworkid)) {
+                $frameworkid = $this->frameworkid;
+            } else if ($parentid != 0) {
+                if (!$frameworkid = get_field($this->shortprefix, 'frameworkid', 'id', $parentid)) {
+                    // can't determine parent's framework
+                    return false;
+                }
+            } else {
+                // we can't work out the framework based on parentid for parentid=0
+                return false;
+            }
+        }
+
+        // calculate where the new item fits into the hierarchy
+        // handle top level items differently
+        if ($parentid == 0) {
+            $depthlevel = 1;
+            $parentpath = '';
+        } else {
+            // parent item must exist
+            if (!$parent = get_record($this->shortprefix, 'id', $parentid)) {
+                return false;
+            }
+            $depthlevel = $parent->depthlevel + 1;
+            $parentpath = $parent->path;
+        }
+
+        // fail if can't successfully determine the sort position
+        if (!$sortthread = $this->get_next_child_sortthread($parentid, $frameworkid)) {
+            return false;
+        }
+
+        // set the hierarchy specific data for the new item
+        $item->frameworkid = $frameworkid;
+        $item->depthlevel = $depthlevel;
+        $item->parentid = $parentid;
+        $item->path = $parentpath; // we'll add the item's ID to the end of this later
+        $item->timecreated = time();
+        $item->sortthread = $sortthread;
+        if ($escapeitem) {
+            $item = addslashes_recursive($item);
+        }
+
+        if ($usetransaction) {
+            begin_sql();
+        }
+
+        if (!$newid = insert_record($this->shortprefix, $item)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+        // Can't set the full path till we know the id!
+        if (!set_field($this->shortprefix, 'path', $item->path . '/' . $newid, 'id', $newid)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+        // load the new item from the db
+        if (!$newitem = get_record($this->shortprefix, 'id', $newid)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+        if ($usetransaction) {
+            commit_sql();
+        }
+
+        // trigger an event if required
+        if ($triggerevent) {
+            events_trigger("{$this->prefix}_added", $newitem);
+        }
+
+        return $newitem;
+
+    }
+
+
+    /**
+     * Update an existing hierarchy item
+     *
+     * This can include moving to a new location in the hierarchy or changing some of its data values.
+     * This method will not update an item's custom field data
+     *
+     * @param integer $itemid ID of the item to update
+     * @param object $newitem An object containing details to be updated
+     *                        Only a parentid is required to update the items location, other data such as
+     *                        depthlevel, sortthread, path, etc will be handled internally
+     * @param boolean $escapeitem If true, the $newitem object will be escaped before being passed to
+     *                            update_record(). If passing data from a form that has already been escaped,
+     *                            this should be set to false. If passing in a raw object from a get_records()
+     *                            call, this should be true (the default)
+     * @param boolean $usetransaction If true this function will use transactions (optional, default: true)
+     * @param boolean $triggerevent If true, this command will trigger a "{$prefix}_added" event handler.
+     *
+     * @return object|false The updated item, or false if it could not be updated
+     */
+    function update_hierarchy_item($itemid, $newitem, $escapeitem = true, $usetransaction = true, $triggerevent = true) {
+        global $USER;
+
+        // the itemid must be a valid item
+        if (!$olditem = get_record($this->shortprefix, 'id', $itemid)) {
+            return false;
+        }
+
+        if ($newitem->parentid != $olditem->parentid) {
+            // the item is being moved. First update without changing the parent, then move afterwards
+            $oldparentid = $olditem->parentid;
+            $newparentid = $newitem->parentid;
+            $newitem->parentid = $oldparentid;
+        }
+
+        $newitem->id = $itemid;
+        $newitem->timemodified = time();
+        $newitem->usermodified = $USER->id;
+
+        if ($escapeitem) {
+            // add slashes if required
+            $newitem = addslashes_recursive($newitem);
+        }
+
+        if ($usetransaction) {
+            begin_sql();
+        }
+
+        if (!update_record($this->shortprefix, $newitem)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+        if (isset($newparentid)) {
+            // item is also being moved
+
+            // get a new copy of the updatd item from the db
+            $updateditem = get_record($this->shortprefix, 'id', $itemid);
+
+            // move it
+            if (!$this->move_hierarchy_item($updateditem, $newparentid, false)) {
+                if ($usetransaction) {
+                    rollback_sql();
+                }
+                return false;
+            }
+        }
+
+        // get a new copy of the updated item from the db
+        if (!$updateditem = get_record($this->shortprefix, 'id', $itemid)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+        if ($usetransaction) {
+            commit_sql();
+        }
+
+        // Raise an event to let other parts of the system know
+        if ($triggerevent) {
+            events_trigger("{$this->prefix}_updated", $updateditem);
+        }
+
+        return $updateditem;
+
     }
 
 
@@ -1376,10 +1496,11 @@ class hierarchy {
      * - parent ID of moved item
      * - path of moved item and all descendants
      * - depthlevel of moved item and all descendants
-     * - sortorder of all moved items and any that were displaced
+     * - sortthread of all moved items
      *
      * @param object $item The item to move
      * @param integer $newparentid ID of the item to attach it to
+     * @param boolean $usetransaction If true this function will use transactions (optional, default: true)
      */
     function move_hierarchy_item($item, $newparentid, $usetransaction=true) {
         global $CFG;
@@ -1408,7 +1529,6 @@ class hierarchy {
             $newparent->id = 0;
             $newparent->path = '';
             $newparent->depthlevel = 0;
-            $newparent->sortorder = 0;
             $newparent->frameworkid = $item->frameworkid;
         } else {
             $newparent = get_record($this->shortprefix, 'id', $newparentid);
@@ -1427,63 +1547,18 @@ class hierarchy {
             return false;
         }
 
+        if (!$newsortthread = $this->get_next_child_sortthread($newparentid, $item->frameworkid)) {
+            // unable to calculate the new sortthread
+            return false;
+        }
+        $oldsortthread = $item->sortthread;
+
         if ($usetransaction) {
             begin_sql();
         }
-        // update the sortorder first
 
-        // updating the sortorder is complex as we need to take into account
-        // the tree being moved, its destination and the items being displaced
-        $sourcetree = $this->get_item_descendants($item->id);
-        if (!$sourcetree) {
-            if ($usetransaction) {
-                rollback_sql();
-            }
-            return false;
-        }
-        $sourcecount = count($sourcetree);
-        $sourcesort = $item->sortorder;
-        $destsort = $newparent->sortorder+1; // always add as first child of new parent
-        $sortdiff = $destsort - $sourcesort;
-        $movingdown = ($destsort > $sourcesort);
-        if ($movingdown) {
-            // subtract the items that are moving
-            $sortdiff -= $sourcecount;
-        }
-
-        // first update the displaced items
-        if ($movingdown) {
-            $operator = '-';
-            $where = "sortorder < {$destsort} AND sortorder > {$sourcesort}";
-        } else {
-            $operator = '+';
-            $where = "sortorder >= {$destsort} AND sortorder < {$sourcesort}";
-        }
-        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
-            SET sortorder = sortorder {$operator} {$sourcecount}
-            WHERE {$where}
-            AND (path != '{$item->path}' AND path NOT LIKE '{$item->path}/%')
-            AND frameworkid = {$item->frameworkid}";
-        if (!execute_sql($sql, false)) {
-            if ($usetransaction) {
-                rollback_sql();
-            }
-            return false;
-        }
-
-        // update items that are moving by adding $sortdiff to their sort order
-        // the WHERE clause must be like this to avoid /1% matching /10
-        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
-            SET sortorder = sortorder + {$sortdiff}
-            WHERE (path = '{$item->path}' OR path LIKE '{$item->path}/%')
-            AND frameworkid = {$item->frameworkid}";
-        if (!execute_sql($sql, false)) {
-            if ($usetransaction) {
-                rollback_sql();
-            }
-            return false;
-        }
-
+        // update the sort thread
+        $this->move_sortthread($oldsortthread, $newsortthread, $item->frameworkid);
 
         // update the item's parent ID
         $todb = new object();
@@ -1495,7 +1570,6 @@ class hierarchy {
             }
             return false;
         }
-
 
         // update the depthlevel of the item and its descendants
         // figure out how much the level will change after move
@@ -1555,45 +1629,6 @@ class hierarchy {
         }
     }
 
-    /**
-     * Updates the sort order of the rest of the items to accomodate a change
-     *
-     * @param integer $sortdiff Change to apply to the items (positive to move down, negative to move up)
-     * @param integer $after Only apply to items with a current sortorder greater than this figure
-     *
-     * @return boolean Success if update was completed
-     */
-    function reorder_remaining_items($sortdiff, $after=null, $frameworkid=null) {
-        global $CFG;
-
-        // use the hierarchies framework id if available
-        // otherwise it must be provided
-        if (empty($this->frameworkid)) {
-            if (isset($frameworkid)) {
-                $fwid = $frameworkid;
-            } else {
-                // we need a framework id
-                return false;
-            }
-        } else {
-            $fwid = $this->frameworkid;
-        }
-
-        $sql = "
-            UPDATE
-                {$CFG->prefix}{$this->shortprefix}
-            SET
-                sortorder = sortorder + {$sortdiff}
-            WHERE
-                frameworkid = {$fwid}
-        ";
-
-        if (!is_null($after)) {
-            $sql .= " AND sortorder > {$after}";
-        }
-
-        return execute_sql($sql, false);
-    }
 
     /**
      * Return the HTML to display a framework search form
@@ -1699,7 +1734,7 @@ class hierarchy {
         $count = "SELECT COUNT(hierarchy.id)";
         $from   = " FROM {$CFG->prefix}{$this->shortprefix} hierarchy LEFT JOIN {$CFG->prefix}{$this->shortprefix}_type type ON hierarchy.typeid = type.id";
         $where  = " WHERE frameworkid={$this->frameworkid}";
-        $order  = " ORDER BY sortorder";
+        $order  = " ORDER BY sortthread";
 
         if ($searchactive) {
             $headings = array('hierarchyname' => get_string('name'), 'typename' => get_string('type','hierarchy'));
@@ -2262,4 +2297,194 @@ class hierarchy {
             redirect($murl->out());
         }
     }
+
+    /*
+     * Protected methods for manipulating item sortthreads
+     */
+
+    /**
+     * Returns the next available sortthread for a new child of the item provided
+     *
+     * This will work for a parentid of 0 (e.g. new top level item), but the frameworkid
+     * must be provided, either explicitly as the second argument or loaded into the hierarchy
+     * via $this->get_framework()
+     *
+     * @param integer $parentid ID of the parent you want to create a new child for
+     * @param integer $frameworkid ID of the parent's framework (optional, unless parentid == 0)
+     *
+     * @return string sortthread for a new child of $parentid or false if it couldn't be calculated
+     *
+     */
+    protected function get_next_child_sortthread($parentid, $frameworkid = null) {
+        global $CFG;
+        // figure out the framework if not provided
+        if (!isset($frameworkid)) {
+            // try and use hierarchy's frameworkid, if not look it up based on parent
+            if (isset($this->frameworkid)) {
+                $frameworkid = $this->frameworkid;
+            } else if ($parentid != 0) {
+                if (!$frameworkid = get_field($this->shortprefix, 'frameworkid', 'id', $parentid)) {
+                    // can't determine parent's framework
+                    return false;
+                }
+            } else {
+                // we can't work out the framework based on parentid for parentid=0
+                return false;
+            }
+        }
+
+        $maxthread = get_record_sql("
+            SELECT MAX(sortthread) AS sortthread
+            FROM {$CFG->prefix}{$this->shortprefix}
+            WHERE parentid = {$parentid}
+            AND frameworkid = {$frameworkid}");
+        if (!$maxthread || strlen($maxthread->sortthread) == 0) {
+            if ($parentid == 0) {
+                // first top level item
+                return totara_int2vancode(1);
+            } else {
+                // parent has no children yet
+                return get_field($this->shortprefix, 'sortthread', 'id', $parentid, 'frameworkid', $frameworkid) . '.' . totara_int2vancode(1);
+            }
+        }
+        return $this->increment_sortthread($maxthread->sortthread);
+
+    }
+
+    /**
+     * Alter the sortthread of an item and all its children to point to a new location
+     *
+     * Required when moving or swapping hierarchy items
+     *
+     * As an example, given the items with sortthreads of:
+     *
+     * 1.2
+     * 1.2.1
+     * 1.2.1.1
+     * 1.2.1.2
+     * 1.2.2
+     *
+     * Running this:
+     *
+     * move_sortthread('1.2', '4.5.6', $fwid) would update them to:
+     *
+     * 4.5.6
+     * 4.5.6.1
+     * 4.5.6.1.1
+     * 4.5.6.1.2
+     * 4.5.6.2
+     *
+     * @param string $oldsortthread The sortthread of the item to move
+     * @param string $newsortthread The new sortthread to apply to the item
+     * @param integer $frameworkid The framework ID containing the items to move
+     *
+     * @return boolean True if the sortthreads were successfully updated
+     */
+    protected function move_sortthread($oldsortthread, $newsortthread, $frameworkid) {
+        global $CFG;
+
+        $length_sql = sql_length("'$oldsortthread'");
+        $substr_sql = sql_substr() . "(sortthread, {$length_sql} + 1)";
+        $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
+            SET sortthread = " . sql_concat("'{$newsortthread}'", $substr_sql) . "
+            WHERE frameworkid = {$frameworkid}
+            AND sortthread='{$oldsortthread}' OR sortthread LIKE '{$oldsortthread}.%'";
+
+        return execute_sql($sql, false);
+
+    }
+
+
+    /**
+     * Swap the order of two hierarchy items (and all of their children)
+     *
+     * This is designed to swap two items with the same parent only, since no other changes
+     * made to the structure of the hierarchy (e.g. depthlevel and parentid are unchanged).
+     *
+     * If you want to swap items at different levels, use {@link move_hierarchy_item()} instead
+     *
+     * Because of the way move_sortthread() is implemented, this method switches
+     * one items sortthread to a temporary location. This is done with a transaction
+     * to prevent data corruption - if the temporary state manages to get left over
+     * then this function will stop functioning and return false
+     *
+     * @param integer $itemid1 The first item to swap
+     * @param integer $itemid2 The second item to swap
+     *
+     * @return boolean True if sortthreads are successfully swapped
+     */
+    protected function swap_item_sortthreads($itemid1, $itemid2) {
+
+        // get the item details
+        if (!$items = get_records_select($this->shortprefix, "id IN ($itemid1, $itemid2)")) {
+            return false;
+        }
+
+        // both items must exist
+        if (!isset($items[$itemid1]) || !isset($items[$itemid2])) {
+            return false;
+        }
+
+        // items must belong to the same framework and have the same parent
+        if ($items[$itemid1]->frameworkid != $items[$itemid2]->frameworkid ||
+            $items[$itemid1]->parentid != $items[$itemid2]->parentid) {
+            return false;
+        }
+
+        $frameworkid = $items[$itemid1]->frameworkid;
+        $sortthread1 = $items[$itemid1]->sortthread;
+        $sortthread2 = $items[$itemid2]->sortthread;
+
+        // this indicates that a swap failed half way through, which shouldn't happen
+        // if transactions are used below
+        if (record_exists_select($this->shortprefix,
+            "frameworkid = $frameworkid AND sortthread LIKE '%swaptemp%'")) {
+
+            return false;
+        }
+
+        begin_sql();
+        $status = true;
+
+        // need an placeholder when moving things round
+        $status = $status && $this->move_sortthread($sortthread1, 'swaptemp', $frameworkid);
+        $status = $status && $this->move_sortthread($sortthread2, $sortthread1, $frameworkid);
+        $status = $status && $this->move_sortthread('swaptemp', $sortthread2, $frameworkid);
+
+        if (!$status) {
+            rollback_sql();
+            return false;
+        }
+
+        commit_sql();
+        return true;
+    }
+
+
+    /**
+     * Increment the last section of a sortthread vancode
+     *
+     * Examples:
+     * 01 -> 02
+     * 01.01 -> 01.02
+     * 04.03 -> 04.04
+     * 01.02.03 -> 01.02.04
+     *
+     * @param string $sortthread The sort thread to increment
+     * @param integer $inc Amount to increment by (default 1)
+     *
+     * @return boolean True if increment successful
+     */
+    protected function increment_sortthread($sortthread, $inc = 1) {
+        if (!$lastdot = strrpos($sortthread, '.')) {
+            // root level, just increment the whole thing
+            return totara_increment_vancode($sortthread, $inc);
+        }
+        $start = substr($sortthread, 0, $lastdot + 1);
+        $last = substr($sortthread, $lastdot + 1);
+
+        // increment the last vancode in the sequence
+        return $start . totara_increment_vancode($last, $inc);
+    }
+
 }

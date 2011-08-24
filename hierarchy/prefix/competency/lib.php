@@ -150,20 +150,20 @@ class competency extends hierarchy {
     /**
      * Delete all data associated with the competencies
      *
-     * This method is protected because it deletes the competencies, but doesn't update the
-     * sortorder of the other framework items (or use transactions).
-     * Use {@link hierarchy::delete_framework_item()} to recursively delete an item and
+     * This method is protected because it deletes the competencies, but doesn't use
+     * transactions
+     * Use {@link hierarchy::delete_hierarchy_item()} to recursively delete an item and
      * all its children
      *
      * @param array $items Array of IDs to be deleted
      *
      * @return boolean True if items and associated data were successfully deleted
      */
-    protected function _delete_framework_items($items) {
+    protected function _delete_hierarchy_items($items) {
         global $CFG;
 
         // First call the deleter for the parent class
-        if (!parent::_delete_framework_items($items)){
+        if (!parent::_delete_hierarchy_items($items)){
             return false;
         }
 
@@ -529,95 +529,6 @@ SQL;
         return $scale;
     }
 
-    /**
-     * Get competencies in a framework by parent. If a revision id is supplied,
-     * add a 'disabled' flag that will be TRUE for the competencies present in
-     * that IDP revision, and FALSE otherwise
-     *
-     * @global object $CFG
-     * @param int $parentid
-     * @param int $revisionid
-     * @return array
-     */
-    function get_items_by_parent($parentid=false, $revisionid=0) {
-        global $CFG;
-
-        // If there's no revisionid, we can use the parent class's implementation
-        if ( !$revisionid ){
-            return parent::get_items_by_parent($parentid);
-        }
-
-        if ($parentid) {
-            // Parentid supplied, do not specify frameworkid as
-            // sometimes it is not set correctly. And a parentid
-            // is enough to get the right results
-            $sql = <<<SQL
-                select
-                    c.*,
-                    (
-                        select count(*)
-                        from {$CFG->prefix}idp_revision_competency rc
-                        where
-                            rc.revision = {$revisionid}
-                            and rc.competency = c.id
-                    ) as disabled
-                from {$CFG->prefix}{$this->shortprefix} c
-                where c.parentid = {$parentid}
-                    and c.visible=1
-                order by frameworkid, sortorder, fullname
-SQL;
-            return get_records_sql($sql);
-        } else {
-            // If no parentid, grab the root node of this framework
-            return $this->get_all_root_items(false, $revisionid);
-        }
-    }
-
-
-    /*
-     * Returns all items at the root level (parentid=0) for the current framework (obtained
-     * from $this->frameworkid)
-     * If no framework is specified, returns root items across all frameworks
-     * This behaviour can also be forced by setting $all = true
-     *
-     * @global object $CFG
-     * @param int $fwid Framework ID or null for all frameworks
-     * @param boolean $all If true return root items for all frameworks even if $this->frameworkid is set
-     * @return array|false
-     */
-    function get_all_root_items($all=false, $revisionid=0) {
-        global $CFG;
-
-        // If there's no revisionid, we can use the parent class's implementation
-        if ( !$revisionid ){
-            return parent::get_all_root_items($all);
-        }
-
-        if(empty($this->frameworkid) || $all) {
-            // all root level items across frameworks
-            return $this->get_items_by_parent(0, $revisionid);
-        } else {
-            // root level items for current framework only
-            $sql = <<<SQL
-                select
-                    c.*,
-                    (
-                        select count(*)
-                        from {$CFG->prefix}idp_revision_competency rc
-                        where
-                            rc.revision = {$revisionid}
-                            and rc.competency = c.id
-                    ) as disabled
-                from {$CFG->prefix}{$this->shortprefix} c
-                where
-                    c.parentid = 0
-                    and c.frameworkid = {$this->frameworkid}
-                    and c.visible = 1
-                order by sortorder, fullname
-SQL;
-            return get_records_sql($sql);
-        }
-    }
 
     /**
      * Get scales for a competency
