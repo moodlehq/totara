@@ -381,7 +381,7 @@ class flexible_table {
         }
 
         // If it's "the first time" we 've been here, forget the previous initials filters
-        if(qualified_me() == $this->reseturl) {
+        if ($this->use_initials && qualified_me() == $this->reseturl) {
             $this->sess->i_first = '';
             $this->sess->i_last  = '';
         }
