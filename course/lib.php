@@ -3868,10 +3868,19 @@ function print_main_subcategories($parentid, $secondarycats, $secondary_item_cou
         if (!$editingon && $subcat->itemcount == 0) {
             continue;
         }
-        // @todo check capabilities and hide if necessary
+
+        // Check capabilities and hide if necessary
+        $cssclass = '';
+        if (!$subcat->visible) {
+            $subcatcontext = get_context_instance(CONTEXT_COURSECAT, $subcat->id);
+            if (!has_capability('moodle/category:viewhiddencategories', $subcatcontext)) {
+                continue;
+            }
+            $cssclass = 'class="dimmed"';
+        }
 
         if ($numdisplayed < $numbertoshow) {
-            $out .= '<li><a href="category.php?id='.$subcat->id.'">'.format_string($subcat->name).' ('.
+            $out .= '<li><a '.$cssclass.' href="category.php?id='.$subcat->id.'">'.format_string($subcat->name).' ('.
                 $subcat->itemcount.')</a></li>';
             $numdisplayed++;
         } else {
