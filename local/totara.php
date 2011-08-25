@@ -645,14 +645,20 @@ function totara_get_manager($userid, $postype=null){
     $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
 
     $userid = (int) $userid;
-    $sql = "SELECT u.*
+    $sql = "
+        SELECT
+            u.*
         FROM
             {$CFG->prefix}pos_assignment pa
-            INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
-            INNER JOIN {$CFG->prefix}user u ON ra.userid = u.id
+        INNER JOIN
+            {$CFG->prefix}role_assignments ra
+         ON pa.reportstoid = ra.id
+        INNER JOIN
+            {$CFG->prefix}user u
+         ON ra.userid = u.id
         WHERE
             pa.userid = {$userid}
-            AND pa.type = {$postype}";
+        AND pa.type = {$postype}";
 
     //Return a manager if they have one otherwise false
     return get_record_sql($sql);

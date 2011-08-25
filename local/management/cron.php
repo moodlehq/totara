@@ -59,7 +59,7 @@ class manager {
 function management_cron() {
     global $CFG;
 
-    mtrace("Updating the local management heirarchy...");
+    mtrace("Updating the local management hierarchy...");
 
     // Build the management hierarchy
     $sql = "SELECT pa.*
@@ -80,13 +80,7 @@ function management_cron() {
                 $managers[$assignment->userid] = new manager($assignment->userid);
             }
 
-            if (empty($assignment->reportstoid)) {
-                $assignment->reportstoid = 0;
-            }
-            else {
-                // Lookup the managers id
-                $assignment->reportstoid = get_field('role_assignments', 'userid', 'id', $assignment->reportstoid);
-            }
+            $assignment->reportstoid = isset($assignment->managerid) ? $assignment->managerid : 0;
 
             if (!isset($managers[$assignment->reportstoid])) {
                 $managers[$assignment->reportstoid] = new manager($assignment->reportstoid);

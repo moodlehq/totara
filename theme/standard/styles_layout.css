@@ -5176,6 +5176,15 @@ form.hierarchy-export-form {
     clear: both;
 }
 
+/**
+ * Position page in user profile styling
+ */
+body#user-positions span#positiontitle.nonempty,
+body#user-positions span#managertitle.nonempty,
+body#user-positions span#organisationtitle.nonempty {
+    margin-right: 10px;
+}
+
 /***
  *** Cohort
  ***/
@@ -5311,6 +5320,11 @@ form.hierarchy-export-form {
 div.totara-dialog .selected span.unremovable span.deletebutton {
     cursor: default;
 }
+
+span.dialog-singleselect-deletable {
+    margin-left: 5px;
+}
+
 
 /* Spacing for checkbox on the Email notifiations page  */
 div span.emailnotifycheckbox {

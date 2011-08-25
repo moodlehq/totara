@@ -5964,6 +5964,11 @@ function assign_user_position($assignment, $managerid = null) {
         $assignment->reportstoid = $raid;
     }
 
+    // If no manager set, reset reportstoid
+    if (!$managerid) {
+        $assignment->reportstoid = null;
+    }
+
     // Store the date of this assignment
     global $CFG;
     require_once($CFG->dirroot.'/local/program/lib.php');

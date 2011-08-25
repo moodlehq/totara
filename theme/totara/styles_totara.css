@@ -3422,7 +3422,19 @@ a.noscript-button {
     padding-bottom: 0.25em;
 }
 
-
+span.dialog-singleselect-deletable {
+    vertical-align: middle;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 0 0 2px;
+    overflow: hidden;
+    text-indent: -999px;
+    padding: 2px 0px;
+    width: 20px;
+    background-image: url("../../theme/totara/pix/t/delete.gif");
+    background-position: right top;
+    background-repeat: no-repeat;
+}
 
 /*****************************************************************************/
 /** Dashboards **/

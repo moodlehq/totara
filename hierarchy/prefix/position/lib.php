@@ -514,6 +514,10 @@ class position_assignment extends data_object {
             return false;
         }
 
+        if (!$this->managerid) {
+            $this->managerid = null;
+        }
+
         if (!$this->organisationid) {
             $this->organisationid = null;
         }

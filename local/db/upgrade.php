@@ -2462,62 +2462,6 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && execute_sql("update {$CFG->prefix}comp_evidence_items set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
     }
 
-
-    if ($result && $oldversion < 2011072900) {
-
-    /// Define table errorlog to be created
-        $table = new XMLDBTable('errorlog');
-
-    /// Adding fields to table errorlog
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('timeoccured', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('version', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('build', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('details', XMLDB_TYPE_TEXT, 'big', null, XMLDB_NOTNULL, null, null, null, null);
-
-    /// Adding keys to table errorlog
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-        /// Launch create table for errorlog
-        if (!table_exists($table)) {
-            $result = $result && create_table($table);
-        }
-    }
-
-    if ($result && $oldversion < 2011080100) {
-        require_once($CFG->dirroot.'/local/plan/lib.php');
-
-        // Add linktype field to pos_competencies table
-        $table = new XMLDBTable('pos_competencies');
-        $field = new XMLDBField('linktype');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
-        }
-
-        // Add linktype field to org_competencies table
-        $table = new XMLDBTable('org_competencies');
-        $field = new XMLDBField('linktype');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
-        }
-
-        $result = $result && execute_sql("update {$CFG->prefix}pos_competencies set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
-
-        $result = $result && execute_sql("update {$CFG->prefix}org_competencies set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
-
-        // Define field linktype to be added to question_truefalse
-        $table = new XMLDBTable('comp_evidence_items');
-        $field = new XMLDBField('linktype');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'iteminstance');
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
-        }
-
-        $result = $result && execute_sql("update {$CFG->prefix}comp_evidence_items set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
-    }
-
     if ($result && $oldversion < 2011082400) {
         // Delete existing columns from table "errorlog"
         $result = $result && delete_records('errorlog');
@@ -2792,6 +2736,46 @@ function xmldb_local_upgrade($oldversion) {
         if (field_exists($table, $field)) {
             $result = $result && drop_field($table, $field);
         }
+    }
+
+    if ($result && $oldversion < 2011090101) {
+        // Add "managerid" column to table "pos_assignment"
+        $table = new XMLDBTable('pos_assignment');
+        $field = new XMLDBField('managerid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED);
+
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+        // Add index to "managerid" column
+        $index = new XMLDBIndex('managerid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('managerid'));
+
+        if (!index_exists($table, $index)) {
+            $result = $result && add_index($table, $index);
+        }
+
+        // Fill column with data
+        $psql = "
+            SELECT
+                pa.id AS id,
+                ra.userid AS managerid
+            FROM
+                {$CFG->prefix}pos_assignment pa
+            INNER JOIN
+                {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
+            WHERE
+                pa.reportstoid IS NOT NULL
+        ";
+
+        // Only load position assignments with a reportstoid set and update with manager's id
+        $pos_assignments = get_recordset_sql($psql);
+        while ($pa = rs_fetch_next_record($pos_assignments)) {
+            $result = $result && update_record('pos_assignment', $pa);
+        }
+        rs_close($pos_assignments);
+
     }
 
     return $result;

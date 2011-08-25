@@ -945,6 +945,9 @@ totaraDialog_handler_treeview_multiselect.prototype._handle_update_hierarchy = f
 
 totaraDialog_handler_treeview_singleselect = function(value_element_name, text_element_id, dualpane) {
 
+    // Can the value be deleted
+    var deletable;
+
     // Can hold an externally assigned function
     var external_function;
 
@@ -970,6 +973,35 @@ totaraDialog_handler_treeview_singleselect.prototype = new totaraDialog_handler_
 totaraDialog_handler_treeview_singleselect.prototype._handle_update_hierarchy = function(parent_element) {
     this._make_selectable(parent_element);
 }
+
+/**
+ * Setup delete buttons
+ *
+ * @return  void
+ */
+totaraDialog_handler_treeview_singleselect.prototype.setup_delete = function() {
+    this.deletable = true;
+
+    var textel = $('#'+this.text_element_id);
+    var idel = $('input[name='+this.value_element_name+']');
+    var deletebutton = $('<span class="dialog-singleselect-deletable">delete</span>');
+    var handler = this;
+
+    // Setup handler
+    deletebutton.click(function() {
+        idel.val('');
+        textel.removeClass('nonempty');
+        textel.empty();
+        handler.setup_delete();
+    });
+
+    if (!textel.text().length) {
+        deletebutton.hide();
+    }
+
+    textel.append(deletebutton);
+}
+
 
 /**
  * Setup run this on first load
@@ -1041,6 +1073,16 @@ totaraDialog_handler_treeview_singleselect.prototype._save = function() {
     // Update text element
     if (this.text_element_id) {
         $('#'+this.text_element_id).text(selected_text);
+
+        if (selected_text) {
+            $('#'+this.text_element_id).addClass('nonempty');
+        } else {
+            $('#'+this.text_element_id).remClass('nonempty');
+        }
+
+        if (this.deletable) {
+            this.setup_delete();
+        }
     }
 
     if (this.external_function) {
@@ -1276,11 +1318,15 @@ totaraDialog_handler_skeletalTreeview.prototype._make_selectable = function(elem
  * @param string value_element bound to this dialog (value will be updated after dialog selection)
  * @param string text_element bound to this dialog (text will be updated after dialog selection)
  * @param function handler_extra extra code to be executed with handler
+ * @param boolean deletable Should the value be delelable?
  * @return void
  */
-totaraSingleSelectDialog = function(name, title, find_url, value_element, text_element, handler_extra) {
+totaraSingleSelectDialog = function(name, title, find_url, value_element, text_element, handler_extra, deletable) {
 
     var handler = new totaraDialog_handler_treeview_singleselect(value_element, text_element);
+    if (deletable) {
+        handler.setup_delete();
+    }
     handler.external_function = handler_extra;
 
     totaraDialogs[name] = new totaraDialog(
