@@ -5915,6 +5915,10 @@ ul.course-subcat-listing li.more {
     font-size: 100%;
 }
 
+table.categorylisting td {
+    vertical-align: top;
+}
+
 /*
  * Full width class that can be applied to elements
  */

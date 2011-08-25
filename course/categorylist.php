@@ -140,7 +140,7 @@
         $colwidth = floor(100 / $numcols) . '%';
         $table->define_columns($columns);
         $table->define_headers($headers);
-        $table->set_attribute('class', 'nostripes boxaligncenter fullwidth');
+        $table->set_attribute('class', 'nostripes boxaligncenter fullwidth categorylisting');
         $table->column_style_all('width', $colwidth);
         $table->setup();
         $tablerow = array();
