@@ -1431,7 +1431,15 @@ abstract class dp_base_component {
         return choose_from_menu($options, $name, $selected, $choose, $ajax, $chooseval, true);
     }
 
-    function get_field_updating_ajax($fieldname, $itemid){
+    /**
+     * Return javascript code for updating field via ajax
+     *
+     * @access  protected
+     * @param   string      $fieldname
+     * @param   int         $itemid
+     * @return  string
+     */
+    protected function get_field_updating_ajax($fieldname, $itemid){
         global $CFG;
         $sesskey = sesskey();
         $js = <<<JS
@@ -1550,7 +1558,29 @@ JS;
      */
     function display_approval_options($obj, $approvalstatus) {
         $name = "approve_{$this->component}[{$obj->id}]";
-        return dp_display_approval_options($name, $approvalstatus);
+
+        $options = array(
+            DP_APPROVAL_APPROVED => get_string('approve', 'local_plan'),
+            DP_APPROVAL_DECLINED => get_string('decline', 'local_plan'),
+        );
+
+        $js = $this->get_field_updating_ajax('approve', $obj->id);
+
+        return choose_from_menu(
+            $options,
+            $name,
+            $approvalstatus,
+            'choose',
+            $js,
+            0,
+            true,
+            false,
+            0,
+            '',
+            false,
+            false,
+            'approval'
+        );
     }
 
     /**

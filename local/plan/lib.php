@@ -413,31 +413,6 @@ function dp_print_workflow_diff($diff_array) {
 
 
 /**
- * Returns an plan approval picker using the specified name and selected option
- *
- * @param string $name The value to enter in the form element's name attribute
- * @param string $selected Value of the option that should be selected
- * @param bool $choose If true, picker contains a 'Choose' option
- *
- * @return string HTML to generate the picker
- */
-function dp_display_approval_options($name, $selected=DP_APPROVAL_UNAPPROVED, $choose=true) {
-    if($choose) {
-        $choosestr = 'choose';
-        $chooseval = 0;
-    } else {
-        $choosestr = null;
-        $chooseval = null;
-    }
-    $options = array(
-        DP_APPROVAL_APPROVED => get_string('approve', 'local_plan'),
-        DP_APPROVAL_DECLINED => get_string('decline', 'local_plan'),
-    );
-    return choose_from_menu($options, $name, $selected, $choosestr, '', $chooseval, true, false, 0, '', false, false, 'approval');
-}
-
-
-/**
  * Return markup for displaying a user's plans
  *
  * Optionally filter by plan status, and chose columns to display
