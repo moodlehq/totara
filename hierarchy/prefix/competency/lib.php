@@ -338,6 +338,7 @@ class competency extends hierarchy {
             WHERE
                 (r.id1 = {$item->id} OR r.id2 = {$item->id})
             AND c.id != {$item->id}
+            ORDER BY c.fullname
             "
         );
     }

@@ -179,6 +179,8 @@ class position extends hierarchy {
             $sql .= " AND c.id NOT IN({$ids})";
         }
 
+        $sql .= " ORDER BY c.fullname";
+
         return get_records_sql($sql);
     }
 
