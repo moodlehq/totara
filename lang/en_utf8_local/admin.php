@@ -55,6 +55,10 @@ $string['cron_max_time_kill'] = 'Terminate cron automatically';
 $string['cron_max_time_kill_info'] = 'If checked watching process will terminate cron if it is overdue in configured execution. For this to work you must setup cron watcher.';
 $string['cron_max_time_mail_notify_title'] = 'Warning: Cron execution overdue!';
 $string['cron_max_time_mail_notify_msg'] = 'The cron execution is taking more time than specified! Please check your server settings.';
+$string['cron_kill_mail_notify_title'] = 'Warning: Cron execution was automatically terminated!';
+$string['cron_kill_mail_notify_msg'] = 'The cron execution took longer than maximum execution time and was terminated! Please check your server settings.';
+$string['cron_kill_mail_fail_notify_title'] = 'Warning: Cron execution failed to be automatically terminated!';
+$string['cron_kill_mail_fail_notify_msg'] = 'The cron execution took longer than maximum execution time and automatic termination failed! Please check your server settings.';
 $string['cron_watcher_info'] = 'Cron Watcher';
 $string['cron_status_info'] = 'Cron Execution Status';
 
