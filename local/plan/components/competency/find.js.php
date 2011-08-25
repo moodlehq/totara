@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -22,10 +21,10 @@
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
  * @author Alastair Munro <alastair@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
-require_once '../../../../config.php';
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php');
 require_login();
 $ok_string = get_string('ok');
 $cancel_string = get_string('cancel');
@@ -93,7 +92,7 @@ totaraDialog_handler_lpCompetency = function() {
     var baseurl = '';
 }
 
-totaraDialog_handler_lpCompetency.prototype = new totaraDialog_handler_treeview_multiselect();
+totaraDialog_handler_lpCompetency.prototype = new totaraDialog_handler_preRequisite();
 
 
 /**
@@ -183,78 +182,4 @@ totaraDialog_handler.prototype._continueSave = function(url) {
 
     // Send to server
     this._dialog._request(url, this, '_update');
-}
-
-
-/**
- * Add a row to a table on the calling page
- * Also hides the dialog and any no item notice
- *
- * @param string    HTML response
- * @return void
- */
-totaraDialog_handler_lpCompetency.prototype._update = function(response) {
-
-    // Hide dialog
-    this._dialog.hide();
-
-    // Remove no item warning (if exists)
-    $('.noitems-'+this._title).remove();
-
-    //Split response into table and div
-    var new_table = $(response).filter('table');
-    var new_planbox = $(response).filter('.plan_box');
-
-    // Grab table
-    var table = $('div#content form#dp-component-update table.dp-plan-component-items');
-
-    // Check for no items msg
-    var noitems = $(response).filter('span.noitems-assigncompetency');
-
-    // Define update setting button div
-    var updatesettings = $('div#content div#dp-component-update-submit');
-
-    if (noitems.size()) {
-        // If no items, just display message
-        $('div#content form#dp-component-update div#dp-component-update-table').append(noitems);
-        // Replace table with nothing
-        table.empty();
-        // Hide update setting button when there are no items
-        updatesettings.hide();
-    } else if (table.size()) {
-        // If table found
-        table.replaceWith(new_table);
-        updatesettings.show();
-    } else {
-        // Add new table
-        $('div#content form#dp-component-update div#dp-component-update-table').append(new_table);
-        // Show update setting button there are now rows
-        updatesettings.show();
-    }
-
-    //Replace plan message box
-    $('div.plan_box').replaceWith(new_planbox);
-
-    <?php
-        require_once($CFG->dirroot.'/local/plan/development_plan.class.php');
-        $plan = new development_plan(required_param('planid', PARAM_INT), optional_param('viewas', null, PARAM_INT));
-
-        if ($plan->get_component('competency')->can_update_settings(false)) {
-    ?>
-
-    <?php if ($plan->get_component('competency')->get_setting('duedatemode') && $plan->get_component('competency')->get_setting('setduedate') >= DP_PERMISSION_ALLOW) { ?>
-        // Add duedate datepicker
-        $(function() {
-            $('[id^=duedate_competency]').datepicker(
-                {
-                    dateFormat: 'dd/mm/y',
-                    showOn: 'both',
-                    buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
-                    buttonImageOnly: true,
-                    constrainInput: true
-                }
-            );
-        });
-    <?php }
-    } ?>
 }

@@ -545,7 +545,8 @@ class dp_program_component extends dp_base_component {
 
             // Get course picker
             require_js(array(
-                $CFG->wwwroot.'/local/plan/components/program/find.js.php?planid='.$this->plan->id.'&amp;viewas='.$this->plan->viewas
+                $CFG->wwwroot.'/local/plan/component.js.php?planid='.$this->plan->id.'&amp;component=program&amp;viewas='.$this->plan->viewas,
+                $CFG->wwwroot.'/local/plan/components/program/find.js.php'
             ));
         }
     }
