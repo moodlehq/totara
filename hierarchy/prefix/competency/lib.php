@@ -332,7 +332,7 @@ class competency extends hierarchy {
             INNER JOIN
                 {$CFG->prefix}{$this->shortprefix}_framework f
              ON f.id = c.frameworkid
-            INNER JOIN
+            LEFT JOIN
                 {$CFG->prefix}{$this->shortprefix}_type it
              ON it.id = c.typeid
             WHERE
