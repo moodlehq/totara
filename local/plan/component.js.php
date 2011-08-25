@@ -3,7 +3,6 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +39,32 @@ require_login();
 $plan = new development_plan($plan_id, $view_as);
 $component = $plan->get_component($component_name);
 
+$sesskey = sesskey();
+
 ?>
+
+// Add hooks to learning plan component form elements
+$(function() {
+
+    // Update when form elements change
+    $('table.dp-plan-component-items input, table.dp-plan-component-items select').live('change', function() {
+        var data = {
+            submitbutton: "1",
+            ajax: "1",
+            sesskey: "<?php echo $sesskey; ?>"
+        };
+
+        // Get current value
+        data[$(this).attr('name')] = $(this).val();
+
+        $.post(
+            '<?php echo "{$CFG->wwwroot}/local/plan/component.php?id={$plan->id}&c={$component_name}"; ?>',
+            data,
+            totara_local_plan_update
+        );
+    });
+});
+
 
 // Create handler for the dialog
 totaraDialog_handler_preRequisite = function() {
@@ -58,9 +82,21 @@ totaraDialog_handler_preRequisite.prototype = new totaraDialog_handler_treeview_
  * @return void
  */
 totaraDialog_handler_preRequisite.prototype._update = function(response) {
-
     // Hide dialog
     this._dialog.hide();
+
+    // Update table
+    totara_local_plan_update(response);
+}
+
+
+/**
+ * Update the table on the calling page, and remove/add no items notices
+ *
+ * @param   string  HTML response
+ * @return  void
+ */
+var totara_local_plan_update = function(response) {
 
     // Remove no item warning (if exists)
     $('.noitems-assign<?php echo $component_name; ?>').remove();

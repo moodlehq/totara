@@ -271,9 +271,10 @@ abstract class dp_base_component {
      * Process component's settings update
      *
      * @access  public
+     * @param   bool    $ajax   Is an AJAX request (optional)
      * @return  void
      */
-    abstract public function process_settings_update();
+    abstract public function process_settings_update($ajax = false);
 
     /**
      * Returns true if any items from this component uses the scale given
@@ -1290,15 +1291,8 @@ abstract class dp_base_component {
      */
     function display_duedate_as_form($duedate, $name, $inputclass='', $itemid) {
         global $CFG;
-        $duedatestr = !empty($duedate) ?
-            userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
-        $js = $this->get_field_updating_ajax('duedate', $itemid);
-        if ( $js !== '' ){
-            $onchange = " onchange=\"{$js}\"";
-        } else {
-            $onchange = '';
-        }
-        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\"{$onchange} />";
+        $duedatestr = !empty($duedate) ? userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
+        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\" />";
     }
 
 
@@ -1420,39 +1414,7 @@ abstract class dp_base_component {
             $selected = ($priorityrequired) ? $defaultchooseval : 0;
         }
 
-        $ajax = $this->get_field_updating_ajax('priorities', $itemid);
-
-        return choose_from_menu($options, $name, $selected, $choose, $ajax, $chooseval, true);
-    }
-
-    /**
-     * Return javascript code for updating field via ajax
-     *
-     * @access  protected
-     * @param   string      $fieldname
-     * @param   int         $itemid
-     * @return  string
-     */
-    protected function get_field_updating_ajax($fieldname, $itemid){
-        global $CFG;
-        $sesskey = sesskey();
-        $js = <<<JS
-if ( this.value ){
-    var response;
-    response = $.post(
-        '{$CFG->wwwroot}/local/plan/component.php?id={$this->plan->id}&c={$this->component}',
-        {
-            submitbutton: "1",
-            ajax: "1",
-            sesskey: "{$sesskey}",
-            '{$fieldname}_{$this->component}[{$itemid}]': $(this).val()
-        }
-    );
-    }
-JS;
-        $js = preg_replace("/(\s+)/",' ',$js);
-        $js = htmlspecialchars($js);
-        return $js;
+        return choose_from_menu($options, $name, $selected, $choose, '', $chooseval, true);
     }
 
     /**
@@ -1558,14 +1520,12 @@ JS;
             DP_APPROVAL_DECLINED => get_string('decline', 'local_plan'),
         );
 
-        $js = $this->get_field_updating_ajax('approve', $obj->id);
-
         return choose_from_menu(
             $options,
             $name,
             $approvalstatus,
             'choose',
-            $js,
+            '',
             0,
             true,
             false,

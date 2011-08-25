@@ -24,6 +24,8 @@
  */
 
 require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/lib.php');
+
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -700,10 +702,11 @@ class dp_competency_component extends dp_base_component {
      * Process component's settings update
      *
      * @access  public
+     * @param   bool    $ajax   Is an AJAX request (optional)
      * @return  void
      */
-    public function process_settings_update() {
-        global $CFG;
+    public function process_settings_update($ajax = false) {
+        global $CFG, $USER;
 
         if (!confirm_sesskey()) {
             return 0;
@@ -716,11 +719,47 @@ class dp_competency_component extends dp_base_component {
         $duedates = optional_param('duedate_competency', array(), PARAM_TEXT);
         $priorities = optional_param('priorities_competency', array(), PARAM_INT);
         $approvals = optional_param('approve_competency', array(), PARAM_INT);
+        $evidences = optional_param('compprof_competency', array(), PARAM_INT);
         $linkedcourses = optional_param('linkedcourses', array(), PARAM_INT);
         $currenturl = qualified_me();
         $stored_records = array();
 
+        $oldrecords = get_records_list('dp_plan_competency_assign', 'planid', $this->plan->id);
+
         $status = true;
+
+        if (!empty($evidences)) {
+            // Update evidence
+            foreach ($evidences as $id => $evidence) {
+                if (!isset($oldrecords[$id])) {
+                    continue;
+                }
+                $competencyid = $oldrecords[$id]->competencyid;
+
+                if (hierarchy_can_add_competency_evidence($this->plan, $this, $this->plan->userid, $competencyid)) {
+                    // Update the competency evidence
+                    $details = new object();
+
+                    // Get user's current primary position and organisation (if any)
+                    $posrec = get_record('pos_assignment', 'userid', $this->plan->userid, 'type', POSITION_TYPE_PRIMARY, '','','id, positionid, organisationid');
+                    if ($posrec) {
+                        $details->positionid = $posrec->positionid;
+                        $details->organisationid = $posrec->organisationid;
+                        unset($posrec);
+                    }
+
+                    $details->assessorname = addslashes(fullname($USER));
+                    $details->assessorid = $USER->id;
+
+                    $result = hierarchy_add_competency_evidence($competencyid, $this->plan->userid, $evidence, $this, $details);
+
+                    if ($result) {
+                        dp_plan_item_updated($this->plan->userid, 'competency', $competencyid);
+                    }
+                }
+            }
+        }
+
         if (!empty($duedates) && $cansetduedates) {
             $badduedates = array();  // Record naughty duedates
             // Update duedates
@@ -793,7 +832,6 @@ class dp_competency_component extends dp_base_component {
 
         $status = true;
         if (!empty($stored_records)) {
-            $oldrecords = get_records_list('dp_plan_competency_assign', 'id', implode(',', array_keys($stored_records)));
             $updates = '';
             $approvals = null;
             begin_sql();
@@ -912,9 +950,16 @@ class dp_competency_component extends dp_base_component {
                         $issuesnotification .= $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED ?
                             '<br>'.get_string('noteduedateswrongformatorrequired', 'local_plan') : '<br>'.get_string('noteduedateswrongformat', 'local_plan');
                     }
-                    totara_set_notification(get_string('competenciesupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
+
+                    // Do not create notification or redirect if ajax request
+                    if (!$ajax) {
+                        totara_set_notification(get_string('competenciesupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
+                    }
                 } else {
-                    totara_set_notification(get_string('error:competenciesupdated','local_plan'), $currenturl);
+                    // Do not create notification or redirect if ajax request
+                    if (!$ajax) {
+                        totara_set_notification(get_string('error:competenciesupdated','local_plan'), $currenturl);
+                    }
                 }
             }
         }
@@ -923,7 +968,10 @@ class dp_competency_component extends dp_base_component {
             return null;
         }
 
-        redirect($currenturl);
+        // Do not redirect if ajax request
+        if (!$ajax) {
+            redirect($currenturl);
+        }
     }
 
 
@@ -1233,22 +1281,12 @@ class dp_competency_component extends dp_base_component {
         }
         $compscale = get_records_menu('comp_scale_values','scaleid',$scaledetails->scaleid,'sortorder');
 
-        $url  = "{$CFG->wwwroot}/local/plan/components/competency/update-competency-setting.php";
-        $url .= "?competencyid={$item->competencyid}&amp;planid={$this->plan->id}";
-
-        $javascript = "
-            if (this.value > 0) {
-                var response = \$.get('{$url}&amp;prof=' + $(this).val());
-                $(this).children('[option[value=\'0\']').remove();
-            }
-        ";
-
         return choose_from_menu(
             $compscale,
             "compprof_{$this->component}[{$item->id}]",
             $item->profscalevalueid,
             ($item->profscalevalueid ? '' : get_string('notset','local_reportbuilder')),
-            $javascript,
+            '',
             ($item->profscalevalueid ? '' : 0),
             true
         );

@@ -190,9 +190,10 @@ class dp_program_component extends dp_base_component {
      * Process component's settings update
      *
      * @access  public
+     * @param   bool    $ajax   Is an AJAX request (optional)
      * @return  void
      */
-    public function process_settings_update() {
+    public function process_settings_update($ajax = false) {
         // @todo validation notices, including preventing empty due dates
         // if duedatemode is required
         // @todo consider handling differently - currently all updates must
@@ -384,9 +385,16 @@ class dp_program_component extends dp_base_component {
                         $issuesnotification .= $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED ?
                             '<br>'.get_string('noteduedateswrongformatorrequired', 'local_plan') : '<br>'.get_string('noteduedateswrongformat', 'local_plan');
                     }
-                    totara_set_notification(get_string('programsupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
+
+                    // Do not create notification or redirect if ajax request
+                    if (!$ajax) {
+                        totara_set_notification(get_string('programsupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
+                    }
                 } else {
-                    totara_set_notification(get_string('programsnotupdated','local_plan'), $currenturl);
+                    // Do not create notification or redirect if ajax request
+                    if (!$ajax) {
+                        totara_set_notification(get_string('programsnotupdated','local_plan'), $currenturl);
+                    }
                 }
             }
         }
@@ -395,7 +403,10 @@ class dp_program_component extends dp_base_component {
             return null;
         }
 
-        redirect($currenturl);
+        // Do not redirect if ajax request
+        if (!$ajax) {
+            redirect($currenturl);
+        }
     }
 
     /**

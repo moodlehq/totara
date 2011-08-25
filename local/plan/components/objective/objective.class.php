@@ -168,6 +168,10 @@ class dp_objective_component extends dp_base_component {
                 TOTARA_JS_DIALOG,
                 TOTARA_JS_TREEVIEW
             ));
+
+            require_js(array(
+                $CFG->wwwroot.'/local/plan/component.js.php?planid='.$this->plan->id.'&amp;component=objective&amp;viewas='.$this->plan->viewas,
+            ));
         }
     }
 
@@ -341,9 +345,10 @@ class dp_objective_component extends dp_base_component {
      * Process component's settings update
      *
      * @access  public
+     * @param   bool    $ajax   Is an AJAX request (optional)
      * @return  void
      */
-    public function process_settings_update() {
+    public function process_settings_update($ajax = false) {
         global $CFG;
 
         if (!confirm_sesskey()) {
@@ -364,11 +369,11 @@ class dp_objective_component extends dp_base_component {
         $currentuser = $this->plan->userid;
 
         $status = true;
-        if(!empty($duedates) && $cansetduedates) {
+        if (!empty($duedates) && $cansetduedates) {
             // Update duedates
-            foreach($duedates as $id => $duedate) {
+            foreach ($duedates as $id => $duedate) {
                 // allow empty due dates
-                if($duedate == '' || $duedate == 'dd/mm/yy') {
+                if ($duedate == '' || $duedate == 'dd/mm/yy') {
                     if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
                         $duedateout = $this->plan->enddate;
                     } else {
@@ -393,10 +398,10 @@ class dp_objective_component extends dp_base_component {
             }
         }
 
-        if(!empty($priorities) && $cansetpriorities) {
-            foreach($priorities as $id => $priority) {
+        if (!empty($priorities) && $cansetpriorities) {
+            foreach ($priorities as $id => $priority) {
                 $priority = (int) $priority;
-                if(array_key_exists($id, $stored_records)) {
+                if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$id]->priority = $priority;
                 } else {
@@ -410,7 +415,7 @@ class dp_objective_component extends dp_base_component {
         }
 
         if (!empty($proficiencies) && $cansetprofs) {
-            foreach( $proficiencies as $id => $proficiency){
+            foreach ($proficiencies as $id => $proficiency){
                 $proficiency = (int) $proficiency;
                 if (array_key_exists($id, $stored_records) ){
                     // add to the existing update object
@@ -561,7 +566,7 @@ class dp_objective_component extends dp_base_component {
 
             if ($this->plan->reviewing_pending) {
                 return $status;
-            } else {
+            } elseif (!$ajax) {
                 if ($status) {
                     totara_set_notification(get_string('objectivesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
                 } else {
@@ -574,7 +579,10 @@ class dp_objective_component extends dp_base_component {
             return null;
         }
 
-        redirect($currenturl);
+        // Do not redirect if ajax request
+        if (!$ajax) {
+            redirect($currenturl);
+        }
     }
 
 
@@ -1179,22 +1187,12 @@ SQL;
                 $options[$id] = $val->name;
             }
 
-            $url  = "{$CFG->wwwroot}/local/plan/components/objective/update-objective-setting.php";
-            $url .= "?objectiveid={$ca->id}&amp;planid={$this->plan->id}&amp;userid={$this->plan->userid}";
-
-            $javascript = "
-                if (this.value > 0) {
-                    var response = \$.get('{$url}&amp;prof=' + $(this).val());
-                    $(this).children('[option[value=\'0\']').remove();
-                }
-            ";
-
             return choose_from_menu(
                 $options,
                 "proficiencies[{$ca->id}]",
                 $selected,
                 null,
-                $javascript,
+                '',
                 null,
                 true
             );

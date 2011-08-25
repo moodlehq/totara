@@ -35,6 +35,7 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 $id = required_param('id', PARAM_INT); // plan id
 $componentname = required_param('c', PARAM_ALPHA); // component type
 $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
+$ajax = optional_param('ajax', false, PARAM_BOOL); // ajax call
 
 require_login();
 
@@ -61,8 +62,16 @@ $component = $plan->get_component($componentname);
 //
 // Perform actions
 //
-if($submitted && confirm_sesskey()) {
-    $component->process_settings_update();
+if ($submitted && confirm_sesskey()) {
+    $component->process_settings_update($ajax);
+
+    // If ajax, no need to recreate entire page
+    if ($ajax) {
+        // Print list and message box so page can be updated
+        echo $component->display_list();
+        echo $plan->display_plan_message_box();
+        die();
+    }
 }
 
 $component->process_action_hook();
