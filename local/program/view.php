@@ -47,18 +47,6 @@ add_to_log(SITEID, 'program', 'view', "view.php?id={$program->id}&amp;userid={$U
 
 $adminediting = !empty($USER->categoryedit);
 
-// Construct breadcrumbs using category path
-$category = get_record('course_categories', 'id', $program->category);
-$bread = explode('/', $category->path);
-$bread_ids = substr(implode(',', $bread), 1);
-$sql = "SELECT id, name FROM {$CFG->prefix}course_categories WHERE id IN ({$bread_ids}) ORDER BY depth";
-$cat_bread = array();
-if($bread_info = get_records_sql($sql)) {
-    foreach($bread_info as $b) {
-        $cat_bread[] = array('name' => format_string($b->name), 'link' => $CFG->wwwroot . '/course/category.php?id='.$b->id, 'type' => 'misc');
-    }
-}
-
 $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
 $heading = $program->fullname;
