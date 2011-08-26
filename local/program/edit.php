@@ -90,6 +90,11 @@ if ($data = $detailsform->get_data()) {
         $data->availablefrom = prog_date_to_time($data->availablefromselector);
         $data->availableuntil = prog_date_to_time($data->availableuntilselector);
 
+        // Program has moved categories
+        if ($data->category != $program->category) {
+            prog_move_programs(array($program->id), $data->category);
+        }
+
         // Save program data
         if (!update_record('prog', $data)) {
             totara_set_notification(get_string('programupdatefail', 'local_program'), $editurl);
