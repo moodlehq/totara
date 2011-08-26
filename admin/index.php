@@ -712,6 +712,18 @@
         print_box_end();
     }
 
+    // list count of active users
+    print_box_start('generalbox adminnotice');
+    $oneyearago = time() - 60*60*24*365;
+    // See MDL-22481 for why currentlogin is used instead of lastlogin
+    $sql = "SELECT COUNT(id)
+        FROM {$CFG->prefix}user
+        WHERE currentlogin > $oneyearago";
+    $activeusers = count_records_sql($sql);
+    print_string('numberofactiveusers', 'admin', $activeusers);
+    print_box_end();
+
+
 /// Display Totara version information
     $totarainfo  = '<div class="totara-copyright">';
     $totarainfo .= '<p><img src="'.$CFG->wwwroot.'/theme/totara/images/logo_main.gif" /></p>';

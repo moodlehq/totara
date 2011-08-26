@@ -556,6 +556,7 @@ $string['notifications'] = 'Notifications';
 $string['notifyloginfailures'] = 'Email login failures to';
 $string['notifyloginthreshold'] = 'Threshold for email notifications';
 $string['notloggedinroleid'] = 'Role for visitors';
+$string['numberofactiveusers'] = '$a users have logged in to this site in the last year';
 $string['numberofstrings'] = 'Total number of strings: $a->strings<br />Missing: $a->missing ($a->missingpercent&nbsp;%%)';
 $string['numberofmissingstrings'] = 'Number of missing strings: $a';
 $string['opensslrecommended'] = 'Installing the optional OpenSSL library is highly recommended -- it enables Moodle Networking functionality.';
