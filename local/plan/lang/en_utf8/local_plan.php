@@ -697,6 +697,7 @@ $string['competencycompleted'] = 'Competency Completed';
 $string['todb_coursesettingerror'] = 'Error updating course settings';
 $string['todb_competencysettingerror'] = 'Error updating competency settings';
 $string['todb_objectivesettingerror'] = 'Error updating objective settings';
+$string['todb_programsettingerror'] = 'Error updating program settings';
 $string['todb_updatepermissionserror'] = 'Error updating template permissions';
 
 $string['scaleslocked'] = 'This template is in use and changing the scales will impact data integrity. Therefore Priority and Objective scales are locked and will not be updated when the workflow is changed.';
