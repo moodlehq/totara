@@ -475,13 +475,13 @@ if ($adminediting && has_capability('moodle/category:manage', $categorycontext))
         has_capability('moodle/course:create', $categorycontext)) {
 
     /// Print button to create a new course (no specific category)
-        print_single_button('edit.php', array('category' => $category), get_string('addnewcourse'), 'get');
+        print_single_button('edit.php', array('category' => $CFG->defaultrequestcategory), get_string('addnewcourse'), 'get');
     }
 
     if ($viewtype == 'program' &&
         has_capability('local/program:createprogram', $categorycontext)) {
     /// Print button to create a new program
-        print_single_button($CFG->wwwroot.'/local/program/add.php', array('category' => $category), get_string('addnewprogram', 'local_program'), 'get');
+        print_single_button($CFG->wwwroot.'/local/program/add.php', array('category' => $CFG->defaultrequestcategory), get_string('addnewprogram', 'local_program'), 'get');
     }
 
     echo '</div>';
