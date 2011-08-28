@@ -5697,6 +5697,9 @@ div.prog-course-launch {
 	border:0px;
     width:95%;
 }
+#local-program-edit_content .courseselector select{
+	width:480px;
+}
 
 #iconheader legend{
 	font-size:0.9em;
