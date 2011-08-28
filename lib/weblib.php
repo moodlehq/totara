@@ -6847,7 +6847,7 @@ function convert_tree_to_html($tree, $row=0) {
             }
         }
 
-        $str .= (!empty($liclass)) ? '<li class="'.$liclass.'">' : '<li>';
+        $str .= '<li class="'.$liclass.' tab-'.$tab->id.'">';
 
         if ($tab->inactive || $tab->active || ($tab->selected && !$tab->linkedwhenselected)) {
             // The a tag is used for styling

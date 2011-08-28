@@ -1170,6 +1170,20 @@ ul.tabrow1 li a:visited {
   height:65px;
 }
 
+/* Custom tabs */
+.tabrow0 li.tab-exceptions a span{
+  background:url("images/tab/right_highlight.gif") no-repeat scroll right top transparent
+}
+.tabrow0 li.tab-exceptions a{
+  background:url("images/tab/left_highlight.gif") no-repeat scroll left top transparent;
+}
+.tabrow0 li.tab-exceptions.selected a{
+  background:url("images/tab/left_white.gif") no-repeat scroll left top transparent;
+}
+.tabrow0 li.tab-exceptions.selected a span{
+  background:url("images/tab/right_white.gif") no-repeat scroll right top transparent
+}
+
 /******************************************
  * Frontpage
  *****************************************/
