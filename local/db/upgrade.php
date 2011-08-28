@@ -2528,6 +2528,15 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2011082600) {
         foreach (array('pos', 'comp', 'org') as $hierarchy) {
+
+            // skip if depth table has already been converted to type
+            $oldtable = new XMLDBTable($hierarchy.'_depth');
+            $newtable = new XMLDBTable($hierarchy.'_type');
+            if (!table_exists($oldtable) && table_exists($newtable)) {
+                notify("'{$hierarchy}' tables already upgraded. Skipping");
+                continue;
+            }
+
             // UPDATE ITEM TABLE
 
             // add depth level field to item table
