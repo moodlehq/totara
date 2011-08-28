@@ -344,6 +344,29 @@ function xmldb_local_program_upgrade($oldversion=0) {
         $result = $result && drop_field($table, $field);
     }
 
+    if ($result && $oldversion < 2011080100) {
+
+    /// Define field recurringcourseid to be added to prog_completion_history
+        $table = new XMLDBTable('prog_completion_history');
+        $field = new XMLDBField('recurringcourseid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'timecompleted');
+
+    /// Launch add field recurringcourseid
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+    }
+
+    if ($result && $oldversion < 2011080100) {
+
+    /// Define key recurringcourseid (foreign) to be added to prog_completion_history
+        $table = new XMLDBTable('prog_completion_history');
+        $key = new XMLDBKey('recurringcourseid');
+        $key->setAttributes(XMLDB_KEY_FOREIGN, array('recurringcourseid'), 'course', array('id'));
+
+    /// Launch add key recurringcourseid
+        $result = $result && add_key($table, $key);
+    }
 
     return $result;
 }

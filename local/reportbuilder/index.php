@@ -38,8 +38,6 @@
 
     admin_externalpage_setup('managereports');
 
-    set_time_limit(0);
-
     global $USER;
 
     $returnurl = $CFG->wwwroot.'/local/reportbuilder/index.php';

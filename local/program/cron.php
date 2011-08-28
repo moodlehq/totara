@@ -75,6 +75,12 @@ function program_daily_cron() {
     // if necessary
     program_cron_recurrence();
 
+    // Check if any courses in recurring programs that were not completed when
+    // the recurring course was switched to a newer version of the course
+    // have subsequently been completed and mark them as complete in the
+    // history table.
+    program_cron_recurrence_history();
+
     // Check that program user assignments are correct
     program_cron_user_assignments();
 
@@ -122,7 +128,7 @@ function program_cron_send_messages() {
 
 /**
  * Checks if the enrolenddates in any courses in recurring programs have expired
- * and therefore need ot be switched over as the new recurring course in the
+ * and therefore need to be switched over as the new recurring course in the
  * program.
  *
  * @global object $CFG
@@ -166,8 +172,70 @@ function program_cron_switch_recurring_courses() {
         // check that the next course has been created for this program
         if ($recurrence_rec = get_record('prog_recurrence', 'programid', $program->id, 'currentcourseid', $course->id)) {
 
-            // check that the next course actually exists and set it as the current course in the program
+            // check that the next course actually exists
             if ($newcourse = get_record('course', 'id', $recurrence_rec->nextcourseid)) {
+
+                // Before we set the new course in the program, we have to first save the history
+                // record of any users who have not completed the current course and notify
+                // those users that the course has been changed so that they can complete
+                // the course independently. The can view the record of their complete/incomplete
+                // recurring program history via a link in their record of learning.
+
+                // Query to retrieve all the users who have not completed the program
+                $sql = "SELECT DISTINCT(pc.userid) AS id, pc.id AS completionid, u.*
+                        FROM {$CFG->prefix}prog_completion AS pc
+                        LEFT JOIN {$CFG->prefix}user AS u ON pc.userid=u.id
+                        WHERE pc.programid = {$program->id}
+                        AND pc.status = ".STATUS_PROGRAM_INCOMPLETE."
+                        AND pc.coursesetid = 0";
+
+                // get all the users matching the query
+                if ($users = get_records_sql($sql)) {
+                    foreach($users as $user) {
+
+                        begin_sql();
+
+                        // copy the existing completion records for the user in to the
+                        // history table so that we have a record to show that the
+                        // course has not been completed
+                        $select = "programid={$program->id} AND userid={$user->id} AND coursesetid=0";
+                        if ($completion_records_history = get_records_select('prog_completion', $select)) {
+
+                            $backup_success = true;
+                            foreach($completion_records_history as $completion_record) {
+
+                                // we need to store the id of the course that belonged to this recurring program at the time
+                                // it was added to the history table so that we can report on the course history later if necessary
+                                $completion_record->recurringcourseid = $course->id;
+
+                                if ( ! $backup_success = insert_record('prog_completion_history', $completion_record)) {
+                                    rollback_sql();
+                                    break;
+                                }
+                            }
+
+                            if ($backup_success) {
+
+                                // send a message to the user to let them know that the course
+                                // has changed and that they haven't completed it
+                                $messagedata = new stdClass();
+                                $messagedata->userto = $user;
+                                $messagedata->userfrom = get_admin();
+                                $messagedata->subject = get_string('z:incompleterecurringprogramsubject', 'local_program');
+                                $messagedata->fullmessage = get_string('z:incompleterecurringprogrammessage', 'local_program');
+                                $messagedata->contexturl = $CFG->wwwroot.'/course/view.php?id='.$course->id;
+                                $messagedata->contexturlname = get_string('launchcourse', 'local_program');;
+                                $result = tm_alert_send($messagedata);
+
+                                commit_sql();
+                            } else {
+                                rollback_sql();
+                            }
+                        }
+                    }
+                }
+
+                // Now we can set the next course as the current course in the program
                 $courseset->course = $newcourse;
                 $courseset->save_set();
             }
@@ -726,7 +794,7 @@ function program_cron_exceptions_raised(&$programs) {
  * Loops through all the existing recurring programs and finds any users who
  * have completed the program and are due to re-take it. It then backs up the
  * completion history for the user and unassigns the user from the program so
- * that the user will be re-assigned the next timt the cron task to assign
+ * that the user will be re-assigned the next time the cron task to assign
  * learners is run
  *
  * @global <type> $CFG
@@ -747,6 +815,9 @@ function program_cron_recurrence() {
 
         // retrieve the recurring course set
         $courseset = $coursesets[0];
+
+        // retrieve the recurring course
+        $recurringcourse = $courseset->course;
 
         $now = time();
         $recurrencetime = $courseset->recurrencetime;
@@ -777,6 +848,11 @@ function program_cron_recurrence() {
 
                     $backup_success = true;
                     foreach($completion_records_history as $completion_record) {
+
+                        // we need to store the id of the course that belonged to this recurring program at the time
+                        // it was added to the history table so that we can report on the course history later if necessary
+                        $completion_record->recurringcourseid = $recurringcourse->id;
+
                         if ( ! $backup_success = insert_record('prog_completion_history', $completion_record)) {
                             rollback_sql();
                             break;
@@ -785,7 +861,9 @@ function program_cron_recurrence() {
 
                     $completion_delete_success = false;
                     if ($backup_success) {
-                        // delete all the previous completion records for this user in this program
+                        // delete all the previous completion records for this user in this program.
+                        // A new completion record will be added when the user is re-assigned when the
+                        // assignments cron task runs
                         if ( ! $completion_delete_success = delete_records('prog_completion', 'programid', $program->id, 'userid', $user->id)) {
                             rollback_sql();
                         }
@@ -801,6 +879,38 @@ function program_cron_recurrence() {
                             rollback_sql();
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Finds any users in the 'prog_completion_history' table who have incomplete
+ * recurring programs and checks if the course that belonged to the program at
+ * the time when the entry was added to the table has since been completed.
+ *
+ */
+function program_cron_recurrence_history() {
+
+    if (debugging()) {
+        mtrace('Checking program recurrence history');
+    }
+
+    if ($history_records = get_records('prog_completion_history', 'status', STATUS_PROGRAM_INCOMPLETE)) {
+
+        foreach($history_records as $history_record) {
+
+            if ($course = get_record('course', 'id', $history_record->recurringcourseid)) {
+
+                // create a new completion object for this course
+                $completion_info = new completion_info($course);
+
+                // check if the course is complete
+                if ($completion_info->is_course_complete($history_record->userid)) {
+                    $history_record->status = STATUS_PROGRAM_COMPLETE;
+                    $history_record->timecompleted = time();
+                    update_record('prog_completion_history', $history_record);
                 }
             }
         }

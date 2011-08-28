@@ -56,6 +56,7 @@ $string['error:usernotfound'] = 'User not found';
 $string['error:cannotviewpage'] = 'You cannot view this page';
 $string['recordoflearningcourses'] = 'Record of Learning: Courses';
 $string['recordoflearningprograms'] = 'Record of Learning: Programs';
+$string['recordoflearningprogramsrecurring'] = 'Record of Learning: Recurring programs';
 $string['recordoflearningcompetencies'] = 'Record of Learning: Competencies';
 $string['recordoflearningobjectives'] = 'Record of Learning: Objectives';
 $string['teammembers'] = 'Team Members';

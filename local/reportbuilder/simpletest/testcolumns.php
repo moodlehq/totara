@@ -32,6 +32,7 @@ if (!defined('MOODLE_INTERNAL')) {
 set_time_limit(0);
 require_once($CFG->dirroot . '/local/reportbuilder/lib.php');
 require_once($CFG->libdir . '/simpletestlib.php');
+set_time_limit(0);
 
 class columns_test extends prefix_changing_test_case {
     // test data for database
@@ -420,6 +421,11 @@ class columns_test extends prefix_changing_test_case {
         array(2, 1, 1, 0, 1, 1205445539),
     );
 
+    var $prog_completion_history_data = array(
+        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timestarted', 'timedue', 'timecompleted', 'recurringcourseid'),
+        array(2, 1, 1, 0, 1, 1205445539, 1205445539, 1205445539, 1),
+    );
+
     var $prog_user_assignment_data = array(
         array('id', 'programid', 'userid'),
         array(1, 1, 1),
@@ -531,6 +537,7 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'cohort_members', $this->cohort_members_data, $db);
         load_test_table($CFG->prefix . 'prog', $this->prog_data, $db);
         load_test_table($CFG->prefix . 'prog_completion', $this->prog_completion_data, $db);
+        load_test_table($CFG->prefix . 'prog_completion_history', $this->prog_completion_history_data, $db);
         load_test_table($CFG->prefix . 'prog_user_assignment', $this->prog_user_assignment_data, $db);
         load_test_table($CFG->prefix . 'pos_type_info_field', $this->pos_type_info_field_data, $db);
         load_test_table($CFG->prefix . 'org_type_info_field', $this->org_type_info_field_data, $db);
@@ -620,6 +627,7 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'cohort_members', $db);
         remove_test_table($CFG->prefix . 'prog', $db);
         remove_test_table($CFG->prefix . 'prog_completion', $db);
+        remove_test_table($CFG->prefix . 'prog_completion_history', $db);
         remove_test_table($CFG->prefix . 'prog_user_assignment', $db);
         remove_test_table($CFG->prefix . 'pos_type_info_field', $db);
         remove_test_table($CFG->prefix . 'org_type_info_field', $db);

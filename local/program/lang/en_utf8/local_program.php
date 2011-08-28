@@ -118,12 +118,13 @@ $string['programscomplete'] = 'Programs complete';
 $string['programsinthiscategory'] = 'Programs in this category ({$a})';
 $string['programsmovedout'] = 'Programs moved out from $a';
 $string['progress'] = 'Progress';
-$string['rolprogramsourcename'] = 'Record of Learning: Programs';
 $string['reasonforextension'] = 'Reason for extension';
 $string['repeatevery'] = 'Repeat every';
+$string['recurringprograms'] = 'Recurring programs';
 $string['requestextension'] = 'Request an extension';
 $string['requiredlearning'] = 'Required Learning';
 $string['returntoprogram'] = 'Return to program';
+$string['rolprogramsourcename'] = 'Record of Learning: Programs';
 $string['saveprogram'] = 'Save program';
 $string['saveallchanges'] = 'Save all changes';
 $string['shortname'] = 'Short name';
@@ -140,6 +141,15 @@ $string['xlearnerscurrentlyenrolled'] = 'There are $a learners currently enrolle
 $string['xsrequiredlearning'] = '$a\'s Required Learning';
 $string['youareviewingxsrequiredlearning'] = '<strong>You are viewing <a href=\"{$a->site}/user/view.php?id={$a->userid}\">{$a->name}\'s</a> required learning.</strong>';
 $string['youhaveunsavedchanges'] = 'You have unsaved changes.';
+
+// Record of learning
+$string['completiondate'] = 'Completion date';
+$string['completionstatus'] = 'Status';
+$string['coursenamelink'] = 'Course name';
+$string['incomplete'] = 'Not complete';
+$string['recurringprogramhistory'] = 'History record for recurring program $a';
+$string['recurringprogramhistoryfor'] = 'History record for $a->username for recurring program $a->progname';
+$string['viewrecurringprogramhistory'] = 'View history';
 
 //Instruction text
 $string['requiredlearninginstructions'] = 'Your required learning is shown below.';
@@ -430,3 +440,6 @@ $string['moveselectedprogramsto'] = 'Move selected programs to...';
 $string['programidnotfound'] = 'Program does not exist for ID : $a';
 $string['therearenoprogramstodisplay'] = 'There are no programs to display.';
 
+// Alert messages
+$string['z:incompleterecurringprogramsubject'] = 'Incomplete recurring course';
+$string['z:incompleterecurringprogrammessage'] = 'A course in a recurring program that you are enrolled on has reached it\'s end date but you have not completed the course. This course must be completed in order to meet the requirements of the program.';

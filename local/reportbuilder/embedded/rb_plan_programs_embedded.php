@@ -52,6 +52,11 @@ class rb_plan_programs_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'program',
+                'value' => 'recurring',
+                'heading' => 'Recurring',
+            ),
+            array(
+                'type' => 'program',
                 'value' => 'timedue',
                 'heading' => 'Due/Status',
             ),
