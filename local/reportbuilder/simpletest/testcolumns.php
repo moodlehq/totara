@@ -108,7 +108,7 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of user table
     var $user_data = array(
-        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt', 'lastlogin', 'phone1', 'institution', 'department', 'address', 'city', 'country'),
+        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt', 'currentlogin', 'phone1', 'institution', 'department', 'address', 'city', 'country'),
         array(2, 'admin', 'Admin', 'User', 'ID2', 0, 'alt', 0, 'phone', 'institution', 'department', 'address', 'city', 'nz'),
     );
 

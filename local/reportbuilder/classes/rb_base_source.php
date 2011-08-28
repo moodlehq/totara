@@ -869,7 +869,8 @@ abstract class rb_base_source {
             'user',
             'lastlogin',
             get_string('userlastlogin', 'local_reportbuilder'),
-            "$join.lastlogin",
+            // See MDL-22481 for why currentlogin is used instead of lastlogin
+            "$join.currentlogin",
             array(
                 'joins' => $join,
                 'displayfunc' => 'nice_date',
