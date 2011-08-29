@@ -4169,19 +4169,22 @@ table.topics tr.section span.topicnumber {
 div#dp-component-update-table table {
 
 }
-a.comments-icon {
-	position: relative;
-	display: block;
-}
-a.comments-icon span.comments-count{
-	padding: 2px;
-    position: absolute;
-    text-align: center;
-    width: 23px;
-}
 
-a.comments-icon img{
-	position: absolute;
+/* display comment count on top of speech bubble image */
+a.comments-icon-some,
+a.comments-icon-none {
+    display: block;
+    width: 27px;
+    height: 25px;
+    padding: 0px;
+    text-align: center;
+    line-height: 21px;
+}
+a.comments-icon-some {
+    background-image: url('pix/t/comments.gif');
+}
+a.comments-icon-none {
+    background-image: url('pix/t/comments-none.gif');
 }
 
 .comment-list li {

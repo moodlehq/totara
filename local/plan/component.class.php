@@ -1163,19 +1163,13 @@ abstract class dp_base_component {
             $latestcomment = $comment->get_latest_comment();
             $tooltip = get_string('latestcommentby', 'local_plan').' '.$latestcomment->firstname.' '.get_string('on', 'local_plan').' '.userdate($latestcomment->ctimecreated).': '.format_string(substr($latestcomment->ccontent, 0, 50));
             $tooltip = format_string(strip_tags($tooltip));
-            return '<a href="'.$CFG->wwwroot.'/local/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
-                class="comments-icon" title="'.$tooltip.'">
-                    <img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/t/comments.gif" title="'.$tooltip.'" alt="" />
-                    <span class="comments-count" title="'.$tooltip.'">'.$count.'</span>
-                </a>';
+            $commentclass = 'comments-icon-some';
         } else {
             $tooltip = get_string('nocomments', 'local_plan');
-            return '<a href="'.$CFG->wwwroot.'/local/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
-                class="comments-icon" title="'.$tooltip.'">
-                    <img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/t/comments-none.gif" title="'.$tooltip.'" alt=""/>
-                    <span class="comments-count" title="'.$tooltip.'">0</span>
-                </a>';
+            $commentclass = 'comments-icon-none';
         }
+        return '<a href="'.$CFG->wwwroot.'/local/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
+                class="' . $commentclass . '" title="'.$tooltip.'">'.$count.'</a>';
     }
 
 
