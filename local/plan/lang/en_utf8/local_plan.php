@@ -315,7 +315,7 @@ $string['autocompleteplantext'] = 'Automatically set approved plans to complete 
 
 $string['manualcomplete'] = 'Manually, by a user with \'complete\' permission';
 $string['autobyitems'] = 'Automatically, when all items have been completed';
-$string['autobyplandate'] = 'Automatically, when the plan completion date has past';
+$string['autobyplandate'] = 'Automatically, when the plan completion date has passed';
 
 $string['planmarkedcomplete'] = 'Plan marked as complete';
 
