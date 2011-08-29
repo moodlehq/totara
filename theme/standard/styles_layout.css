@@ -5945,3 +5945,7 @@ div.center-buttons {
 .block_addtoplan select#block_addtoplan_selector {
     width: 160px;
 }
+
+h2.reactivateheading {
+    text-align: center;
+}

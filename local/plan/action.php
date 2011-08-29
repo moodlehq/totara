@@ -256,33 +256,60 @@ if (!empty($complete)) {
 /// Reactivate
 ///
 if (!empty($reactivate)) {
+    require_once($CFG->dirroot.'/local/plan/reactivate_form.php');
+    require_once($CFG->dirroot . '/local/js/lib/setup.php');
+
+    local_js(array(
+        TOTARA_JS_DATEPICKER
+    ));
+
     if ($plan->get_setting('completereactivate') >= DP_PERMISSION_ALLOW) {
-        $confirm = optional_param('confirm', 0, PARAM_BOOL);
+        $form = new plan_reactivate_form(null, compact('id','referer'));
 
-        if (!$confirm && empty($ajax)) {
-            print_header_simple();
-            $confirmurl = new moodle_url(qualified_me());
-            $confirmurl->param('confirm', 'true');
-            $confirmurl->param('referer', $referer);
-            $strcomplete = get_string('checkplanreactivate', 'local_plan', $plan->name);
-            notice_yesno(
-                "{$strcomplete}<br><br>",
-                $confirmurl->out(),
-                $referer
-            );
+        if ($form->is_cancelled()) {
+            redirect($referer);
+        }
 
-            print_footer();
-            exit;
-        } else {
-            // Set plan status to complete
-            if (!$plan->reactivate_plan()) {
+        if ($data = $form->get_data()) {
+
+            $new_date = (isset($data->enddate)) ? dp_convert_userdate($data->enddate) : null;
+
+            $referer = $data->referer;
+
+            // Reactivate plan
+            if (!$plan->reactivate_plan($new_date)) {
                 totara_set_notification(get_string('planreactivatefail', 'local_plan', $plan->name), $referer);
-                //$plan->send_completion_alert();
             } else {
                 add_to_log(SITEID, 'plan', 'reactivated', "view.php?id={$plan->id}", $plan->name);
                 totara_set_notification(get_string('planreactivatesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
             }
         }
+
+        print_header_simple();
+        print_heading(get_string('planreactivate', 'local_plan'), '', 2, 'reactivateheading');
+
+        $form->display();
+
+        print <<<HEREDOC
+                <script type="text/javascript">
+
+                $(function() {
+                    $('#id_enddate').datepicker(
+                        {
+                            dateFormat: 'dd/mm/yy',
+                            showOn: 'both',
+                            buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
+                            buttonImageOnly: true,
+                            constrainInput: true
+                        }
+                    );
+                });
+                </script>
+HEREDOC;
+
+        print_footer();
+        exit;
+
     } else {
         if (empty($ajax)) {
             totara_set_notification(get_string('nopermission', 'local_plan'), $referer);

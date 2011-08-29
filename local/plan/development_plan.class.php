@@ -1708,10 +1708,11 @@ class development_plan {
     /**
      * Reactivates a completed plan
      *
+     * @param  int $enddate When reactivating a plan a new enddate for the plan can be optionally set
      * @access public
      * @return bool
      */
-    public function reactivate_plan() {
+    public function reactivate_plan($enddate=null) {
         global $USER;
 
         begin_sql();
@@ -1719,6 +1720,10 @@ class development_plan {
         $plan_todb = new stdClass;
         $plan_todb->id = $this->id;
         $plan_todb->timecompleted = null;
+        if (!empty($enddate)) {
+            $plan_todb->enddate = $enddate;
+        }
+
         if (!update_record('dp_plan', $plan_todb)) {
             rollback_sql();
             return false;

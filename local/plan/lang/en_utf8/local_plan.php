@@ -613,12 +613,15 @@ $string['checkplancomplete'] = 'Are you sure you want to mark the plan \"$a\" as
 $string['plancompletesuccess'] = 'Successfully completed plan $a';
 $string['plancompletefail'] = 'There was a problem while trying to mark plan \"$a\" as complete';
 $string['planreactivate'] = 'Reactivate plan';
-$string['checkplanreactivate'] = 'Are you sure you want to reactivate the plan \"$a\"?<br /><br />Are you sure you want to proceed?';
+$string['checkplanreactivate'] = 'Are you sure you want to reactivate the plan \"$a\"?<br />';
 $string['planreactivatesuccess'] = 'Successfully reactivated plan $a';
 $string['planreactivatefail'] = 'There was a problem while trying to reactivate plan \"$a\"';
 $string['cannotdelete_inuse'] = 'You cannot delete this template because there are plans using it.';
 $string['planapprovalrequested'] = 'Plan approval requested for <a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
 $string['requestremoval'] = 'Request removal';
+$string['reactivate'] = 'Reactivate';
+$string['error:reactivatedatebeforenow'] = 'Error, the new end date specified is before now.';
+$string['error:planhistory'] = 'Error, plan history not found';
 
 
 //// Messaging
