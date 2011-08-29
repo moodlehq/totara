@@ -2049,10 +2049,8 @@ function print_category_info($category, $depth, $showcourses = false) {
     global $CFG;
     static $strallowguests, $strrequireskey, $strsummary;
 
-    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
     require_once($CFG->dirroot.'/local/icon/course_icon.class.php');
 
-    $category_icon = new coursecategory_icon();
     $course_icon = new course_icon();
 
     if (empty($strsummary)) {
@@ -2089,7 +2087,7 @@ function print_category_info($category, $depth, $showcourses = false) {
             print_spacer(10, $indent);
             echo '</td>';
         }
-        echo '<td valign="top" class="category image">'.$category_icon->display($category, 'small').'</td>';
+        echo '<td valign="top" class="category image">&nbsp;</td>';
         echo '<td class="category name">';
         echo '<a '.$catlinkcss.' href="'.$CFG->wwwroot.'/course/category.php?id='.$category->id.'">'. format_string($category->name).'</a>';
         echo '</td>';
@@ -3917,16 +3915,11 @@ function course_cmp_by_count($a, $b) {
 function print_category($category, $highlightterms) {
     global $CFG;
 
-    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
-
-    $category_icon = new coursecategory_icon();
-
     $catlinkcss = $category->visible ? '' : ' class="dimmed" ';
 
     echo '<div class="coursebox clearfix">';
     echo '<div class="info">';
     echo '<div class="name">';
-    echo $category_icon->display($category, 'small');
     echo "<a {$catlinkcss} href=\"{$CFG->wwwroot}/course/index.php?highlightid={$category->id}#category{$category->id}\">";
     echo highlight($highlightterms, format_string($category->name));
     echo '</a>';

@@ -4,7 +4,6 @@
     require_once("../config.php");
     require_once("lib.php");
     require_once($CFG->dirroot."/local/program/lib.php"); // required to display lists of programs
-    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
 
     $categoryedit = optional_param('categoryedit', -1, PARAM_BOOL);
     $viewtype = optional_param('viewtype', '', PARAM_TEXT);
@@ -40,8 +39,6 @@
 
     // determine how to display this page
     $adminediting = !empty($USER->categoryedit);
-
-    $category_icon = new coursecategory_icon();
 
 /// Print headings
     $numcategories = count_records('course_categories');
@@ -160,8 +157,8 @@
                 }
 
                 $tablerow[] = '<h3><a '.$catlinkcss.' href="category.php?id='.$topcat->id.'">'.
-                    $category_icon->display($topcat, 'small') .format_string($topcat->name).' ('.$item_count.')</a></h3>' .
-                        print_main_subcategories($topcat->id, $secondarycats, $secondary_item_counts, $adminediting);
+                    format_string($topcat->name).' ('.$item_count.')</a></h3>' .
+                    print_main_subcategories($topcat->id, $secondarycats, $secondary_item_counts, $adminediting);
             }
         }
         // output the last row

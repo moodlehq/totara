@@ -56,7 +56,6 @@ $string['course_completion'] = 'השלמת קורס';
 $string['coursecategory'] = 'קטיגוריית קורס';
 $string['coursecategoryid'] = 'קוד קטיגוריית קורס';
 $string['coursecategorylinked'] = 'קטיגוריית קורס (מקושר לקטיגוריה)';
-$string['coursecategorylinkedicon'] = 'קטיגוריית קורס (מקושר לקטיגוריה עם סמליל)';
 $string['courseicon'] = 'סמליל קורס';
 $string['courseid'] = 'קוד קורס';
 $string['courseidnumber'] = 'מספר קוד קורס';

@@ -476,18 +476,6 @@ abstract class rb_base_source {
         return "<a $cssclass href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\">{$category}</a>";
     }
 
-    // convert a course name into a link to that course and shows
-    // the course icon next to it
-    function rb_display_link_course_category_icon($category, $row) {
-        global $CFG;
-        $catid = $row->cat_id;
-        $caticon = $row->cat_icon;
-        if($catid == 0 || !$catid) {
-            return '';
-        }
-        return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($caticon)."&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\" />{$category}</a>";
-    }
-
 
     /**
      * Generate the plan title with a link to the plan
@@ -1389,22 +1377,6 @@ abstract class rb_base_source {
                     'displayfunc' => 'link_course_category',
                     'defaultheading' => get_string('category', 'local_reportbuilder'),
                     'extrafields' => array('cat_id' => "$catjoin.id", 'cat_visible' => "$catjoin.visible")
-                )
-        );
-        $columnoptions[] = new rb_column_option(
-                'course_category',
-                'namelinkicon',
-                get_string('coursecategorylinkedicon', 'local_reportbuilder'),
-                "$catjoin.name",
-                array(
-                    'joins' => $catjoin,
-                    'displayfunc' => 'link_course_category_icon',
-                    'defaultheading' => get_string('category', 'local_reportbuilder'),
-                    'extrafields' => array(
-                        'cat_id' => "$catjoin.id",
-                        'cat_icon' => "$catjoin.icon",
-                        'cat_visible' => "$catjoin.visible"
-                    )
                 )
         );
         $columnoptions[] = new rb_column_option(

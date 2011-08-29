@@ -54,7 +54,6 @@ $string['course_completion'] = 'Kursabschluss';
 $string['coursecategory'] = 'Kurskategorie';
 $string['coursecategoryid'] = 'Kurskategorie-ID';
 $string['coursecategorylinked'] = 'Kurskategorie (verlinkt zu Kategorie)';
-$string['coursecategorylinkedicon'] = 'Kurskategorie (verlinkt zu Kategorie mit Symbol)';
 $string['courseicon'] = 'Kurssymbol';
 $string['courseid'] = 'Kurs-ID';
 $string['courseidnumber'] = 'Kurs-ID Nummer';

@@ -5,7 +5,6 @@ require_once(dirname(dirname(__FILE__))."/config.php");
 require_once("{$CFG->dirroot}/course/lib.php");
 require_once("{$CFG->dirroot}/local/program/lib.php");
 require_once($CFG->dirroot.'/local/icon/course_icon.class.php');
-require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
 require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
 
 
@@ -874,8 +873,6 @@ if ($results['categories']) {
         $str->roles    = get_string('assignroles', 'role');
         $str->spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" /> ';
 
-        $category_icon = new coursecategory_icon();
-
         foreach ($results['categories'] as $cat) {
             ++$i;
             $rowclass = $i % 2 ? 'r0' : 'r1';
@@ -886,7 +883,6 @@ if ($results['categories']) {
 
             echo "<tr class=\"{$rowclass}\">\n";
             echo "<td class=\"cell c0\">";
-            echo $category_icon->display($cat, 'small');
             echo "<a $linkcss href=\"{$CFG->wwwroot}/course/index.php?highlightid={$cat->id}#category{$cat->id}\">"
                 . highlight($search, format_string($cat->name)) . "</a></td>\n";
             echo "<td class=\"cell c1\">";

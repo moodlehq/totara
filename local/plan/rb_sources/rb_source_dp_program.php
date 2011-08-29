@@ -313,7 +313,7 @@ class rb_source_dp_program extends rb_base_source {
             ),
         array(
                 'type' => 'course_category',
-                'value' => 'namelinkicon',
+                'value' => 'namelink',
             ),
         );
         return $defaultcolumns;

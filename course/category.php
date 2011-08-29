@@ -7,7 +7,6 @@
     require_once("lib.php");
     require_once($CFG->dirroot."/local/program/lib.php"); // required to display lists of programs
     require_once($CFG->dirroot.'/local/icon/course_icon.class.php');
-    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
     require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
 
     $id = required_param('id', PARAM_INT);          // Category id
@@ -107,7 +106,6 @@
     }
 
     $course_icon = new course_icon();
-    $category_icon = new coursecategory_icon();
     $program_icon = new program_icon();
 
 /// Print headings
@@ -426,7 +424,7 @@
                 }
 
                 $tablerow[] = '<a '.$catlinkcss.' href="category.php?id='.$subcategory->id.'">'.
-                     $category_icon->display($subcategory, 'small') .format_string($subcategory->name).' ('.$item_count.')</a>';
+                     format_string($subcategory->name).' ('.$item_count.')</a>';
             }
         }
         // add the last row

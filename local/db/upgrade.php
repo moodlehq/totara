@@ -2785,5 +2785,14 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2011082601) {
+        // remove unwanted icon field
+        $table = new XMLDBTable('course_categories');
+        $field = new XMLDBField('icon');
+        if (field_exists($table, $field)) {
+            $result = $result && drop_field($table, $field);
+        }
+    }
+
     return $result;
 }

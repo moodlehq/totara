@@ -853,7 +853,6 @@ function prog_print_category_info($category, $depth, $showprograms = false) {
     global $CFG;
     static $strallowguests, $strrequireskey, $strsummary;
 
-    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
     require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
 
     if (empty($strsummary)) {
@@ -882,7 +881,6 @@ function prog_print_category_info($category, $depth, $showprograms = false) {
             'p.id,p.sortorder,p.visible,p.fullname,p.shortname,p.summary,p.icon');
 
     if ($showprograms and $programcount) {
-        $category_icon = new coursecategory_icon();
 
         echo '<tr>';
 
@@ -894,7 +892,7 @@ function prog_print_category_info($category, $depth, $showprograms = false) {
             echo '</td>';
         }
 
-        echo '<td valign="top" class="category image">'.$category_icon->display($category, 'small').'</td>';
+        echo '<td valign="top" class="category image">&nbsp;</td>';
         echo '<td class="category name">';
         echo '<a '.$catlinkcss.' href="'.$CFG->wwwroot.'/course/category.php?id='.$category->id.'">'. format_string($category->name).'</a>';
         echo '</td>';
