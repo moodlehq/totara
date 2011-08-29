@@ -311,6 +311,14 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
             return false;
         }
 
+        // remove the index first
+        $table = new XMLDBTable('report_builder_settings');
+        $index = new XMLDBIndex('reportid-type-name');
+        $index->setAttributes(XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
+        if (index_exists($table, $index)) {
+            $result = $result && drop_index($table, $index);
+        }
+
         // shorten the fields to a maximum of 100 characters
         $table = new XMLDBTable('report_builder_settings');
         $field = new XMLDBField('type');
@@ -320,6 +328,14 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         $field = new XMLDBField('name');
         $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
         $result = $result && change_field_precision($table, $field);
+
+        // re-add the index
+        $table = new XMLDBTable('report_builder_settings');
+        $index = new XMLDBIndex('reportid-type-name');
+        $index->setAttributes(XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
+        if (!index_exists($table, $index)) {
+            $result = $result && add_index($table, $index);
+        }
     }
 
     return $result;

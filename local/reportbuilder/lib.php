@@ -3589,3 +3589,66 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
 function lowerfirst($string) {
     return strtolower(substr($string, 0, 1)) . substr($string, 1);
 }
+
+/**
+ * This function is run when reportbuilder is first installed
+ *
+ * Add code here that should be run when the module is first installed
+ */
+function local_reportbuilder_install() {
+    global $CFG;
+
+    // hack to get cron working via admin/cron.php
+    // at some point we should create a local_modules table
+    // based on data in version.php
+    set_config('local_reportbuilder_cron', 60);
+
+    // set global export options to include all current
+    // formats except fusion tables (excel, csv and ods)
+    set_config('exportoptions', 7, 'reportbuilder');
+
+    // create stored procedure for aggregating text by concatenation
+    // mysql supports by default. The code below adds postgres support
+    // see sql_group_concat() function for usage
+    if($CFG->dbfamily == 'postgres') {
+        $sql = '
+            CREATE TYPE tp_concat AS (data TEXT[], delimiter TEXT);
+            CREATE OR REPLACE FUNCTION group_concat_iterate(_state
+                tp_concat, _value TEXT, delimiter TEXT, is_distinct boolean)
+                RETURNS tp_concat AS
+                $BODY$
+                SELECT
+                CASE
+                    WHEN $1 IS NULL THEN ARRAY[$2]
+                    WHEN $4 AND $1.data @> ARRAY[$2] THEN $1.data
+                    ELSE $1.data || $2
+                        END,
+                        $3
+                        $BODY$
+                        LANGUAGE \'sql\' VOLATILE;
+
+            CREATE OR REPLACE FUNCTION group_concat_finish(_state tp_concat)
+                RETURNS text AS
+                $BODY$
+                SELECT array_to_string($1.data, $1.delimiter)
+                $BODY$
+                LANGUAGE \'sql\' VOLATILE;
+
+            DROP AGGREGATE IF EXISTS group_concat(text, text, boolean);
+            CREATE AGGREGATE group_concat(text, text, boolean) (SFUNC =
+                group_concat_iterate, STYPE = tp_concat, FINALFUNC =
+                group_concat_finish)';
+
+
+        return execute_sql($sql);
+        /* To undo this, use the following:
+         * DROP AGGREGATE group_concat(text, text, boolean);
+         * DROP FUNCTION group_concat_finish(tp_concat);
+         * DROP FUNCTION group_concat_iterate(tp_concat, text, text, boolean);
+         * DROP TYPE tp_concat;
+         */
+    }
+
+    return true;
+}
+

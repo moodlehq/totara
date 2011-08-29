@@ -829,7 +829,21 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_type($table, $field);
     }
 
-    if ($result && $oldversion < 2010012800) {
+    if ($result && $oldversion < 2010012700) {
+        // this flag was added here on 29/08/2011, therefore any site that has
+        // already upgraded past this point will never set the flag.
+        //
+        // So if the flag is set, we know it must be either a new install, or
+        // an install so old that no report builder content was ever installed.
+        // In both these cases we can skip all the messy report builder upgrades
+        // and do a fresh install via local/reportbuilder/db/install.xml
+        //
+        // if this flag is not set, we need to follow the existing upgrade path
+        // as the site has previously upgraded past this point
+        set_config('skiplegacyupgrades', true, 'reportbuilder');
+    }
+
+    if ($result && $oldversion < 2010012800 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
     /// Create table learning_report
         $table = new XMLDBTable('learning_report');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
@@ -844,7 +858,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
-    if ($result && $oldversion < 2010020500) {
+    if ($result && $oldversion < 2010020500 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
     // increase space for restriction data
         $table = new XMLDBTable('learning_report');
         $field = new XMLDBField('restriction');
@@ -854,7 +868,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
-    if ($result && $oldversion < 2010020800) {
+    if ($result && $oldversion < 2010020800 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         // rename learning_report to report_builder
         $table = new XMLDBTable('learning_report');
         $result = $result && rename_table($table, 'report_builder');
@@ -875,7 +889,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
-    if ($result && $oldversion < 2010021701) {
+    if ($result && $oldversion < 2010021701 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         // add hidden field to report builder table
         $table = new XMLDBTable('report_builder');
         $field = new XMLDBField('hidden');
@@ -1177,13 +1191,15 @@ function xmldb_local_upgrade($oldversion) {
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('fieldid'));
         $result = $result && add_index($table, $index);
 
-        // lots of changes to report builder db structure
-        totara_migrate_old_report_builder_reports($result);
+        if (!get_config('reportbuilder', 'skiplegacyupgrades')) {
+            // lots of changes to report builder db structure
+            totara_migrate_old_report_builder_reports($result);
+        }
 
     }
 
 
-    if ($result && $oldversion < 2010051100) {
+    if ($result && $oldversion < 2010051100 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         $table = new XMLDBTable('report_builder_saved');
         if(!table_exists($table)) {
 
@@ -1291,18 +1307,16 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
-    if ($result && $oldversion < 2010072601) {
+    if ($result && $oldversion < 2010072601 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
     /// Create table report_heading_items
         $table = new XMLDBTable('report_builder_settings');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('reportid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('value', XMLDB_TYPE_CHAR, '255', null, null, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        if (!$CFG->dbtype=='mysql') { //see Catalyst Bugzilla: 6004 - temporary hack to allow mysql install.
-            $table->addIndexInfo('reportid-type-name', XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
-        }
+        $table->addIndexInfo('reportid-type-name', XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
         $result = $result && create_table($table);
 
         // migrate content settings from report_builder table
@@ -1631,7 +1645,7 @@ function xmldb_local_upgrade($oldversion) {
     }
 
     /// add description field to report_builder table
-    if ($result && $oldversion < 2010080200) {
+    if ($result && $oldversion < 2010080200 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         $table = new XMLDBTable('report_builder');
         $field = new XMLDBField('description');
         $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
@@ -1640,7 +1654,7 @@ function xmldb_local_upgrade($oldversion) {
 
     // update existing reports to use new versions of
     // position and organisation filters (with dialogs)
-    if ($result && $oldversion < 2010081000) {
+    if ($result && $oldversion < 2010081000 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         if($filters = get_records_select('report_builder_filters',
             "(type = 'user' AND
              (value = 'organisationid' OR value = 'positionid') ) OR
@@ -1664,11 +1678,11 @@ function xmldb_local_upgrade($oldversion) {
 
     // set global export options to include all current
     // formats (excel, csv and ods)
-    if ($result && $oldversion < 2010081200) {
+    if ($result && $oldversion < 2010081200 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         set_config('exportoptions', 7, 'reportbuilder');
     }
 
-    if ($result && $oldversion < 2010081900) {
+    if ($result && $oldversion < 2010081900 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         // apply some database changes to get db in sync with install.xml version
 
         // remove not null from heading
@@ -2078,7 +2092,7 @@ function xmldb_local_upgrade($oldversion) {
     }
 
     // fix for bug introduced in v1.0.3
-    if ($result && $oldversion < 2011032801) {
+    if ($result && $oldversion < 2011032801 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         $table = new XMLDBTable('report_builder_filters');
         $field = new XMLDBField('ispublic');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
