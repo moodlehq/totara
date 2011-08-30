@@ -349,7 +349,12 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
             var searchterm = '<?php echo $searchterm ?>';
         url += '&action=' + $('#selectionaction option:selected').val();
         url += '&search=' + searchterm;
-        this._request(url, handler, '_update');
+        this._request(url, dialog, '_update', searchterm);
+    }
+
+    dialog._update = function(response, searchterm) {
+        this.hide();
+        window.location.href = '<?php echo $CFG->wwwroot . '/local/program/exceptions.php?id=' . $id . '&search='; ?>'+searchterm;
     }
 
     totaraDialogs['applyaction'] = dialog;
