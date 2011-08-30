@@ -740,6 +740,36 @@ class dp_program_component extends dp_base_component {
 
 
     /**
+     * Gets all plans containing specified program
+     *
+     * @param int $programid
+     * @param int $userid
+     * @return array|false $plans ids of plans with specified program
+     */
+    public static function get_plans_containing_item($programid, $userid) {
+        global $CFG;
+        $sql = "SELECT DISTINCT
+                planid
+            FROM
+                {$CFG->prefix}dp_plan_program_assign pa
+            JOIN
+                {$CFG->prefix}dp_plan p
+              ON
+                pa.planid = p.id
+            WHERE
+                pa.programid = {$programid}
+            AND
+                p.userid = {$userid}";
+
+        if (!$plans = get_records_sql($sql)) {
+            // There are no plans with this program
+            return false;
+        }
+
+        return array_keys($plans);
+    }
+
+    /**
      * Reactivates item when re-activating a plan
      *
      * @return bool $success

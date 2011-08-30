@@ -1315,6 +1315,8 @@ function prog_eventhandler_program_unassigned($eventdata) {
  * @return bool Success status
  */
 function prog_eventhandler_program_completed($eventdata) {
+    global $CFG;
+    require_once($CFG->dirroot.'/local/plan/lib.php');
 
     $program = $eventdata->program;
     $userid = $eventdata->userid;
@@ -1330,6 +1332,10 @@ function prog_eventhandler_program_completed($eventdata) {
             }
         }
     }
+
+    // auto plan completion hook
+    dp_plan_item_updated($userid, 'program', $program->id);
+
     return true;
 }
 
