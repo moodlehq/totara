@@ -83,9 +83,11 @@
     if ($SESSION->viewtype == 'course') {
         $strheading = get_string('courses');
         $stralllink = get_string('viewallcourses');
+        $strnoitems = get_string('therearenocoursestodisplay');
     } else {
         $strheading = get_string('programs', 'local_program');
         $stralllink = get_string('viewallprograms', 'local_program');
+        $strnoitems = get_string('therearenoprogramstodisplay', 'local_program');
     }
 
     print_heading($strheading, '', 1);
@@ -110,7 +112,6 @@
     }
 
     print_totara_search('', false, $SESSION->viewtype, 0);
-    echo '<p><a href="'. $CFG->wwwroot . '/course/search.php?category=0&amp;viewtype='.$SESSION->viewtype.'&amp;search=">'.$stralllink.'</a></p>';
 
     $topcats = get_records('course_categories', 'parent', 0);
 
@@ -123,7 +124,6 @@
         $secondary_item_counts = 0;
     }
 
-    print_heading(get_string('browsebycategory'), '', 3);
 
 /// Print out all the top-level categories
     if ($topcats) {
@@ -168,7 +168,14 @@
         if (count($tablerow) > 0) {
             $table->add_data($tablerow);
         }
-        $table->print_html();
+        if (!empty($table->data)) {
+            echo '<p><a href="'. $CFG->wwwroot . '/course/search.php?category=0&amp;viewtype='.$SESSION->viewtype.'&amp;search=">'.$stralllink.'</a></p>';
+            print_heading(get_string('browsebycategory'), '', 3);
+            $table->print_html();
+        } else {
+            echo '<p>' . $strnoitems . '</p>';
+
+        }
     }
 
     echo '<div class="buttons">';

@@ -421,4 +421,5 @@ $string['noprogramsfound'] = 'No programs were found with the words \'$a\'';
 $string['moveselectedprogramsto'] = 'Move selected programs to...';
 
 $string['programidnotfound'] = 'Program does not exist for ID : $a';
+$string['therearenoprogramstodisplay'] = 'There are no programs to display.';
 

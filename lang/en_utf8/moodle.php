@@ -1594,6 +1594,7 @@ $string['theme'] = 'Theme';
 $string['themes'] = 'Themes';
 $string['themesaved'] = 'New theme saved';
 $string['thereareno'] = 'There are no $a in this course';
+$string['therearenocoursestodisplay'] = 'There are no courses to display';
 $string['thiscategorycontains'] = 'This category contains';
 $string['thischarset'] = 'UTF-8';
 $string['thisdirection'] = 'ltr';
