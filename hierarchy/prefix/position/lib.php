@@ -334,9 +334,12 @@ class position extends hierarchy {
     function print_comp_framework_picker($positionid, $currentfw) {
         global $CFG;
 
+        require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+
         $edit = optional_param('edit', 'off', PARAM_TEXT);
 
-        $frameworks = get_records('comp_framework', '', '', 'sortorder');
+        $competency = new competency();
+        $frameworks = $competency->get_frameworks();
 
         $assignedcounts = get_records_sql_menu("SELECT comp.frameworkid, COUNT(*)
                                                 FROM {$CFG->prefix}pos_competencies poscomp

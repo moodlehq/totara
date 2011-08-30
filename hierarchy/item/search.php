@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
  * @subpackage hierarchy
  */
@@ -83,7 +84,7 @@ $hidden = compact('prefix', 'select', 'templates', 'disabledlist');
 
 // Create form
 $mform = new dialog_search_form($CFG->wwwroot. '/hierarchy/item/search.php',
-    compact('hidden', 'query', 'frameworkid', 'shortprefix'));
+    compact('hidden', 'query', 'frameworkid', 'shortprefix', 'prefix'));
 
 // Display form
 $mform->display();
@@ -94,9 +95,11 @@ if (strlen($query)) {
     // extract quoted strings from query
     $keywords = local_search_parse_keywords($query);
 
-    $fields = 'SELECT id,fullname';
+    $fields = 'SELECT i.id,i.fullname';
     $count = 'SELECT COUNT(*)';
-    $from = " FROM {$CFG->prefix}{$shortprefix}";
+    $from = " FROM {$CFG->prefix}{$shortprefix} i
+        JOIN {$CFG->prefix}{$shortprefix}_framework f
+        ON frameworkid = f.id";
     $order = ' ORDER BY frameworkid,sortthread';
 
     // If searching templates, change tables
@@ -106,16 +109,16 @@ if (strlen($query)) {
     }
 
     // match search terms
-    $dbfields = array('fullname', 'shortname', 'description');
+    $dbfields = array('i.fullname', 'i.shortname', 'i.description');
     $where = ' WHERE ' . local_search_get_keyword_where_clause($keywords, $dbfields);
 
     // restrict by framework if required
     if ($frameworkid) {
-        $where .= " AND frameworkid=$frameworkid";
+        $where .= " AND i.frameworkid=$frameworkid";
     }
 
     // don't show hidden items
-    $where .= ' AND visible=1';
+    $where .= ' AND i.visible=1 AND f.visible=1';
 
     $total = count_records_sql($count . $from . $where);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;

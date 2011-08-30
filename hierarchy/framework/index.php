@@ -57,7 +57,7 @@
 ///
 
 // Get frameworks for this page
-$frameworks = $hierarchy->get_frameworks(array('item_count'=>1));
+$frameworks = $hierarchy->get_frameworks(array('item_count'=>1), true);
 
 ///
 /// Generate / display page

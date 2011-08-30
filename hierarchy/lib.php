@@ -138,12 +138,15 @@ class hierarchy {
 
     /**
      * Get framework
-     * @var array $extra_data optional - specifying extra info to be fetched and returned
+     * @param array $extra_data optional - specifying extra info to be fetched and returned
+     * @param bool $showhidden optional - specifying whether or not to include hidden frameworks
      * @return array|false
      * @uses $CFG when extra_data specified
      */
-    function get_frameworks($extra_data=array()) {
-        if (!count($extra_data)) {
+    function get_frameworks($extra_data=array(), $showhidden=false) {
+        if (!count($extra_data) && !$showhidden) {
+            return get_records($this->shortprefix.'_framework', 'visible', '1', 'sortorder, fullname');
+        } else if (!count($extra_data)) {
             return get_records($this->shortprefix.'_framework', '', '', 'sortorder, fullname');
         }
 
@@ -158,8 +161,11 @@ class hierarchy {
             $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix} ic
                         WHERE ic.frameworkid=f.id) AS item_count ";
         }
-        $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f
-                 ORDER BY f.sortorder, f.fullname";
+        $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f ";
+        if (!$showhidden) {
+            $sql .= "WHERE f.visible=1 ";
+        }
+        $sql .= "ORDER BY f.sortorder, f.fullname";
 
         return get_records_sql($sql);
 

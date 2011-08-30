@@ -19,6 +19,7 @@
  *
  * @author Simon Coggins <simon.coggins@totaralms.com>
  * @author Aaron Barnes <aaron.barnes@totaralms.com>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
  * @subpackage dialogs
  */
@@ -51,6 +52,7 @@ class dialog_search_form extends moodleform {
             $hierarchy = true;
             $frameworkid = $this->_customdata['frameworkid'];
             $shortprefix = $this->_customdata['shortprefix'];
+            $prefix = $this->_customdata['prefix'];
             $showpicker = $this->_customdata['hidden']['select'];
         }
 
@@ -89,9 +91,20 @@ class dialog_search_form extends moodleform {
 
         // Show framework selector
         if ($hierarchy && $showpicker) {
+            $hierarchy_include = $CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/lib.php';
+            if (file_exists($hierarchy_include)) {
+                require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+                $hierarchy = new $prefix;
+                $frameworks = $hierarchy->get_frameworks();
+            }
 
-            $options = array(0 => get_string('allframeworks', 'hierarchy')) +
-                get_records_select_menu($shortprefix . '_framework', '', 'sortorder, fullname', 'id, fullname');
+            $options = array(0 => get_string('allframeworks', 'hierarchy'));
+
+            if ($frameworks) {
+                foreach ($frameworks as $fw) {
+                    $options[$fw->id] = $fw->fullname;
+                }
+            }
 
             $attr = array(
                 'class' => 'totara-limited-width-150',
