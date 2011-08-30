@@ -97,7 +97,7 @@ if (strlen($query)) {
     $fields = 'SELECT id,fullname';
     $count = 'SELECT COUNT(*)';
     $from = " FROM {$CFG->prefix}{$shortprefix}";
-    $order = ' ORDER BY frameworkid,sortorder';
+    $order = ' ORDER BY frameworkid,sortthread';
 
     // If searching templates, change tables
     if ($templates) {
