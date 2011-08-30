@@ -1,0 +1,17 @@
+<p align="center"><b>Personalizar texto</b></p>
+<p>Para que el certificado imprima otros nombres de profesor, diferentes a los que están asignados a la función de profesor, no seleccione la opción Imprimir profesor ni ninguna imagen de firma excepto la imagen de la línea. Escriba los nombres de los profesores en esta casilla, tal y como desee que aparezcan. Este texto aparece en la parte inferior izquierda del certificado por defecto. Puede modificarlo en el archivo certificate/type/&quot;nombre de tipo&quot;/certificate.php. </p>
+<p>En este archivo, busque la línea de código similar a la siguiente al final de la página:</p>
+<p>cert_printtext(150, 450, '', '', '', '', ''); </p>
+<p>Los dos números muestran los valores de la ubicación X (por arriba desde la izquierda) y la ubicación Y (por abajo desde arriba) del texto. Puede modificarlos si lo desea. </p>
+<p>Asimismo, puede utilizar la casilla para escribir en html. Por ejemplo, puede añadir un enlace o una imagen.</p>
+
+<div style="border: 1px solid black;font-size: 12px">
+Las siguientes etiquetas html están disponibles:
+<ul type="square">
+<li>&lt;br&gt; y &lt;p&gt;</li>
+<li>&lt;b&gt;, &lt;i&gt; y &lt;u&gt;</li>
+<li>&lt;img&gt; (src y width (o height) son obligatorios)</li>
+<li>&lt;a&gt; (href es obligatorio)</li>
+<li>&lt;font&gt;: los atributos posibles son los siguientes.<br/></li></ul></div>
+<p>Ejemplo de html:</p>
+<p>Sr. James Salesman, Director&lt;br&gt;&lt;br&gt;Departamento de ventas&lt;br&gt;&lt;br&gt;&lt;font color=&quot;#0000CC&quot;&gt;&lt;b&gt;Su empresa&lt;font face=&quot;Symbol&quot;&gt;&amp;Ograve;&lt;/font&gt;&lt;/b&gt;&lt;/font&gt;&lt;img src=&quot;http://yourmoodle.com/mod/certificate/pix/seals/Logo.png&quot; width=&quot;100&quot;&gt;&lt;p&gt;&lt;a href=&quot;http://www.site.com target=&quot;_blank&quot;&gt;Haga clic aquí&lt;/a&gt;&lt;/p&gt;</p>

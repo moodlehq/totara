@@ -1,0 +1,7 @@
+<p align="center"><b>Imagen de sello o logotipo </b></p>
+<p>Esta opción le permite seleccionar de la carpeta certificate/pix/seals un sello o un logotipo para que aparezca impreso en el certificado. Incluye cuatro sellos y un ejemplo de logotipo. Esta imagen se ubica por defecto en la esquina inferior derecha del certificado. Puede modificar esta ubicación en el archivo certificate/type/&quot;nombre de tipo&quot;/certificate.php. </p>
+<p>En este archivo, busque la línea de código similar a la siguiente hacia el final:</p>
+<p> print_seal($certificate-&gt;printseal, $orientation, 590, 425, '', ''); </p>
+<p>Los dos números muestran los valores de la ubicación X (por arriba desde la izquierda) y la ubicación Y (por abajo desde arriba) de la imagen. Puede modificarlos si lo desea. </p>
+<p>Recuerde que las imágenes que añada al certificado aumentarán el tamaño del archivo PDF.
+Puede añadir, asimismo, sus propias imágenes a la carpeta certificate/pix/seals y aparecerán también en el menú desplegable. Las imágenes deben ser en formato JPEG (.jpg) o PNG 8 (.png). </p>

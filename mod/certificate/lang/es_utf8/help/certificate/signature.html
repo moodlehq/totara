@@ -1,0 +1,8 @@
+<p align="center"><b>Imagen de firma </b></p>
+<p>Esta opción le permite imprimir una imagen de firma desde la carpeta certificate/pix/signatures. Puede imprimir la representación gráfica de una firma o imprimir una línea para luego firmar de puño y letra. Incluye un ejemplo de imagen con línea y con firma.</p>
+<p>Esta imagen se ubica por defecto en la parte inferior izquierda del certificado. Puede modificar esta ubicación en el archivo certificate/type/&quot;nombre de tipo&quot;/certificate.php. </p>
+<p>En este archivo, busque la línea de código similar a la siguiente hacia el final:</p>
+<p>print_signature($certificate-&gt;printsignature, $orientation, 110, 450, '', '');</p>
+<p>Los dos números muestran los valores de la ubicación X (por arriba desde la izquierda) y la ubicación Y (por abajo desde arriba) de la imagen. Puede modificarlos si lo desea. </p>
+<p>Recuerde que las imágenes que añada al certificado aumentarán el tamaño del archivo PDF. Puede añadir, asimismo, sus propias imágenes a la carpeta certificate/pix/signatures y aparecerán también en el menú desplegable. Las imágenes deben tener el formato JPEG (.jpg) o PNG 8 (.png). </p>
+<p>&nbsp;</p>

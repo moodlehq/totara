@@ -1,0 +1,137 @@
+<h1>Respuestas incluidas (Cloze)</h1>
+
+<p>Este tipo de preguntas muy flexibles es parecido al famoso formato conocido como Cloze.</p>
+
+<p>Las preguntas constan de pasajes de texto (en formato Moodle) que tiene varias subpreguntas incluidas, entre las que se encuentran:</p>
+<ul>
+  <li>respuestas cortas&nbsp;(RESPUESTA CORTA o RC o MW), las mayúsculas o minúsculas no son importantes,</li>
+  <li>respuestas cortas&nbsp;(RESPUESTA CORTA_C o RCC o MWC), las mayúsculas o minúsculas deben coincidir,</li>
+  <li>respuestas numéricas (NUMÉRICA o NM),</li>
+  <li>múltiples opciones (MÚLTIPLES OPCIONES o MO), representadas como menú desplegable en línea en el texto</li>
+  <li>múltiples opciones (MÚLTIPLES OPCIONES_V o MOV), representadas como columna vertical de botones radiales, o</li>
+  <li>múltiples opciones (MÚLTIPLES OPCIONES_H o MOH), representadas como fila horizontal de botones radiales.</li>
+</ul>
+<p>Actualmente no hay interfaz gráfica para crear estas preguntas; necesita especificar el formato de la pregunta utilizando el cuadro de texto o importándolo de archivos externos.</p>
+
+<p>Este es un ejemplo del texto de entrada utilizado para especificar este tipo de preguntas:</p>
+
+<p>Tenga en cuenta que, en el caso de las de múltiples opciones verticales u horizontales, no hay numeración automática. Se puede agregar a cada respuesta, como se muestra aquí.</p>
+
+<p><textarea rows="25" cols="60">Esta pregunta consta de texto con una respuesta incluida aquí mismo {1:MULTICHOICE:Wrong answer#Feedback for this wrong answer~Another wrong answer#Feedback for the other wrong answer~=Correct answer#Feedback for correct answer~%50%Answer that gives half the credit#Feedback for half credit answer} y justo después de esto tendrá que ocuparse de la respuesta corta {1:SHORTANSWER:Wrong answer#Feedback for this wrong answer~=Correct answer#Feedback for correct answer~%50%Answer that gives half the credit#Feedback for half credit answer} y finalmente tendremos un número de punto flotante {2:NUMERICAL:=23.8:0.1#Feedback for correct answer 23.8~%50%23.8:2#Feedback for half credit answer in the nearby region of the correct answer}.
+</textarea></p>
+
+<p>Este ejemplo aparecerá a los estudiantes de la forma siguiente:</p>
+
+<div id="middle-column"><div><span id="maincontent"></span><div id="q6" class="que multianswer clearfix">
+  <div class="info">
+    <span class="accesshide">Pregunta </span>1
+    <div class="grade">
+      Marcas: --/13.00</div>
+    </div>
+    <div class="content">
+      <div class="ablock clearfix"><label>Esta pregunta consta de texto con una respuesta incluida aquí mismo <span><select name="resp3796_1"><option selected="selected"></option><option value="8919">Respuesta incorrecta</option><option value="8920">Otra respuesta incorrecta</option><option value="8921">Respuesta correcta</option><option value="8922">Respuesta que le otorga la mitad de los créditos</option></select></span></label><label>y justo después de esto tendrá que ocuparse de esta respuesta corta<input name="resp3796_2" size="33"/> </label><label>y finalmente tendremos un número de punto flotante<input name="resp3796_3" size="4"/> </label>.<br />
+  <br />  La pregunta de múltiples opciones también se puede mostrar de forma vertical según el estándar de múltiples opciones de moodle<br />
+        <table width="50%"><tbody><tr><td>
+          <table class="answer">
+            <tr class="r0">
+              <td class="c0 control">
+                <input id="resp3796_8960" name="resp3796_4" type="radio" value="8960"/>
+              </td>
+              <td class="c1 text ">
+                <label for="resp3796_8960">
+                  1. Respuesta incorrecta
+                </label>
+              </td>
+              <td class="c0 feedback">
+              </td>
+            </tr>
+            <tr class="r1">
+              <td class="c0 control">
+                <input id="resp3796_8961" name="resp3796_4" type="radio" value="8961"/>
+              </td>
+              <td class="c1 text ">
+                <label for="resp3796_8961">
+                  2. Otra respuesta incorrecta
+                </label>
+              </td>
+              <td class="c0 feedback">
+              </td>
+            </tr>
+            <tr class="r0">
+              <td class="c0 control">
+                <input id="resp3796_8962" name="resp3796_4" type="radio" value="8962"/>
+              </td>
+              <td class="c1 text ">
+                <label for="resp3796_8962">
+                  3. Respuesta correcta
+                </label>
+              </td>
+              <td class="c0 feedback">
+              </td>
+            </tr>
+            <tr class="r1">
+              <td class="c0 control">
+                <input id="resp3796_8963" name="resp3796_4" type="radio" value="8963"/>
+              </td>
+              <td class="c1 text ">
+                <label for="resp3796_8963">
+                  4. Respuesta que le otorga la mitad de los créditos
+                </label>
+              </td>
+              <td class="c0 feedback">
+              </td>
+            </tr>
+          </table>
+        </td></tr></tbody></table>
+      <br />O en el formato horizontal que se incluye aquí en una tabla<br/><br />
+        <table class="answer">
+          <tr class="r0">
+            <td class="c0 control">
+              <input id="resp3796_8964" name="resp3796_5" type="radio" value="8964"/>
+            </td>
+            <td class="c1 text ">
+              <label for="resp3796_8964">
+                a. Respuesta incorrecta
+              </label>
+            </td>
+            <td class="c0 feedback">
+            </td>
+            <td class="c0 control">
+              <input id="resp3796_8965" name="resp3796_5" type="radio" value="8965"/>
+            </td>
+            <td class="c1 text ">
+              <label for="resp3796_8965">
+                b. Otra respuesta incorrecta
+              </label>
+            </td>
+            <td class="c0 feedback">
+            </td>
+            <td class="c0 control">
+              <input id="resp3796_8966" name="resp3796_5" type="radio" value="8966"/>
+            </td>
+            <td class="c1 text ">
+              <label for="resp3796_8966">
+                c. Respuesta correcta
+              </label>
+            </td>
+            <td class="c0 feedback">
+            </td>
+            <td class="c0 control">
+              <input id="resp3796_8967" name="resp3796_5" type="radio" value="8967"/>
+            </td>
+            <td class="c1 text ">
+              <label for="resp3796_8967">
+                d. Respuesta que le otorga la mitad de los créditos
+              </label>
+            </td>
+            <td class="c0 feedback">
+            </td>
+          </tr>
+        </table>
+        <br />       Una pregunta de respuesta corta en la que las mayúsculas y minúsculas deben coincidir. Escriba moodle en letras mayúsculas<input name="resp3435_6" type="text" value="" size="6"/> <br />
+      <br/>Tenga en cuenta que las direcciones del tipo <a href="http://www.moodle.org" target="_blank">www.moodle.org</a> y las caras felices <img alt="cara feliz" width="15" height="15" src="http://132.208.141.198/moodle_head/pix/s/smiley.gif"/> funcionan del modo normal:<br/> a) ¿Esta esto bien?<select name="resp3796_6"><option selected="selected"></option><option value="8968">Sí</option><option value="8969">No</option></select></span><label><br />       b)¿Qué calificación le daría? <input name="resp3796_7" size="1"/> </label><br /><br/>¡Buena suerte!
+    </div>
+    <div class="grading">
+    </div>
+  </div>
+</div></div></div>
