@@ -28,4 +28,4 @@
  * Strings for component 'message_popup', language 'en', branch 'MOODLE_20_STABLE'
  */
 
-$string['pluginname'] = 'Totara tasks';
+$string['pluginname'] = 'Totara Aufgaben';
