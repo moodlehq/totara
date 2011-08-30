@@ -5940,3 +5940,8 @@ div.highlight {
 div.center-buttons {
     text-align: center;
 }
+
+/* Learning plan block */
+.block_addtoplan select#block_addtoplan_selector {
+    width: 160px;
+}
