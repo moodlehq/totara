@@ -317,8 +317,8 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
             'applyactionbutton',
             {
         buttons: {
-            'Cancel': function() { handler._cancel() },
-            'Ok': function() { dialog.save('<?php echo $CFG->wwwroot; ?>/local/program/exception/resolve.php?id=<?php echo $id ?>'); }
+            '<?php echo get_string('cancel'); ?>': function() { handler._cancel() },
+            '<?php echo get_string('ok'); ?>': function() { dialog.save('<?php echo $CFG->wwwroot; ?>/local/program/exception/resolve.php?id=<?php echo $id ?>'); }
         },
         title: '<?php echo '<h2>'.get_string('confirmresolution', 'local_program').'</h2>'; ?>',
                 height: '250'
