@@ -29,6 +29,7 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+set_time_limit(0);
 require_once($CFG->dirroot . '/local/reportbuilder/lib.php');
 require_once($CFG->libdir . '/simpletestlib.php');
 
@@ -190,6 +191,18 @@ class columns_test extends prefix_changing_test_case {
     var $course_categories_data = array(
         array('id', 'name', 'parent','sortorder','icon','visible'),
         array(1, 'Misc', 0, 1,'icon.gif',1),
+    );
+
+    // partial grade_items table
+    var $grade_items_data = array(
+        array('id', 'courseid', 'itemtype'),
+        array(1, 1, 'course'),
+    );
+
+    // partial grade_grades table
+    var $grade_grades_data = array(
+        array('id', 'itemid', 'userid', 'finalgrade'),
+        array(1, 1, 2, 80),
     );
 
     // competency test data
@@ -466,6 +479,8 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'log', $this->log_data, $db);
         load_test_table($CFG->prefix . 'course', $this->course_data, $db);
         load_test_table($CFG->prefix . 'course_categories', $this->course_categories_data, $db);
+        load_test_table($CFG->prefix . 'grade_items', $this->grade_items_data, $db);
+        load_test_table($CFG->prefix . 'grade_grades', $this->grade_grades_data, $db);
         load_test_table($CFG->prefix . 'comp_framework', $this->framework_data, $db);
         load_test_table($CFG->prefix . 'comp_type', $this->type_data, $db);
         load_test_table($CFG->prefix . 'comp', $this->competency_data, $db);
@@ -565,6 +580,8 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'comp', $db);
         remove_test_table($CFG->prefix . 'comp_type', $db);
         remove_test_table($CFG->prefix . 'comp_framework', $db);
+        remove_test_table($CFG->prefix . 'grade_grades', $db);
+        remove_test_table($CFG->prefix . 'grade_items', $db);
         remove_test_table($CFG->prefix . 'course_categories', $db);
         remove_test_table($CFG->prefix . 'course', $db);
         remove_test_table($CFG->prefix . 'log', $db);

@@ -100,6 +100,23 @@ class rb_source_course_completion extends rb_base_source {
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
                 'criteria'
             ),
+            new rb_join(
+                'grade_items',
+                'LEFT',
+                $CFG->prefix . 'grade_items',
+                '(grade_items.courseid = base.course AND ' .
+                    'grade_items.itemtype = \'course\')',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'grade_grades',
+                'LEFT',
+                $CFG->prefix . 'grade_grades',
+                '(grade_grades.itemid = grade_items.id AND ' .
+                    'grade_grades.userid = base.userid)',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'grade_items'
+            ),
         );
 
         // include some standard joins
@@ -193,9 +210,9 @@ class rb_source_course_completion extends rb_base_source {
                 'course_completion',
                 'grade',
                 get_string('grade', 'rb_source_course_completion'),
-                'critcompl.gradefinal',
+                'grade_grades.finalgrade',
                 array(
-                    'joins' => array('criteria', 'critcompl'),
+                    'joins' => 'grade_grades',
                     'displayfunc' => 'percent',
                 )
             ),
@@ -213,9 +230,9 @@ class rb_source_course_completion extends rb_base_source {
                 'course_completion',
                 'gradestring',
                 get_string('requiredgrade', 'rb_source_course_completion'),
-                'critcompl.gradefinal',
+                'grade_grades.finalgrade',
                 array(
-                    'joins' => array('criteria', 'critcompl'),
+                    'joins' => array('criteria', 'grade_grades'),
                     'displayfunc' => 'grade_string',
                     'extrafields' => array('gradepass' => 'criteria.gradepass'),
                     'defaultheading' => get_string('grade', 'rb_source_course_completion'),
