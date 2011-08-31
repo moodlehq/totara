@@ -72,6 +72,7 @@ switch ($action) {
         $colid = required_param('cid', PARAM_INT);
         if ($column = get_record('report_builder_columns', 'id', $colid)) {
             if (delete_records('report_builder_columns', 'id', $colid)) {
+                require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
                 echo json_encode((array)$column);
             } else {
                 echo false;

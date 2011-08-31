@@ -287,6 +287,8 @@ class prog_assignments {
     }
 
     public static function get_confirmation_template() {
+        global $CFG;
+        require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
 
         $table = new stdClass();
         $table->head = array('','added','removed');
