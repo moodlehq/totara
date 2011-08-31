@@ -519,6 +519,12 @@ function xmldb_local_plan_upgrade($oldversion=0) {
             $roles = array('learner','manager');
             $actions=array('updateprogram','commenton','setpriority','setduedate','setcompletionstatus');
 
+            require_once($CFG->dirroot . '/local/plan/priorityscales/lib.php');
+            if (!$defaultpriorityscale = dp_priority_default_scale_id()) {
+                $defaultpriorityscale = 0;
+            }
+
+
             foreach( $templates as $t ){
                 begin_sql();
                 $perm = new stdClass();
@@ -541,14 +547,14 @@ function xmldb_local_plan_upgrade($oldversion=0) {
                 if($progset = get_record_select('dp_program_settings', "templateid={$t->id}")) {
                     $progset->duedatemode=0;
                     $progset->prioritymode=0;
-                    $progset->priorityscale=1;
+                    $progset->priorityscale=$defaultpriorityscale;
                     update_record('dp_program_settings', $progset);
                 } else {
                     $progset = new stdClass();
                     $progset->templateid = $t->id;
                     $progset->duedatemode=0;
                     $progset->prioritymode=0;
-                    $progset->priorityscale=1;
+                    $progset->priorityscale=$defaultpriorityscale;
                     insert_record('dp_program_settings', $progset);
                 }
 

@@ -83,6 +83,8 @@ function local_program_initial_install() {
  * plans framework.
  */
 function prog_setup_initial_plan_settings() {
+    global $CFG;
+    require_once($CFG->dirroot . '/local/plan/priorityscales/lib.php');
 
     // retrieve all the existing templates (if any exist)
     $templates = get_records('dp_template', '', '', 'id', 'id');
@@ -113,6 +115,12 @@ function prog_setup_initial_plan_settings() {
         $roles = array('learner','manager');
         $actions=array('updateprogram','setpriority','setduedate');
 
+        $defaultduedatemode = DP_DUEDATES_OPTIONAL;
+        $defaultprioritymode = DP_PRIORITY_NONE;
+        if (!$defaultpriorityscaleid = dp_priority_default_scale_id()) {
+            $defaultpriorityscaleid = 0;
+        }
+
         foreach( $templates as $t ){
             begin_sql();
             $perm = new stdClass();
@@ -140,10 +148,6 @@ function prog_setup_initial_plan_settings() {
                     }
                 }
             }
-
-            $defaultduedatemode = DP_DUEDATES_OPTIONAL;
-            $defaultprioritymode = DP_PRIORITY_NONE;
-            $defaultpriorityscaleid = 1;
 
             if($progset = get_record_select('dp_program_settings', "templateid={$t->id}")) {
                 $progset->duedatemode=$defaultduedatemode;
