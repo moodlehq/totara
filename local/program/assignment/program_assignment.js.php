@@ -511,6 +511,13 @@ function handleSaveChanges(event) {
 
     var html = template.html();
 
+    // don't prompt if no assignments have been added or removed
+    // the user may still have changed the completion criteria but
+    // this doesn't require a prompt
+    if (totalAdded == 0 && totalRemoved == 0) {
+        return true;
+    }
+
     totaraDialogs['savechanges'].open(html);
     totaraDialogs['savechanges'].save = function() {
         totaraDialogs['savechanges'].savechanges = true;
@@ -694,7 +701,7 @@ totaraDialog_savechanges = function() {
         '<?php print_string('editassignments','local_program') ?>': function() { handler._cancel() },
         '<?php print_string('saveallchanges','local_program') ?>': function() { self.save() }
         },
-        title: '<h2>Confirm assignment changes</h2>'
+        title: '<h2><?php print_string('confirmassignmentchanges', 'local_program') ?></h2>'
     },
     'unused', // default_url unused
     handler
