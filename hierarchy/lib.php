@@ -1024,8 +1024,12 @@ class hierarchy {
     static function get_short_prefix($prefixname){
         global $CFG;
         $cleanprefixname = clean_param($prefixname, PARAM_ALPHA);
-        require_once($CFG->dirroot . '/hierarchy/prefix/' . $cleanprefixname . '/lib.php');
-        $instance = new $prefixname();
+        $libpath = $CFG->dirroot.'/hierarchy/prefix/'.$cleanprefixname.'/lib.php';
+        if (!file_exists($libpath)) {
+            print_error('error:hierarchyprefixnotfound', 'hierarchy', $cleanprefixname);
+        }
+        require_once($libpath);
+        $instance = new $cleanprefixname();
         return $instance->shortprefix;
     }
 
