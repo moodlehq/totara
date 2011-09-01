@@ -119,7 +119,7 @@ class dialog_search_form extends moodleform {
         }
 
         // Show search button
-        $searcharray[] =& $mform->createElement('submit', 'submitbutton', $strsearch);
+        $searcharray[] =& $mform->createElement('submit', 'dialogsearchsubmitbutton', $strsearch);
         $searcharray[] =& $mform->createElement('static', 'tableend', '', '</td></tr></tbody></table>');
         $mform->addGroup($searcharray, 'searchgroup', '', array(' '), false);
 
