@@ -376,6 +376,7 @@ $string['positions'] = 'Positions';
 $string['positionsname'] = 'Positions name';
 $string['positions_category'] = 'position(s)';
 $string['source'] = 'Source';
+$string['type'] = 'Type';
 $string['userid'] = 'User ID';
 $string['setcompletion'] = 'Set completion';
 $string['totalassignments'] = 'Total assignments';

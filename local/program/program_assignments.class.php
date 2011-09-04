@@ -961,7 +961,7 @@ class cohorts_category extends prog_assignment_category {
     function build_table($prefix, $programid) {
         $this->headers = array(
             get_string('cohortname','local_program'),
-            get_string('source','local_program'),
+            get_string('type','local_program'),
             get_string('complete','local_program'),
             get_string('numlearners','local_program')
         );
@@ -989,13 +989,18 @@ class cohorts_category extends prog_assignment_category {
     function build_row($item) {
         global $CFG;
 
+        require_once($CFG->dirroot.'/cohort/lib.php');
+
         if (is_int($item)) {
             $item = $this->get_item($item);
         }
 
+        $cohorttypes = cohort::getCohortTypes();
+        $cohortstring = $cohorttypes[$item->cohorttype];
+
         $row = array();
         $row[] = '<div class="item">'.format_string($item->fullname).'<a href="#" class="deletelink">'.'<img src="'.$CFG->pixpath.'/t/delete.gif"'.' /></a></div><input type="hidden" name="item['.$this->id.']['.$item->id.']" value="1"/>';
-        $row[] = $item->cohorttype;
+        $row[] = $cohortstring;
         $row[] = $this->get_completion($item);
         $row[] = $this->user_affected_count($item);
 
