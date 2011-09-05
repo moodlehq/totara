@@ -6,9 +6,7 @@ require_once('lib.php');
 
 $id = required_param('id', PARAM_INT);
 // Delete confirmation hash
-// TODO implement this once the timemodified for a program
-// is correctly updated
-$delete = optional_param('delete', '', PARAM_TEXT);
+$delete = optional_param('delete', '', PARAM_ALPHANUM);
 
 if (!$program = new program($id)) {
     print_error('error:programid', 'local_program');
@@ -17,7 +15,7 @@ if (!$program = new program($id)) {
 admin_externalpage_setup('manageprograms', '', array('id' => $id, 'delete' => $delete), $CFG->wwwroot.'/local/program/delete.php');
 
 $returnurl = "{$CFG->wwwroot}/local/program/edit.php?id={$program->id}";
-$deleteurl = "{$CFG->wwwroot}/local/program/delete.php?id={$program->id}&amp;sesskey={$USER->sesskey}&amp;delete=1";
+$deleteurl = "{$CFG->wwwroot}/local/program/delete.php?id={$program->id}&amp;sesskey={$USER->sesskey}&amp;delete=".md5($program->timemodified);
 
 if (!$delete) {
     admin_externalpage_print_header();
@@ -44,6 +42,10 @@ if (!$delete) {
 
     print_footer();
     exit;
+}
+
+if ($delete != md5($program->timemodified)) {
+    print_error('error:badcheckvariable', 'local_program');
 }
 
 if (!confirm_sesskey()) {

@@ -167,6 +167,7 @@ $string['error:deleteset'] = 'Unable to delete set. Set not found.';
 $string['error:unabletoaddset'] = 'Unable to add new set. Set type not recognised.';
 $string['error:unabletosetupprogcontent'] = 'Unable to set up program content.';
 $string['error:invaliduser'] = '';
+$string['error:badcheckvariable'] = 'The check variable was wrong - try again';
 
 // Instructions
 $string['instructions:assignments1'] = 'Categories can be used to assign the program to sets of learners.';
