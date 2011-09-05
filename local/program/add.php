@@ -70,6 +70,11 @@ if ($data = $form->get_data()) {
         $data->availablefrom = prog_date_to_time($data->availablefromselector);
         $data->availableuntil = prog_date_to_time($data->availableuntilselector);
 
+        $now = time();
+        $data->timecreated = $now;
+        $data->timemodified = $now;
+        $data->usermodified = $USER->id;
+
         if (!isset($data->visible)) {
             $data->visible = 0;
         }
