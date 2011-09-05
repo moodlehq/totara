@@ -96,34 +96,37 @@ class hierarchy {
     var $frameworkid;
 
     /**
-     * Get framework
+     * Get a framework
      *
-     * @param $noframeworkok boolean (optional) No framework is ok
-     * @return boolean success
+     * @param integer $id (optional) ID of the framework to return. If not set returns the default (first) framework
+     * @param $showhidden (optional) When returning the default framework, exclude hidden frameworks
+     *                               Note: if a hidden framework is specified by id it will still be returned
+     * @param $noframeworkok boolean (optional) If false, throw an error if no ID is supplied and there is no default framework
+     *                                          If true, the function returns false but no error is generated
+     * @return object|false The framework object. On failure returns false or throws an error
      */
-    function get_framework($id = 0, $noframeworkok = false) {
+    function get_framework($id = 0, $showhidden = false, $noframeworkok = false) {
+        global $CFG;
+
         // If no framework id supplied, use first in sortorder
         if ($id == 0) {
-                // Get frameworks
-                $frameworks = get_records_select($this->shortprefix.'_framework', '1 = 1 ORDER BY sortorder ASC');
-
-                if (!$frameworks) {
-                    if ($noframeworkok) {
-                        return false;
-                    }
-                    else {
-                        print_error('noframeworks', $this->prefix);
-                    }
+            $visible_sql = $showhidden ? '' : ' WHERE visible = 1';
+            $sql = "SELECT * FROM {$CFG->prefix}{$this->shortprefix}_framework
+                {$visible_sql}
+                ORDER BY sortorder ASC";
+            if (!$framework = get_record_sql($sql, true)) {
+                if ($noframeworkok) {
+                    return false;
+                } else {
+                    print_error('noframeworks', $this->prefix);
                 }
-
-                // Get first
-                $framework = array_shift($frameworks);
-
+            }
         } else {
             if (!$framework = get_record($this->shortprefix.'_framework', 'id', $id)) {
                 print_error('frameworkdoesntexist', 'hierarchy', '', $this->prefix);
             }
         }
+
         $this->frameworkid = $framework->id; // specify the framework id
         return $framework;
     }
@@ -471,12 +474,13 @@ class hierarchy {
      * @param string $page Page to redirect to
      * @param boolean $simple optional Display simple selector
      * @param boolean $return optional Return instead of print
+     * @param boolean $showhidden optional Include hidden frameworks in picker
      * @return boolean success
      */
-    function display_framework_selector($page = 'index.php', $simple = false, $return = false) {
+    function display_framework_selector($page = 'index.php', $simple = false, $return = false, $showhidden = false) {
         global $CFG;
 
-        $frameworks = $this->get_frameworks();
+        $frameworks = $this->get_frameworks(array(), $showhidden);
 
         if (count($frameworks) <= 1) {
             return;

@@ -61,6 +61,14 @@ if (!isset($disabledlist)) {
 if (!isset($templates)) {
     $templates = optional_param('templates', false, PARAM_BOOL); // search templates only
 }
+if (!isset($showhidden)) {
+    $showhidden = optional_param('showhidden', false, PARAM_BOOL); // include hidden frameworks
+    // check they have permissions on hidden frameworks in case parameter is changed manually
+    $context = get_context_instance(CONTEXT_SYSTEM);
+    if ($showhidden && !has_capability('moodle/local:update'.$prefix.'frameworks', $context)) {
+        print_error('nopermviewhiddenframeworks', 'hierarchy');
+    }
+}
 
 $query = optional_param('query', null, PARAM_TEXT); // search query
 $page = optional_param('page', 0, PARAM_INT); // results page number
@@ -84,7 +92,7 @@ $hidden = compact('prefix', 'select', 'templates', 'disabledlist');
 
 // Create form
 $mform = new dialog_search_form($CFG->wwwroot. '/hierarchy/item/search.php',
-    compact('hidden', 'query', 'frameworkid', 'shortprefix', 'prefix'));
+    compact('hidden', 'query', 'frameworkid', 'shortprefix', 'prefix', 'showhidden'));
 
 // Display form
 $mform->display();
@@ -118,7 +126,10 @@ if (strlen($query)) {
     }
 
     // don't show hidden items
-    $where .= ' AND i.visible=1 AND f.visible=1';
+    $where .= ' AND i.visible=1';
+    if (!$showhidden) {
+        $where .= ' AND f.visible=1';
+    }
 
     $total = count_records_sql($count . $from . $where);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;

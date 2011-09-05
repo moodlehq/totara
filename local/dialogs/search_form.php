@@ -54,6 +54,7 @@ class dialog_search_form extends moodleform {
             $shortprefix = $this->_customdata['shortprefix'];
             $prefix = $this->_customdata['prefix'];
             $showpicker = $this->_customdata['hidden']['select'];
+            $showhidden = $this->_customdata['showhidden'];
         }
 
         // Pad search string to make it look nicer
@@ -69,6 +70,11 @@ class dialog_search_form extends moodleform {
                 $mform->addElement('hidden', $key);
                 $mform->setDefault($key, $value);
             }
+        }
+
+        // are we showing items from hidden frameworks?
+        if (!empty($this->_customdata['showhidden'])) {
+            $mform->addElement('hidden', 'showhidden', $showhidden);
         }
 
         // If framework selector not shown, pass value as hidden field
@@ -95,7 +101,7 @@ class dialog_search_form extends moodleform {
             if (file_exists($hierarchy_include)) {
                 require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
                 $hierarchy = new $prefix;
-                $frameworks = $hierarchy->get_frameworks();
+                $frameworks = $hierarchy->get_frameworks(array(), $showhidden);
             }
 
             $options = array(0 => get_string('allframeworks', 'hierarchy'));

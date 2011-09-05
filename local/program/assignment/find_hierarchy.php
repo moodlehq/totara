@@ -69,7 +69,7 @@ $unremovable = $selected;
 ///
 
 // Load dialog content generator; skip access, since it's checked above
-$dialog = new totara_dialog_content_hierarchy_multi($type, $frameworkid, $skipaccesschecks=true);
+$dialog = new totara_dialog_content_hierarchy_multi($type, $frameworkid, false, $skipaccesschecks=true);
 
 // Toggle treeview only display
 $dialog->show_treeview_only = $treeonly;

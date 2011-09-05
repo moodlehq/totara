@@ -25,6 +25,15 @@ $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 // Only return generated tree html
 $treeonly = optional_param('treeonly', false, PARAM_BOOL);
 
+// should we show hidden frameworks?
+$showhidden = optional_param('showhidden', false, PARAM_BOOL);
+
+// check they have permissions on hidden frameworks in case parameter is changed manually
+$context = get_context_instance(CONTEXT_SYSTEM);
+if ($showhidden && !has_capability('moodle/local:updatecompetencyframeworks', $context)) {
+    print_error('nopermviewhiddenframeworks', 'hierarchy');
+}
+
 // show search tab instead of browse
 $search = optional_param('search', false, PARAM_BOOL);
 
@@ -51,7 +60,7 @@ $alreadyrelated[$compid] = $compid;
 
 if(!$nojs) {
     // Load dialog content generator
-    $dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid);
+    $dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid, $showhidden);
 
     // Toggle treeview only display
     $dialog->show_treeview_only = $treeonly;
@@ -70,7 +79,7 @@ if(!$nojs) {
     echo $dialog->generate_markup();
 
 } else {
-    // none JS version of page
+    // non JS version of page
     // Check permissions
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
     require_capability('moodle/local:updatecompetency', $sitecontext);
@@ -79,7 +88,7 @@ if(!$nojs) {
     $hierarchy = new competency();
 
     // Load framework
-    if (!$framework = $hierarchy->get_framework($frameworkid)) {
+    if (!$framework = $hierarchy->get_framework($frameworkid, $showhidden)) {
         error('Competency framework could not be found');
     }
 

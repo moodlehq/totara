@@ -92,6 +92,13 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
      */
     public $switch_frameworks = false;
 
+    /**
+     * Show hidden frameworks
+     *
+     * @access public
+     * @var    boolean
+     */
+    public $showhidden = false;
 
     /**
      * Load hierarchy specific information and make some
@@ -100,10 +107,11 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
      * @see     totara_dialog_hierarchy::skip_access_checks
      *
      * @access  public
-     * @param   $prefix           string  Hierarchy prefix
+     * @param   $prefix         string  Hierarchy prefix
      * @param   $frameworkid    int     Framework id (optional)
+     * @param   $showhidden     boolean When listing frameworks, include hidden frameworks (optional)
      */
-    public function __construct($prefix, $frameworkid = 0) {
+    public function __construct($prefix, $frameworkid = 0, $showhidden = false) {
 
         // Make some capability checks
         if (!$this->skip_access_checks) {
@@ -113,6 +121,9 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
 
         // Load hierarchy instance
         $this->hierarchy = hierarchy::load_hierarchy($prefix);
+
+        // Should the dialog display hidden frameworks?
+        $this->showhidden = $showhidden;
 
         // Set lang file
         $this->lang_file = $prefix;
@@ -133,11 +144,8 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
      */
     public function set_framework($frameworkid) {
 
-        if (!$framework = $this->hierarchy->get_framework($frameworkid, true)) {
-            print_error('frameworkdoesntexist', 'hierarchy', $frameworkid);
-        }
+        $this->framework = $this->hierarchy->get_framework($frameworkid, $this->showhidden);
 
-        $this->framework = $framework;
     }
 
 
@@ -172,7 +180,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
             return '';
         }
 
-        return $this->hierarchy->display_framework_selector('', true, true);
+        return $this->hierarchy->display_framework_selector('', true, true, $this->showhidden);
     }
 
 
@@ -201,6 +209,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
         $select = !$this->disable_picker; # Only show select if picker isn't disabled
         $disabledlist = array_flip(array_keys($this->disabled_items)); # Return an array without values
         $templates = $this->templates_only;
+        $showhidden = $this->showhidden;
 
         // Grab search page markup
         ob_start();
@@ -226,14 +235,15 @@ class totara_dialog_content_hierarchy_multi extends totara_dialog_content_hierar
      * @access  public
      * @param   $prefix               string  Hierarchy prefix
      * @param   $frameworkid        int     Framework id (optional)
+     * @param   $showhidden     boolean When listing frameworks, include hidden frameworks (optional)
      * @param   $skipaccesschecks   boolean Indicate whether access checks should be performed
      */
-    public function __construct($prefix, $frameworkid = 0, $skipaccesschecks=false) {
+    public function __construct($prefix, $frameworkid = 0, $showhidden = false, $skipaccesschecks=false) {
 
         $this->skip_access_checks = $skipaccesschecks;
 
         // Run parent constructor
-        parent::__construct($prefix, $frameworkid);
+        parent::__construct($prefix, $frameworkid, $showhidden);
 
         // Set to type multi
         $this->type = self::TYPE_CHOICE_MULTI;

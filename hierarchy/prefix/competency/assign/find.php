@@ -15,14 +15,22 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 $parentid = optional_param('parentid', 0, PARAM_INT);
 
 // Framework id
-$defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
-$frameworkid = optional_param('frameworkid', $defaultframeworkid, PARAM_INT);
+$frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
 // competency evidence id - may be 0 for new competency evidence
 $id = optional_param('id', 0, PARAM_INT);
 
 // Only return generated tree html
 $treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
+// should we show hidden frameworks?
+$showhidden = optional_param('showhidden', false, PARAM_BOOL);
+
+// check they have permissions on hidden frameworks in case parameter is changed manually
+$context = get_context_instance(CONTEXT_SYSTEM);
+if ($showhidden && !has_capability('moodle/local:updatecompetencyframeworks', $context)) {
+    print_error('nopermviewhiddenframeworks', 'hierarchy');
+}
 
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
@@ -41,7 +49,7 @@ admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/co
 
 if(!$nojs) {
     // Load dialog content generator
-    $dialog = new totara_dialog_content_hierarchy('competency', $frameworkid);
+    $dialog = new totara_dialog_content_hierarchy('competency', $frameworkid, $showhidden);
 
     // Toggle treeview only display
     $dialog->show_treeview_only = $treeonly;
@@ -53,7 +61,7 @@ if(!$nojs) {
     echo $dialog->generate_markup();
 
 } else {
-    // none JS version of page
+    // non JS version of page
     // Check permissions
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
     require_capability('moodle/local:updatecompetency', $sitecontext);
@@ -62,7 +70,7 @@ if(!$nojs) {
     $hierarchy = new competency();
 
     // Load framework
-    if (!$framework = $hierarchy->get_framework($frameworkid)) {
+    if (!$framework = $hierarchy->get_framework($frameworkid, $showhidden)) {
         error('Competency framework could not be found');
     }
 

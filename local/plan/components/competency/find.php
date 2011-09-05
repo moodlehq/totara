@@ -76,7 +76,7 @@ foreach ($component->get_assigned_items() as $item) {
 ///
 
 // Load dialog content generator; skip access, since it's checked above
-$dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid, $skipaccesschecks=true);
+$dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid, false, $skipaccesschecks=true);
 
 // Toggle treeview only display
 $dialog->show_treeview_only = $treeonly;

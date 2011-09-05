@@ -75,6 +75,7 @@ $string['selected'] = 'Selected';
 $string['nocustomfields'] = 'No custom fields';
 $string['nodata'] = 'No custom field data';
 $string['nopathfoundforid'] = 'No path found for {$a->prefix} id {$a->id}';
+$string['nopermviewhiddenframeworks'] = 'You do not have permission to view hidden frameworks';
 $string['noresultsfor'] = 'No results found for \"{$a->query}\".';
 $string['noresultsforinframework'] = 'No results found for \"{$a->query}\" in framework \"{$a->framework}\".';
 $string['noxfound'] = 'No {$a} found';

@@ -230,7 +230,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // clear all frameworks
         delete_records('comp_framework');
         // if no frameworks exist should return false
-        $this->assertFalse($competency->get_framework(0, true));
+        $this->assertFalse($competency->get_framework(0, false, true));
     }
 
     function test_hierarchy_get_type_by_id() {
