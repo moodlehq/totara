@@ -1046,22 +1046,12 @@ class development_plan {
      * @return string
      */
     function display_pending_items($pendinglist=null) {
-        global $CFG;
+        global $CFG, $DP_AVAILABLE_COMPONENTS;
 
         // If this is the pending review page, do not show list of items
         if ($this->reviewing_pending) {
             return '';
         }
-
-        $canapprovecourses = ($this->get_component('course')->get_setting('updatecourse')
-            == DP_PERMISSION_APPROVE);
-        $canapprovecompetencies = ($this->get_component('competency')->get_setting('updatecompetency')
-            == DP_PERMISSION_APPROVE);
-        $canapproveobjectives = ($this->get_component('objective')->get_setting('updateobjective')
-            == DP_PERMISSION_APPROVE);
-        $coursesenabled = $this->get_component('course')->get_setting('enabled');
-        $competenciesenabled = $this->get_component('competency')->get_setting('enabled');
-        $objectivesenabled = $this->get_component('objective')->get_setting('enabled');
 
         // get the pending items, if it hasn't been passed to the method
         if(!isset($pendinglist)) {
@@ -1071,57 +1061,36 @@ class development_plan {
         $list = '';
         $listcount = 0;
         $itemscount = 0;
-        if ($coursesenabled && !empty($pendinglist['course'])) {
-            $component = $this->get_component('course');
-            $a = new object();
-            $a->planid = $this->id;
-            $a->number = count($pendinglist['course']);
-            $itemscount += $a->number;
-            $a->component = 'course';
-            $name = $a->component;
-            // determine plurality
-            $langkey = $name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
-            $a->link = $component->get_url();
-            $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
-            $listcount++;
+
+        $approval = false;
+
+        foreach($DP_AVAILABLE_COMPONENTS as $componentname) {
+            if (!$component = $this->get_component($componentname)) {
+                continue;
+            }
+
+            $canapprove = $component->get_setting('update'.$component->component) == DP_PERMISSION_APPROVE;
+            $enabled = $component->get_setting('enabled');
+
+            if ($enabled && !empty($pendinglist[$component->component])) {
+                $a = new object();
+                $a->planid = $this->id;
+                $a->number = count($pendinglist[$component->component]);
+                $itemscount += $a->number;
+                $a->component = $component->component;
+                $name = $a->component;
+                // determine plurality
+                $langkey = $name . ($a->number > 1 ? 'plural' : '');
+                $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
+                $a->link = $component->get_url();
+                $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
+                $listcount++;
+            }
+            $approval = $approval || $canapprove;
         }
 
-        if ($competenciesenabled && !empty($pendinglist['competency'])) {
-            $component = $this->get_component('competency');
-            $a = new object();
-            $a->planid = $this->id;
-            $a->number = count($pendinglist['competency']);
-            $itemscount += $a->number;
-            $a->component = 'competency';
-            $name = $a->component;
-            // determine plurality
-            $langkey = $name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
-            $a->link = $component->get_url();
-            $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
-            $listcount++;
-        }
+        $descriptor = $approval ? 'thefollowingitemsrequireyourapproval' : 'thefollowingitemsarepending';
 
-        if ($objectivesenabled && !empty($pendinglist['objective'])) {
-            $component = $this->get_component('objective');
-            $a = new object();
-            $a->planid = $this->id;
-            $a->number = count($pendinglist['objective']);
-            $itemscount += $a->number;
-            $a->component = 'objective';
-            $name = $a->component;
-            // determine plurality
-            $langkey = $name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
-            $a->link = $component->get_url();
-            $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
-            $listcount++;
-        }
-        // @todo add evidence when tables exist
-
-        $descriptor = ($canapprovecourses || $canapprovecompetencies || $canapproveobjectives) ?
-        'thefollowingitemsrequireyourapproval' : 'thefollowingitemsarepending';
         // only print if there are pending items
         $out = '';
         if($listcount) {
@@ -1131,7 +1100,6 @@ class development_plan {
         }
 
         return $out;
-
     }
 
 
