@@ -937,7 +937,7 @@ class multi_course_set extends course_set {
         $templatehtml .= '<fieldset id="'.$prefix.'" class="course_set">';
 
         $helpbutton = helpbutton('multicourseset', get_string('legend:courseset', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('untitledset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
+        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? stripslashes($this->label) : get_string('untitledset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
 
         // Add set buttons
         $templatehtml .= '<div class="setbuttons">';
@@ -1526,7 +1526,7 @@ class competency_course_set extends course_set {
         $templatehtml .= '<fieldset id="'.$prefix.'" class="course_set">';
 
         $helpbutton = helpbutton('competencycourseset', get_string('competency', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('legend:courseset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
+        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? stripslashes($this->label) : get_string('legend:courseset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
 
         $templatehtml .= '<div class="setbuttons">';
 
@@ -1959,7 +1959,7 @@ class recurring_course_set extends course_set {
         $templatehtml .= '<fieldset id="'.$prefix.'" class="course_set">';
 
         $helpbutton = helpbutton('recurringcourseset', get_string('legend:recurringcourseset', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('legend:recurringcourseset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
+        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? stripslashes($this->label) : get_string('legend:recurringcourseset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
 
         // Recurring programs don't need a nextsetoperator property but we must
         // include it in the form to avoid any problems when the data is submitted
