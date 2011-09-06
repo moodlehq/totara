@@ -757,3 +757,33 @@ $string['error:updatinglinktype'] = 'Error: could not update link type';
 $string['deletelinkedcoursesheader'] = 'Removing \"$a\" from plan';
 $string['deletelinkedcoursesinstructions'] = 'The following development activities are linked to this focus area in your plan. If checked, they will be removed from your plan at this time. If unchecked, they will remain in your plan.';
 $string['deletelinkedcoursessubmit'] = 'Remove from my plan';
+
+$string['activecourses'] = 'Courses';
+$string['activecompetencies'] = 'Competencies';
+$string['activeobjectives'] = 'Objectives';
+$string['activeprograms'] = 'Programs';
+
+$string['allcourses'] = 'Courses';
+$string['allcompetencies'] = 'Competencies';
+$string['allobjectives'] = 'Objectives';
+$string['allprograms'] = 'Programs';
+
+$string['completedcourses'] = 'Courses';
+$string['completedcompetencies'] = 'Competencies';
+$string['completedobjectives'] = 'Objectives';
+$string['completedprograms'] = 'Programs';
+
+$string['completedcoursessubhead'] = 'Completed Courses';
+$string['completedcompetenciessubhead'] = 'Completed Competencies';
+$string['completedobjectivessubhead'] = 'Completed Objectives';
+$string['completedprogramssubhead'] = 'Completed Programs';
+
+$string['activecoursessubhead'] = 'Active Courses';
+$string['activecompetenciessubhead'] = 'Active Competencies';
+$string['activeobjectivessubhead'] = 'Active Objectives';
+$string['activeprogramssubhead'] = 'Active Programs';
+
+$string['allcoursessubhead'] = 'All Courses';
+$string['allcompetenciessubhead'] = 'All Competencies';
+$string['allobjectivessubhead'] = 'All Objectives';
+$string['allprogramssubhead'] = 'All Programs';

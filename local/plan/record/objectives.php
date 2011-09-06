@@ -65,7 +65,7 @@
         $strheading = get_string('recordoflearning', 'local');
     }
     // get subheading name for display
-    $strsubheading = get_string($rolstatus.'objectives', 'local_plan');
+    $strsubheading = get_string($rolstatus.'objectivessubhead', 'local_plan');
 
     $shortname = 'plan_objectives';
     $data = array(
@@ -110,7 +110,7 @@
 
     print_container_start(false, '', 'dp-plan-content');
 
-    echo '<h1>'.$strheading.'</h1>';
+    echo '<h1>'.$strheading.' : '.$strsubheading.'</h1>';
 
     $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
 
