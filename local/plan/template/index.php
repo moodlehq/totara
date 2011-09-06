@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,9 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 /**
@@ -43,14 +43,17 @@ $confirm = optional_param('confirm', false, PARAM_BOOL);
 
 admin_externalpage_setup('managetemplates');
 
-//Javascript include
+// Javascript include
 local_js(array(
     TOTARA_JS_DIALOG,
     TOTARA_JS_DATEPICKER
 ));
 
-if($show) {
-    if(!$template = get_record('dp_template', 'id', $show)){
+
+$returnurl = "{$CFG->wwwroot}/local/plan/template/index.php";
+
+if ($show) {
+    if (!$template = get_record('dp_template', 'id', $show)) {
         totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
     } else {
         $visible = 1;
@@ -60,8 +63,8 @@ if($show) {
     }
 }
 
-if($hide) {
-    if(!$template = get_record('dp_template', 'id', $hide)){
+if ($hide) {
+    if (!$template = get_record('dp_template', 'id', $hide)) {
         totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
     } else {
         $visible = 0;
@@ -120,30 +123,30 @@ if ((!empty($moveup) or !empty($movedown))) {
     }
 }
 
-if($delete && $confirm) {
-    if(confirm_sesskey()){
+if ($delete && $confirm) {
+    if (confirm_sesskey()) {
         begin_sql();
-        if(!delete_records('dp_template', 'id', $delete) || !delete_records('dp_component_settings', 'templateid', $delete)){
+        if (!delete_records('dp_template', 'id', $delete) || !delete_records('dp_component_settings', 'templateid', $delete)){
             rollback_sql();
             totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
         }
 
-        if(!delete_records('dp_competency_settings', 'templateid', $delete)){
+        if (!delete_records('dp_competency_settings', 'templateid', $delete)){
             rollback_sql();
             totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
         }
 
-        if(!delete_records('dp_course_settings', 'templateid', $delete)){
+        if (!delete_records('dp_course_settings', 'templateid', $delete)){
             rollback_sql();
             totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
         }
 
-        if(!delete_records('dp_objective_settings', 'templateid', $delete)){
+        if (!delete_records('dp_objective_settings', 'templateid', $delete)){
             rollback_sql();
             totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
         }
 
-        if(!delete_records('dp_permissions', 'templateid', $delete)){
+        if (!delete_records('dp_permissions', 'templateid', $delete)){
             rollback_sql();
             totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
         }
@@ -151,12 +154,12 @@ if($delete && $confirm) {
         commit_sql();
         totara_set_notification(get_string('deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php', array('style' => 'notifysuccess'));
     }
-} else if($delete) {
-    if(!$template = get_record('dp_template', 'id', $delete)){
+} else if ($delete) {
+    if (!$template = get_record('dp_template', 'id', $delete)) {
         error(get_string('error:templateid', 'local_plan'));
     }
 
-    if(count_records('dp_plan', 'templateid', $template->id) > 0){
+    if (count_records('dp_plan', 'templateid', $template->id) > 0) {
         totara_set_notification(get_string('cannotdelete_inuse', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
     }
 
@@ -180,9 +183,8 @@ if ($mform->is_cancelled()) {
     redirect($returnurl);
 }
 if ($fromform = $mform->get_data()) {
-    if(empty($fromform->submitbutton)) {
-        redirect($returnurl . '&amp;notice=' .
-            DEVELOPMENT_PLAN_UNKNOWN_BUTTON_CLICKED);
+    if (empty($fromform->submitbutton)) {
+        redirect($returnurl);
     }
     else {
         if ( !count_records('dp_priority_scale') ){
@@ -196,7 +198,7 @@ if ($fromform = $mform->get_data()) {
         $error = '';
         $newtemplateid = dp_create_template($fromform->templatename, $fromform->enddate, $error);
 
-        if($newtemplateid) {
+        if ($newtemplateid) {
             redirect($CFG->wwwroot .
                 '/local/plan/template/general.php?id=' .
                 $newtemplateid);
@@ -212,7 +214,7 @@ print_heading(get_string('managetemplates','local_plan'));
 
 $templates = get_records('dp_template', null, null, 'sortorder');
 
-if($templates){
+if ($templates) {
 
     $str_hide = 'Hide';
     $str_show = 'Show';
@@ -237,20 +239,20 @@ if($templates){
     $spacer = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" />";
     $count = 0;
     $numvalues = count($templates);
-    foreach($templates as $template){
+    foreach ($templates as $template) {
         $count++;
         $tablerow = array();
 
         $cssclass = !$template->visible ? 'class="dimmed"' : '';
 
         $title = "<a $cssclass href=\"$CFG->wwwroot/local/plan/template/general.php?id=$template->id\">$template->fullname</a>";
-        if($count==1){
+        if ($count==1) {
             $title .= ' ('.get_string('default').')';
         }
         $tablerow[] = $title;
 
         $instancecount = count_records('dp_plan', 'templateid', $template->id);
-        if($instancecount) {
+        if ($instancecount) {
             $tablerow[] = '<a href=templateinstances.php?id='.$template->id.'>' . $instancecount . '</a>';
         } else {
             $tablerow[] = $instancecount;
@@ -319,5 +321,3 @@ print <<<HEREDOC
 HEREDOC;
 
 print_footer();
-
-?>
