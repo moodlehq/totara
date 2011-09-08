@@ -422,7 +422,7 @@ class totara_dialog_content {
                 $class .= 'unremovable ';
             }
 
-            $html .= '<div><span id="item_'.$element->id.'" class="'.$class.'">';
+            $html .= '<div class="treeview-selected-item"><span id="item_'.$element->id.'" class="'.$class.'">';
             $html .= '<a href="#">';
             $html .= format_string($element->fullname);
             $html .= '</a>';

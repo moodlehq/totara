@@ -655,7 +655,7 @@ class organisations_category extends prog_assignment_category {
     function __construct() {
         $this->id = ASSIGNTYPE_ORGANISATION;
         $this->name = get_string('organisations','local_program');
-        $this->buttonname = get_string('addorganisationtoprogram','local_program');
+        $this->buttonname = get_string('addorganisationstoprogram','local_program');
     }
 
     function build_table($prefix, $programid) {
@@ -794,7 +794,7 @@ class organisations_category extends prog_assignment_category {
             (function() {
                 var id = {$this->id};
                 var programid = {$programid};
-                var title = '". get_string('addorganisationtoprogram','local_program') ."';
+                var title = '". get_string('addorganisationstoprogram','local_program') ."';
                 program_assignment.add_category(new category(id, 'organisations', 'find_hierarchy.php?type=organisation&table=org&programid='+programid, title));
             })();
         ";
@@ -954,8 +954,8 @@ class cohorts_category extends prog_assignment_category {
 
     function __construct() {
         $this->id = ASSIGNTYPE_COHORT;
-        $this->name = get_string('cohort','local_program');
-        $this->buttonname = get_string('addcohorttoprogram','local_program');
+        $this->name = get_string('cohorts','local_program');
+        $this->buttonname = get_string('addcohortstoprogram','local_program');
     }
 
     function build_table($prefix, $programid) {
@@ -1049,7 +1049,7 @@ class cohorts_category extends prog_assignment_category {
             (function() {
                 var id = {$this->id};
                 var programid = {$programid};
-                var title = '". get_string('addcohorttoprogram','local_program') ."';
+                var title = '". get_string('addcohortstoprogram','local_program') ."';
                 program_assignment.add_category(new category(id, 'cohorts', 'find_cohort.php?programid='+programid, title));
             })();
         ";
@@ -1061,7 +1061,7 @@ class managers_category extends prog_assignment_category {
     function __construct() {
         $this->id = ASSIGNTYPE_MANAGER;
         $this->name = get_string('managementhierarchy','local_program');
-        $this->buttonname = get_string('addmanagertoprogram','local_program');
+        $this->buttonname = get_string('addmanagerstoprogram','local_program');
     }
 
     function build_table($prefix, $programid) {
@@ -1187,7 +1187,7 @@ class managers_category extends prog_assignment_category {
             (function() {
                 var id = {$this->id};
                 var programid = {$programid};
-                var title = '". get_string('addmanagertoprogram','local_program') ."';
+                var title = '". get_string('addmanagerstoprogram','local_program') ."';
                 var cat = new category(id, 'managers', 'find_manager.php?test=test', title);
                 cat.dialog_additem.default_url = '{$CFG->wwwroot}/local/management/dialog.php?programid='+programid;
                 program_assignment.add_category(cat);
@@ -1201,7 +1201,7 @@ class individuals_category extends prog_assignment_category {
     function __construct() {
         $this->id = ASSIGNTYPE_INDIVIDUAL;
         $this->name = get_string('individuals','local_program');
-        $this->buttonname = get_string('addindividualtoprogram','local_program');
+        $this->buttonname = get_string('addindividualstoprogram','local_program');
     }
 
     function build_table($prefix, $programid) {
@@ -1272,7 +1272,7 @@ class individuals_category extends prog_assignment_category {
             (function() {
                 var id = {$this->id};
                 var programid = {$programid};
-                var title = '". get_string('addindividualtoprogram','local_program') ."';
+                var title = '". get_string('addindividualstoprogram','local_program') ."';
                 program_assignment.add_category(new category(id, 'individuals', 'find_individual.php?programid='+programid, title));
             })();
         ";

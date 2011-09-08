@@ -46,11 +46,11 @@ $component = $plan->get_component('course');
 $linkedcompetencies = $component->get_linked_components($courseid, 'competency');
 $selected = array();
 if (!empty($linkedcompetencies)) {
-    $sql = "SELECT ca.id, c.fullname, c.sortorder
+    $sql = "SELECT ca.id, c.fullname
             FROM {$CFG->prefix}dp_plan_competency_assign ca
             INNER JOIN {$CFG->prefix}comp c ON ca.competencyid = c.id
             WHERE ca.id IN (".implode(',', $linkedcompetencies).')
-            ORDER BY c.fullname, c.sortorder';
+            ORDER BY c.fullname';
     $competencies = get_records_sql($sql);
     if (!empty($competencies)) {
         $selected = $competencies;
@@ -71,7 +71,7 @@ $dialog = new totara_dialog_linked_competencies_content_competencies();
 
 // Set type to multiple
 $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
-$dialog->selected_title = 'currentlyselected';
+$dialog->selected_title = 'currentselection';
 
 // Add data
 $dialog->load_competencies($planid);

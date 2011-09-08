@@ -26,7 +26,7 @@
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php');
 require_login();
-$ok_string = get_string('ok');
+$save_string = get_string('save');
 $cancel_string = get_string('cancel');
 $cont_string = get_string('continue');
 ?>
@@ -54,7 +54,7 @@ $(function() {
 
         handler.standard_buttons = {
             '<?php echo $cancel_string ?>': function() { handler._cancel() },
-            '<?php echo $ok_string ?>': function() { handler._save(saveurl) }
+            '<?php echo $save_string ?>': function() { handler._save(saveurl) }
         };
 
         handler.continue_buttons = {
@@ -64,7 +64,7 @@ $(function() {
 
         handler.continuesave_buttons = {
             '<?php echo $cancel_string ?>': function() { handler._cancel() },
-            '<?php echo $ok_string ?>': function() { handler._continueSave(continuesaveurl) }
+            '<?php echo $save_string ?>': function() { handler._continueSave(continuesaveurl) }
         };
 
         totaraDialogs['evidence'] = new totaraDialog(
@@ -74,7 +74,7 @@ $(function() {
                 buttons: {},
                 title: '<?php
                     echo '<h2>';
-                    echo get_string('addremovecompetency', 'local_plan');
+                    echo get_string('addcompetencys', 'local_plan');
                     echo '</h2>';
                 ?>'
             },

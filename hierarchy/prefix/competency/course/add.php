@@ -50,32 +50,7 @@ admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/co
 /// Display page
 ///
 
-if(!$nojs) {
-    /*
-    // build Javascript Treeview
-    if ($treeonly) {
-        echo build_treeview($competencies, get_string('nochildcompetencies', 'competency'), $hierarchy);
-        exit;
-    }
-
-    // If parent id is not supplied, we must be displaying the main page
-    if (!$parentid) {
-        echo '<div class="selectcompetencies">';
-        echo '<div id="available-evidence" class="selected">';
-        echo '</div>';
-        echo '<p><strong>' . get_string('locatecompetency', $hierarchy->prefix) . '</strong></p>';
-        $hierarchy->display_framework_selector('', true);
-        echo '<ul class="filetree treeview">';
-    }
-
-    echo build_treeview($competencies, get_string('nochildcompetencies', 'competency'), $hierarchy);
-
-    // If no parent id, close list
-    if (!$parentid) {
-        echo '</ul></div>';
-    }
-     */
-
+if (!$nojs) {
     // Load dialog content generator
     $dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid);
 
@@ -85,13 +60,16 @@ if(!$nojs) {
     // Load items to display
     $dialog->load_items($parentid);
 
-    // Set selected id
-    $dialog->selected_id = 'available-evidence';
-
     if (empty($CFG->competencyuseresourcelevelevidence)) {
         // Set disabled/selected items
         $dialog->selected_items = $selected;
+    } else {
+        // Set selected id
+        $dialog->selected_id = 'available-evidence';
     }
+
+    // Selected title
+    $dialog->selected_title = 'currentselection';
 
     // Display
     echo $dialog->generate_markup();

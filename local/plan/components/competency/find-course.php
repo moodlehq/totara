@@ -70,7 +70,7 @@ $dialog = new totara_dialog_linked_courses_content_courses();
 
 // Set type to multiple
 $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
-$dialog->selected_title = 'currentlyselected';
+$dialog->selected_title = 'currentselection';
 
 // Add data
 $dialog->load_courses($planid);

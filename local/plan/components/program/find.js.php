@@ -27,7 +27,7 @@
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php');
 require_login();
-$ok_string = get_string('ok');
+$save_string = get_string('save');
 $cancel_string = get_string('cancel');
 
 ?>
@@ -53,11 +53,11 @@ $(function() {
             {
                  buttons: {
                     '<?php echo $cancel_string ?>': function() { handler._cancel() },
-                    '<?php echo $ok_string ?>': function() { handler._save(saveurl) }
+                    '<?php echo $save_string ?>': function() { handler._save(saveurl) }
                  },
                 title: '<?php
                     echo '<h2>';
-                    echo get_string('updateprograms', 'local_plan');
+                    echo get_string('addprograms', 'local_plan');
                     echo '</h2>';
                 ?>'
             },

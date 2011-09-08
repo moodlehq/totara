@@ -46,7 +46,7 @@ $dialog->selected_items = $selected;
 $dialog->unremovable_items = $unremovable;
 
 // Set title
-$dialog->selected_title = 'currentlyselected';
+$dialog->selected_title = 'currentselection';
 
 $dialog->search_code = '/local/program/assignment/find_individual_search.php';
 

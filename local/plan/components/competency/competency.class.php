@@ -451,9 +451,9 @@ class dp_competency_component extends dp_base_component {
                 LEFT JOIN {$CFG->prefix}comp_scale_values csv
                     ON ce.proficiency = csv.id ";
         }
-            $from .= "LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
-                    ON (ca.priority = psv.id
-                    AND psv.priorityscaleid = {$priorityscaleid}) ";
+        $from .= "LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
+                ON (ca.priority = psv.id
+                AND psv.priorityscaleid = {$priorityscaleid}) ";
 
         $where = "WHERE ca.id IN (" . implode(',', $list) . ")
             AND ca.approved=" . DP_APPROVAL_APPROVED . ' ';
@@ -477,6 +477,11 @@ class dp_competency_component extends dp_base_component {
         if ($showduedates) {
             $tableheaders[] = get_string('duedate', 'local_plan');
             $tablecolumns[] = 'duedate';
+        }
+
+        if (!$this->plan->is_complete() && $this->can_update_items()) {
+            $tableheaders[] = get_string('remove', 'local_plan');
+            $tablecolumns[] = 'remove';
         }
 
         $table = new flexible_table('linkedcompetencylist');
@@ -506,6 +511,10 @@ class dp_competency_component extends dp_base_component {
 
                 if ($showduedates) {
                     $row[] = $this->display_duedate_as_text($ca->duedate);
+                }
+
+                if (!$this->plan->is_complete() && $this->can_update_items()) {
+                    $row[] = '<input type="checkbox" value="1" name="delete_linked_comp_assign['.$ca->id.']" />';
                 }
 
                 $table->add_data($row);
@@ -1385,8 +1394,7 @@ class dp_competency_component extends dp_base_component {
             return '';
         }
 
-        $coursename = get_string('courseplural', 'local_plan');
-        $btntext = get_string('updatelinkedx', 'local_plan', strtolower($coursename));
+        $btntext = get_string('addlinkedcourses', 'local_plan');
 
         $html  = '<div class="buttons">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';

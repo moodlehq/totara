@@ -76,6 +76,10 @@ $string['noclassforcomponent'] = 'Class \'$a->class\' does not exist for compone
 $string['noclassfileforworkflow'] = 'Class file \'$a->classfile\' could not be found for workflow \'$a->workflow\'';
 $string['noclassforworkflow'] = 'Class \'$a->class\' does not exist for workflow \'$a->workflow\'';
 $string['pendingitems'] = 'Pending approval';
+$string['removeselected'] = 'Remove selected';
+$string['selectedlinkedcompetenciesremovedfromcourse'] = 'The selected linked competencies have been removed from this course';
+$string['selectedlinkedcoursesremovedfromcompetency'] = 'The selected linked courses have been removed from this competency';
+$string['selectedlinkedcoursesremovedfromobjective'] = 'The selected linked courses have been removed from this objective';
 
 
 //Instruction text
@@ -200,6 +204,8 @@ $string['error:cannotupdatecourses'] = 'Cannot update courses';
 $string['updatecourse'] = 'Update';
 $string['updatecourses'] = 'Update courses';
 $string['addremovecourse'] = 'Add/remove courses';
+$string['addcourses'] = 'Add courses';
+$string['addlinkedcourses'] = 'Add linked courses';
 $string['assessitem'] = 'Assess item';
 $string['coursenotfound'] = 'Course not found';
 
@@ -213,7 +219,7 @@ $string['updatecompetency'] = 'Update competencies';
 $string['competenciesupdated'] = 'Competencies updated';
 $string['updaterequestedcompetency'] = 'Update requested competencies';
 $string['updatecompetency'] = 'Update';
-$string['addremovecompetency'] = 'Add/remove competencies';
+$string['addcompetencys'] = 'Add competencies';
 $string['setproficiency'] = 'Set Status';
 $string['proficiency'] = 'Proficiency';
 $string['error:competencynotfound'] = 'Competency not found';
@@ -221,6 +227,7 @@ $string['error:competenciesupdated'] = 'Competencies not updated';
 $string['nocompetencies'] = 'No competencies.';
 $string['nolinkedcompetencies'] = 'No linked competencies.';
 $string['linkedcompetencies'] = 'Linked competencies';
+$string['addlinkedcompetencies'] = 'Add linked competencies';
 $string['error:cannotupdatecompetencies'] = 'Cannot update competencies';
 $string['confirmlinkedcourses'] = 'Confirm linked courses';
 $string['confirmlinkedcoursesdesc'] = 'Some of those competencies have linked courses. If checked below, these courses will also be added to this plan:';
@@ -234,6 +241,7 @@ $string['programplural'] = 'Programs';
 $string['programname'] = 'Program Name';
 $string['programnotfound'] = 'Program not found';
 $string['programsupdated'] = 'Program settings updated.';
+$string['addprograms'] = 'Add programs';
 $string['updateprogram'] = 'Update';
 $string['updateprograms'] = 'Update programs';
 $string['addremoveprogram'] = 'Add/remove programs';

@@ -1039,8 +1039,7 @@ class dp_objective_component extends dp_base_component {
             return '';
         }
 
-        $coursename = get_string('courseplural', 'local_plan');
-        $btntext = get_string('updatelinkedx', 'local_plan', strtolower($coursename));
+        $btntext = get_string('addlinkedcourses', 'local_plan');
 
         $html  = '<div class="buttons">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';

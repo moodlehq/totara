@@ -26,7 +26,7 @@
 
 require_once '../../config.php';
 $id = optional_param('id', 0, PARAM_INT);
-$ok_string = get_string('ok');
+$save_string = get_string('save');
 $cancel_string = get_string('cancel');
 
 ?>
@@ -150,11 +150,11 @@ $(function() {
                 {
                      buttons: {
                         '<?php echo $cancel_string ?>': function() { handler._cancel() },
-                        '<?php echo $ok_string ?>': function() { handler._save(saveurl) }
+                        '<?php echo $save_string ?>': function() { handler._save(saveurl) }
                      },
                     title: '<?php
                         echo '<h2>';
-                        echo get_string('assigncoursecompletion', 'competency');
+                        echo get_string('assigncoursecompletions', 'competency');
                         echo '</h2>';
                     ?>'
                 },

@@ -64,7 +64,7 @@ if(!$nojs) {
     $dialog->selected_items = $alreadyselected;
 
     // Set title
-    $dialog->selected_title = 'selectedcompetencies';
+    $dialog->selected_title = 'currentselection';
 
     // Display
     echo $dialog->generate_markup();

@@ -75,6 +75,7 @@ $string['weight'] = 'Weight';
 $string['name'] = 'Name';
 $string['editgeneric'] = 'Edit $a';
 $string['currentlyselected'] = 'Currently selected';
+$string['currentselection'] = 'Current selection';
 $string['nounassignedcompetencies'] = 'No unassigned competencies';
 $string['nounassignedcompetencytemplates'] = 'No unassigned competency templates';
 $string['competencyassigndeletecheck'] = 'Are you sure you would like to remove this competency assignment?';

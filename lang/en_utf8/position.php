@@ -106,6 +106,7 @@ $string['clickfornonjsform'] = 'Click here for a non-javascript version of this 
 $string['name'] = 'Name';
 $string['editgeneric'] = 'Edit $a';
 $string['currentlyselected'] = 'Currently selected';
+$string['currentselection'] = 'Current selection';
 $string['entervaliddate'] = 'Enter a valid date';
 $string['error:dialognotreeitems'] = 'No positions in this framework';
 $string['error:positionnotset'] = 'A position has not been set for this user';

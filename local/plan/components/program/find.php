@@ -77,7 +77,7 @@ $dialog = new totara_dialog_content_programs($categoryid);
 
 // Set type to multiple
 $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
-$dialog->selected_title = 'currentlyselected';
+$dialog->selected_title = 'currentselection';
 
 // Setup search
 $dialog->search_code = '/local/program/search.php';

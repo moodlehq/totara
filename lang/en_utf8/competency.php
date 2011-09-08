@@ -2,13 +2,17 @@
 
 $string['achieved'] = 'Achieved';
 $string['addassignedcompetencies'] = 'Assign competencies';
+$string['assigncompetencies'] = 'Assign competencies';
 $string['assigncompetency'] = 'Assign competency';
 $string['assigncompetencytemplate'] = 'Assign competency template';
 $string['addassignedcompetencytemplates'] = 'Assign competency templates';
+$string['addcourseevidencetocompetencies'] = 'Add course evidence to competencies';
 $string['addcourseevidencetocompetency'] = 'Add course evidence to competency';
 $string['allcompetencyscales'] = 'All competency scales';
+$string['assigncoursecompletiontocompetencies'] = 'Assign course completion to competencies';
 $string['assigncoursecompletiontocompetency'] = 'Assign course completion to competency';
 $string['assigncoursecompletion'] = 'Assign course completion';
+$string['assigncoursecompletions'] = 'Assign course completions';
 $string['addnewcompetency'] = 'Add new competency';
 $string['bulkdeletecompetency'] = 'Bulk delete competencies';
 $string['bulkmovecompetency'] = 'Bulk move competencies';
@@ -209,6 +213,7 @@ $string['type'] = 'Type';
 $string['unknownbuttonclicked'] = 'Unknown button clicked';
 $string['weight'] = 'Weight';
 $string['currentlyselected'] = 'Currently selected';
+$string['currentselection'] = 'Current selection';
 $string['error:dialognotreeitems'] = 'No competencies in this framework';
 $string['globalsettings'] = 'Global settings';
 $string['useresourcelevelevidence'] = 'Use resource-level evidence';

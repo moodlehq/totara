@@ -339,13 +339,18 @@ $string['daysremaining'] = '$a days remaining';
 
 // Program assignment
 $string['addorganisationtoprogram'] = 'Add organisation to program';
+$string['addorganisationstoprogram'] = 'Add organisations to program';
 $string['addpositiontoprogram'] = 'Add position to program';
 $string['addcohorttoprogram'] = 'Add cohort to program';
+$string['addcohortstoprogram'] = 'Add cohorts to program';
 $string['addmanagertoprogram'] = 'Add manager to program';
+$string['addmanagerstoprogram'] = 'Add managers to program';
 $string['addindividualtoprogram'] = 'Add individual to program';
+$string['addindividualstoprogram'] = 'Add individuals to program';
 $string['allbelow'] = 'All below';
 $string['allbelowlower'] = 'all below';
 $string['cohort'] = 'Cohort';
+$string['cohorts'] = 'Cohorts';
 $string['cohortname'] = 'Cohort name';
 $string['cohorts_category'] = 'cohort(s)';
 $string['complete'] = 'Complete';

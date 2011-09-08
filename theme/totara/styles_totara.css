@@ -717,6 +717,11 @@ div.totara-dialog {
 		vertical-align: top;
 		width: 30%;
 	    }
+
+    div.totara-dialog .selected div.treeview-selected-item {
+        display: none !important;
+    }
+
 		div.totara-dialog .selected span {
 		    display: block;
 		    font-size: 12px;
@@ -767,7 +772,8 @@ div.totara-dialog .selected span span.deletebutton {
 
 		div.totara-dialog .selected p {
 		    font-weight: bold;
-			margin-bottom:15px;
+        margin-top: 0;
+        margin-bottom:15px;
 		}
     div.totara-dialog div.ui-dialog-buttonpane {
 	-moz-border-radius: 0 0 0 0;

@@ -67,7 +67,7 @@ if (!$nojs) {
     $dialog->disabled_items = $currentlyassigned;
 
     // Set title
-    $dialog->selected_title = 'selectedcompetencies';
+    $dialog->selected_title = 'currentselection';
 
     $dialog->selected_items = $currentlyassigned;
 
@@ -75,7 +75,7 @@ if (!$nojs) {
     echo $dialog->generate_markup();
 
 } else {
-    // none JS version of page
+    // non JS version of page
     // Check permissions
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
     require_capability('moodle/local:updateorganisation', $sitecontext);
@@ -96,7 +96,7 @@ if (!$nojs) {
 
     echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
 
-    if(empty($frameworkid) || $frameworkid == 0) {
+    if (empty($frameworkid) || $frameworkid == 0) {
 
         echo build_nojs_frameworkpicker(
             $hierarchy,

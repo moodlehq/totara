@@ -5087,6 +5087,10 @@ table.dp-template-instances {
     width: 100%;
 }
 
+input.plan-remove-selected {
+    float: right;
+]
+
 /*
  * Hierarchy index styles
  */

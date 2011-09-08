@@ -1244,7 +1244,7 @@ abstract class dp_base_component {
         $html .= "var plan_id = {$this->plan->id};";
         $html .= "var comp_update_allowed = {$canupdate};";
         $html .= '</script>';
-        $html .= '<input type="submit" class="plan-add-item-button" id="show-'.$this->component.'-dialog" value="'.get_string('addremove'.$this->component, 'local_plan').'" />';
+        $html .= '<input type="submit" class="plan-add-item-button" id="show-'.$this->component.'-dialog" value="'.get_string('add'.$this->component.'s', 'local_plan').'" />';
         $html .= '</div>';
         $html .= '</div>';
         $html .= '</div>';

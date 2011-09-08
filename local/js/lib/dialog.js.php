@@ -25,6 +25,7 @@
  */
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 $ok_string = get_string('ok');
+$save_string = get_string('save');
 $cancel_string = get_string('cancel');
 ?>
 
@@ -1364,7 +1365,7 @@ totaraMultiSelectDialog = function(name, title, find_url, save_url) {
         {
             buttons: {
                 '<?php echo $cancel_string ?>': function() { handler._cancel() },
-                '<?php echo $ok_string ?>': function() { handler._save(save_url) }
+                '<?php echo $save_string ?>': function() { handler._save(save_url) }
             },
             title: '<h2>'+title+'</h2>'
         },

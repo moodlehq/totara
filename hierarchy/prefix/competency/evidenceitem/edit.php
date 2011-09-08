@@ -55,8 +55,8 @@ if (empty($CFG->competencyuseresourcelevelevidence)) {
 ///
 
 
-if($nojs) {
-    // None JS version
+if ($nojs) {
+    // Non JS version
 
     // Load categories by parent id
     $categories = array();
@@ -76,7 +76,7 @@ if($nojs) {
     echo '<input type="submit" name="submit" value="'.get_string('go').'">';
     echo '</form>';
 
-    if($category != 0) {
+    if ($category != 0) {
         if($courses = get_records('course', 'category', $category, 'sortorder')) {
             echo '<ul>';
             foreach($courses as $course) {
@@ -88,6 +88,7 @@ if($nojs) {
         }
     }
     print_footer();
+
 } else {
 
     // Use parentid instead of category
@@ -101,7 +102,7 @@ if($nojs) {
 
     // Turn on multi-select
     $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
-    $dialog->selected_title = 'currentlyselected';
+    $dialog->selected_title = 'currentselection';
 
     // Show only courses with completion enabled
     $where = "category = '{$parentid}' AND visible = 1 AND enablecompletion = ".COMPLETION_ENABLED;
@@ -109,9 +110,6 @@ if($nojs) {
 
     // Setup search
     $dialog->search_code = '/hierarchy/prefix/competency/evidenceitem/search.php';
-
-    // Set selected pane's id
-    $dialog->selected_id = 'available-evidence';
 
     if (empty($CFG->competencyuseresourcelevelevidence)) {
         // Set selected items

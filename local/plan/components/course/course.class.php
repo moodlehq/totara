@@ -407,6 +407,11 @@ class dp_course_component extends dp_base_component {
         $tableheaders[] = get_string('progress','local_plan');
         $tablecolumns[] = 'progress';
 
+        if (!$this->plan->is_complete() && $this->can_update_items()) {
+            $tableheaders[] = get_string('remove', 'local_plan');
+            $tablecolumns[] = 'remove';
+        }
+
         $table = new flexible_table('linkedcourselist');
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
@@ -432,6 +437,10 @@ class dp_course_component extends dp_base_component {
                 }
 
                 $row[] = $this->display_status_as_progress_bar($ca);
+
+                if (!$this->plan->is_complete() && $this->can_update_items()) {
+                    $row[] = '<input type="checkbox" value="1" name="delete_linked_course_assign['.$ca->id.']" />';
+                }
 
                 $table->add_data($row);
             }
@@ -1005,8 +1014,7 @@ class dp_course_component extends dp_base_component {
             return '';
         }
 
-        $competencyname = get_string('competencyplural', 'local_plan');
-        $btntext = get_string('updatelinkedx', 'local_plan', strtolower($competencyname));
+        $btntext = get_string('addlinkedcompetencies', 'local_plan');
 
         $html  = '<div class="buttons">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';

@@ -58,7 +58,7 @@ class totara_dialog_content_manager extends totara_dialog_content {
             //require_capability("moodle/local:view{$type}", get_system_context());
         }
 
-    $this->type = self::TYPE_CHOICE_MULTI;
+        $this->type = self::TYPE_CHOICE_MULTI;
     }
 
     /**
@@ -121,14 +121,14 @@ class totara_dialog_content_manager extends totara_dialog_content {
             // Parentid supplied, do not specify frameworkid as
             // sometimes it is not set correctly. And a parentid
             // is enough to get the right results
-        //return get_records('manager', 'parentid', $parentid, 'sortorder, id');
-        return get_records_sql("
-        SELECT u.id, " . sql_fullname() . " as fullname
-        FROM {$CFG->prefix}manager m
-        INNER JOIN {$CFG->prefix}user u on u.id = m.userid
-        WHERE m.parentid = $parentid
-        ORDER BY sortorder, id
-        ");
+            //return get_records('manager', 'parentid', $parentid, 'sortorder, id');
+            return get_records_sql("
+                SELECT u.id, " . sql_fullname() . " as fullname
+                FROM {$CFG->prefix}manager m
+                INNER JOIN {$CFG->prefix}user u on u.id = m.userid
+                WHERE m.parentid = $parentid
+                ORDER BY sortorder, id
+            ");
         }
         else {
             // If no parentid, grab the root node of this framework

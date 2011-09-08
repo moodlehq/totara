@@ -121,9 +121,9 @@ $dropdown_options = array();
 $available_categories = array();
 
 foreach ($categories as $category) {
-    $category->build_table($CFG->prefix,$program->id);
+    $category->build_table($CFG->prefix, $program->id);
     if (!$category->has_items()) {
-    $dropdown_options[$category->id] = $category->name;
+        $dropdown_options[$category->id] = $category->name;
     }
 }
 
@@ -151,7 +151,7 @@ if (!empty($dropdown_options)) {
     $html .= get_string('addnew','local_program');
     $html .= ' <select>';
     foreach ($dropdown_options as $value => $name) {
-    $html .= '<option value="'.$value.'">'.$name.'</option>';
+        $html .= '<option value="'.$value.'">'.$name.'</option>';
     }
     $html .= '</select> ';
     $html .= get_string('toprogram','local_program');

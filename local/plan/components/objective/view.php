@@ -31,6 +31,7 @@ require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // objective assignment id
+$action = optional_param('action', 'view', PARAM_TEXT);
 
 require_login();
 $plan = new development_plan($id);
@@ -46,10 +47,12 @@ $componentname = 'objective';
 $component = $plan->get_component($componentname);
 $objectivename = get_string($componentname, 'local_plan');
 $coursename = get_string('courseplural', 'local_plan');
+$currenturl = $CFG->wwwroot . '/local/plan/components/objective/view.php?id='.$id.'&amp;itemid='.$caid;
+$canupdate = $component->can_update_items();
 
 /// Javascript stuff
 // If we are showing dialog
-if ($component->can_update_items()) {
+if ($canupdate) {
     // Setup lightbox
     local_js(array(
         TOTARA_JS_DIALOG,
@@ -61,6 +64,42 @@ if ($component->can_update_items()) {
         $CFG->wwwroot.'/local/plan/components/objective/find-course.js.php'
     ));
 }
+
+
+// Check if we are performing an action
+if ($data = data_submitted() && $canupdate) {
+    if ($action === 'removelinkedcourses' && !$plan->is_complete()) {
+        $deletions = array();
+
+        // Load existing list of linked courses
+        $fullidlist = $component->get_linked_components($caid, 'course');
+
+        // Grab all linked items for deletion
+        $course_assigns = optional_param('delete_linked_course_assign', array(), PARAM_BOOL);
+        if ($course_assigns) {
+            foreach ($course_assigns as $linkedid => $delete) {
+                if (!$delete) {
+                    continue;
+                }
+
+                $deletions[] = $linkedid;
+            }
+
+            if ($fullidlist && $deletions) {
+                $newidlist = array_diff($fullidlist, $deletions);
+                $component->update_linked_components($caid, 'course', $newidlist);
+            }
+        }
+
+        if ($deletions) {
+            totara_set_notification(get_string('selectedlinkedcoursesremovedfromobjective', 'local_plan'), $currenturl, array('style' => 'notifysuccess'));
+        } else {
+            redirect($currenturl);
+        }
+        die();
+    }
+}
+
 
 $mform = $component->objective_form($caid, 'view');
 if ($data = $mform->get_data()){
@@ -88,21 +127,26 @@ print $component->display_back_to_index_link();
 $component->display_objective_detail($caid, true);
 
 
-if ( $plan->get_component('course')->get_setting('enabled') ){
+if ($plan->get_component('course')->get_setting('enabled')) {
     print '<br />';
     print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
-    if ( !$plancompleted ){
-        print $component->display_course_picker($caid);
-    }
     print '<div id="dp-objective-courses-container">';
-    if($linkedcourses =
-        $component->get_linked_components($caid, 'course')) {
+    if ($linkedcourses = $component->get_linked_components($caid, 'course')) {
+        $formurl = $currenturl.'&action=removelinkedcourses';
+        print '<form action="'.$formurl.'" method="post" />';
         print $plan->get_component('course')->display_linked_courses($linkedcourses);
+        if ($canupdate) {
+            print '<input type="submit" class="plan-remove-selected" value="'.get_string('removeselected', 'local_plan').'" />';
+        }
+        print '</form>';
     } else {
-        print '<p class="noitems-assigncourse">' . get_string('nolinkedx', 'local_plan', strtolower($coursename)). '</p>';
+        print '<p class="noitems-assigncourses">' . get_string('nolinkedx', 'local_plan', strtolower($coursename)). '</p>';
     }
     print '</div>';
 
+    if (!$plancompleted) {
+        print $component->display_course_picker($caid);
+    }
 }
 
 // Comments
