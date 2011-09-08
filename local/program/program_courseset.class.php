@@ -1888,7 +1888,7 @@ class recurring_course_set extends course_set {
             $row[] = $coursedetails;
 
             if ($accessible) {
-                $launch = '<div class="prog-course-launch">' . print_single_button($CFG->wwwroot.'/course/view.php?id='.$course->id, null, get_string('launchcourse', 'local_program'), null, null, true) . '</div>';
+                $launch = '<div class="prog-course-launch">' . print_single_button($CFG->wwwroot.'/course/view.php', array('id' => $course->id), get_string('launchcourse', 'local_program'), null, null, true) . '</div>';
             } else {
                 $launch = '<div class="prog-course-launch">' . print_single_button(null, null, get_string('notavailable', 'local_program'), null, null, true, null, true) . '</div>';
             }
