@@ -42,7 +42,7 @@ class rb_source_program extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
-        $this->sourcetitle = get_string('rolprogramsourcename', 'local_program');
+        $this->sourcetitle = get_string('programs','local_program');
         parent::__construct();
     }
 
