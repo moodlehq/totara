@@ -233,6 +233,7 @@ $string['weight'] = 'Weight';
 $string['currentlyselected'] = 'Currently selected';
 $string['currentselection'] = 'Current selection';
 $string['error:dialognotreeitems'] = 'No competencies in this framework';
+$string['error:dialognolinkedcourseitems'] = 'There are no competencies in this framework with linked courses assigned to them';
 $string['globalsettings'] = 'Global settings';
 $string['useresourcelevelevidence'] = 'Use resource-level evidence';
 $string['linkcourses'] = 'Link courses';
