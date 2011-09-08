@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 class dp_basic_workflow extends dp_base_workflow {
@@ -92,6 +91,8 @@ class dp_basic_workflow extends dp_base_workflow {
         $this->perm_course_setduedate_manager = DP_PERMISSION_ALLOW;
         $this->perm_course_setcompletionstatus_learner = DP_PERMISSION_DENY;
         $this->perm_course_setcompletionstatus_manager = DP_PERMISSION_ALLOW;
+        $this->perm_course_deletemandatory_learner = DP_PERMISSION_DENY;
+        $this->perm_course_deletemandatory_manager = DP_PERMISSION_DENY;
 
         // program permission settings
         $this->perm_program_updateprogram_learner = DP_PERMISSION_REQUEST;
@@ -112,6 +113,8 @@ class dp_basic_workflow extends dp_base_workflow {
         $this->perm_competency_setduedate_manager = DP_PERMISSION_ALLOW;
         $this->perm_competency_setproficiency_learner = DP_PERMISSION_DENY;
         $this->perm_competency_setproficiency_manager = DP_PERMISSION_ALLOW;
+        $this->perm_competency_deletemandatory_learner = DP_PERMISSION_DENY;
+        $this->perm_competency_deletemandatory_manager = DP_PERMISSION_DENY;
 
         //objective permission settings
         $this->perm_objective_updateobjective_learner = DP_PERMISSION_REQUEST;

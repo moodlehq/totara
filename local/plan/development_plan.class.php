@@ -819,10 +819,10 @@ class development_plan {
     /**
      * Given a pair of id/component pairs, returns them in a correctly sorted array
      *
-     * @param string $component1 Component name of the first item
-     * @param integer $itemid1 Assignment ID of the first item
-     * @param string $component2 Component name of the second item
-     * @param integer $itemid2 Assignment ID of the second item
+     * @param   string  $component1     Component name of the first item
+     * @param   int     $itemid1        Assignment ID of the first item
+     * @param   string  $component2     Component name of the second item
+     * @param   int     $itemid2        Assignment ID of the second item
      *
      * @return array or false Array of arrays containing the items sorted by component name in the form:
      *  array(
@@ -871,36 +871,52 @@ class development_plan {
      *
      * This method checks if the relation is already set and returns the existing relations ID if found
      *
-     * @param string $component1 Component name of the first item
-     * @param integer $itemid1 Assignment ID of the first item
-     * @param string $component2 Component name of the second item
-     * @param integer $itemid2 Assignment ID of the second item
+     * @param   string  $component1     Component name of the first item
+     * @param   int     $itemid1        Assignment ID of the first item
+     * @param   string  $component2     Component name of the second item
+     * @param   int     $itemid2        Assignment ID of the second item
+     * @param   string  $mandatory      Which, if any component is mandatory? (optional)
      *
      * @return integer or false ID of the new relation, or the existing relation, or false on failure
      */
-    function add_component_relation($component1, $itemid1, $component2, $itemid2) {
+    function add_component_relation($component1, $itemid1, $component2, $itemid2, $mandatory = '') {
         $items = $this->get_relation_array($component1, $itemid1, $component2, $itemid2);
-        // couldn't generate items, probably because item 1 and item 2 have same component type
-        if($items === false) {
+
+        // Couldn't generate items, probably because item 1 and item 2 have same component type
+        if ($items === false) {
             return false;
         }
 
-        // see if the relation already exists
-        $existingid = get_field_select('dp_plan_component_relation', 'id',
-            "itemid1={$items[0]['id']} AND component1='{$items[0]['component']}'
-            AND itemid2={$items[1]['id']} AND component2='{$items[1]['component']}'");
-        if($existingid) {
-            // relation already exists, return the relation ID
-            return $existingid;
+        // See if the relation already exists
+        $existingrelation = get_record_select(
+            'dp_plan_component_relation',
+            "
+                itemid1 = {$items[0]['id']}
+            AND component1 = '{$items[0]['component']}'
+            AND itemid2 = {$items[1]['id']}
+            AND component2 = '{$items[1]['component']}'
+        ");
+
+        // Relation already exists and mandatory value hasn't changed, return the relation ID
+        if ($existingrelation && $existingrelation->mandatory == $mandatory) {
+            return $existingrelation->id;
         }
 
-        // otherwise create the relation, returning the new ID
+        // Otherwise create/update the relation, returning the new ID
         $todb = new object();
         $todb->itemid1 = $items[0]['id'];
         $todb->component1 = $items[0]['component'];
         $todb->itemid2 = $items[1]['id'];
         $todb->component2 = $items[1]['component'];
-        return insert_record('dp_plan_component_relation', $todb);
+        $todb->mandatory = $mandatory;
+
+        // If there but diff mandatory, update
+        if ($existingrelation) {
+            $todb->id = $existingrelation->id;
+            return update_record('dp_plan_component_relation', $todb);
+        } else {
+            return insert_record('dp_plan_component_relation', $todb);
+        }
     }
 
 

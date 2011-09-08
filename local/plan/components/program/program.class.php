@@ -449,13 +449,19 @@ class dp_program_component extends dp_base_component {
      *
      * @access  public
      * @param   $itemid     integer
-     * @return  added item's name
+     * @param   boolean $checkpermissions If false user permission checks are skipped (optional)
+     * @param   boolean $manual Was this assignment created manually by a user? (optional)
+     * @return  object  Inserted record
      */
-    public function assign_new_item($itemid) {
+    public function assign_new_item($itemid, $checkpermissions = true, $manual = true) {
 
-        // Get approval value for new item
-        if (!$permission = $this->can_update_items()) {
-            print_error('error:cannotupdateprograms', 'local_plan');
+        // Get approval value for new item if required
+        if ($checkpermissions) {
+            if (!$permission = $this->can_update_items()) {
+                print_error('error:cannotupdateprograms', 'local_plan');
+            }
+        } else {
+            $permission = DP_PERMISSION_ALLOW;
         }
 
         $item = new object();
@@ -463,7 +469,8 @@ class dp_program_component extends dp_base_component {
         $item->programid = $itemid;
         $item->priority = null;
         $item->duedate = null;
-        $programname = get_field('prog', 'fullname',  'id', $itemid);
+        $item->manual = (int) $manual;
+
         // Check required values for priority/due data
         if ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED) {
             $item->priority = $this->get_default_priority();
@@ -481,7 +488,10 @@ class dp_program_component extends dp_base_component {
             $item->approved = DP_APPROVAL_UNAPPROVED;
         }
 
-        add_to_log(SITEID, 'plan', 'added program', "component.php?id={$this->plan->id}&amp;c=program", $programname);
+        // Load fullname of item
+        $item->fullname = get_field('program', 'fullname', 'id', $itemid);
+
+        add_to_log(SITEID, 'plan', 'added program', "component.php?id={$this->plan->id}&amp;c=program", "Program ID: {$itemid}");
 
         $insert_result = insert_record('dp_plan_program_assign', $item) ? $programname : false;
 
@@ -496,9 +506,13 @@ class dp_program_component extends dp_base_component {
             );
 
             $program->update_program_complete($this->plan->userid, $completionsettings);
-
         }
-        return $insert_result;
+
+        if ($insert_result) {
+            $item->id = $insert_result;
+        }
+
+        return $insert_result ? $item : $insert_result;
     }
 
     /**

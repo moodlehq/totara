@@ -94,7 +94,8 @@
         <FIELD NAME="duedate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Timestamp of the date this course is due to be completed." PREVIOUS="priority" NEXT="approved"/>
         <FIELD NAME="approved" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates if the course has been accepted as part of a plan, or is awaiting approval." PREVIOUS="duedate" NEXT="completionstatus"/>
         <FIELD NAME="completionstatus" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Stores the course completion status at the moment the plan is marked as complete. Set to null before the plan is complete." PREVIOUS="approved" NEXT="grade"/>
-        <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" DECIMALS="5" COMMENT="Stores the course grade at the moment the plan is marked as complete. Set to null for active plans." PREVIOUS="completionstatus"/>
+        <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" DECIMALS="5" COMMENT="Stores the course grade at the moment the plan is marked as complete. Set to null for active plans." PREVIOUS="completionstatus" NEXT="manual"/>
+        <FIELD NAME="manual" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Was this assignment made manually" PREVIOUS="grade"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -112,8 +113,8 @@
         <FIELD NAME="priority" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Identifies the priority of this competency within the current plan." PREVIOUS="competencyid" NEXT="duedate"/>
         <FIELD NAME="duedate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Timestamp of the date this competency is due to be completed." PREVIOUS="priority" NEXT="approved"/>
         <FIELD NAME="approved" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates if the competency has been accepted as part of a plan, or is awaiting approval." PREVIOUS="duedate" NEXT="scalevalueid"/>
-        <FIELD NAME="scalevalueid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The final id of the proficiency scalevalue. This field is used as a snapshot field, for saving the proficiency, after the plan has been completed" PREVIOUS="approved" NEXT="mandatory"/>
-        <FIELD NAME="mandatory" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Is this a manadatory competency" PREVIOUS="scalevalueid"/>
+        <FIELD NAME="scalevalueid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The final id of the proficiency scalevalue. This field is used as a snapshot field, for saving the proficiency, after the plan has been completed" PREVIOUS="approved" NEXT="manual"/>
+        <FIELD NAME="manual" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Was this assignment made manually" PREVIOUS="scalevalueid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -227,7 +228,8 @@
         <FIELD NAME="component1" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="The first component in the relation - first alphabetically" PREVIOUS="id" NEXT="itemid1"/>
         <FIELD NAME="itemid1" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Identifier for the first component in the relation" PREVIOUS="component1" NEXT="component2"/>
         <FIELD NAME="component2" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="The second component in the relation - second alphabetically" PREVIOUS="itemid1" NEXT="itemid2"/>
-        <FIELD NAME="itemid2" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Identifies the second item in the relation" PREVIOUS="component2"/>
+        <FIELD NAME="itemid2" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Identifies the second item in the relation" PREVIOUS="component2" NEXT="mandatory"/>
+        <FIELD NAME="mandatory" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="Is this a manadatory relation" PREVIOUS="itemid2"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -273,7 +275,8 @@
         <FIELD NAME="priority" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="description" NEXT="duedate"/>
         <FIELD NAME="duedate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="priority" NEXT="scalevalueid"/>
         <FIELD NAME="scalevalueid" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="duedate" NEXT="approved"/>
-        <FIELD NAME="approved" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="scalevalueid"/>
+        <FIELD NAME="approved" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="scalevalueid" NEXT="manual"/>
+        <FIELD NAME="manual" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Was this assignment made manually" PREVIOUS="approved"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -301,7 +304,8 @@
         <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Identifies the program being assigned" PREVIOUS="planid" NEXT="priority"/>
         <FIELD NAME="priority" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Identifies the priority of this program within the current plan." PREVIOUS="programid" NEXT="duedate"/>
         <FIELD NAME="duedate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Timestamp of the date this program is due to be completed." PREVIOUS="priority" NEXT="approved"/>
-        <FIELD NAME="approved" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates if the program has been accepted as part of a plan, or is awaiting approval." PREVIOUS="duedate"/>
+        <FIELD NAME="approved" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates if the program has been accepted as part of a plan, or is awaiting approval." PREVIOUS="duedate" NEXT="manual"/>
+        <FIELD NAME="manual" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Was this assignment made manually" PREVIOUS="approved"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

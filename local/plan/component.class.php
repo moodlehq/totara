@@ -518,34 +518,41 @@ abstract class dp_base_component {
         // first component is in component1
         // Figure out which order to perform query
         switch (strcmp($thiscomponent, $componentrequired)) {
-        case -1:
-            $matchedcomp = 'component1';
-            $matchedid = 'itemid1';
-            $searchedcomp = 'component2';
-            $searchedid = 'itemid2';
-            break;
-        case 1:
-            $matchedcomp = 'component2';
-            $matchedid = 'itemid2';
-            $searchedcomp = 'component1';
-            $searchedid = 'itemid1';
-            break;
-        case 0:
-        default:
-            // linking within the same component not supported
-            return false;
+            case -1:
+                $matchedcomp = 'component1';
+                $matchedid = 'itemid1';
+                $searchedcomp = 'component2';
+                $searchedid = 'itemid2';
+                break;
+            case 1:
+                $matchedcomp = 'component2';
+                $matchedid = 'itemid2';
+                $searchedcomp = 'component1';
+                $searchedid = 'itemid1';
+                break;
+            case 0:
+            default:
+                // linking within the same component not supported
+                return false;
         }
 
         // find all matching relations
-        $sql = "SELECT id, $searchedid AS itemid
-            FROM {$CFG->prefix}dp_plan_component_relation
-            WHERE $matchedcomp = '$thiscomponent' AND
-                $matchedid = $id AND
-                $searchedcomp = '$componentrequired'";
+        $sql = "
+            SELECT
+                id,
+                $searchedid AS itemid
+            FROM
+                {$CFG->prefix}dp_plan_component_relation
+            WHERE
+                $matchedcomp = '$thiscomponent'
+            AND $matchedid = $id
+            AND $searchedcomp = '$componentrequired'
+        ";
+
         // return an array of IDs
-        if($result = get_records_sql($sql)) {
+        if ($result = get_records_sql($sql)) {
             $out = array();
-            foreach($result as $item) {
+            foreach ($result as $item) {
                 $out[] = $item->itemid;
             }
             return $out;
@@ -684,6 +691,42 @@ abstract class dp_base_component {
 
 
     /**
+     * Is the item a mandatory relation for something else?
+     *
+     * @access  protected
+     * @param   int     $itemid
+     * @return  bool
+     */
+    protected function is_mandatory_relation($itemid) {
+        global $CFG;
+
+        // Count mandatory records
+        $sql = "
+            SELECT
+                *
+            FROM
+                {$CFG->prefix}dp_plan_component_relation
+            WHERE
+                mandatory = '{$this->component}'
+            AND
+            (
+                (
+                    component1 = '{$this->component}'
+                AND itemid1 = $itemid
+                )
+                OR
+                (
+                    component2 = '{$this->component}'
+                AND itemid2 = $itemid
+                )
+            )
+        ";
+
+        return record_exists_sql($sql);
+    }
+
+
+    /**
      * Update assigned items
      *
      * @access  public
@@ -697,12 +740,14 @@ abstract class dp_base_component {
         // Get currently assigned items
         $assigned = $this->get_assigned_items();
         $assigned_ids = array();
-        foreach($assigned as $item) {
+        foreach ($assigned as $item) {
             $assigned_ids[$item->$item_id_name] = $item->$item_id_name;
         }
         $sendalert = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
             && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
         $updates = '';
+
+        begin_sql();
 
         if ($items) {
             foreach ($items as $itemid) {
@@ -714,8 +759,13 @@ abstract class dp_base_component {
 
                 // Check if not already assigned
                 if (!isset($assigned_ids[$itemid])) {
-                    $newitem = $this->assign_new_item($itemid);
-                    $updates .= get_string('addedx', 'local_plan', $newitem).'<br>';
+                    $result = $this->assign_new_item($itemid);
+                    if (!$result) {
+                        rollback_sql();
+                        print_error('error:couldnotassignnewitem', 'local_plan');
+                    }
+
+                    $updates .= get_string('addedx', 'local_plan', $result->fullname).'<br>';
                 }
 
                 // Remove from list to prevent deletion
@@ -728,9 +778,17 @@ abstract class dp_base_component {
             if(!isset($assigned_ids[$item->$item_id_name])) {
                 continue;
             }
+
+            // Check the user has permission on each item individually
+            if (!$this->can_delete_item($item)) {
+                continue;
+            }
+
             $this->unassign_item($item);
             $updates .= get_string('removedx', 'local_plan', $assigned[$item->id]->fullname).'<br>';
         }
+
+        commit_sql();
 
         if ($sendalert) {
             $this->send_component_update_alert($updates);

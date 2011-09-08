@@ -37,6 +37,7 @@ class dp_course_component extends dp_base_component {
         'setpriority' => false,
         'setduedate' => false,
         'setcompletionstatus' => false,
+        'deletemandatory' => false,
     );
 
 
@@ -223,6 +224,11 @@ class dp_course_component extends dp_base_component {
                 print_error('error:couldnotfindassigneditem', 'local_plan');
             }
 
+            // Check mandatory permissions
+            if (!$this->can_delete_item($deleteitem)) {
+                print_error('error:nopermissiondeletemandatorycourse', 'local_plan');
+            }
+
             // Unassign item
             if ($this->unassign_item($deleteitem)) {
                 add_to_log(SITEID, 'plan', 'removed course', "component.php?id={$this->plan->id}&amp;c=course", "{$deleteitem->fullname} (ID:{$deleteitem->id})");
@@ -282,14 +288,15 @@ class dp_course_component extends dp_base_component {
 
 
     /**
-     * Assign a new item to this plan
+     * Assign a new item to this component of the plan
      *
      * @access  public
      * @param   integer $itemid
      * @param   boolean $checkpermissions If false user permission checks are skipped (optional)
-     * @return  added item's name
+     * @param   boolean $manual Was this assignment created manually by a user? (optional)
+     * @return  object  Inserted record
      */
-    public function assign_new_item($itemid, $checkpermissions=true) {
+    public function assign_new_item($itemid, $checkpermissions = true, $manual = true) {
 
         // Get approval value for new item if required
         if ($checkpermissions) {
@@ -307,7 +314,8 @@ class dp_course_component extends dp_base_component {
         $item->duedate = null;
         $item->completionstatus = null;
         $item->grade = null;
-        $coursename = get_field('course', 'fullname',  'id', $itemid);
+        $item->manual = (int) $manual;
+
         // Check required values for priority/due data
         if ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED) {
             $item->priority = $this->get_default_priority();
@@ -325,21 +333,29 @@ class dp_course_component extends dp_base_component {
             $item->approved = DP_APPROVAL_UNAPPROVED;
         }
 
-        add_to_log(SITEID, 'plan', 'added course', "component.php?id={$this->plan->id}&amp;c=course", $coursename);
-        return insert_record('dp_plan_course_assign', $item) ? $coursename : false;
+        // Load fullname of item
+        $item->fullname = get_field('course', 'fullname', 'id', $itemid);
+
+        add_to_log(SITEID, 'plan', 'added course', "component.php?id={$this->plan->id}&amp;c=course", "Course ID: {$itemid}");
+
+        if ($result = insert_record('dp_plan_course_assign', $item)) {
+            $item->id = $result;
+        }
+
+        return $result ? $item : $result;
     }
 
 
     /**
      * Displays a list of linked courses
      *
-     * @param  array  $list  the list of linked courses
-     * @return false|string  $out  the table to display
+     * @param   array   $list           The list of linked courses
+     * @return  false|string  $out  the table to display
      */
     function display_linked_courses($list) {
         global $CFG;
 
-        if (!is_array($list)|| count($list) == 0) {
+        if (!is_array($list) || count($list) == 0) {
             return false;
         }
 
@@ -373,14 +389,19 @@ class dp_course_component extends dp_base_component {
 
         // get courses assigned to this plan
         // and related details
-        $from = " FROM {$CFG->prefix}dp_plan_course_assign ca
-                LEFT JOIN
-                    {$CFG->prefix}course c ON c.id = ca.courseid
-                LEFT JOIN
-                    {$CFG->prefix}dp_priority_scale_value psv
-                    ON (ca.priority = psv.id
-                    AND psv.priorityscaleid = $priorityscaleid)
-                    {$completion_joins}";
+        $from = "
+            FROM
+                {$CFG->prefix}dp_plan_course_assign ca
+            LEFT JOIN
+                {$CFG->prefix}course c
+             ON c.id = ca.courseid
+            LEFT JOIN
+                {$CFG->prefix}dp_priority_scale_value psv
+            ON  (ca.priority = psv.id
+            AND psv.priorityscaleid = $priorityscaleid)
+                {$completion_joins}
+        ";
+
         $where = " WHERE ca.id IN (" . implode(',', $list) . ")
             AND ca.approved = ".DP_APPROVAL_APPROVED;
 
@@ -424,7 +445,7 @@ class dp_course_component extends dp_base_component {
             $priorityvalues = get_records('dp_priority_scale_value',
                 'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
-            while($ca = rs_fetch_next_record($records)) {
+            while ($ca = rs_fetch_next_record($records)) {
                 $row = array();
                 $row[] = $this->display_item_name($ca);
 
@@ -1027,5 +1048,25 @@ class dp_course_component extends dp_base_component {
         $html .= '</div>';
 
         return $html;
+    }
+
+
+    /**
+     * Check to see if the course can be deleted
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  bool
+     */
+    public function can_delete_item($item) {
+
+        // Check whether this course is a mandatory relation
+        if ($this->is_mandatory_relation($item->id)) {
+            if ($this->get_setting('deletemandatory') <= DP_PERMISSION_DENY) {
+                return false;
+            }
+        }
+
+        return parent::can_delete_item($item);
     }
 }

@@ -86,8 +86,8 @@ define('DP_PLAN_REASON_AUTO_COMPLETE_ITEMS', 60);
 define('DP_PLAN_REASON_MANUAL_REACTIVATE', 80);
 
 // Types of competency evidence items
-define('PLAN_LINKTYPE_MANDATORY','mandatory');
-define('PLAN_LINKTYPE_OPTIONAL','optional');
+define('PLAN_LINKTYPE_MANDATORY', 1);
+define('PLAN_LINKTYPE_OPTIONAL', 0);
 
 // roles available to development plans
 // each must have a class definition in

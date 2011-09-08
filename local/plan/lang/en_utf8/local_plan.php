@@ -170,6 +170,7 @@ $string['setpriority'] = 'Set Priority';
 $string['setduedate'] = 'Set Due Date';
 $string['setcompletionstatus'] = 'Set Completion Status';
 $string['completereactivate'] = 'Complete/reactivate';
+$string['deletemandatory'] = 'Delete Mandatory';
 $string['add'] = 'Add $a';
 $string['remove'] = 'Remove $a';
 $string['competency'] = 'Competency';
@@ -190,7 +191,9 @@ $string['error:updateobjectivescaleordering'] = 'Could not update objective scal
 $string['error:updateobjectivescalevalue'] = 'Could not update objective scale value';
 $string['error:competencystatuspermission'] = 'You do not have permission to change the status of that competency';
 $string['error:problemapproving'] = 'There was a problem approving those items';
-
+$string['error:nopermissiondeletemandatorycourse'] = 'You do not have permission to delete a mandatory course';
+$string['error:nopermissiondeletemandatorycomp'] = 'You do not have permission to delete a mandatory competency';
+$string['error:couldnotassignnewitem'] = 'Could not assign new item to plan';
 // Strings with placeholder for custom-editable component names
 $string['updatelinkedx'] = 'Update linked $a';
 $string['nox'] = 'No $a.';
@@ -755,7 +758,7 @@ $string['error:updatinglinktype'] = 'Error: could not update link type';
 
 // Deleting linked courses
 $string['deletelinkedcoursesheader'] = 'Removing \"$a\" from plan';
-$string['deletelinkedcoursesinstructions'] = 'The following development activities are linked to this focus area in your plan. If checked, they will be removed from your plan at this time. If unchecked, they will remain in your plan.';
+$string['deletelinkedcoursesinstructions'] = 'The following courses are linked to this competency in your plan. If checked, they will be removed from your plan at this time. If unchecked, they will remain in your plan.';
 $string['deletelinkedcoursessubmit'] = 'Remove from my plan';
 
 $string['activecourses'] = 'Courses';

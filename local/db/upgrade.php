@@ -2434,7 +2434,7 @@ function xmldb_local_upgrade($oldversion) {
         // Add linktype field to pos_competencies table
         $table = new XMLDBTable('pos_competencies');
         $field = new XMLDBField('linktype');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
         }
@@ -2442,24 +2442,18 @@ function xmldb_local_upgrade($oldversion) {
         // Add linktype field to org_competencies table
         $table = new XMLDBTable('org_competencies');
         $field = new XMLDBField('linktype');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
         }
-
-        $result = $result && execute_sql("update {$CFG->prefix}pos_competencies set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
-
-        $result = $result && execute_sql("update {$CFG->prefix}org_competencies set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
 
         // Define field linktype to be added to question_truefalse
         $table = new XMLDBTable('comp_evidence_items');
         $field = new XMLDBField('linktype');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'iteminstance');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'iteminstance');
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
         }
-
-        $result = $result && execute_sql("update {$CFG->prefix}comp_evidence_items set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
     }
 
     if ($result && $oldversion < 2011082400) {

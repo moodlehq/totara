@@ -43,12 +43,14 @@ else {
     $idlist = explode(',', $idlist);
 }
 
-// Basic access control checks
-
-
 $plan = new development_plan($id);
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
+
+// Basic access control checks
+if (!$component->can_update_items()) {
+    print_error('error:cannotupdateitems', 'local_plan');
+}
 
 // get array of competencies already assigned
 $assigned = $component->get_assigned_items();
@@ -80,12 +82,13 @@ print '<p>' . get_string('confirmlinkedcoursesdesc', 'local_plan') . '</p>';
 print '<form>';
 print '<input type="hidden" name="id" value="' . $id . '" />';
 print '<input type="hidden" name="update" value="' . implode(',', $idlist) . '" />';
-foreach($evidence as $compid => $linkedcourses) {
+
+foreach ($evidence as $compid => $linkedcourses) {
     print 'Competency "'. $compnames[$compid] . '":<br />';
-    foreach($linkedcourses as $linkedcourse) {
-        if($plan->get_component('course')->is_item_assigned($linkedcourse->courseid)) {
-            $message = ' (' .
-                get_string('alreadyassignedtoplan', 'local_plan'). ')';
+
+    foreach ($linkedcourses as $linkedcourse) {
+        if ($plan->get_component('course')->is_item_assigned($linkedcourse->courseid)) {
+            $message = ' ('.get_string('alreadyassignedtoplan', 'local_plan').')';
         } else {
             $message = '';
         }
@@ -93,6 +96,7 @@ foreach($evidence as $compid => $linkedcourses) {
         if ($linkedcourse->linktype == PLAN_LINKTYPE_MANDATORY) {
             print '<input type="checkbox" checked="checked" disabled="disabled" value="1"> ';
             print '<input type="hidden" name="linkedcourses['.$compid.']['.$linkedcourse->courseid.']" value="1" />';
+            print '<input type="hidden" name="mandatory['.$compid.']['.$linkedcourse->courseid.']" value="1" />';
             print $linkedcourse->fullname . $message.'<br />';
         } else {
             print '<input type="checkbox" checked="checked" name="linkedcourses[' . $compid . '][' . $linkedcourse->courseid . ']" value="1"> ';

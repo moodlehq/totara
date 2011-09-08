@@ -38,7 +38,8 @@ class dp_competency_component extends dp_base_component {
         //'commenton' => false,
         'setpriority' => false,
         'setduedate' => false,
-        'setproficiency' => false
+        'setproficiency' => false,
+        'deletemandatory' => false
     );
 
 
@@ -331,15 +332,22 @@ class dp_competency_component extends dp_base_component {
             return array();
         }
 
-        $sql = 'SELECT cei.id, cei.competencyid, cei.iteminstance AS ' .
-            " courseid, c.fullname, cei.linktype
-            FROM {$CFG->prefix}comp_evidence_items cei
-            LEFT JOIN {$CFG->prefix}course c ON
-                cei.iteminstance = c.id
-            WHERE cei.itemtype = '" .
-                COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION ."' AND
-                cei.competencyid IN (" .
-            implode(',', $competencies) . ')';
+        $sql = "
+            SELECT
+                cei.id,
+                cei.competencyid,
+                cei.iteminstance AS courseid,
+                c.fullname,
+                cei.linktype
+            FROM
+                {$CFG->prefix}comp_evidence_items cei
+            LEFT JOIN
+                {$CFG->prefix}course c
+             ON cei.iteminstance = c.id
+            WHERE
+                cei.itemtype = '".COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION."'
+            AND cei.competencyid IN (".implode(',', $competencies).")
+        ";
         $records = get_records_sql($sql);
 
         // restructure into 2d array for easy access
@@ -357,6 +365,7 @@ class dp_competency_component extends dp_base_component {
                 }
             }
         }
+
         return $out;
     }
 
@@ -1017,6 +1026,10 @@ class dp_competency_component extends dp_base_component {
             return false;
         }
 
+        if (!$this->can_delete_item($item)) {
+            print_error('error:nopermissiondeletemandatorycomp', 'local_plan');
+        }
+
         $item->itemid = $item->id;
         return $this->unassign_item($item);
     }
@@ -1028,9 +1041,10 @@ class dp_competency_component extends dp_base_component {
      * @access  public
      * @param   integer $itemid
      * @param   boolean $checkpermissions If false user permission checks are skipped (optional)
-     * @return  added item's name
+     * @param   boolean $manual Was this assignment created manually by a user? (optional)
+     * @return  object  Inserted record
      */
-    public function assign_new_item($itemid, $checkpermissions=true, $mandatory=false) {
+    public function assign_new_item($itemid, $checkpermissions = true, $manual = true) {
 
         // Get approval value for new item if required
         if ($checkpermissions) {
@@ -1048,8 +1062,7 @@ class dp_competency_component extends dp_base_component {
         $item->duedate = null;
         $item->completionstatus = null;
         $item->grade = null;
-        $item->mandatory = $mandatory;
-        $competencyname = get_field('comp', 'fullname', 'id', $itemid);
+        $item->manual = (int) $manual;
 
         // Check required values for priority/due data
         if ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED) {
@@ -1068,8 +1081,13 @@ class dp_competency_component extends dp_base_component {
             $item->approved = DP_APPROVAL_UNAPPROVED;
         }
 
-        add_to_log(SITEID, 'plan', 'added competency', "component.php?id={$this->plan->id}&amp;c=competency", $competencyname);
-        $result = insert_record('dp_plan_competency_assign', $item) ? $competencyname : false;
+        // Load fullname of item
+        $item->fullname = get_field('comp', 'fullname', 'id', $itemid);
+
+        add_to_log(SITEID, 'plan', 'added competency', "component.php?id={$this->plan->id}&amp;c=competency", "Competency ID: {$itemid}");
+        if ($result = insert_record('dp_plan_competency_assign', $item)) {
+            $item->id = $result;
+        }
 
         // Check if we are auto marking competencies with default evidence values
         if ($this->get_setting('autoadddefaultevidence')) {
@@ -1078,33 +1096,45 @@ class dp_competency_component extends dp_base_component {
             }
         }
 
-        return $result;
+        return $result ? $item : $result;
     }
 
 
     /**
      * Assigns competencies to a plan
      *
-     * @param  array  the competencies to be assigned
-     * @param  boolean $checkpermissions If false user permission checks are skipped (optional)
-     * @return boolean
+     * @access  public
+     * @param   array   $competencies       The competencies to be assigned
+     * @param   bool    $checkpermissions   If false user permission checks are skipped (optional)
+     * @param   array   $relation           Optional relation type (component, id)
+     * @return bool
      */
-    function assign_competencies($competencies, $checkpermissions=true) {
+    function auto_assign_competencies($competencies, $checkpermissions = true, $relation = false) {
+
+        begin_sql();
+
         // Get all currently-assigned competencies
         $assigned = get_records('dp_plan_competency_assign', 'planid', $this->plan->id, '', 'competencyid');
         $assigned = !empty($assigned) ? array_keys($assigned) : array();
+
         foreach ($competencies as $c) {
-            if (in_array($c->id, $assigned)) {
-                // Don't assign duplicate competencies
-                continue;
+            // Don't assign duplicate competencies
+            if (!in_array($c->id, $assigned)) {
+                // Assign competency item (false = assigned automatically)
+                if (!$assignment = $this->assign_new_item($c->id, $checkpermissions, false)) {
+                    rollback_sql();
+                    return false;
+                }
             }
-            $mandatory = isset($c->linktype) && $c->linktype == PLAN_LINKTYPE_MANDATORY;
-            // Assign competency item
-            if (!$this->assign_new_item($c->id, $checkpermissions, $mandatory)) {
-                return false;
+
+            // Add relation
+            if ($relation) {
+                $mandatory = $c->linktype == PLAN_LINKTYPE_MANDATORY ? 'competency' : '';
+                $this->plan->add_component_relation($relation['component'], $relation['id'], 'competency', $assignment->id, $mandatory);
             }
         }
 
+        commit_sql();
         return true;
     }
 
@@ -1134,8 +1164,7 @@ class dp_competency_component extends dp_base_component {
                         $this->plan->get_component('course')->assign_new_item($courseid, $checkpermissions);
                     }
 
-                    $assignmentid = get_field('dp_plan_course_assign',
-                        'id', 'planid', $this->plan->id, 'courseid', $courseid);
+                    $assignmentid = get_field('dp_plan_course_assign', 'id', 'planid', $this->plan->id, 'courseid', $courseid);
                     if (!$assignmentid) {
                         // something went wrong trying to assign the course
                         // don't attempt to create a relation
@@ -1149,14 +1178,12 @@ class dp_competency_component extends dp_base_component {
                         continue;
                     }
 
-                    // create relation
-                    $this->plan->add_component_relation('competency', $comp_assign_id, 'course', $assignmentid);
-
+                    // Create relation
+                    $mandatory = $linkedcourse->linktype == PLAN_LINKTYPE_MANDATORY ? 'course' : '';
+                    $this->plan->add_component_relation('competency', $comp_assign_id, 'course', $assignmentid, $mandatory);
                 }
             }
-
         }
-
     }
 
 
@@ -1171,6 +1198,7 @@ class dp_competency_component extends dp_base_component {
         $includecompleted = $this->get_setting('includecompleted');
 
         require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+
         // Get primary position
         $position_assignment = new position_assignment(
             array(
@@ -1178,10 +1206,12 @@ class dp_competency_component extends dp_base_component {
                 'type'      => POSITION_TYPE_PRIMARY
             )
         );
+
         if (empty($position_assignment->positionid)) {
             // No position assigned to the primary position, so just go away
             return true;
         }
+
         $position = new position();
         if ($includecompleted) {
             $competencies = $position->get_assigned_competencies($position_assignment->positionid);
@@ -1191,8 +1221,9 @@ class dp_competency_component extends dp_base_component {
         }
 
         if ($competencies) {
-            if ($this->assign_competencies($competencies, false)) {
-                // assign courses
+            $relation = array('component' => 'position', 'id' => $position_assignment->positionid);
+            if ($this->auto_assign_competencies($competencies, false, $relation)) {
+                // Assign courses
                 if ($includecourses) {
                     $this->assign_linked_courses($competencies, false);
                 }
@@ -1238,7 +1269,8 @@ class dp_competency_component extends dp_base_component {
         }
 
         if ($competencies) {
-            if ($this->assign_competencies($competencies, false)) {
+            $relation = array('component' => 'organisation', 'id' => $position_assignment->positionid);
+            if ($this->auto_assign_competencies($competencies, false, $relation)) {
                 // assign courses
                 if ($includecourses) {
                     $this->assign_linked_courses($competencies, false);
@@ -1368,18 +1400,26 @@ class dp_competency_component extends dp_base_component {
         return $cansetproficiency && $approved;
     }
 
-    public function can_delete_item($item){
-        global $CFG;
-        require_once($CFG->dirroot.'/local/plan/lib.php');
-        // Check whether this competency comes from the selected JE for this plan
-        //
 
-        if ($item->mandatory) {
-            return false;
+    /**
+     * Check to see if the competency can be deleted
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  bool
+     */
+    public function can_delete_item($item) {
+
+        // Check whether this course is a mandatory relation
+        if ($this->is_mandatory_relation($item->id)) {
+            if ($this->get_setting('deletemandatory') <= DP_PERMISSION_DENY) {
+                return false;
+            }
         }
 
         return parent::can_delete_item($item);
     }
+
 
     /*
      * Display the course picker
