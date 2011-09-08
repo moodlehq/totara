@@ -69,7 +69,7 @@ $countfiltered = $report->get_filtered_count();
 // save a query if no filters set
 $countall = ($report->get_sql_filter() == '') ? $countfiltered : $report->get_full_count();
 
-$fullname = $report->fullname;
+$fullname = format_string($report->fullname);
 $pagetitle = format_string(get_string('report','local_reportbuilder').': '.$fullname);
 $navlinks[] = array('name' => get_string('myreports','local_reportbuilder'), 'link'=> $CFG->wwwroot . '/my/reports.php', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
