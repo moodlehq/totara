@@ -263,6 +263,17 @@ from
                 )
         );
 
+        $columnoptions[] = new rb_column_option(
+                'course_completion',
+                'timecompleted',
+                get_string('coursecompletedate', 'rb_source_dp_course'),
+                'course_completion.timecompleted',
+                array(
+                    'joins' => 'course_completion',
+                    'displayfunc' => 'nice_date'
+                )
+        );
+
         $this->add_user_fields_to_columns($columnoptions);
 
         $columnoptions[] = new rb_column_option(
