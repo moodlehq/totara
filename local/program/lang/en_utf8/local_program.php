@@ -16,6 +16,7 @@ $string['addnewprogram'] = 'Add a new program';
 $string['allowedtimeforprogramaslearner'] = 'You are allowed $a->num $a->periodstr to complete this program.';
 $string['allowedtimeforprogramasmanager'] = '$a->fullname is allowed $a->num $a->periodstr to complete this program.';
 $string['allowedtimeforprogramviewing'] = 'A learner is allowed $a->num $a->periodstr to complete this program.';
+$string['anothercourse'] = 'another course';
 $string['assignmentcriteriamanager'] = 'The learner is required to complete this program under the following criteria:';
 $string['assignmentcriterialearner'] = 'You are required to complete this program under the following criteria:';
 $string['availability'] = 'Availability';

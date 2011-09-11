@@ -417,7 +417,8 @@ abstract class course_set {
             else {
                 $a->mustcomplete = $this->get_course_text($previous_sets[count($previous_sets)-1]);
             }
-
+            // fallback for 'proceedto'
+            $a->proceedto = ' ' . get_string('anothercourse', 'local_program');
             // If there is an OR set below us..
             if (isset($next_sets[0]) && $next_sets[0]->nextsetoperator == NEXTSETOPERATOR_OR) { // If the below set is using OR
                 $sets = array();
