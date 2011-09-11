@@ -1939,9 +1939,9 @@ class recurring_course_set extends course_set {
         $out .= '<input type="hidden" name="'.$prefix.'nextsetoperator" value="'.$this->nextsetoperator.'" />';
 
         $out .= '<input type="hidden" name="'.$prefix.'timeallowedperiod" value="'.TIME_SELECTOR_DAYS.'" />';
-        $out .= '<input type="hidden" name="'.$prefix.'timeallowednum" value="1" />';
+        $out .= '<input type="hidden" name="'.$prefix.'timeallowednum" value="30" />';
         $out .= '<input type="hidden" name="'.$prefix.'recurrencetimeperiod" value="'.TIME_SELECTOR_DAYS.'" />';
-        $out .= '<input type="hidden" name="'.$prefix.'recurrencetimenum" value="1" />';
+        $out .= '<input type="hidden" name="'.$prefix.'recurrencetimenum" value="365" />';
         $out .= '<input type="hidden" name="'.$prefix.'recurcreatetimeperiod" value="'.TIME_SELECTOR_DAYS.'" />';
         $out .= '<input type="hidden" name="'.$prefix.'recurcreatetimenum" value="1" />';
 
