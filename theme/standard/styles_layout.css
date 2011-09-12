@@ -1274,6 +1274,7 @@ body#admin-modules table.generaltable td.c0
   padding-right: 3px;
 }
 
+
 /***
  *** Blocks
  ***/
@@ -1870,9 +1871,14 @@ div#totara-header-notifications .notifyproblem {
 }
 
 div.totara-copyright {
-	margin: 10px 20px;
-	padding-bottom: 10px;
-	text-align:center;
+    margin: 10px 20px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+p.totara-copyright {
+    text-align: center;
+    margin: 0 20px 10px;
 }
 
 /*****************************************************************************/
