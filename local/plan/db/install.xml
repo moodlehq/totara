@@ -229,7 +229,7 @@
         <FIELD NAME="itemid1" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Identifier for the first component in the relation" PREVIOUS="component1" NEXT="component2"/>
         <FIELD NAME="component2" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="The second component in the relation - second alphabetically" PREVIOUS="itemid1" NEXT="itemid2"/>
         <FIELD NAME="itemid2" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Identifies the second item in the relation" PREVIOUS="component2" NEXT="mandatory"/>
-        <FIELD NAME="mandatory" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="Is this a manadatory relation" PREVIOUS="itemid2"/>
+        <FIELD NAME="mandatory" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Is this a manadatory relation" PREVIOUS="itemid2"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

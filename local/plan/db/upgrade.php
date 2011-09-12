@@ -439,7 +439,10 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         }
     }
 
-    if ($result && $oldversion < 2011080200) {
+
+/// Totara 1.1 upgrade
+
+    if ($result && $oldversion < 2011091200) {
 
     /// Define table dp_plan_program_assign to be created
         $table = new XMLDBTable('dp_plan_program_assign');
@@ -462,9 +465,6 @@ function xmldb_local_plan_upgrade($oldversion=0) {
 
     /// Launch create table for dp_plan_program_assign
         $result = $result && create_table($table);
-    }
-
-    if ($result && $oldversion < 2011051002) {
 
     /// Define table dp_program_settings to be created
         $table = new XMLDBTable('dp_program_settings');
@@ -551,13 +551,11 @@ function xmldb_local_plan_upgrade($oldversion=0) {
                 commit_sql();
             }
         }
-    }
 
-    if ($result && $oldversion < 2011090800) {
         // Add mandatory field to dp_plan_component_relation table
         $table = new XMLDBTable('dp_plan_component_relation');
         $field = new XMLDBField('mandatory');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, null);
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
         }

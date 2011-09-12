@@ -22,4 +22,4 @@
  * @subpackage management
  */
 
-$plugin->version  = 2011052600;   // The (date) version of this module
+$plugin->version  = 2011091200;   // The (date) version of this module

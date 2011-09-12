@@ -2407,7 +2407,9 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
-    if ($result && $oldversion < 2011072900) {
+/// Totara 1.1 upgrade
+
+    if ($result && $oldversion < 2011091200) {
 
     /// Define table errorlog to be created
         $table = new XMLDBTable('errorlog');
@@ -2418,17 +2420,17 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('version', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
         $table->addFieldInfo('build', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
         $table->addFieldInfo('details', XMLDB_TYPE_TEXT, 'big', null, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('hash', XMLDB_TYPE_CHAR, '32', null, XMLDB_NOTNULL);
 
     /// Adding keys to table errorlog
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addKeyInfo('hash', XMLDB_INDEX_NOTUNIQUE, array('hash'));
 
-        /// Launch create table for errorlog
+    /// Launch create table for errorlog
         if (!table_exists($table)) {
             $result = $result && create_table($table);
         }
-    }
 
-    if ($result && $oldversion < 2011080100) {
         require_once($CFG->dirroot.'/local/plan/lib.php');
 
         // Add linktype field to pos_competencies table
@@ -2454,31 +2456,9 @@ function xmldb_local_upgrade($oldversion) {
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
         }
-    }
 
-    if ($result && $oldversion < 2011082400) {
-        // Delete existing columns from table "errorlog"
-        $result = $result && delete_records('errorlog');
 
-        // Add "hash" column to table "errorlog"
-        $table = new XMLDBTable('errorlog');
-        $field = new XMLDBField('hash');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '32', null, XMLDB_NOTNULL);
-
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
-        }
-
-        // Add index to "hash" column
-        $index = new XMLDBIndex('hash');
-        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('hash'));
-
-        if (!index_exists($table, $index)) {
-            $result = $result && add_index($table, $index);
-        }
-    }
-
-    if ($result && $oldversion < 2011082600) {
+    /// Hierarchy migration
         foreach (array('pos', 'comp', 'org') as $hierarchy) {
 
             // skip if depth table has already been converted to type
@@ -2721,18 +2701,14 @@ function xmldb_local_upgrade($oldversion) {
                 $result = $result && add_field($table, $field);
             }
         }
-    }
 
-    if ($result && $oldversion < 2011082601) {
         // remove unwanted icon field
         $table = new XMLDBTable('course_categories');
         $field = new XMLDBField('icon');
         if (field_exists($table, $field)) {
             $result = $result && drop_field($table, $field);
         }
-    }
 
-    if ($result && $oldversion < 2011090101) {
         // Add "managerid" column to table "pos_assignment"
         $table = new XMLDBTable('pos_assignment');
         $field = new XMLDBField('managerid');

@@ -22,4 +22,4 @@
  * @subpackage cohort
  */
 
-$plugin->version  = 2011082500;   // The (date) version of this module
+$plugin->version  = 2011091200;   // The (date) version of this module

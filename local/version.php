@@ -25,5 +25,5 @@
 /**
  * local version information - used to keep track of local changes
  */
-$local_version = 2011090101;
+$local_version = 2011091200;
 

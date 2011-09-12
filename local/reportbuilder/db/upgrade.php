@@ -338,7 +338,9 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         }
     }
 
-    if ($result && $oldversion < 2011083000) {
+/// Totara 1.1 upgrade
+
+    if ($result && $oldversion < 2011091200) {
         // get rid of course category icon columns (replace with name link only)
         $sql = "UPDATE {$CFG->prefix}report_builder_columns
             SET value = 'namelink'

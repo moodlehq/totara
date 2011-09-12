@@ -26,5 +26,5 @@
  * Version file for the dashboard module.
  */
 
-$plugin->version  = 2011052300;
+$plugin->version  = 2011091200;
 
