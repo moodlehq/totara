@@ -759,8 +759,9 @@ $string['error:updatinglinktype'] = 'Error: could not update link type';
 
 // Deleting linked courses
 $string['deletelinkedcoursesheader'] = 'Removing \"$a\" from plan';
-$string['deletelinkedcoursesinstructions'] = 'The following courses are linked to this competency in your plan. If checked, they will be removed from your plan at this time. If unchecked, they will remain in your plan.';
-$string['deletelinkedcoursessubmit'] = 'Remove from my plan';
+$string['deletelinkedcoursesinstructionslearner'] = 'The following courses are linked to this competency in your plan. If checked, they will be removed from your plan at this time. If unchecked, they will remain in your plan.';
+$string['deletelinkedcoursesinstructionsmanager'] = 'The following courses are linked to this competency in $a\'s plan. If checked, they will be removed from the plan at this time. If unchecked, they will remain in the plan.';
+$string['deletelinkedcoursessubmit'] = 'Remove from plan';
 
 $string['activecourses'] = 'Courses';
 $string['activecompetencies'] = 'Competencies';

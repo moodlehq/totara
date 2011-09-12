@@ -240,7 +240,7 @@ class dp_competency_component extends dp_base_component {
      * @return  void
      */
     public function post_header_hook() {
-        global $CFG;
+        global $CFG, $USER;
 
         $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
         $currenturl = $this->get_url();
@@ -274,7 +274,18 @@ class dp_competency_component extends dp_base_component {
                 print_box_start('generalbox','notice');
                 $compname = get_field_sql("select comp.fullname from {$CFG->prefix}comp comp inner join {$CFG->prefix}dp_plan_competency_assign compasn on comp.id=compasn.competencyid where compasn.id={$delete}");
                 print_heading(get_string('deletelinkedcoursesheader','local_plan', s($compname)));
-                echo '<p>'.get_string('deletelinkedcoursesinstructions','local_plan').'</p>';
+
+                if ($USER->id == $this->plan->userid) {
+                    echo '<p>'.get_string('deletelinkedcoursesinstructionslearner','local_plan').'</p>';
+                } else {
+                    if ($planowner = get_record('user', 'id', $this->plan->userid, null, null, null, null, 'firstname, lastname')) {
+                        $planowner_name = fullname($planowner);
+                    }
+
+                    echo '<p>'.get_string('deletelinkedcoursesinstructionsmanager','local_plan', $planowner_name).'</p>';
+                }
+
+
                 echo "<form method=\"get\" action=\"{$CFG->wwwroot}/local/plan/component.php\">";
                 echo "<input type=\"hidden\" name=\"d\" value=\"{$delete}\" />";
                 echo "<input type=\"hidden\" name=\"c\" value=\"competency\" />";
