@@ -154,7 +154,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
             this.handler._open();
         }
 
-        this.load(url, method);
+        this.load(url);
 
         // If ie6 then hide selects while the pop-up is open
         if($.browser.msie && parseInt($.browser.version) == 6) {
@@ -166,11 +166,9 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
     /**
      * Load an external page in the dialog
      * @param   string      Url of page
-     * @param   string      Page fetch method, POST or GET
-     * @param   function    Optional function to run on success
      * @return  void
      */
-    this.load = function(url, method, onsuccess) {
+    this.load = function(url) {
         // Add loading animation
         this.dialog.html('');
         this.showLoading();
@@ -270,7 +268,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
                     dialog._request(url, null, null, null, target);
                 } else {
                     // otherwise, load in the whole dialog
-                    dialog.load(url, 'GET');
+                    dialog.load(url);
                 }
 
                 // Stop any default event occuring
@@ -310,7 +308,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
                     dialog._request(url, null, null, null, target);
                 } else {
                     // if no target set, reload whole dialog
-                    dialog.load(url, $(this).attr('method'));
+                    dialog.load(url);
                 }
 
                 // Stop any default event occuring
