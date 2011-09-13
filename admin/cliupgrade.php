@@ -973,7 +973,8 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
                 if (!stats_upgrade_for_roles_wrapper()) {
                     notify('Couldn\'t upgrade the stats tables to use the new roles system');
                 }
-                if (set_config("version", $version) && set_config("release", $release)) {
+                if (set_config("version", $version) && set_config("release", $release)
+                    && set_config('totara_build', $TOTARA->build) && set_config('totara_release', $TOTARA->release)) {
                     remove_dir($CFG->dataroot . '/cache', true); // flush cache
                     notify($strdatabasesuccess, "green");
                     /// print_continue("upgradesettings.php");
@@ -997,6 +998,12 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
             console_write(STDERR,"A problem occurred inserting current version into databases",'',false);
         }
         if (!set_config("release", $release)) {
+            console_write(STDERR,"A problem occurred inserting current release into databases",'',false);
+        }
+        if (!set_config("totara_build", $TOTARA->build)) {
+            console_write(STDERR,"A problem occurred inserting current version into databases",'',false);
+        }
+        if (!set_config("totara_release", $TOTARA->release)) {
             console_write(STDERR,"A problem occurred inserting current release into databases",'',false);
         }
     }

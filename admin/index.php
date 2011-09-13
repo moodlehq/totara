@@ -428,7 +428,7 @@
             upgrade_log_finish();
         }
     } else {
-        if (!set_config("version", $version)) {
+        if (!set_config("version", $version) || !set_config("totara_build", $TOTARA->build)) {
             error("A problem occurred inserting current version into databases");
         }
     }
@@ -437,6 +437,13 @@
 
     if ($release <> $CFG->release) {  // Update the release version
         if (!set_config("release", $release)) {
+            error("ERROR: Could not update release version in database!!");
+        }
+    }
+
+    if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release) {
+        // Also set Totara release (human readable version)
+        if (!set_config("totara_release", $TOTARA->release)) {
             error("ERROR: Could not update release version in database!!");
         }
     }
