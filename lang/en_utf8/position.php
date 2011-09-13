@@ -89,6 +89,7 @@ $string['nocompetenciesassignedtoposition'] = 'No competencies assigned to posit
 $string['nopositionsinframework'] = 'No positions in this framework';
 $string['nodepthlevels'] = 'No depth levels in this framework';
 $string['noframeworks'] = 'No position frameworks available';
+$string['noframeworkssetup'] = 'There are no position frameworks setup for this site.';
 $string['nopositionsassigned'] = 'No positions currently assigned to this user';
 $string['noposition'] = 'No positions defined';
 $string['nopositionset'] = 'No position set';

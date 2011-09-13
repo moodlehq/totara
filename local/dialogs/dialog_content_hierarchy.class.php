@@ -131,6 +131,12 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
         // Load framework
         $this->set_framework($frameworkid);
 
+        // Print error message then die if there are no frameworks
+        if (empty($this->framework)) {
+            echo '<p>' . get_string('noframeworkssetup', $prefix) . '</p>';
+            die();
+        }
+
         // Check if switching frameworks
         $this->switch_frameworks = optional_param('switchframework', false, PARAM_BOOL);
     }
@@ -144,7 +150,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
      */
     public function set_framework($frameworkid) {
 
-        $this->framework = $this->hierarchy->get_framework($frameworkid, $this->showhidden);
+        $this->framework = $this->hierarchy->get_framework($frameworkid, $this->showhidden, true);
 
     }
 

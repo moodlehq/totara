@@ -79,6 +79,7 @@ $string['noorganisation'] = 'No organisations defined';
 $string['noorganisationsinframework'] = 'No organisations in this framework';
 $string['nodepthlevels'] = 'No depth levels in this framework';
 $string['noframeworks'] = 'No organisation frameworks available';
+$string['noframeworkssetup'] = 'There are no organisation frameworks setup for this site.';
 $string['numericalvalue'] = 'Numerical value';
 $string['organisationdepthcustomfields'] = 'Organisation depth custom fields';
 $string['parent'] = 'Parent';

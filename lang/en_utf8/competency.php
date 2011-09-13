@@ -186,6 +186,7 @@ $string['nodepthlevels'] = 'No depth levels in this framework';
 $string['noevidenceitems'] = 'No evidence items setup for this competency';
 $string['noevidencetypesavailable'] = 'No evidence types available in this course';
 $string['noframeworks'] = 'No competency frameworks defined';
+$string['noframeworkssetup'] = 'There are no competency frameworks setup for this site.';
 $string['nonsensicalproficientvalues'] = 'Warning: You have proficient values below non-proficient values in this scale. Remember that your scale should be ordered from most proficient at the top, to least proficient at the bottom.';
 $string['norelatedcompetencies'] = 'No related competencies';
 $string['noscalevalues'] = 'There are no scale values defined for this scale.';
