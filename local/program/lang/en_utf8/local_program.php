@@ -377,7 +377,7 @@ $string['for'] = 'For';
 $string['individuals'] = 'Individuals';
 $string['individualname'] = 'Individual name';
 $string['individuals_category'] = 'individual(s)';
-$string['learnersassigned'] = '$a learner(s) currently assigned';
+$string['learnersassigned'] = '$a->total learner(s) assigned. $a->assignments learner(s) are active, $a->exceptions with exception(s)';
 $string['managementhierarchy'] = 'Management hierarchy';
 $string['managername'] = 'Manager name';
 $string['managers_category'] = 'management team(s)';
@@ -398,7 +398,7 @@ $string['source'] = 'Source';
 $string['type'] = 'Type';
 $string['userid'] = 'User ID';
 $string['setcompletion'] = 'Set completion';
-$string['totalassignments'] = 'Total assignments';
+$string['totalassignments'] = 'Total potential assignments';
 $string['tosaveassignments'] = 'To save all assignment changes click \''.$string['saveallchanges'].'\'. To edit assignment changes click \''.$string['editassignments'].'\'. Saving assignments cannot be undone.';
 $string['youhaveadded'] = 'You have added $a->itemnames to this program<br />
 <br />

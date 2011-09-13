@@ -1100,7 +1100,7 @@ class program {
         global $CFG;
 
         $assignmentscount = $this->assignments->count_user_assignments();
-        $assignmentscount = $assignmentscount ? $assignmentscount : 0;
+        $assignmentexceptionscount = $this->assignments->count_user_assignment_exceptions();
         $statusstr = '';
 
         $out = '';
@@ -1143,7 +1143,11 @@ class program {
         $out .= $programstatusimg;
         $out .= '<p>';
         $out .= '<span class="status">'.$programstatusstring.'.</span><br />';
-        $out .= '<span class="assignmentcount">'.get_string('learnersassigned', 'local_program', $assignmentscount).'.</span>';
+        $assignmentcounts = new object();
+        $assignmentcounts->exceptions = $assignmentexceptionscount;
+        $assignmentcounts->assignments = $assignmentscount;
+        $assignmentcounts->total = $assignmentscount + $assignmentexceptionscount;
+        $out .= '<span class="assignmentcount">'.get_string('learnersassigned', 'local_program', $assignmentcounts).'.</span>';
         $out .= '</p>';
         $out .= '</div>';
         // This js variable is added so that is available to javascript and can

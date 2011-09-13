@@ -133,10 +133,21 @@ class prog_assignments {
     /**
      * Returns the number of assignments found for the current program
      *
-     * @return array of object
+     * @return integer The number of user assignments
      */
     public function count_user_assignments() {
-        return count_records('prog_user_assignment', 'programid', $this->programid);
+        $count = count_records('prog_user_assignment', 'programid', $this->programid);
+        return ($count) ? $count : 0;
+    }
+
+    /**
+     * Returns the number of exceptions found for the current program
+     *
+     * @return integer The number of exceptions
+     */
+    public function count_user_assignment_exceptions() {
+        $count = count_records('prog_exception', 'programid', $this->programid);
+        return ($count) ? $count : 0;
     }
 
     /**
