@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 /*
  * Unit tests to check source column definitions
@@ -94,13 +94,13 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $org_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortthread', 'visible', 'timecreated', 'timemodified', 'usermodified'),
-        array(1, 'District Office', 'DO', '', '', 1, '/1', 1, 0, '01', 1, 0, 0, 2),
+        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortthread', 'visible', 'timecreated', 'timemodified', 'usermodified', 'typeid'),
+        array(1, 'District Office', 'DO', '', '', 1, '/1', 1, 0, '01', 1, 0, 0, 2, 1),
     );
 
     var $pos_data = array(
-        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortthread', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified'),
-        array(1, 'Data Analyst', 'Data Analyst', '', '', 1, '/1', 1, 0, '01', 1, 0, 0, 0, 0, 2),
+        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortthread', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified', 'typeid'),
+        array(1, 'Data Analyst', 'Data Analyst', '', '', 1, '/1', 1, 0, '01', 1, 0, 0, 0, 0, 2, 1),
     );
 
     var $comp_scale_values_data = array(
@@ -218,25 +218,25 @@ class columns_test extends prefix_changing_test_case {
     var $type_data = array(
         array('id', 'fullname', 'shortname', 'description', 'timecreated', 'timemodified',
             'usermodified'),
-        array(1, 'Depth Level 1', 'Depth 1', 'Description 1', 1265963591, 1265963591, 2),
-        array(2, 'Depth Level 2', 'Depth 2', 'Description 2', 1265963591, 1265963591, 2),
-        array(3, 'F2 Depth Level 1', 'F2 Depth 1', 'F2 Description 1', 1265963591, 1265963591, 2),
+        array(1, 'Hierarchy Type 1', 'Type 1', 'Description 1', 1265963591, 1265963591, 2),
+        array(2, 'Hierarchy Type 2', 'Type 2', 'Description 2', 1265963591, 1265963591, 2),
+        array(3, 'F2 Hierarchy Type 1', 'F2 Type 1', 'F2 Description 1', 1265963591, 1265963591, 2),
     );
 
     var $competency_data = array(
         array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid',
             'sortthread', 'visible', 'aggregationmethod', 'scaleid', 'proficencyexpected', 'evidencecount', 'timecreated',
-            'timemodified', 'usermodified'),
+            'timemodified', 'usermodified', 'typeid'),
         array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 1, 0, '01', 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
+            1265963591, 1265963591, 2, 1),
         array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 2, 1, '01.01', 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
+            1265963591, 1265963591, 2, 2),
         array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 1, 0, '01', 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
+            1265963591, 1265963591, 2, 1),
         array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 2, 1, '01.02', 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
+            1265963591, 1265963591, 2, 2),
         array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 1, 0, '02', 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
+            1265963591, 1265963591, 2, 1),
     );
 
     var $type_field_data = array(
@@ -543,6 +543,8 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'org_type_info_field', $this->org_type_info_field_data, $db);
         load_test_table($CFG->prefix . 'pos_type_info_data', $this->pos_type_info_data_data, $db);
         load_test_table($CFG->prefix . 'org_type_info_data', $this->org_type_info_data_data, $db);
+        load_test_table($CFG->prefix . 'org_type', $this->type_data, $db);
+        load_test_table($CFG->prefix . 'pos_type', $this->type_data, $db);
 
         // get rid of dummy records
         delete_records('report_builder_group');
@@ -633,6 +635,8 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'org_type_info_field', $db);
         remove_test_table($CFG->prefix . 'pos_type_info_data', $db);
         remove_test_table($CFG->prefix . 'org_type_info_data', $db);
+        remove_test_table($CFG->prefix . 'pos_type', $db);
+        remove_test_table($CFG->prefix . 'org_type', $db);
         parent::tearDown();
     }
 

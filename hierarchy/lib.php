@@ -202,6 +202,19 @@ class hierarchy {
     }
 
 
+    /**
+     * Get types for a hierarchy
+     * @return array
+     */
+    function get_types_list() {
+        if ($types = get_records_menu($this->shortprefix.'_type', '', '', 'fullname', 'id,fullname')) {
+            return $types;
+        } else {
+            return array();
+        }
+    }
+
+
     function get_custom_fields($itemid) {
         global $CFG;
         $prefix = $this->prefix;

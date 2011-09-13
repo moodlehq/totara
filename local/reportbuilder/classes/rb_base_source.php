@@ -699,6 +699,42 @@ abstract class rb_base_source {
         return $cats;
     }
 
+
+    function rb_filter_competency_type_list() {
+        global $CFG;
+        require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+
+        $competencyhierarchy = new competency();
+        $unclassified_option = array(0 => get_string('unclassified', 'hierarchy'));
+        $typelist = $unclassified_option + $competencyhierarchy->get_types_list();
+
+        return $typelist;
+    }
+
+
+    function rb_filter_position_type_list() {
+        global $CFG;
+        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+
+        $positionhierarchy = new position();
+        $unclassified_option = array(0 => get_string('unclassified', 'hierarchy'));
+        $typelist = $unclassified_option + $positionhierarchy->get_types_list();
+
+        return $typelist;
+    }
+
+
+    function rb_filter_organisation_type_list() {
+        global $CFG;
+        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
+
+        $organisationhierarchy = new organisation();
+        $unclassified_option = array(0 => get_string('unclassified', 'hierarchy'));
+        $typelist = $unclassified_option + $organisationhierarchy->get_types_list();
+
+        return $typelist;
+    }
+
     //
     //
     // Generic grouping methods for aggregation
@@ -1459,6 +1495,24 @@ abstract class rb_base_source {
             'position_assignment'
         );
 
+        $joinlist[] = new rb_join(
+                'pos_type',
+                'LEFT',
+                $CFG->prefix . 'pos_type',
+                'position.typeid = pos_type.id',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'position'
+        );
+
+        $joinlist[] = new rb_join(
+                'org_type',
+                'LEFT',
+                $CFG->prefix . 'org_type',
+                'organisation.typeid = org_type.id',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'organisation'
+        );
+
         return true;
     }
 
@@ -1503,6 +1557,22 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'user',
+            'org_type',
+            get_string('organisationtype', 'local_reportbuilder'),
+            'org_type.fullname',
+            array(
+                'joins' => 'org_type'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'org_type_id',
+            get_string('organisationtypeid', 'local_reportbuilder'),
+            'organisation.typeid',
+            array('joins' => $org)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
             'positionid',
             get_string('usersposid', 'local_reportbuilder'),
             "$posassign.positionid",
@@ -1520,6 +1590,22 @@ abstract class rb_base_source {
             'position',
             get_string('userspos', 'local_reportbuilder'),
             "$pos.fullname",
+            array('joins' => $pos)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'pos_type',
+            get_string('positiontype', 'local_reportbuilder'),
+            'pos_type.fullname',
+            array(
+                'joins' => 'pos_type'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'pos_type_id',
+            get_string('positiontypeid', 'local_reportbuilder'),
+            'position.typeid',
             array('joins' => $pos)
         );
         $columnoptions[] = new rb_column_option(
@@ -1580,6 +1666,27 @@ abstract class rb_base_source {
             get_string('participantscurrentpos', 'local_reportbuilder'),
             'pos'
         );
+        $filteroptions[] = new rb_filter_option(
+                'user',
+                'pos_type_id',
+                get_string('positiontype', 'local_reportbuilder'),
+                'select',
+                array(
+                    'selectfunc' => 'position_type_list',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                )
+        );
+        $filteroptions[] = new rb_filter_option(
+                'user',
+                'org_type_id',
+                get_string('organisationtype', 'local_reportbuilder'),
+                'select',
+                array(
+                    'selectfunc' => 'organisation_type_list',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                )
+        );
+
         return true;
     }
 

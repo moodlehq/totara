@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 // Report Builder
@@ -386,9 +386,13 @@ $string['userid'] = 'User ID';
 $string['usersorgid'] = 'User\'s Organisation ID';
 $string['usersorgpathids'] = 'User\'s Organisation Path IDs';
 $string['usersorgname'] = 'User\'s Organisation Name';
+$string['organisationtype'] = 'User\'s Organisation Type';
+$string['organisationtypeid'] = 'User\'s Organisation Type ID';
 $string['usersposid'] = 'User\'s Position ID';
 $string['userspospathids'] = 'User\'s Position Path IDs';
 $string['userspos'] = 'User\'s Position';
+$string['positiontype'] = 'User\'s Position Type';
+$string['positiontypeid'] = 'User\'s Position Type ID';
 $string['usersjobtitle'] = 'User\'s Job Title';
 $string['participantscurrentorgbasic'] = 'Participant\'s Current Organisation (basic)';
 $string['participantscurrentorg'] = 'Participant\'s Current Organisation';

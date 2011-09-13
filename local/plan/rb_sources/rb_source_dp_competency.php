@@ -197,6 +197,15 @@ from
                 'comp_evidence'
         );
 
+        $joinlist[] = new rb_join(
+                'comp_type',
+                'LEFT',
+                $CFG->prefix . 'comp_type',
+                'competency.typeid = comp_type.id',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'competency'
+        );
+
         $this->add_user_table_to_joinlist($joinlist, 'base','userid');
 
         return $joinlist;
@@ -340,6 +349,27 @@ from
 
         $columnoptions[] = new rb_column_option(
                 'competency',
+                'type',
+                get_string('competencytype', 'rb_source_dp_competency'),
+                'comp_type.fullname',
+                array(
+                    'joins' => 'comp_type'
+                )
+            );
+
+        $columnoptions[] = new rb_column_option(
+                'competency',
+                'type_id',
+                get_string('competencytypeid', 'rb_source_dp_competency'),
+                'competency.typeid',
+                array(
+                    'joins' => 'competency'
+                )
+        );
+
+
+        $columnoptions[] = new rb_column_option(
+                'competency',
                 'proficiency',
                 get_string('competencyproficiency', 'rb_source_dp_competency'),
                 // source of proficiency depends on plan status
@@ -470,6 +500,19 @@ from
                 get_string('planname', 'rb_source_dp_competency'),
                 'text'
         );
+
+        $filteroptions[] = new rb_filter_option(
+                'competency',
+                'type_id',
+                get_string('competencytype', 'rb_source_dp_competency'),
+                'select',
+                array(
+                    'selectfunc' => 'competency_type_list',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                )
+        );
+
+
         return $filteroptions;
     }
 
