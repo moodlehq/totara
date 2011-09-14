@@ -489,15 +489,15 @@ class dp_program_component extends dp_base_component {
         }
 
         // Load fullname of item
-        $item->fullname = get_field('program', 'fullname', 'id', $itemid);
+        $item->fullname = get_field('prog', 'fullname', 'id', $itemid);
 
         add_to_log(SITEID, 'plan', 'added program', "component.php?id={$this->plan->id}&amp;c=program", "Program ID: {$itemid}");
 
-        $insert_result = insert_record('dp_plan_program_assign', $item) ? $programname : false;
+        if ($result = insert_record('dp_plan_program_assign', $item)) {
+            $item->id = $result;
 
-        // create a completion record for this program for this plan's user to
-        // record when the program was started and when it is due
-        if ($insert_result !== false) {
+            // create a completion record for this program for this plan's user to
+            // record when the program was started and when it is due
             $program = new program($item->programid);
             $completionsettings = array(
                 'status'        => STATUS_PROGRAM_INCOMPLETE,
@@ -508,11 +508,7 @@ class dp_program_component extends dp_base_component {
             $program->update_program_complete($this->plan->userid, $completionsettings);
         }
 
-        if ($insert_result) {
-            $item->id = $insert_result;
-        }
-
-        return $insert_result ? $item : $insert_result;
+        return $result ? $item : $result;
     }
 
     /**

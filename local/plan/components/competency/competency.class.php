@@ -1096,14 +1096,15 @@ class dp_competency_component extends dp_base_component {
         $item->fullname = get_field('comp', 'fullname', 'id', $itemid);
 
         add_to_log(SITEID, 'plan', 'added competency', "component.php?id={$this->plan->id}&amp;c=competency", "Competency ID: {$itemid}");
+
         if ($result = insert_record('dp_plan_competency_assign', $item)) {
             $item->id = $result;
-        }
 
-        // Check if we are auto marking competencies with default evidence values
-        if ($this->get_setting('autoadddefaultevidence')) {
-            if ($result && $item->approved == DP_APPROVAL_APPROVED && $this->plan->status == DP_PLAN_STATUS_APPROVED) {
-                plan_mark_competency_default($item->competencyid, $this->plan->userid, $this);
+            // Check if we are auto marking competencies with default evidence values
+            if ($this->get_setting('autoadddefaultevidence')) {
+                if ($result && $item->approved == DP_APPROVAL_APPROVED && $this->plan->status == DP_PLAN_STATUS_APPROVED) {
+                    plan_mark_competency_default($item->competencyid, $this->plan->userid, $this);
+                }
             }
         }
 
