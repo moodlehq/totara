@@ -1097,7 +1097,7 @@ class program {
      * @return string
      */
     public function display_current_status() {
-        global $CFG;
+        global $CFG, $USER;
 
         $assignmentscount = $this->assignments->count_user_assignments();
         $assignmentexceptionscount = $this->assignments->count_user_assignment_exceptions();
@@ -1112,7 +1112,11 @@ class program {
 
         // Check if this program has from and until dates set, if so, encforce them
         if (!empty($this->availablefrom) && !empty($this->availableuntil)) {
-            $now = time();
+            if (isset($USER->timezone)) {
+                $now = usertime(time(), $USER->timezone);
+            } else {
+                $now = usertime(time());
+            }
 
             // Check if the programme isn't accessible yet
             if ($this->availablefrom > $now) {
