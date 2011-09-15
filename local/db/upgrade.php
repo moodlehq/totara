@@ -2789,5 +2789,25 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2011091202) {
+        foreach (array('pos', 'comp', 'org') as $hierarchy) {
+            /// Define field idnumber to be added to each hierarchy type
+            $table = new XMLDBTable($hierarchy.'_type');
+            $field = new XMLDBField('idnumber');
+            $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
+             if (!field_exists($table, $field)) {
+                /// Add idnumber field
+                $result = $result && add_field($table, $field);
+            }
+
+            /// Add index for idnumber field
+            $index = new XMLDBIndex('idnumber');
+            $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('idnumber'));
+            if (!index_exists($table, $index)) {
+                $result = $result && add_index($table, $index);
+            }
+        }
+    }
+
     return $result;
 }
