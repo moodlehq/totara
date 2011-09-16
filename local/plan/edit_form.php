@@ -68,7 +68,7 @@ class plan_edit_form extends moodleform {
         }
         if ($action == 'complete') {
             // Only show complete plan confirmation
-            $mform->addElement('html', get_string('checkplancomplete', 'local_plan', $plan->name));
+            $mform->addElement('html', get_string('checkplancomplete11', 'local_plan', $plan->name));
             $buttonarray = array();
             $buttonarray[] = $mform->createElement('submit', 'completeyes', get_string('completeplan', 'local_plan'));
             $buttonarray[] = $mform->createElement('submit', 'completeno', get_string('no'));

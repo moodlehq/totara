@@ -68,7 +68,8 @@ $string['couldnotdeletescalevalue'] = 'There was a problem deleting that scale v
 $string['createdon'] = 'Created on';
 $string['createnewcompetency'] = 'Create a new competency';
 $string['defaultvalue'] = 'Default value';
-$string['deletecheck'] = 'Are you sure you want to delete the competency \"$a\"?
+$string['deletecheck'] = 'Are you absolutely sure you want to completely delete this competency, all its children and the data they contain?';
+$string['deletecheck11'] = 'Are you sure you want to delete the competency \"$a\"?
 <br /><br />
 This will remove the following data:<br />
 - The \"$a\" competency';
@@ -141,7 +142,8 @@ $string['idnumberview'] = 'ID Number';
 $string['includecompetencyevidence'] = 'Include competency evidence';
 $string['invalidevidencetype'] = 'Invalid evidence type';
 $string['invalidnumeric'] = 'Numerical value must be numerical (or not set)';
-$string['linktoscalevalues'] = '<a href=\\"view.php?id=$a&amp;prefix=competency\\">Click here</a> to view/edit the scale values for this competency scale.';
+$string['linktoscalevalues'] = '<a href=\\"view.php?id=$a&amp;type=competency\\">Click here</a> to view/edit the scale values for this competency scale.';
+$string['linktoscalevalues11'] = '<a href=\\"view.php?id=$a&amp;prefix=competency\\">Click here</a> to view/edit the scale values for this competency scale.';
 $string['locatecompetency'] = 'Locate competency';
 $string['locatecompetencytemplate'] = 'Locate competency template';
 $string['managecompetencies'] = 'Manage competencies';

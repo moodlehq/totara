@@ -2076,7 +2076,7 @@ class hierarchy {
             $langstr = 'deletecheckwithchildren';
             $a->itemname = $stats['itemname'];
         } else {
-            $langstr = 'deletecheck';
+            $langstr = 'deletecheck11';
             $a = $stats['itemname'];
         }
         $message .= get_string($langstr, $this->prefix, $a) . '<br />';

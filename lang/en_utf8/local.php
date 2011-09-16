@@ -119,11 +119,11 @@ $string['editheading'] = 'Edit the Report Heading Block';
 $string['headingmissingvalue'] = 'Value to display if no data found';
 $string['reportedat'] = 'Reported at';
 $string['notfound'] = 'Not found';
-$string['error:columntypenotfound'] = 'Column with type of \'$a\' not found in column options.';
 $string['managers'] = 'Manager\'s ';
 $string['positionsarrow'] = 'Positions > ';
 $string['organisationsarrow'] = 'Organisations > ';
-$string['error:columntypenotfound'] = 'The column type \'$a\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy type. The best course of action is to delete this column by pressing the red cross to the right.';
+$string['error:columntypenotfound'] = 'The column type \'$a\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy depth level. The best course of action is to delete this column by pressing the red cross to the right.';
+$string['error:columntypenotfound11'] = 'The column type \'$a\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy type. The best course of action is to delete this column by pressing the red cross to the right.';
 $string['error:couldnotcreatedefaultfields'] = 'Could not create default fields';
 
 // Add/Edit competency evidence

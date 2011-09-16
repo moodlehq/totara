@@ -878,7 +878,7 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
 
             $a->oldversion = "$CFG->release ($CFG->version)";
             $a->newversion = "$release ($version)";
-            $strdatabasechecking = get_string("databasechecking", "", $a);
+            $strdatabasechecking = get_string("databasechecking11", "", $a);
 
             // hide errors from headers in case debug is enabled
             $origdebug = $CFG->debug;

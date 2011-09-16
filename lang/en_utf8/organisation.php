@@ -16,7 +16,8 @@ $string['organisationframework'] = 'Organisation Framework';
 $string['organisationframeworks'] = 'Organisation Frameworks';
 $string['organisationframeworkmanage'] = 'Manage frameworks';
 $string['organisationmanage'] = 'Manage organisations';
-$string['deletecheck'] = 'Are you sure you want to delete the organisation \"$a\"?
+$string['deletecheck'] = 'Are you sure you want to delete this organisation, all its children and the data they contain?';
+$string['deletecheck11'] = 'Are you sure you want to delete the organisation \"$a\"?
 <br /><br />
 This will remove the following data:<br />
 - The \"$a\" organisation';

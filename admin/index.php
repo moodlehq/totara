@@ -287,7 +287,7 @@
                 }
             }
 
-            $strdatabasechecking = get_string("databasechecking", "", $a);
+            $strdatabasechecking = get_string("databasechecking11", "", $a);
             $strdatabasecompare = get_string('databasecompare', '', $a);
 
             // hide errors from headers in case debug is enabled

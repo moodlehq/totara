@@ -19,7 +19,8 @@ $string['positionframeworks'] = 'Position frameworks';
 $string['positionframeworkmanage'] = 'Manage frameworks';
 $string['positionmanage'] = 'Manage positions';
 $string['positioncustomfields'] = 'Custom fields';
-$string['deletecheck'] = 'Are you sure you want to delete the position \"$a\"?
+$string['deletecheck'] = 'Are you sure you want to delete this position, all its children and the data they contain?';
+$string['deletecheck11'] = 'Are you sure you want to delete the position \"$a\"?
 <br /><br />
 This will remove the following data:<br />
 - The \"$a\" position';

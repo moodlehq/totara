@@ -229,7 +229,7 @@ if (!empty($complete)) {
             $confirmurl = new moodle_url(qualified_me());
             $confirmurl->param('confirm', 'true');
             $confirmurl->param('referer', $referer);
-            $strcomplete = get_string('checkplancomplete', 'local_plan', $plan->name);
+            $strcomplete = get_string('checkplancomplete11', 'local_plan', $plan->name);
             notice_yesno(
                 "{$strcomplete}<br><br>",
                 $confirmurl->out(),
