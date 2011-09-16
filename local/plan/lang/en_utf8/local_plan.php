@@ -223,6 +223,7 @@ $string['updatecompetency'] = 'Update competencies';
 $string['competenciesupdated'] = 'Competencies updated';
 $string['updaterequestedcompetency'] = 'Update requested competencies';
 $string['updatecompetency'] = 'Update';
+$string['addremovecompetency'] = 'Add/remove competencies';
 $string['addcompetencys'] = 'Add competencies';
 $string['setproficiency'] = 'Set Status';
 $string['proficiency'] = 'Proficiency';

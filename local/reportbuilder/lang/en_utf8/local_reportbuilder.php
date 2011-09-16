@@ -362,6 +362,7 @@ $string['coursenameandsummary'] = 'Course Name and Summary';
 $string['coursecategory'] = 'Course Category';
 $string['coursecategoryid'] = 'Course Category ID';
 $string['coursecategorylinked'] = 'Course Category (linked to category)';
+$string['coursecategorylinkedicon'] = 'Course Category (linked to category with icon)';
 $string['category'] = 'Category';
 
 // add users
