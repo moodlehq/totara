@@ -71,7 +71,14 @@ print_container_start(false, '', 'view-program-content');
 
 print_heading($heading);
 
-echo $program->display(null);
+/* if the logged in user has been assigned this program,
+ * then they should always see their progress - even on
+ * the searched pages */
+if ($program->is_program_inprogress($USER->id)) {
+    echo $program->display($USER->id);
+} else {
+    echo $program->display(null);
+}
 
 print_container_end();
 
