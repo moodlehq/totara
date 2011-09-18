@@ -35,7 +35,7 @@ require_login();
 $id = required_param('id', PARAM_INT); // program id
 
 $program = new program($id);
-if (!$program->is_accessible()) {
+if (!$program->is_accessible($USER)) {
     $program->display_access_error();
 }
 

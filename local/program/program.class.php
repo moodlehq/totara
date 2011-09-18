@@ -1105,31 +1105,11 @@ class program {
 
         $out = '';
 
-        // Check if this program is not available
-        if ($this->availablerole == AVAILABILITY_NOT_TO_STUDENTS) {
+        if (!$this->is_accessible()) {
             $statusstr = 'programnotavailable';
         }
 
-        // Check if this program has from and until dates set, if so, encforce them
-        if (!empty($this->availablefrom) && !empty($this->availableuntil)) {
-            if (isset($USER->timezone)) {
-                $now = usertime(time(), $USER->timezone);
-            } else {
-                $now = usertime(time());
-            }
-
-            // Check if the programme isn't accessible yet
-            if ($this->availablefrom > $now) {
-                $statusstr = 'programnotavailable';
-            }
-
-            // Check if the programme isn't accessible anymore
-            if ($this->availableuntil < $now) {
-                $statusstr = 'programnotavailable';
-            }
-        }
-
-        if ( ! empty($statusstr)) {
+        if (!empty($statusstr)) {
             $programstatusclass = 'programstatusnotlive';
             $programstatusstring = get_string($statusstr, 'local_program');
             $programstatusimg = '';
@@ -1190,24 +1170,22 @@ class program {
     }
 
     /**
-     * Determines whether this program is accessible to the currently logged
-     * in user or the passed in user. This does not care whether
-     * the user is enrolled or not.
+     * Checks accessiblity of the program for user if the user parameter is
+     * passed to the function otherwise checks if the program is generally
+     * accessible.
      *
      * @global object $USER
-     * @param object $user
+     * @param object $user If this parameter is included check availibilty to this user
      * @return boolean
      */
     public function is_accessible($user = null) {
-        if ($user == null) {
-            global $USER;
-            $user = $USER;
+        // If a user is set check if they area a site admin, if so, let them have access
+        if (!empty($user->id)) {
+            if (is_siteadmin($user->id)) {
+                return true;
+            }
         }
 
-        // Check if the user can see hidden programs, if so, let them have access
-        if (has_capability('local/program:viewhiddenprograms', get_system_context(), $user->id)) {
-            return true;
-        }
 
         // Check if this program is not available, if it's not then deny access
         if ($this->availablerole == AVAILABILITY_NOT_TO_STUDENTS) {
@@ -1215,16 +1193,16 @@ class program {
         }
 
         // Check if this program has from and until dates set, if so, encforce them
-        if (!empty($this->availablefrom) && !empty($this->availableuntil)) {
+        if (!empty($this->availablefrom) || !empty($this->availableuntil)) {
             $now = time();
 
             // Check if the programme isn't accessible yet
-            if ($this->availablefrom > $now) {
+            if (!empty($this->availablefrom) && $this->availablefrom > $now) {
                 return false;
             }
 
             // Check if the programme isn't accessible anymore
-            if ($this->availableuntil < $now) {
+            if (!empty($this->availableuntil) && $this->availableuntil < $now) {
                 return false;
             }
         }

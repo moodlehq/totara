@@ -49,7 +49,7 @@ if ($learnerid != $USER->id) {
 
 if ($programid) {
     $program = new program($programid);
-    if (!$program->is_accessible()) {
+    if (!$program->is_accessible($USER)) {
         $program->display_access_error();
     }
 
@@ -132,7 +132,7 @@ if ($programid) {
     /// Display
     ///
     $program = new program($programid);
-    if (!$program->is_accessible()) {
+    if (!$program->is_accessible($USER)) {
         $program->display_access_error();
     }
 
