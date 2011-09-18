@@ -822,9 +822,10 @@ class hierarchy {
 
     /**
      * Delete a framework and its contents
+     * @param boolean $triggerevent Whether the delete item event should be triggered or not
      * @return  boolean
      */
-    function delete_framework() {
+    function delete_framework($triggerevent = true) {
         global $CFG;
 
         // Get all items in the framework
@@ -836,7 +837,7 @@ class hierarchy {
             foreach ($items as $item) {
                 // Delete all top level items (which also deletes their children), and their info data
                 if ($item->parentid == 0) {
-                    if (!$this->delete_hierarchy_item($item->id)) {
+                    if (!$this->delete_hierarchy_item($item->id, $triggerevent)) {
                         rollback_sql();
                         return false;
                     }

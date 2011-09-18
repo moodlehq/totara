@@ -123,9 +123,10 @@ class competency extends hierarchy {
     /**
      * Delete competency framework and updated associated scales
      * @access  public
+     * @param boolean $triggerevent Whether the delete item event should be triggered or not
      * @return  void
      */
-    function delete_framework() {
+    function delete_framework($triggerevent = true) {
 
         // Start transaction
         begin_sql();
@@ -210,21 +211,26 @@ class competency extends hierarchy {
 
         // only continue if at least one template has changed
         if (count($modified_templates) > 0) {
-            // now update count for templates that still have at least one assignment
-            // this won't catch templates that now have zero competencies as there
-            // won't be any entries in comp_template_assignment
-            $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}_template t
-                SET competencycount = q.count
-                FROM
-                    (SELECT templateid, COUNT(instanceid) AS count
-                    FROM {$CFG->prefix}{$this->shortprefix}_template_assignment
-                    WHERE type = 1
-                    GROUP BY templateid
-                    HAVING templateid IN (" . implode(',', $modified_templates) . ")
-                ) q
-                WHERE t.id = q.templateid";
-            if (!execute_sql($sql, false)) {
-                return false;
+            $templatecounts = get_records_sql(
+                "SELECT templateid, COUNT(instanceid) AS count
+                FROM {$CFG->prefix}{$this->shortprefix}_template_assignment
+                WHERE type = 1
+                GROUP BY templateid
+                HAVING templateid IN (" . implode(',', $modified_templates) . ')'
+            );
+
+            if ($templatecounts) {
+                foreach ($templatecounts as $templatecount) {
+                    // now update count for templates that still have at least one assignment
+                    // this won't catch templates that now have zero competencies as there
+                    // won't be any entries in comp_template_assignment
+                    $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}_template t
+                        SET competencycount = {$templatecount->count}
+                        WHERE t.id = {$templatecount->templateid}";
+                    if (!execute_sql($sql, false)) {
+                        return false;
+                    }
+                }
             }
 
             // figure out if any of the modified templates are now empty

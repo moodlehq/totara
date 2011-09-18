@@ -518,7 +518,7 @@ class hierarchylib_test extends prefix_changing_test_case {
     function test_hierarchy_delete_framework() {
         $competency = $this->competency;
         // function should return null
-        $this->assertTrue($competency->delete_framework());
+        $this->assertTrue($competency->delete_framework(false));
         // items should have been deleted
         $this->assertFalse($competency->get_items());
         // types should still all exist because they are framework independant
