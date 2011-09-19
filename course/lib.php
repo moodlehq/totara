@@ -2395,9 +2395,9 @@ function print_my_moodle() {
                 if ($course->id == SITEID) {
                     continue;
                 }
-                echo '<li><table>';
+                echo '<li>';
                 print_course($course);
-                echo "</table></li>\n";
+                echo "</li>\n";
             }
             echo "</ul>\n";
         }
