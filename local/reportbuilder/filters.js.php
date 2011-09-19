@@ -69,7 +69,7 @@ var rb_init_addbutton = function(filterselector) {
         $.ajax({
             url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/filter.php'; ?>",
             type: "POST",
-            data: ({action: 'add', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, filter: filterselector.val(), advanced: advancedCheck.is(':checked')}),
+            data: ({action: 'add', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, filter: filterselector.val(), advanced: Number(advancedCheck.is(':checked'))}),
             beforeSend: function() {
                 addbutton.html('<img src="<?php echo "{$CFG->pixpath}/i/ajaxloader.gif"; ?>" alt="Saving..." class="iconsmall" />');
             },
