@@ -2748,5 +2748,46 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
+    if ($result && $oldversion < 2011091201) {
+        $completion_type = COMPLETION_CRITERIA_TYPE_ACTIVITY;
+
+        $sql =  "SELECT
+            ccc.id, ccc.course
+            FROM {$CFG->prefix}course_completion_criteria ccc
+            LEFT JOIN {$CFG->prefix}course_modules cm
+            ON
+                ccc.moduleinstance = cm.id
+            WHERE
+                ccc.criteriatype={$completion_type}
+            AND
+                cm.id is NULL";
+
+        $courses = array();
+
+        if ($criteria_ids = get_records_sql($sql)) {
+            foreach ($criteria_ids as $criteria) {
+                // Delete criteria
+                $result = $result && delete_records('course_completion_criteria', 'id', $criteria->id);
+
+                // Delete related completion records
+                $result = $result && delete_records('course_completion_crit_compl', 'criteriaid', $criteria->id);
+
+                $courses[] = $criteria->course;
+            }
+        }
+
+        // Reaggregate courses
+        if ($courses = array_unique($courses)) {
+            $now = time();
+
+            $course_ids = implode(',', $courses);
+            $sql = "UPDATE {$CFG->prefix}course_completions
+                SET reaggregate={$now}
+                WHERE course IN ({$course_ids})";
+
+            $result = $result && execute_sql($sql);
+        }
+    }
+
     return $result;
 }
