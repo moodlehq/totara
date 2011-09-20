@@ -214,7 +214,7 @@ function totara_display_course_progress_icon($userid, $courseid, $status) {
 
     // Display progress bar
     $content = "<span class=\"coursecompletionstatus\">";
-    $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
+    $content .= "<span class=\"completion-$statusstring\" title=\"$status\">$status</span></span>";
 
     // Check if user has permissions to see details
     if (completion_can_view_data($userid, $courseid)) {

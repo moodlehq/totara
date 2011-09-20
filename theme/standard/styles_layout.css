@@ -1836,9 +1836,7 @@ table.dp-templates td.c0 {
  * Recent Learning
  **/
 div.block_totara_recent_learning td.status span {
-    text-indent: -1000px;
     display: block;
-    text-align: right;
     width: 39px;
     height: 12px;
     background: transparent url(images/progress-icons.png) no-repeat;
@@ -5056,9 +5054,17 @@ table.viewhierarchyitem th {
 /**
  * Course completion status
  */
+
+/**
+ * Hide the text for the progress bar
+ */
+span.coursecompletionstatus span {
+    text-indent: -10000px;
+    text-align: left;
+}
+
 div.mycourses td.status span,
 span.coursecompletionstatus span {
-    text-indent: -1000px;
     display: block;
     width: 39px;
     height: 12px;
