@@ -1367,6 +1367,7 @@ a.skip:focus, a.skip:active {
   padding-bottom: 0.5em;
   display: block;
   float: left;
+  width: 160px;
 }
 .block_tag_youtube .yt-video-entry li {
   clear: left;
