@@ -185,11 +185,11 @@ $string['error:badcheckvariable'] = 'The check variable was wrong - try again';
 // Instructions
 $string['instructions:assignments1'] = 'Categories can be used to assign the program to sets of learners.';
 $string['instructions:messages1'] = 'Configure event and reminder triggers associated with the program.';
-$string['instructions:programassignments'] = 'Instructional text for this program section goes here.';
-$string['instructions:programcontent'] = 'Instructional text for this program section goes here.';
-$string['instructions:programdetails'] = 'Instructional text for this program section goes here.';
-$string['instructions:programexceptions'] = 'Instructional text for this program section goes here.';
-$string['instructions:programmessages'] = 'Instructional text for this program section goes here.';
+$string['instructions:programassignments'] = 'Assign learners on-mass and set fixed or relative completion criteria <br />(Assign learners by organisation, position, cohort, hierarchy or individual)';
+$string['instructions:programcontent'] = 'Define the program content by adding sets of courses and / or competencies';
+$string['instructions:programdetails'] = 'Define the program name, availability and description';
+$string['instructions:programexceptions'] = 'Quickly resolve assignment issues by selecting \'type\' and applying an \'action\'';
+$string['instructions:programmessages'] = 'Define program messages and reminders as required';
 
 // Legends
 $string['legend:courseset'] = 'Course set $a';
