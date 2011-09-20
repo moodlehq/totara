@@ -1,0 +1,10 @@
+Notas sobre o Diretório
+--------------------
+
+NÃO ALTERE, RENOMEIE OU MUDE DE LUGAR ESTES ARQUIVOS a menos que você saiba REALMENTE o que está fazendo. 
+
+A alteração de arquivos pode causar problemas ao curso.
+
+Este diretório contém arquivos carregados no curso com o uso dos módulos, como tarefas e anexos.
+
+Os nomes de diretórios e arquivos são específicos e mantidos automaticamente pelo Moodle.

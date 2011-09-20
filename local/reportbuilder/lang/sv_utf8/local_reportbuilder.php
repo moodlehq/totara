@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_reportbuilder.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// local_reportbuilder.php - created with Totara langimport script version 1.0
 
 $string['access'] = 'Access';
 $string['accessbyrole'] = 'Begränsa access via roll';

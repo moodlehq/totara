@@ -1,0 +1,12 @@
+<p class="center"><strong>Use estas configurações se você quiser revisar os pedidos antes do processamento do cartão de crédito. </strong></p>
+<p>Desmarque o campo 'an_review' se os estudantes forem imediatamente matriculados no curso quando indicam o número do cartão.<br />
+   Se você tiver marcado o campo 'an_review' o cartão de crédito será autorizado mas não será capturado e você terá 2 opções:
+   'Captura-Manual' e 'Captura-Programada'.
+</p>
+   <ul>
+      <li>Para a Captura-Manual, insira '0' para o campo an_capture_day.  A transação será cancelada se você não revisá-la em 30 dias. 
+          Não entre em pânico! Seu negócio é importante para nós. Na sessão 'Configurações de envio de email', você será notificado X dias antes das ordens pendentes expirarem, se você configurou o CRON corretamente. </li>
+      <li>Para Captura-Programada, insira um número entre 1 e 29 no campo an_capture_day. Note que o CRON deve ser ativado.
+          O cartão será capturado e o estudante será matriculado no curso. O sistema de Captura-Programada captura o cartão an_capture_day dias depois se você preferir. Se você é uma pessoa cética, você pode aceitar ou negar o pagamento depois de ter recebido o e-mail sobre o novo pedido pendente. Usuários podem também receber e-mails com mensagens de boas-vindas se você marcar o campo enrol_mailstudents.</li>
+   </ul>
+<p class="center"><strong>Em Moodle 1.6, você pode aceitar/negar/restituir o pagamento na página Gerenciamento de Pagamento.</strong></p>

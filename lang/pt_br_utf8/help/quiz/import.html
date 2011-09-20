@@ -1,0 +1,28 @@
+<h1>Importar Novas Questões</h1>
+
+<P>Você pode importar questões de files externos enviados ao servidor com o uso do formulário.
+
+<P>Formatos compatíveis:
+
+<h2>Missing Word</h2>
+
+<P>Formato para envio de Perguntas de Múltipla Escolha.
+Cada resposta deve ser separada por um til (~), e a resposta correta deve ser precedida por um sinal de igual (=). Eis um exemplo:
+
+<BLOCKQUOTE>As soon as we begin to explore our body parts as infants
+we become students of {=anatomy and physiology ~reflexology 
+~science ~experiment}, and in a sense we remain students for life.
+</BLOCKQUOTE>
+
+<h2>AON</h2>
+<P>Formato semelhante ao formato Missing Word , mas depois da importação, todas as Questões com Resposta Breve são convertidas em Questões de Associação, em grupos de 4.</P>
+<p>Além disto, as respostas das Perguntas de Múltipla Escolha perdem a ordem de visualização original durante a importação.
+
+<h2>Blackboard</h2>
+
+<P>Questões salvas em formato de exportação Blackboard podem ser importadas. Este processo é baseado em código XML compilado em PHP</P>
+
+<h2>Custom</h2>
+
+<P>Para importar um formato proprietário, você precisa implementar o novo formato editando mod/quiz/format/custom.php
+<P>O impegno na programação do código não é muito grande.

@@ -1,0 +1,39 @@
+<h1>Cálculos</h1>
+<!-- TRANSLATORS BEWARE!! The comma (,) sign used in the calculations may be a semi-colon (;)
+in your language. Please use whichever is used in your spreadsheet application. -->
+
+<p>Os cálculos para o relatório de notas seguem o padrão de fórmulas/funções de planilhas eletrônicas. Eles começam com um sinal de igual(=) e usam operadores e funções matemáticas comuns para produzir uma única solução numérica. Esta saída é, então, usada como o valor computado para o item de avaliação que você está editando.</p>
+
+<p>Segue uma lista de funções suportadas. O ponto-e-vírgula(;) é usado para separar argumentos dentro de parênteses.</p>
+
+<ul>
+    <li><strong>average</strong>([[item1]]; [[item2]]...): Retorna a média de uma amostra</li>
+    <li><strong>max</strong>([[item1]]; [[item2]]...): Retorna o valor máximo de uma lista de argumentos</li>
+    <li><strong>min</strong>([[item1]]; [[item2]]...): Retorna o valor mínimo de uma lista de argumentos</li>
+    <li><strong>mod</strong>(dividendo; divisor): Calcula o resto de uma divisão</li>
+    <li><strong>pi</strong>(): Retorna o valor do número Pi</li>
+    <li><strong>power</strong>(base; potência): Eleva um número a potência de outro</li>
+    <li><strong>round</strong>(número; casas decimais): Arredonda um número para uma precisão predefinida</li>
+    <li><strong>sum</strong>([[item1]]; [[item2]]...): Retorna a soma de todos os argumentos</li>
+</ul>
+
+<p>Várias funções matemáticas também são suportadas:</p>
+<ul>
+    <li>sin</li><li>sinh</li><li>arcsin</li><li>asin</li><li>arcsinh</li><li>asinh</li>
+    <li>cos</li><li>cosh</li><li>arccos</li><li>acos</li><li>arccosh</li><li>acosh</li>
+    <li>tan</li><li>tanh</li><li>arctan</li><li>atan</li><li>arctanh</li><li>atanh</li>
+    <li>sqrt</li><li>abs</li><li>ln</li><li>log</li><li>exp</li>
+</ul>
+
+<p>Você pode pode incluir valores de outros itens de avaliação nos cálculos usando seus 'números de identificação' como referências em suas fórmulas. Um número de identificação é cercado por dois pares de colchetes para evitar confusão caso ele contenha caracteres incomuns. Por exemplo, se você tem um item de avaliação cujo numero de identificação é "Questionário.3", você pode referir-se a ele escrendo [[Questionário .3]] em seu cálculo.</p>
+
+<p>Abaixo da área de cálculo há um esquema hierárquico de seu curso que contém as categorias e itens de avaliação. Junto do total de cada item ou categoria é mostrado o número de identificação que você pode usar em seu cálculo(já entre colchetes). Contudo, como o número de identificação é opcional, alguns identificadores podem estar em branco. Neste caso, há um campo de formulário onde você pode digitar o número de identificação, e, assim, usá-lo no seu cálculo sem ter que sair da página. Esse formulário não permite que você edite números de identificação existentes; para isto você precisa editar diretamente o item em questão. </p>
+
+<p>Assim que você tiver atribuído os números de identificação necessários, clique em "adicionar números de identificação", e a página será recarregada e mostrará o mesmo esquema, agora com os números identificação que você acabou de atribuir. Estas novas referências estão disponíveis para sem utilizadas nos cálculos.</p>
+
+<p>Segue uma lista de exemplos práticos de cálculos que podem ser utilizados:</p>
+
+<ul>
+    <li>=average([[Questionário.1]]; [[Questionário.4]]; [[Tarefa.1]])</li>
+    <li>=average(max([[Questionário.1]]; [[Questionário.4]]; [[Tarefa.1]]); min([[Questionário.1]]; [[Questionário.4]]; [[Tarefa.1]]))</li>
+</ul>

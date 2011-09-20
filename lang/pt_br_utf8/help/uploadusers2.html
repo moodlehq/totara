@@ -1,0 +1,78 @@
+<h1>Carregar usuários</h1>
+
+<p>Primeiro, note que <strong>geralmente não é necessário importar usuários em massa</strong> - para continuar o processo de manutenção você deveria tentar explorar formas de autenticação que não requerem trabalho manual, como conectar a bancos de dados externos ou permitir que os usuários criem suas próprias contas. Veja a seção Autenticação, na aba de Usuários do menu de administração.</p>
+<p>Se você quiser importar contas múltiplas de um arquivo de texto, então você precisa obedecer o seguinte formato:</p>
+
+<ul>
+  <li>Cada linha contém um registro</li>
+  <li>Cada registro é uma sequência de dados separados por vírgulas</li>
+  <li>O primeiro registro do arquivo é especial, e contém uma lista de campos. Isso define o formato do resto do arquivo.
+    <blockquote>
+      <p><strong>Campos Obrigatórios:</strong> esses campos precisam ser incluídos na primeira linha, e definidos para cada usuário</p>
+      <p><code>firstname, lastname</code> quando for inserir ou <code>username</code> quando for atualizar</p>
+      <p><strong>Nomes de campos opcionai: </strong>todos esses são completamente opcionais. Se um valor estiver presente para o campo no arquivo, ele será utilizado; senão, o valor tido como padrão tomará o seu lugar.</p>
+      <p><code>institution, department, city, country, lang, auth, ajax, timezone, idnumber, icq, phone1, phone2, address, url, description, mailformat, maildisplay, htmleditor, autosubscribe, emailstop</code></p>
+      <p><strong>Nomes de campos customizados para perfis:</strong> opcional, com xxxxx como o nome real do usuário a ser atualizado (o nome breve, que é único)</p>
+      <p><code>profile_field_xxxxx</code></p>
+      <p><strong>Nomes de campos especiais:</strong> usados para alterar nomes de usuário e excluir contas, veja abaixo</p>
+      <p><code>deleted, oldusername</code></p>
+      <p><strong>Nomes de campos para inscrição (opcional):</strong> Os nomes dos cursos são os nomes breves dos mesmos - se presentes, o usuário será inscrito neles. &quot;Type&quot; define o tipo de função associada à inscrição.
+         O valor 1 é o papel de aluno normal, 2 é o de professor que edita e 3 é o de professor que não pode editar. Você pode usar o campo de funções, em vez de especificá-las diretamente - use o nome breve da função ou o id (os nomes numéricos não são suportados). Usuários também podem ser atríbuidos a grupos nos cursos(group1 no course1, group2 no course2, etc.). Grupos, como os outros, são identificados pelos nomes ou ids (nomes númericos não funcionam).</p>
+      <p><code>course1, type1, role1, group1, course2, type2, role2, group2, etc.</code></p>
+    </blockquote>
+    </li>
+  <li>As vírgulas usadas nos dados precisam ser codificadas como &amp;#44 - o script irá decodificar automaticamente. </li>
+  <li>Para campos booleanos(lógicos), use 0 para falso e 1 para verdadeiro. </li>
+</ul>
+<p>Eis um exemplo de arquivo de importação válido:</p>
+<p><code>username, password, firstname, lastname, email, lang, idnumber, maildisplay, course1, group1, type1<br />
+jonest, verysecret, Tom, Jones, jonest@someplace.edu, en, 3663737, 1, Intro101, Section 1, 1<br />
+reznort, somesecret, Trent, Reznor, reznort@someplace.edu, en_us, 6736733, 0, Advanced202, Section 3, 3
+</code></p>
+
+<h2>Padrões</h2>
+<p>Os valores padrão são processados como modelos, nos quais são permitidos os seguintes códigos:</p>
+<ul>
+<li><code>%l</code> - será substituído por lastname</li>
+<li><code>%f</code> - será substituído por firstname</li>
+<li><code>%u</code> - será substituído por username</li>
+<li><code>%%</code> - será substituído por %</li>
+</ul>
+<p>Entre o sinal de porcentagem (%) e qualquer letra de código (l, f or u) são permitidos os seguintes modificadores:</p>
+<ul>
+<li>(-) sinal de menos - a informação especificada pela letra de código será convertido para minúscula</li>
+<li>(+) sinal de mais - a informação especificada pela letra de código será convertido para MAIÚSCULA</li>
+<li>(~) til - a informação especificada pela letra de código começará com Maiuscúla</li>
+<li>um dígito decimal - a informação especificada pela letra de código será truncada(reduzida) sobre o número de letras digitado</li>
+</ul>
+
+<p>Por exemplo, se o primeiro nome for John e o último nome for Doe, os valores podem ser obtidos a partir dos seguintes modelos:</p>
+<ul>
+<li>%l%f = DoeJohn</li>
+<li>%l%1f = DoeJ</li>
+<li>%-l%+f = doeJOHN</li>
+<li>%-f_%-l = john_doe</li>
+<li>http://www.example.com/~%u/ = http://www.example.com/~jdoe/ (se o nome de usuário for jdoe ou %-1f%-l)</li>
+</ul>
+<p>O processamento de modelos é feito apenas para valores padrão, mas não em valores vindos de um arquivo CSV.</p>
+<p>Para criar nomes de usuário corretos no Moodle, o nome é sempre convertido para minúsculas. Além disso, se a opção "Permitir caracteres extendidos nos nomes de usuário" na seção Políticas do Site estiver desligada, caracteres diferentes de letras, dígitos, hífen (-) e ponto (.) são removidos. 
+Por exemplo se o primeiro nome é John Jr. e o último nome é Doe, o username %-f_%-l irá produzir john jr._doe quando "Permitir caracteres extendidos nos nomes de usuário" estiver ligada, e johnjr.doe quando desligada.</p>
+<p>Quando a opção "Novo tratamento de nomes duplicados" estiver marcada como "Anexar contador", um contador com incremento automático será aplicado a usuários duplicados produzidos pelo modelo.
+Por exemplo, se um arquivo CSV contém usuários chamados John Doe, Jane Doe e Jenny Doe sem nomes de usuário explícitos, o padrão %-1f%-l, e a opção "Novo tratamento de nomes duplicados" estiver habilitada, os nomes produzidos serão jdoe, jdoe2 and jdoe3.
+</p>
+
+<h2>Atualizando contas existentes</h2>
+
+<p>Por padrão o Moodle assume que você criará novas contas de usuário, e salta registros que correspondem a contas já existentes. Entretanto, se você marcar "Atualizar contas existentes" como <b>Sim</b>, a conta será atualizada. </p>
+
+<p>Ao atualizar contas existente você pode também mudar os nomes de usuário. Marque "Permitir renomeação" como <b>Sim</b> e inclua em seu arquivo um campo chamado <code class="example1">oldusername</code>.</p>
+
+<p><b>Aviso:</b> qualquer erro nas atualizações de contas existentes pode produzir efeitos muito ruins nas contas dos usuários. Tenha cuidado ao utilizar essas opções.</p>
+
+<h2>Apagando contas</h2>
+<p>Se o código <code>deleted</code> estiver presente nas colunas, usuários com o valor 1 serão apagados. Nesse caso, todos os campos podem ser omitidos, exceto <code>username</code>.</p>
+<p>O apagamento e o envio de contas podem ser feitos com um arquivo CSV único. Por exemplo, o arquivo a seguir criaria um usuário Tom Jones e excluiria o usuário reznort:</p>
+<p><code>username, firstname, lastname, deleted<br />
+jonest, Tom, Jones, 0<br />
+reznort, , , 1
+</code></p>

@@ -1,0 +1,60 @@
+<h1>Análise do item</h1>
+
+<P>Esta tabela apresenta os dados de processamento do questionário de uma maneira agradável para análise e 
+julgamento do desempenho de cada pergunta de acordo com a função do exercício. Os parâmetros 
+estatísticos utilizados são calculados como explicado na teoria clássica sobre testes.</P>
+
+<h2>Índice de facilidade (FI)(% Correto)</h2>
+<P>Esta é a medida de quão fácil ou difícil é uma pergunta para os estudantes. É 
+calculado como: 
+<br />
+FI = (X<SUB>média</SUB>) / X<SUB>máx</SUB>
+<br />
+
+onde X<SUB>média</SUB> é o crédito médio obtido por todos os estudantes que tentaram o 
+item, <br />e X<SUB>máx</SUB> é o crédito máximo atingido para o respectivo 
+item.<br />Se as perguntas puderem ser distribuídas dicotomicamente em categorias corretas / incorretas, 
+este parâmetro coincide com a porcentagem de estudantes que responderam 
+a pergunta corretamente. </P>
+<P></P>
+<h2>Desvio padrão (SD)</h2>
+<P>Este parâmetro mede a variação das respostas dos estudantes. Caso 
+todos os estudantes respondam a mesma coisa, então SD=0. SD é calculado como o desvio 
+padrão estatístico para a amostra das notas fracionais (atingido / máximo) para cada 
+pergunta em particular. </P>
+<h2>Índice discriminatório (DI)</h2>
+<P>Fornece um ótimo indicador do desempenho de cada item para separar os estudantes 
+proficientes <I>versus</I> os estudantes menos proficientes. Este parâmetro é calculado primeiramente 
+dividindo-se os estudantes em três grupos baseados nas notas. Então 
+a nota média do item analisado é calculada para o grupo superior e para o grupo 
+inferior, e são subtraídas. A expressão matemática 
+é: <br />DI = (X<SUB>superior</SUB> - X<SUB>inferior</SUB>)/ N <BR>onde 
+X<SUB>superior</SUB> é a somatória dos créditos fracionais (atingido/máximo) obtido 
+neste item por 1/3 dos estudantes que tiveram as notas mais altas em todo o questionário 
+(i.e. número das respostas corretas no grupo), <br />e X<SUB>inferior</SUB>) é 
+analogamente a somatória para os 1/3 dos estudantes com as notas mais baixas em todo o questionário.</P>
+<P>Este parâmetro pode assumir valores entre +1 e -1. Se o índice estiver abaixo de 0.0 
+significa que os estudantes mais fracos conseguiram o item mais do que os estudantes mais fortes. 
+Tais itens deverão ser descartados como ruins. De fato, eles reduzirão a 
+precisão das notas totais para o questionário. </P>
+<h2>Coeficiente discriminatório (DC)</h2>
+<P>É uma outra medida da força de um item para distinguir os estudantes 
+proficientes daqueles mais fracos.<br />
+O coeficiente discriminatório é um 
+coeficiente de correlação entre notas de um item e de todo o questionário. É 
+calculado como: <br />DC = Soma(xy)/ (N * s<SUB>x</SUB> * s<SUB>y</SUB>) 
+<br />onde  Soma(xy) é a somatória dos produtos dos desvios para as notas do item e 
+as notas totais do questionário, <BR>N é o número de respostas dadas a esta 
+pergunta<BR>s<SUB>x</SUB> é o desvio padrão das notas fracionais para a pergunta 
+e, <br />
+s<SUB>y</SUB> é o desvio padrão das notas do questionário como um todo. </P>
+<P>Novamente, este parâmetro pode assumir valores entre +1 e -1. Os valores positivos 
+indicam itens que fazem discriminação aos estudantes proficientes, e os índices 
+negativos marcam os itens que são melhores respondidos por aqueles com as notas mais baixas. Itens 
+com um índice DC negativo são respondidos incorretamente pelos estudantes intermediários e assim eles 
+são geralmente uma penalidade contra a maioria dos estudantes proficientes. Estes itens deveriam 
+ser evitados.<br />
+A vantagem do Coeficiente discriminatório versus o Índice discriminatório 
+é que o primeiro utiliza a informação de toda a população de estudantes, 
+não somente a terça parte do extremo superior e a terça parte do extremo inferior. Assim, este parâmetro apresenta uma 
+sensibilidade maior para detectar o desempenho no item.</P>

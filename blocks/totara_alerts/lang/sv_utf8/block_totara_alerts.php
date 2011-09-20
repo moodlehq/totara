@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // block_totara_alerts.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// block_totara_alerts.php - created with Totara langimport script version 1.0
 
 $string['alerts'] = 'Varningar';
 $string['blockname'] = 'Totaravarningar';

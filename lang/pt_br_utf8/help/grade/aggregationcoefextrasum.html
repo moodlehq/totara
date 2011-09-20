@@ -1,0 +1,11 @@
+<h1>Crédito Extra</h1>
+<p>Quando a soma das notas é utilizada como estratégia de agregação, um item pode ser considerado crédito extra na categoria. Isto significa que a nota máxima do item não será adicionada à nota máxima da categoria mas a nota do item, sim. Por exemplo></p>
+<ul>
+    <li>Item 1 tem valor entre 0-100</li>
+    <li>Item 2 tem valor entre 0-75</li>
+    <li>Item 1 tem a opção "crédito extra" selecionada, Item 2 não.</li>
+    <li>Os dois itens pertencem à categoria 1, que tem "soma das notas" como estratégia de agregação</li>
+    <li>O total da Categoria 1's é entre 0-75</li>
+    <li>Um estudante obtém a nota 20 no Item 1 e 70 no Item 2</li>
+    <li>O total da Categoria 1 será 75/75 (20+70 = 90 mas o Item 1 é apenas um crédito extra e portanto aumenta o total até o máximo)</li>
+</ul>

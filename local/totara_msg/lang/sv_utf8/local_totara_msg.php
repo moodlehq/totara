@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_totara_msg.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// local_totara_msg.php - created with Totara langimport script version 1.0
 
 $string['accept'] = 'Acceptera';
 $string['alert_description'] = 'Nedan listas alla larm du har fått. Du kan klicka på länk i larmtitel för att visa fler detaljer eller avförda ett larm genom att klicka på avfärdaikonen till höger om listan. Du kan också välja att filtrera vilka larm som visas i listan genom att använda dig av \"Sök\"-funktionalitet.';

@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // facetoface.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// facetoface.php - created with Totara langimport script version 1.0
 
 $string['addingsession'] = 'Lägg till en ny session i $a';
 $string['addmanageremailaddress'] = 'Lägg till chefs e-postadress';

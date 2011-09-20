@@ -1,0 +1,108 @@
+<h1>Tipos de Questões</h1>
+
+<p>São esses os tipos de questões atualmente suportados pelo módulo de Lição:
+
+<ol>
+<li><p><b>Múltipla Escolha</b> É o tipo padrão de questão. Questões Múltipla Escolha são populares quando pede-se que o estudante escolha uma resposta correta em um conjunto de alternativas. As respostas corretas levam a lição adiante, e as erradas não. A respostas erradas geralmente são "pegadinhas", e a utilidade dessas questões se apoia mais na qualidade dessas "pegadinhas" que nas respostas propriamente ditas.</p>
+
+<p> Cada pergunta pode, opcionalmente, ter um retorno direcionado. Se nenhuma resposta de retorno for especificada, será mostrado na tela &quot;Essa alternativa está correta&quot; ou &quot;Essa alternativa está errada&quot;.  </p>
+
+<p>É possível que haja mais de uma resposta correta para uma questão Múltipla Escolha. As diferentes respostas podem dar retornos diferentes ao estudante, e levá-los para diferentes páginas na lição, mas não podem ter notas diferentes, (ou seja, <b>não</b> há respostas mais corretas que outras, ao menos em termos de nota). É possível que todas as respostas sejam corretas, e que elas levem para diferentes partes da lição, dependendo de qual foi a escolhida.</p>
+
+<p> Há uma variante das questões de múltipla escolha chamadas questões de    <b>&quot;Múltipla escolha Multi-resposta&quot;</b>. Se essa opção for escolhida, então o estudante deve marcar todas as respostas corretas em um conjunto de respostas. A questão pode ou não dizer <i>quantas</i> respostas corretas existem. Por exemplo, &quot;Quais desses foram presidentes dos Estados Unidos?&quot; não diz, mas "Selecione dois presidentes dos Estados Unidos na lista a seguir." o faz. O número de respostas corretas pode variar de <b>um</b> até o número de alternativas. (Uma questão de Resposta Múltipla com uma resposta correta <b>é</b> diferente de uma questão Múltipla Escolha, já que a anterior permite que o estudante escolha mais de uma resposta.)</p>
+
+<p>As respostas corretas são definidas como saltos a frente, e as respostas erradas, definidas para retornar à mesma página, ou como saltos para trás. Quando há mais de uma resposta correta, todos os pulos devem levar à mesma página, assim como as respostas erradas. Se esse <b>não</b> for o caso, um aviso é dado na visualização da lição pelo professor. O retorno "Resposta correta", se necessário, deverá ser dado na primeira resposta correta e o "Resposta errada", na primeira resposta errada. Retornos para outras respostas são ignorados (sem aviso).  </p></li>
+
+<li><p><b>Resposta Curta</b> </p>
+  <p>O estudante recebe um pequeno campo de texto.
+    Ele será checado na busca de uma ou mais respostas, que podem ser certas ou erradas. Cada respostas pode ter opcionalmente um retorno direcionado. Se nenhum retorno for configurado, então o padrão será mostrar para o aluno &quot;Essa resposta está correta&quot; ou &quot;Essa respostas está errada&quot;.
+    Se o texto digitado não bate com nenhuma resposta, a questão será dada como errada, e será mostrado o respectivo retorno padrão.</p>
+  <p><strong>Há dois tipos diferentes de sistemas de comparação para o tipo de questão de Resposta Curta: o mais simples é utilizado por padrão; 
+      o sistema de &quot;Expressões Regulares&quot; é utilizado caso a opção &quot;Usar Expressões Regulares&quot; estiver marcada. </p>
+  <ul>
+    <li><strong>Análise Simples</strong>
+      <p>Nesse sistema (padrão) de análise, as comparações ignoram maiúscula e minúscula. O caractere asterisco (*) pode ser usado nas respostas como um caractere &quot;wild card&quot;, que significa um número qualquer de caracteres (incluindo o caso de não haver nenhum). Por exemplo, a resposta &quot;Comprid*&quot; baterá com
+        &quot;comprido&quot;, &quot;compridinho&quot; e &quot;Compridão&quot;. Se uma das respostas for apenas &quot;*&quot; (um único *), ela baterá com qualquer coisa que o aluno digitar, é normalmente usado como uma resposta genérica. O processo de comparação ocorre nas respostas na ordem que elas aparecem na tela. Assim que encontra uma correspondência, ele para e o resultado (um retorno, se houver) é retornado. Então, por exemplo se as respostas são Compridão, Comprid* e * (nessa ordem), a entrada
+        &quot;comprido&quot; baterá com a segunda resposta, e a terceira, embora corresponda, será ignorada.</p>
+      <p> Se um asterisco (*) é realmente necessário em uma resposta, ele deverá ser digitado como
+        \*, um asterisco com barra.</p>
+    </li>
+  </ul>
+  <ul>
+    <li><strong>Análise de expressões regulares</strong>
+      <p>Este sistema lhe dá acesso a um sistema mais poderoso mas mais complicado para analisar as respostas dos estudantes. Para uma introdução completa a Expressões Regulares, veja estes sites: 
+          <a href="http://www.zend.com/zend/tut/tutorial-delin2.php" target="_blank">tutoria lde expressões</a> ou <a href="http://perso.wanadoo.fr/joseph.rezeau/eao/developpement/expandRegexpToString.htm#" 
+          target="_blank">rezeau.org</a>. </p>
+      <h3>Resposta correta correspondendo a un padrão de expressão regular </h3>
+      <p>Não é possível dar exemplos completos das vastas possibilçidades oferecidas pelo sistema, e as seguintes são apenas algumas possibilidades. </p>
+      <p><strong>Exenplo 1.</strong> Suponha que sua questão seja &quot;Quais são as cores da bandeira francesa?&quot;. No frame Resposta 1 você digita esta expressão regular:&quot;<span class="c_computeroutput">it&rsquo;s azul, branca(,| e) 
+          vermelha</span>/i&quot;. Isso irá corresponder a qualquer uma das 4 seguintes respostas dos estudantes:</p>
+      <ul>
+        <li>É azul, branca, vermelha</li>
+        <li>É azul, branca e vermelha</li>
+        <li>É azul, branca, vermelha</li>
+        <li>É azul, branca e vermelha</li>
+      </ul>
+      <p>Note que por padrão uma expressão regular é sensível a letras maiúsculas; para que a correspondência não seja assim, você deve adicionar o parâmetro <strong>/i</strong> ao fim da expressão.</p>
+      <p><strong>Exemplo 2</strong>. Questão: &quot;O que é azul, ou vermelha, ou amarela?&quot;. 
+          Resposta: &quot;(|É )uma co?r&quot;. Isto será aceito:</p>
+      <ul>
+        <li>uma cor</li>
+        <li> uma co</li>
+        <li>é uma cor</li>
+        <li>é uma co</li>
+      </ul>
+      <p>Notas.- O início desta expressão regular &quot;(|é )&quot; será aceito tanto com nada nada como com &quot;é  &quot; (&quot;é&quot; seguido de um espaço). O ? (ponto de interrogação) significa: o próximo caractere pode aparecer uma vez ou nenhuma.</p>
+      <p><strong>Exemplo 3.</strong> Questão: &quot;Diga um animal de quatro letras, com vogal A como segunda letra. Resposta: 
+          &quot;[grp]ato&quot;. Isso baterá com: rato, gato, pato. </p>
+      <h3>Detectar palavras ou caracteres faltando</h3>
+      <p>As expressões regulares por si só não podêm detectar caracteres ausentes, então você terá que colocar mais código na sua repsosta para cuidar disso. Qualquer resposta do professor que começe com hífen duplo analisará a resposta do estudante para descobrir se a seguinte palavra está ausente ou não. Se presente, a análise continua para a próxima questão; se ausente, a análise pára e a mensagem de retorno é exibida.</p>
+      <p><strong>Exemplo 4.  </strong></p>
+      <ul>
+        <li>Resposta 2: <span class="c_computeroutput">--.*azul.*</span>/i</li>
+        <li>resposta do estudante: &quot;é vermelho e branco&quot; </li>
+        <li>Retorno 2: <span class="c_computeroutput">Você não escreveu a cor do céu!</span></li>
+        <li>Salto 2: <span class="c_computeroutput">essa página</span></li>
+      </ul>
+      <p>Aqui, o . (ponto) define &ldquo;qualquer caractere&rdquo; e o * (asterisco) 
+          significa que o próximo caractere poderá ser repetido qualquer número de vezes&rdquo;. 
+          A expressão regular da Resposta 2, acima, significa: verifique se a palavra 
+          &quot;azul&quot;, precedida por qualquer coisa e seguida por qualquer coisa, está ausente na resposta do estudante. Note que o uso de asterisco é diferente nos sistemas de Análise Simples e de Expressões Regulares.</p>
+      <p><strong>Exemplo 5.</strong> Questão: &quot;Diga um animal cujo nome tenha 4 letras e tenha a vogal A na segunda posição. Resposta do professor: &quot;--[g|r|p]&quot;. Retorno: &quot;Sua resposta deve começar com uma dessas três letras: g,r, ou p&quot; </p>
+      <h3>Detectando palavra ou caracteres incorretos</h3>
+      <p>Você pode querer detectar, na resposta do estudante, a presença de uma ou mais palavras que <strong>não</strong> deveriam estar lá (por serem erradas) e criar um retorno específico para esse caso. É só iniciar a resposta do professor com sinal de mais duplo (++). </p>
+      <p><strong>Exemplo 6. </strong></p>
+      <ul>
+        <li>Resposta 3: ++(amarelo|preto|laranja|verde|rosa)/i</li>
+        <li>resposta do estudante: &quot;é azul, laranja e branco&quot; </li>
+        <li>Retorno 3: Uma ou mais cores estão erradas!</li>
+        <li>Salto 3: essa páginae</li></ul>
+        <p>Se alguma dessas cores (erradas) forem detectadas na resposta do aluno, um retorno negativo é mostrado (Retorno 3), e as palavras erradas estarão em vermelho (ou a cor definida na classe .incorrect no arquivo CSS do seu tema).</p>
+      <p><strong>Exemplo 7</strong>. Questão: &quot;Diga um animal cujo nome tenha 4 letras e tenha a vogal A na segunda posição. Resposta do professor: &quot;++mato&quot;. Retorno: &quot;Mato não é bicho!&quot;   </p>
+      <h3>Utilizando caracteres especiais </h3>
+      <p>Se você precisar usar caracteres que são parte do conjunto de expressões regulares, você precisa colocar uma barra antes de cada um. Ex. Se você quer usar a resposta &quot;Meu computador 
+          custa 1000$&quot;, você deve escrever a expressão como &quot;Meu computador 
+          custa 1000\$&quot;. Os caracteres especiais existentes são .^$*()[]+?|</p>
+    </li>
+  </ul>
+</li>
+
+<li><p><b>Verdadeiro/Falso</b> A resposta para esse tipo de questão só tem duas opções, verdadeiro ou falso. O estudante deve escolher a opção correta. Esse tipo é basicamente uma questão de Múltipla Escolha com apenas duas alternativas.</p></li>
+
+<li><p><b>Correspondência</b> Esse é um tipo poderoso e flexível de questões. Elas consistem numa lista de nomes e expressões que devem ser ligados corretamente a outra lista de mesmo tipo. Por exemplo, &quot;Ligar Capital com País nas duas listas Japão, Canadá, Itália; e Tóquio, Ottawa e Roma. É possível ter nomes repetidos em uma das listas, mas deve-se tomar cuidado para deixar essas repetições idênticas. Por exemplo
+    &quot;Identifcar o tipo dessas criaturas&quot; com as listas Pombo, Vaca, Formiga, Cachorro; e Ave, Mamífero, Inseto, Mamífero. </p>
+
+<p>Ao criar esse tipo de questão, os itens da primeira lista ficam como respostas, e a segunda lista como correspondências. Uma vez criada, um esquema mais claro é mostrado. Quando o estudante liga os itens com sucesso, o salto da primeira resposta é usado. Uma resposta errada puxa o salto da segunda resposta. A questão <b>não</b> suporta retornos personalizados, é mostrado ao estudante quantas correspondências estão certas, ou se todas estão certas.</p>
+
+<p>Diferentemente das questões de Múltipla Escolha, onde as alternativas são mostradas em ordem aleatória, aqui a primeira lista de itens <b>não</b> é embaralhada, mas mostrada na mesma ordem que você digitou. Isso permite que você construa <b>&quot;Questões Ordenadas&quot;</b>. Considere a seguinte questão &quot; Coloque na ordem que eles nasceram, os mais velhos primeiro&quot; com as listas 1., 2., 3., 4. e João, José, Pedro, Maria. A segunda lista, claro, é embaralhada antes de ser utilizada.</p></li>
+
+<li><p><b>Numérica</b> Esse tipo de questão requer um número como resposta. Na sua forma mais simples, só requer que uma resposta seja digitada. Por exemplo &quot;Quanto é 2 mais 2?&quot; com a resposta 4 dando um salto à frente. Entretanto, é melhor especificar um intervalo, porque o sistema interno de arredondamento pode fazer com que comparações únicas possam dar resultados errados.
+    Portanto, se a questão fosse &quot;Quanto é 10 dividido por 3&quot; seria necessário dar a resposta como <b>&quot;Mínimo:Máximo&quot;</b>, ou seja, <b>dois</b> valores separados por dois-pontos (:). Então se 3.33:3.34 é dado como um intervalo aceitável, as respostas 3.33, 3.333, 3.3333...
+    serão todas tomadas como corretas. As respostas erradas seriam as que estariam fora do intervalo.</p>
+
+<p>É permitido utilizar mais de uma resposta correta e as respostas podem ser tanto únicas ou um par de valores. Note a ordem em que são restadas as respostas é Resposta 1, Resposta 2... , então é preciso tomar cuidado se a resposta desejada ainda está para aparecer. Por exemplo a questão &quot;Quando João nasceu?&quot;
+    poderia ter um valor único de 1922, a resposta exata, e um par de valores 1920:1929, a década de 20, como uma resposta menos exata. A ordem em que esses valores devem ser testados é, obviamente, 1922 e então 1920:1929. A primeira resposta pode ter o retorno &quot;Acertou em cheio!&quot;,
+    enquanto o outro poderia ser &quot;Quase lá, acertou a década&quot;</p>
+
+<p>Respostas erradas podem ser dadas, mas dependendo do local do seu intervalo, é preciso tomar cuidado para colocá-las depois da resposta certa. Por exemplo colocando a resposta errada 3:4 para  &quot;10 dividido por 3&quot;, ela deve ficar depois da resposta correta. As respostas devem ser ordenadas assim: 3.33:3.34 (a correta) e 3:4 (a não tão errada).</p></li>
+</ul>

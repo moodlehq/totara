@@ -1,0 +1,51 @@
+<h1>Permissões</h1>
+
+<p>
+Permissões são configurações relativas às ações possíveis na definição de funções de usuário.
+</p>
+
+<p>
+Podemos definir uma permissão de "Iniciar novas discussões" (no fórum), por exemplo.
+</p>
+
+<p>
+Para cada função, você pode definir o conjunto de permissões de uma capacidade em quatro valores:</p>
+<dl>
+<dt>NÃO ALTERAR</dt>
+<dd>Esse é o valor padrão, geralmente. É uma configuração neutra que significa "manter as capacidades que o usuário já tinha anteriormente". Se uma função é atribuída a alguém (num curso, por exemplo) que tem essa permissão para uma atividade, então a permissão atual será a mesma que havia em contextos superiores da hierarquia (categorias ou em nível de sistema).  Portanto, se o usuário nunca teve permissão naquele nível, nunca terá para essa capacidade.
+    </dd>
+
+<dt>PERMITIR</dt>
+<dd>Ao escolher isso, você estará dando permissão na atividade para pessoas que possuem essa função.  Essa permissão se aplica ao contexto no qual a função é atribuído e em todos os níveis mais baixos.  Por exemplo, se a função é de um estudante inscrito num curso, então todos os estudantes poderão "Iniciar novas discussões" em todos os fóruns do curso, A NÃO SER que algum fórum tenha uma configuração que sobreponha a anterior, ou alguma atividade com o valor de evitar ou proibir essa capacidade.</dd>
+
+<dt>EVITAR</dt>
+<dd>Ao escolher essa opção, você removerá a permissão para essa capacidade, mesmo que os usuários com essa função tenham permissão em um contexto superior.</dd>
+
+<dt>PROIBIR</dt>
+<dd>Isso é raramente necessário, mas ocasionalmente você pode precisar negar as permissões de uma função de usuário para que não sejam sobrepostas em NENHUM nível inferior. Um bom exemplo é a necessidade do administrador proibir uma pessoa de iniciar novas discussões em todos os fóruns do site. Nesse caso ele pode criar uma função com a capacidade configurada como "Proibir" e então atribuí-la ao usuário em questão, no contexto do sistema.
+  </dd>
+
+</dl>
+
+<h1>Resoluções de conflito das permissões</h1>
+
+<p> Permissões de contexto mais baixo geralmente irão sobrepor tudo que está acima (isso aplica às sobreposições e funções atribuídas). A exceção é o PROIBIR, que não pode ser sobreposto nos níveis mais baixos.
+</p>
+
+<p> Se duas funções são atribuídas a uma pessoa no mesmo contexto, uma com PERMITIR e uma com EVITAR, qual das duas vence?  Nesse caso, o Moodle fará uma busca na árvore de contextos para uma decisão.   </p>
+    
+<p> Por exemplo, um estudante tem duas funções em um curso, uma que permite iniciar novas discussões, e outra que evita que isso ocorra. Nesse caso, nós checamos as categorias e os contextos de sistema, procurando por outra permissão definida que nos ajuda a decidir.  Se não encontrarmos, a permissão é EVITAR por padrão (porque as duas configurações se cancelaram mutuamente, então não há mais a permissão).
+</p>
+
+<h1>Exceções especiais</h1>
+
+<p> Note que a conta de Visitante não pode gerar conteúdos (ex: fóruns, registros de calendário, blogs) mesmo que essas capacidades sejam atribuídas a ela.
+</p>
+
+<p>
+Veja também 
+<a href="help.php?file=roles.html">Funções</a>,
+<a href="help.php?file=contexts.html">Contextos</a>,
+<a href="help.php?file=assignroles.html">Atribuição de Funções</a>
+<a href="help.php?file=overrides.html">Sobreposições</a>.
+</p>

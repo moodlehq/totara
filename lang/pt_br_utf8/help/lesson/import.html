@@ -1,0 +1,108 @@
+<h1>Importando novas questões</h1>
+
+<p>Isto permite que você importe questões de arquivos de texto 
+   externos, enviados através de um formulário.</p>
+
+<p>Os arquivos podem ser enviados em vários formatos:</p>
+
+<h2>Formato GIFT</h2>
+<div class="indent">
+<p>GIFT é o formato de importação mais abrangente para a importação de 
+   questões de questionário do Moodle, de um arquivo texto. Ele foi desenhado para ser um método fácil  
+   para os professores escreverem questões como arquivos de texto. Ele suporta questões de Múltipla 
+   Escolha, Verdadeiro-Falso, Resposta Breve, de Associação e Numéricas, bem como para o formato 
+   inserção de _____ para a "palavra que está faltando". Vários tipos de questões podem ser
+   misturados em um único arquivo texto, e o formato também permite linhas de comentarios, nomes das questões, 
+   retornos e notas com pesos percentuais. Seguem alguns exemplos:</p>
+<pre>
+Quem está enterrado na tumba de Grant?{~Grant ~Jefferson =ninguém}
+
+Grant está {~enterrado =sepultado ~vivendo} na tumba de Grant.
+
+Grant está enterrado na tumba de Grant.{FALSO}
+
+Quem está enterrado na tumba de Grant?{=nenhum =ninguém}
+
+Quando nasceu Ulysses S. Grant?{#1822}
+</pre>
+
+<p class="moreinfo"><a href="help.php?file=formatgift.html&module=quiz">Mais informações sobre o formato "GIFT"</a></p>
+</div>
+
+<h2>Formato Aiken</h2>
+<div class="indent">
+<p>O formato Aiken é um meio muito simples de criar questões de múltipla escolha usando um formato de fácil leitura. Eis um exemplo do formato:</p>
+<pre>
+Qual é o propósito dos primeiros socorros?
+A. Salvar vidas, prevenir mais ferimentos, preservar a boa saúde.
+B. Providenciar tratamento médico para qualquer pessoa ferida ou machucada.
+C. Prevenir mais ferimentos.
+D. Auxiliar vítimas que possam estar procurando ajuda.
+RESPOSTA: A
+</pre>
+
+<p class="moreinfo"><a href="help.php?file=formataiken.html&module=quiz">Mais informações sobre o formato "Aiken"</a></p>
+</div>
+
+<h2>Complete com a palavra que falta</h2>
+<div class="indent">
+<p>Este formato só permite questões de múltipla escolha.
+Cada resposta é separada com um til (~), e a resposta correta é 
+assinalada com um sinal de igual (=). Eis um exemplo:</p>
+
+<blockquote>Tão logo começamos a explorar as partes de nosso corpo, quando crianças,
+nos tornamos estudantes de {=anatomia e fisiologia ~reflexologia 
+~ciência ~experimentação}, e em certo sentido permanecemos estudantes de por vida.
+</blockquote>
+
+<p class="moreinfo"><a href="help.php?file=formatmissingword.html&module=quiz">Mais informações sobre o formato "Complete com a palavra que falta"</a></p>
+</div>
+
+<h2>AON</h2>
+<div class="indent">
+<p>Este é o mesmo formato que "Complete com a palavra que falta", exceto que após importar 
+   as questões, todas as questões de resposta breve são convertidas, quatro de cada vez,
+   em Questões de Associação.</p>
+<p>Além disso, as respostas das questões de múltipla escolha são misturadas 
+   aleatoriamente durante a importação.</p>
+<p>Recebeu este nome de uma organização que patrocinou o desenvolvimento de muitas 
+   funcionalidade para os questionários</p>
+</div>
+
+<h2>Blackboard</h2>
+<div class="indent">
+<p>Este módulo pode importar questões salvas no formato de exportação do Blackboard. 
+Ele se baseia em funções XML que são compiladas dentro do seu PHP.</p>
+
+<p align="right"><a href="help.php?file=formatblackboard.html&module=quiz">Mais informações sobre o formato "Blackboard"</a></p>
+</div>
+
+<h2>Teste de gerenciamento do curso</h2>
+<div class="indent">
+<p>Este módulo pode importar questões salvas em um banco de testes do Teste de gerenciamento do Curso.
+Ele se baseia em diferentes modos de acessar o banco de testes, que está em uma base de dados do Microsof 
+Access, dependendo se o Moodle está rodando em um servidor web Windows ou Linux.</p>
+<p>Em Windows ele permite que você envie a base de dados do Access da mesma forma que qualquer outro arquivo de importação de dados.</p>
+<p>Em Linux, você deve instalar uma máquina Windows na mesma rede que está a base de dados do
+Teste de gerenciamento do curso e um pacote chamado de ODBC Socket Server, que usa XML
+para transferir dados para o Moodle no servidor Linux.</p>  
+
+<p>Favor ler o arquivo de ajuda completo abaixo, antes
+de usar esta classe de importação.</p>
+
+<p align="right"><a href="help.php?file=formatctm.html&module=quiz">Mais informações sobre o formato "CTM" (Teste de gerenciamento do curso)</a></p>
+</div>
+
+<h2>Personalizar</h2>
+<div class="indent">
+<p>Se você tiver seu próprio formato que precisa importar, pode 
+   implementá-lo por conta própria, editando mod/quiz/format/custom.php</p>
+
+<p>A quantidade necessária de código novo é bem pequena - apenas o suficiente
+   para analisar uma única questão de um texto dado.</p>
+
+<p align="right"><a href="help.php?file=formatcustom.html&module=quiz">Mais informação sobr o formato "Personalizado"</a></p>
+</div>
+
+<p>Mais formatos virão, incluindo WebCT, IMS QTI e qualquer outro que os usuários do
+   Moodle possam contribuir! </p>
