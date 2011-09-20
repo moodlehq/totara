@@ -1,0 +1,23 @@
+<h1>Betyg låsta för uppdateringar</h1>
+<p>Detta avgör huruvida betygen ska acceptera automatiska uppdateringar från den aktivitet som de är länkade till. Vanligtvis så är detta aktiverat (låst) så snart som aktiviteten är avslutad och det inte längre går att skicka in uppgifter. En typisk händelsekedja skulle kunna se ut så här:
+</p>
+<table class="generaltable boxaligncenter" cellpadding="4" cellspacing="1" summary="Principal events in the grading process, and matching locked and hidden states">
+    <tr>
+        <th class="header">Händelse</th><th class="header">Låsta</th><th class="header">Dolda</th>
+    </tr>
+    <tr>
+        <td class="cell">Inledning av aktivitet och inskickning av uppgiftslösningar</td>
+        <td class="cell">Nej</td>
+        <td class="cell">Ja</td>
+    </tr>
+    <tr>
+        <td class="cell">Avslutning av aktivitet och inledning av betygssättning/återkoppling</td>
+        <td class="cell">Ja</td>
+        <td class="cell">Ja</td>
+    </tr>
+    <tr>
+        <td class="cell">Avslutning av betygssättning/återkoppling och publicering av betyg</td>
+        <td class="cell">Ja</td>
+        <td class="cell">Nej</td>
+    </tr>
+</table>

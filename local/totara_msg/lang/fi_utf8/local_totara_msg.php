@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_totara_msg.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// local_totara_msg.php - created with Totara langimport script version 1.0
 
 $string['accept'] = 'Hyväksy';
 $string['alert_description'] = 'Alla on lista kaikista saamistasi ilmoituksista. Voit tarkastella yksittäistä ilmoitusta klikkaamalla sen otsikkoa tai hylätä ilmoituksen klikkaamalla hylkäyspainiketta listan oikeassa reunassa. Voit myös suodattaa listan \"Etsi\"-toiminnolla.';

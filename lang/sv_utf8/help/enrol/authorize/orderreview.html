@@ -1,0 +1,13 @@
+<p class="center"><strong>Använd dessa inställningar om du vill förhandsgranska beställningar innan du behandlar kreditkortet.</strong></p>
+<p>Avmarkera fältet 'an_review' om du vill att studenter/ elever/ deltagare/ lärande ska registreras på kurser direkt när de har matat in sitt kredit/ betalkortsnummer.<br /><br />
+  Om du har markerat fältet 'an_review' så kommer kredit/ betalkortet att bli auktoriserat men inte noterat och du kommer att ha två alternativ:<br /><br />
+   'Manuell notering' och 'schemalagd notering'.
+</p>
+   <ul>
+      <li>För <b>manuell  notering</b> ska du mata in '0' i ett fält för 'an_capture_day'. Transaktionen kommer att avbrytas om du inte förhandsgranskar den inom 30 dagar.<br /><br />
+          Ta det lugnt! Dina affärer är viktiga för oss. I sektionen för  'Inställningar för utskick av e-post' kommer du att bli påmind X dagar innan de avvaktande beställningarna löper ut, detta om du har ställt in cron på rätt sätt.<br /><br /></li>
+      <li>För <b>schemalagd  notering</b> ska du mata in ett tal mellan 1 och 29 i ett fält för 'an_capture_day'. <br />Lägg märke till att CRON MÅSTE VARA AKTIVERAT.<br /><br />
+          Kortet kommer att noteras och studenten/ eleven/ deltagaren/ den lärande kommer att registreras på kursen. Systemet för schemalagd notering noterar kortet 'an_capture_day' dagar senare om du så önskar. <br /><br />Om du är skeptiskt lagd så kan du acceptera eller avvisa betalningen efter det att du har tagit emot ett e-postmeddelande om en ny avvaktande beställning. 
+</li>
+   </ul>
+<p class="center"><strong>I Moodle 1.6 kan du acceptera/ avvisa/ återbetala betalningarna på sidan för  Administration av betalningar.</strong></p>

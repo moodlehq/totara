@@ -1,8 +1,8 @@
-<?PHP // $Id: book.php,v 1.1 2006/03/12 18:40:04 skodak Exp $ 
-      // book.php - created with Moodle 1.4 (2004083100)
-
+<?php
+// book.php - created with Totara langimport script version 1.0
 
 $string['addafter'] = 'Lägg till ett nytt kapitel';
+$string['book_tocwidth'] = 'Bredd på innehållförteckning';
 $string['chapterscount'] = 'Kapitel';
 $string['chaptertitle'] = 'Titel på kapitel';
 $string['confchapterdelete'] = 'Är Du säker på att vill ta bort det här kapitlet?';
@@ -10,10 +10,13 @@ $string['confchapterdeleteall'] = 'Är Du säker på att vill ta bort det här k
 $string['content'] = 'Innehåll';
 $string['customtitles'] = 'Standardtitlar';
 $string['disableprinting'] = 'Avaktivera utskrift';
+$string['doexport'] = 'Exportera';
 $string['doimport'] = 'Importera';
+$string['doreimport'] = 'Åter-importera';
 $string['editingchapter'] = 'Redigerar kapitel';
 $string['faq'] = 'FAQ för Bok';
 $string['fileordir'] = 'File eller katalog';
+$string['generateimscp'] = 'Generera IMSCP';
 $string['import'] = 'Import';
 $string['importinfo'] = 'Importera den markerade HTML-filen eller katalogen.<br />Kapitel sorteras alfabetiskt utifrån filnamn.';
 $string['importing'] = 'Importerar';

@@ -1,0 +1,57 @@
+<!--
+ATT_GÖRA:  Uppdatera i takt med att statusen för standarderna för tillgänglighet ändras. 
+FIL:  lang/en_utf8/docs/accessibility.html
+NOTERINGAR: De hårdkodade länkarna måste redigeras / kodas om.
+       Detta kan komma att kräva redigering av lokala webbplatser för Moodle.
+-->
+
+<h1>Tillgänglighet</h1>
+
+<h2>Uttalande angående tillgänglighet</h2>
+
+<p>Den här webbplatsen har testats i ett antal webbläsare och med hjälp av mjukvara för skärmläsning.</p>
+
+<p>Moodle använder semantisk uppmärkning för att stödja användare av skärmläsare bland annat genom att &mdash; rubriker på webbplatsen, sidorna och blocken
+använder &lt;h1&gt;, &lt;h2&gt;, navigationsblocken är listor &lt;ul&gt; osv.
+</p>
+
+<p>Moodle stödjer World Wide Web Consortiums [<a href="http://www.w3.org/TR/WCAG10/" title="Web Content Accessibility Guidelines 1.0">Web
+ Content Accessibility Guidelines 1.0</a>] nivå 1, större delen av nivå 2 
+ [<a href="http://www.w3.org/WAI/WCAG1AA-Conformance"  title="About Double-A WCAG conformance">about Double-A conformance</a>] 
+ och i någon mån nivå 3. Via dessa riktlinjer avser vi att stödja lokala lagar angående tillgänglighet för de som har olika typer av funktionshinder. Vi arbetar f.n. med att utveckla och förbättra tillgängligheten i Moodle. Det finns fortfarande en del tabeller som används för layout men normalt sett så är presentationen (med hjälp av stilblad) separerad från innehållet. </p>
+
+<p>Vi välkomnar återkoppling, speciellt då rapporter om problem med att få tillgång till innehåll. 
+Var snäll och [<a href="./message/discussion.php?id=2">meddela administratören</a>].
+</p>
+
+<h2>Nycklar till tillgänglighet</h2>
+
+<p>F.n. anger vi inga nycklar till tillgänglighet men vi avser att implementera dem i framtida versioner av Moodle.</p>
+
+<h2>Länkar</h2>
+
+<p>Det finns en länk för varje sidoblock vilket gör det möjligt för användare av skärmläsare att hoppa över blocket. Lägg märke till att länken inte syns i vanliga webbläsare. 
+ </p>
+
+<p>Många länkar har titelattribut som beskriver länken i detalj i de fall där länken själv
+inte redan beskriver målet tydligt (som t.ex. en rubrik på en artikel). Om länken har en nyckel till tillgänglighet så kommer denna att finnas med i länkens titel.</p>
+
+<p>Var helst det är möjligt kommer länken att namnges och beskrivas så att sammanhanget framgår tydligt. Vi använder inte javascript: pseudo-länkar. </p>
+
+<h2>Bilder</h2>
+
+<p>Alla bilder använder alt-attribut för att tillhandhålla en alternativ text när så är lämpligt;
+bilder som har ett rent dekorativt ändamål innehåller ett tomt alt-attribut. 
+Bilder av t.ex. typen kartor som presenterar komplex information har ett longdesc-attribut
+som länkar dem till en textbaserad beskrivning av innehållet i bilden.</p>
+
+<h2>Stöd för standarder</h2>
+
+<p>Den här webbplatsen har utformats med hjälp av giltig <acronym title="Extensible Hyper-Text Markup Language">XHTML</acronym> 
+ för uppmärkningen och använder CSS för presentationen.</p>
+
+<p style="text-align:center">
+  <a href="http://validator.w3.org/check?verbose=1&amp;ss=1&amp;uri=<?php echo $CFG->wwwroot; ?>" title="Use the W3C validator">Validate HTML</a> 
+| <a href="http://www.contentquality.com/mynewtester/cynthia.exe?rptmode=-1&amp;url1=<?php echo $CFG->wwwroot; ?>" title="Test with Cynthia">Section 508 Check</a> 
+| <a href="http://www.contentquality.com/mynewtester/cynthia.exe?rptmode=0&amp;warnp2n3e=1&amp;url1=<?php echo $CFG->wwwroot; ?>" title="Test with Cynthia">WCAG 1 (2,3) Check</a>
+</p>

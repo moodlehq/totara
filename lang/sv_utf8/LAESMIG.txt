@@ -1,0 +1,343 @@
+﻿Oeversaettning av Moodle till svenska. 
+Swedish Language pack by Anders Berggren andersb@ikt-pedagogen.se
+
+
+ http://www.iktpeda.se Moodlerooms of Sweden
+////////////////////////////////////////////////////////////////////////
+
+
+
+Creative Commons statement
+
+
+
+2007-05-26
+Du faar anvaenda den haer oeversaettningen fritt under foerutsaettning 
+
+att nedanstaaende 
+information finns med i varje spraakpaket:
+
+Set Lonnert paaboerjade det haer arbetet. Sedan hoesten 2003 och hittills t.o.m. våren 2008 har 
+
+Anders Berggren, IKT-Pedagogen, http://iktpeda.se, underhaallit den.
+
+Oeversättaren är fullt kvalificerad foer uppgiften. Det laemnas dock inga garantier foer att oeversättningen aer korrekt och tydlig i alla enskildheter. Oeversaettaren tar inget ansvar foer problem eller eventuella skador som kan uppstaa med anledning av att Du tolkar beskrivningar och foeljer instruktioner i denna oeversaettning. Viss information aer av mycket specifik teknisk natur (saadant som roer serveradministration t.ex.) saa om Du aer osaeker boer Du konsultera naagon specialist.
+Arbetet med detta sker ideellt. Du faar ta oeversaettningen i bruk 
+i befintligt skick. Du anvaender 
+m.a.o. oeversaettningen paa eget ansvar. 
+
+
+
+Slut Creative Commons statement
+
+//////////////////////////////////////////////////////////////////////
+
+
+__________________________________________________________________________________________
+
+
+
+Logg foer redigering och komplettering av spraakpaketet foer svenska i Moodle 1.9 2008-03-24
+
+///////////////////////////////////////////////////////////////////////
+
+
+__________________________________________________________________________________________
+
+
+
+Logg foer redigering och komplettering av spraakpaketet foer svenska i Moodle 1.8 2007-05-26
+Denna oeversaettning taecker nästan allt standardinnehaall i Moodle 1.8 och hela paketet aer kodat enligt UTF-8. 
+Om Du vill anvaenda moduler som inte ingaar som standard i Moodle saa faar du ladda ner dessa moduler 
+separat. 
+
+
+Alltsaa om Du vill anvaenda utvecklingsmoduler som inte ingaar i huvuddistributionen 
+av Moodle, som t.ex. Bok (Book), Dialog (Dialogue), Oevningsuppgift (Exercise), 
+HotPotv2, Egen enkaet (Questionnaire), NaetTidning (NetPublish), Tidsbokare (Appointment), 
+Naervaro (Attendance) osv. saa maaste Du ladda ner och installera dem separat. 
+Daa kan emellertid de oeversatta php- och hjaelpfilerna redan ingaa i mod/modulnamn/lang/sv.
+Det aer dock oklart om de alla aer kodade enligt UTF-8.  
+
+
+
+___________________________________________________________________________________________
+
+__________________________________________________________________________________________
+
+Log f&ouml;r redigering och komplettering av spr&aring;kpaketet f&ouml;r svenska i Moodle  
+version 3.0 2003-12-19
+Anders Berggren anders@ikt-pedagogen.se
+
+Utg&aring;ngspunkten &auml;r Moodle 1.2 som &auml;r en utvecklingsversion.
+
+Alla str&auml;ngar i programfilerna och i hj&auml;lpfilerna f&ouml;r standardmodulerna &auml;r 
+&ouml;versatta t.o.m. ovanst&aring;ende datum.
+
+D&auml;rtill &auml;r hj&auml;lpfilerna till nedanst&aring;ende utvecklingsmoduler &ouml;versatta:
+__________________________________________________________________________________________
+
+Event (H&auml;ndelse)
+Exercise (Övningsuppgift)
+Scheduler (Tidsbokare)
+Workshop 
+__________________________________________________________________________________________
+
+version 2.0, 2003-11-03
+Anders Berggren anders@ikt-pedagogen.se
+
+Senaste nytt:
+
+Övers&auml;ttningen &auml;r &auml;nnu inte komplett. Alla de str&auml;ngar som hittills (t.o.m. 2003-11-03) 
+finns i php-filerna &auml;r &ouml;versatta med undantag f&ouml;r str&auml;ngarna till modulen 'Library-add-on'.
+
+Alla hj&auml;lpfiler till standardmodulerna samt till Ray Kingdons utvecklingsmodul 'Dialog', 
+Williams Castillos utvecklingsmodul 'Ord- och begreppslista och Russell J. Jungwirths 
+utvecklingsmodul 'N&auml;rvaro' &auml;r &ouml;versatta. 
+
+Hj&auml;lpfilerna till Ray Kingdons utvecklingsmoduler 'Övningsuppgift', 'Workshop' och 
+'Uppgifter som betygss&auml;tts p&aring; "peer"-niv&aring;' finns med i denna version av spr&aring;kpaketet 
+men de &auml;r &auml;nnu inte &ouml;versatta.
+
+Min avsikt &auml;r att &ouml;vers&auml;tta all dokumentation av Moodle till svenska och att d&auml;refter 
+underh&aring;lla &ouml;vers&auml;ttningen.
+
+N&aring;gra principer
+__________________________________________________________________________________________
+
+Jag har (&aring;tminstone f&ouml;rs&ouml;kt att) konsekvent anv&auml;nda (ibland bytt ut) begreppen i den 
+nedanst&aring;ende tabellerna. Vissa val kan man kan ha olika uppfattningar om. "alt" betyder 
+ett alternativt begrepp som vore m&ouml;jligt eller &auml;r bortbytt. Det jag f&ouml;resl&aring;r &auml;r i regel 
+vilken betydelse ordet ska ha i det h&auml;r sammanhanget, vilken ibland skiljer sig fr&aring;n 
+ordets mer allm&auml;nt k&auml;nda betydelse. Ibland har jag anv&auml;nt flera svenska ord som &ouml;ver-
+s&auml;ttning av ett engelskt begrepp. Sedan har jag valt vilket svenskt jag ska anv&auml;nda 
+beroende p&aring; sammanhanget. Ibland har jag &ouml;versatt ett engelskt begrepp med ett fler-
+faldigt svenskt begrepp (ex bed&ouml;mning/v&auml;rdering/betygss&auml;ttning). 
+
+Inte perfekt...
+__________________________________________________________________________________________
+
+Detta &auml;r ett p&aring;g&aring;ende arbete. Jag f&ouml;rv&auml;ntar mig inte att alla ska samtycka om de val 
+jag g&ouml;r. Utmana mig g&auml;rna - om Du har rimliga argument s&aring; lyssnar jag och &auml;ndrar - 
+om inte s&aring; f&aring;r Du kanske svar p&aring; tal. Resultatet g&ouml;r inte heller anspr&aring;k p&aring; att vara 
+"perfekt". Ibland f&ouml;rst&aring;r jag inte det rent tekniska fullt ut och ibland har jag inte
+helt klart f&ouml;r mig hur modulen fungerar.  I s&aring;dana fall &auml;r jag tacksam om Du kan hj&auml;lpa 
+mig att klara ut begreppen. Ibland &auml;r det helt enkelt ett f&ouml;r stort avst&aring;nd mellan de 
+tv&aring; spr&aring;ken. D&aring; blir det otymplig "svengelska"...
+
+Allm&auml;nt
+__________________________________________________________________________________________
+
+Eng  	     Svenska
+
+Action	handling
+Assignment	uppgift
+Choice	opinionsunders&ouml;kning
+Creator	kursutvecklare
+current 1	aktuell
+deadline	stoppdatum/tid 
+disable	avaktivera
+default	standardval/v&auml;rde (f&ouml;rvald inst&auml;llning
+discussion	diskussions&auml;mne
+download	ladda ner
+email 2	e-post
+enable	aktivera
+entry		bidrag
+existing	befintlig
+insert	l&auml;gga in
+option	val(m&ouml;jlighet)/alternativ
+feedback 3	&aring;terkoppling
+post 4	(g&ouml;ra) inl&auml;gg
+profile	personlig profil
+student 5	student/elev/deltagare/l&auml;rande
+submission	inl&auml;mning/inskickat bidrag
+view (verb)	visa
+
+1 "current" = aktuell alt. nuvarande
+
+2 "email" I nusvenskan anv&auml;nds de engelska "email", "e-mail" och "mail" 
+   parallellt med "epost",   "e-postmeddelande" och  t o m "e-brev".  
+   "Post", "meddelande" och "brev" &auml;r ju inte riktigt samma sak eller hur?
+
+"e-post" &auml;r kort, svenskt och sanktionerat av Svenska Akademiens Ordlista. 
+ Deras bed&ouml;mningar utg&aring;r i h&ouml;g grad fr&aring;n hur pass vanligt f&ouml;rekommande de 
+ olika varianterna &auml;r.
+
+3 "feedback" = &aring;terkoppling - det &auml;r ett svenskt ord som tyv&auml;rr inte fungerar 
+   s&aring; bra i plural och det &auml;r inte glasklart vad det betyder... "feedback" 
+   anv&auml;nds ofta &auml;ven p&aring; svenska men det l&aring;ter "svengelskt" och det 
+   k&auml;nns oklart semantiskt (till sin betydelse).
+
+4 "grade"= bed&ouml;ma/v&auml;rdera/betygs&auml;tta (verb)
+                v&auml;rdering (substantiv) alt. bed&ouml;mning, omd&ouml;me, betyg
+   Vad som &auml;r den egentliga skillnaden mellan "grade" och "assess" p&aring; 
+   engelska &auml;r jag os&auml;ker p&aring;: Är det n&aring;gon som vet mera?
+
+4 "post" = g&ouml;ra inl&auml;gg (verb) alt. postning (l&aring;ter inte s&aring; svenskt)
+                inl&auml;gg (subst) 
+
+6 "Student" &auml;r ett etablerat begrepp p&aring; svenska, men det &auml;r &auml;ven 
+  "studerande", "deltagare" och "elev". Dessa begrepp &auml;r inte synonyma. 
+   De anv&auml;nds med delvis olika betydelse i olika sammanhang. Tyv&auml;rr &auml;r 
+  "L&auml;rande" en osmidig substantivform p&aring; svenska, till skillnad fr&aring;n t ex  
+   engelskans "Learner". "L&auml;rande" har emellertid en mer generell betydelse
+   &auml;n &ouml;vriga svenska uttryck. Dessutom speglar det b&auml;ttre G&ouml;teborgsskolans
+  (F. Marton m.fl.) pedagogiska ansats med dess inriktning mot fenomenografi.
+   
+
+Glossary module
+__________________________________________________________________________________________
+
+agree 1		godk&auml;nn/a/ - acceptera
+accumulative	sammanr&auml;knat
+add (verb)		l&auml;gg/a till
+already in phase  redan p&aring;b&ouml;rjat
+amend			&auml;ndra/r&auml;tta/utveckla
+entry			bidrag
+main glossary	&ouml;vergripande (f&ouml;rklarande) ord- och begreppslista
+secondary 
+glossary	  	separat ord- och begreppslista
+
+1 "agree" Den allm&auml;nna betydelsen av "agree" &auml;r "h&aring;lla med om" eller 
+  "samtycka om"  men det passar inte s&aring; bra h&auml;r. B&aring;de "godk&auml;nna" och
+  "acceptera" b&ouml;r vara  med f&ouml;r att t&auml;cka den betydelse jag tror att 
+  det engelska ordet har h&auml;r.
+
+Attendance module
+__________________________________________________________________________________________
+
+attendance roll		n&auml;rvarolista
+exceptional information OBS-meddelande
+
+
+pgassignment module (har utg&aring;tt)
+__________________________________________________________________________________________
+
+assessment 1 	bed&ouml;mning/v&auml;rdering/omd&ouml;me/betygss&auml;ttning 
+awaiting 2		v&auml;ntar p&aring; 
+correct		r&auml;tt/a
+final grade 3	slutbetyg/omd&ouml;me 
+iteration  4	&aring;terkommande 
+submission		inskickad/inl&auml;mnad uppgift/ bidrag/&ouml;vning 
+teacher  5		distansl&auml;rare 
+element		komponent
+weight		viktning (v&auml;rde vid bed&ouml;mning/v&auml;rdering/betygss&auml;ttning)
+
+1 "assessment".  
+  "r&auml;ttning/bed&ouml;mning/betygss&auml;ttning/utv&auml;rdering/examination/uppskattning" 
+  &auml;r olika m&ouml;jliga tolkningar i olika sammanhang p&aring; engelska.
+
+2 "awaiting"."avvaktar", "i v&auml;ntl&auml;ge f&ouml;r" vore m&ouml;jliga varianter. "v&auml;ntar p&aring;" 
+   l&aring;ter personligt och trevligt men i sj&auml;lva verket handlar det ju om en 
+   automatisk funktion i systemet.
+
+3  "final grade" Jag har valt det dubbla uttrycket "slutbetyg/omd&ouml;me" i st&auml;llet 
+    f&ouml;r t.ex.  "slutbetyg" som &auml;r vanligare och mer officiellt i Sverige. 
+
+4 "Iteration" betyder ju rent allm&auml;nt "fullst&auml;ndig och regelbunden upprepning" 
+    men i programmering anv&auml;nds begreppet i en likartad men specifik 
+    betydelse. H&auml;r handlar det om en "iterativ" (pedagogisk) dialog mellan  
+    l&auml;rande/l&auml;rande eller handledare/l&auml;rande som en del av l&auml;roprocessen
+    som &auml;r n&ouml;dv&auml;ndig f&ouml;r att l&auml;rom&aring;len i termer av djupinl&auml;rning och f&ouml;rst&aring;-      
+    else ska kunna uppn&aring;s. Detta sista &auml;r vad jag har &ouml;versatt med "&aring;ter-
+    kommande".
+ 
+5 "teacher". Jag har h&auml;r som huvuduttryck valt "(distans)l&auml;rare" (som inte 
+   n&ouml;dv&auml;ndigtvis &auml;r en 'vanlig' l&auml;rare som undervisar p&aring; distans utan snarare 
+   en person som &auml;r utbildad f&ouml;r att arbeta p&aring; det s&auml;tt som distansutbildning 
+   kr&auml;ver) framf&ouml;r uttryck som "handledare", "coach", "utbildare" os: Detta bl.a. 
+   eftersom "grading" i t.ex. pgassignment-modulen i s&aring; h&ouml;g grad p&aring;minner om 
+   det i l&auml;raryrket s&aring; typiska betygss&auml;ttandet.
+
+Journal module
+__________________________________________________________________________________________
+
+journal 1		dagbok/loggbok/journal
+topic 2 
+format		moment/ alt. &auml;mne
+
+1 "Journal" Det &auml;r sv&aring;rt att hitta ett bra svenskt ord.
+
+Forum module
+
+social format 	gemenskap
+
+
+Quiz module
+
+Quiz		test
+
+Exercise module
+__________________________________________________________________________________________
+
+Exercise 1		&ouml;vningsuppgift 
+league table
+
+
+1 "exercise" betyder p&aring; engelska &auml;ven "klassrumsf&ouml;rh&ouml;r". 
+  Jag vet inte hur vanligt det &auml;r i svenska skolor numera.
+
+
+Allm&auml;nna kommentarer
+__________________________________________________________________________________________
+
+P&aring; pedagogikens omr&aring;de finns det en tankeinfrastruktur (eller diskurs), 
+med en svensk underavdelning f&ouml;r bl.a. ungdomsskolan, h&ouml;gskolan och uni-
+versiteten, d&auml;r begrepp som 'student', 's&auml;tta betyg', 'v&auml;rdera' och 
+'utv&auml;rdera' redan &auml;r positionerade och inarbetade. Det vore d&auml;rf&ouml;r 
+logiskt att anv&auml;nda dessa i &ouml;vers&auml;ttningen av Moodle. Men, &auml;r saken 
+verkligen s&aring; enkel? Om vi talar om studief&ouml;rbund, folkh&ouml;gskolor och 
+personal- och f&ouml;retagsutbildning s&aring; f&ouml;rlorar v&auml;l dessa begrepp i re-
+levans? Utanf&ouml;r dessa preciserade sammanhang hittar man ocks&aring; t.ex. 
+utrymme f&ouml;r ett mer dynamiskt s&auml;tt att se p&aring; begreppsapparaten (jfr 
+t.ex. med ett fenomenografiskt perspektiv). Och vad g&auml;ller egentligen 
+globalt sett i hela den engelskspr&aring;kiga sf&auml;ren - finns det d&auml;r en 
+enhetlig tolkning av 'student', 'grade' och 'assess'? Jag tvivlar. 
+Vad kan man s&auml;ga om  den krets som &auml;r engagerade i Moodle - finns 
+det d&auml;r en underf&ouml;rst&aring;dd samsyn kring dessa begrepps betydelseinneh&aring;ll 
+och anv&auml;ndning? Jag &auml;r ganska os&auml;ker p&aring; det. 
+
+I Martins forummodul anv&auml;nds begreppet 'rate' medan Ray Kingdon i 'Workshop', 
+'Dialogue', och 'Exercise' anv&auml;nder 'grade' och 'assess' om varannat. 
+
+Och vart har begrepp som 'mark', 'degree', 'evaluate' och 'examination'
+tagit v&auml;gen i Moodle-sammanhanget?
+
+Jag h&aring;ller definitivt med om att man s&aring; mycket som m&ouml;jligt ska undvika 
+att skapa (ytterligare) f&ouml;rvirring. Men oavsett om man har ett l&auml;tt-
+f&ouml;rst&aring;eligt och igenk&auml;nnbart spr&aring;k, enklast m&ouml;jliga teknik och till&auml;mpar 
+anv&auml;ndbarhetsprinciper s&aring; kommer det att kvarst&aring; en inl&auml;rningstr&ouml;skel 
+(och enligt min mening i f&ouml;rl&auml;ngningen en trappa). Man kan f&ouml;rst&aring;s betrakta 
+Moodle p&aring; olika s&auml;tt - t ex som 'vanligt' campus, fast p&aring; n&auml;tet. 
+
+Sj&auml;lv menar jag att distansl&auml;rande (IKT och l&auml;rande) och Moodle &auml;r n&aring;gonting 
+annat och mer &auml;n det. F&ouml;r mig &auml;r Moodle p&aring; ett m&aring;ngdimensionellt s&auml;tt ett 
+nytt fenomen. Det r&auml;cker allts&aring; inte med assimilation som pedagogisk strategi 
+n&auml;r man tar sig an Moodle (&auml;ven som ny teknisk l&auml;randemilj&ouml;) - det m&aring;ste till 
+ackommodation ocks&aring;. D&auml;rut&ouml;ver tror jag att mer avancerade strategier ocks&aring; 
+kommer att beh&ouml;vas, men det blir v&auml;l en ny diskussion som jag tror att Martin 
+helst vill se i forumet 'Teaching strategies'. H&auml;r finns hursomhelst den stora, 
+och ruskigt sp&auml;nnande!, utmaningen f&ouml;r oss pedagoger.
+
+S&aring; h&auml;r kan Du redigera &ouml;vers&auml;ttningen sj&auml;lv
+__________________________________________________________________________________________
+
+N&auml;r det g&auml;ller den 'officiella' &ouml;vers&auml;ttningen s&aring; tror jag att det finns stort 
+utrymme f&ouml;r flexibilitet och initiativ. I Moodle 2.0 kommer man (enligt utveck-
+lingsplanerna) att kunna byta 'kostym' (skin) i systemet beroende p&aring; sammanhang. 
+Jag har inte fr&aring;gat Martin &auml;n, men ur ett systemutvecklingsperspektiv borde det 
+vara m&ouml;jligt att ta fram &auml;ven spr&aring;kpaket som &auml;r kontextberoende. Ett f&ouml;r grund-
+skolan och ett f&ouml;r h&ouml;gskolan t.ex.  S&aring;dana funktioner finns redan f&ouml;r ett begr&auml;nsat 
+antal begrepp. N&auml;r Du skapar en ny kurs s&aring; kan Du i kursens inst&auml;llningar sj&auml;lv 
+v&auml;lja vad Du vill kalla 'l&auml;rare' och 'student' i just den kursen. Du kan ocks&aring; ge 
+'l&auml;rarna' titlar som 'professor', 'docent', 'handledare', 'assistent' osv. Dessa 
+titlar visar sig bl.a. i kurspresentationerna och i kursdeltagarf&ouml;rteckningarna. 
+Ytterligare en m&ouml;jlighet &auml;r alltid att var och en redigerar spr&aring;kpaketet i den 
+egna instansen av Moodle efter tycke och smak. Om man vill s&aring; kan man ocks&aring; s&auml;tta 
+upp hur m&aring;nga instanser man vill och ha ett spr&aring;kpaket f&ouml;r varje. Sedan &auml;r det ju 
+ocks&aring; s&aring; att dokumentationen av Moodle kommunicerar med olika m&aring;lgrupper (som man 
+b&ouml;r anpassa sig till)  - externt med 'studenter' och internt med t.ex. 'l&auml;rare', 
+'kursutvecklare' och 'administrat&ouml;rer'.
+
+Mvh
+Anders Berggren

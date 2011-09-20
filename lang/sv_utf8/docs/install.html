@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    
+<title>Moodle dokumentation: Grundl&auml;ggande installation</title>
+  
+<link rel="stylesheet" href="docstyles.css" type="TEXT/CSS" />
+    
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style type="text/css">
+<!--
+.style3 {color: #660000}
+-->
+</style>
+</head>
+
+<body>
+<h1>Att installera Moodle</h1>
+<h2>Ta det lugnt! <img src="http://moodle.org/pix/s/smiley.gif" /></h2>
+<blockquote>
+  <p>Den h&auml;r guiden f&ouml;rklarar hur Du installerar Moodle f&ouml;rsta g&aring;ngen.  
+N&auml;r det g&auml;ller en del av dessa steg s&aring; g&aring;r guiden in p&aring; r&auml;tt mycket detaljer.
+Den f&ouml;rs&ouml;ker ocks&aring; att t&auml;cka in s&aring; m&aring;nga t&auml;nkbara s&auml;tt att installera Moodle
+p&aring; en webbserver som m&ouml;jligt. Det g&ouml;r att det h&auml;r dokumentet kan komma att se l&aring;ngt och komplicerat ut.  Ta det dock lugnt, n&auml;r Du v&auml;l har kommit p&aring; hur Du ska g&ouml;ra s&aring; kan Du installera Moodle inom n&aring;gra minuter!</p>
+  <p>Om Du st&ouml;ter p&aring; problem s&aring; f&aring;r Du l&auml;sa det h&auml;r dokumentet noga. Du f&aring;r hj&auml;lp med alla de vanligaste oklarheterna h&auml;r. Om Du &auml;nd&aring; beh&ouml;ver mer hj&auml;lp s&aring; kan Du hitta den h&auml;r (p&aring; engelska):   
+   <a target="_blank" href="http://moodle.org/help">Moodle Help</a></p>
+  <p>Ett annat alternativ &auml;r att kontakta <a target="_blank" href="http://moodle.com/hosting/">ett webbhotell</a> som kan sk&ouml;ta hela underh&aring;llet av Moodle &aring;r Dig. D&aring; kan Du hoppa &ouml;ver allt detta och koncentrera dig p&aring; Dina utbildningar!  </p>
+  <p>&nbsp;  </p>
+  <p>Sektioner i det h&auml;r dokumentet:</p>
+  <ol>
+    <li><a href="#requirements">Tekniska krav</a></li>
+    <li><a href="#downloading">Ladda ner och kopiera filerna till r&auml;tt plats</a> </li>
+    <li><a href="#site">Webbplatsens struktur</a></li>
+    <li><a href="#installer">K&ouml;r installationsskriptet f&ouml;r att skapa config.php</a>      <ul>
+        <li><a href="#webserver">Kolla inst&auml;llningarna f&ouml;r webbservern</a></li>
+        <li><a href="#database">Att skapa en databas</a></li>
+        <li><a href="#data">Att skapa en katalog f&ouml;r data</a></li>
+        </ul>
+    </li>
+    <li><a href="#admin">G&aring; till sidan f&ouml;r admininstration f&ouml;r att forts&auml;tta med konfigurationen</a></li>
+    <li><a href="#cron">Inst&auml;llning av cron</a></li>
+    <li><a href="#course">Att skapa en ny kurs</a></li>
+     </ol>
+  <p>&nbsp;</p>
+</blockquote>
+<h3 class="sectionheading"><a name="requirements"></a>1. Tekniska krav</h3>
+<blockquote> 
+  <p>Moodle &auml;r i f&ouml;rsta hand utvecklat i Linux och med anv&auml;ndning av Apache, MySQL och PHP (detta kallas ibland f&ouml;r LAMP-plattformen), men det har ocks&aring; regelbundet testats med PostgreSQL 
+    och i Windows XP, Mac OS X och Netware 6 operativsystem.</p>
+  <p>De tekniska kraven f&ouml;r Moodle &auml;r som f&ouml;ljer:</p>
+  <ol>
+    <li>program f&ouml;r webbservern. De flesta anv&auml;nder <a href="http://www.apache.org/" target="_blank">Apache</a>, 
+      men Moodle b&ouml;r fungera v&auml;l med vilken webbserver som helst som st&ouml;djer PHP, s&aring;som 
+     IIS p&aring; Windows plattformar.</li>
+    <li><a href="http://www.php.net/" target="_blank">PHP</a> scriptspr&aring;k (version 4.1.0 
+      or later). PHP 5 st&ouml;djs fr.o.m. Moodle 1.4. </li>
+    <li>en fungerande databasserver: <a href="http://www.mysql.com/" target="_blank">MySQL</a> 
+      eller <a href="http://www.postgresql.org/" target="_blank">PostgreSQL</a> st&ouml;djs fullt ut och rekommenderas f&ouml;r anv&auml;ndning med Moodle. </li>
+  </ol>
+  <p>De flesta webbv&auml;rdar st&ouml;djer allt detta som standard. Om Du har ett avtal med n&aring;gon av de f&aring; webbv&auml;rdar som inte st&ouml;djer dessa egenskaper s&aring; b&ouml;r Du fr&aring;ga dem varf&ouml;r. Du b&ouml;r ocks&aring; &ouml;verv&auml;ga att byta webbv&auml;rd.</p>
+  <p>Om Du vill k&ouml;ra Moodle p&aring; Din egen dator och om det l&aring;ter lite riskfyllt s&aring; &auml;r Du v&auml;lkommen att l&auml;sa v&aring;r guide: <a href="http://moodle.org/doc/?file=installamp.html">Att installera 
+    Apache, MySQL ochPHP</a>. D&auml;r hittar Du steg-f&ouml;r-steg-instruktioner f&ouml;r att installera detta p&aring; de mest popul&auml;ra plattformarna.</p>
+  <p>&nbsp;</p>
+</blockquote>
+<h3 class="sectionheading"><a name="downloading"></a>2. Ladda ner och kopiera filerna till r&auml;tt plats. </h3>
+<blockquote>
+  <p>Det finns tv&aring; s&auml;tt att skaffa Moodle, antingen som en .zip-fil eller via CVS. Dessa s&auml;tt beskrivs i detalj p&aring; sidan f&ouml;r nedladdning: <a href="http://moodle.org/download/" target="_blank">http://moodle.org/download/</a></p>
+  <p>N&auml;r Du har laddat ner och packat upp arkivet, eller om Du har installerat filerna med CVS, s&aring; kommer Du att ha en katalog som heter &quot;moodle&quot;, som inneh&aring;ller ett antal filer och mappar.
+   </p>
+  <p>Du kan placera hela denna katalog i Din webbservers katalog f&ouml;r dokument. Webbplatsen hittar Du d&aring; p&aring; <b>http://dinwebbserver.com/moodle</b>, 
+    Du kan ocks&aring; kopiera &ouml;ver allt inneh&aring;ll direkt i webbserverns huvudkatalog. D&aring; kommer webbplatsen helt enkelt att heta <b>http://dinwebbserver.com</b>.</p>
+  <p>Om Du f&ouml;rst laddar ner Moodle till Din lokala dator och sedan vill ladda upp systemet till Din webbplats  s&aring; &auml;r det oftast b&auml;ttre att ladda upp hela arkivet som en fil. D&auml;refter kan Du packa upp   den p&aring; servern. Det finns t.o.m. gr&auml;nssnitt av typen Cpanel som l&aring;ter Dig packa upp arkiv i &quot;File Manager&quot;. </p>
+</blockquote>
+<p>&nbsp;</p>
+<h3 class="sectionheading"><a name="site"></a>3. Webbplatsens struktur</h3>
+<blockquote>
+  <p>Du kan lugnt hoppa &ouml;ver den h&auml;r sektionen men h&auml;r hittar Du &auml;nd&aring; en sammanfattning av inneh&aring;llet i mappen Moodle. Detta f&ouml;r att det ska bli l&auml;ttare f&ouml;r Dig att orientera Dig:  </p>
+  <blockquote>
+    <table><tr>
+      <td width="130" valign="top">config.php</td>
+      <td valign="top">-</td>
+      <td valign="top">
+        inneh&aring;ller de grundl&auml;ggande inst&auml;llningarna. Den h&auml;r filen kommer inte med  Moodle - det &auml;r Du som m&aring;ste skapa den. </td>
+    </tr>
+      <tr>
+        <td valign="top">install.php</td>
+        <td valign="top">-</td>
+        <td valign="top">Det h&auml;r &auml;r det skript som Du beh&ouml;ver k&ouml;ra f&ouml;r att skapa config.php </td>
+      </tr>
+      <tr><td valign="top">version.php</td>
+      <td valign="top">-</td>
+      <td valign="top">
+        definierar den aktuella versionen av Moodles kod.
+      </td></tr>
+      <tr><td valign="top">index.php</td>
+      <td valign="top">-</td>
+      <td valign="top">
+        f&ouml;rsta sidan p&aring; webbplatsen
+      </td></tr></table>
+    <ul>
+      <li>admin/ - kod f&ouml;r att administrera hela servern </li>
+      <li>auth/ - plugin-moduler f&ouml;r att autenticera anv&auml;ndare </li>
+      <li>blocks/ - plugin-moduler f&ouml;r de sm&aring; sidoblocken som finns p&aring; m&aring;nga sidor</li>
+      <li>calendar/ - all den kod som beh&ouml;vs f&ouml;r att hantera och visa kalendrar</li>
+      <li>course/ - kod f&ouml;r att visa och administrera kurser</li>
+      <li>doc/ - hj&auml;lp-dokumentation f&ouml;r Moodle (som t.ex. den h&auml;r sidan)</li>
+      <li>files/ - kod f&ouml;r att visa och hantera uppladdade filer</li>
+      <li>lang/ - texter p&aring; olika spr&aring;k, en katalog per spr&aring;k </li>
+      <li>lib/ - bibliotek med Moodles k&auml;llkod </li>
+      <li>login/ - kod f&ouml;r att hantera inloggningar och registreringar </li>
+      <li>mod/ - alla Moodles standardmoduler f&ouml;r aktiviteter i kurser finns h&auml;r </li>
+      <li>pix/ - allm&auml;n grafik f&ouml;r webbplatsen</li>
+      <li>theme/ - Paket med teman/skin f&ouml;r att &auml;ndra webbplatsens utseende.</li>
+      <li>user/ -  kod f&ouml;r att visa och administrera anv&auml;ndare</li>
+    </ul>
+    <p>&nbsp;</p>
+  </blockquote>
+</blockquote>
+<h3 class="sectionheading"><a name="installer"></a>4. K&ouml;r skriptet f&ouml;r installation f&ouml;r att skapa config.php </h3>
+<blockquote>
+  <p>F&ouml;r att k&ouml;ra skriptet f&ouml;r installation (install.php), s&aring; beh&ouml;ver Du bara f&ouml;rs&ouml;ka g&aring; till adressen (URL) till Din webbplats f&ouml;r Moodle med hj&auml;lp av en webbl&auml;sare eller g&aring; direkt till  <strong>http://dinserver/install.php</strong>.</p>
+  <p>Skriptet f&ouml;r installation kommer att f&ouml;rs&ouml;ka att st&auml;lla in en 'cookie' (kaka) f&ouml;r en session. Om Du f&aring;r upp en dialogruta i Din webbl&auml;sare med en varning om detta s&aring; ska Du acceptera en s&aring;dan 'cookie'!  </p>
+  <p>Moodle kommer att uppt&auml;cka att det &auml;r n&ouml;dv&auml;ndigt att konfigurera systemet och Du kommer att ledas genom n&aring;gra dialogrutor (sk&auml;rmar) som hj&auml;lper Dig att skapa en ny konfigurationsfil som heter  <strong>config.php. </strong>I slutet av processen kommer Moodle att f&ouml;rs&ouml;ka skriva in filen p&aring; r&auml;tt plats. Annars kan Du klicka p&aring; en knapp f&ouml;r att ladda ner den med hj&auml;lp av skriptet f&ouml;r installation s&aring; att Du sedan kan ladda upp config.php till huvudkatalogen f&ouml;r Moodle p&aring; servern. </p>
+  <p>Under proceduren kommer skriptet f&ouml;r installation ocks&aring; att testa den milj&ouml; som finns i Din server och ge Dig f&ouml;rslag om hur Du ska l&ouml;sa eventuella problem. I de flesta fall b&ouml;r det vara tillr&auml;ckligt med dessa f&ouml;rslag men om Du k&ouml;r fast s&aring; kan Du leta efter mer information h&auml;r nedan.  <br />
+  </p>
+</blockquote>
+<blockquote>
+
+<h3 class="sectionheading"><a name="webserver" id="webserver"></a>4.1 Allm&auml;nna inst&auml;llningar f&ouml;r webbservern. </h3>
+  <blockquote>
+    <p>F&ouml;r det f&ouml;rsta s&aring; ska Du se till att Din webbserver &auml;r inst&auml;lld f&ouml;r att anv&auml;nda index.php som standardsida (kanske i kombination med index.html, default.htm osv).</p>
+    <p>I Apache, s&aring; g&aring;r det till s&aring; att en DirectoryIndex parameter i den fil som heter httpd.conf 
+     anv&auml;nds. Min ser vanligtvis ut s&aring; h&auml;r:</p>
+    <blockquote>
+      <pre><strong>DirectoryIndex</strong> index.php index.html index.htm </pre>
+    </blockquote>
+    <p>S&auml;kerst&auml;ll att index.php &auml;r med i listan (och helst i b&ouml;rjan av den, det &auml;r mest effektivt).</p>
+    <p>F&ouml;r det andra, <b>om Du anv&auml;nder Apache 2</b>, d&aring; b&ouml;r Du aktivera  variabeln <i>AcceptPathInfo</i>, som till&aring;ter att skript skickas med som argument som t.ex.  http://server/file.php/arg1/arg2.
+       Det h&auml;r &auml;r av avg&ouml;rande betydelse f&ouml;r att det ska vara m&ouml;jligt med relativa l&auml;nkar mellan Dina resurser och f&ouml;r dem som anv&auml;nder Din webbplats f&ouml;r Moodle inneb&auml;r det ocks&aring; en f&ouml;rst&auml;rkning av Moodles prestanda.  Du kan aktivera detta genom att l&auml;gga till de nedanst&aring;ende raderna i den fil som heter httpd.conf file.</p>
+    <blockquote>
+      <pre><strong>AcceptPathInfo</strong> on (det vill s&auml;ga 'p&aring;') </pre>
+    </blockquote>
+    <p>F&ouml;r det tredje, s&aring; kr&auml;ver Moodle att ett antal inst&auml;llningar i PHP &auml;r aktiverade f&ouml;r att det ska fungera. <b>P&aring; de flesta servrar s&aring; kommer dessa inst&auml;llningar redan att vara aktiverade som standard.</b>
+       Trots detta kan det vara s&aring; att en del PHP-servrar (och en del av de nyare versionerna av PHP) kan ha andra v&auml;rden inst&auml;llda. Dessa definieras is&aring;fall i PHP:s konfigurationsfil (vanligtvis kallad php.ini):</p>
+    <blockquote>
+      <pre>magic_quotes_gpc = 1    (mest &ouml;nskv&auml;rda men inte n&ouml;dv&auml;ndiga)
+magic_quotes_runtime = 0    (n&ouml;dv&auml;ndig)
+file_uploads = 1
+session.auto_start = 0
+session.bug_compat_warn = 0
+  </pre>
+    </blockquote>
+    <p>Om Du inte har tillg&aring;ng till  httpd.conf eller php.ini p&aring; Din server, eller om Du har Moodle p&aring; en server med andra applikationer som kr&auml;ver andra inst&auml;llningar s&aring; beh&ouml;ver Du inte oroa Dig &ouml;ver detta eftersom Du &auml;nd&aring; kan g&ouml;ra inst&auml;llningar som tar &ouml;ver (OVERRIDES) de f&ouml;rinst&auml;llda.    </p>
+    <p>F&ouml;r att g&ouml;ra detta s&aring; beh&ouml;ver Du skapa en fil i Moodles huvudkatalog som kallas <b>.htaccess</b> och som inneh&aring;ller rader liknande de f&ouml;ljande. Det h&auml;r fungerar bara p&aring; servrar av typen Apache och bara n&auml;r n&auml;r 'Overrides' har till&aring;tits i den &ouml;vergripande konfigurationen. </p>
+    <blockquote>
+      <pre>
+DirectoryIndex index.php index.html index.htm
+
+&lt;IfDefine APACHE2>
+     <b>AcceptPathInfo</b> on
+&lt;/IfDefine>
+
+php_flag magic_quotes_gpc 1
+php_flag magic_quotes_runtime 0
+php_flag file_uploads 1
+php_flag session.auto_start 0
+php_flag session.bug_compat_warn 0</pre>
+    </blockquote>
+    <p>Du kan ocks&aring; g&ouml;ra saker som att definiera den maximala storleken f&ouml;r uppladdade filer:          
+</p>
+    <blockquote>
+      <pre>
+LimitRequestBody 0
+php_value upload_max_filesize 2M
+php_value post_max_size 2M
+     </pre>
+    </blockquote>
+    <p>Det enklaste &auml;r att bara kopiera exempelfilen fr&aring;n <strong>lib/htaccess</strong> och redigera den s&aring; att den passar Dina behov. Den inneh&aring;ller vidare instruktioner. T.ex. i en 'Unix shell':
+   </p>
+    <blockquote>
+      <pre>cp lib/htaccess .htaccess</pre>
+    </blockquote>
+  </blockquote>
+<p>&nbsp;</p>
+<h3 class="sectionheading"><a name="database"></a>4.2 Skapar en databas</h3>
+
+  <blockquote>
+    <p>Du beh&ouml;ver skapa en tom databas (t.ex. "<em>moodle</em>") i Ditt databassystem 
+      tillsammans med en speciell anv&auml;ndare (t.ex. "moodlare") som har tillg&aring;ng till den databasen 
+      (och endast till den databasen). Du skulle kunna anv&auml;nda "root" anv&auml;ndare p&aring; en testserver om Du ville, men detta rekommenderas inte f&ouml;r ett produktionssystem: om hackers skulle lyckas uppt&auml;cka l&ouml;senordet s&aring; kommer hela Ditt databassystem att vara utsatt f&ouml;r risk och inte bara just den databasen. </p>
+    <p>Om Du anv&auml;nder en webbv&auml;rd, s&aring; har de antagligen en kontrollpanel med ett webbgr&auml;nssnitt 
+som Du kan anv&auml;nda f&ouml;r att skapa Din databas.</p>
+    <p><strong>Cpanel</strong> &auml;r en av de mest popul&auml;ra av kontrollpanelerna. F&ouml;r att skapa en databas i Cpanel: </p>
+    <ol>
+      <li>Klicka p&aring; ikonen &quot;<strong>MySQL Databases</strong>&quot;.</li>
+      <li>Skriv in &quot;moodle&quot; i databasf&auml;ltet och klicka &quot;<strong>Add Database (L&auml;gg till databas)</strong>&quot;.</li>
+      <li> Skriv in ett anv&auml;ndarnamn och ett l&ouml;senord (inte ett som Du anv&auml;nder n&aring;gon annanstans) i respektive f&auml;lt och klicka p&aring; &quot;<strong>Add User(L&auml;gg till anv&auml;ndare)</strong>&quot;.</li>
+      <li> Anv&auml;nd sedan knappen &quot;<strong>Add User to Database (L&auml;gg till anv&auml;ndare till databas)</strong>&quot; f&ouml;r att ge den h&auml;r anv&auml;ndaren ett nytt anv&auml;ndarkonto med &quot;<strong>ALL (alla)</strong>&quot; r&auml;ttigheter i den nya databasen.</li>
+      <li>L&auml;gg m&auml;rke till att anv&auml;ndarnamnet och namnet p&aring; databasen kan ha f&aring;tt ett extra prefix som &auml;r best&auml;mt utifr&aring;n namnet p&aring; Ditt konto som anv&auml;ndare av Cpanel. N&auml;r Du skriver in denna information i installationsprogrammet f&ouml;r Moodle s&aring; ska Du anv&auml;nda de fullst&auml;ndiga namnen.</li>
+    </ol>
+    <p>Om Du har tillg&aring;ng till kommandorader i Unix, d&aring; kan Du g&ouml;ra samma sak genom att skriva in kommandon. </p>
+    <p>H&auml;r f&ouml;ljer n&aring;gra exempel p&aring; kommandrader i UNIX f&ouml;r MySQL: </p>
+    <pre>
+   # mysql -u root -p
+   > CREATE DATABASE moodle; 
+   > GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,INDEX,ALTER ON moodle.* 
+           TO moodleuser@localhost IDENTIFIED BY 'yourpassword'; 
+   > quit 
+   # mysqladmin -p reload
+    </pre>
+    <p>Och n&aring;gra exempel p&aring; kommandorader f&ouml;r PostgreSQL: </p>
+    <pre>
+   # su - postgres
+   > psql -c "create user moodleuser createdb;" template1
+   > psql -c "create database moodle;" -U moodleuser template1
+   > psql -c "alter user moodleuser nocreatedb;" template1</pre>
+  </blockquote>
+  <p>&nbsp;</p>
+  
+<h3 class="sectionheading"><a name="data"></a>4.3 Att skapa en katalog f&ouml;r data </h3>
+
+  <blockquote>
+    <p>Moodle kommer ocks&aring; att beh&ouml;va ett visst utrymme p&aring; Din servers h&aring;rddisk f&ouml;r att lagra uppladdade filer s&aring;som kursdokument och anv&auml;ndarbilder. </p>
+    <p>Installationsprogrammet f&ouml;r Moodle g&ouml;r tappra f&ouml;rs&ouml;k att skapa denna katalog &aring;t Dig men om det inte g&aring;r d&aring; m&aring;ste Du skapa en s&aring;dan katalog manuellt. </p>
+    <p>Med tanke p&aring; s&auml;kerheten s&aring; &auml;r det b&auml;st att den h&auml;r katalogen INTE &auml;r tillg&auml;nglig direkt via webben. Det enklaste s&auml;ttet att l&ouml;sa det h&auml;r problemet &auml;r att helt enkelt att placera den UTANFÖR webbkatalogen (www). Om Du m&aring;ste ha den i webbkatalogen d&aring; b&ouml;r Du skydda den genom att skapa en fil i datakatalogen som kallas f&ouml;r .htaccess och som inneh&aring;ller f&ouml;ljande rad: </p>
+    <blockquote>
+      <pre>deny from all</pre>
+    </blockquote>
+    <p>F&ouml;r att s&auml;kerst&auml;lla att Moodle kan spara uppladdade filer i den h&auml;r katalogen s&aring; ska Du kontrollera att webbserverprogrammet (t.ex. Apache) har tillst&aring;nd att l&auml;sa, skriva och k&ouml;ra (program) i den h&auml;r katalogen. </p>
+    <p>P&aring; Unix maskiner, betyder den h&auml;r inst&auml;llningen att &auml;garen av katalogen kan var n&aring;got i stil med  &quot;nobody&quot; eller &quot;apache&quot;, och d&auml;rmed f&aring;r den anv&auml;ndaren tillst&aring;nd att l&auml;sa, skriva och k&ouml;ra (program).</p>
+    <p>P&aring; Cpanel system kan Du anv&auml;nda &quot;File Manager&quot; f&ouml;r att hitta mappen, klicka p&aring; den och sedan v&auml;lja &quot;Change Permissions&quot;. P&aring; m&aring;nga webbhotell d&auml;r man delar server med andra kommer Du antagligen att beh&ouml;va begr&auml;nsa all tillg&auml;nglighet till filer till Din "grupp" (detta f&ouml;r att hindra andra kunder p&aring; webbhotellet fr&aring;n att titta p&aring; eller &auml;ndra Dina filer) men &auml;nd&aring; se till att alla andra, som Du vill ska ha r&auml;ttigheter och tillg&aring;ng till Dina filer ocks&aring; f&aring;r det. </p>
+    <p>Tala med den som &auml;r administrat&ouml;r f&ouml;r Din webbserver om Du &auml;r os&auml;ker p&aring; hur Du ska g&ouml;ra den h&auml;r inst&auml;llningen p&aring; ett s&auml;kert s&auml;tt. Specifikt g&auml;ller det att vissa webbplatser som anv&auml;nder en egenskap i PHP som kallas &quot;Safe Mode&quot; kan  <em>kr&auml;va</em> att det &auml;r administrat&ouml;ren som ska skapa den h&auml;r katalogen &aring;t Dig s&aring; att det blir r&auml;tt. </p>
+  </blockquote>
+
+</blockquote>
+
+<h3 class="sectionheading"><a name="admin"></a>5. G&auml; till sidan f&ouml;r administration f&ouml;r att forts&auml;tta konfigurationen. </h3>
+<blockquote> 
+  <p>N&auml;r Du v&auml;l har skapat den grundl&auml;ggande <strong>config.php</strong> p&aring; ett korrekt s&auml;tt i det f&ouml;reg&aring;ende steget, s&aring; kommer att Du, n&auml;r Du f&ouml;rs&ouml;ker att g&aring; till hemsidan p&aring; Din webbplats, att ist&auml;llet att bli l&auml;nkad till sidan f&ouml;r &quot;administration&quot; s&aring; att Du kan slutf&ouml;ra konfigurationen.</p>
+  <p>F&ouml;rsta g&aring;ngen som Du anv&auml;nder den h&auml;r sidan kommer Du att f&aring; se ett GPL &quot;shrinkwrap&quot; avtal som Du <strong>m&aring;ste</strong> acceptera innan Du kan forts&auml;tta intallationen. </p>
+  <p>D&auml;refter kommer Moodle s&auml;tta ig&aring;ng att iordningsst&auml;lla Din databas och skapa tabeller f&ouml;r att lagra data.  F&ouml;rst skapas de grundl&auml;ggande databastabellerna. Du b&ouml;r se ett antal SQL-satser som &aring;tf&ouml;ljs av statusmeddelanden (i gr&ouml;nt eller r&ouml;tt) som ser ut s&aring; h&auml;r: </p>
+  <blockquote> 
+    <p>CREATE TABLE course ( id int(10) unsigned NOT NULL auto_increment, category 
+      int(10) unsigned NOT NULL default '0', password varchar(50) NOT NULL default 
+      '', fullname varchar(254) NOT NULL default '', shortname varchar(15) NOT 
+      NULL default '', summary text NOT NULL, format tinyint(4) NOT NULL default 
+      '1', teacher varchar(100) NOT NULL default 'Teacher', startdate int(10) 
+      unsigned NOT NULL default '0', enddate int(10) unsigned NOT NULL default 
+      '0', timemodified int(10) unsigned NOT NULL default '0', PRIMARY KEY (id)) 
+      TYPE=MyISAM</p>
+    <p><font color="#006600">FRAMGÅNG</font></p>
+  </blockquote>
+  <p>...osv, f&ouml;ljt av: <font color="#006600">De grundl&auml;ggande databaserna har satts upp framg&aring;ngsrikt. </font> </p>
+  <blockquote>
+    <p class="style3">Om Du inte ser dessa, d&aring; m&aring;ste det ha uppst&aring;tt n&aring;got problem med databasen eller med de inst&auml;llningar i konfigurationen som Du definierade i config.php. Kolla att PHP inte &auml;r i ett begr&auml;nsat "Safe Mode"-l&auml;ge (kommersiella webbv&auml;rdar har ibland s&auml;kert l&auml;ge 'safe mode' aktiverat). Du kan kolla PHP-variabler genom att skapa en liten fil som inneh&aring;ller  <strong>&lt;?php phpinfo() ?&gt;</strong> och titta p&aring; den genom en webbl&auml;sare. Kolla alla dessa variabler och
+f&ouml;rs&ouml;k sedan att uppdatera denna sida. </p>
+  </blockquote>
+  <p>Skrolla till allra l&auml;ngst ner p&aring; sidan och klicka p&aring; l&auml;nken &quot;Forts&auml;tt&quot;.</p>
+  <p>Du b&ouml;r nu se ett formul&auml;r d&auml;r Du kan definiera fler variabler f&ouml;r konfiguration av Din installation, s&aring;som t.ex. vilket spr&aring;k som ska vara f&ouml;rvalt, SMTP v&auml;rdar osv. 
+   Oroa Dig inte f&ouml;r mycket &ouml;ver hur Du ska f&aring; till allting r&auml;tt just nu - Du kan alltid komma tillbaka hit och redigera saker genom att anv&auml;nda gr&auml;nssnittet f&ouml;r administrat&ouml;rer. De f&ouml;rinst&auml;llda v&auml;rden b&ouml;r passa och vara s&auml;kra f&ouml;r de allra flesta webbplatser. Skrolla ner till slutet p&aring; sidan och klicka  p&aring; &quot;Spara &auml;ndringar&quot;.</p>
+  <blockquote>
+    <p class="style3">Om (och bara om) det visar sig att Du fastnar p&aring; den h&auml;r sidan d&aring; beror det troligen p&aring; det som kallas ett "buggy referrer" problem. 
+      Det h&auml;r &auml;r l&auml;tt att &aring;tg&auml;rda: avaktivera bara inst&auml;llningen  &quot;secureforms (s&auml;kra formul&auml;r)&quot; och f&ouml;rs&ouml;k sedan att forts&auml;tta.</p>
+  </blockquote>
+  <p>D&auml;refter kommer Du att f&aring; se ytterligare ett antal sidor som skriver ut m&auml;ngder med statusmeddelanden i takt med att de s&auml;tter upp de tabeller som h&ouml;r till de olika modulerna. Liksom tidigare b&ouml;r de alla visas med en <font color="#006600">gr&ouml;n</font> font.</p>
+  <p>Skrolla ner till l&auml;ngst ner p&aring; sidan och klicka p&aring; l&auml;nken &quot;Forts&auml;tt&quot;.</p>
+  <p>N&auml;sta sida &auml;r ett formul&auml;r som l&aring;ter Dig definiera parametrar f&ouml;r hela Din webbplats av Moodletyp och hur ing&aring;ngssidan ska visas s&aring;som namn, formatering, beskrivning osv. Fyll i detta (Du kan alltid &aring;terv&auml;nda till denna sida och g&ouml;ra &auml;ndringar senare) och klicka sedan p&aring; "Spara &auml;ndringar" &quot;Save changes&quot;.</p>
+  <p>Sedan kommer Du slutligen att bli uppmanad att skapa en anv&auml;ndare med beh&ouml;righeter och r&auml;ttigheter som administrat&ouml;r p&aring; toppniv&aring; s&aring; att Du kan f&aring; tillg&aring;ng till sidorna f&ouml;r adminstration i forts&auml;ttningen. Fyll i detta med Ditt eget namn, e-postadress osv och klicka sedan p&aring; &quot;Spara &auml;ndringar&quot;. Alla f&auml;lt &auml;r inte obligatoriska, men om Du har missat n&aring;got/n&aring;gra av de viktiga f&auml;lten s&aring; kommer Du att f&aring; p&aring;minnelser om detta. 
+  </p>
+  <blockquote> 
+    <blockquote> 
+      <blockquote> 
+        <blockquote> 
+          
+            <p><strong>F&ouml;rs&auml;kra Dig om att komma ih&aring;g det anv&auml;ndarnamn och det l&ouml;senord Du valde f&ouml;r administrat&ouml;rskontot. Du m&aring;ste ha tillg&aring;ng till dessa koder f&ouml;r att f&aring; tillg&aring;ng till sidan f&ouml;r administration i forts&auml;ttningen.</strong></p>
+        
+        </blockquote>
+      </blockquote>
+    </blockquote>
+    <p class="style3">(Om det av n&aring;gon anledning blir avbrott i Din installation eller om det uppst&aring;r n&aring;gon form av systemfel som hindrar Dig fr&aring;n att logga in som administrat&ouml;r, s&aring; kan Du i regel logga in med det f&ouml;rinst&auml;llda anv&auml;ndarnamnet  &quot;<strong>admin</strong>&quot;, 
+    med l&ouml;senordet &quot;<strong>admin</strong>&quot;.)</p>
+  </blockquote>
+  <p>N&auml;r Du v&auml;l har lyckats s&aring; kommer Du att f&aring; se ing&aring;ngssidan p&aring; Din nya webbplats! L&auml;gg m&auml;rke till att l&auml;nkarna till administrationen dyker upp nere p&aring; v&auml;nster sida av sidan (dessa komponenter visas ocks&aring; p&aring; den separata sidan f&ouml;r administration). Dessa komponenter &auml;r synliga bara om Du &auml;r inloggad som administrat&ouml;r. Du kan nu utf&ouml;ra allt Ditt administrativa arbete med Moodle med hj&auml;lp av den h&auml;r menyn, som t.ex. :</p>
+  <ul>
+    <li>skapa och ta bort kurser</li>
+    <li>skapa och ta bort anv&auml;ndarkonton</li>
+    <li>administrera l&auml;rarkonton</li>
+    <li>&auml;ndra inst&auml;llningar som &auml;r giltiga p&aring; hela webbplatsen som teman etc</li>
+  </ul>
+  <p>Men installationen &auml;r inte klar &auml;n! Det &aring;terst&aring;r fortfarande en mycket viktig sak att g&ouml;ra (se n&auml;sta sektion om cron). </p>
+</blockquote>
+<p>&nbsp;</p>
+<h3 class="sectionheading"><a name="cron"></a>6. Att st&auml;lla in cron -- VIKTIGT! </h3>
+<blockquote> 
+  <p>En del av Moodles moduler kr&auml;ver upprepade kontroller f&ouml;r att genomf&ouml;ra sina uppgifter.  Moodle beh&ouml;ver t.ex. kontrollera diskussionsforumen s&aring; att systemet kan skicka ut kopior av inl&auml;gg i forum via e-post till dem som har prenumererat p&aring; detta forum. </p>
+  <p>Skriptet som g&ouml;r allt detta hittar Du i katalogen 'admin' och det kallas cron.php. Det kan dock inte k&ouml;ra sig sj&auml;lvt s&aring; Du beh&ouml;ver s&auml;tta upp en mekanism d&auml;r skriptet k&ouml;rs regelbundet (t.ex. var femte eller tionde minut). Detta tillf&ouml;r en &quot;puls&quot; s&aring; att skriptet kan utf&ouml;ra periodiserade funktioner som &auml;r definierade av varje modul. Denna typ av mekanism kallas f&ouml;r en <strong>cron service</strong>. </p>
+  <p>L&auml;gg m&auml;rke till att den maskin som utf&ouml;r cron <b>inte beh&ouml;ver vara samma maskin som den som k&ouml;r Moodle.</b> Om Du t.ex. har en begr&auml;nsad tj&auml;nst hos ett webbhotell d&aring; kan Du v&auml;lja att k&ouml;ra cron fr&aring;n en annan server eller fr&aring;n Din egen hemdator. Det enda som &auml;r viktigt &auml;r att filen cron.php blir anropad regelbundet.</p>
+  <p>Belastningen p&aring; det h&auml;r skriptet &auml;r inte s&aring; h&ouml;g, s&aring; fem minuter &auml;r i regel lagom men om Du oroar Dig &ouml;ver detta s&aring; kan Du minska tidsperioden till femton eller t.o.m. trettio minuter. Det b&auml;sta &auml;r att inte g&ouml;ra tidsperioden alltf&ouml;r l&aring;ng. Om Du f&ouml;rdr&ouml;jer utskicket av e-post s&aring; kan &auml;ven aktiviteterna i kursen bli l&aring;ngsammare.</p>
+  <p>F&ouml;r det f&ouml;rsta, testa s&aring; att skriptet fungerar genom att k&ouml;ra det direkt via Din webbl&auml;sare:</p>
+  <blockquote> 
+    <pre>http://exempel.com/moodle/admin/cron.php</pre>
+  </blockquote>
+  <p>Sedan beh&ouml;ver Du s&auml;tta upp n&aring;got s&auml;tt att k&ouml;ra skriptet automatiskt och regelbundet.</p>
+  <p><b>P&aring; Windows-system</b></p>
+  <blockquote>
+    <p>Det enklaste s&auml;ttet &auml;r att anv&auml;nda detta lilla paket <a href="http://moodle.org/download/modules/moodle-cron-for-windows.zip" title="Klicka f&ouml;r att ladda ner detta paket (150k)" target="_blank"><strong>moodle-cron-for-windows.zip</strong></a> som g&ouml;r det      hela mycket enkelt genom att installera en liten Windows-service. K&ouml;r den och gl&ouml;m det hela!</p>
+  </blockquote>
+  <p><strong>Om tj&auml;nster hos webbhotell</strong></p>
+  <blockquote>
+    <p> I Din webbbaserade kontrollpanel kan det ing&aring; en webbsida som l&aring;ter Dig st&auml;lla in den h&auml;r cron-processen. T.ex. p&aring; ett Cpanel-system ska Du titta efter en knapp som heter &quot;Cron jobs&quot;. D&auml;r kan Du fylla i samma typ av Unix-kommandon som de som &auml;r listade nedan. </p>
+  </blockquote>
+  <h4> Att anv&auml;nda kommandoraden i Unix </h4>
+  <blockquote>
+    <p>Det finns olika program med kommandorader som Du kan anv&auml;nda f&ouml;r att anropa sidan fr&aring;n kommandoraden. Det &auml;r inte s&auml;kert att alla dessa &auml;r tillg&auml;ngliga p&aring; en viss server.</p>
+    <p>Du kan t.ex. anv&auml;nda ett UNIX verktyg som 'wget':</p>
+    <blockquote>
+      <pre>wget -q -O /dev/null http://exempel.com/moodle/admin/cron.php</pre>
+    </blockquote>
+    <p>L&auml;gg m&auml;rke till att i det h&auml;r exemplet s&aring; tas resultatet bort (to /dev/null).</p>
+    <p>Samma sak med anv&auml;ndning av lynx:</p>
+    <blockquote>
+      <pre>lynx -dump http://exempel.com/moodle/admin/cron.php &gt; /dev/null</pre>
+    </blockquote>
+    <p>Alternativt skulle Du kunna anv&auml;nda en 'standalone' version av PHP, som &auml;r kompilerad f&ouml;r att k&ouml;ras fr&aring;n kommandoraden. F&ouml;rdelen med att g&ouml;ra detta &auml;r att loggarna fr&aring;n Din webbserver inte fylls  upp med konstant upprepade f&ouml;rfr&aring;gningar till cron.php. Nackdelen &auml;r att Du beh&ouml;ver ha tillg&aring;ng till en php-version som till&aring;ter styrning via kommandorad.</p>
+    <blockquote>
+      <pre>/opt/bin/php /web/moodle/admin/cron.php
+
+    </pre>
+    </blockquote>
+  </blockquote>
+  <h4>Att anv&auml;nda crontab-programmmet i Unix </h4>
+  <blockquote>
+    <p> Allt som Cpanel g&ouml;r &auml;r att tillhandah&aring;lla ett gr&auml;nssnitt f&ouml;r webben f&ouml;r ett UNIX verktyg som kallas 'crontab'. Om Du har en kommandorad s&aring; kan Du st&auml;lla in 'crontab' sj&auml;lv genom att anv&auml;nda kommandot:</p>
+    <blockquote>
+      <pre>crontab -e</pre>
+   </blockquote>
+   <p>och sedan l&auml;gga till ett av kommandona ovan som t.ex.:</p>
+    <blockquote>
+      <pre>*/5 * * * * wget -q -O /dev/null http://exempel.com/moodle/admin/cron.php</pre>
+    </blockquote>
+    <p>Vanligtvis s&aring; kommer, 'crontab'-kommandot att ta Dig till 'vi'-redigeraren. Du g&aring;r in i 
+     "insert mode" genom att trycka p&aring; 'i', och sedan skriva in raden s&aring; som ovan och sedan 
+g&aring; ur l&auml;ge infoga 'insert mode' genom att trycka p&aring; ESC.  Du sparar och g&aring;r ur genom att skriva in  ':wq', eller avbryter utan att spara genom att anv&auml;nda ':q!' (utan apostrofer).</p>
+  </blockquote>
+  <p>&nbsp;</p>
+</blockquote>
+<h3 class="sectionheading"><a name="course"></a>7. Skapa en ny kurs</h3>
+<blockquote>
+  <p>Nu n&auml;r Moodle allts&aring; fungerar som det ska, kan Du f&ouml;rs&ouml;ka skapa en ny kurs att experimentera med. </p>
+  <p>V&auml;lj &quot;Skapa en ny kurs&quot; fr&aring;n sidan f&ouml;r administration (eller via l&auml;nkarna f&ouml;r administration p&aring; hemsidan).</p>
+  <p>Fyll i formul&auml;ret, och l&auml;gg s&auml;rskilt m&auml;rke till kursformatet. Du beh&ouml;ver inte bekymra Dig om detaljerna i det h&auml;r l&auml;get eftersom Du kan &auml;ndra p&aring; allting i ett senare skede. L&auml;gg m&auml;rke till att de gula hj&auml;lpikonerna finns med &ouml;verallt f&ouml;r att ge sammanhangsberoende hj&auml;lp om allt Du beh&ouml;ver veta.  </p>
+  <p>Klicka p&aring; &quot;Spara &auml;ndringar&quot;, och d&aring; kommer Du till ett nytt formul&auml;r d&auml;r Du kan tilldela (distans)l&auml;rare till kursen. Du kan bara l&auml;gga till redan befintliga anv&auml;ndarkonton fr&aring;n det h&auml;r formul&auml;ret - om Du vill skapa ett nytt l&auml;rarkonto d&aring; f&aring;r Du antingen be dem att skapa ett eget s&aring;dant sj&auml;lva (se sidan f&ouml;r inloggning) eller skapa ett &aring;t dem genom att anv&auml;nda funktionen   &quot;L&auml;gg till ny anv&auml;ndare&quot; p&aring; sidan f&ouml;r administration.</p>
+  <p>N&auml;r detta v&auml;l &auml;r gjort s&aring; &auml;r kursen klar s&aring; att Du kan ange de inst&auml;llningar Du vill g&ouml;ra. Kursen &auml;r ocks&aring; tillg&auml;nglig via l&auml;nken &quot;Kurser&quot; p&aring; hemsidan.</p>
+  <p>Se &quot;<a href="./?file=teacher.html">L&auml;rarmanualen</a>&quot; f&ouml;r mer detaljer 
+    ang&aring;ende design av kurser.</p>
+  <p>&nbsp;</p>
+  <p align="center"><strong>Lycka till med Ditt utforskande av Moodle och med moodlandet! </strong></p>
+  <p align="center"><strong>Om Du tycker om Moodle, kanske Du kan t&auml;nka Dig att  <a href="http://moodle.org/donations/" target="_blank">donera</a> f&ouml;r att hj&auml;lpa oss att t&auml;cka v&aring;ra kostnader! </strong></p>
+</blockquote>
+<p>&nbsp;</p>
+<p align="center"><font size="1"><a href="." target="_top">Dokumentation av Moodle </a></font></p>
+<p align="center"><font size="1">Version: $Id$</font></p>
+</body>

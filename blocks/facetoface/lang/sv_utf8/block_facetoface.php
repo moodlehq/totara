@@ -1,0 +1,69 @@
+<?PHP // $Id$ 
+      // block_facetoface.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+      // local modifications from http://translate.totaralms.com
+
+
+$string['allfuturesessions'] = 'Alla kommande sessioner';
+$string['allsessions'] = 'Alla sessioner';
+$string['apply'] = 'Använd';
+$string['attended'] = 'deltagit';
+$string['bookinghistory'] = 'Bokningshistoria';
+$string['bookinghistoryfor'] = 'Bokningshistoria för $a';
+$string['bookings'] = 'Bokningar';
+$string['calendar:tablesummary'] = 'Månatlig kalendervy visar händelser varje dag';
+$string['cancelled'] = 'inställd';
+$string['coursefullname'] = 'Fullnamn för kurs';
+$string['date'] = 'Datum';
+$string['daterange'] = 'Datumintervall:';
+$string['didntattend'] = 'deltog inte';
+$string['enrolled'] = 'inskriven';
+$string['error:invalidcourseid'] = 'Ogiltig kurs-ID';
+$string['error:invalidfacetofaceid'] = 'Ogiltig Face-to-face aktivitets-ID';
+$string['error:invalidsessionid'] = 'Ogiltig sessions-ID';
+$string['error:invaliduserid'] = 'Ogiltig användar-ID';
+$string['exportsessiondates'] = 'Exportera sessionsdatum';
+$string['facetoface:viewbookings'] = 'Visa användares facetoface bokningar';
+$string['filters'] = 'Filter';
+$string['filters:tablesummary'] = 'Lista över filter som kontrollerar händelser som visas i den månatliga kalendervyn nedan.';
+$string['finishdate'] = 'Slutdatum';
+$string['fixdates'] = 'Fasta sessionsdatum';
+$string['formaltitle'] = 'Face-to-face';
+$string['futurebookings'] = 'Kommande bokningar';
+$string['futurebookingsfor'] = 'Kommande bokningar för $a';
+$string['listsessiondates'] = 'Lista Face-to-face sessionsdagar';
+$string['mybookings'] = 'Mina bokningar';
+$string['nbbookings'] = 'Bokningar';
+$string['nobookinghistory'] = 'Ingen bokningshistoria';
+$string['nobookinghistoryfor'] = 'Ingen bokningshistoria för $a';
+$string['nosessions'] = '<p><i>Inga sessioner som matchar nuvarande kriteria.</i></p>';
+$string['nowaitlistedsessions'] = '<p><i>Inga vänte-listade kurser som matcha nuvarande kriteria.</i></p>';
+$string['pastbookings'] = 'Tidigare bokningar';
+$string['pastbookingsfor'] = 'Tidigare bokningar för $a';
+$string['searchedusers'] = '$a användare hittade som matchade sökningen';
+$string['searchusers'] = 'Sök användare';
+$string['sessiondatestable'] = 'Lista med sessionsdetaljer tillsammans med antal bokningar';
+$string['sessiondatesview'] = 'Du är involverad i följande sessioner';
+$string['sessiondatesviewattendees'] = 'Du kan se deltagare på följande sessioner:';
+$string['sessiondatesviewattendeeszero'] = 'Du kan inte visa deltagarna någon session i det angivna datumintervallet.';
+$string['sessiondetails'] = 'Sessionsdetaljer';
+$string['sessionlist'] = 'Sessionslista';
+$string['sessions'] = 'Sessioner';
+$string['showingallwaitlistedsessions'] = '<p><i>Visning av alla vänte-listade kurser som matchar nuvarande kriteria.</i></p>';
+$string['signedupin'] = 'Du är anmäld till följande sessioner:';
+$string['signedupinzero'] = 'Inga registreringar kan hittas i angivet datumintervall.';
+$string['startdate'] = 'Startdatum';
+$string['tab:bycourse'] = 'Lista via kurs';
+$string['tab:bydate'] = 'Lista via datum';
+$string['tab:calendar'] = 'Kalender';
+$string['time'] = 'Tid';
+$string['tooltipheading'] = 'Sessioner för den här dagen:';
+$string['toomanywaitlistedsessions'] = '<p><i>Visar $a av de vänte-listade kurserna som matchar nuvarande kriteria.</i></p><p><i>Alla matchande kurser listas i \"Via kurs\"-tabben nedan.</i></p>';
+$string['trainer'] = 'Lärare';
+$string['trainers'] = 'Lärare';
+$string['trainingcalendar'] = 'Utbildningskalender';
+$string['upcomingsessions'] = 'Kommande sessioner';
+$string['viewexportsessions'] = 'Visa/exportera sessioner';
+$string['xevents'] = '<i>och $a annan...</i>';
+$string['xrecords'] = '$a poster';
+
+?>

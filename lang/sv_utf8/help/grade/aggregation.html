@@ -1,0 +1,54 @@
+<h1>Aggregering av kategori</h1>
+<p>Den här menyn gör det möjligt för dig att välja vilken strategi för aggregering som ska användas för att beräkna varje deltagares övergripande betyg för den här kategorin.
+De olika alternativen förklarar vi här nedan:</p>
+
+<p>Betygen omvandlas först till värden i procent (i intervall från 0 till 1, detta kallas normalisation), sedan aggregeras de med hjälp av en av funktionerna här nedan och slutligen omvandlas de i förhållande till spännvidden för komponenten tillhörande den associerade kategorin (mellan <em>minimibetyget</em> och <em>maxbetyget</em>).</p>
+
+<p><strong>Viktigt!</strong><br /> Ett tomt fält för betyg innebär bara att det saknas en inmatning i betygskatalogen. Detta kan betyda lite olika saker. Det kan t.ex. vara det att en student/elev/deltagare/lärande ännu inte har skickat in en viss uppgift; det kan röra sig om en inskickad uppgift som ännu inte har blivit betygssatt av läraren eller ett betyg som har tagits bort manuellt av den som administrerar betygskatalogen. Du bör alltså iaktta viss försiktighet när du tolkar vad dessa 'tomma betyg' egentligen innebär. </p>
+
+<dl id="grade-aggregation-help">
+    <dt>Medelbetyg</dt>        
+    <dd>Summan av alla betyg dividerat med det totala antalet betyg.</dd>
+    <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategori max 100:<br />
+                     <code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
+                     
+    <dt>Viktat medel</dt>
+        <dd>Varje betygskomponent kan tilldelas en viktning som sedan används för den aritmetiska medelvärdes-aggregering som syftar till att påverka den betydelse som varje komponent ska ha i det övergripande medelvärdet. </dd>
+        <dd class="example">A1 70/100 weight 10, A2 20/80 weight 5, A3
+                         10/10 weight 3, kategori max 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
+    
+    <dt>Enkelt viktat medelvärde</dt>
+        <dd>Skillnaden i förhållande till <em>Viktat medelvärde</em> är den att viktningen beräknas som <em>maxbetyg</em> - <em>minimibetyg</em>
+                         för varje komponent. En uppgift på 100 poäng har en viktning på 100 , en uppgift på 10 poäng har en viktning på 10.</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategori max 100:<br />
+                         <code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
+    
+    <dt>Medelvärde för betyg (med extra tillgodoräknanden)</dt>
+        <dd>Aritmetiskt medelvärde med ett tillägg. Detta är en gammal typ av aggregation som inte längre stödjs. Den finns med här endast p.g.a. behovet av bakåtkompatibilitet.</dd>
+    
+    <dt>Medianvärde för betyg</dt>
+        <dd>Det mittersta betyget (eller medelvärdet av de två mittersta betygen) när betygen har arrangerats efter storlek. Fördelen med detta i förhållande till medelvärdet är att det inte påverkas av undantagsvärden (betyg som ligger extremt långt från medelvärdet).</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategori max 100:<br />
+                         <code>0.7 + 0.25 + 1.0 --> 0.25 --> 25/100</code></dd>
+    
+    <dt>Minsta betyget</dt>
+        <dd>Resultatet är det minsta betyget efter normalisation. Det används vanligen i kombination med <em>Aggregera bara icke-tomma betyg</em>.</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategori max 100:<br />
+                         <code>min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100</code></dd>
+                         
+    <dt>Högsta betyget</dt>
+        <dd>Resultatet är det högsta betyget efter normalisation.</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10, category max 100:<br />
+                         <code>max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100</code></dd>
+    
+    <dt>"Mode" för betyg</dt>
+        <dd>"Mode" är det betyg som är det vanligaste. Det används mer ofta för icke-numeriska betyg. Fördelen jämfört med medelvärdet är att det inte påverkas av undantagsvärden.                         (betyg som ligger extremt långt från medelvärdet). 
+                        Detta förlorar dock sin mening så fort det finns mer än ett betyg som är det vanligaste (det är bara ett som används), eller när alla betyg skiljer sig från varandra.</dd>
+        <dd class="example">A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 kategori max 100:<br />
+                         <code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
+    
+    <dt>Summan av betygen</dt>
+        <dd>Summan av alla betygsvärden. Ingen hänsyn tas till betyg i skalor. Detta är den enda  typen som inte omvandlar betygen till procentvärden internt (normalisation). <em>Maxbetyget</em> på en associerad komponent i en kategori beräknas automatiskt som en summa av max från alla aggregerade komponenter.</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10:<br />
+                         <code>70 + 20 + 10 = 100/190</code></dd>
+</dl>

@@ -1,0 +1,71 @@
+<h1>Administration av filter</h1>
+
+<p>Sidan f&ouml;r administration av filter g&ouml;r det m&ouml;jligt f&ouml;r Dig att ange vilka filter som &auml;r aktiverade f&ouml;r visad text och i vilken ordning. Du hittar f&ouml;r vissa filter &auml;ven en sida f&ouml;r att g&ouml;ra inst&auml;llningar. Filter anv&auml;nds f&ouml;r st&ouml;rre delen av anv&auml;ndartexterna i Moodle och de aktiveras precis innan texten visas. De m&ouml;jligg&ouml;r modifiering av texterna 'i sista minuten'.</p>
+
+<p>Filter &auml;r en 'inpluggningsbar' resurs. Fler filter kan Du hitta p&aring; 
+   <a href="http://download.moodle.org/modules/filters.php">
+   http://download.moodle.org/modules/filters.php</a>.</p>
+
+<p><b>Att v&auml;lja de filter Du vill anv&auml;nda.</b></p><p> Klicka p&aring; den ikon som ser ut som ett &ouml;ga f&ouml;r att 'visa' dem. 
+   Om du har aktiverat flera filter s&aring; kan Du med hj&auml;lp av pilarna upp och ned, &auml;ndra den ordning i vilken de till&auml;mpas. </p> 
+   
+<p><b>TeX notation</b></p>
+
+<div class="indent">
+  <p>TeX notation &auml;r f&ouml;rst och fr&auml;mst till f&ouml;r att skapa matematiska formler 'inline' i 
+ resurser i Moodle. T.ex. $$ sqrt(a+b) $$ ($$ &auml;r 'taggen'
+  f&ouml;r start och slut i det h&auml;r formatet).</p>
+  <p>Moodle anv&auml;nder externa bin&auml;rer f&ouml;r att skapa (rendera) bilderna. Detta kanske m&aring;ste st&auml;llas in f&ouml;r Ditt system. Filtret kommer f&ouml;rst att kontrollera om det finns en LaTeX renderer (Ghostscript
+  &auml;r ocks&aring; n&ouml;dv&auml;ndigt f&ouml;r den h&auml;r metoden) och om det inte fungerar s&aring; kommer en enklare <i>miktex</i> bin&auml;r som ing&aring;r i Moodle distributionen att anv&auml;ndas. LaTex till&aring;ter att hela omfattningen av sytaxen till&auml;mpas, medan miktex bara st&ouml;djer en underordnad matematisk delupps&auml;ttning.</p>
+  <p>P&aring; sidan f&ouml;r inst&auml;llningar kan Du &auml;ven konfigurera LaTeX and Ghostscript bin&auml;ra s&ouml;kv&auml;gar (binary paths) tillsammans med 'LaTeX preamble'.</p>
+  <p><b>Mer info</b></p>
+  <p><a href="http://www.miktex.org/">MiKTeX</a><br/>
+     <a href="http://www.latex-project.org/">LaTeX</a><br/>
+     <a href="http://www.ghostscript.com/">ghostscript</a></p>
+</div>
+
+<p><b>Censurering av ord</b></p>
+
+<div class="indent">
+  <p>Censurering av ord inneb&auml;r att filtret skannar texter f&ouml;r att hitta ol&auml;mpliga ord med st&ouml;d av en lista med s&aring;dana. Varje spr&aring;kpaket har sin egen f&ouml;rinst&auml;llda lista men Du kan definiera en sj&auml;lv.
+F&ouml;r att g&ouml;ra det s&aring; g&aring;r Du till administration/filter/Censurering av ord/inst&auml;llningar och l&auml;gger till de ord som Du tycker &auml;r ol&auml;mpliga. 
+ Anv&auml;ndarna kommer d&aring; att se att orden (eller orddelarna) t&auml;cks av svart, Om man f&ouml;r muspekaren &ouml;ver dem s&aring; visar sig det ursprungliga ordet. I t.ex. ordet Stefan s&aring; kommer 'fan' att tas bort om Du har angivit det i Din lista (ex. SteXXX) 
+</div>
+
+<p><b>Automatisk l&auml;nkning av namn p&aring; resurser</b></p>
+
+<div class="indent">
+  <p>Filtret f&ouml;r automatisk l&auml;nkning av namn p&aring; resurser skannar texter f&ouml;r att hitta titlar p&aring; resurser som ing&aring;r i samma kurs. N&auml;r ett namn hittas s&aring; kommer det att markeras och det kommer &auml;ven att skapas en l&auml;nk till resursen. L&auml;gg m&auml;rke till att om Du vill anv&auml;nda detta effektivt s&aring; b&ouml;r Du anv&auml;nda beskrivande titlar. En titel som t.ex. 'Introduktion' &auml;r inte s&aring; bra eftersom  <b>varje</b> anv&auml;ndning av ordet 'Introduktion' i texten kommer att bli l&auml;nkat oavsett vad det refererar till. Du kan dock undvika det med att s&auml;tta ordet inom f&ouml;ljande tagg:<blockquote> &lt;span class="nolink"&gt;Ord_Som_Inte_Ska_L&auml;nkas&lt;/span&gt;</blockquote></p>
+</div>
+
+<p><b>Automatisk l&auml;nkning  av namn p&aring; aktiviteter</b></p>
+
+<div class="indent">
+  <p>Filtret f&ouml;r automatisk l&auml;nkning av namn p&aring; aktiviteter skannar texter f&ouml;r att hitta titlar p&aring; aktiviteter som finns i samma kurs. N&auml;r ett namn hittas s&aring; kommer det att markeras och det kommer &auml;ven att skapas en l&auml;nk till aktiviteten.  En titel som t.ex. 'Test' &auml;r inte s&aring; bra eftersom  <b>varje</b> anv&auml;ndning av ordet 'Test' i texten kommer att bli l&auml;nkat oavsett vad det refererar till. Du kan dock undvika det med att s&auml;tta ordet inom f&ouml;ljande tagg:<blockquote> &lt;span class="nolink"&gt;Ord_Som_Inte_Ska_L&auml;nkas&lt;/span&gt;</blockquote></p>
+</div>
+
+<p><b>Automatisk l&auml;nkning av ord- och begreppslistor</b></p>
+
+<div class="indent">
+  <p>Filtret f&ouml;r automatisk l&auml;nkning av ord- och begreppslistor letar efter nyckelord som anv&auml;nds i vilken som helst av de ord- och begreppslistor som anv&auml;nds i kursen. L&auml;gg dock m&auml;rke till att varje bidrag till en ord- och begreppslista m&aring;ste ha l&auml;nkning aktiverat. N&auml;r ett bidrag hittas s&aring; kommer det att markeras och det kommer &auml;ven att skapas en l&auml;nk till bidraget.
+  </p>
+</div>
+
+<p><b>Skydd av e-post</b></p>
+
+<div class="indent">
+  <p>Filtret f&ouml;r skydd av e-post skannar texten f&ouml;r att hitta alla f&ouml;rekomster av e-postadresser. N&auml;r en e-postadress hittas s&aring; kommer den att  'd&ouml;ljas' f&ouml;r att f&ouml;rhindra att system f&ouml;r automatisk insamling av e-postadresser 'sk&ouml;rdar' n&aring;got i Ditt filterskyddade Moodle. Detta kan reducera risken f&ouml;r skr&auml;ppost om delar av Ditt Moodle &auml;r &ouml;ppna.</p>
+</div>
+
+<p><b>Tidy (st&auml;da upp)</b></p>
+
+<div class="indent">
+  <p>Filtret f&ouml;r Tidy (st&auml;da upp) skannar texter f&ouml;r att hitta HTML-konstruktioner. N&auml;r s&aring;dana hittas s&aring; kommer ett antal regler att till&auml;mpas i syfte att validera HTML-koden. L&auml;gg dock m&auml;rke till att tidy funktionen m&aring;ste vara inbyggd i Din PHP-installation f&ouml;r att det h&auml;r ska fungera.</p>
+</div>
+
+<p><b>Inneh&aring;ll p&aring; flera spr&aring;k</b></p>
+
+<div class="indent">
+  <p>Det h&auml;r filtret g&ouml;r det m&ouml;jligt att skapa resurser p&aring; flera spr&aring;k. Resursens spr&aring;k kommer d&aring; att &auml;ndras n&auml;r anv&auml;ndaren v&auml;ljer det spr&aring;k han/hon f&ouml;redrar. F&ouml;r att anv&auml;nda det h&auml;r alternativet s&aring; m&aring;ste Du f&ouml;rst skapa Ditt inneh&aring;ll (f&ouml;r samma resurs) p&aring; flera spr&aring;k. Sedan placerar Du varje spr&aring;kblock inom f&ouml;ljande taggar:</p>
+  <blockquote>      &lt;lang lang="XX"&gt;ditt_inneh&aring;ll_h&auml;r&lt;/lang&gt;</blockquote>
+ </div>

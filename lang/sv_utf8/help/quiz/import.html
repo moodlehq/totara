@@ -1,0 +1,152 @@
+<h1>Att importera nya fr&aring;gor</h1>
+<p>Den h&auml;r funktionen l&aring;ter Dig importera fr&aring;gor fr&aring;n 
+externa textfiler som har laddats upp via ett formul&auml;r.</p>
+<p>Det finns ett antal olika filformat som Du kan anv&auml;nda:
+<h2>En anteckning om koderna för teckenuppsättningar</h2>
+
+<p>Om din fil innehåller icke-ascii-tecken då måste du använda teckenuppsättningen för UTF-8. 
+   Det är möjligt att du kan välja eller konvertera till UTF-8 med hjälp av ditt vanliga ordbehandlingsprogram eller också kanske programvaran för export kan klara detta. 
+ Men var särskilt uppmärksam med filer som har skapats med Microsoft Office eftersom de använder speciellt kodade teckenuppsättningar.
+   XML-baserade importformat kommer att hanteras automatiskt under förutsättning att din Moodle-server kör PHP 5.</p> 
+
+<p>Det finns ett antal filformat som stödjs:</p>
+
+<h2>GIFT-formatet</h2>
+
+<p>GIFT är det mest heltäckande importformatet som det går att använda för att importera 
+   testfrågor till Moodle från en textfil.  Det utformades för att vara ett enkelt sätt för lärare att skriva frågor i textfilsformat. Det stödjer flervalsfrågor, Sant/Falskt, Kortsvar, Para-ihop och numeriska frågor likväl som lucktester. Det går att blanda olika frågetyper i en enskild textfil och 
+formatet  stödjer även kommentarer, namn på frågor, återkoppling och procentviktade betyg.  Här nedan ser du några exempel:</p>
+<pre>
+Who's buried in Grant's tomb?{~Grant ~Jefferson =no one}
+
+Grant is {~buried =entombed ~living} in Grant's tomb.
+
+Grant is buried in Grant's tomb.{FALSE}
+
+Who's buried in Grant's tomb?{=no one =nobody}
+
+When was Ulysses S. Grant born?{#1822}
+</pre>
+
+<p class="moreinfo"><a href="help.php?file=formatgift.html&amp;module=quiz">Mer info om "GIFT"- formatet</a></p>
+
+<h2>Aiken-formatet</h2>
+
+<p>Det här är ett enkelt format för att importera flervalsfrågor från en textfil.</p>
+<p class="moreinfo"><a href="help.php?file=formataiken.html&amp;module=quiz">Mer info om "Aiken"-formatet</a></p>
+
+<h2>Moodle XML-format</h2>
+
+<p>Detta Moodle-specifika format importerar testfrågor som tidigare har exporterats i samma format. Formatet är tydligt och du testar det lämpligast genom att exportera en kategori i Moodles XML-format. I XML-formatet går det att importera bildfiler.
+</p>
+<p class="moreinfo"><a href="help.php?file=formatxml.html&amp;module=quiz">Mer info om "Moodle XML"-formatet</a></p>
+
+<p><b>Utel&auml;mnade ord</b></p>
+<ul>
+<li>
+Det h&auml;r formatet st&ouml;der bara flervalsfr&aring;gor.
+Varje svar &auml;r &aring;tskiljt med tecknet tilde (~), 
+och det korrekta svaret har ett prefix i form av ett likhetstecken (=).
+H&auml;r &auml;r ett exempel:
+ 
+<blockquote>
+S&aring; snart vi som barn b&ouml;rjar att utforska v&aring;ra kroppsdelar 
+s&aring; blir studenter/elever/l&auml;rande i &auml;mnena 
+{=anatomi och fysiologi ~reflexologi 
+~vetenskap ~experiment}, och p&aring; ett s&auml;tt f&ouml;rblir vi det livet ut.
+</blockquote>
+</li>
+</ul>
+<p align="right"><a href="help.php?file=formatmissingword.html&module=quiz">
+Mer info om formatet "Utel&auml;mnade ord"</a></p>
+
+<p><b>AON</b></p>
+<ul>
+<li>
+Det h&auml;r &auml;r detsamma som formatet "Utel&auml;mnade ord" f&ouml;rutom det att
+efter det att fr&aring;gorna har importerats s&aring; omvandlas alla kortsvarsfr&aring;gor 
+, fyra &aring;t g&aring;ngen, till para-ihop-fr&aring;gor.
+</li>
+<li>
+Dessutom blandas svaren p&aring; flervalsfr&aring;gor slumpm&auml;ssigt i samband
+med att de importeras.
+</li>
+<li>
+Formatet har d&ouml;pts efter en organisation som sponsrade utvecklingen 
+av m&aring;nga egenskaper i testfunktioner av det h&auml;r slaget.
+</li>
+</ul>
+
+<p><b>Blackboard</b></p>
+<ul>
+<li>
+Den h&auml;r modulen kan importera fr&aring;gor som har sparats 
+i Blackboards exportformat. Modulen &auml;r beroende av XML-funktioner
+f&ouml;r att kunna kompileras in i Din PHP-applikation. 
+</li>
+
+</ul>
+<p align="right"><a href="help.php?file=formatblackboard.html&module=quiz">
+Mer info om 'Blackboard'-formatet</a></p>
+
+<h2>Blackboard V6+</h2>
+
+<p>Den här modulen kan importera frågor som är sparade i Blackboards exportformat. 
+Den tillhandahåller ett begränsat stöd för Blackboard Version 6 och
+7. Den är beroende av XML-funktioner som kompileras till PHP. Du
+måste ladda upp zipfilen som har exporterats från Blackboard.</p>
+
+<h2>WebCT</h2>
+
+<p>Den här modulen kan importera frågor som är sparade i  WebCT's textbaserade format.</p>
+
+<p class="moreinfo"><a href="help.php?file=formatwebct.html&amp;module=quiz">Mer info om "WebCT"-formatet</a></p>
+
+<h2>Course Test Manager</h2>
+
+<p>Den här modulen kan importera frågor som är sparade i en test av typen Course Test Manager.
+Den är beroende av olika sätt att få tillgång till testbanken som ligger i en Microsoft Access databas, beroende på om Moodle körs på en Windows eller Linux webserver.</p>
+<p>I Windows låter modulen dig ladda upp access databasen precis som vilken annan importfil som helst för data.</p>
+<p>I Linux, måste du sätta upp en windowsmaskin på samma nätverk med databasen för Course Test
+Manager och ett program som kallas ODBC Socket Server, som i sin tur använder XML för att föra över data till Moodle på Linuxservern.</p>  
+<p>Var snäll och läs hela hjälpfilen här nedan innan du använder den här klassen av import.</p>
+
+<p class="moreinfo"><a href="help.php?file=formatctm.html&amp;module=quiz">Mere info om "CTM"- formatet</a></p>
+
+<h2>Inbäddade svar (Lucktest)</h2>
+
+<p>Det här specifika formatet importerar bara en sorts fråga, nämligen formatet  
+för Inbäddade svar (Lucktest).
+</p>
+
+<p class="moreinfo"><a href="help.php?file=multianswer.html&amp;module=quiz">Mer info om "Cloze"-formatet</a></p>
+
+<h2>Learnwise-formatet</h2>
+
+<p>Detta format kan importera flervalsfrågor som har sparats i Learnwises XML-format.</p>
+
+<h2>Examview-formatet</h2>
+
+<p>Detta format kan importera från Examview 4 XML-filer. Lägg märke till att äldre versioner av Examview inte stödjs. </p>
+
+<p>Import och exportformat är inpluggbara resurser. Det kan finnas ytterligare format i 
+ databasen för moduler och plugin-program.</p>
+
+<p><b>Egentillverkat</b></p>
+<ul>
+<li>
+Om Du har ett eget format som Du beh&ouml;ver kunna importera s&aring; 
+kan Du implementera det sj&auml;lv genom att redigera mod/quiz/format/custom.php
+</li>
+<p>
+Det &auml;r inte s&aring; mycket ny kod som Du beh&ouml;ver, bara s&aring; mycket
+som kr&auml;vs f&ouml;r att tolka (parse) en enskild fr&aring;ga ur en given text.
+</li>
+</ul>
+<p align="right"><a href="help.php?file=formatcustom.html&module=quiz">
+Mer info om "Egentillverkade" format</a></p>
+
+<p>
+Fler format kommer att finnas s&aring; sm&aring;ningom, WebCT, IMS QTI och vad som helst annat
+som Moodle-anv&auml;ndare kan komma att bidra med!
+</p>

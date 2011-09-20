@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // certificate.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// certificate.php - created with Totara langimport script version 1.0
 
 $string['activitydependencies'] = 'Toisistaan riippuvaiset aktiviteetit';
 $string['activitylocklabel'] = 'Linkitetty aktiviteetti/vähimmäisarvosana %%';

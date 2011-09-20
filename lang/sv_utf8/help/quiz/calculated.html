@@ -1,0 +1,67 @@
+<h1>Beräknade frågor</h1>
+Beräknade frågor erbjuder ett sätt att skapa individuella numeriska frågor genom att använda "wildcards" som byts ut mot individuella värden när testet genomförs. 
+<br />Nedan ser du en krympt vy över huvudsidan för redigering med några exempel:<br /><br />
+
+<table><tbody>
+<tr valign="top">
+    <td align="right"><p><b>Fråga:</b></p>
+    </td>
+    <td>
+        <textarea id="questiontext" name="questiontext" rows="5" cols="40" wrap="virtual">Hur mycket är {a} + {b} ?</textarea>
+</td>
+</tr>
+<tr valign="top">
+    <td align="right"><p><b>Bild som ska visas:</b></p></td>
+    <td>
+    <select name="image"><option value="" selected="selected">Ingen</option><option value="grevture.gif">grevture.gif</option></select>
+    </td>
+</tr>
+
+<tr valign="top">
+<td align="right"><p><b>Formel för rätt svar:</b></p></td>
+    <td>
+    <input align="left" type="text" id="formula0" name="answer[]" size="20" value="{a} + {b}">&nbsp;&nbsp;
+    <input type="hidden" name="fraction[]" value="1.0">
+    </td>
+</tr>
+<tr valign="top">
+    <td align="right"><p><b>Tolerans:</b></p></td>
+    <td>
+    <input align="left" type="text" id="tolerance0&quot;" name="tolerance[]" size="15" value="0.01">±
+    </td>
+</tr>
+<tr valign="top">
+<td align="right"><p><b>Typ av tolerans:</b></p></td>
+    <td>
+    <select name="tolerancetype[]"><option value="1" selected="selected">Relative</option><option value="2">Nominell</option><option value="3">Geometrisk</option></select>
+    </td>
+</tr>
+<tr valign="top">
+<td align="right"><p><b>Signifikanta siffror:</b></p></td>
+    <td>
+    <select name="correctanswerlength[]"><option value="1">1</option><option value="2" selected="selected">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>
+    </td>
+</tr>
+</tbody></table>
+
+<p>
+I textinmatningen för frågan och "Formel för rätt svar" kan du se {a} och {b}. Dessa och vilka andra  {namn} som helst går att använda som ett "wildcard" som byts ut mot något värde när testet genomförs. Dessutom så beräknas det rätta svaret när testet skickas in genom att uttrycket i "Formel för rätt svar" vilket beräknas som ett numeriskt uttryck efter det att aktuella "wildcards har bytts ut. De möjliga "wildcard"-värdena ställs in eller skapas på en senare sida i en "wizard" för redigering av beräknade frågor...
+</p><p>Formelexemplet använder operatorn +. Andra tillåtna operatorer är -*/ och % där % är modulus operatorn. Det är även möjligt att använda några matematiska funktioner av PHP-typ. Bland dessa finns 24 ett-argument funktioner:<br /><br /><b>
+abs, acos, acosh, asin, asinh, atan, atanh, ceil, cos, cosh, deg2rad, exp, expm1, floor, log, log10, log1p, rad2deg, round, sin, sinh, sprt, tan, tanh
+</b><br /><br />och två två-argument funktioner:<br /><br /><b>
+atan2, pow
+</b></p><p>samt funktionerna <b>min</b> and <b>max</b> som kan ta två eller fler argument.</p><p> Det är även möjligt att använda funktionen <b>pi</b> som inte tar några argument men glöm då inte bort att använda parenteserna - rätt användningsätt är <b>pi()</b>.</p><p> På liknande sätt så måste andra funktioner ha sina argument(s) inom parenteser. Ett möjligt sätt att använda detta är t.ex.  <b>sin({a}) + cos({b}) * 2</b>. Det bör inte vara några problem att bädda in funktioner inom varandra som <b>cos(deg2rad({a} + 90))</b> etc.</p>
+<p>Mer detaljer om hur du kan använda dessa funktioner av PHP-typ hittar du i <a target="phpmathdoc" href="http://www.php.net/manual/en/ref.math.php">dokumentationen på webbplatsen för PHP</a>
+</p>
+När det gäller numeriska frågor så är det möjligt att tillåta marginaler inom vilka alla svar accepteras som korrekta. Fältet "Tolerans" används för detta. Det finns emellertid tre olika typer av toleranser. Dessa är <b>relativ, nominell och geometrisk</b>. Om vi säger att det rätta svaret när testet genomförs är beräknat till 200 och toleransen är inställd till 0.5 då kommer de olika typerna av toleranser att fungera som följer:
+<ul><li><b>Relativ:</b> Ett intervall för tolerans beräknas med hjälp av att det rätta svaret multipliceras med 0.5, dvs i det här fallet får vi 100 så för den här toleransen måste det rätta svaret vara mellan 100 och 300.  (200 ± 100)<br /><br />
+Detta är användbart när magnituden på det rätta svaret kan variera mycket mellan olika värden på "wildcarden"<br /><br /></li>
+<li><b>Nominell:</b>  Detta är den enklaste typen av tolerans men den är inte så kraftfull.  Det rätta svaret måste vara mellan  199.5 och 200.5 (200 ± 0.5)<br /><br />
+Den här typen av tolerans kan vara användbar om skillnaderna mellan olika rätta svar är små.<br /><br />
+</li><li><b>Geometrisk:</b> Den övre gränsen för toleransens intervall beräknas som  200 + 0.5*200 och det är samma som i fallet med relativ tolerans.  Den lägre gränsen beräknas som 200/(1 + 0.5). Det rätta svaret måste ligga mellan 133.33 och 300.<br /><br />
+Detta är användbart för komplexa beräkningar som måste ha stora toleranser där relativa toleranser på 1 eller mer skulle användas för den övre gränsen men det är helt klart inte acceptabelt för den lägre gränsen eftersom det skulle innebära att 0 vore ett korrekt svar i alla lägen.<br />
+</li></ul>
+<p>Fältet <b>Signifikanta siffror</b> relaterar endast till hur det korrekta svaret bör presenteras i granskningen av rapporterna. Exempel: Om detta är inställt till 3 då kommer det rätta svaret 13.333 att presenteras som 13.3; 1236 skulle presenteras som 1240; 23 skulle presenteras som 23.0 etc.
+</p><p>
+Fältet för återkoppling och det valfria fältet för enheter fungerar på samma sätt som de gör för numeriska frågor.
+</p>
