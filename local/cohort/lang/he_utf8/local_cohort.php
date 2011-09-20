@@ -1,0 +1,73 @@
+<?PHP // $Id$ 
+      // local_cohort.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+      // local modifications from http://translate.totaralms.com
+
+
+$string['abouttocreate'] = 'אתה עומד ליצור קבוצה כוללת חדשה בשם \"{$a}\"';
+$string['addcohort'] = 'קבוצה כוללת חדשה נוצרה';
+$string['anycohort'] = 'כל אחד';
+$string['assign'] = 'שייך';
+$string['assignmemberstocohort'] = 'שייך חברים לקבוצה';
+$string['assignto'] = '\'{$a}\' חברים בקבוצה';
+$string['backtocohorts'] = 'חזרה לקבוצות כוללות';
+$string['cannoteditcohort'] = 'לא ניתן לערוך קבוצה כוללת לאחר שנוצרה';
+$string['childrenincluded'] = 'כלולים פריטי בנים';
+$string['clear'] = 'נקה';
+$string['cohort'] = 'קבוצה כוללת';
+$string['cohort:assign'] = 'שייך חברים לקבוצה כוללת';
+$string['cohort:manage'] = 'נהל קבוצות כוללות';
+$string['cohort:view'] = 'השתמש בקבוצות כוללות והצג חברים';
+$string['cohortmembers'] = 'חברי קבוצה כוללת';
+$string['cohorts'] = 'קבוצות כוללות';
+$string['cohortsin'] = 'קבוצות כוללות זמינות';
+$string['component'] = 'מקור';
+$string['confirmdynamiccohortcreation'] = 'אשר יצירת קבוצה כוללת דינמית';
+$string['createdynamiccohort'] = 'צור קבוצה כוללת דינמית';
+$string['createnewcohort'] = 'צור קבוצה כוללת חדשה';
+$string['criteria'] = 'קריטריונים';
+$string['criteriaoptional'] = 'כל הקריטריונים הם אופציונאליים אך עךיף לבחור לפחות אפשרות אחת.';
+$string['currentusers'] = 'משתמשים נוכחיים';
+$string['currentusersmatching'] = 'משתמשים נוכחיים מתאימים';
+$string['delcohort'] = 'מחק קבוצה כוללת';
+$string['delconfirm'] = 'האם אתה בטוח שברצונך למחוק את הקבוצה הכוללת \'{$a}\'?';
+$string['deletethiscohort'] = 'מחק קבוצה כוללת זו';
+$string['description'] = 'תיאור';
+$string['duplicateidnumber'] = 'קבוצה כוללת עם אותו קוד מזהה כבר קיימת';
+$string['dynamic'] = 'דינמית';
+$string['dynamiccohortcriteria'] = 'קריטריון קבוצה כוללת דינמי';
+$string['dynamiccohortcriterialower'] = 'קריטריון קבוצה כוללת דינמי';
+$string['editcohort'] = 'ערוך קבוצה כוללת';
+$string['editdetails'] = 'ערוך פרטים';
+$string['editmembers'] = 'ערוך חברים';
+$string['failedtodeleted'] = 'מחיקת קבוצה כוללת נכשלה';
+$string['idnumber'] = 'קוד מזהה';
+$string['includechildren'] = 'כלול פריטי בנים';
+$string['members'] = 'חברים';
+$string['memberscount'] = 'גודל';
+$string['mustselectonecriteria'] = 'עליך לבחור לפחות קריטריון אחד';
+$string['name'] = 'שם';
+$string['nocomponent'] = 'נוצר ידנית';
+$string['nocriteriaset'] = '(לא נבחרו קריטריונים, מחק קבוצה כוללת זו)';
+$string['notvalidprofilefield'] = 'אנא בחר שדה פרופיל חוקי';
+$string['organisation'] = 'ארגון';
+$string['overview'] = 'מבט על';
+$string['pleasesearchmore'] = 'אנא הגדר חיפוש ממוקד יותר';
+$string['pleaseusesearch'] = 'אנא השתמש בחיפוש';
+$string['position'] = 'תפקיד';
+$string['potusers'] = 'משתמשים פוטנציאליים';
+$string['potusersmatching'] = 'משתמשים מתאימים פוטנציאליים';
+$string['role'] = 'תפקיד מערכת';
+$string['selectfromcohort'] = 'בחר חברים מתוך קבוצה כוללת';
+$string['set'] = 'הגדר';
+$string['successfullyaddedcohort'] = 'קבוצה כוללת נוספה בהצלחה';
+$string['successfullydeleted'] = 'קבוצה כוללת נמחקה בהצלחה';
+$string['successfullyupdated'] = 'קבוצה כוללת עודכנה בהצלחה';
+$string['thiscohortwillhave'] = 'קבוצה כוללת זו תכלול {$a} חברים בנקודת זמן זו';
+$string['toomanyusersmatchsearch'] = 'משתמשים רבים מדי מתאימים לחיפוש';
+$string['toomanyuserstoshow'] = 'יש יותר מדי משתמשים ממה שניתן להציג';
+$string['type'] = 'סוג';
+$string['userprofilefield'] = 'שדה פרופיל משתמש';
+$string['values'] = 'ערכים';
+$string['viewmembers'] = 'הצג חברים';
+
+?>

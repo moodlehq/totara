@@ -1,5 +1,5 @@
-<?PHP // $Id: role.php,v 1.24 2010/12/12 11:14:24 emanuel1 Exp $
-      // role.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
+<?PHP // $Id$ 
+      // role.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
 
 
 $string['addrole'] = 'הוסף  תפקיד חדש';
@@ -28,6 +28,12 @@ $string['category:manage'] = 'נהל קטגוריות';
 $string['category:update'] = 'עדכן קטגוריות';
 $string['category:viewhiddencategories'] = 'הראה קטגוריות נסתרות';
 $string['category:visibility'] = 'ראה קטגוריות מוסתרות';
+$string['cohort:assign'] = 'שייך לקבוצות כוללות';
+$string['cohort:manage'] = 'נהל קבוצות כוללות';
+$string['cohort:view'] = 'צפה בקבוצות כוללות';
+$string['comment:delete'] = 'מחק הערות';
+$string['comment:post'] = 'שלח הערות';
+$string['comment:view'] = 'צפה בהערות';
 $string['course:activityvisibility'] = 'הסתר או הראה פעילויות';
 $string['course:bulkmessaging'] = 'שלח הודעה לאנשים רבים';
 $string['course:changecategory'] = 'שנה קטגוריית קורס';
@@ -43,6 +49,7 @@ $string['course:managegrades'] = 'נהל ציונים';
 $string['course:managegroups'] = 'נהל קבוצות';
 $string['course:managemetacourse'] = 'נהל מטה-קורס';
 $string['course:managescales'] = 'נהל את סולמות הציונים';
+$string['course:markcomplete'] = 'סמן משתמש כמי שהשלים';
 $string['course:request'] = 'בקש קורסים חדשים';
 $string['course:reset'] = 'אפס קורס';
 $string['course:sectionvisibility'] = 'ראות של קטע בקרה';
@@ -56,6 +63,7 @@ $string['course:viewhiddencourses'] = 'ראה קורסים מוסתרים';
 $string['course:viewhiddensections'] = 'ראה קטעים מוסתרים';
 $string['course:viewhiddenuserfields'] = 'ראה שדות משתמשים מוסתרים';
 $string['course:viewparticipants'] = 'ראה משתתפים';
+$string['course:viewprogress'] = 'ראה התקדמות בקורס';
 $string['course:viewscales'] = 'ראה את סולמות הציונים';
 $string['course:visibility'] = 'הסתר או הראה קורסים';
 $string['currentcontext'] = 'הקשר נוכחי';
@@ -93,10 +101,11 @@ $string['ingroup'] = 'בקבוצה \"$a->group\"';
 $string['inherit'] = 'לרשת';
 $string['legacy:admin'] = 'תפקיד מורש: מנהל';
 $string['legacy:coursecreator'] = 'תפקיד מורש: יוצר קורס';
-$string['legacy:editingteacher'] = 'תפקיד מורש: מורה (עורך)';
+$string['legacy:editingteacher'] = 'תפקיד מורש: מדריך (עורך)';
 $string['legacy:guest'] = 'תפקיד מורש: אורח';
-$string['legacy:student'] = 'תפקיד מורש: סטודנט';
-$string['legacy:teacher'] = 'תפקיד מורש: מורה (לא עורך)';
+$string['legacy:manager'] = 'תפקיד מורש: מנהל';
+$string['legacy:student'] = 'תפקיד מורש: משתתף';
+$string['legacy:teacher'] = 'תפקיד מורש: מדריך (לא עורך)';
 $string['legacy:user'] = 'תפקיד מורש: משתמש מאומת';
 $string['legacytype'] = 'סוג תפקיד מורש';
 $string['listallroles'] = 'רשום ברשימה את כל התפקידים';
@@ -147,7 +156,7 @@ $string['role:switchroles'] = 'החלף לתפקידים אחרים';
 $string['role:unassignself'] = 'בטל אותי ממינוי מכל תפקידי';
 $string['role:viewhiddenassigns'] = 'ראה את מינוי התפקידים המוסתרים';
 $string['roleassignments'] = 'מינוי התפקידים';
-$string['roles'] = 'תפקידים';
+$string['roles'] = 'תפקידי מערכת';
 $string['roletoassign'] = 'תפקיד שיש למנות אליו';
 $string['roletooverride'] = 'תפקיד שיש לעקוף אותו';
 $string['safeoverridenotice'] = 'הערה: יכולות עם סיכונים גבוהים נעולים מיכוון שאתה רשאי לעקוף רק יכולות מוגנות.';
@@ -197,19 +206,5 @@ $string['xuserswiththerole'] = 'משתמשים שממונים לתפקיד \"$a-
 $string['question:export'] = 'יצוא שאלות'; // ORPHANED
 $string['question:import'] = 'יבוא שאלות'; // ORPHANED
 $string['question:manage'] = 'נהל שאלות'; // ORPHANED
-
-?>
-<?PHP // $Id$
-      // role.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
-
-
-$string['course:markcomplete'] = 'סמן משתמש כמי שהשלים';
-$string['course:viewprogress'] = 'ראה התקדמות בקורס';
-$string['legacy:editingteacher'] = 'תפקיד מורש: מדריך (עורך)';
-$string['legacy:manager'] = 'תפקיד מורש: מנהל';
-$string['legacy:student'] = 'תפקיד מורש: משתתף';
-$string['legacy:teacher'] = 'תפקיד מורש: מדריך (לא עורך)';
-$string['roles'] = 'תפקידי מערכת';
 
 ?>

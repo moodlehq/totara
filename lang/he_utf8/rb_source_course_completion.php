@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // rb_source_course_completion.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
+<?PHP // $Id$ 
+      // rb_source_course_completion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['completiondate'] = 'תאריך ההשלמה';
@@ -24,6 +23,7 @@ $string['poswhencompleted'] = 'תפקיד בזמן ההשלמה';
 $string['poswhencompletedbasic'] = 'תפקיד בזמן ההשלמה (בסיסי)';
 $string['requiredgrade'] = 'ציון וציון נדרש';
 $string['sourcetitle'] = 'השלמת קורס';
+$string['type_course_completion'] = 'השלמת קורס';
 $string['user'] = 'המשתמש';
 
 ?>

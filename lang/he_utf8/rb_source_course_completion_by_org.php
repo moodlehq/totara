@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // rb_source_course_completion_by_org.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
+<?PHP // $Id$ 
+      // rb_source_course_completion_by_org.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['completiondate'] = 'תאריך ההשלמה';
@@ -22,6 +21,7 @@ $string['participants'] = 'משתתפים';
 $string['percentagecompleted'] = 'אחוז שהושלם';
 $string['sourcetitle'] = 'השלמת קורס לפי ארגון';
 $string['totalcompletions'] = 'סך הכל השלמות';
+$string['type_course_completion'] = 'השלמת קורס';
 $string['user'] = 'המשתמש';
 
 ?>

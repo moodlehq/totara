@@ -55,6 +55,7 @@ $string['canremoveitem'] = 'El ítem fue removido exitosamente';
 $string['changedfromxtoy'] = 'Cambiado de \"$a->before\" a \"$a->after\"';
 $string['changeto'] = 'Cambiar a';
 $string['changeworkflowconfirm'] = '¿Esta seguro de que desea cambiar el flujo de trabajo para esta plantilla?. Esto sobre-escribirá todas las opciones y permisos y utilizará configuraciones por defecto para \"$a\".';
+$string['checkplancomplete'] = '¿Está used seguro de que quiere marcar el plan \"$a\" como completo? <br /><br /> Una vez un plan se marca como completo no pueden realizarse más cambios. Esta operación no puede deshacerse. ¿Está seguro que quiere proceder?';
 $string['checkplancomplete11'] = '¿Está used seguro de que quiere marcar el plan \"$a\" como completo? <br /><br /> Una vez un plan se marca como completo no pueden realizarse más cambios. Esta operación no puede deshacerse. ¿Está seguro que quiere proceder?';
 $string['checkplandelete'] = '¿Esta seguro de que quiere borrar este plan y todos los ítems relacionados?';
 $string['commenton'] = 'Comentario';

@@ -1,20 +1,23 @@
-<?PHP // $Id$ 
-      // competency.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// competency.php - created with Totara langimport script version 1.0
 
 $string['achieved'] = 'Saavutettu';
 $string['addassignedcompetencies'] = 'Valitse kompetensseja';
 $string['addassignedcompetencytemplates'] = 'Valitse kompetenssimallipohja';
 $string['addcourseevidencetocompetency'] = 'Lisää suoritusmerkintöjä kompetenssiin';
 $string['adddepthlevel'] = 'Lisää uusi taso';
+$string['addedcompetency'] = 'Kompetenssi \"{$a}\" on lisätty';
+$string['addedframework'] = 'Kompetenssirakenne \"{$a}\" on lisätty';
+$string['addmultiplenewcompetency'] = 'Lisää kompetensseja';
 $string['addnewcompetency'] = 'Lisää uusi kompetenssi';
 $string['addnewframework'] = 'Lisää uusi kompetenssirakenne';
 $string['addnewscalevalue'] = 'Lisää uusi arvo asteikkoon';
 $string['addnewtemplate'] = 'Lisää uusi kompetenssimallipohja';
-$string['aggregationmethod'] = 'Koostamistapa';
-$string['aggregationmethod1'] = 'Kaikki';
-$string['aggregationmethod2'] = 'Mikä tahansa';
-$string['aggregationmethod3'] = 'Pois päältä';
+$string['addtype'] = 'Lisää uusi tyyppi';
+$string['aggregationmethod'] = 'Kompetenssin saavuttaminen';
+$string['aggregationmethod1'] = 'Kaikki alakompetenssit suoritettava';
+$string['aggregationmethod2'] = 'Mikä tahansa alakompetensseista suoritettava';
+$string['aggregationmethod3'] = 'Toiminto ei käytössä';
 $string['aggregationmethod4'] = 'Mittayksikkö';
 $string['aggregationmethod5'] = 'Murto-osa';
 $string['aggregationmethod6'] = 'Summa';
@@ -34,6 +37,9 @@ $string['assignedonly'] = 'Osoitetut, käyttämättömät kompetenssimallipohjat
 $string['assignnewcompetency'] = 'Osoita uusi kompetenssi';
 $string['assignnewevidenceitem'] = 'Osoita uusi todiste';
 $string['assignrelatedcompetencies'] = 'Lisää yhteenkuuluva kompetenssi';
+$string['backtoallframeworks'] = 'Takaisin kompetenssirakenteisiin';
+$string['bulkdeletecompetency'] = 'Poista kompetensseja';
+$string['bulkmovecompetency'] = 'Siirrä kompetensseja';
 $string['cannotupdatedisplaysettings'] = 'Esitysasetuksia ei päivitetty';
 $string['changeto'] = 'Vaihda';
 $string['clickfornonjsform'] = 'Klikkaa tästä päästäksesi sellaiseen versioon tästä lomakkeesta, jossa ei käytetä javascript:iä.';
@@ -59,25 +65,44 @@ $string['competencyscaleinuse'] = 'Tämä asteikko on käytössä (eli käyttäj
 $string['competencyscales'] = 'Kompetenssiasteikot';
 $string['competencytemplatemanage'] = 'Hallinnoi mallipohjia';
 $string['competencytemplates'] = 'Kompetenssimallipohjat';
+$string['competencytypecustomfields'] = 'Kompetenssityypin lisäkentät';
+$string['competencytypes'] = 'Kompetenssityypit';
+$string['competencytypeview'] = 'Kompetenssityyppinäkymä';
 $string['competent'] = 'Pätevä';
 $string['competentwithsupervision'] = 'Pätevä valvottuna';
 $string['couldnotdeletescalevalue'] = 'Asteikon arvon poistamisessa tapahtui virhe';
 $string['createdon'] = 'Luotu';
 $string['createnewcompetency'] = 'Luo uusi kompetenssi';
+$string['createtype'] = 'Kompetenssityyppi \"{$a}\" luotiin';
 $string['currentlyselected'] = 'Valittuna';
 $string['defaultvalue'] = 'Oletusarvo';
-$string['deletecheck11'] = 'Oletko aivan varma, että haluat poistaa tämän kompetenssin, kaikki sen lapsiobjektit ja kaiken niiden sisältämän tiedon?';
+$string['deletecheck'] = 'Oletko aivan varma, että haluat poistaa tämän kompetenssin, kaikki sen lapsiobjektit ja kaiken niiden sisältämän tiedon?';
 $string['deletecheckframework'] = 'Oletko varma, että haluat poistaa rakenteen \"$a\"?';
 $string['deletecheckscale'] = 'Oletko aivan varma, että haluat poistaa tämän kompetenssiasteikon?';
 $string['deletecheckscalevalue'] = 'Oletko aivan varma, että haluat poistaa tämän kompetenssiasteikon arvon?';
 $string['deletechecktemplate'] = 'Oletko aivan varma, että haluat poistaa tämän kompetenssimallipohjan?';
+$string['deletecheckwithchildren'] = 'Oletko varma, että haluat poistaa kompetenssin \"$a->itemname\" ja sen $a->children_string:n?
+<br /><br />
+Tämä poistaa seuraavat tiedot: <br />
+- Kompetenssin \"$a->itemname\" ja sen $a->childcount $a->children_string';
+$string['deletecompetency'] = 'Poista kompetenssi';
 $string['deletedcompetency'] = 'Kompetenssi $a ja kaikki sen lapsiobjektit on poistettu.';
 $string['deletedcompetencyscale'] = 'Kompetenssiasteikko \"{$a}\" on poistettu.';
 $string['deletedcompetencyscalevalue'] = 'Kompetenssiasteikon arvo \"{$a}\" on poistettu.';
 $string['deletedepth'] = 'Poista $a';
 $string['deletedframework'] = 'Kompetenssirakenne $a ja sen sisältämät tiedot on poistettu.';
 $string['deletedtemplate'] = 'Kompetenssimallipohja $a ja sen sisältämät tiedot on poistettu.';
+$string['deletedtype'] = 'Kompetenssityyppi \"{$a}\" on poistettu.';
 $string['deleteframework'] = 'Poista $a';
+$string['deleteincludexcustomfields'] = '- $a lisäkenttä(ä)';
+$string['deleteincludexevidence'] = '- $a todiste(tta)';
+$string['deleteincludexrelatedcompetencies'] = '- $a linkki(ä) liittyviin kompetensseihin';
+$string['deleteincludexuserstatusrecords'] = '- $a käyttäjän tilatietoja';
+$string['deletemulticheckwithchildren'] = 'Oletko varma, että haluat poistaa $a->num kompetenssin/kompetenssit ja sen $a->childcount $a->children_string:n?
+<br /><br />
+Tämä poistaa seuraavat tiedot: <br />
+- Kompetenssin/kompetenssit $a->num ja sen $a->childcount $a->children_string';
+$string['deletetype'] = 'Poista tyyppi \"{$a}\"';
 $string['depthlevel'] = 'Taso';
 $string['depthlevels'] = 'Tasot';
 $string['depths'] = 'Tasot';
@@ -88,9 +113,12 @@ $string['editframework'] = 'Muokkaa kompetenssirakennetta';
 $string['editgeneric'] = 'Muokkaa kohdetta $a';
 $string['editscalevalue'] = 'Muokkaa asteikon arvoa';
 $string['edittemplate'] = 'Muokkaa kompetenssimallipohjaa';
+$string['edittype'] = 'Muokkaa tyyppiä';
 $string['error:compevidencealreadyexists'] = 'Tällä käyttäjällä on jo suoritusmerkintä valitulle kompetenssille. Voit <a href=\'edit.php?id=$a\'>muokata olemassaolevaa kompetenssia</a>, tai lisätä toisen.';
 $string['error:couldnotdeletescale'] = 'Kompetenssiasteikon \"{$a}\" poistamisessa tapahtui virhe';
+$string['error:createtype'] = 'Kompetenssityyppiä \"{$a}\" luodessa tapahtui virhe';
 $string['error:deletedframework'] = 'Kompetenssirakenteen $a ja sen sisältämien tietojen poistamisessa tapahtui virhe.';
+$string['error:deletedtype'] = 'Kompetenssityyppiä \"{$a}\" poistettaessa tapahtui virhe.';
 $string['error:dialognotreeitems'] = 'Tässä rakenteessa ei ole kompetensseja';
 $string['error:evidencealreadyexists'] = 'Uutta suoritusmerkintää ei voitu luoda koska rekisterissä on jo merkintä samalle käyttäjälle ja kompetenssille';
 $string['error:nodeletecompetencyscaleassigned'] = 'Tätä kompetenssiasteikkoa ei voida poistaa koska se on lisätty yhteen tai useampaan rakenteeseen';
@@ -99,6 +127,7 @@ $string['error:nodeletecompetencyscalevaluedefault'] = 'Tätä asteikon arvoa ei
 $string['error:nodeletecompetencyscalevalueonlyprof'] = 'Tätä asteikon arvoa ei voida poistaa koska se on asteikon ainoa pätevyyttä vastaava arvo. Valitse jokin muu arvo pätevyyttä vastaavaksi ennen kuin voit poistaa tämän';
 $string['error:onescalevaluemustbeproficient'] = 'Vähintään yhden arvon on aina vastattava pätevyyttä. Valitse jokin muu arvo ennen kuin poistat valinnan tästä arvosta.';
 $string['error:scaledetails'] = 'Asteikon tietoja hakiessa tapahtui virhe';
+$string['error:updatetype'] = 'Kompetenssityyppiä \"{$a}\" päivitettäessä tapahtui virhe';
 $string['evidence'] = 'Suoritusmerkintä';
 $string['evidenceactivitycompletion'] = 'aktiviteetin valmius';
 $string['evidencecount'] = 'Suoritusmerkinnät';
@@ -113,6 +142,7 @@ $string['fullname'] = 'Kompetenssin koko nimi';
 $string['fullnamedepth'] = 'Tason koko nimi';
 $string['fullnameframework'] = 'Koko nimi';
 $string['fullnametemplate'] = 'Mallipohjan koko nimi';
+$string['fullnametype'] = 'Syötä koko nimi';
 $string['fullnameview'] = 'Koko nimi kohteelle $a';
 $string['globalsettings'] = 'Yleiset asetukset';
 $string['idnumber'] = 'Kompetenssin ID';
@@ -123,21 +153,27 @@ $string['invalidevidencetype'] = 'Suoritusmerkintä ei kelpaa';
 $string['invalidnumeric'] = 'Vain numero kelpaa (tai ei lainkaan merkintää)';
 $string['linkcourses'] = 'Linkitä kurssit';
 $string['linktoscalevalues'] = 'Tarkastele/muokkaa <a href=\"view.php?id=$a&amp;type=competency\">tästä</a> tämän kompetenssiasteikon arvoja.';
-$string['linktoscalevalues11'] = 'Tarkastele/muokkaa <a href=\"view.php?id=$a&amp;prefix=competency\">tästä</a> tämän kompetenssiasteikon arvoja.';
 $string['locatecompetency'] = 'Etsi kompetenssi';
 $string['locatecompetencytemplate'] = 'Etsi kompetenssimallipohja';
 $string['managecompetencies'] = 'Hallinnoi kompetensseja';
 $string['managecompetency'] = 'Hallinnoi kompetensseja';
+$string['managecompetencytypes'] = 'Hallinnoi tyyppejä';
 $string['missingfullname'] = 'Kompetenssilta puuttuu nimi';
 $string['missingfullnamedepth'] = 'Tasolta puuttuu nimi';
 $string['missingfullnameframework'] = 'Rakenteelta puuttuu nimi';
 $string['missingfullnametemplate'] = 'Mallipohjalta puuttuu nimi';
+$string['missingfullnametype'] = 'Tyypin koko nimi puuttuu';
+$string['missingname'] = 'Kompetenssin nimi puuttuu';
+$string['missingnameframework'] = 'Kompetenssirakenteen nimi puuttuu';
+$string['missingnametemplate'] = 'Templaatin nimi puuttuu';
+$string['missingnametype'] = 'Kompetenssityypin nimi puuttuu';
 $string['missingscale'] = 'Asteikko puuttuu';
 $string['missingscalevaluename'] = 'Asteikon arvolta puuttuu nimi';
 $string['missingshortname'] = 'Kompetenssilta puuttuu lyhenne';
 $string['missingshortnamedepth'] = 'Tasolta puuttuu lyhenne';
 $string['missingshortnameframework'] = 'Rakenteelta puuttuu lyhenne';
 $string['missingshortnametemplate'] = 'Mallipohjalta puuttuu lyhenne';
+$string['missingshortnametype'] = 'Lyhenne puuttuu';
 $string['name'] = 'Nimi';
 $string['noassignedcompetencies'] = 'Kompetensseja ei ole lisätty';
 $string['noassignedcompetenciestotemplate'] = 'Kompetensseja ei ole lisätty tähän mallipohjaan';
@@ -161,6 +197,8 @@ $string['notcompetent'] = 'Ei pätevä';
 $string['notemplate'] = 'Kompetenssimallipohjaa ei ole määritelty';
 $string['notemplateinframework'] = 'Tässä rakenteessa ei ole määritelty kompetenssimallipohjia';
 $string['notescalevalueentry'] = 'Yksi arvo riville - pätevimmästä vähiten pätevään';
+$string['notypelevels'] = 'Tässä rakenteessa ei ole määritelty tyyppejä';
+$string['notypes'] = 'Ei kompetenssityyppejä';
 $string['numericalvalue'] = 'Numero';
 $string['options'] = 'Valinnat';
 $string['parent'] = 'Yläkompetenssi';
@@ -196,11 +234,16 @@ $string['shortname'] = 'Kompetenssin lyhenne';
 $string['shortnamedepth'] = 'Tason lyhenne';
 $string['shortnameframework'] = 'Lyhenne';
 $string['shortnametemplate'] = 'Mallipohjan lyhenne';
+$string['shortnametype'] = 'Tyypin lyhenne';
 $string['shortnameview'] = 'Kohteen $a lyhenne';
 $string['template'] = 'Kompetenssimallipohja';
 $string['templatecompetencyremovecheck'] = 'Oletko aivan varma, että haluat irroittaa tämän kompetenssin tästä mallipohjasta?';
 $string['type'] = 'Tyyppi';
+$string['types'] = 'Tyypit';
 $string['unknownbuttonclicked'] = 'Tuntematon painike';
+$string['updatedcompetency'] = 'Kompetenssi \"{$a}\" on päivitetty';
+$string['updatedframework'] = 'Kompetenssirakenne \"{$a}\" on päivitetty';
+$string['updatetype'] = 'Kompetenssityyppi \"{$a}\" on päivitetty';
 $string['useresourcelevelevidence'] = 'Käytä resurssitason todisteita';
 $string['weight'] = 'Painotus';
 

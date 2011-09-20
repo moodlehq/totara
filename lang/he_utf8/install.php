@@ -1,7 +1,9 @@
-<?PHP // $Id: install.php,v 1.16 2010/08/31 07:29:18 emanuel1 Exp $
-      // install.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
+<?PHP // $Id$ 
+      // install.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
 
 
+$string['aborting'] = 'nמבטל ...n';
+$string['abortinstallation'] = 'מבטל התקנה ...n';
 $string['admindirerror'] = 'ספריית מנהל המערכת המצויינת שגויה';
 $string['admindirname'] = 'ספריית מנהל המערכת';
 $string['admindirsetting'] = 'שירותי אירוח אתרים מעטים משתמשים/מתנהלים כ-Url מיוחד עבורך כדי לגשת ללוח הבקרה למשל. למרבה הצער דבר זה עומד נגד המיקום התקני של עמודי מנהל המערכת של Moodle. תוכל לתקן זאת ע\"י שינוי שם ספריית ה-admin בהתקנה שלך והכנסת שם חדש זה כאן. למשל:<br /> <br /><b>moodleadmin</b><br /> <br />
@@ -9,18 +11,33 @@ $string['admindirsetting'] = 'שירותי אירוח אתרים מעטים מש
 $string['admindirsettinghead'] = 'הגדר את ספריית מנהל המערכת...';
 $string['admindirsettingsub'] = 'שירותי אירוח אתרים מעטים משתמשים/מתנהלים כ-Url מיוחד עבורך כדי לגשת ללוח הבקרה למשל. למרבה הצער דבר זה עומד נגד המיקום התקני של עמודי מנהל המערכת של Moodle. תוכל לתקן זאת ע\"י שינוי שם ספריית ה-admin בהתקנה שלך והכנסת שם חדש זה כאן. למשל:<br /> <br /><b>moodleadmin</b><br /> <br />
 דבר זה יתקן את קישורי ה-admin ב-Moodle.';
+$string['adminemail'] = 'דוא\"ל:';
+$string['adminfirstname'] = 'שם פרטי:';
+$string['admininfo'] = 'פרטי מנהל מערכת';
+$string['adminlastname'] = 'שם משפחה:';
+$string['adminpassword'] = 'סיסמא:';
+$string['adminusername'] = 'שם משתמש:';
+$string['askcontinue'] = 'להמשיך (כן/לא):';
+$string['availabledbtypes'] = 'nסוגי בסיסי נתונים זמינים n';
+$string['availablelangs'] = 'רשימת שפות זמינות n';
+$string['cannotconnecttodb'] = 'לא ניתן להתחבר לבסיס הנתונים n';
 $string['caution'] = 'אזהרה';
+$string['checkingphpsettings'] = 'nnבודק הגדרות PHP nn';
 $string['chooselanguage'] = 'בחר שפה';
 $string['chooselanguagehead'] = 'בחר שפה';
 $string['chooselanguagesub'] = 'אנא בחר שפה עבור ההתקנה בלבד. תוכל לבחור בשפה שונה לאתר ולמשתמש באחד מהמסכים הבאים.';
 $string['compatibilitysettings'] = 'בדיקת הגדרות ה-PHP שלך...';
 $string['compatibilitysettingshead'] = 'בדיקת הגדרות ה-PHP שלך...';
 $string['compatibilitysettingssub'] = 'השרת שלך צריך לעבור סדרת בדיקות זו כדי להפעיל את Moodle כהלכה.';
+$string['configfilecreated'] = 'קובץ הגדרות נוצר בהצלחהn';
+$string['configfiledoesnotexist'] = 'קובץ הגדרות לא קיים !!!';
 $string['configfilenotwritten'] = 'תסריט (script) ההתקנה לא הצליח ליצור באופן אוטומטי את קובץ config.php המכיל את ההגדרות שבחרת, ייתכן שהדבר קרה בגלל שספריית ה-Moodle שלך איננה ניתנת לכתיבה. תוכל להעתיק באופן ידני את הקוד הבא לתוך קובץ config.php בספריית האם של Moodle.';
 $string['configfilewritten'] = 'קובץ config.php נוצר בהצלחה';
 $string['configurationcomplete'] = 'הגדרות התצורה הושלמו';
 $string['configurationcompletehead'] = 'הגדרות התצורה הושלמו';
 $string['configurationcompletesub'] = 'Moodle ניסה לשמור את הגדרות התצורה שלך בקובץ בספריית ה-root של התקנת ה-Moodle.';
+$string['configurationfileexist'] = 'קובץ ההגדרות קיים כבר!n';
+$string['creatingconfigfile'] = 'יוצר קובץ הגדרות ...n';
 $string['database'] = 'מסד נתונים';
 $string['databasecreationsettings'] = 'כעת נותר לך לעצב את הגדרות מסד הנתונים שלך היכן שרוב נתוני Moodle יאוחסנו. מסד נתונים זה ייווצר באופן אוטומטי ע\"י ההתקנה
 עם ההגדרות המצויינות להלן:
@@ -40,6 +57,9 @@ $string['databasecreationsettingssub'] = '<b>סוג:</b> תוקן ל\"mysql\" ע
 <b>שם משתמש מסד הנתונים:</b> תוקן ל\"root\" ע\"י קובץ ההתקנה<br />
 <b>סיסמה:</b> סיסמת מסד הנתונים שלך<br />
 <b>תחילית הטבלאות:</b> תחילית רשות לכל שמות הטבלאות';
+$string['databasehost'] = 'שרת בסיס נתונים :';
+$string['databasename'] = 'שם בסיס נתונים :';
+$string['databasepass'] = 'סיסמת בסיס נתונים :';
 $string['databasesettings'] = 'כעת יש לעצב את הגדרות מסד הנתונים שלך, בו יאוחסנו רוב נתוני Moodle. מסד נתונים זה חייב כבר להיות קיים בנוסף שם משתמש וסיסמה לשם גישה אליו.
 .<br />
 <br /> <br />
@@ -49,6 +69,7 @@ $string['databasesettings'] = 'כעת יש לעצב את הגדרות מסד ה�
 <b>שם משתמש:</b> שם משתמש מסד הנתונים שלך<br />
 <b>סיסמה:</b> סיסמת מסד הנתונים שלך<br />
 <b>תחילית הטבלאות:</b> תחילית רשות לכל שמות הטבלאות';
+$string['databasesettingsformoodle'] = 'nnהגדרות בסיס נתונים עבור Moodlenn';
 $string['databasesettingshead'] = 'כעת יש לעצב את הגדרות מסד הנתונים שלך, בו יאוחסנו רוב נתוני Moodle. מסד נתונים זה חייב כבר להיות קיים בנוסף שם משתמש וסיסמה לשם גישה אליו.';
 $string['databasesettingssub'] = '<b>סוג:</b> mysql או postgres7<br />
 <b>מחשב מארח:</b> לדוגמה localhost או db.isp.com<br />
@@ -98,6 +119,8 @@ $string['databasesettingssub_postgres7'] = '<b>סוג:</b> PostgreSQL<br />
 <b>סיסמה:</b> סיסמת מסד הנתונים שלך<br />
 <b>תחילית הטבלאות:</b> תחילית רשות לכל שמות הטבלאות (אפשרי)';
 $string['databasesettingswillbecreated'] = '<b>הערה: </b> ההתקנה תנסה ליצור את מסד הנתונים באופן אוטומטי אם אינו קיים.';
+$string['databasetype'] = 'סוג בסיס נתונים :';
+$string['databaseuser'] = 'משתמש בסיס נתונים :';
 $string['dataroot'] = 'ספריית הנתונים';
 $string['datarooterror'] = 'ספריית \"נתוני Moodle\" שציינת לא נמצאה או לא יכלה להיווצר. אנא תקן נתיב זה או צור ספרייה זו באופן ידני.';
 $string['datarootpublicerror'] = 'ספריית ה-\'Data Directory\' שציינת ניתנת לגישה ישירות מהרשת. אתה מוכרח להשתמש בספרייה אחרת.';
@@ -132,15 +155,20 @@ $string['directorysettingssub'] = '<p> אנא וודא את מיקומי התק�
 תצטרך למצוא מיקום עבור שמירת קבצים שהועלו לאתר Moodle שלך. ספרייה זו חייבת להיות בעלת הרשאת כתיבה וקריאה ע\"י שרת האתר ...';
 $string['dirroot'] = 'ספריית ה-Moodle';
 $string['dirrooterror'] = 'הגדרת ספריית ה-Moodle כנראה איננה נכונה - איננו מוצאים את התקנת Moodle כאן. הערך כאן אותחל.';
+$string['disagreelicense'] = 'לא ניתן להמשיך בשדרוג עקב אי קבלת הסכם GPL!';
 $string['download'] = 'הורדה';
 $string['downloadlanguagebutton'] = 'הורד את חבילת השפה ה-&quot;$a&quot;';
 $string['downloadlanguagehead'] = 'הורד חבילת שפה';
 $string['downloadlanguagenotneeded'] = 'אתה יכול להמשיך את תהליך ההתקנה ע\"י שימוש ב-\"$a\" שפת ברירת המחדל';
+$string['downloadlanguagepack'] = 'nnהאם ברצונך להוריד כעת את חבילת השפה(כן/לא) :';
 $string['downloadlanguagesub'] = 'כעת יש באפשרותך להוריד חבילת שפה ולהמשיך את תהליך ההתקנה עם שפה זו.
 <br/><br/>
 אם אינך מצליח להוריד את חבילת השפה, תהליך ההתקנה ימשיך בשפה האנגלית (כאשר תהליך ההתקנה הסתיים, תיהיה לך את האפשרות להוריד ולהתקין אילו חבילות שפה נוספות שתחפוץ).';
+$string['downloadsuccess'] = 'חבילת השפה הורדה בהצלחה';
+$string['doyouagree'] = 'האם אתה מאשר ? (כן/לא):';
 $string['environmenthead'] = 'בודק את הסביבה שלך...';
 $string['environmentsub'] = 'אנו בודקים את רכיבים השונים';
+$string['errorsinenvironment'] = 'שגיאות בסביבה !n';
 $string['fail'] = 'כישלון';
 $string['fileuploads'] = 'העלאת קבצים';
 $string['fileuploadserror'] = 'חייב לאפשר זאת';
@@ -171,9 +199,27 @@ register_globals = Off
 <blockquote>php_value magic_quotes_gpc On</blockquote>
 <blockquote>php_value register_globals Off</blockquote>
 </p>';
+$string['inputdatadirectory'] = 'תיקיית נתונים :';
+$string['inputwebadress'] = 'כתובת Web :';
+$string['inputwebdirectory'] = 'תיקיית Moodle :';
 $string['installation'] = 'התקנה';
+$string['installationiscomplete'] = 'ההתקנה הושלמה !n';
+$string['invalidargumenthelp'] = 'שגיאה: ביטוי לא תקין
+שימוש: \$php cliupgrade.php OPTIONS
+השתמש ב --help לעזרה למידע נוסףn';
+$string['invalidemail'] = 'דוא\"ל לא תקין';
+$string['invalidhost'] = 'שרת מארח לא תקין';
+$string['invalidint'] = 'שגיאה: הערך אינו מספר שלם n';
+$string['invalidintrange'] = 'שגיאה: הערך אינו טווח תקףn';
+$string['invalidpath'] = 'נתיב לא חוקי';
+$string['invalidsetelement'] = 'שגיאה: ערך שניתן אינו באפשרויות הבחירה n';
+$string['invalidtextvalue'] = 'ערך טקסט לא חוקי';
+$string['invalidurl'] = 'כתובת URL לא חוקית';
+$string['invalidvalueforlanguage'] = 'ערך לא חוקי עבור אפשרות --lang. הקלד --help לעזרה נוספת';
+$string['invalidyesno'] = 'שגיאה: הערך אינו ביטוי כן/לא חוקי n';
 $string['langdownloaderror'] = 'לצערינו השפה \"$a\" לא הותקנה. תהליך ההתקנה ימשיך באנגלית.';
 $string['langdownloadok'] = 'השפה \"$a\" הותקנה בהצלחה. תהליך ההתקנה ימשיך בשפה זו.';
+$string['locationanddirectories'] = 'nnמיקום ותיקיות nn';
 $string['magicquotesruntime'] = 'Magic Quotes Run Time';
 $string['magicquotesruntimeerror'] = 'חייב לנטרל זאת';
 $string['magicquotesruntimehelp'] = '<p>רצוי שמשתנה Magic quotes runtime  יהיה כבוי עבור Moodle בכדי שיעבור כהלכה.
@@ -213,11 +259,13 @@ $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת MySQL בכדי שהוא יוכל לתקשר עם MySQL. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['mysqli'] = 'Improved MySQL (mysqli)';
 $string['mysqliextensionisnotpresentinphp'] = 'PHP לא הוגדר נכון עם הרחבת ה-MYSQLi כך שהוא יוכל להתקשר עם MYSQL. אנא בדוק את הגדרות ה-php.ini שלך או הרץ את תוכנת ה-PHP שוב. MYSQLi לא זמינה עבור PHP4.';
+$string['newline'] = 'n';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת OCI8 בכדי שהוא יוכל לתקשר עם Oracle. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['odbc_mssql'] = 'SQL*Server over ODBC (odbc_mssql)';
 $string['odbcextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת ODBC בכדי שהוא יוכל לתקשר עם SQL*Server. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['pass'] = 'עבר';
+$string['pearargerror'] = 'ספריית PEAR אינה יכולה לזהןת את הביטויn';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת PGSQL בכדי שהוא יוכל לתקשר עם PostgreSQL. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['phpversion'] = 'גירסת PHP';
 $string['phpversionerror'] = 'גירסת PHP חייבת להיות לפחות 4.3.0 או 5.1.0 (בגירסאות 5.0.x קיימות מספר בעיות ידועות)';
@@ -233,19 +281,71 @@ host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=
 
 והשאר ריק את מסד הנתונים, המשתמש, והסיסמה. מידע נוסף ניתן לצפות כאן
  <a href=\"http://docs.moodle.org/en/Installing_Postgres_for_PHP\">Moodle Docs</a>';
+$string['releasenoteslink'] = 'למידע אודות גרסה זו של Moodle, אנא צפה בקובץ Release Notes במיקום $a';
 $string['safemode'] = 'מצב בטוח (Safe Mode)';
 $string['safemodeerror'] = 'ל-Moodle קיימת בעיה עם איפשור מצב הבטוח (safe mode)';
 $string['safemodehelp'] = '<p>
 קיימות מספר בעיות ל-Moodle כאשר ה\"מצב הבטוח\" דלוק, כנראה לא תיהיה אפשרות ליצור קבצים חדשים. </p>
 <p> מצב בטוח (safe mode) מאופשר בד\"כ ע\"י מארחי שרתים ציבוריים פרנואידים, כך שתצטרך כנראה להחליף את חברת שרת המחשב המארח של אתר ה-Moodle שלך ולמצוא אחת חדשה.
 <p> תוכל להמשיך בהתקנה אם תרצה, אך צפה לבעיות בהמשך.';
+$string['selectlanguage'] = 'nnבחירת שפת התקנהn';
 $string['sessionautostart'] = 'פתיחת מושב אוטומטית';
 $string['sessionautostarterror'] = 'חייב לכבות זאת';
 $string['sessionautostarthelp'] = '<p>
 Moodle דורש תמיכת מושב ולא יכול לעבוד בלעדיו.
 <p>
 מושבים (sessions) ניתנים לאיפשור בקובץ php.ini... חפש את פרמטר session.auto_start';
+$string['sitefullname'] = 'שם מלא של האתר :';
+$string['siteinfo'] = 'פרטי האתר';
+$string['sitenewsitems'] = 'פריטי חדשות :';
+$string['siteshortname'] = 'שם קצר של האתר :';
+$string['sitesummary'] = 'תקציר האתר :';
 $string['skipdbencodingtest'] = 'דלג על DB Encoding Test';
+$string['tableprefix'] = 'קידומת טבלה :';
+$string['unsafedirname'] = 'שגיאה: תווים לא בטוחים בשם התיקייה. תווים תקינים הם a-zA-Z0-9_-n';
+$string['upgradingactivitymodule'] = 'משדרג רכיב פעילות';
+$string['upgradingbackupdb'] = 'משדרג בסיס נתוני גיבוי';
+$string['upgradingblocksdb'] = 'משדרג בסיס נתוני בלוקים';
+$string['upgradingblocksplugin'] = 'משדרג תוסף בלוקים';
+$string['upgradingcompleted'] = 'השדרוג הושלם...n';
+$string['upgradingcourseformatplugin'] = 'משדרג תוסף תבנית קורס';
+$string['upgradingenrolplugin'] = 'משדרג תוסף רישום';
+$string['upgradinggradeexportplugin'] = 'משדרג תוסף יצוא ציונים';
+$string['upgradinggradeimportplugin'] = 'משדרג תוסף יבוא ציונים';
+$string['upgradinggradereportplugin'] = 'משדרג תוסף דוח ציונים';
+$string['upgradinglocaldb'] = 'משדרג בסיס נתונים מקומי';
+$string['upgradingmessageoutputpluggin'] = 'משדרג תוסף פלט הודעות';
+$string['upgradingqtypeplugin'] = 'משדרג תוסף סוג שאלה';
+$string['upgradingrpcfunctions'] = 'משדרג פונקציות RPC';
+$string['usagehelp'] = 'סיכום תוצאות:
+\$php cliupgrade.php OPTIONSn
+OPTIONS
+--lang Valid installed language for installation. Default is English(en)
+--webaddr Web address for the Moodle site
+--moodledir Location of the moodle web folder
+--datadir Location of the moodle data folder (should not be web visible)
+--dbtype Database type. Default it mysql
+--dbhost Database host. Default localhost
+--dbname Database name. Default is moodle
+--dbuser Database user. Default is blank
+--dbpass Database password. Default is blank
+--prefix Table prefix for above database tables. Default is mdl
+--verbose 0 No output, 1 Summarized output(Default), 2 Detailed output
+--interactivelevel 0 Non interactive, 1 semi interactive(Default), 2 interactive
+--agreelicense Yes(Default) or No
+--confirmrelease Yes(Default) or No
+--sitefullname Full name for the site. Default is : Moodle Site (Please Change Site Name!!)
+--siteshortname Short name for the site. Default is moodle
+--sitesummary Summary of the site. Default is blank
+--adminfirstname First name of the admin. Default is Admin
+--adminlastname Last name of the admin. Default is User
+--adminusername Username for the admin. Default is admin
+--adminpassword Password for the admin. Default is admin
+--adminemail Email address of admin. Default is root@localhost
+--help print out this helpn
+Usage:
+\$php cliupgrade.php --lang=en --webaddr=http://www.example.com --moodledir=/var/www/html/moodle --datadir=/var/moodledata --dbtype=mysql --dbhost=localhost --dbname=moodle --dbuser=root --prefix=mdl --agreelicense=yes --confirmrelease=yes --sitefullname=\"Example Moodle Site\" --siteshortname=moodle --sitesummary=siteforme --adminfirstname=Admin --adminlastname=User --adminusername=admin --adminpassword=admin --adminemail=admin@example.com --verbose=1 --interactivelevel=2 n';
+$string['versionerror'] = 'הוספק על ידי משתמש בשל שגיאת גרסה';
 $string['welcomep10'] = '$a->installername ($a->installerversion)';
 $string['welcomep20'] = 'הינך רואה את עמוד זה מפני שהתקנת והפעלת בהלכה את <strong> \$a-packname $a->packversion
 </strong>
@@ -265,7 +365,10 @@ href=\"http://www.gnu.org/copyleft/gpl.html\">GPL</a>';
 $string['welcomep60'] = 'העמודים הבאים יובילו אותך בצורה פשוטה דרך כמה צעדים לעיצוב הגדרות <strong>Moodle</strong> במחשבך.
 תוכל לאשר את הגדרות  ברירת המחדל או, באפשרותך, לשנותם לפי צרכיך.';
 $string['welcomep70'] = 'הקש על לחצן ה\"המשך\" למטה כדי להמשיך עם הגדרת ה-<strong>Moodle</strong>';
+$string['welcometext'] = 'nn---ברוך הבא לאשף ההתקנה של moodle באמצעות שורות פקודה---nn';
+$string['writetoconfigfilefaild'] = 'שגיאה: נכשלה כתיבה לקובץ הגדרות';
 $string['wwwroot'] = 'כתובת האתר';
 $string['wwwrooterror'] = 'כתובת האתר כנראה איננה תקנית - התקנת Moodle זו כנראה איננה שם. הערך כאן אותחל.';
+$string['yourchoice'] = 'nהבחירה שלך :';
 
 ?>

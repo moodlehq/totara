@@ -1,4 +1,7 @@
-<?PHP // $Id$
+<?PHP // $Id$ 
+      // enrol_database.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+
+
 $string['autocreate'] = 'Kurssit voidaan luoda automaattisesti, jos rekisteröitymisiä tulee kurssille, jota ei ole olemassa.';
 $string['autocreation_settings'] = 'Automaattisen luonnin asetukset';
 $string['category'] = 'Automaattisesti luotujen kurssien kategoria';
@@ -30,4 +33,17 @@ $string['remote_fields_mapping'] = 'Ulkoisen tietokannan rekisteröitymisen kent
 $string['remotecoursefield'] = 'Ulkoisen tietokannan course id sarakkeen nimi';
 $string['remoterolefield'] = 'Ulkoisen taulun kentän nimi, joka vastaa rollit-taulun kenttää.';
 $string['remoteuserfield'] = 'Ulkoisen tietokannan userid sarakkeen nimi';
+$string['server_settings'] = 'Ulkoisen tietokannan serveriasetukset';
+$string['student_coursefield'] = 'Sen kentän nimi oppijan ilmoittautumistalukossa, jossa on kurssin tunnus.';
+$string['student_l_userfield'] = 'Sen kentän nimi lokaalissa käyttäjätaulukossa, jonka mukaan käyttäjä tunnistetaan etärekisterissä (esim. tunnus).';
+$string['student_r_userfield'] = 'Sen kentän nimi etäilmoittautumistaulukossa, jossa on käyttäjätunnus.';
+$string['student_table'] = 'Sen taulukon nimi, jossa oppijoiden ilmoittautumiset ovat.';
+$string['teacher_coursefield'] = 'Sen kentän nimi kouluttajan ilmoittautumistaulukossa, jossa on kurssin tunnus.';
+$string['teacher_l_userfield'] = 'Sen kentän nimi lokaalissa käyttäjätaulukossa, jonka mukaan käyttäjä tunnistetaan opettajien käytössä olevassa etärekisterissä (esim. tunnus).';
+$string['teacher_r_userfield'] = 'Sen kentän nimi kouluttajan etäilmoittautumistaulukossa, jossa on käyttäjätunnus.';
+$string['teacher_table'] = 'Sen taulukon nimi, jossa kouluttajan ilmoittautumiset ovat.';
+$string['template'] = 'Vapaaehtoinen: automaattisesti luotujen kurssien asetukset voidaan kopioida kurssimallipohjasta.';
+$string['type'] = 'Tietokannan serverityyppi';
+$string['user'] = 'Serverin käyttäjätunnus';
+
 ?>

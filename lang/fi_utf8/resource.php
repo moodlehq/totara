@@ -1,7 +1,9 @@
-<?PHP // $Id$
+<?PHP // $Id$ 
+      // resource.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+
+
 $string['addresource'] = 'Lisää aineisto';
 $string['affectedresources'] = 'Muuttuvat aineistot';
-$string['allowlocalfiles'] = 'Salli paikalliset tiedostot';
 $string['autofilerename'] = 'Päivitä linkki, jos tiedoston nimi muuttuu';
 $string['back'] = 'Takaisin';
 $string['blockdeletingfile'] = 'Estä linkitettyjen tiedostojen poistaminen';
@@ -10,7 +12,6 @@ $string['choose'] = 'Valitse';
 $string['chooseafile'] = 'Valitse tai lähetä tiedosto';
 $string['chooseparameter'] = 'Valitse parametri';
 $string['clicktoopen'] = 'Avataksesi tämän tiedoston, napsauta tätä linkkiä:';
-$string['configallowlocalfiles'] = 'Kun luodaan uutta tiedostoaineistoa, annetaanko luoda linkkejä paikallisiin tiedostoihin, jotka ovat esimerkiksi CD:llä tai kiintolevyllä. Tästä voi olla hyötyä luokkatilassa, jossa kaikilla oppilailla on pääsy yhteiseen verkkoasemaan tai jos on tarpeen käyttää CD:llä olevia tiedostoja. Tämän asetuksen käyttö voi vaatia muutoksia selaimesi turvallisuusasetuksiin.';
 $string['configautofilerenamesettings'] = 'Päivitä viittaukset automaattisesti jos tiedosto tai kansio nimetään uudelleen.';
 $string['configblockdeletingfilesettings'] = 'Estä viitattujen tiedostojen ja kansioiden poisto';
 $string['configdefaulturl'] = 'Tätä käytetään esimerkkiosoitteena, kun lisätään uusia URL-osoitteen sisältäviä aineistoja.';
@@ -52,14 +53,10 @@ $string['fulltext'] = 'Teksti';
 $string['htmlfragment'] = 'HTML';
 $string['imspackageloaded'] = 'Paketti ladattu';
 $string['keepnavigationvisible'] = 'Näytä sivuston navigointi samalla sivulla';
-$string['localfile'] = 'Paikallinen tiedosto';
-$string['localfilechoose'] = 'Valitse paikallinen tiedosto (CD-ROM)';
-$string['localfilehelp'] = 'Apua paikallisten tiedostojen näyttämiseen';
-$string['localfileinfo'] = '<p>Valitse paikallinen tiedosto tietokoneeltasi. Tiedostoa ei kopioida verkkosivustolle, vaan Moodle etsii vastaavaa tiedostoa kaikkien tätä aineistoa käyttävien omilta koneilta.</p>
-
-<p>Tämä on käytännöllistä esimerkiksi silloin, kun olet jakanut osanottajille materiaalia, esim. isokokoisia mediatiedostoja, samansisältöisillä CD-ROM-levyillä. Jokainen osallistuja voi valita itse hakemistopolun koneellaan näihin tiedostoihin <a href=\"$a\" target=\"_blank\">muokkaamalla käyttäjäasetuksiaan</a>.</p>';
-$string['localfilepath'] = 'Asettaaksesi oman hakemistopolkusi aineiston paikallisiin tiedostoihin, valitse mikä tahansa tiedosto asemalta, jolla aineisto sijaitsee (yleensä CD-ROM-asema). Tiedostoa ei kopioida verkkosivustolle, mutta käytetty polku tallennetaan ja sitä käytetään muidenkin paikallisia tiedostoja käyttävien aineistojen kanssa.';
-$string['localfileselect'] = 'Valitse tämä hakemistopolku.';
+$string['keepnavigationvisibleno'] = 'Ei';
+$string['keepnavigationvisiblewarning'] = 'Huomio: jotkin mediatiedostot saattavat jättää tämän asetuksen huomiotta';
+$string['keepnavigationvisibleyesframe'] = 'Kyllä, kehyksessä';
+$string['keepnavigationvisibleyesobject'] = 'Kyllä, ilman kehystä';
 $string['maindirectory'] = 'Tiedostojen hakemisto';
 $string['modulename'] = 'Aineisto';
 $string['modulenameplural'] = 'Aineistot';
@@ -80,7 +77,6 @@ $string['newwidth'] = 'Ikkunan oletusleveys pikseleinä';
 $string['newwindow'] = 'Uusi ikkuna';
 $string['newwindowopen'] = 'Näytä linkki uudessa ikkunassa';
 $string['next'] = 'Seuraava';
-$string['notallowedlocalfileaccess'] = 'Pääsy paikallisiin tiedostoihin on estetty, eikä tämä aineisto ole saatavilla.';
 $string['notdeployed'] = 'Ei sijoitettuna';
 $string['note'] = 'Huomaa';
 $string['notefile'] = 'Lisätäksesi tiedostoja kurssille (jotta ne näkyisivät tässä listassa) käytä 
@@ -131,4 +127,16 @@ $string['vol'] = 'Ver.';
 $string['warningblockingdelete'] = 'Varoitus: tiedoston poistaminen ei ole mahdollista, koska tiedosto on käytössä aineistossa. Muokkaa ensin aineistoa tai pyydä ylläpitäjääsi poistamaan tämä toiminto käytöstä.';
 $string['warningdisabledrename'] = 'Varoitus: aineistoihin linkitettyjen tiedostojen automaattinen uudelleen nimeäminen ei ole käytössä. Päivitä aineisto, jos tarpeen. Ylläpitäjäsi voi laittaa automaattisen nimeämisen päälle koko sivuston aineistoa koskevista asetuksista.';
 $string['websearchdefault'] = 'Www-haun oletus.';
+$string['allowlocalfiles'] = 'Salli paikalliset tiedostot'; // ORPHANED
+$string['configallowlocalfiles'] = 'Kun luodaan uutta tiedostoaineistoa, annetaanko luoda linkkejä paikallisiin tiedostoihin, jotka ovat esimerkiksi CD:llä tai kiintolevyllä. Tästä voi olla hyötyä luokkatilassa, jossa kaikilla oppilailla on pääsy yhteiseen verkkoasemaan tai jos on tarpeen käyttää CD:llä olevia tiedostoja. Tämän asetuksen käyttö voi vaatia muutoksia selaimesi turvallisuusasetuksiin.'; // ORPHANED
+$string['localfile'] = 'Paikallinen tiedosto'; // ORPHANED
+$string['localfilechoose'] = 'Valitse paikallinen tiedosto (CD-ROM)'; // ORPHANED
+$string['localfilehelp'] = 'Apua paikallisten tiedostojen näyttämiseen'; // ORPHANED
+$string['localfileinfo'] = '<p>Valitse paikallinen tiedosto tietokoneeltasi. Tiedostoa ei kopioida verkkosivustolle, vaan Moodle etsii vastaavaa tiedostoa kaikkien tätä aineistoa käyttävien omilta koneilta.</p>
+
+<p>Tämä on käytännöllistä esimerkiksi silloin, kun olet jakanut osanottajille materiaalia, esim. isokokoisia mediatiedostoja, samansisältöisillä CD-ROM-levyillä. Jokainen osallistuja voi valita itse hakemistopolun koneellaan näihin tiedostoihin <a href=\"$a\" target=\"_blank\">muokkaamalla käyttäjäasetuksiaan</a>.</p>'; // ORPHANED
+$string['localfilepath'] = 'Asettaaksesi oman hakemistopolkusi aineiston paikallisiin tiedostoihin, valitse mikä tahansa tiedosto asemalta, jolla aineisto sijaitsee (yleensä CD-ROM-asema). Tiedostoa ei kopioida verkkosivustolle, mutta käytetty polku tallennetaan ja sitä käytetään muidenkin paikallisia tiedostoja käyttävien aineistojen kanssa.'; // ORPHANED
+$string['localfileselect'] = 'Valitse tämä hakemistopolku.'; // ORPHANED
+$string['notallowedlocalfileaccess'] = 'Pääsy paikallisiin tiedostoihin on estetty, eikä tämä aineisto ole saatavilla.'; // ORPHANED
+
 ?>

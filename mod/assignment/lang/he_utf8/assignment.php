@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // assignment.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// assignment.php - created with Totara langimport script version 1.0
 
 $string['allowdeleting'] = 'אפשר מחיקה';
 $string['allowmaxfiles'] = 'מספר הקבצים המירבי שניתן להעלות';
@@ -127,6 +126,7 @@ $string['uploadfiletoobig'] = 'סליחה, אבל הקובץ גדול מדי (ה
 $string['uploadnofilefound'] = 'לא נמצא קובץ - האם אתה בטוח שבחרת קובץ להעלאה?';
 $string['uploadnotregistered'] = '\'$a\' הועלה באופן תקין אבל ההגשה לא נרשמה!';
 $string['uploadsuccess'] = '\'$a\' הועלה בהצלחה';
+$string['usernosubmit'] = 'מצטערים, אינך רשאי להגיש מטלה.';
 $string['viewfeedback'] = 'ראה ציוני ומשובי תרגילים';
 $string['viewsubmissions'] = 'ראה $a תרגילים שהוגשו';
 $string['yoursubmission'] = 'ההגשה שלך';

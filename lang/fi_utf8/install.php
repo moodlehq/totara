@@ -1,4 +1,7 @@
-<?PHP // $Id$
+<?PHP // $Id$ 
+      // install.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+
+
 $string['admindirerror'] = 'Ylläpitohakemisto on määritetty väärin';
 $string['admindirname'] = 'Ylläpitohakemisto';
 $string['admindirsetting'] = 'Jotkut web-palvelut käyttävät /admin hakemistoa ylläpitotarkoituksiin tms. Valitettavasti tämä on ristiriidassa Moodlen ylläpitosivujen normaalin paikan kanssa. Voit korjata tämän nimeämällä asennuksesi ylläpitohakemiston uudelleen ja laittamalla uuden nimen tähän. Esimerkiksi: 
@@ -8,6 +11,13 @@ $string['admindirsettinghead'] = 'Asetetaan ylläpitohakemisto';
 $string['admindirsettingsub'] = 'Jotkut sivustot käyttävät /admin-hakemistoa omiin tarkoituksiinsa. Tämä on ristiriidassa moodlen /admin-kansion kanssa.
 Voit korjata tämän nimeämällä moodlen admin-kansion uudelleen antamalla nimen tähän <br />
 Esim moodleadmin';
+$string['adminemail'] = 'Sähköposti:';
+$string['adminfirstname'] = 'Etunimi:';
+$string['admininfo'] = 'Hallinnoijan tiedot';
+$string['adminlastname'] = 'Sukunimi:';
+$string['adminpassword'] = 'Salasana:';
+$string['adminusername'] = 'Käyttäjätunnus:';
+$string['askcontinue'] = 'Jatka (kyllä/ei):';
 $string['caution'] = 'Varoitus';
 $string['chooselanguage'] = 'Valitse kieli';
 $string['chooselanguagehead'] = 'Valitse kieli';
@@ -36,6 +46,8 @@ $string['databasecreationsettingssub'] = '<b>Tyyppi:</b> Asennusohjelman lukitse
 <b>Käyttäjä:</b> Asennusohjelman lukitsema \"root\" <br />
 <b>Salasana:</b> Tietokannan salasana<br />
 <b>Talukon etuliite:</b> Etuliite kaikille tietokannan tauluille';
+$string['databasename'] = 'Tietokannan nimi:';
+$string['databasepass'] = 'Tietokannan salasana:';
 $string['databasesettings'] = 'Nyt sinun täytyy valita tietokanta missä suurin osa Moodlen tiedoista säilytetään. Tämän tietokannan täytyy jo valmiiksi olla luotu, kuten myös käyttäjänimen ja salasanan, joilla siihen päästään. .<br />
 <br /> <br />
 <b>Tyyppi:</b> mysql or postgres7<br />
@@ -81,8 +93,11 @@ $string['databasesettingssub_postgres7'] = '<b>Tyyppi:</b> PostgreSQL <br />
 <b>Käyttäjä:</b> tietokantasi käyttäjänimi<br />
 <b>Salasana:</b> tietokantasi salasana<br />
 <b>Taulukon etuliite:</b> pakollinen etuliite jota käytetään kaikissa taulukoissa';
+$string['databasetype'] = 'Tietokannan tyyppi:';
+$string['databaseuser'] = 'Tietokannan käyttäjä:';
 $string['dataroot'] = 'Datahakemisto';
 $string['datarooterror'] = '\"Datahakemistoa\", jonka määrittelit, ei voitu löytää, eikä luoda. Joko korjaa polku, tai luo hakemisto manuaalisesti.';
+$string['datarootpublicerror'] = 'Datahakemisto, jonka määrittelit, on käytettävissä suoraan internetin kautta, sinun on käytettävä jotakin muuta hakemistoa.';
 $string['dbconnectionerror'] = 'Emme pystyneet kytkeytymään tietokantaan, jonka määrittelit. Tarkista tietokanta-asetuksesi.';
 $string['dbcreationerror'] = 'Tietokannan luomisvirhe. Ei pystytty luomaan annettua tietokannan nimeä tarjotuilla asetuksilla.';
 $string['dbhost'] = 'Palvelin';
@@ -187,4 +202,5 @@ $string['skipdbencodingtest'] = 'Ohita tietokannan merkistö testi';
 $string['welcomep70'] = 'Napsauta \"Seuraava\"-painiketta jatkaaksesi moodlen asennusta';
 $string['wwwroot'] = 'Web-osoite';
 $string['wwwrooterror'] = 'Web-osoite ei näyttäisi olevan voimassa- tämä Moodle asennus ei näyttäisi olevan siellä.';
+
 ?>

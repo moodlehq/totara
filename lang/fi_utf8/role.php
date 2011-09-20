@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // role.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+      // role.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
 
 
 $string['addrole'] = 'Lisää rooli';
@@ -28,6 +28,12 @@ $string['category:manage'] = 'Hallinnoi kategorioita';
 $string['category:update'] = 'Kategorioiden päivitys';
 $string['category:viewhiddencategories'] = 'Näytä piilotetut kategoriat';
 $string['category:visibility'] = 'Piilotettujen kategorioiden katselu';
+$string['cohort:assign'] = 'Määrittele joukkoja';
+$string['cohort:manage'] = 'Hallinnoi joukkoja';
+$string['cohort:view'] = 'Tarkastele joukkoja';
+$string['comment:delete'] = 'Poista kommentit';
+$string['comment:post'] = 'Lisää kommentteja';
+$string['comment:view'] = 'Tarkastele kommentteja';
 $string['course:activityvisibility'] = 'Aktiviteettien piilotus/näyttö';
 $string['course:bulkmessaging'] = 'Viestin lähetys monille';
 $string['course:changecategory'] = 'Muuta kurssikategoriaa';

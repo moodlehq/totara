@@ -61,6 +61,7 @@ $string['canremoveitem'] = 'Item supprimé avec sucés';
 $string['changedfromxtoy'] = 'Modifier de \"$a->before\" en \"$a->after\"';
 $string['changeto'] = 'Modifier en';
 $string['changeworkflowconfirm'] = 'Vous souhaitez modifier le modèle de déroulement de projet formation. Celà entraînera la dérogation des paramètres et permissions vers ceux du déroulement \"$a\". Etes-vous sûr de vouloir continuer?';
+$string['checkplancomplete'] = 'Etes-vous sûr de vouloir marquer le projet \"$a\" comme achèvé?<br /><br />Quand un projet est marqué comme achèvé, aucun modification peut-être effectué et vous ne pouvez plus revenir en arrière. Etes-vous sûr de vouloir continuer?';
 $string['checkplancomplete11'] = 'Etes-vous sûr de vouloir marquer le projet \"$a\" comme achèvé?<br /><br />Quand un projet est marqué comme achèvé, aucun modification peut-être effectué et vous ne pouvez plus revenir en arrière. Etes-vous sûr de vouloir continuer?';
 $string['checkplandelete'] = 'Etes-vous sûr de vouloir supprimer ce projet et tout ses éléments?';
 $string['commenton'] = 'Commentaire sur';
