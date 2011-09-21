@@ -5984,3 +5984,7 @@ div.center-buttons {
 h2.reactivateheading {
     text-align: center;
 }
+
+form#program-extension-update table {
+    width:100%;
+}

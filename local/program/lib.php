@@ -1293,26 +1293,6 @@ function prog_time_to_date($time) {
 }
 
 /**
- * Handler function called when an extension_granted event is triggered
- *
- * @param object $eventdata Must contain a 'message' object which has the message data
- * @return bool Success status
- */
-function prog_eventhandler_extension_granted($eventdata) {
-    return prog_message::send_generic_alert($eventdata->message);
-}
-
-/**
- * Handler function called when an extension_denied event is triggered
- *
- * @param object $eventdata Must contain a 'message' object which has the message data
- * @return bool Success status
- */
-function prog_eventhandler_extension_denied($eventdata) {
-    return prog_message::send_generic_alert($eventdata->message);
-}
-
-/**
  * Handler function called when a program_assigned event is triggered
  *
  * @param object $eventdata Must contain a 'programid' int and a 'userid' int

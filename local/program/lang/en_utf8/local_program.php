@@ -10,6 +10,7 @@ $string['program:configurecontent'] = 'Configure program content';
 $string['program:configureassignments'] = 'Configure program assignments';
 $string['program:configuremessages'] = 'Configure program messages';
 $string['program:handleexceptions'] = 'Handle program exceptions';
+$string['program:manageextensions'] = 'Manage extensions';
 
 // General program
 $string['addnewprogram'] = 'Add a new program';
@@ -340,6 +341,7 @@ $string['successfullyresolvedexceptions'] = 'Successfully resolved exceptions';
 $string['thiswillaffect'] = 'This will affect $a learners';
 $string['thisactioncannotbeundone'] = 'This action cannot be undone';
 $string['timeallowance'] = 'Time allowance';
+$string['unknownexception'] = 'Unknown exception';
 $string['unresolvedexceptions'] = '$a unresolved issue(s)';
 $string['showingresults'] = 'Showing results $a->from - $a->to of $a->total';
 
@@ -448,3 +450,35 @@ $string['therearenoprogramstodisplay'] = 'There are no programs to display.';
 // Alert messages
 $string['z:incompleterecurringprogramsubject'] = 'Incomplete recurring course';
 $string['z:incompleterecurringprogrammessage'] = 'A course in a recurring program that you are enrolled on has reached it\'s end date but you have not completed the course. This course must be completed in order to meet the requirements of the program.';
+
+
+// Extensions
+$string['backtoallextrequests'] = 'Back to all extension requests';
+$string['currentduedate'] = 'Current due date';
+$string['extensions'] = 'Extensions';
+$string['extensionearlierthanduedate'] = 'Cannot request extension that is before current program due date';
+$string['extensionbeforenow'] = 'Cannot request extension that is earlier than current date';
+$string['extensiondate'] = 'Extension date';
+$string['reason'] = 'Extension reason';
+$string['grantdeny'] = 'Grant / Deny';
+$string['grant'] = 'Grant';
+$string['deny'] = 'Deny';
+$string['manageextensions'] = 'Manage Extensions';
+$string['noextensions'] = 'You have no staff who have pending extension requests';
+$string['nouserextensions'] = '$a does not have any pending extension requests';
+$string['notmanager'] = 'You are not a manager';
+$string['pendingextension'] = 'You currently have a pending extension request';
+$string['updateextensions'] = 'Update Extensions';
+$string['updateextensionfailall'] = 'Failed to update all extensions';
+$string['updateextensionfailcount'] = 'Failed to update $a extension(s)';
+$string['updateextensionsuccess'] = 'All extensions successfully updated';
+$string['viewinguserextrequests'] = 'Viewing extension requests for $a';
+$string['error:cannotrequestextnotuser'] = 'You cannot request an extension for another user';
+$string['error:processingextrequest'] = 'An error occured when processing extension request';
+$string['error:couldnotloadextension'] = 'Error, could not load extension.';
+$string['error:notusersmanager'] = 'You are not the manager of the user who requested this extension';
+$string['error:updateextensionstatus'] = 'Error, failed to update extension status';
+$string['error:failedsendextensiongrantalert'] = 'Error, failed to alert user of granted extension';
+$string['error:failedsendextensiondenyalert'] = 'Error, failed to alert user of denied extension';
+$string['error:failedupdateextension'] = 'Error, failed to update program with new due date';
+$string['error:noprogramcompletionfound'] = 'No program completion record was found';

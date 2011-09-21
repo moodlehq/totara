@@ -38,6 +38,16 @@ $program = new program($id);
 
 add_to_log(SITEID, 'program', 'view', "view.php?id={$program->id}&amp;userid={$USER->id}", $program->fullname);
 
+//Javascript include
+local_js(array(
+    TOTARA_JS_DIALOG,
+));
+
+// Get extension dialog content
+require_js(array(
+    $CFG->wwwroot . '/local/program/view/program_view.js.php?id=' . $program->id
+));
+
 ///
 /// Display
 ///

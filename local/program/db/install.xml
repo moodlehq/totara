@@ -207,7 +207,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="prog_recurrence" COMMENT="Store the id numbers of the courses that will replace existing courses in a recurring program so that the system can know which course will be used when the current course ends" PREVIOUS="prog_pos_assignment">
+    <TABLE NAME="prog_recurrence" COMMENT="Store the id numbers of the courses that will replace existing courses in a recurring program so that the system can know which course will be used when the current course ends" PREVIOUS="prog_pos_assignment" NEXT="prog_extension">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
         <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that contains the recurring course" PREVIOUS="id" NEXT="currentcourseid"/>
@@ -220,6 +220,21 @@
         <KEY NAME="currentcourseid" TYPE="foreign" FIELDS="currentcourseid" REFTABLE="course" REFFIELDS="id" PREVIOUS="programid" NEXT="nextcourseid"/>
         <KEY NAME="nextcourseid" TYPE="foreign" FIELDS="nextcourseid" REFTABLE="course" REFFIELDS="id" PREVIOUS="currentcourseid"/>
       </KEYS>
-    </TABLE>
+  </TABLE>
+  <TABLE NAME="prog_extension" COMMENT="Stores extension requests for programs" PREVIOUS="prog_recurrence">
+      <FIELDS>
+          <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid" />
+          <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid" />
+          <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="programid" NEXT="extensiondate" />
+          <FIELD NAME="extensiondate" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date to request extension to" PREVIOUS="userid" NEXT="extensionreason" />
+          <FIELD NAME="extensionreason" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="The reason for requesting an extension" PREVIOUS="extensiondate" NEXT="status"/>
+          <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates the completion status of a program or course set" PREVIOUS="extensionreason" />
+      </FIELDS>
+      <KEYS>
+          <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid" />
+          <KEY NAME="programid" TYPE="foreign" FIELDS="programid" REFTABLE="prog" REFFIELDS="id" PREVIOUS="primary" NEXT="userid" />
+          <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="programid" />
+      </KEYS>
+  </TABLE>
   </TABLES>
 </XMLDB>

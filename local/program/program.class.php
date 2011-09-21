@@ -809,7 +809,7 @@ class program {
         $viewinganothersprogram = false;
         if ($userid && $userid != $USER->id) {
             $viewinganothersprogram = true;
-            if ( ! $user = get_record('user', 'id', $userid)) {
+            if (!$user = get_record('user', 'id', $userid)) {
                 print_error('Unable to locate the specified user for the program');
             }
             $user->fullname = fullname($user);
@@ -817,36 +817,7 @@ class program {
             $out .= '<p>'.get_string('viewingxusersprogram', 'local_program', $user).'</p>';
         }
 
-        // Get the total time allowed for this program
-        $total_time_allowed = $this->content->get_total_time_allowance();
-
-        // Only display the time allowance if it is greater than zero
-        if ($total_time_allowed > 0) {
-            // Break the time allowed details down into human readable form
-            $timeallowance = program_utilities::duration_explode($total_time_allowed);
-
-            $out .= '<p class="timeallowed">';
-
-            if ($viewinganothersprogram) {
-                $timeallowance->fullname = $user->fullname;
-                $out .= get_string('allowedtimeforprogramasmanager', 'local_program', $timeallowance);
-            } else {
-                if ($userid) {
-                    $out .= get_string('allowedtimeforprogramaslearner', 'local_program', $timeallowance);
-                } else {
-                    $out .= get_string('allowedtimeforprogramviewing', 'local_program', $timeallowance);
-                }
-            }
-
-            // Only display the 'request an extension' link to assigned learners
-            // (i.e. those users who have this program as part of their required
-            // learning)
-            if (!$viewinganothersprogram && $userid && $this->assigned_to_users_required_learning($userid)) {
-                $out .= ' <a href="'.$CFG->wwwroot.'/local/program/view.php?id='.$this->id.'&amp;extrequest=1">'.get_string('requestextension', 'local_program').'</a>';
-            }
-
-            $out .= '</p>';
-        }
+        $out .= $this->get_time_allowance_and_extension_text($userid, $viewinganothersprogram);
 
         // display the start date, due date and progress bar
         if ($userid) {
@@ -855,11 +826,8 @@ class program {
                 $duedatestr = empty($prog_completion->timedue) ? get_string('duedatenotset', 'local_program') : $this->display_date_as_text($prog_completion->timedue);
                 $out .= '<div class="programprogress">';
                 $out .= '<div class="startdate">'.get_string('startdate', 'local_program').': '.$startdatestr.'</div>';
-                ;
                 $out .= '<div class="duedate">'.get_string('duedate', 'local_program').': '.$duedatestr.'</div>';
-                ;
                 $out .= '<div class="startdate">'.get_string('progress', 'local_program').': '.$this->display_progress($userid).'</div>';
-                ;
                 $out .= '</div>';
             }
         }
@@ -946,6 +914,52 @@ class program {
             $out .= '<h2>'.get_string('programends', 'local_program').'</h2>';
             $out .= '<div class="endnote">'.$this->endnote.'</div>';
             $out .= '</div>';
+        }
+
+        return $out;
+    }
+
+    function get_time_allowance_and_extension_text($userid, $viewinganothersprogram) {
+        global $CFG;
+
+        $out = '';
+
+        // Get the total time allowed for this program
+        $total_time_allowed = $this->content->get_total_time_allowance();
+
+        // Only display the time allowance if it is greater than zero
+        if ($total_time_allowed > 0) {
+            // Break the time allowed details down into human readable form
+            $timeallowance = program_utilities::duration_explode($total_time_allowed);
+
+            $out .= '<p class="timeallowed">';
+
+            if ($viewinganothersprogram) {
+                $user = get_record('user', 'id', $userid);
+                $timeallowance->fullname = fullname($user);
+                $out .= get_string('allowedtimeforprogramasmanager', 'local_program', $timeallowance);
+            } else {
+                if ($userid) {
+                    $out .= get_string('allowedtimeforprogramaslearner', 'local_program', $timeallowance);
+                } else {
+                    $out .= get_string('allowedtimeforprogramviewing', 'local_program', $timeallowance);
+                }
+            }
+
+            // Only display the 'request an extension' link to assigned learners
+            // (i.e. those users who have this program as part of their required
+            // learning). If there is an existing pending extension show pending text
+            if (!$viewinganothersprogram && $userid && $this->assigned_to_users_required_learning($userid) && totara_get_manager($userid)) {
+                if (!$extension = get_record('prog_extension', 'userid', $userid, 'programid', $this->id, 'status', 0)) {
+                    // Show extension link
+                    $out .= ' <a href="'.$CFG->wwwroot.'/local/program/view.php?id='.$this->id.'&amp;extrequest=1">'.get_string('requestextension', 'local_program').'</a>';
+                } else {
+                    // Show pending text
+                    $out .= ' ' . get_string('pendingextension', 'local_program');
+                }
+            }
+
+            $out .= '</p>';
         }
 
         return $out;

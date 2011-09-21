@@ -26,6 +26,7 @@
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
 require_login();
 
@@ -39,6 +40,18 @@ $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 $systemcontext = get_system_context();
 if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'local_plan');
+}
+
+//Javascript include
+local_js(array(
+    TOTARA_JS_DIALOG,
+));
+
+// Get extension dialog content
+if ($programid = get_field('dp_plan_program_assign', 'programid', 'id', $progassid)) {
+    require_js(array(
+        $CFG->wwwroot . '/local/program/view/program_view.js.php?id=' . $programid
+    ));
 }
 
 $componentname = 'program';

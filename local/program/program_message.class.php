@@ -1017,7 +1017,7 @@ class prog_learner_followup_message extends prog_eventbased_message {
  */
 class prog_extension_request_message extends prog_noneventbased_message {
 
-    public function __construct($programid, $messageob=null, $uniqueid=null) {
+    public function __construct($programid, $userid, $messageob=null, $uniqueid=null) {
         global $CFG;
 
         parent::__construct($programid, $messageob, $uniqueid);
@@ -1026,12 +1026,13 @@ class prog_extension_request_message extends prog_noneventbased_message {
         $this->helppage = 'extensionrequestmessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:extensionrequestmessage', 'local_program');
+        $this->userid = $userid;
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/exceptions.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/local/program/manageextensions.php?userid='.$this->userid,
             'contexturlname'    => get_string('manageextensionrequests', 'local_program'),
         );
 
@@ -1051,6 +1052,7 @@ class prog_extension_request_message extends prog_noneventbased_message {
         $this->managermessagedata->userfrom = $sender;
         $this->managermessagedata->subject = $this->replacevars($this->managermessagedata->subject);
         $this->managermessagedata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
+        $this->managermessagedata->sendemail = TOTARA_MSG_EMAIL_YES;
         $result = tm_alert_send($this->managermessagedata);
 
         return $result;
