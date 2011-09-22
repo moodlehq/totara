@@ -2013,6 +2013,8 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'label%'] = array('name'=>$prefix.'label', 'value'=>null);
         }
 
+        $templatehtml .= (!$this->course->enrolenddate) ? '<div class="recurringnotice">'.get_string('error:courses_endenroldate','local_program').'</div>' : '';
+
         $helpbutton = helpbutton('setlabel', get_string('label:setname', 'local_program'), 'local_program', true, false, '', true);
         $templatehtml .= '<div>';
         $templatehtml .= '<div class="flabel"><label for="'.$prefix.'label">'.get_string('label:setname', 'local_program').' '.$helpbutton.'</label></div>';
@@ -2119,7 +2121,6 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'update%'] = array('name'=>$prefix.'update', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'update%'."\n";
-
         $templatehtml .= '</div>';
 
         $templatehtml .= '</fieldset>';

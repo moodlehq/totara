@@ -5531,6 +5531,10 @@ body.hierarchy-type div.add-type-button .singlebutton {
 	padding:4px 43px;
 }
 
+#programcontent div.recurringnotice {
+    text-align: center;
+}
+
 #program-overview .singlebutton {
     margin-left: 22%;
     margin-top: 0;

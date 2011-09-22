@@ -157,6 +157,7 @@ $string['requiredlearninginstructions'] = 'Your required learning is shown below
 $string['requiredlearninginstructionsuser'] = '{$a}\'s required learning is shown below.';
 
 // Errors
+$string['error:courses_endenroldate'] = 'You must set an enrolment end date for this course if you want it to recur';
 $string['error:courses_nocourses'] = 'Course sets must contain at least one course.';
 $string['error:nopermissions'] = 'You do not have the necessary permissions to perform this action';
 $string['error:inaccessible'] = 'You cannot currently access this program';

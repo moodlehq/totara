@@ -1312,3 +1312,9 @@ a.deletelink:visited,
 a.deletelink:hover {
     color: #000000;
 }
+
+
+#programcontent div.recurringnotice {
+    color: #FF0000;
+    font-weight: bold;
+}
