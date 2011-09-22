@@ -64,41 +64,56 @@ function scorm_resize (cwidth, cheight) {
 
     var totalheighttoc = totalheight+imsnavheight;
     // override total height with configured height if it is defined
-    if (cheight > 0) {
+    if (cheight > 0 && cheight != 100) {
       winheight = cheight;
     }
     var finalheighttoc = winheight - totalheighttoc;
     if (finalheighttoc <= 0) {
         finalheighttoc = winheight;
-    }                        
+    }
     var finalheight = winheight - totalheight;
     if (finalheight <= 0) {
         finalheight = winheight;
-    }                        
+    }
     var toctree = document.getElementById('toctree');
     if (toctree != null){
         var toctreeHeight = toctree.offsetHeight;
         document.getElementById('toctree').style.height = finalheighttoc + 'px';
         var scoframe2 = document.getElementById('scoframe1');
-        document.getElementById('scormobject').style.height = finalheight + 'px';
+        if (cheight == '100') {
+            document.getElementById('scormobject').style.height = '100%';
+        }
+        else {
+            document.getElementById('scormobject').style.height = finalheight + 'px';
+        }
     }else{
         var scoframe2 = document.getElementById('scoframe1');
-        document.getElementById('scormobject').style.height = finalheight + 'px';
+        if (cheight == '100') {
+            document.getElementById('scormobject').style.height = '100%';
+        }
+        else {
+            document.getElementById('scormobject').style.height = finalheight + 'px';
+        }
     }
 
-	// resize the content container too to move the footer below the SCORM content
-	var contenti3 = document.getElementById('content-i3');
-	if (contenti3) {
-    	contenti3.style.height = (winheight - totalheight + 30) + 'px';
-	} else {
-	   document.getElementById('content').style.height = (finalheight + 30) + 'px';
+    // resize the content container too to move the footer below the SCORM content
+    var contenti3 = document.getElementById('content-i3');
+    if (contenti3) {
+        contenti3.style.height = (winheight - totalheight + 30) + 'px';
+    } else {
+       document.getElementById('content').style.height = (finalheight + 30) + 'px';
     }
      // resize the content container too to move the footer below the SCORM content
     var contenti3 = document.getElementById('content-i3');
     if (contenti3) {
         contenti3.style.height = (finalheight + 30) + 'px';
     } else {
-        document.getElementById('content').style.height = (finalheight + 30) + 'px';
+        if (cheight == '100') {
+            document.getElementById('content').style.height = '100%';
+        }
+        else {
+            document.getElementById('content').style.height = (finalheight + 30) + 'px';
+        }
     }
 }
 -->

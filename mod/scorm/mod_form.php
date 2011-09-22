@@ -98,7 +98,7 @@ class mod_scorm_mod_form extends moodleform_mod {
         $mform->addElement('text', 'width', get_string('width','scorm'),'maxlength="5" size="5"');
         $mform->setDefault('width', $CFG->scorm_framewidth);
         $mform->setType('width', PARAM_INT);
-        
+
 // Height
         $mform->addElement('text', 'height', get_string('height','scorm'),'maxlength="5" size="5"');
         $mform->setDefault('height', $CFG->scorm_frameheight);
@@ -180,6 +180,9 @@ class mod_scorm_mod_form extends moodleform_mod {
 
     function data_preprocessing(&$default_values) {
         global $COURSE;
+        if (isset($default_values['directview']) && $default_values['directview'] == 1) {
+            $default_values['popup'] = 2;
+        }
 
         if (isset($default_values['popup']) && ($default_values['popup'] == 1) && isset($default_values['options'])) {
             if (!empty($default_values['options'])) {
@@ -187,7 +190,7 @@ class mod_scorm_mod_form extends moodleform_mod {
                 foreach ($options as $option) {
                     list($element,$value) = explode('=',$option);
                     $element = trim($element);
-                    $default_values[$element] = trim($value); 
+                    $default_values[$element] = trim($value);
                 }
             }
         }

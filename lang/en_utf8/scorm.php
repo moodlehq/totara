@@ -30,6 +30,7 @@ $string['completionstatusrequired'] = 'Require status';
 $string['confirmloosetracks'] = 'WARNING: The package seems to be changed or modified. If the package structure is changed, some users tracks may be lost during update process.';
 $string['contents'] = 'Contents';
 $string['coursepacket'] = 'Course package';
+$string['directview'] = 'Launch direct from course';
 $string['package'] = 'Package file';
 $string['coursestruct'] = 'Course structure';
 $string['datadir'] = 'Filesystem Error: Can\'t create course data directory';

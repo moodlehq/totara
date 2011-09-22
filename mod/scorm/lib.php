@@ -69,6 +69,15 @@ function scorm_add_instance($scorm) {
             $scorm->whatgrade = 0;
         }
 
+        // no directview if popup
+        if ($scorm->popup == 2) {
+            $scorm->directview = 1;
+            $scorm->popup = 0;
+        }
+        else {
+            $scorm->directview = 0;
+        }
+
         $id = insert_record('scorm', $scorm);
 
         if (scorm_external_link($scorm->reference) || ((basename($scorm->reference) != 'imsmanifest.xml') && ($scorm->reference[0] != '#'))) {
@@ -136,6 +145,15 @@ function scorm_update_instance($scorm) {
 
     if (!isset($scorm->whatgrade)) {
         $scorm->whatgrade = 0;
+    }
+
+    // no directview if popup
+    if ($scorm->popup == 2) {
+        $scorm->directview = 1;
+        $scorm->popup = 0;
+    }
+    else {
+        $scorm->directview = 0;
     }
 
     // Check if scorm manifest needs to be reparsed
@@ -609,7 +627,7 @@ function scorm_option2text($scorm) {
     $scorm_popoup_options = scorm_get_popup_options_array();
 
     if (isset($scorm->popup)) {
-        if ($scorm->popup == 1) {
+        if ($scorm->popup == 1 || $scorm->popup == 2) {
             $optionlist = array();
             foreach ($scorm_popoup_options as $name => $option) {
                 if (isset($scorm->$name)) {

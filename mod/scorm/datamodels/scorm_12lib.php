@@ -278,7 +278,7 @@ function scorm_get_toc($user,$scorm,$liststyle,$currentorg='',$scoid='',$mode='n
                         if ($sco->id == $scoid) {
                             $result->prerequisites = true;
                         }
-                        $url = $CFG->wwwroot.'/mod/scorm/player.php?a='.$scorm->id.'&amp;currentorg='.$currentorg.$modestr.'&amp;scoid='.$sco->id;
+                        $url = $CFG->wwwroot.'/mod/scorm/'.($scorm->directview ? 'view.php?directview=1&' : 'player.php?').'a='.$scorm->id.'&amp;currentorg='.$currentorg.$modestr.'&amp;scoid='.$sco->id;
                         $result->toc .= $statusicon.'&nbsp;'.$startbold.'<a href="'.$url.'">'.format_string($sco->title).'</a>'.$score.$endbold."</li>\n";
                         $tocmenus[$sco->id] = scorm_repeater('&minus;',$level) . '&gt;' . format_string($sco->title);
                     } else {
@@ -337,7 +337,7 @@ function scorm_get_toc($user,$scorm,$liststyle,$currentorg='',$scoid='',$mode='n
           </script>'."\n";
     }
 
-    $url = $CFG->wwwroot.'/mod/scorm/player.php?a='.$scorm->id.'&amp;currentorg='.$currentorg.$modestr.'&amp;scoid=';
+    $url = $CFG->wwwroot.'/mod/scorm/'.($scorm->directview ? 'view.php?directview=1&' : 'player.php?').'a='.$scorm->id.'&amp;currentorg='.$currentorg.$modestr.'&amp;scoid=';
     $result->tocmenu = popup_form($url,$tocmenus, "tocmenu", $sco->id, '', '', '', true);
 
     return $result;
