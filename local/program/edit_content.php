@@ -138,6 +138,12 @@ if($data = $contenteditform->get_data()) {
             // log this request
             add_to_log(SITEID, 'program', 'update content', "edit_content.php?id={$program->id}", $program->fullname);
 
+            $prog_update = new stdClass();
+            $prog_update->id = $id;
+            $prog_update->timemodified = time();
+            $prog_update->usermodified = $USER->id;
+            update_record('prog', $prog_update);
+
             if(isset($data->savechanges)) {
                 totara_set_notification(get_string('programcontentsaved', 'local_program'), 'edit_content.php?id='.$id, array('style' => 'notifysuccess'));
             }

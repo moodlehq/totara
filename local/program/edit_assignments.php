@@ -66,6 +66,12 @@ if($data = data_submitted()) {
     // log this request
     add_to_log(SITEID, 'program', 'update assignments', "edit_assignments.php?id={$program->id}", $program->fullname);
 
+    $prog_update = new stdClass();
+    $prog_update->id = $id;
+    $prog_update->timemodified = time();
+    $prog_update->usermodified = $USER->id;
+    update_record('prog', $prog_update);
+
     if(isset($data->savechanges)) {
         totara_set_notification(get_string('programassignmentssaved', 'local_program'), 'edit_assignments.php?id='.$id, array('style' => 'notifysuccess'));
     }
