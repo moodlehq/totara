@@ -2979,7 +2979,6 @@ fieldset legend span.helplink {
  * totara my courses
  */
 div.mycourses td.status span {
-    text-indent: -1000px;
     display: block;
     width: 45px;
     height: 12px;
