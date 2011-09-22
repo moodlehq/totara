@@ -380,7 +380,7 @@ totaraDialog_handler_addcompetency.prototype._save = function() {
 totaraDialog_addrecurringcourse = function() {
 
     this.url = '<?php echo $CFG->wwwroot; ?>/local/program/content/';
-    this.find_url = 'find_courses.php?id=<?php echo $id ?>';
+    this.find_url = 'find_course.php?id=<?php echo $id ?>';
     this.ajax_url = 'get_html.php?id=<?php echo $id ?>';
 
     // Setup the handler
