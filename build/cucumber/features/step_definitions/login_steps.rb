@@ -1,9 +1,8 @@
 When /I am logged in as "(.*)" with password "(.*)"/ do |username, password|
-  Then "I am on the login page"
-  And "I fill in \"username\" with \"#{username}\""
-  And "I fill in \"password\" with \"#{password}\""
-  And "I press \"Login\""
-  And "I should see \"You are logged in as\""
+  @@site_url = get_site_url
+  visit @@site_url+"/login/index.php",
+      :post,
+      {:username => username, :password => password}
 end
 
 When /I am not logged in/ do

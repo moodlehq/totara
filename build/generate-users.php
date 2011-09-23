@@ -22,17 +22,22 @@ $todb->username = 'learner';
 $todb->email = 'learner@example.com';
 $todb->firstname = 'Reginald';
 $todb->lastname = 'Hulsman';
-insert_record('user', $todb);
+if (!record_exists('user', 'username', 'learner')) {
+    insert_record('user', $todb);
+}
 
 $todb->username = 'manager';
 $todb->email = 'manager@example.com';
 $todb->firstname = 'Test';
 $todb->lastname = 'Manager';
-insert_record('user', $todb);
+if (!record_exists('user', 'username', 'manager')) {
+    insert_record('user', $todb);
+}
 
 $todb->username = 'trainer';
 $todb->email = 'trainer@example.com';
 $todb->firstname = 'Test';
 $todb->lastname = 'Trainer';
-insert_record('user', $todb);
-
+if (!record_exists('user', 'username', 'trainer')) {
+    insert_record('user', $todb);
+}
