@@ -84,7 +84,7 @@ print '<input type="hidden" name="id" value="' . $id . '" />';
 print '<input type="hidden" name="update" value="' . implode(',', $idlist) . '" />';
 
 foreach ($evidence as $compid => $linkedcourses) {
-    print 'Competency "'. $compnames[$compid] . '":<br />';
+    print get_string('competency', 'competency') . ' '. $compnames[$compid] . '":<br />';
 
     foreach ($linkedcourses as $linkedcourse) {
         if ($plan->get_component('course')->is_item_assigned($linkedcourse->courseid)) {
