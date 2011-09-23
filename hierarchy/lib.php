@@ -767,7 +767,7 @@ class hierarchy {
         global $CFG;
 
         if (!record_exists($this->shortprefix, 'id', $id)) {
-            error('Attempting to delete nonexistent item ' . $id);
+            return false;
         }
 
         // get array of items to delete (the item specified *and* all its children)
@@ -1458,10 +1458,16 @@ class hierarchy {
             $newparentid = $newitem->parentid;
             $newitem->parentid = $oldparentid;
         }
+        if ($newitem->frameworkid != $olditem->frameworkid) {
+            // the item is being moved. First update without changing the framework, then move afterwards
+            $oldframeworkid = $olditem->frameworkid;
+            $newframeworkid = $newitem->frameworkid;
+            $newitem->frameworkid = $oldframeworkid;
+        }
 
         $newitem->id = $itemid;
-        $newitem->timemodified = time();
-        $newitem->usermodified = $USER->id;
+        $newitem->timemodified = empty($newitem->timemodified) ? time() : $newitem->timemodified;
+        $newitem->usermodified = empty($USER->id) ? get_admin()->id : $USER->id;
 
         if ($escapeitem) {
             // add slashes if required
@@ -1479,14 +1485,18 @@ class hierarchy {
             return false;
         }
 
-        if (isset($newparentid)) {
+        if (isset($newparentid) || isset($newframeworkid)) {
             // item is also being moved
 
             // get a new copy of the updatd item from the db
             $updateditem = get_record($this->shortprefix, 'id', $itemid);
 
+            $newparentid = isset($newparentid) ? $newparentid : 0;  // top-level
+            $newframeworkid = isset($newframeworkid) ? $newframeworkid : $updateditem->frameworkid;  // same framework
+
+
             // move it
-            if (!$this->move_hierarchy_item($updateditem, $newparentid, false)) {
+            if (!$this->move_hierarchy_item($updateditem, $newframeworkid, $newparentid, false)) {
                 if ($usetransaction) {
                     rollback_sql();
                 }
@@ -1527,13 +1537,18 @@ class hierarchy {
      * - sortthread of all moved items
      *
      * @param object $item The item to move
+     * @param integer $newframeworkid ID of the framework to attach it to
      * @param integer $newparentid ID of the item to attach it to
      * @param boolean $usetransaction If true this function will use transactions (optional, default: true)
      */
-    function move_hierarchy_item($item, $newparentid, $usetransaction=true) {
+    function move_hierarchy_item($item, $newframeworkid, $newparentid, $usetransaction=true) {
         global $CFG;
 
         if (!is_object($item)) {
+            return false;
+        }
+
+        if (!record_exists($this->shortprefix.'_framework', 'id', $newframeworkid)) {
             return false;
         }
 
@@ -1557,7 +1572,7 @@ class hierarchy {
             $newparent->id = 0;
             $newparent->path = '';
             $newparent->depthlevel = 0;
-            $newparent->frameworkid = $item->frameworkid;
+            $newparent->frameworkid = $newframeworkid;
         } else {
             $newparent = get_record($this->shortprefix, 'id', $newparentid);
             if (!$newparent) {
@@ -1570,12 +1585,13 @@ class hierarchy {
                 return false;
             }
         }
-        if ($newparent->frameworkid != $item->frameworkid) {
-            // can't move to a different framework
+
+        // Ensure the new parent exists in the specified new framework
+        if (!empty($newparent->id) && $newparent->frameworkid != $newframeworkid) {
             return false;
         }
 
-        if (!$newsortthread = $this->get_next_child_sortthread($newparentid, $item->frameworkid)) {
+        if (!$newsortthread = $this->get_next_child_sortthread($newparentid, $newframeworkid)) {
             // unable to calculate the new sortthread
             return false;
         }
@@ -1587,17 +1603,6 @@ class hierarchy {
 
         // update the sort thread
         $this->move_sortthread($oldsortthread, $newsortthread, $item->frameworkid);
-
-        // update the item's parent ID
-        $todb = new object();
-        $todb->id = $item->id;
-        $todb->parentid = $newparentid;
-        if (!update_record($this->shortprefix, $todb)) {
-            if ($usetransaction) {
-                rollback_sql();
-            }
-            return false;
-        }
 
         // update the depthlevel of the item and its descendants
         // figure out how much the level will change after move
@@ -1636,6 +1641,18 @@ class hierarchy {
             WHERE (path = '{$item->path}' OR path LIKE '{$item->path}/%')
             AND frameworkid = {$item->frameworkid}";
         if (!execute_sql($sql, false)) {
+            if ($usetransaction) {
+                rollback_sql();
+            }
+            return false;
+        }
+
+        // finally, update the item's parent- and framework id
+        $todb = new object();
+        $todb->id = $item->id;
+        $todb->parentid = $newparentid;
+        $todb->frameworkid = $newframeworkid;
+        if (!update_record($this->shortprefix, $todb)) {
             if ($usetransaction) {
                 rollback_sql();
             }

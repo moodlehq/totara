@@ -15,6 +15,7 @@ require_once($CFG->dirroot . '/hierarchy/prefix/organisation/lib.php');
 require_once($CFG->libdir . '/simpletestlib.php');
 
 class movehierarchyitem_test extends prefix_changing_test_case {
+//TODO: add tests for moving hierarchy items between frameworks
 
     var $org_data = array(
         array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid',
@@ -71,16 +72,27 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         1, 1234567890, 1234567890, 2, null),
     );
 
+    var $org_fw_data = array(
+        array('id', 'fullname', 'shortname', 'description', 'idnumber',
+        'visible', 'timecreated', 'timemodified', 'usermodified'),
+        array(1, 'Framework A', 'FW A', 'Org Framework Description A', 'FA',
+        1, 1234567890, 1234567890, 2),
+        array(2, 'Framework B', 'FW B', 'Org Framework Description B', 'FB',
+        1, 1234567890, 1234567890, 2),
+    );
+
 
     function setUp() {
         global $db,$CFG;
         parent::setup();
         load_test_table($CFG->prefix . 'org', $this->org_data, $db);
+        load_test_table($CFG->prefix . 'org_framework', $this->org_fw_data, $db);
     }
 
     function tearDown() {
         global $db,$CFG;
         remove_test_table($CFG->prefix . 'org', $db);
+        remove_test_table($CFG->prefix . 'org_framework', $db);
         parent::tearDown();
     }
 
@@ -117,7 +129,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 3;
 
         $before = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,parentid');
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,parentid');
 
         // all that should have changed is item 6 should now have 3 as a parentid
@@ -130,7 +142,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 0;
 
         $before = $after;
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,parentid');
         $before[6] = 0;
         $this->assertEqual($before, $after);
@@ -140,7 +152,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 6;
 
         $before = $after;
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,parentid');
         $before[1] = 6;
 
@@ -153,7 +165,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 3;
 
         $before = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,depthlevel');
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,depthlevel');
         // item and all it's children should have changed
         $before[6] = 4;
@@ -168,7 +180,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 0;
 
         $before = $after;
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,depthlevel');
         // item and all it's children should have changed
         $before[6] = 1;
@@ -182,7 +194,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $item = get_record('org', 'id', 1);
         $newparent = 10;
         $before = $after;
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,depthlevel');
         // item and all it's children should have changed
         $before[1] = 2;
@@ -202,7 +214,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 3;
 
         $before = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,path');
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,path');
         // item and all it's children should have changed
         $before[6] = '/1/2/3/6';
@@ -217,7 +229,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 0;
 
         $before = $after;
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,path');
         // item and all it's children should have changed
         $before[6] = '/6';
@@ -231,7 +243,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $item = get_record('org', 'id', 1);
         $newparent = 10;
         $before = $after;
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,path');
         // item and all it's children should have changed
         $before[1] = '/10/1';
@@ -249,7 +261,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 3;
 
         $before = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,sortthread');
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,sortthread');
         // item and all it's children should have changed
         $before[6] = '01.01.01.01';
@@ -265,7 +277,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 0;
 
         $before = $after;
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,sortthread');
         // item and all it's children should have changed
         $before[6] = '04';
@@ -279,7 +291,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $item = get_record('org', 'id', 1);
         $newparent = 10;
         $before = $after;
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '1', 'sortthread', 'id,sortthread');
         // item and all it's children should have changed
         $before[1] = '03.01';
@@ -298,7 +310,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
         $newparent = 14;
 
         $before = get_records_menu('org', 'frameworkid', '2', 'sortthread', 'id,sortthread');
-        $this->assertTrue($org->move_hierarchy_item($item, $newparent));
+        $this->assertTrue($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '2', 'sortthread', 'id,sortthread');
 
         // item and all it's children should have changed
@@ -319,7 +331,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
 
         $before = get_records_menu('org', 'frameworkid', '2', 'sortthread', 'id,sortthread');
         // this should fail
-        $this->assertFalse($org->move_hierarchy_item($item, $newparent));
+        $this->assertFalse($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '2', 'sortthread', 'id,sortthread');
         // everything stays the same
         $this->assertEqual($before, $after);
@@ -330,7 +342,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
 
         $before = get_records_menu('org', 'frameworkid', '2', 'sortthread', 'id,sortthread');
         // this should fail
-        $this->assertFalse($org->move_hierarchy_item($item, $newparent));
+        $this->assertFalse($org->move_hierarchy_item($item, $item->frameworkid, $newparent));
         $after = get_records_menu('org', 'frameworkid', '2', 'sortthread', 'id,sortthread');
         // everything stays the same
         $this->assertEqual($before, $after);
@@ -342,7 +354,7 @@ class movehierarchyitem_test extends prefix_changing_test_case {
 
         $before = get_records_menu('org', 'frameworkid', '2', 'sortthread', 'id,sortthread');
         // this should fail
-        $this->assertFalse($org->move_hierarchy_item($item, $newparent));
+        $this->assertFalse($org->move_hierarchy_item($item, $item, $newparent));
         $after = get_records_menu('org', 'frameworkid', '2', 'sortthread', 'id,sortthread');
         // everything stays the same
         $this->assertEqual($before, $after);

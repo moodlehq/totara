@@ -224,7 +224,7 @@ if ($confirmmove && $newparent !== false) {
     begin_sql();
     if ($items_to_move = get_records_select($shortprefix, sql_sequence('id', $unique_ids))) {
         foreach ($items_to_move as $item_to_move) {
-            $status = $status && $hierarchy->move_hierarchy_item($item_to_move, $newparent, false);
+            $status = $status && $hierarchy->move_hierarchy_item($item_to_move, $frameworkid, $newparent, false);
         }
     }
 
