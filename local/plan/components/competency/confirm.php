@@ -84,7 +84,7 @@ print '<input type="hidden" name="id" value="' . $id . '" />';
 print '<input type="hidden" name="update" value="' . implode(',', $idlist) . '" />';
 
 foreach ($evidence as $compid => $linkedcourses) {
-    print get_string('competency', 'competency') . ' '. $compnames[$compid] . '":<br />';
+    print get_string('competency', 'competency') . ' '. format_string($compnames[$compid]) . '":<br />';
 
     foreach ($linkedcourses as $linkedcourse) {
         if ($plan->get_component('course')->is_item_assigned($linkedcourse->courseid)) {
@@ -97,10 +97,10 @@ foreach ($evidence as $compid => $linkedcourses) {
             print '<input type="checkbox" checked="checked" disabled="disabled" value="1"> ';
             print '<input type="hidden" name="linkedcourses['.$compid.']['.$linkedcourse->courseid.']" value="1" />';
             print '<input type="hidden" name="mandatory['.$compid.']['.$linkedcourse->courseid.']" value="1" />';
-            print $linkedcourse->fullname . $message.'<br />';
+            print format_string($linkedcourse->fullname) . $message .'<br />';
         } else {
             print '<input type="checkbox" checked="checked" name="linkedcourses[' . $compid . '][' . $linkedcourse->courseid . ']" value="1"> ';
-            print $linkedcourse->fullname . $message . '<br />';
+            print format_string($linkedcourse->fullname) . $message . '<br />';
         }
     }
 }

@@ -115,7 +115,7 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
 
         $module = $this->_get_module();
 
-        return '<a href="'.$CFG->wwwroot.'/mod/'.$this->itemmodule.'/view.php?id='.$this->iteminstance.'">'.$module->name.'</a>';
+        return '<a href="'.$CFG->wwwroot.'/mod/'.$this->itemmodule.'/view.php?id='.$this->iteminstance.'">'.format_string($module->name).'</a>';
     }
 
     /**
@@ -130,7 +130,7 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
 
         $module = $this->_get_module();
 
-        return '<a href="'.$CFG->wwwroot.'/course/report/progress/index.php?course='.$module->course.'">'.$name.'</a>';
+        return '<a href="'.$CFG->wwwroot.'/course/report/progress/index.php?course='.$module->course.'">'.format_string($name).'</a>';
     }
 
     /**

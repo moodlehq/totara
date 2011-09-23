@@ -53,10 +53,10 @@ $compname = get_field('comp', 'fullname', 'id', $item->competencyid);
 if (!$delete) {
     if(!$course){
         $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, $compname).'<br /><br />';
-        $message .= format_string($item->get_name() .' ('. $item->get_type().')');
+        $message .= $item->get_name() .' ('. $item->get_type().')';
     }
     else {
-        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, format_string($item->get_name())).'<br /><br />';
+        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, $item->get_name()).'<br /><br />';
         $message .= format_string($compname .' ('. $item->get_type().')');
     }
 

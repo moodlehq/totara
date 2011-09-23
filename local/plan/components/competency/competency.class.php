@@ -400,7 +400,7 @@ class dp_competency_component extends dp_base_component {
         foreach ($pendingitems as $item) {
             $row = array();
             // @todo write abstracted display_item_name() and use here
-            $name = $item->fullname;
+            $name = format_string($item->fullname);
 
             // if there is competency evidence, display it below the
             // competency with checkboxes and a description
@@ -625,10 +625,10 @@ class dp_competency_component extends dp_base_component {
         $icon = $this->determine_item_icon($item);
         return '<img class="competency_state_icon" src="' .
             $CFG->wwwroot . '/local/icon/icon.php?icon=' . $icon .
-            '&amp;size=small&amp;type=msg" alt="' . $item->fullname.
+            '&amp;size=small&amp;type=msg" alt="' . format_string($item->fullname).
             '"><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->fullname .
+            $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
             '</a>';
     }
 
@@ -681,8 +681,8 @@ class dp_competency_component extends dp_base_component {
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
         $icon = $this->determine_item_icon($item);
-        $icon = "<img class=\"competency_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"{$item->fullname}\">";
-        $out .= '<h3>' . $icon . $item->fullname . '</h3>';
+        $icon = "<img class=\"competency_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"" . format_string($item->fullname) . "\">";
+        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
         $out .= '<table border="0" class="planiteminfobox">';
         $out .= '<tr>';
         if ($priorityenabled && !empty($item->priority)) {
@@ -708,7 +708,7 @@ class dp_competency_component extends dp_base_component {
         }
         $out .= "</tr>";
         $out .= '</table>';
-        $out .= '<p>' . $item->description . '</p>';
+        $out .= '<p>' . format_string($item->description) . '</p>';
 
         return $out;
     }

@@ -487,7 +487,7 @@ abstract class dp_base_component {
         foreach($pendingitems as $item) {
             $row = array();
             // @todo write abstracted display_item_name() and use here
-            $row[] = $item->fullname;
+            $row[] = format_string($item->fullname);
             $row[] = $this->display_approval_options($item, $item->approved);
             $table->data[] = $row;
         }

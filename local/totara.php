@@ -350,11 +350,11 @@ function totara_print_report_manager($return=false) {
             $row = '
             <tr class="'.$class.'">
                 <td class="icon" align="left">
-                    <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
+                    <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.format_string($report->fullname).'">
                     <img src="'.$CFG->pixpath.'/i/reports.png" width="32" height="32" /></a>
                 </td>
                 <td class="text" align="left">
-                    <span style="font-size: small;"><a href="'.$viewurl.'">'.$report->fullname.'</a>
+                    <span style="font-size: small;"><a href="'.$viewurl.'">'.format_string($report->fullname).'</a>
                 ';
 
 

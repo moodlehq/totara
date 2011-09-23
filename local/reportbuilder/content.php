@@ -65,7 +65,7 @@ print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_st
 print $report->view_button();
 print_container_end();
 
-print_heading(get_string('editreport','local_reportbuilder',$report->fullname));
+print_heading(get_string('editreport','local_reportbuilder', format_string($report->fullname)));
 
 $currenttab = 'content';
 include_once('tabs.php');

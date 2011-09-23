@@ -283,10 +283,10 @@ class dp_objective_component extends dp_base_component {
         $icon = $this->determine_item_icon($item);
         return '<img class="objective_state_icon" src="' .
             $CFG->wwwroot . '/local/icon/icon.php?icon=' . $icon .
-            '&amp;size=small&amp;type=msg" alt="' . $item->fullname.
+            '&amp;size=small&amp;type=msg" alt="' . format_string($item->fullname).
             '"><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->fullname .
+            $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
             '</a>';
     }
 
@@ -1102,8 +1102,8 @@ SQL;
 
         $out .= "<table><tr><td>";
         $icon = $this->determine_item_icon($item);
-        $icon = "<img class=\"objective_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"{$item->fullname}\">";
-        $out .= '<h3>' . $icon . $item->fullname . '</h3>';
+        $icon = "<img class=\"objective_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"" . format_string($item->fullname) . "\">";
+        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
         $out .= "</td></tr></table>";
 
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
@@ -1154,7 +1154,7 @@ SQL;
             $out .= $this->display_approval($item, false, false)."</td>\n";
         }
         $out .= '</table>';
-        $out .= "  <p>{$item->description}</p>\n";
+        $out .= "  <p>" . format_string($item->description) . "</p>\n";
 
         print $out;
     }

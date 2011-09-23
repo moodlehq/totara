@@ -506,7 +506,7 @@ class dp_course_component extends dp_base_component {
             '&amp;size=small&amp;type=course" alt="' . format_string($item->fullname).
             '" /><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->fullname .
+            $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
             '</a>'. $launch;
     }
 
@@ -563,8 +563,8 @@ class dp_course_component extends dp_base_component {
                 '</div>';
         }
 
-        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$item->icon}&amp;id={$item->courseid}&amp;size=small&amp;type=course\" alt=\"{$item->fullname}\">";
-        $out .= '<h3>' . $icon . $item->fullname . '</h3>';
+        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$item->icon}&amp;id={$item->courseid}&amp;size=small&amp;type=course\" alt=\"" . format_string($item->fullname) . "\">";
+        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
         $out .= '<table border="0" class="planiteminfobox">';
         $out .= "<tr>";
         if ($priorityenabled && !empty($item->priority)) {
@@ -590,7 +590,7 @@ class dp_course_component extends dp_base_component {
         }
         $out .= "</tr>";
         $out .= '</table>';
-        $out .= '<p>' . $item->summary . '</p>';
+        $out .= '<p>' . format_string($item->summary) . '</p>';
 
         return $out;
     }

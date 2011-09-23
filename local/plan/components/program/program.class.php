@@ -666,14 +666,14 @@ class dp_program_component extends dp_base_component {
                 '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
                 '" /><a href="' . $CFG->wwwroot .
                 '/local/plan/components/' . $this->component.'/view.php?id=' .
-                $this->plan->id . '&amp;itemid=' . $item->id . $extraparams . '">' . $item->fullname .
+                $this->plan->id . '&amp;itemid=' . $item->id . $extraparams . '">' . format_string($item->fullname) .
                 '</a>';
         } else {
             return '<img class="program_icon" src="' .
                 $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
                 '&amp;id=' . $item->programid .
                 '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
-                '" />' . $item->fullname;
+                '" />' . format_string($item->fullname);
         }
     }
 
@@ -699,8 +699,8 @@ class dp_program_component extends dp_base_component {
 
         $out = '';
 
-        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$item->icon}&amp;id={$item->programid}&amp;size=small&amp;type=program\" alt=\"{$item->fullname}\">";
-        $out .= '<h3>' . $icon . $item->fullname . '</h3>';
+        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$item->icon}&amp;id={$item->programid}&amp;size=small&amp;type=program\" alt=\"" . format_string($item->fullname) . "\">";
+        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
 
         $program = new program($item->id);
 

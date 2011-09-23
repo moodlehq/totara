@@ -420,6 +420,7 @@ abstract class rb_base_source {
     function rb_display_link_course($course, $row) {
         global $CFG;
         $courseid = $row->course_id;
+        $course = format_string($course);
         $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
         return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
     }
@@ -430,14 +431,16 @@ abstract class rb_base_source {
         global $CFG;
         $courseid = $row->course_id;
         $courseicon = $row->course_icon;
-        return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
+        $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
+        $course = format_string($course);
+        return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
     }
 
     // display an icon based on the course icon field
     function rb_display_course_icon($icon, $row) {
         global $CFG;
         $courseid = $row->course_id;
-        $coursename = $row->course_name;
+        $coursename = format_string($row->course_name);
         return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($icon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\" />";
     }
 
@@ -469,6 +472,7 @@ abstract class rb_base_source {
     function rb_display_link_course_category($category, $row) {
         global $CFG;
         $catid = $row->cat_id;
+        $category = format_string($category);
         if($catid == 0 || !$catid) {
             return '';
         }
@@ -497,6 +501,7 @@ abstract class rb_base_source {
             return $planname;
         }
 
+        $planname = format_string($planname);
         return "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$row->plan_id}\">$planname</a>";
     }
 
@@ -604,7 +609,7 @@ abstract class rb_base_source {
         $out = array();
         if($mods = get_records('modules', 'visible', 1, 'id', 'id,name')) {
             foreach($mods as $mod) {
-                $modname = get_string('modulename', $mod->name);
+                $modname = get_string('modulename', format_string($mod->name));
                 $icon = '/mod/' . $mod->name . '/icon.gif';
                 if(file_exists($CFG->dirroot . $icon)) {
                     $out[$mod->name] = '<img src="'. $CFG->wwwroot .
