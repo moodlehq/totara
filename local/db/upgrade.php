@@ -2484,9 +2484,13 @@ function xmldb_local_upgrade($oldversion) {
                 SELECT h.id, d.depthlevel
                 FROM {$CFG->prefix}{$hierarchy} h
                 LEFT JOIN {$CFG->prefix}{$hierarchy}_depth d
-                ON d.id=h.depthid");
+                ON d.id = h.depthid");
             if ($originals) {
                 foreach ($originals as $original) {
+                    // check to see if there is any bad data
+                    if (!$original->depthlevel) {
+                        print_error('error:couldnotupgradehierarchyduetobaddata', 'hierarchy', "{$hierarchy} item has invalid depthid");
+                    }
                     // should only update the depth level if it's empty
                     $updatesql = "
                         UPDATE {$CFG->prefix}{$hierarchy}

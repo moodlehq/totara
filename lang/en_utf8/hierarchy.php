@@ -24,6 +24,7 @@ $string['moveselectedxto'] = 'Move selected {$a} to: ';
 $string['depths'] = 'Depths';
 $string['depth'] = 'Depth $a';
 $string['enternamesoneperline'] = 'Enter $a names (one per line)';
+$string['error:couldnotupgradehierarchyduetobaddata'] = 'Could not upgrade hierarchy due to bad data ($a)';
 $string['error:hierarchyprefixnotfound'] = 'Hierarchy prefix $a not found';
 $string['displayoptions'] = 'Display Options';
 $string['error:hierarchytypenotfound'] = 'Hierarchy type $a not found';
