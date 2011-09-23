@@ -35,9 +35,6 @@ require_login();
 $id = required_param('id', PARAM_INT); // program id
 
 $program = new program($id);
-if (!$program->is_accessible($USER)) {
-    $program->display_access_error();
-}
 
 add_to_log(SITEID, 'program', 'view', "view.php?id={$program->id}&amp;userid={$USER->id}", $program->fullname);
 
@@ -77,7 +74,7 @@ print_heading($heading);
 if ($program->is_program_inprogress($USER->id)) {
     echo $program->display($USER->id);
 } else {
-    echo $program->display(null);
+    echo $program->display();
 }
 
 print_container_end();

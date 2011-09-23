@@ -3740,7 +3740,7 @@ function get_course_custom_fields($courseid) {
  * @return integer|array Associative array, where keys are the sub-category IDs and value is the count. If $categoryids is a single integer, just returns the count as an integer
  */
 function get_category_item_count($categoryids, $countcourses = true) {
-    global $CFG;
+    global $CFG, $USER;
 
     $where_sql = is_array($categoryids) ?
         'id IN (' . implode(',', $categoryids) . ')' :
@@ -3806,6 +3806,16 @@ function get_category_item_count($categoryids, $countcourses = true) {
             !has_capability($itemcap, get_context_instance($itemcontext, $item->itemid))
            ) {
             continue;
+        }
+
+        // we need to check if programs are available to students before
+        // displaying them in search, unless the user is an admin
+        if (!$countcourses && !is_siteadmin($USER->id)) {
+
+            $program = new program($item->itemid);
+            if (!$program->is_accessible()) {
+                continue;
+            }
         }
 
         // now we need to figure out which sub-category each item

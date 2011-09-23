@@ -801,6 +801,11 @@ class program {
 
         $out = '';
 
+        if (!$this->is_accessible()) {
+            // Return if program is not accessible
+            return '<p>' . get_string('programnotcurrentlyavailable', 'local_program') . '</p>';
+        }
+
         $viewinganothersprogram = false;
         if ($userid && $userid != $USER->id) {
             $viewinganothersprogram = true;
@@ -1180,28 +1185,33 @@ class program {
      */
     public function is_accessible($user = null) {
         // If a user is set check if they area a site admin, if so, let them have access
+
         if (!empty($user->id)) {
             if (is_siteadmin($user->id)) {
                 return true;
             }
         }
 
-
         // Check if this program is not available, if it's not then deny access
         if ($this->availablerole == AVAILABILITY_NOT_TO_STUDENTS) {
             return false;
         }
 
-        // Check if this program has from and until dates set, if so, encforce them
+        // Check if this program has from and until dates set, if so, enforce them
         if (!empty($this->availablefrom) || !empty($this->availableuntil)) {
-            $now = time();
 
-            // Check if the programme isn't accessible yet
+            if (isset($user->timezone)) {
+                $now = usertime(time(), $user->timezone);
+            } else {
+                $now = usertime(time());
+            }
+
+            // Check if the program isn't accessible yet
             if (!empty($this->availablefrom) && $this->availablefrom > $now) {
                 return false;
             }
 
-            // Check if the programme isn't accessible anymore
+            // Check if the program isn't accessible anymore
             if (!empty($this->availableuntil) && $this->availableuntil < $now) {
                 return false;
             }
@@ -1210,12 +1220,6 @@ class program {
         return true;
     }
 
-    /**
-     * Prints an error if a program is not accessible
-     */
-    function display_access_error() {
-        print_error('error:inaccessible', 'local_program');
-    }
 
     /**
      * Generates HTML for a cancel button which is displayed on program

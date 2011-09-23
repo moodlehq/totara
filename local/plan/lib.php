@@ -636,7 +636,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
 
     // Print Required Learning menu
     if ($showrequired) {
-        if($programs = prog_get_required_programs($userid, ' ORDER BY fullname ASC ')) {
+        if($programs = prog_get_required_programs($userid, ' ORDER BY fullname ASC ', '', '', false, true)) {
             if ($role == 'manager') {
                 $extraparams = '&amp;userid='.$userid;
                 $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('requiredlearning', 'local_program') . '</h4>';
@@ -652,6 +652,11 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
                 if ($progcount > $maxprogstodisplay) {
                     $out .= "<li><a href=\"{$CFG->wwwroot}/local/program/required.php?{$extraparams}\">" . get_string('viewallrequiredlearning', 'local_program') . "</a></li>";
                     break;
+                }
+                // hide inaccessible programs
+                $prog = new program($p->id);
+                if (!$prog->is_accessible()) {
+                    continue;
                 }
                 $class = $p->id == $selectedprogid ? 'class="dp-menu-selected"' : '';
                 $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/program/required.php?id={$p->id}{$extraparams}\">{$p->fullname}</a></li>";

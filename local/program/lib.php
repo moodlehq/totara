@@ -217,9 +217,10 @@ function prog_can_view_users_required_learning($learnerid) {
  * @param int $limitfrom return a subset of records, starting at this point (optional, required if $limitnum is set).
  * @param int $limitnum return a subset comprising this many records (optional, required if $limitfrom is set).
  * @param bool $returncount Whether to return a count of the number of records found or the records themselves
+ * @param bool $showhidden Whether to include hidden programs in records returned
  * @return array|int
  */
-function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false) {
+function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false, $showhidden=false) {
     global $CFG;
 
     // Construct sql query
@@ -230,10 +231,14 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
             INNER JOIN {$CFG->prefix}prog_completion AS pc ON p.id = pc.programid
             INNER JOIN {$CFG->prefix}prog_user_assignment AS pua ON (pc.programid=pua.programid AND pc.userid=pua.userid) ";
 
+
     $where = "WHERE pc.coursesetid = 0
         AND pc.userid = $userid
-        AND p.visible = 1
         AND pc.status <> ".STATUS_PROGRAM_COMPLETE;
+
+    if (!$showhidden) {
+        $where .= " AND p.visible = 1";
+    }
 
     if($returncount) {
         return count_records_sql($count.$from.$where);
@@ -247,14 +252,16 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
  * Return markup for displaying a table of a specified user's required programs
  * (i.e. programs that have been automatically assigned to the user)
  *
+ * This includes hidden programs but excludes unavailable programs
+ *
  * @access  public
  * @param   int     $userid     Program assignee
  * @return  string
  */
-function prog_display_programs($userid) {
+function prog_display_required_programs($userid) {
     global $CFG;
 
-    $count = prog_get_required_programs($userid, '', '', '', true);
+    $count = prog_get_required_programs($userid, '', '', '', true, true);
 
     // Set up table
     $tablename = 'progs-list';
@@ -289,7 +296,7 @@ function prog_display_programs($userid) {
     $sort = empty($sort) ? '' : ' ORDER BY '.$sort;
 
     // Add table data
-    $programs = prog_get_required_programs($userid, $sort, $table->get_page_start(), $table->get_page_size());
+    $programs = prog_get_required_programs($userid, $sort, $table->get_page_start(), $table->get_page_size(), false, true);
 
     if (!$programs) {
         return '';
@@ -297,6 +304,9 @@ function prog_display_programs($userid) {
 
     foreach ($programs as $p) {
         $program = new program($p->id);
+        if (!$program->is_accessible()) {
+            continue;
+        }
         $row = array();
         $row[] = $program->display_summary_widget($userid);
         $row[] = $program->display_duedate($p->duedate);
@@ -561,7 +571,7 @@ function prog_move_programs ($programids, $categoryid) {
 function prog_print_programs($category) {
 /// Category is 0 (for all programs) or an object
 
-    global $CFG;
+    global $CFG, $USER;
 
     $fields = "p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible";
 
@@ -580,6 +590,10 @@ function prog_print_programs($category) {
 
     if ($programs) {
         foreach ($programs as $program) {
+            $prog = new program($program->id);
+            if (!$prog->is_accessible($USER)) {
+                continue;
+            }
             if ($program->visible == 1
                 || has_capability('local/program:viewhiddenprograms',$program->context)) {
                 prog_print_program($program);
@@ -756,6 +770,13 @@ function prog_print_program($program, $highlightterms = '') {
 
     require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
 
+    $prog = new program($program->id);
+
+    $accessible = false;
+    if ($prog->is_accessible()) {
+        $accessible = true;
+    }
+
     if (isset($program->context)) {
         $context = $program->context;
     } else {
@@ -764,7 +785,21 @@ function prog_print_program($program, $highlightterms = '') {
 
     $program_icon = new program_icon();
 
-    $linkcss = $program->visible ? '' : ' class="dimmed" ';
+    if ($accessible) {
+        if ($program->visible) {
+            $linkcss = '';
+        } else {
+            $linkcss = ' class="dimmed" ';
+        }
+    } else {
+        if ($program->visible) {
+            $linkcss = ' class="inaccessible " ';
+        } else {
+            $linkcss = ' class="dimmed inaccessible" ';
+        }
+    }
+
+
 
     echo '<div class="coursebox programbox clearfix">';
     echo '<div class="info">';
@@ -854,7 +889,7 @@ function prog_print_whole_category_list($category=NULL, $displaylist=NULL, $pare
  * @param <type> $showprograms
  */
 function prog_print_category_info($category, $depth, $showprograms = false) {
-    global $CFG;
+    global $CFG, $USER;
     static $strallowguests, $strrequireskey, $strsummary;
 
     require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
@@ -912,6 +947,10 @@ function prog_print_category_info($category, $depth, $showprograms = false) {
             $program_icon = new program_icon();
 
             foreach ($programs as $program) {
+                $prog = new program($program->id);
+                if (!$prog->is_accessible($USER)) {
+                    continue;
+                }
                 $linkcss = $program->visible ? '' : ' class="dimmed" ';
                 echo '<tr><td valign="top">&nbsp;';
                 echo '</td><td valign="top" class="course name">';
@@ -1043,7 +1082,7 @@ function prog_can_enter_course($userid, $courseid, $coursecontext) {
  * @return object {@link $COURSE} records
  */
 function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $whereclause) {
-    global $CFG;
+    global $CFG, $USER;
 
     //to allow case-insensitive search for postgesql
     if ($CFG->dbfamily == 'postgres') {
@@ -1146,6 +1185,31 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
 
         while ($program = rs_fetch_next_record($rs)) {
             $program = make_context_subobj($program);
+
+            if (!is_siteadmin($USER->id)) {
+                // Check if this program is not available, if it's not then deny access
+                if ($program->availablerole == 0) {
+                    continue;
+                }
+
+                if (isset($USER->timezone))
+                {
+                    $now = usertime(time(),$USER->timezone);
+                } else {
+                    $now = usertime(time());
+                }
+
+                // Check if the programme isn't accessible yet
+                if ($program->availablefrom > 0 && $program->availablefrom > $now) {
+                    continue;
+                }
+
+                // Check if the programme isn't accessible anymore
+                if ($program->availableuntil > 0 && $program->availableuntil < $now) {
+                    continue;
+                }
+            }
+
             if ($program->visible || has_capability('local/program:viewhiddenprograms', $program->context)) {
                 // Don't exit this loop till the end
                 // we need to count all the visible courses
@@ -1417,9 +1481,13 @@ function prog_get_tab_link($userid) {
     $progtable = new XMLDBTable('prog');
     if (table_exists($progtable)) {
 
-        $requiredlearningcount = prog_get_required_programs($userid, '', '', '', true);
+        $requiredlearningcount = prog_get_required_programs($userid, '', '', '', true, true);
         if ($requiredlearningcount == 1) {
-            $program = reset(prog_get_required_programs($userid));
+            $program = reset(prog_get_required_programs($userid, '', '', '', false, true));
+            $prog = new program($program->id);
+            if (!$prog->is_accessible()) {
+                return false;
+            }
             return $CFG->wwwroot . '/local/program/required.php?id=' . $program->id;
         } else if ($requiredlearningcount > 1) {
             return $CFG->wwwroot . '/local/program/required.php';

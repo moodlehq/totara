@@ -24,6 +24,7 @@
  */
 
 require_once($CFG->dirroot.'/local/program/lib.php');
+require_once($CFG->dirroot.'/local/program/program.class.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -100,7 +101,7 @@ class dp_program_component extends dp_base_component {
         global $CFG;
 
         // Generate where clause
-        $where = "p.visible = 1 AND a.planid = {$this->plan->id}";
+        $where = "a.planid = {$this->plan->id}";
         if ($approved !== null) {
             if (is_array($approved)) {
                 $approved = implode(', ', $approved);
@@ -642,6 +643,7 @@ class dp_program_component extends dp_base_component {
         return $markup;
     }
 
+
     /**
      * Display item's name
      *
@@ -659,7 +661,10 @@ class dp_program_component extends dp_base_component {
             $extraparams = '&amp;userid='.$this->plan->userid;
         }
 
-        if($approved) {
+        $prog = new program($item->programid);
+        $accessible = $prog->is_accessible();
+
+        if($approved && $accessible) {
             return '<img class="program_icon" src="' .
                 $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
                 '&amp;id=' . $item->programid .
@@ -668,13 +673,20 @@ class dp_program_component extends dp_base_component {
                 '/local/plan/components/' . $this->component.'/view.php?id=' .
                 $this->plan->id . '&amp;itemid=' . $item->id . $extraparams . '">' . format_string($item->fullname) .
                 '</a>';
-        } else {
+        } elseif (!$approved && $accessible) {
             return '<img class="program_icon" src="' .
                 $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
                 '&amp;id=' . $item->programid .
                 '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
                 '" />' . format_string($item->fullname);
+        } elseif (!$accessible) {
+            return '<img class="program_icon" src="' .
+                $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
+                '&amp;id=' . $item->programid .
+                '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
+                '" />' . '<span class="inaccessible">' . format_string($item->fullname) . '</span>';
         }
+
     }
 
     /**

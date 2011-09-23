@@ -109,6 +109,7 @@ $string['programmandatory'] = 'Program mandatory';
 $string['programmessages'] = 'Program messages';
 $string['programmessagessaved'] = 'Program messages saved';
 $string['programnotavailable'] = 'Program is not available to students';
+$string['programnotcurrentlyavailable'] = 'This program is not currently available to students';
 $string['programnotlive'] = 'Program is not live';
 $string['programoverdue'] = 'Program overdue';
 $string['programs'] = 'Programs';

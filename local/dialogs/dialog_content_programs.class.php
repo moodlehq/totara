@@ -152,7 +152,14 @@ class totara_dialog_content_programs extends totara_dialog_content {
      */
     public function load_programs() {
         if ($this->categoryid) {
-            $this->programs = prog_get_programs($this->categoryid, "fullname ASC", 'p.id, p.fullname, p.sortorder, p.visible');
+            $progs = prog_get_programs($this->categoryid, "fullname ASC", 'p.id, p.fullname, p.sortorder, p.visible');
+            foreach ($progs as $key=>$prog) {
+                $program = new program($prog->id);
+                if (!$program->is_accessible() || $program->visible == 0) {
+                    unset($progs[$key]);
+                }
+            }
+            $this->programs = $progs;
         }
     }
 

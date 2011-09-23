@@ -40,6 +40,12 @@ a.dimmed:visited {
   color:#AAAAAA;
 }
 
+a.inaccessible:link,
+a.inaccessible:visited,
+span.inaccessible {
+    text-decoration: line-through;
+}
+
 a:hover {
   color:#FF0000;
 }
