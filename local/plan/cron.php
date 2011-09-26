@@ -65,5 +65,7 @@ function plan_cron() {
             $plan->set_status(DP_PLAN_STATUS_COMPLETE, DP_PLAN_REASON_AUTO_COMPLETE_DATE);
         }
     }
+
+    return true;
 }
 
