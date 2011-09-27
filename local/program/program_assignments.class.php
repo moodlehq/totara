@@ -118,6 +118,11 @@ class prog_assignments {
         // delete all user assignments
         $result = delete_records('prog_user_assignment', 'programid', $this->programid);
 
+        // also delete future user assignments
+        if ($result) {
+            $result = $result && delete_records('prog_future_user_assignment', 'programid', $this->programid);
+        }
+
         // delete all configured assignments
         if ($result) {
             $result = $result && delete_records('prog_assignment', 'programid', $this->programid);
@@ -154,10 +159,12 @@ class prog_assignments {
     public function count_total_user_assignments() {
         global $CFG;
 
-        $sql = "SELECT COUNT(DISTINCT userid) FROM {$CFG->prefix}prog_user_assignment WHERE programid = {$this->programid}";
+        // also include future assignments in total
+        $sql = "SELECT COUNT(DISTINCT userid) FROM (SELECT userid FROM {$CFG->prefix}prog_user_assignment WHERE programid = {$this->programid}
+            UNION SELECT userid FROM {$CFG->prefix}prog_future_user_assignment WHERE programid = {$this->programid}) q";
         $count = count_records_sql($sql);
 
-        return ($count) ? $count : 0;
+        return $count;
     }
 
     /**
@@ -602,7 +609,12 @@ abstract class prog_assignment_category {
         }
         if ($assignments_to_delete = get_records_select('prog_assignment', $where)) {
             foreach ($assignments_to_delete as $assignment_to_delete) {
+                // delete any exceptions related to this assignment
                 prog_exceptions_manager::delete_exceptions_by_assignment($assignment_to_delete->id);
+
+                // delete any future user assignments related to this assignment
+                delete_records('prog_future_user_assignment', 'assignmentid', $assignment_to_delete->id,
+                    'programid', $data->id);
             }
             delete_records_select('prog_assignment', $where);
         }

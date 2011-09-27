@@ -42,7 +42,36 @@ function program_cron() {
     // Run the tasks that should be run once a day
     $result = $result && program_daily_cron();
 
+    // Run the tasks that should be run hourly
+    $result = $result && program_hourly_cron();
+
     return $result;
+}
+
+/**
+ * Cron tasks that should be run more regularly
+ *
+ * @return bool Success
+ */
+function program_hourly_cron() {
+
+    $timenow  = time();
+    $hourlycron = 60 * 60; // one hour
+    $lasthourlycron = get_config(null, 'local_program_lasthourlycron');
+
+    if($lasthourlycron && ($timenow - $lasthourlycron <= $hourlycron)) {
+        // not enough time has elapsed to rerun hourly cron
+        mtrace("No need to run program hourly cron - has already been run recently.");
+        return true;
+    }
+
+    if (!set_config('local_program_lasthourlycron', $timenow)) {
+        mtrace("Error: could not update lasthourlycron timestamp for program module.");
+    }
+
+    program_cron_first_login_assignments();
+
+    return true;
 }
 
 /**
@@ -935,6 +964,30 @@ function program_cron_recurrence_history() {
                     update_record('prog_completion_history', $history_record);
                 }
             }
+        }
+    }
+}
+
+
+/**
+ * Looks for users with future assignment records who have logged in
+ *
+ * If any are found an event is triggered to activate the future assignment.
+ * This function should only be needed to catch logins via third-party
+ * authentication plugins, since all the existing auth plugins have had an
+ * event trigger added.
+ */
+function program_cron_first_login_assignments() {
+    global $CFG;
+    $pending_user_sql = "SELECT u.*
+                        FROM {$CFG->prefix}user u
+                        INNER JOIN {$CFG->prefix}prog_future_user_assignment pfa
+                        ON pfa.userid = u.id
+                        WHERE u.firstaccess > 0";
+
+    if ($pending_users = get_records_sql($pending_user_sql)) {
+        foreach ($pending_users as $pending_user) {
+            prog_assignments_firstlogin($pending_user);
         }
     }
 }

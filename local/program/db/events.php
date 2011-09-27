@@ -21,4 +21,9 @@ $handlers = array (
          'handlerfunction'  => 'prog_eventhandler_courseset_completed',
          'schedule'         => 'instant'
      ),
+    'user_firstaccess' => array (
+         'handlerfile'      => '/local/program/lib.php',
+         'handlerfunction'  => 'prog_assignments_firstlogin',
+         'schedule'         => 'instant'
+     )
 );

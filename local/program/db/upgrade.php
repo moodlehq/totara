@@ -149,5 +149,28 @@ function xmldb_local_program_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2012011900) {
+    /// Define table prog_future_user_assignment to be created
+        $table = new XMLDBTable('prog_future_user_assignment');
+
+    /// Adding fields to table prog_future_user_assignment
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('programid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('assignmentid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+
+    /// Adding keys to table prog_future_user_assignment
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table prog_future_user_assignment
+        $table->addIndexInfo('programid', XMLDB_INDEX_NOTUNIQUE, array('programid'));
+        $table->addIndexInfo('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+        $table->addIndexInfo('assignmentid', XMLDB_INDEX_NOTUNIQUE, array('assignmentid'));
+        $table->addIndexInfo('programid-userid-assignmentid', XMLDB_INDEX_UNIQUE, array('programid', 'userid', 'assignmentid'));
+
+    /// Launch create table for prog_future_user_assignment
+        $result = $result && create_table($table);
+    }
+
     return $result;
 }

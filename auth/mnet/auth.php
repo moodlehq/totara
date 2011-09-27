@@ -385,6 +385,7 @@ class auth_plugin_mnet extends auth_plugin_base {
         $localuser->mnethostid = $remotepeer->id;
         if (empty($localuser->firstaccess)) { // Now firstaccess, grab it here
             $localuser->firstaccess = time();
+            events_trigger('user_firstaccess', $localuser);
         }
 
         $bool = update_record('user', addslashes_recursive($localuser));

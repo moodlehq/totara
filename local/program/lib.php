@@ -1479,3 +1479,61 @@ function prog_get_tab_link($userid) {
 
     return false;
 }
+
+
+/*
+ *  This function is to cope with program assignments set up
+ *   with completion deadlines 'from first login' where the
+ *   user had not yet logged in.
+ *  Triggered from events_trigger('user_firstaccess',$user);
+ *  Also used by program_hourly_cron
+ *
+ *  @return boolean True if all the update_learner_assignments() succeeded or there was nothing to do
+ */
+function prog_assignments_firstlogin($user) {
+    global $CFG;
+
+    $status = true;
+
+    // future assignments for this user that can now be processed
+    // (because this user has logged in)
+    // we are looking for:
+    // - future assignments for this user
+    // - that relate to a "first login" assignment
+    $rs = get_recordset_sql(
+        "SELECT pfua.* FROM
+            {$CFG->prefix}prog_future_user_assignment pfua
+        LEFT JOIN
+            {$CFG->prefix}prog_assignment pa
+            ON pfua.assignmentid = pa.id
+        WHERE
+            pfua.userid = {$user->id}
+            AND pa.completionevent = " . COMPLETION_EVENT_FIRST_LOGIN
+    );
+
+    // group the future assignments by 'programid'
+    $pending_by_program = totara_group_records($rs, 'programid');
+
+    if ($pending_by_program) {
+        foreach ($pending_by_program as $programid => $assignments) {
+
+            // update each program
+            $program = new program($programid);
+            if ($program->update_learner_assignments()) {
+                // if the update succeeded, delete the future assignments related to this program
+                $future_assignments_to_delete = array();
+                foreach ($assignments as $assignment) {
+                    $future_assignments_to_delete[] = $assignment->id;
+                }
+                if (!empty($future_assignments_to_delete)) {
+                    $delete_ids = implode(',', $future_assignments_to_delete);
+                    delete_records_select('prog_future_user_assignment', "id IN ({$delete_ids})");
+                }
+            } else {
+                $status = false;
+            }
+        }
+    }
+
+    return $status;
+}

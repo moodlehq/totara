@@ -3278,6 +3278,7 @@ function authenticate_user_login($username, $password) {
             if (empty($user->firstaccess)) { //prevent firstaccess from remaining 0 for manual account that never required confirmation
                 set_field('user','firstaccess', $user->timemodified, 'id', $user->id);
                 $user->firstaccess = $user->timemodified;
+                events_trigger('user_firstaccess', $user);
             }
 
             update_internal_user_password($user, $password); // just in case salt or encoding were changed (magic quotes too one day)

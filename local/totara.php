@@ -1157,6 +1157,11 @@ function totara_print_edit_button($settingname, $params = array()) {
 function get_string_in_user_lang($user, $identifier, $module='', $a=NULL, $extralocations=NULL) {
     global $USER;
 
+    // $USER language not defined - just use current user's language
+    if (!isset($USER->lang)) {
+        return get_string($identifier, $module, $a, $extralocations);
+    }
+
     // Store lang
     $original_lang = $USER->lang;
 
