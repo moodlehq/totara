@@ -17,13 +17,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Aaron Barnes <aaron.barnes@totaralms.com>
+ * @author Jonathan Newman <jonathan.newman@catalyst.net.nz>
  * @package totara
  * @subpackage local
  */
 
 /**
- * local version information - used to keep track of local changes
+ * this file should be used for all the custom event definitions and handers.
+ * event names should all start with totara_.
  */
-$local_version = 2011091203;
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
+$handlers = array (
+    'role_assigned' => array(
+        'handlerfile'       => '/lib/completion/completion_completion.php',
+        'handlerfunction'   => 'completion_eventhandler_role_assigned',
+        'schedule'          => 'instant'
+    )
+);
