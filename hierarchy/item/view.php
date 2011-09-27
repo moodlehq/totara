@@ -162,5 +162,5 @@ if ($can_edit) {
     echo '</div>';
 }
 /// and proper footer
-add_to_log(SITEID, $prefix, 'view item', "item/view.php?prefix={$prefix}&amp;framework={$framework->id}&amp;id={$item->id}", "{$item->fullname} (ID {$item->id})");
+add_to_log(SITEID, $prefix, 'view item', "item/view.php?prefix={$prefix}&amp;framework={$framework->id}&amp;id={$item->id}", substr(strip_tags($item->fullname), 0, 200) . " (ID {$item->id})");
 print_footer();

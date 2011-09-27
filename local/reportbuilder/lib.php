@@ -1826,7 +1826,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $value = $column->value;
             if($column->display_column()) {
                 $tablecolumns[] = "{$type}_{$value}"; // used for sorting
-                $tableheaders[] = $column->heading;
+                $tableheaders[] = format_string($column->heading);
             }
         }
 

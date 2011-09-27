@@ -125,7 +125,7 @@ if ($itemform->is_cancelled()) {
 
         if ($newitem = $hierarchy->add_hierarchy_item($itemnew, $itemnew->parentid, $itemnew->frameworkid, false)) {
 
-            add_to_log(SITEID, $prefix, 'added item', "item/view.php?id={$newitem->id}&amp;prefix={$prefix}", "{$newitem->fullname} (ID {$newitem->id})");
+            add_to_log(SITEID, $prefix, 'added item', "item/view.php?id={$newitem->id}&amp;prefix={$prefix}", substr(strip_tags($newitem->fullname), 0, 200) . " (ID {$newitem->id})");
             totara_set_notification(get_string('added'.$prefix, $prefix, $newitem->fullname), "{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$newitem->id}", array('style' => 'notifysuccess'));
 
         } else {
@@ -147,7 +147,7 @@ if ($itemform->is_cancelled()) {
 
         commit_sql();
 
-        add_to_log(SITEID, $prefix, 'update item', "item/view.php?id={$updateditem->id}&amp;prefix={$prefix}", "{$updateditem->fullname} (ID {$updateditem->id})");
+        add_to_log(SITEID, $prefix, 'update item', "item/view.php?id={$updateditem->id}&amp;prefix={$prefix}", substr(strip_tags($updateditem->fullname), 0, 200) . " (ID {$updateditem->id})");
         totara_set_notification(get_string('updated'.$prefix, $prefix, $updateditem->fullname), "{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$updateditem->id}", array('style' => 'notifysuccess'));
     }
 }
