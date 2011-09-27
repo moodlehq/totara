@@ -104,7 +104,7 @@ class reportbuilder {
     public $_id, $recordsperpage, $defaultsortcolumn, $defaultsortorder;
     private $_joinlist, $_base, $_params, $_sid;
     private $_paramoptions, $_embeddedparams, $_fullcount, $_filteredcount;
-    public $src, $grouped, $reportfor, $badcolumns;
+    public $src, $grouped, $reportfor, $badcolumns, $embedded;
 
     /**
      * Constructor for reportbuilder object
@@ -155,6 +155,7 @@ class reportbuilder {
             $this->fullname = stripslashes($report->fullname);
             $this->hidden = $report->hidden;
             $this->description = stripslashes($report->description);
+            $this->embedded = $report->embedded;
             $this->contentmode = $report->contentmode;
             // store the embedded URL for embedded reports only
             if($report->embedded) {
@@ -637,11 +638,26 @@ var comptree = [' . implode(', ', $comptrees) . '];
         if($columns = get_records('report_builder_columns',
             'reportid', $id, 'sortorder')) {
             foreach ($columns as $column) {
+                // to properly support multiple languages - only use value
+                // in database if it's different from the default. If it's the
+                // same as the default for that column, use the default string
+                // directly
+                if ($column->customheading) {
+                    // use value from database
+                    $heading = $column->heading;
+                } else {
+                    // use default value
+                    $defaultheadings = $this->get_default_headings_array();
+                    $heading = isset($defaultheadings[$column->type . '-' . $column->value]) ?
+                        $defaultheadings[$column->type . '-' . $column->value] : null;
+                }
+
                 try {
                     $out[$column->id] = $this->src->new_column_from_option(
                         $column->type,
                         $column->value,
-                        $column->heading,
+                        $heading,
+                        $column->customheading,
                         $column->hidden
                     );
                     // enabled report grouping if any columns are grouped
@@ -677,6 +693,49 @@ var comptree = [' . implode(', ', $comptrees) . '];
         return $out;
     }
 
+
+    /**
+     * Returns an associative array of the default headings for this report
+     *
+     * Looks up all the columnoptions (from this report's source)
+     * For each one gets the default heading according the the following criteria:
+     *  - if the report is embedded get the heading from the embedded source
+     *  - if not embedded or the column's heading isn't specified in the embedded source,
+     *    get the defaultheading from the columnoption
+     *  - if that isn't specified, use the columnoption name
+     *
+     * @return array Associtive array of default headings for all the column options in this report
+     *               Key is "{$type}-{$value]", value is the default heading string
+     */
+    function get_default_headings_array() {
+        if (!isset($this->src->columnoptions) || !is_array($this->src->columnoptions)) {
+            return false;
+        }
+
+        // get the embedded source if the report is embedded
+        $embedobj = ($this->embedded) ? reportbuilder_get_embedded_report_object($this->shortname) : false;
+
+        $out = array();
+        foreach ($this->src->columnoptions as $option) {
+            $key = $option->type . '-' . $option->value;
+
+            if ($embedobj && $embeddedheading = $embedobj->get_embedded_heading($option->type, $option->value)) {
+                // use heading from embedded source
+                $defaultheading = $embeddedheading;
+            } else {
+                if (isset($option->defaultheading)) {
+                    // use default heading
+                    $defaultheading = $option->defaultheading;
+                } else {
+                    // fall back to columnoption name
+                    $defaultheading = $option->name;
+                }
+            }
+
+            $out[$key] = $defaultheading;
+        }
+        return $out;
+    }
 
     /**
      * Given a report fullname, try to generate a sensible shortname that will be unique
@@ -3520,6 +3579,8 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
         $todb->value = $column['value'];
         $todb->heading = addslashes($column['heading']);
         $todb->sortorder = $so;
+        $todb->customheading = 0; // initially no columns are customised
+
         if(!insert_record('report_builder_columns', $todb)) {
             rollback_sql();
             $error = 'Error inserting columns';
@@ -3578,6 +3639,7 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
     commit_sql();
     return $newid;
 }
+
 
 /**
  * Implementation of PHP function lcfirst for PHP 5.2 support

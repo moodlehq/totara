@@ -114,7 +114,7 @@ if ($fromform = $mform->get_data()) {
         totara_set_notification(get_string('error:unknownbuttonclicked','local_reportbuilder'), $returnurl);
     }
 
-    if(build_columns($id, $fromform)) {
+    if(build_columns($id, $fromform, $report)) {
         add_to_log(SITEID, 'reportbuilder', 'update report', 'columns.php?id='. $id,
             'Column Settings: Report ID=' . $id);
         totara_set_notification(get_string('columns_updated','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
@@ -142,18 +142,11 @@ $mform->display();
 // include JS object to define the column headings
 print '<script type="text/javascript">';
 print "var rb_reportid = {$id};";
-$headings = array();
-foreach($report->src->columnoptions as $option) {
-    $key = $option->type . '-' . $option->value;
-    // use defaultheading if set, otherwise name
-    $value = ($option->defaultheading) ? $option->defaultheading :
-        $option->name;
-    $headings[$key] = $value;
-}
-print "var rb_column_headings = " . json_encode($headings) . ';';
+print "var rb_column_headings = " . json_encode($report->get_default_headings_array()) . ';';
 print '</script>';
 
 admin_externalpage_print_footer();
+
 
 
 /**
@@ -161,10 +154,11 @@ admin_externalpage_print_footer();
  *
  * @param integer $id Report ID to update
  * @param object $fromform Moodle form object containing the new column data
+ * @param object $report The report object
  *
  * @return boolean True if the columns could be updated successfully
  */
-function build_columns($id, $fromform) {
+function build_columns($id, $fromform, $report) {
     begin_sql();
 
     if ($oldcolumns = get_records('report_builder_columns', 'reportid', $id)) {
@@ -172,16 +166,21 @@ function build_columns($id, $fromform) {
         foreach($oldcolumns as $cid => $oldcolumn) {
             $columnname = "column{$cid}";
             $headingname = "heading{$cid}";
+            $customheadingname = "customheading{$cid}";
             // update db only if column has changed
             if(isset($fromform->$columnname) &&
                 ($fromform->$columnname != $oldcolumn->type.'-'.$oldcolumn->value ||
-                $fromform->$headingname != $oldcolumn->heading)) {
+                $fromform->$headingname != $oldcolumn->heading ||
+                $fromform->$customheadingname != $oldcolumn->customheading)) {
+                $heading = isset($fromform->$headingname) ? $fromform->$headingname : '';
                 $todb = new object();
                 $todb->id = $cid;
                 $parts = explode('-', $fromform->$columnname);
                 $todb->type = $parts[0];
                 $todb->value = $parts[1];
-                $todb->heading = $fromform->$headingname;
+                $todb->heading = $heading;
+                $todb->customheading = $fromform->$customheadingname;
+
                 if(!update_record('report_builder_columns', $todb)) {
                     rollback_sql();
                     return false;
@@ -192,12 +191,14 @@ function build_columns($id, $fromform) {
 
     // add any new columns
     if(isset($fromform->newcolumns) && $fromform->newcolumns != '0') {
+        $heading = isset($fromform->newheading) ? $fromform->newheading : '';
         $todb = new object();
         $todb->reportid = $id;
         $parts = explode('-',$fromform->newcolumns);
         $todb->type = $parts[0];
         $todb->value = $parts[1];
-        $todb->heading = $fromform->newheading;
+        $todb->heading = $heading;
+        $todb->customheading = $fromform->newcustomheading;
         $sortorder = get_field('report_builder_columns', 'MAX(sortorder) + 1', 'reportid', $id);
         if(!$sortorder) {
             $sortorder = 1;
@@ -224,6 +225,7 @@ function build_columns($id, $fromform) {
     commit_sql();
     return true;
 }
+
 
 
 ?>

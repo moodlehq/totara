@@ -220,6 +220,14 @@ class rb_column {
     public $hidden;
 
     /**
+     * Determines if the column has been customised or not
+     *
+     * @access public
+     * @var boolean
+     */
+    public $customheading;
+
+    /**
      * Generate a new column instance
      *
      * Options provided by an associative array, e.g.:
@@ -248,6 +256,7 @@ class rb_column {
             'nosort' => false,
             'style' => null,
             'hidden' => 0,
+            'customheading' => true,
         );
         $options = array_merge($defaults, $options);
 
@@ -262,6 +271,7 @@ class rb_column {
         }
 
     }
+
 
     /**
      * Obtain an array of SQL snippets describing field information for this column

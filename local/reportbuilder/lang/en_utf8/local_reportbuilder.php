@@ -165,6 +165,7 @@ $string['groupdeleted'] = 'Group deleted.';
 $string['groupname'] = 'Group name';
 $string['grouptag'] = 'Group tag';
 $string['heading'] = 'Heading';
+$string['customiseheading'] = 'Customise heading';
 $string['help:columnsdesc'] = 'The choices below determine which columns appear in the report and how those columns are labelled.';
 $string['help:restrictionoptions'] = 'The checkboxes below determine who has access to this report, and which records they are able to view. If no options are checked no results are visible. Click the help icon for more information';
 $string['help:searchdesc'] = 'The choices below determine which options appear in the search box at the top of the report.';

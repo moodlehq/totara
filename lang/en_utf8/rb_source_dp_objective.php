@@ -31,7 +31,6 @@ $string['coursetypeicon'] = 'Type';
 // filters
 $string['objfullname'] = 'Objective full name';
 $string['objshortname'] = 'Objective short name';
-$string['objdescription'] = 'Objective description';
 
 // column types for this source, as strings
 $string['type_plan'] = 'Plan';

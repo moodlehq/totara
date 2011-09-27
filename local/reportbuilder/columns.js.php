@@ -32,32 +32,55 @@ $(document).ready(function() {
 var rb_init_col_rows = function() {
     // disable the new column heading field on page load
     $('#id_newheading').attr('disabled', true);
+    $('#id_newcustomheading').attr('disabled', true);
+
+    // disable uncustomised headers on page load
+    $('input.column_custom_heading_checkbox').not(':checked').each(function() {
+        var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
+        textElement.attr('disabled', true);
+    });
 
     // handle changes to the column pulldowns
     $('select.column_selector').change(function() {
         var changedSelector = $(this).val();
         var newContent = rb_column_headings[changedSelector];
-        $(this).parents('td')  // find the containing td tag
-            .next('td')        // get the next sibling (contains textbox)
-            .find('input')     // get the heading input field
-            .val(newContent);  // insert new content
+        var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
 
+        textElement.val(newContent);  // insert new content
     });
 
-    // handle changes to the 'Add another column...' selector
-    $('select.new_column_selector').change(function() {
-        var newHeadingBox = $(this).closest('td').next('td').find('input');
-        var addbutton = rb_init_addbutton($(this));
-        var selectedval = $(this).val();
+    // handle changes to the customise checkbox
+    $('input.column_custom_heading_checkbox').change(function() {
+        var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
+        if ($(this).is(':checked')) {
+            // enable the textbox when checkbox isn't checked
+            textElement.attr('disabled', false);
+        } else {
+            // disable the textbox when checkbox is checked
+            // and reset text contents back to default
+            var changedSelector = $('select.column_selector', $(this).parents('tr:first')).val();
+            var newContent = rb_column_headings[changedSelector];
+            textElement.val(newContent);
+            textElement.attr('disabled', true);
+        }
+    });
 
-        if(selectedval == 0) {
-            // clean out the selections
+
+    // special case for the 'Add another column...' selector
+    $('select.new_column_selector').live('change', function() {
+        var newHeadingBox = $('input.column_heading_text', $(this).parents('tr:first'));
+        var newCheckBox = $('input.column_custom_heading_checkbox', $(this).parents('tr:first'));
+        var addbutton = rb_init_addbutton($(this));
+        if($(this).val() == 0) {
+            // empty and disable the new heading box if no column chosen
             newHeadingBox.val('');
             newHeadingBox.attr('disabled', true);
             addbutton.remove();
+            newCheckBox.removeAttr('checked');
+            newCheckBox.attr('disabled', true);
         } else {
             // reenable it (binding above will fill the value)
-            newHeadingBox.attr('disabled', false);
+            newCheckBox.attr('disabled', false);
         }
     });
 
@@ -76,8 +99,8 @@ var rb_init_col_rows = function() {
 };
 
 var rb_init_addbutton = function(colselector) {
-    var newHeadingBox = colselector.closest('td').next('td').find('input');
-    var optionsbox = newHeadingBox.closest('td').next('td');
+    var newHeadingBox = $('input.column_heading_text', colselector.parents('tr:first'));
+    var optionsbox = $('td:last', newHeadingBox.parents('tr:first'));
     var newcolinput = colselector.closest('tr').clone();  // clone of current 'Add new col...' tr
     var addbutton = optionsbox.find('.addcolbtn');
     if (addbutton.length == 0) {
@@ -116,11 +139,17 @@ var rb_init_addbutton = function(colselector) {
                     optionsbox.prepend(hidebutton, deletebutton, upbutton);
 
                     // Set row atts
-                    $('select.column_selector').removeClass('new_column_selector');
-                    var columnbox = optionsbox.prev('td').prev('td');
-                    columnbox.find('select.column_selector').attr('name', 'column'+colid);
-                    columnbox.find('select.column_selector').attr('id', 'id_column'+colid);
+                    var columnbox = $('td:first', optionsbox.parents('tr:first'));
+                    var columnSelector = $('select.column_selector', columnbox);
+                    var newCustomHeading = $('input.column_custom_heading_checkbox', optionsbox.parents('tr:first'));
+                    columnSelector.removeClass('new_column_selector');
+                    columnSelector.attr('name', 'column'+colid);
+                    columnSelector.attr('id', 'id_column'+colid);
                     columnbox.find('select optgroup[label=New]').remove();
+
+                    newCustomHeading.attr('name', 'customheading'+colid);
+                    newCustomHeading.removeAttr('id');
+
                     newHeadingBox.attr('name', 'heading'+colid);
                     newHeadingBox.attr('id', 'id_heading'+colid);
                     newHeadingBox.closest('tr').attr('colid', colid);

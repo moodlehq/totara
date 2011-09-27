@@ -158,10 +158,11 @@ abstract class rb_base_source {
      * @param string $type The type of the column option to use
      * @param string $value The value of the column option to use
      * @param string $heading Heading for the new column
+     * @param boolean $customheading True if the heading has been customised
      * @return object A new rb_column object with details copied from this
      *                rb_column_option
      */
-    function new_column_from_option($type, $value, $heading=null, $hidden=0) {
+    function new_column_from_option($type, $value, $heading=null, $customheading = true, $hidden=0) {
         $columnoptions = $this->columnoptions;
         $joinlist = $this->joinlist;
         if($coloption =
@@ -180,6 +181,7 @@ abstract class rb_base_source {
                 $heading = ($coloption->defaultheading !== null) ?
                     $coloption->defaultheading : $coloption->name;
             }
+
             return new rb_column(
                 $type,
                 $value,
@@ -196,6 +198,7 @@ abstract class rb_base_source {
                     'nosort' => $coloption->nosort,
                     'style' => $coloption->style,
                     'hidden' => $hidden,
+                    'customheading' => $customheading,
                 )
             );
         } else {

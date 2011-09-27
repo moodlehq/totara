@@ -47,8 +47,8 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $reportbuilder_columns_data = array(
-        array('id', 'reportid', 'type', 'value', 'heading', 'sortorder', 'hidden'),
-        array(1, 1, 'user', 'namelink', 'Participant', 1, 0),
+        array('id', 'reportid', 'type', 'value', 'heading', 'sortorder', 'hidden', 'customheading'),
+        array(1, 1, 'user', 'namelink', 'Participant', 1, 0, 0),
     );
 
     var $reportbuilder_filters_data = array(

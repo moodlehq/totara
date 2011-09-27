@@ -128,12 +128,12 @@
         if(isset($src->defaultcolumns) && is_array($src->defaultcolumns)) {
             $defaultcolumns = $src->defaultcolumns;
             $so = 1;
-            foreach($defaultcolumns as $option) {
+            foreach ($defaultcolumns as $option) {
                 try {
                     $heading = isset($option['heading']) ? $option['heading'] :
                         null;
                     $column = $src->new_column_from_option($option['type'],
-                        $option['value'], $heading);
+                        $option['value'], $heading, false);
 
                     $todb = new object();
                     $todb->reportid = $newid;
@@ -142,6 +142,8 @@
                     $todb->heading = addslashes($column->heading);
                     $todb->hidden = addslashes($column->hidden);
                     $todb->sortorder = $so;
+                    $todb->customheading = 0; // initially no columns are customised
+
                     if(!insert_record('report_builder_columns', $todb)) {
                         rollback_sql();
                         redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
