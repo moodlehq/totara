@@ -76,7 +76,9 @@ class program_edit_form extends moodleform {
 //--------------------------------------------------------------------------------
         $mform->addElement('header','programdetails', get_string('programdetails', 'local_program'));
 
-        $mform->addElement('html', '<p class="instructions">'.get_string('instructions:programdetails', 'local_program').'<p>');
+        if ($action=='edit') {
+            $mform->addElement('html', '<p class="instructions">'.get_string('instructions:programdetails', 'local_program').'<p>');
+        }
 
         // Must have create program capability in both categories in order to move program
         if (has_capability('local/program:createprogram', $categorycontext)) {
