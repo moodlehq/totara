@@ -1624,8 +1624,15 @@ class hierarchy {
         // unfortunately this is a bit messy to do in the SQL in a single statement
         // in a cross platform way...
         // the WHERE clause must be like this to avoid /1% matching /10
+
+        $substr3rdparam = '';
+        if ($CFG->dbfamily == 'mssql') {
+            $substr3rdparam = ', len(path)';
+        }
+        $length_sql = sql_length("'{$oldparent->path}'");
+        $substr_sql = sql_substr() . "(path, {$length_sql} + 1{$substr3rdparam})";
         $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
-            SET path=" . sql_concat("'{$newparent->path}'", sql_substr() . "(path, " . sql_length("'{$oldparent->path}'") . " + 1)") . "
+            SET path=" . sql_concat("'{$newparent->path}'", $substr_sql) . "
             WHERE (path = '{$item->path}' OR path LIKE '{$item->path}/%')
             AND frameworkid = {$item->frameworkid}";
         if (!execute_sql($sql, false)) {
@@ -2411,8 +2418,12 @@ class hierarchy {
     protected function move_sortthread($oldsortthread, $newsortthread, $frameworkid) {
         global $CFG;
 
+        $substr3rdparam = '';
+        if ($CFG->dbfamily == 'mssql') {
+            $substr3rdparam = ', len(sortthread)';
+        }
         $length_sql = sql_length("'$oldsortthread'");
-        $substr_sql = sql_substr() . "(sortthread, {$length_sql} + 1)";
+        $substr_sql = sql_substr() . "(sortthread, {$length_sql} + 1{$substr3rdparam})";
         $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}
             SET sortthread = " . sql_concat("'{$newsortthread}'", $substr_sql) . "
             WHERE frameworkid = {$frameworkid}

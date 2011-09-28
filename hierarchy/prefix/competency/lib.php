@@ -224,9 +224,9 @@ class competency extends hierarchy {
                     // now update count for templates that still have at least one assignment
                     // this won't catch templates that now have zero competencies as there
                     // won't be any entries in comp_template_assignment
-                    $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}_template t
+                    $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}_template
                         SET competencycount = {$templatecount->count}
-                        WHERE t.id = {$templatecount->templateid}";
+                        WHERE id = {$templatecount->templateid}";
                     if (!execute_sql($sql, false)) {
                         return false;
                     }

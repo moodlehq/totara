@@ -120,6 +120,11 @@
 
     $feedbackmoduleid = get_field('modules', 'id', 'name', 'feedback');
     if($feedbackmoduleid) {
+
+        $substr3rdparam = '';
+        if ($CFG->dbfamily == 'mssql') {
+            $substr3rdparam = ', len(source)';
+        }
         $sql = "
             SELECT reports.groupid,g.*, assign.numitems, reports.numreports,
             f.name AS feedbackname, f.id AS feedbackid,
@@ -143,7 +148,7 @@
             ) tag ON g.assigntype = 'tag' AND g.assignvalue = tag.id
             LEFT JOIN (
                 SELECT " . sql_substr() . "(source, " .
-                sql_position("'grp_'", "source"). " + 4) as groupid,
+                sql_position("'grp_'", "source"). " + 4{$substr3rdparam}) as groupid,
                 count(id) as numreports
                 FROM {$CFG->prefix}report_builder
                 WHERE source " . sql_ilike() . " '%_grp_%'
