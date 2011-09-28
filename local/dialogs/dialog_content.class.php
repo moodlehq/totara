@@ -294,7 +294,7 @@ class totara_dialog_content {
 
         $html = '';
 
-        $html .= !$this->show_treeview_only ? '<div class="treeview-wrapper">' : '';
+        $html .= !$this->show_treeview_only ? '<div class="treeview-wrapper dialog-nobind">' : '';
         $show_root = $this->_show_treeview_root();
         $html .= $show_root ? '<ul class="treeview filetree picker">' : '';
 
@@ -304,7 +304,7 @@ class totara_dialog_content {
             $count = 0;
 
             if ($total > $maxitems) {
-                $html .= '<li class="last"><span class="empty dialog-nobind">';
+                $html .= '<li class="last"><span class="empty">';
                 $html .= get_string('error:morethanxitemsatthislevel', 'dialog', $maxitems);
                 $html .= ' <a href="#search-tab" onclick="$(\'#dialog-tabs\').tabs(\'select\', 1);return false;">';
                 $html .= get_string('trysearchinginstead', 'dialog');
