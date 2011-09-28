@@ -52,18 +52,18 @@ function totara_setup_error_handlers() {
  * @return  bool
  */
 function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $errcontext = array()) {
-    global $TOTARA;
+    global $CFG, $TOTARA;
 
     // Restore old error handler to prevent loop
     restore_error_handler();
 
-    // Only log error in database if it would recorded at "DEVELOPER" level
-    if ($errno & DEBUG_DEVELOPER) {
+    // Only log error in database if Totara is installed and it would recorded at "DEVELOPER" level
+    if (!empty($CFG->local_postinst_hasrun) && ($errno & DEBUG_DEVELOPER)) {
 
         // Cache hashes of previous errors to prevent duplicates in table
         static $previous_errors = null;
         if (is_null($previous_errors)) {
-            // Load hashes from db if table exists (in case of error during upgrade)
+            // Load hashes from db if table exists (in case of error during upgrade or install)
             $table = new XMLDBTable('errorlog');
             if (table_exists($table)) {
                 $previous_errors = get_fieldset_select('errorlog', 'hash', '');
@@ -87,7 +87,7 @@ function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $err
             $error->details = addslashes($description);
             $error->hash = md5($description);
 
-            // Only if table exists (in case of error during upgrade)
+            // Only if the table exists (in case of error during upgrade or install)
             $table = new XMLDBTable('errorlog');
             if (table_exists($table)) {
                 insert_record('errorlog', $error);
