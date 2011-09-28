@@ -744,7 +744,7 @@
     }
 
 // Check if any errors in log
-    $latesterror = get_record_sql("SELECT * FROM {$CFG->prefix}errorlog ORDER BY id DESC LIMIT 1", false, true);
+    $latesterror = get_record_sql("SELECT timeoccured FROM {$CFG->prefix}errorlog ORDER BY id DESC", true);
     if ($latesterror) {
         print_box_start('generalbox adminnotice');
         print_string('lasterroroccuredat', 'admin', userdate($latesterror->timeoccured));
