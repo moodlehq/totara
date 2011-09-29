@@ -755,20 +755,15 @@ class program {
 
         $courseset_group_completed = false;
 
-        foreach($courseset_groups as $courseset_group) {
+        foreach ($courseset_groups as $courseset_group) {
 
-            foreach($courseset_group as $courseset) {
+            foreach ($courseset_group as $courseset) {
 
                 // if this set contains the course, the user can enter the course
-                if($courseset->contains_course($courseid)) {
+                if ($courseset->contains_course($courseid)) {
 
-                    $completionsettings = array(
-                        'status'        => STATUS_COURSESET_INCOMPLETE,
-                        'timestarted'   => time()
-                    );
-
-                    // update the course set completion status
-                    $courseset->update_courseset_complete($userid, $completionsettings);
+                    // create completion record if it does not exist
+                    $courseset->update_courseset_complete($userid, array());
 
                     return true;
                 }
@@ -779,7 +774,7 @@ class program {
             // if this course set group is not complete there is not point in
             // continuing because the user can not enter any of the courses
             // in the following course set groups
-            if( ! $courseset_group_completed) {
+            if (!$courseset_group_completed) {
                 return false;
             }
         }

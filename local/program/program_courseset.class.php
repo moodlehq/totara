@@ -192,6 +192,12 @@ abstract class course_set {
 
         if($completion = get_record('prog_completion', 'coursesetid', $this->id, 'programid', $this->programid, 'userid', $userid)) {
 
+            // Do not update record if we have not received any data
+            // (generally because we just want to make sure a record exists)
+            if (empty($completionsettings)) {
+                return true;
+            }
+
             foreach($completionsettings as $key => $val) {
                 $completion->$key = $val;
             }
@@ -696,7 +702,7 @@ class multi_course_set extends course_set {
     }
 
     public function display($userid=null,$previous_sets=array(),$next_sets=array(),$accessible=true, $viewinganothersprogram=false) {
-        global $CFG;
+        global $CFG, $USER;;
 
         $out = '';
         $out .= '<fieldset>';
@@ -723,23 +729,26 @@ class multi_course_set extends course_set {
             }
 
             $table->data = array();
-            foreach($this->courses as $course) {
+            foreach ($this->courses as $course) {
+                $courserole = get_default_course_role($course);
+                $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
 
                 $row = array();
 
                 $coursedetails = '<img src="'.$CFG->wwwroot.'/local/icon/icon.php?icon='.$course->icon.'&amp;id='.$course->id.'&amp;size=small&amp;type=course" class="course_icon" />';
-                $coursedetails .= $accessible ? '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.$course->fullname.'</a>' : $course->fullname;
 
-                if ($accessible) {
+                if (($userid && $accessible) || ($accessible && $course->enrollable) || ($courserole && user_has_role_assignment($userid, $courserole->id, $coursecontext->id)) || is_siteadmin($USER->id)) {
+                    $coursedetails .= '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.$course->fullname.'</a>';
                     $launch = '<div class="prog-course-launch">' . print_single_button($CFG->wwwroot.'/course/view.php', array('id' => $course->id), get_string('launchcourse', 'local_program'), null, null, true) . '</div>';
                 } else {
+                    $coursedetails .= $course->fullname;
                     $launch = '<div class="prog-course-launch">' . print_single_button(null, null, get_string('notavailable', 'local_program'), null, null, true, null, true) . '</div>';
                 }
 
                 $row[] = $coursedetails . $launch;
 
-                if($userid) {
-                    if( ! $status = get_field('course_completions', 'status', 'userid', $userid, 'course', $course->id)) {
+                if ($userid) {
+                    if (!$status = get_field('course_completions', 'status', 'userid', $userid, 'course', $course->id)) {
                         $status = COMPLETION_STATUS_NOTYETSTARTED;
                     }
                     $row[] = totara_display_course_progress_icon($userid, $course->id, $status);

@@ -2073,7 +2073,7 @@ function require_login($courseorid=0, $autologinguest=true, $cm=null, $setwantsu
         // aren't already enrolled)
         if(file_exists($CFG->dirroot.'/local/program/lib.php')) {
             require_once($CFG->dirroot.'/local/program/lib.php');
-            prog_can_enter_course($USER->id, $COURSE->id, $COURSE->context);
+            prog_can_enter_course($USER, $COURSE);
         }
 
         /// Check if the user can be in a particular course

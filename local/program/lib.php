@@ -1037,35 +1037,58 @@ function prog_print_viewtype_selector($pagetype, $viewtype, $options=null) {
  * enrolled onto the course as a student.
  *
  * @global object $CFG
- * @param int $userid
- * @param int $courseid
- * @param object $coursecontext
+ * @param object $user
+ * @param object $course
  * @return void
  */
-function prog_can_enter_course($userid, $courseid, $coursecontext) {
+function prog_can_enter_course($user, $course) {
     global $CFG;
 
-    $studentroleid = get_field('role', 'id', 'shortname', 'student');
-    if (!$studentroleid) {
-	print_error('error:failedtofindstudentrole', 'local_program');
-    }
-    //$context = get_context_instance(CONTEXT_COURSE, $courseid);
-
-    // check if the user has already been assigned the student role in this course
-    if(user_has_role_assignment($userid, $studentroleid, $coursecontext->id)) {
+    if (!$courserole = get_default_course_role($course)) {
         return;
     }
 
-    if($program_records = prog_get_required_programs($userid)) {
-        foreach($program_records as $program_record) {
-            $program = new program($program_record->id);
-            if($program->can_enter_course($userid, $courseid)) {
-                role_assign($studentroleid, $userid, 0, $coursecontext->id);
-                return;
-            }
+    // check if the user has already been assigned the student role in this course
+    if (user_has_role_assignment($user->id, $courserole->id, $course->context->id)) {
+        return;
+    }
+
+    // Get programs that this user is assigned to, either via learning plans or required learning
+    $get_programs = "
+        SELECT p.id
+          FROM {$CFG->prefix}prog p
+         WHERE p.id IN
+             (
+                SELECT pc.programid
+                  FROM {$CFG->prefix}dp_plan_program_assign pc
+            INNER JOIN {$CFG->prefix}dp_plan plan ON plan.id = pc.planid
+                 WHERE pc.approved >= ".DP_APPROVAL_APPROVED."
+                   AND plan.userid = {$user->id}
+                   AND plan.status = ".DP_PLAN_STATUS_APPROVED."
+             )
+            OR p.id IN
+             (
+                SELECT pua.programid
+                  FROM {$CFG->prefix}prog_user_assignment pua
+             LEFT JOIN {$CFG->prefix}prog_completion pc
+                    ON pua.programid = pc.programid AND pua.userid = pc.userid
+                 WHERE pua.userid = {$user->id}
+                   AND pc.coursesetid = 0
+                   AND pc.status <> ".STATUS_PROGRAM_COMPLETE."
+             )
+    ";
+
+    if (!$program_records = get_records_sql($get_programs)) {
+        return;
+    }
+
+    foreach ($program_records as $program_record) {
+        $program = new program($program_record->id);
+        if ($program->is_accessible() && $program->can_enter_course($user->id, $course->id)) {
+            enrol_into_course($course, $user, 'manual');
+            return;
         }
     }
-    return;
 }
 
 
