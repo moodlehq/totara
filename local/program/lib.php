@@ -225,15 +225,15 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
 
     // Construct sql query
     $count = 'SELECT COUNT(*) ';
-    $select = 'SELECT DISTINCT(p.id) AS notid, p.*, p.fullname AS progname, pc.timedue AS duedate ';
+    $select = 'SELECT p.*, p.fullname AS progname, pc.timedue AS duedate ';
 
-    $from = "FROM {$CFG->prefix}prog AS p
-            INNER JOIN {$CFG->prefix}prog_completion AS pc ON p.id = pc.programid
-            INNER JOIN {$CFG->prefix}prog_user_assignment AS pua ON (pc.programid=pua.programid AND pc.userid=pua.userid) ";
+    $from = "FROM {$CFG->prefix}prog p
+            INNER JOIN {$CFG->prefix}prog_completion pc ON p.id = pc.programid AND pc.coursesetid = 0
+            INNER JOIN (SELECT DISTINCT userid, programid FROM {$CFG->prefix}prog_user_assignment) pua
+            ON (pc.programid=pua.programid AND pc.userid=pua.userid) ";
 
 
-    $where = "WHERE pc.coursesetid = 0
-        AND pc.userid = $userid
+    $where = "WHERE pc.userid = $userid
         AND pc.status <> ".STATUS_PROGRAM_COMPLETE;
 
     if (!$showhidden) {
