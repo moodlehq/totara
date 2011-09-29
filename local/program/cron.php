@@ -323,8 +323,21 @@ function program_cron_copy_recurring_courses() {
             $newcourseob = clone $course;
             unset($newcourseob->id);
             unset($newcourseob->modinfo);
-            $newcourseob->fullname = $course->fullname.' '.$datestr;
-            $newcourseob->shortname = $course->shortname.'-'.$datestr;
+
+            // we need to check both fullname and shortname to see if they have a date appended to them already
+            // if there is a date, it needs to be stripped out, including the space or hyphen
+            $fullname = $course->fullname;
+            if (preg_match('/ ([0-9]{2}\/[0-9]{2}\/[0-9]{4})$/', $fullname)) {
+                $fullname = substr($fullname, 0, -11);
+            }
+            $shortname = $course->shortname;
+            if (preg_match('/\-([0-9]{2}\/[0-9]{2}\/[0-9]{4})$/', $shortname)) {
+                $shortname = substr($shortname, 0, -12);
+            }
+
+            // then the new date can be appended if needed
+            $newcourseob->fullname = $fullname.' '.trim($datestr);
+            $newcourseob->shortname = $shortname.'-'.trim($datestr);
             $newcourseob->enrollable = false;
             $newcourseob->enrolenddate = $now + $courseset->recurcreatetime + $courseset->recurrencetime; // this should prevent the system from trying to create another new course the next time the cron is run
             $newcourseob->visible = false;
