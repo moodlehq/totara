@@ -54,6 +54,11 @@ function totara_setup_error_handlers() {
 function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $errcontext = array()) {
     global $CFG, $TOTARA;
 
+    // Do not record suppressed errors (or any others if error reporting disabled)
+    if (!error_reporting()) {
+        return false;
+    }
+
     // Restore old error handler to prevent loop
     restore_error_handler();
 
