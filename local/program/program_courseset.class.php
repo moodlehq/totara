@@ -2097,7 +2097,7 @@ class recurring_course_set extends course_set {
 
         // Add the 'Select course' drop down list
         $templatehtml .= '<div class="courseselector">';
-        if($courseoptions = get_records_menu('course', '', '', 'fullname ASC', 'id,fullname')) {
+        if($courseoptions = get_records_select_menu('course', 'id <> ' . SITEID, 'fullname ASC', 'id,fullname')) {
             if($updateform) {
                 $mform->addElement('select',  $prefix.'courseid', '', $courseoptions);
                 $mform->addElement('submit', $prefix.'changecourse', get_string('changecourse', 'local_program'), array('onclick'=>"return selectRecurringCourse('$prefix')"));
