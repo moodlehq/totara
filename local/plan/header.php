@@ -105,7 +105,7 @@ if ($printinstructions) {
         $instructions .= get_string($currenttab.'_instructions_detail', 'local_plan');
 
         if (!$this->is_active() || $component->get_setting('update'.$currenttab) > DP_PERMISSION_REQUEST) {
-            $instructions .= get_string($currenttab.'_instructions_add', 'local_plan');
+            $instructions .= get_string($currenttab.'_instructions_add11', 'local_plan');
         }
         if ($this->is_active() && $component->get_setting('update'.$currenttab) == DP_PERMISSION_REQUEST) {
             $instructions .= get_string($currenttab.'_instructions_request', 'local_plan');
