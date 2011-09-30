@@ -102,7 +102,7 @@ if ($nojs) {
 
     // Turn on multi-select
     $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
-    $dialog->selected_title = 'currentselection';
+    $dialog->selected_title = 'itemstoadd';
 
     // Show only courses with completion enabled
     $where = "category = '{$parentid}' AND visible = 1 AND enablecompletion = ".COMPLETION_ENABLED;

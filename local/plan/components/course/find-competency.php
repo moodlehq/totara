@@ -71,7 +71,7 @@ $dialog = new totara_dialog_linked_competencies_content_competencies();
 
 // Set type to multiple
 $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
-$dialog->selected_title = 'currentselection';
+$dialog->selected_title = 'itemstoadd';
 
 // Add data
 $dialog->load_competencies($planid);

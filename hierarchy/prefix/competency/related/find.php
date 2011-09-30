@@ -73,7 +73,7 @@ if(!$nojs) {
     $dialog->selected_items = $alreadyselected;
 
     // Set title
-    $dialog->selected_title = 'currentselection';
+    $dialog->selected_title = 'itemstoadd';
 
     // Display
     echo $dialog->generate_markup();

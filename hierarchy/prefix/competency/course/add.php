@@ -78,7 +78,7 @@ if (!$nojs) {
     }
 
     // Selected title
-    $dialog->selected_title = 'currentselection';
+    $dialog->selected_title = 'itemstoadd';
 
     // Display
     echo $dialog->generate_markup();

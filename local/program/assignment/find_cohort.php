@@ -47,7 +47,7 @@ $dialog->selected_items = $selected;
 $dialog->unremovable_items = $unremovable;
 
 // Set title
-$dialog->selected_title = 'currentselection';
+$dialog->selected_title = 'itemstoadd';
 
 // Display
 echo $dialog->generate_markup();
