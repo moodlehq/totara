@@ -634,7 +634,6 @@ from
         $compevscalevalueid = isset($row->compevscalevalueid) ? $row->compevscalevalueid : null;
         $plancompid = isset($row->plancompid) ? $row->plancompid : null;
         $competencyid = isset($row->competencyid) ? $row->competencyid : null;
-        $userid = isset($row->userid) ? $row->userid : null;
 
         if (!$planid) {
             return '';
@@ -680,10 +679,9 @@ from
                         "var response; ".
                         "response = \$.get(".
                             "'{$CFG->wwwroot}/local/plan/components/competency/update-competency-setting.php".
-                            "?c={$competencyid}".
-                            "&amp;pl={$planid}".
-                            "&amp;u={$userid}".
-                            "&amp;p=' + $(this).val()".
+                            "?competencyid={$competencyid}".
+                            "&amp;planid={$planid}".
+                            "&amp;prof=' + $(this).val()".
                         "); ".
                         "$(this).children('[option[value=\'0\']').remove(); ".
                     "}",
