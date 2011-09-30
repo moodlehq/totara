@@ -693,7 +693,7 @@ SQL;
                             PLAN_LINKTYPE_OPTIONAL => get_string('optional','hierarchy'),
                         ),
                         'linktype', //$name,
-                        ($competency->linktype ? $competency->linktype : PLAN_LINKTYPE_MANDATORY), //$selected,
+                        (isset($competency->linktype) ? $competency->linktype : PLAN_LINKTYPE_MANDATORY), //$selected,
                         '', //$nothing,
                         "\$.get(".
                             "'{$CFG->wwwroot}/local/plan/update-linktype.php".

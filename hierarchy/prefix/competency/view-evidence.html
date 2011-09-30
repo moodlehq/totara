@@ -63,7 +63,7 @@ if ($evidence) {
                     PLAN_LINKTYPE_OPTIONAL => get_string('optional','hierarchy'),
                 ),
                 'linktype', //$name,
-                ($eitem->linktype ? $eitem->linktype : PLAN_LINKTYPE_OPTIONAL), //$selected,
+                (isset($eitem->linktype) ? $eitem->linktype : PLAN_LINKTYPE_OPTIONAL), //$selected,
                 '', //$nothing,
                 "\$.get(".
                     "'{$CFG->wwwroot}/local/plan/update-linktype.php".
