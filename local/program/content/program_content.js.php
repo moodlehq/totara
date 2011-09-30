@@ -222,9 +222,9 @@ function handleSaveChanges() {
     // Display the number of affected learners (this variable should have been
     // defined in the page (see display_current_status() method in program.class.php)
     if (window.currentassignmentcount !== undefined) {
-        html = '<?php echo addslashes(get_string('affectedusercount','local_program')); ?>'+ window.currentassignmentcount;
+        html = '<?php echo addslashes_js(get_string('affectedusercount','local_program')); ?>'+ window.currentassignmentcount;
     }
-    html = html + '<'+'p><?php echo addslashes(get_string('tosavecontent','local_program')); ?><'+'/p>';
+    html = html + '<'+'p><?php echo addslashes_js(get_string('tosavecontent','local_program')); ?><'+'/p>';
     dialog.open(html);
     dialog.save = function() {
         dialog.savechanges = true;
