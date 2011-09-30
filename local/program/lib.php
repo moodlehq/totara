@@ -1061,10 +1061,10 @@ function prog_can_enter_course($user, $course) {
              (
                 SELECT pc.programid
                   FROM {$CFG->prefix}dp_plan_program_assign pc
-            INNER JOIN {$CFG->prefix}dp_plan plan ON plan.id = pc.planid
+            INNER JOIN {$CFG->prefix}dp_plan pln ON pln.id = pc.planid
                  WHERE pc.approved >= ".DP_APPROVAL_APPROVED."
-                   AND plan.userid = {$user->id}
-                   AND plan.status = ".DP_PLAN_STATUS_APPROVED."
+                   AND pln.userid = {$user->id}
+                   AND pln.status = ".DP_PLAN_STATUS_APPROVED."
              )
             OR p.id IN
              (
