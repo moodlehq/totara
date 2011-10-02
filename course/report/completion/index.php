@@ -246,6 +246,8 @@ if ($csv) {
     $navlinks[] = array('name' => $strcompletion, 'link' => null, 'type' => 'misc');
     print_header($strcompletion, $course->fullname, build_navigation($navlinks));
 
+    require_once($CFG->dirroot."/local/js/lib/setup.php");
+    local_js();
     require_js(
         array(
             'yui_yahoo',
@@ -254,7 +256,6 @@ if ($csv) {
             'yui_event',
             'yui_connection',
             $CFG->wwwroot.'/course/report/completion/textrotate.js',
-            $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
             $CFG->wwwroot.'/local/js/completion.report.js.php?id='.$course->id,
         )
     );

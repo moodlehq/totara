@@ -626,6 +626,7 @@ from
         global $CFG;
         // needed for approval constants
         require_once($CFG->dirroot . '/local/plan/lib.php');
+        require_once($CFG->dirroot."/local/js/lib/setup.php");
 
         $content = array();
         $approved = isset($row->approved) ? $row->approved : null;
@@ -667,9 +668,7 @@ from
                     $this->compscales[$compframeworkid] = $compscale;
                 }
 
-                require_js(array(
-                    "{$CFG->wwwroot}/local/js/lib/jquery-1.3.2.min.js",
-                    ));
+                local_js();
                 $content[] = choose_from_menu(
                     $compscale,
                     'competencyevidencestatus'.$plancompid,

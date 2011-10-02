@@ -76,9 +76,8 @@ class block_addtoplan extends block_base {
             return $this->content;
         }
 
-        require_js(array(
-            "{$CFG->wwwroot}/local/js/lib/jquery-1.3.2.min.js",
-        ));
+        require_once($CFG->dirroot .'/local/js/lib/setup.php');
+        local_js();
 
         $html  = '<script type="text/javascript">'."\n";
         $html .= '  $(function() {'."\n";

@@ -684,9 +684,6 @@ SQL;
                 // Options column
                 if ($can_edit) {
                     $out .= '<td align="center">';
-                    require_js(array(
-                        "{$CFG->wwwroot}/local/js/lib/jquery-1.3.2.min.js",
-                        ));
                     $out .= choose_from_menu(
                         array(
                             PLAN_LINKTYPE_MANDATORY => get_string('mandatory','hierarchy'),

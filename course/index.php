@@ -33,9 +33,8 @@
         error('Site isn\'t defined!');
     }
 
+    local_js(array(TOTARA_JS_UI));
     require_js(array(
-        $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
-        $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js', // for color animation
         $CFG->wwwroot.'/course/highlight_category.js'
     ));
 
