@@ -1035,7 +1035,7 @@ function dp_plan_item_updated($userid, $component, $componentid) {
     if (file_exists($component_include)) {
         require_once($component_include);
     }
-    $plans = call_user_func("dp_{$component}_component::get_plans_containing_item", $componentid, $userid);
+    $plans = call_user_func(array("dp_{$component}_component","get_plans_containing_item"), $componentid, $userid);
     dp_plan_check_plan_complete($plans);
 }
 
