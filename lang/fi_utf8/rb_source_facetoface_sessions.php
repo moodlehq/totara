@@ -2,6 +2,8 @@
 // rb_source_facetoface_sessions.php - created with Totara langimport script version 1.0
 
 $string['audit'] = 'Tarkistus';
+$string['cancellationdate'] = 'Peruutuspäivä';
+$string['cancellationreason'] = 'Peruutuksen syy';
 $string['coursedelivery'] = 'Kurssin suoritus';
 $string['currentorg'] = 'Käyttäjän nykyinen organisaatio';
 $string['currentpos'] = 'Käyttäjän nykyinen asema';

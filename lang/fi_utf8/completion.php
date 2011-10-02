@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // completion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+      // completion.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
 
 
 $string['achievinggrade'] = 'Vähimmäisarvosana';
@@ -56,7 +56,7 @@ $string['configenablecompletion'] = 'Kun tämä toiminto on käytössä, voit ma
 $string['configenablecourserpl'] = 'Salli kurssin merkitseminen suoritetuksi luomalla aiemman oppimisen hyväksilukemisrekisteri.';
 $string['configenablemodulerpl'] = 'Salli moduulin minkä tahansa suorittamiskriteerin merkitseminen suoritetuksi luomalla aiemman oppimisen hyväksilukemisrekisteri.';
 $string['configprogresstrackedroles'] = 'Roolit, jotka näytetään suorittamisen seuraamisnäytössä. (Yleensä vain opiskelijat tai sitä vastaavat roolit.)';
-$string['confirmselfcompletion'] = 'Vahvista itse suoritetuksi merkitseminen';
+$string['confirmselfcompletion'] = 'Vahvista oma suoritusmerkintä';
 $string['coursealreadycompleted'] = 'Olet suorittanut jo tämän kurssin';
 $string['coursecomplete'] = 'Kurssi on valmis';
 $string['coursecompleted'] = 'Kurssi suoritettu';
@@ -109,10 +109,10 @@ $string['help_completionlocked'] = 'lukitut suoritusasetukset';
 $string['help_completionview'] = 'tarvitaan näkymä, jotta suoritus voidaan viedä loppuun';
 $string['inprogress'] = 'Käynnissä';
 $string['manualcompletionby'] = 'Manuaalinen suoritusmerkintä tähän päivämäärään mennessä';
-$string['manualselfcompletion'] = 'Manuaalinen itse suoritetuksi merkitseminen';
+$string['manualselfcompletion'] = 'Oma suoritusmerkintä';
 $string['markcomplete'] = 'Merkitse suoritetuksi';
 $string['markedcompleteby'] = 'Käyttäjä $a on merkinnyt tämän suoritetuksi';
-$string['markingyourselfcomplete'] = 'Omatoiminen suoritetuksi merkitseminen';
+$string['markingyourselfcomplete'] = 'Oma suoritusmerkintä';
 $string['moredetails'] = 'Lisätietoja';
 $string['notcompleted'] = 'Keskeneräinen';
 $string['notenroled'] = 'Et ole ilmoittautuneena opiskelijaksi tällä kurssilla';
@@ -133,8 +133,8 @@ $string['restoringcompletiondata'] = 'Suoritustietoja kirjoitetaan';
 $string['rpl'] = 'Korvaava suoritus';
 $string['saved'] = 'Tallennettu';
 $string['seedetails'] = 'Tarkastele tarkemmin';
-$string['self'] = 'Itse';
-$string['selfcompletion'] = 'Itse suoritetuksi merkitseminen';
+$string['self'] = 'Oma';
+$string['selfcompletion'] = 'Oma suoritusmerkintä';
 $string['showinguser'] = 'Näytetään käyttäjä';
 $string['showrpl'] = 'Näytä korvaava suoritus';
 $string['showrpls'] = 'Näytä korvaavat suoritukset';
