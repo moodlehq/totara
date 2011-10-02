@@ -310,7 +310,7 @@ class competency extends hierarchy {
      * @return array|false
      */
     function get_evidence($item) {
-        return get_records($this->shortprefix.'_evidence_items', 'competencyid', $item->id);
+        return get_records($this->shortprefix.'_evidence_items', 'competencyid', $item->id, 'id');
     }
 
     /**
