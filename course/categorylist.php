@@ -110,9 +110,9 @@
 
     print_totara_search('', false, $SESSION->viewtype, 0);
 
-    $topcats = get_records('course_categories', 'parent', 0);
+    $topcats = get_records('course_categories', 'parent', 0, 'sortorder');
 
-    $secondarycats = get_records_select('course_categories', 'parent IN ('.implode(',', array_keys($topcats)).')');
+    $secondarycats = get_records_select('course_categories', 'parent IN ('.implode(',', array_keys($topcats)).')', 'sortorder');
 
     $top_item_counts = get_category_item_count(array_keys($topcats), ($SESSION->viewtype != 'program'));
     if ($secondarycats) {
