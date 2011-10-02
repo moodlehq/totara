@@ -3818,6 +3818,10 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 	color:#9E1775;
 }
 
+#program-content fieldset,
+#view-program-content fieldset {
+    border: 1px solid #000000;
+}
 
 /***
 ** Course Category Menu

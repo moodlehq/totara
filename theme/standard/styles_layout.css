@@ -5331,6 +5331,10 @@ body#user-positions span#organisationtitle.nonempty {
 #local-program-view #dp-plan-content fieldset{
 	padding: 5px 25px 20px 25px;
 }
+#program-content fieldset,
+#view-program-content fieldset {
+    padding: 0.5em;
+}
 .completion-notyetstarted{
     margin-top: 10px;
 }

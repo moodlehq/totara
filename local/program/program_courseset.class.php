@@ -745,7 +745,7 @@ class multi_course_set extends course_set {
                     $launch = '<div class="prog-course-launch">' . print_single_button(null, null, get_string('notavailable', 'local_program'), null, null, true, null, true) . '</div>';
                 }
 
-                $row[] = $coursedetails . $launch;
+                $row[] = $launch . $coursedetails;
 
                 if ($userid) {
                     if (!$status = get_field('course_completions', 'status', 'userid', $userid, 'course', $course->id)) {
