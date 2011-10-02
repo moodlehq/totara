@@ -50,7 +50,8 @@ var rb_init_col_rows = function() {
     });
 
     // handle changes to the customise checkbox
-    $('input.column_custom_heading_checkbox').change(function() {
+    // use click instead of change event for IE
+    $('input.column_custom_heading_checkbox').click(function() {
         var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
         if ($(this).is(':checked')) {
             // enable the textbox when checkbox isn't checked
