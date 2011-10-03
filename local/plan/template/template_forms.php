@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,7 +19,7 @@
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -31,14 +30,15 @@ require_once "$CFG->dirroot/lib/formslib.php";
 require_once("$CFG->libdir/tablelib.php");
 
 class dp_template_general_settings_form extends moodleform {
-    function definition(){
+
+    function definition() {
         global $CFG;
         $mform =& $this->_form;
 
         $id = $this->_customdata['id'];
         $template = get_record('dp_template', 'id', $id);
         $templatename = $template->fullname;
-        $enddate = $template->enddate==0 ? '' : date('d/m/Y', $template->enddate);
+        $enddate = $template->enddate == 0 ? '' : date('d/m/Y', $template->enddate);
 
         $mform->addElement('hidden', 'id', $id);
 
@@ -47,15 +47,13 @@ class dp_template_general_settings_form extends moodleform {
         $mform->addElement('text', 'templatename', get_string('name', 'local_plan'), 'maxlength="255"');
         $mform->setType('templatename', PARAM_TEXT);
         $mform->setDefault('templatename', $templatename);
-        $mform->addRule('templatename',null,'required');
+        $mform->addRule('templatename', null, 'required');
 
         $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'));
-
-        $mform->addRule('enddate',get_string('error:dateformat','local_plan'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
-
         $mform->setType('enddate', PARAM_TEXT);
-
         $mform->setDefault('enddate', $enddate);
+        $mform->addRule('enddate', get_string('error:dateformat','local_plan'), 'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('enddate', null, 'required');
         $mform->setHelpButton('enddate', array('templateenddate', get_string('enddate', 'local_plan'), 'local_plan'), true);
 
         $this->add_action_buttons();
@@ -66,11 +64,11 @@ class dp_template_general_settings_form extends moodleform {
         $mform =& $this->_form;
         $result = array();
 
-        $enddatestr = isset($data['enddate'])?$data['enddate']:'';
-        $enddate = dp_convert_userdate( $enddatestr );
+        $enddatestr = isset($data['enddate']) ? $data['enddate'] : '';
+        $enddate = dp_convert_userdate($enddatestr);
 
         // Enforce valid dates
-        if ( false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '' ){
+        if (false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '') {
             $result['enddate'] = get_string('error:dateformat','local_plan');
         }
 
@@ -88,15 +86,13 @@ class dp_template_new_form extends moodleform {
 
         $mform->addElement('text', 'templatename', get_string('name', 'local_plan'), 'maxlength="255"');
         $mform->setType('templatename', PARAM_TEXT);
-        $mform->addRule('templatename',null,'required');
+        $mform->addRule('templatename', null, 'required');
 
         $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'));
-
-        $mform->addRule('enddate',get_string('error:dateformat','local_plan'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
-
         $mform->setType('enddate', PARAM_TEXT);
-
-        $mform->setDefault('enddate','dd/mm/yyyy');
+        $mform->setDefault('enddate', 'dd/mm/yyyy');
+        $mform->addRule('enddate', get_string('error:dateformat','local_plan'), 'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('enddate', null, 'required');
         $mform->setHelpButton('enddate', array('templateenddate', get_string('enddate', 'local_plan'), 'local_plan'), true);
 
         $this->add_action_buttons();
@@ -107,12 +103,12 @@ class dp_template_new_form extends moodleform {
         $mform =& $this->_form;
         $result = array();
 
-        $enddatestr = isset($data['enddate'])?$data['enddate']:'';
+        $enddatestr = isset($data['enddate']) ? $data['enddate'] : '';
         $enddate = dp_convert_userdate( $enddatestr );
 
         // Enforce valid dates
-        if ( false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '' ){
-            $result['enddate'] = get_string('error:dateformat','local_plan');
+        if (false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '') {
+            $result['enddate'] = get_string('error:dateformat', 'local_plan');
         }
 
         return $result;

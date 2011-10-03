@@ -68,7 +68,7 @@ if (!$nojs) {
     $dialog->disabled_items = $currentlyassigned;
 
     // Set title
-    $dialog->selected_title = 'selectedcompetencies';
+    $dialog->selected_title = 'itemstoadd';
 
     $dialog->selected_items = $currentlyassigned;
 

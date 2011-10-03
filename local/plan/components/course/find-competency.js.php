@@ -25,7 +25,7 @@
 
 require_once '../../../../config.php';
 require_login();
-$ok_string = get_string('ok');
+$save_string = get_string('save');
 $cancel_string = get_string('cancel');
 
 ?>
@@ -48,11 +48,11 @@ $(function() {
             {
                  buttons: {
                      '<?php echo $cancel_string ?>': function() { handler._cancel() },
-                         '<?php echo $ok_string ?>': function() { handler._save(saveurl) }
+                     '<?php echo $save_string ?>': function() { handler._save(saveurl) }
                  },
                 title: '<?php
                     echo '<h2>';
-                    echo get_string('addremovecompetency', 'local_plan');
+                    echo get_string('addlinkedcompetencies', 'local_plan');
                     echo '</h2>';
                 ?>'
             },
@@ -87,7 +87,7 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     $('.noitems-'+this._title).remove();
 
     // Grab table
-    var table = $('div#content table.dp-plan-component-items');
+    var table = $('div#content div#dp-course-competencies-container table.dp-plan-component-items');
 
     // If table found
     if (table.size()) {

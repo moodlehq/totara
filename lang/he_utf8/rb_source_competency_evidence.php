@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // rb_source_competency_evidence.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
+<?PHP // $Id$ 
+      // rb_source_competency_evidence.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['assessor'] = 'מעריך';
@@ -32,6 +31,8 @@ $string['positionwhencompletedbasic'] = 'התפקיד בזמן ההשלמה (ב�
 $string['proficiency'] = 'רמת ידע';
 $string['proficiencyid'] = 'קוד רמת ידע';
 $string['sourcetitle'] = 'סימוכין לכשירות';
+$string['type_competency'] = 'כשירות';
+$string['type_competency_evidence'] = 'סימוכין לכשירות';
 $string['user'] = 'המשתמש';
 
 ?>

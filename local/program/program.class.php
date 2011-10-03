@@ -84,7 +84,7 @@ class program {
 
     public $id, $category, $sortorder, $fullname, $shortname;
     public $idnumber, $summary, $endnote, $visible;
-    public $availablefrom, $availableuntil, $availablerole;
+    public $availablefrom, $availableuntil, $available;
     public $timecreated, $timemodified, $usermodified;
     public $content;
 
@@ -112,7 +112,7 @@ class program {
         $this->visible = $program->visible;
         $this->availablefrom = $program->availablefrom;
         $this->availableuntil = $program->availableuntil;
-        $this->availablerole = $program->availablerole;
+        $this->available = $program->available;
         $this->timecreated = $program->timecreated;
         $this->timemodified = $program->timemodified;
         $this->usermodified = $program->usermodified;
@@ -480,10 +480,12 @@ class program {
      */
     public function set_timedue($userid, $timedue) {
 
-        if($completion = get_record('prog_completion', 'programid', $this->id, 'userid', $userid, 'coursesetid', 0)) {
-            $completion->timedue = $timedue;
-            return update_record('prog_completion', $completion);
-        } else {
+        if ($completion = get_record('prog_completion', 'programid', $this->id, 'userid', $userid, 'coursesetid', 0)) {
+            $todb = new object();
+            $todb->id = $completion->id; // addslashes to any text fields from the db
+            $todb->timedue = $timedue;
+            return update_record('prog_completion', $todb);
+		} else {
             return false;
         }
 
@@ -753,20 +755,15 @@ class program {
 
         $courseset_group_completed = false;
 
-        foreach($courseset_groups as $courseset_group) {
+        foreach ($courseset_groups as $courseset_group) {
 
-            foreach($courseset_group as $courseset) {
+            foreach ($courseset_group as $courseset) {
 
                 // if this set contains the course, the user can enter the course
-                if($courseset->contains_course($courseid)) {
+                if ($courseset->contains_course($courseid)) {
 
-                    $completionsettings = array(
-                        'status'        => STATUS_COURSESET_INCOMPLETE,
-                        'timestarted'   => time()
-                    );
-
-                    // update the course set completion status
-                    $courseset->update_courseset_complete($userid, $completionsettings);
+                    // create completion record if it does not exist
+                    $courseset->update_courseset_complete($userid, array());
 
                     return true;
                 }
@@ -777,7 +774,7 @@ class program {
             // if this course set group is not complete there is not point in
             // continuing because the user can not enter any of the courses
             // in the following course set groups
-            if( ! $courseset_group_completed) {
+            if (!$courseset_group_completed) {
                 return false;
             }
         }
@@ -799,10 +796,15 @@ class program {
 
         $out = '';
 
+        if (!$this->is_accessible()) {
+            // Return if program is not accessible
+            return '<p>' . get_string('programnotcurrentlyavailable', 'local_program') . '</p>';
+        }
+
         $viewinganothersprogram = false;
         if ($userid && $userid != $USER->id) {
             $viewinganothersprogram = true;
-            if ( ! $user = get_record('user', 'id', $userid)) {
+            if (!$user = get_record('user', 'id', $userid)) {
                 print_error('Unable to locate the specified user for the program');
             }
             $user->fullname = fullname($user);
@@ -810,36 +812,7 @@ class program {
             $out .= '<p>'.get_string('viewingxusersprogram', 'local_program', $user).'</p>';
         }
 
-        // Get the total time allowed for this program
-        $total_time_allowed = $this->content->get_total_time_allowance();
-
-        // Only display the time allowance if it is greater than zero
-        if ($total_time_allowed > 0) {
-            // Break the time allowed details down into human readable form
-            $timeallowance = program_utilities::duration_explode($total_time_allowed);
-
-            $out .= '<p class="timeallowed">';
-
-            if ($viewinganothersprogram) {
-                $timeallowance->fullname = $user->fullname;
-                $out .= get_string('allowedtimeforprogramasmanager', 'local_program', $timeallowance);
-            } else {
-                if ($userid) {
-                    $out .= get_string('allowedtimeforprogramaslearner', 'local_program', $timeallowance);
-                } else {
-                    $out .= get_string('allowedtimeforprogramviewing', 'local_program', $timeallowance);
-                }
-            }
-
-            // Only display the 'request an extension' link to assigned learners
-            // (i.e. those users who have this program as part of their required
-            // learning)
-            if (!$viewinganothersprogram && $userid && $this->assigned_to_users_required_learning($userid)) {
-                $out .= ' <a href="'.$CFG->wwwroot.'/local/program/view.php?id='.$this->id.'&amp;extrequest=1">'.get_string('requestextension', 'local_program').'</a>';
-            }
-
-            $out .= '</p>';
-        }
+        $out .= $this->get_time_allowance_and_extension_text($userid, $viewinganothersprogram);
 
         // display the start date, due date and progress bar
         if ($userid) {
@@ -848,11 +821,8 @@ class program {
                 $duedatestr = empty($prog_completion->timedue) ? get_string('duedatenotset', 'local_program') : $this->display_date_as_text($prog_completion->timedue);
                 $out .= '<div class="programprogress">';
                 $out .= '<div class="startdate">'.get_string('startdate', 'local_program').': '.$startdatestr.'</div>';
-                ;
                 $out .= '<div class="duedate">'.get_string('duedate', 'local_program').': '.$duedatestr.'</div>';
-                ;
                 $out .= '<div class="startdate">'.get_string('progress', 'local_program').': '.$this->display_progress($userid).'</div>';
-                ;
                 $out .= '</div>';
             }
         }
@@ -930,10 +900,62 @@ class program {
             }
         }
 
-        $out .= '<div class="programendnote">';
-        $out .= '<h2>'.get_string('programends', 'local_program').'</h2>';
-        $out .= '<div class="endnote">'.$this->endnote.'</div>';
-        $out .= '</div>';
+        // only show end note when a program is complete
+        $prog_owners_id = ($userid) ? $userid : $USER->id;
+        $prog_completion = get_record('prog_completion', 'programid', $this->id, 'userid', $prog_owners_id, 'coursesetid', 0);
+
+        if ($prog_completion && $prog_completion->status == STATUS_PROGRAM_COMPLETE) {
+            $out .= '<div class="programendnote">';
+            $out .= '<h2>'.get_string('programends', 'local_program').'</h2>';
+            $out .= '<div class="endnote">'.$this->endnote.'</div>';
+            $out .= '</div>';
+        }
+
+        return $out;
+    }
+
+    function get_time_allowance_and_extension_text($userid, $viewinganothersprogram) {
+        global $CFG;
+
+        $out = '';
+
+        // Get the total time allowed for this program
+        $total_time_allowed = $this->content->get_total_time_allowance();
+
+        // Only display the time allowance if it is greater than zero
+        if ($total_time_allowed > 0) {
+            // Break the time allowed details down into human readable form
+            $timeallowance = program_utilities::duration_explode($total_time_allowed);
+
+            $out .= '<p class="timeallowed">';
+
+            if ($viewinganothersprogram) {
+                $user = get_record('user', 'id', $userid);
+                $timeallowance->fullname = fullname($user);
+                $out .= get_string('allowedtimeforprogramasmanager', 'local_program', $timeallowance);
+            } else {
+                if ($userid) {
+                    $out .= get_string('allowedtimeforprogramaslearner', 'local_program', $timeallowance);
+                } else {
+                    $out .= get_string('allowedtimeforprogramviewing', 'local_program', $timeallowance);
+                }
+            }
+
+            // Only display the 'request an extension' link to assigned learners
+            // (i.e. those users who have this program as part of their required
+            // learning). If there is an existing pending extension show pending text
+            if (!$viewinganothersprogram && $userid && $this->assigned_to_users_required_learning($userid) && totara_get_manager($userid)) {
+                if (!$extension = get_record('prog_extension', 'userid', $userid, 'programid', $this->id, 'status', 0)) {
+                    // Show extension link
+                    $out .= ' <a href="'.$CFG->wwwroot.'/local/program/view.php?id='.$this->id.'&amp;extrequest=1">'.get_string('requestextension', 'local_program').'</a>';
+                } else {
+                    // Show pending text
+                    $out .= ' ' . get_string('pendingextension', 'local_program');
+                }
+            }
+
+            $out .= '</p>';
+        }
 
         return $out;
     }
@@ -1089,35 +1111,19 @@ class program {
      * @return string
      */
     public function display_current_status() {
-        global $CFG;
+        global $CFG, $USER;
 
         $assignmentscount = $this->assignments->count_user_assignments();
-        $assignmentscount = $assignmentscount ? $assignmentscount : 0;
+        $assignmentexceptionscount = $this->assignments->count_user_assignment_exceptions();
         $statusstr = '';
 
         $out = '';
 
-        // Check if this program is not available
-        if ($this->availablerole == AVAILABILITY_NOT_TO_STUDENTS) {
+        if (!$this->is_accessible()) {
             $statusstr = 'programnotavailable';
         }
 
-        // Check if this program has from and until dates set, if so, encforce them
-        if (!empty($this->availablefrom) && !empty($this->availableuntil)) {
-            $now = time();
-
-            // Check if the programme isn't accessible yet
-            if ($this->availablefrom > $now) {
-                $statusstr = 'programnotavailable';
-            }
-
-            // Check if the programme isn't accessible anymore
-            if ($this->availableuntil < $now) {
-                $statusstr = 'programnotavailable';
-            }
-        }
-
-        if ( ! empty($statusstr)) {
+        if (!empty($statusstr)) {
             $programstatusclass = 'programstatusnotlive';
             $programstatusstring = get_string($statusstr, 'local_program');
             $programstatusimg = '';
@@ -1135,7 +1141,11 @@ class program {
         $out .= $programstatusimg;
         $out .= '<p>';
         $out .= '<span class="status">'.$programstatusstring.'.</span><br />';
-        $out .= '<span class="assignmentcount">'.get_string('learnersassigned', 'local_program', $assignmentscount).'.</span>';
+        $assignmentcounts = new object();
+        $assignmentcounts->exceptions = $assignmentexceptionscount;
+        $assignmentcounts->assignments = $assignmentscount;
+        $assignmentcounts->total = $assignmentscount + $assignmentexceptionscount;
+        $out .= '<span class="assignmentcount">'.get_string('learnersassigned', 'local_program', $assignmentcounts).'.</span>';
         $out .= '</p>';
         $out .= '</div>';
         // This js variable is added so that is available to javascript and can
@@ -1174,41 +1184,44 @@ class program {
     }
 
     /**
-     * Determines whether this program is accessible to the currently logged
-     * in user or the passed in user. This does not care whether
-     * the user is enrolled or not.
+     * Checks accessiblity of the program for user if the user parameter is
+     * passed to the function otherwise checks if the program is generally
+     * accessible.
      *
      * @global object $USER
-     * @param object $user
+     * @param object $user If this parameter is included check availibilty to this user
      * @return boolean
      */
     public function is_accessible($user = null) {
-        if ($user == null) {
-            global $USER;
-            $user = $USER;
-        }
+        // If a user is set check if they area a site admin, if so, let them have access
 
-        // Check if the user can see hidden programs, if so, let them have access
-        if (has_capability('local/program:viewhiddenprograms', get_system_context(), $user->id)) {
-            return true;
+        if (!empty($user->id)) {
+            if (is_siteadmin($user->id)) {
+                return true;
+            }
         }
 
         // Check if this program is not available, if it's not then deny access
-        if ($this->availablerole == AVAILABILITY_NOT_TO_STUDENTS) {
+        if ($this->available == AVAILABILITY_NOT_TO_STUDENTS) {
             return false;
         }
 
-        // Check if this program has from and until dates set, if so, encforce them
-        if (!empty($this->availablefrom) && !empty($this->availableuntil)) {
-            $now = time();
+        // Check if this program has from and until dates set, if so, enforce them
+        if (!empty($this->availablefrom) || !empty($this->availableuntil)) {
 
-            // Check if the programme isn't accessible yet
-            if ($this->availablefrom > $now) {
+            if (isset($user->timezone)) {
+                $now = usertime(time(), $user->timezone);
+            } else {
+                $now = usertime(time());
+            }
+
+            // Check if the program isn't accessible yet
+            if (!empty($this->availablefrom) && $this->availablefrom > $now) {
                 return false;
             }
 
-            // Check if the programme isn't accessible anymore
-            if ($this->availableuntil < $now) {
+            // Check if the program isn't accessible anymore
+            if (!empty($this->availableuntil) && $this->availableuntil < $now) {
                 return false;
             }
         }
@@ -1216,12 +1229,6 @@ class program {
         return true;
     }
 
-    /**
-     * Prints an error if a program is not accessible
-     */
-    function display_access_error() {
-        print_error('error:inaccessible', 'local_program');
-    }
 
     /**
      * Generates HTML for a cancel button which is displayed on program
@@ -1233,10 +1240,8 @@ class program {
      */
     public function get_cancel_button($url='') {
         global $CFG;
-        $button_str = get_string('cancelprogrammanagement','local_program');
-        $cancelblurb = '<span class="cancel_program_blurb">'.get_string('cancelprogramblurb', 'local_program').'</span>';
-        $link = empty($url) ? $CFG->wwwroot : $url;
-        return '<a href="'.$link.'" id="cancelprogramedits">'.$button_str.'</a><br />'.$cancelblurb;
+        $link = empty($url) ? $CFG->wwwroot.'/course/categorylist.php?viewtype=program&categoryedit=on' : $url;
+        return '<a href="'.$link.'" id="cancelprogramedits">'.get_string('cancelprogrammanagement', 'local_program').'</a><br />';
     }
 }
 

@@ -24,6 +24,7 @@
  */
 
 require_once($CFG->dirroot.'/local/program/lib.php');
+require_once($CFG->dirroot.'/local/program/program.class.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -100,7 +101,7 @@ class dp_program_component extends dp_base_component {
         global $CFG;
 
         // Generate where clause
-        $where = "p.visible = 1 AND a.planid = {$this->plan->id}";
+        $where = "a.planid = {$this->plan->id}";
         if ($approved !== null) {
             if (is_array($approved)) {
                 $approved = implode(', ', $approved);
@@ -190,9 +191,10 @@ class dp_program_component extends dp_base_component {
      * Process component's settings update
      *
      * @access  public
+     * @param   bool    $ajax   Is an AJAX request (optional)
      * @return  void
      */
-    public function process_settings_update() {
+    public function process_settings_update($ajax = false) {
         // @todo validation notices, including preventing empty due dates
         // if duedatemode is required
         // @todo consider handling differently - currently all updates must
@@ -384,9 +386,16 @@ class dp_program_component extends dp_base_component {
                         $issuesnotification .= $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED ?
                             '<br>'.get_string('noteduedateswrongformatorrequired', 'local_plan') : '<br>'.get_string('noteduedateswrongformat', 'local_plan');
                     }
-                    totara_set_notification(get_string('programsupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
+
+                    // Do not create notification or redirect if ajax request
+                    if (!$ajax) {
+                        totara_set_notification(get_string('programsupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
+                    }
                 } else {
-                    totara_set_notification(get_string('programsnotupdated','local_plan'), $currenturl);
+                    // Do not create notification or redirect if ajax request
+                    if (!$ajax) {
+                        totara_set_notification(get_string('programsnotupdated','local_plan'), $currenturl);
+                    }
                 }
             }
         }
@@ -395,7 +404,10 @@ class dp_program_component extends dp_base_component {
             return null;
         }
 
-        redirect($currenturl);
+        // Do not redirect if ajax request
+        if (!$ajax) {
+            redirect($currenturl);
+        }
     }
 
     /**
@@ -438,13 +450,19 @@ class dp_program_component extends dp_base_component {
      *
      * @access  public
      * @param   $itemid     integer
-     * @return  added item's name
+     * @param   boolean $checkpermissions If false user permission checks are skipped (optional)
+     * @param   boolean $manual Was this assignment created manually by a user? (optional)
+     * @return  object  Inserted record
      */
-    public function assign_new_item($itemid) {
+    public function assign_new_item($itemid, $checkpermissions = true, $manual = true) {
 
-        // Get approval value for new item
-        if (!$permission = $this->can_update_items()) {
-            print_error('error:cannotupdateprograms', 'local_plan');
+        // Get approval value for new item if required
+        if ($checkpermissions) {
+            if (!$permission = $this->can_update_items()) {
+                print_error('error:cannotupdateprograms', 'local_plan');
+            }
+        } else {
+            $permission = DP_PERMISSION_ALLOW;
         }
 
         $item = new object();
@@ -452,7 +470,8 @@ class dp_program_component extends dp_base_component {
         $item->programid = $itemid;
         $item->priority = null;
         $item->duedate = null;
-        $programname = get_field('prog', 'fullname',  'id', $itemid);
+        $item->manual = (int) $manual;
+
         // Check required values for priority/due data
         if ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED) {
             $item->priority = $this->get_default_priority();
@@ -470,13 +489,16 @@ class dp_program_component extends dp_base_component {
             $item->approved = DP_APPROVAL_UNAPPROVED;
         }
 
-        add_to_log(SITEID, 'plan', 'added program', "component.php?id={$this->plan->id}&amp;c=program", $programname);
+        // Load fullname of item
+        $item->fullname = get_field('prog', 'fullname', 'id', $itemid);
 
-        $insert_result = insert_record('dp_plan_program_assign', $item) ? $programname : false;
+        add_to_log(SITEID, 'plan', 'added program', "component.php?id={$this->plan->id}&amp;c=program", "Program ID: {$itemid}");
 
-        // create a completion record for this program for this plan's user to
-        // record when the program was started and when it is due
-        if ($insert_result !== false) {
+        if ($result = insert_record('dp_plan_program_assign', $item)) {
+            $item->id = $result;
+
+            // create a completion record for this program for this plan's user to
+            // record when the program was started and when it is due
             $program = new program($item->programid);
             $completionsettings = array(
                 'status'        => STATUS_PROGRAM_INCOMPLETE,
@@ -485,9 +507,9 @@ class dp_program_component extends dp_base_component {
             );
 
             $program->update_program_complete($this->plan->userid, $completionsettings);
-
         }
-        return $insert_result;
+
+        return $result ? $item : $result;
     }
 
     /**
@@ -545,7 +567,8 @@ class dp_program_component extends dp_base_component {
 
             // Get course picker
             require_js(array(
-                $CFG->wwwroot.'/local/plan/components/program/find.js.php?planid='.$this->plan->id.'&amp;viewas='.$this->plan->viewas
+                $CFG->wwwroot.'/local/plan/component.js.php?planid='.$this->plan->id.'&amp;component=program&amp;viewas='.$this->plan->viewas,
+                $CFG->wwwroot.'/local/plan/components/program/find.js.php'
             ));
         }
     }
@@ -620,6 +643,7 @@ class dp_program_component extends dp_base_component {
         return $markup;
     }
 
+
     /**
      * Display item's name
      *
@@ -637,22 +661,32 @@ class dp_program_component extends dp_base_component {
             $extraparams = '&amp;userid='.$this->plan->userid;
         }
 
-        if($approved) {
+        $prog = new program($item->programid);
+        $accessible = $prog->is_accessible();
+
+        if($approved && $accessible) {
             return '<img class="program_icon" src="' .
                 $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
                 '&amp;id=' . $item->programid .
                 '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
                 '" /><a href="' . $CFG->wwwroot .
                 '/local/plan/components/' . $this->component.'/view.php?id=' .
-                $this->plan->id . '&amp;itemid=' . $item->id . $extraparams . '">' . $item->fullname .
+                $this->plan->id . '&amp;itemid=' . $item->id . $extraparams . '">' . format_string($item->fullname) .
                 '</a>';
-        } else {
+        } elseif (!$approved && $accessible) {
             return '<img class="program_icon" src="' .
                 $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
                 '&amp;id=' . $item->programid .
                 '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
-                '" />' . $item->fullname;
+                '" />' . format_string($item->fullname);
+        } elseif (!$accessible) {
+            return '<img class="program_icon" src="' .
+                $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
+                '&amp;id=' . $item->programid .
+                '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
+                '" />' . '<span class="inaccessible">' . format_string($item->fullname) . '</span>';
         }
+
     }
 
     /**
@@ -677,8 +711,8 @@ class dp_program_component extends dp_base_component {
 
         $out = '';
 
-        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$item->icon}&amp;id={$item->programid}&amp;size=small&amp;type=program\" alt=\"{$item->fullname}\">";
-        $out .= '<h3>' . $icon . $item->fullname . '</h3>';
+        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$item->icon}&amp;id={$item->programid}&amp;size=small&amp;type=program\" alt=\"" . format_string($item->fullname) . "\">";
+        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
 
         $program = new program($item->id);
 
@@ -737,6 +771,36 @@ class dp_program_component extends dp_base_component {
         return $progress;
     }
 
+
+    /**
+     * Gets all plans containing specified program
+     *
+     * @param int $programid
+     * @param int $userid
+     * @return array|false $plans ids of plans with specified program
+     */
+    public static function get_plans_containing_item($programid, $userid) {
+        global $CFG;
+        $sql = "SELECT DISTINCT
+                planid
+            FROM
+                {$CFG->prefix}dp_plan_program_assign pa
+            JOIN
+                {$CFG->prefix}dp_plan p
+              ON
+                pa.planid = p.id
+            WHERE
+                pa.programid = {$programid}
+            AND
+                p.userid = {$userid}";
+
+        if (!$plans = get_records_sql($sql)) {
+            // There are no plans with this program
+            return false;
+        }
+
+        return array_keys($plans);
+    }
 
     /**
      * Reactivates item when re-activating a plan

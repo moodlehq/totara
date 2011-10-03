@@ -429,16 +429,6 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         }
     }
 
-    if ($result && $oldversion < 2011072900) {
-        // Add autoassigned field to competency_assign table
-        $table = new XMLDBTable('dp_plan_competency_assign');
-        $field = new XMLDBField('mandatory');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0);
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
-        }
-    }
-
     if ($result && $oldversion < 2011080100) {
         // Add column to auto add default competency evidence
         $table = new XMLDBTable('dp_competency_settings');
@@ -449,7 +439,10 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         }
     }
 
-    if ($result && $oldversion < 2011080200) {
+
+/// Totara 1.1 upgrade
+
+    if ($result && $oldversion < 2011091200) {
 
     /// Define table dp_plan_program_assign to be created
         $table = new XMLDBTable('dp_plan_program_assign');
@@ -472,9 +465,6 @@ function xmldb_local_plan_upgrade($oldversion=0) {
 
     /// Launch create table for dp_plan_program_assign
         $result = $result && create_table($table);
-    }
-
-    if ($result && $oldversion < 2011051002) {
 
     /// Define table dp_program_settings to be created
         $table = new XMLDBTable('dp_program_settings');
@@ -519,6 +509,12 @@ function xmldb_local_plan_upgrade($oldversion=0) {
             $roles = array('learner','manager');
             $actions=array('updateprogram','commenton','setpriority','setduedate','setcompletionstatus');
 
+            require_once($CFG->dirroot . '/local/plan/priorityscales/lib.php');
+            if (!$defaultpriorityscale = dp_priority_default_scale_id()) {
+                $defaultpriorityscale = 0;
+            }
+
+
             foreach( $templates as $t ){
                 begin_sql();
                 $perm = new stdClass();
@@ -541,19 +537,97 @@ function xmldb_local_plan_upgrade($oldversion=0) {
                 if($progset = get_record_select('dp_program_settings', "templateid={$t->id}")) {
                     $progset->duedatemode=0;
                     $progset->prioritymode=0;
-                    $progset->priorityscale=1;
+                    $progset->priorityscale=$defaultpriorityscale;
                     update_record('dp_program_settings', $progset);
                 } else {
                     $progset = new stdClass();
                     $progset->templateid = $t->id;
                     $progset->duedatemode=0;
                     $progset->prioritymode=0;
-                    $progset->priorityscale=1;
+                    $progset->priorityscale=$defaultpriorityscale;
                     insert_record('dp_program_settings', $progset);
                 }
 
                 commit_sql();
             }
+        }
+
+        // Add mandatory field to dp_plan_component_relation table
+        $table = new XMLDBTable('dp_plan_component_relation');
+        $field = new XMLDBField('mandatory');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, null);
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+        // Add manual column to component item tables
+        $field = new XMLDBField('manual');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0);
+
+        $tables = array(
+            'dp_plan_course_assign',
+            'dp_plan_competency_assign',
+            'dp_plan_objective',
+            'dp_plan_program_assign'
+        );
+
+        // Loop through all component item tables
+        foreach ($tables as $tablename) {
+            $table = new XMLDBTable($tablename);
+
+            if (!field_exists($table, $field)) {
+                $result = $result && add_field($table, $field);
+            }
+
+            // Although we have set the default for this column to 0,
+            // we want all existing items to be marked as 1
+            $sql = "
+                UPDATE
+                    {$CFG->prefix}{$tablename}
+                SET
+                    manual = 1
+            ";
+
+            $result = $result && execute_sql($sql);
+        }
+
+        // Add deletemandatory permission to existing plan templates
+        $result = $result && begin_sql();
+
+        $components = array('course', 'competency');
+
+        $templates = get_records('dp_template', '', '', 'id', 'id');
+        if (is_array($templates)){
+            foreach ($templates as $t){
+                foreach ($components as $component) {
+                    $perm = new stdClass();
+                    $perm->templateid = $t->id;
+
+                    // Learner
+                    if (!$rec = get_record_select('dp_permissions', "templateid={$perm->templateid} AND role='learner' AND component='{$component}' AND action='deletemandatory'")) {
+                        $perm->role = 'learner';
+                        $perm->action = 'deletemandatory';
+                        $perm->value = DP_PERMISSION_DENY;
+                        $perm->component = $component;
+                        $result = $result && insert_record('dp_permissions', $perm);
+                    }
+
+                    // Manager
+                    if (!$rec = get_record_select('dp_permissions', "templateid={$perm->templateid} AND role='manager' AND component='{$component}' AND action='deletemandatory'")) {
+                        $perm->role = 'manager';
+                        $perm->action = 'deletemandatory';
+                        $perm->value = DP_PERMISSION_DENY;
+                        $perm->component = $component;
+                        $result = $result && insert_record('dp_permissions', $perm);
+                    }
+                }
+            }
+        }
+
+        if ($result) {
+            commit_sql();
+        } else {
+            rollback_sql();
         }
     }
 

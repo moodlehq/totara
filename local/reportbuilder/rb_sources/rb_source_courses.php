@@ -203,6 +203,11 @@ class rb_source_courses extends rb_base_source {
     function rb_display_modicons($mods, $row) {
         global $CFG;
         $modules = explode('|', $mods);
+
+        // Sort module list before displaying to make
+        // cells all consistent
+        sort($modules);
+
         $out = '';
         foreach($modules as $module) {
             $icon = '/mod/' . $module . '/icon.gif';

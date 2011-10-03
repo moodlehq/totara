@@ -89,12 +89,6 @@ foreach ($add as $addition) {
     // Load competency
     $related = $competencies->get_item($addition);
 
-    // Load framework
-    $framework = $competencies->get_framework($related->frameworkid);
-
-    // Load types
-    $types = $competencies->get_types();
-
     // Add relationship
     $relationship = new Object();
     $relationship->positionid = $position->id;

@@ -192,14 +192,12 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('completedate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('gradepass', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
         $table->addFieldInfo('role', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('lock', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
 
     /// Adding keys to table course_completion_criteria
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
 
     /// Adding indexes to table course_completion_criteria
         $table->addIndexInfo('course', XMLDB_INDEX_NOTUNIQUE, array('course'));
-        $table->addIndexInfo('lock', XMLDB_INDEX_NOTUNIQUE, array('lock'));
 
     /// Conditionally launch create table for course_completion_criteria
         if (!table_exists($table)) {
@@ -831,7 +829,21 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_type($table, $field);
     }
 
-    if ($result && $oldversion < 2010012800) {
+    if ($result && $oldversion < 2010012700) {
+        // this flag was added here on 29/08/2011, therefore any site that has
+        // already upgraded past this point will never set the flag.
+        //
+        // So if the flag is set, we know it must be either a new install, or
+        // an install so old that no report builder content was ever installed.
+        // In both these cases we can skip all the messy report builder upgrades
+        // and do a fresh install via local/reportbuilder/db/install.xml
+        //
+        // if this flag is not set, we need to follow the existing upgrade path
+        // as the site has previously upgraded past this point
+        set_config('skiplegacyupgrades', true, 'reportbuilder');
+    }
+
+    if ($result && $oldversion < 2010012800 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
     /// Create table learning_report
         $table = new XMLDBTable('learning_report');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
@@ -846,7 +858,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
-    if ($result && $oldversion < 2010020500) {
+    if ($result && $oldversion < 2010020500 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
     // increase space for restriction data
         $table = new XMLDBTable('learning_report');
         $field = new XMLDBField('restriction');
@@ -856,7 +868,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
-    if ($result && $oldversion < 2010020800) {
+    if ($result && $oldversion < 2010020800 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         // rename learning_report to report_builder
         $table = new XMLDBTable('learning_report');
         $result = $result && rename_table($table, 'report_builder');
@@ -877,7 +889,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
-    if ($result && $oldversion < 2010021701) {
+    if ($result && $oldversion < 2010021701 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         // add hidden field to report builder table
         $table = new XMLDBTable('report_builder');
         $field = new XMLDBField('hidden');
@@ -1179,13 +1191,15 @@ function xmldb_local_upgrade($oldversion) {
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('fieldid'));
         $result = $result && add_index($table, $index);
 
-        // lots of changes to report builder db structure
-        totara_migrate_old_report_builder_reports($result);
+        if (!get_config('reportbuilder', 'skiplegacyupgrades')) {
+            // lots of changes to report builder db structure
+            totara_migrate_old_report_builder_reports($result);
+        }
 
     }
 
 
-    if ($result && $oldversion < 2010051100) {
+    if ($result && $oldversion < 2010051100 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         $table = new XMLDBTable('report_builder_saved');
         if(!table_exists($table)) {
 
@@ -1293,18 +1307,16 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
-    if ($result && $oldversion < 2010072601) {
+    if ($result && $oldversion < 2010072601 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
     /// Create table report_heading_items
         $table = new XMLDBTable('report_builder_settings');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('reportid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('value', XMLDB_TYPE_CHAR, '255', null, null, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        if (!$CFG->dbtype=='mysql') { //see Catalyst Bugzilla: 6004 - temporary hack to allow mysql install.
-            $table->addIndexInfo('reportid-type-name', XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
-        }
+        $table->addIndexInfo('reportid-type-name', XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
         $result = $result && create_table($table);
 
         // migrate content settings from report_builder table
@@ -1633,7 +1645,7 @@ function xmldb_local_upgrade($oldversion) {
     }
 
     /// add description field to report_builder table
-    if ($result && $oldversion < 2010080200) {
+    if ($result && $oldversion < 2010080200 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         $table = new XMLDBTable('report_builder');
         $field = new XMLDBField('description');
         $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
@@ -1642,7 +1654,7 @@ function xmldb_local_upgrade($oldversion) {
 
     // update existing reports to use new versions of
     // position and organisation filters (with dialogs)
-    if ($result && $oldversion < 2010081000) {
+    if ($result && $oldversion < 2010081000 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         if($filters = get_records_select('report_builder_filters',
             "(type = 'user' AND
              (value = 'organisationid' OR value = 'positionid') ) OR
@@ -1666,11 +1678,11 @@ function xmldb_local_upgrade($oldversion) {
 
     // set global export options to include all current
     // formats (excel, csv and ods)
-    if ($result && $oldversion < 2010081200) {
+    if ($result && $oldversion < 2010081200 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         set_config('exportoptions', 7, 'reportbuilder');
     }
 
-    if ($result && $oldversion < 2010081900) {
+    if ($result && $oldversion < 2010081900 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         // apply some database changes to get db in sync with install.xml version
 
         // remove not null from heading
@@ -2080,7 +2092,7 @@ function xmldb_local_upgrade($oldversion) {
     }
 
     // fix for bug introduced in v1.0.3
-    if ($result && $oldversion < 2011032801) {
+    if ($result && $oldversion < 2011032801 && !get_config('reportbuilder', 'skiplegacyupgrades')) {
         $table = new XMLDBTable('report_builder_filters');
         $field = new XMLDBField('ispublic');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
@@ -2381,6 +2393,13 @@ function xmldb_local_upgrade($oldversion) {
     if ($result && $oldversion < 2011072401) {
         $table = new XMLDBTable('course_completion_criteria');
         if (table_exists($table)) {
+            // Remove index
+            $lockindex = new XMLDBIndex('lock');
+            if (index_exists($table, $lockindex)) {
+                $result = $result && drop_index($table, $lockindex);
+            }
+
+            // Remove field
             $lockfield = new XMLDBField('lock');
             if (field_exists($table, $lockfield)) {
                 $result = $result && drop_field($table, $lockfield);
@@ -2388,8 +2407,68 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
-    if ($result && $oldversion < 2011072500) {
+/// Totara 1.1 upgrade
+
+    if ($result && $oldversion < 2011091200) {
+
+    /// Define table errorlog to be created
+        $table = new XMLDBTable('errorlog');
+
+    /// Adding fields to table errorlog
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('timeoccured', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('version', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('build', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('details', XMLDB_TYPE_TEXT, 'big', null, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('hash', XMLDB_TYPE_CHAR, '32', null, XMLDB_NOTNULL);
+
+    /// Adding keys to table errorlog
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addKeyInfo('hash', XMLDB_INDEX_NOTUNIQUE, array('hash'));
+
+    /// Launch create table for errorlog
+        if (!table_exists($table)) {
+            $result = $result && create_table($table);
+        }
+
+        require_once($CFG->dirroot.'/local/plan/lib.php');
+
+        // Add linktype field to pos_competencies table
+        $table = new XMLDBTable('pos_competencies');
+        $field = new XMLDBField('linktype');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+        // Add linktype field to org_competencies table
+        $table = new XMLDBTable('org_competencies');
+        $field = new XMLDBField('linktype');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+        // Define field linktype to be added to question_truefalse
+        $table = new XMLDBTable('comp_evidence_items');
+        $field = new XMLDBField('linktype');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'iteminstance');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+
+    /// Hierarchy migration
         foreach (array('pos', 'comp', 'org') as $hierarchy) {
+
+            // skip if depth table has already been converted to type
+            $oldtable = new XMLDBTable($hierarchy.'_depth');
+            $newtable = new XMLDBTable($hierarchy.'_type');
+            if (!table_exists($oldtable) && table_exists($newtable)) {
+                notify("'{$hierarchy}' tables already upgraded. Skipping");
+                continue;
+            }
+
             // UPDATE ITEM TABLE
 
             // add depth level field to item table
@@ -2401,14 +2480,25 @@ function xmldb_local_upgrade($oldversion) {
             }
 
             // calculate the depth level (based on the item's depthid) and store in new field
-            // should only update the depth level if it's empty
-            $updatesql = "
-                UPDATE {$CFG->prefix}{$hierarchy} orig
-                    SET depthlevel = d.depthlevel
-                FROM {$CFG->prefix}{$hierarchy} hierarchy
-                LEFT JOIN {$CFG->prefix}{$hierarchy}_depth d ON d.id=hierarchy.depthid
-                WHERE orig.id=hierarchy.id AND orig.depthlevel IS NULL";
-            $result = $result && execute_sql($updatesql);
+            $originals = get_records_sql("
+                SELECT h.id, d.depthlevel
+                FROM {$CFG->prefix}{$hierarchy} h
+                LEFT JOIN {$CFG->prefix}{$hierarchy}_depth d
+                ON d.id = h.depthid");
+            if ($originals) {
+                foreach ($originals as $original) {
+                    // check to see if there is any bad data
+                    if (!$original->depthlevel) {
+                        print_error('error:couldnotupgradehierarchyduetobaddata', 'hierarchy', "{$hierarchy} item has invalid depthid");
+                    }
+                    // should only update the depth level if it's empty
+                    $updatesql = "
+                        UPDATE {$CFG->prefix}{$hierarchy}
+                        SET depthlevel = {$original->depthlevel}
+                        WHERE id={$original->id} AND depthlevel IS NULL";
+                    $result = $result && execute_sql($updatesql);
+                }
+            }
 
             // rename depthid column to typeid
             $table = new XMLDBTable($hierarchy);
@@ -2424,6 +2514,66 @@ function xmldb_local_upgrade($oldversion) {
             $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0);
             if (field_exists($table, $field)) {
                 $result = $result && change_field_type($table, $field);
+            }
+
+            // Modify sorting to use threaded sorts
+
+            /// Add sortthread field
+            $table = new XMLDBTable($hierarchy);
+            $field = new XMLDBField('sortthread');
+            $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null);
+            if (!field_exists($table, $field)) {
+                $result = $result && add_field($table, $field);
+            }
+
+            // re-calculate sorting using new system and save to sortthread table
+            if (!$fws = get_records($hierarchy.'_framework')) {
+                // no frameworks
+                $fws = array();
+            }
+            if (!$levels = get_records_sql("
+                SELECT DISTINCT depthlevel
+                FROM {$CFG->prefix}{$hierarchy}
+                ORDER BY depthlevel")) {
+
+                // no depth levels
+                $levels = array();
+            }
+
+            begin_sql();
+
+            foreach ($fws as $framework) {
+                // work up through the levels
+                foreach ($levels as $level) {
+                    // get all the items at this level
+                    $rs = get_recordset_select($hierarchy, "frameworkid={$framework->id} AND depthlevel = {$level->depthlevel}", 'sortorder');
+                    // group them by parentid
+                    if ($grouped_by_parent = totara_group_records($rs, 'parentid')) {
+                        foreach ($grouped_by_parent as $parentid => $items) {
+                            $parentsortthread = ($parentid != 0) ? get_field($hierarchy, 'sortthread', 'id', $parentid) . '.' : '';
+                            $inc = 1;
+                            foreach ($items as $item) {
+                                $itemsortthread = $parentsortthread . totara_int2vancode($inc);
+                                $result = $result && set_field($hierarchy, 'sortthread', $itemsortthread, 'id', $item->id);
+                                $inc++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if ($result) {
+                commit_sql();
+            } else {
+                rollback_sql();
+            }
+
+            // now get rid of sortorder field
+            $table = new XMLDBTable($hierarchy);
+            $field = new XMLDBField('sortorder');
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            if (field_exists($table, $field)) {
+                $result = $result && drop_field($table, $field);
             }
 
             // UPDATE ITEM_DEPTH TABLE
@@ -2495,9 +2645,8 @@ function xmldb_local_upgrade($oldversion) {
             $table = new XMLDBTable($frameworktable);
             $field = new XMLDBField('showitemfullname');
             if (field_exists($table, $field)) {
-                $result = $result = drop_field($table, $field);
+                $result = $result && drop_field($table, $field);
             }
-
 
             // RENAME *_DEPTH_* TABLES
 
@@ -2556,61 +2705,112 @@ function xmldb_local_upgrade($oldversion) {
                 $result = $result && add_field($table, $field);
             }
         }
+
+        // remove unwanted icon field
+        $table = new XMLDBTable('course_categories');
+        $field = new XMLDBField('icon');
+        if (field_exists($table, $field)) {
+            $result = $result && drop_field($table, $field);
+        }
+
+        // Add "managerid" column to table "pos_assignment"
+        $table = new XMLDBTable('pos_assignment');
+        $field = new XMLDBField('managerid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED);
+
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+        // Add index to "managerid" column
+        $index = new XMLDBIndex('managerid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('managerid'));
+
+        if (!index_exists($table, $index)) {
+            $result = $result && add_index($table, $index);
+        }
+
+        // Fill column with data
+        $psql = "
+            SELECT
+                pa.id AS id,
+                ra.userid AS managerid
+            FROM
+                {$CFG->prefix}pos_assignment pa
+            INNER JOIN
+                {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
+            WHERE
+                pa.reportstoid IS NOT NULL
+        ";
+
+        // Only load position assignments with a reportstoid set and update with manager's id
+        $pos_assignments = get_recordset_sql($psql);
+        while ($pa = rs_fetch_next_record($pos_assignments)) {
+            $result = $result && update_record('pos_assignment', $pa);
+        }
+        rs_close($pos_assignments);
+
     }
 
-    if ($result && $oldversion < 2011072900) {
+    if ($result && $oldversion < 2011091201) {
+        $completion_type = COMPLETION_CRITERIA_TYPE_ACTIVITY;
 
-    /// Define table errorlog to be created
-        $table = new XMLDBTable('errorlog');
+        $sql =  "SELECT
+            ccc.id, ccc.course
+            FROM {$CFG->prefix}course_completion_criteria ccc
+            LEFT JOIN {$CFG->prefix}course_modules cm
+            ON
+                ccc.moduleinstance = cm.id
+            WHERE
+                ccc.criteriatype={$completion_type}
+            AND
+                cm.id is NULL";
 
-    /// Adding fields to table errorlog
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('timeoccured', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('version', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('build', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('details', XMLDB_TYPE_TEXT, 'big', null, XMLDB_NOTNULL, null, null, null, null);
+        $courses = array();
 
-    /// Adding keys to table errorlog
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        if ($criteria_ids = get_records_sql($sql)) {
+            foreach ($criteria_ids as $criteria) {
+                // Delete criteria
+                $result = $result && delete_records('course_completion_criteria', 'id', $criteria->id);
 
-        /// Launch create table for errorlog
-        if (!table_exists($table)) {
-            $result = $result && create_table($table);
+                // Delete related completion records
+                $result = $result && delete_records('course_completion_crit_compl', 'criteriaid', $criteria->id);
+
+                $courses[] = $criteria->course;
+            }
+        }
+
+        // Reaggregate courses
+        if ($courses = array_unique($courses)) {
+            $now = time();
+
+            $course_ids = implode(',', $courses);
+            $sql = "UPDATE {$CFG->prefix}course_completions
+                SET reaggregate={$now}
+                WHERE course IN ({$course_ids})";
+
+            $result = $result && execute_sql($sql);
         }
     }
 
-    if ($result && $oldversion < 2011080100) {
-        require_once($CFG->dirroot.'/local/plan/lib.php');
+    if ($result && $oldversion < 2011091202) {
+        foreach (array('pos', 'comp', 'org') as $hierarchy) {
+            /// Define field idnumber to be added to each hierarchy type
+            $table = new XMLDBTable($hierarchy.'_type');
+            $field = new XMLDBField('idnumber');
+            $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
+             if (!field_exists($table, $field)) {
+                /// Add idnumber field
+                $result = $result && add_field($table, $field);
+            }
 
-        // Add linktype field to pos_competencies table
-        $table = new XMLDBTable('pos_competencies');
-        $field = new XMLDBField('linktype');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
+            /// Add index for idnumber field
+            $index = new XMLDBIndex('idnumber');
+            $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('idnumber'));
+            if (!index_exists($table, $index)) {
+                $result = $result && add_index($table, $index);
+            }
         }
-
-        // Add linktype field to org_competencies table
-        $table = new XMLDBTable('org_competencies');
-        $field = new XMLDBField('linktype');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'templateid');
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
-        }
-
-        $result = $result && execute_sql("update {$CFG->prefix}pos_competencies set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
-
-        $result = $result && execute_sql("update {$CFG->prefix}org_competencies set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
-
-        // Define field linktype to be added to question_truefalse
-        $table = new XMLDBTable('comp_evidence_items');
-        $field = new XMLDBField('linktype');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, null, null, null, PLAN_LINKTYPE_OPTIONAL, 'iteminstance');
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
-        }
-
-        $result = $result && execute_sql("update {$CFG->prefix}comp_evidence_items set linktype='".PLAN_LINKTYPE_OPTIONAL."' where linktype is null");
     }
 
     return $result;

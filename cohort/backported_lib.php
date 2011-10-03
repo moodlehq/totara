@@ -463,10 +463,10 @@ abstract class user_selector_base {
             $a = new stdClass;
             $a->count = $count;
             $a->search = $search;
-            return array(get_string('toomanyusersmatchsearch', 'cohort', $a) => array(),
+            return array(get_string('toomanyusersmatchsearch', 'local_cohort', $a) => array(),
                     get_string('pleasesearchmore', 'local_cohort') => array());
         } else {
-            return array(get_string('toomanyuserstoshow', 'cohort', $count) => array(),
+            return array(get_string('toomanyuserstoshow', 'local_cohort', $count) => array(),
                     get_string('pleaseusesearch', 'local_cohort') => array());
         }
     }
@@ -666,7 +666,7 @@ class cohort_candidate_selector extends user_selector_base {
 
 
         if ($search) {
-            $groupname = get_string('potusersmatching', 'cohort', $search);
+            $groupname = get_string('potusersmatching', 'local_cohort', $search);
         } else {
             $groupname = get_string('potusers', 'local_cohort');
         }
@@ -728,7 +728,7 @@ class cohort_existing_selector extends user_selector_base {
 
 
         if ($search) {
-            $groupname = get_string('currentusersmatching', 'cohort', $search);
+            $groupname = get_string('currentusersmatching', 'local_cohort', $search);
         } else {
             $groupname = get_string('currentusers', 'local_cohort');
         }

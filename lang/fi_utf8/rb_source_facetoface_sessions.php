@@ -1,10 +1,14 @@
-<?PHP // $Id$ 
-      // rb_source_facetoface_sessions.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+<?php
+// rb_source_facetoface_sessions.php - created with Totara langimport script version 1.0
 
-
+$string['audit'] = 'Tarkistus';
+$string['cancellationdate'] = 'Peruutuspäivä';
+$string['cancellationreason'] = 'Peruutuksen syy';
+$string['coursedelivery'] = 'Kurssin suoritus';
 $string['currentorg'] = 'Käyttäjän nykyinen organisaatio';
 $string['currentpos'] = 'Käyttäjän nykyinen asema';
 $string['endtime'] = 'Loppumisaika';
+$string['facilitator'] = 'Fasilitaattori';
 $string['ftfname'] = 'Lähikoulutuksen nimi';
 $string['ftfnamelink'] = 'Lähikoulutuksen nimi (linkitetty istunnon sivulle)';
 $string['numattendees'] = 'Osallistujien määrä';

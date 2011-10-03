@@ -40,6 +40,12 @@ a.dimmed:visited {
   color:#AAAAAA;
 }
 
+a.inaccessible:link,
+a.inaccessible:visited,
+span.inaccessible {
+    text-decoration: line-through;
+}
+
 a:hover {
   color:#FF0000;
 }
@@ -1311,4 +1317,10 @@ a.deletelink:link,
 a.deletelink:visited,
 a.deletelink:hover {
     color: #000000;
+}
+
+
+#programcontent div.recurringnotice {
+    color: #FF0000;
+    font-weight: bold;
 }

@@ -30,7 +30,7 @@ require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php')
  * @access  public
  * @param   object      $plan       Development plan object
  * @param   object      $component  Full plan component class instance
- * @param   int         $userid
+ * @param   int         $userid     Plan owner (checked)
  * @param   int         $competencyid
  * @return  true|array  True if you can add it, and if false an array where the first element is a lang
  *                      string name and the second element is the lang string file

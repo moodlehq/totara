@@ -1,0 +1,83 @@
+<h1>Visão geral do formato</h1>
+<p>Segue abaixo um guia simples para a estrutura básica de um arquivo de dados Enterprise IMS. Mais informações disponíveis no <a href="http://www.imsglobal.org/enterprise/">Site oficial do IMS Enterprise</a>.</p>
+
+<p>Se quiser leia o <a href="./enrol/imsenterprise/entv1p1_conformance_summary.html">Sumário de Conformidade</a> que descreve quais elementos de informação IMS este plugin consegue processar.</p>
+
+<h1>Guia Básico do formato do arquivo IMS Enterprise</h1>
+
+<p>Para qualquer estilo de inscrição IMS voce precisa de uma etiqueta &lt;group&gt; que especifica o curso, uma etiqueta &lt;person&gt; que especifica a conta de usuário, e uma etiqueta &lt;membership&gt; contendo etiquetas &lt;member&gt; que especificam as funções das pessoas dentro do curso.</p><p>
+</p>
+
+<p>
+Lembre-se que chaves numéricas usadas no banco de dados do Moodle não são dados interoperáveis - um sistema de informações de estudantes nunca saberá antecipadamente que João é o usuário número 20 do banco de dados Moodle - assim este não é o tipo de chave permutada neste tipo de dados.</p><p>
+</p>
+
+<p>
+Normalmente um curso tem um código de referência e um nome, então vamos assumir que seu código é MOODLE101. Para definir seu curso você poderia usar</p><p>
+</p>
+
+<p>
+&nbsp; &lt;group&gt;<br />
+&nbsp; &nbsp; &lt;sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;source&gt;MyDataSystem&lt;/source&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;id&gt;MOODLE101&lt;/id&gt;<br />
+&nbsp; &nbsp; &lt;/sourcedid&gt;<br />
+&nbsp; &nbsp; &lt;description&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;short&gt;Moodle 101&lt;/short&gt;<br />
+&nbsp; &nbsp; &lt;/description&gt;<br />
+&nbsp; &lt;/group&gt;<br />
+</p>
+
+<p>
+A rotina de inscrição irá procurar por um curso com o código MOODLE101, e (opcionalmente) irá criar o curso se já não existir. De forma similar para a pessoa - vamos supor que seja &quot;jmoodle&quot;:</p><p>
+</p>
+
+<p>
+&nbsp; &lt;person&gt;<br />
+&nbsp; &nbsp; &lt;sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;source&gt;MyDataSystem&lt;/source&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;id&gt;jmoodle&lt;/id&gt;<br />
+&nbsp; &nbsp; &lt;/sourcedid&gt;<br />
+&nbsp; &nbsp; &lt;userid&gt;jmoodle&lt;/userid&gt;<br />
+&nbsp; &nbsp; &lt;name&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;fn&gt;Joe Moodle&lt;/fn&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;n&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;family&gt;MOODLE&lt;/family&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;given&gt;JOE&lt;/given&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;/n&gt;<br />
+&nbsp; &nbsp; &lt;/name&gt;<br />
+&nbsp; &lt;/person&gt;<br />
+</p>
+
+<p>
+Se João ainda não tem uma conta, a rotina pode (opcionalmente) criar uma conta para ele.</p>
+
+<p>
+Vejamos agora a participação, adicionando um pessoa ao curso:</p><p>
+</p>
+
+<p>
+&nbsp; &lt;membership&gt;<br />
+&nbsp; &nbsp; &lt;sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;source&gt;MyDataSystem&lt;/source&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;id&gt;MOODLE101&lt;/id&gt;<br />
+&nbsp; &nbsp; &lt;/sourcedid&gt;<br />
+&nbsp; &nbsp; &lt;member&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;source&gt;MyDataSystem&lt;/source&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;id&gt;jmoodle&lt;/id&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;/sourcedid&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;role roletype=&quot;01&quot;&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;status&gt;1&lt;/status&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;extension&gt;&lt;cohort&gt;unit 2&lt;/cohort&gt;&lt;/extension&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;/role&gt;<br />
+&nbsp; &nbsp; &lt;/member&gt;<br />
+&nbsp; &lt;/membership&gt;<br />
+</p>
+
+<p>
+A especificação do IMS Enterprise permite a especificação de datas de início/término de inscrição ao curso, então elas podem ser incluídas usando a etiqueta &lt;timeframe&gt; se for necessário.</p><p>
+</p>
+
+<p>
+Se uma pessoa já foi incluída em um grupo dentro do curso, o roteiro não irá modificá-lo. Se eles não estão agrupados, entretanto, o agrupamento específicado será aplicado.</p><p>

@@ -7,9 +7,9 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 require_sesskey();
 require_capability('moodle/local:updatecompetency', get_context_instance(CONTEXT_SYSTEM));
 
-$compevid = required_param('c',PARAM_INT);
-$linkval = required_param('t',PARAM_ALPHA);
-$component = optional_param('type','course',PARAM_ALPHA);
+$compevid = required_param('c', PARAM_INT);
+$linkval = required_param('t', PARAM_INT);
+$component = optional_param('type','course', PARAM_ALPHA);
 
 if (!in_array($linkval, $PLAN_AVAILABLE_LINKTYPES)) {
     die(get_string('error:nosuchlinktype','local_plan'));

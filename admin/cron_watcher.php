@@ -34,7 +34,7 @@ $sentext  = 'file';
 $prefix   = 'totara_';
 $dir      = $CFG->dataroot . DIRECTORY_SEPARATOR;
 $sentfile = $dir . $prefix . date('dmY.') . $sentext;
-if (   isset($CFG->cron_max_time_mail_notify)
+if (isset($CFG->cron_max_time_mail_notify)
     && ((bool)$CFG->cron_max_time_mail_notify)
     && !file_exists($sentfile)) {
 
@@ -53,15 +53,13 @@ if (   isset($CFG->cron_max_time_mail_notify)
 
     $admin = get_admin();
 
-    $result = email_to_user($admin,
-                            $admin,
-                            get_string('cron_max_time_mail_notify_title','admin'),
-                            get_string('cron_max_time_mail_notify_msg','admin'));
-    if ($result) {
-        $result = file_put_contents($sentfile, 'sent');
-        if (!$result) {
-            echo 'Unable to create sent file!'.PHP_EOL;
-        }
+    if (isset($CFG->cron_max_time_kill) && ((bool)$CFG->cron_max_time_kill)) {
+        $send_kill_mail = true;
+    } else {
+        $mail_sent = email_to_user($admin,
+            $admin,
+            get_string('cron_max_time_mail_notify_title','admin'),
+            get_string('cron_max_time_mail_notify_msg','admin'));
     }
 }
 
@@ -70,8 +68,28 @@ if (isset($CFG->cron_max_time_kill) && ((bool)$CFG->cron_max_time_kill)) {
     $pid = $procfile->pid();
     $result = $procfile->kill();
     if ($result) {
+        $mail_title = get_string('cron_kill_mail_notify_title','admin');
+        $mail_msg = get_string('cron_kill_mail_notify_msg','admin');
+
         echo "We killed existing cron process! PID:\t{$pid}".PHP_EOL;
     } else {
+        $mail_title = get_string('cron_kill_mail_fail_notify_title','admin');
+        $mail_msg = get_string('cron_kill_mail_fail_notify_msg','admin');
+
         echo "Failed to kill cron process! PID:\t{$pid}".PHP_EOL;
+    }
+
+    if (!empty($send_kill_mail)) {
+        $mail_sent = email_to_user($admin,
+            $admin,
+            $mail_title,
+            $mail_msg);
+    }
+}
+
+if (!empty($mail_sent)) {
+    $result = file_put_contents($sentfile, 'sent');
+    if (!$result) {
+        echo 'Unable to create sent file!'.PHP_EOL;
     }
 }

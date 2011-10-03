@@ -271,9 +271,10 @@ abstract class dp_base_component {
      * Process component's settings update
      *
      * @access  public
+     * @param   bool    $ajax   Is an AJAX request (optional)
      * @return  void
      */
-    abstract public function process_settings_update();
+    abstract public function process_settings_update($ajax = false);
 
     /**
      * Returns true if any items from this component uses the scale given
@@ -486,7 +487,7 @@ abstract class dp_base_component {
         foreach($pendingitems as $item) {
             $row = array();
             // @todo write abstracted display_item_name() and use here
-            $row[] = $item->fullname;
+            $row[] = format_string($item->fullname);
             $row[] = $this->display_approval_options($item, $item->approved);
             $table->data[] = $row;
         }
@@ -517,34 +518,41 @@ abstract class dp_base_component {
         // first component is in component1
         // Figure out which order to perform query
         switch (strcmp($thiscomponent, $componentrequired)) {
-        case -1:
-            $matchedcomp = 'component1';
-            $matchedid = 'itemid1';
-            $searchedcomp = 'component2';
-            $searchedid = 'itemid2';
-            break;
-        case 1:
-            $matchedcomp = 'component2';
-            $matchedid = 'itemid2';
-            $searchedcomp = 'component1';
-            $searchedid = 'itemid1';
-            break;
-        case 0:
-        default:
-            // linking within the same component not supported
-            return false;
+            case -1:
+                $matchedcomp = 'component1';
+                $matchedid = 'itemid1';
+                $searchedcomp = 'component2';
+                $searchedid = 'itemid2';
+                break;
+            case 1:
+                $matchedcomp = 'component2';
+                $matchedid = 'itemid2';
+                $searchedcomp = 'component1';
+                $searchedid = 'itemid1';
+                break;
+            case 0:
+            default:
+                // linking within the same component not supported
+                return false;
         }
 
         // find all matching relations
-        $sql = "SELECT id, $searchedid AS itemid
-            FROM {$CFG->prefix}dp_plan_component_relation
-            WHERE $matchedcomp = '$thiscomponent' AND
-                $matchedid = $id AND
-                $searchedcomp = '$componentrequired'";
+        $sql = "
+            SELECT
+                id,
+                $searchedid AS itemid
+            FROM
+                {$CFG->prefix}dp_plan_component_relation
+            WHERE
+                $matchedcomp = '$thiscomponent'
+            AND $matchedid = $id
+            AND $searchedcomp = '$componentrequired'
+        ";
+
         // return an array of IDs
-        if($result = get_records_sql($sql)) {
+        if ($result = get_records_sql($sql)) {
             $out = array();
-            foreach($result as $item) {
+            foreach ($result as $item) {
                 $out[] = $item->itemid;
             }
             return $out;
@@ -683,6 +691,42 @@ abstract class dp_base_component {
 
 
     /**
+     * Is the item a mandatory relation for something else?
+     *
+     * @access  protected
+     * @param   int     $itemid
+     * @return  bool
+     */
+    protected function is_mandatory_relation($itemid) {
+        global $CFG;
+
+        // Count mandatory records
+        $sql = "
+            SELECT
+                *
+            FROM
+                {$CFG->prefix}dp_plan_component_relation
+            WHERE
+                mandatory = '{$this->component}'
+            AND
+            (
+                (
+                    component1 = '{$this->component}'
+                AND itemid1 = $itemid
+                )
+                OR
+                (
+                    component2 = '{$this->component}'
+                AND itemid2 = $itemid
+                )
+            )
+        ";
+
+        return record_exists_sql($sql);
+    }
+
+
+    /**
      * Update assigned items
      *
      * @access  public
@@ -696,12 +740,14 @@ abstract class dp_base_component {
         // Get currently assigned items
         $assigned = $this->get_assigned_items();
         $assigned_ids = array();
-        foreach($assigned as $item) {
+        foreach ($assigned as $item) {
             $assigned_ids[$item->$item_id_name] = $item->$item_id_name;
         }
         $sendalert = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
             && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
         $updates = '';
+
+        begin_sql();
 
         if ($items) {
             foreach ($items as $itemid) {
@@ -713,8 +759,13 @@ abstract class dp_base_component {
 
                 // Check if not already assigned
                 if (!isset($assigned_ids[$itemid])) {
-                    $newitem = $this->assign_new_item($itemid);
-                    $updates .= get_string('addedx', 'local_plan', $newitem).'<br>';
+                    $result = $this->assign_new_item($itemid);
+                    if (!$result) {
+                        rollback_sql();
+                        print_error('error:couldnotassignnewitem', 'local_plan');
+                    }
+
+                    $updates .= get_string('addedx', 'local_plan', $result->fullname).'<br>';
                 }
 
                 // Remove from list to prevent deletion
@@ -727,9 +778,17 @@ abstract class dp_base_component {
             if(!isset($assigned_ids[$item->$item_id_name])) {
                 continue;
             }
+
+            // Check the user has permission on each item individually
+            if (!$this->can_delete_item($item)) {
+                continue;
+            }
+
             $this->unassign_item($item);
             $updates .= get_string('removedx', 'local_plan', $assigned[$item->id]->fullname).'<br>';
         }
+
+        commit_sql();
 
         if ($sendalert) {
             $this->send_component_update_alert($updates);
@@ -1163,19 +1222,13 @@ abstract class dp_base_component {
             $latestcomment = $comment->get_latest_comment();
             $tooltip = get_string('latestcommentby', 'local_plan').' '.$latestcomment->firstname.' '.get_string('on', 'local_plan').' '.userdate($latestcomment->ctimecreated).': '.format_string(substr($latestcomment->ccontent, 0, 50));
             $tooltip = format_string(strip_tags($tooltip));
-            return '<a href="'.$CFG->wwwroot.'/local/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
-                class="comments-icon" title="'.$tooltip.'">
-                    <img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/t/comments.gif" title="'.$tooltip.'" alt="" />
-                    <span class="comments-count" title="'.$tooltip.'">'.$count.'</span>
-                </a>';
+            $commentclass = 'comments-icon-some';
         } else {
             $tooltip = get_string('nocomments', 'local_plan');
-            return '<a href="'.$CFG->wwwroot.'/local/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
-                class="comments-icon" title="'.$tooltip.'">
-                    <img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/t/comments-none.gif" title="'.$tooltip.'" alt=""/>
-                    <span class="comments-count" title="'.$tooltip.'">0</span>
-                </a>';
+            $commentclass = 'comments-icon-none';
         }
+        return '<a href="'.$CFG->wwwroot.'/local/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
+                class="' . $commentclass . '" title="'.$tooltip.'">'.$count.'</a>';
     }
 
 
@@ -1249,7 +1302,7 @@ abstract class dp_base_component {
         $html .= "var plan_id = {$this->plan->id};";
         $html .= "var comp_update_allowed = {$canupdate};";
         $html .= '</script>';
-        $html .= '<input type="submit" class="plan-add-item-button" id="show-'.$this->component.'-dialog" value="'.get_string('addremove'.$this->component, 'local_plan').'" />';
+        $html .= '<input type="submit" class="plan-add-item-button" id="show-'.$this->component.'-dialog" value="'.get_string('add'.$this->component.'s', 'local_plan').'" />';
         $html .= '</div>';
         $html .= '</div>';
         $html .= '</div>';
@@ -1296,15 +1349,8 @@ abstract class dp_base_component {
      */
     function display_duedate_as_form($duedate, $name, $inputclass='', $itemid) {
         global $CFG;
-        $duedatestr = !empty($duedate) ?
-            userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
-        $js = $this->get_field_updating_ajax('duedate', $itemid);
-        if ( $js !== '' ){
-            $onchange = " onchange=\"{$js}\"";
-        } else {
-            $onchange = '';
-        }
-        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\"{$onchange} />";
+        $duedatestr = !empty($duedate) ? userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
+        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\" />";
     }
 
 
@@ -1426,31 +1472,7 @@ abstract class dp_base_component {
             $selected = ($priorityrequired) ? $defaultchooseval : 0;
         }
 
-        $ajax = $this->get_field_updating_ajax('priorities', $itemid);
-
-        return choose_from_menu($options, $name, $selected, $choose, $ajax, $chooseval, true);
-    }
-
-    function get_field_updating_ajax($fieldname, $itemid){
-        global $CFG;
-        $sesskey = sesskey();
-        $js = <<<JS
-if ( this.value ){
-    var response;
-    response = $.post(
-        '{$CFG->wwwroot}/local/plan/component.php?id={$this->plan->id}&c={$this->component}',
-        {
-            submitbutton: "1",
-            ajax: "1",
-            sesskey: "{$sesskey}",
-            '{$fieldname}_{$this->component}[{$itemid}]': $(this).val()
-        }
-    );
-    }
-JS;
-        $js = preg_replace("/(\s+)/",' ',$js);
-        $js = htmlspecialchars($js);
-        return $js;
+        return choose_from_menu($options, $name, $selected, $choose, '', $chooseval, true);
     }
 
     /**
@@ -1550,7 +1572,27 @@ JS;
      */
     function display_approval_options($obj, $approvalstatus) {
         $name = "approve_{$this->component}[{$obj->id}]";
-        return dp_display_approval_options($name, $approvalstatus);
+
+        $options = array(
+            DP_APPROVAL_APPROVED => get_string('approve', 'local_plan'),
+            DP_APPROVAL_DECLINED => get_string('decline', 'local_plan'),
+        );
+
+        return choose_from_menu(
+            $options,
+            $name,
+            $approvalstatus,
+            'choose',
+            '',
+            0,
+            true,
+            false,
+            0,
+            '',
+            false,
+            false,
+            'approval'
+        );
     }
 
     /**

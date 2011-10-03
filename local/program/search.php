@@ -88,11 +88,10 @@ if (strlen($query)) {
     // Match search terms
     $where = prog_search_get_keyword_where_clause($keywords);
 
-    // Don't allow hidden programs to be selected unless permissions allow it
-    $context = get_context_instance(CONTEXT_SYSTEM);
-    if ( ! has_capability('local/program:viewhiddenprograms', $context)) {
-        $where .= ' AND p.visible=1';
-    }
+    // Don't allow hidden programs to be selected, even if the user
+    // can usually see hidden programs, since we still don't want them
+    // adding them to their plan
+    $where .= ' AND p.visible=1';
 
     $total = count_records_sql($count . $from . $where);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;
@@ -112,10 +111,14 @@ if (strlen($query)) {
             $dialog->items = array();
             $dialog->parent_items = array();
 
-            foreach($results as $result) {
+            foreach ($results as $result) {
+                $prog = new program($result->id);
+                if (!$prog->is_accessible()) {
+                    continue;
+                }
                 $item = new object();
                 $item->id = $result->id;
-                $item->fullname = $result->fullname;
+                $item->fullname = format_string($result->fullname);
 
                 $dialog->items[$item->id] = $item;
             }

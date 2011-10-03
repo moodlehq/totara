@@ -1,15 +1,20 @@
-<?PHP // $Id$
+<?PHP // $Id$ 
+      // forum.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+
+
 $string['addanewdiscussion'] = 'Lisää uusi keskustelu';
 $string['addanewquestion'] = 'Lisää uusi kysymys';
 $string['addanewtopic'] = 'Lisää uusi aihe';
 $string['advancedsearch'] = 'Kehittynyt haku';
 $string['aggregateavg'] = 'Arviointien keskiarvo';
 $string['aggregatecount'] = 'Arviointien määrä';
+$string['aggregatecountformat'] = '$a->count (arvosana: $a->grade)';
 $string['aggregatemax'] = 'Korkein arviointi';
 $string['aggregatemin'] = 'Pienin arviointi';
 $string['aggregatenone'] = 'Ei arviointeja';
 $string['aggregatesum'] = 'Arviointien summa';
 $string['aggregatetype'] = 'Arviointien tyyppi';
+$string['ajaxrating'] = 'Ota AJAX käyttöön';
 $string['allforums'] = 'Kaikki keskustelualueet';
 $string['allowchoice'] = 'Anna kaikkien valita';
 $string['allowdiscussions'] = 'Voiko $a avata uusia keskusteluja?';
@@ -26,12 +31,24 @@ $string['blockperioddisabled'] = 'Älä estä';
 $string['bynameondate'] = '$a->name - $a->date';
 $string['cannotadddiscussion'] = 'Vain ryhmän jäsenet voivat lisätä keskusteluja tälle keskkustelualueelle.';
 $string['cannotadddiscussionall'] = 'Sinulla ei ole oikeuksia lisätä keskustelua kaikille osallistujille.';
+$string['cannotdeletepost'] = 'Et voi poistaa tätä merkintää.';
 $string['cannotviewpostyet'] = 'Jotta näkisit muiden vastaukset kysymyksiin, pitää sinun ensin lähettää oma vastauksesi';
 $string['cleanreadtime'] = 'Kellonaika, jolloin vanhat viestit merkitään luetuiksi';
+$string['completiondiscussions'] = 'Käyttäjän tulee luoda keskusteluita:';
+$string['completiondiscussionsgroup'] = 'Vaadi keskusteluita';
+$string['completiondiscussionshelp'] = 'suorittamiseen vaaditaan keskusteluita';
+$string['completionposts'] = 'Käyttäjän tulee aloittaa keskusteluaiheita tai vastata niihin:';
+$string['completionpostsgroup'] = 'Vaadi merkintöjä';
+$string['completionpostshelp'] = 'suorittamiseen vaaditaan keskusteluita tai vastauksia niihin';
+$string['completionreplies'] = 'Käyttäjän tulee vastata keskusteluihin:';
+$string['completionrepliesgroup'] = 'Vaadi vastauksia keskusteluihin';
+$string['completionreplieshelp'] = 'suorittamiseen vaaditaan vastauksia keskusteluaiheisiin';
+$string['configajaxrating'] = 'AJAX-lisäosalla parannat keskustelualueen käytettävyyttä. Jos tämä otetaan käyttöön, käyttäjät voivat luokitella keskustelut suoraan eikä heidän tarvitse siirtyä sivun alaosaan ja klikata \'Tallenna luokitukset\' -painiketta. Tämä asetus vaatii AJAX:in käyttöönoton sivustolla ja käyttäjäprofiileissa.';
 $string['configcleanreadtime'] = 'Kellonaika, jolloin päivittäin poistetaan vanhat viestit \'luettu\'-taulukosta.';
 $string['configdisplaymode'] = 'Oletusasetus keskustelujen näyttämiselle, jos sellaista ei ole asetettu.';
 $string['configenablerssfeeds'] = 'Tämä mahdollistaa RSS-syötteet eri keskustelualueilta. Sinun pitää vielä erikseen kytkeä RSS päälle niiden keskustelualueiden asetuksista, joille haluat käyttää RSS-syötteitä.';
 $string['configenabletimedposts'] = 'Valitse \'kyllä\', jos haluat sallia valittavaksi ajanjakson keskustelun näyttämiselle. (Kokeellinen ominaisuus, ei täysin testattu.)';
+$string['configlogblocked'] = 'Keskustelualueen cron saattaa kirjata estetyt yritykset lähettää sähköpostia käyttäjille, joiden sähköpostiosoite ei ole käytössä.';
 $string['configlongpost'] = 'Tätä pidemmät keskustelut käsitellään pitkinä (HTML-koodia ei lasketa mukaan).';
 $string['configmanydiscussions'] = 'Samalla sivulla näytettävien keskustelujen maksimimäärä';
 $string['configmaxbytes'] = 'Oletusasetus liitetiedoston maksimikoolle koko sivustolla.';
@@ -40,6 +57,8 @@ $string['configreplytouser'] = 'Kun viesti keskustelualueelle lähetetään säh
 $string['configshortpost'] = 'Tätä lyhyemmät keskustelut ovat lyhyitä (HTML-koodia ei lasketa mukaan).';
 $string['configtrackreadposts'] = 'Aseta ´Kyllä´ jos haluat seurata jokaisen käyttäjän kohdalla viestien luettu/lukematon-tilaa.';
 $string['configusermarksread'] = '´Kyllä´ vaatii käyttäjän merkitsevän viestin itse luetuksi, kun taas ´Ei´-asetuksella viestit merkitään automaattisesti luetuiksi, kun ne luetaan.';
+$string['confirmsubscribe'] = 'Haluatko tilata keskustelualueen \'{$a}\' viestit?';
+$string['confirmunsubscribe'] = 'Haluatko lopettaa keskustelualueen \'{$a}\' viestien tilauksen?';
 $string['couldnotadd'] = 'Viestiäsi ei voida lisätä tuntemattoman virheen takia.';
 $string['couldnotdeleteratings'] = 'Valitettavasti viestiä ei voida poistaa, koska se on jo arvioitu';
 $string['couldnotdeletereplies'] = 'Valitettavasti viestiä ei voida poistaa, koska siihen on jo vastattu';
@@ -119,6 +138,7 @@ $string['inforum'] = '$a :ssa';
 $string['intronews'] = 'Yleiset uutiset ja tiedotteet';
 $string['introsocial'] = 'Avoin keskustelualue vapaalle keskustelulle';
 $string['introteacher'] = 'Opettajien oma keskustelualue';
+$string['invalidrate'] = 'Kelpaamaton luokittelu ($a)';
 $string['lastpost'] = 'Viimeisin viesti';
 $string['learningforums'] = 'Keskustelualueet opiskelulle';
 $string['logblocked'] = 'Pidä kirjaa suljetuista sähköpostiosoitteista';
@@ -159,6 +179,7 @@ $string['nopostforum'] = 'Et voi lähettää viestejä tälle keskustelualueelle
 $string['noposts'] = 'Ei viestejä';
 $string['nopostscontaining'] = 'Viestejä, jotka sisältävät \'$a\' ei löytynyt';
 $string['noquestions'] = 'Alueella ei vielä kysymyksiä';
+$string['noratinggiven'] = 'Ei luokittelua';
 $string['nosubscribers'] = 'Tällä keskustelualueella ei ole tilaajia';
 $string['nothingnew'] = 'Ei mitään uutta $a';
 $string['notingroup'] = 'Sinun pitää olla ryhmän jäsen nähdäksesi tämän keskustelualueen.';
@@ -287,4 +308,5 @@ $string['youratedthis'] = 'Arvioit tämän';
 $string['yournewquestion'] = 'Uusi kysymyksesi';
 $string['yournewtopic'] = 'Uusi keskustelun aihe';
 $string['yourreply'] = 'Vastauksesi';
+
 ?>

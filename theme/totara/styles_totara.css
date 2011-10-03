@@ -717,6 +717,11 @@ div.totara-dialog {
 		vertical-align: top;
 		width: 30%;
 	    }
+
+    div.totara-dialog .selected div.treeview-selected-item {
+        display: none !important;
+    }
+
 		div.totara-dialog .selected span {
 		    display: block;
 		    font-size: 12px;
@@ -767,7 +772,8 @@ div.totara-dialog .selected span span.deletebutton {
 
 		div.totara-dialog .selected p {
 		    font-weight: bold;
-			margin-bottom:15px;
+        margin-top: 0;
+        margin-bottom:15px;
 		}
     div.totara-dialog div.ui-dialog-buttonpane {
 	-moz-border-radius: 0 0 0 0;
@@ -1168,6 +1174,20 @@ ul.tabrow1 li a:visited {
 }
 .tabtree.numrows_3{
   height:65px;
+}
+
+/* Custom tabs */
+.tabrow0 li.tab-exceptions a span{
+  background:url("images/tab/right_highlight.gif") no-repeat scroll right top transparent
+}
+.tabrow0 li.tab-exceptions a{
+  background:url("images/tab/left_highlight.gif") no-repeat scroll left top transparent;
+}
+.tabrow0 li.tab-exceptions.selected a{
+  background:url("images/tab/left_white.gif") no-repeat scroll left top transparent;
+}
+.tabrow0 li.tab-exceptions.selected a span{
+  background:url("images/tab/right_white.gif") no-repeat scroll right top transparent
 }
 
 /******************************************
@@ -2500,70 +2520,6 @@ table.centerblock th.status, table.centerblock td.status {
   text-align: left;
 }
 
-#site-index #middle-column div.mycourses div.allmycourses {
-  margin-top: 5px;
-  margin-left: 2px;
-  margin-bottom: 0px;
-  font-weight: bold;
-}
-
-#site-index #middle-column div.mycourses {
-  width: 527px;
-  margin: 0px 0px;
-  border:none;
-  background: none;
-}
-
-#site-index #middle-column div.mycourses div.header h2 {
-  color:#FFFFFF;
-  font-size:1.5em;
-  margin:0;
-  padding-left: 7px;
-  padding-top: 7px;
-  padding-bottom: 6px;
-  font-weight: normal;
-  border:none;
-}
-
-#site-index #middle-column div.mycourses div.header {
-  border:0 none;
-  border-bottom:none;
-  background: #a2b001;
-}
-
-#site-index #middle-column div.mycourses .content {
-  padding: 0 1px;
-}
-#site-index #middle-column div.mycourses .content th {
-  padding:6px 7px;
-  font-size: 1.1em;
-  color: #a2b001;
-  background: #f5f5f5;
-}
-#site-index #middle-column div.mycourses .content td {
-  padding:6px 7px;
-  font-size: 0.9em;
-
-}
-#site-index #middle-column div.mycourses .content a {
-   color:#322f2c;
-}
-#site-index #middle-column div.mycourses .content .allmycourses {
-   font-family: 'Trebuchet ms', Verdana, Arial, Helvetica, sans-serif;
-   text-align:right;
-   font-size: 1em;
-   font-weight:normal;
-   padding: 5px 7px 5px 7px;
-}
-#site-index #middle-column div.mycourses .content .allmycourses a {
-   padding-right: 17px;
-   background: url('images/arw_grn.gif') no-repeat right center;
-}
-
-#site-index #middle-column div.mycourses .content .noenrollments {
-    display: block;
-    padding: 10px;
-}
 
 /*****************************************************************************/
 /** My Team **/
@@ -3023,7 +2979,6 @@ fieldset legend span.helplink {
  * totara my courses
  */
 div.mycourses td.status span {
-    text-indent: -1000px;
     display: block;
     width: 45px;
     height: 12px;
@@ -3472,7 +3427,19 @@ a.noscript-button {
     padding-bottom: 0.25em;
 }
 
-
+span.dialog-singleselect-deletable {
+    vertical-align: middle;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 0 0 2px;
+    overflow: hidden;
+    text-indent: -999px;
+    padding: 2px 0px;
+    width: 20px;
+    background-image: url("../../theme/totara/pix/t/delete.gif");
+    background-position: right top;
+    background-repeat: no-repeat;
+}
 
 /*****************************************************************************/
 /** Dashboards **/
@@ -3501,19 +3468,22 @@ table.centerblock th.status, table.centerblock td.status {
   text-align: left;
 }
 
+
+/*****************************************************************************/
+/** My courses **/
+/*****************************************************************************/
+#site-index #middle-column div.mycourses {
+  margin: 0px 0px 20px;
+  border:none;
+  background: none;
+  width: 527px;
+}
+
 #site-index #middle-column div.mycourses div.allmycourses {
   margin-top: 5px;
   margin-left: 2px;
   margin-bottom: 0px;
   font-weight: bold;
-}
-
-#site-index #middle-column div.mycourses {
-  width: 527px;
-  margin-top: 0px;
-  margin-left: 12px;
-  border:none;
-  background: none;
 }
 
 #site-index #middle-column div.mycourses div.header h2 {
@@ -3537,20 +3507,24 @@ table.centerblock th.status, table.centerblock td.status {
   padding: 0 1px;
   background: transparent url('images/course_bg_ftr.gif') no-repeat bottom left;
 }
+
 #site-index #middle-column div.mycourses .content th {
   padding:6px 7px;
   font-size: 1.1em;
   color: #a2b001;
   background: #f5f5f5;
 }
+
 #site-index #middle-column div.mycourses .content td {
   padding:6px 7px;
   font-size: 0.9em;
 
 }
+
 #site-index #middle-column div.mycourses .content a {
    color:#322f2c;
 }
+
 #site-index #middle-column div.mycourses .content .allmycourses {
    font-family: 'Trebuchet ms', Verdana, Arial, Helvetica, sans-serif;
    text-align: right;
@@ -3558,10 +3532,17 @@ table.centerblock th.status, table.centerblock td.status {
    font-weight: normal;
    padding: 5px 7px 5px 7px;
 }
+
 #site-index #middle-column div.mycourses .content .allmycourses a {
    padding-right: 17px;
    background: url('images/arw_grn.gif') no-repeat right center;
 }
+
+#site-index #middle-column div.mycourses .content .noenrollments {
+    display: block;
+    padding: 10px;
+}
+
 
 /*****************************************************************************/
 /** My Team **/
@@ -3837,6 +3818,10 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 	color:#9E1775;
 }
 
+#program-content fieldset,
+#view-program-content fieldset {
+    border: 1px solid #000000;
+}
 
 /***
 ** Course Category Menu
@@ -4083,6 +4068,7 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 	color:#6E6E6E;
 }
 
+#program-overview-details #programdetails p,
 #program-content #programcontent p,
 #program-assignments #programassignments p,
 #program-messages #programmessages p,
@@ -4219,19 +4205,22 @@ table.topics tr.section span.topicnumber {
 div#dp-component-update-table table {
 
 }
-a.comments-icon {
-	position: relative;
-	display: block;
-}
-a.comments-icon span.comments-count{
-	padding: 2px;
-    position: absolute;
-    text-align: center;
-    width: 23px;
-}
 
-a.comments-icon img{
-	position: absolute;
+/* display comment count on top of speech bubble image */
+a.comments-icon-some,
+a.comments-icon-none {
+    display: block;
+    width: 27px;
+    height: 25px;
+    padding: 0px;
+    text-align: center;
+    line-height: 21px;
+}
+a.comments-icon-some {
+    background-image: url('pix/t/comments.gif');
+}
+a.comments-icon-none {
+    background-image: url('pix/t/comments-none.gif');
 }
 
 .comment-list li {

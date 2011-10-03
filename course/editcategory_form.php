@@ -1,6 +1,5 @@
 <?php
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
-require_once ($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
 class editcategory_form extends moodleform {
 
     // form definition
@@ -40,9 +39,6 @@ class editcategory_form extends moodleform {
             $mform->addElement('select', 'theme', get_string('forcetheme'), $themes);
         }
         $mform->setHelpButton('description', array('writing', 'richtext'), false, 'editorhelpbutton');
-
-        $category_icon = new coursecategory_icon();
-        $category_icon->add_to_form($category, $mform);
 
         $mform->addElement('hidden', 'id', 0);
         $mform->setType('id', PARAM_INT);

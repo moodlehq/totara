@@ -52,6 +52,9 @@ $reactivate = optional_param('reactivate', 0, PARAM_BOOL);
 // Is this an ajax call?
 $ajax = optional_param('ajax', 0, PARAM_BOOL);
 $referer = optional_param('referer', get_referer(false), PARAM_URL);
+//making sure that we redirect to somewhere inside platform
+//in case passed param is invalid or even HTTP_REFERER is bogus
+$referer = clean_param($referer, PARAM_LOCALURL);
 
 if (!confirm_sesskey()) {
     if (empty($ajax)) {
@@ -226,7 +229,7 @@ if (!empty($complete)) {
             $confirmurl = new moodle_url(qualified_me());
             $confirmurl->param('confirm', 'true');
             $confirmurl->param('referer', $referer);
-            $strcomplete = get_string('checkplancomplete', 'local_plan', $plan->name);
+            $strcomplete = get_string('checkplancomplete11', 'local_plan', $plan->name);
             notice_yesno(
                 "{$strcomplete}<br><br>",
                 $confirmurl->out(),
@@ -253,33 +256,60 @@ if (!empty($complete)) {
 /// Reactivate
 ///
 if (!empty($reactivate)) {
-    if ($plan->get_setting('completereactivate') >= DP_PERMISSION_ALLOW && $plan->get_setting('manualcomplete')) {
-        $confirm = optional_param('confirm', 0, PARAM_BOOL);
+    require_once($CFG->dirroot.'/local/plan/reactivate_form.php');
+    require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
-        if (!$confirm && empty($ajax)) {
-            print_header_simple();
-            $confirmurl = new moodle_url(qualified_me());
-            $confirmurl->param('confirm', 'true');
-            $confirmurl->param('referer', $referer);
-            $strcomplete = get_string('checkplanreactivate', 'local_plan', $plan->name);
-            notice_yesno(
-                "{$strcomplete}<br><br>",
-                $confirmurl->out(),
-                $referer
-            );
+    local_js(array(
+        TOTARA_JS_DATEPICKER
+    ));
 
-            print_footer();
-            exit;
-        } else {
-            // Set plan status to complete
-            if (!$plan->reactivate_plan()) {
+    if ($plan->get_setting('completereactivate') >= DP_PERMISSION_ALLOW) {
+        $form = new plan_reactivate_form(null, compact('id','referer'));
+
+        if ($form->is_cancelled()) {
+            redirect($referer);
+        }
+
+        if ($data = $form->get_data()) {
+
+            $new_date = (isset($data->enddate)) ? dp_convert_userdate($data->enddate) : null;
+
+            $referer = $data->referer;
+
+            // Reactivate plan
+            if (!$plan->reactivate_plan($new_date)) {
                 totara_set_notification(get_string('planreactivatefail', 'local_plan', $plan->name), $referer);
-                //$plan->send_completion_alert();
             } else {
                 add_to_log(SITEID, 'plan', 'reactivated', "view.php?id={$plan->id}", $plan->name);
                 totara_set_notification(get_string('planreactivatesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
             }
         }
+
+        print_header_simple();
+        print_heading(get_string('planreactivate', 'local_plan'), '', 2, 'reactivateheading');
+
+        $form->display();
+
+        print <<<HEREDOC
+                <script type="text/javascript">
+
+                $(function() {
+                    $('#id_enddate').datepicker(
+                        {
+                            dateFormat: 'dd/mm/yy',
+                            showOn: 'both',
+                            buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
+                            buttonImageOnly: true,
+                            constrainInput: true
+                        }
+                    );
+                });
+                </script>
+HEREDOC;
+
+        print_footer();
+        exit;
+
     } else {
         if (empty($ajax)) {
             totara_set_notification(get_string('nopermission', 'local_plan'), $referer);

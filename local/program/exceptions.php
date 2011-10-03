@@ -273,10 +273,7 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
         else if (typeId == '<?php echo EXCEPTIONTYPE_ALREADY_ASSIGNED; ?>') {
         selectionId = <?php echo SELECTIONTYPE_ALREADY_ASSIGNED; ?>;
         }
-        else if (typeId == '<?php echo EXCEPTIONTYPE_EXTENSION_REQUEST; ?>') {
-        selectionId = <?php echo SELECTIONTYPE_EXTENSION_REQUEST; ?>;
-        }
-            else if (typeId == '<?php echo EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN; ?>') {
+        else if (typeId == '<?php echo EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN; ?>') {
         selectionId = <?php echo SELECTIONTYPE_COMPLETION_TIME_UNKNOWN; ?>;
         }
         items.addItem(new Item(selectionId,typeId,this));
@@ -317,8 +314,8 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
             'applyactionbutton',
             {
         buttons: {
-            'Cancel': function() { handler._cancel() },
-            'Ok': function() { dialog.save('<?php echo $CFG->wwwroot; ?>/local/program/exception/resolve.php?id=<?php echo $id ?>'); }
+            '<?php echo get_string('cancel'); ?>': function() { handler._cancel() },
+            '<?php echo get_string('ok'); ?>': function() { dialog.save('<?php echo $CFG->wwwroot; ?>/local/program/exception/resolve.php?id=<?php echo $id ?>'); }
         },
         title: '<?php echo '<h2>'.get_string('confirmresolution', 'local_program').'</h2>'; ?>',
                 height: '250'
@@ -349,7 +346,12 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
             var searchterm = '<?php echo $searchterm ?>';
         url += '&action=' + $('#selectionaction option:selected').val();
         url += '&search=' + searchterm;
-        this._request(url, handler, '_update');
+        this._request(url, dialog, '_update', searchterm);
+    }
+
+    dialog._update = function(response, searchterm) {
+        this.hide();
+        window.location.href = '<?php echo $CFG->wwwroot . '/local/program/exceptions.php?id=' . $id . '&search='; ?>'+searchterm;
     }
 
     totaraDialogs['applyaction'] = dialog;

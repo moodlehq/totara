@@ -1,5 +1,6 @@
-<?PHP // $Id$
-      // Modified with langdiff.php
+<?PHP // $Id$ 
+      // enrol_ldap.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+
 
 $string['description'] = '<p>Voit käyttää LDAP-palvelinta hallinnoidaksesi ilmoittautumisia. Tällöin oletetaan että LDAP-puusi sisältää ryhmät, jotka liittyvät kursseihin ja että jokainen näistä ryhmistä/kursseista tulee sisältämään jäsenyysrekisterin, johon oppilaat liitetään.</p>
 
@@ -15,6 +16,7 @@ $string['enrol_ldap_autocreation_settings'] = 'Automaattisen kurssin luonnin ase
 $string['enrol_ldap_bind_dn'] = 'Jos haluat käyttää bind-useria etsiäksesi käyttäjiä, merkitse se tähän. Esimerkki:  \'cn=ldapuser,ou=public,o=org\'';
 $string['enrol_ldap_bind_pw'] = 'Salasana ´bind-user´ille.';
 $string['enrol_ldap_category'] = 'Kategoria automaattisesti luoduille kursseille.';
+$string['enrol_ldap_contexts'] = 'LDAP-kontekstit';
 $string['enrol_ldap_course_fullname'] = 'Valinnainen: LDAP-kenttä jolta haetaan koko nimi.';
 $string['enrol_ldap_course_idnumber'] = 'Linkitä yksilölliseen tunnukseen LDAPssa, yleensä  <em>cn</em> tai <em>uid</em>. On suositeltavaa lukita arvo, jos käytät automaattista kurssin luontia.';
 $string['enrol_ldap_course_settings'] = 'Kurssin ilmoittautumisen asetukset';
@@ -23,7 +25,9 @@ $string['enrol_ldap_course_summary'] = 'Valinnainen: LDAP-kenttä jolta haetaan 
 $string['enrol_ldap_editlock'] = 'Lukitse arvo';
 $string['enrol_ldap_general_options'] = 'Yleiset asetukset';
 $string['enrol_ldap_host_url'] = 'Määritä LDAP-palvelin URL-muodossa. Malli:  \'ldap://ldap.myorg.com/\'tai \'ldaps://ldap.myorg.com/\'';
+$string['enrol_ldap_memberattribute'] = 'LDAP-jäsenominaisuus';
 $string['enrol_ldap_objectclass'] = 'objektiLuokka jolla etsitään kursseilta. Yleensä \'posixGroup\'.';
+$string['enrol_ldap_roles'] = 'Roolitus';
 $string['enrol_ldap_search_sub'] = 'Etsi ryhmien jäsenyyksiä alakonteksteista';
 $string['enrol_ldap_server_settings'] = 'LDAP-palvelimen asetukset';
 $string['enrol_ldap_student_contexts'] = 'Lista konteksteista, joissa ryhmät joille on ilmoittautunut oppilaita sijaitsevat. Eri kontekstit erotetaan puolipisteellä ´;´. Esimerkki: \'ou=courses,o=org; ou=others,o=org\'';
@@ -36,4 +40,5 @@ $string['enrol_ldap_template'] = 'Valinnainen: automaattisesti luodut kurssit vo
 $string['enrol_ldap_updatelocal'] = 'Päivitä paikalliset tiedot';
 $string['enrol_ldap_version'] = 'LDAP-protokollan versio, jota palvelimesi käyttää.';
 $string['enrolname'] = 'LDAP';
+
 ?>

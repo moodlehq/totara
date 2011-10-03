@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // completion.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
+<?PHP // $Id$ 
+      // completion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['achievinggrade'] = 'השגת ציון';
@@ -8,11 +7,12 @@ $string['activities'] = 'פעילויות';
 $string['activitiescompleted'] = 'פעילויות שהושלמו';
 $string['activitycompletion'] = 'השלמת פעילות';
 $string['activitycompletionreport'] = 'דוח התקדמות השלמת פעילויות';
+$string['activityrpl'] = 'פעילות הכרה בלמידה קודמת';
 $string['addcoursedependency'] = 'הוספת תלות קורס';
 $string['afterspecifieddate'] = 'לאחר תאריך מוגדר';
+$string['aggregateall'] = 'הכל';
+$string['aggregateany'] = 'כלשהו';
 $string['aggregationmethod'] = 'שיטת צבירה';
-$string['all'] = 'כל';
-$string['any'] = 'כל אחד';
 $string['approval'] = 'אישור';
 $string['badautocompletion'] = 'כאשר אתה בוחר השלמה אוטומטית, עליך להפעיל גם לפחות דרישה אחת (להלן).';
 $string['complete'] = 'השלם';
@@ -21,6 +21,7 @@ $string['completedunlocked'] = 'הוסרה נעילת אפשרויות השלמ�
 $string['completedunlockedtext'] = 'כאשר תשמור שינויים, מצב ההשלמה עבור כל המשתמשים יימחק. אם אינך רוצה בכך, על תשמור את הטופס.';
 $string['completedwarning'] = 'אפשרויות השלמה ננעלו';
 $string['completedwarningtext'] = 'משתמש אחד או יותר ($a) כבר סימן פעילות זו כהושלמה. שינוי אפשרויות השלמה יימחק את המצב שלהם ועשוי לגרום לבלבול. האפשרויות ננעלו ואנו ממליצים לא לבטל את הנעילה אלא אם אין ברירה.';
+$string['completeviarpl'] = 'הושלם ע\"י הכרה בלמידה קודמת';
 $string['completion'] = 'מעקב השלמה';
 $string['completion-alt-auto-enabled'] = 'המערכת סימנה פריט זה כהושלם לפי תנאים שהתקיימו';
 $string['completion-alt-auto-fail'] = 'הושלם (לא הושג ציון עובר)';
@@ -52,6 +53,8 @@ $string['completionusegrade_text'] = 'משתמש חייב לקבל ציון';
 $string['completionview'] = 'דרוש צפייה';
 $string['completionview_text'] = 'משתמש חייב לצפות בפעילות';
 $string['configenablecompletion'] = 'כאשר מופעל, זה מאפשר לך להפעיל תכנות מעקב השלמה (התקדמות) ברמת הקורס.';
+$string['configenablecourserpl'] = 'כאשר מופעל, ניתן לסמן קורס כהושלם על ידי סימון הכרה בלמידה קודמת למשתמש.';
+$string['configenablemodulerpl'] = 'כאשר מופעל, כל קריטריון להשלמת הקורס עבור סוג רכיב זה יכול להיות מסומן כהושלם על ידי סימון הכרה בלמידה קודמת למשתמש.';
 $string['configprogresstrackedroles'] = 'תפקידים המוצגים במסך מעקב התקדמות. (בדרך כלל כולל רק משתתפים בקורס ותפקידים מקבילים).';
 $string['confirmselfcompletion'] = 'אשר השלמה עצמית';
 $string['coursealreadycompleted'] = 'כבר השלמת קורס זה';
@@ -62,6 +65,9 @@ $string['coursedependencies'] = 'תלות קורס';
 $string['coursegrade'] = 'ציון קורס';
 $string['courseprogress'] = 'התקדמות קורס';
 $string['courseprogresshelp'] = 'זה מגדיר אם משבצת התקדמות הקורס מופיע בעמוד הבית';
+$string['courserpl'] = 'הכרה בלמידה קודמת בקורס';
+$string['courserplorallcriteriagroups'] = 'הכרה בלמידה קודמת לקורס או <br /> כל קבוצות הקריטריונים';
+$string['courserploranycriteriagroup'] = 'הכרה בלמידה קודמת לקורס או <br /> עבור קבוצת קריטריונים כלשהי';
 $string['coursesavailable'] = 'הקורס זמין';
 $string['coursesavailableexplaination'] = '<i>קריטריונים להשלמת הקורס צריכים להיות מוגדרים כדי שקורס יופיע ברשימה זו</i>';
 $string['criteria'] = 'קריטריונים';
@@ -78,6 +84,8 @@ $string['dependenciescompleted'] = 'תנאי תלות הושלמו';
 $string['durationafterenrolment'] = 'זמן לאחר רישום';
 $string['editcoursecompletionsettings'] = 'ערוך הגדרות השלמת קורס';
 $string['enablecompletion'] = 'הפעל מעקב השלמה';
+$string['enablecourserpl'] = 'הפעל הכרה בלמידה קודמת לקורסים';
+$string['enablemodulerpl'] = 'הפעל הכרה בלמידה קודמת לרכיבים';
 $string['enrolmentduration'] = 'ימים שנותרו';
 $string['err_noactivities'] = 'מידע על השלמה לא מופעל עבור פעילות כלשהי, ולכן לא ניתן להציג אף אחת. באפשרותך להפעיל מידע השלמה על ידי עריכת הגדרות לפעילות.';
 $string['err_nocourses'] = 'השלמת קורס לא הופעלה עבור אף קורס, ולכן לא ניתן להציג אף אחד. באפשרותך להפעיל השלמת קורסים בהגדרות קורס.';
@@ -88,6 +96,9 @@ $string['err_noroles'] = 'אין תפקידים עם היכולת \'moodle/local
 $string['err_nousers'] = 'אין משתשמים בקורס או קבוצה זו שלהם מוצג מידע השלמה. (ברירת המחדל היא שהשלמה מוצגת רק למשתתפים, אז אם אין משתתתפים, תראה הודעת שגיאה זו. מנהלי מערכת יכולים לשנות אפשרות זו במסכי הניהול).';
 $string['err_settingslocked'] = 'משתמש אחד או יותר כבר השלימו קריטריון כך שההגדרות ננעלו. שחרור הנעילה להגדרות קריטריונים להשלמה יימחק כל נתוני משתמשים קיימים ועלול לגרום לבלבול.';
 $string['err_system'] = 'שגיאה פנימית התרחשה במערכת ההשלמה. (מנהלי מערכת יכולים להפעיל מידע ניפוי שגיאות כדי לראות פרטים נוספים).';
+$string['error:courserplsaredisabled'] = 'הכרה בלמידה קודמת בקורסים נוטרלה על ידי מנהל מערכת';
+$string['error:incorrectdatatypesupplied'] = 'סופק סוג נתונים שגוי';
+$string['error:rplsaredisabled'] = 'הכרה בלמידה קודמת נוטרלה על ידי מנהל מערכת';
 $string['excelcsvdownload'] = 'הורד בפורמט תואם אקסל (.csv)';
 $string['fraction'] = 'שבר';
 $string['help_completion'] = 'מעקב השלמה';
@@ -117,11 +128,14 @@ $string['remainingenroleduntildate'] = 'הישארות רשום עד תאריך 
 $string['reportpage'] = 'הצג משתמשים {$a->from} עד {$a->to} מתוך {$a->total}.';
 $string['requiredcriteria'] = 'קריטריונים נדרשים';
 $string['restoringcompletiondata'] = 'כותב נתוני השלמה';
+$string['rpl'] = 'הכרה בלמידה קודמת';
 $string['saved'] = 'נשמר';
 $string['seedetails'] = 'ראה פרטים';
 $string['self'] = 'עצמי';
 $string['selfcompletion'] = 'השלמה עצמית';
 $string['showinguser'] = 'הצג משתמש';
+$string['showrpl'] = 'הצג הכרה בלמידה קודמת';
+$string['showrpls'] = 'הצג הכרה בלמידה קודמת';
 $string['unenrolingfromcourse'] = 'ביטול רישום מקורס';
 $string['unenrolment'] = 'ביטול רישום';
 $string['unit'] = 'יחידה';
@@ -135,5 +149,7 @@ $string['viewingactivity'] = 'צופה ב$a';
 $string['writingcompletiondata'] = 'כותב מידע השלמה';
 $string['xdays'] = '$a ימים';
 $string['yourprogress'] = 'ההתקדמות שלך';
+$string['all'] = 'כל'; // ORPHANED
+$string['any'] = 'כל אחד'; // ORPHANED
 
 ?>

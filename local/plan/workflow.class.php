@@ -252,6 +252,11 @@ abstract class dp_base_workflow {
             $objective_todb->id = $objective_settings->id;
         }
 
+        $program_todb = new object();
+        if ($program_settings = get_record('dp_program_settings', 'templateid', $templateid)) {
+            $program_todb->id = $program_settings->id;
+        }
+
         $template_in_use = count_records('dp_plan', 'templateid', $templateid) > 0;
 
         begin_sql();
@@ -289,6 +294,14 @@ abstract class dp_base_workflow {
                         $objective_todb->$parts[2] = $value;
                     }
                     break;
+                case 'program':
+                    if($parts[2] == 'priorityscale'){
+                        if(!$template_in_use) {
+                            $program_todb->$parts[2] = $value;
+                        }
+                    } else {
+                        $program_todb->$parts[2] = $value;
+                    }
                 }
 
             } elseif ($parts[0] == 'perm') {
@@ -377,6 +390,21 @@ abstract class dp_base_workflow {
             if(!insert_record('dp_objective_settings', $objective_todb)){
                 rollback_sql();
                 totara_set_notification(get_string('todb_objectivesettingerror', 'local_plan'), $returnurl);
+                return false;
+            }
+        }
+
+        if($program_settings) {
+            if(!update_record('dp_program_settings', $program_todb)) {
+                rollback_sql();
+                totara_set_notification(get_string('todb_programsettingerror', 'local_plan'), $returnurl);
+                return false;
+            }
+        } else {
+            $program_todb->templateid = $templateid;
+            if(!insert_record('dp_program_settings', $program_todb)){
+                rollback_sql();
+                totara_set_notification(get_string('todb_programsettingerror', 'local_plan'), $returnurl);
                 return false;
             }
         }

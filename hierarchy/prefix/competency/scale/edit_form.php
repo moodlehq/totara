@@ -39,7 +39,7 @@ class edit_scale_form extends moodleform {
             $mform->addRule('scalevalues', get_string('required'), 'required', null, 'server');
             $mform->setType('scalevalues', PARAM_TEXT);
         } else {
-            $mform->addELement('html', '<div class="fitem"><div class="fitemtitle">&nbsp;</div><div class="felement">'.get_string('linktoscalevalues','competency',clean_param($this->_customdata['scaleid'], PARAM_INT))."</div></div>\n");
+            $mform->addELement('html', '<div class="fitem"><div class="fitemtitle">&nbsp;</div><div class="felement">'.get_string('linktoscalevalues11','competency',clean_param($this->_customdata['scaleid'], PARAM_INT))."</div></div>\n");
         }
 
         $mform->addElement('htmleditor', 'description', get_string('description'));

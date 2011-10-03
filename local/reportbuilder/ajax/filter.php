@@ -72,6 +72,7 @@ switch ($action) {
         $fid = required_param('fid', PARAM_INT);
         if ($filter = get_record('report_builder_filters', 'id', $fid)) {
             if (delete_records('report_builder_filters', 'id', $fid)) {
+                require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
                 echo json_encode((array)$filter);
             } else {
                 echo false;

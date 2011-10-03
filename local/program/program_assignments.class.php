@@ -133,10 +133,21 @@ class prog_assignments {
     /**
      * Returns the number of assignments found for the current program
      *
-     * @return array of object
+     * @return integer The number of user assignments
      */
     public function count_user_assignments() {
-        return count_records('prog_user_assignment', 'programid', $this->programid);
+        $count = count_records('prog_user_assignment', 'programid', $this->programid);
+        return ($count) ? $count : 0;
+    }
+
+    /**
+     * Returns the number of exceptions found for the current program
+     *
+     * @return integer The number of exceptions
+     */
+    public function count_user_assignment_exceptions() {
+        $count = count_records('prog_exception', 'programid', $this->programid);
+        return ($count) ? $count : 0;
     }
 
     /**
@@ -287,6 +298,8 @@ class prog_assignments {
     }
 
     public static function get_confirmation_template() {
+        global $CFG;
+        require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
 
         $table = new stdClass();
         $table->head = array('','added','removed');
@@ -653,7 +666,7 @@ class organisations_category extends prog_assignment_category {
     function __construct() {
         $this->id = ASSIGNTYPE_ORGANISATION;
         $this->name = get_string('organisations','local_program');
-        $this->buttonname = get_string('addorganisationtoprogram','local_program');
+        $this->buttonname = get_string('addorganisationstoprogram','local_program');
     }
 
     function build_table($prefix, $programid) {
@@ -792,7 +805,7 @@ class organisations_category extends prog_assignment_category {
             (function() {
                 var id = {$this->id};
                 var programid = {$programid};
-                var title = '". get_string('addorganisationtoprogram','local_program') ."';
+                var title = '". get_string('addorganisationstoprogram','local_program') ."';
                 program_assignment.add_category(new category(id, 'organisations', 'find_hierarchy.php?type=organisation&table=org&programid='+programid, title));
             })();
         ";
@@ -952,14 +965,14 @@ class cohorts_category extends prog_assignment_category {
 
     function __construct() {
         $this->id = ASSIGNTYPE_COHORT;
-        $this->name = get_string('cohort','local_program');
-        $this->buttonname = get_string('addcohorttoprogram','local_program');
+        $this->name = get_string('cohorts','local_program');
+        $this->buttonname = get_string('addcohortstoprogram','local_program');
     }
 
     function build_table($prefix, $programid) {
         $this->headers = array(
             get_string('cohortname','local_program'),
-            get_string('source','local_program'),
+            get_string('type','local_program'),
             get_string('complete','local_program'),
             get_string('numlearners','local_program')
         );
@@ -987,13 +1000,18 @@ class cohorts_category extends prog_assignment_category {
     function build_row($item) {
         global $CFG;
 
+        require_once($CFG->dirroot.'/cohort/lib.php');
+
         if (is_int($item)) {
             $item = $this->get_item($item);
         }
 
+        $cohorttypes = cohort::getCohortTypes();
+        $cohortstring = $cohorttypes[$item->cohorttype];
+
         $row = array();
         $row[] = '<div class="item">'.format_string($item->fullname).'<a href="#" class="deletelink">'.'<img src="'.$CFG->pixpath.'/t/delete.gif"'.' /></a></div><input type="hidden" name="item['.$this->id.']['.$item->id.']" value="1"/>';
-        $row[] = $item->cohorttype;
+        $row[] = $cohortstring;
         $row[] = $this->get_completion($item);
         $row[] = $this->user_affected_count($item);
 
@@ -1042,7 +1060,7 @@ class cohorts_category extends prog_assignment_category {
             (function() {
                 var id = {$this->id};
                 var programid = {$programid};
-                var title = '". get_string('addcohorttoprogram','local_program') ."';
+                var title = '". get_string('addcohortstoprogram','local_program') ."';
                 program_assignment.add_category(new category(id, 'cohorts', 'find_cohort.php?programid='+programid, title));
             })();
         ";
@@ -1054,7 +1072,7 @@ class managers_category extends prog_assignment_category {
     function __construct() {
         $this->id = ASSIGNTYPE_MANAGER;
         $this->name = get_string('managementhierarchy','local_program');
-        $this->buttonname = get_string('addmanagertoprogram','local_program');
+        $this->buttonname = get_string('addmanagerstoprogram','local_program');
     }
 
     function build_table($prefix, $programid) {
@@ -1180,7 +1198,7 @@ class managers_category extends prog_assignment_category {
             (function() {
                 var id = {$this->id};
                 var programid = {$programid};
-                var title = '". get_string('addmanagertoprogram','local_program') ."';
+                var title = '". get_string('addmanagerstoprogram','local_program') ."';
                 var cat = new category(id, 'managers', 'find_manager.php?test=test', title);
                 cat.dialog_additem.default_url = '{$CFG->wwwroot}/local/management/dialog.php?programid='+programid;
                 program_assignment.add_category(cat);
@@ -1194,7 +1212,7 @@ class individuals_category extends prog_assignment_category {
     function __construct() {
         $this->id = ASSIGNTYPE_INDIVIDUAL;
         $this->name = get_string('individuals','local_program');
-        $this->buttonname = get_string('addindividualtoprogram','local_program');
+        $this->buttonname = get_string('addindividualstoprogram','local_program');
     }
 
     function build_table($prefix, $programid) {
@@ -1265,7 +1283,7 @@ class individuals_category extends prog_assignment_category {
             (function() {
                 var id = {$this->id};
                 var programid = {$programid};
-                var title = '". get_string('addindividualtoprogram','local_program') ."';
+                var title = '". get_string('addindividualstoprogram','local_program') ."';
                 program_assignment.add_category(new category(id, 'individuals', 'find_individual.php?programid='+programid, title));
             })();
         ";

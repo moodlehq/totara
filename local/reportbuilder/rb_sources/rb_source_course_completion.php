@@ -3,13 +3,13 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 1999 onwards Martin Dougiamas
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,7 +20,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -42,6 +42,15 @@ class rb_source_course_completion extends rb_base_source {
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_course_completion');
+
+        //Adding custom fields
+        $this->add_custom_position_fields($this->joinlist,
+                                          $this->columnoptions,
+                                          $this->filteroptions);
+        $this->add_custom_organisation_fields($this->joinlist,
+                                              $this->columnoptions,
+                                              $this->filteroptions);
+
         parent::__construct();
     }
 
@@ -91,12 +100,30 @@ class rb_source_course_completion extends rb_base_source {
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
                 'criteria'
             ),
+            new rb_join(
+                'grade_items',
+                'LEFT',
+                $CFG->prefix . 'grade_items',
+                '(grade_items.courseid = base.course AND ' .
+                    'grade_items.itemtype = \'course\')',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'grade_grades',
+                'LEFT',
+                $CFG->prefix . 'grade_grades',
+                '(grade_grades.itemid = grade_items.id AND ' .
+                    'grade_grades.userid = base.userid)',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'grade_items'
+            ),
         );
 
         // include some standard joins
         $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
         $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
         $this->add_course_table_to_joinlist($joinlist, 'base', 'course');
+        $this->add_course_custom_fields_to_joinlist($joinlist, 'base', 'course');
         // requires the course join
         $this->add_course_category_table_to_joinlist($joinlist,
             'course', 'category');
@@ -183,9 +210,9 @@ class rb_source_course_completion extends rb_base_source {
                 'course_completion',
                 'grade',
                 get_string('grade', 'rb_source_course_completion'),
-                'critcompl.gradefinal',
+                'grade_grades.finalgrade',
                 array(
-                    'joins' => array('criteria', 'critcompl'),
+                    'joins' => 'grade_grades',
                     'displayfunc' => 'percent',
                 )
             ),
@@ -203,9 +230,9 @@ class rb_source_course_completion extends rb_base_source {
                 'course_completion',
                 'gradestring',
                 get_string('requiredgrade', 'rb_source_course_completion'),
-                'critcompl.gradefinal',
+                'grade_grades.finalgrade',
                 array(
-                    'joins' => array('criteria', 'critcompl'),
+                    'joins' => array('criteria', 'grade_grades'),
                     'displayfunc' => 'grade_string',
                     'extrafields' => array('gradepass' => 'criteria.gradepass'),
                     'defaultheading' => get_string('grade', 'rb_source_course_completion'),
@@ -217,6 +244,7 @@ class rb_source_course_completion extends rb_base_source {
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_user_custom_fields_to_columns($columnoptions);
         $this->add_course_fields_to_columns($columnoptions);
+        $this->add_course_custom_fields_to_columns($columnoptions);
         $this->add_course_category_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
         $this->add_manager_fields_to_columns($columnoptions);
@@ -315,6 +343,7 @@ class rb_source_course_completion extends rb_base_source {
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
         $this->add_course_fields_to_filters($filteroptions);
+        $this->add_course_custom_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);

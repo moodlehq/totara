@@ -25,6 +25,7 @@
  */
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 $ok_string = get_string('ok');
+$save_string = get_string('save');
 $cancel_string = get_string('cancel');
 ?>
 
@@ -153,7 +154,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
             this.handler._open();
         }
 
-        this.load(url, method);
+        this.load(url);
 
         // If ie6 then hide selects while the pop-up is open
         if($.browser.msie && parseInt($.browser.version) == 6) {
@@ -165,11 +166,9 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
     /**
      * Load an external page in the dialog
      * @param   string      Url of page
-     * @param   string      Page fetch method, POST or GET
-     * @param   function    Optional function to run on success
      * @return  void
      */
-    this.load = function(url, method, onsuccess) {
+    this.load = function(url) {
         // Add loading animation
         this.dialog.html('');
         this.showLoading();
@@ -269,7 +268,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
                     dialog._request(url, null, null, null, target);
                 } else {
                     // otherwise, load in the whole dialog
-                    dialog.load(url, 'GET');
+                    dialog.load(url);
                 }
 
                 // Stop any default event occuring
@@ -309,7 +308,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
                     dialog._request(url, null, null, null, target);
                 } else {
                     // if no target set, reload whole dialog
-                    dialog.load(url, $(this).attr('method'));
+                    dialog.load(url);
                 }
 
                 // Stop any default event occuring
@@ -945,6 +944,9 @@ totaraDialog_handler_treeview_multiselect.prototype._handle_update_hierarchy = f
 
 totaraDialog_handler_treeview_singleselect = function(value_element_name, text_element_id, dualpane) {
 
+    // Can the value be deleted
+    var deletable;
+
     // Can hold an externally assigned function
     var external_function;
 
@@ -970,6 +972,35 @@ totaraDialog_handler_treeview_singleselect.prototype = new totaraDialog_handler_
 totaraDialog_handler_treeview_singleselect.prototype._handle_update_hierarchy = function(parent_element) {
     this._make_selectable(parent_element);
 }
+
+/**
+ * Setup delete buttons
+ *
+ * @return  void
+ */
+totaraDialog_handler_treeview_singleselect.prototype.setup_delete = function() {
+    this.deletable = true;
+
+    var textel = $('#'+this.text_element_id);
+    var idel = $('input[name='+this.value_element_name+']');
+    var deletebutton = $('<span class="dialog-singleselect-deletable">delete</span>');
+    var handler = this;
+
+    // Setup handler
+    deletebutton.click(function() {
+        idel.val('');
+        textel.removeClass('nonempty');
+        textel.empty();
+        handler.setup_delete();
+    });
+
+    if (!textel.text().length) {
+        deletebutton.hide();
+    }
+
+    textel.append(deletebutton);
+}
+
 
 /**
  * Setup run this on first load
@@ -1041,6 +1072,16 @@ totaraDialog_handler_treeview_singleselect.prototype._save = function() {
     // Update text element
     if (this.text_element_id) {
         $('#'+this.text_element_id).text(selected_text);
+
+        if (selected_text) {
+            $('#'+this.text_element_id).addClass('nonempty');
+        } else {
+            $('#'+this.text_element_id).remClass('nonempty');
+        }
+
+        if (this.deletable) {
+            this.setup_delete();
+        }
     }
 
     if (this.external_function) {
@@ -1276,11 +1317,15 @@ totaraDialog_handler_skeletalTreeview.prototype._make_selectable = function(elem
  * @param string value_element bound to this dialog (value will be updated after dialog selection)
  * @param string text_element bound to this dialog (text will be updated after dialog selection)
  * @param function handler_extra extra code to be executed with handler
+ * @param boolean deletable Should the value be delelable?
  * @return void
  */
-totaraSingleSelectDialog = function(name, title, find_url, value_element, text_element, handler_extra) {
+totaraSingleSelectDialog = function(name, title, find_url, value_element, text_element, handler_extra, deletable) {
 
     var handler = new totaraDialog_handler_treeview_singleselect(value_element, text_element);
+    if (deletable) {
+        handler.setup_delete();
+    }
     handler.external_function = handler_extra;
 
     totaraDialogs[name] = new totaraDialog(
@@ -1318,7 +1363,7 @@ totaraMultiSelectDialog = function(name, title, find_url, save_url) {
         {
             buttons: {
                 '<?php echo $cancel_string ?>': function() { handler._cancel() },
-                '<?php echo $ok_string ?>': function() { handler._save(save_url) }
+                '<?php echo $save_string ?>': function() { handler._save(save_url) }
             },
             title: '<h2>'+title+'</h2>'
         },

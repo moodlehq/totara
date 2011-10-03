@@ -41,7 +41,8 @@ if ($action == 'edit') {
 
     //Javascript include
     local_js(array(
-        TOTARA_JS_DATEPICKER
+        TOTARA_JS_DATEPICKER,
+        TOTARA_JS_ICON_PREVIEW
     ));
     require_js(array(
         "{$CFG->wwwroot}/local/program/program.edit.js",
@@ -88,6 +89,14 @@ if ($data = $detailsform->get_data()) {
         // Preprocess to convert string dates e.g. '23/11/2012' to a unix timestamp
         $data->availablefrom = prog_date_to_time($data->availablefromselector);
         $data->availableuntil = prog_date_to_time($data->availableuntilselector);
+
+        $data->timemodified = time();
+        $data->usermodified = $USER->id;
+
+        // Program has moved categories
+        if ($data->category != $program->category) {
+            prog_move_programs(array($program->id), $data->category);
+        }
 
         // Save program data
         if (!update_record('prog', $data)) {

@@ -1,7 +1,5 @@
-<?PHP // $Id$
-      // local_totara_msg.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
-
+<?php
+// local_totara_msg.php - created with Totara langimport script version 1.0
 
 $string['accept'] = 'אשר';
 $string['alert_description'] = 'מפורטות להלן כל ההתראות שקיבלת. באפשרותך ללחוץ על כותרת ההתראה כדי לצפות בפרטים נוספים או למחוק התראה על ידי לחיצה על צלמית המחיקה בצד הרשימה. באפשרותך גם לבחור מסנן כדי לצפות אילו התראות יוצגו על ידי שימוש באפשרות \"חיפוש לפי\".';
@@ -13,6 +11,7 @@ $string['competency'] = 'כישור';
 $string['course'] = 'קורס';
 $string['dismiss'] = 'מחק';
 $string['elearning'] = 'למידה מתוקשבת';
+$string['emailnotifications'] = 'התראות דואר אלקטרוני';
 $string['error:redirecttoexternal'] = 'שגיאה: ניסיון להפנות לאתר חיצוני';
 $string['evidence'] = 'סימוכין';
 $string['facetoface'] = 'פנים-אל-פנים';

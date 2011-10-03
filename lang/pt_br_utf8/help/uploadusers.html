@@ -1,0 +1,44 @@
+<h1>Carregar usuários</h1>
+
+<p>Geralmente não é necessário importar usuários em massa - você deveria tentar explorar formas de autenticação que não requerem trabalho manual, como a conexão a bancos de dados externos ou permitir que os usuários criem suas próprias contas. Veja a seção Autenticação, na aba de Usuários do menu de administração.</p>
+<p>Se você quiser importar contas múltiplas de um arquivo de texto, então você precisa obedecer o seguinte formato:</p>
+
+<ul>
+  <li>Cada linha contém um registro</li>
+  <li>Cada registro é uma sequência de dados separados por vírgulas</li>
+  <li>O primeiro registro do arquivo é especial, e contém uma lista de campos. Isso define o formato do resto do arquivo.
+    <blockquote>
+      <p><strong>Campos Obrigatórios:</strong> esses campos precisam ser incluídos na primeira linha, e definidos para cada usuário</p>
+      <p><code class="example1">username, password, firstname, lastname, email</code></p>
+
+      <p><strong>Nomes dos campos padrão:</strong> esses são opcionais - se não forem incluídos então os valores usados vêm do administrador principal</p>
+      <p><code class="example1">institution, department, city, country, lang, auth, timezone</code> </p>
+      <p><strong>Nomes dos campos opcionais: </strong>todos esses são completamente opcionais. Os nomes dos cursos são os nomes breves dos mesmos - se presente, o usuário será inscrito como aluno desse curso. Nomes de grupos devem ser associados aos cursos correspondentes, ex: group1 para course1, etc.</p>
+      <p> <code class="example1">idnumber,
+icq, phone1, phone2, address, url, description, mailformat,
+maildisplay, htmleditor, autosubscribe, course1, course2, course3,
+course4, course5, group1, group2, group3, group4, group5, type1, type2,
+type3, type4, type5, role1, role2, role3, role4, role5, emailstop</code></p>
+    </blockquote>
+    </li>
+  <li>As vírgulas usadas nos dados precisam ser codificadas como &amp;#44 - o script irá decodificar automaticamente. </li>
+  <li>Para campos booleanos(lógicos), use 0 para falso e 1 para verdadeiro. </li>
+  <li>Tipos são usados para determinar se um usuário é aluno ou professor, se um curso correspondente existe (ex: type2 corresponde a course2 ). 1 =
+Aluno, 2 = Professor que pode editar, e 3 = Professor que não pode editar. Se o tipo estiver em branco, ou se nenhum curso for especificado, o usuário terá o padrão de Aluno. </li>
+  <li>Para os cursos use o nome breve; para grupos use o nome do grupo; para funções use o id.</li>
+  <li>Nota: Se um usuário já estiver registrado no banco de dados do Moodle, o script retornará o número do userid (índice do banco de dados) do usuário, e inscreverá o usuário em todos os cursos especificados SEM atualizar dados existentes.</li>
+</ul>
+
+<p>Aqui um exemplo de arquivo de importação válido:</p>
+<p><code>username, password, firstname, lastname, email, lang, idnumber, maildisplay, course1, group1, type1<br>
+jonest, verysecret, Tom, Jones, jonest@someplace.edu, en, 3663737, 1, Intro101, Section 1, 1<br>
+reznort, somesecret, Trent, Reznor, reznort@someplace.edu, en_us, 6736733, 0, Advanced202, Section 3, 3
+</code></p>
+
+<h2>Atualizando contas existentes</h2>
+
+<p>Por padrão o Moodle assume que você criará novas contas de usuário, e salta registros que correspondem a contas já existentes. Entretanto, se você marcar "Atualizar contas existentes" como <b>Sim</b>, a conta será atualizada. </p>
+
+<p>Ao atualizar contas existente você pode também mudar os nomes de usuário. Marque "Permitir renomeação" como <b>Sim</b> e inclua em seu arquivo um campo chamado <code class="example1">oldusername</code>.</p>
+
+<p><b>Aviso:</b> qualquer erro nas atualizações de contas existentes pode produzir efeitos muito ruins nas contas dos usuários. Tenha cuidado ao utilizar essas opções.</p>

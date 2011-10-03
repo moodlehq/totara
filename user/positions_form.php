@@ -83,13 +83,14 @@ class user_position_assignment_form extends moodleform {
         }
 
         if($nojs) {
-            $allpositions = get_records_menu('pos','','','frameworkid,sortorder','id,fullname');
+            $allpositions = get_records_menu('pos','','','frameworkid,sortthread','id,fullname');
             $mform->addElement('select','positionid', get_string('chooseposition','position'), $allpositions);
             $mform->setHelpButton('positionid', array('userpositionposition', get_string('chooseposition', 'position')), true);
         } else {
+            $pos_class = strlen($position_title) ? 'nonempty' : '';
             $mform->addElement('static', 'positionselector', get_string('position', 'position').
                     '<img class="req" title="Required field" alt="Required field" src="'.$CFG->pixpath.'/req.gif">',
-                '<span id="positiontitle"> '.format_string($position_title).'</span>'.
+                '<span class="'.$pos_class.'" id="positiontitle"> '.format_string($position_title).'</span>'.
                     ($can_edit ? '<input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />' : '')
             );
             $mform->addElement('hidden', 'positionid');
@@ -104,7 +105,7 @@ class user_position_assignment_form extends moodleform {
         }
         if (!$aspirational) {
             if($nojs) {
-                $allorgs = get_records_menu('org','','','frameworkid,sortorder','id,fullname');
+                $allorgs = get_records_menu('org','','','frameworkid,sortthread','id,fullname');
                 if (is_array($allorgs) && !empty($allorgs) ){
                     $mform->addElement('select','organisationid', get_string('chooseorganisation','organisation'),
                         array(0 => get_string('chooseorganisation','organisation')) + $allorgs);
@@ -113,9 +114,10 @@ class user_position_assignment_form extends moodleform {
                 }
                 $mform->setHelpButton('organisationid', array('userpositionorganisation', get_string('chooseorganisation', 'organisation')), true);
             } else {
+                $org_class = strlen($organisation_title) ? 'nonempty' : '';
                 $mform->addElement('static', 'organisationselector', get_string('organisation', 'position'),
                     '
-                        <span id="organisationtitle">'.format_string($organisation_title).'</span>
+                        <span class="'.$org_class.'" id="organisationtitle">'.format_string($organisation_title).'</span>
                     '.
                     ($can_edit ? '<input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />' : '')
                 );
@@ -148,11 +150,12 @@ class user_position_assignment_form extends moodleform {
                 // Show manager
                 // If we can edit, show button. Else show link to manager's profile
                 if ($can_edit) {
+                    $manager_class = strlen($manager_title) ? 'nonempty' : '';
                     $mform->addElement(
                         'static',
                         'managerselector',
                         get_string('manager', 'position'),
-                        '<span id="managertitle">'.format_string($manager_title).'</span>'
+                        '<span class="'.$manager_class.'" id="managertitle">'.format_string($manager_title).'</span>'
                         .'<input type="button" value="'.get_string('choosemanager', 'position').'" id="show-manager-dialog" />'
                     );
                 } else {

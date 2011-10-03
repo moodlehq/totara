@@ -571,7 +571,7 @@ function print_log_csv($course, $user, $date, $order='l.time DESC', $modname,
     header("Pragma: public");
 
     echo get_string('savedat').userdate(time(), $strftimedatetime)."\n";
-    echo $text;
+    echo $text."\n";
 
     if (empty($logs['logs'])) {
         return true;
@@ -2049,10 +2049,8 @@ function print_category_info($category, $depth, $showcourses = false) {
     global $CFG;
     static $strallowguests, $strrequireskey, $strsummary;
 
-    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
     require_once($CFG->dirroot.'/local/icon/course_icon.class.php');
 
-    $category_icon = new coursecategory_icon();
     $course_icon = new course_icon();
 
     if (empty($strsummary)) {
@@ -2089,7 +2087,7 @@ function print_category_info($category, $depth, $showcourses = false) {
             print_spacer(10, $indent);
             echo '</td>';
         }
-        echo '<td valign="top" class="category image">'.$category_icon->display($category, 'small').'</td>';
+        echo '<td valign="top" class="category image">&nbsp;</td>';
         echo '<td class="category name">';
         echo '<a '.$catlinkcss.' href="'.$CFG->wwwroot.'/course/category.php?id='.$category->id.'">'. format_string($category->name).'</a>';
         echo '</td>';
@@ -2397,9 +2395,9 @@ function print_my_moodle() {
                 if ($course->id == SITEID) {
                     continue;
                 }
-                echo '<li><table>';
+                echo '<li>';
                 print_course($course);
-                echo "</table></li>\n";
+                echo "</li>\n";
             }
             echo "</ul>\n";
         }
@@ -3353,6 +3351,7 @@ function category_delete_move($category, $newparentid, $showfeedback=true) {
             notify("Error moving programs");
             return false;
         }
+        notify(get_string('programsmovedout', 'local_program', format_string($category->name)), 'notifysuccess');
     }
 
     // now delete anything that may depend on course category context
@@ -3741,7 +3740,7 @@ function get_course_custom_fields($courseid) {
  * @return integer|array Associative array, where keys are the sub-category IDs and value is the count. If $categoryids is a single integer, just returns the count as an integer
  */
 function get_category_item_count($categoryids, $countcourses = true) {
-    global $CFG;
+    global $CFG, $USER;
 
     $where_sql = is_array($categoryids) ?
         'id IN (' . implode(',', $categoryids) . ')' :
@@ -3804,9 +3803,19 @@ function get_category_item_count($categoryids, $countcourses = true) {
         // if required
         if (!$item->visible &&
             !$doanything &&
-            !has_capability($itemcap,
-                get_context_instance($itemcontext, $itemid))) {
+            !has_capability($itemcap, get_context_instance($itemcontext, $item->itemid))
+           ) {
             continue;
+        }
+
+        // we need to check if programs are available to students before
+        // displaying them in search, unless the user is an admin
+        if (!$countcourses && !is_siteadmin($USER->id)) {
+
+            $program = new program($item->itemid);
+            if (!$program->is_accessible()) {
+                continue;
+            }
         }
 
         // now we need to figure out which sub-category each item
@@ -3867,10 +3876,19 @@ function print_main_subcategories($parentid, $secondarycats, $secondary_item_cou
         if (!$editingon && $subcat->itemcount == 0) {
             continue;
         }
-        // @todo check capabilities and hide if necessary
+
+        // Check capabilities and hide if necessary
+        $cssclass = '';
+        if (!$subcat->visible) {
+            $subcatcontext = get_context_instance(CONTEXT_COURSECAT, $subcat->id);
+            if (!has_capability('moodle/category:viewhiddencategories', $subcatcontext)) {
+                continue;
+            }
+            $cssclass = 'class="dimmed"';
+        }
 
         if ($numdisplayed < $numbertoshow) {
-            $out .= '<li><a href="category.php?id='.$subcat->id.'">'.format_string($subcat->name).' ('.
+            $out .= '<li><a '.$cssclass.' href="category.php?id='.$subcat->id.'">'.format_string($subcat->name).' ('.
                 $subcat->itemcount.')</a></li>';
             $numdisplayed++;
         } else {
@@ -3907,16 +3925,11 @@ function course_cmp_by_count($a, $b) {
 function print_category($category, $highlightterms) {
     global $CFG;
 
-    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
-
-    $category_icon = new coursecategory_icon();
-
     $catlinkcss = $category->visible ? '' : ' class="dimmed" ';
 
     echo '<div class="coursebox clearfix">';
     echo '<div class="info">';
     echo '<div class="name">';
-    echo $category_icon->display($category, 'small');
     echo "<a {$catlinkcss} href=\"{$CFG->wwwroot}/course/index.php?highlightid={$category->id}#category{$category->id}\">";
     echo highlight($highlightterms, format_string($category->name));
     echo '</a>';
@@ -3941,6 +3954,9 @@ function get_category_breadcrumbs($categoryid) {
     global $CFG;
 
     $category = get_record('course_categories', 'id', $categoryid);
+    if (strpos($category->path, '/') === false) {
+        return array();
+    }
     $bread = explode('/', $category->path);
     $bread_ids = substr(implode(',', $bread), 1);
     $sql = "SELECT id, name FROM {$CFG->prefix}course_categories WHERE id IN ({$bread_ids}) ORDER BY depth";

@@ -57,7 +57,9 @@ function print_dates($dates, $includebookings, $includegrades=false, $includesta
         print '<td><a href="'.$courselink.$date->courseid.'">'.format_string($date->coursename).'</a></td>';
 
         print '<td><a href="'.$facetofacelink.$date->facetofaceid.'">'.format_string($date->name).'</a></td>';
-        print '<td>'.format_string($date->location).'</td>';
+
+        $location = isset($date->location) ? $date->location : '';
+        print '<td>'.format_string($location).'</td>';
         print '<td>';
         foreach ($date->alldates as $sessiondate) {
             print userdate($sessiondate->timestart, '%d %B %Y').'<br />';

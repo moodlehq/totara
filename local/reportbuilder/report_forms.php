@@ -266,6 +266,17 @@ class report_builder_edit_filters_form extends moodleform {
         $mform->addElement('hidden','source',$report->source);
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
+
+        // remove the labels from the form elements
+        $renderer =& $mform->defaultRenderer();
+        $select_elementtemplate = '<div class="fitem"><div class="felement fselectgroups">{element}</div></div>';
+        $check_elementtemplate = '<div class="fitem"><div class="felement fcheckbox">{element}</div></div>';
+        $renderer->setElementTemplate($select_elementtemplate, 'newfilter' . $index);
+        $renderer->setElementTemplate($check_elementtemplate, 'newadvanced' . $index);
+        foreach ($filters as $index => $unused) {
+            $renderer->setElementTemplate($select_elementtemplate, 'filter' . $index);
+            $renderer->setElementTemplate($check_elementtemplate, 'advanced' . $index);
+        }
     }
 
     function validation($data) {
@@ -304,7 +315,7 @@ class report_builder_edit_columns_form extends moodleform {
 
 
             $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('column','local_reportbuilder').
-                '</th><th>'.get_string('heading','local_reportbuilder').'</th><th>'.get_string('options','local_reportbuilder').'</th><tr>');
+                '</th><th colspan="2">'.get_string('customiseheading','local_reportbuilder').'</th><th>'.get_string('options','local_reportbuilder').'</th><tr>');
 
             $columnsselect = $report->get_columns_select();
             $columnoptions = array();
@@ -320,15 +331,19 @@ class report_builder_edit_columns_form extends moodleform {
                         $type = $column->type;
                         $value = $column->value;
                         $field = "{$column->type}-{$column->value}";
-                        $heading = $column->heading;
                         $cid = $index;
                         $mform->addElement('html','<tr colid="'.$cid.'"><td>');
                         $mform->addElement('selectgroups',"column{$cid}",'',$columnsselect, array('class' => 'column_selector'));
                         $mform->setDefault("column{$cid}", $field);
                         $mform->addElement('html','</td><td>');
-                        $mform->addElement('text',"heading{$cid}",'');
+
+                        $mform->addElement('advcheckbox', "customheading{$cid}", '', '', array('class' => 'column_custom_heading_checkbox', 'group' => 0), array(0,1));
+                        $mform->setDefault("customheading{$cid}", $column->customheading);
+
+                        $mform->addElement('html','</td><td>');
+                        $mform->addElement('text',"heading{$cid}",'','class="column_heading_text"');
                         $mform->setType("heading{$cid}", PARAM_TEXT);
-                        $mform->setDefault("heading{$cid}",$heading);
+                        $mform->setDefault("heading{$cid}",$column->heading);
                         $mform->addElement('html','</td><td>');
                         // show/hide link
                         if($column->hidden == 0) {
@@ -382,7 +397,11 @@ class report_builder_edit_columns_form extends moodleform {
             unset($cleanednewcolselect);
             $mform->addElement('selectgroups','newcolumns','',$newcolumnsselect, array('class' => 'column_selector new_column_selector'));
             $mform->addElement('html','</td><td>');
-            $mform->addElement('text','newheading','');
+            $mform->addElement('advcheckbox', "newcustomheading", '', '', array('id' => 'id_newcustomheading', 'class' => 'column_custom_heading_checkbox', 'group' => 0), array(0,1));
+            $mform->setDefault("newcustomheading", 0);
+            $mform->addElement('html','</td><td>');
+
+            $mform->addElement('text','newheading','','class="column_heading_text"');
             $mform->setType('newheading', PARAM_TEXT);
             // do manually as disabledIf doesn't play nicely with using JS to update heading values
             // $mform->disabledIf('newheading','newcolumns', 'eq', 0);
@@ -444,6 +463,20 @@ class report_builder_edit_columns_form extends moodleform {
         $mform->addElement('hidden','source',$report->source);
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
+
+        // remove the labels from the form elements
+        $renderer =& $mform->defaultRenderer();
+        $select_elementtemplate = '<div class="fitem"><div class="felement fselectgroups">{element}</div></div>';
+        $check_elementtemplate = '<div class="fitem"><div class="felement fcheckbox">{element}</div></div>';
+        $text_elementtemplate = '<div class="fitem"><div class="felement ftext">{element}</div></div>';
+        $renderer->setElementTemplate($select_elementtemplate, 'newcolumns' . $index);
+        $renderer->setElementTemplate($check_elementtemplate, 'newcustomheading' . $index);
+        $renderer->setElementTemplate($text_elementtemplate, 'newheading' . $index);
+        foreach ($columns as $index => $unused) {
+            $renderer->setElementTemplate($select_elementtemplate, 'column' . $index);
+            $renderer->setElementTemplate($check_elementtemplate, 'customheading' . $index);
+            $renderer->setElementTemplate($text_elementtemplate, 'heading' . $index);
+        }
     }
 
 

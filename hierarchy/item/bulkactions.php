@@ -109,12 +109,15 @@ if ($count_selected_items > 0 && $soffset >= $count_selected_items) {
     $soffset = $spage * HIERARCHY_BULK_SELECTED_PER_PAGE;
 }
 
-
 // display the selected items, including any children they have
-if ($selected_items = get_records_sql("SELECT o.id, o.fullname, count(oo.id) AS children
-    FROM {$CFG->prefix}org o LEFT JOIN {$CFG->prefix}org oo ON oo.path LIKE o.path||'/%'
-    WHERE " . sql_sequence('o.id', $all_selected_item_ids) . "GROUP BY o.id, o.fullname",
-    $soffset, HIERARCHY_BULK_SELECTED_PER_PAGE)) {
+$sql = "SELECT h.id, h.fullname, count(hh.id) AS children
+    FROM {$CFG->prefix}{$shortprefix} h
+    LEFT JOIN {$CFG->prefix}{$shortprefix} hh
+    ON hh.path LIKE " . sql_concat('h.path', "'/%'") . "
+    WHERE " . sql_sequence('h.id', $all_selected_item_ids) . "
+    GROUP BY h.id, h.fullname, h.sortthread
+    ORDER BY h.sortthread";
+if ($selected_items = get_records_sql($sql, $soffset, HIERARCHY_BULK_SELECTED_PER_PAGE)) {
 
     $displayed_selected_items = array();
     foreach ($selected_items as $id => $item) {
@@ -132,10 +135,8 @@ if ($selected_items = get_records_sql("SELECT o.id, o.fullname, count(oo.id) AS 
     $displayed_selected_items = array();
 }
 
-
-
 $available_items = get_records_select($shortprefix,
-    'frameworkid='.$frameworkid . $searchquery, 'sortorder', 'id,fullname,depthlevel',
+    'frameworkid='.$frameworkid . $searchquery, 'sortthread', 'id,fullname,depthlevel',
     $aoffset, HIERARCHY_BULK_AVAILABLE_PER_PAGE);
 $available_items = ($available_items) ?
     $available_items : array();
@@ -174,7 +175,7 @@ if ($confirmdelete) {
     $status = true;
     $deleted = array();
     foreach ($unique_ids as $item_to_delete) {
-        if ($hierarchy->delete_framework_item($item_to_delete)) {
+        if ($hierarchy->delete_hierarchy_item($item_to_delete)) {
             $deleted[] = $item_to_delete;
         } else {
             $status = false;
@@ -223,7 +224,7 @@ if ($confirmmove && $newparent !== false) {
     begin_sql();
     if ($items_to_move = get_records_select($shortprefix, sql_sequence('id', $unique_ids))) {
         foreach ($items_to_move as $item_to_move) {
-            $status = $status && $hierarchy->move_hierarchy_item($item_to_move, $newparent, false);
+            $status = $status && $hierarchy->move_hierarchy_item($item_to_move, $frameworkid, $newparent, false);
         }
     }
 
@@ -301,7 +302,7 @@ if ($mform->is_cancelled()) {
     // add all
     if (isset($formdata->add_all_items)) {
         if ($all_records = get_records($shortprefix, 'frameworkid', $frameworkid,
-            'sortorder', 'id')) {
+            'sortthread', 'id')) {
 
             $SESSION->hierarchy_bulk_items[$action][$prefix][$frameworkid] =
                 array_keys($all_records);
@@ -321,13 +322,17 @@ if ($mform->is_cancelled()) {
 
     // delete button - confirm step
     if (isset($formdata->deletebutton)) {
-        admin_externalpage_print_header('', $navlinks);
         $unique_ids = $hierarchy->get_items_excluding_children($all_selected_item_ids);
 
-        $strdelete = $hierarchy->get_delete_message($unique_ids);
-        notice_yesno($strdelete,
-                 "{$formurl}&amp;confirmdelete=1&amp;sesskey={$USER->sesskey}",
-                 $formurl);
+        if ((count($unique_ids) > 0)) {
+            admin_externalpage_print_header('', $navlinks);
+            $strdelete = $hierarchy->get_delete_message($unique_ids);
+            notice_yesno($strdelete,
+                "{$formurl}&amp;confirmdelete=1&amp;sesskey={$USER->sesskey}",
+                $formurl);
+        } else {
+            totara_set_notification(get_string('error:noitemsselected', 'hierarchy'), $formurl);
+        }
 
         print_footer();
         exit;
@@ -336,6 +341,11 @@ if ($mform->is_cancelled()) {
     // move button - confirm step
     if (isset($formdata->movebutton) && isset($formdata->newparent)) {
         $unique_ids = $hierarchy->get_items_excluding_children($all_selected_item_ids);
+
+        if (count($unique_ids) <= 0) {
+            totara_set_notification(get_string('error:noitemsselected', 'hierarchy'), $formurl);
+        }
+
         $invalidmove = false;
 
         if ($formdata->newparent != 0) {

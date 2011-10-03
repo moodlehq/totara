@@ -24,7 +24,7 @@
 
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot.'/local/dialogs/dialog_content_competency_linkedcourses.class.php');
 require_once("{$CFG->dirroot}/local/program/lib.php");
 
 require_login();
@@ -55,8 +55,8 @@ require_capability('local/program:configurecontent', program_get_context($id));
 /// Setup dialog
 ///
 
-// Load dialog content generator; skip access, since it's checked above
-$dialog = new totara_dialog_content_hierarchy('competency', $frameworkid, $skipaccesschecks=true);
+// Load dialog content generator
+$dialog = new totara_dialog_content_competency_linkedcourses($frameworkid);
 
 // Toggle treeview only display
 $dialog->show_treeview_only = $treeonly;

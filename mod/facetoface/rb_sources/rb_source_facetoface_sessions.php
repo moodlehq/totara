@@ -1,5 +1,6 @@
 <?php
 
+
 class rb_source_facetoface_sessions extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
@@ -16,6 +17,15 @@ class rb_source_facetoface_sessions extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_facetoface_sessions');
+
+        //Adding custom fields
+        $this->add_custom_position_fields($this->joinlist,
+                                          $this->columnoptions,
+                                          $this->filteroptions);
+        $this->add_custom_organisation_fields($this->joinlist,
+                                              $this->columnoptions,
+                                              $this->filteroptions);
+
         parent::__construct();
     }
 
@@ -27,6 +37,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
 
     function define_joinlist() {
         global $CFG;
+        require_once($CFG->dirroot .'/mod/facetoface/lib.php');
 
         // joinlist for this source
         $joinlist = array(
@@ -72,6 +83,15 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'attendees.sessionid = base.sessionid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
+            new rb_join(
+                'cancellationstatus',
+                'LEFT',
+                $CFG->prefix . 'facetoface_signups_status',
+                '(cancellationstatus.signupid = base.id AND
+                    cancellationstatus.superceded = 0 AND
+                    cancellationstatus.statuscode = '.MDL_F2F_STATUS_USER_CANCELLED.')',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            )
         );
 
 
@@ -189,6 +209,20 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 get_string('sessfinish', 'rb_source_facetoface_sessions'),
                 'sessiondate.timefinish',
                 array('joins' => 'sessiondate', 'displayfunc' => 'nice_time')
+            ),
+            new rb_column_option(
+                'session',
+                'cancellationdate',
+                get_string('cancellationdate', 'rb_source_facetoface_sessions'),
+                'cancellationstatus.timecreated',
+                array('joins' => 'cancellationstatus', 'displayfunc' => 'nice_datetime')
+            ),
+            new rb_column_option(
+                'session',
+                'cancellationreason',
+                get_string('cancellationreason', 'rb_source_facetoface_sessions'),
+                'cancellationstatus.note',
+                array('joins' => 'cancellationstatus')
             ),
         );
 

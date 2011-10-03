@@ -32,7 +32,7 @@ $(document).ready(function() {
 var rb_init_filter_rows = function() {
 
     // handle changes to the 'Add another filter...' selector
-    $('select.new_filter_selector').change(function() {
+    $('select.new_filter_selector').bind('change', function() {
         var addbutton = rb_init_addbutton($(this));
         var selectedval = $(this).val();
 
@@ -64,12 +64,13 @@ var rb_init_addbutton = function(filterselector) {
 
     // Add save button to options
     optionsbox.prepend(addbutton);
-    addbutton.click(function(e) {
+    addbutton.unbind('click');
+    addbutton.bind('click', function(e) {
         e.preventDefault();
         $.ajax({
             url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/filter.php'; ?>",
             type: "POST",
-            data: ({action: 'add', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, filter: filterselector.val(), advanced: advancedCheck.is(':checked')}),
+            data: ({action: 'add', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, filter: filterselector.val(), advanced: Number(advancedCheck.is(':checked'))}),
             beforeSend: function() {
                 addbutton.html('<img src="<?php echo "{$CFG->pixpath}/i/ajaxloader.gif"; ?>" alt="Saving..." class="iconsmall" />');
             },
@@ -131,7 +132,8 @@ var rb_init_addbutton = function(filterselector) {
 
 
 var rb_init_deletebuttons = function() {
-    $('.reportbuilderform table .deletefilterbtn').click(function(e) {
+    $('.reportbuilderform table .deletefilterbtn').unbind('click');
+    $('.reportbuilderform table .deletefilterbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -207,7 +209,8 @@ var rb_init_deletebuttons = function() {
 }
 
 var rb_init_movedown_btns = function() {
-    $('.reportbuilderform table .movefilterdownbtn').click(function(e) {
+    $('.reportbuilderform table .movefilterdownbtn').unbind('click');
+    $('.reportbuilderform table .movefilterdownbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -269,7 +272,8 @@ var rb_init_movedown_btns = function() {
 
 
 var rb_init_moveup_btns = function() {
-    $('.reportbuilderform table .movefilterupbtn').click(function(e) {
+    $('.reportbuilderform table .movefilterupbtn').unbind('click');
+    $('.reportbuilderform table .movefilterupbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 

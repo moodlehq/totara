@@ -338,13 +338,6 @@ global $HTTPSPAGEREQUIRED;
         @ini_set('log_errors', '1');
     }
 
-// Setup Totara specific exception handler to trigger
-// moodle's error() function
-    function moodle_exception_handler($exception) {
-        error(get_class($exception).': '.$exception->getMessage());
-    }
-    set_exception_handler('moodle_exception_handler');
-
 /// Shared-Memory cache init -- will set $MCACHE
 /// $MCACHE is a global object that offers at least add(), set() and delete()
 /// with similar semantics to the memcached PHP API http://php.net/memcache

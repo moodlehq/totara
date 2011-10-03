@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 /*
  * Unit tests to check source column definitions
@@ -29,8 +29,10 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+set_time_limit(0);
 require_once($CFG->dirroot . '/local/reportbuilder/lib.php');
 require_once($CFG->libdir . '/simpletestlib.php');
+set_time_limit(0);
 
 class columns_test extends prefix_changing_test_case {
     // test data for database
@@ -45,8 +47,8 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $reportbuilder_columns_data = array(
-        array('id', 'reportid', 'type', 'value', 'heading', 'sortorder', 'hidden'),
-        array(1, 1, 'user', 'namelink', 'Participant', 1, 0),
+        array('id', 'reportid', 'type', 'value', 'heading', 'sortorder', 'hidden', 'customheading'),
+        array(1, 1, 'user', 'namelink', 'Participant', 1, 0, 0),
     );
 
     var $reportbuilder_filters_data = array(
@@ -92,13 +94,13 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $org_data = array(
-        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortorder', 'visible', 'timecreated', 'timemodified', 'usermodified'),
-        array(1, 'District Office', 'DO', '', '', 1, '/1', 1, 0, 1, 1, 0, 0, 2),
+        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortthread', 'visible', 'timecreated', 'timemodified', 'usermodified', 'typeid'),
+        array(1, 'District Office', 'DO', '', '', 1, '/1', 1, 0, '01', 1, 0, 0, 2, 1),
     );
 
     var $pos_data = array(
-        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortorder', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified'),
-        array(1, 'Data Analyst', 'Data Analyst', '', '', 1, '/1', 1, 0, 1, 1, 0, 0, 0, 0, 2),
+        array('id', 'fullname', 'shortname', 'idnumber', 'description', 'frameworkid', 'path', 'depthlevel', 'parentid', 'sortthread', 'visible', 'timevalidfrom', 'timevalidto', 'timecreated', 'timemodified', 'usermodified', 'typeid'),
+        array(1, 'Data Analyst', 'Data Analyst', '', '', 1, '/1', 1, 0, '01', 1, 0, 0, 0, 0, 2, 1),
     );
 
     var $comp_scale_values_data = array(
@@ -108,7 +110,7 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of user table
     var $user_data = array(
-        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt', 'lastlogin', 'phone1', 'institution', 'department', 'address', 'city', 'country'),
+        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt', 'currentlogin', 'phone1', 'institution', 'department', 'address', 'city', 'country'),
         array(2, 'admin', 'Admin', 'User', 'ID2', 0, 'alt', 0, 'phone', 'institution', 'department', 'address', 'city', 'nz'),
     );
 
@@ -192,6 +194,18 @@ class columns_test extends prefix_changing_test_case {
         array(1, 'Misc', 0, 1,'icon.gif',1),
     );
 
+    // partial grade_items table
+    var $grade_items_data = array(
+        array('id', 'courseid', 'itemtype'),
+        array(1, 1, 'course'),
+    );
+
+    // partial grade_grades table
+    var $grade_grades_data = array(
+        array('id', 'itemid', 'userid', 'finalgrade'),
+        array(1, 1, 2, 80),
+    );
+
     // competency test data
 
     var $framework_data = array(
@@ -204,25 +218,25 @@ class columns_test extends prefix_changing_test_case {
     var $type_data = array(
         array('id', 'fullname', 'shortname', 'description', 'timecreated', 'timemodified',
             'usermodified'),
-        array(1, 'Depth Level 1', 'Depth 1', 'Description 1', 1265963591, 1265963591, 2),
-        array(2, 'Depth Level 2', 'Depth 2', 'Description 2', 1265963591, 1265963591, 2),
-        array(3, 'F2 Depth Level 1', 'F2 Depth 1', 'F2 Description 1', 1265963591, 1265963591, 2),
+        array(1, 'Hierarchy Type 1', 'Type 1', 'Description 1', 1265963591, 1265963591, 2),
+        array(2, 'Hierarchy Type 2', 'Type 2', 'Description 2', 1265963591, 1265963591, 2),
+        array(3, 'F2 Hierarchy Type 1', 'F2 Type 1', 'F2 Description 1', 1265963591, 1265963591, 2),
     );
 
     var $competency_data = array(
         array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthlevel', 'parentid',
-            'sortorder', 'visible', 'aggregationmethod', 'scaleid', 'proficencyexpected', 'evidencecount', 'timecreated',
-            'timemodified', 'usermodified'),
-        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 1, 0, 1, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
-        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 2, 1, 2, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
-        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 1, 0, 1, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
-        array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 2, 1, 3, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
-        array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 1, 0, 4, 1, 1, -1, 1, 0,
-            1265963591, 1265963591, 2),
+            'sortthread', 'visible', 'aggregationmethod', 'scaleid', 'proficencyexpected', 'evidencecount', 'timecreated',
+            'timemodified', 'usermodified', 'typeid'),
+        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 1, 0, '01', 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2, 1),
+        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 2, 1, '01.01', 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2, 2),
+        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 1, 0, '01', 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2, 1),
+        array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 2, 1, '01.02', 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2, 2),
+        array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 1, 0, '02', 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2, 1),
     );
 
     var $type_field_data = array(
@@ -269,8 +283,8 @@ class columns_test extends prefix_changing_test_case {
 
     // partial f2f table
     var $f2f_signup_status_data = array(
-        array('id', 'signupid', 'statuscode', 'superceded', 'grade'),
-        array(1, 1, 70, 0, 100),
+        array('id', 'signupid', 'statuscode', 'superceded', 'grade', 'note', 'timecreated'),
+        array(1, 1, 70, 0, 100, 'test note', 1205445539),
     );
 
     // partial f2f table
@@ -387,6 +401,65 @@ class columns_test extends prefix_changing_test_case {
         array(1, 1, 'competency', 1, 'course'),
     );
 
+    var $cohort_data = array(
+        array('id', 'name'),
+        array(1, 'cohort'),
+    );
+
+    var $cohort_members_data = array(
+        array('id', 'cohortid', 'userid'),
+        array(1, 1, 1),
+    );
+
+    var $prog_data = array(
+        array('id', 'category', 'fullname', 'shortname', 'idnumber', 'icon'),
+        array(1, 1, 'program', 'prog', '123', 'default.png'),
+    );
+
+    var $prog_completion_data = array(
+        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timedue'),
+        array(2, 1, 1, 0, 1, 1205445539),
+    );
+
+    var $prog_completion_history_data = array(
+        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timestarted', 'timedue', 'timecompleted', 'recurringcourseid'),
+        array(2, 1, 1, 0, 1, 1205445539, 1205445539, 1205445539, 1),
+    );
+
+    var $prog_user_assignment_data = array(
+        array('id', 'programid', 'userid'),
+        array(1, 1, 1),
+    );
+
+    var $pos_type_info_data_data = array(
+        array('id', 'fieldid', 'positionid', 'data'),
+        array(1, 1, 1, 'test'),
+    );
+
+    var $org_type_info_data_data = array(
+        array('id', 'fieldid', 'organisationid', 'data'),
+        array(1, 1, 1, 'test'),
+    );
+
+    var $pos_type_info_field_data = array(
+        array('id', 'fullname', 'shortname', 'datatype', 'description',
+            'sortorder', 'categoryid', 'hidden', 'locked', 'required',
+            'forceunique', 'defaultdata', 'param1', 'param2', 'param3',
+            'param4', 'param5'),
+        array(1, 'Field Name', 'Field', 'text', 'Description', 1, 1, 0, 0,
+            0, 0, 'default', 'text', 'text', 'text', 'text', 'text'),
+    );
+
+    var $org_type_info_field_data = array(
+        array('id', 'fullname', 'shortname', 'datatype', 'description',
+            'sortorder', 'categoryid', 'hidden', 'locked', 'required',
+            'forceunique', 'defaultdata', 'param1', 'param2', 'param3',
+            'param4', 'param5'),
+        array(1, 'Field Name', 'Field', 'text', 'Description', 1, 1, 0, 0,
+            0, 0, 'default', 'text', 'text', 'text', 'text', 'text'),
+    );
+
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -412,6 +485,8 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'log', $this->log_data, $db);
         load_test_table($CFG->prefix . 'course', $this->course_data, $db);
         load_test_table($CFG->prefix . 'course_categories', $this->course_categories_data, $db);
+        load_test_table($CFG->prefix . 'grade_items', $this->grade_items_data, $db);
+        load_test_table($CFG->prefix . 'grade_grades', $this->grade_grades_data, $db);
         load_test_table($CFG->prefix . 'comp_framework', $this->framework_data, $db);
         load_test_table($CFG->prefix . 'comp_type', $this->type_data, $db);
         load_test_table($CFG->prefix . 'comp', $this->competency_data, $db);
@@ -458,6 +533,18 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'dp_plan_objective', $this->dp_plan_objective_data, $db);
         load_test_table($CFG->prefix . 'dp_objective_scale_value', $this->dp_objective_scale_value_data, $db);
         load_test_table($CFG->prefix . 'dp_plan_component_relation', $this->dp_plan_component_relation_data, $db);
+        load_test_table($CFG->prefix . 'cohort', $this->cohort_data, $db);
+        load_test_table($CFG->prefix . 'cohort_members', $this->cohort_members_data, $db);
+        load_test_table($CFG->prefix . 'prog', $this->prog_data, $db);
+        load_test_table($CFG->prefix . 'prog_completion', $this->prog_completion_data, $db);
+        load_test_table($CFG->prefix . 'prog_completion_history', $this->prog_completion_history_data, $db);
+        load_test_table($CFG->prefix . 'prog_user_assignment', $this->prog_user_assignment_data, $db);
+        load_test_table($CFG->prefix . 'pos_type_info_field', $this->pos_type_info_field_data, $db);
+        load_test_table($CFG->prefix . 'org_type_info_field', $this->org_type_info_field_data, $db);
+        load_test_table($CFG->prefix . 'pos_type_info_data', $this->pos_type_info_data_data, $db);
+        load_test_table($CFG->prefix . 'org_type_info_data', $this->org_type_info_data_data, $db);
+        load_test_table($CFG->prefix . 'org_type', $this->type_data, $db);
+        load_test_table($CFG->prefix . 'pos_type', $this->type_data, $db);
 
         // get rid of dummy records
         delete_records('report_builder_group');
@@ -502,6 +589,8 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'comp', $db);
         remove_test_table($CFG->prefix . 'comp_type', $db);
         remove_test_table($CFG->prefix . 'comp_framework', $db);
+        remove_test_table($CFG->prefix . 'grade_grades', $db);
+        remove_test_table($CFG->prefix . 'grade_items', $db);
         remove_test_table($CFG->prefix . 'course_categories', $db);
         remove_test_table($CFG->prefix . 'course', $db);
         remove_test_table($CFG->prefix . 'log', $db);
@@ -536,6 +625,18 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'dp_template', $db);
         remove_test_table($CFG->prefix . 'dp_objective_scale_value', $db);
         remove_test_table($CFG->prefix . 'dp_plan_component_relation', $db);
+        remove_test_table($CFG->prefix . 'cohort', $db);
+        remove_test_table($CFG->prefix . 'cohort_members', $db);
+        remove_test_table($CFG->prefix . 'prog', $db);
+        remove_test_table($CFG->prefix . 'prog_completion', $db);
+        remove_test_table($CFG->prefix . 'prog_completion_history', $db);
+        remove_test_table($CFG->prefix . 'prog_user_assignment', $db);
+        remove_test_table($CFG->prefix . 'pos_type_info_field', $db);
+        remove_test_table($CFG->prefix . 'org_type_info_field', $db);
+        remove_test_table($CFG->prefix . 'pos_type_info_data', $db);
+        remove_test_table($CFG->prefix . 'org_type_info_data', $db);
+        remove_test_table($CFG->prefix . 'pos_type', $db);
+        remove_test_table($CFG->prefix . 'org_type', $db);
         parent::tearDown();
     }
 

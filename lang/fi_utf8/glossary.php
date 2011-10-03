@@ -1,4 +1,7 @@
-<?PHP // $Id$
+<?PHP // $Id$ 
+      // glossary.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+
+
 $string['addcomment'] = 'Lisää kommentti';
 $string['addentry'] = 'Lisää uusi tietue';
 $string['addingcomment'] = 'Lisää kommentti';
@@ -9,6 +12,7 @@ $string['allowcomments'] = 'Salli tietueiden kommentit';
 $string['allowduplicatedentries'] = 'Päällekkäiset tietueet sallitaan';
 $string['allowprintview'] = 'Salli tulostusnäkymä';
 $string['allowratings'] = 'Salli tietueiden arviointi';
+$string['andmorenewentries'] = 'ja {$a} uutta merkintää.';
 $string['answer'] = 'Vastaus';
 $string['approve'] = 'Vahvista';
 $string['areyousuredelete'] = 'Haluatko todella poistaa tämän tietueen?';
@@ -16,12 +20,14 @@ $string['areyousuredeletecomment'] = 'Haluatko todella poistaa tämän kommentin
 $string['areyousureexport'] = 'Haluatko todella viedä tämän tietueen ->';
 $string['ascending'] = '(nouseva)';
 $string['attachment'] = 'Liite';
+$string['author'] = 'tekijä';
 $string['authorview'] = 'Selaa kirjoittajan mukaan';
 $string['back'] = 'Takaisin';
 $string['cantinsertcat'] = 'Kategoriaa ei voi lisätä';
 $string['cantinsertrec'] = 'Tietuetta ei voi lisätä';
 $string['cantinsertrel'] = 'Relaatiota kategoriaan ei voi lisätä';
 $string['casesensitive'] = 'Tämän tietueen kirjainkoko on merkityksellinen (\"case sensitive\")';
+$string['cat'] = 'cat';
 $string['categories'] = 'Kategoriat';
 $string['category'] = 'Kategoria';
 $string['categorydeleted'] = 'Kategoria poistettu';
@@ -51,8 +57,13 @@ $string['concepts'] = 'Käsitteet';
 $string['configenablerssfeeds'] = 'Tämä mahdollistaa RSS-syötteiden lähettämisen kaikista sanastoista. Sinun pitää vielä erikseen kytkeä syötteet päälle jokaisesta sanastosta.';
 $string['current'] = 'Nykyinen järjestys $a';
 $string['currentglossary'] = 'Nykyinen sanasto';
+$string['date'] = 'päivämäärä';
 $string['dateview'] = 'Selaa päivämäärien mukaan';
 $string['defaultapproval'] = 'Oletustila hyväksymiselle';
+$string['defaulthook'] = 'Oletuskoukku';
+$string['defaultmode'] = 'Oletustila';
+$string['defaultsortkey'] = 'Oletusluokitteluavain';
+$string['defaultsortorder'] = 'Oletusjärjestys';
 $string['definition'] = 'Määritelmä';
 $string['definitions'] = 'Määritelmät';
 $string['deleteentry'] = 'Poista tietue';
@@ -101,6 +112,7 @@ $string['explainimport'] = 'Määritä tuontitiedosto ja tuonnin asetukset.';
 $string['explainspecial'] = 'Näyttää tietueet, jotka eivät ala kirjaimella';
 $string['exportedentry'] = 'Viety tietue';
 $string['exportentries'] = 'Vie tietueet';
+$string['exportentriestoxml'] = 'Vie merkinnät xml-muotoon';
 $string['exportfile'] = 'Vie tietueet tiedostoksi';
 $string['exportglossary'] = 'Vie sanasto';
 $string['exporttomainglossary'] = 'Vie pääsanastoon';
@@ -127,7 +139,10 @@ $string['importedcategories'] = 'Tuodut kategoriat';
 $string['importedentries'] = 'Tuodut tietueet';
 $string['importentries'] = 'Tuo tietueita';
 $string['importentriesfromxml'] = 'Tuo tietueita XML-tiedostosta';
+$string['includegroupbreaks'] = 'Ota mukaan ryhmän siirrot';
+$string['invalidrate'] = 'Kelpaamaton sanaston luokitus ($a)';
 $string['isglobal'] = 'Globaali sanasto?';
+$string['letter'] = 'letter';
 $string['linkcategory'] = 'Linkitä tämä kategoria automaattisesti';
 $string['linking'] = 'Automaattinen linkitys';
 $string['mainglossary'] = 'Pääsanasto';
@@ -146,6 +161,7 @@ $string['noentry'] = 'Hakusanoja ei löytynyt.';
 $string['notcategorised'] = 'Kategorisoimaton';
 $string['numberofentries'] = 'Hakusanojen lukumäärä';
 $string['onebyline'] = '(yksi riviä kohden)';
+$string['popupformat'] = 'Popup';
 $string['printerfriendly'] = 'Tulostukseen soveltuva versio';
 $string['printviewnotallowed'] = 'Tulostusnäkymä ei ole sallittu';
 $string['question'] = 'Kysymys';
@@ -184,4 +200,5 @@ $string['withauthor'] = 'Käsitteet kirjoittajineen';
 $string['withoutauthor'] = 'Käsitteet ilman kirjoittajaa';
 $string['writtenby'] = 'kirjoittanut';
 $string['youarenottheauthor'] = 'Et ole kommentin kirjoittaja, joten et voi muokata sitä.';
+
 ?>

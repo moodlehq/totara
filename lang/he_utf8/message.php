@@ -1,5 +1,5 @@
-<?PHP // $Id$
-      // message.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
+<?PHP // $Id$ 
+      // message.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
 
 
 $string['addcontact'] = 'הוסף איש קשר';
@@ -7,7 +7,7 @@ $string['addsomecontacts'] = 'כדי לשלוח מסר למישהו, או כדי
 $string['addsomecontactsincoming'] = 'מסרים אלה הן מאנשים שלא נמצאים ברשימת אנשי הקשר שלך. כדי להוסיף אותם לאנשי הקשר שלך לחץ על הסמל \"הוסף איש קשר\" שנמצא ליד השם שלהם.';
 $string['ago'] = 'לפני $a';
 $string['allmine'] = 'כל המסרים אלי או ממני.';
-$string['allstudents'] = 'כל המסרים בין התלמידים בקורס.';
+$string['allstudents'] = 'כל ההודעות בין המשתתפים בקורס.';
 $string['allusers'] = 'כל המסרים מכל המשתמשים.';
 $string['backupmessageshelp'] = 'אם אפשרות זו מופעלת, אז המסרים יכללו בגיבויים האוטומטיים של האתר.';
 $string['beepnewmessage'] = 'צפצף כאשר מתקבל מסר חדש (יכול להיות שיידרש התקן תקע בדפדפף שיכול להשמיע צלילים כמו Quicktime).';
@@ -18,6 +18,7 @@ $string['contactlistempty'] = 'נכון לרגע זה רשימת אנשי הקש
 $string['contacts'] = 'אנשי קשר';
 $string['context'] = 'הקשר';
 $string['deletemessagesdays'] = 'מספר הימים שלאחריהם מסרים ישנים נמחקו.';
+$string['disabled'] = 'שליחת הודעות מנוטרלת כעת';
 $string['discussion'] = 'דיון.';
 $string['emailmessages'] = 'שלח לי מסרים בדוא\"ל כשאני לא מקוון.';
 $string['emailtagline'] = 'הודעת דוא\"ל זו היא העתק של המסר שנשלח אליך ב-\"$a\".';
@@ -41,10 +42,10 @@ $string['noframesjs'] = 'גירסה ללא מסגרות או JavaScript';
 $string['nomessages'] = 'אין מסרים ממתינים';
 $string['nomessagesfound'] = 'לא נמצאו מסרים';
 $string['nosearchresults'] = 'לחיפוש שלך לא היו תוצאות';
-$string['offline'] = 'לא מקוון';
-$string['offlinecontacts'] = 'אנשי קשר לא מקוונים ($a)';
-$string['online'] = 'מקוון';
-$string['onlinecontacts'] = 'אנשי קשר מקוונים ($a)';
+$string['offline'] = 'לא מחובר';
+$string['offlinecontacts'] = 'אנשי קשר לא מחוברים ($a)';
+$string['online'] = 'מחוברים';
+$string['onlinecontacts'] = 'אנשי קשר מחוברים ($a)';
 $string['onlyfromme'] = 'רק מסרים ממני';
 $string['onlymycourses'] = 'רק בקורסים שלי';
 $string['onlytome'] = 'רק מסרים אלי';
@@ -62,26 +63,12 @@ $string['settings'] = 'הגדרות';
 $string['settingssaved'] = 'ההגדרות שלך נשמרו';
 $string['showmessagewindow'] = 'הראה אוטומטית את חלון המסר בכל פעם שאני מקבל מסר חדש (עליך להגדיר את הדפדפן שלך כך שהוא לא יחסום \'חלונות קופצים\' באתר זה.)';
 $string['strftimedaydatetime'] = '%%A, %%d %%B %%Y, %%I:%%M %%p';
-$string['timenosee'] = 'דקות מאז הפעם האחרונה שנראתי מקוון.';
+$string['timenosee'] = 'דקות מאז הפעם האחרונה שנראתי מחובר.';
 $string['timesent'] = 'זמן השליחה';
 $string['unblockcontact'] = 'בטל את החסימה של איש הקשר';
 $string['unreadmessages'] = '$a מסרים שלא נקראו';
 $string['userisblockingyou'] = 'משתמש זה חסם אותך, ולכן אינך יכול לשלוח אליו מסרים.';
 $string['userisblockingyounoncontact'] = 'משתמש זה מקבל את המסרים של האנשים שרשומים אצלו כאנשי קשר בלבד, ונכון לרגע זה אתה לא נמצא ברשימה.';
 $string['userssearchresults'] = 'תוצאות החיפוש: נמצאו $a משתמשים.';
-
-?>
-<?PHP // $Id$
-      // message.php - created with Moodle 1.9.5+ (Build: 20090624) (2007101550)
-
-
-
-$string['allstudents'] = 'כל ההודעות בין המשתתפים בקורס.';
-$string['offline'] = 'לא מחובר';
-$string['offlinecontacts'] = 'אנשי קשר לא מחוברים ($a)';
-$string['online'] = 'מחוברים';
-$string['onlinecontacts'] = 'אנשי קשר מחוברים ($a)';
-$string['onlymycourses'] = 'רק בקורסים שלי';
-$string['timenosee'] = 'דקות מאז הפעם האחרונה שנראתי מחובר.';
 
 ?>

@@ -1,0 +1,68 @@
+<!--
+A FAZER:  Atualizar quando mudar a qualificação de acessibilidade.
+ARQUIVO:  lang/en_utf8/docs/accessibility.html
+NOTAS:    links embutidos no código devem ser editados ou feito um "script".
+          Pode ter que ser editado para instalações do Moodle locais.
+-->
+
+<h1>Acessibilidade</h1>
+
+<h2>Declaração de Acessibilidade</h2>
+
+<p>Esta instalação foi verificada em uma variedade de navegadores e com programas de leitura de tela.</p>
+
+<p>O Moodle usa uma marcação semântica para ajudar os usuário de leitores de tela,
+   dentre outros: instalação, páginas e cabeçalhos usam &lt;h1&gt;, &lt;h2&gt;, blocos de navegação são
+   listas &lt;ul&gt; e assim por diante.</p>
+
+<p>O Moodle segue o [<a href="http://www.w3.org/TR/WCAG10/" title="Guia de Acessibilidade
+   a Conteúdos na Rede 1.0">Guia de Acessibilidade a Conteúdos na Rede 1.0</a>] do
+   Consórcio Word Wide Web, nível 1, a maioria nível 2
+   [<a href="http://www.w3.org/WAI/WCAG1AA-Conformance" title="Conformidade Duplo A">
+   Conformidade Duplo A</a>] e alguns nível 3.</p>
+
+<p>Este guia procura atender à legislação local relativa ao acesso para pessoas com deficiências.
+   No momento estamos trabalhando para melhorar a acessibilidade e usabilidade do Moodle.
+   Existem ainda algumas tabelas usadas para a formatação, mas em geral a apresentação
+   é separada do conteúdo (usando folhas de estilo, CSS).</p>
+
+<p>Comentários e sugestões são bem-vindos, particularmente informar sobre qualquer conteúdo
+   inacessível.
+   Por favor [<a href="./message/discussion.php?id=2">envie mensagem para o administrador</a>].
+   </p>
+
+<h2>Chaves de Acesso</h2>
+
+<p>No momento não implementamos chaves de acesso, mas elas estão previstas para uma próxima
+   versão do Moodle.</p>
+
+<h2>Links</h2>
+
+<p>Há um link antes de cada bloco lateral que permite aos usuários de leitores de tela
+   salterem o bloco. Note que este link fica oculto nos navegadores gráficos.</p>
+
+<p>Muitos links tem atributos de título que o descrevem em mais detalhes, a menos que o
+   texto do link já descreva completamente para onde aponta (por exemplo, o cabeçalho
+   de um artigo). Se um link tem uma chave de acesso isto será anunciado no título do
+   link.</p>
+
+<p>Sempre que possível, os links são escritos para serem entendidos fora do contexto.
+   Não há "pseudo-links" javascript. </p>
+
+<h2>Imagens</h2>
+
+<p>Todas as imagens usam o atributo alt para prover textos alternativos onde for apropriado.
+   Imagens que são puramente decorativas têm o atributo alt vazio. Imagens que apresentam
+   informações complexas, como os mapas, tem um atributo longdesc associando-as a um texto
+   que descreve o contéudo da imagem.</p>
+
+<h2>Conformidade com Padrões</h2>
+
+<p>Este ambiente é construído usando <acronym title="Extensible Hyper-Text Markup
+   Language">XHTML</acronym> válido para marcação e usa CSS para apresentação.</p>
+
+<p style="text-align:center">
+  <a href="http://validator.w3.org/check?verbose=1&amp;ss=1&amp;uri=<?php echo $CFG->wwwroot; ?>" title="Use a validação do W3C">Validar o HTML</a> 
+| <a href="http://www.contentquality.com/mynewtester/cynthia.exe?rptmode=-1&amp;url1=<?php echo $CFG->wwwroot; ?>" title="Verificar com Cynthia">Verificação da Seção 508</a> 
+| <a href="http://www.contentquality.com/mynewtester/cynthia.exe?rptmode=0&amp;warnp2n3e=1&amp;url1=<?php echo $CFG->wwwroot; ?>" title="Verificar com Cynthia">Verificar WCAG 1 (2,3)</a>
+</p>

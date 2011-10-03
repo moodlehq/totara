@@ -47,8 +47,7 @@ class totara_dialog_linked_competencies_content_competencies extends totara_dial
         $sql = "
             SELECT
                 dppca.id AS id,
-                c.fullname AS fullname,
-                c.sortorder AS sortorder
+                c.fullname AS fullname
             FROM
                 {$CFG->prefix}dp_plan_competency_assign dppca
             INNER JOIN

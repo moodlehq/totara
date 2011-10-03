@@ -243,6 +243,30 @@
                     notify("Could not delete the $mod->modulename from that section");
                 }
 
+                // Delete completion criteria
+                if ($criteria_id = get_field('course_completion_criteria', 'id', 'criteriatype', COMPLETION_CRITERIA_TYPE_ACTIVITY, 'moduleinstance', $mod->coursemodule)) {
+
+                    // Delete records from mdl_course_completion_criteria
+                    if (!delete_records('course_completion_criteria', 'id', $criteria_id)) {
+                        notify("Could not delete completion criteria");
+                    }
+                    // Delete records from mdl_course_completion_crit_compl
+                    if (!delete_records('course_completion_crit_compl', 'criteriaid', $criteria_id)) {
+                        notify("Could not delete completion_crit_compl record");
+                    }
+
+                    // Update reaggragate date for all completion records for the course
+                    $now = time();
+
+                    $sql = "UPDATE {$CFG->prefix}course_completions
+                        SET reaggregate={$now}
+                        WHERE course={$course->id}";
+                    if (!execute_sql($sql, false)) {
+                        notify("Could not update reaggegation dates");
+                    }
+                }
+
+
                 unset($SESSION->returnpage);
 
                 add_to_log($course->id, "course", "delete mod",

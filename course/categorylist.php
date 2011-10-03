@@ -4,7 +4,6 @@
     require_once("../config.php");
     require_once("lib.php");
     require_once($CFG->dirroot."/local/program/lib.php"); // required to display lists of programs
-    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
 
     $categoryedit = optional_param('categoryedit', -1, PARAM_BOOL);
     $viewtype = optional_param('viewtype', '', PARAM_TEXT);
@@ -40,8 +39,6 @@
 
     // determine how to display this page
     $adminediting = !empty($USER->categoryedit);
-
-    $category_icon = new coursecategory_icon();
 
 /// Print headings
     $numcategories = count_records('course_categories');
@@ -83,9 +80,11 @@
     if ($SESSION->viewtype == 'course') {
         $strheading = get_string('courses');
         $stralllink = get_string('viewallcourses');
+        $strnoitems = get_string('therearenocoursestodisplay');
     } else {
         $strheading = get_string('programs', 'local_program');
         $stralllink = get_string('viewallprograms', 'local_program');
+        $strnoitems = get_string('therearenoprogramstodisplay', 'local_program');
     }
 
     print_heading($strheading, '', 1);
@@ -110,11 +109,10 @@
     }
 
     print_totara_search('', false, $SESSION->viewtype, 0);
-    echo '<p><a href="'. $CFG->wwwroot . '/course/search.php?category=0&amp;viewtype='.$SESSION->viewtype.'&amp;search=">'.$stralllink.'</a></p>';
 
-    $topcats = get_records('course_categories', 'parent', 0);
+    $topcats = get_records('course_categories', 'parent', 0, 'sortorder');
 
-    $secondarycats = get_records_select('course_categories', 'parent IN ('.implode(',', array_keys($topcats)).')');
+    $secondarycats = get_records_select('course_categories', 'parent IN ('.implode(',', array_keys($topcats)).')', 'sortorder');
 
     $top_item_counts = get_category_item_count(array_keys($topcats), ($SESSION->viewtype != 'program'));
     if ($secondarycats) {
@@ -123,7 +121,6 @@
         $secondary_item_counts = 0;
     }
 
-    print_heading(get_string('browsebycategory'), '', 3);
 
 /// Print out all the top-level categories
     if ($topcats) {
@@ -140,7 +137,7 @@
         $colwidth = floor(100 / $numcols) . '%';
         $table->define_columns($columns);
         $table->define_headers($headers);
-        $table->set_attribute('class', 'nostripes boxaligncenter fullwidth');
+        $table->set_attribute('class', 'nostripes boxaligncenter fullwidth categorylisting');
         $table->column_style_all('width', $colwidth);
         $table->setup();
         $tablerow = array();
@@ -160,15 +157,22 @@
                 }
 
                 $tablerow[] = '<h3><a '.$catlinkcss.' href="category.php?id='.$topcat->id.'">'.
-                    $category_icon->display($topcat, 'small') .format_string($topcat->name).' ('.$item_count.')</a></h3>' .
-                        print_main_subcategories($topcat->id, $secondarycats, $secondary_item_counts, $adminediting);
+                    format_string($topcat->name).' ('.$item_count.')</a></h3>' .
+                    print_main_subcategories($topcat->id, $secondarycats, $secondary_item_counts, $adminediting);
             }
         }
         // output the last row
         if (count($tablerow) > 0) {
             $table->add_data($tablerow);
         }
-        $table->print_html();
+        if (!empty($table->data)) {
+            echo '<p><a href="'. $CFG->wwwroot . '/course/search.php?category=0&amp;viewtype='.$SESSION->viewtype.'&amp;search=">'.$stralllink.'</a></p>';
+            print_heading(get_string('browsebycategory'), '', 3);
+            $table->print_html();
+        } else {
+            echo '<p>' . $strnoitems . '</p>';
+
+        }
     }
 
     echo '<div class="buttons">';

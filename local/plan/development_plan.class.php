@@ -819,10 +819,10 @@ class development_plan {
     /**
      * Given a pair of id/component pairs, returns them in a correctly sorted array
      *
-     * @param string $component1 Component name of the first item
-     * @param integer $itemid1 Assignment ID of the first item
-     * @param string $component2 Component name of the second item
-     * @param integer $itemid2 Assignment ID of the second item
+     * @param   string  $component1     Component name of the first item
+     * @param   int     $itemid1        Assignment ID of the first item
+     * @param   string  $component2     Component name of the second item
+     * @param   int     $itemid2        Assignment ID of the second item
      *
      * @return array or false Array of arrays containing the items sorted by component name in the form:
      *  array(
@@ -871,36 +871,52 @@ class development_plan {
      *
      * This method checks if the relation is already set and returns the existing relations ID if found
      *
-     * @param string $component1 Component name of the first item
-     * @param integer $itemid1 Assignment ID of the first item
-     * @param string $component2 Component name of the second item
-     * @param integer $itemid2 Assignment ID of the second item
+     * @param   string  $component1     Component name of the first item
+     * @param   int     $itemid1        Assignment ID of the first item
+     * @param   string  $component2     Component name of the second item
+     * @param   int     $itemid2        Assignment ID of the second item
+     * @param   string  $mandatory      Which, if any component is mandatory? (optional)
      *
      * @return integer or false ID of the new relation, or the existing relation, or false on failure
      */
-    function add_component_relation($component1, $itemid1, $component2, $itemid2) {
+    function add_component_relation($component1, $itemid1, $component2, $itemid2, $mandatory = '') {
         $items = $this->get_relation_array($component1, $itemid1, $component2, $itemid2);
-        // couldn't generate items, probably because item 1 and item 2 have same component type
-        if($items === false) {
+
+        // Couldn't generate items, probably because item 1 and item 2 have same component type
+        if ($items === false) {
             return false;
         }
 
-        // see if the relation already exists
-        $existingid = get_field_select('dp_plan_component_relation', 'id',
-            "itemid1={$items[0]['id']} AND component1='{$items[0]['component']}'
-            AND itemid2={$items[1]['id']} AND component2='{$items[1]['component']}'");
-        if($existingid) {
-            // relation already exists, return the relation ID
-            return $existingid;
+        // See if the relation already exists
+        $existingrelation = get_record_select(
+            'dp_plan_component_relation',
+            "
+                itemid1 = {$items[0]['id']}
+            AND component1 = '{$items[0]['component']}'
+            AND itemid2 = {$items[1]['id']}
+            AND component2 = '{$items[1]['component']}'
+        ");
+
+        // Relation already exists and mandatory value hasn't changed, return the relation ID
+        if ($existingrelation && $existingrelation->mandatory == $mandatory) {
+            return $existingrelation->id;
         }
 
-        // otherwise create the relation, returning the new ID
+        // Otherwise create/update the relation, returning the new ID
         $todb = new object();
         $todb->itemid1 = $items[0]['id'];
         $todb->component1 = $items[0]['component'];
         $todb->itemid2 = $items[1]['id'];
         $todb->component2 = $items[1]['component'];
-        return insert_record('dp_plan_component_relation', $todb);
+        $todb->mandatory = $mandatory;
+
+        // If there but diff mandatory, update
+        if ($existingrelation) {
+            $todb->id = $existingrelation->id;
+            return update_record('dp_plan_component_relation', $todb);
+        } else {
+            return insert_record('dp_plan_component_relation', $todb);
+        }
     }
 
 
@@ -1046,22 +1062,12 @@ class development_plan {
      * @return string
      */
     function display_pending_items($pendinglist=null) {
-        global $CFG;
+        global $CFG, $DP_AVAILABLE_COMPONENTS;
 
         // If this is the pending review page, do not show list of items
         if ($this->reviewing_pending) {
             return '';
         }
-
-        $canapprovecourses = ($this->get_component('course')->get_setting('updatecourse')
-            == DP_PERMISSION_APPROVE);
-        $canapprovecompetencies = ($this->get_component('competency')->get_setting('updatecompetency')
-            == DP_PERMISSION_APPROVE);
-        $canapproveobjectives = ($this->get_component('objective')->get_setting('updateobjective')
-            == DP_PERMISSION_APPROVE);
-        $coursesenabled = $this->get_component('course')->get_setting('enabled');
-        $competenciesenabled = $this->get_component('competency')->get_setting('enabled');
-        $objectivesenabled = $this->get_component('objective')->get_setting('enabled');
 
         // get the pending items, if it hasn't been passed to the method
         if(!isset($pendinglist)) {
@@ -1071,57 +1077,36 @@ class development_plan {
         $list = '';
         $listcount = 0;
         $itemscount = 0;
-        if ($coursesenabled && !empty($pendinglist['course'])) {
-            $component = $this->get_component('course');
-            $a = new object();
-            $a->planid = $this->id;
-            $a->number = count($pendinglist['course']);
-            $itemscount += $a->number;
-            $a->component = 'course';
-            $name = $a->component;
-            // determine plurality
-            $langkey = $name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
-            $a->link = $component->get_url();
-            $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
-            $listcount++;
+
+        $approval = false;
+
+        foreach($DP_AVAILABLE_COMPONENTS as $componentname) {
+            if (!$component = $this->get_component($componentname)) {
+                continue;
+            }
+
+            $canapprove = $component->get_setting('update'.$component->component) == DP_PERMISSION_APPROVE;
+            $enabled = $component->get_setting('enabled');
+
+            if ($enabled && !empty($pendinglist[$component->component])) {
+                $a = new object();
+                $a->planid = $this->id;
+                $a->number = count($pendinglist[$component->component]);
+                $itemscount += $a->number;
+                $a->component = $component->component;
+                $name = $a->component;
+                // determine plurality
+                $langkey = $name . ($a->number > 1 ? 'plural' : '');
+                $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
+                $a->link = $component->get_url();
+                $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
+                $listcount++;
+            }
+            $approval = $approval || $canapprove;
         }
 
-        if ($competenciesenabled && !empty($pendinglist['competency'])) {
-            $component = $this->get_component('competency');
-            $a = new object();
-            $a->planid = $this->id;
-            $a->number = count($pendinglist['competency']);
-            $itemscount += $a->number;
-            $a->component = 'competency';
-            $name = $a->component;
-            // determine plurality
-            $langkey = $name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
-            $a->link = $component->get_url();
-            $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
-            $listcount++;
-        }
+        $descriptor = $approval ? 'thefollowingitemsrequireyourapproval' : 'thefollowingitemsarepending';
 
-        if ($objectivesenabled && !empty($pendinglist['objective'])) {
-            $component = $this->get_component('objective');
-            $a = new object();
-            $a->planid = $this->id;
-            $a->number = count($pendinglist['objective']);
-            $itemscount += $a->number;
-            $a->component = 'objective';
-            $name = $a->component;
-            // determine plurality
-            $langkey = $name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
-            $a->link = $component->get_url();
-            $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
-            $listcount++;
-        }
-        // @todo add evidence when tables exist
-
-        $descriptor = ($canapprovecourses || $canapprovecompetencies || $canapproveobjectives) ?
-        'thefollowingitemsrequireyourapproval' : 'thefollowingitemsarepending';
         // only print if there are pending items
         $out = '';
         if($listcount) {
@@ -1131,7 +1116,6 @@ class development_plan {
         }
 
         return $out;
-
     }
 
 
@@ -1708,10 +1692,11 @@ class development_plan {
     /**
      * Reactivates a completed plan
      *
+     * @param  int $enddate When reactivating a plan a new enddate for the plan can be optionally set
      * @access public
      * @return bool
      */
-    public function reactivate_plan() {
+    public function reactivate_plan($enddate=null) {
         global $USER;
 
         begin_sql();
@@ -1719,6 +1704,10 @@ class development_plan {
         $plan_todb = new stdClass;
         $plan_todb->id = $this->id;
         $plan_todb->timecompleted = null;
+        if (!empty($enddate)) {
+            $plan_todb->enddate = $enddate;
+        }
+
         if (!update_record('dp_plan', $plan_todb)) {
             rollback_sql();
             return false;

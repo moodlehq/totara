@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -158,10 +158,11 @@ abstract class rb_base_source {
      * @param string $type The type of the column option to use
      * @param string $value The value of the column option to use
      * @param string $heading Heading for the new column
+     * @param boolean $customheading True if the heading has been customised
      * @return object A new rb_column object with details copied from this
      *                rb_column_option
      */
-    function new_column_from_option($type, $value, $heading=null, $hidden=0) {
+    function new_column_from_option($type, $value, $heading=null, $customheading = true, $hidden=0) {
         $columnoptions = $this->columnoptions;
         $joinlist = $this->joinlist;
         if($coloption =
@@ -180,6 +181,7 @@ abstract class rb_base_source {
                 $heading = ($coloption->defaultheading !== null) ?
                     $coloption->defaultheading : $coloption->name;
             }
+
             return new rb_column(
                 $type,
                 $value,
@@ -196,6 +198,7 @@ abstract class rb_base_source {
                     'nosort' => $coloption->nosort,
                     'style' => $coloption->style,
                     'hidden' => $hidden,
+                    'customheading' => $customheading,
                 )
             );
         } else {
@@ -420,6 +423,7 @@ abstract class rb_base_source {
     function rb_display_link_course($course, $row) {
         global $CFG;
         $courseid = $row->course_id;
+        $course = format_string($course);
         $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
         return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
     }
@@ -430,14 +434,16 @@ abstract class rb_base_source {
         global $CFG;
         $courseid = $row->course_id;
         $courseicon = $row->course_icon;
-        return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
+        $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
+        $course = format_string($course);
+        return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
     }
 
     // display an icon based on the course icon field
     function rb_display_course_icon($icon, $row) {
         global $CFG;
         $courseid = $row->course_id;
-        $coursename = $row->course_name;
+        $coursename = format_string($row->course_name);
         return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($icon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\" />";
     }
 
@@ -469,23 +475,12 @@ abstract class rb_base_source {
     function rb_display_link_course_category($category, $row) {
         global $CFG;
         $catid = $row->cat_id;
+        $category = format_string($category);
         if($catid == 0 || !$catid) {
             return '';
         }
         $cssclass = (isset($row->cat_visible) && $row->cat_visible == 0) ? ' class="dimmed"' : '';
         return "<a $cssclass href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\">{$category}</a>";
-    }
-
-    // convert a course name into a link to that course and shows
-    // the course icon next to it
-    function rb_display_link_course_category_icon($category, $row) {
-        global $CFG;
-        $catid = $row->cat_id;
-        $caticon = $row->cat_icon;
-        if($catid == 0 || !$catid) {
-            return '';
-        }
-        return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($caticon)."&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\" />{$category}</a>";
     }
 
 
@@ -509,6 +504,7 @@ abstract class rb_base_source {
             return $planname;
         }
 
+        $planname = format_string($planname);
         return "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$row->plan_id}\">$planname</a>";
     }
 
@@ -616,7 +612,7 @@ abstract class rb_base_source {
         $out = array();
         if($mods = get_records('modules', 'visible', 1, 'id', 'id,name')) {
             foreach($mods as $mod) {
-                $modname = get_string('modulename', $mod->name);
+                $modname = get_string('modulename', format_string($mod->name));
                 $icon = '/mod/' . $mod->name . '/icon.gif';
                 if(file_exists($CFG->dirroot . $icon)) {
                     $out[$mod->name] = '<img src="'. $CFG->wwwroot .
@@ -709,6 +705,42 @@ abstract class rb_base_source {
         make_categories_list($cats, $unused);
 
         return $cats;
+    }
+
+
+    function rb_filter_competency_type_list() {
+        global $CFG;
+        require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+
+        $competencyhierarchy = new competency();
+        $unclassified_option = array(0 => get_string('unclassified', 'hierarchy'));
+        $typelist = $unclassified_option + $competencyhierarchy->get_types_list();
+
+        return $typelist;
+    }
+
+
+    function rb_filter_position_type_list() {
+        global $CFG;
+        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+
+        $positionhierarchy = new position();
+        $unclassified_option = array(0 => get_string('unclassified', 'hierarchy'));
+        $typelist = $unclassified_option + $positionhierarchy->get_types_list();
+
+        return $typelist;
+    }
+
+
+    function rb_filter_organisation_type_list() {
+        global $CFG;
+        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
+
+        $organisationhierarchy = new organisation();
+        $unclassified_option = array(0 => get_string('unclassified', 'hierarchy'));
+        $typelist = $unclassified_option + $organisationhierarchy->get_types_list();
+
+        return $typelist;
     }
 
     //
@@ -869,7 +901,8 @@ abstract class rb_base_source {
             'user',
             'lastlogin',
             get_string('userlastlogin', 'local_reportbuilder'),
-            "$join.lastlogin",
+            // See MDL-22481 for why currentlogin is used instead of lastlogin
+            "$join.currentlogin",
             array(
                 'joins' => $join,
                 'displayfunc' => 'nice_date',
@@ -1392,22 +1425,6 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
                 'course_category',
-                'namelinkicon',
-                get_string('coursecategorylinkedicon', 'local_reportbuilder'),
-                "$catjoin.name",
-                array(
-                    'joins' => $catjoin,
-                    'displayfunc' => 'link_course_category_icon',
-                    'defaultheading' => get_string('category', 'local_reportbuilder'),
-                    'extrafields' => array(
-                        'cat_id' => "$catjoin.id",
-                        'cat_icon' => "$catjoin.icon",
-                        'cat_visible' => "$catjoin.visible"
-                    )
-                )
-        );
-        $columnoptions[] = new rb_column_option(
-                'course_category',
                 'id',
                 get_string('coursecategoryid', 'local_reportbuilder'),
                 "$coursejoin.category",
@@ -1486,6 +1503,24 @@ abstract class rb_base_source {
             'position_assignment'
         );
 
+        $joinlist[] = new rb_join(
+                'pos_type',
+                'LEFT',
+                $CFG->prefix . 'pos_type',
+                'position.typeid = pos_type.id',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'position'
+        );
+
+        $joinlist[] = new rb_join(
+                'org_type',
+                'LEFT',
+                $CFG->prefix . 'org_type',
+                'organisation.typeid = org_type.id',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'organisation'
+        );
+
         return true;
     }
 
@@ -1530,6 +1565,22 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'user',
+            'org_type',
+            get_string('organisationtype', 'local_reportbuilder'),
+            'org_type.fullname',
+            array(
+                'joins' => 'org_type'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'org_type_id',
+            get_string('organisationtypeid', 'local_reportbuilder'),
+            'organisation.typeid',
+            array('joins' => $org)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
             'positionid',
             get_string('usersposid', 'local_reportbuilder'),
             "$posassign.positionid",
@@ -1547,6 +1598,22 @@ abstract class rb_base_source {
             'position',
             get_string('userspos', 'local_reportbuilder'),
             "$pos.fullname",
+            array('joins' => $pos)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'pos_type',
+            get_string('positiontype', 'local_reportbuilder'),
+            'pos_type.fullname',
+            array(
+                'joins' => 'pos_type'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'pos_type_id',
+            get_string('positiontypeid', 'local_reportbuilder'),
+            'position.typeid',
             array('joins' => $pos)
         );
         $columnoptions[] = new rb_column_option(
@@ -1607,9 +1674,192 @@ abstract class rb_base_source {
             get_string('participantscurrentpos', 'local_reportbuilder'),
             'pos'
         );
+        $filteroptions[] = new rb_filter_option(
+                'user',
+                'pos_type_id',
+                get_string('positiontype', 'local_reportbuilder'),
+                'select',
+                array(
+                    'selectfunc' => 'position_type_list',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                )
+        );
+        $filteroptions[] = new rb_filter_option(
+                'user',
+                'org_type_id',
+                get_string('organisationtype', 'local_reportbuilder'),
+                'select',
+                array(
+                    'selectfunc' => 'organisation_type_list',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                )
+        );
+
         return true;
     }
 
+    /**
+     * Converts a list to an array given a list and a separator
+     * duplicate values are ignored
+     *
+     * @param string $list List of items
+     * @param string $sep Symbol or string that separates list items
+     * @return array $result array of list items
+     */
+    function list_to_array($list, $sep) {
+        $result = array();
+        $base = explode($sep, $list);
+        if (!empty($base)) {
+            $result = array_combine($base, $base);
+        }
+        return $result;
+    }
+
+    /**
+     * Generic function for adding custom hierarchy fields to the reports
+     * Intentionally optimized into one function to reduce number of db queries
+     *
+     * @param string $cf_prefix - prefix for custom field table e.g. everything before '_info_field' or '_info_data'
+     * @param string $join - join table in joinlist used as a link to main query
+     * @param string $joinfield - joinfield in data table used to link with main table
+     * @param array $joinlist - array of joins passed by reference
+     * @param array $columnoptions - array of columnoptions, passed by reference
+     * @param array $filteroptions - array of filters, passed by reference
+     */
+    protected function add_custom_fields_for($cf_prefix, $join, $joinfield,
+        array &$joinlist, array &$columnoptions, array &$filteroptions){
+
+        global $CFG;
+
+        $seek = false;
+        foreach ($joinlist as $object) {
+            $seek = ($object->name == $join);
+            if ($seek) {
+                break;
+            }
+        }
+        if (!$seek) {
+            throw new ReportBuilderException("Missing dependency table in joinlist: {$join}!");
+        }
+
+        // build the table names for this sort of custom field data
+        $fieldtable = $cf_prefix.'_info_field';
+        $datatable = $cf_prefix.'_info_data';
+
+        // check if there are any visible custom fields of this type
+        $items = get_recordset($fieldtable,'hidden','0');
+        if (empty($items)) {
+            return false;
+        }
+
+        $selfunc = rb_filter_option::select_width_limiter();
+        foreach ($items as $record) {
+            $id   = $record['id'];
+            $joinname = "{$cf_prefix}_{$id}";
+            $value = "custom_field_{$id}";
+            $name = $record['fullname'];
+            $column_options = array('joins' => $joinname);
+            $datatype = 'text';
+            $filter_options = array();
+
+            if ($record['datatype'] == 'menu') {
+                $datatype = 'simpleselect';
+                $filter_options['selectchoices'] = $this->list_to_array($record['param1'],"\n");
+                $filter_options['selectoptions'] = array('datatype' => 'text');
+            }
+
+            if ($record['datatype'] == 'checkbox') {
+                $datatype = 'simpleselect';
+                $filter_options['selectchoices'] = array(0 => get_string('no'), 1 => get_string('yes'));
+                $filter_options['selectoptions'] = array('datatype' => 'text');
+                $column_options['displayfunc'  ] = 'yes_no';
+            }
+
+            $joinlist[] = new rb_join($joinname,
+                                      'LEFT',
+                                      $CFG->prefix.$datatable,
+                                      "{$joinname}.{$joinfield} = {$join}.id AND {$joinname}.fieldid = {$id}",
+                                      REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                                      $join
+                                      );
+            $columnoptions[] = new rb_column_option($cf_prefix,
+                                                     $value,
+                                                     $name,
+                                                     "{$joinname}.data",
+                                                     $column_options
+                                                     );
+            $filteroptions[] = new rb_filter_option( $cf_prefix,
+                                                     $value,
+                                                     $name,
+                                                     $datatype,
+                                                     $filter_options
+                                                     );
+
+        }
+
+
+        return true;
+
+    }
+
+    /**
+     *
+     * Add's custom organisation fields to the report
+     *
+     * @param array $joinlist
+     * @param array $columnoptions
+     * @param array $filteroptions
+     * @return boolean
+     */
+    protected function add_custom_organisation_fields(array &$joinlist, array &$columnoptions,
+        array &$filteroptions) {
+        return $this->add_custom_fields_for('org_type',
+                                            'organisation',
+                                            'organisationid',
+                                            $joinlist,
+                                            $columnoptions,
+                                            $filteroptions);
+    }
+
+    /**
+     *
+     * Add's custom position fields to the report
+     *
+     * @param array $joinlist
+     * @param array $columnoptions
+     * @param array $filteroptions
+     * @return boolean
+     */
+    protected function add_custom_position_fields(array &$joinlist, array &$columnoptions,
+        array &$filteroptions) {
+        return $this->add_custom_fields_for('pos_type',
+                                            'position',
+                                            'positionid',
+                                            $joinlist,
+                                            $columnoptions,
+                                            $filteroptions);
+
+    }
+
+    /**
+     *
+     * Add's custom competency fields to the report
+     *
+     * @param array $joinlist
+     * @param array $columnoptions
+     * @param array $filteroptions
+     * @return boolean
+     */
+    protected function add_custom_competency_fields(array &$joinlist, array &$columnoptions,
+        array &$filteroptions) {
+        return $this->add_custom_fields_for('comp_type',
+                                            'competency',
+                                            'competencyid',
+                                            $joinlist,
+                                            $columnoptions,
+                                            $filteroptions);
+
+    }
 
     /**
      * Adds the manager_role_assignment and manager tables to the $joinlist

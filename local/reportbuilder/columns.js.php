@@ -32,32 +32,58 @@ $(document).ready(function() {
 var rb_init_col_rows = function() {
     // disable the new column heading field on page load
     $('#id_newheading').attr('disabled', true);
+    $('#id_newcustomheading').attr('disabled', true);
 
-    // handle changes to the column pulldowns
-    $('select.column_selector').change(function() {
-        var changedSelector = $(this).val();
-        var newContent = rb_column_headings[changedSelector];
-        $(this).parents('td')  // find the containing td tag
-            .next('td')        // get the next sibling (contains textbox)
-            .find('input')     // get the heading input field
-            .val(newContent);  // insert new content
-
+    // disable uncustomised headers on page load
+    $('input.column_custom_heading_checkbox').not(':checked').each(function() {
+        var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
+        textElement.attr('disabled', true);
     });
 
-    // handle changes to the 'Add another column...' selector
-    $('select.new_column_selector').change(function() {
-        var newHeadingBox = $(this).closest('td').next('td').find('input');
-        var addbutton = rb_init_addbutton($(this));
-        var selectedval = $(this).val();
+    // handle changes to the column pulldowns
+    $('select.column_selector').unbind('change');
+    $('select.column_selector').bind('change', function() {
+        var changedSelector = $(this).val();
+        var newContent = rb_column_headings[changedSelector];
+        var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
 
-        if(selectedval == 0) {
-            // clean out the selections
+        textElement.val(newContent);  // insert new content
+    });
+
+    // handle changes to the customise checkbox
+    // use click instead of change event for IE
+    $('input.column_custom_heading_checkbox').unbind('click');
+    $('input.column_custom_heading_checkbox').bind('click', function() {
+        var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
+        if ($(this).is(':checked')) {
+            // enable the textbox when checkbox isn't checked
+            textElement.attr('disabled', false);
+        } else {
+            // disable the textbox when checkbox is checked
+            // and reset text contents back to default
+            var changedSelector = $('select.column_selector', $(this).parents('tr:first')).val();
+            var newContent = rb_column_headings[changedSelector];
+            textElement.val(newContent);
+            textElement.attr('disabled', true);
+        }
+    });
+
+
+    // special case for the 'Add another column...' selector
+    $('select.new_column_selector').bind('change', function() {
+        var newHeadingBox = $('input.column_heading_text', $(this).parents('tr:first'));
+        var newCheckBox = $('input.column_custom_heading_checkbox', $(this).parents('tr:first'));
+        var addbutton = rb_init_addbutton($(this));
+        if($(this).val() == 0) {
+            // empty and disable the new heading box if no column chosen
             newHeadingBox.val('');
             newHeadingBox.attr('disabled', true);
             addbutton.remove();
+            newCheckBox.removeAttr('checked');
+            newCheckBox.attr('disabled', true);
         } else {
             // reenable it (binding above will fill the value)
-            newHeadingBox.attr('disabled', false);
+            newCheckBox.attr('disabled', false);
         }
     });
 
@@ -76,8 +102,8 @@ var rb_init_col_rows = function() {
 };
 
 var rb_init_addbutton = function(colselector) {
-    var newHeadingBox = colselector.closest('td').next('td').find('input');
-    var optionsbox = newHeadingBox.closest('td').next('td');
+    var newHeadingBox = $('input.column_heading_text', colselector.parents('tr:first'));
+    var optionsbox = $('td:last', newHeadingBox.parents('tr:first'));
     var newcolinput = colselector.closest('tr').clone();  // clone of current 'Add new col...' tr
     var addbutton = optionsbox.find('.addcolbtn');
     if (addbutton.length == 0) {
@@ -89,7 +115,8 @@ var rb_init_addbutton = function(colselector) {
 
     // Add save button to options
     optionsbox.prepend(addbutton);
-    addbutton.click(function(e) {
+    addbutton.unbind('click');
+    addbutton.bind('click', function(e) {
         e.preventDefault();
         $.ajax({
             url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/column.php'; ?>",
@@ -116,11 +143,17 @@ var rb_init_addbutton = function(colselector) {
                     optionsbox.prepend(hidebutton, deletebutton, upbutton);
 
                     // Set row atts
-                    $('select.column_selector').removeClass('new_column_selector');
-                    var columnbox = optionsbox.prev('td').prev('td');
-                    columnbox.find('select.column_selector').attr('name', 'column'+colid);
-                    columnbox.find('select.column_selector').attr('id', 'id_column'+colid);
+                    var columnbox = $('td:first', optionsbox.parents('tr:first'));
+                    var columnSelector = $('select.column_selector', columnbox);
+                    var newCustomHeading = $('input.column_custom_heading_checkbox', optionsbox.parents('tr:first'));
+                    columnSelector.removeClass('new_column_selector');
+                    columnSelector.attr('name', 'column'+colid);
+                    columnSelector.attr('id', 'id_column'+colid);
                     columnbox.find('select optgroup[label=New]').remove();
+
+                    newCustomHeading.attr('name', 'customheading'+colid);
+                    newCustomHeading.removeAttr('id');
+
                     newHeadingBox.attr('name', 'heading'+colid);
                     newHeadingBox.attr('id', 'id_heading'+colid);
                     newHeadingBox.closest('tr').attr('colid', colid);
@@ -164,7 +197,8 @@ var rb_init_addbutton = function(colselector) {
 
 
 var rb_init_deletebuttons = function() {
-    $('.reportbuilderform table .deletecolbtn').click(function(e) {
+    $('.reportbuilderform table .deletecolbtn').unbind('click');
+    $('.reportbuilderform table .deletecolbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -245,7 +279,8 @@ var rb_init_deletebuttons = function() {
 }
 
 var rb_init_hidebuttons = function() {
-    $('.reportbuilderform table .hidecolbtn').click(function(e) {
+    $('.reportbuilderform table .hidecolbtn').unbind('click');
+    $('.reportbuilderform table .hidecolbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -284,7 +319,8 @@ var rb_init_hidebuttons = function() {
 };
 
 var rb_init_showbuttons = function() {
-    $('.reportbuilderform table .showcolbtn').click(function(e) {
+    $('.reportbuilderform table .showcolbtn').unbind('click');
+    $('.reportbuilderform table .showcolbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -324,7 +360,8 @@ var rb_init_showbuttons = function() {
 }
 
 var rb_init_movedown_btns = function() {
-    $('.reportbuilderform table .movecoldownbtn').click(function(e) {
+    $('.reportbuilderform table .movecoldownbtn').unbind('click');
+    $('.reportbuilderform table .movecoldownbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -386,7 +423,8 @@ var rb_init_movedown_btns = function() {
 
 
 var rb_init_moveup_btns = function() {
-    $('.reportbuilderform table .movecolupbtn').click(function(e) {
+    $('.reportbuilderform table .movecolupbtn').unbind('click');
+    $('.reportbuilderform table .movecolupbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 

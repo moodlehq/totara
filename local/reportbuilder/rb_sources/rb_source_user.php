@@ -3,13 +3,13 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 1999 onwards Martin Dougiamas
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,7 +20,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -49,12 +49,21 @@ class rb_source_user extends rb_base_source {
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
         $this->contentoptions = $this->define_contentoptions();
-        $this->paramoptions = array();
+        $this->paramoptions = $this->define_paramoptions();
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = array();
         $this->staff_f2f = get_field('report_builder', 'id', 'shortname', 'staff_facetoface_sessions');
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_user');
+
+        //Adding custom fields
+        $this->add_custom_position_fields($this->joinlist,
+                                          $this->columnoptions,
+                                          $this->filteroptions);
+        $this->add_custom_organisation_fields($this->joinlist,
+                                              $this->columnoptions,
+                                              $this->filteroptions);
+
         parent::__construct();
     }
 
@@ -325,10 +334,15 @@ class rb_source_user extends rb_base_source {
         $picuser->lastname = $row->userpic_lastname;
         $user_pic = print_user_picture($picuser, 1, null, null, true);
 
-        $rol_link = "<a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}\">Records</a>";
-        $plan_link = "<a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">Plans</a>";
-        $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">Profile</a>";
-        $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">Bookings</a>";
+        $recordstr = get_string('records', 'rb_source_user');
+        $planstr = get_string('plans', 'rb_source_user');
+        $profilestr = get_string('profile', 'rb_source_user');
+        $bookingstr = get_string('bookings', 'rb_source_user');
+
+        $rol_link = "<a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}\">{$recordstr}</a>";
+        $plan_link = "<a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">{$planstr}</a>";
+        $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$profilestr}</a>";
+        $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">{$bookingstr}</a>";
 
         $show_plan_link = dp_can_view_users_plans($userid);
 
@@ -345,6 +359,16 @@ class rb_source_user extends rb_base_source {
         return $result ? $result : 0;
     }
 
+    function define_paramoptions() {
+        $paramoptions = array(
+            new rb_param_option(
+                'deleted',
+                'base.deleted'
+            ),
+        );
+
+        return $paramoptions;
+    }
 }
 
 // end of rb_source_user class

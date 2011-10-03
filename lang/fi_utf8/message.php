@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// message.php - created with Totara langimport script version 1.0
+
 $string['addcontact'] = 'Lisää kontakti';
 $string['addsomecontacts'] = 'Käytä <a href=\"$a\">hakutoimintoa</a> lähettääksesi viestin jollekin, tai lisätäksesi heidät tälle sivulle.';
 $string['addsomecontactsincoming'] = 'Nämä viestit ovat henkilöiltä, jotka eivät ole kontaktilistallasi. Lisätäksesi heidät kontakteihin napsauta \"Lisää kontakti\" -kuvaketta nimen perässä.';
@@ -15,6 +17,7 @@ $string['contactlistempty'] = 'Kontaktilistasi on tyhjä.';
 $string['contacts'] = 'Kontaktit';
 $string['context'] = 'asiayhteys';
 $string['deletemessagesdays'] = 'Tätä vanhemmat viestit poistetaan automaattisesti.';
+$string['disabled'] = 'Viestinvaihto on pois käytöstä';
 $string['discussion'] = 'Keskustelu';
 $string['emailmessages'] = 'Lähetä viestit sähköpostilla, jos olen poissa sivustolta';
 $string['emailtagline'] = 'Tämä on kopio viestistä sivustolla \"$a\"';
@@ -66,4 +69,5 @@ $string['unreadmessages'] = '$a uutta viestiä';
 $string['userisblockingyou'] = 'Käyttäjä ei ota vastaan viestejä sinulta.';
 $string['userisblockingyounoncontact'] = 'Käyttäjä ottaa vastaan viestejä vain omilta kontakteiltaan, sinä et ole listalla.';
 $string['userssearchresults'] = 'Hakutulos: $a käyttäjää löydetty';
+
 ?>

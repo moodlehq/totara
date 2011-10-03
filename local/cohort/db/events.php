@@ -46,7 +46,7 @@ $handlers = array (
      ),
     'position_deleted' => array ( // Call the updated function as these need to do the same thing
          'handlerfile'      => '/cohort/lib.php',
-         'handlerfunction'  => 'cohort_position_deleted_handler',
+         'handlerfunction'  => 'cohort_position_updated_handler',
          'schedule'         => 'instant'
      ),
     'organisation_updated' => array (

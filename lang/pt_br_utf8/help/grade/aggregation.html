@@ -1,0 +1,53 @@
+<h1>Agregação de categorias</h1>
+<p>Esse menu lhe permite escolher a estratégia de agregação a ser utilizada para calcular a média final de cada participante para esta categoria. As diferentes opções são explicadas abaixo.</p>
+
+<p>As notas são inicialmente convertidas para valores percentuais (intervalo de 0 a 1, chamado de normalização), sendo então agregadas utilizando uma das funções abaixo e, finalmente, convertidas para o intervalo associado ao item de nota (entre a <em>Nota Mínima</em> e a <em>Nota Máxima</em>).</p>
+
+<p><strong>Importante</strong>: Uma nota vazia é simplesmente uma entrada ausente no livro de notas, podendo significar muitas coisas distintas. Por exemplo, poderia significar que um participante ainda não enviou uma tarefa, ou um envio de tarefas ainda não corrigido pelo professor, ou uma nota que foi apagada manualmente pelo administrador do livro de notas. Cuidado, portanto, ao interpretar essas notas em branco.</p>
+
+<dl id="grade-aggregation-help">
+    <dt>Média das notas</dt>        
+    <dd>A soma de todas as notas dividida pelo número de notas.</dd>
+    <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+                     <code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
+
+                     
+    <dt>Média ponderada das notas</dt>
+        <dd>Pode ser atribuído um peso para cada nota, o qual é, então, utilizado na agregação de média aritmética para definir a importância de cada item na média final.</dd>
+        <dd class="example">T1 70/100 peso 10, T2 20/80 peso 5, T3
+                         10/10 peso 3, máximo da categoria 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
+
+    <dt>Média ponderada simples</dt>
+        <dd>A diferença para a <em>Média Ponderada</em> é que o peso é calculado como <em>Nota máxima - Nota mínima</em>
+                         para cada item. Uma tarefa de 100 pontos tem peso 100, enquanto que uma de 10 pontos tem peso 10.</dd>
+        <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+                         <code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
+    
+    <dt>Média das notas (com pontos extras)</dt>
+        <dd>Média aritmética com pontuação extra. Uma estratégia de agregação antiga e ultrapassada, mantida aqui apenas por questões de compatibilidade com algumas atividades antigas.</dd>
+    
+    <dt>Mediana das notas</dt>
+        <dd>A nota do meio (ou a média de duas notas do meio, caso o número seja par), obtida após ordenação das notas. A vantagem sobre a média é que ela não é afetada por valores atípicos (notas que estão muito longe da média).</dd>
+        <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+                         <code>median(0.7 ; 0.25 ; 1.0) = 0.7 --> 70/100</code></dd>
+    
+    <dt>Menor nota</dt>
+        <dd>O resultado é a menor nota após a normalização. É geralmente utilizada em combinação com <em>Agregar somente notas dadas</em>.</dd>
+        <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+                         <code>min(0.7 ; 0.25 ; 1.0) = 0.25 --> 25/100</code></dd>
+                         
+    <dt>Maior nota</dt>
+        <dd>O resultado é a maior nota após a normalização.</dd>
+        <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+                         <code>max(0.7 ; 0.25 ; 1.0) = 1.0 --> 100/100</code></dd>
+    
+    <dt>Moda das notas</dt>
+        <dd>A moda é a nota que ocorre com mais frequência. É mais utilizado com notas não-númericas. A vantagem sobre a média é que ela não é afetada por valores atípicos (notas que estão muito longe da média). Entretanto, ele perde significado quando há mais de uma nota mais frequente (apenas uma será escolhida), ou quando todas as notas são distintas entre si.</dd>
+        <dd class="example">T1 70/100, T2 35/50, T3 20/80, T4 10/10, T5 7/10 máximo da categoria 100:<br />
+                         <code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
+    
+    <dt>Soma das notas</dt>
+        <dd>A soma de todos as nota. As escalas são ignoradas. Esse é o único tipo de agregação que não converte internamente as notas para percentagem (normalização). A <em>Nota Máxima</em> do item associado à categoria é calculada automaticamente como a soma dos máximos de todos os itens agregados.</dd>
+        <dd class="example">T1 70/100, T2 20/80, T3 10/10:<br />
+                         <code>70 + 20 + 10 = 100/190</code></dd>
+</dl>

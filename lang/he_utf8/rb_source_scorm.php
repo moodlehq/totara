@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // rb_source_scorm.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
+<?PHP // $Id$ 
+      // rb_source_scorm.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['attemptnum'] = 'מספר הניסיון בלומדה';
@@ -25,5 +24,7 @@ $string['theuser'] = 'המשתמש';
 $string['time'] = 'מועד תחילת הלומדה';
 $string['title'] = 'כותרת הלומדה';
 $string['totaltime'] = 'זמן כולל של הלומדה';
+$string['type_sco'] = 'SCO';
+$string['type_scorm'] = 'SCORM';
 
 ?>

@@ -91,6 +91,8 @@ class dp_managerdriven_workflow extends dp_base_workflow {
         $this->perm_course_setduedate_manager = DP_PERMISSION_ALLOW;
         $this->perm_course_setcompletionstatus_learner = DP_PERMISSION_DENY;
         $this->perm_course_setcompletionstatus_manager = DP_PERMISSION_ALLOW;
+        $this->perm_course_deletemandatory_learner = DP_PERMISSION_DENY;
+        $this->perm_course_deletemandatory_manager = DP_PERMISSION_DENY;
 
         // program permission settings
         $this->perm_program_updateprogram_learner = DP_PERMISSION_REQUEST;
@@ -111,6 +113,8 @@ class dp_managerdriven_workflow extends dp_base_workflow {
         $this->perm_competency_setduedate_manager = DP_PERMISSION_ALLOW;
         $this->perm_competency_setproficiency_learner = DP_PERMISSION_DENY;
         $this->perm_competency_setproficiency_manager = DP_PERMISSION_ALLOW;
+        $this->perm_competency_deletemandatory_learner = DP_PERMISSION_DENY;
+        $this->perm_competency_deletemandatory_manager = DP_PERMISSION_DENY;
 
         //objective permission settings
         $this->perm_objective_updateobjective_learner = DP_PERMISSION_REQUEST;

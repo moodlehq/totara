@@ -1,0 +1,76 @@
+<?PHP // $Id$ 
+      // organisation.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+
+
+$string['adddepthlevel'] = 'Lägg till ny djupnivå';
+$string['addnewframework'] = 'Lägg till ramverk för organisation';
+$string['addneworganisation'] = 'Lägg till ny organisation';
+$string['chooseorganisation'] = 'Välj organisation';
+$string['competencyassigndeletecheck'] = 'Är du säker på att du vill ta bort denna kompetenstilldening?';
+$string['currentlyselected'] = 'Nu valda';
+$string['deletecheck'] = 'Är du säker på att du vill ta bort denna organisation, alla dess underorganisationer och de data de innehåller?';
+$string['deletecheckframework'] = 'Är du säker på att du vill radera ramverket \"$a\"?';
+$string['deletedassignedcompetency'] = 'Kompetens bortkopplad från denna organisation';
+$string['deletedepth'] = 'Radera $a';
+$string['deletedframework'] = 'Ramverk för organisation $a och dess data har raderats helt';
+$string['deletedorganisation'] = 'Organisationen $a och dess underorganisationer har raderats helt';
+$string['deleteframework'] = 'Radera $a';
+$string['depthlevel'] = 'Djupnivå';
+$string['depthlevels'] = 'Djupnivåer';
+$string['depths'] = 'Djup';
+$string['descriptionview'] = '$a beskrivning';
+$string['editdepthlevel'] = 'Redigera djupnivå';
+$string['editframework'] = 'Redigera ramverk för organisation';
+$string['editgeneric'] = 'Redigera $a';
+$string['editorganisation'] = 'Redigera organisation';
+$string['error:deletedframework'] = 'Fel vid radering av ramverk för organisation $a och dess data.';
+$string['error:dialognotreeitems'] = 'Inga organisationer i detta ramverk';
+$string['featureplural'] = 'Organisationer';
+$string['framework'] = 'Ramverk för organisationer';
+$string['frameworks'] = 'Ramverk för organisationer';
+$string['fullname'] = 'Fullt namn för organisation';
+$string['fullnamedepth'] = 'Fullt namn för djupnivå';
+$string['fullnameframework'] = 'Fullt namn';
+$string['fullnameview'] = 'Fullt namn';
+$string['idnumber'] = 'Organisations ID-nummer';
+$string['idnumberframework'] = 'ID-nummer';
+$string['idnumberview'] = '$a idnummer';
+$string['invalidnumeric'] = 'Numeriskt värde måste vara numeriskt (eller tomt)';
+$string['manageorganisation'] = 'Hantera organisationer';
+$string['manageorganisations'] = 'Hantera organisationer';
+$string['missingfullname'] = 'Saknar fullt namn för organisation';
+$string['missingfullnamedepth'] = 'Saknar fullt namn för djupnivå';
+$string['missingfullnameframework'] = 'Saknar fullt namn för ramverk';
+$string['missingshortname'] = 'Saknar kortnamn för organisation';
+$string['missingshortnamedepth'] = 'Saknar kortnamn för djupnivå';
+$string['missingshortnameframework'] = 'Saknar kortnamn för ramverk';
+$string['name'] = 'Namn';
+$string['nochildorganisations'] = 'Inga underorganisationer definierade';
+$string['nodepthlevels'] = 'Inga djupnivåer i detta ramverk';
+$string['noframeworks'] = 'Inga ramverk för organisation tillgängliga';
+$string['noorganisation'] = 'Inga organisationer definierade';
+$string['noorganisationsinframework'] = 'Inga organisationer i detta ramverk';
+$string['nounassignedcompetencies'] = 'Inga otilldelade kompetenser';
+$string['nounassignedcompetencytemplates'] = 'Inga otilldelade kompetensmallar';
+$string['numericalvalue'] = 'Numeriskt värde';
+$string['organisation'] = 'Organisation';
+$string['organisationaddnew'] = 'Lägg till ny organisation';
+$string['organisationbulkaction'] = 'Bulkaktiviteter';
+$string['organisationcustomfields'] = 'Anpassade fält';
+$string['organisationdepthcustomfields'] = 'Anpassade fält för organisationsdjup';
+$string['organisationframework'] = 'Ramverk för organisation';
+$string['organisationframeworkmanage'] = 'Hantera ramverk';
+$string['organisationframeworks'] = 'Ramverk för organisation';
+$string['organisationmanage'] = 'Hantera organisationer';
+$string['organisationplural'] = 'Organisationer';
+$string['organisations'] = 'Organisationer';
+$string['parent'] = 'Överliggande organisation';
+$string['returntoframework'] = 'Återgå till ramverk för organisation';
+$string['shortname'] = 'Kortnamn för organisation';
+$string['shortnamedepth'] = 'Kortnamn för djupnivå';
+$string['shortnameframework'] = 'Kortnamn';
+$string['shortnameview'] = 'Kortnamn';
+$string['type'] = 'Typ';
+$string['weight'] = 'Vikt';
+
+?>

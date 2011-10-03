@@ -1,0 +1,46 @@
+<h1>Beräkningar</h1>
+<!-- TRANSLATORS BEWARE!! The comma (,) sign used in the calculations may be a semi-colon (;)
+in your language. Please use whichever is used in your spreadsheet application. -->
+
+<p>Beräkningar med hjälp av betygskatalogen följer samma mönster som 
+formler/funktioner i populära kalkylprogram. De inleds med ett lika-med-tecken
+(=) och använder vanliga matematiska operatorer och funktioner för att producera
+ett enskilt numeriskt resultat. Detta resultat används sedan som det beräknade
+värdet för den betygskomponent som du håller på och redigerar.</p>
+
+<p>Det som följer nedan är en lista över de funktioner som stödjs av beräkningen. 
+Kommatecknet (,) används för att skilja argument åt inom funktionens parenteser.</p>
+
+<ul>
+    <li><strong>average</strong>([[item1]], [[item2]]...): Returnerar medelvärdet av ett utsnitt (exempel)</li>
+    <li><strong>max</strong>([[item1]], [[item2]]...): Returnerar maxvärdet i en lista av argument</li>
+    <li><strong>min</strong>([[item1]], [[item2]]...): Returnerar minimivärdet i en lista av argument</li>
+    <li><strong>mod</strong>(dividend, divisor): Beräknar vad som blir över efter en division</li>
+    <li><strong>pi</strong>(): Returnerar värdet av talet Pi</li>
+    <li><strong>power</strong>(base, power): Upphöjer ett tal till "the power" av ett annat</li>
+    <li><strong>round</strong>(number, count): Avrundar ett tal till en fördefinierad precision</li>
+    <li><strong>sum</strong>([[item1]], [[item2]]...): Returnerar summan av alla argument</li>
+</ul>
+
+<p>Ett antal matematiska funktioner stödjs också:</p>
+<ul>
+    <li>sin</li><li>sinh</li><li>arcsin</li><li>asin</li><li>arcsinh</li><li>asinh</li>
+    <li>cos</li><li>cosh</li><li>arccos</li><li>acos</li><li>arccosh</li><li>acosh</li>
+    <li>tan</li><li>tanh</li><li>arctan</li><li>atan</li><li>arctanh</li><li>atanh</li>
+    <li>sqrt</li><li>abs</li><li>ln</li><li>log</li><li>exp</li>
+</ul>
+
+<p>Du kan ta med andra betygskomponenters värden genom att använda deras ID-nummer som referenser i dina formler. ID-numret omges av två matchande par av vinkelparenteser; detta för att göra det lättare för parsern för beräkningar när ID-numret innehåller ovanliga tecken. 
+Om du t.ex. har en betygskomponent med Quiz.3 som ID-nummer så kan du referera till denna kompenent som [[Quiz.3]] i din beräkning. </p>
+
+<p>Under fältet för beräkning finns ett träddiagram över din kurs och dess betygskategorier och betygskomponenter. Intill varje komponent och kategoris totalsumma visas det ID-nummer som du kan använda i din beräkning (redan omgivet av vinkelparenteser). Dock är det så att eftersom ID-numret är valfritt så kommer en del komponenter inte att ha något. Sådana komponenter utan ID-nummer  
+har istället ett formulärfält som gör det möjligt för dig att mata in ID-numret direkt så att du kan  använda det i din beräkning utan att du behöver lämna sidan. Via detta formulär kan du dock inte redigera befintliga ID-nummer. Om du behöver göra det så måste du gå till sidan för betygskomponenten och redigera den direkt.</p>
+
+<p>Så fort du har tilldelat de ID-nummer du behöver så kan du klicka på "Lägg till ID-nummer". Då kommer sidan att uppdateras och visa dig samma träddiagram med de ID-nummer som du precis har tilldelat. Därefter kan du använda dem som referenser när du ska göra beräkningar. </p>
+
+<p>Här finns en lista över praktiska exempel på beräkningar som du kan använda i din betygskatalog:</p>
+
+<ul>
+    <li>=average([[Quiz.1]], [[Quiz.4]], [[Assignment.1]])</li>
+    <li>=average(max([[Quiz.1]], [[Quiz.4]], [[Assignment.1]]), min([[Quiz.1]], [[Quiz.4]], [[Assignment.1]]))</li>
+</ul>

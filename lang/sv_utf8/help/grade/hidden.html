@@ -1,0 +1,23 @@
+<h1>Att dölja betygen</h1>
+<p>Detta avgör huruvida betygen ska vara <strong>dolda</strong> för deltagarna eller inte. Detta används vanligtvis i slutet av en aktivitet och i slutet av processen att sätta betyg. En typisk händelsekedja skulle kunna se ut så här:
+</p>
+<table class="generaltable boxaligncenter" cellpadding="4" cellspacing="1" summary="Principal events in the grading process, and matching locked and hidden states">
+    <tr>
+        <th class="header">Händelse</th><th class="header">Låsta</th><th class="header">Dolda</th>
+    </tr>
+    <tr>
+        <td class="cell">Inledning av en aktivitet och inskickningar från deltagare</td>
+        <td class="cell">Nej</td>
+        <td class="cell">Ja</td>
+    </tr>
+    <tr>
+        <td class="cell">Avslutning av aktivitet och inledning av betygssättning/återkoppling</td>
+        <td class="cell">Ja</td>
+        <td class="cell">Ja</td>
+    </tr>
+    <tr>
+        <td class="cell">Avslutning av betygssättning/återkoppling, och publicering av betygen</td>
+        <td class="cell">Ja</td>
+        <td class="cell">Nej</td>
+    </tr>
+</table>

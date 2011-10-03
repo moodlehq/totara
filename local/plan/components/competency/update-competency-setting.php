@@ -3,7 +3,6 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,17 +31,16 @@ require_once($CFG->dirroot.'/local/plan/development_plan.class.php');
 
 
 // 1. Get information
-$competencyid = required_param('c', PARAM_INT);
-$prof = required_param('p', PARAM_INT);
-// Include $planid and $userid to limit the possibility of errors
-$planid = required_param('pl', PARAM_INT);
-$userid = required_param('u', PARAM_INT);
+$competencyid = required_param('competencyid', PARAM_INT);
+$prof = required_param('prof', PARAM_INT);
+$planid = required_param('planid', PARAM_INT);
 
 // Permissions check
 require_login();
 
 // Check permission to access the plan
 $plan = new development_plan($planid);
+$userid = $plan->userid;
 
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
@@ -54,7 +52,7 @@ if ($result !== true) {
 }
 
 // Log it
-add_to_log(SITEID, 'plan', 'competency proficiency updated', "update-competency-setting.php?c={$competencyid}&p={$prof}&pl={$planid}&u={$userid}", 'ajax');
+add_to_log(SITEID, 'plan', 'competency proficiency updated', "update-competency-setting.php?competencyid={$competencyid}&prof={$prof}&planid={$planid}", 'ajax');
 
 // Update the competency evidence
 $details = new object();
@@ -73,6 +71,7 @@ $details->assessorid = $USER->id;
 $result = hierarchy_add_competency_evidence($competencyid, $userid, $prof, $component, $details);
 
 if ($result) {
+    dp_plan_item_updated($userid, 'competency', $competencyid);
     echo "OK";
 } else {
     echo "FAIL";

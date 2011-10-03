@@ -1,5 +1,5 @@
-<?PHP // $Id$
-      // editor.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
+<?PHP // $Id$ 
+      // editor.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['about'] = 'אודות עורך הטקסט';
@@ -21,6 +21,7 @@ $string['cellpadding'] = 'ריפוד';
 $string['cellspacing'] = 'ריווח';
 $string['choosechar'] = 'בחר תו';
 $string['chooseicon'] = 'בחר סמל אותו יש להכניס';
+$string['clean'] = 'נקה HTML ממסך וורד';
 $string['close'] = 'סגור';
 $string['closeafterreplace'] = 'סגור אחרי החלפה';
 $string['cols'] = 'עמודות';
@@ -45,15 +46,17 @@ $string['heading'] = 'כותרת';
 $string['height'] = 'גובה';
 $string['hilitecolor'] = 'צבע רקע';
 $string['horizontal'] = 'אופקי';
-$string['horizontalrule'] = 'סרגל אופקי';
 $string['htmlmode'] = 'הצג מקור HTML';
 $string['imageurl'] = 'כתובת אינטרנט של התמונה';
 $string['indent'] = 'הגדל הזחה מהשוליים';
 $string['insertchar'] = 'הכנס תו מיוחד';
+$string['inserthorizontalrule'] = 'קו רוחבי';
 $string['insertimage'] = 'הכנס תמונה';
 $string['insertlink'] = 'הכנס קישור';
+$string['insertorderedlist'] = 'רשימה ממוספרת';
 $string['insertsmile'] = 'הכנס סמיילי';
 $string['inserttable'] = 'הכנס טבלה';
+$string['insertunorderedlist'] = 'רשימת תבליטים';
 $string['italic'] = 'אותיות נטויות';
 $string['itemsreplaced'] = 'ההחלפות הסתיימו!';
 $string['justifycenter'] = 'יישר למרכז';
@@ -85,7 +88,6 @@ $string['notimage'] = 'הקובץ הנבחר אינו תמונה. אנא בחר 
 $string['notset'] = 'לא מוגדר';
 $string['ok'] = 'אישור';
 $string['options'] = 'אפשרויות';
-$string['orderedlist'] = 'רשימה ממויינת';
 $string['outdent'] = 'הקטן הזחה מהשוליים';
 $string['paste'] = 'הדבק מלוח העריכה';
 $string['path'] = 'נתיב';
@@ -98,20 +100,20 @@ $string['preview'] = 'תצוגה מקדימה';
 $string['properties'] = 'מאפיינים';
 $string['redo'] = 'חזור על הפעולה האחרונה';
 $string['regularexpressions'] = 'השתמש בביטויים רגולריים';
-$string['removelink'] = 'הסר קישור';
 $string['rename'] = 'שנה שם';
 $string['replaceall'] = 'החלף הכל';
 $string['replacewith'] = 'החלף';
 $string['right'] = 'ימין';
 $string['righttoleft'] = 'כיוון מימין לשמאל';
 $string['rows'] = 'שורות';
-$string['searchandreplace'] = 'חיפוש והחלפה';
+$string['search_replace'] = 'חפש והחלף';
 $string['searchnotfound'] = 'מחרוזת החיפוש לא נמצאה!';
 $string['selectcolor'] = 'בחר צבע';
 $string['selection'] = 'בחירה';
 $string['showhelp'] = 'עזרה בנוגע לשימוש בעורך';
 $string['size'] = 'גודל';
 $string['spacing'] = 'ריווח';
+$string['spellcheck'] = 'בדוק איות';
 $string['strikethrough'] = 'קו חוצה';
 $string['subscript'] = 'כתב תחתי';
 $string['superscript'] = 'כתב עילי';
@@ -122,11 +124,16 @@ $string['top'] = 'מעלה';
 $string['type'] = 'סוג';
 $string['underline'] = 'קו תחתון';
 $string['undo'] = 'ביטול פעולתך האחרונה';
-$string['unorderedlist'] = 'רשימת תבליטים';
+$string['unlink'] = 'הסר קישור';
 $string['upload'] = 'טען';
 $string['vertical'] = 'אנכי';
 $string['width'] = 'רוחב';
-$string['wordclean'] = 'נקה HTML המיוצר על ידי WORD';
 $string['zip'] = 'Zip';
+$string['horizontalrule'] = 'סרגל אופקי'; // ORPHANED
+$string['orderedlist'] = 'רשימה ממויינת'; // ORPHANED
+$string['removelink'] = 'הסר קישור'; // ORPHANED
+$string['searchandreplace'] = 'חיפוש והחלפה'; // ORPHANED
+$string['unorderedlist'] = 'רשימת תבליטים'; // ORPHANED
+$string['wordclean'] = 'נקה HTML המיוצר על ידי WORD'; // ORPHANED
 
 ?>

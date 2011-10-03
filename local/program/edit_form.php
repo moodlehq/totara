@@ -76,7 +76,9 @@ class program_edit_form extends moodleform {
 //--------------------------------------------------------------------------------
         $mform->addElement('header','programdetails', get_string('programdetails', 'local_program'));
 
-        $mform->addElement('html', '<p class="instructions">'.get_string('instructions:programdetails', 'local_program').'<p>');
+        if ($action=='edit') {
+            $mform->addElement('html', '<p class="instructions">'.get_string('instructions:programdetails', 'local_program').'<p>');
+        }
 
         // Must have create program capability in both categories in order to move program
         if (has_capability('local/program:createprogram', $categorycontext)) {
@@ -142,13 +144,13 @@ class program_edit_form extends moodleform {
             AVAILABILITY_TO_STUDENTS => get_string('availabletostudents', 'local_program'),
             AVAILABILITY_NOT_TO_STUDENTS => get_string('availabletostudentsnot', 'local_program'),
         );
-        $mform->addElement('select', 'availablerole', get_string('availability', 'local_program'), $availabilityoptions);
+        $mform->addElement('select', 'available', get_string('availability', 'local_program'), $availabilityoptions);
         if ($action=='view') {
-            $mform->hardFreeze('availablerole');
+            $mform->hardFreeze('available');
         } else {
-            $mform->setHelpButton('availablerole', array('programavailability', get_string('availability', 'local_program'), 'local_program'), true);
-            $mform->setDefault('availablerole', AVAILABILITY_TO_STUDENTS);
-            $mform->setType('availablerole', PARAM_INT);
+            $mform->setHelpButton('available', array('programavailability', get_string('availability', 'local_program'), 'local_program'), true);
+            $mform->setDefault('available', AVAILABILITY_TO_STUDENTS);
+            $mform->setType('available', PARAM_INT);
         }
 
         $mform->addElement('text', 'availablefromselector', get_string('availablefrom', 'local_program'));
@@ -225,22 +227,22 @@ class program_edit_form extends moodleform {
         $mform = $this->_form;
         $errors = array();
 
-        if (isset($data['availablefromselector'])) {
+        if (!empty($data['availablefromselector'])) {
             $availablefrom = $data['availablefromselector'];
-            if ( ! empty($availablefrom) && ! prog_date_to_time($availablefrom)) {
+            if (!empty($availablefrom) && !prog_date_to_time($availablefrom)) {
                 $errors['availablefromselector'] = get_string('error:invaliddate', 'local_program');
             }
         }
 
-        if (isset($data['availableuntilselector'])) {
+        if (!empty($data['availableuntilselector'])) {
             $availableuntil = $data['availableuntilselector'];
-            if ( ! empty($availableuntil) &&  ! prog_date_to_time($availableuntil)) {
+            if (!empty($availableuntil) &&  !prog_date_to_time($availableuntil)) {
                 $errors['availableuntilselector'] = get_string('error:invaliddate', 'local_program');
             }
         }
 
-        if (isset($availablefrom) && isset($availableuntil)) {
-            if ($availablefrom > $availableuntil) {
+        if (!empty($availablefrom) && !empty($availableuntil)) {
+            if (prog_date_to_time($availablefrom) > prog_date_to_time($availableuntil)) {
                 $errors['availableuntilselector'] = get_string('error:availibileuntilearlierthanfrom', 'local_program');
             }
         }

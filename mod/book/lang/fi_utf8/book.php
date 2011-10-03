@@ -1,8 +1,8 @@
-<?PHP // $Id: book.php,v 1.1 2006/03/12 18:40:03 skodak Exp $ 
-      // book.php - created with Moodle 1.5 unstable development (2004092000)
-
+<?php
+// book.php - created with Totara langimport script version 1.0
 
 $string['addafter'] = 'Lisää uusi luku';
+$string['book_tocwidth'] = 'Sisällysluettelon leveys';
 $string['chapterscount'] = 'Luvut';
 $string['chaptertitle'] = 'Luvun otsikko';
 $string['confchapterdelete'] = 'Haluatko varmasti poistaa tämän luvun?';
@@ -10,10 +10,13 @@ $string['confchapterdeleteall'] = 'Haluatko varmasti poistaa tämän luvun ja se
 $string['content'] = 'Sisältö';
 $string['customtitles'] = 'Mukautetut otsikot';
 $string['disableprinting'] = 'Estä tulostus';
+$string['doexport'] = 'Vie';
 $string['doimport'] = 'Tuo';
+$string['doreimport'] = 'Tuo uudestaan';
 $string['editingchapter'] = 'Luvun muokkaus';
 $string['faq'] = 'Usein kysytyt kysymykset';
 $string['fileordir'] = 'Tiedosto tai kansio';
+$string['generateimscp'] = 'Generoi IMSCP';
 $string['import'] = 'Tuo';
 $string['importinfo'] = 'Tuo valittu HTML-tiedosto tai kansio.<br />Luvut aakkostetaan tiedostonimien mukaan.';
 $string['importing'] = 'Tuodaan';
@@ -21,6 +24,7 @@ $string['importingchapters'] = 'Tuodaan kirjan lukuja';
 $string['maindirectory'] = 'Päävalikko';
 $string['modulename'] = 'Kirja';
 $string['modulenameplural'] = 'Kirjat';
+$string['navexit'] = 'Poistu';
 $string['navnext'] = 'Seuraava';
 $string['navprev'] = 'Edellinen';
 $string['numbering'] = 'Lukujen numerointi';

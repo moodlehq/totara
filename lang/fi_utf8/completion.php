@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // completion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+      // completion.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
 
 
 $string['achievinggrade'] = 'Vähimmäisarvosana';
@@ -53,8 +53,10 @@ $string['completionusegrade_text'] = 'Käyttäjän pitää saada arvosana';
 $string['completionview'] = 'Vaadi näkymä';
 $string['completionview_text'] = 'Käyttäjän pitää nähdä aktiviteetti';
 $string['configenablecompletion'] = 'Kun tämä toiminto on käytössä, voit mahdollistaa suorittamisen seuraamistoiminnot kurssitasolla.';
+$string['configenablecourserpl'] = 'Salli kurssin merkitseminen suoritetuksi luomalla aiemman oppimisen hyväksilukemisrekisteri.';
+$string['configenablemodulerpl'] = 'Salli moduulin minkä tahansa suorittamiskriteerin merkitseminen suoritetuksi luomalla aiemman oppimisen hyväksilukemisrekisteri.';
 $string['configprogresstrackedroles'] = 'Roolit, jotka näytetään suorittamisen seuraamisnäytössä. (Yleensä vain opiskelijat tai sitä vastaavat roolit.)';
-$string['confirmselfcompletion'] = 'Vahvista itse suoritetuksi merkitseminen';
+$string['confirmselfcompletion'] = 'Vahvista oma suoritusmerkintä';
 $string['coursealreadycompleted'] = 'Olet suorittanut jo tämän kurssin';
 $string['coursecomplete'] = 'Kurssi on valmis';
 $string['coursecompleted'] = 'Kurssi suoritettu';
@@ -84,6 +86,8 @@ $string['dependenciescompleted'] = 'Suoritetut riippuvuudet';
 $string['durationafterenrolment'] = 'Kesto ilmoittautumisen jälkeen';
 $string['editcoursecompletionsettings'] = 'Muokkaa kurssin suorittamisasetuksia';
 $string['enablecompletion'] = 'Salli suorituksen etenemisen seuraaminen';
+$string['enablecourserpl'] = 'Salli kursseille aiemman oppimisen hyväksilukeminen';
+$string['enablemodulerpl'] = 'Salli moduuleille aiemman oppimisen hyväksilukeminen';
 $string['enrolmentduration'] = 'Päiviä jäljellä';
 $string['err_noactivities'] = 'Suorituksen etenemisen seuraamista ei ole mahdollistettu millekkään aktiviteetille, joten mitään niistä ei näytetä. Voit mahdollistaa seuraamisen muokkaamalla aktiviteetin asetuksia.';
 $string['err_nocourses'] = 'Muiden kurssien etenemisen seuraamista ei ole mahdollistettu, joten mitään muuta kurssia ei voida näyttää. Voit mahdollistaa seuraamisen muokkaamalla kurssin asetuksia.';
@@ -94,6 +98,9 @@ $string['err_noroles'] = 'Tällä kurssilla ei ole roolia, jolla on \'moodle/loc
 $string['err_nousers'] = 'Tällä kurssilla ei ole käyttäjiä eikä ryhmiä, jotka näkevät suoritustiedot. (Oletuksena suoritustiedot näkyvät vain opiskelijoille, joten jos opiskelijoita ei ole, näet tämän virheilmoituksen. Hallinnoija voi muuttaa tätä asetusta hallinnointiasetusten kautta.)';
 $string['err_settingslocked'] = 'Yksi tai useampi käyttäjä on jo täyttänyt jonkin vaatimuksen, joten asetukset ovat lukkiutuneet. Näiden suoritusvaatimusasetusten avaaminen tuhoaa käyttäjien tiedot ja saattaa aiheuttaa hämmennystä.';
 $string['err_system'] = 'Suoritusjärjestelmässä tapahtui sisäinen virhe. (Järjestelmän hallinnoija voi mahdollilstaa yksityiskohtaisempien tietojen näkyvyyden.)';
+$string['error:courserplsaredisabled'] = 'Administraattori on poistanut aiemman oppimisen hyväksilukemistoiminnon tältä kurssilta';
+$string['error:incorrectdatatypesupplied'] = 'Väärä tietotyyppi';
+$string['error:rplsaredisabled'] = 'Administraattori on poistanut käytöstä rekisterin aiemman oppimisen hyväksilukemisesta';
 $string['excelcsvdownload'] = 'Lataa Excelissä avattavassa muodossa (.csv)';
 $string['fraction'] = 'Murto-osa';
 $string['help_completion'] = 'suorituksen seuranta';
@@ -102,10 +109,10 @@ $string['help_completionlocked'] = 'lukitut suoritusasetukset';
 $string['help_completionview'] = 'tarvitaan näkymä, jotta suoritus voidaan viedä loppuun';
 $string['inprogress'] = 'Käynnissä';
 $string['manualcompletionby'] = 'Manuaalinen suoritusmerkintä tähän päivämäärään mennessä';
-$string['manualselfcompletion'] = 'Manuaalinen itse suoritetuksi merkitseminen';
+$string['manualselfcompletion'] = 'Oma suoritusmerkintä';
 $string['markcomplete'] = 'Merkitse suoritetuksi';
 $string['markedcompleteby'] = 'Käyttäjä $a on merkinnyt tämän suoritetuksi';
-$string['markingyourselfcomplete'] = 'Omatoiminen suoritetuksi merkitseminen';
+$string['markingyourselfcomplete'] = 'Oma suoritusmerkintä';
 $string['moredetails'] = 'Lisätietoja';
 $string['notcompleted'] = 'Keskeneräinen';
 $string['notenroled'] = 'Et ole ilmoittautuneena opiskelijaksi tällä kurssilla';
@@ -126,8 +133,8 @@ $string['restoringcompletiondata'] = 'Suoritustietoja kirjoitetaan';
 $string['rpl'] = 'Korvaava suoritus';
 $string['saved'] = 'Tallennettu';
 $string['seedetails'] = 'Tarkastele tarkemmin';
-$string['self'] = 'Itse';
-$string['selfcompletion'] = 'Itse suoritetuksi merkitseminen';
+$string['self'] = 'Oma';
+$string['selfcompletion'] = 'Oma suoritusmerkintä';
 $string['showinguser'] = 'Näytetään käyttäjä';
 $string['showrpl'] = 'Näytä korvaava suoritus';
 $string['showrpls'] = 'Näytä korvaavat suoritukset';

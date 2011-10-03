@@ -1,7 +1,5 @@
-<?PHP // $Id$
-      // book.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
-
+<?php
+// book.php - created with Totara langimport script version 1.0
 
 $string['addafter'] = 'הוסף פרק חדש';
 $string['book_tocwidth'] = 'רוחב תוכן העניינים';
@@ -18,6 +16,7 @@ $string['doreimport'] = 'ייבא מחדש';
 $string['editingchapter'] = 'עורך פרק';
 $string['faq'] = 'שאלות נפוצות';
 $string['fileordir'] = 'קובץ או תיקייה';
+$string['generateimscp'] = 'צור IMSCP';
 $string['import'] = 'ייבוא';
 $string['importinfo'] = 'ייבא קובץ HTML נבחר או תיקייה.<br />פרקים ימויינו לפי סדר א-ב של שמות הקבצים.<br />קבצים עם קידומת בשם של \'sub_*.*\' ייובאו כתתי פרקים.';
 $string['importing'] = 'מייבא';

@@ -45,6 +45,8 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
 
     global $CFG, $db;
 
+    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+
     $result = true;
 
     if ($result && $oldversion < 2010081901) {
@@ -296,6 +298,112 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
             $result = $result && execute_sql($sql);
 
         }
+    }
+
+    if ($result && $oldversion < 2011081900) {
+
+        // fail upgrade if any settings are > 100 chars (only possible with local customisations)
+        if (record_exists_select('report_builder_settings', sql_length('type') . ' > 100')) {
+            notify("Record in report settings table 'type' field is longer than 100 characters");
+            return false;
+        }
+
+        if (record_exists_select('report_builder_settings', sql_length('name') . ' > 100')) {
+            notify("Record in report settings table 'name' field is longer than 100 characters");
+            return false;
+        }
+
+        // remove the index first
+        $table = new XMLDBTable('report_builder_settings');
+        $index = new XMLDBIndex('reportid-type-name');
+        $index->setAttributes(XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
+        if (index_exists($table, $index)) {
+            $result = $result && drop_index($table, $index);
+        }
+
+        // shorten the fields to a maximum of 100 characters
+        $table = new XMLDBTable('report_builder_settings');
+        $field = new XMLDBField('type');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_precision($table, $field);
+
+        $field = new XMLDBField('name');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_precision($table, $field);
+
+        // re-add the index
+        $table = new XMLDBTable('report_builder_settings');
+        $index = new XMLDBIndex('reportid-type-name');
+        $index->setAttributes(XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
+        if (!index_exists($table, $index)) {
+            $result = $result && add_index($table, $index);
+        }
+    }
+
+/// Totara 1.1 upgrade
+
+    if ($result && $oldversion < 2011091200) {
+        // get rid of course category icon columns (replace with name link only)
+        $sql = "UPDATE {$CFG->prefix}report_builder_columns
+            SET value = 'namelink'
+            WHERE type = 'course_category'
+            AND value = 'namelinkicon'";
+        $result = $result && execute_sql($sql);
+    }
+
+    if ($result && $oldversion < 2011091201) {
+
+        /// Add customheading field to report_builder_columns
+        $table = new XMLDBTable('report_builder_columns');
+        $field = new XMLDBField('customheading');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'hidden');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+
+            // only update new field if it didn't already exist
+
+            $defaultheadings = array();
+            // loop through all reports and build a list of the default headings
+            // this may be different for reports using the same source, as they may be embedded or not embedded
+            if ($allreports = get_fieldset_select('report_builder', 'id', '1=1')) {
+                foreach ($allreports as $reportid) {
+                    $report = new reportbuilder($reportid);
+                    $defaultheadings[$reportid] = $report->get_default_headings_array();
+                }
+            }
+
+            // now loop through every column, working out if the current heading matches the default for that report
+            // there is an assumption here that the upgrade is done in the same language as the report was created in
+            // if that's not true, an admin will need to reset the columns to use defaults to get the multi-language
+            // support to work correctly
+            if ($allcolumns = get_records('report_builder_columns')) {
+
+                begin_sql();
+
+                foreach ($allcolumns as $column) {
+                    $key = $column->type . '-' . $column->value;
+                    if (!isset($defaultheadings[$column->reportid][$key]) ||
+                        $column->heading != $defaultheadings[$column->reportid][$key]) {
+
+                        // mark this column as a custom heading
+                        $todb = new object();
+                        $todb->id = $column->id;
+                        $todb->customheading = 1;
+                        if (!update_record('report_builder_columns', $todb)) {
+                            $result = false;
+                            break;
+                        }
+                    }
+                }
+
+                if ($result) {
+                    commit_sql();
+                } else {
+                    rollback_sql();
+                }
+            }
+        }
+
     }
 
     return $result;

@@ -1,15 +1,14 @@
-<?php // $Id$
+<?php
 /*
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +20,7 @@
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @author Alastair Munro
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 /**
@@ -32,6 +31,7 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/local/plan/lib.php');
 require_once('template_forms.php');
+require_once($CFG->dirroot."/local/js/lib/setup.php");
 
 $id = required_param('id', PARAM_INT);
 $notice = optional_param('notice', 0, PARAM_INT); // notice flag
@@ -39,9 +39,9 @@ $component = optional_param('component', 'plan', PARAM_TEXT);
 $currentcomponent = $component;
 
 if ($currentcomponent == 'competency') {
+    local_js();
     require_js(
         array(
-            $CFG->wwwroot . '/local/js/lib/jquery-1.3.2.min.js',
             $CFG->wwwroot .  '/local/plan/components/competency/competency.settings.js'
         )
     );

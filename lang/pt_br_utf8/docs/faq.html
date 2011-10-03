@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Moodle Docs: Perguntas Frequentes (FAQ)</title>
+<link rel="stylesheet" href="docstyles.css" type="TEXT/CSS" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<h1>Perguntas Frequentes (FAQ)</h1>
+<p class="normaltext">Esta página contem respostas a algumas das perguntas mais 
+  frequentes colocadas pelo pessoal durante a instalação do Moodle. Caso tenha 
+  seguido as <a href="./?file=install.html">instruções de instalação</a> mas 
+  se o problema ainda persiste, então esta página deve ser consultada. </p>
+
+<p class="normaltext">Caso não encontre a resposta aqui tente o fórum <a href="http://moodle.org/mod/forum/index.php?id=5" target="_top">Using 
+  Moodle</a> em moodle.org. Comece pesquisando os fóruns usando algumas palavras-chave, 
+  para verificar se o problema já foi discutido. Se não encontrar nada, 
+  então tente postar sua pergunta no fórum apropriado - normalmente haverá alguém 
+  disposto a ajudar.</p>
+
+<p class="normaltext">Se já tentou várias soluções sem êxito e o seu servidor estiver protegido por firewall, pode ser necessária uma reconfiguração do firewall para não bloquear uma função requerida ou a comunicação necessária. O Moodle raramente tem problemas com Firewalls que ocasionalmente podem ser responsáveis por uma funcionalidade reduzida devido a uma má configuração. </p>
+<p>Use esta lista para pular diretamente à resposta apropriada abaixo:</p>
+<p><a href="#filenotfound">Sempre que tento acessar ou ver um arquivo que enviei aparece o erro "File not 
+Found";</a></p>
+
+<p class="questionlink"><a href="#php">PHP - está instalado mas qual é a versão?</a></p>
+
+<p class="questionlink"><a href="#blankpages">Por que todas as minhas páginas estão em branco?</a></p>
+
+<p class="questionlink"><a href="#errorgetstring">Minhas páginas apresentam erros fatais tais como: "call to undefined function: get_string()" (chamada por função indefinida: get_string()</a></p>
+
+<p class="questionlink"><a href="#headerssent">Por que estou recebendo mensagens de erro sobre &quot;headers already sent&quot; (cabeçalhos já enviados)?</a></p>
+<p class="questionlink"><a href="#failedopen">Aparece sempre este erro: "Failed opening required '/web/moodle/lib/setup.php' (ocorreu uma falha ao abrir o arquivo '/web/moodle/lib/setup.php')</a></p>
+<p class="questionlink"><a href="#quotes">Qualquer texto que acrescento com um ap&oacute;strofo (') ou aspas (&quot;) causa erro ou retorna acrescido com uma barra.</a></p>
+
+<p class="questionlink"><a href="#sessiontmp">Recebo mensagens de erro sobre a sess&atilde;o inicial</a></p>
+
+<p class="questionlink"><a href="#fixdirroot">Quando vou &agrave; p&aacute;gina admin, recebo a mensagem para esvaziar o dirroot !</a></p>
+
+<p class="questionlink"><a href="#loginsetting">Eu faço o acesso mas o link de login não se modifica. Eu já fiz o acesso e pude navegar livremente.</a></p>
+
+<p class="questionlink"><a href="#resource1">Quando tento acrescentar um recurso aparecem mensagens de erro.</a></p>
+
+<p class="questionlink"><a href="#noadmin">Durante o processo de configuração inicial, nunca aparece a pergunta para criar uma conta de administrador!</a></p>
+
+<p class="questionlink"><a href="#nologin">Eu não posso fazer o acesso - fico sempre parado na tela de acesso.</a></p>
+
+<p class="questionlink"><a href="#backup">Como faço o backup do meu site Moodle?</a></p>
+
+<p class="questionlink"><a href="#locale">Por que a hora e a data não são mostrados corretamente?</a></p>
+
+<p class="questionlink"><a href="#cron">Cópias de E-mail não são enviadas dos meus fóruns.</a></p>
+
+<p class="questionlink">&nbsp;</p>
+
+<h3><a name="filenotfound"></a>Sempre que tento acessar ou ver um arquivo que enviei aparece o erro &quot;File not Found&quot;</h3>
+
+<p class="answer">Por exemplo: Not Found: The requested URL /moodle/file.php/2/myfile.jpg was not found on this server. </p>
+<p class="answer">O seu servidor web tem que ser configurado para permitir que a parte do URL que segue o nome de um script seja passada diretamente para esse script. Esta configuração está normalmente ativada no Apache 1, mas desativada por padrão no Apache 2. Para ativar, acrescente esta linha ao seu arquivo httpd.config, ou ao arquivo .htaccess no seu diretório local (ver <a href="./?file=install.html#webserver">Instalação do Moodle</a> para mais informação): </p>
+<p class="answercode"><b>AcceptPathInfo</b> on</p>
+<p class="answer">Note que isto APENAS funcionará para as versões do Apache 2.x. </p>
+<p class="answer">Se não estiver usando o Apache 2, mas ainda encontrar este problema (pouco provável), então pode fazer com que o Moodle use um método alternativo. As desvantagens incluem uma ligeira perda de performance para os seus utilizadores e a impossibilidade de usar links relativos em documentos HTML.</p>
+<p class="answer">Para usar este método alternativo: faça login como Admin, vá à página "Configurar Variáveis" e mude a opção de configuração para "<b>slasharguments</b>". Agora já deve ser possível acessar aos arquivos enviados.</p>
+
+<p class="answer"></p>
+<h3><a name="php"></a>O PHP está instalado e qual &eacute; a versão?</h3>
+<p class="answer">Crie um novo arquivo no seu site web chamado info.php, com o conteúdo abaixo, e visite a página com o seu navegador:</p>
+<p class="answercode">&lt;?PHP phpinfo() ?&gt;</p>
+<p class="answer">Se nada acontecer, então é porque não tem o PHP instalado. Procure nos documentos de instalação mais informação sobre onde pode obter o PHP e como instalá-lo.</p>
+<p class="answer">&nbsp;</p>
+<h3><a name="blankpages"></a>Porque todas as minhas páginas est&atilde;o em branco? </h3>
+<p class="answer">Verifique a variável dirroot em config.php. Você deve usar caminhos completos e absolutos, por exemplo:</p>
+
+<p class="answercode"> $CFG->dirroot = "d:\inetpub\sites\www.yoursite.com\web\moodle";</p>
+<p>&nbsp; </p>
+<p class="answer">Para a plataforma Redhat Linux, veja em: <a href="http://moodle.org/doc/?file=installamp.html">Redhat Linux</a></p>
+<p class="answer">&nbsp;</p>
+<h3><a name="errorgetstring"></a>Minhas páginas apresentam erros fatais tais como: call to undefined function: get_string() (chamada para função indefinida: get_string())</h3>
+<p class="answer">Se aparecerem erros como:</p>
+<p class="answercode">Parse error: parse error, unexpected T_VARIABLE in c:\program files\easyphp\www\moodle\config.php on line 94 <br />
+  Fatal error: Call to undefined function: get_string() in c:\program files\easyphp\www\moodle\mod\resource\lib.php on line 11</p>
+
+<p class="answer">então é provável que se tenha esquecido de um ponto e vírgula ou de fechar aspas numa das linhas do arquivo config.php (antes da linha 94).</p>
+<p class="answer">Outra explicação possível é ter usado um editor de texto como o Word para alterar o arquivo config.php, e o tenha gravado em formato HTML em vez do formato de texto simples.</p>
+<p class="answer">&nbsp;</p>
+<h3><a name="headerssent"></a>Porque  estou  recebendo mensagens de erro sobre &quot;headers already sent&quot; (cabeçalhos já enviados)?</h3>
+<p class="answer">Se aparecerem erros como este:</p>
+<p class="answercode">Warning: Cannot add header information - headers already sent by (output started at /webs/moodle/config.php:87) em /webs/moodle/lib/moodlelib.php on line 1322 </p>
+<p class="answercode"> Warning: Cannot add header information - headers already sent by (output started at /webs/moodle/config.php:87) em /webs/moodle/lib/moodlelib.php on line 1323 </p>
+
+<p class="answercode"> Warning: Cannot add header information - headers already sent by (output started at /webs/moodle/config.php:87) in /webs/moodle/login/index.php on line 54 </p>
+<p class="answer">Significa que tem espaços ou linhas em branco antes do ?> final no arquivo config.php. Algumas vezes alguns editores de texto acrescentam espaços - por exemplo o Notepad em Windows - por isso talvez tenha que usar outro editor para remover completamente as linhas ou espaços em branco.</p>
+<p class="answer">&nbsp;</p>
+<h3><a name="failedopen"></a>Aparece sempre este erro: Failed opening required '/web/moodle/lib/setup.php' (ocorreu uma falha ao abrir o arquivo '/web/moodle/lib/setup.php')</h3>
+<p class="answer">No seu arquivo config.php, o valor usado para a variável dirroot deverá ser o <strong>caminho completo a partir do diretório raíz no seu disco</strong>.</p>
+<p class="answer">Algumas vezes as pessoas usam apenas o caminho a partir do seu diretório de trabalho ou relativo ao diretório raíz do servidor Web.</p>
+<p class="answer">&nbsp;</p>
+<h3><a name="quotes" id="quotes"></a>Qualquer texto que acrescento com um ap&oacute;strofo 
+
+  (') ou aspas (&quot;) causa erro ou retorna acrescido com uma barra.</h3>
+
+<p class="answer">Problemas causados por ap&oacute;strofos são causados pela configura&ccedil;&atilde;o incorreta de &quot;magic 
+
+  quotes&quot;. O Moodle requer a seguinte configura&ccedil;&atilde;o (que geralmente &eacute; padr&atilde;o):</p>
+
+<p class="answercode">magic_quotes_gpc = On<br />
+
+  magic_quotes_runtime = Off</p>
+
+<p class="answer">Veja a se&ccedil;&atilde;o <a href="./?file=install.html#webserver">configura&ccedil;&atilde;o do servidor Web</a> nos documentos de instala&ccedil;&atilde;o para maiores detalhes.</p>
+
+<p class="answer">&nbsp;</p>
+
+<h3><a name="sessiontmp"></a>Recebo mensagens de erro sobre a sess&atilde;o inicial.</h3>
+
+<p class="answer">Se aparecem erros como estes:</p>
+
+<p class="answercode">Warning: session_start() [function.session-start]: open(/tmp\sess_d40f380d37d431fc1516e9a895ad9ce0, O_RDWR) failed: No such file or directory (2) in G:\web\moodle\lib\setup.php on line 123</p>
+
+<p class="answercode">Warning: session_start() [function.session-start]: open(/tmp\sess_d40f380d37d431fc1516e9a895ad9ce0, O_RDWR) failed: No such file or directory (2) in G:\web\moodle\lib\setup.php on line 123</p>
+
+<p class="answercode">Warning: session_start() [function.session-start]: Cannot send session cache limiter - headers already sent (output started at G:\web\moodle\lib\setup.php:1) in G:\web\moodle\lib\setup.php on line 123</p>
+
+<p class="answer">... estes s&atilde;o todos relacionados com o fato que o PHP est&aacute; falhando ao salvar os arquivos "session" no disco r&iacute;gido (no diret&oacute;rio chamado  /tmp).  Gerlamente a raz&atilde;o &eacute; que voc&ecirc; n&atilde;o TEM um diret&oacute;rio chamado /tmp no computador.  Ocorre geralmente nas instala&ccedil;&otilde;es   Windows.
+
+<p class="answer">A solu&ccedil;&atilde;o &eacute; corrigir a configura&ccedil;&atilde;o do PHP  apontando para o diret&oacute;rio  real.  Voc&ecirc; pode fazer isto no arquivo php.ini:</p>
+
+<p class="answercode">session.save_path = C:\temp</p>
+
+<p class="answer">ou de outra forma no arquivo .htaccess em seu diret&oacute;rio moodle principal:</p>
+
+<p class="answercode">php_value session.save_path "/home/moodle/sessions"</p>
+
+<p class="answercode">&nbsp;</p>
+
+<h3><a name="fixdirroot"></a>Quando vou &agrave; p&aacute;gina admin, recebo a mensagem para esvaziar o  dirroot !</h3>
+
+<p class="answer">No caso de erros como este no Moodle 1.0.9:</p>
+
+<table class="generalbox" cellspacing="0" cellpadding="5" align="center" border="0">
+
+<tbody>
+
+<tr>
+
+<td bgcolor=#ffbbbb>Please fix your settings in config.php: 
+
+<p>You have: 
+
+<p>$CFG-&gt;dirroot = "/home/users/fred/public_html/moodle"; 
+
+<p>but it should be: 
+
+<p>$CFG-&gt;dirroot = "";</p></td></tr></tbody></table>
+
+<p class="answer">ent&atilde;o voc&ecirc; encontrou um pequeno bug que ocorre em alguns servidores. O problema est&aacute; no mecanismo de verifica&ccedil;&atilde;o de erros, n&atilde;o no seu caminho atual. Para elimina&ccedil;&atilde;o, encontre a linha (line 66) no arquivo admin/index.php: </p>
+
+<p class="answercode">if ($dirroot != $CFG->dirroot) {</p>
+
+<p class="answer">e altere para:</p>
+
+<p class="answercode">if (!empty($dirroot) and $dirroot != $CFG->dirroot) {</p>
+
+<p class="answercode">&nbsp;</p>
+
+<h3><a name="loginsetting"></a>Eu fa&ccedil;o o acesso mas parece que não o fiz. Eu j&aacute; fiz o acesso e pude navegar livremente.</h3>
+
+<p class="answer">Esteja certo que a  URL em sua configura&ccedil;&atilde;o $CFG->wwwroot &eacute;  seja exatamente a mesma que voc&ecirc; geralmente utiliza para acessar o site.</p>
+
+<p class="answer">&nbsp;</p>
+
+<h3><a name="resource1"></a>Quando tento acrescentar um recurso aparecem mensagens de erro.</h3>
+
+<p class="answer">Pressupondo que voc&ecirc; est&aacute; utilizando o Apache, ent&atilde;o sua configura&ccedil;&atilde;o no config.php para $CFG->wwwroot est&aacute; diferente da  URL que est&aacute; utilizando para acessar o site. Tamb&eacute;m tente deixar desligada a op&ccedil;&atilde;o "<b>secureforms</b>" na configura&ccedil;&atilde;o  
+
+  admin.</p>
+
+<p class="answercode">&nbsp;</p>
+<h3><a name="noadmin"></a>Durante o processo de configura&ccedil;&atilde;o inicial, nunca aparece a pergunta para criar uma conta de administrador!</h3>
+
+<p class="answer">Este &eacute; um conhecido  bug nas vers&otilde;es do Moodle at&eacute; 1.0.9, agora eliminado no c&oacute;digo principal e vers&atilde;o 1.1.</p>
+
+<p class="answer">N&atilde;o afeta a todos, somente ocorrendo quando ao instalar o  Moodle tem-se um 
+
+  cookie no navegador de outro programa no mesmo site, chamado "user", "admin", ou "teacher".</p>
+
+<p class="answer">A solução rápida inclui deletar estes  cookies de seu navegador antes da instala&ccedil;&atilde;o, utilizar um navegador diferente, ou editar o arquivo  moodle/admin/user.php inserindo estas linhas pr&oacute;ximas ao  topo:</p>
+
+<p class="answercode">unset($user);<br />unset($admin);<br />unset($teacher);</p>
+
+<p class="answer">Depois de executar estes passos ser&aacute; uma boa id&eacute;ia reinstalar o banco de dados novamente.</p>
+<p class="answer">&nbsp;</p>
+<h3><a name="nologin"></a>Eu n&atilde;o posso fazer o acesso - fico sempre parado na tela de acesso.</h3>
+
+<p class="answer">A causa mais comum para isto &eacute; que seu computador (n&atilde;o seu servidor Moodle) tem um  firewall que est&aacute; bloqueando informa&ccedil;&otilde;es do navegador. Aqui encontramos algumas instru&ccedil;&otilde;es para elimina&ccedil;&atilde;o: <a href="http://service1.symantec.com/SUPPORT/nip.nsf/46f26a2d6dafb0a788256bc7005c3fa3/b9b47ad7eddd343b88256c6b006a85a8?OpenDocument&amp;src=bar_sch_nam">produtos Norton para firewall</a>.</p>
+
+<p class="answer">No servidor  admin isto pode ser eliminado editando-se a p&aacute;gina de configura&ccedil;&atilde;o do Moodle e alterando-se a vari&aacute;vel "<b>secureforms</b>" para "N&atilde;o".</p>
+
+<p class="answer">Outra causa poss&iacute;vel para este problema &eacute; que as sess&otilde;es n&atilde;o foram configuradas propriamente no servidor. Voc&ecirc; pode testar isto chamando o  script 
+
+  http://yourserver/moodle/lib/session-test.php.</p>
+
+<p class="answer">&nbsp;</p>
+
+<h3><a name="backup"></a>Como fa&ccedil;o o backup do meu site Moodle?</h3>
+
+<p class="answer">H&aacute; duas coisas principais que voc&ecirc; precisa fazer, a c&oacute;pia do banco de dados e a dos arquivos carregados.  O scripts do Moodle s&atilde;o menos importantes, desde que voc&ecirc; possa sempre descarregar uma c&oacute;pia caso seja necess&aacute;rio.</p>
+
+<p class="answer">H&aacute; muitas maneiras de fazer tais  backups.  Aqui temos um pequeno  script que voc&ecirc; pode rodar no  Unix para fazer o  backup do banco de dados (ele funciona bem se tivermos tal  script rodando diariamente como uma tarefa do  cron</p>
+
+<p class="answercode">cd /my/backup/directory</p>
+
+<p class="answercode">mv moodle-database.sql.gz moodle-database-old.sql.gz</p>
+
+<p class="answercode">mysqldump -h example.com -u myusername --password=mypassword -C -Q -e -a mydatabasename > moodle-database.sql</p>
+
+<p class="answercode">gzip moodle-database.sql</p>
+
+<p class="answer">Para os arquivos, voc&ecirc; pode utilizar  rsync regularmente para copiar os arquivos alterados para outro  host:</p>
+
+<p class="answercode">rsync -auvtz --delete -e ssh mysshusername@example.com:/my/server/directory 
+
+  /my/backup/directory/</p>
+
+<p class="answercode">&nbsp;</p>
+
+<h3><a name="locale"></a>Por que hora e data n&atilde;o s&atilde;o mostrados corretamente?</h3>
+
+<p class="answer">Cada l&iacute;ngua requer um c&oacute;digo espec&iacute;fico  (chamado de c&oacute;digo <strong>local</strong>) para permitir que as datas sejam mostradas corretamente. Os pacotes cont&ecirc;m os c&oacute;digos padr&otilde;es da l&iacute;ngua, mas algumas vezes estes pacotes n&atilde;o funcionam em servidores  Windows. </p>
+
+<p class="answer">Voc&ecirc; pode encontrar os c&oacute;digos locais corretos para o Windows nestas duas p&aacute;ginas: <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt_language_strings.asp" target="_blank">C&oacute;digos de L&iacute;ngua</a> and <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vclib/html/_crt_country_strings.asp" target="_blank">C&oacute;digos de regi&otilde;es/pa&iacute;ses</a>.(p.ex.&quot;esp_esp&quot; para o espanhol)</p>
+
+<p class="answer">Estes novos c&oacute;digos locais podem ser introduzidos na p&aacute;gina Admin -&gt; Configura&ccedil;&atilde;o 
+
+  -&gt; Vari&aacute;veis, onde eles sobrescrevem aqueles do pacote lingu&iacute;stico escolhido existente.</p>
+
+<p class="answer">&nbsp;</p>
+
+<h3><a name="cron"></a>C&oacute;pias de E-mail n&atilde;o s&atilde;o enviadas dos meus f&oacute;runs.</h3>
+
+<p class="answer">Voc&ecirc; <strong>precisa</strong> configurar o  cron propriamente se deseja que o  Moodle envie automaticamente email para os f&oacute;runs, exerc&iacute;cios etc. Este mesmo processo tamb&eacute;m executa um n&uacute;mero de tarefas de limpeza tais como excluir usu&aacute;rios antigos, descadastrar estudantes antigos etc.</p>
+
+<p class="answer">Basicamente, voc&ecirc; precisa regularmente chamar o  
+
+  script http://yoursite/admin/cron.php. Por favor veja <a href="./?file=install.html#cron">a se&ccedil;&atilde;o sobre  cron na documenta&ccedil;&atilde;o de Instala&ccedil;&atilde;o</a>.</p>
+
+<p class="answer">Dica: tente utilizar a configura&ccedil;&atilde;o padr&atilde;o na p&aacute;gina de vari&aacute;veis do  Moodle. Deixe vazio o  smtphost.
+
+Isto ser&aacute; aceito pela maioria dos usu&aacute;rios.
+<p class="answer">&nbsp;
+<p class="answer">&nbsp;
+
+<hr />
+
+<p align="center" class="normaltext"><a href='ma&#105&#108t&#111:ma%72%74in@%6d%6fo%64%6c%65.o%72g' title='mar&#116&#105n@&#109oo&#100&#108&#101&#46&#111&#114g'>Sugira um novo FAQ</a> (inclua a resposta!)</p>
+
+<hr />
+
+<p align="right"><strong></strong></p>
+
+<p align="center"><font size="1"><a href="." target="_top">Documentação do Moodle</a></font></p>
+
+<p align="center"><font size="1">Version: $Id: faq.html,v 1.6 2003/03/30 13:54:28 
+
+  moodler Exp $</font></p>
+
+</body>
+
+</html>

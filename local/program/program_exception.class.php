@@ -269,136 +269,6 @@ class already_assigned_exception extends prog_exception {
 
 }
 
-class extension_request_exception extends prog_exception {
-
-    public $extensiondate, $extensionreason;
-
-    const extensiondate_name = 'extensiondate';
-    const extensionreason_name = 'extensionreason';
-
-    public function __construct($programid, $exceptionob=null) {
-
-        parent::__construct($programid, $exceptionob);
-        $this->exceptiontype = EXCEPTIONTYPE_EXTENSION_REQUEST;
-
-        if($this->id != 0) {
-            if( ! $this->extensiondate = get_field('prog_exception_data', 'datavalue', 'exceptionid', $this->id, 'dataname', self::extensiondate_name)) {
-                $this->extensiondate = 0;
-            }
-            if( ! $this->extensionreason = get_field('prog_exception_data', 'datavalue', 'exceptionid', $this->id, 'dataname', self::extensionreason_name)) {
-                $this->extensionreason = '';
-            }
-        } else {
-            $this->extensiondate = 0;
-            $this->extensionreason = '';
-        }
-    }
-
-    public function handles($action) {
-        switch($action) {
-            case SELECTIONACTION_GRANT_EXTENSION_REQUEST:
-            case SELECTIONACTION_DENY_EXTENSION_REQUEST:
-            case SELECTIONACTION_DISMISS_EXCEPTION:
-                return true;
-            break;
-            default:
-                return false;
-            break;
-        }
-    }
-
-    public function handle($action=null) {
-
-        if( ! $this->handles($action)) {
-            return true;
-        }
-
-        switch($action) {
-            case SELECTIONACTION_GRANT_EXTENSION_REQUEST:
-                return $this->grant_extension();
-            case SELECTIONACTION_DENY_EXTENSION_REQUEST:
-                return $this->deny_extension();
-            break;
-            default:
-                return true;
-            break;
-        }
-    }
-
-    protected function grant_extension() {
-
-        $program = new program($this->programid);
-
-        if( ! $program->set_timedue($this->userid, $this->extensiondate)) {
-            return false;
-        } else {
-
-            $roleid = get_field('role', 'id', 'shortname', 'student');
-        if (!$roleid) {
-        print_error('error:failedtofindstudentrole', 'local_program');
-        }
-
-            $userto = get_record('user', 'id', $this->userid);
-        if (!$userto) {
-        print_error('error:failedtofinduser', 'local_program', $this->userid);
-        }
-
-            $userfrom = totara_get_manager($this->userid);
-
-            $messagedata = new stdClass();
-            $messagedata->userto           = $userto;
-            $messagedata->userfrom         = $userfrom;
-            $messagedata->roleid           = $roleid;
-            $messagedata->subject          = get_string('extensiongranted', 'local_program');
-            $messagedata->contexturl       = $CFG->wwwroot.'/local/program/required.php?id='.$this->programid;
-            $messagedata->contexturlname   = get_string('launchprogram', 'local_program');
-            $messagedata->fullmessage      = get_string('extensiongrantedmessage', 'local_program', userdate($this->extensiondate, '%d/%m/%Y', $CFG->timezone));
-
-            $eventdata = new stdClass();
-            //$eventdata->program = $program;
-            $eventdata->message = $messagedata;
-
-            // trigger this event for any listening handlers to catch
-            events_trigger('program_extension_granted', $eventdata);
-
-            return prog_exception::delete_exception($this->id);
-
-        }
-
-    }
-
-    protected function deny_extension() {
-
-        $roleid = get_field('role', 'id', 'shortname', 'student');
-    if (!$roleid) {
-        print_error('error:failedtofindstudentrole', 'local_program');
-    }
-
-        $userto = get_record('user', 'id', $this->userid);
-        $userfrom = totara_get_manager($this->userid);
-
-        $messagedata = new stdClass();
-        $messagedata->userto           = $userto;
-        $messagedata->userfrom         = $userfrom;
-        $messagedata->roleid           = $roleid;
-        $messagedata->subject          = get_string('extensiondenied', 'local_program');;
-        $messagedata->contexturl       = $CFG->wwwroot.'/local/program/required.php?id='.$this->programid;
-        $messagedata->contexturlname   = get_string('launchprogram', 'local_program');
-        $messagedata->fullmessage      = get_string('extensiondeniedmessage', 'local_program');
-
-        $eventdata = new stdClass();
-        //$eventdata->program = $program;
-        $eventdata->message = $messagedata;
-
-        // trigger this event for any listening handlers to catch
-        events_trigger('program_extension_denied', $eventdata);
-
-    return prog_exception::delete_exception($this->id);
-
-    }
-
-}
-
 class completion_time_unknown_exception extends prog_exception {
     public function __construct($programid, $exceptionob=null) {
         parent::__construct($programid, $exceptionob);
@@ -427,8 +297,38 @@ class completion_time_unknown_exception extends prog_exception {
                 return $this->set_auto_time_allowance();
             break;
             default:
-                return parent::handle($action);;
+                return parent::handle($action);
             break;
+        }
+    }
+}
+
+class unknown_exception extends prog_exception {
+    public function __construct($programid, $exceptionob=null) {
+        parent::__construct($programid, $exceptionob);
+        $this->exceptiontype = EXCEPTIONTYPE_UNKNOWN;
+    }
+
+    public function handles ($action) {
+        switch ($action) {
+            case SELECTIONACTION_DISMISS_EXCEPTION:
+                return true;
+                break;
+            default:
+                return false;
+                break;
+        }
+    }
+
+    public function handle ($action = null) {
+        if (!$this->handles($action)) {
+            return true;
+        }
+
+        switch ($action) {
+            default:
+                return parent::handle($action);
+                break;
         }
     }
 }

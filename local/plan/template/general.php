@@ -3,13 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,7 +19,7 @@
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 /**
@@ -46,8 +45,8 @@ local_js(array(
 
 $returnurl = $CFG->wwwroot."/local/plan/template/general.php?id=$id";
 
-if($id) {
-    if(!$template = get_record('dp_template', 'id', $id)) {
+if ($id) {
+    if (!$template = get_record('dp_template', 'id', $id)) {
         error(get_string('error:invalidtemplateid', 'local_plan'));
     }
 }
@@ -60,10 +59,10 @@ if ($mform->is_cancelled()) {
 }
 if ($fromform = $mform->get_data()) {
 
-    if(empty($fromform->submitbutton)) {
+    if (empty($fromform->submitbutton)) {
         totara_set_notification(get_string('error:unknownbuttonclicked', 'local_plan'), $returnurl);
     }
-    if(update_general_settings($id, $fromform)) {
+    if (update_general_settings($id, $fromform)) {
         totara_set_notification(get_string('update_general_settings', 'local_plan'), $returnurl, array('style' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:update_general_settings', 'local_plan'), $returnurl);
@@ -71,14 +70,14 @@ if ($fromform = $mform->get_data()) {
 }
 
 $navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-                    'link'=>"{$CFG->wwwroot}/local/plan/template/index.php",
-                    'type'=>'misc');
-$navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
+$navlinks[] = array('name' => get_string("managetemplates", "local_plan"),
+                    'link' => "{$CFG->wwwroot}/local/plan/template/index.php",
+                    'type' => 'misc');
+$navlinks[] = array('name' => format_string($template->fullname), 'link' => '', 'type' => 'misc');
 
 admin_externalpage_print_header('', $navlinks);
 
-if($template){
+if ($template) {
     print_heading($template->fullname);
 } else {
     print_heading(get_string('newtemplate', 'local_plan'));
@@ -113,12 +112,10 @@ function update_general_settings($id, $fromform){
     $todb = new object();
     $todb->id = $id;
     $todb->fullname = $fromform->templatename;
-    $todb->startdate = dp_convert_userdate($fromform->startdate);
     $todb->enddate = dp_convert_userdate($fromform->enddate);
 
     begin_sql();
     if(!update_record('dp_template', $todb)){
-        echo 'Epic fail';
         rollback_sql();
         return false;
     }

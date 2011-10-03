@@ -14,8 +14,8 @@ $string['approveitemstext'] = 'Please review and approve the changes to the atta
 $string['automateddefault'] = 'Automatic (added to plan)';
 $string['declineplantext'] = 'You are about to decline the requested plan, please confirm';
 $string['decline'] = 'Decline';
-$string['evidence'] = 'Evidence';
-$string['autoadddefaultevidence'] = 'Automatically add default competency evidence';
+$string['defaultstatus'] = 'Default status';
+$string['setdefaultstatus'] = 'Assign newly approved competencies their default status';
 $string['approveitemstext'] = 'Please review and approve the changes to the attached plan';
 $string['noitemsrequiringapproval'] = 'There are no items requiring approval';
 $string['plan'] = 'Plan';
@@ -56,6 +56,7 @@ $string['error:usernotfound'] = 'User not found';
 $string['error:cannotviewpage'] = 'You cannot view this page';
 $string['recordoflearningcourses'] = 'Record of Learning: Courses';
 $string['recordoflearningprograms'] = 'Record of Learning: Programs';
+$string['recordoflearningprogramsrecurring'] = 'Record of Learning: Recurring programs';
 $string['recordoflearningcompetencies'] = 'Record of Learning: Competencies';
 $string['recordoflearningobjectives'] = 'Record of Learning: Objectives';
 $string['teammembers'] = 'Team Members';
@@ -76,6 +77,10 @@ $string['noclassforcomponent'] = 'Class \'$a->class\' does not exist for compone
 $string['noclassfileforworkflow'] = 'Class file \'$a->classfile\' could not be found for workflow \'$a->workflow\'';
 $string['noclassforworkflow'] = 'Class \'$a->class\' does not exist for workflow \'$a->workflow\'';
 $string['pendingitems'] = 'Pending approval';
+$string['removeselected'] = 'Remove selected';
+$string['selectedlinkedcompetenciesremovedfromcourse'] = 'The selected linked competencies have been removed from this course';
+$string['selectedlinkedcoursesremovedfromcompetency'] = 'The selected linked courses have been removed from this competency';
+$string['selectedlinkedcoursesremovedfromobjective'] = 'The selected linked courses have been removed from this objective';
 
 
 //Instruction text
@@ -93,24 +98,28 @@ $string['competency_instructions_learner'] = 'All the competencies that will be 
 $string['competency_instructions_manager'] = 'All the competencies that will be addressed by your team member\'s learning plan area shown below. ';
 $string['competency_instructions_detail'] = 'You can view more details about any competency by clicking its title. ';
 $string['competency_instructions_add'] = 'You can add additional competencies by clicking the \"Add/remove competencies\" button to the right of the screen. ';
+$string['competency_instructions_add11'] = 'You can add additional competencies by clicking the \"Add competencies\" button. ';
 $string['competency_instructions_request'] = 'Clicking \"Update requested competencies\" will allow you to request to add new competencies to this learning plan.';
 
 $string['course_instructions_manager'] = 'All the courses that form your team member\'s learning plan are show below. ';
 $string['course_instructions_learner'] = 'All the courses that form your learning plan are shown below. ';
 $string['course_instructions_detail'] = 'You can view any course by clicking the course title. ';
 $string['course_instructions_add'] = 'Clicking \"Add/remove Courses\" will allow you to add new courses to this learning plan.';
+$string['course_instructions_add11'] = 'Clicking \"Add Courses\" will allow you to add new courses to this learning plan.';
 $string['course_instructions_request'] = 'Clicking \"Update requested courses\" will allow you to request to add new courses to this learning plan.';
 
 $string['program_instructions_manager'] = 'All the programs that form your team member\'s learning plan are show below. ';
 $string['program_instructions_learner'] = 'All the programs that form your learning plan are shown below. ';
 $string['program_instructions_detail'] = 'You can view any program by clicking the program title. ';
 $string['program_instructions_add'] = 'Clicking \"Add/remove programs\" will allow you to add new programs to this learning plan.';
+$string['program_instructions_add11'] = 'Clicking \"Add programs\" will allow you to add new programs to this learning plan.';
 $string['program_instructions_request'] = 'Clicking \"Update requested programs\" will allow you to request to add new programs to this learning plan.';
 
 $string['objective_instructions_manager'] = 'All the objectives that form your team member\'s learning plan are show below. ';
 $string['objective_instructions_learner'] = 'All the objectives that form your learning plan are shown below. ';
 $string['objective_instructions_detail'] = 'You can view any objective by clicking the objective title. ';
 $string['objective_instructions_add'] = 'Clicking \"Add New Objective\" will allow you to add new objectives to this learning plan.';
+$string['objective_instructions_add11'] = 'Clicking \"Add New Objective\" will allow you to add new objectives to this learning plan.';
 $string['objective_instructions_request'] = 'Clicking \"Update requested objectives\" will allow you to request to add new objectives to this learning plan.';
 
 
@@ -166,6 +175,7 @@ $string['setpriority'] = 'Set Priority';
 $string['setduedate'] = 'Set Due Date';
 $string['setcompletionstatus'] = 'Set Completion Status';
 $string['completereactivate'] = 'Complete/reactivate';
+$string['deletemandatory'] = 'Delete Mandatory';
 $string['add'] = 'Add $a';
 $string['remove'] = 'Remove $a';
 $string['competency'] = 'Competency';
@@ -186,7 +196,9 @@ $string['error:updateobjectivescaleordering'] = 'Could not update objective scal
 $string['error:updateobjectivescalevalue'] = 'Could not update objective scale value';
 $string['error:competencystatuspermission'] = 'You do not have permission to change the status of that competency';
 $string['error:problemapproving'] = 'There was a problem approving those items';
-
+$string['error:nopermissiondeletemandatorycourse'] = 'You do not have permission to delete a mandatory course';
+$string['error:nopermissiondeletemandatorycomp'] = 'You do not have permission to delete a mandatory competency';
+$string['error:couldnotassignnewitem'] = 'Could not assign new item to plan';
 // Strings with placeholder for custom-editable component names
 $string['updatelinkedx'] = 'Update linked $a';
 $string['nox'] = 'No $a.';
@@ -200,6 +212,8 @@ $string['error:cannotupdatecourses'] = 'Cannot update courses';
 $string['updatecourse'] = 'Update';
 $string['updatecourses'] = 'Update courses';
 $string['addremovecourse'] = 'Add/remove courses';
+$string['addcourses'] = 'Add courses';
+$string['addlinkedcourses'] = 'Add linked courses';
 $string['assessitem'] = 'Assess item';
 $string['coursenotfound'] = 'Course not found';
 
@@ -214,6 +228,7 @@ $string['competenciesupdated'] = 'Competencies updated';
 $string['updaterequestedcompetency'] = 'Update requested competencies';
 $string['updatecompetency'] = 'Update';
 $string['addremovecompetency'] = 'Add/remove competencies';
+$string['addcompetencys'] = 'Add competencies';
 $string['setproficiency'] = 'Set Status';
 $string['proficiency'] = 'Proficiency';
 $string['error:competencynotfound'] = 'Competency not found';
@@ -221,6 +236,7 @@ $string['error:competenciesupdated'] = 'Competencies not updated';
 $string['nocompetencies'] = 'No competencies.';
 $string['nolinkedcompetencies'] = 'No linked competencies.';
 $string['linkedcompetencies'] = 'Linked competencies';
+$string['addlinkedcompetencies'] = 'Add linked competencies';
 $string['error:cannotupdatecompetencies'] = 'Cannot update competencies';
 $string['confirmlinkedcourses'] = 'Confirm linked courses';
 $string['confirmlinkedcoursesdesc'] = 'Some of those competencies have linked courses. If checked below, these courses will also be added to this plan:';
@@ -234,6 +250,7 @@ $string['programplural'] = 'Programs';
 $string['programname'] = 'Program Name';
 $string['programnotfound'] = 'Program not found';
 $string['programsupdated'] = 'Program settings updated.';
+$string['addprograms'] = 'Add programs';
 $string['updateprogram'] = 'Update';
 $string['updateprograms'] = 'Update programs';
 $string['addremoveprogram'] = 'Add/remove programs';
@@ -315,7 +332,7 @@ $string['autocompleteplantext'] = 'Automatically set approved plans to complete 
 
 $string['manualcomplete'] = 'Manually, by a user with \'complete\' permission';
 $string['autobyitems'] = 'Automatically, when all items have been completed';
-$string['autobyplandate'] = 'Automatically, when the plan completion date has past';
+$string['autobyplandate'] = 'Automatically, when the plan completion date has passed';
 
 $string['planmarkedcomplete'] = 'Plan marked as complete';
 
@@ -609,16 +626,20 @@ $string['planapproved'] = 'Plan \"$a\" has been approved';
 $string['plandeclined'] = 'Plan \"$a\" has been declined';
 $string['approvalrequestsent'] = 'Approval request sent for plan \"$a\"';
 $string['plancomplete'] = 'Complete plan';
-$string['checkplancomplete'] = 'Are you sure you want to mark the plan \"$a\" as complete?<br /><br /> Once the plan is marked complete it will be locked and will have to be reactivated to make any further changes. Are you sure you want to proceed?';
+$string['checkplancomplete'] = 'Are you sure you want to mark the plan \"$a\" as complete?<br /><br />Once a plan is marked complete then no further changes can be made. This operation cannot be undone. Are you sure you want to proceed?';
+$string['checkplancomplete11'] = 'Are you sure you want to mark the plan \"$a\" as complete?<br /><br /> Once the plan is marked complete it will be locked and will have to be reactivated to make any further changes. Are you sure you want to proceed?';
 $string['plancompletesuccess'] = 'Successfully completed plan $a';
 $string['plancompletefail'] = 'There was a problem while trying to mark plan \"$a\" as complete';
 $string['planreactivate'] = 'Reactivate plan';
-$string['checkplanreactivate'] = 'Are you sure you want to reactivate the plan \"$a\"?<br /><br />Are you sure you want to proceed?';
+$string['checkplanreactivate'] = 'Are you sure you want to reactivate the plan \"$a\"?<br />';
 $string['planreactivatesuccess'] = 'Successfully reactivated plan $a';
 $string['planreactivatefail'] = 'There was a problem while trying to reactivate plan \"$a\"';
 $string['cannotdelete_inuse'] = 'You cannot delete this template because there are plans using it.';
 $string['planapprovalrequested'] = 'Plan approval requested for <a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
 $string['requestremoval'] = 'Request removal';
+$string['reactivate'] = 'Reactivate';
+$string['error:reactivatedatebeforenow'] = 'Error, the new end date specified is before now.';
+$string['error:planhistory'] = 'Error, plan history not found';
 
 
 //// Messaging
@@ -697,6 +718,7 @@ $string['competencycompleted'] = 'Competency Completed';
 $string['todb_coursesettingerror'] = 'Error updating course settings';
 $string['todb_competencysettingerror'] = 'Error updating competency settings';
 $string['todb_objectivesettingerror'] = 'Error updating objective settings';
+$string['todb_programsettingerror'] = 'Error updating program settings';
 $string['todb_updatepermissionserror'] = 'Error updating template permissions';
 
 $string['scaleslocked'] = 'This template is in use and changing the scales will impact data integrity. Therefore Priority and Objective scales are locked and will not be updated when the workflow is changed.';
@@ -743,5 +765,36 @@ $string['error:updatinglinktype'] = 'Error: could not update link type';
 
 // Deleting linked courses
 $string['deletelinkedcoursesheader'] = 'Removing \"$a\" from plan';
-$string['deletelinkedcoursesinstructions'] = 'The following development activities are linked to this focus area in your plan. If checked, they will be removed from your plan at this time. If unchecked, they will remain in your plan.';
-$string['deletelinkedcoursessubmit'] = 'Remove from my plan';
+$string['deletelinkedcoursesinstructionslearner'] = 'The following courses are linked to this competency in your plan. If checked, they will be removed from your plan at this time. If unchecked, they will remain in your plan.';
+$string['deletelinkedcoursesinstructionsmanager'] = 'The following courses are linked to this competency in $a\'s plan. If checked, they will be removed from the plan at this time. If unchecked, they will remain in the plan.';
+$string['deletelinkedcoursessubmit'] = 'Remove from plan';
+
+$string['activecourses'] = 'Courses';
+$string['activecompetencies'] = 'Competencies';
+$string['activeobjectives'] = 'Objectives';
+$string['activeprograms'] = 'Programs';
+
+$string['allcourses'] = 'Courses';
+$string['allcompetencies'] = 'Competencies';
+$string['allobjectives'] = 'Objectives';
+$string['allprograms'] = 'Programs';
+
+$string['completedcourses'] = 'Courses';
+$string['completedcompetencies'] = 'Competencies';
+$string['completedobjectives'] = 'Objectives';
+$string['completedprograms'] = 'Programs';
+
+$string['completedcoursessubhead'] = 'Completed Courses';
+$string['completedcompetenciessubhead'] = 'Completed Competencies';
+$string['completedobjectivessubhead'] = 'Completed Objectives';
+$string['completedprogramssubhead'] = 'Completed Programs';
+
+$string['activecoursessubhead'] = 'Active Courses';
+$string['activecompetenciessubhead'] = 'Active Competencies';
+$string['activeobjectivessubhead'] = 'Active Objectives';
+$string['activeprogramssubhead'] = 'Active Programs';
+
+$string['allcoursessubhead'] = 'All Courses';
+$string['allcompetenciessubhead'] = 'All Competencies';
+$string['allobjectivessubhead'] = 'All Objectives';
+$string['allprogramssubhead'] = 'All Programs';

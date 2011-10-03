@@ -23,13 +23,29 @@ $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 // Only return generated tree html
 $treeonly = optional_param('treeonly', false, PARAM_BOOL);
 
+// should we show hidden frameworks?
+$showhidden = optional_param('showhidden', false, PARAM_BOOL);
+
+// check they have permissions on hidden frameworks in case parameter is changed manually
+$context = get_context_instance(CONTEXT_SYSTEM);
+if ($showhidden && !has_capability('moodle/local:updatecompetencyframeworks', $context)) {
+    print_error('nopermviewhiddenframeworks', 'hierarchy');
+}
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
-$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // string of params needed in non-js url strings
-$urlparams = 'id='.$id.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
+$data = array(
+               'id'          => $id,
+               'frameworkid' => $frameworkid,
+               'nojs'        => $nojs,
+               'returnurl'   => $returnurl,
+               's'           => $s
+             );
+$urlparams = http_build_query($data);
 
 if (empty($CFG->competencyuseresourcelevelevidence)) {
     $hierarchy = new competency();
@@ -43,34 +59,9 @@ admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/co
 /// Display page
 ///
 
-if(!$nojs) {
-    /*
-    // build Javascript Treeview
-    if ($treeonly) {
-        echo build_treeview($competencies, get_string('nochildcompetencies', 'competency'), $hierarchy);
-        exit;
-    }
-
-    // If parent id is not supplied, we must be displaying the main page
-    if (!$parentid) {
-        echo '<div class="selectcompetencies">';
-        echo '<div id="available-evidence" class="selected">';
-        echo '</div>';
-        echo '<p><strong>' . get_string('locatecompetency', $hierarchy->prefix) . '</strong></p>';
-        $hierarchy->display_framework_selector('', true);
-        echo '<ul class="filetree treeview">';
-    }
-
-    echo build_treeview($competencies, get_string('nochildcompetencies', 'competency'), $hierarchy);
-
-    // If no parent id, close list
-    if (!$parentid) {
-        echo '</ul></div>';
-    }
-     */
-
+if (!$nojs) {
     // Load dialog content generator
-    $dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid);
+    $dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid, $showhidden);
 
     // Toggle treeview only display
     $dialog->show_treeview_only = $treeonly;
@@ -78,13 +69,16 @@ if(!$nojs) {
     // Load items to display
     $dialog->load_items($parentid);
 
-    // Set selected id
-    $dialog->selected_id = 'available-evidence';
-
     if (empty($CFG->competencyuseresourcelevelevidence)) {
         // Set disabled/selected items
         $dialog->selected_items = $selected;
+    } else {
+        // Set selected id
+        $dialog->selected_id = 'available-evidence';
     }
+
+    // Selected title
+    $dialog->selected_title = 'itemstoadd';
 
     // Display
     echo $dialog->generate_markup();
@@ -105,7 +99,7 @@ if(!$nojs) {
     }
 
     // Load framework
-    if (!$framework = $hierarchy->get_framework($frameworkid)) {
+    if (!$framework = $hierarchy->get_framework($frameworkid, $showhidden)) {
         error('Competency framework could not be found');
     }
 

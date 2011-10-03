@@ -97,7 +97,7 @@ function initCoursesets() {
     $('input[name=update]').css('display', 'none');
     $('input.deletebutton').css('display', 'none');
     $('div.courseadder select').css('display', 'none');
-    $('div.courseadder input:submit').val('<?php echo get_string('addorremovecourses', 'local_program'); ?>');
+    $('div.courseadder input:submit').val('<?php echo get_string('addcourses', 'local_program'); ?>');
     $('div.setbuttons .updatebutton').css('display', 'none');
 
 }
@@ -215,21 +215,21 @@ function handleSaveChanges() {
 
     if (dialog.savechanges == true) {
         window.onbeforeunload = null;
-    return true;
+        return true;
     }
 
     var html = '';
     // Display the number of affected learners (this variable should have been
     // defined in the page (see display_current_status() method in program.class.php)
     if (window.currentassignmentcount !== undefined) {
-        html = '<?php echo addslashes(get_string('affectedusercount','local_program')); ?>'+ window.currentassignmentcount;
+        html = '<?php echo addslashes_js(get_string('affectedusercount','local_program')); ?>'+ window.currentassignmentcount;
     }
-    html = html + '<'+'p><?php echo addslashes(get_string('tosavecontent','local_program')); ?><'+'/p>';
+    html = html + '<'+'p><?php echo addslashes_js(get_string('tosavecontent','local_program')); ?><'+'/p>';
     dialog.open(html);
     dialog.save = function() {
-    dialog.savechanges = true;
-    this.hide();
-    $('input[name="savechanges"]').trigger('click');
+        dialog.savechanges = true;
+        this.hide();
+        $('input[name="savechanges"]').trigger('click');
     }
 
     return false;
@@ -249,22 +249,22 @@ totaraDialog_addmulticourse = function() {
 
     // Call the parent dialog object and link us
     totaraDialog.call(
-    this,
-    'addmulticourse',
-    'unused', // buttonid unused
-    {
-        buttons: {
-        '<?php echo get_string('cancel','local_program'); ?>': function() { handler._cancel(); },
-        '<?php echo get_string('ok','local_program'); ?>': function() { handler._save(); }
-        },
+        this,
+        'addmulticourse',
+        'unused', // buttonid unused
+        {
+            buttons: {
+                '<?php echo get_string('cancel','local_program'); ?>': function() { handler._cancel(); },
+                '<?php echo get_string('ok','local_program'); ?>': function() { handler._save(); }
+            },
             title: '<?php
                 echo '<h2>';
                 echo get_string('addcourses', 'local_program');
                 echo '</h2>';
             ?>'
-    },
-    default_url,
-    handler
+        },
+        default_url,
+        handler
     );
 
 }
@@ -319,23 +319,23 @@ totaraDialog_addcompetency = function() {
 
     // Call the parent dialog object and link us
     totaraDialog.call(
-    this,
-    'addcompetency',
-    'unused', // buttonid unused
-    {
-        buttons: {
-        '<?php echo get_string('cancel','local_program'); ?>': function() { handler._cancel(); },
-        '<?php echo get_string('ok','local_program'); ?>': function() { handler._save(); }
-        },
+        this,
+        'addcompetency',
+        'unused', // buttonid unused
+        {
+            buttons: {
+                '<?php echo get_string('cancel','local_program'); ?>': function() { handler._cancel(); },
+                '<?php echo get_string('ok','local_program'); ?>': function() { handler._save(); }
+            },
             title: '<?php
                 echo '<h2>';
                 echo get_string('addcompetency', 'local_program');
                 echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'addcompetency');
                 echo '</h2>';
             ?>'
-    },
-    default_url,
-    handler
+        },
+        default_url,
+        handler
     );
 
 }
@@ -380,7 +380,7 @@ totaraDialog_handler_addcompetency.prototype._save = function() {
 totaraDialog_addrecurringcourse = function() {
 
     this.url = '<?php echo $CFG->wwwroot; ?>/local/program/content/';
-    this.find_url = 'find_courses.php?id=<?php echo $id ?>';
+    this.find_url = 'find_course.php?id=<?php echo $id ?>';
     this.ajax_url = 'get_html.php?id=<?php echo $id ?>';
 
     // Setup the handler
@@ -390,23 +390,23 @@ totaraDialog_addrecurringcourse = function() {
 
     // Call the parent dialog object and link us
     totaraDialog.call(
-    this,
-    'addrecurringcourse',
-    'unused', // buttonid unused
-    {
-        buttons: {
-        '<?php echo get_string('cancel','local_program'); ?>': function() { handler._cancel(); },
-        '<?php echo get_string('ok','local_program'); ?>': function() { handler._save(); }
-        },
+        this,
+        'addrecurringcourse',
+        'unused', // buttonid unused
+        {
+            buttons: {
+                '<?php echo get_string('cancel','local_program'); ?>': function() { handler._cancel(); },
+                '<?php echo get_string('ok','local_program'); ?>': function() { handler._save(); }
+            },
             title: '<?php
                 echo '<h2>';
                 echo get_string('addcourse', 'local_program');
                 echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'addrecurringcourse');
                 echo '</h2>';
             ?>'
-    },
-    default_url,
-    handler
+        },
+        default_url,
+        handler
     );
 
 }
@@ -458,22 +458,22 @@ totaraDialog_amendmulticourse = function() {
 
     // Call the parent dialog object and link us
     totaraDialog.call(
-    this,
-    'amendmulticourse',
-    'unused', // buttonid unused
-    {
-        buttons: {
-        '<?php echo get_string('cancel','local_program'); ?>': function() { self.handler._cancel(); },
-        '<?php echo get_string('ok','local_program'); ?>': function() { self.handler._save(); }
-        },
+        this,
+        'amendmulticourse',
+        'unused', // buttonid unused
+        {
+            buttons: {
+                '<?php echo get_string('cancel','local_program'); ?>': function() { self.handler._cancel(); },
+                '<?php echo get_string('ok','local_program'); ?>': function() { self.handler._save(); }
+            },
             title: '<?php
                 echo '<h2>';
-                echo get_string('addorremovecourses', 'local_program');
+                echo get_string('addcourses', 'local_program');
                 echo '</h2>';
             ?>'
-    },
-    this.default_url,
-    this.handler
+        },
+        this.default_url,
+        this.handler
     );
 
 }

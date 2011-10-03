@@ -44,8 +44,8 @@ function development_plan_build_settings_form(&$mform, $customdata) {
     global $CFG, $DP_AVAILABLE_ROLES;
 
     //Settings
-    $mform->addElement('header', 'competencysettings', get_string('competencysettings', 'local_plan'));
-    $mform->setHelpButton('competencysettings', array('advancedsettingscompetencysettings', get_string('competencysettings', 'local_plan'), 'local_plan'), true);
+    $mform->addElement('header', 'plansettings', get_string('plansettings', 'local_plan'));
+    $mform->setHelpButton('plansettings', array('advancedsettingsplansettings', get_string('plansettings', 'local_plan'), 'local_plan'), true);
 
     if($templatesettings = get_record('dp_plan_settings', 'templateid', $customdata['id'])) {
         $defaultmanualcomplete = $templatesettings->manualcomplete;

@@ -33,9 +33,8 @@
         error('Site isn\'t defined!');
     }
 
+    local_js(array(TOTARA_JS_UI));
     require_js(array(
-        $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
-        $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js', // for color animation
         $CFG->wwwroot.'/course/highlight_category.js'
     ));
 
@@ -391,7 +390,6 @@ function build_category_edit(&$table, $category, $displaylist, $parentslist, $de
         $linkcss = $category->visible ? '' : ' class="dimmed" ';
         $textcss = $category->visible ? '' : ' class="dimmed_text" ';
         $cat_name .= '<a name="category'.$category->id.'"></a>';
-        $cat_name .= '<span class="category image">'.local_coursecategory_icon_tag($category, 'small').'</span>';
         $cat_name .= '<span '.$textcss.'>'.format_string($category->name).'</span>';
 
         if ($highlightid == $category->id) {

@@ -52,7 +52,7 @@ class prog_message_data {
         (isset($messagedata['contexturlname']))    && ($this->contexturlname = $messagedata['contexturlname']);
         (isset($messagedata['icon']))              && ($this->icon = $messagedata['icon']);
 
-        $this->sendemail = isset($messagedata['sendemail']) ? $messagedata['sendemail'] : TOTARA_MSG_EMAIL_NO;
+        $this->sendemail = isset($messagedata['sendemail']) ? $messagedata['sendemail'] : TOTARA_MSG_EMAIL_YES;
         $this->msgtype   = isset($messagedata['msgtype']) ? $messagedata['msgtype'] : TOTARA_MSG_TYPE_UNKNOWN;
         $this->urgency   = isset($messagedata['urgency']) ? $messagedata['urgency'] : TOTARA_MSG_URGENCY_NORMAL;
 
@@ -190,7 +190,7 @@ abstract class prog_message {
      */
     public static function send_generic_alert($messagedata) {
 
-        (!isset($messagedata->sendemail))   && $messagedata->sendemail  = TOTARA_MSG_EMAIL_NO;
+        (!isset($messagedata->sendemail))   && $messagedata->sendemail  = TOTARA_MSG_EMAIL_YES;
         (!isset($messagedata->msgtype))     && $messagedata->msgtype    = TOTARA_MSG_TYPE_UNKNOWN;
         (!isset($messagedata->urgency))     && $messagedata->urgency    = TOTARA_MSG_URGENCY_NORMAL;
 
@@ -1017,7 +1017,7 @@ class prog_learner_followup_message extends prog_eventbased_message {
  */
 class prog_extension_request_message extends prog_noneventbased_message {
 
-    public function __construct($programid, $messageob=null, $uniqueid=null) {
+    public function __construct($programid, $userid, $messageob=null, $uniqueid=null) {
         global $CFG;
 
         parent::__construct($programid, $messageob, $uniqueid);
@@ -1026,12 +1026,13 @@ class prog_extension_request_message extends prog_noneventbased_message {
         $this->helppage = 'extensionrequestmessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:extensionrequestmessage', 'local_program');
+        $this->userid = $userid;
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/exceptions.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/local/program/manageextensions.php?userid='.$this->userid,
             'contexturlname'    => get_string('manageextensionrequests', 'local_program'),
         );
 

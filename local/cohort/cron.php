@@ -55,4 +55,5 @@ function cohort_cron() {
         }
     }
 
+    return true;
 }

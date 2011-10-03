@@ -54,7 +54,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
         // Get course name
         $course = get_field('course', 'fullname', 'id', $this->iteminstance);
 
-        return '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$this->iteminstance.'">'.$course.'</a>';
+        return '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$this->iteminstance.'">'.format_string($course).'</a>';
     }
 
     /**
@@ -67,7 +67,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
 
         $name = $this->get_type_name();
 
-        return '<a href="'.$CFG->wwwroot.'/course/report/completion/index.php?course='.$this->iteminstance.'">'.$name.'</a>';
+        return '<a href="'.$CFG->wwwroot.'/course/report/completion/index.php?course='.$this->iteminstance.'">'.format_string($name).'</a>';
     }
 
     /**

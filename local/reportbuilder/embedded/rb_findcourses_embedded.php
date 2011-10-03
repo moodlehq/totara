@@ -43,7 +43,7 @@ class rb_findcourses_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'course_category',
-                'value' => 'namelinkicon',
+                'value' => 'namelink',
                 'heading' => get_string('category', 'local_reportbuilder'),
             ),
             array(

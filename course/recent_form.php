@@ -92,15 +92,15 @@ class recent_form extends moodleform {
         $mform->setAdvanced('modid');
 
 
-        if (has_capability('moodle/site:accessallgroups', $context)) {
-            if ($groups = groups_get_all_groups($COURSE->id)) {
-                $options = array('0'=>get_string('allgroups'));
-                foreach($groups as $group) {
-                    $options[$group->id] = format_string($group->name);
-                }
-                $mform->addElement('select', 'group', get_string('groups'), $options);
-                $mform->setAdvanced('group');
+        if (has_capability('moodle/site:accessallgroups', $context) &&
+            $groups = groups_get_all_groups($COURSE->id)) {
+
+            $options = array('0'=>get_string('allgroups'));
+            foreach($groups as $group) {
+                $options[$group->id] = format_string($group->name);
             }
+            $mform->addElement('select', 'group', get_string('groups'), $options);
+            $mform->setAdvanced('group');
         } else {
             $mform->addElement('hidden','group');
             $mform->setType('group', PARAM_INT);

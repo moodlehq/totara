@@ -1,7 +1,5 @@
-<?PHP // $Id$
-      // facetoface.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
-
+<?php
+// facetoface.php - created with Totara langimport script version 1.0
 
 $string['addingsession'] = 'מוסיף מחזור חדש ב-$a';
 $string['addmanageremailaddress'] = 'הוסף כתובת דוא\"ל של מנהל';
@@ -29,6 +27,7 @@ $string['attendees'] = 'משתתפים';
 $string['attendeestablesummary'] = 'אנשים המתוכננים להשתתף או שהשתתפו במחזור זה.';
 $string['booked'] = 'רשום';
 $string['bookingcancelled'] = 'הרשמתך בוטלה.';
+$string['bookingclosed'] = 'ההרשמה סגורה';
 $string['bookingcompleted'] = 'הרשמתך בוצעה.';
 $string['bookingfull'] = 'ההרשמה מלאה';
 $string['bookingopen'] = 'פתוח להרשמה';
@@ -107,6 +106,7 @@ $string['error:cannotsendconfirmationuser'] = 'הייתה בעייה בשליח�
 $string['error:cannotsendconfirmationusermanager'] = 'לא ניתן לשלוח הודעת אישור למייל שלך ושל המנהל שלך.';
 $string['error:cannotsendrequestmanager'] = 'הייתה בעיה בשליחת הודעת בקשת רישום לחשבון הדוא\"ל של מנהלך.';
 $string['error:cannotsendrequestuser'] = 'הייתה בעיה בשליחת הודעת בקשת רישום לכתובת הדוא\"ל שלך.';
+$string['error:canttakeattendanceforunstartedsession'] = 'לא ניתן לתעד נוכחות למפגש שטרם החל.';
 $string['error:couldnotaddfield'] = 'הוספת שדה מותאם אישית למחזור נכשלה.';
 $string['error:couldnotaddnotice'] = 'הוספת הודעת אתר נכשלה.';
 $string['error:couldnotaddsession'] = 'הוספת מחזור נכשלה';
@@ -117,6 +117,7 @@ $string['error:couldnotdeletesession'] = 'מחיקת מחזור נכשלה';
 $string['error:couldnotfindsession'] = 'לא ניתן היה לאתר את המחזור החדש שהוכנס';
 $string['error:couldnotsavecustomfield'] = 'שמירת שדה מותאם אישית נכשלה';
 $string['error:couldnotupdatecalendar'] = 'עדכון אירוע ההדרכה בלוח השנה נכשל.';
+$string['error:couldnotupdatef2frecord'] = 'לא ניתן היה לעדכן תיעוד הרשמה בבסיס הנתונים';
 $string['error:couldnotupdatefield'] = 'עדכון שדה מותאם אישית נכשל.';
 $string['error:couldnotupdatemanageremail'] = 'עדכון כתובת דוא\"ל מנהל נכשלה';
 $string['error:couldnotupdatenotice'] = 'עדכון הודעת אתר נכשלה.';
@@ -128,6 +129,7 @@ $string['error:emptymanageremail'] = 'דוא\"ל מנהל ריק';
 $string['error:emptyvenue'] = 'פרטי בניין ריקים';
 $string['error:enrolmentfailed'] = 'לא ניתן לרשום את $a לקורס.';
 $string['error:eventoccurred'] = 'אינך יכול לבטל אירוע שכבר התרחש.';
+$string['error:f2ffailedupdatestatus'] = 'לא ניתן היה לעדכן את הסטטוס של המשתמש';
 $string['error:incorrectcoursemodule'] = 'רכיב קורס אינו תקין';
 $string['error:incorrectcoursemoduleid'] = 'קוד רכיב קורס אינו תקין';
 $string['error:incorrectcoursemodulesession'] = 'רכיב מחזור פנים-אל-פנים אינו תקין';
@@ -142,6 +144,7 @@ $string['error:nopermissiontosignup'] = 'אין לך הרשאה להירשם ל�
 $string['error:problemsigningup'] = 'הייתה בעיה בהרשמתך.';
 $string['error:removeattendee'] = 'לא ניתן היה למחוק את $a מהמחזור.';
 $string['error:sessionstartafterend'] = 'תאריך סיום המחזור הוא לפני תאריך הפתיחה.';
+$string['error:shortnametaken'] = 'שדה מותאם אישית בשם קצר זה כבר קיים.';
 $string['error:signedupinothersession'] = 'אתה כבר רשום למחזור אחר בהדרכה זו. ניתן להירשם למחזור אחד בלבד בפעילות פנים-אל-פנים.';
 $string['error:unknownbuttonclicked'] = 'אין פעולה שמקושרת לכפתור שנלחץ';
 $string['excelformat'] = 'אקסל';
@@ -150,6 +153,7 @@ $string['exportattendance'] = 'ייצא נוכחות';
 $string['exporttofile'] = 'יצא לקובץ';
 $string['facetoface'] = 'הדרכה פנים-אל-פנים';
 $string['facetoface:addattendees'] = 'הוסף משתתפים למחזור';
+$string['facetoface:editattendees'] = 'הוסף או מחק משתתפים מהמחזור';
 $string['facetoface:editsessions'] = 'הוסף, ערוך, העתק ומחק מחזורים';
 $string['facetoface:overbook'] = 'הרשמה למחזורים מלאים.';
 $string['facetoface:removeattendees'] = 'הסר משתתפים ממחזור פנים-אל-פנים';
@@ -237,9 +241,12 @@ $string['placeholder:facetofacename'] = '[facetofacename]';
 $string['placeholder:finishtime'] = '[finishtime]';
 $string['placeholder:firstname'] = '[firstname]';
 $string['placeholder:lastname'] = '[lastname]';
+$string['placeholder:location'] = '[location]';
 $string['placeholder:reminderperiod'] = '[reminderperiod]';
+$string['placeholder:room'] = '[room]';
 $string['placeholder:sessiondate'] = '[sessiondate]';
 $string['placeholder:starttime'] = '[starttime]';
+$string['placeholder:venue'] = '[venue]';
 $string['points'] = 'נקודות';
 $string['pointsplural'] = 'נקודות';
 $string['previoussessions'] = 'מחזורים קודמים';
@@ -263,9 +270,12 @@ $string['seatsavailable'] = 'מקומות פנויים';
 $string['seeattendees'] = 'צפה במשתתפים';
 $string['sentremindermanager'] = 'שלח מייל תזכורת למנהל של המשתמש';
 $string['sentreminderuser'] = 'שלח מייל תזכורת למשתמש';
+$string['sessionadded'] = 'המחזור הוסף';
+$string['sessioncopied'] = 'המחזור הועתק';
 $string['sessiondate'] = 'תאריך המחזור';
 $string['sessiondatetime'] = 'מועדי המחזור';
 $string['sessiondatetimeknown'] = 'מועד ההדרכה ידוע';
+$string['sessiondeleted'] = 'המחזור נמחק';
 $string['sessionfinishtime'] = 'שעת סיום המחזור';
 $string['sessioninprogress'] = 'מחזור בתהליך';
 $string['sessionisfull'] = 'מחזור זה מלא, עליך לבחור מועד אחר או לפנות לגוף ההדרכה.';
@@ -655,13 +665,5 @@ $string['xhours'] = '$a שעות';
 $string['xminutes'] = '$a דקות';
 $string['youarebooked'] = 'אתה רשום למחזור זה';
 $string['youremailaddress'] = 'כתובת הדוא\"ל שלך';
-$string['bookingclosed'] = 'ההרשמה סגורה'; // ORPHANED
-$string['placeholder:location'] = '[location]'; // ORPHANED
-$string['placeholder:room'] = '[room]'; // ORPHANED
-$string['placeholder:venue'] = '[venue]'; // ORPHANED
-$string['facetoface:editattendees'] = 'הוסף או מחק משתתפים מהמחזור'; // ORPHANED
-$string['sessionadded'] = 'המחזור הוסף'; // ORPHANED
-$string['sessioncopied'] = 'המחזור הועתק'; // ORPHANED
-$string['sessiondeleted'] = 'המחזור נמחק'; // ORPHANED
 
 ?>

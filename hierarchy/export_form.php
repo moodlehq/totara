@@ -61,9 +61,7 @@ class hierarchy_export_form extends moodleform {
             $group[] =& $mform->createElement('submit', 'export', get_string('export','hierarchy'));
             $mform->addGroup($group, 'exportgroup', '', array(' '), false);
         }
-
     }
-
 }
 
 

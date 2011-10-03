@@ -92,7 +92,7 @@ $navigation = build_navigation($navlinks);
 
 print_header_simple($pagetitle, '', $navigation, '', null, true);
 
-$heading = "{$framework->fullname} - {$item->fullname}";
+$heading = format_string("{$framework->fullname} - {$item->fullname}");
 
 // add editing icon
 $str_edit = get_string('edit');
@@ -136,7 +136,7 @@ foreach ($data as $ditem) {
 
     echo '<tr class="r'.$oddeven.'">';
     echo '<th class="header">'.format_string($ditem['title']).'</th>';
-    echo '<td class="cell">'.$ditem['value'].'</td>';
+    echo '<td class="cell">'.format_string($ditem['value']).'</td>';
     echo '</tr>'.PHP_EOL;
 }
 
@@ -162,5 +162,5 @@ if ($can_edit) {
     echo '</div>';
 }
 /// and proper footer
-add_to_log(SITEID, $prefix, 'view item', "item/view.php?prefix={$prefix}&amp;framework={$framework->id}&amp;id={$item->id}", "{$item->fullname} (ID {$item->id})");
+add_to_log(SITEID, $prefix, 'view item', "item/view.php?prefix={$prefix}&amp;framework={$framework->id}&amp;id={$item->id}", substr(strip_tags($item->fullname), 0, 200) . " (ID {$item->id})");
 print_footer();

@@ -168,6 +168,10 @@ class dp_objective_component extends dp_base_component {
                 TOTARA_JS_DIALOG,
                 TOTARA_JS_TREEVIEW
             ));
+
+            require_js(array(
+                $CFG->wwwroot.'/local/plan/component.js.php?planid='.$this->plan->id.'&amp;component=objective&amp;viewas='.$this->plan->viewas,
+            ));
         }
     }
 
@@ -279,10 +283,10 @@ class dp_objective_component extends dp_base_component {
         $icon = $this->determine_item_icon($item);
         return '<img class="objective_state_icon" src="' .
             $CFG->wwwroot . '/local/icon/icon.php?icon=' . $icon .
-            '&amp;size=small&amp;type=msg" alt="' . $item->fullname.
+            '&amp;size=small&amp;type=msg" alt="' . format_string($item->fullname).
             '"><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->fullname .
+            $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
             '</a>';
     }
 
@@ -341,9 +345,10 @@ class dp_objective_component extends dp_base_component {
      * Process component's settings update
      *
      * @access  public
+     * @param   bool    $ajax   Is an AJAX request (optional)
      * @return  void
      */
-    public function process_settings_update() {
+    public function process_settings_update($ajax = false) {
         global $CFG;
 
         if (!confirm_sesskey()) {
@@ -364,11 +369,11 @@ class dp_objective_component extends dp_base_component {
         $currentuser = $this->plan->userid;
 
         $status = true;
-        if(!empty($duedates) && $cansetduedates) {
+        if (!empty($duedates) && $cansetduedates) {
             // Update duedates
-            foreach($duedates as $id => $duedate) {
+            foreach ($duedates as $id => $duedate) {
                 // allow empty due dates
-                if($duedate == '' || $duedate == 'dd/mm/yy') {
+                if ($duedate == '' || $duedate == 'dd/mm/yy') {
                     if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
                         $duedateout = $this->plan->enddate;
                     } else {
@@ -393,10 +398,10 @@ class dp_objective_component extends dp_base_component {
             }
         }
 
-        if(!empty($priorities) && $cansetpriorities) {
-            foreach($priorities as $id => $priority) {
+        if (!empty($priorities) && $cansetpriorities) {
+            foreach ($priorities as $id => $priority) {
                 $priority = (int) $priority;
-                if(array_key_exists($id, $stored_records)) {
+                if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$id]->priority = $priority;
                 } else {
@@ -410,7 +415,7 @@ class dp_objective_component extends dp_base_component {
         }
 
         if (!empty($proficiencies) && $cansetprofs) {
-            foreach( $proficiencies as $id => $proficiency){
+            foreach ($proficiencies as $id => $proficiency){
                 $proficiency = (int) $proficiency;
                 if (array_key_exists($id, $stored_records) ){
                     // add to the existing update object
@@ -465,9 +470,12 @@ class dp_objective_component extends dp_base_component {
             foreach ($stored_records as $itemid => $record) {
                 $record = addslashes_recursive($record);
                 $status = $status & update_record('dp_plan_objective', $record);
-                $scale_value_record = get_record('dp_objective_scale_value', 'id', $record->scalevalueid);
-                if ($scale_value_record->achieved == 1) {
-                    dp_plan_item_updated($currentuser, 'objective', $id);
+
+                if (isset($record->scalevalueid)) {
+                    $scale_value_record = get_record('dp_objective_scale_value', 'id', $record->scalevalueid);
+                    if ($scale_value_record->achieved == 1) {
+                        dp_plan_item_updated($currentuser, 'objective', $id);
+                    }
                 }
             }
             if ($status) {
@@ -558,7 +566,7 @@ class dp_objective_component extends dp_base_component {
 
             if ($this->plan->reviewing_pending) {
                 return $status;
-            } else {
+            } elseif (!$ajax) {
                 if ($status) {
                     totara_set_notification(get_string('objectivesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
                 } else {
@@ -571,7 +579,10 @@ class dp_objective_component extends dp_base_component {
             return null;
         }
 
-        redirect($currenturl);
+        // Do not redirect if ajax request
+        if (!$ajax) {
+            redirect($currenturl);
+        }
     }
 
 
@@ -1028,8 +1039,7 @@ class dp_objective_component extends dp_base_component {
             return '';
         }
 
-        $coursename = get_string('courseplural', 'local_plan');
-        $btntext = get_string('updatelinkedx', 'local_plan', strtolower($coursename));
+        $btntext = get_string('addlinkedcourses', 'local_plan');
 
         $html  = '<div class="buttons">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';
@@ -1092,8 +1102,8 @@ SQL;
 
         $out .= "<table><tr><td>";
         $icon = $this->determine_item_icon($item);
-        $icon = "<img class=\"objective_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"{$item->fullname}\">";
-        $out .= '<h3>' . $icon . $item->fullname . '</h3>';
+        $icon = "<img class=\"objective_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"" . format_string($item->fullname) . "\">";
+        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
         $out .= "</td></tr></table>";
 
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
@@ -1144,7 +1154,7 @@ SQL;
             $out .= $this->display_approval($item, false, false)."</td>\n";
         }
         $out .= '</table>';
-        $out .= "  <p>{$item->description}</p>\n";
+        $out .= "  <p>" . format_string($item->description) . "</p>\n";
 
         print $out;
     }
@@ -1156,6 +1166,8 @@ SQL;
      * @return string
      */
     function display_proficiency($ca) {
+        global $CFG;
+
         // Get the proficiency values for this plan
         static $proficiencyvalues;
         if (!isset($proficiencyvalues)) {
@@ -1164,22 +1176,30 @@ SQL;
 
         $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
         $cansetprof = $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
-        $out = '';
 
         $selected = $ca->scalevalueid;
 
-        if ( !$plancompleted && $cansetprof ){
+        if (!$plancompleted && $cansetprof) {
             // Show the menu
             $options = array();
-            foreach( $proficiencyvalues as $id => $val){
+            foreach ($proficiencyvalues as $id => $val) {
                 $options[$id] = $val->name;
             }
-            return choose_from_menu($options, "proficiencies[{$ca->id}]", $selected, null, '', null, true);
+
+            return choose_from_menu(
+                $options,
+                "proficiencies[{$ca->id}]",
+                $selected,
+                null,
+                '',
+                null,
+                true
+            );
 
         } else {
             // They can't change the setting, so show it as-is
             $out = format_string($proficiencyvalues[$selected]->name);
-            if ( $proficiencyvalues[$selected]->achieved ){
+            if ($proficiencyvalues[$selected]->achieved) {
                 $out = '<b>'.$out.'</b>';
             }
             return $out;

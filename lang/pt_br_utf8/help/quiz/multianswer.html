@@ -1,0 +1,57 @@
+<h1>Respostas embutidas (Cloze)</h1>
+<P>Este tipo muito flexível de pergunta é similar ao formato popular conhecido como  
+formato Cloze. </P>
+<P>As perguntas consistem em uma passagem de texto (no formato Moodle) que tem várias  
+respostas embutidas dentro dela, incluindo escolha múltipla, respostas breves e 
+respostas numéricas.</P>
+<P>Não existe uma interface gráfica para criar estas perguntas - deve-se 
+especificar o formato da pergunta utilizando-se uma caixa de texto ou importando de arquivos 
+externos.</P>
+<P>Aqui está um exemplo de um texto de entrada utilizado para especificar tal pergunta:</P>
+<FORM action="">
+<CENTER><TEXTAREA rows=15 wrap=virtual cols=60>Esta pergunta consiste em alguns textos com uma resposta embutida exatamente aqui {1:MULTICHOICE:Resposta errada#Avaliação para a resposta errada~Outra resposta errada#Avaliação para a outra resposta errada~=Resposta correta#Avaliação para a resposta correta~%50%Resposta que dá metade dos créditos#Avaliação para a resposta com metade dos créditos} e exatamente depois disto deverá lidar com esta resposta breve {1:SHORTANSWER:Resposta errada#Avaliação para a resposta errada~=Resposta correta#Avaliação para a resposta correta~%50%Resposta que dá metada dos créditos#Avaliação para a resposta com metada dos créditos} e finalmente tem-se um número com ponto flutuante {2:NUMERICAL:=23.8:0.1#Avaliação para a resposta correta 23.8~%50%23.8:2#Avaliação para a resposta com metade dos créditos na região próxima à resposta correta}.
+
+Note que endereços como www.moodle.org e smileys :-) trabalham normalmente:
+ a) Isto é bom? {:MULTICHOICE:=Sim#Correto~Não#Você tem uma opinião diferente}
+ b) Qual a nota que você daria a isto? {3:NUMERICAL:=3:2}
+
+Boa sorte!
+</TEXTAREA> </CENTER></FORM>
+<P>Este exemplo aparecer&aacute; aos estudantes como se segue:</P>
+<FORM action="">
+<TABLE class=generalbox cellSpacing=0 cellPadding=5 width="90%" align=center 
+border=0>
+  <TBODY>
+  <TR>
+    <TD class=generalboxcontent bgColor=#ffffff>
+      <TABLE cellSpacing=10 width="100%">
+        <TBODY>
+        <TR>
+          <TD vAlign=top noWrap width=100>
+            <P align=center><B>3</B></P>
+            <P align=center><FONT size=1>8 Marcas</FONT></P><IMG height=1 alt="" 
+            src="" width=100><BR></TD>
+          <TD vAlign=top>
+            <P>Esta pergunta consiste em alguns textos com uma resposta embutida exatamente 
+            aqui <SELECT name=q4ma1><OPTION selected>&nbsp;</OPTION><OPTION 
+              value=4>Resposta errada</OPTION><OPTION value=5>Outra resposta 
+              errada</OPTION><OPTION value=6>Resposta correta</OPTION><OPTION 
+              value=7>Resposta que dá metade dos créditos</OPTION></SELECT> e 
+            exatamente depois disto deverá lidar com esta resposta breve <INPUT 
+            size=8 name=q4ma2> e finalmente tem-se um número com ponto flutuante 
+            <INPUT size=8 name=q4ma3> .<BR><BR>Note que endereços como <A 
+            href="http://www.moodle.org/" 
+            target=_blank>http://www.moodle.org/</A> e smileys <IMG height=15 
+            alt="" src="" width=15 border=0> trabalham normalmente:<BR>a) Isto é  
+            bom? 
+            <select name=q4ma4>
+              <option 
+              selected>&nbsp;</option>
+              <option value=13>Yes</option>
+              <option 
+              value=14>No</option>
+            </select> 
+            <BR>
+            b) Qual a nota que você daria a isto? 
+            <INPUT size=8 name=q4ma5> <BR><BR>Boa 
+    sorte!</P></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM>

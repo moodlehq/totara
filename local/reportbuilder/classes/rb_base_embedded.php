@@ -75,4 +75,26 @@ class rb_base_embedded {
         }
     }
 
+    /**
+     * Look up the embedded name for a heading for a particular embedded report
+     *
+     * @param string $type The type of the column
+     * @param string $value The value of the column
+     *
+     * @return string The heading specified in the embedded report or false if it's not specified
+     */
+    function get_embedded_heading($type, $value) {
+        if (!isset($this->columns) || !is_array($this->columns)) {
+            // no columns defined
+            return false;
+        }
+        foreach ($this->columns as $column) {
+            if ($column['type'] == $type && $column['value'] == $value) {
+                // return the column's heading
+                return $column['heading'];
+            }
+        }
+        // column matching that type/value pair not found
+        return false;
+    }
 }

@@ -35,29 +35,24 @@ require_login();
 $id = required_param('id', PARAM_INT); // program id
 
 $program = new program($id);
-if (!$program->is_accessible()) {
-    $program->display_access_error();
-}
 
 add_to_log(SITEID, 'program', 'view', "view.php?id={$program->id}&amp;userid={$USER->id}", $program->fullname);
+
+//Javascript include
+local_js(array(
+    TOTARA_JS_DIALOG,
+));
+
+// Get extension dialog content
+require_js(array(
+    $CFG->wwwroot . '/local/program/view/program_view.js.php?id=' . $program->id
+));
 
 ///
 /// Display
 ///
 
 $adminediting = !empty($USER->categoryedit);
-
-// Construct breadcrumbs using category path
-$category = get_record('course_categories', 'id', $program->category);
-$bread = explode('/', $category->path);
-$bread_ids = substr(implode(',', $bread), 1);
-$sql = "SELECT id, name FROM {$CFG->prefix}course_categories WHERE id IN ({$bread_ids}) ORDER BY depth";
-$cat_bread = array();
-if($bread_info = get_records_sql($sql)) {
-    foreach($bread_info as $b) {
-        $cat_bread[] = array('name' => format_string($b->name), 'link' => $CFG->wwwroot . '/course/category.php?id='.$b->id, 'type' => 'misc');
-    }
-}
 
 $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
@@ -83,7 +78,14 @@ print_container_start(false, '', 'view-program-content');
 
 print_heading($heading);
 
-echo $program->display(null);
+/* if the logged in user has been assigned this program,
+ * then they should always see their progress - even on
+ * the searched pages */
+if ($program->is_program_inprogress($USER->id)) {
+    echo $program->display($USER->id);
+} else {
+    echo $program->display();
+}
 
 print_container_end();
 

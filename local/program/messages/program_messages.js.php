@@ -77,7 +77,7 @@ function handleSaveChanges() {
         return true;
     }
 
-    dialog.open('<?php echo addslashes(get_string('tosavemessages','local_program')); ?>');
+    dialog.open('<?php echo addslashes_js(get_string('tosavemessages','local_program')); ?>');
     dialog.save = function() {
     dialog.savechanges = true;
     this.hide();

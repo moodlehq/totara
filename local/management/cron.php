@@ -59,7 +59,7 @@ class manager {
 function management_cron() {
     global $CFG;
 
-    mtrace("Updating the local management heirarchy...");
+    mtrace("Updating the local management hierarchy...");
 
     // Build the management hierarchy
     $sql = "SELECT pa.*
@@ -74,40 +74,45 @@ function management_cron() {
     $top_manager = new manager(0);
     $managers[0] = $top_manager;
 
-    foreach ($pos_assignments as $assignment) {
-        if (!isset($managers[$assignment->userid])) {
-            $managers[$assignment->userid] = new manager($assignment->userid);
-        }
+    if (is_array($pos_assignments)) {
+        foreach ($pos_assignments as $assignment) {
+            if (!isset($managers[$assignment->userid])) {
+                $managers[$assignment->userid] = new manager($assignment->userid);
+            }
 
-        if (empty($assignment->reportstoid)) {
-            $assignment->reportstoid = 0;
-        }
-        else {
-            // Lookup the managers id
-            $assignment->reportstoid = get_field('role_assignments', 'userid', 'id', $assignment->reportstoid);
-        }
+            $assignment->reportstoid = isset($assignment->managerid) ? $assignment->managerid : 0;
 
-        if (!isset($managers[$assignment->reportstoid])) {
-            $managers[$assignment->reportstoid] = new manager($assignment->reportstoid);
-        }
+            if (!isset($managers[$assignment->reportstoid])) {
+                $managers[$assignment->reportstoid] = new manager($assignment->reportstoid);
+            }
 
-        // Get the user ids of the chain of parents, starting from the manager
-        $ids = get_ids_in_chain($managers[$assignment->reportstoid]);
+            // Get the user ids of the chain of parents, starting from the manager
+            $ids = get_ids_in_chain($managers[$assignment->reportstoid]);
 
-        // See if the user is in the chain of managers!
-        if (in_array($managers[$assignment->userid]->id, $ids)) {
-            $error = "ERROR: making user_$assignment->reportstoid the manager of user_$assignment->userid would cause a circular reference! ";
-            echo $error;
-        }
-        else {
-            $managers[$assignment->reportstoid]->addChild($managers[$assignment->userid]);
+            // See if the user is in the chain of managers!
+            if (in_array($managers[$assignment->userid]->id, $ids)) {
+                $error = "ERROR: making user_$assignment->reportstoid the manager of user_$assignment->userid would cause a circular reference! ";
+                echo $error;
+            }
+            else {
+                $managers[$assignment->reportstoid]->addChild($managers[$assignment->userid]);
+            }
         }
     }
 
     // Drop all existing records from the table
-    execute_sql("TRUNCATE {$CFG->prefix}manager CASCADE", false);
-    execute_sql("SELECT setval('{$CFG->prefix}manager_id_seq', 1, false)", false);
-
+    if ($CFG->dbfamily == 'postgres') {
+        // If using postgres - we need to specify CASCADE, in MySQL this is handled by the
+        //  settings in each foreign key instead of the truncate statement
+        execute_sql("TRUNCATE {$CFG->prefix}manager CASCADE", false);
+        // if using postgres, need to manually reset the primary key auto increment counter
+        // this is done automatically in MySQL 5.0.13 and later (also, no setval function
+        // in mysql) Truncate appears to be fairly universal, despite not being in the SQL
+        // Standard.
+        execute_sql("SELECT setval('{$CFG->prefix}manager_id_seq', 1, false)", false);
+    } else {
+        execute_sql("TRUNCATE {$CFG->prefix}manager", false);
+    }
     $sortorder = 1;
 
     // For each top level manager..

@@ -1,5 +1,5 @@
-<?PHP // $Id: question.php,v 1.23 2011/04/03 05:30:39 emanuel1 Exp $
-      // question.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
+<?PHP // $Id$ 
+      // question.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
 
 
 $string['adminreport'] = 'דווח על בעיות אפשריות במסד הנתונים של שאלותיך';
@@ -9,7 +9,7 @@ $string['categorycurrent'] = 'קטגוריה נוכחית';
 $string['categorycurrentuse'] = 'השתמש בקטגוריה זאת';
 $string['categorydoesnotexist'] = 'קטגוריה זו לא קיימת';
 $string['categorymoveto'] = 'שמור בקטגוריה';
-$string['changepublishstatuscat'] = '<a href=\"$a->caturl\">לקטגוריה \"$a->name\"</a>בקורס \"$a->coursename\" יהיה מצב שיתופי שישונה מ<strong>$a->changefrom ל$a->changeto </strong>';
+$string['changepublishstatuscat'] = '<a href=\"caturl\">לקטגוריה \"a->name\"</a>בקורס \"$a->coursename\" יהיה סטאטוס שיתופי שישונה מ<strong>$a->changefrom ל$a->changeto </strong>';
 $string['copy'] = 'העתק מ $a ושנה את הקישורים';
 $string['created'] = 'נוצר ב-';
 $string['createdmodifiedheader'] = 'נוצר/שונה ב-';
@@ -38,6 +38,8 @@ $string['errorprocessingresponses'] = 'שגיאה חלה כאשר נעבדו ה�
 $string['errorsavingcomment'] = 'שגיאה בשמירת תגובה לשאלה $a->name במסד נתונים זה.';
 $string['errorupdatingattempt'] = 'שגיאה בעדכון נסיון $a->id במסד נתונים זה.';
 $string['exportcategory'] = 'יצוא קטגוריה';
+$string['filecantmovefrom'] = 'לא ניתן להעביר קבצי השאלות מכיוון שאין לך הרשאות להסיר את הקבצים מהמקום ממנו אתה מנסה להעביר אותם.';
+$string['filecantmoveto'] = 'לא ניתן להעתיק את קבצי השאלות מכיוון שאין לך הרשאות להוסיף קבצים למקום אליו אתה מנסה להעבירם.';
 $string['filesareacourse'] = 'אזור הקבצים של הקורס';
 $string['filesareasite'] = 'אזור בקסצים של האתר';
 $string['filestomove'] = 'העתק/הסט קבצים ל-$a?';
@@ -79,7 +81,7 @@ $string['questionbank'] = 'מאגר שאלות';
 $string['questioncategory'] = 'קטגוריית שאלה';
 $string['questioncatsfor'] = 'קטגוריות שאלה עבור \'$a\'';
 $string['questiondoesnotexist'] = 'שאלה זו לא קיימת.';
-$string['questionsmovedto'] = 'שאלות שבשימוש הועברו ל\"$a\" בקטגוריית קורס האב.';
+$string['questionsmovedto'] = 'שאלות שבשימוש הועברו ל\"$a\" בקטגוריית הקורס האב.';
 $string['questionsrescuedfrom'] = 'שאלות נשמרו מקונטקסט $a.';
 $string['questionsrescuedfrominfo'] = 'שאלות אלו (כאלו שכנראה הוסתרו) נשמרו כאשר קונטקסט $a נמחקו מפני שהם עדיין בשימוש ע\"י בחנים ופעילויות מסויימות.';
 $string['questionuse'] = 'השתמש בשאלה בפעילות זאת';
@@ -93,17 +95,5 @@ $string['upgradeproblemcategoryloop'] = 'בעיה הובחנה כאשר עודכ
 $string['upgradeproblemcouldnotupdatecategory'] = 'לא ניתן היה לעדכן את קטגוריית השאלה $a->name ($a->id).';
 $string['upgradeproblemunknowncategory'] = 'בעיה הובחנה כאשר עודכנה קטגוריית שאלות. קטגוריית  $a->id מתייחסת לאב $a->parent אשר איננו קיים. האב שונה לתקן את המצב הנ\"ל.';
 $string['yourfileshoulddownload'] = 'קובץ היצוא אמור להתחיל לרדת מייד. אם איננו יורד , אנא לחצו <a href=\"$a\">כאן </a>.';
-
-?>
-<?PHP // $Id$
-      // question.php - created with Moodle 1.9.5+ (Build: 20090624) (2007101550)
-
-
-
-$string['changepublishstatuscat'] = '<a href=\"caturl\">לקטגוריה \"a->name\"</a>בקורס \"$a->coursename\" יהיה סטאטוס שיתופי שישונה מ<strong>$a->changefrom ל$a->changeto </strong>';
-$string['deletecoursecategorywithquestions'] = 'קיימות שאלות בבנק השאלות המשוייכות לקטגוריית קורס זה. אם תמשיך, הן תימחקנה. תוכל להעבירם למקום אחר באמצעות שימוש בבנק השאלות';
-$string['filesareacourse'] = 'אזור הקבצים של הקורס';
-$string['questionaffected'] = '<a href=\"$a->qurl\">שאלה \"$a->name\" ($a->qtype)</a> בקטגורית שאלה זו אך היא גם נלקחת בשימוש ב<a href=\"$a->qurl\"> בוחן \"$a->quizname\"</a> בקורס אחר \"$a->coursename';
-$string['questionsmovedto'] = 'שאלות שבשימוש הועברו ל\"$a\" בקטגוריית הקורס האב.';
 
 ?>

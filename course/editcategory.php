@@ -37,8 +37,6 @@ if ($id) {
     $strtitle = get_string("addnewcategory");
 }
 
-local_js(array(TOTARA_JS_ICON_PREVIEW));
-
 $mform = new editcategory_form('editcategory.php', $category);
 $mform->set_data($category);
 
@@ -85,10 +83,6 @@ if ($mform->is_cancelled()) {
         mark_context_dirty($newcategory->context->path);
         fix_course_sortorder(); // Required to build course_categories.depth and .path.
     }
-
-    // Update category icon
-    $category_icon = new category_icon();
-    $category_icon->process_form($data);
 
     redirect('index.php?highlightid='.$newcategory->id.'&amp;categoryedit=on#category'.$newcategory->id);
 }

@@ -1,0 +1,58 @@
+<h1>Tillstånd</h1>
+
+<p>
+Tillstånd är de inställningar som Du medger för vissa specifika kapaciteter. 
+</p>
+
+<p>
+Det kan t.ex. vara kapaciteten att 'Starta ett nytt diskussionsämne' (i forum).
+</p>
+
+<p>
+I varje roll kan Du välja att ställa in tillståndet för en sådan kapacitet
+till ett av fyra värden: 
+<dl>
+<dt>INTE INSTÄLLT</dt>
+<dd>Detta är, normalt sett, det förinställda standardvärdet.
+Det är en neutral inställning som betyder 'använd de inställningar som redan gäller för användaren'.   
+Om någon blir tilldelad en roll (t.ex. i en kurs) som har detta tillstånd för en kapacitet
+då kommer det faktiska tillstånd som de kommer att ha bara att vara samma tillstånd som de har 
+i det högre sammanhanget (t.ex. på kategori- eller webbplatsnivå).   
+Och i slutänden blir det så att, om rollen inte medger ett tillstånd på någon nivå så kommer användaren inte att ha något tillstånd för den kapaciteten. 
+    </dd>
+
+<dt>TILLÅT</dt>
+<dd>Om Du väljer detta så innebär det att Du medger tillstånd för den här kapaciteten till dem som har tilldelats den här rollen. Detta tillstånd är tillämpbart på det sammanhang där denna roll tilldelas - och för alla 'lägre' sammanhang.  Om det här t.ex. är en roll som 'Lärande' som är tilldelad en kurs då kommer de som har rollen att kunna 'Starta nytt diskussionsämne' i alla forum i den kursen. Detta FÖRUTOM i de fall då något forum innehåller ett överskridande eller en ny uppgift med ett Förhindra eller Förbjud-attribut för den här kapaciteten.</dd>
+
+<dt>FÖRHINDRA</dt>
+<dd>Om Du väljer detta så innebär det att Du tar bort tillståndet för den här kapaciteten även om användarna med denna roll skulle ha kvar tillståndet på en högre nivå. </dd>
+
+<dt>FÖRBJUD</dt>
+<dd>Det här behöver Du sällan använda men någon gång kan Du tänkas vilja neka tillstånd för en roll 
+helt och hållet och det så att det INTE går att överskrida det på något sätt i ett 'lägre' sammanhang. Ett bra exempel är när en sysadmin vill förhindra en person från att starta några nya diskussionsämnen på webbplatsen överhuvudtaget. I det fallet kan de skapa en roll där denna kapacitet är inställd till 'Förbjud' och sedan tilldela den personen rollen på webbplatsnivå.  
+  </dd>
+
+</dl>
+</p>
+
+<h1>Hur hanteras tillstånd som strider mot varandra?</h1>
+
+<p> Tillstånd i ett 'lägre' sammanhang kommer generellt sett att överskrida allting i ett 'högre' sammanhang (detta är tillämpbart på överskridanden och tilldelade roller). Undantaget är   FÖRBJUD som inte kan överskridas i lägre sammanhang. 
+</p>
+
+<p> Om två roller skulle tilldelas samma person i ett visst givet sammanhang, den ena med TILLÅT och den andra med FÖRHINDRA - vilken är det då som kommer att gälla? I det här fallet kommer Moodle att inspektera trädet för sammanhang och leta efter 'något som kan avgöra det hela'.   </p>
+    
+<p> Om t.ex. en student/elev/deltagare/lärande har två roller i en kurs; en som tillåter honom/henne att starta nya diskussionsämnen och en som förhindrar detta. I det här fallet kontrollerar vi sammanhangen på kategori- och webbplatsnivå för att hitta något annat definierat tillstånd som kan hjälpa oss att avgöra saken. Om vi inte kan hitta någonting så är det tillståndet FÖRHINDRA som gäller som förinställt standardvärde. Detta därför att de två tillstånden tar ut varandra och därmed har Du inget tillstånd.
+</p>
+
+<h1>Speciella undantag</h1>
+
+<p> Lägg märke till att kontot för gästanvändare normalt sett förhindrar gäster från att bidra med innehåll, (t.ex. i forum, kalendrar, bloggar osv) även om det har tilldelats tillståndet att göra det. 
+
+<p>
+Se även
+<a href="help.php?file=roles.html">Roller</a>,
+<a href="help.php?file=contexts.html">Sammanhang</a>,
+<a href="help.php?file=assignroles.html">Tilldela roller</a> and
+<a href="help.php?file=overrides.html">Överskridanden</a>.
+</p>

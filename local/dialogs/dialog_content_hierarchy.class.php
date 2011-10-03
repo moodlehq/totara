@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
  * @package totara
- * @subpackage dialogs 
+ * @subpackage dialogs
  */
 
 /**
@@ -92,6 +92,13 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
      */
     public $switch_frameworks = false;
 
+    /**
+     * Show hidden frameworks
+     *
+     * @access public
+     * @var    boolean
+     */
+    public $showhidden = false;
 
     /**
      * Load hierarchy specific information and make some
@@ -100,10 +107,11 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
      * @see     totara_dialog_hierarchy::skip_access_checks
      *
      * @access  public
-     * @param   $prefix           string  Hierarchy prefix
+     * @param   $prefix         string  Hierarchy prefix
      * @param   $frameworkid    int     Framework id (optional)
+     * @param   $showhidden     boolean When listing frameworks, include hidden frameworks (optional)
      */
-    public function __construct($prefix, $frameworkid = 0) {
+    public function __construct($prefix, $frameworkid = 0, $showhidden = false) {
 
         // Make some capability checks
         if (!$this->skip_access_checks) {
@@ -114,11 +122,20 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
         // Load hierarchy instance
         $this->hierarchy = hierarchy::load_hierarchy($prefix);
 
+        // Should the dialog display hidden frameworks?
+        $this->showhidden = $showhidden;
+
         // Set lang file
         $this->lang_file = $prefix;
 
         // Load framework
         $this->set_framework($frameworkid);
+
+        // Print error message then die if there are no frameworks
+        if (empty($this->framework)) {
+            echo '<p>' . get_string('noframeworkssetup', $prefix) . '</p>';
+            die();
+        }
 
         // Check if switching frameworks
         $this->switch_frameworks = optional_param('switchframework', false, PARAM_BOOL);
@@ -133,11 +150,8 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
      */
     public function set_framework($frameworkid) {
 
-        if (!$framework = $this->hierarchy->get_framework($frameworkid, true)) {
-            print_error('frameworkdoesntexist', 'hierarchy', $frameworkid);
-        }
+        $this->framework = $this->hierarchy->get_framework($frameworkid, $this->showhidden, true);
 
-        $this->framework = $framework;
     }
 
 
@@ -172,7 +186,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
             return '';
         }
 
-        return $this->hierarchy->display_framework_selector('', true, true);
+        return $this->hierarchy->display_framework_selector('', true, true, $this->showhidden);
     }
 
 
@@ -201,6 +215,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
         $select = !$this->disable_picker; # Only show select if picker isn't disabled
         $disabledlist = array_flip(array_keys($this->disabled_items)); # Return an array without values
         $templates = $this->templates_only;
+        $showhidden = $this->showhidden;
 
         // Grab search page markup
         ob_start();
@@ -226,14 +241,15 @@ class totara_dialog_content_hierarchy_multi extends totara_dialog_content_hierar
      * @access  public
      * @param   $prefix               string  Hierarchy prefix
      * @param   $frameworkid        int     Framework id (optional)
+     * @param   $showhidden     boolean When listing frameworks, include hidden frameworks (optional)
      * @param   $skipaccesschecks   boolean Indicate whether access checks should be performed
      */
-    public function __construct($prefix, $frameworkid = 0, $skipaccesschecks=false) {
+    public function __construct($prefix, $frameworkid = 0, $showhidden = false, $skipaccesschecks=false) {
 
         $this->skip_access_checks = $skipaccesschecks;
 
         // Run parent constructor
-        parent::__construct($prefix, $frameworkid);
+        parent::__construct($prefix, $frameworkid, $showhidden);
 
         // Set to type multi
         $this->type = self::TYPE_CHOICE_MULTI;

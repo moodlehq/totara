@@ -68,7 +68,7 @@ foreach ($hlist AS $index => $hname) {
         continue;
     }
     $hierarchy = new $hname();
-    $frameworks->$hname = $hierarchy->get_frameworks();
+    $frameworks->$hname = $hierarchy->get_frameworks(array(), true);
 
     if(!$frameworks->$hname) {
         continue;

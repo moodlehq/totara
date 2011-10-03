@@ -1,0 +1,31 @@
+<h1>Analys av enheter</h1>
+<p>Den h&auml;r tabellen redovisar behandlade data fr&aring;n testet p&aring; ett s&auml;tt som l&auml;mpar sig f&ouml;r att analysera och bed&ouml;ma prestationer f&ouml;r varje fr&aring;ga i syftet att bed&ouml;ma/v&auml;rdera. De statistiska parametrarna som anv&auml;nds ber&auml;knas p&aring; det s&auml;tt som beskrivs i klassisk teori om test (ref. 1)</p>
+<p><b>Facilitetsindex (% korrekt)</b></p>
+<p>Detta &auml;r ett m&aring;tt p&aring; hur l&auml;tt eller sv&aring;r en fr&aring;ga kan vara f&ouml;r dem som ska genomg&aring; testet.
+Det ber&auml;knas som: <br />
+FI = (X<sub>average</sub>) / X<sub>max</sub> <br />
+d&auml;r X<sub>average</sub> &auml;r det medelbetyg som har uppn&aring;tts av samtliga anv&auml;ndare som har gjort f&ouml;rs&ouml;kt besvara/l&ouml;sa enheten <br>
+och X<sub>max</sub> &auml;r det maximala betyget/po&auml;ngtalet f&ouml;r den enheten. <br>
+Om fr&aring;gor kan f&ouml;rdelas (distribueras) som  en dikotomi i kategorierna korrekt/inte-korrekt s&aring; kommer denna parameter att sammanfalla med den procentandel av anv&auml;ndarna som har l&auml;mnat ett korrekt svar p&aring; fr&aring;gan. </p>
+
+<p><b>Standardavvikelse (SA)</b></p>
+<p>Denna parameter m&auml;ter spridningen av svaren i den svarande populationen. Om alla anv&auml;ndare l&auml;mnar samma svar; d&aring; SA=0. SA ber&auml;knas som den statistiskt standardm&auml;ssiga avvikelsen f&ouml;r det urval av (fractional) resultatet (uppn&aring;tt/maximum) f&ouml;r varje specifik fr&aring;ga.  </p>
+<p><b>Diskriminationsindex (DI)</b></p>
+<p>Det h&auml;r erbjuder en indikator (i runda tal) f&ouml;r prestationerna f&ouml;r varje enhet f&ouml;r att skilja framg&aring;ngsrika anv&auml;ndare fr&aring;n mindre framg&aring;ngsrika anv&auml;ndare. Denna parameter ber&auml;knas genom att man f&ouml;rst dividerar de l&auml;rande i tredjedelar baserat p&aring; det sammanlagda resultatet p&aring; testet. Sedan kommer det genomsnittsliga resultatet f&ouml;r den analyserade enheten att ber&auml;knas f&ouml;r den h&ouml;gst coh l&auml;gst presterande gruppen varp&aring; det genomsnittsliga resultatet dras ifr&aring;n. Det matematiska uttrycket &auml;r som f&ouml;ljer: <br/>
+DI = (X<sub>top</sub> - X<sub>bottom</sub>)/ N <br/>
+d&auml;r X<sub>top</sub> &auml;r summan av den (fractional) tillgodor&auml;kningen (uppn&aring;tt/maximum) som har uppn&aring;tts p&aring; den h&auml;r enheten av den 1/3 av anv&auml;ndarna som har det h&ouml;gsta betyget p&aring; hela testet (dvs antalet korrekta svar i den h&auml;r gruppen), <br/>and X<sub>bottom</sub>) &auml;r den analoga summan f&ouml;r anv&auml;ndare med de l&auml;gsta 1/3 betygen p&aring; hela testet.</p> 
+<p>Denna parameter kan anta v&auml;rden mellan  +1 och -1.  
+Om indexet g&aring;r under 0.0 d&aring; betyder det att fler av de svagare l&auml;rande har svarat r&auml;tt p&aring; enheten &auml;n de starkare l&auml;randena. S&aring;dana enheter b&ouml;r bed&ouml;mas som v&auml;rdel&ouml;sa. 
+Faktum &auml;r att de reducerar noggrannheten i det sammanlagda resultatet f&ouml;r testet. </p>
+<p><b>Koefficienten f&ouml;r diskrimination  (KD)</b></p>
+<p>Detta &auml;r ett annat m&aring;tt p&aring; att enheten kraftfullt kan skilja framg&aring;ngrika l&auml;rande fr&aring;n svagare. <br/>
+Koefficienten f&ouml;r diskrimination &auml;r en korrelationskoefficient mellan resultat p&aring; enheten och p&aring; hela testet. H&auml;r &auml;r det ber&auml;knat enligt f&ouml;ljande:<br/>
+KD = Sum(xy)/ (N * s<sub>x</sub> * s<sub>y</sub>) 
+<br/>
+d&auml;r Sum(xy) &auml;r summan av de produkter av avvikelse f&ouml;r resultat p&aring; enheter och sammanlagda testresultat, <br>
+N &auml;r antalet svar som har avgivits p&aring; denna fr&aring;ga<br/>
+s<sub>x</sub> &auml;r standardavvikelsen p&aring; (fractional) resultat p&aring; denna fr&aring;ga och <br/>
+s<sub>y</sub> &auml;r standardavvikelsen p&aring; resultat p&aring; testet som helhet.
+</p>
+<p>Återigen, denna parameter kan anta v&auml;rden mellan +1 and -1. Positiva v&auml;rden indikerar enheter som   missgynnar framg&aring;ngsrika l&auml;rande och negativa v&auml;rden indikerar enheter som de svagare lyckas besvara b&auml;ttre. Enheter med negativa KD besvaras felaktigt av de framg&aring;ngsrika l&auml;rande och d&auml;rf&ouml;r &auml;r de i praktiken en bestraffning gentemot dem. Dessa enheter b&ouml;r undvikas.<br/>
+F&ouml;rdelen med koefficienten f&ouml;r diskrimination gentemot diskriminationsindexet &auml;r att det f&ouml;rra anv&auml;nder information fr&aring;n hela populationen av l&auml;rande, inte bara den h&ouml;gsta och l&auml;gsta tredjedelen. S&aring;lunda kan denna parameter vara mer k&auml;nslig n&auml;r det g&auml;ller att uppt&auml;cka prestationer f&ouml;r enheter. </p>

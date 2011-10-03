@@ -27,6 +27,9 @@ function get_registration_data() {
     $data['webserversoftware'] = $_SERVER['SERVER_SOFTWARE'];
     $data['usercount'] = count_records('user', 'deleted', '0');
     $data['coursecount'] = count_records('course');
+    $oneyearago = time() - 60*60*24*365;
+    // See MDL-22481 for why currentlogin is used instead of lastlogin
+    $data['activeusercount'] = count_records_select('user', "currentlogin > {$oneyearago}");
     return $data;
 }
 

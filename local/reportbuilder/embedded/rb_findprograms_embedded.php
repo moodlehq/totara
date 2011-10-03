@@ -41,7 +41,7 @@ class rb_findprograms_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'course_category',
-                'value' => 'namelinkicon',
+                'value' => 'namelink',
                 'heading' => 'Category',
             ),
         );

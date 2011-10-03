@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
  * @subpackage hierarchy
  */
@@ -60,6 +61,14 @@ if (!isset($disabledlist)) {
 if (!isset($templates)) {
     $templates = optional_param('templates', false, PARAM_BOOL); // search templates only
 }
+if (!isset($showhidden)) {
+    $showhidden = optional_param('showhidden', false, PARAM_BOOL); // include hidden frameworks
+    // check they have permissions on hidden frameworks in case parameter is changed manually
+    $context = get_context_instance(CONTEXT_SYSTEM);
+    if ($showhidden && !has_capability('moodle/local:update'.$prefix.'frameworks', $context)) {
+        print_error('nopermviewhiddenframeworks', 'hierarchy');
+    }
+}
 
 $query = optional_param('query', null, PARAM_TEXT); // search query
 $page = optional_param('page', 0, PARAM_INT); // results page number
@@ -83,7 +92,7 @@ $hidden = compact('prefix', 'select', 'templates', 'disabledlist');
 
 // Create form
 $mform = new dialog_search_form($CFG->wwwroot. '/hierarchy/item/search.php',
-    compact('hidden', 'query', 'frameworkid', 'shortprefix'));
+    compact('hidden', 'query', 'frameworkid', 'shortprefix', 'prefix', 'showhidden'));
 
 // Display form
 $mform->display();
@@ -94,10 +103,12 @@ if (strlen($query)) {
     // extract quoted strings from query
     $keywords = local_search_parse_keywords($query);
 
-    $fields = 'SELECT id,fullname';
+    $fields = 'SELECT i.id,i.fullname';
     $count = 'SELECT COUNT(*)';
-    $from = " FROM {$CFG->prefix}{$shortprefix}";
-    $order = ' ORDER BY frameworkid,sortorder';
+    $from = " FROM {$CFG->prefix}{$shortprefix} i
+        JOIN {$CFG->prefix}{$shortprefix}_framework f
+        ON frameworkid = f.id";
+    $order = ' ORDER BY frameworkid,sortthread';
 
     // If searching templates, change tables
     if ($templates) {
@@ -106,16 +117,19 @@ if (strlen($query)) {
     }
 
     // match search terms
-    $dbfields = array('fullname', 'shortname', 'description');
+    $dbfields = array('i.fullname', 'i.shortname', 'i.description');
     $where = ' WHERE ' . local_search_get_keyword_where_clause($keywords, $dbfields);
 
     // restrict by framework if required
     if ($frameworkid) {
-        $where .= " AND frameworkid=$frameworkid";
+        $where .= " AND i.frameworkid=$frameworkid";
     }
 
     // don't show hidden items
-    $where .= ' AND visible=1';
+    $where .= ' AND i.visible=1';
+    if (!$showhidden) {
+        $where .= ' AND f.visible=1';
+    }
 
     $total = count_records_sql($count . $from . $where);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;

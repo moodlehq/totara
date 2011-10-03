@@ -1,0 +1,31 @@
+<h1>Att ladda upp grupper</h1>
+
+<p>Den h&auml;r funktionen g&ouml;r det m&ouml;jligt att 'batch'-ladda upp grupper i Moodle.</p>
+
+<ul>
+  <li>Varje rad inneh&aring;ller en post.</li>
+  <li>Varje post &auml;r en serie data &auml;r separerade med komma.</li>
+  <li>Den f&ouml;rsta posten i filen &auml;r speciell och inneh&aring;ller en lista med filnamn. Detta definierar   formatet p&aring; resten av filen.
+    <blockquote>
+      <p><strong>Obligatoriska f&auml;ltnamn:</strong> dessa f&auml;lt m&aring;ste ing&aring; i den f&ouml;rsta posten och definieras f&ouml;r varje anv&auml;ndare. </p>
+      <p></p>
+      <font color="#990000" face="Courier New, Courier, mono">groupname</font></p>
+</p>
+      <p><strong>F&auml;ltnamn av standardtyp:</strong> dessa f&auml;lt &auml;r valfria - om de inte ing&aring;r d&aring; tas v&auml;rdena direkt fr&aring;n det aktuella spr&aring;ket och den aktuella kursen. </p>
+      <p><font color="#990000" face="Courier New, Courier, mono">idnumber, coursename, lang</font> </p>
+      <p><strong>Alternativa f&auml;ltnamn: </strong>alla dessa &auml;r helt och h&aring;llet valfria. </p>
+      <p> <font color="#990000" face="Courier New, Courier, mono">description, picture, hidepicture</font></p>
+    </blockquote>
+    </li>
+  <li>Komman inom data ska symboliseras med  &amp;#44 - skriptet kommer automatiskt att avkoda dessa tillbaka till komman. </li>
+  <li>F&ouml;r Booleanska f&auml;lt, anv&auml;nd 0 f&ouml;r 'falsk' och 1 f&ouml;r 'sann'. </li>
+  <li>Antingen idnumret eller kursnamnet kan anv&auml;ndas f&ouml;r att identifiera kursen. Idnummer har h&ouml;gre prioritet &auml;n kursnamn. Om ingendera &auml;r angivet s&aring; kommer grupperna att l&auml;ggas till den aktuella kursen.
+  <li>Kursnamnet &auml;r kursens kortnamn.</li>
+  <li>OBS: Om en grupp redan &auml;r registrerad i Moodles databas f&ouml;r en viss kurs s&aring; kommer det h&auml;r skriptet att returnera gruppnamnet f&ouml;r den gruppen. (Distans)l&auml;rare f&aring;r bara ladda upp grupper till kurser d&auml;r de har r&auml;ttigheter att redigera.</li>
+</ul>
+   
+<p>H&auml;r &auml;r ett exempel p&aring; en giltig fil att importera:</p>
+<p><font size="-1" face="Courier New, Courier, mono"></font>groupname,idnumber,lang,description,picture <br />
+group1, Phil101, en, den h&auml;r gruppen kr&auml;ver extra uppm&auml;rksamhet!, 0 <br />
+group2, Math243, , ,
+</font></p>

@@ -83,6 +83,8 @@ function local_program_initial_install() {
  * plans framework.
  */
 function prog_setup_initial_plan_settings() {
+    global $CFG;
+    require_once($CFG->dirroot . '/local/plan/priorityscales/lib.php');
 
     // retrieve all the existing templates (if any exist)
     $templates = get_records('dp_template', '', '', 'id', 'id');
@@ -113,6 +115,12 @@ function prog_setup_initial_plan_settings() {
         $roles = array('learner','manager');
         $actions=array('updateprogram','setpriority','setduedate');
 
+        $defaultduedatemode = DP_DUEDATES_OPTIONAL;
+        $defaultprioritymode = DP_PRIORITY_NONE;
+        if (!$defaultpriorityscaleid = dp_priority_default_scale_id()) {
+            $defaultpriorityscaleid = 0;
+        }
+
         foreach( $templates as $t ){
             begin_sql();
             $perm = new stdClass();
@@ -140,10 +148,6 @@ function prog_setup_initial_plan_settings() {
                     }
                 }
             }
-
-            $defaultduedatemode = DP_DUEDATES_OPTIONAL;
-            $defaultprioritymode = DP_PRIORITY_NONE;
-            $defaultpriorityscaleid = 1;
 
             if($progset = get_record_select('dp_program_settings', "templateid={$t->id}")) {
                 $progset->duedatemode=$defaultduedatemode;
@@ -213,23 +217,28 @@ function prog_can_view_users_required_learning($learnerid) {
  * @param int $limitfrom return a subset of records, starting at this point (optional, required if $limitnum is set).
  * @param int $limitnum return a subset comprising this many records (optional, required if $limitfrom is set).
  * @param bool $returncount Whether to return a count of the number of records found or the records themselves
+ * @param bool $showhidden Whether to include hidden programs in records returned
  * @return array|int
  */
-function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false) {
+function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false, $showhidden=false) {
     global $CFG;
 
     // Construct sql query
     $count = 'SELECT COUNT(*) ';
-    $select = 'SELECT DISTINCT(p.*) AS id, p.fullname AS progname, pc.timedue AS duedate ';
+    $select = 'SELECT p.*, p.fullname AS progname, pc.timedue AS duedate ';
 
-    $from = "FROM {$CFG->prefix}prog AS p
-            INNER JOIN {$CFG->prefix}prog_completion AS pc ON p.id = pc.programid
-            INNER JOIN {$CFG->prefix}prog_user_assignment AS pua ON (pc.programid=pua.programid AND pc.userid=pua.userid) ";
+    $from = "FROM {$CFG->prefix}prog p
+            INNER JOIN {$CFG->prefix}prog_completion pc ON p.id = pc.programid AND pc.coursesetid = 0
+            INNER JOIN (SELECT DISTINCT userid, programid FROM {$CFG->prefix}prog_user_assignment) pua
+            ON (pc.programid=pua.programid AND pc.userid=pua.userid) ";
 
-    $where = "WHERE pc.coursesetid = 0
-        AND pc.userid = $userid
-        AND p.visible = 1
+
+    $where = "WHERE pc.userid = $userid
         AND pc.status <> ".STATUS_PROGRAM_COMPLETE;
+
+    if (!$showhidden) {
+        $where .= " AND p.visible = 1";
+    }
 
     if($returncount) {
         return count_records_sql($count.$from.$where);
@@ -243,14 +252,16 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
  * Return markup for displaying a table of a specified user's required programs
  * (i.e. programs that have been automatically assigned to the user)
  *
+ * This includes hidden programs but excludes unavailable programs
+ *
  * @access  public
  * @param   int     $userid     Program assignee
  * @return  string
  */
-function prog_display_programs($userid) {
+function prog_display_required_programs($userid) {
     global $CFG;
 
-    $count = prog_get_required_programs($userid, '', '', '', true);
+    $count = prog_get_required_programs($userid, '', '', '', true, true);
 
     // Set up table
     $tablename = 'progs-list';
@@ -285,7 +296,7 @@ function prog_display_programs($userid) {
     $sort = empty($sort) ? '' : ' ORDER BY '.$sort;
 
     // Add table data
-    $programs = prog_get_required_programs($userid, $sort, $table->get_page_start(), $table->get_page_size());
+    $programs = prog_get_required_programs($userid, $sort, $table->get_page_start(), $table->get_page_size(), false, true);
 
     if (!$programs) {
         return '';
@@ -293,6 +304,9 @@ function prog_display_programs($userid) {
 
     foreach ($programs as $p) {
         $program = new program($p->id);
+        if (!$program->is_accessible()) {
+            continue;
+        }
         $row = array();
         $row[] = $program->display_summary_widget($userid);
         $row[] = $program->display_duedate($p->duedate);
@@ -557,7 +571,7 @@ function prog_move_programs ($programids, $categoryid) {
 function prog_print_programs($category) {
 /// Category is 0 (for all programs) or an object
 
-    global $CFG;
+    global $CFG, $USER;
 
     $fields = "p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible";
 
@@ -576,11 +590,13 @@ function prog_print_programs($category) {
 
     if ($programs) {
         foreach ($programs as $program) {
+            $prog = new program($program->id);
+            if (!$prog->is_accessible($USER)) {
+                continue;
+            }
             if ($program->visible == 1
                 || has_capability('local/program:viewhiddenprograms',$program->context)) {
-                echo '<table class="programlist">';
                 prog_print_program($program);
-                echo "</table>\n";
             }
         }
     } else {
@@ -750,9 +766,16 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
  * @param string $highlightterms (optional) some search terms that should be highlighted in the display.
  */
 function prog_print_program($program, $highlightterms = '') {
+    global $CFG, $USER;
+
     require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
 
-    global $CFG, $USER;
+    $prog = new program($program->id);
+
+    $accessible = false;
+    if ($prog->is_accessible()) {
+        $accessible = true;
+    }
 
     if (isset($program->context)) {
         $context = $program->context;
@@ -762,7 +785,21 @@ function prog_print_program($program, $highlightterms = '') {
 
     $program_icon = new program_icon();
 
-    $linkcss = $program->visible ? '' : ' class="dimmed" ';
+    if ($accessible) {
+        if ($program->visible) {
+            $linkcss = '';
+        } else {
+            $linkcss = ' class="dimmed" ';
+        }
+    } else {
+        if ($program->visible) {
+            $linkcss = ' class="inaccessible " ';
+        } else {
+            $linkcss = ' class="dimmed inaccessible" ';
+        }
+    }
+
+
 
     echo '<div class="coursebox programbox clearfix">';
     echo '<div class="info">';
@@ -852,10 +889,9 @@ function prog_print_whole_category_list($category=NULL, $displaylist=NULL, $pare
  * @param <type> $showprograms
  */
 function prog_print_category_info($category, $depth, $showprograms = false) {
-    global $CFG;
+    global $CFG, $USER;
     static $strallowguests, $strrequireskey, $strsummary;
 
-    require_once($CFG->dirroot.'/local/icon/coursecategory_icon.class.php');
     require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
 
     if (empty($strsummary)) {
@@ -884,7 +920,6 @@ function prog_print_category_info($category, $depth, $showprograms = false) {
             'p.id,p.sortorder,p.visible,p.fullname,p.shortname,p.summary,p.icon');
 
     if ($showprograms and $programcount) {
-        $category_icon = new coursecategory_icon();
 
         echo '<tr>';
 
@@ -896,7 +931,7 @@ function prog_print_category_info($category, $depth, $showprograms = false) {
             echo '</td>';
         }
 
-        echo '<td valign="top" class="category image">'.$category_icon->display($category, 'small').'</td>';
+        echo '<td valign="top" class="category image">&nbsp;</td>';
         echo '<td class="category name">';
         echo '<a '.$catlinkcss.' href="'.$CFG->wwwroot.'/course/category.php?id='.$category->id.'">'. format_string($category->name).'</a>';
         echo '</td>';
@@ -912,6 +947,10 @@ function prog_print_category_info($category, $depth, $showprograms = false) {
             $program_icon = new program_icon();
 
             foreach ($programs as $program) {
+                $prog = new program($program->id);
+                if (!$prog->is_accessible($USER)) {
+                    continue;
+                }
                 $linkcss = $program->visible ? '' : ' class="dimmed" ';
                 echo '<tr><td valign="top">&nbsp;';
                 echo '</td><td valign="top" class="course name">';
@@ -998,35 +1037,58 @@ function prog_print_viewtype_selector($pagetype, $viewtype, $options=null) {
  * enrolled onto the course as a student.
  *
  * @global object $CFG
- * @param int $userid
- * @param int $courseid
- * @param object $coursecontext
+ * @param object $user
+ * @param object $course
  * @return void
  */
-function prog_can_enter_course($userid, $courseid, $coursecontext) {
+function prog_can_enter_course($user, $course) {
     global $CFG;
 
-    $studentroleid = get_field('role', 'id', 'shortname', 'student');
-    if (!$studentroleid) {
-	print_error('error:failedtofindstudentrole', 'local_program');
-    }
-    //$context = get_context_instance(CONTEXT_COURSE, $courseid);
-
-    // check if the user has already been assigned the student role in this course
-    if(user_has_role_assignment($userid, $studentroleid, $coursecontext->id)) {
+    if (!$courserole = get_default_course_role($course)) {
         return;
     }
 
-    if($program_records = prog_get_required_programs($userid)) {
-        foreach($program_records as $program_record) {
-            $program = new program($program_record->id);
-            if($program->can_enter_course($userid, $courseid)) {
-                role_assign($studentroleid, $userid, 0, $coursecontext->id);
-                return;
-            }
+    // check if the user has already been assigned the student role in this course
+    if (user_has_role_assignment($user->id, $courserole->id, $course->context->id)) {
+        return;
+    }
+
+    // Get programs that this user is assigned to, either via learning plans or required learning
+    $get_programs = "
+        SELECT p.id
+          FROM {$CFG->prefix}prog p
+         WHERE p.id IN
+             (
+                SELECT pc.programid
+                  FROM {$CFG->prefix}dp_plan_program_assign pc
+            INNER JOIN {$CFG->prefix}dp_plan pln ON pln.id = pc.planid
+                 WHERE pc.approved >= ".DP_APPROVAL_APPROVED."
+                   AND pln.userid = {$user->id}
+                   AND pln.status = ".DP_PLAN_STATUS_APPROVED."
+             )
+            OR p.id IN
+             (
+                SELECT pua.programid
+                  FROM {$CFG->prefix}prog_user_assignment pua
+             LEFT JOIN {$CFG->prefix}prog_completion pc
+                    ON pua.programid = pc.programid AND pua.userid = pc.userid
+                 WHERE pua.userid = {$user->id}
+                   AND pc.coursesetid = 0
+                   AND pc.status <> ".STATUS_PROGRAM_COMPLETE."
+             )
+    ";
+
+    if (!$program_records = get_records_sql($get_programs)) {
+        return;
+    }
+
+    foreach ($program_records as $program_record) {
+        $program = new program($program_record->id);
+        if ($program->is_accessible() && $program->can_enter_course($user->id, $course->id)) {
+            enrol_into_course($course, $user, 'manual');
+            return;
         }
     }
-    return;
 }
 
 
@@ -1043,7 +1105,7 @@ function prog_can_enter_course($userid, $courseid, $coursecontext) {
  * @return object {@link $COURSE} records
  */
 function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $whereclause) {
-    global $CFG;
+    global $CFG, $USER;
 
     //to allow case-insensitive search for postgesql
     if ($CFG->dbfamily == 'postgres') {
@@ -1146,6 +1208,31 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
 
         while ($program = rs_fetch_next_record($rs)) {
             $program = make_context_subobj($program);
+
+            if (!is_siteadmin($USER->id)) {
+                // Check if this program is not available, if it's not then deny access
+                if ($program->available == 0) {
+                    continue;
+                }
+
+                if (isset($USER->timezone))
+                {
+                    $now = usertime(time(),$USER->timezone);
+                } else {
+                    $now = usertime(time());
+                }
+
+                // Check if the programme isn't accessible yet
+                if ($program->availablefrom > 0 && $program->availablefrom > $now) {
+                    continue;
+                }
+
+                // Check if the programme isn't accessible anymore
+                if ($program->availableuntil > 0 && $program->availableuntil < $now) {
+                    continue;
+                }
+            }
+
             if ($program->visible || has_capability('local/program:viewhiddenprograms', $program->context)) {
                 // Don't exit this loop till the end
                 // we need to count all the visible courses
@@ -1229,26 +1316,6 @@ function prog_time_to_date($time) {
 }
 
 /**
- * Handler function called when an extension_granted event is triggered
- *
- * @param object $eventdata Must contain a 'message' object which has the message data
- * @return bool Success status
- */
-function prog_eventhandler_extension_granted($eventdata) {
-    return prog_message::send_generic_alert($eventdata->message);
-}
-
-/**
- * Handler function called when an extension_denied event is triggered
- *
- * @param object $eventdata Must contain a 'message' object which has the message data
- * @return bool Success status
- */
-function prog_eventhandler_extension_denied($eventdata) {
-    return prog_message::send_generic_alert($eventdata->message);
-}
-
-/**
  * Handler function called when a program_assigned event is triggered
  *
  * @param object $eventdata Must contain a 'programid' int and a 'userid' int
@@ -1259,7 +1326,11 @@ function prog_eventhandler_program_assigned($eventdata) {
     $programid = $eventdata->programid;
     $userid = $eventdata->userid;
 
-    $program = new program($programid);
+    try {
+        $program = new program($programid);
+    } catch (ProgramException $e) {
+        return true;
+    }
 
     $messagesmanager = $program->get_messagesmanager();
     $messages = $messagesmanager->get_messages();
@@ -1286,7 +1357,11 @@ function prog_eventhandler_program_unassigned($eventdata) {
     $programid = $eventdata->programid;
     $userid = $eventdata->userid;
 
-    $program = new program($programid);
+    try {
+        $program = new program($programid);
+    } catch (ProgramException $e) {
+        return true;
+    }
 
     $messagesmanager = $program->get_messagesmanager();
     $messages = $messagesmanager->get_messages();
@@ -1309,6 +1384,8 @@ function prog_eventhandler_program_unassigned($eventdata) {
  * @return bool Success status
  */
 function prog_eventhandler_program_completed($eventdata) {
+    global $CFG;
+    require_once($CFG->dirroot.'/local/plan/lib.php');
 
     $program = $eventdata->program;
     $userid = $eventdata->userid;
@@ -1324,6 +1401,10 @@ function prog_eventhandler_program_completed($eventdata) {
             }
         }
     }
+
+    // auto plan completion hook
+    dp_plan_item_updated($userid, 'program', $program->id);
+
     return true;
 }
 
@@ -1403,9 +1484,13 @@ function prog_get_tab_link($userid) {
     $progtable = new XMLDBTable('prog');
     if (table_exists($progtable)) {
 
-        $requiredlearningcount = prog_get_required_programs($userid, '', '', '', true);
+        $requiredlearningcount = prog_get_required_programs($userid, '', '', '', true, true);
         if ($requiredlearningcount == 1) {
-            $program = reset(prog_get_required_programs($userid));
+            $program = reset(prog_get_required_programs($userid, '', '', '', false, true));
+            $prog = new program($program->id);
+            if (!$prog->is_accessible()) {
+                return false;
+            }
             return $CFG->wwwroot . '/local/program/required.php?id=' . $program->id;
         } else if ($requiredlearningcount > 1) {
             return $CFG->wwwroot . '/local/program/required.php';

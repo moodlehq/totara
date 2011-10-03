@@ -26,5 +26,5 @@
  * Version file for the comment module.
  */
 
-$plugin->version  = 2011062100;
+$plugin->version  = 2011091200;
 

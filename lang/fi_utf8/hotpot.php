@@ -1,4 +1,7 @@
-<?PHP // $Id$
+<?PHP // $Id$ 
+      // hotpot.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+
+
 $string['abandoned'] = 'jätetty kesken';
 $string['addquizchain'] = 'Lisää kysymysketju';
 $string['allmycourses'] = 'Kaikki kurssini';
@@ -13,11 +16,14 @@ $string['checks'] = 'Tarkistuksia';
 $string['clickreporting'] = 'Ota käyttöön näpäytysten seuranta';
 $string['clues'] = 'Vihjeitä';
 $string['completed'] = 'Suoritettu';
+$string['configexcelencodings'] = 'Lista koodaustavoista, pilkulla erotettuina, joita voidaan käyttää pakottamassa raportin arvoja tiettyyn koodaustapaan taulukko-ohjelmille. Esimerkiksi, Microsoft Excel vaatii &quot;SJIS&quot;-koodauksen japanin kielelle';
+$string['configshowtimes'] = 'Näytetäänkö listoissa ja raporteissa aika, joka niiden käsittelyyn on kulunut? Tämä on tarpeen vain, jos on tarkoitus selvittää palvelimen hitauden syytä.';
 $string['copiedtoclipboard'] = 'Tämän sivun sisältö on kopioitu leikepöydälle';
 $string['copytoclipboard'] = 'Kopioi leikepöydälle';
 $string['correct'] = 'Oikein';
 $string['deleteabandoned'] = 'Poista kesken jätetyt';
 $string['deleteabandonedcheck'] = 'Haluatko varmasti poistaa kaikki $a kesken jätettyä vastausyritystä?';
+$string['deleteallattempts'] = 'Poista kaikki yritykset';
 $string['displaycoursenext'] = 'Näytä kurssin sivu seuraavaksi';
 $string['displayhotpotnext'] = 'Näytä Hot Potatoes kysely seuraavaksi';
 $string['displayindexnext'] = 'Näytä HotPot luettelo seuraavaski';
@@ -81,6 +87,7 @@ $string['rawdetails'] = 'Tietoa vastausyrityksistä';
 $string['regrade'] = 'Arvioi uudelleen';
 $string['regradecheck'] = 'Haluatko todellakin arvioida uudelleen &quot;$a&quot;?';
 $string['regraderequired'] = 'Uudelleenarviointi vaaditaan';
+$string['removegradeitem'] = 'Poista arvosanaobjekti';
 $string['reportanswers'] = 'Vastaukset';
 $string['reportattemptfinish'] = 'Yritys loppuu';
 $string['reportattemptnumber'] = 'Yritys';
@@ -148,4 +155,5 @@ $string['timedout'] = 'Aika loppui';
 $string['updatequizchain'] = 'Päivitä kysymysketju';
 $string['weighting'] = 'Painotus';
 $string['wrong'] = 'Väärin';
+
 ?>

@@ -179,6 +179,8 @@ class position extends hierarchy {
             $sql .= " AND c.id NOT IN({$ids})";
         }
 
+        $sql .= " ORDER BY c.fullname";
+
         return get_records_sql($sql);
     }
 
@@ -274,20 +276,20 @@ class position extends hierarchy {
     /**
      * Delete all data associated with the positions
      *
-     * This method is protected because it deletes the positions, but doesn't update the
-     * sortorder of the other framework items (or use transactions).
-     * Use {@link hierarchy::delete_framework_item()} to recursively delete an item and
+     * This method is protected because it deletes the positions, but doesn't use transactions
+     *
+     * Use {@link hierarchy::delete_hierarchy_item()} to recursively delete an item and
      * all its children
      *
      * @param array $items Array of IDs to be deleted
      *
      * @return boolean True if items and associated data were successfully deleted
      */
-    protected function _delete_framework_items($items) {
+    protected function _delete_hierarchy_items($items) {
         global $CFG;
 
         // First call the deleter for the parent class
-        if (!parent::_delete_framework_items($items)) {
+        if (!parent::_delete_hierarchy_items($items)) {
             return false;
         }
 
@@ -332,9 +334,12 @@ class position extends hierarchy {
     function print_comp_framework_picker($positionid, $currentfw) {
         global $CFG;
 
+        require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+
         $edit = optional_param('edit', 'off', PARAM_TEXT);
 
-        $frameworks = get_records('comp_framework', '', '', 'sortorder');
+        $competency = new competency();
+        $frameworks = $competency->get_frameworks();
 
         $assignedcounts = get_records_sql_menu("SELECT comp.frameworkid, COUNT(*)
                                                 FROM {$CFG->prefix}pos_competencies poscomp
@@ -507,6 +512,10 @@ class position_assignment extends data_object {
 
         if (!$this->positionid) {
             return false;
+        }
+
+        if (!$this->managerid) {
+            $this->managerid = null;
         }
 
         if (!$this->organisationid) {

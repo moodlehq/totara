@@ -23,7 +23,7 @@ $movedown    = optional_param('movedown', 0, PARAM_INT);
 $hierarchy = new competency();
 
 // Load framework
-$framework   = $hierarchy->get_framework($frameworkid, true);
+$framework   = $hierarchy->get_framework($frameworkid, true, true);
 
 // If no frameworks exist
 if (!$framework) {

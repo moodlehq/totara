@@ -35,6 +35,15 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
         $this->preproc = 'feedback_questions';
         $this->grouptype = 'group';
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_graphical_feedback_questions');
+
+        //Adding custom fields
+        $this->add_custom_position_fields($this->joinlist,
+                                          $this->columnoptions,
+                                          $this->filteroptions);
+        $this->add_custom_organisation_fields($this->joinlist,
+                                              $this->columnoptions,
+                                              $this->filteroptions);
+
         parent::__construct();
     }
 

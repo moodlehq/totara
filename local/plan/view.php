@@ -146,18 +146,20 @@ if ($plan->timecompleted) {
 $form->set_data($plan);
 $form->display();
 
-// Comments
-require_once($CFG->dirroot.'/local/comment/lib.php');
-comment::init();
-$options->area    = 'plan-overview';
-$options->context = $systemcontext;
-$options->itemid  = $plan->id;
-$options->showcount = true;
-$options->component = 'local_plan';
-$options->autostart = true;
-$options->notoggle = true;
-$comment = new comment($options);
-echo $comment->output(true);
+if ($action == 'view') {
+    // Comments
+    require_once($CFG->dirroot.'/local/comment/lib.php');
+    comment::init();
+    $options->area    = 'plan-overview';
+    $options->context = $systemcontext;
+    $options->itemid  = $plan->id;
+    $options->showcount = true;
+    $options->component = 'local_plan';
+    $options->autostart = true;
+    $options->notoggle = true;
+    $comment = new comment($options);
+    echo $comment->output(true);
+}
 
 print_container_end();
 

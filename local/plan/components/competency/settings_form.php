@@ -119,7 +119,7 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
     $mform->setDefault('includecompleted', $defaultincludecompleted);
     $mform->setDefault('autoassigncourses', $defaultautoassigncourses);
 
-    $mform->addElement('advcheckbox', 'autoadddefaultevidence', get_string('evidence', 'local_plan'), get_string('autoadddefaultevidence', 'local_plan'), null, array(0,1));
+    $mform->addElement('advcheckbox', 'autoadddefaultevidence', get_string('defaultstatus', 'local_plan'), get_string('setdefaultstatus', 'local_plan'), null, array(0,1));
     $mform->setDefault('autoadddefaultevidence', $defaultautoadddefaultevidence);
 
 

@@ -10,12 +10,14 @@ $string['program:configurecontent'] = 'Configure program content';
 $string['program:configureassignments'] = 'Configure program assignments';
 $string['program:configuremessages'] = 'Configure program messages';
 $string['program:handleexceptions'] = 'Handle program exceptions';
+$string['program:manageextensions'] = 'Manage extensions';
 
 // General program
 $string['addnewprogram'] = 'Add a new program';
 $string['allowedtimeforprogramaslearner'] = 'You are allowed $a->num $a->periodstr to complete this program.';
 $string['allowedtimeforprogramasmanager'] = '$a->fullname is allowed $a->num $a->periodstr to complete this program.';
 $string['allowedtimeforprogramviewing'] = 'A learner is allowed $a->num $a->periodstr to complete this program.';
+$string['anothercourse'] = 'another course';
 $string['assignmentcriteriamanager'] = 'The learner is required to complete this program under the following criteria:';
 $string['assignmentcriterialearner'] = 'You are required to complete this program under the following criteria:';
 $string['availability'] = 'Availability';
@@ -25,7 +27,7 @@ $string['availabletostudents'] = 'Available to students';
 $string['availabletostudentsnot'] = 'Not available to students';
 $string['beforecourseends'] = 'before course ends';
 $string['browsecategories'] = 'Browse categories';
-$string['cancelprogrammanagement'] = 'Cancel program management';
+$string['cancelprogrammanagement'] = 'Clear unsaved changes';
 $string['cancelprogramblurb'] = 'Cancelling will remove any unsaved changes';
 $string['category'] = 'Category';
 $string['checkprogramdelete'] = 'Are you sure you want to delete this program and all its related items?';
@@ -82,6 +84,7 @@ $string['noprogramsyet'] = 'No programs in this category';
 $string['noprogramcontent'] = 'Program does not contain any content';
 $string['noprogramassignments'] = 'Program does not contain any assignments';
 $string['noprogrammessages'] = 'Program does not contain any messages';
+$string['noprograms'] = 'No programs';
 $string['norequiredlearning'] = 'No required learning';
 $string['notavailable'] = 'Not available';
 $string['orviewprograms'] = 'or view programs in this category ({$a})';
@@ -107,6 +110,7 @@ $string['programmandatory'] = 'Program mandatory';
 $string['programmessages'] = 'Program messages';
 $string['programmessagessaved'] = 'Program messages saved';
 $string['programnotavailable'] = 'Program is not available to students';
+$string['programnotcurrentlyavailable'] = 'This program is not currently available to students';
 $string['programnotlive'] = 'Program is not live';
 $string['programoverdue'] = 'Program overdue';
 $string['programs'] = 'Programs';
@@ -115,13 +119,15 @@ $string['programupdatefail'] = 'Program update failed';
 $string['programupdatecancelled'] = 'Program update cancelled';
 $string['programscomplete'] = 'Programs complete';
 $string['programsinthiscategory'] = 'Programs in this category ({$a})';
+$string['programsmovedout'] = 'Programs moved out from $a';
 $string['progress'] = 'Progress';
-$string['rolprogramsourcename'] = 'Record of Learning: Programs';
 $string['reasonforextension'] = 'Reason for extension';
 $string['repeatevery'] = 'Repeat every';
+$string['recurringprograms'] = 'Recurring programs';
 $string['requestextension'] = 'Request an extension';
 $string['requiredlearning'] = 'Required Learning';
 $string['returntoprogram'] = 'Return to program';
+$string['rolprogramsourcename'] = 'Record of Learning: Programs';
 $string['saveprogram'] = 'Save program';
 $string['saveallchanges'] = 'Save all changes';
 $string['shortname'] = 'Short name';
@@ -139,11 +145,21 @@ $string['xsrequiredlearning'] = '$a\'s Required Learning';
 $string['youareviewingxsrequiredlearning'] = '<strong>You are viewing <a href=\"{$a->site}/user/view.php?id={$a->userid}\">{$a->name}\'s</a> required learning.</strong>';
 $string['youhaveunsavedchanges'] = 'You have unsaved changes.';
 
+// Record of learning
+$string['completiondate'] = 'Completion date';
+$string['completionstatus'] = 'Status';
+$string['coursenamelink'] = 'Course name';
+$string['incomplete'] = 'Not complete';
+$string['recurringprogramhistory'] = 'History record for recurring program $a';
+$string['recurringprogramhistoryfor'] = 'History record for $a->username for recurring program $a->progname';
+$string['viewrecurringprogramhistory'] = 'View history';
+
 //Instruction text
 $string['requiredlearninginstructions'] = 'Your required learning is shown below.';
 $string['requiredlearninginstructionsuser'] = '{$a}\'s required learning is shown below.';
 
 // Errors
+$string['error:courses_endenroldate'] = 'You must set an enrolment end date for this course if you want it to recur';
 $string['error:courses_nocourses'] = 'Course sets must contain at least one course.';
 $string['error:nopermissions'] = 'You do not have the necessary permissions to perform this action';
 $string['error:inaccessible'] = 'You cannot currently access this program';
@@ -154,6 +170,8 @@ $string['error:invaliddate'] = 'Date is not valid';
 $string['error:invalidshortname'] = 'That\'s an invalid program short name';
 $string['error:invalidid'] = 'That\'s an invalid program id';
 $string['error:timeallowednum_nonzero'] = 'Time allowance must be higher than zero';
+$string['error:recurrence_nonzero'] = 'Recurrence must be higher than zero';
+$string['error:coursecreation_nonzero'] = 'Course creation must be more than zero days before course ends';
 $string['error:messagesubject_empty'] = 'Message subject is required';
 $string['error:mainmessage_empty'] = 'Message is required';
 $string['error:availibileuntilearlierthanfrom'] = 'Available until date cannot be earlier than from date';
@@ -165,15 +183,16 @@ $string['error:deleteset'] = 'Unable to delete set. Set not found.';
 $string['error:unabletoaddset'] = 'Unable to add new set. Set type not recognised.';
 $string['error:unabletosetupprogcontent'] = 'Unable to set up program content.';
 $string['error:invaliduser'] = '';
+$string['error:badcheckvariable'] = 'The check variable was wrong - try again';
 
 // Instructions
 $string['instructions:assignments1'] = 'Categories can be used to assign the program to sets of learners.';
 $string['instructions:messages1'] = 'Configure event and reminder triggers associated with the program.';
-$string['instructions:programassignments'] = 'Instructional text for this program section goes here.';
-$string['instructions:programcontent'] = 'Instructional text for this program section goes here.';
-$string['instructions:programdetails'] = 'Instructional text for this program section goes here.';
-$string['instructions:programexceptions'] = 'Instructional text for this program section goes here.';
-$string['instructions:programmessages'] = 'Instructional text for this program section goes here.';
+$string['instructions:programassignments'] = 'Assign learners on-mass and set fixed or relative completion criteria <br />(Assign learners by organisation, position, cohort, hierarchy or individual)';
+$string['instructions:programcontent'] = 'Define the program content by adding sets of courses and / or competencies';
+$string['instructions:programdetails'] = 'Define the program name, availability and description';
+$string['instructions:programexceptions'] = 'Quickly resolve assignment issues by selecting \'type\' and applying an \'action\'';
+$string['instructions:programmessages'] = 'Define program messages and reminders as required';
 
 // Legends
 $string['legend:courseset'] = 'Course set $a';
@@ -322,6 +341,7 @@ $string['successfullyresolvedexceptions'] = 'Successfully resolved exceptions';
 $string['thiswillaffect'] = 'This will affect $a learners';
 $string['thisactioncannotbeundone'] = 'This action cannot be undone';
 $string['timeallowance'] = 'Time allowance';
+$string['unknownexception'] = 'Unknown exception';
 $string['unresolvedexceptions'] = '$a unresolved issue(s)';
 $string['showingresults'] = 'Showing results $a->from - $a->to of $a->total';
 
@@ -336,13 +356,18 @@ $string['daysremaining'] = '$a days remaining';
 
 // Program assignment
 $string['addorganisationtoprogram'] = 'Add organisation to program';
+$string['addorganisationstoprogram'] = 'Add organisations to program';
 $string['addpositiontoprogram'] = 'Add position to program';
 $string['addcohorttoprogram'] = 'Add cohort to program';
+$string['addcohortstoprogram'] = 'Add cohorts to program';
 $string['addmanagertoprogram'] = 'Add manager to program';
+$string['addmanagerstoprogram'] = 'Add managers to program';
 $string['addindividualtoprogram'] = 'Add individual to program';
+$string['addindividualstoprogram'] = 'Add individuals to program';
 $string['allbelow'] = 'All below';
 $string['allbelowlower'] = 'all below';
 $string['cohort'] = 'Cohort';
+$string['cohorts'] = 'Cohorts';
 $string['cohortname'] = 'Cohort name';
 $string['cohorts_category'] = 'cohort(s)';
 $string['complete'] = 'Complete';
@@ -356,7 +381,7 @@ $string['for'] = 'For';
 $string['individuals'] = 'Individuals';
 $string['individualname'] = 'Individual name';
 $string['individuals_category'] = 'individual(s)';
-$string['learnersassigned'] = '$a learner(s) currently assigned';
+$string['learnersassigned'] = '$a->total learner(s) assigned. $a->assignments learner(s) are active, $a->exceptions with exception(s)';
 $string['managementhierarchy'] = 'Management hierarchy';
 $string['managername'] = 'Manager name';
 $string['managers_category'] = 'management team(s)';
@@ -374,9 +399,10 @@ $string['positions'] = 'Positions';
 $string['positionsname'] = 'Positions name';
 $string['positions_category'] = 'position(s)';
 $string['source'] = 'Source';
+$string['type'] = 'Type';
 $string['userid'] = 'User ID';
 $string['setcompletion'] = 'Set completion';
-$string['totalassignments'] = 'Total assignments';
+$string['totalassignments'] = 'Total potential assignments';
 $string['tosaveassignments'] = 'To save all assignment changes click \''.$string['saveallchanges'].'\'. To edit assignment changes click \''.$string['editassignments'].'\'. Saving assignments cannot be undone.';
 $string['youhaveadded'] = 'You have added $a->itemnames to this program<br />
 <br />
@@ -417,3 +443,42 @@ $string['prognamelinkedicon'] = 'Program name and linked icon';
 $string['novalidprograms'] = 'No valid programs';
 $string['noprogramsfound'] = 'No programs were found with the words \'$a\'';
 $string['moveselectedprogramsto'] = 'Move selected programs to...';
+
+$string['programidnotfound'] = 'Program does not exist for ID : $a';
+$string['therearenoprogramstodisplay'] = 'There are no programs to display.';
+
+// Alert messages
+$string['z:incompleterecurringprogramsubject'] = 'Incomplete recurring course';
+$string['z:incompleterecurringprogrammessage'] = 'A course in a recurring program that you are enrolled on has reached it\'s end date but you have not completed the course. This course must be completed in order to meet the requirements of the program.';
+
+
+// Extensions
+$string['backtoallextrequests'] = 'Back to all extension requests';
+$string['currentduedate'] = 'Current due date';
+$string['extensions'] = 'Extensions';
+$string['extensionearlierthanduedate'] = 'Cannot request extension that is before current program due date';
+$string['extensionbeforenow'] = 'Cannot request extension that is earlier than current date';
+$string['extensiondate'] = 'Extension date';
+$string['reason'] = 'Extension reason';
+$string['grantdeny'] = 'Grant / Deny';
+$string['grant'] = 'Grant';
+$string['deny'] = 'Deny';
+$string['manageextensions'] = 'Manage Extensions';
+$string['noextensions'] = 'You have no staff who have pending extension requests';
+$string['nouserextensions'] = '$a does not have any pending extension requests';
+$string['notmanager'] = 'You are not a manager';
+$string['pendingextension'] = 'You currently have a pending extension request';
+$string['updateextensions'] = 'Update Extensions';
+$string['updateextensionfailall'] = 'Failed to update all extensions';
+$string['updateextensionfailcount'] = 'Failed to update $a extension(s)';
+$string['updateextensionsuccess'] = 'All extensions successfully updated';
+$string['viewinguserextrequests'] = 'Viewing extension requests for $a';
+$string['error:cannotrequestextnotuser'] = 'You cannot request an extension for another user';
+$string['error:processingextrequest'] = 'An error occured when processing extension request';
+$string['error:couldnotloadextension'] = 'Error, could not load extension.';
+$string['error:notusersmanager'] = 'You are not the manager of the user who requested this extension';
+$string['error:updateextensionstatus'] = 'Error, failed to update extension status';
+$string['error:failedsendextensiongrantalert'] = 'Error, failed to alert user of granted extension';
+$string['error:failedsendextensiondenyalert'] = 'Error, failed to alert user of denied extension';
+$string['error:failedupdateextension'] = 'Error, failed to update program with new due date';
+$string['error:noprogramcompletionfound'] = 'No program completion record was found';

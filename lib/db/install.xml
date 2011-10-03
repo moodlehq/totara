@@ -130,15 +130,13 @@
         <FIELD NAME="enrolperiod" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Number of days after enrolment the course is completed (if using enrolperiod criteria type)" PREVIOUS="courseinstance" NEXT="date"/>
         <FIELD NAME="date" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Timestamp of the date for course completion (if using date criteria type)" PREVIOUS="enrolperiod" NEXT="gradepass"/>
         <FIELD NAME="gradepass" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" DECIMALS="5" COMMENT="The minimum grade needed to pass the course (if passing grade criteria enabled)" PREVIOUS="date" NEXT="role"/>
-        <FIELD NAME="role" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="gradepass" NEXT="lock"/>
-        <FIELD NAME="lock" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" COMMENT="Date this criteria was locked" SEQUENCE="false" PREVIOUS="role"/>
+        <FIELD NAME="role" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="gradepass"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="course" UNIQUE="false" FIELDS="course" NEXT="lock"/>
-        <INDEX NAME="lock" UNIQUE="false" FIELDS="lock" PREVIOUS="course"/>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="course_completion_crit_compl" COMMENT="Course completion user records" PREVIOUS="course_completion_criteria" NEXT="course_completion_notify">

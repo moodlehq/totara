@@ -42,7 +42,7 @@ class rb_plan_courses_embedded extends rb_base_embedded {
             array(
                 'type' => 'course',
                 'value' => 'coursetypeicon',
-                'heading' => get_string('coursetypeicon', 'rb_source_dp_course'),
+                'heading' => get_string('coursetypeicon', 'local_reportbuilder'),
             ),
             array(
                 'type' => 'course',

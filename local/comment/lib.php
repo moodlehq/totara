@@ -22,6 +22,7 @@
  * @package totara
  * @subpackage comment
  */
+require_once($CFG->dirroot."/local/js/lib/setup.php");
 
 class comment {
     /**
@@ -344,8 +345,8 @@ EOD;
         $options->autostart = $this->autostart;
 
         //$PAGE->requires->js_init_call('M.core_comment.init', array($options), true);
+        local_js();
         require_js(array(
-            $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
             'yui_yahoo', 'yui_dom', 'yui_event', 'yui_container', 'yui_connection',
             'yui_dragdrop', 'yui_element', 'yui_json', 'yui_animation'));
         echo '<script>

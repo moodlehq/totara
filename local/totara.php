@@ -214,7 +214,7 @@ function totara_display_course_progress_icon($userid, $courseid, $status) {
 
     // Display progress bar
     $content = "<span class=\"coursecompletionstatus\">";
-    $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
+    $content .= "<span class=\"completion-$statusstring\" title=\"$status\">$status</span></span>";
 
     // Check if user has permissions to see details
     if (completion_can_view_data($userid, $courseid)) {
@@ -350,11 +350,11 @@ function totara_print_report_manager($return=false) {
             $row = '
             <tr class="'.$class.'">
                 <td class="icon" align="left">
-                    <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
+                    <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.format_string($report->fullname).'">
                     <img src="'.$CFG->pixpath.'/i/reports.png" width="32" height="32" /></a>
                 </td>
                 <td class="text" align="left">
-                    <span style="font-size: small;"><a href="'.$viewurl.'">'.$report->fullname.'</a>
+                    <span style="font-size: small;"><a href="'.$viewurl.'">'.format_string($report->fullname).'</a>
                 ';
 
 
@@ -645,14 +645,20 @@ function totara_get_manager($userid, $postype=null){
     $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
 
     $userid = (int) $userid;
-    $sql = "SELECT u.*
+    $sql = "
+        SELECT
+            u.*
         FROM
             {$CFG->prefix}pos_assignment pa
-            INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
-            INNER JOIN {$CFG->prefix}user u ON ra.userid = u.id
+        INNER JOIN
+            {$CFG->prefix}role_assignments ra
+         ON pa.reportstoid = ra.id
+        INNER JOIN
+            {$CFG->prefix}user u
+         ON ra.userid = u.id
         WHERE
             pa.userid = {$userid}
-            AND pa.type = {$postype}";
+        AND pa.type = {$postype}";
 
     //Return a manager if they have one otherwise false
     return get_record_sql($sql);

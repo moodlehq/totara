@@ -169,6 +169,7 @@ $strdeselectall = get_string("deselectall");
 $stredit = get_string("edit");
 $strfrontpage = get_string('frontpage', 'admin');
 $strnocourses = get_string('nocourses');
+$strnoprograms = get_string('noprograms', 'local_program');
 
 if ($category > 0) {
     $categoryname = $displaylist[$category];
@@ -473,13 +474,13 @@ if ($adminediting && has_capability('moodle/category:manage', $categorycontext))
         has_capability('moodle/course:create', $categorycontext)) {
 
     /// Print button to create a new course (no specific category)
-        print_single_button('edit.php', array('category' => $category), get_string('addnewcourse'), 'get');
+        print_single_button('edit.php', array('category' => $CFG->defaultrequestcategory), get_string('addnewcourse'), 'get');
     }
 
     if ($viewtype == 'program' &&
         has_capability('local/program:createprogram', $categorycontext)) {
     /// Print button to create a new program
-        print_single_button($CFG->wwwroot.'/local/program/add.php', array('category' => $category), get_string('addnewprogram', 'local_program'), 'get');
+        print_single_button($CFG->wwwroot.'/local/program/add.php', array('category' => $CFG->defaultrequestcategory), get_string('addnewprogram', 'local_program'), 'get');
     }
 
     echo '</div>';
@@ -882,7 +883,6 @@ if ($results['categories']) {
 
             echo "<tr class=\"{$rowclass}\">\n";
             echo "<td class=\"cell c0\">";
-            echo local_coursecategory_icon_tag($cat, 'small');
             echo "<a $linkcss href=\"{$CFG->wwwroot}/course/index.php?highlightid={$cat->id}#category{$cat->id}\">"
                 . highlight($search, format_string($cat->name)) . "</a></td>\n";
             echo "<td class=\"cell c1\">";

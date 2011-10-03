@@ -197,6 +197,15 @@ from
                 'comp_evidence'
         );
 
+        $joinlist[] = new rb_join(
+                'comp_type',
+                'LEFT',
+                $CFG->prefix . 'comp_type',
+                'competency.typeid = comp_type.id',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'competency'
+        );
+
         $this->add_user_table_to_joinlist($joinlist, 'base','userid');
 
         return $joinlist;
@@ -340,6 +349,27 @@ from
 
         $columnoptions[] = new rb_column_option(
                 'competency',
+                'type',
+                get_string('competencytype', 'rb_source_dp_competency'),
+                'comp_type.fullname',
+                array(
+                    'joins' => 'comp_type'
+                )
+            );
+
+        $columnoptions[] = new rb_column_option(
+                'competency',
+                'type_id',
+                get_string('competencytypeid', 'rb_source_dp_competency'),
+                'competency.typeid',
+                array(
+                    'joins' => 'competency'
+                )
+        );
+
+
+        $columnoptions[] = new rb_column_option(
+                'competency',
                 'proficiency',
                 get_string('competencyproficiency', 'rb_source_dp_competency'),
                 // source of proficiency depends on plan status
@@ -390,7 +420,7 @@ from
                     evidence_scale_value.name
                 END',
                 array(
-                    'joins' => array('dp_competency', 'scale_value', 'evidence_scale_value'),
+                    'joins' => array('dp_competency', 'scale_value', 'evidence_scale_value', 'competency'),
                     'displayfunc' => 'proficiency_and_approval_menu',
                     'defaultheading' => get_string('competencyproficiency', 'rb_source_dp_competency'),
                     'extrafields' => array(
@@ -470,6 +500,19 @@ from
                 get_string('planname', 'rb_source_dp_competency'),
                 'text'
         );
+
+        $filteroptions[] = new rb_filter_option(
+                'competency',
+                'type_id',
+                get_string('competencytype', 'rb_source_dp_competency'),
+                'select',
+                array(
+                    'selectfunc' => 'competency_type_list',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                )
+        );
+
+
         return $filteroptions;
     }
 
@@ -583,6 +626,7 @@ from
         global $CFG;
         // needed for approval constants
         require_once($CFG->dirroot . '/local/plan/lib.php');
+        require_once($CFG->dirroot."/local/js/lib/setup.php");
 
         $content = array();
         $approved = isset($row->approved) ? $row->approved : null;
@@ -591,7 +635,6 @@ from
         $compevscalevalueid = isset($row->compevscalevalueid) ? $row->compevscalevalueid : null;
         $plancompid = isset($row->plancompid) ? $row->plancompid : null;
         $competencyid = isset($row->competencyid) ? $row->competencyid : null;
-        $userid = isset($row->userid) ? $row->userid : null;
 
         if (!$planid) {
             return '';
@@ -625,9 +668,7 @@ from
                     $this->compscales[$compframeworkid] = $compscale;
                 }
 
-                require_js(array(
-                    "{$CFG->wwwroot}/local/js/lib/jquery-1.3.2.min.js",
-                    ));
+                local_js();
                 $content[] = choose_from_menu(
                     $compscale,
                     'competencyevidencestatus'.$plancompid,
@@ -637,10 +678,9 @@ from
                         "var response; ".
                         "response = \$.get(".
                             "'{$CFG->wwwroot}/local/plan/components/competency/update-competency-setting.php".
-                            "?c={$competencyid}".
-                            "&amp;pl={$planid}".
-                            "&amp;u={$userid}".
-                            "&amp;p=' + $(this).val()".
+                            "?competencyid={$competencyid}".
+                            "&amp;planid={$planid}".
+                            "&amp;prof=' + $(this).val()".
                         "); ".
                         "$(this).children('[option[value=\'0\']').remove(); ".
                     "}",

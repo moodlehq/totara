@@ -56,7 +56,7 @@ class item_edit_form extends moodleform {
             $mform->setHelpButton('parentid', array($prefix.'parent', get_string('parent', $prefix)), true);
         }
 
-        $mform->addElement('text', 'fullname', get_string('name'), 'maxlength="254" size="50"');
+        $mform->addElement('text', 'fullname', get_string('name'), 'maxlength="1024" size="50"');
         $mform->addRule('fullname', get_string('missingname', $prefix), 'required', null);
         $mform->setType('fullname', PARAM_MULTILANG);
 

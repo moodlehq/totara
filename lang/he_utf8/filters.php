@@ -1,5 +1,5 @@
-<?PHP // $Id: filters.php,v 1.5 2010/04/28 08:27:47 emanuel1 Exp $
-      // filters.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
+<?PHP // $Id$ 
+      // filters.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
 
 
 $string['actfilterhdr'] = 'מסננים פעילים (מצורפים יחד)';
@@ -22,14 +22,21 @@ $string['endswith'] = 'נגמר ב-';
 $string['firstaccess'] = 'כניסה ראשונה';
 $string['globalrolelabel'] = '$a->label הוא $a->value';
 $string['includenever'] = 'לא נכלל לעולם';
+$string['includesubcategories'] = 'האם לכלול קטגוריות משנה?';
 $string['isafter'] = 'אחרי';
 $string['isanyvalue'] = 'כל ערך שהוא';
 $string['isbefore'] = 'לפני';
 $string['isdefined'] = 'מוגדר';
 $string['isempty'] = 'הינו ריק';
 $string['isequalto'] = 'שווה ל-';
+$string['isgreaterorequalto'] = 'גדול יותר או שווה ל';
+$string['isgreaterthan'] = 'גדול מ';
+$string['islessthan'] = 'קטן מ';
+$string['islessthanorequalto'] = 'פחות יותר או שווה ל';
 $string['isnotdefined'] = 'לא מוגדר';
 $string['isnotequalto'] = 'לא שווה ל-';
+$string['matchesallselected'] = 'תואם לכל מה שנבחר';
+$string['matchesanyselected'] = 'תואם לפחות לאחד מהנבחרים';
 $string['newfilter'] = 'מסנן חדש';
 $string['profilelabel'] = '$a->label: $a->profile $a->operator $a->value';
 $string['profilelabelnovalue'] = '$a->label: $a->profile $a->operator';

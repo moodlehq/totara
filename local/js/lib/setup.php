@@ -32,8 +32,9 @@ require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
 define('TOTARA_JS_DIALOG',         1);
 define('TOTARA_JS_TREEVIEW',       2);
 define('TOTARA_JS_DATEPICKER',     3);
-define('TOTARA_JS_PLACEHOLDER',     4);
-define('TOTARA_JS_ICON_PREVIEW',    5);
+define('TOTARA_JS_PLACEHOLDER',    4);
+define('TOTARA_JS_ICON_PREVIEW',   5);
+define('TOTARA_JS_UI',             6);
 
 /**
  * Load appropriate JS and CSS files for lightbox
@@ -45,8 +46,16 @@ function local_js($options = array()) {
 
     // Include required javascript libraries
     require_js(array(
-        $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
+        $CFG->wwwroot.'/local/js/lib/jquery-1.6.4.min.js',
     ));
+
+    // If UI
+    if (in_array(TOTARA_JS_UI, $options)) {
+
+        require_js(array(
+            $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
+        ));
+    }
 
     // If dialog
     if (in_array(TOTARA_JS_DIALOG, $options)) {

@@ -1,0 +1,19 @@
+<p align="center">
+	<b>Relativa URL:er, mediaspelare och Hot Potatoes</b></p>
+<p><b>Definitioner</b></p>
+<dl>
+	<dt><i>URL</i></dt>
+	<dd>adressen till en resurs p&aring; Internet, t.ex. en webbsida, bild- eller ljudfil.</dd>
+	<dt><i>absolut URL</i></dt>
+	<dd>en URL som b&ouml;rjar "http://" kallas f&ouml;r en absolut URL. Var den &auml;n anv&auml;nds s&aring; refererar den alltid till samma m&aring;lresurs.</dd>
+	<dt><i>relativ URL</i></dt>
+	<dd>en URL som inte b&ouml;rjar "http://" kallas f&ouml;r en relativ URL. Den g&aring;r att kombinera med den absoluta URL:en f&ouml;r en "bas"-sida, f&ouml;r att f&aring; fram den absoluta URL:en till m&aring;lresursen.</dd>
+</dl>
+<p><b>Relativa URL:er i test av typ Hot Potatoes </b></p>
+<p>Relativa URL:er erbjuder ett bekv&auml;mt s&auml;tt att ange bilder, ljud och videor i ett test av typ Hot Potatoes, eftersom de g&ouml;r det m&ouml;jligt att visa och provk&ouml;ra testet p&aring; en lokal PC, innan det laddas upp till en Moodlesajt. N&auml;r testet laddas upp till Moodlesajten m&aring;ste man ladda upp multimedia-filerna ocks&aring;, s&aring; att de &auml;r tillg&auml;ngliga n&auml;r testet administreras via Moodle.</p>
+<p>F&ouml;r s&auml;kerhets skull, s&aring; till&aring;ter inte Moodle direkt tillg&aring;ng till kursfiler. Alla f&ouml;rfr&aring;gningar ang&aring;ende filer i en viss given kurs passerar genom ett &ouml;vervakande skript som kontrollerar att den person som efterfr&aring;gar filen &auml;r registrerad p&aring; kursen. Denna mekanism kan emellertid bryta ev relativa l&auml;nkar som  anv&auml;nds i testet, eftersom de vanliga reglerna f&ouml;r att utl&auml;sa en absolut URL fr&aring;n en relativ URL inte fungerar.</p>
+<p>L&ouml;sningen &auml;r nog s&aring; enkel: <font color="red"><b>alla relativa URL:er m&aring;ste konverteras till absoluta URL:er </b></font> i det &ouml;gonblick d&aring; testet anl&auml;nder till webbl&auml;saren. I fallet med test av typ Hot Potatoes, kommer URL:erna att konverteras av Moodle, vilket inneb&auml;r att de som utvecklar inneh&aring;ll inte beh&ouml;ver bekymra sig om detta tidskr&auml;vande arbete. </p>
+<p><b>Mediaspelae i test av typ Hot Potatoes</b></p>
+<p>En del mediaspelare kommer inte att acceptera mediafilen om den kommer via det skript som kontrollerar tillg&aring;ngen till kursfilerna. I en s&aring;dan situation, &auml;r det n&ouml;dv&auml;ndigt att byta ut mediaspelaren mot en som &auml;r kompatibel med Moodle. Det kan Du g&ouml;ra sj&auml;lv genom att modifiera referensen till mediaspelaren i testet, eller ocks&aring; kan Du tvinga Moodle att g&ouml;ra det genom att
+st&auml;lla in alternativet "Tvinga fram mediaplugins" till "Ja" p&aring; sidan f&ouml;r inst&auml;llningar av testet.</p>
+<p> </p>

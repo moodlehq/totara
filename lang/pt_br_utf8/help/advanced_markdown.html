@@ -1,0 +1,220 @@
+<h2>Uso avançado de Markdown</h2>
+
+<div id="Main">
+
+<div class="article">
+<p>Essa seção expande a informação básica dada na seção 'Melhorando o texto com Markdown' para dar àqueles que precisam de configurações específicas as informações necessárias para usar o máximo do Markdown. Se você não entender, ou não precisar da formatação listada abaixo, sinta-se à vontade para pular essa seção e retornar quando precisar.</p>
+
+<p> Outras opções avançadas são disponíveis. Veja a seção de <a href="#further">Leitura Complementar</a>.</p>
+
+<ul>
+
+<li><a href="#linebreaks">Quebras de Linha</a></li>
+<li><a href="#hr">Linhas Horizontais</a></li>
+<li><a href="#image_links">Imagens com link</a></li>
+<li><a href="#tables">Tabelas</a></li>
+<li><a href="#definition">Listas de Definição</a></li>
+<li><a href="#footnotes">Notas de Rodapé</a></li>
+<li><a href="#embedded">HTML Embutido (embed)</a></li>
+<li><a href="#preformatted">Código Pré-formatado</a></li>
+<li><a href="#special_char">Usando Caracteres Especiais</a></li>
+<li><a href="#further">Leitura Complementar</a></li>
+</ul>
+
+<h2><a id="linebreaks">Quebras de Linha</a></h2>
+
+<p>Em alguns textos, por exemplo nas poesias e nos versos, geralmente é necessário inserir quebras de linha. Tentar fazer isto com a tecla Return não produzirá o efeito desejado porque por padrão as linhas ficarão juntas criando um parágrafo.</p>
+
+<p><strong><code>The best laid schemes o' Mice an' Men,<br />
+Gang aft agley,<br />
+An' lea'e us nought but grief an' pain,<br />
+For promis'd joy!</code></strong></p>
+
+<p>A entrada acima, usando a tecla enter para inserir quebra de linhas resultará na saída seguinte uma vez que estas quebras são ignoradas:</p>
+
+<p>The best laid schemes o' Mice an' Men,
+Gang aft agley,
+An' lea'e us nought but grief an' pain,
+For promis'd joy!</p>
+
+<p>Mas finalizando cada linha com dois espaços você pode forçar uma quebra de linha como se segue:</p>
+
+<p>The best laid schemes o' Mice an' Men,<br />
+Gang aft agley,<br />
+An' lea'e us nought but grief an' pain,<br />
+For promis'd joy!  </p>
+
+<h2><a id="hr">Linhas Horizontais</a></h2>
+
+<p>Linhas horizontais são criadas colocando três ou mais asteriscos (*), hífens (-) ou sublinhados (_) em uma linha sem mais nada.</p>
+
+<p>Isto funcionará:</p>
+
+<p><strong><code>***</code></strong></p>
+
+<p>mas você pode adicionar espaços ou outros caracteres para tornar a quebra de seção na janela de edição de texto mais óbvia. Ex.:</p>
+
+<p><strong><code>* * * * *</code></strong></p>
+
+<p><strong><code>-------------------------</code></strong></p>
+
+<p><strong><code>_ _ _ _ _</code></strong></p>
+
+<p>Todos esses métodos apresentam o mesmo resultado:</p>
+
+<hr />
+
+<h2><a id="image_links">Imagens com link</a></h2>
+
+<p>O documento Melhorando o texto com Markdown traz instruções para a criação de links web e inserção de imagens. Pode não ser óbvio, mas esses podem ser combinados para criar imagens que também  são links clicáveis.</p>
+
+<p><strong><code>[a ferramenta de pesquisas do google][google]</code></strong></p>
+
+<p><strong><code>![a logomarca do google][logomarca]</code></strong></p>
+
+<p>Acima estão um link web e uma imagem comuns. Colocando a imagem onde o texto do link seria encontrado você termina com isto:</p>
+
+<p><strong><code>[![a logomarca do google][logomarca]][google]</code></strong></p>
+
+<p>Essa linha acima, em combinação com as seguintes definições de links em outro lugar no documento:</p>
+
+<p><strong><code>[logomarca]: http://www.google.com/images/logo.gif</code></strong><br />
+<strong><code>[google]: http://www.google.com/ "clique para visitar Google.com"</code></strong></p>
+
+<p>combinam-se para produzir o link de imagem clicável (com descrição se você passar o mouse em cima da imagem):</p>
+
+<p><a href="http://www.google.com/" title="clique para visitar Google.com"><img src="http://www.google.com/images/logo.gif" alt="a logomarca do google" /></a></p>
+
+<p>Um exemplo de onde esta técnica pode ser útil é em criar links das pequenas imagens 'thumbnail' para downloads das imagens maiores.</p>
+
+<h2><a id="tables">Tabelas</a></h2>
+
+<p>Você pode simplesmente tabelas HTML com Markdown. Aqui um exemplo:</p>
+
+<pre>
+Nome    |   Idade
+--------|------
+Fred    |   29
+Jim     |   47
+Harry   |   32
+</pre>
+
+<table>
+<thead>
+<tr>
+  <th>Nome</th>
+  <th>Idade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Fred</td>
+  <td>29</td>
+
+</tr>
+<tr>
+  <td>Jim</td>
+  <td>47</td>
+</tr>
+<tr>
+  <td>Harry</td>
+  <td>32</td>
+</tr>
+
+</tbody>
+</table>
+
+<p>Você pode aplicar formatação normal para os conteúdos das células. As colunas podem ser alinhadas a esquerda ou a direita adicionando dois pontos a esquerda ou a direita da barra horizontal (veja instruções adicionais).</p>
+
+<h2><a id="definition">Listas de definições</a></h2>
+
+<p>Listas de definições consistem de termos seguidos de suas definições, como em um dicionário. Um simples exemplo:</p>
+
+<pre>
+Moodle
+:   Uma plataforma de aprendizado bastante conhecida
+
+PHP
+:   Uma linguagem de script.
+    Mais utilizada para desenvolver aplicações interativas para a web.
+</pre>
+
+<dl>
+<dt>Moodle</dt>
+<dd>Uma plataforma de aprendizado bastante conhecida</dd>
+
+<dt>PHP</dt>
+<dd>Uma linguagem de script.
+Mais utilizada para desenvolver aplicações interativas para a web.</dd>
+</dl>
+
+<h2><a id="footnotes">Notas de rodapé</a></h2>
+
+<p>Uma nota de rodapé tem dois elementos. Uma marcação no texto que irá se tornar um número superscript e uma definição da nota de rodapé que aparecerá no final do documento. Um simles exemplo:</p>
+
+<pre>
+Leia sobre isso no meu livro.[^1]
+
+[^1]: Tudo sobre o meu livro.
+</pre>
+
+<p>Você pode colocar as definições da nota de rodapé aonde desejar. Elas serão listadas na ordem em que elas são linkadas no texto. Você não pode criar mais de um link para a mesma nota de rodapé.</p>
+
+<h2><a id="embedded">HTML Embutido (embed)</a></h2>
+
+<p>Se você tem habilidade com HTML, então podem haver ocasiões em que Markdown não lhe dá tanto controle quanto você está acostumado a ter. Por sorte, Markdown foi projetado para esse eventualidade e permite que você insira HTML diretamente no texto formatado com Markdown.</p>
+
+<p><strong><code>* &lt;small&gt;texto pequeno&lt;/small&gt;</code></strong><br />
+
+<strong><code>* &lt;big&gt;texto grande&lt;/big&gt;</code></strong> </p>
+
+<ul>
+<li><small>texto pequeno</small>  </li>
+<li><big>texto grande</big> </li>
+</ul>
+
+<p>Note que o HTML inserido coexiste com o código do Markdown para listas com símbolos de marcação especial. Isto lhe livra da árdua tarefa de escrever um código HTML complexo para formatações básicas como parágrafos e listas enquanto ainda permite que você acesse todo o poder do HTML em situações específicas.</p>
+
+<h2><a id="preformatted">Código Pré-formatado</a></h2>
+
+<p>Se, ao contrário da situação acima, você deseja que o HTML que você inserir seja exibido exatamente da mesma forma que você o digitou ao invés de ser processado como HTML, então você pode iniciar cada linha com quatro caracteres de espaço.</p>
+
+<pre><code>&lt;p&gt;Um parágrafo em &lt;b&gt;HTML&lt;/b&gt; exibido como código&lt;/p&gt;
+</code></pre>
+
+<p>Isso também funciona para exibir código de computador:</p>
+
+<pre><code>print "Argumentos da linha de comando: (@ARGV)\n";
+</code></pre>
+
+<p>Como essa formatação é usualmente utilizada em listagens de programas de computador e outro texto, que pode conter caracteres que o Markdown utilize para indicar diferentes tipos de formatação, a formatação do Markdown é desativada para essas linhas:</p>
+
+<pre><code>Normalmente esta palavra seria **negrita**.
+</code></pre>
+
+<p>Para incluir tais caracteres no texto normal, veja a seção abaixo.</p>
+
+<h2><a id="special_char">Usando Caracteres Especiais</a></h2>
+
+<p>Se você deseja usar quaisquer caracteres especiais que iniciam a formatação do Markdown sem que eles sejam processados, simplesmente preceda-os com um caractere backslash (\). Isso é conhecido por 'escapar' um caractere. O backslash não é exibido mas o caractere imediatamente após é mostrado exatamente como inserido.</p>
+
+<p><strong><code>\*asteriscos, não ênfase\*</code></strong></p>
+
+<p>se torna</p>
+
+<p>*asteriscos, não ênfase*</p>
+
+<p>ao invés de</p>
+
+<p><strong><code>*ênfase, não asteriscos*</code></strong></p>
+
+<p>que nos dá</p>
+
+<p><em>ênfase, não asteriscos</em></p>
+
+<h2><a id="further">Leitura complementar</a></h2>
+
+<p>O sistema Markdown não é exclusivo do Moodle, ele é utilizado em um crescente número de ferramentas de publicação na web. Você pode encontrar mais a respeito em <a href="http://daringfireball.net/projects/markdown/">http://daringfireball.net/projects/markdown/</a></p>
+
+<p>O Moodle usa uma versão do Markdown com atributos adicionais conhecidos por "Markdown Extra". Mais informações podem ser encontradas em <a href="http://www.michelf.com/projects/php-markdown/extra/">http://www.michelf.com/projects/php-markdown/extra/ </a>.</p>
+</div></div>

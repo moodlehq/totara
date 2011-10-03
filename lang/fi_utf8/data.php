@@ -1,4 +1,7 @@
-<?PHP // $Id: data.php,v 1.11 2008/11/21 01:32:24 samulik Exp $
+<?PHP // $Id$ 
+      // data.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+
+
 $string['action'] = 'Toiminto';
 $string['add'] = 'Lisää tietue';
 $string['addafield'] = 'Lisää kenttä';
@@ -40,6 +43,7 @@ $string['configenablerssfeeds'] = 'Sallii RSS-syötteet kaikista tietokannoista.
 $string['confirmdeletefield'] = 'Haluatko poistaa tämän kentän?';
 $string['confirmdeleterecord'] = 'Haluatko poistaa tämän tietueen?';
 $string['csstemplate'] = 'Näkymien CSS-tyylit';
+$string['csvfailed'] = 'CSV-tiedoston raakatietoja ei pystytä lukemaan';
 $string['csvfile'] = 'CSV-tiedosto';
 $string['csvimport'] = 'CSV-tuonti';
 $string['csvwithselecteddelimiter'] = '<acronym title=\"Pilkulla erotetut arvot\">CSV</acronym> teksti valitulla erottimella:';
@@ -79,11 +83,13 @@ $string['emptyadd'] = 'Lisäysnäkymä on tyhjä, luodaan peruslomake...';
 $string['emptyaddform'] = 'Et täyttänyt tietueen kenttiä!';
 $string['entries'] = 'Tietueet';
 $string['entrieslefttoadd'] = 'Sinun täytyy lisätä $a->entriesleft tietuetta ennen kuin voit katsoa muiden tekemiä tietueita.';
+$string['entrieslefttoaddtoview'] = 'Sinun tulee lisätä $a->entrieslefttoview merkintä(ä) ennenkuin voit tarkastella muiden osanottajien merkintöjä.';
 $string['entry'] = 'Tietue';
 $string['entrysaved'] = 'Tietueesi on tallennettu';
 $string['errormustbeteacher'] = 'Vain opettaja voi käyttää tätä sivua!';
 $string['example'] = 'Tietokannan esimerkki';
 $string['excel'] = 'Excel';
+$string['expired'] = 'Tämä aktiviteetti on suljettu {$a}';
 $string['export'] = 'Vie';
 $string['exportaszip'] = 'Vie zip-tiedostona';
 $string['exportdatabaserecords'] = 'Vie Tietokannan tiedot';
@@ -101,6 +107,7 @@ $string['fieldheightsingleview'] = 'Korkeus yksittäisnäkymässä';
 $string['fieldids'] = 'Kenttien id:t';
 $string['fieldmappings'] = 'Kenttien yhdistäminen';
 $string['fieldname'] = 'Kentän nimi';
+$string['fieldnotmatched'] = 'Tietokanta ei tunnista seuraavia kenttiä tiedostossasi: $a';
 $string['fieldoptions'] = 'Valinnat (yksi riviä kohden)';
 $string['fields'] = 'Kentät';
 $string['fieldupdated'] = 'Kentät päivitetty';
@@ -127,6 +134,7 @@ $string['importsuccess'] = 'Malli otettiin käyttöön';
 $string['insufficiententries'] = 'tietuetta tarvitaan lisää jotta tietokantaa voidaan katsella';
 $string['intro'] = 'Johdanto';
 $string['invalidfieldname'] = 'Valitse tälle kentälle toinen nimi';
+$string['invalidrate'] = 'Kelpaamaton tietokannan nopeustaso ($a)';
 $string['invalidurl'] = 'URL-osoite, jonka annoit, ei ole toimiva';
 $string['jstemplate'] = 'Näkymien javascript-koodi';
 $string['latitude'] = 'Leveysaste';
@@ -173,11 +181,14 @@ $string['nomatch'] = 'Ei haluttuja tietueita';
 $string['nomaximum'] = 'Ei maksimia';
 $string['norecords'] = 'Tietokannassa ei ole tietueita';
 $string['nosingletemplate'] = 'Tietuenäkymää ei ole määritelty';
+$string['notapproved'] = 'Merkintää ei ole vielä hyväksytty.';
 $string['notinjectivemap'] = 'Ei injektiivinen kartta';
+$string['notopenyet'] = 'Tämä aktivitetti on saatavilla {$a}';
 $string['number'] = 'Luku';
 $string['numberrssarticles'] = 'RSS-syötteet';
 $string['numnotapproved'] = 'Jäljellä';
 $string['numrecords'] = '$a tietuetta';
+$string['ods'] = '<acronym title=\"OpenDocument Spreadsheet\">ODS</acronym> (OpenOffice)';
 $string['optionaldescription'] = 'Lyhyt kuvaus (valinnainen)';
 $string['optionalfilename'] = 'Tiedoston nimi (valinnainen)';
 $string['other'] = 'Muu';
@@ -206,6 +217,7 @@ $string['recordsnotsaved'] = 'Tietueita ei tallennettu. Tarkista lähettämäsi 
 $string['recordssaved'] = 'tietueet tallennettu';
 $string['requireapproval'] = 'Vaadi hyväksyntä?';
 $string['requiredentries'] = 'Vaadittavat tietueet';
+$string['requiredentrieschanged'] = '<p><strong>TÄRKEÄÄ - LUE TÄMÄ</strong></p><p>Bugi-korjauksen vuoksi sellaisten tietokanta-aktiviteettien toiminta, jotka käyttävät tiettyjä asetuksia, (\'Vaadittavat merkinnät\' ja \'Vaadittavat merkinnät ennen katselua\') muuttuvat. Lisätietoja saa <a href=\"http://moodle.org/mod/forum/discuss.php?d=110928\" target=\"_blank\">tietokantafoorumilta</a>. Näiden asetusten oletetut toimintatavat on kuvattu täällä: <a href=\"http://docs.moodle.org/en/Adding/editing_a_database#Required_entries\" target=\"_blank\">Moodle Docs</a>. </p><p>Tämä muutos vaikuttaa seuraaviin järjestelmäsi tietokantoihin: (Tallenna tämä lista nyt ja tarkista, että nämä aktiviteetit toimivat opettajan tarkoittamalla tavalla päivityksen jälkeenkin.)</p><strong style=\"color:red\">$a->text</strong><br/>';
 $string['requiredentriestoview'] = 'Katseluun vaadittavien tietueiden määrä';
 $string['resetsettings'] = 'Tyhjennä hakuehdot';
 $string['resettemplate'] = 'Palauta perusnäkymäksi';
@@ -247,4 +259,5 @@ $string['usestandard'] = 'Käytä mallia';
 $string['viewfromdate'] = 'Nähtävissä alkaen';
 $string['viewtodate'] = 'Nähtävissä päättyen';
 $string['wrongdataid'] = 'Väärä data-id';
+
 ?>

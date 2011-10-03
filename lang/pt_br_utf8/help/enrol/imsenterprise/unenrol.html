@@ -1,0 +1,16 @@
+<h1>Remover estudantes/professores</h1>
+
+<p>Dados Enterprise podem acrescentar ou também remover inscrições dos estudantes e professores nos cursos. Se essa opção estiver ativada, o Moodle seguirá as indicações de remoção de usuários.</p>
+
+<p>Há três modos de remover os estudantes usando dados IMS:</p>
+
+<ul><li>Com um elemento &lt;member&gt;, que indica o estudante e o curso, e com o atributo "recstatus" do elemento &lt;role&gt; definido como 3 (que significa "excluir"). ISSO AINDA NÃO FOI IMPLEMENTADO NO PLUGIN DO MOODLE.</li>
+
+<li> Com um elemento &lt;member&gt;, que indica o estudante e o curso, e com o elemento &lt;status&gt; definido como 0 (que significa "inativo").</li>
+</ul>
+
+<p>O terceiro método é um pouco diferente. Ele não requer que essa configuração de remover estudantes esteja ativa, e pode ser programado com antecedência em relação à data de remoção:</p>
+
+<ul>
+  <li>Com um elemento &lt;member&gt; que especifica um &lt;timeframe&gt;, para a definição das datas de ínicio e/ou término da permanência do estudante. Essas datas são carregadas na tabela de dados de inscrição do Moodle (se presente), e então, após uma data final, o estudante não poderá mais entrar no respectivo curso.</li>
+</ul>

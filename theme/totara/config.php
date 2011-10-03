@@ -5,6 +5,7 @@
 /// how Moodle uses this theme.
 ////////////////////////////////////////////////////////////////////////////////
 
+$THEME = new object();
 $THEME->sheets = array('jquery-ui-1.7.2.custom','jquery.treeview','styles_page','styles_buttons','styles_totara');
 
 /// This variable is an array containing the names of all the 

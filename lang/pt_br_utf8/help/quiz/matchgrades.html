@@ -1,0 +1,46 @@
+<h1>Coincidência de notas</h1>
+
+<p>As notas importadas <b>devem</b> coincidir com uma das notas
+válidas da lista predeterminada, como abaixo...</p>
+
+<ul>
+  <li>100%</li>
+  <li>90%</li>
+  <li>80%</li>
+  <li>75%</li>
+  <li>70%</li>
+  <li>66.666%</li>
+  <li>60%</li>
+  <li>50%</li>
+  <li>40%</li>
+  <li>33.333</li>
+  <li>30%</li>
+  <li>25%</li>
+  <li>20%</li>
+  <li>16.666%</li>
+  <li>14.2857</li>
+  <li>12.5%</li>
+  <li>11.111%</li>
+  <li>10%</li>
+  <li>5%</li>
+  <li>0%</li>
+</ul>
+
+<p>Valores negativos da lista também são
+permitidos.</p>
+
+<p>Há duas configurações para esta chave. Elas afetam como
+a rotina de importação trata os valores que não coincidem <strong>exatamente</strong>
+com um dos valores da lista acima.</p>
+
+<ul>
+  <li><strong>Erro se a nota não está na lista</strong><br />
+  Se a pergunta contem qualquer nota não encontrada na lista um erro é mostrado
+  e a pergunta não será importada.</li>
+  <li><strong>Nota mais próxima se não está na lista</strong><br />
+
+  Se a nota não coincide com um valor da lista, a nota é alterada
+  para o valor mais próximo da lista.</li>
+</ul>
+
+<p><i>Nota: alguns formatos customizados de importação escrevem diretamente no banco de dados e podem ignorar esta checagem.</i></p>

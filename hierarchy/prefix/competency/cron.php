@@ -48,7 +48,7 @@ function competency_cron() {
     // Loop through each depth level, lowest levels first, processing individually
     $sql = "
         SELECT
-            DISTINCT " .sql_concat_join("'|'", array(sql_cast2char('depthlevel'), sql_cast2char('frameworkid'))) ." AS key, depthlevel, frameworkid
+            DISTINCT " .sql_concat_join("'|'", array(sql_cast2char('depthlevel'), sql_cast2char('frameworkid'))) ." AS depthkey, depthlevel, frameworkid
         FROM
             {$CFG->prefix}comp
         ORDER BY

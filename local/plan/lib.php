@@ -74,7 +74,6 @@ define('DP_APPROVAL_REQUESTED',         30);
 define('DP_APPROVAL_APPROVED',          50);
 
 // Plan notices
-define('DEVELOPMENT_PLAN_UNKNOWN_BUTTON_CLICKED', 1);
 define('DEVELOPMENT_PLAN_GENERAL_CONFIRM_UPDATE', 2);
 define('DEVELOPMENT_PLAN_GENERAL_FAILED_UPDATE', 3);
 
@@ -87,8 +86,8 @@ define('DP_PLAN_REASON_AUTO_COMPLETE_ITEMS', 60);
 define('DP_PLAN_REASON_MANUAL_REACTIVATE', 80);
 
 // Types of competency evidence items
-define('PLAN_LINKTYPE_MANDATORY','mandatory');
-define('PLAN_LINKTYPE_OPTIONAL','optional');
+define('PLAN_LINKTYPE_MANDATORY', 1);
+define('PLAN_LINKTYPE_OPTIONAL', 0);
 
 // roles available to development plans
 // each must have a class definition in
@@ -413,31 +412,6 @@ function dp_print_workflow_diff($diff_array) {
 
 
 /**
- * Returns an plan approval picker using the specified name and selected option
- *
- * @param string $name The value to enter in the form element's name attribute
- * @param string $selected Value of the option that should be selected
- * @param bool $choose If true, picker contains a 'Choose' option
- *
- * @return string HTML to generate the picker
- */
-function dp_display_approval_options($name, $selected=DP_APPROVAL_UNAPPROVED, $choose=true) {
-    if($choose) {
-        $choosestr = 'choose';
-        $chooseval = 0;
-    } else {
-        $choosestr = null;
-        $chooseval = null;
-    }
-    $options = array(
-        DP_APPROVAL_APPROVED => get_string('approve', 'local_plan'),
-        DP_APPROVAL_DECLINED => get_string('decline', 'local_plan'),
-    );
-    return choose_from_menu($options, $name, $selected, $choosestr, '', $chooseval, true, false, 0, '', false, false, 'approval');
-}
-
-
-/**
  * Return markup for displaying a user's plans
  *
  * Optionally filter by plan status, and chose columns to display
@@ -662,7 +636,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
 
     // Print Required Learning menu
     if ($showrequired) {
-        if($programs = prog_get_required_programs($userid, ' ORDER BY fullname ASC ')) {
+        if($programs = prog_get_required_programs($userid, ' ORDER BY fullname ASC ', '', '', false, true)) {
             if ($role == 'manager') {
                 $extraparams = '&amp;userid='.$userid;
                 $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('requiredlearning', 'local_program') . '</h4>';
@@ -678,6 +652,11 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
                 if ($progcount > $maxprogstodisplay) {
                     $out .= "<li><a href=\"{$CFG->wwwroot}/local/program/required.php?{$extraparams}\">" . get_string('viewallrequiredlearning', 'local_program') . "</a></li>";
                     break;
+                }
+                // hide inaccessible programs
+                $prog = new program($p->id);
+                if (!$prog->is_accessible()) {
+                    continue;
                 }
                 $class = $p->id == $selectedprogid ? 'class="dp-menu-selected"' : '';
                 $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/program/required.php?id={$p->id}{$extraparams}\">{$p->fullname}</a></li>";
@@ -1044,9 +1023,9 @@ function dp_create_template($templatename, $enddate, &$error) {
 /**
  * Find all plans a specified item is part of
  *
- * @param int $userid
- * @param string $component
- * @param int $componentid
+ * @param int $userid ID of the user updating the item
+ * @param string $component Name of the component (eg. course, competency, objective)
+ * @param int $componentid ID of the component item (eg. competencyid, objectiveid)
  *
  */
 function dp_plan_item_updated($userid, $component, $componentid) {
@@ -1056,7 +1035,7 @@ function dp_plan_item_updated($userid, $component, $componentid) {
     if (file_exists($component_include)) {
         require_once($component_include);
     }
-    $plans = call_user_func("dp_{$component}_component::get_plans_containing_item", $componentid, $userid);
+    $plans = call_user_func(array("dp_{$component}_component","get_plans_containing_item"), $componentid, $userid);
     dp_plan_check_plan_complete($plans);
 }
 
@@ -1099,6 +1078,8 @@ function plan_comment_permissions($details) {
         case 'plan-objective-item':
             $planid = get_field('dp_plan_objective', 'planid', 'id', $details->itemid);
             break;
+        case 'plan-program-item':
+            $planid = get_field('dp_plan_program_assign', 'planid', 'id', $details->itemid);
         default:
             break;
 
@@ -1223,6 +1204,32 @@ function plan_comment_add($comment) {
             $contexturl = $CFG->wwwroot.'/local/plan/components/objective/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
             $icon = 'objective-newcomment';
+            break;
+        case 'plan-program-item':
+            $sql = "SELECT pa.id, pa.planid, p.fullname
+                FROM {$CFG->prefix}dp_plan_program_assign pa
+                INNER JOIN {$CFG->prefix}prog p ON pa.programid = p.id
+                WHERE pa.id = {$comment->itemid}";
+            if (!$record = get_record_sql($sql)) {
+                print_error('comment_error:itemnotfound', 'local_plan');
+            }
+            $plan = get_record('dp_plan', 'id', $record->planid);
+
+            $msgobj = new stdClass;
+            $msgobj->plan = $plan->name;
+            $msgobj->planowner = fullname(get_record('user', 'id', $plan->userid));
+            $msgobj->component = get_string('program', 'local_plan');
+            $msgobj->componentname = $record->fullname;
+            $msgobj->comment = format_text($comment->content);
+            $msgobj->commentby = fullname($commentuser);
+            $msgobj->commentdate = userdate($comment->timecreated);
+            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj);
+            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj);
+
+            $contexturl = $CFG->wwwroot.'/local/plan/components/program/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
+            $contexturlname = $record->fullname;
+            $icon = 'program-newcomment';
+
             break;
         default:
             print_error('commenterror:unsupportedcomment', 'local_plan');

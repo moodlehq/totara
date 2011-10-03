@@ -115,13 +115,26 @@ class totara_dialog_content_programs extends totara_dialog_content {
         // Load child categories
         $categories = get_child_categories($parent->id);
 
+        $category_ids = array();
+        foreach ($categories as $cat) {
+            $category_ids[] = $cat->id;
+        }
+
+        // Get item counts for categories
+        $category_item_counts = (count($category_ids) > 0) ? get_category_item_count($category_ids, false) : array();
+
         // Fix array to be indexed by prefixed id's (so it doesn't conflict with course id's)
         foreach ($categories as $category) {
-            $c = new object();
-            $c->id = 'cat'.$category->id;
-            $c->fullname = $category->name;
+            $item_count = array_key_exists($category->id, $category_item_counts) ? $category_item_counts[$category->id] : 0;
 
-            $this->categories[$c->id] = $c;
+            //Dont show category if there are no items in it
+            if ($item_count > 0) {
+                $c = new object();
+                $c->id = 'cat'.$category->id;
+                $c->fullname = $category->name;
+
+                $this->categories[$c->id] = $c;
+            }
         }
 
         // Also fill parents array
@@ -139,7 +152,14 @@ class totara_dialog_content_programs extends totara_dialog_content {
      */
     public function load_programs() {
         if ($this->categoryid) {
-            $this->programs = prog_get_programs($this->categoryid, "fullname ASC", 'p.id, p.fullname, p.sortorder, p.visible');
+            $progs = prog_get_programs($this->categoryid, "fullname ASC", 'p.id, p.fullname, p.sortorder, p.visible');
+            foreach ($progs as $key=>$prog) {
+                $program = new program($prog->id);
+                if (!$program->is_accessible() || $program->visible == 0) {
+                    unset($progs[$key]);
+                }
+            }
+            $this->programs = $progs;
         }
     }
 

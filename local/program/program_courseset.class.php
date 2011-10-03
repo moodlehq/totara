@@ -192,6 +192,12 @@ abstract class course_set {
 
         if($completion = get_record('prog_completion', 'coursesetid', $this->id, 'programid', $this->programid, 'userid', $userid)) {
 
+            // Do not update record if we have not received any data
+            // (generally because we just want to make sure a record exists)
+            if (empty($completionsettings)) {
+                return true;
+            }
+
             foreach($completionsettings as $key => $val) {
                 $completion->$key = $val;
             }
@@ -417,7 +423,8 @@ abstract class course_set {
             else {
                 $a->mustcomplete = $this->get_course_text($previous_sets[count($previous_sets)-1]);
             }
-
+            // fallback for 'proceedto'
+            $a->proceedto = ' ' . get_string('anothercourse', 'local_program');
             // If there is an OR set below us..
             if (isset($next_sets[0]) && $next_sets[0]->nextsetoperator == NEXTSETOPERATOR_OR) { // If the below set is using OR
                 $sets = array();
@@ -695,7 +702,7 @@ class multi_course_set extends course_set {
     }
 
     public function display($userid=null,$previous_sets=array(),$next_sets=array(),$accessible=true, $viewinganothersprogram=false) {
-        global $CFG;
+        global $CFG, $USER;;
 
         $out = '';
         $out .= '<fieldset>';
@@ -722,23 +729,26 @@ class multi_course_set extends course_set {
             }
 
             $table->data = array();
-            foreach($this->courses as $course) {
+            foreach ($this->courses as $course) {
+                $courserole = get_default_course_role($course);
+                $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
 
                 $row = array();
 
                 $coursedetails = '<img src="'.$CFG->wwwroot.'/local/icon/icon.php?icon='.$course->icon.'&amp;id='.$course->id.'&amp;size=small&amp;type=course" class="course_icon" />';
-                $coursedetails .= $accessible ? '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.$course->fullname.'</a>' : $course->fullname;
 
-                if ($accessible) {
+                if (($userid && $accessible) || ($accessible && $course->enrollable) || ($courserole && user_has_role_assignment($userid, $courserole->id, $coursecontext->id)) || is_siteadmin($USER->id)) {
+                    $coursedetails .= '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.$course->fullname.'</a>';
                     $launch = '<div class="prog-course-launch">' . print_single_button($CFG->wwwroot.'/course/view.php', array('id' => $course->id), get_string('launchcourse', 'local_program'), null, null, true) . '</div>';
                 } else {
+                    $coursedetails .= $course->fullname;
                     $launch = '<div class="prog-course-launch">' . print_single_button(null, null, get_string('notavailable', 'local_program'), null, null, true, null, true) . '</div>';
                 }
 
-                $row[] = $coursedetails . $launch;
+                $row[] = $launch . $coursedetails;
 
-                if($userid) {
-                    if( ! $status = get_field('course_completions', 'status', 'userid', $userid, 'course', $course->id)) {
+                if ($userid) {
+                    if (!$status = get_field('course_completions', 'status', 'userid', $userid, 'course', $course->id)) {
                         $status = COMPLETION_STATUS_NOTYETSTARTED;
                     }
                     $row[] = totara_display_course_progress_icon($userid, $course->id, $status);
@@ -937,7 +947,7 @@ class multi_course_set extends course_set {
         $templatehtml .= '<fieldset id="'.$prefix.'" class="course_set">';
 
         $helpbutton = helpbutton('multicourseset', get_string('legend:courseset', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('untitledset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
+        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? stripslashes($this->label) : get_string('untitledset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
 
         // Add set buttons
         $templatehtml .= '<div class="setbuttons">';
@@ -1286,9 +1296,11 @@ class competency_course_set extends course_set {
 
         $courses = $this->get_competency_courses();
 
-        foreach($courses as $course) {
-            if($course->id == $courseid) {
-                return true;
+        if ($courses) {
+            foreach ($courses as $course) {
+                if($course->id == $courseid) {
+                    return true;
+                }
             }
         }
 
@@ -1309,11 +1321,11 @@ class competency_course_set extends course_set {
         $completiontype = $this->get_completion_type();
 
         // check that the course set contains at least one course
-        if( ! count($courses)) {
+        if( !$courses || !count($courses)) {
             return false;
         }
 
-        foreach($courses as $course) {
+        foreach ($courses as $course) {
 
             $set_completed = false;
 
@@ -1371,7 +1383,7 @@ class competency_course_set extends course_set {
 
         $courses = $this->get_competency_courses();
 
-        if(count($courses) > 0) {
+        if ($courses && count($courses) > 0) {
             $table = new stdClass();
             $table->head = array(get_string('coursename', 'local_program'), '');
             if($userid) {
@@ -1446,7 +1458,7 @@ class competency_course_set extends course_set {
         $out .= '<div class="courseset">';
         $out .= '<div class="courses">';
 
-        if(count($courses)) {
+        if ($courses && count($courses) > 0) {
             $coursestr = '';
             foreach($courses as $course) {
                 $coursestr .= $course->fullname.' '.$completiontypestr.' ';
@@ -1524,7 +1536,7 @@ class competency_course_set extends course_set {
         $templatehtml .= '<fieldset id="'.$prefix.'" class="course_set">';
 
         $helpbutton = helpbutton('competencycourseset', get_string('competency', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('legend:courseset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
+        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? stripslashes($this->label) : get_string('legend:courseset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
 
         $templatehtml .= '<div class="setbuttons">';
 
@@ -1886,7 +1898,7 @@ class recurring_course_set extends course_set {
             $row[] = $coursedetails;
 
             if ($accessible) {
-                $launch = '<div class="prog-course-launch">' . print_single_button($CFG->wwwroot.'/course/view.php?id='.$course->id, null, get_string('launchcourse', 'local_program'), null, null, true) . '</div>';
+                $launch = '<div class="prog-course-launch">' . print_single_button($CFG->wwwroot.'/course/view.php', array('id' => $course->id), get_string('launchcourse', 'local_program'), null, null, true) . '</div>';
             } else {
                 $launch = '<div class="prog-course-launch">' . print_single_button(null, null, get_string('notavailable', 'local_program'), null, null, true, null, true) . '</div>';
             }
@@ -1937,9 +1949,9 @@ class recurring_course_set extends course_set {
         $out .= '<input type="hidden" name="'.$prefix.'nextsetoperator" value="'.$this->nextsetoperator.'" />';
 
         $out .= '<input type="hidden" name="'.$prefix.'timeallowedperiod" value="'.TIME_SELECTOR_DAYS.'" />';
-        $out .= '<input type="hidden" name="'.$prefix.'timeallowednum" value="1" />';
+        $out .= '<input type="hidden" name="'.$prefix.'timeallowednum" value="30" />';
         $out .= '<input type="hidden" name="'.$prefix.'recurrencetimeperiod" value="'.TIME_SELECTOR_DAYS.'" />';
-        $out .= '<input type="hidden" name="'.$prefix.'recurrencetimenum" value="1" />';
+        $out .= '<input type="hidden" name="'.$prefix.'recurrencetimenum" value="365" />';
         $out .= '<input type="hidden" name="'.$prefix.'recurcreatetimeperiod" value="'.TIME_SELECTOR_DAYS.'" />';
         $out .= '<input type="hidden" name="'.$prefix.'recurcreatetimenum" value="1" />';
 
@@ -1957,11 +1969,21 @@ class recurring_course_set extends course_set {
         $templatehtml .= '<fieldset id="'.$prefix.'" class="course_set">';
 
         $helpbutton = helpbutton('recurringcourseset', get_string('legend:recurringcourseset', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? $this->label : get_string('legend:recurringcourseset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
+        $templatehtml .= '<legend>'.((isset($this->label) && ! empty($this->label)) ? stripslashes($this->label) : get_string('legend:recurringcourseset', 'local_program', $this->sortorder)).' '.$helpbutton.'</legend>';
 
         // Recurring programs don't need a nextsetoperator property but we must
         // include it in the form to avoid any problems when the data is submitted
         $templatehtml .= '<input type="hidden" name="'.$prefix.'nextsetoperator" value="0" />';
+
+        // Add the delete button for this set
+        $templatehtml .= '<div class="setbuttons">';
+
+        if($updateform) {
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
+            $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
+        }
+        $templatehtml .= '%'.$prefix.'delete%'."\n";
+        $templatehtml .= '</div>';
 
         // Add the course set id
         if($updateform) {
@@ -2000,6 +2022,8 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'label%'] = array('name'=>$prefix.'label', 'value'=>null);
         }
 
+        $templatehtml .= (!$this->course->enrolenddate) ? '<div class="recurringnotice">'.get_string('error:courses_endenroldate','local_program').'</div>' : '';
+
         $helpbutton = helpbutton('setlabel', get_string('label:setname', 'local_program'), 'local_program', true, false, '', true);
         $templatehtml .= '<div>';
         $templatehtml .= '<div class="flabel"><label for="'.$prefix.'label">'.get_string('label:setname', 'local_program').' '.$helpbutton.'</label></div>';
@@ -2021,7 +2045,7 @@ class recurring_course_set extends course_set {
         if($updateform) {
             $mform->addElement('text', $prefix.'timeallowednum', $this->timeallowednum, array('size'=>4, 'maxlength'=>3));
             $mform->setType($prefix.'timeallowednum', PARAM_INT);
-            $mform->addRule($prefix.'timeallowednum', get_string('required'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'timeallowednum', get_string('error:timeallowednum_nonzero', 'local_program'), 'nonzero', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'timeallowedperiod', '', $timeallowanceoptions);
@@ -2042,7 +2066,7 @@ class recurring_course_set extends course_set {
         if($updateform) {
             $mform->addElement('text', $prefix.'recurrencetimenum', $this->recurrencetimenum, array('size'=>4, 'maxlength'=>3));
             $mform->setType($prefix.'recurrencetimenum', PARAM_INT);
-            $mform->addRule($prefix.'recurrencetimenum', get_string('required'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'recurrencetimenum', get_string('error:recurrence_nonzero', 'local_program'), 'nonzero', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'recurrencetimeperiod', '', $timeallowanceoptions);
@@ -2063,7 +2087,7 @@ class recurring_course_set extends course_set {
         if($updateform) {
             $mform->addElement('text', $prefix.'recurcreatetimenum', $this->recurcreatetimenum, array('size'=>4, 'maxlength'=>3));
             $mform->setType($prefix.'recurcreatetimenum', PARAM_INT);
-            $mform->addRule($prefix.'recurcreatetimenum', get_string('required'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'recurcreatetimenum', get_string('error:coursecreation_nonzero', 'local_program'), 'nonzero', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'recurcreatetimeperiod', '', $timeallowanceoptions);
@@ -2082,7 +2106,7 @@ class recurring_course_set extends course_set {
 
         // Add the 'Select course' drop down list
         $templatehtml .= '<div class="courseselector">';
-        if($courseoptions = get_records_menu('course', '', '', 'fullname ASC', 'id,fullname')) {
+        if($courseoptions = get_records_select_menu('course', 'id <> ' . SITEID, 'fullname ASC', 'id,fullname')) {
             if($updateform) {
                 $mform->addElement('select',  $prefix.'courseid', '', $courseoptions);
                 $mform->addElement('submit', $prefix.'changecourse', get_string('changecourse', 'local_program'), array('onclick'=>"return selectRecurringCourse('$prefix')"));
@@ -2106,14 +2130,6 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'update%'] = array('name'=>$prefix.'update', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'update%'."\n";
-
-        // Add the delete button for this set
-        if($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
-            $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
-        }
-        $templatehtml .= '%'.$prefix.'delete%'."\n";
-
         $templatehtml .= '</div>';
 
         $templatehtml .= '</fieldset>';

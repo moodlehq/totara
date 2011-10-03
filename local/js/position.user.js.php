@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -66,7 +66,9 @@ $(function() {
             ?>',
             url+'find.php?',
             'organisationid',
-            'organisationtitle'
+            'organisationtitle',
+            undefined,
+            true            // Make selection deletable
         );
     })();
 
@@ -85,10 +87,9 @@ $(function() {
             ?>',
                 url+'manager.php?userid=<?php echo $userid ?>',
             'managerid',
-            'managertitle'
+            'managertitle',
+            undefined,
+            true            // Make selection deletable
         );
     })();
-
-
-
 });

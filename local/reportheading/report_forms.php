@@ -102,7 +102,7 @@ class report_heading_columns_form extends moodleform {
                 } else {
                     $mform->addElement('hidden',"column{$cid}", $type);
                     $mform->setType("column{$cid}", PARAM_TEXT);
-                    $mform->addElement('html','<tr><td colspan="3" style="color:red;padding:10px;">' . get_string('error:columntypenotfound','local',$type).'</td>');
+                    $mform->addElement('html','<tr><td colspan="3" style="color:red;padding:10px;">' . get_string('error:columntypenotfound11','local',$type).'</td>');
                 }
 
                 $mform->addElement('html','<td>');

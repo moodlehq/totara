@@ -1274,6 +1274,7 @@ body#admin-modules table.generaltable td.c0
   padding-right: 3px;
 }
 
+
 /***
  *** Blocks
  ***/
@@ -1366,6 +1367,7 @@ a.skip:focus, a.skip:active {
   padding-bottom: 0.5em;
   display: block;
   float: left;
+  width: 160px;
 }
 .block_tag_youtube .yt-video-entry li {
   clear: left;
@@ -1835,9 +1837,7 @@ table.dp-templates td.c0 {
  * Recent Learning
  **/
 div.block_totara_recent_learning td.status span {
-    text-indent: -1000px;
     display: block;
-    text-align: right;
     width: 39px;
     height: 12px;
     background: transparent url(images/progress-icons.png) no-repeat;
@@ -1870,9 +1870,14 @@ div#totara-header-notifications .notifyproblem {
 }
 
 div.totara-copyright {
-	margin: 10px 20px;
-	padding-bottom: 10px;
-	text-align:center;
+    margin: 10px 20px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+p.totara-copyright {
+    text-align: center;
+    margin: 0 20px 10px;
 }
 
 /*****************************************************************************/
@@ -2624,7 +2629,6 @@ body#course-info .generalbox.info {
 
 .coursebox {
   width: 100%;
-  /* float:left; */
   margin-bottom: 15px;
   border-width:1px;
   border-style:solid;
@@ -5051,9 +5055,18 @@ table.viewhierarchyitem th {
 /**
  * Course completion status
  */
+
+/**
+ * Hide the text for the progress bar
+ */
+span.coursecompletionstatus span {
+    text-indent: -10000px;
+    text-align: left;
+    direction: ltr;
+}
+
 div.mycourses td.status span,
 span.coursecompletionstatus span {
-    text-indent: -1000px;
     display: block;
     width: 39px;
     height: 12px;
@@ -5086,6 +5099,10 @@ table.planiteminfobox td {
 /* Plan Template Instances table */
 table.dp-template-instances {
     width: 100%;
+}
+
+input.plan-remove-selected {
+    float: right;
 }
 
 /*
@@ -5171,6 +5188,19 @@ table.hierarchy-index .depth9 {
 table.hierarchy-index .depth10 {
     background-position: 275px 0px;
     padding-left: 295px;
+}
+
+form.hierarchy-export-form {
+    clear: both;
+}
+
+/**
+ * Position page in user profile styling
+ */
+body#user-positions span#positiontitle.nonempty,
+body#user-positions span#managertitle.nonempty,
+body#user-positions span#organisationtitle.nonempty {
+    margin-right: 10px;
 }
 
 /***
@@ -5293,8 +5323,7 @@ table.hierarchy-index .depth10 {
 	width:95px;
 }
 #dp-plan-content fieldset table .c1{
-	width:80px;
-	text-align: center;
+	width:55px;
 }
 #dp-plan-content fieldset table .program-launch-course-button{
 	padding-top:5px;
@@ -5303,12 +5332,21 @@ table.hierarchy-index .depth10 {
 #local-program-view #dp-plan-content fieldset{
 	padding: 5px 25px 20px 25px;
 }
+#program-content fieldset,
+#view-program-content fieldset {
+    padding: 0.5em;
+}
 .completion-notyetstarted{
     margin-top: 10px;
 }
 div.totara-dialog .selected span.unremovable span.deletebutton {
     cursor: default;
 }
+
+span.dialog-singleselect-deletable {
+    margin-left: 5px;
+}
+
 
 /* Spacing for checkbox on the Email notifiations page  */
 div span.emailnotifycheckbox {
@@ -5496,6 +5534,10 @@ body.hierarchy-type div.add-type-button .singlebutton {
 #local-program-edit #programassignments .ftoggler,
 #local-program-edit #programmessages .ftoggler{
 	padding:4px 43px;
+}
+
+#programcontent div.recurringnotice {
+    text-align: center;
 }
 
 #program-overview .singlebutton {
@@ -5694,6 +5736,9 @@ div.prog-course-launch {
 	background:none;
 	border:0px;
     width:95%;
+}
+#local-program-edit_content .courseselector select{
+	width:480px;
 }
 
 #iconheader legend{
@@ -5913,6 +5958,10 @@ ul.course-subcat-listing li.more {
     font-size: 100%;
 }
 
+table.categorylisting td {
+    vertical-align: top;
+}
+
 /*
  * Full width class that can be applied to elements
  */
@@ -5925,4 +5974,22 @@ ul.course-subcat-listing li.more {
  */
 div.highlight {
     margin: -3px -10px;
+}
+
+/* Generic center button class */
+div.center-buttons {
+    text-align: center;
+}
+
+/* Learning plan block */
+.block_addtoplan select#block_addtoplan_selector {
+    width: 160px;
+}
+
+h2.reactivateheading {
+    text-align: center;
+}
+
+form#program-extension-update table {
+    width:100%;
 }

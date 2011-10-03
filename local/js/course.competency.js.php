@@ -27,7 +27,7 @@
 require_once '../../config.php';
 
 $courseid = optional_param('id', 0, PARAM_INT);
-$ok_string = get_string('ok');
+$save_string = get_string('save');
 $cancel_string = get_string('cancel');
 
 ?>
@@ -52,7 +52,7 @@ $(function() {
                 buttons: {
                      '<?php echo $cancel_string ?>': function() { handler._cancel() }
                 },
-                title: '<?php echo '<h2>' . get_string('addcourseevidencetocompetency', 'competency') . '</h2>' ?>'
+                title: '<?php echo '<h2>' . get_string('addcourseevidencetocompetencies', 'competency') . '</h2>' ?>'
             },
             url+'add.php?id=<?php echo $courseid;?>',
             handler
@@ -119,10 +119,10 @@ totaraDialog_handler_assignCourseEvidence.prototype.display_evidence = function(
                 {
                      buttons: {
                         '<?php echo $cancel_string ?>': function() { handler._cancel() },
-                        '<?php echo $ok_string ?>': function() { handler._save(saveurl) }
+                        '<?php echo $save_string ?>': function() { handler._save(saveurl) }
                      },
                     title: '<?php echo '<h2>' .
-                        get_string('assigncoursecompletiontocompetency', 'competency') . '</h2>' ?>'
+                        get_string('assigncoursecompletiontocompetencies', 'competency') . '</h2>' ?>'
                 },
                 url+'add.php?id='+<?php echo $courseid; ?>,
                 handler

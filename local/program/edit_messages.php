@@ -122,6 +122,12 @@ if($data = $messageseditform->get_data()) {
         // log this request
         add_to_log(SITEID, 'program', 'update messages', "edit_messages.php?id={$program->id}", $program->fullname);
 
+        $prog_update = new stdClass();
+        $prog_update->id = $id;
+        $prog_update->timemodified = time();
+        $prog_update->usermodified = $USER->id;
+        update_record('prog', $prog_update);
+
         // then save the messages
         if( ! $programmessagemanager->save_messages($data)) {
             totara_set_notification(get_string('programupdatefail', 'local_program'), $editurl);

@@ -104,7 +104,7 @@ class reportbuilder {
     public $_id, $recordsperpage, $defaultsortcolumn, $defaultsortorder;
     private $_joinlist, $_base, $_params, $_sid;
     private $_paramoptions, $_embeddedparams, $_fullcount, $_filteredcount;
-    public $src, $grouped, $reportfor, $badcolumns;
+    public $src, $grouped, $reportfor, $badcolumns, $embedded;
 
     /**
      * Constructor for reportbuilder object
@@ -155,6 +155,7 @@ class reportbuilder {
             $this->fullname = stripslashes($report->fullname);
             $this->hidden = $report->hidden;
             $this->description = stripslashes($report->description);
+            $this->embedded = $report->embedded;
             $this->contentmode = $report->contentmode;
             // store the embedded URL for embedded reports only
             if($report->embedded) {
@@ -637,11 +638,26 @@ var comptree = [' . implode(', ', $comptrees) . '];
         if($columns = get_records('report_builder_columns',
             'reportid', $id, 'sortorder')) {
             foreach ($columns as $column) {
+                // to properly support multiple languages - only use value
+                // in database if it's different from the default. If it's the
+                // same as the default for that column, use the default string
+                // directly
+                if ($column->customheading) {
+                    // use value from database
+                    $heading = $column->heading;
+                } else {
+                    // use default value
+                    $defaultheadings = $this->get_default_headings_array();
+                    $heading = isset($defaultheadings[$column->type . '-' . $column->value]) ?
+                        $defaultheadings[$column->type . '-' . $column->value] : null;
+                }
+
                 try {
                     $out[$column->id] = $this->src->new_column_from_option(
                         $column->type,
                         $column->value,
-                        $column->heading,
+                        $heading,
+                        $column->customheading,
                         $column->hidden
                     );
                     // enabled report grouping if any columns are grouped
@@ -677,6 +693,49 @@ var comptree = [' . implode(', ', $comptrees) . '];
         return $out;
     }
 
+
+    /**
+     * Returns an associative array of the default headings for this report
+     *
+     * Looks up all the columnoptions (from this report's source)
+     * For each one gets the default heading according the the following criteria:
+     *  - if the report is embedded get the heading from the embedded source
+     *  - if not embedded or the column's heading isn't specified in the embedded source,
+     *    get the defaultheading from the columnoption
+     *  - if that isn't specified, use the columnoption name
+     *
+     * @return array Associtive array of default headings for all the column options in this report
+     *               Key is "{$type}-{$value]", value is the default heading string
+     */
+    function get_default_headings_array() {
+        if (!isset($this->src->columnoptions) || !is_array($this->src->columnoptions)) {
+            return false;
+        }
+
+        // get the embedded source if the report is embedded
+        $embedobj = ($this->embedded) ? reportbuilder_get_embedded_report_object($this->shortname) : false;
+
+        $out = array();
+        foreach ($this->src->columnoptions as $option) {
+            $key = $option->type . '-' . $option->value;
+
+            if ($embedobj && $embeddedheading = $embedobj->get_embedded_heading($option->type, $option->value)) {
+                // use heading from embedded source
+                $defaultheading = $embeddedheading;
+            } else {
+                if (isset($option->defaultheading)) {
+                    // use default heading
+                    $defaultheading = $option->defaultheading;
+                } else {
+                    // fall back to columnoption name
+                    $defaultheading = $option->name;
+                }
+            }
+
+            $out[$key] = $defaultheading;
+        }
+        return $out;
+    }
 
     /**
      * Given a report fullname, try to generate a sensible shortname that will be unique
@@ -876,7 +935,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 $value = $param->value;
                 $type = $param->type;
                 // don't include if param not set to anything
-                if(!isset($value) || $value=='') {
+                if (!isset($value) || strlen(trim($value)) == 0) {
                     continue;
                 }
 
@@ -1767,7 +1826,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $value = $column->value;
             if($column->display_column()) {
                 $tablecolumns[] = "{$type}_{$value}"; // used for sorting
-                $tableheaders[] = $column->heading;
+                $tableheaders[] = format_string($column->heading);
             }
         }
 
@@ -3282,7 +3341,7 @@ function get_next_monthly($time, $day){
         $newyear = $currentyear;
     }
 
-    $daysinmonth = cal_days_in_month(CAL_GREGORIAN, $newmonth, $newyear);
+    $daysinmonth = date('t', mktime(0, 0, 0, $newmonth, 3, $newyear));
     // If the new day is greater than the days in the month
     // then set it to be the last day of the month
     if($day > $daysinmonth){
@@ -3520,6 +3579,8 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
         $todb->value = $column['value'];
         $todb->heading = addslashes($column['heading']);
         $todb->sortorder = $so;
+        $todb->customheading = 0; // initially no columns are customised
+
         if(!insert_record('report_builder_columns', $todb)) {
             rollback_sql();
             $error = 'Error inserting columns';
@@ -3579,6 +3640,7 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
     return $newid;
 }
 
+
 /**
  * Implementation of PHP function lcfirst for PHP 5.2 support
  *
@@ -3589,3 +3651,66 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
 function lowerfirst($string) {
     return strtolower(substr($string, 0, 1)) . substr($string, 1);
 }
+
+/**
+ * This function is run when reportbuilder is first installed
+ *
+ * Add code here that should be run when the module is first installed
+ */
+function local_reportbuilder_install() {
+    global $CFG;
+
+    // hack to get cron working via admin/cron.php
+    // at some point we should create a local_modules table
+    // based on data in version.php
+    set_config('local_reportbuilder_cron', 60);
+
+    // set global export options to include all current
+    // formats except fusion tables (excel, csv and ods)
+    set_config('exportoptions', 7, 'reportbuilder');
+
+    // create stored procedure for aggregating text by concatenation
+    // mysql supports by default. The code below adds postgres support
+    // see sql_group_concat() function for usage
+    if($CFG->dbfamily == 'postgres') {
+        $sql = '
+            CREATE TYPE tp_concat AS (data TEXT[], delimiter TEXT);
+            CREATE OR REPLACE FUNCTION group_concat_iterate(_state
+                tp_concat, _value TEXT, delimiter TEXT, is_distinct boolean)
+                RETURNS tp_concat AS
+                $BODY$
+                SELECT
+                CASE
+                    WHEN $1 IS NULL THEN ARRAY[$2]
+                    WHEN $4 AND $1.data @> ARRAY[$2] THEN $1.data
+                    ELSE $1.data || $2
+                        END,
+                        $3
+                        $BODY$
+                        LANGUAGE \'sql\' VOLATILE;
+
+            CREATE OR REPLACE FUNCTION group_concat_finish(_state tp_concat)
+                RETURNS text AS
+                $BODY$
+                SELECT array_to_string($1.data, $1.delimiter)
+                $BODY$
+                LANGUAGE \'sql\' VOLATILE;
+
+            DROP AGGREGATE IF EXISTS group_concat(text, text, boolean);
+            CREATE AGGREGATE group_concat(text, text, boolean) (SFUNC =
+                group_concat_iterate, STYPE = tp_concat, FINALFUNC =
+                group_concat_finish)';
+
+
+        return execute_sql($sql);
+        /* To undo this, use the following:
+         * DROP AGGREGATE group_concat(text, text, boolean);
+         * DROP FUNCTION group_concat_finish(tp_concat);
+         * DROP FUNCTION group_concat_iterate(tp_concat, text, text, boolean);
+         * DROP TYPE tp_concat;
+         */
+    }
+
+    return true;
+}
+

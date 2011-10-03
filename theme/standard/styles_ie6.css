@@ -170,6 +170,11 @@ div.totara-dialog #dialog-search-table select#id_frameworkid.totara-expanded-wid
 .reportbuilder-table .c1 img {
 	float:left;
 	margin-top:2px;
+}
+
+form.mform div.reportbuilderform input {
+  margin-left: expression((this.type=="text")?'5px':'0');
+}
 
 /** Comments **/
 

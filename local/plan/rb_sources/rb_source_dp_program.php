@@ -47,7 +47,7 @@ class rb_source_dp_program extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
-        $this->sourcetitle = get_string('programs','local_program');
+        $this->sourcetitle = get_string('rolprogramsourcename', 'local_program');
         parent::__construct();
     }
 
@@ -173,6 +173,20 @@ class rb_source_dp_program extends rb_base_source {
         );
 
         $columnoptions[] = new rb_column_option(
+            'program',
+            'recurring',
+            get_string('programrecurring','local_program'),
+            "base.id",
+            array(
+                'joins' => 'program_completion',
+                'displayfunc' => 'recurring_status',
+                'extrafields' => array(
+                    'userid' => "program_completion.userid"
+                )
+            )
+        );
+
+        $columnoptions[] = new rb_column_option(
             'program_completion',
             'status',
             get_string('completionstatus', 'rb_source_dp_course'),
@@ -233,6 +247,25 @@ class rb_source_dp_program extends rb_base_source {
         global $CFG;
         if (!empty($id)) {
             return '<img src="' . $CFG->pixpath . '/i/tick_green_big.gif" />';
+        }
+        return get_string('no');
+    }
+
+    function rb_display_recurring_status($programid, $row) {
+        global $CFG;
+
+        $userid = $row->userid;
+
+        $program = new program($programid);
+        $program_content = $program->get_content();
+        $coursesets = $program_content->get_course_sets();
+        if (isset($coursesets[0])) {
+            $courseset = $coursesets[0];
+            if ($courseset->is_recurring()) {
+                $recurringcourse = $courseset->course;
+                $link = get_string('yes') . ' (<a href="'.$CFG->wwwroot.'/local/plan/record/programs_recurring.php?programid='.$program->id.'&amp;userid='.$userid.'">' .  get_string('viewrecurringprogramhistory', 'local_program') . '</a>)';
+                return $link;
+            }
         }
         return get_string('no');
     }
@@ -313,7 +346,7 @@ class rb_source_dp_program extends rb_base_source {
             ),
         array(
                 'type' => 'course_category',
-                'value' => 'namelinkicon',
+                'value' => 'namelink',
             ),
         );
         return $defaultcolumns;

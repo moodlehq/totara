@@ -31,6 +31,7 @@ class type_edit_form extends moodleform {
         $mform->addElement('header', 'moodle', $strgeneral);
 
         $mform->addElement('text', 'fullname', get_string('fullnametype', $prefix), 'maxlength="254" size="50"');
+        $mform->addElement('text', 'idnumber', get_string('idnumber'), 'maxlength="100"  size="10"');
         $mform->setHelpButton('fullname', array('typefullname', get_string('fullnametype', $prefix)), true);
         $mform->addRule('fullname', get_string('missingnametype', $prefix), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);

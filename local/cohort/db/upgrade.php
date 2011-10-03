@@ -23,13 +23,13 @@ function xmldb_local_cohort_upgrade($oldversion=0) {
 
     $result = true;
 
-    if ($result && $oldversion < 2011072700) {
+/// Totara 1.1 upgrade
+
+    if ($result && $oldversion < 2011091200) {
         // hack to get cron working via admin/cron.php
         set_config('local_cohort_cron', 60);
-    }
 
     // delete capabilities that have changed and should be removed
-    if ($result && $oldversion < 2011072704) {
         delete_records('capabilities', 'name', 'moodle/cohort:manage');
         delete_records('capabilities', 'name', 'moodle/cohort:assign');
         delete_records('capabilities', 'name', 'moodle/cohort:view');

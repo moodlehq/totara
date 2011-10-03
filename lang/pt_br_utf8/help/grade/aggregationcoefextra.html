@@ -1,0 +1,11 @@
+<h1>Coeficiente de Crédito Extra</h1>
+<p>Um valor maior que 0 trata esta nota como crédito extra durante a agregação. O número é o fator de multiplicação da nota antes que seja somado às outras notas mas o item não será contado na divisão. Por exemplo:</p>
+
+<ul>
+    <li>Item 1 é avaliado como 0-100 e o valor do "crédito extra" é 2</li>
+    <li>Item 2 é avaliado como 0-100 e o valor do "crédito extra" é 0.0000</li>
+    <li>Item 3 é avaliado como 0-100 e o valor do "crédito extra" é 0.0000</li>
+    <li>Os 3 items pertencem à Categoria 1, que tem a estratégia de agregação "Média das notas (com crédito extra)"</li>
+    <li>Um estudante obtém a nota 20 no Item 1, 40 no Item 2 e 70 no Item 3</li>
+    <li>O total da Categoria 1 será 95/100 pois 20*2 + (40 + 70)/2 = 95</li>
+</ul>

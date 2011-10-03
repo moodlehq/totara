@@ -21,12 +21,6 @@ else if ($action == SELECTIONACTION_OVERRIDE_EXCEPTION) {
 else if ($action == SELECTIONACTION_DISMISS_EXCEPTION) {
     $html .= get_string('chosedismissexception','local_program');
 }
-else if ($action == SELECTIONACTION_GRANT_EXTENSION_REQUEST) {
-    $html .= get_string('chosegrantextensionexception','local_program');
-}
-else if ($action == SELECTIONACTION_DENY_EXTENSION_REQUEST) {
-    $html .= get_string('chosedenyextensionexception','local_program');
-}
 $html .= '</div>';
 
 $html .= '<div>' . get_string('thiswillaffect','local_program',$selectedexceptioncount) . '</div>';

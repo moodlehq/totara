@@ -80,6 +80,12 @@ if (!$info->is_tracked_user($user->id)) {
 $page = get_string('completionprogressdetails', 'block_completionstatus');
 $title = format_string($course->fullname) . ': ' . $page;
 
+$navlinks = array();
+$navlinks[] = array(
+        'name' => format_string($course->fullname),
+        'link' => "{$CFG->wwwroot}/course/view.php?id={$course->id}",
+        'type' => 'misc'
+);
 $navlinks[] = array('name' => $page, 'link' => null, 'type' => 'misc');
 $navigation = build_navigation($navlinks);
 
@@ -256,5 +262,9 @@ if (empty($completions)) {
 
     echo '</tbody></table>';
 }
+
+echo '<div class="buttons center-buttons">';
+print_single_button("{$CFG->wwwroot}/course/view.php", array('id' => $course->id), get_string('returntocourse'));
+echo '</div>';
 
 print_footer($course);

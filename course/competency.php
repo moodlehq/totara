@@ -103,9 +103,9 @@ if ($can_edit) {
     <form action="<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/course/add.php?id=<?php echo $id ?>" method="get">
         <div>
             <?php if (!empty($CFG->competencyuseresourcelevelevidence)) { ?>
-                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('addcourseevidencetocompetency', 'competency'); ?>" />
+                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('addcourseevidencetocompetencies', 'competency'); ?>" />
             <?php } else { ?>
-                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('assigncoursecompletiontocompetency', 'competency'); ?>" />
+                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('assigncoursecompletiontocompetencies', 'competency'); ?>" />
             <?php } ?>
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="nojs" value="1">

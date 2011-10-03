@@ -172,7 +172,7 @@ Feature: Manage position Frameworks
   @store_pos_framework
   @store_pos_type
   Scenario: Add a position type with incomplete data, gives validation message
-    Given there are no organisation type records
+    Given there are no position type records
       And I am logged in as admin
       And I am on the manage position types page
       And I press "Add a new type"

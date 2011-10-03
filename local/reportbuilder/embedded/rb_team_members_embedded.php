@@ -75,6 +75,11 @@ class rb_team_members_embedded extends rb_base_embedded {
             )
         );
 
+        // only show non-deleted users
+        $this->embeddedparams = array(
+            'deleted' => '0',
+        );
+
         parent::__construct();
     }
 }

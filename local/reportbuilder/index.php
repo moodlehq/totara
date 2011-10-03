@@ -38,8 +38,6 @@
 
     admin_externalpage_setup('managereports');
 
-    set_time_limit(0);
-
     global $USER;
 
     $returnurl = $CFG->wwwroot.'/local/reportbuilder/index.php';
@@ -130,12 +128,12 @@
         if(isset($src->defaultcolumns) && is_array($src->defaultcolumns)) {
             $defaultcolumns = $src->defaultcolumns;
             $so = 1;
-            foreach($defaultcolumns as $option) {
+            foreach ($defaultcolumns as $option) {
                 try {
                     $heading = isset($option['heading']) ? $option['heading'] :
                         null;
                     $column = $src->new_column_from_option($option['type'],
-                        $option['value'], $heading);
+                        $option['value'], $heading, false);
 
                     $todb = new object();
                     $todb->reportid = $newid;
@@ -144,6 +142,8 @@
                     $todb->heading = addslashes($column->heading);
                     $todb->hidden = addslashes($column->hidden);
                     $todb->sortorder = $so;
+                    $todb->customheading = 0; // initially no columns are customised
+
                     if(!insert_record('report_builder_columns', $todb)) {
                         rollback_sql();
                         redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
@@ -198,7 +198,7 @@
                          get_string('source','local_reportbuilder'),
                          get_string('options','local_reportbuilder'));
 
-    // only get none-embedded reports
+    // only get non-embedded reports
     $reports = get_records('report_builder','embedded', 0, 'fullname');
     if($reports) {
         $data = array();
@@ -211,7 +211,7 @@
                 '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'" /></a>';
             $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
                 '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" /></a>';
-            $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.$report->fullname.'</a>' .
+            $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.format_string($report->fullname).'</a>' .
                 ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
             $src = reportbuilder::get_source_object($report->source);
             $srcname = $src->sourcetitle;
@@ -248,7 +248,7 @@
 
         foreach($embeds as $embed) {
             $id = reportbuilder_get_embedded_id_from_shortname($embed->shortname, $embedded_ids);
-            $fullname = $embed->fullname;
+            $fullname = format_string($embed->fullname);
             $shortname = $embed->shortname;
             $url = $embed->url;
             $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$id.'" title="'.$strsettings.'">' .

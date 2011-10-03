@@ -28,22 +28,19 @@ if (!defined('MOODLE_INTERNAL')) {
 
 define('EXCEPTIONTYPE_TIME_ALLOWANCE', 1);
 define('EXCEPTIONTYPE_ALREADY_ASSIGNED', 2);
-define('EXCEPTIONTYPE_EXTENSION_REQUEST', 3);
 define('EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN', 4);
+define('EXCEPTIONTYPE_UNKNOWN', 5);
 
 define('SELECTIONTYPE_NONE', 0);
 define('SELECTIONTYPE_ALL', -1);
 define('SELECTIONTYPE_TIME_ALLOWANCE', 1);
 define('SELECTIONTYPE_ALREADY_ASSIGNED', 2);
-define('SELECTIONTYPE_EXTENSION_REQUEST', 3);
 define('SELECTIONTYPE_COMPLETION_TIME_UNKNOWN', 4);
 
 define('SELECTIONACTION_NONE', 0);
 define('SELECTIONACTION_AUTO_TIME_ALLOWANCE', 1);
 define('SELECTIONACTION_OVERRIDE_EXCEPTION', 2);
 define('SELECTIONACTION_DISMISS_EXCEPTION', 3);
-define('SELECTIONACTION_GRANT_EXTENSION_REQUEST', 4);
-define('SELECTIONACTION_DENY_EXTENSION_REQUEST', 5);
 
 define('RESULTS_PER_PAGE', 50);
 
@@ -63,15 +60,15 @@ class prog_exceptions_manager {
         $this->exceptiontype_classnames = array(
             EXCEPTIONTYPE_TIME_ALLOWANCE    => 'time_allowance_exception',
             EXCEPTIONTYPE_ALREADY_ASSIGNED  => 'already_assigned_exception',
-            EXCEPTIONTYPE_EXTENSION_REQUEST  => 'extension_request_exception',
             EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN => 'completion_time_unknown_exception',
+            EXCEPTIONTYPE_UNKNOWN => 'unknown_exception'
         );
 
         $this->exceptiontype_descriptors = array(
             EXCEPTIONTYPE_TIME_ALLOWANCE    => get_string('timeallowance', 'local_program'),
             EXCEPTIONTYPE_ALREADY_ASSIGNED  => get_string('currentlyassigned', 'local_program'),
-            EXCEPTIONTYPE_EXTENSION_REQUEST  => get_string('extensionrequest', 'local_program'),
             EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN  => get_string('completiontimeunknown', 'local_program'),
+            EXCEPTIONTYPE_UNKNOWN => get_string('unknownexception', 'local_program')
         );
 
         $this->exception_actions = array(
@@ -79,8 +76,6 @@ class prog_exceptions_manager {
             SELECTIONACTION_AUTO_TIME_ALLOWANCE,
             SELECTIONACTION_OVERRIDE_EXCEPTION,
             SELECTIONACTION_DISMISS_EXCEPTION,
-            SELECTIONACTION_GRANT_EXTENSION_REQUEST,
-            SELECTIONACTION_DENY_EXTENSION_REQUEST,
         );
     }
 
@@ -226,16 +221,16 @@ class prog_exceptions_manager {
             switch($selectiontype) {
                 case SELECTIONTYPE_TIME_ALLOWANCE:
                     $exceptiontype = EXCEPTIONTYPE_TIME_ALLOWANCE;
-                break;
+                    break;
                 case SELECTIONTYPE_ALREADY_ASSIGNED:
                     $exceptiontype = EXCEPTIONTYPE_ALREADY_ASSIGNED;
-                break;
-                case SELECTIONTYPE_EXTENSION_REQUEST:
-                    $exceptiontype = EXCEPTIONTYPE_EXTENSION_REQUEST;
-                break;
+                    break;
                 case SELECTIONTYPE_COMPLETION_TIME_UNKNOWN:
                     $exceptiontype = EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN;
-                break;
+                    break;
+                default:
+                    $exceptiontype = EXCEPTIONTYPE_UNKNOWN;
+                    break;
             }
             $this->selectedexceptions = $this->search_exceptions('all', $searchterm, $exceptiontype);
 
@@ -338,7 +333,6 @@ class prog_exceptions_manager {
             $out .= '<option value="'.SELECTIONTYPE_ALL.'"'.($selectiontype==SELECTIONTYPE_ALL ? ' selected="selected"' : '').'>'.get_string('alllearners', 'local_program').'</option>';
             $out .= '<option value="'.SELECTIONTYPE_TIME_ALLOWANCE.'"'.($selectiontype==SELECTIONTYPE_TIME_ALLOWANCE ? ' selected="selected"' : '').'>'.get_string('alltimeallowanceissues', 'local_program').'</option>';
             $out .= '<option value="'.SELECTIONTYPE_ALREADY_ASSIGNED.'"'.($selectiontype==SELECTIONTYPE_ALREADY_ASSIGNED ? ' selected="selected"' : '').'>'.get_string('allcurrentlyassignedissues', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONTYPE_EXTENSION_REQUEST.'"'.($selectiontype==SELECTIONTYPE_EXTENSION_REQUEST ? ' selected="selected"' : '').'>'.get_string('allextensionrequestissues', 'local_program').'</option>';
             $out .= '<option value="'.SELECTIONTYPE_COMPLETION_TIME_UNKNOWN.'"'.($selectiontype==SELECTIONTYPE_COMPLETION_TIME_UNKNOWN ? ' selected="selected"' : '').'>'.get_string('allcompletiontimeunknownissues', 'local_program').'</option>';
             $out .= '</select>';
             $out .= '</div>';
@@ -349,8 +343,6 @@ class prog_exceptions_manager {
             $out .= '<option value="'.SELECTIONACTION_AUTO_TIME_ALLOWANCE.'">'.get_string('setrealistictimeallowance', 'local_program').'</option>';
             $out .= '<option value="'.SELECTIONACTION_OVERRIDE_EXCEPTION.'">'.get_string('overrideandaddprogram', 'local_program').'</option>';
             $out .= '<option value="'.SELECTIONACTION_DISMISS_EXCEPTION.'">'.get_string('dismissandtakenoaction', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONACTION_GRANT_EXTENSION_REQUEST.'">'.get_string('grantextensionrequest', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONACTION_DENY_EXTENSION_REQUEST.'">'.get_string('denyextensionrequest', 'local_program').'</option>';
             $out .= '</select>';
             $out .= '</div>';
 
@@ -364,7 +356,6 @@ class prog_exceptions_manager {
 
             $out .= '</div>';
 
-            //$table = new flexible_table('exceptions');
             $table = new stdClass();
             $table->id = 'exceptions';
 
@@ -394,7 +385,14 @@ class prog_exceptions_manager {
                 $row[] = '<input type="checkbox" name="exceptionid" value="'.$exception->id.'"'.$selectedstr.' />';
                 $row[] = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'">'.fullname($user).'</a>';
                 $row[] = '#'.$exception->id;
-                $row[] = $this->exceptiontype_descriptors[$exception->exceptiontype] . '<span class="type" style="display:none;">'.$exception->exceptiontype.'</span>';
+                if (isset($this->exceptiontype_descriptors[$exception->exceptiontype])) {
+                    $exceptiontype = $exception->exceptiontype;
+                    $descriptor = $this->exceptiontype_descriptors[$exceptiontype];
+                } else {
+                    $exceptiontype = EXCEPTIONTYPE_UNKNOWN;
+                    $descriptor = $this->exceptiontype_descriptors[$exceptiontype];
+                }
+                $row[] = $descriptor . '<span class="type" style="display:none;">'.$exceptiontype.'</span>';
 
 
                 $table->data[] = $row;
@@ -462,8 +460,6 @@ class prog_exceptions_manager {
                 SELECTIONACTION_AUTO_TIME_ALLOWANCE     => false,
                 SELECTIONACTION_OVERRIDE_EXCEPTION      => false,
                 SELECTIONACTION_DISMISS_EXCEPTION       => false,
-                SELECTIONACTION_GRANT_EXTENSION_REQUEST => false,
-                SELECTIONACTION_DENY_EXTENSION_REQUEST  => false,
             );
         } else {
             // Build a list of exceptions and their handled actions
@@ -471,12 +467,15 @@ class prog_exceptions_manager {
                 SELECTIONACTION_AUTO_TIME_ALLOWANCE     => true,
                 SELECTIONACTION_OVERRIDE_EXCEPTION      => true,
                 SELECTIONACTION_DISMISS_EXCEPTION       => true,
-                SELECTIONACTION_GRANT_EXTENSION_REQUEST => true,
-                SELECTIONACTION_DENY_EXTENSION_REQUEST  => true,
             );
 
             foreach ($selectedexceptions as $selectedexception) {
-                $classname = $this->exceptiontype_classnames[$selectedexception->exceptiontype];
+                if (isset($this->exceptiontype_classnames[$selectedexception->exceptiontype])) {
+                    $classname = $this->exceptiontype_classnames[$selectedexception->exceptiontype];
+                } else {
+                    $classname = $this->exceptiontype_classnames[EXCEPTIONTYPE_UNKNOWN];
+                }
+
                 $exceptionob = new $classname($this->programid, $selectedexception);
 
                 foreach ($handledActions as $action => $handles) {

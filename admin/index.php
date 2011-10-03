@@ -247,7 +247,9 @@
     $stradministration = get_string("administration");
 
     if ($CFG->version) {
-        if ($version > $CFG->version) {  // upgrade
+        if ($version > $CFG->version
+            || !isset($CFG->totara_build)
+            || $TOTARA->build > $CFG->totara_build) {  // upgrade
 
         /// If the database is not already Unicode then we do not allow upgrading!
         /// Instead, we print an error telling them to upgrade to 1.7 first.  MDL-6857
@@ -255,9 +257,38 @@
                 print_error('unicodeupgradeerror', 'error', '', $version);
             }
 
-            $a->oldversion = "$CFG->release ($CFG->version)";
-            $a->newversion = "$release ($version)";
-            $strdatabasechecking = get_string("databasechecking", "", $a);
+            $a = new object();
+            $a->oldversion = '';
+            $a->newversion = '';
+
+            // If a Moodle core upgrade:
+            if ($version > $CFG->version) {
+                $prefix = get_string('moodlecore').':';
+                $a->oldversion .= "{$prefix}<br />{$CFG->release} ({$CFG->version})";
+                $a->newversion .= "{$prefix}<br />{$release} ({$version})";
+            }
+
+            // If a Totara core upgrade
+            if (!isset($CFG->totara_build) || $TOTARA->build > $CFG->totara_build) {
+                $prefix = get_string('totaracore').':';
+
+                // If a Moodle and a Totara upgrade, tidy up the markup
+                if ($version > $CFG->version) {
+                    $a->oldversion .= '<br /><br />';
+                    $a->newversion .= '<br /><br />';
+                }
+
+                if (!isset($CFG->totara_build)) {
+                    $a->oldversion .= $prefix.'<br />'.get_string('totarapre11', 'admin');
+                    $a->newversion .= "{$prefix}<br />{$TOTARA->release}";
+                } else {
+                    $a->oldversion .= "{$prefix}<br />{$CFG->totara_release}";
+                    $a->newversion .= "{$prefix}<br />{$TOTARA->release}";
+                }
+            }
+
+            $strdatabasechecking = get_string("databasechecking11", "", $a);
+            $strdatabasecompare = get_string('databasecompare', '', $a);
 
             // hide errors from headers in case debug is enabled
             $origdebug = $CFG->debug;
@@ -275,7 +306,7 @@
                 print_header($strdatabasechecking, $stradministration, $navigation,
                         "", "", false, "&nbsp;", "&nbsp;");
 
-                notice_yesno(get_string('upgradesure', 'admin', $a->newversion), 'index.php?confirmupgrade=1', 'index.php');
+                notice_yesno(get_string('upgradesure', 'admin', $strdatabasecompare), 'index.php?confirmupgrade=1', 'index.php');
                 print_footer('none');
                 exit;
 
@@ -284,7 +315,7 @@
                 $navigation = build_navigation(array(array('name'=>$strcurrentrelease, 'link'=>null, 'type'=>'misc')));
                 print_header($strcurrentrelease, $strcurrentrelease, $navigation, "", "", false, "&nbsp;", "&nbsp;");
                 print_heading("Totara $TOTARA->release");
-                print_box(get_string('releasenoteslink', 'admin', 'http://docs.moodle.org/en/Release_Notes'));
+                print_box(get_string('releasenoteslink', 'admin', 'http://community.totaralms.com/mod/forum/view.php?id=141'));
 
                 require_once($CFG->libdir.'/environmentlib.php');
                 print_heading(get_string('environment', 'admin'));
@@ -371,7 +402,9 @@
                     if (!stats_upgrade_for_roles_wrapper()) {
                         notify('Couldn\'t upgrade the stats tables to use the new roles system');
                     }
-                    if (set_config("version", $version)) {
+                    if (set_config("version", $version) && set_config("totara_build", $TOTARA->build)) {
+                        // Also set Totara release (human readable version)
+                        set_config("totara_release", $TOTARA->release);
                         remove_dir($CFG->dataroot . '/cache', true); // flush cache
                         notify($strdatabasesuccess, "green");
                         print_continue("upgradesettings.php");
@@ -389,13 +422,13 @@
                 }
                 upgrade_log_finish();
             }
-        } else if ($version < $CFG->version) {
+        } else if ($version < $CFG->version || !isset($CFG->totara_build) || $TOTARA->build < $CFG->totara_build) {
             upgrade_log_start();
             notify("WARNING!!!  The code you are using is OLDER than the version that made these databases!");
             upgrade_log_finish();
         }
     } else {
-        if (!set_config("version", $version)) {
+        if (!set_config("version", $version) || !set_config("totara_build", $TOTARA->build)) {
             error("A problem occurred inserting current version into databases");
         }
     }
@@ -404,6 +437,13 @@
 
     if ($release <> $CFG->release) {  // Update the release version
         if (!set_config("release", $release)) {
+            error("ERROR: Could not update release version in database!!");
+        }
+    }
+
+    if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release) {
+        // Also set Totara release (human readable version)
+        if (!set_config("totara_release", $TOTARA->release)) {
             error("ERROR: Could not update release version in database!!");
         }
     }
@@ -704,7 +744,7 @@
     }
 
 // Check if any errors in log
-    $latesterror = get_record_sql("SELECT * FROM {$CFG->prefix}errorlog ORDER BY id DESC LIMIT 1", false, true);
+    $latesterror = get_record_sql("SELECT timeoccured FROM {$CFG->prefix}errorlog ORDER BY id DESC", true);
     if ($latesterror) {
         print_box_start('generalbox adminnotice');
         print_string('lasterroroccuredat', 'admin', userdate($latesterror->timeoccured));
@@ -712,12 +752,26 @@
         print_box_end();
     }
 
+    // list count of active users
+    print_box_start('generalbox adminnotice');
+    $oneyearago = time() - 60*60*24*365;
+    // See MDL-22481 for why currentlogin is used instead of lastlogin
+    $sql = "SELECT COUNT(id)
+        FROM {$CFG->prefix}user
+        WHERE currentlogin > $oneyearago";
+    $activeusers = count_records_sql($sql);
+    print_string('numberofactiveusers', 'admin', $activeusers);
+    print_box_end();
+
+
 /// Display Totara version information
     $totarainfo  = '<div class="totara-copyright">';
-    $totarainfo .= '<p><img src="'.$CFG->wwwroot.'/theme/totara/images/logo_main.gif" /></p>';
+    $totarainfo .= '<p><a href="http://www.totaralms.com"><img src="'.$CFG->wwwroot.'/theme/totara/images/logo_main.gif" /></a></p>';
     $totarainfo .= '<p><a href="http://www.totaralms.com">'.get_string('version').' '.$TOTARA->release.'</a></p>';
     $totarainfo .= '</div>';
     echo $totarainfo;
+
+    echo get_string('totaracopyright');
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
     ////  IT IS ILLEGAL AND A VIOLATION OF THE GPL TO HIDE, REMOVE OR MODIFY THIS COPYRIGHT NOTICE ///

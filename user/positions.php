@@ -168,9 +168,8 @@ else {
         $data->userid = $user->id;
 
         // Get new manager id
-        //echo 'Manager ID: '. $data->managerid . ' - User ID: '. $data->userid .'<br/>'; die();
-        if(isset($data->managerid)) {
-            if($data->managerid == $data->userid) {
+        if (isset($data->managerid)) {
+            if ($data->managerid == $data->userid) {
                 error(get_string('error:userownmanager', 'position'));
             } else {
                 $managerid = $data->managerid;
@@ -185,9 +184,6 @@ else {
         }
 
         assign_user_position($position_assignment, $managerid);
-
-        // Log
-        add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");
 
         // Log
         add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");

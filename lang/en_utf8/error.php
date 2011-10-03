@@ -21,6 +21,7 @@ $string['cannotviewprofile'] = 'You cannot view the profile of this user';
 $string['cantunenrollfrommetacourse'] = 'You cannot unenrol from this meta course';
 $string['cantunenrollinthisrole'] = 'You cannot unenrol from this course while you are in your current role';
 $string['cmunknown'] = 'Couldn\'t find this course module';
+$string['codingerrorbaseurlrequired'] = 'Coding error: Base URL required';
 $string['componentisuptodate'] = 'Component is up-to-date';
 $string['confirmsesskeybad'] = 'Sorry, but your session key could not be confirmed to carry out this action.  This security feature prevents against accidental or malicious execution of important functions in your name.  Please make sure you really wanted to execute this function.';
 $string['couldnotassignrole'] = 'A serious but unspecified error occurred while trying to assign a role to you';

@@ -33,7 +33,7 @@
         print_error('coursehidden', '', $CFG->wwwroot .'/'); 
     }  
     
-    print_header(get_string("summaryof", "", $course->fullname));
+    print_header(get_string("summaryof", "", format_string($course->fullname)));
 
     print_heading(format_string($course->fullname) . '<br />(' . format_string($course->shortname) . ')');
 

@@ -1,0 +1,30 @@
+<h1>Carregar grupos</h1>
+
+<p>Esse recursos permite a criação de grupos a partir de um arquivo.</p>
+
+<ul>
+  <li>Cada linha contém um registro</li>
+  <li>Cada registro é uma sequência de dados separados por vírgulas</li>
+  <li>O primeiro registro do arquivo é especial, e contém uma lista de campos. Isso define o formato do resto do arquivo.
+    <blockquote>
+      <p><strong>Campos Obrigatórios:</strong> esses campos precisam ser incluídos na primeira linha, e definidos para cada usuário</p>
+      <p></p>
+      <code class="example1">groupname</code>
+      <p><strong>Nomes dos campos padrão:</strong> esses são opcionais - se não forem incluídos então os valores usados vêm do idioma atual e do curso</p>
+      <p><code class="example1">idnumber, coursename, lang</code> </p>
+      <p><strong>Nomes dos campos opcionais: </strong>todos esses são completamente opcionais. </p>
+      <p> <code class="example1">description, enrolmentkey, picture, hidepicture</code></p>
+    </blockquote>
+    </li>
+  <li>As vírgulas usadas nos dados precisam ser codificadas como &amp;#44 - o script irá decodificar automaticamente. </li>
+  <li>Para campos booleanos(lógicos), use 0 para falso e 1 para verdadeiro. </li>
+  <li>Idnumber ou coursename podem ser usados para identificar o curso. Idnumber sobrepõe coursename. Se nenhum dos dois for especificado, os grupos serão adicionados ao curso atual. </li>
+  <li>Coursename é o nome reduzido do curso.</li>
+  <li>Nota: Se um grupo já estiver registrado no banco de dados do Moodle em um curso, esse script reconhecerá o nome do grupo. Professores só podem criar grupos nos cursos que eles podem editar.</li>
+</ul>
+   
+<p>Aqui um exemplo de arquivo de importação válido:</p>
+<p><code>groupname,idnumber,lang,description,picture <br />
+grupo1, Joao01, pt_br_utf8, este grupo é especial!, 0 <br />
+grupo12, Mat243, , ,
+</code></p>
