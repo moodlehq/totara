@@ -84,7 +84,7 @@ class program {
 
     public $id, $category, $sortorder, $fullname, $shortname;
     public $idnumber, $summary, $endnote, $visible;
-    public $availablefrom, $availableuntil, $availablerole;
+    public $availablefrom, $availableuntil, $available;
     public $timecreated, $timemodified, $usermodified;
     public $content;
 
@@ -112,7 +112,7 @@ class program {
         $this->visible = $program->visible;
         $this->availablefrom = $program->availablefrom;
         $this->availableuntil = $program->availableuntil;
-        $this->availablerole = $program->availablerole;
+        $this->available = $program->available;
         $this->timecreated = $program->timecreated;
         $this->timemodified = $program->timemodified;
         $this->usermodified = $program->usermodified;
@@ -1202,7 +1202,7 @@ class program {
         }
 
         // Check if this program is not available, if it's not then deny access
-        if ($this->availablerole == AVAILABILITY_NOT_TO_STUDENTS) {
+        if ($this->available == AVAILABILITY_NOT_TO_STUDENTS) {
             return false;
         }
 

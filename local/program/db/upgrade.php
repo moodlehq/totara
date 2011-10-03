@@ -85,5 +85,14 @@ function xmldb_local_program_upgrade($oldversion=0) {
 
     }
 
+    if ($result && $oldversion < 2011091202) {
+        $table = new XMLDBTable('prog');
+        $field = new XMLDBField('availablerole');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        if (field_exists($table, $field)) {
+            $result = $result && rename_field($table, $field, 'available');
+        }
+    }
+
     return $result;
 }

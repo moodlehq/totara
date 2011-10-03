@@ -1211,7 +1211,7 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
 
             if (!is_siteadmin($USER->id)) {
                 // Check if this program is not available, if it's not then deny access
-                if ($program->availablerole == 0) {
+                if ($program->available == 0) {
                     continue;
                 }
 

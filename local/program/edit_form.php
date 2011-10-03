@@ -144,13 +144,13 @@ class program_edit_form extends moodleform {
             AVAILABILITY_TO_STUDENTS => get_string('availabletostudents', 'local_program'),
             AVAILABILITY_NOT_TO_STUDENTS => get_string('availabletostudentsnot', 'local_program'),
         );
-        $mform->addElement('select', 'availablerole', get_string('availability', 'local_program'), $availabilityoptions);
+        $mform->addElement('select', 'available', get_string('availability', 'local_program'), $availabilityoptions);
         if ($action=='view') {
-            $mform->hardFreeze('availablerole');
+            $mform->hardFreeze('available');
         } else {
-            $mform->setHelpButton('availablerole', array('programavailability', get_string('availability', 'local_program'), 'local_program'), true);
-            $mform->setDefault('availablerole', AVAILABILITY_TO_STUDENTS);
-            $mform->setType('availablerole', PARAM_INT);
+            $mform->setHelpButton('available', array('programavailability', get_string('availability', 'local_program'), 'local_program'), true);
+            $mform->setDefault('available', AVAILABILITY_TO_STUDENTS);
+            $mform->setType('available', PARAM_INT);
         }
 
         $mform->addElement('text', 'availablefromselector', get_string('availablefrom', 'local_program'));
