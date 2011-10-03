@@ -266,6 +266,17 @@ class report_builder_edit_filters_form extends moodleform {
         $mform->addElement('hidden','source',$report->source);
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
+
+        // remove the labels from the form elements
+        $renderer =& $mform->defaultRenderer();
+        $select_elementtemplate = '<div class="fitem"><div class="felement fselectgroups">{element}</div></div>';
+        $check_elementtemplate = '<div class="fitem"><div class="felement fcheckbox">{element}</div></div>';
+        $renderer->setElementTemplate($select_elementtemplate, 'newfilter' . $index);
+        $renderer->setElementTemplate($check_elementtemplate, 'newadvanced' . $index);
+        foreach ($filters as $index => $unused) {
+            $renderer->setElementTemplate($select_elementtemplate, 'filter' . $index);
+            $renderer->setElementTemplate($check_elementtemplate, 'advanced' . $index);
+        }
     }
 
     function validation($data) {
@@ -452,6 +463,20 @@ class report_builder_edit_columns_form extends moodleform {
         $mform->addElement('hidden','source',$report->source);
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
+
+        // remove the labels from the form elements
+        $renderer =& $mform->defaultRenderer();
+        $select_elementtemplate = '<div class="fitem"><div class="felement fselectgroups">{element}</div></div>';
+        $check_elementtemplate = '<div class="fitem"><div class="felement fcheckbox">{element}</div></div>';
+        $text_elementtemplate = '<div class="fitem"><div class="felement ftext">{element}</div></div>';
+        $renderer->setElementTemplate($select_elementtemplate, 'newcolumns' . $index);
+        $renderer->setElementTemplate($check_elementtemplate, 'newcustomheading' . $index);
+        $renderer->setElementTemplate($text_elementtemplate, 'newheading' . $index);
+        foreach ($columns as $index => $unused) {
+            $renderer->setElementTemplate($select_elementtemplate, 'column' . $index);
+            $renderer->setElementTemplate($check_elementtemplate, 'customheading' . $index);
+            $renderer->setElementTemplate($text_elementtemplate, 'heading' . $index);
+        }
     }
 
 

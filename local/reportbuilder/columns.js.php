@@ -41,7 +41,8 @@ var rb_init_col_rows = function() {
     });
 
     // handle changes to the column pulldowns
-    $('select.column_selector').change(function() {
+    $('select.column_selector').unbind('change');
+    $('select.column_selector').bind('change', function() {
         var changedSelector = $(this).val();
         var newContent = rb_column_headings[changedSelector];
         var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
@@ -51,7 +52,8 @@ var rb_init_col_rows = function() {
 
     // handle changes to the customise checkbox
     // use click instead of change event for IE
-    $('input.column_custom_heading_checkbox').click(function() {
+    $('input.column_custom_heading_checkbox').unbind('click');
+    $('input.column_custom_heading_checkbox').bind('click', function() {
         var textElement = $('input.column_heading_text', $(this).parents('tr:first'));
         if ($(this).is(':checked')) {
             // enable the textbox when checkbox isn't checked
@@ -68,7 +70,7 @@ var rb_init_col_rows = function() {
 
 
     // special case for the 'Add another column...' selector
-    $('select.new_column_selector').live('change', function() {
+    $('select.new_column_selector').bind('change', function() {
         var newHeadingBox = $('input.column_heading_text', $(this).parents('tr:first'));
         var newCheckBox = $('input.column_custom_heading_checkbox', $(this).parents('tr:first'));
         var addbutton = rb_init_addbutton($(this));
@@ -113,7 +115,8 @@ var rb_init_addbutton = function(colselector) {
 
     // Add save button to options
     optionsbox.prepend(addbutton);
-    addbutton.click(function(e) {
+    addbutton.unbind('click');
+    addbutton.bind('click', function(e) {
         e.preventDefault();
         $.ajax({
             url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/column.php'; ?>",
@@ -194,7 +197,8 @@ var rb_init_addbutton = function(colselector) {
 
 
 var rb_init_deletebuttons = function() {
-    $('.reportbuilderform table .deletecolbtn').click(function(e) {
+    $('.reportbuilderform table .deletecolbtn').unbind('click');
+    $('.reportbuilderform table .deletecolbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -275,7 +279,8 @@ var rb_init_deletebuttons = function() {
 }
 
 var rb_init_hidebuttons = function() {
-    $('.reportbuilderform table .hidecolbtn').click(function(e) {
+    $('.reportbuilderform table .hidecolbtn').unbind('click');
+    $('.reportbuilderform table .hidecolbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -314,7 +319,8 @@ var rb_init_hidebuttons = function() {
 };
 
 var rb_init_showbuttons = function() {
-    $('.reportbuilderform table .showcolbtn').click(function(e) {
+    $('.reportbuilderform table .showcolbtn').unbind('click');
+    $('.reportbuilderform table .showcolbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -354,7 +360,8 @@ var rb_init_showbuttons = function() {
 }
 
 var rb_init_movedown_btns = function() {
-    $('.reportbuilderform table .movecoldownbtn').click(function(e) {
+    $('.reportbuilderform table .movecoldownbtn').unbind('click');
+    $('.reportbuilderform table .movecoldownbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
@@ -416,7 +423,8 @@ var rb_init_movedown_btns = function() {
 
 
 var rb_init_moveup_btns = function() {
-    $('.reportbuilderform table .movecolupbtn').click(function(e) {
+    $('.reportbuilderform table .movecolupbtn').unbind('click');
+    $('.reportbuilderform table .movecolupbtn').bind('click', function(e) {
         e.preventDefault();
         var clickedbtn = $(this);
 
