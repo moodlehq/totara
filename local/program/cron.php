@@ -53,7 +53,6 @@ function program_cron() {
 function program_daily_cron() {
     $timenow  = time();
     $dailycron = 60 * 60 * 24; // one day
-    $dailycron = 0; // testing only
     $lastdailycron = get_config(null, 'local_program_lastdailycron');
 
     if($lastdailycron && ($timenow - $lastdailycron <= $dailycron)) {
