@@ -223,7 +223,7 @@ border-color:#cecece;
 }
 
 .grade-report-grader th {
-padding:2px 10px 0;
+padding:3px 10px;
 }
 
 .grade-report-grader span.inclusion-links {
