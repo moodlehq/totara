@@ -71,11 +71,18 @@ abstract class prog_exception {
         $exception->exceptiontype = $exceptiontype;
         $exception->userid = $userid;
         $exception->timeraised = $timeraised;
-    $exception->assignmentid = $assignmentid;
+        $exception->assignmentid = $assignmentid;
 
         begin_sql();
 
         if($exceptionid = insert_record('prog_exception', $exception)) {
+            $prog_notify_todb = new stdClass;
+            $prog_notify_todb->id = $programid;
+            $prog_notify_todb->exceptionssent = 0;
+            if (!update_record('prog', $prog_notify_todb)) {
+                rollback_sql();
+                return false;
+            }
 
             foreach($dataobjects as $dataobject) {
                 $dataobject->exceptionid = $exceptionid;

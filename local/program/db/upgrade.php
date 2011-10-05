@@ -94,5 +94,14 @@ function xmldb_local_program_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2011091203) {
+        $table = new XMLDBTable('prog');
+        $field = new XMLDBField('exceptionssent');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+    }
+
     return $result;
 }

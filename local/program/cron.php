@@ -144,7 +144,7 @@ function program_cron_switch_recurring_courses() {
 
     $recurring_programs = prog_get_recurring_programs();
 
-    foreach($recurring_programs as $program) {
+    foreach ($recurring_programs as $program) {
 
         $content = $program->get_content();
         $coursesets = $content->get_course_sets();
@@ -766,7 +766,7 @@ function program_cron_exceptions_raised(&$programs) {
         mtrace('Checking if any exceptions exist');
     }
 
-    if ( ! $admin = get_admin()) {
+    if (!$admin = get_admin()) {
         mtrace('Unable to determine admin user in program_cron_exceptions_raised. Not checking for exceptions.');
         return;
     }
@@ -774,7 +774,9 @@ function program_cron_exceptions_raised(&$programs) {
     // Query to retrieve any programs that have unhandled exceptions
     $sql = "SELECT DISTINCT(p.id) AS id
             FROM {$CFG->prefix}prog AS p
-            JOIN {$CFG->prefix}prog_exception AS pe ON p.id=pe.programid";
+            JOIN {$CFG->prefix}prog_exception AS pe
+               ON p.id=pe.programid
+            WHERE p.exceptionssent=0";
 
     if ($progsfound = get_records_sql($sql)) {
 
@@ -791,8 +793,16 @@ function program_cron_exceptions_raised(&$programs) {
             $messages = $messagesmanager->get_messages();
 
             // send alerts for each program to the admin user
-            foreach($messages as $message) {
-                if($message->messagetype==MESSAGETYPE_EXCEPTION_REPORT) {
+
+            foreach ($messages as $message) {
+                if ($message->messagetype == MESSAGETYPE_EXCEPTION_REPORT) {
+
+                    // Update program with exceptions sent
+                    $prog_notify_todb = new stdClass;
+                    $prog_notify_todb->id = $message->programid;
+                    $prog_notify_todb->exceptionssent = 1;
+                    update_record('prog', $prog_notify_todb);
+
                     $message->send_message($admin);
                 }
             }
