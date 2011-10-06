@@ -270,12 +270,10 @@ class prog_exceptions_manager {
             return count_records_sql($sql);
         }
 
-        if (is_int($page)) {
-            $sql .= " LIMIT " . RESULTS_PER_PAGE;
-            $sql .= " OFFSET " . (($page) * RESULTS_PER_PAGE);
-        }
+        $limit = is_int($page) ? RESULTS_PER_PAGE : '';
+        $offset = is_int($page) ? (($page) * RESULTS_PER_PAGE) : '';
 
-        $exceptions = get_records_sql($sql);
+        $exceptions = get_records_sql($sql, $offset, $limit);
 
         if (!empty($exceptions)) {
             return $exceptions;
