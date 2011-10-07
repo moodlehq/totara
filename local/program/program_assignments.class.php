@@ -1346,7 +1346,7 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
         return 'first login';
     }
     public function get_timestamp($userid,$instanceid) {
-        if (!isset($this->timestamps[$userid . '-' . $instanceid])) {
+        if (!isset($this->timestamps[$userid])) {
             return false;
         }
 
