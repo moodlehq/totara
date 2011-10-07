@@ -402,9 +402,11 @@ class completion_completion extends data_object {
             // Attempt to update, and return the results
             return $this->update();
         } else {
-            // Make sure reaggregate field is not null
+            // We should always be reaggregating when new course_completions
+            // records are created as they might have already completed some
+            // criteria before enrolling
             if (!$this->reaggregate) {
-                $this->reaggregate = 0;
+                $this->reaggregate = time();
             }
 
             // Make sure timestarted is not null
