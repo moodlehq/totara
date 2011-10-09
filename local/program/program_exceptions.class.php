@@ -253,12 +253,11 @@ class prog_exceptions_manager {
         INNER JOIN {$CFG->prefix}user us ON us.id = ex.userid
         WHERE ex.programid = {$this->programid} AND us.deleted = 0";
 
-        if ( ! empty($exceptiontype)) {
+        if (!empty($exceptiontype)) {
             $sql .= " AND ex.exceptiontype = $exceptiontype";
         }
 
         if (!empty($searchterm)) {
-            $searchterm = addslashes($searchterm);
             if (is_numeric($searchterm)) {
                 $sql .= " AND us.id = $searchterm";
             }
@@ -296,7 +295,7 @@ class prog_exceptions_manager {
 
         $out = '<form method="get" action="'. $this->build_link() .'">';
         $out .= '<label for="exception_search" >'. get_string('searchforindividual', 'local_program') .' </label>';
-        $out .= '<input type="text" id="exception_search" name="search" value="'. $previoussearch .'" />';
+        $out .= '<input type="text" id="exception_search" name="search" value="'.stripslashes($previoussearch).'" />';
         $out .= '<input type="hidden" name="id" value="'. $this->programid .'" />';
         $out .= '<input type="submit" value="'. get_string('search') .'" />';
         $out .= '</form>';
