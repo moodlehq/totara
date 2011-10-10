@@ -5,6 +5,7 @@ require_once($CFG->dirroot.'/local/reportbuilder/filters/number.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/simpleselect.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/select.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/date.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/datetime.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/hierarchy.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/multicheck.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/filter_forms.php');
@@ -113,6 +114,7 @@ class filtering {
             case 'textarea':
             case 'number':
             case 'date':
+            case 'datetime':
                 return new $filtername($filter, $sessionname);
             case 'org':
             case 'comp':
