@@ -502,9 +502,9 @@ function totara_print_my_courses() {
             '<th class="startdate">'.get_string('started','local').'</th>'.
             '<th class="completeddate">'.get_string('completed','local').'</th></tr>';
 
-        foreach($courses as $course) {
+        foreach ($courses as $course) {
             $id = $course->course;
-            $name = $course->name;
+            $name = format_string($course->name);
             $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;
 
