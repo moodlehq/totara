@@ -957,7 +957,7 @@ function create_temp_table($table, $continue=true, $feedback=true) {
     }
 
     if (!empty($temporary)) {
-        $sqlarr = preg_replace('/^CREATE/', "CREATE $temporary", $sqlarr);
+        $sqlarr = preg_replace('/^CREATE TABLE/', "CREATE $temporary TABLE", $sqlarr);
     }
 
     if (execute_sql_arr($sqlarr, $continue, $feedback)) {
