@@ -15,8 +15,8 @@ $(document).ready(function() {
 function dp_competency_disable_dependencies() {
     if ($('#mform1 input[name=autoassignpos]').is(':checked') ||
        $('#mform1 input[name=autoassignorg]').is(':checked')) {
-        $('#mform1 input[name=includecompleted]').attr('disabled', '');
-        $('#mform1 input[name=autoassigncourses]').attr('disabled', '');
+        $('#mform1 input[name=includecompleted]').removeAttr('disabled');
+        $('#mform1 input[name=autoassigncourses]').removeAttr('disabled');
     } else {
         $('#mform1 input[name=includecompleted]').attr('disabled', 'disabled');
         $('#mform1 input[name=autoassigncourses]').attr('disabled', 'disabled');
