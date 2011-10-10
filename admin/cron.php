@@ -339,10 +339,13 @@
 
         if ($CFG->longtimenosee) { // value in days
             $cuttime = $timenow - ($CFG->longtimenosee * 3600 * 24);
-            $rs = get_recordset_sql ("SELECT id, userid, courseid
-                                        FROM {$CFG->prefix}user_lastaccess
-                                       WHERE courseid != ".SITEID."
-                                         AND timeaccess < $cuttime ");
+            $rs = get_recordset_sql ("SELECT la.id, la.userid, la.courseid
+                                        FROM {$CFG->prefix}user_lastaccess la
+                                        JOIN {$CFG->prefix}course c
+                                          ON c.id = la.courseid
+                                       WHERE la.courseid != ".SITEID."
+                                         AND la.timeaccess < $cuttime
+                                         AND c.metacourse = 0 ");
             while ($assign = rs_fetch_next_record($rs)) {
                 if ($context = get_context_instance(CONTEXT_COURSE, $assign->courseid)) {
                     if (role_unassign(0, $assign->userid, 0, $context->id)) {
@@ -446,25 +449,24 @@
         mtrace('checking for create_password');
         if (count_records('user_preferences', 'name', 'create_password', 'value', '1')) {
             mtrace('creating passwords for new users');
-            $newusers = get_records_sql("SELECT  u.id as id, u.email, u.firstname, 
-                                                u.lastname, u.username,
-                                                p.id as prefid 
-                                        FROM {$CFG->prefix}user u 
-                                             JOIN {$CFG->prefix}user_preferences p ON u.id=p.userid
-                                        WHERE p.name='create_password' AND p.value='1' AND u.email !='' ");
-
-            foreach ($newusers as $newuserid => $newuser) {
-                $newuser->emailstop = 0; // send email regardless
-                // email user                               
-                if (setnew_password_and_mail($newuser)) {
-                    // remove user pref
-                    delete_records('user_preferences', 'id', $newuser->prefid);
-                } else {
-                    trigger_error("Could not create and mail new user password!");
+            $newuserssql = "SELECT u.id as id, u.email, u.firstname, u.lastname, u.username, p.id as prefid
+                              FROM {$CFG->prefix}user u
+                              JOIN {$CFG->prefix}user_preferences p ON u.id=p.userid
+                             WHERE p.name='create_password' AND p.value='1' AND u.email !='' ";
+            if ($newusers = get_records_sql($newuserssql)) {
+                foreach ($newusers as $newuserid => $newuser) {
+                    $newuser->emailstop = 0; // send email regardless
+                    // email user
+                    if (setnew_password_and_mail($newuser)) {
+                        // remove user pref
+                        delete_records('user_preferences', 'id', $newuser->prefid);
+                    } else {
+                        trigger_error("Could not create and mail new user password!");
+                    }
                 }
             }
         }
-        
+
         if (!empty($CFG->usetags)) {
             require_once($CFG->dirroot.'/tag/lib.php');
             tag_cron();

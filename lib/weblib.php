@@ -309,7 +309,7 @@ if (!defined('MOODLE_URL_2')) {
 /**
  * Class for creating and manipulating urls.
  *
- * See short write up here http://docs.moodle.org/en/Development:lib/weblib.php_moodle_url
+ * See short write up here http://docs.moodle.org/dev/lib/weblib.php_moodle_url
  */
 class moodle_url {
     var $scheme = '';// e.g. http

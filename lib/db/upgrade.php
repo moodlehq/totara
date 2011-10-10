@@ -370,7 +370,7 @@ function xmldb_main_upgrade($oldversion=0) {
         drop_index($table, $index);
         $index->setFields(array('mnethostid', 'username'));
         if (!add_index($table, $index)) {
-            notify(get_string('duplicate_usernames', 'mnet', 'http://docs.moodle.org/en/DuplicateUsernames'));
+            notify(get_string('duplicate_usernames', 'mnet', 'http://docs.moodle.org/19/en/DuplicateUsernames'));
         }
 
         unset($table, $field, $index);
@@ -3284,6 +3284,17 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101563.03);
     }
 
+    if ($result && $oldversion < 2007101571.01) {
+        // Remove category_sortorder index that was supposed to be removed long time ago
+        $table = new XMLDBTable('course');
+        $index = new XMLDBIndex('category_sortorder');
+        $index->setAttributes(XMLDB_INDEX_UNIQUE, array('category', 'sortorder'));
+
+        if (index_exists($table, $index)) {
+            drop_index($table, $index);
+        }
+    }
+
     if ($result && $oldversion < 2007101574.01) {
         // MDL-21011 bring down course sort orders away from maximum values
         $sql = "SELECT id, category, sortorder from {$CFG->prefix}course
@@ -3384,6 +3395,18 @@ function xmldb_main_upgrade($oldversion=0) {
             }
         }
         upgrade_main_savepoint($result, 2007101591.03);
+    }
+
+    if ($result && $oldversion < 2007101591.05) {
+        // Remove category_sortorder index that was supposed to be removed long time ago
+        $table = new XMLDBTable('course');
+        $index = new XMLDBIndex('category_sortorder');
+        $index->setAttributes(XMLDB_INDEX_UNIQUE, array('category', 'sortorder'));
+
+        if (index_exists($table, $index)) {
+            drop_index($table, $index);
+        }
+        upgrade_main_savepoint($result, 2007101591.05);
     }
 
     return $result;

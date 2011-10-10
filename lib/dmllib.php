@@ -32,7 +32,7 @@
 /// include it yourself.
 
 /// For more info about the functions available in this library, please visit:
-///     http://docs.moodle.org/en/DML_functions
+///     http://docs.moodle.org/19/en/DML_functions
 /// (feel free to modify, improve and document such page, thanks!)
 
 /// GLOBAL CONSTANTS /////////////////////////////////////////////////////////
@@ -575,6 +575,7 @@ function get_record_select($table, $select='', $fields='*') {
 function get_recordset($table, $field='', $value='', $sort='', $fields='*', $limitfrom='', $limitnum='') {
 
     if ($field) {
+        $value = sql_magic_quotes_hack($value);
         $select = "$field = '$value'";
     } else {
         $select = '';
@@ -716,7 +717,7 @@ function recordset_to_array($rs) {
         $objects = array();
     /// First of all, we are going to get the name of the first column
     /// to introduce it back after transforming the recordset to assoc array
-    /// See http://docs.moodle.org/en/XMLDB_Problems, fetch mode problem.
+    /// See http://docs.moodle.org/19/en/XMLDB_Problems, fetch mode problem.
         $firstcolumn = $rs->FetchField(0);
     /// Get the whole associative array
         if ($records = $rs->GetAssoc(true)) {
@@ -1439,7 +1440,7 @@ function delete_records_select($table, $select='') {
  * @param string $table The database table to be checked against.
  * @param object $dataobject A data object with values for one or more fields in the record
  * @param bool $returnid Should the id of the newly created record entry be returned? If this option is not requested then true/false is returned.
- * @param string $primarykey (obsolete) This is now forced to be 'id'. 
+ * @param string $primarykey (obsolete) This is now forced to be 'id'.
  */
 function insert_record($table, $dataobject, $returnid=true, $primarykey='id') {
 
@@ -1467,6 +1468,11 @@ function insert_record($table, $dataobject, $returnid=true, $primarykey='id') {
 /// In Moodle we always use auto-numbering fields for the primary key
 /// so let's unset it now before it causes any trouble later
     unset($dataobject->{$primarykey});
+
+/// Extra protection against SQL injections
+    foreach((array)$dataobject as $k=>$v) {
+        $dataobject->$k = sql_magic_quotes_hack($v);
+    }
 
 /// Get an empty recordset. Cache for multiple inserts.
     if (empty($empty_rs_cache[$table])) {
@@ -1644,6 +1650,11 @@ function update_record($table, $dataobject) {
         $dataobject = (object)$dataobject;
     }
 
+/// Extra protection against SQL injections
+    foreach((array)$dataobject as $k=>$v) {
+        $dataobject->$k = sql_magic_quotes_hack($v);
+    }
+
     // Remove this record from record cache since it will change
     if (!empty($CFG->rcache)) { // no === here! breaks upgrade
         rcache_unset($table, $dataobject->id);
@@ -1760,7 +1771,7 @@ function sql_paging_limit($page, $recordsperpage) {
  *
  * Note the LIKE are case sensitive for Oracle. Oracle 10g is required to use
  * the caseinsensitive search using regexp_like() or NLS_COMP=LINGUISTIC :-(
- * See http://docs.moodle.org/en/XMLDB_Problems#Case-insensitive_searches
+ * See http://docs.moodle.org/19/en/XMLDB_Problems#Case-insensitive_searches
  *
  * @uses $CFG
  * @return string
@@ -2229,6 +2240,38 @@ function sql_ceil($fieldname) {
 }
 
 /**
+ * This hack prevents some types of SQL injections, no code should rely on this,
+ * do not forget to use addslashes() and addslashes_recursive() properly!
+ *
+ * The performance cost is negligible considering the security benefits and DB requests cost.
+ *
+ * @param mixed $value sql parameter value (hopefully with magic quotes)
+ * @return mixed sanitised value - added magic quotes if accidentally missing
+ */
+function sql_magic_quotes_hack($value) {
+    if ($value === null or $value === '') {
+        // performance shortcut
+        return $value;
+    }
+
+    // ignore stuff that can not be converted to string, catchable fatal error will be displayed elsewhere,
+    // this is intentional because we want to get the same errors as before this magic hack
+    if (is_object($value)) {
+        if (!method_exists($value, '__toString')) {
+            // ignore - we can not cast object to string, error will be triggered elsewhere
+            return $value;
+        }
+    } else if (!is_string($value)) {
+        // no sql injection possible in other non-string values
+        return $value;
+    }
+
+    // note: this does not change content if the content is properly escaped,
+    // the result is different only for strings with missing magic quotes!
+    return addslashes(stripslashes($value));
+}
+
+/**
  * Prepare a SQL WHERE clause to select records where the given fields match the given values.
  *
  * Prepares a where clause of the form
@@ -2243,6 +2286,9 @@ function sql_ceil($fieldname) {
  * @param string $value3 the value field3 must have (requred if field3 is given, else optional).
  */
 function where_clause($field1='', $value1='', $field2='', $value2='', $field3='', $value3='') {
+    $value1 = sql_magic_quotes_hack($value1);
+    $value2 = sql_magic_quotes_hack($value2);
+    $value3 = sql_magic_quotes_hack($value3);
     if ($field1) {
         $select = is_null($value1) ? "WHERE $field1 IS NULL" : "WHERE $field1 = '$value1'";
         if ($field2) {
