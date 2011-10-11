@@ -134,10 +134,23 @@ abstract class course_set {
             $this->label = get_string('legend:courseset', 'local_program', $this->sortorder);
         }
 
-        if($this->id > 0) { // if this set already exists in the database
-            return update_record('prog_courseset', $this);
+        $todb = new object();
+        $todb->programid = $this->programid;
+        $todb->sortorder = $this->sortorder;
+        $todb->competencyid = $this->competencyid;
+        $todb->nextsetoperator = $this->nextsetoperator;
+        $todb->completiontype = $this->completiontype;
+        $todb->timeallowed = $this->timeallowed;
+        $todb->recurrencetime = $this->recurrencetime;
+        $todb->recurcreatetime = $this->recurcreatetime;
+        $todb->contenttype = $this->contenttype;
+        $todb->label = $this->label;
+
+        if ($this->id > 0) { // if this set already exists in the database
+            $todb->id = $this->id;
+            return update_record('prog_courseset', $todb);
         } else {
-            if($id = insert_record('prog_courseset', $this)) {
+            if ($id = insert_record('prog_courseset', $todb)) {
                 $this->id = $id;
                 return true;
             }
@@ -545,14 +558,27 @@ class multi_course_set extends course_set {
             $this->label = get_string('legend:courseset', 'local_program', $this->sortorder);
         }
 
-        if($this->id == 0) { // if this set doesn't already exist in the database
-            if( ! $id = insert_record('prog_courseset', $this)) {
+        $todb = new object();
+        $todb->programid = $this->programid;
+        $todb->sortorder = $this->sortorder;
+        $todb->competencyid = $this->competencyid;
+        $todb->nextsetoperator = $this->nextsetoperator;
+        $todb->completiontype = $this->completiontype;
+        $todb->timeallowed = $this->timeallowed;
+        $todb->recurrencetime = $this->recurrencetime;
+        $todb->recurcreatetime = $this->recurcreatetime;
+        $todb->contenttype = $this->contenttype;
+        $todb->label = $this->label;
+
+        if ($this->id == 0) { // if this set doesn't already exist in the database
+            if (!$id = insert_record('prog_courseset', $todb)) {
                 return false;
             }
 
             $this->id = $id;
         } else {
-            if( ! update_record('prog_courseset', $this)) {
+            $todb->id = $this->id;
+            if (!update_record('prog_courseset', $todb)) {
                 return false;
             }
         }
