@@ -3529,7 +3529,7 @@ class admin_setting_pickroles extends admin_setting_configmulticheckbox {
         if (is_array($this->choices)) {
             return true;
         }
-        if ($roles = get_records('role')) {
+        if ($roles = get_all_roles()) {
             $this->choices = array();
             foreach($roles as $role) {
                 $this->choices[$role->id] = format_string($role->name);
