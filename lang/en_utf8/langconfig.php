@@ -29,5 +29,9 @@ $string['thisdirection'] = 'ltr';
 $string['thislanguage'] = 'English';
 $string['thislanguageint'] = 'English';
 $string['thousandssep'] = ','; // thousands separator, for some languages it is '.' or ' '
+$string['strftimedateseconds'] = '%%d %%b %%Y at %%H:%%M:%%S';
+$string['strfdateshortmonth'] = '%%d %%b %%Y';
+$string['strftimeshort'] = '%%H:%%M';
+$string['strfdateattime'] = '%%d %%b %%Y at %%H:%%M';
 
 ?>

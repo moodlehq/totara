@@ -295,7 +295,7 @@ abstract class rb_base_source {
      */
     function rb_display_nice_date($date, $row) {
         if($date && $date > 0) {
-            return userdate($date, '%d %b %Y');
+            return userdate($date, get_string('strfdateshortmonth'));
         } else {
             return '';
         }
@@ -311,7 +311,7 @@ abstract class rb_base_source {
      */
     function rb_display_nice_time($date, $row) {
         if($date && $date > 0) {
-            return userdate($date, '%H:%M');
+            return userdate($date, get_string('strftimeshort'));
         } else {
             return '';
         }
@@ -328,12 +328,27 @@ abstract class rb_base_source {
      */
     function rb_display_nice_datetime($date, $row) {
         if($date && $date > 0) {
-            return userdate($date, '%d %b %Y at %H:%M');
+            return userdate($date, get_string('strfdateattime'));
         } else {
             return '';
         }
     }
 
+    /**
+     * Reformat a timestamp into a date and time (including seconds), showing nothing if invalid or null
+     *
+     * @param integer $date Unix timestamp
+     * @param object $row Object containing all other fields for this row
+     *
+     * @return string Date and time (including seconds) in a nice format
+     */
+    function rb_display_nice_datetime_seconds($date, $row) {
+        if ($date && $date > 0) {
+            return userdate($date, get_string('strftimedateseconds'));
+        } else {
+            return '';
+        }
+    }
 
     /**
      * Convert 1 and 0 to 'Yes' and 'No'
