@@ -158,10 +158,27 @@ abstract class prog_message {
     }
 
     public function save_message() {
+        //Create object to save
+
+        $message_todb = new stdClass();
+        $message_todb->programid = $this->programid;
+        $message_todb->messagetype = $this->messagetype;
+        $message_todb->sortorder = $this->sortorder;
+        $message_todb->locked = $this->locked;
+        $message_todb->notifymanager = $this->notifymanager;
+        $message_todb->triggertime = $this->triggertime;
+
         if($this->id > 0) { // if this message already exists in the database
-            return update_record('prog_message', $this);
+            $message_todb->id = $this->id;
+            $message_todb->messagesubject = $this->messagesubject;
+            $message_todb->mainmessage = $this->mainmessage;
+            $message_todb->managermessage = $this->managermessage;
+            return update_record('prog_message', $message_todb);
         } else {
-            if($id = insert_record('prog_message', $this)) {
+            $message_todb->messagesubject = addslashes($this->messagesubject);
+            $message_todb->mainmessage = addslashes($this->mainmessage);
+            $message_todb->managermessage = addslashes($this->managermessage);
+            if($id = insert_record('prog_message', $message_todb)) {
                 $this->id = $id;
                 return true;
             }

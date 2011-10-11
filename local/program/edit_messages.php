@@ -130,7 +130,7 @@ if($data = $messageseditform->get_data()) {
 
         // then save the messages
         if( ! $programmessagemanager->save_messages($data)) {
-            totara_set_notification(get_string('programupdatefail', 'local_program'), $editurl);
+            totara_set_notification(get_string('programupdatefail', 'local_program'), $currenturl);
         } else {
             totara_set_notification(get_string('programmessagessaved', 'local_program'), 'edit_messages.php?id='.$id, array('style' => 'notifysuccess'));
         }
