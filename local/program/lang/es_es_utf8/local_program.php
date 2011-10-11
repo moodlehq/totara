@@ -191,7 +191,6 @@ $string['launchcourse'] = 'Lanzar curso';
 $string['launchprogram'] = 'Lanzar programa';
 $string['learnerenrolled'] = 'Participante inscrito';
 $string['learnerfollowup'] = 'Seguimiento participante';
-$string['learnersassigned'] = '$a estudiante(s) asignado';
 $string['learnersselected'] = 'Participantes seleccionados';
 $string['learnerunenrolled'] = 'Participantes no inscritos';
 $string['legend:courseset'] = 'Conjunto de curso $a';

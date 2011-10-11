@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // book.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// book.php - created with Totara langimport script version 1.0
 
 $string['addafter'] = 'إضافة فصل جديد';
 $string['book_tocwidth'] = 'عرض جدول المحتويات';

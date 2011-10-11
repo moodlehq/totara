@@ -204,7 +204,6 @@ $string['launchcourse'] = 'התחל קורס';
 $string['launchprogram'] = 'התחל מסלול';
 $string['learnerenrolled'] = 'לומד רשום';
 $string['learnerfollowup'] = 'מעקב לומד';
-$string['learnersassigned'] = '$a לומדים כבר משוייכים';
 $string['learnersselected'] = 'לומדים שנבחרו';
 $string['learnerunenrolled'] = 'לומדים ששיוכם הוסר';
 $string['legend:courseset'] = 'אוסף קורסים $a';

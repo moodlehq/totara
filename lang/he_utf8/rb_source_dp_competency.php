@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // rb_source_dp_competency.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+      // rb_source_dp_competency.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
 
 
 $string['competencyduedate'] = 'תאריך יעד של הכשירות';
@@ -9,6 +9,8 @@ $string['competencyproficiency'] = 'רמת ידע בכשירות';
 $string['competencyproficiencyandapproval'] = 'רמת ידע בכשירות (וסטטוס אישור)';
 $string['competencyproficient'] = 'בעל רמת ידע טובה בכשירות?';
 $string['competencystatus'] = 'סטטוס הכשירויות';
+$string['competencytype'] = 'סוג כשירות';
+$string['competencytypeid'] = 'קוד סוג כשירות';
 $string['courses'] = 'קורסים';
 $string['coursetypeicon'] = 'סוג';
 $string['duedate'] = 'תאריך יעד';
