@@ -1,7 +1,33 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Alastair Munro <alastair.munro@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
+ * @author Francois Marier <francois@catalyst.net.nz>
+ * @package modules
+ * @subpackage facetoface
+ */
+defined('MOODLE_INTERNAL') || die();
 
-require_once "$CFG->dirroot/lib/formslib.php";
-require_once 'lib.php';
+
+require_once("{$CFG->libdir}/formslib.php");
+require_once("{$CFG->dirroot}/mod/facetoface/lib.php");
 
 class mod_facetoface_session_form extends moodleform {
 
@@ -36,8 +62,8 @@ class mod_facetoface_session_form extends moodleform {
 
         $formarray  = array();
         $formarray[] = $mform->createElement('selectyesno', 'datetimeknown', get_string('sessiondatetimeknown', 'facetoface'));
-	$formarray[] = $mform->createElement('static', 'datetimeknownhint', '','<span class="hint-text">'.get_string('datetimeknownhinttext','facetoface').'</span>');
-	$mform->addGroup($formarray,'datetimeknown_group', get_string('sessiondatetimeknown','facetoface'), array(' '),false);
+        $formarray[] = $mform->createElement('static', 'datetimeknownhint', '','<span class="hint-text">'.get_string('datetimeknownhinttext','facetoface').'</span>');
+        $mform->addGroup($formarray,'datetimeknown_group', get_string('sessiondatetimeknown','facetoface'), array(' '),false);
         $mform->addGroupRule('datetimeknown_group', null, 'required', null, 'client');
         $mform->setDefault('datetimeknown', false);
         $mform->setHelpButton('datetimeknown_group', array('sessiondatetimeknown', get_string('sessiondatetimeknown', 'facetoface'), 'facetoface'));
@@ -78,16 +104,16 @@ class mod_facetoface_session_form extends moodleform {
         if (!get_config(NULL, 'facetoface_hidecost')) {
             $formarray  = array();
             $formarray[] = $mform->createElement('text', 'normalcost', get_string('normalcost', 'facetoface'), 'size="5"');
-	    $formarray[] = $mform->createElement('static', 'normalcosthint', '','<span class="hint-text">'.get_string('normalcosthinttext','facetoface').'</span>');
-	    $mform->addGroup($formarray,'normalcost_group', get_string('normalcost','facetoface'), array(' '),false);
+            $formarray[] = $mform->createElement('static', 'normalcosthint', '','<span class="hint-text">'.get_string('normalcosthinttext','facetoface').'</span>');
+            $mform->addGroup($formarray,'normalcost_group', get_string('normalcost','facetoface'), array(' '),false);
             $mform->setType('normalcost', PARAM_TEXT);
             $mform->setHelpButton('normalcost_group', array('normalcost', get_string('normalcost', 'facetoface'), 'facetoface'));
 
             if (!get_config(NULL, 'facetoface_hidediscount')) {
                 $formarray  = array();
                 $formarray[] = $mform->createElement('text', 'discountcost', get_string('discountcost', 'facetoface'), 'size="5"');
-	        $formarray[] = $mform->createElement('static', 'discountcosthint', '','<span class="hint-text">'.get_string('discountcosthinttext','facetoface').'</span>');
-	        $mform->addGroup($formarray,'discountcost_group', get_string('discountcost','facetoface'), array(' '),false);
+                $formarray[] = $mform->createElement('static', 'discountcosthint', '','<span class="hint-text">'.get_string('discountcosthinttext','facetoface').'</span>');
+                $mform->addGroup($formarray,'discountcost_group', get_string('discountcost','facetoface'), array(' '),false);
                 $mform->setType('discountcost', PARAM_TEXT);
                 $mform->setHelpButton('discountcost_group', array('discountcost', get_string('discountcost', 'facetoface'), 'facetoface'));
             }
@@ -146,8 +172,17 @@ class mod_facetoface_session_form extends moodleform {
 
                 // If only a few, use checkboxes
                 if (count($choices) < 4) {
+                    $role_shown = false;
                     foreach ($choices as $cid => $choice) {
-                        $mform->addElement('advcheckbox', 'trainerrole['.$role.']['.$cid.']', $rolename, $choice, null, array('', $cid));
+                        // Only display the role title for the first checkbox for each role
+                        if (!$role_shown) {
+                            $roledisplay = $rolename;
+                            $role_shown = true;
+                        } else {
+                            $roledisplay = '';
+                        }
+
+                        $mform->addElement('advcheckbox', 'trainerrole['.$role.']['.$cid.']', $roledisplay, $choice, null, array('', $cid));
                         $mform->setType('trainerrole['.$role.']['.$cid.']', PARAM_INT);
                     }
                 } else {
