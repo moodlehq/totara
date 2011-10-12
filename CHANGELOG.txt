@@ -1,5 +1,51 @@
 Totara LMS Changelog
 
+Release 1.1.1 (12 October 2011):
+==================================================
+
+Security fixes:
+    MDL-29311   Messaging: added a safety check to prevent message refreshing causing inadvertant DOS
+    MDL-29033   Magic quotes hardening                                                              Filtering has been added to various DB functions to avoid unanticipated injection threats
+    MDL-23872   Honour setConstant() behaviour in MoodleQuickForm                                   Form values that are set as constants were able to be altered by users when the form was submitted
+    MDL-29148   Incorrect handling of openssl_verify() return code in MNET
+
+Database upgrades:
+    MDL-27248   Remove forgotten unique sortorder index from the course table
+
+Improvements:
+    T-8485      Additions to Finnish, Hebrew and Arabic language packs
+
+Bug fixes:
+    T-9395      Set reaggregate when creating course_completions records                            Historic data relevant to course completion was not immediately aggregated on enrolment
+    T-9282      Fix missing format_string()
+    T-9399      Linked course checkboxes in Learning Plan Template settings are not correctly enabled
+    T-9359      Objective date picker does not use JavaScript version
+    T-9398      Temp tables do not correctly create temporary indexes
+    T-9384      Cross database support issues in exception search function
+    T-9403      Limit number of rows added to database by error handler                             Greatly speeds up the search for missing strings functionality
+    T-9401      Fix multiple instances of passing excess data to database functions
+    T-9286      Fixed missing format_string in My Courses block
+    T-9392      Assigning individuals by first login creating an exception even when they have logged in
+    T-9396      Prevent unnecessary slashing of search terms in program exceptions
+    T-6710      Fix hard coded lang strings in ROL program embedded report
+    T-9380      Only notify admin about exceptions in a program once                                Prevent multiple emails being received regarding same exception
+    T-9339      Hide empty categories in learning plan course dialog for learners
+    MDL-27174   Fatal missing assignmenttype error during Assignment backup
+    MDL-20501   Fix text alignment for RTL languages in Survey module
+    MDL-28639   Question import should set timemodified and modified by
+    MDL-28931   Timezone updates
+    MDL-24887   RSS block feed validator link fails with ampersands
+    MDL-28690   Do not automatically unenrol users from meta courses after longtimenosee days       This can lead to multiple "welcome" messages
+    MDL-4561    Allow guests to access metacourses with an enrolment key
+    MDL-16950   Add msqli_real_escape_string call in Search when using mysqli
+    MDL-18952   Move uploaded file into dataroot before attempting to read it
+    MDL-29212   RCount incorrect in Quiz Analysis Report when correct answer is 0
+    MDL-28428   Quiz: Prefer getElementById for IE9 fix
+    MDL-25454   Before skipping course backup make sure that there are no change entries in it's log during the last month
+    MDL-25454   Using the faster way to check if record exists in the DB
+    MDL-28537   Fixed use of the TYPE option when creating MySQL tables, now uses ENGINE for backward compatibility and future support
+
+
 Release 1.1.0 (3 October 2011):
 ==================================================
 
