@@ -128,7 +128,7 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'starttime',
                 get_string('time', 'rb_source_scorm'),
-                sql_cast_char2int('sco_starttime.value'),
+                sql_cast_char2int('sco_starttime.value', true),
                 array(
                     'joins' => 'sco_starttime',
                     'displayfunc' => 'nice_datetime',
@@ -442,7 +442,8 @@ class rb_source_scorm extends rb_base_source {
     function rb_filter_scorm_status_list() {
         global $CFG;
         // get all available options
-        if($records = get_records_sql("SELECT DISTINCT value FROM " .
+        if($records = get_records_sql("SELECT DISTINCT " .
+            sql_compare_text("value") . " AS value FROM " .
             "{$CFG->prefix}scorm_scoes_track " .
             "WHERE element = 'cmi.core.lesson_status'")) {
             $statusselect = array();
