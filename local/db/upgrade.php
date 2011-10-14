@@ -2799,7 +2799,7 @@ function xmldb_local_upgrade($oldversion) {
             $table = new XMLDBTable($hierarchy.'_type');
             $field = new XMLDBField('idnumber');
             $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
-             if (!field_exists($table, $field)) {
+            if (!field_exists($table, $field)) {
                 /// Add idnumber field
                 $result = $result && add_field($table, $field);
             }
@@ -2856,6 +2856,24 @@ function xmldb_local_upgrade($oldversion) {
                 set_config('local_management_cron', null);
                 set_config('local_management_lastcron', null);
             }
+        }
+    }
+
+    if ($result && $oldversion < 2011091205) {
+        // Add missing rpl column to course_completion_crit_compl table (missing from upgrades)
+        $table = new XMLDBTable('course_completion_crit_compl');
+        $field = new XMLDBField('rpl');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, null, null);
+
+        if (!field_exists($table, $field)) {
+            // Add rpl field
+            $result = $result && add_field($table, $field);
+        } else {
+            $sql = "UPDATE {$CFG->prefix}course_completion_crit_compl SET rpl=" .
+                sql_substr() . "(rpl, 1, 255)";
+            $result = $result && execute_sql($sql);
+
+            $result = $result && change_field_type($table, $field, true, true);
         }
     }
 
