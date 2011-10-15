@@ -635,6 +635,29 @@ abstract class rb_base_source {
         return $code;
     }
 
+
+    function rb_display_user_email($email, $row, $isexport = false) {
+        if (empty($email)) {
+            return '';
+        }
+        $maildisplay = $row->maildisplay;
+        $emaildisabled = $row->emailstop;
+
+        // respect users email privacy setting
+        // at some point we may want to allow admins to view anyway
+        if ($maildisplay != 1) {
+            return get_string('useremailprivate', 'local_reportbuilder');
+        }
+
+        if ($isexport) {
+            return $email;
+        } else {
+            // obfuscate email to avoid spam if printing to page
+            return obfuscate_mailto($email, '', (bool) $emaildisabled);
+        }
+    }
+
+
     //
     //
     // Generic select filter methods
@@ -940,6 +963,22 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'user',
+            'email',
+            get_string('useremail', 'local_reportbuilder'),
+            // use CASE to include/exclude email in SQL
+            // so search won't reveal hidden results
+            "CASE WHEN $join.maildisplay <> 1 THEN '-' ELSE $join.email END",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'user_email',
+                'extrafields' => array(
+                    'emailstop' => "$join.emailstop",
+                    'maildisplay' => "$join.maildisplay",
+                )
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
             'lastlogin',
             get_string('userlastlogin', 'local_reportbuilder'),
             // See MDL-22481 for why currentlogin is used instead of lastlogin
@@ -1009,6 +1048,7 @@ abstract class rb_base_source {
             'department' => get_string('userdepartment', 'local_reportbuilder'),
             'address' => get_string('useraddress', 'local_reportbuilder'),
             'city' => get_string('usercity', 'local_reportbuilder'),
+            'email' => get_string('useremail', 'local_reportbuilder'),
         );
         foreach ($fields as $field => $name) {
             $filteroptions[] = new rb_filter_option(
