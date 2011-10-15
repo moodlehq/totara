@@ -1984,7 +1984,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                         if (isset($column->displayfunc)) {
                             $func = 'rb_display_'.$column->displayfunc;
                             if(method_exists($this->src, $func)) {
-                                $tabledata[] = $this->src->$func($record->$field, $record);
+                                $tabledata[] = $this->src->$func($record->$field, $record, $isexport);
                             } else {
                                 $tabledata[] = $record->$field;
                             }
@@ -2892,7 +2892,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                     if (isset($primary_field->displayfunc)) {
                         $func = 'rb_display_'.$primary_field->displayfunc;
                         if(method_exists($this->src, $func)) {
-                            $primaryvalue = $this->src->$func($item->$primaryname, $item);
+                            $primaryvalue = $this->src->$func($item->$primaryname, $item, false);
                         } else {
                             $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
                         }
