@@ -120,7 +120,7 @@ class rb_source_program extends rb_base_source {
         global $CFG;
         $programid = $row->program_id;
         $programicon = $row->program_icon;
-        return "<a href=\"{$CFG->wwwroot}/local/program/view.php?id={$programid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=".urlencode($programicon)."&amp;id=$programid&amp;size=small&amp;type=course\" alt=\"$program\" />{$program}</a>";
+        return "<a href=\"{$CFG->wwwroot}/local/program/view.php?id={$programid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($programicon)."&amp;id=$programid&amp;size=small&amp;type=course\" alt=\"$program\" />{$program}</a>";
     }
 
     function define_filteroptions() {
