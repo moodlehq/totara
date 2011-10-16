@@ -159,6 +159,28 @@ class ADODB_mssql_n extends ADODB_mssql {
 
         return $result;
     }
+
+    // returns concatenated string
+    // MSSQL requires integers to be cast as strings
+    // automatically cast every datatype to VARCHAR(255)
+    function Concat() {
+        $s = "";
+        $arr = func_get_args();
+
+        // Split single record on commas, if possible
+        if (sizeof($arr) == 1) {
+            foreach ($arr as $arg) {
+                $args = explode(',', $arg);
+            }
+            $arr = $args;
+        }
+
+        array_walk($arr, create_function('&$v', '$v = "CAST(" . $v . " AS NVARCHAR(255))";'));
+        $s = implode('+',$arr);
+        if (sizeof($arr) > 0) return "$s";
+
+        return '';
+    }
 }
 
 class ADORecordset_mssql_n extends ADORecordset_mssql {
