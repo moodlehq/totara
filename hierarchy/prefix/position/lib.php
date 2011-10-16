@@ -546,3 +546,32 @@ class position_assignment extends data_object {
         return true;
     }
 }
+
+/**
+ * Calcuates if a user can edit a position assignment
+ *
+ * @param int $userid The user ID of the position being edited
+ * @return bool True if a user is allowed to edit assignment
+ */
+function pos_can_edit_position_assignment($userid) {
+    global $USER;
+
+    $personalcontext = get_context_instance(CONTEXT_USER, $userid);
+
+    // can assign any user's position
+    if (has_capability('moodle/local:assignuserposition', get_context_instance(CONTEXT_SYSTEM))) {
+        return true;
+    }
+
+    // can assign this particular user's position
+    if (has_capability('moodle/local:assignuserposition', $personalcontext)) {
+        return true;
+    }
+
+    // editing own position and have capability to assign own position
+    if ($USER->id == $userid && has_capability('moodle/local:assignselfposition', get_context_instance(CONTEXT_SYSTEM))) {
+        return true;
+    }
+
+    return false;
+}

@@ -26,8 +26,11 @@
 
 require_once '../../config.php';
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
 
 $userid = required_param('userid', PARAM_INT);
+
+$can_edit = pos_can_edit_position_assignment($userid);
 
 ?>
 // Bind functionality to page on load
@@ -68,7 +71,7 @@ $(function() {
             'organisationid',
             'organisationtitle',
             undefined,
-            true            // Make selection deletable
+            <?php echo $can_edit ? 'true' : 'false'; ?>            // Make selection deletable
         );
     })();
 
@@ -89,7 +92,7 @@ $(function() {
             'managerid',
             'managertitle',
             undefined,
-            true            // Make selection deletable
+            <?php echo ($can_edit) ? 'true' : 'false'; ?>            // Make selection deletable
         );
     })();
 });

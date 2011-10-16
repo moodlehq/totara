@@ -56,17 +56,7 @@ if ($user->deleted) {
 }
 
 // Can user edit this user's positions?
-$can_edit = false;
-if (has_capability('moodle/local:assignuserposition', get_context_instance(CONTEXT_SYSTEM))) {
-    $can_edit = true;
-}
-elseif (has_capability('moodle/local:assignuserposition', $personalcontext)) {
-    $can_edit = true;
-}
-elseif ($USER->id == $user->id &&
-    has_capability('moodle/local:assignselfposition', get_context_instance(CONTEXT_SYSTEM))) {
-    $can_edit = true;
-}
+$can_edit = pos_can_edit_position_assignment($user->id);
 
 // Check a valid position type was supplied
 if ($type === '') {
