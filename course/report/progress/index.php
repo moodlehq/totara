@@ -336,7 +336,7 @@ foreach($progress as $user) {
         if($csv) {
             print $sep.csv_quote($describe).$sep.csv_quote($date);
         } else {
-            print '<td class="completion-progresscell '.$activity->datepassedclass.'"'.
+            print '<td class="completion-progresscell '.$activity->datepassedclass.'">'.
                 '<img src="'.$CFG->pixpath.'/i/'.$completionicon.'.gif'.
                 '" alt="'.$describe.'" title="'.$fulldescribe.'" /></td>';
         }
