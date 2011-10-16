@@ -345,12 +345,22 @@ class rb_source_user extends rb_base_source {
         $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">{$bookingstr}</a>";
 
         $show_plan_link = dp_can_view_users_plans($userid);
+        $links = $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
+        $links .= $profile_link.'&nbsp;|&nbsp;';
+        $links .= $booking_link.'&nbsp;|&nbsp;';
+        $links .= $rol_link;
 
-        $return = '<div class="picture">'.$user_pic.' <span class="username">'.$user.'</span></div>'.'<div class="links">';
-        $return .= $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
-        $return .= $profile_link.'&nbsp;|&nbsp;';
-        $return .= $booking_link.'&nbsp;|&nbsp;';
-        $return .= $rol_link.'</div>';
+        $return = <<<EOF
+<table class="namewithlinks-layout">
+    <tr>
+        <td class="user-picture">{$user_pic}</td>
+        <td class="user-name">{$user}</td>
+    </tr>
+    <tr>
+        <td class="user-links" colspan="2">{$links}</td>
+    </tr>
+</table>
+EOF;
 
         return $return;
     }

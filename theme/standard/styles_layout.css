@@ -1927,18 +1927,27 @@ img.iconhelp {
     height: 16px;
 }
 
-td.user_namewithlinks span.username {
+table.namewithlinks-layout,
+table.namewithlinks-layout tr,
+table.namewithlinks-layout td {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+table.namewithlinks-layout td.user-name {
     font-size: 1.3em;
+    vertical-align: middle;
+    text-align: left;
+}
+table.namewithlinks-layout td.user-picture {
+    padding-right: 4px;
+    width: 35px;
+}
+table.namewithlinks-layout td.user-links {
+    font-size: 1em;
 }
 
-td.user_namewithlinks div.picture {
-    float:left;
-    padding-right:4px;
-}
-
-td.user_namewithlinks .userpicture {
-    vertical-align:middle
-}
 
 div.add-linked-course {
     text-align:right;
