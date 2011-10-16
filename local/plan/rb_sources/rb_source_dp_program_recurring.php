@@ -222,7 +222,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
     function define_defaultcolumns() {
         $defaultcolumns = array(
             array(
-                'type' => 'program',
+                'type' => 'program_completion_history',
                 'value' => 'courselink',
             ),
         );
