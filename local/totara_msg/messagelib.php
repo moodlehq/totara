@@ -352,11 +352,11 @@ function tm_alert_send($eventdata) {
         }
 
         if ($eventdata->contexturl) {
-            $eventdata->fullmessagehtml .= '<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl);
+            $eventdata->fullmessagehtml .= '<br><br>'.get_string_in_user_lang($eventdata->userto, 'viewdetailshere', 'local_totara_msg', $eventdata->contexturl);
         }
 
         // Add footer to email
-        $eventdata->fullmessagehtml .= '<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1");
+        $eventdata->fullmessagehtml .= '<br><br>'.get_string_in_user_lang($eventdata->userto, 'alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1");
 
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_text($eventdata->fullmessage, FORMAT_PLAIN), format_text($eventdata->fullmessagehtml, FORMAT_HTML));
@@ -427,11 +427,11 @@ function tm_task_send($eventdata) {
         }
 
         if ($eventdata->contexturl) {
-            $eventdata->fullmessagehtml .= '<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl);
+            $eventdata->fullmessagehtml .= '<br><br>'.get_string_in_user_lang($eventdata->userto, 'viewdetailshere', 'local_totara_msg', $eventdata->contexturl);
         }
 
         // Add footer to email
-        $eventdata->fullmessagehtml .= '<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1");
+        $eventdata->fullmessagehtml .= '<br><br>'.get_string_in_user_lang($eventdata->userto, 'alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1");
 
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_text($eventdata->fullmessage, FORMAT_PLAIN), format_text($eventdata->fullmessagehtml, FORMAT_HTML));
@@ -546,11 +546,11 @@ function tm_workflow_send($eventdata) {
         }
 
         if ($eventdata->contexturl) {
-            $eventdata->fullmessagehtml .= '<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl);
+            $eventdata->fullmessagehtml .= '<br><br>'.get_string_in_user_lang($eventdata->userto, 'viewdetailshere', 'local_totara_msg', $eventdata->contexturl);
         }
 
         // Add footer to email
-        $eventdata->fullmessagehtml .= '<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1");
+        $eventdata->fullmessagehtml .= '<br><br>'.get_string_in_user_lang($eventdata->userto, 'alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1");
 
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_text($eventdata->fullmessage, FORMAT_PLAIN), format_text($eventdata->fullmessagehtml, FORMAT_HTML));

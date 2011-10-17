@@ -1921,7 +1921,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session,
                                                         $session->id
                                                 );
-            $newevent->subject          = 'Booked for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->subject          = get_string_in_user_lang($user, 'bookedforsession', 'facetoface') . ' <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->icon             = 'facetoface-add';
             $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
             $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
@@ -1938,7 +1938,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session,
                                                         $session->id
                                                 );
-            $newevent->subject          = 'Waitlisted for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->subject          = get_string_in_user_lang($user, 'waitlistedforsession' ,'facetoface') . ' <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->icon             = 'facetoface-regular';
             $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
             $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
@@ -1947,7 +1947,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             break;
 
         case MDL_F2F_STATUS_USER_CANCELLED:
-            $newevent->subject          = 'Cancelled for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->subject          = get_string_in_user_lang($user, 'cancelledforsession', 'facetoface') . ' <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->fullmessage      = $newevent->subject;
             $newevent->icon             = 'facetoface-remove';
             $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
@@ -1959,7 +1959,10 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $userto = get_record('user', 'id', $managerid);
                 $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
                 $newevent->userto           = $userto;
-                $newevent->subject          = 'Cancelled for '.$usermsg.' session <a href="'.$url.'">'.$facetoface->name.'</a>';
+                $subjectinfo = new stdClass();
+                $subjectinfo->usermsg = $usermsg;
+                $subjectinfo->url = '<a href="'.$url.'">'.$facetoface->name.'</a>';
+                $newevent->subject          = get_string_in_user_lang($userto, 'cancelusersession', 'facetoface', $subjectinfo);
                 $newevent->fullmessage      = $newevent->subject;
                 tm_alert_send($newevent);
             }
@@ -1979,16 +1982,19 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session,
                                                         $session->id
                                                 );
-                $newevent->subject          = 'Request for '.$usermsg.'to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id.'">'.$facetoface->name.'</a>';
+                $subjectinfo = new stdClass();
+                $subjectinfo->usermsg = $usermsg;
+                $subjectinfo->url = '<a href="'.$CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id.'">'.$facetoface->name.'</a>';
+                $newevent->subject          = get_string_in_user_lang($userto, 'requestuserattendsession', 'facetoface', $subjectinfo);
                 // do the facetoface workflow event
                 $onaccept = new stdClass();
                 $onaccept->action = 'facetoface';
-                $onaccept->text = 'To approve session registration, press accept';
+                $onaccept->text = get_string_in_user_lang($userto, 'approveinstruction', 'facetoface');
                 $onaccept->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
                 $newevent->onaccept = $onaccept;
                 $onreject = new stdClass();
                 $onreject->action = 'facetoface';
-                $onreject->text = 'To reject session registration press reject';
+                $onreject->text = get_string_in_user_lang($userto, 'rejectinstruction', 'facetoface');
                 $onreject->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
                 $newevent->onreject = $onreject;
                 tm_task_send($newevent);
@@ -1997,7 +2003,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $user = get_record('user', 'id', $userid);
                 $newevent->userto           = $user;
                 $newevent->roleid           = get_field('role', 'id', 'shortname', 'student');
-                $newevent->subject          = 'Request to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a> sent to manager';
+                $newevent->subject          = get_string_in_user_lang($user, 'requestattendsessionsent', 'facetoface', '<a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a>');
                 $newevent->fullmessage      = $newevent->subject;
                 $newevent->icon             = 'facetoface-request';
                 $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;

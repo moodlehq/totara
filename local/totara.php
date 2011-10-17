@@ -1030,3 +1030,30 @@ function totara_print_edit_button($settingname, $params = array()) {
     $params[$settingname] = $edit;
     return print_single_button(qualified_me(), $params, $label, 'get', '', true);
 }
+
+
+/**
+ * Return a language string in the local language for a given user
+ * @param object $user User to use to localize string
+ * @param string $identifier The key identifier for the localized string
+ * @param string $module The module where the key identifier is stored.
+ * @param mixed $a An object, string or number that can be used within translation strings
+ * @param array $extralocations An array of strings with other locations to look for string files
+ * @return string The localized string.
+ *
+ */
+function get_string_in_user_lang($user, $identifier, $module='', $a=NULL, $extralocations=NULL) {
+    global $USER;
+
+    // Store lang
+    $original_lang = $USER->lang;
+
+    // Set lang
+    $USER->lang = $user->lang;
+
+    $string = get_string($identifier, $module, $a, $extralocations);
+
+    $USER->lang = $original_lang;
+
+    return $string;
+}

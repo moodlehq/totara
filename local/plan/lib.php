@@ -1128,8 +1128,6 @@ function plan_comment_add($comment) {
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
 
-            $subject = get_string('commentmsg:planoverview', 'local_plan', $msgobj);
-            $fullmsg = get_string('commentmsg:planoverviewdetail', 'local_plan', $msgobj);
             $contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$plan->id.'#comments';
             $contexturlname = $plan->name;
             $icon = 'elearning-newcomment';
@@ -1152,8 +1150,6 @@ function plan_comment_add($comment) {
             $msgobj->comment = format_text($comment->content);
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
-            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj);
-            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj);
 
             $contexturl = $CFG->wwwroot.'/local/plan/components/course/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
@@ -1177,8 +1173,6 @@ function plan_comment_add($comment) {
             $msgobj->comment = format_text($comment->content);
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
-            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj);
-            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj);
 
             $contexturl = $CFG->wwwroot.'/local/plan/components/competency/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
@@ -1198,8 +1192,6 @@ function plan_comment_add($comment) {
             $msgobj->comment = format_text($comment->content);
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
-            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj);
-            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj);
 
             $contexturl = $CFG->wwwroot.'/local/plan/components/objective/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
@@ -1223,8 +1215,6 @@ function plan_comment_add($comment) {
             $msgobj->comment = format_text($comment->content);
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
-            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj);
-            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj);
 
             $contexturl = $CFG->wwwroot.'/local/plan/components/program/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
@@ -1279,6 +1269,15 @@ function plan_comment_add($comment) {
             $event->roleid = get_field('role', 'id', 'shortname', 'manager');
         }
         $event->icon = $icon;
+
+        if ($comment->commentarea == 'plan-overview') {
+            $subject = get_string_in_user_lang($userto, 'commentmsg:planoverview', 'local_plan', $msgobj);
+            $fullmsg = get_string_in_user_lang($userto, 'commentmsg:planoverviewdetail', 'local_plan', $msgobj);
+        } else {
+            $subject = get_string_in_user_lang($userto, 'commentmsg:componentitem', 'local_plan', $msgobj);
+            $fullmsg = get_string_in_user_lang($userto, 'commentmsg:componentitemdetail', 'local_plan', $msgobj);
+        }
+
         $event->subject = $subject;
         $event->fullmessage = format_text_email($fullmsg, FORMAT_HTML);
         $event->fullmessagehtml = $fullmsg;

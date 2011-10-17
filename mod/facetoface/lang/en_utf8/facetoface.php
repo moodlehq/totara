@@ -519,3 +519,17 @@ $string['xminutes'] = '$a minutes';
 $string['youarebooked'] = 'You are booked for the following session';
 $string['youremailaddress'] = 'Your email address';
 $string['error:shortnametaken'] = 'Custom field with this short name already exists.';
+
+//Totara Messaging strings
+$string['requestattendsession'] = 'Request to attend session $a';
+$string['requestattendsessionsent'] = 'Request to attend session $a sent to manager';
+
+$string['bookedforsession'] = 'Booked for session $a';
+$string['waitlistedforsession'] = 'Waitlisted for session $a';
+$string['cancelledforsession'] = 'Cancelled for session';
+
+$string['requestuserattendsession'] = 'Request for $a->usermsg to attend session $a->url';
+$string['cancelusersession'] = 'Cancelled for $a->usermsg session $a->url';
+
+$string['approveinstruction'] = 'To approve session registration, press accept';
+$string['rejectinstruction'] = 'To reject session registraion, press reject';
