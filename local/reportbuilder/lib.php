@@ -1877,15 +1877,18 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $this->check_sort_keys();
         // get the ORDER BY SQL fragment from table
         $sort = $table->get_sql_sort();
-        if($sort!='') {
+        if ($sort!='') {
             $order = " ORDER BY $sort";
         } else {
            $order = '';
         }
-        $data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size());
-        // add data to flexible table
-        foreach ($data as $row) {
-            $table->add_data($row);
+        if ($data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size())) {
+            // add data to flexible table
+            foreach ($data as $row) {
+                $table->add_data($row);
+            }
+        } else {
+            print_error('error:problemobtainingreportdata', 'local_reportbuilder');
         }
 
         // display the table

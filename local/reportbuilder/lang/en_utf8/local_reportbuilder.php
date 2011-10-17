@@ -133,6 +133,7 @@ $string['error:nosources'] ='No sources found. You must have at least one source
 $string['error:savedsearchnotdeleted'] = 'Saved search could not be deleted';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
 $string['error:updatescheduledreport'] = 'Error updating Scheduled Report';
+$string['error:problemobtainingreportdata'] = 'There was a problem obtaining the data for this report';
 $string['error:propertyxmustbesetiny'] = 'Property \"{$a->property}\" must be set in class \"{$a->class}\"';
 $string['error:joinxusedmorethanonceiny'] = 'Join name \"{$a->join}\" used more than once in source \"{$a->source}\"';
 $string['error:joinxisreservediny'] = 'Join name \"{$a->join}\" in source \"{$a->source}\" is an SQL reserved word. Please rename the join';
