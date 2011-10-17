@@ -1325,9 +1325,7 @@ abstract class prog_assignment_completion_type {
 
 class prog_assigment_completion_first_login extends prog_assignment_completion_type {
     private $timestamps;
-    public function __construct() {
-        $this->timestamps = get_records_select('user','','','id, firstaccess, lastaccess');
-    }
+
     public function get_id() {
         return COMPLETION_EVENT_FIRST_LOGIN;
     }
@@ -1345,7 +1343,14 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
     public function get_completion_string() {
         return 'first login';
     }
+    private function load_data() {
+        $this->timestamps = get_records_select('user','','','id, firstaccess, lastaccess');
+    }
     public function get_timestamp($userid,$instanceid) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
         if (!isset($this->timestamps[$userid])) {
             return false;
         }
@@ -1360,10 +1365,6 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
 
 class prog_assigment_completion_position_start_date extends prog_assignment_completion_type {
     private $names, $timestamps;
-    public function __construct() {
-        $this->names = get_records_select('pos','','','id, fullname');
-        $this->timestamps = get_records_select('prog_pos_assignment','type = 1','',sql_concat('userid',"'-'",'positionid') . ' as hash, timeassigned');
-    }
     public function get_id() {
         return COMPLETION_EVENT_POSITION_START_DATE;
     }
@@ -1384,13 +1385,25 @@ class prog_assigment_completion_position_start_date extends prog_assignment_comp
             });
         ";
     }
+    private function load_data() {
+        $this->names = get_records_select('pos','','','id, fullname');
+        $this->timestamps = get_records_select('prog_pos_assignment','type = 1','',sql_concat('userid',"'-'",'positionid') . ' as hash, timeassigned');
+    }
     public function get_item_name($instanceid) {
+        // lazy load data when required
+        if (!isset($this->names)) {
+            $this->load_data();
+        }
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
         return 'starting in position';
     }
     public function get_timestamp($userid,$instanceid) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
         if (isset($this->timestamps[$userid . '-' . $instanceid])) {
             return $this->timestamps[$userid . '-' . $instanceid]->timeassigned;
         }
@@ -1400,10 +1413,6 @@ class prog_assigment_completion_position_start_date extends prog_assignment_comp
 
 class prog_assigment_completion_program_completion extends prog_assignment_completion_type {
     private $names, $timestamps;
-    public function __construct() {
-        $this->names = get_records_select('prog','','','id, fullname');
-        $this->timestamps = get_records_select('prog_completion','','',sql_concat('userid',"'-'",'programid') . ' as hash, timecompleted');
-    }
     public function get_id() {
         return COMPLETION_EVENT_PROGRAM_COMPLETION;
     }
@@ -1426,13 +1435,25 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
             $('.folder').removeClass('clickable').addClass('unclickable');
         ";
     }
+    private function load_data() {
+        $this->names = get_records_select('prog','','','id, fullname');
+        $this->timestamps = get_records_select('prog_completion','','',sql_concat('userid',"'-'",'programid') . ' as hash, timecompleted');
+    }
     public function get_item_name($instanceid) {
+        // lazy load data when required
+        if (!isset($this->names)) {
+            $this->load_data();
+        }
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
         return 'completion of program';
     }
     public function get_timestamp($userid,$instanceid) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
         if (isset($this->timestamps[$userid . '-' . $instanceid])) {
             return $this->timestamps[$userid . '-' . $instanceid]->timecompleted;
         }
@@ -1442,10 +1463,6 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
 
 class prog_assigment_completion_course_completion extends prog_assignment_completion_type {
     private $names, $timestamps;
-    public function __construct() {
-        $this->names = get_records_select('course','','','id, fullname');
-        $this->timestamps = get_records_select('course_completions','','',sql_concat('userid',"'-'",'course') . ' as hash, timecompleted');
-    }
     public function get_id() {
         return COMPLETION_EVENT_COURSE_COMPLETION;
     }
@@ -1468,13 +1485,25 @@ class prog_assigment_completion_course_completion extends prog_assignment_comple
             $('.folder').removeClass('clickable').addClass('unclickable');
         ";
     }
+    private function load_data() {
+        $this->names = get_records_select('course','','','id, fullname');
+        $this->timestamps = get_records_select('course_completions','','',sql_concat('userid',"'-'",'course') . ' as hash, timecompleted');
+    }
     public function get_item_name($instanceid) {
+        // lazy load data when required
+        if (!isset($this->names)) {
+            $this->load_data();
+        }
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
         return 'completion of course';
     }
     public function get_timestamp($userid,$instanceid) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
         if (isset($this->timestamps[$userid . '-' . $instanceid])) {
             return $this->timestamps[$userid . '-' . $instanceid]->timecompleted;
         }
@@ -1484,10 +1513,6 @@ class prog_assigment_completion_course_completion extends prog_assignment_comple
 
 class prog_assigment_completion_profile_field_date extends prog_assignment_completion_type {
     private $names, $timestamps;
-    public function __construct() {
-        $this->names = get_records_select('user_info_field','','','id, name');
-        $this->timestamps = get_records_select('user_info_data','','',sql_concat('userid',"'-'",'fieldid') . ' as hash, data');
-    }
     public function get_id() {
         return COMPLETION_EVENT_PROFILE_FIELD_DATE;
     }
@@ -1508,13 +1533,25 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
             });
         ";
     }
+    private function load_data() {
+        $this->names = get_records_select('user_info_field','','','id, name');
+        $this->timestamps = get_records_select('user_info_data','','',sql_concat('userid',"'-'",'fieldid') . ' as hash, data');
+    }
     public function get_item_name($instanceid) {
+        // lazy load data when required
+        if (!isset($this->names)) {
+            $this->load_data();
+        }
         return $this->names[$instanceid]->name;
     }
     public function get_completion_string() {
         return 'date in profile field';
     }
     public function get_timestamp($userid,$instanceid) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
         if (!isset($this->timestamps[$userid . '-' . $instanceid])) {
             return false;
         }
