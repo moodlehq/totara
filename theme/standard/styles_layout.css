@@ -1833,29 +1833,6 @@ table.dp-templates td.c0 {
     margin:10px 0;
 }
 
-/**
- * Recent Learning
- **/
-div.block_totara_recent_learning td.status span {
-    display: block;
-    width: 39px;
-    height: 12px;
-    background: transparent url(images/progress-icons.png) no-repeat;
-}
-
-div.block_totara_recent_learning td.status span.completion-inprogress {
-    background-position: 0px -12px;
-}
-
-div.block_totara_recent_learning td.status span.completion-complete,
-div.block_totara_recent_learning td.status span.completion-completeviarpl {
-    background-position: 0px -24px;
-}
-
-div.block_totara_recent_learning table.recent_learning tr {
-    height: 30px;
-}
-
 
 /***
  *** Notifications
@@ -5066,7 +5043,8 @@ span.coursecompletionstatus span {
 }
 
 div.mycourses td.status span,
-span.coursecompletionstatus span {
+span.coursecompletionstatus span,
+div.block_totara_recent_learning td.status span {
     display: block;
     width: 39px;
     height: 12px;
@@ -5074,15 +5052,25 @@ span.coursecompletionstatus span {
 }
 
 div.mycourses td.status span.completion-inprogress,
-span.coursecompletionstatus span.completion-inprogress {
+span.coursecompletionstatus span.completion-inprogress,
+div.block_totara_recent_learning td.status span.completion-inprogress {
     background-position: 0px -12px;
 }
 
 div.mycourses td.status span.completion-complete,
 div.mycourses td.status span.completion-completeviarpl,
 span.coursecompletionstatus span.completion-complete,
-span.coursecompletionstatus span.completion-completeviarpl {
+span.coursecompletionstatus span.completion-completeviarpl,
+div.block_totara_recent_learning td.status span.completion-complete,
+div.block_totara_recent_learning td.status span.completion-completeviarpl {
     background-position: 0px -24px;
+}
+
+/**
+ * Recent Learning
+ **/
+div.block_totara_recent_learning table.recent_learning tr {
+    height: 30px;
 }
 
 /* Course item styles */

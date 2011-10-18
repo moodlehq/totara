@@ -572,3 +572,30 @@ body.course h3.main {
 p.course-prog-alt-view {
     float: left;
 }
+
+/**
+ * Completion progress bars
+ **/
+div.mycourses td.status span,
+span.coursecompletionstatus span,
+div.block_totara_recent_learning td.status span {
+    display: block;
+    width: 39px;
+    height: 12px;
+    background: transparent url(images/progress-icons-rtl.png) no-repeat;
+}
+
+div.mycourses td.status span.completion-inprogress,
+span.coursecompletionstatus span.completion-inprogress,
+div.block_totara_recent_learning td.status span.completion-inprogress {
+    background-position: 0px -12px;
+}
+
+div.mycourses td.status span.completion-complete,
+div.mycourses td.status span.completion-completeviarpl,
+span.coursecompletionstatus span.completion-complete,
+span.coursecompletionstatus span.completion-completeviarpl,
+div.block_totara_recent_learning td.status span.completion-complete,
+div.block_totara_recent_learning td.status span.completion-completeviarpl {
+    background-position: 0px -24px;
+}
