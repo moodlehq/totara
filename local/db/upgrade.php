@@ -2813,5 +2813,49 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2011091204) {
+        require_once($CFG->dirroot . '/hierarchy/prefix/position/lib.php');
+        $table = new XMLDBTable('pos_assignment');
+        $field = new XMLDBField('managerpath');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '1024', null, null, null, null, null);
+
+        // Conditionally add field managerpath
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+
+            // fill primary position assignments with manager path data
+            $primary_assignments = get_records('pos_assignment',
+                'type', POSITION_TYPE_PRIMARY,
+                'userid', 'id,userid,managerid');
+            // build a keyed array for faster access
+            // unique key ensures only one userid for each primary position assignment
+            $manager_relations = array();
+            if ($primary_assignments) {
+                foreach ($primary_assignments as $assignment) {
+                    $manager_relations[$assignment->userid] = $assignment->managerid;
+                }
+
+                foreach ($primary_assignments as $assignment) {
+                    $path = '/' . implode(totara_get_lineage($manager_relations, $assignment->userid), '/');
+                    $todb = new object();
+                    $todb->id = $assignment->id;
+                    $todb->managerpath = $path;
+                    $result = $result && update_record('pos_assignment', $todb);
+                }
+            }
+
+            if ($result) {
+                // remove management plugin table
+                $table = new XMLDBTable('manager');
+                $result = $result && drop_table($table);
+
+                // unset config variables
+                set_config('local_management_version', null);
+                set_config('local_management_cron', null);
+                set_config('local_management_lastcron', null);
+            }
+        }
+    }
+
     return $result;
 }

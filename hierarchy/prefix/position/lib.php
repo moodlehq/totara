@@ -458,6 +458,10 @@ class position_assignment extends data_object {
         'timevalidto'
     );
 
+    public $optional_fields = array(
+        'managerpath' => null,
+    );
+
     /**
      * Unique fields to be used in where clauses
      * when the ID is not known
@@ -476,6 +480,7 @@ class position_assignment extends data_object {
     public $organisationid;
     public $managerid;
     public $reportstoid;
+    public $managerpath;
     public $timecreated;
     public $timemodified;
     public $usermodified;

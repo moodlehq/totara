@@ -22,8 +22,8 @@
  * @subpackage management
  */
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once('lib.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
+require_once($CFG->dirroot . '/local/dialogs/dialog_content_manager.class.php');
 
 // Parent id
 $parentid = optional_param('parentid', 0, PARAM_INT);

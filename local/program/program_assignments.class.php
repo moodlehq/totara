@@ -22,6 +22,8 @@
  * @subpackage program
 */
 
+require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
@@ -1076,6 +1078,7 @@ class managers_category extends prog_assignment_category {
     }
 
     function build_table($prefix, $programid) {
+        $primarytype = POSITION_TYPE_PRIMARY;
         $this->headers = array(
             get_string('managername','local_program'),
             get_string('for','local_program'),
@@ -1084,13 +1087,16 @@ class managers_category extends prog_assignment_category {
         );
 
         // Go to the database and gets the assignments
-        $items = get_records_sql(
-            "SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " as fullname, m.path, prog_assignment.includechildren, prog_assignment.completiontime, prog_assignment.completionevent, prog_assignment.completioninstance
-	    FROM {$prefix}prog_assignment prog_assignment
-	    INNER JOIN {$prefix}user u ON u.id = prog_assignment.assignmenttypeid
-            INNER JOIN {$prefix}manager m ON m.userid = u.id
-	    WHERE prog_assignment.programid = $programid
-	    AND prog_assignment.assignmenttype = $this->id");
+        $items = get_records_sql("
+            SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " as fullname,
+                pa.managerpath AS path, prog_assignment.includechildren, prog_assignment.completiontime,
+                prog_assignment.completionevent, prog_assignment.completioninstance
+            FROM {$prefix}prog_assignment prog_assignment
+            INNER JOIN {$prefix}user u ON u.id = prog_assignment.assignmenttypeid
+                INNER JOIN {$prefix}pos_assignment pa ON pa.userid = u.id AND pa.type = $primarytype
+            WHERE prog_assignment.programid = $programid
+            AND prog_assignment.assignmenttype = $this->id
+        ");
 
         // Convert these into html
         if (!empty($items)) {
@@ -1102,9 +1108,10 @@ class managers_category extends prog_assignment_category {
 
     function get_item($itemid) {
         global $CFG;
-        $sql = "SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " AS fullname, m.path
+        $primarytype = POSITION_TYPE_PRIMARY;
+        $sql = "SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " AS fullname, pa.managerpath AS path
                 FROM {$CFG->prefix}user AS u
-                INNER JOIN {$CFG->prefix}manager AS m ON u.id = m.userid
+                INNER JOIN {$CFG->prefix}pos_assignment pa ON u.id = pa.userid AND pa.type = $primarytype
                 WHERE u.id = {$itemid}";
         return get_record_sql($sql);
     }
@@ -1141,13 +1148,14 @@ class managers_category extends prog_assignment_category {
 
     function get_affected_users($item, $count=false) {
         global $CFG;
+        $primarytype = POSITION_TYPE_PRIMARY;
 
-        $subquery = "SELECT ra.id FROM {$CFG->prefix}role_assignments ra WHERE ra.userid = $item->id"; // for a manager's direct team
         if (isset($item->includechildren) && $item->includechildren == 1 && isset($item->path)) {
-            $children = get_records_select('manager', "path LIKE '$item->path/%'", '', 'userid');
-            $children = $children == false ? array() : array_keys($children);
-            $children[] = $item->id;
-            $subquery = "SELECT ra.id FROM {$CFG->prefix}role_assignments ra WHERE ra.userid IN (". implode(',', $children) .")"; // for a manager's entire team
+            // for a manager's entire team
+            $where = "pa.type = {$primarytype} AND pa.managerpath LIKE '{$item->path}/%'";
+        } else {
+            // for a manager's direct team
+            $where = "pa.type = {$primarytype} AND pa.managerid = {$item->id}";
         }
 
         $select = $count ? 'COUNT(pa.userid) AS id' : 'pa.userid AS id';
@@ -1155,28 +1163,28 @@ class managers_category extends prog_assignment_category {
         $sql = "SELECT $select
                 FROM {$CFG->prefix}pos_assignment pa
                 INNER JOIN {$CFG->prefix}user u ON (pa.userid = u.id AND u.deleted = 0)
-                WHERE pa.reportstoid IN ($subquery)";
+                WHERE {$where}";
 
         if ($count) {
             $num = count_records_sql($sql);
             return !$num ? 0 : $num;
-        }
-        else {
+        } else {
             return get_records_sql($sql);
         }
     }
 
     function get_affected_users_by_assignment($assignment) {
         global $CFG;
+        $primarytype = POSITION_TYPE_PRIMARY;
 
         // Query to retrieves the data required to determine the number of users
         //affected by an assignment
         $sql = "SELECT u.id,
-                        m.path,
+                        pa.managerpath AS path,
                         prog_assignment.includechildren
                 FROM {$CFG->prefix}prog_assignment prog_assignment
                 INNER JOIN {$CFG->prefix}user u ON u.id = prog_assignment.assignmenttypeid
-                INNER JOIN {$CFG->prefix}manager m ON m.userid = u.id
+                INNER JOIN {$CFG->prefix}pos_assignment pa ON u.id = pa.userid AND pa.type = $primarytype
                 WHERE prog_assignment.id = $assignment->id";
 
         if ($item = get_record_sql($sql)) {
@@ -1199,9 +1207,7 @@ class managers_category extends prog_assignment_category {
                 var id = {$this->id};
                 var programid = {$programid};
                 var title = '". get_string('addmanagerstoprogram','local_program') ."';
-                var cat = new category(id, 'managers', 'find_manager.php?test=test', title);
-                cat.dialog_additem.default_url = '{$CFG->wwwroot}/local/management/dialog.php?programid='+programid;
-                program_assignment.add_category(cat);
+                program_assignment.add_category(new category(id, 'managers', 'find_manager_hierarchy.php?programid='+programid, title));
             })();
         ";
     }

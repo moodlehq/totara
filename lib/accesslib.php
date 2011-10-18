@@ -5962,11 +5962,13 @@ function assign_user_position($assignment, $managerid = null) {
         );
 
         $assignment->reportstoid = $raid;
+
     }
 
-    // If no manager set, reset reportstoid
+    // If no manager set, reset reportstoid and managerpath
     if (!$managerid) {
         $assignment->reportstoid = null;
+        $assignment->managerpath = null;
     }
 
     // Store the date of this assignment
@@ -5975,6 +5977,14 @@ function assign_user_position($assignment, $managerid = null) {
     prog_store_position_assignment($assignment);
 
     // Save assignment
+    $assignment->save();
+
+    // now recalculate managerpath
+    // must be done after managerid has been updated
+    $manager_relations = get_records_menu('pos_assignment', 'type', POSITION_TYPE_PRIMARY, 'userid', 'userid,managerid');
+    $assignment->managerpath = '/' . implode(totara_get_lineage($manager_relations, $assignment->userid), '/');
+
+    // Save assignment again
     $assignment->save();
 
     commit_sql();

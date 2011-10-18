@@ -25,6 +25,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
+require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
 
 class totara_dialog_content_manager extends totara_dialog_content {
 
@@ -106,7 +107,16 @@ class totara_dialog_content_manager extends totara_dialog_content {
 
 
     function get_items() {
-        return get_records('manager', '', '', 'sortorder, id');
+        global $CFG;
+        $primarytype = POSITION_TYPE_PRIMARY;
+        return get_records_sql("
+            SELECT DISTINCT pa.managerid AS sortorder, pa.managerid AS id, u.lastname
+            FROM {$CFG->prefix}pos_assignment pa
+            LEFT JOIN {$CFG->prefix}user u
+            ON pa.managerid = u.id
+            WHERE pa.type = {$primarytype}
+            ORDER BY u.lastname"
+        );
     }
 
     /**
@@ -118,16 +128,20 @@ class totara_dialog_content_manager extends totara_dialog_content {
         global $CFG;
 
         if ($parentid) {
-            // Parentid supplied, do not specify frameworkid as
-            // sometimes it is not set correctly. And a parentid
-            // is enough to get the right results
-            //return get_records('manager', 'parentid', $parentid, 'sortorder, id');
+            $primarytype = POSITION_TYPE_PRIMARY;
+            // returns users who *are* managers, who's manager is user $parentid
             return get_records_sql("
                 SELECT u.id, " . sql_fullname() . " as fullname
-                FROM {$CFG->prefix}manager m
-                INNER JOIN {$CFG->prefix}user u on u.id = m.userid
-                WHERE m.parentid = $parentid
-                ORDER BY sortorder, id
+                FROM (
+                    SELECT DISTINCT managerid AS id
+                    FROM {$CFG->prefix}pos_assignment
+                    WHERE type = $primarytype
+                ) managers
+                INNER JOIN {$CFG->prefix}pos_assignment pa on managers.id = pa.userid
+                INNER JOIN {$CFG->prefix}user u on u.id = pa.userid
+                WHERE pa.managerid = $parentid
+                AND pa.type = $primarytype
+                ORDER BY u.lastname, u.id
             ");
         }
         else {
@@ -140,14 +154,21 @@ class totara_dialog_content_manager extends totara_dialog_content {
     function get_all_root_items($all=false) {
         global $CFG;
 
-        //return get_records('manager', 'parentid', 0, 'sortorder, id');
+        $primarytype = POSITION_TYPE_PRIMARY;
+        // returns users who *are* managers, but don't *have* a manager
         return get_records_sql("
             SELECT u.id, " . sql_fullname() . " as fullname
-            FROM {$CFG->prefix}manager m
-            INNER JOIN {$CFG->prefix}user u on u.id = m.userid
-            WHERE m.parentid = 0
-            ORDER BY sortorder, id
-            ");
+            FROM (
+                SELECT DISTINCT managerid AS id
+                FROM {$CFG->prefix}pos_assignment
+                WHERE type = $primarytype
+            ) managers
+            INNER JOIN {$CFG->prefix}pos_assignment pa on managers.id = pa.userid
+            INNER JOIN {$CFG->prefix}user u on u.id = pa.userid
+            WHERE pa.managerid IS NULL OR pa.managerid = 0
+            AND pa.type = $primarytype
+            ORDER BY u.lastname, u.id
+        ");
     }
 
     /**
@@ -159,28 +180,24 @@ class totara_dialog_content_manager extends totara_dialog_content {
      */
     function get_all_parents() {
         global $CFG;
+        $primarytype = POSITION_TYPE_PRIMARY;
 
-        //$parents = get_records_select('manager', 'parentid != 0', 'sortorder, id');
+        // returns users who *are* managers, who also have staff who *are* managers
         $parents = get_records_sql("
-            SELECT DISTINCT
-            parentid AS id
-            FROM {$CFG->prefix}manager
-            WHERE parentid != 0
+            SELECT DISTINCT managers.id
+            FROM (
+                SELECT DISTINCT managerid AS id
+                FROM {$CFG->prefix}pos_assignment
+                WHERE type = $primarytype
+            ) managers
+            INNER JOIN {$CFG->prefix}pos_assignment staff on managers.id = staff.managerid
+            INNER JOIN {$CFG->prefix}pos_assignment pa ON staff.userid = pa.managerid AND pa.type = 1
             ");
 
-        if($parents) {
+        if ($parents) {
             return $parents;
         } else {
             return array();
         }
     }
-}
-
-
-function local_management_install() {
-    global $CFG;
-
-    set_config('local_management_cron', 60);
-
-    return true;
 }
