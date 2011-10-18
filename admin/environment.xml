@@ -135,19 +135,19 @@
       </FEEDBACK>
     </UNICODE>
     <DATABASE level="required">
-      <VENDOR name="mysql" version="4.1.16">
+      <VENDOR name="mysql" version="5.0.25">
         <FEEDBACK>
-          <ON_ERROR message="mysql416required" />
+          <ON_ERROR message="mysql5025required" />
         </FEEDBACK>
       </VENDOR>
-      <VENDOR name="postgres" version="8.0" />
+      <VENDOR name="postgres" version="8.2" />
       <VENDOR name="mssql" version="9.0" />
       <VENDOR name="odbc_mssql" version="9.0" />
       <VENDOR name="mssql_n" version="9.0" />
       <VENDOR name="oracle" version="9.0" />
     </DATABASE>
-    <PHP version="4.3.0" level="required">
-      <RESTRICT function="restrict_php50_version" message="php50restricted" />
+    <PHP version="5.1.6" level="required">
+      <RESTRICT function="restrict_php516_version" message="php516restricted" />
     </PHP>
     <PHP_EXTENSIONS>
       <PHP_EXTENSION name="iconv" level="optional">

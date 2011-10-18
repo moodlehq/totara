@@ -1197,6 +1197,20 @@ function restrict_php50_version($result) {
 }
 
 /**
+ * This function will restrict PHP reqs if:
+ *   - We are using PHP lower than 5.1.6, and inform about minimum version for totara
+ *
+ * @param object result object to handle
+ * @return boolean true/false to determinate if the restrict has to be performed (true) or no (false)
+ */
+function restrict_php516_version($result) {
+    if (version_compare($result->getCurrentVersion(), '5.1.6', '<')) {
+        return true;
+    }
+    return false;
+}
+
+/**
  * @param array $element the element from the environment.xml file that should have
  *      either a level="required" or level="optional" attribute.
  * @read string "required" or "optional".
