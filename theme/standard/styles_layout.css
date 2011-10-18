@@ -2676,6 +2676,10 @@ body#course-info .generalbox.info {
   padding-bottom:10px;
 }
 
+.hierarchyframeworkpicker {
+  text-align:right;
+}
+
 #coursesearch,
 #coursesearch2 {
   margin-top: 1em;
@@ -5138,44 +5142,54 @@ table.hierarchy-index .itemdescription, table.hierarchy-index .itemtype {
     font-size: 85%;
 }
 table.hierarchy-index .depth1 {
-    background-position: 5px 0px;
-    padding-left: 25px;
+    background-position: left top;
+    margin-left: 5px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth2 {
-    background-position: 35px 0px;
-    padding-left: 55px;
+    background-position: left top;
+    margin-left: 35px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth3 {
-    background-position: 65px 0px;
-    padding-left: 85px;
+    background-position: left top;
+    margin-left: 65px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth4 {
-    background-position: 95px 0px;
-    padding-left: 115px;
+    background-position: left top;
+    margin-left: 95px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth5 {
-    background-position: 125px 0px;
-    padding-left: 145px;
+    background-position: left top;
+    margin-left: 125px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth6 {
-    background-position: 155px 0px;
-    padding-left: 175px;
+    background-position: left top;
+    margin-left: 155px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth7 {
-    background-position: 185px 0px;
-    padding-left: 205px;
+    background-position: left top;
+    margin-left: 185px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth8 {
-    background-position: 215px 0px;
-    padding-left: 235px;
+    background-position: left top;
+    margin-left: 215px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth9 {
-    background-position: 245px 0px;
-    padding-left: 265px;
+    background-position: left top;
+    margin-left: 245px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth10 {
-    background-position: 275px 0px;
-    padding-left: 295px;
+    background-position: left top;
+    margin-left: 275px;
+    padding-left: 20px;
 }
 
 form.hierarchy-export-form {

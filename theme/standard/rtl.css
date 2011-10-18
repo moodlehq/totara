@@ -599,3 +599,78 @@ div.block_totara_recent_learning td.status span.completion-complete,
 div.block_totara_recent_learning td.status span.completion-completeviarpl {
     background-position: 0px -24px;
 }
+
+/* Framework picker in hierarchy items */
+.hierarchyframeworkpicker {
+  text-align:left;
+}
+
+/*
+ * RTL support for hierarchies
+ */
+table.hierarchy-index .customfield {
+    width: 200px;
+    font-size: 85%;
+    float: right;
+}
+table.hierarchy-index .depth1 {
+    background-position: right top;
+    margin-right: 5px;
+    margin-left: 0px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth2 {
+    background-position: right top;
+    margin-right: 35px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth3 {
+    background-position: right top;
+    margin-right: 65px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth4 {
+    background-position: right top;
+    margin-right: 95px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth5 {
+    background-position: right top;
+    margin-right: 125px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth6 {
+    background-position: right top;
+    margin-right: 155px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth7 {
+    background-position: right top;
+    margin-right: 185px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth8 {
+    background-position: right top;
+    margin-right: 215px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth9 {
+    background-position: right top;
+    margin-right: 245px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth10 {
+    background-position: right top;
+    margin-right: 275px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
