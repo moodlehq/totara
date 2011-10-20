@@ -27,7 +27,7 @@ add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_i
 
 $report->include_js();
 
-$fullname = $report->fullname;
+$fullname = format_string($report->fullname);
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
 $navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}" . "/course/find.php", 'type' => 'title');
 $navlinks[] = array('name' => get_string('search'), 'link' => null, 'type' => 'title');
