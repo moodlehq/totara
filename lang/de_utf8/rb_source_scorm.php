@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // rb_source_scorm.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // rb_source_scorm.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['attemptnum'] = 'SCO Versuch Nummer';
@@ -24,5 +24,7 @@ $string['theuser'] = 'Benutzer';
 $string['time'] = 'SCO Startzeit';
 $string['title'] = 'SCO Titel';
 $string['totaltime'] = 'SCO Gesamtdauer';
+$string['type_sco'] = 'SCO';
+$string['type_scorm'] = 'SCORM';
 
 ?>

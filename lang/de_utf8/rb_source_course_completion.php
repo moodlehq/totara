@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // rb_source_course_completion.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // rb_source_course_completion.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['completiondate'] = 'Abschluss Datum';
@@ -23,6 +23,7 @@ $string['poswhencompleted'] = 'Position wenn abgeschlossen';
 $string['poswhencompletedbasic'] = 'Position wenn abgeschlossen (Basic)';
 $string['requiredgrade'] = 'Note und notwendige Note';
 $string['sourcetitle'] = 'Kursabschluss';
+$string['type_course_completion'] = 'Kursabschluss';
 $string['user'] = 'Benutzer';
 
 ?>

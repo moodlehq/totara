@@ -1,7 +1,5 @@
-<?PHP // $Id$
-      // feedback.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
-
+<?php
+// feedback.php - created with Totara langimport script version 1.0
 
 $string['add_item'] = 'הוסף שאלה לפעילות';
 $string['add_items'] = 'הוסף שאלה לפעילות';
@@ -187,7 +185,7 @@ $string['textfield'] = 'תשובה מקוצרת';
 $string['textfield_maxlength'] = 'מספר תווים מירבי';
 $string['textfield_size'] = 'רוחב שדה טקסט';
 $string['this_feedback_is_already_submitted'] = 'כבר ביצעת פעילות זו.';
-$string['update_item'] = 'השינויים בשאלה נשמרו';
+$string['update_item'] = 'שמור שינויים';
 $string['url_for_continue_button'] = 'URL לכפתור המשך';
 $string['use_one_line_for_each_value'] = '<br />השתמש בשורה אחת לכל תשובה!';
 $string['use_this_template'] = 'השתמש בתבנית זו';

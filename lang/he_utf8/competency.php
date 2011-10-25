@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // competency.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+      // competency.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['achieved'] = 'הושגו';
@@ -19,9 +19,9 @@ $string['addtype'] = 'הוסף סוג חדש';
 $string['aggregationmethod'] = 'שיטת צבירה';
 $string['aggregationmethod1'] = 'כל';
 $string['aggregationmethod2'] = 'כלשהו';
-$string['aggregationmethod3'] = 'יחידה';
-$string['aggregationmethod4'] = 'חלק';
-$string['aggregationmethod5'] = 'סה\"כ משוקלל';
+$string['aggregationmethod3'] = 'כבוי';
+$string['aggregationmethod4'] = 'יחידה';
+$string['aggregationmethod5'] = 'שבר';
 $string['aggregationmethod6'] = 'סכום משוקלל';
 $string['aggregationmethod7'] = 'ממוצע משוקלל';
 $string['aggregationmethodview'] = 'שיטת צבירה $a';

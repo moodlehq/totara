@@ -756,6 +756,7 @@ $string['timezoneforced'] = 'אילוץ זה נקבע ע\"י המנהל';
 $string['timezoneisforcedto'] = 'אלץ את כל המשתמשים להשתמש';
 $string['timezonenotforced'] = 'משתמשים יכולים לבחור את איזור הזמן שלהם';
 $string['tokenizerrecommended'] = 'התקנת תוספת אופציונלית של PHP Talkenizer מומלצת - משפרת את פונקציונליות ה-Moodle Networking';
+$string['totarapre11'] = 'Totara (pre version 1.1)';
 $string['unattendedoperation'] = 'פעולה ללא השגחה';
 $string['unbookmarkthispage'] = 'בטל סימון עמוד זה';
 $string['unicoderecommended'] = 'אחסנת המידע שלך בקידוד-Unicode מומלץ. התקנות חדשות יופיעו במסדי הנתונים אשר להם קבוצת התווים כברירת מחדל המתאימה ל-Unicode. אם אתה משדרג, תציג את ה-UTF-8 migration process (ראה בדף מנהל המערכת).';

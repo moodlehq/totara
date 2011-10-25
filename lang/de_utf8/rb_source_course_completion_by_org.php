@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // rb_source_course_completion_by_org.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // rb_source_course_completion_by_org.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['completiondate'] = 'Abschluss Datum';
@@ -21,6 +21,7 @@ $string['participants'] = 'Teilnehmer';
 $string['percentagecompleted'] = 'Prozent abgeschlossen';
 $string['sourcetitle'] = 'Kursabschluss per Organisation';
 $string['totalcompletions'] = 'Abschlüsse insgesamt';
+$string['type_course_completion'] = 'Kursabschluss';
 $string['user'] = 'Benutzer';
 
 ?>

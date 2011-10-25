@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // rb_source_totaramessages.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // rb_source_totaramessages.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['actions'] = 'Aktionen';
@@ -15,11 +15,14 @@ $string['msgid'] = 'Nachrichten ID';
 $string['msgstatus'] = 'Nachrichtenstatus';
 $string['msgtype'] = 'Nachrichtentyp';
 $string['msgurgency'] = 'Nachrichtenwichtigkeit';
+$string['name'] = 'Name';
 $string['select'] = 'Auswahl';
 $string['sent'] = 'Versendet';
 $string['sourcetitle'] = 'Nachrichten';
 $string['statement'] = 'Aussage';
 $string['statementurl'] = 'Aussage (verbunden mit Bewertung)';
+$string['type'] = 'Typ';
+$string['type_message_values'] = 'Nachrichten Werte';
 $string['user'] = 'Benutzer';
 
 ?>

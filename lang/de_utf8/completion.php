@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // completion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+      // completion.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['achievinggrade'] = 'Erreichen der Bewertung';
@@ -53,6 +53,8 @@ $string['completionusegrade_text'] = 'Der/die Nutzer/in muss beurteilt werden';
 $string['completionview'] = 'Benötigt Ansicht';
 $string['completionview_text'] = 'Der/die Nutzer/in muss die Aktivität einsehen.';
 $string['configenablecompletion'] = 'Wenn diese Funktion aktiviert ist, können Sie die Optionen des Abschlussfortschritts bzw. -verfolgung auf Kursebene einschalten.';
+$string['configenablecourserpl'] = 'Wenn diese Funktion aktiviert ist, kann ein Kurs als abgeschlossen markiert werden, indem man dem Benutzer Anerkennung von Vorkenntnissen zuweist.';
+$string['configenablemodulerpl'] = 'Wenn diese Funktion auf Modulebene aktiviert ist, kann jedes Kursvervollständigungskriterium für dieses Moduel als abgeschlossen markiert werden,  indem man dem Benutzer Anerkennung von Vorkenntnissen zuweist.';
 $string['configprogresstrackedroles'] = 'Rollen, die in der Fortschritts-Verfolgungs-Anzeige angezeigt werden. (Üblicherweise sind hier Teilnehmer/innen und ähnlich Rollen inkludiert.)';
 $string['confirmselfcompletion'] = 'Vollständigen Abschluss des Kurses bestätigen';
 $string['coursealreadycompleted'] = 'Sie haben diesen Kurs schon abgeschlossen';
@@ -64,6 +66,8 @@ $string['coursegrade'] = 'Kursbewertung';
 $string['courseprogress'] = 'Kursfortschritt';
 $string['courseprogresshelp'] = 'Dies gibt an, ob der Kursfortschrittsblock auf der Homepage erscheint.';
 $string['courserpl'] = 'Kurs Anerkennung von Vorkenntnissen';
+$string['courserplorallcriteriagroups'] = 'Anerkennung von Vorkenntnissen für Kurs oder <br/> alle Kriteriengruppen';
+$string['courserploranycriteriagroup'] = 'Anerkennung von Vorkenntnissen für Kurs oder <br/> irgendeine Kriteriengruppe';
 $string['coursesavailable'] = 'Kurse verfügbar';
 $string['coursesavailableexplaination'] = '<i>Kursabschlusskriterien müssen festgelegt sein, damit ein Kurs in dieser Liste erscheint</i>';
 $string['criteria'] = 'Kriterien';
@@ -80,6 +84,8 @@ $string['dependenciescompleted'] = 'Bedingungen abgeschlossen';
 $string['durationafterenrolment'] = 'Zeitdauer nach der Einschreibung';
 $string['editcoursecompletionsettings'] = 'Abschlusseinstellungen bearbeiten';
 $string['enablecompletion'] = 'Schaltet die Abschluss-Verfolgung ein';
+$string['enablecourserpl'] = 'Anerkennung von Vorkenntnissen für Kurse aktivieren';
+$string['enablemodulerpl'] = 'Anerkennung von Vorkenntnissen für Module aktivieren';
 $string['enrolmentduration'] = 'Tage noch verfügbar';
 $string['err_noactivities'] = 'Die Abschlussinformation ist nicht für jede Aktivität eingeschaltet, daher kann keine angezeigt werden. Sie können die Abschlussinformation einschalten, indem Sie die Einstellungen einer Aktivität bearbeiten.';
 $string['err_nocourses'] = 'Die Abschlussverfolgung ist für keinen Kurs aktiviert, so dass kein Kurs angezeigt werden kann. Sie können die Abschlussverfolgung in den Kurseinstellungen aktivieren.';
@@ -90,6 +96,9 @@ $string['err_noroles'] = 'Keine der Rollen in diesem Kurs besitzt die Fähigkeit
 $string['err_nousers'] = 'Es gibt keine User in diesem Kurs für die Abschluss-Informationen angezeigt werden. (Standardmäßig, Abschluss-Informationen werden nur für Teilnehmer/innen angezeigt, also wenn es keine Teilnehmer/innen im Kurs gibt, sehen Sie diese Fehlermeldung. Administratoren können diese Einstellung im Administrationsmenü ändern.)';
 $string['err_settingslocked'] = 'Die Einstellung wurde gesperrt, weil bereits Teilnehmer/innen ein Abschlusskriterium erfüllt hat. Wenn Sie die Abschlussbedingungen entsperren, werden die vorhandenen Nutzerdaten gelöscht und es könnte zu Verwirrungen kommen.';
 $string['err_system'] = 'Ein interner Fehler ist im Abschluss-System aufgetreten. (Systemadministratoren können den Debug-Modus aktivieren um weitere Details angezeigt zu bekommen.)';
+$string['error:courserplsaredisabled'] = 'Anerkennung von Vorkenntnissen für Kurse wurde von dem Administrator deaktiviert';
+$string['error:incorrectdatatypesupplied'] = 'Ein falscher Datentyp wurde eingegeben';
+$string['error:rplsaredisabled'] = 'Anerkennung von Vorkenntnissen für Kurse wurde von dem Administrator deaktiviert';
 $string['excelcsvdownload'] = 'Download in Excel kompatiblem Textformat (.csv)';
 $string['fraction'] = 'Bruchteil';
 $string['help_completion'] = 'Abschluss-Verfolgung';
@@ -119,11 +128,14 @@ $string['remainingenroleduntildate'] = 'Bis zum angegebenen Zeitpunkt eingeschri
 $string['reportpage'] = 'Zeige Nutzer/innen {$a->from} bis {$a->to} von {$a->total}.';
 $string['requiredcriteria'] = 'Notwendiges Kriterium';
 $string['restoringcompletiondata'] = 'Stelle Abschluss-Daten wieder her';
+$string['rpl'] = 'Anerkennung von Vorkenntnissen';
 $string['saved'] = 'Gespeichert';
 $string['seedetails'] = 'Siehe Details';
 $string['self'] = 'Selbst';
 $string['selfcompletion'] = 'Eigener Abschluss';
 $string['showinguser'] = 'Benutzer anzeigen';
+$string['showrpl'] = 'Anerkennung von Vorkenntnissen anzeigen';
+$string['showrpls'] = 'Anerkennungen von Vorkenntnissen anzeigen';
 $string['unenrolingfromcourse'] = 'Vom Kurs abmelden';
 $string['unenrolment'] = 'Abmelden';
 $string['unit'] = 'Einheit';

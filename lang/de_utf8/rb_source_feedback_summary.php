@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // rb_source_feedback_summary.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // rb_source_feedback_summary.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['course'] = 'Kurs';
@@ -18,6 +18,9 @@ $string['trainerorg'] = 'Trainer Organisation';
 $string['trainerorgid'] = 'Trainer Organisation ID';
 $string['trainerpos'] = 'Trainer Position';
 $string['trainerposid'] = 'Trainer Position ID';
+$string['type_feedback'] = 'Feedback';
+$string['type_responses'] = 'Antworten';
+$string['type_trainer'] = 'Trainer';
 $string['user'] = 'Benutzer';
 
 ?>

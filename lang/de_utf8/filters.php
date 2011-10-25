@@ -1,5 +1,5 @@
-<?PHP // $Id: filters.php,v 1.11 2009/12/19 00:10:23 krause Exp $ 
-      // filters.php - created with Moodle 1.9.7+ (Build: 20091218) (2007101570)
+<?PHP // $Id$ 
+      // filters.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['actfilterhdr'] = 'Aktive Suche';
@@ -14,6 +14,8 @@ $string['contains'] = 'enthält';
 $string['courserole'] = 'Kurs-Rolle';
 $string['courserolelabel'] = '$a->label ist $a->rolename im Kurs $a->coursename der Kategorie $a->categoryname';
 $string['courserolelabelerror'] = '$a->label Fehler: Den Kurs $a->coursename gibt es nicht';
+$string['customlabel'] = '$a->label: $a->custom $a->operator $a->value';
+$string['customlabelnovalue'] = '$a->label: $a->custom $a->operator';
 $string['datelabelisafter'] = '$a->label kommt nach $a->after';
 $string['datelabelisbefore'] = '$a->label kommt vor $a->before';
 $string['datelabelisbetween'] = '$a->label liegt zwischen $a->after und $a->before';
@@ -22,14 +24,21 @@ $string['endswith'] = 'endet mit';
 $string['firstaccess'] = 'Erster Zugriff';
 $string['globalrolelabel'] = '$a->label ist $a->value';
 $string['includenever'] = 'nie enthalten';
+$string['includesubcategories'] = 'Inklusive Unterkategorien?';
 $string['isafter'] = 'nach dem $a';
 $string['isanyvalue'] = 'hat beliebigen Wert';
 $string['isbefore'] = 'vor dem $a';
 $string['isdefined'] = 'ist definiert';
 $string['isempty'] = 'ist leer';
 $string['isequalto'] = 'ist identisch mit';
+$string['isgreaterorequalto'] = 'ist größer oder gleich als';
+$string['isgreaterthan'] = 'ist größer als';
+$string['islessthan'] = 'ist kleiner als';
+$string['islessthanorequalto'] = 'ist kleiner oder gleich als';
 $string['isnotdefined'] = 'ist nicht definiert';
 $string['isnotequalto'] = 'ist nicht identisch mit';
+$string['matchesallselected'] = 'stimmt mit allen Gewählten überein';
+$string['matchesanyselected'] = 'stimmt mit irgendeinem Gewählten überein';
 $string['newfilter'] = 'Neue Suche';
 $string['profilelabel'] = '$a->label: $a->profile $a->operator $a->value';
 $string['profilelabelnovalue'] = '$a->label: $a->profile $a->operator';

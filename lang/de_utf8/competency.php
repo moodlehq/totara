@@ -1,16 +1,21 @@
 <?PHP // $Id$ 
-      // competency.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+      // competency.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['achieved'] = 'Abgeschlossen';
 $string['addassignedcompetencies'] = 'Kompetenzen zuweisen';
 $string['addassignedcompetencytemplates'] = 'Kompetenzvorlagen zuweisen';
+$string['addcourseevidencetocompetencies'] = 'Kursnachweis zu Kompetenzen hinzufügen';
 $string['addcourseevidencetocompetency'] = 'Kursnachweis zu Kompetenz hinzufügen';
 $string['adddepthlevel'] = 'Neues Level hinzufügen';
+$string['addedcompetency'] = 'Die Kompetenz \"{$a}\" wurde hinzugrfügt';
+$string['addedframework'] = 'Das Kompetenzprofil \"{$a}\" wurde hinzugefügt';
+$string['addmultiplenewcompetency'] = 'Mehrere Kompetenzen hinzufügen';
 $string['addnewcompetency'] = 'Neue Komeptenz hinzufügen';
 $string['addnewframework'] = 'Neues Kompetenzprofil hinzufügen';
 $string['addnewscalevalue'] = 'Neuen Skalenwert hinzufügen';
 $string['addnewtemplate'] = 'Neue Kompetenzvorlage hinzufügen';
+$string['addtype'] = 'Neuen Typ hinzufügen';
 $string['aggregationmethod'] = 'Methode zur Zusammenfassung';
 $string['aggregationmethod1'] = 'Alle';
 $string['aggregationmethod2'] = 'Irgendein';
@@ -26,6 +31,8 @@ $string['assigncompetency'] = 'Kompetenz zuweisen';
 $string['assigncompetencytemplate'] = 'Kompetenzvorlage zuweisen';
 $string['assigncompetencytemplates'] = 'Kompetenzvorlage zuweisen';
 $string['assigncoursecompletion'] = 'Kursabschluss zuweisen';
+$string['assigncoursecompletions'] = 'Kursabschluss zuweisen';
+$string['assigncoursecompletiontocompetencies'] = 'Kursabschluss einer Kompetenz zuweisen';
 $string['assigncoursecompletiontocompetency'] = 'Kursabschluss zu Kompetenz zuweisen';
 $string['assignedcompetencies'] = 'Zugewiesene Kompetenzen';
 $string['assignedcompetenciesandtemplates'] = 'Zugewiesene Kompetenzen und Kompetenzvorlagen';
@@ -34,6 +41,9 @@ $string['assignedonly'] = 'Zugewiesen, aber nicht benutzt';
 $string['assignnewcompetency'] = 'Neue Kompetenz zuweisen';
 $string['assignnewevidenceitem'] = 'Neuen Nachweis zuweisen';
 $string['assignrelatedcompetencies'] = 'Zugehörige Kompetenzen zuweisen';
+$string['backtoallframeworks'] = 'Zurück zu Kompetenzprofilen';
+$string['bulkdeletecompetency'] = 'Kompetenzen löschen (Bulk)';
+$string['bulkmovecompetency'] = 'Kompetenzen verschieben (Bulk)';
 $string['cannotupdatedisplaysettings'] = 'Bildschirmeinstellungen konnten nicht aktualisiert werden';
 $string['changeto'] = 'Ändern nach';
 $string['clickfornonjsform'] = 'Hier klicken, um das Formular ohne Javascript aufzurufen.';
@@ -59,25 +69,48 @@ $string['competencyscaleinuse'] = 'Die Skala ist schon zugewiesen worden, d.h. B
 $string['competencyscales'] = 'Kompetenzskalen';
 $string['competencytemplatemanage'] = 'Vorlagen verwalten';
 $string['competencytemplates'] = 'Kompetenzvorlagen';
+$string['competencytypecustomfields'] = 'Kompetenztypen benutzerdefinierte Felder';
+$string['competencytypes'] = 'Kompetenztypen';
+$string['competencytypeview'] = 'Kompetenztypen-Ansicht';
 $string['competent'] = 'Kompetent';
 $string['competentwithsupervision'] = 'Kompetent unter Aufsicht';
 $string['couldnotdeletescalevalue'] = 'Ein Problem ist beim Löschen dieses Skalenwertes aufgetreten';
 $string['createdon'] = 'Erstellt am';
 $string['createnewcompetency'] = 'Neue Kompetenz erstellen';
+$string['createtype'] = 'Der Kompetenztyp \"{$a}\" wurde angelegt';
 $string['currentlyselected'] = 'Momentan ausgewählt';
 $string['defaultvalue'] = 'Standardwert';
 $string['deletecheck'] = 'Sind Sie sicher, dass diese Kompetenz, all Ihre Unterkompetenzen, sowie die darin enthaltenen Daten gelöscht werden sollen?';
+$string['deletecheck11'] = 'Soll die Kompetenz \"$a\" gelöscht werden?
+<br /><br />
+Dies wird die folgenden Daten löschen:<br />
+- Kompetenz \"$a\"';
 $string['deletecheckframework'] = 'Sind Sie sicher, dass Sie das Profil \"$a\" löschen wollen?';
 $string['deletecheckscale'] = 'Sind Sie sicher, dass Sie die Kompetenzskala vollständig löschen wollen?';
 $string['deletecheckscalevalue'] = 'Sind Sie sicher, dass Sie den Wert der Kompetenzskala löschen wollen?';
 $string['deletechecktemplate'] = 'Sind Sie sicher, dass Sie die Kompetenzvorlage löschen wollen?';
+$string['deletecheckwithchildren'] = 'Soll die Kompetenz \"$a->itemname\" und Unterkompetenz(en) $a->children_string gelöscht werden?
+<br /><br />
+Dies wird die folgenden Daten löschen:<br />
+- Kompetenz $a->itemname\" und Unterkompetenz(en) $a->childcount $a->children_string';
+$string['deletecompetency'] = 'Kompetenz löschen';
 $string['deletedcompetency'] = 'Die Kompetenz $a und Ihre Unterkompetenzen sind vollständig gelöscht worden.';
 $string['deletedcompetencyscale'] = 'Die Kompetenzskala $a wurde vollständig gelöscht.';
 $string['deletedcompetencyscalevalue'] = 'Der Wert $a der Kompetenzskala wurde vollständig gelöscht.';
 $string['deletedepth'] = '$a löschen';
 $string['deletedframework'] = 'Das Kompetenzprofil $a und die dazugehörigen Daten wurden vollständig gelöscht.';
 $string['deletedtemplate'] = 'Die Kompetenzvorlage $a und die dazugehörigen Daten wurden vollständig gelöscht.';
+$string['deletedtype'] = 'Der Kompetenztyp \"{$a}\" wurde vollständig gelöscht';
 $string['deleteframework'] = '$a löschen';
+$string['deleteincludexcustomfields'] = '- $a Einträge benutzerdefinierte Felder';
+$string['deleteincludexevidence'] = '- $a Nachweiselement(e)';
+$string['deleteincludexrelatedcompetencies'] = '- $a Verweis(e) zu zugehörigen Kompetenzen';
+$string['deleteincludexuserstatusrecords'] = '- $a Einträge Benutzerstatus';
+$string['deletemulticheckwithchildren'] = 'Soll/en $a->num Kompetenz/en und $a->childcount $a->children_string gelöscht werden?
+<br /><br />
+Dies wird die folgenden Daten löschen:<br />
+- $a->num Kompetenz/Kompetenzen und $a->childcount $a->children_string';
+$string['deletetype'] = 'Typ \"{$a}\" löschen';
 $string['depthlevel'] = 'Level';
 $string['depthlevels'] = 'Level';
 $string['depths'] = 'Tiefen';
@@ -88,10 +121,15 @@ $string['editframework'] = 'Kompetenzprofil ändern';
 $string['editgeneric'] = '$a ändern';
 $string['editscalevalue'] = 'Skalenwert ändern';
 $string['edittemplate'] = 'Kompetenzvorlage ändern';
+$string['edittype'] = 'Typ ändern';
+$string['error:addcompetency'] = 'Beim Hinzufügen von Kompetenz \"{$a}\" ist ein Fehler aufgetreten';
 $string['error:compevidencealreadyexists'] = 'Die ausgewählte Kompetenz wurde diesem Benutzer schon zugewiesen. Sie können  
 <a href=\'edit.php?id=$a\'>die existierende Kompetenz ändern</a> eine neue hinzufügen.';
 $string['error:couldnotdeletescale'] = 'Ein Problem ist beim Löschen der Kompetenzskala \"{$a}\" aufgetreten.';
-$string['error:deletedframework'] = 'Ein Fehler ist beim Löschen des Kompetenzprofils {$a} aufgetreten.';
+$string['error:createtype'] = 'Ein Fehler ist beim Anlegen des Kompetenztyps \"{$a}\" aufgetreten.';
+$string['error:deletedframework'] = 'Ein Fehler ist beim Löschen des Kompetenzprofils \"{$a}\" aufgetreten.';
+$string['error:deletedtype'] = 'Ein Fehler ist beim Löschen des Kompetenztyps \"{$a}\" aufgetreten.';
+$string['error:dialognolinkedcourseitems'] = 'In diesem Profil gibt es keine Kompetenzen zu denen verlinkte Kurse zugewiesen sind';
 $string['error:dialognotreeitems'] = 'Keine Kompetenzen in diesem Profil';
 $string['error:evidencealreadyexists'] = 'Neue Kompetenz konnte nicht hinzugefügt werden, da für diesem Benutzer und diese Kompetenz schon ein Eintrag existiert.';
 $string['error:nodeletecompetencyscaleassigned'] = 'Diese Skala kann nicht gelöscht werden, weil sie zu einem oder mehreren Profilen zugewiesen wurde.';
@@ -100,6 +138,8 @@ $string['error:nodeletecompetencyscalevaluedefault'] = 'Diese Skala kann nicht g
 $string['error:nodeletecompetencyscalevalueonlyprof'] = 'Diese Skala kann nicht gelöscht werden, weil sie die einzige Kenntniswert der Skala ist. Ein anderer Wert muss als bekannt, bevor der Wert gelöscht werden kann.';
 $string['error:onescalevaluemustbeproficient'] = 'Mindestens ein Wert muss als bekannt markiert werden. Bevor dieser Wert abgewählt wird, muss ein anderer Wert ausgewählt werden.';
 $string['error:scaledetails'] = 'Fehler beim Lesen der Skalendetails';
+$string['error:updatecompetency'] = 'Beim Aktualisieren von Kompetenz \"{$a}\" ist ein Fehler aufgetreten';
+$string['error:updatetype'] = 'Beim Aktualisieren von Kompetenztyp \"{$a}\" ist ein Fehler aufgetreten';
 $string['evidence'] = 'Nachweise';
 $string['evidenceactivitycompletion'] = 'Aktivitätsabschluss';
 $string['evidencecount'] = 'Nachweisbelege';
@@ -114,6 +154,7 @@ $string['fullname'] = 'Kompetenz vollständiger Name';
 $string['fullnamedepth'] = 'Level vollständiger Name';
 $string['fullnameframework'] = 'Vollständiger Name';
 $string['fullnametemplate'] = 'Vorlage vollständiger Name';
+$string['fullnametype'] = 'Typ vollständiger Name';
 $string['fullnameview'] = '$a vollständiger Name';
 $string['globalsettings'] = 'Globale Einstellungen';
 $string['idnumber'] = 'Kompetenz ID';
@@ -122,22 +163,31 @@ $string['idnumberview'] = '$a ID';
 $string['includecompetencyevidence'] = 'Kompetenznachweis einbeziehen';
 $string['invalidevidencetype'] = 'Ungültiger Nachweistyp';
 $string['invalidnumeric'] = 'Numerischer Wert muss numerisch sein (oder leer)';
+$string['itemstoadd'] = 'Elemente hinzuzufügen';
 $string['linkcourses'] = 'Kurse verbinden';
 $string['linktoscalevalues'] = '<a href=\"view.php?id=$a&amp;type=competency\">Hier klicken</a>, um die Skalenwerte für diese Kompetenzskala zu sehen / ändern.';
+$string['linktoscalevalues11'] = '<a href=\"view.php?id=$a&amp;prefix=competency\">Hier klicken</a>, um die Skalenwerte für diese Kompetenzskala zu sehen / ändern.';
 $string['locatecompetency'] = 'Kompetenz finden';
 $string['locatecompetencytemplate'] = 'Kompetenzvorlage finden';
 $string['managecompetencies'] = 'Kompetenzen verwalten';
 $string['managecompetency'] = 'Kompetenzen verwalten';
+$string['managecompetencytypes'] = 'Typen verwalten';
 $string['missingfullname'] = 'Fehlende Kompetenz vollständiger Name';
 $string['missingfullnamedepth'] = 'Fehlendes Level vollständiger Name';
 $string['missingfullnameframework'] = 'Fehlendes Profil vollständiger Name';
 $string['missingfullnametemplate'] = 'Fehlende Vorlage vollständiger Name';
+$string['missingfullnametype'] = 'Fehlender Typ vollständiger Name';
+$string['missingname'] = 'Fehlender Kompetenzname';
+$string['missingnameframework'] = 'Fehlender Kompetenzprofilname';
+$string['missingnametemplate'] = 'Fehlender Vorlagenname';
+$string['missingnametype'] = 'Fehlender Kompetenztypname';
 $string['missingscale'] = 'Fehlende Skala';
 $string['missingscalevaluename'] = 'Fehlender Name des Skalenwertes';
 $string['missingshortname'] = 'Fehlende Kompetenz Kurzbezeichnung';
 $string['missingshortnamedepth'] = 'Fehlendes Level Kurzbezeichnung';
 $string['missingshortnameframework'] = 'Fehlendes Profil Kurzbezeichnung';
 $string['missingshortnametemplate'] = 'Fehlende Vorlage Kurzbezeichnung';
+$string['missingshortnametype'] = 'Fehlender Typ Kurzbezeichnung';
 $string['name'] = 'Name';
 $string['noassignedcompetencies'] = 'Keine Kompetenzen zugewiesen';
 $string['noassignedcompetenciestotemplate'] = 'Dieser Vorlage sind keine Kompetenzen zugewiesen';
@@ -153,6 +203,7 @@ $string['nodepthlevels'] = 'Keine Level in diesem Profil';
 $string['noevidenceitems'] = 'Für diese Kompetenz wurden keine Nachweisbelege angelegt';
 $string['noevidencetypesavailable'] = 'In diesem Kurs sind keine Nachweistypen angelegt';
 $string['noframeworks'] = 'Keine Kompetenzprofile definiert';
+$string['noframeworkssetup'] = 'Für diese Seite sind keine Kompetenzprofile eingerichtet';
 $string['nonsensicalproficientvalues'] = 'Achtung: in der Skala befinden sich Kenntniswerte unterhalb Nicht-Kenntniswerten. Die Skala sollte so sortiert sein, dass die wichtigsten Kenntniswerte oben und die am wenigsten wichtigen Werte unten in der Liste stehen.';
 $string['norelatedcompetencies'] = 'Keine zugehörigen Kompetenzen';
 $string['noscalesdefined'] = 'Keine Skalen definiert';
@@ -161,6 +212,8 @@ $string['notcompetent'] = 'Nicht kompetent';
 $string['notemplate'] = 'Es sind keine Kompetenzvorlagen definiert.';
 $string['notemplateinframework'] = 'EIn dieser Vorlage sind keine Kompetenzvorlagen definiert.';
 $string['notescalevalueentry'] = 'Ein Wert je Zeile - von am wenigsten kompetent bis zum meisten kompetent';
+$string['notypelevels'] = 'Keine Typen in dieser Vorlage';
+$string['notypes'] = 'Keine Kompetenztypen';
 $string['numericalvalue'] = 'Numerischer Wert';
 $string['options'] = 'Optionen';
 $string['parent'] = 'Überkompetenz';
@@ -196,12 +249,17 @@ $string['shortname'] = 'Kompetenz Kurzbezeichnung';
 $string['shortnamedepth'] = 'Level Kurzbezeichnung';
 $string['shortnameframework'] = 'Kurzbezeichnung';
 $string['shortnametemplate'] = 'Vorlage Kurzbezeichnung';
+$string['shortnametype'] = 'Typ Kurzbezeichnung';
 $string['shortnameview'] = '$a Kurzbezeichnung';
 $string['template'] = 'Kompetenzvorlage';
 $string['templatecompetencyremovecheck'] = 'Sind Sie sicher, dass Sie die Kompetenz von diesem Profile entfernen möchten?';
 $string['type'] = 'Typ';
+$string['types'] = 'Typen';
 $string['unknownbuttonclicked'] = 'Unbekannter Button wurde geklickt';
+$string['updatedcompetency'] = 'Die Kompetenz \"{$a}\" wurde aktualisiert';
+$string['updatedframework'] = 'Das Kompetenzprofil  \"{$a}\" wurde aktualisiert';
+$string['updatetype'] = 'Der Kompetenztyp  \"{$a}\" wurde aktualisiert';
 $string['useresourcelevelevidence'] = 'Benutze Ressourcenlevel Nachweis';
-$string['weight'] = 'Gewicht';
+$string['weight'] = 'Gewichtung';
 
 ?>

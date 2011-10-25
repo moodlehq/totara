@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // role.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // role.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['addrole'] = 'Neue Rolle hinzufügen';
@@ -28,6 +28,12 @@ $string['category:manage'] = 'Kursbereiche verwalten';
 $string['category:update'] = 'Kursbereiche aktualisieren';
 $string['category:viewhiddencategories'] = 'Verborgene Kursbereiche sehen';
 $string['category:visibility'] = 'Verborgene Kursbereiche sehen';
+$string['cohort:assign'] = 'Globale Gruppen zuweisen';
+$string['cohort:manage'] = 'Globale Gruppen verwalten';
+$string['cohort:view'] = 'Globale Gruppen sehen';
+$string['comment:delete'] = 'Kommentare löschen';
+$string['comment:post'] = 'Kommentare schreiben';
+$string['comment:view'] = 'Kommentare lesen';
 $string['course:activityvisibility'] = 'Aktivitäten anzeigen / verbergen';
 $string['course:bulkmessaging'] = 'Nachrichten an viele Empfänger senden';
 $string['course:changecategory'] = 'Kursbereich ändern';
@@ -224,9 +230,6 @@ $string['checkpermissionsin'] = 'Rechte prüfen in $a'; // ORPHANED
 $string['checksystempermissionsfor'] = 'Systemrechte prüfen für $a->fullname'; // ORPHANED
 $string['checkuserspermissionshere'] = 'Rechte prüfen, die $a->fullname in diesem  $a->contextlevel hat'; // ORPHANED
 $string['chooseroletoassign'] = 'Wählen Sie bitte eine Rolle zur Zuweisung'; // ORPHANED
-$string['comment:delete'] = 'Kommentare löschen'; // ORPHANED
-$string['comment:post'] = 'Kommentare schreiben'; // ORPHANED
-$string['comment:view'] = 'Kommentare lesen'; // ORPHANED
 $string['context'] = 'Kontext'; // ORPHANED
 $string['createhiddenassign'] = 'Erstellt eine versteckte Rollenzuweisung'; // ORPHANED
 $string['createrolebycopying'] = 'Neue Rolle als Kopie von $a erzeugen'; // ORPHANED

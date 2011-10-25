@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // completion.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+      // completion.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['achievinggrade'] = 'Vähimmäisarvosana';
@@ -22,7 +22,7 @@ $string['completedunlockedtext'] = 'Kun tallennat muutokset, kaikkien käyttäji
 $string['completedwarning'] = 'Suoritusasetukset lukittu';
 $string['completedwarningtext'] = 'Yksi tai useampi käyttäjä ($a) on jo merkinnyt suorittaneensa tämän aktiviteetin. Suoritusasetusten muuttaminen pyyhkii käyttäjien suoritustiedot ja saattaa aiheuttaa epäselvyyksiä. Asetukset ovat lukittuna eikä niiden avaamista suositella ellei se ole välttämätöntä.';
 $string['completeviarpl'] = 'Suorita hyväksyttämällä aiempi suoritus';
-$string['completion'] = 'Suorituksen tilan seuraaminen';
+$string['completion'] = 'Suorittamisen seuranta';
 $string['completion-alt-auto-enabled'] = 'Järjestelmä merkitsee tämän osion suoritetuksi ehtojen perusteella';
 $string['completion-alt-auto-fail'] = 'Suoritettu (riittävää arvosanaa ei saavutettu)';
 $string['completion-alt-auto-n'] = 'Keskeneräinen';
@@ -33,12 +33,12 @@ $string['completion-alt-manual-n'] = 'Keskeneräinen; valitse tämä merkitäkse
 $string['completion-alt-manual-y'] = 'Suoritettu; valitse tämä merkitäksesi osion keskeneräiseksi';
 $string['completion-title-manual-n'] = 'Merkitse suoritetuksi';
 $string['completion-title-manual-y'] = 'Merkitse keskeneräiseksi';
-$string['completion_automatic'] = 'Näytä akiviteetti suoritettuna kun ehdot täyttyvät';
-$string['completion_manual'] = 'Käyttäjät voivat itse merkitä tämän osion suoritetuksi';
-$string['completion_none'] = 'Älä viittaa aktiviteetin suoritusasteeseen';
+$string['completion_automatic'] = 'Automaattinen';
+$string['completion_manual'] = 'Manuaalinen';
+$string['completion_none'] = 'Pois käytöstä';
 $string['completiondisabled'] = 'Pois käytöstä, ei näy aktiviteettiasetuksissa';
 $string['completionenabled'] = 'Käytössä, hallinnoi suoritus- ja aktiviteettiasetusten kautta';
-$string['completionexpected'] = 'Odotettu suorituspäivämäärä';
+$string['completionexpected'] = 'Oletettu suorituspäivämäärä';
 $string['completionicons'] = 'valintaruudut etenemisen seurannalle';
 $string['completionmenuitem'] = 'Suorittaminen';
 $string['completionnotenabled'] = 'Suorittamista ei ole sallittu';
@@ -50,8 +50,8 @@ $string['completionstartonenrol'] = 'Suorittamisen seuraaminen alkaa ilmoittautu
 $string['completionstartonenrolhelp'] = 'Aloita käyttäjän kurssin suorittamisen seuraaminen ilmoittautumisen jälkeen';
 $string['completionusegrade'] = 'Vaadi arvosana';
 $string['completionusegrade_text'] = 'Käyttäjän pitää saada arvosana';
-$string['completionview'] = 'Vaadi näkymä';
-$string['completionview_text'] = 'Käyttäjän pitää nähdä aktiviteetti';
+$string['completionview'] = 'Vaadi aktiviteetin avaaminen';
+$string['completionview_text'] = 'Käyttäjän tulee avata aktiviteetti';
 $string['configenablecompletion'] = 'Kun tämä toiminto on käytössä, voit mahdollistaa suorittamisen seuraamistoiminnot kurssitasolla.';
 $string['configenablecourserpl'] = 'Salli kurssin merkitseminen suoritetuksi luomalla aiemman oppimisen hyväksilukemisrekisteri.';
 $string['configenablemodulerpl'] = 'Salli moduulin minkä tahansa suorittamiskriteerin merkitseminen suoritetuksi luomalla aiemman oppimisen hyväksilukemisrekisteri.';

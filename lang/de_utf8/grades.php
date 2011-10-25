@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // grades.php - created with Moodle 2.0 dev (Build: 20100213) (2010020701)
+      // grades.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['activities'] = 'Aktivitäten';
@@ -71,6 +71,7 @@ $string['categoryedit'] = 'Kategorie bearbeiten';
 $string['categoryname'] = 'Name der Kategorie';
 $string['categorytotal'] = 'Summe für die Kategorie';
 $string['categorytotalfull'] = 'Summe für $a->category';
+$string['categorytotalname'] = 'Summe für die Kategorie Name';
 $string['changedefaults'] = 'Grundeinstellungen ändern';
 $string['changereportdefaults'] = 'Voreinstellungen für Berichte ändern';
 $string['chooseaction'] = 'Aktion auswählen ...';
@@ -177,11 +178,6 @@ $string['errornocategorisedid'] = 'Keine nicht kategorisierte id!';
 $string['errornocourse'] = 'Keine Kursinformation!';
 $string['errorreprintheadersnonnumeric'] = 'Nicht-nummerischer Wert für Kopfzeile!';
 $string['errorsavegrade'] = 'Endschuldigung, aber die Bewertung konnte nicht gespeichert werden.';
-$string['errorupdatinggradecategoryaggregateonlygraded'] = 'Es ist ein Fehler beim Aktualisieren der Einstellungen \"Zusammenfassung nur bewerteter Elemente\" in der Bewertungskategorie mit der ID $a->id aufgetreten.';
-$string['errorupdatinggradecategoryaggregateoutcomes'] = 'Es ist ein Fehler beim Aktualisieren der Einstellungen \"Zusammenfassen der Ergebnisse\" in der Bewertungskategorie mit der ID $a->id aufgetreten.';
-$string['errorupdatinggradecategoryaggregatesubcats'] = 'Es ist ein Fehler beim Aktualisieren der Einstellungen \"Zusammenfassung der Unter-Kategorien\" in der Bewertungskategorie mit der ID $a->id aufgetreten.';
-$string['errorupdatinggradecategoryaggregation'] = 'Es ist ein Fehler beim Aktualisieren des Typs der Zusammenfassung in der Bewertungskategorie mit der ID $a->id aufgetreten.';
-$string['errorupdatinggradeitemaggregationcoef'] = 'Es ist ein Fehler beim Aktualisieren des Summenkoeffizients (Gewichtung oder Zusatzpunkte) des Bewertungselements mit der ID $a->id aufgetreten.';
 $string['exceptions'] = 'Ausnahmen';
 $string['excluded'] = 'Unberücksichtigt';
 $string['excludedhelp'] = 'Wenn \'unberücksichtigt\' aktiviert wurde, wird die Bewertung bei jeder übergeordneten Notenberechnung ausgelassen.';
@@ -394,12 +390,10 @@ $string['nonweightedpct'] = 'nicht gewichtet %%';
 $string['nooutcome'] = 'Kein Lernziel';
 $string['nooutcomes'] = 'Einzelne Lernziel-Aspekte müssen zu einem Lernziel eines Kurses verlinkt werden, aber in diesem Kurs gibt es keine Lernziele. Möchten Sie eines hinzufügen?';
 $string['nopublish'] = 'Nicht veröffentlichen';
-$string['norolesdefined'] = 'Es wurden keine Rollen definiert unter Website Administration -> Bewertungen -> Einstellungen -> Bewertete Rollen';
 $string['noscales'] = 'Lernziele müssen zu einer Bewertungsskala eines Kurses oder einer globalen Skala zu gewiesen werden, aber es existiert keine. Möchten Sie eine hinzufügen?';
 $string['noselectedcategories'] = 'Keine Kategorie wurde ausgewählt.';
 $string['noselecteditems'] = 'keine Werte ausgewählt.';
 $string['notteachererror'] = 'Diese Funktionen können nur Trainer/innen nutzen';
-$string['nousersloaded'] = 'Es wurden keine Nutzer importiert.';
 $string['numberofgrades'] = 'Anzahl der Bewertungsstufen';
 $string['onascaleof'] = 'auf einer Skala von $a->grademin bis $a->grademax';
 $string['operations'] = 'Vorgänge';
@@ -478,7 +472,6 @@ $string['respectingcurrentdata'] = 'Die aktuelle Konfiguration wird nicht verän
 $string['rowpreviewnum'] = 'Zeilenvorschau';
 $string['savechanges'] = 'Änderungen speichern';
 $string['savepreferences'] = 'Grundeinstellungen speichern';
-$string['scaleconfirmdelete'] = 'Sind Sie sicher, dass Sie die Skala \"$a\" löschen möchten?';
 $string['scaledpct'] = 'Berechnete %%';
 $string['scaleidhelp'] = 'Wenn der Skalenbewertungstyp verwendet wird, kann eine Skala ausgewählt werden. Dies erfolgt auf der Einstellungsseite der jeweiligen Lernaktivität.';
 $string['scalestandardhelp'] = 'Eine Standard-Skala ist eine Skala, die systemweit in allen Kursen verfügbar ist.';
@@ -584,6 +577,14 @@ $string['writinggradebookinfo'] = 'Einstellungen festhalten';
 $string['xml'] = 'XML';
 $string['yes'] = 'Ja';
 $string['yourgrade'] = 'Ihre Bewertung';
+$string['errorupdatinggradecategoryaggregateonlygraded'] = 'Es ist ein Fehler beim Aktualisieren der Einstellungen \"Zusammenfassung nur bewerteter Elemente\" in der Bewertungskategorie mit der ID $a->id aufgetreten.'; // ORPHANED
+$string['errorupdatinggradecategoryaggregateoutcomes'] = 'Es ist ein Fehler beim Aktualisieren der Einstellungen \"Zusammenfassen der Ergebnisse\" in der Bewertungskategorie mit der ID $a->id aufgetreten.'; // ORPHANED
+$string['errorupdatinggradecategoryaggregatesubcats'] = 'Es ist ein Fehler beim Aktualisieren der Einstellungen \"Zusammenfassung der Unter-Kategorien\" in der Bewertungskategorie mit der ID $a->id aufgetreten.'; // ORPHANED
+$string['errorupdatinggradecategoryaggregation'] = 'Es ist ein Fehler beim Aktualisieren des Typs der Zusammenfassung in der Bewertungskategorie mit der ID $a->id aufgetreten.'; // ORPHANED
+$string['errorupdatinggradeitemaggregationcoef'] = 'Es ist ein Fehler beim Aktualisieren des Summenkoeffizients (Gewichtung oder Zusatzpunkte) des Bewertungselements mit der ID $a->id aufgetreten.'; // ORPHANED
+$string['norolesdefined'] = 'Es wurden keine Rollen definiert unter Website Administration -> Bewertungen -> Einstellungen -> Bewertete Rollen'; // ORPHANED
+$string['nousersloaded'] = 'Es wurden keine Nutzer importiert.'; // ORPHANED
+$string['scaleconfirmdelete'] = 'Sind Sie sicher, dass Sie die Skala \"$a\" löschen möchten?'; // ORPHANED
 $string['configbulkcheckboxes'] = 'Checkboxes neben jeder Bewertung anzeigen, um Bewertungen schnell in großer Menge durchführen zu können.'; // ORPHANED
 $string['configquickfeedback'] = 'Schnelles Feedback fügt eine Texteingabe in jedes Bewertungsfeld des Bewertungsberichts ein, so dass die gleichseitige Bearbeitung mehrerer Bewertungen möglich wird. Sie können dann mit dem Update-Button alle Änderungen gleichzeitig speichern, anstatt dies für jedes einzelnen Änderung durchzuführen.'; // ORPHANED
 $string['errornocategorizedid'] = 'Keine ID für nicht-kategorisierte Aktivitäten!'; // ORPHANED

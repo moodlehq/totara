@@ -1,5 +1,5 @@
-<?PHP // $Id: tag.php,v 1.16 2009/12/14 12:06:51 ralf-bonn Exp $ 
-      // tag.php - created with Moodle 1.9.7+ (Build: 20091204) (2007101570)
+<?PHP // $Id$ 
+      // tag.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['addedotag'] = '\"$a\" wurde als offizielles Schlagwort hinzugefügt.';
@@ -9,6 +9,8 @@ $string['blocktagstitle'] = 'Schlagworte';
 $string['changename'] = 'Schlagwort ändern';
 $string['changetype'] = 'Schlagworttyp ändern';
 $string['count'] = 'Zählen';
+$string['coursetagging'] = 'Kursverschlagwortung';
+$string['coursetagginghelp'] = 'Wählen Sie diese Einstellung um die Kursverschlagwortung zu aktivieren,';
 $string['delete'] = 'Löschen';
 $string['deleted'] = 'Gelöscht';
 $string['description'] = 'Beschreibung';

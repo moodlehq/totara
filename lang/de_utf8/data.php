@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // data.php - created with Moodle 2.0 dev (Build: 20091117) (2009112000)
+      // data.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['action'] = 'Aktion';
@@ -28,11 +28,6 @@ $string['blank'] = 'Leer';
 $string['buttons'] = 'Aktionen';
 $string['bynameondate'] = 'von $a->name - $a->date';
 $string['cancel'] = 'Abbrechen';
-$string['cannotaccesspresentsother'] = 'Sie können nicht auf Vorlagen anderer Nutzer zugreifen';
-$string['cannotadd'] = 'Kann keine Einträge hinzufügen!';
-$string['cannotdeletepreset'] = 'Fehler beim Löschen der Vorlage';
-$string['cannotrate'] = 'Bewertung der Einträge nicht erlaubt!';
-$string['cannotunziptopreset'] = 'Entpacken im Vorlagenordner nicht möglich';
 $string['checkbox'] = 'Mehrfachauswahl';
 $string['chooseexportfields'] = 'Felder für Export auswählen:';
 $string['chooseexportformat'] = 'Exportformat auswählen:';
@@ -54,9 +49,6 @@ $string['csvimport'] = 'CSV-Dateiimport';
 $string['csvwithselecteddelimiter'] = '<acronym title=\"Komma getrennte Werte\">CSV</acronym> mit diesem Trennzeichen:';
 $string['data:approve'] = 'Einträge freigeben';
 $string['data:comment'] = 'Kommentare schreiben';
-$string['data:exportallentries'] = 'Alle Datenbankeinträge exportieren';
-$string['data:exportentry'] = 'Datenbankeintrag exportieren';
-$string['data:exportownentry'] = 'Eigenen Datenbankeintrag exportieren';
 $string['data:managecomments'] = 'Kommentare verwalten';
 $string['data:manageentries'] = 'Einträge verwalten';
 $string['data:managetemplates'] = 'Vorlagen verwalten';
@@ -67,7 +59,6 @@ $string['data:viewalluserpresets'] = 'Vorlagensätze aller Nutzer/innen sehen';
 $string['data:viewentry'] = 'Einträge sehen';
 $string['data:viewrating'] = 'Bewertungen sehen';
 $string['data:writeentry'] = 'Einträge schreiben';
-$string['dataadministration'] = 'Administration der Datenbank-Aktivität';
 $string['date'] = 'Datum';
 $string['dateentered'] = 'Daten eingetragen';
 $string['defaultfielddelimiter'] = '(Grundeinstellung ist das Komma-Zeichen)';
@@ -98,6 +89,7 @@ $string['entrysaved'] = 'Ihr Eintrag wurde gespeichert';
 $string['errormustbeteacher'] = 'Diese Seite können nur Trainer/innen benutzen!';
 $string['example'] = 'Datenbankmodul-Beispiel';
 $string['excel'] = 'Excel';
+$string['expired'] = 'Die Aktivität {$a} ist geschlossen und steht nicht weiter zur Verfügung';
 $string['export'] = 'Export';
 $string['exportaszip'] = 'Exportieren als ZIP';
 $string['exportdatabaserecords'] = 'Datenbankeinträge exportieren';
@@ -130,8 +122,6 @@ $string['forcelinkname'] = 'Namenseintrag  für den Link erzwingen';
 $string['foundnorecords'] = 'Keine Einträge gefunden (<a href=\"$a->reseturl\">Filter zurücksetzen</a>)';
 $string['foundrecords'] = 'Einträge gefunden: $a->num/$a->max (<a href=\"$a->reseturl\">Filter zurücksetzen</a>)';
 $string['fromfile'] = 'aus der ZIP-Datei';
-$string['generateerror'] = 'Mehrere Dateien wurden nicht angelegt!';
-$string['guestrate'] = 'Gäste können Einträge nicht bewerten';
 $string['header'] = 'Kopfzeile';
 $string['headeraddtemplate'] = 'Definiert Formular zum Anlegen neuer Einträge';
 $string['headerasearchtemplate'] = 'Definiert das Interface zur erweiterten Suche';
@@ -143,15 +133,8 @@ $string['headersingletemplate'] = 'Definiert Darstellung für die Einzelansicht'
 $string['importsuccess'] = 'Die Vorlagensatz wurde erfolgreich übernommen.';
 $string['insufficiententries'] = 'Weitere Einträge sind erforderlich, um die Datenbank einzusehen.';
 $string['intro'] = 'Einführung';
-$string['invalidaccess'] = 'Seite wurde nicht richtig aufgerufen';
-$string['invalidfieldid'] = 'Feld-ID ist falsch';
 $string['invalidfieldname'] = 'Wählen Sie bitte einen anderen Namen für dieses Feld.';
-$string['invalidfieldtype'] = 'Feldtyp ist falsch';
-$string['invalidid'] = 'Falsche Daten-ID';
-$string['invalidpreset'] = '$a ist keine Voreinstellung.';
 $string['invalidrate'] = 'Ungültige Bewertung in Datenbank ($a)';
-$string['invalidratedata'] = 'Bewertungseintrag falsch übermittelt';
-$string['invalidrecord'] = 'Falscher Eintrag';
 $string['invalidurl'] = 'Die eingegebene URL ist nicht gültig.';
 $string['jstemplate'] = 'JavaScript für Vorlagen';
 $string['latitude'] = 'Breitengrad';
@@ -168,8 +151,6 @@ $string['maxentries'] = 'Einträge (Höchstzahl)';
 $string['maxsize'] = 'Größe (max)';
 $string['menu'] = 'Menü';
 $string['menuchoose'] = 'Auswählen ...';
-$string['missingdata'] = 'Daten-ID bzw. Daten-Objekt müssen zur Feldklasse passen';
-$string['missingfield'] = 'Programmierfehler: Sie müssen Feld und Daten angeben, wenn Sie eine Feldklasse definieren.';
 $string['modulename'] = 'Datenbank';
 $string['modulenameplural'] = 'Datenbanken';
 $string['more'] = 'Einzelansicht';
@@ -194,15 +175,15 @@ $string['newentry'] = 'Neuer Eintrag';
 $string['newfield'] = 'Ein neues Feld erstellen';
 $string['noaccess'] = 'Sie haben keinen Zugriff auf diese Seite.';
 $string['nodefinedfields'] = 'Neuer Vorlagensatz besitzt keine definierten Felder!';
-$string['nofieldcontent'] = 'Feldinhalt nicht gefunden';
 $string['nofieldindatabase'] = 'In dieser Datenbank sind noch keine Felder definiert. Fügen Sie bitte Datenbankfelder hinzu.';
 $string['nolisttemplate'] = 'Die Listenansicht ist noch nicht definiert worden.';
 $string['nomatch'] = 'Keine passenden Einträge gefunden';
 $string['nomaximum'] = 'Keine Höchstzahl';
-$string['norating'] = 'Diese Aktivität hat keien Bewertungen';
 $string['norecords'] = 'Keine Einträge in der Datenbank';
 $string['nosingletemplate'] = 'Einzelansicht ist noch nicht definiert';
+$string['notapproved'] = 'Der Eintrag ist bisher nicht freigegeben worden';
 $string['notinjectivemap'] = 'Keine injektive Abbildung';
+$string['notopenyet'] = 'Die Aktivität steht erst ab {$a} zur Verfügung';
 $string['number'] = 'Zahl';
 $string['numberrssarticles'] = 'RSS-Beiträge';
 $string['numnotapproved'] = 'Wartend';
@@ -217,7 +198,6 @@ $string['pagesize'] = 'Einträge pro Seite';
 $string['participants'] = 'Teilnehmer/innen';
 $string['picture'] = 'Bild';
 $string['pleaseaddsome'] = 'Bitte tragen Sie etwas ein oder <a href=\"$a\">wählen Sie einen Vorlagensatz</a>, um zu beginnen';
-$string['portfolionotfile'] = 'In ein Portfolio und nicht als Datei exportieren';
 $string['presetinfo'] = 'Durch das Sichern als Vorlagensatz wird Ihre Datenbank-Gestaltung für die gesamte Moodle-Installation veröffentlicht. Andere Nutzer/innen können dann diesen Vorlagensatz für ihre Datenbank nutzen.';
 $string['presets'] = 'Vorlagensätze';
 $string['radiobutton'] = 'Einfachauswahl';
@@ -237,6 +217,10 @@ $string['recordsnotsaved'] = 'Kein Datensatz wurde gespeichert. Prüfen Sie bitt
 $string['recordssaved'] = 'Datensätze gespeichert';
 $string['requireapproval'] = 'Freigabe erforderlich?';
 $string['requiredentries'] = 'Erforderliche Einträge';
+$string['requiredentrieschanged'] = '<p><strong>WICHTIG - BITTE LESEN</strong></p>
+<p>Wegen einer Fehlerkorrektur ändert sich das Verhalten von Datenbank-Aktivitäten bei den Einstellungen \'Erforderliche Einträge\' und \'Erforderliche Einträge, bevor Ansicht aller Daten möglich\'. Eine ausführliche Diskussion der Änderungen finden Sie im <a href=\"http://moodle.org/mod/forum/discuss.php?d=110928\" target=\"_blank\">Forum zum Datenbank-Modul</a>. Die Wirkung der Einstellungen können Sie auch in den <a href=\"http://docs.moodle.org/en/Adding/editing_a_database#Required_entries\" target=\"_blank\">Moodle Docs</a> nachlesen.</p>
+<p>Diese Änderung betrifft die nachfolgenden Datenbanken in Ihrem System. Bitte sichern Sie die Liste, um nach der Aktualisierung prüfen zu können, ob die Aktivitäten noch in der beabsichtigten Weise funktionieren.</p>
+<strong style=\"color:red\">$a->text</strong><br/>';
 $string['requiredentriestoview'] = 'Erforderliche Einträge, bevor Ansicht aller Daten möglich';
 $string['resetsettings'] = 'Felder zurücksetzen';
 $string['resettemplate'] = 'Vorlage zurücksetzen';
@@ -278,6 +262,29 @@ $string['usestandard'] = 'Vorlagensatz benutzen';
 $string['viewfromdate'] = 'Sichtbar von';
 $string['viewtodate'] = 'Sichtbar bis';
 $string['wrongdataid'] = 'Falsche Daten-ID bereitgestellt';
+$string['cannotaccesspresentsother'] = 'Sie können nicht auf Vorlagen anderer Nutzer zugreifen'; // ORPHANED
+$string['cannotadd'] = 'Kann keine Einträge hinzufügen!'; // ORPHANED
+$string['cannotdeletepreset'] = 'Fehler beim Löschen der Vorlage'; // ORPHANED
+$string['cannotrate'] = 'Bewertung der Einträge nicht erlaubt!'; // ORPHANED
+$string['cannotunziptopreset'] = 'Entpacken im Vorlagenordner nicht möglich'; // ORPHANED
+$string['data:exportallentries'] = 'Alle Datenbankeinträge exportieren'; // ORPHANED
+$string['data:exportentry'] = 'Datenbankeintrag exportieren'; // ORPHANED
+$string['data:exportownentry'] = 'Eigenen Datenbankeintrag exportieren'; // ORPHANED
+$string['dataadministration'] = 'Administration der Datenbank-Aktivität'; // ORPHANED
+$string['generateerror'] = 'Mehrere Dateien wurden nicht angelegt!'; // ORPHANED
+$string['guestrate'] = 'Gäste können Einträge nicht bewerten'; // ORPHANED
+$string['invalidaccess'] = 'Seite wurde nicht richtig aufgerufen'; // ORPHANED
+$string['invalidfieldid'] = 'Feld-ID ist falsch'; // ORPHANED
+$string['invalidfieldtype'] = 'Feldtyp ist falsch'; // ORPHANED
+$string['invalidid'] = 'Falsche Daten-ID'; // ORPHANED
+$string['invalidpreset'] = '$a ist keine Voreinstellung.'; // ORPHANED
+$string['invalidratedata'] = 'Bewertungseintrag falsch übermittelt'; // ORPHANED
+$string['invalidrecord'] = 'Falscher Eintrag'; // ORPHANED
+$string['missingdata'] = 'Daten-ID bzw. Daten-Objekt müssen zur Feldklasse passen'; // ORPHANED
+$string['missingfield'] = 'Programmierfehler: Sie müssen Feld und Daten angeben, wenn Sie eine Feldklasse definieren.'; // ORPHANED
+$string['nofieldcontent'] = 'Feldinhalt nicht gefunden'; // ORPHANED
+$string['norating'] = 'Diese Aktivität hat keien Bewertungen'; // ORPHANED
+$string['portfolionotfile'] = 'In ein Portfolio und nicht als Datei exportieren'; // ORPHANED
 $string['cannotinsertempty'] = 'Leerer Eintrag nicht zulässig'; // ORPHANED
 $string['updatingerror'] = 'Beim Aktualisieren der Datenbank ist ein Fehler aufgetreten'; // ORPHANED
 $string['cannotinsertrate'] = 'Neue Bewertung konnte  nicht eingetragen werden ($a[0] = $a[1])'; // ORPHANED
@@ -287,10 +294,5 @@ $string['csvformat'] = 'CSV Format'; // ORPHANED
 $string['excelformat'] = 'Excel Format'; // ORPHANED
 $string['exportdatabase'] = 'Datenbankeinträge exportieren'; // ORPHANED
 $string['odsformat'] = 'ODS-Format'; // ORPHANED
-$string['notapproved'] = 'Der Eintrag ist bisher nicht freigegeben worden'; // ORPHANED
-$string['requiredentrieschanged'] = '<p><strong>WICHTIG - BITTE LESEN</strong></p>
-<p>Wegen einer Fehlerkorrektur ändert sich das Verhalten von Datenbank-Aktivitäten bei den Einstellungen \'Erforderliche Einträge\' und \'Erforderliche Einträge, bevor Ansicht aller Daten möglich\'. Eine ausführliche Diskussion der Änderungen finden Sie im <a href=\"http://moodle.org/mod/forum/discuss.php?d=110928\" target=\"_blank\">Forum zum Datenbank-Modul</a>. Die Wirkung der Einstellungen können Sie auch in den <a href=\"http://docs.moodle.org/en/Adding/editing_a_database#Required_entries\" target=\"_blank\">Moodle Docs</a> nachlesen.</p>
-<p>Diese Änderung betrifft die nachfolgenden Datenbanken in Ihrem System. Bitte sichern Sie die Liste, um nach der Aktualisierung prüfen zu können, ob die Aktivitäten noch in der beabsichtigten Weise funktionieren.</p>
-<strong style=\"color:red\">$a->text</strong><br/>'; // ORPHANED
 
 ?>

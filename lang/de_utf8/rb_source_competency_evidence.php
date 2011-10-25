@@ -1,5 +1,5 @@
 <?PHP // $Id$ 
-      // rb_source_competency_evidence.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
+      // rb_source_competency_evidence.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
 
 
 $string['assessor'] = 'Assessor';
@@ -31,6 +31,8 @@ $string['positionwhencompletedbasic'] = 'Position nach Abschluss (Basic)';
 $string['proficiency'] = 'Kenntnis';
 $string['proficiencyid'] = 'Kenntnis ID';
 $string['sourcetitle'] = 'Kompetenznachweis';
+$string['type_competency'] = 'Kompetenz';
+$string['type_competency_evidence'] = 'Kompetenznachweis';
 $string['user'] = 'Benutzer';
 
 ?>
