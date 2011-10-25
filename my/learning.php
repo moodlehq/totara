@@ -62,7 +62,7 @@ if (!empty($dashaction) && !empty($dletid) && confirm_sesskey() && !$dashb->is_u
     redirect($redirect);
 }
 
-$strheading = $dashb->data->title;
+$strheading = get_string($dashb->data->shortname, 'local_dashboard');
 
 $pagetitle = format_string($strheading);
 $navlinks[] = array('name' => $strheading, 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');

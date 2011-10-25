@@ -59,7 +59,8 @@ if ($dashboards = local_dashboard_get_dashboards()) {
         $content = array();
 
         $content[] = $d->shortname;
-        $content[] = "<a href=\" {$CFG->wwwroot}/local/dashboard/admin/edit.php?item={$d->shortname}\">{$d->title}</a>";
+        $dashboard_title = get_string($d->shortname, 'local_dashboard');
+        $content[] = "<a href=\" {$CFG->wwwroot}/local/dashboard/admin/edit.php?item={$d->shortname}\">{$dashboard_title}</a>";
         $content[] = $d->rolename;
         $content[] = $d->active_dashlets;
         $table->add_data($content);

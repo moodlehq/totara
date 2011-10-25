@@ -98,7 +98,7 @@ if (!empty($dashaction) && !empty($dletid) && confirm_sesskey() && $dashb->is_us
 
 $strheading = get_string('editdashboard', 'local_dashboard');
 if (!empty($dashb->data->title)) {
-    $strheading .= ' - '.$dashb->data->title;
+    $strheading .= ' - '. get_string($dashb->data->shortname, 'local_dashboard');
 }
 
 $navlinks[] = array('name' => get_string('dashboards', 'local_dashboard'), 'link' => "{$CFG->wwwroot}/local/dashboard/admin/index.php", 'type' => 'misc');
