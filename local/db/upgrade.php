@@ -2847,7 +2847,9 @@ function xmldb_local_upgrade($oldversion) {
             if ($result) {
                 // remove management plugin table
                 $table = new XMLDBTable('manager');
-                $result = $result && drop_table($table);
+                if (table_exists($table)) {
+                    $result = $result && drop_table($table);
+                }
 
                 // unset config variables
                 set_config('local_management_version', null);
