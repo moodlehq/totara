@@ -158,6 +158,12 @@ class rb_source_facetoface_sessions extends rb_base_source {
                     'displayfunc' => 'facetoface_status',
                 )
             ),
+             new rb_column_option(
+                'session',
+                'discountcode',
+                get_string('discountcode', 'rb_source_facetoface_sessions'),
+                'base.discountcode'
+            ),
             new rb_column_option(
                 'facetoface',
                 'name',
@@ -275,6 +281,12 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'session',
                 'details',
                 get_string('sessdetails', 'rb_source_facetoface_sessions'),
+                'text'
+            ),
+            new rb_filter_option(
+                'session',
+                'discountcode',
+                get_string('discountcode', 'rb_source_facetoface_sessions'),
                 'text'
             ),
             new rb_filter_option(
