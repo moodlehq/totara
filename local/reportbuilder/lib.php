@@ -1887,7 +1887,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             foreach ($data as $row) {
                 $table->add_data($row);
             }
-        } else {
+        } else if ($data === false) {
             print_error('error:problemobtainingreportdata', 'local_reportbuilder');
         }
 
@@ -1966,6 +1966,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
      * @param boolean $striptags If true, returns the data with any html tags removed
      * @param boolean $isexport If true, data is being exported
      * @return array Outer array are table rows, inner array are columns
+     *               False is returned if the SQL query failed entirely
      */
     function fetch_data($sql, $start=null, $size=null, $striptags=false, $isexport=false) {
         global $CFG;
@@ -1999,6 +2000,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 $ret[] = $tabledata;
             }
             rs_close($records);
+        } else {
+            // this indicates a failed query, not just 0 results
+            return false;
         }
         if($striptags === true) {
             return $this->strip_tags_r($ret);
@@ -2260,14 +2264,16 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $data = $this->fetch_data($query, $start, $blocksize, true, true);
 
             $filerow = 0;
-            foreach ($data as $datarow) {
-                for($col=0; $col<$numfields;$col++) {
-                    if(isset($data[$filerow][$col])) {
-                        $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+            if ($data) {
+                foreach ($data as $datarow) {
+                    for($col=0; $col<$numfields;$col++) {
+                        if(isset($data[$filerow][$col])) {
+                            $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+                        }
                     }
+                    $filerow++;
+                    $row++;
                 }
-                $filerow++;
-                $row++;
             }
         }
 
@@ -2338,14 +2344,16 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $data = $this->fetch_data($query, $start, $blocksize, true, true);
 
             $filerow = 0;
-            foreach ($data as $datarow) {
-                for($col=0; $col<$numfields; $col++) {
-                    if(isset($data[$filerow][$col])) {
-                        $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+            if ($data) {
+                foreach ($data as $datarow) {
+                    for($col=0; $col<$numfields; $col++) {
+                        if(isset($data[$filerow][$col])) {
+                            $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+                        }
                     }
+                    $row++;
+                    $filerow++;
                 }
-                $row++;
-                $filerow++;
             }
         }
 
@@ -2391,19 +2399,20 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $start = $k*$blocksize;
             $data = $this->fetch_data($query, $start, $blocksize, true, true);
             $i = 0;
-            foreach ($data AS $row) {
-                $row = array();
-                for($j=0; $j<$numfields; $j++) {
-                    if(isset($data[$i][$j])) {
-                        $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $data[$i][$j]));
-                    } else {
-                        $row[] = '';
+            if ($data) {
+                foreach ($data AS $row) {
+                    $row = array();
+                    for($j=0; $j<$numfields; $j++) {
+                        if(isset($data[$i][$j])) {
+                            $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $data[$i][$j]));
+                        } else {
+                            $row[] = '';
+                        }
                     }
+                    $csv .= implode($delimiter, $row)."\n";
+                    $i++;
                 }
-                $csv .= implode($delimiter, $row)."\n";
-                $i++;
             }
-
         }
 
         if($file) {

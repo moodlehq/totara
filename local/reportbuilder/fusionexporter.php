@@ -121,17 +121,19 @@ for($k=0;$k<=floor($count/$blocksize);$k++) {
     $data = $rep->fetch_data($query, $start, $blocksize, true, true);
     $i = 0;
     $rows = array();
-    foreach ($data AS $row) {
-        $row = array();
-        for($j=0; $j<$numfields; $j++) {
-            if(isset($data[$i][$j])) {
-                $row[] = addslashes(htmlspecialchars_decode($data[$i][$j]));
-            } else {
-                $row[] = '';
+    if ($data) {
+        foreach ($data AS $row) {
+            $row = array();
+            for($j=0; $j<$numfields; $j++) {
+                if(isset($data[$i][$j])) {
+                    $row[] = addslashes(htmlspecialchars_decode($data[$i][$j]));
+                } else {
+                    $row[] = '';
+                }
             }
+            $rows[]= $row;
+            $i++;
         }
-        $rows[]= $row;
-        $i++;
     }
     $result = $oauth->insert_rows($tablename, $rows);
 
