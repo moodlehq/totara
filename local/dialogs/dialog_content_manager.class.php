@@ -163,10 +163,9 @@ class totara_dialog_content_manager extends totara_dialog_content {
                 FROM {$CFG->prefix}pos_assignment
                 WHERE type = $primarytype
             ) managers
-            INNER JOIN {$CFG->prefix}pos_assignment pa on managers.id = pa.userid
-            INNER JOIN {$CFG->prefix}user u on u.id = pa.userid
+            LEFT JOIN {$CFG->prefix}pos_assignment pa on managers.id = pa.userid
+            INNER JOIN {$CFG->prefix}user u on u.id = managers.id
             WHERE pa.managerid IS NULL OR pa.managerid = 0
-            AND pa.type = $primarytype
             ORDER BY u.lastname, u.id
         ");
     }
