@@ -190,7 +190,7 @@ class report_builder_edit_filters_form extends moodleform {
 
             $filtersselect = $report->get_filters_select();
 
-            if(isset($report->filters) && is_array($report->filters) && count($report->filters)>0) {
+            if (isset($report->filters) && is_array($report->filters) && count($report->filters) > 0) {
                 $filters = $report->filters;
                 $filtercount = count($filters);
                 $i = 1;
@@ -226,8 +226,8 @@ class report_builder_edit_filters_form extends moodleform {
                 }
             } else {
                 $mform->addElement('html','<p>'. get_string('nofiltersyet','local_reportbuilder').'</p>');
+                $filters = array();
             }
-
 
             $mform->addElement('html','<tr><td>');
             $newfilterselect = array_merge(
