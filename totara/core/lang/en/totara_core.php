@@ -234,4 +234,18 @@ $string['staffmanager'] = 'Staff Manager';
 $string['sitemanager'] = 'Site Manager';
 
 $string['coursecompletion'] = 'Course completion';
+
+// User delete/undelete
+$string['deleted'] = 'Deleted';
+$string['undelete'] = 'Undelete';
+$string['undeletecheckfull'] = 'Are you sure you want to undelete {$a}?';
+$string['undeletedx'] = 'Undeleted {$a}';
+$string['undeleteuser'] = 'Undelete User';
+$string['undeleteusernoperm'] = 'You do not have the required permission to undelete a user';
+$string['userdoesnotexist'] = 'User does not exist';
+$string['cannotundeleteuser'] = 'Cannot undelete user';
+$string['undeletednotx'] = 'Could not undelete {$a} !';
+$string['core:seedeletedusers'] = 'See deleted users';
+$string['core:undeleteuser'] = 'Undelete user';
+
 ?>

@@ -40,6 +40,11 @@ class user_filtering {
                                 'nevermodified'=>1, 'username'=>1, 'auth'=>1, 'mnethostid'=>1);
         }
 
+        $systemcontext = get_system_context();
+        if (has_capability('totara/core:seedeletedusers', $systemcontext)) {
+            $fieldnames['deleted'] = 1;
+        }
+
         $this->_fields  = array();
 
         foreach ($fieldnames as $fieldname=>$advanced) {
@@ -120,6 +125,7 @@ class user_filtering {
             case 'timemodified': return new user_filter_date('timemodified', get_string('lastmodified'), $advanced, 'timemodified');
             case 'nevermodified': return new user_filter_checkbox('nevermodified', get_string('nevermodified', 'filters'), $advanced, array('timemodified', 'timecreated'), array('timemodified_sck', 'timemodified_eck'));
             case 'cohort':      return new user_filter_cohort($advanced);
+            case 'deleted':   return new user_filter_yesno('deleted', get_string('deleted', 'totara_core'), $advanced, 'deleted');
             case 'auth':
                 $plugins = get_plugin_list('auth');
                 $choices = array();

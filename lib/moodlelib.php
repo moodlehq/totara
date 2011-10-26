@@ -3931,9 +3931,6 @@ function delete_user(stdClass $user) {
     $updateuser = new stdClass();
     $updateuser->id           = $user->id;
     $updateuser->deleted      = 1;
-    $updateuser->username     = $delname;            // Remember it just in case
-    $updateuser->email        = md5($user->username);// Store hash of username, useful importing/restoring users
-    $updateuser->idnumber     = '';                  // Clear this field to free it up
     $updateuser->timemodified = time();
 
     $DB->update_record('user', $updateuser);
@@ -3953,6 +3950,30 @@ function delete_user(stdClass $user) {
     events_trigger('user_deleted', $user);
 
     return true;
+}
+
+/**
+ * Removes user deleted flag in internal user database and notifies the auth plugin.
+ * @param object $user       Userobject before undelete    (without system magic quotes)
+ * @return boolean success
+ */
+function undelete_user($user) {
+    global $DB;
+
+    $updateuser = new object();
+    $updateuser->id           = $user->id;
+    $updateuser->deleted      = 0;
+    $updateuser->timemodified = time();
+
+    // Call get_context_insance to create context if it doesn't exist.
+    get_context_instance(CONTEXT_USER, $user->id);
+
+    if ($DB->update_record('user', $updateuser)) {
+        events_trigger('user_undeleted', $user);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**

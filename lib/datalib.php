@@ -190,11 +190,12 @@ function search_users($courseid, $groupid, $searchtext, $sort='', array $excepti
  * @param string $page The page or records to return
  * @param string $recordsperpage The number of records to return per page
  * @param string $fields A comma separated list of fields to be returned from the chosen table.
+ * @param boolean $excludedeleted if true, don't get deleted users (default moodle behaviour)
  * @return array|int|bool  {@link $USER} records unless get is false in which case the integer count of the records found is returned.
   *                        False is returned if an error is encountered.
  */
 function get_users($get=true, $search='', $confirmed=false, array $exceptions=null, $sort='firstname ASC',
-                   $firstinitial='', $lastinitial='', $page='', $recordsperpage='', $fields='*', $extraselect='', array $extraparams=null) {
+                   $firstinitial='', $lastinitial='', $page='', $recordsperpage='', $fields='*', $extraselect='', array $extraparams=null, $excludedeleted=true) {
     global $DB, $CFG;
 
     if ($get && !$recordsperpage) {
@@ -206,8 +207,13 @@ function get_users($get=true, $search='', $confirmed=false, array $exceptions=nu
 
     $fullname  = $DB->sql_fullname();
 
-    $select = " id <> :guestid AND deleted = 0";
+    $select = " id <> :guestid";
     $params = array('guestid'=>$CFG->siteguest);
+
+    if ($excludedeleted) {
+        // Moodle core default behaviour - if deleted not specified, or 0, exclude deleted users
+        $select .= ' AND deleted = 0';
+    }
 
     if (!empty($search)){
         $search = trim($search);
@@ -263,16 +269,17 @@ function get_users($get=true, $search='', $confirmed=false, array $exceptions=nu
  * @param array $extraparams Additional parameters to use for the above $extraselect
  * @param object $extracontext If specified, will include user 'extra fields'
  *   as appropriate for current user and given context
+ * @param boolean $excludedeleted if true, don't get deleted users (default moodle behaviour)
  * @return array Array of {@link $USER} records
  */
 function get_users_listing($sort='lastaccess', $dir='ASC', $page=0, $recordsperpage=0,
                            $search='', $firstinitial='', $lastinitial='', $extraselect='',
-                           array $extraparams=null, $extracontext = null) {
+                           array $extraparams=null, $extracontext = null, $excludedeleted=true) {
     global $DB;
 
     $fullname  = $DB->sql_fullname();
 
-    $select = "deleted <> 1";
+    $select = $excludedeleted ? "deleted <> 1" : '1=1';  // override core moodle habits for !$excludedeleted
     $params = array();
 
     if (!empty($search)) {
@@ -314,11 +321,10 @@ function get_users_listing($sort='lastaccess', $dir='ASC', $page=0, $recordsperp
 
     // warning: will return UNCONFIRMED USERS
     return $DB->get_records_sql("SELECT id, username, email, firstname, lastname, city, country,
-                                        lastaccess, confirmed, mnethostid, suspended $extrafields
+                                        lastaccess, confirmed, mnethostid, deleted, suspended $extrafields
                                    FROM {user}
                                   WHERE $select
                                   $sort", $params, $page, $recordsperpage);
-
 }
 
 
