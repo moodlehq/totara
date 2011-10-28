@@ -825,7 +825,7 @@ abstract class dp_base_component {
                     $a->user = $this->current_user_link();
                     $event->subject = get_string_in_user_lang($manager, 'componentupdateshortmanager', 'local_plan', $a);
                     $event->fullmessage = get_string_in_user_lang($manager, 'componentupdatelongmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -875,7 +875,7 @@ abstract class dp_base_component {
                     $a->user = $this->current_user_link();
                     $event->subject = get_string_in_user_lang($manager, 'component'.$type.'shortmanager', 'local_plan', $a);
                     $event->fullmessage = get_string_in_user_lang($manager, 'component'.$type.'longmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -920,7 +920,7 @@ abstract class dp_base_component {
                     $a->user = $this->current_user_link();
                     $event->subject = get_string_in_user_lang($manager, 'componentcompleteshortmanager', 'local_plan', $a);
                     $event->fullmessage = get_string_in_user_lang($manager, 'componentcompletelongmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }

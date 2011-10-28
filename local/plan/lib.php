@@ -1266,7 +1266,7 @@ function plan_comment_add($comment) {
         $event->contexturl = $contexturl;
         $event->contexturlname = $contexturlname;
         if (!empty($manager) && $sid == $manager->id) {
-            $event->roleid = get_field('role', 'id', 'shortname', 'manager');
+            $event->roleid = $CFG->managerroleid;
         }
         $event->icon = $icon;
 

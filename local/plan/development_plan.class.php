@@ -1382,7 +1382,7 @@ class development_plan {
             $event->userfrom = $learner;
             $event->contexturl = $this->get_display_url();
             $event->contexturlname = $this->name;
-            $event->roleid = get_field('role','id', 'shortname', 'manager');
+            $event->roleid = $CFG->managerroleid;
             $event->icon = 'learningplan-request';
 
             $a = new stdClass;
@@ -1451,7 +1451,7 @@ class development_plan {
         $event->userfrom = $learner;
         $event->contexturl = "{$CFG->wwwroot}/local/plan/approve.php?id={$this->id}";
         $event->contexturlname = $this->name;
-        $event->roleid = get_field('role','id', 'shortname', 'manager');
+        $event->roleid = $CFG->managerroleid;
         $event->icon = 'learningplan-request';
 
         $a = new stdClass;
@@ -1491,11 +1491,11 @@ class development_plan {
             if ( $tolearner ){
                 $userto = $learner;
                 $userfrom = $manager;
-                $roleid = get_field('role','id','shortname','student');
+                $roleid = $CFG->learnerroleid;
             } else {
                 $userto = $manager;
                 $userfrom = $learner;
-                $roleid = get_field('role','id','shortname','manager');
+                $roleid = $CFG->managerroleid;
             }
             $event = new tm_alert_eventdata($userto);
             $event->userfrom = $userfrom;
@@ -1593,7 +1593,7 @@ class development_plan {
             $a->plan = $this->name;
             $event->subject = get_string_in_user_lang($manager, 'plan-complete-manager-short','local_plan',$a);
             $event->fullmessage = get_string_in_user_lang($manager, 'plan-complete-manager-long','local_plan',$a);
-            $event->roleid = get_field('role','id', 'shortname', 'manager');
+            $event->roleid = $CFG->managerroleid;
             tm_alert_send($event);
         }
 

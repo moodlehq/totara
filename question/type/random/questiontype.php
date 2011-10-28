@@ -306,7 +306,7 @@ class random_qtype extends default_questiontype {
     }
 
     // ULPGC ecastro
-    function get_actual_response(&$question, &$state){
+    function get_actual_response($question, $state){
         global $QTYPES;
         $wrappedquestion = &$state->options->question;
         return $QTYPES[$wrappedquestion->qtype]
@@ -320,7 +320,7 @@ class random_qtype extends default_questiontype {
                 ->get_html_head_contributions($wrappedquestion, $state);
     }
 
-    function print_question(&$question, &$state, &$number, $cmoptions, $options) {
+    function print_question(&$question, &$state, $number, $cmoptions, $options) {
         global $QTYPES;
         $wrappedquestion = &$state->options->question;
         $wrappedquestion->randomquestionid = $question->id;

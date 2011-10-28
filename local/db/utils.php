@@ -183,11 +183,15 @@ function totara_migrate_old_report_builder_reports(&$result) {
                         $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
                         $result = $result && update_record('report_builder', $todb);
                         // make it admin only
-                        $todb = new object();
-                        $todb->reportid = $report->id;
-                        $todb->accesstype = 'role';
-                        $todb->typeid = get_field('role', 'id', 'shortname', 'administrator');
-                        $result = $result && insert_record('report_builder_access', $todb);
+                        if ($adminroles = get_roles_with_capability('moodle/site:doanything', CAP_ALLOW, get_context_instance(CONTEXT_SYSTEM))) {
+                            foreach ($adminroles as $adminrole) {
+                                $todb = new object();
+                                $todb->reportid = $report->id;
+                                $todb->accesstype = 'role';
+                                $todb->typeid = $adminrole->id;
+                                $result = $result && insert_record('report_builder_access', $todb);
+                            }
+                        }
                         continue 3;
                     case 'local_completed_records':
                     case 'local_completed':

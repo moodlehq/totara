@@ -2073,19 +2073,18 @@ function xmldb_local_upgrade($oldversion) {
     if ($result && $oldversion < 2011030701) {
         $roles = get_records('role');
         // find administrator role (either admin or administrator)
-        $adminid = get_field('role', 'id', 'shortname', 'admin');
-        if(!$adminid) {
-            $adminid = get_field('role', 'id', 'shortname', 'administrator');
-        }
-        // only continue if admin role found
-        if($adminid) {
-            foreach($roles as $role) {
-                $assign = get_record('role_allow_assign', 'roleid', $adminid, 'allowassign', $role->id);
-                if (!$assign) {
-                    $role_assign = new object();
-                    $role_assign->roleid = $adminid;
-                    $role_assign->allowassign = $role->id;
-                    $result = $result && insert_record('role_allow_assign', $role_assign);
+
+        // Get admin role(s)
+        if ($adminroles = get_roles_with_capability('moodle/site:doanything', CAP_ALLOW, get_context_instance(CONTEXT_SYSTEM))) {
+            foreach ($adminroles as $adminrole) {
+                foreach ($roles as $role) {
+                    $assign = get_record('role_allow_assign', 'roleid', $adminrole->id, 'allowassign', $role->id);
+                    if (!$assign) {
+                        $role_assign = new object();
+                        $role_assign->roleid = $adminrole->id;
+                        $role_assign->allowassign = $role->id;
+                        $result = $result && insert_record('role_allow_assign', $role_assign);
+                    }
                 }
             }
         }

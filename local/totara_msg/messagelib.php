@@ -459,7 +459,7 @@ function tm_task_send($eventdata) {
  *          $event->userfrom = $learner;
  *          $event->contexturl = $this->get_display_url();
  *          $event->contexturlname = $this->name;
- *          $event->roleid = get_field('role','id', 'shortname', 'manager');
+ *          $event->roleid = $CFG->managerroleid;
  *          $event->icon = 'learningplan-request.png';
  *          $a = new stdClass;
  *          $a->learner = fullname($learner);

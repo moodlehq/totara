@@ -52,9 +52,6 @@ define('MDL_F2F_CANCEL_BOTH',		11);	// Send a copy of both 8+2+1
 define('MDL_F2F_CANCEL_TEXT',		10);	// Send just a plan email 8+2
 define('MDL_F2F_CANCEL_ICAL',		9);	    // Send just a combined text/ical message 8+1
 
-// Name of the role which should be used to determine a users manager
-define('MDL_MANAGER_ROLEID','manager');
-
 // Custom field related constants
 define('CUSTOMFIELD_DELIMITTER', '##SEPARATOR##');
 define('CUSTOMFIELD_TYPE_TEXT',        0);
@@ -1909,7 +1906,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
     $usermsg = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
     $newevent->userto           = $user;
     $newevent->userfrom         = $USER;
-    $newevent->roleid           = get_field('role', 'id', 'shortname', 'student');
+    $newevent->roleid           = $CFG->learnerroleid;
     $url = $CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id;
     switch ($nottype) {
         case MDL_F2F_STATUS_BOOKED:
@@ -1957,7 +1954,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
                 $userto = get_record('user', 'id', $managerid);
-                $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
+                $newevent->roleid           = $CFG->managerroleid;
                 $newevent->userto           = $userto;
                 $subjectinfo = new stdClass();
                 $subjectinfo->usermsg = $usermsg;
@@ -1972,7 +1969,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
                 $userto = get_record('user', 'id', $managerid);
-                $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
+                $newevent->roleid           = $CFG->managerroleid;
                 $newevent->userto           = $userto;
                 $newevent->fullmessage      = facetoface_email_substitutions(
                                                         $facetoface->requestinstrmngr,
@@ -2002,7 +1999,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $newevent->userfrom         = NULL;
                 $user = get_record('user', 'id', $userid);
                 $newevent->userto           = $user;
-                $newevent->roleid           = get_field('role', 'id', 'shortname', 'student');
+                $newevent->roleid           = $CFG->learnerroleid;
                 $newevent->subject          = get_string_in_user_lang($user, 'requestattendsessionsent', 'facetoface', '<a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a>');
                 $newevent->fullmessage      = $newevent->subject;
                 $newevent->icon             = 'facetoface-request';
@@ -2026,7 +2023,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
  */
 function facetoface_get_manager($userid) {
     global $CFG;
-    $roleid = get_field('role','id','shortname',MDL_MANAGER_ROLEID);
+    $roleid = $CFG->managerroleid;
 
     if ($roleid) {
         $sql = "SELECT ra.userid AS managerid
@@ -2437,7 +2434,8 @@ function facetoface_check_signup($facetofaceid) {
  */
 function facetoface_get_manageremail($userid) {
     global $CFG;
-    $roleid = get_field('role','id','shortname',MDL_MANAGER_ROLEID);
+
+    $roleid = $CFG->managerroleid;
 
     if ($roleid) {
         $sql = "SELECT ra.userid AS managerid

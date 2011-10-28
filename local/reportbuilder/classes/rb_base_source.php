@@ -1975,7 +1975,7 @@ abstract class rb_base_source {
         global $CFG;
 
         // only include these joins if the manager role is defined
-        if($managerroleid = get_field('role','id','shortname','manager')) {
+        if ($managerroleid = $CFG->managerroleid) {
             $joinlist[] = new rb_join(
                 'manager_role_assignment',
                 'LEFT',

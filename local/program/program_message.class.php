@@ -79,6 +79,7 @@ abstract class prog_message {
     const messageprefixstr = 'message_';
 
     public function __construct($programid, $messageob=null, $uniqueid=null) {
+        global $CFG;
 
         if(is_object($messageob)) {
             $this->id = $messageob->id;
@@ -114,8 +115,8 @@ abstract class prog_message {
             $this->uniqueid = rand();
         }
 
-	$this->studentrole = get_field('role', 'id', 'shortname', 'student');
-	$this->managerrole = get_field('role', 'id', 'shortname', 'manager');
+	$this->studentrole = $CFG->learnerroleid;
+	$this->managerrole = $CFG->managerroleid;
 
 	if (!$this->studentrole) {
 	    print_error('error:failedtofindstudentrole', 'local_program');

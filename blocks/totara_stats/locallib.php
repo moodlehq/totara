@@ -155,7 +155,7 @@ function totara_stats_manager_stats($user, $config=null) {
     }
 
 
-    $managerroleid = get_field('role','id','shortname','manager');
+    $managerroleid = $CFG->managerroleid;
 
     //TODO: look to see if there's a more efficient way to manage this. - eg get list of userids, and pass userids into queries?
     //might need to be careful with length of sql query limit - list of userids could be very large.

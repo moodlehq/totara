@@ -5924,6 +5924,7 @@ function role_cap_duplicate($sourcerole, $targetrole) {
  * @param $managerid new manager's user id (optional)
  */
 function assign_user_position($assignment, $managerid = null) {
+    global $CFG;
 
     begin_sql();
 
@@ -5949,7 +5950,7 @@ function assign_user_position($assignment, $managerid = null) {
         $context = get_context_instance(CONTEXT_USER, $assignment->userid);
 
         // Get manager role id
-        $roleid = get_field('role', 'id', 'shortname', 'manager');
+        $roleid = $CFG->managerroleid;
 
         // Assign manager to user
         $raid = role_assign(

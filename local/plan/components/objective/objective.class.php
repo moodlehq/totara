@@ -699,7 +699,7 @@ class dp_objective_component extends dp_base_component {
                     $event->userto = $manager;
                     $event->subject = get_string_in_user_lang($manager, 'objectivedeleteshortmanager', 'local_plan', $this->current_user_link());
                     $event->fullmessage = get_string_in_user_lang($manager, 'objectivedeletelongmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -743,7 +743,7 @@ class dp_objective_component extends dp_base_component {
                     $event->userto = $manager;
                     $event->subject = get_string_in_user_lang($manager, 'objectivenewshortmanager', 'local_plan', $this->current_user_link());
                     $event->fullmessage = get_string_in_user_lang($manager, 'objectivenewlongmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -789,7 +789,7 @@ class dp_objective_component extends dp_base_component {
                     $event->userto = $manager;
                     $event->subject = get_string_in_user_lang($manager, 'objectiveeditshortmanager', 'local_plan', $this->current_user_link());
                     $event->fullmessage = get_string_in_user_lang($manager, 'objectiveeditlongmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -841,7 +841,7 @@ class dp_objective_component extends dp_base_component {
                     $event->userto = $manager;
                     $event->subject = get_string_in_user_lang($manager, 'objective'.$status.'shortmanager', 'local_plan', $this->current_user_link());
                     $event->fullmessage = get_string_in_user_lang($manager, 'objective'.$status.'longmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }

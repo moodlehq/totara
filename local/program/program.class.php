@@ -92,6 +92,7 @@ class program {
     protected $exceptionsmanager, $context, $studentroleid;
 
     function __construct($id) {
+        global $CFG;
 
         // get program db record
         $program = get_record('prog', 'id', $id);
@@ -124,7 +125,7 @@ class program {
         $this->exceptionsmanager = new prog_exceptions_manager($id);
 
         $this->context = get_context_instance(CONTEXT_PROGRAM, $this->id);
-        $this->studentroleid = get_field('role', 'id', 'shortname', 'student');
+        $this->studentroleid = $CFG->learnerroleid;
 
         if (!$this->studentroleid) {
             print_error('error:failedtofindstudentrole', 'local_program');

@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,8 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
- * @subpackage dashboard 
+ * @subpackage dashboard
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -154,6 +155,8 @@ class Dashboard {
         $dashlets = $dashletsarr;
         unset($dashletsarr);
 
+        $available_dashlet_options = $this->get_available_dashlets_menu();
+
         for ($col=1; $col<$this->instance->cols+1; $col++) {
             echo "<div class=\"dashboardcol\" style=\"width: {$this->instance->colwidth}px\">";
             if (!empty($dashlets[$col])) {
@@ -195,7 +198,7 @@ class Dashboard {
 
             // Show add functionality
             if ($this->type == 'useredit') {
-                $this->print_available_dashlets_menu($col);
+                $this->print_dashlets_menu($available_dashlet_options, $col);
             }
 
             echo "</div>";  // dashboard col
@@ -227,20 +230,27 @@ class Dashboard {
         return print_single_button(qualified_me(), $options, $label, 'get', '', true);
     }
 
-    function print_available_dashlets_menu($col=1) {
-        global $USER;
-
+    function get_available_dashlets_menu() {
         $dashlets = $this->get_available_dashlets();
 
         $menu = array();
         if (!empty($dashlets)) {
-            $stradd    = get_string('addtocol', 'local_dashboard');
             foreach ($dashlets as $key=>$dlet) {
                 $blockobject = block_instance($dlet);
                 $menu[$key] = $blockobject->get_title();
             }
             asort($menu);
 
+        }
+
+        return $menu;
+    }
+
+    function print_dashlets_menu($menu, $col=1) {
+        global $USER;
+
+        if ($menu) {
+            $stradd = get_string('addtocol', 'local_dashboard');
             $target=strip_querystring(me()).'?dashaction=add&amp;col='.$col.'&amp;sesskey='.$USER->sesskey.'&amp;item='.$this->data->shortname;
             popup_form($target.'&amp;dlet=', $menu, 'add_dashlet'.$col, '', $stradd .'...', '', '');
         }
@@ -382,16 +392,39 @@ class Dashboard {
 
         $blocks = get_records('block', 'visible', 1);
 
+        //Get current dashlets
+        $dashlets_on_db = array();
+        $existing_dashlets = $this->get_instance_dashlets();
+
+        foreach ($existing_dashlets as $dashb) {
+            $dashlets_on_db[] = $dashb->blockid;
+        }
+
         foreach ($blocks as $block) {
             $dfilepath = "{$CFG->dirroot}/blocks/{$block->name}/dashlet_roles.txt";
             if (file_exists($dfilepath) && $roles = array_map('rtrim',file($dfilepath))) {
-                $roleshortname = get_field('role', 'shortname', 'id', $this->data->roleid);
-                if (in_array($roleshortname, $roles)) {
+                $roleids = array();
+                foreach ($roles as $role) {
+                    switch ($role) {
+                        case 'student':
+                            $roleids[] = $CFG->learnerroleid;
+                            break;
+                        case 'manager':
+                            $roleids[] = $CFG->managerroleid;
+                            break;
+                        default:
+                            $roleids[] = get_field('role', 'id', 'shortname', $role);
+                            break;
+                    }
+                }
+
+                $currentroleid = $this->data->roleid;
+
+                if (in_array($currentroleid, $roleids) && !in_array($block->id, $dashlets_on_db)) {
                     $dashlets[$block->id] = $block->name;
                 }
             }
         }
-        //TODO: don't return dashlets already on the dashboard, not allowing multiple instances
 
         return $dashlets;
     }
@@ -495,11 +528,12 @@ function local_dashboard_get_dashboards() {
  * Instead it is called by local_postinst()
  */
 function local_dashboard_initial_install() {
+    global $CFG;
 
     $status = true;
 
     // create my learning dashboard
-    if($learnerrole = get_field('role', 'id', 'shortname', 'student')) {
+    if($learnerrole = $CFG->learnerroleid) {
         begin_sql();
         // create dashboard
         $todb = new object();
@@ -566,7 +600,7 @@ function local_dashboard_initial_install() {
     }
 
     // create my team dashboard
-    if($managerrole = get_field('role', 'id', 'shortname', 'manager')) {
+    if($managerrole = $CFG->managerroleid) {
         begin_sql();
         // create dashboard
         $todb = new object();

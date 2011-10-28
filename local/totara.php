@@ -307,7 +307,7 @@ function totara_print_my_team_nav($return=false) {
 
     $returnstr = '';
 
-    $managerroleid = get_field('role','id','shortname','manager');
+    $managerroleid = $CFG->managerroleid;
 
     // return users with this user as manager
     $teammembers = totara_get_staff();

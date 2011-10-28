@@ -1378,6 +1378,12 @@ class facetofacelib_test extends prefix_changing_test_case {
     function test_facetoface_send_request_notice() {
         //test method - returns string
 
+        // Set managerroleid to make sure that it
+        // matches the role id defined in the unit test
+        // role table, as the local install may have a different
+        // manager role id
+        set_config('managerroleid', 1);
+
         //test variables
         $session1 = $this->session[0];
 
@@ -1494,6 +1500,7 @@ class facetofacelib_test extends prefix_changing_test_case {
     }
 
     function test_facetoface_get_manageremail() {
+        set_config('managerroleid', 1);
         //test method - returns string
 
         // Find manager of user 1 (which is user2)

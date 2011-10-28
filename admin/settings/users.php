@@ -92,16 +92,38 @@ if ($hassiteconfig
             if (!$guestrole = get_guest_role()) {
                 $guestrole->id = 0;
             }
-            if ($studentroles = get_roles_with_capability('moodle/legacy:student', CAP_ALLOW)) {
-                $studentrole = array_shift($studentroles);   /// Take the first one
-            } else {
-                $studentrole->id = 0;
-            }
             if ($userroles = get_roles_with_capability('moodle/legacy:user', CAP_ALLOW)) {
                 $userrole = array_shift($userroles);   /// Take the first one
             } else {
                 $userrole->id = 0;
             }
+
+            if ($studentrole = get_record('role', 'shortname', 'student')) {
+                $defaultlearnerid = $studentrole->id;
+            } else if ($studentroles = get_roles_with_capability('moodle/legacy:student', CAP_ALLOW)) {
+                $studentrole = array_shift($studentroles);   /// Take the first one
+                $defaultlearnerid = $studentrole->id;
+            } else {
+                $studentrole = new object();
+                $studentrole->id = 0;
+                $defaultlearnerid = null;
+            }
+
+            if ($managerroleid = get_field('role','id','shortname','manager')) {
+                $defaultmanagerid = $managerroleid;
+            } else if ($managerroles = get_roles_with_capability('moodle/legacy:manager', CAP_ALLOW)) {
+                $managerrole = array_shift($managerroles); /// Take the first one
+                $defaultmanagerid = $managerrole->id;
+            } else {
+                $defaultmanagerid = null;
+            }
+
+            if ($assessorroleid = get_field('role','id','shortname','assessor')) {
+                $defaultassessorid = $assessorroleid;
+            } else {
+                $defaultassessorid = 0;
+            }
+
             if (empty($CFG->creatornewroleid)) {
                 if ($teacherroles = get_roles_with_capability('moodle/legacy:editingteacher', CAP_ALLOW, $context)) {
                     $teachereditrole = array_shift($teacherroles);
@@ -117,7 +139,7 @@ if ($hassiteconfig
                 $defaultguestid = reset($guestroles);
                 $defaultguestid = $defaultguestid->id;
             }
-            
+
             // we must not use assignable roles here:
             //   1/ unsetting roles as assignable for admin might bork the settings!
             //   2/ default user role should not be assignable anyway
@@ -137,6 +159,12 @@ if ($hassiteconfig
                           get_string('confignotloggedinroleid', 'admin'), $defaultguestid, $allroles ));
             $temp->add(new admin_setting_configselect('guestroleid', get_string('guestroleid', 'admin'),
                           get_string('configguestroleid', 'admin'), $defaultguestid, $allroles));
+            $temp->add(new admin_setting_configselect('learnerroleid', get_string('learnerroleid', 'admin'),
+                          get_string('configlearnerroleid', 'admin'), $defaultlearnerid, $allroles));
+            $temp->add(new admin_setting_configselect('managerroleid', get_string('managerroleid', 'admin'),
+                          get_string('configmanagerroleid', 'admin'), $defaultmanagerid, $allroles));
+            $temp->add(new admin_setting_configselect('assessorroleid', get_string('assessorroleid', 'admin'),
+                          get_string('configassessorroleid', 'admin'), $defaultassessorid, $allroles));
             $temp->add(new admin_setting_configselect('defaultuserroleid', get_string('defaultuserroleid', 'admin'),
                           get_string('configdefaultuserroleid', 'admin'), $userrole->id, $nonguestroles)); // guest role here breaks a lot of stuff
         }
