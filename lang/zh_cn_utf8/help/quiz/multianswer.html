@@ -1,0 +1,134 @@
+﻿<h1>填空（完型填空）</h1>
+
+<p>这种非常灵活的问题类型与常见的完形填空格式相似。</p>
+
+<p>问题由一段文字（Moodle 格式）构成，文字中嵌入着几个不同的子问题，包括</p>
+<ul>
+<li>简答题（SHORTANSWER、SA 或 MW），</li>
+<li>数学题（NUMERICAL 或 NM），</li>
+<li>选择题（MULTICHOICE 或 MC），表示为内嵌在文本中的下拉菜单</li>
+<li>选择题（MULTICHOICE_V 或 MCV），表示为一列垂直的单选按钮，或</li>
+<li>选择题（MULTICHOICE_H 或 MCH），表示为一行水平的单选按钮。</li>
+</ul>
+<p>当前没有可用于创建这些问题的图形界面 - 您需要使用文本框或通过从外部文件导入来指定问题格式。</p>
+
+<p>以下是一个通过输入文本来说明问题的例子：</p>
+
+<p><textarea rows="25" wrap="virtual" cols="60">此问题由包含在此处嵌入答案的文本构成 {1:MULTICHOICE:错误答案#此错误答案的反馈~其他错误答案#其他错误答案的反馈~=正确答案#正确答案的反馈~%50%给予一半分值的答案#一半分值答案的反馈} 收到反馈后，需要处理此答案{1:SHORTANSWER:错误答案#此错误答案的反馈~=正确答案#此正确答案的反馈~%50%给予一半分值的答案#一半分值答案的反馈}，最终我们会得到一个浮动分数。{2:NUMERICAL:=23.8:0.1#此正确答案的反馈 23.8~%50%23.8:2#一半分值答案的反馈，显示在正确答案附近的区域中}。&lt;br /&gt; &lt;br /&gt;选择题也可以垂直显示为标准 Moodle 选择题目。&lt;br /&gt; &lt;br /&gt; {2:MCV:错误答案#此错误答案的反馈~其他错误答案#其他错误答案的反馈~=正确答案#正确答案的反馈~%50%给予一半分值的答案#一半分值答案的反馈}&lt;br /&gt; 或表中此处包括的水平显示中&lt;br /&gt; &lt;br /&gt; {2:MCH:错误答案#此错误答案的反馈~其他错误答案#其他错误答案的反馈~=正确答案#正确答案的反馈~%50%给予一半分值的答案#一半分值答案的反馈}&lt;br /&gt; 请注意 www.moodle.org 和 smileys :-) 之类的地址均正常显示：&lt;br /&gt; a) 这样很好？{:MULTICHOICE:=是#正确~否#有其他选项}&lt;br /&gt; b) 成绩是多少？{3:NUMERICAL:=3:2}&lt;br /&gt; &lt;br /&gt; 祝您好运！
+</textarea>
+</p>
+
+<p>学生看到的示例如下：<p>
+
+<div id="middle-column"><div><span id="maincontent"></span><div id="q6" class="que multianswer clearfix">
+  <div class="info">
+<span class="accesshide">问题</span> 1      
+    <div class="grade">
+分数： --/12.00</div>
+    </div>
+    <div class="content">
+<div class="ablock clearfix"><label>此问题由此处嵌入的某些答案文本组成<span ><select name="resp3796_1"><option 
+  selected></option><option value="8919">错误答案</option><option value="8920">其他错误答案</option><option value="8921">正确答案</option><option value="8922">给予一半分值的答案</option></select></span></label><label>完成之后您将必须回答此简答题<input name="resp3796_2" size="33" /> </label><label> 最终，将得到浮点数<input name="resp3796_3" size="4" /> </label><label>.<br /><br />选择题还可以显示在垂直显示的标准 Moodle 选择题中<br /><br />
+        <table width="50%"><tbody><tr><td>
+          <table class="answer">
+            <tr class="r0">
+              <td class="c0 control">
+                <input id="resp3796_8960" name="resp3796_4"  type="radio" value="8960" />
+              </td>
+              <td class="c1 text ">
+                <label for="resp3796_8960">
+<span class="anun">1<span class="anumsep">.</span></span>错误答案
+                </label>
+              </td>
+              <td class="c0 feedback">
+              </td>
+            </tr>
+            <tr class="r1">
+              <td class="c0 control">
+                <input id="resp3796_8961" name="resp3796_4"  type="radio" value="8961" />
+              </td>
+              <td class="c1 text ">
+                <label for="resp3796_8961">
+<span class="anun">2<span class="anumsep">.</span></span>其他错误答案
+                </label>
+              </td>
+              <td class="c0 feedback">
+              </td>
+            </tr>
+            <tr class="r0">
+              <td class="c0 control">
+                <input id="resp3796_8962" name="resp3796_4"  type="radio" value="8962" />
+              </td>
+              <td class="c1 text ">
+                <label for="resp3796_8962">
+<span class="anun">3<span class="anumsep">.</span></span>正确答案
+                </label>
+              </td>
+              <td class="c0 feedback">
+              </td>
+            </tr>
+            <tr class="r1">
+              <td class="c0 control">
+                <input id="resp3796_8963" name="resp3796_4"  type="radio" value="8963" />
+              </td>
+              <td class="c1 text ">
+                <label for="resp3796_8963">
+<span class="anun">4<span class="anumsep">.</span></span>给予一半分值的答案
+                </label>
+              </td>
+              <td class="c0 feedback">
+              </td>
+            </tr>
+          </table>
+        </td></tr></tbody></table>
+<br />或表中此处包括的水平显示中<br /><br />
+        <table class="answer">
+          <tr class="r0">
+            <td class="c0 control">
+              <input id="resp3796_8964" name="resp3796_5"  type="radio" value="8964" />
+            </td>
+            <td class="c1 text ">
+              <label for="resp3796_8964">
+<span class="anun">1<span class="anumsep">.</span></span>错误答案
+              </label>
+            </td>
+            <td class="c0 feedback">
+            </td>
+            <td class="c0 control">
+              <input id="resp3796_8965" name="resp3796_5"  type="radio" value="8965" />
+            </td>
+            <td class="c1 text ">
+              <label for="resp3796_8965">
+<span class="anun">2<span class="anumsep">.</span></span>其他错误答案
+              </label>
+            </td>
+            <td class="c0 feedback">
+            </td>
+            <td class="c0 control">
+              <input  id="resp3796_8966" name="resp3796_5"  type="radio" value="8966" >
+            </td>
+            <td class="c1 text ">
+              <label for="resp3796_8966">
+<span class="anun">3<span class="anumsep">.</span></span>正确答案
+              </label>
+            </td>
+            <td class="c0 feedback">
+            </td>
+            <td class="c0 control">
+              <input  id="resp3796_8967" name="resp3796_5"  type="radio" value="8967" />
+            </td>
+            <td class="c1 text ">
+              <label for="resp3796_8967">
+<span class="anun">4<span class="anumsep">.</span></span>给予一半分值的答案
+              </label>
+            </td>
+            <td class="c0 feedback">
+            </td>
+          </tr>
+        </table>
+<br />请注意，如 <a href="http://www.moodle.org" target="_blank">www.moodle.org</a> 和 smileys <img alt="smile" width="15" height="15" src="http://132.208.141.198/moodle_head/pix/s/smiley.gif" /> 之类的地址均正常显示：<br />a) 这样很好？<span><select name="resp3796_6"><option selected></option><option value="8968">是</option><option value="8969">否</option></select></span></label><label><br /> b) 成绩是多少？<input name="resp3796_7" size="1" > </label><br /><br />祝您好运！
+    </div>
+    <div class="grading">
+    </div>
+  </div>
+</div></div></div>

@@ -1,0 +1,64 @@
+﻿<h1>筛选器管理</h1>
+
+<p>筛选器管理页面允许您指定显示文本时运用哪些筛选器，以及怎样安排这些筛选器的顺序。并且，筛选器管理页面还提供通向一些筛选器设置页面的途径。在 Moodle 中，大部分用户文本在显示之前都将运用筛选器。并且筛选器允许在&ldquo;最后一刻&rdquo;对文本进行修改。</p>
+
+<p>筛选器是一种&ldquo;嵌入式&rdquo;资源。点击 <a href="http://moodle.org/mod/data/view.php?id=6009">http://download.moodle.org/modules/filters.php</a> 可得到更多的筛选器。</p>
+
+<p>通过眼睛图标取消隐藏可以选择您希望使用的筛选器。如果您拥有多个未隐藏的筛选器，您可以通过点击上下箭头，改变运用这些筛选器的顺序。</p> 
+   
+<h2>TeX 表示法</h2>
+
+<div class="indent">
+<p>TeX 表示法主要用来在 Moodle 资源里生成成行的数学公式。例如，$$ sqrt(a+b) $$（$$ 是格式开始和结束的标签）。</p>
+<p>Moodle 使用外部二进制来呈现可能需要为系统建立的图像。筛选器首先进行 LaTeX 显示检测（在这种方法中，Ghostscript 是必需的），如果失败的话，将会运用 Moodle 分类中包含的更简单的 <i>mimetex</i> 二进制来呈现。LaTex 允许整个范围的语法，然而 mimetex 只支持一个数学子集。</p>
+<p>在 Windows 操作系统环境中，Ghostscript是可用的，并且 MikTex（一种 LaTeX 实现）也是可用的。</p>
+<p>设定页面允许设置 LaTeX、Ghostscript 二进制路径，以及 LaTeX 导言。</p>
+<h3>更多的信息</h3>
+<p><a href="http://www.miktex.org/">MiKTeX</a><br /> <a href="http://www.forkosh.com/mimetex.html">MimeTeX</a><br /> <a href="http://www.latex-project.org/">LaTeX</a><br /> <a href="http://www.ghostscript.com/">ghostscript</a></p>
+</div>
+
+<h2>字符检查机制</h2>
+
+<div class="indent">
+<p>字符检查机制将扫描列表中的&ldquo;错误单词&rdquo;文本并使用黑色框将其描黑。需要在单词检查机制设置中输入错误单词的列表。</p>
+</div>
+
+<h2>自动链接资源名称</h2>
+
+<div class="indent">
+<p>&ldquo;自动链接资源名称&rdquo;筛选器通过浏览文本，可寻找属于同一课程的资源标题。被找到的任何资源标题，都将会高亮显示，并且产生相应的链接。注意如果想有效地运用这一项功能，您应该使用描述性的标题。例如，以&ldquo;介绍&rdquo;作为标题，是不恰当的。因为文本中<b>任何</b>用到&ldquo;介绍&rdquo;这个单词的地方，无论此处的介绍指的是什么，都将会产生链接。</p>
+</div>
+
+<h2>自动链接活动名称</h2>
+
+<div class="indent">
+<p>&ldquo;自动链接活动名称&rdquo;筛选器通过浏览文本，可寻找属于同一课程的活动标题。被找到的任何活动标题，都将会高亮显示，并且产生相应的链接。注意如果想有效地运用这一项功能，您应该使用描述性的标题。例如，以&ldquo;测验&rdquo;作为标题，是不恰当的。因为文本中<b>任何</b>用到&ldquo;测验&rdquo;这个单词的地方，无论此处的测验指的是什么，都将会产生链接。</p>
+</div>
+
+<h2>自动链接术语</h2>
+
+<div class="indent">
+<p>&ldquo;自动链接术语&rdquo;筛选器通过浏览文本，可寻找课程中任何术语用到的关键词。但是请注意，每一个术语条目都必须启用链接。被找到的任何关键词，都将会高亮显示，并且产生相应的链接。
+  </p>
+</div>
+
+<h2>保护电子邮件</h2>
+
+<div class="indent">
+<p>&ldquo;保护电子邮件&rdquo;筛选器通过浏览文本，寻找任何电子邮件地址。通过发现一些电子邮件地址是&ldquo;模糊&rdquo;的，将有助于阻止自动电子邮件收集系统捕获电子邮件地址。如果您的 Moodle 站点是部分开放的，则可以降低收到垃圾邮件的风险。</p>
+</div>
+
+<h2>整理</h2>
+
+<div class="indent">
+<p>&ldquo;整理&rdquo;筛选器通过浏览文本，可寻找 HTML 结构。如果发现 HTML 结构，则将运用使 HTML 有效的规则。注意，必须将整理功能嵌入您的 PHP 安装，这样规则才能够起作用。</p>
+</div>
+
+<h2>内容呈现的语言多样化</h2>
+
+<div class="indent">
+<p>本筛选器可以使用多样的语言创建资源。当用户改变他们所选择的 Moodle 语言时，资源语言也随之而改变。如果想运用这项特性，首先在同一个资源当中，应当用多样的语言来创建同一项内容。然后使用以下标签来围住您的每一个语言块：</p>
+<pre>      &lt;span lang=&quot;XX&quot; class=&quot;multilang&quot;&gt;此处是您的内容&lt;/span&gt;</pre>
+<p>如果您愿意，也可以改为使用过时的 span 标签，例如：</p>
+<pre>      &lt;lang lang=&quot;XX&quot; &gt;此处是您的内容&lt;/lang&gt;</pre>
+ </div>

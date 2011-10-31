@@ -1,0 +1,60 @@
+﻿<h1>计算题</h1>
+
+<p>计算题提供了一种建立单个数学题的方法。问题中可以使用通配符，答题时通配符会被数值所替换。<br />下面是主编辑页面的大致视图，其中有一些简单的输入示例：
+</p>
+
+<table><tbody>
+<tr valign="top">
+<th scope="col" align="right">问题：</th>
+    <td>
+<textarea id="questiontext" name="questiontext" rows="5" cols="40" wrap="virtual">{a} + {b} 是多少？</textarea>
+</td>
+</tr>
+<tr valign="top">
+<th scope="col" align="right">要显示的图像：</th>
+    <td>
+<select name="image"><option value="" selected="selected">无</option><option value="grevture.gif">grevture.gif</option></select>
+    </td>
+</tr>
+
+<tr valign="top">
+<th scope="col" align="right">正确答案公式：</th>
+    <td>
+<input align="left" type="text" id="formula0" name="answer[]" size="20" value="{a} + {b}" />&nbsp;&nbsp;
+    <input type="hidden" name="fraction[]" value="1.0" />
+    </td>
+</tr>
+<tr valign="top">
+<th scope="col" align="right">误差：</th>
+    <td>
+<input align="left" type="text" id="tolerance0&quot;" name="tolerance[]" size="15" value="0.01" />&Acirc;&plusmn;
+    </td>
+</tr>
+<tr valign="top">
+<th scope="col" align="right">误差类型：</th>
+    <td>
+<select name="tolerancetype[]"><option value="1" selected="selected">相对误差</option><option value="2">额定误差</option><option value="3">几何误差</option></select>
+    </td>
+</tr>
+<tr valign="top">
+<th scope="col" align="right">有效数字：</th>
+    <td>
+    <select name="correctanswerlength[]"><option value="1">1</option><option value="2" selected="selected">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>
+    </td>
+</tr>
+</tbody></table>
+
+<p>
+可以在问题文本输入和&ldquo;正确答案公式&rdquo;中看到 {a} 和 {b}。这些名称和其他任何 {name} 都可以用作通配符，在测试时会被数值替换。同时，提交测验后，使用&ldquo;正确答案公式&rdquo;可以计算出正确答案，在替换通配符后此公式将作为数字表达式进行计算。随后将在计算题的&ldquo;编辑向导&rdquo;页面上设置或生成可能的通配符值...
+</p> <p>
+示例公式使用运算符 +。其他可接受的运算符有 -*/ 和 %，其中 % 是模量运算符。还可以使用某些 PHP 数学函数。其中，有 24 个单参数函数：<br /><b>abs、acos、acosh、asin、asinh、atan、atanh、ceil、cos、cosh、deg2rad、 exp、expm1、floor、log、log10、log1p、rad2deg、round、sin、sinh、sqrt、tan、tanh</b><br />和两个个双参数函数<br /><b>atan2、pow</b><br />以及含有两个或更多参数的函数 <b>min</b> 和 <b>max</b>。还可以使用无参数函数 <b>pi</b>，但不要忘记使用圆括号，正确的使用方法是 <b>pi()</b>。同样的，其他函数的参数必须括在圆括号中。例如，可能的使用方法是 <b>sin({a}) + cos({b}) * 2</b>。将函数放在两个括号内不应有问题，如 <b>cos(deg2rad({a} + 90))</b> 等。<br />有关如何使用 PHP 数学函数的详细信息，请参阅 <a target="phpmathdoc" href="http://www.php.net/manual/en/ref.math.php">PHP 网站中的文档</a>
+</p> <p>
+至于数字题，可以允许在某个范围内的所有答案均为正确答案。&ldquo;误差&rdquo;字段用于此情况。但是，误差也有三种不同的类型，分别是<b>相对误差、额定误差和几何误差</b>。如果将测验时间的正确答案设置为 200 且误差设置为 0.5，则不同误差类型的计算原理如下：
+</p> <p><b>相对误差：</b>将正确答案乘以 0.5 可得到误差间隔，例如，在这种情况下，我们得到的误差间隔为 100。因此，此类误差的正确答案必须在 100 到 300 之间。(200 &plusmn; 100)<br />如果正确答案的量值在不同通配符值之间差异很大，则此误差类型将十分有用。
+</p> <p><b>额定误差：</b>这是最简单的误差类型，但并不常用。正确答案必须在 199.5 和 200.5 (200 &plusmn; 0.5) 之间<br />如果不同正确答案之间的差异很小，则此误差类型将十分有用。
+</p> <p><b>几何误差：</b>计算出误差间隔的上限为 200 + 0.5*200，与相对误差的上限相同。计算出误差间隔的下限为 200/(1 + 0.5)。正确答案必须在 133.33 和 300 之间。<br />这种误差类型对于复杂的计算非常有用，这种复杂计算必须有较大的误差（相对误差为 1 或大于 1），且适用于上限，不适用于下限，因为在任何情况下，下限都以 0 作为正确答案。
+</p> <p>
+字段<b>有效数字</b>仅与正确答案在批阅或报表中的呈现方式有关。示例：如果将有效数字设置为 3，则正确答案 13.333 会呈现为 13.3；1236 会呈现为 1240；23 会呈现为 23.0 等。
+</p> <p>
+反馈字段和可选单位字段的计算原理与上述数学题相同。
+</p>
