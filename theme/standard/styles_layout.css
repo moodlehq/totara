@@ -6004,3 +6004,9 @@ h2.reactivateheading {
 form#program-extension-update table {
     width:100%;
 }
+
+/* Totara progress bar */
+img.totaraprogressbar {
+    padding: 0;
+    margin: 5px 0 0 0;
+}

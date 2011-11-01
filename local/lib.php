@@ -248,10 +248,16 @@ function local_display_progressbar($percent, $size='medium', $showlabel=false, $
         $tooltip = "{$percent}%";
     }
 
+    if (right_to_left()) {
+        // Negate offset and add 1 to
+        // fix display in RTL
+        $pixeloffset  = -$pixeloffset + 1;
+    }
+
     $out = '';
 
-    $out .= '<img src="'.$bar.'" alt="' . $percent . '%"
-        style="background: white url('.$bar_background.') top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;"
+    $out .= '<img src="'.$bar.'" alt="' . $percent . '%" class="totaraprogressbar"
+        style="background: white url('.$bar_background.') top left no-repeat;background-position: ' . $pixeloffset . 'px 0pt;"
         title="'.$tooltip.'" />';
     if ($showlabel) {
         $out .= " $percent % complete<br />\n";
