@@ -5965,6 +5965,8 @@ function assign_user_position($assignment, $managerid = null) {
 
     }
 
+    $oldpath = $assignment->managerpath;
+
     // If no manager set, reset reportstoid and managerpath
     if (!$managerid) {
         $assignment->reportstoid = null;
@@ -5983,6 +5985,24 @@ function assign_user_position($assignment, $managerid = null) {
     // must be done after managerid has been updated
     $manager_relations = get_records_menu('pos_assignment', 'type', POSITION_TYPE_PRIMARY, 'userid', 'userid,managerid');
     $assignment->managerpath = '/' . implode(totara_get_lineage($manager_relations, $assignment->userid), '/');
+
+    $newpath = $assignment->managerpath;
+
+    // Update child items
+    $substr3rdparam = '';
+    if ($CFG->dbfamily == 'mssql') {
+        $substr3rdparam = ', len(managerpath)';
+    }
+    $length_sql = sql_length("'{$oldpath}'");
+    $substr_sql = sql_substr() . "(managerpath, {$length_sql} + 1{$substr3rdparam})";
+    $sql = "UPDATE {$CFG->prefix}pos_assignment
+    SET managerpath=" . sql_concat("'{$newpath}'", $substr_sql) . "
+    WHERE (managerpath LIKE '{$oldpath}/%')";
+    if (!execute_sql($sql, false)) {
+        rollback_sql();
+        error_log('assign_user_position: Could not update manager path of child items in manager hierarchy');
+        return false;
+    }
 
     // Save assignment again
     $assignment->save();
