@@ -128,11 +128,27 @@ class grade_export_fusion extends grade_export {
 
         $table = $oauth->table_by_name($this->tablename, true);
         $table_id = $table['table id'];
-        redirect('http://tables.googlelabs.com/DataSource?dsrcid='.$table_id);
+        // output a basic page and do the popup and redirect
+        $table_url = 'https://www.google.com/fusiontables/DataSource?dsrcid='.$table_id;
+        $course_url = $CFG->wwwroot.'/course/view.php?id='.$this->course->id;
+        print_grade_page_head($this->course->id, 'export', 'fusion', get_string('exportto', 'grades') . ' ' . get_string('modulename', 'gradeexport_fusion'));
+        print_heading(get_string('popup', 'gradeexport_fusion'));
+        ?>
+            <script type="text/javascript">
+            //<![CDATA[
+                url = "<?php echo $table_url ?>";
+                courseurl = "<?php echo $course_url ?>";
+                window.open(url, "_blank", 'left=20,top=20,width=1024,height=768,toolbar=1,resizable=1,menubar=1,scrollbars=1,status=1,location=1');
+                window.location = courseurl;
+            //]]>
+            </script>
+            <noscript>
+                <?php echo get_string('noscript', 'gradeexport_fusion'); ?>
+            </noscript>
+        <?php
+        print_footer('none');
         exit;
     }
-
-
 
     /**
      * Either prints a "Export" box, which will redirect the user to the download page,
@@ -178,5 +194,3 @@ class grade_export_fusion extends grade_export {
     }
 
 }
-
-

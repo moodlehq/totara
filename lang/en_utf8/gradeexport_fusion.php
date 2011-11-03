@@ -27,3 +27,5 @@ $string['modulename'] = 'Fusion Table Export';
 $string['pluginname'] = 'Fusion Table Export';
 $string['fusion:publish'] = 'Publish Fusion Table grade export';
 $string['fusion:view'] = 'Use Fusion table grade export';
+$string['popup'] = 'Fusion Tables popup';
+$string['noscript'] = 'Please enable JavaScript for this page to work';

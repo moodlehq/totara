@@ -63,24 +63,22 @@ $preserve = array(
 try {
     if (!$oauth->authenticate($preserve)) {
         print_grade_page_head($COURSE->id, 'export', 'fusion', get_string('exportto', 'grades') . ' ' . get_string('modulename', 'gradeexport_fusion'));
-        print_errror(get_string('oauthfailed', 'local_oauth'));
+        print_error(get_string('authfailed', 'local_oauth'));
     }
+    $oauth->show_tables();
 }
 catch (local_oauth_exception $e) {
     // clean it down
     $oauth->wipe_auth();
-
     // try again
     $oauth = new local_oauth_fusion();
     if (!$oauth->authenticate($preserve)) {
-        print_error(get_string('oauthfailed', 'local_oauth'));
+        print_grade_page_head($COURSE->id, 'export', 'fusion', get_string('exportto', 'grades') . ' ' . get_string('modulename', 'gradeexport_fusion'));
+        print_error(get_string('authfailed', 'local_oauth'));
     }
 }
-
 
 // print all the exported data here
 $export = new grade_export_fusion($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints, $separator, $tablename);
 $export->set_table($tablename);
 $export->export_grades($oauth);
-
-

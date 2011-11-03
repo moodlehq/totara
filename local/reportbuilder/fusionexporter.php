@@ -54,8 +54,20 @@ $preserve = array(
                    'id' => $id,
                    'sid' => $sid,
             );
-if (!$oauth->authenticate($preserve)) {
-    print_error(get_string('oauthfailed', 'local_oauth'));
+try {
+    if (!$oauth->authenticate($preserve)) {
+        print_error(get_string('oauthfailed', 'local_oauth'));
+    }
+    $oauth->show_tables();
+}
+catch (local_oauth_exception $e) {
+    // clean it down
+    $oauth->wipe_auth();
+    // try again
+    $oauth = new local_oauth_fusion();
+    if (!$oauth->authenticate($preserve)) {
+        print_error(get_string('oauthfailed', 'local_oauth'));
+    }
 }
 
 $columns = $rep->columns;
@@ -142,7 +154,7 @@ for($k=0;$k<=floor($count/$blocksize);$k++) {
 // all done - go and have a look at the table
 $table = $oauth->table_by_name($tablename, true);
 $table_id = $table['table id'];
-redirect('http://tables.googlelabs.com/DataSource?dsrcid='.$table_id);
+redirect('https://www.google.com/fusiontables/DataSource?dsrcid='.$table_id);
 exit;
 
 
