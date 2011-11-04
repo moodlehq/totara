@@ -1,18 +1,64 @@
-<?PHP // $Id$ 
-      // block_facetoface.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://www.educmedia.com.br/online
+<?php
+$string['error:invalidcourseid'] = 'Id do curso inválido';
+$string['error:invalidfacetofaceid'] = 'ID da atividade pessoal inválido';
+$string['error:invalidsessionid'] = 'ID da sessão inválido';
+$string['error:invaliduserid'] = 'ID de usuário inválido';
 
-
-$string['allfuturesessions'] = 'SessÃµes futuras';
-$string['allsessions'] = 'Todas sessÃµes';
+$string['allsessions'] = 'Todas as sessões';
+$string['allfuturesessions'] = 'Todas as futuras sessões';
 $string['apply'] = 'Aplicar';
-$string['attended'] = 'Atendidas';
-$string['bookinghistory'] = 'HistÃ³rico de compras';
-$string['bookinghistoryfor'] = 'HistÃ³rico de compras para $a';
-$string['bookings'] = 'Compras';
+$string['attended'] = 'participou';
+$string['bookings'] = 'Reservas';
+$string['bookinghistory'] = 'Histórico de reservas';
+$string['bookinghistoryfor'] = 'Histórico de reservas para $a';
+$string['calendar:tablesummary'] = 'Exibição mensal do calendário, mostrando eventos ocorridos a cada dia';
 $string['cancelled'] = 'cancelado';
 $string['coursefullname'] = 'Nome completo do curso';
-$string['date'] = 'Data';
-$string['daterange'] = 'Data';
-
-?>
+$string['date'] = 'Data(s)';
+$string['daterange'] = 'Intervalo de datas:';
+$string['didntattend'] = 'não participou';
+$string['exportsessiondates'] = 'Exportar datas da sessão';
+$string['enrolled'] = 'inscrito';
+$string['facetoface:viewbookings'] = 'Exibir reservas pessoais do usuário';
+$string['filters'] = 'Filtros';
+$string['filters:tablesummary'] = 'Lista de filtros que controlam os eventos exibidos no calendário mensal abaixo.';
+$string['finishdate'] = 'Data de término';
+$string['fixdates'] = 'Corrigir datas da sessão';
+$string['futurebookings'] = 'Futuras reservas';
+$string['futurebookingsfor'] = 'Futuras reservas para $a';
+$string['formaltitle'] = 'Pessoal';
+$string['listsessiondates'] = 'Listar datas da sessão pessoal';
+$string['mybookings'] = 'Minhas reservas';
+$string['nbbookings'] = 'Reservas';
+$string['nobookinghistory'] = 'Nenhum histórico de reservas';
+$string['nobookinghistoryfor'] = 'Nenhum histórico de reservas para $a';
+$string['nosessions'] = '<p><i>Nenhuma sessão corresponde aos critérios atuais.</i></p>';
+$string['nowaitlistedsessions'] = '<p><i>Nenhum curso em lista de espera corresponde aos critérios atuais.</i></p>';
+$string['pastbookings'] = 'Reservas prévias';
+$string['pastbookingsfor'] = 'Reservas prévias para $a';
+$string['searchusers'] = 'Pesquisar usuários';
+$string['searchedusers'] = '$a usuários encontrados correspondentes à pesquisa';
+$string['sessions'] = 'Sessões';
+$string['sessiondatesviewattendees'] = 'Você pode visualizar os participantes das seguintes sessões:';
+$string['sessiondatesview'] = 'Você está envolvido nas seguintes sessões';
+$string['sessiondatesviewattendeeszero'] = 'Você não pode visualizar os participantes de qualquer sessão no intervalo de datas fornecido.';
+$string['sessiondatestable'] = 'Lista dos detalhes da sessão junto com o número de reservas';
+$string['sessiondetails'] = 'Detalhes da sessão';
+$string['sessionlist'] = 'Lista de sessões';
+$string['showingallwaitlistedsessions'] = '<p><i>Exibindo cursos em lista de espera que correspondem aos critérios atuais.</i></p>';
+$string['signedupin'] = 'Você está inscrito nas seguintes sessões:';
+$string['signedupinzero'] = 'Nenhuma inscrição pôde ser encontrada no intervalo de datas fornecido.';
+$string['startdate'] = 'Data de início';
+$string['tab:bycourse'] = 'Lista por curso';
+$string['tab:bydate'] = 'Lista por data';
+$string['tab:calendar'] = 'Calendário';
+$string['time'] = 'Horário(s)';
+$string['tooltipheading'] = 'Sessões oferecidas neste dia:';
+$string['toomanywaitlistedsessions'] = '<p><i>Mostrando $a dos cursos em lista de espera que correspondem aos critérios atuais.</i></p><p><i>Todos os cursos correspondem são listados na guia \"Por curso\" abaixo.</i></p>';
+$string['trainer'] = 'Treinador';
+$string['trainers'] = 'Formador(es)';
+$string['trainingcalendar'] = 'Calendário de treinamento';
+$string['upcomingsessions'] = 'Sessões futuras';
+$string['viewexportsessions'] = 'Exibir/exportar sessões';
+$string['xevents'] = '<i>e $a outros...</i>';
+$string['xrecords'] = '$a registros';

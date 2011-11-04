@@ -1,0 +1,39 @@
+<?php
+// lang file for mod/facetoface/rb_sources/rb_source_facetoface_sessions.php
+$string['sourcetitle'] = 'Sessões pessoais';
+// columns
+$string['sesscapacity'] = 'Capacidade da sessão';
+$string['numattendees'] = 'Número de participantes';
+$string['sessdetails'] = 'Detalhes da sessão';
+$string['sessduration'] = 'Duração da sessão (minutos)';
+$string['status'] = 'Status';
+$string['endtime'] = 'Horário de término';
+$string['facilitator'] = 'Mediador';
+$string['ftfname'] = 'Nome pessoal';
+$string['ftfnamelink'] = 'Nome pessoal (vinculado à página da sessão)';
+$string['sessdate'] = 'Data da sessão';
+$string['sessdatelink'] = 'Data da sessão (vinculado à atividade)';
+$string['sessname'] = 'Nome da sessão';
+$string['sessstart'] = 'Horário de início da sessão';
+$string['sessfinish'] = 'Horário de término da sessão';
+$string['sessionx'] = 'Sessão $a';
+$string['starttime'] = 'Horário de início';
+// content
+$string['currentorg'] = 'A organização atual do usuário';
+$string['currentpos'] = 'A posição atual do usuário';
+$string['user'] = 'O usuário';
+$string['thedate'] = 'A data da sessão';
+// filters
+$string['sesslocation'] = 'Local da sessão';
+$string['sessvenue'] = 'Local da sessão';
+$string['sessroom'] = 'Sala da sessão';
+$string['pilot'] = 'Piloto';
+$string['audit'] = 'Auditoria';
+$string['coursedelivery'] = 'Entrega do curso';
+
+// column types for this source, as strings
+$string['type_session'] = 'Sessão';
+$string['type_status'] = 'Status';
+$string['type_role'] = 'Função';
+$string['type_facetoface'] = 'Pessoal';
+$string['type_date'] = 'Data da sessão';

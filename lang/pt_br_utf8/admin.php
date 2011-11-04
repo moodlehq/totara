@@ -835,4 +835,40 @@ $string['xmlrpcrecommended'] = 'Instalar a extensÃ£o opcional xmlrpc Ã© Ãºtil pa
 $string['xmlstrictheaders'] = 'CabeÃ§alhos estritos de XML';
 $string['ziprequired'] = 'A extensÃ£o Zip do PHP Ã© obrigatÃ³ria. BinÃ¡rios infoZIP ou PclZip nÃ£o sÃ£o mais utilizados.';
 
+$string['coursecount'] = 'Número de cursos do site';
+$string['displayerrorsset'] = 'Este site está configurado para exibir ocorrências de erro. <br />Esta configuração não é recomendada nos sites de produção. <br />Desmarque <em>Exibir mensagens de depuração</em> na seção <a href=\"$a->link\">Server/Debugging</a> do bloco de configurações de administração do site.';
+$string['displayerrorswarning'] = 'Não é recomendado ativar a configuração do PHP <em>display_errors</em> nos sites de produção. <br />Isso pode ser alterado na suas configurações do PHP.';
+$string['moodlerelease'] = 'Identificador de liberação do Moodle';
+$string['orgname'] = 'Nome da organização';
+$string['orgnamehelp'] = 'O nome da sua organização.';
+$string['passwordreuselimit'] = 'Limite de rotação da senha';
+$string['phpversion'] = 'Versão do PHP';
+$string['registrationinformation'] = 'Informações do registro para serem enviadas';
+$string['registrationdisabled'] = 'Desativado';
+$string['registrationenabled'] = 'Ativado';
+$string['registrationisdisabled'] = 'O registro está desativado. É recomendado configurar o seu site para registrar as informações básicas com o Totara para ajudar a solucionar quaisquer problemas futuros que você possa ter.<br /> Você pode ativar o registro da <a href="\"$a\">página de configuraçaõ de registro</a>';
+$string['registrationisenabled'] = 'O registro está ativado.';
+$string['registrationoutofdate'] = 'As informações do registro não foram atualizadas por um período prolongado. As informações do registro devem ser mantidas atualizadas para ajudar na solução de possíveis problemas futuros. Verifique se o seu servidor da Web possui um acesso irrestrito, para fazer as solicitações de https ao register.totaralms.com.';
+$string['save'] = 'Salvar';
+$string['sitefullname'] = 'Nome completo do site';
+$string['sitehasntregistered'] = 'Este site ainda não foi registrado com sucesso no Totara. É recomendado registrar as informações básicas com o Totara para ajudar a solucionar quaisquer problemas futuros que você possa ter. Verifique se o seu servidor da Web é capaz de fazer as solicitações de https ao register.totaralms.com e se o cron do Moodle está ativado. Você pode executar o cron manualmente clicando aqui Você pode executar o cron manualmente <a href="\"$a\">clicando aqui</a>';
+$string['siteidentifier'] = 'Identificador do site';
+$string['siteshortname'] = 'Nome curto do site';
+$string['techsupportemail'] = 'E-mail do suporte técnico';
+$string['techsupportemailhelp'] = 'Endereço de e-mail das pessoas que cuidam da maioria dos problemas técnicos relacionados à hospedagem no site';
+$string['techsupportphone'] = 'Número de telefone do suporte técnico';
+$string['techsupportphonehelp'] = 'Número de telefone das pessoas que cuidam da maioria dos problemas técnicos relacionados à hospedagem no site. (Incluir o código do país)';
+$string['totarabuild'] = 'Número da versão do Totara';
+$string['totararegistration'] = 'Registro no Totara';
+$string['totararegistrationinfo'] = '<p>Esta página configura as atualizações do registro que são enviadas para o toraralms.com. Essas atualizações permitem ao Totara saber quais as versões de Totaralms e software de apoio que você está executando. Essas informações permitirão ao Totara melhor examinar e solucionar quaisquer problemas técnicos que você enfrentar no futuro.</p>
+<p>Essas informações serão transmitidas com segurança e mantidas em sigilo.</p>';
+$string['checksum'] = 'Soma de verificação';
+$string['dbtype'] = 'Tipo de banco de dados';
+$string['totararelease'] = 'Identificador de liberação do Totara';
+$string['totaraversion'] = 'Número de versão do Totara';
+$string['usercount'] = 'Número de usuários do site';
+$string['webserversoftware'] = 'Identificador do software do servidor da Web';
+$string['wwwroot'] = 'Raiz www do site';
+$string['configpasswordreuselimit'] = 'Número de vezes que um usuário deve alterar sua senha antes que possa reutilizá-la';
+
 ?>
