@@ -62,9 +62,9 @@ class feedback_item_textfield extends feedback_item_base {
         if($values) {
             //echo '<table>';2
             // $itemnr++;
-            echo '<tr><th colspan="2" align="left">'. $itemnr . '&nbsp;' . stripslashes_safe($item->name) .'</th></tr>';
+            echo '<tr><th colspan="2">'. $itemnr . '&nbsp;' . stripslashes_safe($item->name) .'</th></tr>';
             foreach($values as $value) {
-                echo '<tr><td colspan="2" valign="top" align="left">-&nbsp;&nbsp;' . str_replace("\n", '<br />', $value->value) . '</td></tr>';
+                echo '<tr><td colspan="2" valign="top">-&nbsp;&nbsp;' . str_replace("\n", '<br />', $value->value) . '</td></tr>';
             }
             //echo '</table>';
         }

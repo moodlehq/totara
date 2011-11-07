@@ -124,7 +124,7 @@ class feedback_item_multichoicerated extends feedback_item_base {
         if($analysedItem) {
             //echo '<table>';
             // $itemnr++;
-            echo '<tr><th colspan="2" align="left">'. $itemnr . '&nbsp;' . stripslashes($analysedItem[1]) .'</th></tr>';
+            echo '<tr><th colspan="2">'. $itemnr . '&nbsp;' . stripslashes($analysedItem[1]) .'</th></tr>';
             $analysedVals = $analysedItem[2];
             $pixnr = 0;
             $avg = 0.0;
@@ -140,10 +140,10 @@ class feedback_item_multichoicerated extends feedback_item_base {
 
                 $avg += $val->avg;
                 $quotient = number_format(($val->quotient * 100), 2, $sep_dec, $sep_thous);
-                echo '<tr><td align="left" valign="top">-&nbsp;&nbsp;' . trim(strip_tags(format_text($val->answertext))) . ' ('.$val->value.'):</td><td align="left" style="width: '.FEEDBACK_MAX_PIX_LENGTH.'"><img alt="'.$intvalue.'" src="'.$pix.'" height="5" width="'.$pixwidth.'" />' . $val->answercount. (($val->quotient > 0)?'&nbsp;('. $quotient . '&nbsp;%)':'') . '</td></tr>';
+                echo '<tr><td valign="top">-&nbsp;&nbsp;' . trim(strip_tags(format_text($val->answertext))) . ' ('.$val->value.'):</td><td style="width: '.FEEDBACK_MAX_PIX_LENGTH.'"><img alt="'.$intvalue.'" src="'.$pix.'" height="5" width="'.$pixwidth.'" />' . $val->answercount. (($val->quotient > 0)?'&nbsp;('. $quotient . '&nbsp;%)':'') . '</td></tr>';
             }
             $avg = number_format(($avg), 2, $sep_dec, $sep_thous);
-            echo '<tr><td align="left" colspan="2"><b>'.get_string('average', 'feedback').': '.$avg.'</b></td></tr>';
+            echo '<tr><td colspan="2"><b>'.get_string('average', 'feedback').': '.$avg.'</b></td></tr>';
             //echo '</table>';
         }
         // return $itemnr;

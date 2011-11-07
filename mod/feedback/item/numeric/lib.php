@@ -87,9 +87,9 @@ class feedback_item_numeric extends feedback_item_base {
         if(isset($values->data) AND is_array($values->data)) {
             //echo '<table>';2
             // $itemnr++;
-            echo '<tr><th colspan="2" align="left">'. $itemnr . '&nbsp;' . stripslashes($item->name) .'</th></tr>';
+            echo '<tr><th colspan="2">'. $itemnr . '&nbsp;' . stripslashes($item->name) .'</th></tr>';
             foreach($values->data as $value) {
-                echo '<tr><td colspan="2" valign="top" align="left">-&nbsp;&nbsp;' . number_format($value, 2, $this->sep_dec, $this->sep_thous) . '</td></tr>';
+                echo '<tr><td colspan="2" valign="top">-&nbsp;&nbsp;' . number_format($value, 2, $this->sep_dec, $this->sep_thous) . '</td></tr>';
             }
             //echo '</table>';
             if(isset($values->avg)) {
@@ -97,7 +97,7 @@ class feedback_item_numeric extends feedback_item_base {
             } else {
                 $avg = number_format(0, 2, $this->sep_dec, $this->sep_thous);
             }
-            echo '<tr><td align="left" colspan="2"><b>'.get_string('average', 'feedback').': '.$avg.'</b></td></tr>';
+            echo '<tr><td colspan="2"><b>'.get_string('average', 'feedback').': '.$avg.'</b></td></tr>';
         }
         // return $itemnr;
     }
