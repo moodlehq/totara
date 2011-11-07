@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // organisation.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// organisation.php - created with Totara langimport script version 1.1
 
 $string['adddepthlevel'] = 'Neues Level hinzufügen';
 $string['addedframework'] = 'Das Organisationsprofile \"{$a}\" wurde hinzugefügt';
@@ -98,6 +97,7 @@ $string['nounassignedcompetencytemplates'] = 'Keine nicht zugewiesenen Kompetenz
 $string['numericalvalue'] = 'Numerischer Wert';
 $string['organisation'] = 'Organisation';
 $string['organisationaddnew'] = 'Neue Organisation hinzufügen';
+$string['organisationbulkaction'] = 'Bulk Aktionen';
 $string['organisationcustomfields'] = 'Benutzerdefinierte Felder';
 $string['organisationdepthcustomfields'] = 'Organisationslevel benutzerdefinierte Felder';
 $string['organisationframework'] = 'Organisationsprofil';
@@ -121,6 +121,5 @@ $string['updatedframework'] = 'Das Organisationsprofil \"{$a}\" wurde geändert'
 $string['updatedorganisation'] = 'Die Organisation \"{$a}\" wurde geändert';
 $string['updatetype'] = 'Der Organisationstyp \"{$a}\" wurde geändert';
 $string['weight'] = 'Gewicht';
-$string['organisationbulkaction'] = 'Bulk Aktionen'; // ORPHANED
 
 ?>

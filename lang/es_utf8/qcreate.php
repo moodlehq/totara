@@ -1,6 +1,5 @@
-<?PHP // $Id: qcreate.php,v 1.2 2009/04/04 08:42:41 barias Exp $ 
-      // qcreate.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// qcreate.php - created with Totara langimport script version 1.1
 
 $string['activityclosed'] = 'La actividad está cerrada.';
 $string['activitygrade'] = 'Ha recibido una calificación total de $a->grade / $a->outof por esta actividad.';

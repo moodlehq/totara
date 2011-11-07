@@ -1,5 +1,5 @@
-<?PHP // $Id$ 
-      // lesson.php - created with Moodle 1.7 beta + (2006101003)
+<?php
+// lesson.php - created with Totara langimport script version 1.1
 
 $string['accesscontrol'] = '访问控制';
 $string['actionaftercorrectanswer'] = '正确答案之后的行为';
@@ -61,6 +61,7 @@ $string['credit'] = '学分';
 $string['customscoring'] = '是否自定义分数';
 $string['deadline'] = '截止时间';
 $string['defaultessayresponse'] = '您的问答题将被课程教师评分';
+$string['deleteallattempts'] = '删除所有程序教学尝试';
 $string['deletedefaults'] = '删除 $a 默认课程';
 $string['deletedpage'] = '删除此页';
 $string['deleting'] = '删除中';
@@ -223,7 +224,6 @@ $string['previewlesson'] = '预览 $a';
 $string['previouspage'] = '上一页';
 $string['progressbar'] = '是否显示进度条';
 $string['progressbarteacherwarning'] = '$a 不显示进度条';
-$string['deleteallattempts'] = '删除所有程序教学尝试';
 $string['qtype'] = '页面类型';
 $string['question'] = '试题';
 $string['questionoption'] = '试题选项';

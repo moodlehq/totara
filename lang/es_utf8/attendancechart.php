@@ -1,6 +1,5 @@
-<?PHP // $Id: attendancechart.php,v 1.1 2007/08/07 09:21:07 barias Exp $ 
-      // attendancechart.php - created with Moodle 1.8 + (2007021502)
-
+<?php
+// attendancechart.php - created with Totara langimport script version 1.1
 
 $string['adding'] = 'Se agregará un diagrama de asistencia a este curso <br>';
 $string['aktual'] = 'actual';

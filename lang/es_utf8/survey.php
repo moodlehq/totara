@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // survey.php - created with Moodle 1.8.2+ (2007021520)
-
+<?php
+// survey.php - created with Totara langimport script version 1.1
 
 $string['actual'] = 'Real';
 $string['actualclass'] = 'Clase real';

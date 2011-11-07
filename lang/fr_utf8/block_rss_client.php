@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// block_rss_client.php - created with Totara langimport script version 1.1
 
 $string['addfeed'] = 'Ajouter l\'URL d\'un flux RSS : ';
 $string['addheadlineblock'] = 'Ajouter un bloc manchette RSS';
@@ -34,10 +35,14 @@ $string['feedupdated'] = 'Le flux RSS a été modifié';
 $string['feedurl'] = 'URL du flux';
 $string['findmorefeeds'] = 'Rechercher d\'autres flux RSS';
 $string['managefeeds'] = 'Gérer tous mes flux RSS';
-$string['numentries'] = 'Articles par flux';
 $string['nofeeds'] = 'Il n\'y a pas de flux RSS défini sur ce site.';
+$string['numentries'] = 'Articles par flux';
 $string['pickfeed'] = 'Choisir un flux RSS';
 $string['remotenewsfeed'] = 'Flux RSS distants';
+$string['rss_client:createprivatefeeds'] = 'Créer des flux RSS privés';
+$string['rss_client:createsharedfeeds'] = 'Créer des flux RSS partagés';
+$string['rss_client:manageanyfeeds'] = 'Gérer tous les flux RSS';
+$string['rss_client:manageownfeeds'] = 'Gérer ses propres flux RSS';
 $string['seeallfeeds'] = 'Afficher tous les flux RSS';
 $string['sharedfeed'] = 'Flux RSS partagé';
 $string['shownumentrieslabel'] = 'Nombre maximum d\'articles à afficher par bloc';
@@ -49,10 +54,5 @@ $string['timeoutdesc'] = 'Durée de vie en cache d\'un flux RSS (en minutes).';
 $string['updatefeed'] = 'Modifier l\'URL d\'un flux URL : ';
 $string['validatefeed'] = 'Valider le flux';
 $string['viewfeed'] = 'Afficher le flux';
-
-$string['rss_client:createprivatefeeds'] = 'Créer des flux RSS privés';
-$string['rss_client:createsharedfeeds'] = 'Créer des flux RSS partagés';
-$string['rss_client:manageownfeeds'] = 'Gérer ses propres flux RSS';
-$string['rss_client:manageanyfeeds'] = 'Gérer tous les flux RSS';
 
 ?>

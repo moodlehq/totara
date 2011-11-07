@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // glossary.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// glossary.php - created with Totara langimport script version 1.1
 
 $string['addcomment'] = 'Inserir comentário';
 $string['addentry'] = 'Inserir novo item';

@@ -1,6 +1,5 @@
-<?PHP // $Id: rating.php,v 1.1 2010/03/19 09:37:20 krause Exp $ 
-      // rating.php - created with Moodle 2.0 dev (Build: 20100220) (2010021900)
-
+<?php
+// rating.php - created with Totara langimport script version 1.1
 
 $string['aggregatetype'] = 'Aggregattyp';
 $string['allowratings'] = 'Einstufung von Elementen erlauben?';

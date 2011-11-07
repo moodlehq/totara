@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// notes.php - created with Totara langimport script version 1.1
 
 $string['addnewnote'] = 'Escrever uma nova anotação';
 $string['addnewnoteselect'] = 'Escolher os usuários que serão objeto de anotações';

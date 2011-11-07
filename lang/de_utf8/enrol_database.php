@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_database.php - created with Moodle 2.0 dev (Build: 20090109) (2009010801)
-
+<?php
+// enrol_database.php - created with Totara langimport script version 1.1
 
 $string['autocreate'] = 'Kurse können automatisch angelegt werden, wenn es Anmeldungen zu einem Kurs gibt, der noch nicht in Moodle existiert.';
 $string['autocreation_settings'] = 'Einstellungen für automatisiertes Anlegen von Kursen';
@@ -24,6 +23,7 @@ $string['enrolname'] = 'Externe Datenbank';
 $string['general_options'] = 'Allgemeine Einstellungen';
 $string['host'] = 'Name des Datenbank-Servers';
 $string['ignorehiddencourse'] = 'Wenn diese Einstellung auf \"ja\" gesetzt ist, dann werden Nutzer/innen nicht in Kursen eingeschrieben, die für Teilnehmer/innen nicht verfügbar sind.';
+$string['local_coursefield'] = 'Name des Feldes in der lokalen Kurstabelle von Moodle, das zum Abgleich mit Einträgen in der externen Datenbank verwendet werden soll (z.B. idnumber)';
 $string['local_fields_mapping'] = 'Moodle-Datenbankfelder (lokal)';
 $string['localcoursefield'] = 'Name des Feldes in der Kurstabelle (course) zum Abgleich mit der Remote-Datenbank (z.B. idnumber).';
 $string['localrolefield'] = 'Name des Feldes in der Rollentabelle (roles) zum Abgleich mit der Remote-Datenbank (z.B. Kurzname).';
@@ -46,6 +46,5 @@ $string['teacher_table'] = 'Name der externen Tabelle, in der Trainereinträge g
 $string['template'] = 'Optional: Automatisch angelegte Kurse können ihre Kurseinstellungen aus einer Kursvorlage kopieren.  übernehmen. Tragen Sie hier die Kurzbezeichnung dieser Kursvorlage ein.';
 $string['type'] = 'Datenbank-Server-Typ';
 $string['user'] = 'Nutzername für Zugriff auf den Datenbank-Server';
-$string['local_coursefield'] = 'Name des Feldes in der lokalen Kurstabelle von Moodle, das zum Abgleich mit Einträgen in der externen Datenbank verwendet werden soll (z.B. idnumber)'; // ORPHANED
 
 ?>

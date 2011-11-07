@@ -1,6 +1,6 @@
 <?php
+// report_security.php - created with Totara langimport script version 1.1
 
-$string['configuration'] = 'Configuração';
 $string['check_configrw_details'] = '<p>É recomendado que as permissões do arquivo config.php sejam alteradas após a instalação de forma que o arquivo não possa ser alterado pelo servidor web. Por favor, note que esta medida não aumenta a segurança do servidor significantemente, mas retarda ou limita exploits em geral.</p>';
 $string['check_configrw_name'] = 'config.php gravável';
 $string['check_configrw_ok'] = 'config.php não pode ser modificado por scripts PHP';
@@ -107,6 +107,7 @@ $string['check_unsecuredataroot_error'] = 'Seu diretório dataroot <code>$a</cod
 $string['check_unsecuredataroot_name'] = 'Dataroot inseguro';
 $string['check_unsecuredataroot_ok'] = 'O diretório dataroot não é acessível via web.';
 $string['check_unsecuredataroot_warning'] = 'Seu diretório dataroot <code>$a</code> está em um local errado e pode estar exposto à web.';
+$string['configuration'] = 'Configuração';
 $string['description'] = 'Descrição';
 $string['details'] = 'Detalhes';
 $string['issue'] = 'Item';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_flatfile.php - created with Moodle 1.8 (2007021501)
-
+<?php
+// enrol_flatfile.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Den här metoden kommer att återkommande leta efter och bearbeta en specialformaterad textfil som Du anger. 
 Filen är kommaseparerade och antas ha fyra eller sex fält per rad.

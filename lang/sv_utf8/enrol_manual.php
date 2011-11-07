@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_manual.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// enrol_manual.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Det här är standardformuläret för registreringar. Det finns två sätt som en student/elev/deltagare/lärande kan bli registrerad på en viss kurs. <ul>
 <li>En lärare eller administratör kan registrera dem manuellt genom att använda länken i Administration>>Kurser>> 

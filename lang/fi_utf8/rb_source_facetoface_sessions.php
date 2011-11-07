@@ -1,5 +1,5 @@
 <?php
-// rb_source_facetoface_sessions.php - created with Totara langimport script version 1.0
+// rb_source_facetoface_sessions.php - created with Totara langimport script version 1.1
 
 $string['audit'] = 'Tarkistus';
 $string['cancellationdate'] = 'Peruutuspäivä';

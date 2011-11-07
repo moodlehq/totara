@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// userkey.php - created with Totara langimport script version 1.1
 
 $string['createnewkey'] = 'Criar uma nova chave de usuário';
 $string['createuserkey'] = 'Criar chave de usuário';

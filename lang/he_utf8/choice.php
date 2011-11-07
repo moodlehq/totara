@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // choice.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// choice.php - created with Totara langimport script version 1.1
 
 $string['addmorechoices'] = 'הוסף אפשרויות נוספות';
 $string['allowupdate'] = 'אפשר לעדכן את הבחירה';
@@ -34,12 +33,12 @@ $string['notanswered'] = 'לא נענה עדיין';
 $string['notopenyet'] = 'צר לי, פעילות זו אינה זמינה עד $a';
 $string['privacy'] = 'סודיות התוצאות';
 $string['publish'] = 'פרסם תוצאות';
-$string['publishafteranswer'] = 'הצג את התוצאות לתלמיד אחרי שהוא עונה';
-$string['publishafterclose'] = 'הצג את התוצאות לתלמידים רק אחרי שהבחירה כבר סגורה';
-$string['publishalways'] = 'תמיד הצג את התוצאות לתלמידים';
-$string['publishanonymous'] = 'פרסם תוצאות אנונימיות, אל תראה את שמות הסטודנטים';
+$string['publishafteranswer'] = 'הצג את התוצאות למשתתף אחרי שהוא עונה';
+$string['publishafterclose'] = 'הצג את התוצאות למשתתפים רק אחרי שהבחירה כבר סגורה';
+$string['publishalways'] = 'תמיד הצג את התוצאות למשתתפים';
+$string['publishanonymous'] = 'פרסם תוצאות אנונימיות, אל תראה את שמות המשתתפים';
 $string['publishnames'] = 'פרסם תוצאות מלאות, הצג את השמות ואת בחירותיהם';
-$string['publishnot'] = 'אל תפרסם תוצאות לסטודנטים';
+$string['publishnot'] = 'אל תפרסם תוצאות למשתתפים';
 $string['removemychoice'] = 'הסר את בחירתי';
 $string['removeresponses'] = 'הסר את כל התגובות';
 $string['responses'] = 'תגובות';
@@ -52,17 +51,5 @@ $string['taken'] = 'תפוס';
 $string['timerestrict'] = 'הגבל את מתן התשובות לפרק זמן זה';
 $string['viewallresponses'] = 'ראה $a תגובות';
 $string['yourselection'] = 'הבחירה שלך';
-
-?>
-<?PHP // $Id$
-      // choice.php - created with Moodle 1.9.5+ (Build: 20090624) (2007101550)
-
-
-
-$string['publishafteranswer'] = 'הצג את התוצאות למשתתף אחרי שהוא עונה';
-$string['publishafterclose'] = 'הצג את התוצאות למשתתפים רק אחרי שהבחירה כבר סגורה';
-$string['publishalways'] = 'תמיד הצג את התוצאות למשתתפים';
-$string['publishanonymous'] = 'פרסם תוצאות אנונימיות, אל תראה את שמות המשתתפים';
-$string['publishnot'] = 'אל תפרסם תוצאות למשתתפים';
 
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_flatfile.php - created with Moodle 1.6.3 (2006050530)
-
+<?php
+// enrol_flatfile.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Dieses Kurs-Anmeldeverfahren nutzt eine speziell formatierte Textdatei, die in einem von Ihnen angegebenen Verzeichnis abgelegt ist. Die Datei muss vier oder sechs Felder pro Zeile haben, die Felder sind durch Komma getrennt. Die Zeilen haben folgende Struktur:
 <pre>

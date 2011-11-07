@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_imsenterprise.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// enrol_imsenterprise.php - created with Totara langimport script version 1.1
 
 $string['aftersaving...'] = '一旦您保存了您的设置，您会希望';
 $string['allowunenrol'] = '同意IMS 数据给<strong>unenrol</strong>未登入的学生/老师';

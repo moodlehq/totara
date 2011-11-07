@@ -1,6 +1,5 @@
-<?PHP // $Id: mimetypes.php,v 1.2 2006/12/30 22:24:00 koenr Exp $ 
-      // mimetypes.php - created with Moodle 1.8 dev (2006120700)
-
+<?php
+// mimetypes.php - created with Totara langimport script version 1.1
 
 $string['application/msword'] = 'وثيقة Word';
 $string['application/pdf'] = 'وثيقة PDF';

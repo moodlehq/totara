@@ -1,8 +1,9 @@
-<?PHP // $Id$ 
-      // blog.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// blog.php - created with Totara langimport script version 1.1
 
 $string['addnewentry'] = 'Lägg till ett nytt inlägg';
+$string['addotags'] = 'Lägg till etiketter';
+$string['addptags'] = 'Lägg till användardefinerade etiketter';
 $string['backupblogshelp'] = 'Om detta är aktiverat så kommer bloggar att tas med i automatiska säkerhetskopieringar på webbplatsnivå.';
 $string['blockmenutitle'] = 'Bloggmeny';
 $string['blocktagstitle'] = 'Bloggetiketter';
@@ -33,9 +34,11 @@ $string['norighttodeletetag'] = 'Du har inga rättigheter att ta bort denna etik
 $string['notallowedtoedit'] = 'Du är inte tillåten att ändra detta inlägg';
 $string['numberofentries'] = 'Inlägg: $a';
 $string['numberoftags'] = 'Antal etiketter som visas';
+$string['otags'] = 'Etiketter';
 $string['pagesize'] = 'Antal inlägg per sida';
 $string['permalink'] = 'Permalink';
 $string['personalblogs'] = 'Användare kan endast se deras egen blogg';
+$string['ptags'] = 'Användardefinierade etiketter';
 $string['publishto'] = 'Publicera för';
 $string['publishtonoone'] = 'Dig själv (utkast)';
 $string['publishtosite'] = 'Vem som helst på denna sajt';
@@ -54,9 +57,5 @@ $string['viewcourseentries'] = 'Visa inlägg inom kursen';
 $string['viewmyentries'] = 'Visa mina inlägg';
 $string['viewsiteentries'] = 'Visa inlägg på sajten';
 $string['worldblogs'] = 'Alla på internet kan läsa inlägg som gjorts tillgängliga för vem som helst';
-$string['addotags'] = 'Lägg till etiketter'; // ORPHANED
-$string['addptags'] = 'Lägg till användardefinerade etiketter'; // ORPHANED
-$string['otags'] = 'Etiketter'; // ORPHANED
-$string['ptags'] = 'Användardefinierade etiketter'; // ORPHANED
 
 ?>

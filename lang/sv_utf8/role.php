@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // role.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// role.php - created with Totara langimport script version 1.1
 
 $string['addrole'] = 'Lägg till en ny roll';
 $string['allow'] = 'Tillåt';
@@ -128,6 +127,9 @@ $string['question:add'] = 'Lägg till nya frågor';
 $string['question:config'] = 'Konfigurera frågetyper';
 $string['question:editall'] = 'Redigera alla frågor';
 $string['question:editmine'] = 'Redigera Dina egna frågor';
+$string['question:export'] = 'Exportera frågor';
+$string['question:import'] = 'Importera frågor';
+$string['question:manage'] = 'Administrera frågor';
 $string['question:managecategory'] = 'Administrera frågekategori';
 $string['question:moveall'] = 'Flytta alla frågor';
 $string['question:movemine'] = 'Flytta Dina egna frågor';
@@ -198,8 +200,5 @@ $string['userhashiddenassignments'] = 'Den här användaren har en eller flera d
 $string['userswithrole'] = 'Alla användare med en roll';
 $string['viewrole'] = 'Visa detaljer angående roll';
 $string['xuserswiththerole'] = 'Användare med rollen \"$a->role\": $a->number';
-$string['question:export'] = 'Exportera frågor'; // ORPHANED
-$string['question:import'] = 'Importera frågor'; // ORPHANED
-$string['question:manage'] = 'Administrera frågor'; // ORPHANED
 
 ?>

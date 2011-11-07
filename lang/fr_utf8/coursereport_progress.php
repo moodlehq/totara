@@ -1,4 +1,5 @@
-<?php // $Id: coursereport_progress.php,v 1.1 2008/12/07 15:04:24 martignoni Exp $
+<?php
+// coursereport_progress.php - created with Totara langimport script version 1.1
 
 $string['progress:view'] = 'Consulter le rapport de suivi des progrès du cours';
 

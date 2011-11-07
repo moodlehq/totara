@@ -1,6 +1,5 @@
-<?PHP // $Id: lams.php,v 1.3 2010/05/10 14:26:27 emanuel1 Exp $
-      // lams.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// lams.php - created with Totara langimport script version 1.1
 
 $string['createSequence'] = 'צור רצף חדש';
 $string['editSequence'] = 'ערוך את הרצף הנבחר';

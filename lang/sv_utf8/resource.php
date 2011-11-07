@@ -1,9 +1,9 @@
-<?PHP // $Id$ 
-      // resource.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// resource.php - created with Totara langimport script version 1.1
 
 $string['addresource'] = 'Lägg till resurs';
 $string['affectedresources'] = 'Påverkade resurser';
+$string['allowlocalfiles'] = 'Tillåt lokala filer';
 $string['autofilerename'] = 'Uppdatera länken om filen har döpts om';
 $string['back'] = 'Tillbaka';
 $string['blockdeletingfile'] = 'Blockera borttagandet av de refererade filerna';
@@ -12,6 +12,7 @@ $string['choose'] = 'Välj';
 $string['chooseafile'] = 'Välj eller ladda upp en fil';
 $string['chooseparameter'] = 'Välj parameter';
 $string['clicktoopen'] = 'För att öppna detta dokument, klicka på den här länken:';
+$string['configallowlocalfiles'] = 'När Du skapar en ny fil som resurs så kan Du tillåta länkar till filer på en lokal filhanterare som t.ex. en CD eller en hårddisk. Detta kan vara användbart i ett klassrum där alla studenter/elever/deltagare/lärande har tillgång till en gemensam nätverkskälla eller där filer på en CD måste vara tillgängliga. Användning av den här egenskapen kan kräva att Du ändrar på säkerhetsinställningarna på Din webbläsare.';
 $string['configautofilerenamesettings'] = 'Uppdatera referenser till filer automatiskt när de döps om i filhanteraren.';
 $string['configblockdeletingfilesettings'] = 'Blockera borttagandet av filer och kataloger som refereras av resurser. Var snäll och lägg märke till att bilder och andra filer som refereras från HTML inte är skyddade.';
 $string['configdefaulturl'] = 'Det här värdet används för att fylla i en URL i formuläret när Du skapar en ny URL-baserad resurs.';
@@ -58,6 +59,12 @@ $string['keepnavigationvisibleno'] = 'Nej';
 $string['keepnavigationvisiblewarning'] = 'OBS: vissa mediafiler kan ignorera denna inställning';
 $string['keepnavigationvisibleyesframe'] = 'Ja, med ram';
 $string['keepnavigationvisibleyesobject'] = 'Nej, utan ram';
+$string['localfile'] = 'Lokal fil';
+$string['localfilechoose'] = 'Välj en lokal fil (CD-ROM)';
+$string['localfilehelp'] = 'Hjälp till att visa lokala filer';
+$string['localfileinfo'] = '<p>Välj en lokal fil på Din dator. Filen kommer inte att laddas upp till webbplatsen men Moodle kommer att söka efter samma fil varje gång någon visar den här resursen.</p><p>Det här är framförallt användbart när Du har stora mediafiler lagrade på CD-ROM/DVD som Du vill distribuera till alla deltagare. Varje deltagare kan välja sin egen sökväg till sådana filer. genom att <a href=\"$a\" target=\"_blank\">redigera sin användarprofil</a></p>';
+$string['localfilepath'] = 'För att ställa in Din egen lokala sökväg, så kan Du välja vilken fil som helst från källan (vanligtvis en CD-ROM/DVD). Filen kommer inte att laddas upp men informationen om källan kommer att lagras och användas för alla lokala filresurser.';
+$string['localfileselect'] = 'Välj den här sökvägen för filer';
 $string['maindirectory'] = 'HTML fragment';
 $string['modulename'] = 'Resurs';
 $string['modulenameplural'] = 'Resurser';
@@ -78,6 +85,7 @@ $string['newwidth'] = 'Fönstrets aktuella vidd (i pixlar)';
 $string['newwindow'] = 'Nytt fönster';
 $string['newwindowopen'] = 'Visa den här resursen i ett nytt \'pop-up\'-fönster';
 $string['next'] = 'Nästa';
+$string['notallowedlocalfileaccess'] = 'Tillgången till lokala filer är f.n. avaktiverad så den här resursen är inte tillgänglig.';
 $string['notdeployed'] = 'Inte utlagd';
 $string['note'] = 'OBS';
 $string['notefile'] = 'För att ladda upp fler filer till kursen (så att de uppträder i denna lista) använd <A HREF=$a >Filhanteraren</A>.';
@@ -127,14 +135,5 @@ $string['vol'] = 'Vol';
 $string['warningblockingdelete'] = 'Varning! Operationen att \'ta bort\' är blockerad av en befintlig resurs. Du måste antingen uppdatera Dina resurser först eller fråga administratören att avaktivera den här säkerhetsfunktionen i den globala konfigurationen av resurser.';
 $string['warningdisabledrename'] = 'Varning! Den automatiska funktionen för byte av namn på resurser är avaktiverad. Var snäll och uppdatera de berörda resurserna manuellt om det behövs. Administratören kan också aktivera automatiskt byte av namn i den globala konfigurationen av resurser.';
 $string['websearchdefault'] = 'Standard för webbsök';
-$string['allowlocalfiles'] = 'Tillåt lokala filer'; // ORPHANED
-$string['configallowlocalfiles'] = 'När Du skapar en ny fil som resurs så kan Du tillåta länkar till filer på en lokal filhanterare som t.ex. en CD eller en hårddisk. Detta kan vara användbart i ett klassrum där alla studenter/elever/deltagare/lärande har tillgång till en gemensam nätverkskälla eller där filer på en CD måste vara tillgängliga. Användning av den här egenskapen kan kräva att Du ändrar på säkerhetsinställningarna på Din webbläsare.'; // ORPHANED
-$string['localfile'] = 'Lokal fil'; // ORPHANED
-$string['localfilechoose'] = 'Välj en lokal fil (CD-ROM)'; // ORPHANED
-$string['localfilehelp'] = 'Hjälp till att visa lokala filer'; // ORPHANED
-$string['localfileinfo'] = '<p>Välj en lokal fil på Din dator. Filen kommer inte att laddas upp till webbplatsen men Moodle kommer att söka efter samma fil varje gång någon visar den här resursen.</p><p>Det här är framförallt användbart när Du har stora mediafiler lagrade på CD-ROM/DVD som Du vill distribuera till alla deltagare. Varje deltagare kan välja sin egen sökväg till sådana filer. genom att <a href=\"$a\" target=\"_blank\">redigera sin användarprofil</a></p>'; // ORPHANED
-$string['localfilepath'] = 'För att ställa in Din egen lokala sökväg, så kan Du välja vilken fil som helst från källan (vanligtvis en CD-ROM/DVD). Filen kommer inte att laddas upp men informationen om källan kommer att lagras och användas för alla lokala filresurser.'; // ORPHANED
-$string['localfileselect'] = 'Välj den här sökvägen för filer'; // ORPHANED
-$string['notallowedlocalfileaccess'] = 'Tillgången till lokala filer är f.n. avaktiverad så den här resursen är inte tillgänglig.'; // ORPHANED
 
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // survey.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// survey.php - created with Totara langimport script version 1.1
 
 $string['actual'] = '实际的';
 $string['actualclass'] = '班级实际的';
@@ -163,6 +162,8 @@ $string['collespintro'] = '该问卷调查的目的是为了了解您对网上�
 非常感谢！';
 $string['collespname'] = '建构主义在线学习环境问卷调查（希望的）';
 $string['customintro'] = '自定义描述';
+$string['deleteallanswers'] = '删除所有调查回复';
+$string['deleteanalysis'] = '删除所有分析回复';
 $string['done'] = '完成';
 $string['download'] = '下载';
 $string['downloadexcel'] = '以 Excel 电子表格形式下载数据';
@@ -191,8 +192,6 @@ $string['preferredstudent'] = ' $a  希望的';
 $string['question'] = '问题';
 $string['questions'] = '问题';
 $string['questionsnotanswered'] = '有些问题没有回答。';
-$string['deleteallanswers'] = '删除所有调查回复';
-$string['deleteanalysis'] = '删除所有分析回复';
 $string['report'] = '调查报表';
 $string['responses'] = '回复';
 $string['savednotes'] = '您的注解已经保存';

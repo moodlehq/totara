@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'À propos de cet éditeur';
 $string['absbottom'] = 'Bas (absolu)';
@@ -98,7 +99,7 @@ $string['preview'] = 'Prévisualiser';
 $string['properties'] = 'Propriétés';
 $string['redo'] = 'Refaire la dernière action';
 $string['regularexpressions'] = 'Utiliser les expressions régulières (GREP)';
-$string['removelink'] = 'Supprimer le lien';	
+$string['removelink'] = 'Supprimer le lien';
 $string['rename'] = 'Renommer';
 $string['replaceall'] = 'Tout remplacer';
 $string['replacewith'] = 'Remplacer';

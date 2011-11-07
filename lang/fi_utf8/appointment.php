@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// appointment.php - created with Totara langimport script version 1.1
+
 $string['allowresubmit'] = 'Salli uudelleenlähetys';
 $string['appointmentdetails'] = 'Tapaamisen tiedot';
 $string['appointmentlocation'] = 'Tapaamispaikka';
@@ -38,4 +40,5 @@ $string['uploadsuccess'] = 'Tiedosto \'$a\' vastaanotettu';
 $string['viewfeedback'] = 'Tarkastele tapaamisten arviointeja ja palautteita';
 $string['viewsubmissions'] = 'Katso $a lähetettyä tapaamista';
 $string['yoursubmission'] = 'Vastauksesi';
+
 ?>

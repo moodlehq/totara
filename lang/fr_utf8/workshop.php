@@ -1,4 +1,5 @@
-<?php // $Id$
+<?php
+// workshop.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'Absent';
 $string['accumulative'] = 'Cumulative';
@@ -60,8 +61,8 @@ $string['commentbank'] = 'Liste de commentaires';
 $string['commentby'] = 'Commentaire de';
 $string['comparisonofassessments'] = 'Comparaison des évaluations';
 $string['confirmdeletionofthisitem'] = 'Confirmer la suppression de $a';
-$string['count'] = 'Nombre';
 $string['correct'] = 'Correct';
+$string['count'] = 'Nombre';
 $string['criterion'] = 'Par critère';
 $string['currentphase'] = 'Phase en cours';
 $string['date'] = 'Date';
@@ -73,9 +74,9 @@ $string['deleting'] = 'Suppression';
 $string['description'] = 'Description';
 $string['detailsofassessment'] = 'Détails de l\'évaluation';
 $string['disagreewiththisassessment'] = 'En désaccord avec l\'évaluation';
-$string['displayofgrades'] = 'Affichage des notes';
 $string['displayofcurrentgrades'] = 'Affichage des notes actuelles';
 $string['displayoffinalgrades'] = 'Affichage des notes finales';
+$string['displayofgrades'] = 'Affichage des notes';
 $string['dontshowgrades'] = 'Ne pas afficher les notes';
 $string['edit'] = 'Modifier';
 $string['editacomment'] = 'Modifier un commentaire';
@@ -223,7 +224,7 @@ $string['releaseteachergrades'] = 'Délivrer les notes de l\'enseignant';
 $string['removeallattachments'] = 'Supprimer toutes les annexes';
 $string['repeatanalysis'] = 'Répéter l\'analyse';
 $string['reply'] = 'Réponse';
-$string['resetworkshopall'] ='Supprimer les documents, notes et évaluations';
+$string['resetworkshopall'] = 'Supprimer les documents, notes et évaluations';
 $string['returnto'] = 'Retour à';
 $string['returntosubmissionpage'] = 'Revenir à la page de remise des travaux';
 $string['rubric'] = 'Par rubrique';
@@ -314,8 +315,8 @@ $string['weightforteacherassessments'] = 'Coefficient des évaluations de l\'ens
 $string['weights'] = 'Pondération';
 $string['weightsusedforfinalgrade'] = 'Coefficients utilisés pour la note finale';
 $string['weightsusedforsubmissions'] = 'Coefficients utilisés pour les travaux';
-$string['workshop:participate'] = 'Participer à un atelier';
 $string['workshop:manage'] = 'Gérer les réglages des ateliers';
+$string['workshop:participate'] = 'Participer à un atelier';
 $string['workshopagreedassessments'] = 'Évaluations de l\'atelier en accord';
 $string['workshopassessments'] = 'Évaluations de l\'atelier';
 $string['workshopcomments'] = 'Commentaire sur l\'atelier';

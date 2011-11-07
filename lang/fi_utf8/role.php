@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // role.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// role.php - created with Totara langimport script version 1.1
 
 $string['addrole'] = 'Lisää rooli';
 $string['allow'] = 'Salli';
@@ -133,6 +132,9 @@ $string['question:add'] = 'Lisätä kysymyksiä';
 $string['question:config'] = 'Määritellä kysymystyyppejä';
 $string['question:editall'] = 'Muokata kaikkia kysymyksiä';
 $string['question:editmine'] = 'Muokata omia kysymyksiä';
+$string['question:export'] = 'Kysymysten vienti';
+$string['question:import'] = 'Kysymysten tuonti';
+$string['question:manage'] = 'Kysymysten hallinta';
 $string['question:managecategory'] = 'Kysymyskategorioiden hallinta';
 $string['question:moveall'] = 'Siirtää kaikki kysymykset';
 $string['question:movemine'] = 'Siirtää omat kysymykset';
@@ -203,8 +205,5 @@ $string['userhashiddenassignments'] = 'Tällä käyttäjällä on yksi tai useam
 $string['userswithrole'] = 'Kaikki käyttäjät, joilla on rooli';
 $string['viewrole'] = 'Roolin tarkastelu';
 $string['xuserswiththerole'] = 'Käyttäjiä roolilla \"$a->role\": $a->number';
-$string['question:export'] = 'Kysymysten vienti'; // ORPHANED
-$string['question:import'] = 'Kysymysten tuonti'; // ORPHANED
-$string['question:manage'] = 'Kysymysten hallinta'; // ORPHANED
 
 ?>

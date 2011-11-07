@@ -1,19 +1,20 @@
-<?php // $Id: quiz_overview.php,v 1.20 2009/04/10 19:24:57 martignoni Exp $
+<?php
+// quiz_overview.php - created with Totara langimport script version 1.1
 
-$string['attemptprogress'] = 'Tentative $a->done sur $a->todo';
-$string['attemptsonly'] = 'N\'afficher que les $a avec tentatives';
 $string['allattempts'] = 'Afficher toutes les tentatives';
 $string['allattemptscontributetograde'] = 'Toutes les tentatives comptent pour la note finale du participant.';
 $string['allstudents'] = 'Afficher tous les $a';
+$string['attemptprogress'] = 'Tentative $a->done sur $a->todo';
+$string['attemptsonly'] = 'N\'afficher que les $a avec tentatives';
 $string['attemptsprepage'] = 'Tentatives affichées par page';
 $string['deleteselected'] = 'Supprimer les tentatives sélectionnées';
 $string['done'] = 'Effectué';
-$string['err_failedtorecalculateattemptgrades'] = 'Échec du re-calcul des notes de la tentative';
 $string['err_failedtodeleteregrades'] = 'Échec de la suppression des notes calculées de la tentative';
+$string['err_failedtorecalculateattemptgrades'] = 'Échec du re-calcul des notes de la tentative';
 $string['highlightinggraded'] = 'La tentative comptant pour la note finale est surlignée pour chaque participant.';
 $string['needed'] = 'Nécessaire';
-$string['noattemptstoregrade'] = 'Aucune tentative ne doit être ré-évaluée';
 $string['noattemptsonly'] = 'N\'afficher / télécharger que les $a sans tentatives';
+$string['noattemptstoregrade'] = 'Aucune tentative ne doit être ré-évaluée';
 $string['nogradepermission'] = 'Vous n\'avez le droit d\'évaluer ce test.';
 $string['onlyoneattemptallowed'] = 'Une seule tentative par participant est autorisée pour ce test.';
 $string['optallattempts'] = 'toutes les tentatives';
@@ -34,11 +35,11 @@ $string['preferencesuser'] = 'Vos préférences pour ce rapport';
 $string['qprogress'] = 'Question $a->done sur $a->todo';
 $string['regrade'] = 'Ré-évaluer';
 $string['regradeall'] = 'Tout ré-évaluer';
-$string['regradeallgroup'] = 'Ré-évaluation complète pour le groupe « {$a->groupname} »';
 $string['regradealldry'] = 'Ré-évaluer complètement à blanc';
 $string['regradealldrydo'] = 'Ré-évaluer les tentatives marquées comme devant être ré-évaluées ($a)';
 $string['regradealldrydogroup'] = 'Ré-évaluer les tentatives ($a->countregradeneeded) marquées comme devant être ré-évaluées dans le groupe « {$a->groupname} »';
 $string['regradealldrygroup'] = 'Ré-évaluer complètement le groupe « {$a->groupname} » à blanc';
+$string['regradeallgroup'] = 'Ré-évaluation complète pour le groupe « {$a->groupname} »';
 $string['regradeheader'] = 'Ré-évaluation';
 $string['regradeselected'] = 'Ré-évaluer les tentatives sélectionnées';
 $string['show'] = 'Afficher / télécharger';

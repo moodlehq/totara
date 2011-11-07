@@ -1,5 +1,5 @@
-<?PHP // $Id$
-      // Modified with langdiff.php
+<?php
+// enrol_flatfile.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Tämä moduuli tarkistaa ajoittain määrittelemäsi tekstiedoston. Tiedoston tulisi näyttää seuraavalta: <pre>
 add, student, 5, CF101
@@ -15,4 +15,5 @@ $string['filelockedmailsubject'] = 'Virhe rekisteröitymistiedostossa';
 $string['location'] = 'Tiedoston sijainti';
 $string['mailadmin'] = 'Ilmoita ylläpitäjälle';
 $string['mailusers'] = 'Ilmoita käyttäjälle';
+
 ?>

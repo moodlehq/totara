@@ -1,7 +1,5 @@
-<?PHP // $Id: search.php,v 1.1 2007/08/22 13:19:22 barias Exp $ 
-      // search.php - created with Moodle 1.9 Beta + (2007081600)
-      // local modifications from http://127.0.0.1/moodle
-
+<?php
+// search.php - created with Totara langimport script version 1.1
 
 $string['advancedsearch'] = 'Búsqueda avanzada';
 $string['all'] = 'Todos';

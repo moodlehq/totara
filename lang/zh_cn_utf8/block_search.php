@@ -1,8 +1,10 @@
 <?php
+// block_search.php - created with Totara langimport script version 1.1
+
 $string['asynchronous'] = '异步 (Ajax)';
 $string['blockname'] = '全局查找';
-$string['blockssearchswitches'] = '版块的索引激活';
 $string['blockssearchmnetfeatures'] = 'Moodle 网络搜索';
+$string['blockssearchswitches'] = '版块的索引激活';
 $string['bytes'] = '字节（0表示没有限制）';
 $string['configbuttonlabel'] = '按钮标签';
 $string['configenablefileindexing'] = '生成文件索引';
@@ -31,4 +33,5 @@ $string['searchmoodle'] = '在 Moodle 中搜索';
 $string['synchronous'] = '同步';
 $string['usemoodleroot'] = '为外部转换程序使用 moodle 根';
 $string['wordhandling'] = 'Microsoft Word 处理';
+
 ?>

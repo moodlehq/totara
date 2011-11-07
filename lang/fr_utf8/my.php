@@ -1,4 +1,5 @@
-<?php // $Id$
+<?php
+// my.php - created with Totara langimport script version 1.1
 
 $string['mymoodle'] = 'Vue d\'ensemble de mes cours';
 $string['nocourses'] = 'Aucune information de cours à afficher.';

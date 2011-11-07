@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // resource.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// resource.php - created with Totara langimport script version 1.1
 
 $string['addresource'] = 'أضف مصدر';
 $string['affectedresources'] = 'المصادر المتأثرة';
@@ -57,6 +56,10 @@ $string['keepnavigationvisibleno'] = 'لا';
 $string['keepnavigationvisiblewarning'] = 'ملاحظة: بعض ملفات الوسائط قد تتجاهل هذا الضبط';
 $string['keepnavigationvisibleyesframe'] = 'نعم، مع الإطار';
 $string['keepnavigationvisibleyesobject'] = 'نعم، بدون الإطار';
+$string['localfile'] = 'ملف محلي';
+$string['localfilechoose'] = 'اختر ملف محلي (قرص مدمج)';
+$string['localfilehelp'] = 'المساعدة لعرض الملفات المحلية';
+$string['localfileselect'] = 'اختر هذا المسار للملف';
 $string['maindirectory'] = 'مجلد الملفات الرئيسية';
 $string['modulename'] = 'مصدر';
 $string['modulenameplural'] = 'مصادر';
@@ -126,9 +129,5 @@ $string['vol'] = 'سعة';
 $string['warningblockingdelete'] = 'تحذير: تم حظر عملية الحذف من المصادر المتاحة.فإما أن تقوم بتحديث مصادرك أولاً او اطلب من المسؤول تعطيل هذة الآلية للأمان في تكوين المصادر العالمية .';
 $string['warningdisabledrename'] = 'تحذير: إعادة التسمية التلقائي للمراجع في المصادر معطلة.  الرجاء تحديث المصادر المتأثرة يدوياً إذا لزم الأمر. يمكن للمسؤول أيضاً إعادة تسمية تلقائياً في تكوين المصادر العالمية .';
 $string['websearchdefault'] = 'بحث الويب الافتراضي';
-$string['localfile'] = 'ملف محلي'; // ORPHANED
-$string['localfilechoose'] = 'اختر ملف محلي (قرص مدمج)'; // ORPHANED
-$string['localfilehelp'] = 'المساعدة لعرض الملفات المحلية'; // ORPHANED
-$string['localfileselect'] = 'اختر هذا المسار للملف'; // ORPHANED
 
 ?>

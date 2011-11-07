@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_manual.php,v 1.6 2010/04/22 16:37:24 danielneis Exp $ 
-      // enrol_manual.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// enrol_manual.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Este é o formulário padrão de inscrição. Existem dois modos de inscrever um estudante em um curso.
 <ul>

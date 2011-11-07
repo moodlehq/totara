@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_ldap.php - created with Moodle 1.8 Beta + (2007021400)
-
+<?php
+// enrol_ldap.php - created with Totara langimport script version 1.1
 
 $string['description'] = '<p>Sie können einen LDAP-Server nutzen, um die Anmeldung von Teilnehmer/innen in Kursen zu verwalten.</p>
 <p>Es wird angenommen, dass der LDAP-Baum Gruppen enthält, die zu Kursen gehören und dass jede/r der Gruppen/Kurse Einträge von Teilnehmer/innen hat.</p>

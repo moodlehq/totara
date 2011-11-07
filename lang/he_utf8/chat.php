@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // chat.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// chat.php - created with Totara langimport script version 1.1
 
 $string['autoscroll'] = 'גלילה אוטומטית';
 $string['beep'] = 'ציפצוף';

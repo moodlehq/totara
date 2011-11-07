@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // auth.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// auth.php - created with Totara langimport script version 1.1
 
 $string['CASform'] = 'Escolha de autenticação';
 $string['accesCAS'] = 'Usuários CAS';
@@ -330,8 +329,8 @@ $string['getanothercaptcha'] = 'Mudar imagem';
 $string['guestloginbutton'] = 'Botão de entrada como visitante';
 $string['incorrectpleasetryagain'] = 'Incorreto. Por favor, tente novamente.';
 $string['infilefield'] = 'Campos obrigatórios no arquivo';
-$string['informminpasswordlength'] = 'ao menos $a caracteres';
 $string['informminpassworddigits'] = 'ao menos $a dígito(s)';
+$string['informminpasswordlength'] = 'ao menos $a caracteres';
 $string['informminpasswordlower'] = 'ao menos $a letra(s) minúscula(s)';
 $string['informminpasswordnonalphanum'] = 'ao menos $a caracater(es) não alfanumérico';
 $string['informminpasswordupper'] = 'ao menos $a letra(s) maiúscula(s)';
@@ -359,6 +358,11 @@ $string['shib_no_attributes_error'] = 'Você usa autenticação Shibboleth mas o
 $string['shib_not_all_attributes_error'] = 'O Moodle precisa de alguns atributos Shibboleth que não foram fornecidos no seu caso. Os atributos são: $a<br /> Contate o webmaster deste servidor ou o Provedor da sua Identidade.';
 $string['shib_not_set_up_error'] = 'A autenticação Shibboleth não está configurada corretamente pois as variáveis de ambiente não estão presentes nesta página. Consulte o <a href=\"README.txt\">README</a> para melhores explicações sobre a configuração da autenticação Shibboleth ou contate o webmaster.';
 $string['showguestlogin'] = 'Você pode esconder ou mostrar o botão de entrada para visitantes na página de ingresso.';
+$string['sso_idp_description'] = 'Publique este serviço para que seus usuários possam visitar o site $a sem ter que logar novamente. <ul><li><em>Dependência</em>: Você deve também <strong>subscrever</strong> o SSO ( Provedor de Serviço) em $a.</li></ul><br />Subscreva este serviço para permitir aos usuários autenticados em $a o acesso ao seu site sem ter que logar novamente. <ul><li><em>Dependência</em>: Você deve também <strong>publicar</strong> o SSO (Provedor de serviço) para $a.</li></ul><br />';
+$string['sso_idp_name'] = 'SSO (Provedor de Identidade)';
+$string['sso_mnet_login_refused'] = 'Nome de Usuário $a[0] não tem permissão para logar a partir de $a[1].';
+$string['sso_sp_description'] = 'Publicar este serviço para permitir que usuários autenticados de $a tenham acesso ao seu site sem ter que logar novamente. <ul><li><em>Dependência</em>: Você deve também <strong>subscrever</strong> o serviço SSO (Provedor de Identidade) em $a.</li></ul><br />Subscreva este serviço para permitir que seus usuários visitem o site $a sem ter que logar novamente. <ul><li><em>Dependência</em>: Você deve também <strong>publicar</strong> o serviço SSO (Provedor de Identidade) em $a.</li></ul><br />';
+$string['sso_sp_name'] = 'SSO (Provedor do Serviço)';
 $string['stdchangepassword'] = 'Usar página standard para mudança de senha';
 $string['stdchangepassword_expl'] = 'Se o sistema de autenticação externa permitir mudanças de senha usando o Moodle, escolha SIM. Esta configuração ignora a \'URL para mudança de senha\'.';
 $string['stdchangepassword_explldap'] = 'ATENÇÃO: É recomendável o uso de LDAP em um túnel cifrado SSL (ldaps://) se o servidor LDAP for remoto.';
@@ -368,16 +372,5 @@ $string['update_never'] = 'Nunca';
 $string['update_oncreate'] = 'Quando for criado';
 $string['update_onlogin'] = 'Em cada login';
 $string['update_onupdate'] = 'Quando for atualizado';
-
-
-// Strings below here are module specific and will be duplicated in auth_* files
-// Module specific language strings should also be copied into their respective
-// auth_*.php files to ensure compatibility in all versions of Moodle
-
-$string['sso_idp_description'] = 'Publique este serviço para que seus usuários possam visitar o site $a sem ter que logar novamente. <ul><li><em>Dependência</em>: Você deve também <strong>subscrever</strong> o SSO ( Provedor de Serviço) em $a.</li></ul><br />Subscreva este serviço para permitir aos usuários autenticados em $a o acesso ao seu site sem ter que logar novamente. <ul><li><em>Dependência</em>: Você deve também <strong>publicar</strong> o SSO (Provedor de serviço) para $a.</li></ul><br />';
-$string['sso_idp_name'] = 'SSO (Provedor de Identidade)';
-$string['sso_mnet_login_refused'] = 'Nome de Usuário $a[0] não tem permissão para logar a partir de $a[1].';
-$string['sso_sp_description'] = 'Publicar este serviço para permitir que usuários autenticados de $a tenham acesso ao seu site sem ter que logar novamente. <ul><li><em>Dependência</em>: Você deve também <strong>subscrever</strong> o serviço SSO (Provedor de Identidade) em $a.</li></ul><br />Subscreva este serviço para permitir que seus usuários visitem o site $a sem ter que logar novamente. <ul><li><em>Dependência</em>: Você deve também <strong>publicar</strong> o serviço SSO (Provedor de Identidade) em $a.</li></ul><br />';
-$string['sso_sp_name'] = 'SSO (Provedor do Serviço)';
 
 ?>

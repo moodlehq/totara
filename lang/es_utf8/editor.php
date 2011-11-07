@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // editor.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'Acerca de este editor';
 $string['absbottom'] = 'Abajo';

@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_cas.php - created with Totara langimport script version 1.1
 
 $string['CASform'] = 'Val angående autenticering';
 $string['accesCAS'] = 'CAS-användare';
@@ -38,3 +36,5 @@ $string['auth_cas_version'] = 'CAS version';
 $string['auth_casdescription'] = 'Den här metoden använder en CAS-server (Central Authentication Service) för att autentisera användare i en Single Sign On environment (SSO). Du kan också använda enkel LDAP autenticering. Om ett visst givet annvändarnamn och lösenord är giltigt enligt CAS så lägger Moodle in en ny användare i sin databas, och hämtar användarens egenskaper (attribut) från LDAP om så krävs. Vid nästföljande inloggningar så kontrolleras bara användarnamnet och lösenordet.';
 $string['auth_casnotinstalled'] = 'Det går inte att använda autenticering med  CAS. PHP modulen för LDAP är inte installerad.';
 $string['auth_castitle'] = 'Använd en CAS-server (SSO)';
+
+?>

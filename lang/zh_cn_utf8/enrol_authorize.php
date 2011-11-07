@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_authorize.php - created with Moodle 1.8 dev (2006112200)
-
+<?php
+// enrol_authorize.php - created with Totara langimport script version 1.1
 
 $string['adminacceptccs'] = '接受哪种信用卡？';
 $string['adminaccepts'] = '请选择允许的支付方式和类型';

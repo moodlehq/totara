@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_ldap.php - created with Totara langimport script version 1.1
 
 $string['auth_ldap_auth_user_create_key'] = 'أنشاء المستخدمين خارجياً';
 $string['auth_ldap_bind_dn'] = 'إذا أردت استخدام وظيفة bind-user للبحث عن مستخدمين فيمكنك تعيين ذلك هنا، كأن تحدد مثلا: \'cn=ldapuser,ou=public,o=org\'';
@@ -40,3 +38,5 @@ $string['auth_ldapdescription'] = 'هذا الأسلوب يقدم التوثيق
 إذا كان كل من اسم المستخدم وكلمة المرور صحيحا فإن نظام Moodle يقوم بإنشاء إدخال مستخدم جديد في قاعدة بياناته. ويمكن لهذه الوحدة النمطية قراءة سمات المستخدم من بروتوكول الدخول على الدليل الخفيف LDAP  وملء الحقول المطلوبة في نظام Moodle  . ولا يحتاج عند الدخول لاحقا سوى إلى التحقق من اسم المستخدم وكلمة المرور.';
 $string['auth_ldapextrafields'] = 'هذه الحقول اختيارية، ويمكنك ملء بعض حقول المستخدم في نظام Moodle  مسبقا بالمعلومات من <b>حقول LDAP </b> التي تقوم بتحديدها هنا. <br />إذا تركت هذه الحقول فارغة فلن يتم نقل أي شيء من بروتوكول الدخول على الدليل الخفيف LDAP ، بل يتم استخدام الأوضاع الافتراضية الموجودة بنظام Moodle.<br />وفي كل الأحوال، فسوف يتمكن المستخدم من تعديل كل تلك الحقول بعد الدخول.';
 $string['auth_ldaptitle'] = 'استخدم مزود LDAP';
+
+?>

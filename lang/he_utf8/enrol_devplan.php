@@ -1,7 +1,5 @@
-<?PHP // $Id$
-      // enrol_devplan.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
-
+<?php
+// enrol_devplan.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'רכיב ההרשמה באמצעות תכניות התפתחות מגביל את ההרשמה האינטראקטיבית לקורסים. כשקורס משתמש בתוסף הרשמה זה, רק משתמשים שהקורס מופיע להם כמרכיב מאושר בתכנית ההתפתחות שלהם מורשים להירשם לקורס בעצמם.';
 $string['developmentplan'] = 'תכנית התפתחות';

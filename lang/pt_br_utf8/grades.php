@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // grades.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// grades.php - created with Totara langimport script version 1.1
 
 $string['activities'] = 'Atividades';
 $string['addcategory'] = 'Adicionar Categoria';
@@ -121,7 +120,7 @@ $string['configshowuseridnumber'] = 'Mostrar os ids de usuário numa coluna adic
 $string['configshowuserimage'] = 'Mostrar a imagem do perfil do usuário próximo ao seu nome no relatório de notas.';
 $string['configstudentsperpage'] = 'O número de estudantes a ser mostrado por página no relatório de notas.';
 $string['configstudentsperpagedefault'] = 'O número de estudantes a ser mostrado por página no relatório de notas. Deixe em branco para manter o padrão ($a).';
-$string['configunlimitedgrades'] = "Por padrão as notas são limitadas por valores máximos e mínimos do item de nota. Habilitar esta opção remove este limite e permite que notas acima de 100%% sejam incluídas diretamente no livro de notas. É recomendado que esta opção seja habilitada num momento fora de pico, pois todas as notas serão recalculadas, o que deve resultar em uma alta carga do sistema.";
+$string['configunlimitedgrades'] = 'Por padrão as notas são limitadas por valores máximos e mínimos do item de nota. Habilitar esta opção remove este limite e permite que notas acima de 100%% sejam incluídas diretamente no livro de notas. É recomendado que esta opção seja habilitada num momento fora de pico, pois todas as notas serão recalculadas, o que deve resultar em uma alta carga do sistema.';
 $string['contract'] = 'Categoria contratada';
 $string['controls'] = 'Controles';
 $string['courseavg'] = 'Média do curso';
@@ -173,6 +172,7 @@ $string['errorcalculationunknown'] = 'Fórmula inválida';
 $string['errorgradevaluenonnumeric'] = 'Recebido valor não numérico para nota baixa ou alta';
 $string['errornocalculationallowed'] = 'Cálculos não são permitidos para este item';
 $string['errornocategorisedid'] = 'Impossível obter id sem categoria!';
+$string['errornocategorizedid'] = 'Impossível obter um ID não categorizado';
 $string['errornocourse'] = 'Impossível obter informações do curso';
 $string['errorreprintheadersnonnumeric'] = 'Recebido valor não numérico para imprimir novamente os títulos';
 $string['errorsavegrade'] = 'Desculpe, mas não foi possível salvar as notas.';
@@ -255,8 +255,8 @@ $string['gradepreferenceshelp'] = 'Ajuda para preferências de avaliação';
 $string['gradepublishing'] = 'Habilitar publicar';
 $string['graderreport'] = 'Relatório de notas';
 $string['grades'] = 'Notas';
-$string['gradesonly'] = 'Só notas';
 $string['gradesforuser'] = 'Notas para $a->user';
+$string['gradesonly'] = 'Só notas';
 $string['gradessettings'] = 'Configurações de notas';
 $string['gradetype'] = 'Tipo de nota';
 $string['gradetypehelp'] = 'Especificar o tipo de nota usado: nenhuma (sem notas), limitado (permite configurações de máximo e mínimo), escala (permite configurações de escala) ou texto (somente feedback). Somente as limitadas e as de escala podem ser agregadas. O tipo de nota para um item de nota baseado em atividades é configurado na página de atualizações das atividades.';
@@ -422,10 +422,10 @@ $string['parentcategory'] = 'Categoria pai';
 $string['pctoftotalgrade'] = '%% da nota total';
 $string['percent'] = 'Percentual';
 $string['percentage'] = 'Porcentagem';
-$string['percentascending'] = 'Ordem crescente por porcentagem';
-$string['percentdescending'] = 'Ordem decrescente por porcentagem';
 $string['percentageletter'] = 'Porcentagem (letra)';
 $string['percentagereal'] = 'Porcentagem (real)';
+$string['percentascending'] = 'Ordem crescente por porcentagem';
+$string['percentdescending'] = 'Ordem decrescente por porcentagem';
 $string['percentshort'] = '%%';
 $string['plusfactor'] = 'Compensação';
 $string['plusfactorhelp'] = 'Valor que será somado a todas as notas desse item, após a aplicação do multiplicador.';
@@ -569,6 +569,5 @@ $string['writinggradebookinfo'] = 'Escrevendo configurações do Livro de notas'
 $string['xml'] = 'XML';
 $string['yes'] = 'Sim';
 $string['yourgrade'] = 'Sua nota';
-$string['errornocategorizedid'] = 'Impossível obter um ID não categorizado'; // ORPHANED
 
 ?>

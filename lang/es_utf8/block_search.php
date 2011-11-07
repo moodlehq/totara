@@ -1,6 +1,5 @@
-<?PHP // $Id: block_search.php,v 1.4 2010/06/20 18:19:48 barias Exp $ 
-      // block_search.php - created with Moodle 1.9.8 (Build: 20100325) (2007101580)
-
+<?php
+// block_search.php - created with Totara langimport script version 1.1
 
 $string['asynchronous'] = 'Asíncrono (Ajax)';
 $string['blockname'] = 'Búsqueda global';

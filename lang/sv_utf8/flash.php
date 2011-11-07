@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // flash.php - created with Moodle 1.6 development (2005090100)
-
+<?php
+// flash.php - created with Totara langimport script version 1.1
 
 $string['accesses'] = 'Tillgång till  Flash aktiviteter.';
 $string['allresultsheading'] = 'Lista över alla resultat från $a. Bara tillgängliga för (distans)lärare eller admin.';

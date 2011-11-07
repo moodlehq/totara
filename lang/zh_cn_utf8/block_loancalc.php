@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_loancalc.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// block_loancalc.php - created with Totara langimport script version 1.1
 
 $string['amountofloan'] = '借款数额';
 $string['fortnightly'] = '每半月';

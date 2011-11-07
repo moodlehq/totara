@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz_overview.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// quiz_overview.php - created with Totara langimport script version 1.1
 
 $string['allattempts'] = 'اظهار جميع المحاولات';
 $string['allattemptscontributetograde'] = 'جميع المحاولات المساهمة للدرجة النهائية للعضو.';

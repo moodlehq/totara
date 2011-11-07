@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_internal.php - created with Moodle 1.3.2 (2004052502)
-
+<?php
+// enrol_internal.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Detta &auml;r det vanligaste s&auml;ttet att registrera sig/n&aring;gon p&aring; kurser. Det finns huvudsakligen tv&aring; s&auml;tt p&aring; vilka en student/elev/deltagare/l&auml;rande kan bli registrerad p&aring; en viss given kurs.
 <ul>

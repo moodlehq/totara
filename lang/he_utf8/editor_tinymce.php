@@ -1,9 +1,6 @@
-﻿<?php
+<?php
+// editor_tinymce.php - created with Totara langimport script version 1.1
 
-//== Custom Moodle strings that are not part of upstream TinyMCE ==
-
-
-// == TinyMCE upstream lang strings from all plugins ==
 $string['advanced:address'] = 'כתובת';
 $string['advanced:anchor_delta_height'] = '';
 $string['advanced:anchor_delta_width'] = '';
@@ -330,7 +327,7 @@ $string['fullpage_dlg:meta_index_follow'] = 'Index and follow the links';
 $string['fullpage_dlg:meta_index_nofollow'] = 'Index and don\'t follow the links';
 $string['fullpage_dlg:meta_keywords'] = 'Keywords';
 $string['fullpage_dlg:meta_noindex_follow'] = 'Do not index but follow the links';
-$string['fullpage_dlg:meta_noindex_nofollow'] = 'Do not index and don\\\'t follow the links';
+$string['fullpage_dlg:meta_noindex_nofollow'] = 'Do not index and don\'t follow the links';
 $string['fullpage_dlg:meta_props'] = 'Meta information';
 $string['fullpage_dlg:meta_robots'] = 'Robots';
 $string['fullpage_dlg:meta_tab'] = 'כללי';
@@ -452,7 +449,7 @@ $string['media_dlg:prefetch'] = 'Prefetch';
 $string['media_dlg:preview'] = 'תצוגה מקדימה';
 $string['media_dlg:progress'] = 'Progress';
 $string['media_dlg:qt_options'] = 'אפשרויות Quicktime';
-$string['media_dlg:qt_stream_warn'] = 'Streamed rtsp resources should be added to the QT Src field under the advanced tab.\\nYou should also add a non streamed version to the Src field..';
+$string['media_dlg:qt_stream_warn'] = 'Streamed rtsp resources should be added to the QT Src field under the advanced tab.\nYou should also add a non streamed version to the Src field..';
 $string['media_dlg:qtsrc'] = 'QT Src';
 $string['media_dlg:qtsrcchokespeed'] = 'Choke speed';
 $string['media_dlg:quality'] = 'איכות הסרטון';
@@ -755,3 +752,5 @@ $string['xhtmlxtras_dlg:title_acronym_element'] = 'ראשי תיבות האלמ�
 $string['xhtmlxtras_dlg:title_cite_element'] = 'ציטוט אלמנט';
 $string['xhtmlxtras_dlg:title_del_element'] = 'מחיקת אלמנט';
 $string['xhtmlxtras_dlg:title_ins_element'] = 'הכנסת אלמנט';
+
+?>

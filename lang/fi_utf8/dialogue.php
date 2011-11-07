@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// dialogue.php - created with Totara langimport script version 1.1
+
 $string['addmynewentries'] = 'Lisää viestini';
 $string['addmynewentry'] = 'Lisää viestini';
 $string['addsubject'] = 'Lisää aihe';
@@ -67,4 +69,5 @@ $string['typefollowup'] = 'Kirjoita seuraavat tähän';
 $string['typeofdialogue'] = 'Dialogin tyyppi';
 $string['typereply'] = 'Kirjoita vastaus tähän';
 $string['viewallentries'] = 'Näytä $a dialogin viestit';
+
 ?>

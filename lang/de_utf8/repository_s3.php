@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_s3.php,v 1.2 2010/02/09 16:40:53 krause Exp $ 
-      // repository_s3.php - created with Moodle 2.0 dev (Build: 20100207) (2010020700)
-
+<?php
+// repository_s3.php - created with Totara langimport script version 1.1
 
 $string['access_key'] = 'Zugangsschlüssel';
 $string['configplugin'] = 'Einstellungen für Amazon S3';

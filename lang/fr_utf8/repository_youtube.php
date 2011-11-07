@@ -1,4 +1,5 @@
-<?php // $Id: repository_youtube.php,v 1.3 2009/08/12 10:41:00 martignoni Exp $
+<?php
+// repository_youtube.php - created with Totara langimport script version 1.1
 
 $string['repositoryname'] = 'Vidéos Youtube';
 $string['search'] = 'Recherche vidéos';

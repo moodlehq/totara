@@ -1,4 +1,5 @@
-<?php // $Id: block_mentees.php,v 1.2 2009/07/29 17:16:06 martignoni Exp $
+<?php
+// block_mentees.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Participants suivis';
 $string['configtitle'] = 'Titre du bloc';

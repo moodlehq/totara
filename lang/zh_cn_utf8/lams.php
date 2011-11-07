@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // lams.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// lams.php - created with Totara langimport script version 1.1
 
 $string['createSequence'] = '创建新的序列';
 $string['editSequence'] = '编辑选中的序列';
@@ -20,12 +19,12 @@ $string['openmonitor'] = '打开 LAMS 监视器';
 $string['refreshSequenceList'] = '刷性教学序列列表';
 $string['selectExistingSequence'] = '选择一个已经存在的序列或创建一个新的序列。';
 $string['sequence'] = '选择一个序列';
-$string['serverid'] = '输入从 <a href=\"http://www.lamsinternational.com\">LAMS international</a> 获得的服务器 ID';
 $string['server_id'] = '服务器 ID';
-$string['serverkey'] = '输入从 <a href=\"http://www.lamsinternational.com\">LAMS international</a> 获得的服务器密钥';
 $string['server_key'] = '服务器 Key';
-$string['serverurl'] = '输入访问LAMS服务器的基本URL。例如：http://localhost:8080/lams';
 $string['server_url'] = '服务器 URL';
+$string['serverid'] = '输入从 <a href=\"http://www.lamsinternational.com\">LAMS international</a> 获得的服务器 ID';
+$string['serverkey'] = '输入从 <a href=\"http://www.lamsinternational.com\">LAMS international</a> 获得的服务器密钥';
+$string['serverurl'] = '输入访问LAMS服务器的基本URL。例如：http://localhost:8080/lams';
 $string['useSequence'] = '使用选择的序列';
 $string['visibletostudents'] = '为学员显示活动';
 $string['wikistartederror'] = 'Wiki 已经输入了 - 不能修改';

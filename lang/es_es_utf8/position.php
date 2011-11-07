@@ -1,5 +1,5 @@
 <?php
-// position.php - created with Totara langimport script version 1.0
+// position.php - created with Totara langimport script version 1.1
 
 $string['adddepthlevel'] = 'Añadir un nuevo nivel de profundidad';
 $string['addedframework'] = 'La estructura del puesto de trabajo \"{$a}\" ha sido añadida';

@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // countries.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// countries.php - created with Totara langimport script version 1.1
 
 $string['AD'] = 'אנדורה';
 $string['AE'] = 'מדינות ערב המאוחדות';
@@ -51,6 +50,7 @@ $string['CM'] = 'קאמרון';
 $string['CN'] = 'סין';
 $string['CO'] = 'קולומביה';
 $string['CR'] = 'קוסטה ריקה';
+$string['CS'] = 'סרביה ומונטנגרו';
 $string['CU'] = 'קובה';
 $string['CV'] = 'קייפ ורדה';
 $string['CX'] = 'אי חג המולד';
@@ -75,6 +75,7 @@ $string['FK'] = 'איי פוקלנד (מאלוינאס)';
 $string['FM'] = 'מיקרונזיה';
 $string['FO'] = 'איי פרעה';
 $string['FR'] = 'צרפת';
+$string['FX'] = 'צרפת; המטרופולין';
 $string['GA'] = 'גבון';
 $string['GB'] = 'בריטניה';
 $string['GD'] = 'גרנדה';
@@ -119,6 +120,7 @@ $string['KH'] = 'קמבודיה';
 $string['KI'] = 'קיריבטי';
 $string['KM'] = 'קומורו';
 $string['KN'] = 'סיינט קיטס ונוויס';
+$string['KO'] = 'קוסובו';
 $string['KP'] = 'קוריאה - הרפובליקה העממית הדמוקרטית של';
 $string['KR'] = 'קוריאה - רפובליקת';
 $string['KW'] = 'כוויית';
@@ -221,6 +223,7 @@ $string['TL'] = 'טימור-לסטה';
 $string['TM'] = 'טורקמניסטן';
 $string['TN'] = 'טוניסיה';
 $string['TO'] = 'טונגה';
+$string['TP'] = 'מזרח טימור';
 $string['TR'] = 'טורקיה';
 $string['TT'] = 'טרינידד וטובגו';
 $string['TV'] = 'טובאלו';
@@ -239,18 +242,14 @@ $string['VG'] = 'איי הבתולה (בריטניה)';
 $string['VI'] = 'איי הבתולה (אמריקה)';
 $string['VN'] = 'ווייטנאם';
 $string['VU'] = 'ונואטו';
+$string['WA'] = 'וויילס';
 $string['WF'] = 'איי ווליס ופוטונה';
 $string['WS'] = 'סמואה';
 $string['YE'] = 'תימן';
 $string['YT'] = 'מאיוט';
 $string['ZA'] = 'דרום אפריקה';
 $string['ZM'] = 'זמביה';
+$string['ZR'] = 'זאיר';
 $string['ZW'] = 'זימבבואה';
-$string['CS'] = 'סרביה ומונטנגרו'; // ORPHANED
-$string['FX'] = 'צרפת; המטרופולין'; // ORPHANED
-$string['KO'] = 'קוסובו'; // ORPHANED
-$string['TP'] = 'מזרח טימור'; // ORPHANED
-$string['WA'] = 'וויילס'; // ORPHANED
-$string['ZR'] = 'זאיר'; // ORPHANED
 
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // choice.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// choice.php - created with Totara langimport script version 1.1
 
 $string['addmorechoices'] = 'Lägg till fler opinionsundersökningar';
 $string['allowupdate'] = 'Tillåt uppdatering av opinionsundersökning';

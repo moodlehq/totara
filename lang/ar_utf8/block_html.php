@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_html.php - created with Moodle 1.6 development (2005052400)
-
+<?php
+// block_html.php - created with Totara langimport script version 1.1
 
 $string['configcontent'] = 'محتوى';
 $string['configtitle'] = 'عنوان الكتلة';

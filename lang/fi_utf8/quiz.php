@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// quiz.php - created with Totara langimport script version 1.1
 
 $string['1day'] = '1 päivä';
 $string['1hour'] = '1 tunti';
@@ -212,6 +211,9 @@ $string['event7'] = 'Lähetä';
 $string['event8'] = 'Sulje';
 $string['event9'] = 'Käsin arviointi';
 $string['examview'] = 'Koenäkymä';
+$string['existingcategory1'] = 'Vakiomerkintä jo olemassa olevasta vakiomerkintäsarjasta, jota käyttävät myös muut tämän kategorian kysymykset.';
+$string['existingcategory2'] = 'Tiedosto jo olemassa olevasta tiedostosarjasta, jota käyttävät myös muut tämän kategorian kysymykset.';
+$string['existingcategory3'] = 'Linkki jo olemassa olevasta linkkisarjasta, jota käyttävät myös muut tämän kategorian kysymykset.';
 $string['export'] = 'Vie';
 $string['exportcategory'] = 'vientikategoria';
 $string['exporterror'] = 'Virhe viennissä';
@@ -305,6 +307,12 @@ $string['itemdefinition'] = 'Määrittely';
 $string['itemsource'] = 'Kohteen lähde';
 $string['itemsourceformat'] = 'Kohteen lähteen muoto';
 $string['itemtypes'] = 'Ulkopuoliset kysymystyypit';
+$string['keptcategory1'] = 'Vakiomerkintä samasta kategoriasta uudelleen käytettävien vakiomerkintöjen sarjaa kuin aiemminkin';
+$string['keptcategory2'] = 'Tiedosto samasta kategoriasta uudelleen käytettävien tiedostojen sarjaa kuin aiemminkin';
+$string['keptcategory3'] = 'Linkki samasta kategoriasta uudelleen käytettävien linkkien sarjaa kuin aiemminkin';
+$string['keptlocal1'] = 'Vakiomerkintä samasta luokasta yksityisten vakiomerkintöjen sarjaa kuin aiemminkin';
+$string['keptlocal2'] = 'Tiedosto samasta luokasta yksityisten tiedostojen sarjaa kuin aiemminkin';
+$string['keptlocal3'] = 'Linkki samasta luokasta yksityisten linkkien sarjaa kuin aiemminkin';
 $string['lastanswer'] = 'Viimeinen vastauksesi oli';
 $string['learnwise'] = 'Learnwise muoto';
 $string['link'] = 'Linkki';
@@ -344,6 +352,12 @@ $string['multipleanswers'] = 'Valitse ainakin yksi vastaus';
 $string['multiplier'] = 'Kerroin';
 $string['name'] = 'Nimi';
 $string['newattemptfail'] = 'Virhe: Ei voitu aloittaa uutta yritystä tenttiin';
+$string['newcategory1'] = 'Vakiomerkintä uudesta vakiomerkintöjen sarjasta, jota saattavat käyttää myös muut kysymykset tässä kategoriassa.';
+$string['newcategory2'] = 'Tiedosto uudesta tiedostojen sarjasta, jota saattavat käyttää myös muut kysymykset tässä kategoriassa.';
+$string['newcategory3'] = 'Linkki uudesta linkkien sarjasta, jota saattavat käyttää myös muut kysymykset tässä kategoriassa.';
+$string['newlocal1'] = 'Vakiomerkintä uudesta vakiomerkintöjen sarjasta, jota käyttää vain tämä kysymys.';
+$string['newlocal2'] = 'Tiedosto uudesta tiedostojen sarjasta, jota käyttää vain tämä kysymys.';
+$string['newlocal3'] = 'Linkki uudesta linkkien sarjasta, jota käyttää vain tämä kysymys.';
 $string['noanswers'] = 'Vastausta ei ole valittu!';
 $string['noattempts'] = 'Kukaan ei ole yrittänyt tätä tenttiä.';
 $string['noattemptstoshow'] = 'Näytettäviä yrityksiä ei ole';
@@ -609,20 +623,5 @@ $string['xmltypeunsupported'] = 'xml:n tuonti ei tue kysymystyyppiä $a';
 $string['youneedtoenrol'] = 'Sinun pitää reksteröityä tälle kurssille ennen kuin voit yrittää tätä tenttiä';
 $string['yourfinalgradeis'] = 'Lopullinen tuloksesi tästä tentistä on: $a';
 $string['zerosignificantfiguresnotallowed'] = 'Oikeassa vastauksessa ei voi olla nollaa merkitsevää lukua!';
-$string['existingcategory1'] = 'Vakiomerkintä jo olemassa olevasta vakiomerkintäsarjasta, jota käyttävät myös muut tämän kategorian kysymykset.'; // ORPHANED
-$string['existingcategory2'] = 'Tiedosto jo olemassa olevasta tiedostosarjasta, jota käyttävät myös muut tämän kategorian kysymykset.'; // ORPHANED
-$string['existingcategory3'] = 'Linkki jo olemassa olevasta linkkisarjasta, jota käyttävät myös muut tämän kategorian kysymykset.'; // ORPHANED
-$string['keptcategory1'] = 'Vakiomerkintä samasta kategoriasta uudelleen käytettävien vakiomerkintöjen sarjaa kuin aiemminkin'; // ORPHANED
-$string['keptcategory2'] = 'Tiedosto samasta kategoriasta uudelleen käytettävien tiedostojen sarjaa kuin aiemminkin'; // ORPHANED
-$string['keptcategory3'] = 'Linkki samasta kategoriasta uudelleen käytettävien linkkien sarjaa kuin aiemminkin'; // ORPHANED
-$string['keptlocal1'] = 'Vakiomerkintä samasta luokasta yksityisten vakiomerkintöjen sarjaa kuin aiemminkin'; // ORPHANED
-$string['keptlocal2'] = 'Tiedosto samasta luokasta yksityisten tiedostojen sarjaa kuin aiemminkin'; // ORPHANED
-$string['keptlocal3'] = 'Linkki samasta luokasta yksityisten linkkien sarjaa kuin aiemminkin'; // ORPHANED
-$string['newcategory1'] = 'Vakiomerkintä uudesta vakiomerkintöjen sarjasta, jota saattavat käyttää myös muut kysymykset tässä kategoriassa.'; // ORPHANED
-$string['newcategory2'] = 'Tiedosto uudesta tiedostojen sarjasta, jota saattavat käyttää myös muut kysymykset tässä kategoriassa.'; // ORPHANED
-$string['newcategory3'] = 'Linkki uudesta linkkien sarjasta, jota saattavat käyttää myös muut kysymykset tässä kategoriassa.'; // ORPHANED
-$string['newlocal1'] = 'Vakiomerkintä uudesta vakiomerkintöjen sarjasta, jota käyttää vain tämä kysymys.'; // ORPHANED
-$string['newlocal2'] = 'Tiedosto uudesta tiedostojen sarjasta, jota käyttää vain tämä kysymys.'; // ORPHANED
-$string['newlocal3'] = 'Linkki uudesta linkkien sarjasta, jota käyttää vain tämä kysymys.'; // ORPHANED
 
 ?>

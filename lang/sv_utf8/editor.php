@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // editor.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'Om den här redigeraren';
 $string['absbottom'] = 'Absbottom';
@@ -44,6 +43,7 @@ $string['heading'] = 'Rubrik';
 $string['height'] = 'Höjd';
 $string['hilitecolor'] = 'Bakgrundsfärg';
 $string['horizontal'] = 'Horisontell';
+$string['horizontalrule'] = 'Horisontell linje (linjal)';
 $string['htmlmode'] = 'Byt till  HTML-källa';
 $string['imageurl'] = 'URL till bild';
 $string['indent'] = 'Öka indrag';
@@ -86,6 +86,7 @@ $string['notimage'] = 'Vald fil är inte en bild. Var snäll och välj en bild!'
 $string['notset'] = 'Ej angivet';
 $string['ok'] = 'OK';
 $string['options'] = 'Alternativ';
+$string['orderedlist'] = 'Ordnad lista';
 $string['outdent'] = 'Minska indrag';
 $string['paste'] = 'Klistra in från \'Urklippshanteraren\'';
 $string['path'] = '(sök)väg';
@@ -98,6 +99,7 @@ $string['preview'] = 'Förhandsgranska';
 $string['properties'] = 'Egenskaper';
 $string['redo'] = 'Gör om Din senaste aktivitet';
 $string['regularexpressions'] = 'Använd reguljära uttryck';
+$string['removelink'] = 'Ta bort länk';
 $string['rename'] = 'Byt namn';
 $string['replaceall'] = 'Ersätt alla';
 $string['replacewith'] = 'Ersätt';
@@ -105,6 +107,7 @@ $string['right'] = 'Höger';
 $string['righttoleft'] = 'Läs- och skrivriktning från höger till vänster';
 $string['rows'] = 'Rader';
 $string['search_replace'] = 'Sök och ersätt';
+$string['searchandreplace'] = 'Sök och ersätt';
 $string['searchnotfound'] = 'Det gick inte att hitta det Du sökte';
 $string['selectcolor'] = 'Välj färg';
 $string['selection'] = 'Urval';
@@ -123,15 +126,11 @@ $string['type'] = 'Skriv in';
 $string['underline'] = 'Understrykning';
 $string['undo'] = 'Ångra senaste aktivitet';
 $string['unlink'] = 'Ta bort länk';
+$string['unorderedlist'] = 'Lista med \'ringar\'';
 $string['upload'] = 'Ladda upp';
 $string['vertical'] = 'Vertikal';
 $string['width'] = 'Bredd';
+$string['wordclean'] = 'Rensa HTML skapad med Word';
 $string['zip'] = 'Zip';
-$string['horizontalrule'] = 'Horisontell linje (linjal)'; // ORPHANED
-$string['orderedlist'] = 'Ordnad lista'; // ORPHANED
-$string['removelink'] = 'Ta bort länk'; // ORPHANED
-$string['searchandreplace'] = 'Sök och ersätt'; // ORPHANED
-$string['unorderedlist'] = 'Lista med \'ringar\''; // ORPHANED
-$string['wordclean'] = 'Rensa HTML skapad med Word'; // ORPHANED
 
 ?>

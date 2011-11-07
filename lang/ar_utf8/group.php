@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // group.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// group.php - created with Totara langimport script version 1.1
 
 $string['addgroupstogrouping'] = 'إضافة مجموعة إلى المجموعات';
 $string['addgroupstogroupings'] = 'إضافة/حذف مجموعة';
@@ -14,6 +13,7 @@ $string['badnamingscheme'] = 'يجب أن تحتوي على حرف واحد ،@�
 $string['byfirstname'] = 'أبجديا بالاسم الأول, الاسم الأخير';
 $string['byidnumber'] = 'أبجديا برقم الهوية';
 $string['bylastname'] = 'أبجديا بالاسم الأخير , الاسم الأول';
+$string['cancel'] = 'إلغاء';
 $string['createautomaticgrouping'] = 'إنشاء تجمع تلقائي';
 $string['creategroup'] = 'إنشاء مجموعة';
 $string['creategrouping'] = 'إنشاء تجمع';
@@ -24,6 +24,7 @@ $string['databaseupgradegroups'] = 'إصدار المجموعات هو $a';
 $string['defaultgrouping'] = 'التجمع الافتراضي';
 $string['defaultgroupingname'] = 'التجمع';
 $string['defaultgroupname'] = 'مجموعة';
+$string['defaultgroupprefix'] = 'مجموعة';
 $string['deleteallgroupings'] = 'حذف كل التجمعات';
 $string['deleteallgroups'] = 'حذف كل المجموعات';
 $string['deletegroupconfirm'] = 'هل أنت متأكد من حذف المجموعة $a?';
@@ -105,6 +106,7 @@ $string['removegroupfromselectedgrouping'] = 'حذف مجموعة من التج�
 $string['removegroupingsmembers'] = 'حذف جميع المجموعات من التجمعات';
 $string['removegroupsmembers'] = 'حذف جميع أعضاء المجموعة';
 $string['removeselectedusers'] = 'حذف المستخدمين المحددين';
+$string['save'] = 'حفظ';
 $string['selectfromrole'] = 'حدد أعضاء من الوظيفة';
 $string['showgroupsingrouping'] = 'عرض المجموعات في التجمع';
 $string['showmembersforgroup'] = 'عرض أعضاء المجموعة';
@@ -112,8 +114,5 @@ $string['toomanygroups'] = 'عدد المستخدمين غير كاف لملء �
 $string['usercount'] = 'عد المستخدم';
 $string['usercounttotal'] = 'عد المستخدم ($a)';
 $string['usergroupmembership'] = 'عضوية المستخدم المختارة:';
-$string['cancel'] = 'إلغاء'; // ORPHANED
-$string['defaultgroupprefix'] = 'مجموعة'; // ORPHANED
-$string['save'] = 'حفظ'; // ORPHANED
 
 ?>

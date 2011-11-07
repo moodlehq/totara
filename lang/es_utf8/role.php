@@ -1,6 +1,5 @@
-<?PHP // $Id: role.php,v 1.21 2009/01/18 18:20:04 barias Exp $ 
-      // role.php - created with Moodle 1.8.2+ (2007021520)
-
+<?php
+// role.php - created with Totara langimport script version 1.1
 
 $string['addrole'] = 'Añadir un nuevo rol';
 $string['allow'] = 'Permitir';
@@ -27,8 +26,12 @@ $string['category:update'] = 'Actualizar categorías';
 $string['category:visibility'] = 'Ver categorías ocultas';
 $string['course:activityvisibility'] = 'Ocultar/mostrar actividades';
 $string['course:bulkmessaging'] = 'Enviar un mensaje a mucha gente';
+$string['course:changefullname'] = 'Cambiar el nombre completo del curso';
+$string['course:changeidnumber'] = 'Cambiar el número ID del curso';
+$string['course:changeshortname'] = 'Cambiar el nombre corto del curso';
 $string['course:create'] = 'Crear cursos';
 $string['course:delete'] = 'Eliminar cursos';
+$string['course:downloadallgrades'] = 'Descargar todas las calificaciones';
 $string['course:manageactivities'] = 'Gestionar actividades';
 $string['course:managefiles'] = 'Gestionar archivos';
 $string['course:managegrades'] = 'Gestionar calificaciones';
@@ -41,11 +44,13 @@ $string['course:setcurrentsection'] = 'Ajustar sección actual';
 $string['course:update'] = 'Actualizar ajustes de curso';
 $string['course:useremail'] = 'Habilitar/deshabilitar dirección email';
 $string['course:view'] = 'Ver cursos';
+$string['course:viewallgrades'] = 'Ver todas las calificaciones';
 $string['course:viewcoursegrades'] = 'Ver calificaciones de curso';
 $string['course:viewhiddenactivities'] = 'Ver actividades ocultas';
 $string['course:viewhiddencourses'] = 'Ver cursos ocultos';
 $string['course:viewhiddensections'] = 'Ver secciones ocultas';
 $string['course:viewhiddenuserfields'] = 'Ver campos de usuario ocultos';
+$string['course:viewowngrades'] = 'Ver las calificaciones propias';
 $string['course:viewparticipants'] = 'Ver participantes';
 $string['course:viewscales'] = 'Ver escalas';
 $string['course:visibility'] = 'Ocultar/mostrar cursos';
@@ -67,6 +72,7 @@ $string['existingusers'] = '$a usuarios existentes';
 $string['globalrole'] = 'Rol global';
 $string['globalroleswarning'] = '¡ATENCIÓN! Cualesquiera roles que asigne desde esta página se aplicarán a los usuarios asignados en todo el sitio, incluyendo la portada y todos los cursos.';
 $string['grade:edit'] = 'Editar calificaciones';
+$string['grade:editlocked'] = 'Editar calificaciones bloqueadas';
 $string['grade:export'] = 'Exportar calificaciones';
 $string['grade:hide'] = 'Ocultar calificación';
 $string['grade:import'] = 'Importar calificaciones';
@@ -116,7 +122,10 @@ $string['question:add'] = 'Agregar nuevas preguntas';
 $string['question:config'] = 'Configurar tipos de pregunta';
 $string['question:editall'] = 'Editar todas las preguntas';
 $string['question:editmine'] = 'Editar sus propias preguntas';
+$string['question:export'] = 'Exportar preguntas';
 $string['question:flag'] = 'Marcar preguntas mientras se intentan';
+$string['question:import'] = 'Importar preguntas';
+$string['question:manage'] = 'Gestionar preguntas';
 $string['question:managecategory'] = 'Gestionar categorías de preguntas';
 $string['question:moveall'] = 'Mover todas las preguntas';
 $string['question:movemine'] = 'Mover sus propias preguntas';
@@ -186,15 +195,5 @@ $string['userhashiddenassignments'] = 'Este usuario tiene una o más tareas de r
 $string['userswithrole'] = 'Todos los usuarios con rol';
 $string['viewrole'] = 'Ver detalles del rol';
 $string['xuserswiththerole'] = 'Usuarios con el rol \"$a->role\": $a->number';
-$string['question:export'] = 'Exportar preguntas'; // ORPHANED
-$string['question:import'] = 'Importar preguntas'; // ORPHANED
-$string['question:manage'] = 'Gestionar preguntas'; // ORPHANED
-$string['course:downloadallgrades'] = 'Descargar todas las calificaciones'; // ORPHANED
-$string['course:viewallgrades'] = 'Ver todas las calificaciones'; // ORPHANED
-$string['course:viewowngrades'] = 'Ver las calificaciones propias'; // ORPHANED
-$string['grade:editlocked'] = 'Editar calificaciones bloqueadas'; // ORPHANED
-$string['course:changefullname'] = 'Cambiar el nombre completo del curso';
-$string['course:changeidnumber'] = 'Cambiar el número ID del curso';
-$string['course:changeshortname'] = 'Cambiar el nombre corto del curso';
 
 ?>

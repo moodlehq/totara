@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // mediaplugin.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// mediaplugin.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'Multimedia-Plugins';
 $string['flashanimation'] = 'Flash-Animation';

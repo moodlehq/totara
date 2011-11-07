@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // auth.php - created with Moodle 1.9.8 (Build: 20100325) (2007101580)
-
+<?php
+// auth.php - created with Totara langimport script version 1.1
 
 $string['CASform'] = 'Opción de autenticación';
 $string['accesCAS'] = 'Usuarios CAS';
@@ -312,6 +311,7 @@ $string['chooseauthmethod'] = 'Escoger un método de autenticación:';
 $string['createpasswordifneeded'] = 'Crear contraseña si es necesario';
 $string['enterthenumbersyouhear'] = 'Escriba los números que oye';
 $string['enterthewordsabove'] = 'Escriba las palabras de arriba';
+$string['errormaxconsecutiveidentchars'] = 'Las contraseñas deben tener como máximo $a caracteres consecutivos idénticos';
 $string['errorminpassworddigits'] = 'Las contraseñas deben tener al menos $a dígito(s).';
 $string['errorminpasswordlength'] = 'Las contraseñas deben tener al menos una longitud de $a caracteres.';
 $string['errorminpasswordlower'] = 'Las contraseñas deben tener al menos $a minúscula(s).';
@@ -357,6 +357,11 @@ $string['shib_no_attributes_error'] = 'Usted parece haber sido autentificado por
 $string['shib_not_all_attributes_error'] = 'Moodle necesita ciertos atributos Shibboleth que no están presentes en su caso. Los atributos son: $a<br />Por favor, contacte con el webmaster de este servidor o con su proveedor de identidad.';
 $string['shib_not_set_up_error'] = 'La autentificación Shibboleth no parece ser correcta debido a que en esta página no están presentes las variables contextuales Shibboleth. Por favor, consulte el archivo <a href=\"README.txt\">README</a> si desea más instrucciones sobre cómo definir la autentificación Shibboleth, o contacte con el webmaster de esta instalación de Moodle.';
 $string['showguestlogin'] = 'Puede ocultar o mostrar el botón de entrada para invitados en la página de acceso.';
+$string['sso_idp_description'] = 'Publique este servicio para permitir a sus usuarios divagar al sitio Moodle $a sin tener que reiniciar sesión allí. <ul><li><em>Dependencia</em>: Usted debe también <strong>suscribirse</strong> al servicio SSO (Proveedor de servicios) en $a.</li></ul><br />Suscríbase a este servicio para permitir a los usuarios autenticados de $a acceder a su sitio sin tener que reiniciar sesión. <ul><li><em>Dependencia</em>: Usted debe también <strong>publicar</strong> el servicio SSO (proveedor de servicios) a $a.</li></ul><br />';
+$string['sso_idp_name'] = 'SSO (Proveedor de Identidad)';
+$string['sso_mnet_login_refused'] = 'Al nombre de usuario $a[0] no le es permitido iniciar sesión desde $a[1].';
+$string['sso_sp_description'] = 'Publique este servicio para permitir a usuarios autenticados acceder a su sitio desde $a sin tener que reinciar sesión.<ul><li><em>Dependecia</em>: Usted debe también <strong>subscribirse</strong> al servicio SSO (Proveedor de identidad) en $a.</li></ul><br />Suscríbase a este servicio para permitir a sus usuarios divagar al sitio Moodle $a sin tener que reiniciar sesión allí. <ul><li><em>Dependencia</em>: Usted debe también <strong>publicar</strong> el servicio SSO (Proveedor de identidad) a $a.</li></ul><br />';
+$string['sso_sp_name'] = 'SSO (Proveedor de Servicios)';
 $string['stdchangepassword'] = 'Utilizar Página de cambio de contraseña estándar';
 $string['stdchangepassword_expl'] = 'Si el sistema de autenticación externa permite cambios de contraseña en Moodle, seleccione Sí. Este ajuste pasa por alto \'Cambiar contraseña URL\'.';
 $string['stdchangepassword_explldap'] = 'NOTA: Se recomienda que utilice LDAP sobre un túnel encriptado SSL (ldaps://) si el servidor LDAP es remoto.';
@@ -366,13 +371,7 @@ $string['update_never'] = 'Nunca';
 $string['update_oncreate'] = 'Al crearse';
 $string['update_onlogin'] = 'En cada acceso';
 $string['update_onupdate'] = 'Al actualizar';
-$string['errormaxconsecutiveidentchars'] = 'Las contraseñas deben tener como máximo $a caracteres consecutivos idénticos'; // ORPHANED
-$string['user_activatenotsupportusertype'] = 'auth: ldap user_activate() no admite el tipo de usuario seleccionado: $a'; // ORPHANED
-$string['user_disablenotsupportusertype'] = 'auth: ldap user_disable() no admite el tipo de usuario seleccionado (...aún)'; // ORPHANED
-$string['sso_idp_description'] = 'Publique este servicio para permitir a sus usuarios divagar al sitio Moodle $a sin tener que reiniciar sesión allí. <ul><li><em>Dependencia</em>: Usted debe también <strong>suscribirse</strong> al servicio SSO (Proveedor de servicios) en $a.</li></ul><br />Suscríbase a este servicio para permitir a los usuarios autenticados de $a acceder a su sitio sin tener que reiniciar sesión. <ul><li><em>Dependencia</em>: Usted debe también <strong>publicar</strong> el servicio SSO (proveedor de servicios) a $a.</li></ul><br />'; // ORPHANED
-$string['sso_idp_name'] = 'SSO (Proveedor de Identidad)'; // ORPHANED
-$string['sso_mnet_login_refused'] = 'Al nombre de usuario $a[0] no le es permitido iniciar sesión desde $a[1].'; // ORPHANED
-$string['sso_sp_description'] = 'Publique este servicio para permitir a usuarios autenticados acceder a su sitio desde $a sin tener que reinciar sesión.<ul><li><em>Dependecia</em>: Usted debe también <strong>subscribirse</strong> al servicio SSO (Proveedor de identidad) en $a.</li></ul><br />Suscríbase a este servicio para permitir a sus usuarios divagar al sitio Moodle $a sin tener que reiniciar sesión allí. <ul><li><em>Dependencia</em>: Usted debe también <strong>publicar</strong> el servicio SSO (Proveedor de identidad) a $a.</li></ul><br />'; // ORPHANED
-$string['sso_sp_name'] = 'SSO (Proveedor de Servicios)'; // ORPHANED
+$string['user_activatenotsupportusertype'] = 'auth: ldap user_activate() no admite el tipo de usuario seleccionado: $a';
+$string['user_disablenotsupportusertype'] = 'auth: ldap user_disable() no admite el tipo de usuario seleccionado (...aún)';
 
 ?>

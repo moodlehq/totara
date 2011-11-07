@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// resource.php - created with Totara langimport script version 1.1
 
 $string['addresource'] = 'Acrescentar um recurso';
 $string['affectedresources'] = 'Recursos atingidos';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // currencies.php - created with Moodle 1.9 dev (2007080103)
-
+<?php
+// currencies.php - created with Totara langimport script version 1.1
 
 $string['AED'] = 'Vereinigte Arabische Emirate Dirham';
 $string['AFA'] = 'Afghanistan Afghani';
@@ -99,6 +98,7 @@ $string['NPR'] = 'Nepalese Rupee';
 $string['NZD'] = 'New Zealand Dollar';
 $string['OMR'] = 'Omani Rial';
 $string['PAB'] = 'Panamanian Balboa';
+$string['PEI'] = 'Peruvian Inti';
 $string['PEN'] = 'Neue Sol';
 $string['PGK'] = 'Papua New Guinea Kina';
 $string['PHP'] = 'Philippinische Peso';
@@ -143,6 +143,5 @@ $string['YER'] = 'Yemeni Rial';
 $string['ZAR'] = 'South African Rand';
 $string['ZMK'] = 'Zambian Kwacha';
 $string['ZWD'] = 'Zimbabwe Dollar';
-$string['PEI'] = 'Peruvian Inti'; // ORPHANED
 
 ?>

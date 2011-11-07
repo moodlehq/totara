@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_multianswer.php,v 1.4 2009/04/26 10:11:49 barias Exp $ 
-      // qtype_multianswer.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// qtype_multianswer.php - created with Totara langimport script version 1.1
 
 $string['addingmultianswer'] = 'Agregando respuestas anidadas (Cloze)';
 $string['correctanswer'] = 'Respuesta correcta';

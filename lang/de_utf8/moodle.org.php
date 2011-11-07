@@ -1,6 +1,5 @@
-<?PHP // $Id: moodle.org.php,v 1.4 2009/12/23 22:13:03 krause Exp $ 
-      // moodle.org.php - created with Moodle 1.9.7+ (Build: 20091218) (2007101570)
-
+<?php
+// moodle.org.php - created with Totara langimport script version 1.1
 
 $string['aboutdemosite'] = 'Unsere Demo-Website ist eine vollständige Moodle-Instanz mit Beispielkursen, die Sie in den Rollen Trainer, Teilnehmer und Administrator ausprobieren können. Haben Sie bitte keine Sorge, dabei etwas kaputt zu machen ... die Website wird jede Stunde auf einen ordentlichen Zustand zurückgesetzt.';
 $string['aboutdemositetitle'] = 'Demo-Website';

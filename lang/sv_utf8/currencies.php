@@ -1,7 +1,7 @@
-<?PHP // $Id$ 
-      // currencies.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+<?php
+// currencies.php - created with Totara langimport script version 1.1
 
-
+$string['ADP'] = 'Andorranska pesetas';
 $string['AED'] = 'F&ouml;renade Arabemiraten dirham';
 $string['AFA'] = 'Afghanistan Afghani';
 $string['ALL'] = 'Albanska lek';
@@ -15,10 +15,12 @@ Netherlands Antillian Guilder
 Netherlands Antillian Guilder';
 $string['AON'] = 'Angolan New Kwanza';
 $string['ARA'] = 'Argentinian Nuevo Peso';
+$string['ATS'] = 'Österrikiska schilling';
 $string['AUD'] = 'Australiensiska dollar';
 $string['AWG'] = 'Aruban Florin';
 $string['BBD'] = 'Barbados Dollar';
 $string['BDT'] = 'Bangladeshi Taka';
+$string['BEF'] = 'Belgiska franc';
 $string['BGL'] = 'Bulgariska lev';
 $string['BHD'] = 'Bahraini Dinar';
 $string['BIF'] = 'Burundi Franc';
@@ -40,24 +42,31 @@ $string['CNY'] = 'Yuan (kinesiska) renminbi';
 $string['COP'] = 'Colombianska pesos';
 $string['CRC'] = 'Costa Rican Colon';
 $string['CSD'] = 'Serbiska Dinar';
+$string['CSK'] = 'Tjeckiska kronor';
 $string['CUP'] = 'Kubanska pesos';
 $string['CVE'] = 'Escudo Caboverdiano';
 $string['CYP'] = 'Cyprus Pound';
 $string['CZK'] = 'Tjeckiska Kronor';
+$string['DDM'] = 'DDR mark';
+$string['DEM'] = 'Tyska mark';
 $string['DJF'] = 'Djibouti Franc';
 $string['DKK'] = 'Danska kronor';
 $string['DOP'] = 'Dominikanska pesos';
 $string['DZD'] = 'Algeriska dinarer';
 $string['EGP'] = 'Egyptiska pund';
+$string['ESP'] = 'Spanska pesetas';
 $string['ETB'] = 'Ethiopiska Birr';
 $string['EUR'] = 'Euro';
+$string['FIM'] = 'Finska mark';
 $string['FJD'] = 'Fiji Dollar';
 $string['FKP'] = 'Falklands&ouml;arna pund';
+$string['FRF'] = 'Franska franc';
 $string['GBP'] = 'Brittiska pund';
 $string['GHC'] = 'Ghanaian Cedi';
 $string['GIP'] = 'Gibraltar Pound';
 $string['GMD'] = 'Gambiska Dalasi';
 $string['GNF'] = 'Guinea Franc';
+$string['GRD'] = 'Grekiska drakmer';
 $string['GTQ'] = 'Guatemala Quetzal';
 $string['GWP'] = 'Guinea-Bissau Peso';
 $string['GYD'] = 'Guyanan Dollar';
@@ -71,6 +80,7 @@ $string['INR'] = 'Indiska rupees';
 $string['IQD'] = 'Irakiska dinarer';
 $string['IRR'] = 'Iranska rial';
 $string['ISK'] = 'Isl&auml;ndska kronor';
+$string['ITL'] = 'Italienska lire';
 $string['JMD'] = 'Jamaikanska dollar';
 $string['JOD'] = 'Jordanska dinarer';
 $string['JPY'] = 'Japanska yen';
@@ -97,6 +107,7 @@ $string['MUR'] = 'Mauritius Rupee';
 $string['MVR'] = 'Maldiv Rufiyaa';
 $string['MWK'] = 'Malawi Kwacha';
 $string['MXN'] = 'Mexicanska Peso';
+$string['MXP'] = 'Mexikanska pesos';
 $string['MYR'] = 'Malaysian Ringgit';
 $string['MZM'] = 'Mozambique Metical';
 $string['NGN'] = 'Nigeria Naira';
@@ -136,11 +147,13 @@ $string['TND'] = 'Tunisiska dinarer';
 $string['TOP'] = 'Tonga Pa\'anga';
 $string['TPE'] = 'Öst Timor Escudo';
 $string['TRL'] = 'Turkiska Lira';
+$string['TRY'] = 'Nya turkiska lira';
 $string['TTD'] = 'Trinidad and Tobago Dollar';
 $string['TWD'] = 'Taiwanesiska dollar';
 $string['TZS'] = 'Tanzania Schilling';
 $string['UGS'] = 'Uganda Shilling';
 $string['USD'] = 'USA dollar';
+$string['UYP'] = 'Uruguayanska pesos';
 $string['UYU'] = 'Uruguay New Peso';
 $string['VEB'] = 'Venezuela Bolivar';
 $string['VND'] = 'Vietnam Dong';
@@ -150,19 +163,5 @@ $string['YER'] = 'Yemeni Riyal';
 $string['ZAR'] = 'Sydafrikanska rand';
 $string['ZMK'] = 'Zambian Kwacha';
 $string['ZWD'] = 'Zimbabwe Dollar';
-$string['ADP'] = 'Andorranska pesetas'; // ORPHANED
-$string['ATS'] = 'Österrikiska schilling'; // ORPHANED
-$string['BEF'] = 'Belgiska franc'; // ORPHANED
-$string['CSK'] = 'Tjeckiska kronor'; // ORPHANED
-$string['DDM'] = 'DDR mark'; // ORPHANED
-$string['DEM'] = 'Tyska mark'; // ORPHANED
-$string['ESP'] = 'Spanska pesetas'; // ORPHANED
-$string['FIM'] = 'Finska mark'; // ORPHANED
-$string['FRF'] = 'Franska franc'; // ORPHANED
-$string['GRD'] = 'Grekiska drakmer'; // ORPHANED
-$string['ITL'] = 'Italienska lire'; // ORPHANED
-$string['MXP'] = 'Mexikanska pesos'; // ORPHANED
-$string['TRY'] = 'Nya turkiska lira'; // ORPHANED
-$string['UYP'] = 'Uruguayanska pesos'; // ORPHANED
 
 ?>

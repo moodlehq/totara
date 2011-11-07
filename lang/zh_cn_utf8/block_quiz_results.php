@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_quiz_results.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// block_quiz_results.php - created with Totara langimport script version 1.1
 
 $string['bestgrade'] = '最高分';
 $string['bestgrades'] = '$a 个最高分：';

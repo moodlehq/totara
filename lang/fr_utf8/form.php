@@ -1,4 +1,5 @@
-<?php // $Id: form.php,v 1.24 2009/04/10 19:28:52 martignoni Exp $
+<?php
+// form.php - created with Totara langimport script version 1.1
 
 $string['addfields'] = 'Ajouter $a champs au formulaire';
 $string['advancedelement'] = 'Élément supplémentaire';
@@ -11,7 +12,6 @@ $string['err_maxlength'] = 'Vous ne pouvez pas taper plus de $a->format caractè
 $string['err_minlength'] = 'Vous devez taper au moins $a->format caractères dans ce champ.';
 $string['err_nonzero'] = 'Vous ne devez pas saisir de nombre commençant par 0 dans ce champ.';
 $string['err_nopunctuation'] = 'Vous ne devez saisir aucune ponctuation dans ce champ.';
-$string['err_numeric'] = 'Vous devez saisir un nombre dans ce champ.';
 $string['err_numeric'] = 'Vous devez spécifier un nombre dans ce champ.';
 $string['err_rangelength'] = 'Vous devez taper entre {$a->format[0]} et {$a->format[1]} caractères dans ce champ.';
 $string['err_required'] = 'Vous devez remplir ce champ.';
@@ -28,7 +28,7 @@ $string['nonexistentformelements'] = 'Tentative d\'ajout de bouton d\'aide à de
 $string['optional'] = 'Facultatif';
 $string['othersettings'] = 'Autres réglages';
 $string['requiredelement'] = 'Champ requis';
-$string['revealpassword'] = 'Révéler'; // Legacy, to remove for 1.9 and above ?
+$string['revealpassword'] = 'Révéler';
 $string['security'] = 'Sécurité';
 $string['selectallornone'] = 'Tout/ne rien sélectionner';
 $string['showadvanced'] = 'Afficher éléments supplémentaires';

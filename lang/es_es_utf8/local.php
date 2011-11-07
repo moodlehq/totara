@@ -1,5 +1,5 @@
 <?php
-// local.php - created with Totara langimport script version 1.0
+// local.php - created with Totara langimport script version 1.1
 
 $string['allf2fbookings'] = 'Todas las inscripciones presenciales';
 $string['alllearningrecords'] = 'Todos los registros de formación';

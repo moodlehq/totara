@@ -1,5 +1,5 @@
 <?php
-// local.php - created with Totara langimport script version 1.0
+// local.php - created with Totara langimport script version 1.1
 
 $string['addanothercolumn'] = 'Añadir otra columna...';
 $string['addcompetencyevidence'] = 'Agregar registro evidencia de competencia';

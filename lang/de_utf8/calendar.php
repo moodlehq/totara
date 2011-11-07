@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // calendar.php - created with Moodle 2.0 dev (Build: 20100114) (2010011400)
-
+<?php
+// calendar.php - created with Totara langimport script version 1.1
 
 $string['advancedoptions'] = 'Erweiterte Optionen';
 $string['allday'] = 'ganztägig';

@@ -1,5 +1,5 @@
-<?PHP // $Id$ 
-      // chat.php - created with Moodle 1.7 beta + (2006101003)
+<?php
+// chat.php - created with Totara langimport script version 1.1
 
 $string['autoscroll'] = '自动滚动';
 $string['beep'] = '呼叫';
@@ -33,8 +33,8 @@ $string['explainmethodnormal'] = '这些设置<strong>只有</strong>在您选�
 $string['generalconfig'] = '常规设置';
 $string['helpchatting'] = '聊天室帮助';
 $string['idle'] = '空闲';
-$string['list_complete_sessions'] = '仅列出完整会话。';
 $string['list_all_sessions'] = '列出所有会话。';
+$string['list_complete_sessions'] = '仅列出完整会话。';
 $string['listing_all_sessions'] = '正在列出所有会话。';
 $string['messagebeepseveryone'] = '$a 呼叫所有人';
 $string['messagebeepsyou'] = '$a 呼叫您';
@@ -64,12 +64,12 @@ $string['repeatdaily'] = '每天的此刻';
 $string['repeatnone'] = '不重复';
 $string['repeattimes'] = '重复时间';
 $string['repeatweekly'] = '每周的此刻';
+$string['savemessages'] = '保存聊天记录的时间';
+$string['seesession'] = '查看聊天记录';
 $string['serverhost'] = '服务器名称';
 $string['serverip'] = '服务器 IP';
 $string['servermax'] = '最大用户数';
 $string['serverport'] = '服务器端口';
-$string['savemessages'] = '保存聊天记录的时间';
-$string['seesession'] = '查看聊天记录';
 $string['sessions'] = '聊天记录';
 $string['strftimemessage'] = '%%H:%%M';
 $string['studentseereports'] = '是否所有人都可查看聊天记录';

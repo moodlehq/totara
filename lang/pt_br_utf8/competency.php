@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // competency.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://www.educmedia.com.br/online
-
+<?php
+// competency.php - created with Totara langimport script version 1.1
 
 $string['achieved'] = 'alcançado';
 $string['addassignedcompetencies'] = 'atribuir competências';

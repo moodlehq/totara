@@ -1,7 +1,6 @@
-<?php // $Id: debug.php,v 1.24 2009/12/14 09:22:14 mudrd8mz Exp $
-/*
- * debug information for developer only
- */
+<?php
+// debug.php - created with Totara langimport script version 1.1
+
 $string['authpluginnotfound'] = 'Méthode d\'authentification $a introuvable.';
 $string['blocknotexist'] = 'Le bloc $a n\'existe pas';
 $string['cannotbenull'] = '$a ne peut pas être nul !';

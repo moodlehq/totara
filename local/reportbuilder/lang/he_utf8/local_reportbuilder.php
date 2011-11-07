@@ -1,5 +1,5 @@
 <?php
-// local_reportbuilder.php - created with Totara langimport script version 1.0
+// local_reportbuilder.php - created with Totara langimport script version 1.1
 
 $string['access'] = 'גישה';
 $string['accessbyrole'] = 'הגבל גישה לפי תפקיד';
@@ -133,6 +133,7 @@ $string['error:nopermissionsforscheduledreport'] = 'שגיאת דוח מתוזמ
 $string['error:norolesfound'] = 'לא נמצאו תפקידים';
 $string['error:nosavedsearches'] = 'לדוח זה עדיין אין כל חיפושים שמורים';
 $string['error:nosources'] = 'לא נמצאו מקורות. אתה חייב לפחות מקור אחד לפני שתוכל להוסיף דוחות. בקש מהמפתח שלך להוסיף את הקבצים הדורשים לבסיס הקוד.';
+$string['error:problemobtainingreportdata'] = 'הייתה בעיה בקבלת נתונים עבור דוח זה';
 $string['error:propertyxmustbesetiny'] = 'מאפיין \"{$a->property}\" חייב להיות מוגדר בסוג \"{$a->class}\"';
 $string['error:savedsearchnotdeleted'] = 'לא ניתן למחוק את החיפוש השמור';
 $string['error:unknownbuttonclicked'] = 'כפתור לא ידוע נלחץ';

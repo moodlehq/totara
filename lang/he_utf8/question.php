@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // question.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// question.php - created with Totara langimport script version 1.1
 
 $string['adminreport'] = 'דווח על בעיות אפשריות במסד הנתונים של שאלותיך';
 $string['broken'] = 'זהו \"קישור שבור\" - הוא מצביע על קובץ שאיננו קיים';

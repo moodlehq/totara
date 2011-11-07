@@ -1,9 +1,9 @@
-<?PHP // $Id$ 
-      // hotpot.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// hotpot.php - created with Totara langimport script version 1.1
 
 $string['abandoned'] = '放弃';
 $string['addquizchain'] = '添加一系列测验';
+$string['allmycourses'] = '我所有的课程';
 $string['allusers'] = '所有用户';
 $string['alwaysopen'] = '一直开放';
 $string['attemptsall'] = '所有试答';
@@ -108,8 +108,6 @@ $string['reportexercisename'] = '练习名称';
 $string['reportexercisenumber'] = '练习';
 $string['reportexercisetype'] = '练习类型';
 $string['reportformat'] = '格式';
-$string['allmycourses'] = '我所有的课程'; //necessary for 1.6 and older
-$string['allusers'] = '所有用户';
 $string['reportformatexcel'] = 'Excel';
 $string['reportformathtml'] = 'HTML';
 $string['reportformattext'] = '文本';
@@ -151,7 +149,7 @@ $string['textsourcefilename'] = '用文件名';
 $string['textsourcefilepath'] = '用文件路径';
 $string['textsourcequiz'] = '从测验中获得';
 $string['textsourcespecific'] = '特殊的文本';
-$string['thiscourse'] = '本课程'; //necessary for 1.6 and older
+$string['thiscourse'] = '本课程';
 $string['timedout'] = '超时';
 $string['updatequizchain'] = '更新测验系列';
 $string['weighting'] = '加权';

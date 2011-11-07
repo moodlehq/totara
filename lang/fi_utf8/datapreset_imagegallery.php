@@ -1,3 +1,6 @@
-<?PHP // $Id: datapreset_imagegallery.php,v 1.2 2008/11/21 01:32:24 samulik Exp $
+<?php
+// datapreset_imagegallery.php - created with Totara langimport script version 1.1
+
 $string['modulename'] = 'Kuvagalleria';
+
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_authorize.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// enrol_authorize.php - created with Totara langimport script version 1.1
 
 $string['adminacceptccs'] = 'ما هو نوع بطاقة الأئيمان الذي سيتم مقبول؟';
 $string['adminaccepts'] = 'اختر طريق التسديد المسموح بها وأنواعها';

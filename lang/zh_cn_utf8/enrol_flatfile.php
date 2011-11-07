@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_flatfile.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// enrol_flatfile.php - created with Totara langimport script version 1.1
 
 $string['description'] = '在这种方式中，Moodle重复地检查并处理一个特殊格式的文本文件，它的位置由您指定。文件格式如下：
 <pre>

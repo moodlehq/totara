@@ -1,6 +1,5 @@
-<?php // $Id: enrol_manual.php,v 1.5 2009/04/10 19:28:51 martignoni Exp $ 
-
-$string['enrolname'] = 'Inscription interne';
+<?php
+// enrol_manual.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Contrôle des inscriptions par défaut. Un étudiant peut essentiellement être inscrit dans un cours de deux façons :
 <ul>
@@ -11,6 +10,7 @@ $string['enrol_manual_requirekey'] = 'Exiger une clef d\'inscription pour les no
 $string['enrol_manual_showhint'] = 'Activez ce réglage pour révéler le premier caractère de la clef d\'inscription à titre d\'indication, quand un utilisateur saisit une clef incorrecte.';
 $string['enrol_manual_usepasswordpolicy'] = 'Utiliser les règles de mot de passe actuelles pour les clefs d\'inscription aux cours.';
 $string['enrolmentkeyerror'] = 'La clef d\'inscription n\'est pas correcte. Veuillez essayez à nouveau.';
-$string['keyholderrole' ] = 'Le rôle de l\'utilisateur détenant la clef d\'inscription d\'un cours. Affiché pour les étudiants tentant de s\'inscrire au cours.';
+$string['enrolname'] = 'Inscription interne';
+$string['keyholderrole'] = 'Le rôle de l\'utilisateur détenant la clef d\'inscription d\'un cours. Affiché pour les étudiants tentant de s\'inscrire au cours.';
 
 ?>

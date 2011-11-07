@@ -1,6 +1,5 @@
-<?php // $Id$ 
-
-$string['enrolname'] = 'Fichier plat';
+<?php
+// enrol_flatfile.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Cette méthode permet une vérification systématique à partir d\'un fichier texte spécialement mis en forme disposé à un emplacement que vous choisissez. Le fichier est en format CSV (séparateurs virgules) avec 4 ou 6 champs par ligne, à savoir :
 <pre>
@@ -22,10 +21,11 @@ Cela pourrait par exemple ressembler à ceci :
     del, student, 17, CF101
     add, student, 21, CF101, 1091115000, 1091215000
 </pre>';
-$string['filelockedmailsubject'] = 'Erreur importante : fichier d\'inscriptions';
+$string['enrolname'] = 'Fichier plat';
 $string['filelockedmail'] = 'Le fichier texte que vous utilisez pour l\'inscription ($a) ne pourra pas être effacé par le cron. Cela signifie la plupart du temps que ses permissions ne sont pas correctement réglées. Veuillez corriger ces permissions, de sorte que Moodle puisse effacer le fichier. Sans cela les inscriptions pourraient être effectuées à plusieurs reprises.';
+$string['filelockedmailsubject'] = 'Erreur importante : fichier d\'inscriptions';
 $string['location'] = 'Emplacement du fichier';
-$string['mailusers'] = 'Avertir les utilisateurs par courriel';
 $string['mailadmin'] = 'Avertir l\'administrateur par courriel';
+$string['mailusers'] = 'Avertir les utilisateurs par courriel';
 
 ?>

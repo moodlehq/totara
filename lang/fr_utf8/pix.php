@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// pix.php - created with Totara langimport script version 1.1
 
 $string['angry'] = 'fâché';
 $string['approve'] = 'approbateur';
@@ -19,6 +20,6 @@ $string['surprise'] = 'surprise';
 $string['thoughtful'] = 'pensif';
 $string['tongueout'] = 'langue tirée';
 $string['wideeyes'] = 'yeux grands ouverts';
-$string['wink'] = 'clin d&#8217;oeil'; // Workaround wink emoticon insertion problem with HTML Editor
+$string['wink'] = 'clin d&#8217;oeil';
 
 ?>

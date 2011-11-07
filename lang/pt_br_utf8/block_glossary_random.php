@@ -1,5 +1,5 @@
 <?php
-
+// block_glossary_random.php - created with Totara langimport script version 1.1
 
 $string['addentry'] = 'Adicione um novo item!';
 $string['askaddentry'] = 'Quando os usuários adicionar itens ao glossário, mostrar um link com este texto';

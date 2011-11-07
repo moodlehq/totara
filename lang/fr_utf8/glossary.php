@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// glossary.php - created with Totara langimport script version 1.1
 
 $string['addcomment'] = 'Ajouter un commentaire';
 $string['addentry'] = 'Ajouter un nouvel article';
@@ -13,7 +14,7 @@ $string['allowprintview'] = 'Autoriser l\'affichage pour impression';
 $string['allowratings'] = 'Autoriser l\'évaluation des articles';
 $string['answer'] = 'Réponse';
 $string['approve'] = 'Approuver';
-$string['areaintro'] = 'Descriptif du glossaire'; // Obsolete as of 2.0dev
+$string['areaintro'] = 'Descriptif du glossaire';
 $string['areyousuredelete'] = 'Voulez-vous vraiment supprimer cet article :';
 $string['areyousuredeletecomment'] = 'Voulez-vous vraiment supprimer ce commentaire ?';
 $string['areyousureexport'] = 'Voulez-vous vraiment exporter cet article vers';
@@ -46,8 +47,8 @@ $string['cnflinkentry'] = 'Définit si un article est par défaut automatiquemen
 $string['cnflinkglossaries'] = 'Définit si un glossaire doit par défaut être lié';
 $string['cnfrelatedview'] = 'Définit le format d\'affichage utilisé pour les fenêtres surgissantes lors du clic sur les liens automatiques et l\'affichage des articles';
 $string['cnfshowgroup'] = 'Indique si une coupure entre les groupes doit être affichée ou non';
-$string['cnfsortkey']     = 'Définit la clef de tri par défaut';
-$string['cnfsortorder']   = 'Définit l\'ordre de tri par défaut';
+$string['cnfsortkey'] = 'Définit la clef de tri par défaut';
+$string['cnfsortorder'] = 'Définit l\'ordre de tri par défaut';
 $string['cnfstudentcanpost'] = 'Définit si les étudiants peuvent par défaut proposer des articles dans un glossaire ';
 $string['comment'] = 'Commentaire';
 $string['commentdeleted'] = 'Le commentaire a été effacé.';
@@ -57,7 +58,7 @@ $string['commentupdated'] = 'Le commentaire a été modifié.';
 $string['concept'] = 'Concept';
 $string['concepts'] = 'Concepts';
 $string['configenablerssfeeds'] = 'Activation de l\'option des flux RSS pour tous les glossaires. Il est en outre nécessaire d\'activer manuellement les flux RSS dans les réglages de chaque glossaire.';
-$string['current']= 'Tri actuellement $a';
+$string['current'] = 'Tri actuellement $a';
 $string['currentglossary'] = 'Glossaire actuel';
 $string['date'] = 'date';
 $string['dateview'] = 'Consulter par date';
@@ -78,7 +79,7 @@ $string['displayformat'] = 'Format d\'affichage';
 $string['displayformatcontinuous'] = 'Continu sans auteur';
 $string['displayformatdictionary'] = 'Simple, style dictionnaire';
 $string['displayformatencyclopedia'] = 'Encyclopédie';
-$string['displayformatentrylist'] =  'Liste d\'articles';
+$string['displayformatentrylist'] = 'Liste d\'articles';
 $string['displayformatfaq'] = 'FAQ';
 $string['displayformatfullwithauthor'] = 'Complet avec auteur';
 $string['displayformatfullwithoutauthor'] = 'Complet sans auteur';

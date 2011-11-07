@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_calculated.php,v 1.6 2010/07/21 08:33:17 emanuel1 Exp $
-      // qtype_calculated.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// qtype_calculated.php - created with Totara langimport script version 1.1
 
 $string['addmoreanswerblanks'] = 'הוסף מרוח נוסף לתשובה.';
 $string['addmoreunitblanks'] = 'הוספת $a יחידות משתנים נוספות';
@@ -24,17 +23,9 @@ $string['nosharedwildcard'] = 'בקטגוריה זו אין תווים כללי�
 $string['possiblehdr'] = 'תווים כללים אפשריים נמצאים רק בטקסט של השאלה';
 $string['tolerance'] = 'מרווח סובלנות &plusmn;';
 $string['trueanswerinsidelimits'] = 'תשובה נכונה מצויה בטווח ערכים בין $a->correct ל- $a->true';
-$string['trueansweroutsidelimits'] = '<span class=\"error\"> שגיאה בתשובה הנכונה: $a->correct מחוץ לגבולות ערך ה\"אמת\" $a->true</span>';
+$string['trueansweroutsidelimits'] = '<span class=\"error\">טעות. תשובה נכונה: $a->correct מחוץ לגבולות של הערך האמיתי $a->true</span>';
 $string['updatecategory'] = 'עדכן את הקטגוריה';
 $string['usedinquestion'] = 'משמש בשאלה';
 $string['youmustenteramultiplierhere'] = 'כאן חובה עלייך להכניס מכפיל';
-
-?>
-<?PHP // $Id$
-      // qtype_calculated.php - created with Moodle 1.9.5+ (Build: 20090624) (2007101550)
-
-
-
-$string['trueansweroutsidelimits'] = '<span class=\"error\">טעות. תשובה נכונה: $a->correct מחוץ לגבולות של הערך האמיתי $a->true</span>';
 
 ?>

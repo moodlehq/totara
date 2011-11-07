@@ -1,6 +1,5 @@
-<?PHP // $Id: block_videoconference.php,v 1.1 2007/10/26 10:59:28 barias Exp $ 
-      // block_videoconference.php - created with Moodle 1.8.2+ (2007021520)
-
+<?php
+// block_videoconference.php - created with Totara langimport script version 1.1
 
 $string['expand'] = 'Expandir';
 $string['finishVirtualRoom'] = 'Terminar Sala Virtual';

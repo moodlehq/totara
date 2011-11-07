@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// local.php - created with Totara langimport script version 1.1
 
 $string['addanothercolumn'] = 'הוסף טור נוסף';
 $string['addcompetencyevidence'] = 'הוסף רשומת סימוכין לכשירות';
@@ -96,7 +95,10 @@ $string['local:deletepositioncustomfield'] = 'מחק שדה מותאם אישי�
 $string['local:deletepositiondepth'] = 'מחק רמת עומק של תפקיד';
 $string['local:deletepositionframeworks'] = 'מחק מסגרת של תפקיד';
 $string['local:deletepositiontype'] = 'מחק סוג תפקיד';
+$string['local:editclassifications'] = 'ערוך סיווגי קורסים';
+$string['local:editcourseclassification'] = 'ערוך סיווג של קורס';
 $string['local:markcomplete'] = 'סמן משתמש כמי שהשלים ביצוע קורס';
+$string['local:searchclassifications'] = 'חפש בסיווגים';
 $string['local:updatecompetency'] = 'עדכן כשירות';
 $string['local:updatecompetencycustomfield'] = 'עדכן שדה מותאם אישית לכשירות';
 $string['local:updatecompetencydepth'] = 'עדכן רמת עומק של כשירות';
@@ -175,8 +177,5 @@ $string['timecompleted'] = 'זמן ההשלמה';
 $string['type'] = 'סוג';
 $string['typeicon'] = 'צלמית סוג';
 $string['viewmyteam'] = 'הצג את הצוות שלי';
-$string['local:editclassifications'] = 'ערוך סיווגי קורסים'; // ORPHANED
-$string['local:editcourseclassification'] = 'ערוך סיווג של קורס'; // ORPHANED
-$string['local:searchclassifications'] = 'חפש בסיווגים'; // ORPHANED
 
 ?>

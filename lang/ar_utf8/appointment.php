@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // appointment.php - created with Moodle 1.6 Beta 1 (2006032900)
-
+<?php
+// appointment.php - created with Totara langimport script version 1.1
 
 $string['allowresubmit'] = 'السماح بإعادة التسليم';
 $string['appointmentdetails'] = 'تفاصيل الموعد';

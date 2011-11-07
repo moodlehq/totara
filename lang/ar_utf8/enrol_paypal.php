@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_paypal.php - created with Moodle 1.8 dev (2006120700)
-
+<?php
+// enrol_paypal.php - created with Totara langimport script version 1.1
 
 $string['business'] = 'عنوان بريدك الإلكتروني لحسابك Paypal التجاري.';
 $string['costorkey'] = 'الرجاء اختيار أحد الطرق التالية للنضمام.';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// quiz.php - created with Totara langimport script version 1.1
 
 $string['acceptederror'] = 'Error aceptado';
 $string['addingquestions'] = 'Esta parte de la página es donde se maneja la base de datos de preguntas. Las preguntas se guardan en categorías para ayudarle a mantenerlas organizadas, y pueden usarse para cualquier cuestionario en su curso o incluso en otros cursos si usted escoge \"publicarlos\". <br /> <br />Después de que seleccione o cree una categoría de preguntas podrá crear o editar preguntas. Puede seleccionar cualquiera de estas preguntas para añadirlas a su cuestionario en el otro lado de esta página.';

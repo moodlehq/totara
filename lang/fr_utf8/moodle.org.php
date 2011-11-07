@@ -1,4 +1,5 @@
-<?php   // $Id: moodle.org.php,v 1.3 2009/12/30 19:11:54 martignoni Exp $
+<?php
+// moodle.org.php - created with Totara langimport script version 1.1
 
 $string['aboutdemosite'] = 'Notre site de démonstration est un site Moodle complet avec quelques échantillons de cours que vous pouvez tester en tant qu\'enseignant, étudiant ou même en tant qu\'administrateur. N\'hésitez pas à expérimenter comme vous le voulez : le site est totalement remis en état toutes les heures. Aucun problème si vous y provoquez le chaos !';
 $string['aboutdemositetitle'] = 'Site de démonstration';
@@ -19,21 +20,21 @@ $string['communityintro'] = 'Moodle possède une communauté d\'utilisateurs vas
 $string['conferencecenter'] = 'Centre de congrès Moodle';
 $string['connectedsites'] = 'Certains sites Moodle sont connectés à moodle.org via le réseau Moodle. Vous pouvez ainsi vous connecter directement à ces sites si vous vous êtes authentifié ici.';
 $string['connectedsitestitle'] = 'Sites connectés';
+$string['contactbugs'] = 'Vous pouvez annoncer des problèmes détectés dans le logiciel Moodle et sur les sites web de moodle.org en créant un nouveau rapport dans le traqueur de bogues de Moodle.';
+$string['contactbugstitle'] = 'Annonce de bogue';
 $string['contactintro'] = 'Veuillez sélectionner l\'une des options de contact suivantes :';
 $string['contactlogin'] = 'Pour toutes les autres demandes, connectez-vous sur ce site et utilisez le formulaire de contact apparaissant sur cette page.';
-$string['contactsent'] = 'Votre message a été envoyé par courriel au gestionnaire de la communauté Moodle.';
-$string['contactsupporttitle'] = 'Assistance';
-$string['contactsupport'] = 'Pour de l\'assistance à l\'utilisation du logiciel Moodle, veuillez consulter notre page d\'assistance, qui propose de nombreuses ressources propres à vous aider.';
-$string['contactmoodleorgtitle'] = 'Moodle.org';
-$string['contactmoodleorgemail'] = 'Pour des problèmes liés à la confirmation de votre compte sur moodle.org, envoyez un courriel à cette adresse :';
-$string['contactmoodleorgother'] = 'Pour toute autre demande, veuillez utiliser le formulaire de contact ci-dessous.';
-$string['contactmoodleorglogin'] = 'Se connecter sur ce site';
-$string['contactmoodlecomtitle'] = 'Moodle.com';
 $string['contactmoodlecom'] = 'Pour toute demande liée aux questions de licence, de marque déposée ou à des questions commerciales, ainsi que pour des développements majeurs de Moodle, veuillez contacter le centre d\'assistance <a href=\"http://moodle.com/\">moodle.com</a>';
 $string['contactmoodlecomhelpdesk'] = 'Centre d\'assistance moodle.com';
-$string['contactbugstitle'] = 'Annonce de bogue';
-$string['contactbugs'] = 'Vous pouvez annoncer des problèmes détectés dans le logiciel Moodle et sur les sites web de moodle.org en créant un nouveau rapport dans le traqueur de bogues de Moodle.';
+$string['contactmoodlecomtitle'] = 'Moodle.com';
+$string['contactmoodleorgemail'] = 'Pour des problèmes liés à la confirmation de votre compte sur moodle.org, envoyez un courriel à cette adresse :';
+$string['contactmoodleorglogin'] = 'Se connecter sur ce site';
+$string['contactmoodleorgother'] = 'Pour toute autre demande, veuillez utiliser le formulaire de contact ci-dessous.';
+$string['contactmoodleorgtitle'] = 'Moodle.org';
 $string['contactsecurity'] = 'Les problèmes de sécurité peuvent également être annoncés de manière sécurisée dans le traqueur de bogues, en indiquant de façon adéquate le niveau de sécurité supposé.';
+$string['contactsent'] = 'Votre message a été envoyé par courriel au gestionnaire de la communauté Moodle.';
+$string['contactsupport'] = 'Pour de l\'assistance à l\'utilisation du logiciel Moodle, veuillez consulter notre page d\'assistance, qui propose de nombreuses ressources propres à vous aider.';
+$string['contactsupporttitle'] = 'Assistance';
 $string['developercontributors'] = 'Crédits';
 $string['developerlist'] = 'Liste complète des développeurs avec accès en écriture';
 $string['developermeetings'] = 'Réunion des développeurs';
@@ -63,9 +64,9 @@ $string['downloadwin'] = 'Si vous ne disposez pas d\'un serveur web déjà insta
 $string['downloadwintitle'] = 'Moodle pour Windows';
 $string['events'] = 'Nous sommes spécialisés dans l\'apprentissage en ligne. Cependant, c\'est aussi très sympathique de se rencontrer dans un même endroit ! Ces liens vous proposent des informations sur nos congrès ou conférences (appelées « MoodleMoots ») et d\'autres événements.';
 $string['eventstitle'] = 'Événements';
-$string['frontpagewelcometitle'] = 'Bienvenue dans la communauté Moodle !';
 $string['frontpagewelcome1'] = 'Moodle est un environnement d\'apprentissage libre (Learning Management System ou LMS). C\'est une application web gratuite que les acteurs de l\'éducation peuvent utiliser pour créer des sites d\'apprentissage efficaces.';
 $string['frontpagewelcome2'] = 'Moodle.org est le site de notre communauté, où l\'on discute de la création et de l\'utilisation de Moodle. Utilisez les menus pour explorer et nous rejoindre !';
+$string['frontpagewelcometitle'] = 'Bienvenue dans la communauté Moodle !';
 $string['generaldeveloperforum'] = 'Forum général des développeurs';
 $string['jobs'] = 'Visitez notre base de données d\'emplois pour des informations sur des postes en lien avec Moodle, dans le monde entier.';
 $string['jobstitle'] = 'Emplois Moodle';
@@ -144,3 +145,5 @@ $string['supportforumslist'] = 'Nous avons également beaucoup d\'autres forums,
 $string['supportforumslistname'] = 'Liste de tous les forums';
 $string['supportforumstitle'] = 'Forums';
 $string['supportintro'] = 'Vous n\'êtes pas tout seul ! Il y a une multitude de façons d\'obtenir de l\'aide sur Moodle si vous en avez besoin.';
+
+?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz_analysis.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// quiz_analysis.php - created with Totara langimport script version 1.1
 
 $string['analysis'] = '单项分析';
 $string['analysisdownload'] = '下载分析';

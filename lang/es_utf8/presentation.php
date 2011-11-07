@@ -1,6 +1,5 @@
-<?PHP // $Id: presentation.php,v 1.1 2008/01/06 11:14:23 barias Exp $ 
-      // presentation.php - created with Moodle 1.8.2+ (2007021520)
-
+<?php
+// presentation.php - created with Totara langimport script version 1.1
 
 $string['button_back_slide'] = 'Atrás';
 $string['button_continue'] = 'Continuar';

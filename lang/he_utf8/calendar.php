@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // calendar.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// calendar.php - created with Totara langimport script version 1.1
 
 $string['advancedoptions'] = 'אפשרויות מתקדמות';
 $string['allday'] = 'כל היום';
@@ -14,7 +13,7 @@ $string['course'] = 'קורס';
 $string['courseevent'] = 'ארוע קורס';
 $string['courseevents'] = 'ארועי קורס';
 $string['courses'] = 'קורסים';
-$string['dayview'] = 'תצוגה יומוית';
+$string['dayview'] = 'תצוגה יומית';
 $string['daywithnoevents'] = 'אין ארועים ביום זה';
 $string['default'] = 'ברירת מחדל';
 $string['deleteevent'] = 'מחק ארוע';
@@ -49,8 +48,8 @@ $string['eventview'] = 'פרטי אירוע';
 $string['expired'] = 'פג תוקף';
 $string['explain_lookahead'] = 'ערך זה קובע מהו מספר הימים (המירבי) שיכול לחלוף עד לתחילת האירוע כדי שהאירוע עדיין ייחשב כאירוע קרב. אירועים שעד לתחילתם ישנו מספר גדול יותר של ימים, לעולם לא יוצגו כ\'קרבים\'. אנא שים לב כי <strong>כי אין שום ערובה</strong> כי כל האירועים המתחילים במסגרת זמן זו יוצגו. אם ישנם יותר מדי אירועים, (יותר מהעדפת \"מירב האירועים הקרבים\") אז האירועים הרחוקים ביותר לא יוצגו.';
 $string['explain_maxevents'] = 'ערך זה קובע את המספר המירבי של אירועים קרבים שניתן להציג. אם תבחר כאן מספר גדול, יתכן שתצוגות של אירועים קרבים ימלאו חלק גדול מחלל הצג שלך.';
-$string['explain_persistflt'] = 'אם אפשרות זו מופעלת, Moodle יזכור את הגדרות הסינון של הארוע האחרון שלך וישחזר אותם באופן אוטומטי בכל פעם שתכנס לחשבון.';
-$string['explain_site_timeformat'] = 'באפשרותך לראות את הזמנים עבור האתר כולו בתבנית של 12 או 24 שעות. אם תבחר ב\"ברירת מחדל\",פורמט יבחר אוטומטית על פי שפת האתר. ניתן לעקוף הגדרה זו על ידי העדפות משתמש.';
+$string['explain_persistflt'] = 'אם אפשרות זו מופעלת, המערכת תזכור את הגדרות הסינון של הארוע האחרון שלך וישחזר אותם באופן אוטומטי בכל פעם שתכנס לחשבון.';
+$string['explain_site_timeformat'] = 'באפשרותך לראות את הזמנים עבור האתר כולו בפורמט של 12 או 24 שעות. אם תבחר ב\"ברירת מחדל\", אז הפורמט ייבחר אוטומטית על פי השפה בה אתה משתמש באתר. את הגדרה זו ניתן לעקוף על ידי העדפות משתמש.';
 $string['explain_startwday'] = 'בחר ביום בו יתחילו השבועות בלוח שנה.';
 $string['explain_timeformat'] = 'אתה יכול לבחור לראות זמנים במבנה של 12 או 24 שעות. אם תבחר ב\"ברירת מחדל\", המבנה ייבחר אוטומטית לפי השפה בה אתה משתמש באתר.';
 $string['export'] = 'יצוא';
@@ -60,8 +59,8 @@ $string['for'] = 'ל';
 $string['fri'] = 'ו';
 $string['friday'] = 'שישי';
 $string['generateurlbutton'] = 'צור כתובת אינטרנט ללוח השנה';
-$string['global'] = 'מערכתי';
-$string['globalevent'] = 'ארוע מערכתי';
+$string['global'] = 'כולל';
+$string['globalevent'] = 'ארוע כולל';
 $string['globalevents'] = 'ארועים מערכתיים';
 $string['gotocalendar'] = 'תצוגת לוח שנה';
 $string['group'] = 'קבוצה';
@@ -87,7 +86,7 @@ $string['pref_timeformat'] = 'מבנה תצוגת הזמן';
 $string['preferences'] = 'העדפות';
 $string['preferences_available'] = 'העדפותיך האישיות';
 $string['quickdownloadcalendar'] = 'הורדה מהירה או הירשם ללוח שנה';
-$string['recentupcoming'] = '60 הימים שזה עתה חלפו ו60 הימים הבאים';
+$string['recentupcoming'] = '60 הימים שזה עתה חלפו ו- 60 הימים הבאים';
 $string['repeateditall'] = 'החל את השינויים לכל אירועי $a בסדרה חוזרת זו';
 $string['repeateditthis'] = 'החל את השינוי על ארוע זה בלבד';
 $string['repeatnone'] = 'אין חזרות';
@@ -110,46 +109,27 @@ $string['tt_editevent'] = 'ערוך ארוע';
 $string['tt_hidecourse'] = 'ארועי הקורס מוצגים (לחץ כדי להסתיר)';
 $string['tt_hideglobal'] = 'ארועים מערכתיים מוצגים (לחץ כדי להסתיר)';
 $string['tt_hidegroups'] = 'ארועים קבוצתיים מוצגים (לחץ כדי להסתיר)';
-$string['tt_hideuser'] = 'ארועי משתמשים מוצגים (לחץ כדי להסתיר)';
+$string['tt_hideuser'] = 'ארועים שלי (לחץ כדי להסתיר)';
 $string['tt_showcourse'] = 'ארועי הקורס מוסתרים (לחץ כדי להציג)';
 $string['tt_showglobal'] = 'ארועים מערכתיים מוסתרים (לחץ כדי להציג)';
 $string['tt_showgroups'] = 'ארועים קבוצתיים מוסתרים (לחץ כדי להציג)';
-$string['tt_showuser'] = 'ארועי משתמשים מוסתרים (לחץ כדי להציג)';
+$string['tt_showuser'] = 'ארועים שלי מוסתרים (לחץ כדי להציג)';
 $string['tue'] = 'ג';
 $string['tuesday'] = 'שלישי';
 $string['typecourse'] = 'ארוע קורס';
 $string['typegroup'] = 'ארוע קבוצתי';
 $string['typesite'] = 'ארוע כלל מערכתי';
-$string['typeuser'] = 'ארוע משתמש';
+$string['typeuser'] = 'ארוע שלי';
 $string['upcomingevents'] = 'ארועים קרבים';
 $string['urlforical'] = 'כתובת ה-URL ליצוא לוח השנה iCalendar, כדי להירשם ללוח השנה.';
-$string['user'] = 'משתמש';
-$string['userevent'] = 'ארוע משתמש';
-$string['userevents'] = 'ארועי משתמשים';
+$string['user'] = 'שלי';
+$string['userevent'] = 'ארוע שלי';
+$string['userevents'] = 'ארועים שלי';
 $string['wed'] = 'ד';
 $string['wednesday'] = 'רביעי';
 $string['weeknext'] = 'שבוע הבא';
 $string['weekthis'] = 'שבוע נוכחי';
 $string['yesterday'] = 'אתמול';
 $string['youcandeleteallrepeats'] = 'ארוע זה הוא חלק מסדרת ארועים חוזרת. באפשרותך למחוק ארוע זה בלבד, או את כל $a הארועים בסדרה בבת אחת.';
-
-?>
-<?PHP // $Id$
-      // calendar.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
-
-
-$string['dayview'] = 'תצוגה יומית';
-$string['explain_persistflt'] = 'אם אפשרות זו מופעלת, המערכת תזכור את הגדרות הסינון של הארוע האחרון שלך וישחזר אותם באופן אוטומטי בכל פעם שתכנס לחשבון.';
-$string['explain_site_timeformat'] = 'באפשרותך לראות את הזמנים עבור האתר כולו בפורמט של 12 או 24 שעות. אם תבחר ב\"ברירת מחדל\", אז הפורמט ייבחר אוטומטית על פי השפה בה אתה משתמש באתר. את הגדרה זו ניתן לעקוף על ידי העדפות משתמש.';
-$string['global'] = 'כולל';
-$string['globalevent'] = 'ארוע כולל';
-$string['recentupcoming'] = '60 הימים שזה עתה חלפו ו- 60 הימים הבאים';
-$string['tt_hideuser'] = 'ארועים שלי (לחץ כדי להסתיר)';
-$string['tt_showuser'] = 'ארועים שלי מוסתרים (לחץ כדי להציג)';
-$string['typeuser'] = 'ארוע שלי';
-$string['user'] = 'שלי';
-$string['userevent'] = 'ארוע שלי';
-$string['userevents'] = 'ארועים שלי';
 
 ?>

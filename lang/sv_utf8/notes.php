@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // notes.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// notes.php - created with Totara langimport script version 1.1
 
 $string['addnewnote'] = 'Lägg till en ny anteckning';
 $string['addnewnoteselect'] = 'Välj vilka användare som Du vill skriva anteckningar om';

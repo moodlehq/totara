@@ -1,15 +1,17 @@
-<?PHP // $Id$ 
-      // assignment.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// assignment.php - created with Totara langimport script version 1.1
 
 $string['allowdeleting'] = 'Löschen erlauben';
 $string['allowmaxfiles'] = 'Maximale Anzahl hochgeladener Dateien';
 $string['allownotes'] = 'Anmerkungen zulassen';
 $string['allowresubmit'] = 'Erneutes Einreichen erlauben';
 $string['alreadygraded'] = 'Ihre Lösung zu dieser Aufgabe wurde bereits bewertet. Das Aktualisieren ist daher nicht mehr möglich.';
+$string['assignment:exportownsubmission'] = 'Eigene Einreichung exportieren';
+$string['assignment:exportsubmission'] = 'Einreichung exportieren';
 $string['assignment:grade'] = 'Aufgabe bewerten';
 $string['assignment:submit'] = 'Aufgabe übermitteln';
 $string['assignment:view'] = 'Aufgabe ansehen';
+$string['assignmentadministration'] = 'Aufgaben-Administration';
 $string['assignmentdetails'] = 'Aufgabendetails';
 $string['assignmentmail'] = '$a->teacher hat einen Kommentar zu Ihrer eingereichten Aufgabe \'$a->assignment\' verfasst.
 
@@ -23,12 +25,15 @@ $string['assignmentname'] = 'Name der Aufgabe';
 $string['assignmenttype'] = 'Aufgabentyp';
 $string['availabledate'] = 'Verfügbar ab';
 $string['cannotdeletefiles'] = 'Es ist ein Fehler aufgetreten. Die Dateien konnten nicht gelöscht werden.';
+$string['cannotinsertempty'] = 'Eine weitere leere Einreichung war nicht möglich';
+$string['cannotviewassignment'] = 'Sie können diese Aufgabe nicht anzeigen';
 $string['comment'] = 'Kommentar';
 $string['commentinline'] = 'eingearbeiteter Kommentar';
 $string['configitemstocount'] = 'Werte, die bei den Online-Aufgaben der Teilnehmer/innen ausgezählt werden sollen (z.B. Wort- oder Zeichenzahl)';
 $string['configmaxbytes'] = 'Voreingestellte maximale Dateigröße für alle Aufgabenlösungen dieser Website (Obergrenze für alle Kurse und andere lokale Einstellungen)';
 $string['configshowrecentsubmissions'] = 'Alle können die Aufgabenabgaben im letzten Aktivitätenbericht sehen.';
 $string['confirmdeletefile'] = 'Sind Sie wirklich sicher, dass Sie diese Datei löschen möchten?<br /><strong>$a</strong>';
+$string['coursemisconf'] = 'Der Kurs ist fehlkonfiguriert';
 $string['deleteallsubmissions'] = 'Alle Aufgabenabgaben löschen';
 $string['deletefilefailed'] = 'Löschen der Datei fehlgeschlagen.';
 $string['description'] = 'Beschreibung';
@@ -65,15 +70,21 @@ $string['helpupload'] = '<p>Dieser Aufgabentyp ermöglicht es den Teilnehmenden,
 <p>Außerdem ist es möglich, mehrere Antwortdateien hochzuladen. Antwortdateien können auch schon hochgeladen werden, bevor die Teilnehmer/innen die Aufgabe bearbeiten. Auf diese Weise können Sie allen  unterschiedliche Dateien zur Bearbeitung zur Verfügung stellen. </p> <p>Die Teilnehmer/innen können außerdem Kommentare zu ihrer Aufgabenbearbeitung verfassen und dabei die hochgeladenen Dateien beschreiben, Hinweise zum Stand ihrer Bearbeitung geben, Fragen stellen und vieles mehr.</p><p>Diese Art der Aufgabenbearbeitung muss von den Teilnehmer/innen manuell beendet werden. Sie können sich jederzeit den Stand der Bearbeitung ansehen. Aufgabenbearbeitungen, die noch nicht fertig sind, werden als \"Entwurf\" gekennzeichnet. Sie können jede Lösung, die Sie noch nicht bewertet haben, wieder in einen Entwurf verwandeln.';
 $string['helpuploadsingle'] = '<p>Diese Aufgabenart ermöglicht allen Teilnehmer/innen den Upload einer einzelnen Datei beliebigen Typs.</p><p>Dies kann eine Text-, Bild-, ZIP- oder eine Datei in jedem anderen Format sein, das Sie in der Aufgabenstellung beschrieben haben.</p>';
 $string['hideintro'] = 'Beschreibung vor dem Veröffentlichungszeitpunkt verbergen';
+$string['invalidassignment'] = 'Falsche Aufgabe';
+$string['invalidid'] = 'Falsche Aufgaben-ID';
+$string['invalidtype'] = 'Falscher Aufgabentyp';
+$string['invaliduserid'] = 'Ungültige Nutzer-ID';
 $string['itemstocount'] = 'Anzahl';
 $string['late'] = '$a spät';
 $string['maximumgrade'] = 'Höchste Bewertung';
 $string['maximumsize'] = 'Maximale Größe';
+$string['maxpublishstate'] = 'Maximale Sichtbarkeit für Blog-Einträge vor dem Abgabetermin';
 $string['modulename'] = 'Aufgabe';
 $string['modulenameplural'] = 'Aufgaben';
 $string['newsubmissions'] = 'Aufgaben eingereicht';
 $string['noassignments'] = 'Es gibt derzeit keine Aufgaben';
 $string['noattempts'] = 'Bisher wurden keine Arbeiten eingereicht';
+$string['noblogs'] = 'Sie haben keine Blog-Einträge zum Abgeben!';
 $string['nofiles'] = 'Keine Dateien abgegeben';
 $string['nofilesyet'] = 'Bisher wurden keine Dateien abgegeben';
 $string['nomoresubmissions'] = 'Es sind keine weiteren Einträge mehr möglich.';
@@ -92,6 +103,7 @@ $string['quickgrade'] = 'Schnelle Bewertung ermöglichen';
 $string['responsefiles'] = 'Antwortdateien';
 $string['reviewed'] = 'Nachgeprüft';
 $string['saveallfeedback'] = 'Alle meine Rückmeldungen speichern';
+$string['selectblog'] = 'Wählen Sie bitte, welchen Blog-Eintrag Sie einreichen möchten';
 $string['sendformarking'] = 'Zur Bewertung freigeben';
 $string['showrecentsubmissions'] = 'Neueste Aufgabenabgaben anzeigen';
 $string['submission'] = 'Aufgabenabgabe';
@@ -106,6 +118,7 @@ $string['submitformarking'] = 'Aufgabe zur Bewertung abgeben';
 $string['submitted'] = 'Eingereicht';
 $string['submittedfiles'] = 'Eingereichte Dateien';
 $string['trackdrafts'] = 'Button \'Zur Bewertung freigeben\' aktivieren';
+$string['typeblog'] = 'Blog-Beitrag';
 $string['typeoffline'] = 'Offline - Aktivität';
 $string['typeonline'] = 'Online - Texteingabe';
 $string['typeupload'] = 'Online - mehrere Dateien hochladen';
@@ -120,25 +133,11 @@ $string['uploadfiletoobig'] = 'Entschuldigung, aber diese Datei ist zu groß (ma
 $string['uploadnofilefound'] = 'Es wurde keine Datei gefunden. Sind Sie sicher, dass Sie eine Datei zum Hochladen ausgewählt haben?';
 $string['uploadnotregistered'] = '\'$a\' wurde korrekt hochgeladen, aber der Eintrag wurde nicht registriert!';
 $string['uploadsuccess'] = '\'$a\' wurde erfolgreich hochgeladen';
+$string['usermisconf'] = 'Die Nutzereinstellungen sind fehlkonfiguriert';
 $string['usernosubmit'] = 'Sie haben keine Berechtigung Aufgaben einzureichen';
 $string['viewfeedback'] = 'Aufgabenbewertung und Rückmeldung anzeigen';
+$string['viewmysubmission'] = 'Meinen Eintrag ansehen';
 $string['viewsubmissions'] = '$a eingereichte Aufgabe(n) ansehen';
 $string['yoursubmission'] = 'Ihre eingereichten Aufgaben';
-$string['assignment:exportownsubmission'] = 'Eigene Einreichung exportieren'; // ORPHANED
-$string['assignment:exportsubmission'] = 'Einreichung exportieren'; // ORPHANED
-$string['assignmentadministration'] = 'Aufgaben-Administration'; // ORPHANED
-$string['cannotviewassignment'] = 'Sie können diese Aufgabe nicht anzeigen'; // ORPHANED
-$string['coursemisconf'] = 'Der Kurs ist fehlkonfiguriert'; // ORPHANED
-$string['invalidassignment'] = 'Falsche Aufgabe'; // ORPHANED
-$string['invalidid'] = 'Falsche Aufgaben-ID'; // ORPHANED
-$string['invalidtype'] = 'Falscher Aufgabentyp'; // ORPHANED
-$string['invaliduserid'] = 'Ungültige Nutzer-ID'; // ORPHANED
-$string['maxpublishstate'] = 'Maximale Sichtbarkeit für Blog-Einträge vor dem Abgabetermin'; // ORPHANED
-$string['noblogs'] = 'Sie haben keine Blog-Einträge zum Abgeben!'; // ORPHANED
-$string['selectblog'] = 'Wählen Sie bitte, welchen Blog-Eintrag Sie einreichen möchten'; // ORPHANED
-$string['typeblog'] = 'Blog-Beitrag'; // ORPHANED
-$string['usermisconf'] = 'Die Nutzereinstellungen sind fehlkonfiguriert'; // ORPHANED
-$string['viewmysubmission'] = 'Meinen Eintrag ansehen'; // ORPHANED
-$string['cannotinsertempty'] = 'Eine weitere leere Einreichung war nicht möglich'; // ORPHANED
 
 ?>

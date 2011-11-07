@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// survey.php - created with Totara langimport script version 1.1
+
 $string['actual'] = 'Toteutunut';
 $string['actualclass'] = 'Toteutunut';
 $string['actualstudent'] = '$a toteutunut';
@@ -205,4 +207,5 @@ $string['surveytype'] = 'Kyselyn tyyppi';
 $string['thanksforanswers'] = 'Kiitos vastauksestasi tähän kyselyyn, $a';
 $string['time'] = 'Aika';
 $string['viewsurveyresponses'] = 'Katso $a kyselyn vastausta';
+
 ?>

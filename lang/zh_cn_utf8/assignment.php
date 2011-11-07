@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // assignment.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// assignment.php - created with Totara langimport script version 1.1
 
 $string['allowdeleting'] = '是否允许学生删除作业';
 $string['allowmaxfiles'] = '允许上传文件的最大数目';
@@ -76,13 +75,13 @@ $string['noattempts'] = '尚无人尝试做此作业';
 $string['nofiles'] = '没有提交任何文件';
 $string['nofilesyet'] = '还没有文件被提交';
 $string['nomoresubmissions'] = '不允许再提交作业';
+$string['nosubmitusers'] = '没有用户允许提交该作业。';
 $string['notavailableyet'] = '很抱歉，此作业还未启动。<br />下面的日期后，将在此显示作业说明。';
 $string['notes'] = '备注';
 $string['notesempty'] = '无';
 $string['notesupdateerror'] = '在更新备注时发生错误';
 $string['notgradedyet'] = '没有评分';
 $string['notsubmittedyet'] = '未交';
-$string['nosubmitusers'] = '没有用户允许提交该作业。';
 $string['onceassignmentsent'] = '一旦发送了评分请求，您将不再能删除或上传文件了。您确定要继续吗？';
 $string['overwritewarning'] = '警告：重新上载将覆盖您已交的作业';
 $string['pagesize'] = '每页显示作业数';

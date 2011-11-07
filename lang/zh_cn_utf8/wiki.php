@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // wiki.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// wiki.php - created with Totara langimport script version 1.1
 
 $string['action'] = '-- 动作 --';
 $string['administration'] = '管理';

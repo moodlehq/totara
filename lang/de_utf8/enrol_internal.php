@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_internal.php - created with Moodle 1.4.3 (2004083130)
-
+<?php
+// enrol_internal.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Dies ist die Standardmethode für die Registrierung. Es gibt zwei verschiedene Möglichkeiten, Teilnehmer/innen den Zugang zu einem Kurs zu ermöglichen.
 <ul>

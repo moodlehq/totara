@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // blog.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// blog.php - created with Totara langimport script version 1.1
 
 $string['addnewentry'] = '增加新条目';
 $string['backupblogshelp'] = '如果启用，所有博客将被包含站点自动备份中';
@@ -44,9 +43,9 @@ $string['settingsupdatederror'] = '错误，无法更新博客的使用偏好设
 $string['siteblog'] = '站点博客：$a';
 $string['siteblogs'] = '所有用户均能浏览所有博客';
 $string['tagdatelastused'] = '标签最后使用的日期';
+$string['tags'] = '标签';
 $string['tagsort'] = '分类排序';
 $string['tagtext'] = '标签文字';
-$string['tags'] = '标签';
 $string['timewithin'] = '显示最近使用的分类';
 $string['updateentrywithid'] = '更新项目';
 $string['userblog'] = '用户博客：$a';

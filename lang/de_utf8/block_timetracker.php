@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_timetracker.php - created with Moodle 1.6 development (2005111101)
-
+<?php
+// block_timetracker.php - created with Totara langimport script version 1.1
 
 $string['addmissingpunch'] = 'Fehelenden Eintrag nachholen';
 $string['addpunch'] = 'Zeiterfassung hinzufügen';

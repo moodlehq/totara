@@ -1,5 +1,5 @@
 <?php
-
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'Acrescentar Contato';
 $string['addsomecontacts'] = 'Para mandar uma mensagem para alguém ou acrescentar um contato à sua lista, use a <a href=\"$a\">busca</a> acima.';

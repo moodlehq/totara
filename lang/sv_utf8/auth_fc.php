@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_fc.php - created with Totara langimport script version 1.1
 
 $string['auth_fcchangepasswordurl'] = 'URL för att byta lösenord';
 $string['auth_fcconnfail'] = 'Det gick inte att ansluta med felnummer $a[0] felaktig sträng: $a[1]';
@@ -17,3 +15,5 @@ $string['auth_fcpasswd_key'] = 'Lösenord';
 $string['auth_fctitle'] = 'Använd en FirstClass-server';
 $string['auth_fcuserid'] = 'AnvändarID för FirstClass-konto med inställningen \"Subadministrator\" aktiverad.';
 $string['auth_fcuserid_key'] = 'AnvändarID';
+
+?>

@@ -1,4 +1,5 @@
-<?php // $Id: filters.php,v 1.17 2010/05/14 13:56:28 martignoni Exp $
+<?php
+// filters.php - created with Totara langimport script version 1.1
 
 $string['actfilterhdr'] = 'Filtres actifs';
 $string['addfilter'] = 'Ajouter filtre';
@@ -9,9 +10,9 @@ $string['anyrole'] = 'Tous les rôles';
 $string['anyvalue'] = 'Toutes les valeurs';
 $string['applyto'] = 'Appliquer à';
 $string['categoryrole'] = 'Rôle dans la catégorie';
+$string['contains'] = 'contient';
 $string['content'] = 'Contenu';
 $string['contentandheadings'] = 'Contenu et titres';
-$string['contains'] = 'contient';
 $string['courserole'] = 'Rôle dans le cours';
 $string['courserolelabel'] = '$a->label est $a->rolename dans $a->coursename de la catégorie $a->categoryname';
 $string['courserolelabelerror'] = 'Erreur {$a->label} : le cours $a->coursename n\'existe pas';

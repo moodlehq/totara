@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // completion.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// completion.php - created with Totara langimport script version 1.1
 
 $string['achievinggrade'] = 'Erreichen der Bewertung';
 $string['activities'] = 'Aktivitäten';
@@ -13,6 +12,8 @@ $string['afterspecifieddate'] = 'Nach dem angegebenen Zeitpunkt';
 $string['aggregateall'] = 'Alle';
 $string['aggregateany'] = 'Einige';
 $string['aggregationmethod'] = 'Methode zur Zusammenfassung';
+$string['all'] = 'Irgendein';
+$string['any'] = 'Alle';
 $string['approval'] = 'Freigabe';
 $string['badautocompletion'] = 'Wenn Sie den automatischen Abschluss auswählen, müssen Sie auch zumindest (im Folgenden) eine Bedingung eingeben.';
 $string['complete'] = 'Vollständig';
@@ -149,7 +150,5 @@ $string['viewingactivity'] = '$a ansehen';
 $string['writingcompletiondata'] = 'Schreibe Abschluss-Daten';
 $string['xdays'] = '\$ Tage';
 $string['yourprogress'] = 'Ihre Fortschritte';
-$string['all'] = 'Irgendein'; // ORPHANED
-$string['any'] = 'Alle'; // ORPHANED
 
 ?>

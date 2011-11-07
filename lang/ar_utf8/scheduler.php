@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // scheduler.php - created with Moodle 1.2 development (2004012800)
-
+<?php
+// scheduler.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'عمل';
 $string['addsession'] = 'اضف جلسة';

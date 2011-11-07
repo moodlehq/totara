@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// enrol_database.php - created with Totara langimport script version 1.1
 
 $string['autocreate'] = 'Les cours peuvent être créés automatiquement si des inscriptions ont lieu pour un cours qui n\'existe pas encore dans le Moodle.';
 $string['autocreation_settings'] = 'Réglages de création automatique';

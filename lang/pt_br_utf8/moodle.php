@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // moodle.php - created with Moodle 2.0 dev (Build: 20081121) (2008112101)
-
+<?php
+// moodle.php - created with Totara langimport script version 1.1
 
 $string['abouttobeinstalled'] = 'será instalado';
 $string['action'] = 'Ação';
@@ -309,6 +308,7 @@ $string['courserejectsubject'] = 'O seu curso não foi aceito';
 $string['coursereports'] = 'Relatórios do curso';
 $string['courserequest'] = 'Solicitação de curso';
 $string['courserequestdetails'] = 'Detalhes do curso solicitado';
+$string['courserequestdisabled'] = 'Infelizmente o pedido de criação de novos cursos foi desativado pelo administrador do servidor';
 $string['courserequestfailed'] = 'Por alguma razão, sua solicitação de curso não foi gravada.';
 $string['courserequestintro'] = 'Use este formulário para solicitar a criação de um novo curso.<br /> Forneça o maior número de informações possível<br />para que os administradores possam entender e aceitar o seu pedido.';
 $string['courserequestreason'] = 'Razões para abrir este curso';
@@ -1086,6 +1086,7 @@ $string['noresults'] = 'Nenhum resultado';
 $string['normal'] = 'Normal';
 $string['normalfilter'] = 'Busca normal';
 $string['nosite'] = 'Não foi encontrado o curso a nível de site';
+$string['nostatstodisplay'] = 'Sinto muito, nenhum dado disponível para ser mostrado.';
 $string['nostudentsfound'] = 'Nenhum $a encontrado';
 $string['nostudentsingroup'] = 'Nenhum estudante neste grupo ainda';
 $string['nostudentsyet'] = 'Nenhum estudante inscrito neste curso ainda';
@@ -1242,6 +1243,7 @@ $string['reject'] = 'Rejeitar';
 $string['rejectdots'] = 'Rejeitar...';
 $string['reload'] = 'Recarregar';
 $string['remoteappuser'] = 'Usuário remoto $a';
+$string['remotemaharauser'] = 'Usuário remoto de Mahara';
 $string['remove'] = 'Remover';
 $string['removeadmin'] = 'Remover administrador';
 $string['removecreator'] = 'Remover criador de curso';
@@ -1401,6 +1403,7 @@ $string['sizegb'] = 'Gb';
 $string['sizekb'] = 'Kb';
 $string['sizemb'] = 'Mb';
 $string['skipped'] = 'Saltado';
+$string['skiptomaincontent'] = 'Saltar para conteúdo principal';
 $string['skypeid'] = 'ID Skype';
 $string['socialheadline'] = 'Forum social -  tópicos mais recentes';
 $string['someallowguest'] = 'Alguns cursos podem permitir o acesso a visitantes';
@@ -1434,6 +1437,7 @@ $string['statsreport2'] = 'Acessos (docentes e alunos)';
 $string['statsreport3'] = 'Mensagens (docentes e alunos)';
 $string['statsreport4'] = 'Todas as atividades (docentes e alunos)';
 $string['statsreport5'] = 'Todas as atividades dos alunos (acessos e mensagens)';
+$string['statsreport6'] = 'Todas as atividades dos docentes (acessos e mensagens)';
 $string['statsreport7'] = 'Atividade do usuário (acessos e mensagens)';
 $string['statsreport8'] = 'Todas as atividades dos usuários';
 $string['statsreport9'] = 'Logins (curso principal)';
@@ -1442,6 +1446,8 @@ $string['statsreportactivitybyrole'] = 'Todas as atividades (visitas e mensagens
 $string['statsreportforuser'] = 'para';
 $string['statsreportlogins'] = 'Logins';
 $string['statsreportreads'] = 'Acessos (docentes e alunos)';
+$string['statsreportstudentactivity'] = 'Todas as atividades do aluno (acessos e mensagens)';
+$string['statsreportteacheractivity'] = 'Todas as atividades do docente (acessos e mensagens)';
 $string['statsreporttype'] = 'Tipo de relatório';
 $string['statsreportwrites'] = 'Mensagens (docentes e alunos)';
 $string['statsstudentactivity'] = 'Atividades dos alunos';
@@ -1680,12 +1686,5 @@ $string['yourlastlogin'] = 'Seu último acesso foi em';
 $string['yourself'] = 'Você Mesmo';
 $string['yourteacher'] = 'seu $a';
 $string['zippingbackup'] = 'Compactando o backup';
-$string['courserequestdisabled'] = 'Infelizmente o pedido de criação de novos cursos foi desativado pelo administrador do servidor'; // ORPHANED
-$string['nostatstodisplay'] = 'Sinto muito, nenhum dado disponível para ser mostrado.'; // ORPHANED
-$string['remotemaharauser'] = 'Usuário remoto de Mahara'; // ORPHANED
-$string['skiptomaincontent'] = 'Saltar para conteúdo principal'; // ORPHANED
-$string['statsreport6'] = 'Todas as atividades dos docentes (acessos e mensagens)'; // ORPHANED
-$string['statsreportstudentactivity'] = 'Todas as atividades do aluno (acessos e mensagens)'; // ORPHANED
-$string['statsreportteacheractivity'] = 'Todas as atividades do docente (acessos e mensagens)'; // ORPHANED
 
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // algebra.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// algebra.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'Algebra数学符号';
 

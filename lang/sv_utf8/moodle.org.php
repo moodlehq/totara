@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // moodle.org.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// moodle.org.php - created with Totara langimport script version 1.1
 
 $string['aboutdemosite'] = 'Vår demonstrationswebbplats är en full Moodle site med några exempelkurser som du kan prova som lärare, elev eller en administratör. Oroa dig inte för att göra en enda röra, allt återställs varje timme.';
 $string['aboutdemositetitle'] = 'Demonstrations site';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz_regrade.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// quiz_regrade.php - created with Totara langimport script version 1.1
 
 $string['regrade'] = '重新打分';
 

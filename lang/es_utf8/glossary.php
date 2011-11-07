@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // glossary.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// glossary.php - created with Totara langimport script version 1.1
 
 $string['addcomment'] = 'Agregar comentario';
 $string['addentry'] = 'Agregar entrada';
@@ -15,6 +14,7 @@ $string['allowprintview'] = 'Permitir vista impresión';
 $string['allowratings'] = 'Permitir calificar las entradas';
 $string['answer'] = 'Respuesta';
 $string['approve'] = 'Aprobar';
+$string['areaintro'] = 'Introducción al glosario';
 $string['areyousuredelete'] = '¿Realmente desea borrarla?';
 $string['areyousuredeletecomment'] = '¿Está seguro de que desea borrar este comentario?';
 $string['areyousureexport'] = '¿Realmente desea exportar esta entrada a';
@@ -23,9 +23,12 @@ $string['attachment'] = 'Adjunto';
 $string['author'] = 'autor';
 $string['authorview'] = 'Buscar por autor';
 $string['back'] = 'Volver';
+$string['cantexportentry'] = 'No se pudo exportar la entrada al glosario principal';
 $string['cantinsertcat'] = 'No se puede insertar la categoría';
+$string['cantinsertent'] = 'No se pudo insertar esta nueva entrada';
 $string['cantinsertrec'] = 'No se puede insertar el registro';
 $string['cantinsertrel'] = 'No se puede insertar la relación registro-categoría';
+$string['cantupdateglossary'] = 'No se pudo actualizar su glosario';
 $string['casesensitive'] = 'Esta entrada es en Mayúsculas y minúsculas';
 $string['cat'] = 'cat';
 $string['categories'] = 'Categorías';
@@ -145,6 +148,8 @@ $string['importedentries'] = 'Entradas importadas';
 $string['importentries'] = 'Importar entradas';
 $string['importentriesfromxml'] = 'Importar entradas desde archivo XML';
 $string['includegroupbreaks'] = 'Incluir segmentaciones de grupo';
+$string['invalidglossaryformat'] = 'Formato de glosario no válido';
+$string['invalidid'] = 'ID de glosario incorrecta';
 $string['invalidrate'] = 'Calificación del glosario no válida ($a)';
 $string['isglobal'] = '¿Este es el glosario global?';
 $string['letter'] = 'letra';
@@ -209,11 +214,5 @@ $string['withauthor'] = 'Conceptos con autor';
 $string['withoutauthor'] = 'Conceptos sin autor';
 $string['writtenby'] = 'por';
 $string['youarenottheauthor'] = 'Dado que usted no es el autor de este comentario, no está autorizado a modificarlo.';
-$string['areaintro'] = 'Introducción al glosario'; // ORPHANED
-$string['cantexportentry'] = 'No se pudo exportar la entrada al glosario principal'; // ORPHANED
-$string['cantinsertent'] = 'No se pudo insertar esta nueva entrada'; // ORPHANED
-$string['cantupdateglossary'] = 'No se pudo actualizar su glosario'; // ORPHANED
-$string['invalidglossaryformat'] = 'Formato de glosario no válido'; // ORPHANED
-$string['invalidid'] = 'ID de glosario incorrecta'; // ORPHANED
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-// error.php - created with Totara langimport script version 1.0
+// error.php - created with Totara langimport script version 1.1
 
 $string['adminprimarynoedit'] = 'Muut eivät voi muokata pääasiallista hallinnoijaa';
 $string['cannotassignrole'] = 'Ei voi antaa roolia';

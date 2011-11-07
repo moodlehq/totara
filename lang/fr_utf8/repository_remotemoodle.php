@@ -1,4 +1,5 @@
-<?php // $Id: repository_remotemoodle.php,v 1.5 2009/08/12 10:42:22 martignoni Exp $
+<?php
+// repository_remotemoodle.php - created with Totara langimport script version 1.1
 
 $string['configplugin'] = 'Configuration du dépôt de fichiers distant Moodle';
 $string['connectionfailure'] = 'Échec de la récupération de la liste des fichiers. Soit le Moodle est d\'une version antérieure à la 2.0, soit son service Dépôt Moodle distant n\'a pas été activé';

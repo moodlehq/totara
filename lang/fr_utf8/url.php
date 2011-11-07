@@ -1,7 +1,8 @@
 <?php
+// url.php - created with Totara langimport script version 1.1
 
-$string['clicktoopen'] = 'Cliquer le lien {$a} pour ouvrir l\'URL.';
 $string['chooseavariable'] = 'Sélectionner une variable...';
+$string['clicktoopen'] = 'Cliquer le lien {$a} pour ouvrir l\'URL.';
 $string['configdisplayoptions'] = 'Sélectionner toutes les options à mettre à disposition des utilisateurs. Les réglages existants ne sont pas modifiés. Vous pouvez sélectionner plusieurs champs simultanément.';
 $string['configframesize'] = 'Cette valeur est la hauteur (en pixels) du cadre contenant la navigation. Elle est utilisée quand une page web ou un fichier déposé est affiché dans un cadre.';
 $string['configrolesinparams'] = 'Activer cette option si vous désirez inclure les noms des rôles (localisés) dans la liste des paramètres disponibles.';
@@ -33,3 +34,5 @@ $string['printheadingexplain'] = 'Indique s\'il faut afficher le nom de l\'URL a
 $string['printintro'] = 'Afficher la description de la ressource';
 $string['printintroexplain'] = 'Indique s\'il faut afficher la description de l\'URL au-dessus du contenu. Certains types d\'affichage n\'afficheront toutefois pas cette description, même lorsque l\'option est activée.';
 $string['rolesinparams'] = 'Inclure les noms des rôles dans les paramètres';
+
+?>

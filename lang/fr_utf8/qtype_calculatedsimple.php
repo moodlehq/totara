@@ -1,4 +1,5 @@
 <?php
+// qtype_calculatedsimple.php - created with Totara langimport script version 1.1
 
 $string['addingcalculatedsimple'] = 'Ajout d\'une question calculée simple';
 $string['atleastonewildcard'] = 'Vous devez fournir au moins un joker <strong>{x..}</strong> dans les formules de la réponse correcte';
@@ -15,11 +16,13 @@ $string['setno'] = 'Jeu $a';
 $string['setwildcardvalues'] = 'jeu(x) de valeur(s) pour le(s) joker(s) ';
 $string['showitems'] = 'Afficher ';
 $string['updatewildcardvalues'] = 'Modifier les valeurs des jokers';
-$string['useadvance'] = 'Utiliser le bouton suite pour voir les erreurs' ;
+$string['useadvance'] = 'Utiliser le bouton suite pour voir les erreurs';
 $string['wildcard'] = 'Joker {<strong>$a</strong>}';
+$string['wildcardparam'] = 'Jokers utilisés pour générer les valeurs ';
+$string['wildcardrole'] = ' Les jokers <strong>{x..}</strong> seront remplacés par une valeur numérique tirée parmi les valeurs générées';
 $string['wildcardvalues'] = 'Valeur du(des) joker(s) ';
 $string['wildcardvaluesgenerated'] = 'Valeurs générées pour le(s) joker(s)';
-$string['wildcardrole'] = ' Les jokers <strong>{x..}</strong> seront remplacés par une valeur numérique tirée parmi les valeurs générées';
-$string['wildcardparam'] = 'Jokers utilisés pour générer les valeurs ';
 $string['willconverttocalculated'] = 'Si activé, le bouton <strong>Enregistrer comme nouvelle question</strong> enregistrera cette question comme une nouvelle question calculée';
 $string['youmustaddatleastonevalue'] = 'Vous devez ajouter au moins un jeu de valeurs pour les jokers avant d\'enregistrer cette question.';
+
+?>

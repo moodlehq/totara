@@ -1,9 +1,9 @@
-<?PHP // $Id$ 
-      // assignment.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// assignment.php - created with Totara langimport script version 1.1
 
 $string['allowdeleting'] = 'Salli tiedostojen poistaminen';
 $string['allowmaxfiles'] = 'Palautettujen tiedostojen enimmäismäärä';
+$string['allowmultiple'] = 'Salli useita tiedostoja';
 $string['allownotes'] = 'Salli muistiinpanot';
 $string['allowresubmit'] = 'Salli uudelleenpalautus';
 $string['alreadygraded'] = 'Vastauksesi on jo arvioitu eikä uudelleenpalautus ole sallittua.';
@@ -23,7 +23,11 @@ Voit nähdä sen osoitteessa:
 <a href=\"$a->url\">Tehtävän palautus</a>.';
 $string['assignmentname'] = 'Tehtävän nimi';
 $string['assignmenttype'] = 'Tehtävän tyyppi';
+$string['attachfile'] = 'Liitä tiedosto';
+$string['attachfiletoassignment'] = 'Liitä tiedosto(ja) tehtävään';
 $string['availabledate'] = 'Saatavilla';
+$string['backtoassignment'] = 'Takaisin tehtävään';
+$string['backtofeedback'] = 'Takaisin palautteeseen';
 $string['cannotdeletefiles'] = 'Tapahtui virhe eikä tiedostoja voitu poistaa';
 $string['comment'] = 'Kommentoi';
 $string['commentinline'] = 'Kommentoi ja muokkaa vastausta';
@@ -32,6 +36,9 @@ $string['configmaxbytes'] = 'Oletusasetus sivuston tehtävien enimmäiskoolle (a
 $string['configshowrecentsubmissions'] = 'Kaikki näkevät palautustapahtumat viimeisimpien tapahtumien listalla';
 $string['confirmdeletefile'] = 'Oletko varma että haluat poistaa tämän tiedoston?<br /><strong>$a</strong>';
 $string['deleteallsubmissions'] = 'Poista kaikki palautukset';
+$string['deletecheckfile'] = 'Haluatko varmasti poistaa tämän tiedoston?';
+$string['deleteednotification'] = 'Tiedosto on poistettu.';
+$string['deletefail'] = 'Seuraavaa tiedostoa ei ole poistettu:';
 $string['deletefilefailed'] = 'Tiedoston poistaminen epäonnistui';
 $string['description'] = 'Kuvaus';
 $string['draft'] = 'Keskeneräinen';
@@ -73,14 +80,17 @@ $string['helpuploadsingle'] = '<p>Tämäntyyppisessä tehtävässä kaikki osano
 $string['hideintro'] = 'Piilota kuvaus kunnes tehtävä on avoinna';
 $string['itemstocount'] = 'Määrä';
 $string['late'] = '$a myöhässä';
+$string['markingsubmitnotification'] = 'Tiedosto on lähetetty onnistuneesti.';
 $string['maximumgrade'] = 'Korkein arvosana';
 $string['maximumsize'] = 'Maksimikoko';
 $string['modulename'] = 'Tehtävä';
 $string['modulenameplural'] = 'Tehtävät';
+$string['namedeletefile'] = 'Olet poistamassa tätä tiedostoa:';
 $string['newsubmissions'] = 'Palautetut tehtävät';
 $string['noassignments'] = 'Ei vielä tehtäviä';
 $string['noattempts'] = 'Tähän tehtävään ei ole vielä vastattu';
 $string['nofiles'] = 'Tiedostoja ei palautettu';
+$string['nofilesforsubmit'] = 'Tiedostoa ei löydy - oletko varmasti tuonut tiedoston?';
 $string['nofilesyet'] = 'Ei palautettuja tiedostoja vielä';
 $string['nomoresubmissions'] = 'Enempää palautuksia ei ole sallittu';
 $string['nosubmitusers'] = 'Käyttäjillä ei ole oikeuksia palauttaa tätä tehtävää';
@@ -95,6 +105,7 @@ $string['overwritewarning'] = 'Varoitus: uudelleen lähettäminen KORVAA aiemman
 $string['pagesize'] = 'Näytettävien tehtävien määrä sivua kohden';
 $string['preventlate'] = 'Estä myöhästyneet palautukset';
 $string['quickgrade'] = 'Salli nopea arviointi';
+$string['removelink'] = 'Poista';
 $string['responsefiles'] = 'Palautetiedostot';
 $string['reviewed'] = 'Arvioinut';
 $string['saveallfeedback'] = 'Tallenna palaute';
@@ -130,17 +141,5 @@ $string['usernosubmit'] = 'Valitettavasti et voi palauttaa tehtävää.';
 $string['viewfeedback'] = 'Katso tehtävien arviointeja ja palautteita';
 $string['viewsubmissions'] = 'Katso palautettuja tehtäviä ($a kpl)';
 $string['yoursubmission'] = 'Palautuksesi';
-$string['allowmultiple'] = 'Salli useita tiedostoja'; // ORPHANED
-$string['attachfile'] = 'Liitä tiedosto'; // ORPHANED
-$string['attachfiletoassignment'] = 'Liitä tiedosto(ja) tehtävään'; // ORPHANED
-$string['backtoassignment'] = 'Takaisin tehtävään'; // ORPHANED
-$string['backtofeedback'] = 'Takaisin palautteeseen'; // ORPHANED
-$string['deletecheckfile'] = 'Haluatko varmasti poistaa tämän tiedoston?'; // ORPHANED
-$string['deleteednotification'] = 'Tiedosto on poistettu.'; // ORPHANED
-$string['deletefail'] = 'Seuraavaa tiedostoa ei ole poistettu:'; // ORPHANED
-$string['markingsubmitnotification'] = 'Tiedosto on lähetetty onnistuneesti.'; // ORPHANED
-$string['namedeletefile'] = 'Olet poistamassa tätä tiedostoa:'; // ORPHANED
-$string['nofilesforsubmit'] = 'Tiedostoa ei löydy - oletko varmasti tuonut tiedoston?'; // ORPHANED
-$string['removelink'] = 'Poista'; // ORPHANED
 
 ?>

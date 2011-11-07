@@ -1,5 +1,5 @@
 <?php
-// role.php - created with Totara langimport script version 1.0
+// role.php - created with Totara langimport script version 1.1
 
 $string['addinganewrole'] = 'Ajout d\'un nouveau rôle';
 $string['addingrolebycopying'] = 'Ajout d\'un nouveau rôle basé sur $a';

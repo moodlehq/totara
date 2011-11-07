@@ -1,13 +1,13 @@
-<?PHP // $Id$
-      // qtype_multichoice.php - created with Moodle 1.7 beta + (2006101003)
+<?php
+// qtype_multichoice.php - created with Totara langimport script version 1.1
 
 $string['addingmultichoice'] = '添加一个多选题';
 $string['addmorechoiceblanks'] = '更多选项空白';
 $string['answerhowmany'] = '一个还是多个答案？';
 $string['answernumbering'] = '选项数目';
-$string['answernumberingabc'] = 'a., b., c., ...';
-$string['answernumberingABCD'] = 'A., B., C., ...';
 $string['answernumbering123'] = '1., 2., 3., ...';
+$string['answernumberingABCD'] = 'A., B., C., ...';
+$string['answernumberingabc'] = 'a., b., c., ...';
 $string['answernumberingnone'] = '没有数字';
 $string['answersingleno'] = '允许多个正确答案';
 $string['answersingleyes'] = '只有一个正确答案';
@@ -24,11 +24,12 @@ $string['fractionsaddwrong'] = '您已选择的正分值不会合计达到 100%%
 $string['fractionsnomax'] = '答案之一必须是 100%%，<br />这样才能从此题目得到满分。<br />您希望返回并且修正这个问题吗？';
 $string['incorrectfeedback'] = '针对任何错误答案';
 $string['notenoughanswers'] = '此类型的问题要求至少 {$a} 个答案';
-$string['overallfeedback'] = '全面反馈';
 $string['overallcorrectfeedback'] = '针对任何正确答案的反馈';
+$string['overallfeedback'] = '全面反馈';
 $string['overallincorrectfeedback'] = '针对任何错误答案的反馈';
 $string['overallpartiallycorrectfeedback'] = '针对所有部分正确的答案的反馈';
 $string['partiallycorrectfeedback'] = '针对部分正确答案';
 $string['shuffleanswers'] = '随机排列答案？';
 $string['singleanswer'] = '选择一个答案。';
+
 ?>

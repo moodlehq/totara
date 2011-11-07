@@ -1,6 +1,5 @@
-<?PHP // $Id: gradeimport_xml.php,v 1.4 2010/11/07 14:20:00 emanuel1 Exp $
-      // gradeimport_xml.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// gradeimport_xml.php - created with Totara langimport script version 1.1
 
 $string['errbadxmlformat'] = 'שגיאה - פורמט קובץ XML פגום';
 $string['errduplicategradeidnumber'] = 'שגיאה - ישנם שני רכיבי ציונים עם מספר ID

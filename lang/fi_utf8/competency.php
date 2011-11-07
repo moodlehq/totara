@@ -1,5 +1,5 @@
 <?php
-// competency.php - created with Totara langimport script version 1.0
+// competency.php - created with Totara langimport script version 1.1
 
 $string['achieved'] = 'Saavutettu';
 $string['addassignedcompetencies'] = 'Valitse kompetensseja';
@@ -81,10 +81,7 @@ $string['deletecheckframework'] = 'Oletko varma, että haluat poistaa rakenteen 
 $string['deletecheckscale'] = 'Oletko aivan varma, että haluat poistaa tämän kompetenssiasteikon?';
 $string['deletecheckscalevalue'] = 'Oletko aivan varma, että haluat poistaa tämän kompetenssiasteikon arvon?';
 $string['deletechecktemplate'] = 'Oletko aivan varma, että haluat poistaa tämän kompetenssimallipohjan?';
-$string['deletecheckwithchildren'] = 'Oletko varma, että haluat poistaa kompetenssin \"$a->itemname\" ja sen $a->children_string:n?
-<br /><br />
-Tämä poistaa seuraavat tiedot: <br />
-- Kompetenssin \"$a->itemname\" ja sen $a->childcount $a->children_string';
+$string['deletecheckwithchildren'] = 'Oletko varma, että haluat poistaa kompetenssin \"$a->itemname\" ja sen $a->children_string:n? <br /><br /> Tämä poistaa seuraavat tiedot: <br /> - Kompetenssin \"$a->itemname\" ja sen $a->childcount $a->children_string';
 $string['deletecompetency'] = 'Poista kompetenssi';
 $string['deletedcompetency'] = 'Kompetenssi $a ja kaikki sen lapsiobjektit on poistettu.';
 $string['deletedcompetencyscale'] = 'Kompetenssiasteikko \"{$a}\" on poistettu.';
@@ -98,10 +95,7 @@ $string['deleteincludexcustomfields'] = '- $a lisäkenttä(ä)';
 $string['deleteincludexevidence'] = '- $a todiste(tta)';
 $string['deleteincludexrelatedcompetencies'] = '- $a linkki(ä) liittyviin kompetensseihin';
 $string['deleteincludexuserstatusrecords'] = '- $a käyttäjän tilatietoja';
-$string['deletemulticheckwithchildren'] = 'Oletko varma, että haluat poistaa $a->num kompetenssin/kompetenssit ja sen $a->childcount $a->children_string:n?
-<br /><br />
-Tämä poistaa seuraavat tiedot: <br />
-- Kompetenssin/kompetenssit $a->num ja sen $a->childcount $a->children_string';
+$string['deletemulticheckwithchildren'] = 'Oletko varma, että haluat poistaa $a->num kompetenssin/kompetenssit ja sen $a->childcount $a->children_string:n? <br /><br /> Tämä poistaa seuraavat tiedot: <br /> - Kompetenssin/kompetenssit $a->num ja sen $a->childcount $a->children_string';
 $string['deletetype'] = 'Poista tyyppi \"{$a}\"';
 $string['depthlevel'] = 'Taso';
 $string['depthlevels'] = 'Tasot';

@@ -1,6 +1,5 @@
-<?PHP // $Id: data.php,v 1.15 2010/03/19 18:21:28 danielneis Exp $ 
-      // data.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// data.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'Ação';
 $string['add'] = 'Acrescentar Item';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_flatfile.php - created with Moodle 1.5 unstable development (2004083000)
-
+<?php
+// enrol_flatfile.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Este método comprueba y procesa un archivo de texto con formato especial en el lugar que usted especifica. El archivo puede tener una apariencia semejante a ésta:
 <pre>

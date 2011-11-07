@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_match.php,v 1.3 2009/04/07 16:59:40 barias Exp $ 
-      // qtype_match.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// qtype_match.php - created with Totara langimport script version 1.1
 
 $string['addingmatch'] = 'Agregando una pregunta de emparejamiento';
 $string['addmoreqblanks'] = '{no} Más conjuntos de espacios en blanco';

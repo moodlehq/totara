@@ -1,5 +1,5 @@
 <?php
-// qtype_calculated.php - created with Totara langimport script version 1.0
+// qtype_calculated.php - created with Totara langimport script version 1.1
 
 $string['addmoreanswerblanks'] = 'أضف خانة إجابة أخرى.';
 $string['addmoreunitblanks'] = 'خانات لمزيد من وحدات $a';

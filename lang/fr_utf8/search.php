@@ -1,5 +1,6 @@
-<?php  // $Id: search.php,v 1.5 2009/04/10 19:28:54 martignoni Exp $
-  
+<?php
+// search.php - created with Totara langimport script version 1.1
+
 $string['advancedsearch'] = 'Recherche avancée';
 $string['all'] = 'Tout';
 $string['author'] = 'Auteur';

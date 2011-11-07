@@ -1,6 +1,5 @@
-<?PHP // $Id: gradereport_outcomes.php,v 1.1 2008/03/25 19:47:28 koenr Exp $ 
-      // gradereport_outcomes.php - created with Moodle 1.9 Beta + (2007090600)
-
+<?php
+// gradereport_outcomes.php - created with Totara langimport script version 1.1
 
 $string['addoutcome'] = 'Lägg till ett resultat';
 $string['courseoutcomes'] = 'Resultat på kurs';

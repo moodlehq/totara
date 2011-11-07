@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_glossary_random.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// block_glossary_random.php - created with Totara langimport script version 1.1
 
 $string['addentry'] = '添加新词条';
 $string['askaddentry'] = '当用户可以添加词条时，显示链接和如下文字';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_ldap.php - created with Moodle 1.7 (2006101007)
-
+<?php
+// enrol_ldap.php - created with Totara langimport script version 1.1
 
 $string['description'] = '<p>Usted puede utilizar un servidor LDAP para coltrolar sus matriculaciones. Se asume que su árbol LDAP contiene grupos que apuntan a los cursos, y que cada uno de esos grupos o cursos contienen entradas de matriculación que hacen referencia a los estudiantes.</p>
 <p>Se asume que los cursos están definidos como grupos en LDAP, de modo que cada grupo tiene múltiples campos de matriculación  (<em>member</em> or <em>memberUid</em>) que contienen una identificación única del usuario.</p>

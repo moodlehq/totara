@@ -1,6 +1,5 @@
-<?PHP // $Id: cms.php,v 1.2 2009/12/04 13:46:57 mudrd8mz Exp $ 
-      // cms.php - created with Moodle 1.8 dev (2006120700)
-
+<?php
+// cms.php - created with Totara langimport script version 1.1
 
 $string['actions'] = 'إجراءات';
 $string['addchild'] = 'إضافة صفحة تابعة';

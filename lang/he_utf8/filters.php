@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // filters.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// filters.php - created with Totara langimport script version 1.1
 
 $string['actfilterhdr'] = 'מסננים פעילים (מצורפים יחד)';
 $string['addfilter'] = 'הוסף מסנן';
@@ -45,10 +44,10 @@ $string['profilelabelnovalue'] = '$a->label: $a->profile $a->operator';
 $string['removeall'] = 'סלק הכל';
 $string['removeselected'] = 'סלק נבחרים';
 $string['selectlabel'] = '$a->label $a->operator $a->value';
+$string['setfilter'] = 'הפעל את המסנן';
 $string['startswith'] = 'התחל ב-';
 $string['tablenosave'] = 'השינויים בטבלה למעלה נשמרים אוטומטית.';
 $string['textlabel'] = '$a->label $a->operator $a->value';
 $string['textlabelnovalue'] = '$a->label $a->operator';
-$string['setfilter'] = 'הפעל את המסנן'; // ORPHANED
 
 ?>

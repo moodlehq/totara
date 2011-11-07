@@ -1,9 +1,6 @@
 <?php
+// editor_tinymce.php - created with Totara langimport script version 1.1
 
-//== Custom Moodle strings that are not part of upstream TinyMCE ==
-
-
-// == TinyMCE upstream lang strings from all plugins ==
 $string['advanced:address'] = 'Osoite';
 $string['advanced:anchor_delta_height'] = '';
 $string['advanced:anchor_delta_width'] = '';
@@ -231,7 +228,7 @@ $string['common:apply'] = 'Käytä';
 $string['common:browse'] = 'Selaa';
 $string['common:cancel'] = 'Peruuta';
 $string['common:class_name'] = 'Luokka';
-$string['common:clipboard_msg'] = 'Kopioi/Leikkaa/Liitä ei ole käytettävissä Mozilla ja Firefox -selaimilla.\\nHaluatko lisätietoa tästä ongelmasta?';
+$string['common:clipboard_msg'] = 'Kopioi/Leikkaa/Liitä ei ole käytettävissä Mozilla ja Firefox -selaimilla.\nHaluatko lisätietoa tästä ongelmasta?';
 $string['common:clipboard_no_support'] = 'Selaimesi ei ole tuettu, käytä sen sijaan näppäinoikoteitä.';
 $string['common:close'] = 'Sulje';
 $string['common:edit_confirm'] = 'Haluatko käyttää WYSIWYG-tilaa tässä tekstikentässä?';
@@ -448,7 +445,7 @@ $string['media_dlg:prefetch'] = 'Esinouda';
 $string['media_dlg:preview'] = 'Esikatselu';
 $string['media_dlg:progress'] = 'Eteneminen';
 $string['media_dlg:qt_options'] = 'Quicktimen asetukset';
-$string['media_dlg:qt_stream_warn'] = 'Streamatut rtsp-resurssit tulisi lisätä QT Src -kenttään edistynyt-välilehdelle.\\nSinun kannattaa lisätä myös ei-streamattu versio Src-kenttään.';
+$string['media_dlg:qt_stream_warn'] = 'Streamatut rtsp-resurssit tulisi lisätä QT Src -kenttään edistynyt-välilehdelle.\nSinun kannattaa lisätä myös ei-streamattu versio Src-kenttään.';
 $string['media_dlg:qtsrc'] = 'QT Src';
 $string['media_dlg:qtsrcchokespeed'] = 'Choke-nopeus';
 $string['media_dlg:quality'] = 'Laatu';
@@ -751,3 +748,5 @@ $string['xhtmlxtras_dlg:title_acronym_element'] = 'Kirjainlyhenne elementit';
 $string['xhtmlxtras_dlg:title_cite_element'] = 'Sitaatti elementit';
 $string['xhtmlxtras_dlg:title_del_element'] = 'Poisto elementit';
 $string['xhtmlxtras_dlg:title_ins_element'] = 'Lisäys elementit';
+
+?>

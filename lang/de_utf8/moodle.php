@@ -1,5 +1,5 @@
 <?php
-// moodle.php - created with Totara langimport script version 1.0
+// moodle.php - created with Totara langimport script version 1.1
 
 $string['abouttobeinstalled'] = 'Was wird installiert?';
 $string['action'] = 'Aktion';

@@ -1,12 +1,8 @@
-<?php // $Id$
-
-//------------------------------------------------------------
-$string['modulename'] = 'SCORM/AICC';
-$string['modulenameplural'] = 'SCORMs/AICCs';
-//------------------------------------------------------------
+<?php
+// scorm.php - created with Totara langimport script version 1.1
 
 $string['activation'] = 'Activation';
-$string['activityloading'] = 'Vous allez être dirigé automatiquement vers l\'activité dans';  // used in conjunction with numseconds
+$string['activityloading'] = 'Vous allez être dirigé automatiquement vers l\'activité dans';
 $string['activitypleasewait'] = 'Activité en cours de chargement. Veuillez patienter...';
 $string['advanced'] = 'Paramètres';
 $string['allowapidebug'] = 'Activer l\'API de débogage et de tracement (veuillez spécifier le masque de capture)';
@@ -15,7 +11,7 @@ $string['allowtypeimsrepository'] = 'Activer le type de paquetage IMS';
 $string['allowtypelocalsync'] = 'Activer le type de paquetage téléchargé';
 $string['apidebugmask'] = 'Masque de capture de l\'API de débogage (simple expression régulière sur &lt;username&gt;:&lt;activityname&gt;)';
 $string['areacontent'] = 'Contenu des fichiers';
-$string['areaintro'] = 'Descriptif des fichiers'; // Obsolete as of 2.0dev
+$string['areaintro'] = 'Descriptif des fichiers';
 $string['areapackage'] = 'Fichier de paquetage';
 $string['asset'] = 'Élément';
 $string['assetlaunched'] = 'Élément - affiché';
@@ -27,7 +23,7 @@ $string['attr_error'] = 'Valeur incorrecte de l\'attribut ($a->attr) dans la bal
 $string['autocontinue'] = 'Continuer automatiquement';
 $string['autocontinuedesc'] = 'Ce réglage détermine si par défaut l\'activité continue automatiquement ou non';
 $string['averageattempt'] = 'Moyenne des tentatives';
-$string['badmanifest'] ='Erreurs dans le fichier « manifest » : veuillez consulter l\'historique des erreurs';
+$string['badmanifest'] = 'Erreurs dans le fichier « manifest » : veuillez consulter l\'historique des erreurs';
 $string['badpackage'] = 'Le paquetage/manifeste indiqué n\'est pas valide. Veuillez le vérifier et essayer à nouveau.';
 $string['browse'] = 'Prévisualiser';
 $string['browsed'] = 'Consulté';
@@ -55,14 +51,14 @@ $string['element'] = 'Élément';
 $string['enter'] = 'Entrer';
 $string['entercourse'] = 'Commencer le cours';
 $string['errorlogs'] = 'Historique des erreurs';
-$string['everyday']= 'Chaque jour';
-$string['everytime']= 'À chaque utilisation';
+$string['everyday'] = 'Chaque jour';
+$string['everytime'] = 'À chaque utilisation';
 $string['exceededmaxattempts'] = 'Vous avez atteint le nombre maximum de tentatives.';
 $string['exit'] = 'Terminer le cours';
 $string['exitactivity'] = 'Terminer l\'activité';
 $string['expcoll'] = 'Développer/Minimiser';
 $string['expired'] = 'Désolé, cette activité s\'est terminée le $a et n\'est plus disponible';
-$string['external']= 'Mise à jour des paquetages externes';
+$string['external'] = 'Mise à jour des paquetages externes';
 $string['failed'] = 'Échec';
 $string['finishscorm'] = 'Si vous avezfini de consulter cette ressource, {$a}';
 $string['finishscormlinkname'] = 'cliquez ici pour revenir à la page de cours';
@@ -118,6 +114,8 @@ $string['missing_attribute'] = 'Attribut $a->attr manquant dans la balise $a->ta
 $string['missing_tag'] = 'Balise $a->tag manquante';
 $string['missingparam'] = 'Un paramètre requis est manquant ou incorrect';
 $string['mode'] = 'Mode';
+$string['modulename'] = 'SCORM/AICC';
+$string['modulenameplural'] = 'SCORMs/AICCs';
 $string['newattempt'] = 'Commencer une nouvelle tentative';
 $string['next'] = 'Continuer';
 $string['no_attributes'] = 'La balise $a->tag doit avoir des attributs';
@@ -135,7 +133,7 @@ $string['not_corr_type'] = 'Erreur de type pour la balise $a->tag';
 $string['notattempted'] = 'Aucune tentative';
 $string['notopenyet'] = 'Désolé, cette activité n\'est pas disponible avant le $a';
 $string['objectives'] = 'Objectifs';
-$string['onchanges']= 'À chaque modification';
+$string['onchanges'] = 'À chaque modification';
 $string['options'] = 'Options';
 $string['organization'] = 'Organisation';
 $string['organizations'] = 'Organisations';
@@ -216,6 +214,6 @@ $string['whatgrade'] = 'Évaluation des tentatives';
 $string['whatgradedesc'] = 'Ce réglage détermine le mode d\'évaluation par défaut des tentatives';
 $string['width'] = 'Largeur';
 $string['window'] = 'Fenêtre';
-$string['zlibwarning'] ='Attention !: La compression PHP Zlib a été activée sur ce site. Certains utilisateurs pourraient avoir des problèmes de téléchargement d\'objets SCORM avec certains navigateurs.'; 
+$string['zlibwarning'] = 'Attention !: La compression PHP Zlib a été activée sur ce site. Certains utilisateurs pourraient avoir des problèmes de téléchargement d\'objets SCORM avec certains navigateurs.';
 
 ?>

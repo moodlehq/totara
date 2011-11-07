@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_feedback_summary.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// rb_source_feedback_summary.php - created with Totara langimport script version 1.1
 
 $string['course'] = 'הקורס';
 $string['coursename'] = 'שם הקורס';

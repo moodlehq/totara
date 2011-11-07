@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// dialogue.php - created with Totara langimport script version 1.1
 
 $string['addmynewentries'] = 'Ajouter mes nouvelles contributions';
 $string['addmynewentry'] = 'Ajouter ma nouvelle contribution';
@@ -46,8 +47,8 @@ $string['onyouwrote'] = '$a, vous avez écrit';
 $string['open'] = 'Ouvert';
 $string['openadialoguewith'] = 'Ouvrir un dialogue avec';
 $string['opendialogue'] = 'Ouvrir le dialogue';
-$string['opendialogues'] = 'Dialogues ouverts';
 $string['opendialogueentries'] = 'Contributions aux dialogues ouverts';
+$string['opendialogues'] = 'Dialogues ouverts';
 $string['pane0'] = 'Ouvrir un dialogue';
 $string['pane1'] = '$a dialogues attendent une réponse de votre part';
 $string['pane1one'] = 'Un dialogue attend une réponse de votre part';

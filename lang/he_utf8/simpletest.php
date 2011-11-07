@@ -1,6 +1,5 @@
-<?PHP // $Id: simpletest.php,v 1.5 2009/06/07 14:29:16 emanuel1 Exp $
-      // simpletest.php - created with Moodle 1.9.5 (Build: 20090513) (2007101550)
-
+<?php
+// simpletest.php - created with Totara langimport script version 1.1
 
 $string['all'] = 'הכל';
 $string['exception'] = 'יוצא מן הכלל';

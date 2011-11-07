@@ -1,10 +1,10 @@
-<?PHP // $Id: form.php,v 1.12 2011/01/05 10:47:34 emanuel1 Exp $
-      // form.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// form.php - created with Totara langimport script version 1.1
 
 $string['addfields'] = 'הוסף $a שדות לטופס';
 $string['advancedelement'] = 'מרכיב מתקדם';
 $string['day'] = 'יום';
+$string['denotesreq'] = '$a מציין שדה נדרש.';
 $string['display'] = 'הצג';
 $string['err_alphanumeric'] = 'כאן עליך להקליד רק אותיות או מספרים.';
 $string['err_email'] = 'כאן עליך להקליד כתובת דוא\"ל תקפה.';
@@ -36,6 +36,5 @@ $string['somefieldsrequired'] = 'בטופס זה ישנם שדות אותם חו
 $string['timing'] = 'תזמון';
 $string['unmaskpassword'] = 'גלוי';
 $string['year'] = 'שנה';
-$string['denotesreq'] = '$a מציין שדה נדרש.'; // ORPHANED
 
 ?>

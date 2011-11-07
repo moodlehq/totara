@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_online_users.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// block_online_users.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = '在线用户';
 $string['configtimetosee'] = '认为多少分钟内访问过网站的用户是在线的';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz_overview.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// quiz_overview.php - created with Totara langimport script version 1.1
 
 $string['allattempts'] = '显示所有试答';
 $string['allattemptscontributetograde'] = '所有试答都计入用户的最终成绩。';
@@ -24,7 +23,8 @@ $string['preferencespage'] = '仅用于此页面的使用偏好';
 $string['preferencessave'] = '保存使用偏好';
 $string['preferencesuser'] = '您对此报表的使用偏好';
 $string['show'] = '显示/下载';
+$string['showdetailedmarks'] = '各试题的显示/下载标记';
 $string['showinggraded'] = '仅显示计入各用户成绩的试答部分。';
 $string['showinggradedandungraded'] = '显示各用户已评分和未评分的试答。为每名用户突出显示已评分的一次试答。此测验的评分方法为 $a。';
-$string['showdetailedmarks'] = '各试题的显示/下载标记';
+
 ?>

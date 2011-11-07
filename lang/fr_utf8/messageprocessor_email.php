@@ -1,4 +1,5 @@
-<?php // $Id: messageprocessor_email.php,v 1.1 2008/09/05 10:44:49 martignoni Exp $ 
+<?php
+// messageprocessor_email.php - created with Totara langimport script version 1.1
 
 $string['email'] = 'Courriel';
 

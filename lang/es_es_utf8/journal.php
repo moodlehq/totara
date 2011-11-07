@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // journal.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// journal.php - created with Totara langimport script version 1.1
 
 $string['alwaysopen'] = 'Siempre abierto';
 $string['blankentry'] = 'No hay datos';

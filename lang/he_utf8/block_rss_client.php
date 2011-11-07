@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // block_rss_client.php - created with Moodle 2.0 dev (Build: 20080327) (2008030700)
-
+<?php
+// block_rss_client.php - created with Totara langimport script version 1.1
 
 $string['addfeed'] = 'הוסף כתובת URL להזנת חדשות:';
 $string['addheadlineblock'] = 'הוסף משבצת־ניהול כותרות RSS';

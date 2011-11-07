@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // completion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// completion.php - created with Totara langimport script version 1.1
 
 $string['achievinggrade'] = 'השגת ציון';
 $string['activities'] = 'פעילויות';
@@ -13,6 +12,8 @@ $string['afterspecifieddate'] = 'לאחר תאריך מוגדר';
 $string['aggregateall'] = 'הכל';
 $string['aggregateany'] = 'כלשהו';
 $string['aggregationmethod'] = 'שיטת צבירה';
+$string['all'] = 'כל';
+$string['any'] = 'כל אחד';
 $string['approval'] = 'אישור';
 $string['badautocompletion'] = 'כאשר אתה בוחר השלמה אוטומטית, עליך להפעיל גם לפחות דרישה אחת (להלן).';
 $string['complete'] = 'השלם';
@@ -149,7 +150,5 @@ $string['viewingactivity'] = 'צופה ב$a';
 $string['writingcompletiondata'] = 'כותב מידע השלמה';
 $string['xdays'] = '$a ימים';
 $string['yourprogress'] = 'ההתקדמות שלך';
-$string['all'] = 'כל'; // ORPHANED
-$string['any'] = 'כל אחד'; // ORPHANED
 
 ?>

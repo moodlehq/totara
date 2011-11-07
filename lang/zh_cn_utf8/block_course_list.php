@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_course_list.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// block_course_list.php - created with Totara langimport script version 1.1
 
 $string['adminview'] = '管理员视图';
 $string['allcourses'] = '管理员可看到所有课程';

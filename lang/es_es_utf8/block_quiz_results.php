@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_quiz_results.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// block_quiz_results.php - created with Totara langimport script version 1.1
 
 $string['bestgrade'] = 'La nota más alta';
 $string['bestgrades'] = 'El grupo con el promedio más alto:';

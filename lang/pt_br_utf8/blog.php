@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// blog.php - created with Totara langimport script version 1.1
 
 $string['addnewentry'] = 'Acrescentar novo texto';
 $string['backupblogshelp'] = 'Se habilitada, os blogs serão incluídos no backup automático do site';

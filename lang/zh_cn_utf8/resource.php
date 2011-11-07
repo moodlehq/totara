@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // resource.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// resource.php - created with Totara langimport script version 1.1
 
 $string['addresource'] = '添加资源';
 $string['affectedresources'] = '受影响的资源';
@@ -53,13 +52,13 @@ $string['fulltext'] = '全文';
 $string['htmlfragment'] = 'HTML 片段';
 $string['imspackageloaded'] = '包已载入';
 $string['keepnavigationvisible'] = '显示导航';
+$string['keepnavigationvisibleno'] = '否';
 $string['keepnavigationvisiblewarning'] = '备注：一些媒体文件可能忽略此设置';
+$string['keepnavigationvisibleyesframe'] = '是，使用框架';
+$string['keepnavigationvisibleyesobject'] = '是，不使用框架';
 $string['maindirectory'] = '主文件目录';
 $string['modulename'] = '资源';
 $string['modulenameplural'] = '资源';
-$string['keepnavigationvisibleno'] = '否';
-$string['keepnavigationvisibleyesframe'] = '是，使用框架';
-$string['keepnavigationvisibleyesobject'] = '是，不使用框架';
 $string['navigationbuttons'] = '导航按钮';
 $string['navigationmenu'] = '浏览侧栏菜单';
 $string['navigationup'] = '显示顶部导航';

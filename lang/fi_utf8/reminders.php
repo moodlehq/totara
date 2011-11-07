@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // reminders.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// reminders.php - created with Totara langimport script version 1.1
 
 $string['businessdays'] = 'Arkipäivät';
 $string['completion'] = 'Suorittaminen';

@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // dialogue.php - created with Moodle 1.8 + (2007021503)
-
+<?php
+// dialogue.php - created with Totara langimport script version 1.1
 
 $string['addmynewentries'] = 'הוסף את ההודעות החדשות שלי';
 $string['addmynewentry'] = 'הוסף את ההודעה החדשה שלי';

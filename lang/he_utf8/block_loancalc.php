@@ -1,6 +1,5 @@
-<?PHP // $Id: block_loancalc.php,v 1.1 2007/05/14 11:56:47 emanuel1 Exp $
-      // block_loancalc.php - created with Moodle 1.8 dev (2006120700)
-
+<?php
+// block_loancalc.php - created with Totara langimport script version 1.1
 
 $string['amountofloan'] = 'סכום ההלוואה';
 $string['fortnightly'] = 'דו-שבועי';

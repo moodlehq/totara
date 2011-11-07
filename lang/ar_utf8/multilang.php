@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // multilang.php - created with Moodle 1.3 development (2004041800)
-
+<?php
+// multilang.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'محتوى متعدد اللغة';
 

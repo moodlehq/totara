@@ -1,9 +1,8 @@
-<?PHP // $Id: wiki.php,v 1.12 2010/11/08 08:58:21 emanuel1 Exp $
-      // wiki.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// wiki.php - created with Totara langimport script version 1.1
 
 $string['action'] = '-- פעולה --';
-$string['administration'] = 'מנהלה';
+$string['administration'] = 'ניהול';
 $string['allowremovepages'] = 'אפשר \'הסר עמודים\'';
 $string['allowrevertchanges'] = 'אפשר \'החזר כמות גדולה של שינויים לקדמותם\'';
 $string['allowsetpage'] = 'אפשר \'קבע דגלוני עמודים\'';
@@ -12,7 +11,7 @@ $string['attachments'] = 'לעמוד זה מצורפים קבצים';
 $string['author'] = 'מחבר';
 $string['authorfieldpattern'] = 'דפוס שדה המחבר';
 $string['authorfieldpatternerror'] = 'אנא הכנס מחבר.';
-$string['backlinks'] = 'קישורים מפנים';
+$string['backlinks'] = 'קישורים נכנסים';
 $string['binimgtoolarge'] = 'קובץ התמונה גדול מדי!';
 $string['binnoimg'] = 'פורמט קובץ זה לא קביל!';
 $string['browse'] = 'עיין';
@@ -40,7 +39,7 @@ $string['differences'] = 'הבדלים בין הגירסאות $a->new_ver ו-$a
 $string['disablecamel'] = 'ביטול קישורי כתב CamelCase';
 $string['disabledpage'] = 'עמוד זה אינו זמין כרגע.';
 $string['doesnotexist'] = 'עמוד זה עדיין לא קיים, אם ברצונך ליצור אותו, אנא לחץ על כפתור העריכה.';
-$string['downloadaszip'] = 'ארכיון zip  שניתן להורדה.';
+$string['downloadaszip'] = 'ארכיון zip שניתן להורדה.';
 $string['downloadtimes'] = 'הורד $a פעמים';
 $string['dwnlnofiles'] = 'עדיין לא הועלו קבצים';
 $string['dwnlsection'] = 'הורד קטע';
@@ -48,15 +47,15 @@ $string['editform1'] = 'נסה לא לדאוג יותר מדי בכל הנוגע
 $string['editform2'] = 'אנא כתוב בהיגיון, זכור שכל פעולות העריכה נשמרות ביומני המעקב.';
 $string['editthispage'] = 'ערוך עמוד זה';
 $string['emptypage'] = 'עמוד ריק';
-$string['errorbinandtxt'] = 'שגיאת דגלון: עמוד מסוג BIN  ו-TXT';
+$string['errorbinandtxt'] = 'שגיאת דגלון: עמוד מסוג BIN ו-TXT';
 $string['errorhtml'] = 'עמוד מסוג HTML';
-$string['errornotype'] = 'שגיאת דגלון: לא BIN  ולא TXT';
+$string['errornotype'] = 'שגיאת דגלון: לא BIN ולא TXT';
 $string['errororreason'] = 'שגיאה או סיבה';
 $string['errorroandwr'] = 'שגיאת דגלון: העמוד הוא לקריאה בלבד וניתן לכתיבה.';
 $string['errorsize'] = 'העמוד גדול יותר מ-64k';
 $string['errversionsave'] = 'סליחה, בזמן שערכת את עמוד זה מישהו אחר שמר גירסה שונה שלו. אנא חזור למסך הקודם והעתק את השינויים שעשית לתוך לוח העריכה של המחשב שלך.כך תוכל להכניסם חזרה לעמוד לאחר שתטען מחדש את מסך העריכה.';
 $string['ewikiacceptbinary'] = 'אפשר צירוף קבצים';
-$string['ewikiprinttitle'] = 'הדפס את שם בכל עמוד.';
+$string['ewikiprinttitle'] = 'הדפס את שם ה-wiki על כל עמוד.';
 $string['export'] = 'יצא';
 $string['exportformats'] = 'פורמטי יצוא';
 $string['exportsuccessful'] = 'יצוא הצליח.';
@@ -98,18 +97,18 @@ $string['lockcancelled'] = 'מנעול העריכה שלך נעקף, וכעת מ
 $string['meta'] = 'מטה-נתונים';
 $string['moduledirectory'] = 'ספריית רכיב';
 $string['modulename'] = 'ויקי';
-$string['modulenameplural'] = 'ויקי(ם)';
+$string['modulenameplural'] = 'Wikis';
 $string['mostoftenchangedpages'] = 'עמודים ששונו בתכיפות הגבוהה ביותר';
 $string['mostvisitedpages'] = 'העמודים שנצפו הכי הרבה';
 $string['newestpages'] = 'העמודים החדשים ביותר';
-$string['noadministrationaction'] = 'לא ניתנה פעולה של ההנהלה.';
+$string['noadministrationaction'] = 'לא ניתנה פעולת ניהול.';
 $string['nocandidatestoremove'] = 'אין עמודים המועמדים להסרה, בחר ב-\'$a\' כדי להראות את כל העמודים.';
 $string['nochangestorevert'] = 'אין שינויים שיש להחזיר לקדמותם.';
 $string['nohtml'] = 'ללא עיצוב';
 $string['nojslockwarning'] = 'בגלל ש-Javascript מנוטרל בדפדפן שלך קיימת האפשרות שמישהו אחר יוכל לערוך את העמוד הזה. אם הדבר קורה, לא תוכל לשמור את השינויים שעשית. אנא נסה לעשות את השינויים שלך במהרה או שתפעיל את Javascript וטען מחדש את עמוד זה.';
 $string['nolinksfound'] = 'לא נמצאו קישורים על העמוד.';
 $string['noregexp'] = 'על המחרוזת להיות קבועה (אינך יכול להשתמש ב-* או בביטויים רגולריים), מומלץ להשתמש בכתובת ה-IP או המחשב המארח של התוקף, אך אל תכלול את מספר הפתחה (מפני שהיא גדלה עם כל כניסת HTTP).';
-$string['notadministratewiki'] = 'אינך מורשה לנהל את ויקי זה!';
+$string['notadministratewiki'] = 'אתה לא מורשה לנהל את wiki זה!';
 $string['nothingtostrip'] = 'אין עמודים בעלי יותר מגירסה אחת.';
 $string['nowikicreated'] = 'לא נוצרו רשומות עבור ויקי זה.';
 $string['of'] = 'של';
@@ -117,7 +116,7 @@ $string['offline'] = 'לא מקוון';
 $string['optional'] = 'לבחירתכם';
 $string['orphanedpage'] = 'עמוד יתום';
 $string['orphanedpages'] = 'עמודים יתומים';
-$string['otherwikis'] = 'ויקי(ם) אחר(ים)';
+$string['otherwikis'] = 'Wikis אחרים';
 $string['overridebutton'] = 'עקוף את הנעילה';
 $string['overrideinfo'] = 'באפשרותך לעקוף את הנעילה של המשתמש הזה. אבל אם תעשה כן, אתה עלול לגרום לו לאבד את השינויים שהוא ביצע! אנא פעל ברגישות.';
 $string['ownerunknown'] = 'לא ידוע';
@@ -141,7 +140,7 @@ $string['removenotice'] = 'שים לב. ברשימה זו יופיעו רק עמ
 $string['removepagecheck'] = 'האם אתה בטוח שברצונך למחוק את העמודים הללו?';
 $string['removepages'] = 'הסר עמודים';
 $string['removeselectedpages'] = 'הסר את העמודים שנבחרו';
-$string['revertallsince'] = 'המהדורה מתיישנת, מחק גם שינויים שנעשו לאחר';
+$string['revertallsince'] = 'המהדורה מתיישנת, מחוק גם שינויים שנעשו לאחר';
 $string['revertchanges'] = 'החזר את השינויים לקדמותם';
 $string['revertlastonly'] = 'רק אם הוא היה השינוי האחרון';
 $string['revertpages'] = 'החזר כמות גדולה של שינויים לקדמותם';
@@ -158,7 +157,7 @@ $string['smfor'] = 'מפת עמודי ויקי עבור';
 $string['status'] = 'מצב';
 $string['strippagecheck'] = 'האם אתה בטוח שברצונך להסיר מעמודים אלה את הגירסאות הישנות?';
 $string['strippages'] = 'הסר תוכן מהעמודים';
-$string['studentadminoptions'] = 'אפשרויות מנהליות לסטודנטים';
+$string['studentadminoptions'] = 'אפשרויות ניהול למשתתפים';
 $string['submit'] = 'הגש';
 $string['tabattachments'] = 'קבצים מצורפים';
 $string['tabedit'] = 'ערוך';
@@ -168,7 +167,7 @@ $string['tabview'] = 'הצג';
 $string['thanksforcontribution'] = 'תודה על תרומתכם.';
 $string['thispageisntlinkedfromanywhereelse'] = 'העמוד אינו מקושר ממקום אחר.';
 $string['updatedpages'] = 'עמודים מעודכנים';
-$string['updatedwikipages'] = 'עמודי  ויקי מעודכנים';
+$string['updatedwikipages'] = 'עמודי wiki מעודכנים';
 $string['uplerror'] = 'אנו מצטערים, אבל חלה שגיאה כלשהיא בזמן העלאת הקובץ.';
 $string['uplinsect'] = 'העלה לתוך';
 $string['uplnewnam'] = 'שמור תחת שם קובץ שונה';
@@ -198,26 +197,5 @@ $string['wikiusage'] = 'שימושי ויקי';
 $string['withbinaries'] = 'כלול תוכן בינארי';
 $string['withvirtualpages'] = 'כלול קישורי-ויקי';
 $string['wrongversionrange'] = '$a איננו טווח נכון!';
-
-?>
-<?PHP // $Id$
-      // wiki.php - created with Moodle 1.9.5+ (Build: 20090624) (2007101550)
-
-
-
-$string['administration'] = 'ניהול';
-$string['backlinks'] = 'קישורים נכנסים';
-$string['chooseadministration'] = '-- ניהול --';
-$string['downloadaszip'] = 'ארכיון zip שניתן להורדה.';
-$string['errorbinandtxt'] = 'שגיאת דגלון: עמוד מסוג BIN ו-TXT';
-$string['errornotype'] = 'שגיאת דגלון: לא BIN ולא TXT';
-$string['ewikiprinttitle'] = 'הדפס את שם ה-wiki על כל עמוד.';
-$string['modulenameplural'] = 'Wikis';
-$string['noadministrationaction'] = 'לא ניתנה פעולת ניהול.';
-$string['notadministratewiki'] = 'אתה לא מורשה לנהל את wiki זה!';
-$string['otherwikis'] = 'Wikis אחרים';
-$string['revertallsince'] = 'המהדורה מתיישנת, מחוק גם שינויים שנעשו לאחר';
-$string['studentadminoptions'] = 'אפשרויות ניהול למשתתפים';
-$string['updatedwikipages'] = 'עמודי wiki מעודכנים';
 
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // resource.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// resource.php - created with Totara langimport script version 1.1
 
 $string['addresource'] = 'Agregar recurso';
 $string['affectedresources'] = 'Recursos afectados';
@@ -9,6 +8,7 @@ $string['autofilerename'] = 'Actualizar enlace si se renombra el archivo';
 $string['back'] = 'Atrás';
 $string['blockdeletingfile'] = 'Bloquear la eliminación de archivos referenciados';
 $string['browserepository'] = 'Revisar repositorio';
+$string['cannotupdate'] = 'No se puede actualizar el recurso.';
 $string['choose'] = 'Seleccionar';
 $string['chooseafile'] = 'Elija o suba un archivo';
 $string['chooseaparameter'] = 'Elegir un parámetro...';
@@ -173,6 +173,5 @@ $string['vol'] = 'Vol';
 $string['warningblockingdelete'] = 'ATENCIÓN: La operación de borrado está bloqueada por un recurso existente. Puede actualizar en primer lugar sus recursos, o pedir al administrador que desactive este mecanismo de seguridad en la configuración global de los recursos.';
 $string['warningdisabledrename'] = 'ATENCIÓN: El renombrado automático de las referencias en los recursos está desactivado. Por favor, actualice manualmente los recursos afectados si fuera necesario. El administrador puede asimismo activar el renombrado automático en la configuración global de los recursos.';
 $string['websearchdefault'] = 'Búsqueda de web por defecto';
-$string['cannotupdate'] = 'No se puede actualizar el recurso.'; // ORPHANED
 
 ?>

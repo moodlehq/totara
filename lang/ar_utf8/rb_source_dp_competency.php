@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_dp_competency.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// rb_source_dp_competency.php - created with Totara langimport script version 1.1
 
 $string['competencyduedate'] = 'تاريخ استحقاق الكفاءة';
 $string['competencyname'] = 'اسم الكفاءة';

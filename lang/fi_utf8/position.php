@@ -1,7 +1,7 @@
-<?PHP // $Id$ 
-      // position.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+<?php
+// position.php - created with Totara langimport script version 1.1
 
-
+$string['adddepthlevel'] = 'Lisää uusi taso';
 $string['addedframework'] = 'Asemarakenne \"{$a}\" on lisätty';
 $string['addedposition'] = 'Asema \"{$a}\" on lisätty';
 $string['addmultiplenewposition'] = 'Lisää asemia';
@@ -23,6 +23,7 @@ $string['deletecheckwithchildren'] = 'Oletko varma, että haluat poistaa tämän
 <br /><br />
 Tämä poistaa seuraavat tiedot <br />- aseman \"$a->itemname\" ja sen $a->childcount $a->children_string.';
 $string['deletedassignedcompetency'] = 'Kompetenssi poistettu tästä asemasta';
+$string['deletedepth'] = 'Poista $a';
 $string['deletedframework'] = 'Asemarakenne $a ja kaikki sen tiedot on poistettu';
 $string['deletedposition'] = 'Asema $a ja sen lapsiobjektit on poistettu';
 $string['deletedtype'] = 'Asematyyppi \"{$a}\" on poistettu lopullisesti';
@@ -35,7 +36,11 @@ $string['deletemulticheckwithchildren'] = 'Oletko varma, että haluat poistaa as
 Tämä poistaa seuraavat tiedot <br />- asemat $a->num ja sen $a->childcount $a->children_string:n.';
 $string['deleteposition'] = 'Poista asema';
 $string['deletetype'] = 'Poista tyyppi \"{$a}\"';
+$string['depthlevel'] = 'Taso';
+$string['depthlevels'] = 'Tasot';
+$string['depths'] = 'Tasot';
 $string['descriptionview'] = 'Kuvaus kohteelle $a';
+$string['editdepthlevel'] = 'Muokkaa tasoa';
 $string['editframework'] = 'Muokkaa asemarakennetta';
 $string['editgeneric'] = 'Muokkaa kohdetta $a';
 $string['editposition'] = 'Muokkaa asemaa';
@@ -57,6 +62,7 @@ $string['finishdatehint'] = '&nbsp;<b>Muoto:</b>pp/kk/vvvv';
 $string['framework'] = 'Asemarakenne';
 $string['frameworks'] = 'Rakenteet';
 $string['fullname'] = 'Aseman koko nimi';
+$string['fullnamedepth'] = 'Tason koko nimi';
 $string['fullnameframework'] = 'Koko nimi';
 $string['fullnametype'] = 'Tyypin koko nimi';
 $string['fullnameview'] = 'Koko nimi';
@@ -68,15 +74,20 @@ $string['manageposition'] = 'Hallinnoi asemia';
 $string['managepositions'] = 'Hallinnoi asemia';
 $string['managepositiontypes'] = 'Hallinnoi tyyppejä';
 $string['manager'] = 'Esimies';
+$string['missingfullname'] = 'Asemalta puuttuu täydellinen nimi';
+$string['missingfullnamedepth'] = 'Tasolta puuttuu täydellinen nimi';
+$string['missingfullnameframework'] = 'Rakenteelta puuttuu täydellinen nimi';
 $string['missingfullnametype'] = 'Puuttuva tyypin nimi';
 $string['missingname'] = 'Puuttuva aseman nimi';
 $string['missingnameframework'] = 'Puuttuva asemarakenteen nimi';
 $string['missingnametype'] = 'Puuttuva asematyypin nimi';
 $string['missingshortname'] = 'Asemalta puuttuu lyhenne';
+$string['missingshortnamedepth'] = 'Tasolta puuttuu lyhenne';
 $string['missingshortnameframework'] = 'Rakenteelta puuttuu lyhenne';
 $string['missingshortnametype'] = 'Puuttuva tyypin lyhenne';
 $string['name'] = 'Nimi';
 $string['nocompetenciesassignedtoposition'] = 'Tälle asemalle ei ole määritelty kompetensseja';
+$string['nodepthlevels'] = 'Tässä rakenteessa ei ole tasoja';
 $string['noframeworks'] = 'Asemarakenteita ei löytynyt';
 $string['noposition'] = 'Asemia ei ole määritelty';
 $string['nopositionsassigned'] = 'Tälle käyttäjälle ei ole määritelty asemia';
@@ -90,7 +101,9 @@ $string['organisation'] = 'Organisaatio';
 $string['parent'] = 'Ylempi asema';
 $string['position'] = 'Asema';
 $string['positionaddnew'] = 'Lisää uusi asema';
+$string['positionbulkaction'] = 'Massatoimenpiteet';
 $string['positioncustomfields'] = 'Lisäkentät';
+$string['positiondepthcustomfields'] = 'Asematason lisäkentät';
 $string['positionframework'] = 'Asemarakenne';
 $string['positionframeworkmanage'] = 'Hallinnoi rakenteita';
 $string['positionframeworks'] = 'Asemarakenteet';
@@ -103,6 +116,7 @@ $string['positiontypecustomfields'] = 'Asematyypin lisäkentät';
 $string['positiontypes'] = 'Asematyypit';
 $string['returntoframework'] = 'Palaa asemarakenteeseen';
 $string['shortname'] = 'Aseman lyhenne';
+$string['shortnamedepth'] = 'Tason lyhenne';
 $string['shortnameframework'] = 'Lyhenne';
 $string['shortnametype'] = 'Tyypin lyhenne';
 $string['shortnameview'] = 'Lyhenne';
@@ -120,20 +134,5 @@ $string['updatedposition'] = 'Asema \"{$a}\" on päivitetty';
 $string['updateposition'] = 'Päivitä asema';
 $string['updatetype'] = 'Asematyypi \"{$a}\" on päivitetty';
 $string['weight'] = 'Painotus';
-$string['adddepthlevel'] = 'Lisää uusi taso'; // ORPHANED
-$string['deletedepth'] = 'Poista $a'; // ORPHANED
-$string['depthlevel'] = 'Taso'; // ORPHANED
-$string['depthlevels'] = 'Tasot'; // ORPHANED
-$string['depths'] = 'Tasot'; // ORPHANED
-$string['editdepthlevel'] = 'Muokkaa tasoa'; // ORPHANED
-$string['fullnamedepth'] = 'Tason koko nimi'; // ORPHANED
-$string['missingfullname'] = 'Asemalta puuttuu täydellinen nimi'; // ORPHANED
-$string['missingfullnamedepth'] = 'Tasolta puuttuu täydellinen nimi'; // ORPHANED
-$string['missingfullnameframework'] = 'Rakenteelta puuttuu täydellinen nimi'; // ORPHANED
-$string['missingshortnamedepth'] = 'Tasolta puuttuu lyhenne'; // ORPHANED
-$string['nodepthlevels'] = 'Tässä rakenteessa ei ole tasoja'; // ORPHANED
-$string['positionbulkaction'] = 'Massatoimenpiteet'; // ORPHANED
-$string['positiondepthcustomfields'] = 'Asematason lisäkentät'; // ORPHANED
-$string['shortnamedepth'] = 'Tason lyhenne'; // ORPHANED
 
 ?>

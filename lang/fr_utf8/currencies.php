@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// currencies.php - created with Totara langimport script version 1.1
 
 $string['AED'] = 'Dirham des Émirats arabes unis';
 $string['AFA'] = 'Afghani d\'Afghanistan';
@@ -31,10 +32,10 @@ $string['CNY'] = 'Yuan renminbi (chinois)';
 $string['COP'] = 'Peso colombien';
 $string['CRC'] = 'Colon du Costa Rica';
 $string['CSD'] = 'Dinar serbe';
-$string['CZK'] = 'Couronne tchèque';
 $string['CUP'] = 'Peso cubain';
 $string['CVE'] = 'Escudo capverdien';
 $string['CYP'] = 'Livre chypriote';
+$string['CZK'] = 'Couronne tchèque';
 $string['DJF'] = 'Franc de Djibouti';
 $string['DKK'] = 'Couronne danoise';
 $string['DOP'] = 'Peso dominicain';

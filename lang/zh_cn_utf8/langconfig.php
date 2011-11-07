@@ -1,12 +1,11 @@
-<?PHP // $Id$ 
-      // langconfig.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// langconfig.php - created with Totara langimport script version 1.1
 
 $string['alphabet'] = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
 $string['backupnameformat'] = '%%Y%%m%%d-%%H%%M';
-$string['decsep'] = '.'; // decimal point separator, for some languages it is ','
+$string['decsep'] = '.';
 $string['firstdayofweek'] = '1';
-$string['listsep'] = ','; // if decsep is ',', then usually ';' is used instead here; these two can not be the same
+$string['listsep'] = ',';
 $string['locale'] = 'zh_CN.UTF-8';
 $string['localewin'] = 'Chinese_China.936';
 $string['localewincharset'] = 'CP936';
@@ -28,6 +27,6 @@ $string['thischarset'] = 'UTF-8';
 $string['thisdirection'] = 'ltr';
 $string['thislanguage'] = '简体中文';
 $string['thislanguageint'] = '简体中文';
-$string['thousandssep'] = ','; // thousands separator, for some languages it is '.' or ' '
+$string['thousandssep'] = ',';
 
 ?>

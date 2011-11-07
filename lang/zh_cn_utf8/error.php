@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // error.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// error.php - created with Totara langimport script version 1.1
 
 $string['adminprimarynoedit'] = '其他人不能修改主管理员信息';
 $string['cannotassignrole'] = '无法在课程中委派角色。';
@@ -26,8 +25,8 @@ $string['confirmsesskeybad'] = '很抱歉，您的会话密钥不能确保您完
 $string['couldnotassignrole'] = '当试图给您分配角色时，发生了一个严重但未说明的错误。';
 $string['countriesphpempty'] = '错误：语言包 $a 中的文件 countries.php 为空或缺失。';
 $string['coursegroupunknown'] = '未指定与组 $a 关联的课程';
-$string['csvemptyfile'] = 'CSV 文件为空';
 $string['csvcolumnduplicates'] = '检测到重复的列';
+$string['csvemptyfile'] = 'CSV 文件为空';
 $string['csvfewcolumns'] = '没有足够的列，请校验分隔符设置';
 $string['csvweirdcolumns'] = '无效的 CSV 文件格式-列数不连续';
 $string['dbupdatefailed'] = '数据库更新失败';
@@ -65,19 +64,19 @@ $string['invalidrequest'] = '无效的请求';
 $string['invalidrole'] = '无效的角色';
 $string['invalidsesskey'] = '提交了不正确的 sesskey，表单未被接受！';
 $string['invalidurl'] = '无效的 URL';
+$string['invalidxmlfile'] = '\"$a\"不是合法的 XML 文件';
 $string['iplookupfailed'] = '无法找到关于 IP 地址 $a 的地理信息';
 $string['iplookupprivate'] = '无法显示私有 IP 地址查找结果';
-$string['invalidxmlfile'] = '\"$a\"不是合法的 XML 文件';
-$string['listnopeers'] = '未找到同类项目';
-$string['listnoitem'] = '项目未找到';
-$string['listnochildren'] = '未找到子项';
-$string['listupdatefail'] = '编辑列表层级时数据库操作失败';
-$string['listcantmoveup'] = '上移项目失败，已经是在最前位置';
 $string['listcantmovedown'] = '下移项目失败，已经是在最后位置';
 $string['listcantmoveleft'] = '左移项目失败，没有找到父项';
 $string['listcantmoveright'] = '右移项目失败，没有找到子项。您必须下移到另一个同类项目中后才能右移。';
-$string['loginasonecourse'] = '您不能进入该课程。<br />在进入任何其他课程之前，您必须终止 \"登录为\"会话。';
+$string['listcantmoveup'] = '上移项目失败，已经是在最前位置';
+$string['listnochildren'] = '未找到子项';
+$string['listnoitem'] = '项目未找到';
+$string['listnopeers'] = '未找到同类项目';
+$string['listupdatefail'] = '编辑列表层级时数据库操作失败';
 $string['loginasnoenrol'] = '在课程的 \"登录为\"会话中，不允许使用选修或者注销';
+$string['loginasonecourse'] = '您不能进入该课程。<br />在进入任何其他课程之前，您必须终止 \"登录为\"会话。';
 $string['missingfield'] = '字段 \"$a\"不存在';
 $string['missingrequiredfield'] = '缺少了必需的字段';
 $string['modulemissingcode'] = '模块 $a 缺少了执行此功能的代码';
@@ -90,8 +89,8 @@ $string['nologinas'] = '您不可以登录为此用户';
 $string['nonmeaningfulcontent'] = '无意义的内容';
 $string['noparticipatorycms'] = '很抱歉，您没有要报告的共享课程模块';
 $string['nopermissions'] = '很抱歉，您目前没有权限（$a）这么做';
-$string['notavailable'] = '现在它已经不存在了';
 $string['nostatstodisplay'] = '很抱歉，没有可用的数据可显示';
+$string['notavailable'] = '现在它已经不存在了';
 $string['onlyadmins'] = '只有管理员才能使用此功能';
 $string['onlyeditingteachers'] = '只有拥有修改权的教师才能使用此功能';
 $string['onlyeditown'] = '您只能修改您自己的信息';
@@ -124,10 +123,10 @@ $string['useremailduplicate'] = '地址重复';
 $string['usernotaddedadmin'] = '无法删除管理员帐号';
 $string['usernotaddederror'] = '用户未添加 - 错误';
 $string['usernotaddedregistered'] = '用户未添加 - 已注册';
+$string['usernotavailable'] = '您无法查看这个用户的详细信息';
 $string['usernotdeletederror'] = '用户未删除 - 错误';
 $string['usernotdeletedmissing'] = '用户未删除 - 找不到用户名';
 $string['usernotdeletedoff'] = '用户未删除 - 不允许删除';
-$string['usernotavailable'] = '您无法查看这个用户的详细信息';
 $string['usernotrenamedadmin'] = '无法重命名管理员帐户';
 $string['usernotrenamedexists'] = '用户未重命名 - 新用户名已在使用中';
 $string['usernotrenamedmissing'] = '用户未重命名 - 找不到原用户名';

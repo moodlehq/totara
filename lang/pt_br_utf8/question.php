@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// question.php - created with Totara langimport script version 1.1
 
 $string['adminreport'] = 'Reportar possíveis problemas no banco de questões.';
 $string['broken'] = 'Este é um \"link quebrado\", ele aponta para um arquivo inexistente.';

@@ -1,10 +1,11 @@
 <?php
-// certificate.php - created with Totara langimport script version 1.0
+// certificate.php - created with Totara langimport script version 1.1
 
 $string['activitydependencies'] = 'أنشطة تابعة';
 $string['activitylocklabel'] = 'نشاط مرتبط/الحد الأدنى للدرجة';
 $string['addlinklabel'] = 'إضافة خيار نشاط مرتبط آخر';
 $string['addlinktitle'] = 'اضغط لإضافة خيار نشاط مرتبط آخر';
+$string['advertencia'] = 'يستطيع الطلاب فقط تنزيل هذه الشهادة بهذا الاصدار';
 $string['awarded'] = 'منح';
 $string['awardedto'] = 'منح إلى';
 $string['back'] = 'عودة';
@@ -41,6 +42,7 @@ $string['dateformat'] = 'تنسيق التاريخ';
 $string['datehelp'] = 'تاريخ';
 $string['deliver'] = 'تسليم';
 $string['designoptions'] = 'خيارات التصميم';
+$string['diploma'] = 'شهادة';
 $string['download'] = 'تحميل القوة';
 $string['emailcertificate'] = 'بريد إلكتروني (يجب اختيار حفظ أيضاً!)';
 $string['emailothers'] = 'أرسل بريد إلكتروني للآخرين';
@@ -82,6 +84,8 @@ $string['introletterportrait'] = 'وذلك من أجل إقرار أن';
 $string['introportrait'] = 'وذلك من أجل إقرار أن';
 $string['issued'] = 'المصدرة';
 $string['issueoptions'] = 'خيارات الإصدار';
+$string['linea1'] = 'منحت هذا الشهاد لـ';
+$string['linea2'] = 'وذلك لإنهاء المنهج الدراسي بشكل مرضى';
 $string['linkedactivity'] = 'النشاط المرتبط';
 $string['lockgrade'] = 'قفل حسب الدرجة';
 $string['lockingoptions'] = 'خيارات الإقفال';

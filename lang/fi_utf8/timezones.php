@@ -1,5 +1,5 @@
-<?PHP // $Id$
-      // Modified with langdiff.php
+<?php
+// timezones.php - created with Totara langimport script version 1.1
 
 $string['europe/amsterdam'] = 'Eurooppa/Amsterdam';
 $string['europe/andorra'] = 'Eurooppa/Andorra';
@@ -44,4 +44,5 @@ $string['europe/vilnius'] = 'Eurooppa/Vilna';
 $string['europe/warsaw'] = 'Eurooppa/Varsova';
 $string['europe/zaporozhye'] = 'Eurooppa/Zaporozhye';
 $string['europe/zurich'] = 'Eurooppa/Zurich';
+
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_match.php,v 1.3 2009/03/11 10:09:26 ralf-bonn Exp $ 
-      // qtype_match.php - created with Moodle 2.0 dev (Build: 20090226) (2009021800)
-
+<?php
+// qtype_match.php - created with Totara langimport script version 1.1
 
 $string['addingmatch'] = 'Eine Zuordnungs-Frage hinzufügen';
 $string['addmoreqblanks'] = '{no} weitere Leerfelder';

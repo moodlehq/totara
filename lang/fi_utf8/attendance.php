@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// attendance.php - created with Totara langimport script version 1.1
+
 $string['absentlong'] = 'Puuttuva';
 $string['absentshort'] = 'P';
 $string['addingmultiple'] = 'Läsnäololistojen lisääminen';
@@ -65,4 +67,5 @@ $string['viewtable'] = 'Katsele raporttia yhtenä taulukkona';
 $string['viewweek'] = 'Katsele kaikkia viikon läsnäololistoja';
 $string['wednesday'] = 'Ke';
 $string['weekmodulename'] = 'Kaikki viime viikon läsnäololistat';
+
 ?>

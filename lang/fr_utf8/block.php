@@ -1,7 +1,8 @@
-<?php // $Id: block.php,v 1.3 2009/09/18 09:20:35 martignoni Exp $ 
+<?php
+// block.php - created with Totara langimport script version 1.1
 
-$string['appearsinsubcontexts'] = 'Apparaît dans des sous-contextes';
 $string['anypagematchingtheabove'] = 'Toutes les pages correspondant aux critères ci-dessus';
+$string['appearsinsubcontexts'] = 'Apparaît dans des sous-contextes';
 $string['blocksettings'] = 'Réglage du bloc';
 $string['blogadministration'] = 'Administration du blog';
 $string['bracketfirst'] = '$a (premier)';
@@ -20,3 +21,5 @@ $string['thisspecificpage'] = 'Cette page spécifique (page $a)';
 $string['visible'] = 'Visible';
 $string['weight'] = 'Poids';
 $string['wherethisblockappears'] = 'Où ce bloc apparaît';
+
+?>

@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_calculated.php,v 1.8 2009/03/11 10:09:26 ralf-bonn Exp $ 
-      // qtype_calculated.php - created with Moodle 2.0 dev (Build: 20090226) (2009021800)
-
+<?php
+// qtype_calculated.php - created with Totara langimport script version 1.1
 
 $string['addingcalculated'] = 'Eine berechnete Frage hinzufügen';
 $string['addmoreanswerblanks'] = 'Weiteres Antwortfeld hinzufügen';

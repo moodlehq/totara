@@ -1,6 +1,6 @@
-<?PHP // $Id$
-      // tex.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2004100800)
-
+<?php
+// tex.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'תחביר TeX';
+
 ?>

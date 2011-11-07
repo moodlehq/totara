@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // assignment.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// assignment.php - created with Totara langimport script version 1.1
 
 $string['allowdeleting'] = 'אפשר מחיקה';
 $string['allowmaxfiles'] = 'מספר הקבצים המירבי שניתן להעלות';

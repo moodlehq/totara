@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// exercise.php - created with Totara langimport script version 1.1
+
 $string['absent'] = 'Puuttuva';
 $string['accumulative'] = 'Kumulatiivinen';
 $string['action'] = 'Toimenpide';
@@ -178,4 +180,5 @@ $string['wrongpassword'] = 'väärä salasana tälle harjoitukselle';
 $string['yourassessment'] = 'Sinun arviointisi';
 $string['yourfeedbackgoeshere'] = 'Palautteesi tänne';
 $string['yoursubmission'] = 'Palautuksesi';
+
 ?>

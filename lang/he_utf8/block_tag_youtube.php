@@ -1,6 +1,5 @@
-<?PHP // $Id: block_tag_youtube.php,v 1.5 2011/03/21 07:11:14 emanuel1 Exp $
-      // block_tag_youtube.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// block_tag_youtube.php - created with Totara langimport script version 1.1
 
 $string['anycategory'] = 'כל קטגוריה';
 $string['autosvehicles'] = 'מכוניות   וכלי רכב';

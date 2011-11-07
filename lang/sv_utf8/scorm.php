@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // scorm.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// scorm.php - created with Totara langimport script version 1.1
 
 $string['activation'] = 'Aktivering';
 $string['activityloading'] = 'Du kommer automatiskt att omdirigeras till aktiviteten i';

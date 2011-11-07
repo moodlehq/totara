@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_datasetdependent.php,v 1.3 2010/03/19 18:21:29 danielneis Exp $ 
-      // qtype_datasetdependent.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// qtype_datasetdependent.php - created with Totara langimport script version 1.1
 
 $string['additem'] = 'Adicionar item';
 $string['atleastonerealdataset'] = 'Deve haver pelo menos um conjunto real de dados no texto da questão';

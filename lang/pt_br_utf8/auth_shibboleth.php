@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_shibboleth.php - created with Totara langimport script version 1.1
 
 $string['auth_shib_changepasswordurl'] = 'Página de mudança de senha';
 $string['auth_shib_convert_data'] = 'API de modificação dos dados';
@@ -25,3 +23,5 @@ $string['auth_shibbolethtitle'] = 'Shibboleth';
 $string['shib_no_attributes_error'] = 'Você usa autenticação Shibboleth mas o Moodle não recebeu os atributos do usuário. Controle o provedor da Identidade para a comunicação dos atributos ($a)necessários, ao provedor em que Moodle está instalado ou informe o webmaster deste servidor.';
 $string['shib_not_all_attributes_error'] = 'O Moodle precisa de alguns atributos Shibboleth que não foram fornecidos no seu caso. Os atributos são: $a<br /> Contate o webmaster deste servidor ou o Provedor da sua Identidade.';
 $string['shib_not_set_up_error'] = 'A autenticação Shibboleth não está configurada corretamente pois as variáveis de ambiente não estão presentes nesta página. Consulte o <a href=\"README.txt\">README</a> para melhores explicações sobre a configuração da autenticação Shibboleth ou contate o webmaster.';
+
+?>

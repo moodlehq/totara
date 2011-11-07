@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // imscc.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// imscc.php - created with Totara langimport script version 1.1
 
 $string['cc2moodle_checking_schema'] = 'CC Format! Kollar Schema...';
 $string['cc2moodle_invalid_schema'] = 'Schema är inte giltigt.';

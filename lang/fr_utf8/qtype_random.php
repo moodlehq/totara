@@ -1,4 +1,5 @@
-<?php // $Id: qtype_random.php,v 1.4 2009/04/10 19:28:53 martignoni Exp $
+<?php
+// qtype_random.php - created with Totara langimport script version 1.1
 
 $string['configselectmanualquestions'] = 'Le type de question aléatoire peut-il choisir des questions évaluées manuellement lorsqu\'il tire aléatoirement une question d\'une catégorie ?';
 $string['editingrandom'] = 'Modification d\'une question aléatoire';

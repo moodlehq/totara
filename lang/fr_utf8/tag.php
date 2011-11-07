@@ -1,12 +1,12 @@
 <?php
-// tag.php - created with Totara langimport script version 1.0
+// tag.php - created with Totara langimport script version 1.1
 
 $string['addedotag'] = '« {$a} » a été ajouté comme tag officiel.';
 $string['addotags'] = 'Ajouter des tags officiels';
 $string['addtagtomyinterests'] = 'Ajouter « {$a} » à mes centres d\'intérêts';
 $string['blocktagstitle'] = 'Tags';
 $string['changename'] = 'Modifier nom du tag';
-$string['changetype'] = 'Modifier type de tag';
+$string['changetype'] = 'Modifier type du tag';
 $string['count'] = 'Compte';
 $string['coursetagging'] = 'Le marquage de cours';
 $string['coursetagginghelp'] = 'Activer l\'option permettant le marquage de cours.';

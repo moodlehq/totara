@@ -1,4 +1,5 @@
-<?php   // $Id$
+<?php
+// moodle.org.php - created with Totara langimport script version 1.1
 
 $string['aboutdemosite'] = '我们的演示网站是一个完整的 Moodle 网站，提供了一些样本课程，您可以作为教师、学生甚至管理员身份试用这些课程。不必担心出现混乱情况，整个网站每隔一个小时便会重置为清洁状态。';
 $string['aboutdemositetitle'] = '演示网站';
@@ -19,21 +20,21 @@ $string['communityintro'] = 'Moodle 拥有庞大、多样化的用户社区，�
 $string['conferencecenter'] = 'Moodle 会议中心';
 $string['connectedsites'] = '某些 Moodle 网站已经使用 Moodle 网络功能连接到 moodle.org，因此只要您在此网站通过身份验证，即可直接登录那些网站。';
 $string['connectedsitestitle'] = '连接的网站';
+$string['contactbugs'] = '您可以在 Moodle Tracker 中创建一个新问题来报告 Moodle 软件和任何 moodle.org 网站中的问题。';
+$string['contactbugstitle'] = '错误报告';
 $string['contactintro'] = '请从以下联系方式选项中进行选择：';
 $string['contactlogin'] = '对于所有其他查询，请登录本网站，随后使用本页面上显示的联系方式表。';
-$string['contactsent'] = '您的消息将通过电子邮件发送给 Moodle 社区管理者。';
-$string['contactsupporttitle'] = '支持';
-$string['contactsupport'] = '有关使用 Moodle 软件的支持，请查看我们的支持页面，其中列出了您可以利用的大量有用资源。';
-$string['contactmoodleorgtitle'] = 'Moodle.org';
-$string['contactmoodleorgemail'] = '有关 moodle.org 帐号确认的问题，请发送电子邮件至此地址：';
-$string['contactmoodleorgother'] = '有关所有其他查询，请使用下面的联系方式表。';
-$string['contactmoodleorglogin'] =  '立即登录此网站';
-$string['contactmoodlecomtitle'] = 'Moodle.com';
 $string['contactmoodlecom'] = '对于其他与许可、商标或商业问题以及重要 Moodle 开发相关的查询，请联系 <a href=\"http://moodle.com/\">Moodle.com</a> 服务台';
 $string['contactmoodlecomhelpdesk'] = 'Moodle.com 服务台';
-$string['contactbugstitle'] = '错误报告';
-$string['contactbugs'] = '您可以在 Moodle Tracker 中创建一个新问题来报告 Moodle 软件和任何 moodle.org 网站中的问题。';
+$string['contactmoodlecomtitle'] = 'Moodle.com';
+$string['contactmoodleorgemail'] = '有关 moodle.org 帐号确认的问题，请发送电子邮件至此地址：';
+$string['contactmoodleorglogin'] = '立即登录此网站';
+$string['contactmoodleorgother'] = '有关所有其他查询，请使用下面的联系方式表。';
+$string['contactmoodleorgtitle'] = 'Moodle.org';
 $string['contactsecurity'] = '只要您正确地设置了安全级别，则在 Tracker 中也可安全地报告安全问题。';
+$string['contactsent'] = '您的消息将通过电子邮件发送给 Moodle 社区管理者。';
+$string['contactsupport'] = '有关使用 Moodle 软件的支持，请查看我们的支持页面，其中列出了您可以利用的大量有用资源。';
+$string['contactsupporttitle'] = '支持';
 $string['developercontributors'] = '学分';
 $string['developerlist'] = '具有写访问权限的开发人员的完整列表';
 $string['developermeetings'] = '开发人员会议';
@@ -63,9 +64,9 @@ $string['downloadwin'] = '如果您尚未设置 Web 服务器，则这些一体�
 $string['downloadwintitle'] = '用于 Windows 的 Moodle';
 $string['events'] = '尽管我们专攻在线学习，但共聚一室进行探讨也是一种很好的做法！查看这些链接，进一步了解我们的会议（我们称之为 MoodleMoots）和其他活动。';
 $string['eventstitle'] = '活动';
-$string['frontpagewelcometitle'] = '欢迎加入 Moodle 社区！';
 $string['frontpagewelcome1'] = 'Moodle 是一种开源课程管理系统 (CMS)，也称为学习管理系统 (LMS) 或虚拟学习环境 (VLE)。它是一种免费的 Web 应用程序，可供教育工作者用于创建有效的在线学习网站。';
 $string['frontpagewelcome2'] = 'Moodle.org 是我们的社区网站，我们在这里制作和讨论 Moodle。请利用菜单浏览并加入我们！';
+$string['frontpagewelcometitle'] = '欢迎加入 Moodle 社区！';
 $string['generaldeveloperforum'] = '通用开发人员论坛';
 $string['jobs'] = '访问我们的职位数据库，了解全球各地 Moodle 相关职位的信息。';
 $string['jobstitle'] = 'Moodle 工作机会';
@@ -145,4 +146,4 @@ $string['supportforumslistname'] = '全部论坛列表';
 $string['supportforumstitle'] = '论坛';
 $string['supportintro'] = '您并不孤单！如有必要，您可以通过多种方法获得 Moodle 相关帮助。';
 
-
+?>

@@ -1,6 +1,5 @@
-<?PHP // $Id: currencies.php,v 1.2 2007/03/19 08:13:49 barias Exp $ 
-      // currencies.php - created with Moodle 1.7 (2006101007)
-
+<?php
+// currencies.php - created with Totara langimport script version 1.1
 
 $string['AED'] = 'Dirham de los Emiratos Arabes Unidos';
 $string['AFA'] = 'Afgani Afgano';

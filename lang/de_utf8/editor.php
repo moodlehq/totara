@@ -1,9 +1,9 @@
-<?PHP // $Id$ 
-      // editor.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'Über diesen Editor';
 $string['absbottom'] = 'Unten ausrichten';
+$string['acteditorshhdr'] = 'Aktive Texteditoren';
 $string['address'] = 'Adresse';
 $string['alertnoselectedtext'] = 'Markieren Sie erst den Text!';
 $string['alignment'] = 'Anordnung';
@@ -25,6 +25,7 @@ $string['clean'] = 'Word HTML bereinigen';
 $string['close'] = 'Schließen';
 $string['closeafterreplace'] = 'Nach dem Ersetzen schließen';
 $string['cols'] = 'Spalten';
+$string['configeditorplugins'] = 'Bitte wählen Sie die Editor-Plugins, die Sie benutzen möchten, und ordnen Sie sie in der empfohlenen Reihenfolge.';
 $string['copy'] = 'Auswahl kopieren';
 $string['createanchor'] = 'Anker erstellen';
 $string['createfolder'] = 'Ordner erstellen';
@@ -32,6 +33,8 @@ $string['createlink'] = 'Link einfügen';
 $string['cut'] = 'Auswahl ausschneiden';
 $string['cutpastemozilla'] = 'Leider können Sie mit diesem Editor die gewohnten Tastatur-Shortcuts zum Einfügen von Texten nicht nutzen. Hintergrund ist eine Sicherheitsfunktion in einigen Versionen von Mozilla und Firefox.<br /><br />Sie haben drei Möglichkeiten, die Sie probieren können: <br /> (1) An Stelle von Strg-V verwenden Sie SHIFT-Einfg <br /> (2) Nutzen Sie das Menü mit Bearbeiten -> Einfügen <br /> (3) Verändern Sie die Einstellungen des Browsers in der Datei user.js. <br /><br />Mit dem \"OK\"-Button finden Sie weitere Informationen, mit dem Button \"Abbrechen\" gehen Sie zum Editor zurück.';
 $string['delete'] = 'Löschen';
+$string['editors'] = 'Texteditoren';
+$string['editorsettings'] = 'Editoren verwalten';
 $string['enterurlfirst'] = 'Sie müssen zuerst eine URL eingeben';
 $string['filebrowser'] = 'Dateibrowser';
 $string['findwhat'] = 'Finden';
@@ -44,6 +47,7 @@ $string['heading'] = 'Überschrift';
 $string['height'] = 'Höhe (Pixel)';
 $string['hilitecolor'] = 'Hintergrundfarbe';
 $string['horizontal'] = 'Horizontal';
+$string['horizontalrule'] = 'Trennlinie';
 $string['htmlmode'] = 'HTML-Modus ein/aus';
 $string['imageurl'] = 'URL zum Bild';
 $string['indent'] = 'Einzug vergrößern';
@@ -86,6 +90,7 @@ $string['notimage'] = 'Die ausgewählte Datei ist kein Bild. Bitte wählen Sie e
 $string['notset'] = 'Nicht gesetzt';
 $string['ok'] = 'OK';
 $string['options'] = 'Optionen';
+$string['orderedlist'] = 'Nummerierung';
 $string['outdent'] = 'Einzug verkleinern';
 $string['paste'] = 'Einfügen aus der Zwischenablage';
 $string['path'] = 'Pfad';
@@ -98,6 +103,7 @@ $string['preview'] = 'Vorschau';
 $string['properties'] = 'Eigenschaften';
 $string['redo'] = 'Zurück zur letzten Aktion';
 $string['regularexpressions'] = 'Reguläre Ausdrücke verwenden';
+$string['removelink'] = 'Link entfernen';
 $string['rename'] = 'Umbenennen';
 $string['replaceall'] = 'Alle ersetzen';
 $string['replacewith'] = 'Ersetzen';
@@ -105,6 +111,7 @@ $string['right'] = 'Rechts';
 $string['righttoleft'] = 'Schreibrichtung von rechts nach links';
 $string['rows'] = 'Zeilen';
 $string['search_replace'] = 'Suchen und Ersetzen';
+$string['searchandreplace'] = 'Suchen und ersetzen';
 $string['searchnotfound'] = 'Suchbegriff nicht gefunden!';
 $string['selectcolor'] = 'Farbe auswählen';
 $string['selection'] = 'Auswahl';
@@ -123,19 +130,11 @@ $string['type'] = 'Typ';
 $string['underline'] = 'Unterstrichen';
 $string['undo'] = 'Rückgängig';
 $string['unlink'] = 'Link löschen';
+$string['unorderedlist'] = 'Aufzählungszeichen';
 $string['upload'] = 'Hochladen';
 $string['vertical'] = 'Vertikal';
 $string['width'] = 'Breite (Pixel)';
+$string['wordclean'] = 'Word-Formatierung umwandeln (HTML)';
 $string['zip'] = 'ZIP';
-$string['horizontalrule'] = 'Trennlinie'; // ORPHANED
-$string['orderedlist'] = 'Nummerierung'; // ORPHANED
-$string['removelink'] = 'Link entfernen'; // ORPHANED
-$string['searchandreplace'] = 'Suchen und ersetzen'; // ORPHANED
-$string['unorderedlist'] = 'Aufzählungszeichen'; // ORPHANED
-$string['wordclean'] = 'Word-Formatierung umwandeln (HTML)'; // ORPHANED
-$string['acteditorshhdr'] = 'Aktive Texteditoren'; // ORPHANED
-$string['configeditorplugins'] = 'Bitte wählen Sie die Editor-Plugins, die Sie benutzen möchten, und ordnen Sie sie in der empfohlenen Reihenfolge.'; // ORPHANED
-$string['editors'] = 'Texteditoren'; // ORPHANED
-$string['editorsettings'] = 'Editoren verwalten'; // ORPHANED
 
 ?>

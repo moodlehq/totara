@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_completionstatus.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-
+<?php
+// block_completionstatus.php - created with Totara langimport script version 1.1
 
 $string['cannotviewreport'] = 'Sie haben keine Rechte diesen Bericht anzusehen';
 $string['completionprogressdetails'] = 'Kursbearbeitungsdetails';

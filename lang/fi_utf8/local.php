@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// local.php - created with Totara langimport script version 1.1
 
 $string['addanothercolumn'] = 'Lisää uusi sarake';
 $string['addcompetencyevidence'] = 'Lisää kompetenssitodisteiden rekisteri';
@@ -63,45 +62,57 @@ $string['local:assignselfposition'] = 'Määrittele oma rooli';
 $string['local:assignuserposition'] = 'Määrittele käyttäjän rooli';
 $string['local:createcompetency'] = 'Luo kompetenssi';
 $string['local:createcompetencycustomfield'] = 'Luo kompetenssikenttä';
+$string['local:createcompetencydepth'] = 'Luo kompetenssitaso';
 $string['local:createcompetencyframeworks'] = 'Luo kompetenssirakenne';
 $string['local:createcompetencytemplate'] = 'Luo kompetenssimallipohja';
 $string['local:createcompetencytype'] = 'Luo kompetenssityyppi';
 $string['local:createcoursecustomfield'] = 'Luo kurssikenttä';
 $string['local:createorganisation'] = 'Luo organisaatio';
 $string['local:createorganisationcustomfield'] = 'Luo organisaatiokenttä';
+$string['local:createorganisationdepth'] = 'Luo oganisaatiotaso';
 $string['local:createorganisationframeworks'] = 'Luo oganisaatiorakenne';
 $string['local:createorganisationtype'] = 'Luo organisaatiotyyppi';
 $string['local:createposition'] = 'Luo rooli';
 $string['local:createpositioncustomfield'] = 'Luo roolikenttä';
+$string['local:createpositiondepth'] = 'Luo roolitaso';
 $string['local:createpositionframeworks'] = 'Luo roolirakenne';
 $string['local:createpositiontype'] = 'Luo asematyyppi';
 $string['local:deletecompetency'] = 'Poista kompetenssi';
 $string['local:deletecompetencycustomfield'] = 'Poista kompetenssikenttä';
+$string['local:deletecompetencydepth'] = 'Poista kompetenssitaso';
 $string['local:deletecompetencyframeworks'] = 'Poista kompetenssirakenne';
 $string['local:deletecompetencytemplate'] = 'Poista kompetenssimallipohja';
 $string['local:deletecompetencytype'] = 'Poista kompetenssityyppi';
 $string['local:deletecoursecustomfield'] = 'Poista kurssikenttä';
 $string['local:deleteorganisation'] = 'Poista organisaatio';
 $string['local:deleteorganisationcustomfield'] = 'Poista organisaatiokenttä';
+$string['local:deleteorganisationdepth'] = 'Poista organisaatiotaso';
 $string['local:deleteorganisationframeworks'] = 'Poista organisaatiorakenne';
 $string['local:deleteorganisationtype'] = 'Poista organisaatiotyyppi';
 $string['local:deleteposition'] = 'Poista rooli';
 $string['local:deletepositioncustomfield'] = 'Poista roolikenttä';
+$string['local:deletepositiondepth'] = 'Poista roolitaso';
 $string['local:deletepositionframeworks'] = 'Poista roolirakenne';
 $string['local:deletepositiontype'] = 'Poista asematyypppi';
+$string['local:editclassifications'] = 'Muokkaa kurssiluokitteluja';
+$string['local:editcourseclassification'] = 'Muokkaa kurssin luokittelua';
 $string['local:markcomplete'] = 'Merkitse kurssi suoritetuksi';
+$string['local:searchclassifications'] = 'Hakuluokittelut';
 $string['local:updatecompetency'] = 'Päivitä kompetenssi';
 $string['local:updatecompetencycustomfield'] = 'Päivitä kompetenssikenttä';
+$string['local:updatecompetencydepth'] = 'Päivitä kompetenssitaso';
 $string['local:updatecompetencyframeworks'] = 'Päivitä kompetenssirakenne';
 $string['local:updatecompetencytemplate'] = 'Päivitä kompetenssimallipohja';
 $string['local:updatecompetencytype'] = 'Päivitä kompetenssityyppi';
 $string['local:updatecoursecustomfield'] = 'Päivitä kurssikenttä';
 $string['local:updateorganisation'] = 'Päivitä organisaatio';
 $string['local:updateorganisationcustomfield'] = 'Päivitä organisaatiokenttä';
+$string['local:updateorganisationdepth'] = 'Päivitä organisaatiotaso';
 $string['local:updateorganisationframeworks'] = 'Päivitä organisaatiorakenne';
 $string['local:updateorganisationtype'] = 'Päivitä organisaatiotyyppi';
 $string['local:updateposition'] = 'Päivitä rooli';
 $string['local:updatepositioncustomfield'] = 'Päivitä roolikenttä';
+$string['local:updatepositiondepth'] = 'Päivitä roolitaso';
 $string['local:updatepositionframeworks'] = 'Päivitä roolirakenne';
 $string['local:updatepositiontype'] = 'Päivitä asematyyppi';
 $string['local:viewcompetency'] = 'Tarkastele kompetenssia';
@@ -165,17 +176,5 @@ $string['timecompleted'] = 'Suoritettu';
 $string['type'] = 'Tyyppi';
 $string['typeicon'] = 'Tyypin kuvake';
 $string['viewmyteam'] = 'Tarkastele omaa tiimiä';
-$string['local:createcompetencydepth'] = 'Luo kompetenssitaso'; // ORPHANED
-$string['local:createorganisationdepth'] = 'Luo oganisaatiotaso'; // ORPHANED
-$string['local:createpositiondepth'] = 'Luo roolitaso'; // ORPHANED
-$string['local:deletecompetencydepth'] = 'Poista kompetenssitaso'; // ORPHANED
-$string['local:deleteorganisationdepth'] = 'Poista organisaatiotaso'; // ORPHANED
-$string['local:deletepositiondepth'] = 'Poista roolitaso'; // ORPHANED
-$string['local:editclassifications'] = 'Muokkaa kurssiluokitteluja'; // ORPHANED
-$string['local:editcourseclassification'] = 'Muokkaa kurssin luokittelua'; // ORPHANED
-$string['local:searchclassifications'] = 'Hakuluokittelut'; // ORPHANED
-$string['local:updatecompetencydepth'] = 'Päivitä kompetenssitaso'; // ORPHANED
-$string['local:updateorganisationdepth'] = 'Päivitä organisaatiotaso'; // ORPHANED
-$string['local:updatepositiondepth'] = 'Päivitä roolitaso'; // ORPHANED
 
 ?>

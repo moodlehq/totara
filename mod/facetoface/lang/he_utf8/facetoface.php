@@ -1,5 +1,5 @@
 <?php
-// facetoface.php - created with Totara langimport script version 1.0
+// facetoface.php - created with Totara langimport script version 1.1
 
 $string['addingsession'] = 'מוסיף מחזור חדש ב-$a';
 $string['addmanageremailaddress'] = 'הוסף כתובת דוא\"ל של מנהל';
@@ -19,6 +19,7 @@ $string['answer'] = 'היכנס';
 $string['answercancel'] = 'התנתק';
 $string['approvalreqd'] = 'נדרש אישור';
 $string['approve'] = 'אשר';
+$string['approveinstruction'] = 'על מנת לאשר רישום למחזור ההדרכה, לחץ \"אשר\"';
 $string['assessmentyour'] = 'ההערכה שלך';
 $string['attendance'] = 'נוכחות';
 $string['attendanceinstructions'] = 'בחר משתתפים שנכחו במחזור:';
@@ -26,6 +27,7 @@ $string['attendedsession'] = 'השתתף במחזור';
 $string['attendees'] = 'משתתפים';
 $string['attendeestablesummary'] = 'אנשים המתוכננים להשתתף או שהשתתפו במחזור זה.';
 $string['booked'] = 'רשום';
+$string['bookedforsession'] = 'רשום למחזור $a';
 $string['bookingcancelled'] = 'הרשמתך בוטלה.';
 $string['bookingclosed'] = 'ההרשמה סגורה';
 $string['bookingcompleted'] = 'הרשמתך בוצעה.';
@@ -44,7 +46,9 @@ $string['cancellations'] = 'ביטולים';
 $string['cancellationsent'] = 'המערכת שלחה לך הודעת ביטול בדואר אלקטרוני';
 $string['cancellationsentmgr'] = 'המערכת שלחה לך ולמנהל שלך הודעת ביטול בדואר אלקטרוני';
 $string['cancellationstablesummary'] = 'רשימת אנשים שביטלו את הרשמתם למחזור.';
+$string['cancelledforsession'] = 'מבוטל למחזור';
 $string['cancelreason'] = 'סיבה';
+$string['cancelusersession'] = 'מבוטל עבור $a->usermsg במחזור $a->url';
 $string['cannotsignupsessioninprogress'] = 'אינך יכול להירשם. מחזור זה מתקיים כעת';
 $string['cannotsignupsessionover'] = 'אינך יכול להירשם, המחזור הסתיים.';
 $string['capacity'] = 'מקומות בהדרכה';
@@ -258,11 +262,15 @@ $string['printversionname'] = 'גרסת הדפסה: כולל שם';
 $string['really'] = 'האם אתה בטוח שברצונך למחוק את כל התוצאות של מחזור פנים-אל-פנים זה?';
 $string['registeredon'] = 'נרשם ב:';
 $string['registrations'] = 'הרשמות';
+$string['rejectinstruction'] = 'על מנת לדחות את בקשת הרישום להדרכה, לחץ \"דחה\"';
 $string['reminder'] = 'תזכורת';
 $string['remindermessage'] = 'הודעת תזכורת';
 $string['reminderperiod'] = 'כמה ימים לפני לשלוח תזכורת';
+$string['requestattendsession'] = 'בקשה להשתתף במחזור הדרכה $a';
+$string['requestattendsessionsent'] = 'בקשה להשתתף במחזור הדרכה $a נשלחה למנהל';
 $string['requestmessage'] = 'הודעת בקשה';
 $string['requeststablesummary'] = 'אנשים המבקשים להשתתף במחזור זה.';
+$string['requestuserattendsession'] = 'בקשה עבור $a->usermsg להשתתף במחזור הדרכה  $a->url';
 $string['room'] = 'חדר';
 $string['saveallfeedback'] = 'שמור את כל התשובות';
 $string['saveattendance'] = 'שמור נוכחות';
@@ -501,7 +509,6 @@ $string['setting:defaultrequestinstrmngrdefault'] = 'הודעה זו נועדה 
 נא ללחוץ על הקישור הבא על מנת לאשר את הבקשה:
 [attendeeslink]#unapproved
 
-
 English Version
 ---------------
 This is to advise that [firstname] [lastname] has requested to be booked into the following course, and you are listed as their Team Leader / Manager.
@@ -520,7 +527,6 @@ Room: [session:room]
 Please follow the link below to approve the request:
 [attendeeslink]#unapproved
 
-
 *** [firstname] [lastname]\'s booking request is copied below ****';
 $string['setting:defaultrequestmessagedefault'] = 'בקשתך להירשם לקורס הבא נשלחה למנהל שלך:
 our request to book into the following course has been sent to your manager:
@@ -536,7 +542,6 @@ our request to book into the following course has been sent to your manager:
 מיקום: [session:location]
 בניין: [session:venue]
 חדר: [session:room]
-
 
 English Version
 ---------------
@@ -662,6 +667,7 @@ $string['viewallsessions'] = 'צפה בכל המחזורים';
 $string['viewsubmissions'] = 'הצג בקשות רישום';
 $string['wait-list'] = 'רשימת המתנה';
 $string['wait-listed'] = 'ברשימת המתנה';
+$string['waitlistedforsession'] = 'ברשימת המתנה למחזור הדרכה $a';
 $string['waitlistedmessage'] = 'הודעת רשימת המתנה';
 $string['xhours'] = '$a שעות';
 $string['xminutes'] = '$a דקות';

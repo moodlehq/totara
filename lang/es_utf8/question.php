@@ -1,6 +1,5 @@
-<?PHP // $Id: question.php,v 1.9 2010/06/20 18:33:09 barias Exp $ 
-      // question.php - created with Moodle 1.9.8 (Build: 20100325) (2007101580)
-
+<?php
+// question.php - created with Totara langimport script version 1.1
 
 $string['adminreport'] = 'Informe sobre posibles problemas en su base de datos de preguntas.';
 $string['broken'] = 'Éste es un enlace roto: apunta a un archivo inexistente.';

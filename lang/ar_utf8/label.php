@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // label.php - created with Moodle 1.2 development (2003121500)
-
+<?php
+// label.php - created with Totara langimport script version 1.1
 
 $string['labeltext'] = 'نص الملصقه';
 $string['modulename'] = 'ملصقة';

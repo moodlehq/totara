@@ -1,4 +1,5 @@
-<?php // $Id: portfolio_flickr.php,v 1.5 2009/04/10 19:28:53 martignoni Exp $
+<?php
+// portfolio_flickr.php - created with Totara langimport script version 1.1
 
 $string['apikey'] = 'Clef API (vous l\'obtiendrez sur http://flickr.com/services/api/keys/apply)';
 $string['contenttype'] = 'Types de contenu';

@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_imsenterprise.php,v 1.8 2007/01/02 13:26:25 ralf-bonn Exp $ 
-      // enrol_imsenterprise.php - created with Moodle 1.7+ (2006101008)
-
+<?php
+// enrol_imsenterprise.php - created with Totara langimport script version 1.1
 
 $string['aftersaving...'] = 'Nachdem Sie die Einstellungen gespeichert haben, können Sie folgendes tun:';
 $string['allowunenrol'] = 'IMS-Datei das <strong>Löschen</string> von Teilnehmer/innen bzw. Trainer/innen erlauben';

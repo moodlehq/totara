@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// local.php - created with Totara langimport script version 1.1
 
 $string['addanothercolumn'] = 'Neue Spalte hinzufügen';
 $string['addcompetencyevidence'] = 'Neuen Kompetenznachweis hinzufügen';
@@ -96,7 +95,10 @@ $string['local:deletepositioncustomfield'] = 'Benutzerdefiniertes Positionsfeld 
 $string['local:deletepositiondepth'] = 'Positionslevel löschen';
 $string['local:deletepositionframeworks'] = 'Positionsprofil löschen';
 $string['local:deletepositiontype'] = 'Positionstyp löschen';
+$string['local:editclassifications'] = 'Kursklassifikationen bearbeiten';
+$string['local:editcourseclassification'] = 'Klassifikation eines Kurses bearbeiten';
 $string['local:markcomplete'] = 'Kurs des Benutzers als abgeschlossen markieren';
+$string['local:searchclassifications'] = 'Klassifikationen suchen';
 $string['local:updatecompetency'] = 'Kompetenz aktualisieren';
 $string['local:updatecompetencycustomfield'] = 'Benutzerdefiniertes Positionsfeld löschen';
 $string['local:updatecompetencydepth'] = 'Kompetenzlevel aktualisieren';
@@ -175,8 +177,5 @@ $string['timecompleted'] = 'Zeit abgeschlossen';
 $string['type'] = 'Typ';
 $string['typeicon'] = 'Symbol Typ';
 $string['viewmyteam'] = 'Mein Team ansehen';
-$string['local:editclassifications'] = 'Kursklassifikationen bearbeiten'; // ORPHANED
-$string['local:editcourseclassification'] = 'Klassifikation eines Kurses bearbeiten'; // ORPHANED
-$string['local:searchclassifications'] = 'Klassifikationen suchen'; // ORPHANED
 
 ?>

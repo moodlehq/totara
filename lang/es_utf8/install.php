@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // install.php - created with Moodle 1.9.5+ (Build: 20090902) (2007101550)
-
+<?php
+// install.php - created with Totara langimport script version 1.1
 
 $string['admindirerror'] = 'El directorio especificado para admin es incorrecto';
 $string['admindirname'] = 'Directorio Admin';
@@ -258,10 +257,14 @@ $string['pathswrongdirroot'] = 'La ubicación de dirroot es incorrecta';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP no ha sido adecuadamente configurado con la extensión PGSQL de modo que pueda comunicarse con PostgreSQL. Por favor, compruebe el archivo php.ini o vuelva a compilar PHP.';
 $string['phpextension'] = 'Extensión PHP $a';
 $string['phpversion'] = 'Versión PHP';
+$string['phpversionerror'] = 'La versión PHP debe ser 4.1.0 o superior';
 $string['phpversionhelp'] = '<p>Moodle requiere una versión de PHP 4.1.0 o superior.</p>
 <p>Su versión es $a</p>
 <p>Debe actualizar PHP o acudir a otro servidor con una versión más reciente de PHP</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
+$string['postgresqlwarning'] = '<strong>Nota:</strong> Si experimenta problemas de conexión, puede intentar ajustar el campo Host Server como
+host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=\'postgresql_user\' password=\'postgresql_user_password\'
+y dejar vacía los campos Base de datos, Usuario y Contraseña. Más información en <a href=\"http://docs.moodle.org/en/Installing_Postgres_for_PHP\">Moodle Docs</a>';
 $string['releasenoteslink'] = 'Para obtener información acerca de esta versión de Moodle, consulte las Notas de la Versión en $a';
 $string['safemode'] = 'Modo Seguro (Safe Mode)';
 $string['safemodeerror'] = 'Moodle puede tener problemas con Modo Seguro (\'safe mode\') activado';
@@ -294,9 +297,5 @@ $string['welcomep60'] = 'Las siguientes páginas le guiarán a través de alguno
 $string['welcomep70'] = 'Pulse en el botón \"Siguiente\" para continuar con la configuración de <strong>Moodle</strong>.';
 $string['wwwroot'] = 'Dirección Web';
 $string['wwwrooterror'] = 'La \'Dirección Web\' parece incorrecta. No se pudo encontrar una instalación de Moodle. El valor ha sido cambiado por el original.';
-$string['phpversionerror'] = 'La versión PHP debe ser 4.1.0 o superior'; // ORPHANED
-$string['postgresqlwarning'] = '<strong>Nota:</strong> Si experimenta problemas de conexión, puede intentar ajustar el campo Host Server como
-host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=\'postgresql_user\' password=\'postgresql_user_password\'
-y dejar vacía los campos Base de datos, Usuario y Contraseña. Más información en <a href=\"http://docs.moodle.org/en/Installing_Postgres_for_PHP\">Moodle Docs</a>'; // ORPHANED
 
 ?>

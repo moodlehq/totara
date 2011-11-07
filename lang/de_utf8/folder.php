@@ -1,6 +1,5 @@
-<?PHP // $Id: folder.php,v 1.1 2010/01/17 00:01:33 krause Exp $ 
-      // folder.php - created with Moodle 2.0 dev (Build: 20100116) (2010011400)
-
+<?php
+// folder.php - created with Totara langimport script version 1.1
 
 $string['contentheader'] = 'Inhalt';
 $string['folderadministration'] = 'Verzeichnisadministration';

@@ -1,6 +1,5 @@
-<?PHP // $Id: gradereport_outcomes.php,v 1.7 2008/07/22 19:57:27 ralf-bonn Exp $ 
-      // gradereport_outcomes.php - created with Moodle 1.9 Beta + (2007082400)
-
+<?php
+// gradereport_outcomes.php - created with Totara langimport script version 1.1
 
 $string['addoutcome'] = 'Lernziel hinzufügen';
 $string['courseoutcomes'] = 'Lernziele im Kurs';

@@ -1,10 +1,11 @@
-<?PHP // $Id$ 
-      // choice.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// choice.php - created with Totara langimport script version 1.1
 
 $string['addmorechoices'] = 'Añadir más opciones';
 $string['allowupdate'] = 'Permitir la actualización de la consulta';
 $string['answered'] = 'Contestado';
+$string['cannotsavechoice'] = 'No se pudo guardar su elección';
+$string['cannotupdatechoice'] = 'No se pudo actualizar su elección debido a un error en la base de datos';
 $string['choice'] = 'Opción';
 $string['choice:choose'] = 'Registrar una elección';
 $string['choice:deleteresponses'] = 'Eliminar respuestas';
@@ -54,7 +55,5 @@ $string['taken'] = 'Tomadas';
 $string['timerestrict'] = 'Restringir la respuesta a este período';
 $string['viewallresponses'] = 'Ver $a respuestas';
 $string['yourselection'] = 'Su selección';
-$string['cannotsavechoice'] = 'No se pudo guardar su elección'; // ORPHANED
-$string['cannotupdatechoice'] = 'No se pudo actualizar su elección debido a un error en la base de datos'; // ORPHANED
 
 ?>

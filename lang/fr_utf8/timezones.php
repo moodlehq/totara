@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// timezones.php - created with Totara langimport script version 1.1
 
 $string['africa/abidjan'] = 'Afrique/Abidjan';
 $string['africa/accra'] = 'Afrique/Accra';

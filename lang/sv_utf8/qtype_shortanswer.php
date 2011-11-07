@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // qtype_shortanswer.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// qtype_shortanswer.php - created with Totara langimport script version 1.1
 
 $string['addmoreanswerblanks'] = 'Tomma utrymmen för {no}  fler svar';
 $string['answermustbegiven'] = 'Du måste mata in ett svar om det finns ett betyg eller feedback.';

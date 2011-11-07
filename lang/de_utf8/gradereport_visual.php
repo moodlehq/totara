@@ -1,6 +1,5 @@
-<?PHP // $Id: gradereport_visual.php,v 1.3 2009/06/30 12:57:17 ralf-bonn Exp $ 
-      // gradereport_visual.php - created with Moodle 2.0 dev (Build: 20090409) (2009040100)
-
+<?php
+// gradereport_visual.php - created with Totara langimport script version 1.1
 
 $string['aggregationposition'] = 'Position des Gesamtergebnisses';
 $string['aggregationview'] = 'Ansicht des Gesamtergebnisses';

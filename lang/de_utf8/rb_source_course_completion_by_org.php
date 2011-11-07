@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_course_completion_by_org.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// rb_source_course_completion_by_org.php - created with Totara langimport script version 1.1
 
 $string['completiondate'] = 'Abschluss Datum';
 $string['completionorgid'] = 'Abschluss Organisation ID';

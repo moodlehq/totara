@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // gallery.php - created with Moodle 1.4.3 (2004083130)
-
+<?php
+// gallery.php - created with Totara langimport script version 1.1
 
 $string['add'] = 'Meinen Kommentar veröffentlichen';
 $string['allpics'] = 'Alle Bilder in diesem Verzeichnis werden veröffentlicht.';

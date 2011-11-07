@@ -1,5 +1,5 @@
 <?php
-// hierarchy.php - created with Totara langimport script version 1.0
+// hierarchy.php - created with Totara langimport script version 1.1
 
 $string['additionaloptions'] = 'Lisävalinnat';
 $string['allframeworks'] = 'Kaikki rakenteet';
@@ -105,7 +105,7 @@ $string['reclassify1of2bulk'] = 'Luokitellaan uudelleen kohteita {$a->num} {$a->
 $string['reclassify1of2desc'] = 'Valitse uusi tyyppi';
 $string['reclassify1of2item'] = 'Luokitellaan uudelleen kohteita {$a->num} {$a->items} - vaihe 1/2';
 $string['reclassifyingfromxtoybulk'] = 'Luokitellaan kohteet {$a->num} {$a->items} uudelleen: \"{$a->from}\" > \"{$a->to}\"';
-$string['reclassifyingfromxtoyitem'] = 'Luokitellaan kohteet  \"{$a->name}\" uudelleen: \"{$a->from}\" > \"{$a->to}\"';
+$string['reclassifyingfromxtoyitem'] = 'Luokitellaan kohteet \"{$a->name}\" uudelleen: \"{$a->from}\" > \"{$a->to}\"';
 $string['reclassifyitems'] = 'Luokittele kohteet uudelleen';
 $string['reclassifyitemsanddelete'] = 'Luokittele kohteet uudelleen ja poista tiedot';
 $string['reclassifyitemsandtransfer'] = 'Luokittele kohteet uudelleen ja siirrä/poista tiedot';

@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_manual.php,v 1.16 2009/01/31 09:11:04 ralf-bonn Exp $ 
-      // enrol_manual.php - created with Moodle 2.0 dev (Build: 20090109) (2009010801)
-
+<?php
+// enrol_manual.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Dies ist das Standardverfahren für Kurs-Einschreibungen, bei dem zwei Formen der Teilnehmeranmeldung genutzt werden können.
 <ul>

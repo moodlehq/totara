@@ -1,14 +1,20 @@
 <?php
+// reminders.php - created with Totara langimport script version 1.1
 
 $string['businessdays'] = '工作日';
 $string['completion'] = '完成';
 $string['completiontotrack'] = '完成跟踪';
 $string['coursecompletion'] = '课程完成';
 $string['deadline'] = '活动的最后期限';
-$string['deletereminder'] = '删除提醒 \"$a\"';
 $string['deletedreminder'] = '已成功删除提醒 \"$a\"';
+$string['deletereminder'] = '删除提醒 \"$a\"';
 $string['dontsend'] = '不要发送此消息';
 $string['editcoursereminders'] = '编辑课程提醒';
+$string['error:courseidincorrect'] = '课程 ID 不正确';
+$string['error:courseidorcategory'] = '必须指定课程 id 或类别';
+$string['error:createreminder'] = '无法创建提醒消息';
+$string['error:deletereminder'] = '无法删除提醒消息';
+$string['error:updatereminder'] = '无法更新提醒消息';
 $string['escalation'] = '上报';
 $string['escalationmessagedefault'] = '这是为了通知以下职员未完成课程评估：
 
@@ -63,16 +69,12 @@ $string['remindermessagedefault'] = '尊敬的[名]
 [课程页面 url]
 
 若此评估仍未完成，我们将上报给您的团队主管。';
-$string['remindersubjectdefault'] = '[课程名称]评估提醒';
 $string['remindersmenuitem'] = '提醒';
+$string['remindersubjectdefault'] = '[课程名称]评估提醒';
 $string['requirement'] = '要求';
 $string['sameday'] = '同一天';
 $string['skipmanager'] = '切勿发送给团队主管/管理者';
 $string['subject'] = '主题';
 $string['title'] = '标题';
 
-$string['error:courseidincorrect'] = '课程 ID 不正确';
-$string['error:courseidorcategory'] = '必须指定课程 id 或类别';
-$string['error:deletereminder'] = '无法删除提醒消息';
-$string['error:createreminder'] = '无法创建提醒消息';
-$string['error:updatereminder'] = '无法更新提醒消息';
+?>

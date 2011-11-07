@@ -1,4 +1,6 @@
-<?PHP // $Id: access.php,v 1.7 2008/11/13 11:01:26 samulik Exp $
+<?php
+// access.php - created with Totara langimport script version 1.1
+
 $string['access'] = 'Esteettömyys';
 $string['accesshelp'] = 'Esteettömyysohje';
 $string['accesskey'] = 'Näppäinkomento, $a';
@@ -22,4 +24,5 @@ $string['tablelayout'] = 'Asettelutaulukko, $a';
 $string['tocontent'] = 'Pääsisältö';
 $string['tonavigation'] = 'Navigointivalikkoon';
 $string['youarehere'] = 'Olet tässä';
+
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // coursereport_participation.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// coursereport_participation.php - created with Totara langimport script version 1.1
 
 $string['participation:view'] = 'Visa rapport på kursdeltagare';
 

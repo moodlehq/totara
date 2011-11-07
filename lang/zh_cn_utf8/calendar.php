@@ -1,8 +1,8 @@
-<?PHP // $Id$ 
-      // calendar.php - created with Moodle 1.7 beta + (2006101003)
+<?php
+// calendar.php - created with Totara langimport script version 1.1
 
-$string['allday'] = '整天';
 $string['advancedoptions'] = '高级选项';
+$string['allday'] = '整天';
 $string['calendar'] = '日程管理';
 $string['calendarheading'] = '$a 日历';
 $string['clickhide'] = '点击隐藏';
@@ -49,12 +49,12 @@ $string['expired'] = '过期';
 $string['explain_lookahead'] = '此处设置最多未来多少天之内将会发生的事件会显示为即将发生的事件。在此天数之外的事件不会被显示出来。请注意，系统<strong>并不保证</strong>此天数之内所有的事件都会被显示出来，如果事件总数超过了 \"最多显示几条即将发生的事件\"的设置，系统将不显示最后发生的事件。';
 $string['explain_maxevents'] = '此处设置了显示出来的即将发生事件的最大数目。如果您在此设置的数值较大，即将发生事件的显示区域将会占据屏幕上的很大空间。';
 $string['explain_persistflt'] = '如果激活，则 Moodle 将会记住您最后一次使用的事件过滤设定并在每次登录时自动恢复。';
+$string['explain_site_timeformat'] = '您可以选择以 12 或 24 小时格式查看整个站点时间。如果选择 \"默认\"。系统将按照站点语言自动选择格式，该项会被用户的首选项覆盖。';
 $string['explain_startwday'] = '日历中每周的起始日期将会根据您在此处的选择来显示。';
 $string['explain_timeformat'] = '您可以选择以 12 小时或 24 小时的格式来显示时间。如果您选择 \"缺省\"，系统将根据您所使用的语言自动选择格式。';
-$string['explain_site_timeformat'] = '您可以选择以 12 或 24 小时格式查看整个站点时间。如果选择 \"默认\"。系统将按照站点语言自动选择格式，该项会被用户的首选项覆盖。';
 $string['export'] = '导出';
-$string['exportcalendar'] = '导出日历';
 $string['exportbutton'] = '导出';
+$string['exportcalendar'] = '导出日历';
 $string['for'] = '为了';
 $string['fri'] = '周五';
 $string['friday'] = '星期五';

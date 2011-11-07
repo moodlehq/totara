@@ -1,6 +1,5 @@
-<?PHP // $Id: simpletest.php,v 1.3 2007/08/23 09:38:58 barias Exp $ 
-      // simpletest.php - created with Moodle 1.7 (2006101007)
-
+<?php
+// simpletest.php - created with Totara langimport script version 1.1
 
 $string['all'] = 'TODAS';
 $string['exception'] = 'Excepción';

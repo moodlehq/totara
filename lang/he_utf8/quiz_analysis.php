@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_analysis.php,v 1.5 2010/08/29 13:26:51 emanuel1 Exp $
-      // quiz_analysis.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// quiz_analysis.php - created with Totara langimport script version 1.1
 
 $string['analysis'] = 'ניתוח פריט';
 $string['analysisdownload'] = 'הורדת ניתוח';

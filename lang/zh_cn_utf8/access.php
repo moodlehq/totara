@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // access.php - created with Moodle 1.7 beta + (2006101003)
-      // Accessibility, usability and navigation language file.
-
+<?php
+// access.php - created with Totara langimport script version 1.1
 
 $string['access'] = '进入';
 $string['accesshelp'] = '进入帮助';
@@ -10,12 +8,12 @@ $string['accessstatement'] = '进入声明';
 $string['activitynext'] = '下一个活动';
 $string['activityprev'] = '前一个活动';
 $string['breadcrumb'] = '网页导航';
-$string['currentweek'] = '本周';
 $string['currenttopic'] = '本主题';
+$string['currentweek'] = '本周';
+$string['hideblocka'] = '隐藏 $a 板块';
 $string['monthnext'] = '下月';
 $string['monthprev'] = '上月';
 $string['showblocka'] = '显示 $a 板块';
-$string['hideblocka'] = '隐藏 $a 板块';
 $string['sitemap'] = '站点导航';
 $string['skipa'] = '跳过 $a';
 $string['skipblock'] = '跳过版块';

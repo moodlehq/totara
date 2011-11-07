@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// quiz.php - created with Totara langimport script version 1.1
 
 $string['1day'] = 'يوم واحد';
 $string['1hour'] = 'ساعة واحدة';

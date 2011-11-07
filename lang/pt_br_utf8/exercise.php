@@ -1,5 +1,5 @@
 <?php
-
+// exercise.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'Ausente';
 $string['accumulative'] = 'Acumulativo';

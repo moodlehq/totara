@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // view.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// view.php - created with Totara langimport script version 1.1
 
 $string['error:courseid'] = 'Kurssin id ei kelpaa';
 $string['error:idnumber'] = 'Kurssin numero ei kelpaa';

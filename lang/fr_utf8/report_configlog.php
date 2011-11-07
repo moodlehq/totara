@@ -1,11 +1,11 @@
-<?php  // $Id: report_configlog.php,v 1.1 2009/01/22 21:08:39 martignoni Exp $
+<?php
+// report_configlog.php - created with Totara langimport script version 1.1
 
 $string['configlog'] = 'Modification de configuration';
-
-$string['timemodified'] = 'Date';
+$string['oldvalue'] = 'Valeur d\'origine';
 $string['plugin'] = 'Plugin';
 $string['setting'] = 'Réglage';
+$string['timemodified'] = 'Date';
 $string['value'] = 'Nouvelle valeur';
-$string['oldvalue'] = 'Valeur d\'origine';
 
 ?>

@@ -1,4 +1,5 @@
-<?php // $Id: gradereport_outcomes.php,v 1.4 2007/08/27 16:27:27 martignoni Exp $ 
+<?php
+// gradereport_outcomes.php - created with Totara langimport script version 1.1
 
 $string['addoutcome'] = 'Ajouter un objectif';
 $string['courseoutcomes'] = 'Objectif du cours';

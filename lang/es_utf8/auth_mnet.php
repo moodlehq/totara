@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_mnet.php - created with Totara langimport script version 1.1
 
 $string['auth_mnet_auto_add_remote_users'] = 'Cuando se deja en \'sí\', un registro local de usuario es creado automáticamente cuando un usuario remoto incia sesión por primera vez.';
 $string['auth_mnet_roamin'] = 'Estos usuarios de este host pueden divagar por su sitio.';
@@ -16,3 +14,5 @@ $string['sso_idp_name'] = 'SSO (Proveedor de Identidad)';
 $string['sso_mnet_login_refused'] = 'Al nombre de usuario $a[0] no le es permitido iniciar sesión desde $a[1].';
 $string['sso_sp_description'] = 'Publique este servicio para permitir a usuarios autenticados acceder a su sitio desde $a sin tener que reinciar sesión.<ul><li><em>Dependecia</em>: Usted debe también <strong>subscribirse</strong> al servicio SSO (Proveedor de identidad) en $a.</li></ul><br />Suscríbase a este servicio para permitir a sus usuarios divagar al sitio Moodle $a sin tener que reiniciar sesión allí. <ul><li><em>Dependencia</em>: Usted debe también <strong>publicar</strong> el servicio SSO (Proveedor de identidad) a $a.</li></ul><br />';
 $string['sso_sp_name'] = 'SSO (Proveedor de Servicios)';
+
+?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // choice.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// choice.php - created with Totara langimport script version 1.1
 
 $string['answered'] = 'Contestado';
 $string['choice'] = 'Opción';

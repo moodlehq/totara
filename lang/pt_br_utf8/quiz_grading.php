@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_grading.php,v 1.2 2008/09/20 19:30:37 papita Exp $ 
-      // quiz_grading.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// quiz_grading.php - created with Totara langimport script version 1.1
 
 $string['essayonly'] = 'A avaliação manual pode ser utilizada apenas em perguntas de dissertação (por enquanto)';
 $string['gradeall'] = 'Avaliar todas as $a tentativas';

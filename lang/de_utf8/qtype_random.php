@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_random.php,v 1.2 2009/03/11 10:09:26 ralf-bonn Exp $ 
-      // qtype_random.php - created with Moodle 2.0 dev (Build: 20090226) (2009021800)
-
+<?php
+// qtype_random.php - created with Totara langimport script version 1.1
 
 $string['configselectmanualquestions'] = 'Kann der Zufallsfragen-Typ eine manuell zu bewertende Frage wählen, wenn er eine Frage aus einer Kategorie zufällig wählt?';
 $string['editingrandom'] = 'Eine Zufallsfrage ändern';

@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_randomsamatch.php,v 1.7 2009/03/11 10:09:26 ralf-bonn Exp $ 
-      // qtype_randomsamatch.php - created with Moodle 2.0 dev (Build: 20090226) (2009021800)
-
+<?php
+// qtype_randomsamatch.php - created with Totara langimport script version 1.1
 
 $string['addingrandomsamatch'] = 'Eine zufällige Kurzantwort-Zuordnung hinzufügen';
 $string['editingrandomsamatch'] = 'Eine zufällige Kurzantwort-Zuordnung ändern';

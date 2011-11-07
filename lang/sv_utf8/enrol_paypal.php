@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_paypal.php - created with Moodle 1.8 (2007021501)
-
+<?php
+// enrol_paypal.php - created with Totara langimport script version 1.1
 
 $string['business'] = 'E-postadressen till Ditt affärskonto hos PayPal';
 $string['costorkey'] = 'Var snäll och välj ett av de följande sätten att registrera sig.';

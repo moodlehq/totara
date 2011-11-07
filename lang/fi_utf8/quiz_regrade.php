@@ -1,3 +1,6 @@
-<?PHP // $Id: quiz_regrade.php,v 1.5 2008/11/13 11:01:28 samulik Exp $
+<?php
+// quiz_regrade.php - created with Totara langimport script version 1.1
+
 $string['regrade'] = 'Arvioi uudelleen';
+
 ?>

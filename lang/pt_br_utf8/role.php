@@ -1,6 +1,5 @@
-<?PHP // $Id: role.php,v 1.11 2010/06/23 15:39:46 danielneis Exp $ 
-      // role.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// role.php - created with Totara langimport script version 1.1
 
 $string['addrole'] = 'Acrescentar uma nova função';
 $string['allow'] = 'Permitir';
@@ -124,6 +123,9 @@ $string['question:add'] = 'Adicionar novas questões';
 $string['question:config'] = 'Configurar tipos de questão';
 $string['question:editall'] = 'Editar todas as questões';
 $string['question:editmine'] = 'Editar suas próprias questões';
+$string['question:export'] = 'Exportar questões';
+$string['question:import'] = 'Importar questões';
+$string['question:manage'] = 'Gerenciar questões';
 $string['question:managecategory'] = 'Gerenciar categoria de questão';
 $string['question:moveall'] = 'Mover todas as questões';
 $string['question:movemine'] = 'Mover suas próprias questões';
@@ -194,8 +196,5 @@ $string['userhashiddenassignments'] = 'Este usuário tem uma ou mais funções e
 $string['userswithrole'] = 'Todos os usuários com funções';
 $string['viewrole'] = 'Visualizar detalhes das funções';
 $string['xuserswiththerole'] = 'Usuários com a função \"$a->role\": $a->number';
-$string['question:export'] = 'Exportar questões'; // ORPHANED
-$string['question:import'] = 'Importar questões'; // ORPHANED
-$string['question:manage'] = 'Gerenciar questões'; // ORPHANED
 
 ?>

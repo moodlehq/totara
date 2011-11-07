@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// block_tag_youtube.php - created with Totara langimport script version 1.1
 
 $string['anycategory'] = 'Qualquer Categoria';
 $string['autosvehicles'] = 'Automóveis &amp; Veículos';

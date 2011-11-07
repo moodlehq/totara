@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_fc.php - created with Totara langimport script version 1.1
 
 $string['auth_fcchangepasswordurl'] = 'عنوان تغير كلمة المرور';
 $string['auth_fccreators'] = 'قائمة المجموعاتِ التي أعضائهم يَسْمح لهم انشاء مناهج دراسية جديدة. قم بفصل المجموعات المتعدّدة باستخدام \'؛ \'. يجب أن تكون الأسماء مكتوبة بالضبط  كما هي على الخادمِ FirstClass. النظام حساس لحجم الحروفُ.';
@@ -16,3 +14,5 @@ $string['auth_fcpasswd_key'] = 'كلمة مرور';
 $string['auth_fctitle'] = 'استخدم خادم درجة أولى';
 $string['auth_fcuserid'] = 'تعريف مستخدم لحساب FisrtClass بصلاحيات حزمة نائب مدير.';
 $string['auth_fcuserid_key'] = 'اسم مستخدم';
+
+?>

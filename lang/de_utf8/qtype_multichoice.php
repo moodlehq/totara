@@ -1,12 +1,12 @@
-<?PHP // $Id: qtype_multichoice.php,v 1.12 2009/03/11 10:09:26 ralf-bonn Exp $ 
-      // qtype_multichoice.php - created with Moodle 2.0 dev (Build: 20090226) (2009021800)
-
+<?php
+// qtype_multichoice.php - created with Totara langimport script version 1.1
 
 $string['addingmultichoice'] = 'Multiple-Choice-Frage hinzufügen';
 $string['addmorechoiceblanks'] = 'Leerfelder für {no} weitere Auswahl';
 $string['answerhowmany'] = 'Eine oder mehrere Antworten';
 $string['answernumbering'] = 'Fragen nummerieren?';
 $string['answernumbering123'] = '1.,2.,3., ...';
+$string['answernumberingABC'] = 'A,B,C,...';
 $string['answernumberingABCD'] = 'A., B., C., ...';
 $string['answernumberingabc'] = 'a., b., c., ...';
 $string['answernumberingnone'] = 'Keine Nummerierung';
@@ -34,6 +34,5 @@ $string['overallpartiallycorrectfeedback'] = 'Feedback für jede teilrichtige An
 $string['partiallycorrectfeedback'] = 'Für alle teilrichtigen Antworten';
 $string['shuffleanswers'] = 'Antworten mischen';
 $string['singleanswer'] = 'Antwort wählen:';
-$string['answernumberingABC'] = 'A,B,C,...'; // ORPHANED
 
 ?>

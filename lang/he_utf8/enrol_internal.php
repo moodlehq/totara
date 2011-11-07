@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // enrol_internal.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2005032800)
-
+<?php
+// enrol_internal.php - created with Totara langimport script version 1.1
 
 $string['enrolname'] = 'הרשמה פנימית';
 

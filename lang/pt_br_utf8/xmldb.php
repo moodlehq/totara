@@ -1,6 +1,5 @@
-<?PHP // $Id: xmldb.php,v 1.3 2010/03/17 13:52:33 danielneis Exp $ 
-      // xmldb.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// xmldb.php - created with Totara langimport script version 1.1
 
 $string['aftertable'] = 'Depois da tabela:';
 $string['back'] = 'Voltar';

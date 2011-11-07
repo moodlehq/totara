@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // workshop.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// workshop.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'Ausente';
 $string['accumulative'] = 'Acumulativa';
@@ -130,6 +129,8 @@ $string['phase4'] = 'Permitir $a Valoraciones';
 $string['phase4short'] = 'Evaluaciones';
 $string['phase5'] = 'Cálculo de la calificación final';
 $string['phase5short'] = 'Cálculo';
+$string['phase6'] = 'Mostrar la calificación final';
+$string['phase6short'] = 'Mostrar calificación';
 $string['pleaseassesstheseexamplesfromtheteacher'] = 'Valore por favor estos ejemplos de la $a';
 $string['pleaseassessthesestudentsubmissions'] = 'Por favor valore estos  $a Envíos';
 $string['pleaseassessyoursubmissions'] = 'Por favor, evalúe su(s) envío(s)';
@@ -177,6 +178,7 @@ $string['teacherscomment'] = 'Comentario del Profesor';
 $string['teachersgrade'] = 'Calificación del Profesor';
 $string['teachersubmissionsforassessment'] = '$a Envíos del Profesor para Valoración';
 $string['thegradeis'] = 'La calificación es $a';
+$string['thereisfeedbackfromtheteacher'] = 'Tiene una respuesta de $a';
 $string['theseasessmentsaregradedbytheteacher'] = 'Estas Valoraciones están calificadas por el $a';
 $string['timeassessed'] = 'Tiempo valorado';
 $string['title'] = 'Título';
@@ -198,8 +200,5 @@ $string['weightsusedforfinalgrade'] = 'Pesos usados para la Calificación Final'
 $string['weightsusedforsubmissions'] = 'Pesos usados para los Envíos';
 $string['yourassessments'] = 'Sus Valoraciones';
 $string['yourfeedbackgoeshere'] = 'Su respuesta va aquí';
-$string['phase6'] = 'Mostrar la calificación final'; // ORPHANED
-$string['phase6short'] = 'Mostrar calificación'; // ORPHANED
-$string['thereisfeedbackfromtheteacher'] = 'Tiene una respuesta de $a'; // ORPHANED
 
 ?>

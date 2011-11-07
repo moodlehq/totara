@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_mahara.php,v 1.1 2010/02/09 16:45:16 krause Exp $ 
-      // repository_mahara.php - created with Moodle 2.0 dev (Build: 20100207) (2010020700)
-
+<?php
+// repository_mahara.php - created with Totara langimport script version 1.1
 
 $string['configplugin'] = 'Einstellungen für das Mahara-Repository';
 $string['connectionfailure'] = 'Fehler beim Abfragen der Dateiliste! 

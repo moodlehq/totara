@@ -1,4 +1,5 @@
-<?php // $Id$
+<?php
+// quiz_responses.php - created with Totara langimport script version 1.1
 
 $string['cannotloadoptions'] = 'Impossible de charger les options de question';
 $string['pagesize'] = 'Taille de page';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // moodle.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// moodle.php - created with Totara langimport script version 1.1
 
 $string['abouttobeinstalled'] = 'a punto de ser instalado';
 $string['action'] = 'Acción';
@@ -333,6 +332,7 @@ $string['courserejectsubject'] = 'Su curso ha sido rechazado';
 $string['coursereports'] = 'Informes del curso';
 $string['courserequest'] = 'Solicitud de curso';
 $string['courserequestdetails'] = 'Detalles del curso que solicita';
+$string['courserequestdisabled'] = 'Lo sentimos, la solicitud de cursos ha sido deshabilitada por el administrador';
 $string['courserequestfailed'] = 'Por alguna razón desconocida, su solicitud de curso no ha podido guardarse';
 $string['courserequestintro'] = 'Utilice este formulario para solcitar la creación de un curso.<br />Suministre toda la información posible para facilitar<br />a los administradores la comprensión de las razones por las que solicita el curso.';
 $string['courserequestreason'] = 'Razones para solicitar el curso';
@@ -631,6 +631,7 @@ $string['enteremail'] = 'Escriba su dirección email';
 $string['enteremailaddress'] = 'Escriba su dirección de correo electrónico.
 Le enviaremos una nueva contraseña.';
 $string['enterusername'] = 'Escriba su nombre de usuario';
+$string['enteryourinterests'] = 'Escriba sus intereses separados por comas';
 $string['entries'] = 'Entradas';
 $string['error'] = 'Error';
 $string['errortoomanylogins'] = 'Lo sentimos, ha excedido el número permitido de intentos. Reinicie su navegador para intentarlo de nuevo.';
@@ -1145,6 +1146,7 @@ $string['noresults'] = 'No hay resultados';
 $string['normal'] = 'Normal';
 $string['normalfilter'] = 'Búsqueda normal';
 $string['nosite'] = 'No se encontró curso en el nivel de sitio';
+$string['nostatstodisplay'] = 'Lo sentimos, no hay datos disponibles que mostrar.';
 $string['nostudentsfound'] = 'No se encuentra $a';
 $string['nostudentsingroup'] = 'Aún no hay estudiantes en este grupo';
 $string['nostudentsyet'] = 'Aún no se ha matriculado ningún alumno en este curso';
@@ -1307,6 +1309,7 @@ $string['reject'] = 'Rechazar';
 $string['rejectdots'] = 'Rechazar...';
 $string['reload'] = 'Recargar';
 $string['remoteappuser'] = 'Usuario $a remoto';
+$string['remotemaharauser'] = 'Usuario Mahara remoto';
 $string['remove'] = 'Quitar';
 $string['removeadmin'] = 'Quitar administrador';
 $string['removecreator'] = 'Quitar creador';
@@ -1466,6 +1469,7 @@ $string['sizegb'] = 'Gb';
 $string['sizekb'] = 'Kb';
 $string['sizemb'] = 'Mb';
 $string['skipped'] = 'Pasado por alto';
+$string['skiptomaincontent'] = 'Saltar al contenido principal';
 $string['skypeid'] = 'ID Skype';
 $string['socialheadline'] = 'Foro social, últimos temas';
 $string['someallowguest'] = 'Algunos cursos permiten el acceso de invitados';
@@ -1664,6 +1668,7 @@ $string['usernamenotfound'] = 'No se ha encontrado el nombre de usuario en la ba
 $string['usernameoremail'] = 'Escribir nombre de usuario o dirección email';
 $string['usernotconfirmed'] = 'No se pudo confirmar $a';
 $string['userpic'] = 'Imagen del usuario';
+$string['userprofilefor'] = 'Información personal de $a';
 $string['users'] = 'Usuarios';
 $string['userselectorautoselectunique'] = 'Si sólo un usuario coincide con la búsqueda, seleccionarlo automáticamente';
 $string['userselectorpreserveselected'] = 'Mantener los usuarios seleccionados, incluso si no coinciden más con la búsqueda';
@@ -1760,11 +1765,5 @@ $string['yourself'] = 'usted';
 $string['yourteacher'] = 'su $a';
 $string['yourwordforx'] = 'Su palabra para \'$a\'';
 $string['zippingbackup'] = 'Comprimiendo la copia de seguridad';
-$string['userprofilefor'] = 'Información personal de $a'; // ORPHANED
-$string['courserequestdisabled'] = 'Lo sentimos, la solicitud de cursos ha sido deshabilitada por el administrador'; // ORPHANED
-$string['remotemaharauser'] = 'Usuario Mahara remoto'; // ORPHANED
-$string['nostatstodisplay'] = 'Lo sentimos, no hay datos disponibles que mostrar.'; // ORPHANED
-$string['skiptomaincontent'] = 'Saltar al contenido principal'; // ORPHANED
-$string['enteryourinterests'] = 'Escriba sus intereses separados por comas'; // ORPHANED
 
 ?>

@@ -1,4 +1,6 @@
-<?PHP // $Id: qtype_calculated.php,v 1.2 2008/11/21 01:32:26 samulik Exp $
+<?php
+// qtype_calculated.php - created with Totara langimport script version 1.1
+
 $string['addmoreanswerblanks'] = 'Lisää vastauskenttiä';
 $string['addmoreunitblanks'] = 'Lisää kenttiä $a yksikölle';
 $string['answerhdr'] = 'Vaihtoehto';
@@ -25,4 +27,5 @@ $string['trueansweroutsidelimits'] = '<span class=\"error\">VIRHE: oikea vastaus
 $string['updatecategory'] = 'Päivitä kategoria';
 $string['usedinquestion'] = 'Käytetään kysymyksessä';
 $string['youmustenteramultiplierhere'] = 'Tähän pitää syöttää kerroin';
+
 ?>

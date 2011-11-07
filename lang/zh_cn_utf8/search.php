@@ -1,5 +1,6 @@
-<?php  // $Id$
-  
+<?php
+// search.php - created with Totara langimport script version 1.1
+
 $string['advancedsearch'] = '高级查找';
 $string['all'] = '所有';
 $string['author'] = '作者';
@@ -54,4 +55,5 @@ $string['uncompleteindexingerror'] = '索引不成功！请重新启动';
 $string['versiontoolow'] = '对不起！全局检索需要PHP5.0.0或者更高版本支持';
 $string['whichmodulestosearch?'] = '在哪个模块中检索？';
 $string['wordsintitle'] = '标题字数';
+
 ?>

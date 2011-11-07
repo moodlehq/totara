@@ -1,5 +1,5 @@
-<?PHP // $Id$
-      // Modified with langdiff.php
+<?php
+// pgassignment.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'Puuttuva';
 $string['acceptance'] = 'Hyväksyminen';
@@ -165,4 +165,5 @@ $string['weightingofteacher'] = 'Opettajan arvioinnin painotus';
 $string['workofotherstudentsbeinggraded'] = 'Arvioitavanasi on seuraavat työt';
 $string['youhavenotbeenallocatedanyworktograde'] = 'Sinulle ei ole annettu yhtään arvoitavaa työtä';
 $string['yourworkbeinggraded'] = 'Oman työsi arvioinnit  $a';
+
 ?>

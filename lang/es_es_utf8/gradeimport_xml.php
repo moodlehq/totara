@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // gradeimport_xml.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// gradeimport_xml.php - created with Totara langimport script version 1.1
 
 $string['errbadxmlformat'] = 'Error: formato XML erróneo';
 $string['errduplicategradeidnumber'] = 'Error: no existen dos elementos de calificación con el número \'$a\' en este curso (es imposible que ocurra).';

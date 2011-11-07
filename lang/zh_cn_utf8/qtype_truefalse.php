@@ -1,5 +1,5 @@
-<?php // $Id$ 
-      // qtype_truefalse.php - created with Moodle 1.8dev
+<?php
+// qtype_truefalse.php - created with Totara langimport script version 1.1
 
 $string['addingtruefalse'] = '添加判断题';
 $string['correctanswer'] = '正确答案';

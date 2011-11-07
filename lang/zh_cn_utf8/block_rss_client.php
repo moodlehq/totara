@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_rss_client.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// block_rss_client.php - created with Totara langimport script version 1.1
 
 $string['addfeed'] = '添加新种子链接：';
 $string['addheadlineblock'] = '添加 RSS 标题块';
@@ -29,8 +28,8 @@ $string['feedstitle'] = '远程 RSS 种子';
 $string['feedupdated'] = '新闻种子已更新';
 $string['findmorefeeds'] = '查找更多 RSS 种子';
 $string['managefeeds'] = '管理我的全部种子';
-$string['numentries'] = '每个种子的标题数';
 $string['nofeeds'] = '此站尚未添加 RSS 种子。';
+$string['numentries'] = '每个种子的标题数';
 $string['pickfeed'] = '选择一个新闻种子';
 $string['remotenewsfeed'] = '远程新闻种子';
 $string['rss_client:createprivatefeeds'] = '建立个人的 RSS 种子';

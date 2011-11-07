@@ -1,4 +1,5 @@
-<?php // $Id: dbtransfer.php,v 1.3 2009/02/15 18:38:55 martignoni Exp $
+<?php
+// dbtransfer.php - created with Totara langimport script version 1.1
 
 $string['checkingsourcetables'] = 'Vérification de la structure de la table source';
 $string['copyingtable'] = 'Copie de la table $a';
@@ -15,8 +16,8 @@ $string['importversionmismatchexception'] = 'La version actuelle $a->currentver 
 $string['malformedxmlexception'] = 'Fichier XML mal formé. Impossible de continuer.';
 $string['notargetconectexception'] = 'Impossible de se connecter à la base de données cible.';
 $string['transferdata'] = 'Transférer les données';
-$string['transferdbtoserver'] = 'Transférer cette base de données Moodle vers un autre serveur';
 $string['transferdbintro'] = 'Ce script permet de transférer la totalité du contenu de cette base de données vers un autre serveur de base de données.';
+$string['transferdbtoserver'] = 'Transférer cette base de données Moodle vers un autre serveur';
 $string['transferringdbto'] = 'Transfert de cette base de données vers la base de données $a->dbname, de type $a->dbtype sur $a->dbhost';
 $string['unknowntableexception'] = 'Table $a inconnue détectée dans le fichier exporté.';
 

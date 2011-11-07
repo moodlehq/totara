@@ -1,4 +1,5 @@
-<?php // $Id: portfolio_download.php,v 1.3 2008/10/05 08:04:28 martignoni Exp $
+<?php
+// portfolio_download.php - created with Totara langimport script version 1.1
 
 $string['downloadfile'] = 'Télécharger votre fichier d\'exportation de portfolio';
 $string['downloading'] = 'Téléchargement...';

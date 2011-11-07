@@ -1,4 +1,5 @@
-<?php // $Id$
+<?php
+// block_quiz_results.php - created with Totara langimport script version 1.1
 
 $string['bestgrade'] = 'La note la plus haute :';
 $string['bestgrades'] = 'Les $a notes les plus hautes :';
@@ -9,9 +10,9 @@ $string['config_format_fraction'] = 'Fractions';
 $string['config_format_percentage'] = 'Pourcents';
 $string['config_grade_format'] = 'Afficher les notes comme :';
 $string['config_name_format'] = 'Niveau de confidentialité des résultats affichés :';
+$string['config_names_anon'] = 'Résultats anonymes';
 $string['config_names_full'] = 'Afficher les noms';
 $string['config_names_id'] = 'N\'afficher que les identifiants numériques';
-$string['config_names_anon'] = 'Résultats anonymes';
 $string['config_no_quizzes_in_course'] = 'Ce cours ne comporte pas de test. Avant de pouvoir utiliser ce bloc correctement, vous devez ajouter au moins un test.';
 $string['config_select_quiz'] = 'De quel test voulez-vous afficher les résultats dans ce blocs ?';
 $string['config_show_best'] = 'Combien de notes les plus hautes doivent être affichées (0 pour désactiver) ?';

@@ -1,6 +1,5 @@
-<?PHP // $Id: gradereport_admin.php,v 1.1 2007/06/23 12:04:38 barias Exp $ 
-      // gradereport_admin.php - created with Moodle 1.8 + (2007021502)
-
+<?php
+// gradereport_admin.php - created with Totara langimport script version 1.1
 
 $string['admin:manage'] = 'Editar categorías de calificación';
 $string['modulename'] = 'Categorías';

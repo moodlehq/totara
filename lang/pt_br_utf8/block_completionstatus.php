@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // block_completionstatus.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://www.educmedia.com.br/online
-
+<?php
+// block_completionstatus.php - created with Totara langimport script version 1.1
 
 $string['cannotviewreport'] = 'Você não tem permissão de visualiazar esse relatório';
 $string['completionprogressdetails'] = 'Detalhe do progresso da completação de curso';

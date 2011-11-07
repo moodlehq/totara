@@ -1,6 +1,5 @@
-<?PHP // $Id: filters.php,v 1.5 2010/02/08 19:52:09 barias Exp $ 
-      // filters.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// filters.php - created with Totara langimport script version 1.1
 
 $string['actfilterhdr'] = 'Filtros activos (ORed juntos)';
 $string['addfilter'] = 'Agregar filtro';
@@ -33,6 +32,7 @@ $string['isactive'] = '¿Activo?';
 $string['isafter'] = 'es después de $a';
 $string['isanyvalue'] = 'es cualquier valor';
 $string['isbefore'] = 'es antes de $a';
+$string['isbetween'] = 'es entre $a(0) y $a(1)';
 $string['isdefined'] = 'está definido';
 $string['isempty'] = 'está vacío';
 $string['isequalto'] = 'es igual a';
@@ -48,11 +48,10 @@ $string['profilelabelnovalue'] = '$a->label: $a->profile $a->operator';
 $string['removeall'] = 'Eliminar todo';
 $string['removeselected'] = 'Eliminar seleccionados';
 $string['selectlabel'] = '$a->label $a->operator $a->value';
+$string['setfilter'] = 'Ajustar filtro';
 $string['startswith'] = 'comienza con';
 $string['tablenosave'] = 'Los cambios de la tabla superior se guardan automáticamente.';
 $string['textlabel'] = '$a->label $a->operator $a->value';
 $string['textlabelnovalue'] = '$a->label $a->operator';
-$string['isbetween'] = 'es entre $a(0) y $a(1)'; // ORPHANED
-$string['setfilter'] = 'Ajustar filtro'; // ORPHANED
 
 ?>

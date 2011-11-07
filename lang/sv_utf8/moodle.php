@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // moodle.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// moodle.php - created with Totara langimport script version 1.1
 
 $string['abouttobeinstalled'] = 'på väg att installeras';
 $string['action'] = 'Åtgärd';
@@ -652,6 +651,7 @@ $string['enrolstartdate'] = 'Startdatum';
 $string['entercourse'] = 'Klicka för att nå denna kurs';
 $string['enteremailaddress'] = 'Mata in Din e-postadress för att nollställa Ditt
 lösenord så skickar vi det nya lösenordet till Dig via e-post.';
+$string['enteryourinterests'] = 'Skriv in Dina intressen separerade med komman';
 $string['entries'] = 'Bidrag';
 $string['error'] = 'Fel';
 $string['errortoomanylogins'] = 'Du har tyvärr försökt logga in för många gånger. Starta om Din webbläsare och försök igen.';
@@ -1340,6 +1340,7 @@ $string['reject'] = 'Avslå';
 $string['rejectdots'] = 'Avslå...';
 $string['reload'] = 'Uppdatera';
 $string['remoteappuser'] = 'Fjärranvändare $a';
+$string['remotemaharauser'] = 'Fjärranvändare av Mahara';
 $string['remove'] = 'Ta bort';
 $string['removeadmin'] = 'Ta bort administratör';
 $string['removecreator'] = 'Ta bort kursutvecklare';
@@ -1500,6 +1501,7 @@ $string['sizegb'] = 'Gb';
 $string['sizekb'] = 'Kb';
 $string['sizemb'] = 'Mb';
 $string['skipped'] = 'Överhoppad';
+$string['skiptomaincontent'] = 'Fortsätt framåt till huvudinnehållet';
 $string['skypeid'] = 'Skype ID';
 $string['socialheadline'] = 'Gemenskapsforum - senaste tema';
 $string['someallowguest'] = 'Några kurser kan tillåta gäster';
@@ -1533,6 +1535,7 @@ $string['statsreport2'] = 'Visningar (lärare och lärande)';
 $string['statsreport3'] = 'Inlägg (lärare och lärande)';
 $string['statsreport4'] = 'Alla aktiviteter (lärare och lärande)';
 $string['statsreport5'] = 'Alla aktiviteter av lärande (visningar och inlägg)';
+$string['statsreport6'] = 'Alla aktiviteter av lärare (visningar och inlägg)';
 $string['statsreport7'] = 'Aktiviteter av användare (visningar och inlägg)';
 $string['statsreport8'] = 'Alla aktiviteter av användare';
 $string['statsreport9'] = 'Inloggningar (webbplats kurs)';
@@ -1541,6 +1544,8 @@ $string['statsreportactivitybyrole'] = 'All aktivitet (visningar och inlägg)';
 $string['statsreportforuser'] = 'för';
 $string['statsreportlogins'] = 'Inloggningar';
 $string['statsreportreads'] = 'Visningar (lärare och lärande)';
+$string['statsreportstudentactivity'] = 'Alla aktiviteter av lärande (visningar och inlägg)';
+$string['statsreportteacheractivity'] = 'Alla aktiviteter av lärare  (visningar och inlägg)';
 $string['statsreporttype'] = 'Typ av rapport';
 $string['statsreportwrites'] = 'Inlägg (lärare  och lärande)';
 $string['statsstudentactivity'] = 'Aktiviteter - lärande';
@@ -1774,11 +1779,5 @@ $string['yourlastlogin'] = 'Din senaste inloggning var';
 $string['yourself'] = 'Dig själv';
 $string['yourteacher'] = 'Din $a';
 $string['zippingbackup'] = 'Packar ihop säkerhetskopian...';
-$string['remotemaharauser'] = 'Fjärranvändare av Mahara'; // ORPHANED
-$string['enteryourinterests'] = 'Skriv in Dina intressen separerade med komman'; // ORPHANED
-$string['skiptomaincontent'] = 'Fortsätt framåt till huvudinnehållet'; // ORPHANED
-$string['statsreport6'] = 'Alla aktiviteter av lärare (visningar och inlägg)'; // ORPHANED
-$string['statsreportstudentactivity'] = 'Alla aktiviteter av lärande (visningar och inlägg)'; // ORPHANED
-$string['statsreportteacheractivity'] = 'Alla aktiviteter av lärare  (visningar och inlägg)'; // ORPHANED
 
 ?>

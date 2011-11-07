@@ -1,6 +1,5 @@
-<?PHP // $Id: form.php,v 1.3 2008/11/03 20:56:44 koenr Exp $ 
-      // form.php - created with Moodle 1.9 + (Build: 20080324) (2007101509)
-
+<?php
+// form.php - created with Totara langimport script version 1.1
 
 $string['addfields'] = 'Lägg till $a fält till formuläret';
 $string['advancedelement'] = 'Avancerad komponent';

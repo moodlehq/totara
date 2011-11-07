@@ -1,4 +1,5 @@
-<?php // $Id: repository_mahara.php,v 1.3 2009/08/12 10:40:59 martignoni Exp $
+<?php
+// repository_mahara.php - created with Totara langimport script version 1.1
 
 $string['configplugin'] = 'Configuration du dépôt Mahara';
 $string['connectionfailure'] = 'Échec de la récupération de la liste de fichiers. Le Moodle hôte a une version antérieure à la version 2.0 ou son service de dépôt Mahara n\'a pas été activé';
@@ -16,3 +17,5 @@ $string['repositorydesc'] = 'Fichiers sur un serveur Moodle distant';
 $string['repositoryname'] = 'Mahara';
 $string['usercannotaccess'] = 'Vous ($a) ne pouvez pas accéder à ce fichier';
 $string['usernotfound'] = 'L\'utilisateur $a n\'est pas enregistré dans Mahara';
+
+?>

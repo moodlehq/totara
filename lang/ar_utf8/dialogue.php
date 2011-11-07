@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // dialogue.php - created with Moodle 1.8 dev (2006101001)
-
+<?php
+// dialogue.php - created with Totara langimport script version 1.1
 
 $string['addmynewentries'] = 'اضف مدخلاتي الجديدة';
 $string['addmynewentry'] = 'اضف مدخل الجديدة';

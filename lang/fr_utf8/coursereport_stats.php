@@ -1,4 +1,5 @@
-<?php // $Id: coursereport_stats.php,v 1.1 2008/12/07 15:04:24 martignoni Exp $
+<?php
+// coursereport_stats.php - created with Totara langimport script version 1.1
 
 $string['stats:view'] = 'Consulter le rapport des statistiques du cours';
 

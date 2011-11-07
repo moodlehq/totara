@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // forum.php - created with Moodle 1.2 Beta + (2004030702)
-
+<?php
+// forum.php - created with Totara langimport script version 1.1
 
 $string['addanewdiscussion'] = 'Añadir un nuevo tema de debate';
 $string['addanewtopic'] = 'Añadir un nuevo tema';

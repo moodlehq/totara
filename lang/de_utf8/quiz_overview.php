@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_overview.php,v 1.15 2010/01/31 15:33:29 krause Exp $ 
-      // quiz_overview.php - created with Moodle 2.0 dev (Build: 20100129) (2010012902)
-
+<?php
+// quiz_overview.php - created with Totara langimport script version 1.1
 
 $string['allattempts'] = 'Alle Versuche anzeigen';
 $string['allattemptscontributetograde'] = 'Alle Versuche werden bei der Gesamtnote berücksichtigt.';

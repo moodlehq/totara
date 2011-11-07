@@ -1,22 +1,24 @@
 <?php
-// lang strings for report builder 'user' source
-$string['sourcetitle'] = 'Usuario';
-$string['userspicture'] = 'Fotografía del usuario';
-$string['lastlogin'] = 'Última sesión';
-$string['mylearningicons'] = $string[''] = 'Mis iconos de aprendizaje del usuario';
-$string['name'] = 'Nombre';
-$string['usersachievedcompcount'] = 'Recuento de competencias adquiridas del usuario';
-$string['userscoursestartedcount'] = 'Recuento de cursos iniciados del usuario';
-$string['userscoursescompletedcount'] = 'Recuento de cursos realizados del usuario';
-$string['usernamewithlearninglinks'] = 'Nombre completo del usuario (con vínculos a componentes de aprendizaje)';
-$string['usersname'] = 'Nombre del usuario';
-$string['user'] = 'Usuario';
-$string['users'] = 'Usuarios';
-$string['picture'] = 'Fotografía';
-$string['options'] = 'Opciones';
-$string['coursesstarted'] = 'Cursos iniciados';
-$string['coursescompleted'] = 'Cursos realizados';
-$string['competenciesachieved'] = 'Competencias adquiridas';
+// rb_source_user.php - created with Totara langimport script version 1.1
 
-// column types for this source, as strings
+$string[''] = 'Mis iconos de aprendizaje del usuario';
+$string['competenciesachieved'] = 'Competencias adquiridas';
+$string['coursescompleted'] = 'Cursos realizados';
+$string['coursesstarted'] = 'Cursos iniciados';
+$string['lastlogin'] = 'Última sesión';
+$string['mylearningicons'] = 'Mis iconos de aprendizaje del usuario';
+$string['name'] = 'Nombre';
+$string['options'] = 'Opciones';
+$string['picture'] = 'Fotografía';
+$string['sourcetitle'] = 'Usuario';
 $string['type_statistics'] = 'Estadísticas';
+$string['user'] = 'Usuario';
+$string['usernamewithlearninglinks'] = 'Nombre completo del usuario (con vínculos a componentes de aprendizaje)';
+$string['users'] = 'Usuarios';
+$string['usersachievedcompcount'] = 'Recuento de competencias adquiridas del usuario';
+$string['userscoursescompletedcount'] = 'Recuento de cursos realizados del usuario';
+$string['userscoursestartedcount'] = 'Recuento de cursos iniciados del usuario';
+$string['usersname'] = 'Nombre del usuario';
+$string['userspicture'] = 'Fotografía del usuario';
+
+?>

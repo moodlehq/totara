@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// quiz.php - created with Totara langimport script version 1.1
 
 $string['1day'] = '1 dia';
 $string['1hour'] = '1 hora';
@@ -219,6 +218,9 @@ $string['event7'] = 'Enviar';
 $string['event8'] = 'Fechar';
 $string['event9'] = 'Avaliação Manual';
 $string['examview'] = 'Ver exame';
+$string['existingcategory1'] = 'um literal de um conjunto de literais já existente, que também são usados em outras questões desta categoria';
+$string['existingcategory2'] = 'um arquivo de um conjunto de arquivos já existente que também são usados em outras questões desta categoria';
+$string['existingcategory3'] = 'um link de um conjunto de links que também são usados em outras questões desta categoria';
 $string['export'] = 'Exportar';
 $string['exportcategory'] = 'exportar categoria';
 $string['exporterror'] = 'Erro durante a exportação';
@@ -314,6 +316,12 @@ $string['itemdefinition'] = 'Definição';
 $string['itemsource'] = 'Fonte do recurso';
 $string['itemsourceformat'] = 'Formato da fonte do recurso';
 $string['itemtypes'] = 'Tipos de questões remotas';
+$string['keptcategory1'] = 'um literal do mesmo conjunto de literais de categoria reutilizável como antes';
+$string['keptcategory2'] = 'um arquivo do mesmo conjunto de arquivos de categoria reutilizável como antes';
+$string['keptcategory3'] = 'um link do mesmo conjunto de links de categoria reutilizável como antes';
+$string['keptlocal1'] = 'um literal do mesmo conjunto de literais de questões reservadas como antes';
+$string['keptlocal2'] = 'um arquivo do mesmo conjunto de arquivos de questões reservadas como antes';
+$string['keptlocal3'] = 'um link do mesmo conjunto de links de questões reservadas como antes';
 $string['lastanswer'] = 'A sua última resposta foi';
 $string['learnwise'] = 'Formato Learnwise';
 $string['link'] = 'Link';
@@ -353,6 +361,12 @@ $string['multipleanswers'] = 'Escolha pelo menos uma resposta.';
 $string['multiplier'] = 'Multiplicador';
 $string['name'] = 'Nome';
 $string['newattemptfail'] = 'Erro: Não foi possível iniciar uma tentativa deste questionário';
+$string['newcategory1'] = 'um literal de um novo conjunto de literais que também pode ser utilizado por outras questões desta categoria';
+$string['newcategory2'] = 'um arquivo de um novo conjunto de arquivos que também pode ser utilizado por outras questões desta categoria';
+$string['newcategory3'] = 'um link de um novo conjunto de links que também pode ser utilizado por outras questões desta categoria';
+$string['newlocal1'] = 'um literal de um novo conjunto de literais que será utilizado apenas nesta questão';
+$string['newlocal2'] = 'um arquivo de um novo conjunto de arquivos que será utilizado apenas nesta questão';
+$string['newlocal3'] = 'um link de um novo conjunto de links que será utilizado apenas nesta questão';
 $string['noanswers'] = 'Nenhuma resposta foi selecionada!';
 $string['noattempts'] = 'Nenhuma tentativa foi feita neste questionário';
 $string['noattemptstoshow'] = 'Nenhuma tentativa a ser mostrada';
@@ -618,20 +632,5 @@ $string['xmltypeunsupported'] = 'O tipo de questão $a não é compatível com a
 $string['youneedtoenrol'] = 'Você deve se cadastrar neste curso antes de tentar responder este questionário';
 $string['yourfinalgradeis'] = 'A sua nota final neste questionário é $a';
 $string['zerosignificantfiguresnotallowed'] = 'A resposta correta não pode ser igual a zero números significativos';
-$string['existingcategory1'] = 'um literal de um conjunto de literais já existente, que também são usados em outras questões desta categoria'; // ORPHANED
-$string['existingcategory2'] = 'um arquivo de um conjunto de arquivos já existente que também são usados em outras questões desta categoria'; // ORPHANED
-$string['existingcategory3'] = 'um link de um conjunto de links que também são usados em outras questões desta categoria'; // ORPHANED
-$string['keptcategory1'] = 'um literal do mesmo conjunto de literais de categoria reutilizável como antes'; // ORPHANED
-$string['keptcategory2'] = 'um arquivo do mesmo conjunto de arquivos de categoria reutilizável como antes'; // ORPHANED
-$string['keptcategory3'] = 'um link do mesmo conjunto de links de categoria reutilizável como antes'; // ORPHANED
-$string['keptlocal1'] = 'um literal do mesmo conjunto de literais de questões reservadas como antes'; // ORPHANED
-$string['keptlocal2'] = 'um arquivo do mesmo conjunto de arquivos de questões reservadas como antes'; // ORPHANED
-$string['keptlocal3'] = 'um link do mesmo conjunto de links de questões reservadas como antes'; // ORPHANED
-$string['newcategory1'] = 'um literal de um novo conjunto de literais que também pode ser utilizado por outras questões desta categoria'; // ORPHANED
-$string['newcategory2'] = 'um arquivo de um novo conjunto de arquivos que também pode ser utilizado por outras questões desta categoria'; // ORPHANED
-$string['newcategory3'] = 'um link de um novo conjunto de links que também pode ser utilizado por outras questões desta categoria'; // ORPHANED
-$string['newlocal1'] = 'um literal de um novo conjunto de literais que será utilizado apenas nesta questão'; // ORPHANED
-$string['newlocal2'] = 'um arquivo de um novo conjunto de arquivos que será utilizado apenas nesta questão'; // ORPHANED
-$string['newlocal3'] = 'um link de um novo conjunto de links que será utilizado apenas nesta questão'; // ORPHANED
 
 ?>

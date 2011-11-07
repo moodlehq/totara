@@ -1,12 +1,12 @@
-<?PHP // $Id: xmldb.php,v 1.9 2009/12/14 09:18:45 mudrd8mz Exp $ 
-      // xmldb.php - created with Moodle 1.8.2+ (2007021520)
-
+<?php
+// xmldb.php - created with Totara langimport script version 1.1
 
 $string['actual'] = 'Real';
 $string['aftertable'] = 'Después de la tabla:';
 $string['back'] = 'Atrás';
 $string['backtomainview'] = 'Volver al principal';
 $string['binaryincorrectlength'] = 'Longitud incorrecta del campo binario';
+$string['butis'] = 'pero es';
 $string['cannotuseidfield'] = 'No se puede insertar el campo \"id\". Es una columna autonumerada';
 $string['change'] = 'Cambiar';
 $string['charincorrectlength'] = 'Longitud incorrecta del campo char';
@@ -109,6 +109,7 @@ $string['selectonecommand'] = 'Por favor, seleccione una acción de la lista par
 $string['selectonefieldkeyindex'] = 'Por favor, seleccione un Campo/Clave/Índice de la lista para ver el código PHP';
 $string['selecttable'] = 'Seleccionar tabla:';
 $string['sentences'] = 'Frases';
+$string['shouldbe'] = 'debería ser';
 $string['statements'] = 'Declaraciones';
 $string['statementtable'] = 'Tabla de declaraciones:';
 $string['statementtype'] = 'Tipo de declaración:';
@@ -137,7 +138,5 @@ $string['wrongreservedwords'] = 'Palabras reservadas usadas actualmente<br />(no
 $string['yesmissingindexesfound'] = 'En su BD se han encontrado algunos índices ausentes. Aquí puede ver sus detalles, así como los comandos SQL a ejecutar con su interfaz SQL favorita para crearlos.<br /><br /> Una vez que lo haya hecho, es muy recomendable que ejecute de nuevo esta utilidad para comprobar que no se encuentran más índices ausentes.';
 $string['yeswrongdefaultsfound'] = 'En su base de datos se han encontrado algunos valores por defecto inconsistentes. Aquí se presentan sus detalles y las acciones SQL que deben ejecutarse en su interfaz SQL favorita para crearlos (no olvide hacer una copia de seguridad de sus datos).<br /><br />Una vez realizado, se recomienda ejecutar de nuevo esta utilidad para comprobar que no se encuentran más valores por defecto inconsistentes.';
 $string['yeswrongintsfound'] = 'Se han encontrado algunos enteros erróneos en su BD. Aquí se presentan sus detalles y las acciones SQL que deben ejecutarse en su interfaz SQL favorita para crearlos (no olvide hacer una copia de seguridad de sus datos).<br /><br />Una vez realizado, se recomienda ejecutar de nuevo esta utilidad para comprobar que no se encuentran más enteros erróneos.';
-$string['butis'] = 'pero es';
-$string['shouldbe'] = 'debería ser';
 
 ?>

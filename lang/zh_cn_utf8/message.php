@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // message.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = '添加联系人';
 $string['addsomecontacts'] = '要给某人发信或在此页面添加一个快捷链接，可以使用上方的<a href=\"$a\">搜索</a>功能。';
@@ -27,16 +26,16 @@ $string['includeblockedusers'] = '包括被阻拦的用户';
 $string['incomingcontacts'] = '新的联系人 ($a)';
 $string['keywords'] = '关键字';
 $string['keywordssearchresults'] = '搜索结果: 找到 $a 条消息';
-$string['maxmessages'] = '最多显示多少条讨论历史中的消息';
 $string['mailsent'] = '将通过 E-mail 发送消息';
+$string['maxmessages'] = '最多显示多少条讨论历史中的消息';
 $string['message'] = '消息';
 $string['messagehistory'] = '消息历史';
 $string['messages'] = '消息';
 $string['messaging'] = '发送消息';
 $string['messagingdisabled'] = '站点中已禁用短消息功能，消息将以 E-mail 形式发送。';
 $string['mycontacts'] = '我的联系人';
-$string['newsearch'] = '重新搜索';
 $string['newonlymsg'] = '只显示新的';
+$string['newsearch'] = '重新搜索';
 $string['noframesjs'] = '不使用框架和Javascript';
 $string['nomessages'] = '没有新消息';
 $string['nomessagesfound'] = '没有找到消息';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_dbpositions.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// enrol_dbpositions.php - created with Totara langimport script version 1.1
 
 $string['dbhost'] = 'Server IP-namn eller nummer';
 $string['dbname'] = 'Databasnamn';

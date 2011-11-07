@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // editor.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'Tietoja editorista';
 $string['absbottom'] = 'Absbottom';
@@ -50,6 +49,7 @@ $string['heading'] = 'Otsikko';
 $string['height'] = 'Korkeus';
 $string['hilitecolor'] = 'Taustan väri';
 $string['horizontal'] = 'Vaaka';
+$string['horizontalrule'] = 'Vaakaviiva';
 $string['htmlmode'] = 'Näytä HTML-koodi';
 $string['imageurl'] = 'Kuvan URL';
 $string['indent'] = 'Lisää sisennystä';
@@ -92,6 +92,7 @@ $string['notimage'] = 'Valittu tiedosto ei ollut kuva. Valitse kuvatiedosto!';
 $string['notset'] = 'Ei valittua';
 $string['ok'] = 'OK';
 $string['options'] = 'Asetukset';
+$string['orderedlist'] = 'Numerointi';
 $string['outdent'] = 'Vähennä sisennystä';
 $string['paste'] = 'Liitä';
 $string['path'] = 'Polku';
@@ -104,6 +105,7 @@ $string['preview'] = 'Esikatsele';
 $string['properties'] = 'Ominaisuudet';
 $string['redo'] = 'Palauta viimeinen toiminto';
 $string['regularexpressions'] = 'Käytä säännöllisiä ilmauksia';
+$string['removelink'] = 'Poista linkki';
 $string['rename'] = 'Nimeä uudelleen';
 $string['replaceall'] = 'Korvaa kaikki';
 $string['replacewith'] = 'Korvaa';
@@ -111,6 +113,7 @@ $string['right'] = 'Oikea';
 $string['righttoleft'] = 'Suunta oikealta vasemmalle';
 $string['rows'] = 'Rivit';
 $string['search_replace'] = 'Etsi ja korvaa';
+$string['searchandreplace'] = 'Etsi ja korvaa';
 $string['searchnotfound'] = 'Etsittyjä sanoja ei löydetty!';
 $string['selectcolor'] = 'Valitse väri';
 $string['selection'] = 'Valinta';
@@ -129,15 +132,11 @@ $string['type'] = 'Tyyppi';
 $string['underline'] = 'Alleviivattu';
 $string['undo'] = 'Peruuta viimeisin toiminto';
 $string['unlink'] = 'Poista linkki';
+$string['unorderedlist'] = 'Luettelomerkit';
 $string['upload'] = 'Lataa';
 $string['vertical'] = 'Pysty';
 $string['width'] = 'Leveys';
+$string['wordclean'] = 'Puhdista Word HTML';
 $string['zip'] = 'Zip';
-$string['horizontalrule'] = 'Vaakaviiva'; // ORPHANED
-$string['orderedlist'] = 'Numerointi'; // ORPHANED
-$string['removelink'] = 'Poista linkki'; // ORPHANED
-$string['searchandreplace'] = 'Etsi ja korvaa'; // ORPHANED
-$string['unorderedlist'] = 'Luettelomerkit'; // ORPHANED
-$string['wordclean'] = 'Puhdista Word HTML'; // ORPHANED
 
 ?>

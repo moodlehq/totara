@@ -1,4 +1,5 @@
 <?php
+// coursereport_completion.php - created with Totara langimport script version 1.1
 
 $string['activitiescomplete'] = '活动完成';
 $string['complete'] = '课程完成';
@@ -12,3 +13,5 @@ $string['nocompletioncoursesenroled'] = '用户未选修任何已完成的课程
 $string['nocompletions'] = '此用户已选修此课程，但此课程尚未开始。';
 $string['notyetstarted'] = '课程尚未开始';
 $string['unstarted'] = '课程尚未开始';
+
+?>

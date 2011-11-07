@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // moodle.org.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// moodle.org.php - created with Totara langimport script version 1.1
 
 $string['aboutdemosite'] = 'موقعنا الظاهر هو موقع موودل الكامل مع عينة لبعض المقررات التي يمكنك تجربتها كمحاضر او طالب او حتى مسؤول .لا تقلق بشأن حدوث فوضى , سيتم إعادة ضبط كامل الموقع كل ساعة.';
 $string['aboutdemositetitle'] = 'الموقع الظاهر';

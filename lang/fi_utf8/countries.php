@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // countries.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// countries.php - created with Totara langimport script version 1.1
 
 $string['AD'] = 'Andorra';
 $string['AE'] = 'Yhdistyneet arabiemiirikunnat';
@@ -52,6 +51,7 @@ $string['CM'] = 'Kamerun';
 $string['CN'] = 'Kiina';
 $string['CO'] = 'Kolumbia';
 $string['CR'] = 'Costa Rica';
+$string['CS'] = 'Serbia';
 $string['CU'] = 'Kuuba';
 $string['CV'] = 'Cap Verde';
 $string['CX'] = 'Joulusaari';
@@ -76,6 +76,7 @@ $string['FK'] = 'Falkland-saaret';
 $string['FM'] = 'Micronesian yhdistyneet kansakunnat';
 $string['FO'] = 'Färsaaret';
 $string['FR'] = 'Ranska';
+$string['FX'] = 'Ranska; Metropolitan';
 $string['GA'] = 'Gabon';
 $string['GB'] = 'Iso-Britannia';
 $string['GD'] = 'Grenada';
@@ -121,6 +122,7 @@ $string['KH'] = 'Kambodza';
 $string['KI'] = 'Kiribati';
 $string['KM'] = 'Komorit';
 $string['KN'] = 'Saint Kitts ja Nevis';
+$string['KO'] = 'Kosovo';
 $string['KP'] = 'Pohjois-Korea';
 $string['KR'] = 'Etelä-Korea';
 $string['KW'] = 'Kuwait';
@@ -223,6 +225,7 @@ $string['TL'] = 'Itä-Timor';
 $string['TM'] = 'Turkmenistan';
 $string['TN'] = 'Tunisia';
 $string['TO'] = 'Tonga';
+$string['TP'] = 'Itä-Timor';
 $string['TR'] = 'Turkki';
 $string['TT'] = 'Trinidad ja Tobago';
 $string['TV'] = 'Tuvalu';
@@ -241,18 +244,14 @@ $string['VG'] = 'Brittiläiset Neitsytsaaret';
 $string['VI'] = 'Yhdysvaltain Neitsytsaaret';
 $string['VN'] = 'Vietnam';
 $string['VU'] = 'Vanuatu';
+$string['WA'] = 'Wales';
 $string['WF'] = 'Wallis- ja Futunasaaret';
 $string['WS'] = 'Samoa';
 $string['YE'] = 'Jemen';
 $string['YT'] = 'Mayotte';
 $string['ZA'] = 'Etelä-Afrikka';
 $string['ZM'] = 'Zambia';
+$string['ZR'] = 'Zaire';
 $string['ZW'] = 'Zimbabwe';
-$string['CS'] = 'Serbia'; // ORPHANED
-$string['FX'] = 'Ranska; Metropolitan'; // ORPHANED
-$string['KO'] = 'Kosovo'; // ORPHANED
-$string['TP'] = 'Itä-Timor'; // ORPHANED
-$string['WA'] = 'Wales'; // ORPHANED
-$string['ZR'] = 'Zaire'; // ORPHANED
 
 ?>

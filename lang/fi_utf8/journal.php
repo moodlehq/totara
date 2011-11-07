@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// journal.php - created with Totara langimport script version 1.1
+
 $string['alwaysopen'] = 'Aina avoinna';
 $string['blankentry'] = 'Tyhjä osa';
 $string['daysavailable'] = 'Päivää avoinna';
@@ -33,4 +35,5 @@ $string['rate'] = 'Arviointi';
 $string['saveallfeedback'] = 'Tallenna kaikki palaute';
 $string['startoredit'] = 'Aloita tai muokkaa muistiota';
 $string['viewallentries'] = 'Katso kaikkia $a muistioita';
+
 ?>

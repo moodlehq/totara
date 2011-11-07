@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // brainstorm.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2005010100)
-
+<?php
+// brainstorm.php - created with Totara langimport script version 1.1
 
 $string['addmoreresponses'] = 'اضف اجابات اضافية';
 $string['brainstormname'] = 'اسم العصف الذهني';

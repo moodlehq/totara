@@ -1,4 +1,6 @@
-<?PHP // $Id: qtype_multichoice.php,v 1.10 2008/11/21 01:32:26 samulik Exp $
+<?php
+// qtype_multichoice.php - created with Totara langimport script version 1.1
+
 $string['addingmultichoice'] = 'Lisätään monivalinta';
 $string['addmorechoiceblanks'] = 'Lisää kenttiä {no} vaihtoehdolle';
 $string['answerhowmany'] = 'Yksi vai useita vaihtoehtoja?';
@@ -29,4 +31,5 @@ $string['overallpartiallycorrectfeedback'] = 'Palaute osittain oikeasta vastauks
 $string['partiallycorrectfeedback'] = 'Mille tahansa osittain oikealle vastaukselle';
 $string['shuffleanswers'] = 'Sekoita vaihtoehdot';
 $string['singleanswer'] = 'Valitse yksi vaihtoehto';
+
 ?>

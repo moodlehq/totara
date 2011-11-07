@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// forum.php - created with Totara langimport script version 1.1
 
 $string['addanewdiscussion'] = 'Acrescentar um novo tópico de discussão';
 $string['addanewquestion'] = 'Acrescentar uma nova questão';

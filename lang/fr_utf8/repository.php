@@ -1,8 +1,5 @@
-<?php // $Id: repository.php,v 1.67 2010/06/29 22:40:06 martignoni Exp $
-
-// Terme actuellement choisi pour "repository" : dépôt
-// Autres possibilités à envisager : entrepôt, stockage,
-// zone de dépôt, vivier, ...
+<?php
+// repository.php - created with Totara langimport script version 1.1
 
 $string['accessiblefilepicker'] = 'Choix de fichiers accessible';
 $string['activaterep'] = 'Activer les dépôts de documents';
@@ -38,11 +35,11 @@ $string['confirmdeletefile'] = 'Voulez-vous vraiment supprimer ce fichier ?';
 $string['confirmremove'] = 'Voulez-vous vraiment supprimer le plugin de dépôt {$a}, ses réglages et <strong>toutes ses instances</strong> ?';
 $string['copying'] = 'Copie en cours';
 $string['create'] = 'Créer';
-$string['createfoldersuccess'] = 'Dossier créé correctement';
 $string['createfolderfail'] = 'Échec de la création du dossier';
+$string['createfoldersuccess'] = 'Dossier créé correctement';
 $string['createinstance'] = 'Créer une instance de dépôt';
-$string['createxxinstance'] = 'Créer une instance de dépôt $a';
 $string['createrepository'] = 'Créer une instance de dépôt';
+$string['createxxinstance'] = 'Créer une instance de dépôt $a';
 $string['date'] = 'Date';
 $string['deleted'] = 'Dépôt supprimé';
 $string['deleterepository'] = 'Supprimer ce dépôt';

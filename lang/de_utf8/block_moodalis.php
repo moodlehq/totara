@@ -1,6 +1,5 @@
-<?PHP // $Id: block_moodalis.php,v 1.1 2007/03/18 14:16:36 ralf-bonn Exp $ 
-      // block_moodalis.php - created with Moodle 1.6.1 (2006050510)
-
+<?php
+// block_moodalis.php - created with Totara langimport script version 1.1
 
 $string['advancedsearch'] = 'Erweiterte Suche';
 $string['blocktitle'] = 'moOdalis';

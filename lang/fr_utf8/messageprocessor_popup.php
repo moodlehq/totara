@@ -1,4 +1,5 @@
-<?php // $Id: messageprocessor_popup.php,v 1.1 2008/09/05 10:44:49 martignoni Exp $ 
+<?php
+// messageprocessor_popup.php - created with Totara langimport script version 1.1
 
 $string['popup'] = 'HTML dans une fenêtre';
 

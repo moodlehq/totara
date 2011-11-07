@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // workshop.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// workshop.php - created with Totara langimport script version 1.1
 
 $string['absent'] = '缺席';
 $string['accumulative'] = '累积的';
@@ -223,7 +222,7 @@ $string['releaseteachergrades'] = '公布成绩';
 $string['removeallattachments'] = '移出所有附件';
 $string['repeatanalysis'] = '重复分析';
 $string['reply'] = '答复';
-$string['resetworkshopall'] ='删除提交的作业、成绩与评价';
+$string['resetworkshopall'] = '删除提交的作业、成绩与评价';
 $string['returnto'] = '返回到';
 $string['returntosubmissionpage'] = '返回到提交页面';
 $string['rubric'] = '量规';

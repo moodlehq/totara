@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // label.php - created with Moodle 1.6.2+ (2006050521)
-
+<?php
+// label.php - created with Totara langimport script version 1.1
 
 $string['labeltext'] = 'Überschrift/Text auf Kursseite';
 $string['modulename'] = 'Überschrift/Text';

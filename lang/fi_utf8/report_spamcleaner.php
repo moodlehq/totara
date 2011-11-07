@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // report_spamcleaner.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// report_spamcleaner.php - created with Totara langimport script version 1.1
 
 $string['spamauto'] = 'Tunnista automaattisesti yleiset roskapostimuodot';
 $string['spamcannotdelete'] = 'Tätä käyttäjää ei voida poistaa';

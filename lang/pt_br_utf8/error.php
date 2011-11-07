@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // error.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// error.php - created with Totara langimport script version 1.1
 
 $string['adminprimarynoedit'] = 'Apenas o administrador principal pode alterar os seus dados';
 $string['cannotassignrole'] = 'Impossível designar funções no curso';

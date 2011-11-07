@@ -1,6 +1,5 @@
-<?PHP // $Id: block_side_bar.php,v 1.1 2006/05/20 06:42:18 koenr Exp $ 
-      // block_side_bar.php - created with Moodle 1.6 Beta 1 (2006032900)
-
+<?php
+// block_side_bar.php - created with Totara langimport script version 1.1
 
 $string['configsectionnumber'] = 'أدخل رقم بداية جزء جديد';
 $string['configtitle'] = 'أدخل عنوان كتلة جديدة';

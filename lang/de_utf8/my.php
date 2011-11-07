@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // my.php - created with Moodle 1.9 Beta + (2007092001)
-
+<?php
+// my.php - created with Totara langimport script version 1.1
 
 $string['mymoodle'] = 'Übersicht zu meinen Kursen';
 $string['nocourses'] = 'Zur Zeit gibt es keine neuen Informationen aus Ihren Kursen.';

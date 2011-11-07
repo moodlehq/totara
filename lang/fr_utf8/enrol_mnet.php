@@ -1,4 +1,5 @@
-<?php // $Id: enrol_mnet.php,v 1.8 2010/02/24 19:22:01 martignoni Exp $
+<?php
+// enrol_mnet.php - created with Totara langimport script version 1.1
 
 $string['allcategories'] = '$a catégories potentielles';
 $string['allcourses'] = '$a cours potentiels';

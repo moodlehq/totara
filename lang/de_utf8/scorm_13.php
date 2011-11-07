@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // scorm_13.php - created with Moodle 1.6 development (2005111101)
-
+<?php
+// scorm_13.php - created with Totara langimport script version 1.1
 
 $string['asset'] = 'Asset';
 $string['attr_error'] = 'Falscher Wert für Attribut ($a->attr) in Tag $a->tag';

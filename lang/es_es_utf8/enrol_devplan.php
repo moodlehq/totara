@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_devplan.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// enrol_devplan.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'El módulo de matriculación DevPlan restringe la matriculación interactiva en los cursos. Cuando un curso se utiliza el módulo de matriculación DevPlan para gestionar las inscripciones interactivas, sólo los usuarios que tienen el curso como componente del plan de carrera aprobado se les permite a auto-inscribirse.';
 $string['developmentplan'] = 'Plan de carrera';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // scorm.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// scorm.php - created with Totara langimport script version 1.1
 
 $string['activation'] = 'הפעלה';
 $string['activityloading'] = 'תועבר חזרה אוטומטית לפעילות';
@@ -37,6 +36,7 @@ $string['datadir'] = 'שגיאה במערכת הקבצים: לא ניתן ליצ
 $string['deleteallattempts'] = 'מחק את כל נסיונות ה-SCROM';
 $string['details'] = 'פרטי דוח המעקב';
 $string['directories'] = 'הראה את קישורי הסיפרייה';
+$string['directview'] = 'הפעל ישירות מהקורס';
 $string['display'] = 'הצג את החבילה';
 $string['displaydesc'] = 'מאפיין זה מגדיר את ברירת המחדל של הצגה או אי הצגה של החבילה עבור פעילות';
 $string['domxml'] = 'סיפריית DOMXML חיצונית';
@@ -124,6 +124,8 @@ $string['packagefile'] = 'לא צויין קובץ חבילה';
 $string['passed'] = 'עבר';
 $string['php5'] = 'PHP 5 (סיפרייה מקומית של DOMXML)';
 $string['popup'] = 'חלון חדש';
+$string['popupblocked'] = 'אם חלון חדש לא מופיע לחץ $a להפעיל את הפעילות';
+$string['popupblockedlinkname'] = 'כאן';
 $string['popupblockmessage'] = 'עם החלון הקופץ אינו מופיע, אנא אפשר חלונות קופצים בדפדפן.';
 $string['popupmenu'] = 'בתפריט רשימה גולשת';
 $string['popupopen'] = 'פתח חבילה בחלון חדש';
@@ -182,7 +184,5 @@ $string['whatgrade'] = 'הציון של ניסיונות המענה';
 $string['whatgradedesc'] = 'מאפיין זה מגדיר את ברירת המחדל של ניסיונות המענה לבוחן';
 $string['width'] = 'רוחב';
 $string['window'] = 'חלון';
-$string['popupblocked'] = 'אם חלון חדש לא מופיע לחץ $a להפעיל את הפעילות'; // ORPHANED
-$string['popupblockedlinkname'] = 'כאן'; // ORPHANED
 
 ?>

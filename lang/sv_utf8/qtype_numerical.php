@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_numerical.php,v 1.2 2008/03/25 19:47:29 koenr Exp $ 
-      // qtype_numerical.php - created with Moodle 1.9 Beta + (2007090600)
-
+<?php
+// qtype_numerical.php - created with Totara langimport script version 1.1
 
 $string['addmoreanswerblanks'] = 'Tomma utrymmen för {no}  fler svar';
 $string['addmoreunitblanks'] = 'Tomma utrymmen för {no} fler enheter';

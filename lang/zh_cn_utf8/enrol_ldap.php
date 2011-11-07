@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_ldap.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// enrol_ldap.php - created with Totara langimport script version 1.1
 
 $string['description'] = '<p>您可以是用LDAP服务器来控制选课方面的信息。在这种情况下，您的LDAP树上的组会被映射为课程，而在这些组中应该包含的成员应该可以映射到学生。</p>
 

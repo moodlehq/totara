@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // qtype_match.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// qtype_match.php - created with Totara langimport script version 1.1
 
 $string['addmoreqblanks'] = '{no}  fler uppsättningar av tomma';
 $string['filloutthreeqsandtwoas'] = 'Du måste ange åtminstone två frågor och tre svar. Du kan ge extra fel svar genom att ge ett svar med en tom fråga. Inmatningar där både frågan och svaret är tomma kommer att ignoreras.';

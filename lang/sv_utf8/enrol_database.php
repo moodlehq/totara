@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_database.php - created with Moodle 1.9 + (Build: 20080324) (2007101509)
-
+<?php
+// enrol_database.php - created with Totara langimport script version 1.1
 
 $string['autocreate'] = 'Det går att skapa kurser automatiskt om det finns registreringar på en kurs som ännu inte finns i Moodle.';
 $string['autocreation_settings'] = 'Inställningar för automatiskt skapande av kurser';
@@ -23,6 +22,7 @@ $string['enrolname'] = 'Extern databas';
 $string['general_options'] = 'Allmänna alternativ';
 $string['host'] = 'Databasserverns värdnamn';
 $string['ignorehiddencourse'] = 'Om detta är inställt till \"Ja\" så kommer inga studenter/elever/deltagare/lärande att registreras på kurser som inte är öppna för dem.';
+$string['local_coursefield'] = 'Det namn på fältet i kurstabellen som vi använder för att matcha bidrag i fjärrdatabasen (t.ex. id-nummer).';
 $string['local_fields_mapping'] = '(Lokala) databasfält i Moodle';
 $string['localcoursefield'] = 'Det namn på fältet i tabellen för kurser som vi använder för att matcha inmatningar i fjärrdatabasen (t.ex. idnummer).';
 $string['localrolefield'] = 'Det namn på fältet i tabellen för roller som vi använder för att matcha inmatningar i fjärrdatabasen (t.ex. kortnamn).';
@@ -45,6 +45,5 @@ $string['teacher_table'] = 'Namnet på den tabell där registringar av distansl�
 $string['template'] = 'Valfritt: automatiskt skapade kurser kan kopiera sina inställningar från mall till en kurs. Mata in kortnamnet på den mallen här.';
 $string['type'] = 'Typ av databasserver';
 $string['user'] = 'Användarnamn för åtkomst till servern.';
-$string['local_coursefield'] = 'Det namn på fältet i kurstabellen som vi använder för att matcha bidrag i fjärrdatabasen (t.ex. id-nummer).'; // ORPHANED
 
 ?>

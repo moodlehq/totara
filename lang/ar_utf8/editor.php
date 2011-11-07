@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // editor.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'حول هذا المحرر';
 $string['absbottom'] = 'أسفل النص';
@@ -44,6 +43,7 @@ $string['heading'] = 'عنوان';
 $string['height'] = 'ظلل';
 $string['hilitecolor'] = 'لون الخلفية';
 $string['horizontal'] = 'افقي';
+$string['horizontalrule'] = 'خط تسطير أفقي';
 $string['htmlmode'] = 'تبديل مصدر HTML';
 $string['imageurl'] = 'الارتباط التشعبي للصورة';
 $string['indent'] = 'زيادة المسافة البادئة';
@@ -86,6 +86,7 @@ $string['notimage'] = 'الملف المختار ليس صورة. الرجاء �
 $string['notset'] = 'لم يعيين';
 $string['ok'] = 'OK';
 $string['options'] = 'خيارات';
+$string['orderedlist'] = 'قائمة منطمة';
 $string['outdent'] = 'إنقاص المسافة البادئة';
 $string['paste'] = 'انسخ من الحافظة';
 $string['path'] = 'مسار';
@@ -98,6 +99,7 @@ $string['preview'] = 'معاينة';
 $string['properties'] = 'خصائص';
 $string['redo'] = 'إعادة اخر عمل';
 $string['regularexpressions'] = 'أستخدم تعابير عادية';
+$string['removelink'] = 'استبعاد الرابط';
 $string['rename'] = 'إعادة تسمية';
 $string['replaceall'] = 'أستبدال الكل';
 $string['replacewith'] = 'أستبدال';
@@ -105,6 +107,7 @@ $string['right'] = 'يمين';
 $string['righttoleft'] = 'اتجاه النص من اليمين إلى اليسار';
 $string['rows'] = 'صفوف';
 $string['search_replace'] = 'البحث والاستبدال';
+$string['searchandreplace'] = 'بحث وأستبدال';
 $string['searchnotfound'] = 'لم يتم العثور على أي جمل';
 $string['selectcolor'] = 'اختر اللون';
 $string['selection'] = 'اختيار';
@@ -123,15 +126,11 @@ $string['type'] = 'نوع';
 $string['underline'] = 'تسطير';
 $string['undo'] = 'إلغي اخر عمل';
 $string['unlink'] = 'إزالة الإرتباط';
+$string['unorderedlist'] = 'قائمة نقطية';
 $string['upload'] = 'تحميل';
 $string['vertical'] = 'عموديّ/ رأسي';
 $string['width'] = 'عرض';
+$string['wordclean'] = 'نظف ميكرو سوف وررد تش تي إم أل';
 $string['zip'] = 'ضغط';
-$string['horizontalrule'] = 'خط تسطير أفقي'; // ORPHANED
-$string['orderedlist'] = 'قائمة منطمة'; // ORPHANED
-$string['removelink'] = 'استبعاد الرابط'; // ORPHANED
-$string['searchandreplace'] = 'بحث وأستبدال'; // ORPHANED
-$string['unorderedlist'] = 'قائمة نقطية'; // ORPHANED
-$string['wordclean'] = 'نظف ميكرو سوف وررد تش تي إم أل'; // ORPHANED
 
 ?>

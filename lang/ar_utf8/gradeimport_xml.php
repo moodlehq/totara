@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // gradeimport_xml.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// gradeimport_xml.php - created with Totara langimport script version 1.1
 
 $string['errbadxmlformat'] = 'خطأ - تنسيق XML سيء';
 $string['errduplicategradeidnumber'] = 'خطأ - يوجد عنصرين درجة لهما نفس رقم الهوية \'$a\'في هذا المقرر. لا يمكن ذلك';

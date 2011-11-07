@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_mnet.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// enrol_mnet.php - created with Totara langimport script version 1.1
 
 $string['allcategories'] = '$a mögliche Kategorien';
 $string['allcourses'] = '$a mögliche Kurse';
@@ -9,6 +8,10 @@ $string['allow_allcourses2'] = 'Anmeldung für Remote-Benutzer in all Kursen auf
 $string['allowedcategories'] = '$a zugelassene Kategorien';
 $string['allowedcourses'] = '$a zugelassene Kurse';
 $string['allowedcourseslinktext'] = 'Zugelassene Kurs und Kategorien hier bearbeiten';
+$string['couldnotcreateuser'] = 'Beim Anlegen des Nutzers ist ein Fehler aufgetreten!';
+$string['couldnotenrol'] = 'Der Nutzer konnte nicht aus dem Kurs ausgetragen werden!';
+$string['coursenotfound'] = 'Der Kurs existiert nicht';
+$string['courseunavailable'] = 'Der Kurs ist nicht verfügbar';
 $string['description'] = 'Beschreibung der Anmeldung über das Moodle-Netzwerk';
 $string['enrolname'] = 'Moodle-Netzwerk';
 $string['mnet_enrol_description'] = 'Veröffentlichen Sie diesen Dienst, um Administrator/innen von $a zu erlauben, deren Teilnehmer/innen in Kursen anzumelden, die Sie auf Ihrem Server erstellt haben.<br/>
@@ -22,10 +25,6 @@ $string['mnet_enrol_name'] = 'Moodle-Netzwerk-Registrierung';
 $string['mnetlocalforexternal'] = 'Lokale Kurse für externe Nutzer/innen.';
 $string['nocategoriesdefined'] = 'Keine Kategorien gefunden. Definieren Sie neue Kategorien <a href=\"$a\">hier</a>.';
 $string['nocoursesdefined'] = 'Keine Kurse gefunden. Definieren Sie neue Kurse <a href=\"$a\">hier</a>.';
-$string['couldnotcreateuser'] = 'Beim Anlegen des Nutzers ist ein Fehler aufgetreten!'; // ORPHANED
-$string['couldnotenrol'] = 'Der Nutzer konnte nicht aus dem Kurs ausgetragen werden!'; // ORPHANED
-$string['coursenotfound'] = 'Der Kurs existiert nicht'; // ORPHANED
-$string['courseunavailable'] = 'Der Kurs ist nicht verfügbar'; // ORPHANED
-$string['usernotfound'] = 'Die Nutzerdaten konnten nicht gefunden werden'; // ORPHANED
+$string['usernotfound'] = 'Die Nutzerdaten konnten nicht gefunden werden';
 
 ?>

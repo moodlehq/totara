@@ -1,9 +1,9 @@
-<?PHP // $Id$ 
-      // admin.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// admin.php - created with Totara langimport script version 1.1
 
 $string['accessdenied'] = 'Tillträde medgavs inte';
 $string['accounts'] = 'Konton';
+$string['addcounter'] = 'Lägg till räknare';
 $string['adminseesall'] = 'Administratörer ser allt';
 $string['adminseesallevents'] = 'Administratörer ser alla händelser';
 $string['adminseesownevents'] = 'Administratörer har samma status som alla andra användare';
@@ -346,6 +346,7 @@ $string['displayloginfailures'] = 'Visa misslyckade inloggningsförsök för';
 $string['docroot'] = 'Dokument root för Extern dokumentation av Moodle';
 $string['doctonewwindow'] = 'Öppna i nytt fönster';
 $string['download'] = 'Ladda ner';
+$string['downloaderrorlog'] = 'Ladda ner errorlog';
 $string['editennotallowed'] = 'Det går inte att redigera språket en_utf8 med den här sidan, byt till lokal.';
 $string['edithelpdocs'] = 'Redigera hjälpdokument';
 $string['editingnoncorelangfile'] = 'Du håller på att försöka modifiera en översättning av en tredjeparts-modul eller ett \'plugin\'-program. Du kan bara spara sådana översättningar i Din _local-mapp. Du kanske vill flytta filen med översättningen till modulens \'lang\'-mapp och/eller skicka den till den som underhåller den modulen.';
@@ -490,6 +491,7 @@ $string['langpackwillbeupdated'] = 'Att notera för översättare: Under uppgrad
 $string['langrmyourself'] = 'För att förhindra förlust av data så kan inte lang.php skriva över den befintliga filen med tomt innehåll. Var snäll och ta bort filen manuellt för att bli av med den.';
 $string['languagesettings'] = 'Inställningar för språk';
 $string['langupdatecomplete'] = 'Uppdateringen av språkpaket har fullföljts';
+$string['lasterroroccuredat'] = 'Senaste fel inträffade vid $a';
 $string['latexpreamble'] = 'LaTeX utkast';
 $string['latexsettings'] = 'Inställningar för LaTeX Renderer';
 $string['latinexcelexport'] = 'Teckenuppsättning för Excel';
@@ -507,7 +509,9 @@ $string['mailnewline'] = 'Tecken för ny rad i e-post';
 $string['maintenancemode'] = 'I underhålls Mode';
 $string['maintfileopenerror'] = 'Fel i samband med att filerna för underhål skulle öppnas';
 $string['maintinprogress'] = 'Underhåll pågår';
+$string['managecourses'] = 'Hantera kurser';
 $string['managelang'] = '<b>Administrera</b>';
+$string['manageprograms'] = 'Hantera program';
 $string['maxbytes'] = 'Maximal storlek på uppladdade filer';
 $string['maxeditingtime'] = 'Maximal tillåten tid för att redigera inlägg';
 $string['mbstringrecommended'] = 'Du rekommenderas starkt att installera det valfria MBSTRING-biblioteket. Detta förbättrar webbplatsens prestanda, speciellt om Din webbplats stödjer icke-latinska språk.';
@@ -552,6 +556,7 @@ $string['mymoodle'] = 'Mitt Moodle';
 $string['mymoodleredirect'] = 'Tvinga användare att använda Mitt Moodle';
 $string['mysql416bypassed'] = 'Om Du emellertid på Din webbplats använder BARA språk som är kodade enligt ISO-8859-1 så kan Du fortsätta att använda Din aktuella installation av MySQL 4.1.12 (eller högre).';
 $string['mysql416required'] = 'MySQL 4.1.16 är den äldsta version som Du kan använda tillsammans med Moodle 1.6 om Du vill säkerställa att alla data kan konverteras till UTF-8 i framtiden.';
+$string['newusernamehandling'] = 'Hantering av dubbletter av nya användarnamn';
 $string['nobookmarksforuser'] = 'Du har inga bokmärken';
 $string['nochanges'] = 'Inga ändringar';
 $string['nodefaultuserrolelists'] = 'Returnera inte alla de användare som har tilldelats en standardroll';
@@ -566,6 +571,7 @@ $string['notifications'] = 'Meddelanden';
 $string['notifyloginfailures'] = 'E-post om misslyckade inloggningar till';
 $string['notifyloginthreshold'] = 'Tröskel för meddelanden via e-post';
 $string['notloggedinroleid'] = 'Roll för besökare';
+$string['numberofactiveusers'] = '$a användare har loggat in på den här sidan under senaste året.';
 $string['numberofmissingstrings'] = 'Antal saknade textsträngar';
 $string['numberofstrings'] = 'Det sammanlagda antalet textsträngar: $a->strings<br />Saknas: $a->missing ($a->missingpercent&nbsp;%%)';
 $string['opensslrecommended'] = 'Vi rekommenderar starkt att Du installerar det valfria OpenSSL-biblioteket - det möjliggör funktionaliteten för nätverk med Moodle.';
@@ -714,6 +720,7 @@ $string['sitemaintenancewarning'] = 'Din webbplats är f.n. i ett läge för und
 $string['sitepolicies'] = 'Regler för användning av webbplatsen';
 $string['sitepolicy'] = 'URL till regler för användning av webbplatsen';
 $string['sitesectionhelp'] = 'Om detta är valt så kommer en sektion för ämnen att visas på webbplatsens ingångssida (hem/första).';
+$string['skipuser'] = 'Hoppa över användare';
 $string['slasharguments'] = 'Använd \'snedstrecks\'-argument';
 $string['smartpix'] = 'Smart sökning av bilder';
 $string['smtphosts'] = 'SMTP-värdar';
@@ -752,6 +759,7 @@ $string['timezoneforced'] = 'Det här är fastställt av systemadministratören'
 $string['timezoneisforcedto'] = 'Tvinga alla användare att använda samma tidszon';
 $string['timezonenotforced'] = 'Användare kan själva välja sin egen tidszon';
 $string['tokenizerrecommended'] = 'Vi rekommenderar att Du installerar det valfria tillägget PHP Tokenizer - det förbättrar funktionaliteten för nätverk med Moodle.';
+$string['totarapre11'] = 'Totara (pre version 1.1)';
 $string['unattendedoperation'] = 'Operation som inte monitoreras';
 $string['unbookmarkthispage'] = 'ta bort bokmärket för den här sidan';
 $string['unicoderecommended'] = 'Vi rekommenderar att Du lagrar alla Dina data i Unicode (UTF-8). Nya installationer bör genomföras i databaser som har Unicode som förvald standardinställning för teckenuppsättningar. Om Du uppgraderar så bör Du genomföra processen för migration till UTF-8 (se sidan för administration).';
@@ -841,8 +849,5 @@ $string['webproxyinfo'] = 'Fyll i följande alternativ om din Moodle-server inte
 $string['xmlrpcrecommended'] = 'Att installera den valfria xmlrpc är användbart med tanke på funktionaliteten i Moodle Nätverk.';
 $string['xmlstrictheaders'] = 'XML strict headers';
 $string['ziprequired'] = 'Zip PHP-ändelsen krävs nu av Moodle, Info-ZIP binärfiler eller PclZip biblioteket används inte längre.';
-$string['addcounter'] = 'Lägg till räknare'; // ORPHANED
-$string['newusernamehandling'] = 'Hantering av dubbletter av nya användarnamn'; // ORPHANED
-$string['skipuser'] = 'Hoppa över användare'; // ORPHANED
 
 ?>

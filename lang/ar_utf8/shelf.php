@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // shelf.php - created with Moodle 1.2 development (2004011700)
-
+<?php
+// shelf.php - created with Totara langimport script version 1.1
 
 $string['modulename'] = 'رف';
 $string['modulenameplural'] = 'ارفف';

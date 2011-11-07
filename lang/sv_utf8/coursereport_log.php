@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // coursereport_log.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// coursereport_log.php - created with Totara langimport script version 1.1
 
 $string['log:view'] = 'Visa kursloggar';
 $string['log:viewlive'] = 'Visa liveloggar';

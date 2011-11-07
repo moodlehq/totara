@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // question.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// question.php - created with Totara langimport script version 1.1
 
 $string['adminreport'] = 'Raportoi mahdollisista ongelmista kysymystietokannassasi.';
 $string['broken'] = 'Tämä linkki on \"hajonnut\". Tiedosto, johon se osoittaa ei ole olemassa';

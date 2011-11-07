@@ -1,5 +1,5 @@
 <?php
-// userkey.php - created with Totara langimport script version 1.0
+// userkey.php - created with Totara langimport script version 1.1
 
 $string['createnewkey'] = 'إنشاء مستخدم جديد';
 $string['createuserkey'] = 'إنشاءمفتاج مستخدم';

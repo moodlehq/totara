@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // organisation.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// organisation.php - created with Totara langimport script version 1.1
 
 $string['adddepthlevel'] = 'הוסף רמת עומק חדשה';
 $string['addedframework'] = 'המסגרת הארגונית \"{$a}\" נוספה';
@@ -98,6 +97,7 @@ $string['nounassignedcompetencytemplates'] = 'אין תבניות כשירות �
 $string['numericalvalue'] = 'ערך מספרי';
 $string['organisation'] = 'ארגון';
 $string['organisationaddnew'] = 'הוסף ארגון חדש';
+$string['organisationbulkaction'] = 'פעולות מרובות';
 $string['organisationcustomfields'] = 'שדות מותאמים אישית';
 $string['organisationdepthcustomfields'] = 'שדות מותאמים אישית של רמות עומק ארגון';
 $string['organisationframework'] = 'מסגרת ארגונית';
@@ -121,6 +121,5 @@ $string['updatedframework'] = 'המסגרת הארגונית \"{$a}\" עודכנ
 $string['updatedorganisation'] = 'הארגון \"{$a}\" עודכן';
 $string['updatetype'] = 'סוג הארגון \"{$a}\" עודכן';
 $string['weight'] = 'משקל';
-$string['organisationbulkaction'] = 'פעולות מרובות'; // ORPHANED
 
 ?>

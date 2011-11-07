@@ -1,4 +1,5 @@
-<?php // $Id: access.php,v 1.13 2009/10/21 16:16:03 martignoni Exp $
+<?php
+// access.php - created with Totara langimport script version 1.1
 
 $string['access'] = 'Accessibilité';
 $string['accesshelp'] = 'Aide d\'accessibilité';
@@ -8,13 +9,13 @@ $string['activitynext'] = 'Activité suivante';
 $string['activityprev'] = 'Activité précédente';
 $string['breadcrumb'] = 'Barre de navigation';
 $string['cannotdeleterolenoadmin'] = 'Vous ne pouvez pas supprimer ce rôle, car il n\'y a pas d\'autre rôle d\'aministrateur attribué à des utilisateurs';
-$string['currentweek'] = 'Cette semaine';
 $string['currenttopic'] = 'Cette section';
+$string['currentweek'] = 'Cette semaine';
 $string['hideblocka'] = 'Cacher bloc $a';
 $string['monthnext'] = 'Mois suivant';
 $string['monthprev'] = 'Mois précédent';
 $string['showblocka'] = 'Afficher bloc $a';
-$string['showhideblock'] = 'Afficher ou masquer le bloc'; // Legacy as of 1.9beta3
+$string['showhideblock'] = 'Afficher ou masquer le bloc';
 $string['sitemap'] = 'Carte du site';
 $string['skipa'] = 'Sauter $a';
 $string['skipblock'] = 'Sauter le bloc';

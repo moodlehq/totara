@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_shortanswer.php,v 1.2 2008/09/20 19:30:36 papita Exp $ 
-      // qtype_shortanswer.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// qtype_shortanswer.php - created with Totara langimport script version 1.1
 
 $string['addmoreanswerblanks'] = 'Vazios em {no} Outras Respostas';
 $string['answermustbegiven'] = 'Você tem que definir uma resposta quando existe uma avaliação ou um feedback.';

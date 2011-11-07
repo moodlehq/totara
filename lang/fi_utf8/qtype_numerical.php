@@ -1,4 +1,6 @@
-<?PHP // $Id: qtype_numerical.php,v 1.2 2008/11/21 01:32:26 samulik Exp $
+<?php
+// qtype_numerical.php - created with Totara langimport script version 1.1
+
 $string['addmoreanswerblanks'] = 'Lisää kenttiä {no} vaihtoehdolle';
 $string['addmoreunitblanks'] = 'Lisää kenttiä {no} yksikölle';
 $string['answermustbenumberorstar'] = 'Vastauksen pitää olla numero tai \'*\'.';
@@ -7,4 +9,5 @@ $string['errornomultiplier'] = 'Tälle yksikölle pitää antaa kerroin.';
 $string['errorrepeatedunit'] = 'Ei voi olla saman nimisiä yksiköitä.';
 $string['notenoughanswers'] = 'Anna vähintään yksi vastaus.';
 $string['unithdr'] = 'Yksikkö $a';
+
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_remotemoodle.php,v 1.2 2010/02/09 16:40:53 krause Exp $ 
-      // repository_remotemoodle.php - created with Moodle 2.0 dev (Build: 20100207) (2010020700)
-
+<?php
+// repository_remotemoodle.php - created with Totara langimport script version 1.1
 
 $string['configplugin'] = 'Einstellungen für ein externes Moodle Datei-Repository';
 $string['connectionfailure'] = 'Fehler beim Abfragen der Dateiliste! Die Version der Moodle-Instanz ist älter als 2.0 oder der Dienst für das externe Moodle Datei-Repository wurde nicht aktiviert';

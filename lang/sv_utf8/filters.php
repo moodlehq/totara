@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // filters.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// filters.php - created with Totara langimport script version 1.1
 
 $string['actfilterhdr'] = 'Aktiva filter';
 $string['addfilter'] = 'Lägg till filter';
@@ -28,6 +27,7 @@ $string['includesubcategories'] = 'Inkludera underkategorier?';
 $string['isafter'] = 'är efter $a';
 $string['isanyvalue'] = 'är vilket värde som helst';
 $string['isbefore'] = 'är före $a';
+$string['isbetween'] = 'är mellan  $a[0] och $a[1]';
 $string['isdefined'] = 'är definierad';
 $string['isempty'] = 'är tom';
 $string['isequalto'] = 'är lika med';
@@ -45,11 +45,10 @@ $string['profilelabelnovalue'] = '$a->label: $a->profile $a->operator';
 $string['removeall'] = 'Ta bort alla filter';
 $string['removeselected'] = 'Ta bort de valda';
 $string['selectlabel'] = '$a->label $a->operator $a->value';
+$string['setfilter'] = 'Ställ in filter';
 $string['startswith'] = 'inleds med';
 $string['tablenosave'] = 'Ändringarna i den ovanstående tabellen sparas automatiskt.';
 $string['textlabel'] = '$a->label $a->operator $a->value';
 $string['textlabelnovalue'] = '$a->label $a->operator';
-$string['isbetween'] = 'är mellan  $a[0] och $a[1]'; // ORPHANED
-$string['setfilter'] = 'Ställ in filter'; // ORPHANED
 
 ?>

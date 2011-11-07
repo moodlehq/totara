@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // qtype_calculated.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// qtype_calculated.php - created with Totara langimport script version 1.1
 
 $string['addmoreanswerblanks'] = 'Lägg till ytterligare ett tomt svar';
 $string['addmoreunitblanks'] = 'Tomma för ytterligare $a enheter';

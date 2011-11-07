@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // block_html.php - created with Moodle 1.8 dev (2006120700)
-
+<?php
+// block_html.php - created with Totara langimport script version 1.1
 
 $string['configcontent'] = 'תוכן';
 $string['configtitle'] = 'כותרת המשבצת';

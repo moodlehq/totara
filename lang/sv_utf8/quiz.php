@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// quiz.php - created with Totara langimport script version 1.1
 
 $string['1day'] = '1 dag';
 $string['1hour'] = '1 timme';
@@ -216,6 +215,10 @@ $string['event7'] = 'Skicka';
 $string['event8'] = 'Stäng';
 $string['event9'] = 'Manuell bedömning/betygssättning';
 $string['examview'] = 'Visning av examination';
+$string['existingcategory1'] = 'en literal ur en redan befintlig uppsättning literaler som också används av andra frågor i den här kategorin';
+$string['existingcategory2'] = 'en fil ur en redan befintlig uppsättning filer som också används av andra frågor i den här kategorin';
+$string['existingcategory3'] = 'en länk ur 
+en redan befintlig uppsättning länkar som också används av andra frågor i den här kategorin';
 $string['export'] = 'Exportera';
 $string['exportcategory'] = 'Exportera kategori';
 $string['exporterror'] = 'Ett fel inträffade i samband med genomförande av exporten';
@@ -310,6 +313,12 @@ $string['itemdefinition'] = 'Definition';
 $string['itemsource'] = 'Källa till komponent';
 $string['itemsourceformat'] = 'Format på källa till komponent';
 $string['itemtypes'] = 'Fjärrrfrågetyper';
+$string['keptcategory1'] = 'en literal ur samma kategori av återanvändbara uppsättningar av literaler som förut';
+$string['keptcategory2'] = 'en fil ur samma kategori av återanvändbara uppsättningar av filer som förut';
+$string['keptcategory3'] = 'en länk ur samma kategori av återanvändbara uppsättningar av länkar som förut';
+$string['keptlocal1'] = 'en literal ur samma (fråga) privata uppsättning av literaler som förut';
+$string['keptlocal2'] = 'en fil ur samma (fråga) privata uppsättning av filer som förut';
+$string['keptlocal3'] = 'en länk ur samma (fråga) privata uppsättning av länkar som förut';
 $string['lastanswer'] = 'Ditt senaste svar var';
 $string['learnwise'] = 'Format för \'Learnwise\'';
 $string['link'] = 'Länk';
@@ -349,6 +358,12 @@ $string['multipleanswers'] = 'Välj minst ett svar';
 $string['multiplier'] = 'Multiplikator';
 $string['name'] = 'Namn';
 $string['newattemptfail'] = 'Fel: Det gick inte att påbörja ett nytt försök av testet';
+$string['newcategory1'] = 'en literal ur en ny uppsättning av literaler som också kan användas av andra frågor i den här kategorin';
+$string['newcategory2'] = 'en fil ur en ny uppsättning av filer som också kan användas av andra frågor i den här kategorin';
+$string['newcategory3'] = 'en länk ur en ny uppsättning av länkar som också kan användas av andra frågor i den här kategorin';
+$string['newlocal1'] = 'en literal ur en ny uppsättning av literaler som bara kommer att användas av den här frågan';
+$string['newlocal2'] = 'en fil ur en ny uppsättning av filer som bara kommer att användas av den här frågan';
+$string['newlocal3'] = 'en länk ur en ny uppsättning av länkarr som bara kommer att användas av den här frågan';
 $string['noanswers'] = 'Du valde inga svar!';
 $string['noattempts'] = 'Inga försök har gjorts med detta test';
 $string['noattemptstoshow'] = 'Det finns inga försök att visa';
@@ -615,21 +630,5 @@ $string['xmltypeunsupported'] = 'Frågetyp $a stödjs inte av xml import';
 $string['youneedtoenrol'] = 'Du måste registrera dig på den här kursen innan du får göra ett försök på testet.';
 $string['yourfinalgradeis'] = 'Ditt slutgiltiga betyg för detta test är $a.';
 $string['zerosignificantfiguresnotallowed'] = 'Det rätta svaret kan inte ha noll signifikanta siffror!';
-$string['existingcategory1'] = 'en literal ur en redan befintlig uppsättning literaler som också används av andra frågor i den här kategorin'; // ORPHANED
-$string['existingcategory2'] = 'en fil ur en redan befintlig uppsättning filer som också används av andra frågor i den här kategorin'; // ORPHANED
-$string['existingcategory3'] = 'en länk ur 
-en redan befintlig uppsättning länkar som också används av andra frågor i den här kategorin'; // ORPHANED
-$string['keptcategory1'] = 'en literal ur samma kategori av återanvändbara uppsättningar av literaler som förut'; // ORPHANED
-$string['keptcategory2'] = 'en fil ur samma kategori av återanvändbara uppsättningar av filer som förut'; // ORPHANED
-$string['keptcategory3'] = 'en länk ur samma kategori av återanvändbara uppsättningar av länkar som förut'; // ORPHANED
-$string['keptlocal1'] = 'en literal ur samma (fråga) privata uppsättning av literaler som förut'; // ORPHANED
-$string['keptlocal2'] = 'en fil ur samma (fråga) privata uppsättning av filer som förut'; // ORPHANED
-$string['keptlocal3'] = 'en länk ur samma (fråga) privata uppsättning av länkar som förut'; // ORPHANED
-$string['newcategory1'] = 'en literal ur en ny uppsättning av literaler som också kan användas av andra frågor i den här kategorin'; // ORPHANED
-$string['newcategory2'] = 'en fil ur en ny uppsättning av filer som också kan användas av andra frågor i den här kategorin'; // ORPHANED
-$string['newcategory3'] = 'en länk ur en ny uppsättning av länkar som också kan användas av andra frågor i den här kategorin'; // ORPHANED
-$string['newlocal1'] = 'en literal ur en ny uppsättning av literaler som bara kommer att användas av den här frågan'; // ORPHANED
-$string['newlocal2'] = 'en fil ur en ny uppsättning av filer som bara kommer att användas av den här frågan'; // ORPHANED
-$string['newlocal3'] = 'en länk ur en ny uppsättning av länkarr som bara kommer att användas av den här frågan'; // ORPHANED
 
 ?>

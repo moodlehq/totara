@@ -1,4 +1,6 @@
-<?PHP // $Id: blog.php,v 1.10 2008/11/21 01:32:24 samulik Exp $
+<?php
+// blog.php - created with Totara langimport script version 1.1
+
 $string['addnewentry'] = 'Lisää uusi merkintä';
 $string['addotags'] = 'Lisää virallinen tunniste';
 $string['addptags'] = 'Lisää oma tunniste';
@@ -55,4 +57,5 @@ $string['viewcourseentries'] = 'Kurssimerkinnnät';
 $string['viewmyentries'] = 'Omat merkinnät';
 $string['viewsiteentries'] = 'Sivuston merkinnät';
 $string['worldblogs'] = 'Kuka tahansa voi lukea merkinnät, jotka ovat avoinna kaikille internet-käyttäjille';
+
 ?>

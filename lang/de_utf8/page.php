@@ -1,6 +1,5 @@
-<?PHP // $Id: page.php,v 1.2 2010/01/31 15:33:29 krause Exp $ 
-      // page.php - created with Moodle 2.0 dev (Build: 20100129) (2010012902)
-
+<?php
+// page.php - created with Totara langimport script version 1.1
 
 $string['configdisplayoptions'] = 'Wählen Sie alle Optionen, die möglich sein sollen. Bestehende Einstellungen werden nicht verändert. Zur Mehrfachauswahl drücken Sie die Taste strg.';
 $string['content'] = 'Seiteninhalt';

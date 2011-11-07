@@ -1,4 +1,6 @@
-<?PHP // $Id: block_rss_client.php,v 1.12 2008/11/21 01:32:24 samulik Exp $
+<?php
+// block_rss_client.php - created with Totara langimport script version 1.1
+
 $string['addfeed'] = 'Lisää uutislähteen osoite:';
 $string['addheadlineblock'] = 'Lisää RSS-otsikkolohko';
 $string['addnew'] = 'Lisää uusi';
@@ -44,4 +46,5 @@ $string['timeout2'] = 'Aikaraja';
 $string['timeoutdesc'] = 'Montako minuuttia RSS-syöte säilyy välimuistissa';
 $string['updatefeed'] = 'Päivitä uutislähteen osoite:';
 $string['validatefeed'] = 'Tarkista syöte';
+
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // countries.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// countries.php - created with Totara langimport script version 1.1
 
 $string['AD'] = 'أندورا';
 $string['AE'] = 'الامارات العربية المتحدة';
@@ -52,6 +51,7 @@ $string['CM'] = 'الكاميرون';
 $string['CN'] = 'الصين';
 $string['CO'] = 'كولومبيا';
 $string['CR'] = 'كوستاريكا';
+$string['CS'] = 'Serbia and Montenegro';
 $string['CU'] = 'كوبا';
 $string['CV'] = 'جزر كيب فيرد';
 $string['CX'] = 'جزيرة الكريسماس';
@@ -76,6 +76,7 @@ $string['FK'] = '(جزر فوكلاند(مالفينس';
 $string['FM'] = 'ميكرونيزيا';
 $string['FO'] = 'جزر فاروي';
 $string['FR'] = 'فرنسا';
+$string['FX'] = 'France; Metropolitan';
 $string['GA'] = 'غابون';
 $string['GB'] = 'المملكة المتحدة';
 $string['GD'] = 'جرانادا';
@@ -121,6 +122,7 @@ $string['KH'] = 'كمبوديا';
 $string['KI'] = 'كيريباتي';
 $string['KM'] = 'جزر القمر';
 $string['KN'] = 'سانت كتس نيفيس أنغيلا';
+$string['KO'] = 'كوسوفو';
 $string['KP'] = 'كورياالشمالية';
 $string['KR'] = 'كوريا الجنوبية';
 $string['KW'] = 'الكويت';
@@ -223,6 +225,7 @@ $string['TL'] = 'تيمور الشرقية';
 $string['TM'] = 'تركمنستان';
 $string['TN'] = 'تونس';
 $string['TO'] = 'تونغا';
+$string['TP'] = 'East Timor';
 $string['TR'] = 'تركيا';
 $string['TT'] = 'ترينيداد وتوباغو';
 $string['TV'] = 'توفالو';
@@ -241,18 +244,14 @@ $string['VG'] = 'الجزر العذراء البريطانية';
 $string['VI'] = '(الجزر العذراء( الولايات المتحدة';
 $string['VN'] = 'فيتنام';
 $string['VU'] = 'فانواتو';
+$string['WA'] = 'وليز';
 $string['WF'] = 'جزر والس وفوتونا';
 $string['WS'] = 'ساموا';
 $string['YE'] = 'اليمن';
 $string['YT'] = 'مايوت';
 $string['ZA'] = 'جنوب إفريقيا';
 $string['ZM'] = 'زامبيا';
+$string['ZR'] = 'زائير';
 $string['ZW'] = 'زيمبابوي';
-$string['CS'] = 'Serbia and Montenegro'; // ORPHANED
-$string['FX'] = 'France; Metropolitan'; // ORPHANED
-$string['KO'] = 'كوسوفو'; // ORPHANED
-$string['TP'] = 'East Timor'; // ORPHANED
-$string['WA'] = 'وليز'; // ORPHANED
-$string['ZR'] = 'زائير'; // ORPHANED
 
 ?>

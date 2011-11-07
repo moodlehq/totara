@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // question.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// question.php - created with Totara langimport script version 1.1
 
 $string['adminreport'] = 'Rapport över  möjliga problem i Din frågedatabas.';
 $string['broken'] = 'Det här är en \'bruten\' länk, den pekar på en fil som inte finns.';

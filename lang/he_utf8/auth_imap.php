@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_imap.php - created with Totara langimport script version 1.1
 
 $string['auth_imapchangepasswordurl_key'] = 'כתובת URL המשמשת לשינוי סיסמה';
 $string['auth_imapdescription'] = 'שיטה זו עושה שימוש בשרת IMAP כדי לבדוק עם סיסמה או שם משתמש נתונים הינם תקפים.';
@@ -13,3 +11,5 @@ $string['auth_imapport_key'] = 'יציאה';
 $string['auth_imaptitle'] = 'השתמש בשרת IMAP';
 $string['auth_imaptype'] = 'סוג שרת ה IMAP. שרתי IMAP יכולים לתמוך בסוגי אימות ודו-שיח שונים.';
 $string['auth_imaptype_key'] = 'סוג';
+
+?>

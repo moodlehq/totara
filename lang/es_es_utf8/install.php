@@ -1,5 +1,5 @@
 <?php
-// install.php - created with Totara langimport script version 1.0
+// install.php - created with Totara langimport script version 1.1
 
 $string['aborting'] = 'nAborting ...n';
 $string['admindirerror'] = 'El directorio especificado para admin es incorrecto';
@@ -14,11 +14,11 @@ en su instalación, y poniendo aquí ese nuevo nombre. Por ejemplo: <br /> <br /
 Así se corregirán los enlaces admin en Moodle.';
 $string['adminemail'] = 'Email:';
 $string['adminfirstname'] = 'Nombre:';
-$string['admininfo'] = 'Detalles del administrador';
-$string['adminlastname'] = 'Apellidos';
-$string['adminpassword'] = 'Contraseña';
-$string['adminusername'] = 'Nombre de usuario';
-$string['askcontinue'] = 'Continuar (sí/no)';
+$string['admininfo'] = 'Detalles del administrador:';
+$string['adminlastname'] = 'Apellidos:';
+$string['adminpassword'] = 'Contraseña:';
+$string['adminusername'] = 'Nombre de usuario:';
+$string['askcontinue'] = 'Continuar (sí/no):';
 $string['availabledbtypes'] = 'nAvailable db types n';
 $string['availablelangs'] = 'Lista de idiomas disponibles';
 $string['caution'] = 'Precaución';

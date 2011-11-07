@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // journal.php - created with Moodle 1.6 Beta 1 (2006032900)
-
+<?php
+// journal.php - created with Totara langimport script version 1.1
 
 $string['alwaysopen'] = 'متاح دائما';
 $string['blankentry'] = 'قيمة فارغة';

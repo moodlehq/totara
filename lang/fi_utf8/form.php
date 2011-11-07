@@ -1,4 +1,6 @@
-<?PHP // $Id: form.php,v 1.7 2008/11/21 01:32:24 samulik Exp $
+<?php
+// form.php - created with Totara langimport script version 1.1
+
 $string['addfields'] = 'Lisää lomakkeeseen $a kenttää';
 $string['advancedelement'] = 'Lisätietokenttä';
 $string['day'] = 'Päivää';
@@ -34,4 +36,5 @@ $string['somefieldsrequired'] = 'Pakolliset kentät on merkitty symbolilla $a.';
 $string['timing'] = 'Ajastus';
 $string['unmaskpassword'] = 'Näytä';
 $string['year'] = 'Vuotta';
+
 ?>

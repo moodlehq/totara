@@ -1,4 +1,5 @@
-<?php // $Id: repository_boxnet.php,v 1.6 2009/08/12 10:03:36 martignoni Exp $
+<?php
+// repository_boxnet.php - created with Totara langimport script version 1.1
 
 $string['apikey'] = 'Clef API';
 $string['boxnet:view'] = 'Consulter un dépôt Box.net';

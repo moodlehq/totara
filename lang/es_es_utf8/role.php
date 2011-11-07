@@ -1,5 +1,5 @@
 <?php
-// role.php - created with Totara langimport script version 1.0
+// role.php - created with Totara langimport script version 1.1
 
 $string['backup:userinfo'] = 'Datos de copia de seguridad de usuario';
 $string['category:manage'] = 'Administrar categorías';

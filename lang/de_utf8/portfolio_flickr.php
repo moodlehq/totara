@@ -1,6 +1,5 @@
-<?PHP // $Id: portfolio_flickr.php,v 1.3 2008/12/26 18:05:29 ralf-bonn Exp $ 
-      // portfolio_flickr.php - created with Moodle 2.0 dev (Build: 20081110) (2008110603)
-
+<?php
+// portfolio_flickr.php - created with Totara langimport script version 1.1
 
 $string['apikey'] = 'API-Schlüssel (Sie müssen sich diesen Schlüssel über http://flickr.com/services/api/keys/apply beschaffen)';
 $string['contenttype'] = 'Inhaltstypen';

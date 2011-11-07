@@ -1,4 +1,5 @@
-<?php // $Id: quiz_statistics.php,v 1.17 2008/12/07 14:36:04 martignoni Exp $ 
+<?php
+// quiz_statistics.php - created with Totara langimport script version 1.1
 
 $string['allattempts'] = 'toutes les tentatives';
 $string['allattemptsavg'] = 'Note moyenne de toutes les tentatives';
@@ -36,7 +37,7 @@ $string['intended_weight'] = 'Pondération désirée';
 $string['kurtosis'] = 'Aplatissement de la distribution des notes pour $a';
 $string['lastcalculated'] = 'Dernier calcul il y a $a->lastcalculated. $a->count tentatives depuis.';
 $string['median'] = 'Note médiane pour $a';
-$string['negcovar'] ='Covariance négative de la note de cette question avec la note de la totalité de la tentative';
+$string['negcovar'] = 'Covariance négative de la note de cette question avec la note de la totalité de la tentative';
 $string['nostudentsingroup'] = 'Il n\'y a pas encore d\'étudiant dans ce groupe';
 $string['optiongrade'] = 'Crédit partiel';
 $string['position'] = 'Position';
@@ -49,7 +50,6 @@ $string['questiontype'] = 'Type de question';
 $string['quizinformation'] = 'Information du test';
 $string['quizname'] = 'Nom du test';
 $string['quizoverallstatistics'] = 'Statistiques globales du test';
-$string['statisticsreport'] = 'Rapport de statistiques';
 $string['quizstructureanalysis'] = 'Analyse structurelle du test';
 $string['random_guess_score'] = 'Score de réponses au hasard';
 $string['recalculatenow'] = 'Recalculer maintenant';
@@ -59,8 +59,9 @@ $string['standarddeviation'] = 'Écart type pour $a';
 $string['standarddeviationq'] = 'Écart type';
 $string['standarderror'] = 'Erreur standard pour $a';
 $string['statistics'] = 'Statistiques';
-$string['statistics:view'] = 'Consulter le rapport de statistiques';
 $string['statistics:componentname'] = 'Rapport de statistiques des tests';
+$string['statistics:view'] = 'Consulter le rapport de statistiques';
+$string['statisticsreport'] = 'Rapport de statistiques';
 $string['statisticsreportgraph'] = 'Statistique des positions de question';
 $string['statsfor'] = 'Statistiques  de test pour $a';
 $string['statsforfirstattempts'] = 'Statistiques des premières tentatives';

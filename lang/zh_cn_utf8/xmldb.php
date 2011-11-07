@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // xmldb.php - created with Moodle 1.7 beta + (2006101003)
-
+<?php
+// xmldb.php - created with Totara langimport script version 1.1
 
 $string['aftertable'] = '放在此表后：';
 $string['back'] = '后退';
@@ -10,12 +9,12 @@ $string['butis'] = '但是';
 $string['cannotuseidfield'] = '不能插入 \"id\"字段。它是自动编号的列';
 $string['change'] = '更改';
 $string['charincorrectlength'] = '字符字段的不正确长度';
+$string['check_bigints'] = '查询不正确 DB 整数';
+$string['check_defaults'] = '查找不一致的默认值';
+$string['check_indexes'] = '查找缺失的 DB 索引';
 $string['checkbigints'] = '检查';
 $string['checkdefaults'] = '检查详细信息';
 $string['checkindexes'] = '检查索引';
-$string['check_defaults'] = '查找不一致的默认值';
-$string['check_bigints'] = '查询不正确 DB 整数';
-$string['check_indexes'] = '查找缺失的 DB 索引';
 $string['completelogbelow'] = '查看下面的完整日志';
 $string['confirmcheckbigints'] = '本功能将搜索 <a href=\"http://tracker.moodle.org/browse/MDL-11038\">整数字段的可能错误</a>。强烈推荐使用最新版本。';
 $string['confirmcheckdefaults'] = '该功能将查找 Moodle 服务器中不一致的默认值，生成（但不执行）必需的 SQL 语句来保证所有默认值定义正确。<br /><br />
@@ -70,10 +69,10 @@ $string['key'] = '键值';
 $string['keys'] = '键值';
 $string['listreservedwords'] = '保留字列表<br />（用于保持 <a href=\"http://docs.moodle.org/en/XMLDB_reserved_words\" target=\"_blank\">XMLDB_reserved_words</a> 更新）';
 $string['load'] = '载入';
-$string['missing'] = '缺失';
-$string['missingindexes'] = '找到缺失字段';
 $string['main_view'] = '主视图';
+$string['missing'] = '缺失';
 $string['missingfieldsinsentence'] = '句子中没有字段';
+$string['missingindexes'] = '找到缺失字段';
 $string['missingvaluesinsentence'] = '子句中没有值';
 $string['mustselectonefield'] = '您必须选择一个字段来查看与字段相关的动作！';
 $string['mustselectoneindex'] = '您必须选择一个索引来查看与索引相关的动作！';
@@ -132,7 +131,8 @@ $string['wrongints'] = '错误的整型';
 $string['wronglengthforenum'] = '枚举字段的长度不正确';
 $string['wrongnumberoffieldsorvalues'] = '子句中字段或值的数量不正确';
 $string['wrongreservedwords'] = '当前使用的保留字<br />（注意，如果使用 \$CFG->prefix，则表名就不重要了）';
-$string['yeswrongdefaultsfound'] = '在数据库中已经发现了不一致的默认值。以下是详细资料，需要使用您喜爱的 SQL 界面执行 SQL 语句来修正这些问题（请记住，在进行此操作之前，先备份数据）。<br /><br />我们强烈建议您在修改完成后，重新用此工具进行检查以确认没有其他不一致性的默认值。';
 $string['yesmissingindexesfound'] = '在数据库中发现了缺失的索引。以下是详细资料，需要使用您喜爱的 SQL 界面执行 SQL 命令来修正（请记住，在进行此操作之前，先备份数据）。<br /><br />我们强烈建议您在修改完成后，重新用此工具进行检查以确认没有其他缺失的索引。';
+$string['yeswrongdefaultsfound'] = '在数据库中已经发现了不一致的默认值。以下是详细资料，需要使用您喜爱的 SQL 界面执行 SQL 语句来修正这些问题（请记住，在进行此操作之前，先备份数据）。<br /><br />我们强烈建议您在修改完成后，重新用此工具进行检查以确认没有其他不一致性的默认值。';
 $string['yeswrongintsfound'] = '在数据库中已经发现了整数错误。以下是详细资料，需要使用您喜爱的 SQL 界面执行 SQL 命令来修正（请记住，在进行此操作之前，先备份数据）。<br /><br />我们强烈建议您在修改完成后，重新用此工具进行检查以确认没有其他错误的整型。';
+
 ?>

@@ -1,5 +1,5 @@
 <?php
-// local_plan.php - created with Totara langimport script version 1.0
+// local_plan.php - created with Totara langimport script version 1.1
 
 $string['achieved'] = 'הושגו';
 $string['achievedvaluefrozen'] = 'אינך יכול לשנות את ההגדרות מכיוון שסולם זה נמצא בשימוש';
@@ -416,6 +416,7 @@ $string['objectiveeditlonglearner'] = '$a->userfrom ערך את $a->field עבו
 $string['objectiveeditlongmanager'] = '$a->userfrom ערך את $a->field עבור היעד \"$a->objective\" בתכנית הלמידה \"$a->plan\"';
 $string['objectiveeditshortlearner'] = 'היעד \"$a\" עבר עריכה';
 $string['objectiveeditshortmanager'] = '$a ערך את היעדים שלו/שלה';
+$string['objectivefullname'] = 'כותרת היעד';
 $string['objectiveincompletelonglearner'] = '$a->userfrom שינה את היעד \"$a->objective\" לסטטוס \'לא הושלם\'';
 $string['objectiveincompletelongmanager'] = '$a->userfrom שינה את היעד \"$a->objective\" לסטטוס \'לא הושלם\' בתכנית הלמידה \"$a->plan\"';
 $string['objectiveincompleteshortlearner'] = 'יעד \"$a\" לא הושלם';
