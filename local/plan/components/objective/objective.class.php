@@ -486,7 +486,8 @@ class dp_objective_component extends dp_base_component {
                 $approvals = null;
                 $objheader = '<p><strong>'.format_string($orig_objectives[$itemid]->fullname).": </strong><br>";
                 $objprinted = false;
-                foreach($stored_records as $itemid => $record) {
+                $currentuserobj = get_record('user', 'id', $currentuser);
+                foreach ($stored_records as $itemid => $record) {
                     // priority may have been updated
                     if (!empty($record->priority) && array_key_exists($itemid, $orig_objectives) &&
                         $record->priority != $orig_objectives[$itemid]->priority) {
@@ -496,8 +497,8 @@ class dp_objective_component extends dp_base_component {
                         $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
                         $updates .= $objheader;
                         $objprinted = true;
-                        $updates .= get_string_in_user_lang($currentuser, 'priority', 'local_plan').' - '.
-                            get_string_in_user_lang($currentuser, 'changedfromxtoy', 'local_plan',
+                        $updates .= get_string_in_user_lang($currentuserobj, 'priority', 'local_plan').' - '.
+                            get_string_in_user_lang($currentuserobj, 'changedfromxtoy', 'local_plan',
                             (object)array('before'=>$oldpriority, 'after'=>$newpriority))."<br>";
                     }
 
@@ -507,8 +508,8 @@ class dp_objective_component extends dp_base_component {
 
                         $updates .= $objprinted ? '' : $objheader;
                         $objprinted = true;
-                        $updates .= get_string_in_user_lang($currentuser, 'duedate', 'local_plan').' - '.
-                            get_string_in_user_lang($currentuser, 'changedfromxtoy', 'local_plan',
+                        $updates .= get_string_in_user_lang($currentuserobj, 'duedate', 'local_plan').' - '.
+                            get_string_in_user_lang($currentuserobj, 'changedfromxtoy', 'local_plan',
                             (object)array('before'=>empty($orig_objectives[$itemid]->duedate) ? '' :
                                 userdate($orig_objectives[$itemid]->duedate, '%e %h %Y', $CFG->timezone, false),
                                 'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
@@ -523,8 +524,8 @@ class dp_objective_component extends dp_base_component {
                         $newprof = get_field('dp_objective_scale_value', 'name', 'id', $record->scalevalueid);
                         $updates .= $objprinted ? '' : $objheader;
                         $objprinted = true;
-                        $updates .= get_string_in_user_lang($currentuser, 'status', 'local_plan').' - '.
-                            get_string_in_user_lang($currentuser, 'changedfromxtoy', 'local_plan',
+                        $updates .= get_string_in_user_lang($currentuserobj, 'status', 'local_plan').' - '.
+                            get_string_in_user_lang($currentuserobj, 'changedfromxtoy', 'local_plan',
                             (object)array('before'=>$oldprof, 'after'=>$newprof))."<br>";
                     }
 
@@ -534,8 +535,8 @@ class dp_objective_component extends dp_base_component {
 
                         $approval = new object();
                         $text = $objheader;
-                        $text .= get_string_in_user_lang($currentuser, 'approval', 'local_plan').' - '.
-                            get_string_in_user_lang($currentuser, 'changedfromxtoy', 'local_plan',
+                        $text .= get_string_in_user_lang($currentuserobj, 'approval', 'local_plan').' - '.
+                            get_string_in_user_lang($currentuserobj, 'changedfromxtoy', 'local_plan',
                             (object)array('before'=>dp_get_approval_status_from_code($orig_objectives[$itemid]->approved),
                             'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
                         $approval->text = $text;
