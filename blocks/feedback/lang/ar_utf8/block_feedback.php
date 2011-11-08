@@ -1,6 +1,6 @@
 <?php
-// block_feedback.php - created with Totara langimport script version 1.0
+// block_feedback.php - created with Totara langimport script version 1.1
 
-$string['feedback'] = 'ملاحظات';
+$string['feedback'] = 'التغذية الراجعة';
 
 ?>

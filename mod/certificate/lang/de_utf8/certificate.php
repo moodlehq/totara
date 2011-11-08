@@ -2,7 +2,7 @@
 // certificate.php - created with Totara langimport script version 1.1
 
 $string['activitydependencies'] = 'Dependent activities';
-$string['activitylocklabel'] = 'Linked Activity/Minimum Grade %';
+$string['activitylocklabel'] = 'Linked Activity/Minimum Grade %%';
 $string['addlinklabel'] = 'Add another linked activity option';
 $string['addlinktitle'] = 'Click to add another linked activity option';
 $string['awarded'] = 'Zertifikat erstellt';
