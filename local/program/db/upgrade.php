@@ -132,5 +132,22 @@ function xmldb_local_program_upgrade($oldversion=0) {
         /// Launch add field positionid
         $result = $result && add_field($table, $field);
     }
+
+    if ($result && $oldversion < 2012011300) {
+        $table = new XMLDBTable('prog_user_assignment');
+        $field = new XMLDBField('exceptionstatus');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+
+        $index = new XMLDBIndex('exceptionstatus');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('exceptionstatus'));
+
+        if (!index_exists($table, $index)) {
+            $result = $result && add_index($table, $index);
+        }
+    }
+
     return $result;
 }

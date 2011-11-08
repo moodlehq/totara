@@ -230,7 +230,7 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
 
     $from = "FROM {$CFG->prefix}prog p
             INNER JOIN {$CFG->prefix}prog_completion pc ON p.id = pc.programid AND pc.coursesetid = 0
-            INNER JOIN (SELECT DISTINCT userid, programid FROM {$CFG->prefix}prog_user_assignment) pua
+            INNER JOIN (SELECT DISTINCT userid, programid FROM {$CFG->prefix}prog_user_assignment WHERE exceptionstatus NOT IN (".PROGRAM_EXCEPTION_RAISED.",".PROGRAM_EXCEPTION_DISMISSED.")) pua
             ON (pc.programid=pua.programid AND pc.userid=pua.userid) ";
 
 
@@ -241,7 +241,7 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
         $where .= " AND p.visible = 1";
     }
 
-    if($returncount) {
+    if ($returncount) {
         return count_records_sql($count.$from.$where);
     } else {
         return get_records_sql($select.$from.$where.$sort, $limitfrom, $limitnum);

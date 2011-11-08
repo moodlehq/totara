@@ -187,7 +187,8 @@
         <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this user assignment relates to" PREVIOUS="id" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the user that this assignment relates to" PREVIOUS="programid" NEXT="assignmentid"/>
         <FIELD NAME="assignmentid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the linked assignment type" PREVIOUS="userid" NEXT="timeassigned"/>
-        <FIELD NAME="timeassigned" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date/time at which this user assignment was made" PREVIOUS="assignmentid"/>
+        <FIELD NAME="timeassigned" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date/time at which this user assignment was made" PREVIOUS="assignmentid" NEXT="exceptionstatus"/>
+        <FIELD NAME="exceptionstatus" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates the status exceptions for this user assignment" PREVIOUS="timeassigned"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
@@ -195,6 +196,9 @@
         <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="programid" NEXT="assignmentid"/>
         <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="prog_assignment" REFFIELDS="id" PREVIOUS="userid"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="exceptionstatus" UNIQUE="false" FIELDS="exceptionstatus"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="prog_pos_assignment" COMMENT="Stores when users were last assigned a position" PREVIOUS="prog_user_assignment" NEXT="prog_recurrence">
       <FIELDS>

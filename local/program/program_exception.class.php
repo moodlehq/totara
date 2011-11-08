@@ -102,13 +102,29 @@ abstract class prog_exception {
 
     }
 
+
+    /**
+     *  Checks if an exception exists
+     *
+     *  @param int $programid
+     *  @param int $exceptiontype
+     *  @param int $userid
+     *  @return bool True if exception exists
+     */
     public static function exception_exists($programid, $exceptiontype, $userid) {
         return record_exists_select('prog_exception', "programid = $programid AND exceptiontype = $exceptiontype AND userid = $userid");
     }
 
+
+    /**
+     *  Deletes and exception given an ID
+     *
+     *  @param int $exceptionid
+     *  @return bool Success status
+     */
     public static function delete_exception($exceptionid) {
         // first delete any data relating to this exception
-        if( ! delete_records('prog_exception_data', 'exceptionid', $exceptionid)) {
+        if (!delete_records('prog_exception_data', 'exceptionid', $exceptionid)) {
             return false;
         }
         // then delete the exception itself
@@ -128,7 +144,7 @@ abstract class prog_exception {
 
     public function handle($action=null) {
 
-        if( ! $this->handles($action)) {
+        if (!$this->handles($action)) {
             return true;
         }
 
@@ -146,19 +162,23 @@ abstract class prog_exception {
 
         $program = new program($this->programid);
 
-        $assignment_record = get_record('prog_assignment','id',$this->assignmentid);
-    if (!$assignment_record) {
-        return false;
-    }
+        $user_assign = get_record('prog_user_assignment', 'assignmentid', $this->assignmentid, 'userid', $this->userid);
+        $learner_assign_todb = new stdClass();
+        $learner_assign_todb->id = $user_assign->id;
+        $learner_assign_todb->exceptionstatus = PROGRAM_EXCEPTION_RESOLVED;
 
-    $timedue = $program->make_timedue($this->userid, $assignment_record);
-
-    if( ! $program->assign_learner($this->userid, $timedue, $assignment_record)) {
+        if (!update_record('prog_user_assignment', $learner_assign_todb)) {
             return false;
         }
 
-        return prog_exception::delete_exception($this->id);
+        //Event trigger to send notification when
+        //exception is resolved
+        $eventdata = new stdClass();
+        $eventdata->programid = $this->programid;
+        $eventdata->userid = $this->userid;
+        events_trigger('program_assigned', $eventdata);
 
+        return prog_exception::delete_exception($this->id);
     }
 
     /**
@@ -166,26 +186,47 @@ abstract class prog_exception {
      * @return boolean success
      */
     protected function set_auto_time_allowance() {
+        global $CFG;
 
-    $program = new program($this->programid);
+        require_once($CFG->dirroot . '/local/program/program.class.php');
 
-    $assignment_record = get_record('prog_assignment','id',$this->assignmentid);
-    if (!$assignment_record) {
-        return false;
-    }
+        $program = new program($this->programid);
 
-    // Get the total time allowed for the content in the program
-    $total_time_allowed = $program->content->get_total_time_allowance();
-
-    // Give the user this much time plus one week (from now!)
-    $timedue = time() + $total_time_allowed + 604800;
-
-    if( ! $program->assign_learner($this->userid, $timedue, $assignment_record)) {
+        $assignment_record = get_record('prog_assignment','id',$this->assignmentid);
+        if (!$assignment_record) {
             return false;
         }
 
-    return prog_exception::delete_exception($this->id);
+        // Get the total time allowed for the content in the program
+        $total_time_allowed = $program->content->get_total_time_allowance();
 
+        // Give the user this much time plus one week (from now!)
+        $timedue = time() + $total_time_allowed + 604800;
+
+        // Update prog_completion
+        $assignment = new user_assignment($this->userid, $this->assignmentid, $this->programid);
+        if (!$assignment->update($timedue)) {
+            return false;
+        }
+
+        // Update user_assignment
+        $user_assign = get_record('prog_user_assignment', 'assignmentid', $this->assignmentid, 'userid', $this->userid);
+        $learner_assign_todb = new stdClass();
+        $learner_assign_todb->id = $user_assign->id;
+        $learner_assign_todb->exceptionstatus = PROGRAM_EXCEPTION_RESOLVED;
+
+        if (!update_record('prog_user_assignment', $learner_assign_todb)) {
+            return false;
+        }
+
+        //Event trigger to send notification when
+        //exception is resolved
+        $eventdata = new stdClass();
+        $eventdata->programid = $this->programid;
+        $eventdata->userid = $this->userid;
+        events_trigger('program_assigned', $eventdata);
+
+        return prog_exception::delete_exception($this->id);
     }
 
     /**
@@ -194,9 +235,19 @@ abstract class prog_exception {
      * @return boolean success
      */
     private function dismiss_exception() {
-    return prog_exception::delete_exception($this->id);
-    }
+        global $CFG;
+        require_once($CFG->dirroot . '/local/program/program.class.php');
 
+        $user_assign = get_record('prog_user_assignment', 'assignmentid', $this->assignmentid, 'userid', $this->userid);
+        $learner_assign_todb = new stdClass();
+        $learner_assign_todb->id = $user_assign->id;
+        $learner_assign_todb->exceptionstatus = PROGRAM_EXCEPTION_DISMISSED;
+        if (!update_record('prog_user_assignment', $learner_assign_todb)) {
+            return false;
+        }
+
+        return prog_exception::delete_exception($this->id);
+    }
 }
 
 class time_allowance_exception extends prog_exception {

@@ -48,6 +48,10 @@ if ($userid != $USER->id) {
 
 if ($programid) {
     $program = new program($programid);
+    if (!$program->is_required_learning()) {
+        print_error('error:notrequiredlearning', 'local_program');
+    }
+
     if ($program->is_accessible()) {
 
         //Javascript include

@@ -134,22 +134,43 @@ class prog_assignments {
 
     /**
      * Returns the number of assignments found for the current program
+     * who dont have exceptions
      *
      * @return integer The number of user assignments
      */
-    public function count_user_assignments() {
-        $count = count_records('prog_user_assignment', 'programid', $this->programid);
+    public function count_active_user_assignments() {
+        global $CFG;
+        require_once($CFG->dirroot . '/local/program/program.class.php');
+
+        $count = count_records_sql("SELECT COUNT(DISTINCT userid) FROM {$CFG->prefix}prog_user_assignment WHERE programid={$this->programid} AND exceptionstatus IN (" . PROGRAM_EXCEPTION_NONE ."," . PROGRAM_EXCEPTION_RESOLVED . ")");
+        return $count;
+    }
+
+    /**
+     * Returns the total user assignments for the current program
+     *
+     * @return integer The number of users assigned to the current program
+     */
+    public function count_total_user_assignments() {
+        global $CFG;
+
+        $sql = "SELECT COUNT(DISTINCT userid) FROM {$CFG->prefix}prog_user_assignment WHERE programid = {$this->programid}";
+        $count = count_records_sql($sql);
+
         return ($count) ? $count : 0;
     }
 
     /**
-     * Returns the number of exceptions found for the current program
+     * Returns the number of users found for the current program
+     * who have exceptions
      *
-     * @return integer The number of exceptions
+     * @return integer The number of users
      */
     public function count_user_assignment_exceptions() {
-        $count = count_records('prog_exception', 'programid', $this->programid);
-        return ($count) ? $count : 0;
+        global $CFG;
+
+        $sql = "SELECT COUNT(DISTINCT userid) FROM {$CFG->prefix}prog_exception WHERE programid = {$this->programid}";
+        return count_records_sql($sql);
     }
 
     /**
@@ -528,10 +549,45 @@ abstract class prog_assignment_category {
                         $original_object->completiontime != $object->completiontime ||
                         $original_object->completionevent != $object->completionevent) {
 
-                        update_record('prog_assignment', $object);
+                        if ($object->completionevent != $original_object->completionevent) {
+                            //Rule Changed
+                            //Delete old exceptions, completion records dates and user assignments
+                            prog_exceptions_manager::delete_exceptions_by_assignment($object->id);
+
+                            // Create comma separated list to use in deletions
+                            $user_assignments_sql = "SELECT userid FROM {$CFG->prefix}prog_user_assignment WHERE assignmentid={$object->id}";
+                            if ($user_assignments = get_records_sql($user_assignments_sql)) {
+                                $assignment_userids = implode(',', array_keys($user_assignments));
+                            }
+
+                            begin_sql();
+
+                            $delete_user_assign_sql = "DELETE FROM {$CFG->prefix}prog_user_assignment WHERE assignmentid={$object->id}";
+                            if (!execute_sql($delete_user_assign_sql, false)) {
+                                rollback_sql();
+                                return false;
+                            }
+
+                            $delete_completions_sql = "DELETE FROM {$CFG->prefix}prog_completion WHERE coursesetid=0 AND userid IN ({$assignment_userids}) AND programid={$object->programid}";
+                            if (!execute_sql($delete_completions_sql, false)) {
+                                rollback_sql();
+                                return false;
+                            }
+
+                            commit_sql();
+                        } else if ($object->completiontime != $original_object->completiontime) {
+                            // Completion date changed
+                            // Delete old exceptions
+                            prog_exceptions_manager::delete_exceptions_by_assignment($object->id);
+                        }
+
+                        if (!update_record('prog_assignment', $object)) {
+                            print_error('error:updatingprogramassignment', 'local_program');
+                        }
                     }
                 }
                 else {
+                    // Create new assignment
                     $inserts[] = "($object->programid, $object->assignmenttype, $object->assignmenttypeid, $object->includechildren, $object->completiontime, $object->completionevent, $object->completioninstance)";
                 }
             }
@@ -552,7 +608,7 @@ abstract class prog_assignment_category {
             $where .= " AND assignmenttypeid NOT IN (". implode(',', $seenids) .")";
         }
         if ($assignments_to_delete = get_records_select('prog_assignment', $where)) {
-            foreach($assignments_to_delete as $assignment_to_delete) {
+            foreach ($assignments_to_delete as $assignment_to_delete) {
                 prog_exceptions_manager::delete_exceptions_by_assignment($assignment_to_delete->id);
             }
             delete_records_select('prog_assignment', $where);
@@ -1299,24 +1355,40 @@ class individuals_category extends prog_assignment_category {
 class user_assignment {
     public $userid, $assignment, $timedue;
 
-    public function __construct($userid,$assignment,$timedue) {
+    public function __construct($userid, $assignment, $programid) {
         $this->userid = $userid;
         $this->assignment = $assignment;
-        $this->timedue = $timedue;
+        $this->programid = $programid;
+
+        if (!$this->completion = get_record('prog_completion', 'programid', $programid, 'userid', $userid, 'status', '0')) {
+            if (defined('FULLME') && FULLME === 'cron') {
+                mtrace(get_string('error:nocompletionrecord', 'local_program'));
+            } else {
+                print_error('error:nocompletionrecord', 'local_program');
+            }
+        }
     }
 
-    // See which assignment has an earlier due date
-    public function update($assignment, $timedue) {
-        if (empty($assignment->completiontime)) {
-            return;
+    /*
+     *  Updates timedue for a user assignment
+     *
+     *  @param $timedue int New timedue
+     *  @return bool Success
+     */
+    public function update($timedue) {
+        if (!empty($this->completion)) {
+            $completion_todb = new stdClass();
+            $completion_todb->id = $this->completion->id;
+            $completion_todb->timedue = $timedue;
+
+            if (!update_record('prog_completion', $completion_todb)) {
+                // Failed to update completion with new date
+                return false;
+            }
+            return true;
         }
 
-        // Todo: Implement the completion event bits
-        // For now, lets just compare the completion time
-
-        if ($timedue < $this->timedue) {
-            $this->assignment = $assignment;
-        }
+        return false;
     }
 }
 
