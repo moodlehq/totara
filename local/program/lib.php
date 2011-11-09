@@ -121,27 +121,28 @@ function prog_setup_initial_plan_settings() {
             $defaultpriorityscaleid = 0;
         }
 
-        foreach( $templates as $t ){
+        $action_values = array(
+            'learner' => array(
+                'updateprogram' => DP_PERMISSION_REQUEST,
+                'setpriority' => DP_PERMISSION_DENY,
+                'setduedate' => DP_PERMISSION_DENY),
+            'manager' => array(
+                'updateprogram' => DP_PERMISSION_APPROVE,
+                'setpriority' => DP_PERMISSION_ALLOW,
+                'setduedate' => DP_PERMISSION_ALLOW));
+
+        foreach ($templates as $t) {
             begin_sql();
             $perm = new stdClass();
             $perm->templateid = $t->id;
-            foreach( $roles as $r ){
-                foreach( $actions as $a ){
-
-                    if ($r=='learner' && $a=='updateprogram') {
-                        $permissionvalue = DP_PERMISSION_REQUEST;
-                    } else if ($r=='manager' && $a=='updateprogram') {
-                        $permissionvalue = DP_PERMISSION_APPROVE;
-                    } else {
-                        $permissionvalue = DP_PERMISSION_ALLOW;
-                    }
-
-                    if ($rec = get_record_select('dp_permissions', "templateid={$perm->templateid} AND role='$r' AND component='program' AND action='$a'")) {
+            foreach ($action_values as $role => $actions) {
+                foreach ($actions as $action => $permissionvalue) {
+                    if ($rec = get_record_select('dp_permissions', "templateid={$perm->templateid} AND role='$role' AND component='program' AND action='$action'")) {
                         $rec->value=$permissionvalue;
                         update_record('dp_permissions', $rec);
                     } else {
-                        $perm->role = $r;
-                        $perm->action = $a;
+                        $perm->role = $role;
+                        $perm->action = $action;
                         $perm->value=$permissionvalue;
                         $perm->component = 'program';
                         insert_record('dp_permissions', $perm);
