@@ -849,20 +849,17 @@ class development_plan {
             ),
         );
 
-        switch (strcmp($unsorted[0]['component'], $unsorted[1]['component'])) {
-        case -1:
+        $cmp = strcmp($unsorted[0]['component'], $unsorted[1]['component']);
+        if ($cmp < 0) {
             // items in correct order already
-            $sorted = $unsorted;
-            break;
-        case 1:
+            return $unsorted;
+        } else if ($cmp > 0) {
             // reverse array order
-            $sorted = array_reverse($unsorted);
-            break;
-        default:
+            return array_reverse($unsorted);
+        } else {
             // items are the same, not supported
             return false;
         }
-        return $sorted;
     }
 
 

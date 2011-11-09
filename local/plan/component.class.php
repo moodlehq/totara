@@ -517,23 +517,21 @@ abstract class dp_base_component {
         // component relations are stored alphabetically
         // first component is in component1
         // Figure out which order to perform query
-        switch (strcmp($thiscomponent, $componentrequired)) {
-            case -1:
-                $matchedcomp = 'component1';
-                $matchedid = 'itemid1';
-                $searchedcomp = 'component2';
-                $searchedid = 'itemid2';
-                break;
-            case 1:
-                $matchedcomp = 'component2';
-                $matchedid = 'itemid2';
-                $searchedcomp = 'component1';
-                $searchedid = 'itemid1';
-                break;
-            case 0:
-            default:
-                // linking within the same component not supported
-                return false;
+        $cmp = strcmp($thiscomponent, $componentrequired);
+
+        if ($cmp < 0) {
+            $matchedcomp = 'component1';
+            $matchedid = 'itemid1';
+            $searchedcomp = 'component2';
+            $searchedid = 'itemid2';
+        } else if ($cmp > 0) {
+            $matchedcomp = 'component2';
+            $matchedid = 'itemid2';
+            $searchedcomp = 'component1';
+            $searchedid = 'itemid1';
+        } else {
+            // linking within the same component not supported
+            return false;
         }
 
         // find all matching relations
@@ -584,23 +582,21 @@ abstract class dp_base_component {
         // component relations are stored alphabetically
         // first component is in component1
         // Figure out which order to perform query
-        switch (strcmp($thiscomponent, $componentupdatetype)) {
-        case -1:
+        $cmp = strcmp($thiscomponent, $componentupdatetype);
+
+        if ($cmp < 0) {
             $matchedcomp = 'component1';
             $matchedid = 'itemid1';
             $searchedcomp = 'component2';
             $searchedid = 'itemid2';
             $thiscomponentfirst = true;
-            break;
-        case 1:
+        } else if ($cmp > 0) {
             $matchedcomp = 'component2';
             $matchedid = 'itemid2';
             $searchedcomp = 'component1';
             $searchedid = 'itemid1';
             $thiscomponentfirst = false;
-            break;
-        case 0:
-        default:
+        } else {
             // linking within the same component not supported
             return false;
         }
@@ -653,21 +649,19 @@ abstract class dp_base_component {
         // component relations are stored alphabetically
         // first component is in component1
         // Figure out which order to perform query
-        switch (strcmp($thiscomponent, $componentrequired)) {
-        case -1:
+        $cmp = strcmp($thiscomponent, $componentrequired);
+
+        if ($cmp < 0) {
             $matchedcomp = 'component1';
             $matchedid = 'itemid1';
             $searchedcomp = 'component2';
             $searchedid = 'itemid2';
-            break;
-        case 1:
+        } else if ($cmp > 0) {
             $matchedcomp = 'component2';
             $matchedid = 'itemid2';
             $searchedcomp = 'component1';
             $searchedid = 'itemid1';
-            break;
-        case 0:
-        default:
+        } else {
             // linking within the same component not supported
             return false;
         }
