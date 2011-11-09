@@ -2338,14 +2338,10 @@ border-width:0px;
 #course-view .section .weekdates {
 }
 
-#course-view li.activity {
-  margin-right:20px; /* Space allowed for completion icons if enabled */
-  position:relative;
-}
 #course-view li.activity form.togglecompletion,
 #course-view li.activity span.autocompletion {
   display:inline;
-  position:absolute;
+  float:right;
   right:-20px;
   bottom:0;
   z-index:10;

@@ -674,3 +674,9 @@ table.hierarchy-index .depth10 {
     margin-left: 0px;
     padding-right: 20px;
 }
+
+/* Course completion checkbox */
+#course-view li.activity form.togglecompletion,
+#course-view li.activity span.autocompletion {
+    float:left;
+}
