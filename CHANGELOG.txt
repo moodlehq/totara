@@ -1,5 +1,31 @@
 Totara LMS Changelog
 
+Release 1.1.3 (9 November 2011):
+==================================================
+
+Database upgrades:
+    T-9442      Fix issue with RPL column not created during upgrade from Moodle
+    T-9445      Fix updating of children in management hierarchy
+    T-9025      Add admin setting for learner and manager roles and fix references              Admin will be prompted to set roles for specific tasks on upgrade
+
+Improvements:
+    T-8485      Additions to Arabic, Finnish, French, German, Hebrew, Portuguese Brazilian,
+                Spanish, Castilian Spanish and Swedish language packs
+    T-8485      Added Simplified Chinese language pack
+    T-9452      Upgrade OAuth integration
+    T-9404      Add nice_datetime_seconds display function to Report Builder
+
+Bug fixes:
+    T-9444      Add details about installing Totara with Postgres 9+ in INSTALL.txt
+    T-5734      Fix PHP notice when no filters set in report
+    T-9440      Add "discountcode" column to Face-to-face report source
+    T-9442      Prevent empty My Team embedded report throwing errors
+    T-9447      Fix right-to-left support on response analysis page in the Feedback module
+    T-9434      Make program and plan progress bars right-to-left compatible
+    T-9442      Patch formslib to allow custom form ID prefix
+    T-9459      Fix warning when sending objective approval alerts
+
+
 Release 1.1.2 (26 October 2011):
 ==================================================
 
