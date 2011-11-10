@@ -112,6 +112,16 @@ class rb_source_user extends rb_base_source {
                     GROUP BY userid)",
                 'base.id = totara_stats_courses_completed.userid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'prog_extension_count',
+                'LEFT',
+                "(SELECT userid, count(*) as extensioncount
+                    FROM {$CFG->prefix}prog_extension pe
+                    WHERE pe.userid = userid AND pe.status = 0
+                    GROUP BY pe.userid)",
+                'base.id = prog_extension_count.userid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
             )
         );
 
@@ -220,6 +230,18 @@ class rb_source_user extends rb_base_source {
                         )
         );
 
+        $columnoptions[] = new rb_column_option(
+                        'user',
+                        'extensionswithlink',
+                        get_string('extensions', 'local_program'),
+                        'prog_extension_count.extensioncount',
+                        array(
+                            'joins' => 'prog_extension_count',
+                            'displayfunc' => 'extension_link',
+                        )
+        );
+
+
         $this->add_user_custom_fields_to_columns($columnoptions);
 
         return $columnoptions;
@@ -321,6 +343,18 @@ class rb_source_user extends rb_base_source {
         $disp .= '</span>';
         return $disp;
     }
+
+
+    function rb_display_extension_link($extensioncount, $row) {
+        global $CFG;
+
+        if (!empty($extensioncount)) {
+            return "<a href=\"{$CFG->wwwroot}/local/program/manageextensions.php?userid={$row->user_id}\">{$extensioncount}</a>";
+        } else {
+            return '0';
+        }
+    }
+
 
     function rb_display_user_with_links($user, $row) {
         global $CFG;
