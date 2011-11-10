@@ -3766,20 +3766,6 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 	font-family:'Myriad Pro', Arial;
 	font-weight:bold;
 	text-transform:uppercase;
-    float: left;
-    margin-bottom: 0;
-    margin-top: 26px;
-    width: 155px;
-}
-
-#program-content .nextsetoperator .operator-or,
-#view-program-content .nextsetoperator .operator-or{
-	background: url("images/progress_or.jpg") no-repeat scroll right center transparent;
-}
-
-#program-content .nextsetoperator .operator-then,
-#view-program-content .nextsetoperator .operator-then{
-	background: url("images/progress_then.jpg") no-repeat scroll right top transparent;
 }
 
 .nextsetoperator{

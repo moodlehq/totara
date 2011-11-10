@@ -5354,6 +5354,23 @@ span.dialog-singleselect-deletable {
     margin-left: 5px;
 }
 
+#program-content .nextsetoperator .operator-or,
+#program-content .nextsetoperator .operator-then,
+#view-program-content .nextsetoperator .operator-or,
+#view-program-content .nextsetoperator .operator-then{
+    float: left;
+    margin-bottom: 0;
+    margin-top: 26px;
+    width:98px;
+}
+
+#program-content .nextsetoperator img,
+#view-program-content .nextsetoperator img{
+    float: left;
+    margin-top: 26px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
 
 /* Spacing for checkbox on the Email notifiations page  */
 div span.emailnotifycheckbox {

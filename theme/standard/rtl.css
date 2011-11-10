@@ -680,3 +680,25 @@ table.hierarchy-index .depth10 {
 #course-view li.activity span.autocompletion {
     float:left;
 }
+
+/* Program display */
+#program-content .nextsetoperator .operator-or,
+#program-content .nextsetoperator .operator-then,
+#view-program-content .nextsetoperator .operator-or,
+#view-program-content .nextsetoperator .operator-then{
+    float: right;
+}
+
+#program-content .nextsetoperator .nextsethelp,
+#view-program-content .nextsetoperator .nextsethelp {
+    float:right;
+}
+
+#program-content .nextsetoperator img,
+#view-program-content .nextsetoperator img{
+    float:right;
+}
+
+div.prog-course-launch {
+    float: left;
+}
