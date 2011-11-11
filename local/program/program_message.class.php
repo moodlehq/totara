@@ -888,7 +888,7 @@ class prog_program_due_message extends prog_eventbased_message {
         $this->helppage = 'programduemessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programduemessage', 'local_program');
-        $this->triggereventstr = 'Before program is due';
+        $this->triggereventstr = get_string('beforeprogramisdue', 'local_program');
         $this->managermessagedata->subject = get_string('programdue', 'local_program');
 
         $managermessagedata = array(
@@ -916,7 +916,7 @@ class prog_courseset_due_message extends prog_eventbased_message {
         $this->helppage = 'coursesetduemessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetduemessage', 'local_program');
-        $this->triggereventstr = 'Before set is due';
+        $this->triggereventstr = get_string('beforesetisdue', 'local_program');
         $this->managermessagedata->subject = get_string('coursesetdue', 'local_program');
 
         $managermessagedata = array(
@@ -944,7 +944,7 @@ class prog_program_overdue_message extends prog_eventbased_message {
         $this->helppage = 'programoverduemessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programoverduemessage', 'local_program');
-        $this->triggereventstr = 'After program is due';
+        $this->triggereventstr = get_string('afterprogramisdue', 'local_program');
         $this->managermessagedata->subject = get_string('programoverdue', 'local_program');
 
         $managermessagedata = array(
@@ -972,7 +972,7 @@ class prog_courseset_overdue_message extends prog_eventbased_message {
         $this->helppage = 'coursesetoverduemessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetoverduemessage', 'local_program');
-        $this->triggereventstr = 'After set is due';
+        $this->triggereventstr = get_string('aftersetisdue', 'local_program');
         $this->managermessagedata->subject = get_string('coursesetoverdue', 'local_program');
 
         $managermessagedata = array(
@@ -1000,7 +1000,7 @@ class prog_learner_followup_message extends prog_eventbased_message {
         $this->helppage = 'learnerfollowupmessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:learnerfollowupmessage', 'local_program');
-        $this->triggereventstr = 'After program is completed';
+        $this->triggereventstr = get_string('afterprogramiscompleted', 'local_program');
         $this->notifymanager = false;
 
     }

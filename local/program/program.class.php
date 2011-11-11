@@ -855,7 +855,7 @@ class program {
 
         // check if this is a recurring program
         if (count($courseset_groups) == 0) {
-            $out .= '<p class="nocontent">No course content.</p>';
+            $out .= '<p class="nocontent">' . get_string('nocoursecontent', 'local_program') . '</p>';
         } else if (count($courseset_groups) == 1 && ($courseset_groups[0][0]->contenttype == CONTENTTYPE_RECURRING)) {
             $out .= $courseset_groups[0][0]->display($userid);
         } else {
@@ -1323,7 +1323,7 @@ class program_utilities {
         }
 
         if(array_key_exists($ob->period, $TIMEALLOWANCESTRINGS)) {
-            $ob->periodstr = strtolower($TIMEALLOWANCESTRINGS[$ob->period]);
+            $ob->periodstr = strtolower(get_string($TIMEALLOWANCESTRINGS[$ob->period]));
         } else {
             $ob->periodstr = '';
         }
@@ -1343,7 +1343,6 @@ class program_utilities {
      * @return <type>
      */
     public static function print_duration_selector($prefix, $periodelementname, $periodvalue, $numberelementname, $numbervalue, $return=false, $includehours=true) {
-        global $TIMEALLOWANCESTRINGS;
 
         $timeallowances = array();
         if ($includehours) {

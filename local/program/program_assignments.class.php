@@ -621,7 +621,7 @@ abstract class prog_assignment_category {
 
             $a->num = $parts[0];
             if (isset($TIMEALLOWANCESTRINGS[$parts[1]])) {
-                $a->period = $TIMEALLOWANCESTRINGS[$parts[1]];
+                $a->period = get_string($TIMEALLOWANCESTRINGS[$parts[1]]);
             }
             else {
                 return '';
@@ -1403,7 +1403,7 @@ class prog_assigment_completion_position_start_date extends prog_assignment_comp
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
-        return 'starting in position';
+        return get_string('startinposition', 'local_program');
     }
     public function get_timestamp($userid,$instanceid) {
         // lazy load data when required
@@ -1453,7 +1453,7 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
-        return 'completion of program';
+        return get_string('completionofprogram', 'local_program');
     }
     public function get_timestamp($userid,$instanceid) {
         // lazy load data when required
@@ -1503,7 +1503,7 @@ class prog_assigment_completion_course_completion extends prog_assignment_comple
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
-        return 'completion of course';
+        return get_string('completionofcourse', 'local_program');
     }
     public function get_timestamp($userid,$instanceid) {
         // lazy load data when required
@@ -1551,7 +1551,7 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
         return $this->names[$instanceid]->name;
     }
     public function get_completion_string() {
-        return 'date in profile field';
+        return get_string('dateinprofilefield', 'local_program');
     }
     public function get_timestamp($userid,$instanceid) {
         // lazy load data when required
