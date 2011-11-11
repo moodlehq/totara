@@ -594,7 +594,9 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
             INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
             INNER JOIN {$CFG->prefix}user u ON ra.userid = u.id
         WHERE
-            ra.userid = {$managerid} AND pa.userid = {$userid}
+            ra.userid = {$managerid}
+            AND pa.userid = {$userid}
+            AND u.deleted = 0
             {$postypewhere}";
 
     return record_exists_sql($sql);
@@ -622,9 +624,10 @@ function totara_get_staff($userid=null, $postype=null) {
             INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
         WHERE
             ra.userid = {$userid}
+            AND u.deleted = 0
             AND pa.type = {$postype}";
 
-    if(!$res = get_records_sql($sql)) {
+    if (!$res = get_records_sql($sql)) {
         // no matches
         return false;
     }
@@ -658,7 +661,8 @@ function totara_get_manager($userid, $postype=null){
          ON ra.userid = u.id
         WHERE
             pa.userid = {$userid}
-        AND pa.type = {$postype}";
+            AND pa.type = {$postype}
+            AND u.deleted = 0";
 
     //Return a manager if they have one otherwise false
     return get_record_sql($sql);
