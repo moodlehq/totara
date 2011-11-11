@@ -158,7 +158,7 @@ class prog_cohort_assignment extends prog_user_assignment {
 class prog_manager_assignment extends prog_user_assignment {
 
     public function display_criteria() {
-        $managers_name = get_record_select('user', "id = $this->assignment->assignmenttypeid", sql_fullname() . ' as fullname');#
+        $managers_name = get_record_select('user', "id = $this->assignment->assignmenttypeid", sql_fullname() . ' as fullname');
         $out = '';
         $out .= '<li class="assignmentcriteria">';
         $out .= '<span class="criteria">' . get_string('partofteam', 'local_program', $managers_name->fullname) . '</span> ';

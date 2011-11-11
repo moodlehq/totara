@@ -980,10 +980,10 @@ class multi_course_set extends course_set {
         // Add set buttons
         $templatehtml .= '<div class="setbuttons">';
 
-        // Add the move up button for this seit
+        // Add the move up button for this set
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->isfirstset) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->isfirstset) ? 'moveup fieldsetbutton disabled' : 'moveup fieldsetbutton';
             if(isset($this->isfirstset)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'moveup', get_string('moveup', 'local_program'), $attributes);
             $template_values['%'.$prefix.'moveup%'] = array('name'=>$prefix.'moveup', 'value'=>null);
@@ -991,14 +991,14 @@ class multi_course_set extends course_set {
 
             // Add the move down button for this set
             $attributes = array();
-            $attributes['class'] = isset($this->islastset) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->islastset) ? 'movedown fieldsetbutton disabled' : 'movedown fieldsetbutton';
             if(isset($this->islastset)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'movedown', get_string('movedown', 'local_program'), $attributes);
             $template_values['%'.$prefix.'movedown%'] = array('name'=>$prefix.'movedown', 'value'=>null);
             $templatehtml .= '%'.$prefix.'movedown%'."\n";
 
             // Add the delete button for this set
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"delete fieldsetbutton setdeletebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
             $templatehtml .= '%'.$prefix.'delete%'."\n";
         }
@@ -1573,7 +1573,7 @@ class competency_course_set extends course_set {
         // Add the move up button for this set
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->isfirstset) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->isfirstset) ? 'moveup fieldsetbutton disabled' : 'moveup fieldsetbutton';
             if(isset($this->isfirstset)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'moveup', get_string('moveup', 'local_program'), $attributes);
             $template_values['%'.$prefix.'moveup%'] = array('name'=>$prefix.'moveup', 'value'=>null);
@@ -1583,7 +1583,7 @@ class competency_course_set extends course_set {
         // Add the move down button for this set
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->islastset) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->islastset) ? 'movedown fieldsetbutton disabled' : 'movedown fieldsetbutton';
             if(isset($this->islastset)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'movedown', get_string('movedown', 'local_program'), $attributes);
             $template_values['%'.$prefix.'movedown%'] = array('name'=>$prefix.'movedown', 'value'=>null);
@@ -1592,7 +1592,7 @@ class competency_course_set extends course_set {
 
         // Add the delete button for this set
         if($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"delete fieldsetbutton setdeletebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";
@@ -2009,7 +2009,7 @@ class recurring_course_set extends course_set {
         $templatehtml .= '<div class="setbuttons">';
 
         if($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"delete fieldsetbutton setdeletebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";

@@ -5556,6 +5556,7 @@ body.hierarchy-type div.add-type-button .singlebutton {
 #local-program-edit #programdetails .ftoggler,
 #local-program-edit #programcontent .ftoggler,
 #local-program-edit #programassignments .ftoggler,
+#local-program-edit #programexceptions .ftoggler,
 #local-program-edit #programmessages .ftoggler{
 	padding:4px 43px;
 }
@@ -5633,9 +5634,10 @@ body.local-program .rolelink {
 
 .local-program fieldset .setbuttons input,
 .local-program fieldset .messagebuttons input{
-	border:0px;
-	text-align:left;
-    padding-right:18px;
+    border:0px;
+    text-align:left;
+    padding-right: 18px;
+    padding-left: 6px;
 }
 
 .local-program fieldset.course_set .flabel,
@@ -5666,6 +5668,7 @@ body.local-program .rolelink {
 
 .local-program fieldset.course_set .course_table .course{
     padding-left: 10px;
+    padding-right: 0px;
 }
 
 .local-program fieldset.course_set .course_table .action{
@@ -5742,7 +5745,8 @@ div.prog-course-launch {
 }
 
 .local-program fieldset.course_set .courseadder{
-	margin-left:78px;
+    margin-left:78px;
+    margin-right: 0px;
 }
 
 #program-overview-details .hidden .fitem .felement{
@@ -5784,10 +5788,8 @@ div.prog-course-launch {
 #program-assignments #programassignments legend,
 #program-messages #programmessages legend,
 #program-exceptions #programexceptions legend{
-	padding-left:46px;
-	margin-left:0px;
-	padding-top:6px;
-	padding-bottom:6px;
+    padding: 6px 6px 6px 38px;
+    margin: 0px 0px 0px 8px;
 }
 
 #edit-program-content #programcontent #course_sets legend,
@@ -5839,13 +5841,10 @@ input[type="submit"].program-savechanges{
 
 .local-program fieldset.course_set .coursedeletelink .delete_item,
 .local-program fieldset.course_set .course_item{
-	width:100%;
-	padding-left:20px;
-	height:20px;
-	padding-top:6px;
-	padding-bottom:6px;
-	padding-right:0px;
-	font-weight:bold;
+    width:100%;
+    height:20px;
+    padding: 6px 0px 6px 20px;
+    font-weight:bold;
 }
 
 .local-program fieldset.course_set .delete_item a {
@@ -5924,6 +5923,7 @@ input[type="submit"].program-savechanges{
 .total_user_count {
     text-align: right;
     padding-right: 6px;
+    padding-left: 0px;
 }
 
 .overall_total {
@@ -5936,8 +5936,9 @@ input[type="submit"].program-savechanges{
 /** Program Exceptions **/
 /*****************************************************************************/
 .local-program #programexceptions .exceptionactions div{
-	float:left;
-	padding-right:5px;
+    float:left;
+    padding-right:5px;
+    padding-left:0px;
 }
 
 .local-program #programexceptions .exceptionactions{
@@ -5949,8 +5950,8 @@ input[type="submit"].program-savechanges{
 }
 
 .local-program #programexceptions .exceptionactions p{
-	margin-top:5px;
-	margin-bottom:5px;
+    margin-top:5px;
+    margin-bottom:5px;
 }
 
 body.course h1.main,

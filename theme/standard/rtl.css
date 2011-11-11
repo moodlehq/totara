@@ -702,3 +702,100 @@ table.hierarchy-index .depth10 {
 div.prog-course-launch {
     float: left;
 }
+
+/************/
+/* Programs */
+/************/
+
+#programstatus img {
+    float: right;
+    padding-left: 5px;
+}
+
+#edit-program-content #programcontent legend,
+#program-assignments #programassignments legend,
+#program-messages #programmessages legend,
+#program-exceptions #programexceptions legend{
+    padding: 6px 46px 6px 6px;
+    margin: 0px;
+}
+
+#edit-program-content #programcontent #course_sets legend,
+#program-assignments #programassignments #assignment_categories legend,
+#program-messages #programmessages #messages legend{
+    padding-right:5px;
+}
+
+#edit-program-content #programcontent p,
+#program-assignments #programassignments p,
+#program-messages #programmessages p,
+#program-exceptions #programexceptions p{
+    padding-right:5px;
+}
+
+#program-assignments #programassignments #assignment_categories a {
+    float: left;
+}
+
+.local-program fieldset.course_set .setbuttons,
+.local-program fieldset .messagebuttons{
+    text-align: left;
+}
+
+.local-program fieldset .setbuttons input,
+.local-program fieldset .messagebuttons input{
+    text-align:right;
+    padding-left: 18px;
+    padding-right: 6px;
+}
+
+.local-program fieldset.course_set .flabel,
+.local-program fieldset.message .flabel,
+.local-program fieldset.course_set .fitem,
+.local-program fieldset.message .fitem{
+    float:right;
+}
+
+.local-program fieldset.course_set div.courselist {
+    clear:right;
+}
+
+.local-program fieldset.course_set .coursedeletelink .delete_item,
+.local-program fieldset.course_set .course_item{
+    padding: 6px 20px 6px 0px;
+}
+
+.local-program fieldset.course_set .delete_item a {
+    float: left;
+}
+
+.local-program fieldset.course_set .course_table .course{
+    padding-left: 0px;
+    padding-right: 10px;
+}
+
+.local-program fieldset.course_set .course_table .action{
+    padding-left:15px;
+    padding-right:0px;
+}
+
+.local-program fieldset.course_set .courseadder{
+    margin-left: 0px;
+    margin-right: 78px;
+}
+
+.total_user_count {
+    text-align: left;
+    padding-left: 0px;
+    padding-right: 6px;
+}
+
+.overall_total {
+    text-align: left;
+}
+
+.local-program #programexceptions .exceptionactions div{
+    float:right;
+    padding-right:0px;
+    padding-left:5px;
+}

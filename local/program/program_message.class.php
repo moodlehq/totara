@@ -448,7 +448,7 @@ abstract class prog_message {
         // Add the move up button for this message
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->isfirstmoveablemessage) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->isfirstmoveablemessage) ? 'moveup fieldsetbutton disabled' : 'moveup fieldsetbutton';
             if(isset($this->isfirstmoveablemessage)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'moveup', get_string('moveup', 'local_program'), $attributes);
             $template_values['%'.$prefix.'moveup%'] = array('name'=>$prefix.'moveup', 'value'=>null);
@@ -458,7 +458,7 @@ abstract class prog_message {
         // Add the move down button for this message
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->islastmessage) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->islastmessage) ? 'movedown fieldsetbutton disabled' : 'movedown fieldsetbutton';
             if(isset($this->islastmessage)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'movedown', get_string('movedown', 'local_program'), $attributes);
             $template_values['%'.$prefix.'movedown%'] = array('name'=>$prefix.'movedown', 'value'=>null);
@@ -467,7 +467,7 @@ abstract class prog_message {
 
          // Add the delete button for this message
         if($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton deletedmessagebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"delete fieldsetbutton deletedmessagebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";

@@ -119,7 +119,7 @@ class program_messages_edit_form extends moodleform {
         if(isset($mform->_errors) && !empty($mform->_errors)) {
 
             $mform->addElement('static', 'errors');
-            $mform->setConstant('errors', 'There are errors in this form. Please review the list below and fix any errors before saving.');
+            $mform->setConstant('errors', get_string('errorsinform', 'local_program'));
             $this->template_values['%errors%'] = array('name'=>'errors', 'value'=>null);
             $html .= '<div class="error">%errors%</div>';
 
