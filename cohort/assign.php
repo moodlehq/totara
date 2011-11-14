@@ -94,6 +94,14 @@ if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
     }
 }
 
+// arrange buttons based on language direction
+if (get_string('thisdirection') == 'rtl') {
+    $addarrow = '&#x25BA';
+    $removearrow = '&#x25C4';
+} else {
+    $addarrow = '&#x25C4';
+    $removearrow = '&#x25BA';
+}
 // Print the form.
 ?>
 <form id="assignform" method="post" action="<?php echo $CFG->wwwroot; ?>/cohort/assign.php?id=<?php echo $id; ?>"><div>
@@ -107,11 +115,11 @@ if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
       </td>
       <td id="buttonscell">
           <div id="addcontrols">
-              <input name="add" id="add" type="submit" value="<?php echo '&#x25C4;&nbsp;'.s(get_string('add')); ?>" title="<?php p(get_string('add')); ?>" /><br />
+              <input name="add" id="add" type="submit" value="<?php echo "{$addarrow}&nbsp;" . get_string('add'); ?>" title="<?php p(get_string('add')); ?>" /><br />
           </div>
 
           <div id="removecontrols">
-              <input name="remove" id="remove" type="submit" value="<?php echo s(get_string('remove')).'&nbsp;&#x25BA;'; ?>" title="<?php p(get_string('remove')); ?>" />
+              <input name="remove" id="remove" type="submit" value="<?php echo get_string('remove') . "&nbsp;{$removearrow}"; ?>" title="<?php p(get_string('remove')); ?>" />
           </div>
       </td>
       <td id="potentialcell">
