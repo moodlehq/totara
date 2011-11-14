@@ -310,7 +310,7 @@ body#user-index table#participants td, body#user-index table#participants th {
 
 /* backup_sche_hour */
 
-form.mform div.felement, form.mform fieldset.felement {
+.mform div.felement, .mform fieldset.felement {
     float: right;
     text-align: right;
     margin-right: 10px;
@@ -346,9 +346,9 @@ body#mod-quiz-report table#attempts .header {
     text-align: right;
 }
 
-form.mform .fitemtitle {
+.mform .fitemtitle {
     float: right;
-    text-align: left;
+    text-align: right;
     margin-right: 10px;
 	margin-left: 0px;
 }
