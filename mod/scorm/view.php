@@ -250,7 +250,7 @@
             if ($scorm->popup == 0) {
                 echo "                <script type=\"text/javascript\">scorm_resize(".$scorm->width.", ".$scorm->height.");</script>\n";
                 $fullurl="loadSCO.php?id=".$cm->id.$scoidstr.$modestr;
-                echo "                <iframe id=\"scoframe1\" class=\"scoframe\" style=\"height: 100%; width: 100%;\" height=\"100%\" width=\"100%\" name=\"scoframe1\" src=\"{$fullurl}\"></iframe>\n";
+                echo "                <iframe id=\"scoframe1\" class=\"scoframe\" style=\"height: 100%; width: 100%;\" frameborder=\"0\" height=\"100%\" width=\"100%\" name=\"scoframe1\" src=\"{$fullurl}\"></iframe>\n";
             } else {
                 // Clean the name for the window as IE is fussy
                 $name = ereg_replace("[^A-Za-z0-9]", "", $scorm->name);
