@@ -4339,3 +4339,21 @@ ul.comment-list li .comment-delete {
 #local-program-view table td{
   vertical-align:middle;
 }
+
+/* Messages */
+
+body#message-messages {
+    background: none;
+}
+
+body#message-user {
+    background: none;
+}
+
+body#message-user div#top-bg {
+    background: none;
+}
+
+body#message-user div#container {
+    padding-left: 0px;
+}

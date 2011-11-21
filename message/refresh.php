@@ -1,6 +1,6 @@
 <?php // $Id$
 
-    require('../config.php');
+    require_once('../config.php');
 
     define('MESSAGE_DEFAULT_REFRESH', 5);
 

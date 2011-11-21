@@ -1,7 +1,7 @@
 <?php // $Id$
       
-    require('../config.php');
-    require('lib.php');
+    require_once('../config.php');
+    require_once('lib.php');
 
     require_login();
 
@@ -50,7 +50,7 @@
     }
 
     print_header('','','','','',false,'','',false,'');
-    echo '<table width="100%" cellpadding="0" cellspacing="0"><tr>';
+    echo '<table cellpadding="0" cellspacing="0"><tr>';
     echo '<td width="100">';
     echo print_user_picture($user, SITEID, $user->picture, true, true, true, 'userwindow').'</td>';
     echo '<td valign="middle" align="center">';

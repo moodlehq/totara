@@ -1,7 +1,7 @@
 <?php // $Id$
 
-    require('../config.php');
-    require('lib.php');
+    require_once('../config.php');
+    require_once('lib.php');
 
     require_login();
 
