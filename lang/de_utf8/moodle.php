@@ -476,6 +476,7 @@ $string['disabledcomments'] = 'Kommentare sind deaktiviert';
 $string['displayingfirst'] = 'Es werden nur die ersten $a->count $a->things angezeigt.';
 $string['displayingrecords'] = 'Zeige $a Einträge';
 $string['displayingusers'] = 'Zeige Nutzer/innen von $a->start bis $a->end';
+$string['displaylanguagepanel'] = 'Sprachschaltfeld anzeigen';
 $string['displayonpage'] = 'Auf der Seite anzeigen';
 $string['documentation'] = 'Moodle-Dokumentation';
 $string['donotask'] = 'Fragen Sie nicht!';

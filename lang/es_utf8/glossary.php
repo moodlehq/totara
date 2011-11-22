@@ -12,6 +12,7 @@ $string['allowcomments'] = 'Permitir comentar las entradas';
 $string['allowduplicatedentries'] = 'Permitir entradas duplicadas';
 $string['allowprintview'] = 'Permitir vista impresión';
 $string['allowratings'] = 'Permitir calificar las entradas';
+$string['andmorenewentries'] = 'y {$a} nuevas entradas.';
 $string['answer'] = 'Respuesta';
 $string['approve'] = 'Aprobar';
 $string['areaintro'] = 'Introducción al glosario';

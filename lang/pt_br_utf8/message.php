@@ -17,6 +17,7 @@ $string['contactlistempty'] = 'Sua lista de contatos está vazia';
 $string['contacts'] = 'Contatos';
 $string['context'] = 'mostrar';
 $string['deletemessagesdays'] = 'Número de dias antes que as mensagens antigas sejam apagadas';
+$string['disabled'] = 'O serviço de mensagem atualmente está desabilitado';
 $string['discussion'] = 'Discussão';
 $string['emailmessages'] = 'Receber as mensagens por e-mail se eu não estiver conectado';
 $string['emailtagline'] = 'Este e-mail é a cópia de uma mensagem que foi enviada para você em \"$a\"';

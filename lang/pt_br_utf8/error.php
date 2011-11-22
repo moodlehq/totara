@@ -20,6 +20,7 @@ $string['cannotviewprofile'] = 'Não foi possível ver o perfil desse usuário.'
 $string['cantunenrollfrommetacourse'] = 'Você não pode cancelar a inscrição em um meta-curso.';
 $string['cantunenrollinthisrole'] = 'A sua função atual não tem permissão para cancelar a inscrição.';
 $string['cmunknown'] = 'Impossível achar este módulo';
+$string['codingerrorbaseurlrequired'] = 'Erro de codificação: Necessário base URL';
 $string['componentisuptodate'] = 'Componente atualizado';
 $string['confirmsesskeybad'] = 'Sinto muito mas não foi possível confirmar a chave da sua sessão para completar esta ação. Esta medida de segurança evita a execução de funções importantes em seu nome, causadas por terceiros maliciosos ou por erros acidentais. Certifique-se que a execução desta função seja realmente intencional.';
 $string['couldnotassignrole'] = 'Um erro sério e desconhecido ocorreu ao tentar alterar sua função';

@@ -11,6 +11,7 @@ $string['allowcomments'] = 'Permitir comentários';
 $string['allowduplicatedentries'] = 'Permitir itens repetidos';
 $string['allowprintview'] = 'Permitir versão para impressão';
 $string['allowratings'] = 'Habilitar a avaliação dos itens';
+$string['andmorenewentries'] = 'e {$a} mais novas entradas.';
 $string['answer'] = 'Resposta';
 $string['approve'] = 'Aprovar';
 $string['areyousuredelete'] = 'Tem certeza que quer excluir este item?';

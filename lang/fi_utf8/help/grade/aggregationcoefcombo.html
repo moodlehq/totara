@@ -1,0 +1,24 @@
+<h1>Lisäpisteet</h1>
+<h2>Arvosanojen summa -yhteenvedolle</h2>
+<p>Kun Arvosanojen summa -yhteenvetomenetelmä on käytössä, arvosanaobjekti voi toimia lisäpisteiden tavoin kyseisessä kategoriassa. Tämä tarkoittaa, että tämän arvosanaobjektin enimmäisarvosanaa ei lisätä kategorian yhteisenimmääisarvosanaan vaan objektin arvosana lisätään. Esimerkiksi:</p>
+
+<ul>
+    <li>Arvosanaobjekti 1 arvostellaan asteikolla 0-100</li>
+    <li>Arvosanaobjekti 2 arvostellaan asteikolla 0-75</li>
+    <li>Arvosanaobjekti 1:n kohdalla on "Toimii lisäpisteinä" -valinta valittuna, objektin 2 kohdalla ei</li>
+    <li>Molemmat objektit kuuluvat Kategoriaan 1, jolle on määritelty yhteenlaskutavaksi "Arvosanojen summa"</li>
+    <li>Kategoria 1 kokonaisuudessaan arvostellaan asteikolla 0-75</li>
+    <li>Oppija saa arvosanan 20 objektista 1 ja 70 objektista 2</li>
+    <li>Oppijan kokonaisarvosana Kategoriassa 1 on 75/75 (20+70 = 90 mutta objekti 1 toimii lisäpisteinä, joten kokonaisarvosana nousee maksimiin)</li>
+</ul>
+<h2>Painotetulle arvosanojen keskiarvolle (lisäpisteet)</h2>
+<p>Nollaa suurempi arvo käsittelee tämän arvosanaobjektin arvosanaa lisäpisteinä yhteenvedon yhteydessä. Numero on kerroin, jolla arvosanan arvo kerrotaan ennen kuin se lisätään kaikkien arvosanojen summaan mutta itse objektia ei lasketa mukaan jaotteluun. Esimerkiksi:</p>
+
+<ul>
+    <li>Arvosanaobjekti 1 arvostellaan asteikolla 0-100 ja sen lisäpistearvo määritellään 2:ksi</li>
+    <li>Arvosanaobjekti 2 arvostellaan asteikolla 0-100 aja sen lisäpistearvo määritellään 0.0000:ksi</li>
+    <li>Arvosanaobjekti 3 arvostellaan asteikolla 0-100 aja sen lisäpistearvo määritellään 0.0000:ksi</li>
+    <li>Kaikki kolme objektia kuuluvat Kategoriaan 1, jonka yhteenlaskumenetelmä on "Arvosanojen keskiarvo (lisäpisteillä)</li>
+    <li>Oppija saa arvosanan 20 objektista 1 ja 40 objektista 2 ja 70 objketista 3</li>
+    <li>Oppijan kokonaisarvosana Kategoriassa 1 on 95/100 koska 20*2 + (40 + 70)/2 = 95</li>
+</ul>

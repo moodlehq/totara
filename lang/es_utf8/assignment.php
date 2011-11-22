@@ -145,6 +145,7 @@ $string['uploadnofilefound'] = 'No seleccionó ningún archivo: ¿está seguro d
 $string['uploadnotregistered'] = '\'$a\' se subió correctamente, pero el envío no se registró!.';
 $string['uploadsuccess'] = '\'$a\' se ha subido correctamente';
 $string['usermisconf'] = 'Usuario mal configurado';
+$string['usernosubmit'] = 'Disculpe, no tiene permiso para enviar una tarea';
 $string['viewfeedback'] = 'Ver calificaciones y comentarios sobre la tarea';
 $string['viewmysubmission'] = 'Ver mi envío';
 $string['viewsubmissions'] = 'Ver $a tareas enviadas';

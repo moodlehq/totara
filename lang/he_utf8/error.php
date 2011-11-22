@@ -20,6 +20,7 @@ $string['cannotviewprofile'] = 'אינך רשאי לראות את הפרופיל
 $string['cantunenrollfrommetacourse'] = 'אתה לא יכול לבטל את הרשמתך למטה-קורס זה.';
 $string['cantunenrollinthisrole'] = 'אתה לא יכול לבטל את הרשמתך לקורס זה כל עוד אתה נמצא בתפקיד הנוכחי שלך.';
 $string['cmunknown'] = 'לא ניתן למצוא את המודול של קורס זה.';
+$string['codingerrorbaseurlrequired'] = 'שגיאת קוד: נדרש URL בסיס';
 $string['componentisuptodate'] = 'הרכיב מעודכן.';
 $string['confirmsesskeybad'] = 'סליחה, אבל לא היה ניתן לאשר את מפתח המושב שלך כדי להריץ פונקציה זו. תכונת אבטחה זו מונעת הרצה של פונקציות חשובות בשימך, בין אם בזדון ובין אם בטעות. אנא וודא שאתה באמת רוצה להריץ את הפונקציה הזו.';
 $string['couldnotassignrole'] = 'חלה שגיאה רצינית אך לא מוגדרת במהלך הניסיון למנות אותך לתפקיד.';

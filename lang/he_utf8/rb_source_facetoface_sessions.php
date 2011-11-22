@@ -7,6 +7,7 @@ $string['cancellationreason'] = 'סיבת ביטול';
 $string['coursedelivery'] = 'העברת ההדרכה';
 $string['currentorg'] = 'הארגון הנוכחי של המשתמש';
 $string['currentpos'] = 'התקיד הנוכחי של המשתמש';
+$string['discountcode'] = 'קוד הנחה';
 $string['endtime'] = 'מועד סיום';
 $string['facilitator'] = 'מדריך';
 $string['ftfname'] = 'שם הדרכת פנים-אל-פנים';

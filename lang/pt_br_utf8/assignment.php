@@ -144,6 +144,7 @@ $string['uploadnofilefound'] = 'Não foi encontrado nenhum arquivo - você tem c
 $string['uploadnotregistered'] = '\'$a\' foi recebido corretamente mas o envio não foi registrado!';
 $string['uploadsuccess'] = '\'$a\' enviado com sucesso!';
 $string['uploadsuccessresponse'] = 'Archivo de resposta enviado com sucesso';
+$string['usernosubmit'] = 'Desculpe, você não está autorizado a submeter uma tarefa.';
 $string['viewfeedback'] = 'Ver  avaliação e feedback';
 $string['viewsubmissions'] = 'Ver $a tarefas enviadas';
 $string['yoursubmission'] = 'As suas tarefas';

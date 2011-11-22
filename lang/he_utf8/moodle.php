@@ -448,6 +448,7 @@ $string['disable'] = 'מנע';
 $string['displayingfirst'] = 'רק הראשונים $a->count $a->things מוצגים';
 $string['displayingrecords'] = 'מציג $a רשומות';
 $string['displayingusers'] = 'מציג משתמשים $a->start עד $a->end';
+$string['displaylanguagepanel'] = 'הצג לוח בקרת תרגום שפות';
 $string['displayonpage'] = 'הצג בעמוד';
 $string['documentation'] = 'תיעוד Moodle';
 $string['donotask'] = 'אל תשאל';

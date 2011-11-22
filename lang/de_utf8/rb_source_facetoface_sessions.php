@@ -7,6 +7,7 @@ $string['cancellationreason'] = 'Absage Grund';
 $string['coursedelivery'] = 'Unterrichten des Kurses';
 $string['currentorg'] = 'Aktuelle Organisation des Benutzers';
 $string['currentpos'] = 'Aktuelle Position des Benutzers';
+$string['discountcode'] = 'Rabattcode';
 $string['endtime'] = 'Ende Zeit';
 $string['facilitator'] = 'Moderator';
 $string['ftfname'] = 'Face-to-Face Name';
