@@ -13,6 +13,7 @@ $string['program:handleexceptions'] = 'Handle program exceptions';
 $string['program:manageextensions'] = 'Manage extensions';
 
 // General program
+$string['added'] = 'Added';
 $string['addnewprogram'] = 'Add a new program';
 $string['afterprogramiscompleted'] = 'After program is completed';
 $string['afterprogramisdue'] = 'After program is due';
@@ -416,6 +417,7 @@ $string['pleasesetcompletiontimes'] = 'Please set completion times for all items
 $string['positions'] = 'Positions';
 $string['positionsname'] = 'Positions name';
 $string['positions_category'] = 'position(s)';
+$string['removed'] = 'Removed';
 $string['source'] = 'Source';
 $string['type'] = 'Type';
 $string['userid'] = 'User ID';

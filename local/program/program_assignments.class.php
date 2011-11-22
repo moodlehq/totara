@@ -304,7 +304,7 @@ class prog_assignments {
         require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
 
         $table = new stdClass();
-        $table->head = array('','added','removed');
+        $table->head = array('', get_string('added', 'local_program'), get_string('removed', 'local_program'));
         $table->data = array();
         global $ASSIGNMENT_CATEGORY_CLASSNAMES;
         foreach ($ASSIGNMENT_CATEGORY_CLASSNAMES as $classname) {
