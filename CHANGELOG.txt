@@ -1,5 +1,31 @@
 Totara LMS Changelog
 
+Release 1.1.4 (23 November 2011):
+==================================================
+Improvements:
+    T-8485      Additions to Finnish, German, Hebrew, Portuguese Brazilian, Spanish,
+                Castilian Spanish and Swedish language packs
+
+Bug fixes:
+    T-9465      Fix alignment of report names and icons on my/reports page for
+                right-to-left languages
+    T-9464      Fix course completion checkboxes in right-to-left languages
+    T-9468      Fix date picker localisation in program management
+    T-9471      Fix use of strcmp in plans
+    T-9468      Fix cohort assign buttons in right-to-left languages
+    T-5879      Fix incorrect text in 'Competency Aggregation Method' help file
+    T-9743      Remove iframe border when using SCORM activity
+    T-9457      Fixes for program management in right-to-left languages
+    T-9470      Fix hard-coded language strings in program                                      These strings can now be translated
+    T-9475      Added support for custom course fields to Face-to-face and scorm report sources
+    T-9471      Fix right-to-left language issues on view cohorts page
+    T-6710      Fix typo in manageruserdescription lang string
+    T-9472      Fix right-to-left and language issues in program management admin pages
+    T-9469      totara_get_staff() no longer returns deleted users
+    T-9325      Add extension column option to team members report
+    T-9476      Fix errors and layout/display issues when sending message to user
+
+
 Release 1.1.3 (9 November 2011):
 ==================================================
 
