@@ -89,7 +89,7 @@
 
     print_heading($strheading, '', 1);
 
-    if ($adminediting && has_capability('moodle/category:manage', $context)) {
+    if ($adminediting) {
         echo '<div class="buttons">';
 
         if ($SESSION->viewtype == 'course' &&
