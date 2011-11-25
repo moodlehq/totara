@@ -532,4 +532,4 @@ $string['requestuserattendsession'] = 'Request for $a->usermsg to attend session
 $string['cancelusersession'] = 'Cancelled for $a->usermsg session $a->url';
 
 $string['approveinstruction'] = 'To approve session registration, press accept';
-$string['rejectinstruction'] = 'To reject session registraion, press reject';
+$string['rejectinstruction'] = 'To reject session registration, press reject';
