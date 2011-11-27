@@ -659,7 +659,7 @@ SQL;
 
                 $out .= '<tr class="r' . $oddeven . '">';
                 $out .= "<td>{$framework_text}</td>";
-                $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?prefix=competency&amp;id={$competency->id}\">{$competency->fullname}</a></td>";
+                $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?prefix=competency&amp;id={$competency->id}\">" . format_string($competency->fullname) . "</a></td>";
 
                 // Create evidence object
                 $evidence = new object();
