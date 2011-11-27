@@ -26,7 +26,7 @@ class TCPDF_Protection extends TCPDF
     var $last_rc4_key_c;     //last RC4 computed key
 
     function TCPDF_Protection($orientation='P',$unit='mm',$format='A4') {
-        parent::TCPDF($orientation,$unit,$format);
+        parent::__construct($orientation,$unit,$format);
 
         $this->encrypted=false;
         $this->last_rc4_key='';
