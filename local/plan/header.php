@@ -63,8 +63,7 @@ $navigation = build_navigation($breadcrumbs);
 
 //Javascript include
 local_js(array(
-    TOTARA_JS_DATEPICKER,
-    $CFG->wwwroot.'/local/js/plan.form.datepick.js'
+    TOTARA_JS_DATEPICKER
 ));
 
 

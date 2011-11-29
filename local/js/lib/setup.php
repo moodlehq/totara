@@ -117,6 +117,42 @@ function local_js($options = array()) {
     }
 }
 
+/**
+ * Returns a code snippet to initialize a JS datepicker
+ *
+ * @param string $selector A JQuery Selector string referencing the element to add
+ *                         the picker to
+ * @param boolean $includetags If true, also surrounds the JS in script tags
+ * @param string $dateformat (optional) provide if format should not be dd/mm/yy
+ * @return string Script contents to be included in the page
+ */
+function build_datepicker_js($selector, $includetags = true, $dateformat='dd/mm/yy') {
+    global $CFG;
+    $out = '';
+
+    $rtl = (get_string('thisdirection') == 'ltr') ? 'false' : 'true';
+    if ($includetags) {
+        $out .= '<script type="text/javascript">';
+    }
+    $out .= <<<HEREDOC
+    $(function() {
+        $('{$selector}').datepicker(
+            {
+                dateFormat: '{$dateformat}',
+                showOn: 'both',
+                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
+                buttonImageOnly: true,
+                constrainInput: true,
+                isRTL: {$rtl}
+            }
+        );
+    });
+HEREDOC;
+    if ($includetags) {
+        $out .= '</script>';
+    }
+    return $out;
+}
 
 function build_search_interface($prefix, $frameworkid=0, $select=true,
     $disabledlist=array()) {

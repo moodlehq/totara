@@ -303,21 +303,6 @@ else {
 
 $mform->display();
 
-print <<<HEREDOC
-<script type="text/javascript">
-
-    $(function() {
-        $('#id_enddate').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'both',
-                buttonImage: '../../../local/js/images/calendar.gif',
-                buttonImageOnly: true,
-                constrainInput: true
-            }
-        );
-    });
-</script>
-HEREDOC;
+echo build_datepicker_js('#id_enddate');
 
 print_footer();

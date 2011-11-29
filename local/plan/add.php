@@ -147,10 +147,6 @@ $navigation = build_navigation($navlinks);
 local_js(array(
     TOTARA_JS_DATEPICKER
 ));
-require_js(array(
-    $CFG->wwwroot.'/local/js/plan.form.datepick.js'
-));
-
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
 // Plan menu
@@ -172,22 +168,6 @@ $form->display();
 
 print_container_end();
 
-print <<<HEREDOC
-<script type="text/javascript">
-
-    $(function() {
-        $('input[name="enddate"]').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
-                buttonImageOnly: true,
-                constrainInput: true
-            }
-        );
-    });
-</script>
-HEREDOC;
-
+echo build_datepicker_js('input[name="enddate"]');
 
 print_footer();

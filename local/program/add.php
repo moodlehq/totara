@@ -135,35 +135,9 @@ $form->display();
 
 print_container_end();
 
-print <<<HEREDOC
-<script type="text/javascript">
-
-    $(function() {
-        $('input[name="availablefromselector"]').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
-                buttonImageOnly: true,
-                constrainInput: true
-            }
-        );
-    });
-
-    $(function() {
-        $('input[name="availableuntilselector"]').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
-                buttonImageOnly: true,
-                constrainInput: true
-            }
-        );
-    });
-
-</script>
-HEREDOC;
+echo build_datepicker_js(
+    'input[name="availablefromselector"], input[name="availableuntilselector"]'
+);
 
 admin_externalpage_print_footer();
 

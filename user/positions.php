@@ -195,21 +195,6 @@ else {
     $form->display();
 
     // Setup calendar
-    ?>
-    <script type="text/javascript">
-
-        $(function() {
-            $('#id_timevalidfrom, #id_timevalidto').datepicker(
-                {
-                    dateFormat: 'dd/mm/yy',
-                    showOn: 'both',
-                    buttonImage: '../local/js/images/calendar.gif',
-                    buttonImageOnly: true,
-                    constrainInput: true
-                }
-            );
-            });
-    </script>
-    <?php
+    echo build_datepicker_js('#id_timevalidfrom, #id_timevalidto');
 }
 print_footer($course);

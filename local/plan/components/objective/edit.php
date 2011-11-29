@@ -231,21 +231,6 @@ switch($action){
 
 print_container_end();
 
-print <<<HEREDOC
-<script type="text/javascript">
-
-    $(function() {
-        $('input[name="duedate"]').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
-                buttonImageOnly: true,
-                constrainInput: true
-            }
-        );
-    });
-</script>
-HEREDOC;
+echo build_datepicker_js('input[name="duedate"]');
 
 print_footer();
