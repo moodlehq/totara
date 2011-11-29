@@ -1,6 +1,8 @@
 <?php
 // install.php - created with Totara langimport script version 1.1
 
+$string['aborting'] = 'Abortando...';
+$string['abortinstallation'] = 'Abortando instalación...';
 $string['admindirerror'] = 'El directorio especificado para admin es incorrecto';
 $string['admindirname'] = 'Directorio Admin';
 $string['admindirsetting'] = '<p>Muy pocos servidores web usan /admin como URL especial para permitirle acceder a un panel de control o similar. Desgraciadamente, esto entra en conflicto con la ubicación estándar de las páginas de administración de Moodle Usted puede corregir esto renombrando el directorio admin en su instalación, y poniendo aquí ese nuevo nombre. Por ejemplo: <blockquote> moodleadmin</blockquote>.
@@ -18,8 +20,11 @@ $string['adminlastname'] = 'Apellido:';
 $string['adminpassword'] = 'Contraseña:';
 $string['adminusername'] = 'Nombre de usuario:';
 $string['askcontinue'] = 'Continuar (sí/no):';
+$string['availabledbtypes'] = 'Tipos de db disponibles';
 $string['availablelangs'] = 'Lista de idiomas disponibles';
+$string['cannotconnecttodb'] = 'No se puede conectar a db';
 $string['caution'] = 'Precaución';
+$string['checkingphpsettings'] = 'Revisando la Configuración PHP';
 $string['chooselanguage'] = 'Seleccionar idioma';
 $string['chooselanguagehead'] = 'Seleccionar idioma';
 $string['chooselanguagesub'] = 'Por favor, seleccione un idioma para el proceso de instalación.';
@@ -32,12 +37,15 @@ $string['clitablesexist'] = 'Tablas de base de datos ya existentes, la instalaci
 $string['compatibilitysettings'] = 'Comprobando sus ajustes PHP...';
 $string['compatibilitysettingshead'] = 'Comprobando sus ajustes PHP...';
 $string['compatibilitysettingssub'] = 'Su servidor debería pasar todos estas comprobaciones para que Moodle pueda funcionar correctamente.';
+$string['configfilecreated'] = 'Archivo de configuración creado exitosamente';
 $string['configfiledoesnotexist'] = '¡¡El archivo de configuración no existe!!';
 $string['configfilenotwritten'] = 'El script de instalación no ha podido crear automáticamente un archivo config.php con las especificaciones elegidas. Por favor, copie el siguiente código en un archivo llamado config.php y coloque ese archivo en el directorio raíz de Moodle.';
 $string['configfilewritten'] = 'config.php se ha creado con éxito';
 $string['configurationcomplete'] = 'Configuración completa';
 $string['configurationcompletehead'] = 'Configuración completa';
 $string['configurationcompletesub'] = 'Moodle ha creado su fichero de configuración';
+$string['configurationfileexist'] = '¡El archivo de configuración ya existe!';
+$string['creatingconfigfile'] = 'Creando el archivo de configuración...';
 $string['database'] = 'Base de datos';
 $string['databasecreationsettings'] = 'Ahora necesita configurar los ajustes de la base de datos donde se almacenarán la mayoría de los datos de Moodle. El instalador creará la base de datos con los ajustes especificados más abajo.<br />
 <br /> <br />
@@ -71,6 +79,7 @@ $string['databasesettings'] = 'Ahora necesita configurar la base de datos en la 
 <b>Usuario:</b> nombre de usuario de la base de datos<br />
 <b>Contraseña:</b> contraseña de la base de datos<br />
 <b>Prefijo de tablas:</b> prefijo a utilizar en todos los nombres de tabla';
+$string['databasesettingsformoodle'] = 'Configuración de base de datos para Moodle';
 $string['databasesettingshead'] = 'Ahora necesita configurar la base de datos en la que se almacenarán la mayor parte de los datos de Moodle. Esta base de datos debe haber sido ya creada y disponer de un nombre de usuario y una contraseña de acceso.';
 $string['databasesettingssub'] = '<b>Tipo:</b> mysql o postgres7<br />
 <b>Servidor:</b> p.ej.: localhost o db.tudominio.com<br />
@@ -150,7 +159,7 @@ $string['directorysettingshead'] = 'Por favor, confirme las siguientes direccion
 $string['directorysettingssub'] = '<b>Dirección Web:</b>
 Especifique la dirección web completa en la que se accederá a Moodle.
 Si su sitio es accesible desde diferentes URLs entonces elija
-la más natural que sus estudiantes deberían utilizar. No incluya la diagonal invertida final ().
+la más natural que sus estudiantes deberían utilizar. No incluya la diagonal invertida final (/).
 <br />
 <br />
 <b>Directorio Moodle:</b>
@@ -166,6 +175,7 @@ $string['download'] = 'Descargar';
 $string['downloadlanguagebutton'] = 'Descargar el paquete de idioma \"$a\"';
 $string['downloadlanguagehead'] = 'Descargar paquete de idioma';
 $string['downloadlanguagenotneeded'] = 'Puede continuar el proceso de instalación con el idioma por defecto, \"$a\".';
+$string['downloadlanguagepack'] = '¿Quiere descargar el paquete de idiomas ahora? (Sí/No):';
 $string['downloadlanguagesub'] = 'Ahora tiene la opción de descargar su paquete de idioma y continuar con el proceso de instalación en ese idioma.<br /><br />Si no es posible la descarga el proceso de instalación continuará en inglés (una vez que la instalación haya finalizado, tendrá la oportunidad de descargar e instalar otros idiomas adicionales).';
 $string['downloadsuccess'] = 'Se descargó exitosamente el paquete de idiomas';
 $string['doyouagree'] = '¿Está de acuerdo? (sí/no):';
@@ -205,13 +215,23 @@ $string['inputdatadirectory'] = 'Directorio de Datos:';
 $string['inputwebadress'] = 'Dirección Web:';
 $string['inputwebdirectory'] = 'Directorio Moodle:';
 $string['installation'] = 'Instalación';
+$string['installationiscomplete'] = '¡La instalación está completada!';
+$string['invalidargumenthelp'] = 'Error: Argumento(s) inválido(s)
+Uso: \$php cliupgrade.php OPCIONES
+Uso opción --help para obtener más ayuda';
 $string['invalidemail'] = 'Correo electrónico inválido';
 $string['invalidhost'] = 'Huésped inválido';
+$string['invalidint'] = 'Error: el valor no es entero';
+$string['invalidintrange'] = 'Error: el valor está por fuera del rango válido';
 $string['invalidpath'] = 'Ruta inválida';
+$string['invalidsetelement'] = 'Error: El valor dado no está en las opciones dadas';
 $string['invalidtextvalue'] = 'Valor de texto inválido';
 $string['invalidurl'] = 'URL inválida';
+$string['invalidvalueforlanguage'] = 'Valor inválido para la opción --lang. Escriba --help para más ayuda';
+$string['invalidyesno'] = 'Error: el valor no es un argumento del tipo sí/no';
 $string['langdownloaderror'] = 'El idioma \"$a\" no pudo ser instalado. El proceso de instalación continuará en inglés.';
 $string['langdownloadok'] = 'El idioma \"$a\" ha sido instalado correctamente. El proceso de instalación continuará en este idioma.';
+$string['locationanddirectories'] = 'Ubicaciones y directorios';
 $string['magicquotesruntime'] = 'Magic Quotes Run Time';
 $string['magicquotesruntimeerror'] = 'Debe estar desactivado';
 $string['magicquotesruntimehelp'] = '<p>Magic quotes runtime debe estar desactivado para que Moodle funcione adecuadamente.</p>
@@ -271,6 +291,7 @@ $string['pathssubwwwroot'] = 'Dirección web completa donde Moodle será accesad
 $string['pathsunsecuredataroot'] = 'La ubicación de dataroot no es segura';
 $string['pathswrongadmindir'] = 'El directorio admin no existe';
 $string['pathswrongdirroot'] = 'La ubicación de dirroot es incorrecta';
+$string['pearargerror'] = 'La biblioteca PEAR no pudo identificar el argumento';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP no ha sido adecuadamente configurado con la extensión PGSQL de modo que pueda comunicarse con PostgreSQL. Por favor, compruebe el archivo php.ini o vuelva a compilar PHP.';
 $string['phpextension'] = 'Extensión PHP $a';
 $string['phpversion'] = 'Versión PHP';
@@ -290,6 +311,7 @@ $string['safemodehelp'] = '<p>Moodle puede tener varios problemas  Modo Seguro (
 <p>Normalmente el Modo Seguro (\'safe mode\') sólo es activado por servidores web públicos paranoides, así que lo que usted debe hacer es encontrar otra compañía para su sitio Moodle.</p>
 
 <p>Si lo desea, puede seguir con la instalación, pero experimentará problemas más adelante.</p>';
+$string['selectlanguage'] = 'Seleccionando un idioma para la instalación';
 $string['sessionautostart'] = 'Inicio automático de sesión';
 $string['sessionautostarterror'] = 'Esto debe estar desactivado';
 $string['sessionautostarthelp'] = '<p>Moodle requiere apoyo de sesión y no funcionará sin él.</p>
@@ -303,10 +325,12 @@ $string['sitesummary'] = 'Resumen del sitio:';
 $string['skipdbencodingtest'] = 'Pasar por alto el test de decodificación de la BD';
 $string['sqliteextensionisnotpresentinphp'] = 'PHP no ha sido adecuadamente configurado con la extensión SQLite. Por favor, compruebe su archivo php.ini o recompile PHP.';
 $string['tableprefix'] = 'Prefijo de la tabla:';
+$string['unsafedirname'] = 'Error: Caracteres inseguros en el nombre del directorio. Los caracteres válidos son a-zA-Z0-9';
 $string['upgradingactivitymodule'] = 'Actualizando módulo de actividad';
 $string['upgradingbackupdb'] = 'Actualizando la copia de seguridad de la base de datos';
 $string['upgradingblocksdb'] = 'Actualizando la base de datos de masa';
 $string['upgradingblocksplugin'] = 'Actualizando plugins de masa';
+$string['upgradingcompleted'] = 'Actualización completada...';
 $string['upgradingcourseformatplugin'] = 'Actualizando plugins del formato del curso';
 $string['upgradingenrolplugin'] = 'Actualizando plugin de apuntarse';
 $string['upgradinggradeexportplugin'] = 'Actualizando plugin de exportación de nota';
@@ -316,6 +340,35 @@ $string['upgradinglocaldb'] = 'Actualizando la base de datos local';
 $string['upgradingmessageoutputpluggin'] = 'Actualizando plugin de pregunta/tipo';
 $string['upgradingqtypeplugin'] = 'Actualizando el Plugin Pregunta/tipo';
 $string['upgradingrpcfunctions'] = 'Actualizando las funciones RPC';
+$string['usagehelp'] = 'Sinopsis:
+\$php cliupgrade.php OPCIONES
+OPCIONES
+--lang Idioma válido instalado durante la instalación. Inglés(in) es por defecto
+--webaddr Dirección web para el sitio Moodle
+--moodledir Ubicación de la carpeta web de moodle
+--datadir Ubicación de la carpeta de datos moodle (no se debe ver en la web)
+--dbtype Tipo de base de datos. Por defecto es mysql 
+--dbhost Host de la base de datos. Por defecto es localhost
+--dbname Nombre de la base de datos. Por defecto es moodle
+--dbuser Usuario de la base de datos. Por defecto es en blanco
+--dbpass Contraseña de la base de datos. Por defecto es en blanco
+--prefix Prefijo de tabla para las tablas de arriba de las base de datos. Por defecto es mdl
+--verbose 0 Sin output; 1 Output resumido (por defecto); 2 Output detallado
+--interactivelevel 0 No interactivo (por defecto); 1 Semi interactivo; 2 Interactivo
+--agreelicense Sí(por defecto) o No
+--confirmrelease Sí(por defecto) o No
+--sitefullname Nombre completo para el sitio. Por defecto es:Sitio Moodle (¡¡Por favor cambie el nombre del sitio!!)
+--siteshortname Nombre corto para el sitio. Por defecto es Moodle
+--sitesummary Resumen del sitio. Por defecto es en blanco
+--adminfirstname Nombre del admin. Por defecto es Admin
+--adminlastname Apellido del admin. Por defecto es admin
+--adminusername Nombre de usuario para el admin. Por defecto es admin
+--adminpassword Contraseña del admin. Por defecto es admin
+--adminemail Dirección de email del admin. Por defecto es root@localhost
+--help Imprimir esta ayuda
+
+Uso:
+\$php cliupgrade.php --lang=in--webaddr=http://www.ejemplo.com --moodledir=/var/www/html/moodle --datadir=/var/moodledata --dbtype=mysql --dbhost=localhost--dbname=moodle --dbuser=root --prefix=mdl --agreelicense=si--confirmrelease=si--sitefullname=\"Ejemplo de sitio Moodle\" --siteshortname=moodle --sitesummary=sitioparami--adminfirstname=Admin --adminlastname=Usuario--adminusername=admin --adminpassword=admin --adminemail=admin@ejemplo.com --verbose=1 --interactivelevel=2';
 $string['versionerror'] = 'El usuario abortó debido a un error en la versión';
 $string['welcomep10'] = '$a->installername ($a->installerversion)';
 $string['welcomep20'] = 'Si está viendo esta página es porque ha podido ejecutar el paquete <strong>$a->packname $a->packversion</strong> en su ordenador. !Enhorabuena!';
@@ -331,8 +384,10 @@ $string['welcomep60'] = 'Las siguientes páginas le guiarán a través de alguno
     y ajustar <strong>Moodle</strong> en su ordenador. Puede utilizar los valores por defecto sugeridos o,
     de forma opcional, modificarlos para que se ajusten a sus necesidades.';
 $string['welcomep70'] = 'Pulse en el botón \"Siguiente\" para continuar con la configuración de <strong>Moodle</strong>.';
+$string['welcometext'] = '---Bienvenido al instalador del comando moodle ---';
 $string['writetoconfigfilefaild'] = 'Error: Falló la escritura en el archivo config';
 $string['wwwroot'] = 'Dirección Web';
 $string['wwwrooterror'] = 'La \'Dirección Web\' parece incorrecta. No se pudo encontrar una instalación de Moodle. El valor ha sido cambiado por el original.';
+$string['yourchoice'] = 'Su elección:';
 
 ?>

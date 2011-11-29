@@ -217,6 +217,7 @@ $string['releaseteachergrades'] = 'Publicar Calificaciones del Profesor';
 $string['removeallattachments'] = 'Eliminar todos los anexos';
 $string['repeatanalysis'] = 'Repetir el Análisis';
 $string['reply'] = 'Responder';
+$string['resetworkshopall'] = 'Eliminar envíos, notas y evaluaciones';
 $string['returnto'] = 'Devolver a';
 $string['returntosubmissionpage'] = 'Volver a la Página de Envíos';
 $string['rubric'] = 'Rúbrica';

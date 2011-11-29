@@ -1,29 +1,11 @@
 <?php
+// gradeexport_fusion.php - created with Totara langimport script version 1.1
 
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+$string['fusion:publish'] = 'Publicar a nota da exportaÃ§Ã£o da Tabela de FusÃ£o';
+$string['fusion:view'] = 'Usar a exportaÃ§Ã£o da Tabela de FusÃ£o';
+$string['modulename'] = 'Exportar Tabela de FusÃ£o';
+$string['noscript'] = 'Habilite o JavaScript para esta pÃ¡gina funcionar';
+$string['pluginname'] = 'Exportar Tabela de FusÃ£o';
+$string['popup'] = 'Janela de Tabelas de FusÃ£o';
 
-/**
- * Strings for component 'gradeexport_fusion', language 'en', branch 'MOODLE_20_STABLE'
- *
- * @package   gradeexport_fusion
- * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-$string['modulename'] = 'Exportar Tabela de Fusão';
-$string['pluginname'] = 'Exportar Tabela de Fusão';
-$string['fusion:publish'] = 'Publicar a nota da exportação da Tabela de Fusão';
-$string['fusion:view'] = 'Usar a exportação da Tabela de Fusão';
+?>

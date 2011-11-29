@@ -1,32 +1,33 @@
 <?php
-// lang file for local/plan/rb_sources/rb_sources_dp_competency.php
-$string['sourcetitle'] = 'Registro do aprendizado: Competências';
-// columns
+// rb_source_dp_competency.php - created with Totara langimport script version 1.1
+
+$string['competencyduedate'] = 'Data de vencimento da competÃªncia';
+$string['competencyname'] = 'Nome da competÃªncia';
+$string['competencypriority'] = 'Prioridade da competÃªncia';
+$string['competencyproficiency'] = 'ProficiÃªncia da competÃªncia';
+$string['competencyproficiencyandapproval'] = 'ProficiÃªncia da competÃªncia (e status de aprovaÃ§Ã£o)';
+$string['competencyproficient'] = 'Proficiente na competÃªncia?';
+$string['competencystatus'] = 'Status da competÃªncia';
+$string['competencytype'] = 'Tipo de competÃªncia';
+$string['competencytypeid'] = 'ID do tipo de competÃªncia';
+$string['courses'] = 'Cursos';
+$string['coursetypeicon'] = 'Tipo';
 $string['duedate'] = 'Data de vencimento';
 $string['plan'] = 'Plano';
+$string['planenddate'] = 'Data de tÃ©rmino do plano';
 $string['planname'] = 'Nome do plano';
-$string['plannamelinked'] = 'Nome do plano (vinculado à página do plano)';
-$string['planstartdate'] = 'Data de início do plano';
-$string['planenddate'] = 'Data de término do plano';
+$string['plannamelinked'] = 'Nome do plano (vinculado Ã  pÃ¡gina do plano)';
+$string['planstartdate'] = 'Data de inÃ­cio do plano';
 $string['planstatus'] = 'Status do plano';
 $string['plantemplate'] = 'Modelo do plano';
 $string['priority'] = 'Prioridade';
-$string['courses'] = 'Cursos';
-$string['templatename'] = 'Nome do modelo do plano';
-$string['templatestartdate'] = 'Data de início do modelo do plano';
-$string['templateenddate'] = 'Data de término do modelo do plano';
-$string['competencyname'] = 'Nome da competência';
-$string['competencyduedate'] = 'Data de vencimento da competência';
-$string['competencypriority'] = 'Prioridade da competência';
-$string['competencystatus'] = 'Status da competência';
-$string['competencyproficiency'] = 'Proficiência da competência';
-$string['competencyproficient'] = 'Proficiente na competência?';
-$string['competencyproficiencyandapproval'] = 'Proficiência da competência (e status de aprovação)';
-$string['coursetypeicon'] = 'Tipo';
+$string['sourcetitle'] = 'Registro do aprendizado: CompetÃªncias';
 $string['status'] = 'Status';
-
-// column types for this source, as strings
+$string['templateenddate'] = 'Data de tÃ©rmino do modelo do plano';
+$string['templatename'] = 'Nome do modelo do plano';
+$string['templatestartdate'] = 'Data de inÃ­cio do modelo do plano';
+$string['type_competency'] = 'CompetÃªncia';
 $string['type_plan'] = 'Plano';
 $string['type_template'] = 'Modelo do plano';
-$string['type_competency'] = 'Competência';
 
+?>

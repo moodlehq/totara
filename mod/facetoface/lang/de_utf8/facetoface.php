@@ -1,14 +1,13 @@
-<?PHP // $Id$ 
-      // facetoface.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// facetoface.php - created with Totara langimport script version 1.1
 
 $string['addingsession'] = 'Hinzufügen einer neuen Sitzung in $a';
 $string['addmanageremailaddress'] = 'E-Mail-Adresse des Managers hinzufügen.';
 $string['addmanageremailinstruction'] = 'Sie haben die E-Mail-Adresse Ihres Managers noch nicht eingegeben. Bitte geben Sie diese unter der Anmeldung für diese Sitzung ein.';
-$string['addnewfield'] = 'Ein neues spezifischesFeld hinzufügen';
-$string['addnewfieldlink'] = 'Ein neues spezifisches Feld erstellen';
-$string['addnewnotice'] = 'Eine neue Standortmitteilung hinzufügen';
-$string['addnewnoticelink'] = 'Eine neue Standortmitteilung erstellen';
+$string['addnewfield'] = 'Ein neues benutzerdefiniertes Feld hinzufügen';
+$string['addnewfieldlink'] = 'Ein neues benutzerdefiniertes Feld erstellen';
+$string['addnewnotice'] = 'Eine neue Website-Mitteilung hinzufügen';
+$string['addnewnoticelink'] = 'Eine neue Website-Mitteilung erstellen';
 $string['addremoveattendees'] = 'Teilnehmer hinzufügen/entfernen';
 $string['addsession'] = 'Eine neue Sitzung hinzufügen';
 $string['addstudent'] = 'Schüler hinzufügen';
@@ -19,7 +18,7 @@ $string['alreadysignedup'] = 'Sie haben sich für diese Face-to-face-Aktivität 
 $string['answer'] = 'Anmelden';
 $string['answercancel'] = 'Abmelden';
 $string['approvalreqd'] = 'Genehmigung erforderlich';
-$string['approve'] = 'genehmigen';
+$string['approve'] = 'Genehmigen';
 $string['approveinstruction'] = 'Bitte annehmen, um Registrierung der Sitzung zu genehmigen';
 $string['assessmentyour'] = 'Ihre Bewertung';
 $string['attendance'] = 'Teilnahme';
@@ -30,7 +29,7 @@ $string['attendeestablesummary'] = 'Personen, die an dieser Sitzung teilnehmen w
 $string['booked'] = 'Gebucht';
 $string['bookedforsession'] = 'Gebucht für Sitzung $a';
 $string['bookingcancelled'] = 'Ihre Buchung wurde storniert.';
-$string['bookingcompleted'] = 'Ichre Buchung wurde abgeschlossen.';
+$string['bookingcompleted'] = 'Ihre Buchung wurde abgeschlossen.';
 $string['bookingfull'] = 'Buchung voll';
 $string['bookingopen'] = 'Buchung offen';
 $string['bookingstatus'] = 'Sie sind für die folgende Sitzung gebucht';
@@ -57,7 +56,7 @@ $string['changemanageremailinstruction'] = 'Bitte geben Sie nachfolgend die E-Ma
 $string['clearall'] = 'Alles löschen';
 $string['closed'] = 'Geschlossen';
 $string['conditions'] = 'Bedingungen';
-$string['conditionsexplanation'] = 'Alle diese Kriterien müssen erfüllt sein, um die Mitteilung auf dem Schulungskalender anzuzeigen.';
+$string['conditionsexplanation'] = 'Alle diese Kriterien müssen erfüllt sein, um die Mitteilung auf dem Lernkalender anzuzeigen.';
 $string['confirm'] = 'Bestätigen';
 $string['confirmanager'] = 'E-Mail-Adresse des Managers bestätigen';
 $string['confirmation'] = 'Bestätigung';
@@ -74,7 +73,7 @@ $string['copysession'] = 'Sitzung kopieren';
 $string['cost'] = 'Kosten';
 $string['costheading'] = 'Sitzungskosten';
 $string['currentstatus'] = 'Aktueller Status';
-$string['customfieldsheading'] = 'Spezifische Sitzungsfelder';
+$string['customfieldsheading'] = 'Benutzerdefinierte Sitzungsfelder';
 $string['date'] = 'Datum';
 $string['dateadd'] = 'Neues Datum hinzufügen';
 $string['dateremove'] = 'Dieses Datum entfernen';
@@ -111,28 +110,29 @@ $string['error:cannotsendconfirmationthirdparty'] = 'Es wurde eine Bestätigungs
 $string['error:cannotsendconfirmationuser'] = 'Es ist ein Problem beim Senden der Bestätigungsmitteilung an Ihr E-Mail-Konto aufgetreten.';
 $string['error:cannotsendconfirmationusermanager'] = 'Es konnte keine Bestätigungsmitteilung an Ihre E-Mail-Adresse und die E-Mail-Adresse Ihres Mangers gesendet werden.';
 $string['error:cannotsendrequestmanager'] = 'Es ist ein Problem beim Senden der Anmeldeanforderungsmitteilung an das E-Mail-Konto Ihres Managers aufgetreten.';
-$string['error:cannotsendrequestuser'] = 'Es ist ein Problem beim Senden der Anmeldeanforderungsmitteilung an Ihr E-Mail-Konto aufgetreten.';
+$string['error:cannotsendrequestuser'] = 'Es ist ein Problem beim Senden der Anmeldeaufforderungsmitteilung an Ihr E-Mail-Konto aufgetreten.';
 $string['error:canttakeattendanceforunstartedsession'] = 'Kann Teilnahme für eine Sitzung, die noch starten muss, nicht aufnehmen.';
-$string['error:couldnotaddfield'] = 'Es spezielles Sitzungsfeld konnte nicht hinzugefügt werden.';
-$string['error:couldnotaddnotice'] = 'Standortmitteilung konnte nicht hinzugefügt werden.';
+$string['error:couldnotaddfield'] = 'Benutzerdefiniertes Sitzungsfeld konnte nicht hinzugefügt werden.';
+$string['error:couldnotaddnotice'] = 'Website-Mitteilung konnte nicht hinzugefügt werden.';
 $string['error:couldnotaddsession'] = 'Sitzung konnte nicht hinzugefügt werden';
 $string['error:couldnotcopysession'] = 'Sitzung konnte nicht kopiert werden';
-$string['error:couldnotdeletefield'] = 'Spezielles Sitzungsfeld konnte nicht gelöscht werden';
-$string['error:couldnotdeletenotice'] = 'Standortmitteilung konnte nicht gelöscht werden';
+$string['error:couldnotdeletefield'] = 'Benutzerdefiniertes Sitzungsfeld konnte nicht gelöscht werden';
+$string['error:couldnotdeletenotice'] = 'Websit-Mitteilung konnte nicht gelöscht werden';
 $string['error:couldnotdeletesession'] = 'Sitzung konnte nicht gelöscht werden';
 $string['error:couldnotfindsession'] = 'Die neu eingefügte Sitzung konnte nicht gefunden werden';
-$string['error:couldnotsavecustomfield'] = 'Spezielles Feld konnte nicht gespeichert werden';
+$string['error:couldnotsavecustomfield'] = 'Benutzerdefiniertes Feld konnte nicht gespeichert werden';
 $string['error:couldnotupdatecalendar'] = 'Sitzung konnte im Kalender nicht aktualisiert werden.';
 $string['error:couldnotupdatef2frecord'] = 'Konnte Face-to-Face-Anmeldedatensatz in Datenbank nicht aktualisieren';
-$string['error:couldnotupdatefield'] = 'Konnte spezielles Sitzungsfeld nicht aktualisieren';
+$string['error:couldnotupdatefield'] = 'Konnte benutzerdefiniertes Sitzungsfeld nicht aktualisieren';
 $string['error:couldnotupdatemanageremail'] = 'E-Mail-Adresse des Managers konnte nicht aktualisiert werden.';
-$string['error:couldnotupdatenotice'] = 'Standortmitteilung konnte nicht aktualisiert werden.';
+$string['error:couldnotupdatenotice'] = 'Website-Mitteilung konnte nicht aktualisiert werden.';
 $string['error:couldnotupdatesession'] = 'Sitzung konnte nicht aktualisiert werden';
 $string['error:coursemisconfigured'] = 'Kurs ist fehlerhaft konfiguriert';
+$string['error:cronprefix'] = 'Fehler: Face-to-Face cron:';
 $string['error:emptylocation'] = 'Ort war leer.';
 $string['error:emptymanageremail'] = 'E-Mail-Adresse des Managers ist leer.';
 $string['error:emptyvenue'] = 'Veranstaltungsort war leer.';
-$string['error:enrolmentfailed'] = '$a konnte nicht in den Kurse eingeschrieben werden.';
+$string['error:enrolmentfailed'] = '$a konnte nicht in den Kurs eingeschrieben werden.';
 $string['error:eventoccurred'] = 'Sie können kein Ereignis stornieren, das bereits stattgefunden hat.';
 $string['error:f2ffailedupdatestatus'] = 'Face-to-Face konne Nutzerstatus nicht aktualisieren.';
 $string['error:incorrectcoursemodule'] = 'Kursmodul ist fehlerhaft';
@@ -141,7 +141,7 @@ $string['error:incorrectcoursemodulesession'] = 'Kursmodul Face-to-Face-Sitzung 
 $string['error:incorrectfacetofaceid'] = 'Face-to-Face-ID wahr fehlerhaft';
 $string['error:incorrectnotificationtype'] = 'Fehlerhafter Mitteilungstyp bereitgestellt';
 $string['error:invaliduserid'] = 'Ungültige Nutzer-ID';
-$string['error:manageremailaddressmissing'] = 'Sie sind gegenwärtig keinem Manager im System zugewiesen. Bitte kontaktieren Sie den Site-Administrator.';
+$string['error:manageremailaddressmissing'] = 'Sie sind gegenwärtig keinem Manager im System zugewiesen. Bitte kontaktieren Sie den Website-Administrator.';
 $string['error:mustspecifycoursemodulefacetoface'] = 'Es muss ein Kursmodul oder eine Face-to-Face-ID angegeben werden';
 $string['error:nomanageremail'] = 'Sie haben keine E-Mail-Adresse für Ihren Manager angegeben';
 $string['error:nomanagersemailset'] = 'Es wurde keine E-Mail-Adresse für den Manager eingestellt';
@@ -149,8 +149,8 @@ $string['error:nopermissiontosignup'] = 'Sie haben keine Berechtigung, sich an d
 $string['error:problemsigningup'] = 'Bei der Anmeldung ist ein Problem aufgetreten.';
 $string['error:removeattendee'] = 'Kann $a nicht aus der Sitzung entfernen.';
 $string['error:sessionstartafterend'] = 'Startdatum/-zeit der Sitzung liegt nach dem Ende.';
-$string['error:shortnametaken'] = 'Spezielles Feld mit diesem kurzen Namen besteht bereits.';
-$string['error:signedupinothersession'] = 'Sie sind bereits an einer anderen Sitzung für diese Aktivität angemeldet. Sie können sich nur für eine Sitzung pro Face-to-FAce-Aktivität anmelden.';
+$string['error:shortnametaken'] = 'Benutzerdefiniertes Feld mit diesem Kurznamen besteht bereits.';
+$string['error:signedupinothersession'] = 'Sie sind bereits an einer anderen Sitzung für diese Aktivität angemeldet. Sie können sich nur für eine Sitzung pro Face-to-Face-Aktivität anmelden.';
 $string['error:unknownbuttonclicked'] = 'Mit dem angeklickten Feld ist keine Aktion verknüpft.';
 $string['excelformat'] = 'Excel';
 $string['export'] = 'Exportieren';
@@ -209,16 +209,16 @@ $string['moreinfo'] = 'Weitere Infos';
 $string['multiday'] = 'mehrtätgig';
 $string['newmanageremailaddress'] = 'E-Mail-Adresse des Managers';
 $string['noactionableunapprovedrequests'] = 'Keine umsetzbaren unbestätigten Anfragen';
-$string['nocustomfields'] = '<p>Es wurden keine speziellen Felder definiert.</p>';
+$string['nocustomfields'] = '<p>Es wurden keine benutzerdefinierten Felder festgelegtt.</p>';
 $string['nofacetofaces'] = 'Es bestehen keine Face-to-Face-Aktivitäten';
 $string['none'] = 'keine';
 $string['noremindersneedtobesent'] = 'Es müssen keine Erinnerungen versendet werden.';
 $string['normalcost'] = 'Normale Kosten';
 $string['nosignedupusers'] = 'Für diese Sitzung wurden keine Nutzer angemeldet.';
-$string['nositenotices'] = '<p>Es wurden keinen Standortmitteilungen definiert.</p>';
+$string['nositenotices'] = '<p>Es wurden keinen Website-Mitteilungen definiert.</p>';
 $string['note'] = 'Hinweis';
 $string['notefull'] = 'Auch wenn die Sitzung vollständig ausgebucht ist, können Sie sich noch registrieren. Sie kommen auf eine Warteliste (rot markiert). Wenn sich jemand abmeldet, steigt der erste Schüler/die erste Schülerin auf der Warteliste zu den eingetragenen Schülern auf und es wird eine Mitteilung per E-Mail an den Schüler/die Schülerin versendet.';
-$string['noticedeleteconfirm'] = 'Standortmitteilung \'$a->name\' löschen?<br/><blockquote>$a->text</blockquote>';
+$string['noticedeleteconfirm'] = 'Websit-Mitteilung \'$a->name\' löschen?<br/><blockquote>$a->text</blockquote>';
 $string['noticetext'] = 'Mitteilungstext';
 $string['notificationboth'] = 'E-Mail-Mitteilung und iCalendar-Termin';
 $string['notificationemail'] = 'Nur E-Mail-Mitteilung';
@@ -227,13 +227,25 @@ $string['notificationtype'] = 'Mitteilungstyp';
 $string['notsignedup'] = 'Sie sind für diese Sitzung nicht angemeldet.';
 $string['notsubmittedyet'] = 'Noch nicht bewertet';
 $string['noupcoming'] = '<p><i>Keine bevorstehenden Sitzungen</i></p>';
-$string['odsformat'] = 'DokumentÖffnen';
+$string['odsformat'] = 'OffenesDokument';
 $string['onehour'] = '1 Stunde';
 $string['oneminute'] = '1 Minute';
 $string['options'] = 'Optionen';
 $string['or'] = 'oder';
 $string['order'] = 'Auftrag';
 $string['place'] = 'Raum';
+$string['placeholder:alldates'] = '[alleDaten]';
+$string['placeholder:attendeeslink'] = '[TeilnehmerLink]';
+$string['placeholder:cost'] = '[Kosten]';
+$string['placeholder:details'] = '[Details]';
+$string['placeholder:duration'] = '[Dauer]';
+$string['placeholder:facetofacename'] = '[FaceToFaceName]';
+$string['placeholder:finishtime'] = '[Endzeit]';
+$string['placeholder:firstname'] = '[Vorname]';
+$string['placeholder:lastname'] = '[Nachname]';
+$string['placeholder:reminderperiod'] = '[Erinnerungszeitraum]';
+$string['placeholder:sessiondate'] = '[Sitzungsdatum]';
+$string['placeholder:starttime'] = '[Startzeit]';
 $string['points'] = 'Punkte';
 $string['pointsplural'] = 'Punkte';
 $string['previoussessions'] = 'Vorherige Sitzungen';
@@ -248,6 +260,10 @@ $string['reminder'] = 'Erinnerung';
 $string['remindermessage'] = 'Erinnerungsmitteilung';
 $string['reminderperiod'] = 'Tage, bevor Mitteilung gesendet wird';
 $string['requestattendsession'] = 'Anfrage zur Teilnahme an Sitzung $a';
+$string['requestattendsessionsent'] = 'Anfrage zur Teilnahme an Sitzung $a an Manager gesendet';
+$string['requestmessage'] = 'Anfragemitteilung';
+$string['requeststablesummary'] = 'Personen, die eine Teilnahme an dieser Sitzung anfragen.';
+$string['requestuserattendsession'] = 'Anfrage für $a->usermsg zur Teilnahme an Sitzung $a->url';
 $string['room'] = 'Raum';
 $string['saveallfeedback'] = 'Alle Antworten speichern';
 $string['saveattendance'] = 'Teilnahme speichern';
@@ -255,36 +271,170 @@ $string['scheduledsession'] = 'Geplante Sitzung';
 $string['scheduledsessions'] = 'Geplante Sitzungen';
 $string['seatsavailable'] = 'Verfügbare Plätze';
 $string['seeattendees'] = 'Teilnehmer anzeigen';
+$string['sentremindermanager'] = 'Erinnerungs-E-Mail an Nutzermanager gesendet';
+$string['sentreminderuser'] = 'Erinnerungs-E-Mail an Nutzer gesendet';
 $string['sessiondate'] = 'Sitzungsdatum';
 $string['sessiondatetime'] = 'Sitzungsdatum/-uhrzeit';
 $string['sessiondatetimeknown'] = 'Sitzungsdatum/-uhrzeit bekannt';
 $string['sessionfinishtime'] = 'Sitzungsendzeit';
 $string['sessioninprogress'] = 'Sitzung läuft';
+$string['sessionisfull'] = 'Diese Sitzung ist jetzt voll. Sie müssen eine andere Zeit wählen oder mit dem Instructor reden.';
 $string['sessionover'] = 'Sitzung abgelaufen';
+$string['sessionrequiresmanagerapproval'] = 'Diese Sitzung erfordert eine Managergenehmigung für die Buchung.';
+$string['sessionroles'] = 'Sitzungsrollen';
+$string['sessions'] = 'Sitzungen';
+$string['sessionsdetailstablesummary'] = 'Vollständige Beschreiung der aktuellen Sitzung.';
+$string['sessionsoncoursepage'] = 'Auf Kursseite angezeigte Sitzungen';
+$string['sessionstartdate'] = 'Startdatum der Sitzung';
+$string['sessionstarttime'] = 'Startzeit der Sitzung';
+$string['sessionvenue'] = 'Veranstaltungsort der Sitzung';
+$string['setting:addchangemanageremail'] = 'Bitten Sie die Nutzer um die E-Mail-Adresse von deren Manager.';
+$string['setting:addchangemanageremail_caption'] = 'E-Mail des Managers:';
+$string['setting:addchangemanageremaildefault'] = 'Bitten Sie die Nutzer um die E-Mail-Adresse von deren Manager.';
 $string['setting:defaultcancellationinstrmngr'] = 'Standardmäßige, an Manager gesendete Stornierungsmitteilung.';
 $string['setting:defaultcancellationinstrmngr_caption'] = 'Stornierungsmitteilung (Manager)';
+$string['setting:defaultcancellationinstrmngrdefault'] = '*** Nur Mitteilung ****
+
+Hiermit wird Ihnen mitgeteilt, dass [Vorname] [Nachname] nicht mehr für den folgenden Kurs angemeldet ist und Sie als Teamleiter/Manager aufgeführt hat.
+
+*** Die Buchungsstornierung von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt****';
 $string['setting:defaultcancellationmessage'] = 'Standardmäßige, an Nutzer gesendete Stornierungsmitteilung.';
 $string['setting:defaultcancellationmessage_caption'] = 'Stornierungsmitteilung';
+$string['setting:defaultcancellationmessagedefault'] = 'Hiermit teilen wir Ihnen mit, dass Ihre Buchung für den folgenden Kurs storniert wurde:
+
+***BUCHUNG STORNIERT***
+
+Teilnehmer: [Vorname] [Nachname]
+Kurs: [FaceToFaceName]
+
+Dauer: [Dauer]
+Datum:
+[alleDaten]
+
+Ort: [Sitzung:Ort]
+Veranstaltungsort: [Sitzung:Veranstaltungsort]
+Raum: [Sitzung:Raum]';
 $string['setting:defaultcancellationsubject'] = 'Standardmäßige Betreffzeile für Stornierungs-E-Mails.';
 $string['setting:defaultcancellationsubject_caption'] = 'Stornierungsbetreff';
 $string['setting:defaultcancellationsubjectdefault'] = 'Stornierung von Kursbuchung';
 $string['setting:defaultconfirmationinstrmngr'] = 'Standardmäßige, an Manager gesendete Bestätigungsmitteilung.';
 $string['setting:defaultconfirmationinstrmngr_caption'] = 'Bestätigungsmitteilung (Manager)';
+$string['setting:defaultconfirmationinstrmngrdefault'] = '*** Nur Mitteilung ****
+
+Hiermit wird Ihnen mitgeteilt, dass [Vorname] [Nachname] den folgenden Kurs gebucht hat und Sie als Teamleiter/Manager aufgeführt hat.
+
+Wenn Sie nicht der Teamleiter/Manager sind und glauben, diese E-Mail fälschlicherweise erhalten zu haben, dann antworten Sie bitte auf diese E-Mail. Wenn Sie Zweifel bei Ihrer Belegschaft in Hinblick auf die Teilnahme an diesem Kurs haben, besprechen Sie dies bitte direkt mit Ihrer Belegschaft.
+
+*** Die Buchungsbestätigung von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt****';
 $string['setting:defaultconfirmationmessage'] = 'Standardmäßige, an Nutzer gesendete Bestätigungsmitteilung.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Bestätigungsmitteilung';
+$string['setting:defaultconfirmationmessagedefault'] = 'Hiermit bestätigen wir, dass Sie den folgenden Kurs gebucht haben:
+
+Teilnehmer: [Vorname] [Nachname]
+Kurs: [FaceToFaceName]
+Kosten: [Kosten]
+
+Dauer: [Dauer]
+Datum:
+[alleDaten]
+
+Ort: [Sitzung:Ort]
+Veranstaltungsort: [Sitzung:Veranstaltungsort]
+Raum: [Sitzung:Raum]
+
+***Bitte erscheinen Sie zehn Minuten vor Kursbeginn***
+
+Buchung neu planen oder stornieren
+Um Ihre Buchung neu zu planen, müssen Sie diese Buchung stornieren und dann erneut eine neue Sitzung buchen. Um Ihre Buchung zu stornieren, gehen Sie auf die Website und dann auf die Seite für diesen Kurs und wählen Sie dann \'Stornieren\' auf dem Bildschirm mit den Buchungsinformationen.
+
+[Details]
+
+Sie werden [Erinnerungszeitraum] Geschäftstage vor diesem Kurs eine Erinnerung erhalten.';
 $string['setting:defaultconfirmationsubject'] = 'Standardmäßige Betreffzeile für Bestätigungs-E-Mails.';
 $string['setting:defaultconfirmationsubject_caption'] = 'Bestätigungsbetreff';
+$string['setting:defaultconfirmationsubjectdefault'] = 'Kursbuchungsbestätigung: [FaceToFaceName], [Startzeit]-[Endzeit], [Sitzungsdatum]';
 $string['setting:defaultreminderinstrmngr'] = 'Standardmäßige, an Manager gesendete Erinnerungsmitteilung.';
 $string['setting:defaultreminderinstrmngr_caption'] = 'Erinnerungsmitteilung (Manager)';
+$string['setting:defaultreminderinstrmngrdefault'] = '*** Nur Erinnerung****
+
+Ihr Mitarbeiter [Vorname] [Nachname] hat den vorstehenden Kurs gebucht und ebenfalls diese Erinnerungs-E-Mail erhalten.
+
+Wenn Sie nicht der Teamleiter/Manager sind und glauben, diese E-Mail fälschlicherweise erhalten zu haben, dann antworten Sie bitte auf diese E-Mail.
+
+*** Die Erinnerungs-E-Mail von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt****';
 $string['setting:defaultremindermessage'] = 'Standardmäßige, an Nutzer gesendete Erinnerungsmitteilung.';
 $string['setting:defaultremindermessage_caption'] = 'Erinnerungsmitteilung';
+$string['setting:defaultremindermessagedefault'] = 'Dies ist eine Erinnerung, dass Sie den folgenden Kurs gebucht haben:
+
+Teilnehmer: [Vorname] [Nachname]
+Kurs: [FaceToFaceName]
+Kosten: [Kosten]
+
+Dauer: [Dauer]
+Datum:
+[alleDaten]
+
+Ort: [Sitzung:Ort]
+Veranstaltungsort: [Sitzung:Veranstaltungsort]
+Raum: [Sitzung:Raum]
+
+***Bitte erscheinen Sie zehn Minuten vor Kursbeginn***
+
+Buchung neu planen oder stornieren
+Um Ihre Buchung neu zu planen, müssen Sie diese Buchung stornieren und dann erneut eine neue Sitzung buchen. Um Ihre Buchung zu stornieren, gehen Sie auf die Website und dann auf die Seite für diesen Kurs und wählen Sie dann \'Stornieren\' auf dem Bildschirm mit den Buchungsinformationen.
+
+[Details]';
 $string['setting:defaultremindersubject'] = 'Standardmäßige Betreffzeile für Erinnerungs-E-Mails:';
 $string['setting:defaultremindersubject_caption'] = 'Erinnerungsbetreff';
+$string['setting:defaultremindersubjectdefault'] = 'Kursbuchungserinnerung: [FaceToFaceName], [Startzeit]-[Endzeit], [Sitzungsdatum]';
+$string['setting:defaultrequestinstrmngrdefault'] = 'Hiermit wird Ihnen mitgeteilt, dass [Vorname] [Nachname] die Buchung für den folgenden Kurs angefragt hat und Sie als Teamleiter/Manager aufgeführt hat.
+
+Kurs: [FaceToFaceName]
+Kosten: [Kosten]
+
+Dauer: [Dauer]
+Datum:
+[alleDaten]
+
+Ort: [Sitzung:Ort]
+Veranstaltungsort: [Sitzung:Veranstaltungsort]
+Raum: [Sitzung:Raum]
+
+Bitte folgen Sie dem nachfolgenden Link, um die Anfrage zu bestätigen:
+[Teilnehmerlink]#unbestätigt
+
+*** Die Buchungsanfrage von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt ****';
+$string['setting:defaultrequestmessagedefault'] = 'Ihre Anfrage für die Buchung des folgenden Kurses wurde an Ihren Manager übermittelt:
+
+Teilnehmer: [Voname] [Nachname]
+Kurs: [FaceToFaceName]
+Kosten: [Kosten]
+
+Dauer: [Dauer]
+Datum:
+[alleDaten]
+
+Ort: [Sitzung:Ort]
+Veranstaltungsort: [Sitzung:Veranstaltungsort]
+Raum: [Sitzung:Raum]';
+$string['setting:defaultrequestsubjectdefault'] = 'Kursbuchungsanfrage: [FaceToFaceName], [Startzeit]-[Endzeit]';
 $string['setting:defaultvalue'] = 'Standardwert';
 $string['setting:defaultwaitlistedmessage'] = 'Standardmäßige, an die Nutzer versendete Wartelistenmitteilung';
 $string['setting:defaultwaitlistedmessage_caption'] = 'Wartelistenmitteilung';
+$string['setting:defaultwaitlistedmessagedefault'] = 'Hiermit teilen wir Ihnen mit, dass Sie für Folgendes auf die Warteliste gesetzt wurden:
+
+Kurs: [FaceToFaceName]
+Ort: [Sitzung:Ort]
+Teilnehmer: [Vorname] [Nachname]
+
+***Bitte beachten Sie, dass dies keine Kursbuchungsbestätigung ist***
+
+Auf der Warteliste haben Sie Ihr Interesse an diesem Kurs bestätigt und werden kontaktiert, wenn Sitzungen verfügbar sind.
+
+Um sich von der Warteliste zu entfernen, gehen Sie bitte zu dem Kurs und klicken Sie auf Buchung stornieren. Bitte beachten Sie, dass das Entfernen von der Warteliste nicht mit einer E-Mail bestätigt wird.';
 $string['setting:defaultwaitlistedsubject'] = 'Standardmäßige Betreffzeile für Wartelisten-E-Mails.';
 $string['setting:defaultwaitlistedsubject_caption'] = 'Wartelisten-Betreff';
+$string['setting:defaultwaitlistedsubjectdefault'] = 'Wartelistenmitteilung für [FaceToFaceName]';
 $string['setting:disableicalcancel'] = 'Stornierungs-E-Mails mit iCalendar Attachment deaktivieren.';
 $string['setting:disableicalcancel_caption'] = 'iCalendar-Stornierungen deaktivieren:';
 $string['setting:fromaddress'] = 'Was im Feld Von der durch dieses Modul gesendeten Erinnerungen angezeigt wird.';
@@ -303,7 +453,7 @@ $string['setting:manageraddressformatreadabledefault'] = 'vorname.nachname@unter
 $string['setting:oneemailperday'] = 'Mehrfachbestätigungs-E-Mails für mehrtägige Ereignisse senden.';
 $string['setting:oneemailperday_caption'] = 'Eine Mitteilung pro Tag:';
 $string['setting:possiblevalues'] = 'Liste der möglichen Werte';
-$string['setting:sessionroles'] = 'Den gewählten Rollen in einem Kurs zugeweisene Nutzer könnenmit jeder Face-to-Face-Sitzung nachverfolgt werden';
+$string['setting:sessionroles'] = 'Den gewählten Rollen in einem Kurs zugeweisene Nutzer können mit jeder Face-to-Face-Sitzung nachverfolgt werden';
 $string['setting:sessionroles_caption'] = 'Sitzungsrollen:';
 $string['setting:showinsummary'] = 'In Exporten und Listen zeigen';
 $string['setting:type'] = 'Feldtyp';
@@ -315,7 +465,7 @@ $string['signupfor'] = 'Anmelden für $a';
 $string['signupforsession'] = 'Für eine verfügbare bevorstehende Sitzung anmelden';
 $string['signupforthissession'] = 'Für diese Face-to-Face-Sitzung anmelden';
 $string['signups'] = 'Anmeldungen';
-$string['sitenoticesheading'] = 'Standortmitteilungen';
+$string['sitenoticesheading'] = 'Website-Mitteilungen';
 $string['status'] = 'Status';
 $string['status_approved'] = 'Bestätigt';
 $string['status_booked'] = 'Gebucht';

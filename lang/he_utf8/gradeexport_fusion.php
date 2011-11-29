@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // gradeexport_fusion.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// gradeexport_fusion.php - created with Totara langimport script version 1.1
 
 $string['fusion:publish'] = 'פרסם יצוא ציונים לטבלת Fusion';
 $string['fusion:view'] = 'השתמש ביצוא ציונים לטבלת Fusion';

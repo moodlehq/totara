@@ -1,9 +1,9 @@
 <?php
-// lang file for local/reportbuilder/rb_sources/rb_source_courses.php
+// rb_source_courses.php - created with Totara langimport script version 1.1
+
+$string['content'] = 'ConteÃºdo';
+$string['coursecontent'] = 'ConteÃºdo do curso';
 $string['sourcetitle'] = 'Cursos';
-// columns
-$string['content'] = 'Conteúdo';
-// filters
-$string['coursecontent'] = 'Conteúdo do curso';
-// content
-$string['startdate'] = 'A data de início';
+$string['startdate'] = 'A data de inÃ­cio';
+
+?>

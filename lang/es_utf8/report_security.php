@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // report_security.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// report_security.php - created with Totara langimport script version 1.1
 
 $string['check_configrw_details'] = '<p>Se recomienda cambiar los permisos del archivo config.php luego de la instalación para que éste no pueda ser modificado por el servidor de Internet. 
 Por favor tenga en cuenta que esta medida no mejora significativamente la seguridad del servidor, aunque sí podría ralentizar o limitar el rendimiento de la computadora.</p>';
@@ -12,15 +11,16 @@ $string['check_cookiesecure_error'] = 'Por favor habilite las cookies seguras';
 $string['check_cookiesecure_name'] = 'Cookies seguras';
 $string['check_cookiesecure_ok'] = 'Cookies seguras habilitadas';
 $string['check_courserole_anything'] = 'La capacidad de \"hacerlo todo\" no debe permitirse en este <a href=\"$a\">context</a>.';
-$string['check_courserole_details'] = '<p>Cada curso tiene un rol específico por defecto al apuntarse. Por favor asegúrese que no se permitirán capacidades riesgosas para este rol.</p>
+$string['check_courserole_details'] = '<p>Cada curso tiene un rol específico por defecto al inscribirse. Por favor asegúrese que no se permitirán capacidades riesgosas para este rol.</p>
 </p>El único tipo de legado que es compatible con el rol de curso por defecto es <em>Student</em>.</p>';
 $string['check_courserole_error'] = '¡Se detectaron roles de curso por defecto que están incorrectamente definidos!';
 $string['check_courserole_name'] = 'Roles por defecto (cursos)';
+$string['check_courserole_notyet'] = 'Utilice solamente el rol del curso por defecto.';
 $string['check_courserole_ok'] = 'Las definiciones del rol del curso por defecto están bien.';
 $string['check_courserole_risky'] = 'Capacidades riesgosas detectadas en <a href=\"$a\">context</a>.';
 $string['check_courserole_riskylegacy'] = 'Tipo de legado riesgoso detectado en <a href=\"$a->url\">$a->shortname</a>.';
 $string['check_defaultcourserole_anything'] = 'No se debe permitir la capacidad de \"hacerlo todo\" en este <a href=\"$a\">context</a>.';
-$string['check_defaultcourserole_details'] = '<p> El rol del estudiante por defecto para apuntarse en el curso especifica el rol por defecto para los cursos. Por favor asegúrese que no se permitirá ninguna capacidad riesgosa en este rol.</p>
+$string['check_defaultcourserole_details'] = '<p> El rol del estudiante por defecto para inscribirse en el curso especifica el rol por defecto para los cursos. Por favor asegúrese que no se permitirá ninguna capacidad riesgosa en este rol.</p>
 <p>El único tipo de legado que es compatible para el rol por defecto es <em>Student</em>.</p>';
 $string['check_defaultcourserole_error'] = '¡Se detectó el rol de curso por defecto \"$a\" que está incorrectamente definido!';
 $string['check_defaultcourserole_legacy'] = 'Se detectó un tipo de legado riesgoso.';
@@ -103,5 +103,42 @@ $string['check_riskadmin_name'] = 'Administradores';
 $string['check_riskadmin_ok'] = 'Se encontró $a administrador(es) del sistema.';
 $string['check_riskadmin_unassign'] = '<a href=\"$a->url\">$a->fullname ($a->email) review role assignment</a>';
 $string['check_riskadmin_warning'] = 'Se encontró $a->admincount administradores del sistema y $a->unsupcount tareas del rol de admin no compatible.';
+$string['check_riskbackup_details_overriddenroles'] = '<p> Estas sobreescrituras activas les permiten a los usuarios utilizar datos en sus copias de seguridad. 
+Por favor asegúrese de que este permiso es necesario.</p> $a';
+$string['check_riskbackup_details_systemroles'] = '<p>Actualmente, los siguientes roles del sistema les permiten a los usuarios incluir datos del usuario en las copias de seguridad. Por favor asegúrese de que este permiso es necesario.</p> $a';
+$string['check_riskbackup_details_users'] = '<p>Actualmente, los roles de arriba o las sobreescrituras locales le permiten a las siguientes cuentas de usuarios hacer copias de seguridad que contienen datos personales de cualquier usuario inscrito en este curso. Asegúrese de que son (a) confiables y que están (b) protegidos por contraseñas fuertes:</p> $a';
+$string['check_riskbackup_detailsok'] = 'Ningún rol le permite explícitamente hacer una copia de seguridad de un usuario.
+Sin embargo, nótese que los admins con la capacidad de \"hacerlo todo\" probablemente podrán realizar esta operación.';
+$string['check_riskbackup_editoverride'] = '<a href=\"$a->url\">$a->name in $a->contextname</a>';
+$string['check_riskbackup_editrole'] = '<a href=\"$a->url\">$a->name</a>';
+$string['check_riskbackup_name'] = 'Copia de seguridad de los datos del usuario';
+$string['check_riskbackup_ok'] = 'Ningún rol permite explícitamente la copia de seguridad de los datos del usuario';
+$string['check_riskbackup_unassign'] = '<a href=\"$a->url\">$a->fullname ($a->email) in $a->contextname</a>';
+$string['check_riskbackup_warning'] = 'Se encontró que $a->rolecount roles, $a->overridecount sobreescribe y que $a->usercoun usuarios pueden hacer una copia de seguridad de los datos del usuario.';
+$string['check_riskxss_details'] = '<p>RISK_XSS denota todas las capacidades peligrosas que sólo pueden utilizar los usuarios confiables. 
+</p>
+<p>Por favor verifique la siguiente lista de usuarios y asegúrese de que son absolutamente confiables en este sitio:</p><p>$a</p>';
+$string['check_riskxss_name'] = 'XSS usuarios confiables';
+$string['check_riskxss_warning'] = 'RISK_XSS - encontró $a usuarios de los que se debe confiar.';
+$string['check_unsecuredataroot_details'] = '<p>No se debe poder ingresar por Internet al directorio de datos (dataroot). La mejor forma de asegurarse que este directorio no será accesible es utilizar un directorio afuera del directorio web público.
+</p>
+<p>Si mueve el directorio, necesita actualizar la configuración de <code>\$CFG->dataroot</code> en <code>config.php</code>';
+$string['check_unsecuredataroot_error'] = 'Su directorio de datos (dataroot) <code>$a</code> está en la ubicación incorrecta y ¡está expuesto en la red!';
+$string['check_unsecuredataroot_name'] = 'Directorio de datos (dataroot) inseguro';
+$string['check_unsecuredataroot_ok'] = 'No se debe poder ingresar por Internet al directorio de datos (dataroot).';
+$string['check_unsecuredataroot_warning'] = 'Su directorio de datos (dataroot) <code>$a</code> está en la ubicación equivocada y puede estar expuesto en Internet.';
+$string['configuration'] = 'Configuración';
+$string['description'] = 'Descripción';
+$string['details'] = 'Detalles';
+$string['issue'] = 'Problema';
+$string['reportsecurity'] = 'Panorama de seguridad';
+$string['security:view'] = 'Ver el informe de seguridad';
+$string['status'] = 'Estado';
+$string['statuscritical'] = 'Crítico';
+$string['statusinfo'] = 'Información';
+$string['statusok'] = 'OK';
+$string['statusserious'] = 'Serio';
+$string['statuswarning'] = 'Advertencia';
+$string['timewarning'] = 'El procesamiento de datos puede llevar bastante tiempo, por favor tenga paciencia...';
 
 ?>

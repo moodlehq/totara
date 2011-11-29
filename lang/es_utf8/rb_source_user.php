@@ -2,6 +2,7 @@
 // rb_source_user.php - created with Totara langimport script version 1.1
 
 $string[''] = 'Mis iconos de aprendizaje del usuario';
+$string['bookings'] = 'Reservas';
 $string['competenciesachieved'] = 'Competencias adquiridas';
 $string['coursescompleted'] = 'Cursos realizados';
 $string['coursesstarted'] = 'Cursos iniciados';
@@ -10,6 +11,9 @@ $string['mylearningicons'] = 'Mis iconos de aprendizaje del usuario';
 $string['name'] = 'Nombre';
 $string['options'] = 'Opciones';
 $string['picture'] = 'Fotografía';
+$string['plans'] = 'Planes';
+$string['profile'] = 'Perfil';
+$string['records'] = 'Archivos';
 $string['sourcetitle'] = 'Usuario';
 $string['type_statistics'] = 'Estadísticas';
 $string['user'] = 'Usuario';

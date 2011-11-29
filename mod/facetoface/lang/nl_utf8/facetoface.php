@@ -1,364 +1,514 @@
-<?php // facetoface.php - created with Moodle 1.9 Beta 3 (2007101504)
-      //
-      // Created by Peter-Anne Wissema <wis AT veursvoorburg DOT nl>
-      // Released under the same terms as the Facetoface module
+<?php
+// facetoface.php - created with Totara langimport script version 1.1
 
-$string['addingsession'] = 'Voeg een nieuwe sessie toe in $a';
-$string['addmanageremailaddress'] = 'Voeg emailadres manager toe';
-$string['addmanageremailinstruction'] = 'U heeft nog geen emailadres voor een manager ingevoerd. Voer dat hier inom voor de sessie in te tekenen.';
+$string['addingsession'] = 'Nieuwe uitvoering toevoegen aan $a';
+$string['addmanageremailaddress'] = 'E-mailadres manager toevoegen';
+$string['addmanageremailinstruction'] = 'Vul eerst het e-mailadres van je manager in. Zonder deze gegevens is aanmelding niet mogelijk.';
+$string['addnewfield'] = 'Extra veld toevoegen';
+$string['addnewfieldlink'] = 'Extra veld toevoegen';
+$string['addnewnotice'] = 'Systeemmelding toevoegen';
+$string['addnewnoticelink'] = 'Systeemmelding toevoegen';
 $string['addremoveattendees'] = 'Aanwezigen toevoegen/verwijderen';
-$string['addsession'] = 'Voeg een nieuwe sessie toe';
-$string['addstudent'] = 'Voeg een leerling toe';
+$string['addsession'] = 'Uitvoering toevoegen';
+$string['addstudent'] = 'Cursist toevoegen';
 $string['alllocations'] = 'Alle locaties';
-$string['allsessionsin'] = 'Alle sessies in $a';
-$string['alreadysignedup'] = 'U heeft al ingetekend voor deze sessie.';
-$string['answer'] = 'Schrijf in';
-$string['answercancel'] = 'Schrijf uit';
+$string['allowoverbook'] = 'Aanmelden mogelijk als capaciteit is bereikt';
+$string['allsessionsin'] = 'Alle uitvoeringen in $a';
+$string['alreadysignedup'] = 'Je bent al aangemeld voor deze bijeenkomst.';
+$string['answer'] = 'Aanmelden';
+$string['answercancel'] = 'Afmelden';
+$string['approvalreqd'] = 'Goedkeuring vereist';
+$string['approve'] = 'Goedkeuren';
+$string['approveinstruction'] = 'Accepteer het volgende om de aanmelding goed te keuren';
 $string['assessmentyour'] = 'Uw assessment';
 $string['attendance'] = 'Aanwezigheid';
-$string['attendanceinstructions'] = 'Selecteer gebruikers die de sessie bijwoonden';
-$string['attendedsession'] = 'Bijgewoonde sessie';
+$string['attendanceinstructions'] = 'Selecteer gebruikers die aanwezig waren:';
+$string['attendedsession'] = 'Aanwezig in uitvoering';
 $string['attendees'] = 'Aanwezigen';
-$string['booked'] = 'Geboekt';
-$string['bookingcancelled'] = 'Uw inschrijving is verwijderd';
-$string['bookingcompleted'] = 'Uw inschrijving is compleet';
-$string['bookingfull'] = 'Inschrijving vol';
-$string['bookingopen'] = 'Inschrijving geopend';
-$string['bookingstatus'] = 'U bent geboekt voor de volgende sessie';
-$string['calendareventdescriptionbooking'] = 'U bent ingeschreven voor deze<a href=\"$a\">afspraak</a>.';
-$string['calendareventdescriptionsession'] = 'U heeft deze <a href=\"$a\">afspraak aangemaakt</a>.';
-$string['cancelbooking'] = 'Verwijder boeking';
-$string['cancelbookingfor'] = 'Verwijder boeking voor $a';
-$string['cancellation'] = 'Verwijdering';
-$string['cancellations'] = 'Opzeggingen';
-$string['cancellationconfirm'] = 'Weet u zeker dat u uw reservering voor deze sessie wilt verwijderen?';
-$string['cancellationmessage'] = 'Bericht van verwijderen boeking';
-$string['cancellationsent'] = 'U zou een bevestigingsbericht van uw opzegging moeten ontvangen in uW mailbox';
-$string['cancellationsentmgr'] = 'U en de sessieleider zouden een bevestigingsbericht van uw opzegging moeten ontvangen via de mail';
-$string['capacity'] = 'Aantal plaatsen';
-$string['changemanageremailaddress'] = 'Wijzig emailadres sessieleider';
-$string['changemanageremailinstruction'] = 'Vul hier het emailadres van de sessieleider in';
-$string['clearall'] = 'Maak alle velden leeg';
+$string['attendeestablesummary'] = 'Gebruikers die van plan zijn aanwezig te zijn, of die reeds aanwezig zijn gemeld';
+$string['booked'] = 'Aangemeld';
+$string['bookedforsession'] = 'Aangemeld voor $a';
+$string['bookingcancelled'] = 'Afgemeld.';
+$string['bookingcompleted'] = 'Aangemeld.';
+$string['bookingfull'] = 'Aanmelden niet mogelijk (vol)';
+$string['bookingopen'] = 'Aanmelden mogelijk';
+$string['bookingstatus'] = 'Je bent aangemeld voor de volgende uitvoering';
+$string['calendareventdescriptionbooking'] = 'Je bent aangemeld voor deze <a href=\"$a\">bijeenkomst</a>.';
+$string['calendareventdescriptionsession'] = 'Je hebt deze <a href=\"$a\">bijeenkomst</a> toegevoegd.';
+$string['calendaroptions'] = 'Kalenderopties';
+$string['cancelbooking'] = 'Afmelden';
+$string['cancelbookingfor'] = 'Afmelden voor $a';
+$string['cancellation'] = 'Afmelding';
+$string['cancellationconfirm'] = 'Afmelden voor uitvoering?';
+$string['cancellationmessage'] = 'Bericht Afmelden';
+$string['cancellations'] = 'Afmeldingen';
+$string['cancellationsent'] = 'E-mail verzonden ter bevestiging.';
+$string['cancellationsentmgr'] = 'E-mail verzonden ter bevestiging.';
+$string['cancellationstablesummary'] = 'Gebruikers die zich hebben afgemeld.';
+$string['cancelledforsession'] = 'Afgemeld voor uitvoering';
+$string['cancelreason'] = 'Motivatie';
+$string['cancelusersession'] = 'Afgemeld voor $a->usermsg uitvoering $a->url';
+$string['cannotsignupsessioninprogress'] = 'Aanmelden niet mogelijk omdat de uitvoering is gestart';
+$string['cannotsignupsessionover'] = 'Aanmelden niet mogelijk omdat de uitvoering voorbij is';
+$string['capacity'] = 'Capaciteit';
+$string['changemanageremailaddress'] = 'E-mailadres manager aanpassen';
+$string['changemanageremailinstruction'] = 'Vul hieronder het e-mailadres van je manager in.';
+$string['clearall'] = 'Alles wissen';
 $string['closed'] = 'Gesloten';
-$string['confirm'] = 'Bevestig';
-$string['confirmanager'] = 'Bevestig het emailadres van de sessieleider';
+$string['conditions'] = 'Voorwaarden';
+$string['conditionsexplanation'] = 'Aan al deze voorwaarden moet worden voldaan voordat de melding in de kalender wordt getoond:';
+$string['confirm'] = 'Bevestigen';
+$string['confirmanager'] = 'Bevestig het e-mailadres van je manager';
 $string['confirmation'] = 'Bevestiging';
-$string['confirmationmessage'] = 'Bevestigingsmelding';
-$string['confirmationsent'] = 'U krijgt een bevestigingsbericht per email';
-$string['confirmationsentmgr'] = 'U en de sessieleider ontvangen een bevestiging per email';
-$string['confirmmanageremailaddress'] = 'Bevestig emailadres van de sessieleider';
-$string['confirmmanageremailaddressquestion'] = 'is <b>$a</b> inderdaad het emailadres van de sessieleider?';
-$string['confirmmanageremailinstruction1'] = 'U heeft het volgende emailadres ingevoerd:';
-$string['confirmmanageremailinstruction2'] = 'Is dit inderdaad het emailadres van de sessieleider?';
-$string['copyingsession'] = 'Kopieren als nieuwe sessie in $a';
-$string['copysession'] = 'Kopieer sessie';
-$string['copysession'] = 'Kopieer';
-$string['cost'] = 'Kosten';
+$string['confirmationmessage'] = 'Bericht Bevestiging';
+$string['confirmationsent'] = 'E-mail verzonden ter bevestiging.';
+$string['confirmationsentmgr'] = 'E-mail verzonden ter bevestiging.';
+$string['confirmmanageremailaddress'] = 'Bevestig het e-mailadres van je manager';
+$string['confirmmanageremailaddressquestion'] = 'Is <b>$a</b> inderdaad het e-mailadres van je manager?';
+$string['confirmmanageremailinstruction1'] = 'Eerder is als e-mailadres ingevoerd:';
+$string['confirmmanageremailinstruction2'] = 'Is dit inderdaad het e-mailadres van je manager?';
+$string['copy'] = 'Kopiëren';
+$string['copyingsession'] = 'Kopiëren als nieuwe uitvoering in $a';
+$string['copysession'] = 'Uitvoering kopiëren';
+$string['cost'] = 'Tarief';
+$string['costheading'] = 'Tarief uitvoering';
+$string['currentstatus'] = 'Huidige status';
+$string['customfieldsheading'] = 'Extra velden uitvoering';
 $string['date'] = 'Datum';
-$string['dateadd'] = 'Voeg een nieuwe datum toe';
-$string['dateremove'] = 'Verwijder deze datum';
-$string['datetext'] = 'U heeft zich ingeschreven voor deze datum';
-$string['deleteall'] = 'Verwijder alle';
-$string['deletesession'] = 'Verwijder sessie';
-$string['deletesessionconfirm'] = 'Wet u zeker dat u deze sessie en alle intekeningen daarvoor wilt verwijderen?';
-$string['deletingsession'] = 'Verwijderen van sessie in $a';
+$string['dateadd'] = 'Datum toevoegen';
+$string['dateremove'] = 'Datum verwijderen';
+$string['datetext'] = 'Je bent geregisteerd voor de datum';
+$string['datetimeknownhinttext'] = 'Datum/tijd bekend';
+$string['decidelater'] = 'Besluit uitstellen';
+$string['decline'] = 'Afwijzen';
+$string['deleteall'] = 'Alles verwijderen';
+$string['deletesession'] = 'Uitvoering verwijderen';
+$string['deletesessionconfirm'] = 'Uitvoering en alle bijbehorende aanmeldingen verwijderen?';
+$string['deletingsession'] = 'Uitvoering in $a verwijderen';
 $string['description'] = 'Introductietekst';
 $string['details'] = 'Details';
 $string['discountcode'] = 'Kortingscode';
-$string['discountcost'] = 'Kortingsprijs';
+$string['discountcost'] = 'Tarief met korting';
+$string['discountcosthinttext'] = 'Kortingscode';
 $string['due'] = 'te voldoen';
 $string['duration'] = 'Duur';
 $string['early'] = '$a vroeg';
-$string['editingsession'] = 'Bewerken van sessie in $a';
-$string['editsession'] = 'Bewerk sessie';
-$string['email:instrmngr'] = 'Bericht voor afspraakleider';
+$string['edit'] = 'Aanpassen';
+$string['editingsession'] = 'Uitvoering in $a aanpassen';
+$string['editsession'] = 'Uitvoering aanpassen';
+$string['email:instrmngr'] = 'Bericht voor manager';
 $string['email:message'] = 'Bericht';
 $string['email:subject'] = 'Onderwerp';
-$string['emailmanager'] = 'Stuur bericht naar afspraakleider';
-$string['emptylocation'] = 'Plaats is leeg';
-$string['error:addattendee'] = 'Kon $a niet aan de sessie toevoegen.';
-$string['error:addalreadysignedupattendee'] = '$a is al aangemeld voor deze afspraak.';
-$string['error:cancelbooking'] = 'Er was een probleem bij het opzeggen van uw reservering';
-$string['error:cannotemailmanager'] = 'Herinneringsmail voor inschrijving id $a->submissionid aan gebruiker $->userid is verstuurd, maar het bericht kon niet worden afgeleverd bij de afspraakleider ($a->manageremail).';
-$string['error:cannotemailuser'] = 'Kon het bericht van intekening niet versturen naar $a->submissionid aan gebruiker $a->userid ($a->useremail).';
-$string['error:cannotsendconfirmationmanager'] = 'Een bevestigingsbericht is verstuurd naar u emailadres, maar er was een probleem met het verzenden van een kopie van het bericht naar de afspraakmanager';
-$string['error:cannotsendconfirmationthirdparty'] = 'Een bevestigingsbericht is verstuurd naar u emailadres en dat van de afspraakmanager, maar er was een probleem met het verzenden van een kopie van het bericht naar de andere emailadres(sen)';
-$string['error:cannotsendconfirmationuser'] = 'Er was een probleem om het bevestigingsbericht naar u emailadres te versturen';
-$string['error:cannotsendconfirmationusermanager'] = 'Bevestigingsbericht kon niet per mail verzonden worden';
-$string['error:couldnotaddsession'] = 'Kon geen sessie toevoegen';
-$string['error:couldnotcopysession'] = 'Kon geen sessie kopiëren';
-$string['error:couldnotdeletesession'] = 'Kon sessie niet verwijderen';
-$string['error:couldnotupdatemanageremail'] = 'Kon emailadres niet bijwerken';
-$string['error:couldnotupdatesession'] = 'Kon sessie niet bijwerken';
-$string['error:coursemisconfigured'] = 'Afspraak is niet goed geconfigureerd';
-$string['error:cronprefix'] = 'Error;  facetoface cron:';
-$string['error:emptylocation'] = 'Locatie was leeg';
-$string['error:emptymanageremail'] = 'Managers emailadres is leeg';
-$string['error:emptyvenue'] = 'Ruimte/lokaal was leeg';
-$string['error:enrolmentfailed'] = 'Kon $a niet bij de cursus inschrijven.';
-$string['error:incorrectcoursemodule'] = 'Cursusmodule is onjuist';
-$string['error:incorrectcoursemoduleid'] = 'Cursus ID is onjuist';
-$string['error:incorrectcoursemodulesession'] = 'Afspraaksessie was onjuist';
-$string['error:incorrectfacetofaceid'] = 'afspraak ID was onjuist';
-$string['error:invaliduserid'] = 'GebruikersID onbekend';
-$string['error:mustspecifycoursemodulefacetoface'] = 'U moet een cursusmodule of afspraak ID opgeven';
-$string['error:nomanageremail'] = 'U heeft geen emailadres voor de afspraakmanager ingevoegd';
-$string['error:problemsigningup'] = 'Er was een probleem met uw aanmelding';
-$string['error:removeattendee'] = 'Kon $a niet uit de sessie verwijderen.';
-$string['export'] = 'Exporteer';
+$string['emailmanager'] = 'Bericht naar manager verzenden';
+$string['emptylocation'] = 'Locatie was leeg';
+$string['enrolled'] = 'aangemeld';
+$string['error:addalreadysignedupattendee'] = '$a is al aangemeld voor deze bijeenkomst.';
+$string['error:addattendee'] = '$a niet aan de uitvoering toegevoegd.';
+$string['error:cancelbooking'] = 'Afmelden mislukt';
+$string['error:cannotemailmanager'] = 'Bericht over aanmelding $a->submissionid verzonden aan gebruiker $a->userid, maar het bericht kon niet worden verzonden naar het e-mailadres van de manager ($a->manageremail).';
+$string['error:cannotemailuser'] = 'Bericht over aanmelding $a->submissionid kon niet worden verzonden aan gebruiker $a->userid ($a->useremail).';
+$string['error:cannotsendconfirmationmanager'] = 'Je hebt per e-mail een bevestiging ontvangen, maar het bericht kon niet worden verzonden naar het e-mailadres van je manager.';
+$string['error:cannotsendconfirmationthirdparty'] = 'Jij en je manager hebben per e-mail een bevestiging ontvangen, maar het bericht kon niet worden verzonden naar het extra e-mailadres.';
+$string['error:cannotsendconfirmationuser'] = 'Bericht kon niet worden verzonden naar je e-mailadres.';
+$string['error:cannotsendconfirmationusermanager'] = 'Bericht kon niet worden verzonden naar je eigen e-mailadres en het e-mailadres van je manager.';
+$string['error:cannotsendrequestmanager'] = 'Het bericht kon niet worden verzonden naar het e-mailadres van je manager.';
+$string['error:cannotsendrequestuser'] = 'Het bericht kon niet worden verzonden naar je eigen e-mailadres.';
+$string['error:canttakeattendanceforunstartedsession'] = 'Aanwezigheid kan niet worden geregisteerd als de uitvoering nog niet is gestart.';
+$string['error:couldnotaddfield'] = 'Extra veld toevoegen mislukt.';
+$string['error:couldnotaddnotice'] = 'Systeemmelding toevoegen mislukt.';
+$string['error:couldnotaddsession'] = 'Uitvoering toevoegen mislukt';
+$string['error:couldnotcopysession'] = 'Uitvoering kopiëren mislukt';
+$string['error:couldnotdeletefield'] = 'Extra veld verwijderen mislukt';
+$string['error:couldnotdeletenotice'] = 'Systeemmelding verwijderen mislukt';
+$string['error:couldnotdeletesession'] = 'Uitvoering verwijderen mislukt';
+$string['error:couldnotfindsession'] = 'Nieuwe uitvoering niet gevonden';
+$string['error:couldnotsavecustomfield'] = 'Extra velden opslaan mislukt';
+$string['error:couldnotupdatecalendar'] = 'Uitvoering in kalender aanpassen mislukt.';
+$string['error:couldnotupdatef2frecord'] = 'Aanmelding voor bijeenkomst aanpassen mislukt';
+$string['error:couldnotupdatefield'] = 'Extra veld aanpassen mislukt.';
+$string['error:couldnotupdatemanageremail'] = 'E-mailadres aanpassen mislukt.';
+$string['error:couldnotupdatenotice'] = 'Systeemmelding aanpassen mislukt.';
+$string['error:couldnotupdatesession'] = 'Uitvoering aanpassen mislukt';
+$string['error:coursemisconfigured'] = 'Cursus onjuist ingesteld';
+$string['error:cronprefix'] = 'Fout met bijeenkomst-cron:';
+$string['error:emptylocation'] = 'Locatie was leeg.';
+$string['error:emptymanageremail'] = 'E-mailadres manager niet ingevuld.';
+$string['error:emptyvenue'] = 'Lokaal was leeg.';
+$string['error:enrolmentfailed'] = '$a inschrijven mislukt.';
+$string['error:eventoccurred'] = 'Omdat deze bijeenkomst reeds heeft plaatsgevonden kan deze niet worden geannuleerd.';
+$string['error:f2ffailedupdatestatus'] = 'Status gebruiker aanpassen mislukt';
+$string['error:incorrectcoursemodule'] = 'Ongeldige cursus';
+$string['error:incorrectcoursemoduleid'] = 'Ongeldige cursuscode';
+$string['error:incorrectcoursemodulesession'] = 'Ongeldige bijeenkomst';
+$string['error:incorrectfacetofaceid'] = 'Ongeldige code bijeenkomst';
+$string['error:incorrectnotificationtype'] = 'Ongeldig notificatietype';
+$string['error:invaliduserid'] = 'Ongeldige gebruikersnaam';
+$string['error:manageremailaddressmissing'] = 'Je hebt nog niet de rol Manager toegewezen gekregen. Neem hiervoor contact op met de beheerder.';
+$string['error:mustspecifycoursemodulefacetoface'] = 'Vul in om welke cursus of bijeenkomst het gaat';
+$string['error:nomanageremail'] = 'Vul het e-mailadres van je manager in';
+$string['error:nomanagersemailset'] = 'E-mailadres manager niet ingevuld';
+$string['error:nopermissiontosignup'] = 'Niet bevoegd om jezelf aan te melden voor deze bijeenkomst.';
+$string['error:problemsigningup'] = 'Aanmelden mislukt';
+$string['error:removeattendee'] = '$a uit de uitvoering verwijderen mislukt';
+$string['error:sessionstartafterend'] = 'Kies een startdatum/tijd voor de einddatum/tijd';
+$string['error:shortnametaken'] = 'Extra veld met deze korte naam reeds beschikbaar';
+$string['error:signedupinothersession'] = 'Je bent reeds aangemeld voor een andere uitvoering van deze bijeenkomst.';
+$string['error:unknownbuttonclicked'] = 'Aan deze knop is geen actie gekoppeld';
+$string['excelformat'] = 'Excel';
+$string['export'] = 'Exporteren';
+$string['exportattendance'] = 'Aanwezigheid exporteren';
 $string['exportattendanceexcel'] = 'Export gegevens naar Excel';
-$string['facetoface'] = 'Afspraak';
-$string['facetoface:addattendees'] = 'Aanwezigen toevoegen';
-$string['facetoface:editsessions'] = 'Bewerk, kopieer, verwijder of voeg afspraken toe';
-$string['facetoface:removeattendees'] = 'Aanwezigen verwijderen';
-$string['facetoface:signup'] = 'Teken in voor een afspraak';
-$string['facetoface:takeattendance'] = 'Neem aanwezigheid op';
-$string['facetoface:view'] = 'Bekijk afspraken en sessies';
-$string['facetoface:viewattendees'] = 'Bekijk de lijst van aanwezigen';
-$string['facetoface:viewcancellations'] = 'Bekijk opzeggingen';
-$string['facetoface:viewemptyactivities'] = 'Bekijk lege afspraken';
-$string['facetofacebooking'] = 'Afspraakreservering';
-$string['facetofacename'] = 'Naam van de afspraak';
-$string['facetofacesession'] = 'Afspraak/sessie';
+$string['exporttofile'] = 'Exporteren naar bestand';
+$string['facetoface'] = 'Bijeenkomst';
+$string['facetoface:addattendees'] = 'Gebruikers aan uitvoering toevoegen';
+$string['facetoface:editsessions'] = 'Uitvoeringen toevoegen, aanpassen, kopiëren en verwijderen';
+$string['facetoface:overbook'] = 'Aanmelden voor volle uitvoering.';
+$string['facetoface:removeattendees'] = 'Gebruikers uit uitvoering verwijderen';
+$string['facetoface:signup'] = 'Aanmelden voor een uitvoering';
+$string['facetoface:takeattendance'] = 'Aanwezigheid registreren';
+$string['facetoface:view'] = 'Bijeenkomsten en uitvoeringen tonen';
+$string['facetoface:viewattendees'] = 'Overzicht aanwezigheid tonen';
+$string['facetoface:viewcancellations'] = 'Afmeldingen tonen';
+$string['facetoface:viewemptyactivities'] = 'Lege bijeenkomsten tonen';
+$string['facetofacebooking'] = 'Bijeenkomst';
+$string['facetofacename'] = 'Naam bijeenkomst';
+$string['facetofacesession'] = 'Uitvoering bijeenkomst';
 $string['feedback'] = 'Feedback';
 $string['feedbackupdated'] = 'Feedback bijgewerkt voor $a personen';
-$string['floor'] = 'Verdieping';
-$string['full'] = 'Datum is bezet';
-$string['goback'] = 'Ga terug';
-$string['import'] = 'Importeer';
-$string['info'] = 'Info';
+$string['field:multiselect'] = 'Meerkeuze';
+$string['field:select'] = 'Keuzelijst';
+$string['field:text'] = 'Tekst';
+$string['fielddeleteconfirm'] = 'Veld \'$a\' met bijbehorende gegevens verwijderen?';
+$string['floor'] = 'Etage';
+$string['format'] = 'Formaat';
+$string['full'] = 'Uitvoering vol';
+$string['goback'] = 'Terug';
+$string['guestsno'] = 'Gasten kunnen zich niet aanmelden voor bijeenkomsten';
+$string['icalendarheading'] = 'Afspraakverzoeken (iCalendar)';
+$string['import'] = 'Importeren';
+$string['info'] = 'Informatie';
 $string['late'] = '$a te laat';
 $string['location'] = 'Locatie';
-$string['lookfor'] = 'Zoek';
-$string['manageradded'] = 'Het emailadres is geaccepteerd';
-$string['managerchanged'] = 'Het emailadres is gewijzigd';
-$string['manageremail'] = 'emailadres afspraakleider';
-$string['manageremailaddress'] = 'emailadres afspraakleider';
-$string['manageremailformat'] = 'Het emailadres moet zijn als $a om geaccepteerd te worden';
-$string['manageremailinstruction'] = 'Om in te tekenen moet er een bevestigingsmail naar uw adres en dat van de afspraakleider gestuurd worden';
-$string['manageremailinstructionconfirm'] = 'Bevestig het emailadres van de afspraakleider';
-$string['managername'] = 'Naam afspraakleider';
-$string['managerupdated'] = 'Het emailadres van de afspraakleider is bijgewerkt';
-$string['maximumpoints'] = 'Maximum punten';
+$string['lookfor'] = 'Zoeken';
+$string['manageradded'] = 'E-mailadres geregistreerd.';
+$string['managerchanged'] = 'E-mailadres aangepast.';
+$string['manageremail'] = 'E-mailadres manager';
+$string['manageremailaddress'] = 'E-mailadres manager';
+$string['manageremailformat'] = 'Hanteer het formaat $a.';
+$string['manageremailheading'] = 'E-mailadres manager';
+$string['manageremailinstruction'] = 'Bij aanmelding ontvang je een e-mail ter bevestiging. Van dit bericht wordt een kopie verzonden naar het e-mailadres van je manager.';
+$string['manageremailinstructionconfirm'] = 'Bevestig dit e-mailadres van je manager';
+$string['managername'] = 'Naam manager';
+$string['managerupdated'] = 'Het e-mailadres van je manager is aangepast.';
+$string['maximumpoints'] = 'Maximum aantal punten';
 $string['maximumsize'] = 'Maximum aantal deelnemers';
-$string['message'] = 'Verandering in de boeking van $a->coursename!
+$string['message'] = 'Aanmelding voor $a->coursename aangepast.
 
-Er is een plaats vrijgekomen voor $a->duedate ($a->name) voor de afspraak $a->coursename.
+Er is een plaats beschikbaar in de uitvoering op $a->duedate ($a->name) van de cursus $a->coursename.
 
-U bent voor deze datum ingeschreven. Als u dan verhindert bent, kunt u zich uitschrijven bij <a href=\'$a->url\'>#a->url,/a>';
-$string['modulename'] = 'Afspraak';
-$string['modulenameplural'] = 'Afspraken';
-$string['moreinfo'] = 'Meer info';
-$string['multiday'] = 'Meerdere dagen';
-$string['newmanageremailaddress'] = 'emaildres afspraakleider';
-$string['nofacetofaces'] = 'Er zijn geen afspraken';
-$string['none'] = 'Geen';
-$string['noremindersneedtobesent'] = 'Er hoeven geen herinneringen verstuurd te worden';
-$string['normalcost'] = 'Normale kosten';
-$string['nosignedupusers'] = 'Geen deelnemers hebben zich ingeschreven';
-$string['note'] = 'Notitie';
-$string['notefull'] = 'Zelfs als de afspraak volgeboekt is, kunt u zich wel aanmelden. U komt dan op de wachtlijst (in het rood weergegeven). Als er een plaats vrijkomt wordt die automatisch uit de wachtlijst opgevuld. Als u geplaatst wordt, krijgt u daar bericht van.';
-$string['notificationtype'] = 'Type bericht';
-$string['notificationboth'] = 'Email bericht en iCalendar Gebeurtenis';
-$string['notificationemail'] = 'Alleen Email bericht';
-$string['notificationical'] = 'Alleen iCalendar gebeurtenis';
-$string['notsubmittedyet'] = 'Nog niet ge-evalueerd';
-$string['noupcoming'] = 'Geen geplande sessies';
+Je bent automatisch voor deze uitvoering aangemeld. Als deze datum niet schikt, kun je jezelf afmelden via <a href=\'$a->url\'>$a->url</a>.';
+$string['modulename'] = 'Bijeenkomst';
+$string['modulenameplural'] = 'Bijeenkomsten';
+$string['moreinfo'] = 'Details';
+$string['multiday'] = 'Meerdaags';
+$string['newmanageremailaddress'] = 'E-mailadres manager';
+$string['noactionableunapprovedrequests'] = 'Geen aanmeldingen om goed te keuren';
+$string['nocustomfields'] = '<p>Geen extra velden.</>';
+$string['nofacetofaces'] = 'Geen bijeenkomsten';
+$string['none'] = 'geen';
+$string['noremindersneedtobesent'] = 'Geen berichten om te versturen.';
+$string['normalcost'] = 'Standaardtarief';
+$string['normalcosthinttext'] = 'Standaardtarief';
+$string['nosignedupusers'] = 'Geen aanmeldingen voor deze uitvoering.';
+$string['nositenotices'] = '<p>Geen systeemmeldingen.</>';
+$string['note'] = 'Let op';
+$string['notefull'] = 'Aanmelding is nog steeds mogelijk als de uitvoering vol is. Je wordt dan op de wachtlijst geplaatst (rood gemarkeerd). Zodra een deelnemer zichzelf afmeldt, wordt de eerste gebruiker van de wachtlijst automatisch ingeschreven. Hierover wordt een e-mail verzonden ter bevestiging.';
+$string['noticedeleteconfirm'] = 'Systeemmelding \'$a->name\' verwijderen?<br/><blockquote>$a->text</blockquote>';
+$string['noticetext'] = 'Tekst';
+$string['notificationboth'] = 'Bericht en afspraakverzoek';
+$string['notificationemail'] = 'Alleen bericht';
+$string['notificationical'] = 'Alleen afspraakverzoek';
+$string['notificationtype'] = 'Type e-mail';
+$string['notsignedup'] = 'Je bent niet aangemeld voor deze uitvoering.';
+$string['notsubmittedyet'] = 'Nog niet geëvalueerd';
+$string['noupcoming'] = '<p><i>Geen uitvoeringen gepland</i></p>';
+$string['odsformat'] = 'OpenDocument';
 $string['onehour'] = '1 uur';
 $string['oneminute'] = '1 minuut';
 $string['options'] = 'Opties';
 $string['or'] = 'of';
-$string['order'] = 'Bestel';
-$string['place'] = 'Kamer';
+$string['order'] = 'Bestellen';
+$string['place'] = 'Lokaal';
+$string['placeholder:alldates'] = '[alldates]';
+$string['placeholder:attendeeslink'] = '[attendeeslink]';
+$string['placeholder:cost'] = '[cost]';
+$string['placeholder:details'] = '[details]';
+$string['placeholder:duration'] = '[duration]';
 $string['placeholder:facetofacename'] = '[facetofacename]';
+$string['placeholder:finishtime'] = '[finishtime]';
 $string['placeholder:firstname'] = '[firstname]';
 $string['placeholder:lastname'] = '[lastname]';
-$string['placeholder:cost'] = '[cost]';
-$string['placeholder:alldates'] = '[alldates]';
+$string['placeholder:reminderperiod'] = '[reminderperiod]';
 $string['placeholder:sessiondate'] = '[sessiondate]';
 $string['placeholder:starttime'] = '[starttime]';
-$string['placeholder:finishtime'] = '[finishtime]';
-$string['placeholder:duration'] = '[duration]';
-$string['placeholder:details'] = '[details]';
-$string['placeholder:reminderperiod'] = '[reminderperiod]';
 $string['points'] = 'Punten';
 $string['pointsplural'] = 'Punten';
-$string['previoussessions'] = 'Eerdere afspraken';
-$string['printversionid'] = 'Printversie zonder naam';
-$string['printversionname'] = 'Printversie met naam';
-$string['really'] = 'Weet u zeker dat u alle resultaten wilt verwijderen';
-$string['registeredon'] = 'Geregistreerd op';
-$string['registrations'] = 'Registraties';
+$string['previoussessions'] = 'Eerdere uitvoeringen';
+$string['previoussessionslist'] = 'Overzicht van eerdere uitvoeringen van deze bijeenkomst';
+$string['printversionid'] = 'Afdrukken zonder naam';
+$string['printversionname'] = 'Afdrukken met naam';
+$string['really'] = 'Alle resultaten verwijderen?';
+$string['registeredon'] = 'Aangemeld op';
+$string['registrations'] = 'Aanmeldingen';
+$string['rejectinstruction'] = 'Klik op Afwijzen om de gebruiker af te melden';
 $string['reminder'] = 'Herinnering';
-$string['remindermessage'] = 'Herinneringsboodschap';
-$string['reminderperiod'] = 'Aantal dagen voordat een boodschap wordt verstuurd';
-$string['room'] = 'Kamer';
-$string['saveallfeedback'] = 'Bewaar alle antwoorden';
-$string['saveattendance'] = 'Bewaar aanwezigheid';
-$string['scheduledsession'] = 'Ingeroosterde afspraak';
-$string['scheduledsessions'] = 'Ingeroosterde afspraken';
-$string['seatsavailable'] = 'Open plaatsen';
-$string['seeattendees'] = 'Bekijk intekeningen';
-$string['sentremindermanager'] = 'Stuur herinneringsmail naar beheerder';
-$string['sentreminderuser'] = 'Stuur herinneringsmail naar gebruiker';
-$string['sessiondate'] = 'Sessie datum';
-$string['sessiondatetime'] = 'Sessie datum/tijd';
-$string['sessiondatetimeknown'] = 'Sessie datum/tijd bekend';
+$string['remindermessage'] = 'Herinnering';
+$string['reminderperiod'] = 'Aantal dagen voor verzending bericht';
+$string['requestattendsession'] = 'Aanmelding voor @a goedkeuren';
+$string['requestattendsessionsent'] = 'Aanvraag voor @a aan manager verzonden';
+$string['requestmessage'] = 'Goedkeuring aanvragen';
+$string['requeststablesummary'] = 'Aanmelding moet worden goedgekeurd voor:';
+$string['requestuserattendsession'] = '$a->usermsg vraag goedkeuring voor aanmelding $a->url';
+$string['room'] = 'Lokaal';
+$string['saveallfeedback'] = 'Alle antwoorden opslaan';
+$string['saveattendance'] = 'Aanwezigheid opslaan';
+$string['scheduledsession'] = 'Uitvoering';
+$string['scheduledsessions'] = 'Uitvoeringen';
+$string['seatsavailable'] = 'Beschikbare plaatsen';
+$string['seeattendees'] = 'Aanmeldingen tonen';
+$string['sentremindermanager'] = 'Herinnering verzenden naar manager van gebruiker';
+$string['sentreminderuser'] = 'Herinnering verzenden naar gebruiker';
+$string['sessiondate'] = 'Datum uitvoering';
+$string['sessiondatetime'] = 'Datum/tijd uitvoering';
+$string['sessiondatetimeknown'] = 'Datum/tijd bekend';
 $string['sessionfinishtime'] = 'Eindtijd sessie';
-$string['sessionover'] = 'Sessie over';
-$string['sessions'] = 'Sessies';
-$string['sessionsoncoursepage'] = 'Sessie getoond op cursuspagina';
-$string['sessionstartdate'] = 'Startdatum sessie';
-$string['sessionstarttime'] = 'Begintijd sessie';
-$string['sessionvenue'] = 'Ruimte/lokaal sessie';
-$string['setting:addchangemanageremail'] = 'Vraag gebruikers om het emailadres van de afspraakmanager';
-$string['setting:defaultcancellationinstrmngr'] = 'Standaard kennisgeving van afzegging naar de afspraakleider gestuurd.';
-$string['setting:defaultcancellationinstrmngr_caption'] = 'Bericht van verwijderen boeking (afspraakleider)';
-$string['setting:defaultcancellationinstrmngrdefault'] = '***Ter kennisname***
+$string['sessioninprogress'] = 'uitvoering gestart';
+$string['sessionisfull'] = 'Deze uitvoering is vol, kies een andere uitvoering.';
+$string['sessionover'] = 'uitvoering afgerond';
+$string['sessionrequiresmanagerapproval'] = 'Je manager moet deze aanmelding goedkeuren.';
+$string['sessionroles'] = 'Rollen uitvoering';
+$string['sessions'] = 'Uitvoeringen';
+$string['sessionsdetailstablesummary'] = 'Volledige beschrijving van de uitvoering.';
+$string['sessionsoncoursepage'] = 'Uitvoeringen op cursuspagina';
+$string['sessionstartdate'] = 'Startdatum uitvoering';
+$string['sessionstarttime'] = 'Starttijd uitvoering';
+$string['sessionvenue'] = 'Ruimte uitvoering';
+$string['setting:addchangemanageremail'] = 'Gebruikers moeten e-mailadres van manager invullen';
+$string['setting:addchangemanageremail_caption'] = 'E-mailadres manager:';
+$string['setting:addchangemanageremaildefault'] = 'Gebruikers moeten e-mailadres van manager invullen';
+$string['setting:defaultcancellationinstrmngr'] = 'E-mail aan managers verzonden ter bevestiging.';
+$string['setting:defaultcancellationinstrmngr_caption'] = 'Bericht Afmelding (manager)';
+$string['setting:defaultcancellationinstrmngrdefault'] = '*** Ter informatie ***
 
-Dit is een bevestiging dat [firstname][lastname] de volgende cursus heeft afgemeld en u heeft opgegeven als hun teamleider.
+[firstname] [lastname] heeft zich afgemeld voor de onderstaande cursus.
 
-***[firstname][lastname]\'s opzegging is hieronder weergegeven ***';
-$string['setting:defaultcancellationmessage'] = 'Standaard kennisgeving van afzegging naar de deelnemer gestuurd.';
-$string['setting:defaultcancellationmessage_caption'] = 'Bericht van verwijderen boeking';
-$string['setting:defaultcancellationmessagedefault'] = 'Dit is een kennisgeving van het opzeggen van de boeking voor de volgende afspraak:
+*** [firstname] [lastname]\'s afmelding ***';
+$string['setting:defaultcancellationmessage'] = 'E-mail aan gebruiker verzonden ter bevestiging.';
+$string['setting:defaultcancellationmessage_caption'] = 'Bericht Afmelding';
+$string['setting:defaultcancellationmessagedefault'] = '*** Afmelding ***
 
-***BOEKING GEANNULEERD***
-
-Deelnemer: [firstname][lastname]
-Afspraak: [facetofacename]
-
-Tijdsduur: [duration]
-Data: [alldates]
-
-Locatie: [session:location]
-Ruimte/lokaal: [session:venue]
-Kamer: [session:room]';
-$string['setting:defaultcancellationsubject'] = 'Standaard onderwerp voor afzeggingsemails.';
-$string['setting:defaultcancellationsubject_caption'] = 'Onderwerp afzegging';
-$string['setting:defaultcancellationsubjectdefault'] = 'Opzegging';
-$string['setting:defaultconfirmationinstrmngr'] = 'Standaard bevestigingsbericht gestuurd naar afspraakleiders.';
-$string['setting:defaultconfirmationinstrmngr_caption'] = 'Bevestigingsmelding (afspraakleider)';
-$string['setting:defaultconfirmationinstrmngrdefault'] = '*** Kennisgeving***
-
-Dit is een kennisgeving dat [firstname][lastname] zich heeft ingeschreven voor de volgende afspraak en u als teamleider heeft geselecteerd.
-
-Als u dit bericht ten onrechte ontvangt, stuur dit bericht dan terug.
-
-*** [fistname] [lastname]\'s inschrijving wordt hieronder weergegeven ***';
-$string['setting:defaultconfirmationmessage'] = 'Standaard bevestigingsbericht gestuurd naar deelnemers.';
-$string['setting:defaultconfirmationmessage_caption'] = 'Bevestigingsmelding';
-$string['setting:defaultconfirmationmessagedefault'] = 'Dit is een kennisgeving van het bevestigen van de boeking voor de volgende afspraak:
-
-Deelnemer: [firstname][lastname]
-Afspraak: [facetofacename]
-kosten: [cost]
-
-Tijdsduur: [duration]
-Data: [alldates]
-
-Locatie: [session:location]
-Ruimte/lokaal: [session:venue]
-Kamer: [session:room]
-
-*** probeer ervoor te zorgen op tijd aanwezig te zijn***
-
-[details]
-
-U zult een herinnering van deze afspraak [reminderperiod] ontvangen voor aanvang van de afspraak.';
-$string['setting:defaultconfirmationsubject'] = 'Standaard onderwerp voor bevestigingsberichten.';
-$string['setting:defaultconfirmationsubject_caption'] = 'Onderwerp van bevestiging';
-$string['setting:defaultconfirmationsubjectdefault'] = 'Boekingsbevestiging: [facetofacename],[starttime]-[finishtime][sessiondate]';
-$string['setting:defaultreminderinstrmngr'] = 'Standaard herinneringsboodschap gestuurd naar afspraakleiders.';
-$string['setting:defaultreminderinstrmngr_caption'] = 'Herinneringsboodschap (afspraakleider)';
-$string['setting:defaultreminderinstrmngrdefault'] = '***Herinnering***
-
-Uw collega [firstname] [lastname] is bij de volgende afspraak geplaatst en heeft een herinneringsmail ontvangen.
-
-Als u dit bericht ten onrechte heeft ontvangen, stuur deze mail dan terug.
-
-***[firstname] [lastname]\'s herinnering is hieronder weergegeven***';
-$string['setting:defaultremindermessage'] = 'Standaard herinneringsboodschap gestuurd naar deelnemers.';
-$string['setting:defaultremindermessage_caption'] = 'Herinneringsboodschap';
-$string['setting:defaultremindermessagedefault'] = 'Dit is een herinnering dat u geboekt bent voor de volgende afspraak:
-
-Deelnemer: [firstname] [lastname]
-Afspraak: [facetofacename]
-Kosten:  [cost]
+Gebruiker: [firstname] [lastname]
+Bijeenkomst: [facetofacename]
 
 Duur: [duration]
-Data:
+Datum: [alldates]
+
+Locatie: [session:location]
+Ruimte: [session:venue]
+Lokaal: [session:room]';
+$string['setting:defaultcancellationsubject'] = 'Onderwerp van berichten Afmelding.';
+$string['setting:defaultcancellationsubject_caption'] = 'Onderwerp Afmelding';
+$string['setting:defaultcancellationsubjectdefault'] = 'Afmelding';
+$string['setting:defaultconfirmationinstrmngr'] = 'E-mail aan managers verzonden ter bevestiging.';
+$string['setting:defaultconfirmationinstrmngr_caption'] = 'Bericht Aanmelding (manager)';
+$string['setting:defaultconfirmationinstrmngrdefault'] = '*** Ter informatie ***
+
+[firstname] [lastname] heeft zich aangemeld voor de onderstaande bijeenkomst. 
+
+Je ontvangt dit bericht omdat je door de gebruiker als manager bent aangemerkt.
+
+*** [fistname] [lastname]\'s aanmelding ***';
+$string['setting:defaultconfirmationmessage'] = 'Bericht Aanmelding (gebruiker)';
+$string['setting:defaultconfirmationmessage_caption'] = 'Bericht Aanmelding';
+$string['setting:defaultconfirmationmessagedefault'] = 'Je bent aangemeld voor de onderstaande bijeenkomst:
+
+Gebruiker: [firstname][lastname]
+Bijeenkomst: [facetofacename]
+Tarief: [cost]
+Duur: [duration]
+
+Datum:
 [alldates]
 
 Locatie: [session:location]
-Ruimte/lokaal: [session:venue]
-Locatie: [session:room]
+Ruimte: [session:venue]
+Lokaal: [session:room]
 
-*** Zorg er altublieft voor op tijd aanwezig te zijn***
+Als deze uitvoering niet schikt, kun je een andere kiezen. Meld je dan eerst af voor deze bijeenkomst.
 
-[details';
-$string['setting:defaultremindersubject'] = 'Standaard onderwerp voor herinneringsboodschappen.';
-$string['setting:defaultremindersubject_caption'] = 'Onderwerp herinneringsboodschap';
-$string['setting:defaultremindersubjectdefault'] = 'Afspraakbevestiging-herinnering: [facetofacename],[starttime]-[finishtime],[sessiondate]';
-$string['setting:defaultwaitlistedmessage'] = 'Standaard wachtlijst-boodschap gestuurd naar deelnemers.';
-$string['setting:defaultwaitlistedmessage_caption'] = 'Wachtlijst boodschap';
-$string['setting:defaultwaitlistedmessagedefault'] = 'U bent op de wachtlijst geplaatst voor:
+[details]
 
-Afspraak: [facetofacename]
-Plaats: [session:location]
-Deelnemer: [firstname][lastname]
+[reminderperiod] dagen voor de startdatum ontvangt u een herinnering.';
+$string['setting:defaultconfirmationsubject'] = 'Onderwerp van berichten Aanmelding';
+$string['setting:defaultconfirmationsubject_caption'] = 'Onderwerp Aanmelding';
+$string['setting:defaultconfirmationsubjectdefault'] = 'Aanmelding voor bijeenkomst [facetofacename], [sessiondate] [starttime]-[finishtime]';
+$string['setting:defaultreminderinstrmngr'] = 'Bericht Herinnering (mamager)';
+$string['setting:defaultreminderinstrmngr_caption'] = 'Bericht Herinnering (mamager)';
+$string['setting:defaultreminderinstrmngrdefault'] = '*** Herinnering ***
 
-***Dit is geen bevestiging van inschrijving!***
+Binnenkort start de bijeenkomst waarvoor [firstname] [lastname] zich heeft aangemeld.
 
-Als deze afspraak beschikbaar komt, zult u er van op de hoogte worden gesteld.';
-$string['setting:defaultwaitlistedsubject'] = 'Standaard onderwerp voor wachtlijst-boodschappen.';
-$string['setting:defaultwaitlistedsubject_caption'] = 'Onderwerp wachtlijst';
-$string['setting:defaultwaitlistedsubjectdefault'] = 'Wachtlijst voor [facetofacename]';
-$string['setting:disableicalcancel'] = 'Schakel Opzeggingsberichten met iCalendar bijlages uit.';
-$string['setting:disableicalcancel_caption'] = 'Schakel iCalendar opzeggingen uit:';
-$string['setting:fromaddress'] = 'Wat zal zichtbaar zijn in het afzenderveld van emails die door deze module wordt verstuurd?';
-$string['setting:fromaddressdefault'] = 'moodle@example.com';
-$string['setting:manageraddressformat'] = 'Element dat in het emailadres van de afspraakmanager moet voorkomen, voor het adres geaccepteerd wordt';
+Je ontvangt dit bericht omdat je door de gebruiker als manager bent aangemerkt.
+
+*** [firstname] [lastname]\'s herinnering ***';
+$string['setting:defaultremindermessage'] = 'Bericht Herinnering';
+$string['setting:defaultremindermessage_caption'] = 'Bericht Herinnering';
+$string['setting:defaultremindermessagedefault'] = 'Binnenkort start de onderstaande bijeenkomst waarvoor je bent aangemeld:
+
+Gebruiker: [firstname] [lastname]
+Bijeenkomst: [facetofacename]
+Tarief: [cost]
+Duur: [duration]
+
+Datum:
+[alldates]
+
+Locatie: [session:location]
+Ruimte: [session:venue]
+Lokaal: [session:room]
+
+Als deze uitvoering niet schikt, kun je een andere kiezen. Meld je dan eerst af voor deze bijeenkomst.
+
+[details]';
+$string['setting:defaultremindersubject'] = 'Onderwerp van berichten Herinnering';
+$string['setting:defaultremindersubject_caption'] = 'Onderwerp Herinnering';
+$string['setting:defaultremindersubjectdefault'] = 'Herinnering voor bijeenkomst [facetofacename], [sessiondate] [starttime]-[finishtime]';
+$string['setting:defaultrequestinstrmngrdefault'] = '[firstname] [lastname] vraagt jouw goedkeuring voor aanmelding op de onderstaande bijeenkomst.
+
+Bijeenkomst: [facetofacename]
+Tarief: [cost]
+Duur: [duration]
+
+Datum:
+[alldates]
+
+Locatie: [session:location]
+Ruimte: [session:venue]
+Lokaal: [session:room]
+
+Klik op de link om deze aanmelding goed te keuren:
+[attendeeslink]#unapproved
+
+*** [firstname] [lastname]\'s aanmelding ****';
+$string['setting:defaultrequestmessagedefault'] = 'Je manager is verzocht om je aanmelding voor onderstaande bijeenkomst goed te keuren:
+
+Gebruiker: [firstname] [lastname]
+Bijeenkomst: [facetofacename]
+Tarief: [cost]
+Duur: [duration]
+
+Datum:
+[alldates]
+
+Locatie: [session:location]
+Ruimte: [session:venue]
+Lokaal: [session:room]';
+$string['setting:defaultrequestsubjectdefault'] = 'Aanmelding goedkeuren voor [facetofacename], [sessiondate] [starttime]-[finishtime]';
+$string['setting:defaultvalue'] = 'Standaardwaarde';
+$string['setting:defaultwaitlistedmessage'] = 'Bericht Op wachtlijst geplaatst';
+$string['setting:defaultwaitlistedmessage_caption'] = 'Bericht Op wachtlijst geplaatst';
+$string['setting:defaultwaitlistedmessagedefault'] = 'Je bent voor onderstaande bijeenkomst op de wachtlijst geplaatst:
+
+Bijeenkomst: [facetofacename]
+Locatie: [session:location]
+Gebruiker: [firstname][lastname]
+
+*** Geen bevestiging van aanmelding ***
+
+Als er een plaats beschikbaar komt, wordt je automatisch aangemeld en ontvang je een e-mail ter bevestiging.';
+$string['setting:defaultwaitlistedsubject'] = 'Onderwerp van berichten Op wachtlijst geplaatst';
+$string['setting:defaultwaitlistedsubject_caption'] = 'Onderwerp Op wachtlijst geplaatst';
+$string['setting:defaultwaitlistedsubjectdefault'] = 'Op wachtlijst van [facetofacename] geplaatst';
+$string['setting:disableicalcancel'] = 'Geen afmeldingen met afspraakverzoeken verzenden.';
+$string['setting:disableicalcancel_caption'] = 'Geen afmeldingen met afspraakverzoeken verzenden:';
+$string['setting:fromaddress'] = 'De afzender van de berichten die vanuit over bijeenkomst worden verzonden.';
+$string['setting:fromaddress_caption'] = 'E-mailadres afzender:';
+$string['setting:fromaddressdefault'] = 'voorbeeld@adres.nl';
+$string['setting:hidecost'] = 'Velden tarief en kortingscode verbergen.';
+$string['setting:hidecost_caption'] = 'Tarief en kortingscode verbergen:';
+$string['setting:hidediscount'] = 'Veld kortingscode verbergen.';
+$string['setting:hidediscount_caption'] = 'Kortingscode verbergen:';
+$string['setting:isfilter'] = 'Als filter tonen';
+$string['setting:manageraddressformat'] = 'Het e-mailadres van de manager is alleen geldig als het deze tekst bevat.';
+$string['setting:manageraddressformat_caption'] = 'E-mailadres bevat tekst:';
 $string['setting:manageraddressformatdefault'] = 'Email afspraakleider';
-$string['setting:manageraddressformatreadable'] = 'Korte beschrijving van de beperkingen van het emailadres van de afspraakmanager';
-$string['setting:manageraddressformatreadabledefault'] = 'firstname.lastname@company.com';
-$string['setting:oneemailperday'] = 'Stuur meerdere bevestigingsberichten voor meerdaagse gebeurtenissen.';
-$string['setting:oneemailperday_caption'] = 'Één bericht per dag:';
-$string['showbylocation'] = 'Sorteer op locatie';
-$string['sign-ups'] = 'Intekeningen';
-$string['signup'] = 'Intekening';
-$string['signupfor'] = 'Teken in voor $a';
-$string['signupforsession'] = 'Teken in voor een beschikbare sessie';
+$string['setting:manageraddressformatreadable'] = 'Omschrijving van de beperkingen die gelden voor het e-mailadres van de manager. Deze zijn niet van toepassing als deze hierboven niet is ingesteld.';
+$string['setting:manageraddressformatreadable_caption'] = 'Voorbeeldopmaak';
+$string['setting:manageraddressformatreadabledefault'] = 'voornaam.achternaam@bedrijf.nl';
+$string['setting:oneemailperday'] = 'Stuur meerdere berichten als het een meerdaage bijeenkomst betreft.';
+$string['setting:oneemailperday_caption'] = 'Eén bericht per dag:';
+$string['setting:possiblevalues'] = 'Lijst van mogelijke waarden';
+$string['setting:sessionroles'] = 'Voor elke uitvoering wordt de voortgang geregistreerd van gebruikers met één van de geselecteerde rollen';
+$string['setting:sessionroles_caption'] = 'Rollen uitvoering:';
+$string['setting:showinsummary'] = 'In export en overzichten tonen';
+$string['setting:type'] = 'Type veld';
+$string['showbylocation'] = 'Per locatie tonen';
+$string['showoncalendar'] = 'Op kalender tonen';
+$string['sign-ups'] = 'Aanmeldingen';
+$string['signup'] = 'Aanmelden';
+$string['signupfor'] = 'Aanmelden voor $a';
+$string['signupforsession'] = 'Aanmelden voor een bijeenkomst';
+$string['signupforthissession'] = 'Aanmelden voor deze uitvoering';
+$string['signups'] = 'Aanmeldingen';
+$string['sitenoticesheading'] = 'Systeemberichten';
 $string['status'] = 'Status';
-$string['subject'] = 'Verandering in intekening van $a->coursename ($a->duedate)';
-$string['submissions'] = 'Intekeningen';
-$string['submit'] = 'Intekenen';
-$string['submitted'] = 'Ingetekend';
+$string['status_approved'] = 'Goedgekeurd';
+$string['status_booked'] = 'Aangemeld';
+$string['status_declined'] = 'Afgewezen';
+$string['status_fully_attended'] = 'Aanwezig';
+$string['status_no_show'] = 'Afwezig';
+$string['status_partially_attended'] = 'Gedeeltelijk aanwezig';
+$string['status_requested'] = 'Wacht op goedkeuring';
+$string['status_session_cancelled'] = 'Uitvoering geannuleerd';
+$string['status_user_cancelled'] = 'Afgemeld';
+$string['status_waitlisted'] = 'Op wachtlijst';
+$string['subject'] = 'Aanmeldingen aangepast voor bijeenkomst $a->coursename ($a->duedate)';
+$string['submissions'] = 'Aanmeldingen';
+$string['submit'] = 'Aanmelden';
+$string['submitted'] = 'Aangemeld';
 $string['summary'] = 'Samenvatting';
-$string['suppressemail'] = 'Onderdruk bevestigingen per email';
-$string['takeattendance'] = 'Neem aanwezigheid op';
-$string['thirdpartyemailaddress'] = 'Alternatief emailadres';
-$string['thirdpartywaitlist'] = 'Stuur een bericht over sessies op de wachtlijst aan derden';
-$string['time'] = 'Tijd';
-$string['timecancelled'] = 'Tijd opzegging';
-$string['timedue'] = 'Einde registratie';
-$string['timefinish'] = 'Eindtijd';
-$string['timesignedup'] = 'Tijd van intekening';
-$string['timestart'] = 'Begintijd';
+$string['suppressemail'] = 'Berichten overslaan';
+$string['takeattendance'] = 'Aanwezigheid registreren';
+$string['thirdpartyemailaddress'] = 'Extra e-mailadres';
+$string['thirdpartywaitlist'] = 'Bericht Op wachtlijst geplaatst ook verzenden naar extra e-mailadres';
+$string['time'] = 'Tijdstip';
+$string['timecancelled'] = 'Tijdstip afgemeld';
+$string['timedue'] = 'Aanmelden mogelijk tot';
+$string['timefinish'] = 'Einde';
+$string['timerequested'] = 'Tijdstip goedkeuring aangevraagd';
+$string['timesignedup'] = 'Tijdstip aangemeld';
+$string['timestart'] = 'Start';
+$string['unapprovedrequests'] = 'Goedkeuring aangevraagd';
 $string['unknowndate'] = '(datum onbekend)';
-$string['unknowntime'] = '(tijd onbekend)';
-$string['upcomingsessions'] = 'Aankomende sessies';
-$string['usercancelledon'] = 'Gebruiker heeft afgezegd op $a';
-$string['usernotsignedup'] = 'Status: niet ingetekend';
-$string['usersignedup'] = 'Status: ingetekend';
-$string['usersignedupon'] = 'Gebruiker heeft ingetekend op $a';
-$string['venue'] = 'Ruimte/lokaal';
-$string['viewallsessions'] = 'Bekijk alle sessies';
-$string['viewsubmissions'] = 'Bekijk intekeningen';
+$string['unknowntime'] = '(tijdstip onbekend)';
+$string['upcomingsessions'] = 'Actieve uitvoeringen';
+$string['upcomingsessionslist'] = 'Alle uitvoeringen van deze bijeenkomst';
+$string['usercancelledon'] = 'Gebruiker afgemeld voor $a';
+$string['usernotsignedup'] = 'Status: niet aangemeld';
+$string['usersignedup'] = 'Status: aangemeld';
+$string['usersignedupon'] = 'Gebruiker aangemeld voor $a';
+$string['userwillbewaitlisted'] = 'Deze uitvoering is vol. Klik op Aanmelden om op de wachtlijst geplaatst te worden.';
+$string['validation:needatleastonedate'] = 'Vul minimaal één datum in of kies als uitvoeringstatus Op wachtlijst.';
+$string['venue'] = 'Ruimte';
+$string['viewallsessions'] = 'Alle uitvoeringen tonen';
+$string['viewsubmissions'] = 'Aanmeldingen tonen';
 $string['wait-list'] = 'Wachtlijst';
-$string['wait-listed'] = 'Op wachtlijst geplaatst';
-$string['waitlistedmessage'] = 'Wachtlijst boodschap';
+$string['wait-listed'] = 'Op wachtlijst';
+$string['waitlistedforsession'] = 'Op wachtlijst voor uitvoering $a';
+$string['waitlistedmessage'] = 'Bericht Op wachtlijst geplaatst';
 $string['xhours'] = '$a uren';
 $string['xminutes'] = '$a minuten';
-$string['youarebooked'] = 'U bent geboekt voor de volgende sessie';
-$string['youremailaddress'] = 'Uw emailadres';
+$string['youarebooked'] = 'Je bent aangemeld voor de uitvoering';
+$string['youremailaddress'] = 'Je e-mailadres';
+
+?>

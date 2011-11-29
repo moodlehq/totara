@@ -9,6 +9,7 @@ $string['dbtype'] = 'Tipo de base de datos';
 $string['dbuser'] = 'Usuario del servidor';
 $string['description'] = 'Puede utilizar una base de datos externa (de casi cualquier tipo) para llevar el control de las relaciones entre usuarios. Se asume que su base de datos externa contiene un campo con dos ID de usuario y un ID de función. Estos se comparan con los campos que usted elija en las tablas de usuario y función locales';
 $string['enrolname'] = 'Base de datos externa (Relaciones entre usuarios)';
+$string['fullnamefield'] = 'El nombre del campo en la base de datos externa que será utilizado como el nombre completo de la tarea de posición.';
 $string['localobjectuserfield'] = 'El nombre del campo en la tabla de usuario que estamos utilizando para buscar coincidencias de entradas en la base de datos remota (p. ej. númerodeid) para la asignación de función de <i>objeto</i>.';
 $string['localorgfield'] = 'El nombre del campo en la tabla de la organización que utilizamos para hacer concordar las entradas en la base de datos remota (p. ej. número de id).';
 $string['localposfield'] = 'El nombre del campo en la tabla de posición que estamos usando para hacer concordar las entradas en la base de datos remota (p. ej. número de id).';

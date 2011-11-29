@@ -1,34 +1,33 @@
 <?php
-// lang file for local/plan/rb_sources/rb_source_dp_course.php
-$string['sourcetitle'] = 'Registro do aprendizado: Cursos';
-// columns
-$string['plan'] = 'Plano';
-$string['planname'] = 'Nome do plano';
-$string['plannamelink'] = 'Nome do plano (vinculado à página do plano)';
-$string['planstartdate'] = 'Data de início do plano';
-$string['planenddate'] = 'Data de término do plano';
-$string['planstatus'] = 'Status do plano';
-$string['plantemplate'] = 'Modelo do plano';
+// rb_source_dp_course.php - created with Totara langimport script version 1.1
+
+$string['blended'] = 'Misto';
+$string['completionstatus'] = 'Status da conclusÃ£o';
+$string['completionstatusandapproval'] = 'Status da conclusÃ£o (e da aprovaÃ§Ã£o)';
+$string['coursecompletedate'] = 'Data de tÃ©rmino do curso';
 $string['coursecompletiondate'] = 'Data de conclusão do curso';
 $string['courseduedate'] = 'Data de vencimento do curso';
 $string['coursepriority'] = 'Prioridade do curso';
 $string['coursestatus'] = 'Status do curso';
-$string['templatename'] = 'Nome do modelo do plano';
-$string['templatestartdate'] = 'Data de início do modelo do plano';
-$string['templateenddate'] = 'Data de término do modelo do plano';
-$string['completionstatus'] = 'Status da conclusão';
-$string['completionstatusandapproval'] = 'Status da conclusão (e da aprovação)';
+$string['coursetitle'] = 'TÃ­tulo do curso';
 $string['coursetypeicon'] = 'Tipo';
-$string['progress'] = 'Progresso';
-// filters
-$string['userid'] = 'ID do usuário';
-$string['coursetitle'] = 'Título do curso';
-// course types
 $string['elearning'] = 'E-Learning';
-$string['blended'] = 'Misto';
 $string['facetoface'] = 'Pessoal';
-
-// column types for this source, as strings
+$string['plan'] = 'Plano';
+$string['planenddate'] = 'Data de tÃ©rmino do plano';
+$string['planname'] = 'Nome do plano';
+$string['plannamelink'] = 'Nome do plano (vinculado Ã  pÃ¡gina do plano)';
+$string['planstartdate'] = 'Data de inÃ­cio do plano';
+$string['planstatus'] = 'Status do plano';
+$string['plantemplate'] = 'Modelo do plano';
+$string['progress'] = 'Progresso';
+$string['sourcetitle'] = 'Registro do aprendizado: Cursos';
+$string['templateenddate'] = 'Data de tÃ©rmino do modelo do plano';
+$string['templatename'] = 'Nome do modelo do plano';
+$string['templatestartdate'] = 'Data de inÃ­cio do modelo do plano';
+$string['type_course_completion'] = 'ConclusÃ£o do curso';
 $string['type_plan'] = 'Plano';
 $string['type_template'] = 'Modelo do plano';
-$string['type_course_completion'] = 'Conclusão do curso';
+$string['userid'] = 'ID do usuÃ¡rio';
+
+?>

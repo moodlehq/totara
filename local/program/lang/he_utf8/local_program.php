@@ -1,5 +1,5 @@
 <?php
-// local_program.php - created with Totara langimport script version 1.0
+// local_program.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'פעולה';
 $string['addcohortstoprogram'] = 'הוסף קבוצות כוללות למסלול';
@@ -67,7 +67,7 @@ $string['complete'] = 'הושלם';
 $string['completeallcourses'] = 'כל הקורסים באוסף זה צריכים להיות מושלמים (אלא אם מדובר באוסף אופציונאלי).';
 $string['completeanycourse'] = 'לפחות אחד מהקורסים באוסף זה צריך להיות מושלם.';
 $string['completeby'] = 'השלם עד';
-$string['completebytime'] = 'השךם עד $a';
+$string['completebytime'] = 'השלם עד $a';
 $string['completewithin'] = 'השלם תוך';
 $string['completewithinevent'] = 'השלם תוך $a->num $a->period של $a->event $a->instance';
 $string['completioncriteria'] = 'קריטריונים להשלמה';

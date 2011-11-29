@@ -77,6 +77,7 @@ $string['invalidassignment'] = 'tarea incorrecta';
 $string['invalidid'] = 'ID de recurso incorrecta';
 $string['keepnavigationvisible'] = 'Mantener visible la navegación en la misma página';
 $string['keepnavigationvisibleno'] = 'No';
+$string['keepnavigationvisiblewarning'] = 'Nota: algunos archivos multimedia pueden ignorar esta configuración';
 $string['keepnavigationvisibleyesframe'] = 'Sí, con marco';
 $string['keepnavigationvisibleyesobject'] = 'Sí, sin marco';
 $string['legacyfiles'] = 'Migración de archivo antiguo de curso';

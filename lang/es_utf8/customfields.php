@@ -1,13 +1,12 @@
-<?PHP // $Id$ 
-      // customfields.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// customfields.php - created with Totara langimport script version 1.1
 
 $string['category'] = 'Categoría';
 $string['categorynamemustbeunique'] = 'Nombre de la categoría (debe ser único)';
 $string['categorynamenotunique'] = 'Este nombre de categoría ya está en uso';
 $string['commonsettings'] = 'Configuración común';
-$string['confirmcategorydeletion'] = 'Hay $a campo/s en esta categoría que será(n) trasladado(s) a la categoría de arriba (o abajo si está(n) en la primera). <br />¿Aún desea borrar esta categoría?';
-$string['confirmfielddeletion'] = 'Hay $a archivo/s para este campo que será(n) eliminado(s). <br />¿Aún desea eliminar este campo?';
+$string['confirmcategorydeletion'] = 'Hay $a campo/s en esta categoría que será(n) trasladado(s) a la categoría superior (o inferior si está(n) en la primera). <br />¿Aún desea borrar esta categoría?';
+$string['confirmfielddeletion'] = 'Hay $a registro/s para este campo que será(n) eliminado(s). <br />¿Aún desea eliminar este campo?';
 $string['coursecustomfields'] = 'Campos personalizados del curso';
 $string['createcustomfieldcategory'] = 'Cree una categoría de campo personalizada';
 $string['createnewcategory'] = 'Creando una nueva categoría';
@@ -16,7 +15,7 @@ $string['createnewfield'] = 'Cree un nuevo &quot;$a&quot; campo personalizado';
 $string['customfield'] = 'Campo personalizado';
 $string['customfieldcategories'] = 'Categorías del campo personalizado';
 $string['customfields'] = 'Campos personalizados';
-$string['customfieldtypecheckbox'] = 'Caja de selección';
+$string['customfieldtypecheckbox'] = 'Casilla de selección';
 $string['customfieldtypefile'] = 'Archivo';
 $string['customfieldtypemenu'] = 'Menú de elecciones';
 $string['customfieldtypetext'] = 'Ingreso de texto';

@@ -1,0 +1,72 @@
+<?PHP // $Id$ 
+      // local_cohort.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
+
+
+$string['abouttocreate'] = 'Esta por crear un nuevo cohorte llamado \"{$a}\"';
+$string['addcohort'] = 'Crear un cohorte nuevo';
+$string['anycohort'] = 'Cualquiera';
+$string['assign'] = 'Asignar';
+$string['assignmemberstocohort'] = 'Asignar miembros al cohorte';
+$string['assignto'] = '\'{$a}\' miembros del cohorte';
+$string['backtocohorts'] = 'Volver a los cohortes';
+$string['cannoteditcohort'] = 'No se puede editar este cohorte luego de ser creado';
+$string['childrenincluded'] = 'hijos incluidos';
+$string['clear'] = 'Borrar';
+$string['cohort'] = 'Cohorte';
+$string['cohort:assign'] = 'Asignar miembros del cohorte';
+$string['cohort:manage'] = 'Ajustar cohortes';
+$string['cohort:view'] = 'Utilizar cohortes y ver miembros';
+$string['cohortmembers'] = 'Miembros del cohorte';
+$string['cohorts'] = 'Cohortes';
+$string['cohortsin'] = 'Cohortes disponibles';
+$string['component'] = 'Fuente';
+$string['confirmdynamiccohortcreation'] = 'Confirmar la creación dinámica de cohortes';
+$string['createdynamiccohort'] = 'Crear un cohorte dinámico';
+$string['createnewcohort'] = 'Crear un nuevo cohorte';
+$string['criteria'] = 'Criterios';
+$string['criteriaoptional'] = 'Todos los criterios son opcionales pero debe seleccionar una opción al menos.';
+$string['currentusers'] = 'Usuarios actuales';
+$string['currentusersmatching'] = 'Los usuarios actuales que concuerdan';
+$string['delcohort'] = 'Eliminar cohorte';
+$string['delconfirm'] = '¿Realmente quiere eliminar el cohorte \'{$a}\'?';
+$string['deletethiscohort'] = 'Eliminar este cohorte';
+$string['description'] = 'Descripción';
+$string['duplicateidnumber'] = 'Ya existe un cohorte con el mismo número ID';
+$string['dynamic'] = 'Dinámico';
+$string['dynamiccohortcriteria'] = 'Criterios Dinámicos del Cohorte';
+$string['dynamiccohortcriterialower'] = 'Criterios dinámicos del cohorte';
+$string['editcohort'] = 'Editar cohorte';
+$string['editdetails'] = 'Editar detalles';
+$string['editmembers'] = 'Editar miembros';
+$string['failedtodeleted'] = 'No se pudo eliminar el cohorte';
+$string['idnumber'] = 'ID';
+$string['includechildren'] = 'Incluir hijos';
+$string['members'] = 'Miembros';
+$string['memberscount'] = 'Tamaño';
+$string['mustselectonecriteria'] = 'Debe seleccionar al menos un criterio';
+$string['name'] = 'Nombre';
+$string['nocomponent'] = 'Creado manualmente';
+$string['nocriteriaset'] = '(no se configuraron los criterios, elimine este cohorte)';
+$string['notvalidprofilefield'] = 'Por favor seleccione un campo de perfil válido';
+$string['organisation'] = 'Organización';
+$string['overview'] = 'Panorama';
+$string['pleasesearchmore'] = 'Por favor haga la búsqueda más específica';
+$string['pleaseusesearch'] = 'Por favor utilice la búsqueda';
+$string['position'] = 'Posición';
+$string['potusers'] = 'Usuarios potenciales';
+$string['potusersmatching'] = 'Usuarios potenciales que pueden concordar';
+$string['role'] = 'Rol';
+$string['selectfromcohort'] = 'Seleccionar miembros del cohorte';
+$string['set'] = 'Activado';
+$string['successfullyaddedcohort'] = 'Cohorte agregado exitosamente';
+$string['successfullydeleted'] = 'Cohorte eliminado exitosamente';
+$string['successfullyupdated'] = 'Cohorte actualizado exitosamente';
+$string['thiscohortwillhave'] = 'Este cohorte tendrá {$a} miembros en este punto del tiempo';
+$string['toomanyusersmatchsearch'] = 'Demasiados usuarios concuerdan con la búsqueda';
+$string['toomanyuserstoshow'] = 'Hay demasiados usuarios para mostar';
+$string['type'] = 'Tipo';
+$string['userprofilefield'] = 'Utilizar el campo del usuario';
+$string['values'] = 'valores';
+$string['viewmembers'] = 'Ver miembros';
+
+?>

@@ -1,5 +1,5 @@
 <?php
-// local_totara_msg.php - created with Totara langimport script version 1.0
+// local_totara_msg.php - created with Totara langimport script version 1.1
 
 $string['accept'] = 'Aceptar';
 $string['alert_description'] = 'A continuación se enumeran todas las alertas que ha recibido. Puede hacer clic en el título de la alerta para ver más detalles o descartarla haciendo clic en el icono descartar a la derecha de la lista. También pueden optar por filtrar qué alertas se muestran en la lista, haciendo uso de la funcionalidad \"Buscar por\".';
@@ -11,6 +11,7 @@ $string['competency'] = 'Competencia';
 $string['course'] = 'Curso';
 $string['dismiss'] = 'Descartar';
 $string['elearning'] = 'E-learning';
+$string['emailnotifications'] = 'Notificaciones por email';
 $string['error:redirecttoexternal'] = 'Error: tratando de redirigir al dominio externo';
 $string['evidence'] = 'Evidencia';
 $string['facetoface'] = 'Cara-a-cara';

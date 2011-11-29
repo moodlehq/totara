@@ -2,9 +2,12 @@
 // rb_source_facetoface_sessions.php - created with Totara langimport script version 1.1
 
 $string['audit'] = 'Auditoría';
+$string['cancellationdate'] = 'Fecha de cancelación';
+$string['cancellationreason'] = 'Razón de la cancelación';
 $string['coursedelivery'] = 'Presentación del curso';
 $string['currentorg'] = 'La organización actual del usuario';
 $string['currentpos'] = 'La posición actual del usuario';
+$string['discountcode'] = 'Código de descuento';
 $string['endtime'] = 'Hora de finalización';
 $string['facilitator'] = 'Instructor';
 $string['ftfname'] = 'Nombre presencial';

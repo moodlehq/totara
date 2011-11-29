@@ -4,6 +4,7 @@
 $string['blended'] = 'Combinado';
 $string['completionstatus'] = 'Estado de realización';
 $string['completionstatusandapproval'] = 'Estado de realización (y estado de aprobación)';
+$string['coursecompletedate'] = 'Fecha de realización del curso';
 $string['courseduedate'] = 'Fecha límite del curso';
 $string['coursepriority'] = 'Prioridad del curso';
 $string['coursestatus'] = 'Estado del curso';

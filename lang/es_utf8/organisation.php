@@ -1,14 +1,13 @@
-<?PHP // $Id$ 
-      // organisation.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
+<?php
+// organisation.php - created with Totara langimport script version 1.1
 
-
-$string['adddepthlevel'] = 'Agregar un nuevo nivel de profundidad';
-$string['addedframework'] = 'Se agregó el cuadro de la organización \"{$a}\"';
-$string['addedorganisation'] = 'Se agregó la organización \"{$a}\"';
-$string['addmultipleneworganisation'] = 'Agregar organizaciones múltiples';
-$string['addnewframework'] = 'Agregar un nuevo cuadro de organizaciones';
-$string['addneworganisation'] = 'Agregar una organización nueva';
-$string['addtype'] = 'Agregar un tipo nuevo';
+$string['adddepthlevel'] = 'Añadir un nuevo nivel de profundidad';
+$string['addedframework'] = 'Se añadió el cuadro de la organización \"{$a}\"';
+$string['addedorganisation'] = 'Se añadió la organización \"{$a}\"';
+$string['addmultipleneworganisation'] = 'Añadir organizaciones múltiples';
+$string['addnewframework'] = 'Añadir un nuevo cuadro de organizaciones';
+$string['addneworganisation'] = 'Añadir una organización nueva';
+$string['addtype'] = 'Añadir un tipo nuevo';
 $string['backtoallframeworks'] = 'Volver a todos los cuadros de las organizaciones';
 $string['bulkdeleteorganisation'] = 'Eliminar organizaciones en masa';
 $string['bulkmoveorganisation'] = 'Mover organizaciones en masa';
@@ -16,7 +15,7 @@ $string['chooseorganisation'] = 'Seleccionar una organización';
 $string['competencyassigndeletecheck'] = '¿Está seguro de que querría eliminar esta tarea de competencia?';
 $string['createtype'] = 'Se creó el tipo de organización \"{$a}\"';
 $string['currentlyselected'] = 'Actualmente seleccionado';
-$string['deletecheck'] = '¿Está seguro de que quiere eliminar esta organización, todos sus niños y los datos que contienen?';
+$string['deletecheck'] = '¿Está seguro de que quiere eliminar esta organización, todos sus hijos y los datos que contienen?';
 $string['deletecheck11'] = '¿Está seguro de que quiere eliminar la organización \"$a\"?
 <br /><br />
 Esto eliminará los siguientes datos:<br />
@@ -29,10 +28,10 @@ Esto eliminará los siguientes datos: <br />
 $string['deletedassignedcompetency'] = 'La competencia ya no está más asignada a esta organización';
 $string['deletedepth'] = 'Eliminar $a';
 $string['deletedframework'] = 'Se eliminó completamente el cuadro de la organización \"{$a}\" y sus datos';
-$string['deletedorganisation'] = 'Se eliminó completamente la organización \"{$a}\" y sus niños';
+$string['deletedorganisation'] = 'Se eliminó completamente la organización \"{$a}\" y sus hijos';
 $string['deletedtype'] = 'Se eliminó completamente el tipo de organización \"{$a}\"';
 $string['deleteframework'] = 'Eliminar $a';
-$string['deleteincludexcustomfields'] = '- $a archivo(s) de campo personalizado';
+$string['deleteincludexcustomfields'] = '- $a registro(s) de campo personalizado';
 $string['deleteincludexlinkedcompetencies'] = '- $a enclace(s) con las competencias';
 $string['deleteincludexposassignments'] = '- $a asignacion(es) a esta organización (los usuarios que tengan asignación en esta organización la perderán)';
 $string['deletemulticheckwithchildren'] = '¿Está seguro de que quiere eliminar $a->num organisation(s) and $a->childcount $a->children_string?
@@ -50,7 +49,7 @@ $string['editframework'] = 'Editar el cuadro de la organización';
 $string['editgeneric'] = 'Editar $a';
 $string['editorganisation'] = 'Editar la organización';
 $string['edittypelevel'] = 'Editar el tipo';
-$string['error:addorganisation'] = 'Hubo un problema al agregar la organización \"{$a}\"';
+$string['error:addorganisation'] = 'Hubo un problema al añadir la organización \"{$a}\"';
 $string['error:createtype'] = 'Error al crear el tipo de organización \"{$a}\"';
 $string['error:deleteassignedcompetency'] = 'Error al liberar la competencia de esta organización';
 $string['error:deletedframework'] = 'Error al eliminar el cuadro de la organización \"{$a}\" y sus datos.';
@@ -70,7 +69,7 @@ $string['idnumber'] = 'Número ID de la organización';
 $string['idnumberframework'] = 'Número ID';
 $string['idnumberview'] = 'Número ID';
 $string['invalidnumeric'] = 'El valor numérico debe ser numérico (o no configurarlo)';
-$string['itemstoadd'] = 'Elementos a agregar';
+$string['itemstoadd'] = 'Elementos a añadir';
 $string['manageorganisation'] = 'Ajustar organizaciones';
 $string['manageorganisations'] = 'Ajustar organizaciones';
 $string['manageorganisationtypes'] = 'Ajustar tipos';
@@ -86,7 +85,7 @@ $string['missingshortnamedepth'] = 'No se encuentra el nombre corto del nivel de
 $string['missingshortnameframework'] = 'No se encuentra el nombre corto del cuadro';
 $string['missingshortnametype'] = 'No se encuentra el nombre corto del tipo';
 $string['name'] = 'Nombre';
-$string['nochildorganisations'] = 'No se definieron organizaciones de niños';
+$string['nochildorganisations'] = 'No se definieron organizaciones de hijos';
 $string['nodepthlevels'] = 'No hay niveles de profundidad en este cuadro';
 $string['noframeworks'] = 'No hay disponibles cuadros de organizaciones';
 $string['noframeworkssetup'] = 'No hay configurados cuadros de organizaciones para este sitio.';
@@ -97,7 +96,7 @@ $string['nounassignedcompetencies'] = 'No hay competencias sin asignar';
 $string['nounassignedcompetencytemplates'] = 'No hay plantillas de competencias sin asignar';
 $string['numericalvalue'] = 'Valor numérico';
 $string['organisation'] = 'Organización';
-$string['organisationaddnew'] = 'Agregar una nueva organización';
+$string['organisationaddnew'] = 'Añadir una nueva organización';
 $string['organisationcustomfields'] = 'Campos personalizados';
 $string['organisationdepthcustomfields'] = 'Campos personalizados de profundidad de la organización';
 $string['organisationframework'] = 'Cuadro de la organización';
