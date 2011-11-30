@@ -132,7 +132,7 @@ if ( $deleteyes ){
                 $data->fullname,
                 isset($data->description)?$data->description:null,
                 isset($data->priority)?$data->priority:null,
-                isset($data->duedate)?$data->duedate:null,
+                isset($data->duedate)?dp_convert_userdate($data->duedate):null,
                 isset($data->scalevalueid)?$data->scalevalueid:null
         );
         if (!$result){
