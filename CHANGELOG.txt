@@ -1,7 +1,28 @@
 Totara LMS Changelog
 
+Release 1.1.5 (2 December 2011):
+==================================================
+
+Security fixes:
+    T-9484      Clean URL parameters in javascript to prevent XSS                                 Thanks to Nick Freeman from security-assessment.com for finding this
+
+Improvements:
+    T-8485      Dutch language pack added
+    T-8485      Additions to Finnish, German, Hebrew, Portuguese and Spanish
+
+Bug fixes:
+                Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_1.9.15_release_notes
+    T-9476      Fix additional require statements in messages
+    T-5734      Fixed missing format_string on competency name in the competency
+                linked evidence list for a course
+    T-6710      Fix typo in facetoface English language string
+    T-9478      Remove incorrect permissions check on course browse pages                          Course creators now correctly see 'Add Course' button when editing is on
+    T-9482      Refactor calendar picker to avoid duplication
+    T-9483      Fix saving of due date when creating objected in learning plan
+
 Release 1.1.4 (23 November 2011):
 ==================================================
+
 Improvements:
     T-8485      Additions to Finnish, German, Hebrew, Portuguese Brazilian, Spanish,
                 Castilian Spanish and Swedish language packs
