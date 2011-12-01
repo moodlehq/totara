@@ -57,18 +57,13 @@ class completion_criteria_course extends completion_criteria {
     /**
      * Add appropriate form elements to the critieria form
      *
+     * Not used for this criteria, defined in course/completion_form.php
+     *
      * @param moodle_form $mform Moodle forms object
      * @param stdClass $data data used to define default value of the form
      */
     public function config_form_display(&$mform, $data = null) {
-        global $CFG;
-
-        $link = "<a href=\"{$CFG->wwwroot}/course/view.php?id={$data->id}\">".s($data->fullname).'</a>';
-        $mform->addElement('checkbox', 'criteria_course['.$data->id.']', $link);
-
-        if ($this->id) {
-            $mform->setDefault('criteria_course['.$data->id.']', 1);
-        }
+        return;
     }
 
     /**
@@ -77,6 +72,12 @@ class completion_criteria_course extends completion_criteria {
      * @param array $data Form data
      */
     public function update_config(&$data) {
+
+        // If select none selected, clear selection
+        if (!empty($data->criteria_course_none)) {
+            $data->criteria_course = array();
+            return;
+        }
 
         if (!empty($data->criteria_course) && is_array($data->criteria_course)) {
 

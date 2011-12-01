@@ -60,6 +60,10 @@ if ($id) { // editing course
     print_error('needcourseid');
 }
 
+// Load completion object
+$completion = new completion_info($course);
+
+
 /// Set up the page
 $streditcompletionsettings = get_string("editcoursecompletionsettings", 'completion');
 $PAGE->set_course($course);
@@ -72,13 +76,23 @@ $PAGE->set_pagelayout('standard');
 /// first create the form
 $form = new course_completion_form('completion.php?id='.$id, compact('course'));
 
+/// set data
+$currentdata = array('criteria_course' => array());
+
+// grab all course criteria and add to data array
+// as they are a special case
+foreach ($completion->get_criteria(COMPLETION_CRITERIA_TYPE_COURSE) as $criterion) {
+    $currentdata['criteria_course'][] = $criterion->courseinstance;
+}
+
+$form->set_data($currentdata);
+
+
 // now override defaults if course already exists
 if ($form->is_cancelled()){
-    redirect($CFG->wwwroot.'/course/view.php?id='.$course->id);
-
+    redirect(new moodle_url('/course/view.php', array('id' => $course->id)));
 } else if ($data = $form->get_data()) {
 
-    $completion = new completion_info($course);
 
 /// process criteria unlocking if requested
     if (!empty($data->settingsunlock)) {
@@ -86,7 +100,7 @@ if ($form->is_cancelled()){
         $completion->delete_course_completion_data();
 
         // Return to form (now unlocked)
-        redirect($CFG->wwwroot."/course/completion.php?id=$course->id");
+        redirect(new moodle_url('/course/completion.php', array('id' => $course->id)));
     }
 
 /// process data if submitted
