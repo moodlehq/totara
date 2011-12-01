@@ -153,6 +153,7 @@ function totara_msg_eventdata($id, $event, $metadata=null) {
 function totara_msg_dismiss_action($id) {
     global $CFG, $FULLME;
 
+    $clean_fullme = clean_param($FULLME, PARAM_LOCALURL);
     $str = get_string('dismiss', 'block_totara_alerts');
     // Button Lang Strings
     $cancel_string = get_string('cancel');
@@ -174,7 +175,7 @@ function totara_msg_dismiss_action($id) {
                 {
                     buttons: {
                         '{$cancel_string}': function() { handler._cancel() },
-                        '{$dismiss_string}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }
+                        '{$dismiss_string}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$clean_fullme}') }
                     },
                     title: '<h2>{$str}</h2>',
                     width: 600,
@@ -194,7 +195,7 @@ function totara_msg_dismiss_action($id) {
     '<noscript>
     <form action="' . $CFG->wwwroot . '/local/totara_msg/dismiss.php?id=' . $id . '" method="post">
     <input type="hidden" name="id" value="' . $id . '" />
-    <input type="hidden" name="returnto" value="' . $FULLME . '" />
+    <input type="hidden" name="returnto" value="' . $clean_fullme . '" />
     <input type="image" class="iconsmall" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/dismiss.gif" title="'.$str.'" alt="'.$str.'" />
     </form>
     </noscript>';
@@ -211,6 +212,7 @@ function totara_msg_dismiss_action($id) {
 function totara_msg_alert_popup($id, $extrabuttons=array()) {
     global $CFG, $FULLME;
 
+    $clean_fullme = clean_param($FULLME, PARAM_LOCALURL);
     $str = get_string('reviewitems', 'block_totara_alerts');
     // Button Lang Strings
     $cancel_string = get_string('cancel');
@@ -232,10 +234,11 @@ function totara_msg_alert_popup($id, $extrabuttons=array()) {
                 {
                     buttons: {
                         '{$cancel_string}': function() { handler._cancel() },
-                        '{$dismiss_string}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }";
+                        '{$dismiss_string}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$clean_fullme}') }";
                         foreach ($extrabuttons as $btn) {
+                            $clean_redirect = clean_param($btn->redirect, PARAM_LOCALURL);
                             $return .= ",
-                        '{$btn->text}': function() { handler._confirm('{$btn->action}', '{$btn->redirect}') }";
+                        '{$btn->text}': function() { handler._confirm('{$btn->action}', '{$clean_redirect}') }";
                         }
                     $return .= "
                     },
@@ -300,6 +303,7 @@ function totara_msg_checkbox_all_none() {
 function totara_msg_action_button($action) {
     global $CFG, $FULLME;
 
+    $clean_fullme = clean_param($FULLME, PARAM_LOCALURL);
     $str = get_string($action, 'local_totara_msg');
     // Button Lang Strings
     $cancel_string = get_string('cancel');
@@ -321,7 +325,7 @@ function totara_msg_action_button($action) {
                 {
                     buttons: {
                         '{$cancel_string}': function() { handler._cancel() },
-                        '{$str}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/action.php?{$action}={$action}', '{$FULLME}') }
+                        '{$str}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/action.php?{$action}={$action}', '{$clean_fullme}') }
                     },
                     title: '<h2>{$str}</h2>',
                     width: 600,
@@ -366,11 +370,12 @@ function totara_msg_accept_reject_action($id) {
     // Button Lang Strings
     $cancel_string = get_string('cancel');
 
+    $clean_fullme = clean_param($FULLME, PARAM_LOCALURL);
     $msg = get_record('message20', 'id', $id);
     $msgmeta = get_record('message_metadata', 'messageid', $id);
     $msgacceptdata = totara_msg_eventdata($id, 'onaccept');
 
-    $returnto = ($msgmeta->msgtype == TOTARA_MSG_TYPE_LINK && isset($msgacceptdata->data['redirect'])) ? $msgacceptdata->data['redirect'] : $FULLME;
+    $returnto = ($msgmeta->msgtype == TOTARA_MSG_TYPE_LINK && isset($msgacceptdata->data['redirect'])) ? $msgacceptdata->data['redirect'] : $clean_fullme;
 
     // Validate redirect
     $return_host = parse_url($returnto);
@@ -420,7 +425,7 @@ function totara_msg_accept_reject_action($id) {
                 {
                     buttons: {
                         '{$cancel_string}': function() { handler_reject._cancel() },
-                        '{$onaccept_str}': function() { handler_reject._confirm('{$CFG->wwwroot}/local/totara_msg/reject.php?id={$id}', '{$FULLME}') }
+                        '{$onaccept_str}': function() { handler_reject._confirm('{$CFG->wwwroot}/local/totara_msg/reject.php?id={$id}', '{$clean_fullme}') }
                     },
                     title: '<h2>{$onreject_str}</h2>',
                     width: 600,
@@ -455,7 +460,7 @@ function totara_msg_accept_reject_action($id) {
             '<noscript>
             <form action="' . $CFG->wwwroot . '/local/totara_msg/reject.php?id=' . $id . '" method="post">
             <input type="hidden" name="id" value="' . $id . '" />
-            <input type="hidden" name="returnto" value="' . $FULLME . '" />
+            <input type="hidden" name="returnto" value="' . $clean_fullme . '" />
             <input type="image" class="iconsmall action" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" title="'.$onreject_str.'" alt="'.$onreject_str.'" />
             </form>
             </noscript>';
