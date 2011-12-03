@@ -17,26 +17,44 @@
     $sessionid = required_param('session_id', PARAM_ALPHANUM);
     $aiccdata = optional_param('aicc_data', '', PARAM_RAW);
 
-    require_login();
+    $cfg_scorm = get_config('scorm');
 
-    if (!empty($command) && confirm_sesskey($sessionid)) {
+    if (empty($cfg_scorm->allowaicchacp)) {
+        require_login();
+        if (!confirm_sesskey($sessionid)) {
+            print_error('invalidsesskey');
+        }
+        $aiccuser = $USER;
+        $scormsession = $SESSION->scorm;
+    } else {
+        $scormsession = scorm_aicc_confirm_hacp_session($sessionid);
+        if (empty($scormsession)) {
+            print_error('invalidhacpsession', 'scorm');
+        }
+        $aiccuser = get_record('user', 'id', $scormsession->userid, '','','','','id,username,lastname,firstname');
+        if (empty($aiccuser)) {
+            print_error('invalidhacpsession', 'scorm');
+        }
+    }
+
+    if (!empty($command)) {
         $command = strtolower($command);
 
-        if (isset($SESSION->scorm_scoid)) {
-            $scoid = $SESSION->scorm_scoid;
+        if (isset($scormsession->scoid)) {
+            $scoid = $scormsession->scoid;
         } else {
             error('Invalid script call');
         }
         $mode = 'normal';
-        if (isset($SESSION->scorm_mode)) {
-            $mode = $SESSION->scorm_mode;
+        if (isset($scormsession->scormmode)) {
+            $mode = $scormsession->scormmode;
         }
         $status = 'Not Initialized';
-        if (isset($SESSION->scorm_status)) {
-            $status = $SESSION->scorm_status;
+        if (isset($scormsession->scormstatus)) {
+            $status = $scormsession->scormstatus;
         }
-        if (isset($SESSION->scorm_attempt)) {
-            $attempt = $SESSION->scorm_attempt;
+        if (isset($scormsession->attempt)) {
+            $attempt = $scormsession->attempt;
         } else {
             $attempt = 1;
         }
@@ -53,20 +71,20 @@
             switch ($command) {
                 case 'getparam':
                     if ($status == 'Not Initialized') {
-                        $SESSION->scorm_status = 'Running';
+                        $scormsession->scormstatus = 'Running';
                         $status = 'Running';
                     }
                     if ($status != 'Running') {
                         echo "error=101\r\nerror_text=Terminated\r\n";
                     } else {
-                        if ($usertrack=scorm_get_tracks($scoid,$USER->id,$attempt)) {
+                        if ($usertrack=scorm_get_tracks($scoid,$aiccuser->id,$attempt)) {
                             $userdata = $usertrack;
                         } else {
                             $userdata->status = '';
                             $userdata->score_raw = '';
                         }
-                        $userdata->student_id = $USER->username;
-                        $userdata->student_name = $USER->lastname .', '. $USER->firstname;
+                        $userdata->student_id = $aiccuser->username;
+                        $userdata->student_name = $aiccuser->lastname .', '. $aiccuser->firstname;
                         $userdata->mode = $mode;
                         if ($userdata->mode == 'normal') {
                             $userdata->credit = 'credit';
@@ -103,10 +121,10 @@
                             }
                             if (isset($userdata->{'cmi.core.lesson_status'})) {
                                 echo 'Lesson_Status='.$userdata->{'cmi.core.lesson_status'}.$userdata->entry."\r\n";
-                                $SESSION->scorm_lessonstatus = $userdata->{'cmi.core.lesson_status'};
+                                $scormsession->scorm_lessonstatus = $userdata->{'cmi.core.lesson_status'};
                             } else {
                                 echo 'Lesson_Status=not attempted'.$userdata->entry."\r\n";
-                                $SESSION->scorm_lessonstatus = 'not attempted';
+                                $scormsession->scorm_lessonstatus = 'not attempted';
                             }
                             if (isset($userdata->{'cmi.core.score.raw'})) {
                                 $max = '';
@@ -148,11 +166,11 @@
                         if (! $cm = get_coursemodule_from_instance("scorm", $scorm->id, $scorm->course)) {
                             echo "error=1\r\nerror_text=Unknown\r\n"; // No one must see this error message if not hacked
                         }
-                        if (!empty($aiccdata) && has_capability('mod/scorm:savetrack', get_context_instance(CONTEXT_MODULE, $cm->id))) {
+                        if (!empty($aiccdata) && has_capability('mod/scorm:savetrack', get_context_instance(CONTEXT_MODULE, $cm->id), $aiccuser->id)) {
                             $initlessonstatus = 'not attempted';
                             $lessonstatus = 'not attempted';
-                            if (isset($SESSION->scorm_lessonstatus)) {
-                                $initlessonstatus = $SESSION->scorm_lessonstatus;
+                            if (isset($scormsession->scorm_lessonstatus)) {
+                                $initlessonstatus = $scormsession->scorm_lessonstatus;
                             }
                             $score = '';
                             $datamodel['lesson_location'] = 'cmi.core.lesson_location';
@@ -171,7 +189,7 @@
                                         $element = $datamodel[$element];
                                         switch ($element) {
                                             case 'cmi.core.lesson_location':
-                                                $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, $element, $value);
+                                                $id = scorm_insert_track($aiccuser->id, $scorm->id, $sco->id, $attempt, $element, $value);
                                             break;
                                             case 'cmi.core.lesson_status':
                                                 $statuses = array(
@@ -207,13 +225,13 @@
                                                 }
                                                 if (empty($value) || isset($exites[$value])) {
                                                     $subelement = 'cmi.core.exit';
-                                                    $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, $subelement, $value);
+                                                    $id = scorm_insert_track($aiccuser->id, $scorm->id, $sco->id, $attempt, $subelement, $value);
                                                 }
                                                 $value = trim(strtolower($values[0]));
                                                 $value = $value[0];
                                                 if (isset($statuses[$value]) && ($mode == 'normal')) {
                                                     $value = $statuses[$value];
-                                                    $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, $element, $value);
+                                                    $id = scorm_insert_track($aiccuser->id, $scorm->id, $sco->id, $attempt, $element, $value);
                                                 }
                                                 $lessonstatus = $value;
                                             break;
@@ -222,23 +240,23 @@
                                                  if ((count($values) > 1) && ($values[1] >= $values[0]) && is_numeric($values[1])) {
                                                      $subelement = 'cmi.core.score.max';
                                                      $value = trim($values[1]);
-                                                     $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, $subelement, $value);
+                                                     $id = scorm_insert_track($aiccuser->id, $scorm->id, $sco->id, $attempt, $subelement, $value);
                                                      if ((count($values) == 3) && ($values[2] <= $values[0]) && is_numeric($values[2])) {
                                                          $subelement = 'cmi.core.score.min';
                                                          $value = trim($values[2]);
-                                                         $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, $subelement, $value);
+                                                         $id = scorm_insert_track($aiccuser->id, $scorm->id, $sco->id, $attempt, $subelement, $value);
                                                      }
                                                  }
 
                                                  $value = '';
                                                  if (is_numeric($values[0])) {
                                                      $value = trim($values[0]);
-                                                     $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, $element, $value);
+                                                     $id = scorm_insert_track($aiccuser->id, $scorm->id, $sco->id, $attempt, $element, $value);
                                                  }
                                                  $score = $value;
                                             break;
                                             case 'cmi.core.session_time':
-                                                 $SESSION->scorm_session_time = $value;
+                                                $scormsession->sessiontime = $value;
                                             break;
                                         }
                                     }
@@ -251,13 +269,13 @@
                                             next($datarows);
                                         }
                                         $value = rawurlencode(stripslashes($value));
-                                        $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, $element, $value);
+                                        $id = scorm_insert_track($aiccuser->id, $scorm->id, $sco->id, $attempt, $element, $value);
                                     }
                                 }
                             }
                             if (($mode == 'browse') && ($initlessonstatus == 'not attempted')){
                                 $lessonstatus = 'browsed';
-                                $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, 'cmi.core.lesson_status', 'browsed');
+                                $id = scorm_insert_track($aiccuser->id, $scorm->id, $sco->id, $attempt, 'cmi.core.lesson_status', 'browsed');
                             }
                             if ($mode == 'normal') {
                                 if ($sco = scorm_get_sco($scoid)) {
@@ -270,7 +288,7 @@
                                             }
                                         }
                                     }
-                                    $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, 'cmi.core.lesson_status', $lessonstatus);
+                                    $id = scorm_insert_track($aiccuser->id, $scorm->id, $sco->id, $attempt, 'cmi.core.lesson_status', $lessonstatus);
                                 }
                             }
                         }
@@ -328,29 +346,29 @@
                 break;
                 case 'exitau':
                     if ($status == 'Running') {
-                        if (isset($SESSION->scorm_session_time) && ($SESSION->scorm_session_time != '')) {
-                            if ($track = get_record_select('scorm_scoes_track',"userid='$USER->id' AND scormid='$scorm->id' AND scoid='$sco->id' AND attempt='$attempt' AND element='cmi.core.total_time'")) {
+                        if (isset($scormsession->sessiontime) && ($scormsession->sessiontime != '')) {
+                            if ($track = get_record_select('scorm_scoes_track',"userid='$aiccuser->id' AND scormid='$scorm->id' AND scoid='$sco->id' AND attempt='$attempt' AND element='cmi.core.total_time'")) {
                                // Add session_time to total_time
-                                $value = scorm_add_time($track->value, $SESSION->scorm_session_time);
+                                $value = scorm_add_time($track->value, $scormsession->sessiontime);
                                 $track->value = $value;
                                 $track->timemodified = time();
                                 update_record('scorm_scoes_track',$track);
                                 $id = $track->id;
                             } else {
                                 $track = new object();
-                                $track->userid = $USER->id;
+                                $track->userid = $aiccuser->id;
                                 $track->scormid = $scorm->id;
                                 $track->scoid = $sco->id;
                                 $track->element = 'cmi.core.total_time';
-                                $track->value = $SESSION->scorm_session_time;
+                                $track->value = $scormsession->sessiontime;
                                 $track->attempt = $attempt;
                                 $track->timemodified = time();
                                 $id = insert_record('scorm_scoes_track',$track);
                             }
-                            scorm_update_grades($scorm, $USER->id);
+                            scorm_update_grades($scorm, $aiccuser->id);
                         }
-                        $SESSION->scorm_status = 'Terminated';
-                        $SESSION->scorm_session_time = '';
+                        $scormsession->scormstatus = 'Terminated';
+                        $scormsession->sessiontime = '';
                         echo "error=0\r\nerror_text=Successful\r\n";
                     } else if ($status == 'Terminated') {
                         echo "error=1\r\nerror_text=Terminated\r\n";
@@ -369,5 +387,11 @@
         } else {
             echo "error=3\r\nerror_text=Invalid Session ID\r\n";
         }
+    }
+    if (empty($cfg_scorm->allowaicchacp)) {
+        $SESSION->scorm = $scormsession;
+    } else {
+        $scormsession->timemodified = time();
+        update_record('scorm_aicc_session', $scormsession);
     }
 ?>
