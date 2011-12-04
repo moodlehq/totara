@@ -479,7 +479,8 @@ class plugin_manager {
 
             'scormreport' => array(
                 'basic',
-                'interactions'
+                'interactions',
+                'graphs'
             ),
 
             'theme' => array(

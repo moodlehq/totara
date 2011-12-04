@@ -784,7 +784,7 @@ function scorm_view_display ($user, $scorm, $action, $cm) {
     if ($scorm->lastattemptlock == 0 || $result->attemptleft > 0) {
         ?>
             <div class="scorm-center">
-               <form id="theform" method="post" action="<?php echo $CFG->wwwroot ?>/mod/scorm/player.php">
+               <form id="scormviewform" method="post" action="<?php echo $CFG->wwwroot ?>/mod/scorm/player.php">
         <?php
         if ($scorm->hidebrowse == 0) {
             print_string('mode', 'scorm');
@@ -803,6 +803,9 @@ function scorm_view_display ($user, $scorm, $action, $cm) {
                       <input type="checkbox" id="a" name="newattempt" />
                       <label for="a"><?php print_string('newattempt', 'scorm') ?></label>
             <?php
+        }
+        if (!empty($scorm->popup)) {
+            echo '<input type="hidden" name="display" value="popup" />'."\n";
         }
         ?>
               <br />
@@ -1503,15 +1506,6 @@ function scorm_get_toc($user,$scorm,$cmid,$toclink=TOCJSLINK,$currentorg='',$sco
     if ($tocheader) {
         $result->toc .= '</div></div></div>';
         $result->toc .= '<div id="scorm_navpanel"></div>';
-    }
-
-
-    if ($scorm->hidetoc == 0) {
-        $PAGE->requires->data_for_js('scormdata', array(
-                'plusicon' => $OUTPUT->pix_url('plus', 'scorm'),
-                'minusicon' => $OUTPUT->pix_url('minus', 'scorm')));
-        $PAGE->requires->js('/lib/cookies.js');
-        $PAGE->requires->js('/mod/scorm/datamodels/scorm_datamodels.js');
     }
 
     $url = new moodle_url('/mod/scorm/player.php?a='.$scorm->id.'&currentorg='.$currentorg.$modestr);
