@@ -5387,6 +5387,18 @@ div.list-assignedcompetencies table#list-assignedcompetencies td.c2 {
     text-align: center;
 }
 
+div#prog-completion-fixed-date {
+    float: left;
+}
+
+div#prog-completion-or-string {
+    clear: both;
+}
+
+div#prog-completion-relative-date {
+    float: left;
+}
+
 /* Bulk type changes */
 
 /* improve spacing between existing and new type headings */

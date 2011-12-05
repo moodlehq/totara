@@ -33,7 +33,7 @@ require_login();
 
 ?>
 
-<div>
+<div id="prog-completion-fixed-date">
     <label><?php echo get_string('completeby', 'local_program'); ?></label>
 
     <input type="text" class="completiontime" name="completiontime" />
@@ -41,11 +41,11 @@ require_login();
     <button class="fixeddate" ><?php echo get_string('setfixedcompletiondate', 'local_program'); ?></button>
 </div>
 
-<div>
+<div id="prog-completion-or-string">
     <?php echo get_string('or', 'local_program'); ?>
 </div>
 
-<div>
+<div id="prog-completion-relative-date">
     <?php echo get_string('completewithin', 'local_program'); ?>
 
     <?php echo program_utilities::print_duration_selector($prefix='', $periodelementname='timeperiod', $periodvalue='', $numberelementname='timeamount', $numbervalue='1', $return=true, $includehours=false); ?>

@@ -95,7 +95,7 @@ totaraDialog_extension_handler.prototype.first_load = function() {
     buttonImageOnly: true,
     beforeShow: function() { $('#ui-datepicker-div').css('z-index',1600); },
     constrainInput: true,
-    isRTL: <? echo (get_string('thisdirection') == 'ltr') ? 'false' : 'true'; ?>
+    isRTL: false // positioning handled via CSS instead
     });
 }
 

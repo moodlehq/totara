@@ -737,6 +737,11 @@ div.prog-course-launch {
     float: left;
 }
 
+#assignment_categories .assignment_category td.col3{
+	text-align:left;
+}
+
+
 .local-program fieldset.course_set .setbuttons,
 .local-program fieldset .messagebuttons{
     text-align: left;
@@ -798,4 +803,12 @@ div.prog-course-launch {
     float:right;
     padding-right:0px;
     padding-left:5px;
+}
+
+div#prog-completion-fixed-date {
+    float: right;
+}
+
+div#prog-completion-relative-date {
+    float: right;
 }

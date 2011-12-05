@@ -130,10 +130,12 @@ function build_datepicker_js($selector, $includetags = true, $dateformat='dd/mm/
     global $CFG;
     $out = '';
 
-    $rtl = (get_string('thisdirection') == 'ltr') ? 'false' : 'true';
     if ($includetags) {
         $out .= '<script type="text/javascript">';
     }
+    // we are choosing to override the isRTL option here, instead float
+    // the datepicker fields left/right to get the picker to appear on
+    // the correct side
     $out .= <<<HEREDOC
     $(function() {
         $('{$selector}').datepicker(
@@ -143,7 +145,8 @@ function build_datepicker_js($selector, $includetags = true, $dateformat='dd/mm/
                 buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
                 buttonImageOnly: true,
                 constrainInput: true,
-                isRTL: {$rtl}
+                isRTL: false // positioning handled via CSS instead
+
             }
         );
     });
