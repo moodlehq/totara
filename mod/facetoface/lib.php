@@ -301,7 +301,7 @@ function facetoface_add_instance($facetoface) {
 
     facetoface_fix_settings($facetoface);
     if ($facetoface->id = insert_record('facetoface', $facetoface)) {
-        facetoface_grade_item_update($facetoface);
+        facetoface_grade_item_update(stripslashes_recursive($facetoface));
     }
     return $facetoface->id;
 }
@@ -317,7 +317,7 @@ function facetoface_update_instance($facetoface) {
 
     facetoface_fix_settings($facetoface);
     if ($return = update_record('facetoface', $facetoface)) {
-        facetoface_grade_item_update($facetoface);
+        facetoface_grade_item_update(stripslashes_recursive($facetoface));
     }
 
     //Update events when we update instance

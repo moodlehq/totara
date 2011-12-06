@@ -22,7 +22,7 @@ define('FIRSTUSEDEXCELROW', 3);
 define('MOD_CLASS_ACTIVITY', 0);
 define('MOD_CLASS_RESOURCE', 1);
 
-if (!defined('MAX_MODINFO_CACHE_SIZE')) { 
+if (!defined('MAX_MODINFO_CACHE_SIZE')) {
     define('MAX_MODINFO_CACHE_SIZE', 10);
 }
 
@@ -1078,6 +1078,11 @@ function get_array_of_activities($courseid) {
                        $mod[$seq]->availableuntil   = $rawmods[$seq]->availableuntil;
                        $mod[$seq]->showavailability = $rawmods[$seq]->showavailability;
                        $mod[$seq]->conditionscompletion = $rawmods[$seq]->conditionscompletion;
+                       foreach ($rawmods[$seq]->conditionsgrade as $key => $condition) {
+                           if (is_object($condition) && isset($condition->name)) {
+                               $rawmods[$seq]->conditionsgrade[$key]->name = urlencode($condition->name);
+                           }
+                       }
                        $mod[$seq]->conditionsgrade  = $rawmods[$seq]->conditionsgrade;
                    }
 
@@ -1222,6 +1227,11 @@ function &get_fast_modinfo(&$course, $userid=0) {
             $cm->availableuntil   = $mod->availableuntil;
             $cm->showavailability = $mod->showavailability;
             $cm->conditionscompletion = $mod->conditionscompletion;
+            foreach ($mod->conditionsgrade as $key => $condition) {
+                if (is_object($condition) && isset($condition->name)) {
+                    $mod->conditionsgrade[$key]->name = urldecode($condition->name);
+                }
+            }
             $cm->conditionsgrade  = $mod->conditionsgrade;
         }
 
