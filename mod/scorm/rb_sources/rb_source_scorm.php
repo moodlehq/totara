@@ -161,6 +161,16 @@ class rb_source_scorm extends rb_base_source {
             ),
             new rb_column_option(
                 'sco',
+                'statusmodified',
+                get_string('statusmodified', 'rb_source_scorm'),
+                'sco_status.timemodified',
+                array(
+                    'joins' => 'sco_status',
+                    'displayfunc' => 'nice_datetime'
+                )
+            ),
+            new rb_column_option(
+                'sco',
                 'scoremin',
                 get_string('minscore', 'rb_source_scorm'),
                 'sco_scoremin.value',
@@ -237,6 +247,12 @@ class rb_source_scorm extends rb_base_source {
                 get_string('status', 'rb_source_scorm'),
                 'select',
                 array('selectfunc' => 'scorm_status_list')
+            ),
+            new rb_filter_option(
+                'sco',
+                'statusmodified',
+                get_string('statusmodified', 'rb_source_scorm'),
+                'date'
             ),
             new rb_filter_option(
                 'sco',
