@@ -2115,14 +2115,23 @@ var comptree = [' . implode(', ', $comptrees) . '];
         global $CFG,$USER;
         $id = $this->_id;
         $sid = $this->_sid;
-        // only show if there are saved searches for this report and user
-        if($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND userid='.$USER->id)) {
-            $common = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id.'&amp;sid=';
-            $options = array();
-            foreach($saved as $item) {
-                $options[$item->id] = $item->name;
+        $savedoptions = array();
+        $common = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id.'&amp;sid=';
+        // are there saved searches for this report and user?
+        if ($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND userid='.$USER->id)) {
+            foreach ($saved as $item) {
+                $savedoptions[$item->id] = format_string($item->name);
             }
-            return popup_form($common, $options, 'viewsavedsearch', $sid, get_string('viewsavedsearch','local_reportbuilder'),'','',true);
+        }
+        // are there public saved searches for this report?
+        if ($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND ispublic=1')) {
+            foreach ($saved as $item) {
+                $savedoptions[$item->id] = format_string($item->name);
+            }
+        }
+
+        if (count($savedoptions) > 0) {
+            return popup_form($common, $savedoptions, 'viewsavedsearch', $sid, get_string('viewsavedsearch','local_reportbuilder'),'','',true);
         } else {
             return '';
         }

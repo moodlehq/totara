@@ -56,7 +56,7 @@ if ($fromform = $mform->get_data()) {
     $todb->userid = $fromform->userid;
     $todb->search = $fromform->search;
     $todb->name = $fromform->name;
-    $todb->public = $fromform->public;
+    $todb->ispublic = $fromform->ispublic;
     if(insert_record('report_builder_saved', $todb)) {
         redirect($CFG->wwwroot.'/local/reportbuilder/savedsearches.php?id='.$id);
     } else {

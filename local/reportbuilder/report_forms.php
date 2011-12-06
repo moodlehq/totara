@@ -722,7 +722,7 @@ class report_builder_save_form extends moodleform {
         $mform->addElement('static', 'params', get_string('currentsearchparams','local_reportbuilder'), $params);
         $mform->addElement('text','name', get_string('searchname','local_reportbuilder'));
         $mform->setType('name', PARAM_TEXT);
-        $mform->addElement('advcheckbox', 'public', get_string('publicallyavailable','local_reportbuilder'), '', null, array(0,1));
+        $mform->addElement('advcheckbox', 'ispublic', get_string('publicallyavailable','local_reportbuilder'), '', null, array(0,1));
         $mform->addElement('hidden','id',$id);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'search', $searchsettings);
