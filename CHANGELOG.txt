@@ -32,10 +32,10 @@ Bug fixes:
                 right-to-left languages
     T-9464      Fix course completion checkboxes in right-to-left languages
     T-9468      Fix date picker localisation in program management
-    T-9471      Fix use of strcmp in plans
+    T-9463      Fix use of strcmp in plans
     T-9468      Fix cohort assign buttons in right-to-left languages
     T-5879      Fix incorrect text in 'Competency Aggregation Method' help file
-    T-9743      Remove iframe border when using SCORM activity
+    T-9473      Remove iframe border when using SCORM activity
     T-9457      Fixes for program management in right-to-left languages
     T-9470      Fix hard-coded language strings in program                                      These strings can now be translated
     T-9475      Added support for custom course fields to Face-to-face and scorm report sources
