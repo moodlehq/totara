@@ -859,7 +859,6 @@ function scorm_validate($data) {
             return $validation;
         }
     }
-
     if ($reference[0] == '#') {
         if (isset($CFG->repositoryactivate) && $CFG->repositoryactivate) {
             $reference = $CFG->repository.substr($reference,1).'/imsmanifest.xml';
@@ -948,7 +947,6 @@ function scorm_check_package($data) {
 
     if (!empty($courseid) && !empty($reference)) {
         $externalpackage = scorm_external_link($reference);
-
         $validation->launch = 0;
         $referencefield = $reference;
         if (empty($reference)) {
@@ -963,12 +961,21 @@ function scorm_check_package($data) {
         } else if (!$externalpackage) {
             $reference = $CFG->dataroot.'/'.$courseid.'/'.$reference;
         }
-
         if (!empty($scormid)) {
         //
         // SCORM Update
         //
-            if ((!empty($validation)) && (is_file($reference) || $externalpackage)){
+            if (($data->unpackmethod == 'aiccdirect')) {
+                $validation->result = true;
+                $validation->pkgtype = 'AICC';
+                $validation->datadir = '';
+                if ($scorm = get_record('scorm','id',$scormid)) {
+                    if (($scorm->reference != $reference)) {
+                        $validation->launch = 0;
+                    }
+                }
+            }
+            else if ((!empty($validation)) && (is_file($reference) || $externalpackage)){
 
                 if (!$externalpackage) {
                     $mdcheck = md5_file($reference);
@@ -1017,7 +1024,12 @@ function scorm_check_package($data) {
             }
         }
         //$validation->launch = 0;
-        if (($validation != null) && ($validation->launch == 0)) {
+        if (($data->unpackmethod == 'aiccdirect')) {
+            $validation->result = true;
+            $validation->datadir = '';
+            $validation->pkgtype = 'AICC';
+        }
+        else if (($validation != null) && ($validation->launch == 0)) {
         //
         // Package must be validated
         //

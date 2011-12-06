@@ -380,6 +380,27 @@ function xmldb_scorm_upgrade($oldversion=0) {
         }
     }
 
+
+    // Adding unpackmethod field to scorm table
+    if ($result && $oldversion < 2011041405) {
+        $table = new XMLDBTable('scorm');
+        $field = new XMLDBField('unpackmethod');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, false, null, null, '', 'reference');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+        /// fix bad unpackmethod.
+        $scorms = get_records('scorm');
+        if (!empty($scorms)) {
+            foreach ($scorms as $scorm) {
+                if (empty($scorm->unpackmethod)) {
+                    $scorm->unpackmethod = 'manifest';
+                    update_record('scorm', $scorm);
+                }
+            }
+        }
+    }
+
     return $result;
 }
 
