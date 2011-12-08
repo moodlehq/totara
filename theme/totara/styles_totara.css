@@ -160,6 +160,8 @@ div.block_admin_tree div.admintree .depth2 {
   margin: 0 auto;
   display: auto;
   word-wrap: break-word;
+  height: 100%;
+  min-height: 100%;
 }
 
 #content {
