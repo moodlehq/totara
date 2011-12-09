@@ -651,6 +651,24 @@ abstract class rb_base_source {
     }
 
 
+    // convert a language code into text
+    function rb_display_language_code($code, $row) {
+        global $CFG;
+        if (empty($code)) {
+            return get_string('notspecified', 'local_reportbuilder');
+        }
+        $string = array();
+        $langfile = $CFG->dirroot . '/lang/' . $code . '/langconfig.php';
+        if (!file_exists($langfile)) {
+            return get_string('unknown', 'local_reportbuilder');
+        }
+        include($langfile);
+        if (!isset($string['thislanguage']) || empty($string['thislanguage'])) {
+            return get_string('unknown', 'local_reportbuilder');
+        }
+        return $string['thislanguage'];
+    }
+
     function rb_display_user_email($email, $row, $isexport = false) {
         if (empty($email)) {
             return '';
@@ -822,6 +840,18 @@ abstract class rb_base_source {
         return $typelist;
     }
 
+    function rb_filter_course_languages() {
+        global $CFG;
+        $out = array();
+        if ($langs = get_records_sql("SELECT DISTINCT lang
+            FROM {$CFG->prefix}course ORDER BY lang")) {
+            foreach($langs as $row) {
+                $out[$row->lang] = $this->rb_display_language_code($row->lang, array());
+            }
+        }
+
+        return $out;
+    }
     //
     //
     // Generic grouping methods for aggregation
@@ -1321,6 +1351,18 @@ abstract class rb_base_source {
                 'defaultheading' => get_string('coursetypeicon', 'local_reportbuilder'),
             )
         );
+        // add language option
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'language',
+            get_string('courselanguage', 'local_reportbuilder'),
+            "$join.lang",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'language_code'
+            )
+        );
+
         return true;
     }
 
@@ -1363,6 +1405,16 @@ abstract class rb_base_source {
             'name_and_summary',
             get_string('coursenameandsummary', 'local_reportbuilder'),
             'textarea'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'course',
+            'language',
+            get_string('courselanguage', 'local_reportbuilder'),
+            'select',
+            array(
+                'selectfunc' => 'course_languages',
+                'selectoptions' => rb_filter_option::select_width_limiter(),
+            )
         );
         return true;
     }
