@@ -5860,6 +5860,7 @@ input[type="submit"].program-savechanges{
 }
 
 .local-program fieldset.course_set .delete_item a {
+    display: relative;
     float: right;
 }
 

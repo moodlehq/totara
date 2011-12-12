@@ -4009,6 +4009,9 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 	width:500px;
 	color:#000000;
 	font-weight:bold;
+    position: relative;
+    overflow: auto;
+    clear:both;
 }
 
 .local-program fieldset.course_set .course_table .action{
@@ -4102,13 +4105,14 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 }
 
 .local-program fieldset.course_set div.courselist td.course div.delete_item {
-    padding: 6px 10px 6px 20px;
+    padding: 6px 10px 6px 10px;
     background-color: #F7F8E8;
     border: 1px solid #D0D676;
     border-radius: 15px;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
-    width: 100%;
+    width: auto;
+    overflow: auto;
 }
 
 span.cancel_program_blurb {
