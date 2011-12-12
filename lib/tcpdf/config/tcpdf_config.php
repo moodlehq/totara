@@ -2,31 +2,32 @@
 //============================================================+
 // File name   : tcpdf_config.php
 // Begin       : 2004-06-11
-// Last Update : 2010-04-28
+// Last Update : 2006-05-18
 //
-// Description : Configuration file for TCPDF.
+// Description : Congiguration file for TCPDF.
 //
 // Author: Nicola Asuni
 //
 // (c) Copyright:
-//               Nicola Asuni
-//               Tecnick.com s.r.l.
-//               Via Della Pace, 11
-//               09044 Quartucciu (CA)
+//               Tecnick.com S.r.l.
+//               Via Ugo Foscolo n.19
+//               09045 Quartu Sant'Elena (CA)
 //               ITALY
 //               www.tecnick.com
 //               info@tecnick.com
 //============================================================+
 
 /**
- * Configuration file for TCPDF.
+ * Congiguration file for TCPDF.
  * @author Nicola Asuni
- * @copyright 2004-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright Copyright &copy; 2004, Tecnick.com S.r.l. - Via Ugo Foscolo
+ *            n.19 - 09045 Quartu Sant'Elena (CA) - ITALY - www.tecnick.com -
+ *            info@tecnick.com
  * @package com.tecnick.tcpdf
- * @version 4.9.005
+ * @version 1.53.0.TC017
  * @link http://tcpdf.sourceforge.net
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @since 2004-10-27
+ * @since 2004-06-11
  *
  * Moodle-specific changes:
  *   Default values for K_PATH_MAIN and K_PATH_URL are automatically set for
