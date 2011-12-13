@@ -5846,7 +5846,8 @@ div.prog-course-launch {
 input[type="submit"].return-overview,
 input[type="submit"].next-assignments,
 input[type="submit"].next-messages,
-input[type="submit"].program-savechanges{
+input[type="submit"].program-savechanges,
+input[type="submit"].program-cancel {
 	margin-top:15px;
     margin-bottom:15px;
 }

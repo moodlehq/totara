@@ -205,7 +205,7 @@ class program_edit_form extends moodleform {
         if($action == 'add') {
             $buttonarray = array();
             $buttonarray[] = $mform->createElement('submit', 'savechanges', get_string('savechanges'), 'class="savechanges-overview program-savechanges"');
-            $buttonarray[] = $mform->createElement('cancel', 'cancel', get_string('cancel', 'local_program'), 'class="cancel"');
+            $buttonarray[] = $mform->createElement('cancel', 'cancel', get_string('cancel', 'local_program'), 'class="program-cancel"');
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
         } else if($action == 'edit') {

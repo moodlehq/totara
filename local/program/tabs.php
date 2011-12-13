@@ -30,7 +30,7 @@ $id = optional_param('id', 0, PARAM_INT);
 $edit = optional_param('edit', 'off', PARAM_TEXT);
 
 if (!isset($currenttab)) {
-    $currenttab = 'competencies';
+    $currenttab = 'details';
 }
 
 if(!isset($context)) {
@@ -49,7 +49,12 @@ if (substr($currenttab, 0, 7) == 'overview'){
 }
 
 // Details Tab
-$toprow[] = new tabobject('details', $CFG->wwwroot.'/local/program/edit.php?id='.$id.'&amp;action=edit', get_string('details', 'local_program'));
+//disable link if creating a new program to avoid fatal error
+if ($id == 0) {
+    $toprow[] = new tabobject('details', '#', get_string('details', 'local_program'));
+} else {
+    $toprow[] = new tabobject('details', $CFG->wwwroot.'/local/program/edit.php?id='.$id.'&amp;action=edit', get_string('details', 'local_program'));
+}
 if (substr($currenttab, 0, 7) == 'details'){
     $activated[] = 'details';
 }
