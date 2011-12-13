@@ -1,5 +1,34 @@
 Totara LMS Changelog
 
+Release 1.1.6 (14 December 2011):
+==================================================
+
+Database upgrades:
+    MDL-27036   Improve AICC HACP Handling so that direct login isn't required                  Backport from 2.2
+    MDL-30146   Allow directurl method for HACP AICC
+
+Improvements:
+    T-8485      Additions to Finnish, French, and Spanish
+    MDL-15055   Upgrade TCPDF library to 4.0.015
+    T-9489      Add time modified column and filter to SCORM report source
+    T-9499      Add course language column and filter
+
+
+Bug fixes:
+    T-9487      Fix calls to $PAGE in comments block
+    T-9432      Program Exception Actions pulldown not populated when checkboxes selected manually
+    T-9485      Fix apostrophe issues with grade_items and modinfo
+    T-9498      Fix blocks editing button on categorylist page
+    T-9377      Fix floating footer in IE7
+    T-9494      Fix visibility of saved searches in report builder
+    T-9488      Fix export issue on IE with SSL
+    T-9497      Give access to find courses without login if forcelogin disabled
+    T-9448      Fix unicode issue in ADODB driver
+    T-9471      Fix datepicker to display icon correctly in RTL languages
+    T-9502      Fix warning on new activity page
+    T-9480      Update unicode certificate types to use new TCPDF library
+
+
 Release 1.1.5 (2 December 2011):
 ==================================================
 
