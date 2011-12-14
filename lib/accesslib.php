@@ -5989,20 +5989,22 @@ function assign_user_position($assignment, $managerid = null) {
 
     $newpath = $assignment->managerpath;
 
-    // Update child items
-    $substr3rdparam = '';
-    if ($CFG->dbfamily == 'mssql') {
-        $substr3rdparam = ', len(managerpath)';
-    }
-    $length_sql = sql_length("'{$oldpath}'");
-    $substr_sql = sql_substr() . "(managerpath, {$length_sql} + 1{$substr3rdparam})";
-    $sql = "UPDATE {$CFG->prefix}pos_assignment
-    SET managerpath=" . sql_concat("'{$newpath}'", $substr_sql) . "
-    WHERE (managerpath LIKE '{$oldpath}/%')";
-    if (!execute_sql($sql, false)) {
-        rollback_sql();
-        error_log('assign_user_position: Could not update manager path of child items in manager hierarchy');
-        return false;
+    if (!empty($oldpath)) {
+        // Update child items (only if oldpath is set)
+        $substr3rdparam = '';
+        if ($CFG->dbfamily == 'mssql') {
+            $substr3rdparam = ', len(managerpath)';
+        }
+        $length_sql = sql_length("'{$oldpath}'");
+        $substr_sql = sql_substr() . "(managerpath, {$length_sql} + 1{$substr3rdparam})";
+        $sql = "UPDATE {$CFG->prefix}pos_assignment
+        SET managerpath=" . sql_concat("'{$newpath}'", $substr_sql) . "
+        WHERE type = " . POSITION_TYPE_PRIMARY . " AND (managerpath LIKE '{$oldpath}/%')";
+        if (!execute_sql($sql, false)) {
+            rollback_sql();
+            error_log('assign_user_position: Could not update manager path of child items in manager hierarchy');
+            return false;
+        }
     }
 
     // Save assignment again
