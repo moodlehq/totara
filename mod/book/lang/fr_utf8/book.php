@@ -1,5 +1,5 @@
 <?php
-// book.php - created with Totara langimport script version 1.0
+// book.php - created with Totara langimport script version 1.1
 
 $string['addafter'] = 'Ajouter un nouveau chapitre';
 $string['book_tocwidth'] = 'Largeur de la table de contenu';
@@ -16,6 +16,7 @@ $string['doreimport'] = 'Importer de nouveau';
 $string['editingchapter'] = 'Edition de chapitre';
 $string['faq'] = 'FAQ sur les livres';
 $string['fileordir'] = 'Ficher ou dossier';
+$string['generateimscp'] = 'Générer IMSCP';
 $string['import'] = 'Importation';
 $string['importallinfo'] = 'Importer tous les fichiers HTML du dossier choisi&nbsp;;<br />les chapitres ont triés alphabétiquement sur la base des noms de fichiers.
                             <br /><h3>CETTE FONCTIONNALITÉ EST EXPÉRIMENTALE ;-)</h3>';

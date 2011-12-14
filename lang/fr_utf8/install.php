@@ -2,6 +2,7 @@
 // install.php - created with Totara langimport script version 1.1
 
 $string['aborting'] = 'Interruption de l\'installation';
+$string['abortinstallation'] = 'Annulation de l\'installation...n';
 $string['admindirerror'] = 'Le dossier d\'administration spécifié est incorrect';
 $string['admindirname'] = 'Dossier d\'administration';
 $string['admindirsetting'] = 'De rares hébergeurs web utilisent le dossier « /admin » comme URL spéciale vous permettant d\'accéder à un tableau de bord ou autre chose. Ceci entre en collision avec l\'emplacement standard des pages d\'administration de Moodle. Vous pouvez corriger cela en renommant le dossier d\'administration de votre installation de Moodle, en inscrivant ici le nouveau nom, par exemple <br /><br /><b>moodleadmin</b>.<br /><br />Les liens vers l\'administration de Moodle seront ainsi corrigés.';
@@ -110,7 +111,7 @@ $string['databasesettingssub_oci8po'] = '<b>Type :</b> Oracle<br />
 <b>Utilisateur :</b> le nom d\'utilisateur de la base de données<br />
 <b>Mot de passe :</b> le mot de passe de la base de données<br />
 <b>Préfixe des tables :</b> le préfixe à utiliser pour les noms de toutes les tables (requis, max. 2cc.)';
-$string['databasesettingssub_odbc_mssql'] = '<b>Type :</b> SQL*Server (via ODBC) <b><strong class="errormsg">Expérimental ! (ne pas utiliser en production)</strong></b><br />
+$string['databasesettingssub_odbc_mssql'] = '<b>Type :</b> SQL*Server (via ODBC) <b><strong class=\"errormsg\">Expérimental ! (ne pas utiliser en production)</strong></b><br />
 <b>Serveur hôte :</b> nom du DSN dans le panneau de contrôle ODBC<br />
 <b>Nom :</b> nom de la base de données, par exemple « moodle »<br />
 <b>Utilisateur :</b> le nom d\'utilisateur de la base de données<br />
@@ -186,8 +187,7 @@ $string['inputwebadress'] = 'Adresse web :';
 $string['inputwebdirectory'] = 'Dossier Moodle :';
 $string['installation'] = 'Installation';
 $string['installationiscomplete'] = 'L\'installation est terminée !';
-$string['invalidargumenthelp'] = '
-    Erreur : Argument(s) non valide(s)
+$string['invalidargumenthelp'] = 'Erreur : Argument(s) non valide(s)
     Usage : \$php cliupgrade.php OPTIONS
     Utiliser l\'option --help pour obtenir plus d\'aide';
 $string['invalidemail'] = 'Courriel non valide';
@@ -226,6 +226,7 @@ $string['nativemysqlihelp'] = 'Vous devez maintenant configurer la base de donn�
 $string['nativeoci'] = 'Oracle (natif, oci)';
 $string['nativepgsql'] = 'PostgreSQL (natif, pgsql)';
 $string['nativepgsqlhelp'] = 'Vous devez maintenant configurer la base de données où seront stockées les données de Moodle. Cette base de données doit être déjà créée, tout comme le nom d\'utilisateur et le mot de passe pour y accéder. Le préfixe des tables est obligatoire.';
+$string['newline'] = 'n';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'La configuration de l\'extension OCI8 de PHP n\'a pas été effectuée correctement. De ce fait, PHP ne peut communiquer avec Oracle. Veuillez contrôler votre fichier « php.ini » ou recompiler PHP.';
 $string['odbc_mssql'] = 'SQL*Server via ODBC (odbc_mssql)';
@@ -244,6 +245,7 @@ $string['pathsunsecuredataroot'] = 'L\'emplacement du dossier de données n\'est
 $string['pathswrongadmindir'] = 'Le dossier d\'administration n\'existe pas';
 $string['pathswrongdirroot'] = 'Emplacement incorrect du dossier de données';
 $string['pdosqlite3'] = 'SQLite 3 (PDO) <b><strong class=\"errormsg\">Expérimental ! (ne pas utiliser en production)</strong></b>';
+$string['pearargerror'] = 'La bibliothèque PEAR ne peut identifier les argumentsn';
 $string['pgsqlextensionisnotpresentinphp'] = 'La configuration de l\'extension PGSQL de PHP n\'a pas été effectuée correctement. De ce fait, PHP ne peut communiquer avec PostgreSQL. Veuillez contrôler votre fichier « php.ini » ou recompiler PHP.';
 $string['php52versionerror'] = 'La version de PHP doit être au moins 5.2.4.';
 $string['php52versionhelp'] = '<p>Moodle requiert une version de PHP 5.2.4 ou postérieure.</p><p>Votre serveur utilise actuellement la version $a</p><p>Pour que Moodle fonctionne, vous devez mettre à jour PHP ou aller chez un hébergeur ayant une version récente de PHP.</p>';
@@ -270,6 +272,7 @@ $string['skipdbencodingtest'] = 'Ne pas effectuer le test d\'encodage de la base
 $string['sqlite3_pdo'] = 'SQLite 3 (PDO) <b><strong  class=\"errormsg\">Expérimental ! (ne pas utiliser en production)</strong></b>';
 $string['sqliteextensionisnotpresentinphp'] = 'L\'extension SQLite de PHP n\'a pas été configurée correctement. Veuillez contrôler votre fichier php.ini ou recompiler PHP.';
 $string['tableprefix'] = 'Préfixe des tables :';
+$string['unsafedirname'] = 'Erreur : Caractères interdits dans le nom de dossier. Les caractères valides sont a-zA-Z0-9_-n';
 $string['upgradingactivitymodule'] = 'Mise à jour du module Activité';
 $string['upgradingbackupdb'] = 'Mise à jour de la base de données du backup';
 $string['upgradingblocksdb'] = 'Mise à jour de la base de données des blocs';
@@ -284,9 +287,8 @@ $string['upgradinglocaldb'] = 'Mise à jour de la base de données locale';
 $string['upgradingmessageoutputpluggin'] = 'Mise à jour du plugin Message';
 $string['upgradingqtypeplugin'] = 'Mise à jour du plugin Question';
 $string['upgradingrpcfunctions'] = 'Mise à jour des fonctions RPC';
-$string['usagehelp'] = '
-Synopsis:
-\$php cliupgrade.php OPTIONS\n
+$string['usagehelp'] = 'Synopsis:
+\$php cliupgrade.php OPTIONSn
 OPTIONS
 --lang              Langue installée à utiliser pour l\'installation. Par défaut, l\'anglais (en)
 --webaddr           Adresse web du site Moodle
@@ -310,7 +312,7 @@ OPTIONS
 --adminusername     Nom d\'utilisateur de l\'administrateur. Par défaut, admin
 --adminpassword     Mot de passe de l\'administrateur. Par défaut, admin
 --adminemail        Adresse de courriel de l\'administrateur. Par défaut, root@localhost
---help              print out this help\n
+--help              print out this helpn
 Usage:
 \$php cliupgrade.php --lang=en --webaddr=http://www.example.com --moodledir=/var/www/html/moodle --datadir=/var/moodledata --dbtype=mysql --dbhost=localhost --dbname=moodle --dbuser=root --prefix=mdl --agreelicense=yes --confirmrelease=yes --sitefullname=\"Site Moodle de test\" --siteshortname=moodle --sitesummary=monbeausite --adminfirstname=Admin --adminlastname=User --adminusername=admin --adminpassword=admin --adminemail=admin@example.com --verbose=1 --interactivelevel=2';
 $string['versionerror'] = 'Installation interrompue en raison d\'une erreur de version';

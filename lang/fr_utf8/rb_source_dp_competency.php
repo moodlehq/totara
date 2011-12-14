@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_dp_competency.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// rb_source_dp_competency.php - created with Totara langimport script version 1.1
 
 $string['competencyduedate'] = 'Date butoire de la compétence';
 $string['competencyname'] = 'Nom de la compétence';
@@ -10,6 +8,8 @@ $string['competencyproficiency'] = 'Maîtrise de la compétence';
 $string['competencyproficiencyandapproval'] = 'Maîtrise de la compétence (et statut d\'approbation)';
 $string['competencyproficient'] = 'Maîtrise de la compétence?';
 $string['competencystatus'] = 'Statut de la compétence';
+$string['competencytype'] = 'Type de compétence';
+$string['competencytypeid'] = 'ID type de compétence';
 $string['courses'] = 'Cours';
 $string['coursetypeicon'] = 'Genre';
 $string['duedate'] = 'Date butoire';

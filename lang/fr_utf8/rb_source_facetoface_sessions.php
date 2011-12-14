@@ -1,12 +1,13 @@
-<?PHP // $Id$ 
-      // rb_source_facetoface_sessions.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// rb_source_facetoface_sessions.php - created with Totara langimport script version 1.1
 
 $string['audit'] = 'Contrôle';
+$string['cancellationdate'] = 'Date d\'annulation';
+$string['cancellationreason'] = 'Raison d\'annulation';
 $string['coursedelivery'] = 'Prestation de cours';
 $string['currentorg'] = 'Le structure actuel de l\'utilisateur';
 $string['currentpos'] = 'Le poste actuel de l\'utilisateur';
+$string['discountcode'] = 'Code promo';
 $string['endtime'] = 'Date de fin';
 $string['facilitator'] = 'Facilitateur';
 $string['ftfname'] = 'Nom de la face à face';
