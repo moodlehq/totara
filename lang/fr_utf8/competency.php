@@ -1,14 +1,14 @@
 <?php
 // competency.php - created with Totara langimport script version 1.1
 
-$string['achieved'] = 'Acquis';
+$string['achieved'] = 'Acquéri';
 $string['addassignedcompetencies'] = 'Compétences attribuées';
 $string['addassignedcompetencytemplates'] = 'Attribuer les modèles de compétence';
-$string['addcourseevidencetocompetencies'] = 'Ajouter des preuves de cours aux compétences';
+$string['addcourseevidencetocompetencies'] = 'Ajouter preuve de cours aux compétences';
 $string['addcourseevidencetocompetency'] = 'Ajouter des cours à la compétence';
 $string['adddepthlevel'] = 'Ajouter un nouveau niveau';
 $string['addedcompetency'] = 'La compétence \"{$a}\" a été ajoutée';
-$string['addedframework'] = 'Le cadre de compétences \"{$a}\" a été ajouté';
+$string['addedframework'] = 'Le cadre de compétence \"{$a}\" a été ajouté';
 $string['addmultiplenewcompetency'] = 'Ajouter plusieurs compétences';
 $string['addnewcompetency'] = 'Ajouter une nouvelle compétence';
 $string['addnewframework'] = 'Ajouter un nouveau cadre de compétences';
@@ -30,8 +30,8 @@ $string['assigncompetency'] = 'Attribuer la compétence';
 $string['assigncompetencytemplate'] = 'Attribuer le modèle de compétences';
 $string['assigncompetencytemplates'] = 'Attribuer les modèle de compétences';
 $string['assigncoursecompletion'] = 'Attribuer l\'achèvement de cours';
-$string['assigncoursecompletions'] = 'Attribuer les achèvements de cours';
-$string['assigncoursecompletiontocompetencies'] = 'Attribuer l\'achèvement de cours aux compétences';
+$string['assigncoursecompletions'] = 'Attribuer les achèvements des cours';
+$string['assigncoursecompletiontocompetencies'] = 'Attribuer l\'achèvement du cours aux compétences';
 $string['assigncoursecompletiontocompetency'] = 'Attribuer l\'achèvement de cours à la compétence';
 $string['assignedcompetencies'] = 'Compétences attribuées';
 $string['assignedcompetenciesandtemplates'] = 'Compétences et modèles de compétences attribuées';
@@ -40,7 +40,7 @@ $string['assignedonly'] = 'Attribué mais pas utilisé';
 $string['assignnewcompetency'] = 'Attribuer une nouvelle compétence';
 $string['assignnewevidenceitem'] = 'Attribuer un nouveau cours';
 $string['assignrelatedcompetencies'] = 'Attribuer des compétences liées';
-$string['backtoallframeworks'] = 'Retour aux cadres de compétences';
+$string['backtoallframeworks'] = 'Retour aux cadres de compétence';
 $string['bulkdeletecompetency'] = 'Suppression massive de compétences';
 $string['bulkmovecompetency'] = 'Déplacement massif de compétences';
 $string['cannotupdatedisplaysettings'] = 'Echec: modification de paramètres d\'affichage impossible';
@@ -68,9 +68,9 @@ $string['competencyscaleinuse'] = 'Cette échelle est déjà utilisée. (Il y a 
 $string['competencyscales'] = 'Echelles de compétences';
 $string['competencytemplatemanage'] = 'Gérer les modèles';
 $string['competencytemplates'] = 'Modèles de compétences';
-$string['competencytypecustomfields'] = 'Champs personnalisés de types de compétence';
+$string['competencytypecustomfields'] = 'Champs personnalisés de type de compétence';
 $string['competencytypes'] = 'Types de compétence';
-$string['competencytypeview'] = 'Vue types de compétence';
+$string['competencytypeview'] = 'Vue des types de compétence';
 $string['competent'] = 'Compétente';
 $string['competentwithsupervision'] = 'Compétente sous la surveillance';
 $string['couldnotdeletescalevalue'] = 'Echec: Impossible de supprimer cette valeur d\'échelle';
@@ -87,8 +87,8 @@ $string['deletecheckscalevalue'] = 'Etes vous sûr de vouloir supprimer cette va
 $string['deletechecktemplate'] = 'Etes vous sûr de vouloir supprimer ce modèle de compétences?';
 $string['deletecheckwithchildren'] = 'Voulez-vous vraiment supprimer la compétence \"$a->itemname\" et ses $a->children_string?
 <br /><br />
-Ceci supprimera les données suivantes : <br />
-- La compétence \"$a->itemname\" et ses $a->childcount $a->children_string';
+Les données suivantes seront supprimées : <br />
+- The \"$a->itemname\" competency et ses $a->childcount $a->children_string';
 $string['deletecompetency'] = 'Supprimer compétence';
 $string['deletedcompetency'] = 'La compétence $a et toutes les sous-compétences ont été supprimées.';
 $string['deletedcompetencyscale'] = 'L\'échelle de compétences \"{$a}\" a été supprimée.';
@@ -96,16 +96,16 @@ $string['deletedcompetencyscalevalue'] = 'La valeur de l\'échelle de compétenc
 $string['deletedepth'] = 'Supprimer $a';
 $string['deletedframework'] = 'Le cadre de compétences $a a été supprimé ainsi que toutes ses données.';
 $string['deletedtemplate'] = 'Le modèle de compétences $a a été supprimé ainsi que toutes ses données.';
-$string['deletedtype'] = 'Le type de compétence \"{$a}\" a été complètement supprimé.';
+$string['deletedtype'] = 'Le type de compétence \"{$a}\" a été supprimé';
 $string['deleteframework'] = 'Supprimer $a';
-$string['deleteincludexcustomfields'] = '- $a enregistrement(s) de champ personnalisé';
-$string['deleteincludexevidence'] = '- $a élément(s) de preuve';
-$string['deleteincludexrelatedcompetencies'] = '- $a lien(s) vers des compétences liées';
-$string['deleteincludexuserstatusrecords'] = '- $a enregistrement(s) de statut utilisateur';
-$string['deletemulticheckwithchildren'] = 'Voulez-vous vraiment supprimer $a->num compétence(s) et $a->childcount $a->children_string?
+$string['deleteincludexcustomfields'] = '- $a enregistrements de champs personnalisés';
+$string['deleteincludexevidence'] = '- $a objets d\'élément de preuve';
+$string['deleteincludexrelatedcompetencies'] = '- $a lien(s) vers les compétences liées';
+$string['deleteincludexuserstatusrecords'] = '- $a enregistrement(s) de statut d\'utilisateur';
+$string['deletemulticheckwithchildren'] = 'Voulez vous vraiment supprimer les compétences $a->num et $a->childcount $a->children_string?
 <br /><br />
-Ceci supprimera les données suivantes : <br />
-- La/les compétences $a->num et $a->childcount $a->children_string';
+Les données suivantes seront supprimées : <br />
+- Les $a->num compétences et $a->childcount $a->children_string';
 $string['deletetype'] = 'Supprimer le type \"{$a}\"';
 $string['depthlevel'] = 'Niveau';
 $string['depthlevels'] = 'Niveaux';
@@ -117,14 +117,14 @@ $string['editframework'] = 'Modifier le cadre de compétences';
 $string['editgeneric'] = 'Modifier $a';
 $string['editscalevalue'] = 'Modifier la valeur d\'échelle';
 $string['edittemplate'] = 'Modifier le modèle de compétences';
-$string['edittype'] = 'Modifier le type';
+$string['edittype'] = 'Modifier le Type';
 $string['error:addcompetency'] = 'Un problème est survenu lors de l\'ajout de la compétence \"{$a}\"';
 $string['error:compevidencealreadyexists'] = 'L\'utilisateur a déjà des justificatifs pour la compétence choisi. Vous pouvez <a href=\'edit.php?id=$a\'>modifier la compétence</a>, ou ajouter une nouvelle compétence.';
 $string['error:couldnotdeletescale'] = 'Echec: problème de suppression de l\'échelle de compétences \"{$a}\"';
-$string['error:createtype'] = 'Un problème est survenu lors de l\'ajout du type de compétence \"{$a}\"';
+$string['error:createtype'] = 'Une erreur est survenue lors de la création du type de compétence \"{$a}\"';
 $string['error:deletedframework'] = 'Echec: Impossible de supprimer le cadre de compétences $a (et ses données)';
-$string['error:deletedtype'] = 'Un problème est survenu lors de la suppression du type compétence \"{$a}\"';
-$string['error:dialognolinkedcourseitems'] = 'Il n\'y a aucune compétence dans ce cadre avec des cours liés affectés';
+$string['error:deletedtype'] = 'Erreur lors de la  suppression du type de compétence \"{$a}\"';
+$string['error:dialognolinkedcourseitems'] = 'Aucune compétence dans ce cadre avec des cours liés y étant attribués';
 $string['error:dialognotreeitems'] = 'Aucune compétence dans ce cadre';
 $string['error:evidencealreadyexists'] = 'Impossible de crée un nouveau justificatif de compétence car il existe déjà une entrée pour l\'utilisateur et cette compétence';
 $string['error:nodeletecompetencyscaleassigned'] = 'Echec: Impossible de supprimer l\'échelle de compétences car elle est déjà attribuée à d\'autres cadres';
@@ -133,8 +133,8 @@ $string['error:nodeletecompetencyscalevaluedefault'] = 'Echec: Impossible de sup
 $string['error:nodeletecompetencyscalevalueonlyprof'] = 'Echec: Impossible de supprimer la valeur d\'échelle car elle s\'agit de la seule valeur de maîtrise. Veuillez choisir une autre valeur de maîtrise avant de supprimer celle ci';
 $string['error:onescalevaluemustbeproficient'] = 'Dans l\'échelle il faut toujours avoir une valeur de maîtrise. Veuillez choisir une autre valeur de maîtrise avant de décocher celle ci.';
 $string['error:scaledetails'] = 'Echec: Impossible de retrouver les détails';
-$string['error:updatecompetency'] = 'Un problème est survenu lors de la mise à jour de la compétence \"{$a}\"';
-$string['error:updatetype'] = 'Un problème est survenu lors de la mise à jour du type de compétence \"{$a}\"';
+$string['error:updatecompetency'] = 'Un problème est survenu lors de la modification de la compétence \"{$a}\"';
+$string['error:updatetype'] = 'Erreur lors de la modification du type de compétence \"{$a}\"';
 $string['evidence'] = 'Justification';
 $string['evidenceactivitycompletion'] = 'Achèvement de l\'activité';
 $string['evidencecount'] = 'Elements de justification';
@@ -161,7 +161,7 @@ $string['invalidnumeric'] = 'Une valeur numérique doit être composée de chiff
 $string['itemstoadd'] = 'Objets à ajouter';
 $string['linkcourses'] = 'Cours associés';
 $string['linktoscalevalues'] = '<a href=\"view.php?id=$a&amp;type=competency\">Cliquez-ici</a> pour gérer les valeurs pour cette échelle de compétences.';
-$string['linktoscalevalues11'] = '<a href=\"view.php?id=$a&amp;prefix=competency\">Cliquez-ici</a> pour gérer les valeurs pour cette échelle de compétences.';
+$string['linktoscalevalues11'] = '<a href=\"view.php?id=$a&amp;prefix=competency\">Cliquez ici</a> pour voir/modifier l\'échelle de valeurs pour cette échelle de compétences.';
 $string['locatecompetency'] = 'Recherchez des compétences';
 $string['locatecompetencytemplate'] = 'Recherchez des modèles de compétences';
 $string['managecompetencies'] = 'Gérer les compétences';
@@ -171,10 +171,10 @@ $string['missingfullname'] = 'Il manque le nom complèt de la compétence';
 $string['missingfullnamedepth'] = 'Il manque le nom complèt du niveau';
 $string['missingfullnameframework'] = 'Il manque le nom complèt du cadre';
 $string['missingfullnametemplate'] = 'Il manque le nom complèt du modèle';
-$string['missingfullnametype'] = 'Il manque le nom complet';
+$string['missingfullnametype'] = 'Il manque le nom complet du type';
 $string['missingname'] = 'Il manque le nom de la compétence';
-$string['missingnameframework'] = 'Il manque le nom du cadre de compétence';
-$string['missingnametemplate'] = 'Il manque le nom du cadre';
+$string['missingnameframework'] = 'Il manque le nom du cadre';
+$string['missingnametemplate'] = 'Il manque le nom du modèle';
 $string['missingnametype'] = 'Il manque le nom du type de compétence';
 $string['missingscale'] = 'Il manque l\'échelle';
 $string['missingscalevaluename'] = 'Il manque le nom de la valeur d\'échelle';
@@ -182,7 +182,7 @@ $string['missingshortname'] = 'Il manque le nom abrègé de la compétence';
 $string['missingshortnamedepth'] = 'Il manque le nom abrègé du niveau';
 $string['missingshortnameframework'] = 'Il manque le nom abrègé du cadre';
 $string['missingshortnametemplate'] = 'Il manque le nom abrègé du modèle';
-$string['missingshortnametype'] = 'Il manque le nom abrégé';
+$string['missingshortnametype'] = 'Il manque le nom abrégé du type';
 $string['name'] = 'Nom';
 $string['noassignedcompetencies'] = 'Aucune compétence attribuée';
 $string['noassignedcompetenciestotemplate'] = 'Aucune compétence attribuée à ce modèle';
@@ -198,7 +198,7 @@ $string['nodepthlevels'] = 'Aucun niveau dans ce cadre';
 $string['noevidenceitems'] = 'Aucun élément justificatif n\'a été configuré pour cette compétence';
 $string['noevidencetypesavailable'] = 'Aucun type de justificatif n\'est disponible dans ce cours';
 $string['noframeworks'] = 'Aucun cadre de compétences definie';
-$string['noframeworkssetup'] = 'Aucun cadre de compétence configuré pour ce site.';
+$string['noframeworkssetup'] = 'Aucune configuration de cadres de compétences pour ce site.';
 $string['nonsensicalproficientvalues'] = 'Attention: Il y a des valeurs de maîtrise inférieures aux valeurs de non maîtrise dans cette échelle. Il faut que l\'échelle commence avec les éléments maîtrisé en haut (non maîtrisé en bas).';
 $string['norelatedcompetencies'] = 'Aucune compétence liée';
 $string['noscalesdefined'] = 'Aucun échelle définie';
@@ -207,8 +207,8 @@ $string['notcompetent'] = 'Non compétent';
 $string['notemplate'] = 'Aucun modèle de compétence n\'existe';
 $string['notemplateinframework'] = 'Aucun modèle de compétence n\'existe dans ce cadre';
 $string['notescalevalueentry'] = 'Une valeur par ligne commencant par le plus compétent en haut';
-$string['notypelevels'] = 'Pas de types dans ce cadre';
-$string['notypes'] = 'Pas de types de compétence';
+$string['notypelevels'] = 'Aucun type dans ce cadre';
+$string['notypes'] = 'Aucun type de compétence';
 $string['numericalvalue'] = 'Valeur numérique';
 $string['options'] = 'Options';
 $string['parent'] = 'Compétence mère';
@@ -251,9 +251,9 @@ $string['templatecompetencyremovecheck'] = 'Etes vous sûr de vouloir désattrib
 $string['type'] = 'Genre';
 $string['types'] = 'Types';
 $string['unknownbuttonclicked'] = 'Echec: bouton inconnu';
-$string['updatedcompetency'] = 'La compétence \"{$a}\" a été mise à jour';
-$string['updatedframework'] = 'Le cadre de compétence \"{$a}\" a été mis à jour';
-$string['updatetype'] = 'Le type de compétence \"{$a}\" a été mis à jour';
+$string['updatedcompetency'] = 'La compétence \"{$a}\" a été modifiée';
+$string['updatedframework'] = 'Le cadre de compétence \"{$a}\" a été modifié';
+$string['updatetype'] = 'Le type de compétence \"{$a}\" a été modifié';
 $string['useresourcelevelevidence'] = 'Utiliser';
 $string['weight'] = 'Poid';
 
