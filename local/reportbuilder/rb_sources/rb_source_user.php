@@ -96,7 +96,7 @@ class rb_source_user extends rb_base_source {
             new rb_join(
                 'totara_stats_courses_started',
                 'LEFT',
-                "(SELECT userid, count(data2) AS number
+                "(SELECT userid, COUNT(DISTINCT data2) as number
                     FROM {$CFG->prefix}block_totara_stats
                     WHERE eventtype = 2
                     GROUP BY userid)",
@@ -106,7 +106,7 @@ class rb_source_user extends rb_base_source {
             new rb_join(
                 'totara_stats_courses_completed',
                 'LEFT',
-                "(SELECT userid, count(data2) AS number
+                "(SELECT userid, count(DISTINCT data2) AS number
                     FROM {$CFG->prefix}block_totara_stats
                     WHERE eventtype = 3
                     GROUP BY userid)",

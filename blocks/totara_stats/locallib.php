@@ -30,8 +30,8 @@ define('STATS_EVENT_OBJ_ACHIEVED', 5);
  * @return boolean (result of insert_record)
  */
 function totara_stats_add_event($time, $userid, $eventtype, $data=null, $data2=null) {
-    global $DB;
     $newevent = new stdClass();
+
     $newevent->timestamp = $time;
     $newevent->userid = $userid;
     $newevent->eventtype = $eventtype;

@@ -3087,6 +3087,7 @@ function role_assign($roleid, $userid, $groupid, $contextid, $timestart=0, $time
 function role_unassign($roleid=0, $userid=0, $groupid=0, $contextid=0, $enrol=NULL, $id=0) {
     global $USER, $CFG;
     require_once($CFG->dirroot.'/group/lib.php');
+    require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
 
     $success = true;
 
@@ -3162,6 +3163,9 @@ function role_unassign($roleid=0, $userid=0, $groupid=0, $contextid=0, $enrol=NU
                         }
                     }
                 }
+
+                // Remove totara stats record
+                totara_stats_remove_event($ra->userid, STATS_EVENT_COURSE_STARTED, $context->instanceid);
 
                 if ($fireevent) {
                     events_trigger('role_unassigned', $ra);

@@ -835,8 +835,15 @@ class completion_info {
      * @return  void
      */
     public function delete_course_completion_data() {
+        global $CFG;
+
+        require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
+
         delete_records('course_completions', 'course', $this->course_id);
         delete_records('course_completion_crit_compl', 'course', $this->course_id);
+
+        //Remove stats data
+        delete_records('block_totara_stats', 'eventtype', STATS_EVENT_COURSE_COMPLETE, 'data2', $this->course_id);
     }
 
     /**

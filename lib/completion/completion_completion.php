@@ -277,7 +277,9 @@ class completion_completion extends data_object {
             return false;
         }
 
-        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+       if (!record_exists('block_totara_stats', 'userid', $this->userid, 'eventtype', STATS_EVENT_COURSE_STARTED, 'data2', $this->course)) {
+           totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+       }
     }
 
     /**
@@ -314,7 +316,9 @@ class completion_completion extends data_object {
         }
 
         if (!$wasenrolled) {
-            totara_stats_add_event($timenow, $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+            if (!record_exists('block_totara_stats', 'userid', $this->userid, 'eventtype', STATS_EVENT_COURSE_STARTED, 'data2', $this->course)) {
+                totara_stats_add_event($timenow, $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+            }
         }
     }
 
@@ -357,7 +361,9 @@ class completion_completion extends data_object {
             return false;
         }
 
-        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);
+        if (!record_exists('block_totara_stats', 'userid', $this->userid, 'eventtype', STATS_EVENT_COURSE_COMPLETE, 'data2', $this->course)) {
+            totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);
+        }
 
         //Auto plan completion hook
         dp_plan_item_updated($this->userid, 'course', $this->course);
