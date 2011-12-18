@@ -56,7 +56,7 @@ if (instance_is_dashlet($this)) {
 
     foreach ($quicklinks as $ql) {
         $content = array();
-        $content[] = $ql->title;
+        $content[] = format_string($ql->title);
         $content[] = $ql->url;
         $baseactionurl = "{$CFG->wwwroot}/blocks/quicklinks/block_quicklinks_action.php?id={$ql->id}&blockinstance={$this->instance->id}&sesskey={$USER->sesskey}";
         $actions = "<a class=\"icon delete\" href=\"{$baseactionurl}&blockaction=deletelink\">

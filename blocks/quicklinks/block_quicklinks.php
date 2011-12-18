@@ -63,7 +63,7 @@ class block_quicklinks extends block_base {
         foreach ($links as $l) {
 	    $class = ($counter % 2) ? 'noshade' : 'shade';
 	    $counter++;
-            $html .= '<tr class="'.$class.'"><td class="linkicon"></td><td class="linktext"><p><a href="'.format_string($l->url).'">'.$this->format_title($l->title).'</a></p></td></tr>';
+            $html .= '<tr class="'.$class.'"><td class="linkicon"></td><td class="linktext"><p class="quicklink-title"><a href="'.format_string($l->url).'">'.format_string($l->title).'</a></p></td></tr>';
         }
 	$html .= '</tbody></table>';
 
@@ -204,19 +204,6 @@ class block_quicklinks extends block_base {
         delete_records('block_quicklinks', 'block_instance_id', $this->instance->id);
 
         return true;
-    }
-
-    // Strips the title down and adds '...' for excessively long titles.
-    function format_title($title,$max=64) {
-
-    /// Loading the textlib singleton instance. We are going to need it.
-        $textlib = textlib_get_instance();
-
-        if ($textlib->strlen($title) <= $max) {
-            return s($title);
-        } else {
-            return s($textlib->substr($title,0,$max-3).'...');
-        }
     }
 }
 

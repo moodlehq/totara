@@ -6038,3 +6038,10 @@ img.totaraprogressbar {
     padding: 0;
     margin: 5px 0 0 0;
 }
+
+div.block_quicklinks div.content p.quicklink-title {
+    white-space: nowrap;
+    width: 210px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
