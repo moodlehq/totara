@@ -1302,6 +1302,32 @@ var comptree = [' . implode(', ', $comptrees) . '];
         return $paramjoins;
     }
 
+
+    /**
+     * Return an array of {@link rb_join} objects containing the joins required by
+     * the source joins
+     *
+     * @return array An array of {@link rb_join} objects containing join information
+     */
+    function get_source_joins() {
+        // no where clause - don't add any joins
+        // as they won't be used
+        if (empty($this->src->sourcewhere)) {
+            return array();
+        }
+
+        // no joins specified
+        if (empty($this->src->sourcejoins)) {
+            return array();
+        }
+
+        $item = new object();
+        $item->joins = $this->src->sourcejoins;
+
+        return $this->get_joins($item, 'source');
+
+    }
+
     /**
      * Check the current session for active filters, and if found
      * collect together join data into a format suitable for {@link get_joins()}
@@ -1643,7 +1669,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $filterjoins = ($filtered === true) ? $this->get_filter_joins() : array();
         $paramjoins = $this->get_param_joins();
         $contentjoins = $this->get_content_joins();
-        $joins = array_merge($columnjoins, $filterjoins, $paramjoins, $contentjoins);
+        $sourcejoins = $this->get_source_joins();
+        $joins = array_merge($columnjoins, $filterjoins, $paramjoins, $contentjoins, $sourcejoins);
 
         // sort the joins to remove duplicates and resolve any dependencies
         $joins = $this->sort_joins($joins);
@@ -1687,6 +1714,12 @@ var comptree = [' . implode(', ', $comptrees) . '];
         if($paramrestrictions != '') {
             $whereclauses[] = $paramrestrictions;
         }
+
+        // apply any SQL specified by the source
+        if (!empty($this->src->sourcewhere)) {
+            $whereclauses[] = $this->src->sourcewhere;
+        }
+
         $where = (count($whereclauses) > 0) ? "WHERE ".implode(' AND ',$whereclauses)."\n" : '';
 
         $groupby = '';
