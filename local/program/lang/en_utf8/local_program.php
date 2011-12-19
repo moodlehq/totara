@@ -457,6 +457,7 @@ $string['programname'] = 'Program name';
 
 $string['programshortname'] = 'Program short name';
 $string['programidnumber'] = 'Program Id number';
+$string['programsummary'] = 'Program summary';
 $string['programid'] = 'Program Id';
 $string['prognamelinkedicon'] = 'Program name and linked icon';
 

@@ -428,4 +428,5 @@ $string['type_tags'] = 'Tags';
 $string['type_org_type'] = 'Organisation custom fields';
 $string['type_pos_type'] = 'Position custom fields';
 $string['type_comp_type'] = 'Competency custom fields';
+$string['type_prog'] = 'Program';
 

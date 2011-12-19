@@ -65,75 +65,20 @@ class rb_source_program extends rb_base_source {
     function define_columnoptions() {
         $columnoptions = array();
 
-    $columnoptions[] = new rb_column_option(
-            'prog',
-            'fullname',
-            get_string('programname','local_program'),
-            "base.fullname",
-            array('joins' => 'base')
-        );
-    $columnoptions[] = new rb_column_option(
-            'prog',
-            'shortname',
-            get_string('programshortname','local_program'),
-            "base.shortname",
-            array('joins' => 'base')
-        );
-        $columnoptions[] = new rb_column_option(
-            'prog',
-            'idnumber',
-           get_string('programidnumber','local_program'),
-            "base.idnumber",
-            array('joins' => 'base')
-        );
-        $columnoptions[] = new rb_column_option(
-            'prog',
-            'id',
-            get_string('programid','local_program'),
-            "base.id",
-            array('joins' => 'base')
-        );
-    $columnoptions[] = new rb_column_option(
-            'prog',
-            'proglinkicon',
-            get_string('prognamelinkedicon','local_program'),
-            "base.fullname",
-            array(
-                'joins' => 'base',
-                'displayfunc' => 'link_program_icon',
-                'defaultheading' => get_string('programname', 'local_program'),
-                'extrafields' => array(
-                    'program_id' => "base.id",
-                    'program_icon' => "base.icon"
-                )
-            )
-        );
-
-
         // include some standard columns
+        $this->add_program_fields_to_columns($columnoptions, 'base');
         $this->add_course_category_fields_to_columns($columnoptions, 'course_category', 'base');
 
         return $columnoptions;
     }
 
-    function rb_display_link_program_icon($program, $row) {
-        global $CFG;
-        $programid = $row->program_id;
-        $programicon = $row->program_icon;
-        return "<a href=\"{$CFG->wwwroot}/local/program/view.php?id={$programid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($programicon)."&amp;id=$programid&amp;size=small&amp;type=course\" alt=\"$program\" />{$program}</a>";
-    }
 
     function define_filteroptions() {
-        $filteroptions = array(
-        new rb_filter_option(
-        'prog',
-        'fullname',
-        get_string('programname','local_program'),
-        'text'
-        )
-        );
+        $filteroptions = array();
 
-    $this->add_course_category_fields_to_filters($filteroptions, 'base', 'category');
+        // include some standard filters
+        $this->add_program_fields_to_filters($filteroptions);
+        $this->add_course_category_fields_to_filters($filteroptions, 'base', 'category');
 
         return $filteroptions;
     }

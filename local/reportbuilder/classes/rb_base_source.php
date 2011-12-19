@@ -691,6 +691,14 @@ abstract class rb_base_source {
     }
 
 
+    function rb_display_link_program_icon($program, $row) {
+        global $CFG;
+        $programid = $row->program_id;
+        $programicon = $row->program_icon;
+        return "<a href=\"{$CFG->wwwroot}/local/program/view.php?id={$programid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($programicon)."&amp;id=$programid&amp;size=small&amp;type=course\" alt=\"$program\" />{$program}</a>";
+    }
+
+
     //
     //
     // Generic select filter methods
@@ -1370,7 +1378,7 @@ abstract class rb_base_source {
     /**
      * Adds some common course filters to the $filteroptions array
      *
-     * @param array &$columnoptions Array of current filter options
+     * @param array &$filteroptions Array of current filter options
      *                              Passed by reference and updated by
      *                              this method
      * @return True
@@ -1419,6 +1427,164 @@ abstract class rb_base_source {
         return true;
     }
 
+
+
+    /**
+     * Adds the program table to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the
+     *                     'program id' field
+     * @param string $field Name of table containing program id field to join on
+     * @return boolean True
+     */
+    protected function add_program_table_to_joinlist(&$joinlist, $join, $field) {
+        global $CFG;
+
+        $joinlist[] = new rb_join(
+            'program',
+            'LEFT',
+            $CFG->prefix . 'prog',
+            "program.id = $join.$field",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+    }
+
+
+    /**
+     * Adds some common program info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @param string $join Name of the join that provides the 'program' table
+     *
+     * @return True
+     */
+    protected function add_program_fields_to_columns(&$columnoptions, $join='program') {
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'fullname',
+            get_string('programname','local_program'),
+            "$join.fullname",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'shortname',
+            get_string('programshortname','local_program'),
+            "$join.shortname",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'idnumber',
+            get_string('programidnumber','local_program'),
+            "$join.idnumber",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'id',
+            get_string('programid','local_program'),
+            "$join.id",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'summary',
+            get_string('programsummary','local_program'),
+            sql_compare_text("$join.summary"),
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'availablefrom',
+            get_string('availablefrom','local_program'),
+            sql_compare_text("$join.availablefrom"),
+            array(
+                'joins' => $join,
+                'displayfunc' => 'nice_date'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'availableuntil',
+            get_string('availableuntil','local_program'),
+            sql_compare_text("$join.availableuntil"),
+            array(
+                'joins' => $join,
+                'displayfunc' => 'nice_date'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'proglinkicon',
+            get_string('prognamelinkedicon','local_program'),
+            "$join.fullname",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'link_program_icon',
+                'defaultheading' => get_string('programname', 'local_program'),
+                'extrafields' => array(
+                    'program_id' => "$join.id",
+                    'program_icon' => "$join.icon"
+                )
+            )
+        );
+        return true;
+    }
+
+    /**
+     * Adds some common program filters to the $filteroptions array
+     *
+     * @param array &$filteroptions Array of current filter options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @return True
+     */
+    protected function add_program_fields_to_filters(&$filteroptions) {
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'fullname',
+            get_string('programname','local_program'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'shortname',
+            get_string('programshortname','local_program'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'idnumber',
+            get_string('programidnumber','local_program'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'summary',
+            get_string('programsummary','local_program'),
+            'textarea'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'availablefrom',
+            get_string('availablefrom','local_program'),
+            'date'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'availableuntil',
+            get_string('availableuntil','local_program'),
+            'date'
+        );
+        return true;
+    }
 
     /**
      * Adds any course custom fields to the $joinlist array
