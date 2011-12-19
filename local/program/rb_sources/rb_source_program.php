@@ -101,7 +101,7 @@ class rb_source_program extends rb_base_source {
             array(
                 'joins' => 'base',
                 'displayfunc' => 'link_program_icon',
-                'defaultheading' => 'Program Name',
+                'defaultheading' => get_string('programname', 'local_program'),
                 'extrafields' => array(
                     'program_id' => "base.id",
                     'program_icon' => "base.icon"
