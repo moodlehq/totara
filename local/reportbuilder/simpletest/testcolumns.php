@@ -422,8 +422,8 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $prog_completion_data = array(
-        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timedue'),
-        array(2, 1, 1, 0, 1, 1205445539),
+        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timedue', 'timecompleted', 'timestarted'),
+        array(2, 1, 1, 0, 1, 1205445539, 1205445539, 1205445539),
     );
 
     var $prog_completion_history_data = array(
