@@ -2531,11 +2531,32 @@ var comptree = [' . implode(', ', $comptrees) . '];
     function get_filters_select() {
         $filters = $this->filteroptions;
         $ret = array();
-        if(!isset($this->filteroptions)) {
+        if (!isset($this->filteroptions)) {
             return $ret;
         }
-        foreach($filters as $filter) {
-            $section = ucwords(str_replace(array('_','-'),array(' ',' '), $filter->type));
+
+        // are we handling a 'group' source?
+        if (preg_match('/^(.+)_grp_([0-9]+|all)$/', $this->source, $matches)) {
+            // use original source name (minus any suffix)
+            $sourcename = $matches[1];
+        } else {
+            // standard source
+            $sourcename = $this->source;
+        }
+
+        foreach ($filters as $filter) {
+            $langstr = 'type_' . $filter->type;
+            // is there a type string in the source file?
+            if (check_string($langstr, 'rb_source_' . $sourcename)) {
+                $section = get_string($langstr, 'rb_source_' . $sourcename);
+            // how about in report builder?
+            } else if (check_string($langstr, 'local_reportbuilder')) {
+                $section = get_string($langstr, 'local_reportbuilder');
+            } else {
+            // fall back on original approach to cope with dynamic types in feedback sources
+                $section = ucwords(str_replace(array('_','-'),array(' ',' '), $filter->type));
+            }
+
             $key = $filter->type . '-' . $filter->value;
             $ret[$section][$key] = $filter->label;
         }
@@ -2551,7 +2572,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
     function get_columns_select() {
         $columns = $this->columnoptions;
         $ret = array();
-        if(!isset($this->columnoptions)) {
+        if (!isset($this->columnoptions)) {
             return $ret;
         }
 
