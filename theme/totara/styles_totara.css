@@ -2164,9 +2164,9 @@ div.yuimenu .yuichildtree .yuimenuitem {
 /** Pop-up Page Size Fix **/
 /*****************************************************************************/
 
-body#message-index div#wrapper,
-body#help div#wrapper,
-body#files-index div#wrapper {
+body#message-index div#wrapper.bare,
+body#help div#wrapper.bare,
+body#files-index div#wrapper.bare {
     background-image: none;
     background-color: #FFFFFF;
     width: auto ;
@@ -2176,9 +2176,9 @@ body#files-index div#wrapper {
     border-right: 1px solid #666;
 }
 
-body#message-index div#wrapper .login-container,
-body#help div#wrapper .login-container,
-body#files-index div#wrapper .login-container {
+body#message-index div#wrapper.bare .login-container,
+body#help div#wrapper.bare .login-container,
+body#files-index div#wrapper.bare .login-container {
     display:none;
 }
 

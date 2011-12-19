@@ -15,7 +15,7 @@
     }
     ?>>
 <div id="top-bg"></div>
-<div id="wrapper">
+<div id="wrapper" <?php if (!$home && !$heading) { echo 'class="bare"'; } ?>>
 <?php if (isset($menu)): ?>
     <div class="login-container"><?php echo $menu ?></div>
 <?php endif; ?>
