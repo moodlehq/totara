@@ -103,5 +103,34 @@ function xmldb_local_program_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2011122000) {
+
+        /// Define field organisationid to be added to prog_completion
+        $table = new XMLDBTable('prog_completion');
+        $field = new XMLDBField('organisationid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'timecompleted');
+
+        /// Launch add field organisationid
+        $result = $result && add_field($table, $field);
+
+        $field = new XMLDBField('positionid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'organisationid');
+        /// Launch add field positionid
+        $result = $result && add_field($table, $field);
+
+
+        /// Define field organisationid to be added to prog_completion_history
+        $table = new XMLDBTable('prog_completion_history');
+        $field = new XMLDBField('organisationid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'recurringcourseid');
+
+        /// Launch add field organisationid
+        $result = $result && add_field($table, $field);
+
+        $field = new XMLDBField('positionid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'organisationid');
+        /// Launch add field positionid
+        $result = $result && add_field($table, $field);
+    }
     return $result;
 }

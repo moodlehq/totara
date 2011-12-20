@@ -486,7 +486,7 @@ class program {
             $todb->id = $completion->id; // addslashes to any text fields from the db
             $todb->timedue = $timedue;
             return update_record('prog_completion', $todb);
-		} else {
+        } else {
             return false;
         }
 
@@ -615,6 +615,7 @@ class program {
      * @return bool|int
      */
     public function update_program_complete($userid, $completionsettings) {
+        global $CFG;
 
         $progcompleted_eventtrigger = false;
 
@@ -625,6 +626,10 @@ class program {
 
                 // flag that we need to trigger the program_completed event
                 $progcompleted_eventtrigger = true;
+
+                // get the user's position/organisation at time of completion
+                require_once("{$CFG->dirroot}/hierarchy/prefix/position/lib.php");
+                $posids = pos_get_current_position_data($userid);
 
                 // set up the event data
                 $eventdata = new stdClass();
@@ -637,6 +642,12 @@ class program {
 
             foreach($completionsettings as $key => $val) {
                 $completion->$key = $val;
+            }
+
+            if ($progcompleted_eventtrigger) {
+                // record the user's pos/org at time of completion
+                $completion->positionid = $posids['positionid'];
+                $completion->organisationid = $posids['organisationid'];
             }
 
             if($update_success = update_record('prog_completion', $completion)) {
@@ -660,6 +671,11 @@ class program {
             $completion->timecompleted = 0;
             $completion->timedue = 0;
             $completion->timestarted = $now;
+            if ($progcompleted_eventtrigger) {
+                // record the user's pos/org at time of completion
+                $completion->positionid = $posids['positionid'];
+                $completion->organisationid = $posids['organisationid'];
+            }
 
             foreach($completionsettings as $key => $val) {
                 $completion->$key = $val;

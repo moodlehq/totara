@@ -57,7 +57,22 @@ class rb_source_program_completion extends rb_base_source {
     function define_joinlist() {
         global $CFG;
 
-        $joinlist = array();
+        $joinlist = array(
+            new rb_join(
+                'completion_organisation',
+                'LEFT',
+                $CFG->prefix . 'org',
+                'completion_organisation.id = base.organisationid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'completion_position',
+                'LEFT',
+                $CFG->prefix . 'pos',
+                'completion_position.id = base.positionid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+        );
 
         $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
         $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
@@ -103,6 +118,47 @@ class rb_source_program_completion extends rb_base_source {
             get_string('duedate', 'rb_source_program_completion'),
             'base.timedue',
             array('displayfunc' => 'nice_date')
+        );
+
+        $columnoptions[] =new rb_column_option(
+            'progcompletion',
+            'organisationid',
+            get_string('completionorgid', 'rb_source_program_completion'),
+            'base.organisationid'
+        );
+        $columnoptions[] =new rb_column_option(
+            'progcompletion',
+            'organisationpath',
+            get_string('completionorgpath', 'rb_source_program_completion'),
+            'completion_organisation.path',
+            array('joins' => 'completion_organisation')
+        );
+        $columnoptions[] =new rb_column_option(
+            'progcompletion',
+            'organisation',
+            get_string('completionorgname', 'rb_source_program_completion'),
+            'completion_organisation.fullname',
+            array('joins' => 'completion_organisation')
+        );
+        $columnoptions[] =new rb_column_option(
+            'progcompletion',
+            'positionid',
+            get_string('completionposid', 'rb_source_program_completion'),
+            'base.positionid'
+        );
+        $columnoptions[] =new rb_column_option(
+            'progcompletion',
+            'positionpath',
+            get_string('completionpospath', 'rb_source_program_completion'),
+            'completion_position.path',
+            array('joins' => 'completion_position')
+        );
+        $columnoptions[] =new rb_column_option(
+            'progcompletion',
+            'position',
+            get_string('completionposname', 'rb_source_program_completion'),
+            'completion_position.fullname',
+            array('joins' => 'completion_position')
         );
 
         // include some standard columns
@@ -151,6 +207,40 @@ class rb_source_program_completion extends rb_base_source {
                 'selectoptions' => rb_filter_option::select_width_limiter(),
             )
         );
+
+        $filteroptions[] = new rb_filter_option(
+            'progcompletion',
+            'organisationid',
+            get_string('orgwhencompletedbasic', 'rb_source_program_completion'),
+            'select',
+            array(
+                'selectfunc' => 'organisations_list',
+                'selectoptions' => rb_filter_option::select_width_limiter(),
+            )
+        );
+        $filteroptions[] = new rb_filter_option(
+            'progcompletion',
+            'organisationpath',
+            get_string('orgwhencompleted', 'rb_source_program_completion'),
+            'org'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'progcompletion',
+            'positionid',
+            get_string('poswhencompletedbasic', 'rb_source_program_completion'),
+            'select',
+            array(
+                'selectfunc' => 'positions_list',
+                'selectoptions' => rb_filter_option::select_width_limiter()
+            )
+        );
+        $filteroptions[] = new rb_filter_option(
+            'progcompletion',
+            'positionpath',
+            get_string('poswhencompleted', 'rb_source_program_completion'),
+            'pos'
+        );
+
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions, 'prog', 'category');
@@ -172,6 +262,11 @@ class rb_source_program_completion extends rb_base_source {
                 'current_pos',
                 get_string('currentpos', 'rb_source_course_completion'),
                 'base.userid'
+            ),
+            new rb_content_option(
+                'completed_org',
+                get_string('orgwhencompleted', 'rb_source_program_completion'),
+                'base.organisationid'
             ),
             new rb_content_option(
                 'user',

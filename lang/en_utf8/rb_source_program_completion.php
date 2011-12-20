@@ -5,5 +5,15 @@ $string['programcompletionstatus'] = 'Status';
 $string['starteddate'] = 'Date started';
 $string['duedate'] = 'Date due';
 $string['completeddate'] = 'Date completed';
+$string['completionorgid'] = 'Completion organisation ID';
+$string['completionorgpath'] = 'Completion organisation path';
+$string['completionorgname'] = 'Completion organisation';
+$string['completionposid'] = 'Completion position ID';
+$string['completionpospath'] = 'Completion position path';
+$string['completionposname'] = 'Completion position';
+$string['orgwhencompletedbasic'] = 'Organisation when completed (basic)';
+$string['orgwhencompleted'] = 'Organisation when completed';
+$string['poswhencompletedbasic'] = 'Position when completed (basic)';
+$string['poswhencompleted'] = 'Position when completed';
 
 $string['type_progcompletion'] = 'Program Completion';

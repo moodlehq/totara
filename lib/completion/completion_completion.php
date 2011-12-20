@@ -346,19 +346,10 @@ class completion_completion extends data_object {
         // Get user's positionid and organisationid if not already set
         if ($this->positionid === null) {
             require_once("{$CFG->dirroot}/hierarchy/prefix/position/lib.php");
+            $ids = pos_get_current_position_data($this->userid);
 
-            // Attempt to load user's position assignment
-            $pa = new position_assignment(array('userid' => $this->userid, 'type' => POSITION_TYPE_PRIMARY));
-
-            // If no position assignment present, set values to 0
-            if (!$pa->id) {
-                $this->positionid = 0;
-                $this->organisationid = 0;
-            }
-            else {
-                $this->positionid = $pa->positionid ? $pa->positionid : 0;
-                $this->organisationid = $pa->organisationid ? $pa->organisationid : 0;
-            }
+            $this->positionid = $ids['positionid'];
+            $this->organisationid = $ids['organisationid'];
         }
 
         // Save record

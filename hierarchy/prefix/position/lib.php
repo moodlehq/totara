@@ -580,3 +580,32 @@ function pos_can_edit_position_assignment($userid) {
 
     return false;
 }
+
+/**
+ * Return the specified user's position and organisation ids, or 0 if not currently set
+ *
+ * @param integer $userid ID of the user to get the data for (defaults to current user)
+ * @param integer $type Position type (primary, secondary, etc) to get data for
+ *
+ * @return array Associative array with positionid and organisationid keys
+ */
+function pos_get_current_position_data($userid = false, $type = POSITION_TYPE_PRIMARY) {
+    global $USER;
+    if ($userid === false) {
+        $userid = $USER->id;
+    }
+    // Attempt to load user's position assignment
+    $pa = new position_assignment(array('userid' => $userid, 'type' => $type));
+
+    // If no position assignment present, set values to 0
+    if (!$pa->id) {
+        $positionid = 0;
+        $organisationid = 0;
+    } else {
+        $positionid = $pa->positionid ? $pa->positionid : 0;
+        $organisationid = $pa->organisationid ? $pa->organisationid : 0;
+    }
+
+    return array('positionid' => $positionid, 'organisationid' => $organisationid);
+
+}
