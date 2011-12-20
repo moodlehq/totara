@@ -18,6 +18,7 @@ $string['score'] = 'ציון בלומדה';
 $string['scormtitle'] = 'כותרת הלומדה';
 $string['sourcetitle'] = 'לומדה';
 $string['status'] = 'סטטוס הלומדה';
+$string['statusmodified'] = 'סטטוס הלומדה השתנה';
 $string['thedate'] = 'תאריך הניסיון';
 $string['theuser'] = 'המשתמש';
 $string['time'] = 'מועד תחילת הלומדה';
