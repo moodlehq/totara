@@ -2241,6 +2241,20 @@ abstract class rb_base_source {
             sql_fullname("$manager.firstname","$manager.lastname"),
             array('joins' => $manager)
         );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'managerid',
+            get_string('usersmanagerid', 'local_reportbuilder'),
+            "$manager.id",
+            array('joins' => $manager)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'manageridnumber',
+            get_string('usersmanageridnumber', 'local_reportbuilder'),
+            "$manager.idnumber",
+            array('joins' => $manager)
+        );
         return true;
     }
 
@@ -2258,6 +2272,18 @@ abstract class rb_base_source {
             'user',
             'managername',
             get_string('managername', 'local_reportbuilder'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'managerid',
+            get_string('usersmanagerid', 'local_reportbuilder'),
+            'number'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'manageridnumber',
+            get_string('usersmanageridnumber', 'local_reportbuilder'),
             'text'
         );
         return true;

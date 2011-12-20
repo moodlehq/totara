@@ -408,6 +408,8 @@ $string['participantscurrentpos'] = 'Participant\'s Current Position';
 
 // add manager info
 $string['usersmanagername'] = 'User\'s Manager Name';
+$string['usersmanagerid'] = 'User\'s Manager ID';
+$string['usersmanageridnumber'] = 'User\'s Manager ID Number';
 $string['managername'] = 'Manager\'s Name';
 
 // add course tag fields
