@@ -71,7 +71,13 @@ class assignment_base {
             error('assignment ID was incorrect');
         }
 
-        $this->assignment->cmidnumber = $this->cm->idnumber; // compatibility with modedit assignment obj
+        if (isset($this->cm->idnumber)) {
+            $this->assignment->cmidnumber = $this->cm->idnumber; // compatibility with modedit assignment obj
+        } else {
+            $this->cm->idnumber = get_field('course_modules', 'idnumber', 'id', $cm->id);
+            $this->assignment->cmidnumber = $this->cm->idnumber; // compatibility with modedit assignment obj
+        }
+
         $this->assignment->courseid   = $this->course->id; // compatibility with modedit assignment obj
 
         $this->strassignment = get_string('modulename', 'assignment');

@@ -1388,8 +1388,14 @@ WHERE
                 return COMPLETION_COMPLETE_FAIL;
             }
         } else {
-            // Not displaying pass/fail, but we know grade exists b/c we got here
-            return COMPLETION_COMPLETE;
+            // Not displaying pass/fail, so just if there is a grade
+            if (!is_null($grade->finalgrade) || !is_null($grade->rawgrade)) {
+                // Grade exists, so maybe complete now
+                return COMPLETION_COMPLETE;
+            } else {
+                // Grade does not exist, so maybe incomplete now
+                return COMPLETION_INCOMPLETE;
+            }
         }
     }
 
