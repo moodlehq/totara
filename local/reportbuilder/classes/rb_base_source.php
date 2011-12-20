@@ -1861,14 +1861,14 @@ abstract class rb_base_source {
             'organisationid',
             get_string('usersorgid', 'local_reportbuilder'),
             "$posassign.organisationid",
-            array('joins' => $posassign)
+            array('joins' => $posassign, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'organisationpath',
             get_string('usersorgpathids', 'local_reportbuilder'),
             "$org.path",
-            array('joins' => $org)
+            array('joins' => $org, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
@@ -1891,21 +1891,21 @@ abstract class rb_base_source {
             'org_type_id',
             get_string('organisationtypeid', 'local_reportbuilder'),
             'organisation.typeid',
-            array('joins' => $org)
+            array('joins' => $org, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'positionid',
             get_string('usersposid', 'local_reportbuilder'),
             "$posassign.positionid",
-            array('joins' => $posassign)
+            array('joins' => $posassign, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'positionpath',
             get_string('userspospathids', 'local_reportbuilder'),
             "$pos.path",
-            array('joins' => $pos)
+            array('joins' => $pos, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
@@ -1928,7 +1928,7 @@ abstract class rb_base_source {
             'pos_type_id',
             get_string('positiontypeid', 'local_reportbuilder'),
             'position.typeid',
-            array('joins' => $pos)
+            array('joins' => $pos, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
@@ -2362,7 +2362,7 @@ abstract class rb_base_source {
             'tagids',
             get_string('coursetagids', 'local_reportbuilder'),
             "$tagids.idlist",
-            array('joins' => $tagids)
+            array('joins' => $tagids, 'selectable' => false)
         );
 
         // create a on/off field for every official tag

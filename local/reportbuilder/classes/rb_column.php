@@ -266,7 +266,7 @@ class rb_column {
         $this->field = $field;
 
         // assign optional properties
-        foreach($defaults as $property => $unused) {
+        foreach ($defaults as $property => $unused) {
             $this->$property = $options[$property];
         }
 

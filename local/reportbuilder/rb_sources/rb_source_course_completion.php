@@ -177,7 +177,7 @@ class rb_source_course_completion extends rb_base_source {
                 'organisationpath',
                 get_string('completionorgpath', 'rb_source_course_completion'),
                 'completion_organisation.path',
-                array('joins' => 'completion_organisation')
+                array('joins' => 'completion_organisation', 'selectable' => false)
             ),
             new rb_column_option(
                 'course_completion',
@@ -197,7 +197,7 @@ class rb_source_course_completion extends rb_base_source {
                 'positionpath',
                 get_string('completionpospath', 'rb_source_course_completion'),
                 'completion_position.path',
-                array('joins' => 'completion_position')
+                array('joins' => 'completion_position', 'selectable' => false)
             ),
             new rb_column_option(
                 'course_completion',

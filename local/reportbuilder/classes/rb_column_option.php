@@ -225,6 +225,14 @@ class rb_column_option {
     public $hidden;
 
     /**
+     * Determines if the column can be selected by an administrator building
+     * a report. If not the column option can never be picked. This is useful
+     * if you need to create a column to be used by a filter, but it would
+     * clutter up the column option list
+     */
+    public $selectable;
+
+    /**
      * Generate a new column option instance
      *
      * Options provided by an associative array, e.g.:
@@ -253,6 +261,7 @@ class rb_column_option {
             'style' => null,
             'nosort' => false,
             'hidden' => 0,
+            'selectable' => true,
         );
         $options = array_merge($defaults, $options);
 

@@ -2586,6 +2586,10 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
 
         foreach ($columns as $column) {
+            // don't include unselectable columns
+            if (!$column->selectable) {
+                continue;
+            }
             $langstr = 'type_' . $column->type;
             // is there a type string in the source file?
             if (check_string($langstr, 'rb_source_' . $sourcename)) {
