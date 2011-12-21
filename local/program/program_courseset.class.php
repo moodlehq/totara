@@ -793,21 +793,20 @@ class multi_course_set extends course_set {
             switch($this->nextsetoperator) {
             case NEXTSETOPERATOR_THEN:
                 $out .= '<div class="nextsetoperator">';
-                $out .= '<p class="operator-then">'.get_string('then', 'local_program').'</p>';
-                $out .= '<img src="'. $CFG->themewww . '/'. $CFG->theme . '/images/progress_then.jpg" />';
-                $out .= '<p class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</p>';
+                $out .= '<div class="operator-then">'.get_string('then', 'local_program').'</div>';
+                $out .= '<div><img src="'. $CFG->themewww . '/'. $CFG->theme . '/images/progress_then.jpg" /></div>';
+                $out .= '<div class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</div>';
                 $out .= '</div>';
                 break;
             case NEXTSETOPERATOR_OR:
                 $out .= '<div class="nextsetoperator">';
-                $out .= '<p class="operator-or">'.get_string('or', 'local_program').'</p>';
-                $out .= '<img src="'. $CFG->themewww .'/'. $CFG->theme . '/images/progress_or.jpg" />';
-                $out .= '<p class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</p>';
+                $out .= '<div class="operator-or">'.get_string('or', 'local_program').'</div>';
+                $out .= '<div><img src="'. $CFG->themewww .'/'. $CFG->theme . '/images/progress_or.jpg" /></div>';
+                $out .= '<div class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</div>';
                 $out .= '</div>';
                 break;
             }
         }
-
         return $out;
 
     }
@@ -1454,16 +1453,17 @@ class competency_course_set extends course_set {
             switch($this->nextsetoperator) {
             case NEXTSETOPERATOR_THEN:
                 $out .= '<div class="nextsetoperator">';
-                $out .= '<p class="operator-then">'.get_string('then', 'local_program').'</p>';
+                $out .= '<div class="operator-then">'.get_string('then', 'local_program').'</div>';
                 $out .= '<img src="'. $CFG->themewww .'/'. $CFG->theme . '/images/progress_then.jpg" />';
-                $out .= '<p class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</p>';
+                $out .= '<div class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</div>';
                 $out .= '</div>';
                 break;
             case NEXTSETOPERATOR_OR:
                 $out .= '<div class="nextsetoperator">';
-                $out .= '<p class="operator-or">'.get_string('or', 'local_program').'</p>';
+                $out .= '<div class="operator-or">'.get_string('or', 'local_program').'</div>';
                 $out .= '<img src="'. $CFG->themewww .'/'. $CFG->theme . '/images/progress_or.jpg" />';
-                $out .= '<p class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</p>';
+                $out .= '<div class="clearfix"></div>';
+                $out .= '<div class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</div>';
                 $out .= '</div>';
                 break;
             }

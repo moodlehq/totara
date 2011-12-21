@@ -89,3 +89,10 @@ td.user_namewithlinks div.links {
 clear: both;
 }
 
+/*Programs */
+#program-content .nextsetoperator .operator-or,
+#program-content .nextsetoperator .operator-then,
+#view-program-content .nextsetoperator .operator-or,
+#view-program-content .nextsetoperator .operator-then {
+    width: auto;
+}

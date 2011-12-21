@@ -3770,18 +3770,17 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 	text-transform:uppercase;
 }
 
-.nextsetoperator{
-	padding-bottom:20px;
-	height:70px;
+.nextsetoperator {
+    padding-bottom:20px;
 }
 
 #program-content .nextsetoperator .nextsethelp,
 #view-program-content .nextsetoperator .nextsethelp {
-	color:#777777;
-	margin-left: 16px;
+    color: #777777;
+    clear: both;
     margin-top: 26px;
-    width: 465px;
-    float:left;
+    width: auto;
+    margin-top: 0px !important;
 }
 
 #program-content .summary p,
