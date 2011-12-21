@@ -1,5 +1,33 @@
 Totara LMS Changelog
 
+Release 1.1.7 (21 December 2011):
+==================================================
+
+Database upgrades:
+    T-9517      Store user's position info when program completed
+
+New features:
+    T-9516      Add program completion report source
+    T-9518      Add more manager fields to base source
+
+Improvements:
+    T-8485      Additions to Finnish, French, and Hebrew
+    T-9512      Add support for source-specific where clause to report builder
+    T-9519      Add support for unselectable columns in report sources
+    T-9515      Refactor program management source to allow for code reuse
+    T-9508      Minimise changes between upstream
+
+Bug fixes:
+    T-6710      Fix missing language string
+    T-9012      Fix appearance of full page file picker in Totara theme
+    T-9514      Fix filter type language strings
+    T-9507      Fix issue with update to managerpath field
+    T-9375      Dimmed tabs and tab layout broken in IE7
+    T-9490      Assignment marked as completed with no grade                                    Fixed by MDL-24746
+    T-9509      Fix link titles in quick links block to work correctly with multilang filter
+    T-9343      Fix program workflow defaults when upgrading to 1.1
+
+
 Release 1.1.6 (14 December 2011):
 ==================================================
 
