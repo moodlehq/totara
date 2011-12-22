@@ -62,7 +62,7 @@ class filter_hierarchy extends filter_type {
         // TODO change dialogs to bind to any id
         $objs[] =& $mform->createElement('static', 'selectorbutton',
             '',
-            '<input type="button" value="' .
+            '<input type="button" class="rb-filter-choose-' . $this->_type . '" value="' .
             get_string('choose'.$this->_type, 'local_reportbuilder') .
             '" id="show-' . $this->_name . '-dialog" />');
         $objs[] =& $mform->createElement('checkbox', $this->_name . '_rec', '', get_string('includesubcategories', 'filters'));

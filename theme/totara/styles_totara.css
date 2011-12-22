@@ -4363,3 +4363,12 @@ body#message-user div#top-bg {
 body#message-user div#container {
     padding-left: 0px;
 }
+
+div.multiselect-selected-item {
+    background-color: #F7F8E8;
+    border: 1px solid #D0D676;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    padding: 4px 10px;
+}

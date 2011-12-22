@@ -13,7 +13,9 @@ $string['completionpospath'] = 'Completion position path';
 $string['completionposname'] = 'Completion position';
 $string['orgwhencompletedbasic'] = 'Organisation when completed (basic)';
 $string['orgwhencompleted'] = 'Organisation when completed';
+$string['multiorgwhencompleted'] = 'Organisations when completed';
 $string['poswhencompletedbasic'] = 'Position when completed (basic)';
 $string['poswhencompleted'] = 'Position when completed';
+$string['multiposwhencompleted'] = 'Positions when completed';
 
 $string['type_progcompletion'] = 'Program Completion';

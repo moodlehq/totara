@@ -940,6 +940,69 @@ totaraDialog_handler_treeview_multiselect.prototype._handle_update_hierarchy = f
 
 
 /*****************************************************************************/
+/** totaraDialog_handler_treeview_multiselect_rb_filter **/
+
+totaraDialog_handler_treeview_multiselect_rb_filter = function() {};
+totaraDialog_handler_treeview_multiselect_rb_filter.prototype = new totaraDialog_handler_treeview_multiselect();
+
+/**
+ * Setup treeview and drag/drop infrastructure
+ *
+ * @return void
+ */
+totaraDialog_handler_treeview_multiselect_rb_filter.prototype.first_load = function() {
+    var id = this._title;
+    var addLink = $('#show-'+id+'-dialog');
+    var handler = this;
+    // find all the currently selected items (by traversing the DOM on the
+    // underlying page), then add them to the 'selected' panel without the
+    // 'clickable' class (so they are hidden)
+    // This ensures they can't be selected again from the 'choose' panel
+    var preselected = '';
+    $('.multiselect-selected-item', addLink.parent('div').prev()).each(function(i, el) {
+        var item_id = $(this).data('id');
+        var item_name = $(this).text();
+        preselected += '<div class="treeview-selected-item"><span id="item_'+item_id+'"><a href="#">'+item_name+'</a><span class="deletebutton"><?php echo get_string('delete');?></span></span></div>';
+        handler._toggle_items('item_'+item_id, false);
+    });
+    var selected_area = $('.selected', this._container)
+    selected_area.append(preselected);
+
+    // call the original function as well
+    totaraDialog_handler_treeview_multiselect.prototype.first_load.call(this);
+};
+
+totaraDialog_handler_treeview_multiselect_rb_filter.prototype._update = function(response) {
+    var id = this._title;
+    // update the hidden field
+    var hiddenfield = $('input[name='+id+']');
+    var ids = hiddenfield.val();
+    var id_array = (ids) ? ids.split(',') : [];
+
+    // pull out selected IDs from selected column
+    $('#'+id+' .selected .clickable').each(function(i, el){
+        id_array.push($(this).attr('id').split('_')[1]);
+    });
+    var combined_ids = id_array.join(',');
+    hiddenfield.val(combined_ids);
+
+    // Hide dialog
+    this._dialog.hide();
+
+    // Sometimes we want to have two dialogs changing the same table,
+    // so here we support tagging tables by id, or class
+    var content = $('div.list-'+this._title);
+
+    // Replace div with updated data
+    content.replaceWith(response);
+
+    // Hide noscript objects
+    $('.totara-noscript', $('div.list-'+this._title)).hide();
+};
+
+
+
+/*****************************************************************************/
 /** totaraDialog_handler_treeview_singleselect **/
 
 totaraDialog_handler_treeview_singleselect = function(value_element_name, text_element_id, dualpane) {
@@ -1371,3 +1434,63 @@ totaraMultiSelectDialog = function(name, title, find_url, save_url) {
         handler
     );
 }
+
+
+/**
+ * Setup multi-select treeview dialog for use in a report builder filter
+ *
+ * This is a special case of the multiselect dialog, for cases where it is
+ * being used for a report builder filter. This version updates a hidden form
+ * field in the underlying page (the hidden input name = dialog name) with a
+ * comma-separated list of selected IDs, and also prints the selected items in a
+ * specific format into a div with a class of 'list-'+name
+ *
+ * @param string dialog name
+ * @param string dialog title
+ * @param string find page url
+ * @param string save page url
+ * @return void
+ */
+totaraMultiSelectDialogRbFilter = function(name, title, find_url, save_url) {
+
+    var handler = new totaraDialog_handler_treeview_multiselect_rb_filter();
+
+    totaraDialogs[name] = new totaraDialog(
+        name,
+        'show-'+name+'-dialog',
+        {
+            buttons: {
+                '<?php echo $cancel_string ?>': function() { handler._cancel() },
+                '<?php echo $save_string ?>': function() { handler._save(save_url) }
+            },
+            title: '<h2>'+title+'</h2>'
+        },
+        find_url,
+        handler
+    );
+
+
+    // activate the 'delete' option next to any selected items in filters
+    // (for this dialog only)
+    $('.multiselect-selected-item[data-filtername='+name+'] a').live('click', function(event) {
+        event.preventDefault();
+
+        var container = $(this).parents('div.multiselect-selected-item');
+        var filtername = container.data('filtername');
+        var id = container.data('id');
+        var hiddenfield = $('input[name='+filtername+']');
+
+        // take this element's ID out of the hidden form field
+        var ids = hiddenfield.val();
+        var id_array = ids.split(',');
+        var new_id_array = $.grep(id_array, function(n, i) { return n != id });
+        var new_ids = new_id_array.join(',');
+        hiddenfield.val(new_ids);
+
+        // remove this element from the DOM
+        container.remove();
+
+    });
+
+}
+

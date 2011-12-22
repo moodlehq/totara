@@ -22,8 +22,10 @@ $string['dateenrolled'] = 'Date Enrolled';
 $string['completionstatus'] = 'Completion Status';
 $string['officewhencompletedbasic'] = 'Office when completed (basic)';
 $string['orgwhencompleted'] = 'Organisation when completed';
+$string['multiorgwhencompleted'] = 'Organisations when completed';
 $string['poswhencompletedbasic'] = 'Position when completed (basic)';
 $string['poswhencompleted'] = 'Position when completed';
+$string['multiposwhencompleted'] = 'Positions when completed';
 // content
 $string['currentorg'] = 'The user\'s current organisation';
 $string['currentpos'] = 'The user\'s current position';

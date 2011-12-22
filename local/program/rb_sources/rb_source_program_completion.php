@@ -128,6 +128,13 @@ class rb_source_program_completion extends rb_base_source {
         );
         $columnoptions[] =new rb_column_option(
             'progcompletion',
+            'organisationid2',
+            get_string('completionorgid', 'rb_source_program_completion'),
+            'base.organisationid',
+            array('selectable' => false)
+        );
+        $columnoptions[] =new rb_column_option(
+            'progcompletion',
             'organisationpath',
             get_string('completionorgpath', 'rb_source_program_completion'),
             'completion_organisation.path',
@@ -145,6 +152,13 @@ class rb_source_program_completion extends rb_base_source {
             'positionid',
             get_string('completionposid', 'rb_source_program_completion'),
             'base.positionid'
+        );
+        $columnoptions[] =new rb_column_option(
+            'progcompletion',
+            'positionid2',
+            get_string('completionposid', 'rb_source_program_completion'),
+            'base.positionid',
+            array('selectable' => false)
         );
         $columnoptions[] =new rb_column_option(
             'progcompletion',
@@ -220,6 +234,12 @@ class rb_source_program_completion extends rb_base_source {
         );
         $filteroptions[] = new rb_filter_option(
             'progcompletion',
+            'organisationid2',
+            get_string('multiorgwhencompleted', 'rb_source_program_completion'),
+            'orgmulti'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'progcompletion',
             'organisationpath',
             get_string('orgwhencompleted', 'rb_source_program_completion'),
             'org'
@@ -233,6 +253,12 @@ class rb_source_program_completion extends rb_base_source {
                 'selectfunc' => 'positions_list',
                 'selectoptions' => rb_filter_option::select_width_limiter()
             )
+        );
+        $filteroptions[] = new rb_filter_option(
+            'progcompletion',
+            'positionid2',
+            get_string('multiposwhencompleted', 'rb_source_program_completion'),
+            'posmulti'
         );
         $filteroptions[] = new rb_filter_option(
             'progcompletion',

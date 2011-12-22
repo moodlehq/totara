@@ -174,6 +174,13 @@ class rb_source_course_completion extends rb_base_source {
             ),
             new rb_column_option(
                 'course_completion',
+                'organisationid2',
+                get_string('completionorgid', 'rb_source_course_completion'),
+                'base.organisationid',
+                array('selectable' => false)
+            ),
+            new rb_column_option(
+                'course_completion',
                 'organisationpath',
                 get_string('completionorgpath', 'rb_source_course_completion'),
                 'completion_organisation.path',
@@ -191,6 +198,13 @@ class rb_source_course_completion extends rb_base_source {
                 'positionid',
                 get_string('completionposid', 'rb_source_course_completion'),
                 'base.positionid'
+            ),
+            new rb_column_option(
+                'course_completion',
+                'positionid2',
+                get_string('completionposid', 'rb_source_course_completion'),
+                'base.positionid',
+                array('selectable' => false)
             ),
             new rb_column_option(
                 'course_completion',
@@ -311,6 +325,12 @@ class rb_source_course_completion extends rb_base_source {
             ),
             new rb_filter_option(
                 'course_completion',
+                'organisationid2',
+                get_string('multiorgwhencompleted', 'rb_source_course_completion'),
+                'orgmulti'
+            ),
+            new rb_filter_option(
+                'course_completion',
                 'positionid',
                 get_string('poswhencompletedbasic', 'rb_source_course_completion'),
                 'select',
@@ -318,6 +338,12 @@ class rb_source_course_completion extends rb_base_source {
                     'selectfunc' => 'positions_list',
                     'selectoptions' => rb_filter_option::select_width_limiter()
                 )
+            ),
+            new rb_filter_option(
+                'course_completion',
+                'positionid2',
+                get_string('multiposwhencompleted', 'rb_source_course_completion'),
+                'posmulti'
             ),
             new rb_filter_option(
                 'course_completion',

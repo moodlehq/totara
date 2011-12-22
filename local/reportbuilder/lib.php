@@ -229,23 +229,14 @@ class reportbuilder {
         }
 
         // include JS for dialogs if required for filters
-        $orgtrees = array();
-        $postrees = array();
-        $comptrees = array();
         foreach($this->filters as $filter) {
             switch($filter->filtertype) {
             case 'org':
-                $orgtrees[] = "'{$filter->type}-{$filter->value}'";
-                $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
-                $dialog = $treeview = true;
-                break;
-            case 'pos':
-                $postrees[] = "'{$filter->type}-{$filter->value}'";
-                $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
-                $dialog = $treeview = true;
-                break;
             case 'comp':
-                $comptrees[] = "'{$filter->type}-{$filter->value}'";
+            case 'pos':
+            case 'orgmulti':
+            case 'compmulti':
+            case 'orgmulti':
                 $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
                 $dialog = $treeview = true;
                 break;
@@ -268,14 +259,6 @@ class reportbuilder {
             require_js(array_values($js));
         }
 
-        if($dialog) {
-            $this->_body_javascript = '
-<script type="text/javascript">
-var orgtree = [' . implode(', ', $orgtrees) . '];
-var postree = [' . implode(', ', $postrees) . '];
-var comptree = [' . implode(', ', $comptrees) . '];
-</script>';
-        }
     }
 
     /**

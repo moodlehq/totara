@@ -6045,3 +6045,14 @@ div.block_quicklinks div.content p.quicklink-title {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+div.multiselect-selected-item {
+    margin: 3px 0;
+    padding: 3px 0;
+    width: 250px;
+}
+
+div.multiselect-selected-item .delete-icon {
+    float: right;
+}
+

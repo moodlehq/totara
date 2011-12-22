@@ -30,6 +30,9 @@ $string['officewhencompletedbasic'] = 'Office when completed (basic)';
 $string['organisationwhencompleted'] = 'Organisation when completed';
 $string['positionwhencompletedbasic'] = 'Position when completed (basic)';
 $string['positionwhencompleted'] = 'Position when completed';
+$string['multicomp'] = 'Competencies';
+$string['multipos'] = 'Positions when completed';
+$string['multiorg'] = 'Organisations when completed';
 
 // content options
 $string['currentorg'] = 'The user\'s current organisation';
