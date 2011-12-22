@@ -72,10 +72,7 @@ function development_plan_build_settings_form(&$mform, $customdata) {
     $mform->addElement('header', 'planpermissions', get_string('planpermissions', 'local_plan'));
     $mform->setHelpButton('planpermissions', array('advancedsettingsplanpermissions', get_string('planpermissions', 'local_plan'), 'local_plan'), true);
 
-    $mform->addElement('html', '<div class="planpermissionsform"><table class="planpermissions"><tr>'.
-        '<th>'.get_string('action', 'local_plan').'</th>'.
-        '<th>'.get_string('learner', 'local_plan').'</th>'.
-        '<th>'.get_string('manager', 'local_plan').'</th></tr>');
+    dp_add_permissions_table_headings($mform);
 
     foreach(development_plan::$permissions as $action => $requestable) {
         dp_add_permissions_table_row($mform, $action, get_string($action, 'local_plan'), $requestable);

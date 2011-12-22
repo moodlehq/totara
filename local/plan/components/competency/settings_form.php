@@ -127,10 +127,7 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
     $mform->addElement('header', 'competencypermissions', get_string('competencypermissions', 'local_plan'));
     $mform->setHelpButton('competencypermissions', array('advancedsettingscompetencypermissions', get_string('competencypermissions', 'local_plan'), 'local_plan'), true);
 
-    $mform->addElement('html', '<div class="coursepermissionsform"><table><tr>'.
-        '<th>'.get_string('action', 'local_plan').'</th>'.
-        '<th>'.get_string('learner', 'local_plan').'</th>'.
-        '<th>'.get_string('manager', 'local_plan').'</th></tr>');
+    dp_add_permissions_table_headings($mform);
 
     foreach(dp_competency_component::$permissions as $action => $requestable) {
         dp_add_permissions_table_row($mform, $action, get_string($action, 'local_plan'), $requestable);

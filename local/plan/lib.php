@@ -270,7 +270,28 @@ function dp_add_permissions_select(&$form, $name, $requestable){
 }
 
 /**
- * Adds perissions table row to the form
+ * Adds permissions table headings to the form
+ *
+ * @access  public
+ * @param   object  $form  the form object
+ */
+function dp_add_permissions_table_headings(&$form){
+    global $DP_AVAILABLE_ROLES;
+
+    $headingshtml = '<div class="planpermissionsform"><table class="planpermissions"><tr>'.
+        '<th>'.get_string('action', 'local_plan').'</th>';
+
+    foreach ($DP_AVAILABLE_ROLES as $role) {
+        $headingshtml .= '<th>'.get_string($role, 'local_plan').'</th>';
+    }
+
+    $headingshtml .= '</tr>';
+
+    $form->addElement('html', $headingshtml);
+}
+
+/**
+ * Adds permissions table row to the form
  *
  * @access  public
  * @param   object  $form  the form object
@@ -279,11 +300,14 @@ function dp_add_permissions_select(&$form, $name, $requestable){
  * @param   boolean $requestable
  */
 function dp_add_permissions_table_row(&$form, $name, $label, $requestable){
+    global $DP_AVAILABLE_ROLES;
+
     $form->addElement('html', '<tr><td id="action">'.$label);
-    $form->addElement('html', '</td><td id="learner">');
-    dp_add_permissions_select($form, $name.'learner', $requestable);
-    $form->addElement('html', '</td><td id="manager">');
-    dp_add_permissions_select($form, $name.'manager', $requestable);
+
+    foreach ($DP_AVAILABLE_ROLES as $role) {
+        $form->addElement('html', '</td><td id="'.$role.'">');
+        dp_add_permissions_select($form, $name.$role, $requestable);
+    }
     $form->addElement('html', '</td></tr>');
 }
 
