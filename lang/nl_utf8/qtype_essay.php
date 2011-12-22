@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_essay.php,v 1.1 2009/02/26 22:02:35 koenr Exp $ 
-      // qtype_essay.php - created with Moodle 2.0 dev (Build: 20090218) (2009021800)
-
+<?php
+// qtype_essay.php - created with Totara langimport script version 1.1
 
 $string['addingessay'] = 'Open vraag toevoegen';
 $string['editingessay'] = 'Open vraag bewerken';

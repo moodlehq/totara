@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // countries.php - created with Moodle 2.0 dev (2007101508)
-
+<?php
+// countries.php - created with Totara langimport script version 1.1
 
 $string['AD'] = 'Andorra';
 $string['AE'] = 'Verenigde Arabische Emiraten';
@@ -52,6 +51,7 @@ $string['CM'] = 'Kameroon';
 $string['CN'] = 'China';
 $string['CO'] = 'Columbia';
 $string['CR'] = 'Costa Rica';
+$string['CS'] = 'Servië en Montenegro';
 $string['CU'] = 'Cuba';
 $string['CV'] = 'Kaap Verdië';
 $string['CX'] = 'Christmaseilanden';
@@ -76,6 +76,7 @@ $string['FK'] = 'Falklandeilanden';
 $string['FM'] = 'Micronesië';
 $string['FO'] = 'Faroe eilanden';
 $string['FR'] = 'Frankrijk';
+$string['FX'] = 'Frankrijk, Europees deel';
 $string['GA'] = 'Gabon';
 $string['GB'] = 'Verenigd Koninkrijk';
 $string['GD'] = 'Grenada';
@@ -121,6 +122,7 @@ $string['KH'] = 'Cambodia';
 $string['KI'] = 'Kiribati';
 $string['KM'] = 'Comoren';
 $string['KN'] = 'Saint Kitts en Nevis';
+$string['KO'] = 'Kosovo';
 $string['KP'] = 'Korea (Democratische Republiek)';
 $string['KR'] = 'Korea (Republiek)';
 $string['KW'] = 'Koeweit';
@@ -223,6 +225,7 @@ $string['TL'] = 'Timor-Leste';
 $string['TM'] = 'Turkmenistan';
 $string['TN'] = 'Tunesië';
 $string['TO'] = 'Tonga';
+$string['TP'] = 'Oost Timor';
 $string['TR'] = 'Turkije';
 $string['TT'] = 'Trinidad en Tobago';
 $string['TV'] = 'Tuvalu';
@@ -241,18 +244,14 @@ $string['VG'] = 'Maagdeneilanden (Brits)';
 $string['VI'] = 'Maagdeneilanden (VS)';
 $string['VN'] = 'Vietnam';
 $string['VU'] = 'Vanuatu';
+$string['WA'] = 'Wales';
 $string['WF'] = 'Wallis en Futuna';
 $string['WS'] = 'Samoa';
 $string['YE'] = 'Jemen';
 $string['YT'] = 'Mayotte';
 $string['ZA'] = 'Zuid-Afrika';
 $string['ZM'] = 'Zambië';
+$string['ZR'] = 'Zaïre';
 $string['ZW'] = 'Zimbabwe';
-$string['CS'] = 'Servië en Montenegro'; // ORPHANED
-$string['FX'] = 'Frankrijk, Europees deel'; // ORPHANED
-$string['KO'] = 'Kosovo'; // ORPHANED
-$string['TP'] = 'Oost Timor'; // ORPHANED
-$string['WA'] = 'Wales'; // ORPHANED
-$string['ZR'] = 'Zaïre'; // ORPHANED
 
 ?>

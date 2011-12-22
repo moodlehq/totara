@@ -1,6 +1,5 @@
-<?PHP // $Id: coursereport_log.php,v 1.2 2008/12/17 09:12:48 koenr Exp $ 
-      // coursereport_log.php - created with Moodle 2.0 dev (Build: 20081216) (2008121000)
-
+<?php
+// coursereport_log.php - created with Totara langimport script version 1.1
 
 $string['log:view'] = 'Bekijk cursus logs';
 $string['log:viewlive'] = 'Bekijk live logs';

@@ -1,6 +1,5 @@
-<?PHP // $Id: webservice.php,v 1.1 2009/03/19 23:19:57 koenr Exp $ 
-      // webservice.php - created with Moodle 2.0 dev (Build: 20090313) (2009030501)
-
+<?php
+// webservice.php - created with Totara langimport script version 1.1
 
 $string['debugdisplayon'] = '\"Toon meldingen voor foutopsporing is ingeschakeld. De XMLRPC-server zal niet werken. De andere webserviceservers kunnen ook problemen melden.<br />Verwittig de Moodlebeheerder dat dit moet uitgeschakeld worden.';
 $string['fail'] = 'MISLUKT';

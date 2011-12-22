@@ -1,11 +1,15 @@
-<?PHP // $Id$ 
-      // chat.php - created with Moodle 1.9.7+ (Build: 20091225) (2007101570)
+<?php
+// chat.php - created with Totara langimport script version 1.1
 
-
+$string['ajax'] = 'Versie met Ajax';
 $string['autoscroll'] = 'Automatisch rollen';
 $string['beep'] = 'Piep';
+$string['cantinsert'] = 'Kon chatbericht niet toevoegen!';
+$string['cantlogin'] = 'Kon niet in de chatroom!';
 $string['chat:chat'] = 'Gebruik chat';
 $string['chat:deletelog'] = 'Verwijder chat logs';
+$string['chat:exportparticipatedsession'] = 'Exporteer je chatdeelname';
+$string['chat:exportsession'] = 'Exporteer chatsessie';
 $string['chat:readlog'] = 'Bekijk chatlogs';
 $string['chat:talk'] = 'Praat in een chat';
 $string['chatintro'] = 'Inleidende tekst';
@@ -34,6 +38,8 @@ $string['explainmethodnormal'] = 'Deze instellingen worden <strong>alleen maar</
 $string['generalconfig'] = 'Algemene instellingen';
 $string['helpchatting'] = 'Help met chatten';
 $string['idle'] = 'Wachtend';
+$string['inputarea'] = 'Inputvenster';
+$string['invalidid'] = 'Kon chatroom niet vinden!';
 $string['list_all_sessions'] = 'Toon alle sessies.';
 $string['list_complete_sessions'] = 'Toon alleen volledige sessies.';
 $string['listing_all_sessions'] = 'Alle sessies tonen.';
@@ -50,12 +56,14 @@ $string['modulenameplural'] = 'Chats';
 $string['neverdeletemessages'] = 'Berichten nooit verwijderen';
 $string['nextsession'] = 'Volgende geplande sessie';
 $string['no_complete_sessions_found'] = 'Geen volledige sessies gevonden.';
+$string['nochat'] = 'Geen chatruimte gevonden';
 $string['noguests'] = 'De chatruimte is niet toegankelijk voor gastgebruikers';
 $string['nomessages'] = 'Nog geen berichten';
 $string['normalkeepalive'] = 'KeepAlive';
 $string['normalstream'] = 'Steam';
 $string['noscheduledsession'] = 'Geen sessie gepland';
 $string['notallowenter'] = 'Je hebt het recht niet de chatroom binnen te gaan.';
+$string['notlogged'] = 'Niet ingelogd';
 $string['oldping'] = 'Timeout verbinding verbroken';
 $string['pastchats'] = 'Voorbije chatsessies';
 $string['refreshroom'] = 'Ververs chatroom';
@@ -65,8 +73,11 @@ $string['repeatdaily'] = 'Elke dag om dezelfde tijd';
 $string['repeatnone'] = 'Geen herhalingen - alleen publiceren op de aangegeven tijd';
 $string['repeattimes'] = 'Herhaal sessies';
 $string['repeatweekly'] = 'Elke week om dezelfde tijd';
+$string['saidto'] = '<b>zei tegen</b>';
 $string['savemessages'] = 'Bewaar voorbije chatsessies';
 $string['seesession'] = 'Bekijk deze sessie';
+$string['send'] = 'Stuur';
+$string['sending'] = 'Versturen';
 $string['serverhost'] = 'Servernaam';
 $string['serverip'] = 'Server IP';
 $string['servermax'] = 'Maximum aantal gebruikers';
@@ -75,20 +86,8 @@ $string['sessions'] = 'Chatsessies';
 $string['strftimemessage'] = '%%H:%%M';
 $string['studentseereports'] = 'Iedereen kan voorbije chatsessies bekijken';
 $string['updatemethod'] = 'Update methode';
+$string['updaterate'] = 'Updatesnelheid';
+$string['userlist'] = 'Gebruikerslijst';
 $string['viewreport'] = 'Bekijk voorbije chatsessies';
-$string['ajax'] = 'Versie met Ajax'; // ORPHANED
-$string['cantinsert'] = 'Kon chatbericht niet toevoegen!'; // ORPHANED
-$string['cantlogin'] = 'Kon niet in de chatroom!'; // ORPHANED
-$string['chat:exportparticipatedsession'] = 'Exporteer je chatdeelname'; // ORPHANED
-$string['chat:exportsession'] = 'Exporteer chatsessie'; // ORPHANED
-$string['inputarea'] = 'Inputvenster'; // ORPHANED
-$string['invalidid'] = 'Kon chatroom niet vinden!'; // ORPHANED
-$string['nochat'] = 'Geen chatruimte gevonden'; // ORPHANED
-$string['notlogged'] = 'Niet ingelogd'; // ORPHANED
-$string['saidto'] = '<b>zei tegen</b>'; // ORPHANED
-$string['send'] = 'Stuur'; // ORPHANED
-$string['sending'] = 'Versturen'; // ORPHANED
-$string['updaterate'] = 'Updatesnelheid'; // ORPHANED
-$string['userlist'] = 'Gebruikerslijst'; // ORPHANED
 
 ?>

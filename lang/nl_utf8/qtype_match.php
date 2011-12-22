@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_match.php,v 1.3 2009/02/26 22:03:49 koenr Exp $ 
-      // qtype_match.php - created with Moodle 2.0 dev (Build: 20090218) (2009021800)
-
+<?php
+// qtype_match.php - created with Totara langimport script version 1.1
 
 $string['addingmatch'] = 'Koppelvraag toevoegen';
 $string['addmoreqblanks'] = '{no} Meer lege lijnen';

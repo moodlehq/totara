@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_search_forums.php - created with Moodle 1.5 ALPHA (2005050600)
-
+<?php
+// block_search_forums.php - created with Totara langimport script version 1.1
 
 $string['advancedsearch'] = 'Geavanceerd zoeken';
 $string['blocktitle'] = 'Zoeken in forums';

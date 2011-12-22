@@ -1,6 +1,5 @@
-<?PHP // $Id: debug.php,v 1.11 2009/12/14 09:22:14 mudrd8mz Exp $ 
-      // debug.php - created with Moodle 2.0 dev (Build: 20081216) (2008121000)
-
+<?php
+// debug.php - created with Totara langimport script version 1.1
 
 $string['authpluginnotfound'] = 'Authenticatieplugin $a niet gevonden.';
 $string['blocknotexist'] = 'Blok $a bestaat niet';

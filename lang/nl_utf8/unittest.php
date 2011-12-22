@@ -1,6 +1,5 @@
-<?PHP // $Id: unittest.php,v 1.1 2006/07/05 07:28:14 koenr Exp $ 
-      // unittest.php - created with Moodle 1.7 dev (2006060900)
-
+<?php
+// unittest.php - created with Totara langimport script version 1.1
 
 $string['all'] = 'ALLE';
 $string['exception'] = 'Uitzondering';

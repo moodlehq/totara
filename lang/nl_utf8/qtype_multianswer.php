@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_multianswer.php,v 1.5 2009/02/26 22:07:28 koenr Exp $ 
-      // qtype_multianswer.php - created with Moodle 2.0 dev (Build: 20090218) (2009021800)
-
+<?php
+// qtype_multianswer.php - created with Totara langimport script version 1.1
 
 $string['addingmultianswer'] = 'Ingebedde antwoorden (cloze) toevoegen';
 $string['correctanswer'] = 'Juist antwoord';

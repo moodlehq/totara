@@ -1,8 +1,9 @@
-<?PHP // $Id: blog.php,v 1.14 2009/01/05 21:15:13 koenr Exp $ 
-      // blog.php - created with Moodle 2.0 dev (Build: 20090102) (2008123102)
-
+<?php
+// blog.php - created with Totara langimport script version 1.1
 
 $string['addnewentry'] = 'Voeg een nieuw item toe';
+$string['addotags'] = 'Voeg tags toe';
+$string['addptags'] = 'Voeg eigen tags toe';
 $string['backupblogshelp'] = 'Als dit ingeschakeld is, dan zullen blogs in de automatische site backups opgenomen worden';
 $string['blockmenutitle'] = 'Blog menu';
 $string['blocktagstitle'] = 'Blogtags';
@@ -44,9 +45,11 @@ $string['nosuchentry'] = 'Dit blog-item niet gevonden';
 $string['notallowedtoedit'] = 'Je mag deze tekst niet bewerken';
 $string['numberofentries'] = 'Teksten: $a';
 $string['numberoftags'] = 'Aantal te tonen tags';
+$string['otags'] = 'Officiële tags';
 $string['pagesize'] = 'Aantal teksten per pagina';
 $string['permalink'] = 'Permanente link';
 $string['personalblogs'] = 'Gebruikers kunnen enkel hun eigen blogs zien';
+$string['ptags'] = 'Gebruikerstags';
 $string['publishto'] = 'Publiceer naar';
 $string['publishtonoone'] = 'jezelf (klad)';
 $string['publishtosite'] = 'iedereen op deze site';
@@ -67,9 +70,5 @@ $string['viewmyentries'] = 'Bekijk mijn eigen blogs';
 $string['viewsiteentries'] = 'Bekijk de blogs van de site';
 $string['worldblogs'] = 'Blog-items die als Wereldtoegankelijk aangeduid zijn, kunnen door alle internetgebruikers gelezen worden';
 $string['wrongpostid'] = 'Fout blog post ID';
-$string['addotags'] = 'Voeg tags toe'; // ORPHANED
-$string['addptags'] = 'Voeg eigen tags toe'; // ORPHANED
-$string['otags'] = 'Officiële tags'; // ORPHANED
-$string['ptags'] = 'Gebruikerstags'; // ORPHANED
 
 ?>

@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_shibboleth.php - created with Totara langimport script version 1.1
 
 $string['auth_shib_auth_method'] = 'Naam authenticatiemethode';
 $string['auth_shib_auth_method_description'] = 'Geef een naam voor de Shibboleth authenticatiemethode die bekend is voor je gebruikers. Dit zou de naam van je Shibboleth federatie kunnen zijn, vb. <tt>SWITCHaai Login</tt> of <tt>InCommon Login</tt> of gelijkaardig:';
@@ -34,3 +32,5 @@ $string['auth_shibbolethtitle'] = 'Shibboleth';
 $string['shib_no_attributes_error'] = 'Het lijkt er op dat je door Shibboleth geautenticeerd bent, maar Moodle kon geen gebruikersinformatie vinden. Controleer of je identiteitsprovider de nodige informatie ($a) vrijgeeft aan de serviceprovider waarvan Moodle gebruik maakt of waarschuw de webmaster van die server.';
 $string['shib_not_all_attributes_error'] = 'Moodle heeft verschillende Shibboleth attributen nodig die in jouw geval niet aanwezig zijn. De attributen zijn: $a<br />Contacteer aub de webmaster van deze server of je identiteitsprovidor';
 $string['shib_not_set_up_error'] = 'Shibboleth authenticatie lijkt niet juist geïnstalleerd te zijn. Raadpleeg het <a href=\"README.txt\">README</a>-bestand voor meer informatie over hoe je Shibboleht authenticatie installeert.';
+
+?>

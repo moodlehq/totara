@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_devplan.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// enrol_devplan.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'De inschrijfplugin DevPlan beperkt interactieve inschrijving. Als een cursus gebruikmaakt van deze plugin, kunnen gebruikers zichzelf alleen inschrijven als de cursus is goedgekeurd als een onderdeel van een goedgekeurd Ontwikkelingsplan';
 $string['developmentplan'] = 'Ontwikkelingsplan';

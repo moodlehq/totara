@@ -1,6 +1,5 @@
-<?PHP // $Id: search.php,v 1.1 2007/08/21 22:11:56 koenr Exp $ 
-      // search.php - created with Moodle 1.9 Beta + (2007081600)
-
+<?php
+// search.php - created with Totara langimport script version 1.1
 
 $string['advancedsearch'] = 'Geavanceerd zoeken';
 $string['all'] = 'Alle';

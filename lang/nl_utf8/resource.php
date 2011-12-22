@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // resource.php - created with Moodle 2.0 dev (Build: 20090122) (2009011900)
-
+<?php
+// resource.php - created with Totara langimport script version 1.1
 
 $string['addresource'] = 'Bron toevoegen';
 $string['affectedresources'] = 'Bronnen waarop van toepassing';

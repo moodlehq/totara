@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_filesystem.php,v 1.1 2009/03/19 23:19:57 koenr Exp $ 
-      // repository_filesystem.php - created with Moodle 2.0 dev (Build: 20090313) (2009030501)
-
+<?php
+// repository_filesystem.php - created with Totara langimport script version 1.1
 
 $string['blockedpath'] = 'Geblokkeerd root pad';
 $string['configplugin'] = 'Opslagruimte op bestandssysteem instellen';

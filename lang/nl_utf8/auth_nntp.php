@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_nntp.php - created with Totara langimport script version 1.1
 
 $string['auth_nntpchangepasswordurl_key'] = 'URL om wachtwoord te wijzigen';
 $string['auth_nntpdescription'] = 'Deze methode gebruikt een NTTP-server om te controleren of een gebruikersnaam en wachtwoord geldig zijn.';
@@ -11,3 +9,5 @@ $string['auth_nntpnotinstalled'] = 'Kan de NNTP-authenticatie niet gebruiken. De
 $string['auth_nntpport'] = 'De poort van de server (meestal is dat 119)';
 $string['auth_nntpport_key'] = 'Poort';
 $string['auth_nntptitle'] = 'NNTP-server';
+
+?>

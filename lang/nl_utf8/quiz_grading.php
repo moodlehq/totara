@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_grading.php,v 1.4 2009/01/12 21:44:37 koenr Exp $ 
-      // quiz_grading.php - created with Moodle 2.0 dev (Build: 20090111) (2009011100)
-
+<?php
+// quiz_grading.php - created with Totara langimport script version 1.1
 
 $string['cannotloadquestioninfo'] = 'Kon vraagspecifieke vraaginformatie niet laden';
 $string['essayonly'] = 'Volgende vragen moeten manueel beoordeeld worden';

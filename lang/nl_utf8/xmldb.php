@@ -1,7 +1,7 @@
-<?PHP // $Id: xmldb.php,v 1.14 2010/02/09 10:35:41 koenr Exp $ 
-      // xmldb.php - created with Moodle 1.9.7+ (Build: 20100208) (2007101571.04)
+<?php
+// xmldb.php - created with Totara langimport script version 1.1
 
-
+$string['actual'] = 'Actueel';
 $string['aftertable'] = 'Tabel resultaat:';
 $string['back'] = 'Terug';
 $string['backtomainview'] = 'Terug naar Hoofd';
@@ -12,9 +12,11 @@ $string['change'] = 'Wijzig';
 $string['charincorrectlength'] = 'Foute lengte voor char veld';
 $string['check_bigints'] = 'Zoek foute DB integers';
 $string['check_defaults'] = 'Zoek naar onconsistente standaardwaarden';
+$string['check_foreign_keys'] = 'Zoek foreign key schendingen';
 $string['check_indexes'] = 'Zoek ontbrekende DB indexen';
 $string['checkbigints'] = 'Controleer Bigints';
 $string['checkdefaults'] = 'Controleer standaardwaarden';
+$string['checkforeignkeys'] = 'Controleer foreign keys';
 $string['checkindexes'] = 'Controleer indexen';
 $string['completelogbelow'] = '(complete log van zoeken onderaan)';
 $string['confirmcheckbigints'] = 'Deze functie zal zoeken naar <a href=\"http://tracker.moodle.org/browse/MDL-11038\"> mogelijk foute integer velden op je Moodle server, en hierbij automatisch de nodige SQL-statements genereren (maar niet uitvoeren!) om alle integer velden in je DB juist te zetten. Eens gegenereerd kun je die statements kopiëren en veilig uitvoeren in je favoriete SQL-interface<br /><br />
@@ -24,6 +26,9 @@ $string['confirmcheckdefaults'] = 'Deze functie zoekt naar inconsistente standaa
 Als die gegenereerd zijn, kun je ze uitvoeren in je favoriete SQL-interface (vergeet niet je databank te backuppen voor je dat doet).<br /><br />
 Het is ten zeerste aangeraden om de laatste beschikbare +-versie van je Moodleversie te gebruiken voor je gaatzoeken naar inconsistente standaardwaarden.<br /><br />
 Deze actie leest alleen je databank en kan dus altijd veilig uitgevoerd worden.';
+$string['confirmcheckforeignkeys'] = 'Deze functie zoekt naar mogelijke schendingen van foreign keys, gedefinieerd in de install.xml-definities. (Moodle genereert op dit ogenblik geen foreign key beperkingen in de databank - hierdoor kan er ongeldige data voorkomen.)<br /><br />
+Je kunt best de laatste Moodleversie gebruiken (+-versie) die voor jouw Moodle 51.8, 1.9, 2.x ...) beschikbaar is voor je op zoek gaat naar ontbrekende indexen.<br /><br />
+Deze functie wijzigt niets aan de databank (enkel lezen). Je kunt dit dus op elk moment veilig uitvoeren.';
 $string['confirmcheckindexes'] = 'Deze functie zal zoeken naar mogelijk ontbrekende indexen op je Moodle server, en hierbij automatisch de nodige SQL-statements genereren (maar niet uitvoeren!) om alles up to date te houden. Eens gegenereerd kun je die statements kopiëren en veilig uitvoeren in je favoriete SQL-interface<br /><br />
 Het is ten zeerste aangeraden de laatst beschikbare (+ versie) Moodleversie te gebruiken voor je zoekt naar ontbrekende indexen.<br /><br />
 Deze functie schrijft niets weg in de databank (enkel lezen), en kan dus veilig uitgevoerd worden op elk moment.';
@@ -46,9 +51,11 @@ $string['delete_sentence'] = 'Verwijder zin';
 $string['delete_statement'] = 'Verwijder stelling';
 $string['delete_table'] = 'Verwijder tabel';
 $string['delete_xml_file'] = 'Verwijder XML-bestand';
+$string['doc'] = 'Doc';
 $string['down'] = 'Omlaag';
 $string['duplicate'] = 'Dupliceer';
 $string['duplicatefieldname'] = 'Er bestaat al een veld met die naam';
+$string['duplicatekeyname'] = 'Er bestaat al een sleutel met die naam';
 $string['edit'] = 'Bewerk';
 $string['edit_field'] = 'Bewerk veld';
 $string['edit_index'] = 'Bewerk index';
@@ -58,12 +65,17 @@ $string['edit_statement'] = 'Bewerk stelling';
 $string['edit_table'] = 'Bewerk tabel';
 $string['edit_xml_file'] = 'Bewerk XML-bestand';
 $string['enumvaluesincorrect'] = 'Foute waarden voor enum veld';
+$string['expected'] = 'Verwacht';
+$string['extensionrequired'] = 'Sorry - the PHP-extentie \'$a\' is vereist voor deze actie. Installeer de extentie als je deze functie wil gebruiken.';
 $string['field'] = 'Veld';
 $string['fieldnameempty'] = 'Naam veld leeg';
 $string['fields'] = 'Velden';
+$string['fieldsusedinkey'] = 'Dit veld wordt als sleutel gebruikt.';
 $string['filenotwriteable'] = 'Bestand niet beschrijfbaar';
+$string['fkviolationdetails'] = 'Foreign key $a->keyname op tabel $a->tablename is geschonden door $a->numviolations van $a->numrows rijen.';
 $string['floatincorrectdecimals'] = 'Fout aantal decimalen voor float veld';
 $string['floatincorrectlength'] = 'Foute lengte voor float veld';
+$string['generate_documentation'] = 'Documentatie';
 $string['gotolastused'] = 'Laatst gebruikte bestand';
 $string['incorrectfieldname'] = 'Foute naam';
 $string['index'] = 'Index';
@@ -92,6 +104,7 @@ $string['newstatement'] = 'Nieuwe stelling';
 $string['newtable'] = 'Nieuwe tabel';
 $string['newtablefrommysql'] = 'Nieuwe tabel van MySQL';
 $string['nomissingindexesfound'] = 'Er zijn geen ontbrekende indexen gevonden, er moet niets aan je databank gewijzigd worden.';
+$string['noviolatedforeignkeysfound'] = 'Geen foute foreign keys gevonden';
 $string['nowrongdefaultsfound'] = 'Er werden geen inconsistente standaardwaarden gevonden; Je databank is in orde.';
 $string['nowrongintsfound'] = 'Geen foute integers gevonden - er is verder geen actie nodig.';
 $string['numberincorrectdecimals'] = 'Fout aantal deximalen voor numeriek veld';
@@ -129,6 +142,9 @@ $string['viewedited'] = 'Bekijk bewerkt';
 $string['vieworiginal'] = 'Bekijk origineel';
 $string['viewphpcode'] = 'Bekijk PHP code';
 $string['viewsqlcode'] = 'Bekijk SQL code';
+$string['violatedforeignkeys'] = 'Geschonden foreign keys';
+$string['violatedforeignkeysfound'] = 'Geschonden foreign keys gevonden';
+$string['violations'] = 'Schendingen';
 $string['wrong'] = 'Fout';
 $string['wrongdefaults'] = 'Verkeerde standaardwaarden gevonden';
 $string['wrongints'] = 'Foute integers gevonden';
@@ -139,22 +155,5 @@ $string['yesmissingindexesfound'] = 'Er zijn ontbrekende indexen gevonden in je 
 $string['yeswrongdefaultsfound'] = 'Er zijn inconsistenties gevonden in je databank. Hier zijn de juiste standaardwaarden en de nodige SQL-expressies om uit te voeren in je favoriete SQL-interface om ze allemaal te herstellen (vergeet niet je databank te backuppen voor je dddat doet).<br /><br />
 Daarna is het ten zeerste aangeraden om dit script nogmaals te laten lopen om te zoeken naar meer inconsistenties.';
 $string['yeswrongintsfound'] = 'Er zijn foute integers gevonden in je databank. Hier vind je de details en de nodige SQL-statements om uit te voeren in je favoriete SQL interface ze te herstellen. <br /><br />Nadat je dit gedaan hebt, is het ten zeerste aangeraden deze functie nogmaals te laten lopen om te controleren of er niet meer foute integers gevonden kunnen worden.';
-$string['actual'] = 'Actueel'; // ORPHANED
-$string['check_foreign_keys'] = 'Zoek foreign key schendingen'; // ORPHANED
-$string['checkforeignkeys'] = 'Controleer foreign keys'; // ORPHANED
-$string['confirmcheckforeignkeys'] = 'Deze functie zoekt naar mogelijke schendingen van foreign keys, gedefinieerd in de install.xml-definities. (Moodle genereert op dit ogenblik geen foreign key beperkingen in de databank - hierdoor kan er ongeldige data voorkomen.)<br /><br />
-Je kunt best de laatste Moodleversie gebruiken (+-versie) die voor jouw Moodle 51.8, 1.9, 2.x ...) beschikbaar is voor je op zoek gaat naar ontbrekende indexen.<br /><br />
-Deze functie wijzigt niets aan de databank (enkel lezen). Je kunt dit dus op elk moment veilig uitvoeren.'; // ORPHANED
-$string['doc'] = 'Doc'; // ORPHANED
-$string['duplicatekeyname'] = 'Er bestaat al een sleutel met die naam'; // ORPHANED
-$string['expected'] = 'Verwacht'; // ORPHANED
-$string['extensionrequired'] = 'Sorry - the PHP-extentie \'$a\' is vereist voor deze actie. Installeer de extentie als je deze functie wil gebruiken.'; // ORPHANED
-$string['fieldsusedinkey'] = 'Dit veld wordt als sleutel gebruikt.'; // ORPHANED
-$string['fkviolationdetails'] = 'Foreign key $a->keyname op tabel $a->tablename is geschonden door $a->numviolations van $a->numrows rijen.'; // ORPHANED
-$string['generate_documentation'] = 'Documentatie'; // ORPHANED
-$string['noviolatedforeignkeysfound'] = 'Geen foute foreign keys gevonden'; // ORPHANED
-$string['violatedforeignkeys'] = 'Geschonden foreign keys'; // ORPHANED
-$string['violatedforeignkeysfound'] = 'Geschonden foreign keys gevonden'; // ORPHANED
-$string['violations'] = 'Schendingen'; // ORPHANED
 
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_ldap.php - created with Moodle 1.9 dev (2007021500)
-
+<?php
+// enrol_ldap.php - created with Totara langimport script version 1.1
 
 $string['description'] = '<p>Je kunt een LDAP-server gebruiken om je cursusaanmeldingen te controleren. Er wordt vanuit gegaan dat je LDAP-structuur groepen bevat die verwijzen naar de cursussen en dat elk van die groepen/cursussen naar lidmaatschap van leerlingen verwijzen.</p>
 <p>Er wordt vanuit gegaan dat cursussen als groepen gedefinieerd zijn in LDAP waarbij elke groep meerdere lidmaatschapsvelden heeft (<em>member</em> of <em>memberUid</em> die een unieke identificatie van de gebruiker bevat.</p>

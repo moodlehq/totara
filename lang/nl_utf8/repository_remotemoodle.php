@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_remotemoodle.php,v 1.1 2009/02/18 20:41:30 koenr Exp $ 
-      // repository_remotemoodle.php - created with Moodle 2.0 dev (Build: 20090218) (2009021800)
-
+<?php
+// repository_remotemoodle.php - created with Totara langimport script version 1.1
 
 $string['configplugin'] = 'Beheer van externe Moodle bestandsopslagruimte';
 $string['connectionfailure'] = 'Bestandenlijst ophalen mislukt - De host Moodle heeft ofwel een Moodleversie ouder dan 2.0 of de Moodle externe opslagruimte service is niet geactiveerd';

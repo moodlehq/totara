@@ -1,6 +1,5 @@
-<?PHP // $Id: condition.php,v 1.2 2009/05/26 21:51:26 koenr Exp $ 
-      // condition.php - created with Moodle 2.0 dev (Build: 20090514) (2009051200)
-
+<?php
+// condition.php - created with Totara langimport script version 1.1
 
 $string['addcompletions'] = 'Voeg {no} activiteitsvoorwaarden toe aan formulier';
 $string['addgrades'] = 'Voeg {no} cijfervoorwaarden toe aan formulier';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // data.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// data.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'Actie';
 $string['add'] = 'Item toevoegen';
@@ -28,6 +27,14 @@ $string['blank'] = 'Leeg';
 $string['buttons'] = 'Knoppen';
 $string['bynameondate'] = 'door $a->name - $a->date';
 $string['cancel'] = 'Annuleer';
+$string['cannotaccesspresentsother'] = 'Je mag de sjablonen van andere gebruikers niet gebruiken';
+$string['cannotadd'] = 'Kan geen items toevoegen!';
+$string['cannotdeletepreset'] = 'Fout bij het verwijderen van een sjabloon';
+$string['cannotinsertempty'] = 'Kon geen lege record maken!';
+$string['cannotinsertrate'] = 'Kon geen nieuwe beoordeling invoegen ($a[0] = $a[1])';
+$string['cannotrate'] = 'Beoordelen van items niet toegelaten';
+$string['cannotunziptopreset'] = 'Kan het sjabloon niet unzippen in de map';
+$string['cannotupdaterate'] = 'Kon een vroegere beoordeling niet aanpassen';
 $string['checkbox'] = 'Keuzevakjes';
 $string['chooseexportfields'] = 'Kies de velden die je wil exporteren';
 $string['chooseexportformat'] = 'Kies het formaat waarnaar je wil exporteren';
@@ -49,6 +56,9 @@ $string['csvimport'] = 'Imorteer CSV-bestand';
 $string['csvwithselecteddelimiter'] = '<acronym title=\"Comma Separated Values\">CSV</acronym> tekst met het gekozen scheidingsteken:';
 $string['data:approve'] = 'Keur nieuwe items goed';
 $string['data:comment'] = 'Schrijf commentaar';
+$string['data:exportallentries'] = 'Exporteer alle databankitems';
+$string['data:exportentry'] = 'Exporteer een databankitem';
+$string['data:exportownentry'] = 'Exporteer je databankitem';
 $string['data:managecomments'] = 'Beheer commentaren';
 $string['data:manageentries'] = 'Beheer items';
 $string['data:managetemplates'] = 'Beheer sjablonen';
@@ -123,6 +133,8 @@ $string['forcelinkname'] = 'Geforceerde naam voor de link';
 $string['foundnorecords'] = 'Geen records gevonden (<a href=\"$a->reseturl\">Reset filters</a>)';
 $string['foundrecords'] = 'Gevonden records: $a->num/$a->max (<a href=\"$a->reseturl\">Reset filters</a>)';
 $string['fromfile'] = 'Van zip-bestand';
+$string['generateerror'] = 'Niet alle bestanden gegenereerd!';
+$string['guestrate'] = 'Gasten mogen geen  items beoordelen';
 $string['header'] = 'Koptekst';
 $string['headeraddtemplate'] = 'Definieer de interface voor het vullen van de databank';
 $string['headerasearchtemplate'] = 'Definieert de interface voor geavanceerd zoeken';
@@ -134,8 +146,16 @@ $string['headersingletemplate'] = 'Definieer de interface voor het bladeren per 
 $string['importsuccess'] = 'De sjabloonset is met succes toegepast';
 $string['insufficiententries'] = 'meer items nodig om deze databank te kunnen bekijken';
 $string['intro'] = 'Inleiding';
+$string['invalidaccess'] = 'Deze pagina is niet correct opgevraagd';
+$string['invaliddata'] = 'Gegevensfout';
+$string['invalidfieldid'] = 'Veld ID is fout';
 $string['invalidfieldname'] = 'Kies een andere naam voor dit veld';
+$string['invalidfieldtype'] = 'Verld type is fout';
+$string['invalidid'] = 'Data ID is fout';
+$string['invalidpreset'] = '$a is geen sjabloon.';
 $string['invalidrate'] = 'Ongeldige databank-beoordeling ($a)';
+$string['invalidratedata'] = 'Fout ingestuurde beoordelingsgegevens';
+$string['invalidrecord'] = 'Record fout';
 $string['invalidurl'] = 'De URL die je net gaf is niet geldig';
 $string['jstemplate'] = 'Javascript sjabloon';
 $string['latitude'] = 'Breedtegraad';
@@ -152,7 +172,9 @@ $string['maxentries'] = 'Maximum items';
 $string['maxsize'] = 'Maximum grootte';
 $string['menu'] = 'Menu (enkele selectie)';
 $string['menuchoose'] = 'Kies...';
-$string['modulename'] = 'Databank';
+$string['missingdata'] = 'Data ID of object moet opgegeven worden aan field class';
+$string['missingfield'] = 'Programmatiefout: je moet een veld en of gegevens specifiëren wanneer je een field class definieerd.';
+$string['modulename'] = 'Database';
 $string['modulenameplural'] = 'Databanken';
 $string['more'] = 'Meer';
 $string['moreurl'] = 'Meer URL';
@@ -176,10 +198,12 @@ $string['newentry'] = 'Nieuw item';
 $string['newfield'] = 'Maak een nieuw veld';
 $string['noaccess'] = 'Je hebt geen toegang tot deze pagina';
 $string['nodefinedfields'] = 'Nieuw sjabloon heeft geen gedefiniëerde velden';
+$string['nofieldcontent'] = 'Veldinhoud niet gevonden';
 $string['nofieldindatabase'] = 'Er zijn nog geen velden gedefinieerd voor deze databank. Voeg er enkele toe.';
 $string['nolisttemplate'] = 'Lijstsjabloon is nog niet gedefinieerd';
 $string['nomatch'] = 'Geen overeenkomende items gevonden';
 $string['nomaximum'] = 'Geen maximum';
+$string['norating'] = 'Deze activiteit gebruikt geen beoordelingen';
 $string['norecords'] = 'Geen items in de databank';
 $string['nosingletemplate'] = 'Sjabloon voor itemweergave is niet gedefinieerd';
 $string['notapproved'] = 'Item is nog niet goedgekeurd';
@@ -199,6 +223,7 @@ $string['pagesize'] = 'Items per pagina';
 $string['participants'] = 'Deelnemers';
 $string['picture'] = 'Afbeelding';
 $string['pleaseaddsome'] = 'Kies instellingen hieronder of <a href=\"$a\"> kies een voorgedefinieerd sjabloon</a> om te starten.';
+$string['portfolionotfile'] = 'Exporteer naar een portfolio, niet naar een bestand (enkel CSV)';
 $string['presetinfo'] = 'Bewaren als sjabloonset zal dit sjabloon publiceren. Andere gebruikers kunnen dit dan gebruiken in hun databanken.';
 $string['presets'] = 'Sjabloonsets';
 $string['radiobutton'] = 'Keuzeknoppen';
@@ -254,6 +279,7 @@ $string['type'] = 'Veldtype';
 $string['undefinedprocessactionmethod'] = 'Geen methode gedefiniëerd in Data_Preset om de actie \"$a\" af te handelen.';
 $string['unsupportedexport'] = '($a->fieldtype) kan niet geëxporteerd worden.';
 $string['updatefield'] = 'Update een bestaand veld';
+$string['updatingerror'] = 'Er was een fout bij het updaten van de databank';
 $string['uploadfile'] = 'Upload bestand';
 $string['uploadrecords'] = 'Upload records uit een bestand';
 $string['url'] = 'URL';
@@ -261,32 +287,5 @@ $string['usestandard'] = 'gebruik een sjabloonset';
 $string['viewfromdate'] = 'Zichtbaar vanaf';
 $string['viewtodate'] = 'Zichtbaar voor';
 $string['wrongdataid'] = 'Verkeerd data-ID opgegeven';
-$string['cannotaccesspresentsother'] = 'Je mag de sjablonen van andere gebruikers niet gebruiken'; // ORPHANED
-$string['cannotadd'] = 'Kan geen items toevoegen!'; // ORPHANED
-$string['cannotdeletepreset'] = 'Fout bij het verwijderen van een sjabloon'; // ORPHANED
-$string['cannotinsertempty'] = 'Kon geen lege record maken!'; // ORPHANED
-$string['cannotrate'] = 'Beoordelen van items niet toegelaten'; // ORPHANED
-$string['cannotunziptopreset'] = 'Kan het sjabloon niet unzippen in de map'; // ORPHANED
-$string['data:exportallentries'] = 'Exporteer alle databankitems'; // ORPHANED
-$string['data:exportentry'] = 'Exporteer een databankitem'; // ORPHANED
-$string['data:exportownentry'] = 'Exporteer je databankitem'; // ORPHANED
-$string['generateerror'] = 'Niet alle bestanden gegenereerd!'; // ORPHANED
-$string['guestrate'] = 'Gasten mogen geen  items beoordelen'; // ORPHANED
-$string['invalidaccess'] = 'Deze pagina is niet correct opgevraagd'; // ORPHANED
-$string['invalidfieldid'] = 'Veld ID is fout'; // ORPHANED
-$string['invalidfieldtype'] = 'Verld type is fout'; // ORPHANED
-$string['invalidid'] = 'Data ID is fout'; // ORPHANED
-$string['invalidpreset'] = '$a is geen sjabloon.'; // ORPHANED
-$string['invalidratedata'] = 'Fout ingestuurde beoordelingsgegevens'; // ORPHANED
-$string['invalidrecord'] = 'Record fout'; // ORPHANED
-$string['missingdata'] = 'Data ID of object moet opgegeven worden aan field class'; // ORPHANED
-$string['missingfield'] = 'Programmatiefout: je moet een veld en of gegevens specifiëren wanneer je een field class definieerd.'; // ORPHANED
-$string['nofieldcontent'] = 'Veldinhoud niet gevonden'; // ORPHANED
-$string['norating'] = 'Deze activiteit gebruikt geen beoordelingen'; // ORPHANED
-$string['portfolionotfile'] = 'Exporteer naar een portfolio, niet naar een bestand (enkel CSV)'; // ORPHANED
-$string['updatingerror'] = 'Er was een fout bij het updaten van de databank'; // ORPHANED
-$string['cannotinsertrate'] = 'Kon geen nieuwe beoordeling invoegen ($a[0] = $a[1])'; // ORPHANED
-$string['cannotupdaterate'] = 'Kon een vroegere beoordeling niet aanpassen'; // ORPHANED
-$string['invaliddata'] = 'Gegevensfout'; // ORPHANED
 
 ?>

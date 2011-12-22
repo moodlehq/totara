@@ -1,6 +1,5 @@
-<?PHP // $Id: access.php,v 1.6 2008/12/16 23:41:03 koenr Exp $ 
-      // access.php - created with Moodle 2.0 dev (Build: 20081216) (2008121000)
-
+<?php
+// access.php - created with Totara langimport script version 1.1
 
 $string['access'] = 'Toegankelijkheid';
 $string['accesshelp'] = 'Help toegankelijkheid';
@@ -16,6 +15,7 @@ $string['hideblocka'] = 'Verberg $a blok';
 $string['monthnext'] = 'Volgende maand';
 $string['monthprev'] = 'Vorige maand';
 $string['showblocka'] = 'Toon $a blok';
+$string['showhideblock'] = 'Toon of verberg blok';
 $string['sitemap'] = 'Site kaart';
 $string['skipa'] = 'Sla $a over';
 $string['skipblock'] = 'Sla een blok over';
@@ -25,6 +25,5 @@ $string['tablelayout'] = 'Opmaaktabel, $a';
 $string['tocontent'] = 'Ga naar hoofdinhoud';
 $string['tonavigation'] = 'Ga naar navigatie';
 $string['youarehere'] = 'Je bent hier';
-$string['showhideblock'] = 'Toon of verberg blok'; // ORPHANED
 
 ?>

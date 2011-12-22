@@ -1,6 +1,5 @@
-<?PHP // $Id: mnet.php,v 1.11 2010/02/19 19:52:33 koenr Exp $ 
-      // mnet.php - created with Moodle 1.9.7+ (Build: 20100208) (2007101571.04)
-
+<?php
+// mnet.php - created with Totara langimport script version 1.1
 
 $string['RPC_HTTPS_SELF_SIGNED'] = 'HTTPS (eigen certificaat)';
 $string['RPC_HTTPS_VERIFIED'] = 'HTTPS (certificaat)';
@@ -20,6 +19,8 @@ $string['authfail_usermismatch'] = 'Authorisatie mislukt: de gebruiker komt niet
 $string['authmnetautoadddisabled'] = '<em>Automatisch gebruikers toevoegen</em> in Moodle Networking Authenticatieplugin is <strong>uitgeschakeld</strong>.';
 $string['authmnetdisabled'] = 'Moodle Networking <em>Authenticatieplugin</em> is <strong>uitgeschakeld</strong>.';
 $string['badcert'] = 'Dit certificaat is niet geldig.';
+$string['certdetails'] = 'Cert Details';
+$string['configmnet'] = 'Moodle networking maakt communicatie mogelijk tussen deze server en andere servers of services.';
 $string['couldnotgetcert'] = 'Geen certificaat gevonden op <br />$a.<br />De host is misschien onbereikbaar of slecht geconfigureerd.';
 $string['couldnotmatchcert'] = 'Dit komt niet overeen met het certificaat dat door de webserver gepubliceerd wordt.';
 $string['courses'] = 'cursussen';
@@ -196,7 +197,5 @@ $string['wrong-ip'] = 'Je IP-adres komt niet overeen met het IP-adres dat we ger
 $string['xmlrpc-missing'] = 'Je moet XML-RPC in PHP geinstalleerd hebben om deze functie te kunnen gebruiken';
 $string['yourhost'] = 'Jouw host';
 $string['yourpeers'] = 'Jouw peers';
-$string['certdetails'] = 'Cert Details'; // ORPHANED
-$string['configmnet'] = 'Moodle networking maakt communicatie mogelijk tussen deze server en andere servers of services.'; // ORPHANED
 
 ?>

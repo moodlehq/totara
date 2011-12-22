@@ -1,6 +1,5 @@
-<?PHP // $Id: block_tags.php,v 1.1 2008/07/10 14:26:06 koenr Exp $ 
-      // block_tags.php - created with Moodle 2.0 dev (Build: 20080710) (2008070701)
-
+<?php
+// block_tags.php - created with Totara langimport script version 1.1
 
 $string['add'] = 'Voeg toe';
 $string['alltags'] = 'Alle tags';

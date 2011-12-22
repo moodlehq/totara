@@ -1,6 +1,5 @@
-<?PHP // $Id: simpletest.php,v 1.6 2009/12/14 09:18:47 mudrd8mz Exp $ 
-      // simpletest.php - created with Moodle 2.0 dev (Build: 20090210) (2009012901)
-
+<?php
+// simpletest.php - created with Totara langimport script version 1.1
 
 $string['addconfigprefix'] = 'Voeg een prefix toe aan het configuratiebestand';
 $string['all'] = 'ALLE';

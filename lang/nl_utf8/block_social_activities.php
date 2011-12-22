@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_social_activities.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2004093001)
-
+<?php
+// block_social_activities.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Sociale activiteiten';
 

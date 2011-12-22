@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_internal.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2004093001)
-
+<?php
+// enrol_internal.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Dit is de standaard manier van aanmelden. Er zijn twee belangrijke manieren waarop een leerling in een cursus aangemeld kan worden.
 <ul>

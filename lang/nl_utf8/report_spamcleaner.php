@@ -1,6 +1,5 @@
-<?PHP // $Id: report_spamcleaner.php,v 1.2 2009/09/29 21:17:37 koenr Exp $ 
-      // report_spamcleaner.php - created with Moodle 2.0 dev (Build: 20090929) (2009091700)
-
+<?php
+// report_spamcleaner.php - created with Totara langimport script version 1.1
 
 $string['spamauto'] = 'Detecteer automatisch veel voorkomende spampatronen';
 $string['spamcannotdelete'] = 'Kan deze gebruiker niet verwijderen';

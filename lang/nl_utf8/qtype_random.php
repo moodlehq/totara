@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_random.php,v 1.2 2009/03/19 21:38:00 koenr Exp $ 
-      // qtype_random.php - created with Moodle 2.0 dev (Build: 20090218) (2009021800)
-
+<?php
+// qtype_random.php - created with Totara langimport script version 1.1
 
 $string['configselectmanualquestions'] = 'Mag het willekeurige vraagtype een manueel beoordeelde vraag selecteren wanneer het een willekeurig vraag kiest uit een categorie?';
 $string['editingrandom'] = 'Willekeurige vraag bewerken';

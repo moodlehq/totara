@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_ldap.php - created with Totara langimport script version 1.1
 
 $string['auth_ldap_ad_create_req'] = 'Kan de nieuwe account niet aanmaken in de Active Directory. Zorg ervoor dat alle vereisten om dit mogelijk te maken voorzien zijn (LDAPS-verbinding, bind-gebruiker met de juiste rechten enz.)';
 $string['auth_ldap_attrcreators'] = 'Lijst van groepen of contexten waarvan de leden het recht hebben attributen aan te maken. Gebruik een \';\' als scheidingsteken tussen meerdere groepen. Gewoonlijk wordt dat iets als \'cn=leraars,ou=personeel,o=mijn_organisatie\'';
@@ -85,3 +83,5 @@ $string['auth_ntlmsso_subnet_key'] = 'Subnet';
 $string['ntlmsso_attempting'] = 'Single sign on via NTLM wordt geprobeerd...';
 $string['ntlmsso_failed'] = 'Auto-login mislukt, probeer de gewone loginpagina...';
 $string['ntlmsso_isdisabled'] = 'NTLM SSO is uitgeschakeld';
+
+?>

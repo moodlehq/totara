@@ -1,6 +1,5 @@
-<?PHP // $Id: form.php,v 1.8 2009/03/19 23:19:56 koenr Exp $ 
-      // form.php - created with Moodle 2.0 dev (Build: 20090313) (2009030501)
-
+<?php
+// form.php - created with Totara langimport script version 1.1
 
 $string['addfields'] = 'Voeg $a velden toe aan formulier';
 $string['advancedelement'] = 'Geavanceerd element';
@@ -29,6 +28,7 @@ $string['nonexistentformelements'] = 'Je probeert een helpknop toe te voegen aan
 $string['optional'] = 'Optioneel';
 $string['othersettings'] = 'Meer instellingen';
 $string['requiredelement'] = 'Vereist veld';
+$string['requiredfield'] = 'Dit is een vereist veld';
 $string['revealpassword'] = 'Toon';
 $string['security'] = 'Beveiliging';
 $string['selectallornone'] = 'Kies alle/geen';
@@ -39,6 +39,5 @@ $string['timeunit'] = 'Tijdseenheid';
 $string['timing'] = 'Timing';
 $string['unmaskpassword'] = 'Toon';
 $string['year'] = 'Jaar';
-$string['requiredfield'] = 'Dit is een vereist veld'; // ORPHANED
 
 ?>

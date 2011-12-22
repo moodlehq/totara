@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // message.php - created with Moodle 2.0 dev (Build: 20081216) (2008121000)
-
+<?php
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'Voeg contactpersoon toe';
 $string['addsomecontacts'] = 'Gebruik het tabblad <a href=\"$a\">Zoek</a> om iemand een berichtje te sturen of om op deze pagina een snelkoppeling naar iemand te maken.';
@@ -28,6 +27,7 @@ $string['emailtagline'] = 'Deze e-mail is een kopie van een bericht dat naar jou
 $string['emptysearchstring'] = 'Je moet iets zoeken';
 $string['errorcallingprocessor'] = 'Fout bij het aanroepen van de opgegeven processor';
 $string['formorethan'] = 'Langer offline dan';
+$string['general_config'] = 'Algemene instellingen';
 $string['guestnoeditmessage'] = 'Gastgebruiker kan berichtopties niet wijzigen';
 $string['guestnoeditmessageother'] = 'Gastgebruiker kan berichtopties van andere gebruikers niet wijzigen';
 $string['includeblockedusers'] = 'Geblokkeerde bezoekers inbegrepen';
@@ -60,6 +60,7 @@ $string['onlymycourses'] = 'Enkel in mijn cursussen';
 $string['onlytome'] = 'Enkel berichten aan mij';
 $string['pagerefreshes'] = 'Deze pagina ververst automatisch om de $a seconden';
 $string['private_config'] = 'Popup berichtenvenster';
+$string['processor_config'] = 'Bestemmingsconfiguratie';
 $string['processortag'] = 'Bestemming:';
 $string['providers_config'] = 'Berichtbronnen';
 $string['providerstag'] = 'Bron:';
@@ -83,7 +84,5 @@ $string['unreadmessages'] = '$a ongelezen berichten';
 $string['userisblockingyou'] = 'Deze gebruiker heeft je geblokkeerd om berichten naar hem te sturen';
 $string['userisblockingyounoncontact'] = 'Deze gebruiker aanvaard alleen berichten van mensen uit zijn lijst met contactpersonen en je staat nu niet op die lijst.';
 $string['userssearchresults'] = 'Zoekresultaten: $a gebruikers gevonden';
-$string['general_config'] = 'Algemene instellingen'; // ORPHANED
-$string['processor_config'] = 'Bestemmingsconfiguratie'; // ORPHANED
 
 ?>

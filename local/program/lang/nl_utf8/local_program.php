@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local_program.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// local_program.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'Taak';
 $string['addcohortstoprogram'] = 'Gebruikersgroepen inschrijven voor programma';
@@ -278,7 +277,7 @@ $string['or'] = 'of';
 $string['organisationname'] = 'Naam organisatie';
 $string['organisations'] = 'Organisaties';
 $string['organisations_category'] = 'organisatie(s)';
-$string['orviewprograms'] = 'of programma\'s tonen in deze categorie ({$a})';
+$string['orviewprograms'] = 'Programma\'s in deze categorie ({$a})';
 $string['overrideandaddprogram'] = 'Negeren en programma toevoegen';
 $string['overview'] = 'Overzicht';
 $string['pendingextension'] = 'Er is verlenging aangevraagd';

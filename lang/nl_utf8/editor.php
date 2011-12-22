@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // editor.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'Info';
 $string['absbottom'] = 'Absbottom';
@@ -44,6 +43,7 @@ $string['heading'] = 'Koptekst (h)';
 $string['height'] = 'Hoogte';
 $string['hilitecolor'] = 'Achtergrondkleur';
 $string['horizontal'] = 'Horizontaal';
+$string['horizontalrule'] = 'Horizontale lijn';
 $string['htmlmode'] = 'Omschakelen naar HTML-code';
 $string['imageurl'] = 'URL van de afbeelding';
 $string['indent'] = 'Inspringing vergroten';
@@ -86,6 +86,7 @@ $string['notimage'] = 'Het geselecteerde bestand is geen afbeelding. Kies een af
 $string['notset'] = 'Niet ingesteld';
 $string['ok'] = 'OK';
 $string['options'] = 'Opties';
+$string['orderedlist'] = 'Geordende lijst';
 $string['outdent'] = 'Inspringing verkleinen';
 $string['paste'] = 'Plakken van klembord';
 $string['path'] = 'Pad';
@@ -98,6 +99,7 @@ $string['preview'] = 'Voorbeeld';
 $string['properties'] = 'Eigenschappen';
 $string['redo'] = 'Herhalen';
 $string['regularexpressions'] = 'Regular expressions gebruiken';
+$string['removelink'] = 'Verwijder link';
 $string['rename'] = 'Hernoemen';
 $string['replaceall'] = 'Alles vervangen';
 $string['replacewith'] = 'Vervangen';
@@ -105,6 +107,7 @@ $string['right'] = 'Rechts';
 $string['righttoleft'] = 'Richting van recht naar links';
 $string['rows'] = 'Rijen';
 $string['search_replace'] = 'Zoeken en vervangen';
+$string['searchandreplace'] = 'Zoek  en vervang';
 $string['searchnotfound'] = 'Niet gevonden!';
 $string['selectcolor'] = 'Kleur kiezen';
 $string['selection'] = 'Selectie';
@@ -123,15 +126,11 @@ $string['type'] = 'Type';
 $string['underline'] = 'Onderstrepen';
 $string['undo'] = 'Ongedaan maken';
 $string['unlink'] = 'Link verwijderen';
+$string['unorderedlist'] = 'Lijst met opsommingstekens';
 $string['upload'] = 'Uploaden';
 $string['vertical'] = 'Verticaal';
 $string['width'] = 'Breedte';
+$string['wordclean'] = 'Opschonen Word HTML-document';
 $string['zip'] = 'Zip';
-$string['horizontalrule'] = 'Horizontale lijn'; // ORPHANED
-$string['orderedlist'] = 'Geordende lijst'; // ORPHANED
-$string['removelink'] = 'Verwijder link'; // ORPHANED
-$string['searchandreplace'] = 'Zoek  en vervang'; // ORPHANED
-$string['unorderedlist'] = 'Lijst met opsommingstekens'; // ORPHANED
-$string['wordclean'] = 'Opschonen Word HTML-document'; // ORPHANED
 
 ?>

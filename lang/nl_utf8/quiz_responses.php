@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz_responses.php - created with Moodle 2.0 dev (Build: 20090111) (2009011100)
-
+<?php
+// quiz_responses.php - created with Totara langimport script version 1.1
 
 $string['cannotloadoptions'] = 'Kon vraagopties niet laden';
 $string['pagesize'] = 'Pogingen per pagina';

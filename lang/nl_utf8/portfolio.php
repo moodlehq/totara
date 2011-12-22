@@ -1,6 +1,5 @@
-<?PHP // $Id: portfolio.php,v 1.8 2009/05/24 13:39:42 koenr Exp $ 
-      // portfolio.php - created with Moodle 2.0 dev (Build: 20090514) (2009051200)
-
+<?php
+// portfolio.php - created with Totara langimport script version 1.1
 
 $string['activeportfolios'] = 'Actieve portfolio\'s';
 $string['addalltoportfolio'] = 'Bewaar alles ...';
@@ -40,6 +39,7 @@ $string['failedtosendpackage'] = 'Gegevens sturen naar het geselecteerde portfol
 $string['filedenied'] = 'Toegang tot dit bestand geweigerd';
 $string['filenotfound'] = 'Bestand niet gevonden';
 $string['format_file'] = 'Bestand';
+$string['format_html'] = 'HTML';
 $string['format_image'] = 'Afbeelding';
 $string['format_mbkp'] = 'Moodle backup';
 $string['format_plainhtml'] = 'HTML';
@@ -113,6 +113,7 @@ $string['plugin'] = 'Portfolio Plugin';
 $string['plugincouldnotpackage'] = 'Inpakken van je gegevens voor export mislukt';
 $string['pluginismisconfigured'] = 'De portfolio plugin is fout geconfigureerd, overgeslagen. De fout was: $a';
 $string['portfolio'] = 'Portfolio';
+$string['portfolionotfile'] = 'Exporteer naar een portfolio, eerder dan naar een bestand';
 $string['portfolios'] = 'Portfolio\'s';
 $string['queuesummary'] = 'Transfers in wachtrij';
 $string['returntowhereyouwere'] = 'Keer terug';
@@ -129,7 +130,5 @@ $string['unknownplugin'] = 'Onbekend (kan verwijderd zijn door de beheerder)';
 $string['wait'] = 'Wacht';
 $string['wanttowait_high'] = 'Het wordt niet aangeraden te wachten om deze transfer af te ronden, maar je kunt wachten als je zeker weet wat je doet.';
 $string['wanttowait_moderate'] = 'Wil je op deze transfer wachten? Het kan een aantal minuten duren';
-$string['format_html'] = 'HTML'; // ORPHANED
-$string['portfolionotfile'] = 'Exporteer naar een portfolio, eerder dan naar een bestand'; // ORPHANED
 
 ?>

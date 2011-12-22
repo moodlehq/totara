@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // filters.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// filters.php - created with Totara langimport script version 1.1
 
 $string['actfilterhdr'] = 'Actieve filters';
 $string['addfilter'] = 'Voeg filter toe';
@@ -28,6 +27,7 @@ $string['includesubcategories'] = 'Sub-categorieën opnemen';
 $string['isafter'] = 'is na';
 $string['isanyvalue'] = 'is elke waarde';
 $string['isbefore'] = 'is voor';
+$string['isbetween'] = 'is tussen $a[0] en $a[1]';
 $string['isdefined'] = 'is niet leeg';
 $string['isempty'] = 'is leeg';
 $string['isequalto'] = 'gelijk aan';
@@ -45,11 +45,10 @@ $string['profilelabelnovalue'] = '$a->label: $a->profile $a->operator';
 $string['removeall'] = 'Verwijder alles';
 $string['removeselected'] = 'Verwijder selectie';
 $string['selectlabel'] = '$a->label $a->operator $a->value';
+$string['setfilter'] = 'Filter instellen';
 $string['startswith'] = 'begint met';
 $string['tablenosave'] = 'Wijzigingen in bovenstaande tabel worden automatisch bewaard.';
 $string['textlabel'] = '$a->label $a->operator $a->value';
 $string['textlabelnovalue'] = '$a->label $a->operator';
-$string['isbetween'] = 'is tussen $a[0] en $a[1]'; // ORPHANED
-$string['setfilter'] = 'Filter instellen'; // ORPHANED
 
 ?>

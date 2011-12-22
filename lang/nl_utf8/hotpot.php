@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // hotpot.php - created with Moodle 1.9.7+ (Build: 20091225) (2007101570)
-
+<?php
+// hotpot.php - created with Totara langimport script version 1.1
 
 $string['abandoned'] = 'verlaten';
 $string['addquizchain'] = 'Voeg een ketting testen toe';
@@ -12,6 +11,11 @@ $string['attemptsbest'] = 'Beste poging';
 $string['attemptsfirst'] = 'Eerste poging';
 $string['attemptslast'] = 'Laatste poging';
 $string['average'] = 'Gemiddelde';
+$string['cannotaddquestionrecord'] = 'Kon geen vraag-record toevoegen';
+$string['cannotaddresprecord'] = 'Kon geen antwoord-record toevoegen';
+$string['cannotaddstrrecord'] = 'Kon geen string-record toevoegen';
+$string['cannotfindmethod'] = 'Methode om Sjabloonblok uit te pakken niet gevonden: ($a)';
+$string['cannotupdateattempt'] = 'Kon de attempt record $a niet updaten';
 $string['checks'] = 'controles';
 $string['clickreporting'] = 'Schakel klikrapportering in';
 $string['clues'] = 'Ideeën';
@@ -57,6 +61,8 @@ $string['hotpotcloses'] = 'Hot Potatoes-test sluit';
 $string['hotpotopens'] = 'Hot Potatoes-test opent';
 $string['ignored'] = 'genegeerd';
 $string['inprogress'] = 'lopend';
+$string['invalidattemptid'] = 'Foute attempt ID';
+$string['invalidhotpotid'] = 'Foute hotpot ID';
 $string['location'] = 'Bestandslocatie';
 $string['modulename'] = 'Hot Potatoes-test';
 $string['modulenameplural'] = 'Hot Potatoes-testen';
@@ -70,6 +76,7 @@ $string['navigation_none'] = 'Geen';
 $string['neverclosed'] = 'Nooit gesloten';
 $string['noactivity'] = 'Geen activiteit';
 $string['noresponses'] = 'Er is geen informatie gevonden over individuele vragen en antwoorden.';
+$string['notyourattempt'] = 'Dit is niet jouw poging!';
 $string['outputformat'] = 'Output-opmaak';
 $string['outputformat_best'] = 'beste';
 $string['outputformat_flash'] = 'Flash';
@@ -83,6 +90,7 @@ $string['outputformat_v6_plus'] = 'V6+';
 $string['penalties'] = 'straffen';
 $string['questionshort'] = 'Vr-$a';
 $string['quiztype'] = 'Type test';
+$string['quizunavailable'] = 'De test is nu niet beschikbaar';
 $string['rawdetails'] = 'Ruwe pogingdetails';
 $string['regrade'] = 'Herwaardeer';
 $string['regradecheck'] = 'Wil je echt \"$a\" herwaarderen?';
@@ -152,18 +160,9 @@ $string['textsourcequiz'] = 'Haal uit test';
 $string['textsourcespecific'] = 'Specifieke test';
 $string['thiscourse'] = 'Deze cursus';
 $string['timedout'] = 'Gepauzeerd';
+$string['unknownreport'] = 'Onbekend rapport ($a)';
 $string['updatequizchain'] = 'Update vragenketting';
 $string['weighting'] = 'weging';
 $string['wrong'] = 'foutief';
-$string['cannotaddquestionrecord'] = 'Kon geen vraag-record toevoegen'; // ORPHANED
-$string['cannotaddresprecord'] = 'Kon geen antwoord-record toevoegen'; // ORPHANED
-$string['cannotaddstrrecord'] = 'Kon geen string-record toevoegen'; // ORPHANED
-$string['cannotfindmethod'] = 'Methode om Sjabloonblok uit te pakken niet gevonden: ($a)'; // ORPHANED
-$string['cannotupdateattempt'] = 'Kon de attempt record $a niet updaten'; // ORPHANED
-$string['invalidattemptid'] = 'Foute attempt ID'; // ORPHANED
-$string['invalidhotpotid'] = 'Foute hotpot ID'; // ORPHANED
-$string['notyourattempt'] = 'Dit is niet jouw poging!'; // ORPHANED
-$string['quizunavailable'] = 'De test is nu niet beschikbaar'; // ORPHANED
-$string['unknownreport'] = 'Onbekend rapport ($a)'; // ORPHANED
 
 ?>

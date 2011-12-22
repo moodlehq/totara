@@ -1,6 +1,5 @@
-<?PHP // $Id: portfolio_mahara.php,v 1.2 2009/01/05 22:23:43 koenr Exp $ 
-      // portfolio_mahara.php - created with Moodle 2.0 dev (Build: 20090102) (2008123102)
-
+<?php
+// portfolio_mahara.php - created with Totara langimport script version 1.1
 
 $string['err_invalidhost'] = 'Deze plugin is fout geconfigureerd en wijst naar een foute (of verwijderde) mnet host. Deze plugin steunt op de Moodle Netwerk servers met SSO IDP gepubliceerd en portfolio en SSO_SP ingeschreven.';
 $string['err_networkingoff'] = 'Moodle Netwerk is volledig uitgeschakeld. Schakel dit in voor je deze plugin probeert te configureren. Alle instanties van deze plugin zijn op onzichtbaar gezet tot dit is hersteld - je zult ze manueel terug zichtbaar moeten zetten. Ze kunnen niet gebruikt worden tot dit gebeurd is.';

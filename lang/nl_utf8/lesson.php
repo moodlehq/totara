@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // lesson.php - created with Moodle 2.0 dev (Build: 20081216) (2008121000)
-
+<?php
+// lesson.php - created with Totara langimport script version 1.1
 
 $string['accesscontrol'] = 'Toegangscontrole';
 $string['actionaftercorrectanswer'] = 'Actie na juist antwoord';
@@ -113,6 +112,7 @@ $string['displayreview'] = 'Toon herwerkknop';
 $string['displayscorewithessays'] = 'Je hebt $a->score punten op $a->tempmaxgrade behaald voor de automatisch beoordeelde vragen.<br />Je $a->essayquestions open vragen zullen beoordeeld worden <br />en op een later moment toegevoegd worden bij je totaalcijfer.>br /><br />Je resultaat op dit ogenblik, dus zonder de open vragen is $a->score op $a->grade.';
 $string['displayscorewithoutessays'] = 'Je cijfer is $a->score (op $a->grade).';
 $string['edit'] = 'Bewerk';
+$string['editlesson'] = 'Bewerk $a';
 $string['editlessonsettings'] = 'Bewerk de instellingen van deze les';
 $string['editpagecontent'] = 'Bewerk de inhoud van deze pagina';
 $string['email'] = 'E-mail';
@@ -244,6 +244,7 @@ $string['or'] = 'OF';
 $string['ordered'] = 'Gesorteerd';
 $string['other'] = 'Andere';
 $string['outof'] = 'Van $a';
+$string['outoftime'] = 'Tijd is op';
 $string['overview'] = 'Overzicht';
 $string['page'] = 'Pagina: $a';
 $string['pagecontents'] = 'Inhoud van de pagina';
@@ -306,6 +307,7 @@ $string['startlesson'] = 'Start de les';
 $string['studentattemptlesson'] = 'Pogingnummer $a->attempt van $a->lastname, $a->firstname';
 $string['studentname'] = '$a naam';
 $string['studentoneminwarning'] = 'Waarschuwing: je hebt nog één minuut of minder om deze les af te werken.';
+$string['studentoutoftime'] = 'Opgelet: je tijd voor deze les is op. Je laatste antwoord telt niet mee omdat het ingediend is nadat de tijd verstreken was. Klik op de knop \"ga verder\" om de les te beëindigen.';
 $string['studentresponse'] = 'Het antwoord van {$a}';
 $string['submitname'] = 'Geef een naam';
 $string['teacherjumpwarning'] = 'Er wordt een $a->cluster sprong of een $a->unseen sprong gebruikt in deze les. De sprong naar de volgende pagina zal in de plaats gebruikt worden. Meld je aan als leerling om deze sprongen te testen.';
@@ -345,8 +347,5 @@ $string['youranswer'] = 'Jouw antwoord';
 $string['yourcurrentgradeis'] = 'Je cijfer is nu $a';
 $string['yourcurrentgradeisoutof'] = 'Je huidige cijfer is $a->grade op $a->total';
 $string['youshouldview'] = 'Minimum te bekijken: $a';
-$string['outoftime'] = 'Tijd is op'; // ORPHANED
-$string['studentoutoftime'] = 'Opgelet: je tijd voor deze les is op. Je laatste antwoord telt niet mee omdat het ingediend is nadat de tijd verstreken was. Klik op de knop \"ga verder\" om de les te beëindigen.'; // ORPHANED
-$string['editlesson'] = 'Bewerk $a'; // ORPHANED
 
 ?>

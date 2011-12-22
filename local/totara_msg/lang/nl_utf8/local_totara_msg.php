@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local_totara_msg.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// local_totara_msg.php - created with Totara langimport script version 1.1
 
 $string['accept'] = 'Goedkeuren';
 $string['alert_description'] = 'Hieronder worden je notificaties getoond. Klik op de titel van het bericht voor een toelichting, of klik op Negeren om het bericht te verwijderen. Je kunt het overzicht beperken door de zoekfunctie te gebruiken.';

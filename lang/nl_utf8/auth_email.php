@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_email.php - created with Totara langimport script version 1.1
 
 $string['auth_changingemailaddress'] = 'Je hebt gevraagd om je e-mailadres wijzigen van $a->oldemail naar $a->newemail. Als veiligheidsmaatregel sturen we je een e-mailbericht naar het nieuwe adres om te bevestigen dat dit adres van jouw is. Je e-mailadres zal gewijzigd worden zodra je de URL opent die in dat bericht staat.';
 $string['auth_emailchangecancel'] = 'Annuleer e-mailwijziging';
@@ -24,3 +22,5 @@ $string['auth_emailupdatesuccess'] = 'Het e-mail adres van gebruiker <em>$a->ful
 $string['auth_emailupdatetitle'] = 'Bevestiging van wijziging e-mailadres op  $a->site';
 $string['auth_invalidnewemailkey'] = 'Fout. Als je probeert een wijziging van e-mailadres te bevestigen, dan heb je misschien een fout gemaakt bij het kopieëren van de URL van de e-mail die we je toezonden. Probeer opnieuw.';
 $string['auth_outofnewemailupdateattempts'] = 'Je hebt het maximum aantal pogingen om je wijziging van e-mailadres te bevestigen bereikt. Je wijzigingsaanvraag is geannuleerd.';
+
+?>

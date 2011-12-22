@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_database.php - created with Moodle 2.0 dev (2007101504)
-
+<?php
+// enrol_database.php - created with Totara langimport script version 1.1
 
 $string['autocreate'] = 'Cursussen kunnen automatisch aangemaakt worden als er aanmeldingen zijn voor een cursus die in Moodle nog niet bestaat';
 $string['autocreation_settings'] = 'Automatisch instellingen maken';
@@ -23,6 +22,7 @@ $string['enrolname'] = 'Externe databank';
 $string['general_options'] = 'Algemene instellingen';
 $string['host'] = 'Database server hostnaam';
 $string['ignorehiddencourse'] = 'Als dit op ja gezet wordt, dan zullen gebreukers niet aangemeld worden in cursussen die als niet beschikbaar voor leerlingen ingesteld zijn.';
+$string['local_coursefield'] = 'De naam van het veld in de course tabel die we gebruiken om records te koppelen met de externe databank (bv idnummer)';
 $string['local_fields_mapping'] = 'Locale databankvelden van Moodle';
 $string['localcoursefield'] = 'De veldnaam in de cursustabel die we gebruiken om records te koppelen in de externe databank (vb IDnummer).';
 $string['localrolefield'] = 'De veldnaam in de rollentabel die we gebruiken om records te koppelen in de externe databank (vb kortenaam).';
@@ -45,6 +45,5 @@ $string['teacher_table'] = 'De tabelnaam waar de aanmeldingen van leraren worden
 $string['template'] = 'Optioneel: automatisch aangemaakte cursussen kunnen hun instellingen overnemen van een sjablooncursus';
 $string['type'] = 'Databank type';
 $string['user'] = 'Gebruikersnaam voor de databank';
-$string['local_coursefield'] = 'De naam van het veld in de course tabel die we gebruiken om records te koppelen met de externe databank (bv idnummer)'; // ORPHANED
 
 ?>

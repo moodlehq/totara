@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_course_summary.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2005012501)
-
+<?php
+// block_course_summary.php - created with Totara langimport script version 1.1
 
 $string['coursesummary'] = 'Cursusbeschrijving';
 $string['pagedescription'] = 'Cursus- / sitebeschrijving';

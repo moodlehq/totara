@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // coursereport_completion.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// coursereport_completion.php - created with Totara langimport script version 1.1
 
 $string['activitiescomplete'] = 'Voltooide activiteiten';
 $string['complete'] = 'Voltooide cursussen';

@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_randomsamatch.php,v 1.3 2009/02/26 22:13:21 koenr Exp $ 
-      // qtype_randomsamatch.php - created with Moodle 2.0 dev (Build: 20090218) (2009021800)
-
+<?php
+// qtype_randomsamatch.php - created with Totara langimport script version 1.1
 
 $string['addingrandomsamatch'] = 'Willekeurig kort-antwoord koppelvraag toevoegen';
 $string['editingrandomsamatch'] = 'Willekeurig kort-antwoord koppelvraag bewerken';

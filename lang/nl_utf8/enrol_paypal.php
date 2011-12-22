@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_paypal.php - created with Moodle 1.9 dev (2007021400)
-
+<?php
+// enrol_paypal.php - created with Totara langimport script version 1.1
 
 $string['business'] = 'Het e-mailadres van de Paypal-account van je bedrijf.';
 $string['costorkey'] = 'Kies één van volgende methodes voor aanmelding.';

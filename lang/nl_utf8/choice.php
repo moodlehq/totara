@@ -1,10 +1,11 @@
-<?PHP // $Id$ 
-      // choice.php - created with Moodle 2.0 dev (Build: 20090929) (2009091700)
-
+<?php
+// choice.php - created with Totara langimport script version 1.1
 
 $string['addmorechoices'] = 'Voeg meer keuzes toe';
 $string['allowupdate'] = 'Laat toe de keuze aan te passen';
 $string['answered'] = 'Beantwoord';
+$string['cannotsavechoice'] = 'Kon je keuze niet bewaren';
+$string['cannotupdatechoice'] = 'Kon je keuze niet aanpassen door een databank fout';
 $string['choice'] = 'Keuze $a';
 $string['choice:choose'] = 'Bewaar een keuze';
 $string['choice:deleteresponses'] = 'Verwijder antwoorden';
@@ -53,7 +54,5 @@ $string['taken'] = 'Ingenomen';
 $string['timerestrict'] = 'Beperk het beantwoorden tot deze periode';
 $string['viewallresponses'] = 'Bekijk $a antwoorden';
 $string['yourselection'] = 'Jouw selectie';
-$string['cannotsavechoice'] = 'Kon je keuze niet bewaren'; // ORPHANED
-$string['cannotupdatechoice'] = 'Kon je keuze niet aanpassen door een databank fout'; // ORPHANED
 
 ?>

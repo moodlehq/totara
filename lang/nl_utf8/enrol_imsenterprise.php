@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_imsenterprise.php,v 1.3 2006/10/16 17:45:55 koenr Exp $ 
-      // enrol_imsenterprise.php - created with Moodle 1.7 dev (2006100401)
-
+<?php
+// enrol_imsenterprise.php - created with Totara langimport script version 1.1
 
 $string['aftersaving...'] = 'Als je instellingen bewaard zijn, wil je misschien';
 $string['allowunenrol'] = 'Laat IMS data toe om leraars en leerlingen <strong>af te melden</strong>';

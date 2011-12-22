@@ -1,6 +1,5 @@
-<?PHP // $Id: report_security.php,v 1.9 2010/02/09 10:31:10 koenr Exp $ 
-      // report_security.php - created with Moodle 1.9.7+ (Build: 20100208) (2007101571.04)
-
+<?php
+// report_security.php - created with Totara langimport script version 1.1
 
 $string['check_configrw_details'] = '<p>We raden aan om de rechten op het bestand config.php te wijzigen na installatie, zodat het bestand niet door de webserver gewijzigd kan worden.
 Merk op dat dit de veiligheid van de server niet enorm gaat verhogen, maar het kan inbraken vertragen of beperken.</p>';
@@ -15,6 +14,7 @@ $string['check_courserole_anything'] = 'De doe alles-mogelijkheid mag in deze <a
 $string['check_courserole_details'] = '<a>Voor elke cursus wordt er één standaard rol gespecifiëerd. Zorg er voor dat er geen riskante mogelijkheden voor deze rol ingeschakeld zijn.</p>
 <p>De enige standaardrol die ondersteund wordt als standaard cursus rol is <em>Leerling</em>.</p>';
 $string['check_courserole_error'] = 'Fout gedefinieerde standaard cursus rollen gedetecteerd!';
+$string['check_courserole_legacy'] = 'Niet-ondersteund standaard type gedetecteerd in de  <a href=\"$a\">rol</a>.';
 $string['check_courserole_name'] = 'Standaard cursusrollen';
 $string['check_courserole_notyet'] = 'Gebruikt enkel standaard cursusrol.';
 $string['check_courserole_ok'] = 'Standaard cursusroldefinities OK.';
@@ -135,6 +135,5 @@ $string['statusok'] = 'OK';
 $string['statusserious'] = 'Ernstig';
 $string['statuswarning'] = 'Waarschuwing';
 $string['timewarning'] = 'Deze bewerking kan lang duren, wees geduldig.';
-$string['check_courserole_legacy'] = 'Niet-ondersteund standaard type gedetecteerd in de  <a href=\"$a\">rol</a>.'; // ORPHANED
 
 ?>

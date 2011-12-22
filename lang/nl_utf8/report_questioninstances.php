@@ -1,6 +1,5 @@
-<?PHP // $Id: report_questioninstances.php,v 1.1 2009/02/15 22:53:17 koenr Exp $ 
-      // report_questioninstances.php - created with Moodle 2.0 dev (Build: 20090210) (2009012901)
-
+<?php
+// report_questioninstances.php - created with Totara langimport script version 1.1
 
 $string['editquestionshere'] = 'Bewerk vragen in deze context';
 $string['getreport'] = 'Toon het rapport';

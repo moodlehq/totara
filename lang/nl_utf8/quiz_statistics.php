@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_statistics.php,v 1.4 2009/01/12 21:52:03 koenr Exp $ 
-      // quiz_statistics.php - created with Moodle 2.0 dev (Build: 20090111) (2009011100)
-
+<?php
+// quiz_statistics.php - created with Totara langimport script version 1.1
 
 $string['allattempts'] = 'voor alle pogingen';
 $string['allattemptsavg'] = 'Gemiddelde cijfer voor alle pogingen';
@@ -22,6 +21,8 @@ $string['downloadeverything'] = 'Download volledig rapport als';
 $string['duration'] = 'Open voor';
 $string['effective_weight'] = 'Effectieve weging';
 $string['errordeleting'] = 'Fout bij het verwijderen van oude $a records.';
+$string['errordeletingqstats'] = 'Fout bij het verwijderen van oude quiz_question_statistics records.';
+$string['errordeletingquizstats'] = 'Fout bij het verwijderen van oude quiz_statistics records.';
 $string['erroritemappearsmorethanoncewithdifferentweight'] = 'Vraag ($a) wordt meer dan eens gebruikt met verschillende wegingen. Dit wordt nog niet ondersteund door het statistis rapport en maakt de statistieken voor deze vraag onbetrouwbaar.';
 $string['errormedian'] = 'Fout bij het ophalen van de mediaan';
 $string['errorpowerquestions'] = 'Fout bij het ophalen van gegevens om de variatie op beoordeling van vragen te berekenen';
@@ -39,6 +40,8 @@ $string['kurtosis'] = 'Score distributiekurtosis';
 $string['lastcalculated'] = 'Er zijn $a->count pogingen sinds de laatste berekening, $a->lastcalculated geleden.';
 $string['median'] = 'Mediaancijfer';
 $string['negcovar'] = 'Negatieve cijfercovariantie met totaalcijfer van de poging';
+$string['noofallattempts'] = 'Totaal aantal pogingen';
+$string['nooffirstattempts'] = 'Aantal eerste pogingen';
 $string['nostudentsingroup'] = 'Er zijn nog geen leerlingen in deze groep';
 $string['optiongrade'] = 'Gedeeltelijk krediet';
 $string['position'] = 'Plaats';
@@ -65,11 +68,7 @@ $string['statistics:view'] = 'Bekijk rapport teststatistieken';
 $string['statisticsreport'] = 'Statistisch rapport';
 $string['statisticsreportgraph'] = 'Statistiek voor vraagposities';
 $string['statsfor'] = 'Teststatistieken (voor $a)';
-$string['errordeletingqstats'] = 'Fout bij het verwijderen van oude quiz_question_statistics records.'; // ORPHANED
-$string['errordeletingquizstats'] = 'Fout bij het verwijderen van oude quiz_statistics records.'; // ORPHANED
-$string['noofallattempts'] = 'Totaal aantal pogingen'; // ORPHANED
-$string['nooffirstattempts'] = 'Aantal eerste pogingen'; // ORPHANED
-$string['statsforallattempts'] = 'Statistieken voor alle pogingen'; // ORPHANED
-$string['statsforfirstattempts'] = 'Statistieken voor eerste pogingen'; // ORPHANED
+$string['statsforallattempts'] = 'Statistieken voor alle pogingen';
+$string['statsforfirstattempts'] = 'Statistieken voor eerste pogingen';
 
 ?>

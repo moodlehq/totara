@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local_cohort.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// local_cohort.php - created with Totara langimport script version 1.1
 
 $string['abouttocreate'] = 'Gebruikersgroep \"{$a}\" toevoegen?';
 $string['addcohort'] = 'Gebruikersgroep toevoegen';

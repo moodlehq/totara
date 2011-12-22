@@ -1,12 +1,13 @@
-<?PHP // $Id$ 
-      // assignment.php - created with Moodle 1.9.12+ (Build: 20110726) (2007101591.03)
-
+<?php
+// assignment.php - created with Totara langimport script version 1.1
 
 $string['allowdeleting'] = 'Verwijderen toestaan';
 $string['allowmaxfiles'] = 'Maximum aantal geüploade bestanden';
 $string['allownotes'] = 'Notities toestaan';
 $string['allowresubmit'] = 'Sta herhaald insturen toe';
 $string['alreadygraded'] = 'Jouw opdracht is al beoordeeld en opnieuw insturen is niet toegelaten.';
+$string['assignment:exportownsubmission'] = 'Exporteer je opdracht';
+$string['assignment:exportsubmission'] = 'Exporteer inzending';
 $string['assignment:grade'] = 'Beoordeel opdracht';
 $string['assignment:submit'] = 'Stuur opdracht in';
 $string['assignment:view'] = 'Bekijk opdracht';
@@ -20,12 +21,15 @@ $string['assignmentname'] = 'Naam van de opdracht';
 $string['assignmenttype'] = 'Soort opdracht';
 $string['availabledate'] = 'Inleveren kan vanaf';
 $string['cannotdeletefiles'] = 'Er is een fout opgetreden en de bestanden konden niet verwijderd worden';
+$string['cannotinsertempty'] = 'Kon geen nieuwe lege inzending toevoegen';
+$string['cannotviewassignment'] = 'Je kunt deze opdracht niet bekijken';
 $string['comment'] = 'Commentaar';
 $string['commentinline'] = 'Commentaar invoegen';
 $string['configitemstocount'] = 'Wat er moet geteld worden wanneer leerlingen hun online opdracht ingestuurd hebben.';
 $string['configmaxbytes'] = 'Standaard maximumgrootte voor alle opdrachten op de site (afhankelijk van de limiet van de cursus en van andere lokale instellingen)';
 $string['configshowrecentsubmissions'] = 'Iedereen kan in rapporteringen over \"Recente activiteit\" zien dat er opdrachten zijn ingestuurd.';
 $string['confirmdeletefile'] = 'Ben je er zeker van dat je dit bestand wil verwijderen?<br/><strong>$a</strong>';
+$string['coursemisconf'] = 'De instellingen van de cursus zijn fout';
 $string['deleteallsubmissions'] = 'Alle inzendingen verwijderen';
 $string['deletefilefailed'] = 'Bestand verwijderen mislukt';
 $string['description'] = 'Beschrijving';
@@ -64,6 +68,10 @@ $string['helpupload'] = '<p>Dit type opdracht laat elke leerling toe om één of
 <p>Dit type opdracht maakt het ook voor jou mogelijk om één of meerdere bestanden van gelijk welk type te uploaden als feedback.</p>';
 $string['helpuploadsingle'] = '<p>Dit type opdracht laat elke deelnemer toe om één bestand te uploaden, van gelijk welk bestandstype.</p><p>Dit kan een bestand zijn van een tekstverwerker, een afbeelding, een website in een zip-bestand of gelijk welk type dat je je leerlingen vraagt te maken</p>';
 $string['hideintro'] = 'Verberg beschrijving voor de startdatum';
+$string['invalidassignment'] = 'opdracht fout';
+$string['invalidid'] = 'Opdracht ID was fout';
+$string['invalidtype'] = 'Fout opdrachttype';
+$string['invaliduserid'] = 'Ongeldig gebruiker ID';
 $string['itemstocount'] = 'Aantal';
 $string['late'] = '$a laat';
 $string['maximumgrade'] = 'Maximale cijfer';
@@ -119,19 +127,10 @@ $string['uploadfiletoobig'] = 'Helaas is dat bestand te groot (de toegestane gro
 $string['uploadnofilefound'] = 'Er werd geen bestand gevonden - weet je zeker dat je er één geselecteerd had om te uploaden?';
 $string['uploadnotregistered'] = '\'$a\' werd prima geüpload, maar je bijdrage werd niet verwerkt!';
 $string['uploadsuccess'] = '\'$a\' met succes geüpload';
+$string['usermisconf'] = 'De instellingen van de gebruiker zijn fout';
 $string['usernosubmit'] = 'Je mag geen opdracht insturen.';
 $string['viewfeedback'] = 'Bekijk de cijfers en feedback voor de opdrachten';
 $string['viewsubmissions'] = 'Bekijk $a ingestuurde opdrachten';
 $string['yoursubmission'] = 'Jouw ingestuurde opdracht';
-$string['assignment:exportownsubmission'] = 'Exporteer je opdracht'; // ORPHANED
-$string['assignment:exportsubmission'] = 'Exporteer inzending'; // ORPHANED
-$string['cannotinsertempty'] = 'Kon geen nieuwe lege inzending toevoegen'; // ORPHANED
-$string['cannotviewassignment'] = 'Je kunt deze opdracht niet bekijken'; // ORPHANED
-$string['coursemisconf'] = 'De instellingen van de cursus zijn fout'; // ORPHANED
-$string['invalidassignment'] = 'opdracht fout'; // ORPHANED
-$string['invalidid'] = 'Opdracht ID was fout'; // ORPHANED
-$string['invalidtype'] = 'Fout opdrachttype'; // ORPHANED
-$string['invaliduserid'] = 'Ongeldig gebruiker ID'; // ORPHANED
-$string['usermisconf'] = 'De instellingen van de gebruiker zijn fout'; // ORPHANED
 
 ?>

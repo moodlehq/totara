@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_mnet.php - created with Totara langimport script version 1.1
 
 $string['auth_mnet_auto_add_remote_users'] = 'Wanneer dit op ja staat, wordt er automatisch een locale gebruiker aangemaakt wanneer een externe gebruiker zich voor de eerste keer aanmeldt.';
 $string['auth_mnet_roamin'] = 'Deze gebruiker van deze host kunnen zich op jouw site aanmelden.';
@@ -17,3 +15,5 @@ $string['sso_idp_name'] = 'SSO (identiteits provider)';
 $string['sso_mnet_login_refused'] = 'Gebruikersnaam $a heeft geen toelating om in te loggen vanuit $a.';
 $string['sso_sp_description'] = 'Publiceer deze service om geautenticeerde gebruikers van $a toe te laten tot jouw site, zonder op nieuw te moeten inloggen. <ul><li><em>Dependentie</em>: je moet ook <strong>inschrijven</strong> op de SSO service (identiteits provider) op $a.</li></ul><br />Inschrijven op deze service zal het voor je gebruikers mogelijk maken naar de $a Moodle site te gaan zonder daar opnieuw te moeten inloggen<ul><li><em>Dependentie</em>: Je moet ook de SSO service (identiteitsprovider) <strong>publiceren</strong> voor $a.</li><ul><br />';
 $string['sso_sp_name'] = 'SSO (service provider)';
+
+?>

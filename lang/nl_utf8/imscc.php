@@ -1,6 +1,5 @@
-<?PHP // $Id: imscc.php,v 1.1 2010/02/09 09:48:30 koenr Exp $ 
-      // imscc.php - created with Moodle 1.9.7+ (Build: 20100208) (2007101571.04)
-
+<?php
+// imscc.php - created with Totara langimport script version 1.1
 
 $string['cc2moodle_checking_schema'] = 'CC-opmaak! Schema wordt nagekeken';
 $string['cc2moodle_invalid_schema'] = 'Het schema is ongeldig';

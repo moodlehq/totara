@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_section_links.php - created with Moodle 1.9.7+ (Build: 20100208) (2007101571.04)
-
+<?php
+// block_section_links.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Sectie hyperlinks';
 $string['incby1'] = 'Verhoog met';

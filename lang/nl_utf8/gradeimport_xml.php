@@ -1,6 +1,5 @@
-<?PHP // $Id: gradeimport_xml.php,v 1.5 2008/06/29 20:20:04 koenr Exp $ 
-      // gradeimport_xml.php - created with Moodle 2.0 dev (Build: 20080629) (2008051203)
-
+<?php
+// gradeimport_xml.php - created with Totara langimport script version 1.1
 
 $string['errbadxmlformat'] = 'Fout - XML slecht opgemaakt';
 $string['errduplicategradeidnumber'] = 'Fout - er zijn twee beoordelingsitems met idnummer \'$a\' in deze cursus. Dit is niet mogelijk.';

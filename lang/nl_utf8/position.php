@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // position.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// position.php - created with Totara langimport script version 1.1
 
 $string['adddepthlevel'] = 'Niveau toevoegen';
 $string['addedframework'] = 'Positieraamwerk \"{$a}\" toegevoegd';

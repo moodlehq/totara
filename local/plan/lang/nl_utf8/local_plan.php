@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local_plan.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// local_plan.php - created with Totara langimport script version 1.1
 
 $string['achieved'] = 'Behaald';
 $string['achievedvaluefrozen'] = 'Instelling verwijderen mislukt omdat de schaal in gebruik is';

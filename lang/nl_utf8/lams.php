@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // lams.php - created with Moodle 2.0 dev (2007101506)
-
+<?php
+// lams.php - created with Totara langimport script version 1.1
 
 $string['createSequence'] = 'Maak een nieuwe sequentie';
 $string['editSequence'] = 'Bewerk de geselecteerde sequentie';

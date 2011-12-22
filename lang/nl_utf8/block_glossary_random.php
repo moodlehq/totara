@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_glossary_random.php - created with Moodle 2.0 dev (2007101508)
-
+<?php
+// block_glossary_random.php - created with Totara langimport script version 1.1
 
 $string['addentry'] = 'Voeg je eigen favoriete citaat toe!';
 $string['askaddentry'] = 'Als leerlingen zelf items aan de woordenlijst mogen toevoegen, dan wordt er een link naar de woordenlijst getoond met de volgende tekst';

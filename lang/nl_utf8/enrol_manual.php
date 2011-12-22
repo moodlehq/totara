@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_manual.php,v 1.4 2008/12/17 19:35:18 koenr Exp $ 
-      // enrol_manual.php - created with Moodle 2.0 dev (Build: 20081216) (2008121000)
-
+<?php
+// enrol_manual.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Dit is de standaard aanmelding. Er zijn twee manieren waarop een leerling aangemeld kan worden in een bepaalde cursus.
 <ul>
