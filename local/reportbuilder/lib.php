@@ -266,10 +266,11 @@ class reportbuilder {
      *
      * This does quite a few small SQL queries so load it lazily only when required.
      *
+     * @param boolean $ignorecache If set to true, reload the filtering even if already saved
      * @return boolean True if set, false if has been set previously
      */
-    function get_filtering() {
-        if($this->_filtering === null) {
+    function get_filtering($ignorecache = false) {
+        if(!$ignorecache && $this->_filtering === null) {
             $this->_filtering = new filtering($this, $this->get_current_url());
             return true;
         }
@@ -560,7 +561,9 @@ class reportbuilder {
      */
     function restore_saved_search() {
         global $SESSION,$USER;
-        $this->get_filtering();
+        // reload ignoring the cache to ensure we've got an up to date
+        // version
+        $this->get_filtering(true);
         $filtername = 'filtering_'.$this->shortname;
         if($saved = get_record('report_builder_saved','id',$this->_sid)) {
             if($saved->ispublic != 0 || $saved->userid == $USER->id) {
