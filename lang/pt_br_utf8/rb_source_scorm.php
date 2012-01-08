@@ -2,29 +2,29 @@
 // lang file for mod/scorm/rb_sources_scorm.php
 $string['sourcetitle'] = 'SCORM';
 // columns
-$string['scormtitle'] = 'TÌtulo SCORM';
-$string['title'] = 'TÌtulo SCO';
-$string['time'] = 'Hor·rio de inÌcio SCO';
+$string['scormtitle'] = 'T√≠tulo SCORM';
+$string['title'] = 'T√≠tulo SCO';
+$string['time'] = 'Hor√°rio de in√≠cio SCO';
 $string['status'] = 'Status SCO';
 $string['totaltime'] = 'Tempo total SCO';
-$string['score'] = 'PontuaÁ„o SCO';
-$string['minscore'] = 'PontuaÁ„o mÌn SCO';
-$string['maxscore'] = 'PontuaÁ„o m·x SCO';
-$string['attemptnum'] = 'N˙mero de tentativa SCO';
+$string['score'] = 'Pontua√ß√£o SCO';
+$string['minscore'] = 'Pontua√ß√£o m√≠n SCO';
+$string['maxscore'] = 'Pontua√ß√£o m√°x SCO';
+$string['attemptnum'] = 'N√∫mero de tentativa SCO';
 
 // filters
-$string['attemptstart'] = 'Hor·rio de inÌcio da tentativa';
-$string['rawscore'] = 'PontuaÁ„o';
-$string['rawmin'] = 'PontuaÁ„o mÌnima';
-$string['rawmax'] = 'PontuaÁ„o m·xima';
+$string['attemptstart'] = 'Hor√°rio de in√≠cio da tentativa';
+$string['rawscore'] = 'Pontua√ß√£o';
+$string['rawmin'] = 'Pontua√ß√£o m√≠nima';
+$string['rawmax'] = 'Pontua√ß√£o m√°xima';
 // content
-$string['currentorg'] = 'A organizaÁ„o atual do usu·rio';
-$string['theuser'] = 'O usu·rio';
+$string['currentorg'] = 'A organiza√ß√£o atual do usu√°rio';
+$string['theuser'] = 'O usu√°rio';
 $string['thedate'] = 'A data da tentativa';
 // list
 $string['passed'] = 'Aprovado';
-$string['completed'] = 'ConcluÌdo';
-$string['notattempted'] = 'N„o tentado';
+$string['completed'] = 'Conclu√≠do';
+$string['notattempted'] = 'N√£o tentado';
 $string['incomplete'] = 'Incompleto';
 $string['failed'] = 'Reprovado';
 

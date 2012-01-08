@@ -1,10 +1,10 @@
 <?PHP // $Id$ 
 
-$string['description'] = 'O módulo de inscrição DevPlan restringe a inscrição interativa nos cursos. Quando um curso usa o plugin de inscrição DevPlan para gerenciar as inscrições interativas, somente os usuários que têm o curso listado como um componente aprovado, como parte de um plano de desenvolvimento aprovado, podem fazer a autoinscrição.';
+$string['description'] = 'O mÃ³dulo de inscriÃ§Ã£o DevPlan restringe a inscriÃ§Ã£o interativa nos cursos. Quando um curso usa o plugin de inscriÃ§Ã£o DevPlan para gerenciar as inscriÃ§Ãµes interativas, somente os usuÃ¡rios que tÃªm o curso listado como um componente aprovado, como parte de um plano de desenvolvimento aprovado, podem fazer a autoinscriÃ§Ã£o.';
 $string['enrolname'] = 'DevPlan';
-$string['guestnoenrol'] = 'Impossível inscrever no curso. Você precisa ser um usuário real (não um convidado) para poder se inscrever neste curso. Clique em \'logout\' para deixar de ser um convidado e faça o logon usando um nome de usuário e senha individuais, e depois tente se inscrever novamente.';
-$string['guestaccess'] = 'Sem a inscrição, os convidados têm apenas permissão a um <a href="\"$a\">acesso limitado para ver o curso</a>.<br />';
-$string['nowenrolled'] = 'Você foi inscrito no curso $a.';
-$string['redirectedsoon'] = 'Você está prestes a ser redirecionado.';
-$string['notpermitted'] = 'Atualmente, você não tem permissão para se inscrever neste curso.<br />Para se inscrever, você deve ter este curso listado e totalmente aprovado no seu ';
+$string['guestnoenrol'] = 'ImpossÃ­vel inscrever no curso. VocÃª precisa ser um usuÃ¡rio real (nÃ£o um convidado) para poder se inscrever neste curso. Clique em \'logout\' para deixar de ser um convidado e faÃ§a o logon usando um nome de usuÃ¡rio e senha individuais, e depois tente se inscrever novamente.';
+$string['guestaccess'] = 'Sem a inscriÃ§Ã£o, os convidados tÃªm apenas permissÃ£o a um <a href="\"$a\">acesso limitado para ver o curso</a>.<br />';
+$string['nowenrolled'] = 'VocÃª foi inscrito no curso $a.';
+$string['redirectedsoon'] = 'VocÃª estÃ¡ prestes a ser redirecionado.';
+$string['notpermitted'] = 'Atualmente, vocÃª nÃ£o tem permissÃ£o para se inscrever neste curso.<br />Para se inscrever, vocÃª deve ter este curso listado e totalmente aprovado no seu ';
 $string['developmentplan'] = 'Plano de desenvolvimento';

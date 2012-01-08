@@ -1,18 +1,18 @@
 <?php
 
-$string['blockname'] = 'Estatísticas';
+$string['blockname'] = 'EstatÃ­sticas';
 $string['statlearnerhours'] ='$a->count alunos gastaram mais de $a->hours horas online';
-$string['statlearnerhours_config'] = 'Mostrar contagem de usuários que gastaram um certo número de horas online';
-$string['statlearnerhours_confighours'] = 'Número de horas para exibir';
+$string['statlearnerhours_config'] = 'Mostrar contagem de usuÃ¡rios que gastaram um certo nÃºmero de horas online';
+$string['statlearnerhours_confighours'] = 'NÃºmero de horas para exibir';
 $string['statcoursesstarted'] ='$a->count novos cursos foram iniciados';
 $string['statcoursesstarted_config'] ='Mostrar contagem de cursos que foram iniciados';
-$string['statcoursescompleted'] ='$a->count novos cursos foram concluídos';
-$string['statcoursescompleted_config'] ='Mostrar contagem de cursos que foram concluídos';
-$string['statcompachieved'] ='$a->count novas competências foram adquiridas';
-$string['statcompachieved_config'] ='competências que foram adquiridas';
+$string['statcoursescompleted'] ='$a->count novos cursos foram concluÃ­dos';
+$string['statcoursescompleted_config'] ='Mostrar contagem de cursos que foram concluÃ­dos';
+$string['statcompachieved'] ='$a->count novas competÃªncias foram adquiridas';
+$string['statcompachieved_config'] ='competÃªncias que foram adquiridas';
 $string['statobjachieved'] ='$a->count objetivos foram atingidos';
 $string['statobjachieved_config'] ='Mostrar contagem de objetivos que foram atingidos';
-$string['statdesc'] = 'Nos últimos 30 dias....';
-$string['minutesbetweensession'] = 'minutos entre as sessões';
-$string['minutesbetweensessiondesc'] = 'Usado pela geração de estatísticas para definir quando uma nova sessão deve ser calculada - se alterado, afetará apenas as estatísticas geradas no futuro.';
-$string['executeathelp'] = 'Tempo para executar o processamento de estatísticas baseado no cron';
+$string['statdesc'] = 'Nos Ãºltimos 30 dias....';
+$string['minutesbetweensession'] = 'minutos entre as sessÃµes';
+$string['minutesbetweensessiondesc'] = 'Usado pela geraÃ§Ã£o de estatÃ­sticas para definir quando uma nova sessÃ£o deve ser calculada - se alterado, afetarÃ¡ apenas as estatÃ­sticas geradas no futuro.';
+$string['executeathelp'] = 'Tempo para executar o processamento de estatÃ­sticas baseado no cron';

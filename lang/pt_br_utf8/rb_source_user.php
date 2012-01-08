@@ -1,22 +1,22 @@
 <?php
 // lang strings for report builder 'user' source
-$string['sourcetitle'] = 'Usuário';
-$string['userspicture'] = 'Imagem do usuário';
-$string['lastlogin'] = 'Último logon';
-$string['mylearningicons'] = $string[''] = 'Ícones Meu aprendizado do usuário';
+$string['sourcetitle'] = 'UsuÃ¡rio';
+$string['userspicture'] = 'Imagem do usuÃ¡rio';
+$string['lastlogin'] = 'Ãšltimo logon';
+$string['mylearningicons'] = 'Ãcones Meu aprendizado do usuÃ¡rio';
 $string['name'] = 'Nome';
-$string['usersachievedcompcount'] = 'Contagem de competência adquirida do usuário';
-$string['userscoursestartedcount'] = 'Contagem de cursos iniciados do usuário';
-$string['userscoursescompletedcount'] = 'Contagem de cursos concluídos do usuário';
-$string['usernamewithlearninglinks'] = 'Nome completo do usuário (com links para os componentes do aprendizado)';
-$string['usersname'] = 'Nome do usuário';
-$string['user'] = 'Usuário';
-$string['users'] = 'Usuários';
+$string['usersachievedcompcount'] = 'Contagem de competÃªncia adquirida do usuÃ¡rio';
+$string['userscoursestartedcount'] = 'Contagem de cursos iniciados do usuÃ¡rio';
+$string['userscoursescompletedcount'] = 'Contagem de cursos concluÃ­dos do usuÃ¡rio';
+$string['usernamewithlearninglinks'] = 'Nome completo do usuÃ¡rio (com links para os componentes do aprendizado)';
+$string['usersname'] = 'Nome do usuÃ¡rio';
+$string['user'] = 'UsuÃ¡rio';
+$string['users'] = 'UsuÃ¡rios';
 $string['picture'] = 'Imagem';
-$string['options'] = 'Opções';
+$string['options'] = 'OpÃ§Ãµes';
 $string['coursesstarted'] = 'Cursos iniciados';
-$string['coursescompleted'] = 'Cursos concluídos';
-$string['competenciesachieved'] = 'Competências adquiridas';
+$string['coursescompleted'] = 'Cursos concluÃ­dos';
+$string['competenciesachieved'] = 'CompetÃªncias adquiridas';
 
 $string['records'] = 'Registros';
 $string['plans'] = 'Planos';
@@ -24,5 +24,5 @@ $string['profile'] = 'Perfil';
 $string['bookings'] = 'Reservas';
 
 // column types for this source, as strings
-$string['type_statistics'] = 'Estatísticas';
+$string['type_statistics'] = 'EstatÃ­sticas';
 

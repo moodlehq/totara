@@ -22,26 +22,26 @@
  * @subpackage dashboard 
  */
 
-$string['dashboard:admin'] = 'Gerenciar painéis';
-$string['dashboard:edit'] = 'Editar painéis pessoais';
-$string['dashboard:view'] = 'Exibir painéis pessoais';
+$string['dashboard:admin'] = 'Gerenciar painÃ©is';
+$string['dashboard:edit'] = 'Editar painÃ©is pessoais';
+$string['dashboard:view'] = 'Exibir painÃ©is pessoais';
 $string['dashboard'] = 'Painel';
-$string['dashboards'] = 'Painéis';
-$string['managedashboards'] = 'Gerenciar painéis';
+$string['dashboards'] = 'PainÃ©is';
+$string['managedashboards'] = 'Gerenciar painÃ©is';
 $string['editdashboard'] = 'Editar painel';
 $string['shortname'] = 'Nome curto';
-$string['title'] = 'Título';
+$string['title'] = 'TÃ­tulo';
 $string['activedashlets'] = 'Dashlets ativos';
-$string['options'] = 'Opções';
-$string['addtocol'] = 'Adicionar à coluna';
+$string['options'] = 'OpÃ§Ãµes';
+$string['addtocol'] = 'Adicionar Ã  coluna';
 $string['nodashboardsfound'] = 'Nenhum painel encontrado...';
 $string['mylearning'] = 'Meu aprendizado';
 $string['myteam'] = 'Minha equipe';
 $string['backtodashboard'] = 'Voltar ao painel';
 
-$string['error:dashboardnotfound'] = 'Erro: Painel não encontrado';
-$string['error:couldnotgetinstance'] = 'Erro: Não foi possível obter instância do painel';
-$string['error:createpersonalinstance_nodefault'] = 'Não foi possível criar instância do painel pessoal - nenhuma instância padrão definida';
-$string['error:createpersonalinstance_noinsert'] = 'Não foi possível criar instância do painel pessoal - não foi possível inserir instância';
-$string['error:insertdashlets'] = 'Não foi possível inserir dashlets';
+$string['error:dashboardnotfound'] = 'Erro: Painel nÃ£o encontrado';
+$string['error:couldnotgetinstance'] = 'Erro: NÃ£o foi possÃ­vel obter instÃ¢ncia do painel';
+$string['error:createpersonalinstance_nodefault'] = 'NÃ£o foi possÃ­vel criar instÃ¢ncia do painel pessoal - nenhuma instÃ¢ncia padrÃ£o definida';
+$string['error:createpersonalinstance_noinsert'] = 'NÃ£o foi possÃ­vel criar instÃ¢ncia do painel pessoal - nÃ£o foi possÃ­vel inserir instÃ¢ncia';
+$string['error:insertdashlets'] = 'NÃ£o foi possÃ­vel inserir dashlets';
 ?>

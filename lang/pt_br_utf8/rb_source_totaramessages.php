@@ -2,28 +2,28 @@
 // lang file for local/totara_msg/rb_sources/rb_source_totaramessage.php
 $string['sourcetitle'] = 'Mensagens';
 // columns
-$string['actions'] = 'AÁıes';
+$string['actions'] = 'A√ß√µes';
 $string['dismissmsg'] = 'Ignorar mensagem';
 $string['msgid'] = 'ID da mensagem';
 $string['msgstatus'] = 'Status da mensagem';
 $string['msgtype'] = 'Tipo de mensagem';
-$string['msgurgency'] = 'UrgÍncia da mensagem';
+$string['msgurgency'] = 'Urg√™ncia da mensagem';
 $string['name'] = 'Nome';
 $string['sent'] = 'Enviado';
 $string['select'] = 'Selecionar';
-$string['statement'] = 'DeclaraÁ„o';
-$string['statementurl'] = 'DeclaraÁ„o (vinculaÁ„o ‡ Revis„o)';
+$string['statement'] = 'Declara√ß√£o';
+$string['statementurl'] = 'Declara√ß√£o (vincula√ß√£o √† Revis√£o)';
 $string['type'] = 'Tipo';
 // filters
 $string['datesent'] = 'Data do envio';
 $string['details'] = 'Detalhes';
 // content
-$string['currentorg'] = 'A organizaÁ„o atual do usu·rio';
-$string['currentpos'] = 'A posiÁ„o atual do usu·rio';
-$string['completedorg'] = 'A organizaÁ„o quando concluÌdo';
-$string['date'] = 'A data de conclus„o';
+$string['currentorg'] = 'A organiza√ß√£o atual do usu√°rio';
+$string['currentpos'] = 'A posi√ß√£o atual do usu√°rio';
+$string['completedorg'] = 'A organiza√ß√£o quando conclu√≠do';
+$string['date'] = 'A data de conclus√£o';
 $string['msgcategory'] = 'Categoria da mensagem';
-$string['user'] = 'O usu·rio';
+$string['user'] = 'O usu√°rio';
 
 // column types for this source, as strings
 $string['type_message_values'] = 'Valores da mensagem';

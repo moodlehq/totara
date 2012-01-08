@@ -1,43 +1,43 @@
 <?php
 // lang strings for report builder 'competency evidence' source
-$string['sourcetitle'] = 'Evidência de competência';
+$string['sourcetitle'] = 'EvidÃªncia de competÃªncia';
 // columns
-$string['proficiency'] = 'Proficiência';
-$string['proficiencyid'] = 'ID da proficiência';
-$string['completion'] = 'Conclusão';
-$string['completiondate'] = 'Data de conclusão';
-$string['completionorgid'] = 'ID da organização de conclusão';
-$string['completionorgpath'] = 'Caminho da organização de conclusão';
-$string['completionorgname'] = 'Nome da organização de conclusão';
-$string['completionposid'] = 'ID da posição de conclusão';
-$string['completionpospath'] = 'Caminho da posição de conclusão';
-$string['completionposname'] = 'Nome da posição de conclusão';
+$string['proficiency'] = 'ProficiÃªncia';
+$string['proficiencyid'] = 'ID da proficiÃªncia';
+$string['completion'] = 'ConclusÃ£o';
+$string['completiondate'] = 'Data de conclusÃ£o';
+$string['completionorgid'] = 'ID da organizaÃ§Ã£o de conclusÃ£o';
+$string['completionorgpath'] = 'Caminho da organizaÃ§Ã£o de conclusÃ£o';
+$string['completionorgname'] = 'Nome da organizaÃ§Ã£o de conclusÃ£o';
+$string['completionposid'] = 'ID da posiÃ§Ã£o de conclusÃ£o';
+$string['completionpospath'] = 'Caminho da posiÃ§Ã£o de conclusÃ£o';
+$string['completionposname'] = 'Nome da posiÃ§Ã£o de conclusÃ£o';
 $string['assessor'] = 'Avaliador';
 $string['assessorname'] = 'Nome do avaliador';
-$string['assessororg'] = 'Organização do avaliador';
-$string['competency'] = 'Competência';
-$string['competencyname'] = 'Nome da competência';
-$string['competencyshortname'] = 'Nome curto da competência';
-$string['competencyid'] = 'Número do ID da competência';
-$string['competencylinkname'] = 'Nome da competência (vinculado à página da competência)';
-$string['competencyid'] = 'ID da competência';
-$string['competencypath'] = 'Caminho da competência';
-$string['options'] = 'Opções';
+$string['assessororg'] = 'OrganizaÃ§Ã£o do avaliador';
+$string['competency'] = 'CompetÃªncia';
+$string['competencyname'] = 'Nome da competÃªncia';
+$string['competencyshortname'] = 'Nome curto da competÃªncia';
+$string['competencyid'] = 'NÃºmero do ID da competÃªncia';
+$string['competencylinkname'] = 'Nome da competÃªncia (vinculado Ã  pÃ¡gina da competÃªncia)';
+$string['competencyid'] = 'ID da competÃªncia';
+$string['competencypath'] = 'Caminho da competÃªncia';
+$string['options'] = 'OpÃ§Ãµes';
 
 // filters
-$string['completeddate'] = 'Data de conclusão';
-$string['officewhencompletedbasic'] = 'Escritório quando concluído (básico)';
-$string['organisationwhencompleted'] = 'Organização quando concluído';
-$string['positionwhencompletedbasic'] = 'Posição quando concluído (básico)';
-$string['positionwhencompleted'] = 'Posição quando concluído';
+$string['completeddate'] = 'Data de conclusÃ£o';
+$string['officewhencompletedbasic'] = 'EscritÃ³rio quando concluÃ­do (bÃ¡sico)';
+$string['organisationwhencompleted'] = 'OrganizaÃ§Ã£o quando concluÃ­do';
+$string['positionwhencompletedbasic'] = 'PosiÃ§Ã£o quando concluÃ­do (bÃ¡sico)';
+$string['positionwhencompleted'] = 'PosiÃ§Ã£o quando concluÃ­do';
 
 // content options
-$string['currentorg'] = 'A organização atual do usuário';
-$string['currentpos'] = 'A posição atual do usuário';
-$string['completedorg'] = 'A organização quando concluído';
-$string['user'] = 'O usuário';
-$string['completiondate'] = 'A data de conclusão';
+$string['currentorg'] = 'A organizaÃ§Ã£o atual do usuÃ¡rio';
+$string['currentpos'] = 'A posiÃ§Ã£o atual do usuÃ¡rio';
+$string['completedorg'] = 'A organizaÃ§Ã£o quando concluÃ­do';
+$string['user'] = 'O usuÃ¡rio';
+$string['completiondate'] = 'A data de conclusÃ£o';
 
 // column types for this source, as strings
-$string['type_competency_evidence'] = 'Evidência de competência';
-$string['type_competency'] = 'Competência';
+$string['type_competency_evidence'] = 'EvidÃªncia de competÃªncia';
+$string['type_competency'] = 'CompetÃªncia';

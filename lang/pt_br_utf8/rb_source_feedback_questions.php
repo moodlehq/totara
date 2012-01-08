@@ -3,42 +3,42 @@
 $string['sourcetitle'] = 'Perguntas de feedback';
 // columns
 $string['numfeedbackresponses'] = '# Respostas de feedback';
-$string['timecompleted'] = 'Hor·rio da conclus„o';
+$string['timecompleted'] = 'Hor√°rio da conclus√£o';
 $string['feedbackactivity'] = 'Atividade de feedback';
-$string['ftfsessionid'] = 'ID da sess„o pessoal';
+$string['ftfsessionid'] = 'ID da sess√£o pessoal';
 $string['trainerid'] = 'ID do treinador';
 $string['trainerfullname'] = 'Nome completo do treinador';
-$string['trainerorgid'] = 'ID da organizaÁ„o do treinador';
-$string['trainerorg'] = 'OrganizaÁ„o do treinador';
-$string['trainerposid'] = 'ID da posiÁ„o do treinador';
-$string['trainerpos'] = 'PosiÁ„o do treinador';
-$string['percentoption'] = ': %% opÁ„o ';
-$string['numoption'] = ': # opÁ„o ';
+$string['trainerorgid'] = 'ID da organiza√ß√£o do treinador';
+$string['trainerorg'] = 'Organiza√ß√£o do treinador';
+$string['trainerposid'] = 'ID da posi√ß√£o do treinador';
+$string['trainerpos'] = 'Posi√ß√£o do treinador';
+$string['percentoption'] = ': %% op√ß√£o ';
+$string['numoption'] = ': # op√ß√£o ';
 $string['numresponses'] = ': # Respostas';
-$string['average'] = ' MÈdia';
+$string['average'] = ' M√©dia';
 $string['numanswers'] = ': # respostas';
 $string['allanswers'] = ': Todas as respostas';
 $string['sum'] = ': Soma';
-$string['min'] = ': MÌn';
-$string['max'] = ': M·x';
-$string['stddev'] = ': Desvio padr„o';
+$string['min'] = ': M√≠n';
+$string['max'] = ': M√°x';
+$string['stddev'] = ': Desvio padr√£o';
 $string['coursename'] = 'Nome do curso';
 // filters
 $string['feedbackname'] = 'Nome do feedback';
-$string['numofresponses'] = 'N˙mero de respostas';
-$string['timecompleted'] = 'Hor·rio da conclus„o';
+$string['numofresponses'] = 'N√∫mero de respostas';
+$string['timecompleted'] = 'Hor√°rio da conclus√£o';
 // content
-$string['user'] = 'O usu·rio';
-$string['currentpos'] = 'A posiÁ„o atual do usu·rio';
-$string['currentorg'] = 'A organizaÁ„o atual do usu·rio';
+$string['user'] = 'O usu√°rio';
+$string['currentpos'] = 'A posi√ß√£o atual do usu√°rio';
+$string['currentorg'] = 'A organiza√ß√£o atual do usu√°rio';
 $string['course'] = 'O curso';
 $string['trainer'] = 'O treinador';
-$string['responsetime'] = 'O hor·rio da resposta';
+$string['responsetime'] = 'O hor√°rio da resposta';
 
 // column types for this source, as strings
 $string['type_feedback'] = 'Feedback';
 $string['type_responses'] = 'Respostas';
 $string['type_trainer'] = 'Treinador';
-$string['type_session'] = 'Sess„o';
+$string['type_session'] = 'Sess√£o';
 $string['type_questions'] = 'Perguntas';
 

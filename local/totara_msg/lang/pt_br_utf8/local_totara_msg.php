@@ -43,9 +43,9 @@ $string['sendalertemails'] = 'Enviar-me um email sobre os alertas';
 $string['sendtaskemails'] = 'Enviar-me um email sobre os alertas';
 $string['settingssaved'] = 'Configurações salvas';
 $string['messagesettings'] = 'Configurações da mensagem';
-$string['viewdetailshere'] = 'Mais detalhes podem ser encontrados em:<br/><br/><a href="\"$a\">$a</a>';
+$string['viewdetailshere'] = 'Mais detalhes podem ser encontrados em:<br/><br/><a href=\"$a\">$a</a>';
 $string['cannotsavemessage'] = 'Impossível salvar mensagem';
-$string['alertfooter'] = 'Para alterar as suas preferências para receber esse email, vá para a guia <a href="\"$a\">Perfil -> Mensagens</a>.';
+$string['alertfooter'] = 'Para alterar as suas preferências para receber esse email, vá para a guia <a href=\"$a\">Perfil -> Mensagens</a>.';
 $string['error:redirecttoexternal'] = 'Erro: tentando redirecionar para o domínio externo';
 $string['emailnotifications'] = 'Notificações por email';
 

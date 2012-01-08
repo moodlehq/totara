@@ -1,7 +1,7 @@
 <?php // $Id$
 
 $string['learningrecords'] = 'Registros de aprendizado';
-$string['coursecompletion'] = 'Conclusão do curso';
-$string['competencyevidence'] = 'Evidência de competência';
+$string['coursecompletion'] = 'ConclusÃ£o do curso';
+$string['competencyevidence'] = 'EvidÃªncia de competÃªncia';
 
 ?>

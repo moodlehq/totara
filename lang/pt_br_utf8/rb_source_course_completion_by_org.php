@@ -1,28 +1,28 @@
 <?php
 // lang string for local/reportbuilder/rb_sources/rb_source_course_completion_by_org.php
-$string['sourcetitle'] = 'Conclusão do curso por organização';
+$string['sourcetitle'] = 'ConclusÃ£o do curso por organizaÃ§Ã£o';
 // columns
-$string['completionorgid'] = 'ID da organização de conclusão';
-$string['completionorgpath'] = 'Caminho da organização de conclusão';
-$string['completionorgname'] = 'Nome da organização de conclusão';
+$string['completionorgid'] = 'ID da organizaÃ§Ã£o de conclusÃ£o';
+$string['completionorgpath'] = 'Caminho da organizaÃ§Ã£o de conclusÃ£o';
+$string['completionorgname'] = 'Nome da organizaÃ§Ã£o de conclusÃ£o';
 $string['participants'] = 'Participantes';
-$string['numofrecords'] = 'Número de registros';
-$string['numcompleted'] = 'Número concluído';
-$string['percentagecompleted'] = 'Porcentagem concluída';
-$string['numcompletedviarpl'] = 'Número concluído via RPL';
-$string['numinprogress'] = 'Número em andamento';
-$string['numnotstarted'] = 'Número não iniciado';
-$string['earliestcompletiondate'] = 'Primeira data de conclusão';
-$string['latestcompletiondate'] = 'Última data de conclusão';
+$string['numofrecords'] = 'NÃºmero de registros';
+$string['numcompleted'] = 'NÃºmero concluÃ­do';
+$string['percentagecompleted'] = 'Porcentagem concluÃ­da';
+$string['numcompletedviarpl'] = 'NÃºmero concluÃ­do via RPL';
+$string['numinprogress'] = 'NÃºmero em andamento';
+$string['numnotstarted'] = 'NÃºmero nÃ£o iniciado';
+$string['earliestcompletiondate'] = 'Primeira data de conclusÃ£o';
+$string['latestcompletiondate'] = 'Ãšltima data de conclusÃ£o';
 //filters
-$string['officewhencompletedbasic'] = 'Escritório quando concluído (básico)';
-$string['officewhencompleted'] = 'Escritório quando concluído';
-$string['totalcompletions'] = 'Total de conclusões';
+$string['officewhencompletedbasic'] = 'EscritÃ³rio quando concluÃ­do (bÃ¡sico)';
+$string['officewhencompleted'] = 'EscritÃ³rio quando concluÃ­do';
+$string['totalcompletions'] = 'Total de conclusÃµes';
 // content
-$string['currentorg'] = 'A organização atual do usuário';
-$string['orgwhencompleted'] = 'A organização quando concluído';
-$string['user'] = 'O usuário';
-$string['completiondate'] = 'A data de conclusão';
+$string['currentorg'] = 'A organizaÃ§Ã£o atual do usuÃ¡rio';
+$string['orgwhencompleted'] = 'A organizaÃ§Ã£o quando concluÃ­do';
+$string['user'] = 'O usuÃ¡rio';
+$string['completiondate'] = 'A data de conclusÃ£o';
 
 // column types for this source, as strings
-$string['type_course_completion'] = 'Conclusão do curso';
+$string['type_course_completion'] = 'ConclusÃ£o do curso';

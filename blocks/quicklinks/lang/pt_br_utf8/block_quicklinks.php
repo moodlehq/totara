@@ -1,21 +1,21 @@
 <?php
-$string['blockname'] = 'Links rápidos';
+$string['blockname'] = 'Links rÃ¡pidos';
 $string['quicklinks:managealllinks'] = 'Gerenciar todos os links';
-$string['quicklinks:manageownlinks'] = 'Gerenciar os próprios links';
-$string['title'] = 'Links rápidos';
-$string['maintitle'] = 'Título principal';
-$string['displaytitle'] = 'Links rápidos';
-$string['quicklinks'] = 'Links rápidos';
-$string['linktitle'] = 'Título';
+$string['quicklinks:manageownlinks'] = 'Gerenciar os prÃ³prios links';
+$string['title'] = 'Links rÃ¡pidos';
+$string['maintitle'] = 'TÃ­tulo principal';
+$string['displaytitle'] = 'Links rÃ¡pidos';
+$string['quicklinks'] = 'Links rÃ¡pidos';
+$string['linktitle'] = 'TÃ­tulo';
 $string['url'] = 'URL';
-$string['actions'] = 'Ações';
+$string['actions'] = 'AÃ§Ãµes';
 $string['leaveblanktohide'] = 'Deixar em branco para ocultar';
 $string['links'] = 'Links';
 $string['accessdenied'] = 'Acesso negado';
-$string['error:deletequicklink'] = 'Erro ao excluir link rápido';
+$string['error:deletequicklink'] = 'Erro ao excluir link rÃ¡pido';
 //Strings for default links
-$string['home'] = 'Página inicial';
-$string['reports'] = 'Relatórios';
-$string['managereports'] = 'Gerenciar relatórios';
+$string['home'] = 'PÃ¡gina inicial';
+$string['reports'] = 'RelatÃ³rios';
+$string['managereports'] = 'Gerenciar relatÃ³rios';
 $string['logs'] = 'Logs';
 $string['courses'] = 'Cursos';

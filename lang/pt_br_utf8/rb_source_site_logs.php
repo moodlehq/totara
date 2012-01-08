@@ -2,18 +2,18 @@
 // lang file for local/reportbuilder/rb_sources/rb_source_site_logs.php
 $string['sourcetitle'] = 'Logs do site';
 // columns
-$string['time'] = 'Horário';
-$string['ip'] = 'Endereço IP';
-$string['module'] = 'Módulo';
+$string['time'] = 'HorÃ¡rio';
+$string['ip'] = 'EndereÃ§o IP';
+$string['module'] = 'MÃ³dulo';
 $string['cmid'] = 'CMID';
-$string['action'] = 'Ação';
-$string['actionlink'] = 'Ação (vinculada ao url)';
+$string['action'] = 'AÃ§Ã£o';
+$string['actionlink'] = 'AÃ§Ã£o (vinculada ao url)';
 $string['url'] = 'URL';
 $string['info'] = 'Info';
 // content
-$string['currentorg'] = 'A organização atual do usuário';
-$string['currentpos'] = 'A posição atual do usuário';
-$string['user'] = 'O usuário';
+$string['currentorg'] = 'A organizaÃ§Ã£o atual do usuÃ¡rio';
+$string['currentpos'] = 'A posiÃ§Ã£o atual do usuÃ¡rio';
+$string['user'] = 'O usuÃ¡rio';
 $string['date'] = 'A data';
 
 // column types for this source, as strings

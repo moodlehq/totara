@@ -1,6 +1,6 @@
 <?php
 
-$string['title'] = 'Gerente de relat髍ios Totara';
-$string['displaytitle'] = 'Gerente de relat髍ios';
-$string['course_completion'] = 'Relat髍io de conclus鉶 do curso';
-$string['competency_evidence'] = 'Relat髍io de evid阯cia de compet阯cia';
+$string['title'] = 'Gerente de relat贸rios Totara';
+$string['displaytitle'] = 'Gerente de relat贸rios';
+$string['course_completion'] = 'Relat贸rio de conclus茫o do curso';
+$string['competency_evidence'] = 'Relat贸rio de evid锚ncia de compet锚ncia';

@@ -1,35 +1,35 @@
 <?php
 // lang string for local/reportbuilder/rb_sources/rb_source_course_completion.php
-$string['sourcetitle'] = 'Conclusão do curso';
+$string['sourcetitle'] = 'ConclusÃ£o do curso';
 // columns
-$string['completionstatus'] = 'Status da conclusão';
-$string['completiondate'] = 'Data de conclusão';
-$string['datestarted'] = 'Data de início';
-$string['dateenrolled'] = 'Data da inscrição';
-$string['completionorgid'] = 'ID da organização de conclusão';
-$string['completionorgpath'] = 'Caminho da organização de conclusão';
-$string['completionorgname'] = 'Nome da organização de conclusão';
-$string['completionposid'] = 'ID da posição de conclusão';
-$string['completionpospath'] = 'Caminho da posição de conclusão';
-$string['completionposname'] = 'Nome da posição de conclusão';
+$string['completionstatus'] = 'Status da conclusÃ£o';
+$string['completiondate'] = 'Data de conclusÃ£o';
+$string['datestarted'] = 'Data de inÃ­cio';
+$string['dateenrolled'] = 'Data da inscriÃ§Ã£o';
+$string['completionorgid'] = 'ID da organizaÃ§Ã£o de conclusÃ£o';
+$string['completionorgpath'] = 'Caminho da organizaÃ§Ã£o de conclusÃ£o';
+$string['completionorgname'] = 'Nome da organizaÃ§Ã£o de conclusÃ£o';
+$string['completionposid'] = 'ID da posiÃ§Ã£o de conclusÃ£o';
+$string['completionpospath'] = 'Caminho da posiÃ§Ã£o de conclusÃ£o';
+$string['completionposname'] = 'Nome da posiÃ§Ã£o de conclusÃ£o';
 $string['grade'] = 'Nota';
-$string['passgrade'] = 'Nota de aprovação';
+$string['passgrade'] = 'Nota de aprovaÃ§Ã£o';
 $string['requiredgrade'] = 'Nota e nota exigida';
 // filters
-$string['datecompleted'] = 'Data de conclusão';
-$string['datestarted'] = 'Data de início';
-$string['dateenrolled'] = 'Data da inscrição';
-$string['completionstatus'] = 'Status da conclusão';
-$string['officewhencompletedbasic'] = 'Escritório quando concluído (básico)';
-$string['orgwhencompleted'] = 'Organização quando concluído';
-$string['poswhencompletedbasic'] = 'Posição quando concluído (básico)';
-$string['poswhencompleted'] = 'Posição quando concluído';
+$string['datecompleted'] = 'Data de conclusÃ£o';
+$string['datestarted'] = 'Data de inÃ­cio';
+$string['dateenrolled'] = 'Data da inscriÃ§Ã£o';
+$string['completionstatus'] = 'Status da conclusÃ£o';
+$string['officewhencompletedbasic'] = 'EscritÃ³rio quando concluÃ­do (bÃ¡sico)';
+$string['orgwhencompleted'] = 'OrganizaÃ§Ã£o quando concluÃ­do';
+$string['poswhencompletedbasic'] = 'PosiÃ§Ã£o quando concluÃ­do (bÃ¡sico)';
+$string['poswhencompleted'] = 'PosiÃ§Ã£o quando concluÃ­do';
 // content
-$string['currentorg'] = 'A organização atual do usuário';
-$string['currentpos'] = 'A posição atual do usuário';
-$string['orgwhencompleted'] = 'A organização quando concluído';
-$string['user'] = 'O usuário';
-$string['completiondate'] = 'A data de conclusão';
+$string['currentorg'] = 'A organizaÃ§Ã£o atual do usuÃ¡rio';
+$string['currentpos'] = 'A posiÃ§Ã£o atual do usuÃ¡rio';
+$string['orgwhencompleted'] = 'A organizaÃ§Ã£o quando concluÃ­do';
+$string['user'] = 'O usuÃ¡rio';
+$string['completiondate'] = 'A data de conclusÃ£o';
 
 // column types for this source, as strings
-$string['type_course_completion'] = 'Conclusão do curso';
+$string['type_course_completion'] = 'ConclusÃ£o do curso';
