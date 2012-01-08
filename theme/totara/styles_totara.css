@@ -366,7 +366,7 @@ padding-left: 23px;
 div#totara_menu {
 	background:#FFFFFF url('images/nav_main_bg.jpg') repeat-x top center;
 	height:72px;
-	clear:both;
+
 	margin-right:0px;
 	margin-left:0px;
 	margin-top:0;
@@ -394,11 +394,6 @@ div#totara_menu ul li {
 /* get rid of divider on last element */
 div#totara_menu ul li.last {
 	background:transparent;
-}
-
-/* IE compatibility? */
-div#totara_menu ul li div{
-	zoom:1;
 }
 
 div#totara_menu ul li a {

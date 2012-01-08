@@ -96,3 +96,20 @@ clear: both;
 #view-program-content .nextsetoperator .operator-then {
     width: auto;
 }
+
+/*Fix the totara menu in IE7 RTL*/
+
+div#totara_menu {
+    zoom: 1;
+    width: 100%;
+}
+div#totara_menu ul {
+    width: 70%;
+}
+
+.header-search {
+    margin-right: 5px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    width: 22%;
+}

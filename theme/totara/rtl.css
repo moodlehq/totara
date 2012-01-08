@@ -66,10 +66,17 @@ form.mform input {
 
 span.youarehere {
     float: right;
+    padding-left: 5px;
+    margin-left:20px;
 }
 
 .navbar .breadcrumb ul {
     float: right;
+    width:75%;
+}
+
+.navbar .breadcrumb .sep {
+    background: url('images/sep_blue_rtl.gif') no-repeat center bottom;
 }
 
 .dashboardcol {
@@ -264,15 +271,6 @@ div.totara-dialog div.treeview-wrapper, div.totara-dialog div#column-checkboxes 
 
 table.centerblock td, th {
     text-align: right;
-}
-
-.navbar .breadcrumb ul li, .navbar .breadcrumb ul li a {
-    float: right;
-}
-
-.navbar .breadcrumb .sep {
-    float: right;
-    background: url('images/sep_blue_rtl.gif') no-repeat center bottom;
 }
 
 body#tag-manage table#tag-management-list td, body#tag-manage table#tag-management-list th, body#user-index table#participants td, body#user-index table#participants th {
