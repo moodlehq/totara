@@ -1090,7 +1090,12 @@ totaraDialog_handler_treeview_singleselect.prototype.every_load = function() {
 
 totaraDialog_handler_treeview_singleselect.prototype._set_current_selected = function() {
     var current_val = $('input[name='+this.value_element_name+']').val();
-    var current_text = $('#'+this.text_element_id).text();
+    var current_text = $('#'+this.text_element_id).clone();
+
+    // Strip delete button from current text
+    $('span', current_text).remove();
+    current_text = current_text.text();
+
     var max_title_length = 60;
     if (!(current_val && current_text)) {
         current_val = 0;
