@@ -82,26 +82,26 @@ $string['planinstructionsuser'] = '$a 当前的学习计划和已完成的学习
 $string['planinstructions_add'] = '您可以通过点击屏幕右侧的 \"创建新的学习计划\" 来创建新学习计划。 ';
 $string['createplan_instructions'] = '要创建新计划，请添加计划标题、计划的简短描述和计划应完成的截止日期。在输入这些信息之后，即可点击 \"创建计划\"。';
 
-$string['plan_instructions_manager'] = '下面给出了您的团队成员的学习计划的简短概要。 ';
-$string['plan_instructions_learner'] = '下面给出了您的学习计划的简短概要。 ';
-$string['plan_instructions_edit'] = '您可以点击 \"编辑详细信息\" 按钮来修改学习计划标题、简短描述或完成日期。 ';
-$string['plan_instructions_delete'] = '您可以通过点击 \"删除计划\" 按钮来删除此学习计划。 ';
+$string['plan_instructions_manager'] = '下面给出了您的团队成员的学习计划的简短概要。';
+$string['plan_instructions_learner'] = '下面给出了您的学习计划的简短概要。';
+$string['plan_instructions_edit'] = '您可以点击 \"编辑详细信息\" 按钮来修改学习计划标题、简短描述或完成日期。';
+$string['plan_instructions_delete'] = '您可以通过点击 \"删除计划\" 按钮来删除此学习计划。';
 
-$string['competency_instructions_learner'] = '您的学习计划针对的全部能力显示如下。 ';
-$string['competency_instructions_manager'] = '您的团队成员的学习计划针对的全部能力显示如下。 ';
-$string['competency_instructions_detail'] = '您可以通过点击能力标题来查看有关任何能力的详细信息。 ';
-$string['competency_instructions_add'] = '您可以通过点击屏幕右侧的 \"添加/删除能力\" 按钮来添加额外的能力。 ';
+$string['competency_instructions_learner'] = '您的学习计划针对的全部能力显示如下。';
+$string['competency_instructions_manager'] = '您的团队成员的学习计划针对的全部能力显示如下。';
+$string['competency_instructions_detail'] = '您可以通过点击能力标题来查看有关任何能力的详细信息。';
+$string['competency_instructions_add'] = '您可以通过点击屏幕右侧的 \"添加/删除能力\" 按钮来添加额外的能力。';
 $string['competency_instructions_request'] = '点击 \"更新所申请的能力\" 将允许您申请为此学习计划添加新能力。';
 
-$string['course_instructions_manager'] = '您的团队成员的学习计划的所有课程显示如下。 ';
-$string['course_instructions_learner'] = '您的学习计划的所有课程显示如下。 ';
-$string['course_instructions_detail'] = '您可以通过点击课程标题来查看任何课程。 ';
+$string['course_instructions_manager'] = '您的团队成员的学习计划的所有课程显示如下。';
+$string['course_instructions_learner'] = '您的学习计划的所有课程显示如下。';
+$string['course_instructions_detail'] = '您可以通过点击课程标题来查看任何课程。';
 $string['course_instructions_add'] = '点击 \"添加/删除课程\" 将允许您为此学习计划添加新课程。';
 $string['course_instructions_request'] = '点击 \"更新所申请的课程\" 将允许您申请为此学习计划添加新课程。';
 
-$string['objective_instructions_manager'] = '您的团队成员的学习计划的所有目标显示如下。 ';
-$string['objective_instructions_learner'] = '您的学习计划的所有目标显示如下。 ';
-$string['objective_instructions_detail'] = '您可以通过点击目标标题来查看任何目标。 ';
+$string['objective_instructions_manager'] = '您的团队成员的学习计划的所有目标显示如下。';
+$string['objective_instructions_learner'] = '您的学习计划的所有目标显示如下。';
+$string['objective_instructions_detail'] = '您可以通过点击目标标题来查看任何目标。';
 $string['objective_instructions_add'] = '点击 \"添加新目标\" 将允许您为此学习计划添加新目标。';
 $string['objective_instructions_request'] = '点击 \"更新所申请的目标\" 将允许您申请为此学习计划添加新目标。';
 
