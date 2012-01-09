@@ -1,7 +1,6 @@
 <?php
 // rb_source_user.php - created with Totara langimport script version 1.1
 
-$string[''] = 'أيقونات برنامجي التعليمي';
 $string['competenciesachieved'] = 'القدرات التي تم انجازها';
 $string['coursescompleted'] = 'المقررات التي تم انهائها';
 $string['coursesstarted'] = 'المقررات التي تم البدء بها';

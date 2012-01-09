@@ -3,7 +3,7 @@
 $string['sourcetitle'] = 'User';
 $string['userspicture'] = 'User\'s picture';
 $string['lastlogin'] = 'Last Login';
-$string['mylearningicons'] = $string[''] = 'User\'s My Learning Icons';
+$string['mylearningicons'] = 'User\'s My Learning Icons';
 $string['name'] = 'Name';
 $string['usersachievedcompcount'] = 'User\'s Achieved Competency Count';
 $string['userscoursestartedcount'] = 'User\'s Courses Started Count';

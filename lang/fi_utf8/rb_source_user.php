@@ -1,7 +1,6 @@
 <?php
 // rb_source_user.php - created with Totara langimport script version 1.1
 
-$string[''] = 'Käyttäjän \'Oma oppiminen\' -ikonit';
 $string['competenciesachieved'] = 'Saavutetut kompetenssit';
 $string['coursescompleted'] = 'Suoritetut kurssit';
 $string['coursesstarted'] = 'Aloitetut kurssit';

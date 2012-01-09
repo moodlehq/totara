@@ -1,7 +1,6 @@
 <?php
 // rb_source_user.php - created with Totara langimport script version 1.1
 
-$string[''] = '用户的 \'我的学习\'图标';
 $string['mylearningicons'] = '用户的 \'我的学习\'图标';
 $string['options'] = '选项';
 $string['picture'] = '图像';

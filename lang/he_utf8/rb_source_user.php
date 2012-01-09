@@ -1,7 +1,6 @@
 <?php
 // rb_source_user.php - created with Totara langimport script version 1.1
 
-$string[''] = 'צלמיות הלמידה שלי של המשתמש';
 $string['bookings'] = 'הרשמות';
 $string['competenciesachieved'] = 'כשירויות שהושגו';
 $string['coursescompleted'] = 'קורסים שהושלמו';
