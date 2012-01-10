@@ -4595,6 +4595,10 @@ function forum_user_can_post_discussion($forum, $currentgroup=null, $unused=-1, 
         return false;
     }
 
+    if ($forum->type == 'single') {
+        return false;
+    }
+
     if ($forum->type == 'eachuser') {
         if (forum_user_has_posted_discussion($forum->id, $USER->id)) {
             return false;

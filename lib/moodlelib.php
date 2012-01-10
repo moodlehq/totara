@@ -6160,7 +6160,7 @@ function get_list_of_currencies() {
  * @todo Finish documenting this function
  */
 function rc4encrypt($data) {
-    $password = 'nfgjeingjk';
+    $password = get_site_identifier();
     return endecrypt($password, $data, '');
 }
 
@@ -6172,7 +6172,7 @@ function rc4encrypt($data) {
  * @todo Finish documenting this function
  */
 function rc4decrypt($data) {
-    $password = 'nfgjeingjk';
+    $password = get_site_identifier();
     return endecrypt($password, $data, 'de');
 }
 
