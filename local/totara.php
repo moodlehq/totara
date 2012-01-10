@@ -1061,3 +1061,68 @@ function get_string_in_user_lang($user, $identifier, $module='', $a=NULL, $extra
 
     return $string;
 }
+
+/**
+ * Returns the SQL to be used in order to CAST one column to CHAR
+ *
+ * @param string fieldname the name of the field to be casted
+ * @return string the piece of SQL code to be used in your statement.
+ */
+function sql_cast2char($fieldname) {
+
+    global $CFG;
+
+    $sql = '';
+
+    switch ($CFG->dbfamily) {
+        case 'mysql':
+            $sql = ' CAST(' . $fieldname . ' AS CHAR) ';
+            break;
+        case 'postgres':
+            $sql = ' CAST(' . $fieldname . ' AS VARCHAR) ';
+            break;
+        case 'mssql':
+            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
+            break;
+        case 'oracle':
+            $sql = ' TO_CHAR(' . $fieldname . ') ';
+            break;
+        default:
+            $sql = ' ' . $fieldname . ' ';
+    }
+
+    return $sql;
+}
+
+
+/**
+ * Returns the SQL to be used in order to CAST one column to FLOAT
+ *
+ * @param string fieldname the name of the field to be casted
+ * @return string the piece of SQL code to be used in your statement.
+ */
+function sql_cast2float($fieldname) {
+
+    global $CFG;
+
+    $sql = '';
+
+    switch ($CFG->dbfamily) {
+        case 'mysql':
+            $sql = ' CAST(' . $fieldname . ' AS DECIMAL) ';
+            break;
+        case 'mssql':
+        case 'postgres':
+            $sql = ' CAST(' . $fieldname . ' AS FLOAT) ';
+            break;
+            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
+            break;
+        case 'oracle':
+            $sql = ' TO_BINARY_FLOAT(' . $fieldname . ') ';
+            break;
+        default:
+            $sql = ' ' . $fieldname . ' ';
+    }
+
+    return $sql;
+}

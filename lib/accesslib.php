@@ -5927,95 +5927,69 @@ function role_cap_duplicate($sourcerole, $targetrole) {
  * @param $assignment position_assignment object, include old reportstoid field (if any)
  * @param $managerid new manager's user id (optional)
  */
-function assign_user_position($assignment, $managerid = null) {
+function assign_user_position($assignment, $unittest=false) {
     global $CFG;
 
     begin_sql();
-
     // Get old user id
     $old_managerid = null;
     if ($assignment->reportstoid) {
         $old_managerid = get_field('role_assignments', 'userid', 'id', $assignment->reportstoid);
+    } else {
+        $old_managerid = null;
     }
 
-    // Delete role assignment if manager changed
-    if ($old_managerid && $old_managerid != $managerid) {
-        if (!role_unassign(null, null, null, null, null, $assignment->reportstoid)) {
-            rollback_sql();
-            error_log('assign_user_position: Could not delete old manager role assignment');
-            return false;
+    $managerchanged = false;
+    if ($old_managerid != $assignment->managerid) {
+        $managerchanged = true;
+    }
+
+    // skip this bit during testing as we don't have all the required tables for role assignments
+    if (!$unittest) {
+
+        // Delete role assignment if there was a manager but it changed
+        if ($old_managerid && $managerchanged) {
+            if (!role_unassign(null, null, null, null, null, $assignment->reportstoid)) {
+                rollback_sql();
+                error_log('assign_user_position: Could not delete old manager role assignment');
+                return false;
+            }
+        }
+
+        // Create new role assignment if there is now and a manager but it changed
+        if ($assignment->managerid && $managerchanged) {
+
+            // Get context
+            $context = get_context_instance(CONTEXT_USER, $assignment->userid);
+
+            // Get manager role id
+            $roleid = $CFG->managerroleid;
+
+            // Assign manager to user
+            $raid = role_assign(
+                $roleid,
+                $assignment->managerid,
+                null,
+                $context->id,
+                (!$assignment->timevalidfrom ? 0 : $assignment->timevalidfrom),
+                (!$assignment->timevalidto ? 0 : $assignment->timevalidto)
+            );
+
+            // update reportstoid
+            $assignment->reportstoid = $raid;
         }
     }
 
-    // Create new role assignment if manager changed
-    if ($managerid && $old_managerid != $managerid) {
-
-        // Get context
-        $context = get_context_instance(CONTEXT_USER, $assignment->userid);
-
-        // Get manager role id
-        $roleid = $CFG->managerroleid;
-
-        // Assign manager to user
-        $raid = role_assign(
-                    $roleid,
-                    $managerid,
-                    null,
-                    $context->id,
-                    (!$assignment->timevalidfrom ? 0 : $assignment->timevalidfrom),
-                    (!$assignment->timevalidto ? 0 : $assignment->timevalidto)
-        );
-
-        $assignment->reportstoid = $raid;
-
-    }
-
-    $oldpath = $assignment->managerpath;
-
-    // If no manager set, reset reportstoid and managerpath
-    if (!$managerid) {
-        $assignment->reportstoid = null;
-        $assignment->managerpath = null;
-    }
-
     // Store the date of this assignment
-    global $CFG;
     require_once($CFG->dirroot.'/local/program/lib.php');
     prog_store_position_assignment($assignment);
 
     // Save assignment
-    $assignment->save();
-
-    // now recalculate managerpath
-    // must be done after managerid has been updated
-    $manager_relations = get_records_menu('pos_assignment', 'type', POSITION_TYPE_PRIMARY, 'userid', 'userid,managerid');
-    $assignment->managerpath = '/' . implode(totara_get_lineage($manager_relations, $assignment->userid), '/');
-
-    $newpath = $assignment->managerpath;
-
-    if (!empty($oldpath)) {
-        // Update child items (only if oldpath is set)
-        $substr3rdparam = '';
-        if ($CFG->dbfamily == 'mssql') {
-            $substr3rdparam = ', len(managerpath)';
-        }
-        $length_sql = sql_length("'{$oldpath}'");
-        $substr_sql = sql_substr() . "(managerpath, {$length_sql} + 1{$substr3rdparam})";
-        $sql = "UPDATE {$CFG->prefix}pos_assignment
-        SET managerpath=" . sql_concat("'{$newpath}'", $substr_sql) . "
-        WHERE type = " . POSITION_TYPE_PRIMARY . " AND (managerpath LIKE '{$oldpath}/%')";
-        if (!execute_sql($sql, false)) {
-            rollback_sql();
-            error_log('assign_user_position: Could not update manager path of child items in manager hierarchy');
-            return false;
-        }
+    if (!$assignment->save($managerchanged)) {
+        rollback_sql();
     }
-
-    // Save assignment again
-    $assignment->save();
 
     commit_sql();
 }
-
 
 ?>

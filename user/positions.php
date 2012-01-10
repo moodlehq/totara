@@ -173,7 +173,7 @@ else {
             $managerid = null;
         }
 
-        assign_user_position($position_assignment, $managerid);
+        assign_user_position($position_assignment);
 
         // Log
         add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");

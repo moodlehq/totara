@@ -3158,6 +3158,20 @@ function delete_user($user) {
         $delname++;
     }
 
+    //set manager id to null and fix path
+    $sql = "UPDATE {$CFG->prefix}pos_assignment set managerid=null, managerpath=" . sql_concat("'/'", sql_cast2char('userid')) . " WHERE managerid={$user->id}";
+
+    if (!execute_sql($sql, false)) {
+        rollback_sql();
+        return false;
+    }
+
+    //remove pos_assignment record(s) for this user
+    if (!delete_records('pos_assignment', 'userid', $user->id)) {
+        rollback_sql();
+        return false;
+    }
+
     // mark internal user record as "deleted"
     $updateuser = new object();
     $updateuser->id           = $user->id;

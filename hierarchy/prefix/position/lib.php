@@ -498,8 +498,8 @@ class position_assignment extends data_object {
         return self::fetch_helper($this->table, get_class($this), $params);
     }
 
-    public function save() {
-        global $USER;
+    public function save($managerchanged = true) {
+        global $USER, $CFG;
 
         // Get time (expensive on vservers)
         $time = time();
@@ -519,8 +519,11 @@ class position_assignment extends data_object {
             return false;
         }
 
+        // If no manager set, reset reportstoid and managerpath
         if (!$this->managerid) {
             $this->managerid = null;
+            $this->reportstoid = null;
+            $this->managerpath = null;
         }
 
         if (!$this->organisationid) {
@@ -537,6 +540,34 @@ class position_assignment extends data_object {
 
         if (!$this->timevalidto) {
             $this->timevalidto = null;
+        }
+
+        if ($managerchanged) {
+            // now recalculate managerpath
+            $manager_relations = get_records_menu('pos_assignment', 'type', POSITION_TYPE_PRIMARY, 'userid', 'userid,managerid');
+            //Manager relation for this assignment's user is wrong so we have to fix it
+            $manager_relations[$this->userid] = $this->managerid;
+            $this->managerpath = '/' . implode(totara_get_lineage($manager_relations, $this->userid), '/');
+
+            $newpath = $this->managerpath;
+
+            // Update child items
+            $substr3rdparam = '';
+            if ($CFG->dbfamily == 'mssql') {
+                $substr3rdparam = ', len(managerpath)';
+            }
+            $length_sql = sql_length("'/{$this->userid}/'");
+            $position_sql = sql_position("'/{$this->userid}/'", 'managerpath');
+            $substr_sql = sql_substr() . "(managerpath, {$position_sql} + {$length_sql}{$substr3rdparam})";
+
+            $sql = "UPDATE {$CFG->prefix}pos_assignment
+                SET managerpath=" . sql_concat("'{$newpath}/'", $substr_sql) . "
+                WHERE type = " . POSITION_TYPE_PRIMARY . " AND (managerpath LIKE '%/{$this->userid}/%')";
+
+            if (!execute_sql($sql, false)) {
+                error_log('assign_user_position: Could not update manager path of child items in manager hierarchy');
+                return false;
+            }
         }
 
         // Check if updating or inserting new

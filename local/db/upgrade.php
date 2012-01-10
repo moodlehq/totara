@@ -2876,7 +2876,7 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
-    if ($result && $oldversion < 2011091206) {
+    if ($result && $oldversion < 2012011000) {
         require_once($CFG->dirroot . '/hierarchy/prefix/position/lib.php');
         $table = new XMLDBTable('pos_assignment');
         $field = new XMLDBField('managerpath');
