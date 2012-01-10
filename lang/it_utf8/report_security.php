@@ -1,6 +1,5 @@
-<?PHP // $Id: report_security.php,v 1.12 2010/02/19 18:42:17 andreabix Exp $ 
-      // report_security.php - created with Moodle 2.0 dev (Build: 20100212) (2010020701)
-
+<?php
+// report_security.php - created with Totara langimport script version 1.1
 
 $string['check_configrw_details'] = '<p>Si raccomanda di modificare i permessi del file config.php subito dopo l\'installazione per evitare che il file possa essere modificato da processi del web server.
 Questa impostazione non innalza significativamente la sicurezza del vostro sito, tuttavia riduce e limita i pericoli provenienti dai più comuni exploit.</p>';

@@ -1,6 +1,5 @@
-<?PHP // $Id: auth_cas.php,v 1.1 2009/06/11 16:35:18 andreabix Exp $ 
-      // auth_cas.php - created with Moodle 2.0 dev (Build: 20090603) (2009060200)
-
+<?php
+// auth_cas.php - created with Totara langimport script version 1.1
 
 $string['CASform'] = 'Scelta autenticazione';
 $string['accesCAS'] = 'Utenti CAS';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_ldap.php - created with Moodle 1.9 Beta 4 (2007101508)
-
+<?php
+// enrol_ldap.php - created with Totara langimport script version 1.1
 
 $string['description'] = '<p>E\' possibile usare un server LDAP per gestire le iscrizioni ai corsi. Si suppone che l\'albero LDAP contenga gruppi corrispondenti ai corsi e che all\'interno di ciascun gruppo siano elencati gli utenti da iscrivere.</p>
 <p>All\'interno dei gruppi LDAP, ciascuno dei quali rappresenta un corso,  gli utenti da iscrivere saranno elencati tramite un campo, (es. <em>member</em> o <em>memberUid</em>), che contiene l\'identificativo univoco dell\'utente.</p>

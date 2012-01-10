@@ -1,9 +1,9 @@
-<?PHP // $Id$ 
-      // editor.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'Info su questo editor';
 $string['absbottom'] = 'Inferiore assoluto';
+$string['acteditorshhdr'] = 'Editor di testo attivi';
 $string['address'] = 'Indirizzo';
 $string['alertnoselectedtext'] = 'Dovete prima selezionare il testo!';
 $string['alignment'] = 'Allineamento';
@@ -25,6 +25,7 @@ $string['clean'] = 'Pulisci Word HTML';
 $string['close'] = 'Chiudi';
 $string['closeafterreplace'] = 'Chiudi dopo la sostituzione';
 $string['cols'] = 'Colonne';
+$string['configeditorplugins'] = 'E\' possibile attivare una o più plugin di Editor di testo, arrangiandole poi nell\'ordine di utilizzo desiderato.';
 $string['copy'] = 'Copia selezione';
 $string['createanchor'] = 'Crea ancora';
 $string['createfolder'] = 'Crea cartella';
@@ -32,6 +33,8 @@ $string['createlink'] = 'Inserisci collegamento web';
 $string['cut'] = 'Taglia selezione';
 $string['cutpastemozilla'] = 'Sfortunatamente non è possibile utilizzare le normali scorciatoie da tastiera (o anche il pulsante Incolla) per Incollare testo in questo editor in linea. Questo perché una specifica di sicurezza che  è inclusa in alcune versioni di Mozilla e di Firefox.<br /></br>Ci sono tre alternative conosciute che è possibile provare:<br />(1) Invece di CTRL-v, utilizzare SHIFT-Ins(erisci)<br />(2) Utilizzare il menu Modifica->Incolla del browser<br />(3) Cambiare le impostazioni del browser modificando il file user.js.<br /><br />Cliccare il pulsante OK per ulteriore aiuto, o Cancella per tornare all\'editor.';
 $string['delete'] = 'Elimina';
+$string['editors'] = 'Editor di testo';
+$string['editorsettings'] = 'Gestione editor';
 $string['enterurlfirst'] = 'È necessario inserire prima la URL';
 $string['filebrowser'] = 'Gestione file';
 $string['findwhat'] = 'Trova';
@@ -44,6 +47,7 @@ $string['heading'] = 'Intestazione';
 $string['height'] = 'Altezza';
 $string['hilitecolor'] = 'Colore sfondo';
 $string['horizontal'] = 'Orizzontale';
+$string['horizontalrule'] = 'Riga orizzontale';
 $string['htmlmode'] = 'Mostra sorgente HTML';
 $string['imageurl'] = 'URL immagine';
 $string['indent'] = 'Aumenta nidificazione';
@@ -86,6 +90,7 @@ $string['notimage'] = 'Il file selezionato non è un\'immagine. Prego scegliere 
 $string['notset'] = 'Non impostato';
 $string['ok'] = 'OK';
 $string['options'] = 'Opzioni';
+$string['orderedlist'] = 'Lista ordinata';
 $string['outdent'] = 'Diminuisci nidificazione';
 $string['paste'] = 'Incolla dagli appunti';
 $string['path'] = 'Percorso';
@@ -98,6 +103,7 @@ $string['preview'] = 'Anteprima';
 $string['properties'] = 'Proprietà';
 $string['redo'] = 'Ripeti ultima azione';
 $string['regularexpressions'] = 'Utilizza espressioni regolari';
+$string['removelink'] = 'Elimina collegamento';
 $string['rename'] = 'Rinomina';
 $string['replaceall'] = 'Sostituisci tutto';
 $string['replacewith'] = 'Sostituisci';
@@ -105,6 +111,7 @@ $string['right'] = 'Destra';
 $string['righttoleft'] = 'Direzione da destra a sinistra';
 $string['rows'] = 'Righe';
 $string['search_replace'] = 'Trova e sostituisci';
+$string['searchandreplace'] = 'Cerca e sostituisci';
 $string['searchnotfound'] = 'Stringa di ricerca non trovata!';
 $string['selectcolor'] = 'Selezione colore';
 $string['selection'] = 'Selezione';
@@ -123,19 +130,11 @@ $string['type'] = 'Tipo';
 $string['underline'] = 'Sottolineato';
 $string['undo'] = 'Annulla ultima azione';
 $string['unlink'] = 'Rimuovi link';
+$string['unorderedlist'] = 'Lista puntata';
 $string['upload'] = 'Trasferisci file';
 $string['vertical'] = 'Verticale';
 $string['width'] = 'Larghezza';
+$string['wordclean'] = 'Pulisci codice HTML generato da Word';
 $string['zip'] = 'Comprimi';
-$string['acteditorshhdr'] = 'Editor di testo attivi'; // ORPHANED
-$string['configeditorplugins'] = 'E\' possibile attivare una o più plugin di Editor di testo, arrangiandole poi nell\'ordine di utilizzo desiderato.'; // ORPHANED
-$string['editors'] = 'Editor di testo'; // ORPHANED
-$string['editorsettings'] = 'Gestione editor'; // ORPHANED
-$string['horizontalrule'] = 'Riga orizzontale'; // ORPHANED
-$string['orderedlist'] = 'Lista ordinata'; // ORPHANED
-$string['removelink'] = 'Elimina collegamento'; // ORPHANED
-$string['searchandreplace'] = 'Cerca e sostituisci'; // ORPHANED
-$string['unorderedlist'] = 'Lista puntata'; // ORPHANED
-$string['wordclean'] = 'Pulisci codice HTML generato da Word'; // ORPHANED
 
 ?>

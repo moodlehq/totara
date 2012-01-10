@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local_dashboard.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// local_dashboard.php - created with Totara langimport script version 1.1
 
 $string['activedashlets'] = 'Dashlet attivo';
 $string['addtocol'] = 'Aggiungi a colonna';

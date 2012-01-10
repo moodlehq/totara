@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // view.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// view.php - created with Totara langimport script version 1.1
 
 $string['error:courseid'] = 'ID corso non valido';
 $string['error:idnumber'] = 'Numero ID corso non valido';

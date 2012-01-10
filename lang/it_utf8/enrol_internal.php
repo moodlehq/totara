@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_internal.php - created with Moodle 1.4 beta (2004082300)
-
+<?php
+// enrol_internal.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Questo &egrave; il metodo di registrazione standard. Ci sono due modi pricipali in cui uno studenti pu&ograve; registrarsi in un particolare corso.
 <ul>

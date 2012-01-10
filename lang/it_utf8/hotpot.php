@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // hotpot.php - created with Moodle 2.0 dev (Build: 20100104) (2010010300)
-
+<?php
+// hotpot.php - created with Totara langimport script version 1.1
 
 $string['abandoned'] = 'Abbandonato';
 $string['addquizchain'] = 'Quiz a catena';
@@ -12,7 +11,11 @@ $string['attemptsbest'] = 'Tentativo migliore';
 $string['attemptsfirst'] = 'Primo tentativo';
 $string['attemptslast'] = 'Ultimo tentativo';
 $string['average'] = 'Media';
+$string['cannotaddquestionrecord'] = 'Non è stato possibile aggiungere il record della domanda';
+$string['cannotaddresprecord'] = 'Non è stato possibile aggiungere il record della risposta';
+$string['cannotaddstrrecord'] = 'Non è stato possibile aggiungere il record della stringa';
 $string['cannotfindmethod'] = 'Non è stato trovato un metodo per espandere il blocco template: ($a)';
+$string['cannotupdateattempt'] = 'Non è stato possibile aggiungere il record del tentativo: $a';
 $string['checks'] = 'Controlli';
 $string['clickreporting'] = 'Abilita report dei click';
 $string['clues'] = 'Indizi';
@@ -162,9 +165,5 @@ $string['unknownreport'] = 'Report sconosciuto ($a)';
 $string['updatequizchain'] = 'Aggiorna catena quiz';
 $string['weighting'] = 'Peso';
 $string['wrong'] = 'Errato';
-$string['cannotaddquestionrecord'] = 'Non è stato possibile aggiungere il record della domanda'; // ORPHANED
-$string['cannotaddresprecord'] = 'Non è stato possibile aggiungere il record della risposta'; // ORPHANED
-$string['cannotaddstrrecord'] = 'Non è stato possibile aggiungere il record della stringa'; // ORPHANED
-$string['cannotupdateattempt'] = 'Non è stato possibile aggiungere il record del tentativo: $a'; // ORPHANED
 
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // survey.php - created with Moodle 2.0 dev (Build: 20090922) (2009091700)
-
+<?php
+// survey.php - created with Totara langimport script version 1.1
 
 $string['actual'] = 'Attuale';
 $string['actualclass'] = 'Classe attuale';
@@ -61,6 +60,7 @@ $string['attlsname'] = 'ATTLS (versione con 20 elementi)';
 $string['cannotfindanswer'] = 'Non ci sono risposte al sondaggio.';
 $string['cannotfindquestion'] = 'la domanda non esiste';
 $string['cannotfindsurveytmpt'] = 'Non sono stati trovati template per il sondaggio';
+$string['cannotinsertanswer'] = 'Si è verificato un problema durante il salvataggio. Siamo spiacenti.';
 $string['ciq1'] = 'In che momento in classe sei più partecipe come studente?';
 $string['ciq1short'] = 'Più partecipe';
 $string['ciq2'] = 'In che momento in classe sei meno partecipe come studente?';
@@ -222,6 +222,5 @@ $string['surveytype'] = 'Tipo di sondaggio';
 $string['thanksforanswers'] = 'Grazie per aver risposto a questo sondaggio, $a';
 $string['time'] = 'Tempo impiegato';
 $string['viewsurveyresponses'] = 'Vedi $a risposte al sondaggio';
-$string['cannotinsertanswer'] = 'Si è verificato un problema durante il salvataggio. Siamo spiacenti.'; // ORPHANED
 
 ?>

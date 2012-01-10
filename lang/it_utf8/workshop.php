@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // workshop.php - created with Moodle 1.9.8 (Build: 20100325) (2007101580)
-
+<?php
+// workshop.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'Assente';
 $string['accumulative'] = 'Incrementale';

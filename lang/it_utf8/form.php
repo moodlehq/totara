@@ -1,6 +1,5 @@
-<?PHP // $Id: form.php,v 1.9 2009/11/12 12:36:37 andreabix Exp $ 
-      // form.php - created with Moodle 2.0 dev (Build: 20091110) (2009110605)
-
+<?php
+// form.php - created with Totara langimport script version 1.1
 
 $string['addfields'] = 'Aggiungi $a campi al form';
 $string['advancedelement'] = 'Elemento avanzato';

@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_flickr_public.php,v 1.6 2009/08/31 14:19:29 andreabix Exp $ 
-      // repository_flickr_public.php - created with Moodle 2.0 dev (Build: 20090831) (2009082800)
-
+<?php
+// repository_flickr_public.php - created with Totara langimport script version 1.1
 
 $string['all'] = 'Tutto';
 $string['apikey'] = 'API Key';

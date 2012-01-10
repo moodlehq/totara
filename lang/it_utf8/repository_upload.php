@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_upload.php,v 1.2 2009/08/31 14:19:29 andreabix Exp $ 
-      // repository_upload.php - created with Moodle 2.0 dev (Build: 20090831) (2009082800)
-
+<?php
+// repository_upload.php - created with Totara langimport script version 1.1
 
 $string['configplugin'] = 'Configurazione plugin File upload';
 $string['repositorydesc'] = 'Carica un file su Moodle';

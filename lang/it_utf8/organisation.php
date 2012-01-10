@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // organisation.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// organisation.php - created with Totara langimport script version 1.1
 
 $string['adddepthlevel'] = 'Aggiungi un nuovo livello';
 $string['addedframework'] = 'Il settore di organizzazione \"{$a}\" è stato aggiunto';

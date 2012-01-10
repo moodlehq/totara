@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // pix.php - created with Moodle 1.2 development (2003111400)
-
+<?php
+// pix.php - created with Totara langimport script version 1.1
 
 $string['angry'] = 'arrabbiato';
 $string['approve'] = 'approvo';

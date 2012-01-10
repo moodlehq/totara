@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_authorize.php,v 1.1 2006/10/04 21:23:30 koenr Exp $ 
-      // enrol_authorize.php - created with Moodle 1.7 dev (2006100401)
-
+<?php
+// enrol_authorize.php - created with Totara langimport script version 1.1
 
 $string['adminneworder'] = 'Dear Admin,
 

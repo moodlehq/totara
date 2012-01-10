@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_local.php,v 1.4 2009/08/31 14:19:29 andreabix Exp $ 
-      // repository_local.php - created with Moodle 2.0 dev (Build: 20090831) (2009082800)
-
+<?php
+// repository_local.php - created with Totara langimport script version 1.1
 
 $string['configplugin'] = 'Configurazione per il repository File Locali';
 $string['currentusefiles'] = 'File in uso';

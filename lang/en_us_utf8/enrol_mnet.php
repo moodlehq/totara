@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_mnet.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// enrol_mnet.php - created with Totara langimport script version 1.1
 
 $string['allow_allcourses'] = 'Allow enrollment in all remote courses.';
 $string['allow_allcourses2'] = 'Allow enrollment for remote users in all courses on this moodle site.';

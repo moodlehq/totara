@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // auth.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// auth.php - created with Totara langimport script version 1.1
 
 $string['CASform'] = 'Scelta autenticazione';
 $string['accesCAS'] = 'Utenti CAS';
@@ -328,6 +327,8 @@ $string['auth_updateremote_ldap'] = '<p><b>Nota:</b> Aggiornando i dati esterni 
 $string['auth_user_create'] = 'Abilita creazione utente';
 $string['auth_user_creation'] = 'I nuovi utenti (anonimi) possono iscriversi alla sorgente di autenticazione esterna e confermare tramite email. Se abiliti questo, ricorda anche di configurare le opzioni specifiche del modulo per la creazione degli utenti';
 $string['auth_usernameexists'] = 'Il nome utente scelto è già  utilizzato. Sceglierne uno nuovo.';
+$string['auth_webservicedescription'] = 'Account Web service creati manualmente.';
+$string['auth_webservicetitle'] = 'Web service';
 $string['authenticationoptions'] = 'Opzioni di autenticazione';
 $string['authforcedchangeinstructions'] = 'Le istruzioni che spiegano agli utenti cosa fare alla scadenza della loro password, quando sono obbligati a sceglierne una nuova.';
 $string['authinstructions'] = 'In questo spazio è possibile inserire istruzioni specifiche per i vostri utenti, ad esempio come usare username e password: il testo inserito infatti apparirà  nella pagina di login. Lasciando vuoto lo spazio non saranno fornite istruzioni.';
@@ -338,6 +339,7 @@ $string['chooseauthmethod'] = 'Metodo di autenticazione';
 $string['createpasswordifneeded'] = 'Genera le password se necessario';
 $string['enterthenumbersyouhear'] = 'Inserisci i numeri che senti';
 $string['enterthewordsabove'] = 'Inserisci le parole sovrastanti';
+$string['errormaxconsecutiveidentchars'] = 'La password deve contenere al massimo $a caratteri identici consecutivi.';
 $string['errorminpassworddigits'] = 'La password deve contenere almeno $a numeri.';
 $string['errorminpasswordlength'] = 'La password deve essere lunga almeno $a caratteri.';
 $string['errorminpasswordlower'] = 'La password deve contenere almeno $a lettere minuscole.';
@@ -376,6 +378,7 @@ $string['passwordhandling'] = 'Gestione del campo password';
 $string['plaintext'] = 'Testo semplice';
 $string['pluginnotenabled'] = 'Il plugin \'$a\' per l\'autenticazione non è abilitato.';
 $string['pluginnotinstalled'] = 'Il plugin \'$a\' per l\'autenticazione non è installato.';
+$string['potentialidps'] = 'Di solito su quale sito ti autentichi?<br />Scegli il sito nella lista seguente:';
 $string['recaptcha'] = 'reCAPTCHA';
 $string['rpc_negotiation_timeout'] = 'Timeout negoziazione RPC';
 $string['selfregistration'] = 'Auto creazione account';
@@ -385,6 +388,11 @@ $string['shib_no_attributes_error'] = 'Sembra che dobbiate essere autenticati da
 $string['shib_not_all_attributes_error'] = 'Moodle richiede alcuni attributi Shibboleth che, nel vostro caso, non sono presenti. Gli attributi sono: $a<br />Vi preghiamo di contattare il webmaster di questo server o il vostro Identity Provider.';
 $string['shib_not_set_up_error'] = 'L\'autenticazione Shibboleth non sembra essere impostata correttamente perché nessuna variabile Shibboleth è presente in questa pagina. Si prega di consultare il file <a href=\"README.txt\">README</a> per ulteriori istruzioni sulla configurazione della autenticazione Shibbleth o contattare il webmaster di questa installazione di Moodle.';
 $string['showguestlogin'] = 'E\' possibile visualizzare o nascondere  il pulsante \'login come ospite\' nella pagina di login standard';
+$string['sso_idp_description'] = 'Per consentire ai tuoi utenti di navigare verso il sito $a senza effettuare nuovamente il login, devi offrire questo servizio<ul><li><em>Requisito</em>: è necessario <strong>accettare</strong> il servizio SSO (Service Provider) offerto dal sito $a.</li></ul><br />Per consentire agli utenti autenticati sul sito $a di accedere a questo sito senza effettuare nuovamente il login, devi accettare questo servizio. <ul><li><em>Requisito</em>: è necessario <strong>offrire</strong> il servizio SSO (Service Provider) al sito $a. </li></ul><br />';
+$string['sso_idp_name'] = 'Servizio SSO (Identity Provider)';
+$string['sso_mnet_login_refused'] = 'Lo username $a[0] non è autorizzato a collegarsi da $a[1].';
+$string['sso_sp_description'] = 'Per consentire agli utenti autenticati sul sito $a di accedere a questo sito senza effettuare nuovamente il login, devi offrire questo servizio. <ul><li><em>Requisito</em>: è necessario <strong>accettare</strong> il servizio SSO (Identity Provider) offerto dal sito $a.</li></ul><br />Per consentire ai tuoi utenti di navigare verso il sito $a senza effettuare nuovamente il login, devi accettare questo servizio. <ul><li><em>Requisito</em>: è necessario <strong>offrire</strong> il servizio SSO (Identity Provider) al sito $a. </li></ul><br />';
+$string['sso_sp_name'] = 'Servizio SSO (Service Provider)';
 $string['stdchangepassword'] = 'Utilizzare la pagina standard per il cambiamento della password?';
 $string['stdchangepassword_expl'] = 'Se il sistema di autenticazione esterna permette il cambiamento delle password attraverso Moodle, cambiate questo su Si. Questa impostazione esclude l\'URL per cambiare la password.';
 $string['stdchangepassword_explldap'] = 'Nota: Si raccomanda di utilizzare LDAP su una connessione criptata con SSL (ldaps://) se il server è remoto.';
@@ -394,16 +402,7 @@ $string['update_never'] = 'Mai';
 $string['update_oncreate'] = 'Solo al primo accesso';
 $string['update_onlogin'] = 'Ad ogni accesso';
 $string['update_onupdate'] = 'In caso di modifica';
-$string['auth_webservicedescription'] = 'Account Web service creati manualmente.'; // ORPHANED
-$string['auth_webservicetitle'] = 'Web service'; // ORPHANED
-$string['errormaxconsecutiveidentchars'] = 'La password deve contenere al massimo $a caratteri identici consecutivi.'; // ORPHANED
-$string['potentialidps'] = 'Di solito su quale sito ti autentichi?<br />Scegli il sito nella lista seguente:'; // ORPHANED
-$string['sso_idp_description'] = 'Per consentire ai tuoi utenti di navigare verso il sito $a senza effettuare nuovamente il login, devi offrire questo servizio<ul><li><em>Requisito</em>: è necessario <strong>accettare</strong> il servizio SSO (Service Provider) offerto dal sito $a.</li></ul><br />Per consentire agli utenti autenticati sul sito $a di accedere a questo sito senza effettuare nuovamente il login, devi accettare questo servizio. <ul><li><em>Requisito</em>: è necessario <strong>offrire</strong> il servizio SSO (Service Provider) al sito $a. </li></ul><br />'; // ORPHANED
-$string['sso_idp_name'] = 'Servizio SSO (Identity Provider)'; // ORPHANED
-$string['sso_mnet_login_refused'] = 'Lo username $a[0] non è autorizzato a collegarsi da $a[1].'; // ORPHANED
-$string['sso_sp_description'] = 'Per consentire agli utenti autenticati sul sito $a di accedere a questo sito senza effettuare nuovamente il login, devi offrire questo servizio. <ul><li><em>Requisito</em>: è necessario <strong>accettare</strong> il servizio SSO (Identity Provider) offerto dal sito $a.</li></ul><br />Per consentire ai tuoi utenti di navigare verso il sito $a senza effettuare nuovamente il login, devi accettare questo servizio. <ul><li><em>Requisito</em>: è necessario <strong>offrire</strong> il servizio SSO (Identity Provider) al sito $a. </li></ul><br />'; // ORPHANED
-$string['sso_sp_name'] = 'Servizio SSO (Service Provider)'; // ORPHANED
-$string['user_activatenotsupportusertype'] = 'auth: ldap user_activate()non supporta il tipo di utente selezionato: $a'; // ORPHANED
-$string['user_disablenotsupportusertype'] = 'auth: ldap user_activate()ancora non supporta il tipo di utente selezionato'; // ORPHANED
+$string['user_activatenotsupportusertype'] = 'auth: ldap user_activate()non supporta il tipo di utente selezionato: $a';
+$string['user_disablenotsupportusertype'] = 'auth: ldap user_activate()ancora non supporta il tipo di utente selezionato';
 
 ?>

@@ -1,10 +1,10 @@
-<?PHP // $Id$ 
-      // glossary.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-
+<?php
+// glossary.php - created with Totara langimport script version 1.1
 
 $string['addcomment'] = 'Aggiungi commento';
 $string['addentry'] = 'Aggiungi termine';
 $string['addingcomment'] = 'Aggiungi un commento';
+$string['alias'] = 'Alias';
 $string['aliases'] = 'Alias (parole alternative)';
 $string['allcategories'] = 'Tutte le categorie';
 $string['allentries'] = 'TUTTI';
@@ -23,6 +23,7 @@ $string['attachment'] = 'Allegato';
 $string['author'] = 'autore';
 $string['authorview'] = 'Visualizza per autore';
 $string['back'] = 'Indietro';
+$string['cantexportentry'] = 'Impossibile esportare il termine nel glossario principale';
 $string['cantinsertcat'] = 'Non è possibile inserire la categoria';
 $string['cantinsertrec'] = 'Non è possibile inserire il record';
 $string['cantinsertrel'] = 'Non è possibile inserire la relazione categoria-termine';
@@ -102,6 +103,7 @@ $string['entryupdated'] = 'Questo termine è stato aggiornato';
 $string['entryusedynalink'] = 'Collega il termine automaticamente';
 $string['errcannoteditothers'] = 'Non puoi modificare i termini di altre persone';
 $string['errconceptalreadyexists'] = 'Questo termine già esiste. In questo glossario non sono permessi termini duplicati.';
+$string['errdeltimeexpired'] = 'Cancellazione non consentita. Tempo scaduto!';
 $string['erredittimeexpired'] = 'Il tempo per la modifica di questo termine è scaduto.';
 $string['errorparsingxml'] = 'Errori nel parsing del file. Assicurarsi che la sintassi XML sia corretta.';
 $string['explainaddentry'] = 'Aggiunge un nuovo termine al glossario corrente.<br />Concetto e definizione sono campi obbligatori.';
@@ -124,6 +126,8 @@ $string['globalglossary'] = 'Glossario globale';
 $string['glossary:approve'] = 'Approvare i termini in attesa';
 $string['glossary:comment'] = 'Creare commenti';
 $string['glossary:export'] = 'Esportare termini';
+$string['glossary:exportentry'] = 'Esportare singoli termini';
+$string['glossary:exportownentry'] = 'Esportare singoli termini propri';
 $string['glossary:import'] = 'Importare termini';
 $string['glossary:managecategories'] = 'Gestire categorie';
 $string['glossary:managecomments'] = 'Gestire commetni';
@@ -132,14 +136,18 @@ $string['glossary:rate'] = 'Valutare termini';
 $string['glossary:view'] = 'Visualizzare glossario';
 $string['glossary:viewrating'] = 'Visualizzare valutazioni';
 $string['glossary:write'] = 'Creare nuovi termini';
+$string['glossaryadministration'] = 'Gestione Glossario';
 $string['glossaryleveldefaultsettings'] = 'Impostazioni standard per i glossari';
 $string['glossarytype'] = 'Tipo di glossario';
+$string['guestnoedit'] = 'Agli ospiti non è consentito modificare i glossari';
 $string['importcategories'] = 'Importa categorie';
 $string['importedcategories'] = 'Categorie importate';
 $string['importedentries'] = 'Termini importati';
 $string['importentries'] = 'Importa termini';
 $string['importentriesfromxml'] = 'Importa termini da file XML';
 $string['includegroupbreaks'] = 'Mostra separazione dei gruppi';
+$string['invalidglossaryformat'] = 'Formato del glossario non valido';
+$string['invalidid'] = 'ID del glossario non valido';
 $string['invalidrate'] = 'Valutazione del glossario non valida ($a)';
 $string['isglobal'] = 'Questo glossario è globale?';
 $string['letter'] = 'alfabetico';
@@ -158,6 +166,9 @@ $string['nocomments'] = '(Nessun commento trovato per questo termine)';
 $string['noconceptfound'] = 'Nessun concetto o definizione trovato.';
 $string['noentries'] = 'Nessun termine trovato in questa sezione';
 $string['noentry'] = 'Nessun termine trovato.';
+$string['nopermissiontodelcomment'] = 'Non è consentito cancellare i commenti altrui!';
+$string['nopermissiontodelinglossary'] = 'Non è consentito inserire commenti in questo glossario!';
+$string['nopermissiontoviewresult'] = 'Consentito visualizzare risultati solo per i propri termini';
 $string['notcategorised'] = 'Nessuna categoria';
 $string['numberofentries'] = 'Numero di termini';
 $string['onebyline'] = '(uno per riga)';
@@ -170,6 +181,7 @@ $string['rating'] = 'Valutazione';
 $string['ratingeveryone'] = 'Tutti possono valutare i termini';
 $string['ratingno'] = 'Nessuna valutazione';
 $string['ratingonlyteachers'] = 'Solo $a può valutare i termini';
+$string['ratingonlywithpermissions'] = 'Solo le persone autorizzate possono valutare i termini';
 $string['ratings'] = 'Valutazioni';
 $string['ratingssaved'] = 'Valutazioni salvate';
 $string['ratingsuse'] = 'Utilizza le valutazioni';
@@ -200,18 +212,5 @@ $string['withauthor'] = 'Concetti con autore';
 $string['withoutauthor'] = 'Concetti senza autore';
 $string['writtenby'] = 'scritto da';
 $string['youarenottheauthor'] = 'Non puoi modificare questo commento perché non ne sei autore.';
-$string['alias'] = 'Alias'; // ORPHANED
-$string['errdeltimeexpired'] = 'Cancellazione non consentita. Tempo scaduto!'; // ORPHANED
-$string['glossary:exportentry'] = 'Esportare singoli termini'; // ORPHANED
-$string['glossary:exportownentry'] = 'Esportare singoli termini propri'; // ORPHANED
-$string['glossaryadministration'] = 'Gestione Glossario'; // ORPHANED
-$string['guestnoedit'] = 'Agli ospiti non è consentito modificare i glossari'; // ORPHANED
-$string['nopermissiontodelcomment'] = 'Non è consentito cancellare i commenti altrui!'; // ORPHANED
-$string['nopermissiontodelinglossary'] = 'Non è consentito inserire commenti in questo glossario!'; // ORPHANED
-$string['nopermissiontoviewresult'] = 'Consentito visualizzare risultati solo per i propri termini'; // ORPHANED
-$string['ratingonlywithpermissions'] = 'Solo le persone autorizzate possono valutare i termini'; // ORPHANED
-$string['cantexportentry'] = 'Impossibile esportare il termine nel glossario principale'; // ORPHANED
-$string['invalidglossaryformat'] = 'Formato del glossario non valido'; // ORPHANED
-$string['invalidid'] = 'ID del glossario non valido'; // ORPHANED
 
 ?>

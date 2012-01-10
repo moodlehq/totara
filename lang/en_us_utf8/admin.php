@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // admin.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// admin.php - created with Totara langimport script version 1.1
 
 $string['backgroundcolour'] = 'Transparent color';
 $string['configallowunenroll'] = 'If this is set \'Yes\', then students are allowed to unenroll themselves from courses whenever they like. Otherwise they are not allowed, and this process will be solely controlled by the teachers and administrators.';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_scorm.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// rb_source_scorm.php - created with Totara langimport script version 1.1
 
 $string['attemptnum'] = 'Numero di tentativi SCO';
 $string['attemptstart'] = 'Ora di inizio dei tentativi';

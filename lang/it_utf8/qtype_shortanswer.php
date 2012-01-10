@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_shortanswer.php,v 1.5 2009/03/02 17:00:08 andreabix Exp $ 
-      // qtype_shortanswer.php - created with Moodle 2.0 dev (Build: 20090302) (2009021800)
-
+<?php
+// qtype_shortanswer.php - created with Totara langimport script version 1.1
 
 $string['addingshortanswer'] = 'Creazione domanda Risposta breve';
 $string['addmoreanswerblanks'] = 'Spazi per altre {no} risposte';

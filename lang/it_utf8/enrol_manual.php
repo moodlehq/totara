@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_manual.php,v 1.8 2009/09/15 09:30:43 andreabix Exp $ 
-      // enrol_manual.php - created with Moodle 2.0 dev (Build: 20090915) (2009091310)
-
+<?php
+// enrol_manual.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'L\'Iscrizione interna è il metodo di iscrizione ai corsi di default. Il metodo abilita le due modalità di base per iscrivere studenti ai corsi.
 <ul>

@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_multichoice.php,v 1.7 2009/04/14 11:20:17 andreabix Exp $ 
-      // qtype_multichoice.php - created with Moodle 2.0 dev (Build: 20090328) (2009032001)
-
+<?php
+// qtype_multichoice.php - created with Totara langimport script version 1.1
 
 $string['addingmultichoice'] = 'Creazione domanda a Risposta multipla';
 $string['addmorechoiceblanks'] = 'Spazi per altre {no} alternative';

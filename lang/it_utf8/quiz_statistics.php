@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_statistics.php,v 1.7 2009/06/03 15:07:17 andreabix Exp $ 
-      // quiz_statistics.php - created with Moodle 2.0 dev (Build: 20090603) (2009051700)
-
+<?php
+// quiz_statistics.php - created with Totara langimport script version 1.1
 
 $string['allattempts'] = 'tutti i tentativi';
 $string['allattemptsavg'] = 'Voto medio di tutti i tentativi';

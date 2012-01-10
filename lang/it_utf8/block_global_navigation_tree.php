@@ -1,6 +1,5 @@
-<?PHP // $Id: block_global_navigation_tree.php,v 1.1 2009/08/31 14:19:29 andreabix Exp $ 
-      // block_global_navigation_tree.php - created with Moodle 2.0 dev (Build: 20090831) (2009082800)
-
+<?php
+// block_global_navigation_tree.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Navigazione';
 $string['courseactivities'] = 'Categorie, corsi ed attività dei corsi';

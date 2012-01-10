@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_multianswer.php,v 1.3 2009/03/06 18:57:55 andreabix Exp $ 
-      // qtype_multianswer.php - created with Moodle 2.0 dev (Build: 20090304) (2009030300)
-
+<?php
+// qtype_multianswer.php - created with Totara langimport script version 1.1
 
 $string['addingmultianswer'] = 'Creazione domanda a Risposte inglobate (Cloze)';
 $string['correctanswer'] = 'Risposta corretta';

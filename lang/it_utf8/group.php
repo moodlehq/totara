@@ -1,6 +1,5 @@
-<?PHP // $Id: group.php,v 1.9 2009/05/20 09:14:32 andreabix Exp $ 
-      // group.php - created with Moodle 2.0 dev (Build: 20090128) (2009011900)
-
+<?php
+// group.php - created with Totara langimport script version 1.1
 
 $string['addgroupstogrouping'] = 'Aggiungi gruppo a raggruppamento';
 $string['addgroupstogroupings'] = 'Aggiungi/rimuovi gruppi';

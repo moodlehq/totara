@@ -1,6 +1,5 @@
-<?PHP // $Id: portfolio_format_leap2a.php,v 1.2 2010/03/29 18:59:44 andreabix Exp $ 
-      // portfolio_format_leap2a.php - created with Moodle 2.0 dev (Build: 20100329) (2010032405)
-
+<?php
+// portfolio_format_leap2a.php - created with Totara langimport script version 1.1
 
 $string['entryalreadyexists'] = 'Hai tentato di aggiungere un record Leap2 con una id che già esiste in questo feed';
 $string['feedtitle'] = 'Esportazione Leap2 da Moodle per $a';

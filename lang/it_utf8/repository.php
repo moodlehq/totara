@@ -1,6 +1,5 @@
-<?PHP // $Id: repository.php,v 1.22 2010/03/29 18:59:44 andreabix Exp $ 
-      // repository.php - created with Moodle 2.0 dev (Build: 20100329) (2010032405)
-
+<?php
+// repository.php - created with Totara langimport script version 1.1
 
 $string['accessiblefilepicker'] = 'File picker accessibile';
 $string['activaterep'] = 'Repository attivi';
@@ -36,6 +35,7 @@ $string['close'] = 'Chiudi';
 $string['configallowexternallinks'] = 'E\' possibile disabilitare l\'utilizzo di link esterni nei repository';
 $string['configcacheexpire'] = 'La permanenza in cache, espressa in secondi, degli elenchi di file ottenuti da repository esterni.';
 $string['configsaved'] = 'Configurazione salvata!';
+$string['configuseexternallink'] = 'Il file picker riporterà i link ai file esterni invece di scaricarli.';
 $string['confirmdelete'] = 'Sei sicuro di voler eliminare il repository $a ?';
 $string['confirmdeletefile'] = 'Sei sicuro di voler eliminare questo file?';
 $string['confirmremove'] = 'Sei sicuro di voler eliminare questo repository plugin, le sue opzioni e <strong style=color:red>tutte le sue istanze</strong> - $a?';
@@ -128,11 +128,10 @@ $string['updown'] = 'Ordine';
 $string['upload'] = 'Carica questo file';
 $string['uploading'] = 'Caricamento in corso...';
 $string['uploadsucc'] = 'Il file è stato caricato correttamente';
+$string['useexternallink'] = 'Utilizza i link ai file senza scaricarli';
 $string['usercontextrepositorydisabled'] = 'Nel contesto utente non puoi modificare questo repository';
 $string['wrongcontext'] = 'Non puoi accedere a questo contesto';
 $string['xhtmlerror'] = 'Probabilmente stai usando header XHTML strict, con le quali alcune componenti YUI non funzionano correttamente. Per favore disabilita le componenti YUI in Moodle.';
 $string['ziped'] = 'La cartella è stata compressa correttamente';
-$string['configuseexternallink'] = 'Il file picker riporterà i link ai file esterni invece di scaricarli.'; // ORPHANED
-$string['useexternallink'] = 'Utilizza i link ai file senza scaricarli'; // ORPHANED
 
 ?>

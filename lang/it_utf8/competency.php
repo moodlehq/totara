@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // competency.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// competency.php - created with Totara langimport script version 1.1
 
 $string['achieved'] = 'Conseguito';
 $string['addassignedcompetencies'] = 'Assegna competenze';

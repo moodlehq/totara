@@ -1,6 +1,5 @@
-<?PHP // $Id: moodle.org.php,v 1.2 2010/01/05 17:37:21 andreabix Exp $ 
-      // moodle.org.php - created with Moodle 2.0 dev (Build: 20100105) (2010010400)
-
+<?php
+// moodle.org.php - created with Totara langimport script version 1.1
 
 $string['aboutdemosite'] = 'Il nostro sito demo è una installazione completa di Moodle con  corsi di esempio che potete provare con il ruolo di docente, studente oppure di amministratore. Non aver timore di fare tutte le prove che vuoi, ogni ora il sito viene ripristinato nel suo stato originario.';
 $string['aboutdemositetitle'] = 'Sito demo';
@@ -21,6 +20,7 @@ $string['connectedsites'] = 'Alcuni siti Moodle sono collegati a moodle.org attr
 $string['connectedsitestitle'] = 'Siti collegati';
 $string['contactbugs'] = 'E\' possibile segnalare problemi riscontrati in Moodle o nel sito moodle.org inserendo un bug sul Moodle Tracker';
 $string['contactbugstitle'] = 'Segnala un bug';
+$string['contactcommunity'] = 'Qualsiasi altra richiesta va indirizzata al Moodle Community Manager.';
 $string['contactintro'] = 'Selezionate la modalità preferita per contattarci:';
 $string['contactlogin'] = 'Per qualsiasi altra richiesta, autenticatevi e utilizzate il form che apparirà in questa pagina..';
 $string['contactmoodlecom'] = 'Per richieste commerciali, sulla licenza, sul trademark, o per richieste di sviluppo particolari, per favore rivolgesi all\'Help Desk su <a href=\"http://moodle.com/\">Moodle.com</a>';
@@ -92,6 +92,7 @@ $string['namedocumentation'] = 'Documentazione';
 $string['namedownloads'] = 'Download';
 $string['nameevents'] = 'Eventi';
 $string['nameforums'] = 'Forum';
+$string['namehome'] = 'Home page';
 $string['namemycourses'] = 'I miei corsi';
 $string['namenetwork'] = 'Siti collegati';
 $string['namenews'] = 'Notizie';
@@ -109,6 +110,7 @@ $string['newsrecent'] = 'Notizie recenti';
 $string['newssecurity'] = 'Notizie sulla sicurezza';
 $string['newssecuritydetail'] = 'Informazioni importanti sulla sicurezza';
 $string['noenrolledcoursesyet'] = 'Al momento non sei iscritto in nessun corso presente in questo sito';
+$string['overview'] = 'Panoramica';
 $string['overviewabout'] = 'Panoramica su Moodle';
 $string['overviewcommunity'] = 'Panoramica sulla comunità Moodle';
 $string['overviewdevelopment'] = 'Panoramica sulla comunità Moodle';
@@ -144,8 +146,5 @@ $string['supportforumslist'] = 'Abbiamo molti altri forum, in parecchie lingue:'
 $string['supportforumslistname'] = 'Elenco di tutti i forum';
 $string['supportforumstitle'] = 'Forum';
 $string['supportintro'] = 'Siamo in tanti, non ti devi sentire solo: ci sono moltissimi modi per richiedere ed ottenere l\'aiuto su Moodle di cui hai bisogno.';
-$string['contactcommunity'] = 'Qualsiasi altra richiesta va indirizzata al Moodle Community Manager.'; // ORPHANED
-$string['namehome'] = 'Home page'; // ORPHANED
-$string['overview'] = 'Panoramica'; // ORPHANED
 
 ?>

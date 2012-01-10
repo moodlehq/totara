@@ -1,11 +1,11 @@
-<?PHP // $Id$ 
-      // message.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'Aggiungi contatto';
 $string['addsomecontacts'] = 'Per inviare un messaggio a qualcuno, o per aggiungere un link a qualcuno in questa pagina, usa il tab <a href=\"$a\">Cerca</a> qui sopra.';
 $string['addsomecontactsincoming'] = 'Questi messaggi provengono da persone che non compaiono nella tua lista di contatti. Se desideri aggiungerli, fai click sull\'icona \"Aggiungi contatto\" a fianco del nome delle persone.';
 $string['ago'] = '$a fa';
+$string['ajax_gui'] = 'Chat room Ajax';
 $string['allmine'] = 'Tutti i messaggi inviati a me o inviati da me';
 $string['allstudents'] = 'Tutti i messaggi inviati tra studenti del corso';
 $string['allusers'] = 'Tutti i messaggi inviati da tutti gli utenti';
@@ -14,25 +14,33 @@ $string['beepnewmessage'] = 'Suona quando arriva un messaggio';
 $string['blockcontact'] = 'Blocca contatto';
 $string['blockedmessages'] = '$a messaggi da/per utenti bloccati';
 $string['blocknoncontacts'] = 'Blocca tutti i nuovi messaggi che provengono da persone che non appartengono alla mia lista di contatti';
+$string['cannotsavemessageprefs'] = 'Non è stato possibile salvare le preferenze di messaging dell\'utente';
 $string['contactlistempty'] = 'La tua lista di contatti è vuota';
 $string['contacts'] = 'Contatti';
 $string['context'] = 'contesto';
 $string['deletemessagesdays'] = 'Numero di giorni trascorsi i quali i vecchi messaggi saranno cancellati';
 $string['disabled'] = 'In questo sito il messaging è disabilitato';
 $string['discussion'] = 'Discussione';
+$string['editmymessage'] = 'Messaging';
 $string['emailmessages'] = 'Inviami i messaggi per email quando sono offline';
 $string['emailtagline'] = 'Questa email contiene una copia dei messaggi che hai ricevuto su \"$a\"';
 $string['emptysearchstring'] = 'Dovresti cercare qualcosa';
+$string['errorcallingprocessor'] = 'Si è verificato un errore durante la chiamata all\'elaboratore definito';
 $string['errorconfigeditor'] = 'Errore, imposibile configurare l\'editor';
 $string['formorethan'] = 'Per più di';
+$string['guestnoeditmessage'] = 'Gli ospiti non possono modificare le preferenze del messaging';
+$string['guestnoeditmessageother'] = 'Gli ospiti non possono modificare le preferenze del messaging di altri utenti';
 $string['includeblockedusers'] = 'Includi gli utenti bloccati';
 $string['incomingcontacts'] = 'Contatti in arrivo ($a)';
 $string['keywords'] = 'Parole chiave';
 $string['keywordssearchresults'] = 'Risultati della ricerca: trovati $a messaggi';
+$string['loggedin'] = 'Online';
+$string['loggedoff'] = 'Non online';
 $string['mailsent'] = 'Il tuo messaggio è stato inviato via email';
 $string['maxmessages'] = 'Numero massimo di messaggi da mostrare nello storico della discussione';
 $string['message'] = 'Messaggio';
 $string['messagehistory'] = 'Storico dei messaggi';
+$string['messageprovider:instantmessage'] = 'Messaggi personali tra utenti';
 $string['messages'] = 'Messaggi';
 $string['messaging'] = 'Messaggistica';
 $string['messagingdisabled'] = 'La messaggistica non è abilitata su questo sito, i messaggi saranno inviati via email';
@@ -51,6 +59,10 @@ $string['onlyfromme'] = 'Solo i messaggi che ho inviato';
 $string['onlymycourses'] = 'Solo nel mio corso';
 $string['onlytome'] = 'Solo i messaggi che ho ricevuto';
 $string['pagerefreshes'] = 'Questa pagina si aggiorna ogni  $a secondi';
+$string['private_config'] = 'Finestra messaggi popup';
+$string['processortag'] = 'Destinazione';
+$string['providers_config'] = 'Configurazione delle destinazione per i messaggi in arrivo';
+$string['providerstag'] = 'Sorgente';
 $string['readmessages'] = 'Letti $a messaggi';
 $string['removecontact'] = 'Cancella contatti';
 $string['savemysettings'] = 'Salva le mie impostazioni';
@@ -71,18 +83,5 @@ $string['unreadmessages'] = '$a messaggi non letti';
 $string['userisblockingyou'] = 'Questo utente ha bloccato la possibilità da parte tua di inviargli messaggi';
 $string['userisblockingyounoncontact'] = 'Questo utente accetta messaggi solo dalle persone che compaiono nella propria lista di contatti: al momento, tu non figuri in questa lista.';
 $string['userssearchresults'] = 'Risultati della ricerca: trovati $a utenti';
-$string['ajax_gui'] = 'Chat room Ajax'; // ORPHANED
-$string['cannotsavemessageprefs'] = 'Non è stato possibile salvare le preferenze di messaging dell\'utente'; // ORPHANED
-$string['editmymessage'] = 'Messaging'; // ORPHANED
-$string['errorcallingprocessor'] = 'Si è verificato un errore durante la chiamata all\'elaboratore definito'; // ORPHANED
-$string['guestnoeditmessage'] = 'Gli ospiti non possono modificare le preferenze del messaging'; // ORPHANED
-$string['guestnoeditmessageother'] = 'Gli ospiti non possono modificare le preferenze del messaging di altri utenti'; // ORPHANED
-$string['loggedin'] = 'Online'; // ORPHANED
-$string['loggedoff'] = 'Non online'; // ORPHANED
-$string['messageprovider:instantmessage'] = 'Messaggi personali tra utenti'; // ORPHANED
-$string['private_config'] = 'Finestra messaggi popup'; // ORPHANED
-$string['processortag'] = 'Destinazione'; // ORPHANED
-$string['providers_config'] = 'Configurazione delle destinazione per i messaggi in arrivo'; // ORPHANED
-$string['providerstag'] = 'Sorgente'; // ORPHANED
 
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_devplan.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// enrol_devplan.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'The DevPlan enrollment module restricts interactive enrollment in courses. Where a course uses the DevPlan enrollment plugin to manage interactive enrollments, only users who have the course listed as an approved component as part of an approved development plan are permitted to self-enroll.';
 $string['guestaccess'] = 'Without enrollment, guests are allowed <a href=\"$a\">limited access to view the course</a>.<br />';

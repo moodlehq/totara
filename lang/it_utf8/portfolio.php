@@ -1,6 +1,5 @@
-<?PHP // $Id: portfolio.php,v 1.13 2010/02/19 18:42:17 andreabix Exp $ 
-      // portfolio.php - created with Moodle 2.0 dev (Build: 20100212) (2010020701)
-
+<?php
+// portfolio.php - created with Totara langimport script version 1.1
 
 $string['activeexport'] = 'Decisioni sulle esportazioni già in corso';
 $string['activeportfolios'] = 'Portfolio attivi';
@@ -92,6 +91,7 @@ $string['invalidbuttonproperty'] = 'Non è stato possibile trovare la proprietà
 $string['invalidconfigproperty'] = 'Non è stato possibile trovare la proprietà della configurazione ($a->property di $a->class)';
 $string['invalidexportproperty'] = 'Non è stato possibile trovare la proprietà della configurazione dell\'esportazione ($a->property di $a->class)';
 $string['invalidfileareaargs'] = 'E\' stato passato un argomento File Area non valido a set_file_and_format_data - l\'argomento deve contenere contextid, filearea e itemid';
+$string['invalidfileargument'] = 'E\' stato passato un argomento File non valido a portfolio_format_from_file - l\'argomento deve essere uno stored_file object';
 $string['invalidformat'] = 'Qualcosa sta esportando in un formato non valido, $a';
 $string['invalidinstance'] = 'Non è stato possibile trovare l\'istanza di quel portfolio';
 $string['invalidpreparepackagefile'] = 'Chiamata non valida a prepare_package_file - impostate un file singolo oppure file multipli';
@@ -109,6 +109,7 @@ $string['moderatedbsizethreshold'] = 'Trasferimento db breve';
 $string['moderatedbsizethresholddesc'] = 'Numero di record di database sotto il quale il trasferimento sarà considerato breve';
 $string['moderatefilesizethreshold'] = 'Trasferimento file breve';
 $string['moderatefilesizethresholddesc'] = 'Dimensione dei file sotto la quale il trasferimento sarà considerato breve';
+$string['multipledisallowed'] = 'E\' stata tentata la creazione di un ulteriore istanza di un plugin per il quale non sono consentite istanze multiple ($a)';
 $string['multipleinstancesdisallowed'] = 'Si sta tentando di creare una ulteriore istanza di una plugin non abilitata ad avere istanze multiple ($a)';
 $string['mustsetcallbackoptions'] = 'Dovete impostare l\'opzione di callback nel costructor portfolio_add_button oppure utilizzando il metodo set_callback_options';
 $string['noavailableplugins'] = 'Spiacente, non ci sono portfolio disponibili per l\'esportazione';
@@ -147,7 +148,5 @@ $string['unknownplugin'] = 'Sconosciuto (probabilmente disinstallata da un ammin
 $string['wait'] = 'Attendi';
 $string['wanttowait_high'] = 'Non si consiglia di attendere il completamento di questo trasferimento, tuttavia se preferite attendere e siete consci della richiesta, potete farlo.';
 $string['wanttowait_moderate'] = 'Desiderate attendere il completamento del trasferimento? Il trasferimento potrebbe richiedere alcuni minuti.';
-$string['invalidfileargument'] = 'E\' stato passato un argomento File non valido a portfolio_format_from_file - l\'argomento deve essere uno stored_file object'; // ORPHANED
-$string['multipledisallowed'] = 'E\' stata tentata la creazione di un ulteriore istanza di un plugin per il quale non sono consentite istanze multiple ($a)'; // ORPHANED
 
 ?>

@@ -1,10 +1,10 @@
-<?PHP // $Id$ 
-      // chat.php - created with Moodle 2.0 dev (Build: 20100212) (2010020701)
-
+<?php
+// chat.php - created with Totara langimport script version 1.1
 
 $string['ajax'] = 'Versione Ajax';
 $string['autoscroll'] = 'Scorrimento automatico';
 $string['beep'] = 'campanella';
+$string['cantinsert'] = 'Non è stato possibile inviare il messaggio nella chat!';
 $string['cantlogin'] = 'Non è stato possibile collegarsi alla chat!';
 $string['chat:chat'] = 'Entrare in una chat';
 $string['chat:deletelog'] = 'Rimuovere i log delle chat';
@@ -92,6 +92,5 @@ $string['updatemethod'] = 'Metodo aggiornamento';
 $string['updaterate'] = 'Velocità di aggiornamento:';
 $string['userlist'] = 'Elenco utenti';
 $string['viewreport'] = 'Visualizza le sessioni già svolte';
-$string['cantinsert'] = 'Non è stato possibile inviare il messaggio nella chat!'; // ORPHANED
 
 ?>

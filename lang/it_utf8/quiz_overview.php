@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_overview.php,v 1.6 2009/02/24 19:02:47 andreabix Exp $ 
-      // quiz_overview.php - created with Moodle 2.0 dev (Build: 20090223) (2009021800)
-
+<?php
+// quiz_overview.php - created with Totara langimport script version 1.1
 
 $string['allattempts'] = 'Mostra tutti tentativi';
 $string['allattemptscontributetograde'] = 'Tutti i tentativi contribuiscono alla valutazione finale dell\'utente.';

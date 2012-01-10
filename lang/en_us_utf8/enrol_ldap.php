@@ -1,4 +1,5 @@
-<?php // $Id: enrol_ldap.php,v 1.1 2006/10/04 21:23:31 koenr Exp $ 
+<?php
+// enrol_ldap.php - created with Totara langimport script version 1.1
 
 $string['description'] = '<p>You can use an LDAP server to control your enrollments.  
                           It is assumed your LDAP tree contains groups that map to 
@@ -19,10 +20,11 @@ $string['description'] = '<p>You can use an LDAP server to control your enrollme
                           <em>enrol/ldap/enrol_ldap_sync.php</em>.</p>
                           <p>This plugin can also be set to automatically create new 
                           courses when new groups appear in LDAP.</p>';
-$string['enrol_ldap_search_sub'] = 'Search group memberships from subcontexts.';
-$string['enrol_ldap_student_settings'] = 'Student enrollment settings';
-$string['enrol_ldap_teacher_settings'] = 'Teacher enrollment settings';
+$string['enrol_ldap_autocreate'] = 'Courses can be created automatically if there are
+                                    enrollments to a course  that doesn\'t yet exist 
+                                    in Snap.';
 $string['enrol_ldap_course_settings'] = 'Course enrollment settings';
+$string['enrol_ldap_search_sub'] = 'Search group memberships from subcontexts.';
 $string['enrol_ldap_student_contexts'] = 'List of contexts where groups with student
                                           enrollments are located. Separate different 
                                           contexts with \';\'. For example: 
@@ -30,12 +32,11 @@ $string['enrol_ldap_student_contexts'] = 'List of contexts where groups with stu
 $string['enrol_ldap_student_memberattribute'] = 'Member attribute, when users belongs
                                           (is enrollled) to a group. Usually \'member\'
                                           or \'memberUid\'.';
+$string['enrol_ldap_student_settings'] = 'Student enrollment settings';
 $string['enrol_ldap_teacher_contexts'] = 'List of contexts where groups with teacher
                                           enrollments are located. Separate different 
                                           contexts with \';\'. For example: 
                                           \'ou=courses,o=org; ou=others,o=org\'';
-$string['enrol_ldap_autocreate'] = 'Courses can be created automatically if there are
-                                    enrollments to a course  that doesn\'t yet exist 
-                                    in Snap.';
-                                    
+$string['enrol_ldap_teacher_settings'] = 'Teacher enrollment settings';
+
 ?>

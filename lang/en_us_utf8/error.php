@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // error.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// error.php - created with Totara langimport script version 1.1
 
 $string['cantunenrollfrommetacourse'] = 'You cannot unenroll from this meta course';
 $string['cantunenrollinthisrole'] = 'You cannot unenroll from this course while you are in your current role';

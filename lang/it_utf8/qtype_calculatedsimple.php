@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_calculatedsimple.php,v 1.1 2009/06/03 15:07:17 andreabix Exp $ 
-      // qtype_calculatedsimple.php - created with Moodle 2.0 dev (Build: 20090603) (2009051700)
-
+<?php
+// qtype_calculatedsimple.php - created with Totara langimport script version 1.1
 
 $string['addingcalculatedsimple'] = 'Aggiungi domanda Calcolata Semplice';
 $string['atleastonewildcard'] = 'Almeno un Jolly <strong>{x..}</strong> dovrebbe essere presente nelle formule delle risposte corrette.';

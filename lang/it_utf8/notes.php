@@ -1,6 +1,5 @@
-<?PHP // $Id: notes.php,v 1.3 2009/10/20 08:52:48 andreabix Exp $ 
-      // notes.php - created with Moodle 2.0 dev (Build: 20091014) (2009100605)
-
+<?php
+// notes.php - created with Totara langimport script version 1.1
 
 $string['addnewnote'] = 'Aggiungi una annotazione';
 $string['addnewnoteselect'] = 'Seleziona gli utenti sui quali scrivere l\'annotazione';

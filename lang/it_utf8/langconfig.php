@@ -1,4 +1,6 @@
 <?php
+// langconfig.php - created with Totara langimport script version 1.1
+
 $string['alphabet'] = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
 $string['backupnameformat'] = '%%Y%%m%%d-%%H%%M';
 $string['decsep'] = ',';
@@ -23,4 +25,5 @@ $string['thischarset'] = 'UTF-8';
 $string['thisdirection'] = 'ltr';
 $string['thislanguage'] = 'Italiano';
 $string['thislanguageint'] = 'Italian';
+
 ?>

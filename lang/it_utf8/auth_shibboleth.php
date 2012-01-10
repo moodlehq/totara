@@ -1,5 +1,5 @@
-<?PHP // $Id: auth_shibboleth.php,v 1.1 2009/06/11 16:35:19 andreabix Exp $ 
-      // auth_shibboleth.php - created with Moodle 2.0 dev (Build: 20090603) (2009060200)
+<?php
+// auth_shibboleth.php - created with Totara langimport script version 1.1
 
 $string['auth_shib_auth_method'] = 'Nome del metodo di autenticazione';
 $string['auth_shib_auth_method_description'] = 'Inserite un nome familiare ai vostri utenti per identificare il metodo di autenticazione Shibboleth. Un nome adatto potrebbe essere il nome della vostra federazione Shibboleth, ad esempio <tt>SWITCHaai Login</tt> oppure <tt>InCommon Login</tt>.';

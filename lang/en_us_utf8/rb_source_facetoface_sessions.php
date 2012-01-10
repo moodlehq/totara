@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_facetoface_sessions.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// rb_source_facetoface_sessions.php - created with Totara langimport script version 1.1
 
 $string['currentorg'] = 'The user\'s current organization';
 

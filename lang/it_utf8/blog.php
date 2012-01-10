@@ -1,6 +1,5 @@
-<?PHP // $Id: blog.php,v 1.14 2010/02/25 11:58:18 andreabix Exp $ 
-      // blog.php - created with Moodle 2.0 dev (Build: 20100224) (2010021900)
-
+<?php
+// blog.php - created with Totara langimport script version 1.1
 
 $string['addnewentry'] = 'Nuovo intervento';
 $string['addnewexternalblog'] = 'Aggiungi blog esterno...';
@@ -46,6 +45,7 @@ $string['courseblogdisable'] = 'I Blog del corso non sono abilitati.';
 $string['courseblogs'] = 'Gli utenti possono vedere solo i blog  delle persone con le quali condividono un corso';
 $string['deleteblogassociations'] = 'Elimina associazioni blog';
 $string['deleteotagswarn'] = 'Sei sicuro di voler rimuovere questa/e tag <br/> da tutti gli interventi di blog e dal sistema?';
+$string['deleteposterror'] = 'Si è verificato un errore durante l\'eliminazione dell\'intervento';
 $string['disableblogs'] = 'Disabilita il sistema dei blog';
 $string['donothaveblog'] = 'Spiacente, ma non avete un vostro blog.';
 $string['editentry'] = 'Modifica un intervento blog';
@@ -127,6 +127,7 @@ $string['viewallmodentries'] = 'Tutti gli interventi su $a->type';
 $string['viewblogentries'] = 'Interventi su $a';
 $string['viewblogsfor'] = 'Visualizza tutti gli interventi su...';
 $string['viewcourseblogs'] = 'Visualizza interventi sul corso...';
+$string['viewcourseentries'] = 'Interventi del corso';
 $string['viewgroupblogs'] = 'Visualizza interventi sul gruppo...';
 $string['viewgroupentries'] = 'Interventi sul gruppo';
 $string['viewmodblogs'] = 'Visualizza interventi sul modulo...';
@@ -136,7 +137,5 @@ $string['viewsiteentries'] = 'Tutti gli interventi';
 $string['viewuserentries'] = 'Interventi dell\'utente';
 $string['worldblogs'] = 'Chiunque può leggere gli interventi impostati come pubblici';
 $string['wrongpostid'] = 'Id errata dell\'intervento blog';
-$string['deleteposterror'] = 'Si è verificato un errore durante l\'eliminazione dell\'intervento'; // ORPHANED
-$string['viewcourseentries'] = 'Interventi del corso'; // ORPHANED
 
 ?>

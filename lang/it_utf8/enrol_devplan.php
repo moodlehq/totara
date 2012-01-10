@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_devplan.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// enrol_devplan.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Il modulo di iscrizione DevPlan pone di limiti all\'iscrizione interattiva ai corsi. Se un corso utilizza il plug-in di iscrizione DevPlan per gestire le iscrizioni interattive, soltanto gli utenti che hanno il corso come componente approvato di un piano di sviluppo possono auto iscriversi.';
 $string['developmentplan'] = 'Piano di sviluppo';

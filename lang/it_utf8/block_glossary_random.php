@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_glossary_random.php - created with Moodle 1.9.2+ (Build: 20080924) (2007101522)
-
+<?php
+// block_glossary_random.php - created with Totara langimport script version 1.1
 
 $string['addentry'] = 'Aggiungete le vostre citazioni preferite!';
 $string['askaddentry'] = 'Quando gli utenti possono aggiungere voci al glossario, mostra un collegamento con il seguente testo';

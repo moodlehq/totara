@@ -1,7 +1,5 @@
-<?PHP // $Id: enrol_imsenterprise.php,v 1.1 2007/10/10 13:27:27 andreabix Exp $ 
-      // enrol_imsenterprise.php - created with Moodle 1.9 Beta + (2007091702)
-      // local modifications from http://moodle.chris.intranet
-
+<?php
+// enrol_imsenterprise.php - created with Totara langimport script version 1.1
 
 $string['aftersaving...'] = 'Dopo aver salvato le impostazioni, desideri';
 $string['allowunenrol'] = 'Permettere all\'IMS data di <strong>disiscrivere</strong> gli studenti/docenti';

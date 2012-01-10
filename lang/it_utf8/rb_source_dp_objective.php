@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_dp_objective.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// rb_source_dp_objective.php - created with Totara langimport script version 1.1
 
 $string['coursetypeicon'] = 'Tipo';
 $string['description'] = 'Descrizione';

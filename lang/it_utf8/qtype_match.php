@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_match.php,v 1.3 2009/03/02 17:00:08 andreabix Exp $ 
-      // qtype_match.php - created with Moodle 2.0 dev (Build: 20090302) (2009021800)
-
+<?php
+// qtype_match.php - created with Totara langimport script version 1.1
 
 $string['addingmatch'] = 'Creazione domanda Corrispondenza';
 $string['addmoreqblanks'] = '{no} altre coppie vuote';

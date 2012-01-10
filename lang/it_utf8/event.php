@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // event.php - created with Moodle 1.2 development (2003121500)
-
+<?php
+// event.php - created with Totara langimport script version 1.1
 
 $string['modulename'] = 'Evento';
 $string['modulenameplural'] = 'Eventi';

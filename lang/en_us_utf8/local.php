@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// local.php - created with Totara langimport script version 1.1
 
 $string['local:createorganisation'] = 'Create an organization';
 $string['local:createorganisationcustomfield'] = 'Create an organization custom field';

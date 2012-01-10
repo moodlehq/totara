@@ -1,6 +1,5 @@
-<?PHP // $Id: condition.php,v 1.6 2009/04/20 08:20:12 andreabix Exp $ 
-      // condition.php - created with Moodle 2.0 dev (Build: 20090419) (2009041700)
-
+<?php
+// condition.php - created with Totara langimport script version 1.1
 
 $string['addcompletions'] = 'Aggiungi {no} condizioni sulle attività';
 $string['addgrades'] = 'Aggiungi {no} condizioni sulle valutazioni';

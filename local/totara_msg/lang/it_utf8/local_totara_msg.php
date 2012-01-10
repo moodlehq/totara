@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local_totara_msg.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// local_totara_msg.php - created with Totara langimport script version 1.1
 
 $string['accept'] = 'Accetta';
 $string['alert_description'] = 'Segue un elenco delle allerte ricevute. Fare clic sui link nel titolo di allerta per visualizzare in maggior dettaglio o respingere un\'allerta facendo clic sull\'icona di rifiuto a destra dell\'elenco. Si può anche scegliere di filtrare le allerte che sono mostrate nell\'elenco usando la funzionalità Cerca per.';

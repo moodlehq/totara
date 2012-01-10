@@ -1,5 +1,5 @@
-<?PHP // $Id: auth_fc.php,v 1.1 2009/06/11 16:35:18 andreabix Exp $ 
-      // auth.php - created with Moodle 2.0 dev (Build: 20090603) (2009060200)
+<?php
+// auth_fc.php - created with Totara langimport script version 1.1
 
 $string['auth_fcchangepasswordurl'] = 'URL per cambiare password';
 $string['auth_fcconnfail'] = 'Connessione fallita con Numero errore: $a[0] e Stringa di Errore: $a[1]';

@@ -1,6 +1,5 @@
-<?PHP // $Id: imscc.php,v 1.1 2009/10/26 17:54:17 andreabix Exp $ 
-      // imscc.php - created with Moodle 2.0 dev (Build: 20091023) (2009102201)
-
+<?php
+// imscc.php - created with Totara langimport script version 1.1
 
 $string['cc2moodle_checking_schema'] = 'Fomrmato CC! E\' in corso il controllo dello Schema...';
 $string['cc2moodle_invalid_schema'] = 'Lo Schema non è valido.';

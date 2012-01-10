@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_online_users.php - created with Moodle 2.0 dev (Build: 20090128) (2009011900)
-
+<?php
+// block_online_users.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Utenti online';
 $string['configtimetosee'] = 'Numero di minuti di inattività trascorsi i quali un utente non è più considerato online.';

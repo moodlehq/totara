@@ -1,6 +1,5 @@
-<?PHP // $Id: portfolio_mahara.php,v 1.3 2010/03/24 17:04:10 andreabix Exp $ 
-      // portfolio_mahara.php - created with Moodle 2.0 dev (Build: 20100324) (2010031900)
-
+<?php
+// portfolio_mahara.php - created with Totara langimport script version 1.1
 
 $string['err_invalidhost'] = 'Il plugin non è configurato correttamente, punta a un host ment non valido oppure eliminato. Questo plugin necessita di peer Moodle Networking che offrano il servizio SSO IDP e  sottoscrivino il servizio portfolio e SSO SP.';
 $string['err_networkingoff'] = 'Il Moodle Networking è disabilitato. Prima di usare questo plugin dovete abilitare il Moodle Betworking. Qualsiasi istanza di questo plugin non sarà visibile fino alla abilitazione del Networking, quando potrete rendere nuovamente visibile il plugin manualmente.';

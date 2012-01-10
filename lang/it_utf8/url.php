@@ -1,6 +1,5 @@
-<?PHP // $Id: url.php,v 1.3 2010/01/04 19:52:44 andreabix Exp $ 
-      // url.php - created with Moodle 2.0 dev (Build: 20100104) (2010010300)
-
+<?php
+// url.php - created with Totara langimport script version 1.1
 
 $string['chooseavariable'] = 'Scegli una variabile...';
 $string['clicktoopen'] = 'Per aprire l\'URL fate click sul link $a';

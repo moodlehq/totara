@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // activitynames.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// activitynames.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'Auto link ai Nomi delle attività ';
 

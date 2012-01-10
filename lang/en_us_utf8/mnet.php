@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // mnet.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// mnet.php - created with Totara langimport script version 1.1
 
 $string['authfail_nosessionexists'] = 'Authorization failed: the mnet session does not exist.';
 $string['authfail_sessiontimedout'] = 'Authorization failed: the mnet session has timed out.';

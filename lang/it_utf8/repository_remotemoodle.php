@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_remotemoodle.php,v 1.5 2009/08/31 14:19:29 andreabix Exp $ 
-      // repository_remotemoodle.php - created with Moodle 2.0 dev (Build: 20090831) (2009082800)
-
+<?php
+// repository_remotemoodle.php - created with Totara langimport script version 1.1
 
 $string['configplugin'] = 'Configurazione repository Moodle Remoto';
 $string['connectionfailure'] = 'Non è stato possibile ottenere l\'elenco dei file. E\' possibile che il Moodle remoto non sia alla versione 2.0 oppure che il Servizio di Repository Moodle Remoto non sia stato attivato';

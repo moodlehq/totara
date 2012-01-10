@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_randomsamatch.php,v 1.4 2009/05/20 09:14:32 andreabix Exp $ 
-      // qtype_randomsamatch.php - created with Moodle 2.0 dev (Build: 20090302) (2009021800)
-
+<?php
+// qtype_randomsamatch.php - created with Totara langimport script version 1.1
 
 $string['addingrandomsamatch'] = 'Creazione Corrispondenze di domande a Risposta Breve';
 $string['editingrandomsamatch'] = 'Modifica Corrispondenze di domande a Risposta Breve';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_competency_evidence.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// rb_source_competency_evidence.php - created with Totara langimport script version 1.1
 
 $string['assessor'] = 'Valutatore';
 $string['assessorname'] = 'Nome valutatore';

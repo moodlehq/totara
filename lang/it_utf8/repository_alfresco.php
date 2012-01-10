@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_alfresco.php,v 1.4 2009/08/31 14:19:28 andreabix Exp $ 
-      // repository_alfresco.php - created with Moodle 2.0 dev (Build: 20090831) (2009082800)
-
+<?php
+// repository_alfresco.php - created with Totara langimport script version 1.1
 
 $string['alfresco:view'] = 'Visualizzare repository Alfresco';
 $string['alfresco_url'] = 'Alfresco URL';

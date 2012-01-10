@@ -1,4 +1,6 @@
 <?php
+// langconfig.php - created with Totara langimport script version 1.1
+
 $string['locale'] = 'en_US.UTF-8';
 $string['oldcharset'] = 'ISO-8859-1';
 $string['strftimedate'] = '%%B %%d, %%Y';
@@ -17,4 +19,5 @@ $string['thischarset'] = 'UTF-8';
 $string['thisdirection'] = 'ltr';
 $string['thislanguage'] = 'English';
 $string['thislanguageint'] = 'English (US)';
+
 ?>

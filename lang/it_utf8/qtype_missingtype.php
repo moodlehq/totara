@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_missingtype.php,v 1.2 2009/11/12 12:36:37 andreabix Exp $ 
-      // qtype_missingtype.php - created with Moodle 2.0 dev (Build: 20091110) (2009110605)
-
+<?php
+// qtype_missingtype.php - created with Totara langimport script version 1.1
 
 $string['editingmissingtype'] = 'Modifica domanda di tipo sconosciuto';
 $string['missingtype'] = 'Domanda di tipo mancante';

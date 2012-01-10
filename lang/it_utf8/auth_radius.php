@@ -1,5 +1,5 @@
-<?PHP // $Id: auth_radius.php,v 1.1 2009/06/11 16:35:19 andreabix Exp $ 
-      // auth_radius.php - created with Moodle 2.0 dev (Build: 20090603) (2009060200)
+<?php
+// auth_radius.php - created with Totara langimport script version 1.1
 
 $string['auth_radiuschangepasswordurl_key'] = 'URL per cambiare password';
 $string['auth_radiusdescription'] = 'Questo metodo utilizza un server <a href=\"http://en.wikipedia.org/wiki/RADIUS\" target=\"_blank\">RADIUS</a> per controllare se il nome utente e la password fornite sono valide.';

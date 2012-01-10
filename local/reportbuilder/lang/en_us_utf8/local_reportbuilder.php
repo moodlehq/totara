@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local_reportbuilder.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// local_reportbuilder.php - created with Totara langimport script version 1.1
 
 $string['chooseorg'] = 'Choose Organization...';
 $string['completedorgenable'] = 'Show records completed in the user\'s organization';

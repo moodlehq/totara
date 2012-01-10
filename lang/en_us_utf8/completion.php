@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // completion.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// completion.php - created with Totara langimport script version 1.1
 
 $string['completionstartonenrol'] = 'Completion tracking begins on enrollment';
 $string['completionstartonenrolhelp'] = 'Begin tracking a user\'s progress in course completion after course enrollment';

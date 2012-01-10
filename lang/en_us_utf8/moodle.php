@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // moodle.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// moodle.php - created with Totara langimport script version 1.1
 
 $string['adminhelpenrolments'] = 'Choose internal or external ways to control enrollments';
 $string['adminhelpthemes'] = 'Choose how the site looks (colors, fonts etc)';

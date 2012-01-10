@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_facetoface.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// block_facetoface.php - created with Totara langimport script version 1.1
 
 $string['allfuturesessions'] = 'Tutte le sessioni future';
 $string['allsessions'] = 'Tutte le sessioni';

@@ -1,6 +1,5 @@
-<?PHP // $Id: lams.php,v 1.4 2008/02/17 20:33:35 andreabix Exp $ 
-      // lams.php - created with Moodle 1.9 Beta 4 (2007101508)
-
+<?php
+// lams.php - created with Totara langimport script version 1.1
 
 $string['createSequence'] = 'Creare una nuova sequenza';
 $string['editSequence'] = 'Modificare la sequenza selezionata';

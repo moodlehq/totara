@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_database.php - created with Moodle 1.9 Beta 4 (2007101508)
-
+<?php
+// enrol_database.php - created with Totara langimport script version 1.1
 
 $string['autocreate'] = 'I corsi possono essere creati automaticamente se nel Database esterno esistono iscrizioni ad un corso che ancora non è presente in Moodle.';
 $string['autocreation_settings'] = 'Impostazioni per la creazione automatica dei corsi';

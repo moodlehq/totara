@@ -1,6 +1,5 @@
-<?PHP // $Id: block.php,v 1.4 2010/02/19 18:42:16 andreabix Exp $ 
-      // block.php - created with Moodle 2.0 dev (Build: 20100212) (2010020701)
-
+<?php
+// block.php - created with Totara langimport script version 1.1
 
 $string['*'] = 'Qualsiasi pagina';
 $string['addtodock'] = 'Sposta nel dock';
@@ -24,12 +23,12 @@ $string['showonfrontpageandsubs'] = 'Visualizza nella pagina home e nelle pagine
 $string['showonfrontpageonly'] = 'Visualizza solo nella pagina home';
 $string['site-*'] = 'Tutte le pagine a livello di sito';
 $string['subpages'] = 'Pagina figlia specifica';
+$string['thisblockbelongsto'] = 'Contesto di appartenenza';
 $string['thisspecificpage'] = 'Questa pagina specifica (page $a)';
 $string['undockall'] = 'Rimuovi tutto dal dock';
 $string['undockitem'] = 'Rimuovi dal dock';
 $string['visible'] = 'Visibile';
 $string['weight'] = 'Peso';
 $string['wherethisblockappears'] = 'Persistenza e visibilità';
-$string['thisblockbelongsto'] = 'Contesto di appartenenza'; // ORPHANED
 
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // data.php - created with Moodle 1.9.14 (Build: 20111010) (2007101591.06)
-
+<?php
+// data.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'Azione';
 $string['add'] = 'Inserisci';
@@ -28,6 +27,12 @@ $string['blank'] = 'Vuoto';
 $string['buttons'] = 'Azioni';
 $string['bynameondate'] = 'di <strong>$a->name - $a->date</strong>';
 $string['cancel'] = 'Annulla';
+$string['cannotaccesspresentsother'] = 'Non sei autorizzato ad accedere alle preimpostazioni di altri utenti';
+$string['cannotadd'] = 'Impossibile aggiungere record!';
+$string['cannotdeletepreset'] = 'Errore nella eliminazione di una preimpostazione!';
+$string['cannotinsertempty'] = 'Impossibile creare un record vuoto!';
+$string['cannotrate'] = 'Valutazione dei record non consentita!';
+$string['cannotunziptopreset'] = 'Non è stato possibile decomprimere nella cartella dei preset';
 $string['checkbox'] = 'Casella spunta';
 $string['chooseexportfields'] = 'Scegli i campi da esportare:';
 $string['chooseexportformat'] = 'Scegli il formato di esportazione:';
@@ -49,6 +54,9 @@ $string['csvimport'] = 'Importa un file CSV';
 $string['csvwithselecteddelimiter'] = '<acronym title=\"Comma Separated Values\">CSV</acronym> testo delimitato da:';
 $string['data:approve'] = 'Approvare tutti i record in attesa';
 $string['data:comment'] = 'Scrivere i commenti';
+$string['data:exportallentries'] = 'Esportare tutti i record del database';
+$string['data:exportentry'] = 'Esportare un record del database';
+$string['data:exportownentry'] = 'Esportare propri record del database';
 $string['data:managecomments'] = 'Gestire i commenti';
 $string['data:manageentries'] = 'Gestire i record inseriti';
 $string['data:managetemplates'] = 'Gestire i Modelli';
@@ -59,6 +67,7 @@ $string['data:viewalluserpresets'] = 'Visualizzare le preimpostazioni salvate da
 $string['data:viewentry'] = 'Visualizzare i record inseriti';
 $string['data:viewrating'] = 'Visualizzare le valutazioni ai record inseriti';
 $string['data:writeentry'] = 'Inserire un record';
+$string['dataadministration'] = 'Gestione Attività Database';
 $string['date'] = 'Data';
 $string['dateentered'] = 'Data di inserimento';
 $string['defaultfielddelimiter'] = '(per default la virgola)';
@@ -122,6 +131,8 @@ $string['forcelinkname'] = 'Nome forzato del link';
 $string['foundnorecords'] = 'Non è stato trovato nessun record (<a href=\"$a->reseturl\">Reset filtri</a>)';
 $string['foundrecords'] = 'Record trovati: $a->num/$a->max (<a href=\"$a->reseturl\">Reset filtri</a>)';
 $string['fromfile'] = 'Importa da file .zip';
+$string['generateerror'] = 'Non tutti i file sono stati generati!';
+$string['guestrate'] = 'Gli ospiti non sono autorizzati a valutare i record.';
 $string['header'] = 'Intestazione';
 $string['headeraddtemplate'] = 'Impostazione dell\'interfaccia per l\'inserimento o la modifica dei record.';
 $string['headerasearchtemplate'] = 'Impostazione dell\'interfaccia per la Ricerca avanzata';
@@ -133,8 +144,15 @@ $string['headersingletemplate'] = 'Impostazione dell\'interfaccia per la visuali
 $string['importsuccess'] = 'Le preimpostazioni sono state applicate correttamente.';
 $string['insufficiententries'] = 'è necessario inserire un maggior numero di record prima di poter visualizzare questo Database';
 $string['intro'] = 'Introduzione';
+$string['invalidaccess'] = 'Questa pagina non è stata acceduta correttamente';
+$string['invalidfieldid'] = 'L\'ID di campo non è valido';
 $string['invalidfieldname'] = 'Si prega di scegliere un nome diverso per questo campo';
+$string['invalidfieldtype'] = 'Tipo campo non valido';
+$string['invalidid'] = 'ID non valido';
+$string['invalidpreset'] = '$a non è una preimpostazione.';
 $string['invalidrate'] = 'Valutazione del database non valida ($a)';
+$string['invalidratedata'] = 'Sono stati inviati dati di valutazione errati';
+$string['invalidrecord'] = 'Record non valido';
 $string['invalidurl'] = 'L\'indirizzo (URL) inserito non è valido';
 $string['jstemplate'] = 'Javascript';
 $string['latitude'] = 'Latitudine';
@@ -151,6 +169,8 @@ $string['maxentries'] = 'Numero massimo di record inseribili';
 $string['maxsize'] = 'Dimensione massima: $a';
 $string['menu'] = 'Menu (Selezione singola)';
 $string['menuchoose'] = 'Scegli...';
+$string['missingdata'] = 'La id dei dati o l\'oggetto devono essere forniti alla classe dei campi';
+$string['missingfield'] = 'Errore del programmatore: è necessario specificare il campo e/o i dati quando si definisce un classe di campi.';
 $string['modulename'] = 'Database';
 $string['modulenameplural'] = 'Database';
 $string['more'] = 'Dettagli';
@@ -175,10 +195,12 @@ $string['newentry'] = 'Nuovo record';
 $string['newfield'] = 'Aggiungi un campo';
 $string['noaccess'] = 'Non sei autorizzato ad accedere a questa pagina';
 $string['nodefinedfields'] = 'La nuova preimpostazione non ha campi definiti!';
+$string['nofieldcontent'] = 'Contenuto del campo non trovato';
 $string['nofieldindatabase'] = 'Non ci sono campi definiti nel Database, si prega di aggiungerne qualcuno';
 $string['nolisttemplate'] = 'Il Modello di visualizzazione \"Elenco\" non è stata ancora impostato';
 $string['nomatch'] = 'Non è stato trovato nessun record che corrisponda!';
 $string['nomaximum'] = 'Senza limite massimo';
+$string['norating'] = 'Questa attività non utilizza le valutazioni';
 $string['norecords'] = 'Nessun record è presente nel Database';
 $string['nosingletemplate'] = 'Il modello di visualizzazione \"Dettagli\" non è stato ancora impostato';
 $string['notapproved'] = 'Il record inserito è in attesa di essere approvato.';
@@ -198,6 +220,7 @@ $string['pagesize'] = 'Record per pagina';
 $string['participants'] = 'Sono autorizzati ad inserire record';
 $string['picture'] = 'Immagine';
 $string['pleaseaddsome'] = 'Potete aggiungere campi al Database tramite il menu sottostante. Se preferite, potete usare degli <a href=\"$a\">insiemi di campi preimpostati</a>.';
+$string['portfolionotfile'] = 'Esporta in un portfolio piuttosto che in un file (solo csv)';
 $string['presetinfo'] = 'Salvando le preimpostazioni si pubblicherà anche questo Modello di visualizzazione. Qualsiasi utente potrà utilizzarlo per il proprio Database.';
 $string['presets'] = 'Preimpostazioni';
 $string['radiobutton'] = 'Pulsante radio';
@@ -253,6 +276,7 @@ $string['type'] = 'Tipo di campo';
 $string['undefinedprocessactionmethod'] = 'Nessuna metodo definito in Data_Preset per gestire l\'azione \"$a\".';
 $string['unsupportedexport'] = '($a->fieldtype) non è esportabile';
 $string['updatefield'] = 'Aggiorna un campo già esistente';
+$string['updatingerror'] = 'Si è verificato un errore nell\'aggiornamento del database';
 $string['uploadfile'] = 'Carica file';
 $string['uploadrecords'] = 'Carica i record da un file';
 $string['url'] = 'URL';
@@ -260,30 +284,5 @@ $string['usestandard'] = 'Utilizza preimpostazione';
 $string['viewfromdate'] = 'Database visualizzabile dal';
 $string['viewtodate'] = 'fino al';
 $string['wrongdataid'] = 'E\' stato fornito un id errato';
-$string['cannotaccesspresentsother'] = 'Non sei autorizzato ad accedere alle preimpostazioni di altri utenti'; // ORPHANED
-$string['cannotadd'] = 'Impossibile aggiungere record!'; // ORPHANED
-$string['cannotdeletepreset'] = 'Errore nella eliminazione di una preimpostazione!'; // ORPHANED
-$string['cannotrate'] = 'Valutazione dei record non consentita!'; // ORPHANED
-$string['cannotunziptopreset'] = 'Non è stato possibile decomprimere nella cartella dei preset'; // ORPHANED
-$string['data:exportallentries'] = 'Esportare tutti i record del database'; // ORPHANED
-$string['data:exportentry'] = 'Esportare un record del database'; // ORPHANED
-$string['data:exportownentry'] = 'Esportare propri record del database'; // ORPHANED
-$string['dataadministration'] = 'Gestione Attività Database'; // ORPHANED
-$string['generateerror'] = 'Non tutti i file sono stati generati!'; // ORPHANED
-$string['guestrate'] = 'Gli ospiti non sono autorizzati a valutare i record.'; // ORPHANED
-$string['invalidaccess'] = 'Questa pagina non è stata acceduta correttamente'; // ORPHANED
-$string['invalidfieldid'] = 'L\'ID di campo non è valido'; // ORPHANED
-$string['invalidfieldtype'] = 'Tipo campo non valido'; // ORPHANED
-$string['invalidid'] = 'ID non valido'; // ORPHANED
-$string['invalidpreset'] = '$a non è una preimpostazione.'; // ORPHANED
-$string['invalidratedata'] = 'Sono stati inviati dati di valutazione errati'; // ORPHANED
-$string['invalidrecord'] = 'Record non valido'; // ORPHANED
-$string['missingdata'] = 'La id dei dati o l\'oggetto devono essere forniti alla classe dei campi'; // ORPHANED
-$string['missingfield'] = 'Errore del programmatore: è necessario specificare il campo e/o i dati quando si definisce un classe di campi.'; // ORPHANED
-$string['nofieldcontent'] = 'Contenuto del campo non trovato'; // ORPHANED
-$string['norating'] = 'Questa attività non utilizza le valutazioni'; // ORPHANED
-$string['portfolionotfile'] = 'Esporta in un portfolio piuttosto che in un file (solo csv)'; // ORPHANED
-$string['cannotinsertempty'] = 'Impossibile creare un record vuoto!'; // ORPHANED
-$string['updatingerror'] = 'Si è verificato un errore nell\'aggiornamento del database'; // ORPHANED
 
 ?>

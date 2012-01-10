@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // block_html.php - created with Moodle 1.5 ALPHA (2005043000)
-	  // traduzione a cura di Luca Arese - Universit&agrave;  di Torino
-
+<?php
+// block_html.php - created with Totara langimport script version 1.1
 
 $string['configcontent'] = 'Contenuto';
 $string['configtitle'] = 'Titolo blocco';

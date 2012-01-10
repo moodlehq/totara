@@ -1,5 +1,5 @@
-<?PHP // $Id: auth_db.php,v 1.1 2009/06/11 16:35:18 andreabix Exp $ 
-      // auth.php - created with Moodle 2.0 dev (Build: 20090603) (2009060200)
+<?php
+// auth_db.php - created with Totara langimport script version 1.1
 
 $string['auth_dbcantconnect'] = 'Connessione non possibile al database specificato per l\'autenticazione ...';
 $string['auth_dbchangepasswordurl_key'] = 'URL per cambiare password';

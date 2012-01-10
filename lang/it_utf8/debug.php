@@ -1,6 +1,5 @@
-<?PHP // $Id: debug.php,v 1.6 2010/02/25 11:58:19 andreabix Exp $ 
-      // debug.php - created with Moodle 2.0 dev (Build: 20100222) (2010021900)
-
+<?php
+// debug.php - created with Totara langimport script version 1.1
 
 $string['authpluginnotfound'] = 'La plugin di autenticazione $a non è stata trovata';
 $string['blocknotexist'] = 'Il blocco $a non esiste';
@@ -32,9 +31,9 @@ $string['notables'] = 'Non ci sono tabelle!';
 $string['phpvaroff'] = 'La variabile PHP \'$a->name\' dovrebbe essere impostata ad Off - $a->link';
 $string['phpvaron'] = 'La variabile PHP \'$a->name\' non è impostata ad On - $a->link';
 $string['sessionmissing'] = 'L\'oggetto $a manca dalla sessione';
+$string['siteisnotdefined'] = 'Il sito non è definito!';
 $string['sqlrelyonobsoletetable'] = 'Questo SQL fa affidamento su tabelle obsolete: $a!. Il tuo codice deve essere sistemato da uno sviluppatore.';
 $string['withoutversion'] = 'Il file version.php principale è mancante, illeggibile o rovinato.';
 $string['xmlizeunavailable'] = 'Le funzioni xmlize non sono disponibili';
-$string['siteisnotdefined'] = 'Il sito non è definito!'; // ORPHANED
 
 ?>

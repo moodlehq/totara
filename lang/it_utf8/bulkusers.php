@@ -1,6 +1,5 @@
-<?PHP // $Id: bulkusers.php,v 1.2 2008/10/08 14:11:21 andreabix Exp $ 
-      // bulkusers.php - created with Moodle 1.9.2+ (Build: 20080924) (2007101522)
-
+<?php
+// bulkusers.php - created with Totara langimport script version 1.1
 
 $string['addall'] = 'Aggiungi tutti';
 $string['addsel'] = 'Aggiungi alla selezione';

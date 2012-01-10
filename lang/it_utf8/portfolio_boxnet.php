@@ -1,6 +1,5 @@
-<?PHP // $Id: portfolio_boxnet.php,v 1.2 2009/04/10 12:59:25 andreabix Exp $ 
-      // portfolio_boxnet.php - created with Moodle 2.0 dev (Build: 20090410) (2009040100)
-
+<?php
+// portfolio_boxnet.php - created with Totara langimport script version 1.1
 
 $string['apikey'] = 'API key';
 $string['apikeyhelp'] = 'Potete ottenerla creando un account su enabled.box.net, dove potrete poi aggiungere una applicazione. La url di callback deve essere  yourwwwroot/portfolio/add.php?postcontrol=1';

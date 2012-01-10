@@ -1,5 +1,5 @@
-<?PHP // $Id: auth_imap.php,v 1.1 2009/06/11 16:35:18 andreabix Exp $ 
-      // created with Moodle 2.0 dev (Build: 20090603) (2009060200)
+<?php
+// auth_imap.php - created with Totara langimport script version 1.1
 
 $string['auth_imapchangepasswordurl_key'] = 'URL per cambiare password';
 $string['auth_imapdescription'] = 'Questo metodo usa un server IMAP per controllare se il nome utente e la password dati sono validi.';

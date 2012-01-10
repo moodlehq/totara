@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_datasetdependent.php,v 1.4 2009/06/03 15:07:17 andreabix Exp $ 
-      // qtype_datasetdependent.php - created with Moodle 2.0 dev (Build: 20090603) (2009051700)
-
+<?php
+// qtype_datasetdependent.php - created with Totara langimport script version 1.1
 
 $string['additem'] = 'Aggiungi elemento';
 $string['answerstoleranceparam'] = 'Tolleranza della risposta';

@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_description.php,v 1.1 2009/03/02 17:00:08 andreabix Exp $ 
-      // qtype_description.php - created with Moodle 2.0 dev (Build: 20090302) (2009021800)
-
+<?php
+// qtype_description.php - created with Totara langimport script version 1.1
 
 $string['addingdescription'] = 'Creazione Descrizione';
 $string['description'] = 'Descrizione';

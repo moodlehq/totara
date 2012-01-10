@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // position.php - created with Moodle 1.9.15 (Build: 20111128) (2007101591.07)
-
+<?php
+// position.php - created with Totara langimport script version 1.1
 
 $string['organisation'] = 'Organization';
 

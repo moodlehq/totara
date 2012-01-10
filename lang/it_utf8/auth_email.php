@@ -1,6 +1,5 @@
-<?PHP // $Id: auth_email.php,v 1.1 2009/06/11 16:35:18 andreabix Exp $ 
-      // auth_email.php - created with Moodle 2.0 dev (Build: 20090611) (2009060200)
-
+<?php
+// auth_email.php - created with Totara langimport script version 1.1
 
 $string['auth_changingemailaddress'] = 'Hai richiesto il cambio di indirizzo email da $a->oldemail a $a->newemail. Per motivi di sicurezza ti stiamo mandando un messaggio al nuovo indirizzo per avere conferma che ti appartiene. Il tuo indirizzo email sarà aggiornato appena tu clicchi sul link presente nel messaggio inviato.';
 $string['auth_emailchangecancel'] = 'Annulla cambio email';

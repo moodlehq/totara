@@ -1,9 +1,8 @@
-<?PHP // $Id: webservice_amf.php,v 1.2 2009/10/28 11:51:53 andreabix Exp $ 
-      // webservice_amf.php - created with Moodle 2.0 dev (Build: 20091028) (2009102700)
-
+<?php
+// webservice_amf.php - created with Totara langimport script version 1.1
 
 $string['amf:use'] = 'Usa protocollo AMF';
+$string['amfdebug'] = 'Modalità debug server AMF';
 $string['pluginname'] = 'Protocollo AMF';
-$string['amfdebug'] = 'Modalità debug server AMF'; // ORPHANED
 
 ?>

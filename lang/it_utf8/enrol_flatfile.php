@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_flatfile.php - created with Moodle 1.6 development (2006022400)
-
+<?php
+// enrol_flatfile.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Questo metodo controlla ripetutamente e elabora un file di testo scritto in un formato speciale e rintracciabile nel percorso specificato.
 Il file &egrave; un testo separato da virgole con quattro o sei campi per linea:

@@ -1,5 +1,5 @@
-<?PHP // $Id: auth_pam.php,v 1.1 2009/06/11 16:35:18 andreabix Exp $ 
-      // auth_pam.php - created with Moodle 2.0 dev (Build: 20090603) (2009060200)
+<?php
+// auth_pam.php - created with Totara langimport script version 1.1
 
 $string['auth_pamdescription'] = 'Questo metodo utilizza PAM per accedere ai nomi utente originali su questo server. E\' necessario installare <a href=\"http://www.math.ohio-state.edu/~ccunning/pam_auth/\" target=\"_blank\">la libreria di autenticazione PAM di PHP4</a> per poter utilizzare questo modulo.';
 $string['auth_pamtitle'] = 'PAM (Pluggable Authentication Modules)';

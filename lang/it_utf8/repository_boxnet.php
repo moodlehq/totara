@@ -1,6 +1,5 @@
-<?PHP // $Id: repository_boxnet.php,v 1.3 2009/08/31 14:19:28 andreabix Exp $ 
-      // repository_boxnet.php - created with Moodle 2.0 dev (Build: 20090831) (2009082800)
-
+<?php
+// repository_boxnet.php - created with Totara langimport script version 1.1
 
 $string['apikey'] = 'API Key';
 $string['boxnet:view'] = 'Visualizzare repository box.net';

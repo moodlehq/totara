@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_database.php,v 1.1 2006/10/04 21:23:31 koenr Exp $ 
-      // enrol_database.php - created with Moodle 1.7 dev (2006100401)
-
+<?php
+// enrol_database.php - created with Totara langimport script version 1.1
 
 $string['autocreate'] = 'Courses can be created automatically if there are enrollments to a course that doesn\'t yet exist in Snap.';
 $string['description'] = 'You can use a external database (of nearly any kind) to control your enrollments. It is assumed your external database contains a field containing a course ID, and a field containing a user ID. These are compared against fields that you choose in the local course and user tables.';

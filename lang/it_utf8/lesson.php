@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // lesson.php - created with Moodle 2.0 dev (Build: 20100224) (2010021900)
-
+<?php
+// lesson.php - created with Totara langimport script version 1.1
 
 $string['accesscontrol'] = 'Controllo accesso';
 $string['actionaftercorrectanswer'] = 'Azione dopo una risposta corretta';
@@ -37,6 +36,9 @@ $string['averagetime'] = 'Tempo medio';
 $string['branch'] = 'Diramazione';
 $string['branchtable'] = 'Diramazione';
 $string['cancel'] = 'Annulla';
+$string['cannotdeleteanswer'] = 'Non è stato possibile cancellare il record risposta';
+$string['cannotdeleteattempt'] = 'Non è stato possibile cancellare i vecchi tentativi';
+$string['cannotdeletebranch'] = 'Non è stato possibile cancellare le diramazioni già viste';
 $string['cannotfindanswer'] = 'Non è stato possibile trovare la risposta';
 $string['cannotfindattempt'] = 'Non è stato possibile trovare il tentativo';
 $string['cannotfindessay'] = 'Non è stato possibile trovare il testo libero';
@@ -52,6 +54,19 @@ $string['cannotfindpreattempt'] = 'Non è stato possibile trovare il precedente 
 $string['cannotfindrecords'] = 'Non è stato possibile trovare i record della lezione';
 $string['cannotfindtimer'] = 'Non è stato possibile trovare i record della tabella lesson_timer';
 $string['cannotfinduser'] = 'Non è stato possibile trovare gli utenti';
+$string['cannotinsertanswer'] = 'Non è stato possibile scrivere il record risposta';
+$string['cannotinsertgrade'] = 'Non è stato possibile scrivere la valutazione';
+$string['cannotinserthighscore'] = 'Non è stato possibile inserire il voto nella lista dei migliori!';
+$string['cannotinsertpage'] = 'Non è stato possibile inserire una nuova pagina';
+$string['cannotinserttimer'] = 'Non è stato possibile inserire una riga nella tabella lesson_timer';
+$string['cannotresetjump'] = 'Non è stato possibile ripristinare il salto nel restore della lezione';
+$string['cannotupdateanswer'] = 'Non è stato possibile aggiornare la risposta';
+$string['cannotupdatebook'] = 'Non è possibile aggiornare il tuo book';
+$string['cannotupdateessayscore'] = 'Non è stato possibile aggiornare il punteggio del testo libero';
+$string['cannotupdategrade'] = 'Non è stato possibile aggiornare la valutazione';
+$string['cannotupdatelink'] = 'Non è stato possibile aggiornare il link';
+$string['cannotupdatepage'] = 'Non è stato possibile aggiornare la pagina';
+$string['cannotupdatetimer'] = 'Non è stato possibile aggiornare la tabella lesson_timer';
 $string['canretake'] = '$a può essere riprovata';
 $string['casesensitive'] = 'Utilizza Espressioni Regolari';
 $string['checkbranchtable'] = 'Controlla Diramazione';
@@ -361,21 +376,5 @@ $string['youranswer'] = 'La tua risposta';
 $string['yourcurrentgradeis'] = 'La tua attuale valutazione è $a';
 $string['yourcurrentgradeisoutof'] = 'La tua attuale valutazione è $a->grade su $a->total';
 $string['youshouldview'] = 'Devi rispondere almeno: $a';
-$string['cannotdeleteanswer'] = 'Non è stato possibile cancellare il record risposta'; // ORPHANED
-$string['cannotdeleteattempt'] = 'Non è stato possibile cancellare i vecchi tentativi'; // ORPHANED
-$string['cannotdeletebranch'] = 'Non è stato possibile cancellare le diramazioni già viste'; // ORPHANED
-$string['cannotinsertanswer'] = 'Non è stato possibile scrivere il record risposta'; // ORPHANED
-$string['cannotinsertgrade'] = 'Non è stato possibile scrivere la valutazione'; // ORPHANED
-$string['cannotinserthighscore'] = 'Non è stato possibile inserire il voto nella lista dei migliori!'; // ORPHANED
-$string['cannotinsertpage'] = 'Non è stato possibile inserire una nuova pagina'; // ORPHANED
-$string['cannotinserttimer'] = 'Non è stato possibile inserire una riga nella tabella lesson_timer'; // ORPHANED
-$string['cannotresetjump'] = 'Non è stato possibile ripristinare il salto nel restore della lezione'; // ORPHANED
-$string['cannotupdateanswer'] = 'Non è stato possibile aggiornare la risposta'; // ORPHANED
-$string['cannotupdatebook'] = 'Non è possibile aggiornare il tuo book'; // ORPHANED
-$string['cannotupdateessayscore'] = 'Non è stato possibile aggiornare il punteggio del testo libero'; // ORPHANED
-$string['cannotupdategrade'] = 'Non è stato possibile aggiornare la valutazione'; // ORPHANED
-$string['cannotupdatelink'] = 'Non è stato possibile aggiornare il link'; // ORPHANED
-$string['cannotupdatepage'] = 'Non è stato possibile aggiornare la pagina'; // ORPHANED
-$string['cannotupdatetimer'] = 'Non è stato possibile aggiornare la tabella lesson_timer'; // ORPHANED
 
 ?>

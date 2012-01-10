@@ -1,6 +1,5 @@
-<?PHP // $Id: table.php,v 1.1 2008/12/24 15:10:55 andreabix Exp $ 
-      // table.php - created with Moodle 2.0 dev (Build: 20081216) (2008121000)
-
+<?php
+// table.php - created with Totara langimport script version 1.1
 
 $string['downloadas'] = 'Download tabella dati come';
 $string['downloadcsv'] = 'file testo CSV (Comma Separated Values)';

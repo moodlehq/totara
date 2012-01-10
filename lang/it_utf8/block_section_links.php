@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_section_links.php - created with Moodle 2.0 dev (Build: 20100217) (2010021400)
-
+<?php
+// block_section_links.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Collegamenti sezione';
 $string['incby1'] = 'Intervallo di';

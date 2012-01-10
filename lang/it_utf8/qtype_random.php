@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_random.php,v 1.2 2009/03/02 17:00:08 andreabix Exp $ 
-      // qtype_random.php - created with Moodle 2.0 dev (Build: 20090302) (2009021800)
-
+<?php
+// qtype_random.php - created with Totara langimport script version 1.1
 
 $string['configselectmanualquestions'] = 'Questa impostazione permette di stabilire se le domande con valutazione manuale possono essere utilizzate in quiz che prevedono domande scelte casualmente da una categoria';
 $string['editingrandom'] = 'Modifica domanda Casuale';

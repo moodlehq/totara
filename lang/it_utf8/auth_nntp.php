@@ -1,5 +1,5 @@
-<?PHP // $Id: auth_nntp.php,v 1.1 2009/06/11 16:35:18 andreabix Exp $ 
-      // auth_nntp.php - created with Moodle 2.0 dev (Build: 20090603) (2009060200)
+<?php
+// auth_nntp.php - created with Totara langimport script version 1.1
 
 $string['auth_nntpchangepasswordurl_key'] = 'URL per cambiare password';
 $string['auth_nntpdescription'] = 'Questo metodo utilizza un server NNTP per controllare se il nome utente e la password dati sono validi.';

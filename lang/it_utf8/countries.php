@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // countries.php - created with Moodle 2.0 dev (Build: 20090219) (2009021800)
-
+<?php
+// countries.php - created with Totara langimport script version 1.1
 
 $string['AD'] = 'Andorra';
 $string['AE'] = 'Emirati Arabi Uniti';
