@@ -406,7 +406,31 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
 
     }
 
+    if ($result && $oldversion < 2012011300) {
+        $sql = "SELECT
+                    sc.id
+                FROM
+                    {$CFG->prefix}report_builder_schedule sc
+                LEFT JOIN
+                    {$CFG->prefix}report_builder_saved sv
+                ON
+                    sc.savedsearchid = sv.id
+                WHERE
+                    sc.savedsearchid != 0
+                AND
+                    sv.id IS null";
+
+        $records = get_records_sql($sql);
+
+        if ($records) {
+            //Create comma separated list of ids
+            $ids = implode(',', array_keys($records));
+
+            //Update records
+            $update_sql = "UPDATE {$CFG->prefix}report_builder_schedule SET savedsearchid = 0 WHERE id IN ({$ids})";
+            $result = $result && execute_sql($update_sql);
+        }
+    }
+
     return $result;
-
-
 }

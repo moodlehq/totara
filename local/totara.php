@@ -387,8 +387,18 @@ function totara_print_report_manager($return=false) {
     echo $returnstr;
 }
 
-
-function totara_print_scheduled_reports($return=false) {
+/**
+* Returns markup for displaying saved scheduled reports
+*
+* Optionally without the options column and add/delete form
+* Optionally with an additional sql WHERE clause
+* @access  public
+* @param   $showoptions   bool
+* @param   $showaddform   bool
+* @param   $sqlclause     string
+* @return  string
+*/
+function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $sqlclause='') {
     global $CFG, $USER, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS, $CALENDARDAYS;
     $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
 
@@ -402,7 +412,9 @@ function totara_print_scheduled_reports($return=false) {
             JOIN {$CFG->prefix}report_builder rb
             ON rbs.reportid=rb.id
             WHERE rbs.userid={$USER->id}";
-
+    if ($sqlclause != '') {
+        $sql .= " AND " . $sqlclause;
+    }
     if($scheduledreports = get_records_sql($sql)){
         $columns[] = 'reportname';
         $headers[] = get_string('reportname', 'local_reportbuilder');
@@ -412,17 +424,19 @@ function totara_print_scheduled_reports($return=false) {
         $headers[] = get_string('format', 'local_reportbuilder');
         $columns[] = 'schedule';
         $headers[] = get_string('schedule', 'local_reportbuilder');
-
-        $columns[] = 'options';
-        $headers[] = get_string('options', 'local');
-
+        if ($showoptions) {
+            $columns[] = 'options';
+            $headers[] = get_string('options', 'local');
+        }
         $shortname = 'scheduled_reports';
         $table = new flexible_table($shortname);
         $table->define_columns($columns);
         $table->define_headers($headers);
         $table->set_attribute('class', 'scheduled-reports generalbox');
-        $table->column_class('options', 'options');
 
+        if ($showoptions) {
+            $table->column_class('options', 'options');
+        }
         $table->setup();
         $dateformat = ($USER->lang == 'en_utf8') ? 'jS' : 'j';
 
@@ -469,12 +483,12 @@ function totara_print_scheduled_reports($return=false) {
             $tablerow[] = $data;
             $tablerow[] = $format;
             $tablerow[] = $schedule;
-
-            $tablerow[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/scheduled.php?id='.$sched->id .'" title="'.get_string('edit').
-                '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.get_string('edit').'" /></a>'. ' ' .
-                '<a href="'.$CFG->wwwroot.'/local/reportbuilder/deletescheduled.php?id='.$sched->id.'" title="'.get_string('delete').
-                '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.get_string('delete').'" /></a>';
-
+            if ($showoptions) {
+                $tablerow[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/scheduled.php?id='.$sched->id .'" title="'.get_string('edit').
+                    '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.get_string('edit').'" /></a>'. ' ' .
+                    '<a href="'.$CFG->wwwroot.'/local/reportbuilder/deletescheduled.php?id='.$sched->id.'" title="'.get_string('delete').
+                    '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.get_string('delete').'" /></a>';
+            }
             $table->add_data($tablerow);
         }
 
@@ -483,9 +497,11 @@ function totara_print_scheduled_reports($return=false) {
     else {
         echo get_string('noscheduledreports', 'local_reportbuilder') . '<br /><br />';
     }
+    if ($showaddform) {
+        $mform = new scheduled_reports_add_form($CFG->wwwroot . '/local/reportbuilder/scheduled.php', array());
+        $mform->display();
+    }
 
-    $mform = new scheduled_reports_add_form($CFG->wwwroot . '/local/reportbuilder/scheduled.php', array());
-    $mform->display();
 
 }
 
