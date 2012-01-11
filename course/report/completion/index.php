@@ -223,6 +223,14 @@ if ($total) {
  * Setup page header
  */
 if ($csv) {
+    if (strpos($CFG->wwwroot, 'https://') === 0) {
+        //https sites - watch out for IE! KB812935 and KB3164
+        header('Cache-Control: max-age=10');
+        header('Pragma: ');
+    } else { //normal http - prevent caching at all cost
+        header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
+        header('Pragma: no-cache');
+    }
     header('Content-Disposition: attachment; filename=progress.'.
         preg_replace('/[^a-z0-9-]/','_',strtolower($course->shortname)).'.csv');
     // Unicode byte-order mark for Excel
