@@ -111,6 +111,15 @@ add_to_log($course->id, "certificate", "received", "view.php?id=$cm->id", $certi
         }
 certificate_issue($course, $USER); // update certrecord as issued
     }
+    //Fix headers on SSL sites for IE
+    if (strpos($CFG->wwwroot, 'https://') === 0) {
+        //https sites - watch out for IE! KB812935 and KB3164
+        header('Cache-Control: max-age=10');
+        header('Pragma: ');
+    } else { //normal http - prevent caching at all cost
+        header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
+        header('Pragma: no-cache');
+    }
 // Output to pdf
     $userid = $USER->id;
     certificate_file_area($userid);
