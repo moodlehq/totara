@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_site_logs.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-
+<?php
+// rb_source_site_logs.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'Aktion';
 $string['actionlink'] = 'Aktion (mit einer URL verlinkt)';
@@ -13,6 +12,7 @@ $string['ip'] = 'IP Address';
 $string['module'] = 'Modul';
 $string['sourcetitle'] = 'Seiten Logs';
 $string['time'] = 'Zeit';
+$string['type_log'] = 'Log';
 $string['url'] = 'URL';
 $string['user'] = 'Benutzer';
 

@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_mnet.php,v 1.2 2010/04/09 19:10:44 danielneis Exp $ 
-      // enrol_mnet.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// enrol_mnet.php - created with Totara langimport script version 1.1
 
 $string['allcategories'] = '$a potenciais categorias';
 $string['allcourses'] = '$a potenciais cursos';

@@ -1,0 +1,51 @@
+<h1>Yhteenveto kategorioittain</h1>
+<p>Tässä valikossa voit valita yhteenvetomenetelmän, jota käytetään jokaisen osallistujan kokonaisarvosanan laskemiseen tässä kategoriasa. Eri vaihtoehdot selitetään alla.</p>
+
+<p>Arvosanat muutetaan ensin prosenttiarvoiksi vaihteluväli on  0-1, ns. normalisointi), sen jälkeen ne lasketaan yhteen käyttäen yhtä allamainittua tapaa ja lopuksi ne muutetaan kyseisen kategorian arvosananasteikkoon sopiviksi (<em>Minimiarvosanan</em> and <em>Maksimiarvosanan</em> välille).</p>
+
+<p><strong>Tärkeää</strong>: Tyhjä arvosana on puuttuva merkintä arvosanarekisterissä ja se voi johtua usemmasta seikasta. Se voi johtua esimerkiksi siitä, että osallistuja ei ole vielä palauttanut tehtävää; tehtävä, jota kouluttaja ei ole vielä arvostellut tai arvosana, jonka arvosanarekisterin hallinnoija on poistanut. Siksi on oltava varovainen tulkitessaan näitä "tyhjiä arvosanoja".</p>
+
+<dl id="grade-aggregation-help">
+    <dt>Arvosanojen keskiarvo</dt>        
+    <dd>Kaikkien arvosanojen summa jaettuna arvosanojen kokonaislukumäärällä.</dd>
+    <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategoria max 100:<br />
+                     <code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
+                     
+    <dt>Painotettu keskiarvo</dt>
+        <dd>Arvosanoille voidaan antaa painotusarvo, jota käytetään yhteenlaskutavassa painottamaan arvosanojen tärkeyttä suhteessa koknaisarvosanaan.</dd>
+        <dd class="example">A1 70/100 painotus 10, A2 20/80 painotus 5, A3
+                         10/10 painotus 3, kategoria max 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
+    
+    <dt>Yksinkertainen painotettu keskiarvo</dt>
+        <dd>Erona <em>Painotettuun keskiarvoon</em>, tämä keskiarvo lasketaan<em> Maksimiarvosanoina<em> ja <em>Minimiarvosanoina<em> jokaiselle kohteelle. 100 pisteen tehtävän painotus on 100, 10 pisteen tehtävän painotus on 10.</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10, category max 100:<br />
+                         <code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
+    
+    <dt>Arvosanojen keskiarvo (ylimääräisillä pisteillä)</dt>
+        <dd>Laskuopillinen keskiarvo. Vanha, ei enää tuettu yhteenlaskumenetelmä, vanhojen aktiviteettien yhteensopivuutta varten.</dd>
+    
+    <dt>Arvosanojen mediaani</dt>
+        <dd>Keskimmäinen arvosana (tai kahden keskimmäisen arvosnanan keskiarvo) kun arvosanat on järjestetty koon mukaan. Tämän laskutavan etu on siinä, että siihen eivät vaikuta ääripäät (arvosanat, jotka ovat erityisen kaukana keskiarvosta).</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategoria max 100:<br />
+                         <code>mediaani(0.7 ; 0.25 ; 1.0) = 0.7 --> 70/100</code></dd>
+    
+    <dt>Pienin arvosana</dt>
+        <dd>Tuloksena on pienin arvosana normalisoinnin jälkeen. Sitä käytetään yleensä <em>Kokoa yhteen vain ei-tyhjät arvosanat</em>-toiminnon kanssa yhdessä.</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategoria max 100:<br />
+                         <code>min(0.7 ; 0.25 ; 1.0) = 0.25 --> 25/100</code></dd>
+                         
+    <dt>Korkein arvosana</dt>
+        <dd>Tuloksena on korkein arvosana normalisoinnin jälkeen.</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategoria max 100:<br />
+                         <code>max(0.7 ; 0.25 ; 1.0) = 1.0 --> 100/100</code></dd>
+    
+    <dt>Arvosanojen moodi</dt>
+        <dd>Moodi on arvosana, joka esiintyy eniten. Sitä käytetään useimmiten ei-numeeristen arvosanojen yhteydessä. Tämän laskutavan etu on siinä, että siihen eivät vaikuta ääripäät (arvosanat, jotka ovat erityisen kaukana keskiarvosta). Tosin, laskutapa menettää merkityksensä, jos eniten esiintyviä arvosanoja on enemmän kuin yksi tai kun kaikki arvosanat eroavat toisistaan.</dd>
+        <dd class="example">A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 kategoria max 100:<br />
+                         <code>moodi(0.7 ; 0.7 ; 0.25 ; 1.0 ; 0.7) = 0.7 --> 70/100</code></dd>
+    
+    <dt>Arvosanojen summa</dt>
+        <dd>Kaikkien arvosanojen arvojen summa. Asteikkoarvosanoja ei huomioida. Tämä on ainoa tapa, joka ei muunna arvosanoja prosenteiksi (normalisointi). Kyseisen kategorian <em>Maksimiarvosana</em> lasketaan automaattisesti kaikkien yhteenvetoon sisältyvien kohteiden maksimiarvosanojen summana.</dd>
+        <dd class="example">A1 70/100, A2 20/80, A3 10/10:<br />
+                         <code>70 + 20 + 10 = 100/190</code></dd>
+</dl>

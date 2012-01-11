@@ -1,7 +1,10 @@
-<?PHP // $Id: block_html.php,v 1.5 2008/11/13 11:01:26 samulik Exp $
+<?php
+// block_html.php - created with Totara langimport script version 1.1
+
 $string['configcontent'] = 'Sisältö';
 $string['configtitle'] = 'Lohkon otsikko';
 $string['html'] = 'HTML';
 $string['leaveblanktohide'] = 'Jätä tyhjäksi piilottaaksesi otsikon';
 $string['newhtmlblock'] = '(uusi HTML-lohko)';
+
 ?>

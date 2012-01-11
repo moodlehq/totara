@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // assignment.php - created with Moodle 2.0 dev (Build: 20100116) (2010011400)
-
+<?php
+// assignment.php - created with Totara langimport script version 1.1
 
 $string['allowdeleting'] = 'Löschen erlauben';
 $string['allowmaxfiles'] = 'Maximale Anzahl hochgeladener Dateien';
@@ -26,6 +25,7 @@ $string['assignmentname'] = 'Name der Aufgabe';
 $string['assignmenttype'] = 'Aufgabentyp';
 $string['availabledate'] = 'Verfügbar ab';
 $string['cannotdeletefiles'] = 'Es ist ein Fehler aufgetreten. Die Dateien konnten nicht gelöscht werden.';
+$string['cannotinsertempty'] = 'Eine weitere leere Einreichung war nicht möglich';
 $string['cannotviewassignment'] = 'Sie können diese Aufgabe nicht anzeigen';
 $string['comment'] = 'Kommentar';
 $string['commentinline'] = 'eingearbeiteter Kommentar';
@@ -134,10 +134,10 @@ $string['uploadnofilefound'] = 'Es wurde keine Datei gefunden. Sind Sie sicher, 
 $string['uploadnotregistered'] = '\'$a\' wurde korrekt hochgeladen, aber der Eintrag wurde nicht registriert!';
 $string['uploadsuccess'] = '\'$a\' wurde erfolgreich hochgeladen';
 $string['usermisconf'] = 'Die Nutzereinstellungen sind fehlkonfiguriert';
+$string['usernosubmit'] = 'Sie haben keine Berechtigung Aufgaben einzureichen';
 $string['viewfeedback'] = 'Aufgabenbewertung und Rückmeldung anzeigen';
 $string['viewmysubmission'] = 'Meinen Eintrag ansehen';
 $string['viewsubmissions'] = '$a eingereichte Aufgabe(n) ansehen';
 $string['yoursubmission'] = 'Ihre eingereichten Aufgaben';
-$string['cannotinsertempty'] = 'Eine weitere leere Einreichung war nicht möglich'; // ORPHANED
 
 ?>

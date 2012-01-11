@@ -173,7 +173,19 @@ class block_totara_tasks extends block_base {
         if (instance_is_dashlet($this)) {
             // what dashlet role is this
             $role = get_dashlet_role($this->instance->pageid);
-            $roleid = get_field('role', 'id', 'shortname', $role);
+
+            switch ($role) {
+                case 'student':
+                    $roleid = $CFG->learnerroleid;
+                    break;
+                case 'manager':
+                    $roleid = $CFG->managerroleid;
+                    break;
+                default:
+                    $roleid = get_field('role', 'id', 'shortname', $role);
+                    break;
+            }
+
             return $roleid;
         }
         else {

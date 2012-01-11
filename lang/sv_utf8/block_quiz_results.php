@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_quiz_results.php - created with Moodle 1.6 development (2005090100)
-
+<?php
+// block_quiz_results.php - created with Totara langimport script version 1.1
 
 $string['bestgrade'] = 'Det h&ouml;gsta betyget:';
 $string['bestgrades'] = 'Det $a h&ouml;gsta betygen:';

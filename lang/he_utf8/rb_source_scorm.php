@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_scorm.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// rb_source_scorm.php - created with Totara langimport script version 1.1
 
 $string['attemptnum'] = 'מספר הניסיון בלומדה';
 $string['attemptstart'] = 'זמן התחלת הניסיון';
@@ -19,6 +18,7 @@ $string['score'] = 'ציון בלומדה';
 $string['scormtitle'] = 'כותרת הלומדה';
 $string['sourcetitle'] = 'לומדה';
 $string['status'] = 'סטטוס הלומדה';
+$string['statusmodified'] = 'סטטוס הלומדה השתנה';
 $string['thedate'] = 'תאריך הניסיון';
 $string['theuser'] = 'המשתמש';
 $string['time'] = 'מועד תחילת הלומדה';

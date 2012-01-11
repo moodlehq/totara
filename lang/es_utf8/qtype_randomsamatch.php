@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_randomsamatch.php,v 1.2 2009/04/26 10:11:49 barias Exp $ 
-      // qtype_randomsamatch.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// qtype_randomsamatch.php - created with Totara langimport script version 1.1
 
 $string['addingrandomsamatch'] = 'Agregando una pregunta de emparejamiento de respuesta corta aleatoria';
 $string['editingrandomsamatch'] = 'Editando una pregunta de emparejamiento de respuesta corta aleatoria';

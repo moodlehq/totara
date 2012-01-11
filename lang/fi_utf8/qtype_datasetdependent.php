@@ -1,4 +1,6 @@
-<?PHP // $Id: qtype_datasetdependent.php,v 1.2 2008/11/21 01:32:26 samulik Exp $
+<?php
+// qtype_datasetdependent.php - created with Totara langimport script version 1.1
+
 $string['additem'] = 'Lisää kohta';
 $string['atleastonerealdataset'] = 'Pitäisi olla ainakin yksi oikea tietue kysymystekstissä';
 $string['atleastonewildcard'] = 'Pitäisi olla ainakin yksi oikea muuttuja vastauskaavassa tai kysymystekstissä';
@@ -42,4 +44,5 @@ $string['sharedwildcards'] = 'Jaetut muuttujat';
 $string['uniform'] = 'Yhdenmukainen';
 $string['updatedatasetparam'] = 'Päivitä tietojoukon arvot';
 $string['youmustaddatleastoneitem'] = 'Sinun on lisättävä ainakin yksi tietojoukon kohta ennen kysymyksen tallentamista.';
+
 ?>

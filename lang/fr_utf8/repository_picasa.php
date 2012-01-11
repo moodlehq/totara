@@ -1,4 +1,5 @@
-<?php // $Id: repository_picasa.php,v 1.2 2009/08/12 10:40:59 martignoni Exp $
+<?php
+// repository_picasa.php - created with Totara langimport script version 1.1
 
 $string['picasa:view'] = 'Consulter un dépôt Picasa';
 $string['repositoryname'] = 'Album web Picasa';

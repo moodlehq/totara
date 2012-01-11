@@ -1,13 +1,18 @@
-<?PHP // $Id$ 
-      // chat.php - created with Moodle 1.9.7+ (Build: 20091204) (2007101570)
+<?php
+// chat.php - created with Totara langimport script version 1.1
 
-
+$string['ajax'] = 'Version benutzt Ajax';
 $string['autoscroll'] = 'Automatisches Scrollen';
 $string['beep'] = 'Signal';
+$string['cantinsert'] = 'Die Chat-Nachricht konnte nicht eingefügt werden!';
+$string['cantlogin'] = 'DIe Chat-Anmeldung ist fehlgeschlagen!!';
 $string['chat:chat'] = 'An einem Chat teilnehmen';
 $string['chat:deletelog'] = 'Logdaten eines Chats löschen';
+$string['chat:exportparticipatedsession'] = 'Teilgenommene Chat-Sitzung exportieren';
+$string['chat:exportsession'] = 'Chat-Sitzung exportieren';
 $string['chat:readlog'] = 'Logdaten eines Chats sehen';
 $string['chat:talk'] = 'Im Chat sprechen';
+$string['chatadministration'] = 'Chat-Administration';
 $string['chatintro'] = 'Einleitungstext';
 $string['chatname'] = 'Name dieses Chat-Raums';
 $string['chatreport'] = 'Chat-Protokolle';
@@ -34,6 +39,8 @@ $string['explainmethodnormal'] = 'Diese Einstellungen sind <strong>nur erforderl
 $string['generalconfig'] = 'Grundeinstellungen';
 $string['helpchatting'] = 'Hilfe beim Chatten';
 $string['idle'] = 'Leerlauf';
+$string['inputarea'] = 'Eingabefeld';
+$string['invalidid'] = 'Dieser Chat-Raum konnte nicht gefunden werden!';
 $string['list_all_sessions'] = 'Alle Sitzungen auflisten';
 $string['list_complete_sessions'] = 'Bereits beendete Sitzungen auflisten';
 $string['listing_all_sessions'] = 'Alle Sitzungen werden aufgelistet';
@@ -42,6 +49,7 @@ $string['messagebeepsyou'] = '$a hat Sie angepiepst!';
 $string['messageenter'] = '$a hat den Chat gerade betreten';
 $string['messageexit'] = '$a hat den Chat verlassen';
 $string['messages'] = 'Mitteilungen';
+$string['messageyoubeep'] = 'Sie haben $a angepiepst';
 $string['method'] = 'Chat Methode';
 $string['methoddaemon'] = 'Chat Server Daemon';
 $string['methodnormal'] = 'Standardmethode';
@@ -50,12 +58,14 @@ $string['modulenameplural'] = 'Chats';
 $string['neverdeletemessages'] = 'Mitteilungen nie löschen';
 $string['nextsession'] = 'Nächste geplante Sitzung';
 $string['no_complete_sessions_found'] = 'Keine beendete Sitzung gefunden';
+$string['nochat'] = 'Kein Chat gefunden';
 $string['noguests'] = 'Der Chat ist für Gäste nicht zugänglich';
 $string['nomessages'] = 'Bisher keine Nachrichten';
 $string['normalkeepalive'] = 'KeepAlive';
 $string['normalstream'] = 'Stream';
 $string['noscheduledsession'] = 'Kein Termin vorgesehen';
 $string['notallowenter'] = 'Sie sind nicht berechtigt, den Chatraum zu betreten.';
+$string['notlogged'] = 'Nicht angemeldet!';
 $string['oldping'] = 'Timeout für Trennung';
 $string['pastchats'] = 'Vorherige Chat-Sitzungen';
 $string['refreshroom'] = 'Aktualisierung Raum';
@@ -65,8 +75,11 @@ $string['repeatdaily'] = 'Jeden Tag zur gleichen Zeit';
 $string['repeatnone'] = 'Keine Antworten - nur festgelegte Zeiten veröffentlichen';
 $string['repeattimes'] = 'Sitzungen wiederholen';
 $string['repeatweekly'] = 'Jede Woche zur gleichen Zeit';
+$string['saidto'] = '<b>sagte zu</b>';
 $string['savemessages'] = 'Speicherung der Chat-Protokolle (Dauer)';
 $string['seesession'] = 'Die Sitzung einsehen';
+$string['send'] = 'Senden';
+$string['sending'] = 'wird gesendet';
 $string['serverhost'] = 'Servername';
 $string['serverip'] = 'Server IP';
 $string['servermax'] = 'Maximale Nutzerzahl';
@@ -74,24 +87,10 @@ $string['serverport'] = 'Server-Port';
 $string['sessions'] = 'Chat-Sitzungen';
 $string['strftimemessage'] = '%%H:%%M';
 $string['studentseereports'] = 'Teilnehmer/innen können Chat-Protokolle sehen';
+$string['talk'] = 'Sprechen';
 $string['updatemethod'] = 'Aktualisierungsmethode';
+$string['updaterate'] = 'Aktualisierungsrate:';
+$string['userlist'] = 'Nutzerliste';
 $string['viewreport'] = 'Vorherige Chat-Protokolle ansehen';
-$string['ajax'] = 'Version benutzt Ajax'; // ORPHANED
-$string['cantlogin'] = 'DIe Chat-Anmeldung ist fehlgeschlagen!!'; // ORPHANED
-$string['chat:exportparticipatedsession'] = 'Teilgenommene Chat-Sitzung exportieren'; // ORPHANED
-$string['chat:exportsession'] = 'Chat-Sitzung exportieren'; // ORPHANED
-$string['chatadministration'] = 'Chat-Administration'; // ORPHANED
-$string['inputarea'] = 'Eingabefeld'; // ORPHANED
-$string['invalidid'] = 'Dieser Chat-Raum konnte nicht gefunden werden!'; // ORPHANED
-$string['messageyoubeep'] = 'Sie haben $a angepiepst'; // ORPHANED
-$string['nochat'] = 'Kein Chat gefunden'; // ORPHANED
-$string['notlogged'] = 'Nicht angemeldet!'; // ORPHANED
-$string['saidto'] = '<b>sagte zu</b>'; // ORPHANED
-$string['send'] = 'Senden'; // ORPHANED
-$string['sending'] = 'wird gesendet'; // ORPHANED
-$string['talk'] = 'Sprechen'; // ORPHANED
-$string['updaterate'] = 'Aktualisierungsrate:'; // ORPHANED
-$string['userlist'] = 'Nutzerliste'; // ORPHANED
-$string['cantinsert'] = 'Die Chat-Nachricht konnte nicht eingefügt werden!'; // ORPHANED
 
 ?>

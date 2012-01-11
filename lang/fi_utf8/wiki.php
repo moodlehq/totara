@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// wiki.php - created with Totara langimport script version 1.1
+
 $string['action'] = '-- Toiminto --';
 $string['administration'] = 'Ylläpito';
 $string['allowremovepages'] = 'Salli \'Poista sivuja\'';
@@ -195,4 +197,5 @@ $string['wikiusage'] = 'Wikin käyttö';
 $string['withbinaries'] = 'Ota mukaan tiedostot';
 $string['withvirtualpages'] = 'Ota mukaan Wiki-linkit';
 $string['wrongversionrange'] = '$a ei ole kelvollinen alue.';
+
 ?>

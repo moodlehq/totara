@@ -1,4 +1,5 @@
-<?php // $Id: coursereport_log.php,v 1.1 2008/12/07 15:04:24 martignoni Exp $
+<?php
+// coursereport_log.php - created with Totara langimport script version 1.1
 
 $string['log:view'] = 'Consulter les historiques du cours';
 $string['log:viewlive'] = 'Consulter les historiques en direct';

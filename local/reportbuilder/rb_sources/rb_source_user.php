@@ -96,7 +96,7 @@ class rb_source_user extends rb_base_source {
             new rb_join(
                 'totara_stats_courses_started',
                 'LEFT',
-                "(SELECT userid, count(data2) AS number
+                "(SELECT userid, COUNT(DISTINCT data2) as number
                     FROM {$CFG->prefix}block_totara_stats
                     WHERE eventtype = 2
                     GROUP BY userid)",
@@ -106,11 +106,21 @@ class rb_source_user extends rb_base_source {
             new rb_join(
                 'totara_stats_courses_completed',
                 'LEFT',
-                "(SELECT userid, count(data2) AS number
+                "(SELECT userid, count(DISTINCT data2) AS number
                     FROM {$CFG->prefix}block_totara_stats
                     WHERE eventtype = 3
                     GROUP BY userid)",
                 'base.id = totara_stats_courses_completed.userid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'prog_extension_count',
+                'LEFT',
+                "(SELECT userid, count(*) as extensioncount
+                    FROM {$CFG->prefix}prog_extension pe
+                    WHERE pe.userid = userid AND pe.status = 0
+                    GROUP BY pe.userid)",
+                'base.id = prog_extension_count.userid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             )
         );
@@ -220,6 +230,18 @@ class rb_source_user extends rb_base_source {
                         )
         );
 
+        $columnoptions[] = new rb_column_option(
+                        'user',
+                        'extensionswithlink',
+                        get_string('extensions', 'local_program'),
+                        'prog_extension_count.extensioncount',
+                        array(
+                            'joins' => 'prog_extension_count',
+                            'displayfunc' => 'extension_link',
+                        )
+        );
+
+
         $this->add_user_custom_fields_to_columns($columnoptions);
 
         return $columnoptions;
@@ -322,6 +344,18 @@ class rb_source_user extends rb_base_source {
         return $disp;
     }
 
+
+    function rb_display_extension_link($extensioncount, $row) {
+        global $CFG;
+
+        if (!empty($extensioncount)) {
+            return "<a href=\"{$CFG->wwwroot}/local/program/manageextensions.php?userid={$row->user_id}\">{$extensioncount}</a>";
+        } else {
+            return '0';
+        }
+    }
+
+
     function rb_display_user_with_links($user, $row) {
         global $CFG;
         $userid = $row->user_id;
@@ -345,12 +379,22 @@ class rb_source_user extends rb_base_source {
         $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">{$bookingstr}</a>";
 
         $show_plan_link = dp_can_view_users_plans($userid);
+        $links = $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
+        $links .= $profile_link.'&nbsp;|&nbsp;';
+        $links .= $booking_link.'&nbsp;|&nbsp;';
+        $links .= $rol_link;
 
-        $return = '<div class="picture">'.$user_pic.' <span class="username">'.$user.'</span></div>'.'<div class="links">';
-        $return .= $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
-        $return .= $profile_link.'&nbsp;|&nbsp;';
-        $return .= $booking_link.'&nbsp;|&nbsp;';
-        $return .= $rol_link.'</div>';
+        $return = <<<EOF
+<table class="namewithlinks-layout">
+    <tr>
+        <td class="user-picture">{$user_pic}</td>
+        <td class="user-name">{$user}</td>
+    </tr>
+    <tr>
+        <td class="user-links" colspan="2">{$links}</td>
+    </tr>
+</table>
+EOF;
 
         return $return;
     }

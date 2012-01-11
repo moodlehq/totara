@@ -147,7 +147,7 @@
         <FIELD NAME="criteriaid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Completion criteria this references" PREVIOUS="course" NEXT="gradefinal"/>
         <FIELD NAME="gradefinal" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" DECIMALS="5" COMMENT="The final grade for the course (included regardless of whether a passing grade was required)" PREVIOUS="criteriaid" NEXT="unenroled"/>
         <FIELD NAME="unenroled" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Timestamp when the user was unenroled" PREVIOUS="gradefinal" NEXT="rpl"/>
-        <FIELD NAME="rpl" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="Record of prior learning" PREVIOUS="unenroled" NEXT="deleted"/>
+        <FIELD NAME="rpl" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Record of prior learning" PREVIOUS="unenroled" NEXT="deleted"/>
         <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="rpl" NEXT="timecompleted"/>
         <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="deleted"/>
       </FIELDS>

@@ -1,4 +1,5 @@
-<?php // $Id: simpletest.php,v 1.20 2009/11/26 13:47:54 mudrd8mz Exp $
+<?php
+// simpletest.php - created with Totara langimport script version 1.1
 
 $string['addconfigprefix'] = 'Ajouter le préfixe au fichier de configuration';
 $string['all'] = 'TOUT';
@@ -16,8 +17,8 @@ $string['droptesttables'] = 'Supprimer les tables de tests';
 $string['exception'] = 'Exception';
 $string['executablelines'] = 'Lignes exécutables';
 $string['fail'] = 'Échec';
-$string['ignorethisfile'] = 'Relancer les tests unitaires en ignorant ce fichier de test.';
 $string['ignorefile'] = 'Ignorer les tests de ce fichier';
+$string['ignorethisfile'] = 'Relancer les tests unitaires en ignorant ce fichier de test.';
 $string['installtesttables'] = 'Installer les tables de tests';
 $string['moodleunittests'] = 'Tests unitaires Moodle : $a';
 $string['notice'] = 'Remarque';
@@ -47,10 +48,10 @@ $string['testtablesok'] = 'Les tables de tests ont été installées correctemen
 $string['thorough'] = 'Lancer un test exhaustif (peut être lent).';
 $string['timetakes'] = 'Durée des tests : $a.';
 $string['totallines'] = 'Total des lignes';
-$string['unittestprefixsetting'] = 'Préfixe des tests unitaires : <strong>$a->unittestprefix</strong> (veuillez modifier le fichier <i>config.php</i> pour changer ce préfixe).';
-$string['unittests'] = 'Tests unitaires';
 $string['uncaughtexception'] = 'Exception non traitée [{$a->getMessage()}] dans [{$a->getFile()}:{$a->getLine()}] : TESTS INTERROMPUS.';
 $string['uncoveredlines'] = 'Lignes non couvertes';
+$string['unittestprefixsetting'] = 'Préfixe des tests unitaires : <strong>$a->unittestprefix</strong> (veuillez modifier le fichier <i>config.php</i> pour changer ce préfixe).';
+$string['unittests'] = 'Tests unitaires';
 $string['updatingnoninsertedrecord'] = 'Tentative de modification d\'un enregistrement n\'ayant pas été inséré par ces tests unitaires (id $a->id dans la table $a->table).';
 $string['version'] = 'Utilise <a href=\"http://sourceforge.net/projects/simpletest/\">SimpleTest</a> version $a. ';
 

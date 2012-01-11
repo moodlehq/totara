@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // countries.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// countries.php - created with Totara langimport script version 1.1
 
 $string['AD'] = 'Andorra';
 $string['AE'] = 'Förenade Arabemiraten';
@@ -52,6 +51,7 @@ $string['CM'] = 'Kamerun';
 $string['CN'] = 'Kina';
 $string['CO'] = 'Colombia';
 $string['CR'] = 'Costa Rica';
+$string['CS'] = 'Serbien och Montenegro';
 $string['CU'] = 'Kuba';
 $string['CV'] = 'Kap Verde';
 $string['CX'] = 'Julön';
@@ -121,6 +121,7 @@ $string['KH'] = 'Kambodja';
 $string['KI'] = 'Kiribati';
 $string['KM'] = 'Comoros';
 $string['KN'] = 'Saint Kitts And Nevis';
+$string['KO'] = 'Kosovo';
 $string['KP'] = 'Nordkorea';
 $string['KR'] = 'Sydkorea';
 $string['KW'] = 'Kuwait';
@@ -223,6 +224,7 @@ $string['TL'] = 'Timor-Leste';
 $string['TM'] = 'Turkmenistan';
 $string['TN'] = 'Tunisien';
 $string['TO'] = 'Tonga';
+$string['TP'] = 'Östtimor';
 $string['TR'] = 'Turkiet';
 $string['TT'] = 'Trinidad ochTobago';
 $string['TV'] = 'Tuvalu';
@@ -241,17 +243,14 @@ $string['VG'] = 'Virgin Islands, British';
 $string['VI'] = 'Virgin Islands, U.S.';
 $string['VN'] = 'Vietnam';
 $string['VU'] = 'Vanuatu';
+$string['WA'] = 'Wales';
 $string['WF'] = 'Wallis och Futuna';
 $string['WS'] = 'Samoa';
 $string['YE'] = 'Jemen';
 $string['YT'] = 'Mayotte';
 $string['ZA'] = 'Sydafrika';
 $string['ZM'] = 'Zambia';
+$string['ZR'] = 'Zaire';
 $string['ZW'] = 'Zimbabwe';
-$string['CS'] = 'Serbien och Montenegro'; // ORPHANED
-$string['KO'] = 'Kosovo'; // ORPHANED
-$string['TP'] = 'Östtimor'; // ORPHANED
-$string['WA'] = 'Wales'; // ORPHANED
-$string['ZR'] = 'Zaire'; // ORPHANED
 
 ?>

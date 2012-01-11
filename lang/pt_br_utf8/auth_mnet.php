@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_mnet.php - created with Totara langimport script version 1.1
 
 $string['auth_mnet_auto_add_remote_users'] = 'Quando marcado como Sim, um registro local do usuário é criado automaticamente quando o usuário remoto logar pelo primeira vez.';
 $string['auth_mnet_roamin'] = 'Os usuários desse host podem passar para seu site.';

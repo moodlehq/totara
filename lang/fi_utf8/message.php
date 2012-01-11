@@ -1,5 +1,5 @@
 <?php
-// message.php - created with Totara langimport script version 1.0
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'Lisää kontakti';
 $string['addsomecontacts'] = 'Käytä <a href=\"$a\">hakutoimintoa</a> lähettääksesi viestin jollekin, tai lisätäksesi heidät tälle sivulle.';

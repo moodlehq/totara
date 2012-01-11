@@ -85,7 +85,7 @@ class filter_simpleselect extends filter_type {
             return ' 1=1 ';
         }
 
-        if ($this->_attributes['datatype'] == 'text') {
+        if (isset($this->_attributes['datatype']) && $this->_attributes['datatype'] == 'text') {
             return "$query = '$value'";
         } else {
             return "$query = $value";

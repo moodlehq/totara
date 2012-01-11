@@ -1,5 +1,5 @@
 <?php
-// message.php - created with Totara langimport script version 1.0
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'أضف عنوان أتصال';
 $string['addsomecontacts'] = 'لإرسال رسالة إلى شخص ما، أو أضافة اختصار له في هذه الصفحةأستخدم <a href=\"$a\">مؤشر البحث</a> أعلاة.';

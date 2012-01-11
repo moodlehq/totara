@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // scorm.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// scorm.php - created with Totara langimport script version 1.1
 
 $string['activation'] = 'הפעלה';
 $string['activityloading'] = 'תועבר חזרה אוטומטית לפעילות';
@@ -36,7 +35,9 @@ $string['coursestruct'] = 'מבנה קורס';
 $string['datadir'] = 'שגיאה במערכת הקבצים: לא ניתן ליצור ספריה שתכיל את נתוני הקורס.';
 $string['deleteallattempts'] = 'מחק את כל נסיונות ה-SCROM';
 $string['details'] = 'פרטי דוח המעקב';
+$string['direct'] = 'קישור ישיר';
 $string['directories'] = 'הראה את קישורי הסיפרייה';
+$string['directview'] = 'הפעל ישירות מהקורס';
 $string['display'] = 'הצג את החבילה';
 $string['displaydesc'] = 'מאפיין זה מגדיר את ברירת המחדל של הצגה או אי הצגה של החבילה עבור פעילות';
 $string['domxml'] = 'סיפריית DOMXML חיצונית';
@@ -82,10 +83,12 @@ $string['iframe'] = 'חלון נוכחי';
 $string['iframedisplay'] = 'פתח את החבילה בחלון הנוכחי';
 $string['incomplete'] = 'לא גמור';
 $string['interactions'] = 'הידברות';
+$string['invalidurl'] = 'הוגדר קישור לא תקף לפעילות קישור ישיר';
 $string['last'] = 'הושגה גישה בפעם האחרונה ב-';
 $string['lastaccess'] = 'כניסה אחרונה';
 $string['lastattempt'] = 'ניסיון מענה אחרון';
 $string['location'] = 'הראה את סרגל המיקום';
+$string['manifest'] = 'קובץ מניפסט';
 $string['max'] = 'תוצאה מירבית';
 $string['maximumattempts'] = 'מספר ניסיונות המענה';
 $string['maximumattemptsdesc'] = 'מאפיין זה מגדיר את ברירת מחדל המספר המירבי של נסיונות עבור פעילות';
@@ -124,6 +127,8 @@ $string['packagefile'] = 'לא צויין קובץ חבילה';
 $string['passed'] = 'עבר';
 $string['php5'] = 'PHP 5 (סיפרייה מקומית של DOMXML)';
 $string['popup'] = 'חלון חדש';
+$string['popupblocked'] = 'אם חלון חדש לא מופיע לחץ $a להפעיל את הפעילות';
+$string['popupblockedlinkname'] = 'כאן';
 $string['popupblockmessage'] = 'עם החלון הקופץ אינו מופיע, אנא אפשר חלונות קופצים בדפדפן.';
 $string['popupmenu'] = 'בתפריט רשימה גולשת';
 $string['popupopen'] = 'פתח חבילה בחלון חדש';
@@ -168,6 +173,7 @@ $string['toolbar'] = 'הראה את סרגל הכלים';
 $string['totaltime'] = 'זמן';
 $string['trackingloose'] = 'אזהרה: נתוני דוח המעקב של החבילה הזו יאבדו!';
 $string['type'] = 'סוג';
+$string['unpackmethod'] = 'שיטת פריסת קוסת';
 $string['unziperror'] = 'חלה טעות בעת פריסת הקובץ הדחוס';
 $string['updatefreq'] = 'תדירות העידכון האוטומטי';
 $string['updatefreqdesc'] = 'מאפיין זה מגדיר את ברירת מחדל תכיפות העדכון אוטומטי של הפעילות';
@@ -182,7 +188,5 @@ $string['whatgrade'] = 'הציון של ניסיונות המענה';
 $string['whatgradedesc'] = 'מאפיין זה מגדיר את ברירת המחדל של ניסיונות המענה לבוחן';
 $string['width'] = 'רוחב';
 $string['window'] = 'חלון';
-$string['popupblocked'] = 'אם חלון חדש לא מופיע לחץ $a להפעיל את הפעילות'; // ORPHANED
-$string['popupblockedlinkname'] = 'כאן'; // ORPHANED
 
 ?>

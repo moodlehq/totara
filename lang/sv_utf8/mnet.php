@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // mnet.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// mnet.php - created with Totara langimport script version 1.1
 
 $string['RPC_HTTPS_SELF_SIGNED'] = 'HTTPS (själv-signerad)';
 $string['RPC_HTTPS_VERIFIED'] = 'HTTPS (signerad)';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // algebra.php - created with Moodle 1.3 development (2004042600)
-
+<?php
+// algebra.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'الترقيم الجبري';
 

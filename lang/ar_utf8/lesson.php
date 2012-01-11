@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // lesson.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// lesson.php - created with Totara langimport script version 1.1
 
 $string['accesscontrol'] = 'تحكم الدخول';
 $string['actionaftercorrectanswer'] = 'العمل بعد الاجابة الصحيحة';
@@ -82,6 +81,7 @@ $string['displayreview'] = 'أعرض زر المراجعة';
 $string['displayscorewithessays'] = 'حصلت على $a->score من أصل $a->tempmaxgrade للأسئلة المُدرجة تلقائياً.<br />لديك $a->essayquestions سؤال(أسئلة) مقالي ستُدرج وتضاف <br /> لدرجتك النهائية في وقت لاحق .<br /><br />درجتك الحالية بدون السؤال(الأسئلة) المقالي هي $a->s من أصل $a->grade';
 $string['displayscorewithoutessays'] = 'نتيجتك هي  $a->score ( من أصل $a->grade) .';
 $string['edit'] = 'تحرير';
+$string['editlesson'] = 'حرر $a';
 $string['editlessonsettings'] = 'حرر إدادات الدرس';
 $string['editpagecontent'] = 'حرر محتوى الصفحة';
 $string['email'] = 'بريد الإلكتروني';
@@ -146,6 +146,7 @@ $string['linkedmedia'] = 'ربط الوسائط';
 $string['loginfail'] = 'فشلت عملية الدخول، اعد المحاولة';
 $string['lowscore'] = 'أقل درجة';
 $string['lowtime'] = 'أقل وقت';
+$string['mainmenu'] = 'القائمة الرئيسية';
 $string['manualgrading'] = 'اعطاء درجات للمقالات';
 $string['matchesanswer'] = 'طابق مع الاجابة';
 $string['maxhighscores'] = 'عدد أعلى درجات معروض';
@@ -206,6 +207,7 @@ $string['or'] = 'أو';
 $string['ordered'] = 'رتب';
 $string['other'] = 'أخر';
 $string['outof'] = 'من $a';
+$string['outoftime'] = 'أنتهى الوقت';
 $string['overview'] = 'عرض عام';
 $string['page'] = 'صفحة: $a';
 $string['pagecontents'] = 'محتويات الصفحة';
@@ -238,6 +240,7 @@ $string['redisplaypage'] = 'إعادة عرض الصفحة';
 $string['report'] = 'تقرير';
 $string['reports'] = 'تقارير';
 $string['response'] = 'إجابة';
+$string['returnmainmenu'] = 'العودة إلى القائمة الرئيسية';
 $string['returnto'] = 'العودة الى $a';
 $string['returntocourse'] = 'العودة إلى المنهج الدراسي';
 $string['review'] = 'مراجعة';
@@ -301,9 +304,5 @@ $string['youranswer'] = 'إجابتك';
 $string['yourcurrentgradeis'] = 'درجتك الحالية هي $a';
 $string['yourcurrentgradeisoutof'] = 'درجتك الحالية هي $a->grade من أصل $a->total';
 $string['youshouldview'] = 'على الأقل يمكنك مشاهدة $a';
-$string['editlesson'] = 'حرر $a'; // ORPHANED
-$string['mainmenu'] = 'القائمة الرئيسية'; // ORPHANED
-$string['outoftime'] = 'أنتهى الوقت'; // ORPHANED
-$string['returnmainmenu'] = 'العودة إلى القائمة الرئيسية'; // ORPHANED
 
 ?>

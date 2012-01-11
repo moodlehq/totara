@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // lesson.php - created with Moodle 1.8.2+ (2007021520)
-
+<?php
+// lesson.php - created with Totara langimport script version 1.1
 
 $string['accesscontrol'] = 'Control de acceso';
 $string['actionaftercorrectanswer'] = 'Acción posterior a la respuesta correcta';
@@ -82,6 +81,7 @@ $string['displayreview'] = 'Mostrar botón Revisar';
 $string['displayscorewithessays'] = 'Usted ha obtenido una puntuación de $a->score sobre $a->tempmaxgrade en las preguntas calificadas automáticamente.<br>La(s) $a->essayquestions pregunta(s) de su ensayo serán calificadas y añadidas<br>a su calificación final en una fecha posterior.<br><br>Su calificación actual sin contar esa(s) pregunta(s) es de is $a->score sobre $a->grade';
 $string['displayscorewithoutessays'] = 'Su puntuación es $a->score (sobre $a->grade).';
 $string['edit'] = 'Edición';
+$string['editlesson'] = 'Editar $a';
 $string['editlessonsettings'] = 'Editar los ajustes de Esta lección';
 $string['editpagecontent'] = 'Editar el contenido de esta página';
 $string['email'] = 'Email';
@@ -179,6 +179,7 @@ $string['nobranchtablefound'] = 'No se ha encontrado tabla de ramas';
 $string['nocommentyet'] = 'Aún no comentado.';
 $string['nocoursemods'] = 'No se encuentran actividades';
 $string['nocredit'] = 'No crédito';
+$string['nodeadline'] = 'No fecha límite';
 $string['noessayquestionsfound'] = 'No se encuentran preguntas de ensayo en esta lección.';
 $string['nohighscores'] = 'No puntuaciones más altas';
 $string['nolessonattempts'] = 'No se han hecho intentos de practicar esta lección.';
@@ -205,6 +206,7 @@ $string['or'] = 'O';
 $string['ordered'] = 'Ordenado';
 $string['other'] = 'Otro';
 $string['outof'] = 'Fuera de $a';
+$string['outoftime'] = 'Fuera de tiempo';
 $string['overview'] = 'Revisión';
 $string['page'] = 'Página: $a';
 $string['pagecontents'] = 'Contenido de la página';
@@ -262,6 +264,7 @@ $string['startlesson'] = 'Comenzar lección';
 $string['studentattemptlesson'] = 'Intento número $a->attempt de $a->lastname, $a->firstname';
 $string['studentname'] = '$a Nombre';
 $string['studentoneminwarning'] = 'Atención: Le queda 1 minuto o menos para terminar la lección.';
+$string['studentoutoftime'] = 'Atención: Ha sobrepasado el límite de esta lección. Su última respuesta no cuenta porque ha sido dada fuera de tiempo. Por favor, pulse en el botón Continuar para terminar la lección.';
 $string['studentresponse'] = 'comentario de {$a}';
 $string['submitname'] = 'Enviar nombre';
 $string['teacherjumpwarning'] = 'Un salto $a->cluster o $a->unseen se está usando en esta lección. En su lugar se usará el salto a la página siguiente. Entre como estudiante para probar estos saltos.';
@@ -300,9 +303,5 @@ $string['youranswer'] = 'Su respuesta';
 $string['yourcurrentgradeis'] = 'Su calificación actual es $a';
 $string['yourcurrentgradeisoutof'] = 'Su calificación actual es $a->grade sobre $a->total';
 $string['youshouldview'] = 'Usted debería ver como mínimo: $a';
-$string['outoftime'] = 'Fuera de tiempo'; // ORPHANED
-$string['studentoutoftime'] = 'Atención: Ha sobrepasado el límite de esta lección. Su última respuesta no cuenta porque ha sido dada fuera de tiempo. Por favor, pulse en el botón Continuar para terminar la lección.'; // ORPHANED
-$string['editlesson'] = 'Editar $a'; // ORPHANED
-$string['nodeadline'] = 'No fecha límite';
 
 ?>

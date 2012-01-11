@@ -39,6 +39,11 @@ class mod_scorm_mod_form extends moodleform_mod {
         $mform->addRule('reference', get_string('required'), 'required');
         $mform->setHelpButton('reference',array('package', get_string('package', 'scorm'), 'scorm'));
 
+        // Unpacking type - a direct activity or package with Manifest
+        $mform->addElement('select', 'unpackmethod', get_string('unpackmethod', 'scorm'), array('manifest' => get_string('manifest', 'scorm'), 'aiccdirect' => get_string('direct', 'scorm')));
+        $mform->setHelpButton('unpackmethod', array('unpackmethod',get_string('unpackmethod', 'scorm'), 'scorm'));
+        $mform->setAdvanced('unpackmethod');
+
 //-------------------------------------------------------------------------------
 // Other Settings
         $mform->addElement('header', 'advanced', get_string('othersettings', 'form'));
@@ -98,7 +103,7 @@ class mod_scorm_mod_form extends moodleform_mod {
         $mform->addElement('text', 'width', get_string('width','scorm'),'maxlength="5" size="5"');
         $mform->setDefault('width', $CFG->scorm_framewidth);
         $mform->setType('width', PARAM_INT);
-        
+
 // Height
         $mform->addElement('text', 'height', get_string('height','scorm'),'maxlength="5" size="5"');
         $mform->setDefault('height', $CFG->scorm_frameheight);
@@ -180,6 +185,9 @@ class mod_scorm_mod_form extends moodleform_mod {
 
     function data_preprocessing(&$default_values) {
         global $COURSE;
+        if (isset($default_values['directview']) && $default_values['directview'] == 1) {
+            $default_values['popup'] = 2;
+        }
 
         if (isset($default_values['popup']) && ($default_values['popup'] == 1) && isset($default_values['options'])) {
             if (!empty($default_values['options'])) {
@@ -187,7 +195,7 @@ class mod_scorm_mod_form extends moodleform_mod {
                 foreach ($options as $option) {
                     list($element,$value) = explode('=',$option);
                     $element = trim($element);
-                    $default_values[$element] = trim($value); 
+                    $default_values[$element] = trim($value);
                 }
             }
         }
@@ -233,12 +241,31 @@ class mod_scorm_mod_form extends moodleform_mod {
             $default_values['completionscoredisabled'] = 1;
         }
 
+        // set default unpackmethod
+        if (!isset($default_values['unpackmethod']) || !strlen($default_values['unpackmethod'])) {
+            $default_values['unpackmethod'] = 'manifest';
+        }
+
     }
 
     function validation($data, $files) {
         $errors = parent::validation($data, $files);
 
-        $validate = scorm_validate($data);
+        $validate = (object) array('errors' => array(), 'result' => false);
+        // only validate the package if it is specified as type manifest
+        if (isset($data['unpackmethod']) && $data['unpackmethod'] == 'manifest') {
+            $validate = scorm_validate($data);
+        }
+        else {
+            // is this a valid URL for a reference
+            $clean = clean_param($data['reference'], PARAM_URL);
+            if (empty($clean)) {
+                $validate->errors['reference'] = get_string('invalidurl','scorm');
+            }
+            else {
+                $validate->result = true;
+            }
+        }
 
         if (!$validate->result) {
             $errors = $errors + $validate->errors;

@@ -24,12 +24,13 @@
  */
 
 function xmldb_coursereport_completion_upgrade($oldversion) {
+    global $CFG;
 
     $result = true;
 
     if ($oldversion < 2011032901) {
 
-        $managerroleid = get_field('role', 'id', 'shortname', 'manager');
+        $managerroleid = $CFG->managerroleid;
 
         if ($managerroleid) {
             $result = $result && assign_capability(

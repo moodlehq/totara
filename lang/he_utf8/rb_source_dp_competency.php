@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_dp_competency.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// rb_source_dp_competency.php - created with Totara langimport script version 1.1
 
 $string['competencyduedate'] = 'תאריך יעד של הכשירות';
 $string['competencyname'] = 'שם הכשירות';
@@ -9,6 +8,8 @@ $string['competencyproficiency'] = 'רמת ידע בכשירות';
 $string['competencyproficiencyandapproval'] = 'רמת ידע בכשירות (וסטטוס אישור)';
 $string['competencyproficient'] = 'בעל רמת ידע טובה בכשירות?';
 $string['competencystatus'] = 'סטטוס הכשירויות';
+$string['competencytype'] = 'סוג כשירות';
+$string['competencytypeid'] = 'קוד סוג כשירות';
 $string['courses'] = 'קורסים';
 $string['coursetypeicon'] = 'סוג';
 $string['duedate'] = 'תאריך יעד';

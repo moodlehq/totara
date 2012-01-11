@@ -1,6 +1,5 @@
-<?PHP // $Id: portfolio.php,v 1.8 2009/06/30 12:57:18 ralf-bonn Exp $ 
-      // portfolio.php - created with Moodle 2.0 dev (Build: 20090409) (2009040100)
-
+<?php
+// portfolio.php - created with Totara langimport script version 1.1
 
 $string['activeexport'] = 'Aktiven Export abbrechen';
 $string['activeportfolios'] = 'Aktive Portfolios';
@@ -42,6 +41,7 @@ $string['failedtosendpackage'] = 'Fehler beim Senden Ihrer Daten an das gewählt
 $string['filedenied'] = 'Kein Zugriff zu dieser Datei';
 $string['filenotfound'] = 'Datei nicht gefunden';
 $string['format_file'] = 'Datei';
+$string['format_html'] = 'HTML';
 $string['format_image'] = 'Bild';
 $string['format_mbkp'] = 'Moodle-Sicherung';
 $string['format_plainhtml'] = 'HTML';
@@ -120,6 +120,5 @@ $string['unknownplugin'] = 'Unbekannt (u.U. von Admin inzwischen entfernt)';
 $string['wait'] = 'Warten';
 $string['wanttowait_high'] = 'Es ist nicht empfehlenswert abzuwarten, bis der Transfer angeschlossen ist. Sie können es jedoch tun, wenn Sie wissen was Sie tun.';
 $string['wanttowait_moderate'] = 'Möchten Sie auf das Ende dieser Übertragung warten? Dies könnte noch ein paar Minuten dauern...';
-$string['format_html'] = 'HTML'; // ORPHANED
 
 ?>

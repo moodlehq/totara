@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_internal.php - created with Moodle 1.4.1 (2004083101)
-
+<?php
+// enrol_internal.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Modalidade padrão de inscrição. Existem dois modos principais para a inscrição de um estudante em um curso.
 <ul>
@@ -10,4 +9,3 @@ $string['description'] = 'Modalidade padrão de inscrição. Existem dois modos 
 $string['enrolname'] = 'Inscrição interna';
 
 ?>
-

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_online_users.php - created with Moodle 2.0 dev (Build: 20081209) (2008120801)
-
+<?php
+// block_online_users.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Online-Aktivitäten';
 $string['configtimetosee'] = 'Wartezeit in Minuten, nach der inaktive Nutzer/innen nicht mehr in der Liste angezeigt werden.';

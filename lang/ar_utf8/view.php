@@ -1,5 +1,5 @@
 <?php
-// view.php - created with Totara langimport script version 1.0
+// view.php - created with Totara langimport script version 1.1
 
 $string['error:courseid'] = 'رمز المقرر الدراسي غير صالح';
 $string['error:idnumber'] = 'رقم رمز المقرر الدراسي غير صالح';

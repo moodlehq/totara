@@ -1,5 +1,5 @@
-<?PHP // $Id$
-      // Modified with langdiff.php
+<?php
+// enrol_authorize.php - created with Totara langimport script version 1.1
 
 $string['anlogin'] = 'Authorize.net: Käyttäjänimi';
 $string['anpassword'] = 'Authorize.net: Salasana';
@@ -23,4 +23,5 @@ Tämän valinnan käyttö käskee Moodlea käyttämään turvattua https-yhteytt
 $string['nameoncard'] = 'Kortin nimi';
 $string['sendpaymentbutton'] = 'Lähetä maksu';
 $string['zipcode'] = 'Postinumero';
+
 ?>

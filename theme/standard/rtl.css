@@ -310,7 +310,7 @@ body#user-index table#participants td, body#user-index table#participants th {
 
 /* backup_sche_hour */
 
-form.mform div.felement, form.mform fieldset.felement {
+.mform div.felement, .mform fieldset.felement {
     float: right;
     text-align: right;
     margin-right: 10px;
@@ -346,9 +346,9 @@ body#mod-quiz-report table#attempts .header {
     text-align: right;
 }
 
-form.mform .fitemtitle {
+.mform .fitemtitle {
     float: right;
-    text-align: left;
+    text-align: right;
     margin-right: 10px;
 	margin-left: 0px;
 }
@@ -571,4 +571,244 @@ body.course h3.main {
 
 p.course-prog-alt-view {
     float: left;
+}
+
+/**
+ * Completion progress bars
+ **/
+div.mycourses td.status span,
+span.coursecompletionstatus span,
+div.block_totara_recent_learning td.status span {
+    display: block;
+    width: 39px;
+    height: 12px;
+    background: transparent url(images/progress-icons-rtl.png) no-repeat;
+}
+
+div.mycourses td.status span.completion-inprogress,
+span.coursecompletionstatus span.completion-inprogress,
+div.block_totara_recent_learning td.status span.completion-inprogress {
+    background-position: 0px -12px;
+}
+
+div.mycourses td.status span.completion-complete,
+div.mycourses td.status span.completion-completeviarpl,
+span.coursecompletionstatus span.completion-complete,
+span.coursecompletionstatus span.completion-completeviarpl,
+div.block_totara_recent_learning td.status span.completion-complete,
+div.block_totara_recent_learning td.status span.completion-completeviarpl {
+    background-position: 0px -24px;
+}
+
+/* Framework picker in hierarchy items */
+.hierarchyframeworkpicker {
+  text-align:left;
+}
+
+/*
+ * RTL support for hierarchies
+ */
+table.hierarchy-index .customfield {
+    width: 200px;
+    font-size: 85%;
+    float: right;
+}
+table.hierarchy-index .depth1 {
+    background-position: right top;
+    margin-right: 5px;
+    margin-left: 0px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth2 {
+    background-position: right top;
+    margin-right: 35px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth3 {
+    background-position: right top;
+    margin-right: 65px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth4 {
+    background-position: right top;
+    margin-right: 95px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth5 {
+    background-position: right top;
+    margin-right: 125px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth6 {
+    background-position: right top;
+    margin-right: 155px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth7 {
+    background-position: right top;
+    margin-right: 185px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth8 {
+    background-position: right top;
+    margin-right: 215px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth9 {
+    background-position: right top;
+    margin-right: 245px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+table.hierarchy-index .depth10 {
+    background-position: right top;
+    margin-right: 275px;
+    margin-left: 0px;
+    padding-right: 20px;
+}
+
+/* Course completion checkbox */
+#course-view li.activity form.togglecompletion,
+#course-view li.activity span.autocompletion {
+    float:left;
+}
+
+/* Program display */
+#program-content .nextsetoperator .operator-or,
+#program-content .nextsetoperator .operator-then,
+#view-program-content .nextsetoperator .operator-or,
+#view-program-content .nextsetoperator .operator-then{
+    float: right;
+}
+
+#program-content .nextsetoperator .nextsethelp,
+#view-program-content .nextsetoperator .nextsethelp {
+    float:right;
+}
+
+#program-content .nextsetoperator img,
+#view-program-content .nextsetoperator img{
+    float:right;
+}
+
+div.prog-course-launch {
+    float: left;
+}
+
+/************/
+/* Programs */
+/************/
+
+#programstatus img {
+    float: right;
+    padding-left: 5px;
+}
+
+#edit-program-content #programcontent legend,
+#program-assignments #programassignments legend,
+#program-messages #programmessages legend,
+#program-exceptions #programexceptions legend{
+    padding: 6px 46px 6px 6px;
+    margin: 0px;
+}
+
+#edit-program-content #programcontent #course_sets legend,
+#program-assignments #programassignments #assignment_categories legend,
+#program-messages #programmessages #messages legend{
+    padding-right:5px;
+}
+
+#edit-program-content #programcontent p,
+#program-assignments #programassignments p,
+#program-messages #programmessages p,
+#program-exceptions #programexceptions p{
+    padding-right:5px;
+}
+
+#program-assignments #programassignments #assignment_categories a {
+    float: left;
+}
+
+#assignment_categories .assignment_category td.col3{
+	text-align:left;
+}
+
+
+.local-program fieldset.course_set .setbuttons,
+.local-program fieldset .messagebuttons{
+    text-align: left;
+}
+
+.local-program fieldset .setbuttons input,
+.local-program fieldset .messagebuttons input{
+    text-align:right;
+    padding-left: 18px;
+    padding-right: 6px;
+}
+
+.local-program fieldset.course_set .flabel,
+.local-program fieldset.message .flabel,
+.local-program fieldset.course_set .fitem,
+.local-program fieldset.message .fitem{
+    float:right;
+}
+
+.local-program fieldset.course_set div.courselist {
+    clear:right;
+}
+
+.local-program fieldset.course_set .coursedeletelink .delete_item,
+.local-program fieldset.course_set .course_item{
+    padding: 6px 20px 6px 0px;
+}
+
+.local-program fieldset.course_set .delete_item a {
+    float: left;
+}
+
+.local-program fieldset.course_set .course_table .course{
+    padding-left: 0px;
+    padding-right: 10px;
+}
+
+.local-program fieldset.course_set .course_table .action{
+    padding-left:15px;
+    padding-right:0px;
+}
+
+.local-program fieldset.course_set .courseadder{
+    margin-left: 0px;
+    margin-right: 78px;
+}
+
+.total_user_count {
+    text-align: left;
+    padding-left: 0px;
+    padding-right: 6px;
+}
+
+.overall_total {
+    text-align: left;
+}
+
+.local-program #programexceptions .exceptionactions div{
+    float:right;
+    padding-right:0px;
+    padding-left:5px;
+}
+
+div#prog-completion-fixed-date {
+    float: right;
+}
+
+div#prog-completion-relative-date {
+    float: right;
 }

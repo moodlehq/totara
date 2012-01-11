@@ -1,5 +1,4 @@
 <?php
-include $CFG->dirroot.'/lib/tcpdf/tcpdfprotection.php';
 require_once($CFG->dirroot.'/lib/tcpdf/config/lang/eng.php');
 include $CFG->dirroot.'/lib/tcpdf/tcpdf.php';
 
@@ -102,12 +101,12 @@ if (!empty($certificate->coursename)) {
     $classname = $certificate->coursename;
 }
 
-//Create new PDF document 
+//Create new PDF document
 
-    $pdf = new TCPDF_Protection('P', 'pt', 'A4', true); 
+    $pdf = new TCPDF('P', 'pt', 'A4', true);
     $pdf->SetProtection(array('print'));
-    $pdf->print_header = false;
-    $pdf->print_footer = false;
+    $pdf->setPrintHeader = false;
+    $pdf->setPrintFooter = false;
     $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
     $pdf->setLanguageArray($l); //set language items
     $pdf->AddPage();

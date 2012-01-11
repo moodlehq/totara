@@ -47,7 +47,7 @@ require_login();
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
 admin_externalpage_setup('reportspamcleaner');
 
-// Implement some AJAX calls
+// Implement some AJAX calls 
 
 // Delete one user
 if (!empty($del) && confirm_sesskey() && !empty($id) && ($id != $USER->id)) {
@@ -103,7 +103,7 @@ print_box_start();     // The forms section at the top
 
 <form method="post" action="index.php">
   <div>
-    <input type="text" name="keyword" id="keyword_el" value="<?php p($keyword) ?>" />
+    <input type="text" name="keyword" id="keyword_el" value="<?php p($keyword) ?>" /> 
     <input type="hidden" name="sesskey" value="<?php echo sesskey();?>" />
     <input type="submit" value="<?php echo get_string('spamsearch', 'report_spamcleaner')?>" />
   </div>
@@ -122,7 +122,7 @@ print_box_start();     // The forms section at the top
 </div>
 
 <?php
-print_box_end();
+print_box_end(); 
 
 echo '<div id="result" class="mdl-align">';
 
@@ -144,12 +144,12 @@ echo '</div>';
 /////////////////////////////////////////////////////////////////////////////////
 
 
-///  Functions
+///  Functions 
 
 
 function search_spammers($keywords) {
 
-    global $CFG, $USER;
+    global $CFG, $USER; 
 
     if (!is_array($keywords)) {
         $keywords = array($keywords);    // Make it into an array
@@ -308,7 +308,7 @@ function init() {
     YAHOO.util.Event.addListener("removeall_btn", "click", function(){
         var yes = confirm('<?php echo get_string('spamdeleteallconfirm', 'report_spamcleaner');?>');
         if(yes){
-            var cObj = YAHOO.util.Connect.asyncRequest('POST', '<?php echo me();?>?delall=yes&sesskey=<?php echo $sesskey;?>', delall_cb);
+            var cObj = YAHOO.util.Connect.asyncRequest('POST', '<?php echo me();?>?delall=yes&sesskey=<?php echo $sesskey;?>', delall_cb); 
         }
     });
 }
@@ -356,18 +356,18 @@ function del_user(obj, id) {
     var yes = confirm('<?php echo get_string('spamdeleteconfirm', 'report_spamcleaner');?>');
     if(yes){
         row = obj;
-        var cObj = YAHOO.util.Connect.asyncRequest('POST', '<?php echo me();?>?del=yes&sesskey=<?php echo $sesskey;?>&id='+id, del_cb);
+        var cObj = YAHOO.util.Connect.asyncRequest('POST', '<?php echo me();?>?del=yes&sesskey=<?php echo $sesskey;?>&id='+id, del_cb); 
     }
 }
 function ignore_user(obj, id) {
     row = obj;
-    var cObj = YAHOO.util.Connect.asyncRequest('POST', '<?php echo me();?>?ignore=yes&sesskey=<?php echo $sesskey;?>&id='+id, ignore_cb);
+    var cObj = YAHOO.util.Connect.asyncRequest('POST', '<?php echo me();?>?ignore=yes&sesskey=<?php echo $sesskey;?>&id='+id, ignore_cb); 
 }
 YAHOO.util.Event.onDOMReady(init);
 //]]>
 </script>
 
-<?php
+<?php 
 }
 
 admin_externalpage_print_footer();

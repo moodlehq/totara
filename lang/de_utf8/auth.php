@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // auth.php - created with Moodle 2.0 dev (Build: 20100220) (2010021900)
-
+<?php
+// auth.php - created with Totara langimport script version 1.1
 
 $string['CASform'] = 'Wahl der Authentifizierung';
 $string['accesCAS'] = 'CAS-Nutzer/innen';
@@ -14,6 +13,11 @@ $string['auth_cas_baseuri_key'] = 'Basis URI';
 $string['auth_cas_broken_password'] = 'Sie müssen zunächst Ihr Kennwort ändern. Falls dafür keine Seite verfügbar ist, nehmen Sie bitte mit dem Admin Kontakt auf.';
 $string['auth_cas_cantconnect'] = 'LDAP-Teil des CAS-Moduls kann keine Verbindung mit dem Server herstellen: $a';
 $string['auth_cas_casversion'] = 'Version';
+$string['auth_cas_certificate_check'] = 'Diese Einstellung auf \"Ja\" setzen, falls die Serverzertifikate validiert werden sollen';
+$string['auth_cas_certificate_check_key'] = 'Servervalidierung';
+$string['auth_cas_certificate_path'] = 'Pfad der CA chain Datei (PEM Format) für Serverzertifizierung';
+$string['auth_cas_certificate_path_empty'] = 'Wenn Servervalidierung eingeschaltet ist muss eine Pfad angegeben werden';
+$string['auth_cas_certificate_path_key'] = 'Zertifikat Pfad';
 $string['auth_cas_changepasswordurl'] = 'URL zur Kennwortänderung';
 $string['auth_cas_create_user'] = 'Aktivieren Sie die Einstellung, um CAS authentifizierte Nutzer/innen in die Moodle-Datenbank einzufügen. Wenn nicht, können sich nur die Nutzer/innen einloggen, die in der Moodle-Datenbank eingetragen sind.';
 $string['auth_cas_create_user_key'] = 'Nutzer anlegen';
@@ -238,6 +242,12 @@ $string['auth_ntlmsso_subnet_key'] = 'Subnet';
 $string['auth_outofnewemailupdateattempts'] = 'Sie haben die zulässige Zahl der Versuche zur Aktualisierung Ihrer E-Mail-Adresse überschritten. Der Änderungsvorgang wurde abgebrochen.';
 $string['auth_pamdescription'] = 'Diese Methode verwendet PAM (Pluggable Authentication Modules), um auf die richtigen Nutzernamen auf dem Server zuzugreifen. Sie müssen hierzu <a href=\"http://www.math.ohio-state.edu/~ccunning/pam_auth/\" target=\"_blank\">PHP4 PAM Authentication</a> installieren, um das Modul nutzen zu können.';
 $string['auth_pamtitle'] = 'PAM Authentifizierung';
+$string['auth_passchangedays'] = 'Zeitraum nach dem Passwort abläuft (Tage)';
+$string['auth_passchangedayshelp'] = 'Maximale Anzahl der Tage für die Benutzer das gleiche Passwort nutzen können';
+$string['auth_passexpiration'] = 'Passwortablauf';
+$string['auth_passexpirationhelp'] = 'Angabe ob ein Passwort vom Benutzer geändert werden muss nachdem es abgelaufen ist.';
+$string['auth_passexpirationwarning'] = 'Passwortänderungshinweis (Tage)';
+$string['auth_passexpirationwarninghelp'] = 'Anzahl der Tage vor dem Passwortablauf, in denen die Warnung zum Passwortwechsel angezeigt wird.';
 $string['auth_passwordisexpired'] = 'Ihr Kennwort ist abgelaufen. Wollen Sie Ihr Kennwort jetzt aktualisieren?';
 $string['auth_passwordwillexpire'] = 'Ihr Kennwort wird in $a Tagen ablaufen. Wollen Sie Ihr Kennwort nun aktualisieren?';
 $string['auth_pop3changepasswordurl_key'] = 'URL zur Kennwortänderung';
@@ -314,6 +324,7 @@ $string['auth_usernameexists'] = 'Der ausgewählte Anwendername existiert bereit
 $string['auth_webservicedescription'] = 'Manuell erzeugte Konten für Web-Services';
 $string['auth_webservicetitle'] = 'Web-Services';
 $string['authenticationoptions'] = 'Authentifizierungsoptionen';
+$string['authforcedchangeinstructions'] = 'Instruktionen, die angeben was Benutzer zu tun haben, wenn sie aufgefordert werden ein neues Passwort zu wählen.';
 $string['authinstructions'] = 'Hier können Sie Ihren Nutzern Anweisungen geben, welche Nutzernamen und Kennworte sie verwenden sollen. Der eingegebene Text erscheint auf der Anmeldeseite. Wenn Sie nichts eingeben, werden keine Anweisungen angezeigt.';
 $string['auto_add_remote_users'] = 'Automatisches Hinzufügen externer Nutzer';
 $string['changepassword'] = 'URL zur Kennwortänderung';
@@ -327,11 +338,13 @@ $string['errorminpassworddigits'] = 'Kennworte müssen mindestens $a Ziffer(n) e
 $string['errorminpasswordlength'] = 'Kennworte müssen mindestens $a Zeichen lang sein';
 $string['errorminpasswordlower'] = 'Kennworte müssen mindestens $a Kleinbuchstaben enthalten';
 $string['errorminpasswordnonalphanum'] = 'Kennworte müssen mindestens $a Sonderzeichen enthalten, z.B. :#_!§-%%&*+?@.';
+$string['errorminpasswordthreeoffour'] = 'Das Passwort muss 3 der folgenden 4 Kriterien erfüllen:';
 $string['errorminpasswordupper'] = 'Kennworte müssen mindestens $a Großbuchstaben enthalten.';
 $string['errorpasswordupdate'] = 'Fehler: Kennwort konnte nicht geändert werden!';
 $string['forcechangepassword'] = 'Verbindliche Kennwortänderung';
 $string['forcechangepassword_help'] = 'Nutzer werden aufgefordert, ihr Kennwort beim nächsten Login zu ändern';
 $string['forcechangepasswordfirst_help'] = 'Nutzer werden aufgefordert, ihr Kennwort beim ersten Login zu ändern';
+$string['forcedchangeinstructions'] = 'Anleitung für Aufforderungen';
 $string['forgottenpassword'] = 'Wenn Sie außerhalb von Moodle eine Seite angelegt haben, mit der Nutzer/innen vergessene Kennwörter anfordern können, dann tragen Sie die URL hier ein. 
 Lassen Sie das Feld leer, damit die Standardseite von moodle für diesen Zweck genutzt wird.';
 $string['forgottenpasswordurl'] = 'URL für vergessene Kennworte';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_glossary_random.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2005041101)
-
+<?php
+// block_glossary_random.php - created with Totara langimport script version 1.1
 
 $string['addentry'] = 'L&auml;gg till Dina egna favoritcitat!';
 $string['askaddentry'] = 'Om studenter/elever/deltagare/l&auml;rande har r&auml;tt att l&auml;gga till egna inl&auml;gg i ord- och begreppslistan s&aring; kommer en l&auml;nk till ord- och begreppslistan att visas i den f&ouml;ljande texten.';

@@ -1,7 +1,7 @@
-<?PHP // $Id$ 
-      // position.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
+<?php
+// position.php - created with Totara langimport script version 1.1
 
-
+$string['adddepthlevel'] = 'הוסף רמת עומק חדשה';
 $string['addedframework'] = 'מסגרת התפקיד \"{$a}\" נוספה';
 $string['addedposition'] = 'התפקיד \"{$a}\" נוסף';
 $string['addmultiplenewposition'] = 'הוסף תפקידים מרובים';
@@ -18,11 +18,16 @@ $string['competencyassigndeletecheck'] = 'האם אתה בטוח שברצונך 
 $string['createtype'] = 'סוג התפקיד \"{$a}\" נוצר';
 $string['currentlyselected'] = 'כרגע נבחר';
 $string['deletecheck'] = 'האם אתה בטוח שברצונך למחוק תפקיד זה, כולל תתי התפקידים וכל הנתונים שהם כוללים?';
+$string['deletecheck11'] = 'האם אתה בטוח שברצונך למחוק תפקיד זה \"$a\"?
+<br /><br />
+פעולה זו תסיר את הנתונים הבאים:<br />
+- התפקיד \"$a\"';
 $string['deletecheckframework'] = 'האם אתה בטוח שברצונך למחוק את המסגרת \"$a\"?';
 $string['deletecheckwithchildren'] = 'האם אתה בטוח שברצונך למחוק את התפקיד \"$a->itemname\" ואת כל $a->children_string שלו?<br /><br />
 פעולה זו תסיר את המידע הבא: <br />
 - התפקיד \"$a->itemname\" ואת $a->childcount $a->children_string שלו';
 $string['deletedassignedcompetency'] = 'הקצאת הכשירות הוסרה בהצלחה מתפקיד זה';
+$string['deletedepth'] = 'מחק $a';
 $string['deletedframework'] = 'מסגרת תפקיד $a והנתונים שלה נמחקו לחלוטין';
 $string['deletedposition'] = 'תפקיד $a ותתי התפקידים נמחקו לחלוטין';
 $string['deletedtype'] = 'סוג התפקיד \"{$a}\" נמחק לחלוטין';
@@ -35,12 +40,17 @@ $string['deletemulticheckwithchildren'] = 'האם אתה בטוח שברצונך
 - $a->num תפקידים ואת $a->childcount $a->children_string';
 $string['deleteposition'] = 'מחק תפקיד';
 $string['deletetype'] = 'מחק סוג \"{$a}\"';
+$string['depthlevel'] = 'רמת עומק';
+$string['depthlevels'] = 'רמות עומק';
+$string['depths'] = 'עומק';
 $string['descriptionview'] = 'תיאור $a';
+$string['editdepthlevel'] = 'ערוך רמת עומק';
 $string['editframework'] = 'ערוך מסגרת תפקיד';
 $string['editgeneric'] = 'ערוך $a';
 $string['editposition'] = 'ערוך תפקיד';
 $string['edittype'] = 'ערוך סוג';
 $string['entervaliddate'] = 'הקלד תאריך תקף';
+$string['error:addposition'] = 'הייתה בעייה בהוספת התפקיד \"{$a}\"';
 $string['error:createtype'] = 'שגיאה ביצירת סוג תפקיד \"{$a}\"';
 $string['error:dateformat'] = 'נא להקליד תאריך בפורמט dd/mm/yyyy.';
 $string['error:deleteassignedcompetency'] = 'שגיאה בביטול שיוך כשירות לתפקיד זה';
@@ -49,6 +59,7 @@ $string['error:deletedtype'] = 'שגיאה במחיקת תפקיד \"{$a}\".';
 $string['error:dialognotreeitems'] = 'אין תפקידים במסגרת זו';
 $string['error:positionnotset'] = 'לא הוגדר תפקיד למשתמש זה';
 $string['error:startafterfinish'] = 'תאריך תחילה לא יכול להיות מאוחר מתאריך סיום';
+$string['error:updateposition'] = 'הייתה בעייה בעדכון התפקיד \"{$a}\"';
 $string['error:updatetype'] = 'שגיאה בעדכון סוג תפקיד \"{$a}\"';
 $string['error:userownmanager'] = 'משתמש לא יכול להיות מוגדר כמנהל של עצמו';
 $string['featureplural'] = 'תפקידים';
@@ -57,6 +68,7 @@ $string['finishdatehint'] = '&nbsp;<b>פורמט:</b> dd/mm/yyyy';
 $string['framework'] = 'מסגרת תפקיד';
 $string['frameworks'] = 'מסגרות';
 $string['fullname'] = 'שם מלא של התפקיד';
+$string['fullnamedepth'] = 'שם מלא של רמת עומק';
 $string['fullnameframework'] = 'שם מלא';
 $string['fullnametype'] = 'שם מלא של סוג';
 $string['fullnameview'] = 'שם מלא';
@@ -64,20 +76,27 @@ $string['idnumber'] = 'מספר זיהוי תפקיד';
 $string['idnumberframework'] = 'מספר זיהוי';
 $string['idnumberview'] = 'מספר זיהוי';
 $string['invalidnumeric'] = 'ערך מספרי חייב להיות מספרי (או ריק)';
+$string['itemstoadd'] = 'פריטים להוספה';
 $string['manageposition'] = 'נהל תפקידים';
 $string['managepositions'] = 'נהל תפקידים';
 $string['managepositiontypes'] = 'נהל סוגים';
 $string['manager'] = 'מנהל';
+$string['missingfullname'] = 'חסר שם מלא של תפקיד';
+$string['missingfullnamedepth'] = 'חסר שם מלא של רמת עומק';
+$string['missingfullnameframework'] = 'חסר שם מלא של מסגרת';
 $string['missingfullnametype'] = 'חסר שם מלא של סוג';
 $string['missingname'] = 'חסר שם תפקיד';
 $string['missingnameframework'] = 'חסר שם מסגרת תפקיד';
 $string['missingnametype'] = 'חסר שם סוג תפקיד';
 $string['missingshortname'] = 'חסר שם קצר של תפקיד';
+$string['missingshortnamedepth'] = 'חסר שם קצר של רמת עומק';
 $string['missingshortnameframework'] = 'חסר שם קצר של מסגרת';
 $string['missingshortnametype'] = 'חסר שם קצר של סוג';
 $string['name'] = 'שם';
 $string['nocompetenciesassignedtoposition'] = 'לא הוקצו כשירויות לתפקיד';
+$string['nodepthlevels'] = 'אין רמות עומק למסגרת זו';
 $string['noframeworks'] = 'אין מסגרות תפקיד זמינות';
+$string['noframeworkssetup'] = 'אין מסגרות תפקידים שהוקמו באתר זה.';
 $string['noposition'] = 'לא הוגדרו תפקידים';
 $string['nopositionsassigned'] = 'לא הוגדרו תפקידים למשתמש זה';
 $string['nopositionset'] = 'לא הוגדר תפקיד';
@@ -90,7 +109,9 @@ $string['organisation'] = 'ארגון';
 $string['parent'] = 'תפקיד אב';
 $string['position'] = 'תפקיד';
 $string['positionaddnew'] = 'הוסף תפקיד חדש';
+$string['positionbulkaction'] = 'פעולות מרובות';
 $string['positioncustomfields'] = 'שדות מותאמים אישית';
+$string['positiondepthcustomfields'] = 'שדות מותאמים אישית של עומק תפקיד';
 $string['positionframework'] = 'מסגרת תפקיד';
 $string['positionframeworkmanage'] = 'נהל מסגרות';
 $string['positionframeworks'] = 'מסגרות תפקידים';
@@ -103,6 +124,7 @@ $string['positiontypecustomfields'] = 'שדות מותאמים אישית של �
 $string['positiontypes'] = 'סוגי תפקידים';
 $string['returntoframework'] = 'חזור למסגרת תפקיד';
 $string['shortname'] = 'שם קצר של תפקיד';
+$string['shortnamedepth'] = 'שם קצר של רמת עומק';
 $string['shortnameframework'] = 'שם קצר';
 $string['shortnametype'] = 'שם קצר של סוג';
 $string['shortnameview'] = 'שם קצר';
@@ -120,20 +142,5 @@ $string['updatedposition'] = 'התפקיד \"{$a}\" עודכן';
 $string['updateposition'] = 'עדכן תפקיד';
 $string['updatetype'] = 'סוג התפקיד \"{$a}\" עודכן';
 $string['weight'] = 'משקל';
-$string['adddepthlevel'] = 'הוסף רמת עומק חדשה'; // ORPHANED
-$string['deletedepth'] = 'מחק $a'; // ORPHANED
-$string['depthlevel'] = 'רמת עומק'; // ORPHANED
-$string['depthlevels'] = 'רמות עומק'; // ORPHANED
-$string['depths'] = 'עומק'; // ORPHANED
-$string['editdepthlevel'] = 'ערוך רמת עומק'; // ORPHANED
-$string['fullnamedepth'] = 'שם מלא של רמת עומק'; // ORPHANED
-$string['missingfullname'] = 'חסר שם מלא של תפקיד'; // ORPHANED
-$string['missingfullnamedepth'] = 'חסר שם מלא של רמת עומק'; // ORPHANED
-$string['missingfullnameframework'] = 'חסר שם מלא של מסגרת'; // ORPHANED
-$string['missingshortnamedepth'] = 'חסר שם קצר של רמת עומק'; // ORPHANED
-$string['nodepthlevels'] = 'אין רמות עומק למסגרת זו'; // ORPHANED
-$string['positionbulkaction'] = 'פעולות מרובות'; // ORPHANED
-$string['positiondepthcustomfields'] = 'שדות מותאמים אישית של עומק תפקיד'; // ORPHANED
-$string['shortnamedepth'] = 'שם קצר של רמת עומק'; // ORPHANED
 
 ?>

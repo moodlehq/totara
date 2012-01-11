@@ -1,4 +1,5 @@
-<?php // $Id: repository_wikimedia.php,v 1.2 2009/08/12 10:41:00 martignoni Exp $
+<?php
+// repository_wikimedia.php - created with Totara langimport script version 1.1
 
 $string['keyword'] = 'Nom de l\'image';
 $string['repositoryname'] = 'Wikimedia';

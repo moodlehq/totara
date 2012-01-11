@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_ldap.php - created with Totara langimport script version 1.1
 
 $string['auth_ldap_ad_create_req'] = 'לא ניתן ליצור את החשבון החדש ב-Active Directory. וודא כי כל הדרישות לשם הפעלה זו נכונות. (חיבור LDAPS, משתמש קשור (bind) עם זכויות מתאימות וכד\'.';
 $string['auth_ldap_attrcreators'] = 'רשימת קבוצות קונטקסטים אשר חבריהם רשאים ליצור תכונות. הפרד קבוצות רבות עם הסימן \';\'. בדר\"כ יראה למשל כך \'cn=teachers,ou=staff,o=myorg\'';
@@ -82,3 +80,5 @@ $string['auth_ntlmsso_subnet'] = 'אם מאופשר, הדבר ינסה SSO עם 
 $string['ntlmsso_attempting'] = 'נסיון Single Sign On דרך NTLM...';
 $string['ntlmsso_failed'] = 'התחברות אוטומטית נכשלה, נסה את עמוד ההתחברות הרגיל...';
 $string['ntlmsso_isdisabled'] = 'NTLM SSO מנוטרל.';
+
+?>

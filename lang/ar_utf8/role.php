@@ -1,5 +1,5 @@
 <?php
-// role.php - created with Totara langimport script version 1.0
+// role.php - created with Totara langimport script version 1.1
 
 $string['addrole'] = 'إضافة دور جديد';
 $string['allow'] = 'اسمح';

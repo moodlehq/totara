@@ -1,46 +1,47 @@
 <?php
-// book.php - created with Totara langimport script version 1.0
+// book.php - created with Totara langimport script version 1.1
 
-$string['addafter'] = 'Agregar un nuevo Cápitulo';
+$string['addafter'] = 'Agregar un nuevo capítulo';
 $string['book_tocwidth'] = 'Ancho de la tabla de contenidos';
-$string['chapterscount'] = 'Cápitulos';
-$string['chaptertitle'] = 'Título del Cápitulo';
-$string['confchapterdelete'] = 'En Realidad Desea Eliminar este Cápitulo?';
-$string['confchapterdeleteall'] = '¿Estás seguro que quieres eliminar este capítulo y todos sus subcapítulos?';
+$string['chapterscount'] = 'Capítulos';
+$string['chaptertitle'] = 'Título del capítulo';
+$string['confchapterdelete'] = '¿Realmente desea eliminar este capítulo?';
+$string['confchapterdeleteall'] = '¿Realmente desea eliminar este capítulo y todas sus secciones?';
 $string['content'] = 'Contenido';
 $string['customtitles'] = 'Títulos personalizados';
 $string['disableprinting'] = 'Desactivar impresión';
 $string['doexport'] = 'Exportar';
 $string['doimport'] = 'Importar';
 $string['doreimport'] = 'Re-importar';
-$string['editingchapter'] = 'Edición de capítulo';
-$string['faq'] = 'Libro FAQ';
-$string['fileordir'] = 'El archivo o directorio';
+$string['editingchapter'] = 'Editando capítulo';
+$string['faq'] = 'FAQ Libro';
+$string['fileordir'] = 'Archivo o directorio';
+$string['generateimscp'] = 'Generar IMSCP';
 $string['hidepreview'] = 'Atrás para Modo Edición';
 $string['import'] = 'Importar';
-$string['importinfo'] = 'Importar archivo HTML o un directorio seleccionado. <br />Los capítulos están ordenados alfabéticamente utilizando nombres de archivos. <br /> Archivos llamados \'sub_*.*\' siempre se importan como subcapítulos.';
+$string['importinfo'] = 'Importar el archivo HTML seleccionado o un directorio,<br />Los capítulos se ordenan alfabéticamente por nombre de archivo.<br />Los archivos con la denominación \'sub_*.*\' se importan siempre como secciones.';
 $string['importing'] = 'Importando';
-$string['importingchapters'] = 'Importando capítulos en el libro';
-$string['maindirectory'] = 'Directorio Principal';
+$string['importingchapters'] = 'Importando capítulos al libro';
+$string['maindirectory'] = 'Directorio principal';
 $string['modulename'] = 'Libro';
 $string['modulenameplural'] = 'Libros';
-$string['navexit'] = 'Salir del Libro';
+$string['navexit'] = 'Salir';
 $string['navnext'] = 'Siguiente';
 $string['navprev'] = 'Anterior';
-$string['numbering'] = 'Número del Cápitulo';
-$string['numbering0'] = 'Nada';
-$string['numbering1'] = 'Númerica';
+$string['numbering'] = 'Número del capítulo';
+$string['numbering0'] = 'No';
+$string['numbering1'] = 'Numérico';
 $string['numbering2'] = 'Viñetas';
-$string['numbering3'] = 'Indentidad';
-$string['printbook'] = 'Imprimir el Libro Completo';
-$string['printchapter'] = 'Imprimir este Cápitulo';
-$string['printdate'] = 'Día';
+$string['numbering3'] = 'Sangría';
+$string['printbook'] = 'Imprimir el libro completo';
+$string['printchapter'] = 'Imprimir este capítulo';
+$string['printdate'] = 'Fecha';
 $string['printedby'] = 'Imprimido por';
-$string['relinking'] = 'Volver a vincular';
+$string['relinking'] = 'Re-enlanzando';
 $string['showpreview'] = 'Mostrar TOC Preliminar';
-$string['subchapter'] = 'Subcápitulo';
-$string['toc'] = 'Tabla de Contenido';
-$string['tocwidth'] = 'Seleciona el Ancho de la Tabla de Contenidos de Todos los Libros.';
+$string['subchapter'] = 'Sección';
+$string['toc'] = 'Tabla de contenidos';
+$string['tocwidth'] = 'Seleciona la anchura de la tabla de contenidos de todos los libros.';
 $string['top'] = 'arriba';
 
 ?>

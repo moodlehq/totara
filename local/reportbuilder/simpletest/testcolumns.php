@@ -110,8 +110,8 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of user table
     var $user_data = array(
-        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt', 'currentlogin', 'phone1', 'institution', 'department', 'address', 'city', 'country'),
-        array(2, 'admin', 'Admin', 'User', 'ID2', 0, 'alt', 0, 'phone', 'institution', 'department', 'address', 'city', 'nz'),
+        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt', 'currentlogin', 'phone1', 'institution', 'department', 'address', 'city', 'country', 'maildisplay', 'email', 'emailstop'),
+        array(2, 'admin', 'Admin', 'User', 'ID2', 0, 'alt', 0, 'phone', 'institution', 'department', 'address', 'city', 'nz', 0, 'test@example.com', 'emailstop'),
     );
 
     var $pos_assignment_data = array(
@@ -153,8 +153,8 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of course table
     var $course_data = array(
-        array('id','fullname','shortname','category','idnumber','startdate','icon','visible','summary', 'coursetype'),
-        array(1, 'Test Course 1', 'TC1', 1, 'ID1', 1140606000,'icon.gif',1,'Course summary', 0),
+        array('id','fullname','shortname','category','idnumber','startdate','icon','visible','summary', 'coursetype', 'lang'),
+        array(1, 'Test Course 1', 'TC1', 1, 'ID1', 1140606000,'icon.gif',1,'Course summary', 0, ''),
     );
 
     // reduced version of feedback table
@@ -277,8 +277,8 @@ class columns_test extends prefix_changing_test_case {
 
     // partial f2f table
     var $f2f_signups_data = array(
-        array('id', 'sessionid', 'userid'),
-        array(1, 1, 2),
+        array('id', 'sessionid', 'userid', 'discountcode'),
+        array(1, 1, 2, ''),
     );
 
     // partial f2f table
@@ -412,18 +412,23 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $prog_data = array(
-        array('id', 'category', 'fullname', 'shortname', 'idnumber', 'icon'),
-        array(1, 1, 'program', 'prog', '123', 'default.png'),
+        array('id', 'category', 'fullname', 'shortname', 'idnumber', 'icon', 'summary', 'availablefrom', 'availableuntil'),
+        array(1, 1, 'program', 'prog', '123', 'default.png', 'summary', 123456789, 123456789),
+    );
+
+    var $prog_extension_data = array(
+        array('id', 'programid', 'userid', 'status'),
+        array(1, 1, 2, 0),
     );
 
     var $prog_completion_data = array(
-        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timedue'),
-        array(2, 1, 1, 0, 1, 1205445539),
+        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timedue', 'timecompleted', 'timestarted', 'positionid', 'organisationid'),
+        array(2, 1, 1, 0, 1, 1205445539, 1205445539, 1205445539, 1, 1),
     );
 
     var $prog_completion_history_data = array(
-        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timestarted', 'timedue', 'timecompleted', 'recurringcourseid'),
-        array(2, 1, 1, 0, 1, 1205445539, 1205445539, 1205445539, 1),
+        array('id', 'programid', 'userid', 'coursesetid', 'status', 'timestarted', 'timedue', 'timecompleted', 'recurringcourseid', 'positionid', 'organisationid'),
+        array(2, 1, 1, 0, 1, 1205445539, 1205445539, 1205445539, 1, 1, 1),
     );
 
     var $prog_user_assignment_data = array(
@@ -536,6 +541,7 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'cohort', $this->cohort_data, $db);
         load_test_table($CFG->prefix . 'cohort_members', $this->cohort_members_data, $db);
         load_test_table($CFG->prefix . 'prog', $this->prog_data, $db);
+        load_test_table($CFG->prefix . 'prog_extension', $this->prog_extension_data, $db);
         load_test_table($CFG->prefix . 'prog_completion', $this->prog_completion_data, $db);
         load_test_table($CFG->prefix . 'prog_completion_history', $this->prog_completion_history_data, $db);
         load_test_table($CFG->prefix . 'prog_user_assignment', $this->prog_user_assignment_data, $db);
@@ -628,6 +634,7 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'cohort', $db);
         remove_test_table($CFG->prefix . 'cohort_members', $db);
         remove_test_table($CFG->prefix . 'prog', $db);
+        remove_test_table($CFG->prefix . 'prog_extension', $db);
         remove_test_table($CFG->prefix . 'prog_completion', $db);
         remove_test_table($CFG->prefix . 'prog_completion_history', $db);
         remove_test_table($CFG->prefix . 'prog_user_assignment', $db);

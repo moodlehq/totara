@@ -1,0 +1,17 @@
+<h1>O cálculo da nota final</h1>
+
+<p>A tabela nesta tela mostra como as notas finais dos alunos são calculadas. As notas finais são uma soma com peso de até cinco componentes.</p>
+
+<ol>
+<li>A nota do professor para o trabalho enviado. Isso é opcional e será usado se o professor realmente avaliar o trabalho do aluno. Se o aluno enviar mais de um trabalho, a &quot;melhor&quot; nota é usada. Aqui, melhor significa o trabalho com a mais alta combinação com peso das notas do professor e do colega...</li>
+<li>A média das notas do colega para o trabalho enviado. Novamente, se o aluno enviar mais de um trabalho, a &quot;melhor&quot; nota é usada. A nota do colega pode opcionalmente incluir a nota do professor. Essas notas serão incluídas se o número de classificações do colega for muito baixo, ou se for considerado que as classificações do colega são suspeitas por causa de viés (geralmente exageradas) ou por não serem confiáveis. Se forem incluídas, a nota do professor é tratada da mesma maneira que a nota do colega no cálculo da média.</li>
+<li>O viés do aluno para classificar o trabalho do colega. Isso mede se o aluno classifica o trabalho com uma nota muito alta ou muito baixa. Não é uma medição absoluta, porque é baseada na diferença entre a nota do aluno e as notas do colega para cada envio avaliado. Em geral, esse componente NÃO deve receber um peso alto.</li>
+<li>A confiabilidade do aluno ao classificar o trabalho do colega. Isso mede se as notas dos alunos seguem uma média do colega para os trabalhos que eles avaliaram. A medição desconta o viés do aluno e calcula a média das diferenças absolutas entre suas notas e as notas médias do colega. Em teoria, se o aluno dá notas altas para trabalhos bons e notas baixas para os ruins, sua confiabilidade é alta. Se houver suspeita de que o aluno não é um bom avaliador em geral, as notas do professor deve ser incluídas nas médias do colega, para que os valores da confiabilidade sejam mais significativos.
+<li>A nota média dada pelo professor para as avaliações do aluno.</li>
+ Isso inclui as avaliações preliminares feitas pelo aluno nos exemplos de trabalhos, e qualquer classificação do professor sobre as avaliações produzidas durante a fase da atribuição referente à avaliação do colega. Em geral, provavelmente esse componente é mais importante que os componentes de Viés e Confiabilidade e portanto, se disponível, deve ter um peso mais alto.</li>
+</ol>
+
+<p>Esses cinco componentes podem ter os pesos considerados apropriados para a atribuição. Por exemplo, a nota do professor pode ter um peso forte se a classificação do colega for apenas considerada uma parte secundária da atribuição como um todo. Como alternativa, se o professor só classificar alguns envios, essas notas podem ser ignoradas se receberem um peso zero. Se a atribuição é baseada em alunos como juízes e no fornecimento de feedback, os primeiros dois componentes devem ser configurados como zero (ou baixos) e as capacidades de classificação dos alunos irão determinar as notas finais.</p>
+
+<p>Observe que essa tela é usada repetitivamente e as notas finais normalmente não são disponibilizadas para os alunos até a fase final da atribuição. Quando o professor estiver satisfeito com as notas finais e seus pesos, elas podem ser disponibilizadas para os alunos.
+</p>

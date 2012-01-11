@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_paypal.php - created with Moodle 1.9.7+ (Build: 20091216) (2007101570)
-
+<?php
+// enrol_paypal.php - created with Totara langimport script version 1.1
 
 $string['business'] = 'E-Mail-Adresse Ihres PayPal-Kontos';
 $string['costorkey'] = 'Wählen Sie eines der folgenden Kurs-Anmeldeverfahren.';

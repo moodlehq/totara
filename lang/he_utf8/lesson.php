@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // lesson.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// lesson.php - created with Totara langimport script version 1.1
 
 $string['accesscontrol'] = 'בקרת גישה';
 $string['actionaftercorrectanswer'] = 'הפעולה לאחר תשובה נכונה';
@@ -84,6 +83,7 @@ $string['displayscorewithessays'] = 'עבור השאלות שנבדקות באו
 הציון הנוכחי שלך, מבלי שאלת(ות) החיבור הוא תוצאה של $a->score מתוך $a->grade.';
 $string['displayscorewithoutessays'] = 'התוצאה שלך היא $a->score (מתוך $a->grade).';
 $string['edit'] = 'ערוך';
+$string['editlesson'] = 'ערוך $a';
 $string['editlessonsettings'] = 'ערוך את הגדרות השיעור';
 $string['editpagecontent'] = 'ערוך את תכולת העמוד';
 $string['email'] = 'דוא\"ל';
@@ -149,6 +149,7 @@ $string['linkedmedia'] = 'מדיה מקושרת';
 $string['loginfail'] = 'ההתחברות נכשלה, אנא נסה שנית.....';
 $string['lowscore'] = 'תוצאה נמוכה.';
 $string['lowtime'] = 'זמן נמוך';
+$string['mainmenu'] = 'תפריט הקורס';
 $string['manualgrading'] = 'בדוק ותן ציון למאמרים';
 $string['matchesanswer'] = 'תואם עם התשובה';
 $string['maxhighscores'] = 'מספר התוצאות הגבוהות המוצגות';
@@ -209,6 +210,7 @@ $string['or'] = 'או';
 $string['ordered'] = 'הוזמן';
 $string['other'] = 'אחר';
 $string['outof'] = 'מתוך $a';
+$string['outoftime'] = 'חלף הזמן';
 $string['overview'] = 'סקירה כללית';
 $string['page'] = 'עמוד: $a';
 $string['pagecontents'] = 'תכולת העמוד';
@@ -241,6 +243,7 @@ $string['redisplaypage'] = 'הצג מחדש את העמוד';
 $string['report'] = 'דוח';
 $string['reports'] = 'דוחות';
 $string['response'] = 'תגובה';
+$string['returnmainmenu'] = 'חזור לתפריט הראשי';
 $string['returnto'] = 'חזור ל-$a';
 $string['returntocourse'] = 'חזור לקורס';
 $string['review'] = 'סקור';
@@ -266,6 +269,7 @@ $string['startlesson'] = 'התחל את השיעור';
 $string['studentattemptlesson'] = 'ניסיון מספר $a->attempt, של $a->lastname, $a->firstname';
 $string['studentname'] = '$a שם';
 $string['studentoneminwarning'] = 'אזהרה: יש לך דקה אחת או פחות כדי לסיים את השיעור.';
+$string['studentoutoftime'] = 'שים לב: נגמר לך הזמן המוקצב לשיעור זה. התשובה האחרונה שלך לא נספרת, משום שנתת אותה לאחר שהזמן נגמר. אנא לחץ על כפתור ה\'המשך\' כדי לסיים את השיעור.';
 $string['studentresponse'] = 'התגובות של {$a}';
 $string['submitname'] = 'הגש שם';
 $string['teacherjumpwarning'] = 'שיעור זה משתמש בקפיצת $a->cluster או בקפיצת $a->unseen. במקום זה, יעשה שימוש בקפיצת \'העמוד הבא\'. התחבר כסטודנט על מנת לבחון את הקפיצות הללו.';
@@ -304,10 +308,5 @@ $string['youranswer'] = 'התשובה שלך';
 $string['yourcurrentgradeis'] = 'הציון הנוכחי שלך הוא $a';
 $string['yourcurrentgradeisoutof'] = 'הציון הנוכחי שלך הוא $a->grade מתוך $a->total.';
 $string['youshouldview'] = 'על התשובה שלך להיות לפחות: $a';
-$string['outoftime'] = 'חלף הזמן'; // ORPHANED
-$string['studentoutoftime'] = 'שים לב: נגמר לך הזמן המוקצב לשיעור זה. התשובה האחרונה שלך לא נספרת, משום שנתת אותה לאחר שהזמן נגמר. אנא לחץ על כפתור ה\'המשך\' כדי לסיים את השיעור.'; // ORPHANED
-$string['editlesson'] = 'ערוך $a'; // ORPHANED
-$string['mainmenu'] = 'תפריט הקורס'; // ORPHANED
-$string['returnmainmenu'] = 'חזור לתפריט הראשי'; // ORPHANED
 
 ?>

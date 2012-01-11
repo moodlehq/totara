@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_course_summary.php - created with Moodle 1.6 Beta 1 (2006032900)
-
+<?php
+// block_course_summary.php - created with Totara langimport script version 1.1
 
 $string['coursesummary'] = 'ملخص مقرر دراسي';
 $string['pagedescription'] = 'وصف المقرر الدراسي / الموقع';

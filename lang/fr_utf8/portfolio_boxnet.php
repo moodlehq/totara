@@ -1,4 +1,5 @@
-<?php // $Id: portfolio_boxnet.php,v 1.8 2009/04/10 19:28:53 martignoni Exp $
+<?php
+// portfolio_boxnet.php - created with Totara langimport script version 1.1
 
 $string['apikey'] = 'Clef API';
 $string['apikeyhelp'] = 'Vous obtiendrez cette clef en vous inscrivant sur le site enabled.box.net et en ajoutant application. L\' URL de <i>callback</i> doit être votre_wwwroot/portfolio/add.php?postcontrol=1';
@@ -8,10 +9,10 @@ $string['existingfolder'] = 'Dossier existant dans lequel placer le(s) fichier(s
 $string['folderclash'] = 'Le dossier dont vous avez demandé la création existe déjà !';
 $string['foldercreatefailed'] = 'Échec de la création de votre dossier cible sur box.net';
 $string['folderlistfailed'] = 'Échec de la récupération de la liste des fichiers d\'un dossier sur box.net';
-$string['newfolder']  = 'Nouveau dossier dans lequel placer le(s) fichier(s)';
+$string['newfolder'] = 'Nouveau dossier dans lequel placer le(s) fichier(s)';
 $string['noauthtoken'] = 'Impossible de récupérer un jeton d\authentification à utiliser dans cette session';
-$string['noticket'] = 'Impossible de récupérer un ticket sur box.net pour initier la session d\'authentification';
 $string['notarget'] = 'Vous devez indiquer soit un dossier existant soit un dossier à créer vers lequel déposer les données';
+$string['noticket'] = 'Impossible de récupérer un ticket sur box.net pour initier la session d\'authentification';
 $string['password'] = 'Votre mot de passe box.net (ne sera pas enregistré)';
 $string['pluginname'] = 'Stockage internet Box.net';
 $string['sendfailed'] = 'Échec de l\'envoi de contenu vers box.net : $a';

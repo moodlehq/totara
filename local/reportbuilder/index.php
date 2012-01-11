@@ -100,24 +100,27 @@
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
         }
 
+        $todb = new object();
+        $todb->reportid = $newid;
+        $todb->type = 'role_access';
+        $todb->name = 'enable';
+        $todb->value = 1;
+        if (!insert_record('report_builder_settings', $todb)) {
+            rollback_sql();
+            redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
+        }
         // if administrator or admin role exists, restrict access to new report to administrators only
         // (if role doesn't exist report will not be visible to anyone)
-        if($adminroleid = get_field('role', 'id', 'shortname', 'administrator') ||
-           $adminroleid = get_field('role', 'id', 'shortname', 'admin')) {
-            $todb = new object();
-            $todb->reportid = $newid;
-            $todb->type = 'role_access';
-            $todb->name = 'enable';
-            $todb->value = 1;
+        if ($adminroles = get_roles_with_capability('moodle/site:doanything', CAP_ALLOW, get_context_instance(CONTEXT_SYSTEM))) {
+
+            $role_string = implode('|', array_keys($adminroles));
 
             $todb2 = new object();
             $todb2->reportid = $newid;
             $todb2->type = 'role_access';
             $todb2->name = 'activeroles';
-            $todb2->value = $adminroleid;
-
-            if(!insert_record('report_builder_settings', $todb) ||
-                !insert_record('report_builder_settings', $todb2)) {
+            $todb2->value = $role_string;
+            if (!insert_record('report_builder_settings', $todb2)) {
                 rollback_sql();
                 redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
             }

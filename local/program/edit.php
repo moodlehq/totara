@@ -207,6 +207,11 @@ if ($action == 'edit') {
 
 $unsavedchangesstr = get_string('youhaveunsavedchanges','local_program');
 
+// attach a date picker to the available until/from fields
+echo build_datepicker_js(
+    'input[name="availablefromselector"], input[name="availableuntilselector"]'
+);
+
 print <<<HEREDOC
 <script type="text/javascript">
 
@@ -242,27 +247,6 @@ print <<<HEREDOC
             return true;
         });
 
-        // attach a date picker to the available from field
-        $('input[name="availablefromselector"]').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
-                buttonImageOnly: true,
-                constrainInput: true
-            }
-        );
-
-        // attach a date picker to the available until field
-        $('input[name="availableuntilselector"]').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
-                buttonImageOnly: true,
-                constrainInput: true
-            }
-        );
 
         storeInitialFormValues();
     });

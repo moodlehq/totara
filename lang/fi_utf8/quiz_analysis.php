@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// quiz_analysis.php - created with Totara langimport script version 1.1
+
 $string['analysis'] = 'Kohteen analyysi';
 $string['analysisdownload'] = 'Lataa analyysi';
 $string['analysisoptions'] = 'Analyysin valinnat';
@@ -26,4 +28,5 @@ $string['responsestitle'] = 'Vastauksen teksti';
 $string['rfractiontitle'] = 'Arviointi';
 $string['rpercenttitle'] = 'Vastausprosentti';
 $string['stddevtitle'] = 'Keski-<br />hajonta';
+
 ?>

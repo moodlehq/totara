@@ -1,6 +1,5 @@
-<?PHP // $Id: imscp.php,v 1.1 2010/01/17 00:01:33 krause Exp $ 
-      // imscp.php - created with Moodle 2.0 dev (Build: 20100116) (2010011400)
-
+<?php
+// imscp.php - created with Totara langimport script version 1.1
 
 $string['areabackup'] = 'Paketarchiv';
 $string['areacontent'] = 'Inhalt';

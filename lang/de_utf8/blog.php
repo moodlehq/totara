@@ -1,9 +1,10 @@
-<?PHP // $Id: blog.php,v 1.24 2010/01/30 09:32:12 krause Exp $ 
-      // blog.php - created with Moodle 2.0 dev (Build: 20100129) (2010012902)
-
+<?php
+// blog.php - created with Totara langimport script version 1.1
 
 $string['addnewentry'] = 'Neuer Eintrag';
 $string['addnewexternalblog'] = 'Externen Blog registrieren ...';
+$string['addotags'] = 'Offizielles Schlagwort hinzufügen';
+$string['addptags'] = 'Nutzerdefiniertes Schlagwort hinzufügen';
 $string['assocdescription'] = 'Wenn Sie zu einen Kurs und/oder über eine Aktivität schreiben, dann wählen Sie dies bitte hier aus.';
 $string['associated'] = 'Verbunden: $a';
 $string['associatewithcourse'] = 'Blog zum Kurs $a->coursename';
@@ -46,6 +47,7 @@ $string['courseblogdisable'] = 'Blogfunktion ist nicht aktiviert';
 $string['courseblogs'] = 'Blogs von anderen im Kurs';
 $string['deleteblogassociations'] = 'Blog-Verbindungen löschen';
 $string['deleteotagswarn'] = 'Sind Sie sicher, dass Sie diese Schlagworte <br />aus allen Blog-Einträgen und aus dem System entfernen möchten?';
+$string['deleteposterror'] = 'Beim Löschen von Einträgen ist ein Fehler aufgetreten';
 $string['disableblogs'] = 'Blog-System vollständig deaktivieren';
 $string['donothaveblog'] = 'Sie haben zur Zeit keinen eigenen Blog.';
 $string['editentry'] = 'Blog-Eintrag bearbeiten';
@@ -87,10 +89,12 @@ $string['nosuchentry'] = 'Kein Blogeintrag dazu vorhanden';
 $string['notallowedtoedit'] = 'Sie haben keine Berechtigung, diesen Beitrag zu bearbeiten';
 $string['numberofentries'] = 'Einträge: $a';
 $string['numberoftags'] = 'Zahl der anzuzeigenden Schlagworte';
+$string['otags'] = 'Offizielles Schlagwort';
 $string['pagesize'] = 'Zahl der Einträge pro Seite';
 $string['permalink'] = 'Permalink';
 $string['personalblogs'] = 'Nur den eigenen Blog';
 $string['preferences'] = 'Voreinstellungen';
+$string['ptags'] = 'Nutzerdefiniertes Schlagwort';
 $string['publishto'] = 'Veröffentlichen in';
 $string['publishtocourse'] = 'Nutzer/innen, die mit Ihnen in einem Kurs eingetragen sind';
 $string['publishtocourseassoc'] = 'Mitglieder des verbundenen Kurses';
@@ -127,6 +131,7 @@ $string['viewallmodentries'] = 'Alle Beiträge zu diesem $a->type';
 $string['viewblogentries'] = 'Beiträge zu diesem $a->type';
 $string['viewblogsfor'] = 'Alle Beiträge anzeigen zu ...';
 $string['viewcourseblogs'] = 'Alle Beiträge anzeigen zu Kurs ...';
+$string['viewcourseentries'] = 'Kurseinträge';
 $string['viewgroupblogs'] = 'Alle Beiträge anzeigen zu Gruppe ...';
 $string['viewgroupentries'] = 'Gruppeneinträge';
 $string['viewmodblogs'] = 'Alle Beiträge anzeigen zu Modul ...';
@@ -136,11 +141,5 @@ $string['viewsiteentries'] = 'Alle Einträge';
 $string['viewuserentries'] = 'Nutzereinträge';
 $string['worldblogs'] = 'Für alle weltweit sichtbar (öffentlich)';
 $string['wrongpostid'] = 'Falsche Blog-Post-ID';
-$string['viewcourseentries'] = 'Kurseinträge'; // ORPHANED
-$string['deleteposterror'] = 'Beim Löschen von Einträgen ist ein Fehler aufgetreten'; // ORPHANED
-$string['addotags'] = 'Offizielles Schlagwort hinzufügen'; // ORPHANED
-$string['addptags'] = 'Nutzerdefiniertes Schlagwort hinzufügen'; // ORPHANED
-$string['otags'] = 'Offizielles Schlagwort'; // ORPHANED
-$string['ptags'] = 'Nutzerdefiniertes Schlagwort'; // ORPHANED
 
 ?>

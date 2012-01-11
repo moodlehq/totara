@@ -1,4 +1,6 @@
-<?PHP // $Id: simpletest.php,v 1.6 2008/11/21 01:32:27 samulik Exp $
+<?php
+// simpletest.php - created with Totara langimport script version 1.1
+
 $string['all'] = 'KAIKKI';
 $string['exception'] = 'Poikkeus';
 $string['fail'] = 'Epäonnistui';
@@ -25,4 +27,5 @@ $string['thorough'] = 'Suorita perusteelliset testit (vie aikaa)';
 $string['uncaughtexception'] = 'Poikkeus[{$a->getMessage()}] in [{$a->getFile()}:{$a->getLine()}]TESTIT KESKEYTETTY.';
 $string['unittests'] = 'Testit';
 $string['version'] = 'Käytetään <a href=\"http://sourceforge.net/projects/simpletest/\">SimpleTest</a> versiota $a.';
+
 ?>

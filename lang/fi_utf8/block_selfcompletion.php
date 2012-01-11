@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_selfcompletion.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// block_selfcompletion.php - created with Totara langimport script version 1.1
 
 $string['alreadyselfcompleted'] = 'Olet jo merkinnyt suorittaneesi tämän kurssin';
 $string['completecourse'] = 'Merkitse kurssi suoritetuksi';

@@ -229,23 +229,14 @@ class reportbuilder {
         }
 
         // include JS for dialogs if required for filters
-        $orgtrees = array();
-        $postrees = array();
-        $comptrees = array();
         foreach($this->filters as $filter) {
             switch($filter->filtertype) {
             case 'org':
-                $orgtrees[] = "'{$filter->type}-{$filter->value}'";
-                $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
-                $dialog = $treeview = true;
-                break;
-            case 'pos':
-                $postrees[] = "'{$filter->type}-{$filter->value}'";
-                $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
-                $dialog = $treeview = true;
-                break;
             case 'comp':
-                $comptrees[] = "'{$filter->type}-{$filter->value}'";
+            case 'pos':
+            case 'orgmulti':
+            case 'compmulti':
+            case 'orgmulti':
                 $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
                 $dialog = $treeview = true;
                 break;
@@ -268,14 +259,6 @@ class reportbuilder {
             require_js(array_values($js));
         }
 
-        if($dialog) {
-            $this->_body_javascript = '
-<script type="text/javascript">
-var orgtree = [' . implode(', ', $orgtrees) . '];
-var postree = [' . implode(', ', $postrees) . '];
-var comptree = [' . implode(', ', $comptrees) . '];
-</script>';
-        }
     }
 
     /**
@@ -283,10 +266,11 @@ var comptree = [' . implode(', ', $comptrees) . '];
      *
      * This does quite a few small SQL queries so load it lazily only when required.
      *
+     * @param boolean $ignorecache If set to true, reload the filtering even if already saved
      * @return boolean True if set, false if has been set previously
      */
-    function get_filtering() {
-        if($this->_filtering === null) {
+    function get_filtering($ignorecache = false) {
+        if(!$ignorecache && $this->_filtering === null) {
             $this->_filtering = new filtering($this, $this->get_current_url());
             return true;
         }
@@ -577,17 +561,27 @@ var comptree = [' . implode(', ', $comptrees) . '];
      */
     function restore_saved_search() {
         global $SESSION,$USER;
-        $this->get_filtering();
+        // reload ignoring the cache to ensure we've got an up to date
+        // version
+        $this->get_filtering(true);
         $filtername = 'filtering_'.$this->shortname;
         if($saved = get_record('report_builder_saved','id',$this->_sid)) {
             if($saved->ispublic != 0 || $saved->userid == $USER->id) {
                 $SESSION->$filtername = unserialize($saved->search);
             } else {
-                error('Saved search not found or search is not public');
+                if (defined('FULLME') and FULLME === 'cron') {
+                    mtrace('Saved search not found or search is not public');
+                } else {
+                    error('Saved search not found or search is not public');
+                }
                 return false;
             }
         } else {
-            error('Saved search not found or search is not public');
+            if (defined('FULLME') and FULLME === 'cron') {
+                mtrace('Saved search not found or search is not public');
+            } else {
+                error('Saved search not found or search is not public');
+            }
             return false;
         }
         return true;
@@ -1302,6 +1296,32 @@ var comptree = [' . implode(', ', $comptrees) . '];
         return $paramjoins;
     }
 
+
+    /**
+     * Return an array of {@link rb_join} objects containing the joins required by
+     * the source joins
+     *
+     * @return array An array of {@link rb_join} objects containing join information
+     */
+    function get_source_joins() {
+        // no where clause - don't add any joins
+        // as they won't be used
+        if (empty($this->src->sourcewhere)) {
+            return array();
+        }
+
+        // no joins specified
+        if (empty($this->src->sourcejoins)) {
+            return array();
+        }
+
+        $item = new object();
+        $item->joins = $this->src->sourcejoins;
+
+        return $this->get_joins($item, 'source');
+
+    }
+
     /**
      * Check the current session for active filters, and if found
      * collect together join data into a format suitable for {@link get_joins()}
@@ -1643,7 +1663,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $filterjoins = ($filtered === true) ? $this->get_filter_joins() : array();
         $paramjoins = $this->get_param_joins();
         $contentjoins = $this->get_content_joins();
-        $joins = array_merge($columnjoins, $filterjoins, $paramjoins, $contentjoins);
+        $sourcejoins = $this->get_source_joins();
+        $joins = array_merge($columnjoins, $filterjoins, $paramjoins, $contentjoins, $sourcejoins);
 
         // sort the joins to remove duplicates and resolve any dependencies
         $joins = $this->sort_joins($joins);
@@ -1687,6 +1708,12 @@ var comptree = [' . implode(', ', $comptrees) . '];
         if($paramrestrictions != '') {
             $whereclauses[] = $paramrestrictions;
         }
+
+        // apply any SQL specified by the source
+        if (!empty($this->src->sourcewhere)) {
+            $whereclauses[] = $this->src->sourcewhere;
+        }
+
         $where = (count($whereclauses) > 0) ? "WHERE ".implode(' AND ',$whereclauses)."\n" : '';
 
         $groupby = '';
@@ -1877,15 +1904,18 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $this->check_sort_keys();
         // get the ORDER BY SQL fragment from table
         $sort = $table->get_sql_sort();
-        if($sort!='') {
+        if ($sort!='') {
             $order = " ORDER BY $sort";
         } else {
            $order = '';
         }
-        $data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size());
-        // add data to flexible table
-        foreach ($data as $row) {
-            $table->add_data($row);
+        if ($data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size())) {
+            // add data to flexible table
+            foreach ($data as $row) {
+                $table->add_data($row);
+            }
+        } else if ($data === false) {
+            print_error('error:problemobtainingreportdata', 'local_reportbuilder');
         }
 
         // display the table
@@ -1963,6 +1993,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
      * @param boolean $striptags If true, returns the data with any html tags removed
      * @param boolean $isexport If true, data is being exported
      * @return array Outer array are table rows, inner array are columns
+     *               False is returned if the SQL query failed entirely
      */
     function fetch_data($sql, $start=null, $size=null, $striptags=false, $isexport=false) {
         global $CFG;
@@ -1984,7 +2015,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                         if (isset($column->displayfunc)) {
                             $func = 'rb_display_'.$column->displayfunc;
                             if(method_exists($this->src, $func)) {
-                                $tabledata[] = $this->src->$func($record->$field, $record);
+                                $tabledata[] = $this->src->$func($record->$field, $record, $isexport);
                             } else {
                                 $tabledata[] = $record->$field;
                             }
@@ -1996,6 +2027,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 $ret[] = $tabledata;
             }
             rs_close($records);
+        } else {
+            // this indicates a failed query, not just 0 results
+            return false;
         }
         if($striptags === true) {
             return $this->strip_tags_r($ret);
@@ -2108,14 +2142,23 @@ var comptree = [' . implode(', ', $comptrees) . '];
         global $CFG,$USER;
         $id = $this->_id;
         $sid = $this->_sid;
-        // only show if there are saved searches for this report and user
-        if($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND userid='.$USER->id)) {
-            $common = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id.'&amp;sid=';
-            $options = array();
-            foreach($saved as $item) {
-                $options[$item->id] = $item->name;
+        $savedoptions = array();
+        $common = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id.'&amp;sid=';
+        // are there saved searches for this report and user?
+        if ($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND userid='.$USER->id)) {
+            foreach ($saved as $item) {
+                $savedoptions[$item->id] = format_string($item->name);
             }
-            return popup_form($common, $options, 'viewsavedsearch', $sid, get_string('viewsavedsearch','local_reportbuilder'),'','',true);
+        }
+        // are there public saved searches for this report?
+        if ($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND ispublic=1')) {
+            foreach ($saved as $item) {
+                $savedoptions[$item->id] = format_string($item->name);
+            }
+        }
+
+        if (count($savedoptions) > 0) {
+            return popup_form($common, $savedoptions, 'viewsavedsearch', $sid, get_string('viewsavedsearch','local_reportbuilder'),'','',true);
         } else {
             return '';
         }
@@ -2257,14 +2300,16 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $data = $this->fetch_data($query, $start, $blocksize, true, true);
 
             $filerow = 0;
-            foreach ($data as $datarow) {
-                for($col=0; $col<$numfields;$col++) {
-                    if(isset($data[$filerow][$col])) {
-                        $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+            if ($data) {
+                foreach ($data as $datarow) {
+                    for($col=0; $col<$numfields;$col++) {
+                        if(isset($data[$filerow][$col])) {
+                            $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+                        }
                     }
+                    $filerow++;
+                    $row++;
                 }
-                $filerow++;
-                $row++;
             }
         }
 
@@ -2335,14 +2380,16 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $data = $this->fetch_data($query, $start, $blocksize, true, true);
 
             $filerow = 0;
-            foreach ($data as $datarow) {
-                for($col=0; $col<$numfields; $col++) {
-                    if(isset($data[$filerow][$col])) {
-                        $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+            if ($data) {
+                foreach ($data as $datarow) {
+                    for($col=0; $col<$numfields; $col++) {
+                        if(isset($data[$filerow][$col])) {
+                            $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+                        }
                     }
+                    $row++;
+                    $filerow++;
                 }
-                $row++;
-                $filerow++;
             }
         }
 
@@ -2388,19 +2435,20 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $start = $k*$blocksize;
             $data = $this->fetch_data($query, $start, $blocksize, true, true);
             $i = 0;
-            foreach ($data AS $row) {
-                $row = array();
-                for($j=0; $j<$numfields; $j++) {
-                    if(isset($data[$i][$j])) {
-                        $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $data[$i][$j]));
-                    } else {
-                        $row[] = '';
+            if ($data) {
+                foreach ($data AS $row) {
+                    $row = array();
+                    for($j=0; $j<$numfields; $j++) {
+                        if(isset($data[$i][$j])) {
+                            $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $data[$i][$j]));
+                        } else {
+                            $row[] = '';
+                        }
                     }
+                    $csv .= implode($delimiter, $row)."\n";
+                    $i++;
                 }
-                $csv .= implode($delimiter, $row)."\n";
-                $i++;
             }
-
         }
 
         if($file) {
@@ -2477,11 +2525,32 @@ var comptree = [' . implode(', ', $comptrees) . '];
     function get_filters_select() {
         $filters = $this->filteroptions;
         $ret = array();
-        if(!isset($this->filteroptions)) {
+        if (!isset($this->filteroptions)) {
             return $ret;
         }
-        foreach($filters as $filter) {
-            $section = ucwords(str_replace(array('_','-'),array(' ',' '), $filter->type));
+
+        // are we handling a 'group' source?
+        if (preg_match('/^(.+)_grp_([0-9]+|all)$/', $this->source, $matches)) {
+            // use original source name (minus any suffix)
+            $sourcename = $matches[1];
+        } else {
+            // standard source
+            $sourcename = $this->source;
+        }
+
+        foreach ($filters as $filter) {
+            $langstr = 'type_' . $filter->type;
+            // is there a type string in the source file?
+            if (check_string($langstr, 'rb_source_' . $sourcename)) {
+                $section = get_string($langstr, 'rb_source_' . $sourcename);
+            // how about in report builder?
+            } else if (check_string($langstr, 'local_reportbuilder')) {
+                $section = get_string($langstr, 'local_reportbuilder');
+            } else {
+            // fall back on original approach to cope with dynamic types in feedback sources
+                $section = ucwords(str_replace(array('_','-'),array(' ',' '), $filter->type));
+            }
+
             $key = $filter->type . '-' . $filter->value;
             $ret[$section][$key] = $filter->label;
         }
@@ -2497,7 +2566,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
     function get_columns_select() {
         $columns = $this->columnoptions;
         $ret = array();
-        if(!isset($this->columnoptions)) {
+        if (!isset($this->columnoptions)) {
             return $ret;
         }
 
@@ -2511,6 +2580,10 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
 
         foreach ($columns as $column) {
+            // don't include unselectable columns
+            if (!$column->selectable) {
+                continue;
+            }
             $langstr = 'type_' . $column->type;
             // is there a type string in the source file?
             if (check_string($langstr, 'rb_source_' . $sourcename)) {
@@ -2892,7 +2965,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                     if (isset($primary_field->displayfunc)) {
                         $func = 'rb_display_'.$primary_field->displayfunc;
                         if(method_exists($this->src, $func)) {
-                            $primaryvalue = $this->src->$func($item->$primaryname, $item);
+                            $primaryvalue = $this->src->$func($item->$primaryname, $item, false);
                         } else {
                             $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
                         }
@@ -3059,71 +3132,6 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
             $distinct = $unique ? 'TRUE' : 'FALSE';
             $sql = " GROUP_CONCAT($field, '$delimiter', $distinct) ";
             break;
-    }
-
-    return $sql;
-}
-
-/**
- * Returns the SQL to be used in order to CAST one column to CHAR
- *
- * @param string fieldname the name of the field to be casted
- * @return string the piece of SQL code to be used in your statement.
- */
-function sql_cast2char($fieldname) {
-
-    global $CFG;
-
-    $sql = '';
-
-    switch ($CFG->dbfamily) {
-        case 'mysql':
-            $sql = ' CAST(' . $fieldname . ' AS CHAR) ';
-            break;
-        case 'postgres':
-            $sql = ' CAST(' . $fieldname . ' AS VARCHAR) ';
-            break;
-        case 'mssql':
-            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
-            break;
-        case 'oracle':
-            $sql = ' TO_CHAR(' . $fieldname . ') ';
-            break;
-        default:
-            $sql = ' ' . $fieldname . ' ';
-    }
-
-    return $sql;
-}
-
-
-/**
- * Returns the SQL to be used in order to CAST one column to FLOAT
- *
- * @param string fieldname the name of the field to be casted
- * @return string the piece of SQL code to be used in your statement.
- */
-function sql_cast2float($fieldname) {
-
-    global $CFG;
-
-    $sql = '';
-
-    switch ($CFG->dbfamily) {
-        case 'mysql':
-            $sql = ' CAST(' . $fieldname . ' AS DECIMAL) ';
-            break;
-        case 'mssql':
-        case 'postgres':
-            $sql = ' CAST(' . $fieldname . ' AS FLOAT) ';
-            break;
-            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
-            break;
-        case 'oracle':
-            $sql = ' TO_BINARY_FLOAT(' . $fieldname . ') ';
-            break;
-        default:
-            $sql = ' ' . $fieldname . ' ';
     }
 
     return $sql;

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_dp_competency.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// rb_source_dp_competency.php - created with Totara langimport script version 1.1
 
 $string['competencyduedate'] = 'Fecha de vencimiento de la competencia';
 $string['competencyname'] = 'Nombre de la competencia';
@@ -9,6 +8,8 @@ $string['competencyproficiency'] = 'Habilidad de la competencia';
 $string['competencyproficiencyandapproval'] = 'Habilidad de la competencia (y el estado de aprobación)';
 $string['competencyproficient'] = '¿Hábiles en la competencia?';
 $string['competencystatus'] = 'Estado de la competencia';
+$string['competencytype'] = 'Tipo de competencia';
+$string['competencytypeid'] = 'Tipo de competencia ID';
 $string['courses'] = 'Cursos';
 $string['coursetypeicon'] = 'Tipo';
 $string['duedate'] = 'Fecha de vencimiento';

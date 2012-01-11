@@ -1833,29 +1833,6 @@ table.dp-templates td.c0 {
     margin:10px 0;
 }
 
-/**
- * Recent Learning
- **/
-div.block_totara_recent_learning td.status span {
-    display: block;
-    width: 39px;
-    height: 12px;
-    background: transparent url(images/progress-icons.png) no-repeat;
-}
-
-div.block_totara_recent_learning td.status span.completion-inprogress {
-    background-position: 0px -12px;
-}
-
-div.block_totara_recent_learning td.status span.completion-complete,
-div.block_totara_recent_learning td.status span.completion-completeviarpl {
-    background-position: 0px -24px;
-}
-
-div.block_totara_recent_learning table.recent_learning tr {
-    height: 30px;
-}
-
 
 /***
  *** Notifications
@@ -1950,18 +1927,27 @@ img.iconhelp {
     height: 16px;
 }
 
-td.user_namewithlinks span.username {
+table.namewithlinks-layout,
+table.namewithlinks-layout tr,
+table.namewithlinks-layout td {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+table.namewithlinks-layout td.user-name {
     font-size: 1.3em;
+    vertical-align: middle;
+    text-align: left;
+}
+table.namewithlinks-layout td.user-picture {
+    padding-right: 4px;
+    width: 35px;
+}
+table.namewithlinks-layout td.user-links {
+    font-size: 1em;
 }
 
-td.user_namewithlinks div.picture {
-    float:left;
-    padding-right:4px;
-}
-
-td.user_namewithlinks .userpicture {
-    vertical-align:middle
-}
 
 div.add-linked-course {
     text-align:right;
@@ -2352,14 +2338,10 @@ border-width:0px;
 #course-view .section .weekdates {
 }
 
-#course-view li.activity {
-  margin-right:20px; /* Space allowed for completion icons if enabled */
-  position:relative;
-}
 #course-view li.activity form.togglecompletion,
 #course-view li.activity span.autocompletion {
   display:inline;
-  position:absolute;
+  float:right;
   right:-20px;
   bottom:0;
   z-index:10;
@@ -2697,6 +2679,10 @@ body#course-info .generalbox.info {
 .frameworkpicker {
   text-align:center;
   padding-bottom:10px;
+}
+
+.hierarchyframeworkpicker {
+  text-align:right;
 }
 
 #coursesearch,
@@ -5066,7 +5052,8 @@ span.coursecompletionstatus span {
 }
 
 div.mycourses td.status span,
-span.coursecompletionstatus span {
+span.coursecompletionstatus span,
+div.block_totara_recent_learning td.status span {
     display: block;
     width: 39px;
     height: 12px;
@@ -5074,15 +5061,25 @@ span.coursecompletionstatus span {
 }
 
 div.mycourses td.status span.completion-inprogress,
-span.coursecompletionstatus span.completion-inprogress {
+span.coursecompletionstatus span.completion-inprogress,
+div.block_totara_recent_learning td.status span.completion-inprogress {
     background-position: 0px -12px;
 }
 
 div.mycourses td.status span.completion-complete,
 div.mycourses td.status span.completion-completeviarpl,
 span.coursecompletionstatus span.completion-complete,
-span.coursecompletionstatus span.completion-completeviarpl {
+span.coursecompletionstatus span.completion-completeviarpl,
+div.block_totara_recent_learning td.status span.completion-complete,
+div.block_totara_recent_learning td.status span.completion-completeviarpl {
     background-position: 0px -24px;
+}
+
+/**
+ * Recent Learning
+ **/
+div.block_totara_recent_learning table.recent_learning tr {
+    height: 30px;
 }
 
 /* Course item styles */
@@ -5150,44 +5147,54 @@ table.hierarchy-index .itemdescription, table.hierarchy-index .itemtype {
     font-size: 85%;
 }
 table.hierarchy-index .depth1 {
-    background-position: 5px 0px;
-    padding-left: 25px;
+    background-position: left top;
+    margin-left: 5px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth2 {
-    background-position: 35px 0px;
-    padding-left: 55px;
+    background-position: left top;
+    margin-left: 35px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth3 {
-    background-position: 65px 0px;
-    padding-left: 85px;
+    background-position: left top;
+    margin-left: 65px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth4 {
-    background-position: 95px 0px;
-    padding-left: 115px;
+    background-position: left top;
+    margin-left: 95px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth5 {
-    background-position: 125px 0px;
-    padding-left: 145px;
+    background-position: left top;
+    margin-left: 125px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth6 {
-    background-position: 155px 0px;
-    padding-left: 175px;
+    background-position: left top;
+    margin-left: 155px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth7 {
-    background-position: 185px 0px;
-    padding-left: 205px;
+    background-position: left top;
+    margin-left: 185px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth8 {
-    background-position: 215px 0px;
-    padding-left: 235px;
+    background-position: left top;
+    margin-left: 215px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth9 {
-    background-position: 245px 0px;
-    padding-left: 265px;
+    background-position: left top;
+    margin-left: 245px;
+    padding-left: 20px;
 }
 table.hierarchy-index .depth10 {
-    background-position: 275px 0px;
-    padding-left: 295px;
+    background-position: left top;
+    margin-left: 275px;
+    padding-left: 20px;
 }
 
 form.hierarchy-export-form {
@@ -5347,6 +5354,23 @@ span.dialog-singleselect-deletable {
     margin-left: 5px;
 }
 
+#program-content .nextsetoperator .operator-or,
+#program-content .nextsetoperator .operator-then,
+#view-program-content .nextsetoperator .operator-or,
+#view-program-content .nextsetoperator .operator-then{
+    float: left;
+    margin-bottom: 0;
+    margin-top: 26px;
+    width:98px;
+}
+
+#program-content .nextsetoperator img,
+#view-program-content .nextsetoperator img{
+    float: left;
+    margin-top: 26px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
 
 /* Spacing for checkbox on the Email notifiations page  */
 div span.emailnotifycheckbox {
@@ -5361,6 +5385,18 @@ div.list-assignedcompetencies table#list-assignedcompetencies {
 div.list-assignedcompetencies table#list-assignedcompetencies td.c2 {
     width:3%;
     text-align: center;
+}
+
+div#prog-completion-fixed-date {
+    float: left;
+}
+
+div#prog-completion-or-string {
+    clear: both;
+}
+
+div#prog-completion-relative-date {
+    float: left;
 }
 
 /* Bulk type changes */
@@ -5532,6 +5568,7 @@ body.hierarchy-type div.add-type-button .singlebutton {
 #local-program-edit #programdetails .ftoggler,
 #local-program-edit #programcontent .ftoggler,
 #local-program-edit #programassignments .ftoggler,
+#local-program-edit #programexceptions .ftoggler,
 #local-program-edit #programmessages .ftoggler{
 	padding:4px 43px;
 }
@@ -5609,9 +5646,10 @@ body.local-program .rolelink {
 
 .local-program fieldset .setbuttons input,
 .local-program fieldset .messagebuttons input{
-	border:0px;
-	text-align:left;
-    padding-right:18px;
+    border:0px;
+    text-align:left;
+    padding-right: 18px;
+    padding-left: 6px;
 }
 
 .local-program fieldset.course_set .flabel,
@@ -5642,6 +5680,7 @@ body.local-program .rolelink {
 
 .local-program fieldset.course_set .course_table .course{
     padding-left: 10px;
+    padding-right: 0px;
 }
 
 .local-program fieldset.course_set .course_table .action{
@@ -5718,7 +5757,8 @@ div.prog-course-launch {
 }
 
 .local-program fieldset.course_set .courseadder{
-	margin-left:78px;
+    margin-left:78px;
+    margin-right: 0px;
 }
 
 #program-overview-details .hidden .fitem .felement{
@@ -5760,10 +5800,8 @@ div.prog-course-launch {
 #program-assignments #programassignments legend,
 #program-messages #programmessages legend,
 #program-exceptions #programexceptions legend{
-	padding-left:46px;
-	margin-left:0px;
-	padding-top:6px;
-	padding-bottom:6px;
+    padding: 6px 6px 6px 38px;
+    margin: 0px 0px 0px 8px;
 }
 
 #edit-program-content #programcontent #course_sets legend,
@@ -5808,23 +5846,22 @@ div.prog-course-launch {
 input[type="submit"].return-overview,
 input[type="submit"].next-assignments,
 input[type="submit"].next-messages,
-input[type="submit"].program-savechanges{
+input[type="submit"].program-savechanges,
+input[type="submit"].program-cancel {
 	margin-top:15px;
     margin-bottom:15px;
 }
 
 .local-program fieldset.course_set .coursedeletelink .delete_item,
 .local-program fieldset.course_set .course_item{
-	width:100%;
-	padding-left:20px;
-	height:20px;
-	padding-top:6px;
-	padding-bottom:6px;
-	padding-right:0px;
-	font-weight:bold;
+    width:100%;
+    height:20px;
+    padding: 6px 0px 6px 20px;
+    font-weight:bold;
 }
 
 .local-program fieldset.course_set .delete_item a {
+    display: relative;
     float: right;
 }
 
@@ -5900,6 +5937,7 @@ input[type="submit"].program-savechanges{
 .total_user_count {
     text-align: right;
     padding-right: 6px;
+    padding-left: 0px;
 }
 
 .overall_total {
@@ -5912,8 +5950,9 @@ input[type="submit"].program-savechanges{
 /** Program Exceptions **/
 /*****************************************************************************/
 .local-program #programexceptions .exceptionactions div{
-	float:left;
-	padding-right:5px;
+    float:left;
+    padding-right:5px;
+    padding-left:0px;
 }
 
 .local-program #programexceptions .exceptionactions{
@@ -5925,8 +5964,8 @@ input[type="submit"].program-savechanges{
 }
 
 .local-program #programexceptions .exceptionactions p{
-	margin-top:5px;
-	margin-bottom:5px;
+    margin-top:5px;
+    margin-bottom:5px;
 }
 
 body.course h1.main,
@@ -5993,3 +6032,27 @@ h2.reactivateheading {
 form#program-extension-update table {
     width:100%;
 }
+
+/* Totara progress bar */
+img.totaraprogressbar {
+    padding: 0;
+    margin: 5px 0 0 0;
+}
+
+div.block_quicklinks div.content p.quicklink-title {
+    white-space: nowrap;
+    width: 210px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.multiselect-selected-item {
+    margin: 3px 0;
+    padding: 3px 0;
+    width: 250px;
+}
+
+div.multiselect-selected-item .delete-icon {
+    float: right;
+}
+

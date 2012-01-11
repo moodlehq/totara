@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // tex.php - created with Moodle 1.6 development (2006031600)
-
+<?php
+// tex.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'Anotação TeX';
 

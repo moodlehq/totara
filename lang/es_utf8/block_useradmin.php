@@ -1,6 +1,5 @@
-<?PHP // $Id: block_useradmin.php,v 1.2 2009/04/07 16:59:39 barias Exp $ 
-      // block_useradmin.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// block_useradmin.php - created with Totara langimport script version 1.1
 
 $string['CONTEXT_COURSE'] = 'Curso';
 $string['CONTEXT_COURSECAT'] = 'Categoría de Curso';

@@ -1,6 +1,5 @@
-<?PHP // $Id: mnet.php,v 1.20 2010/03/19 09:37:20 krause Exp $ 
-      // mnet.php - created with Moodle 2.0 dev (Build: 20100220) (2010021900)
-
+<?php
+// mnet.php - created with Totara langimport script version 1.1
 
 $string['RPC_HTTPS_SELF_SIGNED'] = 'HTTPS (selbstsigniert)';
 $string['RPC_HTTPS_VERIFIED'] = 'HTTPS (signiert)';
@@ -141,6 +140,7 @@ $string['nocurl'] = 'PHP-Library cURL wurde nicht installiert';
 $string['nohostid'] = 'Diese Seite benötigt eine Rechner-ID, die eine Zahl sein sollte.';
 $string['noipmatch'] = 'Die Remote-Rechner-Adresse <br /><em>$a[0]</em><br /> passt nicht zu der Adresse im Datensatz<br /><em>$a[1]</em>.';
 $string['nolocaluser'] = 'Es gibt keinen lokalen Datensatz für Remote-Nutzer.';
+$string['nolocaluser2'] = 'Es gibt keinen lokalen Datensatz für Remote-Nutzer. Da dieser Rechner Nutzerkonten nicht automatisch anlegt, kann auch kein Datensatz erzeugt werden. Bitte fragen Sie Ihren Administrator!';
 $string['nomodifyacl'] = 'Sie sind nicht berechtigt, die MNET-Access-Kontrollliste zu verändern.';
 $string['nonmatchingcert'] = 'Der Inhalt des Zertifikats: <br /><em>$a[0]</em><br />Passt nicht zu dem Host von dem es stammt:<br /><em>$a[1]</em>.';
 $string['nopubkey'] = 'Bei der Abfrage des PublicKey ist ein Problem aufgetreten. <br />Vielleicht erlaubt der Rechner kein Moodle-Netzwerk oder der PublicKey ist ungültig.';
@@ -241,6 +241,5 @@ $string['wrong-ip'] = 'Ihre IP-Adresse passt nicht zu der Adresse, die wir gespe
 $string['xmlrpc-missing'] = 'XMLRPC muss innerhalb von PHP installiert sein, um diese Funktion nutzen zu können.';
 $string['yourhost'] = 'Ihr Rechner';
 $string['yourpeers'] = 'Ihre Peers';
-$string['nolocaluser2'] = 'Es gibt keinen lokalen Datensatz für Remote-Nutzer. Da dieser Rechner Nutzerkonten nicht automatisch anlegt, kann auch kein Datensatz erzeugt werden. Bitte fragen Sie Ihren Administrator!'; // ORPHANED
 
 ?>

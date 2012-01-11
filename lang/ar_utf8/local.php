@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // local.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// local.php - created with Totara langimport script version 1.1
 
 $string['addanothercolumn'] = 'أضف عامود آخر...';
 $string['addcompetencyevidence'] = 'أضف سجل شهادة كفاءة';
@@ -63,45 +62,57 @@ $string['local:assignselfposition'] = 'قم بتعيين وظيفتك';
 $string['local:assignuserposition'] = 'فم بتعيين وظيفة المستخدم';
 $string['local:createcompetency'] = 'إنشاء الكفاءة';
 $string['local:createcompetencycustomfield'] = 'إنشاء حقل كفاءة مخصص';
+$string['local:createcompetencydepth'] = 'إنشاء بعد الكفاءة';
 $string['local:createcompetencyframeworks'] = 'إنشاء إطار الكفاءة';
 $string['local:createcompetencytemplate'] = 'إنشاء قالب الكفاءة';
 $string['local:createcompetencytype'] = 'إنشاء نوع الكفاءة';
 $string['local:createcoursecustomfield'] = 'إنشاء خانة مقرر مخصصة';
 $string['local:createorganisation'] = 'إنشاء خانة مقرر مخصصة';
 $string['local:createorganisationcustomfield'] = 'إنشاء خانة مقرر مخصصة';
+$string['local:createorganisationdepth'] = 'إنشاء البعد التنظيمي';
 $string['local:createorganisationframeworks'] = 'إنشاء إطار تنظيمي';
 $string['local:createorganisationtype'] = 'إنشاء نوع الجهة';
 $string['local:createposition'] = 'إنشاء وظيفة';
 $string['local:createpositioncustomfield'] = 'إنشاء خانة وظيفة مخصصة';
+$string['local:createpositiondepth'] = 'إنشاء البعد الوظيفي';
 $string['local:createpositionframeworks'] = 'إنشاء إطار الوظيفة';
 $string['local:createpositiontype'] = 'إنشاء نوع الموقع';
 $string['local:deletecompetency'] = 'حذف كفاءة';
 $string['local:deletecompetencycustomfield'] = 'حذف خانة كفاءة مخصصة';
+$string['local:deletecompetencydepth'] = 'حذف بعد الكفاءة';
 $string['local:deletecompetencyframeworks'] = 'حذف إطارالكفاءة';
 $string['local:deletecompetencytemplate'] = 'حذف قال الكفاءة';
 $string['local:deletecompetencytype'] = 'حذف نوع الكفاءة';
 $string['local:deletecoursecustomfield'] = 'حذف خانة مقرر مخصصة';
 $string['local:deleteorganisation'] = 'حذف منظمة';
 $string['local:deleteorganisationcustomfield'] = 'حذف خانة منظمة مخصصة';
+$string['local:deleteorganisationdepth'] = 'حذف البعد التنظيمي';
 $string['local:deleteorganisationframeworks'] = 'حذف إطار تنظيمي';
 $string['local:deleteorganisationtype'] = 'حذف نوع الجهة';
 $string['local:deleteposition'] = 'حذف وظيفة';
 $string['local:deletepositioncustomfield'] = 'حذف خانة وظيفة مخصصة';
+$string['local:deletepositiondepth'] = 'حذف البعد الوظيفي';
 $string['local:deletepositionframeworks'] = 'حذف إطار وظيفة';
 $string['local:deletepositiontype'] = 'حذف نوع الموقع';
+$string['local:editclassifications'] = 'تحرير تصنيفات المقرر';
+$string['local:editcourseclassification'] = 'تحرير تصنيفات المقرر';
 $string['local:markcomplete'] = 'إجعل اكتمال المستخدم في استكمال المقرر';
+$string['local:searchclassifications'] = 'البحث في التصنيفات';
 $string['local:updatecompetency'] = 'تحديث الكفاءة';
 $string['local:updatecompetencycustomfield'] = 'تحديث خانة الكفاءة المخصصة';
+$string['local:updatecompetencydepth'] = 'تحديث بعد الكفاءة';
 $string['local:updatecompetencyframeworks'] = 'تحديث إطار الكفاءة';
 $string['local:updatecompetencytemplate'] = 'تحديث قالب الكفاءة';
 $string['local:updatecompetencytype'] = 'تحديث نوع الكفاءة';
 $string['local:updatecoursecustomfield'] = 'تحديث خانة المقرر المخصصة';
 $string['local:updateorganisation'] = 'تحديث منظمة';
 $string['local:updateorganisationcustomfield'] = 'تحديث خانة المنظمة المخصصة';
+$string['local:updateorganisationdepth'] = 'تحديث البعد التنظيمي';
 $string['local:updateorganisationframeworks'] = 'تحديث إطار تنظيمي';
 $string['local:updateorganisationtype'] = 'تحديث نوع الجهة';
 $string['local:updateposition'] = 'تحديث وظيفة';
 $string['local:updatepositioncustomfield'] = 'تحديث خانة وظيفة مخصصة';
+$string['local:updatepositiondepth'] = 'تحديث البعد الوظيفي';
 $string['local:updatepositionframeworks'] = 'تحديث إطار الوظيفة';
 $string['local:updatepositiontype'] = 'تحديث نوع الموقع';
 $string['local:viewcompetency'] = 'عرض الكفاءة';
@@ -165,17 +176,5 @@ $string['timecompleted'] = 'إتمام الوقت';
 $string['type'] = 'نوع';
 $string['typeicon'] = 'أيقونة النوع';
 $string['viewmyteam'] = 'عرض فريقي';
-$string['local:createcompetencydepth'] = 'إنشاء بعد الكفاءة'; // ORPHANED
-$string['local:createorganisationdepth'] = 'إنشاء البعد التنظيمي'; // ORPHANED
-$string['local:createpositiondepth'] = 'إنشاء البعد الوظيفي'; // ORPHANED
-$string['local:deletecompetencydepth'] = 'حذف بعد الكفاءة'; // ORPHANED
-$string['local:deleteorganisationdepth'] = 'حذف البعد التنظيمي'; // ORPHANED
-$string['local:deletepositiondepth'] = 'حذف البعد الوظيفي'; // ORPHANED
-$string['local:editclassifications'] = 'تحرير تصنيفات المقرر'; // ORPHANED
-$string['local:editcourseclassification'] = 'تحرير تصنيفات المقرر'; // ORPHANED
-$string['local:searchclassifications'] = 'البحث في التصنيفات'; // ORPHANED
-$string['local:updatecompetencydepth'] = 'تحديث بعد الكفاءة'; // ORPHANED
-$string['local:updateorganisationdepth'] = 'تحديث البعد التنظيمي'; // ORPHANED
-$string['local:updatepositiondepth'] = 'تحديث البعد الوظيفي'; // ORPHANED
 
 ?>

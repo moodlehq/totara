@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // forum.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// forum.php - created with Totara langimport script version 1.1
 
 $string['addanewdiscussion'] = 'Colocar un nuevo tema de discusión aquí';
 $string['addanewquestion'] = 'Agregar una nueva pregunta';
@@ -25,6 +24,7 @@ $string['allsubscribe'] = 'Suscribir a todos los foros';
 $string['allunsubscribe'] = 'Dar de baja de todos los foros';
 $string['alreadyfirstpost'] = 'Éste es ya el primer mensaje del debate';
 $string['anyfile'] = 'Cualquier archivo';
+$string['areaintro'] = 'Introducción al foro';
 $string['attachment'] = 'Archivo adjunto';
 $string['attachmentnopost'] = 'No puede exportar archivos adjuntos sin una id de mensaje';
 $string['attachments'] = 'Archivos adjuntos';
@@ -37,6 +37,7 @@ $string['cannotadddiscussion'] = 'Para agregar discusiones a este foro hay que s
 $string['cannotadddiscussionall'] = 'No tiene permiso para agregar un nuevo tema de discusión para todos los participantes.';
 $string['cannotaddsubscriber'] = 'No se pudo agregar un suscriptor con la id $a a este foro.';
 $string['cannotaddteacherforumto'] = 'No se ha podido convertir el ejemplo de foro de profesores a la sección 0 del curso';
+$string['cannotconvertteachertogeneral'] = 'No se pudo cambiar el foro de tipo profesor a tipo general';
 $string['cannotcreatediscussion'] = 'No se pudo crear un debate nuevo';
 $string['cannotcreateinstanceforteacher'] = 'No se pudo crear un nuevo ejemplo de móduno de curso para el foro de profesores';
 $string['cannotdeleteforummodule'] = 'No se puede eliminar el módulo Foro.';
@@ -57,6 +58,10 @@ $string['cannotsplit'] = 'Los debates de este foro no pueden dividirse';
 $string['cannotsubscribe'] = 'Lo sentimos, debe ser un miembro de un grupo para suscribirse.';
 $string['cannottrack'] = 'No se pudo parar de rastrear ese foro';
 $string['cannotunsubscribe'] = 'No se pudo darle de baja en ese foro';
+$string['cannotupdatecoursemoudle'] = 'No se pudo actualizar el módulo con la id de sección';
+$string['cannotupdatediscussion'] = 'No se pudo actualizar el debate';
+$string['cannotupdatefirstpost'] = 'No se pudo actualizar el primer mensaje';
+$string['cannotupdateforum'] = 'No se puede actualizar el foro';
 $string['cannotupdatepost'] = 'No puede actualizar este mensaje';
 $string['cannotviewpostyet'] = 'No puede leer las preguntas de otros estudiantes en esta discusión porque usted aún no ha enviado mensajes';
 $string['cleanreadtime'] = 'Hora para marcar mensajes antiguos como leídos';
@@ -84,6 +89,8 @@ $string['configreplytouser'] = 'Cuando un mensaje del foro es enviado por correo
 $string['configshortpost'] = 'Cualquier mensaje que no alcance esta extensión (sin incluir código HTML) se considera corto.';
 $string['configtrackreadposts'] = 'Seleccione \'Sí\' si desea rastrear leído/no leído para cada usuario.';
 $string['configusermarksread'] = 'Si elige \'sí\' el usuario debe marcar manualmente un mensaje como leído. Si \'no\', cuando el mensaje sea visto se marcará como leído.';
+$string['confirmsubscribe'] = '¿Quiere realmente suscribirse al foro \'{$a}\'?';
+$string['confirmunsubscribe'] = '¿Quiere realmente cancelar su suscripción al foro \'{$a}\'?';
 $string['couldnotadd'] = 'No se puede colocar su mensaje debido a un problema desconocido.';
 $string['couldnotdeleteratings'] = 'Lo sentimos, no podemos borrar este mensaje debido a que ha sido calificado.';
 $string['couldnotdeletereplies'] = 'Lo sentimos, no podemos borrar este mensaje debido a que tiene respuestas.';
@@ -360,11 +367,5 @@ $string['youratedthis'] = 'Usted calificó este mensaje';
 $string['yournewquestion'] = 'Su nueva pregunta';
 $string['yournewtopic'] = 'Su nuevo tema';
 $string['yourreply'] = 'Su respuesta';
-$string['areaintro'] = 'Introducción al foro'; // ORPHANED
-$string['cannotconvertteachertogeneral'] = 'No se pudo cambiar el foro de tipo profesor a tipo general'; // ORPHANED
-$string['cannotupdatecoursemoudle'] = 'No se pudo actualizar el módulo con la id de sección'; // ORPHANED
-$string['cannotupdatediscussion'] = 'No se pudo actualizar el debate'; // ORPHANED
-$string['cannotupdatefirstpost'] = 'No se pudo actualizar el primer mensaje'; // ORPHANED
-$string['cannotupdateforum'] = 'No se puede actualizar el foro'; // ORPHANED
 
 ?>

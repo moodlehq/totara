@@ -1,0 +1,11 @@
+<h1>Mukautuva tila</h1>
+
+<p>Mikäli valitset tässä Kyllä, oppija voi vastata yhteen kysymykseen useaan kertaan samalla vastauskerralla. Esimerkiksi mikäli oppijan vastaus merkitään vääräksi, hän voi vastata heti uudestaan. Tosin, yleensä väärästä vastauksesta saa miinuspisteitä (niiden määrä määritellään rangaistuskertoimella, joka määritellään seuraavassa valikossa).</p>
+
+<p>Tässä tilassa voit myös luoda mukautuvia kysymyksiä, jotka muuttuvat oppijan vastaukseen perustuen. Näin mukautuva kysymys (kohde) määritellään IMS QTI -määrittelyissä:</p>
+
+<blockquote>
+<p>Mukautuva kohde mukautuu joko ulkoasultaan, pisteytykseltään tai molemmilta osin riippuen vastaajan toiminnasta. Esimekiksi, mukautuva kohde saattaa aluksi tarjota vastaajalle vapaata tekstikenttää mutta kun vastaaja antaa epätyydyttävän vastauksen, kohde tarjoaa seuraavaksi yksinkertaisen valitsemistehtävän, jonka hyväksyttävästi suorittamisesta vastaaja saa vähemmän pisteitä. Mukautuvuus mahdollistaa kehittävien kohteiden luomisen, jotka auttavat vastaajaa tehtävissä sekä ottaa huomioon hänen oppimispolkunsa
+</p></blockquote>
+
+<p>Mukautuvassa tilassa näkyy <?php print_string('mark', 'quiz') ?> -painike jokaisen kysymyksen yhteydessä. Mikäli oppija klikkaa tätä painiketta, kyseisen kysymyksen vastaus kirjataan ja saavutettu tulos näytetään oppijalle. Jos kysysmys on mukautuva, kysymys näytetään sen uudessa tilassa, josta näkyy miten oppijan vastaus otetaan huomioon ja usein pyydetään oppijalta toista yritystä. Yksinkertaisimmissa mukautuvissa kysymyksissä tämä uusi tila saattaa erota edellisestä vain palautetekstin osalta, joka pyytää oppijaa yrittämään uudelleen; monimutkaisemmassa kysymyksessä kysymys ja jopa kysymyselementit saattavat muuttua.</p>

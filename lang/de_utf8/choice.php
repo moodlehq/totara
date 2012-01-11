@@ -1,10 +1,11 @@
-<?PHP // $Id$ 
-      // choice.php - created with Moodle 2.0 dev (Build: 20100114) (2010011400)
-
+<?php
+// choice.php - created with Totara langimport script version 1.1
 
 $string['addmorechoices'] = 'Weitere Auswahloptionen hinzufügen';
 $string['allowupdate'] = 'Abstimmung kann bearbeitet werden';
 $string['answered'] = 'Beantwortet';
+$string['cannotsavechoice'] = 'Ihre Abstimmung konnte nicht gespeichert werden.';
+$string['cannotupdatechoice'] = 'Aufgrund eines Datenbankfehlers konnte der geänderte Eintrag zur Abstimmung nicht gespeichert werden.';
 $string['choice'] = 'Antwort  $a';
 $string['choice:choose'] = 'An einer Abstimmung teilnehmen';
 $string['choice:deleteresponses'] = 'Stimmabgaben löschen';
@@ -54,7 +55,5 @@ $string['taken'] = 'Eingetragen';
 $string['timerestrict'] = 'Abstimmung nur im Zeitraum:';
 $string['viewallresponses'] = 'Zeige $a Stimmabgaben';
 $string['yourselection'] = 'Ihre Auswahl';
-$string['cannotsavechoice'] = 'Ihre Abstimmung konnte nicht gespeichert werden.'; // ORPHANED
-$string['cannotupdatechoice'] = 'Aufgrund eines Datenbankfehlers konnte der geänderte Eintrag zur Abstimmung nicht gespeichert werden.'; // ORPHANED
 
 ?>

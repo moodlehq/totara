@@ -1,5 +1,5 @@
-<?PHP // $Id: block_shared_files.php,v 1.2 2008/10/11 15:57:29 paca70 Exp $
-      // Modified with langdiff.php
+<?php
+// block_shared_files.php - created with Totara langimport script version 1.1
 
 $string['addcategory'] = 'Lisää kategoria';
 $string['addshared_file'] = 'Lisää tiedosto';
@@ -75,5 +75,5 @@ $string['teachersmaxdir'] = 'Opettajien suurin sallittu hakemistokoko';
 $string['teachersmaxupload'] = 'Opettajien suurin sallittu tiedostokoko';
 $string['uploadsettings'] = 'Asetukset';
 $string['url'] = 'Osoite';
-?>
 
+?>

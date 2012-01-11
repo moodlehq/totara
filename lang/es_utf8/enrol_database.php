@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_database.php - created with Moodle 1.8.2+ (2007021520)
-
+<?php
+// enrol_database.php - created with Totara langimport script version 1.1
 
 $string['autocreate'] = 'Los cursos pueden crearse automáticamente si hay matriculaciones en un curso que aún no existe en Moodle.';
 $string['autocreation_settings'] = 'Ajustes de autocreación';

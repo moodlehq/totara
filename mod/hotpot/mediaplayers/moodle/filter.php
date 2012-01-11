@@ -128,7 +128,7 @@ function hotpot_mediaplayer_moodle(&$hotpot, $text) {
 
         $replace  = '\\0<p class="mediaplugin wmv"><object classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95"';
         $replace .= ' codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701" ';
-        $replace .= ' standby="Loading Microsoft� Windows� Media Player components..." ';
+        $replace .= ' standby="Loading Microsoft™ Windows™ Media Player components..." ';
         $replace .= ' id="msplayer" type="application/x-oleobject">';
         $replace .= "<param name=\"Filename\" value=\"\\2.wmv\" />";
         $replace .= '<param name="ShowControls" value="true" />';

@@ -1,6 +1,5 @@
-<?PHP // $Id: auth_ldap.php,v 1.4 2010/01/16 14:35:37 krause Exp $ 
-      // auth_ldap.php - created with Moodle 2.0 dev (Build: 20100114) (2010011400)
-
+<?php
+// auth_ldap.php - created with Totara langimport script version 1.1
 
 $string['auth_ldap_ad_create_req'] = 'Im Active Directory konnte kein neuer Account angelegt werden. Prüfen Sie, ob alle Voraussetzungen hierfür getroffen wurden (LDAPS-Verbindung, Bind-User mit den nötigen Rechten, usw.)';
 $string['auth_ldap_attrcreators'] = 'Liste von Gruppen oder Kontexten, deren Mitglieder zur Erstellung von Merkmalen berechtigt sind. Mehrere Gruppen werden durch ein \';\' (Semikolon) getrennt. Der Eintrag hat üblicherweise die folgende Form: \'cn=teacher,ou=staff,o=myorg\'.';

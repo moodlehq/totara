@@ -1,6 +1,5 @@
-<?PHP // $Id: block_learning_resources.php,v 1.1 2007/04/30 23:13:47 koenr Exp $ 
-      // block_learning_resources.php - created with Moodle 1.9 dev (2007041800)
-
+<?php
+// block_learning_resources.php - created with Totara langimport script version 1.1
 
 $string['actions'] = 'إجراءات';
 $string['addlink'] = 'إضافة رابط';

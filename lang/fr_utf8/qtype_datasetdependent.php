@@ -1,4 +1,5 @@
 <?php
+// qtype_datasetdependent.php - created with Totara langimport script version 1.1
 
 $string['additem'] = 'Ajouter élément';
 $string['answerstoleranceparam'] = 'Paramètres de tolérance des réponses';
@@ -36,9 +37,9 @@ $string['newcategory3'] = 'Un lien d\'un nouveau jeu de données de liens qui po
 $string['newlocal1'] = 'Une lettre d\'un nouveau jeu de données de lettres qui ne sera utilisé que pour cette question';
 $string['newlocal2'] = 'Un fichier d\'un nouveau jeu de données de fichiers qui ne sera utilisé que pour cette question';
 $string['newlocal3'] = 'Un lien d\'un nouveau jeu de données de liens qui ne sera utilisé que pour cette question';
-$string['nocommaallowed'] = 'Le caractère virgule (,) ne peut pas être utilisé. Veuillez utiliser le point décimal, comme dans 0.013 ou 1.3e-2' ;
+$string['nocommaallowed'] = 'Le caractère virgule (,) ne peut pas être utilisé. Veuillez utiliser le point décimal, comme dans 0.013 ou 1.3e-2';
 $string['nodataset'] = 'Rien - ce n\'est pas un joker';
-$string['notvalidnumber'] = 'La valeur du joker n\'est pas un nombre valide ' ;
+$string['notvalidnumber'] = 'La valeur du joker n\'est pas un nombre valide ';
 $string['oneanswertrueansweroutsidelimits'] = 'Au moins une réponse correcte en dehors des limites de la valeur correcte.<br />Veuillez modifier le réglage de tolérance des réponses dans les paramètres avancés';
 $string['param'] = 'Paramètre {<strong>$a</strong>}';
 $string['replacewithrandom'] = 'Remplacer par une valeur aléatoire';
@@ -49,3 +50,5 @@ $string['uniform'] = 'Uniforme';
 $string['updatedatasetparam'] = 'Modifier les paramètres du jeu de données';
 $string['updatetolerancesparam'] = 'Modifier les paramètres de tolérance des réponses';
 $string['youmustaddatleastoneitem'] = 'Veuillez ajouter au moins un élément du jeu de données avant d\'enregistrer cette question.';
+
+?>

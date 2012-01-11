@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_manual.php,v 1.4 2009/03/16 22:30:09 barias Exp $ 
-      // enrol_manual.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// enrol_manual.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Este es el formulario por defecto de matriculación. Existen dos formas principales de matriculación en un curso concreto.
 <ul>

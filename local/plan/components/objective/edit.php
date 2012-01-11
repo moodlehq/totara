@@ -50,6 +50,11 @@ if ( $deleteno == null ){
     $deleteno = true;
 }
 
+//Javascript include
+local_js(array(
+    TOTARA_JS_DATEPICKER
+));
+
 ///
 /// Load data
 ///
@@ -96,6 +101,9 @@ if ( $plancompleted ){
 }
 
 $mform = $component->objective_form( $objectiveid );
+if (isset($objective->duedate)) {
+    $objective->duedate = userdate($objective->duedate, '%d/%m/%Y', $CFG->timezone, false);
+}
 $mform->set_data($objective);
 
 if ( $deleteyes ){
@@ -124,7 +132,7 @@ if ( $deleteyes ){
                 $data->fullname,
                 isset($data->description)?$data->description:null,
                 isset($data->priority)?$data->priority:null,
-                isset($data->duedate)?$data->duedate:null,
+                isset($data->duedate)?dp_convert_userdate($data->duedate):null,
                 isset($data->scalevalueid)?$data->scalevalueid:null
         );
         if (!$result){
@@ -140,7 +148,7 @@ if ( $deleteyes ){
         $record->fullname = $data->fullname;
         $record->description = $data->description;
         $record->priority = isset($data->priority)?$data->priority:null;
-        $record->duedate = isset($data->duedate)?$data->duedate:null;
+        $record->duedate = isset($data->duedate)?dp_convert_userdate($data->duedate):null;
         $record->scalevalueid = $data->scalevalueid;
         $record->approved = $component->approval_status_after_update();
 
@@ -222,4 +230,7 @@ switch($action){
 }
 
 print_container_end();
+
+echo build_datepicker_js('input[name="duedate"]');
+
 print_footer();

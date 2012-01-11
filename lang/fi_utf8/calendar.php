@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// calendar.php - created with Totara langimport script version 1.1
+
 $string['advancedoptions'] = 'Lisäasetukset';
 $string['allday'] = 'Koko päivä';
 $string['calendar'] = 'Kalenteri';
@@ -129,4 +131,5 @@ $string['weeknext'] = 'Seuraava viikko';
 $string['weekthis'] = 'Tämä viikko';
 $string['yesterday'] = 'eilen';
 $string['youcandeleteallrepeats'] = 'Tämä tapahtuma on osa tapahtumasarjaa. Voit poistaa vain tämän tapahtuman tai tapahtumasarjan kaikki $a tapahtumaa kerralla.';
+
 ?>

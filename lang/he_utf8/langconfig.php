@@ -1,4 +1,6 @@
 <?php
+// langconfig.php - created with Totara langimport script version 1.1
+
 $string['alphabet'] = 'א,ב,ג,ד,ה,ו,ז,ח,ט,י,כ,ל,מ,נ,ס,ע,פ,צ,ק,ר,ש,ת';
 $string['backupnameformat'] = '%%Y%%m%%d-%%H%%M';
 $string['firstdayofweek'] = '0';
@@ -21,4 +23,5 @@ $string['thischarset'] = 'UTF-8';
 $string['thisdirection'] = 'rtl';
 $string['thislanguage'] = 'עברית';
 $string['thislanguageint'] = 'Hebrew';
+
 ?>

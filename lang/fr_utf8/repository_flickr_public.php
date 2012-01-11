@@ -1,13 +1,14 @@
-<?php // $Id: repository_flickr_public.php,v 1.8 2009/08/12 10:42:21 martignoni Exp $
+<?php
+// repository_flickr_public.php - created with Totara langimport script version 1.1
 
 $string['all'] = 'Toutes';
 $string['apikey'] = 'Clef API';
-$string['by-nc-sa'] = 'Paternité Pas d\'utilisation commerciale Partage des conditions initiales à l\'identique';
+$string['by'] = 'Paternité';
 $string['by-nc'] = 'Paternité Pas d\'utilisation commerciale';
 $string['by-nc-nd'] = 'Paternité Pas d\'utilisation commerciale Pas de modification';
-$string['by'] = 'Paternité';
-$string['by-sa'] = 'Paternité Partage des conditions initiales à l\'identique';
+$string['by-nc-sa'] = 'Paternité Pas d\'utilisation commerciale Partage des conditions initiales à l\'identique';
 $string['by-nd'] = 'Paternité Pas de modification';
+$string['by-sa'] = 'Paternité Partage des conditions initiales à l\'identique';
 $string['callbackurl'] = 'URL de rappel';
 $string['commercialuse'] = 'Permettre l\'utilisation commerciale de votre travail ?';
 $string['configplugin'] = 'Configuration Flickr public';
@@ -22,8 +23,8 @@ $string['modification'] = 'Permettre les modifications de votre travail ?';
 $string['notitle'] = 'Sans titre';
 $string['nullphotolist'] = 'Il n\'y a pas de photo dans ce compte';
 $string['remember'] = 'Se souvenir de moi';
-$string['repositoryname'] = 'Flickr public';
 $string['repositorydesc'] = 'Dépôt sur flickr.com';
+$string['repositoryname'] = 'Flickr public';
 $string['secret'] = 'Secret';
 $string['sharealike'] = 'Oui, pour autant que les autres partagent aux mêmes conditions';
 $string['tag'] = 'Tag';

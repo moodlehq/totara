@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // report_security.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// report_security.php - created with Totara langimport script version 1.1
 
 $string['check_configrw_details'] = '<p>Det rekommenderas att filrättigheterna i config.php ändras efter installation så att filen inte kan modifieras av webservern. Observera att detta inte ökar säkerheten på servern markant även om det minskar eller begränsar risken för exponering.</p>';
 $string['check_configrw_name'] = 'Skrivbar config.php';

@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_pop3.php - created with Totara langimport script version 1.1
 
 $string['auth_pop3changepasswordurl_key'] = 'כתובת URL לשינוי סיסמה';
 $string['auth_pop3description'] = 'שיטה זו עושה שימוש בשרת POP3 כדי לבדוק אם שם משתמש  וסיסמה נתונים הינם תקפים.';
@@ -15,3 +13,5 @@ $string['auth_pop3port_key'] = 'יציאה';
 $string['auth_pop3title'] = 'השתמש בשרת POP3';
 $string['auth_pop3type'] = 'סוג שרת. אם השרת שלך משתמש באבטחת תעודה (certificate), בחר pop3cert.';
 $string['auth_pop3type_key'] = 'סוג';
+
+?>

@@ -591,7 +591,7 @@ class grade_item extends grade_object {
     function set_hidden($hidden, $cascade=false) {
         $this->hidden = $hidden;
         $this->update();
-        
+
         if ($cascade) {
             if ($grades = grade_grade::fetch_all(array('itemid'=>$this->id))) {
                 foreach($grades as $grade) {

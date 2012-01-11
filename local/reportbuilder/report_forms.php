@@ -190,7 +190,7 @@ class report_builder_edit_filters_form extends moodleform {
 
             $filtersselect = $report->get_filters_select();
 
-            if(isset($report->filters) && is_array($report->filters) && count($report->filters)>0) {
+            if (isset($report->filters) && is_array($report->filters) && count($report->filters) > 0) {
                 $filters = $report->filters;
                 $filtercount = count($filters);
                 $i = 1;
@@ -226,8 +226,8 @@ class report_builder_edit_filters_form extends moodleform {
                 }
             } else {
                 $mform->addElement('html','<p>'. get_string('nofiltersyet','local_reportbuilder').'</p>');
+                $filters = array();
             }
-
 
             $mform->addElement('html','<tr><td>');
             $newfilterselect = array_merge(
@@ -271,8 +271,8 @@ class report_builder_edit_filters_form extends moodleform {
         $renderer =& $mform->defaultRenderer();
         $select_elementtemplate = '<div class="fitem"><div class="felement fselectgroups">{element}</div></div>';
         $check_elementtemplate = '<div class="fitem"><div class="felement fcheckbox">{element}</div></div>';
-        $renderer->setElementTemplate($select_elementtemplate, 'newfilter' . $index);
-        $renderer->setElementTemplate($check_elementtemplate, 'newadvanced' . $index);
+        $renderer->setElementTemplate($select_elementtemplate, 'newfilter');
+        $renderer->setElementTemplate($check_elementtemplate, 'newadvanced');
         foreach ($filters as $index => $unused) {
             $renderer->setElementTemplate($select_elementtemplate, 'filter' . $index);
             $renderer->setElementTemplate($check_elementtemplate, 'advanced' . $index);
@@ -469,9 +469,9 @@ class report_builder_edit_columns_form extends moodleform {
         $select_elementtemplate = '<div class="fitem"><div class="felement fselectgroups">{element}</div></div>';
         $check_elementtemplate = '<div class="fitem"><div class="felement fcheckbox">{element}</div></div>';
         $text_elementtemplate = '<div class="fitem"><div class="felement ftext">{element}</div></div>';
-        $renderer->setElementTemplate($select_elementtemplate, 'newcolumns' . $index);
-        $renderer->setElementTemplate($check_elementtemplate, 'newcustomheading' . $index);
-        $renderer->setElementTemplate($text_elementtemplate, 'newheading' . $index);
+        $renderer->setElementTemplate($select_elementtemplate, 'newcolumns');
+        $renderer->setElementTemplate($check_elementtemplate, 'newcustomheading');
+        $renderer->setElementTemplate($text_elementtemplate, 'newheading');
         foreach ($columns as $index => $unused) {
             $renderer->setElementTemplate($select_elementtemplate, 'column' . $index);
             $renderer->setElementTemplate($check_elementtemplate, 'customheading' . $index);
@@ -722,7 +722,7 @@ class report_builder_save_form extends moodleform {
         $mform->addElement('static', 'params', get_string('currentsearchparams','local_reportbuilder'), $params);
         $mform->addElement('text','name', get_string('searchname','local_reportbuilder'));
         $mform->setType('name', PARAM_TEXT);
-        $mform->addElement('advcheckbox', 'public', get_string('publicallyavailable','local_reportbuilder'), '', null, array(0,1));
+        $mform->addElement('advcheckbox', 'ispublic', get_string('publicallyavailable','local_reportbuilder'), '', null, array(0,1));
         $mform->addElement('hidden','id',$id);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'search', $searchsettings);

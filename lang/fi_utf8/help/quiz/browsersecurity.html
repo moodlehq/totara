@@ -1,0 +1,42 @@
+<h1>Selainturvallisuus</h1>
+
+<p>Tämä toiminto tarjoaa eri tapoja estää oppijoita käyttämästä vilpillisiä konsteja tentin läpäisemisessä. Tämä ei kuitenkaan ole yksioikoinen asia, sillä toiminta, joka voidaan jossakin tilanteessa katsoa vilpilliseksi, saattaakin toisessa tilanteessa olla tehokasta tiedonhakua (esimerkiksi hakukoneen nopeaa ja tehokasta käyttöä).</p>
+
+<p>Huomaa myös, että ongelma ei ole pelkästään teknologian aiheuttama, johon on tekninen ratkaisu. Vilpillistä toimintaa on ollut aina ja vaikka tietokone helpottaa toimia kuten tekstin kopioiminen, se myös helpottaa kouluttajan työtä vilpin huomaamisessa, esimerkiksi tenttiraporttien avulla. Tässä tarjotut vaihtoehdot eivät ole täysin varmoja ja samalla kun ne vaikeuttavat vilpillistä toimintaa, ne myös vaikeuttavat tentin suorittamista.</p>
+
+<p>Kannattaa miettiä myös muita tapoja vaikeuttaa vilpillistä toimintaa tenttien sisällön suhteen:</p>
+<ul>
+<li>Voit käyttää laajaa kysymyspankkia, josta kysymykset valikoituvat sattumanvaraisesti, joten kaikki oppijat näkevät eri kysymykset, joskin samanlaiset sisällöltään.</li>
+<li>Voit käyttää vastauksien sekoitusta, jolloin oikea vastaus kysymykseen 1 ei ole aina vaihtoehto A.</li>
+<li>Voit kysyä kysymyksiä, jotka vaativat oppijoilta analysointia, ei pelkkää faktojen muistamista.</li>
+</p>
+
+<p>Pidä mielessä yllämainitut seikat kun tutustut allaoleviin vaihtoehtoihin.</p>
+
+<h3>Ei estoja</h3>
+
+<p>Ei käytetä minkäänlaisia vilpinestotoimintoja tenteissä.</p>
+
+<h3>Koko ruudun kokoinen popup-ikkuna JavaScript -turvauksella</h3>
+
+<p>Koska tentti tehdään verkkopalvelimella, tentin vilpinestolle on tiettyjä rajoituksia. Alla mainitut toimet ovat kuitenkin mahdollisia:</p>
+<ul>
+    <li>Tentti voidaan suorittaa vain JavaScriptiä tukevalla selaimella.</li>
+    <li>Tentti avautuu koko ruudun kokoisessa popup-ikkunassa, joka peittää kaikki muut ikkunat eikä siinä ole navigointimahdollisuuksia.</li>
+    <li>Oppijoilta on estetty toiminnot kuten kopiointi ja liittäminen niin pitkälle kuin mahdollista.</li>
+</ul>
+
+<h3>Vaadi Safe Exam Browser -selaimen käyttöä</h3>
+
+<p>Tämä toiminto on käytössä vain, jos järjestelmäsi hallinnoija on sen mahdollistanut.</p>
+
+<p><a href="http://www.safeexambrowser.org/">Safe Exam Browser</a> on räätälöity selain, joka tulee ladata verkosta ja asentaa koneelle, jolla oppija tenttiä suorittaa. Selain asettaa samankaltaiset rajoitukset oppijalle kuin popup-ikkunakin mutta koska selain on asennettu tietokoneelle, se on tehokkaampi rajoittamaan oppijan toimia ja estämään vilppiä. Mikäli tämä selain on käytössä</p>
+<ul>
+    <li>oppijat voivat tehdä tentin ainoastaan käyttämällä Safe Exam Browser -selainta.</li>
+    <li>selainikkuna täyttää koko näytön eikä siinä ole navigointimahdollisuuksia.</li>
+    <li>ikkunaa ei voida sulkea ennenkuin tentti on tehty.</li>
+    <li>pikanäppäimet ja niden yhdistelmät (kuten Win, Ctrl+Alt+Del, Alt+F4, F1, Ctrl+P, Printscreen) eivät toimi.</li>
+    <li>kopio ja liitä -toiminnot eivät toimi eikä myöskään pikavalikko (hiiren oikea näppäin).</li>
+    <li>toiseen sovellukseen siirtyminen ei ole mahdollista.</li>
+    <li>muille verkon sivustoille ei pääse.</li>
+</ul>

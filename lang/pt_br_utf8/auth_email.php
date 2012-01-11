@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_email.php - created with Totara langimport script version 1.1
 
 $string['auth_changingemailaddress'] = 'Você pediu a mudança do email de $a->oldemail para $a->newemail. Estamos enviando um email ao novo endereço para confirmação. Clique o link no email para completar o processo de atualização.';
 $string['auth_emailchangecancel'] = 'Excluir mudança no email';
@@ -24,3 +22,5 @@ $string['auth_emailupdatesuccess'] = 'Endereço email do usuário <em>$a->fullna
 $string['auth_emailupdatetitle'] = 'Confirmação de atualização de endereço email em $a->site';
 $string['auth_invalidnewemailkey'] = 'Erro: se você está tentando confirmar a mudança de endereço email, provavelmente copiou o URL incompleto. Tente novamente.';
 $string['auth_outofnewemailupdateattempts'] = 'O seu pedido de atualização do endereço email foi anulado. Você superou o número de tentativas permitidas.';
+
+?>

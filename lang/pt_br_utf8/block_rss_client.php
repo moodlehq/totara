@@ -1,4 +1,5 @@
 <?php
+// block_rss_client.php - created with Totara langimport script version 1.1
 
 $string['addfeed'] = 'Adicionar URL do alimentador de notícias:';
 $string['addheadlineblock'] = 'Adicionar título do bloco RSS';

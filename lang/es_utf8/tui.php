@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // tui.php - created with Moodle 1.5 Beta (2005052300)
-
+<?php
+// tui.php - created with Totara langimport script version 1.1
 
 $string['allresultsheading'] = 'Resultados de $a. (Disponible para administrador o profesor).';
 $string['average_for_stimulus_block'] = 'Tiempo de respuesta<br /> promedio para <br /> conjunto estimular $a';

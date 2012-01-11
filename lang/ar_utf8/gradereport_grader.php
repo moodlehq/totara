@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // gradereport_grader.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// gradereport_grader.php - created with Totara langimport script version 1.1
 
 $string['grader:manage'] = 'إدارة تقرير المصحح';
 $string['grader:view'] = 'عرض تقرير المصحح';

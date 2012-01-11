@@ -1,6 +1,5 @@
-<?PHP // $Id$
-//translated by Dariem (Demian)
-
+<?php
+// webquest.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'Ausente';
 $string['accumulative'] = 'Acumulativa';
@@ -126,7 +125,7 @@ $string['warningtask'] = 'AVISO: Hay evaluaciones enviadas.<br />
      No cambie el número de tareas, el tipo de escala o los pesos de tarea.';
 $string['weightederrorcount'] = 'Weighted Error Count: $a';
 $string['wellsaved'] = 'Guardado correctamente';
-$string['writeafeedback'] =  'Write a feedback';
+$string['writeafeedback'] = 'Write a feedback';
 $string['writeconclussion'] = 'Escriba las conclusiones';
 $string['writeintro'] = 'Escriba la introducción';
 $string['writeprocess'] = 'Escriba el proceso';

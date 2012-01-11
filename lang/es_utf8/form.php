@@ -1,6 +1,5 @@
-<?PHP // $Id: form.php,v 1.7 2009/04/26 10:11:49 barias Exp $ 
-      // form.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// form.php - created with Totara langimport script version 1.1
 
 $string['addfields'] = 'Agregar $a campos al formulario';
 $string['advancedelement'] = 'Elemento Avanzado';
@@ -29,6 +28,7 @@ $string['nonexistentformelements'] = 'Intentando añadir botones de ayuda a elem
 $string['optional'] = 'Opcional';
 $string['othersettings'] = 'Otros ajustes';
 $string['requiredelement'] = 'Debe suministrar un valor aquí.';
+$string['requiredfield'] = 'Este campo es obligatorio';
 $string['revealpassword'] = 'Revelar';
 $string['security'] = 'Seguridad';
 $string['selectallornone'] = 'Seleccionar todos/ninguno';
@@ -37,6 +37,5 @@ $string['somefieldsrequired'] = 'En este formulario hay campos obligatorios';
 $string['timing'] = 'Tiempo';
 $string['unmaskpassword'] = 'Desenmascarar';
 $string['year'] = 'Año';
-$string['requiredfield'] = 'Este campo es obligatorio'; // ORPHANED
 
 ?>

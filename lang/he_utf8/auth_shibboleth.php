@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_shibboleth.php - created with Totara langimport script version 1.1
 
 $string['auth_shib_changepasswordurl'] = 'תובת URL לשינוי סיסמה';
 $string['auth_shib_convert_data'] = 'התאמת נתוני API';
@@ -26,3 +24,5 @@ $string['auth_shibbolethtitle'] = 'שיבולת';
 $string['shib_no_attributes_error'] = 'נראה כי אתה מאומת באמצעות שיבולת, אבל מוודל לא קיבל כל תכונות משתמש שהן. אנא וודא שמספק הזהות שלך משחרר את התכונות הדרושות ($a) למספק השרות שמוודל מריץ או שידע את מנהל הרשת של שרת זה.';
 $string['shib_not_all_attributes_error'] = 'למוודל דרושות תכונות מסויימות של שיבולת, שבמקרה שלך, לא נמצאות. התכונות הן: $a<br />אנא צור קשר על מנהל הרשת של השרת או עם ספק הזהות שלך.';
 $string['shib_not_set_up_error'] = 'לא נראה כי אימות שיבולת מוגדר נכונה זאת מפני ששם משתני סביבת שיבולת לא נוכחים בעמוד זה. אנא התייעץ ב-<a href=\"README.txt\">README</a> על מנת לקבל הוראות נוספות על איך יש להגדיר את האימות דרך שיבולת, או צור קשר עם מנהל הרשת של התקנת מוודל זו.';
+
+?>

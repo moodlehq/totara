@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_database.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// enrol_database.php - created with Totara langimport script version 1.1
 
 $string['autocreate'] = 'يمكن إنشاء المقررات آلياً إذا كان هناك تسجيل في مقرر لم يتم إضافته إلى مودل بعد.';
 $string['autocreation_settings'] = 'اعدادات الإنشاء الآلي';

@@ -296,6 +296,5 @@ class moodlelib_test extends UnitTestCase {
         //set the timezone back to what it was
         $USER->timezone = $userstimezone;
     }
-
 }
 ?>

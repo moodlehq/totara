@@ -1,9 +1,6 @@
 <?php
+// editor_tinymce.php - created with Totara langimport script version 1.1
 
-//== Custom Moodle strings that are not part of upstream TinyMCE ==
-
-
-// == TinyMCE upstream lang strings from all plugins ==
 $string['advanced:address'] = 'Dirección';
 $string['advanced:anchor_delta_height'] = '';
 $string['advanced:anchor_delta_width'] = '';
@@ -18,7 +15,7 @@ $string['advanced:charmap_delta_height'] = '';
 $string['advanced:charmap_delta_width'] = '';
 $string['advanced:charmap_desc'] = 'Insertar caracteres personalizados';
 $string['advanced:cleanup_desc'] = 'Limpiar código basura';
-$string['advanced:clipboard_msg'] = 'Copiar/Cortar/Pegar no se encuentra disponible en Mozilla y Firefox.\\n ¿Desea obtener más información acerca de este tema?';
+$string['advanced:clipboard_msg'] = 'Copiar/Cortar/Pegar no se encuentra disponible en Mozilla y Firefox.\n ¿Desea obtener más información acerca de este tema?';
 $string['advanced:code'] = 'Código';
 $string['advanced:code_desc'] = 'Editar código HTML';
 $string['advanced:colorpicker_delta_height'] = '';
@@ -231,7 +228,7 @@ $string['common:apply'] = 'Aplicar';
 $string['common:browse'] = 'Examinar';
 $string['common:cancel'] = 'Cancelar';
 $string['common:class_name'] = 'Clase';
-$string['common:clipboard_msg'] = 'Copiar/Cortar/Pegar no se encuentra disponible en Mozilla y Firefox.\\n ¿Desea obtener más información acerca de este tema?';
+$string['common:clipboard_msg'] = 'Copiar/Cortar/Pegar no se encuentra disponible en Mozilla y Firefox.\n ¿Desea obtener más información acerca de este tema?';
 $string['common:clipboard_no_support'] = 'Su navegador no soporta las funciones de cortapapeles, use los accesos por teclado.';
 $string['common:close'] = 'Cerrar';
 $string['common:edit_confirm'] = ' ¿Desea utilizar el modo WYSIWYG para esta caja de texto?';
@@ -448,7 +445,7 @@ $string['media_dlg:prefetch'] = 'Prebúsqueda';
 $string['media_dlg:preview'] = 'Vista Previa';
 $string['media_dlg:progress'] = 'Progreso';
 $string['media_dlg:qt_options'] = 'Opciones Quicktime';
-$string['media_dlg:qt_stream_warn'] = 'Los recursos rtsp de Streaming deberían añadirse en el campo QT Src de la pestaña avanzada.\\nAdemás debería añadir una versión no Streaming en el campo Src.';
+$string['media_dlg:qt_stream_warn'] = 'Los recursos rtsp de Streaming deberían añadirse en el campo QT Src de la pestaña avanzada.\nAdemás debería añadir una versión no Streaming en el campo Src.';
 $string['media_dlg:qtsrc'] = 'QT Src';
 $string['media_dlg:qtsrcchokespeed'] = 'Vel. de choque';
 $string['media_dlg:quality'] = 'Calidad';
@@ -751,3 +748,5 @@ $string['xhtmlxtras_dlg:title_acronym_element'] = 'Acrónimo';
 $string['xhtmlxtras_dlg:title_cite_element'] = 'Cita';
 $string['xhtmlxtras_dlg:title_del_element'] = 'Borrar';
 $string['xhtmlxtras_dlg:title_ins_element'] = 'Insertar';
+
+?>

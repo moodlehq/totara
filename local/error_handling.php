@@ -62,8 +62,15 @@ function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $err
     // Restore old error handler to prevent loop
     restore_error_handler();
 
+    // Record count of inserted errors on this page
+    static $insertcount;
+    if (!isset($insertcount)) {
+        $insertcount = 0;
+    }
+
     // Only log error in database if Totara is installed and it would recorded at "DEVELOPER" level
-    if (!empty($CFG->local_postinst_hasrun) && ($errno & DEBUG_DEVELOPER)) {
+    // and we have made less than 100 inserts so far this page view
+    if (!empty($CFG->local_postinst_hasrun) && ($errno & DEBUG_DEVELOPER) && $insertcount < 100) {
 
         // Cache hashes of previous errors to prevent duplicates in table
         static $previous_errors = null;
@@ -81,8 +88,13 @@ function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $err
 
         $description = serialize(array($errno, $errstr, $errfile, $errline));
 
+        // Create "unique index" on error level, file and line number to prevent mass duplicates
+        // Used to include error description but that thwarted duplicate detection due to things
+        // like array indexes
+        $hash = md5(serialize(array($errno, $errfile, $errline)));
+
         // Check if hash does not already exists in database
-        if (!in_array(md5($description), $previous_errors)) {
+        if (!in_array($hash, $previous_errors)) {
 
             // Record error
             $error = new object();
@@ -90,12 +102,13 @@ function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $err
             $error->version = addslashes($TOTARA->version);
             $error->build = addslashes($TOTARA->build);
             $error->details = addslashes($description);
-            $error->hash = md5($description);
+            $error->hash = $hash;
 
             // Only if the table exists (in case of error during upgrade or install)
             $table = new XMLDBTable('errorlog');
             if (table_exists($table)) {
                 insert_record('errorlog', $error);
+                ++$insertcount;
             }
         }
     }

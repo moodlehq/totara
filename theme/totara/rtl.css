@@ -66,10 +66,17 @@ form.mform input {
 
 span.youarehere {
     float: right;
+    padding-left: 5px;
+    margin-left:20px;
 }
 
 .navbar .breadcrumb ul {
     float: right;
+    width:75%;
+}
+
+.navbar .breadcrumb .sep {
+    background: url('images/sep_blue_rtl.gif') no-repeat center bottom;
 }
 
 .dashboardcol {
@@ -262,21 +269,8 @@ div.totara-dialog div.treeview-wrapper, div.totara-dialog div#column-checkboxes 
     clear: both;
 }
 
-.clearer {
-    margin-top: 45px;
-}
-
 table.centerblock td, th {
     text-align: right;
-}
-
-.navbar .breadcrumb ul li, .navbar .breadcrumb ul li a {
-    float: right;
-}
-
-.navbar .breadcrumb .sep {
-    float: right;
-    background: url('images/sep_blue_rtl.gif') no-repeat center bottom;
 }
 
 body#tag-manage table#tag-management-list td, body#tag-manage table#tag-management-list th, body#user-index table#participants td, body#user-index table#participants th {
@@ -393,4 +387,80 @@ div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous {
 
 div#calendarcontainer div.monthlycalendar div.calendar-controls a.next {
     background: url("images/cal_bg_next_rtl.gif") no-repeat scroll left center transparent;
+}
+
+/* Programs */
+
+.local-program #programcontent .ftoggler{
+    background-position: right center;
+}
+.local-program #programdetails .ftoggler{
+    background-position: right center;
+}
+.local-program #programassignments .ftoggler{
+    background-position: right center;
+}
+.local-program #programmessages .ftoggler{
+    background-position: right center;
+}
+.local-program #programexceptions .ftoggler{
+    background-position: right center;
+}
+
+.local-program fieldset .setbuttons input.moveup,
+.local-program fieldset .messagebuttons input.moveup {
+    background-position: left center;
+}
+
+.local-program fieldset .setbuttons input.movedown,
+.local-program fieldset .messagebuttons input.movedown {
+    background-position: left center;
+}
+
+.local-program fieldset .setbuttons input.delete,
+.local-program fieldset .messagebuttons input.delete {
+    background-position: left center;
+}
+
+.local-program fieldset .setbuttons input.movedown[disabled],
+.local-program fieldset .messagebuttons input.movedown[disabled] {
+    background-position: left center;
+}
+
+.local-program fieldset .setbuttons input.moveup[disabled],
+.local-program fieldset .messagebuttons input.moveup[disabled]{
+    background-position: left center;
+}
+
+.local-program fieldset.course_set .course_table .operator{
+    border-right: 0px solid;
+    border-left:1px solid #d7d7d7;
+}
+
+.nextsetoperator-or {
+    background-position: left center;
+    float: right;
+}
+
+.nextsetoperator-then {
+    background-position: left center;
+    float: right;
+}
+
+#assignment_categories .assignment_category td.col1,
+#assignment_categories .assignment_category th.col1{
+    border-right:1px solid #2e2e2e;
+    border-left: 0px solid;
+}
+
+#assignment_categories .assignment_category td.col2,
+#assignment_categories .assignment_category th.col2{
+    border-right:1px solid #2e2e2e;
+    border-left: 0px solid;
+}
+
+#assignment_categories .assignment_category td.col3,
+#assignment_categories .assignment_category th.col3{
+    border-right:1px solid #2e2e2e;
+    border-left: 0px solid;
 }

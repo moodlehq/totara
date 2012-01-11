@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_oauth.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// local_oauth.php - created with Totara langimport script version 1.0
 
 $string['access'] = 'وصول';
 $string['authentication'] = 'مصادقة OAuth';

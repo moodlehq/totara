@@ -1,5 +1,5 @@
 <?php
-
+// calendar.php - created with Totara langimport script version 1.1
 
 $string['advancedoptions'] = 'Opções avançadas';
 $string['allday'] = 'Dia Todo';

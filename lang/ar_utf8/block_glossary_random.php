@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_glossary_random.php - created with Moodle 1.6 Beta 1 (2006032900)
-
+<?php
+// block_glossary_random.php - created with Totara langimport script version 1.1
 
 $string['addentry'] = 'أضف مقتبساتك المفضله';
 $string['askaddentry'] = 'عندما يستطيع المستخدمون من إضافة مدخلاتهم إلى المسرد، أظهر الرابط مع هذا النص.';

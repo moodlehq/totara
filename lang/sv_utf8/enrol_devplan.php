@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_devplan.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// enrol_devplan.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'DevPlan registreringssmodulen begränsar interaktiva registreringar i kurser. Om en kurs använder DevPlanregistreringens plugin för att hantera interaktiva registreringar är det bara användare som har kursen listad som en godkänd komponent som en del av en godkänd utvecklingsplan som är tillåtna att själv-registrera sig.';
 $string['developmentplan'] = 'Utvecklingsplan';

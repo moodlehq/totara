@@ -1,0 +1,47 @@
+<?php
+
+$string['businessdays'] = 'Dias úteis';
+$string['completion'] = 'Conclusão';
+$string['completiontotrack'] = 'Conclusão para rastrear';
+$string['coursecompletion'] = 'Conclusão do curso';
+$string['deadline'] = 'Prazo da ação';
+$string['deletereminder'] = 'Excluir lembrete \"$a\"';
+$string['deletedreminder'] = 'Lembrete excluído com sucesso \"$a\"';
+$string['dontsend'] = 'Não enviar esta mensagem';
+$string['editcoursereminders'] = 'Editar lembretes do curso';
+$string['escalation'] = 'Encaminhamento';
+$string['escalationmessagedefault'] = 'Serve para avisar que o seguinte membro da equipe tem uma avaliação de curso pendente: [firstname] [lastname] [coursename] As avaliações do curso são importantes para o negócio e ajudam a informar o valor que um treinamento específico fornece e se ele está sendo realizado da maneira mais eficiente. Como talvez você já saiba, o seu envolvimento com o membro da equipe em relação a este treinamento também é medido. Não existem outros lembretes, mas saiba que os índices de retorno são registrados e relatados na unidade de negócio e no nível do grupo de negócios.';
+$string['escalationsubjectdefault'] = 'Avaliação de curso pendente de [firstname] [lastname]';
+$string['invitation'] = 'Convite';
+$string['invitationmessagedefault'] = 'Prezado [firstname] Parabéns pela conclusão do [coursename]. Agora, gostaríamos que você preenchesse uma avaliação do curso. Ela é importante porque informa aos responsáveis pelo treinamento o que está ou não dando certo. A avaliação do curso é constituída principalmente de perguntas de múltipla escolha e demora 2 a 3 minutos. Visite o link da página do curso abaixo para acessar a avaliação: [coursepageurl] Realize esta ação dentro de três dias. Se isto ficar pendente em [days count down] dias, encaminharemos para o seu líder de equipe.';
+$string['invitationsubjectdefault'] = 'Avalie o [coursename]';
+$string['message'] = 'Mensagem';
+$string['missingtitle'] = 'Título ausente';
+$string['new'] = 'Adicionar novo';
+$string['nextday'] = 'Dia seguinte';
+$string['noactivitieswithcompletionenabled'] = 'Os lembretes do curso estão indisponíveis, porque o nenhuma atividade deste curso tem a conclusão ativada';
+$string['nofeedbackactivities'] = 'Os lembretes do curso estão indisponíveis, porque não há atividades de Feedback neste curso';
+$string['nomanagermessage'] = '(nenhum gerente configurado)';
+$string['period'] = 'Período';
+$string['placeholder:coursename'] = '[coursename]';
+$string['placeholder:coursepageurl'] = '[coursepageurl]';
+$string['placeholder:dayssincecompletion'] = '[days counter up]';
+$string['placeholder:daysuntildeadline'] = '[days count down]';
+$string['placeholder:firstname'] = '[firstname]';
+$string['placeholder:lastname'] = '[lastname]';
+$string['placeholder:managername'] = '[managername]';
+$string['reminder'] = 'Lembrete';
+$string['remindermessagedefault'] = 'Prezado [firstname] Este é um lembrete para concluir sua avaliação do curso [coursename]. Isso é importante e leva apenas 2 ou 3 minutos do seu tempo. Visite o link da página do curso abaixo para acessar a avaliação: [coursepageurl] Se isto continuar pendente, encaminharemos para o seu líder de equipe.';
+$string['remindersubjectdefault'] = 'Lembrete para avaliar [coursename]';
+$string['remindersmenuitem'] = 'Lembretes';
+$string['requirement'] = 'Requisito';
+$string['sameday'] = 'Mesmo dia';
+$string['skipmanager'] = 'Não enviar para o líder de equipe/gerente';
+$string['subject'] = 'Assunto';
+$string['title'] = 'Título';
+
+$string['error:courseidincorrect'] = 'ID do curso estava incorreto';
+$string['error:courseidorcategory'] = 'Id ou categoria do curso deve ser especificado';
+$string['error:deletereminder'] = 'Não foi possível excluir a mensagem do lembrete';
+$string['error:createreminder'] = 'Não foi possível criar a mensagem do lembrete';
+$string['error:updatereminder'] = 'Não foi possível atualizar a mensagem do lembrete';

@@ -1,5 +1,5 @@
 <?php
-// qtype_datasetdependent.php - created with Totara langimport script version 1.0
+// qtype_datasetdependent.php - created with Totara langimport script version 1.1
 
 $string['additem'] = 'إضافة عنصر';
 $string['atleastonerealdataset'] = 'يجب أن يكون هناك مجموعة بيانات واحدة على الأقل في نص السؤال';

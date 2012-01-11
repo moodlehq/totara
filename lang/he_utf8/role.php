@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // role.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// role.php - created with Totara langimport script version 1.1
 
 $string['addrole'] = 'הוסף  תפקיד חדש';
 $string['allow'] = 'אפשר';
@@ -133,6 +132,9 @@ $string['question:add'] = 'הוסף שאלה חדשה';
 $string['question:config'] = 'צור סוגי שאלה';
 $string['question:editall'] = 'ערוך את כל השאלות';
 $string['question:editmine'] = 'ערוך את השאלות שלך';
+$string['question:export'] = 'יצוא שאלות';
+$string['question:import'] = 'יבוא שאלות';
+$string['question:manage'] = 'נהל שאלות';
 $string['question:managecategory'] = 'נהל קטגוריות של שאלות';
 $string['question:moveall'] = 'הסט את כל השאלות';
 $string['question:movemine'] = 'הסט את השאלות שלך';
@@ -203,8 +205,5 @@ $string['userhashiddenassignments'] = 'למשתמש זה תפקיד מוסתר �
 $string['userswithrole'] = 'כל המשתמשים עם תפקיד';
 $string['viewrole'] = 'ראה את פרטי התפקיד';
 $string['xuserswiththerole'] = 'משתמשים שממונים לתפקיד \"$a->role\": $a->number';
-$string['question:export'] = 'יצוא שאלות'; // ORPHANED
-$string['question:import'] = 'יבוא שאלות'; // ORPHANED
-$string['question:manage'] = 'נהל שאלות'; // ORPHANED
 
 ?>

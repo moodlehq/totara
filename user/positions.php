@@ -56,17 +56,7 @@ if ($user->deleted) {
 }
 
 // Can user edit this user's positions?
-$can_edit = false;
-if (has_capability('moodle/local:assignuserposition', get_context_instance(CONTEXT_SYSTEM))) {
-    $can_edit = true;
-}
-elseif (has_capability('moodle/local:assignuserposition', $personalcontext)) {
-    $can_edit = true;
-}
-elseif ($USER->id == $user->id &&
-    has_capability('moodle/local:assignselfposition', get_context_instance(CONTEXT_SYSTEM))) {
-    $can_edit = true;
-}
+$can_edit = pos_can_edit_position_assignment($user->id);
 
 // Check a valid position type was supplied
 if ($type === '') {
@@ -183,7 +173,7 @@ else {
             $managerid = null;
         }
 
-        assign_user_position($position_assignment, $managerid);
+        assign_user_position($position_assignment);
 
         // Log
         add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");
@@ -205,21 +195,6 @@ else {
     $form->display();
 
     // Setup calendar
-    ?>
-    <script type="text/javascript">
-
-        $(function() {
-            $('#id_timevalidfrom, #id_timevalidto').datepicker(
-                {
-                    dateFormat: 'dd/mm/yy',
-                    showOn: 'both',
-                    buttonImage: '../local/js/images/calendar.gif',
-                    buttonImageOnly: true,
-                    constrainInput: true
-                }
-            );
-            });
-    </script>
-    <?php
+    echo build_datepicker_js('#id_timevalidfrom, #id_timevalidto');
 }
 print_footer($course);

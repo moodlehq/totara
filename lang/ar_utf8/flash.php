@@ -1,6 +1,5 @@
-<?PHP // $Id: flash.php,v 1.1 2007/04/30 23:13:49 koenr Exp $ 
-      // flash.php - created with Moodle 1.9 dev (2007042400)
-
+<?php
+// flash.php - created with Totara langimport script version 1.1
 
 $string['accesses'] = 'الدخول لإنشطة فلاش';
 $string['allresultsheading'] = 'قائمة جميع النتائج من $a . (متوفر للمعلمون والداراء فقط)';

@@ -1,4 +1,5 @@
-<?php // $Id$
+<?php
+// quiz_analysis.php - created with Totara langimport script version 1.1
 
 $string['analysis'] = 'Analyse par éléments';
 $string['analysisdownload'] = 'Téléchargement analyse';

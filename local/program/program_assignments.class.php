@@ -22,6 +22,8 @@
  * @subpackage program
 */
 
+require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
@@ -302,7 +304,7 @@ class prog_assignments {
         require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
 
         $table = new stdClass();
-        $table->head = array('','added','removed');
+        $table->head = array('', get_string('added', 'local_program'), get_string('removed', 'local_program'));
         $table->data = array();
         global $ASSIGNMENT_CATEGORY_CLASSNAMES;
         foreach ($ASSIGNMENT_CATEGORY_CLASSNAMES as $classname) {
@@ -619,7 +621,7 @@ abstract class prog_assignment_category {
 
             $a->num = $parts[0];
             if (isset($TIMEALLOWANCESTRINGS[$parts[1]])) {
-                $a->period = $TIMEALLOWANCESTRINGS[$parts[1]];
+                $a->period = get_string($TIMEALLOWANCESTRINGS[$parts[1]]);
             }
             else {
                 return '';
@@ -1076,6 +1078,7 @@ class managers_category extends prog_assignment_category {
     }
 
     function build_table($prefix, $programid) {
+        $primarytype = POSITION_TYPE_PRIMARY;
         $this->headers = array(
             get_string('managername','local_program'),
             get_string('for','local_program'),
@@ -1084,13 +1087,16 @@ class managers_category extends prog_assignment_category {
         );
 
         // Go to the database and gets the assignments
-        $items = get_records_sql(
-            "SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " as fullname, m.path, prog_assignment.includechildren, prog_assignment.completiontime, prog_assignment.completionevent, prog_assignment.completioninstance
-	    FROM {$prefix}prog_assignment prog_assignment
-	    INNER JOIN {$prefix}user u ON u.id = prog_assignment.assignmenttypeid
-            INNER JOIN {$prefix}manager m ON m.userid = u.id
-	    WHERE prog_assignment.programid = $programid
-	    AND prog_assignment.assignmenttype = $this->id");
+        $items = get_records_sql("
+            SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " as fullname,
+                pa.managerpath AS path, prog_assignment.includechildren, prog_assignment.completiontime,
+                prog_assignment.completionevent, prog_assignment.completioninstance
+            FROM {$prefix}prog_assignment prog_assignment
+            INNER JOIN {$prefix}user u ON u.id = prog_assignment.assignmenttypeid
+                INNER JOIN {$prefix}pos_assignment pa ON pa.userid = u.id AND pa.type = $primarytype
+            WHERE prog_assignment.programid = $programid
+            AND prog_assignment.assignmenttype = $this->id
+        ");
 
         // Convert these into html
         if (!empty($items)) {
@@ -1102,9 +1108,10 @@ class managers_category extends prog_assignment_category {
 
     function get_item($itemid) {
         global $CFG;
-        $sql = "SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " AS fullname, m.path
+        $primarytype = POSITION_TYPE_PRIMARY;
+        $sql = "SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " AS fullname, pa.managerpath AS path
                 FROM {$CFG->prefix}user AS u
-                INNER JOIN {$CFG->prefix}manager AS m ON u.id = m.userid
+                INNER JOIN {$CFG->prefix}pos_assignment pa ON u.id = pa.userid AND pa.type = $primarytype
                 WHERE u.id = {$itemid}";
         return get_record_sql($sql);
     }
@@ -1141,13 +1148,14 @@ class managers_category extends prog_assignment_category {
 
     function get_affected_users($item, $count=false) {
         global $CFG;
+        $primarytype = POSITION_TYPE_PRIMARY;
 
-        $subquery = "SELECT ra.id FROM {$CFG->prefix}role_assignments ra WHERE ra.userid = $item->id"; // for a manager's direct team
         if (isset($item->includechildren) && $item->includechildren == 1 && isset($item->path)) {
-            $children = get_records_select('manager', "path LIKE '$item->path/%'", '', 'userid');
-            $children = $children == false ? array() : array_keys($children);
-            $children[] = $item->id;
-            $subquery = "SELECT ra.id FROM {$CFG->prefix}role_assignments ra WHERE ra.userid IN (". implode(',', $children) .")"; // for a manager's entire team
+            // for a manager's entire team
+            $where = "pa.type = {$primarytype} AND pa.managerpath LIKE '{$item->path}/%'";
+        } else {
+            // for a manager's direct team
+            $where = "pa.type = {$primarytype} AND pa.managerid = {$item->id}";
         }
 
         $select = $count ? 'COUNT(pa.userid) AS id' : 'pa.userid AS id';
@@ -1155,28 +1163,28 @@ class managers_category extends prog_assignment_category {
         $sql = "SELECT $select
                 FROM {$CFG->prefix}pos_assignment pa
                 INNER JOIN {$CFG->prefix}user u ON (pa.userid = u.id AND u.deleted = 0)
-                WHERE pa.reportstoid IN ($subquery)";
+                WHERE {$where}";
 
         if ($count) {
             $num = count_records_sql($sql);
             return !$num ? 0 : $num;
-        }
-        else {
+        } else {
             return get_records_sql($sql);
         }
     }
 
     function get_affected_users_by_assignment($assignment) {
         global $CFG;
+        $primarytype = POSITION_TYPE_PRIMARY;
 
         // Query to retrieves the data required to determine the number of users
         //affected by an assignment
         $sql = "SELECT u.id,
-                        m.path,
+                        pa.managerpath AS path,
                         prog_assignment.includechildren
                 FROM {$CFG->prefix}prog_assignment prog_assignment
                 INNER JOIN {$CFG->prefix}user u ON u.id = prog_assignment.assignmenttypeid
-                INNER JOIN {$CFG->prefix}manager m ON m.userid = u.id
+                INNER JOIN {$CFG->prefix}pos_assignment pa ON u.id = pa.userid AND pa.type = $primarytype
                 WHERE prog_assignment.id = $assignment->id";
 
         if ($item = get_record_sql($sql)) {
@@ -1199,9 +1207,7 @@ class managers_category extends prog_assignment_category {
                 var id = {$this->id};
                 var programid = {$programid};
                 var title = '". get_string('addmanagerstoprogram','local_program') ."';
-                var cat = new category(id, 'managers', 'find_manager.php?test=test', title);
-                cat.dialog_additem.default_url = '{$CFG->wwwroot}/local/management/dialog.php?programid='+programid;
-                program_assignment.add_category(cat);
+                program_assignment.add_category(new category(id, 'managers', 'find_manager_hierarchy.php?programid='+programid, title));
             })();
         ";
     }
@@ -1325,9 +1331,7 @@ abstract class prog_assignment_completion_type {
 
 class prog_assigment_completion_first_login extends prog_assignment_completion_type {
     private $timestamps;
-    public function __construct() {
-        $this->timestamps = get_records_select('user','','','id, firstaccess, lastaccess');
-    }
+
     public function get_id() {
         return COMPLETION_EVENT_FIRST_LOGIN;
     }
@@ -1345,8 +1349,15 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
     public function get_completion_string() {
         return 'first login';
     }
+    private function load_data() {
+        $this->timestamps = get_records_select('user','','','id, firstaccess, lastaccess');
+    }
     public function get_timestamp($userid,$instanceid) {
-        if (!isset($this->timestamps[$userid . '-' . $instanceid])) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
+        if (!isset($this->timestamps[$userid])) {
             return false;
         }
 
@@ -1360,10 +1371,6 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
 
 class prog_assigment_completion_position_start_date extends prog_assignment_completion_type {
     private $names, $timestamps;
-    public function __construct() {
-        $this->names = get_records_select('pos','','','id, fullname');
-        $this->timestamps = get_records_select('prog_pos_assignment','type = 1','',sql_concat('userid',"'-'",'positionid') . ' as hash, timeassigned');
-    }
     public function get_id() {
         return COMPLETION_EVENT_POSITION_START_DATE;
     }
@@ -1384,13 +1391,25 @@ class prog_assigment_completion_position_start_date extends prog_assignment_comp
             });
         ";
     }
+    private function load_data() {
+        $this->names = get_records_select('pos','','','id, fullname');
+        $this->timestamps = get_records_select('prog_pos_assignment','type = 1','',sql_concat('userid',"'-'",'positionid') . ' as hash, timeassigned');
+    }
     public function get_item_name($instanceid) {
+        // lazy load data when required
+        if (!isset($this->names)) {
+            $this->load_data();
+        }
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
-        return 'starting in position';
+        return get_string('startinposition', 'local_program');
     }
     public function get_timestamp($userid,$instanceid) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
         if (isset($this->timestamps[$userid . '-' . $instanceid])) {
             return $this->timestamps[$userid . '-' . $instanceid]->timeassigned;
         }
@@ -1400,10 +1419,6 @@ class prog_assigment_completion_position_start_date extends prog_assignment_comp
 
 class prog_assigment_completion_program_completion extends prog_assignment_completion_type {
     private $names, $timestamps;
-    public function __construct() {
-        $this->names = get_records_select('prog','','','id, fullname');
-        $this->timestamps = get_records_select('prog_completion','','',sql_concat('userid',"'-'",'programid') . ' as hash, timecompleted');
-    }
     public function get_id() {
         return COMPLETION_EVENT_PROGRAM_COMPLETION;
     }
@@ -1426,13 +1441,25 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
             $('.folder').removeClass('clickable').addClass('unclickable');
         ";
     }
+    private function load_data() {
+        $this->names = get_records_select('prog','','','id, fullname');
+        $this->timestamps = get_records_select('prog_completion','','',sql_concat('userid',"'-'",'programid') . ' as hash, timecompleted');
+    }
     public function get_item_name($instanceid) {
+        // lazy load data when required
+        if (!isset($this->names)) {
+            $this->load_data();
+        }
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
-        return 'completion of program';
+        return get_string('completionofprogram', 'local_program');
     }
     public function get_timestamp($userid,$instanceid) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
         if (isset($this->timestamps[$userid . '-' . $instanceid])) {
             return $this->timestamps[$userid . '-' . $instanceid]->timecompleted;
         }
@@ -1442,10 +1469,6 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
 
 class prog_assigment_completion_course_completion extends prog_assignment_completion_type {
     private $names, $timestamps;
-    public function __construct() {
-        $this->names = get_records_select('course','','','id, fullname');
-        $this->timestamps = get_records_select('course_completions','','',sql_concat('userid',"'-'",'course') . ' as hash, timecompleted');
-    }
     public function get_id() {
         return COMPLETION_EVENT_COURSE_COMPLETION;
     }
@@ -1468,13 +1491,25 @@ class prog_assigment_completion_course_completion extends prog_assignment_comple
             $('.folder').removeClass('clickable').addClass('unclickable');
         ";
     }
+    private function load_data() {
+        $this->names = get_records_select('course','','','id, fullname');
+        $this->timestamps = get_records_select('course_completions','','',sql_concat('userid',"'-'",'course') . ' as hash, timecompleted');
+    }
     public function get_item_name($instanceid) {
+        // lazy load data when required
+        if (!isset($this->names)) {
+            $this->load_data();
+        }
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
-        return 'completion of course';
+        return get_string('completionofcourse', 'local_program');
     }
     public function get_timestamp($userid,$instanceid) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
         if (isset($this->timestamps[$userid . '-' . $instanceid])) {
             return $this->timestamps[$userid . '-' . $instanceid]->timecompleted;
         }
@@ -1484,10 +1519,6 @@ class prog_assigment_completion_course_completion extends prog_assignment_comple
 
 class prog_assigment_completion_profile_field_date extends prog_assignment_completion_type {
     private $names, $timestamps;
-    public function __construct() {
-        $this->names = get_records_select('user_info_field','','','id, name');
-        $this->timestamps = get_records_select('user_info_data','','',sql_concat('userid',"'-'",'fieldid') . ' as hash, data');
-    }
     public function get_id() {
         return COMPLETION_EVENT_PROFILE_FIELD_DATE;
     }
@@ -1508,13 +1539,25 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
             });
         ";
     }
+    private function load_data() {
+        $this->names = get_records_select('user_info_field','','','id, name');
+        $this->timestamps = get_records_select('user_info_data','','',sql_concat('userid',"'-'",'fieldid') . ' as hash, data');
+    }
     public function get_item_name($instanceid) {
+        // lazy load data when required
+        if (!isset($this->names)) {
+            $this->load_data();
+        }
         return $this->names[$instanceid]->name;
     }
     public function get_completion_string() {
-        return 'date in profile field';
+        return get_string('dateinprofilefield', 'local_program');
     }
     public function get_timestamp($userid,$instanceid) {
+        // lazy load data when required
+        if (!isset($this->timestamps)) {
+            $this->load_data();
+        }
         if (!isset($this->timestamps[$userid . '-' . $instanceid])) {
             return false;
         }

@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // block_online_users.php - created with Moodle 1.9.4+ (Build: 20090211) (2007101540)
-
+<?php
+// block_online_users.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'משתמשים מחוברים';
 $string['configtimetosee'] = 'משך תקופת חוסר הפעילות בדקות שלאחריה נחשב המשתמש כלא מקוון.';

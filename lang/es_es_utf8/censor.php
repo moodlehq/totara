@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // censor.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// censor.php - created with Totara langimport script version 1.1
 
 $string['badwords'] = 'mierda,jodido,joder,follar,capullo,
 polla,nabo,cipote,coño,culo,verga,puta,

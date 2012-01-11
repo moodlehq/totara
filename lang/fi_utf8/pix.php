@@ -1,5 +1,5 @@
-<?PHP // $Id$
-      // Modified with langdiff.php
+<?php
+// pix.php - created with Totara langimport script version 1.1
 
 $string['angry'] = 'Vihainen';
 $string['approve'] = 'Hyväksyvä';
@@ -21,4 +21,5 @@ $string['thoughtful'] = 'Ajattelevainen';
 $string['tongueout'] = 'Näyttää kieltä';
 $string['wideeyes'] = 'Silmät suurina';
 $string['wink'] = 'Nikkaa';
+
 ?>

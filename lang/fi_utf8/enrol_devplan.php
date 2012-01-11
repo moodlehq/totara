@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_devplan.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// enrol_devplan.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Kehityssuunnitelmaan perustuva ilmoittatuminen rajoittaa käyttäjän ilmoittautumismahdollisuuksia. Tapauksissa, joissa kurssi käyttää kehityssuunnitelmalisäosaa ilmoittautumisten kontrolloimisessa, vain käyttäjät, joilla kyseinen kurssi on hyväksyttynä osana hyväksytyssä kehityssuunnitelmassa, voivat itse ilmoittautua kurssille.';
 $string['developmentplan'] = 'Kehityssuunnitelma';

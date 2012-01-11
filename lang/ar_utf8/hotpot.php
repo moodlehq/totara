@@ -1,9 +1,9 @@
-<?PHP // $Id$ 
-      // hotpot.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// hotpot.php - created with Totara langimport script version 1.1
 
 $string['abandoned'] = 'لم يتم الاجابة علية';
 $string['addquizchain'] = 'إضافة سلسلة اختبار';
+$string['allattempts'] = 'جميع المجاولات';
 $string['allmycourses'] = 'جميع مقرراتي';
 $string['allusers'] = 'كل المستخدمين';
 $string['alwaysopen'] = 'دائماً مفتوح';
@@ -12,6 +12,7 @@ $string['attemptsbest'] = 'أفضل محاولة';
 $string['attemptsfirst'] = 'أول محاولة';
 $string['attemptslast'] = 'آخر محاولة';
 $string['average'] = 'المعدل';
+$string['bestattempt'] = 'المحاولة الأفضل';
 $string['checks'] = 'علامات';
 $string['clickreporting'] = 'تمكين النقر على التقارير';
 $string['clues'] = 'دلائل';
@@ -24,6 +25,8 @@ $string['correct'] = 'صحيح';
 $string['deleteabandoned'] = 'حذف ما لم يتم الاجابة عليه';
 $string['deleteabandonedcheck'] = 'هل تريد فعلاً حذف جميع المحاولات $a  التي لم يتم الاجابة عليها؟';
 $string['deleteallattempts'] = 'حذف جميع المحاولات';
+$string['deletedattempts'] = '$a محاولات تم حذفها';
+$string['deletedresponses'] = '$a اجابات تم حذفها';
 $string['displaycoursenext'] = 'عرض صفحة المقرر بعد';
 $string['displayhotpotnext'] = 'عرض اختبار Hot Potatoes بعد';
 $string['displayindexnext'] = 'عرض فهرس Hot Potatoes بعد';
@@ -139,6 +142,7 @@ $string['reportwrong'] = 'خطأ';
 $string['reportwrongsymbol'] = 'X';
 $string['resultssaved'] = 'تم حفظ نتائج الامتحان';
 $string['score'] = 'الدرجة';
+$string['selectattempt'] = 'الرجاء اختيار محاولة';
 $string['showhtmlsource'] = 'اظهار مصدر HTML';
 $string['shownextquiz'] = 'اظهار الامتحان التالي';
 $string['showtimes'] = 'اظهار أوقات المعالجة';
@@ -155,10 +159,5 @@ $string['timedout'] = 'إنتهى الوقت';
 $string['updatequizchain'] = 'حدث سلسة الاختبار';
 $string['weighting'] = 'وزن';
 $string['wrong'] = 'خطأ';
-$string['allattempts'] = 'جميع المجاولات'; // ORPHANED
-$string['bestattempt'] = 'المحاولة الأفضل'; // ORPHANED
-$string['deletedattempts'] = '$a محاولات تم حذفها'; // ORPHANED
-$string['deletedresponses'] = '$a اجابات تم حذفها'; // ORPHANED
-$string['selectattempt'] = 'الرجاء اختيار محاولة'; // ORPHANED
 
 ?>

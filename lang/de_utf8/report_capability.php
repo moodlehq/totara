@@ -1,6 +1,5 @@
-<?PHP // $Id: report_capability.php,v 1.3 2008/10/04 17:02:48 ralf-bonn Exp $ 
-      // report_capability.php - created with Moodle 2.0 dev (Build: 20080925) (2008092400)
-
+<?php
+// report_capability.php - created with Totara langimport script version 1.1
 
 $string['capability'] = 'Berechtigungsbericht';
 $string['capabilitylabel'] = 'Berechtigung:';

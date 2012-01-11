@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// enrol_paypal.php - created with Totara langimport script version 1.1
 
 $string['business'] = 'L\'adresse de courriel de votre compte PayPal';
 $string['costorkey'] = 'Veuillez choisir l\'une des méthodes d\'inscription suivantes.';

@@ -1,6 +1,5 @@
-<?PHP // $Id: thesis.php,v 1.1 2007/05/26 21:11:08 koenr Exp $ 
-      // thesis.php - created with Moodle 1.8 (2007021501)
-
+<?php
+// thesis.php - created with Totara langimport script version 1.1
 
 $string['abort'] = 'Avbryt avhandling';
 $string['aborted'] = 'Avbruten';

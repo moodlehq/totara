@@ -1,6 +1,5 @@
-<?PHP // $Id: moodle.org.php,v 1.2 2010/01/07 14:09:08 emanuel1 Exp $
-      // moodle.org.php - created with Moodle 1.9.7+ (Build: 20091209) (2007101570)
-
+<?php
+// moodle.org.php - created with Totara langimport script version 1.1
 
 $string['aboutdemosite'] = 'אתר ההדגמה שלנו הוא אתר מוודל מלא עם מספר קורסים לדוגמא בהם תוכל להתנסות כמורה, סטודנט או אף מנהל מערכת. אל תחששו לעשות בלאגן, האתר כולו מתאפס למצב ראשוני אחת לשעה.';
 $string['aboutdemositetitle'] = 'אתר הדגמה';

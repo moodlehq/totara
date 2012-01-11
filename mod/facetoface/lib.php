@@ -1,4 +1,30 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Alastair Munro <alastair.munro@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
+ * @author Francois Marier <francois@catalyst.net.nz>
+ * @package modules
+ * @subpackage facetoface
+ */
+defined('MOODLE_INTERNAL') || die();
+
 
 require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
@@ -25,9 +51,6 @@ define('MDL_F2F_INVITE_ICAL',		5);	    // Send just a combined text/ical message
 define('MDL_F2F_CANCEL_BOTH',		11);	// Send a copy of both 8+2+1
 define('MDL_F2F_CANCEL_TEXT',		10);	// Send just a plan email 8+2
 define('MDL_F2F_CANCEL_ICAL',		9);	    // Send just a combined text/ical message 8+1
-
-// Name of the role which should be used to determine a users manager
-define('MDL_MANAGER_ROLEID','manager');
 
 // Custom field related constants
 define('CUSTOMFIELD_DELIMITTER', '##SEPARATOR##');
@@ -278,7 +301,7 @@ function facetoface_add_instance($facetoface) {
 
     facetoface_fix_settings($facetoface);
     if ($facetoface->id = insert_record('facetoface', $facetoface)) {
-        facetoface_grade_item_update($facetoface);
+        facetoface_grade_item_update(stripslashes_recursive($facetoface));
     }
     return $facetoface->id;
 }
@@ -294,7 +317,7 @@ function facetoface_update_instance($facetoface) {
 
     facetoface_fix_settings($facetoface);
     if ($return = update_record('facetoface', $facetoface)) {
-        facetoface_grade_item_update($facetoface);
+        facetoface_grade_item_update(stripslashes_recursive($facetoface));
     }
 
     //Update events when we update instance
@@ -1883,7 +1906,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
     $usermsg = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
     $newevent->userto           = $user;
     $newevent->userfrom         = $USER;
-    $newevent->roleid           = get_field('role', 'id', 'shortname', 'student');
+    $newevent->roleid           = $CFG->learnerroleid;
     $url = $CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id;
     switch ($nottype) {
         case MDL_F2F_STATUS_BOOKED:
@@ -1895,7 +1918,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session,
                                                         $session->id
                                                 );
-            $newevent->subject          = 'Booked for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->subject          = get_string_in_user_lang($user, 'bookedforsession', 'facetoface') . ' <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->icon             = 'facetoface-add';
             $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
             $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
@@ -1912,7 +1935,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session,
                                                         $session->id
                                                 );
-            $newevent->subject          = 'Waitlisted for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->subject          = get_string_in_user_lang($user, 'waitlistedforsession' ,'facetoface') . ' <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->icon             = 'facetoface-regular';
             $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
             $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
@@ -1921,7 +1944,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             break;
 
         case MDL_F2F_STATUS_USER_CANCELLED:
-            $newevent->subject          = 'Cancelled for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->subject          = get_string_in_user_lang($user, 'cancelledforsession', 'facetoface') . ' <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->fullmessage      = $newevent->subject;
             $newevent->icon             = 'facetoface-remove';
             $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
@@ -1931,9 +1954,12 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
                 $userto = get_record('user', 'id', $managerid);
-                $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
+                $newevent->roleid           = $CFG->managerroleid;
                 $newevent->userto           = $userto;
-                $newevent->subject          = 'Cancelled for '.$usermsg.' session <a href="'.$url.'">'.$facetoface->name.'</a>';
+                $subjectinfo = new stdClass();
+                $subjectinfo->usermsg = $usermsg;
+                $subjectinfo->url = '<a href="'.$url.'">'.$facetoface->name.'</a>';
+                $newevent->subject          = get_string_in_user_lang($userto, 'cancelusersession', 'facetoface', $subjectinfo);
                 $newevent->fullmessage      = $newevent->subject;
                 tm_alert_send($newevent);
             }
@@ -1943,7 +1969,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
                 $userto = get_record('user', 'id', $managerid);
-                $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
+                $newevent->roleid           = $CFG->managerroleid;
                 $newevent->userto           = $userto;
                 $newevent->fullmessage      = facetoface_email_substitutions(
                                                         $facetoface->requestinstrmngr,
@@ -1953,16 +1979,19 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session,
                                                         $session->id
                                                 );
-                $newevent->subject          = 'Request for '.$usermsg.'to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id.'">'.$facetoface->name.'</a>';
+                $subjectinfo = new stdClass();
+                $subjectinfo->usermsg = $usermsg;
+                $subjectinfo->url = '<a href="'.$CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id.'">'.$facetoface->name.'</a>';
+                $newevent->subject          = get_string_in_user_lang($userto, 'requestuserattendsession', 'facetoface', $subjectinfo);
                 // do the facetoface workflow event
                 $onaccept = new stdClass();
                 $onaccept->action = 'facetoface';
-                $onaccept->text = 'To approve session registration, press accept';
+                $onaccept->text = get_string_in_user_lang($userto, 'approveinstruction', 'facetoface');
                 $onaccept->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
                 $newevent->onaccept = $onaccept;
                 $onreject = new stdClass();
                 $onreject->action = 'facetoface';
-                $onreject->text = 'To reject session registration press reject';
+                $onreject->text = get_string_in_user_lang($userto, 'rejectinstruction', 'facetoface');
                 $onreject->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
                 $newevent->onreject = $onreject;
                 tm_task_send($newevent);
@@ -1970,8 +1999,8 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $newevent->userfrom         = NULL;
                 $user = get_record('user', 'id', $userid);
                 $newevent->userto           = $user;
-                $newevent->roleid           = get_field('role', 'id', 'shortname', 'student');
-                $newevent->subject          = 'Request to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a> sent to manager';
+                $newevent->roleid           = $CFG->learnerroleid;
+                $newevent->subject          = get_string_in_user_lang($user, 'requestattendsessionsent', 'facetoface', '<a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a>');
                 $newevent->fullmessage      = $newevent->subject;
                 $newevent->icon             = 'facetoface-request';
                 $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
@@ -1994,7 +2023,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
  */
 function facetoface_get_manager($userid) {
     global $CFG;
-    $roleid = get_field('role','id','shortname',MDL_MANAGER_ROLEID);
+    $roleid = $CFG->managerroleid;
 
     if ($roleid) {
         $sql = "SELECT ra.userid AS managerid
@@ -2405,7 +2434,8 @@ function facetoface_check_signup($facetofaceid) {
  */
 function facetoface_get_manageremail($userid) {
     global $CFG;
-    $roleid = get_field('role','id','shortname',MDL_MANAGER_ROLEID);
+
+    $roleid = $CFG->managerroleid;
 
     if ($roleid) {
         $sql = "SELECT ra.userid AS managerid
@@ -3751,9 +3781,9 @@ function facetoface_update_trainers($sessionid, $form) {
                     rollback_sql();
                     return false;
                 }
+            } else {
+                unset($old_trainers[$roleid][$trainer]);
             }
-
-            unset($old_trainers[$roleid][$trainer]);
         }
     }
 

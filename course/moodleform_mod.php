@@ -388,7 +388,7 @@ class moodleform_mod extends moodleform {
 
         if (!empty($CFG->enableavailability)) {
             // Conditional availability
-            $mform->addElement('header', '', get_string('availabilityconditions', 'condition'));
+            $mform->addElement('header', 'availabilityconditions', get_string('availabilityconditions', 'condition'));
             $mform->addElement('date_selector', 'availablefrom', get_string('availablefrom', 'condition'), array('optional'=>true));
             $mform->setHelpButton('availablefrom', array('conditiondatesfrom', get_string('help_conditiondates', 'condition'), 'condition'));
             $mform->addElement('date_selector', 'availableuntil', get_string('availableuntil', 'condition'), array('optional'=>true));
@@ -399,7 +399,16 @@ class moodleform_mod extends moodleform {
             $items=grade_item::fetch_all(array('courseid'=>$COURSE->id));
             $items = $items ? $items : array();
             foreach($items as $id=>$item) {
-                $gradeoptions[$id]=$item->get_name();
+                //exclude this course module from being set as a condition for its own availability when editing
+                if (isset($this->_cm->id)) {
+                    //editing, need to exclude ourselves if the same instance of the same module as we are editing
+                    if (!($item->iteminstance == $this->_cm->instance && $item->itemmodule == $modname)) {
+                        $gradeoptions[$id] = $item->get_name();
+                    }
+                } else {
+                    //add new, all available gradeitems in the course are valid
+                    $gradeoptions[$id]=$item->get_name();
+                }
             }
             asort($gradeoptions);
             $gradeoptions=array(0=>get_string('none','condition'))+$gradeoptions;
@@ -435,8 +444,14 @@ class moodleform_mod extends moodleform {
                 $completionoptions=array();
                 $modinfo=get_fast_modinfo($COURSE);
                 foreach($modinfo->cms as $id=>$cm) {
+                    //exclude this course module from being set as a condition for its own availability when editing
+                    //first, only add modules that have a completion condition
                     if ($cm->completion) {
-                        $completionoptions[$id]=$cm->name;
+                        //if creating a new module $this->_cm->id is NOT set, so simply add all other modules in the course;
+                        //if editing a module $this->_cm->id IS set, so we want to add all modules EXCEPT FOR the one we are editing
+                        if (!isset($this->_cm->id) || (isset($this->_cm->id) && $this->_cm->id != $id)) {
+                            $completionoptions[$id]=$cm->name;
+                        }
                     }
                 }
                 asort($completionoptions);
@@ -475,7 +490,7 @@ class moodleform_mod extends moodleform {
         }
 
         if($completion->is_enabled()) {
-            $mform->addElement('header', '', get_string('activitycompletion', 'completion'));
+            $mform->addElement('header', 'activitycompletion', get_string('activitycompletion', 'completion'));
 
             // Unlock button for if people have completed it (will
             // be removed in definition_after_data if they haven't)

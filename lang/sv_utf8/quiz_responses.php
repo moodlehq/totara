@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_responses.php,v 1.2 2008/03/25 19:47:29 koenr Exp $ 
-      // quiz_responses.php - created with Moodle 1.9 Beta + (2007090600)
-
+<?php
+// quiz_responses.php - created with Totara langimport script version 1.1
 
 $string['pagesize'] = 'Försök per sida';
 $string['reportresponses'] = 'Detaljerade responser';

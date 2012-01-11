@@ -131,8 +131,8 @@ if($data = $contenteditform->get_data()) {
         }
 
         // Save program content
-        if ( ! $programcontent->save_content()) {
-            totara_set_notification(get_string('programupdatefail', 'local_program'), $editurl);
+        if (!$programcontent->save_content()) {
+            totara_set_notification(get_string('programupdatefail', 'local_program'), $currenturl);
         } else {
 
             // log this request

@@ -1,5 +1,5 @@
-<?PHP // $Id: mimetypes.php,v 1.2 2007/09/19 04:32:42 paca70 Exp $
-      // Modified with langdiff.php
+<?php
+// mimetypes.php - created with Totara langimport script version 1.1
 
 $string['application/msword'] = 'Word-tiedosto';
 $string['application/pdf'] = 'Pdf-tiedosto';
@@ -14,4 +14,5 @@ $string['image/gif'] = 'Gif-kuva';
 $string['image/jpeg'] = 'Jpeg-kuva';
 $string['text/plain'] = 'tekstitiedosto';
 $string['text/rtf'] = 'Rtf-tiedosto';
+
 ?>

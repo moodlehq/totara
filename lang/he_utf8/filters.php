@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // filters.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// filters.php - created with Totara langimport script version 1.1
 
 $string['actfilterhdr'] = 'מסננים פעילים (מצורפים יחד)';
 $string['addfilter'] = 'הוסף מסנן';
@@ -14,6 +13,8 @@ $string['contains'] = 'מכיל';
 $string['courserole'] = 'תפקיד הקורס';
 $string['courserolelabel'] = '$a->label הוא $a->rolename ב-$a->coursename מתוך $a->categoryname';
 $string['courserolelabelerror'] = '$a->label שגיאה: הקורס $a->coursename לא קיים';
+$string['customlabel'] = '$a->label: $a->custom $a->operator $a->value';
+$string['customlabelnovalue'] = '$a->label: $a->custom $a->operator';
 $string['datelabelisafter'] = '$a->label אחרי $a->after';
 $string['datelabelisbefore'] = '$a->label לפני $a->before';
 $string['datelabelisbetween'] = 'a->label בין  $a->after ו- $a->before';
@@ -43,10 +44,10 @@ $string['profilelabelnovalue'] = '$a->label: $a->profile $a->operator';
 $string['removeall'] = 'סלק הכל';
 $string['removeselected'] = 'סלק נבחרים';
 $string['selectlabel'] = '$a->label $a->operator $a->value';
+$string['setfilter'] = 'הפעל את המסנן';
 $string['startswith'] = 'התחל ב-';
 $string['tablenosave'] = 'השינויים בטבלה למעלה נשמרים אוטומטית.';
 $string['textlabel'] = '$a->label $a->operator $a->value';
 $string['textlabelnovalue'] = '$a->label $a->operator';
-$string['setfilter'] = 'הפעל את המסנן'; // ORPHANED
 
 ?>

@@ -1,11 +1,10 @@
-<?PHP // $Id: block_search.php,v 1.5 2010/08/31 07:29:18 emanuel1 Exp $
-      // block_search.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// block_search.php - created with Totara langimport script version 1.1
 
 $string['asynchronous'] = 'אסינכרוני';
-$string['blockname'] = 'חיפוש גלובלי';
-$string['blockssearchmnetfeatures'] = 'חיפוש רשת Moodle';
-$string['blockssearchswitches'] = 'אינדוקס אקטיבי עבור משבצות־ניהול';
+$string['blockname'] = 'חיפוש כללי באתר';
+$string['blockssearchmnetfeatures'] = 'חיפוש ברשת Moodle';
+$string['blockssearchswitches'] = 'הפעלת אינדוקס עבור בלוקים';
 $string['bytes'] = 'בתים (bytes) 0 משמעו ללא גבולות';
 $string['configbuttonlabel'] = 'תווית לחיצה';
 $string['configenablefileindexing'] = 'אפשר מפתוח (הכנסת אינדקים) לקובץ';
@@ -30,20 +29,9 @@ $string['nosearchablemodules'] = 'אין רכיבים הניתנים לחיפו�
 $string['pdfhandling'] = 'טיפול ב-Acrobat PDF';
 $string['search'] = 'חיפוש';
 $string['searchdiscovery'] = 'גילוי פריטים הניתנים לחיפוש';
-$string['searchmoodle'] = 'רכיב חיפוש';
+$string['searchmoodle'] = 'חפש ב-MILיון:';
 $string['synchronous'] = 'בו-זמני';
 $string['usemoodleroot'] = 'השתמש במקור Moodle עבור ממירים חיצוניים';
 $string['wordhandling'] = 'טיפול ב-Microsoft Word';
-
-?>
-<?PHP // $Id$
-      // block_search.php - created with Moodle 1.9.5+ (Build: 20090624) (2007101550)
-
-
-
-$string['blockname'] = 'חיפוש כללי באתר';
-$string['blockssearchmnetfeatures'] = 'חיפוש ברשת Moodle';
-$string['blockssearchswitches'] = 'הפעלת אינדוקס עבור בלוקים';
-$string['searchmoodle'] = 'חפש ב-MILיון:';
 
 ?>

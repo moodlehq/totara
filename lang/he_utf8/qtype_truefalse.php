@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_truefalse.php,v 1.3 2010/06/21 13:42:14 emanuel1 Exp $
-      // qtype_truefalse.php - created with Moodle 1.9 Beta + (2007081600)
-
+<?php
+// qtype_truefalse.php - created with Totara langimport script version 1.1
 
 $string['addingtruefalse'] = 'הוספת שאלה מסוג נכון/לא-נכון';
 $string['correctanswer'] = 'תשובה נכונה';

@@ -1,12 +1,13 @@
-<?php // $Id: qtype_multichoice.php,v 1.13 2009/04/10 19:28:53 martignoni Exp $ 
+<?php
+// qtype_multichoice.php - created with Totara langimport script version 1.1
 
 $string['addingmultichoice'] = 'Ajouter une question à choix multiples';
 $string['addmorechoiceblanks'] = 'Emplacement pour {no} réponses supplémentaires';
 $string['answerhowmany'] = 'Une seule ou plusieurs réponses ?';
 $string['answernumbering'] = 'Numéroter les choix ?';
 $string['answernumbering123'] = '1., 2., 3., ...';
-$string['answernumberingabc'] = 'a., b., c., ...';
 $string['answernumberingABCD'] = 'A., B., C., ...';
+$string['answernumberingabc'] = 'a., b., c., ...';
 $string['answernumberingnone'] = 'Sans numérotation';
 $string['answersingleno'] = 'Réponses multiples autorisées';
 $string['answersingleyes'] = 'Une seule réponse';

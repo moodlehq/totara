@@ -1,7 +1,8 @@
-<?php // $Id: repository_alfresco.php,v 1.4 2009/08/12 10:03:36 martignoni Exp $
+<?php
+// repository_alfresco.php - created with Totara langimport script version 1.1
 
-$string['alfresco_url'] = 'URL Alfresco';
 $string['alfresco:view'] = 'Consulter un dépôt Alfresco';
+$string['alfresco_url'] = 'URL Alfresco';
 $string['alfrescourltext'] = 'L\'URL de l\'API Alfresco devrait être de la forme : http://yoursite.com/alfresco/api';
 $string['configplugin'] = 'Configuration Alfresco';
 $string['notitle'] = 'Sans titre';

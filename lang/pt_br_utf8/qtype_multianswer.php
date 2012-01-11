@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_multianswer.php,v 1.2 2009/10/18 13:12:26 papita Exp $ 
-      // qtype_multianswer.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// qtype_multianswer.php - created with Totara langimport script version 1.1
 
 $string['addingmultianswer'] = 'Acrescentar pergunta embutida';
 $string['correctanswer'] = 'Resposta certa';

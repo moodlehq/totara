@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // auth.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// auth.php - created with Totara langimport script version 1.1
 
 $string['CASform'] = 'Val angående autenticering';
 $string['accesCAS'] = 'CAS-användare';
@@ -377,6 +376,11 @@ $string['shib_no_attributes_error'] = 'Du verkar vara autenticerad via Shibbolet
 $string['shib_not_all_attributes_error'] = 'Moodle behöver vissa Shibboleth-egenskaper som inte får att påträffa för Din Del. Egenskaperna är:$a<br />Var snäll och kontakta webmaster på den här servern eller den som tillhandahåller de tjänster som Moodle körs på.';
 $string['shib_not_set_up_error'] = 'Autenticering via Shibboleth verkar inte att fungera  korrekt. Var snäll och konsultera <a href=\"README.txt\">README</a> för vidare instruktioner om hur man sätter upp autenticering via Shibboleth.';
 $string['showguestlogin'] = 'Du kan gömma eller visa knappen för inloggning för gäster på sidan för inloggning.';
+$string['sso_idp_description'] = 'Offentliggör den här tjänsten för att tillåta att Dina användare navigerar vidare till $a webbplatsen för Moodle utan att behöva logga in där igen. <ul><li><em>Beroende</em>: Du måste också  <strong>prenumerera</strong> på SSO-tjänsten hos $a.</li></ul>Prenumerera på den tjänsten för att tillåta att autenticerade användare från $a får tillgång till Din webbplats utan att behöva logga in igen. <ul><li><em>Beroende</em>: Du måste också  <strong>offentliggöra</strong> SSO-tjänsten hos $a.</li></ul><br />';
+$string['sso_idp_name'] = 'SSO (Tillhandahållare av identiteter)';
+$string['sso_mnet_login_refused'] = 'Användarnamn $a[0] har inte tillstånd att logga in från $a[1].';
+$string['sso_sp_description'] = 'Offentliggör den här tjänsten för att tillåta att autenticerade användare från $a får tillgång till Din webbplats utan att behöva logga in igen. <ul><li><em>Beroende</em>: Du måste också  <strong>prenumerera</strong> på SSO-tjänsten (tillhandahållare av identiteter) hos $a.</li></ul>Prenumerera på den tjänsten för att tillåta att Dina användare navigerar vidare till $a webbplatsen för Moodle utan att behöva logga in där igen.<ul><li><em>Beroende</em>: Du måste också  <strong>offentliggöra</strong> SSO-tjänsten (tillhandahållare av identiteter) hos $a.</li></ul><br />';
+$string['sso_sp_name'] = 'SSO (tillhandahållare av tjänster)';
 $string['stdchangepassword'] = 'Använd standardsidan för \'Ändra lösenord\'.';
 $string['stdchangepassword_expl'] = 'Om det externa systemet för autenticering tillåter ändring av lösenord via Moodle så ska Du ändra detta till \'Yes\' (Ja). Den här inställningen har förträde över inställningen \'URL till sida för att ändra lösenord\'.';
 $string['stdchangepassword_explldap'] = 'OBS! Vi rekommenderar att Du använder LDAP via en SSL-krypterad kanal (ldaps://) om Du använder en fjärrserver för LDAP.';
@@ -386,10 +390,5 @@ $string['update_never'] = 'Aldrig';
 $string['update_oncreate'] = 'Vid skapande';
 $string['update_onlogin'] = 'Vid varje inloggning';
 $string['update_onupdate'] = 'Vid uppdatering';
-$string['sso_idp_description'] = 'Offentliggör den här tjänsten för att tillåta att Dina användare navigerar vidare till $a webbplatsen för Moodle utan att behöva logga in där igen. <ul><li><em>Beroende</em>: Du måste också  <strong>prenumerera</strong> på SSO-tjänsten hos $a.</li></ul>Prenumerera på den tjänsten för att tillåta att autenticerade användare från $a får tillgång till Din webbplats utan att behöva logga in igen. <ul><li><em>Beroende</em>: Du måste också  <strong>offentliggöra</strong> SSO-tjänsten hos $a.</li></ul><br />'; // ORPHANED
-$string['sso_idp_name'] = 'SSO (Tillhandahållare av identiteter)'; // ORPHANED
-$string['sso_mnet_login_refused'] = 'Användarnamn $a[0] har inte tillstånd att logga in från $a[1].'; // ORPHANED
-$string['sso_sp_description'] = 'Offentliggör den här tjänsten för att tillåta att autenticerade användare från $a får tillgång till Din webbplats utan att behöva logga in igen. <ul><li><em>Beroende</em>: Du måste också  <strong>prenumerera</strong> på SSO-tjänsten (tillhandahållare av identiteter) hos $a.</li></ul>Prenumerera på den tjänsten för att tillåta att Dina användare navigerar vidare till $a webbplatsen för Moodle utan att behöva logga in där igen.<ul><li><em>Beroende</em>: Du måste också  <strong>offentliggöra</strong> SSO-tjänsten (tillhandahållare av identiteter) hos $a.</li></ul><br />'; // ORPHANED
-$string['sso_sp_name'] = 'SSO (tillhandahållare av tjänster)'; // ORPHANED
 
 ?>

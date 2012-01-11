@@ -1,4 +1,5 @@
-<?php // $Id: userkey.php,v 1.5 2009/04/10 19:28:54 martignoni Exp $
+<?php
+// userkey.php - created with Totara langimport script version 1.1
 
 $string['createnewkey'] = 'Créer une nouvelle clef utilisateur';
 $string['createuserkey'] = 'Créer clef utilisateur';

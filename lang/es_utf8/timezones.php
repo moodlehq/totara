@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // timezones.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2005042100)
-
+<?php
+// timezones.php - created with Totara langimport script version 1.1
 
 $string['africa/abidjan'] = 'África/Abidján';
 $string['africa/accra'] = 'África/Accra';

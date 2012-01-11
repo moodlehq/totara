@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // message.php - created with Moodle 1.9 + (Build: 20080324) (2007101509)
-
+<?php
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'Lägg till kontakt';
 $string['addsomecontacts'] = 'För att skicka ett meddelande till någon, eller lägga till en genväg till dem på den här sidan så använder Du <a href=\"$a\">Sök </a> här ovan.';

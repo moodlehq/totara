@@ -1,4 +1,5 @@
-<?php // $Id: datapreset_imagegallery.php,v 1.1 2007/08/21 08:33:43 martignoni Exp $
+<?php
+// datapreset_imagegallery.php - created with Totara langimport script version 1.1
 
 $string['modulename'] = 'Galerie d\'images';
 

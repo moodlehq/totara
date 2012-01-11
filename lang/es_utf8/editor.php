@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // editor.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'Acerca de este editor';
 $string['absbottom'] = 'Abajo';
@@ -8,7 +7,7 @@ $string['acteditorshhdr'] = 'Editores de texto activos';
 $string['address'] = 'Dirección';
 $string['alertnoselectedtext'] = '¡Antes debe seleccionar el texto!';
 $string['alignment'] = 'Alinear';
-$string['alternatetext'] = 'Texto alterno';
+$string['alternatetext'] = 'Intercambiar texto';
 $string['anchorhelp'] = 'Esta acción sólo crea un ancla. Deberá crear un enlace manualmente.';
 $string['anchorname'] = 'Ancla';
 $string['anchors'] = 'Anclas';
@@ -22,6 +21,7 @@ $string['cellpadding'] = 'Separación entre Columnas';
 $string['cellspacing'] = 'Espacio entre Columnas';
 $string['choosechar'] = 'Seleccione carácter';
 $string['chooseicon'] = 'Seleccione un icono para insertar';
+$string['clean'] = 'Limpiar HTML de Word';
 $string['close'] = 'Cerrar';
 $string['closeafterreplace'] = 'Cerrar después de reemplazar';
 $string['cols'] = 'Cols';
@@ -52,12 +52,15 @@ $string['htmlmode'] = 'Tabulación HTML';
 $string['imageurl'] = 'URL de imagen';
 $string['indent'] = 'Aumentar sangría';
 $string['insertchar'] = 'Insertar caracteres especiales';
+$string['inserthorizontalrule'] = 'Regla horizontal';
 $string['insertimage'] = 'Insertar imagen';
-$string['insertlink'] = 'Insertar vínculo';
+$string['insertlink'] = 'Insertar enlace';
+$string['insertorderedlist'] = 'Lista ordenada';
 $string['insertsmile'] = 'Insertar emoticono';
 $string['inserttable'] = 'Insertar tabla';
+$string['insertunorderedlist'] = 'Lista de viñetas';
 $string['italic'] = 'Cursiva';
-$string['itemsreplaced'] = 'items reemplazados';
+$string['itemsreplaced'] = '¡elementos reemplazados!';
 $string['justifycenter'] = 'Centrado';
 $string['justifyfull'] = 'Justificado';
 $string['justifyleft'] = 'Izquierda';
@@ -66,7 +69,7 @@ $string['lang'] = 'Idioma';
 $string['layout'] = 'Diseño';
 $string['left'] = 'Izquierda';
 $string['lefttoright'] = 'Dirección de izquierda a derecha';
-$string['linkproperties'] = 'Propiedades de vínculo';
+$string['linkproperties'] = 'Propiedades de enlace';
 $string['linktarget'] = 'Destino';
 $string['linktargetblank'] = 'Nueva ventana';
 $string['linktargetnone'] = 'Ninguno';
@@ -107,6 +110,7 @@ $string['replacewith'] = 'Reemplazar';
 $string['right'] = 'Derecha';
 $string['righttoleft'] = 'Dirección de derecha a izquierda';
 $string['rows'] = 'Filas';
+$string['search_replace'] = 'Buscar y reemplazar';
 $string['searchandreplace'] = 'Buscar y reemplazar';
 $string['searchnotfound'] = 'Cadena de búsqueda no encontrada';
 $string['selectcolor'] = 'Seleccionar color';
@@ -114,6 +118,7 @@ $string['selection'] = 'Selección';
 $string['showhelp'] = 'Mostrar ayuda';
 $string['size'] = 'Tamaño';
 $string['spacing'] = 'Espaciado';
+$string['spellcheck'] = 'Revisar ortografía';
 $string['strikethrough'] = 'Tachado';
 $string['subscript'] = 'Subíndice';
 $string['superscript'] = 'Superíndice';
@@ -124,6 +129,7 @@ $string['top'] = 'Arriba';
 $string['type'] = 'Tipo';
 $string['underline'] = 'Subrayado';
 $string['undo'] = 'Deshacer la última acción';
+$string['unlink'] = 'Eliminar enlace';
 $string['unorderedlist'] = 'Lista con viñetas';
 $string['upload'] = 'Subir';
 $string['vertical'] = 'Vertical';

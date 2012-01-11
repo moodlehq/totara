@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_shibboleth.php - created with Totara langimport script version 1.1
 
 $string['auth_shib_convert_data'] = 'Tiedon muokaamisen API';
 $string['auth_shib_convert_data_description'] = 'Voit käyttää tätä APIa muokataksesi edelleen tietoja, joita Shibboleth tarjoaa. Lue  <a href=\"../auth/shibboleth/README.txt\" target=\"_blank\">README (englanniksi)</a> saadakseis lisää tietoa.';
@@ -16,3 +14,5 @@ $string['auth_shibboleth_login'] = 'Shibboleth-kirjautuminen';
 $string['auth_shibboleth_manual_login'] = 'Sisäänkirjautuminen käsin';
 $string['auth_shibbolethdescription'] = 'Tätä menetelmää käyttäessä käyttäjät luodaan ja varmennetaan käyttäen href=\"http://shibboleth.internet2.edu/\" target=\"_blank\">Shibboleth-käyttäjänvarmennusta</a>. Lue <a href=\"../auth/shibboleth/README.txt\" target=\"_blank\">README (englanniksi)</a>, jossa kerrotaan kuinka Moodle asetetaan käyttämään Shibbolethin-varmennusta.';
 $string['auth_shibbolethtitle'] = 'Shibboleth';
+
+?>

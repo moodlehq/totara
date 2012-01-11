@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_cas.php - created with Totara langimport script version 1.1
 
 $string['CASform'] = 'בחירת אימות';
 $string['accesCAS'] = 'משתמשי CAS';
@@ -39,3 +37,5 @@ $string['auth_casdescription'] = 'שיטה זו עושה שימוש בשרת CAS
 אם שם המשתמש והסיסמה הנתונים תקפים לפי CAS, מוודל יוצר כניסת משתמש חדשה בבסיס הנתונים, כאשר הוא לוקח תכונות משתמש מ-LDAP, אם הדבר נדרש. בהתחברויות עתידיות נבדקים רק שם המשתמש והסיסמה.';
 $string['auth_casnotinstalled'] = 'לא ניתן להשתמש באימות CAS. רכיב ה-PHP LDAP אינו מותקן';
 $string['auth_castitle'] = 'השתמש בשרת CAS (שרת אימות מרכזי), SSO (התחברות יחידה)';
+
+?>

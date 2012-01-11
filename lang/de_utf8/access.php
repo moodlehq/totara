@@ -1,6 +1,5 @@
-<?PHP // $Id: access.php,v 1.12 2010/01/16 14:35:37 krause Exp $ 
-      // access.php - created with Moodle 2.0 dev (Build: 20100114) (2010011400)
-
+<?php
+// access.php - created with Totara langimport script version 1.1
 
 $string['access'] = 'Barrierefreiheit';
 $string['accesshelp'] = 'Hilfe zur Barrierefreiheit';
@@ -16,6 +15,7 @@ $string['hideblocka'] = 'Block $a verbergen';
 $string['monthnext'] = 'Nächster Monat';
 $string['monthprev'] = 'Vorheriger Monat';
 $string['showblocka'] = 'Block $a anzeigen';
+$string['showhideblock'] = 'Block zeigen/verbergen';
 $string['sitemap'] = 'Site Map';
 $string['skipa'] = '$a überspringen';
 $string['skipblock'] = 'Block überspringen';
@@ -26,6 +26,5 @@ $string['tablelayout'] = 'Layouttabelle, $a';
 $string['tocontent'] = 'Direkt zum Hauptinhalt';
 $string['tonavigation'] = 'Direkt zur Navigation';
 $string['youarehere'] = 'Sie sind hier';
-$string['showhideblock'] = 'Block zeigen/verbergen'; // ORPHANED
 
 ?>

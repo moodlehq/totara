@@ -1,4 +1,6 @@
-<?PHP // $Id: block_quiz_results.php,v 1.8 2008/11/21 01:32:24 samulik Exp $
+<?php
+// block_quiz_results.php - created with Totara langimport script version 1.1
+
 $string['bestgrade'] = 'Ylin arvosana';
 $string['bestgrades'] = '$a ylintä arvosanaa';
 $string['bestgroupgrade'] = 'Keskiarvoltaan ylin ryhmä';
@@ -25,4 +27,5 @@ $string['worstgrade'] = 'Alin arvosana';
 $string['worstgrades'] = '$a alinta arvosanaa';
 $string['worstgroupgrade'] = 'Keskiarvoltaan alin ryhmä:';
 $string['worstgroupgrades'] = '$a keskiarvoltaan alinta ryhmää:';
+
 ?>

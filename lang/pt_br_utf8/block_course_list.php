@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// block_course_list.php - created with Totara langimport script version 1.1
 
 $string['adminview'] = 'Visão do administrador';
 $string['allcourses'] = 'O administrador vê todos os cursos';

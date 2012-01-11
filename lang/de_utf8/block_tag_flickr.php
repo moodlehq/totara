@@ -1,6 +1,5 @@
-<?PHP // $Id: block_tag_flickr.php,v 1.6 2008/07/22 19:57:25 ralf-bonn Exp $ 
-      // block_tag_flickr.php - created with Moodle 1.9  Beta + (2007081600)
-
+<?php
+// block_tag_flickr.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Flickr';
 $string['configtitle'] = 'Titel';

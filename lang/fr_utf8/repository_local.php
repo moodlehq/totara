@@ -1,4 +1,5 @@
-<?php // $Id: repository_local.php,v 1.6 2009/09/30 19:40:42 martignoni Exp $
+<?php
+// repository_local.php - created with Totara langimport script version 1.1
 
 $string['configplugin'] = 'Configuration du dépôt de fichiers serveur';
 $string['currentusefiles'] = 'Fichiers utilisés actuellement';

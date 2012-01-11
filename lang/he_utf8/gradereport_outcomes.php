@@ -1,6 +1,5 @@
-<?PHP // $Id: gradereport_outcomes.php,v 1.4 2010/07/21 08:33:17 emanuel1 Exp $
-      // gradereport_outcomes.php - created with Moodle 1.9 + (Build: 20080326) (2007101509)
-
+<?php
+// gradereport_outcomes.php - created with Totara langimport script version 1.1
 
 $string['addoutcome'] = 'הוסף מדד־הערכה';
 $string['courseoutcomes'] = 'מדדי־הערכה בקורס';

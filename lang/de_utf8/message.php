@@ -1,11 +1,11 @@
-<?PHP // $Id$ 
-      // message.php - created with Moodle 1.9.7+ (Build: 20091216) (2007101570)
-
+<?php
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'Kontakt hinzufügen';
 $string['addsomecontacts'] = 'Verwenden Sie die <a href=\"$a\">Suchoption </a> oben, um eine Mitteilung an jemanden zu versenden oder einen Eintrag im Verzeichnis zu erstellen.';
 $string['addsomecontactsincoming'] = 'Diese Mitteilungen stammen von Personen, die nicht in Ihrer Kontaktliste aufgeführt sind. Um sie in Ihre Kontaktliste einzufügen, klicken Sie auf den Button \"Kontakt hinzufügen\" neben dem Namen.';
 $string['ago'] = '$a beendet';
+$string['ajax_gui'] = 'AJAX Chat';
 $string['allmine'] = 'Alle Mitteilungen an mich oder von mir';
 $string['allstudents'] = 'Alle Mitteilungen der Teilnehmer/innen untereinander';
 $string['allusers'] = 'Alle Mitteilungen (Teilnehmer/innen und Trainer/innen)';
@@ -14,23 +14,33 @@ $string['beepnewmessage'] = 'Akustisches Signal bei neuer Nachricht';
 $string['blockcontact'] = 'Kontakt sperren';
 $string['blockedmessages'] = '$a Mitteilung(en) an/von gesperrten Nutzer/innen';
 $string['blocknoncontacts'] = 'Alle Nachrichten von unbekannten Personen blockieren';
+$string['cannotsavemessageprefs'] = 'Ihre Nutzereinstellungen konnten nicht gespeichert werden';
 $string['contactlistempty'] = 'Ihre Kontaktliste ist zur Zeit noch leer';
 $string['contacts'] = 'Kontakte';
 $string['context'] = 'Kontext';
 $string['deletemessagesdays'] = 'Dauer (in Tagen), bis alte Mitteilungen automatisch gelöscht werden';
+$string['disabled'] = 'Bei dieser Website sind die Mitteilungen deaktiviert';
 $string['discussion'] = 'Diskussion';
+$string['editmymessage'] = 'Mitteilungssystem';
 $string['emailmessages'] = 'Mitteilungen per E-Mail versenden, wenn ich offline bin';
 $string['emailtagline'] = 'Diese E-Mail ist eine Kopie einer Mitteilung, die an Sie als Nutzer/in von \"$a\" geschickt wurde';
 $string['emptysearchstring'] = 'Sie müssen einen Suchbegriff eingeben';
+$string['errorcallingprocessor'] = 'Fehler beim Aufruf des definierten Prozesses';
 $string['formorethan'] = 'Für mehr als';
+$string['general_config'] = 'Allgemeine Einstellungen';
+$string['guestnoeditmessage'] = 'Gäste dürfen keine Einstellungen ändern';
+$string['guestnoeditmessageother'] = 'Gäste dürfen keine Nutzereinstellungen ändern';
 $string['includeblockedusers'] = 'Gesperrte Nutzer/innen einschließen';
 $string['incomingcontacts'] = 'Eingehende Kontakte ($a)';
 $string['keywords'] = 'Schlüsselbegriffe';
 $string['keywordssearchresults'] = 'Suchergebnis: $a Mitteilungen gefunden';
+$string['loggedin'] = 'Online:';
+$string['loggedoff'] = 'Nicht online:';
 $string['mailsent'] = 'Ihre Nachricht wurde als E-Mail versandt.';
 $string['maxmessages'] = 'Höchstzahl der Mitteilungen, die im Rückblick angezeigt werden';
 $string['message'] = 'Mitteilung';
 $string['messagehistory'] = 'Mitteilungen (Rückblick)';
+$string['messageprovider:instantmessage'] = 'Persönliche Mitteilungen unter Nutzer/innen';
 $string['messages'] = 'Mitteilungen';
 $string['messaging'] = 'Mitteilungen';
 $string['messagingdisabled'] = 'Bei dieser Website sind die Mitteilungen deaktiviert, aber es werden stattdessen E-Mails verschickt.';
@@ -49,6 +59,11 @@ $string['onlyfromme'] = 'Nur Mitteilungen von mir';
 $string['onlymycourses'] = 'Nur in meinen Kursen';
 $string['onlytome'] = 'Nur Mitteilungen an mich';
 $string['pagerefreshes'] = 'Diese Seite wird automatisch nach $a Sekunden aktualisiert';
+$string['private_config'] = 'Popup-Mitteilungsfenster';
+$string['processor_config'] = 'Zieleinstellung';
+$string['processortag'] = 'Ziel:';
+$string['providers_config'] = 'Festlegung der Orte für ankommende Mitteilungen';
+$string['providerstag'] = 'Quelle:';
 $string['readmessages'] = '$a gelesene Mitteilungen';
 $string['removecontact'] = 'Kontakt entfernen';
 $string['savemysettings'] = 'Meine Einstellungen speichern';
@@ -69,21 +84,5 @@ $string['unreadmessages'] = '$a ungelesene Mitteilungen';
 $string['userisblockingyou'] = 'Dieses Nutzerkonto hat Mitteilungen von Ihnen gesperrt.';
 $string['userisblockingyounoncontact'] = 'Dieses Nutzerkonto nimmt nur Nachrichten von Personen an, die in der Kontaktliste eingetragen sind. Sie sind aktuell dort nicht aufgeführt.';
 $string['userssearchresults'] = 'Suchergebniss(e): $a Nutzer/innen gefunden';
-$string['ajax_gui'] = 'AJAX Chat'; // ORPHANED
-$string['cannotsavemessageprefs'] = 'Ihre Nutzereinstellungen konnten nicht gespeichert werden'; // ORPHANED
-$string['disabled'] = 'Bei dieser Website sind die Mitteilungen deaktiviert'; // ORPHANED
-$string['editmymessage'] = 'Mitteilungssystem'; // ORPHANED
-$string['errorcallingprocessor'] = 'Fehler beim Aufruf des definierten Prozesses'; // ORPHANED
-$string['guestnoeditmessage'] = 'Gäste dürfen keine Einstellungen ändern'; // ORPHANED
-$string['guestnoeditmessageother'] = 'Gäste dürfen keine Nutzereinstellungen ändern'; // ORPHANED
-$string['loggedin'] = 'Online:'; // ORPHANED
-$string['loggedoff'] = 'Nicht online:'; // ORPHANED
-$string['messageprovider:instantmessage'] = 'Persönliche Mitteilungen unter Nutzer/innen'; // ORPHANED
-$string['private_config'] = 'Popup-Mitteilungsfenster'; // ORPHANED
-$string['processortag'] = 'Ziel:'; // ORPHANED
-$string['providers_config'] = 'Festlegung der Orte für ankommende Mitteilungen'; // ORPHANED
-$string['providerstag'] = 'Quelle:'; // ORPHANED
-$string['processor_config'] = 'Zieleinstellung'; // ORPHANED
-$string['general_config'] = 'Allgemeine Einstellungen'; // ORPHANED
 
 ?>

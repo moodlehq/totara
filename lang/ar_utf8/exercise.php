@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // exercise.php - created with Moodle 1.8 dev (2006101001)
-
+<?php
+// exercise.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'غائب';
 $string['accumulative'] = 'تراكمي';

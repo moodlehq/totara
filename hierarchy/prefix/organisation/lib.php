@@ -285,7 +285,7 @@ class organisation extends hierarchy {
                 $fwoptions[$fw->id] = $fw->fullname . " ({$count})";
             }
             $fwoptions = count($fwoptions) > 1 ? array(0 => get_string('all')) + $fwoptions : $fwoptions;
-            echo '<div style="text-align: right">';
+            echo '<div class="hierarchyframeworkpicker">';
             popup_form($CFG->wwwroot.'/hierarchy/item/view.php?id='.$organisationid.'&amp;edit='.$edit.'&amp;prefix=organisation&amp;framework=', $fwoptions, 'switchframework', $currentfw, '', '', '', false, 'self', get_string('filterframework', 'hierarchy'));
             echo '</div>';
         } else {

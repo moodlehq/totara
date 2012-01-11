@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_numerical.php,v 1.5 2009/03/11 10:09:26 ralf-bonn Exp $ 
-      // qtype_numerical.php - created with Moodle 2.0 dev (Build: 20090226) (2009021800)
-
+<?php
+// qtype_numerical.php - created with Totara langimport script version 1.1
 
 $string['addingnumerical'] = 'Eine numerische Frage hinzufügen';
 $string['addmoreanswerblanks'] = 'Leerfelder für {no} weitere Antwort';

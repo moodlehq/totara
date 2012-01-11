@@ -1,5 +1,5 @@
 <?php
-// competency.php - created with Totara langimport script version 1.0
+// competency.php - created with Totara langimport script version 1.1
 
 $string['achieved'] = 'منجز';
 $string['addassignedcompetencies'] = 'تعيين الكفاءات';

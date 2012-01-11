@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_totara_msg.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// local_totara_msg.php - created with Totara langimport script version 1.0
 
 $string['accept'] = 'قبول';
 $string['alert_description'] = 'المذكور أدناه هي كل التنبيهات التي تلقيتها. يمكنك نقر الروابط في عنوان التنبيه لعرض مزيد من التفاصيل أو إلغاء التنبيه عن طريق النقر على أيقونة الإلغاء في يمين القائمة. يمكنك أيضاً اختيار التنبيهات التي يتم عرضها في القائمة عن طريق إتاحة استخدام \"البحث بواسطة\" تشغيلياً.';

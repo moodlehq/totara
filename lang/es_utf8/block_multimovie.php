@@ -1,7 +1,5 @@
-<?PHP // $Id: block_multimovie.php,v 1.1 2007/09/15 10:55:51 barias Exp $ 
-      // block_multimovie.php - created with Moodle 1.9 Beta + (2007091400)
-      // local modifications from http://127.0.0.1/moodle
-
+<?php
+// block_multimovie.php - created with Totara langimport script version 1.1
 
 $string['configcontent'] = 'Contenido';
 $string['configtitle'] = 'Título';

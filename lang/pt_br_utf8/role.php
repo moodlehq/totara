@@ -1,6 +1,5 @@
-<?PHP // $Id: role.php,v 1.11 2010/06/23 15:39:46 danielneis Exp $ 
-      // role.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// role.php - created with Totara langimport script version 1.1
 
 $string['addrole'] = 'Acrescentar uma nova função';
 $string['allow'] = 'Permitir';
@@ -28,6 +27,12 @@ $string['category:manage'] = 'Gerenciar categorias';
 $string['category:update'] = 'Atualizar categorias';
 $string['category:viewhiddencategories'] = 'Ver categorias ocultas';
 $string['category:visibility'] = 'Visualizar categorias ocultas';
+$string['cohort:assign'] = 'Atribuir grupos';
+$string['cohort:manage'] = 'Gerenciar grupos';
+$string['cohort:view'] = 'Visualizar grupos';
+$string['comment:delete'] = 'Apagar comentários';
+$string['comment:post'] = 'Postar comentários';
+$string['comment:view'] = 'Visualizar comentários';
 $string['course:activityvisibility'] = 'Ocultar/Mostrar atividades';
 $string['course:bulkmessaging'] = 'Enviar mensagem para várias pessoas';
 $string['course:changecategory'] = 'Alterar a categoria do curso';
@@ -43,6 +48,7 @@ $string['course:managegrades'] = 'Gerenciar notas';
 $string['course:managegroups'] = 'Gerenciar grupos';
 $string['course:managemetacourse'] = 'Gerenciar meta-curso';
 $string['course:managescales'] = 'Gerenciar escalas de avaliação';
+$string['course:markcomplete'] = 'Marcar término de usuário';
 $string['course:request'] = 'Solicitar novos cursos';
 $string['course:reset'] = 'Reconfigurar o curso';
 $string['course:sectionvisibility'] = 'Definir visibilidade da seção';
@@ -56,6 +62,7 @@ $string['course:viewhiddencourses'] = 'Visualizar cursos que estão ocultos';
 $string['course:viewhiddensections'] = 'Visualizar seções ocultas';
 $string['course:viewhiddenuserfields'] = 'Visualizar campos ocultos do usuário';
 $string['course:viewparticipants'] = 'Visualizar participantes';
+$string['course:viewprogress'] = 'Visualizar progresso do curso';
 $string['course:viewscales'] = 'Visualizar escalas de avaliação';
 $string['course:visibility'] = 'Ocultar/Mostrar cursos';
 $string['currentcontext'] = 'Contexto atual';
@@ -95,6 +102,7 @@ $string['legacy:admin'] = 'FUNÇÃO HERDADA: Administrador';
 $string['legacy:coursecreator'] = 'FUNÇÃO HERDADA: Criador de curso';
 $string['legacy:editingteacher'] = 'FUNÇÃO HERDADA: Professor (editor)';
 $string['legacy:guest'] = 'FUNÇÃO HERDADA: Visitante';
+$string['legacy:manager'] = 'FUNÇÃO HERDADA: Gerente';
 $string['legacy:student'] = 'FUNÇÃO HERDADA: Estudante';
 $string['legacy:teacher'] = 'FUNÇÃO HERDADA: Professor (não editor)';
 $string['legacy:user'] = 'FUNÇÃO HERDADA: Usuário autenticado';
@@ -124,6 +132,9 @@ $string['question:add'] = 'Adicionar novas questões';
 $string['question:config'] = 'Configurar tipos de questão';
 $string['question:editall'] = 'Editar todas as questões';
 $string['question:editmine'] = 'Editar suas próprias questões';
+$string['question:export'] = 'Exportar questões';
+$string['question:import'] = 'Importar questões';
+$string['question:manage'] = 'Gerenciar questões';
 $string['question:managecategory'] = 'Gerenciar categoria de questão';
 $string['question:moveall'] = 'Mover todas as questões';
 $string['question:movemine'] = 'Mover suas próprias questões';
@@ -194,8 +205,5 @@ $string['userhashiddenassignments'] = 'Este usuário tem uma ou mais funções e
 $string['userswithrole'] = 'Todos os usuários com funções';
 $string['viewrole'] = 'Visualizar detalhes das funções';
 $string['xuserswiththerole'] = 'Usuários com a função \"$a->role\": $a->number';
-$string['question:export'] = 'Exportar questões'; // ORPHANED
-$string['question:import'] = 'Importar questões'; // ORPHANED
-$string['question:manage'] = 'Gerenciar questões'; // ORPHANED
 
 ?>

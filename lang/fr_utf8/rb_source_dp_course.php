@@ -1,11 +1,10 @@
-<?PHP // $Id$ 
-      // rb_source_dp_course.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// rb_source_dp_course.php - created with Totara langimport script version 1.1
 
 $string['blended'] = 'Mixte';
 $string['completionstatus'] = 'Statut d\'achèvement';
 $string['completionstatusandapproval'] = 'Statut d\'achèvement (et statut d\'approbation)';
+$string['coursecompletedate'] = 'Date d\'accomplissement du cours';
 $string['courseduedate'] = 'Date butoire du cours';
 $string['coursepriority'] = 'Priorité du cours';
 $string['coursestatus'] = 'Statut du cours';

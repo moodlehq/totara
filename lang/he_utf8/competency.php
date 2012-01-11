@@ -1,11 +1,12 @@
-<?PHP // $Id$ 
-      // competency.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// competency.php - created with Totara langimport script version 1.1
 
 $string['achieved'] = 'הושגו';
 $string['addassignedcompetencies'] = 'הקצה כשירויות';
 $string['addassignedcompetencytemplates'] = 'הקצה תבניות כשירויות';
+$string['addcourseevidencetocompetencies'] = 'הוסף סימוכין לקורס לכשירויות';
 $string['addcourseevidencetocompetency'] = 'הוסף סימוכין קורסים לכשירויות';
+$string['adddepthlevel'] = 'הוסף רמת עומק חדשה';
 $string['addedcompetency'] = 'הכשירות \"{$a}\" הוספה';
 $string['addedframework'] = 'מסגרת הכשירות \"{$a}\" הוספה';
 $string['addmultiplenewcompetency'] = 'הוסף כשירויות מרובות';
@@ -17,9 +18,9 @@ $string['addtype'] = 'הוסף סוג חדש';
 $string['aggregationmethod'] = 'שיטת צבירה';
 $string['aggregationmethod1'] = 'כל';
 $string['aggregationmethod2'] = 'כלשהו';
-$string['aggregationmethod3'] = 'יחידה';
-$string['aggregationmethod4'] = 'חלק';
-$string['aggregationmethod5'] = 'סה\"כ משוקלל';
+$string['aggregationmethod3'] = 'כבוי';
+$string['aggregationmethod4'] = 'יחידה';
+$string['aggregationmethod5'] = 'שבר';
 $string['aggregationmethod6'] = 'סכום משוקלל';
 $string['aggregationmethod7'] = 'ממוצע משוקלל';
 $string['aggregationmethodview'] = 'שיטת צבירה $a';
@@ -29,6 +30,8 @@ $string['assigncompetency'] = 'הקצה כשירות';
 $string['assigncompetencytemplate'] = 'הקצה תבנית כשירות';
 $string['assigncompetencytemplates'] = 'הקצה תבניות כשירות';
 $string['assigncoursecompletion'] = 'הקצה השלמת קורס';
+$string['assigncoursecompletions'] = 'הקצה השלמות קורס';
+$string['assigncoursecompletiontocompetencies'] = 'הקצה השלמת קורס לכשירויות';
 $string['assigncoursecompletiontocompetency'] = 'הקצה השלמת קורס לכשירות';
 $string['assignedcompetencies'] = 'כשירויות משוייכות';
 $string['assignedcompetenciesandtemplates'] = 'הקצה כשירויות ותבניות כשירות';
@@ -51,6 +54,8 @@ $string['competenciesusedincourse'] = 'כשירויות המשמשים בקור�
 $string['competency'] = 'כשירות';
 $string['competencyaddnew'] = 'הוסף כשירות חדשה';
 $string['competencycustomfields'] = 'שדות מותאמים אישית';
+$string['competencydepthcustomfields'] = 'שדות מותאמים אישית של רמת עומק כשירות';
+$string['competencydepthlevelview'] = 'תצוגת רמת עומק כשירות';
 $string['competencyevidence'] = 'סימוכין של כשירות';
 $string['competencyframework'] = 'מסגרת של כשירויות';
 $string['competencyframeworkmanage'] = 'נהל מסגרות';
@@ -75,6 +80,10 @@ $string['createtype'] = 'סוג הכשירות \"{$a}\" נוצר';
 $string['currentlyselected'] = 'נבחר כעת';
 $string['defaultvalue'] = 'ערך ברירת מחדל';
 $string['deletecheck'] = 'האם אתה בטוח לגמרי שברצונך למחוק לחלוטין כשירות זו, כולל תתי הכשירויות שלה והנתונים שהן מכילות?';
+$string['deletecheck11'] = 'האם אתה בטוח שברצונך למחוק את הכשירות \"$a\"?
+<br /><br />
+פעולה זו תסיר את הנתונים הבאים:<br />
+הכשירות - \"$a\"';
 $string['deletecheckframework'] = 'האם אתה בטוח שאתה רוצה למחוק את המסגרת \"$a\"?';
 $string['deletecheckscale'] = 'האם אתה בטוח לחלוטין שאתה רוצה למחוק לחלוטין סולם כשירויות זה?';
 $string['deletecheckscalevalue'] = 'האם אתה בטוח לחלוטין שאתה רוצה למחוק ערך סולם כשירויות זה?';
@@ -87,6 +96,7 @@ $string['deletecompetency'] = 'מחק כשירות';
 $string['deletedcompetency'] = 'כשירות $a וכל תתי הכשירויות שלה נמחקו לגמרי.';
 $string['deletedcompetencyscale'] = 'סולם כשירות \"{$a}\" נמחק לגמרי.';
 $string['deletedcompetencyscalevalue'] = 'ערך סולם כשירות \"{$a}\" נמחק.';
+$string['deletedepth'] = 'מחק $a';
 $string['deletedframework'] = 'מסגרת כשירות $a והנתונים שלה נמחקו לגמרי.';
 $string['deletedtemplate'] = 'תבנית כשירות $a והנתונים שלה נמחקו לגמרי.';
 $string['deletedtype'] = 'סוג הכשירות \"{$a}\" נמחק לחלוטין.';
@@ -100,18 +110,24 @@ $string['deletemulticheckwithchildren'] = 'האם אתה בטוח שברצונך
 פעולה זו תסיר את המידע הבא: <br />
 - $a->num כשירויות וכן $a->childcount $a->children_string';
 $string['deletetype'] = 'מחק סוג \"{$a}\"';
+$string['depthlevel'] = 'רמת עומק';
+$string['depthlevels'] = 'רמות עומק';
+$string['depths'] = 'עומק';
 $string['descriptionview'] = 'תיאור $a';
 $string['editcompetency'] = 'ערוך כשירות';
+$string['editdepthlevel'] = 'ערוך רמת עומק';
 $string['editframework'] = 'ערוך מסגרת כשירות';
 $string['editgeneric'] = 'ערוך $a';
 $string['editscalevalue'] = 'ערוך ערך סולם';
 $string['edittemplate'] = 'ערוך תבנית כשירות';
 $string['edittype'] = 'ערוך סוג';
+$string['error:addcompetency'] = 'הייתה בעיה בהוספת הכשירות \"{$a}\"';
 $string['error:compevidencealreadyexists'] = 'למשתמש זה כבר יש סימוכין לכשירות לכשירות שנבחרה. ביכולתך <a href=\'edit.php?id=$a\'>לערוך את הכשירות הנוכחית</a>, או להוסיף כישורת אחרת.';
 $string['error:couldnotdeletescale'] = 'הייתה בעיה במחיקת סולם הכשירות \"{$a}\"';
 $string['error:createtype'] = 'שגיאה ביצירת סוג כשירות \"{$a}\"';
 $string['error:deletedframework'] = 'שגיאה במחיקת מסגרת כשירות $a והנתונים שלה.';
 $string['error:deletedtype'] = 'שגיאה במחיקת סוג כשירות \"{$a}\".';
+$string['error:dialognolinkedcourseitems'] = 'אין כשירויות במסגרת זו המקושרות לקורסים המשוייכים להן';
 $string['error:dialognotreeitems'] = 'אין כשירויות עבור מסגרת זו';
 $string['error:evidencealreadyexists'] = 'לא ניתן היה ליצור סימוכין חדש לכשירות מכיוון שכבר קיים תיעוד עבור משתמש זה וכשירות זו';
 $string['error:nodeletecompetencyscaleassigned'] = 'אינך יכול למחוק סולם כשירות זה מכיוון שהוא כבר מוקצה למסגרת אחת או יותר';
@@ -120,6 +136,7 @@ $string['error:nodeletecompetencyscalevaluedefault'] = 'אינך יכול למח
 $string['error:nodeletecompetencyscalevalueonlyprof'] = 'אינך יכול למחוק ערך סולם זה מכיוון שהוא הערך היחיד לרמת ידע טובה בסולם זה. סמן ערך אחר כרמת ידע טובה לפני שתמחוק';
 $string['error:onescalevaluemustbeproficient'] = 'לפחות ערך סולם אחד צריך להיות מסומן כרמת ידע טובה בכל זמן נתון. סמן ערך אחר כרמת ידע טובה לפני שתסיר את הסימון מערך זה.';
 $string['error:scaledetails'] = 'שגיאה בקבלת נתוני סולם.';
+$string['error:updatecompetency'] = 'הייתה בעיה בעדכון הכשירות \"{$a}\"';
 $string['error:updatetype'] = 'שגיאה בעדכון סוג כשירות \"{$a}\"';
 $string['evidence'] = 'סימוכין';
 $string['evidenceactivitycompletion'] = 'השלמת פעילות';
@@ -132,6 +149,7 @@ $string['featureplural'] = 'כשירויות';
 $string['framework'] = 'מסגרת כשירות';
 $string['frameworks'] = 'מסגרות כשירות';
 $string['fullname'] = 'שם מלא של כשירות';
+$string['fullnamedepth'] = 'שם מלא של רמת עומק';
 $string['fullnameframework'] = 'שם מלא';
 $string['fullnametemplate'] = 'שם מלא של תבנית';
 $string['fullnametype'] = 'שם מלא של הסוג';
@@ -143,13 +161,19 @@ $string['idnumberview'] = '$a idnumber';
 $string['includecompetencyevidence'] = 'כלול סימוכין לכשירות';
 $string['invalidevidencetype'] = 'סוג סימוכין לא חוקי';
 $string['invalidnumeric'] = 'ערך מספרי חייב להיות מספרי (או ריק)';
+$string['itemstoadd'] = 'פריטים להוספה';
 $string['linkcourses'] = 'קשר קורסים';
 $string['linktoscalevalues'] = '<a href=\"view.php?id=$a&amp;type=competency\">לחץ כאן</a> על מנת לצפות/לערוך ערכי סולם עבור סולם כשירות זה.';
+$string['linktoscalevalues11'] = '<a href=\"view.php?id=$a&amp;prefix=competency\">לחץ כאן</a> על מנת לצפות/לערוך את ערכי סולם כשירות זה.';
 $string['locatecompetency'] = 'אתר כשירות';
 $string['locatecompetencytemplate'] = 'אתר תבנית כשירות';
 $string['managecompetencies'] = 'נהל כשירויות';
 $string['managecompetency'] = 'נהל כשירויות';
 $string['managecompetencytypes'] = 'נהל סוגים';
+$string['missingfullname'] = 'חסר שם מלא של כשירות';
+$string['missingfullnamedepth'] = 'חסר שם מלא של רמת עומק';
+$string['missingfullnameframework'] = 'חסר שם מלא של מסגרת';
+$string['missingfullnametemplate'] = 'חסר שם מלא של תבנית';
 $string['missingfullnametype'] = 'חסר שם מלא של סוג';
 $string['missingname'] = 'חסר שם כשירות';
 $string['missingnameframework'] = 'חסר שם מסגרת כשירות';
@@ -158,6 +182,7 @@ $string['missingnametype'] = 'חסר שם סוג כשירות';
 $string['missingscale'] = 'חסר סולם';
 $string['missingscalevaluename'] = 'חסר שם ערך בסולם';
 $string['missingshortname'] = 'חסר שם קצר לכשירות';
+$string['missingshortnamedepth'] = 'חסר שם קצר לרמת עומק';
 $string['missingshortnameframework'] = 'חסר שם קצר למסגרת';
 $string['missingshortnametemplate'] = 'חסר שם קצר לתבנית';
 $string['missingshortnametype'] = 'חסר שם קצר של כשירות';
@@ -172,9 +197,11 @@ $string['nocompetency'] = 'לא הוגדרו כשירויות';
 $string['nocompetencyscales'] = 'עליך להגדיר לפחות סולם כשירויות אחד עם ערכים לפני שתוכל להגדיר מסגרת כשירות';
 $string['nocoursecompetencies'] = 'אין כשירויות לקורס';
 $string['nocoursesincat'] = 'לא נמצאו קורסים בקטיגוריה זו';
+$string['nodepthlevels'] = 'אין רמות עומק במסגרת זו';
 $string['noevidenceitems'] = 'לא הוגדרו פריטי סימוכין לכשירות זו';
 $string['noevidencetypesavailable'] = 'אין סוגי סימוכין זמינים לקורס זה';
 $string['noframeworks'] = 'לא הוגדרו מסגרות כשירות';
+$string['noframeworkssetup'] = 'אין מסגרות כשירות שהוקמו באתר זה.';
 $string['nonsensicalproficientvalues'] = 'אזהרה: יש לך ערכי רמת ידע מתחת לערכי רמת ידע טובים בסולם זה. זכור שהסולם שלך צריך להיות מסודר מרמת הידע הגבוהה ביותר למעלה, לרמת הידע הנמוכה ביותר למטה.';
 $string['norelatedcompetencies'] = 'אין כשירויות קשורות';
 $string['noscalesdefined'] = 'לא הוגדרו סולמות';
@@ -217,6 +244,7 @@ $string['selectedcompetencies'] = 'בחר כשירויות:';
 $string['selectedcompetencytemplates'] = 'בחר תבניות כשירות:';
 $string['set'] = 'הגדר';
 $string['shortname'] = 'שם קצר של כשירות';
+$string['shortnamedepth'] = 'שם קצר של רמת עומק';
 $string['shortnameframework'] = 'שם קצר';
 $string['shortnametemplate'] = 'שם קצר של תבנית';
 $string['shortnametype'] = 'שם קצר של סוג כשירות';
@@ -231,21 +259,5 @@ $string['updatedframework'] = 'מסגרת הכשירות \"{$a}\" עודכנה';
 $string['updatetype'] = 'סוג הכשירות \"{$a}\" עודכן';
 $string['useresourcelevelevidence'] = 'השתמש בסימוכין ברמת משאב';
 $string['weight'] = 'משקל';
-$string['adddepthlevel'] = 'הוסף רמת עומק חדשה'; // ORPHANED
-$string['competencydepthcustomfields'] = 'שדות מותאמים אישית של רמת עומק כשירות'; // ORPHANED
-$string['competencydepthlevelview'] = 'תצוגת רמת עומק כשירות'; // ORPHANED
-$string['deletedepth'] = 'מחק $a'; // ORPHANED
-$string['depthlevel'] = 'רמת עומק'; // ORPHANED
-$string['depthlevels'] = 'רמות עומק'; // ORPHANED
-$string['depths'] = 'עומק'; // ORPHANED
-$string['editdepthlevel'] = 'ערוך רמת עומק'; // ORPHANED
-$string['fullnamedepth'] = 'שם מלא של רמת עומק'; // ORPHANED
-$string['missingfullname'] = 'חסר שם מלא של כשירות'; // ORPHANED
-$string['missingfullnamedepth'] = 'חסר שם מלא של רמת עומק'; // ORPHANED
-$string['missingfullnameframework'] = 'חסר שם מלא של מסגרת'; // ORPHANED
-$string['missingfullnametemplate'] = 'חסר שם מלא של תבנית'; // ORPHANED
-$string['missingshortnamedepth'] = 'חסר שם קצר לרמת עומק'; // ORPHANED
-$string['nodepthlevels'] = 'אין רמות עומק במסגרת זו'; // ORPHANED
-$string['shortnamedepth'] = 'שם קצר של רמת עומק'; // ORPHANED
 
 ?>

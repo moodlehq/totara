@@ -1,6 +1,5 @@
-<?PHP // $Id: userkey.php,v 1.3 2008/07/22 19:57:28 ralf-bonn Exp $ 
-      // userkey.php - created with Moodle 1.9 Beta + (2007082400)
-
+<?php
+// userkey.php - created with Totara langimport script version 1.1
 
 $string['createnewkey'] = 'Neuen Nutzerschlüssel erzeugen';
 $string['createuserkey'] = 'Nutzerschlüssel erzeugen';

@@ -1,4 +1,6 @@
-<?PHP // $Id$
+<?php
+// lesson.php - created with Totara langimport script version 1.1
+
 $string['accesscontrol'] = 'Saatavuus';
 $string['actionaftercorrectanswer'] = 'Toiminto oikean vastauksen jälkeen';
 $string['actions'] = 'Toiminnot';
@@ -310,4 +312,5 @@ $string['yourcurrentgradeisoutof'] = 'Nykyinen arvosanasi on $a->grade/$a->total
 $string['yourgradeisnow'] = 'Arvosanasi tunnista on muutettu $a :iksi';
 $string['yourresponse'] = 'Vastauksesi';
 $string['youshouldview'] = 'Sinun pitäisi katsoa ainakin $a sivua';
+
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id: pagetype.php,v 1.1 2010/01/30 09:32:12 krause Exp $ 
-      // pagetype.php - created with Moodle 2.0 dev (Build: 20100129) (2010012902)
-
+<?php
+// pagetype.php - created with Totara langimport script version 1.1
 
 $string['page-blog-index'] = 'Seitenliste im Blog';
 $string['page-blog-x'] = 'Alle Blog-Seiten';

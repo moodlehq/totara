@@ -1,0 +1,25 @@
+<h1>Extrapunkte</h1>
+<h2>Für Berechnung der Summe der Bewertungen</h2>
+<p>Bei der Einstellung "Summe der Bewertungen" als Berechnungsverfahren kann eine Bewertung als Extrapunkte definiert werden. Das bedeutet, dass die höchste hierbei mögliche Bewertung nicht in die Summe der Bewertungen der Kategorie eingerechnet wird. Die Bewertung selber wird als Bonus dennoch mit berechnet.
+Das folgende Beispiel kann dies verdeutlichen:</p>
+
+<ul>
+    <li>Wert 1 ist bewertet mit 0-100</li>
+    <li>Wert 2 ist bewertet mit 0-75</li>
+    <li>Wert 1 ist als "Extrapunkte" aktiviert, Wert 2 jedoch nicht.</li>
+    <li>Beide Werte gehören zur Kategorie 1. Für diese gilt, dass die Summe der Bewertungen ermittelt werden soll </li>
+    <li>Kategorie 1 wird gesamt mit 0-75 bewertet</li>
+    <li>Ein Teilnehmer erhält nun die Bewertung 20 für Wert 1 und 70 für Wert 2</li>
+    <li>Der Gesamtwert für Kategorie 1 ist nun 75/75 (20+70 = 90; Wert 1 wird nur als Extrapunkte gewertet, so dass der Gesamtwert beim Höchstwert liegt.)</li>
+</ul>
+<h2>Für gewichteten Durchschnitt der Einzelbewertungen (Extrapunkte)</h2>
+<p>Ein Wert größer als 0 behandelt die Bewertungen dieses Bewertungelements während der Berechnung als Extrapunkte. Die Zahl ist der faktor, mit dem der Bewertungswert multipliziert wird, bevor er zur Summe aller Bewertungen addiert wird; das Element selbst wird jedoch nicht in der Division gezählt. Beispiel:</p>
+
+<ul>
+    <li>Wert 1 wird bewertet mit 0-100 und "Extrapunkte" Wert wird gesetzt auf 2</li>
+    <li>Wert 2 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000</li>
+    <li>Wert 3 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000</li>
+    <li>Alle 3 Werte gehören in Kategorie 1, mit der Bewertungsstrategie "Durchschnitt der Einzelbewertungen (mit Extrapunkten)" als Berechnungsverfahren</li>
+    <li>Ein Teilnehmer erhält nun folgende Einzelbewertungen 20 für Wert 1, 40 für Wert 2 und 70 für Wert 3</li>
+    <li>Die Gesamtbewertung für Kategorie 1 ist nun 95/100, da 20*2 + (40 + 70)/2 = 95</li>
+</ul>

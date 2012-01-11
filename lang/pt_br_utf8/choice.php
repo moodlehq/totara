@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// choice.php - created with Totara langimport script version 1.1
 
 $string['addmorechoices'] = 'Acrescentar outras opções';
 $string['allowupdate'] = 'Permitir a atualização da escolha feita';

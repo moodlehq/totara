@@ -71,7 +71,7 @@
         // otherwise the admin block does not appear to this user, and you get an error.
         require_once($CFG->libdir.'/adminlib.php');
         $adminpage = ($SESSION->viewtype == 'course') ? 'managecourses' : 'manageprograms';
-        admin_externalpage_setup($adminpage, $editbutton, array(), $CFG->wwwroot . '/course/category.php');
+        admin_externalpage_setup($adminpage, $editbutton, array(), $CFG->wwwroot . '/course/categorylist.php');
         admin_externalpage_print_header('', $navlinks);
     } else {
         print_header("$site->shortname", "$site->fullname: $strcourses", $navigation, '', '', true, $editbutton);
@@ -89,7 +89,7 @@
 
     print_heading($strheading, '', 1);
 
-    if ($adminediting && has_capability('moodle/category:manage', $context)) {
+    if ($adminediting) {
         echo '<div class="buttons">';
 
         if ($SESSION->viewtype == 'course' &&

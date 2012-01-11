@@ -61,6 +61,11 @@ class rb_team_members_embedded extends rb_base_embedded {
                 'value' => 'competenciesachieved',
                 'heading' => get_string('competenciesachieved', 'rb_source_user'),
             ),
+            array(
+                'type' => 'user',
+                'value' => 'extensionswithlink',
+                'heading' => get_string('extensions', 'local_program'),
+            ),
         );
 
         // no filters

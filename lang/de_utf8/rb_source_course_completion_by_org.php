@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_course_completion_by_org.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-
+<?php
+// rb_source_course_completion_by_org.php - created with Totara langimport script version 1.1
 
 $string['completiondate'] = 'Abschluss Datum';
 $string['completionorgid'] = 'Abschluss Organisation ID';
@@ -21,6 +20,7 @@ $string['participants'] = 'Teilnehmer';
 $string['percentagecompleted'] = 'Prozent abgeschlossen';
 $string['sourcetitle'] = 'Kursabschluss per Organisation';
 $string['totalcompletions'] = 'Abschlüsse insgesamt';
+$string['type_course_completion'] = 'Kursabschluss';
 $string['user'] = 'Benutzer';
 
 ?>

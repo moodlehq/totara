@@ -1,14 +1,15 @@
-<?PHP // $Id$ 
-      // rb_source_dp_course.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// rb_source_dp_course.php - created with Totara langimport script version 1.1
 
 $string['blended'] = 'Mixto';
 $string['completionstatus'] = 'Estado finalización';
 $string['completionstatusandapproval'] = 'Estado finalización (y estado de aprobación)';
+$string['coursecompletedate'] = 'Fecha de finalización del curso';
 $string['courseduedate'] = 'Fecha de vencimiento del curso';
 $string['coursepriority'] = 'Prioridad del curso';
 $string['coursestatus'] = 'Estado del curso';
 $string['coursetitle'] = 'Título del curso';
+$string['coursetypeicon'] = 'Tipo';
 $string['elearning'] = 'E-Learning';
 $string['facetoface'] = 'Presencial';
 $string['plan'] = 'Plan';
@@ -27,6 +28,5 @@ $string['type_course_completion'] = 'Finalización del curso';
 $string['type_plan'] = 'Plan';
 $string['type_template'] = 'Plantilla de plan';
 $string['userid'] = 'ID de usuario';
-$string['coursetypeicon'] = 'Tipo'; // ORPHANED
 
 ?>

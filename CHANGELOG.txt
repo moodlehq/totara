@@ -1,5 +1,246 @@
 Totara LMS Changelog
 
+Release 1.1.8 (11 January 2012):
+==================================================
+
+Database upgrades:
+    T-9507      Fix position assignments and add unit tests for managerpath Manager paths weren't being correctly updated in some situations
+
+New features:
+    T-9522      Add a multiple item hierarchy picker as a filter option
+
+Improvements:
+    T-8485      Italian language pack added
+    T-8485      US English language pack added
+    T-8485      Additions to Dutch and Finnish
+
+Bug fixes:
+                Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_1.9.16_release_notes
+    T-9379      Fix grader report alignment
+    T-9503      Fix quoting issue when creating activities with grades
+    T-9530      "Delete" text should not appear in dialog
+    T-9528      Fix encoding issues in Portuguese language pack
+    T-8485      Fix empty language key in user source
+    T-9533      Fix language issue with trailing period and space
+    T-9500      Program display with multiple course sets has CSS issues
+    T-9492      Stop duplicate records being added to Statistics block table
+    T-9526      Fix saved searches for javascript filters
+    T-9504      Menu and breadcrumb issues in right-to-left languages and IE7
+    T-9496      Module can apply an availability condition to itself
+    T-9536      Scheduled reports breaks cron if saved search doesn't exist or has been deleted
+
+
+Release 1.1.7 (21 December 2011):
+==================================================
+
+Database upgrades:
+    T-9517      Store user's position info when program completed
+
+New features:
+    T-9516      Add program completion report source
+    T-9518      Add more manager fields to base source
+
+Improvements:
+    T-8485      Additions to Finnish, French, and Hebrew
+    T-9512      Add support for source-specific where clause to report builder
+    T-9519      Add support for unselectable columns in report sources
+    T-9515      Refactor program management source to allow for code reuse
+    T-9508      Minimise changes between upstream
+
+Bug fixes:
+    T-6710      Fix missing language string
+    T-9012      Fix appearance of full page file picker in Totara theme
+    T-9514      Fix filter type language strings
+    T-9507      Fix issue with update to managerpath field
+    T-9375      Dimmed tabs and tab layout broken in IE7
+    T-9490      Assignment marked as completed with no grade                                    Fixed by MDL-24746
+    T-9509      Fix link titles in quick links block to work correctly with multilang filter
+    T-9343      Fix program workflow defaults when upgrading to 1.1
+
+
+Release 1.1.6 (14 December 2011):
+==================================================
+
+Database upgrades:
+    MDL-27036   Improve AICC HACP Handling so that direct login isn't required                  Backport from 2.2
+    MDL-30146   Allow directurl method for HACP AICC
+
+Improvements:
+    T-8485      Additions to Finnish, French, and Spanish
+    MDL-15055   Upgrade TCPDF library to 4.0.015
+    T-9489      Add time modified column and filter to SCORM report source
+    T-9499      Add course language column and filter
+
+
+Bug fixes:
+    T-9487      Fix calls to $PAGE in comments block
+    T-9432      Program Exception Actions pulldown not populated when checkboxes selected manually
+    T-9485      Fix apostrophe issues with grade_items and modinfo
+    T-9498      Fix blocks editing button on categorylist page
+    T-9377      Fix floating footer in IE7
+    T-9494      Fix visibility of saved searches in report builder
+    T-9488      Fix export issue on IE with SSL
+    T-9497      Give access to find courses without login if forcelogin disabled
+    T-9448      Fix unicode issue in ADODB driver
+    T-9471      Fix datepicker to display icon correctly in RTL languages
+    T-9502      Fix warning on new activity page
+    T-9480      Update unicode certificate types to use new TCPDF library
+
+
+Release 1.1.5 (2 December 2011):
+==================================================
+
+Security fixes:
+    T-9484      Clean URL parameters in javascript to prevent XSS                                 Thanks to Nick Freeman from security-assessment.com for finding this
+
+Improvements:
+    T-8485      Dutch language pack added
+    T-8485      Additions to Finnish, German, Hebrew, Portuguese and Spanish
+
+Bug fixes:
+                Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_1.9.15_release_notes
+    T-9476      Fix additional require statements in messages
+    T-5734      Fixed missing format_string on competency name in the competency
+                linked evidence list for a course
+    T-6710      Fix typo in facetoface English language string
+    T-9478      Remove incorrect permissions check on course browse pages                          Course creators now correctly see 'Add Course' button when editing is on
+    T-9482      Refactor calendar picker to avoid duplication
+    T-9483      Fix saving of due date when creating objected in learning plan
+
+Release 1.1.4 (23 November 2011):
+==================================================
+
+Improvements:
+    T-8485      Additions to Finnish, German, Hebrew, Portuguese Brazilian, Spanish,
+                Castilian Spanish and Swedish language packs
+
+Bug fixes:
+    T-9465      Fix alignment of report names and icons on my/reports page for
+                right-to-left languages
+    T-9464      Fix course completion checkboxes in right-to-left languages
+    T-9468      Fix date picker localisation in program management
+    T-9463      Fix use of strcmp in plans
+    T-9468      Fix cohort assign buttons in right-to-left languages
+    T-5879      Fix incorrect text in 'Competency Aggregation Method' help file
+    T-9473      Remove iframe border when using SCORM activity
+    T-9457      Fixes for program management in right-to-left languages
+    T-9470      Fix hard-coded language strings in program                                      These strings can now be translated
+    T-9475      Added support for custom course fields to Face-to-face and scorm report sources
+    T-9471      Fix right-to-left language issues on view cohorts page
+    T-6710      Fix typo in manageruserdescription lang string
+    T-9472      Fix right-to-left and language issues in program management admin pages
+    T-9469      totara_get_staff() no longer returns deleted users
+    T-9325      Add extension column option to team members report
+    T-9476      Fix errors and layout/display issues when sending message to user
+
+
+Release 1.1.3 (9 November 2011):
+==================================================
+
+Database upgrades:
+    T-9442      Fix issue with RPL column not created during upgrade from Moodle
+    T-9445      Fix updating of children in management hierarchy
+    T-9025      Add admin setting for learner and manager roles and fix references              Admin will be prompted to set roles for specific tasks on upgrade
+
+Improvements:
+    T-8485      Additions to Arabic, Finnish, French, German, Hebrew, Portuguese Brazilian,
+                Spanish, Castilian Spanish and Swedish language packs
+    T-8485      Added Simplified Chinese language pack
+    T-9452      Upgrade OAuth integration
+    T-9404      Add nice_datetime_seconds display function to Report Builder
+
+Bug fixes:
+    T-9444      Add details about installing Totara with Postgres 9+ in INSTALL.txt
+    T-5734      Fix PHP notice when no filters set in report
+    T-9440      Add "discountcode" column to Face-to-face report source
+    T-9442      Prevent empty My Team embedded report throwing errors
+    T-9447      Fix right-to-left support on response analysis page in the Feedback module
+    T-9434      Make program and plan progress bars right-to-left compatible
+    T-9442      Patch formslib to allow custom form ID prefix
+    T-9459      Fix warning when sending objective approval alerts
+
+
+Release 1.1.2 (26 October 2011):
+==================================================
+
+Improvements:
+    T-8485      Additions to German, Finnish, Hebrew and Castilian Spanish language packs
+    T-9265      Add email address to user report source
+    T-9397      Add Date/Time filter to Report Builder
+
+Bug fixes:
+    T-9410      Tidy up session roles display in the Face-to-face session form
+    T-9405      Display rolepicker roles in the correct order
+    T-9423      Use HTML entities for arrows in theme
+    T-8027      Add support for flag to indicate report is being exported
+    T-9409      Fix MSSQL error in SCORM report
+    T-9412      Add RTL support for course completion status bars
+    T-9420      Fix broken tag in progress report
+    T-9437      Fix multi-lang issue with Find Course embedded report
+    T-9408      Add RTL support for new hierarchies
+    T-9428      Update environment.xml to reflect Totara system requirements                        Totara now checks for system requirements when updating version
+    T-9427      Fix unicode concatenation in MSSQL
+    T-9424      Fix broken program icon in program report source
+    T-9426      Fix incorrectly named default column in recurring course report source
+    T-5734      Fix warning if referrer no set when viewing another users profile
+    T-9435      Fix issue with language strings in parent languages not being found
+    T-9416      Don't load data at instantiation in program assignment classes
+    T-9429      Throw an error if report query fails
+    T-9421      Fix team members report formatting
+    T-9415      Add permission check when showing delete buttons on user position page              Stops buttons showing up when a user doesn't have permission to edit the position
+    T-9010      Allow SCORM activity to be directly launched                                        SCORM activities can now be launched directly from the course view page, using "direct view"
+                                                                                                    also resolves some crashing issues with IE8 and IE9
+    T-9383      Remove unnecessary local management module
+    T-9436      Change dashboard headings to make them translatable
+    T-9417      Fix messaging so that notifications and emails are sent in users language
+
+
+Release 1.1.1 (12 October 2011):
+==================================================
+
+Security fixes:
+    MDL-29311   Messaging: added a safety check to prevent message refreshing causing inadvertant DOS
+    MDL-29033   Magic quotes hardening                                                              Filtering has been added to various DB functions to avoid unanticipated injection threats
+    MDL-23872   Honour setConstant() behaviour in MoodleQuickForm                                   Form values that are set as constants were able to be altered by users when the form was submitted
+    MDL-29148   Incorrect handling of openssl_verify() return code in MNET
+
+Database upgrades:
+    MDL-27248   Remove forgotten unique sortorder index from the course table
+
+Improvements:
+    T-8485      Additions to Finnish, Hebrew and Arabic language packs
+
+Bug fixes:
+    T-9395      Set reaggregate when creating course_completions records                            Historic data relevant to course completion was not immediately aggregated on enrolment
+    T-9282      Fix missing format_string()
+    T-9399      Linked course checkboxes in Learning Plan Template settings are not correctly enabled
+    T-9359      Objective date picker does not use JavaScript version
+    T-9398      Temp tables do not correctly create temporary indexes
+    T-9384      Cross database support issues in exception search function
+    T-9403      Limit number of rows added to database by error handler                             Greatly speeds up the search for missing strings functionality
+    T-9401      Fix multiple instances of passing excess data to database functions
+    T-9286      Fixed missing format_string in My Courses block
+    T-9392      Assigning individuals by first login creating an exception even when they have logged in
+    T-9396      Prevent unnecessary slashing of search terms in program exceptions
+    T-6710      Fix hard coded lang strings in ROL program embedded report
+    T-9380      Only notify admin about exceptions in a program once                                Prevent multiple emails being received regarding same exception
+    T-9339      Hide empty categories in learning plan course dialog for learners
+    MDL-27174   Fatal missing assignmenttype error during Assignment backup
+    MDL-20501   Fix text alignment for RTL languages in Survey module
+    MDL-28639   Question import should set timemodified and modified by
+    MDL-28931   Timezone updates
+    MDL-24887   RSS block feed validator link fails with ampersands
+    MDL-28690   Do not automatically unenrol users from meta courses after longtimenosee days       This can lead to multiple "welcome" messages
+    MDL-4561    Allow guests to access metacourses with an enrolment key
+    MDL-16950   Add msqli_real_escape_string call in Search when using mysqli
+    MDL-18952   Move uploaded file into dataroot before attempting to read it
+    MDL-29212   RCount incorrect in Quiz Analysis Report when correct answer is 0
+    MDL-28428   Quiz: Prefer getElementById for IE9 fix
+    MDL-25454   Before skipping course backup make sure that there are no change entries in it's log during the last month
+    MDL-25454   Using the faster way to check if record exists in the DB
+    MDL-28537   Fixed use of the TYPE option when creating MySQL tables, now uses ENGINE for backward compatibility and future support
+
+
 Release 1.1.0 (3 October 2011):
 ==================================================
 

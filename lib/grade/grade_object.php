@@ -49,6 +49,29 @@ abstract class grade_object extends data_object {
      */
     var $timemodified;
 
+
+
+    /**
+    * Constructor. Optionally (and by default) attempts to fetch corresponding row from DB.
+    *
+    * uses addslashes_recursive to fix grades quoting issues
+    * and then calls the parent constructor (data_object)
+    * which will try to fetch data from the database
+    * Constructor added to fix bug T-9503
+    *
+    * @access  public
+    * @param   array   $params     required parameters and their values for this data object
+    * @param   mixed   $fetch      if false, do not attempt to fetch from the database, otherwise see notes
+    * @return  void
+    */
+    public function __construct($params = null, $fetch = true) {
+
+        if ($params) {
+            $params = addslashes_recursive($params);
+        }
+        parent::__construct($params,$fetch);
+        return;
+    }
     /**
      * Updates this object in the Database, based on its object variables. ID must be set.
      * @param string $source from where was the object updated (mod/forum, manual, etc.)
@@ -64,7 +87,7 @@ abstract class grade_object extends data_object {
 
         $data = $this->get_record_data();
 
-        if (!update_record($this->table, addslashes_recursive($data))) {
+        if (!update_record($this->table, $data)) {
             return false;
         }
 
@@ -75,7 +98,7 @@ abstract class grade_object extends data_object {
             $data->source       = $source;
             $data->timemodified = time();
             $data->loggeduser   = $USER->id;
-            insert_record($this->table.'_history', addslashes_recursive($data));
+            insert_record($this->table.'_history', $data);
         }
 
         $this->notify_changed(false);
@@ -106,7 +129,7 @@ abstract class grade_object extends data_object {
                 $data->source       = $source;
                 $data->timemodified = time();
                 $data->loggeduser   = $USER->id;
-                insert_record($this->table.'_history', addslashes_recursive($data));
+                insert_record($this->table.'_history', $data);
             }
             $this->notify_changed(true);
             return true;
@@ -133,7 +156,7 @@ abstract class grade_object extends data_object {
 
         $data = $this->get_record_data();
 
-        if (!$this->id = insert_record($this->table, addslashes_recursive($data))) {
+        if (!$this->id = insert_record($this->table, $data)) {
             debugging("Could not insert object into db");
             return false;
         }
@@ -150,7 +173,7 @@ abstract class grade_object extends data_object {
             $data->source       = $source;
             $data->timemodified = time();
             $data->loggeduser   = $USER->id;
-            insert_record($this->table.'_history', addslashes_recursive($data));
+            insert_record($this->table.'_history', $data);
         }
 
         $this->notify_changed(false);

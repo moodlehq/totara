@@ -1,4 +1,5 @@
-<?php // $Id: qtype_truefalse.php,v 1.6 2009/04/10 19:28:53 martignoni Exp $ 
+<?php
+// qtype_truefalse.php - created with Totara langimport script version 1.1
 
 $string['addingtruefalse'] = 'Ajouter une question Vrai/Faux';
 $string['correctanswer'] = 'Réponse correcte';

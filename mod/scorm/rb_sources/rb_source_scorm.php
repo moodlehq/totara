@@ -86,6 +86,7 @@ class rb_source_scorm extends rb_base_source {
         $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
         $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
         $this->add_course_table_to_joinlist($joinlist, 'scorm', 'course');
+        $this->add_course_custom_fields_to_joinlist($joinlist, 'scorm', 'course');
         // requires the course join
         $this->add_course_category_table_to_joinlist($joinlist,
             'course', 'category');
@@ -128,7 +129,7 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'starttime',
                 get_string('time', 'rb_source_scorm'),
-                sql_cast_char2int('sco_starttime.value'),
+                sql_cast_char2int('sco_starttime.value', true),
                 array(
                     'joins' => 'sco_starttime',
                     'displayfunc' => 'nice_datetime',
@@ -160,6 +161,16 @@ class rb_source_scorm extends rb_base_source {
             ),
             new rb_column_option(
                 'sco',
+                'statusmodified',
+                get_string('statusmodified', 'rb_source_scorm'),
+                'sco_status.timemodified',
+                array(
+                    'joins' => 'sco_status',
+                    'displayfunc' => 'nice_datetime'
+                )
+            ),
+            new rb_column_option(
+                'sco',
                 'scoremin',
                 get_string('minscore', 'rb_source_scorm'),
                 'sco_scoremin.value',
@@ -184,6 +195,7 @@ class rb_source_scorm extends rb_base_source {
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_user_custom_fields_to_columns($columnoptions);
         $this->add_course_fields_to_columns($columnoptions);
+        $this->add_course_custom_fields_to_columns($columnoptions);
         $this->add_course_category_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
         $this->add_manager_fields_to_columns($columnoptions);
@@ -238,6 +250,12 @@ class rb_source_scorm extends rb_base_source {
             ),
             new rb_filter_option(
                 'sco',
+                'statusmodified',
+                get_string('statusmodified', 'rb_source_scorm'),
+                'date'
+            ),
+            new rb_filter_option(
+                'sco',
                 'scoreraw',
                 get_string('rawscore', 'rb_source_scorm'),
                 'number'
@@ -260,6 +278,7 @@ class rb_source_scorm extends rb_base_source {
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
         $this->add_course_fields_to_filters($filteroptions);
+        $this->add_course_custom_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);
@@ -442,7 +461,8 @@ class rb_source_scorm extends rb_base_source {
     function rb_filter_scorm_status_list() {
         global $CFG;
         // get all available options
-        if($records = get_records_sql("SELECT DISTINCT value FROM " .
+        if($records = get_records_sql("SELECT DISTINCT " .
+            sql_compare_text("value") . " AS value FROM " .
             "{$CFG->prefix}scorm_scoes_track " .
             "WHERE element = 'cmi.core.lesson_status'")) {
             $statusselect = array();

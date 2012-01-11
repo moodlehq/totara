@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // editor.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// editor.php - created with Totara langimport script version 1.1
 
 $string['about'] = 'Informações sobre este editor';
 $string['absbottom'] = 'Embaixo';
@@ -21,6 +20,7 @@ $string['cellpadding'] = 'Distância entre o texto e as bordas';
 $string['cellspacing'] = 'Distância entre células';
 $string['choosechar'] = 'Escolher caractere';
 $string['chooseicon'] = 'Escolher imagem para inserir';
+$string['clean'] = 'Limpar Word HTML';
 $string['close'] = 'Fechar';
 $string['closeafterreplace'] = 'Fechar depois de substituir';
 $string['cols'] = 'Cols';
@@ -48,10 +48,13 @@ $string['htmlmode'] = 'Passar ao código html';
 $string['imageurl'] = 'URL da imagem';
 $string['indent'] = 'Aumentar distância da margem';
 $string['insertchar'] = 'Inserir caractere especial';
+$string['inserthorizontalrule'] = 'Regra horizontal';
 $string['insertimage'] = 'Inserir imagem';
 $string['insertlink'] = 'Inserir link';
+$string['insertorderedlist'] = 'Lista ordenada';
 $string['insertsmile'] = 'Inserir emoticons';
 $string['inserttable'] = 'Inserir tabela';
+$string['insertunorderedlist'] = 'Lista de marcadores';
 $string['italic'] = 'Itálico';
 $string['itemsreplaced'] = 'itens substituídos!';
 $string['justifycenter'] = 'Centralizar';
@@ -103,6 +106,7 @@ $string['replacewith'] = 'Substituir';
 $string['right'] = 'Direita';
 $string['righttoleft'] = 'Da direita para a esquerda';
 $string['rows'] = 'Linhas';
+$string['search_replace'] = 'Buscar e substituir';
 $string['searchandreplace'] = 'Buscar e substituir';
 $string['searchnotfound'] = 'Os termos da busca não foram encontrados';
 $string['selectcolor'] = 'Selecionar cor';
@@ -110,6 +114,7 @@ $string['selection'] = 'Seleção';
 $string['showhelp'] = 'Ajuda para utilizar o editor';
 $string['size'] = 'Tamanho';
 $string['spacing'] = 'Distância';
+$string['spellcheck'] = 'Verificar Ortografia';
 $string['strikethrough'] = 'Riscado';
 $string['subscript'] = 'Índice';
 $string['superscript'] = 'Expoente';
@@ -120,6 +125,7 @@ $string['top'] = 'Topo';
 $string['type'] = 'Tipo';
 $string['underline'] = 'Sublinhar';
 $string['undo'] = 'Cancelar a última ação';
+$string['unlink'] = 'Remover link';
 $string['unorderedlist'] = 'Lista com marcadores';
 $string['upload'] = 'Enviar';
 $string['vertical'] = 'Vertical';

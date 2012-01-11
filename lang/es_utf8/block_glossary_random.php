@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_glossary_random.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2004093001)
-
+<?php
+// block_glossary_random.php - created with Totara langimport script version 1.1
 
 $string['addentry'] = '¡Añada sus propias citas favoritas!';
 $string['askaddentry'] = 'Se mostrará un enlace al glosario con el texto siguiente si se permite a los estudiantes agregar sus propias entradas al glosario';

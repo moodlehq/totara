@@ -1,0 +1,8 @@
+﻿<p class="center"><strong>如果您需要在处理信用卡前核查定单，请使用这些设置。</strong></p>
+<p>如果学生将在输入其卡号之后注册并立即参加课程学习，则不核对&ldquo;an_review&rdquo;字段信息。<br />如果您已经核查&ldquo;an_review&rdquo;字段信息，则将验证信用卡，但不会付款，此时您可以有两个选择：&ldquo;手动付款&rdquo;和&ldquo;预定付款&rdquo;。
+</p>
+   <ul>
+<li>对于&ldquo;手动付款&rdquo;，在 an_capture_day 字段中输入 0。如果您在 30 天之内没有付款，则将取消这项交易。别害怕！您的事情对我们来说至关重要。在&ldquo;电子邮件发送设置&rdquo;部分中，如果设置了适当的 CRON 值，您会在待办定单过期前的 X 天时收到通知。</li>
+<li>对于&ldquo;预定付款&rdquo;，在 an_capture_day 字段中输入一个 1 至 29 之间的数字。请注意，必须启用 CRON。支付费用后，学生将注册以参加课程学习。如果以方便为目的，&ldquo;预定付款&rdquo;系统会在 an_capture_day 字段中所示天数后从您的卡上扣款。如果您有异议，可以在收到关于新待办定单的电子邮件后，选择接受或拒绝付款。如果您核对了 enrol_mailstudents 信息，则可以收到含有欢迎信息的邮件。</li>
+   </ul>
+<p class="center"><strong>在 MOODLE 1.6 版中，您可以在&ldquo;支付管理&rdquo;页面中接受/拒绝/退还款项。</strong></p>

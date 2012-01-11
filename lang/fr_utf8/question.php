@@ -1,4 +1,5 @@
-<?php // $Id: question.php,v 1.48 2009/11/25 17:54:30 martignoni Exp $
+<?php
+// question.php - created with Totara langimport script version 1.1
 
 $string['adminreport'] = 'Rapport sur les problèmes possibles dans votre banque de questions.';
 $string['availableq'] = 'Disponible ?';
@@ -18,7 +19,6 @@ $string['cannotgetdsfordependent'] = 'Impossible d\'obtenir le jeu de données i
 $string['cannotgetdsforquestion'] = 'Impossible d\'obtenir le jeu de données indiqué pour une question calculée ! (question : {$a})';
 $string['cannothidequestion'] = 'Impossible de cacher la question';
 $string['cannotimportformat'] = 'Désolé, l\'importation de ce format n\'est pas encore implémentée !';
-$string['cannotinsert'] = 'Erreur : impossible d\'insérer l\'élément du jeu de données';
 $string['cannotinsert'] = 'Impossible de créer un nouvel enregistrement dans question_sessions';
 $string['cannotinsertitem'] = 'Impossible d\'insérer l\'élément du jeu de données $a[0] dans $a[1] pour $a[2]';
 $string['cannotinsertquestion'] = 'Impossible d\'insérer une nouvelle question !';
@@ -89,6 +89,8 @@ $string['errorsavingcomment'] = 'Erreur lors de l\'enregistrement dans la base d
 $string['errorupdatingattempt'] = 'Erreur lors de la mise à jour dans la base de données de la tentative $a->id.';
 $string['exportcategory'] = 'Exporter catégorie';
 $string['exporterror'] = 'Des erreurs sont survenues lors de l\'exportation !';
+$string['filecantmovefrom'] = 'Les fichiers de questions ne peuvent être déplacés car vous n\'avez pas les permissions pour supprimer les fichiers du lieu duquel vous essayez de déplacer les questions.';
+$string['filecantmoveto'] = 'Les fichiers de questions ne peuvent être déplacés ou copiés car vous n\'avez pas les permissions pour ajouter les fichiers du lieu vers lequel vous essayez de déplacer les questions.';
 $string['filesareacourse'] = 'la zone des fichiers du cours';
 $string['filesareasite'] = 'la zone des fichiers du site';
 $string['filestomove'] = 'Déplacer / copier les fichiers vers {$a} ?';
@@ -126,7 +128,7 @@ $string['movingcategoryandfiles'] = 'Voulez-vous vraiment déplacer la catégori
 $string['movingcategorynofiles'] = 'Voulez-vous vraiment déplacer la catégorie {$a->name} et toutes les catégories filles vers le contexte « {$a->contextto} »?';
 $string['movingquestions'] = 'Déplacement des questions et des fichiers';
 $string['movingquestionsandfiles'] = 'Voulez-vous vraiment déplacer la(les) question(s) {$a->questions} vers le contexte « {$a->tocontext} »?<br />{$a->urlcount} fichiers liés depuis cette(ces) question(s) dans {$a->fromareaname} ont été détectés.  Voulez-vous les copier ou les déplacer vers {$a->toareaname} ';
-$string['movingquestionsnofiles'] =  'Voulez-vous vraiment déplacer la(les) question(s) {$a->questions} vers le contexte « {$a->tocontext} »?<br />Il n\'y a <strong>aucun fichier</strong> liés depuis cette(ces) question(s) dans {$a->fromareaname}.';
+$string['movingquestionsnofiles'] = 'Voulez-vous vraiment déplacer la(les) question(s) {$a->questions} vers le contexte « {$a->tocontext} »?<br />Il n\'y a <strong>aucun fichier</strong> liés depuis cette(ces) question(s) dans {$a->fromareaname}.';
 $string['needtochoosecat'] = 'Vous devez choisir une catégorie dans laquelle déplacer cette question ou cliquer sur « Annuler ».';
 $string['nocate'] = 'Aucune catégorie {$a} !';
 $string['nopermissionadd'] = 'Vous n\'avez pas le droit d\'ajouter des questions ici.';

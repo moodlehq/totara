@@ -1,6 +1,5 @@
-<?PHP // $Id: dbtransfer.php,v 1.5 2009/12/04 13:47:26 mudrd8mz Exp $ 
-      // dbtransfer.php - created with Moodle 2.0 dev (Build: 20090109) (2009010801)
-
+<?php
+// dbtransfer.php - created with Totara langimport script version 1.1
 
 $string['checkingsourcetables'] = 'Tabellenstruktur der Quelldatenbank wird geprüft';
 $string['copyingtable'] = 'Tabelle $a wird kopiert';

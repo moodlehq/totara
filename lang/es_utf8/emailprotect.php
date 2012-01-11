@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // emailprotect.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2004092700)
-
+<?php
+// emailprotect.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'Protección de email';
 

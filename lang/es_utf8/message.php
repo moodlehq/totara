@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // message.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'Añadir contacto';
 $string['addsomecontacts'] = 'Para enviar un mensaje a alguien, o para añadir un atajo en esta página, utilice la pestaña <a href=\"$a\">Buscar</a> de más arriba.';
@@ -60,6 +59,7 @@ $string['onlymycourses'] = 'Sólo en mis cursos';
 $string['onlytome'] = 'Sólo mensajes dirigidos a mí';
 $string['pagerefreshes'] = 'Esta página se actualiza automáticamente cada $a segundos';
 $string['private_config'] = 'Opciones de Mensajería Privada';
+$string['processor_config'] = 'Configuración de Destinos';
 $string['processortag'] = 'Destino:';
 $string['providers_config'] = 'Fuentes de Mensajes';
 $string['providerstag'] = 'Fuente:';
@@ -83,6 +83,5 @@ $string['unreadmessages'] = '$a mensajes sin leer';
 $string['userisblockingyou'] = 'Este usuario le ha bloqueado y no puede enviarle mensajes';
 $string['userisblockingyounoncontact'] = 'Este usuario sólo acepta mensajes de las personas que están en su lista de contactos, y usted no figura de momento en dicha lista.';
 $string['userssearchresults'] = 'Resultados de la búsqueda: $a usuarios encontrados';
-$string['processor_config'] = 'Configuración de Destinos'; // ORPHANED
 
 ?>

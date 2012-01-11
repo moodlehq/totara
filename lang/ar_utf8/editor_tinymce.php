@@ -1,9 +1,6 @@
 <?php
+// editor_tinymce.php - created with Totara langimport script version 1.1
 
-//== Custom Moodle strings that are not part of upstream TinyMCE ==
-
-
-// == TinyMCE upstream lang strings from all plugins ==
 $string['advanced:address'] = 'عنوان';
 $string['advanced:anchor_delta_height'] = '';
 $string['advanced:anchor_delta_width'] = '';
@@ -18,7 +15,7 @@ $string['advanced:charmap_delta_height'] = '';
 $string['advanced:charmap_delta_width'] = '';
 $string['advanced:charmap_desc'] = 'إدارج حرف مخصص';
 $string['advanced:cleanup_desc'] = 'ازالة الأكواد الخاطئة';
-$string['advanced:clipboard_msg'] = 'نسخ/قص/لصق غير متوفرة لمتصفح Mozilla و Firefox.\\nهل تريد معرفة المزيد من المعلومات حول هذا الموضوع?';
+$string['advanced:clipboard_msg'] = 'نسخ/قص/لصق غير متوفرة لمتصفح Mozilla و Firefox.\nهل تريد معرفة المزيد من المعلومات حول هذا الموضوع?';
 $string['advanced:code'] = 'كود';
 $string['advanced:code_desc'] = 'تحرير كود HTML';
 $string['advanced:colorpicker_delta_height'] = '';
@@ -231,7 +228,7 @@ $string['common:apply'] = 'تطبيق';
 $string['common:browse'] = 'استعراض';
 $string['common:cancel'] = 'تراجع';
 $string['common:class_name'] = 'فئة';
-$string['common:clipboard_msg'] = 'نسخ/قص/لصق غير متوفرة لمتصفح Mozilla و Firefox.\\nهل تريد معرفة المزيد من المعلومات حول هذا الموضوع?';
+$string['common:clipboard_msg'] = 'نسخ/قص/لصق غير متوفرة لمتصفح Mozilla و Firefox.\nهل تريد معرفة المزيد من المعلومات حول هذا الموضوع?';
 $string['common:clipboard_no_support'] = 'حاليا، هذه الخاصية غير مدعومة من قبل هذا المتصفح، استعمل اختصارات لوحة المفاتيح.';
 $string['common:close'] = 'اغلاق';
 $string['common:edit_confirm'] = 'هل تريد استخدام المحرر لمربع النص هذا?';
@@ -448,7 +445,7 @@ $string['media_dlg:prefetch'] = 'جلب قبلي';
 $string['media_dlg:preview'] = 'معاينة';
 $string['media_dlg:progress'] = 'تقدم';
 $string['media_dlg:qt_options'] = 'خصائص ال Quicktime';
-$string['media_dlg:qt_stream_warn'] = 'مصادر التدفق rtsp يجب أن تضاف إلى حقل المصادر الخاص بال QT تحت التبويب متقدم.\\n عليك أيضا أن تضيف النسخة التي لا تملك خاصية التدفق إلى الحقل.';
+$string['media_dlg:qt_stream_warn'] = 'مصادر التدفق rtsp يجب أن تضاف إلى حقل المصادر الخاص بال QT تحت التبويب متقدم.\n عليك أيضا أن تضيف النسخة التي لا تملك خاصية التدفق إلى الحقل.';
 $string['media_dlg:qtsrc'] = 'QT Src';
 $string['media_dlg:qtsrcchokespeed'] = 'سرعة الخنق';
 $string['media_dlg:quality'] = 'الجودة';
@@ -751,3 +748,5 @@ $string['xhtmlxtras_dlg:title_acronym_element'] = 'عنصر الاختصار';
 $string['xhtmlxtras_dlg:title_cite_element'] = 'عنصر الاقتباس';
 $string['xhtmlxtras_dlg:title_del_element'] = 'عنصر حذف';
 $string['xhtmlxtras_dlg:title_ins_element'] = 'عنصر ادراج';
+
+?>

@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// exercise.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'Absent';
 $string['accumulative'] = 'Cumulative';
@@ -85,11 +86,10 @@ $string['nosubmissions'] = 'Aucun travail remis';
 $string['notassessedyet'] = 'Pas encore évalué';
 $string['notavailable'] = 'Pas disponible';
 $string['noteonassessmentelements'] = 'L\'évaluation se fait à partir de divers éléments, ce qui facilite l\'attribution<br />d\'une note et assure une plus grande équité. Vous devez spécifier ces éléments<br />avant de rendre disponible cet exercice aux étudiants. Pour ce faire, cliquez<br />sur l\'exercice dans le cours et on vous demandera d\'ajouter des éléments s\'il n\'y<br />en a encore aucun. Vous pourrez changer ultérieurement le nombre des éléments en<br />cliquant Modifier cet exercice. Vous pouvez modifier les éléments en cliquant sur<br />« Modifier les éléments d\'évaluation ».';
-$string['noteongradinggrade'] =	'Cette note mesure à quel point votre évaluation est en accord avec<br />celle de l\'enseignant. Plus la note est élevée, meilleur est l\'accord entre les deux évaluations.';
+$string['noteongradinggrade'] = 'Cette note mesure à quel point votre évaluation est en accord avec<br />celle de l\'enseignant. Plus la note est élevée, meilleur est l\'accord entre les deux évaluations.';
 $string['noteonstudentassessments'] = '{Note donnée par l\'étudiant / Note de l\'évaluation donnée par l\'enseignant}';
 $string['notgraded'] = 'Sans évaluation';
 $string['notitlegiven'] = 'Aucun nom fourni';
-// $string['nowpleasemakeyourownassessment'] = 'Veuillez maintenant évaluer le travail de $a.<br />Le formulaire d\'évaluation contient initialement les notes que s\'est donné l\'étudiant.<br />Faites toutes les modifications que vous jugez nécessaires, puis cliquez sur l\'un<br />des boutons au bas de la page.';
 $string['numberofassessmentelements'] = 'Nombre de commentaires, d\'éléments d\'évaluation, de critères, de notes ou de catégories dans une rubrique';
 $string['numberofcriterionelements'] = 'Le nombre d\'éléments d\'évaluation doit être supérieur à un.';
 $string['numberofentries'] = 'Nombre de travaux';
@@ -124,8 +124,8 @@ $string['saveentries'] = 'Enregistrer les réglages';
 $string['savemyassessment'] = 'Enregistrer mon évaluation';
 $string['saveweights'] = 'Enregistrer les coefficients';
 $string['scale10'] = 'Total sur 10';
-$string['scale20'] = 'Total sur 20';
 $string['scale100'] = 'Total sur 100';
+$string['scale20'] = 'Total sur 20';
 $string['scalecorrect'] = 'Barème à 2 points (Juste/Faux)';
 $string['scaleexcellent4'] = 'Barème à 4 points (Excellent/Très faible)';
 $string['scaleexcellent5'] = 'Barème à 5 points (Excellent/Très faible)';

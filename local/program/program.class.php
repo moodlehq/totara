@@ -92,6 +92,7 @@ class program {
     protected $exceptionsmanager, $context, $studentroleid;
 
     function __construct($id) {
+        global $CFG;
 
         // get program db record
         $program = get_record('prog', 'id', $id);
@@ -124,7 +125,7 @@ class program {
         $this->exceptionsmanager = new prog_exceptions_manager($id);
 
         $this->context = get_context_instance(CONTEXT_PROGRAM, $this->id);
-        $this->studentroleid = get_field('role', 'id', 'shortname', 'student');
+        $this->studentroleid = $CFG->learnerroleid;
 
         if (!$this->studentroleid) {
             print_error('error:failedtofindstudentrole', 'local_program');
@@ -485,7 +486,7 @@ class program {
             $todb->id = $completion->id; // addslashes to any text fields from the db
             $todb->timedue = $timedue;
             return update_record('prog_completion', $todb);
-		} else {
+        } else {
             return false;
         }
 
@@ -614,6 +615,7 @@ class program {
      * @return bool|int
      */
     public function update_program_complete($userid, $completionsettings) {
+        global $CFG;
 
         $progcompleted_eventtrigger = false;
 
@@ -624,6 +626,10 @@ class program {
 
                 // flag that we need to trigger the program_completed event
                 $progcompleted_eventtrigger = true;
+
+                // get the user's position/organisation at time of completion
+                require_once("{$CFG->dirroot}/hierarchy/prefix/position/lib.php");
+                $posids = pos_get_current_position_data($userid);
 
                 // set up the event data
                 $eventdata = new stdClass();
@@ -636,6 +642,12 @@ class program {
 
             foreach($completionsettings as $key => $val) {
                 $completion->$key = $val;
+            }
+
+            if ($progcompleted_eventtrigger) {
+                // record the user's pos/org at time of completion
+                $completion->positionid = $posids['positionid'];
+                $completion->organisationid = $posids['organisationid'];
             }
 
             if($update_success = update_record('prog_completion', $completion)) {
@@ -659,6 +671,11 @@ class program {
             $completion->timecompleted = 0;
             $completion->timedue = 0;
             $completion->timestarted = $now;
+            if ($progcompleted_eventtrigger) {
+                // record the user's pos/org at time of completion
+                $completion->positionid = $posids['positionid'];
+                $completion->organisationid = $posids['organisationid'];
+            }
 
             foreach($completionsettings as $key => $val) {
                 $completion->$key = $val;
@@ -854,7 +871,7 @@ class program {
 
         // check if this is a recurring program
         if (count($courseset_groups) == 0) {
-            $out .= '<p class="nocontent">No course content.</p>';
+            $out .= '<p class="nocontent">' . get_string('nocoursecontent', 'local_program') . '</p>';
         } else if (count($courseset_groups) == 1 && ($courseset_groups[0][0]->contenttype == CONTENTTYPE_RECURRING)) {
             $out .= $courseset_groups[0][0]->display($userid);
         } else {
@@ -1322,7 +1339,7 @@ class program_utilities {
         }
 
         if(array_key_exists($ob->period, $TIMEALLOWANCESTRINGS)) {
-            $ob->periodstr = strtolower($TIMEALLOWANCESTRINGS[$ob->period]);
+            $ob->periodstr = strtolower(get_string($TIMEALLOWANCESTRINGS[$ob->period]));
         } else {
             $ob->periodstr = '';
         }
@@ -1342,7 +1359,6 @@ class program_utilities {
      * @return <type>
      */
     public static function print_duration_selector($prefix, $periodelementname, $periodvalue, $numberelementname, $numbervalue, $return=false, $includehours=true) {
-        global $TIMEALLOWANCESTRINGS;
 
         $timeallowances = array();
         if ($includehours) {

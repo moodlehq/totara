@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // forum.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// forum.php - created with Totara langimport script version 1.1
 
 $string['addanewdiscussion'] = 'Lisää uusi keskustelu';
 $string['addanewquestion'] = 'Lisää uusi kysymys';
@@ -34,13 +33,13 @@ $string['cannotadddiscussionall'] = 'Sinulla ei ole oikeuksia lisätä keskustel
 $string['cannotdeletepost'] = 'Et voi poistaa tätä merkintää.';
 $string['cannotviewpostyet'] = 'Jotta näkisit muiden vastaukset kysymyksiin, pitää sinun ensin lähettää oma vastauksesi';
 $string['cleanreadtime'] = 'Kellonaika, jolloin vanhat viestit merkitään luetuiksi';
-$string['completiondiscussions'] = 'Käyttäjän tulee luoda keskusteluita:';
+$string['completiondiscussions'] = 'Käyttäjän tulee luoda keskusteluita (kuinka monta kertaa):';
 $string['completiondiscussionsgroup'] = 'Vaadi keskusteluita';
 $string['completiondiscussionshelp'] = 'suorittamiseen vaaditaan keskusteluita';
-$string['completionposts'] = 'Käyttäjän tulee aloittaa keskusteluaiheita tai vastata niihin:';
+$string['completionposts'] = 'Käyttäjän tulee aloittaa keskusteluaiheita tai vastata niihin (kuinka monta kertaa):';
 $string['completionpostsgroup'] = 'Vaadi merkintöjä';
 $string['completionpostshelp'] = 'suorittamiseen vaaditaan keskusteluita tai vastauksia niihin';
-$string['completionreplies'] = 'Käyttäjän tulee vastata keskusteluihin:';
+$string['completionreplies'] = 'Käyttäjän tulee vastata keskusteluihin (kuinka monta kertaa):';
 $string['completionrepliesgroup'] = 'Vaadi vastauksia keskusteluihin';
 $string['completionreplieshelp'] = 'suorittamiseen vaaditaan vastauksia keskusteluaiheisiin';
 $string['configajaxrating'] = 'AJAX-lisäosalla parannat keskustelualueen käytettävyyttä. Jos tämä otetaan käyttöön, käyttäjät voivat luokitella keskustelut suoraan eikä heidän tarvitse siirtyä sivun alaosaan ja klikata \'Tallenna luokitukset\' -painiketta. Tämä asetus vaatii AJAX:in käyttöönoton sivustolla ja käyttäjäprofiileissa.';

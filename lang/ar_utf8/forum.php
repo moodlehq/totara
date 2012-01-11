@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // forum.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// forum.php - created with Totara langimport script version 1.1
 
 $string['addanewdiscussion'] = 'أضف موضوعا جديدا للنقاش';
 $string['addanewquestion'] = 'أضف سؤال جديد';

@@ -1,0 +1,30 @@
+<h1>Tuo ryhmiä</h1>
+
+<p>Tällä toiminnolla voit tuoda oppimisympäristöön ison joukon ryhmiä yhdellä kertaa.</p>
+
+<ul>
+  <li>Tiedoston jokainen rivi sisältää yhden tietueen.</li>
+  <li>Jokainen tietue koostuu pilkulla erotetuista tiedoista.</li>
+  <li>Tiedoston ensimmäinen tietue on tärkeä, sillä se sisältää listan mukana olevien kenttien nimistä. Ne määrittävät sen, missä muodossa tiedoston loppuosa on. 
+    <blockquote>
+      <p><strong>Vaaditut kentät:</strong> näiden kenttien tulee olla tiedoston ensimmäisenä ja ne määritetään jokaiselle käyttäjälle.</p>
+      <p></p>
+      <code class="example1">groupname</code>
+      <p><strong>Oletus-kentät:</strong> nämä eivät ole pakollisia - jos niitä ei käytetä, arvot otetaan nykyisen kielen ja kurssin perusteella. </p>
+      <p><code class="example1">idnumber, coursename, lang</code> </p>
+      <p><strong>Valinnaiset kentät: </strong> nämä ovat kokonaan vapaaehtoisia. </p>
+      <p> <code class="example1">description, enrolmentkey, picture, hidepicture</code></p>
+    </blockquote>
+    </li>
+  <li>Pilkku, jota käytetään tietojen erottamiseen, tulee olla syötettynä muodossa: &amp;#44. Skripti muuntaa ne automaattisesti takaisin pilkuiksi. </li>
+  <li>Käytettäessä Boolen muuttujia, käytä 0 arvolle 'epätosi' ja 1 arvolle 'tosi'. </li>
+  <li>Joko arvoa 'idnumber' tai 'coursename' voidaan käyttää kurssin tunnistamiseen. 'Idnumber' kumoaa 'coursenamen'. Jos kumpaakaan ei ole määritetty, ryhmät lisätään nykyiselle kurssille. </li>
+  <li>'Coursename' tarkoittaa kurssin lyhennettä. </li>
+  <li>Huom: Jos ryhmä on jo talletettu järjestelmän tietokantaan tietylle kurssille, skripti palauttaa siellä olevan ryhmän nimen. Kouluttajat voivat tuoda ryhmiä vain kursseille, joihin heillä on muokkausoikeudet. </li>
+</ul>
+   
+<p>Ohessa on esimerkki oikein muotoillusta tuontitiedostosta:</p>
+<p><code>groupname,idnumber,lang,description,picture <br />
+group1, Phil101, en, this group requires extra attention!, 0 <br />
+group2, Math243, , ,
+</code></p>

@@ -11,6 +11,7 @@ $string['competency'] = 'Kompetenz';
 $string['course'] = 'Kurs';
 $string['dismiss'] = 'Verwerfen';
 $string['elearning'] = 'E-learning';
+$string['emailnotifications'] = 'EMail-Benachrichtigungen';
 $string['error:redirecttoexternal'] = 'Fehler: versuche auf eine externe Domaine weiterzuleiten';
 $string['evidence'] = 'Nachweise';
 $string['facetoface'] = 'Face-to-Face';

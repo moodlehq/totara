@@ -1,12 +1,12 @@
-<?PHP // $Id: qtype_multichoice.php,v 1.7 2011/01/05 10:47:35 emanuel1 Exp $
-      // qtype_multichoice.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// qtype_multichoice.php - created with Totara langimport script version 1.1
 
 $string['addingmultichoice'] = 'הוספת שאלה מסוג רב-ברירה';
 $string['addmorechoiceblanks'] = 'הוספת {no} אפשרויות נוספות';
 $string['answerhowmany'] = 'תשובה אחת או תשובות מרובות?';
 $string['answernumbering'] = 'למספר את האפשרויות?';
 $string['answernumbering123'] = '1, 2, 3, ...';
+$string['answernumberingABC'] = 'A, B, C, ...';
 $string['answernumberingABCD'] = 'A, B, C,...';
 $string['answernumberingabc'] = 'a, b, c, ...';
 $string['answernumberingnone'] = 'ללא מספור';
@@ -32,6 +32,5 @@ $string['overallpartiallycorrectfeedback'] = 'משוב על כל תשובה נכ
 $string['partiallycorrectfeedback'] = 'עבור כל תשובה נכונה חלקית';
 $string['shuffleanswers'] = 'ערבב את התשובות';
 $string['singleanswer'] = 'בחר בתשובה אחת.';
-$string['answernumberingABC'] = 'A, B, C, ...'; // ORPHANED
 
 ?>

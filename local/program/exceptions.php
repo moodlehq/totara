@@ -233,11 +233,11 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
 
     // Add a hook for when the checkboxs are updated manually by the user
     var self = this;
-    $(this.checkbox).change(function() {
+    $(this.checkbox).click(function() {
 
             var url = '<?php echo $CFG->wwwroot.'/local/program/exception/updateselections.php?id='.$id ?>';
             var searchterm = '<?php echo $searchterm ?>';
-            var checked = $(this).attr('checked');
+            var checked = $(this).is(":checked");
 
             $.getJSON(url + '&action=selectsingle' + '&checked=' + checked + '&exceptionid=' + self.exceptionId + '&search=' + searchterm, function(data) {
                 if(data['error']==true) {

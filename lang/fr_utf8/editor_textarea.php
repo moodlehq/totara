@@ -1,3 +1,6 @@
-<?php // $Id: editor_textarea.php,v 1.1 2009/05/17 18:06:22 martignoni Exp $
+<?php
+// editor_textarea.php - created with Totara langimport script version 1.1
 
 $string['modulename'] = 'Zone de texte pur';
+
+?>

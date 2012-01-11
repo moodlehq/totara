@@ -2,6 +2,7 @@
 // lang file for mod/facetoface/rb_sources/rb_source_facetoface_sessions.php
 $string['sourcetitle'] = 'Face-to-face sessions';
 // columns
+$string['discountcode'] = 'Discount code';
 $string['sesscapacity'] = 'Session Capacity';
 $string['numattendees'] = 'Number of Attendees';
 $string['sessdetails'] = 'Session Details';

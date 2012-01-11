@@ -1,0 +1,101 @@
+﻿<h1>导入新问题</h1>
+
+<p>该功能允许您从通过表单上传的外部文本闻不见导入问题，或通过选择课程文件区域中已存在的合适文件来导入问题。  </p>
+
+<h2>关于字符编码的注释</h2>
+
+<p>如果您的文件中包含非 ASCII 字符，则必须使用 UTF-8 编码。您可以用喜欢的编辑器选择或转换为 UTF-8，或导出软件中包含此选项。要特别注意由 Microsoft Office 应用程序生成的文件，因为它们通常使用可能无法正确处理的特殊编码。基于 XML 的导入格式将被自动处理，前提条件是您的 Moodle 服务器正在运行 PHP 5。</p> 
+
+<p>以下多种文件格式受到支持：</p>
+
+
+<h2>GIFT 格式</h2>
+
+<p>GIFT 是用于从文本文件导入 Moodle 测验题的最复杂的导入格式。它的设计目的在于帮助教师以文本文件的方式轻松编写问题，支持选择题、判断题、简答题、匹配题、数学题及填空题。在一个单独的文本文件中可以混合多种类型的问题，并且这种格式还支持整行注释、问题名称、反馈和百分比权重的打分方法。下面是一些例子：</p>
+<pre>
+谁埋在 Grant 的坟墓中？{~Grant ~Jefferson =没有人}
+
+Grant {~埋在 =埋在 ~活着} 在 Grant 的坟墓中。
+
+Grant 埋在 Grant 的坟墓中。{错误}
+
+谁埋在 Grant 的坟墓中？{=没有人 =无人}
+
+Ulysses S. Grant 是何年出生的？{#1822}
+</pre>
+
+<p class="moreinfo"><a href="help.php?file=formatgift.html&amp;module=quiz">&ldquo;GIFT&rdquo;格式的更多信息</a></p>
+
+
+<h2>Aiken 格式</h2>
+
+<p>这是用于从文本文件导入选择题的一种简单格式。</p>
+<p class="moreinfo"><a href="help.php?file=formataiken.html&amp;module=quiz">&ldquo;Aiken&rdquo;格式的更多信息</a></p>
+
+
+<h2>Moodle XML 格式</h2>
+
+<p>这种 Moodle 特定格式会导入之前以同样格式导出的测试题。这个格式很直接明了，以 Moodle  XML 格式导出目录就是最好的证明。用 XML 格式可以导入图像文件。
+</p>
+<p class="moreinfo"><a href="help.php?file=formatxml.html&amp;module=quiz">&ldquo;Moodle XML&rdquo;格式的更多信息</a></p>
+
+
+<h2>Missing Word</h2>
+
+<p>这个格式根据答案的数量仅支持选择题和简答题。一个答案可生成一个简答题，两个或两个以上答案可生成选择题。答案之间以波浪号 (~) 分隔，正确答案则以等号 (=) 为前缀。下面是一个选择题的例子:</p>
+
+<blockquote><p>一旦以婴儿的身份开始探索自己的身体部位，我们就会开始学习 {=解剖学和生理学~反射学~科学~实验}，并且从某种意义上来说，我们仍然在学习如何生活。
+</p></blockquote>
+
+<p>下面是一个简答题的例子：</p>
+
+<blockquote><p>一旦以婴儿的身份开始探索自己的身体部位，我们就会开始学习 {=解剖学和生理学}，并且从某种意义上来说，我们仍然在学习如何生活。
+</p></blockquote>
+
+
+<h2>Blackboard</h2>
+
+<p>这个模块可以导入以 Blackboard&ldquo;POOL&rdquo;类型的导出格式保存的问题。要使用它，PHP 必须具备 XML 处理函数。注意，必须先解压导出的 zip 文件，并提供带有正确 .dat 文件的 Moodle。注意：这个版本<strong>不与</strong> Blackboard 版本 6 或更高版本兼容。</p>
+
+
+<h2>Blackboard V6+</h2>
+
+<p>此模块可以导入以 Blackboard 的导出格式保存的问题。它为 Blackboard 版本 6 和 Blackboard 版本 7 提供有限的支持。它取决于编译到 PHP 内的 XML 功能。您必须下载从 Blackboard 导出的 zip 文件。</p>
+
+
+<h2>WebCT</h2>
+
+<p>这个模块可以导入以 WebCT 基于文本格式保存的问题。</p>
+
+<p class="moreinfo"><a href="help.php?file=formatwebct.html&amp;module=quiz">关于&ldquo;WebCT&rdquo;格式的更多信息</a></p>
+
+
+<h2>Course Test Manager</h2>
+
+<p>此模块可以导入 Course Test Manager 题库中的问题。由于题库保存在 Micorsoft Access 数据库中，它对于访问题库的方式有比较强的依赖性，具体取决于 Moodle 运行在 Windows 还是 Linux Web 服务器上。</p>
+<p>在 Windows 上，它允许您像上传其他文件一样上传 Access 数据库。</p>
+<p>在 Linux 上，在您的网络上必须有一台安装了 Course Test Manager 数据库的 Windows 计算机，并通过 ODBC Socket Server 软件以 XML 格式将数据传到 Linux 服务器上的 Moodle。</p>  
+<p>在使用此导入类之前，请仔细阅读完整的帮助文档。</p>
+
+<p class="moreinfo"><a href="help.php?file=formatctm.html&amp;module=quiz">&ldquo;CTM&rdquo;格式的更多信息</a></p>
+
+
+<h2>填空（完型填空）</h2>
+
+<p>此特殊目的的格式只能导入一种类型的问题，即填空（还称为完型填空）格式。
+</p>
+
+<p class="moreinfo"><a href="help.php?file=multianswer.html&amp;module=quiz">&ldquo;完型填空&rdquo;格式的更多信息</a></p>
+
+
+<h2>Learnwise 格式</h2>
+
+<p>这种格式可以导入以 Learnwise 的 XML 格式保存的选择题。</p>
+
+
+<h2>Examview 格式</h2>
+
+<p>这种格式可以从 Examview 4 XML 文件进行导入。注意，Examview 较老的版本也不受支持。</p>
+
+
+<p>导入和导出格式是&ldquo;嵌入式&rdquo;资源。其他可选格式可用于&ldquo;模块和插件&rdquo;数据库。</p>

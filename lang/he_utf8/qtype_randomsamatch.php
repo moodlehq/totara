@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_randomsamatch.php,v 1.1 2007/07/24 13:38:13 emanuel1 Exp $
-      // qtype_randomsamatch.php - created with Moodle 1.8 + (2007021503)
-
+<?php
+// qtype_randomsamatch.php - created with Totara langimport script version 1.1
 
 $string['nosaincategory'] = 'בקטגוריה \'$a->catname\' אותה בחרת אין שאלות \'תשובה קצרה\'. בחר בקטגוריה אחרת,
 עשה כמה שאלות בקטגוריה זו.';

@@ -1,4 +1,6 @@
 <?php
+// langconfig.php - created with Totara langimport script version 1.1
+
 $string['alphabet'] = 'أ،ب،ت،ث،ج،ح،خ،د،ذ،ر،ز،س،ش،ص،ض،ط،ظ،ع،غ،ف،ق،ك،ل،م،ن،هـ،و،ي،';
 $string['backupnameformat'] = 'نوع تنسيق ملف النسخة الإحتياطية';
 $string['firstdayofweek'] = '0';
@@ -21,4 +23,5 @@ $string['thischarset'] = 'UTF-8';
 $string['thisdirection'] = 'rtl';
 $string['thislanguage'] = 'عربي';
 $string['thislanguageint'] = 'Arabic';
+
 ?>

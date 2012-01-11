@@ -1,0 +1,12 @@
+<h1>Lisäpisteinä toimiminen</h1>
+<p>Kun "Arvosanojen summa" -toiminto on käytössä, arvosanaobjekti voi toimia lisäpisteinä kyseisessä kategoriassa. Tämä tarkoittaa sitä, että objektin enimmäisarvosanaa ei lisätä kategorian enimmäisarvosanaan mutta objektin arvosana lisätään. Esimerkiksi:</p>
+
+<ul>
+    <li>Arvosanaobjekti 1 arvostellaan asteikolla 0-100</li>
+    <li>Arvosanaobjekti 2 arvostellaan asteikolla 0-75</li>
+    <li>Arvosanaobjekti 1:n kohdalla on "Toimii lisäpisteinä" -valinta valittuna, objektin 2 kohdalla ei</li>
+    <li>Molemmat objektit kuuluvat Kategoriaan 1, jolle on määritelty yhteenlaskutavaksi "Arvosanojen summa"</li>
+    <li>Kategoria 1 kokonaisuudessaan arvostellaan asteikolla 0-75</li>
+    <li>Oppija saa arvosanan 20 objektista 1 ja 70 objektista 2</li>
+    <li>ppijan kokonaisarvosana Kategoriassa 1 on 75/75 (20+70 = 90 mutta objekti 1 toimii lisäpisteinä, joten kokonaisarvosana nousee maksimiin)</li>
+</ul>

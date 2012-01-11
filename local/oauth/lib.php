@@ -20,15 +20,7 @@
  * @author    Piers Harding
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-
-// ensure that the correct OAuth libraries are pulled in
-$path = realpath($CFG->dirroot.'/local/oauth/oauthlib/');
-set_include_path($path . PATH_SEPARATOR . get_include_path());
-require_once('libextinc/OAuth.php');
 require_once('Consumer.php');
-require_once('Utilities.php');
-
 
 class local_oauth_registration {
 
@@ -72,8 +64,6 @@ class local_oauth_registration {
      * @throws dml_exception if error
      */
     public function add_site($site) {
-//        $site->timeregistered = time();
-//        $site->timemodified = time();
         $site->id = insert_record('oauth_site_directory', $site);
         return $site;
     }
@@ -92,12 +82,9 @@ class local_oauth_registration {
         $wheresql = '';
 
         if (!empty($search)) {
-//            $wheresql .= " (name ".sql_ilike()." :namesearch)";
-//            $sqlparams['namesearch'] = '%'.$search.'%';
             $wheresql .= " (name ".sql_ilike()." '%".$search."%') ";
         }
 
-//        $sites = get_records_select('oauth_site_directory', $wheresql, $sqlparams);
         $sites = get_records_select('oauth_site_directory', $wheresql);
         return $sites;
     }
@@ -200,12 +187,9 @@ class local_oauth {
         global $CFG, $USER, $SESSION;
 
         // search for things in the SESSION first
-        delete_records('oauth_access_token', 'siteid', $this->site, 'userid', $USER->id);
-        //$this->site = NULL;
+        delete_records('oauth_access_token', 'siteid', $this->site->id, 'userid', $USER->id);
         $this->request_token = NULL;
         $this->access_token = NULL;
-        //$this->consumer = NULL;
-        //$this->preserve = NULL;
 
         if (isset($SESSION->local_oauth)) {
             if (isset($SESSION->local_oauth[$name])) {
@@ -235,7 +219,6 @@ class local_oauth {
             $token = new object();
             $token->userid = $USER->id;
             $token->siteid = $this->site->id;
-            $token->access_token = $SESSION->local_oauth[$name]['access_token'];
             insert_record('oauth_access_token', $token);
         }
     }
@@ -274,7 +257,6 @@ class local_oauth {
     public function add_to_log($msg, $url='') {
         global $COURSE, $CFG;
 
-        //$rurl = setup_get_remote_url();
         if ($COURSE) {
             add_to_log($COURSE->id, 'OAuth', 'Authentication', $url, $msg);
         }
@@ -301,7 +283,6 @@ class local_oauth {
             if (empty($this->request_token)) {
                 // obtain a request token
                 $this->add_to_log('get request token');
-                $this->consumer = new local_oauth_Consumer($this->site->consumer_key, $this->site->consumer_secret);
                 $this->request_token = $this->consumer->getRequestToken($this->site->request_token_url, $oauth_params);
                 $this->store();
 
@@ -328,9 +309,9 @@ class local_oauth {
 
     }
 
-    public function getCSV($url, $accessToken, $parameters = array()) {
+    public function getCSV($url, $parameters = array()) {
 
-        $response = $this->getRequest($url, $accessToken, $parameters);
+        $response = $this->getRequest($url, $parameters);
         if ($response->status != 200) {
             throw new local_oauth_exception($response->message." : ".$response->body);
         }
@@ -347,9 +328,9 @@ class local_oauth {
         return $lines;
     }
 
-    public function getCSVTable($url, $accessToken, $parameters = array()) {
+    public function getCSVTable($url, $parameters = array()) {
 
-        $data = $this->getCSV($url, $accessToken, $parameters);
+        $data = $this->getCSV($url, $parameters);
         if (empty($data)) {
             return null;
         }

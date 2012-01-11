@@ -1,12 +1,11 @@
-<?PHP // $Id$ 
-      // auth_mnet.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+<?php
+// auth_mnet.php - created with Totara langimport script version 1.1
 
-
+$string['auth_mnettitle'] = 'توثيق شبكة مودل';
 $string['sso_idp_description'] = 'انشر هذه الخدمة للسماح للمستخدمين للتجول في $a موقع موودل  دون الحاجة إلى إعادة الدخول هناك. <ul><li><em>التبعية</em>: يجب عليك ايضا <strong>الاشتراك</strong> في خدمة SSO  مقدم الخدمة على $a</li></ul><br />اشترك في هذه الخدمة للسماح للمستخدمين الموثقين من $a الوصول إلى موقعك دون الحاجة إلى إعادة تسجيل الدخول. <ul><li><em>التبعية</em>: يجب عليك ايضا <strong>نشر</strong> خدمة SSO  الى  $a مقدم الخدمة </li></ul><br />';
 $string['sso_idp_name'] = 'SSO (مقدم الهوية)';
 $string['sso_mnet_login_refused'] = 'اسم المستخدم $a[0] لا يسمح له بالدخول من $a[1].';
 $string['sso_sp_description'] = 'انشر هذه الخدمة للسماح للمستخدمين الموثقين من $a الوصول إلى موقعك دون الحاجة إلى إعادة تسجيل الدخول. <ul><li><em>التبعية</em>: يجب عليك ايضا <strong>الاشتراك</strong> في خدمة SSO  مقدم الهوية على $a </li></ul><br />شترك في هذه الخدمة للسماح للمستخدمين الموثقين من $a الوصول إلى موقعك دون الحاجة إلى إعادة تسجيل الدخول. <ul><li><em>التبعية</em>: يجب عليك ايضا <strong>نشر</strong> في خدمة SSO  مقدم الهوية على $a</li></ul><br />';
 $string['sso_sp_name'] = 'SSO (مقدم الخدمة)';
-$string['auth_mnettitle'] = 'توثيق شبكة مودل'; // ORPHANED
 
 ?>

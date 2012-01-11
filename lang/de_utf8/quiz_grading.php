@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_grading.php,v 1.10 2008/12/26 18:05:29 ralf-bonn Exp $ 
-      // quiz_grading.php - created with Moodle 2.0 dev (Build: 20080925) (2008092400)
-
+<?php
+// quiz_grading.php - created with Totara langimport script version 1.1
 
 $string['cannotloadquestioninfo'] = 'Die Fragetyp spezifischen Informationen konnten nicht geladen werden.';
 $string['essayonly'] = 'Die manuelle Bewertung steht nur für Freitext-Fragen zur Verfügung.';

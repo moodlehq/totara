@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// survey.php - created with Totara langimport script version 1.1
 
 $string['actual'] = 'Actuel';
 $string['actualclass'] = 'Classe actuelle';
@@ -56,9 +57,9 @@ $string['attlsm2'] = 'Apprentissage lié';
 $string['attlsm3'] = 'Apprentissage détaché';
 $string['attlsmintro'] = 'En discussion ...';
 $string['attlsname'] = 'ATTLS (20 items)';
-$string['cannotfindsurveytmpt'] = 'Aucun modèle de consultation trouvé !';
-$string['cannotfindquestion'] = 'La question n\'existe pas';
 $string['cannotfindanswer'] = 'Il n\'y a pas encore de réponse à cette consultation.';
+$string['cannotfindquestion'] = 'La question n\'existe pas';
+$string['cannotfindsurveytmpt'] = 'Aucun modèle de consultation trouvé !';
 $string['ciq1'] = 'À quel moment du cours avez-vous été le plus impliqué en tant qu\'apprenant ?';
 $string['ciq1short'] = 'Plus impliqué';
 $string['ciq2'] = 'À quel moment du cours avez-vous été le plus distant en tant qu\'apprenant ?';
@@ -208,9 +209,9 @@ $string['scaletimes5'] = 'Presque jamais,Rarement,Parfois,Souvent,Presque toujou
 $string['seemoredetail'] = 'Cliquer ici pour avoir plus de détail';
 $string['selectedquestions'] = 'Questions choisies dans un barème, tous les étudiants';
 $string['summary'] = 'Résumé';
+$string['survey:download'] = 'Télécharger les réponses';
 $string['survey:participate'] = 'Répondre aux consultations';
 $string['survey:readresponses'] = 'Voir les réponses';
-$string['survey:download'] = 'Télécharger les réponses';
 $string['surveyadministration'] = 'Administration de la consultation';
 $string['surveycompleted'] = 'Vous avez complètement répondu à cette consultation. Le graphique ci-dessous montre un résumé de vos résultats comparés aux moyennes de la classe.';
 $string['surveygraph'] = 'Graphique de la consultation';

@@ -2,7 +2,7 @@
        /// Main interface window for messaging
 
     require('../config.php');
-    require('lib.php');
+    require_once('lib.php');
 
     require_login(0, false);
 

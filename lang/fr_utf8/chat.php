@@ -1,14 +1,15 @@
-<?php // $Id$ 
+<?php
+// chat.php - created with Totara langimport script version 1.1
 
 $string['ajax'] = 'Version Ajax';
 $string['autoscroll'] = 'Défilement automatique';
 $string['beep'] = 'bip';
+$string['cantinsert'] = 'Impossible d\'ajouter un message dans le chat !';
 $string['cantlogin'] = 'Connexion au salon de chat impossible !';
-$string['cantinsert'] = 'Impossible d\'ajouter un message dans le chat !'; // Obsolete from 2.0dev onwards, see MDL-18293
 $string['chat:chat'] = 'Accéder à un salon de chat';
 $string['chat:deletelog'] = 'Supprimer les historiques des chats';
-$string['chat:exportsession'] = 'Exporter des sessions de chat';
 $string['chat:exportparticipatedsession'] = 'Exporter ses propres sessions de chat';
+$string['chat:exportsession'] = 'Exporter des sessions de chat';
 $string['chat:readlog'] = 'Lire les historiques des chats';
 $string['chat:talk'] = 'Participer à un chat';
 $string['chatadministration'] = 'Administration du chat';
@@ -40,8 +41,8 @@ $string['helpchatting'] = 'Aide pour le chat';
 $string['idle'] = 'En attente';
 $string['inputarea'] = 'Zone de saisie';
 $string['invalidid'] = 'Salon de chat introuvable !';
-$string['list_complete_sessions'] = 'Lister les sessions complètes.';
 $string['list_all_sessions'] = 'Lister toutes les sessions.';
+$string['list_complete_sessions'] = 'Lister les sessions complètes.';
 $string['listing_all_sessions'] = 'Liste de toutes les sessions.';
 $string['messagebeepseveryone'] = '$a bipe tout le monde !';
 $string['messagebeepsyou'] = '$a vient de vous biper !';
@@ -49,8 +50,8 @@ $string['messageenter'] = '$a vient d\'entrer';
 $string['messageexit'] = '$a est sorti';
 $string['messages'] = 'Messages';
 $string['method'] = 'Méthode du chat';
-$string['methodnormal'] = 'Méthode normale';
 $string['methoddaemon'] = 'Utilisation d\'un démon';
+$string['methodnormal'] = 'Méthode normale';
 $string['modulename'] = 'Chat';
 $string['modulenameplural'] = 'Chats';
 $string['neverdeletemessages'] = 'Ne pas effacer les messages';

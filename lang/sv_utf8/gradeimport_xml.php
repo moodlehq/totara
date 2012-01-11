@@ -1,6 +1,5 @@
-<?PHP // $Id: gradeimport_xml.php,v 1.2 2008/11/03 20:56:45 koenr Exp $ 
-      // gradeimport_xml.php - created with Moodle 1.9 + (Build: 20080324) (2007101509)
-
+<?php
+// gradeimport_xml.php - created with Totara langimport script version 1.1
 
 $string['errbadxmlformat'] = 'Fel - ogiltigt XML-format';
 $string['errduplicategradeidnumber'] = 'Fel - det finns två komponenter för betyg med id-numret \'$a\' i den här kursen. Det ska vara omöjligt.';

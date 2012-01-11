@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_numerical.php,v 1.2 2010/06/21 13:42:14 emanuel1 Exp $
-      // qtype_numerical.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// qtype_numerical.php - created with Totara langimport script version 1.1
 
 $string['addmoreanswerblanks'] = 'מרווחים עבור {no} תשובות נוספות';
 $string['addmoreunitblanks'] = 'מרווחים עבור {no} יחידות נוספות';

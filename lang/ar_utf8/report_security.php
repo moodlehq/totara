@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // report_security.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// report_security.php - created with Totara langimport script version 1.1
 
 $string['check_configrw_details'] = 'فمن المستحسن أن يتم تغيير أذونات الملف config.php بعد التثبيت بحيث لا يمكن أن يكون تعديل الملف من قبل خادم الويب.
 يرجى ملاحظة أن هذا الإجراء لا يحسن الوضع الأمني ​​لخادم الويب بشكل ملحوظ، و لكن قد يؤدي إلى البطء أو الحد من الاستغلال العام.';

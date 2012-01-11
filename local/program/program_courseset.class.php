@@ -134,10 +134,23 @@ abstract class course_set {
             $this->label = get_string('legend:courseset', 'local_program', $this->sortorder);
         }
 
-        if($this->id > 0) { // if this set already exists in the database
-            return update_record('prog_courseset', $this);
+        $todb = new object();
+        $todb->programid = $this->programid;
+        $todb->sortorder = $this->sortorder;
+        $todb->competencyid = $this->competencyid;
+        $todb->nextsetoperator = $this->nextsetoperator;
+        $todb->completiontype = $this->completiontype;
+        $todb->timeallowed = $this->timeallowed;
+        $todb->recurrencetime = $this->recurrencetime;
+        $todb->recurcreatetime = $this->recurcreatetime;
+        $todb->contenttype = $this->contenttype;
+        $todb->label = $this->label;
+
+        if ($this->id > 0) { // if this set already exists in the database
+            $todb->id = $this->id;
+            return update_record('prog_courseset', $todb);
         } else {
-            if($id = insert_record('prog_courseset', $this)) {
+            if ($id = insert_record('prog_courseset', $todb)) {
                 $this->id = $id;
                 return true;
             }
@@ -545,14 +558,27 @@ class multi_course_set extends course_set {
             $this->label = get_string('legend:courseset', 'local_program', $this->sortorder);
         }
 
-        if($this->id == 0) { // if this set doesn't already exist in the database
-            if( ! $id = insert_record('prog_courseset', $this)) {
+        $todb = new object();
+        $todb->programid = $this->programid;
+        $todb->sortorder = $this->sortorder;
+        $todb->competencyid = $this->competencyid;
+        $todb->nextsetoperator = $this->nextsetoperator;
+        $todb->completiontype = $this->completiontype;
+        $todb->timeallowed = $this->timeallowed;
+        $todb->recurrencetime = $this->recurrencetime;
+        $todb->recurcreatetime = $this->recurcreatetime;
+        $todb->contenttype = $this->contenttype;
+        $todb->label = $this->label;
+
+        if ($this->id == 0) { // if this set doesn't already exist in the database
+            if (!$id = insert_record('prog_courseset', $todb)) {
                 return false;
             }
 
             $this->id = $id;
         } else {
-            if( ! update_record('prog_courseset', $this)) {
+            $todb->id = $this->id;
+            if (!update_record('prog_courseset', $todb)) {
                 return false;
             }
         }
@@ -767,19 +793,20 @@ class multi_course_set extends course_set {
             switch($this->nextsetoperator) {
             case NEXTSETOPERATOR_THEN:
                 $out .= '<div class="nextsetoperator">';
-                $out .= '<p class="operator-then">'.get_string('then', 'local_program').'</p>';
-                $out .= '<p class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</p>';
+                $out .= '<div class="operator-then">'.get_string('then', 'local_program').'</div>';
+                $out .= '<div><img src="'. $CFG->themewww . '/'. $CFG->theme . '/images/progress_then.jpg" /></div>';
+                $out .= '<div class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</div>';
                 $out .= '</div>';
                 break;
             case NEXTSETOPERATOR_OR:
                 $out .= '<div class="nextsetoperator">';
-                $out .= '<p class="operator-or">'.get_string('or', 'local_program').'</p>';
-                $out .= '<p class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</p>';
+                $out .= '<div class="operator-or">'.get_string('or', 'local_program').'</div>';
+                $out .= '<div><img src="'. $CFG->themewww .'/'. $CFG->theme . '/images/progress_or.jpg" /></div>';
+                $out .= '<div class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</div>';
                 $out .= '</div>';
                 break;
             }
         }
-
         return $out;
 
     }
@@ -952,10 +979,10 @@ class multi_course_set extends course_set {
         // Add set buttons
         $templatehtml .= '<div class="setbuttons">';
 
-        // Add the move up button for this seit
+        // Add the move up button for this set
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->isfirstset) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->isfirstset) ? 'moveup fieldsetbutton disabled' : 'moveup fieldsetbutton';
             if(isset($this->isfirstset)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'moveup', get_string('moveup', 'local_program'), $attributes);
             $template_values['%'.$prefix.'moveup%'] = array('name'=>$prefix.'moveup', 'value'=>null);
@@ -963,14 +990,14 @@ class multi_course_set extends course_set {
 
             // Add the move down button for this set
             $attributes = array();
-            $attributes['class'] = isset($this->islastset) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->islastset) ? 'movedown fieldsetbutton disabled' : 'movedown fieldsetbutton';
             if(isset($this->islastset)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'movedown', get_string('movedown', 'local_program'), $attributes);
             $template_values['%'.$prefix.'movedown%'] = array('name'=>$prefix.'movedown', 'value'=>null);
             $templatehtml .= '%'.$prefix.'movedown%'."\n";
 
             // Add the delete button for this set
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"delete fieldsetbutton setdeletebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
             $templatehtml .= '%'.$prefix.'delete%'."\n";
         }
@@ -1426,14 +1453,17 @@ class competency_course_set extends course_set {
             switch($this->nextsetoperator) {
             case NEXTSETOPERATOR_THEN:
                 $out .= '<div class="nextsetoperator">';
-                $out .= '<p class="operator-then">'.get_string('then', 'local_program').'</p>';
-                $out .= '<p class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</p>';
+                $out .= '<div class="operator-then">'.get_string('then', 'local_program').'</div>';
+                $out .= '<img src="'. $CFG->themewww .'/'. $CFG->theme . '/images/progress_then.jpg" />';
+                $out .= '<div class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</div>';
                 $out .= '</div>';
                 break;
             case NEXTSETOPERATOR_OR:
                 $out .= '<div class="nextsetoperator">';
-                $out .= '<p class="operator-or">'.get_string('or', 'local_program').'</p>';
-                $out .= '<p class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</p>';
+                $out .= '<div class="operator-or">'.get_string('or', 'local_program').'</div>';
+                $out .= '<img src="'. $CFG->themewww .'/'. $CFG->theme . '/images/progress_or.jpg" />';
+                $out .= '<div class="clearfix"></div>';
+                $out .= '<div class="nextsethelp">'. $this->get_courseset_divider_text($previous_sets, $next_sets, $userid, $viewinganothersprogram) .'</div>';
                 $out .= '</div>';
                 break;
             }
@@ -1543,7 +1573,7 @@ class competency_course_set extends course_set {
         // Add the move up button for this set
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->isfirstset) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->isfirstset) ? 'moveup fieldsetbutton disabled' : 'moveup fieldsetbutton';
             if(isset($this->isfirstset)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'moveup', get_string('moveup', 'local_program'), $attributes);
             $template_values['%'.$prefix.'moveup%'] = array('name'=>$prefix.'moveup', 'value'=>null);
@@ -1553,7 +1583,7 @@ class competency_course_set extends course_set {
         // Add the move down button for this set
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->islastset) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->islastset) ? 'movedown fieldsetbutton disabled' : 'movedown fieldsetbutton';
             if(isset($this->islastset)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'movedown', get_string('movedown', 'local_program'), $attributes);
             $template_values['%'.$prefix.'movedown%'] = array('name'=>$prefix.'movedown', 'value'=>null);
@@ -1562,7 +1592,7 @@ class competency_course_set extends course_set {
 
         // Add the delete button for this set
         if($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"delete fieldsetbutton setdeletebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";
@@ -1979,7 +2009,7 @@ class recurring_course_set extends course_set {
         $templatehtml .= '<div class="setbuttons">';
 
         if($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton setdeletebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"delete fieldsetbutton setdeletebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";

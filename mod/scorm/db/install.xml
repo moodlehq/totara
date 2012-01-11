@@ -9,8 +9,9 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="course" NEXT="reference"/>
-        <FIELD NAME="reference" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="summary"/>
-        <FIELD NAME="summary" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="reference" NEXT="version"/>
+        <FIELD NAME="reference" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="unpackmethod"/>
+        <FIELD NAME="unpackmethod" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="reference" NEXT="summary"/>
+        <FIELD NAME="summary" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="unpackmethod" NEXT="version"/>
         <FIELD NAME="version" TYPE="char" LENGTH="9" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="summary" NEXT="maxgrade"/>
         <FIELD NAME="maxgrade" TYPE="float" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="version" NEXT="grademethod"/>
         <FIELD NAME="grademethod" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="maxgrade" NEXT="whatgrade"/>
@@ -30,7 +31,8 @@
         <FIELD NAME="height" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="600" SEQUENCE="false" ENUM="false" PREVIOUS="width" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="height" NEXT="completionstatusrequired"/>
         <FIELD NAME="completionstatusrequired" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" DEFAULT="null" SEQUENCE="false" ENUM="false" PREVIOUS="timemodified" NEXT="completionscorerequired"/>
-        <FIELD NAME="completionscorerequired" TYPE="int" LENGTH="2" NOTNULL="false" UNSIGNED="true" DEFAULT="null" SEQUENCE="false" ENUM="false" PREVIOUS="completionstatusrequired"/>
+        <FIELD NAME="completionscorerequired" TYPE="int" LENGTH="2" NOTNULL="false" UNSIGNED="true" DEFAULT="null" SEQUENCE="false" ENUM="false" PREVIOUS="completionstatusrequired"  NEXT="directview"/>
+        <FIELD NAME="directview" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="completionscorerequired"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" />
@@ -170,7 +172,7 @@
         <KEY NAME="scorm_rolluprule_scoid" TYPE="foreign" FIELDS="scoid" REFTABLE="scorm_scoes" REFFIELDS="id" COMMENT="The relative sco" PREVIOUS="scorm_rolluprule_uniq"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="scorm_seq_rolluprulecond" COMMENT="SCORM2004 sequencing rule" PREVIOUS="scorm_seq_rolluprule">
+    <TABLE NAME="scorm_seq_rolluprulecond" COMMENT="SCORM2004 sequencing rule" PREVIOUS="scorm_seq_rolluprule" NEXT="scorm_aicc_session">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="scoid"/>
         <FIELD NAME="scoid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="rollupruleid"/>
@@ -185,6 +187,27 @@
         <KEY NAME="scorm_rolluprulecond_rolluprule" TYPE="foreign" FIELDS="rollupruleid" REFTABLE="scorm_seq_rolluprule" REFFIELDS="id" COMMENT="The relative rolluprule" PREVIOUS="scorm_rolluprulecond_scoid"/>
       </KEYS>
     </TABLE>
+      <TABLE NAME="scorm_aicc_session" COMMENT="Used by AICC HACP to store session information" PREVIOUS="scorm_seq_rolluprulecond">
+        <FIELDS>
+          <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
+          <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="id from user table" PREVIOUS="id" NEXT="scormid"/>
+          <FIELD NAME="scormid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="id from scorm table" PREVIOUS="userid" NEXT="hacpsession"/>
+          <FIELD NAME="hacpsession" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="sessionid used to authenticate AICC HACP communication" PREVIOUS="scormid" NEXT="scoid"/>
+          <FIELD NAME="scoid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="id from scorm_scoes table" PREVIOUS="hacpsession" NEXT="scormmode"/>
+          <FIELD NAME="scormmode" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" PREVIOUS="scoid" NEXT="scormstatus"/>
+          <FIELD NAME="scormstatus" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="scormmode" NEXT="attempt"/>
+          <FIELD NAME="attempt" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="scormstatus" NEXT="lessonstatus"/>
+          <FIELD NAME="lessonstatus" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="attempt" NEXT="sessiontime"/>
+          <FIELD NAME="sessiontime" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="lessonstatus" NEXT="timecreated"/>
+          <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="time this session was created" PREVIOUS="sessiontime" NEXT="timemodified"/>
+          <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="time this session was last used" PREVIOUS="timecreated"/>
+        </FIELDS>
+        <KEYS>
+          <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="scormid"/>
+          <KEY NAME="scormid" TYPE="foreign" FIELDS="scormid" REFTABLE="scorm" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+          <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="scormid"/>
+        </KEYS>
+      </TABLE>
   </TABLES>
   <STATEMENTS>
     <STATEMENT NAME="insert log_display" TYPE="insert" TABLE="log_display" COMMENT="Initial insert of records on table log_display">

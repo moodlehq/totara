@@ -1,4 +1,5 @@
-<?php // $Id: block_tags.php,v 1.3 2009/04/10 19:28:50 martignoni Exp $
+<?php
+// block_tags.php - created with Totara langimport script version 1.1
 
 $string['add'] = 'Ajouter';
 $string['alltags'] = 'Tous les tags:';
@@ -16,9 +17,9 @@ $string['editdeletemytag'] = 'Supprimer ce tag de ce cours :';
 $string['editmytags'] = 'Mes tags - raccourcis vers les cours avec un de vos tags.';
 $string['editmytagsfor'] = 'Modifier mes tags pour $a';
 $string['editnopersonaltags'] = 'Aucun tag personnel n\'a encore été créé.';
+$string['edittags'] = 'Modifier mes tags...';
 $string['edittagthisunit'] = 'Ajouter un tag à ce cours :';
 $string['editthiscoursetags'] = 'Mes tags dans ce cours sont $a';
-$string['edittags'] = 'Modifier mes tags...';
 $string['edittitle'] = 'Mes tags';
 $string['entries'] = 'articles';
 $string['entry'] = 'article';
@@ -33,10 +34,10 @@ $string['moreorderpop'] = 'Popularité';
 $string['moreshow'] = 'Afficher : ';
 $string['moreshowalltags'] = 'Tous les tags';
 $string['moreshowcommtags'] = 'Tags de la communauté';
-$string['moreshowofficialtags'] = 'Tags officiels';
-$string['moreshowmytags'] = 'Mes tags';
-$string['moretags'] = 'Afficher et filtrer plus de tags';
 $string['moreshowcoursetags'] = 'Tags de « {$a} »';
+$string['moreshowmytags'] = 'Mes tags';
+$string['moreshowofficialtags'] = 'Tags officiels';
+$string['moretags'] = 'Afficher et filtrer plus de tags';
 $string['moretitle'] = 'Plus de tags';
 $string['morewelcome'] = 'Bienvenue dans le nuage de tags « Plus de tags ». Les tags sont des liens vers des objets, créés par des utilisateurs. Ils vous permettent de classer et lier des objets tels que vos cours préférés, vos articles de blog ou votre profil avec vos propres mots. Différent groupes de tags peuvent être affichés au moyen des liens de la ligne «Afficher :» et peuvent être organisés au moyen des liens de la ligne « Ordre :». Pour plus d\'informations :';
 $string['mycoursetag1'] = 'Afficher mes tags de cours';

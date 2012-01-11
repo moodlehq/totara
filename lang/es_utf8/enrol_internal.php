@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_internal.php - created with Moodle 1.5 unstable development (2004083000)
-
+<?php
+// enrol_internal.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'Esta es la forma de matriculación por defecto. Un estudiante puede matricularse en un curso básicamente de dos formas.
 <ul>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // survey.php - created with Moodle 2.0 dev (Build: 20100116) (2010011400)
-
+<?php
+// survey.php - created with Totara langimport script version 1.1
 
 $string['actual'] = 'Tatsächlich';
 $string['actualclass'] = 'Aktuelle Erfahrungen der Lerngruppe';
@@ -59,6 +58,7 @@ $string['attlsname'] = 'ATTLS (20 Punkte Version)';
 $string['cannotfindanswer'] = 'Bisher gibt es keine Antworten für diese Umfrage.';
 $string['cannotfindquestion'] = 'Frage existiert nicht';
 $string['cannotfindsurveytmpt'] = 'Keine Umfragemaske gefunden!';
+$string['cannotinsertanswer'] = 'Entschuldigung! Beim Speichern Ihrer Ergebnisse ist ein Problem aufgetreten.';
 $string['ciq1'] = 'Wann haben Sie sich in diesem Kurs als Lernende/r am meisten engagiert?';
 $string['ciq1short'] = 'Stark beteiligt';
 $string['ciq2'] = 'Wann hatten Sie als Lernende/r zu diesem Kurs die meiste Distanz?';
@@ -203,6 +203,5 @@ $string['surveytype'] = 'Typ der Umfrage';
 $string['thanksforanswers'] = 'Danke $a, dass Sie sich an dieser Umfrage beteiligt haben.';
 $string['time'] = 'Zeit';
 $string['viewsurveyresponses'] = 'Zeige $a Antworten zur Umfrage';
-$string['cannotinsertanswer'] = 'Entschuldigung! Beim Speichern Ihrer Ergebnisse ist ein Problem aufgetreten.'; // ORPHANED
 
 ?>

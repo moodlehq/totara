@@ -67,26 +67,37 @@ if ($form->is_cancelled()) {
 if ($data = $form->get_data()) {
     if (isset($data->savechanges)) {
 
-        $data->availablefrom = prog_date_to_time($data->availablefromselector);
-        $data->availableuntil = prog_date_to_time($data->availableuntilselector);
+        $program_todb = new stdClass;
+
+        $program_todb->availablefrom = ($data->availablefromselector) ? prog_date_to_time($data->availablefromselector) : 0;
+        $program_todb->availableuntil = ($data->availableuntilselector) ? prog_date_to_time($data->availableuntilselector) : 0;
+
+        //Calcuate sortorder
+        $sortorder = get_field('prog', 'MAX(sortorder) + 1', '', '');
 
         $now = time();
-        $data->timecreated = $now;
-        $data->timemodified = $now;
-        $data->usermodified = $USER->id;
-
-        if (!isset($data->visible)) {
-            $data->visible = 0;
-        }
+        $program_todb->timecreated = $now;
+        $program_todb->timemodified = $now;
+        $program_todb->usermodified = $USER->id;
+        $program_todb->category = $data->category;
+        $program_todb->shortname = $data->shortname;
+        $program_todb->fullname = $data->fullname;
+        $program_todb->idnumber = $data->idnumber;
+        $program_todb->available = $data->available;
+        $program_todb->summary = $data->summary;
+        $program_todb->endnote = $data->endnote;
+        $program_todb->sortorder = !empty($sortorder) ? $sortorder : 0;
+        $program_todb->icon = $data->icon;
+        $program_todb->exceptionssent = 0;
+        $program_todb->visible = $data->visible;
 
         begin_sql();
 
         // Set up the program
-        if (!$newid = insert_record('prog', $data)) {
+        if (!$newid = insert_record('prog', $program_todb)) {
             rollback_sql();
             totara_set_notification(get_string('programcreatefail', 'local_program', get_string('couldnotinsertnewrecord', 'local_program')), $currenturl);
         }
-
         $program = new program($newid);
 
         commit_sql();
@@ -124,35 +135,9 @@ $form->display();
 
 print_container_end();
 
-print <<<HEREDOC
-<script type="text/javascript">
-
-    $(function() {
-        $('input[name="availablefromselector"]').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
-                buttonImageOnly: true,
-                constrainInput: true
-            }
-        );
-    });
-
-    $(function() {
-        $('input[name="availableuntilselector"]').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
-                buttonImageOnly: true,
-                constrainInput: true
-            }
-        );
-    });
-
-</script>
-HEREDOC;
+echo build_datepicker_js(
+    'input[name="availablefromselector"], input[name="availableuntilselector"]'
+);
 
 admin_externalpage_print_footer();
 

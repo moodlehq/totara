@@ -1,5 +1,5 @@
 <?php
-// moodle.php - created with Totara langimport script version 1.0
+// moodle.php - created with Totara langimport script version 1.1
 
 $string['abouttobeinstalled'] = 'על סף התקנה';
 $string['action'] = 'פעולה';
@@ -382,6 +382,8 @@ $string['currentpicture'] = 'תמונה נוכחית';
 $string['currentrelease'] = 'מידע שחרור עכשווי';
 $string['currentversion'] = 'גירסה עכשווית';
 $string['databasechecking'] = 'שדרוג בסיס נתונים Moodle מגירסה $a->oldversion ל $a->newversion...';
+$string['databasechecking11'] = 'משדרג את בסיס הנתונים של Totara...';
+$string['databasecompare'] = 'מגרסה:<br /><br /> $a->oldversion<br /><br /> לגרסה:<br /><br /> $a->newversion';
 $string['databaseperformance'] = 'ביצועי בסיס נתונים';
 $string['databasesetup'] = 'הקמת בסיס נתונים';
 $string['databasesuccess'] = 'בסיס הנתונים שודרג בהצלחה';
@@ -446,6 +448,7 @@ $string['disable'] = 'מנע';
 $string['displayingfirst'] = 'רק הראשונים $a->count $a->things מוצגים';
 $string['displayingrecords'] = 'מציג $a רשומות';
 $string['displayingusers'] = 'מציג משתמשים $a->start עד $a->end';
+$string['displaylanguagepanel'] = 'הצג לוח בקרת תרגום שפות';
 $string['displayonpage'] = 'הצג בעמוד';
 $string['documentation'] = 'תיעוד Moodle';
 $string['donotask'] = 'אל תשאל';
@@ -933,6 +936,8 @@ $string['moduledeleteconfirm'] = 'אתה עומד למחוק לחלוטין את
 $string['moduledeletefiles'] = 'כל מידע הקשור לרכיב \'$a->module\' נמחק  מבסיס הנתונים.  בכדי להשלים את המחיקה (ולמנוע מהפרק להתקין את עצמו מחדש), אתה צריך למחוק עכשיו את הספריה $a->directory מהשרת שלך';
 $string['modulesetup'] = 'יוצר טבלאות רכיבים';
 $string['modulesuccess'] = 'טבלאות $a נוצרו בהצלחה';
+$string['months'] = 'חודשים';
+$string['moodlecore'] = 'Moodle core';
 $string['moodledocs'] = 'Moodle Docs';
 $string['moodledocslink'] = 'Moodle Docs עבור עמוד זה';
 $string['moodleversion'] = 'גרסת Moodle';
@@ -1237,6 +1242,7 @@ $string['restoreusersprecheckerror'] = 'בעיות אחדות זוהו בבדי�
 $string['restricted'] = 'מוגבל';
 $string['restrictmodules'] = 'להגביל רכיבי פעילויות?';
 $string['returningtosite'] = 'התחברות למערכת הלמידה';
+$string['returntocourse'] = 'חזור לקורס';
 $string['revert'] = 'לחזור';
 $string['role'] = 'תפקיד';
 $string['rolemappings'] = 'מיפוי תפקידים';
@@ -1468,6 +1474,7 @@ $string['theme'] = 'ערכת נושא';
 $string['themes'] = 'ערכות נושא';
 $string['themesaved'] = 'ערכת הנושא החדשה נשמרה';
 $string['thereareno'] = 'אין $a בקורס';
+$string['therearenocoursestodisplay'] = 'אין קורסים להצגה';
 $string['thiscategorycontains'] = 'קטגוריה זו מכילה';
 $string['thischarset'] = 'UTF-8';
 $string['thisdirection'] = 'rtl';
@@ -1487,6 +1494,8 @@ $string['topichide'] = 'הסתר נושא זה מפני $a';
 $string['topicoutline'] = 'סקירת נושאים';
 $string['topicshow'] = 'הראה נושא זה ל $a';
 $string['total'] = 'סך הכל';
+$string['totaracopyright'] = '<p class=\"totara-copyright\"><a href=\"http://www.totaralms.com\">TotaraLMS</a> is a distribution of Moodle. A \"distro\" or distribution is a ready-made extended version of the standard product with its own particular focus and vision. Totara is specifically designed for the requirements of corporate, industry and vocational training in contrast to standard Moodle\'s traditional educational setting.</p><p class=\"totara-copyright\"><a href=\"http://www.totaralms.com\">TotaraLMS</a> extensions are Copyright &copy; 2010 onwards, Totara Learning Solutions Limited.</p>';
+$string['totaracore'] = 'Totara core';
 $string['trackforums'] = 'מעקב פורום';
 $string['trackforumsno'] = 'לא: אל תחזיק במעקב של פרסומים (posts) שראיתי';
 $string['trackforumsyes'] = 'כן: הדגש פרסומי הודעות חדשות עבורי';
@@ -1589,6 +1598,7 @@ $string['webpage'] = 'דף בית באינטרנט';
 $string['week'] = 'שבוע';
 $string['weekhide'] = 'הסתר שבוע זה מפני $a';
 $string['weeklyoutline'] = 'סקירה שבועית';
+$string['weeks'] = 'שבועות';
 $string['weekshow'] = 'הראה שבוע זה ל $a';
 $string['welcometocourse'] = 'ברוך בואך לקורס $a';
 $string['welcometocoursetext'] = 'ברוך בואך לקורס $a->coursename!

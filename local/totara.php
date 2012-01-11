@@ -307,7 +307,7 @@ function totara_print_my_team_nav($return=false) {
 
     $returnstr = '';
 
-    $managerroleid = get_field('role','id','shortname','manager');
+    $managerroleid = $CFG->managerroleid;
 
     // return users with this user as manager
     $teammembers = totara_get_staff();
@@ -349,11 +349,11 @@ function totara_print_report_manager($return=false) {
             $counter++;
             $row = '
             <tr class="'.$class.'">
-                <td class="icon" align="left">
+                <td class="icon">
                     <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.format_string($report->fullname).'">
                     <img src="'.$CFG->pixpath.'/i/reports.png" width="32" height="32" /></a>
                 </td>
-                <td class="text" align="left">
+                <td class="text">
                     <span style="font-size: small;"><a href="'.$viewurl.'">'.format_string($report->fullname).'</a>
                 ';
 
@@ -502,9 +502,9 @@ function totara_print_my_courses() {
             '<th class="startdate">'.get_string('started','local').'</th>'.
             '<th class="completeddate">'.get_string('completed','local').'</th></tr>';
 
-        foreach($courses as $course) {
+        foreach ($courses as $course) {
             $id = $course->course;
-            $name = $course->name;
+            $name = format_string($course->name);
             $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;
 
@@ -594,7 +594,9 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
             INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
             INNER JOIN {$CFG->prefix}user u ON ra.userid = u.id
         WHERE
-            ra.userid = {$managerid} AND pa.userid = {$userid}
+            ra.userid = {$managerid}
+            AND pa.userid = {$userid}
+            AND u.deleted = 0
             {$postypewhere}";
 
     return record_exists_sql($sql);
@@ -622,9 +624,10 @@ function totara_get_staff($userid=null, $postype=null) {
             INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
         WHERE
             ra.userid = {$userid}
+            AND u.deleted = 0
             AND pa.type = {$postype}";
 
-    if(!$res = get_records_sql($sql)) {
+    if (!$res = get_records_sql($sql)) {
         // no matches
         return false;
     }
@@ -658,7 +661,8 @@ function totara_get_manager($userid, $postype=null){
          ON ra.userid = u.id
         WHERE
             pa.userid = {$userid}
-        AND pa.type = {$postype}";
+            AND pa.type = {$postype}
+            AND u.deleted = 0";
 
     //Return a manager if they have one otherwise false
     return get_record_sql($sql);
@@ -1029,4 +1033,96 @@ function totara_print_edit_button($settingname, $params = array()) {
     // Generate the button HTML.
     $params[$settingname] = $edit;
     return print_single_button(qualified_me(), $params, $label, 'get', '', true);
+}
+
+
+/**
+ * Return a language string in the local language for a given user
+ * @param object $user User to use to localize string
+ * @param string $identifier The key identifier for the localized string
+ * @param string $module The module where the key identifier is stored.
+ * @param mixed $a An object, string or number that can be used within translation strings
+ * @param array $extralocations An array of strings with other locations to look for string files
+ * @return string The localized string.
+ *
+ */
+function get_string_in_user_lang($user, $identifier, $module='', $a=NULL, $extralocations=NULL) {
+    global $USER;
+
+    // Store lang
+    $original_lang = $USER->lang;
+
+    // Set lang
+    $USER->lang = $user->lang;
+
+    $string = get_string($identifier, $module, $a, $extralocations);
+
+    $USER->lang = $original_lang;
+
+    return $string;
+}
+
+/**
+ * Returns the SQL to be used in order to CAST one column to CHAR
+ *
+ * @param string fieldname the name of the field to be casted
+ * @return string the piece of SQL code to be used in your statement.
+ */
+function sql_cast2char($fieldname) {
+
+    global $CFG;
+
+    $sql = '';
+
+    switch ($CFG->dbfamily) {
+        case 'mysql':
+            $sql = ' CAST(' . $fieldname . ' AS CHAR) ';
+            break;
+        case 'postgres':
+            $sql = ' CAST(' . $fieldname . ' AS VARCHAR) ';
+            break;
+        case 'mssql':
+            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
+            break;
+        case 'oracle':
+            $sql = ' TO_CHAR(' . $fieldname . ') ';
+            break;
+        default:
+            $sql = ' ' . $fieldname . ' ';
+    }
+
+    return $sql;
+}
+
+
+/**
+ * Returns the SQL to be used in order to CAST one column to FLOAT
+ *
+ * @param string fieldname the name of the field to be casted
+ * @return string the piece of SQL code to be used in your statement.
+ */
+function sql_cast2float($fieldname) {
+
+    global $CFG;
+
+    $sql = '';
+
+    switch ($CFG->dbfamily) {
+        case 'mysql':
+            $sql = ' CAST(' . $fieldname . ' AS DECIMAL) ';
+            break;
+        case 'mssql':
+        case 'postgres':
+            $sql = ' CAST(' . $fieldname . ' AS FLOAT) ';
+            break;
+            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
+            break;
+        case 'oracle':
+            $sql = ' TO_BINARY_FLOAT(' . $fieldname . ') ';
+            break;
+        default:
+            $sql = ' ' . $fieldname . ' ';
+    }
+
+    return $sql;
 }

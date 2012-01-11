@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // block_section_links.php - created with Moodle 1.9.7+ (Build: 20091209) (2007101570)
-
+<?php
+// block_section_links.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'קישורים ליחידות ההוראה';
 $string['incby1'] = 'הגדלה ב';

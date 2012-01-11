@@ -1,5 +1,5 @@
 <?php
-// manager.php - created with Totara langimport script version 1.0
+// manager.php - created with Totara langimport script version 1.1
 
 $string['error:dialognotreeitems'] = 'لا يوجد مدراء';
 

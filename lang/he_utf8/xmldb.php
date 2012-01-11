@@ -1,6 +1,5 @@
-<?PHP // $Id: xmldb.php,v 1.7 2011/01/05 10:47:35 emanuel1 Exp $
-      // xmldb.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// xmldb.php - created with Totara langimport script version 1.1
 
 $string['aftertable'] = 'לאחר טבלה:';
 $string['back'] = 'חזרה';
@@ -17,6 +16,14 @@ $string['checkbigints'] = 'בדוק Bigints';
 $string['checkdefaults'] = 'בדוק ברירות מחדל';
 $string['checkindexes'] = 'בדוק אינדקסים';
 $string['completelogbelow'] = '(ראה את בדוח המלא של החיפוש להלן)';
+$string['confirmcheckbigints'] = 'This functionality will search for <a href=\"http://tracker.moodle.org/browse/MDL-11038\">potential wrong integer fields</a> in your Moodle server, generating (but not executing!) automatically the needed SQL statements to have all the integers in your DB properly defined.<br /><br />
+Once generated you can copy such statements and execute them safely with your favourite SQL interface (don\'t forget to backup your data before doing that).<br /><br />
+It\'s highly recommended to be running the latest (+ version) available of your Moodle release (1.8, 1.9, 2.x ...) before executing the search of wrong integers.<br /><br />
+This functionality doesn\'t perform any action against the DB (just reads from it), so can be safely executed at any moment.';
+$string['confirmcheckdefaults'] = 'This functionality will search for inconsistent default values in your Moodle server, generating (but not executing!) the needed SQL statements to have all the default values properly defined.<br /><br />
+Once generated you can copy such statements and execute them safely with your favourite SQL interface (don\'t forget to backup your data before doing that).<br /><br />
+It\'s highly recommended to be running the latest (+ version) available of your Moodle release (1.8, 1.9, 2.x ...) before executing the search of wrong integers.<br /><br />
+This functionality doesn\'t perform any action against the DB (just reads from it), so can be safely executed at any moment.';
 $string['confirmcheckindexes'] = 'יחידה זאת תחפש אינדקסים אפשריים חסרים בשרת ה-Moodle כאשר היא יוצרת, אל לא מבצעת!, באופן אוטומטי את משפטי ה-SQL הדרושים לעידכון מלא. לאחר היווצרם אתה יכול להעתיק משפטים אלו ולבצע אותם בבטחה עם מנשק ה-SQL שאתה מעדיף.
 <br /><br>
 מאד ממולץ להריץ את המהדורה האחרונה של Moodle (1.8, 1.9, 2.x ...)לפני ביצוע החיפוש לאינדקסים חסרים.
@@ -77,6 +84,7 @@ $string['missingvaluesinsentence'] = 'במשפט חסרים ערכים';
 $string['mustselectonefield'] = 'עליך לבחור בשדה על מנת לראות פעולות המקושרות לשדות!';
 $string['mustselectoneindex'] = 'עליך לבחור באינדקס על מנת לראות פעולות המקושרות לאינדקסים!';
 $string['mustselectonekey'] = 'עליך לבחור במפתח על מנת לראות פעולות המקושרות למפתחות!';
+$string['mysqlextracheckbigints'] = 'Under MySQL it also looks for incorrectly signed bigints, generating the required SQL to be executed in order to fix all them.';
 $string['new_statement'] = 'הצהרה חדשה';
 $string['new_table_from_mysql'] = 'טבלה חדשה מ-MySQL';
 $string['newfield'] = 'שדה חדש';
@@ -138,21 +146,5 @@ $string['yeswrongdefaultsfound'] = 'נמצאו ערכי ברירת מחדל לא
 לאחר פעולות אלו מומלץ להריץ את תועלת זו שוב בכדי לוודא כי לא נמצאו עוד ערכי ברירת מחדל לא עקביים.';
 $string['yeswrongintsfound'] = 'נמצאו מספרים שלמים שגויים במסד הנתונים שלך.  להלן פרטיהם ומשפטי ה-SQL שצריכים להריץ עם ממשק הSQL שלך בכדי לתקן אותם (אל תשכח לגבות את המידע שלך לפני פעולה זו). <br /><br />
 לאחר פעולות אלו מומלץ להריץ את תועלת זו שוב בכדי לוודא כי לא נמצאו עוד מספים שלמים שגויים.';
-
-?>
-<?PHP // $Id$
-      // xmldb.php - created with Moodle 1.9.5+ (Build: 20090624) (2007101550)
-
-
-
-$string['confirmcheckbigints'] = 'This functionality will search for <a href=\"http://tracker.moodle.org/browse/MDL-11038\">potential wrong integer fields</a> in your Moodle server, generating (but not executing!) automatically the needed SQL statements to have all the integers in your DB properly defined.<br /><br />
-Once generated you can copy such statements and execute them safely with your favourite SQL interface (don\'t forget to backup your data before doing that).<br /><br />
-It\'s highly recommended to be running the latest (+ version) available of your Moodle release (1.8, 1.9, 2.x ...) before executing the search of wrong integers.<br /><br />
-This functionality doesn\'t perform any action against the DB (just reads from it), so can be safely executed at any moment.';
-$string['confirmcheckdefaults'] = 'This functionality will search for inconsistent default values in your Moodle server, generating (but not executing!) the needed SQL statements to have all the default values properly defined.<br /><br />
-Once generated you can copy such statements and execute them safely with your favourite SQL interface (don\'t forget to backup your data before doing that).<br /><br />
-It\'s highly recommended to be running the latest (+ version) available of your Moodle release (1.8, 1.9, 2.x ...) before executing the search of wrong integers.<br /><br />
-This functionality doesn\'t perform any action against the DB (just reads from it), so can be safely executed at any moment.';
-$string['mysqlextracheckbigints'] = 'Under MySQL it also looks for incorrectly signed bigints, generating the required SQL to be executed in order to fix all them.';
 
 ?>

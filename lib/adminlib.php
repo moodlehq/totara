@@ -3529,7 +3529,7 @@ class admin_setting_pickroles extends admin_setting_configmulticheckbox {
         if (is_array($this->choices)) {
             return true;
         }
-        if ($roles = get_records('role')) {
+        if ($roles = get_all_roles()) {
             $this->choices = array();
             foreach($roles as $role) {
                 $this->choices[$role->id] = format_string($role->name);
@@ -5040,13 +5040,17 @@ function print_plugin_tables() {
     $installed_mods = get_records_list('modules', '', '', '', 'name');
     $installed_blocks = get_records_list('block', '', '', '', 'name');
 
+    $plugins_installed['mod'] = array();
     foreach($installed_mods as $mod) {
         $plugins_installed['mod'][] = $mod->name;
     }
 
+    $plugins_installed['blocks'] = array();
     foreach($installed_blocks as $block) {
         $plugins_installed['blocks'][] = $block->name;
     }
+
+    $plugins_installed['filter'] = array();
 
     $plugins_ondisk = array();
     $plugins_ondisk['mod'] = get_list_of_plugins('mod', 'db');

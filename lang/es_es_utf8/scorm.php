@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // scorm.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// scorm.php - created with Totara langimport script version 1.1
 
 $string['scorm:deleteresponses'] = 'Eliminar intentos SCORM';
 $string['scormcourse'] = 'Curso de formación';

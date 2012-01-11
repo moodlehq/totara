@@ -358,7 +358,7 @@ class position extends hierarchy {
                 $fwoptions[$fw->id] = $fw->fullname . " ({$count})";
             }
             $fwoptions = count($fwoptions) > 1 ? array(0 => get_string('all')) + $fwoptions : $fwoptions;
-            echo '<div style="text-align: right">';
+            echo '<div class="hierarchyframeworkpicker">';
             popup_form($CFG->wwwroot.'/hierarchy/item/view.php?id='.$positionid.'&amp;edit='.$edit.'&amp;prefix=position&amp;framework=', $fwoptions, 'switchframework', $currentfw, '', '', '', false, 'self', get_string('filterframework', 'hierarchy'));
             echo '</div>';
         } else {
@@ -458,6 +458,10 @@ class position_assignment extends data_object {
         'timevalidto'
     );
 
+    public $optional_fields = array(
+        'managerpath' => null,
+    );
+
     /**
      * Unique fields to be used in where clauses
      * when the ID is not known
@@ -476,6 +480,7 @@ class position_assignment extends data_object {
     public $organisationid;
     public $managerid;
     public $reportstoid;
+    public $managerpath;
     public $timecreated;
     public $timemodified;
     public $usermodified;
@@ -493,8 +498,8 @@ class position_assignment extends data_object {
         return self::fetch_helper($this->table, get_class($this), $params);
     }
 
-    public function save() {
-        global $USER;
+    public function save($managerchanged = true) {
+        global $USER, $CFG;
 
         // Get time (expensive on vservers)
         $time = time();
@@ -514,8 +519,11 @@ class position_assignment extends data_object {
             return false;
         }
 
+        // If no manager set, reset reportstoid and managerpath
         if (!$this->managerid) {
             $this->managerid = null;
+            $this->reportstoid = null;
+            $this->managerpath = null;
         }
 
         if (!$this->organisationid) {
@@ -534,6 +542,34 @@ class position_assignment extends data_object {
             $this->timevalidto = null;
         }
 
+        if ($managerchanged) {
+            // now recalculate managerpath
+            $manager_relations = get_records_menu('pos_assignment', 'type', POSITION_TYPE_PRIMARY, 'userid', 'userid,managerid');
+            //Manager relation for this assignment's user is wrong so we have to fix it
+            $manager_relations[$this->userid] = $this->managerid;
+            $this->managerpath = '/' . implode(totara_get_lineage($manager_relations, $this->userid), '/');
+
+            $newpath = $this->managerpath;
+
+            // Update child items
+            $substr3rdparam = '';
+            if ($CFG->dbfamily == 'mssql') {
+                $substr3rdparam = ', len(managerpath)';
+            }
+            $length_sql = sql_length("'/{$this->userid}/'");
+            $position_sql = sql_position("'/{$this->userid}/'", 'managerpath');
+            $substr_sql = sql_substr() . "(managerpath, {$position_sql} + {$length_sql}{$substr3rdparam})";
+
+            $sql = "UPDATE {$CFG->prefix}pos_assignment
+                SET managerpath=" . sql_concat("'{$newpath}/'", $substr_sql) . "
+                WHERE type = " . POSITION_TYPE_PRIMARY . " AND (managerpath LIKE '%/{$this->userid}/%')";
+
+            if (!execute_sql($sql, false)) {
+                error_log('assign_user_position: Could not update manager path of child items in manager hierarchy');
+                return false;
+            }
+        }
+
         // Check if updating or inserting new
         if ($this->id) {
             $this->update();
@@ -545,4 +581,62 @@ class position_assignment extends data_object {
 
         return true;
     }
+}
+
+/**
+ * Calcuates if a user can edit a position assignment
+ *
+ * @param int $userid The user ID of the position being edited
+ * @return bool True if a user is allowed to edit assignment
+ */
+function pos_can_edit_position_assignment($userid) {
+    global $USER;
+
+    $personalcontext = get_context_instance(CONTEXT_USER, $userid);
+
+    // can assign any user's position
+    if (has_capability('moodle/local:assignuserposition', get_context_instance(CONTEXT_SYSTEM))) {
+        return true;
+    }
+
+    // can assign this particular user's position
+    if (has_capability('moodle/local:assignuserposition', $personalcontext)) {
+        return true;
+    }
+
+    // editing own position and have capability to assign own position
+    if ($USER->id == $userid && has_capability('moodle/local:assignselfposition', get_context_instance(CONTEXT_SYSTEM))) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Return the specified user's position and organisation ids, or 0 if not currently set
+ *
+ * @param integer $userid ID of the user to get the data for (defaults to current user)
+ * @param integer $type Position type (primary, secondary, etc) to get data for
+ *
+ * @return array Associative array with positionid and organisationid keys
+ */
+function pos_get_current_position_data($userid = false, $type = POSITION_TYPE_PRIMARY) {
+    global $USER;
+    if ($userid === false) {
+        $userid = $USER->id;
+    }
+    // Attempt to load user's position assignment
+    $pa = new position_assignment(array('userid' => $userid, 'type' => $type));
+
+    // If no position assignment present, set values to 0
+    if (!$pa->id) {
+        $positionid = 0;
+        $organisationid = 0;
+    } else {
+        $positionid = $pa->positionid ? $pa->positionid : 0;
+        $organisationid = $pa->organisationid ? $pa->organisationid : 0;
+    }
+
+    return array('positionid' => $positionid, 'organisationid' => $organisationid);
+
 }

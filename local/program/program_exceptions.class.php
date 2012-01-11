@@ -253,12 +253,11 @@ class prog_exceptions_manager {
         INNER JOIN {$CFG->prefix}user us ON us.id = ex.userid
         WHERE ex.programid = {$this->programid} AND us.deleted = 0";
 
-        if ( ! empty($exceptiontype)) {
+        if (!empty($exceptiontype)) {
             $sql .= " AND ex.exceptiontype = $exceptiontype";
         }
 
         if (!empty($searchterm)) {
-            $searchterm = addslashes($searchterm);
             if (is_numeric($searchterm)) {
                 $sql .= " AND us.id = $searchterm";
             }
@@ -271,12 +270,10 @@ class prog_exceptions_manager {
             return count_records_sql($sql);
         }
 
-        if (is_int($page)) {
-            $sql .= " LIMIT " . RESULTS_PER_PAGE;
-            $sql .= " OFFSET " . (($page) * RESULTS_PER_PAGE);
-        }
+        $limit = is_int($page) ? RESULTS_PER_PAGE : '';
+        $offset = is_int($page) ? (($page) * RESULTS_PER_PAGE) : '';
 
-        $exceptions = get_records_sql($sql);
+        $exceptions = get_records_sql($sql, $offset, $limit);
 
         if (!empty($exceptions)) {
             return $exceptions;
@@ -296,7 +293,7 @@ class prog_exceptions_manager {
 
         $out = '<form method="get" action="'. $this->build_link() .'">';
         $out .= '<label for="exception_search" >'. get_string('searchforindividual', 'local_program') .' </label>';
-        $out .= '<input type="text" id="exception_search" name="search" value="'. $previoussearch .'" />';
+        $out .= '<input type="text" id="exception_search" name="search" value="'.stripslashes($previoussearch).'" />';
         $out .= '<input type="hidden" name="id" value="'. $this->programid .'" />';
         $out .= '<input type="submit" value="'. get_string('search') .'" />';
         $out .= '</form>';

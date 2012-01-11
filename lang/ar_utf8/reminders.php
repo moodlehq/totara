@@ -1,5 +1,5 @@
 <?php
-// reminders.php - created with Totara langimport script version 1.0
+// reminders.php - created with Totara langimport script version 1.1
 
 $string['businessdays'] = 'أيام العمل';
 $string['completion'] = 'اكمال';

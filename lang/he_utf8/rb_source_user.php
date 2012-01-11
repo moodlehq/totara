@@ -1,8 +1,7 @@
-<?PHP // $Id$ 
-      // rb_source_user.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
+<?php
+// rb_source_user.php - created with Totara langimport script version 1.1
 
-
-$string[''] = 'צלמיות הלמידה שלי של המשתמש';
+$string['bookings'] = 'הרשמות';
 $string['competenciesachieved'] = 'כשירויות שהושגו';
 $string['coursescompleted'] = 'קורסים שהושלמו';
 $string['coursesstarted'] = 'קורסים שהחלו';
@@ -11,6 +10,9 @@ $string['mylearningicons'] = 'צלמיות הלמידה שלי של המשתמש
 $string['name'] = 'שם';
 $string['options'] = 'אפשרויות';
 $string['picture'] = 'תמונה';
+$string['plans'] = 'תכניות';
+$string['profile'] = 'פרופיל';
+$string['records'] = 'תיעוד';
 $string['sourcetitle'] = 'משתמש';
 $string['type_statistics'] = 'סטטיסטיקה';
 $string['user'] = 'משתמש';

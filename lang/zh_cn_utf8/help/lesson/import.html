@@ -1,0 +1,89 @@
+﻿<h1>导入新问题</h1>
+
+<p>此功能允许您通过表单上传外部文本文件，并导入其中的问题。  </p>
+
+<p>以下多种文件格式受到支持：</p>
+
+<h2>GIFT 格式</h2>
+<div class="indent">
+<p>GIFT 是用于从文本文件导入 Moodle 测验题的最复杂的导入格式。它的设计目的在于帮助教师以文本文件的方式轻松编写问题，支持选择题、判断题、简答题、匹配题、数学题及填空题。在一个单独的文本文件中可以混合多种类型的问题，并且这种格式还支持整行注释、问题名称、反馈和百分比权重的打分方法。下面是一些例子：</p>
+<pre>
+谁埋在 Grant 的坟墓中？{~Grant ~Jefferson =没有人}
+
+Grant {~埋在 =埋在 ~活着} 在 Grant 的坟墓中。
+
+Grant 埋在 Grant 的坟墓中。{错误}
+
+谁埋在 Grant 的坟墓中？{=没有人 =无人}
+
+Ulysses S. Grant 是何年出生的？{#1822}
+</pre>
+
+<p class="moreinfo"><a href="help.php?file=formatgift.html&amp;module=quiz">&ldquo;GIFT&rdquo;格式的更多信息</a></p>
+</div>
+
+<h2>Aiken 格式</h2>
+<div class="indent">
+<p>Aiken 格式通常用来编写选择题，它很简单也易于读懂。下面就是这个格式的例子：</p>
+<pre>
+首次援助的目的是什么？
+A. 为了挽救生命、防止进一步的伤害、保护身体健康
+B. 为任何受伤或负伤的人员提供治疗
+C. 防止进一步的伤害
+D. 援助可能寻求帮助的受害人
+答案：A
+</pre>
+
+<p class="moreinfo"><a href="help.php?file=formataiken.html&amp;module=quiz">&ldquo;Aiken&rdquo;格式的更多信息</a></p>
+</div>
+
+
+<h2>Missing Word</h2>
+<div class="indent">
+<p>此格式只支持选择题。答案之间以波浪号 (~) 分隔，正确答案则以等号 (=) 为前缀。示例如下：</p>
+
+<blockquote><p>一旦以婴儿的身份开始探索自己的身体部位，我们就会开始学习 {=解剖学和生理学~反射学~科学~实验}，并且从某种意义上来说，我们仍然在学习如何生活。</p>
+</blockquote>
+
+<p class="moreinfo"><a href="help.php?file=formatmissingword.html&amp;module=quiz">&ldquo;Missing Word&rdquo;格式的更多信息</a></p>
+</div>
+
+
+<h2>AON</h2>
+<div class="indent">
+<p>此格式在多数情况下和 Missing Word 格式相同，但在导入问题后，所有简答题都会被转为匹配题。</p>
+<p>此外，选择题的答案在导入过程中其顺序会被打乱。</p>
+<p>它以一个开发了多种测验功能的组织命名</p>
+</div>
+
+
+<h2>Blackboard</h2>
+<div class="indent">
+<p>此模块可以导入以 Blackboard 的导出格式保存的问题。要使用它，PHP 必须具备 XML 处理函数。</p>
+
+<p class="moreinfo"><a href="help.php?file=formatblackboard.html&amp;module=quiz">&ldquo;Blackboard&rdquo;格式的更多信息</a></p>
+</div>
+
+<h2>Course Test Manager</h2>
+<div class="indent">
+<p>此模块可以导入 Course Test Manager 题库中的问题。由于题库保存在 Micorsoft Access 数据库中，它对于访问题库的方式有比较强的依赖性，具体取决于 Moodle 运行在 Windows 还是 Linux Web 服务器上。</p>
+<p>在 Windows 上，它允许您像上传其他文件一样上传 Access 数据库。</p>
+<p>在 Linux 上，在您的网络上必须有一台安装了 Course Test Manager 数据库的 Windows 计算机，并通过 ODBC Socket Server 软件以 XML 格式将数据传到 Linux 服务器上的 Moodle。</p>  
+
+<p>在使用此导入类之前，请仔细阅读完整的帮助文档。</p>
+
+
+<p class="moreinfo"><a href="help.php?file=formatctm.html&amp;module=quiz">&ldquo;CTM&rdquo;格式的更多信息</a></p>
+</div>
+
+<h2>自定义</h2>
+<div class="indent">
+<p>如果您希望以您自己的格式导入问题，请通过编辑 mod/quiz/format/custom.php 文件实现它。</p>
+
+<p>需要编写的新代码并不多 - 只需从给定的文字中分析出问题就可以了。</p>
+
+<p class="moreinfo"><a href="help.php?file=formatcustom.html&amp;module=quiz">&ldquo;自定义&rdquo;格式的更多信息</a></p>
+</div>
+
+
+<p>将来还会有更多的格式，包括 WebCT、IMS QTI 和任何其他 Moodle 用户可以贡献的格式！ </p>

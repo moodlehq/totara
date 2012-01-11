@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_paypal.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// enrol_paypal.php - created with Totara langimport script version 1.1
 
 $string['business'] = 'Dirección de correo electrónico de su cuenta Paypal';
 $string['costorkey'] = 'Por favor, seleccione uno de los siguientes métodos de matriculación.';

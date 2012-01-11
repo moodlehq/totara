@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // lesson.php - created with Moodle 2.0 dev (Build: 20100116) (2010011400)
-
+<?php
+// lesson.php - created with Totara langimport script version 1.1
 
 $string['accesscontrol'] = 'Zugriffskontrolle';
 $string['actionaftercorrectanswer'] = 'Aktion nach richtiger Antwort';
@@ -35,6 +34,9 @@ $string['averagescore'] = 'Durchschnittliche Bewertung';
 $string['averagetime'] = 'Durchschnittliche Zeit';
 $string['branchtable'] = 'Verzweigungsseite';
 $string['cancel'] = 'Abbrechen';
+$string['cannotdeleteanswer'] = 'Seitenaktualisierung: Antwortdaten konnten nicht gelöscht werden';
+$string['cannotdeleteattempt'] = 'Fehler: Alte Versuche konnten nicht gelöscht werden';
+$string['cannotdeletebranch'] = 'Fehler: Gefundene alte Verzweigungen konnten nicht gelöscht werden';
 $string['cannotfindanswer'] = 'Fehler: Antwort konnte nicht gefunden werden';
 $string['cannotfindattempt'] = 'Fehler: Versuch konnte nicht gefunden werden';
 $string['cannotfindessay'] = 'Fehler: Freitext-Antwort konnte nicht gefunden werden';
@@ -50,6 +52,19 @@ $string['cannotfindpreattempt'] = 'Vorheriger Versuch konnte nicht gefunden werd
 $string['cannotfindrecords'] = 'Fehler: Lektionsdaten konnten nicht gefunden werden';
 $string['cannotfindtimer'] = 'Fehler: Die Daten lesson_timer konnten nicht gefunden werden';
 $string['cannotfinduser'] = 'Fehler: Nutzer/innen konnten nicht gefunden werden';
+$string['cannotinsertanswer'] = 'Antwortdaten können nicht eingefügt werden';
+$string['cannotinsertgrade'] = 'Bewertung kann nicht eingefügt werden';
+$string['cannotinserthighscore'] = 'Einfügen der neuen Höchstwertung fehlgeschlagen!';
+$string['cannotinsertpage'] = 'Neue Seite kann nicht eingefügt werden';
+$string['cannotinserttimer'] = 'Fehler: Zeile konnte nicht in die Tabelle lesson_timer eingefügt werden';
+$string['cannotresetjump'] = 'Lektion wiederherstellen: Sprungrücksetzung nicht möglich';
+$string['cannotupdateanswer'] = 'Seitenaktualisierung: Antwort wurde nicht aktualisiert';
+$string['cannotupdatebook'] = 'Ihr Buch kann nicht aktualisiert werden';
+$string['cannotupdateessayscore'] = 'Freitext-Wertung konnte nicht aktualisiert werden';
+$string['cannotupdategrade'] = 'Bewertung kann nicht aktualisiert werden';
+$string['cannotupdatelink'] = 'Link kann nicht aktualisiert werden';
+$string['cannotupdatepage'] = 'Seitenaktualisierung: Seite wurde nicht aktualisiert';
+$string['cannotupdatetimer'] = 'Fehler: Tabelle lesson_timer konnte nicht aktualisiert werden';
 $string['canretake'] = 'Wiederholungen';
 $string['casesensitive'] = 'Erweiterte Antwortanalyse';
 $string['checkbranchtable'] = 'Verzweigungsseite testen';
@@ -101,6 +116,7 @@ $string['displayscorewithessays'] = 'Sie haben bisher $a->score von $a->tempmaxg
 $string['displayscorewithoutessays'] = 'Ihre Bewertung:  $a->score Punkte (von $a->grade Punkten).';
 $string['edit'] = 'Bearbeiten';
 $string['editingquestionpage'] = 'Frageseite $a bearbeiten';
+$string['editlesson'] = 'Bearbeite $a';
 $string['editlessonsettings'] = 'Einstellungen für Lektion bearbeiten';
 $string['editpage'] = 'Seite bearbeiten';
 $string['editpagecontent'] = 'Inhalt der Seite bearbeiten';
@@ -244,6 +260,7 @@ $string['or'] = 'ODER';
 $string['ordered'] = 'Geordnet';
 $string['other'] = 'Weitere Einstellungen';
 $string['outof'] = 'von $a';
+$string['outoftime'] = 'Zeit ist abgelaufen';
 $string['overview'] = 'Übersicht';
 $string['page'] = 'Seite: $a';
 $string['pagecontents'] = 'Inhalt der Seite';
@@ -308,6 +325,7 @@ $string['startlesson'] = 'Lektion bearbeiten';
 $string['studentattemptlesson'] = '$a->lastname, $a->firstname: Versuch Nr. $a->attempt';
 $string['studentname'] = 'Name';
 $string['studentoneminwarning'] = 'Warnung: Sie haben noch eine Minute oder weniger Zeit, um die Lektion abzuschließen.';
+$string['studentoutoftime'] = 'Achtung: Die Zeit für die Bearbeitung der Lektion ist abgelaufen. Die letzte Frage wurde nach Ablauf der Zeit beantwortet und wird nicht mehr bewertet. Klicken Sie auf \"Fortsetzen\", um die Lektion zu verlassen.';
 $string['studentresponse'] = '{$a}\'s  Antwort';
 $string['submitname'] = 'Absenden';
 $string['teacherjumpwarning'] = 'In der Lektion werden \"$a->cluster\"-Sprünge und/oder \"$a->unseen\"-Sprünge verwendet. Diese Sprünge werden durch \"Nächste Seite\"-Sprünge ersetzt. Loggen Sie sich als Teilnehmer/in ein, um diese Sprünge zu testen.';
@@ -350,24 +368,5 @@ $string['youranswer'] = 'Ihre Antwort';
 $string['yourcurrentgradeis'] = 'Derzeitige Bewertung: $a';
 $string['yourcurrentgradeisoutof'] = 'Ihre derzeitige Bewertung ist $a->grade von $a->total';
 $string['youshouldview'] = 'mindestens zu beantworten: $a';
-$string['cannotdeleteanswer'] = 'Seitenaktualisierung: Antwortdaten konnten nicht gelöscht werden'; // ORPHANED
-$string['cannotdeleteattempt'] = 'Fehler: Alte Versuche konnten nicht gelöscht werden'; // ORPHANED
-$string['cannotdeletebranch'] = 'Fehler: Gefundene alte Verzweigungen konnten nicht gelöscht werden'; // ORPHANED
-$string['cannotinsertanswer'] = 'Antwortdaten können nicht eingefügt werden'; // ORPHANED
-$string['cannotinsertgrade'] = 'Bewertung kann nicht eingefügt werden'; // ORPHANED
-$string['cannotinserthighscore'] = 'Einfügen der neuen Höchstwertung fehlgeschlagen!'; // ORPHANED
-$string['cannotinsertpage'] = 'Neue Seite kann nicht eingefügt werden'; // ORPHANED
-$string['cannotinserttimer'] = 'Fehler: Zeile konnte nicht in die Tabelle lesson_timer eingefügt werden'; // ORPHANED
-$string['cannotresetjump'] = 'Lektion wiederherstellen: Sprungrücksetzung nicht möglich'; // ORPHANED
-$string['cannotupdateanswer'] = 'Seitenaktualisierung: Antwort wurde nicht aktualisiert'; // ORPHANED
-$string['cannotupdatebook'] = 'Ihr Buch kann nicht aktualisiert werden'; // ORPHANED
-$string['cannotupdateessayscore'] = 'Freitext-Wertung konnte nicht aktualisiert werden'; // ORPHANED
-$string['cannotupdategrade'] = 'Bewertung kann nicht aktualisiert werden'; // ORPHANED
-$string['cannotupdatelink'] = 'Link kann nicht aktualisiert werden'; // ORPHANED
-$string['cannotupdatepage'] = 'Seitenaktualisierung: Seite wurde nicht aktualisiert'; // ORPHANED
-$string['cannotupdatetimer'] = 'Fehler: Tabelle lesson_timer konnte nicht aktualisiert werden'; // ORPHANED
-$string['outoftime'] = 'Zeit ist abgelaufen'; // ORPHANED
-$string['studentoutoftime'] = 'Achtung: Die Zeit für die Bearbeitung der Lektion ist abgelaufen. Die letzte Frage wurde nach Ablauf der Zeit beantwortet und wird nicht mehr bewertet. Klicken Sie auf \"Fortsetzen\", um die Lektion zu verlassen.'; // ORPHANED
-$string['editlesson'] = 'Bearbeite $a'; // ORPHANED
 
 ?>

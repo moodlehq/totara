@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rssfeed.php - created with Moodle 1.6 development (2005090100)
-
+<?php
+// rssfeed.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Nyhetsinmatning';
 $string['configrssfile'] = 'Varifr&aring;n kommer rss-inmatningen? (inklusive http://)';

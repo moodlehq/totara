@@ -1,4 +1,5 @@
-<?php // $Id: gradeimport_xml.php,v 1.9 2009/04/10 19:24:56 martignoni Exp $ 
+<?php
+// gradeimport_xml.php - created with Totara langimport script version 1.1
 
 $string['errbadxmlformat'] = 'Erreur - format XML incorrect';
 $string['errduplicategradeidnumber'] = 'Erreur - il y a deux notes de même identifiant « {$a} » dans ce cours. Cela ne devrait pas être possible.';
@@ -9,7 +10,7 @@ $string['errincorrectuseridnumber'] = 'Erreur - l\'identifiant « {$a} » du f
 $string['error'] = 'Des erreurs sont survenues';
 $string['fileurl'] = 'URL du fichier distant';
 $string['modulename'] = 'Fichier XML';
-$string['xml:view'] = 'Importer des notes en XML';
 $string['xml:publish'] = 'Publier les notes importées depuis XML';
+$string['xml:view'] = 'Importer des notes en XML';
 
 ?>

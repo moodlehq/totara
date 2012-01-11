@@ -1,6 +1,5 @@
-<?PHP // $Id: tag.php,v 1.2 2010/03/19 18:21:29 danielneis Exp $ 
-      // tag.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// tag.php - created with Totara langimport script version 1.1
 
 $string['addedotag'] = '\"$a\" foi adicionada como tag oficial';
 $string['addotags'] = 'Adicionar tags oficiais';
@@ -9,6 +8,8 @@ $string['blocktagstitle'] = 'Tags';
 $string['changename'] = 'Mudar nome da tag';
 $string['changetype'] = 'Mudar o tipo da tag';
 $string['count'] = 'Contar';
+$string['coursetagging'] = 'Tag do curso';
+$string['coursetagginghelp'] = 'Habilite esta opção para permitir o tag do curso.';
 $string['delete'] = 'Excluir';
 $string['deleted'] = 'Excluído';
 $string['description'] = 'Descrição';

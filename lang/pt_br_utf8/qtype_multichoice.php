@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_multichoice.php,v 1.3 2010/03/18 19:10:40 danielneis Exp $ 
-      // qtype_multichoice.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// qtype_multichoice.php - created with Totara langimport script version 1.1
 
 $string['addingmultichoice'] = 'Adicionando uma questão de múltipla escolha';
 $string['addmorechoiceblanks'] = 'Espaços em branco para {no} mais questões';

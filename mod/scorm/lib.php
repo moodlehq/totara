@@ -45,14 +45,14 @@ function scorm_add_instance($scorm) {
 
     if (($packagedata = scorm_check_package($scorm)) != null) {
         $scorm->pkgtype = $packagedata->pkgtype;
+        $scorm->version = $packagedata->pkgtype;
         $scorm->datadir = $packagedata->datadir;
         $scorm->launch = $packagedata->launch;
         $scorm->parse = 1;
-
         $scorm->timemodified = time();
         if (!scorm_external_link($scorm->reference)) {
             $scorm->md5hash = md5_file($CFG->dataroot.'/'.$scorm->course.'/'.$scorm->reference);
-        } else {
+        } else if ($scorm->unpackmethod != 'aiccdirect') {
             $scorm->dir = $CFG->dataroot.'/'.$scorm->course.'/moddata/scorm';
             $scorm->md5hash = md5_file($scorm->dir.$scorm->datadir.'/'.basename($scorm->reference));
         }
@@ -69,9 +69,18 @@ function scorm_add_instance($scorm) {
             $scorm->whatgrade = 0;
         }
 
+        // no directview if popup
+        if ($scorm->popup == 2) {
+            $scorm->directview = 1;
+            $scorm->popup = 0;
+        }
+        else {
+            $scorm->directview = 0;
+        }
+
         $id = insert_record('scorm', $scorm);
 
-        if (scorm_external_link($scorm->reference) || ((basename($scorm->reference) != 'imsmanifest.xml') && ($scorm->reference[0] != '#'))) {
+        if (($scorm->unpackmethod != 'aiccdirect') && (scorm_external_link($scorm->reference) || ((basename($scorm->reference) != 'imsmanifest.xml') && ($scorm->reference[0] != '#')))) {
             // Rename temp scorm dir to scorm id
             $scorm->dir = $CFG->dataroot.'/'.$scorm->course.'/moddata/scorm';
             if (file_exists($scorm->dir.'/'.$id)) {
@@ -118,7 +127,7 @@ function scorm_update_instance($scorm) {
             $scorm->parse = 1;
             if (!scorm_external_link($scorm->reference) && $scorm->reference[0] != '#') { //dont set md5hash if this is from a repo.
                 $scorm->md5hash = md5_file($CFG->dataroot.'/'.$scorm->course.'/'.$scorm->reference);
-            } elseif($scorm->reference[0] != '#') { //dont set md5hash if this is from a repo.
+            } elseif($scorm->reference[0] != '#' && $scorm->unpackmethod == 'manifest') { //dont set md5hash if this is from a repo.
                 $scorm->dir = $CFG->dataroot.'/'.$scorm->course.'/moddata/scorm';
                 $scorm->md5hash = md5_file($scorm->dir.$scorm->datadir.'/'.basename($scorm->reference));
             }
@@ -138,13 +147,22 @@ function scorm_update_instance($scorm) {
         $scorm->whatgrade = 0;
     }
 
+    // no directview if popup
+    if ($scorm->popup == 2) {
+        $scorm->directview = 1;
+        $scorm->popup = 0;
+    }
+    else {
+        $scorm->directview = 0;
+    }
+
     // Check if scorm manifest needs to be reparsed
     if ($scorm->parse == 1) {
         $scorm->dir = $CFG->dataroot.'/'.$scorm->course.'/moddata/scorm';
         if (is_dir($scorm->dir.'/'.$scorm->id)) {
             scorm_delete_files($scorm->dir.'/'.$scorm->id);
         }
-        if (isset($scorm->datadir) && ($scorm->datadir != $scorm->id) && 
+        if ($scorm->unpackmethod == 'manifest' && isset($scorm->datadir) && ($scorm->datadir != $scorm->id) &&
            (scorm_external_link($scorm->reference) || ((basename($scorm->reference) != 'imsmanifest.xml') && ($scorm->reference[0] != '#')))) {
             rename($scorm->dir.$scorm->datadir,$scorm->dir.'/'.$scorm->id);
         }
@@ -452,7 +470,12 @@ function scorm_cron () {
             }
         }
     }
-
+    //now clear out AICC session table with old session data
+    $cfg_scorm = get_config('scorm');
+    if (!empty($cfg_scorm->allowaicchacp)) {
+        $expiretime = time() - ($cfg_scorm->aicchacpkeepsessiondata*24*60*60);
+        delete_records_select('scorm_aicc_session', 'timemodified < '.$expiretime);
+    }
     return true;
 }
 
@@ -609,7 +632,7 @@ function scorm_option2text($scorm) {
     $scorm_popoup_options = scorm_get_popup_options_array();
 
     if (isset($scorm->popup)) {
-        if ($scorm->popup == 1) {
+        if ($scorm->popup == 1 || $scorm->popup == 2) {
             $optionlist = array();
             foreach ($scorm_popoup_options as $name => $option) {
                 if (isset($scorm->$name)) {

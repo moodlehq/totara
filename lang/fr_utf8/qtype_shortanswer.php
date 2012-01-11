@@ -1,4 +1,5 @@
-<?php // $Id: qtype_shortanswer.php,v 1.7 2009/04/10 19:28:53 martignoni Exp $
+<?php
+// qtype_shortanswer.php - created with Totara langimport script version 1.1
 
 $string['addingshortanswer'] = 'Ajout d\'une question à réponse courte';
 $string['addmoreanswerblanks'] = '{no} emplacements supplémentaires vides';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // qtype_numerical.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// qtype_numerical.php - created with Totara langimport script version 1.1
 
 $string['addmoreanswerblanks'] = 'إضافة فراغات أكثر للإجابات';
 $string['addmoreunitblanks'] = 'إضافة فراغات أكثر للوحدات';

@@ -1,4 +1,5 @@
 <?php
+// imscp.php - created with Totara langimport script version 1.1
 
 $string['areabackup'] = 'Archive des paquetages';
 $string['areacontent'] = 'Contenu';
@@ -11,3 +12,5 @@ $string['modulenameplural'] = 'Paquetages IMS Content';
 $string['navigation'] = 'Navigation';
 $string['packagefile'] = 'Fichier paquetage';
 $string['toc'] = 'TDM';
+
+?>

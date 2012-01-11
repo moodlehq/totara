@@ -1,4 +1,5 @@
-<?php // $Id: qtype_multianswer.php,v 1.8 2009/04/10 19:28:53 martignoni Exp $
+<?php
+// qtype_multianswer.php - created with Totara langimport script version 1.1
 
 $string['addingmultianswer'] = 'Ajout d\'une question Cloze';
 $string['correctanswer'] = 'Réponse correcte';
@@ -6,8 +7,8 @@ $string['correctanswerandfeedback'] = 'Réponse correcte et feedback';
 $string['decodeverifyquestiontext'] = 'Décoder et vérifier le texte de la question';
 $string['editingmultianswer'] = 'Modification d\'une question Cloze';
 $string['layout'] = 'Disposition';
-$string['layoutselectinline'] = 'Menu déroulant incorporé au texte';
 $string['layouthorizontal'] = 'Rangée horizontale de boutons radio';
+$string['layoutselectinline'] = 'Menu déroulant incorporé au texte';
 $string['layoutundefined'] = 'Disposition non définie';
 $string['layoutvertical'] = 'Colonne verticale de boutons radio';
 $string['multianswer'] = 'Question Cloze';

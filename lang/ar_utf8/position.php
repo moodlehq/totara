@@ -1,5 +1,5 @@
 <?php
-// position.php - created with Totara langimport script version 1.0
+// position.php - created with Totara langimport script version 1.1
 
 $string['adddepthlevel'] = 'اضافة مستوى عمق جديد';
 $string['addedframework'] = 'تم إضافة إطار للموقع \"{$a}\"';

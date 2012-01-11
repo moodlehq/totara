@@ -107,21 +107,6 @@ if ($component->can_update_settings(false)) {
 print '</form>';
 print_container_end();
 
-print <<<HEREDOC
-<script type="text/javascript">
-
-    $(function() {
-        $('[id^=duedate_{$componentname}]').datepicker(
-            {
-                dateFormat: 'dd/mm/y',
-                constrainInput: true,
-                showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
-                buttonImageOnly: true
-            }
-        );
-    });
-</script>
-HEREDOC;
+echo build_datepicker_js("[id^=duedate_{$componentname}]", true, 'dd/mm/y');
 
 print_footer();

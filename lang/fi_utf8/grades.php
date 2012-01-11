@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // grades.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// grades.php - created with Totara langimport script version 1.1
 
 $string['activities'] = 'Aktiviteetit';
 $string['addcategory'] = 'Lisää kategoria';
@@ -50,7 +49,7 @@ $string['availableidnumbers'] = 'Saatavilla olevat id numerot';
 $string['average'] = 'Keskiarvo';
 $string['averagesdecimalpoints'] = 'Desimaaleja sarakkeen keskiarvoissa';
 $string['averagesdisplaytype'] = 'Sarakkeen keskiarvojen näyttötyyppi';
-$string['backupwithoutgradebook'] = 'Varmuuskopioon ei oteta mukaan Arviointien asetuksia';
+$string['backupwithoutgradebook'] = 'Varmuuskopioon ei oteta mukaan arvosanarekisterin asetuksia';
 $string['badgrade'] = 'Virhe annetussa arvosanassa';
 $string['badlyformattedscale'] = 'Syötä pilkuilla erotettu lista arvoista (vähintään 2 arvoa).';
 $string['baduser'] = 'Virhe annetussa käyttäjässä';
@@ -99,7 +98,7 @@ $string['configgradeletterdefault'] = 'Arvosanojen määrää kuvaava kirjain ta
 $string['configgradepublishing'] = 'Ota käyttöön julkaiseminen tuoduissa ja viedyissä: Vietyihin arvosanoihin päästään menemällä URL:iin, ilman että kirjaudutaan Moodleen. Arvosanat voidaan tuoda menemällä sellaiseen URL:iin (tarkoittaa sitä että Moodle -sivustoon voi tuoda toisen sivuston julkaisemia arvosanoja) Oletuksena adminit voivat käyttää tätä ominaisuutta. Neuvokaa käyttäjiä ennen kuin lisäätte näitä kykyjä muille rooleille.';
 $string['confighiddenasdate'] = 'Jos käyttäjä ei pysty näkemään piiloitettuja arvosanoja, näytä alistamisen päivämäärä, kuin \"-\".';
 $string['confighideforcedsettings'] = 'Älä näytä pakoitettuja asetuksia asteittaessa UI:ta.';
-$string['configincludescalesinaggregation'] = 'Voit vaihtaa suhteita jotka ovat liitetty numeroina kaikkiin kokonaispisteisiin kaikkien kurssien kaikissa arvosanakirjoissa. VAROITUS: tämän asetuksen vaihtaminen pakottaa kaikki kokonaispisteet uudelleen laskettavaksi.';
+$string['configincludescalesinaggregation'] = 'Voit vaihtaa suhteita jotka ovat liitetty numeroina kaikkiin kokonaispisteisiin kaikkien kurssien kaikissa arvosanarekistereissä. VAROITUS: tämän asetuksen vaihtaminen pakottaa kaikki kokonaispisteet uudelleen laskettavaksi.';
 $string['configmeanselection'] = 'Mitkä solut, joissa ei ole arvosanaa pitäisi lisätä kun lasketaan keskiarvoa jokaiselle palstalle.';
 $string['configprofilereport'] = 'Käyttäjän profiilissa käytetty arvosanaraportti.';
 $string['configquickgrading'] = 'Pika-arviointi lisää tekstinsyöttöelementin arvioijan raportin arviointisoluihin. Kenttien avulla voit muokata monia arviointeja yhtä aikaa. Napsauta Päivitä -nappia tallentaaksesi syötetyt arvioinnit kerralla.';
@@ -136,7 +135,7 @@ $string['coursesettingsexplanation'] = 'Kurssiasetuksissa määritellään milt�
 $string['coursetotal'] = 'Kurssiyhteenveto';
 $string['createcategory'] = 'Tee kategoria';
 $string['createcategoryerror'] = 'Uuden kategorian luonti ei onnistunut';
-$string['creatinggradebooksettings'] = 'Luodaan arviointikirjan asetukset';
+$string['creatinggradebooksettings'] = 'Luodaan arvosanarekisterin asetukset';
 $string['csv'] = 'CSV';
 $string['currentparentaggregation'] = 'Nykyinen ylempi kokoamistapa';
 $string['curveto'] = 'Pyöristä';
@@ -175,6 +174,7 @@ $string['errorcalculationunknown'] = 'Tuntematon kaava';
 $string['errorgradevaluenonnumeric'] = 'Saatiin ei-numeerinen arvo matalalle tai korkealle arvosanalle seuraavalle';
 $string['errornocalculationallowed'] = 'Laskelmat eivät ole sallittuja tälle yksikölle.';
 $string['errornocategorisedid'] = 'Ei pystynyt saamaan kategoriatonta tunnusta!';
+$string['errornocategorizedid'] = 'Ei saatu kategorioimatonta id:tä!';
 $string['errornocourse'] = 'Ei voitu noutaa kurssitietoja';
 $string['errorreprintheadersnonnumeric'] = 'Vastaanotettujen ei-numeraalisien arvo otsakkeiden päivitystä varten.';
 $string['errorsavegrade'] = 'Arvosanaa ei voitu tallentaa.';
@@ -208,8 +208,8 @@ $string['fullmode'] = 'Täysi näkymä';
 $string['fullview'] = 'Koko näkymä';
 $string['generalsettings'] = 'Yleiset asetukset';
 $string['grade'] = 'Arvosana';
-$string['gradebook'] = 'Arviointikirja';
-$string['gradebookhiddenerror'] = 'Arviointikirja ei näytä mitään tietoja opiskelijoille';
+$string['gradebook'] = 'Arvosanarekisteri';
+$string['gradebookhiddenerror'] = 'Arvosanarekisteri ei näytä mitään tietoja opiskelijoille';
 $string['gradebookhistories'] = 'Arvosanojen historia';
 $string['gradeboundary'] = 'Kirjain arvosanan raja';
 $string['gradecategories'] = 'Arvosanojen kategoriat';
@@ -229,7 +229,7 @@ $string['gradehistorylifetime'] = 'Arvosanojen historian ikä';
 $string['gradeitem'] = 'Arviointikohde';
 $string['gradeitemaddusers'] = 'Jätä pois arvioinnista';
 $string['gradeitemadvanced'] = 'Arvosananimikkeen lisäominaisuudet';
-$string['gradeitemislocked'] = 'Tämä aktiviteetti on lukittu arvosanakirjaan. Muutoksia lisätä arvosanakirjaan ennen kuin se on avattu.';
+$string['gradeitemislocked'] = 'Tämä aktiviteetti on lukittu arvosanarekisteriin. Muutoksia ri  lisätä arvosanarekisteriin ennen kuin se on avattu.';
 $string['gradeitemlocked'] = 'Arviointi lukittu';
 $string['gradeitemmembersselected'] = 'Jätetään pois arvioinnista';
 $string['gradeitemnonmembers'] = 'Mukana arvioinnissa';
@@ -403,7 +403,7 @@ $string['outcomecategorynew'] = 'Uusi kategoria';
 $string['outcomeconfirmdelete'] = 'Haluatko varmasti poistaa tavoitteen \"$a\"?';
 $string['outcomecreate'] = 'Lisää uusi tavoite';
 $string['outcomedelete'] = 'Poista tavoite';
-$string['outcomeidhelp'] = 'Määrittelee Lopputuloksen jolla tämä arvosana esittään arvosanakirjassa. vain tähän kurssiin assosioidut lopputulokset ja koko sivuston laajuiset lopputulokset ovat saatavilla.';
+$string['outcomeidhelp'] = 'Määrittelee Lopputuloksen jolla tämä arvosana esittään arvosanarekisterissä. vain tähän kurssiin assosioidut lopputulokset ja koko sivuston laajuiset lopputulokset ovat saatavilla.';
 $string['outcomeitem'] = 'Lopputulosnimike';
 $string['outcomeitemsedit'] = 'Muokkaa lopputulosnimikettä';
 $string['outcomename'] = 'Lopputuloksen nimi';
@@ -423,7 +423,7 @@ $string['overridden'] = 'Ylitetty';
 $string['overriddenhelp'] = 'Kun päällä, ylittämislippu estää tulevat yritykset automaattisen arvosanan arvon käsittelyn.';
 $string['overriddennotice'] = 'Sinun arvosanasi tältä aktiviteetilta käsiteltiin manuaalisesti.';
 $string['overridesitedefaultgradedisplaytype'] = 'Ylitä sivuston oletukset';
-$string['overridesitedefaultgradedisplaytypehelp'] = 'Merkitse tämä nappi käyttääkseksi sivuston arvosanojen oletusnäkymä ylittämistä arvosanakirjassa. Tämä aktivoi lomake elementit, jotka antavat sinun määritellä arvosanamerkit ja rajat.';
+$string['overridesitedefaultgradedisplaytypehelp'] = 'Merkitse tämä valintaruutu käyttääksesi sivuston arvosanojen oletusnäkymän syrjäyttämistä arvosanarekisterissä. Tämä aktivoi lomake-elementit, jotka antavat sinun määritellä arvosanamerkit ja rajat.';
 $string['parentcategory'] = 'Yläkategoria';
 $string['pctoftotalgrade'] = 'prosenttia kokonaisarvosanasta';
 $string['percent'] = 'Prosentti';
@@ -571,10 +571,9 @@ $string['weightorextracredit'] = 'Painotus tai lisäsuoritus';
 $string['weights'] = 'Painotukset';
 $string['weightsedit'] = 'Muokkaa painotuksia ja lisäsuorituksia';
 $string['weightuc'] = 'Painotus';
-$string['writinggradebookinfo'] = 'Kirjoitetaan arviointikirjan asetuksia';
+$string['writinggradebookinfo'] = 'Kirjoitetaan arvosanarekisterin asetuksia';
 $string['xml'] = 'XML';
 $string['yes'] = 'Kyllä';
 $string['yourgrade'] = 'Arvosanasi';
-$string['errornocategorizedid'] = 'Ei saatu kategorioimatonta id:tä!'; // ORPHANED
 
 ?>

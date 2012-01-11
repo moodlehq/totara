@@ -1,7 +1,5 @@
-<?PHP // $Id$
-      // questionnaire.php - created with Moodle 1.9.5+ (Build: 20090624) (2007101550)
-
-
+<?php
+// questionnaire.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'פעולה';
 $string['addnewquestion'] = 'הוספת שאלת $a';

@@ -1,6 +1,5 @@
-<?PHP // $Id: question.php,v 1.33 2009/11/22 14:17:06 ralf-bonn Exp $ 
-      // question.php - created with Moodle 2.0 dev (Build: 20091117) (2009112000)
-
+<?php
+// question.php - created with Totara langimport script version 1.1
 
 $string['adminreport'] = 'Bericht zu möglichen Problemen mit Ihrer Fragen-Datenbank';
 $string['availableq'] = 'Verfügbar?';
@@ -9,7 +8,9 @@ $string['broken'] = 'Dies ist ein ungültiger Link, der auf eine nicht existiere
 $string['byandon'] = 'von <em>$a->user</em> - <em>$a->time</em>';
 $string['cannotcopybackup'] = 'Die Sicherungsdatei konnte nicht kopiert werden';
 $string['cannotcreate'] = 'Es konnte kein Eintrag in der Datenbanktabelle für Testversuche (question_attempts) angelegt werden.';
+$string['cannotcreatedataset'] = 'Der Datensatz $a kann nicht angelegt werden';
 $string['cannotcreatepath'] = 'Pfad $a konnte nicht erstellt werden';
+$string['cannotcreaterelation'] = 'Eine Verbindung zum den Datensatz $a[0] $a[1] kann nicht angelegt werden';
 $string['cannotdeletecate'] = 'Kategorie konnte nicht gelöscht werden, weil sie für diesen Kontext die Standardkategorie darstellt.';
 $string['cannotenable'] = 'Fragentyp $a kann nicht direkt erstellt werden.';
 $string['cannotfindcate'] = 'Kategoriedaten konnten nicht gefunden werden';
@@ -18,15 +19,28 @@ $string['cannotgetdsfordependent'] = 'Für diese datensetabhängige Frage kann d
 $string['cannotgetdsforquestion'] = 'Ausgewähltes Datenset für berechnete Fragen nicht gefunden! (Frage:{$a})';
 $string['cannothidequestion'] = 'Frage konnte nicht verborgen werden';
 $string['cannotimportformat'] = 'Entschuldigung, aber der Import für dieses Format ist bisher nicht implementiert!';
+$string['cannotinsert'] = 'Fehler beim Einfügen des Eintrag';
+$string['cannotinsertitem'] = 'Datenmenge konnte nicht eingefügt werden: $a[0] mit $a[1] von $a[2]';
 $string['cannotinsertquestion'] = 'Neue Frage konnte nicht eingefügt werden!';
+$string['cannotinsertquestioncate'] = 'Neue Fragenkategorie $a nicht eingefügt';
 $string['cannotinsertquestioncatecontext'] = 'Neue Fragenkategorie $a[0] nicht eingefügt: ungültige Kontext-ID $a[1]';
 $string['cannotloadquestion'] = 'Frage konnte nicht geladen werden';
+$string['cannotmovecate'] = 'Kategorie $a nicht verschiebbar. Es ist die einzige in diesem Kontext.';
+$string['cannotmovefromto'] = 'Kategorie $a[0] konnte nicht nach $a[1] verschoben werden.';
 $string['cannotmovequestion'] = 'Mit dieser Funktionen können Sie keine Fragen verschieben in denen Dateien (Bilder) aus verschiedenen Bereichen eingebunden sind.';
 $string['cannotopenforwriting'] = 'Öffnen zum Schreiben von $a nicht möglich.';
 $string['cannotpreview'] = 'Keine Vorschau für diese Fragen möglich!';
 $string['cannotretrieveqcat'] = 'Fragekategorie konnte nicht aufgerufen werden';
+$string['cannotsavequiz'] = 'Der letzte Testversuch konnte nicht gespeichert werden!';
 $string['cannotunhidequestion'] = 'Frage konnte nicht sichtbar gemacht werden';
 $string['cannotunzip'] = 'Datei konnte nicht entpackt werden.';
+$string['cannotupdatecate'] = 'Kategorie $a konnte nicht aktualisiert werden';
+$string['cannotupdatecount'] = 'Fehler: Zähler für Wert nicht aktualisiert';
+$string['cannotupdateitem'] = 'Fehler: Datensetwert nicht aktualisiert';
+$string['cannotupdatequestion'] = 'Die Frage konnte nicht aktualisiert werden!';
+$string['cannotupdatequestionver'] = 'Das Versionsfeld der Frage konnte nicht aktualisiert werden';
+$string['cannotupdaterandomqname'] = 'Name der Zufallsfrage nicht aktualisiert';
+$string['cannotupdatesubcate'] = 'Unterkategorie nicht aktualisiert';
 $string['cannotwriteto'] = 'Die exportierten Fragen können nicht nach \"$a\" gespeichert werden';
 $string['categorycurrent'] = 'Aktuelle Kategorie';
 $string['categorycurrentuse'] = 'Diese Kategorie benutzen';
@@ -76,6 +90,8 @@ $string['errorsavingcomment'] = 'Fehler beim Speichern des Kommentars für Frage
 $string['errorupdatingattempt'] = 'Fehler beim Speichern des Kommentars zu Frage $a->id in der Datenbank.';
 $string['exportcategory'] = 'Kategorie exportieren';
 $string['exporterror'] = 'Fehler beim Export aufgetreten!';
+$string['filecantmovefrom'] = 'Sie haben keine Berechtigung die Fragendatei von der gewählten Quelle zu verschieben.';
+$string['filecantmoveto'] = 'Sie haben keine Berechtigung die Fragendatei zu dem gewählten Ziel zu verschieben.';
 $string['filesareacourse'] = 'Dateibereich im Kurs';
 $string['filesareasite'] = 'Dateibereich der Website';
 $string['filestomove'] = 'Dateien nach $a kopieren / verschieben?';
@@ -122,6 +138,7 @@ $string['noprobs'] = 'Es wurden keine Probleme in Ihrer Fragen-Datenbank gefunde
 $string['notenoughdatatoeditaquestion'] = 'Weder eine Frage-ID, noch Kategorie-ID oder Fragetyp sind angegeben.';
 $string['notenoughdatatomovequestions'] = 'Sie müssen die Frage-ID der Fragen angeben, die Sie verschieben wollen.';
 $string['notflagged'] = 'nicht markiert';
+$string['novirtualquestion'] = 'Für den Fragetyp $a wurde kein virtueller Fragetyp gefunden.';
 $string['novirtualquestiontype'] = 'Kein virtueller Fragetyp für Fragetyp $a vorhanden';
 $string['parenthesisinproperclose'] = 'Die Klammer vor ** ist nicht richtig geschlossen bei $a**';
 $string['parenthesisinproperstart'] = 'Die Klammer vor ** ist nicht richtig geöffnet bei $a**';
@@ -159,21 +176,5 @@ $string['upgradeproblemcouldnotupdatecategory'] = 'Die Fragenkategorie $a->name 
 $string['upgradeproblemunknowncategory'] = 'Bei der Aktualisierung der Fragenkategorien wurde ein Problem erkannt. Kategorie $a->id bezieht sich auf die Vorgänger-Kategorie, die nicht existiert. Die Vorgänger-Kategorie wurde geändert um das Problem zu beheben.';
 $string['wrongprefix'] = 'Falsch formatiertes Präfix-Wort';
 $string['yourfileshoulddownload'] = 'Der Download Ihrer Exportdatei sollte in Kürze beginnen. Falls nicht, dann klicken Sie  <a href=\"$a\">hier</a>.';
-$string['cannotcreatedataset'] = 'Der Datensatz $a kann nicht angelegt werden'; // ORPHANED
-$string['cannotcreaterelation'] = 'Eine Verbindung zum den Datensatz $a[0] $a[1] kann nicht angelegt werden'; // ORPHANED
-$string['cannotinsert'] = 'Fehler beim Einfügen des Eintrag'; // ORPHANED
-$string['cannotinsertitem'] = 'Datenmenge konnte nicht eingefügt werden: $a[0] mit $a[1] von $a[2]'; // ORPHANED
-$string['cannotinsertquestioncate'] = 'Neue Fragenkategorie $a nicht eingefügt'; // ORPHANED
-$string['cannotmovecate'] = 'Kategorie $a nicht verschiebbar. Es ist die einzige in diesem Kontext.'; // ORPHANED
-$string['cannotmovefromto'] = 'Kategorie $a[0] konnte nicht nach $a[1] verschoben werden.'; // ORPHANED
-$string['cannotsavequiz'] = 'Der letzte Testversuch konnte nicht gespeichert werden!'; // ORPHANED
-$string['cannotupdatecate'] = 'Kategorie $a konnte nicht aktualisiert werden'; // ORPHANED
-$string['cannotupdatecount'] = 'Fehler: Zähler für Wert nicht aktualisiert'; // ORPHANED
-$string['cannotupdateitem'] = 'Fehler: Datensetwert nicht aktualisiert'; // ORPHANED
-$string['cannotupdatequestion'] = 'Die Frage konnte nicht aktualisiert werden!'; // ORPHANED
-$string['cannotupdatequestionver'] = 'Das Versionsfeld der Frage konnte nicht aktualisiert werden'; // ORPHANED
-$string['cannotupdaterandomqname'] = 'Name der Zufallsfrage nicht aktualisiert'; // ORPHANED
-$string['cannotupdatesubcate'] = 'Unterkategorie nicht aktualisiert'; // ORPHANED
-$string['novirtualquestion'] = 'Für den Fragetyp $a wurde kein virtueller Fragetyp gefunden.'; // ORPHANED
 
 ?>

@@ -2,6 +2,10 @@
  * These styles are ONLY included for IE 7 (via meta.php)
  */
 
+.local-program fieldset.course_set .delete_item a {
+    margin-bottom:10px;
+}
+
 .tabrow0 {
 	padding-top:6px;
 }

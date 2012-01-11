@@ -1,6 +1,5 @@
-<?PHP // $Id: mnet.php,v 1.9 2010/06/20 18:19:49 barias Exp $ 
-      // mnet.php - created with Moodle 1.9.8 (Build: 20100325) (2007101580)
-
+<?php
+// mnet.php - created with Totara langimport script version 1.1
 
 $string['RPC_HTTPS_SELF_SIGNED'] = 'HTTPS (auto-firmado)';
 $string['RPC_HTTPS_VERIFIED'] = 'HTTPS (firmado)';
@@ -20,6 +19,8 @@ $string['authfail_usermismatch'] = 'Autorización fallida: el usuario no concuer
 $string['authmnetautoadddisabled'] = '<em>Añadir automáticamente usuarios</em> en el conector (\'plugin\') de autenticación de la Red de Trabajo Moodle(\'Moodle Networking\') está <strong>deshabilitado</strong>.';
 $string['authmnetdisabled'] = '<em>El conector (\'plugin\') de autenticación</em>de la Red de Trabajo Moodle(\'Moodle Networking\') está <strong>deshabilitado</strong>.';
 $string['badcert'] = 'Este no es un certificado válido.';
+$string['certdetails'] = 'Detalles del certificado';
+$string['configmnet'] = 'La red Moodle permite la comunicación de este servidor con otros servidores o servicios.';
 $string['couldnotgetcert'] = 'Ningún certificado fue encontrado en <br />$a. <br />El host puede estar caído o incorrectamente configurado.';
 $string['couldnotmatchcert'] = 'Esto no concuerda con el certificado actualmente publicado por el servidor web.';
 $string['courses'] = 'cursos';
@@ -192,7 +193,5 @@ $string['wrong-ip'] = 'Su dirección IP no concuerda con la que tenemos registra
 $string['xmlrpc-missing'] = 'Debe tener XML-RPC instalado en su construcción PHP para poder usar esta característica.';
 $string['yourhost'] = 'Su Host';
 $string['yourpeers'] = 'Sus iguales';
-$string['certdetails'] = 'Detalles del certificado'; // ORPHANED
-$string['configmnet'] = 'La red Moodle permite la comunicación de este servidor con otros servidores o servicios.'; // ORPHANED
 
 ?>

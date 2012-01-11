@@ -2073,19 +2073,18 @@ function xmldb_local_upgrade($oldversion) {
     if ($result && $oldversion < 2011030701) {
         $roles = get_records('role');
         // find administrator role (either admin or administrator)
-        $adminid = get_field('role', 'id', 'shortname', 'admin');
-        if(!$adminid) {
-            $adminid = get_field('role', 'id', 'shortname', 'administrator');
-        }
-        // only continue if admin role found
-        if($adminid) {
-            foreach($roles as $role) {
-                $assign = get_record('role_allow_assign', 'roleid', $adminid, 'allowassign', $role->id);
-                if (!$assign) {
-                    $role_assign = new object();
-                    $role_assign->roleid = $adminid;
-                    $role_assign->allowassign = $role->id;
-                    $result = $result && insert_record('role_allow_assign', $role_assign);
+
+        // Get admin role(s)
+        if ($adminroles = get_roles_with_capability('moodle/site:doanything', CAP_ALLOW, get_context_instance(CONTEXT_SYSTEM))) {
+            foreach ($adminroles as $adminrole) {
+                foreach ($roles as $role) {
+                    $assign = get_record('role_allow_assign', 'roleid', $adminrole->id, 'allowassign', $role->id);
+                    if (!$assign) {
+                        $role_assign = new object();
+                        $role_assign->roleid = $adminrole->id;
+                        $role_assign->allowassign = $role->id;
+                        $result = $result && insert_record('role_allow_assign', $role_assign);
+                    }
                 }
             }
         }
@@ -2799,7 +2798,7 @@ function xmldb_local_upgrade($oldversion) {
             $table = new XMLDBTable($hierarchy.'_type');
             $field = new XMLDBField('idnumber');
             $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
-             if (!field_exists($table, $field)) {
+            if (!field_exists($table, $field)) {
                 /// Add idnumber field
                 $result = $result && add_field($table, $field);
             }
@@ -2809,6 +2808,105 @@ function xmldb_local_upgrade($oldversion) {
             $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('idnumber'));
             if (!index_exists($table, $index)) {
                 $result = $result && add_index($table, $index);
+            }
+        }
+    }
+
+    if ($result && $oldversion < 2011091204) {
+        require_once($CFG->dirroot . '/hierarchy/prefix/position/lib.php');
+        $table = new XMLDBTable('pos_assignment');
+        $field = new XMLDBField('managerpath');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '1024', null, null, null, null, null);
+
+        // Conditionally add field managerpath
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+
+            // fill primary position assignments with manager path data
+            $primary_assignments = get_records('pos_assignment',
+                'type', POSITION_TYPE_PRIMARY,
+                'userid', 'id,userid,managerid');
+            // build a keyed array for faster access
+            // unique key ensures only one userid for each primary position assignment
+            $manager_relations = array();
+            if ($primary_assignments) {
+                foreach ($primary_assignments as $assignment) {
+                    $manager_relations[$assignment->userid] = $assignment->managerid;
+                }
+
+                foreach ($primary_assignments as $assignment) {
+                    $path = '/' . implode(totara_get_lineage($manager_relations, $assignment->userid), '/');
+                    $todb = new object();
+                    $todb->id = $assignment->id;
+                    $todb->managerpath = $path;
+                    $result = $result && update_record('pos_assignment', $todb);
+                }
+            }
+
+            if ($result) {
+                // remove management plugin table
+                $table = new XMLDBTable('manager');
+                if (table_exists($table)) {
+                    $result = $result && drop_table($table);
+                }
+
+                // unset config variables
+                set_config('local_management_version', null);
+                set_config('local_management_cron', null);
+                set_config('local_management_lastcron', null);
+            }
+        }
+    }
+
+    if ($result && $oldversion < 2011091205) {
+        // Add missing rpl column to course_completion_crit_compl table (missing from upgrades)
+        $table = new XMLDBTable('course_completion_crit_compl');
+        $field = new XMLDBField('rpl');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, null, null);
+
+        if (!field_exists($table, $field)) {
+            // Add rpl field
+            $result = $result && add_field($table, $field);
+        } else {
+            $sql = "UPDATE {$CFG->prefix}course_completion_crit_compl SET rpl=" .
+                sql_substr() . "(rpl, 1, 255)";
+            $result = $result && execute_sql($sql);
+
+            $result = $result && change_field_type($table, $field, true, true);
+        }
+    }
+
+    if ($result && $oldversion < 2012011000) {
+        require_once($CFG->dirroot . '/hierarchy/prefix/position/lib.php');
+        $table = new XMLDBTable('pos_assignment');
+        $field = new XMLDBField('managerpath');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '1024', null, null, null, null, null);
+
+        // If managerpath exists then check for inconsistencies and fix if necessary
+        if (field_exists($table, $field)) {
+
+            // fill primary position assignments with manager path data
+            $primary_assignments = get_records('pos_assignment',
+                'type', POSITION_TYPE_PRIMARY,
+                'userid', 'id,userid,managerid,managerpath');
+            // build a keyed array for faster access
+            // unique key ensures only one userid for each primary position assignment
+            $manager_relations = array();
+            if ($primary_assignments) {
+                foreach ($primary_assignments as $assignment) {
+                    $manager_relations[$assignment->userid] = $assignment->managerid;
+                }
+
+                foreach ($primary_assignments as $assignment) {
+                    $path = '/' . implode(totara_get_lineage($manager_relations, $assignment->userid), '/');
+
+                    if ($path != $assignment->managerpath) {
+                        $todb = new object();
+                        $todb->id = $assignment->id;
+                        $todb->managerpath = $path;
+                        $result = $result && update_record('pos_assignment', $todb);
+                    }
+                }
             }
         }
     }

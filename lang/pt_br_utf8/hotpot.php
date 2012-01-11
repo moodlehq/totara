@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // hotpot.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// hotpot.php - created with Totara langimport script version 1.1
 
 $string['abandoned'] = 'Abandonada';
 $string['addquizchain'] = 'Acrescentar série de atividades';

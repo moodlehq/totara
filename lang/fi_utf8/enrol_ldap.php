@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_ldap.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// enrol_ldap.php - created with Totara langimport script version 1.1
 
 $string['description'] = '<p>Voit käyttää LDAP-palvelinta hallinnoidaksesi ilmoittautumisia. Tällöin oletetaan että LDAP-puusi sisältää ryhmät, jotka liittyvät kursseihin ja että jokainen näistä ryhmistä/kursseista tulee sisältämään jäsenyysrekisterin, johon oppilaat liitetään.</p>
 

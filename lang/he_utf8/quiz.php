@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // quiz.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// quiz.php - created with Totara langimport script version 1.1
 
 $string['1day'] = 'יום 1';
 $string['1hour'] = 'שעה 1';
@@ -65,7 +64,7 @@ $string['attemptsexist'] = 'אינך מורשה להוסיף או להוריד �
 $string['attemptsnum'] = 'ניסיונות מענה: $a';
 $string['attemptsnumthisgroup'] = 'ניסיונות מענה: $a->total  ($a->group מקורס זה';
 $string['attemptsnumyourgroups'] = 'ניסיונות מענה: $a->total  ($a->group מהקבוצות שלך';
-$string['attemptsonly'] = 'הראה רק את התלמידים שניסו לענות על בחנים.';
+$string['attemptsonly'] = 'הראה רק את המשתתפים שניסו לענות על בחנים.';
 $string['attemptsunlimited'] = 'אין מגבלה על מספר נסיונות המענה.';
 $string['back'] = 'חזרה לתצוגה המקדימה של השאלה.';
 $string['backtoquestionlist'] = 'חזרה לרשימת השאלות';
@@ -73,7 +72,7 @@ $string['backtoquiz'] = 'חזרה לעריכת הבוחן';
 $string['bestgrade'] = 'הציון הטוב ביותר';
 $string['blackboard'] = 'תצורת Blackboard';
 $string['blackboard_6'] = 'תצורת Blackboard V6+';
-$string['bothattempts'] = 'הראה את התלמידים שניסו לענות על הבוחן בנוסף לתלמידים שלא ניסו.';
+$string['bothattempts'] = 'הראה את המשתתפים שניסו לענות על הבוחן בנוסף למשתתפים שלא ניסו.';
 $string['braceerror'] = 'לא נמצאו {...} סביב התשובות';
 $string['browsersecurity'] = 'אבטחת דפדפן';
 $string['calculated'] = 'חישוב';
@@ -133,7 +132,7 @@ $string['corrresp'] = 'תגובה נכונה';
 $string['countdown'] = 'ספירה לאחור';
 $string['countdownfinished'] = 'בוחן זה עומד להסתיים, עליך להגיש את תשובותיך כעת.';
 $string['countdowntenminutes'] = 'בוחן זה יסתיים בעוד עשר דקות.';
-$string['coursetestmanager'] = 'תסדיר מנהל מבחני קורס.';
+$string['coursetestmanager'] = 'פורמט מנהל מבחני קורס.';
 $string['createfirst'] = 'תחילה עליך ליצור מספר שאלות מסוג תשובה-קצרה.';
 $string['createmultiple'] = 'הוסף מספר שאלות אקראיות לבוחן.';
 $string['createnewquestion'] = 'הוסף שאלה חדשה';
@@ -208,6 +207,9 @@ $string['event7'] = 'הגש';
 $string['event8'] = 'סגור';
 $string['event9'] = 'ציון ידני';
 $string['examview'] = 'תצוגת מבחן';
+$string['existingcategory1'] = '\'מילולי\' מתוך סט קיים של \'מילוליים\', שמשמשים גם שאלות אחרות בקטגוריה זו.';
+$string['existingcategory2'] = 'קובץ מתוך סט קיים של קבצים, שמשמשים גם שאלות אחרות בקטגוריה זו.';
+$string['existingcategory3'] = 'קישור מתוך סט קיים של קישורים, שמשמשים גם שאלות אחרות בקטגוריה זו.';
 $string['export'] = 'יצוא';
 $string['exportcategory'] = 'יצוא קטגוריה';
 $string['exporterror'] = 'חלה שגיאה במהלך עיבוד היצוא';
@@ -226,7 +228,7 @@ $string['feedbackerrororder'] = 'על גבולות ציוני המשוב חוב�
 $string['file'] = 'קובץ';
 $string['fileformat'] = 'תסדיר הקובץ';
 $string['fillcorrect'] = 'מלא עם הנכון';
-$string['filloutnumericalanswer'] = 'עליך לספק לפחות תשובה אפשרית אחת ומרווח סובלנות. התשובה המתאימה הראשונה תשמש כדי לקבוע את התוצאה והמשוב. אם בסוף תספק משוב כלשהוא ללא תשובה, משוב זה יוצג לתלמידים שתשובתם לא תואמת אף אחת מהתשובות האפשריות.';
+$string['filloutnumericalanswer'] = 'עליך לספק לפחות תשובה אפשרית אחת ומרווח סובלנות. התשובה המתאימה הראשונה תשמש כדי לקבוע את התוצאה והמשוב. אם בסוף תספק משוב כלשהוא ללא תשובה, משוב זה יוצג למשתתפים שתשובתם לא תואמת אף אחת מהתשובות האפשריות.';
 $string['filloutoneanswer'] = 'עליך לספק לפחות תשובה אפשרית אחת. תשובות ריקות לא ייחשבו. ניתן להשתמש ב-* כתו-כללי שיתאים לכל תו שהוא. התשובה התואמת הראשונה תשמש לקביעת התוצאה והמשוב.';
 $string['filloutthreequestions'] = 'עליך לספק לפחות שלוש שאלות בעלות תשובות תואמות. באפשרותך לספק בנוסף לאלו תשובות שגויות על ידי נתינת תשובה שהשאלה שלה ריקה. ערכים בהם גם השאלה וגם התשובה ריקות לא ייחשבו.';
 $string['fillouttwochoices'] = 'עליך למלא לפחות שתי בחירות. בחירות שיושארו ריקות לא ייחשבו.';
@@ -283,7 +285,7 @@ $string['importingquestions'] = 'מיבא  $a שאלות מתוך הקובץ.';
 $string['importmax10error'] = 'בשאלה שלך יש שגיאה. אינך יכול להגדיר יותר מעשר תשובות.';
 $string['importmaxerror'] = 'בשאלה שלך יש שגיאה. קיימות יותר מדי תשובות.';
 $string['importminerror'] = 'בשאלה שלך יש שגיאה. אין מספיק תשובות לשאלה מסוג זה.';
-$string['importparseerror'] = 'שגיאות נמצאו לאחר ניתוח הקובץ המיובא. לא נימצא יבוא של שאלות. בכדי לייבא שאלות תקינות נסה שוב ושנה את בחירת \"עצור בשגיאה\" ל \"לא\".';
+$string['importparseerror'] = 'טעות/טעויות התגלו בעיבוד הקובץ המיובא. לא יובאו שאלות. לייבא שאלות טובות נסה להגדיר את \'עצור בעת טעות\' ל- \'לא\'';
 $string['importquestions'] = 'יבא שאלות מקובץ';
 $string['incorrect'] = 'לא נכון';
 $string['indivresp'] = 'תגובות של יחידים לכל פריט';
@@ -299,6 +301,9 @@ $string['itemdefinition'] = 'הגדרה';
 $string['itemsource'] = 'מקור הפריט';
 $string['itemsourceformat'] = 'תסדיר מקור הפריט';
 $string['itemtypes'] = 'סוגי שאלות חיצוניות';
+$string['keptlocal1'] = '\'מילולי\' מאותו סט \'מילוליים\' פרטי של אותה השאלה כמקודם.';
+$string['keptlocal2'] = 'קובץ מאותו סט קבצים פרטי של אותה השאלה כמקודם.';
+$string['keptlocal3'] = 'קישור מאותו סט קישורים פרטי של אותה השאלה כמקודם.';
 $string['lastanswer'] = 'התשובה האחרונה שלך הייתה';
 $string['learnwise'] = 'תסדיר Learnwise';
 $string['link'] = 'קישור';
@@ -338,6 +343,12 @@ $string['multipleanswers'] = 'בחר בתשובה אחת לפחות';
 $string['multiplier'] = 'מכפיל';
 $string['name'] = 'שם';
 $string['newattemptfail'] = 'שגיאה: לא היה ניתן להתחיל בניסיון חדש לענות על הבוחן.';
+$string['newcategory1'] = '\'מילולי\' מתוך סט חדש של \'מילוליים\', שיכולים לשמש גם שאלות אחרות בקטגוריה זו.';
+$string['newcategory2'] = 'קובץ מתוך סט חדש של קבצים, שיכולים לשמש גם שאלות אחרות בקטגוריה זו.';
+$string['newcategory3'] = 'קישור מתוך סט חדש של קישורים, שיכולים לשמש גם שאלות אחרות בקטגוריה זו.';
+$string['newlocal1'] = '\'מילולי\' מתוך סט חדש של \'מילוליים\', שישמש רק את השאלה הזו.';
+$string['newlocal2'] = 'קובץ מתוך סט חדש של קבצים, שישמש רק את השאלה הזו.';
+$string['newlocal3'] = 'קישור מתוך סט חדש של קבצים, שישמש רק את השאלה הזו.';
 $string['noanswers'] = 'לא נבחרו תשובות!';
 $string['noattempts'] = 'לא נעשו ניסיונות לענות על בוחן זה';
 $string['noattemptstoshow'] = 'אין נסיונות מענה להציג';
@@ -346,7 +357,7 @@ $string['nocommentsyet'] = 'עדיין אין הערות.';
 $string['noconnection'] = 'נכון לרגע זה אין חיבור לשירות רשת שיכול לעבד את השאלה הזו. אנא צור קשר עם המנהל שלך.';
 $string['nodataset'] = 'כלום - זהו אינו תו-כללי';
 $string['noessayquestionsfound'] = 'לא נמצאו שאלות שניתן להם ציון באופן ידני.';
-$string['nogradewarning'] = 'לא ניתן ציון לבוחן זה. לא תוכל להגדיר משוב מקיף אשר שונה מהציון.';
+$string['nogradewarning'] = 'הבוחן אינו נמדד עם ציון, אז לא ניתן להגדיר משוב כולל ששונה לפי ציון.';
 $string['nomatchinganswer'] = 'עלייך לפרט תשובה שתתאים לשאלה \'$a\'.';
 $string['nominal'] = 'נומינלי';
 $string['nomoreattempts'] = 'אין באפשרותך לבצע ניסיונות מענה נוספים עבור בוחן זה.';
@@ -369,12 +380,13 @@ $string['numattempts'] = '$a->studentnum $a->studentstring ניסה לענות �
 $string['numattemptsmade'] = '$a ניסיונות נעשו עבור בוחן זה';
 $string['numberabbr'] = '#';
 $string['numerical'] = 'מספרי';
-$string['onlyteachersexport'] = 'מורים בלבד יכולים לייצא שאלות.';
-$string['onlyteachersimport'] = 'רק מורים בעלי זכויות עריכה יכולים לייצא שאלות.';
+$string['onlyteachersexport'] = 'מדריכים בלבד יכולים לייצא שאלות.';
+$string['onlyteachersimport'] = 'רק מדריכים בעלי זכויות עריכה יכולים לייצא שאלות.';
 $string['openclosedatesupdated'] = 'מועדי תחילת וסיום הבוחן עודכנו';
 $string['optional'] = 'לבחירתכם';
 $string['outof'] = '$a->grade מתוך מקסימום של $a->maxgrade';
-$string['outofpercent'] = 'קיבלתם $a->grade  מתוך הציון המירבי  $a->maxgrade ($a->percent%%)';
+$string['outofpercent'] = '$a->grade מתוך ציון מירבי של a maximum of $a->maxgrade ($a->percent%%)
+outofpercent';
 $string['outofshort'] = '$a->grade/$a->maxgrade';
 $string['overallfeedback'] = 'הערכה מילולית לבוחן (משוב כולל)';
 $string['overdue'] = 'איחר את המועד';
@@ -404,7 +416,7 @@ $string['qti'] = 'תסדיר IMS QTI';
 $string['qti2'] = 'תסדיר IMS QTI 2.0';
 $string['question'] = 'שאלה';
 $string['questioncats'] = 'קטגוריות של שאלות';
-$string['questiondeleted'] = 'השאלה נמחקה. אנא צור קשר עם המורה שלך.';
+$string['questiondeleted'] = 'השאלה נמחקה. אנא צור קשר עם המדריך הקורס.';
 $string['questioninuse'] = 'השאלה \'$a->questionname\' נמצאת כרגע בשימוש ב: <br />$a->quiznames<br />השאלה לא תימחק מבחנים אלה, אלא רק מרשימת הקטגוריות.';
 $string['questionname'] = 'שם השאלה';
 $string['questionnametoolong'] = 'שם השאלה ארוך מדי בשורה $a (יש גבול של מקסימום 225 תווים), הוא קוצץ.';
@@ -497,7 +509,7 @@ $string['reviewopen'] = 'מאוחר יותר, כאשר הבוחן עדיין פ�
 $string['reviewoptions'] = 'הרשה לסטודנטים לעיין בתשובות';
 $string['reviewoptionsheading'] = 'אפשרויות לתצוגת משוב';
 $string['reviewresponse'] = 'עיין בתגובה';
-$string['reviewresponsetoq'] = 'סקירת תגובה (שאלה $a)';
+$string['reviewresponsetoq'] = 'בדוק תשובה לשאלה($a)';
 $string['rqp'] = 'שאלה חיצונית';
 $string['rqps'] = 'שאלות חיצוניות';
 $string['safebrowsererror'] = 'הבוחן הזה הוגדר כך שנסיונות המענה יקחו חלק רק ע\"י שימוש ב- Safe Exam Browser. לא ניתן לגשת אליו עם דפדפן רגיל.';
@@ -533,7 +545,7 @@ $string['showhidden'] = 'הצג גם שאלות ישנות';
 $string['shownoattempts'] = 'הצג סטודנטים ללא נסיונות מענה';
 $string['shownoattemptsonly'] = 'הצג סטודנטים ללא נסיונות מענה בלבד';
 $string['showquestiontext'] = 'הצג את הטקסט של השאלות ברשימת השאלות';
-$string['showteacherattempts'] = 'הצב את ניסיונות המענה של המורים';
+$string['showteacherattempts'] = 'הצב את ניסיונות המענה של המדריכים';
 $string['shuffle'] = 'ערבב';
 $string['shuffleanswers'] = 'ערבב תשובות';
 $string['shufflequestions'] = 'ערבב שאלות';
@@ -549,14 +561,14 @@ $string['startagain'] = 'התחל שוב';
 $string['startedon'] = 'התחיל ב-';
 $string['stoponerror'] = 'בשגיאה עצור';
 $string['subneterror'] = 'סליחה, בוחן זה נחסם כך שניתן לגשת אליו רק ממקומות מסויימים. נכון לעכשיו, המחשב שלך הוא לא אחד ממקומות אלה, ולכן אינך יכול לנסות ולפתור את הבוחן.';
-$string['subnetnotice'] = 'בוחן זה ננעל כך שהגישה אליו מותרת רק ממיקומים מסויימים. המחשב שלך לא נמצא בתת-רשת מורשה. כמורה, מותר לך לחזות בתצוגה המקדימה בכל מקרה.';
+$string['subnetnotice'] = 'בוחן זה ננעל כך שהגישה אליו מותרת רק ממיקומים מסויימים. המחשב שלך לא נמצא בתת-רשת מורשה. כמדריך, מותר לך לחזות בתצוגה המקדימה בכל מקרה.';
 $string['substitutedby'] = 'יוחלף על ידי';
 $string['summaryofattempts'] = 'סיכום ניסיונות המענה הקודמים שלך';
 $string['temporaryblocked'] = 'באופן זמני, אתה לא מורשה לנסות ולפתור את הבוחן שוב.<br />תוכל לנסות שוב בתאריך:';
 $string['time'] = 'זמן';
 $string['timecompleted'] = 'הושלם';
 $string['timedelay'] = 'אתה לא יכול לנסות לפתור את הבוחן מפני שעדיין לא חלפה השהיית הזמן שרק לאחריה אתה יכול לנסות ולפתור עוד בוחן.';
-$string['timeleft'] = 'זמן נותר';
+$string['timeleft'] = 'זמן שנותר';
 $string['timelimit'] = 'הגבלת זמן';
 $string['timelimitexeeded'] = 'סליחה! עברת על מגבלת הזמן של הבוחן!';
 $string['timelimitmin'] = 'משך הבחינה (בדקות)';
@@ -607,54 +619,5 @@ $string['xmltypeunsupported'] = 'שאלות מסוג $a לא נתמכות על �
 $string['youneedtoenrol'] = 'בכדי לגשת לבוחן אתה צריך להיות רשום לקורס זה';
 $string['yourfinalgradeis'] = 'ציונך הסופי בבוחן זה הוא $a';
 $string['zerosignificantfiguresnotallowed'] = 'התשובה הנכונה איננה יכולה להכיל ערכים ללא  ספרות משמעותיות';
-$string['existingcategory1'] = '\'מילולי\' מתוך סט קיים של \'מילוליים\', שמשמשים גם שאלות אחרות בקטגוריה זו.'; // ORPHANED
-$string['existingcategory2'] = 'קובץ מתוך סט קיים של קבצים, שמשמשים גם שאלות אחרות בקטגוריה זו.'; // ORPHANED
-$string['existingcategory3'] = 'קישור מתוך סט קיים של קישורים, שמשמשים גם שאלות אחרות בקטגוריה זו.'; // ORPHANED
-$string['keptlocal1'] = '\'מילולי\' מאותו סט \'מילוליים\' פרטי של אותה השאלה כמקודם.'; // ORPHANED
-$string['keptlocal2'] = 'קובץ מאותו סט קבצים פרטי של אותה השאלה כמקודם.'; // ORPHANED
-$string['keptlocal3'] = 'קישור מאותו סט קישורים פרטי של אותה השאלה כמקודם.'; // ORPHANED
-$string['newcategory1'] = '\'מילולי\' מתוך סט חדש של \'מילוליים\', שיכולים לשמש גם שאלות אחרות בקטגוריה זו.'; // ORPHANED
-$string['newcategory2'] = 'קובץ מתוך סט חדש של קבצים, שיכולים לשמש גם שאלות אחרות בקטגוריה זו.'; // ORPHANED
-$string['newcategory3'] = 'קישור מתוך סט חדש של קישורים, שיכולים לשמש גם שאלות אחרות בקטגוריה זו.'; // ORPHANED
-$string['newlocal1'] = '\'מילולי\' מתוך סט חדש של \'מילוליים\', שישמש רק את השאלה הזו.'; // ORPHANED
-$string['newlocal2'] = 'קובץ מתוך סט חדש של קבצים, שישמש רק את השאלה הזו.'; // ORPHANED
-$string['newlocal3'] = 'קישור מתוך סט חדש של קבצים, שישמש רק את השאלה הזו.'; // ORPHANED
-
-?>
-<?PHP // $Id$
-      // quiz.php - created with Moodle 1.9.5+ (Build: 20090624) (2007101550)
-
-
-
-$string['addingquestions'] = 'צד זה של הדף משמש לניהול מסד נתוני השאלות שלך. השאלות נשמרות בקטגוריות כדי לאפשר לך לשמור על סדר, ניתן להשתמש בהן בכל בוחן בקורס שלך ואפילו בקורסים אחרים אם תחליט \"לפרסם\" אותן. <br /><br />אחרי שתבחר או תיצור קטגורית שאלות תוכל ליצור או לערוך שאלות. תוכל לבחור להוסיף כל אחת משאלות אלו לבוחן שלך בצד השני של הדף.';
-$string['attemptsnumthisgroup'] = 'ניסיונות מענה: $a->total  ($a->group מקורס זה';
-$string['attemptsonly'] = 'הראה רק את המשתתפים שניסו לענות על בחנים.';
-$string['bothattempts'] = 'הראה את המשתתפים שניסו לענות על הבוחן בנוסף למשתתפים שלא ניסו.';
-$string['coursetestmanager'] = 'פורמט מנהל מבחני קורס.';
-$string['downloadextra'] = '(הקובץ נשמר גם בקבצי הקורס תחת הספרייה  /backupdata/quiz )';
-$string['emailconfirmbody'] = 'תודה על ששלחת את התשובות ל:
-\'$a->quizname\'
-בקורס \'$a->coursename\'
-ב: $a->submissiontime';
-$string['emailnotifybody'] = '$a->studentname סים את $a->quizname ב: $a->quizurl בקורס $a->coursename';
-$string['filloutnumericalanswer'] = 'עליך לספק לפחות תשובה אפשרית אחת ומרווח סובלנות. התשובה המתאימה הראשונה תשמש כדי לקבוע את התוצאה והמשוב. אם בסוף תספק משוב כלשהוא ללא תשובה, משוב זה יוצג למשתתפים שתשובתם לא תואמת אף אחת מהתשובות האפשריות.';
-$string['importfilearea'] = 'יבא מתוך קובץ שכבר נמצא בקבצי הקורס...';
-$string['importparseerror'] = 'טעות/טעויות התגלו בעיבוד הקובץ המיובא. לא יובאו שאלות. לייבא שאלות טובות נסה להגדיר את \'עצור בעת טעות\' ל- \'לא\'';
-$string['nogradewarning'] = 'הבוחן אינו נמדד עם ציון, אז לא ניתן להגדיר משוב כולל ששונה לפי ציון.';
-$string['onlyteachersexport'] = 'מדריכים בלבד יכולים לייצא שאלות.';
-$string['onlyteachersimport'] = 'רק מדריכים בעלי זכויות עריכה יכולים לייצא שאלות.';
-$string['outofpercent'] = '$a->grade מתוך ציון מירבי של a maximum of $a->maxgrade ($a->percent%%)
-outofpercent';
-$string['outofshort'] = '$a->grade/$a->maxgrade';
-$string['publishedit'] = 'על מנת שתוכל להוסיף או לערוך שאלות שנמצאות בקטגוריה זה, עליך להיות בעל הרשאות בקורס המפרסם';
-$string['questiondeleted'] = 'השאלה נמחקה. אנא צור קשר עם המדריך הקורס.';
-$string['reviewresponsetoq'] = 'בדוק תשובה לשאלה($a)';
-$string['savedfromdeletedcourse'] = 'נשמר מקורס $a שנמחק.';
-$string['showteacherattempts'] = 'הצב את ניסיונות המענה של המדריכים';
-$string['subnetnotice'] = 'בוחן זה ננעל כך שהגישה אליו מותרת רק ממיקומים מסויימים. המחשב שלך לא נמצא בתת-רשת מורשה. כמדריך, מותר לך לחזות בתצוגה המקדימה בכל מקרה.';
-$string['timeleft'] = 'זמן שנותר';
-$string['unusedcategorydeleted'] = 'קטגוריה זו נמחקה מפני ששאלותיה יצאו מכלל שימוש לאחר שהקורס נמחק.';
-$string['usedcategorymoved'] = 'קטגוריה זו נשתמרה בצורתה הנוכחית והועברה לרמת האתר זאת מפני שהיא קטגוריה מפורסמת וקורסים אחרים עדיין משתמשים בה.';
-$string['youneedtoenrol'] = 'בכדי לגשת לבוחן אתה צריך להיות רשום לקורס זה';
 
 ?>

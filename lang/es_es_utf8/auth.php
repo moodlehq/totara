@@ -1,11 +1,11 @@
 <?php
-// auth.php - created with Totara langimport script version 1.0
+// auth.php - created with Totara langimport script version 1.1
 
 $string['auth_cas_certificate_check'] = 'Pulse \'\'sí\'\' si desea validar el certificado del servidor';
 $string['auth_cas_certificate_check_key'] = 'Validación del servidor';
 $string['auth_cas_certificate_path'] = 'Ruta del archivo de la cadena de CA (Formato PEM) para validar el certificado del servidor';
 $string['auth_cas_certificate_path_empty'] = 'Si activa la validación del servidor, es necesario especificar una ruta de certificación';
-$string['auth_cas_certificate_path_key'] = 'Ruta de certificación';
+$string['auth_cas_certificate_path_key'] = 'Ruta';
 $string['auth_cas_hostname'] = 'Nombre del servidor CAS <br />ej.: host.domain.fr';
 $string['auth_dbdescription'] = 'Este método utiliza una tabla de una base de datos externa para comprobar si un determinado usuario y contraseña son válidos. Si la cuenta es nueva, la información de otros campos puede también ser copiada en Moodle.';
 $string['auth_dbextrafields'] = 'Estos campos son opcionales. Usted puede elegir pre-rellenar algunos campos del usuario de Moodle con información desde los <strong>campos de la base de datos externa</strong> que especifique aquí. <p>Si deja esto en blanco, se tomarán los valores por defecto</p>.<p>En ambos casos, el usuario podrá editar todos estos campos después de entrar</p>.';
@@ -60,9 +60,9 @@ $string['auth_pop3host'] = 'La dirección del servidor POP3. Use el número IP, 
 $string['auth_pop3port'] = 'Puerto del Servidor (110 es el más habitual)';
 $string['auth_pop3title'] = 'Usar un servidor POP3';
 $string['auth_pop3type'] = 'Tipo de servidor. Si su servidor utiliza certificado de seguridad, escoja pop3cert.';
-$string['auth_shib_integrated_wayf_description'] = 'Si marca esta opción, Moodle utilizará su servicio WAYF propio configurado para el lugar Shibboleth. Moodle  mostrará una lista desplegable en la página alternativa de inicio de sesión en la que el usuario tiene que seleccionar su proveedor de identidad.';
+$string['auth_shib_integrated_wayf_description'] = 'Si marca esta opción, Moodle utilizará su servicio WAYF propio configurado para el lugar Shibboleth. Moodle mostrará una lista desplegable en la página alternativa de inicio de sesión en la que el usuario tiene que seleccionar su proveedor de identidad.';
 $string['auth_shib_logout_return_url'] = 'URL alternativa de retorno';
-$string['auth_shib_logout_return_url_description'] = 'Proporcionar la dirección  de URL para que los usuarios Shibboleth ser redireccionen  después de la sesión. <br /> Si se deja vacío, el usuario será redirigido a la ubicación que va a redirigir a los usuarios de Moodle.';
+$string['auth_shib_logout_return_url_description'] = 'Proporcionar la dirección de URL para que los usuarios Shibboleth ser redireccionen después de la sesión. <br /> Si se deja vacío, el usuario será redirigido a la ubicación que va a redirigir a los usuarios de Moodle.';
 $string['auth_shib_logout_url_description'] = 'Proporcionar la dirección URL del proveedor de servicios de Shibboleth salir de controlador. Esto normalmente es <tt> / Shibboleth.sso / Cerrar sesión </ tt>';
 $string['auth_user_create'] = 'Habilitar creación por parte del usuario';
 $string['auth_user_creation'] = 'Los nuevos usuarios (anónimos) pueden crear cuentas de usuario sobre el código externo de autentificación y confirmar vía correo electrónico. Si usted habilita esto, recuerde también configurar las opciones del módulo específico para la creación de usuario.';

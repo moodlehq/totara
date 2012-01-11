@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// block_online_users.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Usuários Online';
 $string['configtimetosee'] = 'Período de inatividade, em minutos, que determina a exclusão do usuário da lista.';

@@ -1,9 +1,6 @@
 <?php
+// editor_tinymce.php - created with Totara langimport script version 1.1
 
-//== Custom Moodle strings that are not part of upstream TinyMCE ==
-
-
-// == TinyMCE upstream lang strings from all plugins ==
 $string['advanced:address'] = 'Adress';
 $string['advanced:anchor_delta_height'] = '';
 $string['advanced:anchor_delta_width'] = '';
@@ -18,7 +15,7 @@ $string['advanced:charmap_delta_height'] = '';
 $string['advanced:charmap_delta_width'] = '';
 $string['advanced:charmap_desc'] = 'Infoga specialtecken';
 $string['advanced:cleanup_desc'] = 'Städa upp i källkoden';
-$string['advanced:clipboard_msg'] = 'Kopiera/klipp ut/klistra in är inte tillgängligt i din webbläsare.\\nVill du veta mer om detta?';
+$string['advanced:clipboard_msg'] = 'Kopiera/klipp ut/klistra in är inte tillgängligt i din webbläsare.\nVill du veta mer om detta?';
 $string['advanced:code'] = 'Kodblock';
 $string['advanced:code_desc'] = 'Redigera HTML källkoden';
 $string['advanced:colorpicker_delta_height'] = '';
@@ -231,7 +228,7 @@ $string['common:apply'] = 'Applicera';
 $string['common:browse'] = 'Bläddra';
 $string['common:cancel'] = 'Avbryt';
 $string['common:class_name'] = 'Klass';
-$string['common:clipboard_msg'] = 'Kopiera/klipp ut/klistra in är inte tillgängligt i din webbläsare.\\nVill du veta mer?';
+$string['common:clipboard_msg'] = 'Kopiera/klipp ut/klistra in är inte tillgängligt i din webbläsare.\nVill du veta mer?';
 $string['common:clipboard_no_support'] = 'Funktionen är inte tillgänglig i din webbläsare, använd tangentbordsgenvägarna i stället.';
 $string['common:close'] = 'Stäng';
 $string['common:edit_confirm'] = 'Vill du använda WYSIWYG för denna textarea?';
@@ -448,7 +445,7 @@ $string['media_dlg:prefetch'] = 'Prefetch';
 $string['media_dlg:preview'] = 'Förhandsvisning';
 $string['media_dlg:progress'] = 'Progress';
 $string['media_dlg:qt_options'] = 'Quicktime options';
-$string['media_dlg:qt_stream_warn'] = 'Streamed rtsp resources should be added to the QT Src field under the advanced tab.\\nYou should also add a non streamed version to the Src field..';
+$string['media_dlg:qt_stream_warn'] = 'Streamed rtsp resources should be added to the QT Src field under the advanced tab.\nYou should also add a non streamed version to the Src field..';
 $string['media_dlg:qtsrc'] = 'QT Src';
 $string['media_dlg:qtsrcchokespeed'] = 'Choke speed';
 $string['media_dlg:quality'] = 'Kvalité';
@@ -751,3 +748,5 @@ $string['xhtmlxtras_dlg:title_acronym_element'] = 'Akronym';
 $string['xhtmlxtras_dlg:title_cite_element'] = 'Citat';
 $string['xhtmlxtras_dlg:title_del_element'] = 'Markera som struket';
 $string['xhtmlxtras_dlg:title_ins_element'] = 'Markera som tillagt';
+
+?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // data.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// data.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'إجراء';
 $string['add'] = 'أضف مدخل';

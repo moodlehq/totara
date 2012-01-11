@@ -1,4 +1,5 @@
-<?php // $Id: repository_s3.php,v 1.3 2009/08/12 10:42:22 martignoni Exp $
+<?php
+// repository_s3.php - created with Totara langimport script version 1.1
 
 $string['access_key'] = 'Clef d\'accès';
 $string['configplugin'] = 'Réglages Amazon S3';

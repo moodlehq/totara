@@ -145,7 +145,7 @@ class totara_competency_evidence_form extends moodleform {
         $mform->addRule('competencyid',null,'required');
         $mform->addRule('competencyid',null,'numeric');
 
-        if($assessorroleid = get_field('role','id','shortname','assessor')) {
+        if($assessorroleid = $CFG->assessorroleid) {
             $sql = "SELECT DISTINCT u.id,".sql_fullname('u.firstname','u.lastname')." AS name
                 FROM {$CFG->prefix}role_assignments ra
                 JOIN {$CFG->prefix}user u ON ra.userid = u.id

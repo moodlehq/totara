@@ -1,12 +1,12 @@
-<?PHP // $Id: qtype_multichoice.php,v 1.3 2008/11/03 20:56:45 koenr Exp $ 
-      // qtype_multichoice.php - created with Moodle 1.9 + (Build: 20080324) (2007101509)
-
+<?php
+// qtype_multichoice.php - created with Totara langimport script version 1.1
 
 $string['addingmultichoice'] = 'Lägger till en flervalsfråga';
 $string['addmorechoiceblanks'] = 'Tomma utrymmen för {inga} fler val';
 $string['answerhowmany'] = 'Ett eller flera svar?';
 $string['answernumbering'] = 'Numrera svarsalternativen?';
 $string['answernumbering123'] = '1., 2., 3., ...';
+$string['answernumberingABC'] = 'A., B., C., ...';
 $string['answernumberingABCD'] = 'A., B., C., ...';
 $string['answernumberingabc'] = 'a., b., c., ...';
 $string['answernumberingnone'] = 'Ingen numrering';
@@ -32,6 +32,5 @@ $string['overallpartiallycorrectfeedback'] = 'Återkoppling för vilket delvis f
 $string['partiallycorrectfeedback'] = 'För vilket delvis korrekt svar som helst';
 $string['shuffleanswers'] = 'Blanda svaren';
 $string['singleanswer'] = 'Välj ett svar';
-$string['answernumberingABC'] = 'A., B., C., ...'; // ORPHANED
 
 ?>

@@ -47,7 +47,7 @@
 
 /// Check some PHP server settings
 
-    $documentationlink = '<a href="http://docs.moodle.org/en/Installation">Installation docs</a>';
+    $documentationlink = '<a href="http://docs.moodle.org/19/en/Installation">Installation docs</a>';
 
     if (ini_get_bool('session.auto_start')) {
         error("The PHP server variable 'session.auto_start' should be Off - $documentationlink");
@@ -776,10 +776,10 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////
     ////  IT IS ILLEGAL AND A VIOLATION OF THE GPL TO HIDE, REMOVE OR MODIFY THIS COPYRIGHT NOTICE ///
     $copyrighttext = '<a href="http://moodle.org/">Moodle</a> '.
-                     '<a href="http://docs.moodle.org/en/Release" title="'.$CFG->version.'">'.$CFG->release.'</a><br />'.
+                     '<a href="http://docs.moodle.org/dev/Releases" title="'.$CFG->version.'">'.$CFG->release.'</a><br />'.
                      'Copyright &copy; 1999 onwards, Martin Dougiamas<br />'.
-                     'and <a href="http://docs.moodle.org/en/Credits">many other contributors</a>.<br />'.
-                     '<a href="http://docs.moodle.org/en/License">GNU Public License</a>';
+                     'and <a href="http://docs.moodle.org/dev/Credits">many other contributors</a>.<br />'.
+                     '<a href="http://docs.moodle.org/dev/License">GNU Public License</a>';
     print_box($copyrighttext, 'copyright');
     //////////////////////////////////////////////////////////////////////////////////////////////////
 

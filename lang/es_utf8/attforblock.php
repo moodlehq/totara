@@ -1,6 +1,5 @@
-<?PHP // $Id: attforblock.php,v 1.5 2009/08/08 12:39:52 barias Exp $ 
-      // attforblock.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// attforblock.php - created with Totara langimport script version 1.1
 
 $string['Aacronym'] = 'A';
 $string['Afull'] = 'Ausente';

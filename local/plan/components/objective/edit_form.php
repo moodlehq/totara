@@ -68,7 +68,7 @@ class plan_objective_edit_form extends moodleform {
                 if ( $prioritymode == DP_PRIORITY_OPTIONAL ){
                     $select[] = get_string('none','local_plan');
                 }
-                foreach( $priorityvalues as $pv ){
+                foreach ($priorityvalues as $pv) {
                     $select[$pv->id] = $pv->name;
                 }
                 $prioritylist = $select;
@@ -107,17 +107,17 @@ class plan_objective_edit_form extends moodleform {
         $mform->setType('description', PARAM_CLEAN);
 
         // Due dates
-        if ( $duedatemode == DP_DUEDATES_OPTIONAL || $duedatemode == DP_DUEDATES_REQUIRED ){
+        if (!$duedateallow) {
+            $mform->addElement('static', 'duedate', get_string('duedate', 'local_plan'));
+        } else if ($duedatemode == DP_DUEDATES_OPTIONAL || $duedatemode == DP_DUEDATES_REQUIRED) {
+            $mform->addElement('text', 'duedate', get_string('duedate', 'local_plan'));
+            $mform->setType('duedate', PARAM_TEXT);
+
+            $mform->addRule('duedate', get_string('error:dateformat','local_plan'), 'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
 
             // Whether to make the field optional
-            if ( $duedatemode == DP_DUEDATES_REQUIRED){
-                $datemenu = $mform->addElement('date_selector', 'duedate', get_string('duedate', 'local_plan'));
-                $mform->addRule('duedate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-            } else {
-                $datemenu = $mform->addElement('date_selector', 'duedate', get_string('duedate', 'local_plan'), array('optional'=>true));
-            }
-            if ( !$duedateallow ){
-                $mform->freeze(array('duedate'));
+            if ($duedatemode == DP_DUEDATES_REQUIRED) {
+                $mform->addRule('duedate', null, 'required');
             }
         }
 

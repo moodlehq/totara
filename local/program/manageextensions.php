@@ -59,7 +59,7 @@ if ($submitted && confirm_sesskey()) {
                 error(get_string('error:notusersmanager', 'local_program'));
             }
 
-            if (!$roleid = get_field('role', 'id', 'shortname', 'student')) {
+            if (!$roleid = $CFG->learnerroleid) {
                 print_error('error:failedtofindstudentrole', 'local_program');
             }
 

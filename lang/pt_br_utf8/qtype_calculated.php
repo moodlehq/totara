@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// qtype_calculated.php - created with Totara langimport script version 1.1
 
 $string['addmoreanswerblanks'] = 'Adicionar outra resposta vazia';
 $string['addmoreunitblanks'] = 'Espaços em branco para mais $a unidades';

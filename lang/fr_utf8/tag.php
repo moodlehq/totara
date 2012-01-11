@@ -1,5 +1,5 @@
 <?php
-// tag.php - created with Totara langimport script version 1.0
+// tag.php - created with Totara langimport script version 1.1
 
 $string['addedotag'] = '« {$a} » a été ajouté comme tag officiel.';
 $string['addotags'] = 'Ajouter des tags officiels';
@@ -35,7 +35,7 @@ $string['othertags'] = 'Autres tags (séparés par des virgules)';
 $string['owner'] = 'Possesseur';
 $string['ptags'] = 'Tags personnels (séparés par des virgules)';
 $string['relatedblogs'] = 'Articles de blog les plus récents';
-$string['relatedtags'] = 'Tags ';
+$string['relatedtags'] = 'Tags';
 $string['removetagfrommyinterests'] = 'Retirer « {$a} » de mes centres d\'intérêts';
 $string['reset'] = 'Réinitialisation';
 $string['resetflag'] = 'Réinitialisation fanion';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // workshop.php - created with Moodle 1.7 (2006101007)
-
+<?php
+// workshop.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'Ausente';
 $string['accumulative'] = 'Acumulativa';
@@ -218,6 +217,7 @@ $string['releaseteachergrades'] = 'Publicar Calificaciones del Profesor';
 $string['removeallattachments'] = 'Eliminar todos los anexos';
 $string['repeatanalysis'] = 'Repetir el Análisis';
 $string['reply'] = 'Responder';
+$string['resetworkshopall'] = 'Eliminar envíos, notas y evaluaciones';
 $string['returnto'] = 'Devolver a';
 $string['returntosubmissionpage'] = 'Volver a la Página de Envíos';
 $string['rubric'] = 'Rúbrica';

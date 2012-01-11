@@ -835,8 +835,15 @@ class completion_info {
      * @return  void
      */
     public function delete_course_completion_data() {
+        global $CFG;
+
+        require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
+
         delete_records('course_completions', 'course', $this->course_id);
         delete_records('course_completion_crit_compl', 'course', $this->course_id);
+
+        //Remove stats data
+        delete_records('block_totara_stats', 'eventtype', STATS_EVENT_COURSE_COMPLETE, 'data2', $this->course_id);
     }
 
     /**
@@ -1388,8 +1395,14 @@ WHERE
                 return COMPLETION_COMPLETE_FAIL;
             }
         } else {
-            // Not displaying pass/fail, but we know grade exists b/c we got here
-            return COMPLETION_COMPLETE;
+            // Not displaying pass/fail, so just if there is a grade
+            if (!is_null($grade->finalgrade) || !is_null($grade->rawgrade)) {
+                // Grade exists, so maybe complete now
+                return COMPLETION_COMPLETE;
+            } else {
+                // Grade does not exist, so maybe incomplete now
+                return COMPLETION_INCOMPLETE;
+            }
         }
     }
 

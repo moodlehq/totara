@@ -1,6 +1,5 @@
-<?PHP // $Id: quiz_statistics.php,v 1.7 2008/12/26 18:05:29 ralf-bonn Exp $ 
-      // quiz_statistics.php - created with Moodle 2.0 dev (Build: 20081209) (2008120801)
-
+<?php
+// quiz_statistics.php - created with Totara langimport script version 1.1
 
 $string['allattempts'] = 'Alle Versuche';
 $string['allattemptsavg'] = 'Durchschnittsergebnis über alle Versuche';
@@ -39,6 +38,8 @@ $string['kurtosis'] = 'Bewertungsverteilungsgraph (für $a)';
 $string['lastcalculated'] = 'Seit der letzten Berechnung ($a->lastcalculated) gab es $a->count neue Versuche.';
 $string['median'] = 'Median (für $a)';
 $string['negcovar'] = 'Negative Kovarianz der Bewertung mit der Bewertung aller Versuche';
+$string['noofallattempts'] = 'Gesamtzahl von Versuchen';
+$string['nooffirstattempts'] = 'Zahl von ersten Versuchen';
 $string['nostudentsingroup'] = 'In dieser Gruppe sind bisher keine Teilnehmer/innen';
 $string['optiongrade'] = 'Teilweise Wertung';
 $string['position'] = 'Position';
@@ -65,7 +66,5 @@ $string['statistics:view'] = 'Ansehen des Statistik-Reports';
 $string['statisticsreport'] = 'Statistik-Report';
 $string['statisticsreportgraph'] = 'Statistik für Fragenpositionen';
 $string['statsfor'] = 'Statistik (für $a)';
-$string['noofallattempts'] = 'Gesamtzahl von Versuchen'; // ORPHANED
-$string['nooffirstattempts'] = 'Zahl von ersten Versuchen'; // ORPHANED
 
 ?>

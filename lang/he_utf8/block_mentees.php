@@ -1,6 +1,5 @@
-<?PHP // $Id: block_mentees.php,v 1.3 2010/08/31 07:29:18 emanuel1 Exp $
-      // block_mentees.php - created with Moodle 1.8 + (2007021503)
-
+<?php
+// block_mentees.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'בני חסותי';
 $string['configtitle'] = 'כותרת משבצת־ניהול';

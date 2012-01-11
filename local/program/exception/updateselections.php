@@ -75,8 +75,13 @@ switch ($action) {
         $manually_added_exceptions = isset($_SESSION['exceptions_added']) ? $_SESSION['exceptions_added'] : array();
         $manually_removed_exceptions = isset($_SESSION['exceptions_removed']) ? $_SESSION['exceptions_removed'] : array();
 
-        $exceptions_manager->set_selections($selectiontype, $searchterm);
-        $selected_exceptions = $exceptions_manager->get_selected_exceptions();
+        //handle manual selection when no selection made in selection type
+        if ($selectiontype == "0") {
+            $selected_exceptions = array();
+        } else {
+            $exceptions_manager->set_selections($selectiontype, $searchterm);
+            $selected_exceptions = $exceptions_manager->get_selected_exceptions();
+        }
 
         // if the exception is being added to the selection
         if($checked=='true') {

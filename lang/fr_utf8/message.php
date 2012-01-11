@@ -1,4 +1,5 @@
-<?php  // $Id$
+<?php
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'Ajouter ce contact';
 $string['addsomecontacts'] = 'Pour envoyer un message personnel à quelqu\'un ou ajouter ses coordonnées à cette liste, utilisez <a href=\"$a\">l\'onglet Recherche</a> ci-dessus.';
@@ -9,11 +10,9 @@ $string['allmine'] = 'Tous mes messages personnels reçus ou envoyés';
 $string['allstudents'] = 'Tous les messages personnels des participants au cours';
 $string['allusers'] = 'Tous les messages personnels de tous les utilisateurs';
 $string['backupmessageshelp'] = 'Si ce paramètre est activé, les messages personnels seront inclus dans les sauvegardes automatiques du site';
-$string['beepnewmessage'] = 'Bip à l\'arrivée d\'un message personnel (une extension de navigateur pouvant jouer des sons est nécessaire, par exemple Quicktime)';
 $string['beepnewmessage'] = 'Bip pour les nouveaux messages personnels';
 $string['blockcontact'] = 'Bloquer ce contact';
 $string['blockedmessages'] = '$a message(s) personnel(s) de/pour des utilisateurs bloqués';
-$string['blocknoncontacts'] = 'Bloquer les messages personnels de personnes n\'appartenant pas à ma liste de contacts';
 $string['blocknoncontacts'] = 'Bloquer les utilisateurs inconnus';
 $string['cannotsavemessageprefs'] = 'Impossible d\'enregistrer les préférences de messagerie de l\'utilisateur';
 $string['contactlistempty'] = 'Votre liste de contacts est vide';
@@ -27,6 +26,7 @@ $string['emailmessages'] = 'Envoyer par courriel les messages personnels quand j
 $string['emailtagline'] = 'Ce courriel est la copie d\'un message personnel qui vous a été envoyé sur « {$a} »';
 $string['emptysearchstring'] = 'Vous devez saisir un critère de recherche';
 $string['errorcallingprocessor'] = 'Erreur lors de l\'appel du destinataire';
+$string['errorconfigeditor'] = 'Erreur, impossible de configurer l\'éditeur';
 $string['formorethan'] = 'Depuis plus de';
 $string['general_config'] = 'Options générales';
 $string['guestnoeditmessage'] = 'Les visiteurs anonymes ne peuvent pas modifier les options de messagerie personnelle';
@@ -35,8 +35,8 @@ $string['includeblockedusers'] = 'Inclure les utilisateurs bloqués';
 $string['incomingcontacts'] = 'Messages personnels arrivant ($a)';
 $string['keywords'] = 'Mots clefs';
 $string['keywordssearchresults'] = 'Résultats de recherche : $a message(s) personnel(s) trouvé(s)';
-$string['loggedin'] = 'Connectés : ';
-$string['loggedoff'] = 'Non connectés : ';
+$string['loggedin'] = 'Connectés :';
+$string['loggedoff'] = 'Non connectés :';
 $string['mailsent'] = 'Votre message personnel a été envoyé par courriel.';
 $string['maxmessages'] = 'Nombre maximal de messages personnels à afficher dans l\'historique des discussions';
 $string['message'] = 'Message personnel';
@@ -75,7 +75,6 @@ $string['sendmessageto'] = 'Envoyer message personnel à $a';
 $string['sendmessagetopopup'] = 'Envoyer message personnel à $a - nouvelle fenêtre';
 $string['settings'] = 'Réglages';
 $string['settingssaved'] = 'Vos réglages ont été enregistrés';
-$string['showmessagewindow'] = 'Fenêtres surgissantes pour les nouveaux messages personnels';
 $string['showmessagewindow'] = 'Ouvrir la messagerie lorsque de nouveaux messages personnels arrivent (votre navigateur doit être configuré de façon à ne pas bloquer l\'ouverture des fenêtres surgissante de ce site)';
 $string['strftimedaydatetime'] = '%%A, %%d %%B %%Y, %%H:%%M';
 $string['timenosee'] = 'Minutes depuis ma dernière présence en ligne';

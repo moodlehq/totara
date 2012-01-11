@@ -1,4 +1,5 @@
-<?php // $Id: portfolio.php,v 1.36 2009/04/10 19:28:53 martignoni Exp $ 
+<?php
+// portfolio.php - created with Totara langimport script version 1.1
 
 $string['activeexport'] = 'Résoudre les exportations actives';
 $string['activeportfolios'] = 'Portfolios actifs';
@@ -21,8 +22,8 @@ $string['deleteportfolio'] = 'Supprimer le portfolio';
 $string['destination'] = 'Destination';
 $string['disabled'] = 'Désolé, les exportations de portfolio ne sont pas activées sur ce site';
 $string['displayarea'] = 'Zone d\'exportation';
-$string['displayinfo'] = 'Infos d\'exportation';
 $string['displayexpiry'] = 'Durée d\'échéance des transferts';
+$string['displayinfo'] = 'Infos d\'exportation';
 $string['dontwait'] = 'Ne pas attendre';
 $string['enabled'] = 'Activer les portfolios';
 $string['enableddesc'] = 'Cette option permet aux administrateurs de configurer les systèmes distants vers lesquels les utilisateurs exportent des contenus';
@@ -52,7 +53,6 @@ $string['highdbsizethreshold'] = 'Taille de base de donnée élevée';
 $string['highdbsizethresholddesc'] = 'Nombre d\'enregistrements de la base de données au delà duquel le temps de transfert est considéré comme élevé';
 $string['highfilesizethreshold'] = 'Taille de transfert élevée';
 $string['highfilesizethresholddesc'] = 'Les fichiers dépassant cette taille seront considérés comme nécessitant un temps de transfert élevé';
-$string['insanesubject'] = 'Des instances portfolio ont été désactivées automatiquement';
 $string['insanebody'] = 'Bonjour, Vous recevez ce message en tant qu\'administrateur de $a->sitename.
 
 Des instances de plugin de portfolio ont été automatiquement désactivées en raison de problèmes de configuration. Cela signifie que les utilisateurs ne peuvent actuellement exporter de contenus vers ces portfolios.
@@ -67,6 +67,7 @@ $string['insanebodyhtml'] = '<p>Bonjour, Vous recevez ce message en tant qu\'adm
 $a->htmllist
 <p>Veuillez corriger ce problème au plus vite, en vous rendant sur <a href=\"$a->fixurl\">les pages de configuration des portfolios</a>.</p>';
 $string['insanebodysmall'] = 'Bonjour, Vous recevez ce message en tant qu\'administrateur de $a->sitename. Des instances de plugin de portfolio ont été automatiquement désactivées en raison de problèmes de configuration. Cela signifie que les utilisateurs ne peuvent actuellement exporter de contenus vers ces portfolios. Veuillez corriger ce problème au plus vite, en vous rendant sur la page $a->fixurl.';
+$string['insanesubject'] = 'Des instances portfolio ont été désactivées automatiquement';
 $string['instancedeleted'] = 'Le portfolio a été supprimé';
 $string['instanceismisconfigured'] = 'La configuration du portfolio n\'est pas correcte. Erreur : $a';
 $string['instancenotdelete'] = 'Échec de la suppression du portfolio';

@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // local_plan.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// local_plan.php - created with Totara langimport script version 1.0
 
 $string['achieved'] = 'حققت';
 $string['achievedvaluefrozen'] = 'لا يمكنك تغيير هذا الإعداد لأن المقياس يتم استخدامه حاليا';
@@ -106,7 +104,7 @@ $string['competenciesplural'] = 'كفاءات';
 $string['competenciesupdated'] = 'كفاءات تم تحديثها';
 $string['competency'] = 'كفاءة';
 $string['competency_instructions_add'] = 'باستطاعتك إضافة كفاءات إضافية بالنقر على الرز \"أضف/احذف الكفاءات\" الموجود في الجهة اليمنى من الشاشة.';
-$string['competency_instructions_detail'] = 'باستطاعتك إستعراض المزيد من التفاصيل عن أي كفاءة و ذلك بالنقر على عنوانها';
+$string['competency_instructions_detail'] = 'باستطاعتك إستعراض المزيد من التفاصيل عن أي كفاءة و ذلك بالنقر على عنوانها.';
 $string['competency_instructions_learner'] = 'كل الكفاءات المتناولة في خطتك التعليمية موجودة في الأسفل.';
 $string['competency_instructions_manager'] = 'كل الكفاءات المتناولة في مجال الخطة التعليم التابعة لأعضاء فرقتك موجودة في الأسفل.';
 $string['competency_instructions_request'] = 'النقر على \"تحديث الكفاءات المطلوبة\" سيسمح لك بطلب إضافة كفاءات جديدة للخطة التعليم هذه.';
@@ -387,11 +385,11 @@ $string['notemplatesetup'] = 'لم يتم تأسيس قوالب خطط';
 $string['nox'] = 'لا وجود ل$a';
 $string['numberoflinkedcourses'] = 'دورات';
 $string['objective'] = 'أهداف';
-$string['objective_instructions_add'] = 'النقر على \"أضف هدف جديد\" سيسمح لك بإضافة أهداف جديدة للخطة التعليمية هذه';
-$string['objective_instructions_detail'] = 'بإمكانك الإطلاع على أي هدف بالنقر على عنوان الهدف';
-$string['objective_instructions_learner'] = 'كل الأهداف التي تكون خطتك التعليمية موجودة في الأسفل';
-$string['objective_instructions_manager'] = 'كل الأهداف التي تكون خطط أعضاء فريقك التعليمية موجودة في الأسفل';
-$string['objective_instructions_request'] = 'النقر على \"تحديث الأهداف المطلوبة\" سيسمح لك بإضافة أهداف جديدة للخطة التعليمية هذه';
+$string['objective_instructions_add'] = 'النقر على \"أضف هدف جديد\" سيسمح لك بإضافة أهداف جديدة للخطة التعليمية هذه.';
+$string['objective_instructions_detail'] = 'بإمكانك الإطلاع على أي هدف بالنقر على عنوان الهدف.';
+$string['objective_instructions_learner'] = 'كل الأهداف التي تكون خطتك التعليمية موجودة في الأسفل.';
+$string['objective_instructions_manager'] = 'كل الأهداف التي تكون خطط أعضاء فريقك التعليمية موجودة في الأسفل.';
+$string['objective_instructions_request'] = 'النقر على \"تحديث الأهداف المطلوبة\" سيسمح لك بإضافة أهداف جديدة للخطة التعليمية هذه.';
 $string['objectiveapproved'] = 'الموافقة على الأهداف';
 $string['objectivecompletelonglearner'] = 'قام $a->userfrom بتغيير الأهداف \"$a->objective\" إلى كاملة';
 $string['objectivecompletelongmanager'] = 'قام $a->userfrom بتغيير الأهداف \"$a->objective\" إلى كاملة في الخطة التعليمية \"$a->plan\"';
@@ -497,10 +495,10 @@ $string['plan:add'] = 'أضف خطط';
 $string['plan:configureplans'] = 'تكوين قوالب خطط';
 $string['plan:manageobjectivescales'] = 'الإشراف على مقاييس الأهداف';
 $string['plan:managepriorityscales'] = 'الإشراف على المقاييس ذي الأولوية';
-$string['plan_instructions_delete'] = 'باستطاعتك حذف الخطة التعليمية هذه بواسطة النقر على رز \"حذف الخطة\"';
-$string['plan_instructions_edit'] = 'باستطاعتك حذف الخطة التعليمية هذه بواسطة النقر على رز \"حذف الخطة\"';
-$string['plan_instructions_learner'] = 'في الأسفل ملخص قصير عن خطتك التعليمية';
-$string['plan_instructions_manager'] = 'في الأسفل ملخص قصير عن الخطط التعليمية التابعة لأعضاء فريقك';
+$string['plan_instructions_delete'] = 'باستطاعتك حذف الخطة التعليمية هذه بواسطة النقر على رز \"حذف الخطة\".';
+$string['plan_instructions_edit'] = 'باستطاعتك حذف الخطة التعليمية هذه بواسطة النقر على رز \"حذف الخطة\".';
+$string['plan_instructions_learner'] = 'في الأسفل ملخص قصير عن خطتك التعليمية.';
+$string['plan_instructions_manager'] = 'في الأسفل ملخص قصير عن الخطط التعليمية التابعة لأعضاء فريقك.';
 $string['planapprovalrequested'] = 'طلب موافقة على <a href=\"{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
 $string['planapproved'] = 'تمت الموافقة على الخطة \"$a\"';
 $string['planautocompleteddate'] = 'تم استكمال هذه الخطة تلقائياً بسبب مضو تاريخ انتهاء الخطة';
@@ -555,11 +553,11 @@ $string['priorityscalex'] = 'المقياس ذي الأولوية \"{$a}\"';
 $string['priorityvalues'] = 'قيم الأولوية';
 $string['proficiency'] = 'مهارات';
 $string['program'] = 'برامج';
-$string['program_instructions_add'] = 'النقر على \"أضف/احذف البرامج\" سيسمح لك بإضافة برامج جديدة لخطة التعليم هذه';
-$string['program_instructions_detail'] = 'بإمكانك الإطلاع على أي برنامج بالنقر على عنوان البرنامج';
-$string['program_instructions_learner'] = 'جميع البرامج المكونة لخطتك التعليمية موجودة في الأسفل';
-$string['program_instructions_manager'] = 'جميع البرامج المكونة للخطط التعليمية التابعة لأعضاء فريقك موجودة في الأسفل';
-$string['program_instructions_request'] = 'النقر على \"تحديث البرامج المطلوبة\" سيسمح لك بطلب إضافة برامج جديدة لخطة التعليم هذه';
+$string['program_instructions_add'] = 'النقر على \"أضف/احذف البرامج\" سيسمح لك بإضافة برامج جديدة لخطة التعليم هذه.';
+$string['program_instructions_detail'] = 'بإمكانك الإطلاع على أي برنامج بالنقر على عنوان البرنامج.';
+$string['program_instructions_learner'] = 'جميع البرامج المكونة لخطتك التعليمية موجودة في الأسفل.';
+$string['program_instructions_manager'] = 'جميع البرامج المكونة للخطط التعليمية التابعة لأعضاء فريقك موجودة في الأسفل.';
+$string['program_instructions_request'] = 'النقر على \"تحديث البرامج المطلوبة\" سيسمح لك بطلب إضافة برامج جديدة لخطة التعليم هذه.';
 $string['programname'] = 'اسم البرنامج';
 $string['programnotfound'] = 'لم يتم العثور على البرنامج';
 $string['programpermissions'] = 'أذونات البرنامج';

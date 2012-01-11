@@ -295,7 +295,7 @@ abstract class rb_base_source {
      */
     function rb_display_nice_date($date, $row) {
         if($date && $date > 0) {
-            return userdate($date, '%d %b %Y');
+            return userdate($date, get_string('strfdateshortmonth'));
         } else {
             return '';
         }
@@ -311,7 +311,7 @@ abstract class rb_base_source {
      */
     function rb_display_nice_time($date, $row) {
         if($date && $date > 0) {
-            return userdate($date, '%H:%M');
+            return userdate($date, get_string('strftimeshort'));
         } else {
             return '';
         }
@@ -328,12 +328,27 @@ abstract class rb_base_source {
      */
     function rb_display_nice_datetime($date, $row) {
         if($date && $date > 0) {
-            return userdate($date, '%d %b %Y at %H:%M');
+            return userdate($date, get_string('strfdateattime'));
         } else {
             return '';
         }
     }
 
+    /**
+     * Reformat a timestamp into a date and time (including seconds), showing nothing if invalid or null
+     *
+     * @param integer $date Unix timestamp
+     * @param object $row Object containing all other fields for this row
+     *
+     * @return string Date and time (including seconds) in a nice format
+     */
+    function rb_display_nice_datetime_seconds($date, $row) {
+        if ($date && $date > 0) {
+            return userdate($date, get_string('strftimedateseconds'));
+        } else {
+            return '';
+        }
+    }
 
     /**
      * Convert 1 and 0 to 'Yes' and 'No'
@@ -378,13 +393,18 @@ abstract class rb_base_source {
     // link user's name to profile page
     // requires the user_id extra field
     // in column definition
-    function rb_display_link_user($user, $row) {
+    function rb_display_link_user($user, $row, $isexport = false) {
         global $CFG;
         $userid = $row->user_id;
-        return "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
+        if ($isexport) {
+            return $user;
+        } else {
+            return "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
+        }
     }
 
-    function rb_display_link_user_icon($user, $row) {
+
+    function rb_display_link_user_icon($user, $row, $isexport = false) {
         global $CFG;
         $userid = $row->user_id;
 
@@ -395,8 +415,12 @@ abstract class rb_base_source {
         $picuser->firstname = $row->userpic_firstname;
         $picuser->lastname = $row->userpic_lastname;
 
-        return print_user_picture($picuser, 1, null, null, true) .
-            "&nbsp;<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
+        if ($isexport) {
+            return $user;
+        } else {
+            return print_user_picture($picuser, 1, null, null, true) .
+                "&nbsp;<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
+        }
 
     }
 
@@ -405,9 +429,10 @@ abstract class rb_base_source {
      * profile picture
      * @param integer $itemid ID of the user
      * @param object $row The rest of the data for the row
+     * @param boolean $isexport If the report is being exported or viewed
      * @return string
      */
-    function rb_display_user_picture($itemid, $row) {
+    function rb_display_user_picture($itemid, $row, $isexport = false) {
         $picuser = new stdClass();
         $picuser->id = $itemid;
         $picuser->picture = $row->userpic_picture;
@@ -415,40 +440,57 @@ abstract class rb_base_source {
         $picuser->firstname = $row->userpic_firstname;
         $picuser->lastname = $row->userpic_lastname;
 
-        return print_user_picture($picuser, 1, null, null, true);
+        // don't show picture in spreadsheet
+        if ($isexport) {
+            return '';
+        } else {
+            return print_user_picture($picuser, 1, null, null, true);
+        }
     }
 
 
     // convert a course name into a link to that course
-    function rb_display_link_course($course, $row) {
+    function rb_display_link_course($course, $row, $isexport = false) {
         global $CFG;
         $courseid = $row->course_id;
         $course = format_string($course);
         $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
-        return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
+        if ($isexport) {
+            return $course;
+        } else {
+            return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
+        }
     }
 
     // convert a course name into a link to that course and shows
     // the course icon next to it
-    function rb_display_link_course_icon($course, $row) {
+    function rb_display_link_course_icon($course, $row, $isexport = false) {
         global $CFG;
         $courseid = $row->course_id;
         $courseicon = $row->course_icon;
         $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
         $course = format_string($course);
-        return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
+        if ($isexport) {
+            return $course;
+        } else {
+            return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
+        }
     }
 
     // display an icon based on the course icon field
-    function rb_display_course_icon($icon, $row) {
+    function rb_display_course_icon($icon, $row, $isexport = false) {
         global $CFG;
         $courseid = $row->course_id;
         $coursename = format_string($row->course_name);
-        return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($icon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\" />";
+        if ($isexport) {
+            return $coursename;
+        } else {
+            return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($icon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\" />";
+        }
     }
 
     // display an icon for the course type
-    function rb_display_course_type_icon($type) {
+    function rb_display_course_type_icon($type, $row, $isexport = false) {
         global $CFG;
 
         switch ($type) {
@@ -468,11 +510,16 @@ abstract class rb_base_source {
         $alt = get_string($image, 'rb_source_dp_course');
         $icon = "<img title=\"{$alt}\" src=\"{$CFG->pixpath}/msgicons/{$image}" . '-regular.png' . "\"></img>";
 
-        return $icon;
+        if ($isexport) {
+            // don't return icon if exporting to spreadsheet
+            return '';
+        } else {
+            return $icon;
+        }
     }
 
     // convert a course category name into a link to that category's page
-    function rb_display_link_course_category($category, $row) {
+    function rb_display_link_course_category($category, $row, $isexport = false) {
         global $CFG;
         $catid = $row->cat_id;
         $category = format_string($category);
@@ -480,7 +527,11 @@ abstract class rb_base_source {
             return '';
         }
         $cssclass = (isset($row->cat_visible) && $row->cat_visible == 0) ? ' class="dimmed"' : '';
-        return "<a $cssclass href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\">{$category}</a>";
+        if ($isexport) {
+            return $category;
+        } else {
+            return "<a $cssclass href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\">{$category}</a>";
+        }
     }
 
 
@@ -489,9 +540,10 @@ abstract class rb_base_source {
      * @global object $CFG
      * @param string $planname
      * @param object $row
+     * @param boolean $isexport If the report is being exported or viewed
      * @return string
      */
-    public function rb_display_planlink($planname, $row){
+    public function rb_display_planlink($planname, $row, $isexport = false){
         global $CFG;
 
         // no text
@@ -505,7 +557,11 @@ abstract class rb_base_source {
         }
 
         $planname = format_string($planname);
-        return "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$row->plan_id}\">$planname</a>";
+        if ($isexport) {
+            return $planname;
+        } else {
+            return "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$row->plan_id}\">$planname</a>";
+        }
     }
 
 
@@ -593,6 +649,55 @@ abstract class rb_base_source {
         }
         return $code;
     }
+
+
+    // convert a language code into text
+    function rb_display_language_code($code, $row) {
+        global $CFG;
+        if (empty($code)) {
+            return get_string('notspecified', 'local_reportbuilder');
+        }
+        $string = array();
+        $langfile = $CFG->dirroot . '/lang/' . $code . '/langconfig.php';
+        if (!file_exists($langfile)) {
+            return get_string('unknown', 'local_reportbuilder');
+        }
+        include($langfile);
+        if (!isset($string['thislanguage']) || empty($string['thislanguage'])) {
+            return get_string('unknown', 'local_reportbuilder');
+        }
+        return $string['thislanguage'];
+    }
+
+    function rb_display_user_email($email, $row, $isexport = false) {
+        if (empty($email)) {
+            return '';
+        }
+        $maildisplay = $row->maildisplay;
+        $emaildisabled = $row->emailstop;
+
+        // respect users email privacy setting
+        // at some point we may want to allow admins to view anyway
+        if ($maildisplay != 1) {
+            return get_string('useremailprivate', 'local_reportbuilder');
+        }
+
+        if ($isexport) {
+            return $email;
+        } else {
+            // obfuscate email to avoid spam if printing to page
+            return obfuscate_mailto($email, '', (bool) $emaildisabled);
+        }
+    }
+
+
+    function rb_display_link_program_icon($program, $row) {
+        global $CFG;
+        $programid = $row->program_id;
+        $programicon = $row->program_icon;
+        return "<a href=\"{$CFG->wwwroot}/local/program/view.php?id={$programid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($programicon)."&amp;id=$programid&amp;size=small&amp;type=course\" alt=\"$program\" />{$program}</a>";
+    }
+
 
     //
     //
@@ -743,6 +848,18 @@ abstract class rb_base_source {
         return $typelist;
     }
 
+    function rb_filter_course_languages() {
+        global $CFG;
+        $out = array();
+        if ($langs = get_records_sql("SELECT DISTINCT lang
+            FROM {$CFG->prefix}course ORDER BY lang")) {
+            foreach($langs as $row) {
+                $out[$row->lang] = $this->rb_display_language_code($row->lang, array());
+            }
+        }
+
+        return $out;
+    }
     //
     //
     // Generic grouping methods for aggregation
@@ -899,6 +1016,22 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'user',
+            'email',
+            get_string('useremail', 'local_reportbuilder'),
+            // use CASE to include/exclude email in SQL
+            // so search won't reveal hidden results
+            "CASE WHEN $join.maildisplay <> 1 THEN '-' ELSE $join.email END",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'user_email',
+                'extrafields' => array(
+                    'emailstop' => "$join.emailstop",
+                    'maildisplay' => "$join.maildisplay",
+                )
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
             'lastlogin',
             get_string('userlastlogin', 'local_reportbuilder'),
             // See MDL-22481 for why currentlogin is used instead of lastlogin
@@ -968,6 +1101,7 @@ abstract class rb_base_source {
             'department' => get_string('userdepartment', 'local_reportbuilder'),
             'address' => get_string('useraddress', 'local_reportbuilder'),
             'city' => get_string('usercity', 'local_reportbuilder'),
+            'email' => get_string('useremail', 'local_reportbuilder'),
         );
         foreach ($fields as $field => $name) {
             $filteroptions[] = new rb_filter_option(
@@ -1225,6 +1359,18 @@ abstract class rb_base_source {
                 'defaultheading' => get_string('coursetypeicon', 'local_reportbuilder'),
             )
         );
+        // add language option
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'language',
+            get_string('courselanguage', 'local_reportbuilder'),
+            "$join.lang",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'language_code'
+            )
+        );
+
         return true;
     }
 
@@ -1232,7 +1378,7 @@ abstract class rb_base_source {
     /**
      * Adds some common course filters to the $filteroptions array
      *
-     * @param array &$columnoptions Array of current filter options
+     * @param array &$filteroptions Array of current filter options
      *                              Passed by reference and updated by
      *                              this method
      * @return True
@@ -1268,9 +1414,177 @@ abstract class rb_base_source {
             get_string('coursenameandsummary', 'local_reportbuilder'),
             'textarea'
         );
+        $filteroptions[] = new rb_filter_option(
+            'course',
+            'language',
+            get_string('courselanguage', 'local_reportbuilder'),
+            'select',
+            array(
+                'selectfunc' => 'course_languages',
+                'selectoptions' => rb_filter_option::select_width_limiter(),
+            )
+        );
         return true;
     }
 
+
+
+    /**
+     * Adds the program table to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the
+     *                     'program id' field
+     * @param string $field Name of table containing program id field to join on
+     * @return boolean True
+     */
+    protected function add_program_table_to_joinlist(&$joinlist, $join, $field) {
+        global $CFG;
+
+        $joinlist[] = new rb_join(
+            'program',
+            'LEFT',
+            $CFG->prefix . 'prog',
+            "program.id = $join.$field",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+    }
+
+
+    /**
+     * Adds some common program info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @param string $join Name of the join that provides the 'program' table
+     *
+     * @return True
+     */
+    protected function add_program_fields_to_columns(&$columnoptions, $join='program') {
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'fullname',
+            get_string('programname','local_program'),
+            "$join.fullname",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'shortname',
+            get_string('programshortname','local_program'),
+            "$join.shortname",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'idnumber',
+            get_string('programidnumber','local_program'),
+            "$join.idnumber",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'id',
+            get_string('programid','local_program'),
+            "$join.id",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'summary',
+            get_string('programsummary','local_program'),
+            sql_compare_text("$join.summary"),
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'availablefrom',
+            get_string('availablefrom','local_program'),
+            sql_compare_text("$join.availablefrom"),
+            array(
+                'joins' => $join,
+                'displayfunc' => 'nice_date'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'availableuntil',
+            get_string('availableuntil','local_program'),
+            sql_compare_text("$join.availableuntil"),
+            array(
+                'joins' => $join,
+                'displayfunc' => 'nice_date'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'prog',
+            'proglinkicon',
+            get_string('prognamelinkedicon','local_program'),
+            "$join.fullname",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'link_program_icon',
+                'defaultheading' => get_string('programname', 'local_program'),
+                'extrafields' => array(
+                    'program_id' => "$join.id",
+                    'program_icon' => "$join.icon"
+                )
+            )
+        );
+        return true;
+    }
+
+    /**
+     * Adds some common program filters to the $filteroptions array
+     *
+     * @param array &$filteroptions Array of current filter options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @return True
+     */
+    protected function add_program_fields_to_filters(&$filteroptions) {
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'fullname',
+            get_string('programname','local_program'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'shortname',
+            get_string('programshortname','local_program'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'idnumber',
+            get_string('programidnumber','local_program'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'summary',
+            get_string('programsummary','local_program'),
+            'textarea'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'availablefrom',
+            get_string('availablefrom','local_program'),
+            'date'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'prog',
+            'availableuntil',
+            get_string('availableuntil','local_program'),
+            'date'
+        );
+        return true;
+    }
 
     /**
      * Adds any course custom fields to the $joinlist array
@@ -1547,14 +1861,14 @@ abstract class rb_base_source {
             'organisationid',
             get_string('usersorgid', 'local_reportbuilder'),
             "$posassign.organisationid",
-            array('joins' => $posassign)
+            array('joins' => $posassign, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'organisationpath',
             get_string('usersorgpathids', 'local_reportbuilder'),
             "$org.path",
-            array('joins' => $org)
+            array('joins' => $org, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
@@ -1577,21 +1891,21 @@ abstract class rb_base_source {
             'org_type_id',
             get_string('organisationtypeid', 'local_reportbuilder'),
             'organisation.typeid',
-            array('joins' => $org)
+            array('joins' => $org, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'positionid',
             get_string('usersposid', 'local_reportbuilder'),
             "$posassign.positionid",
-            array('joins' => $posassign)
+            array('joins' => $posassign, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'positionpath',
             get_string('userspospathids', 'local_reportbuilder'),
             "$pos.path",
-            array('joins' => $pos)
+            array('joins' => $pos, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
@@ -1614,7 +1928,7 @@ abstract class rb_base_source {
             'pos_type_id',
             get_string('positiontypeid', 'local_reportbuilder'),
             'position.typeid',
-            array('joins' => $pos)
+            array('joins' => $pos, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
@@ -1879,7 +2193,7 @@ abstract class rb_base_source {
         global $CFG;
 
         // only include these joins if the manager role is defined
-        if($managerroleid = get_field('role','id','shortname','manager')) {
+        if ($managerroleid = $CFG->managerroleid) {
             $joinlist[] = new rb_join(
                 'manager_role_assignment',
                 'LEFT',
@@ -1927,6 +2241,20 @@ abstract class rb_base_source {
             sql_fullname("$manager.firstname","$manager.lastname"),
             array('joins' => $manager)
         );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'managerid',
+            get_string('usersmanagerid', 'local_reportbuilder'),
+            "$manager.id",
+            array('joins' => $manager)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'manageridnumber',
+            get_string('usersmanageridnumber', 'local_reportbuilder'),
+            "$manager.idnumber",
+            array('joins' => $manager)
+        );
         return true;
     }
 
@@ -1944,6 +2272,18 @@ abstract class rb_base_source {
             'user',
             'managername',
             get_string('managername', 'local_reportbuilder'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'managerid',
+            get_string('usersmanagerid', 'local_reportbuilder'),
+            'number'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'manageridnumber',
+            get_string('usersmanageridnumber', 'local_reportbuilder'),
             'text'
         );
         return true;
@@ -2022,7 +2362,7 @@ abstract class rb_base_source {
             'tagids',
             get_string('coursetagids', 'local_reportbuilder'),
             "$tagids.idlist",
-            array('joins' => $tagids)
+            array('joins' => $tagids, 'selectable' => false)
         );
 
         // create a on/off field for every official tag

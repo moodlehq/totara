@@ -1,5 +1,5 @@
 <?php
-// hierarchy.php - created with Totara langimport script version 1.0
+// hierarchy.php - created with Totara langimport script version 1.1
 
 $string['additionaloptions'] = 'Opciones adicionales';
 $string['allframeworks'] = 'Todas las estructuras';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // my.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// my.php - created with Totara langimport script version 1.1
 
 $string['mymoodle'] = 'Mi moodle';
 $string['nocourses'] = 'No hay información sobre cursos.';

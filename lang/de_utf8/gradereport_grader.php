@@ -1,6 +1,5 @@
-<?PHP // $Id: gradereport_grader.php,v 1.13 2010/03/19 09:37:20 krause Exp $ 
-      // gradereport_grader.php - created with Moodle 2.0 dev (Build: 20100220) (2010021900)
-
+<?php
+// gradereport_grader.php - created with Totara langimport script version 1.1
 
 $string['ajaxchoosescale'] = 'Auswählen';
 $string['ajaxclicktoclose'] = 'Klicken Sie in dieses Feld, um es zu entfernen';

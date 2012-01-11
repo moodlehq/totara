@@ -1,4 +1,5 @@
-<?php // $Id$ 
+<?php
+// enrol_authorize.php - created with Totara langimport script version 1.1
 
 $string['adminacceptccs'] = 'Cartes de crédit acceptées';
 $string['adminaccepts'] = 'Veuillez choisir les méthodes de paiement acceptées et leur type';

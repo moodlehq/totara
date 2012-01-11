@@ -1,4 +1,5 @@
-<?php  // $Id: report_capability.php,v 1.3 2009/04/10 19:28:53 martignoni Exp $
+<?php
+// report_capability.php - created with Totara langimport script version 1.1
 
 $string['capability'] = 'Rapport de capacité';
 $string['capabilitylabel'] = 'Capacité :';

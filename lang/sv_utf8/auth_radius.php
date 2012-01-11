@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_radius.php - created with Totara langimport script version 1.1
 
 $string['auth_radiuschangepasswordurl_key'] = 'URL för byte av lösenord';
 $string['auth_radiusdescription'] = 'Den här metoden använder en <a href=\"http://en.wikipedia.org/wiki/RADIUS\" target=\"_blank\">RADIUS</a> server för att kontrollera huruvida ett gívet användarnamn och lösenord är giltiga.';
@@ -12,3 +10,5 @@ $string['auth_radiusnasport_key'] = 'Port';
 $string['auth_radiussecret'] = 'Delad hemlighet';
 $string['auth_radiussecret_key'] = 'Hemlig';
 $string['auth_radiustitle'] = 'Använd en RADIUS server';
+
+?>

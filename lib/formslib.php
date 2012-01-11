@@ -103,16 +103,28 @@ class moodleform {
      *                  it if you don't need to as the target attribute is deprecated in xhtml
      *                  strict.
      * @param mixed $attributes you can pass a string of html attributes here or an array.
+     * @param bool $editable
+     * @param string $formidprefix (optional) Prefix for the automatically generated form id. (Passed directly to MoodleQuickForm())
      * @return moodleform
      */
-    function moodleform($action=null, $customdata=null, $method='post', $target='', $attributes=null, $editable=true) {
+    function moodleform($action=null, $customdata=null, $method='post', $target='', $attributes=null, $editable=true, $formidprefix='mform') {
+        global $CFG;
+        if (empty($CFG->xmlstrictheaders)) {
+            // no standard mform in moodle should allow autocomplete with the exception of user signup
+            // this is valid attribute in html5, sorry, we have to ignore validation errors in legacy xhtml 1.0
+            $attributes = (array)$attributes;
+            if (!isset($attributes['autocomplete'])) {
+                $attributes['autocomplete'] = 'off';
+            }
+        }
+
         if (empty($action)){
             $action = strip_querystring(qualified_me());
         }
 
         $this->_formname = get_class($this); // '_form' suffix kept in order to prevent collisions of form id and other element
         $this->_customdata = $customdata;
-        $this->_form =& new MoodleQuickForm($this->_formname, $method, $action, $target, $attributes);
+        $this->_form =& new MoodleQuickForm($this->_formname, $method, $action, $target, $attributes, $formidprefix);
         if (!$editable){
             $this->_form->hardFreeze();
         }
@@ -817,10 +829,10 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
      * @param    mixed      $action             (optional)Form's action - string or moodle_url
      * @param    string      $target            (optional)Form's target defaults to none
      * @param    mixed       $attributes        (optional)Extra attributes for <form> tag
-     * @param    bool        $trackSubmit       (optional)Whether to track if the form was submitted by adding a special hidden field
+     * @param    string      $formidprefix      (optional)An optional prefix to the form id. Without this, it defaults to mform (mform1, mform2, etc)
      * @access   public
      */
-    function MoodleQuickForm($formName, $method, $action, $target='', $attributes=null){
+    function MoodleQuickForm($formName, $method, $action, $target='', $attributes=null, $formidprefix='mform'){
         global $CFG;
 
         static $formcounter = 1;
@@ -836,7 +848,7 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
         }
         //no 'name' atttribute for form in xhtml strict :
         $attributes = array('action'=>$action, 'method'=>$method,
-                'accept-charset'=>'utf-8', 'id'=>'mform'.$formcounter) + $target;
+                'accept-charset'=>'utf-8', 'id'=>$formidprefix.$formcounter) + $target;
         $formcounter++;
         $this->updateAttributes($attributes);
 
@@ -1143,6 +1155,10 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
                 }
                 $unfiltered[$elementName] = $value;
             }
+        }
+
+        if (is_array($this->_constantValues)) {
+            $unfiltered = HTML_QuickForm::arrayMerge($unfiltered, $this->_constantValues);
         }
 
         if ($addslashes){

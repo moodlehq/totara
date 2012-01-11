@@ -1,6 +1,5 @@
-<?PHP // $Id: filters.php,v 1.3 2010/04/08 21:32:26 danielneis Exp $ 
-      // filters.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// filters.php - created with Totara langimport script version 1.1
 
 $string['actfilterhdr'] = 'Filtros ativos';
 $string['addfilter'] = 'Adicione um filtro';
@@ -14,6 +13,8 @@ $string['contains'] = 'contém';
 $string['courserole'] = 'Função do Curso';
 $string['courserolelabel'] = '$a->label está $a->rolename em $a->coursename na $a->categoryname';
 $string['courserolelabelerror'] = '$a->label erro: curso $a->coursename não existe';
+$string['customlabel'] = '$a->label: $a->custom $a->operator $a->value';
+$string['customlabelnovalue'] = '$a->label: $a->custom $a->operator';
 $string['datelabelisafter'] = '$a->label está depois de $a->after';
 $string['datelabelisbefore'] = '$a->label está antes de $a->before';
 $string['datelabelisbetween'] = '$a->label está entre $a->after e $a->before';
@@ -22,14 +23,21 @@ $string['endswith'] = 'termina com';
 $string['firstaccess'] = 'Primeiro acesso';
 $string['globalrolelabel'] = '$a->label é $a->value';
 $string['includenever'] = 'Nunca incluído';
+$string['includesubcategories'] = 'Incluir sub-categorias?';
 $string['isafter'] = 'está depois de';
 $string['isanyvalue'] = 'é qualquer valor';
 $string['isbefore'] = 'está antes de';
 $string['isdefined'] = 'está definido';
 $string['isempty'] = 'está vazio';
 $string['isequalto'] = 'é igual a';
+$string['isgreaterorequalto'] = 'é maior que ou igual a';
+$string['isgreaterthan'] = 'é maior que';
+$string['islessthan'] = 'é menor que';
+$string['islessthanorequalto'] = 'é menor que ou igual a';
 $string['isnotdefined'] = 'não está definido';
 $string['isnotequalto'] = 'não é igual a';
+$string['matchesallselected'] = 'corresponde a tudo selecionado';
+$string['matchesanyselected'] = 'corresponde a qualquer seleção';
 $string['newfilter'] = 'Novo filtro';
 $string['profilelabel'] = '$a->label: $a->profile $a->operator $a->value';
 $string['profilelabelnovalue'] = '$a->label: $a->profile $a->operator';

@@ -1,4 +1,5 @@
-<?php // $Id: repository_flickr.php,v 1.10 2009/08/12 10:03:36 martignoni Exp $
+<?php
+// repository_flickr.php - created with Totara langimport script version 1.1
 
 $string['apikey'] = 'Clef API';
 $string['callbackurl'] = 'URL de rappel';
@@ -16,8 +17,8 @@ $string['invalidemail'] = 'Adresse de courriel non valide pour flickr';
 $string['notitle'] = 'Sans titre';
 $string['nullphotolist'] = 'Il n\'y a pas de photo dans ce compte';
 $string['remember'] = 'Se souvenir de moi';
-$string['repositoryname'] = 'Flickr';
 $string['repositorydesc'] = 'Dépôt sur flickr.com';
+$string['repositoryname'] = 'Flickr';
 $string['secret'] = 'Secret';
 $string['username'] = 'Courriel du compte Flickr';
 

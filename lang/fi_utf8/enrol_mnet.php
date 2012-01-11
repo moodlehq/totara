@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_mnet.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// enrol_mnet.php - created with Totara langimport script version 1.1
 
 $string['allcategories'] = 'Mahdollisten kategorioitten määrä: $a';
 $string['allcourses'] = 'Mahdollisten kurssien määrä: $a';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // scorm.php - created with Moodle 2.0 dev (Build: 20100116) (2010011400)
-
+<?php
+// scorm.php - created with Totara langimport script version 1.1
 
 $string['activation'] = 'Aktivierung';
 $string['activityloading'] = 'Sie werden automatisch zur Aktivität weitergeleitet:';
@@ -12,6 +11,7 @@ $string['allowtypeimsrepository'] = 'IMS Pakettyp aktivieren';
 $string['allowtypelocalsync'] = 'Download Paketyp aktivieren';
 $string['apidebugmask'] = 'API Debug Capture Mask (simple regex on &lt;username&gt;:&lt;activityname&gt;)';
 $string['areacontent'] = 'Inhaltsdateien';
+$string['areaintro'] = 'Einführungsdateien';
 $string['areapackage'] = 'Paketdatei';
 $string['asset'] = 'Anlage';
 $string['assetlaunched'] = 'Anlage gesehen';
@@ -32,6 +32,11 @@ $string['browserepository'] = 'Repository durchsuchen';
 $string['cannotfindsco'] = 'SCO konnte nicht gefunden werden';
 $string['chooseapacket'] = 'Auswählen/aktualisieren eines Pakets';
 $string['completed'] = 'Abgeschlossen';
+$string['completionscorerequired'] = 'Minumumpunktzahl wird benötigt';
+$string['completionstatus_completed'] = 'Abgeschlossen';
+$string['completionstatus_failed'] = 'Nicht bestanden';
+$string['completionstatus_passed'] = 'Bestanden';
+$string['completionstatusrequired'] = 'Status wird benötigt';
 $string['confirmloosetracks'] = 'Warnung: Das Lernpaket scheint verändert worden zu sein. Evtl. ist die Paketstruktur geändert worden. Beim Update könnten Protokolldaten der Nutzer/innen verloren gehen.';
 $string['contents'] = 'Inhalte';
 $string['coursepacket'] = 'Lernpaket';
@@ -40,6 +45,7 @@ $string['datadir'] = 'Dateisystemfehler: Das Verzeichnis für Kursdaten konnte n
 $string['deleteallattempts'] = 'Alle Versuche im Lernpaket löschen';
 $string['details'] = 'Trackingdetails';
 $string['directories'] = 'Verzeichnislinks anzeigen';
+$string['directview'] = 'Direkt aus dem Kurs starten';
 $string['display'] = 'Lernpaket anzeigen';
 $string['displayattemptstatus'] = 'Status der Versuche anzeigen';
 $string['displayattemptstatusdesc'] = 'Diese Einstellung setzt den Standardwert für die Einstellung \"Status der Versuche anzeigen\"';
@@ -60,6 +66,8 @@ $string['expcoll'] = 'Entfalten/Zusammensetzen';
 $string['expired'] = 'Entschuldigung, die Aktivität wurde am $a geschlossen und ist nicht länger verfügbar';
 $string['external'] = 'Externe Paket-Zeitnahme benutzen';
 $string['failed'] = 'Fehlgeschlagen';
+$string['finishscorm'] = 'Wenn Sie das Ansehen dieser Ressource beendet haben, $a';
+$string['finishscormlinkname'] = 'Hier klicken um zurück zur Kursseite zu gelangen';
 $string['firstaccess'] = 'Beim ersten Zugang';
 $string['firstattempt'] = 'Erster Versuch';
 $string['forcecompleted'] = 'Beenden erzwingen';
@@ -145,6 +153,7 @@ $string['php5'] = 'PHP 5 (DOMXML native library)';
 $string['popup'] = 'In neuem Fenster';
 $string['popupblocked'] = 'Wenn kein neues Fenster geöffnet wurde, klicken Sie $a um die Aktivität zu öffnen.';
 $string['popupblockedlinkname'] = 'hier';
+$string['popupblockmessage'] = 'Falls das Popup-Fenster nicht erscheint, müssen Popups im Browser zugelassen werden.';
 $string['popupmenu'] = 'In einem Dropdown-Menü';
 $string['popupopen'] = 'Lernpaket in neuem Fenster öffnen';
 $string['position_error'] = 'Das Tag \$a-tag kann nicht Kind (Child) des Tags $a->parent sein';
@@ -214,6 +223,5 @@ $string['whatgradedesc'] = 'Diese Einstellung setzt den Standardwert für die Be
 $string['width'] = 'Breite';
 $string['window'] = 'Rahmen/Fenster';
 $string['zlibwarning'] = 'Warnung: PHP-Komprimierung Zlib ist auf dieser Website aktiviert worden, bei bestimmten Web-Browsern könnten Probleme beim Laden von Lernpaketen auftreten.';
-$string['areaintro'] = 'Einführungsdateien'; // ORPHANED
 
 ?>

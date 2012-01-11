@@ -28,18 +28,35 @@ button,
 .tabrow0 div, .tabrow0 ul {
   top: 4.5em;
 }
-.tabrow0 li a.nolink,
-.tabrow0 li a.nolink:hover,
-.tabrow0 li a.nolink:visited {
-    padding-bottom:0px;
+/*fix tabs: use images instead of opacity for IE7*/
+.tabrow0 li a,
+.tabrow0 li a:hover {
+    background-position: 0px 4px !important;
 }
-.tabrow0 a:link,
-.tabrow0 a:visited,
-.tabrow0 a:hover {
-    background-position: 0 4px !important;
+
+.tabrow0 li a.inactive,
+.tabrow0 li a.inactive:hover {
+    background: url("images/tab/left_dimmed.gif") no-repeat scroll left top transparent;
 }
-.tabrow0 a.nolink:hover {
-    background-position: 0 0 !important;
+.tabrow0 li a.inactive span,
+.tabrow0 li a.inactive:hover span,
+.tabrow0 li.last a.inactive:hover span {
+    background: url("images/tab/right_dimmed.gif") no-repeat scroll right top transparent;
+}
+
+.tabrow0 li a.nolink {
+    background-position: 0px 4px;
+}
+
+.tabrow0 li a.nolink:hover {
+    background-position: 0px 4px;
+}
+
+.tabrow0 li.here a,
+.tabrow0 li.selected a,
+.tabrow0 li.selected a:hover {
+    background-position: 0px 0px !important;
+    padding-bottom: 0px;
 }
 
 /**
@@ -72,3 +89,27 @@ td.user_namewithlinks div.links {
 clear: both;
 }
 
+/*Programs */
+#program-content .nextsetoperator .operator-or,
+#program-content .nextsetoperator .operator-then,
+#view-program-content .nextsetoperator .operator-or,
+#view-program-content .nextsetoperator .operator-then {
+    width: auto;
+}
+
+/*Fix the totara menu in IE7 RTL*/
+
+div#totara_menu {
+    zoom: 1;
+    width: 100%;
+}
+div#totara_menu ul {
+    width: 70%;
+}
+
+.header-search {
+    margin-right: 5px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    width: 22%;
+}

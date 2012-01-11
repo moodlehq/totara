@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_rss_client.php - created with Moodle 2.0 dev (Build: 20100207) (2010020700)
-
+<?php
+// block_rss_client.php - created with Totara langimport script version 1.1
 
 $string['addfeed'] = 'URL für Newsfeed hinzufügen';
 $string['addheadlineblock'] = 'RSS-Überschriftenblock hinzufügen';

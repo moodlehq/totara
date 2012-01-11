@@ -145,7 +145,7 @@ define('CONTEXT_COURSE', 50);
 define('CONTEXT_MODULE', 70);
 define('CONTEXT_BLOCK', 80);
 
-// capability risks - see http://docs.moodle.org/en/Development:Hardening_new_Roles_system
+// capability risks - see http://docs.moodle.org/dev/Hardening_new_Roles_system
 define('RISK_MANAGETRUST', 0x0001);
 define('RISK_CONFIG',      0x0002);
 define('RISK_XSS',         0x0004);
@@ -3087,6 +3087,7 @@ function role_assign($roleid, $userid, $groupid, $contextid, $timestart=0, $time
 function role_unassign($roleid=0, $userid=0, $groupid=0, $contextid=0, $enrol=NULL, $id=0) {
     global $USER, $CFG;
     require_once($CFG->dirroot.'/group/lib.php');
+    require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
 
     $success = true;
 
@@ -3162,6 +3163,9 @@ function role_unassign($roleid=0, $userid=0, $groupid=0, $contextid=0, $enrol=NU
                         }
                     }
                 }
+
+                // Remove totara stats record
+                totara_stats_remove_event($ra->userid, STATS_EVENT_COURSE_STARTED, $context->instanceid);
 
                 if ($fireevent) {
                     events_trigger('role_unassigned', $ra);
@@ -5923,62 +5927,69 @@ function role_cap_duplicate($sourcerole, $targetrole) {
  * @param $assignment position_assignment object, include old reportstoid field (if any)
  * @param $managerid new manager's user id (optional)
  */
-function assign_user_position($assignment, $managerid = null) {
+function assign_user_position($assignment, $unittest=false) {
+    global $CFG;
 
     begin_sql();
-
     // Get old user id
     $old_managerid = null;
     if ($assignment->reportstoid) {
         $old_managerid = get_field('role_assignments', 'userid', 'id', $assignment->reportstoid);
+    } else {
+        $old_managerid = null;
     }
 
-    // Delete role assignment if manager changed
-    if ($old_managerid && $old_managerid != $managerid) {
-        if (!role_unassign(null, null, null, null, null, $assignment->reportstoid)) {
-            rollback_sql();
-            error_log('assign_user_position: Could not delete old manager role assignment');
-            return false;
+    $managerchanged = false;
+    if ($old_managerid != $assignment->managerid) {
+        $managerchanged = true;
+    }
+
+    // skip this bit during testing as we don't have all the required tables for role assignments
+    if (!$unittest) {
+
+        // Delete role assignment if there was a manager but it changed
+        if ($old_managerid && $managerchanged) {
+            if (!role_unassign(null, null, null, null, null, $assignment->reportstoid)) {
+                rollback_sql();
+                error_log('assign_user_position: Could not delete old manager role assignment');
+                return false;
+            }
+        }
+
+        // Create new role assignment if there is now and a manager but it changed
+        if ($assignment->managerid && $managerchanged) {
+
+            // Get context
+            $context = get_context_instance(CONTEXT_USER, $assignment->userid);
+
+            // Get manager role id
+            $roleid = $CFG->managerroleid;
+
+            // Assign manager to user
+            $raid = role_assign(
+                $roleid,
+                $assignment->managerid,
+                null,
+                $context->id,
+                (!$assignment->timevalidfrom ? 0 : $assignment->timevalidfrom),
+                (!$assignment->timevalidto ? 0 : $assignment->timevalidto)
+            );
+
+            // update reportstoid
+            $assignment->reportstoid = $raid;
         }
     }
 
-    // Create new role assignment if manager changed
-    if ($managerid && $old_managerid != $managerid) {
-
-        // Get context
-        $context = get_context_instance(CONTEXT_USER, $assignment->userid);
-
-        // Get manager role id
-        $roleid = get_field('role', 'id', 'shortname', 'manager');
-
-        // Assign manager to user
-        $raid = role_assign(
-                    $roleid,
-                    $managerid,
-                    null,
-                    $context->id,
-                    (!$assignment->timevalidfrom ? 0 : $assignment->timevalidfrom),
-                    (!$assignment->timevalidto ? 0 : $assignment->timevalidto)
-        );
-
-        $assignment->reportstoid = $raid;
-    }
-
-    // If no manager set, reset reportstoid
-    if (!$managerid) {
-        $assignment->reportstoid = null;
-    }
-
     // Store the date of this assignment
-    global $CFG;
     require_once($CFG->dirroot.'/local/program/lib.php');
     prog_store_position_assignment($assignment);
 
     // Save assignment
-    $assignment->save();
+    if (!$assignment->save($managerchanged)) {
+        rollback_sql();
+    }
 
     commit_sql();
 }
-
 
 ?>

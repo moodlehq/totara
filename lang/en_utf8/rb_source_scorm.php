@@ -6,6 +6,7 @@ $string['scormtitle'] = 'SCORM Title';
 $string['title'] = 'SCO Title';
 $string['time'] = 'SCO Start Time';
 $string['status'] = 'SCO Status';
+$string['statusmodified'] = 'SCO Status Modified';
 $string['totaltime'] = 'SCO Total TIme';
 $string['score'] = 'SCO Score';
 $string['minscore'] = 'SCO Min Score';

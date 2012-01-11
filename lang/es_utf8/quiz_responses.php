@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz_responses.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// quiz_responses.php - created with Totara langimport script version 1.1
 
 $string['cannotloadoptions'] = 'No se pudieron cargar las opciones de pregunta';
 $string['pagesize'] = 'Intentos por página:';

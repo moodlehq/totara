@@ -1,4 +1,5 @@
-<?php // $Id: notes.php,v 1.12 2009/04/10 19:28:52 martignoni Exp $
+<?php
+// notes.php - created with Totara langimport script version 1.1
 
 $string['addnewnote'] = 'Ajouter une nouvelle annotation';
 $string['addnewnoteselect'] = 'Sélectionnez les utilisateurs sur lesquels écrire une annotation';
@@ -9,8 +10,8 @@ $string['content'] = 'Contenu';
 $string['course'] = 'cours';
 $string['coursenotes'] = 'Annotations de cours';
 $string['created'] = 'créée';
-$string['deletenotes'] = 'Supprimer toutes les annotations';
 $string['deleteconfirm'] = 'Supprimer cette annotation ?';
+$string['deletenotes'] = 'Supprimer toutes les annotations';
 $string['editnote'] = 'Modifier annotation';
 $string['enablenotes'] = 'Activer les annotations';
 $string['groupaddnewnote'] = 'Ajouter une annotation commune';

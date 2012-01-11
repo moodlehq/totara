@@ -1,7 +1,5 @@
-<?PHP // $Id: userkey.php,v 1.2 2008/11/21 19:32:43 samulik Exp $ 
-      // userkey.php - created with Moodle 1.9.2+ (Build: 20080813) (2007101521)
-      // local modifications from https://www.moodle.fi/demo/moodle
-
+<?php
+// userkey.php - created with Totara langimport script version 1.1
 
 $string['createnewkey'] = 'Luo uusi käyttäjä-avain';
 $string['createuserkey'] = 'Luo käyttäjä-avain';

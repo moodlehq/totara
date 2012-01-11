@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // customfields.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// customfields.php - created with Totara langimport script version 1.1
 
 $string['category'] = 'فئة';
 $string['categorynamemustbeunique'] = 'اسم الفئة ( يجب ان يكون فريد)';

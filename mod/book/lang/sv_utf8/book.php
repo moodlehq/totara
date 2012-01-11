@@ -1,5 +1,5 @@
 <?php
-// book.php - created with Totara langimport script version 1.0
+// book.php - created with Totara langimport script version 1.1
 
 $string['addafter'] = 'Lägg till ett nytt kapitel';
 $string['book_tocwidth'] = 'Bredd på innehållförteckning';

@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_truefalse.php,v 1.2 2008/09/20 19:30:36 papita Exp $ 
-      // qtype_truefalse.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// qtype_truefalse.php - created with Totara langimport script version 1.1
 
 $string['addingtruefalse'] = 'Adicionando uma questão verdadeiro/falso';
 $string['correctanswer'] = 'Resposta certa';

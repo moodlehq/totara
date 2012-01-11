@@ -1,0 +1,14 @@
+<h1>Ilmoittautumisen poistaminen<h1>
+
+<p>IMS Enterprise -tietoja voidaan käyttää kurssi-ilmoittautumisten lisäämiseen sekä poistamiseen. Tämä pätee sekä oppijoihin että opettajiin. Jos tämä asetus on valittuna, Totara poistaa ilmoittautumiset määritellysti.</p>
+
+<p>Tähän on kaksi tapaa:</p>
+
+<li>&lt;member&gt; elementti, joka määrittää tietyn oppijan ja kurssin, ja &lt;status&gt; elementti, jonka arvona on 0 ("ei toiminnassa").</li>
+</ul>
+
+<p>Toinen tapa on erilainen. Se ei vaadi konfigurointiasetusten aktivointia, ja voidaan määrittää hyvissä ajoin ennen ilmoittautumisen poistamispäivämäärää: </p>
+
+<ul>
+  <li>&lt;member> elementti, joka määrittää &lt;timeframe> (ajanjakson) ilmoittautumiselle, voi sisältää myös ilmoittautumisen alku- ja loppupäivän tietylle opiskelijalle. Loppupäivän jälkeen opiskelija ei enää pääse kirjautumaan kyseiselle kurssille. </li>
+</ul>

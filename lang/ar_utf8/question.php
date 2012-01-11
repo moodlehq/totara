@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // question.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// question.php - created with Totara langimport script version 1.1
 
 $string['adminreport'] = 'تقرير عن المشاكل المحتملة في قاعدة بيانات سؤالك.';
 $string['broken'] = 'هذا \"ارتباط مكسور\" ، إنه يشير إلى ملف غير موجود.';

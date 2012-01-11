@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // enrol_flatfile.php - created with Moodle 2.0 dev (Build: 20080327) (2008030700)
-
+<?php
+// enrol_flatfile.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'שיטה זו תבדוק ותעבד באופן שיטתי קובץ טקסט ש באופן מיוחד במיקום אשר אותו אתה תפרט.
 הקובץ הינו קובץ המופרד על ידי פסיק, ומונח כי יש בו ארבעה או שישה שדות בכל שורה:

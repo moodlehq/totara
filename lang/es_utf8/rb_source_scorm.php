@@ -1,33 +1,29 @@
 <?php
-// lang file for mod/scorm/rb_sources_scorm.php
-$string['sourcetitle'] = 'SCORM';
-// columns
-$string['scormtitle'] = 'Título de SCORM';
-$string['title'] = 'Título de SCO';
-$string['time'] = 'Hora de inicio de SCO';
-$string['status'] = 'Estado de SCO';
-$string['totaltime'] = 'Tiempo total de SCO';
-$string['score'] = 'Puntuación de SCO';
-$string['minscore'] = 'Puntuación mínima de SCO';
-$string['maxscore'] = 'Puntuación máxima de SCO';
+// rb_source_scorm.php - created with Totara langimport script version 1.1
+
 $string['attemptnum'] = 'Número de intentos de SCO';
-
-// filters
 $string['attemptstart'] = 'Hora de inicio del intento';
-$string['rawscore'] = 'Puntuación';
-$string['rawmin'] = 'Puntuación mínima';
-$string['rawmax'] = 'Puntuación máxima';
-// content
-$string['currentorg'] = 'La organización actual del usuario';
-$string['theuser'] = 'El usuario';
-$string['thedate'] = 'La fecha del intento';
-// list
-$string['passed'] = 'Apto';
 $string['completed'] = 'Realizado';
-$string['notattempted'] = 'No intentado';
-$string['incomplete'] = 'Incompleto';
+$string['currentorg'] = 'La organización actual del usuario';
 $string['failed'] = 'No apto';
-
-// column types for this source, as strings
-$string['type_scorm'] = 'SCORM';
+$string['incomplete'] = 'Incompleto';
+$string['maxscore'] = 'Puntuación máxima de SCO';
+$string['minscore'] = 'Puntuación mínima de SCO';
+$string['notattempted'] = 'No intentado';
+$string['passed'] = 'Apto';
+$string['rawmax'] = 'Puntuación máxima';
+$string['rawmin'] = 'Puntuación mínima';
+$string['rawscore'] = 'Puntuación';
+$string['score'] = 'Puntuación de SCO';
+$string['scormtitle'] = 'Título de SCORM';
+$string['sourcetitle'] = 'SCORM';
+$string['status'] = 'Estado de SCO';
+$string['thedate'] = 'La fecha del intento';
+$string['theuser'] = 'El usuario';
+$string['time'] = 'Hora de inicio de SCO';
+$string['title'] = 'Título de SCO';
+$string['totaltime'] = 'Tiempo total de SCO';
 $string['type_sco'] = 'SCO';
+$string['type_scorm'] = 'SCORM';
+
+?>

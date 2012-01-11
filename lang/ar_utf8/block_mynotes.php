@@ -1,6 +1,5 @@
-<?PHP // $Id: block_mynotes.php,v 1.1 2007/04/30 23:13:43 koenr Exp $ 
-      // block_mynotes.php - created with Moodle 1.9 dev (2007041800)
-
+<?php
+// block_mynotes.php - created with Totara langimport script version 1.1
 
 $string['add'] = 'أضف';
 $string['blockname'] = 'ملاحظاتي';

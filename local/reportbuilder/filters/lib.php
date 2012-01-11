@@ -5,7 +5,9 @@ require_once($CFG->dirroot.'/local/reportbuilder/filters/number.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/simpleselect.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/select.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/date.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/datetime.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/hierarchy.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/hierarchy_multi.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/multicheck.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/filter_forms.php');
 
@@ -104,7 +106,7 @@ class filtering {
         $value = $filter->value;
         $sessionname = $this->_sessionname;
 
-        if(isset($filter->filtertype)) {
+        if (isset($filter->filtertype)) {
             $filtertype = $filter->filtertype;
             $filtername = "filter_{$filtertype}";
 
@@ -113,11 +115,16 @@ class filtering {
             case 'textarea':
             case 'number':
             case 'date':
+            case 'datetime':
                 return new $filtername($filter, $sessionname);
             case 'org':
             case 'comp':
             case 'pos':
                 return new filter_hierarchy($filter, $sessionname, $filtertype);
+            case 'orgmulti':
+            case 'compmulti':
+            case 'posmulti':
+                return new filter_hierarchy_multi($filter, $sessionname, $filtertype);
             case 'simpleselect':
                 $choices = $filter->selectchoices;
                 $options = isset($filter->selectoptions) ?

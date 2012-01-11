@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // message.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// message.php - created with Totara langimport script version 1.1
 
 $string['addcontact'] = 'הוסף איש קשר';
 $string['addsomecontacts'] = 'כדי לשלוח מסר למישהו, או כדי להוסיף אליהם קיצור דרך בעמוד זה, השתמש ב<a href=\"$a\">לשונית החיפוש </a> לעיל.';

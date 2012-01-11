@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // hotpotatoes.php - created with Moodle 1.4.3 + (2004083134)
-
+<?php
+// hotpotatoes.php - created with Totara langimport script version 1.1
 
 $string['abandoned'] = 'avbruten';
 $string['allattempts'] = 'alla f&ouml;rs&ouml;k';

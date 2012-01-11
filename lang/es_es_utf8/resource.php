@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // resource.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// resource.php - created with Totara langimport script version 1.1
 
 $string['addresource'] = 'Añadir recurso';
 $string['affectedresources'] = 'Recursos afectados';
@@ -10,6 +9,7 @@ $string['configfilterexternalpages'] = 'Activar esta variable ocasionará que to
 $string['configframesize'] = 'Cuando se muestra una página web o un archivo cargado dentro de un marco (frame), este valor es el tamaño (en pixeles) del marco superior (el cual contiene la navegación).';
 $string['editingaresource'] = 'Editar recurso';
 $string['example'] = 'Ejemplo';
+$string['examplereference'] = 'Tobin, K. & Tippins, D (1993) Constructivism as a Referent for Teaching and Learning. In: K. Tobin (Ed) The Practice of Constructivism in Science Education, pp 3-21, Lawrence-Erlbaum, Hillsdale, NJ.';
 $string['exampleurl'] = 'http://www.ejemplo.com/algúndirectorio/algúnarchivo.html';
 $string['filename'] = 'Nombre del archivo';
 $string['fulltext'] = 'Texto completo';
@@ -45,6 +45,5 @@ $string['resourcetype5'] = 'Enlace Web';
 $string['resourcetype6'] = 'Texto HTML';
 $string['resourcetype7'] = 'Programa';
 $string['resourcetype8'] = 'Texto Wiki';
-$string['examplereference'] = 'Tobin, K. & Tippins, D (1993) Constructivism as a Referent for Teaching and Learning. In: K. Tobin (Ed) The Practice of Constructivism in Science Education, pp 3-21, Lawrence-Erlbaum, Hillsdale, NJ.'; // ORPHANED
 
 ?>

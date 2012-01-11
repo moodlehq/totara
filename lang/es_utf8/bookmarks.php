@@ -1,4 +1,5 @@
 <?php
+// bookmarks.php - created with Totara langimport script version 1.1
 
 $string['accessdenied'] = 'Usted no es miembro de este grupo';
 $string['additem'] = 'Agregar un marcador';
@@ -9,10 +10,10 @@ $string['bookmarksname'] = 'Nombre';
 $string['canceled'] = 'Operación cancelada';
 $string['changegroup'] = 'Cambiar';
 $string['currenttags'] = 'Etiquetas actuales:';
-$string['description'] = 'Descripción del marcador';
 $string['deleting'] = 'Eliminar marcador';
-$string['modulenameplural'] = 'Marcadores';
+$string['description'] = 'Descripción del marcador';
 $string['modulename'] = 'Marcadores';
+$string['modulenameplural'] = 'Marcadores';
 $string['mybookmarks'] = 'Mis marcadores';
 $string['name'] = 'Nombre del marcador';
 $string['nogroupsset'] = 'No hay grupos establecidos en este curso';
@@ -26,4 +27,5 @@ $string['selectedgroup'] = 'Grupo seleccionado:  $a';
 $string['tags'] = 'Etiquetas de marcadores';
 $string['url'] = 'URL del marcador';
 $string['validurl'] = 'Para que una URL sea válida debe comenzar por http(s)://';
+
 ?>

@@ -87,7 +87,7 @@ This will remove the following data: <br />
 $string['deleteincludexcustomfields'] = '- $a custom field record(s)';
 $string['deleteincludexuserstatusrecords'] = '- $a user status record(s)';
 $string['deleteincludexevidence'] = '- $a item(s) of evidence';
-$string['deleteincludexrelatedcompetencies'] = '- $a link(s) to releated competencies';
+$string['deleteincludexrelatedcompetencies'] = '- $a link(s) to related competencies';
 $string['deletecheckframework'] = 'Are you sure you want to delete the framework \"$a\"?';
 $string['deletecheckscale'] = 'Are you absolutely sure you want to completely delete this competency scale?';
 $string['deletecheckscalevalue'] = 'Are you absolutely sure you want to delete this competency scale value?';

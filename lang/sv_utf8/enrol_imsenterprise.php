@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_imsenterprise.php,v 1.2 2007/05/26 21:11:05 koenr Exp $ 
-      // enrol_imsenterprise.php - created with Moodle 1.8 (2007021501)
-
+<?php
+// enrol_imsenterprise.php - created with Totara langimport script version 1.1
 
 $string['aftersaving...'] = 'När Du väl har sparat Dina inställningar så kanske Du vill';
 $string['allowunenrol'] = 'Tillåt IMS data att <strong>avregistrera</strong> lärande och distanslärare';

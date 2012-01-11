@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// forum.php - created with Totara langimport script version 1.1
 
 $string['addanewdiscussion'] = 'Acrescentar um novo tópico de discussão';
 $string['addanewquestion'] = 'Acrescentar uma nova questão';
@@ -29,8 +30,18 @@ $string['blockperioddisabled'] = 'Não bloquear';
 $string['bynameondate'] = 'por $a->name - $a->date';
 $string['cannotadddiscussion'] = 'Apenas os participantes inscritos nos grupos podem escrever mensagens neste fórum';
 $string['cannotadddiscussionall'] = 'Você não tem permissão para abrir um novo tópico de discussão para todos os participantes.';
+$string['cannotdeletepost'] = 'Você não pode apagar esta mensagem!';
 $string['cannotviewpostyet'] = 'Você ainda não pode ler as perguntas dos outros participantes desta discussão porque você ainda não publicou a sua';
 $string['cleanreadtime'] = 'Quando marcar as mensagens antigas como lidas';
+$string['completiondiscussions'] = 'O usuário deve criar discussões:';
+$string['completiondiscussionsgroup'] = 'Discussões necessárias';
+$string['completiondiscussionshelp'] = 'as discussões são necessárias para se completar';
+$string['completionposts'] = 'O usuário deve inserir discussões ou respostas:';
+$string['completionpostsgroup'] = 'Obrigatoriedade de mensagens';
+$string['completionpostshelp'] = 'as discussões ou respostas são necessárias para se completar';
+$string['completionreplies'] = 'O usuário deve inserir respostas:';
+$string['completionrepliesgroup'] = 'Obrigatoriedade de respostas';
+$string['completionreplieshelp'] = 'as respostas são necessárias para se completar';
 $string['configajaxrating'] = 'A opção AJAX melhora a usabilidade da avaliação, pois é imediata e não depende do pulsante de envio. Para que funcione é necessario que o AJAX esteja habilitato no site e no perfil dos usuários.';
 $string['configcleanreadtime'] = 'Hora do dia em que as mensagens antigas serão apagadas da tabela \'lidas\'.';
 $string['configdisplaymode'] = 'Modalidade de visualização das discussões predefinida, se uma outra não for configurada.';
@@ -45,6 +56,8 @@ $string['configreplytouser'] = 'Quando as mensagens dos fóruns são enviadas ao
 $string['configshortpost'] = 'Todas as mensagens menores que esta dimensão (sem contar o html) são consideradas curtas.';
 $string['configtrackreadposts'] = 'Escolha \'sim\' se você quiser monitorar as mensagens lidas/não lidas de cada usuário.';
 $string['configusermarksread'] = 'Se \'sim\',o usuário terá que marcar as mensagens lidas manualmente. Se \'não\', a mensagem acessada será marcada automaticamente.';
+$string['confirmsubscribe'] = 'Você realmente deseja se inscrever ao fórum \'{$a}\'?';
+$string['confirmunsubscribe'] = 'Você realmente deseja sair do fórum \'{$a}\'?';
 $string['couldnotadd'] = 'Não foi possível publicar a sua mensagem. Infelizmente a causa do erro não foi identificada.';
 $string['couldnotdeleteratings'] = 'Não é possível excluir esta mensagem porque já foi avaliada.';
 $string['couldnotdeletereplies'] = 'Não é possível excluir esta mensagem porque já existem respostas.';

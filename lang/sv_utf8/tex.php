@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // tex.php - created with Moodle 1.9 Beta + (2007090600)
-
+<?php
+// tex.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'Notation för TeX';
 

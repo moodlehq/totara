@@ -1,10 +1,10 @@
-<?PHP // $Id: enrol_mnet.php,v 1.2 2008/01/02 12:11:30 barias Exp $ 
-      // enrol_mnet.php - created with Moodle 1.8.2+ (2007021520)
-
+<?php
+// enrol_mnet.php - created with Totara langimport script version 1.1
 
 $string['allcategories'] = '$a categorías potenciales';
 $string['allcourses'] = '$a cursos potenciales';
 $string['allow_allcourses'] = 'Permitir la matriculación en todos los cursos remotos.';
+$string['allow_allcourses2'] = 'Permita que usuarios remotos puedan apuntarse en todos los cursos en este sitio moodle.';
 $string['allowedcategories'] = '$a categorías permitidas';
 $string['allowedcourses'] = '$a cursos permitidos';
 $string['allowedcourseslinktext'] = 'Editar las categorías y cursos permitidos.';

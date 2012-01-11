@@ -1,8 +1,5 @@
-<?php // $Id$ 
-
-// Trouver un bon terme pour "aggregate".
-// Verbes : amalgamer, agréger, combiner, coupler
-// Termes utilisés actuellement : tendance centrale, combiner
+<?php
+// grades.php - created with Totara langimport script version 1.1
 
 $string['activities'] = 'Activités';
 $string['addcategory'] = 'Ajouter une catégorie';
@@ -35,7 +32,7 @@ $string['aggregation'] = 'Tendance centrale';
 $string['aggregationcoef'] = 'Coefficient';
 $string['aggregationcoefextra'] = 'Points supplémentaires';
 $string['aggregationcoefextrahelp'] = 'Points supplémentaires pour cet élément d\'évaluation lors du calcul de la tendance centrale.';
-$string['aggregationcoefextrasum'] = 'Points supplémentaires'; // Obsolete from 2.0dev onwards
+$string['aggregationcoefextrasum'] = 'Points supplémentaires';
 $string['aggregationcoefextrasumhelp'] = 'Points supplémentaires pour cet élément d\'évaluation lors du calcul de la tendance centrale.';
 $string['aggregationcoefweight'] = 'Coefficient de l\'élément';
 $string['aggregationcoefweighthelp'] = 'Coefficient appliqué à toutes les notes de cet élément d\'évaluation lors du calcul de la tendance centrale.';
@@ -73,6 +70,7 @@ $string['categoryedit'] = 'Modifier catégorie';
 $string['categoryname'] = 'Nom de la catégorie';
 $string['categorytotal'] = 'Total de la catégorie';
 $string['categorytotalfull'] = 'Total de {$a->category}';
+$string['categorytotalname'] = 'Nom complet catégorie';
 $string['changedefaults'] = 'Modifier les réglages par défaut';
 $string['changereportdefaults'] = 'Modifier les rapports par défaut';
 $string['chooseaction'] = 'Choisir une action...';
@@ -116,8 +114,8 @@ $string['configshowgroups'] = 'Spécifie si la moyenne de chaque groupe doit êt
 $string['configshowhiddenitems'] = 'Spécifie comment les éléments cachés sont affichés. Si Cacher est sélectionné, ils sont cachés complètement. Si Afficher est sélectionné, la rangée de l\'élément caché est grisée et la note est complètement cachée. Si Caché jusqu\'au est sélectionné, les éléments sont grisés et la note cachée, jusqu\'à l\'échéance de la date fixée, s\'il y en a une. Une fois le date passée, l\'élément est affiché complètement.';
 $string['configshowlocks'] = 'Afficher une icône de verrouillage/déverrouillage pour chaque note ?';
 $string['configshownumberofgrades'] = 'Spécifie si le nombre des notes utilisées pour calculer la moyenne doit être affiché entre parenthèses, à côté de chaque moyenne. Exemple : 45 (34).';
-$string['configshowquickfeedback'] = 'Le feedback rapide ajoute un champ de texte à chaque cellule de note du rapport de l\'évaluateur, vous permettant de modifier de nombreux feedbacks à la fois. Vous pouvez alors cliquer sur le bouton Modifier pour effectuer d\'un coup toutes les modifications, au lieu de les faire une à la fois.';
 $string['configshowpercentage'] = 'Spécifie s\'il faut afficher la valeur en pour-cents de chaque élément d\'évaluation.';
+$string['configshowquickfeedback'] = 'Le feedback rapide ajoute un champ de texte à chaque cellule de note du rapport de l\'évaluateur, vous permettant de modifier de nombreux feedbacks à la fois. Vous pouvez alors cliquer sur le bouton Modifier pour effectuer d\'un coup toutes les modifications, au lieu de les faire une à la fois.';
 $string['configshowranges'] = 'Spécifie si les valeurs possibles des notes de chaque colonne doivent être affichées dans une rangée supplémentaire.';
 $string['configshowrank'] = 'Spécifie si le rang du participant, par rapport aux autres participants, doit être affiché pour chaque élément.';
 $string['configshowuseridnumber'] = 'Spécifie si l\'identifiant du participant doit être affiché dans une colonne supplémentaire.';
@@ -174,7 +172,7 @@ $string['enableoutcomes'] = 'Activer les objectifs';
 $string['encoding'] = 'Encodage';
 $string['errorcalculationnoequal'] = 'La formule doit commencer par un signe d\'égalité (=1+2)';
 $string['errorcalculationunknown'] = 'Formule non valide';
-$string['errorgradevaluenonnumeric'] = 'Une note non-numérique a été reçue (note haute ou basse) pour ';
+$string['errorgradevaluenonnumeric'] = 'Une note non-numérique a été reçue (note haute ou basse) pour';
 $string['errornocalculationallowed'] = 'Les calculs ne sont pas autorisés pour cet élément';
 $string['errornocategorisedid'] = 'Impossible d\'obtenir un identifiant sans catégorie !';
 $string['errornocourse'] = 'Impossible d\'obtenir les informations du cours';
@@ -211,7 +209,7 @@ $string['finalgradehelp'] = 'La note finale (mise en cache), une fois tous les c
 $string['fixedstudents'] = 'Colonne étudiants statique';
 $string['forceoff'] = 'Imposer : non';
 $string['forceon'] = 'Imposer : oui';
-$string['forelementtypes'] = ' pour les $a sélectionnés';
+$string['forelementtypes'] = 'pour les $a sélectionnés';
 $string['forstudents'] = 'Pour les étudiants';
 $string['full'] = 'Complet';
 $string['fullmode'] = 'Affichage complet';
@@ -393,20 +391,20 @@ $string['nogradesreturned'] = 'Aucune note retournée';
 $string['noidnumber'] = 'Pas d\'identifiant';
 $string['nolettergrade'] = 'Pas de note lettre pour';
 $string['nomode'] = 'ND';
-$string['nonnumericweight'] = 'Valeur non numérique reçue pour ';
+$string['nonnumericweight'] = 'Valeur non numérique reçue pour';
 $string['nonunlockableverbose'] = 'Cette note ne peut pas être déverrouillée tant que $a->itemname est verrouillé.';
 $string['nonweightedpct'] = '%% non pondéré';
 $string['nooutcome'] = 'Aucun objectif';
 $string['nooutcomes'] = 'Les éléments d\'objectif doivent être liés à un objectif de cours. Il n\'y a cependant aucun objectif défini dans ce cours. Voulez-vous en définir un ?';
 $string['nopublish'] = 'Ne pas publier';
-$string['norolesdefined' ] = 'Aucun rôle défini dans Administration > Notes > Réglages généraux > Rôles évalués';
+$string['norolesdefined'] = 'Aucun rôle défini dans Administration > Notes > Réglages généraux > Rôles évalués';
 $string['noscales'] = 'Les éléments d\'objectif doivent être liés à un barème de cours ou un barême global. Il n\'y a cependant aucun barème. Voulez-vous en définir un ?';
 $string['noselectedcategories'] = 'Aucune catégorie sélectionnée.';
 $string['noselecteditems'] = 'Aucun élément sélectionné.';
 $string['notteachererror'] = 'Vous devez être enseignant pour utiliser cette fonctionnalité.';
 $string['nousersloaded'] = 'Aucun utilisateur chargé';
 $string['numberofgrades'] = 'Nombre de notes';
-$string['onascaleof'] = ' sur un barème de $a->grademin à $a->grademax';
+$string['onascaleof'] = 'sur un barème de $a->grademin à $a->grademax';
 $string['operations'] = 'Opérations';
 $string['options'] = 'Options';
 $string['outcome'] = 'Objectif';
@@ -583,9 +581,9 @@ $string['weightedascending'] = 'Tri croissant par pourcent pondéré';
 $string['weighteddescending'] = 'Tri décroissant par pourcent pondéré';
 $string['weightedpct'] = '%% pondéré';
 $string['weightedpctcontribution'] = 'contribution en %% pondérée';
+$string['weightorextracredit'] = 'Coefficient ou bonus';
 $string['weights'] = 'Coefficients';
 $string['weightsedit'] = 'Modifier les coefficients et les bonus';
-$string['weightorextracredit'] = 'Coefficient ou bonus';
 $string['weightuc'] = 'Coefficient';
 $string['writinggradebookinfo'] = 'Écriture des réglages du carnet de notes';
 $string['xml'] = 'XML';

@@ -1,5 +1,5 @@
 <?php
-// enrol_imsenterprise.php - created with Totara langimport script version 1.0
+// enrol_imsenterprise.php - created with Totara langimport script version 1.1
 
 $string['aftersaving...'] = 'Kun olet tallentanut asetuksesi, saatat haluta';
 $string['allowunenrol'] = 'Salli IMS-tietojen';

@@ -74,10 +74,10 @@ class prog_messages_manager {
         $this->messages_deleted_ids = array();
         $this->formdataobject = new stdClass();
 
-        if($messages = get_records('prog_message', 'programid', $programid, 'sortorder ASC')) {
-            foreach($messages as $message) {
+        if ($messages = get_records('prog_message', 'programid', $programid, 'sortorder ASC')) {
+            foreach ($messages as $message) {
 
-                if( ! array_key_exists($message->messagetype, $this->message_classnames)) {
+                if (!array_key_exists($message->messagetype, $this->message_classnames)) {
                     throw new ProgramMessageException(get_string('meesagetypenotfound','local_program'));
                 }
 

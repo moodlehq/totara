@@ -1,5 +1,5 @@
 <?php
-// organisation.php - created with Totara langimport script version 1.0
+// organisation.php - created with Totara langimport script version 1.1
 
 $string['adddepthlevel'] = 'Añadir un nuevo nivel de profundidad';
 $string['addedframework'] = 'La estructura de organización \"{\$ a}\" ha sido añadido';
@@ -41,9 +41,9 @@ Esto eliminará los datos: <br />
 >childcount $a->children_string';
 $string['deleteorganisation'] = 'Eliminar organización';
 $string['deletetype'] = 'Eliminar tipo \"{$a}\"';
-$string['depthlevel'] = 'Niveles de profundidad';
+$string['depthlevel'] = 'Nivel de profundidad';
 $string['depthlevels'] = 'Niveles de profundidad';
-$string['depths'] = 'Profundidad';
+$string['depths'] = 'Profundidades';
 $string['descriptionview'] = 'Descripción';
 $string['editdepthlevel'] = 'Editar nivel de profundidad';
 $string['editframework'] = 'Editar estructura de la organización';
@@ -60,7 +60,7 @@ $string['featureplural'] = 'Organizaciones';
 $string['framework'] = 'Estructura de organización';
 $string['frameworks'] = 'Estructuras de la organización';
 $string['fullname'] = 'Nombre completo de la organización';
-$string['fullnamedepth'] = 'Nombre completo';
+$string['fullnamedepth'] = 'Nombre completo de profundidad';
 $string['fullnameframework'] = 'Nombre completo';
 $string['fullnametype'] = 'Nombre completo del tipo';
 $string['fullnameview'] = 'Nombre completo';
@@ -78,8 +78,8 @@ $string['missingfullnametype'] = 'Falta el nombre completo del tipo';
 $string['missingname'] = 'Falta el nombre de la organización';
 $string['missingnameframework'] = 'Falta el nombre de la estructura de la organización';
 $string['missingnametype'] = 'Falta el nombre del tipo de organización';
-$string['missingshortname'] = 'Falta el nombre';
-$string['missingshortnamedepth'] = 'Falta el nombre corto';
+$string['missingshortname'] = 'Falta el nombre corto de la organización';
+$string['missingshortnamedepth'] = 'Falta el nombre corto de la profundidad';
 $string['missingshortnameframework'] = 'Falta el nombre corto';
 $string['missingshortnametype'] = 'Falta el nombre corto del tipo';
 $string['name'] = 'Nombre';

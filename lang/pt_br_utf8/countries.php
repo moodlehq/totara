@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // countries.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// countries.php - created with Totara langimport script version 1.1
 
 $string['AD'] = 'Andorra';
 $string['AE'] = 'Emirados Árabes Unidos';
@@ -52,6 +51,7 @@ $string['CM'] = 'Camarões';
 $string['CN'] = 'China';
 $string['CO'] = 'Colômbia';
 $string['CR'] = 'Costa Rica';
+$string['CS'] = 'Sérvia e Montenegro';
 $string['CU'] = 'Cuba';
 $string['CV'] = 'Cabo Verde';
 $string['CX'] = 'Ilhas Christmas';
@@ -76,6 +76,7 @@ $string['FK'] = 'Ilhas Falkland (Malvinas)';
 $string['FM'] = 'Micronésia, Estados Federados da';
 $string['FO'] = 'Ilhas Faeroes';
 $string['FR'] = 'França';
+$string['FX'] = 'França (metropolitana)';
 $string['GA'] = 'Gabão';
 $string['GB'] = 'Reino Unido da Grã-Bretanha e da Irlanda do Norte';
 $string['GD'] = 'Grenada';
@@ -121,6 +122,7 @@ $string['KH'] = 'Camboja';
 $string['KI'] = 'Kiribati';
 $string['KM'] = 'Comoros';
 $string['KN'] = 'São Cristovão  e Nevis';
+$string['KO'] = 'Kosovo';
 $string['KP'] = 'Coréia do Norte (República Democrática Popular da Coréia)';
 $string['KR'] = 'Coreia do Sul (República da Coréia)';
 $string['KW'] = 'Kuwait';
@@ -223,6 +225,7 @@ $string['TL'] = 'Timor-Leste';
 $string['TM'] = 'Turcomenistão';
 $string['TN'] = 'Tunísia';
 $string['TO'] = 'Tonga';
+$string['TP'] = 'Timor Leste';
 $string['TR'] = 'Turquia';
 $string['TT'] = 'Trinidad e Tobago';
 $string['TV'] = 'Tuvalu';
@@ -241,18 +244,14 @@ $string['VG'] = 'Ilhas Virgens Britânicas';
 $string['VI'] = 'Ilhas Virgens Americanas';
 $string['VN'] = 'Vietnã';
 $string['VU'] = 'Vanuatu';
+$string['WA'] = 'País de Gales';
 $string['WF'] = 'Ilhas Wallis e Futuna';
 $string['WS'] = 'Samoa ocidental';
 $string['YE'] = 'Iêmen';
 $string['YT'] = 'Mayotte';
 $string['ZA'] = 'África do Sul';
 $string['ZM'] = 'Zâmbia';
+$string['ZR'] = 'Zaire';
 $string['ZW'] = 'Zimbábue';
-$string['CS'] = 'Sérvia e Montenegro'; // ORPHANED
-$string['FX'] = 'França (metropolitana)'; // ORPHANED
-$string['KO'] = 'Kosovo'; // ORPHANED
-$string['TP'] = 'Timor Leste'; // ORPHANED
-$string['WA'] = 'País de Gales'; // ORPHANED
-$string['ZR'] = 'Zaire'; // ORPHANED
 
 ?>

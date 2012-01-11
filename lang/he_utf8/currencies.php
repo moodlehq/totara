@@ -1,6 +1,5 @@
-<?PHP // $Id: currencies.php,v 1.2 2007/07/05 13:56:48 emanuel1 Exp $
-      // currencies.php - created with Moodle 1.8 + (2007021503)
-
+<?php
+// currencies.php - created with Totara langimport script version 1.1
 
 $string['AED'] = 'דירהם, איחוד הנסיכויות הערביות';
 $string['AFA'] = 'אפגני, אפגניסטן';
@@ -99,6 +98,7 @@ $string['NPR'] = 'רופי, נפאל';
 $string['NZD'] = 'דולר, ניו זילנד';
 $string['OMR'] = 'ריאל, אומן';
 $string['PAB'] = 'בלבואה, פנמה';
+$string['PEI'] = 'אינטי, פרו';
 $string['PEN'] = 'סול חדש';
 $string['PGK'] = 'קינה, פפוואה גינאה החדשה';
 $string['PHP'] = 'פסו, פיליפינים';
@@ -143,6 +143,5 @@ $string['YER'] = 'ריאלי תימני';
 $string['ZAR'] = 'רנד, דרום אפריקה';
 $string['ZMK'] = 'קוואצ\'ה, זמביה';
 $string['ZWD'] = 'דולר, זימבבואה';
-$string['PEI'] = 'אינטי, פרו'; // ORPHANED
 
 ?>

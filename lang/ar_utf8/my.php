@@ -1,6 +1,5 @@
-<?PHP // $Id: my.php,v 1.2 2006/12/30 22:24:01 koenr Exp $ 
-      // my.php - created with Moodle 1.8 dev (2006120700)
-
+<?php
+// my.php - created with Totara langimport script version 1.1
 
 $string['mymoodle'] = 'مودل الخاص بي';
 $string['nocourses'] = 'لا يوجد معلومات لمقرر دراسي ليتم اظهرها';

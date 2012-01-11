@@ -1,6 +1,5 @@
-<?PHP // $Id: block_mentees.php,v 1.2 2009/09/20 09:11:41 barias Exp $ 
-      // block_mentees.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// block_mentees.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Mentees';
 $string['configtitle'] = 'Título del Bloque';

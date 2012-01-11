@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // webquest.php - created with Moodle 1.8 Beta (2007020200)
-
+<?php
+// webquest.php - created with Totara langimport script version 1.1
 
 $string['absent'] = 'Abwesend';
 $string['accumulative'] = 'Gesammelt';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // forum.php - created with Moodle 2.0 dev (Build: 20100116) (2010011400)
-
+<?php
+// forum.php - created with Totara langimport script version 1.1
 
 $string['addanewdiscussion'] = 'Neues Diskussionsthema hinzufügen';
 $string['addanewquestion'] = 'Neue Frage hinzufügen';
@@ -25,6 +24,7 @@ $string['allsubscribe'] = 'Alle Foren abonnieren';
 $string['allunsubscribe'] = 'Alle Foren abbestellen';
 $string['alreadyfirstpost'] = 'Dies ist der erste Beitrag in der Diskussion';
 $string['anyfile'] = 'Jede Datei';
+$string['areaintro'] = 'Einleitung zum Forum';
 $string['attachment'] = 'Anhang';
 $string['attachmentnopost'] = 'Ohne Nachrichten-ID können keine Anhänge exportiert werden';
 $string['attachments'] = 'Anhänge';
@@ -38,6 +38,7 @@ $string['cannotadddiscussion'] = 'Um in diesem Forum mit zu diskutieren, müssen
 $string['cannotadddiscussionall'] = 'Sie haben nicht die Berechtigung, um neue Diskussionsthemen für alle Teilnehmer/innen anzulegen.';
 $string['cannotaddsubscriber'] = 'Abonnent mit der ID $a konnte nicht für das Forum registriert werden!';
 $string['cannotaddteacherforumto'] = 'Es kann keine konvertierte Instanz des Trainer-Forums in den Abschnitt 0 des Kurses eingefügt werden.';
+$string['cannotconvertteachertogeneral'] = 'Das Forum vom Typ \"Trainer-Forum\" kann nicht in eines vom Typ \"Allgemein\" geändert werden.';
 $string['cannotcreatediscussion'] = 'Es kann keine neue Diskussion erstellt werden.';
 $string['cannotcreateinstanceforteacher'] = 'Es kann kein neue Kursmodul-Instanz für das Trainer-Forum erstellt werden.';
 $string['cannotdeleteforummodule'] = 'Sie dürfen das Forenmodul nicht löschen.';
@@ -47,6 +48,7 @@ $string['cannotfinddiscussion'] = 'Die Diskussion kann in diesem Forum nicht gef
 $string['cannotfindfirstpost'] = 'Die erste Nachricht konnte nicht gefunden werden';
 $string['cannotfindorcreateforum'] = 'Das Nachrichtenforum dieses Kurses wurde nicht gefunden oder konnte nicht angelegt  werden.';
 $string['cannotfindparentpost'] = 'Der oberste Vorgänger des Beitrags $a kann nicht gefunden werden.';
+$string['cannotinsertrate'] = 'Neue Bewertung ($a[0] = $a[1]) konnte nicht eingefügt werden';
 $string['cannotmovefromsingleforum'] = 'Die Diskussion kann nicht von einem einfachen Einzel-Diskussions-Forum verschoben werden.';
 $string['cannotmovenotvisible'] = 'Forum nicht sichtbar';
 $string['cannotmovetonotexist'] = 'Sie können nicht zu diesem Forum wechseln - es existiert nicht!';
@@ -58,7 +60,12 @@ $string['cannotsplit'] = 'Die Diskussionen dieses Forums können nicht geteilt w
 $string['cannotsubscribe'] = 'Entschuldigung, aber Sie müssen für ein Abonnement ein Gruppenmitglied sein.';
 $string['cannottrack'] = 'Das Tracking des Forums konnte nicht beendet werden';
 $string['cannotunsubscribe'] = 'Sie könnten nicht aus dem Forum abgemeldet werden';
+$string['cannotupdatecoursemoudle'] = 'Das Kursmodul mit der Abschnitts-ID kann nicht aktualisiert werden.';
+$string['cannotupdatediscussion'] = 'Die Diskussion kann nicht aktualisiert werden.';
+$string['cannotupdatefirstpost'] = 'Der erste Beitrag kann nicht aktualisiert werden.';
+$string['cannotupdateforum'] = 'Das Forum kann nicht aktualisiert werden.';
 $string['cannotupdatepost'] = 'Sie können den Beitrag nicht aktualisieren.';
+$string['cannotupdaterate'] = 'Alte Bewertung ($a[0] = $a[1]) konnte nicht aktualisiert werden';
 $string['cannotviewpostyet'] = 'Sie können die Beiträge anderer Teilnehmer/innen erst dann lesen, wenn Sie selbst Beiträge verfasst haben.';
 $string['cleanreadtime'] = 'Stunde zu der alte Beiträge als gelesen gekennzeichnet werden';
 $string['completiondiscussions'] = 'Teilnehmer/in muss Themen neu beginnen';
@@ -85,6 +92,8 @@ $string['configreplytouser'] = 'Wenn ein Forumsbeitrag per E-Mail verschickt wir
 $string['configshortpost'] = 'Jeder Beitrag (ohne HTML-Codierung), der kürzer ist, wird als kurz eingestuft.';
 $string['configtrackreadposts'] = 'Wählen Sie \"Ja\", damit die Einstellung gelesen/ungelesen für alle Nutzer/innen zur Verfügung steht.';
 $string['configusermarksread'] = 'Die \"Ja\"-Einstellung bewirkt, dass die Nutzer/innen eine Nachricht manuell als gelesen markieren müssen. Bei \"Nein\" wird eine Nachricht automatisch dann als gelesen markiert, wenn sie aufgerufen wurde.';
+$string['confirmsubscribe'] = 'Wollen Sie das Forum {$a} abonnieren?';
+$string['confirmunsubscribe'] = 'Wollen Sie das Forum {$a} abbestellen?';
 $string['couldnotadd'] = 'Ihr Eintrag konnte aufgrund eines unbekannten Fehlers nicht hinzugefügt werden.';
 $string['couldnotdeleteratings'] = 'Der Eintrag kann nicht gelöscht werden, weil er schon bewertet wurde.';
 $string['couldnotdeletereplies'] = 'Der Beitrag kann nicht gelöscht werden, weil dazu schon Antworten vorliegen.';
@@ -220,6 +229,7 @@ $string['nomorepostscontaining'] = 'Es wurden keine weiteren Beiträge mit \'$a\
 $string['nonews'] = 'Es wurden bisher keine Nachrichten gepostet.';
 $string['nopermissiontosubscribe'] = 'Sie haben nicht die Berechtigung die Liste der Foren-Abonnenten einzusehen';
 $string['nopermissiontoview'] = 'Sie haben nicht die Berechtigung diesen Beitrag anzusehen.';
+$string['nopostdiscussion'] = 'In dieser Diskussion können Sie keine Beiträge veröffentlichen';
 $string['nopostforum'] = 'In diesem Forum können Sie keine Beiträge veröffentlichen';
 $string['noposts'] = 'Keine Beiträge';
 $string['nopostscontaining'] = 'Es wurden keine in \'$a\' enthaltenen Beiträge gefunden.';
@@ -361,14 +371,5 @@ $string['youratedthis'] = 'Ihre Bewertung';
 $string['yournewquestion'] = 'Ihre neue Frage';
 $string['yournewtopic'] = 'Ihr neues Diskussionsthema';
 $string['yourreply'] = 'Ihre Antwort';
-$string['areaintro'] = 'Einleitung zum Forum'; // ORPHANED
-$string['cannotconvertteachertogeneral'] = 'Das Forum vom Typ \"Trainer-Forum\" kann nicht in eines vom Typ \"Allgemein\" geändert werden.'; // ORPHANED
-$string['cannotupdatecoursemoudle'] = 'Das Kursmodul mit der Abschnitts-ID kann nicht aktualisiert werden.'; // ORPHANED
-$string['cannotupdatediscussion'] = 'Die Diskussion kann nicht aktualisiert werden.'; // ORPHANED
-$string['cannotupdatefirstpost'] = 'Der erste Beitrag kann nicht aktualisiert werden.'; // ORPHANED
-$string['cannotupdateforum'] = 'Das Forum kann nicht aktualisiert werden.'; // ORPHANED
-$string['cannotinsertrate'] = 'Neue Bewertung ($a[0] = $a[1]) konnte nicht eingefügt werden'; // ORPHANED
-$string['cannotupdaterate'] = 'Alte Bewertung ($a[0] = $a[1]) konnte nicht aktualisiert werden'; // ORPHANED
-$string['nopostdiscussion'] = 'In dieser Diskussion können Sie keine Beiträge veröffentlichen'; // ORPHANED
 
 ?>

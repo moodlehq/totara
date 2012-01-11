@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// block_tag_flickr.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Flickr';
 $string['configtitle'] = 'Título';

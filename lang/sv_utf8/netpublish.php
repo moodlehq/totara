@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // netpublish.php - created with Moodle 1.8 (2007021501)
-
+<?php
+// netpublish.php - created with Totara langimport script version 1.1
 
 $string['abstract'] = 'Sammanfattning';
 $string['actions'] = 'Åtgärder';

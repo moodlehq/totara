@@ -67,7 +67,7 @@ if (!empty($dashaction) && !empty($dletid) && confirm_sesskey() && !$dashb->is_u
     redirect($redirect);
 }
 
-$strheading = $dashb->data->title;
+$strheading = get_string($dashb->data->shortname, 'local_dashboard');
 
 $pagetitle = format_string($strheading);
 $navlinks[] = array('name' => $strheading . ' ' . get_string('dashboard', 'local_dashboard'), 'link' => null, 'type' => 'misc');

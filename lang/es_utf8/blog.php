@@ -1,9 +1,10 @@
-<?PHP // $Id: blog.php,v 1.8 2009/09/27 09:44:03 barias Exp $ 
-      // blog.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// blog.php - created with Totara langimport script version 1.1
 
 $string['addnewentry'] = 'Agregar una nueva entrada';
 $string['addnewexternalblog'] = 'Nuevo blog externo...';
+$string['addotags'] = 'Agregar marcas oficiales';
+$string['addptags'] = 'Agregar marcas definidas por el usuario';
 $string['associations'] = 'Asociaciones';
 $string['associationunviewable'] = 'Esta entrada no puede ser vista por otros hasta que se asocie un curso con ella o se cambie el campo \'Publicar a\'';
 $string['backupblogshelp'] = 'Si se habilita esta opción, los blogs se incluirán en las copias automatizadas del SITIO';
@@ -37,6 +38,7 @@ $string['courseblog'] = 'Blog del curso: $a';
 $string['courseblogdisable'] = 'Los blogs del curso están deshabilitados';
 $string['courseblogs'] = 'Los usuarios sólo pueden ver los blogs de las personas que comparten un curso';
 $string['deleteotagswarn'] = '¿Está seguro de que quiere eliminar esta(s) marca(s) <br />de todos los mensajes y quitarlas del sistema?';
+$string['deleteposterror'] = 'Ha ocurrido un error al eliminar el mensaje';
 $string['disableblogs'] = 'Deshabilitar por completo el sistema blog';
 $string['donothaveblog'] = 'Lo sentimos, usted no tiene su propio blog.';
 $string['editentry'] = 'Editar una entrada del blog';
@@ -70,9 +72,11 @@ $string['nosuchentry'] = 'No existe esa entrada de blog';
 $string['notallowedtoedit'] = 'No está autorizado para editar esta entrada';
 $string['numberofentries'] = 'Entradas: $a';
 $string['numberoftags'] = 'Número de marcas a mostrar';
+$string['otags'] = 'Marcas oficiales';
 $string['pagesize'] = 'Número de entradas de blog por página';
 $string['permalink'] = 'Permalink';
 $string['personalblogs'] = 'Los usuarios sólo pueden ver su propio blog';
+$string['ptags'] = 'Marcas definidas por el usuario';
 $string['publishto'] = 'Publicar a';
 $string['publishtocourse'] = 'Usuarios que comparten curso con usted';
 $string['publishtocourseassoc'] = 'Miembros del curso asociado';
@@ -103,6 +107,7 @@ $string['viewallblogentries'] = 'Todas las entradas sobre este $a';
 $string['viewblogentries'] = 'Entradas sobre este $a';
 $string['viewblogsfor'] = 'Ver todas las entradas para...';
 $string['viewcourseblogs'] = 'Ver las entradas del curso...';
+$string['viewcourseentries'] = 'Ver entradas del curso';
 $string['viewgroupblogs'] = 'Ver las entradas del grupo...';
 $string['viewgroupentries'] = 'Entradas del grupo';
 $string['viewmodblogs'] = 'Ver las entradas del módulo...';
@@ -112,11 +117,5 @@ $string['viewsiteentries'] = 'Ver entradas del sitio';
 $string['viewuserentries'] = 'Entradas de usuario';
 $string['worldblogs'] = 'Cualquiera puede ver las entradas definidas como accesibles a todos';
 $string['wrongpostid'] = 'ID de mensaje de blog erróneo';
-$string['deleteposterror'] = 'Ha ocurrido un error al eliminar el mensaje'; // ORPHANED
-$string['viewcourseentries'] = 'Ver entradas del curso'; // ORPHANED
-$string['addotags'] = 'Agregar marcas oficiales'; // ORPHANED
-$string['addptags'] = 'Agregar marcas definidas por el usuario'; // ORPHANED
-$string['otags'] = 'Marcas oficiales'; // ORPHANED
-$string['ptags'] = 'Marcas definidas por el usuario'; // ORPHANED
 
 ?>

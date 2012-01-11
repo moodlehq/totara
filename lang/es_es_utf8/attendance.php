@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // attendance.php - created with Moodle 1.2 Beta + (2004030702)
-
+<?php
+// attendance.php - created with Totara langimport script version 1.1
 
 $string['addingmultiple'] = 'Añadiendo múltiples registros de asistencia';
 $string['addmultiple'] = 'Añadir múltiples registros de asistencia';

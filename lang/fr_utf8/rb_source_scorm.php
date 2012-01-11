@@ -1,7 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_scorm.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-      // local modifications from http://translate.totaralms.com
-
+<?php
+// rb_source_scorm.php - created with Totara langimport script version 1.1
 
 $string['attemptnum'] = 'Numéro de tentative SCO';
 $string['attemptstart'] = 'Heure de début de la tentative';
@@ -20,6 +18,7 @@ $string['score'] = 'Note SCO';
 $string['scormtitle'] = 'Titre du SCORM';
 $string['sourcetitle'] = 'SCORM';
 $string['status'] = 'Statut SCO';
+$string['statusmodified'] = 'Statut SCO modifié';
 $string['thedate'] = 'Date de la tentative';
 $string['theuser'] = 'L\'utilisateur';
 $string['time'] = 'Heure de début SCO';

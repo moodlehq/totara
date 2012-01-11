@@ -143,6 +143,13 @@ class rb_source_competency_evidence extends rb_base_source {
             ),
             new rb_column_option(
                 'competency_evidence',
+                'organisationid2',
+                get_string('completionorgid', 'rb_source_competency_evidence'),
+                'base.organisationid',
+                array('selectable' => false)
+            ),
+            new rb_column_option(
+                'competency_evidence',
                 'organisationpath',
                 get_string('completionorgpath', 'rb_source_competency_evidence'),
                 'completion_organisation.path',
@@ -160,6 +167,13 @@ class rb_source_competency_evidence extends rb_base_source {
                 'positionid',
                 get_string('completionposid', 'rb_source_competency_evidence'),
                 'base.positionid'
+            ),
+            new rb_column_option(
+                'competency_evidence',
+                'positionid2',
+                get_string('completionposid', 'rb_source_competency_evidence'),
+                'base.positionid',
+                array('selectable' => false)
             ),
             new rb_column_option(
                 'competency_evidence',
@@ -229,6 +243,13 @@ class rb_source_competency_evidence extends rb_base_source {
             ),
             new rb_column_option(
                 'competency',
+                'id2',
+                get_string('competencyid', 'rb_source_competency_evidence'),
+                'base.competencyid',
+                array('selectable' => false)
+            ),
+            new rb_column_option(
+                'competency',
                 'path',
                 get_string('competencypath', 'rb_source_competency_evidence'),
                 'competency.path',
@@ -276,6 +297,12 @@ class rb_source_competency_evidence extends rb_base_source {
             ),
             new rb_filter_option(
                 'competency_evidence',
+                'organisationid2',
+                get_string('multiorg', 'rb_source_competency_evidence'),
+                'orgmulti'
+            ),
+            new rb_filter_option(
+                'competency_evidence',
                 'organisationpath',
                 get_string('organisationwhencompleted', 'rb_source_competency_evidence'),
                 'org'
@@ -289,6 +316,12 @@ class rb_source_competency_evidence extends rb_base_source {
                     'selectfunc' => 'positions_list',
                     'selectoptions' => rb_filter_option::select_width_limiter(),
                 )
+            ),
+            new rb_filter_option(
+                'competency_evidence',
+                'positionid2',
+                get_string('multipos', 'rb_source_competency_evidence'),
+                'posmulti'
             ),
             new rb_filter_option(
                 'competency_evidence',
@@ -331,6 +364,12 @@ class rb_source_competency_evidence extends rb_base_source {
                 'idnumber',
                 get_string('competencyid', 'rb_source_competency_evidence'),
                 'text'
+            ),
+            new rb_filter_option(
+                'competency',
+                'id2',
+                get_string('multicomp', 'rb_source_competency_evidence'),
+                'compmulti'
             ),
 
         );

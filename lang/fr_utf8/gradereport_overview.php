@@ -1,4 +1,5 @@
-<?php // $Id: gradereport_overview.php,v 1.3 2009/04/29 16:06:14 martignoni Exp $
+<?php
+// gradereport_overview.php - created with Totara langimport script version 1.1
 
 $string['modulename'] = 'Rapport d\'ensemble';
 $string['overview:view'] = 'Voir le rapport d\'ensemble';

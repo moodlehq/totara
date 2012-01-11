@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_contact_form.php - created with Moodle 1.5 UNSTABLE DEVELOPMENT (2005011000)
-
+<?php
+// block_contact_form.php - created with Totara langimport script version 1.1
 
 $string['askaquestion'] = 'Noch Fragen bitte!';
 $string['ccadmin'] = 'Sollen E-Mails, die auf einer Kursseite erstellt werden nur an die Trainer/innen des Kurses gesandt werden oder zugleich an die Trainer/innen und an die Administration?';

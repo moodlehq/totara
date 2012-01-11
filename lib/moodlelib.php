@@ -3158,6 +3158,20 @@ function delete_user($user) {
         $delname++;
     }
 
+    //set manager id to null and fix path
+    $sql = "UPDATE {$CFG->prefix}pos_assignment set managerid=null, managerpath=" . sql_concat("'/'", sql_cast2char('userid')) . " WHERE managerid={$user->id}";
+
+    if (!execute_sql($sql, false)) {
+        rollback_sql();
+        return false;
+    }
+
+    //remove pos_assignment record(s) for this user
+    if (!delete_records('pos_assignment', 'userid', $user->id)) {
+        rollback_sql();
+        return false;
+    }
+
     // mark internal user record as "deleted"
     $updateuser = new object();
     $updateuser->id           = $user->id;
@@ -5490,7 +5504,8 @@ function get_string($identifier, $module='', $a=NULL, $extralocations=NULL) {
                             'parentlanguage', 'strftimedate', 'strftimedateshort', 'strftimedatetime',
                             'strftimedaydate', 'strftimedaydatetime', 'strftimedayshort', 'strftimedaytime',
                             'strftimemonthyear', 'strftimerecent', 'strftimerecentfull', 'strftimetime',
-                            'thischarset', 'thisdirection', 'thislanguage', 'strftimedatetimeshort', 'thousandssep');
+                            'thischarset', 'thisdirection', 'thislanguage', 'strftimedatetimeshort', 'thousandssep',
+                            'strftimedateseconds', 'strfdateshortmonth', 'strftimeshort', 'strfdateattime');
 
     $filetocheck = 'langconfig.php';
     $defaultlang = 'en_utf8';
@@ -5629,25 +5644,29 @@ function get_string($identifier, $module='', $a=NULL, $extralocations=NULL) {
                 if (eval($result) === FALSE) {
                     trigger_error('Lang error: '.$identifier.':'.$langfile, E_USER_NOTICE);
                 }
-                if (!empty($parentlang)) {   // found it!
+                if (!empty($parentlang)) {   // found the parent lang!
 
-                    //first, see if there's a local file for parent
-                    $locallangfile = $location.$parentlang.'_local'.'/'.$module.'.php';
-                    if (file_exists($locallangfile)) {
-                        if ($result = get_string_from_file($identifier, $locallangfile, "\$resultstring")) {
-                            if (eval($result) === FALSE) {
-                                trigger_error('Lang error: '.$identifier.':'.$locallangfile, E_USER_NOTICE);
+                    // Loop through all the locations again to find
+                    // the actual lang string
+                    foreach ($locations as $loc) {
+                        //first, see if there's a local file for parent
+                        $locallangfile = $loc.$parentlang.'_local'.'/'.$module.'.php';
+                        if (file_exists($locallangfile)) {
+                            if ($result = get_string_from_file($identifier, $locallangfile, "\$resultstring")) {
+                                if (eval($result) === FALSE) {
+                                    trigger_error('Lang error: '.$identifier.':'.$locallangfile, E_USER_NOTICE);
+                                }
+                                return $resultstring;
                             }
-                            return $resultstring;
                         }
-                    }
 
-                    //if local directory not found, or particular string does not exist in local direcotry
-                    $langfile = $location.$parentlang.'/'.$module.'.php';
-                    if (file_exists($langfile)) {
-                        if ($result = get_string_from_file($identifier, $langfile, "\$resultstring")) {
-                            eval($result);
-                            return $resultstring;
+                        //if local directory not found, or particular string does not exist in local direcotry
+                        $langfile = $loc.$parentlang.'/'.$module.'.php';
+                        if (file_exists($langfile)) {
+                            if ($result = get_string_from_file($identifier, $langfile, "\$resultstring")) {
+                                eval($result);
+                                return $resultstring;
+                            }
                         }
                     }
                 }
@@ -6141,7 +6160,7 @@ function get_list_of_currencies() {
  * @todo Finish documenting this function
  */
 function rc4encrypt($data) {
-    $password = 'nfgjeingjk';
+    $password = get_site_identifier();
     return endecrypt($password, $data, '');
 }
 
@@ -6153,7 +6172,7 @@ function rc4encrypt($data) {
  * @todo Finish documenting this function
  */
 function rc4decrypt($data) {
-    $password = 'nfgjeingjk';
+    $password = get_site_identifier();
     return endecrypt($password, $data, 'de');
 }
 
@@ -7545,12 +7564,17 @@ function generate_password($maxlen=10) {
         $filler1 = $fillers[rand(0, strlen($fillers) - 1)];
         $password = $word1 . $filler1 . $word2;
     } else {
-        $maxlen = !empty($CFG->minpasswordlength) ? $CFG->minpasswordlength : 0;
+        $minlen = !empty($CFG->minpasswordlength) ? $CFG->minpasswordlength : 0;
         $digits = $CFG->minpassworddigits;
         $lower = $CFG->minpasswordlower;
         $upper = $CFG->minpasswordupper;
         $nonalphanum = $CFG->minpasswordnonalphanum;
-        $additional = $maxlen - ($lower + $upper + $digits + $nonalphanum);
+        $total = $lower + $upper + $digits + $nonalphanum;
+        // minlength should be the greater one of the two ( $minlen and $total )
+        $minlen = $minlen < $total ? $total : $minlen;
+        // maxlen can never be smaller than minlen
+        $maxlen = $minlen > $maxlen ? $minlen : $maxlen;
+        $additional = $maxlen - $total;
 
         // Make sure we have enough characters to fulfill
         // complexity requirements

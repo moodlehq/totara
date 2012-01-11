@@ -1,7 +1,7 @@
 <?php // $Id$
 
-require('../config.php');
-require('lib.php');
+require_once('../config.php');
+require_once('lib.php');
 
 require_login();
 
@@ -37,7 +37,9 @@ if (has_capability('moodle/site:sendmessage', get_context_instance(CONTEXT_SYSTE
 
     require_once($CFG->libdir .'/editor/htmlEditor.class.php');
     $htmlEditorObject = new htmlEditor();
-    echo $htmlEditorObject->configure();
+    if (!$htmlEditorObject->configure()) {
+        print_error('errorconfigeditor','message');
+    }
 
     echo '<title> </title></head>';
 

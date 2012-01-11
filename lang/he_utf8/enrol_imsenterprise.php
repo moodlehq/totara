@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_imsenterprise.php,v 1.5 2010/11/07 14:20:00 emanuel1 Exp $
-      // enrol_imsenterprise.php - created with Moodle 1.9.8+ (Build: 20100407) (2007101580)
-
+<?php
+// enrol_imsenterprise.php - created with Totara langimport script version 1.1
 
 $string['aftersaving...'] = 'מרגע ששמרת את ההגדרות שלך, יכול להיות שתרצה ל-';
 $string['allowunenrol'] = 'אפשר לנתוני ה- IMS <strong>לבטל את הרשמות</strong> התלמידים או המורים.';

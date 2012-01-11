@@ -160,6 +160,8 @@ div.block_admin_tree div.admintree .depth2 {
   margin: 0 auto;
   display: auto;
   word-wrap: break-word;
+  height: 100%;
+  min-height: 100%;
 }
 
 #content {
@@ -364,7 +366,7 @@ padding-left: 23px;
 div#totara_menu {
 	background:#FFFFFF url('images/nav_main_bg.jpg') repeat-x top center;
 	height:72px;
-	clear:both;
+
 	margin-right:0px;
 	margin-left:0px;
 	margin-top:0;
@@ -392,11 +394,6 @@ div#totara_menu ul li {
 /* get rid of divider on last element */
 div#totara_menu ul li.last {
 	background:transparent;
-}
-
-/* IE compatibility? */
-div#totara_menu ul li div{
-	zoom:1;
 }
 
 div#totara_menu ul li a {
@@ -2162,9 +2159,9 @@ div.yuimenu .yuichildtree .yuimenuitem {
 /** Pop-up Page Size Fix **/
 /*****************************************************************************/
 
-body#message-index div#wrapper,
-body#help div#wrapper,
-body#files-index div#wrapper {
+body#message-index div#wrapper.bare,
+body#help div#wrapper.bare,
+body#files-index div#wrapper.bare {
     background-image: none;
     background-color: #FFFFFF;
     width: auto ;
@@ -2174,9 +2171,9 @@ body#files-index div#wrapper {
     border-right: 1px solid #666;
 }
 
-body#message-index div#wrapper .login-container,
-body#help div#wrapper .login-container,
-body#files-index div#wrapper .login-container {
+body#message-index div#wrapper.bare .login-container,
+body#help div#wrapper.bare .login-container,
+body#files-index div#wrapper.bare .login-container {
     display:none;
 }
 
@@ -2841,7 +2838,7 @@ div.add-linked-course {
 /** Web resources **/
 /*****************************************************************************/
 body#mod-resource-view .generalboxcontent  {
-	padding:10px 20px;
+    padding:10px 20px;
 }
 
 /*****************************************************************************/
@@ -3766,34 +3763,19 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 	font-family:'Myriad Pro', Arial;
 	font-weight:bold;
 	text-transform:uppercase;
-    float: left;
-    margin-bottom: 0;
-    margin-top: 26px;
-    width: 155px;
 }
 
-#program-content .nextsetoperator .operator-or,
-#view-program-content .nextsetoperator .operator-or{
-	background: url("images/progress_or.jpg") no-repeat scroll right center transparent;
-}
-
-#program-content .nextsetoperator .operator-then,
-#view-program-content .nextsetoperator .operator-then{
-	background: url("images/progress_then.jpg") no-repeat scroll right top transparent;
-}
-
-.nextsetoperator{
-	padding-bottom:20px;
-	height:70px;
+.nextsetoperator {
+    padding-bottom:20px;
 }
 
 #program-content .nextsetoperator .nextsethelp,
 #view-program-content .nextsetoperator .nextsethelp {
-	color:#777777;
-	margin-left: 16px;
+    color: #777777;
+    clear: both;
     margin-top: 26px;
-    width: 465px;
-    float:left;
+    width: auto;
+    margin-top: 0px !important;
 }
 
 #program-content .summary p,
@@ -3961,19 +3943,19 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 }
 
 .local-program #programdetails .ftoggler{
-	background:url('images/program_details_small.gif') no-repeat 8px center transparent;
+    background:url('images/program_details_small.gif') no-repeat left center transparent;
 }
 
 .local-program #programcontent .ftoggler{
-	background:url('images/program_content_small.gif') no-repeat 8px center transparent;
+    background:url('images/program_content_small.gif') no-repeat left center transparent;
 }
 
 .local-program #programassignments .ftoggler{
-	background:url('images/program_assig_small.gif') no-repeat 10px center transparent;
+    background:url('images/program_assig_small.gif') no-repeat left center transparent;
 }
 
 .local-program #programmessages .ftoggler{
-	background:url('images/program_messages_small.gif') no-repeat 8px center transparent;
+    background:url('images/program_messages_small.gif') no-repeat left center transparent;
 }
 
 #program-overview label{
@@ -4011,15 +3993,19 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 }
 
 .local-program fieldset.course_set .course_table .operator{
-	border-right:1px solid #d7d7d7;
-	color:#000000;
-	font-weight:bold;
+    border-right:1px solid #d7d7d7;
+    border-left: 0px solid;
+    color:#000000;
+    font-weight:bold;
 }
 
 .local-program fieldset.course_set .course_table .course{
 	width:500px;
 	color:#000000;
 	font-weight:bold;
+    position: relative;
+    overflow: auto;
+    clear:both;
 }
 
 .local-program fieldset.course_set .course_table .action{
@@ -4037,31 +4023,31 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 	border:2px groove #F0F0F0;
 }
 
-.local-program fieldset .setbuttons input[value="Move up"],
-.local-program fieldset .messagebuttons input[value="Move up"]{
-	background:url('pix/t/up.gif') no-repeat right center;
+.local-program fieldset .setbuttons input.moveup,
+.local-program fieldset .messagebuttons input.moveup {
+    background:url('pix/t/up.gif') no-repeat right center;
 }
 
-.local-program fieldset .setbuttons input[value="Move down"],
-.local-program fieldset .messagebuttons input[value="Move down"]{
-	background:url('pix/t/down.gif') no-repeat right center;
+.local-program fieldset .setbuttons input.movedown,
+.local-program fieldset .messagebuttons input.movedown {
+    background:url('pix/t/down.gif') no-repeat right center;
 }
 
-.local-program fieldset .setbuttons input[value="Delete"],
-.local-program fieldset .messagebuttons input[value="Delete"]{
-	background:url('pix/t/delete.gif') no-repeat right center;
+.local-program fieldset .setbuttons input.delete,
+.local-program fieldset .messagebuttons input.delete {
+    background:url('pix/t/delete.gif') no-repeat right center;
 }
 
-.local-program fieldset .setbuttons input[value="Move down"][disabled],
-.local-program fieldset .messagebuttons input[value="Move down"][disabled]{
-	background:url('pix/t/disable_down.gif') no-repeat right center;
-	color:#BDBDC8;
+.local-program fieldset .setbuttons input.movedown[disabled],
+.local-program fieldset .messagebuttons input.movedown[disabled]{
+    background:url('pix/t/disable_down.gif') no-repeat right center;
+    color:#BDBDC8;
 }
 
-.local-program fieldset .setbuttons input[value="Move up"][disabled],
-.local-program fieldset .messagebuttons input[value="Move up"][disabled]{
-	background:url('pix/t/disable_up.gif') no-repeat right center;
-	color:#BDBDC8;
+.local-program fieldset .setbuttons input.moveup[disabled],
+.local-program fieldset .messagebuttons input.moveup[disabled]{
+    background:url('pix/t/disable_up.gif') no-repeat right center;
+    color:#BDBDC8;
 }
 
 #iconheader legend{
@@ -4088,10 +4074,12 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 
 .nextsetoperator-or{
 	background:url('images/or.jpg') no-repeat right center;
+    float: left;
 }
 
 .nextsetoperator-then{
-	background:url('images/then.jpg') no-repeat right center;
+    background:url('images/then.jpg') no-repeat right center;
+    float: left;
 }
 
 .local-program fieldset.course_set .coursedeletelink .delete_item,
@@ -4111,13 +4099,14 @@ div.hierarchy-bulk-move-warning, div.hierarchy-bulk-delete-warning {
 }
 
 .local-program fieldset.course_set div.courselist td.course div.delete_item {
-    padding: 6px 10px 6px 20px;
+    padding: 6px 10px 6px 10px;
     background-color: #F7F8E8;
     border: 1px solid #D0D676;
     border-radius: 15px;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
-    width: 100%;
+    width: auto;
+    overflow: auto;
 }
 
 span.cancel_program_blurb {
@@ -4135,16 +4124,19 @@ span.cancel_program_blurb {
 #assignment_categories .assignment_category td.col1,
 #assignment_categories .assignment_category th.col1{
     border-left:1px solid #2e2e2e;
+    border-right: 0px solid;
 }
 
 #assignment_categories .assignment_category td.col2,
 #assignment_categories .assignment_category th.col2{
-	border-left:1px solid #2e2e2e;
+    border-left:1px solid #2e2e2e;
+    border-right: 0px solid;
 }
 
 #assignment_categories .assignment_category td.col3,
 #assignment_categories .assignment_category th.col3{
-	border-left:1px solid #2e2e2e;
+    border-left:1px solid #2e2e2e;
+    border-right: 0px solid;
 }
 
 #assignment_categories .assignment_category td.col0 div.item{
@@ -4160,7 +4152,7 @@ span.cancel_program_blurb {
 /** Program Exceptions **/
 /*****************************************************************************/
 .local-program #programexceptions .ftoggler{
-	background:url("images/prog_exception_small.gif") no-repeat scroll 8px center transparent
+    background:url("images/prog_exception_small.gif") no-repeat scroll left center transparent
 }
 
 .local-program #programexceptions .exceptionactions{
@@ -4346,4 +4338,31 @@ ul.comment-list li .comment-delete {
 }
 #local-program-view table td{
   vertical-align:middle;
+}
+
+/* Messages */
+
+body#message-messages {
+    background: none;
+}
+
+body#message-user {
+    background: none;
+}
+
+body#message-user div#top-bg {
+    background: none;
+}
+
+body#message-user div#container {
+    padding-left: 0px;
+}
+
+div.multiselect-selected-item {
+    background-color: #F7F8E8;
+    border: 1px solid #D0D676;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    padding: 4px 10px;
 }

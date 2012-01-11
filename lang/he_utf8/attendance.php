@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // attendance.php - created with Moodle 1.8 + (2007021503)
-
+<?php
+// attendance.php - created with Totara langimport script version 1.1
 
 $string['absentlong'] = 'חסר';
 $string['absentshort'] = 'A';

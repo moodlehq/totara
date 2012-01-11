@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_imsenterprise.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// enrol_imsenterprise.php - created with Totara langimport script version 1.1
 
 $string['aftersaving...'] = 'بمجرد الانتهاء من حفظ الإعدادات الخاصة بك، فإنك قد ترغب في';
 $string['allowunenrol'] = 'السماح لبيانات IMS ب<strong>unenrol</strong> الطلاب والمعلمين';

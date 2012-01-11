@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // resource.php - created with Moodle 2.0 dev (Build: 20100215) (2010021400)
-
+<?php
+// resource.php - created with Totara langimport script version 1.1
 
 $string['addresource'] = 'Arbeitsmaterial hinzufügen';
 $string['affectedresources'] = 'Zum Löschen ausgewählte Arbeitsmaterialien';
@@ -9,6 +8,7 @@ $string['autofilerename'] = 'Link beim Umbenennen der Datei aktualisieren';
 $string['back'] = 'Zurück';
 $string['blockdeletingfile'] = 'Löschen der zugeordneten Dateien unterbinden';
 $string['browserepository'] = 'Repository durchsuchen';
+$string['cannotupdate'] = 'Arbeitsmaterial kann nicht aktualisiert werden';
 $string['choose'] = 'Auswählen';
 $string['chooseafile'] = 'Datei wählen oder neu hochladen';
 $string['chooseaparameter'] = 'Parameter auswählen...';
@@ -77,6 +77,7 @@ $string['invalidassignment'] = 'Falsche Zuordnung';
 $string['invalidid'] = 'Falsche Material-ID';
 $string['keepnavigationvisible'] = 'Seitennavigation auf der gleichen Seite sichtbar lassen.';
 $string['keepnavigationvisibleno'] = 'Nein';
+$string['keepnavigationvisiblewarning'] = 'Hinweis: Einige Media-Dateien könnten diese Einstellung übergehen';
 $string['keepnavigationvisibleyesframe'] = 'Ja, mit Frames';
 $string['keepnavigationvisibleyesobject'] = 'Ja, ohne Frames';
 $string['legacyfiles'] = 'Migration einer alten Kursdatei';
@@ -173,7 +174,5 @@ $string['vol'] = 'Vol';
 $string['warningblockingdelete'] = 'Warnung: Das Löschen ist nicht möglich, da noch eine Verlinkung auf diese Ressource vorhanden ist. Überarbeiten Sie zunächst diese Ressourcen oder fragen Sie die Administration, ob sie diese Sicherheitseinstellung in den Einstellungen für die Arbeitsmaterialien deaktiviert.';
 $string['warningdisabledrename'] = 'Warnung: Die automatische Umbenennung der Verlinkungen in den Arbeitsmaterialien ist deaktiviert. Aktualisieren Sie die betroffenen Arbeitsmaterialien einzeln oder fragen Sie die Administration, ob sie die entsprechenden Einstellungen ändert.';
 $string['websearchdefault'] = 'Standard-Websuche';
-$string['cannotupdate'] = 'Arbeitsmaterial kann nicht aktualisiert werden'; // ORPHANED
-$string['keepnavigationvisiblewarning'] = 'Hinweis: Einige Media-Dateien könnten diese Einstellung übergehen'; // ORPHANED
 
 ?>

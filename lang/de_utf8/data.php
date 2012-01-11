@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // data.php - created with Moodle 2.0 dev (Build: 20091117) (2009112000)
-
+<?php
+// data.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'Aktion';
 $string['add'] = 'Eintrag hinzufügen';
@@ -31,8 +30,11 @@ $string['cancel'] = 'Abbrechen';
 $string['cannotaccesspresentsother'] = 'Sie können nicht auf Vorlagen anderer Nutzer zugreifen';
 $string['cannotadd'] = 'Kann keine Einträge hinzufügen!';
 $string['cannotdeletepreset'] = 'Fehler beim Löschen der Vorlage';
+$string['cannotinsertempty'] = 'Leerer Eintrag nicht zulässig';
+$string['cannotinsertrate'] = 'Neue Bewertung konnte  nicht eingetragen werden ($a[0] = $a[1])';
 $string['cannotrate'] = 'Bewertung der Einträge nicht erlaubt!';
 $string['cannotunziptopreset'] = 'Entpacken im Vorlagenordner nicht möglich';
+$string['cannotupdaterate'] = 'Alte Bewertung konnte  aktualisiert werden ($a[0] = $a[1])';
 $string['checkbox'] = 'Mehrfachauswahl';
 $string['chooseexportfields'] = 'Felder für Export auswählen:';
 $string['chooseexportformat'] = 'Exportformat auswählen:';
@@ -50,6 +52,7 @@ $string['confirmdeleterecord'] = 'Wollen Sie diesen Datensatz in der Datenbank w
 $string['csstemplate'] = 'CSS für Vorlagen';
 $string['csvfailed'] = 'Die Daten aus der CSV-Datei konnten nicht gelesen werden.';
 $string['csvfile'] = 'CSV-Datei';
+$string['csvformat'] = 'CSV Format';
 $string['csvimport'] = 'CSV-Dateiimport';
 $string['csvwithselecteddelimiter'] = '<acronym title=\"Komma getrennte Werte\">CSV</acronym> mit diesem Trennzeichen:';
 $string['data:approve'] = 'Einträge freigeben';
@@ -98,8 +101,11 @@ $string['entrysaved'] = 'Ihr Eintrag wurde gespeichert';
 $string['errormustbeteacher'] = 'Diese Seite können nur Trainer/innen benutzen!';
 $string['example'] = 'Datenbankmodul-Beispiel';
 $string['excel'] = 'Excel';
+$string['excelformat'] = 'Excel Format';
+$string['expired'] = 'Die Aktivität {$a} ist geschlossen und steht nicht weiter zur Verfügung';
 $string['export'] = 'Export';
 $string['exportaszip'] = 'Exportieren als ZIP';
+$string['exportdatabase'] = 'Datenbankeinträge exportieren';
 $string['exportdatabaserecords'] = 'Datenbankeinträge exportieren';
 $string['exportedtozip'] = 'In eine temporäre ZIP-Datei exportiert....';
 $string['failedpresetdelete'] = 'Fehler beim Löschen eines Vorlagensatzes';
@@ -144,6 +150,7 @@ $string['importsuccess'] = 'Die Vorlagensatz wurde erfolgreich übernommen.';
 $string['insufficiententries'] = 'Weitere Einträge sind erforderlich, um die Datenbank einzusehen.';
 $string['intro'] = 'Einführung';
 $string['invalidaccess'] = 'Seite wurde nicht richtig aufgerufen';
+$string['invaliddata'] = 'Falsche Daten';
 $string['invalidfieldid'] = 'Feld-ID ist falsch';
 $string['invalidfieldname'] = 'Wählen Sie bitte einen anderen Namen für dieses Feld.';
 $string['invalidfieldtype'] = 'Feldtyp ist falsch';
@@ -202,12 +209,15 @@ $string['nomaximum'] = 'Keine Höchstzahl';
 $string['norating'] = 'Diese Aktivität hat keien Bewertungen';
 $string['norecords'] = 'Keine Einträge in der Datenbank';
 $string['nosingletemplate'] = 'Einzelansicht ist noch nicht definiert';
+$string['notapproved'] = 'Der Eintrag ist bisher nicht freigegeben worden';
 $string['notinjectivemap'] = 'Keine injektive Abbildung';
+$string['notopenyet'] = 'Die Aktivität steht erst ab {$a} zur Verfügung';
 $string['number'] = 'Zahl';
 $string['numberrssarticles'] = 'RSS-Beiträge';
 $string['numnotapproved'] = 'Wartend';
 $string['numrecords'] = '$a Datensätze';
 $string['ods'] = '<acronym title=\"OpenDocument Kalkulation\">ODS</acronym> (OpenOffice)';
+$string['odsformat'] = 'ODS-Format';
 $string['optionaldescription'] = 'Kurzbeschreibung (optional)';
 $string['optionalfilename'] = 'Dateiname (optional)';
 $string['other'] = 'Andere';
@@ -237,6 +247,10 @@ $string['recordsnotsaved'] = 'Kein Datensatz wurde gespeichert. Prüfen Sie bitt
 $string['recordssaved'] = 'Datensätze gespeichert';
 $string['requireapproval'] = 'Freigabe erforderlich?';
 $string['requiredentries'] = 'Erforderliche Einträge';
+$string['requiredentrieschanged'] = '<p><strong>WICHTIG - BITTE LESEN</strong></p>
+<p>Wegen einer Fehlerkorrektur ändert sich das Verhalten von Datenbank-Aktivitäten bei den Einstellungen \'Erforderliche Einträge\' und \'Erforderliche Einträge, bevor Ansicht aller Daten möglich\'. Eine ausführliche Diskussion der Änderungen finden Sie im <a href=\"http://moodle.org/mod/forum/discuss.php?d=110928\" target=\"_blank\">Forum zum Datenbank-Modul</a>. Die Wirkung der Einstellungen können Sie auch in den <a href=\"http://docs.moodle.org/en/Adding/editing_a_database#Required_entries\" target=\"_blank\">Moodle Docs</a> nachlesen.</p>
+<p>Diese Änderung betrifft die nachfolgenden Datenbanken in Ihrem System. Bitte sichern Sie die Liste, um nach der Aktualisierung prüfen zu können, ob die Aktivitäten noch in der beabsichtigten Weise funktionieren.</p>
+<strong style=\"color:red\">$a->text</strong><br/>';
 $string['requiredentriestoview'] = 'Erforderliche Einträge, bevor Ansicht aller Daten möglich';
 $string['resetsettings'] = 'Felder zurücksetzen';
 $string['resettemplate'] = 'Vorlage zurücksetzen';
@@ -271,6 +285,7 @@ $string['type'] = 'Feld-Typ';
 $string['undefinedprocessactionmethod'] = 'In Data_Preset wurde keine Verarbeitungsmethode definiert für: \"$a\".';
 $string['unsupportedexport'] = '($a->fieldtype) kann nicht exportiert werden';
 $string['updatefield'] = 'Bestehendes Feld aktualisieren';
+$string['updatingerror'] = 'Beim Aktualisieren der Datenbank ist ein Fehler aufgetreten';
 $string['uploadfile'] = 'Datei hochladen';
 $string['uploadrecords'] = 'Datensätze aus einer Datei hochladen';
 $string['url'] = 'URL';
@@ -278,19 +293,5 @@ $string['usestandard'] = 'Vorlagensatz benutzen';
 $string['viewfromdate'] = 'Sichtbar von';
 $string['viewtodate'] = 'Sichtbar bis';
 $string['wrongdataid'] = 'Falsche Daten-ID bereitgestellt';
-$string['cannotinsertempty'] = 'Leerer Eintrag nicht zulässig'; // ORPHANED
-$string['updatingerror'] = 'Beim Aktualisieren der Datenbank ist ein Fehler aufgetreten'; // ORPHANED
-$string['cannotinsertrate'] = 'Neue Bewertung konnte  nicht eingetragen werden ($a[0] = $a[1])'; // ORPHANED
-$string['cannotupdaterate'] = 'Alte Bewertung konnte  aktualisiert werden ($a[0] = $a[1])'; // ORPHANED
-$string['invaliddata'] = 'Falsche Daten'; // ORPHANED
-$string['csvformat'] = 'CSV Format'; // ORPHANED
-$string['excelformat'] = 'Excel Format'; // ORPHANED
-$string['exportdatabase'] = 'Datenbankeinträge exportieren'; // ORPHANED
-$string['odsformat'] = 'ODS-Format'; // ORPHANED
-$string['notapproved'] = 'Der Eintrag ist bisher nicht freigegeben worden'; // ORPHANED
-$string['requiredentrieschanged'] = '<p><strong>WICHTIG - BITTE LESEN</strong></p>
-<p>Wegen einer Fehlerkorrektur ändert sich das Verhalten von Datenbank-Aktivitäten bei den Einstellungen \'Erforderliche Einträge\' und \'Erforderliche Einträge, bevor Ansicht aller Daten möglich\'. Eine ausführliche Diskussion der Änderungen finden Sie im <a href=\"http://moodle.org/mod/forum/discuss.php?d=110928\" target=\"_blank\">Forum zum Datenbank-Modul</a>. Die Wirkung der Einstellungen können Sie auch in den <a href=\"http://docs.moodle.org/en/Adding/editing_a_database#Required_entries\" target=\"_blank\">Moodle Docs</a> nachlesen.</p>
-<p>Diese Änderung betrifft die nachfolgenden Datenbanken in Ihrem System. Bitte sichern Sie die Liste, um nach der Aktualisierung prüfen zu können, ob die Aktivitäten noch in der beabsichtigten Weise funktionieren.</p>
-<strong style=\"color:red\">$a->text</strong><br/>'; // ORPHANED
 
 ?>

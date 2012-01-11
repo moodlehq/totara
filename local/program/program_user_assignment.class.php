@@ -122,7 +122,7 @@ class prog_organisation_assignment extends prog_user_assignment {
         $organisation_name = get_field('org','fullname','id',$this->assignment->assignmenttypeid);
         $out = '';
         $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">Member of organisation \''.$organisation_name.'\'.</span> ';
+        $out .= '<span class="criteria">' . get_string('memberoforg', 'local_program', $organisation_name) . '</span> ';
         $out .= '</li>';
         return $out;
     }
@@ -135,7 +135,7 @@ class prog_position_assignment extends prog_user_assignment {
         $position_name = get_field('pos','fullname','id',$this->assignment->assignmenttypeid);
         $out = '';
         $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">Hold position of \''.$position_name.'\'.</span> ';
+        $out .= '<span class="criteria">' . get_string('holdposof', 'local_program', $position_name) . '</span> ';
         $out .= '</li>';
         return $out;
     }
@@ -148,7 +148,7 @@ class prog_cohort_assignment extends prog_user_assignment {
         $cohort_name = get_field('cohort','name','id',$this->assignment->assignmenttypeid);
         $out = '';
         $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">Member of cohort \''.$cohort_name.'\'.</span> ';
+        $out .= '<span class="criteria">' . get_string('memberofcohort', 'local_program', $cohort_name) . '</span> ';
         $out .= '</li>';
         return $out;
     }
@@ -158,10 +158,10 @@ class prog_cohort_assignment extends prog_user_assignment {
 class prog_manager_assignment extends prog_user_assignment {
 
     public function display_criteria() {
-        $managers_name = get_record_select('user', "id = $this->assignment->assignmenttypeid", sql_fullname() . ' as fullname');#
+        $managers_name = get_record_select('user', "id = $this->assignment->assignmenttypeid", sql_fullname() . ' as fullname');
         $out = '';
         $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">Part of \''.$managers_name.'\' team.</span> ';
+        $out .= '<span class="criteria">' . get_string('partofteam', 'local_program', $managers_name->fullname) . '</span> ';
         $out .= '</li>';
         return $out;
     }
@@ -173,7 +173,7 @@ class prog_individual_assignment extends prog_user_assignment {
     public function display_criteria() {
         $out = '';
         $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">Assigned as an individual.</span> ';
+        $out .= '<span class="criteria">' . get_string('assignedasindividual', 'local_program') . '</span> ';
         $out .= '</li>';
         return $out;
     }

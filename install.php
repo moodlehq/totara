@@ -576,7 +576,7 @@ if (isset($_GET['help'])) {
                     echo '<div id="mssql">' . get_string('databasesettingssub_mssql', 'install');
                 /// Link to mssql installation page
                     echo "<p style='text-align:right'><a href=\"javascript:void(0)\" ";
-                    echo "onclick=\"return window.open('http://docs.moodle.org/en/Installing_MSSQL_for_PHP')\"";
+                    echo "onclick=\"return window.open('http://docs.moodle.org/19/en/Installing_MSSQL_for_PHP')\"";
                     echo ">";
                     echo '<img src="pix/docs.gif' . '" alt="Docs" class="iconhelp" />';
                     echo get_string('moodledocslink', 'install') . '</a></p>';
@@ -585,7 +585,7 @@ if (isset($_GET['help'])) {
                     echo '<div id="mssql_n">' . get_string('databasesettingssub_mssql_n', 'install');
                 /// Link to mssql installation page
                     echo "<p style='text-align:right'><a href=\"javascript:void(0)\" ";
-                    echo "onclick=\"return window.open('http://docs.moodle.org/en/Installing_MSSQL_for_PHP')\"";
+                    echo "onclick=\"return window.open('http://docs.moodle.org/19/en/Installing_MSSQL_for_PHP')\"";
                     echo ">";
                     echo '<img src="pix/docs.gif' . '" alt="Docs" />';
                     echo get_string('moodledocslink', 'install') . '</a></p>';
@@ -594,7 +594,7 @@ if (isset($_GET['help'])) {
                     echo '<div id="odbc_mssql">'. get_string('databasesettingssub_odbc_mssql', 'install');
                 /// Link to mssql installation page
                     echo "<p style='text-align:right'><a href=\"javascript:void(0)\" ";
-                    echo "onclick=\"return window.open('http://docs.moodle.org/en/Installing_MSSQL_for_PHP')\"";
+                    echo "onclick=\"return window.open('http://docs.moodle.org/19/en/Installing_MSSQL_for_PHP')\"";
                     echo ">";
                     echo '<img src="pix/docs.gif' . '" alt="Docs" class="iconhelp" />';
                     echo get_string('moodledocslink', 'install') . '</a></p>';
@@ -603,7 +603,7 @@ if (isset($_GET['help'])) {
                     echo '<div id="oci8po">' . get_string('databasesettingssub_oci8po', 'install');
                 /// Link to oracle installation page
                     echo "<p style='text-align:right'><a href=\"javascript:void(0)\" ";
-                    echo "onclick=\"return window.open('http://docs.moodle.org/en/Installing_Oracle_for_PHP')\"";
+                    echo "onclick=\"return window.open('http://docs.moodle.org/19/en/Installing_Oracle_for_PHP')\"";
                     echo ">";
                     echo '<img src="pix/docs.gif' . '" alt="Docs" class="iconhelp" />';
                     echo get_string('moodledocslink', 'install') . '</a></p>';

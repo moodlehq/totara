@@ -517,23 +517,21 @@ abstract class dp_base_component {
         // component relations are stored alphabetically
         // first component is in component1
         // Figure out which order to perform query
-        switch (strcmp($thiscomponent, $componentrequired)) {
-            case -1:
-                $matchedcomp = 'component1';
-                $matchedid = 'itemid1';
-                $searchedcomp = 'component2';
-                $searchedid = 'itemid2';
-                break;
-            case 1:
-                $matchedcomp = 'component2';
-                $matchedid = 'itemid2';
-                $searchedcomp = 'component1';
-                $searchedid = 'itemid1';
-                break;
-            case 0:
-            default:
-                // linking within the same component not supported
-                return false;
+        $cmp = strcmp($thiscomponent, $componentrequired);
+
+        if ($cmp < 0) {
+            $matchedcomp = 'component1';
+            $matchedid = 'itemid1';
+            $searchedcomp = 'component2';
+            $searchedid = 'itemid2';
+        } else if ($cmp > 0) {
+            $matchedcomp = 'component2';
+            $matchedid = 'itemid2';
+            $searchedcomp = 'component1';
+            $searchedid = 'itemid1';
+        } else {
+            // linking within the same component not supported
+            return false;
         }
 
         // find all matching relations
@@ -584,23 +582,21 @@ abstract class dp_base_component {
         // component relations are stored alphabetically
         // first component is in component1
         // Figure out which order to perform query
-        switch (strcmp($thiscomponent, $componentupdatetype)) {
-        case -1:
+        $cmp = strcmp($thiscomponent, $componentupdatetype);
+
+        if ($cmp < 0) {
             $matchedcomp = 'component1';
             $matchedid = 'itemid1';
             $searchedcomp = 'component2';
             $searchedid = 'itemid2';
             $thiscomponentfirst = true;
-            break;
-        case 1:
+        } else if ($cmp > 0) {
             $matchedcomp = 'component2';
             $matchedid = 'itemid2';
             $searchedcomp = 'component1';
             $searchedid = 'itemid1';
             $thiscomponentfirst = false;
-            break;
-        case 0:
-        default:
+        } else {
             // linking within the same component not supported
             return false;
         }
@@ -653,21 +649,19 @@ abstract class dp_base_component {
         // component relations are stored alphabetically
         // first component is in component1
         // Figure out which order to perform query
-        switch (strcmp($thiscomponent, $componentrequired)) {
-        case -1:
+        $cmp = strcmp($thiscomponent, $componentrequired);
+
+        if ($cmp < 0) {
             $matchedcomp = 'component1';
             $matchedid = 'itemid1';
             $searchedcomp = 'component2';
             $searchedid = 'itemid2';
-            break;
-        case 1:
+        } else if ($cmp > 0) {
             $matchedcomp = 'component2';
             $matchedid = 'itemid2';
             $searchedcomp = 'component1';
             $searchedid = 'itemid1';
-            break;
-        case 0:
-        default:
+        } else {
             // linking within the same component not supported
             return false;
         }
@@ -823,9 +817,9 @@ abstract class dp_base_component {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
                     $a->user = $this->current_user_link();
-                    $event->subject = get_string('componentupdateshortmanager', 'local_plan', $a);
-                    $event->fullmessage = get_string('componentupdatelongmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->subject = get_string_in_user_lang($manager, 'componentupdateshortmanager', 'local_plan', $a);
+                    $event->fullmessage = get_string_in_user_lang($manager, 'componentupdatelongmanager', 'local_plan', $a);
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -833,8 +827,8 @@ abstract class dp_base_component {
             // notify user that someone else did it
             $userto = get_record('user', 'id', $this->plan->userid);
             $event->userto = $userto;
-            $event->subject = get_string('componentupdateshortlearner', 'local_plan', $a->component);
-            $event->fullmessage = get_string('componentupdatelonglearner', 'local_plan', $a);
+            $event->subject = get_string_in_user_lang($userto, 'componentupdateshortlearner', 'local_plan', $a->component);
+            $event->fullmessage = get_string_in_user_lang($userto, 'componentupdatelonglearner', 'local_plan', $a);
             tm_alert_send($event);
         }
     }
@@ -873,9 +867,9 @@ abstract class dp_base_component {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
                     $a->user = $this->current_user_link();
-                    $event->subject = get_string('component'.$type.'shortmanager', 'local_plan', $a);
-                    $event->fullmessage = get_string('component'.$type.'longmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->subject = get_string_in_user_lang($manager, 'component'.$type.'shortmanager', 'local_plan', $a);
+                    $event->fullmessage = get_string_in_user_lang($manager, 'component'.$type.'longmanager', 'local_plan', $a);
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -883,8 +877,8 @@ abstract class dp_base_component {
             // notify user that someone else did it
             $userto = get_record('user', 'id', $this->plan->userid);
             $event->userto = $userto;
-            $event->subject = get_string('component'.$type.'shortlearner', 'local_plan', $a);
-            $event->fullmessage = get_string('component'.$type.'longlearner', 'local_plan', $a);
+            $event->subject = get_string_in_user_lang($userto, 'component'.$type.'shortlearner', 'local_plan', $a);
+            $event->fullmessage = get_string_in_user_lang($userto, 'component'.$type.'longlearner', 'local_plan', $a);
             tm_alert_send($event);
         }
     }
@@ -918,9 +912,9 @@ abstract class dp_base_component {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
                     $a->user = $this->current_user_link();
-                    $event->subject = get_string('componentcompleteshortmanager', 'local_plan', $a);
-                    $event->fullmessage = get_string('componentcompletelongmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    $event->subject = get_string_in_user_lang($manager, 'componentcompleteshortmanager', 'local_plan', $a);
+                    $event->fullmessage = get_string_in_user_lang($manager, 'componentcompletelongmanager', 'local_plan', $a);
+                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -928,8 +922,8 @@ abstract class dp_base_component {
             // notify user that someone else did it
             $userto = get_record('user', 'id', $this->plan->userid);
             $event->userto = $userto;
-            $event->subject = get_string('componentcompleteshortlearner', 'local_plan', $a);
-            $event->fullmessage = get_string('componentcompletelonglearner', 'local_plan', $a);
+            $event->subject = get_string_in_user_lang($userto, 'componentcompleteshortlearner', 'local_plan', $a);
+            $event->fullmessage = get_string_in_user_lang($userto, 'componentcompletelonglearner', 'local_plan', $a);
             tm_alert_send($event);
         }
     }

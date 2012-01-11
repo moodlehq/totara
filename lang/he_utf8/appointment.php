@@ -1,6 +1,5 @@
-<?PHP // $Id$
-      // appointment.php - created with Moodle 1.8 dev (2006120700)
-
+<?php
+// appointment.php - created with Totara langimport script version 1.1
 
 $string['allowresubmit'] = 'אפשר שליחה מחדש';
 $string['appointmentdetails'] = 'מידע אודות המפגש';

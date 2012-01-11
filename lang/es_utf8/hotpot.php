@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // hotpot.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// hotpot.php - created with Totara langimport script version 1.1
 
 $string['abandoned'] = 'Abandonado';
 $string['addquizchain'] = 'Agregar cadena de preguntas';
@@ -12,7 +11,11 @@ $string['attemptsbest'] = 'Mejor intento';
 $string['attemptsfirst'] = 'Primer intento';
 $string['attemptslast'] = 'Último intento';
 $string['average'] = 'Promedio';
+$string['cannotaddquestionrecord'] = 'No se pudo agregar el registro de la pregunta';
+$string['cannotaddresprecord'] = 'No se pudo agregar el registro de la respuesta';
+$string['cannotaddstrrecord'] = 'No se pudo agregar el registro de la cadena';
 $string['cannotfindmethod'] = 'No se ha encontrado el método de expansión del bloque de plantillas: ($a)';
+$string['cannotupdateattempt'] = 'No se pudo actualizar el registro del intento: $a';
 $string['checks'] = 'Comprobaciones';
 $string['clickreporting'] = 'Habilitar informe por clic';
 $string['clues'] = 'Pistas';
@@ -161,9 +164,5 @@ $string['unknownreport'] = 'Informe no conocido ($a)';
 $string['updatequizchain'] = 'Actualizar cadena  de cuestionarios';
 $string['weighting'] = 'Ponderación';
 $string['wrong'] = 'Incorrecto';
-$string['cannotaddquestionrecord'] = 'No se pudo agregar el registro de la pregunta'; // ORPHANED
-$string['cannotaddresprecord'] = 'No se pudo agregar el registro de la respuesta'; // ORPHANED
-$string['cannotaddstrrecord'] = 'No se pudo agregar el registro de la cadena'; // ORPHANED
-$string['cannotupdateattempt'] = 'No se pudo actualizar el registro del intento: $a'; // ORPHANED
 
 ?>

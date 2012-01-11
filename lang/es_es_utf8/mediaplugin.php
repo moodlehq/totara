@@ -1,5 +1,5 @@
 <?php
-// mediaplugin.php - created with Totara langimport script version 1.0
+// mediaplugin.php - created with Totara langimport script version 1.1
 
 $string['filtername'] = 'Plugins Multimedia';
 $string['flashanimation'] = 'Animación Flash';

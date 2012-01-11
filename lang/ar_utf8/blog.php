@@ -1,8 +1,9 @@
-<?PHP // $Id$ 
-      // blog.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// blog.php - created with Totara langimport script version 1.1
 
 $string['addnewentry'] = 'أضف مدخل جديد';
+$string['addotags'] = 'اضف علامات رسمية';
+$string['addptags'] = 'اضف علامات المستخدم المغرفة';
 $string['backupblogshelp'] = 'إذا تم التمكين, سيتم تضمين البلوق في النسخ الاحتياطيةالآلية للموقع';
 $string['blockmenutitle'] = 'قائمة بلوق';
 $string['blocktagstitle'] = 'علامات بلوق';
@@ -33,9 +34,11 @@ $string['norighttodeletetag'] = 'انت لست مخول بحذف هذا - $a';
 $string['notallowedtoedit'] = 'غير مسموح لك القيام بتحرير/تعديل هذا المدخل';
 $string['numberofentries'] = 'مدخلات: ش';
 $string['numberoftags'] = 'عدد العلامات التي ستعرض';
+$string['otags'] = 'علامات رسمية';
 $string['pagesize'] = 'عدد مدخلات بلوق في كل صفحة';
 $string['permalink'] = 'رابط ثابت';
 $string['personalblogs'] = 'يستطيع المستخدمون مشاهدة البولوق الخاص بهم فقط';
+$string['ptags'] = 'علامات المستخدم المعرفة';
 $string['publishto'] = 'انشر إلى';
 $string['publishtonoone'] = 'أنت (مسودة)';
 $string['publishtosite'] = 'أي أحد في هذا الموقع';
@@ -54,9 +57,5 @@ $string['viewcourseentries'] = 'معاينة مدخلات مقرر دراسي';
 $string['viewmyentries'] = 'معاينة مدخلاتي';
 $string['viewsiteentries'] = 'معاينة مدخلات الموقع';
 $string['worldblogs'] = 'يمكن للعالم قراءة المقالات, التي من المقرر أن يتم الوصول إليها من انحاء العالم';
-$string['addotags'] = 'اضف علامات رسمية'; // ORPHANED
-$string['addptags'] = 'اضف علامات المستخدم المغرفة'; // ORPHANED
-$string['otags'] = 'علامات رسمية'; // ORPHANED
-$string['ptags'] = 'علامات المستخدم المعرفة'; // ORPHANED
 
 ?>

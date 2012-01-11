@@ -54,8 +54,20 @@ $preserve = array(
                    'id' => $id,
                    'sid' => $sid,
             );
-if (!$oauth->authenticate($preserve)) {
-    print_error(get_string('oauthfailed', 'local_oauth'));
+try {
+    if (!$oauth->authenticate($preserve)) {
+        print_error(get_string('oauthfailed', 'local_oauth'));
+    }
+    $oauth->show_tables();
+}
+catch (local_oauth_exception $e) {
+    // clean it down
+    $oauth->wipe_auth();
+    // try again
+    $oauth = new local_oauth_fusion();
+    if (!$oauth->authenticate($preserve)) {
+        print_error(get_string('oauthfailed', 'local_oauth'));
+    }
 }
 
 $columns = $rep->columns;
@@ -121,17 +133,19 @@ for($k=0;$k<=floor($count/$blocksize);$k++) {
     $data = $rep->fetch_data($query, $start, $blocksize, true, true);
     $i = 0;
     $rows = array();
-    foreach ($data AS $row) {
-        $row = array();
-        for($j=0; $j<$numfields; $j++) {
-            if(isset($data[$i][$j])) {
-                $row[] = addslashes(htmlspecialchars_decode($data[$i][$j]));
-            } else {
-                $row[] = '';
+    if ($data) {
+        foreach ($data AS $row) {
+            $row = array();
+            for($j=0; $j<$numfields; $j++) {
+                if(isset($data[$i][$j])) {
+                    $row[] = addslashes(htmlspecialchars_decode($data[$i][$j]));
+                } else {
+                    $row[] = '';
+                }
             }
+            $rows[]= $row;
+            $i++;
         }
-        $rows[]= $row;
-        $i++;
     }
     $result = $oauth->insert_rows($tablename, $rows);
 
@@ -140,7 +154,7 @@ for($k=0;$k<=floor($count/$blocksize);$k++) {
 // all done - go and have a look at the table
 $table = $oauth->table_by_name($tablename, true);
 $table_id = $table['table id'];
-redirect('http://tables.googlelabs.com/DataSource?dsrcid='.$table_id);
+redirect('https://www.google.com/fusiontables/DataSource?dsrcid='.$table_id);
 exit;
 
 

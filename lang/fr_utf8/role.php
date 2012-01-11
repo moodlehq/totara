@@ -1,5 +1,5 @@
 <?php
-// role.php - created with Totara langimport script version 1.0
+// role.php - created with Totara langimport script version 1.1
 
 $string['addinganewrole'] = 'Ajout d\'un nouveau rôle';
 $string['addingrolebycopying'] = 'Ajout d\'un nouveau rôle basé sur $a';
@@ -53,6 +53,9 @@ $string['checkpermissionsin'] = 'Vérifier les permissions dans $a';
 $string['checksystempermissionsfor'] = 'Vérifier les permissions système de $a->fullname';
 $string['checkuserspermissionshere'] = 'Vérifier les permissions de $a->fullname dans ce $a->contextlevel';
 $string['chooseroletoassign'] = 'Veuillez choisir un rôle à attribuer';
+$string['cohort:assign'] = 'Assigner cohorte';
+$string['cohort:manage'] = 'Gestion des cohortes';
+$string['cohort:view'] = 'Affichage des cohortes';
 $string['comment:delete'] = 'Supprimer des commentaires';
 $string['comment:post'] = 'Écrire des commentaires';
 $string['comment:view'] = 'Lire les commentaires';

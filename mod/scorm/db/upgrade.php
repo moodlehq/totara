@@ -295,7 +295,7 @@ function xmldb_scorm_upgrade($oldversion=0) {
     if ($result && $oldversion < 2007110501) {
         $table = new XMLDBTable('scorm');
         $field = new XMLDBField('whatgrade');
-        
+
         /// Launch add field whatgrade
         if (!field_exists($table, $field)) {
             $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'grademethod');
@@ -322,7 +322,7 @@ function xmldb_scorm_upgrade($oldversion=0) {
         }
         set_config('grademethodfixed', '1', 'scorm'); //set this so that when upgrade to Moodle 2.0 we don't do this again.
     }
-    
+
 //===== 1.9.0 upgrade line ======//
 
     // Adding completion fields to scorm table
@@ -338,6 +338,66 @@ function xmldb_scorm_upgrade($oldversion=0) {
         $field->setAttributes(XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, null, null, null, null, null, 'completionstatusrequired');
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
+        }
+    }
+
+    // Adding directview field to scorm table
+    if ($result && $oldversion < 2011041403) {
+        $table = new XMLDBTable('scorm');
+        $field = new XMLDBField('directview');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null, 'completionscorerequired');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+    }
+
+    if ($result && $oldversion < 2011041404) {
+
+        // Define table scorm_aicc_session to be created
+        $table = new XMLDBTable('scorm_aicc_session');
+
+        // Adding fields to table scorm_aicc_session
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('scormid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('hacpsession', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('scoid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, '0');
+        $table->addFieldInfo('scormmode', XMLDB_TYPE_CHAR, '50', null, null, null, null);
+        $table->addFieldInfo('scormstatus', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->addFieldInfo('attempt', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('lessonstatus', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->addFieldInfo('sessiontime', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+
+        // Adding keys to table scorm_aicc_session
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addKeyInfo('scormid', XMLDB_KEY_FOREIGN, array('scormid'), 'scorm', array('id'));
+        $table->addKeyInfo('userid', XMLDB_KEY_FOREIGN, array('userid'), 'user', array('id'));
+        // Conditionally launch create table for scorm_aicc_session
+        if (!table_exists($table)) {
+            $result = $result & create_table($table);
+        }
+    }
+
+
+    // Adding unpackmethod field to scorm table
+    if ($result && $oldversion < 2011041405) {
+        $table = new XMLDBTable('scorm');
+        $field = new XMLDBField('unpackmethod');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, null, false, null, null, '', 'reference');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+        /// fix bad unpackmethod.
+        $scorms = get_records('scorm');
+        if (!empty($scorms)) {
+            foreach ($scorms as $scorm) {
+                if (empty($scorm->unpackmethod)) {
+                    $scorm->unpackmethod = 'manifest';
+                    update_record('scorm', $scorm);
+                }
+            }
         }
     }
 

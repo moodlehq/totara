@@ -107,7 +107,8 @@
                     print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;");
                     print_heading(get_string('notenrolledprofile'));
                 }
-                print_continue($_SERVER['HTTP_REFERER']);
+                $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $CFG->wwwroot;
+                print_continue($redirect);
                 print_footer($course);
                 exit;
             }
@@ -540,7 +541,7 @@
             echo "<form onclick=\"this.target='message$user->id'\" action=\"../message/discussion.php\" method=\"get\">";
             echo "<div>";
             echo "<input type=\"hidden\" name=\"id\" value=\"$user->id\" />";
-            echo "<input type=\"submit\" value=\"".get_string("sendmessage", "message")."\" onclick=\"return openpopup('/message/discussion.php?id=$user->id', 'message_$user->id', 'menubar=0,location=0,scrollbars,status,resizable,width=400,height=500', 0);\" />";
+            echo "<input type=\"submit\" value=\"".get_string("sendmessage", "message")."\" onclick=\"return openpopup('/message/discussion.php?id=$user->id', 'message_$user->id', 'menubar=0,location=0,scrollbars,status,resizable,width=450,height=500', 0);\" />";
             echo "</div>";
             echo "</form>";
         }

@@ -1,6 +1,5 @@
-<?PHP // $Id: block.php,v 1.2 2010/02/13 16:33:00 krause Exp $ 
-      // block.php - created with Moodle 2.0 dev (Build: 20100213) (2010020701)
-
+<?php
+// block.php - created with Totara langimport script version 1.1
 
 $string['*'] = 'Jede Seite';
 $string['addtodock'] = 'Block ins Navigationsdock bewegen';
@@ -24,12 +23,12 @@ $string['showonfrontpageandsubs'] = 'Auf der Startseite und allen dort hinzugef�
 $string['showonfrontpageonly'] = 'Nur auf der Startseite anzeigen';
 $string['site-*'] = 'Jede top-level Website';
 $string['subpages'] = 'Spezielle Unterseite';
+$string['thisblockbelongsto'] = 'Dieser Block gehört zu';
 $string['thisspecificpage'] = 'Diese spezielle Seite (Seite $a)';
 $string['undockall'] = 'Alles abdocken';
 $string['undockitem'] = 'Dieses Element abdocken';
 $string['visible'] = 'Sichtbar';
 $string['weight'] = 'Bedeutung';
 $string['wherethisblockappears'] = 'Wo dieser Block erscheint';
-$string['thisblockbelongsto'] = 'Dieser Block gehört zu'; // ORPHANED
 
 ?>

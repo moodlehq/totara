@@ -1,6 +1,5 @@
-<?PHP // $Id: question.php,v 1.9 2010/06/20 18:33:09 barias Exp $ 
-      // question.php - created with Moodle 1.9.8 (Build: 20100325) (2007101580)
-
+<?php
+// question.php - created with Totara langimport script version 1.1
 
 $string['adminreport'] = 'Informe sobre posibles problemas en su base de datos de preguntas.';
 $string['broken'] = 'Éste es un enlace roto: apunta a un archivo inexistente.';
@@ -35,6 +34,8 @@ $string['errorprocessingresponses'] = 'Ha ocurrido un error al procesar sus resp
 $string['errorsavingcomment'] = 'Error al guardar el comentario para la pregunta $a->name en la base de datos.';
 $string['errorupdatingattempt'] = 'Error al actualizar el intento $a->id en la base de datos.';
 $string['exportcategory'] = 'Exportar categoría';
+$string['filecantmovefrom'] = 'No puede mover los archivos de preguntas porque no tiene el permiso para eliminar los archivos del lugar de donde está intentando mover las preguntas.';
+$string['filecantmoveto'] = 'No puede mover o copiar los archivos de preguntas porque no tiene el permiso para agregar archivos al lugar de donde está intentando mover las preguntas.';
 $string['filesareacourse'] = 'área de archivos del curso';
 $string['filesareasite'] = 'área de archivos del sitio';
 $string['filestomove'] = '¿Mover / copiar archivos a $a?';

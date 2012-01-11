@@ -1,0 +1,29 @@
+﻿<h1>上传组</h1>
+
+<p>此功能允许将组批量上传到 Moodle 中。</p>
+
+
+<ul>
+<li>文件中的每一行都包含一条记录</li>
+<li>每条记录都是一系列以逗号分隔的数据</li>
+<li>文件的第一条记录很特殊，它包含字段名列表。此记录定义了文件中其他部分的格式。
+    <blockquote>
+<p><strong>必填字段名：</strong>这些字段必须包含在第一条记录中，并且要为每个用户定义</p>
+      <p></p>
+<code class="example1">groupname</code>
+<p><strong>默认字段名：</strong>（可选）如果不包含它们，则值将从当前语言和当前课程中获取</p>
+<p><code class="example1">idnumber, coursename, lang</code> </p>
+<p><strong>可选字段名：</strong>所有这些字段都是可选的。 </p>
+<p> <code class="example1">description, enrolmentkey, picture, hidepicture</code></p>
+    </blockquote>
+    </li>
+<li>数据中的逗号应当编码为 &amp;#44 - 脚本会自动将它们解码为逗号。 </li>
+<li>对于布尔字段，用 0 表示 false、1 表示 true。 </li>
+<li>idnumber 或 coursename 都可用于标识课程。idnumber 优先于 coursename。如果两者都未指定，则会将组添加到当前课程。 </li>
+<li>coursename 是课程简称。</li>
+<li>注意：如果某个组已经针对特定课程在 Moodle 数据库中进行了注册，则此脚本将返回该组的组名称。仅允许教师在他们具有编辑权限的课程中上传组。</li>
+</ul>
+   
+<p>下例是一个有效的导入文件：</p>
+<p><code>groupname,idnumber,lang,description,picture <br /> group1, Phil101, en, this group requires extra attention!, 0 <br /> group2, Math243, , ,</code></p>
+

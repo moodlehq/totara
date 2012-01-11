@@ -1,4 +1,5 @@
-<?PHP
+<?php
+// gradeimport_xml.php - created with Totara langimport script version 1.1
 
 $string['errbadxmlformat'] = 'Erro - XML mal formado';
 $string['errduplicategradeidnumber'] = 'Erro - existem dois itens de nota com idnumber \'$a\' neste curso. Isto deveria ser impossível.';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // quiz_responses.php - created with Moodle 1.6 development (2006031600)
-
+<?php
+// quiz_responses.php - created with Totara langimport script version 1.1
 
 $string['pagesize'] = 'Tentativas por página';
 $string['reportresponses'] = 'Respostas detalhadas';

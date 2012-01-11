@@ -43,27 +43,27 @@ class rb_plan_programs_embedded extends rb_base_embedded {
             array(
                 'type' => 'program',
                 'value' => 'proglinkicon',
-                'heading' => 'Program Name',
+                'heading' => get_string('programname', 'local_program'),
             ),
             array(
                 'type' => 'program',
                 'value' => 'mandatory',
-                'heading' => 'Mandatory',
+                'heading' => get_string('mandatory', 'local_program'),
             ),
             array(
                 'type' => 'program',
                 'value' => 'recurring',
-                'heading' => 'Recurring',
+                'heading' => get_string('recurring', 'local_program'),
             ),
             array(
                 'type' => 'program',
                 'value' => 'timedue',
-                'heading' => 'Due/Status',
+                'heading' => get_string('duestatus', 'local_program'),
             ),
             array(
                 'type' => 'program_completion',
                 'value' => 'status',
-                'heading' => 'Progress',
+                'heading' => get_string('progress', 'local_program'),
             ),
         );
 

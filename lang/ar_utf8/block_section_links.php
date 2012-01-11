@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_section_links.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// block_section_links.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'روابط القسم';
 $string['incby1'] = 'زيادة بنسبة';

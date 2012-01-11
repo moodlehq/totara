@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_course_menu.php - created with Moodle 1.9 + (Build: 20080315) (2007101509)
-
+<?php
+// block_course_menu.php - created with Totara langimport script version 1.1
 
 $string['activitybrdesc'] = 'Mit diesem Link können Sie Aktivitäten oder Inhalt von einem Kurs in dem Sie Trainer/in sind in einen anderen kopieren.';
 $string['assignroles'] = 'Rollen zuordnen';

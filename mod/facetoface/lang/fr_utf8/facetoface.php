@@ -1,5 +1,5 @@
 <?php
-// facetoface.php - created with Totara langimport script version 1.0
+// facetoface.php - created with Totara langimport script version 1.1
 
 $string['addingsession'] = 'Ajouter une nouvelle session';
 $string['addmanageremailaddress'] = 'Ajouter l\'adresse courriel du responsable';
@@ -19,6 +19,7 @@ $string['answer'] = 'S\'inscrire';
 $string['answercancel'] = 'Se désinscrire';
 $string['approvalreqd'] = 'Approbation requise';
 $string['approve'] = 'Approuvé';
+$string['approveinstruction'] = 'Pour approuver l\'enregistrement de la session, cliquez sur accepter';
 $string['assessmentyour'] = 'Votre évaluation';
 $string['attendance'] = 'Présence';
 $string['attendanceinstructions'] = 'Sélectionner les utilisateurs qui ont assisté à la session';
@@ -26,6 +27,7 @@ $string['attendedsession'] = 'A assisté à la session';
 $string['attendees'] = 'Inscrits';
 $string['attendeestablesummary'] = 'Les personnes ayant l\'intention de participer à la session (ou qui ont déjà participées)';
 $string['booked'] = 'Réservé';
+$string['bookedforsession'] = 'Inscrit pour la session $a';
 $string['bookingcancelled'] = 'Votre inscription a été annulée';
 $string['bookingcompleted'] = 'Votre inscription a été enregistrée';
 $string['bookingfull'] = 'Session complète';
@@ -43,7 +45,11 @@ $string['cancellations'] = 'Annulations';
 $string['cancellationsent'] = 'Vous devriez recevoir un courriel d\'annulation immédiatement.';
 $string['cancellationsentmgr'] = 'Vous et votre responsable devriez recevoir un courriel d\'annulation immédiatement.';
 $string['cancellationstablesummary'] = 'Liste de personnes qui se sont désinscrit de la session';
+$string['cancelledforsession'] = 'Annulation pour session';
 $string['cancelreason'] = 'Raison';
+$string['cancelusersession'] = 'Annulé pour la session $a->usermsg  $a->url';
+$string['cannotsignupsessioninprogress'] = 'Vous ne pouvez pas vous inscrire, cette session est en cours';
+$string['cannotsignupsessionover'] = 'Vous ne pouvez pas vous inscrire, cette session est terminée';
 $string['capacity'] = 'Capacité';
 $string['changemanageremailaddress'] = 'Changer l\'adresse courriel du responsable';
 $string['changemanageremailinstruction'] = 'Merci d\'entrer l\'adresse courriel de votre responsable ci-dessous.';
@@ -72,6 +78,7 @@ $string['date'] = 'Date';
 $string['dateadd'] = 'Ajouter une nouvelle date';
 $string['dateremove'] = 'Supprimer cette date';
 $string['datetext'] = 'Vous êtes inscrit(e) à cette date';
+$string['datetimeknownhinttext'] = '-';
 $string['decidelater'] = 'Décider ultérieurement';
 $string['decline'] = 'Refuser';
 $string['deleteall'] = 'Tout supprimer';
@@ -82,6 +89,7 @@ $string['description'] = 'Texte d\'introduction';
 $string['details'] = 'Détails';
 $string['discountcode'] = 'Code de réduction';
 $string['discountcost'] = 'Coût réduit';
+$string['discountcosthinttext'] = '-';
 $string['due'] = 'limite';
 $string['duration'] = 'Durée';
 $string['early'] = '$a tôt';
@@ -116,6 +124,7 @@ $string['error:couldnotdeletesession'] = 'Echec de la suppression de session';
 $string['error:couldnotfindsession'] = 'Impossible de trouver la session ajoutée';
 $string['error:couldnotsavecustomfield'] = 'Impossible d\'enregistrer le champs personalisé';
 $string['error:couldnotupdatecalendar'] = 'Impossible de modifier l\'événement de session dans le calendrier.';
+$string['error:couldnotupdatef2frecord'] = 'Impossible de mettre à jour l\'inscription face-to-face dans la base de données';
 $string['error:couldnotupdatefield'] = 'Impossible de modifier le champs personalisé de session.';
 $string['error:couldnotupdatemanageremail'] = 'Echec de la mise à jour de l\'adresse courriel de votre responsable';
 $string['error:couldnotupdatenotice'] = 'Impossible de modifier la notification globale.';
@@ -127,6 +136,7 @@ $string['error:emptymanageremail'] = 'L\'adresse courriel du responsable est vid
 $string['error:emptyvenue'] = 'Le lieu est vide';
 $string['error:enrolmentfailed'] = 'Impossible d\'inscrire $a dans ce cours.';
 $string['error:eventoccurred'] = 'Impossible de vous inscrire dans un cours passé.';
+$string['error:f2ffailedupdatestatus'] = 'Face-to-face n\'a pas pu mettre à jour le statut de l\'utilisateur';
 $string['error:incorrectcoursemodule'] = 'Course module is incorrect';
 $string['error:incorrectcoursemoduleid'] = 'Course module is incorrect';
 $string['error:incorrectcoursemodulesession'] = 'Course Module Face-to-face Session was incorrect';
@@ -206,6 +216,7 @@ $string['nofacetofaces'] = 'Il n\'y a pas d\'inscriptions';
 $string['none'] = 'Aucun';
 $string['noremindersneedtobesent'] = 'Aucun rappel ne nécessite d\'être envoyé';
 $string['normalcost'] = 'Coût normal';
+$string['normalcosthinttext'] = '-';
 $string['nosignedupusers'] = 'Aucun utilisateur n\'est inscrit pour cette session';
 $string['nositenotices'] = '<p>Aucune notification globale est definie.</p>';
 $string['note'] = 'Note';
@@ -247,11 +258,15 @@ $string['printversionname'] = 'Version imprimable: avec nom';
 $string['really'] = 'Voulez-vous vraiment supprimer tous les résultats pour cette formation';
 $string['registeredon'] = 'Inscrit(e) le';
 $string['registrations'] = 'Inscriptions';
+$string['rejectinstruction'] = 'Pour rejeter l\'inscription à cette session, cliquez sur rejeter';
 $string['reminder'] = 'Rappel';
 $string['remindermessage'] = 'Message de rappel';
 $string['reminderperiod'] = 'Envoyer le rappel combien de jours avant?';
+$string['requestattendsession'] = 'Demande pour participer à la session $a';
+$string['requestattendsessionsent'] = 'Demande pour participer à la session $a envoyée au gestionnaire';
 $string['requestmessage'] = 'Envoyer un message';
 $string['requeststablesummary'] = 'Les personnes demandant de participer à la session';
+$string['requestuserattendsession'] = 'Demande pour la participation de $a->usermsg à la session $a->url';
 $string['room'] = 'Salle';
 $string['saveallfeedback'] = 'Enregistrer toutes les réponses';
 $string['saveattendance'] = 'Enregistrer la présence';
@@ -309,7 +324,6 @@ $string['setting:defaultconfirmationinstrmngr_caption'] = 'Message de confirmati
 $string['setting:defaultconfirmationinstrmngrdefault'] = '***Information***
 
 [firstname] [lastname] a été inscrit pour la formation suivante et vous avez été désigné comme son responsable.
-
 
 Si vous n\'êtes pas son responsable et avez reçu ce message par erreur,merci de le signaler en y répondant.
 
@@ -376,7 +390,6 @@ Salle: [session:room]
 Veuillez suivre le lien suivant afin d\'approuver la demande:
 [attendeeslink]#unapproved
 
-
 *** La demande de réservation de l\'utilisateur [firstname] [lastname] se trouve en copie ci-dessous ****';
 $string['setting:defaultrequestmessagedefault'] = 'Votre demande de réservation du cours suivant a été envoyé à votre manager :
 
@@ -419,9 +432,13 @@ $string['setting:hidecost_caption'] = 'Cacher coût et réduction';
 $string['setting:hidediscount'] = 'Cacher le champs code de réduction seulement.';
 $string['setting:hidediscount_caption'] = 'Cacher réduction :';
 $string['setting:isfilter'] = 'Affichage comme filtre';
+$string['setting:manageraddressformat'] = 'Le suffixe qui doit être présent dans l\'adresse e-mail du gestionnaire pour pouvoir être considéré valide';
 $string['setting:manageraddressformat_caption'] = 'Suffixe requise :';
+$string['setting:manageraddressformatdefault'] = '-';
+$string['setting:manageraddressformatreadable'] = 'Description courte des restrictions sur l\'adresse e-mail du gestionnaire. Ce paramètre n\'a pas d\'effet si le précédent n\'est pas configuré.';
 $string['setting:manageraddressformatreadable_caption'] = 'Exemple du format :';
 $string['setting:manageraddressformatreadabledefault'] = 'firstname.lastname@company.com';
+$string['setting:oneemailperday'] = 'Envoyer plusieurs e-mails de confirmations pour les événements sur plusieurs jours.';
 $string['setting:oneemailperday_caption'] = 'Un message par jour :';
 $string['setting:possiblevalues'] = 'Liste de valeurs possibles';
 $string['setting:sessionroles'] = 'Les utilisateurs ayant un des rôles sélectionner peuvent être suivi avec chaque session face à face';
@@ -480,6 +497,7 @@ $string['viewallsessions'] = 'Voir toutes les sessions';
 $string['viewsubmissions'] = 'Voir';
 $string['wait-list'] = 'Liste d\'attente';
 $string['wait-listed'] = 'Sur liste d\'attente';
+$string['waitlistedforsession'] = 'Liste d\'attente pour la session $a';
 $string['waitlistedmessage'] = 'Message liste d\'attente';
 $string['xhours'] = '$a heures';
 $string['xminutes'] = '$a minutes';

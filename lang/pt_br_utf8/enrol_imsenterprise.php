@@ -1,6 +1,5 @@
-<?PHP // $Id: enrol_imsenterprise.php,v 1.7 2010/03/18 20:40:56 danielneis Exp $ 
-      // enrol_imsenterprise.php - created with Moodle 1.9.2+ (Build: 20080903) (2007101522)
-
+<?php
+// enrol_imsenterprise.php - created with Totara langimport script version 1.1
 
 $string['aftersaving...'] = 'Depois de salvar as suas opções, é possível que você queira';
 $string['allowunenrol'] = 'Permitir que o IMS data <strong>cancele a inscrição</strong> de alunos e professores';

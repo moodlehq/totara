@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_authorize.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// enrol_authorize.php - created with Totara langimport script version 1.1
 
 $string['adminacceptccs'] = '¿Qué tarjetas de crédito se aceptan?';
 $string['adminaccepts'] = 'Seleccione los métodos de pago y sus tipos';

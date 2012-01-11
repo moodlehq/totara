@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // assignment.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// assignment.php - created with Totara langimport script version 1.1
 
 $string['allowdeleting'] = 'Permitir eliminar';
 $string['allowmaxfiles'] = 'Número máximo de archivos subidos';
@@ -25,6 +24,7 @@ $string['assignmentname'] = 'Nombre de la tarea';
 $string['assignmenttype'] = 'Tipo de tarea';
 $string['availabledate'] = 'Disponible en';
 $string['cannotdeletefiles'] = 'Ha ocurrido un error y los archivos no han podido eliminarse';
+$string['cannotinsertempty'] = 'No se ha podido insertar un nuevo envío vacío';
 $string['cannotviewassignment'] = 'No puede ver esta tarea';
 $string['comment'] = 'Comentario';
 $string['commentinline'] = 'Comentario en línea';
@@ -48,8 +48,15 @@ para \'$a->assignment\'
 Está disponible aquí:
 
 $a->url';
+$string['emailteachermailgroup'] = '$a->groupname $a->groupmembers han actualizado el envío de la tarea \'$a->assignment\'
+
+Está disponible aquí:
+
+$a->url';
 $string['emailteachermailhtml'] = '$a->username ha actualizado el envío de su tarea
 para <i>\'$a->assignment\'</i><br /><br />
+Está <a href=\"$a->url\">disponible en el sitio web</a>.';
+$string['emailteachermailhtmlgroup'] = '$a->groupname $a->groupmembers han actualizado el envío de la tarea <i>\'$a->assignment\'</i><br /><br />
 Está <a href=\"$a->url\">disponible en el sitio web</a>.';
 $string['emailteachers'] = 'Alertas de email a los profesores';
 $string['emptysubmission'] = 'Usted aún no ha enviado nada';
@@ -62,6 +69,7 @@ $string['feedbackupdated'] = 'Comentario actualizado para $a personas';
 $string['finalize'] = 'No más envíos';
 $string['finalizeerror'] = 'Ha ocurrido un error y el envío no ha podido completarse';
 $string['graded'] = 'Calificado';
+$string['gradingstyle'] = 'Estilo de calificación';
 $string['guestnosubmit'] = 'Lo sentimos, los invitados no pueden enviar tareas. Para poder enviar su respuesta, antes tiene que registrarse o introducir sus datos de acceso.';
 $string['guestnoupload'] = 'Lo sentimos, los invitados no pueden realizar envíos.';
 $string['helpoffline'] = '<p>Esto resulta útil cuando la tarea se realiza fuera de Moodle, e.g., en algún lugar de internet o personalmente.</p><p>Los estudiantes pueden ver una descipción de la tarea, pero no pueden subir archivos de ninguna clase al servidor. Las calificaciones funcionan normalmente, y los estudiantes recibirán notificaciones sobre la calificación obtenida.</p>';
@@ -70,6 +78,7 @@ $string['helpupload'] = '<p>Este tipo de tarea permite a cada participante subir
 <p>Puede ser un documento en Word, imágenes, una web comprimida, o cualquier otro archivo que se les pida que envíen.</p>
 <p>Usted puede de igual modo subir múltiples archivos de respuesta de cualquier tipo.</p>';
 $string['helpuploadsingle'] = '<p>Este tipo de tarea permite a los participantes subir un solo archivo de cualquier tipo.</p><p>Podría ser un documento procesado en Word, o una imagen, un sitio web comprimido, o cualquier cosa que les pida que envíen.</p>';
+$string['helpuploadsinglegroup'] = '<p>Este tipo de tarea permite a cada participante subir un único archivo, de cualquier tipo.</p> <p>Podría ser un documento en Word, una imagen, un sitio web comprimido, o cualquier cosa que se le pida que envíe..</p> <p>El envío de este usuario es remitido también por todos los miembros del grupo a que pertenece. Si el curso no tiene grupos definidos, toda la clase se considera como un grupo.</p>';
 $string['hideintro'] = 'Ocultar descripción antes de la fecha disponible';
 $string['invalidassignment'] = 'tarea incorrecta';
 $string['invalidid'] = 'ID de tarea incorrecto';
@@ -124,6 +133,7 @@ $string['typeoffline'] = 'Actividad no en línea';
 $string['typeonline'] = 'Texto en línea';
 $string['typeupload'] = 'Subida avanzada de archivos';
 $string['typeuploadsingle'] = 'Subir un solo archivo';
+$string['typeuploadsinglegroup'] = 'Subida de archivo en equipo';
 $string['unfinalize'] = 'Volver a borrador';
 $string['unfinalizeerror'] = 'Ha ocurrido un error y la tarea no ha podido devolverse al estado de borrador';
 $string['uploadbadname'] = 'El nombre contiene caracteres incompatibles y no se pudo subir';
@@ -135,21 +145,11 @@ $string['uploadnofilefound'] = 'No seleccionó ningún archivo: ¿está seguro d
 $string['uploadnotregistered'] = '\'$a\' se subió correctamente, pero el envío no se registró!.';
 $string['uploadsuccess'] = '\'$a\' se ha subido correctamente';
 $string['usermisconf'] = 'Usuario mal configurado';
+$string['usernosubmit'] = 'Disculpe, no tiene permiso para enviar una tarea';
 $string['viewfeedback'] = 'Ver calificaciones y comentarios sobre la tarea';
 $string['viewmysubmission'] = 'Ver mi envío';
 $string['viewsubmissions'] = 'Ver $a tareas enviadas';
+$string['wholeclass'] = 'Toda la clase';
 $string['yoursubmission'] = 'Su envío';
-$string['cannotinsertempty'] = 'No se ha podido insertar un nuevo envío vacío'; // ORPHANED
-$string['emailteachermailgroup'] = '$a->groupname $a->groupmembers han actualizado el envío de la tarea \'$a->assignment\'
-
-Está disponible aquí:
-
-$a->url'; // ORPHANED
-$string['emailteachermailhtmlgroup'] = '$a->groupname $a->groupmembers han actualizado el envío de la tarea <i>\'$a->assignment\'</i><br /><br />
-Está <a href=\"$a->url\">disponible en el sitio web</a>.'; // ORPHANED
-$string['gradingstyle'] = 'Estilo de calificación'; // ORPHANED
-$string['helpuploadsinglegroup'] = '<p>Este tipo de tarea permite a cada participante subir un único archivo, de cualquier tipo.</p> <p>Podría ser un documento en Word, una imagen, un sitio web comprimido, o cualquier cosa que se le pida que envíe..</p> <p>El envío de este usuario es remitido también por todos los miembros del grupo a que pertenece. Si el curso no tiene grupos definidos, toda la clase se considera como un grupo.</p>'; // ORPHANED
-$string['typeuploadsinglegroup'] = 'Subida de archivo en equipo'; // ORPHANED
-$string['wholeclass'] = 'Toda la clase'; // ORPHANED
 
 ?>

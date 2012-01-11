@@ -1,105 +1,54 @@
-<?PHP // $Id: certificate.php,v 1.2.4.1 2007/12/12 15:42:58 crbusch Exp $ 
-      // certificate.php - created with Moodle 1.6.1 (2006050510)
-      //contributed by Ralf Hilgenstock
+<?php
+// certificate.php - created with Totara langimport script version 1.1
 
-//General functions
-$string['modulename'] = 'Zertifikat';
-$string['modulenameplural'] = 'Zertifikate';
-$string['certificatename'] = 'Certificate Name';
-$string['certificate:view'] = 'View Certificate';
-$string['certificate:manage'] = 'Manage Certificate';
-$string['certificate:printteacher'] = 'Print Teacher';
-$string['certificate:student'] = 'Get Certificate';
-
-//Adding an instance
+$string['activitydependencies'] = 'Dependent activities';
+$string['activitylocklabel'] = 'Linked Activity/Minimum Grade %%';
 $string['addlinklabel'] = 'Add another linked activity option';
 $string['addlinktitle'] = 'Click to add another linked activity option';
-$string['issueoptions'] = 'Issue Options';
-$string['textoptions'] = 'Text Options';
-$string['designoptions'] = 'Design Options';
-$string['lockingoptions'] = 'Locking Options';
-$string['certificatetype'] = 'Zertifikatsformat';
-$string['emailteachers'] = 'E-Mail an Trainer/innen';
-$string['emailothers'] = 'E-Mail others';
-$string['savecertificate'] = 'Zertifikate speichern';
-$string['deliver'] = 'Anzeigeformat';
-$string['download'] = 'Download';
-$string['openbrowser'] = 'In einem neuen Fenster anzeigen';
-$string['emailcertificate'] = 'E-Mail-Dateianhang';
+$string['awarded'] = 'Zertifikat erstellt';
+$string['awardedto'] = 'Zertifikat erstellt für';
+$string['back'] = 'Back';
 $string['border'] = 'Rahmen';
-$string['borderstyle'] = 'Border Image';
-$string['borderlines'] = 'Linien';
-$string['bordercolor'] = 'Border Linien';
 $string['borderblack'] = 'Schwarz';
 $string['borderblue'] = 'Blau';
 $string['borderbrown'] = 'Brown';
+$string['bordercolor'] = 'Rahmenfarbe';
 $string['bordergreen'] = 'Grün';
+$string['borderlines'] = 'Linien';
+$string['bordernone'] = 'Kein Rahmen';
+$string['borderstyle'] = 'Rahmentyp';
+$string['cert'] = '#';
+$string['certificate'] = 'Verification for certificate code:';
+$string['certificate:manage'] = 'Manage Certificate';
+$string['certificate:printteacher'] = 'Print Teacher';
+$string['certificate:student'] = 'Get Certificate';
+$string['certificate:view'] = 'View Certificate';
+$string['certificatecoursename'] = 'Kursname';
+$string['certificatename'] = 'Certificate Name';
+$string['certificatereport'] = 'Certificates Report';
+$string['certificatesfor'] = 'Certificates for';
+$string['certificatetitle'] = 'Zertifikatsbezeichnung';
+$string['certificatetype'] = 'Zertifikatsformat';
+$string['code'] = 'Code';
+$string['configcontent'] = 'Config content';
+$string['course'] = 'For';
+$string['courseenddate'] = 'Kursende (muß gesetzt werden)';
+$string['coursegrade'] = 'Kursbewertung';
+$string['coursegradeoption'] = 'Kursbewertung';
+$string['coursename'] = 'Course';
+$string['coursetime'] = 'Required course time';
+$string['coursetimedependency'] = 'Minimum required minutes in course';
+$string['credithours'] = 'Credit Hours';
+$string['customtext'] = 'Custom Text';
+$string['date'] = 'On';
 $string['dateformat'] = 'Datumsformat';
 $string['datehelp'] = 'Datum';
-$string['printwmark'] = 'Wasserzeichen drucken';
-$string['receiveddate'] = 'Ausstellungsdatum';
-$string['courseenddate'] = 'Kursende (muß gesetzt werden)';
-$string['printcode'] = 'Code drucken';
-$string['printdate'] = 'Datum drucken';
-$string['printgrade'] = 'Bewertung drucken';
-$string['printseal'] = 'Stempel/Siegel drucken';
-$string['printsignature'] = 'Unterschrift drucken';
-$string['sigline'] = 'Linie';
-$string['printteacher'] = 'Name  Trainer/in drucken';
-$string['coursegradeoption'] = 'Kursbewertung';
-$string['nogrades'] = 'Keine Bewertungen vorhanden';
-$string['gradeformat'] = 'Format der Bewertung';
-$string['gradeletter'] = 'Buchstaben-Note';
-$string['gradepercent'] = 'Prozentwert als Note';
-$string['gradepoints'] = 'Punkte als Note';
-$string['printhours'] = 'Print Credit Hours';
-$string['customtext'] = 'Custom Text';
-$string['lockgrade'] = 'Lock by grade';
-$string['requiredgrade'] = 'Required grade';
-$string['coursetime'] = 'Required course time';
-$string['linkedactivity'] = 'Linked Activity';
-$string['minimumgrade'] = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required Grade';
-$string['activitylocklabel'] = 'Linked Activity/Minimum Grade %';
-$string['coursetimedependency'] = 'Minimum required minutes in course';
-$string['activitydependencies'] = 'Dependent activities';
-
-//Strings for verification block 
-$string['configcontent'] = 'Config content';
-$string['validate'] = 'Prüfen';
-$string['verifycertificate'] = 'Zertifikat abrufen';
-$string['certificate'] = 'Verification for certificate code:';
+$string['deliver'] = 'Anzeigeformat';
+$string['designoptions'] = 'Design Options';
 $string['dontallowall'] = 'Do not allow all';
-$string['cert'] = '#';
-$string['notfound'] = 'The certificate number could not be validated.';
-$string['back'] = 'Back';
-$string['to'] = 'Awarded to';
-$string['course'] = 'For';
-$string['date'] = 'On';
-
-
-//Certificate view, index, report strings
-$string['incompletemessage'] = 'In order to download your certificate, you must first complete all required '.
-                               'activities. Please return to the course to complete your coursework.';
-$string['issued'] = 'ausgestellt';
-$string['notissued'] = 'Nicht ausgestellt';
-$string['notissuedyet'] = 'Bisher noch nicht ausgestellt';
-$string['getcertificate'] = 'Hier erhalten Sie Ihr Zertifikat';
-$string['code'] = 'Code';
-$string['report'] = 'Bericht';
-$string['viewed'] = 'Dieses Zertifikat wurde für Sie erstellt am:';
-$string['viewcertificateviews'] = '$a erstellte Zertifikate anzeigen';
-$string['reviewcertificate'] = 'Zertifikat aufrufen';
-$string['openwindow'] = 'Klicken Sie den Button, um das Zertifikat in einem neuen Fenster zu öffnen.';
-$string['opendownload'] = 'Klicken Sie den Button, um das Zertifikat auf dem PC zu speichern.';
-$string['openemail'] = 'Klicken Sie den Button. Das Zertifikat wird Ihnen per E-Mail zugesandt.';
-$string['receivedcerts'] = 'Erstellte Zertifikate';
-$string['errorlockgrade'] = 'Your current grade on $a->mod ($a->current%%) is below the grade required ($a->needed%%) to receive the certificate.';
-$string['errorlockgradecourse'] = 'Your current course grade ($a->current%%) is below the grade required ($a->needed%%) to receive your certificate.';
-$string['errorlocktime'] = 'You must first meet the requirement for time spent working in this course before receving your certificate.';
-$string['errorlockmod'] = 'You must first meet all course activity grade requirements before receving your certificate.';
-
-//Email text
-$string['awarded'] = 'Zertifikat erstellt';
+$string['download'] = 'Download';
+$string['emailcertificate'] = 'E-Mail-Dateianhang';
+$string['emailothers'] = 'E-Mail others';
 $string['emailstudenttext'] = 'Im Anhang finden Sie Ihr Zertifikat zum Kurs \'$a->course\'.';
 $string['emailteachermail'] = '$a->student hat das \'$a->certificate\' für den Kurs \'$a->course\' erhalten.';
 $string['emailteachermailhtml'] = '$a->student hat das \'<i>$a->certificate</i>\' für den Kurs \'$a->course\' erhalten.
@@ -107,45 +56,89 @@ $string['emailteachermailhtml'] = '$a->student hat das \'<i>$a->certificate</i>\
 You can review it here:
 
     <a href=\"$a->url\">Certificate Report</a>.';
-
-//Names of type folders
+$string['emailteachers'] = 'E-Mail an Trainer/innen';
+$string['entercode'] = 'Zertifikatscode für Verifizierung eingeben:';
+$string['errorlockgrade'] = 'Your current grade on $a->mod ($a->current%%) is below the grade required ($a->needed%%) to receive the certificate.';
+$string['errorlockgradecourse'] = 'Your current course grade ($a->current%%) is below the grade required ($a->needed%%) to receive your certificate.';
+$string['errorlockmod'] = 'You must first meet all course activity grade requirements before receving your certificate.';
+$string['errorlocksurvey'] = 'Sie müssen alle Kursprüfungen abgeschlossen haben bevor Sie ein Zertifikat erlangen können.';
+$string['errorlocktime'] = 'You must first meet the requirement for time spent working in this course before receving your certificate.';
+$string['field1'] = 'Institution';
+$string['field2'] = 'Ich bin ein';
+$string['field3'] = 'Ich werde geschult als';
+$string['getcertificate'] = 'Hier erhalten Sie Ihr Zertifikat';
+$string['grade'] = 'Bewertung';
+$string['gradedate'] = 'Bewertungsdatum';
+$string['gradeformat'] = 'Format der Bewertung';
+$string['gradeletter'] = 'Note';
+$string['gradepercent'] = 'Prozentwert als Note';
+$string['gradepoints'] = 'Punkte als Note';
+$string['incompletemessage'] = 'In order to download your certificate, you must first complete all required activities. Please return to the course to complete your coursework.';
+$string['intro'] = 'Einleitung';
+$string['introlandscape'] = 'Zertifikat';
+$string['introletterlandscape'] = 'Zertifikat';
+$string['introletterportrait'] = 'Zertifikat';
+$string['introportrait'] = 'Zertifikat';
+$string['issued'] = 'ausgestellt';
+$string['issueoptions'] = 'Issue Options';
+$string['linkedactivity'] = 'Linked Activity';
+$string['lockgrade'] = 'Lock by grade';
+$string['lockingoptions'] = 'Locking Options';
+$string['minimumgrade'] = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required Grade';
+$string['modulename'] = 'Zertifikat';
+$string['modulenameplural'] = 'Zertifikate';
+$string['mycertificates'] = 'My Certificates';
+$string['nocertificatesreceived'] = 'has not received any course certificates.';
+$string['nogrades'] = 'Keine Bewertungen vorhanden';
+$string['notapplicable'] = 'N/A';
+$string['notfound'] = 'The certificate number could not be validated.';
+$string['notissued'] = 'Nicht ausgestellt';
+$string['notissuedyet'] = 'Bisher noch nicht ausgestellt';
+$string['notreceived'] = 'Sie haben das Zertifikat noch nicht erhalten';
+$string['ondayportrait'] = 'erfolgreich abgeschlossen';
+$string['openbrowser'] = 'In einem neuen Fenster anzeigen';
+$string['opendownload'] = 'Klicken Sie den Button, um das Zertifikat auf dem PC zu speichern.';
+$string['openemail'] = 'Klicken Sie den Button. Das Zertifikat wird Ihnen per E-Mail zugesandt.';
+$string['openwindow'] = 'Klicken Sie den Button, um das Zertifikat in einem neuen Fenster zu öffnen.';
+$string['printcode'] = 'Code drucken';
+$string['printdate'] = 'Datum drucken';
+$string['printerfriendly'] = 'Druckerfreundliche Seite';
+$string['printgrade'] = 'Bewertung drucken';
+$string['printhours'] = 'Print Credit Hours';
+$string['printoutcome'] = 'Ergebnis drucken';
+$string['printseal'] = 'Stempel/Siegel drucken';
+$string['printsignature'] = 'Unterschrift drucken';
+$string['printteacher'] = 'Name  Trainer/in drucken';
+$string['printwmark'] = 'Wasserzeichen drucken';
+$string['receivedcerts'] = 'Erstellte Zertifikate';
+$string['receiveddate'] = 'Ausstellungsdatum';
+$string['report'] = 'Bericht';
+$string['reportcertificate'] = 'Report Certificates';
+$string['requiredgrade'] = 'Required grade';
+$string['reviewcertificate'] = 'Zertifikat aufrufen';
+$string['savecertificate'] = 'Zertifikate speichern';
+$string['sigline'] = 'Linie';
+$string['statementlandscape'] = 'über die erfolgreiche Teilnahme am  Kurs';
+$string['statementletterlandscape'] = 'über die erfolgreiche Teilnahme am  Kurs';
+$string['statementletterportrait'] = 'über die erfolgreiche Teilnahme am  Kurs';
+$string['statementportrait'] = 'über die erfolgreiche Teilnahme am  Kurs';
+$string['textoptions'] = 'Text Options';
+$string['titledefault'] = 'ERGEBNISZERTIFIKAT';
+$string['titlelandscape'] = 'Abschlußzertifikat';
+$string['titleletterlandscape'] = 'Abschlußzertifikat';
+$string['titleletterportrait'] = 'Abschlußzertifikat';
+$string['titleportrait'] = 'Abschlußzertifikat';
+$string['to'] = 'Awarded to';
 $string['typelandscape'] = 'Querformat (A4)';
 $string['typeletter_landscape'] = 'Querformat (Letter)';
 $string['typeletter_portrait'] = 'Hochformat (Letter)';
 $string['typeportrait'] = 'Hochformat (A4)';
-$string['typeunicode_landscape'] = 'Unicode (landscape)';
+$string['typeunicode_landscape'] = 'Querformat (A4)';
 $string['typeunicode_portrait'] = 'Unicode (portrait)';
-
-//Print to certificate strings
-$string['grade'] = 'Bewertung';
-$string['coursegrade'] = 'Kursbewertung';
-$string['credithours'] = 'Credit Hours';
-
-$string['titlelandscape'] = 'Abschlußzertifikat';
-$string['introlandscape'] = 'This is to certify that';
-$string['statementlandscape'] = 'has completed the course';
-
-$string['titleletterlandscape'] = 'Abschlußzertifikat';
-$string['introletterlandscape'] = 'This is to certify that';
-$string['statementletterlandscape'] = 'über die erfolgreiche Teilnahme am  Kurs';
-
-$string['titleportrait'] = 'Abschlußzertifikat';
-$string['introportrait'] = 'Dies ist, das zu bescheinigen';
-$string['statementportrait'] = 'über die erfolgreiche Teilnahme am  Kurs';
-$string['ondayportrait'] = 'erfolgreich abgeschlossen';
-
-$string['titleletterportrait'] = 'Abschlußzertifikat';
-$string['introletterportrait'] = 'This is to certify that';
-$string['statementletterportrait'] = 'über die erfolgreiche Teilnahme am  Kurs';
-
-//Certificate transcript strings
-$string['notapplicable'] = 'N/A';
-$string['certificatesfor'] = 'Certificates for';
-$string['coursename'] = 'Course';
+$string['validate'] = 'Prüfen';
+$string['verifycertificate'] = 'Zertifikat abrufen';
+$string['viewcertificateviews'] = '$a erstellte Zertifikate anzeigen';
+$string['viewed'] = 'Dieses Zertifikat wurde für Sie erstellt am:';
 $string['viewtranscript'] = 'View Certificates';
-$string['mycertificates'] = 'My Certificates';
-$string['nocertificatesreceived'] = 'has not received any course certificates.';
-$string['notissued'] = 'Not received';
-$string['reportcertificate'] = 'Report Certificates';
-$string['certificatereport'] = 'Certificates Report';
+
 ?>

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_graphical_feedback_questions.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-
+<?php
+// rb_source_graphical_feedback_questions.php - created with Totara langimport script version 1.1
 
 $string['allanswers'] = ': Alle Antworten';
 $string['average'] = 'Durchschnitt';
@@ -31,5 +30,8 @@ $string['trainerorg'] = 'Trainer Organisation';
 $string['trainerorgid'] = 'Trainer Organisation ID';
 $string['trainerpos'] = 'Trainer Position';
 $string['trainerposid'] = 'Trainer Position ID';
+$string['type_feedback'] = 'Feedback';
+$string['type_responses'] = 'Antworten';
+$string['type_trainer'] = 'Trainer';
 
 ?>

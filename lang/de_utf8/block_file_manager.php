@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_file_manager.php - created with Moodle 1.6 development (2005111101)
-
+<?php
+// block_file_manager.php - created with Totara langimport script version 1.1
 
 $string['actionsname'] = 'Aktionen';
 $string['addfile'] = 'Datei hinzufügen';

@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // wiki.php - created with Moodle 1.9.7+ (Build: 20091216) (2007101570)
-
+<?php
+// wiki.php - created with Totara langimport script version 1.1
 
 $string['action'] = '-- Aktion --';
 $string['administration'] = 'Administration';
@@ -17,7 +16,14 @@ $string['binimgtoolarge'] = 'Bilddatei ist zu groß!';
 $string['binnoimg'] = 'Dieses Dateiformat kann nicht verarbeitet werden!';
 $string['browse'] = 'Durchsuchen';
 $string['canceledit'] = 'Abbrechen';
+$string['cannotacceptbin'] = 'Dieses Wiki erlaubt keine Binärdateien';
+$string['cannotaccessgroup'] = 'Dem Wiki konnte keine Gruppe zugewiesen werden';
+$string['cannotaddentry'] = 'Wiki-Eintrag konnte nicht hinzugefügt werden';
 $string['cannotchangepage'] = 'Diese Seite kann nicht bearbeitet werden.';
+$string['cannotdeletelockrecored'] = 'Sperrmarkierung konnte nicht gelöscht werden';
+$string['cannotgetentry'] = 'Eintrag könnte nicht geholt werden';
+$string['cannotinsertlockrecored'] = 'Sperrmarkierung konnte nicht eingefügt werden';
+$string['cannotstartwith'] = 'Binäreintrag beginnt nicht mit \"$a\"';
 $string['changes'] = '$a Veränderungen';
 $string['changesfield'] = 'Zeit seit der letzten Änderung in Stunden';
 $string['changesfielderror'] = 'Bitte eine korrekte Anzahl Stunden eingeben.';
@@ -76,6 +82,7 @@ $string['flagtxt'] = 'TXT';
 $string['flagwr'] = 'WR';
 $string['for'] = 'für';
 $string['forbidden'] = 'Sie sind nicht berechtigt, diese Seite zu bearbeiten.';
+$string['groupmodeerror'] = 'Auf dieses Wiki kann nicht im Gruppenmodus zugegriffen werden, solange keine Gruppen in diesem Kurs eingerichtet sind';
 $string['groups'] = 'Teilnehmer/innen und Trainer/innen';
 $string['hits'] = '$a Zugriffe';
 $string['howtooperate'] = 'Wie Sie Seiten bearbeiten können';
@@ -86,6 +93,7 @@ $string['htmlonly'] = 'WYSIWIG-Editor';
 $string['index'] = 'Index';
 $string['infoaboutpage'] = 'Informationen über die Seite';
 $string['initialcontent'] = 'Einführende Wiki-Texte';
+$string['invalidpageval'] = 'Nicht unterstützte Seitenzahl';
 $string['invalidroot'] = 'Die Sitemap kann nicht erstellt werden, weil Sie nicht berechtigt sind, diese Seite zu bearbeiten.';
 $string['lastchanged'] = 'Letzte Bearbeitung am $a';
 $string['lastmodified'] = 'Letzte Veränderung';
@@ -108,6 +116,7 @@ $string['nochangestorevert'] = 'Keine Veränderungen vorhanden, die rückgängig
 $string['nohtml'] = 'Kein HTML';
 $string['nojslockwarning'] = 'Wegen des in Ihrem Browser ausgeschalteten JavaScripts könnte eventuell jemand anders diese Seite gleichzeitig mit Ihnen bearbeiten. Falls dies passiert, wäre es Ihnen nicht möglich, Ihre eigenen Änderungen zu speichern. Bitte versuchen Sie, Ihre Änderungen schnell abzuschließen. Am besten aktivieren Sie JavaScript im Browser und laden diese Seite neu.';
 $string['nolinksfound'] = 'Keine Links auf der Seite gefunden.';
+$string['nopermissiontooverride'] = 'Sie haben kein Recht, die Sperrmarkierung aufzuheben';
 $string['noregexp'] = 'Die Eingabe muss ein fester Text sein (reguläre Ausdrücke oder * können nicht verwendet werden). Am besten wird die IP-Adresse des Angreifers verwendet, allerdings ohne Portangabe, denn diese ändert sich mit jedem Seitenzugriff.';
 $string['notadministratewiki'] = 'Sie sind nicht berechtigt, dieses Wiki zu administrieren!';
 $string['nothingtostrip'] = 'Es gibt keine Seiten mit mehreren Versionen.';
@@ -174,6 +183,7 @@ $string['uplinsect'] = 'Hochladen nach';
 $string['uplnewnam'] = 'Unter anderem Dateinamen abspeichern';
 $string['upload0'] = 'Verwenden Sie dieses Formular, um eine Datei vorläufig ins Wiki einzufügen:';
 $string['uploadedon'] = 'Hochgeladen am';
+$string['uploaderror'] = 'Fehler beim Hochladen ($a)';
 $string['uploadpicturebutton'] = 'Upload';
 $string['uplok'] = 'Ihre Datei wurde korrekt hochgeladen.';
 $string['version'] = 'Version';
@@ -198,16 +208,5 @@ $string['wikiusage'] = 'Wiki-Anleitung';
 $string['withbinaries'] = 'Binäre Inhalte einbinden';
 $string['withvirtualpages'] = 'Wiki-Links einbinden';
 $string['wrongversionrange'] = '$a ist kein zulässiger Wert';
-$string['cannotacceptbin'] = 'Dieses Wiki erlaubt keine Binärdateien'; // ORPHANED
-$string['cannotaccessgroup'] = 'Dem Wiki konnte keine Gruppe zugewiesen werden'; // ORPHANED
-$string['cannotaddentry'] = 'Wiki-Eintrag konnte nicht hinzugefügt werden'; // ORPHANED
-$string['cannotdeletelockrecored'] = 'Sperrmarkierung konnte nicht gelöscht werden'; // ORPHANED
-$string['cannotgetentry'] = 'Eintrag könnte nicht geholt werden'; // ORPHANED
-$string['cannotinsertlockrecored'] = 'Sperrmarkierung konnte nicht eingefügt werden'; // ORPHANED
-$string['cannotstartwith'] = 'Binäreintrag beginnt nicht mit \"$a\"'; // ORPHANED
-$string['groupmodeerror'] = 'Auf dieses Wiki kann nicht im Gruppenmodus zugegriffen werden, solange keine Gruppen in diesem Kurs eingerichtet sind'; // ORPHANED
-$string['invalidpageval'] = 'Nicht unterstützte Seitenzahl'; // ORPHANED
-$string['nopermissiontooverride'] = 'Sie haben kein Recht, die Sperrmarkierung aufzuheben'; // ORPHANED
-$string['uploaderror'] = 'Fehler beim Hochladen ($a)'; // ORPHANED
 
 ?>

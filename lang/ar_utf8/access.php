@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // access.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// access.php - created with Totara langimport script version 1.1
 
 $string['access'] = 'الوصول';
 $string['accesshelp'] = 'مساعدة الوصول';
@@ -15,6 +14,7 @@ $string['hideblocka'] = 'اخفاء$a البلوك';
 $string['monthnext'] = 'الشهر القادم';
 $string['monthprev'] = 'الشهر الماضي';
 $string['showblocka'] = 'إظهار $a البلوك';
+$string['showhideblock'] = 'إظهار / إخفاء كتلة';
 $string['sitemap'] = 'خارطة الموقع';
 $string['skipa'] = 'تخطى $a';
 $string['skipblock'] = 'تخطي البلوك';
@@ -24,6 +24,5 @@ $string['tablelayout'] = 'جدول التصميم، $a';
 $string['tocontent'] = 'أذهب إلى المحتوى الرئيس';
 $string['tonavigation'] = 'أذهب إلى التنقل';
 $string['youarehere'] = 'أنت هنا';
-$string['showhideblock'] = 'إظهار / إخفاء كتلة'; // ORPHANED
 
 ?>

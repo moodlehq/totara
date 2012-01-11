@@ -1,7 +1,5 @@
-<?PHP // $Id$
-      // reminders.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-      // local modifications from http://www.kineoisrael.com/totara
-
+<?php
+// reminders.php - created with Totara langimport script version 1.1
 
 $string['businessdays'] = 'ימי עסקים';
 $string['completion'] = 'השלמה';

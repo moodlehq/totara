@@ -1,0 +1,6 @@
+﻿<p align="center"><b>印章或徽标图像 </b></p>
+<p>此选项允许您从&ldquo;certificate/pix/seals&rdquo;文件夹中选择要在证书上打印的印章或徽标。包含四个印章图像和一个示例徽标图像。默认情况下，此图像位于证书的右下角。您可以在&ldquo;certificate/type/&quot;type name&quot;/certificate.php&rdquo;文件中修改该文本的位置。 </p>
+<p>在该文件中，从上至下查找与此行类似的代码行：</p>
+<p> print_seal($certificate-&gt;printseal, $orientation, 590, 425, '', ''); </p>
+<p>其中，两个数值表示图像的 X 轴坐标（从左至右）和 Y 轴坐标（从上至下）。您可以根据需要进行更改。 </p>
+<p>请注意，向证书添加图像后会增大 PDF 文件的大小。您可以将自己的图像添加到&ldquo;certificate/pix/seals&rdquo;文件夹中，之后这些图像也将出现在此处的下拉列表中。这些图像必须是 JPEG (.jpg) 或 PNG 8 (.png) 格式。 </p>

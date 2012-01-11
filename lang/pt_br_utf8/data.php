@@ -1,6 +1,5 @@
-<?PHP // $Id: data.php,v 1.15 2010/03/19 18:21:28 danielneis Exp $ 
-      // data.php - created with Moodle 1.9.5+ (Build: 20091007) (2007101553)
-
+<?php
+// data.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'Ação';
 $string['add'] = 'Acrescentar Item';
@@ -89,6 +88,7 @@ $string['entrysaved'] = 'O seu item foi gravado';
 $string['errormustbeteacher'] = 'Apenas os professores podem usar esta página!';
 $string['example'] = 'Exemplo de Base de dados';
 $string['excel'] = 'Excel';
+$string['expired'] = 'Desculpe, esta atividade encerrada em {$a} não está mais disponível';
 $string['export'] = 'Exportar';
 $string['exportaszip'] = 'Exportar como zip';
 $string['exportdatabaserecords'] = 'Exportar Base de dados';
@@ -182,6 +182,7 @@ $string['norecords'] = 'Nenum item na base de dados';
 $string['nosingletemplate'] = 'O modelo para item único ainda não foi definido';
 $string['notapproved'] = 'O item ainda não foi aprovado';
 $string['notinjectivemap'] = 'Não é um mapa injetivo';
+$string['notopenyet'] = 'Dsculpe, esta atividade não está mais disponível até {$a}';
 $string['number'] = 'Número';
 $string['numberrssarticles'] = 'Artigos RSS';
 $string['numnotapproved'] = 'Pendente';

@@ -1,5 +1,5 @@
 <?php
-// feedback.php - created with Totara langimport script version 1.0
+// feedback.php - created with Totara langimport script version 1.1
 
 $string['add_item'] = 'Lägg till komponent';
 $string['add_items'] = 'Lägg till komponenter';
@@ -171,7 +171,7 @@ $string['saving_failed_because_missing_items'] = 'Det gick inte att spara p.g.a.
 $string['saving_failed_because_missing_or_false_values'] = 'Spara misslyckades eftersom värde saknas eller är felaktigt';
 $string['search_course'] = 'Sök kurs';
 $string['select_item_type'] = 'Välj posttyp';
-$string['selected_dump'] = 'Valda index av $SESSION variabel har dumpats här nedan:';
+$string['selected_dump'] = 'Valda index av \$SESSION variabel har dumpats här nedan:';
 $string['separator_decimal'] = '.';
 $string['separator_thousand'] = ',';
 $string['show_all'] = 'Visa alla';

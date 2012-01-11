@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_section_links.php - created with Moodle 1.6 development (2006031600)
-
+<?php
+// block_section_links.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Links para Seções';
 $string['incby1'] = 'Incremento';

@@ -148,7 +148,7 @@ class feedback_item_multichoice extends feedback_item_base {
         if($analysedItem) {
             // $itemnr++;
             $itemname = stripslashes($analysedItem[1]);
-            echo '<tr><th colspan="2" align="left">'. $itemnr . '&nbsp;' . $itemname .'</th></tr>';
+            echo '<tr><th colspan="2">'. $itemnr . '&nbsp;' . $itemname .'</th></tr>';
             $analysedVals = $analysedItem[2];
             $pixnr = 0;
             foreach($analysedVals as $val) {
@@ -161,7 +161,7 @@ class feedback_item_multichoice extends feedback_item_base {
                 $pixnr++;
                 $pixwidth = intval($val->quotient * FEEDBACK_MAX_PIX_LENGTH);
                 $quotient = number_format(($val->quotient * 100), 2, $sep_dec, $sep_thous);
-                echo '<tr><td align="left" valign="top">-&nbsp;&nbsp;' . trim(strip_tags(format_text($val->answertext))) . ':</td><td align="left" style="width: '.FEEDBACK_MAX_PIX_LENGTH.'"><img alt="'.$intvalue.'" src="'.$pix.'" height="5" width="'.$pixwidth.'" />&nbsp;' . $val->answercount . (($val->quotient > 0)?'&nbsp;('. $quotient . '&nbsp;%)':'').'</td></tr>';
+                echo '<tr><td valign="top">-&nbsp;&nbsp;' . trim(strip_tags(format_text($val->answertext))) . ':</td><td style="width: '.FEEDBACK_MAX_PIX_LENGTH.'"><img alt="'.$intvalue.'" src="'.$pix.'" height="5" width="'.$pixwidth.'" />&nbsp;' . $val->answercount . (($val->quotient > 0)?'&nbsp;('. $quotient . '&nbsp;%)':'').'</td></tr>';
             }
         }
         // return $itemnr;

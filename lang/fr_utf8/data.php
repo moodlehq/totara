@@ -1,7 +1,8 @@
-<?php // $Id: data.php,v 1.87 2010/03/14 14:42:03 martignoni Exp $
+<?php
+// data.php - created with Totara langimport script version 1.1
 
 $string['action'] = 'Action';
-$string['add'] = 'Ajouter une fiche'; // enregistrement ou fiche ?
+$string['add'] = 'Ajouter une fiche';
 $string['addafield'] = 'Ajouter un champ';
 $string['addcomment'] = 'Ajouter un commentaire';
 $string['addentries'] = 'Ajouter des fiches';
@@ -29,9 +30,9 @@ $string['cancel'] = 'Annuler';
 $string['cannotaccesspresentsother'] = 'Vous n\'avez pas la permission d\'accéder à des préréglages d\'autres utilisateurs';
 $string['cannotadd'] = 'Impossible d\'ajouter des fiches !';
 $string['cannotdeletepreset'] = 'Error deleting a preset!';
+$string['cannotinsertempty'] = 'Impossible d\'ajouter une fiche vide !';
 $string['cannotrate'] = 'L\'évaluation des éléments n\'est pas autorisées !';
 $string['cannotunziptopreset'] = 'Impossible de décompresser le dossier du préréglages';
-$string['cannotinsertempty'] = 'Impossible d\'ajouter une fiche vide !'; // Obsolete from 2.0dev onwards, see MDL-18293
 $string['checkbox'] = 'Case à cocher';
 $string['chooseexportfields'] = 'Sélectionnez les champs que vous voulez exporter :';
 $string['chooseexportformat'] = 'Sélectionnez le format d\'exportation désiré :';
@@ -40,7 +41,6 @@ $string['columns'] = 'colonnes';
 $string['comment'] = 'Commentaire';
 $string['commentdeleted'] = 'Commentaire supprimé';
 $string['commentempty'] = 'Le commentaire était vide';
-$string['comment'] = 'Commentaire';
 $string['comments'] = 'Commentaires';
 $string['commentsaved'] = 'Commentaire enregistré';
 $string['commentsn'] = '$a commentaire(s)';
@@ -51,13 +51,13 @@ $string['csstemplate'] = 'Modèle CSS';
 $string['csvfailed'] = 'Impossible de lire les données du fichier CSV';
 $string['csvfile'] = 'Fichier CSV';
 $string['csvformat'] = 'Format CSV';
-$string['csvwithselecteddelimiter'] = 'Texte <acronym title=\"Comma Separated Values\">CSV</acronym> avec séparateur :';
 $string['csvimport'] = 'Importation fichier CSV';
+$string['csvwithselecteddelimiter'] = 'Texte <acronym title=\"Comma Separated Values\">CSV</acronym> avec séparateur :';
 $string['data:approve'] = 'Approuver des fiches';
 $string['data:comment'] = 'Écrire des commentaires';
+$string['data:exportallentries'] = 'Export toutes les fiches d\'une base de données';
 $string['data:exportentry'] = 'Exporter des fiches de base de données';
 $string['data:exportownentry'] = 'Exporter ses propres fiches de base de données';
-$string['data:exportallentries'] = 'Export toutes les fiches d\'une base de données';
 $string['data:managecomments'] = 'Gérer les commentaires';
 $string['data:manageentries'] = 'Gérer les fiches';
 $string['data:managetemplates'] = 'Gérer les modèles';
@@ -77,9 +77,9 @@ $string['defaultsortfield'] = 'Champ de tri par défaut';
 $string['delete'] = 'Supprimer';
 $string['deleteallentries'] = 'Supprimer toutes les fiches';
 $string['deletecomment'] = 'Voulez-vous vraiment supprimer ce commentaire ?';
-$string['deletenotenrolled'] = 'Supprimer les fiches des utilisateurs non inscrits';
 $string['deleted'] = 'supprimée';
 $string['deletefield'] = 'Suppression d\'un champ existant';
+$string['deletenotenrolled'] = 'Supprimer les fiches des utilisateurs non inscrits';
 $string['deletewarning'] = 'Voulez-vous vraiment supprimer ce préréglage ?';
 $string['descending'] = 'Descendant';
 $string['directorynotapreset'] = '$a->directory n\'est pas un préréglage. Fichiers manquants : $a->missing_files';
@@ -100,6 +100,7 @@ $string['errormustbeteacher'] = 'Vous devez être enseignant pour afficher cette
 $string['example'] = 'Exemple de module Base de données';
 $string['excel'] = 'Excel';
 $string['excelformat'] = 'Format Excel';
+$string['expired'] = 'Désolé, cette activité a été terminée le {$a} et n\'est plus disponible';
 $string['export'] = 'Exporter';
 $string['exportaszip'] = 'Exporter en zip';
 $string['exportdatabase'] = 'Exporter des fiches';
@@ -130,8 +131,8 @@ $string['filesnotgenerated'] = 'Les fichiers n\'ont pas tous été générés :
 $string['filtername'] = 'Liens automatiques des bases de données';
 $string['footer'] = 'Pied de page';
 $string['forcelinkname'] = 'Nom imposé pour le lien';
-$string['foundrecords'] = 'Fiches trouvées : $a->num/$a->max (<a href=\"$a->reseturl\">Réinitialiser les filtres</a>)';
 $string['foundnorecords'] = 'Aucune fiche trouvée (<a href=\"$a->reseturl\">Réinitialiser les filtres</a>)';
+$string['foundrecords'] = 'Fiches trouvées : $a->num/$a->max (<a href=\"$a->reseturl\">Réinitialiser les filtres</a>)';
 $string['fromfile'] = 'Importer d\'un fichier zip';
 $string['generateerror'] = 'Erreur de génération de certains fichiers !';
 $string['guestrate'] = 'Les visiteurs anonymes n\'ont pas le droit d\'évaluer les fiches.';
@@ -147,15 +148,15 @@ $string['importsuccess'] = 'Le préréglage a été mis en place correctement.';
 $string['insufficiententries'] = 'autres fiches sont requises pour afficher cette base de données';
 $string['intro'] = 'Introduction';
 $string['invalidaccess'] = 'L\'accès à cette page n\'a pas été effectué correctement';
+$string['invaliddata'] = 'Données incorrectes';
 $string['invalidfieldid'] = 'L\'identifiant du champ est incorrect';
 $string['invalidfieldname'] = 'Veuillez choisir un autre nom pour ce champ';
 $string['invalidfieldtype'] = 'Le type de champ est incorrect';
 $string['invalidid'] = 'Incorrect data ID';
-$string['invaliddata'] = 'Données incorrectes';
 $string['invalidpreset'] = '$a n\'est pas un préréglage.';
 $string['invalidrate'] = 'Note de base de données incorrecte ($a)';
-$string['invalidrecord'] = 'Fiche incorrecte';
 $string['invalidratedata'] = 'Données d\'évaluation fournies incorrectes';
+$string['invalidrecord'] = 'Fiche incorrecte';
 $string['invalidurl'] = 'L\'URL que vous venez de saisir n\'est pas valide';
 $string['jstemplate'] = 'Modèle Javascript';
 $string['latitude'] = 'Latitude';
@@ -208,6 +209,7 @@ $string['norecords'] = 'Aucune fiche dans la base de données';
 $string['nosingletemplate'] = 'Le modèle fiche n\'est pas encore défini';
 $string['notapproved'] = 'La fiche n\'est pas encore approuvée.';
 $string['notinjectivemap'] = 'N\'est pas une application injective';
+$string['notopenyet'] = 'Désolé, cette activité n\'est plus disponible jusqu\'au {$a}';
 $string['number'] = 'Nombre';
 $string['numberrssarticles'] = 'Fiches RSS';
 $string['numnotapproved'] = 'En attente';
@@ -226,7 +228,7 @@ $string['pleaseaddsome'] = 'Veuillez en créer maintenant ou <a href=\"$a\">choi
 $string['portfolionotfile'] = 'Exporter vers un portfolio plutôt que vers un fichier (CSV seulement)';
 $string['presetinfo'] = 'L\'enregistrement en tant que préréglage publiera ce modèle. D\'autres utilisateurs pourront l\'utiliser dans leurs bases de données.';
 $string['presets'] = 'Préréglages';
-$string['presetwarning'] = 'L\'enregistrement en tant que préréglage publie ce modèle sur tout le site. Tous les utilisateurs pourront l\'utiliser dans leurs bases de données.'; // Legacy, to delete for 1.7
+$string['presetwarning'] = 'L\'enregistrement en tant que préréglage publie ce modèle sur tout le site. Tous les utilisateurs pourront l\'utiliser dans leurs bases de données.';
 $string['radiobutton'] = 'Boutons radio';
 $string['rate'] = 'Note';
 $string['rating'] = 'Évaluation';
@@ -244,7 +246,7 @@ $string['recordsnotsaved'] = 'Aucune fiche n\'a été importée. Veuillez vérif
 $string['recordssaved'] = 'fiche(s) importées';
 $string['requireapproval'] = 'Nécessite une approbation ?';
 $string['requiredentries'] = 'Fiches requises';
-$string['requiredentrieschanged'] = '<strong>IMPORTANT !<br />(Ce message d\'avertissement ne sera affiché que durant cette mise à jour.)</strong><br/>En raison de la correction d\'un bogue, le comportement des bases de données qui utilisent les réglages « Fiches requises » et « Fiches requises avant consultation » est modifié. Une explication détaillée des changements peut être lue dans le <a href=\"http://moodle.org/mod/forum/discuss.php?d=110928\" target=\"_blank\">forum dédié au module Base de données (en anglais)</a> et <a href=\"http://docs.moodle.org/en/Adding/editing_a_database#Required_entries\" target=\"_blank\">Moodle Docs (en anglais pour l\'instant)</a>.<br/><br/>Cette modification a un impact sur les bases de données suivantes de votre Moodle : (veuillez Enregistrer cette liste maintenant et, une fois la mise à jour effectuée, vérifier que ces activités continuent de fonctionner de la façon désirée par l\'enseignant.)<br/><strong>$a->text</strong><br/>'; // Moved in admin.php as of 2.0dev, but here in 1.9 stable branch
+$string['requiredentrieschanged'] = '<strong>IMPORTANT !<br />(Ce message d\'avertissement ne sera affiché que durant cette mise à jour.)</strong><br/>En raison de la correction d\'un bogue, le comportement des bases de données qui utilisent les réglages « Fiches requises » et « Fiches requises avant consultation » est modifié. Une explication détaillée des changements peut être lue dans le <a href=\"http://moodle.org/mod/forum/discuss.php?d=110928\" target=\"_blank\">forum dédié au module Base de données (en anglais)</a> et <a href=\"http://docs.moodle.org/en/Adding/editing_a_database#Required_entries\" target=\"_blank\">Moodle Docs (en anglais pour l\'instant)</a>.<br/><br/>Cette modification a un impact sur les bases de données suivantes de votre Moodle : (veuillez Enregistrer cette liste maintenant et, une fois la mise à jour effectuée, vérifier que ces activités continuent de fonctionner de la façon désirée par l\'enseignant.)<br/><strong>$a->text</strong><br/>';
 $string['requiredentriestoview'] = 'Fiches requises avant consultation';
 $string['resetsettings'] = 'Réinitialiser les filtres';
 $string['resettemplate'] = 'Réinitialiser le modèle';

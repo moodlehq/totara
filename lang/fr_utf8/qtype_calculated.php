@@ -1,4 +1,5 @@
-<?php // $Id: qtype_calculated.php,v 1.15 2009/04/10 19:28:53 martignoni Exp $
+<?php
+// qtype_calculated.php - created with Totara langimport script version 1.1
 
 $string['addingcalculated'] = 'Ajout d\'une question calculée';
 $string['addmoreanswerblanks'] = 'Ajouter un autre emplacement de réponse vide.';

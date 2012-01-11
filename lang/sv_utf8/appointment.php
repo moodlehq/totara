@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // appointment.php - created with Moodle 1.4.2+ (2004083126)
-
+<?php
+// appointment.php - created with Totara langimport script version 1.1
 
 $string['allowresubmit'] = 'Låt användare skicka in flera gånger';
 $string['appointmentdetails'] = 'Detaljer om tidsbokningen';

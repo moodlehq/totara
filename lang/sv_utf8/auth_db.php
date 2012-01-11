@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_db.php - created with Totara langimport script version 1.1
 
 $string['auth_dbcantconnect'] = 'Det gick inte att ansluta till den angivna databasen för autenticering.';
 $string['auth_dbchangepasswordurl_key'] = 'URL till sida för att ändra lösenord';
@@ -46,3 +44,5 @@ $string['auth_dbuser_key'] = 'DB-användare';
 $string['auth_dbusernotexist'] = 'Det går inte att uppdatera en icke-existerande användare: $a';
 $string['auth_dbuserstoadd'] = 'Inmatningar från användare som ska läggas till: $a';
 $string['auth_dbuserstoremove'] = 'Inmatningar från användare som ska tas bort:: $a';
+
+?>

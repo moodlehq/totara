@@ -28,7 +28,8 @@ class local_oauth_fusion_exception extends Exception { };
 
 class local_oauth_fusion extends local_oauth {
 
-    private $scope = 'http://tables.googlelabs.com/api/query';
+    private $scope = 'https://www.googleapis.com/auth/fusiontables';
+    private $api = 'https://www.google.com/fusiontables/api/query';
     private $site_name = 'google.com';
 
     public function __construct() {
@@ -58,7 +59,7 @@ class local_oauth_fusion extends local_oauth {
      * @return array of tables - table id/name
      */
     public function show_tables() {
-        return $this->getCSVTable($this->scope, array('sql' => "SHOW TABLES"));
+        return $this->getCSVTable($this->api, array('sql' => "SHOW TABLES"));
     }
 
     /**
@@ -66,7 +67,7 @@ class local_oauth_fusion extends local_oauth {
      * @return array of tables - table id/name
      */
     public function table_exists($name) {
-        $tables = $this->getCSVTable($this->scope, array('sql' => "SHOW TABLES"));
+        $tables = $this->getCSVTable($this->api, array('sql' => "SHOW TABLES"));
         foreach ($tables as $table) {
             if ($table['name'] == $name) {
                 return true;
@@ -80,7 +81,7 @@ class local_oauth_fusion extends local_oauth {
      * @return array of tables - table id/name
      */
     public function desc_table($id) {
-        return $this->getCSVTable($this->scope, array('sql' => "DESCRIBE ".$id));
+        return $this->getCSVTable($this->api, array('sql' => "DESCRIBE ".$id));
     }
 
     /**
@@ -88,7 +89,7 @@ class local_oauth_fusion extends local_oauth {
      * @return array of tables - table id/name
      */
     public function table_by_name($name, $hdr=false) {
-        $tables = $this->getCSVTable($this->scope, array('sql' => "SHOW TABLES"));
+        $tables = $this->getCSVTable($this->api, array('sql' => "SHOW TABLES"));
         foreach ($tables as $table) {
             if ($table['name'] == $name) {
                 if ($hdr) {
@@ -112,7 +113,7 @@ class local_oauth_fusion extends local_oauth {
             $columns[]= "$name: $type";
         }
         $table_def = "CREATE TABLE '".$tablename."' (".implode(", ", $columns).")";
-        $response = $this->postRequest($this->scope, array('sql' => $table_def));
+        $response = $this->postRequest($this->api, array('sql' => $table_def));
         if ($response->status != 200) {
             throw new local_oauth_exception($response->message . ' - ' . $table_def);
         }
@@ -142,8 +143,12 @@ class local_oauth_fusion extends local_oauth {
             }
             $lines[]= "INSERT INTO ".$table_id." (".implode(', ', $fields).") VALUES (".implode(", ", $values).") ";
         }
+        // bail if there are no lines to add
+        if (empty($lines)) {
+            return null;
+        }
         $sql = " ".implode("; ", $lines)."; ";
-        $response = $this->postRequest($this->scope, array('sql' => $sql));
+        $response = $this->postRequest($this->api, array('sql' => $sql));
 
         if ($response->status != 200) {
             throw new local_oauth_exception($response->message.' - '.$sql);

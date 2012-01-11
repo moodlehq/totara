@@ -79,6 +79,7 @@ abstract class prog_message {
     const messageprefixstr = 'message_';
 
     public function __construct($programid, $messageob=null, $uniqueid=null) {
+        global $CFG;
 
         if(is_object($messageob)) {
             $this->id = $messageob->id;
@@ -114,8 +115,8 @@ abstract class prog_message {
             $this->uniqueid = rand();
         }
 
-	$this->studentrole = get_field('role', 'id', 'shortname', 'student');
-	$this->managerrole = get_field('role', 'id', 'shortname', 'manager');
+	$this->studentrole = $CFG->learnerroleid;
+	$this->managerrole = $CFG->managerroleid;
 
 	if (!$this->studentrole) {
 	    print_error('error:failedtofindstudentrole', 'local_program');
@@ -158,10 +159,27 @@ abstract class prog_message {
     }
 
     public function save_message() {
+        //Create object to save
+
+        $message_todb = new stdClass();
+        $message_todb->programid = $this->programid;
+        $message_todb->messagetype = $this->messagetype;
+        $message_todb->sortorder = $this->sortorder;
+        $message_todb->locked = $this->locked;
+        $message_todb->notifymanager = $this->notifymanager;
+        $message_todb->triggertime = $this->triggertime;
+
         if($this->id > 0) { // if this message already exists in the database
-            return update_record('prog_message', $this);
+            $message_todb->id = $this->id;
+            $message_todb->messagesubject = $this->messagesubject;
+            $message_todb->mainmessage = $this->mainmessage;
+            $message_todb->managermessage = $this->managermessage;
+            return update_record('prog_message', $message_todb);
         } else {
-            if($id = insert_record('prog_message', $this)) {
+            $message_todb->messagesubject = addslashes($this->messagesubject);
+            $message_todb->mainmessage = addslashes($this->mainmessage);
+            $message_todb->managermessage = addslashes($this->managermessage);
+            if($id = insert_record('prog_message', $message_todb)) {
                 $this->id = $id;
                 return true;
             }
@@ -430,7 +448,7 @@ abstract class prog_message {
         // Add the move up button for this message
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->isfirstmoveablemessage) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->isfirstmoveablemessage) ? 'moveup fieldsetbutton disabled' : 'moveup fieldsetbutton';
             if(isset($this->isfirstmoveablemessage)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'moveup', get_string('moveup', 'local_program'), $attributes);
             $template_values['%'.$prefix.'moveup%'] = array('name'=>$prefix.'moveup', 'value'=>null);
@@ -440,7 +458,7 @@ abstract class prog_message {
         // Add the move down button for this message
         if($updateform) {
             $attributes = array();
-            $attributes['class'] = isset($this->islastmessage) ? 'fieldsetbutton disabled' : 'fieldsetbutton';
+            $attributes['class'] = isset($this->islastmessage) ? 'movedown fieldsetbutton disabled' : 'movedown fieldsetbutton';
             if(isset($this->islastmessage)) $attributes['disabled'] = 'disabled';
             $mform->addElement('submit', $prefix.'movedown', get_string('movedown', 'local_program'), $attributes);
             $template_values['%'.$prefix.'movedown%'] = array('name'=>$prefix.'movedown', 'value'=>null);
@@ -449,7 +467,7 @@ abstract class prog_message {
 
          // Add the delete button for this message
         if($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"fieldsetbutton deletedmessagebutton"));
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"delete fieldsetbutton deletedmessagebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";
@@ -870,7 +888,7 @@ class prog_program_due_message extends prog_eventbased_message {
         $this->helppage = 'programduemessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programduemessage', 'local_program');
-        $this->triggereventstr = 'Before program is due';
+        $this->triggereventstr = get_string('beforeprogramisdue', 'local_program');
         $this->managermessagedata->subject = get_string('programdue', 'local_program');
 
         $managermessagedata = array(
@@ -898,7 +916,7 @@ class prog_courseset_due_message extends prog_eventbased_message {
         $this->helppage = 'coursesetduemessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetduemessage', 'local_program');
-        $this->triggereventstr = 'Before set is due';
+        $this->triggereventstr = get_string('beforesetisdue', 'local_program');
         $this->managermessagedata->subject = get_string('coursesetdue', 'local_program');
 
         $managermessagedata = array(
@@ -926,7 +944,7 @@ class prog_program_overdue_message extends prog_eventbased_message {
         $this->helppage = 'programoverduemessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programoverduemessage', 'local_program');
-        $this->triggereventstr = 'After program is due';
+        $this->triggereventstr = get_string('afterprogramisdue', 'local_program');
         $this->managermessagedata->subject = get_string('programoverdue', 'local_program');
 
         $managermessagedata = array(
@@ -954,7 +972,7 @@ class prog_courseset_overdue_message extends prog_eventbased_message {
         $this->helppage = 'coursesetoverduemessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetoverduemessage', 'local_program');
-        $this->triggereventstr = 'After set is due';
+        $this->triggereventstr = get_string('aftersetisdue', 'local_program');
         $this->managermessagedata->subject = get_string('coursesetoverdue', 'local_program');
 
         $managermessagedata = array(
@@ -982,7 +1000,7 @@ class prog_learner_followup_message extends prog_eventbased_message {
         $this->helppage = 'learnerfollowupmessage';
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:learnerfollowupmessage', 'local_program');
-        $this->triggereventstr = 'After program is completed';
+        $this->triggereventstr = get_string('afterprogramiscompleted', 'local_program');
         $this->notifymanager = false;
 
     }

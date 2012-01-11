@@ -1,4 +1,6 @@
 <?php
+// langconfig.php - created with Totara langimport script version 1.1
+
 $string['backupnameformat'] = '%%d%%m%%Y-%%H%%M';
 $string['decsep'] = ',';
 $string['listsep'] = ';';
@@ -16,4 +18,5 @@ $string['strftimetime'] = ' %%H:%%M';
 $string['thischarset'] = 'UTF-8';
 $string['thisdirection'] = 'ltr';
 $string['thislanguage'] = 'Español - España';
+
 ?>

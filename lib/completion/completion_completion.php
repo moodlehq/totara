@@ -277,7 +277,9 @@ class completion_completion extends data_object {
             return false;
         }
 
-        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+       if (!record_exists('block_totara_stats', 'userid', $this->userid, 'eventtype', STATS_EVENT_COURSE_STARTED, 'data2', $this->course)) {
+           totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+       }
     }
 
     /**
@@ -314,7 +316,9 @@ class completion_completion extends data_object {
         }
 
         if (!$wasenrolled) {
-            totara_stats_add_event($timenow, $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+            if (!record_exists('block_totara_stats', 'userid', $this->userid, 'eventtype', STATS_EVENT_COURSE_STARTED, 'data2', $this->course)) {
+                totara_stats_add_event($timenow, $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+            }
         }
     }
 
@@ -346,19 +350,10 @@ class completion_completion extends data_object {
         // Get user's positionid and organisationid if not already set
         if ($this->positionid === null) {
             require_once("{$CFG->dirroot}/hierarchy/prefix/position/lib.php");
+            $ids = pos_get_current_position_data($this->userid);
 
-            // Attempt to load user's position assignment
-            $pa = new position_assignment(array('userid' => $this->userid, 'type' => POSITION_TYPE_PRIMARY));
-
-            // If no position assignment present, set values to 0
-            if (!$pa->id) {
-                $this->positionid = 0;
-                $this->organisationid = 0;
-            }
-            else {
-                $this->positionid = $pa->positionid ? $pa->positionid : 0;
-                $this->organisationid = $pa->organisationid ? $pa->organisationid : 0;
-            }
+            $this->positionid = $ids['positionid'];
+            $this->organisationid = $ids['organisationid'];
         }
 
         // Save record
@@ -366,7 +361,9 @@ class completion_completion extends data_object {
             return false;
         }
 
-        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);
+        if (!record_exists('block_totara_stats', 'userid', $this->userid, 'eventtype', STATS_EVENT_COURSE_COMPLETE, 'data2', $this->course)) {
+            totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);
+        }
 
         //Auto plan completion hook
         dp_plan_item_updated($this->userid, 'course', $this->course);
@@ -402,9 +399,11 @@ class completion_completion extends data_object {
             // Attempt to update, and return the results
             return $this->update();
         } else {
-            // Make sure reaggregate field is not null
+            // We should always be reaggregating when new course_completions
+            // records are created as they might have already completed some
+            // criteria before enrolling
             if (!$this->reaggregate) {
-                $this->reaggregate = 0;
+                $this->reaggregate = time();
             }
 
             // Make sure timestarted is not null

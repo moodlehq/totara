@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_glossary_random.php - created with Moodle 1.6.2+ (2006050521)
-
+<?php
+// block_glossary_random.php - created with Totara langimport script version 1.1
 
 $string['addentry'] = 'Fügen Sie Ihre Lieblingseinträge hinzu.';
 $string['askaddentry'] = 'Wenn Teilnehmer/innen selbst Einträge zum Glossar hinzufügen dürfen, wird ein Link mit folgendem Text angezeigt.';

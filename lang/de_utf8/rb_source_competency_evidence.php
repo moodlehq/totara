@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_competency_evidence.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-
+<?php
+// rb_source_competency_evidence.php - created with Totara langimport script version 1.1
 
 $string['assessor'] = 'Assessor';
 $string['assessorname'] = 'Assessor Name';
@@ -31,6 +30,8 @@ $string['positionwhencompletedbasic'] = 'Position nach Abschluss (Basic)';
 $string['proficiency'] = 'Kenntnis';
 $string['proficiencyid'] = 'Kenntnis ID';
 $string['sourcetitle'] = 'Kompetenznachweis';
+$string['type_competency'] = 'Kompetenz';
+$string['type_competency_evidence'] = 'Kompetenznachweis';
 $string['user'] = 'Benutzer';
 
 ?>

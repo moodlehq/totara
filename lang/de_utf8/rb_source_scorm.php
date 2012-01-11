@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // rb_source_scorm.php - created with Moodle 1.9.11 (Build: 20110221) (2007101591.02)
-
+<?php
+// rb_source_scorm.php - created with Totara langimport script version 1.1
 
 $string['attemptnum'] = 'SCO Versuch Nummer';
 $string['attemptstart'] = 'Versuch Startzeit';
@@ -24,5 +23,7 @@ $string['theuser'] = 'Benutzer';
 $string['time'] = 'SCO Startzeit';
 $string['title'] = 'SCO Titel';
 $string['totaltime'] = 'SCO Gesamtdauer';
+$string['type_sco'] = 'SCO';
+$string['type_scorm'] = 'SCORM';
 
 ?>

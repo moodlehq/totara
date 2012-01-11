@@ -1,6 +1,5 @@
-<?PHP // $Id: report_security.php,v 1.8 2009/11/27 15:30:46 ralf-bonn Exp $ 
-      // report_security.php - created with Moodle 1.9.7 (Build: 20091126) (2007101570)
-
+<?php
+// report_security.php - created with Totara langimport script version 1.1
 
 $string['check_configrw_details'] = '<p>Nach der Installation sollten die Zugriffsrechte für die Datei config.php so gesetzt werden, dass der Webserver diese Datei nicht mehr verändern kann. Bitte beachten Sie, dass dieser Schritt die Server-Sicherheit nicht entscheidend verbessert, aber dass  generelle Angriffe behindert und in ihrer Wirkung begrenzt werden könnten.</p>';
 $string['check_configrw_name'] = 'Zugriff auf config.php';
@@ -14,6 +13,7 @@ $string['check_courserole_anything'] = 'Die Berechtigung \"doanything\" (alles t
 $string['check_courserole_details'] = '<p>Jeder Kurs hat eine Standardrolle für Nutzer definiert (meistens Teilnehmer/in). Achten Sie darauf, dass für diese Rolle keine unsicheren Berechtigungen erlaubt sind.</p>
 <p>Die einzige Rolle auf die das zutrifft ist die <em>Standard-Teilnehmerrolle</em>.</p>';
 $string['check_courserole_error'] = 'Fehlerhaft definierte Standardrolle für Kurse entdeckt!';
+$string['check_courserole_legacy'] = 'Nicht unterstützter Legacy-Typ entdeckt in a href=\"$a\">role</a>.';
 $string['check_courserole_name'] = 'Standardrollen (für Kurse)';
 $string['check_courserole_notyet'] = 'In Kursen werden nur Standardrollen verwendet';
 $string['check_courserole_ok'] = 'Die Standardrollendefinitionen sind ok';
@@ -133,6 +133,5 @@ $string['statusok'] = 'OK';
 $string['statusserious'] = 'Schwerwiegend';
 $string['statuswarning'] = 'Warnung';
 $string['timewarning'] = 'Haben Sie bitte Geduld, denn die Bearbeitung kann etwas länger dauern...';
-$string['check_courserole_legacy'] = 'Nicht unterstützter Legacy-Typ entdeckt in a href=\"$a\">role</a>.'; // ORPHANED
 
 ?>

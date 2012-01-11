@@ -1,7 +1,5 @@
 <?php
-
-// All of the language strings in this file should also exist in
-// auth.php to ensure compatibility in all versions of Moodle.
+// auth_cas.php - created with Totara langimport script version 1.1
 
 $string['auth_cas_baseuri'] = 'Palvelimen URI (tyhjä, jos ei baseURIa)<br /> Esimerkiksi, jos CAS-palvelin on ´host.domaine.fr/CAS/´, niin tällöin<br />
 cas_baseuri = CAS/';
@@ -18,3 +16,5 @@ $string['auth_cas_text'] = 'Suojattu yhteys';
 $string['auth_cas_version'] = 'CAS:in versio';
 $string['auth_casdescription'] = 'Tässä menetelmässä käytetään CAS-palvelinta (Central Authentication Service) käyttäjien varmennukseen käyttämällä yhden kirjautumisen ympäristöä, Single Sign On environment (SSO). Voit myös käyttää yksinkertaista LDAP-varmistusta. Jos annettu käyttäjänimi ja salasana ovat kelvollisia CAS:n mukaan Moodle luo uuden käyttäjätiedon tietokantaan ottaen käyttäjätiedot LDAP:stä, jos se  on tarpeen. Seuraavilla kirjautumiskerroilla vain käyttäjänimi ja salasana tarkistetaan.';
 $string['auth_castitle'] = 'Käytä CAS-palvelinta (SSO)';
+
+?>

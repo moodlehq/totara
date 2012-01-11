@@ -51,7 +51,7 @@ class totara_msg_workflow_facetoface extends totara_msg_workflow_plugin_base {
         }
 
         // issue notification that registration has been accepted
-        return $this->acceptreject_notification($userid, $facetoface, $session, 'Approved');
+        return $this->acceptreject_notification($userid, $facetoface, $session, 'status_approved');
     }
 
 
@@ -87,7 +87,7 @@ class totara_msg_workflow_facetoface extends totara_msg_workflow_plugin_base {
         }
 
         // issue notification that registration has been declined
-        return $this->acceptreject_notification($userid, $facetoface, $session, 'Declined');
+        return $this->acceptreject_notification($userid, $facetoface, $session, 'status_declined');
     }
 
     /**
@@ -96,15 +96,17 @@ class totara_msg_workflow_facetoface extends totara_msg_workflow_plugin_base {
      * @param int $userid
      * @param object $facetoface
      * @param object $session
-     * @param string $msg
+     * @param string $langkey
      */
-    private function acceptreject_notification($userid, $facetoface, $session, $msg) {
+    private function acceptreject_notification($userid, $facetoface, $session, $langkey) {
         global $CFG;
+
         $newevent = new stdClass();
         $newevent->userfrom         = NULL;
         $user = get_record('user', 'id', $userid);
         $newevent->userto           = $user;
-        $newevent->fullmessage      = 'Request to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a> '.$msg;
+        $approvedstr = get_string_in_user_lang($user, $langkey, 'facetoface');
+        $newevent->fullmessage      = get_string_in_user_lang($user, 'requestattendsession', 'facetoface', '<a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a>') . ' ' . $approvedstr;
         $newevent->subject          = $newevent->fullmessage;
         $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
         return tm_alert_send($newevent);

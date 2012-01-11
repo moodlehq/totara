@@ -1,6 +1,5 @@
-<?PHP // $Id: qtype_calculated.php,v 1.4 2009/04/07 16:59:40 barias Exp $ 
-      // qtype_calculated.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// qtype_calculated.php - created with Totara langimport script version 1.1
 
 $string['addingcalculated'] = 'Agregando una pregunta calculada';
 $string['addmoreanswerblanks'] = 'Agregar otra respuesta en blanco.';

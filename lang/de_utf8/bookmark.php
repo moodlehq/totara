@@ -1,11 +1,11 @@
-<?PHP // $Id: bookmark.php,v 1.1 2008/07/22 19:57:28 ralf-bonn Exp $ 
-      // bookmark.php - created with Moodle 1.9 dev (2007080103)
-
+<?php
+// bookmark.php - created with Totara langimport script version 1.1
 
 $string['accessoptions'] = 'Zugriffsoptionen';
 $string['add_this_file'] = 'Diese Datei hinzuf&uuml;gen';
 $string['addbookmark'] = 'Bookmark hinzuf&uuml;gen';
 $string['addcategory'] = 'Kategorie hinzuf&uuml;gen';
+$string['addcomment'] = 'Kommentar hinzuf&uuml;gen';
 $string['attachincluded'] = 'Anhang?';
 $string['attachment'] = 'Anhang';
 $string['awaiting'] = '($a wartend)';
@@ -81,6 +81,7 @@ $string['firstnameshared'] = 'Familienname';
 $string['go'] = 'Go!';
 $string['hidesummary'] = '(Gesamtaufstellung ausblenden)';
 $string['import'] = 'Import';
+$string['importedcommentsend'] = '';
 $string['importedcommentsstart'] = 'Importierte Kommentare:<br /><br />';
 $string['linkedfilenotfound'] = 'Datei  in  () wurde nicht gefunden. Datei wurde nicht importiert!';
 $string['maincategory'] = 'Hauptkategorie';
@@ -123,7 +124,5 @@ $string['success'] = 'Datei erfolgreich importiert';
 $string['summary'] = 'Gesamtaufstellung (optional)';
 $string['uploadfailed'] = 'Upload nicht erfolgreich!';
 $string['url'] = 'URL';
-$string['addcomment'] = 'Kommentar hinzuf&uuml;gen'; // ORPHANED
-$string['importedcommentsend'] = ''; // ORPHANED
 
 ?>

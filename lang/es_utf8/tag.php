@@ -1,12 +1,15 @@
-<?PHP // $Id: tag.php,v 1.6 2009/01/18 18:20:04 barias Exp $ 
-      // tag.php - created with Moodle 1.8.2+ (2007021520)
+<?php
+// tag.php - created with Totara langimport script version 1.1
 
-
+$string['addedotag'] = 'Se ha añadido \"$a\" como marca oficial.';
+$string['addotags'] = 'Añadir marcas oficiales.';
 $string['addtagtomyinterests'] = 'Agregar \"$a\" a mis intereses';
 $string['blocktagstitle'] = 'Marcas';
 $string['changename'] = 'Cambiar nombre de marca';
 $string['changetype'] = 'Cambiar tipo de marca';
 $string['count'] = 'Contar';
+$string['coursetagging'] = 'Etiquetar cursos';
+$string['coursetagginghelp'] = 'Habilitar esta opción para permitir el etiquetado de cursos.';
 $string['delete'] = 'Eliminar';
 $string['deleted'] = 'Eliminado';
 $string['description'] = 'Descripción';
@@ -20,9 +23,13 @@ $string['name'] = 'Nombre';
 $string['namesalreadybeeingused'] = 'Los nombres de marca ya se están usando';
 $string['newname'] = 'Nuevo nombre';
 $string['noresultsfor'] = 'No hay resultados para \"$a\"';
+$string['officialtag'] = 'Marca oficial';
+$string['otags'] = 'Marcas oficiales';
 $string['owner'] = 'Propietario';
+$string['ptags'] = 'Marcas definidas por el usuario (separadas por comas)';
 $string['relatedblogs'] = 'Entradas recientes de blog con esta marca';
 $string['relatedtags'] = 'Marcas relacionadas';
+$string['removetagfrommyinterests'] = 'Eliminar \"$a\" de mis intereses';
 $string['reset'] = 'Reiniciar';
 $string['resetflag'] = 'Reiniciar señal';
 $string['responsiblewillbenotified'] = 'Se notificará a la persona responsable';
@@ -46,11 +53,5 @@ $string['updated'] = 'Actualizado';
 $string['updatetag'] = 'Actualizar';
 $string['userstaggedwith'] = 'Usuarios marcados con \"$a\"';
 $string['withselectedtags'] = 'Con las marcas seleccionadas...';
-$string['addedotag'] = 'Se ha añadido \"$a\" como marca oficial.';
-$string['addotags'] = 'Añadir marcas oficiales.';
-$string['officialtag'] = 'Marca oficial';
-$string['otags'] = 'Marcas oficiales';
-$string['ptags'] = 'Marcas definidas por el usuario (separadas por comas)';
-$string['removetagfrommyinterests'] = 'Eliminar \"$a\" de mis intereses';
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-// admin.php - created with Totara langimport script version 1.0
+// admin.php - created with Totara langimport script version 1.1
 
 $string['accessdenied'] = 'تم رفض الدخول';
 $string['accounts'] = 'حسابات';

@@ -116,9 +116,9 @@ class totaralib_db_test extends prefix_changing_test_case {
 
     //Left out columns not needed for this test (and kept a few for code readability)
     var $user_table_data = array(
-                                    array('id','username','firstname','lastname'),
-                                    array(1,'user1','user','one'),
-                                    array(2,'manager1','manager','one'),
+                                    array('id','username','firstname','lastname','deleted'),
+                                    array(1,'user1','user','one',0),
+                                    array(2,'manager1','manager','one',0),
                                 );
 
     //Left out columns not needed for this test

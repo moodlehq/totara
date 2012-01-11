@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_online_users.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// block_online_users.php - created with Totara langimport script version 1.1
 
 $string['blockname'] = 'Anv&auml;ndare som &auml;r <br />online just nu';
 $string['configtimetosee'] = 'Antal minuter som beh&ouml;vs f&ouml;r att uppt&auml;cka en anv&auml;ndare som &auml;r online just nu.';

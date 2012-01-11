@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // enrol_devplan.php - created with Moodle 1.9.13 (Build: 20110801) (2007101591.04)
-
+<?php
+// enrol_devplan.php - created with Totara langimport script version 1.1
 
 $string['description'] = 'تقيد وحدة التسجيل DevPlan التسجيل التفاعلي في المقررات. بينما يستخدم المقرر تسجيل DevPlan لإدارة التسجيل التفاعلي، يسمح فقط بالتسجيل الذاتي للمستخدمين الذين تم إدراج المقرر لديهم كعنصر تمت الموافقة عليه كجزء من خطة التطوير الموافق عليها.';
 $string['developmentplan'] = 'خطة التطوير';

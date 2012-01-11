@@ -42,6 +42,7 @@ $string['customlabelnovalue'] = '$a->label: $a->custom $a->operator';
 $string['removeall'] = 'Remove all filters';
 $string['removeselected'] = 'Remove selected';
 $string['selectlabel'] = '$a->label $a->operator $a->value';
+$string['selectlabelnoop'] = '$a->label $a->value';
 $string['startswith'] = 'starts with';
 $string['textlabel'] = '$a->label $a->operator $a->value';
 $string['textlabelnovalue'] = '$a->label $a->operator';

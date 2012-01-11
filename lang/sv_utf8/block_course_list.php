@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_course_list.php - created with Moodle 1.9 + (Build: 20080324) (2007101509)
-
+<?php
+// block_course_list.php - created with Totara langimport script version 1.1
 
 $string['adminview'] = 'Vy för administratörer';
 $string['allcourses'] = 'Administratören ser alla kurser';

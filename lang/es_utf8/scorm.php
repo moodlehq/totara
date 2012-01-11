@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // scorm.php - created with Moodle 1.9.3+ (Build: 20081126) (2007101532)
-
+<?php
+// scorm.php - created with Totara langimport script version 1.1
 
 $string['activation'] = 'Activación';
 $string['activityloading'] = 'Usted será automáticamente encaminado a la actividad en';
@@ -33,6 +32,11 @@ $string['browserepository'] = 'Navegar por el repositorio';
 $string['cannotfindsco'] = 'No se ha encontrado SCO';
 $string['chooseapacket'] = 'Elegir o actualizar un paquete SCORM';
 $string['completed'] = 'Completado';
+$string['completionscorerequired'] = 'Se requiere la calificación mínima';
+$string['completionstatus_completed'] = 'Completado';
+$string['completionstatus_failed'] = 'Error';
+$string['completionstatus_passed'] = 'Aprobado';
+$string['completionstatusrequired'] = 'Se requiere estado';
 $string['confirmloosetracks'] = 'ATENCIÓN: El paquete parece haber sido modificado.nSi la estructura del paquete se ha cambiado,nlas pistas de algunos usuarios pueden haberse perdido durante el proceso de actualización.';
 $string['contents'] = 'Contenido';
 $string['coursepacket'] = 'Paquete de curso';
@@ -41,6 +45,7 @@ $string['datadir'] = 'Error de sistema: No se puede crear el directorio de datos
 $string['deleteallattempts'] = 'Eliminar todos los intentos SCORM';
 $string['details'] = 'Detalles del rastreo SCO';
 $string['directories'] = 'Mostrar enlaces de directorio';
+$string['directview'] = 'Inicializar directamente desde el curso';
 $string['display'] = 'Mostrar';
 $string['displayattemptstatus'] = 'Mostrar estado de intentos';
 $string['displayattemptstatusdesc'] = 'Esta preferencia fija el valor por defecto para mostrar el ajuste de estado de intentos';
@@ -61,6 +66,8 @@ $string['expcoll'] = 'Expandir/Chocar';
 $string['expired'] = 'Lo sentimos, esta actividad se cerró en $a y ya no está disponible';
 $string['external'] = 'Actualizar la temporalización de paquetes externos';
 $string['failed'] = 'Error';
+$string['finishscorm'] = 'Si ya terminó de ver este recurso, $a';
+$string['finishscormlinkname'] = 'haga clic aquí para regresar a la página del curso';
 $string['firstaccess'] = 'Primer acceso';
 $string['firstattempt'] = 'Primer intento';
 $string['forcecompleted'] = 'Forzar completados';
@@ -141,6 +148,7 @@ $string['php5'] = 'PHP 5 (librería nativa DOMXML)';
 $string['popup'] = 'Abrir Objetos de Aprendizaje en una ventana nueva';
 $string['popupblocked'] = 'Si no aparece una ventana nueva, haga clic en $a para abrir la actividad';
 $string['popupblockedlinkname'] = 'aquí';
+$string['popupblockmessage'] = 'Si no aparece una ventana emergente, por favor habilite en su navegador los pop-ups (ventanas emergentes).';
 $string['popupmenu'] = 'En un menú emergente';
 $string['popupopen'] = 'Abrir paquete en una ventana nueva';
 $string['position_error'] = 'La marca $a->tag no puede ser un hijo de la marca $a->parent';
@@ -154,6 +162,7 @@ $string['review'] = 'Revisión';
 $string['reviewmode'] = 'Modo Revisión';
 $string['scoes'] = 'Scoes';
 $string['score'] = 'Puntuación';
+$string['scorm:deleteresponses'] = 'Eliminar los intentos SCORM';
 $string['scorm:savetrack'] = 'Guardar pistas';
 $string['scorm:skipview'] = 'Pasar por alto revisión';
 $string['scorm:viewreport'] = 'Ver informes';
@@ -161,6 +170,7 @@ $string['scorm:viewscores'] = 'Ver puntuaciones';
 $string['scormcourse'] = 'Curso de Aprendizaje';
 $string['scormloggingoff'] = 'Entrada API desconectada';
 $string['scormloggingon'] = 'Entrada API conectada';
+$string['scormresponsedeleted'] = 'Intentos borrados del usuario';
 $string['scrollbars'] = 'Permitir desplazamiento de la ventana';
 $string['sided'] = 'A la izquierda';
 $string['skipview'] = 'Pasar por alto al estudiante la página de estructura de contenidos';

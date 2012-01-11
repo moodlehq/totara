@@ -18,6 +18,7 @@ $string['allowvisiblecoursesinhiddencategories'] = 'Allow visible courses in hid
 $string['antivirus'] = 'Anti-Virus';
 $string['appearance'] = 'Appearance';
 $string['aspellpath'] = 'Path to aspell';
+$string['assessorroleid'] = 'Role for assessor';
 $string['authentication'] = 'Authentication';
 $string['authsettings'] = 'Manage authentication';
 $string['autolang'] = 'Language autodetect';
@@ -68,6 +69,7 @@ $string['configallowuserswitchrolestheycantassign'] = 'By default, moodle/role:a
 It is recommended that the settings in the \"Allow role assignments\" table do not allow users to switch to a role with more capabilities than their existing role.';
 $string['configallowuserthemes'] = 'If you enable this, then users will be allowed to set their own themes.  User themes override site themes (but not course themes)';
 $string['configallusersaresitestudents'] = 'For activities on the front page of the site, should ALL users be considered as students?  If you answer \"Yes\", then any confirmed user account will be allowed to participate as a student in those activities.  If you answer \"No\", then only users who are already a participant in at least one course will be able to take part in those front page activities. Only admins and specially assigned teachers can act as teachers for these front page activities.';
+$string['configassessorroleid'] = 'This is the role to use for assessors within Totara';
 $string['configvisiblecourses'] = 'Display courses in hidden categories normally';
 $string['configauthenticationplugins'] = 'Please choose the authentication plugins you wish to use and arrange them in order of failthrough.';
 $string['configautolang'] = 'Detect default language from browser setting, if disabled site default is used.';
@@ -162,12 +164,14 @@ $string['configlangdir'] = 'Most languages are printed left-to-right, but some, 
 $string['configlanglist'] = 'Leave this blank to allow users to choose from any language you have in this installation of Totara.  However, you can shorten the language menu by entering a comma-separated list of language codes that you want.  For example:  en,es_es,fr,it';
 $string['configlangmenu'] = 'Choose whether or not you want to display the general-purpose language menu on the home page, login page etc.  This does not affect the user\'s ability to set the preferred language in their own profile.';
 $string['configlatinexcelexport'] = 'Choose the encoding for Excel exports.';
+$string['configlearnerroleid'] = 'This is the role to use for learners within Totara.';
 $string['configlocale'] = 'Choose a sitewide locale - this will override the format and language of dates for all language packs (though names of days in calendar are not affected). You need to have this locale data installed on your operating system (eg for linux en_US.UTF-8 or es_ES.UTF-8). In most cases this field should be left blank.';
 $string['configloginhttps'] = 'Turning this on will make Totara use a secure https connection just for the login page (providing a secure login), and then afterwards revert back to the normal http URL for general speed.  CAUTION: this setting REQUIRES https to be specifically enabled on the web server - if it is not then YOU COULD LOCK YOURSELF OUT OF YOUR SITE.';
 $string['configloglifetime'] = 'This specifies the length of time you want to keep logs about user activity.  Logs that are older than this age are automatically deleted.  It is best to keep logs as long as possible, in case you need them, but if you have a very busy server and are experiencing performance problems, then you may want to lower the log lifetime. Values lower than 30 are not recommended because statistics may not work properly.';
 $string['configlongtimenosee'] = 'If students haven\'t logged in for a very long time, then they are automatically unsubscribed from courses.  This parameter specifies that time limit.';
 $string['configlookahead'] = 'Days to look ahead';
 $string['configmailnewline'] = 'Newline characters used in mail messages. CRLF is required according to RFC 822bis, some mail servers do automatic conversion from LF to CRLF, other mail servers do incorrect conversion from CRLF to CRCRLF, yet others reject mails with bare LF (qmail for example). Try changing this setting if you are having problems with undelivered emails or double newlines.';
+$string['configmanagerroleid'] = 'This is the role to use for managers within Totara.';
 $string['configmaxbytes'] = 'This specifies a maximum size that uploaded files can be throughout the whole site. This setting is limited by the PHP settings post_max_size and upload_max_filesize, as well as the Apache setting LimitRequestBody. In turn, maxbytes limits the range of sizes that can be chosen at course level or module level. If \'Server Limit\' is chosen, the server maximum allowed by the server will be used.';
 $string['configsitemaxcategorydepth'] = 'Maximum Category Depth';
 $string['configsitemaxcategorydepthhelp'] = 'This specifies the maximum depth of child categories shown';
@@ -397,6 +401,8 @@ $string['filtersettings'] = 'Manage filters';
 $string['filtersettingsgeneral'] = 'General filter settings';
 $string['filteruploadedfiles'] = 'Filter uploaded files';
 $string['forcelogin'] = 'Force users to login';
+$string['forceloginforprofileimage'] = 'Force users to login to view user pictures';
+$string['forceloginforprofileimage_help'] = 'If enabled, users must login in order to view user profile pictures and the default user picture will be used in all notification emails.';
 $string['forceloginforprofiles'] = 'Force users to login for profiles';
 $string['forcetimezone'] = 'Force default timezone';
 $string['framename'] = 'Frame name';
@@ -481,12 +487,15 @@ $string['lasterroroccuredat'] = 'Last error occured at $a';
 $string['latexpreamble'] = 'LaTeX preamble';
 $string['latexsettings'] = 'LaTeX renderer Settings';
 $string['latinexcelexport'] = 'Excel encoding';
+$string['learnerroleid'] = 'Role for learner';
 $string['localetext'] = 'Sitewide locale';
 $string['localstringcustomization'] = 'Local string customization';
 $string['location'] = 'Location';
 $string['locationsettings'] = 'Location settings';
 $string['log'] = 'Logs';
 $string['loginhttps'] = 'Use HTTPS for logins';
+$string['loginpasswordautocomplete'] = 'Prevent password autocompletion on login form.';
+$string['loginpasswordautocomplete_help'] = 'Having this off will let users save their account password in their browser. Switching this setting on will result in your site no longer following XHTML strict validation rules.';
 $string['loglifetime'] = 'Keep logs for';
 $string['longtimenosee'] = 'Unsubscribe users from courses after';
 $string['longtimewarning'] = '<b>Please note that this process can take a long time.</b>';
@@ -497,6 +506,7 @@ $string['maintinprogress'] = 'Maintenance is in progress...';
 $string['managelang'] = 'Manage';
 $string['managecourses'] = 'Manage courses';
 $string['manageprograms'] = 'Manage programs';
+$string['managerroleid'] = 'Role for manager';
 $string['maxbytes'] = 'Maximum uploaded file size';
 $string['maxeditingtime'] = 'Maximum time to edit posts';
 $string['mbstringrecommended'] = 'Installing the optional MBSTRING library is highly recommended in order to improve site performance, particularly if your site is supporting non-Latin languages.';
@@ -769,7 +779,7 @@ $string['uploadpicture_userupdated'] = 'Picture updated for user $a.';
 $string['uploadpicture_cannotsave'] = 'Cannot save picture for user $a. Check original picture file.';
 $string['updatetimezones'] = 'Update timezones';
 $string['upgrade197notice'] = '<p>Moodle 1.9.7 contains a number of security fixes to user passwords and backups to protect the user data on your site. As a result some of your settings and permissions relating to backups may have changed.<br />
-See the <a href=\"http://docs.moodle.org/en/Moodle_1.9.7_release_notes\" target=\"_blank\">Moodle 1.9.7 release notes</a> for full details.</p>';
+See the <a href=\"http://docs.moodle.org/dev/Moodle_1.9.7_release_notes\" target=\"_blank\">Moodle 1.9.7 release notes</a> for full details.</p>';
 $string['upgrade197noticesubject'] = 'Moodle 1.9.7 upgrade security notices';
 $string['upgrade197salt'] = 'To reduce the risk of password theft, you are strongly recommended to set a password salt.<br />See the <a href=\"$a\" target=\"_blank\">password salting documentation</a> for details.';
 $string['upgradeforumread'] = 'A new feature has been added in Moodle 1.5 to track read/unread forum posts.<br />To use this functionality you need to <a href=\"$a\">update your tables</a>.';
@@ -834,5 +844,69 @@ $string['webproxyinfo'] = 'Fill in following options if your Totara server can n
 $string['xmlrpcrecommended'] = 'The xmlrpc extension is needed for hub communication, and useful for web services and Totara/Moodle networking';
 $string['xmlstrictheaders'] = 'XML strict headers';
 $string['ziprequired'] = 'The Zip PHP extension is now required by Totara, info-ZIP binaries or PclZip library are not used anymore.';
+
+// Totara-specific strings
+$string['coursecount'] = 'Number of site courses';
+$string['displayerrorsset'] = 'This site is configured to display errors occurrences. <br />This setting is not recommended on production sites. <br />Uncheck <em>Display debug messages</em> in the <a href=\"$a->link\">Server/Debugging</a> section of the site admin settings block.';
+$string['displayerrorswarning'] = 'Enabling the PHP setting <em>display_errors</em> is not recommended on production sites. <br />This setting can be changed in your php settings.';
+$string['moodlerelease'] = 'Moodle release identifier';
+$string['orgname'] = 'Organisation name';
+$string['orgnamehelp'] = 'The name of your organisation.';
+$string['passwordreuselimit'] = 'Password rotation limit';
+$string['phpversion'] = 'PHP version';
+$string['registrationinformation'] = 'Registration information to be sent';
+$string['registrationdisabled'] = 'Disabled';
+$string['registrationenabled'] = 'Enabled';
+$string['registrationisdisabled'] = 'Registration is disabled.  Configuring your site to register basic information with Totara is recommended to assist in troubleshooting any future issues you may have.<br />
+You can enable registration from the <a href=\"$a\">registration configuration page</a>';
+$string['registrationisenabled'] = 'Registration is enabled.';
+$string['registrationoutofdate'] = 'Registration information has not been updated for an extended period of time. Registration information should be kept up-to-date to assist possible future troubleshooting. Ensure that your webserver has unrestricted access to make https requests to register.totaralms.com';
+$string['save'] = 'Save';
+$string['sitefullname'] = 'Site Fullname';
+$string['sitehasntregistered'] = 'This site has not yet successfully registered with Totara. Registering basic information with Totara is recommended to assist in troubleshooting any future issues you may have.  Ensure your webserver is able to make https requests to register.totaralms.com and that the Moodle cron is enabled. You can run the cron manually by <a href=\"$a\">clicking here</a>';
+$string['siteidentifier'] = 'Site Identifier';
+$string['siteshortname'] = 'Site Shortname';
+$string['techsupportemail'] = 'Tech support email';
+$string['techsupportemailhelp'] = 'Email address of persons handling most technical issues related to site hosting';
+$string['techsupportphone'] = 'Tech support phone number';
+$string['techsupportphonehelp'] = 'Phone number of persons handling most technical issues related to site hosting. (Include country code)';
+$string['totarabuild'] = 'Totara build number';
+$string['totararegistration'] = 'Totara Registration';
+$string['totararegistrationinfo'] = '<p>This page configures registration updates which are sent to totaralms.com.
+These updates allow Totara to know what versions of Totaralms and support software you are running.
+This information will allow Totara to better examine and resolve any support issues you face in the future.</p>
+<p>This information will be securely transmitted and held in confidence.</p>';
+$string['checksum'] = 'Checksum';
+$string['dbtype'] = 'Database type';
+$string['totararelease'] = 'Totara release identifier';
+$string['totaraversion'] = 'Totara version number';
+$string['usercount'] = 'Number of site users';
+$string['webserversoftware'] = 'Web server software identifier';
+$string['wwwroot'] = 'Site www root';
+$string['configpasswordreuselimit'] = 'Number of times a user must change their password before they are allowed to reuse a password';
+
+$string['cron_settings'] = 'Cron';
+$string['cron_max_time'] = 'Maximum execution time';
+$string['cron_max_time_info'] = 'Specifies maximum execution time allowed for cron expressed in hours. Default is 0 which means no time limit.';
+$string['cron_max_time_mail_notify'] = 'Notify Admin';
+$string['cron_max_time_mail_notify_info'] = 'If checked system will notify the administrator by sending an email should the cron ever execute over maximum set time. For this to work you must setup cron watcher.';
+$string['cron_execution_status'] = 'Status';
+$string['cron_terminate'] = 'Terminate';
+$string['cron_execute'] = 'Execute';
+$string['cron_refresh'] = 'Refresh status';
+$string['cron_execution_watch'] = 'Cron Execution';
+$string['cron_execution_running'] = 'Cron is running';
+$string['cron_execution_stopped'] = 'Cron is stopped';
+$string['cron_execution_crashed'] = 'Cron crashed';
+$string['cron_max_time_kill'] = 'Terminate cron automatically';
+$string['cron_max_time_kill_info'] = 'If checked watching process will terminate cron if it is overdue in configured execution. For this to work you must setup cron watcher.';
+$string['cron_max_time_mail_notify_title'] = 'Warning: Cron execution overdue!';
+$string['cron_max_time_mail_notify_msg'] = 'The cron execution is taking more time than specified! Please check your server settings.';
+$string['cron_kill_mail_notify_title'] = 'Warning: Cron execution was automatically terminated!';
+$string['cron_kill_mail_notify_msg'] = 'The cron execution took longer than maximum execution time and was terminated! Please check your server settings.';
+$string['cron_kill_mail_fail_notify_title'] = 'Warning: Cron execution failed to be automatically terminated!';
+$string['cron_kill_mail_fail_notify_msg'] = 'The cron execution took longer than maximum execution time and automatic termination failed! Please check your server settings.';
+$string['cron_watcher_info'] = 'Cron Watcher';
+$string['cron_status_info'] = 'Cron Execution Status';
 
 ?>

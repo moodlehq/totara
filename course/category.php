@@ -167,7 +167,7 @@
 
     // @todo include parent name ?
 
-    if ($editingon && has_capability('moodle/category:manage', $context)) {
+    if ($editingon) {
         echo '<div class="buttons">';
 
         if ($SESSION->viewtype == 'course' &&

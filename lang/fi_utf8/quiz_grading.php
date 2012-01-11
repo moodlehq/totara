@@ -1,4 +1,6 @@
-<?PHP // $Id: quiz_grading.php,v 1.7 2008/11/22 02:36:22 samulik Exp $
+<?php
+// quiz_grading.php - created with Totara langimport script version 1.1
+
 $string['essayonly'] = 'Seuraavat kysymykset pitää arvioida käsin';
 $string['gradeall'] = 'Arvostele kaikki $a yritystä';
 $string['graded'] = '(arvioitu)';
@@ -12,4 +14,5 @@ $string['gradingnotallowed'] = 'Sinulla ei ole oikeuksia arvostella tämän tent
 $string['gradingungraded'] = '$a arvioimatonta yritystä';
 $string['gradinguser'] = 'Yritykset $a';
 $string['questiontitle'] = 'Kysymys $a->number : \"$a->name\" ({$a->openspan}$a->gradedattempts{$a->closespan} / $a->totalattempts yritykset {$a->openspan}arvioitu{$a->closespan}).';
+
 ?>

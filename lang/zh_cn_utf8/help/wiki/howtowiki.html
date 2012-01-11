@@ -1,0 +1,258 @@
+﻿<h2>如何使用 Wiki</h2>
+
+<p>
+
+Moodle 的 Wiki 基于
+
+<a href="http://erfurtwiki.sourceforge.net/?id=ErfurtWiki">ErfurtWiki</a>，
+
+是
+
+<a href="http://c2.com/cgi/wiki?WikiWikiWeb">WikiWikiWeb</a>
+
+超文本系统的实现。它允许以简单的方式合作编辑和创建网页。</p>
+
+<p>
+
+<ul>
+
+<li>学习如何<a href="#createpages">创建页面</a></li>
+
+<li>只用点击<img alt="编辑" src="pix/t/edit.gif" />或者在下拉菜单中选择&ldquo;编辑此页面&rdquo;，便可修改页面内容</li>
+
+<li>用 <a href="#wikimarkup">Wiki 标签</a>或 HTML（如果 Wiki 设定了该选项）都可格式化页面</li>
+
+<li>搜索页面或跳转至最新页面列表</li>
+
+<li>还有一些最常访问的页面列表、最常修改的页面列表和最近上传的页面列表</li>
+
+</ul>
+
+</p>
+
+<p>
+
+<h3 id="createpages">创建页面： </h3>
+
+通过在现有页面上用文本为新页面命名便可创建新页面。可以使用
+
+<a href="#camelcase">CamelCase</a> 或将其包含在方括号 ( [] ) 内为 Wiki 页面命名。</p>
+
+<p>
+例如：
+</p>
+
+<ul>
+
+<li>我的 Wiki 页面 (Camel Case)</li>
+
+<li>[我的 Wiki 页面]（包含在方括号内）</li>
+
+</ul>
+
+<p>
+
+已被赋予 Wiki 页名称的文本的名称后将带有&ldquo;?&rdquo;。点击&ldquo;?&rdquo;，将
+
+进入该页面的编辑模式。在其中输入文本并保存，新的 Wiki 页面便完成了。</p>
+
+<h3 id="wikimarkup">Wiki 标记：</h3>
+
+如果将 WYSIWYG HTML 编辑器与普通文字处理器样式控件结合使用，那么应当使用这些控制来格式化您的条目。否则（当编辑框只是正常文本框而不包含特殊控件时），可以使用以下 Wiki 标记。<b>使用 WYSIWYG 编辑器时，不会应用这些功能</b>。   
+</p>
+
+<h4> 段落</h4>
+
+  <ul type="circle">
+
+<li> 通过空行来分隔文本中的段落</li>
+
+<li> 使用三个百分号&ldquo;%%<em></em>%&rdquo;可产生一个换行</li>
+
+<li> 如果您在文本前加入空格或制表符，则会缩进文本  </li>
+
+  </ul>
+
+
+
+<h4> !! 标题行</h4>
+
+  <ul type="circle">
+
+<li> 通过在行首加入一个惊叹号 ! 来创建一个小标题行</li>
+
+<li> !! 用于中标题行</li>
+
+<li> !!! 用于大标题行  </li>
+
+  </ul>
+
+
+
+<h4> 文本样式</h4>
+
+  <ul type="circle">
+
+<li> 如果需要<em>强调文本</em> 效果，则将文本写在两个单引号 '' 中（强调效果通常为斜体）。</li>
+
+<li> <strong>粗体字</strong>用两个下划线 __ 表示（或者两个星号 ** 之间的文本也显示为粗体字）</li>
+
+<li> 要产生<big>较大的字</big>，则将其放在两个井号 ## 中</li>
+
+<li> 也可以产生<small>较小的字</small>，用两个双引号&ldquo;&quot;&quot;&rdquo;就可以了</li>
+
+<li> <tt>等宽效果的字</tt>是用两个等号 == 来表示的  </li>
+
+  </ul>
+
+
+
+<h4> 列表</h4>
+
+
+
+  <ul type="circle">
+
+<li> 一行以星号 * 开始，则会产生列表</li>
+
+<li> 用 # 则产生数字列表
+
+    <ol>
+
+<li> 您可以创建子列表</li>
+
+<li> 子列表中的内容也要以相同的 * 和 # 组合开始    </li>
+
+    </ol>
+
+  </li>
+
+  </ul>
+
+
+
+<h4> 超链接</h4>
+
+
+
+  <ul type="circle">
+
+<li> 在文本中输入 CamelCase WikiWord 可新建超链接</li>
+
+<li> 或在<b>方括号中加入文字</b>也可以创建超链接</li>
+
+<li> 文字中的互联网地址(以<a href="http://">http://</a>开头)如http://www.example.com/会自动成为链接</li>
+
+<li> 在方括号中放入链接地址或WikiLink，[<a href="http://www.moodle.org/">Moodle</a>]，然后通过引号或者竖线&ldquo;|&rdquo;可以给它一个标题：
+
+    <ul type="circle">
+
+<li> [title | http://example.com]</li>
+
+<li> [WikiWord &quot;title&quot;] 或者 [&quot;title for&quot; WikiLink]    </li>
+
+    </ul>
+
+  </li>
+
+<li> 如果您希望 WikiWord 或 !http://www-address（或方括号中的 [其他任何内容])不会变成超链接，则在它前面加一个叹号或波浪号
+
+    <ul type="circle">
+
+<li> !NoHyperLink, ~NoHyperLink</li>
+
+<li> ![no hyperlink], !http://nolink.org/    </li>
+
+    </ul>
+
+  </li>
+
+  </ul>
+
+
+
+<h4> 用 | 产生表格</h4>
+
+<table cellpadding="2" border="1" cellspacing="0">
+
+<tr>
+
+<td> 将内容 </td>
+
+<td> 包含在 </td>
+
+<td> 竖线符号中 </td>
+
+</tr><tr>
+
+<td> 可创建 </td>
+
+<td> 一个表格结构  </td>
+
+</tr><tr>
+
+<td> 浏览器通常会 </td>
+
+<td> 忽略那些缺失的 </td>
+
+<td> 表格单元 </td>
+
+</tr>
+
+</table>
+
+
+
+
+
+<p>
+
+请在表格前后添加空行，以便与段落中其他文本分开。
+
+</p>
+
+
+
+<h4> 图片</h4>
+
+
+
+  <ul type="circle">
+
+<li> 要在页面中嵌入一张图像，只需直接将它的绝对 www-地址放在方括号中即可，如 [http://www.example.com/pics/image.png] </li>
+
+<li> 另外，您还可以使用图像上传功能</li>
+
+  </ul>
+
+
+
+<h4>更多阅读材料</h4>
+
+还有很多关于 Wiki 标记的阅读材料。请咨询 <a href="http://erfurtwiki.sourceforge.net">Erfurt Wiki Homepage</a> 以获得更多信息。
+
+
+
+<h5 id="camelcase">Camel Case ：</h5>
+
+<p>
+CamelCase 描述的是 WikiWord 的样子。多个单词，一起加入而不包含
+
+空格，仅由大小写的变换来分隔。大写和
+
+小写字母的起伏看似驼峰。</p>
+
+<p>
+
+这种链接体制也经常被称为 BumpyText。</p>
+
+<p>
+
+虽然语言纯化论者反对 Wifi 的这种命名体制，但它仍然常用于
+
+计算世界，并且是大多程序设计师所熟知的命名体制。</p>
+
+
+
+
+

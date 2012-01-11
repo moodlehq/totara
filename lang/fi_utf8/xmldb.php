@@ -1,4 +1,6 @@
-<?PHP // $Id: xmldb.php,v 1.7 2009/12/14 09:18:46 mudrd8mz Exp $
+<?php
+// xmldb.php - created with Totara langimport script version 1.1
+
 $string['aftertable'] = 'Taulun jälkeen:';
 $string['back'] = 'Takaisin';
 $string['backtomainview'] = 'Takaisin päävalikkoon';
@@ -101,4 +103,5 @@ $string['viewsqlcode'] = 'Katso SQL';
 $string['wronglengthforenum'] = 'Virheellinen pituus listakentälle';
 $string['wrongnumberoffieldsorvalues'] = 'Virheellinen määrä kenttiä tai arvoja lausekkeessa';
 $string['wrongreservedwords'] = 'Tällä hetkellä varattuna olevat sanat<br />(Taulukoiden nimet on suojattu etuliitteellä \$CFG->prefix)';
+
 ?>

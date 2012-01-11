@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // lams.php - created with Moodle 1.9.12 (Build: 20110510) (2007101591.03)
-
+<?php
+// lams.php - created with Totara langimport script version 1.1
 
 $string['createSequence'] = 'Luo uusi jakso';
 $string['editSequence'] = 'Muokkaa valittua jaksoa';

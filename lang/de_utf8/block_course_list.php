@@ -1,6 +1,5 @@
-<?PHP // $Id$ 
-      // block_course_list.php - created with Moodle 2.0 dev (Build: 20100116) (2010011400)
-
+<?php
+// block_course_list.php - created with Totara langimport script version 1.1
 
 $string['adminview'] = 'Administratoransicht';
 $string['allcourses'] = 'Administrator sieht alle Kurse';
