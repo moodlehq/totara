@@ -569,11 +569,19 @@ class reportbuilder {
             if($saved->ispublic != 0 || $saved->userid == $USER->id) {
                 $SESSION->$filtername = unserialize($saved->search);
             } else {
-                error('Saved search not found or search is not public');
+                if (defined('FULLME') and FULLME === 'cron') {
+                    mtrace('Saved search not found or search is not public');
+                } else {
+                    error('Saved search not found or search is not public');
+                }
                 return false;
             }
         } else {
-            error('Saved search not found or search is not public');
+            if (defined('FULLME') and FULLME === 'cron') {
+                mtrace('Saved search not found or search is not public');
+            } else {
+                error('Saved search not found or search is not public');
+            }
             return false;
         }
         return true;
