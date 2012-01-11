@@ -1,5 +1,35 @@
 Totara LMS Changelog
 
+Release 1.1.8 (11 January 2012):
+==================================================
+
+Database upgrades:
+    T-9507      Fix position assignments and add unit tests for managerpath Manager paths weren't being correctly updated in some situations
+
+New features:
+    T-9522      Add a multiple item hierarchy picker as a filter option
+
+Improvements:
+    T-8485      Italian language pack added
+    T-8485      US English language pack added
+    T-8485      Additions to Dutch and Finnish
+
+Bug fixes:
+                Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_1.9.16_release_notes
+    T-9379      Fix grader report alignment
+    T-9503      Fix quoting issue when creating activities with grades
+    T-9530      "Delete" text should not appear in dialog
+    T-9528      Fix encoding issues in Portuguese language pack
+    T-8485      Fix empty language key in user source
+    T-9533      Fix language issue with trailing period and space
+    T-9500      Program display with multiple course sets has CSS issues
+    T-9492      Stop duplicate records being added to Statistics block table
+    T-9526      Fix saved searches for javascript filters
+    T-9504      Menu and breadcrumb issues in right-to-left languages and IE7
+    T-9496      Module can apply an availability condition to itself
+    T-9536      Scheduled reports breaks cron if saved search doesn't exist or has been deleted
+
+
 Release 1.1.7 (21 December 2011):
 ==================================================
 
