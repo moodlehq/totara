@@ -136,7 +136,6 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
      */
     this.open = function() {
         // Open default url in dialog
-        var url = this.default_url;
         var method = 'GET';
 
         this.dialog.html('');
@@ -154,7 +153,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
             this.handler._open();
         }
 
-        this.load(url);
+        this.load(this.default_url);
 
         // If ie6 then hide selects while the pop-up is open
         if($.browser.msie && parseInt($.browser.version) == 6) {
