@@ -199,20 +199,21 @@ if($action=='view') {
 
 }
 
-echo $program->get_cancel_button();
+if ($action == 'edit') {
+    echo $program->get_cancel_button();
+}
 
 print_container_end();
 
 if ($action == 'edit') {
+    $unsavedchangesstr = get_string('youhaveunsavedchanges','local_program');
 
-$unsavedchangesstr = get_string('youhaveunsavedchanges','local_program');
+    // attach a date picker to the available until/from fields
+    echo build_datepicker_js(
+        'input[name="availablefromselector"], input[name="availableuntilselector"]'
+    );
 
-// attach a date picker to the available until/from fields
-echo build_datepicker_js(
-    'input[name="availablefromselector"], input[name="availableuntilselector"]'
-);
-
-print <<<HEREDOC
+    print <<<HEREDOC
 <script type="text/javascript">
 
     $(function() {

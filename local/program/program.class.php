@@ -1257,7 +1257,7 @@ class program {
      */
     public function get_cancel_button($url='') {
         global $CFG;
-        $link = empty($url) ? $CFG->wwwroot.'/course/categorylist.php?viewtype=program&categoryedit=on' : $url;
+        $link = empty($url) ? "{$CFG->wwwroot}/local/program/edit.php?id={$this->id}" : $url;
         return '<a href="'.$link.'" id="cancelprogramedits">'.get_string('cancelprogrammanagement', 'local_program').'</a><br />';
     }
 }
