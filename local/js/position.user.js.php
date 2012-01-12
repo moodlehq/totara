@@ -88,7 +88,7 @@ $(function() {
                 echo get_string('choosemanager', 'position');
                 echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'manager');
             ?>',
-                url+'manager.php?userid=<?php echo $userid ?>',
+            url+'manager.php?userid=<?php echo $userid ?>',
             'managerid',
             'managertitle',
             undefined,
