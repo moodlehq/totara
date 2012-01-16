@@ -743,25 +743,11 @@
         print_box_end();
     }
 
-// Check if any errors in log
-    $latesterror = get_record_sql("SELECT timeoccured FROM {$CFG->prefix}errorlog ORDER BY id DESC", true);
-    if ($latesterror) {
-        print_box_start('generalbox adminnotice');
-        print_string('lasterroroccuredat', 'admin', userdate($latesterror->timeoccured));
-        print_single_button("{$CFG->wwwroot}/admin/index.php", array('geterrors' => 1), get_string('downloaderrorlog', 'admin'), 'post');
-        print_box_end();
-    }
+    // Check if any errors in log
+    totara_print_errorlog_link();
 
     // list count of active users
-    print_box_start('generalbox adminnotice');
-    $oneyearago = time() - 60*60*24*365;
-    // See MDL-22481 for why currentlogin is used instead of lastlogin
-    $sql = "SELECT COUNT(id)
-        FROM {$CFG->prefix}user
-        WHERE currentlogin > $oneyearago";
-    $activeusers = count_records_sql($sql);
-    print_string('numberofactiveusers', 'admin', $activeusers);
-    print_box_end();
+    totara_print_active_users();
 
 
 /// Display Totara version information
