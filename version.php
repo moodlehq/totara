@@ -20,6 +20,6 @@
 
     $TOTARA = new object();
     $TOTARA->version    = '1.1.8+';             # Please keep as string
-    $TOTARA->build      = '20120111.00';        # Please keep as string
+    $TOTARA->build      = '20120111.01';        # Please keep as string
     $TOTARA->release    = "{$TOTARA->version} (Build: {$TOTARA->build})";
 

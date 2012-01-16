@@ -56,7 +56,6 @@ $string['course:viewhiddencourses'] = '浏览隐藏的课程';
 $string['course:viewhiddensections'] = '浏览隐藏的小节';
 $string['course:viewhiddenuserfields'] = '浏览隐藏的用户域';
 $string['course:viewparticipants'] = '浏览师生名录';
-$string['course:viewprogress'] = '浏览课程进度';
 $string['course:viewscales'] = '浏览等级';
 $string['course:visibility'] = '隐藏/显示课程';
 $string['currentcontext'] = '当前上下文';

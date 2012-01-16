@@ -94,7 +94,6 @@ $string['course:viewhiddencourses'] = 'Visualizzare corsi nascosti';
 $string['course:viewhiddensections'] = 'Visualizzare sezioni nascoste';
 $string['course:viewhiddenuserfields'] = 'Visualizzare campi utente nascosti';
 $string['course:viewparticipants'] = 'Visualizzare partecipanti';
-$string['course:viewprogress'] = 'Visualizza avanzamento del corso';
 $string['course:viewscales'] = 'Visualizzare scale valutazione';
 $string['course:visibility'] = 'Nascondere/Mostrare corsi';
 $string['createhiddenassign'] = 'Crea una assegnazione di ruolo nascosta';

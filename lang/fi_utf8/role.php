@@ -62,7 +62,6 @@ $string['course:viewhiddencourses'] = 'Piilotettujen kurssien katselu';
 $string['course:viewhiddensections'] = 'Piilotettujen kurssin osien katselu';
 $string['course:viewhiddenuserfields'] = 'Piilotettujen käyttäjätietojen katselu';
 $string['course:viewparticipants'] = 'Osallistujien tarkastelu';
-$string['course:viewprogress'] = 'Tarkastele kurssin kulkua';
 $string['course:viewscales'] = 'Asteikoiden tarkastelu';
 $string['course:visibility'] = 'Kurssien piilotus/näyttö';
 $string['currentcontext'] = 'Nykyinen konteksti';

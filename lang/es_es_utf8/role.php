@@ -15,7 +15,6 @@ $string['course:changecategory'] = 'Cambiar categoría del curso';
 $string['course:changesummary'] = 'Cambiar resumen del curso';
 $string['course:markcomplete'] = 'Marcas de usuario completados';
 $string['course:request'] = 'Solicitud de nuevos cursos';
-$string['course:viewprogress'] = 'Ver progreso del curso';
 $string['restore:createuser'] = 'Crear usuarios en la restauración';
 $string['restore:rolldates'] = 'Permitir mover la configuración de fechas en la restauración';
 $string['restore:userinfo'] = 'Restaurar los datos del usuario';

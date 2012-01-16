@@ -92,7 +92,6 @@ $string['course:viewhiddensections'] = 'Verborgene Kursabschnitte sehen';
 $string['course:viewhiddenuserfields'] = 'Verborgene Nutzerfelder sehen';
 $string['course:viewowngrades'] = 'Eigene Bewertungen sehen';
 $string['course:viewparticipants'] = 'Kursteilnehmer/innen sehen';
-$string['course:viewprogress'] = 'Kursfortschritt verfolgen';
 $string['course:viewscales'] = 'Bewertungskalen sehen';
 $string['course:visibility'] = 'Kurse anzeigen / verbergen';
 $string['createhiddenassign'] = 'Erstellt eine versteckte Rollenzuweisung';

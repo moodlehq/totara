@@ -93,7 +93,6 @@ $string['course:viewhiddensections'] = 'Voir les sections cachées';
 $string['course:viewhiddenuserfields'] = 'Voir les champs utilisateur cachés';
 $string['course:viewowngrades'] = 'Voir ses propres notes';
 $string['course:viewparticipants'] = 'Voir les participants';
-$string['course:viewprogress'] = 'Voir le progès du cours';
 $string['course:viewscales'] = 'Voir les barêmes';
 $string['course:visibility'] = 'Cacher/afficher les cours';
 $string['createhiddenassign'] = 'Créer des attributions de rôle cachées';
