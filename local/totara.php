@@ -1131,8 +1131,9 @@ function sql_cast2float($fieldname) {
 /**
  * Assign a user a position assignment and create/delete role assignments as required
  *
- * @param $assignment position_assignment object, include old reportstoid field (if any)
- * @param $managerid new manager's user id (optional)
+ * @param $assignment position_assignment object, include old reportstoid field (if any) and
+ *                    new managerid
+ * @param $unittest set to true if using for unit tests (optional)
  */
 function assign_user_position($assignment, $unittest=false) {
     global $CFG;
