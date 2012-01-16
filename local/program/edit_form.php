@@ -153,7 +153,7 @@ class program_edit_form extends moodleform {
             $mform->setType('available', PARAM_INT);
         }
 
-        $mform->addElement('text', 'availablefromselector', get_string('availablefrom', 'local_program'));
+        $mform->addElement('text', 'availablefromselector', get_string('availablefrom', 'local_program'), array('placeholder' => get_string('datepickerplaceholder')));
         if ($action=='view') {
             $mform->hardFreeze('availablefromselector');
         } else {
@@ -164,7 +164,7 @@ class program_edit_form extends moodleform {
         $mform->addElement('hidden', 'availablefrom');
         $mform->setType('availablefrom', PARAM_INT);
 
-        $mform->addElement('text', 'availableuntilselector', get_string('availableuntil', 'local_program'));
+        $mform->addElement('text', 'availableuntilselector', get_string('availableuntil', 'local_program'), array('placeholder' => get_string('datepickerplaceholder')));
         if ($action=='view') {
             $mform->hardFreeze('availableuntilselector');
         } else {
@@ -226,23 +226,23 @@ class program_edit_form extends moodleform {
 
         $mform = $this->_form;
         $errors = array();
-
+        $dateparseformat = get_string('datepickerparseformat');
         if (!empty($data['availablefromselector'])) {
             $availablefrom = $data['availablefromselector'];
-            if (!empty($availablefrom) && !prog_date_to_time($availablefrom)) {
+            if (!empty($availablefrom) && !totara_date_parse_from_format($dateparseformat, $availablefrom)) {
                 $errors['availablefromselector'] = get_string('error:invaliddate', 'local_program');
             }
         }
 
         if (!empty($data['availableuntilselector'])) {
             $availableuntil = $data['availableuntilselector'];
-            if (!empty($availableuntil) &&  !prog_date_to_time($availableuntil)) {
+            if (!empty($availableuntil) &&  !totara_date_parse_from_format($dateparseformat, $availableuntil)) {
                 $errors['availableuntilselector'] = get_string('error:invaliddate', 'local_program');
             }
         }
 
         if (!empty($availablefrom) && !empty($availableuntil)) {
-            if (prog_date_to_time($availablefrom) > prog_date_to_time($availableuntil)) {
+            if (totara_date_parse_from_format($dateparseformat, $availablefrom) > totara_date_parse_from_format($dateparseformat, $availableuntil)) {
                 $errors['availableuntilselector'] = get_string('error:availibileuntilearlierthanfrom', 'local_program');
             }
         }

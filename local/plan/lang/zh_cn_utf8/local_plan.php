@@ -132,7 +132,7 @@ $string['autoassign'] = '自动分配';
 $string['autoassignpos'] = '按位置自动分配';
 $string['autoassignorg'] = '按组织自动分配';
 $string['autoassigncourses'] = '包括链接的课程';
-$string['error:dateformat'] = '请输入日期，格式为 dd/mm/yyyy';
+$string['error:dateformat'] = '请输入日期，格式为 $a.';
 
 // Generic Strings
 $string['name'] = '名称';

@@ -41,6 +41,7 @@ add_to_log(SITEID, 'program', 'view', "view.php?id={$program->id}&amp;userid={$U
 //Javascript include
 local_js(array(
     TOTARA_JS_DIALOG,
+    TOTARA_JS_PLACEHOLDER
 ));
 
 // Get extension dialog content

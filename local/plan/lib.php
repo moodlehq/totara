@@ -186,21 +186,6 @@ function dp_get_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED)) {
 }
 
 /**
- * Used to create a timestamp from a string
- *
- * @access  public
- * @param   string  $datestring  string to be parsed
- * @return  int|false
- */
-function dp_convert_userdate($datestring) {
-    // Check for DD/MM/YYYY
-    if (preg_match('|(\d{1,2})/(\d{1,2})/(\d{4})|', $datestring, $matches)) {
-        return mktime(0,0,0,$matches[2], $matches[1], $matches[3]);
-    }
-    return strtotime($datestring);
-}
-
-/**
  * Gets Priorities
  *
  * @access  public
@@ -930,7 +915,7 @@ function dp_create_template($templatename, $enddate, &$error) {
 
     $todb = new object();
     $todb->fullname = $templatename;
-    $todb->enddate = dp_convert_userdate($enddate);
+    $todb->enddate = totara_date_parse_from_format(get_string('datepickerparseformat'), $enddate);
     $sortorder = get_field('dp_template', 'MAX(sortorder)', '', '') + 1;
     $todb->sortorder = $sortorder;
     $todb->visible = 1;

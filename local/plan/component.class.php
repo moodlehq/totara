@@ -1343,8 +1343,8 @@ abstract class dp_base_component {
      */
     function display_duedate_as_form($duedate, $name, $inputclass='', $itemid) {
         global $CFG;
-        $duedatestr = !empty($duedate) ? userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
-        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\" />";
+        $duedatestr = !empty($duedate) ? userdate($duedate, get_string('strftimedatenumeric'), $CFG->timezone, false) : '';
+        return '<input id="'.$name.'" type="text" name="'.$name.'" placeholder="' . get_string('datepickerplaceholder') . '" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\" />";
     }
 
 
@@ -1357,7 +1357,7 @@ abstract class dp_base_component {
     function display_duedate_as_text($duedate) {
         global $CFG;
         if (!empty($duedate)) {
-            return userdate($duedate, '%e %h %Y', $CFG->timezone, false);
+            return userdate($duedate, get_string('strftimedate'), $CFG->timezone, false);
         } else {
             return '';
         }

@@ -86,17 +86,13 @@ totaraDialog_extension_handler = function() {};
 totaraDialog_extension_handler.prototype = new totaraDialog_handler();
 
 totaraDialog_extension_handler.prototype.first_load = function() {
-    var handler = this;
+     <?php echo build_datepicker_js('input[name="extensiontime"]',false); ?>
+    $('#ui-datepicker-div').css('z-index',1600);
+}
 
-    $('.extensiontime', this._container).datepicker({
-    dateFormat: 'dd/mm/yy',
-    showOn: 'both',
-    buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
-    buttonImageOnly: true,
-    beforeShow: function() { $('#ui-datepicker-div').css('z-index',1600); },
-    constrainInput: true,
-    isRTL: false // positioning handled via CSS instead
-    });
+totaraDialog_extension_handler.prototype.every_load = function() {
+    // rebind placeholder for date picker
+    $('input[placeholder], textarea[placeholder]').placeholder();
 }
 
 // Adapt the handler's save function
@@ -107,10 +103,10 @@ totaraDialog_extension_handler.prototype._save = function() {
     var extensiontime = $('.extensiontime', this._container).val();
     var extensionreason = $('.extensionreason', this._container).val();
 
-    var dateformat = new RegExp("[0-3][0-9]/(0|1)[0-9]/(19|20)[0-9]{2}");
+    var dateformat = new RegExp("<?php echo get_string('datepickerregexjs'); ?>");
 
     if (dateformat.test(extensiontime) == false) {
-        alert("<?php echo get_string('pleaseentervaliddate', 'local_program'); ?>");
+        alert("<?php echo get_string('pleaseentervaliddate', 'local_program', get_string('datepickerplaceholder')); ?>");
     } else if (extensionreason=='') {
         alert("<?php echo get_string('pleaseentervalidreason', 'local_program'); ?>");
     } else {

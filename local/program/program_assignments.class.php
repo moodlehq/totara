@@ -524,14 +524,7 @@ abstract class prog_assignment_category {
                 }
 
                 if ($object->completionevent == COMPLETION_EVENT_NONE) {
-                    $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
-                    if (preg_match($datepattern, $object->completiontime, $matches) == 0) {
-                        continue;
-                    }
-
-                    list($day, $month, $year) = explode('/', $object->completiontime);
-                    $object->completiontime = $month.'/'.$day.'/'.$year;
-                    $object->completiontime = strtotime($object->completiontime);
+                    $object->completiontime = totara_date_parse_from_format(get_string('datepickerparseformat'),$object->completiontime);
                 }
                 else {
                     $parts = explode(' ',$object->completiontime);
@@ -623,7 +616,7 @@ abstract class prog_assignment_category {
     abstract function get_includechildren($data, $object);
 
     function get_completion($item) {
-
+        global $CFG;
         $completion_string = get_string('setcompletion', 'local_program');
 
         if (!isset($item->completiontime)) {
@@ -643,7 +636,7 @@ abstract class prog_assignment_category {
                 // Completiontime must be a timestamp
 
                 // Print a date
-                $item->completiontime = trim(userdate($item->completiontime,'%d/%m/%Y'));
+                $item->completiontime = trim( userdate($item->completiontime, get_string('strftimedatenumeric'), $CFG->timezone, false) );
                 $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
             }
             else {
@@ -692,7 +685,7 @@ abstract class prog_assignment_category {
             return get_string('completewithinevent','local_program',$a);
         }
         else {
-            $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
+            $datepattern = get_string('datepickerregexphp');
             if (preg_match($datepattern, $completiontime, $matches) == 0) {
                 return '';
             }
@@ -1647,8 +1640,8 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
             return $date;
         }
 
-        // Check if the profile field contains a date in the form dd/mm/yyyy...
-        $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
+        // Check if the profile field contains a date in the lanconfig form...
+        $datepattern = get_string('datepickerregexphp');
         if (preg_match($datepattern, $date, $matches) > 0) {
             list($day, $month, $year) = explode('/', $date);
             $date = $month.'/'.$day.'/'.$year;

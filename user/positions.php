@@ -96,7 +96,8 @@ $navigation = build_navigation($navlinks);
 local_js(array(
     TOTARA_JS_DIALOG,
     TOTARA_JS_TREEVIEW,
-    TOTARA_JS_DATEPICKER
+    TOTARA_JS_DATEPICKER,
+    TOTARA_JS_PLACEHOLDER
 ));
 
 require_js(
@@ -139,16 +140,17 @@ else if (!$can_edit && !$position_assignment->id) {
 else {
 
     if ($form->is_cancelled()){
-        // Do nothing
+        // Redirect to default position
+        redirect("{$CFG->wwwroot}/user/positions.php?user={$user->id}&amp;courseid={$course->id}&amp;&type=$type");
     }
     elseif ($data = $form->get_data()) {
         // Fix dates
         if (isset($data->timevalidfrom) && $data->timevalidfrom) {
-            $data->timevalidfrom = totara_convert_userdate($data->timevalidfrom);
+            $data->timevalidfrom = totara_date_parse_from_format(get_string('datepickerparseformat'),$data->timevalidfrom);
         }
 
         if (isset($data->timevalidto) && $data->timevalidto) {
-            $data->timevalidto = totara_convert_userdate($data->timevalidto);
+            $data->timevalidto = totara_date_parse_from_format(get_string('datepickerparseformat'),$data->timevalidto);
         }
 
         // Setup data

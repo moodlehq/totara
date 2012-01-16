@@ -10,6 +10,7 @@ $string['locale'] = 'fr_FR.UTF-8';
 $string['localewin'] = 'French_France.1252';
 $string['localewincharset'] = 'WINDOWS-1252';
 $string['oldcharset'] = 'ISO-8859-1';
+$string['datepickerplaceholder'] = 'jj/mm/aa';
 $string['strftimedate'] = '%%d %%B %%Y';
 $string['strftimedatefullshort'] = '%%d %%b %%y';
 $string['strftimedateshort'] = '%%d %%B';

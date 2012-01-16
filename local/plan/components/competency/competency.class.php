@@ -804,17 +804,13 @@ class dp_competency_component extends dp_base_component {
                         $duedateout = null;
                     }
                 } else {
-                    $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
-                    if (preg_match($datepattern, $duedate, $matches) == 0) {
+                   $datepattern = get_string('datepickerregexphp');
+                    if (preg_match($datepattern, $duedate) == 0) {
                         // skip badly formatted date strings
                         $badduedates[] = $id;
                         continue;
                     }
-                    $day = $matches[1];
-                    $mon = $matches[2];
-                    $year = $matches[3];
-
-                    $duedateout = make_timestamp($year, $mon, $day);
+                    $duedateout = totara_date_parse_from_format(get_string('datepickerparseformat'), $duedate);
                 }
 
                 $todb = new object();

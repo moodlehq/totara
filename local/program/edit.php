@@ -42,7 +42,8 @@ if ($action == 'edit') {
     //Javascript include
     local_js(array(
         TOTARA_JS_DATEPICKER,
-        TOTARA_JS_ICON_PREVIEW
+        TOTARA_JS_ICON_PREVIEW,
+        TOTARA_JS_PLACEHOLDER
     ));
     require_js(array(
         "{$CFG->wwwroot}/local/program/program.edit.js",
@@ -87,8 +88,8 @@ if ($data = $detailsform->get_data()) {
     } else if(isset($data->savechanges)) {
 
         // Preprocess to convert string dates e.g. '23/11/2012' to a unix timestamp
-        $data->availablefrom = prog_date_to_time($data->availablefromselector);
-        $data->availableuntil = prog_date_to_time($data->availableuntilselector);
+        $data->availablefrom = ($data->availablefromselector) ? totara_date_parse_from_format(get_string('datepickerparseformat'),$data->availablefromselector) : 0;
+        $data->availableuntil = ($data->availableuntilselector) ? totara_date_parse_from_format(get_string('datepickerparseformat'),$data->availableuntilselector) : 0;
 
         $data->timemodified = time();
         $data->usermodified = $USER->id;
@@ -168,8 +169,8 @@ require('tabs.php');
 
 
 // Program details
-$program->availablefromselector = $program->availablefrom>0 ? prog_time_to_date($program->availablefrom) : '';
-$program->availableuntilselector = $program->availableuntil>0 ? prog_time_to_date($program->availableuntil) : '';
+$program->availablefromselector = $program->availablefrom > 0 ? userdate($program->availablefrom, get_string('strftimedatenumeric'), $CFG->timezone, false) : '';
+$program->availableuntilselector = $program->availableuntil > 0 ? userdate($program->availableuntil, get_string('strftimedatenumeric'), $CFG->timezone, false) : '';
 
 $detailsform->set_data($program);
 $detailsform->display();

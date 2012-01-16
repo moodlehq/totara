@@ -373,23 +373,19 @@ class dp_objective_component extends dp_base_component {
             // Update duedates
             foreach ($duedates as $id => $duedate) {
                 // allow empty due dates
-                if ($duedate == '' || $duedate == 'dd/mm/yy') {
+                if ($duedate == '' || $duedate == get_string('datepickerplaceholder')) {
                     if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
                         $duedateout = $this->plan->enddate;
                     } else {
                         $duedateout = null;
                     }
                 } else {
-                    $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
+                    $datepattern = get_string('datepickerregexphp');
                     if (preg_match($datepattern, $duedate, $matches) == 0) {
                         // skip badly formatted date strings
                         continue;
                     }
-                    $day = $matches[1];
-                    $mon = $matches[2];
-                    $year = $matches[3];
-
-                    $duedateout = make_timestamp($year, $mon, $day);
+                    $duedateout = totara_date_parse_from_format(get_string('datepickerparseformat'), $duedate);
                 }
                 $todb = new object();
                 $todb->id = $id;
@@ -511,8 +507,8 @@ class dp_objective_component extends dp_base_component {
                         $updates .= get_string_in_user_lang($currentuserobj, 'duedate', 'local_plan').' - '.
                             get_string_in_user_lang($currentuserobj, 'changedfromxtoy', 'local_plan',
                             (object)array('before'=>empty($orig_objectives[$itemid]->duedate) ? '' :
-                                userdate($orig_objectives[$itemid]->duedate, '%e %h %Y', $CFG->timezone, false),
-                                'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
+                                userdate($orig_objectives[$itemid]->duedate, get_string('strftimedate'), $CFG->timezone, false),
+                                'after'=>userdate($record->duedate, get_string('strftimedate'), $CFG->timezone, false)))."<br>";
                     }
 
                     // proficiency may have been updated

@@ -84,7 +84,7 @@ if ($data = $form->get_data()) {
     if (isset($data->submitbutton)) {
         begin_sql();
 
-        $data->enddate = dp_convert_userdate($data->enddate);  // convert to timestamp
+        $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat'), $data->enddate);  // convert to timestamp
 
         // Set up the plan
         if (!$newid = insert_record('dp_plan', $data)) {
@@ -145,7 +145,8 @@ $navigation = build_navigation($navlinks);
 
 //Javascript include
 local_js(array(
-    TOTARA_JS_DATEPICKER
+    TOTARA_JS_DATEPICKER,
+    TOTARA_JS_PLACEHOLDER
 ));
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 

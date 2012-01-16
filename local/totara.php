@@ -897,16 +897,108 @@ function get_dashlet_role($pageid) {
     return $role;
 }
 
+// date_parse_from_format implementation for PHP<5.3 written by Joe Brewster
+// http://www.brewsterware.com/strptime-for-windows.html
+// platform-independent implementation for parsing date inputs in the user's locale format
+// to get around strptime (not available on PHP for Windows) and date_parse_from_format (only available on PHP 5.3>)
+// NB: should not be called directly - used internally by totara_date_parse_from_format
 
-//Used to create a timestamp from a string
-function totara_convert_userdate($datestring) {
-    // Check for DD/MM/YYYY
-    if (preg_match('|(\d{1,2})/(\d{1,2})/(\d{4})|', $datestring, $matches)) {
-        return mktime(0,0,0,$matches[2], $matches[1], $matches[3]);
+if (!function_exists('date_parse_from_format')) {
+    function date_parse_from_format($format, $date) {
+        $returnArray = array('hour' => 0, 'minute' => 0, 'second' => 0,
+                            'month' => 0, 'day' => 0, 'year' => 0);
+        $dateArray = array();
+        // array of valid date codes with keys for the return array as the values
+        $validDateTimeCode = array('Y' => 'year', 'y' => 'year',
+                                    'm' => 'month', 'n' => 'month',
+                                    'd' => 'day', 'j' => 'day',
+                                    'H' => 'hour', 'G' => 'hour',
+                                    'i' => 'minute', 's' => 'second');
+        /* create an array of valid keys for the return array
+         * in the order that they appear in $format
+        */
+        for ($i = 0 ; $i <= strlen($format) - 1 ; $i++) {
+            $char = substr($format, $i, 1);
+            if (array_key_exists($char, $validDateTimeCode)) {
+                $dateArray[$validDateTimeCode[$char]] = '';
+            }
+        }
+        // create array of reg ex things for each date part
+        $regExArray = array('.' => '\.', // escape the period
+        // parse d first so we dont mangle the reg ex
+        // day
+                            'd' => '(\d{2})',
+        // year
+                            'Y' => '(\d{4})',
+                            'y' => '(\d{2})',
+        // month
+                            'm' => '(\d{2})',
+                            'n' => '(\d{1,2})',
+        // day
+                            'j' => '(\d{1,2})',
+        // hour
+                            'H' => '(\d{2})',
+                            'G' => '(\d{1,2})',
+        // minutes
+                            'i' => '(\d{2})',
+        // seconds
+                            's' => '(\d{2})');
+        // create a full reg ex string to parse the date with
+        $regEx = str_replace(array_keys($regExArray),
+        array_values($regExArray),
+        $format);
+        // Parse the date
+        preg_match("#$regEx#", $date, $matches);
+        // some checks...
+        if (!is_array($matches) || $matches[0] != $date || sizeof($dateArray) != (sizeof($matches) - 1)) {
+            return $returnArray;
+        }
+        // an iterator for the $matches array
+        $i = 1;
+        foreach ($dateArray AS $key => $value) {
+            $dateArray[$key] = $matches[$i++];
+            if (array_key_exists($key, $returnArray)) {
+                $returnArray[$key] = $dateArray[$key];
+            }
+        }
+        return $returnArray;
     }
-    return strtotime($datestring);
 }
+/**
+* returns unix timestamp from a date string depending on the date format
+*
+* @param string $format e.g. "d/m/Y" - see date_parse_from_format for supported formats
+* @param string $date a date to be converted e.g. "12/06/12"
+* @return int unix timestamp (0 if fails to parse)
+*/
+function totara_date_parse_from_format ($format, $date) {
 
+    global $CFG;
+    $timezone = get_user_timezone_offset($CFG->timezone);
+    $dateArray = array();
+    $dateArray = date_parse_from_format($format, $date);
+    if (is_array($dateArray)) {
+        if (abs($timezone) > 13) {
+            $time = mktime($dateArray['hour'],
+                    $dateArray['minute'],
+                    $dateArray['second'],
+                    $dateArray['month'],
+                    $dateArray['day'],
+                    $dateArray['year']);
+        } else {
+            $time = gmmktime($dateArray['hour'],
+                    $dateArray['minute'],
+                    $dateArray['second'],
+                    $dateArray['month'],
+                    $dateArray['day'],
+                    $dateArray['year']);
+            $time = usertime($time, $timezone);
+        }
+        return $time;
+    } else {
+        return 0;
+    }
+}
 
 function get_totara_menu($header=true) {
     global $CFG, $USER;

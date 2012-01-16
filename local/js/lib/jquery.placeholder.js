@@ -92,6 +92,11 @@
                 });
                 // What's even worse, the text cursor disappears
                 // when tabbing between text inputs, here's a fix
+                input.change(function(){
+                    if(input.val()) {
+                        input.removeClass("placeholder");
+                    }
+                });
                 input.focus(function() {
                     if(this.value == "") {
                         var range = this.createTextRange();

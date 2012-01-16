@@ -1295,27 +1295,6 @@ function prog_print_program_search($value="", $return=false, $format="plain") {
     echo $output;
 }
 
-function prog_date_to_time($date) {
-
-    $datearray = explode('/', trim($date));
-
-    if (count($datearray)<3) {
-        return false;
-    } else {
-        try {
-            list($day, $month, $year) = explode('/', $date);    $date = $month.'/'.$day.'/'.$year;
-            $date = $month.'/'.$day.'/'.$year;
-            return strtotime($date);
-        } catch(Exception $e) {
-            return false;
-        }
-    }
-}
-
-function prog_time_to_date($time) {
-    return trim(userdate($time,'%d/%m/%Y'));
-}
-
 /**
  * Handler function called when a program_assigned event is triggered
  *

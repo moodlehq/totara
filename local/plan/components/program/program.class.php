@@ -227,7 +227,7 @@ class dp_program_component extends dp_base_component {
                         $duedateout = null;
                     }
                 } else {
-                    $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
+                    $datepattern = get_string('datepickerregexphp');
                     if (preg_match($datepattern, $duedate, $matches) == 0) {
                         // skip badly formatted date strings
                         $badduedates[] = $id;

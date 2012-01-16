@@ -83,12 +83,12 @@ class plan_reactivate_form extends moodleform {
             $datenow = time();
             $enddate = isset($data['enddate']) ? $data['enddate'] : '';
 
-            $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
+            $datepattern = get_string('datepickerregexphp');
             if (preg_match($datepattern, $enddate, $matches) == 0) {
-                $errstr = get_string('error:dateformat','local_plan');
+                $errstr = get_string('error:dateformat','local_plan', get_string('datepickerplaceholder'));
                 $result['enddate'] = $errstr;
                 unset($errstr);
-            } elseif ($datenow > dp_convert_userdate($enddate) && $enddate !== false ) {
+            } elseif ($datenow > totara_date_parse_from_format(get_string('datepickerparseformat'), $enddate) && $enddate !== false ) {
                 // Enforce start date before finish date
                 $errstr = get_string('error:reactivatedatebeforenow','local_plan');
                 $result['enddate'] = $errstr;
