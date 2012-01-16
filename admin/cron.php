@@ -167,7 +167,7 @@
             if (file_exists($blockfile)) {
                 require_once($blockfile);
                 $classname = 'block_'.$block->name;
-                $blockobj = new $classname;
+                $blockobj = new $classname; 
                 if (method_exists($blockobj,'cron')) {
                     mtrace("Processing cron function for ".$block->name.'....','');
                     if ($blockobj->cron()) {
@@ -326,7 +326,7 @@
     mtrace("Finished local modules");
 
 /// Run all core cron jobs, but not every time since they aren't too important.
-/// These don't have a timer to reduce load, so we'll use a random number
+/// These don't have a timer to reduce load, so we'll use a random number 
 /// to randomly choose the percentage of times we should run these jobs.
 
     srand ((double) microtime() * 10000000);
