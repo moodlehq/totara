@@ -260,11 +260,6 @@
         mtrace('done');
     }
 
-    require_once($CFG->dirroot . '/local/reportbuilder/cron.php');
-    mtrace('Starting the report builder cron...');
-    reportbuilder_cron();
-    mtrace('done.');
-
     // Competency cron
     mtrace('Starting the competency cron...');
     require_once($CFG->dirroot . '/hierarchy/prefix/competency/cron.php');
