@@ -5059,7 +5059,7 @@ function print_recent_activity_note($time, $user, $text, $link, $return=false, $
 /**
  * Prints a basic textarea field.
  *
- * When using this function, you should
+ * When using this function, you should 
  *
  * @uses $CFG
  * @param bool $usehtmleditor Enables the use of the htmleditor for this field.
