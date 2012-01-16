@@ -1313,7 +1313,7 @@ $moodle_capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW
         )
-    ),
+    )
 );
 
 
