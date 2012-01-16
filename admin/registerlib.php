@@ -1,9 +1,10 @@
 <?php
 
-/*
-    collect information to be sent to register.totaralms.com
-    and return it as an associative array
-*/
+/**
+ *  Collect information to be sent to register.totaralms.com
+ *
+ *  @return array Associative array of data to return
+ */
 function get_registration_data() {
     global $CFG, $SITE, $db;
     include($CFG->dirroot . '/version.php');
@@ -33,6 +34,11 @@ function get_registration_data() {
     return $data;
 }
 
+/**
+ * Send registration data to totaralms.com
+ *
+ * @param array $data Associative array of data to send
+ */
 function send_registration_data($data) {
     set_config('registrationattempted', time());
     $ch = curl_init('https://register.totaralms.com/register/report.php');
@@ -44,6 +50,31 @@ function send_registration_data($data) {
     $recdata = curl_exec($ch);
     if ($recdata !== false) {
         set_config('registered', time());
+    }
+}
+
+/**
+ * Check if registration information should be sent, and if so send it
+ *
+ * To be used on the cron to manage registrations
+ *
+ */
+function registration_cron() {
+    global $CFG;
+    $registrationdue = $oktotry = false;
+    if (empty($CFG->registered) || $CFG->registered < (time() - 60 * 60 * 24 * 30)) {
+        // Register up to once a month
+        $registrationdue = true;
+    }
+    if (empty($CFG->registrationattempted) || $CFG->registrationattempted < (time() - 60 * 60 * 24 * 7)) {
+        // Try registering once a week if unsuccessful
+        $oktotry = true;
+    }
+    if ($registrationdue && $oktotry) {
+        mtrace("Performing registration update:");
+        $registerdata = get_registration_data();
+        send_registration_data($registerdata);
+        mtrace("Registration update done");
     }
 }
 ?>

@@ -478,23 +478,10 @@
         build_context_path();
         mtrace ('Built context paths');
 
+        // totara site registration
         if (!empty($CFG->registrationenabled)) {
-            $registrationdue = $oktotry = false;
-            if (empty($CFG->registered) || $CFG->registered < (time() - 60 * 60 * 24 * 30)) {
-                // Register up to once a month
-                $registrationdue = true;
-            }
-            if (empty($CFG->registrationattempted) || $CFG->registrationattempted < (time() - 60 * 60 * 24 * 7)) {
-                // Try registering once a week if unsuccessful
-                $oktotry = true;
-            }
-            if ($registrationdue && $oktotry) {
-                mtrace("Performing registration update:");
-                require_once('registerlib.php');
-                $registerdata = get_registration_data();
-                send_registration_data($registerdata);
-                mtrace("Registration update done");
-            }
+            require_once('registerlib.php');
+            registration_cron();
         }
 
         // crop errorlog table at 100 entries
