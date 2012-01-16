@@ -188,10 +188,7 @@
     }
 
     if (isloggedin() and !isguest() and isset($CFG->courseprogress) and $CFG->courseprogress) {
-        if (file_exists($CFG->dirroot.'/local/totara.php')) {
-            require_once($CFG->dirroot.'/local/totara.php');
-            totara_print_my_courses();
-        }
+        totara_print_my_courses();
     }
 
     foreach (explode(',',$frontpagelayout) as $v) {
