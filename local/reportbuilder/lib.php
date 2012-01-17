@@ -2304,7 +2304,7 @@ class reportbuilder {
                 foreach ($data as $datarow) {
                     for($col=0; $col<$numfields;$col++) {
                         if(isset($data[$filerow][$col])) {
-                            $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+                            $worksheet[0]->write($row, $col, html_entity_decode($data[$filerow][$col], ENT_COMPAT, 'UTF-8'));
                         }
                     }
                     $filerow++;
@@ -2384,7 +2384,7 @@ class reportbuilder {
                 foreach ($data as $datarow) {
                     for($col=0; $col<$numfields; $col++) {
                         if(isset($data[$filerow][$col])) {
-                            $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
+                            $worksheet[0]->write($row, $col, html_entity_decode($data[$filerow][$col], ENT_COMPAT, 'UTF-8'));
                         }
                     }
                     $row++;
@@ -2440,7 +2440,7 @@ class reportbuilder {
                     $row = array();
                     for($j=0; $j<$numfields; $j++) {
                         if(isset($data[$i][$j])) {
-                            $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $data[$i][$j]));
+                            $row[] = html_entity_decode(str_replace($delimiter, $encdelim, $data[$i][$j]), ENT_COMPAT, 'UTF-8');
                         } else {
                             $row[] = '';
                         }
