@@ -22,7 +22,7 @@ define('FIRSTUSEDEXCELROW', 3);
 define('MOD_CLASS_ACTIVITY', 0);
 define('MOD_CLASS_RESOURCE', 1);
 
-if (!defined('MAX_MODINFO_CACHE_SIZE')) {
+if (!defined('MAX_MODINFO_CACHE_SIZE')) { 
     define('MAX_MODINFO_CACHE_SIZE', 10);
 }
 
