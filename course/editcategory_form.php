@@ -1,4 +1,4 @@
-<?php
+<?php 
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 class editcategory_form extends moodleform {
 
@@ -46,5 +46,5 @@ class editcategory_form extends moodleform {
 
         $this->add_action_buttons(true, $strsubmit);
     }
-}
+} 
 ?>
