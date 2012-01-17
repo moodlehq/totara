@@ -1356,3 +1356,12 @@ function plan_activate_plan($plan) {
     }
 }
 
+/**
+ * Remove learning plan items that are associated with a particular course.
+ *
+ * @param int $courseid The id of the course that is being deleted
+ * @return bool true if all the removals succeeded. false if there were any failures.
+ */
+function plan_remove_dp_course_assignments($courseid) {
+    return delete_records('dp_plan_course_assign', 'courseid', $courseid);
+}

@@ -3666,11 +3666,15 @@ function delete_course($courseorid, $showfeedback = true) {
         return false;
     }
 
-    if (!remove_dp_items($courseid)) {
-        if ($showfeedback) {
-            notify("An error occurred while deleting some of the learning plan course items.");
+    // remove learning plan course assignments
+    if (file_exists($CFG->dirroot . '/local/plan/lib.php')) {
+        require_once($CFG->dirroot . '/local/plan/lib.php');
+        if (!plan_remove_dp_course_assignments($courseid)) {
+            if ($showfeedback) {
+                notify("An error occurred while deleting some of the learning plan course items.");
+            }
+            $result = false;
         }
-        $result = false;
     }
 
     // Remove course completion records
@@ -3901,36 +3905,15 @@ function remove_course_contents($courseid, $showfeedback=true) {
     remove_course_grades($courseid, $showfeedback);
     remove_grade_letters($context, $showfeedback);
 
-/// Remove all competency evidence
-    if(!delete_records_select("comp_evidence_items_evidence", "itemid IN (SELECT id FROM {$CFG->prefix}comp_evidence_items WHERE itemtype LIKE 'course%' AND iteminstance=53)")) {
-        return false;
-    } else {
-        if(!delete_records_select("comp_evidence_items", "(itemtype = 'coursecompletion' OR itemtype='coursegrade') AND iteminstance={$courseid}")) {
-            return false;
-        } else {
-            notify($strdeleted . ' - Competency Evidence Items');
+/// Remove competency evidence and evidence items relating to course
+    if (file_exists($CFG->dirroot . '/hierarchy/prefix/competency/evidence/lib.php')) {
+        require_once($CFG->dirroot . '/hierarchy/prefix/competency/evidence/lib.php');
+        if (!hierarchy_delete_competency_evidence($courseid)) {
+            if ($showfeedback) {
+                notify("An error occurred while deleting some of the competency evidence course items.");
+            }
+            $result = false;
         }
-    }
-
-    return $result;
-}
-
-
-/**
- * Remove learning plan items that are associated with this course.
- * @param int $courseid The id of the course that is being deleted
- * @return bool true if all the removals succeeded. false if there were any failures. If this
- *             method returns false, some of the removals will probably have succeeded, and others
- *             failed, but you have no way of knowing which.
- */
-function remove_dp_items($courseid) {
-    $result = true;
-    $strdeleted = get_string('deleted');
-
-    if(!delete_records('dp_plan_course_assign', 'courseid', $courseid)) {
-        return false;
-    } else {
-            notify($strdeleted . ' - Learning Plan Course Items');
     }
 
     return $result;
