@@ -190,7 +190,7 @@ class course_edit_form extends moodleform {
         foreach($COURSE_TYPES as $k => $v) {
             $coursetypeoptions[$v] = get_string($k, 'local');
         }
-        $mform->addElement('select', 'coursetype', 'Course Type', $coursetypeoptions);
+        $mform->addElement('select', 'coursetype', get_string('coursetype', 'local'), $coursetypeoptions);
 
         // Course Icons
         $course_icon = new course_icon();
