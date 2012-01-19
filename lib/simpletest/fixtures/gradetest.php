@@ -71,9 +71,7 @@ class grade_test extends UnitTestCase {
                         'scale',
                         'grade_items',
                         'grade_grades',
-                        'grade_outcomes',
-                        'course_modules',
-                        'modules');
+                        'grade_outcomes');
 
     var $grade_items = array();
     var $grade_categories = array();
@@ -632,13 +630,10 @@ class grade_test extends UnitTestCase {
      */
     function tearDown() {
         global $CFG;
-
         // delete the contents of tables before the test run - the unit test might fail on fatal error and the data would not be deleted!
         foreach ($this->tables as $table) {
             unset($this->$table);
-            execute_sql("DROP TABLE {$CFG->prefix}{$table}");
         }
-
         $CFG->prefix = $CFG->old_prefix;
     }
 
