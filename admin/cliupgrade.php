@@ -1201,8 +1201,7 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
 
     /// Define the unique site ID code if it isn't already
     if (empty($CFG->siteidentifier)) {    // Unique site identification code
-        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_POST'] : $CFG->wwwroot;
-        set_config('siteidentifier', random_string(32).$host);
+        set_config('siteidentifier', random_string(32).$_SERVER['HTTP_HOST']);
     }
 
     /// Check if the guest user exists.  If not, create one.
