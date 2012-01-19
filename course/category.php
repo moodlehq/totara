@@ -638,8 +638,12 @@
                 $notused = array();
                 make_categories_list($movetocategories, $notused, 'moodle/category:manage');
                 $movetocategories[$category->id] = get_string('moveselectedcoursesto');
-                echo '<tr><td colspan="3" align="right">';
-                choose_from_menu($movetocategories, 'moveto', $category->id, '', "javascript:submitFormById('movecourses')");
+                echo '<tr><td colspan="3">';
+                //using a hack to get the event handlers from totara_select_width_limiter included in the $script param to choose_from_menu
+                choose_from_menu ($movetocategories, "moveto", $category->id, '',
+                                    'javascript: submitFormById(\'movecourses\');" onMouseDown="if (document.all) this.className=\'totara-expanded-width\';"
+                                    onBlur="if (document.all) this.className=\'totara-limited-width\';" onChange="if (document.all) this.className=\'totara-limited-width\'; '
+                                    , null, null, null, null, null, null, null, 'totara-limited-width');
                 echo '<input type="hidden" name="id" value="'.$category->id.'" />';
                 echo '</td></tr>';
             }
@@ -816,8 +820,12 @@
                 $notused = array();
                 make_categories_list($movetocategories, $notused, 'moodle/category:manage');
                 $movetocategories[$category->id] = get_string('moveselectedprogramsto', 'local_program');
-                echo '<tr><td colspan="3" align="right">';
-                choose_from_menu($movetocategories, 'moveto', $category->id, '', "javascript:submitFormById('moveprograms')");
+                echo '<tr><td colspan="3" >';
+                //using a hack to get the event handlers from totara_select_width_limiter included in the $script param to choose_from_menu
+                choose_from_menu ($movetocategories, "moveto", $category->id, '',
+                                'javascript: submitFormById(\'moveprograms\');" onMouseDown="if (document.all) this.className=\'totara-expanded-width\';"
+                                onBlur="if (document.all) this.className=\'totara-limited-width\';" onChange="if (document.all) this.className=\'totara-limited-width\'; '
+                                , null, null, null, null, null, null, null, 'totara-limited-width');
                 echo '<input type="hidden" name="id" value="'.$category->id.'" />';
                 echo '</td></tr>';
             }

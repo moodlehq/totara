@@ -659,11 +659,15 @@ if ($results['courses']) {
 
             echo "</td>\n</tr>\n";
         }
-        echo "<tr>\n<td colspan=\"4\" style=\"text-align:center\">\n";
+        echo "<tr>\n<td colspan=\"4\" >\n";
         echo "<br />";
         echo "<input type=\"button\" onclick=\"checkall()\" value=\"$strselectall\" />\n";
         echo "<input type=\"button\" onclick=\"uncheckall()\" value=\"$strdeselectall\" />\n";
-        choose_from_menu ($displaylist, "moveto", "", get_string("moveselectedcoursesto"), "javascript: getElementById('movecourses').submit()");
+        //using a hack to get the event handlers from totara_select_width_limiter included in the $script param to choose_from_menu
+        choose_from_menu ($displaylist, "moveto", "", get_string("moveselectedcoursesto"),
+                        'javascript: getElementById(\'movecourses\').submit();" onMouseDown="if (document.all) this.className=\'totara-expanded-width\';"
+                        onBlur="if (document.all) this.className=\'totara-limited-width\';" onChange="if (document.all) this.className=\'totara-limited-width\'; '
+                        , null, null, null, null, null, null, null, 'totara-limited-width');
         echo "</td>\n</tr>\n";
         echo "</table>\n</form>";
 
@@ -802,11 +806,15 @@ if ($results['programs']) {
 
             echo "</td>\n</tr>\n";
         }
-        echo "<tr>\n<td colspan=\"4\" style=\"text-align:center\">\n";
+        echo "<tr>\n<td colspan=\"4\" >\n";
         echo "<br />";
         echo "<input type=\"button\" onclick=\"checkall()\" value=\"$strselectall\" />\n";
         echo "<input type=\"button\" onclick=\"uncheckall()\" value=\"$strdeselectall\" />\n";
-        choose_from_menu ($displaylist, "moveto", "", get_string("moveselectedprogramsto",'local_program'), "javascript: getElementById('movecourses').submit()");
+        //using a hack to get the event handlers from totara_select_width_limiter included in the $script param to choose_from_menu
+        choose_from_menu ($displaylist, "moveto", "", get_string("moveselectedprogramsto",'local_program'),
+                        'javascript: getElementById(\'movecourses\').submit();" onMouseDown="if (document.all) this.className=\'totara-expanded-width\';"
+                         onBlur="if (document.all) this.className=\'totara-limited-width\';" onChange="if (document.all) this.className=\'totara-limited-width\'; '
+                        , null, null, null, null, null, null, null, 'totara-limited-width');
         echo "</td>\n</tr>\n";
         echo "</table>\n</form>";
     }
