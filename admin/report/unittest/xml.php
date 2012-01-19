@@ -31,7 +31,7 @@ define('UNITTEST', true);
 $langfile = 'simpletest';
 
 // Create the group of tests.
-$test = new AutoGroupTest($showsearch, $thorough);
+$test =& new AutoGroupTest($showsearch, $thorough);
 
 // OU specific. We use the _nonproject folder for stuff we want to
 // keep in CVS, but which is not really relevant. It does no harm
