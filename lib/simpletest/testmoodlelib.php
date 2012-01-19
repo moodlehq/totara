@@ -296,5 +296,206 @@ class moodlelib_test extends UnitTestCase {
         //set the timezone back to what it was
         $USER->timezone = $userstimezone;
     }
+
+    public function test_userdate() {
+        global $USER, $CFG;
+
+        $testvalues = array(
+            array(
+                'time' => '1309514400',
+                'usertimezone' => 'America/Moncton',
+                'timezone' => '0.0', //no dst offset
+                'expectedoutput' => 'Friday, 1 July 2011, 10:00 AM'
+            ),
+            array(
+                'time' => '1293876000 ',
+                'usertimezone' => 'America/Moncton',
+                'timezone' => '0.0', //no dst offset
+                'expectedoutput' => 'Saturday, 1 January 2011, 10:00 AM'
+            ),
+            array(
+                'time' => '1293876000 ',
+                'usertimezone' => 'America/Moncton',
+                'timezone' => '99', //no dst offset in jan, so just timezone offset.
+                'expectedoutput' => 'Saturday, 1 January 2011, 06:00 AM'
+            ),
+            array(
+                'time' => '1293876000 ',
+                'usertimezone' => 'America/Moncton',
+                'timezone' => 'America/Moncton', //no dst offset in jan
+                'expectedoutput' => 'Saturday, 1 January 2011, 06:00 AM'
+            ),
+            array(
+                'time' => '1293876000 ',
+                'usertimezone' => '2',
+                'timezone' => '99', //take user timezone
+                'expectedoutput' => 'Saturday, 1 January 2011, 12:00 PM'
+            ),
+            array(
+                'time' => '1293876000 ',
+                'usertimezone' => '-2',
+                'timezone' => '99', //take user timezone
+                'expectedoutput' => 'Saturday, 1 January 2011, 08:00 AM'
+            ),
+            array(
+                'time' => '1293876000 ',
+                'usertimezone' => '-10',
+                'timezone' => '2', //take this timezone
+                'expectedoutput' => 'Saturday, 1 January 2011, 12:00 PM'
+            ),
+            array(
+                'time' => '1293876000 ',
+                'usertimezone' => '-10',
+                'timezone' => '-2', //take this timezone
+                'expectedoutput' => 'Saturday, 1 January 2011, 08:00 AM'
+            )
+        );
+
+        //Check if forcetimezone is set then save it and set it to use user timezone
+        $cfgforcetimezone = null;
+        if (isset($CFG->forcetimezone)) {
+            $cfgforcetimezone = $CFG->forcetimezone;
+            $CFG->forcetimezone = 99; //get user default timezone.
+        }
+        //store user default timezone to restore later
+        $userstimezone = $USER->timezone;
+
+        // The string version of date comes from server locale setting and does
+        // not respect user language, so it is necessary to reset that.
+        $oldlocale = setlocale(LC_TIME, '0');
+        setlocale(LC_TIME, 'en_AU.UTF-8');
+
+        //get instance of textlib for strtolower
+        $textlib = textlib_get_instance();
+        foreach ($testvalues as $vals) {
+            $USER->timezone = $vals['usertimezone'];
+            $actualoutput = userdate($vals['time'], '%A, %d %B %Y, %I:%M %p', $vals['timezone']);
+
+            //On different systems case of AM PM changes so compare case insenitive
+            $vals['expectedoutput'] = $textlib->strtolower($vals['expectedoutput']);
+            $actualoutput = $textlib->strtolower($actualoutput);
+
+            $this->assertEqual($vals['expectedoutput'], $actualoutput,
+                "Expected: {$vals['expectedoutput']} => Actual: {$actualoutput},
+                Please check if timezones are updated (Site adminstration -> location -> update timezone)");
+        }
+
+        //restore user timezone back to what it was
+        $USER->timezone = $userstimezone;
+
+        //restore forcetimezone
+        if (!is_null($cfgforcetimezone)) {
+            $CFG->forcetimezone = $cfgforcetimezone;
+        }
+
+        //restore system default values.
+        setlocale(LC_TIME, $oldlocale);
+    }
+
+    public function test_make_timestamp() {
+        global $USER, $CFG;
+
+        $testvalues = array(
+            array(
+                'usertimezone' => '2',//no dst applyed
+                'year' => '2011',
+                'month' => '7',
+                'day' => '1',
+                'hour' => '10',
+                'minutes' => '00',
+                'seconds' => '00',
+                'timezone' => '99', //take user timezone
+                'applydst' => true, //apply dst
+                'expectedoutput' => '1309507200'
+            ),
+            array(
+                'usertimezone' => '-2',//no dst applyed
+                'year' => '2011',
+                'month' => '7',
+                'day' => '1',
+                'hour' => '10',
+                'minutes' => '00',
+                'seconds' => '00',
+                'timezone' => '99', //take usertimezone
+                'applydst' => true, //apply dst
+                'expectedoutput' => '1309521600'
+            ),
+            array(
+                'usertimezone' => '-10',//no dst applyed
+                'year' => '2011',
+                'month' => '7',
+                'day' => '1',
+                'hour' => '10',
+                'minutes' => '00',
+                'seconds' => '00',
+                'timezone' => '2', //take this timezone
+                'applydst' => true, //apply dst
+                'expectedoutput' => '1309507200'
+            ),
+            array(
+                'usertimezone' => '-10',//no dst applyed
+                'year' => '2011',
+                'month' => '7',
+                'day' => '1',
+                'hour' => '10',
+                'minutes' => '00',
+                'seconds' => '00',
+                'timezone' => '-2', //take this timezone
+                'applydst' => true, //apply dst,
+                'expectedoutput' => '1309521600'
+            )
+        );
+
+        //Check if forcetimezone is set then save it and set it to use user timezone
+        $cfgforcetimezone = null;
+        if (isset($CFG->forcetimezone)) {
+            $cfgforcetimezone = $CFG->forcetimezone;
+            $CFG->forcetimezone = 99; //get user default timezone.
+        }
+
+        //store user default timezone to restore later
+        $userstimezone = $USER->timezone;
+
+        // The string version of date comes from server locale setting and does
+        // not respect user language, so it is necessary to reset that.
+        $oldlocale = setlocale(LC_TIME, '0');
+        setlocale(LC_TIME, 'en_AU.UTF-8');
+
+        //get instance of textlib for strtolower
+        $textlib = textlib_get_instance();
+        //Test make_timestamp with all testvals and assert if anything wrong.
+        foreach ($testvalues as $vals) {
+            $USER->timezone = $vals['usertimezone'];
+            $actualoutput = make_timestamp(
+                    $vals['year'],
+                    $vals['month'],
+                    $vals['day'],
+                    $vals['hour'],
+                    $vals['minutes'],
+                    $vals['seconds'],
+                    $vals['timezone'],
+                    $vals['applydst']
+                    );
+
+            //On different systems case of AM PM changes so compare case insenitive
+            $vals['expectedoutput'] = $textlib->strtolower($vals['expectedoutput']);
+            $actualoutput = $textlib->strtolower($actualoutput);
+
+            $this->assertEqual($vals['expectedoutput'], $actualoutput,
+                "Expected: {$vals['expectedoutput']} => Actual: {$actualoutput},
+                Please check if timezones are updated (Site adminstration -> location -> update timezone)");
+        }
+
+        //restore user timezone back to what it was
+        $USER->timezone = $userstimezone;
+
+        //restore forcetimezone
+        if (!is_null($cfgforcetimezone)) {
+            $CFG->forcetimezone = $cfgforcetimezone;
+        }
+
+        //restore system default values.
+        setlocale(LC_TIME, $oldlocale);
+    }
 }
 ?>
