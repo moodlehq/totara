@@ -1644,11 +1644,6 @@ function error ($message, $link='') {
     global $CFG, $SESSION, $THEME;
     $message = clean_text($message);   // In case nasties are in here
 
-    if (defined('UNITTEST_XML')) {
-        trigger_error(htmlspecialchars($message, E_USER_WARNING));
-        return;
-    }
-
     if (defined('FULLME') && FULLME == 'cron') {
         // Errors in cron should be mtrace'd.
         mtrace($message);
