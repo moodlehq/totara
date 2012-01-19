@@ -208,8 +208,6 @@ function load_test_table($tablename, $data, $db = null, $strlen = 255, $empty = 
         $coldefs[] = "$colname $type";
     }
 
-    // Attempt to drop the table first just in case
-    remove_test_table($tablename, $db);
     _private_execute_sql("CREATE TABLE $tablename (" . join(',', $coldefs) . ');', $db);
 
     if ($CFG->dbfamily == 'oracle') {
@@ -330,12 +328,7 @@ function make_test_table_like_real_one($tablename, $realprefix, $testprefix, $db
  */
 function remove_test_table($tablename, $db, $cascade = false) {
     global $CFG;
-
-    // Ignore errors
-    $result = _private_execute_sql('DROP TABLE ' . $tablename . ($cascade ? ' CASCADE' : '') . ';', $db, true);
-    if (!$result) {
-        return $result;
-    }
+    _private_execute_sql('DROP TABLE ' . $tablename . ($cascade ? ' CASCADE' : '') . ';', $db);
 
     if ($CFG->dbfamily == 'postgres') {
         $rs = $db->Execute("SELECT relname FROM pg_class WHERE relname = '{$tablename}_id_seq' AND relkind = 'S';");
@@ -395,7 +388,7 @@ function _private_has_id_column($table, $db) {
     return in_array('id', $db->MetaColumnNames($table));
 }
 
-function _private_execute_sql($sql, $localdb = null, $ignoreerror = false) {
+function _private_execute_sql($sql, $localdb = null) {
 
     global $CFG;
 
@@ -408,12 +401,6 @@ function _private_execute_sql($sql, $localdb = null, $ignoreerror = false) {
     }
     if (!$rs = $localdb->Execute($sql)) {
         if (defined('UNITTEST_XML')) {
-
-            // Ignore the error
-            if ($ignoreerror) {
-                return false;
-            }
-
             echo 'SQL ERROR: ';
             echo htmlspecialchars($localdb->ErrorMsg());
             echo ' STATEMENT: ';
