@@ -751,15 +751,4 @@ function choice_get_extra_capabilities() {
     return array('moodle/site:accessallgroups');
 }
 
-/**
- * @param string $feature FEATURE_xx constant for requested feature
- * @return mixed True if module supports feature, null if doesn't know
-*/
-function choice_supports($feature) {
-    switch($feature) {
-        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
-        default: return null;
-    }
-}
-
 ?>

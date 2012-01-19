@@ -36,9 +36,6 @@
     $assignmentclass = "assignment_$assignment->assignmenttype";
     $assignmentinstance = new $assignmentclass($cm->id, $assignment, $cm, $course);
 
-/// Mark as viewed
-    $completion = new completion_info($course);
-    $completion->set_module_viewed($cm);
-
     $assignmentinstance->view();   // Actually display the assignment!
+
 ?>

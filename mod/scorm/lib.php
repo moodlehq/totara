@@ -1,33 +1,5 @@
 <?php  // $Id$
 
-
-/**
- * Return an array of status options
- *
- * Optionally with translated strings
- *
- * @access  public
- * @param   bool    $with_strings   (optional)
- * @return  array
- */
-function scorm_status_options($with_strings = false) {
-    // Id's are important as they are bits
-    $options = array(
-        1 => 'failed',
-        2 => 'passed',
-        4 => 'completed'
-    );
-
-    if ($with_strings) {
-        foreach ($options as $key => $value) {
-            $options[$key] = get_string('completionstatus_'.$value, 'scorm');
-        }
-    }
-
-    return $options;
-}
-
-
 /**
 * Given an object containing all the necessary data,
 * (defined by the form in mod.html) this function
@@ -41,18 +13,18 @@ function scorm_status_options($with_strings = false) {
 function scorm_add_instance($scorm) {
     global $CFG;
 
-    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+    require_once('locallib.php');
 
     if (($packagedata = scorm_check_package($scorm)) != null) {
         $scorm->pkgtype = $packagedata->pkgtype;
-        $scorm->version = $packagedata->pkgtype;
         $scorm->datadir = $packagedata->datadir;
         $scorm->launch = $packagedata->launch;
         $scorm->parse = 1;
+
         $scorm->timemodified = time();
         if (!scorm_external_link($scorm->reference)) {
             $scorm->md5hash = md5_file($CFG->dataroot.'/'.$scorm->course.'/'.$scorm->reference);
-        } else if ($scorm->unpackmethod != 'aiccdirect') {
+        } else {
             $scorm->dir = $CFG->dataroot.'/'.$scorm->course.'/moddata/scorm';
             $scorm->md5hash = md5_file($scorm->dir.$scorm->datadir.'/'.basename($scorm->reference));
         }
@@ -68,19 +40,11 @@ function scorm_add_instance($scorm) {
         if (!isset($scorm->whatgrade)) {
             $scorm->whatgrade = 0;
         }
-
-        // no directview if popup
-        if ($scorm->popup == 2) {
-            $scorm->directview = 1;
-            $scorm->popup = 0;
-        }
-        else {
-            $scorm->directview = 0;
-        }
+        $scorm->grademethod = ($scorm->whatgrade * 10) + $scorm->grademethod;
 
         $id = insert_record('scorm', $scorm);
 
-        if (($scorm->unpackmethod != 'aiccdirect') && (scorm_external_link($scorm->reference) || ((basename($scorm->reference) != 'imsmanifest.xml') && ($scorm->reference[0] != '#')))) {
+        if (scorm_external_link($scorm->reference) || ((basename($scorm->reference) != 'imsmanifest.xml') && ($scorm->reference[0] != '#'))) {
             // Rename temp scorm dir to scorm id
             $scorm->dir = $CFG->dataroot.'/'.$scorm->course.'/moddata/scorm';
             if (file_exists($scorm->dir.'/'.$id)) {
@@ -116,7 +80,7 @@ function scorm_add_instance($scorm) {
 function scorm_update_instance($scorm) {
     global $CFG;
 
-    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+    require_once('locallib.php');
 
     $scorm->parse = 0;
     if (($packagedata = scorm_check_package($scorm)) != null) {
@@ -127,7 +91,7 @@ function scorm_update_instance($scorm) {
             $scorm->parse = 1;
             if (!scorm_external_link($scorm->reference) && $scorm->reference[0] != '#') { //dont set md5hash if this is from a repo.
                 $scorm->md5hash = md5_file($CFG->dataroot.'/'.$scorm->course.'/'.$scorm->reference);
-            } elseif($scorm->reference[0] != '#' && $scorm->unpackmethod == 'manifest') { //dont set md5hash if this is from a repo.
+            } elseif($scorm->reference[0] != '#') { //dont set md5hash if this is from a repo.
                 $scorm->dir = $CFG->dataroot.'/'.$scorm->course.'/moddata/scorm';
                 $scorm->md5hash = md5_file($scorm->dir.$scorm->datadir.'/'.basename($scorm->reference));
             }
@@ -137,24 +101,14 @@ function scorm_update_instance($scorm) {
     $scorm->timemodified = time();
     $scorm->id = $scorm->instance;
 
-    if (empty($scorm->options)) {
-        $scorm = scorm_option2text($scorm);
-    }
+    $scorm = scorm_option2text($scorm);
     $scorm->width = str_replace('%','',$scorm->width);
     $scorm->height = str_replace('%','',$scorm->height);
 
     if (!isset($scorm->whatgrade)) {
         $scorm->whatgrade = 0;
     }
-
-    // no directview if popup
-    if ($scorm->popup == 2) {
-        $scorm->directview = 1;
-        $scorm->popup = 0;
-    }
-    else {
-        $scorm->directview = 0;
-    }
+    $scorm->grademethod = ($scorm->whatgrade * 10) + $scorm->grademethod;
 
     // Check if scorm manifest needs to be reparsed
     if ($scorm->parse == 1) {
@@ -162,7 +116,7 @@ function scorm_update_instance($scorm) {
         if (is_dir($scorm->dir.'/'.$scorm->id)) {
             scorm_delete_files($scorm->dir.'/'.$scorm->id);
         }
-        if ($scorm->unpackmethod == 'manifest' && isset($scorm->datadir) && ($scorm->datadir != $scorm->id) &&
+        if (isset($scorm->datadir) && ($scorm->datadir != $scorm->id) && 
            (scorm_external_link($scorm->reference) || ((basename($scorm->reference) != 'imsmanifest.xml') && ($scorm->reference[0] != '#')))) {
             rename($scorm->dir.$scorm->datadir,$scorm->dir.'/'.$scorm->id);
         }
@@ -202,7 +156,7 @@ function scorm_delete_instance($id) {
     $scorm->dir = $CFG->dataroot.'/'.$scorm->course.'/moddata/scorm';
     if (is_dir($scorm->dir.'/'.$scorm->id)) {
         // Delete any dependent files
-        require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+        require_once('locallib.php');
         scorm_delete_files($scorm->dir.'/'.$scorm->id);
     }
 
@@ -264,25 +218,11 @@ function scorm_delete_instance($id) {
 */
 function scorm_user_outline($course, $user, $mod, $scorm) { 
     global $CFG;
-    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
-    require_once("$CFG->libdir/gradelib.php");
-    $grades = grade_get_grades($course->id, 'mod', 'scorm', $scorm->id, $user->id);
-    if (!empty($grades->items[0]->grades)) {
-        $grade = reset($grades->items[0]->grades);
-        $result = new object();
-        $result->info = get_string('grade') . ': '. $grade->str_long_grade;
+    require_once('locallib.php');
 
-        //datesubmitted == time created. dategraded == time modified or time overridden
-        //if grade was last modified by the user themselves use date graded. Otherwise use date submitted
-        if ($grade->usermodified == $user->id || empty($grade->datesubmitted)) {
-            $result->time = $grade->dategraded;
-        } else {
-            $result->time = $grade->datesubmitted;
-        }
+    $return = scorm_grade_user($scorm, $user->id, true);
 
-        return $result;
-    }
-    return null;
+    return $return;
 }
 
 /**
@@ -297,8 +237,6 @@ function scorm_user_outline($course, $user, $mod, $scorm) {
 */
 function scorm_user_complete($course, $user, $mod, $scorm) {
     global $CFG;
-    require_once("$CFG->libdir/gradelib.php");
-    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
 
     $liststyle = 'structlist';
     $scormpixdir = $CFG->modpixpath.'/scorm/pix';
@@ -307,21 +245,7 @@ function scorm_user_complete($course, $user, $mod, $scorm) {
     $lastmodify = 0;
     $sometoreport = false;
     $report = '';
-
-    // First Access and Last Access dates for SCOs
-    $timetracks = scorm_get_sco_runtime($scorm->id, false, $user->id);
-    $firstmodify = $timetracks->start;
-    $lastmodify = $timetracks->finish;
     
-    $grades = grade_get_grades($course->id, 'mod', 'scorm', $scorm->id, $user->id);
-    if (!empty($grades->items[0]->grades)) {
-        $grade = reset($grades->items[0]->grades);
-        echo '<p>'.get_string('grade').': '.$grade->str_long_grade.'</p>';
-        if ($grade->str_feedback) {
-            echo '<p>'.get_string('feedback').': '.$grade->str_feedback.'</p>';
-        }
-    }
-
     if ($orgs = get_records_select('scorm_scoes',"scorm='$scorm->id' AND organization='' AND launch=''",'id','id,identifier,title')) {
         if (count($orgs) <= 1) {
             unset($orgs);
@@ -378,6 +302,7 @@ function scorm_user_complete($course, $user, $mod, $scorm) {
                     }
 
                     if ($sco->launch) {
+                        require_once('locallib.php');
                         $score = '';
                         $totaltime = '';
                         if ($usertrack=scorm_get_tracks($sco->id,$user->id)) {
@@ -386,6 +311,14 @@ function scorm_user_complete($course, $user, $mod, $scorm) {
                             }
                             $strstatus = get_string($usertrack->status,'scorm');
                             $report .= "<img src='".$scormpixdir.'/'.$usertrack->status.".gif' alt='$strstatus' title='$strstatus' />";
+                            if ($usertrack->timemodified != 0) {
+                                if ($usertrack->timemodified > $lastmodify) {
+                                    $lastmodify = $usertrack->timemodified;
+                                }
+                                if ($usertrack->timemodified < $firstmodify) {
+                                    $firstmodify = $usertrack->timemodified;
+                                }
+                            }
                         } else {
                             if ($sco->scormtype == 'sco') {
                                 $report .= '<img src="'.$scormpixdir.'/'.'notattempted.gif" alt="'.get_string('notattempted','scorm').'" title="'.get_string('notattempted','scorm').'" />';
@@ -399,7 +332,7 @@ function scorm_user_complete($course, $user, $mod, $scorm) {
                             $report .= "\t\t\t<li><ul class='$liststyle'>\n";
                             foreach($usertrack as $element => $value) {
                                 if (substr($element,0,3) == 'cmi') {
-                                    $report .= '<li>'.$element.' => '.s($value).'</li>';
+                                    $report .= '<li>'.$element.' => '.$value.'</li>';
                                 }
                             }
                             $report .= "\t\t\t</ul></li>\n";
@@ -445,7 +378,7 @@ function scorm_cron () {
 
     global $CFG;
 
-    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+    require_once('locallib.php');
 
     $sitetimezone = $CFG->timezone;
     /// Now see if there are any digest mails waiting to be sent, and if we should send them
@@ -454,7 +387,7 @@ function scorm_cron () {
     }
 
     $timenow = time();
-    $updatetime = usergetmidnight($timenow, $sitetimezone);
+    $updatetime = usergetmidnight($timenow, $sitetimezone) + ($CFG->scorm_updatetimelast * 3600);
 
     if ($CFG->scorm_updatetimelast < $updatetime and $timenow > $updatetime) {
 
@@ -470,12 +403,7 @@ function scorm_cron () {
             }
         }
     }
-    //now clear out AICC session table with old session data
-    $cfg_scorm = get_config('scorm');
-    if (!empty($cfg_scorm->allowaicchacp)) {
-        $expiretime = time() - ($cfg_scorm->aicchacpkeepsessiondata*24*60*60);
-        delete_records_select('scorm_aicc_session', 'timemodified < '.$expiretime);
-    }
+
     return true;
 }
 
@@ -488,7 +416,7 @@ function scorm_cron () {
  */
 function scorm_get_user_grades($scorm, $userid=0) {
     global $CFG;
-    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+    require_once('locallib.php');
 
     $grades = array();
     if (empty($userid)) {
@@ -592,18 +520,6 @@ function scorm_grade_item_update($scorm, $grades=NULL) {
         $grades = NULL;
     }
 
-    // Update activity completion if applicable
-    // Get course info
-    $course = new object();
-    $course->id = $scorm->course;
-
-    $cm = get_coursemodule_from_instance('scorm', $scorm->id, $course->id);
-    // CM will be false if this has been run from scorm_add_instance
-    if ($cm) {
-        $completion = new completion_info($course);
-        $completion->update_state($cm, COMPLETION_COMPLETE);
-    }
-
     return grade_update('mod/scorm', $scorm->course, 'mod', 'scorm', $scorm->id, 0, $grades, $params);
 }
 
@@ -632,7 +548,7 @@ function scorm_option2text($scorm) {
     $scorm_popoup_options = scorm_get_popup_options_array();
 
     if (isset($scorm->popup)) {
-        if ($scorm->popup == 1 || $scorm->popup == 2) {
+        if ($scorm->popup == 1) {
             $optionlist = array();
             foreach ($scorm_popoup_options as $name => $option) {
                 if (isset($scorm->$name)) {
@@ -733,117 +649,6 @@ function scorm_get_extra_capabilities() {
  */
 function scorm_is_moddata_trusted() {
     return true;
-}
-
-/**
- * @param string $feature FEATURE_xx constant for requested feature
- * @return mixed True if module supports feature, null if doesn't know
-*/
-function scorm_supports($feature) {
-    switch($feature) {
-        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
-        case FEATURE_GRADE_HAS_GRADE: return true;
-        case FEATURE_COMPLETION_HAS_RULES: return true;
-        default: return null;
-    }
-}
-
-/**
- * Obtains the automatic completion state for this scorm based on any conditions
- * in scorm settings.
- *
- * @param object $course Course
- * @param object $cm Course-module
- * @param int $userid User ID
- * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
- * @return bool True if completed, false if not. (If no conditions, then return
- *   value depends on comparison type)
- */
-function scorm_get_completion_state($course, $cm, $userid, $type) {
-    global $CFG;
-
-    $result = $type;
-
-    // Get scorm
-    if (!$scorm = get_record('scorm', 'id', $cm->instance)) {
-        print_error('cannotfindscorm');
-    }
-
-    // Get user's tracks data
-    $tracks = get_records_sql(
-        "
-        SELECT
-            id,
-            element,
-            value
-        FROM
-            {$CFG->prefix}scorm_scoes_track
-        WHERE
-            scormid = {$scorm->id}
-        AND userid = {$userid}
-        AND element IN
-        (
-            'cmi.core.lesson_status',
-            'cmi.completion_status',
-            'cmi.core.score.raw',
-            'cmi.score.raw'
-        )
-        "
-    );
-
-    if (!$tracks) {
-        return completion_info::aggregate_completion_states($type, $result, false);
-    }
-
-    // Check for status
-    if ($scorm->completionstatusrequired !== null) {
-
-        // Get status
-        $statuses = array_flip(scorm_status_options());
-        $nstatus = 0;
-
-        foreach ($tracks as $track) {
-            if (!in_array($track->element, array('cmi.core.lesson_status', 'cmi.completion_status'))) {
-                continue;
-            }
-
-            if (array_key_exists($track->value, $statuses)) {
-                $nstatus |= $statuses[$track->value];
-            }
-        }
-
-        if ($scorm->completionstatusrequired & $nstatus) {
-            return completion_info::aggregate_completion_states($type, $result, true);
-        }
-        else {
-            return completion_info::aggregate_completion_states($type, $result, false);
-        }
-
-    }
-
-    // Check for score
-    if ($scorm->completionscorerequired !== null) {
-        $maxscore = -1;
-
-        foreach ($tracks as $track) {
-            if (!in_array($track->element, array('cmi.core.score.raw', 'cmi.score.raw'))) {
-                continue;
-            }
-
-            if (strlen($track->value) && floatval($track->value) >= $maxscore) {
-                $maxscore = floatval($track->value);
-            }
-        }
-
-        if ($scorm->completionscorerequired <= $maxscore) {
-            return completion_info::aggregate_completion_states($type, $result, true);
-        }
-        else {
-            return completion_info::aggregate_completion_states($type, $result, false);
-        }
-    }
-
-    return $result;
 }
 
 ?>

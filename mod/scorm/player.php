@@ -109,10 +109,6 @@
 
     add_to_log($course->id, 'scorm', 'view', "player.php?id=$cm->id&scoid=$sco->id", "$scorm->id", $cm->id);
 
-/// Mark as viewed
-    $completion = new completion_info($course);
-    $completion->set_module_viewed($cm);
-
     $scoidstr = '&amp;scoid='.$sco->id;
     $scoidpop = '&scoid='.$sco->id;
     $modestr = '&amp;mode='.$mode;
