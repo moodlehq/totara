@@ -38,7 +38,7 @@ class dp_template_general_settings_form extends moodleform {
         $id = $this->_customdata['id'];
         $template = get_record('dp_template', 'id', $id);
         $templatename = $template->fullname;
-        $enddate = $template->enddate == 0 ? '' : date('d/m/Y', $template->enddate);
+        $enddate = $template->enddate == 0 ? '' : date(get_string('datepickerparseformat'), $template->enddate);
 
         $mform->addElement('hidden', 'id', $id);
 
@@ -49,10 +49,10 @@ class dp_template_general_settings_form extends moodleform {
         $mform->setDefault('templatename', $templatename);
         $mform->addRule('templatename', null, 'required');
 
-        $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'));
+        $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'), array('placeholder' => get_string('datepickerplaceholder')));
         $mform->setType('enddate', PARAM_TEXT);
         $mform->setDefault('enddate', $enddate);
-        $mform->addRule('enddate', get_string('error:dateformat','local_plan'), 'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('enddate', get_string('error:dateformat','local_plan', get_string('datepickerplaceholder')), 'regex', get_string('datepickerregexphp'));
         $mform->addRule('enddate', null, 'required');
         $mform->setHelpButton('enddate', array('templateenddate', get_string('enddate', 'local_plan'), 'local_plan'), true);
 
@@ -65,11 +65,11 @@ class dp_template_general_settings_form extends moodleform {
         $result = array();
 
         $enddatestr = isset($data['enddate']) ? $data['enddate'] : '';
-        $enddate = dp_convert_userdate($enddatestr);
+        $enddate = totara_date_parse_from_format(get_string('datepickerparseformat'), $enddatestr);
 
         // Enforce valid dates
-        if (false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '') {
-            $result['enddate'] = get_string('error:dateformat','local_plan');
+        if (false === $enddate && $enddatestr !== get_string('datepickerplaceholder') && $enddatestr !== '') {
+            $result['enddate'] = get_string('error:dateformat','local_plan', get_string('datepickerplaceholder'));
         }
 
         return $result;
@@ -88,10 +88,9 @@ class dp_template_new_form extends moodleform {
         $mform->setType('templatename', PARAM_TEXT);
         $mform->addRule('templatename', null, 'required');
 
-        $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'));
+        $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'), array('placeholder' => get_string('datepickerplaceholder')));
         $mform->setType('enddate', PARAM_TEXT);
-        $mform->setDefault('enddate', 'dd/mm/yyyy');
-        $mform->addRule('enddate', get_string('error:dateformat','local_plan'), 'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('enddate', get_string('error:dateformat','local_plan', get_string('datepickerplaceholder')), 'regex', get_string('datepickerregexphp'));
         $mform->addRule('enddate', null, 'required');
         $mform->setHelpButton('enddate', array('templateenddate', get_string('enddate', 'local_plan'), 'local_plan'), true);
 
@@ -104,11 +103,11 @@ class dp_template_new_form extends moodleform {
         $result = array();
 
         $enddatestr = isset($data['enddate']) ? $data['enddate'] : '';
-        $enddate = dp_convert_userdate( $enddatestr );
+        $enddate = totara_date_parse_from_format(get_string('datepickerparseformat'), $enddatestr );
 
         // Enforce valid dates
-        if (false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '') {
-            $result['enddate'] = get_string('error:dateformat', 'local_plan');
+        if (false === $enddate && $enddatestr !== get_string('datepickerplaceholder') && $enddatestr !== '') {
+            $result['enddate'] = get_string('error:dateformat', 'local_plan', get_string('datepickerplaceholder'));
         }
 
         return $result;

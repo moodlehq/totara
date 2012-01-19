@@ -136,7 +136,6 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
      */
     this.open = function() {
         // Open default url in dialog
-        var url = this.default_url;
         var method = 'GET';
 
         this.dialog.html('');
@@ -154,7 +153,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
             this.handler._open();
         }
 
-        this.load(url);
+        this.load(this.default_url);
 
         // If ie6 then hide selects while the pop-up is open
         if($.browser.msie && parseInt($.browser.version) == 6) {
@@ -1144,7 +1143,7 @@ totaraDialog_handler_treeview_singleselect.prototype._save = function() {
         if (selected_text) {
             $('#'+this.text_element_id).addClass('nonempty');
         } else {
-            $('#'+this.text_element_id).remClass('nonempty');
+            $('#'+this.text_element_id).removeClass('nonempty');
         }
 
         if (this.deletable) {
@@ -1184,8 +1183,13 @@ totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function
 
             var clicked = $(this);
 
-            $('.treeview span.unclickable', dialog._container).addClass('clickable');
-            $('.treeview span.unclickable', dialog._container).removeClass('unclickable');
+            // Get current selection
+            var current_val = $('#treeview_selected_val_'+dialog._title).val();
+
+            // Enable current (old) selection
+            dialog._toggle_items('item_'+current_val, true);
+
+            // Disable new selection
             dialog._toggle_items($(this).attr('id'), false);
 
             var clicked_id = clicked.attr('id').split('_');
@@ -1210,8 +1214,10 @@ totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function
         var clone = item.clone();
         var max_title_length = 60;
 
-        $('.treeview span.unclickable', dialog._container).addClass('clickable');
-        $('.treeview span.unclickable', dialog._container).removeClass('unclickable');
+        // Get current selection
+        var current_val = $('#treeview_selected_val_'+dialog._title).val();
+
+        // Disable new selection
         dialog._toggle_items($(this).attr('id'), false);
 
         label_length = $('#treeview_currently_selected_span_'+dialog._title+' label').html().length;
@@ -1227,6 +1233,9 @@ totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function
 
         // Make sure the info is displayed
         $('#treeview_currently_selected_span_'+dialog._title).css('display', 'inline');
+
+        // Enable current (old) selection
+        dialog._toggle_items('item_'+current_val, true);
 
         // Re-bind to right elements
         dialog._make_selectable(parent_element);

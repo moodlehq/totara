@@ -10,7 +10,7 @@ require_login();
 
 <div>
     <label for="extensiontime"><?php echo get_string('extenduntil', 'local_program'); ?></label>
-    <input type="text" class="extensiontime" name="extensiontime" id="extensiontime" size="20" maxlength="10" />
+    <input type="text" class="extensiontime" name="extensiontime" id="extensiontime" size="20" maxlength="10" placeholder="<?php echo get_string('datepickerplaceholder'); ?>" />
 </div>
 <br />
 <div>

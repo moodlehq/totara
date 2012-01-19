@@ -582,19 +582,6 @@ $moodle_capabilities = array(
         )
     ),
 
-    'moodle/course:viewprogress' => array(
-
-        'riskbitmask' => RISK_PERSONAL,
-
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'legacy' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
-        )
-    ),
-
     'moodle/course:viewhiddencourses' => array(
 
         'captype' => 'read',
@@ -1326,7 +1313,7 @@ $moodle_capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW
         )
-    ),
+    )
 );
 
 

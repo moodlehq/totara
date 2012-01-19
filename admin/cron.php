@@ -167,7 +167,7 @@
             if (file_exists($blockfile)) {
                 require_once($blockfile);
                 $classname = 'block_'.$block->name;
-                $blockobj = new $classname;
+                $blockobj = new $classname; 
                 if (method_exists($blockobj,'cron')) {
                     mtrace("Processing cron function for ".$block->name.'....','');
                     if ($blockobj->cron()) {
@@ -260,11 +260,6 @@
         mtrace('done');
     }
 
-    require_once($CFG->dirroot . '/local/reportbuilder/cron.php');
-    mtrace('Starting the report builder cron...');
-    reportbuilder_cron();
-    mtrace('done.');
-
     // Competency cron
     mtrace('Starting the competency cron...');
     require_once($CFG->dirroot . '/hierarchy/prefix/competency/cron.php');
@@ -326,7 +321,7 @@
     mtrace("Finished local modules");
 
 /// Run all core cron jobs, but not every time since they aren't too important.
-/// These don't have a timer to reduce load, so we'll use a random number
+/// These don't have a timer to reduce load, so we'll use a random number 
 /// to randomly choose the percentage of times we should run these jobs.
 
     srand ((double) microtime() * 10000000);
@@ -483,43 +478,14 @@
         build_context_path();
         mtrace ('Built context paths');
 
+        // totara site registration
         if (!empty($CFG->registrationenabled)) {
-            $registrationdue = $oktotry = false;
-            if (empty($CFG->registered) || $CFG->registered < (time() - 60 * 60 * 24 * 30)) {
-                // Register up to once a month
-                $registrationdue = true;
-            }
-            if (empty($CFG->registrationattempted) || $CFG->registrationattempted < (time() - 60 * 60 * 24 * 7)) {
-                // Try registering once a week if unsuccessful
-                $oktotry = true;
-            }
-            if ($registrationdue && $oktotry) {
-                mtrace("Performing registration update:");
-                require_once('registerlib.php');
-                $registerdata = get_registration_data();
-                send_registration_data($registerdata);
-                mtrace("Registration update done");
-            }
+            require_once('registerlib.php');
+            registration_cron();
         }
 
-        // Get 100th from end errorlog id
-        $errorlog_maxid = get_records_sql("
-            SELECT id
-              FROM {$CFG->prefix}errorlog
-             ORDER BY id DESC
-        ", 100, 1);
-
-        $errorlog_maxid = $errorlog_maxid ? array_pop($errorlog_maxid) : false;
-
-        // Crop errorlog table at 100 entries
-        if ($errorlog_maxid) {
-            $errorlog_sql = "
-                DELETE FROM {$CFG->prefix}errorlog
-                 WHERE id <= {$errorlog_maxid->id}
-            ";
-            mtrace('Cropping errorlog table at 100 entries');
-            execute_sql($errorlog_sql, false);
-        }
+        // crop errorlog table at 100 entries
+        totara_crop_error_log();
 
         mtrace("Finished clean-up tasks...");
 

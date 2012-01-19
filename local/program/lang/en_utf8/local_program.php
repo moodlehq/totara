@@ -175,6 +175,7 @@ $string['requiredlearninginstructions'] = 'Your required learning is shown below
 $string['requiredlearninginstructionsuser'] = '{$a}\'s required learning is shown below.';
 
 // Errors
+$string['error:addinguserassignment'] = 'An error occured when adding a user assignment';
 $string['error:courses_endenroldate'] = 'You must set an enrolment end date for this course if you want it to recur';
 $string['error:courses_nocourses'] = 'Course sets must contain at least one course.';
 $string['error:nopermissions'] = 'You do not have the necessary permissions to perform this action';
@@ -200,6 +201,11 @@ $string['error:unabletoaddset'] = 'Unable to add new set. Set type not recognise
 $string['error:unabletosetupprogcontent'] = 'Unable to set up program content.';
 $string['error:invaliduser'] = 'Error, invalid user';
 $string['error:badcheckvariable'] = 'The check variable was wrong - try again';
+$string['error:notrequiredlearning'] = 'This program is not required learning';
+$string['error:updatingcompletionrecord'] = 'An error occured when updating a completion record';
+$string['error:updateuserassignment'] = 'An error occured when updating a user assignment record';
+$string['error:updatingprogramassignment'] = 'An error occured when updating a program assignment';
+$string['error:nocompletionrecord'] = 'Error, could not find completion record for assginment';
 
 // Instructions
 $string['instructions:assignments1'] = 'Categories can be used to assign the program to sets of learners.';
@@ -409,7 +415,7 @@ $string['of'] = 'of';
 $string['organisations'] = 'Organisations';
 $string['organisationname'] = 'Organisation name';
 $string['organisations_category'] = 'organisation(s)';
-$string['pleaseentervaliddate'] = 'Please enter a valid date in the format dd/mm/yyyy';
+$string['pleaseentervaliddate'] = 'Please enter a valid date in the format $a.';
 $string['pleaseentervalidreason'] = 'Please enter a valid reason';
 $string['pleaseentervalidunit'] = 'Please enter a valid unit between 0 and 999';
 $string['pleasepickaninstance'] = 'Please choose an item';

@@ -233,6 +233,7 @@ $string['teammembers_text'] = 'All members of your teams are show below.';
 $string['nostaffassigned'] = 'You currently do not have a team.';
 
 //Course Types
+$string['coursetype'] = 'Course Type';
 $string['elearning'] = 'E-learning';
 $string['blended'] = 'Blended';
 $string['facetoface'] = 'Face-to-face';

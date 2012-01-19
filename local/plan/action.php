@@ -260,7 +260,8 @@ if (!empty($reactivate)) {
     require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
     local_js(array(
-        TOTARA_JS_DATEPICKER
+        TOTARA_JS_DATEPICKER,
+        TOTARA_JS_PLACEHOLDER
     ));
 
     if ($plan->get_setting('completereactivate') >= DP_PERMISSION_ALLOW) {
@@ -272,7 +273,7 @@ if (!empty($reactivate)) {
 
         if ($data = $form->get_data()) {
 
-            $new_date = (isset($data->enddate)) ? dp_convert_userdate($data->enddate) : null;
+            $new_date = (isset($data->enddate)) ? totara_date_parse_from_format(get_string('datepickerparseformat'), $data->enddate) : null;
 
             $referer = $data->referer;
 

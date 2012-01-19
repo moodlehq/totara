@@ -136,9 +136,12 @@ class auth_plugin_email extends auth_plugin_base {
                 if (!set_field("user", "confirmed", 1, "id", $user->id)) {
                     return AUTH_CONFIRM_FAIL;
                 }
-                if (!set_field("user", "firstaccess", time(), "id", $user->id)) {
+                $now = time();
+                if (!set_field("user", "firstaccess", $now, "id", $user->id)) {
                     return AUTH_CONFIRM_FAIL;
                 }
+                $user->firstaccess = $now;
+                events_trigger('user_firstaccess', $user);
                 return AUTH_CONFIRM_OK;
             }
         } else {

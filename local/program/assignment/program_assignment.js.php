@@ -612,12 +612,9 @@ totaraDialog_completion = function() {
         var completionevent = <?php echo COMPLETION_EVENT_NONE; ?>;
         var completioninstance = 0;
 
-        //var dateformat = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
-
-        var dateformat = new RegExp("[0-3][0-9]/(0|1)[0-9]/(19|20)[0-9]{2}");
-
+        var dateformat = new RegExp("<?php echo get_string('datepickerregexjs'); ?>");
         if (dateformat.test(completiontime) == false) {
-            alert("<?php echo get_string('pleaseentervaliddate', 'local_program'); ?>");
+            alert("<?php echo get_string('pleaseentervaliddate', 'local_program', get_string('datepickerplaceholder')); ?>");
         }
         else {
             self.item.update_completiontime(completiontime, completionevent, completioninstance);
@@ -653,17 +650,8 @@ totaraDialog_completion_handler = function() {};
 totaraDialog_completion_handler.prototype = new totaraDialog_handler();
 
 totaraDialog_completion_handler.prototype.first_load = function() {
-    var handler = this;
-
-    $('.completiontime', this._container).datepicker({
-    dateFormat: 'dd/mm/yy',
-    showOn: 'both',
-    buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
-    buttonImageOnly: true,
-    beforeShow: function() { $('#ui-datepicker-div').css('z-index',1600); },
-    constrainInput: true,
-    isRTL: false // positioning handled via CSS instead
-    });
+    <?php echo build_datepicker_js('input[name="completiontime"]',false); ?>
+    $('#ui-datepicker-div').css('z-index',1600);
 }
 
 totaraDialog_completion_handler.prototype.every_load = function() {
@@ -680,6 +668,8 @@ totaraDialog_completion_handler.prototype.every_load = function() {
         $('#timeperiod', this._container).val(parts[1]);
         $('#eventtype', this._container).val(completionevent);
     }
+    // rebind placeholder for date picker
+    $('input[placeholder], textarea[placeholder]').placeholder();
 }
 
 

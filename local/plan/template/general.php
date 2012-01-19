@@ -40,7 +40,8 @@ admin_externalpage_setup('managetemplates');
 //Javascript include
 local_js(array(
     TOTARA_JS_DIALOG,
-    TOTARA_JS_DATEPICKER
+    TOTARA_JS_DATEPICKER,
+    TOTARA_JS_PLACEHOLDER
 ));
 
 $returnurl = $CFG->wwwroot."/local/plan/template/general.php?id=$id";
@@ -97,7 +98,7 @@ function update_general_settings($id, $fromform){
     $todb = new object();
     $todb->id = $id;
     $todb->fullname = $fromform->templatename;
-    $todb->enddate = dp_convert_userdate($fromform->enddate);
+    $todb->enddate = totara_date_parse_from_format(get_string('datepickerparseformat'), $fromform->enddate);
 
     begin_sql();
     if(!update_record('dp_template', $todb)){

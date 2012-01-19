@@ -3278,6 +3278,7 @@ function authenticate_user_login($username, $password) {
             if (empty($user->firstaccess)) { //prevent firstaccess from remaining 0 for manual account that never required confirmation
                 set_field('user','firstaccess', $user->timemodified, 'id', $user->id);
                 $user->firstaccess = $user->timemodified;
+                events_trigger('user_firstaccess', $user);
             }
 
             update_internal_user_password($user, $password); // just in case salt or encoding were changed (magic quotes too one day)
@@ -3666,11 +3667,15 @@ function delete_course($courseorid, $showfeedback = true) {
         return false;
     }
 
-    if (!remove_dp_items($courseid)) {
-        if ($showfeedback) {
-            notify("An error occurred while deleting some of the learning plan course items.");
+    // remove learning plan course assignments
+    if (file_exists($CFG->dirroot . '/local/plan/lib.php')) {
+        require_once($CFG->dirroot . '/local/plan/lib.php');
+        if (!plan_remove_dp_course_assignments($courseid)) {
+            if ($showfeedback) {
+                notify("An error occurred while deleting some of the learning plan course items.");
+            }
+            $result = false;
         }
-        $result = false;
     }
 
     // Remove course completion records
@@ -3901,36 +3906,15 @@ function remove_course_contents($courseid, $showfeedback=true) {
     remove_course_grades($courseid, $showfeedback);
     remove_grade_letters($context, $showfeedback);
 
-/// Remove all competency evidence
-    if(!delete_records_select("comp_evidence_items_evidence", "itemid IN (SELECT id FROM {$CFG->prefix}comp_evidence_items WHERE itemtype LIKE 'course%' AND iteminstance=53)")) {
-        return false;
-    } else {
-        if(!delete_records_select("comp_evidence_items", "(itemtype = 'coursecompletion' OR itemtype='coursegrade') AND iteminstance={$courseid}")) {
-            return false;
-        } else {
-            notify($strdeleted . ' - Competency Evidence Items');
+/// Remove competency evidence and evidence items relating to course
+    if (file_exists($CFG->dirroot . '/hierarchy/prefix/competency/evidence/lib.php')) {
+        require_once($CFG->dirroot . '/hierarchy/prefix/competency/evidence/lib.php');
+        if (!hierarchy_delete_competency_evidence($courseid)) {
+            if ($showfeedback) {
+                notify("An error occurred while deleting some of the competency evidence course items.");
+            }
+            $result = false;
         }
-    }
-
-    return $result;
-}
-
-
-/**
- * Remove learning plan items that are associated with this course.
- * @param int $courseid The id of the course that is being deleted
- * @return bool true if all the removals succeeded. false if there were any failures. If this
- *             method returns false, some of the removals will probably have succeeded, and others
- *             failed, but you have no way of knowing which.
- */
-function remove_dp_items($courseid) {
-    $result = true;
-    $strdeleted = get_string('deleted');
-
-    if(!delete_records('dp_plan_course_assign', 'courseid', $courseid)) {
-        return false;
-    } else {
-            notify($strdeleted . ' - Learning Plan Course Items');
     }
 
     return $result;
@@ -5501,9 +5485,10 @@ function get_string($identifier, $module='', $a=NULL, $extralocations=NULL) {
 /// originally these special strings were stored in moodle.php now we are only in langconfig.php
     $langconfigstrs = array('alphabet', 'backupnameformat', 'decsep', 'firstdayofweek', 'listsep', 'locale',
                             'localewin', 'localewincharset', 'oldcharset',
-                            'parentlanguage', 'strftimedate', 'strftimedateshort', 'strftimedatetime',
-                            'strftimedaydate', 'strftimedaydatetime', 'strftimedayshort', 'strftimedaytime',
-                            'strftimemonthyear', 'strftimerecent', 'strftimerecentfull', 'strftimetime',
+                            'parentlanguage', 'datepickerdisplayformat', 'datepickerplaceholder', 'datepickerparseformat',
+                            'datepickerregexjs', 'datepickerregexphp', 'strftimedate', 'strftimedatenumeric',
+                            'strftimedateshort', 'strftimedatetime', 'strftimedaydate', 'strftimedaydatetime',
+                            'strftimedayshort', 'strftimedaytime', 'strftimemonthyear', 'strftimerecent', 'strftimerecentfull', 'strftimetime',
                             'thischarset', 'thisdirection', 'thislanguage', 'strftimedatetimeshort', 'thousandssep',
                             'strftimedateseconds', 'strfdateshortmonth', 'strftimeshort', 'strfdateattime');
 

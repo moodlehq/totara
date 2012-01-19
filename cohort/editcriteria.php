@@ -51,8 +51,7 @@ if (cohort_criteria_already_set($cohort->id)) {
 // Setup custom javascript
 local_js(array(
     TOTARA_JS_DIALOG,
-    TOTARA_JS_TREEVIEW,
-    TOTARA_JS_DATEPICKER
+    TOTARA_JS_TREEVIEW
 ));
 
 require_js(

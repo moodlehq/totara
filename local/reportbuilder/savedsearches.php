@@ -39,7 +39,6 @@ $id = optional_param('id',null,PARAM_INT); // id for report
 $sid = optional_param('sid',null,PARAM_INT); // id for saved search
 $d = optional_param('d',false, PARAM_BOOL); // delete saved search?
 $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
-
 $returnurl = $CFG->wwwroot.'/local/reportbuilder/savedsearches.php?id='.$id;
 
 $report = new reportbuilder($id);
@@ -52,10 +51,23 @@ if($d && $confirm) {
     if(!confirm_sesskey()) {
         totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
     }
-    if(delete_records('report_builder_saved', 'id', $sid)) {
-        totara_set_notification(get_string('savedsearchdeleted','local_reportbuilder'), $returnurl);
+    $deleteok = true;
+    begin_sql();
+    if(!delete_records('report_builder_saved', 'id', $sid)) {
+        rollback_sql();
+        $deleteok = false;
     } else {
-        totara_set_notification(get_string('error:savedsearchnotdeleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+        $sql = "UPDATE {$CFG->prefix}report_builder_schedule SET savedsearchid=0 WHERE savedsearchid=$sid";
+        if (!execute_sql($sql, false)) {
+            rollback_sql();
+            $deleteok = false;
+        }
+    }
+    if ($deleteok) {
+        commit_sql();
+        totara_set_notification(get_string('savedsearchdeleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+    } else {
+        totara_set_notification(get_string('error:savedsearchnotdeleted','local_reportbuilder'), $returnurl);
     }
 } else if($d) {
     $fullname = $report->fullname;
@@ -67,17 +79,29 @@ if($d && $confirm) {
     $navigation = build_navigation($navlinks);
     print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_button());
 
-    print_heading(get_string('savedsearches','local_reportbuilder'));
+    print_heading(get_string('savedsearches','local_reportbuilder'), '', 1);
+    //is this saved search being used in any scheduled reports?
+    if ($scheduled = get_records_select('report_builder_schedule', "savedsearchid={$sid}")) {
+        //display a message and list of scheduled reports using this saved search
+        ob_start();
+        totara_print_scheduled_reports(false, false, "rbs.savedsearchid={$sid}");
+        $out = ob_get_contents();
+        ob_end_clean();
+
+        $messageend = get_string('savedsearchinscheduleddelete', 'local_reportbuilder', $out) . '<br /><br />';
+    } else {
+        $messageend = '';
+    }
+
+    $messageend .= get_string('savedsearchconfirmdelete','local_reportbuilder');
     // prompt to delete
-    notice_yesno(get_string('savedsearchconfirmdelete','local_reportbuilder'),
+    notice_yesno($messageend,
         "savedsearches.php?id={$id}&amp;sid={$sid}&amp;d=1&amp;confirm=1&amp;" .
         "sesskey={$USER->sesskey}", $returnurl);
 
     print_footer();
     die;
 }
-
-
 
 $fullname = $report->fullname;
 $pagetitle = format_string(get_string('savesearch','local_reportbuilder').': '.$fullname);

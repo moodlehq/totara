@@ -38,7 +38,8 @@ $categoryid = optional_param('category', 0, PARAM_INT); // course category - can
 
 //Javascript include
 local_js(array(
-    TOTARA_JS_DATEPICKER
+    TOTARA_JS_DATEPICKER,
+    TOTARA_JS_PLACEHOLDER
 ));
 
 if ($categoryid) { // creating new program in this category
@@ -69,9 +70,8 @@ if ($data = $form->get_data()) {
 
         $program_todb = new stdClass;
 
-        $program_todb->availablefrom = ($data->availablefromselector) ? prog_date_to_time($data->availablefromselector) : 0;
-        $program_todb->availableuntil = ($data->availableuntilselector) ? prog_date_to_time($data->availableuntilselector) : 0;
-
+        $program_todb->availablefrom = ($data->availablefromselector) ? totara_date_parse_from_format(get_string('datepickerparseformat'),$data->availablefromselector) : 0;
+        $program_todb->availableuntil = ($data->availableuntilselector) ? totara_date_parse_from_format(get_string('datepickerparseformat'),$data->availableuntilselector) : 0;
         //Calcuate sortorder
         $sortorder = get_field('prog', 'MAX(sortorder) + 1', '', '');
 

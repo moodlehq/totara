@@ -160,6 +160,33 @@ from
                     AND base.userid = course_completion.userid)',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
         );
+        $joinlist[] = new rb_join(
+                'criteria',
+                'LEFT',
+                $CFG->prefix . 'course_completion_criteria',
+                '(criteria.course = base.courseid AND ' .
+                    'criteria.criteriatype = ' .
+                    COMPLETION_CRITERIA_TYPE_GRADE . ')',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+        );
+        $joinlist[] = new rb_join(
+                'grade_items',
+                'LEFT',
+                $CFG->prefix . 'grade_items',
+                '(grade_items.courseid = base.courseid AND ' .
+                    'grade_items.itemtype = \'course\')',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+        );
+        $joinlist[] = new rb_join(
+                'grade_grades',
+                'LEFT',
+                $CFG->prefix . 'grade_grades',
+                '(grade_grades.itemid = grade_items.id AND ' .
+                    'grade_grades.userid = base.userid)',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'grade_items'
+        );
+
 
         $this->add_course_table_to_joinlist($joinlist, 'base', 'courseid');
         $this->add_user_table_to_joinlist($joinlist, 'base','userid');
@@ -342,6 +369,38 @@ from
                     'extrafields' => array('approved' => 'dp_course.approved', 'userid' => 'base.userid', 'courseid' => 'base.courseid'),
                 )
             );
+        $columnoptions[] = new rb_column_option(
+                'course_completion',
+                'grade',
+                get_string('grade', 'rb_source_course_completion'),
+                'grade_grades.finalgrade',
+                array(
+                    'joins' => 'grade_grades',
+                    'displayfunc' => 'percent',
+                )
+            );
+        $columnoptions[] = new rb_column_option(
+                'course_completion',
+                'passgrade',
+                get_string('passgrade', 'rb_source_course_completion'),
+                'grade_items.gradepass',
+                array(
+                    'joins' => 'grade_items',
+                    'displayfunc' => 'percent',
+                )
+            );
+        $columnoptions[] = new rb_column_option(
+                'course_completion',
+                'gradestring',
+                get_string('requiredgrade', 'rb_source_course_completion'),
+                'grade_grades.finalgrade',
+                array(
+                    'joins' => array('criteria', 'grade_grades'),
+                    'displayfunc' => 'grade_string',
+                    'extrafields' => array('gradepass' => 'criteria.gradepass'),
+                    'defaultheading' => get_string('grade', 'rb_source_course_completion'),
+                )
+            );
 
         return $columnoptions;
     }
@@ -390,6 +449,19 @@ from
                 get_string('courseduedate', 'rb_source_dp_course'),
                 'date'
         );
+        $filteroptions[] = new rb_filter_option(
+                'course_completion',
+                'grade',
+                get_string('grade', 'rb_source_course_completion'),
+                'number'
+        );
+        $filteroptions[] = new rb_filter_option(
+                'course_completion',
+                'passgrade',
+                'Required Grade',
+                'number'
+        );
+
         return $filteroptions;
     }
 

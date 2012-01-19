@@ -5059,7 +5059,7 @@ function print_recent_activity_note($time, $user, $text, $link, $return=false, $
 /**
  * Prints a basic textarea field.
  *
- * When using this function, you should
+ * When using this function, you should 
  *
  * @uses $CFG
  * @param bool $usehtmleditor Enables the use of the htmleditor for this field.
@@ -6244,7 +6244,7 @@ function redirect($url, $message='', $delay=-1) {
     }
     if (! defined('HEADER_PRINTED')) {
         // this type of redirect might not be working in some browsers - such as lynx :-(
-        print_header('', 'Redirect', '', '', $errorprinted ? '' : ('<meta http-equiv="refresh" content="'. $delay .'; url='. $encodedurl .'" />'));
+        print_header('', '', '', '', $errorprinted ? '' : ('<meta http-equiv="refresh" content="'. $delay .'; url='. $encodedurl .'" />'));
         $delay += 3; // double redirect prevention, it was sometimes breaking upgrades before 1.7
     } else {
         print_container_end_all(false, $THEME->open_header_containers);

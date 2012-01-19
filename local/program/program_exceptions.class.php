@@ -116,26 +116,45 @@ class prog_exceptions_manager {
      *
      * @global object $CFG
      * @param int $assignmentid
+     * @param int $userid (optional)
      * @return bool Success status
      */
-    public static function delete_exceptions_by_assignment($assignmentid) {
+    public static function delete_exceptions_by_assignment($assignmentid, $userid=0) {
         global $CFG;
 
         begin_sql();
 
         // first delete all exception_data entries for exceptions relating to this assignment
-        $subquery = "SELECT DISTINCT(id) FROM {$CFG->prefix}prog_exception WHERE assignmentid = $assignmentid";
+        $subquery = "SELECT id FROM {$CFG->prefix}prog_exception WHERE assignmentid = {$assignmentid}";
+        if ($userid) {
+            $subquery .= " AND userid = {$userid}";
+        }
         $select = "exceptionid IN ($subquery)";
         if (delete_records_select('prog_exception_data', $select)!==false) {
-            if (delete_records('prog_exception', 'assignmentid', $assignmentid)!==false) {
-                commit_sql();
-                return true;
+            $exceptionselect = "assignmentid = $assignmentid";
+            if ($userid) {
+                $exceptionselect .= " AND userid = {$userid}";
+            }
+            if (delete_records_select('prog_exception', $exceptionselect)!==false) {
+
+                // Deleted exceptions, now update exception
+                // status for user assignments
+                $update_sql = "UPDATE {$CFG->prefix}prog_user_assignment SET exceptionstatus=0 WHERE assignmentid={$assignmentid}";
+                if ($userid) {
+                    $update_sql .= " AND userid = {$userid}";
+                }
+                if (execute_sql($update_sql, false)) {
+                    commit_sql();
+                    return true;
+                } else {
+                    rollback_sql();
+                    return false;
+                }
             }
         }
 
         rollback_sql();
         return false;
-
     }
 
     /**
@@ -366,11 +385,6 @@ class prog_exceptions_manager {
             foreach($exceptions as $exception) {
 
                 $row = array();
-
-                if ($exception->userid != $exception->userid) {
-                    $this->delete_exception($exception->id);
-                    continue;
-                }
 
                 $user = new object();
                 $user->id = $exception->userid;

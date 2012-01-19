@@ -136,5 +136,5 @@ var totara_local_plan_update = function(response) {
     $('div.plan_box').replaceWith(new_planbox);
 
     // Add duedate datepicker
-<?php echo build_datepicker_js("[id^=duedate_{$component_name}]", false, 'dd/mm/y'); ?>
+<?php echo build_datepicker_js("[id^=duedate_{$component_name}]", false); ?>
 }

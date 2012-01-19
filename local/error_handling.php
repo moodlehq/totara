@@ -185,3 +185,33 @@ function totara_exception_handler($exception) {
     set_exception_handler('totara_exception_handler');
     return $result;
 }
+
+
+/**
+ * Cron task for clearing out older error log entries
+ *
+ * To prevent the table getting too big
+ */
+function totara_crop_error_log() {
+    global $CFG;
+
+    // Get 100th from end errorlog id
+    $errorlog_maxid = get_records_sql("
+        SELECT id
+          FROM {$CFG->prefix}errorlog
+         ORDER BY id DESC
+    ", 100, 1);
+
+    $errorlog_maxid = $errorlog_maxid ? array_pop($errorlog_maxid) : false;
+
+    // Crop errorlog table at 100 entries
+    if ($errorlog_maxid) {
+        $errorlog_sql = "
+            DELETE FROM {$CFG->prefix}errorlog
+             WHERE id <= {$errorlog_maxid->id}
+        ";
+        mtrace('Cropping errorlog table at 100 entries');
+        execute_sql($errorlog_sql, false);
+    }
+
+}

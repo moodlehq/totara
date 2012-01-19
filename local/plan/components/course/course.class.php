@@ -649,7 +649,7 @@ class dp_course_component extends dp_base_component {
             $badduedates = array();  // Record naughty duedates
             foreach ($duedates as $id => $duedate) {
                 // allow empty due dates
-                if ($duedate == '' || $duedate == 'dd/mm/yy') {
+                if ($duedate == '' || $duedate == get_string('datepickerplaceholder')) {
                     // set all empty due dates to the plan due date
                     // if they are required
                     if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
@@ -659,17 +659,13 @@ class dp_course_component extends dp_base_component {
                         $duedateout = null;
                     }
                 } else {
-                    $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
-                    if (preg_match($datepattern, $duedate, $matches) == 0) {
+                    $datepattern = get_string('datepickerregexphp');
+                    if (preg_match($datepattern, $duedate) == 0) {
                         // skip badly formatted date strings
                         $badduedates[] = $id;
                         continue;
                     }
-                    $day = $matches[1];
-                    $mon = $matches[2];
-                    $year = $matches[3];
-
-                    $duedateout = make_timestamp($year, $mon, $day);
+                    $duedateout = totara_date_parse_from_format(get_string('datepickerparseformat'), $duedate);
                 }
 
                 $todb = new object();

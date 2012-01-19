@@ -62,7 +62,6 @@ $string['course:viewhiddencourses'] = 'ראה קורסים מוסתרים';
 $string['course:viewhiddensections'] = 'ראה קטעים מוסתרים';
 $string['course:viewhiddenuserfields'] = 'ראה שדות משתמשים מוסתרים';
 $string['course:viewparticipants'] = 'ראה משתתפים';
-$string['course:viewprogress'] = 'ראה התקדמות בקורס';
 $string['course:viewscales'] = 'ראה את סולמות הציונים';
 $string['course:visibility'] = 'הסתר או הראה קורסים';
 $string['currentcontext'] = 'הקשר נוכחי';

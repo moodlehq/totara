@@ -63,7 +63,8 @@ $navigation = build_navigation($breadcrumbs);
 
 //Javascript include
 local_js(array(
-    TOTARA_JS_DATEPICKER
+    TOTARA_JS_DATEPICKER,
+    TOTARA_JS_PLACEHOLDER
 ));
 
 

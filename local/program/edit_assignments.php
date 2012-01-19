@@ -45,14 +45,14 @@ if (!has_capability('local/program:configureassignments', $program->get_context(
 // Define the categorys to appear on the page
 $categories = prog_assignment_category::get_categories();
 
-if($data = data_submitted()) {
+if ($data = data_submitted()) {
 
     // Check the session key
     confirm_sesskey();
 
     // Update each category
     foreach ($categories as $category) {
-    $category->update_assignments($data);
+        $category->update_assignments($data);
     }
 
     // reset the assignments property to ensure it only contains the current
@@ -61,7 +61,7 @@ if($data = data_submitted()) {
     $assignments->init_assignments($program->id);
 
     // Update the user assignments
-    $program->update_learner_assignments($categories);
+    $program->update_learner_assignments();
 
     // log this request
     add_to_log(SITEID, 'program', 'update assignments', "edit_assignments.php?id={$program->id}", $program->fullname);
@@ -82,7 +82,8 @@ if($data = data_submitted()) {
 local_js(array(
     TOTARA_JS_DIALOG,
     TOTARA_JS_TREEVIEW,
-    TOTARA_JS_DATEPICKER
+    TOTARA_JS_DATEPICKER,
+    TOTARA_JS_PLACEHOLDER
 ));
 
 // Get item pickers

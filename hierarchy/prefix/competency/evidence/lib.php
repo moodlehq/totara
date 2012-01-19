@@ -145,3 +145,30 @@ function hierarchy_add_competency_evidence($competencyid, $userid, $prof, $compo
 
     return $todb->id;
 }
+
+/**
+ * Delete evidence records associated with a specified course
+ *
+ * @param $courseid ID of the course that is no longer required
+ * @return boolean True if all delete operations succeeded, false otherwise
+ */
+function hierarchy_delete_competency_evidence($courseid) {
+    global $CFG;
+    if (empty($courseid)) {
+        return false;
+    }
+
+    // Remove all competency evidence items evidence
+    if (!delete_records_select("comp_evidence_items_evidence",
+        "itemid IN (SELECT id FROM {$CFG->prefix}comp_evidence_items WHERE itemtype LIKE 'course%' AND iteminstance={$courseid})")) {
+        return false;
+    }
+
+    if (!delete_records_select("comp_evidence_items",
+        "(itemtype = 'coursecompletion' OR itemtype='coursegrade') AND iteminstance={$courseid}")) {
+        return false;
+    }
+
+    return true;
+}
+

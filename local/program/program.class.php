@@ -56,6 +56,11 @@ define('DURATION_YEAR',   12 * DURATION_MONTH);
 define('AVAILABILITY_NOT_TO_STUDENTS',0);
 define('AVAILABILITY_TO_STUDENTS', 1);
 
+define('PROGRAM_EXCEPTION_NONE', 0);
+define('PROGRAM_EXCEPTION_RAISED', 1);
+define('PROGRAM_EXCEPTION_DISMISSED', 2);
+define('PROGRAM_EXCEPTION_RESOLVED', 3);
+
 global $TIMEALLOWANCESTRINGS;
 
 $TIMEALLOWANCESTRINGS = array(
@@ -253,99 +258,106 @@ class program {
      *
      * @return bool
      */
-    public function update_learner_assignments($categories = null) {
+    public function update_learner_assignments() {
+        global $CFG, $ASSIGNMENT_CATEGORY_CLASSNAMES;
 
         // Get the total time allowed for this program
         $total_time_allowed = $this->content->get_total_time_allowance();
 
-        // Get a list of category types, such as the one for Organisations, Positions etc
-        if ($categories == null) {
-            $categories = prog_assignment_category::get_categories();
-        }
-        $user_assignments = array();
-
-        // Loop through this programs assignments and work out which users should
-        // be linked to which assignments
-        $assignments = $this->assignments->get_assignments();
-        if (!$assignments) {
-            $assignments = get_records('prog_assignment','programid',$this->id);
+        // Get program assignments
+        $prog_assignments = $this->assignments->get_assignments();
+        if (!$prog_assignments) {
+            $prog_assignments = get_records('prog_assignment','programid',$this->id);
         }
 
-        // Store a list of user that are assigned on this program currently
-        $assigned_users = get_records('prog_user_assignment', 'programid', $this->id, '', 'userid');
-        if ($assigned_users == false) {
-            $assigned_users = array();
+        // Get user assignments only if there assignments for this program
+        if ($prog_assignments) {
+            if (!$user_assignments = get_records('prog_user_assignment', 'programid', $this->id, '', 'id, *')) {
+                $user_assignments = array();
+            }
         }
 
-        // Stores a list of user ids that we don't want to include
-        // Either due to them already being assigned or exceptions being raised
-        $users_to_skip = array_keys($assigned_users);
+        $assigned_user_ids = array();
+        $active_assignments = array();
 
-        if (!empty($assignments)) {
-            foreach ($assignments as $assignment) {
+        if ($prog_assignments) {
+            foreach ($prog_assignments as $assign) {
+                $active_assignments[] = $assign->id;
 
-                // Get the affected users for this assignment
-                $users = $categories[$assignment->assignmenttype]->get_affected_users_by_assignment($assignment);
+                // Create instance of assignment type so we can call functions on it
+                $assignment_class = new $ASSIGNMENT_CATEGORY_CLASSNAMES[$assign->assignmenttype]();
 
-                if (!empty($users)) {
-                    // Loop through the users and populate $user_assignments
-                    foreach ($users as $user) {
+                // Get affected users
+                $affected_users = $assignment_class->get_affected_users_by_assignment($assign);
 
-                        // Get the time due
-                        $timedue = $this->make_timedue($user->id, $assignment);
-                        if ($timedue == false) {
+                //get user assignments for current assignment
+                foreach ($affected_users as $user) {
+                    $assigned_user_ids[] = $user->id;
+                    $timedue = $this->make_timedue($user->id, $assign);
 
-                            // Don't print exception for users who have had exceptions raised or who are already assigned
-                            if (!in_array($user->id, $users_to_skip)) {
-                                $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN, $user->id, $assignment->id, time());
-                                $users_to_skip[] = $user->id;
+                    $user_exists = false;
+                    $user_assign_data = null;
+                    foreach ($user_assignments as $ua) {
+                        // Check user exists for current assignment
+                        if ($user->id == $ua->userid && $ua->assignmentid == $assign->id) {
+                            $user_exists = true;
+                            $user_assign_data = $ua;
+                            break;
+                        }
+                    }
+
+                    if ($user_exists) {
+                        // Check if updates need to be made
+
+                        // Create user assignment object
+                        $current_assignment = new user_assignment($user->id, $user_assign_data->assignmentid, $this->id);
+
+                        if (!in_array($user_assign_data->exceptionstatus, array(PROGRAM_EXCEPTION_RAISED, PROGRAM_EXCEPTION_DISMISSED, PROGRAM_EXCEPTION_RESOLVED)) &&
+                            $timedue != $current_assignment->completion->timedue) {
+                            // there is no exception, and the timedue has changed
+
+                            if ($assign->completionevent == COMPLETION_EVENT_FIRST_LOGIN && $timedue === false) {
+                                // this means that the user hasn't logged in yet
+                                // create a future assignment so we can assign them when they do login
+                                $this->create_future_assignment($this->id, $user->id, $assign->id);
                                 continue;
                             }
+
+                            $exceptions = $this->update_exceptions($user->id, $assign, $timedue);
+                            // Update user assignment including checking for exceptions
+                            if ($current_assignment->update($timedue)) {
+                                $user_assign_todb = new stdClass();
+                                $user_assign_todb->id = $user_assign_data->id;
+                                $user_assign_todb->exceptionstatus = $exceptions ? PROGRAM_EXCEPTION_RAISED : PROGRAM_EXCEPTION_NONE;
+
+                                if (!update_record('prog_user_assignment', $user_assign_todb)) {
+                                    if (defined('FULLME') && FULLME === 'cron') {
+                                        mtrace(get_string('error:updateuserassignment', 'local_program'));
+                                    } else {
+                                        print_error('error:updateuserassignment', 'local_program');
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        if ($assign->completionevent == COMPLETION_EVENT_FIRST_LOGIN && $timedue === false) {
+                            // this means that the user hasn't logged in yet
+                            // create a future assignment so we can assign them when they do login
+                            $this->create_future_assignment($this->id, $user->id, $assign->id);
+                            continue;
                         }
 
-                        if (isset($user_assignments[$user->id])) {
-                            // Update this user assignment, let it handle whether the due date is earlier or not
-                            $user_assignments[$user->id]->update($assignment, $timedue);
-                        }
-                        else {
-                            // Create a user assignment - this temporarily stores the relationshp between a user and an assignment
-                            $user_assignments[$user->id] = new user_assignment($user->id, $assignment, $timedue);
-                        }
-                    }
-                }
-            }
+                        $exceptions = $this->update_exceptions($user->id, $assign, $timedue);
 
-            if (!empty($user_assignments)) {
-                foreach ($user_assignments as $user_assignment) {
-
-                    if (in_array($user_assignment->userid, $users_to_skip)) {
-                        continue;
-                    }
-
-                    // Get the remaining time until the duedate from now
-                    $time_until_duedate = $user_assignment->timedue - time();
-
-                    $exception_raised = false;
-
-                    // Check if the remaining time is less than the allowed time
-                    if ($time_until_duedate < $total_time_allowed) { // 2592000 seconds = 30 days
-                        $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_TIME_ALLOWANCE, $user_assignment->userid, $user_assignment->assignment->id, time());
-                        $exception_raised = true;
-                    }
-                    if ($this->assigned_to_users_non_required_learning($user_assignment->userid)) {
-                        $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_ALREADY_ASSIGNED, $user_assignment->userid, $user_assignment->assignment->id, time());
-                        $exception_raised = true;
-                    }
-                    if (!$exception_raised) {
-                        $this->assign_learner($user_assignment->userid, $user_assignment->timedue, $user_assignment->assignment);
+                        // No record in user_assignment we need to make one
+                        $this->assign_learner($user->id, $timedue, $assign, $exceptions);
                     }
                 }
             }
         }
 
-        // Get an array of user ids, of the users who should be in this program (we've just worked out who is in this list)
-        $users_who_should_be_assigned = array_keys($user_assignments);
-        $users_to_unassign = false;
+        // Get an array of user ids, of the users who should be in this program
+        $users_who_should_be_assigned = $assigned_user_ids;
 
         if (count($users_who_should_be_assigned) > 0) {
             // Get a list of user ids that are ALREADY assigned, but shouldn't be anymore
@@ -356,17 +368,82 @@ class program {
             $users_to_unassign = get_records_select('role_assignments', 'roleid = '. $this->studentroleid .' AND contextid = '. $this->context->id, '', 'userid as id');
         }
 
-        if ($users_to_unassign != false) {
-            $users_to_unassign = array_keys($users_to_unassign);
-            $this->unassign_learners($users_to_unassign);
+        if ($users_to_unassign) {
+            $this->unassign_learners(array_keys($users_to_unassign));
+        }
+
+        // Users can have multiple assignments to a program
+        // We need this to clean up unnessessary redundant assignments caused
+        // when removing an assignment type
+        if (count($active_assignments) > 0) {
+            $redundant_user_assignments = get_records_sql("
+                SELECT * FROM {$CFG->prefix}prog_user_assignment
+                WHERE
+                    programid = {$this->id}
+                    AND assignmentid NOT IN (" . implode(',', $active_assignments) . ')'
+            );
+
+            if ($redundant_user_assignments) {
+                $redundant_ids = implode(',', array_keys($redundant_user_assignments));
+                if (!delete_records_select('prog_user_assignment', "id IN ({$redundant_ids})")) {
+                    return false;
+                }
+            }
+
+            // delete any future_user_assignment records too that are related to
+            // assignment types that have been deleted too
+            $redundant_future_user_assignments = get_records_sql("
+                SELECT * FROM {$CFG->prefix}prog_future_user_assignment
+                WHERE
+                    programid = {$this->id}
+                    AND assignmentid NOT IN (" . implode(',', $active_assignments) . ')'
+            );
+            if ($redundant_future_user_assignments) {
+                $redundant_future_ids = implode(',', array_keys($redundant_future_user_assignments));
+                if (!delete_records_select('prog_future_user_assignment', "id IN ({$redundant_future_ids})")) {
+                    return false;
+                }
+            }
         }
 
         return true;
     }
 
     /**
+     * Create a record in the future assignment table
+     *
+     * Used to track an assignment that cannot be made yet, but will be added
+     * at some later time (e.g. first login assignments which will be applied the
+     * first time the user logs in).
+     *
+     * @param integer $programid ID of the program
+     * @param integer $userid ID of the user being assigned
+     * @param integer $assignment ID of the assignment (record in prog_assignment table)
+     *
+     * @return boolean True if the future assignment is saved successfully or already exists
+     */
+    function create_future_assignment($programid, $userid, $assignmentid) {
+
+        if (record_exists('prog_future_user_assignment',
+            'programid', $programid, 'userid', $userid, 'assignmentid', $assignmentid)) {
+            // future assignment already exists
+            return true;
+        }
+
+        $assignment = new object();
+        $assignment->programid = $programid;
+        $assignment->userid = $userid;
+        $assignment->assignmentid = $assignmentid;
+
+        return insert_record('prog_future_user_assignment', $assignment);
+    }
+
+    /**
+     * This function is ONLY used to create the initial user assignment
+     * and check for exceptions when creating it
+     *
      * Assigns a user to the program. Any users assigned to a program in this
-     * way will have thie program aa part of their required (mandatory) learning
+     * way will have this program as part of their required (mandatory) learning
      * (as opposed to part of a learning plan).
      *
      * A 'program_assigned' event is triggered to notify any listening modules.
@@ -375,17 +452,31 @@ class program {
      * @param int $userid
      * @param int $timedue The date the the program should be completed by
      * @param object $assignment_record A record from mdl_prog_assignment
+     * @param bool $exceptions True if there are exceptions for this learner
      * @return bool
      */
-    public function assign_learner($userid, $timedue, $assignment_record) {
+    public function assign_learner($userid, $timedue, $assignment_record, $exceptions=false) {
         global $CFG;
 
         $now = time();
 
         // insert or update a completion record to store the status of the user's progress on the program
-        if ($pc = get_record('prog_completion', 'programid', $this->id, 'userid', $userid, 'coursesetid', 0)) {
-            $pc->timedue = $timedue;
-            update_record('prog_completion', $pc);
+        // create record if none exists
+        if ($completion = get_record('prog_completion', 'programid', $this->id, 'userid', $userid, 'coursesetid', 0)) {
+            if ($exceptions == false) {
+                // This assignment didn't generate exceptions
+                // update completion date with new one
+                $pc = new stdClass();
+                $pc->id = $completion->id;
+                $pc->timedue = $timedue;
+                if (!update_record('prog_completion', $pc)) {
+                    if (defined('FULLME') && FULLME === 'cron') {
+                        mtrace(get_string('error:updatingcompletionrecord', 'local_program'));
+                    } else {
+                        print_error('error:updatingcompletionrecord', 'local_program');
+                    }
+                }
+            }
         } else {
             $pc = new stdClass();
             $pc->programid = $this->id;
@@ -405,31 +496,33 @@ class program {
         }
 
         // insert or update a user assignment record to store the details of how this user was assigned to the program
-        if ($ua = get_record('prog_user_assignment', 'programid', $this->id, 'userid', $userid)) {
-            $ua->assignmentid = $assignment_record->id;
-            $ua->timeassigned = $now;
-            update_record('prog_user_assignment', $ua);
-        } else {
+        if (!get_record('prog_user_assignment', 'programid', $this->id, 'userid', $userid, 'assignmentid', $assignment_record->id)) {
             $ua = new stdClass();
             $ua->programid = $this->id;
             $ua->userid = $userid;
             $ua->assignmentid = $assignment_record->id;
             $ua->timeassigned = $now;
-            insert_record('prog_user_assignment', $ua);
+            $ua->exceptionstatus = $exceptions ? PROGRAM_EXCEPTION_RAISED : PROGRAM_EXCEPTION_NONE;
+            if (!insert_record('prog_user_assignment', $ua)) {
+                if (defined('FULLME') and FULLME === 'cron') {
+                    mtrace(get_string('error:addinguserassignment', 'local_program'));
+                } else {
+                    print_error('error:addinguserassignment', 'local_program');
+                }
+            }
         }
 
-        // Assign the student role to the user in the program context as
-        // long as the program is not already complete
+        // Assign the student role to the user in the program context
         // This is what identifies the program as required learning.
-        if($pc->status !== STATUS_PROGRAM_COMPLETE) {
-            role_assign($this->studentroleid, $userid, '', $this->context->id);
-        }
+        role_assign($this->studentroleid, $userid, '', $this->context->id);
 
-        // trigger this event for any listening handlers to catch
-        $eventdata = new stdClass();
-        $eventdata->programid = $this->id;
-        $eventdata->userid = $userid;
-        events_trigger('program_assigned', $eventdata);
+        if (!$exceptions) {
+            // trigger this event for any listening handlers to catch
+            $eventdata = new stdClass();
+            $eventdata->programid = $this->id;
+            $eventdata->userid = $userid;
+            events_trigger('program_assigned', $eventdata);
+        }
 
         return true;
     }
@@ -444,8 +537,7 @@ class program {
      * @return bool
      */
     public function unassign_learners($userids) {
-
-        foreach($userids as $userid) {
+        foreach ($userids as $userid) {
 
             // Un-assign the student role from the user in the program context
             role_unassign($this->studentroleid, $userid, '', $this->context->id);
@@ -453,10 +545,13 @@ class program {
             // delete the users assignment records for this program
             delete_records('prog_user_assignment', 'programid', $this->id, 'userid', $userid);
 
+            // delete future_user_assignment records too
+            delete_records('prog_future_user_assignment', 'programid', $this->id, 'userid', $userid);
+
             // check if this program is also part of any of the user's learning plans
-            if ( ! $this->assigned_to_users_non_required_learning($userid)) {
+            if (!$this->assigned_to_users_non_required_learning($userid)) {
                 // delete the completion record if the program is not complete
-                if ( ! $this->is_program_complete($userid)) {
+                if (!$this->is_program_complete($userid)) {
                     $this->delete_completion_record($userid);
                 }
             }
@@ -831,9 +926,11 @@ class program {
 
         $out .= $this->get_time_allowance_and_extension_text($userid, $viewinganothersprogram);
 
+        $userassigned = $this->user_is_assigned($userid);
+
         // display the start date, due date and progress bar
-        if ($userid) {
-            if($prog_completion = get_record('prog_completion', 'programid', $this->id, 'userid', $userid, 'coursesetid', 0)) {
+        if ($userassigned) {
+            if ($prog_completion = get_record('prog_completion', 'programid', $this->id, 'userid', $userid, 'coursesetid', 0)) {
                 $startdatestr = $this->display_date_as_text($prog_completion->timestarted);
                 $duedatestr = empty($prog_completion->timedue) ? get_string('duedatenotset', 'local_program') : $this->display_date_as_text($prog_completion->timedue);
                 $out .= '<div class="programprogress">';
@@ -847,8 +944,8 @@ class program {
         $out .= '<div class="summary">'.$this->summary.'</div>';
 
         // display the reason why this user has been assigned to the program (if it is mandatory for the user)
-        if ($userid) {
-            if($user_assignments = get_records_select('prog_user_assignment', "programid={$this->id} AND userid=$userid")) {
+        if ($userassigned) {
+            if ($user_assignments = get_records_select('prog_user_assignment', "programid={$this->id} AND userid=$userid" )) {
                 $out .= '<div class="assignments">';
                 if ($viewinganothersprogram) {
                     $out .= '<p>'.get_string('assignmentcriteriamanager', 'local_program').'</p>';
@@ -856,8 +953,8 @@ class program {
                     $out .= '<p>'.get_string('assignmentcriterialearner', 'local_program').'</p>';
                 }
                 $out .= '<ul>';
-                foreach($user_assignments as $user_assignment) {
-                    if($assignment = get_record('prog_assignment', 'id', $user_assignment->assignmentid)) {
+                foreach ($user_assignments as $user_assignment) {
+                    if ($assignment = get_record('prog_assignment', 'id', $user_assignment->assignmentid)) {
                         $user_assignment_ob = prog_user_assignment::factory($assignment->assignmenttype, $user_assignment->id);
                         $out .= $user_assignment_ob->display_criteria();
                     }
@@ -939,8 +1036,8 @@ class program {
         // Get the total time allowed for this program
         $total_time_allowed = $this->content->get_total_time_allowance();
 
-        // Only display the time allowance if it is greater than zero
-        if ($total_time_allowed > 0) {
+        // Only display the time allowance if user is assigned to program
+        if ($this->user_is_assigned($userid)) {
             // Break the time allowed details down into human readable form
             $timeallowance = program_utilities::duration_explode($total_time_allowed);
 
@@ -1130,8 +1227,9 @@ class program {
     public function display_current_status() {
         global $CFG, $USER;
 
-        $assignmentscount = $this->assignments->count_user_assignments();
+        $assignmentscount = $this->assignments->count_active_user_assignments();
         $assignmentexceptionscount = $this->assignments->count_user_assignment_exceptions();
+        $assignmenttotal = $this->assignments->count_total_user_assignments();
         $statusstr = '';
 
         $out = '';
@@ -1161,7 +1259,7 @@ class program {
         $assignmentcounts = new object();
         $assignmentcounts->exceptions = $assignmentexceptionscount;
         $assignmentcounts->assignments = $assignmentscount;
-        $assignmentcounts->total = $assignmentscount + $assignmentexceptionscount;
+        $assignmentcounts->total = $assignmenttotal;
         $out .= '<span class="assignmentcount">'.get_string('learnersassigned', 'local_program', $assignmentcounts).'.</span>';
         $out .= '</p>';
         $out .= '</div>';
@@ -1257,8 +1355,125 @@ class program {
      */
     public function get_cancel_button($url='') {
         global $CFG;
-        $link = empty($url) ? $CFG->wwwroot.'/course/categorylist.php?viewtype=program&categoryedit=on' : $url;
+        $link = empty($url) ? "{$CFG->wwwroot}/local/program/edit.php?id={$this->id}" : $url;
         return '<a href="'.$link.'" id="cancelprogramedits">'.get_string('cancelprogrammanagement', 'local_program').'</a><br />';
+    }
+
+
+    /**
+     * Checks for exceptions given an assignment
+     *
+     */
+    public function update_exceptions($userid, $assignment, $timedue) {
+        // Changes are being made so old exceptions are no longer
+        // relevant
+        prog_exceptions_manager::delete_exceptions_by_assignment($assignment->id, $userid);
+
+        $now = time();
+        $total_time_allowed = $this->content->get_total_time_allowance();
+        $time_until_duedate = $timedue - $now;
+
+        if (!$timedue) {
+            $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN, $userid, $assignment->id, $now);
+            return true;
+        } else if ($time_until_duedate < $total_time_allowed) {
+            $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_TIME_ALLOWANCE, $userid, $assignment->id, $now);
+            return true;
+        } else if ($this->assigned_to_users_non_required_learning($userid)) {
+            $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_ALREADY_ASSIGNED, $userid, $assignment->id, $now);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if this proram is required learning for
+     * given user or current user
+     *
+     * @param int $userid User ID to check (optional)
+     * @return bool Returns true if this program is required learning
+     */
+    public function is_required_learning($userid=0) {
+        global $CFG, $USER;
+
+        if (!$userid) {
+            $userid = $USER->id;
+        }
+
+        $sql = "SELECT COUNT(*)
+            FROM
+                {$CFG->prefix}prog_user_assignment
+            WHERE
+                programid={$this->id}
+            AND
+                userid={$userid}
+            AND
+                exceptionstatus NOT IN (".PROGRAM_EXCEPTION_RAISED.",".PROGRAM_EXCEPTION_DISMISSED.")";
+        if (count_records_sql($sql) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a user is assigned to a program
+     *
+     * @param int $userid
+     * @param bool Returns true if a learner is assigned to a program
+     */
+    public function user_is_assigned($userid) {
+        global $USER;
+
+        if (!$userid) {
+            $userid = $USER->id;
+        }
+
+        // Check if there is a user assignment
+        // (user is assigned to program in admin interface)
+        $record_count = count_records_select('prog_user_assignment', "programid = {$this->id} AND userid={$userid} AND exceptionstatus IN (".PROGRAM_EXCEPTION_NONE.",". PROGRAM_EXCEPTION_RESOLVED.")");
+        if ($record_count > 0) {
+            return true;
+        }
+
+        // Check if the program is part of a learning plan
+        if ($this->assigned_through_plan($userid)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks to see if a program is assigned to a user
+     * through a plan and approved
+     *
+     * @param int $userid
+     * @return bool Returns true if program is assigned to user
+     */
+    public function assigned_through_plan($userid) {
+        global $CFG;
+
+        require_once($CFG->dirroot . '/local/plan/lib.php');
+
+        $sql = "SELECT COUNT(*) FROM
+                {$CFG->prefix}dp_plan p
+            JOIN
+                {$CFG->prefix}dp_plan_program_assign pa
+            ON
+                p.id = pa.planid
+            WHERE
+                p.userid = {$userid}
+            AND pa.programid = {$this->id}
+            AND pa.approved=".DP_APPROVAL_APPROVED."
+            AND p.status >= ".DP_PLAN_STATUS_APPROVED;
+
+        if (count_records_sql($sql) > 0) {
+            return true;
+        }
+
+        return false;
     }
 }
 

@@ -387,8 +387,18 @@ function totara_print_report_manager($return=false) {
     echo $returnstr;
 }
 
-
-function totara_print_scheduled_reports($return=false) {
+/**
+* Returns markup for displaying saved scheduled reports
+*
+* Optionally without the options column and add/delete form
+* Optionally with an additional sql WHERE clause
+* @access  public
+* @param   $showoptions   bool
+* @param   $showaddform   bool
+* @param   $sqlclause     string
+* @return  string
+*/
+function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $sqlclause='') {
     global $CFG, $USER, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS, $CALENDARDAYS;
     $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
 
@@ -402,7 +412,9 @@ function totara_print_scheduled_reports($return=false) {
             JOIN {$CFG->prefix}report_builder rb
             ON rbs.reportid=rb.id
             WHERE rbs.userid={$USER->id}";
-
+    if ($sqlclause != '') {
+        $sql .= " AND " . $sqlclause;
+    }
     if($scheduledreports = get_records_sql($sql)){
         $columns[] = 'reportname';
         $headers[] = get_string('reportname', 'local_reportbuilder');
@@ -412,17 +424,19 @@ function totara_print_scheduled_reports($return=false) {
         $headers[] = get_string('format', 'local_reportbuilder');
         $columns[] = 'schedule';
         $headers[] = get_string('schedule', 'local_reportbuilder');
-
-        $columns[] = 'options';
-        $headers[] = get_string('options', 'local');
-
+        if ($showoptions) {
+            $columns[] = 'options';
+            $headers[] = get_string('options', 'local');
+        }
         $shortname = 'scheduled_reports';
         $table = new flexible_table($shortname);
         $table->define_columns($columns);
         $table->define_headers($headers);
         $table->set_attribute('class', 'scheduled-reports generalbox');
-        $table->column_class('options', 'options');
 
+        if ($showoptions) {
+            $table->column_class('options', 'options');
+        }
         $table->setup();
         $dateformat = ($USER->lang == 'en_utf8') ? 'jS' : 'j';
 
@@ -469,12 +483,12 @@ function totara_print_scheduled_reports($return=false) {
             $tablerow[] = $data;
             $tablerow[] = $format;
             $tablerow[] = $schedule;
-
-            $tablerow[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/scheduled.php?id='.$sched->id .'" title="'.get_string('edit').
-                '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.get_string('edit').'" /></a>'. ' ' .
-                '<a href="'.$CFG->wwwroot.'/local/reportbuilder/deletescheduled.php?id='.$sched->id.'" title="'.get_string('delete').
-                '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.get_string('delete').'" /></a>';
-
+            if ($showoptions) {
+                $tablerow[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/scheduled.php?id='.$sched->id .'" title="'.get_string('edit').
+                    '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.get_string('edit').'" /></a>'. ' ' .
+                    '<a href="'.$CFG->wwwroot.'/local/reportbuilder/deletescheduled.php?id='.$sched->id.'" title="'.get_string('delete').
+                    '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.get_string('delete').'" /></a>';
+            }
             $table->add_data($tablerow);
         }
 
@@ -483,9 +497,11 @@ function totara_print_scheduled_reports($return=false) {
     else {
         echo get_string('noscheduledreports', 'local_reportbuilder') . '<br /><br />';
     }
+    if ($showaddform) {
+        $mform = new scheduled_reports_add_form($CFG->wwwroot . '/local/reportbuilder/scheduled.php', array());
+        $mform->display();
+    }
 
-    $mform = new scheduled_reports_add_form($CFG->wwwroot . '/local/reportbuilder/scheduled.php', array());
-    $mform->display();
 
 }
 
@@ -881,16 +897,108 @@ function get_dashlet_role($pageid) {
     return $role;
 }
 
+// date_parse_from_format implementation for PHP<5.3 written by Joe Brewster
+// http://www.brewsterware.com/strptime-for-windows.html
+// platform-independent implementation for parsing date inputs in the user's locale format
+// to get around strptime (not available on PHP for Windows) and date_parse_from_format (only available on PHP 5.3>)
+// NB: should not be called directly - used internally by totara_date_parse_from_format
 
-//Used to create a timestamp from a string
-function totara_convert_userdate($datestring) {
-    // Check for DD/MM/YYYY
-    if (preg_match('|(\d{1,2})/(\d{1,2})/(\d{4})|', $datestring, $matches)) {
-        return mktime(0,0,0,$matches[2], $matches[1], $matches[3]);
+if (!function_exists('date_parse_from_format')) {
+    function date_parse_from_format($format, $date) {
+        $returnArray = array('hour' => 0, 'minute' => 0, 'second' => 0,
+                            'month' => 0, 'day' => 0, 'year' => 0);
+        $dateArray = array();
+        // array of valid date codes with keys for the return array as the values
+        $validDateTimeCode = array('Y' => 'year', 'y' => 'year',
+                                    'm' => 'month', 'n' => 'month',
+                                    'd' => 'day', 'j' => 'day',
+                                    'H' => 'hour', 'G' => 'hour',
+                                    'i' => 'minute', 's' => 'second');
+        /* create an array of valid keys for the return array
+         * in the order that they appear in $format
+        */
+        for ($i = 0 ; $i <= strlen($format) - 1 ; $i++) {
+            $char = substr($format, $i, 1);
+            if (array_key_exists($char, $validDateTimeCode)) {
+                $dateArray[$validDateTimeCode[$char]] = '';
+            }
+        }
+        // create array of reg ex things for each date part
+        $regExArray = array('.' => '\.', // escape the period
+        // parse d first so we dont mangle the reg ex
+        // day
+                            'd' => '(\d{2})',
+        // year
+                            'Y' => '(\d{4})',
+                            'y' => '(\d{2})',
+        // month
+                            'm' => '(\d{2})',
+                            'n' => '(\d{1,2})',
+        // day
+                            'j' => '(\d{1,2})',
+        // hour
+                            'H' => '(\d{2})',
+                            'G' => '(\d{1,2})',
+        // minutes
+                            'i' => '(\d{2})',
+        // seconds
+                            's' => '(\d{2})');
+        // create a full reg ex string to parse the date with
+        $regEx = str_replace(array_keys($regExArray),
+        array_values($regExArray),
+        $format);
+        // Parse the date
+        preg_match("#$regEx#", $date, $matches);
+        // some checks...
+        if (!is_array($matches) || $matches[0] != $date || sizeof($dateArray) != (sizeof($matches) - 1)) {
+            return $returnArray;
+        }
+        // an iterator for the $matches array
+        $i = 1;
+        foreach ($dateArray AS $key => $value) {
+            $dateArray[$key] = $matches[$i++];
+            if (array_key_exists($key, $returnArray)) {
+                $returnArray[$key] = $dateArray[$key];
+            }
+        }
+        return $returnArray;
     }
-    return strtotime($datestring);
 }
+/**
+* returns unix timestamp from a date string depending on the date format
+*
+* @param string $format e.g. "d/m/Y" - see date_parse_from_format for supported formats
+* @param string $date a date to be converted e.g. "12/06/12"
+* @return int unix timestamp (0 if fails to parse)
+*/
+function totara_date_parse_from_format ($format, $date) {
 
+    global $CFG;
+    $timezone = get_user_timezone_offset($CFG->timezone);
+    $dateArray = array();
+    $dateArray = date_parse_from_format($format, $date);
+    if (is_array($dateArray)) {
+        if (abs($timezone) > 13) {
+            $time = mktime($dateArray['hour'],
+                    $dateArray['minute'],
+                    $dateArray['second'],
+                    $dateArray['month'],
+                    $dateArray['day'],
+                    $dateArray['year']);
+        } else {
+            $time = gmmktime($dateArray['hour'],
+                    $dateArray['minute'],
+                    $dateArray['second'],
+                    $dateArray['month'],
+                    $dateArray['day'],
+                    $dateArray['year']);
+            $time = usertime($time, $timezone);
+        }
+        return $time;
+    } else {
+        return 0;
+    }
+}
 
 function get_totara_menu($header=true) {
     global $CFG, $USER;
@@ -1049,6 +1157,11 @@ function totara_print_edit_button($settingname, $params = array()) {
 function get_string_in_user_lang($user, $identifier, $module='', $a=NULL, $extralocations=NULL) {
     global $USER;
 
+    // $USER language not defined - just use current user's language
+    if (!isset($USER->lang)) {
+        return get_string($identifier, $module, $a, $extralocations);
+    }
+
     // Store lang
     $original_lang = $USER->lang;
 
@@ -1125,4 +1238,111 @@ function sql_cast2float($fieldname) {
     }
 
     return $sql;
+}
+
+
+/**
+ * Assign a user a position assignment and create/delete role assignments as required
+ *
+ * @param $assignment position_assignment object, include old reportstoid field (if any) and
+ *                    new managerid
+ * @param $unittest set to true if using for unit tests (optional)
+ */
+function assign_user_position($assignment, $unittest=false) {
+    global $CFG;
+
+    begin_sql();
+    // Get old user id
+    $old_managerid = null;
+    if ($assignment->reportstoid) {
+        $old_managerid = get_field('role_assignments', 'userid', 'id', $assignment->reportstoid);
+    } else {
+        $old_managerid = null;
+    }
+
+    $managerchanged = false;
+    if ($old_managerid != $assignment->managerid) {
+        $managerchanged = true;
+    }
+
+    // skip this bit during testing as we don't have all the required tables for role assignments
+    if (!$unittest) {
+
+        // Delete role assignment if there was a manager but it changed
+        if ($old_managerid && $managerchanged) {
+            if (!role_unassign(null, null, null, null, null, $assignment->reportstoid)) {
+                rollback_sql();
+                error_log('assign_user_position: Could not delete old manager role assignment');
+                return false;
+            }
+        }
+
+        // Create new role assignment if there is now and a manager but it changed
+        if ($assignment->managerid && $managerchanged) {
+
+            // Get context
+            $context = get_context_instance(CONTEXT_USER, $assignment->userid);
+
+            // Get manager role id
+            $roleid = $CFG->managerroleid;
+
+            // Assign manager to user
+            $raid = role_assign(
+                $roleid,
+                $assignment->managerid,
+                null,
+                $context->id,
+                (!$assignment->timevalidfrom ? 0 : $assignment->timevalidfrom),
+                (!$assignment->timevalidto ? 0 : $assignment->timevalidto)
+            );
+
+            // update reportstoid
+            $assignment->reportstoid = $raid;
+        }
+    }
+
+    // Store the date of this assignment
+    require_once($CFG->dirroot.'/local/program/lib.php');
+    prog_store_position_assignment($assignment);
+
+    // Save assignment
+    if (!$assignment->save($managerchanged)) {
+        rollback_sql();
+    }
+
+    commit_sql();
+}
+
+
+/**
+ * Displays a count of the number of active users in the last year
+ */
+function totara_print_active_users() {
+    global $CFG;
+
+    print_box_start('generalbox adminnotice');
+    $oneyearago = time() - 60*60*24*365;
+    // See MDL-22481 for why currentlogin is used instead of lastlogin
+    $sql = "SELECT COUNT(id)
+        FROM {$CFG->prefix}user
+        WHERE currentlogin > $oneyearago";
+    $activeusers = count_records_sql($sql);
+    print_string('numberofactiveusers', 'admin', $activeusers);
+    print_box_end();
+}
+
+
+/**
+ * Displays a link to download error log
+ */
+function totara_print_errorlog_link() {
+    global $CFG;
+
+    $latesterror = get_record_sql("SELECT timeoccured FROM {$CFG->prefix}errorlog ORDER BY id DESC", true);
+    if ($latesterror) {
+        print_box_start('generalbox adminnotice');
+        print_string('lasterroroccuredat', 'admin', userdate($latesterror->timeoccured));
+        print_single_button("{$CFG->wwwroot}/admin/index.php", array('geterrors' => 1), get_string('downloaderrorlog', 'admin'), 'post');
+        print_box_end();
+    }
 }

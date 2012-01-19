@@ -31,15 +31,26 @@ require_login();
 
 global $SESSION,$USER;
 
-$programid  = required_param('programid', PARAM_INT);                       // which program to show
+$programid  = optional_param('programid', 0, PARAM_INT);                       // which program to show
 $userid     = optional_param('userid', null, PARAM_INT);                  // which user to show
 $format     = optional_param('format','',PARAM_TEXT); //export format
 
 // instantiate the program instance
-$program = new program($programid);
+if ($programid) {
+    try {
+        $program = new program($programid);
+    } catch (ProgramException $e) {
+        print_error('error:invalidid', 'local_program');
+    }
+} else {
+    // show all recurring programs if no id given
+    // needed to fix link from manage report page
+    $program = new object();
+    $program->fullname = '';
+}
 
 // default to current user
-if(empty($userid)) {
+if (empty($userid)) {
     $userid = $USER->id;
 }
 

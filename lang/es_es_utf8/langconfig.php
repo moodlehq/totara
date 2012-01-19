@@ -7,6 +7,7 @@ $string['listsep'] = ';';
 $string['locale'] = 'es_ES.UTF-8';
 $string['oldcharset'] = 'ISO-8859-1';
 $string['parentlanguage'] = 'es_utf8';
+$string['datepickerplaceholder'] = 'dd/mm/aa';
 $string['strftimedate'] = '%%d de %%B de %%Y';
 $string['strftimedateshort'] = ' %%d de %%B ';
 $string['strftimedatetime'] = ' %%d de %%B de %%Y, %%H:%%M';

@@ -4,12 +4,12 @@ $handlers = array (
     'program_assigned' => array (
          'handlerfile'      => '/local/program/lib.php',
          'handlerfunction'  => 'prog_eventhandler_program_assigned',
-         'schedule'         => 'cron'
+         'schedule'         => 'instant'
      ),
     'program_unassigned' => array (
          'handlerfile'      => '/local/program/lib.php',
          'handlerfunction'  => 'prog_eventhandler_program_unassigned',
-         'schedule'         => 'cron'
+         'schedule'         => 'instant'
      ),
     'program_completed' => array (
          'handlerfile'      => '/local/program/lib.php',
@@ -21,4 +21,9 @@ $handlers = array (
          'handlerfunction'  => 'prog_eventhandler_courseset_completed',
          'schedule'         => 'instant'
      ),
+    'user_firstaccess' => array (
+         'handlerfile'      => '/local/program/lib.php',
+         'handlerfunction'  => 'prog_assignments_firstlogin',
+         'schedule'         => 'instant'
+     )
 );

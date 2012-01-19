@@ -36,11 +36,12 @@ class rb_source_dp_program_recurring extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
     public $defaultfilters, $requiredcolumns, $sourcetitle;
+    public $sourcewhere;
 
     function __construct() {
 
         global $CFG;
-        $this->base = $CFG->prefix . 'prog';
+        $this->base = $CFG->prefix . 'prog_completion_history';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -50,6 +51,8 @@ class rb_source_dp_program_recurring extends rb_base_source {
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
         $this->sourcetitle = get_string('recordoflearningprogramsrecurring','local_plan');
+        // only consider whole programs - not courseset completion
+        $this->sourcewhere = 'base.coursesetid = 0';
         parent::__construct();
     }
 
@@ -64,12 +67,11 @@ class rb_source_dp_program_recurring extends rb_base_source {
 
         $joinlist = array(
             new rb_join(
-                'program_completion_history', // table alias
-                'INNER', // type of join
-                $CFG->prefix . 'prog_completion_history',
-                'base.id = program_completion_history.programid AND program_completion_history.coursesetid = 0', //how it is joined
-                REPORT_BUILDER_RELATION_ONE_TO_MANY,
-                array('base')
+                'prog', // table alias
+                'LEFT', // type of join
+                $CFG->prefix . 'prog',
+                'base.programid = prog.id', //how it is joined
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
         );
 
@@ -83,38 +85,36 @@ class rb_source_dp_program_recurring extends rb_base_source {
             'program',
             'fullname',
             get_string('programname','local_program'),
-            "base.fullname",
-            array('joins' => 'base')
+            "prog.fullname",
+            array('joins' => 'prog')
         );
     $columnoptions[] = new rb_column_option(
             'program',
             'shortname',
             get_string('programshortname','local_program'),
-            "base.shortname",
-            array('joins' => 'base')
+            "prog.shortname",
+            array('joins' => 'prog')
         );
         $columnoptions[] = new rb_column_option(
             'program',
             'idnumber',
             get_string('programidnumber','local_program'),
-            "base.idnumber",
-            array('joins' => 'base')
+            "prog.idnumber",
+            array('joins' => 'prog')
         );
         $columnoptions[] = new rb_column_option(
             'program',
             'id',
             get_string('programid','local_program'),
-            "base.id",
-            array('joins' => 'base')
+            "base.programid"
         );
 
     $columnoptions[] = new rb_column_option(
             'program_completion_history',
             'courselink',
             get_string('coursenamelink','local_program'),
-            "program_completion_history.recurringcourseid",
+            "base.recurringcourseid",
             array(
-                'joins' => 'program_completion_history',
                 'displayfunc' => 'link_course_name',
             )
         );
@@ -123,13 +123,12 @@ class rb_source_dp_program_recurring extends rb_base_source {
             'program_completion_history',
             'status',
             get_string('completionstatus','local_program'),
-            "program_completion_history.status",
+            "base.status",
             array(
-                'joins' => array('program_completion_history'),
                 'displayfunc' => 'program_completion_status',
                 'extrafields' => array(
                     'programid' => "base.id",
-                    'userid' => "program_completion_history.userid"
+                    'userid' => "base.userid"
                 )
             )
         );
@@ -138,9 +137,8 @@ class rb_source_dp_program_recurring extends rb_base_source {
             'program_completion_history',
             'timecompleted',
             get_string('completiondate','local_program'),
-            "program_completion_history.timecompleted",
+            "base.timecompleted",
             array(
-                'joins' => 'program_completion_history',
                 'displayfunc' => 'completion_date',
             )
         );
@@ -197,23 +195,22 @@ class rb_source_dp_program_recurring extends rb_base_source {
         $paramoptions = array(
             new rb_param_option(
                 'programid',
-                'base.id'
+                'base.programid'
             ),
             new rb_param_option(
                 'visible',
-                'base.visible'
+                'prog.visible',
+                'prog'
             ),
             new rb_param_option(
                 'userid',
-                'program_completion_history.userid',
-                'program_completion_history'
+                'base.userid'
             ),
         );
 
         $paramoptions[] = new rb_param_option(
                 'programstatus',
-                'program_completion_history.status',
-                'program_completion_history'
+                'base.status'
         );
 
         return $paramoptions;

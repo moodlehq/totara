@@ -56,7 +56,6 @@ $string['course:viewhiddencourses'] = 'Visa dolda kurser';
 $string['course:viewhiddensections'] = 'Visa dolda sektioner';
 $string['course:viewhiddenuserfields'] = 'Visa dolda fält för användare';
 $string['course:viewparticipants'] = 'Visa deltagare';
-$string['course:viewprogress'] = 'Visa kursframsteg';
 $string['course:viewscales'] = 'Visa skalor';
 $string['course:visibility'] = 'Dölj/visa kurser';
 $string['currentcontext'] = 'Aktuellt sammanhang';

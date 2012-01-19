@@ -107,6 +107,6 @@ if ($component->can_update_settings(false)) {
 print '</form>';
 print_container_end();
 
-echo build_datepicker_js("[id^=duedate_{$componentname}]", true, 'dd/mm/y');
+echo build_datepicker_js("[id^=duedate_{$componentname}]", true);
 
 print_footer();

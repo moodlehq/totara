@@ -123,15 +123,19 @@ function local_js($options = array()) {
  * @param string $selector A JQuery Selector string referencing the element to add
  *                         the picker to
  * @param boolean $includetags If true, also surrounds the JS in script tags
- * @param string $dateformat (optional) provide if format should not be dd/mm/yy
+ * @param string $dateformat (optional) provide if format should not be standard dd/mm/yy
  * @return string Script contents to be included in the page
  */
-function build_datepicker_js($selector, $includetags = true, $dateformat='dd/mm/yy') {
+function build_datepicker_js($selector, $includetags = true, $dateformat=null) {
     global $CFG;
     $out = '';
 
     if ($includetags) {
         $out .= '<script type="text/javascript">';
+    }
+
+    if (empty($dateformat)) {
+        $dateformat = get_string('datepickerdisplayformat');
     }
     // we are choosing to override the isRTL option here, instead float
     // the datepicker fields left/right to get the picker to appear on
@@ -146,7 +150,6 @@ function build_datepicker_js($selector, $includetags = true, $dateformat='dd/mm/
                 buttonImageOnly: true,
                 constrainInput: true,
                 isRTL: false // positioning handled via CSS instead
-
             }
         );
     });

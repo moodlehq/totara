@@ -39,15 +39,9 @@ admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot
 
 $program = new program($id);
 
-////Javascript include
-//local_js(array(
-//    TOTARA_JS_DATEPICKER
-//));
-
 //Javascript include
 local_js(array(
-    TOTARA_JS_DIALOG,
-    //TOTARA_JS_TREEVIEW
+    TOTARA_JS_DIALOG
 ));
 
 // Additional permissions check

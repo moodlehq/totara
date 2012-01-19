@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/program/db" VERSION="20110801" COMMENT="XMLDB file for Moodle local/program"
+<XMLDB PATH="local/program/db" VERSION="20120119" COMMENT="XMLDB file for Moodle local/program"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -187,7 +187,8 @@
         <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the program that this user assignment relates to" PREVIOUS="id" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the user that this assignment relates to" PREVIOUS="programid" NEXT="assignmentid"/>
         <FIELD NAME="assignmentid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The id of the linked assignment type" PREVIOUS="userid" NEXT="timeassigned"/>
-        <FIELD NAME="timeassigned" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date/time at which this user assignment was made" PREVIOUS="assignmentid"/>
+        <FIELD NAME="timeassigned" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The date/time at which this user assignment was made" PREVIOUS="assignmentid" NEXT="exceptionstatus"/>
+        <FIELD NAME="exceptionstatus" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates the status exceptions for this user assignment" PREVIOUS="timeassigned"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="programid"/>
@@ -195,6 +196,9 @@
         <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="programid" NEXT="assignmentid"/>
         <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="prog_assignment" REFFIELDS="id" PREVIOUS="userid"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="exceptionstatus" UNIQUE="false" FIELDS="exceptionstatus"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="prog_pos_assignment" COMMENT="Stores when users were last assigned a position" PREVIOUS="prog_user_assignment" NEXT="prog_recurrence">
       <FIELDS>
@@ -222,7 +226,7 @@
         <KEY NAME="nextcourseid" TYPE="foreign" FIELDS="nextcourseid" REFTABLE="course" REFFIELDS="id" PREVIOUS="currentcourseid"/>
       </KEYS>
   </TABLE>
-  <TABLE NAME="prog_extension" COMMENT="Stores extension requests for programs" PREVIOUS="prog_recurrence">
+  <TABLE NAME="prog_extension" COMMENT="Stores extension requests for programs" PREVIOUS="prog_recurrence" NEXT="prog_future_user_assignment">
       <FIELDS>
           <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid" />
           <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid" />
@@ -237,5 +241,22 @@
           <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="programid" />
       </KEYS>
   </TABLE>
+    <TABLE NAME="prog_future_user_assignment" COMMENT="Future user assignments such as from first login" PREVIOUS="prog_extension">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programid"/>
+        <FIELD NAME="programid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="programid" NEXT="assignmentid"/>
+        <FIELD NAME="assignmentid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="userid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="programid" UNIQUE="false" FIELDS="programid" NEXT="userid"/>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" NEXT="assignmentid" PREVIOUS="programid"/>
+        <INDEX NAME="assignmentid" UNIQUE="false" FIELDS="assignmentid" NEXT="programid-userid-assignmentid" PREVIOUS="userid"/>
+        <INDEX NAME="programid-userid-assignmentid" UNIQUE="true" FIELDS="programid, userid, assignmentid" PREVIOUS="assignmentid"/>
+      </INDEXES>
+    </TABLE>
   </TABLES>
 </XMLDB>
