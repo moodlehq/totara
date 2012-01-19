@@ -174,9 +174,8 @@ class CheckSpecifiedFieldsExpectation extends SimpleExpectation {
  * @param array $data a two-dimensional array of data, in the format described above.
  * @param object $db an AdoDB database connection.
  * @param int $strlen the width to use for string fields.
- * @param bool $empty if true, do not insert any data
  */
-function load_test_table($tablename, $data, $db = null, $strlen = 255, $empty = false) {
+function load_test_table($tablename, $data, $db = null, $strlen = 255) {
     global $CFG;
     $colnames = array_shift($data);
     $coldefs = array();
@@ -214,11 +213,6 @@ function load_test_table($tablename, $data, $db = null, $strlen = 255, $empty = 
         _private_execute_sql($sql, $db);
         $sql = "CREATE OR REPLACE TRIGGER {$tablename}_id_trg BEFORE INSERT ON $tablename FOR EACH ROW BEGIN IF :new.id IS NULL THEN SELECT {$tablename}_ID_SEQ.nextval INTO :new.id FROM dual; END IF; END; ";
         _private_execute_sql($sql, $db);
-    }
-
-    // If empty flag set, do not add data
-    if ($empty) {
-        return true;
     }
 
     array_unshift($data, $colnames);
