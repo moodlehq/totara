@@ -99,8 +99,7 @@
 
 
     //create form
-    $url = "{$CFG->wwwroot}/user/edit.php?id={$user->id}&course={$course->id}";
-    $userform = new user_edit_form($url);
+    $userform = new user_edit_form();
     if (empty($user->country)) {
         // MDL-16308 - we must unset the value here so $CFG->country can be used as default one
         unset($user->country);
@@ -228,11 +227,6 @@
     $showtasksalerts = 1;
     $currenttab = 'editprofile';
     require('tabs.php');
-
-    // Display warning if file upload was over maximum allowed
-    if (!data_submitted() && totara_is_post_request()) {
-        notify(get_string('uploadserverlimit'));
-    }
 
     if ($email_changed) {
         echo $email_changed_html;
