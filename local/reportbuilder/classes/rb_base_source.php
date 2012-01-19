@@ -699,6 +699,23 @@ abstract class rb_base_source {
     }
 
 
+    // display grade along with passing grade if it is known
+    function rb_display_grade_string($item, $row) {
+        $passgrade = isset($row->gradepass) ? sprintf('%d', $row->gradepass) : null;
+        $usergrade = sprintf('%d', $item);
+
+        if ($item === null) {
+            return '';
+        } else if ($passgrade === null) {
+            return "{$usergrade}%";
+        } else {
+            $a = new object();
+            $a->grade = $usergrade;
+            $a->pass = $passgrade;
+            return get_string('gradeandgradetocomplete', 'local_reportbuilder', $a);
+        }
+    }
+
     //
     //
     // Generic select filter methods

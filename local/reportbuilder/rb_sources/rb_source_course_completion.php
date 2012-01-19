@@ -538,18 +538,6 @@ class rb_source_course_completion extends rb_base_source {
     //
     //
 
-    // display grade along with passing grade if it is known
-    function rb_display_grade_string($item, $row) {
-        $passgrade = isset($row->gradepass) ? $row->gradepass : null;
-
-        if($item === null) {
-            return '';
-        } else if ($passgrade === null) {
-            return sprintf('%d%%', $item);
-        } else {
-            return sprintf('%d%% (%d%% to complete)', $item, $passgrade);
-        }
-    }
 
     //
     //

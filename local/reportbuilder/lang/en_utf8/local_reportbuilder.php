@@ -163,6 +163,7 @@ $string['filters_updated'] = 'Filters updated';
 $string['format'] = 'Format';
 $string['globalsettings'] = 'Global settings';
 $string['globalsettingsupdated'] = 'Global settings updated';
+$string['gradeandgradetocomplete'] = '{$a->grade}%% ({$a->pass}%% to complete)';
 $string['groupconfirmdelete'] = 'Are you sure you want to delete this group?';
 $string['groupcontents'] = 'This group currently contains {$a->count} feedback activities tagged with the <strong>\'{$a->tag}\'</strong> official tag:';
 $string['groupdeleted'] = 'Group deleted.';
