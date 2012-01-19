@@ -251,7 +251,7 @@ function _private_get_unique_name($tablename) {
     // Create new
     $i = 1;
     while ($i < 100) {
-        $padded = str_pad($i, 2, 0, STR_PAD_LEFT);
+        $padded = str_pad($i, 2, 0);
         // need to shorten enough so everything fits in 30 chars
         // assuming:
         // u_ => 2 chars for oracle unittest prefix
@@ -267,8 +267,6 @@ function _private_get_unique_name($tablename) {
             $map_shortname[$shortname] = $tablename;
             return $shortname;
         }
-
-        ++$i;
     }
 
     print_error('failedtocreateuniquename', 'error');
