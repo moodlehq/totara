@@ -4987,7 +4987,6 @@ function print_plugin_tables() {
                                      'workshop');
     
     $plugins_standard['blocks'] = array('activity_modules',
-                                        'addtoplan',
                                         'admin',
                                         'admin_bookmarks',
                                         'admin_tree',
@@ -4995,7 +4994,6 @@ function print_plugin_tables() {
                                         'blog_tags',
                                         'calendar_month',
                                         'calendar_upcoming',
-                                        'comments',
                                         'completionstatus',
                                         'course_list',
                                         'course_summary',
