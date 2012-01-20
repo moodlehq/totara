@@ -506,7 +506,7 @@ function calendar_show_month_detailed($m, $y, $courses, $groups, $users, $course
         if(isset($durationbyday[$aday])) {
             echo '<ul class="events-underway">';
             foreach($durationbyday[$day] as $eventindex) {
-                echo '<li'.$eventclass.'><a href="'.$dayhref.'#event_'.$events[$eventindex]->id.'">'.format_string($events[$eventindex]->name,true).' (continue)</a></li>';
+                echo '<li>['.format_string($events[$eventindex]->name,true).']</li>';
             }
             echo '</ul>';
         }
