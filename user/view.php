@@ -107,8 +107,7 @@
                     print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;");
                     print_heading(get_string('notenrolledprofile'));
                 }
-                $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $CFG->wwwroot;
-                print_continue($redirect);
+                print_continue($_SERVER['HTTP_REFERER']);
                 print_footer($course);
                 exit;
             }
