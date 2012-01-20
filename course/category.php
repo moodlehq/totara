@@ -92,7 +92,7 @@
 
                 //shift course sortorder back down the amount we moved them up
                 execute_sql('UPDATE '. $CFG->prefix .'course SET sortorder = sortorder-'.($sortordermax-$sortordermin).
-                        ' WHERE category='.$category->id, false);
+                        ' WHERE category='.$category->id);
 
                 fix_course_sortorder($category->id);
                 prog_fix_program_sortorder($category->id);
