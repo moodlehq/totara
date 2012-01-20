@@ -366,7 +366,7 @@ class question_match_qtype extends default_questiontype {
         return true;
     }
 
-    function compare_responses(&$question, $state, $teststate) {
+    function compare_responses($question, $state, $teststate) {
         foreach ($state->responses as $i=>$sr) {
             if (empty($teststate->responses[$i])) {
                 if (!empty($state->responses[$i])) {
@@ -380,7 +380,7 @@ class question_match_qtype extends default_questiontype {
     }
 
     // ULPGC ecastro for stats report
-    function get_all_responses(&$question, &$state) {
+    function get_all_responses($question, $state) {
         $answers = array();
         if (is_array($question->options->subquestions)) {
             foreach ($question->options->subquestions as $aid => $answer) {

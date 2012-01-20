@@ -437,7 +437,7 @@ class question_calculated_qtype extends question_dataset_dependent_questiontype 
     }
 
     // ULPGC ecastro
-    function get_actual_response($question, $state) {
+    function get_actual_response(&$question, &$state) {
         // Substitute variables in questiontext before giving the data to the
         // virtual type
         $virtualqtype = $this->get_virtual_qtype();
@@ -862,7 +862,7 @@ class question_calculated_qtype extends question_dataset_dependent_questiontype 
         return $datasetmenus;
     }
 
-    function print_question_grading_details(&$question, &$state, $cmoptions, $options) {
+    function print_question_grading_details(&$question, &$state, &$cmoptions, &$options) {
         $virtualqtype = $this->get_virtual_qtype();
         $virtualqtype->print_question_grading_details($question, $state, $cmoptions, $options) ;
     }

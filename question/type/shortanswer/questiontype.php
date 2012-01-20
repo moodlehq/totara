@@ -160,14 +160,14 @@ class question_shortanswer_qtype extends default_questiontype {
         return false;
     }
 
-    function compare_responses(&$question, $state, $teststate) {
+    function compare_responses($question, $state, $teststate) {
         if (isset($state->responses['']) && isset($teststate->responses[''])) {
             return $state->responses[''] === $teststate->responses[''];
         }
         return false;
     }
 
-    function test_response(&$question, &$state, $answer) {
+    function test_response(&$question, $state, $answer) {
         // Trim the response before it is saved in the database. See MDL-10709
         $state->responses[''] = trim($state->responses['']);
         return $this->compare_string_with_wildcard(stripslashes_safe($state->responses['']),
