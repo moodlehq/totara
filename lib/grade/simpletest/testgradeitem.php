@@ -119,16 +119,7 @@ class grade_item_test extends grade_test {
     }
 
     function test_grade_item_qualifies_for_regrading() {
-        // Short term fix to get tests passing in MSSQL
-        // Only pass ID instead of whole grade_items[0] object
-        // as the whole object will lead to an sql statement
-        // with grade_items.itemtype in the where clause
-        // in data_object::fetch_all_helper(). This fails in
-        // MSSQL as it compares a string (varchar) to the field
-        // which is type NTEXT.
-        //$grade_item = new grade_item($this->grade_items[0]);
-        $reduced = array('id' => $this->grade_items[0]->id);
-        $grade_item = new grade_item($reduced);
+        $grade_item = new grade_item($this->grade_items[0]);
         $this->assertTrue(method_exists($grade_item, 'qualifies_for_regrading'));
 
         $this->assertFalse($grade_item->qualifies_for_regrading());
@@ -143,9 +134,7 @@ class grade_item_test extends grade_test {
     }
 
     function test_grade_item_force_regrading() {
-        //$grade_item = new grade_item($this->grade_items[0]);
-        $reduced = array('id' => $this->grade_items[0]->id);
-        $grade_item = new grade_item($reduced);
+        $grade_item = new grade_item($this->grade_items[0]);
         $this->assertTrue(method_exists($grade_item, 'force_regrading'));
 
         $this->assertEqual(0, $grade_item->needsupdate);
@@ -351,9 +340,7 @@ class grade_item_test extends grade_test {
 
     // Test locking of grade items
     function test_grade_item_set_locked() {
-        //$grade_item = new grade_item($this->grade_items[0]);
-        $reduced = array('id' => $this->grade_items[0]->id);
-        $grade_item = new grade_item($reduced);
+        $grade_item = new grade_item($this->grade_items[0]);
         $this->assertTrue(method_exists($grade_item, 'set_locked'));
 
         $grade = new grade_grade($grade_item->get_final(1));
@@ -374,9 +361,7 @@ class grade_item_test extends grade_test {
     }
 
     function test_grade_item_is_locked() {
-        //$grade_item = new grade_item($this->grade_items[0]);
-        $reduced = array('id' => $this->grade_items[0]->id);
-        $grade_item = new grade_item($reduced);
+        $grade_item = new grade_item($this->grade_items[0]);
         $this->assertTrue(method_exists($grade_item, 'is_locked'));
 
         $this->assertFalse($grade_item->is_locked());
