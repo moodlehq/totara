@@ -149,9 +149,8 @@ class moodlelib_test extends UnitTestCase {
     }
 
     function test_clean_param_clean() {
-        $string = addslashes('#()*#,9789\'".,');
         $this->assertEqual(clean_param('#()*#,9789\'".,<42897></?$(*DSFMO#$*)(SDJ)($*)', PARAM_CLEAN),
-                $string);
+                '#()*#,9789\\\'\".,');
     }
 
     function test_clean_param_alpha() {
