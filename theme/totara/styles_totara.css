@@ -4172,10 +4172,6 @@ body#files-index div#wrapper div#page div#nav-bar{
 
 }
 
-table.topics tr.section span.topicnumber {
-    display: none;
-}
-
 
 #list-related.generalbox tbody tr th.header {
     text-align: left;
