@@ -288,13 +288,11 @@
                 $completion=new completion_info($course);
                 $completion->reset_all_state($cm);
             }
-
-            if (!empty($CFG->enablecompletion)) {
-                $cm->completion = $fromform->completion;
-                $cm->completionview = $fromform->completionview;
-                $cm->completionexpected = $fromform->completionexpected;
-                $cm->completiongradeitemnumber = $fromform->completiongradeitemnumber;
-            }
+            set_coursemodule_completion($fromform->coursemodule, $fromform->completion);
+            set_coursemodule_completionview($fromform->coursemodule, $fromform->completionview);
+            set_coursemodule_completionexpected($fromform->coursemodule, $fromform->completionexpected);
+            set_coursemodule_completiongradeitemnumber(
+                    $fromform->coursemodule,$fromform->completiongradeitemnumber);
 
             if (isset($fromform->cmidnumber)) { //label
                 // set cm idnumber
