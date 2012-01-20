@@ -160,15 +160,10 @@ if(ini_get('zlib.output_compression')) {
 
 $filename = 'icalexport.ics';
 
-if (strpos($CFG->wwwroot, 'https://') === 0) { //https sites - watch out for IE! KB812935 and KB316431
-    header('Cache-Control: max-age=10');
-    header('Pragma: ');
-} else { //normal http - prevent caching at all cost
-    header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
-    header('Pragma: no-cache');
-}
 header('Last-Modified: '. gmdate('D, d M Y H:i:s', time()) .' GMT');
+header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
 header('Expires: '. gmdate('D, d M Y H:i:s', 0) .'GMT');
+header('Pragma: no-cache');
 header('Accept-Ranges: none'); // Comment out if PDFs do not work...
 header('Content-disposition: attachment; filename='.$filename);
 header('Content-length: '.strlen($serialized));
