@@ -63,8 +63,7 @@
     // Initialize the session variables
     calendar_session_vars();
 
-    // Add to log when user views calendar entries
-    add_to_log(SITEID, "calendar", "view site calendar", "../calendar/view.php?view=$view&amp;course=$courseid&amp;cal_d=$day&amp;cal_m=$mon&amp;cal_y=$yr");
+    //add_to_log($course->id, "course", "view", "view.php?id=$course->id", "$course->id");
     $now = usergetdate(time());
     $pagetitle = '';
 
