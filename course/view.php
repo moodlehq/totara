@@ -22,20 +22,20 @@
 
 
     if (empty($id) && empty($name) && empty($idnumber)) {
-        error(get_string('error:missingid', 'view'));
+        error("Must specify course id, short name or idnumber");
     }
 
     if (!empty($name)) {
         if (! ($course = get_record('course', 'shortname', $name)) ) {
-            error(get_string('error:shortname', 'view'));
+            error('Invalid short course name');
         }
     } else if (!empty($idnumber)) {
         if (! ($course = get_record('course', 'idnumber', $idnumber)) ) {
-            error(get_string('error:idnumber', 'view'));
+            error('Invalid course idnumber');
         }
     } else {
         if (! ($course = get_record('course', 'id', $id)) ) {
-            error(get_string('error:courseid', 'view'));
+            error('Invalid course id');
         }
     }
 
@@ -126,7 +126,7 @@
         if (!empty($section)) {
             if (!empty($move) and confirm_sesskey()) {
                 if (!move_section($course, $section, $move)) {
-                    notify(get_string('error:move', 'view'));
+                    notify('An error occurred while moving a section');
                 }
             }
         }
@@ -221,7 +221,7 @@
             $section->id = insert_record('course_sections', $section);
         }
         if (! $sections = get_all_sections($course->id) ) {      // Try again
-            error(get_string('error:structure', 'view'));
+            error('Error finding or creating section structures for this course');
         }
     }
 
