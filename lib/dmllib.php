@@ -2039,15 +2039,12 @@ function sql_compare_text($fieldname, $numchars=32) {
  * @return string the piece of SQL code to be used in your statement.
  */
 function sql_order_by_text($fieldname, $numchars=32) {
+
     global $CFG;
 
     switch ($CFG->dbfamily) {
         case 'mssql':
-            if ($CFG->dbtype == 'mssql_n') {
-                return 'CONVERT(nvarchar, ' . $fieldname . ', ' . $numchars . ')';
-            } else {
-                return 'CONVERT(varchar, ' . $fieldname . ', ' . $numchars . ')';
-            }
+            return 'CONVERT(varchar, ' . $fieldname . ', ' . $numchars . ')';
             break;
         case 'oracle':
             return 'dbms_lob.substr(' . $fieldname . ', ' . $numchars . ',1)';
