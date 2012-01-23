@@ -4544,15 +4544,6 @@ function &admin_get_root($reload=false, $requirefulltree=true) {
         if (file_exists($CFG->dirroot.'/local/settings.php')) {
             include($CFG->dirroot.'/local/settings.php');
         }
-
-        // Add in the local/plugins settings
-        $local_plugins =  get_list_of_plugins('local');
-        foreach ($local_plugins as $plugin) {
-            $file = $CFG->dirroot.'/local/'.$plugin.'/settings.php';
-            if (file_exists($file)) {
-                include($file);
-            }
-        }
     }
 
     return $ADMIN;
