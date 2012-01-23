@@ -102,8 +102,7 @@ function scorm_get_updatefreq_array(){
  */
 function scorm_get_popup_display_array(){
     return array(0 => get_string('iframe', 'scorm'),
-                 1 => get_string('popup', 'scorm'),
-                 2 => get_string('directview', 'scorm'));
+                 1 => get_string('popup', 'scorm'));
 }
 
 /**
@@ -738,7 +737,7 @@ function scorm_simple_play($scorm,$user, $context) {
         }
         scorm_parse($scorm);
     }
-    if (!$scorm->directview && has_capability('mod/scorm:viewreport', $context)) { //if this user can view reports, don't skipview so they can see links to reports. 
+    if (has_capability('mod/scorm:viewreport', $context)) { //if this user can view reports, don't skipview so they can see links to reports. 
         return $result;
     }
 

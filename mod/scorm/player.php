@@ -281,7 +281,7 @@
                 </noscript>
 <?php
     if ($result->prerequisites) {
-        if ($scorm->popup == 0 && $scorm->directview == 0) {
+        if ($scorm->popup == 0) {
             echo "                <script type=\"text/javascript\">scorm_resize(".$scorm->width.", ".$scorm->height.");</script>\n";
             $fullurl="loadSCO.php?id=".$cm->id.$scoidstr.$modestr;
             echo "                <iframe id=\"scoframe1\" class=\"scoframe\" name=\"scoframe1\" src=\"{$fullurl}\"></iframe>\n";   
@@ -292,8 +292,6 @@
                 $name = 'DefaultPlayerWindow';
             }
             $name = 'scorm_'.$name;
-            $base_url = ($scorm->directview ? 'view.php?directview=1&id=' : 'loadSCO.php?id=');
-            $course_url = ($scorm->directview ? 'window.location = "'.$CFG->wwwroot.'/course/view.php?id='.$cm->course.'";' : '');
             ?>
                     <script type="text/javascript">
                     //<![CDATA[
@@ -316,11 +314,10 @@
                             return windowobj;
                         }
 
-                        url = "<?php echo $base_url.$cm->id.$scoidpop ?>";
+                        url = "loadSCO.php?id=<?php echo $cm->id.$scoidpop ?>";
                         width = <?php p($scorm->width) ?>;
                         height = <?php p($scorm->height) ?>;
                         var main = openpopup(url, "<?php p($name) ?>", "<?php p($scorm->options) ?>", width, height);
-                        <?php echo $course_url?>
                     //]]>
                     </script>
                     <noscript>

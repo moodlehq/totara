@@ -341,16 +341,6 @@ function xmldb_scorm_upgrade($oldversion=0) {
         }
     }
 
-    // Adding directview field to scorm table
-    if ($result && $oldversion < 2011041403) {
-        $table = new XMLDBTable('scorm');
-        $field = new XMLDBField('directview');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null, 'completionscorerequired');
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
-        }
-    }
-
     return $result;
 }
 

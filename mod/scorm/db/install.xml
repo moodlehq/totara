@@ -30,8 +30,7 @@
         <FIELD NAME="height" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="600" SEQUENCE="false" ENUM="false" PREVIOUS="width" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="height" NEXT="completionstatusrequired"/>
         <FIELD NAME="completionstatusrequired" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" DEFAULT="null" SEQUENCE="false" ENUM="false" PREVIOUS="timemodified" NEXT="completionscorerequired"/>
-        <FIELD NAME="completionscorerequired" TYPE="int" LENGTH="2" NOTNULL="false" UNSIGNED="true" DEFAULT="null" SEQUENCE="false" ENUM="false" PREVIOUS="completionstatusrequired"  NEXT="directview"/>
-        <FIELD NAME="directview" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="completionscorerequired"/>
+        <FIELD NAME="completionscorerequired" TYPE="int" LENGTH="2" NOTNULL="false" UNSIGNED="true" DEFAULT="null" SEQUENCE="false" ENUM="false" PREVIOUS="completionstatusrequired"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" />
