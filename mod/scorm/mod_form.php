@@ -39,11 +39,6 @@ class mod_scorm_mod_form extends moodleform_mod {
         $mform->addRule('reference', get_string('required'), 'required');
         $mform->setHelpButton('reference',array('package', get_string('package', 'scorm'), 'scorm'));
 
-        // Unpacking type - a direct activity or package with Manifest
-        $mform->addElement('select', 'unpackmethod', get_string('unpackmethod', 'scorm'), array('manifest' => get_string('manifest', 'scorm'), 'aiccdirect' => get_string('direct', 'scorm')));
-        $mform->setHelpButton('unpackmethod', array('unpackmethod',get_string('unpackmethod', 'scorm'), 'scorm'));
-        $mform->setAdvanced('unpackmethod');
-
 //-------------------------------------------------------------------------------
 // Other Settings
         $mform->addElement('header', 'advanced', get_string('othersettings', 'form'));
@@ -241,31 +236,12 @@ class mod_scorm_mod_form extends moodleform_mod {
             $default_values['completionscoredisabled'] = 1;
         }
 
-        // set default unpackmethod
-        if (!isset($default_values['unpackmethod']) || !strlen($default_values['unpackmethod'])) {
-            $default_values['unpackmethod'] = 'manifest';
-        }
-
     }
 
     function validation($data, $files) {
         $errors = parent::validation($data, $files);
 
-        $validate = (object) array('errors' => array(), 'result' => false);
-        // only validate the package if it is specified as type manifest
-        if (isset($data['unpackmethod']) && $data['unpackmethod'] == 'manifest') {
-            $validate = scorm_validate($data);
-        }
-        else {
-            // is this a valid URL for a reference
-            $clean = clean_param($data['reference'], PARAM_URL);
-            if (empty($clean)) {
-                $validate->errors['reference'] = get_string('invalidurl','scorm');
-            }
-            else {
-                $validate->result = true;
-            }
-        }
+        $validate = scorm_validate($data);
 
         if (!$validate->result) {
             $errors = $errors + $validate->errors;
