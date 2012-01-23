@@ -262,15 +262,13 @@ abstract class course_set {
      * @return bool
      */
     public function is_courseset_complete($userid) {
-        if($completion_status = get_record('prog_completion', 'coursesetid', $this->id, 'programid', $this->programid, 'userid', $userid)) {
-            if($completion_status->status == STATUS_COURSESET_COMPLETE) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+        $completion_status = get_field('prog_completion', 'status', 'coursesetid', $this->id,
+            'programid', $this->programid, 'userid', $userid);
+        if ($completion_status === false) {
             return false;
         }
+
+        return ($completion_status == STATUS_COURSESET_COMPLETE);
     }
 
     /**
