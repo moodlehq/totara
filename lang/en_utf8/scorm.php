@@ -4,12 +4,6 @@
 
 $string['activation'] = 'Activation';
 $string['advanced'] = 'Parameters';
-$string['aicchacptimeout'] = 'AICC HACP Timeout';
-$string['aicchacptimeout_desc'] = 'Length of time in minutes that an external AICC HACP session can remain open';
-$string['aicchacpkeepsessiondata'] = 'AICC HACP session data';
-$string['aicchacpkeepsessiondata_desc'] = 'Length of time in days to keep the external AICC HACP session data (a high setting will fill up the table with old data but may be useful when debugging)';
-$string['allowtypeaicchacp'] = 'Enable external AICC HACP';
-$string['allowtypeaicchacp_desc'] = 'If enabled this allows AICC HACP external communication without requiring user login for post requests from the external AICC package';
 $string['asset'] = 'Asset';
 $string['assetlaunched'] = 'Asset - Viewed';
 $string['attempt'] = 'attempt';

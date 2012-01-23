@@ -39,9 +39,4 @@ $settings->add(new admin_setting_configselect('scorm_hidenav', get_string('hiden
 $settings->add(new admin_setting_configselect('scorm_auto', get_string('autocontinue', 'scorm'), get_string('autocontinuedesc', 'scorm'), 0, $yesno));
 
 $settings->add(new admin_setting_configselect('scorm_updatefreq', get_string('updatefreq', 'scorm'), get_string('updatefreqdesc', 'scorm'), 0, scorm_get_updatefreq_array()));
-
-$settings->add(new admin_setting_configcheckbox('scorm/allowaicchacp', get_string('allowtypeaicchacp', 'scorm'), get_string('allowtypeaicchacp_desc', 'scorm'), 0));
-
-$settings->add(new admin_setting_configtext('scorm/aicchacptimeout', get_string('aicchacptimeout', 'scorm'), get_string('aicchacptimeout_desc', 'scorm'), 30, PARAM_INT));
-
-$settings->add(new admin_setting_configtext('scorm/aicchacpkeepsessiondata', get_string('aicchacpkeepsessiondata', 'scorm'), get_string('aicchacpkeepsessiondata_desc', 'scorm'), 1, PARAM_INT));
+?>
