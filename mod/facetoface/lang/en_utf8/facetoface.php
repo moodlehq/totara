@@ -423,7 +423,7 @@ $string['setting:defaultrequestsubjectdefault'] = 'Course booking request: [face
 $string['setting:defaultvalue'] = 'Default value';
 $string['setting:defaultwaitlistedmessage'] = 'Default wait-listed message sent to users.';
 $string['setting:defaultwaitlistedmessage_caption'] = 'Wait-listed message';
-$string['setting:defaultwaitlistedmessagedefault'] = 'This is to advise that you been added to the waitlist for:
+$string['setting:defaultwaitlistedmessagedefault'] = 'This is to advise that you have been added to the waitlist for:
 
 Course:   [facetofacename]
 Location:  [session:location]
