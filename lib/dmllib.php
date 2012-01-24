@@ -1443,6 +1443,7 @@ function insert_record($table, $dataobject, $returnid=true, $primarykey='id') {
     if (empty($db)) {
         return false;
     }
+
 /// Check we are handling a proper $dataobject
     if (is_array($dataobject)) {
         debugging('Warning. Wrong call to insert_record(). $dataobject must be an object. array found instead', DEBUG_DEVELOPER);
