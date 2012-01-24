@@ -1427,7 +1427,7 @@ class program {
         global $USER;
 
         if (!$userid) {
-            $userid = $USER->id;
+            return false;
         }
 
         // Check if there is a user assignment

@@ -262,6 +262,9 @@ abstract class course_set {
      * @return bool
      */
     public function is_courseset_complete($userid) {
+        if (!$userid) {
+            return false;
+        }
         $completion_status = get_field('prog_completion', 'status', 'coursesetid', $this->id,
             'programid', $this->programid, 'userid', $userid);
         if ($completion_status === false) {
@@ -381,6 +384,10 @@ abstract class course_set {
 
     protected function get_courseset_divider_text($previous_sets=array(), $next_sets=array(), $userid=0, $viewinganothersprogram=false) {
         $out = '';
+
+        if (is_null($userid)) {
+            $userid = 0;
+        }
 
         // If this divider is inside an OR group
         if ($previous_sets[count($previous_sets)-1]->nextsetoperator == NEXTSETOPERATOR_OR) {

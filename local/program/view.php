@@ -82,7 +82,7 @@ print_heading($heading);
 /* if the logged in user has been assigned this program,
  * then they should always see their progress - even on
  * the searched pages */
-if ($program->is_program_inprogress($USER->id)) {
+if ($program->user_is_assigned($USER->id)) {
     echo $program->display($USER->id);
 } else {
     echo $program->display();
