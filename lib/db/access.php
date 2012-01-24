@@ -53,12 +53,6 @@ $moodle_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM
     ),
 
-    'moodle/legacy:manager' => array(
-
-        'captype' => 'legacy',
-        'contextlevel' => CONTEXT_SYSTEM
-    ),
-
     'moodle/legacy:student' => array(
 
         'riskbitmask' => RISK_SPAM,
