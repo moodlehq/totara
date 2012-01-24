@@ -246,7 +246,7 @@ class totara_dialog_content {
         if ($this->type === self::TYPE_CHOICE_MULTI) {
 
             $id = strlen($this->selected_id) ? 'id="'.$this->selected_id.'"' : '';
-            $markup .= '<td class="selected" '.$id.'>';
+            $markup .= '<td class="selected dialog-nobind" '.$id.'>';
 
             // Show title
             if (!empty($this->selected_title)) {

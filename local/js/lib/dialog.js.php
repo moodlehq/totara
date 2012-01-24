@@ -244,7 +244,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         // Bind dialog.load to any links in the dialog
         $('a', this.dialog).each(function() {
 
-            // don't bind links if any parent has dialog-nobind class
+            // Don't bind links if any parent has dialog-nobind class
             if ($(this).parents('.dialog-nobind').length != 0) {
                 return;
             }
