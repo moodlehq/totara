@@ -5,7 +5,6 @@
     require_once("../config.php");
     require_once("lib.php");
     require_once($CFG->libdir.'/gradelib.php');
-    require_once($CFG->libdir.'/conditionlib.php');
 
     require_login();
 
@@ -264,16 +263,6 @@
                 // set cm idnumber
                 set_coursemodule_idnumber($fromform->coursemodule, $fromform->cmidnumber);
             }
-            if(!empty($CFG->enableavailability)) {
-                $cm->availablefrom             = $fromform->availablefrom;
-                $cm->availableuntil            = $fromform->availableuntil;
-                $cm->showavailability          = $fromform->showavailability;
-                condition_info::update_cm_from_form($cm,$fromform,true);
-            }
-
-            if (!update_record('course_modules', $cm)) {
-                print_error('cannotupdatecoursemodule');
-            }
 
             add_to_log($course->id, "course", "update mod",
                        "../mod/$fromform->modulename/view.php?id=$fromform->coursemodule",
@@ -322,17 +311,6 @@
             if (isset($fromform->cmidnumber)) { //label
                 // set cm idnumber
                 set_coursemodule_idnumber($fromform->coursemodule, $fromform->cmidnumber);
-            }
-            if(!empty($CFG->enableavailability)) {
-                $newcm->availablefrom             = $fromform->availablefrom;
-                $newcm->availableuntil            = $fromform->availableuntil;
-                $newcm->showavailability          = $fromform->showavailability;
-            }
-
-            // Set up conditions
-            if($CFG->enableavailability) {
-                condition_info::update_cm_from_form(
-                    (object)array('id'=>$fromform->coursemodule),$fromform,false);
             }
 
             add_to_log($course->id, "course", "add mod",

@@ -5,10 +5,6 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 require_once ($CFG->libdir.'/formslib.php');
-
-if(!empty($CFG->enableavailability)) {
-    require_once($CFG->libdir.'/conditionlib.php');
-}
 /**
  * This class adds extra methods to form wrapper specific to be used for module
  * add / update forms (mod/{modname}.mod_form.php replaces deprecated mod/{modname}/mod.html
@@ -174,7 +170,7 @@ class moodleform_mod extends moodleform {
             $default_values = (array)$default_values;
         }
         $this->data_preprocessing($default_values);
-        parent::set_data($default_values);
+        parent::set_data($default_values); //never slashed for moodleform_mod
     }
 
     /**
@@ -351,7 +347,6 @@ class moodleform_mod extends moodleform {
         $mform->setType('buttonar', PARAM_RAW);
         $mform->closeHeaderBefore('buttonar');
     }
-
 }
 
 ?>
