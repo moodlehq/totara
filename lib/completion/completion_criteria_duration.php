@@ -87,10 +87,11 @@ class completion_criteria_duration extends completion_criteria {
      * @param   object  $completion
      * @return  int
      */
-    private function get_timeenrolled($completion) {
+    private function get_timeenroled($completion) {
+        global $DB;
 
         $context = get_context_instance(CONTEXT_COURSE, $this->course);
-        return get_field('role_assignments', 'timestart', 'contextid', $context->id, 'userid', $completion->userid);
+        return $DB->get_field('role_assignments', 'timestart', array('contextid' => $context->id, 'userid' => $completion->userid));
     }
 
     /**
@@ -168,40 +169,40 @@ class completion_criteria_duration extends completion_criteria {
      * @return  void
      */
     public function cron() {
-        global $CFG;
+        global $DB;
 
         // Get all users who match meet this criteria
-        $sql = "
+        $sql = '
             SELECT DISTINCT
                 c.id AS course,
                 cr.id AS criteriaid,
                 ra.userid AS userid,
                 (ra.timestart + cr.enrolperiod) AS timecompleted
             FROM
-                {$CFG->prefix}course_completion_criteria cr
+                {course_completion_criteria} cr
             INNER JOIN
-                {$CFG->prefix}course c
+                {course} c
              ON cr.course = c.id
             INNER JOIN
-                {$CFG->prefix}context con
+                {context} con
              ON con.instanceid = c.id
             INNER JOIN
-                {$CFG->prefix}role_assignments ra
+                {role_assignments} ra
              ON ra.contextid = con.id
             LEFT JOIN
-                {$CFG->prefix}course_completion_crit_compl cc
+                {course_completion_crit_compl} cc
              ON cc.criteriaid = cr.id
             AND cc.userid = ra.userid
             WHERE
-                cr.criteriatype = ".COMPLETION_CRITERIA_TYPE_DURATION."
-            AND con.contextlevel = ".CONTEXT_COURSE."
+                cr.criteriatype = '.COMPLETION_CRITERIA_TYPE_DURATION.'
+            AND con.contextlevel = '.CONTEXT_COURSE.'
             AND c.enablecompletion = 1
             AND cc.id IS NULL
-            AND ra.timestart + cr.enrolperiod < ".time()."
-     ";
+            AND ra.timestart + cr.enrolperiod < ?
+        ';
 
         // Loop through completions, and mark as complete
-        if ($rs = get_recordset_sql($sql)) {
+        if ($rs = $DB->get_recordset_sql($sql, array(time()))) {
             foreach ($rs as $record) {
                 $completion = new completion_criteria_completion($record, DATA_OBJECT_FETCH_BY_KEY);
                 $completion->mark_complete($record['timecompleted']);

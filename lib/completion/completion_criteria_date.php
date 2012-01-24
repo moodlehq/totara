@@ -151,40 +151,40 @@ class completion_criteria_date extends completion_criteria {
      * @return  void
      */
     public function cron() {
-        global $CFG;
+        global $DB;
 
         // Get all users who match meet this criteria
-        $sql = "
+        $sql = '
             SELECT DISTINCT
                 c.id AS course,
                 cr.completedate AS completedate,
                 cr.id AS criteriaid,
                 ra.userid AS userid
             FROM
-                {$CFG->prefix}course_completion_criteria cr
+                {course_completion_criteria} cr
             INNER JOIN
-                {$CFG->prefix}course c
+                {course} c
              ON cr.course = c.id
             INNER JOIN
-                {$CFG->prefix}context con
+                {context} con
              ON con.instanceid = c.id
             INNER JOIN
-                {$CFG->prefix}role_assignments ra
+                {role_assignments} ra
              ON ra.contextid = con.id
             LEFT JOIN
-                {$CFG->prefix}course_completion_crit_compl cc
+                {course_completion_crit_compl} cc
              ON cc.criteriaid = cr.id
             AND cc.userid = ra.userid
             WHERE
-                cr.criteriatype = ".COMPLETION_CRITERIA_TYPE_DATE."
-            AND con.contextlevel = ".CONTEXT_COURSE."
+                cr.criteriatype = '.COMPLETION_CRITERIA_TYPE_DATE.'
+            AND con.contextlevel = '.CONTEXT_COURSE.'
             AND c.enablecompletion = 1
             AND cc.id IS NULL
-            AND cr.completedate < ".time()."
-        ";
+            AND cr.date < ?
+        ';
 
         // Loop through completions, and mark as complete
-        if ($rs = get_recordset_sql($sql)) {
+        if ($rs = $DB->get_recordset_sql($sql, array(time()))) {
             foreach ($rs as $record) {
                 $completion = new completion_criteria_completion($record, DATA_OBJECT_FETCH_BY_KEY);
                 $completion->mark_complete($record['completedate']);

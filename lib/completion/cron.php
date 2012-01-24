@@ -80,7 +80,7 @@ function completion_cron_criteria() {
  * @return  void
  */
 function completion_cron_completions() {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Aggregating completions');
@@ -94,7 +94,7 @@ function completion_cron_completions() {
     $timestarted = time();
 
     // Grab all criteria and their associated criteria completions
-    $sql = "
+    $sql = '
         SELECT DISTINCT
             c.id AS course,
             cr.id AS criteriaid,
@@ -102,26 +102,26 @@ function completion_cron_completions() {
             cr.criteriatype AS criteriatype,
             cc.timecompleted AS timecompleted
         FROM
-            {$CFG->prefix}course_completion_criteria cr
+            {course_completion_criteria} cr
         INNER JOIN
-            {$CFG->prefix}course c
+            {course} c
          ON cr.course = c.id
         INNER JOIN
-            {$CFG->prefix}context con
+            {context} con
          ON con.instanceid = c.id
         INNER JOIN
-            {$CFG->prefix}role_assignments ra
+            {role_assignments} ra
          ON ra.contextid = con.id
         LEFT JOIN
-            {$CFG->prefix}course_completion_crit_compl cc
+            {course_completion_crit_compl} cc
          ON cc.criteriaid = cr.id
         AND cc.userid = ra.userid
         LEFT JOIN
-            {$CFG->prefix}course_completions crc
+            {course_completions} crc
          ON crc.course = c.id
         AND crc.userid = ra.userid
         WHERE
-            con.contextlevel = ".CONTEXT_COURSE."
+            con.contextlevel = '.CONTEXT_COURSE.'
         AND c.enablecompletion = 1
         AND crc.timecompleted IS NULL
         AND crc.reaggregate > 0
@@ -129,10 +129,10 @@ function completion_cron_completions() {
         ORDER BY
             course,
             userid
-    ";
+    ';
 
     // Check if result is empty
-    if (!$rs = get_recordset_sql($sql)) {
+    if (!$rs = $DB->get_recordset_sql($sql)) {
         return;
     }
 
@@ -145,7 +145,6 @@ function completion_cron_completions() {
         // Grab records for current user/course
         while ($record = rs_fetch_next_record($rs)) {
             // If we are still grabbing the same users completions
-            $record = (object)$record;
             if ($record->userid === $current_user && $record->course === $current_course) {
                 $completions[$record->criteriaid] = $record;
             } else {

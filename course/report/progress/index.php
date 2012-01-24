@@ -57,6 +57,7 @@ if($group===0 && $course->groupmode==SEPARATEGROUPS) {
 $reportsurl = $CFG->wwwroot.'/course/report.php?id='.$course->id;
 $completion = new completion_info($course);
 $activities = $completion->get_activities();
+$criteria   = false;#$completion->has_criteria() ? $completion->get_criteria() : false;
 
 // Generate where clause
 $where = array();

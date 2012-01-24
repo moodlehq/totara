@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once $CFG->libdir.'/completion/completion_aggregation.php';
-require_once $CFG->libdir.'/completion/completion_criteria.php';
-require_once $CFG->libdir.'/completion/completion_completion.php';
-require_once $CFG->libdir.'/completion/completion_criteria_completion.php';
+#require_once $CFG->libdir.'/completion/completion_aggregation.php';
+#require_once $CFG->libdir.'/completion/completion_criteria.php';
+#require_once $CFG->libdir.'/completion/completion_completion.php';
+#require_once $CFG->libdir.'/completion/completion_criteria_completion.php';
 
 
 /**
@@ -472,16 +472,17 @@ class completion_info {
         // Fill cache if empty
         if (!is_array($this->criteria)) {
 
+            $params = array(
+                'course'    => $this->course->id
+            );
+
             // Load criteria from database
-            $records = get_records('course_completion_criteria', 'course', $this->course->id);
+            $records = get_records('course_completion_criteria', $params);
 
             // Build array of criteria objects
             $this->criteria = array();
-
-            if ($records) {
-                foreach ($records as $record) {
-                    $this->criteria[$record->id] = completion_criteria::factory($record);
-                }
+            foreach ($records as $record) {
+                $this->criteria[$record->id] = completion_criteria::factory($record);
             }
         }
 

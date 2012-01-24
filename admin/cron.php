@@ -252,14 +252,6 @@
     events_cron();
     mtrace('done.');
 
-    if ($CFG->enablecompletion) {
-        // Completion cron
-        mtrace('Starting the completion cron...');
-        require_once($CFG->libdir . '/completion/cron.php');
-        completion_cron();
-        mtrace('done');
-    }
-
     // Competency cron
     mtrace('Starting the competency cron...');
     require_once($CFG->dirroot . '/hierarchy/prefix/competency/cron.php');
