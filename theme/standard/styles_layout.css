@@ -488,13 +488,6 @@ img.iconkbhelp {
   border:0px;
 }
 
-img.icontoggle {
-  width:50px;
-  height:17px;
-  border:0px;
-  vertical-align:middle;
-}
-
 /*Accessibility: text 'seen' by screen readers but not visual users. Fixed for RTL languages, example Farsi. */
 .accesshide {
   position:absolute;
@@ -607,10 +600,11 @@ div.multicheck-items fieldset.felement span {
   clear: left;
 }
 .mform div.fhtmleditor {
-  margin: 5px 0 0 10px;
-  padding: 0;
-  float: left;
-  display: block;
+  margin: 0 auto 10px auto;
+  width : 600px;
+  clear:both;
+  float:none;
+  padding: 25px 0 20px 0;
 }
 .mform span.error, .mform span.required {
   color: red;
@@ -3446,8 +3440,7 @@ body.notes .notesgroup {
   background-image: url(pix/tab/left.gif);
 }
 
-.tabrow0 .here a:link:hover,
-.tabrow0 .here a:visited:hover {
+.tabrow0 .here a:hover {
   background-image: url(pix/tab/left.gif);
 }
 
@@ -4984,19 +4977,7 @@ wikiadminactions {
   border: 1px dashed #ddd;
   padding: 3px;
 }
-#help #emoticons{
-    text-align: center;clear:both;width: 300px;margin-right: auto; margin-left:auto;
-}
-#help #emoticons ul{
-    list-style-type: none;
-}
-#help #emoticons li{
-    margin-bottom: 3px;
-    width: 120px;
-    border-left: 3px solid gray;
-    padding-left: 7px;
-    float: left;
-}
+
 table.viewhierarchyitem th {
     text-align: left;
     vertical-align: top;

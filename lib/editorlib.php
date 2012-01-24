@@ -3,7 +3,7 @@
 /**
  * Editor class for Moodle.
  *
- * This library is made to make easier to integrate
+ * This library is made to make easier to intergrate
  * WYSIWYG editors into Moodle.
  *
  * @author Janne Mikkonen
@@ -32,14 +32,24 @@ class editorObject {
     var $cfg;
 
     /**
-    * Constructor
+    * PHP4 style class constructor.
+    *
+    * @uses $CFG, $USER
     */
-    function __construct() {
+    function editorObject () {
         global $CFG, $USER;
         $this->cfg  = &$CFG;
         $this->user = &$USER;
         $this->courseid = NULL;
-     }
+    }
+
+    /**
+    * PHP5 style class constructor.
+    *
+    */
+    function __construct() {
+        $this->editorObject();
+    }
 
     /**
     * Method to load necessary editor codes to
@@ -89,14 +99,16 @@ class editorObject {
                 break;
                 case 2:
                 case 'tinymce':
-                    array_push($CFG->editorsrc, "$editorbaseurl/tinymce/jscripts/tiny_mce/tiny_mce.js");
+                    array_push($CFG->editorsrc, "$editorbaseurl/tinymce/jscripts/tiny_mce/tiny_mce_gzip.php");
                     array_push($CFG->editorsrc, "$editorbaseurl/tinymce/moodledialog.js");
                     $classfile = "$editorbasedir/tinymce/tinymce.class.php";
                     include_once($classfile);
                     return (new tinymce($courseid));
                 break;
             }
+
         }
+
     }
 
     /**
@@ -111,6 +123,6 @@ class editorObject {
         echo '</div>';
         exit;
     }
-}
 
+}
 ?>
