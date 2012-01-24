@@ -932,7 +932,7 @@ Version 1.09 (2004-05-24)
 	Added new option "extended_valid_elements", this option adds extra elements to the "valid_elements" list.
 	Fixed bug #958637, Resized images are displayed in original size
 	Fixed bug #958942, Bug on realitive_urls (Bug with absolute URLs to insertlink_callback, insertimage_callback callbacks)
-	Fixed bug #958498, Unable to change Bold and italic text in Mozilla.
+	Fixed bug #958498, Unable to change Bold and italic text in Mozilla. 
 Version 1.08 (2004-05-21)
 	Added new attributes "border, hspace, vspace, width, height, align" to the getInsertImageTemplate theme function.
 	Added new relative_urls option, this new feature converts all absolute URLs to relative URLs and it's on by default.
@@ -942,39 +942,39 @@ Version 1.08 (2004-05-21)
 Version 1.07 (2004-05-10)
 	Added experimental support for option "force_br_newlines" to address bug #922416 and feature request #936270.
 	Fixed bug with mailto: links.
-Version 1.06 (2004-04-15)
+Version 1.06 (2004-04-15) 
 	Added new German language pack. Thanks goes to "Simon Rupf" for the contribution.
 	Added new German/Swedish bold/italic language specific icons to both default and simple theme.
-	Added new Swedish documentation.
-Version 1.05 (2004-04-02)
+	Added new Swedish documentation. 
+Version 1.05 (2004-04-02) 
 	Added new Italian language pack and documentation. Thanks goes to "Fabrix Xm" for the contribution.
 	Fixed missing "lang_help_desc" definition in UK and SE langpacks.
 	Added better documentation for the "valid_elements" option and it's format.
 	Added new "preformatted" option to address feature request #927948.
 	Added browser checker so that the script don't break on non compatible browsers.
 	Fixed bug #926639, now the editor instance gets resized if a width/height is specified in %.
-	Added new simple theme, this theme has only basic functions.
-Version 1.04 (2004-03-30)
+	Added new simple theme, this theme has only basic functions. 
+Version 1.04 (2004-03-30) 
 	Fixed bug when insertLink and insertImage function didn't use the url_convertor callback.
 	Fixed MSIE bug when images was 32x32 on initialization on slow connections.
 	Fixed bug that made request on images with wrong path, produced some 404 error in webserver logs.
-	Fixed MSIE bug where users could add images outside of the editor scope.
-Version 1.03 (2004-03-26)
+	Fixed MSIE bug where users could add images outside of the editor scope. 
+Version 1.03 (2004-03-26) 
 	Added new "add_form_submit_trigger" this option is default and is added on all document forms within the page. To address bug #923362
 	Moved javascript sourcecode file to "jscripts/tiny_mce/tiny_mce_src.js".
 	Added new obfuscated version of tinymce to reduce size of script.
 	Added some performance boosting code to the switchClassSticky function.
 	Removed the "autosave" option, this is no longer needed and is replaced with "add_form_submit_trigger" or triggerSave call.
 	Fixed undo bug in MSIE.
-	Removed some unused eventhandlers results in better performance.
-Version 1.02 (2004-03-26)
+	Removed some unused eventhandlers results in better performance. 
+Version 1.02 (2004-03-26) 
 	Added new handleNodeChange callback to themes.
 	Fixed some bugs regarding events and themes function checks.
-	Fixed bug issue when user focused nodes with keyboard.
-Version 1.01 (2004-03-12)
+	Fixed bug issue when user focused nodes with keyboard. 
+Version 1.01 (2004-03-12) 
 	Added some more documentation.
 	Added new "visual" option to editor.
 	Fixed bug on empty P elements.
-	Fixed bug on table width/height.
-Version 1.0 (2004-03-11)
-	Added new "debug" option and fixed some path issues.
+	Fixed bug on table width/height. 
+Version 1.0 (2004-03-11) 
+	Added new "debug" option and fixed some path issues.  
