@@ -75,7 +75,7 @@ class MoodleQuickForm_htmleditor extends MoodleQuickForm_textarea{
                                     $this->_options['width'],
                                     $this->_options['height'],
                                     $this->getName(),
-                                    $this->getValue(),
+                                    preg_replace("/(\r\n|\n|\r)/", '&#010;',$this->getValue()),
                                     0, // unused anymore
                                     true,
                                     $this->getAttribute('id'));//.$script;
