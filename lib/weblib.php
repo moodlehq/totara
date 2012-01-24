@@ -100,7 +100,6 @@ $ALLOWED_TAGS =
  * @global string $ALLOWED_PROTOCOLS
  */
 $ALLOWED_PROTOCOLS = array('http', 'https', 'ftp', 'news', 'mailto', 'rtsp', 'teamspeak', 'gopher', 'mms',
-                           'skype', 'ymsgr', 'meet', 'sip', 'xmpp', 'aim', 'myim', 'msnim',
                            'color', 'callto', 'cursor', 'text-align', 'font-size', 'font-weight', 'font-style', 'font-family',
                            'border', 'border-bottom', 'border-left', 'border-top', 'border-right', 'margin', 'margin-bottom', 'margin-left', 'margin-top', 'margin-right',
                            'padding', 'padding-bottom', 'padding-left', 'padding-top', 'padding-right', 'vertical-align',
