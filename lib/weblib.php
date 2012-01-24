@@ -3885,7 +3885,7 @@ function build_navigation($extranavlinks, $cm = null) {
     //Site name
     if ($site = get_site()) {
         $navlinks[] = array(
-                'name' => get_string('home'),
+                'name' => format_string($site->shortname),
                 'link' => "$CFG->wwwroot/",
                 'type' => 'home');
     }
@@ -3950,7 +3950,7 @@ function build_navigation($extranavlinks, $cm = null) {
 
     //Construct an unordered list from $navlinks
     //Accessibility: heading hidden from visual browsers by default.
-    $navigation = '<span class="youarehere">' .get_string('youarehere','access').":</span> <ul>\n";
+    $navigation = get_accesshide(get_string('youarehere','access'), 'h2')." <ul>\n";
     $lastindex = count($navlinks) - 1;
     $i = -1; // Used to count the times, so we know when we get to the last item.
     $first = true;
