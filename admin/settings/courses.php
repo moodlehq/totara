@@ -59,8 +59,6 @@ if ($hassiteconfig
     if (!empty($CFG->enablecompletion)) {
         $temp->add(new admin_setting_configselect('moodlecourse/enablecompletion', get_string('completion','completion'), '',
             1, array(0 => get_string('completiondisabled','completion'), 1 => get_string('completionenabled','completion'))));
-
-        $temp->add(new admin_setting_configcheckbox('moodlecourse/completionstartonenrol', get_string('completionstartonenrol','completion'), get_string('completionstartonenrolhelp', 'completion'), 1));
     }
 
     $temp->add(new admin_setting_configcheckbox('moodlecourse/coursetagging', get_string('coursetagging','tag'), get_string('coursetagginghelp','tag'), 0));
