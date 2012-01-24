@@ -1,6 +1,7 @@
 <?php  // $Id$
    // Library of useful functions
 
+
 define('COURSE_MAX_LOG_DISPLAY', 150);          // days
 define('COURSE_MAX_LOGS_PER_PAGE', 1000);       // records
 define('COURSE_LIVELOG_REFRESH', 60);           // Seconds
@@ -2564,23 +2565,6 @@ function get_course_section($section, $courseid) {
     $id = insert_record("course_sections", $cw);
     return get_record("course_sections", "id", $id);
 }
-
-function set_coursemodule_completion($id, $completion) {
-    return set_field("course_modules", "completion", $completion, 'id', $id);
-}
-
-function set_coursemodule_completionview($id, $completionview) {
-    return set_field("course_modules", "completionview", $completionview, 'id', $id);
-}
-
-function set_coursemodule_completiongradeitemnumber($id, $completiongradeitemnumber) {
-    return set_field("course_modules", "completiongradeitemnumber", $completiongradeitemnumber, 'id', $id);
-}
-
-function set_coursemodule_completionexpected($id, $completionexpected) {
-    return set_field("course_modules", "completionexpected", $completionexpected, 'id', $id);
-}
-
 /**
  * Given a full mod object with section and course already defined, adds this module to that section.
  *
