@@ -1951,22 +1951,6 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                             $row['criteriaid'] = $newids['course_completion_criteria'][$row['criteriaid']];
 
                             break;
-                        case 'course_completion_criteria':
-
-                            // If dependency criteria, only restore if this is the same site
-                            if ($row['courseinstance'] && !backup_is_same_site($restore)) {
-                                continue;
-                            }
-
-                            // If activity criteria, get the new activity id
-                            if ($row['moduleinstance']) {
-                                // Get activity id
-                                $new = backup_getid($restore->backup_unique_code, 'course_modules', $row['moduleinstance']);
-
-                                // Update
-                                $row['moduleinstance'] = $new->new_id;
-                            }
-                            break;
                     }
 
                     //Save it to db

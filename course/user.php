@@ -439,10 +439,6 @@
                         $activities = array();
                         $activities_complete = 0;
 
-                        // For aggregating dependencies
-                        $dependencies = array();
-                        $dependencies_complete = 0;
-
                         // Loop through course criteria
                         foreach ($completions as $completion) {
                             $criteria = $completion->get_criteria();
@@ -454,17 +450,6 @@
 
                                 if ($complete) {
                                     $activities_complete++;
-                                }
-
-                                continue;
-                            }
-
-                            // Dependencies are also a special case, so cache them and leave them till last
-                            if ($criteria->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
-                                $dependencies[$criteria->courseinstance] = $complete;
-
-                                if ($complete) {
-                                    $dependencies_complete++;
                                 }
 
                                 continue;
@@ -483,15 +468,6 @@
                             $row['title'] = get_string('activitiescomplete', 'coursereport_completion');
                             $row['status'] = $activities_complete.' of '.count($activities);
                             $rows[] = $row;
-                        }
-
-                        // Aggregate dependencies
-                        if (!empty($dependencies)) {
-
-                            $row = array();
-                            $row['title'] = get_string('dependenciescompleted', 'completion');
-                            $row['status'] = $dependencies_complete.' of '.count($dependencies);
-                            array_splice($rows, 0, 0, array($row));
                         }
 
                         $first_row = true;
