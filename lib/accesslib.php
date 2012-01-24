@@ -2279,17 +2279,12 @@ function get_system_context($cache=true) {
 
         if (!$context->id = insert_record('context', $context)) {
             // better something than nothing - let's hope it will work somehow
-            // DONT do it if we're cli because it's IMMUNTABLE.  Doing it during web installer works because
-            // each step is a new request
-            if (!defined('SYSCONTEXTID') && !defined('CLI_UPGRADE')) {
+            if (!defined('SYSCONTEXTID')) {
                 define('SYSCONTEXTID', 1);
-                $context->id   = SYSCONTEXTID;
-                $context->path = '/'.SYSCONTEXTID;
-            } else {
-                $context->id   = 0;
-                $context->path = '/0';
             }
             debugging('Can not create system context');
+            $context->id   = SYSCONTEXTID;
+            $context->path = '/'.SYSCONTEXTID;
             return $context;
         }
     }
