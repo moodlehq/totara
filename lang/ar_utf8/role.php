@@ -62,6 +62,7 @@ $string['course:viewhiddencourses'] = 'معاينة المناهج الدراس�
 $string['course:viewhiddensections'] = 'معاينة الاجزاء المخفية';
 $string['course:viewhiddenuserfields'] = 'معاينة حقول المستخدم المخفية';
 $string['course:viewparticipants'] = 'معاينة المشاركين';
+$string['course:viewprogress'] = 'عرض مسار تقدم المقرر الدراسي';
 $string['course:viewscales'] = 'معاينة المقايس';
 $string['course:visibility'] = 'أخفاء/ اظهار المناهج الدراسية';
 $string['currentcontext'] = 'السياق الحالي';

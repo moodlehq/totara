@@ -62,6 +62,7 @@ $string['course:viewhiddencourses'] = 'Visualizar cursos que estão ocultos';
 $string['course:viewhiddensections'] = 'Visualizar seções ocultas';
 $string['course:viewhiddenuserfields'] = 'Visualizar campos ocultos do usuário';
 $string['course:viewparticipants'] = 'Visualizar participantes';
+$string['course:viewprogress'] = 'Visualizar progresso do curso';
 $string['course:viewscales'] = 'Visualizar escalas de avaliação';
 $string['course:visibility'] = 'Ocultar/Mostrar cursos';
 $string['currentcontext'] = 'Contexto atual';

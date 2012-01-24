@@ -3,6 +3,7 @@
 
 $string['alphabet'] = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,Å,Ä,Ö';
 $string['backupnameformat'] = '%%Y%%m%%d-%%H%%M';
+$string['datepickerplaceholder'] = 'dd/mm/åå';
 $string['decsep'] = ',';
 $string['firstdayofweek'] = '0';
 $string['listsep'] = ';';
@@ -10,7 +11,6 @@ $string['locale'] = 'sv_SE.UTF-8';
 $string['localewin'] = 'Swedish_Sweden.1252';
 $string['localewincharset'] = 'WINDOWS-1252';
 $string['oldcharset'] = 'ISO-8859-1';
-$string['datepickerplaceholder'] = 'dd/mm/åå';
 $string['strftimedate'] = '%%d %%B %%Y';
 $string['strftimedateshort'] = '%%d %%B';
 $string['strftimedatetime'] = '%%d %%B %%Y, %%H:%%M';

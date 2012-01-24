@@ -5,7 +5,7 @@ $string['CASform'] = 'Käyttäjäntunnistuksen vaihtoehdot';
 $string['accesCAS'] = 'CAS-käyttäjät';
 $string['accesNOCAS'] = 'muut käyttäjät';
 $string['actauthhdr'] = 'Aktiiviset käyttäjäntunnistuksen lisäosat';
-$string['alternatelogin'] = 'Jos kirjoitat tähän URL:n, sitä käytetään kirjautumissivuna tälle sivustolle. Sivun pitäisi sisältää lomake, jonak ominaisuudet on asetettu <strong>\'$a\'</strong> ja joko antaa paluukentät <strong>käyttäjänimi</strong> and <strong>salasana</strong>.<br />
+$string['alternatelogin'] = 'Jos kirjoitat tähän URL:n, sitä käytetään kirjautumissivuna tälle sivustolle. Sivulla tulee olla kirjautumislomake, jolla on seuraava asetus:<strong>\'$a\'</strong>. Sen tulee saada aikaan kentät <strong>käyttäjänimi</strong> ja <strong>salasana</strong>.<br />
 
 Ole varovainen, ettet syötä virheellistä URL:ää, koska siten voit lukita itsesi ulos sivustoltasi.<br />
 
@@ -293,7 +293,7 @@ $string['auth_user_creation'] = 'Käyttäjät voivat itse luoda tunnuksensa. Kä
 $string['auth_usernameexists'] = 'Käyttäjätunnus on jo käytössä. Valitse joku toinen.';
 $string['authenticationoptions'] = 'Käyttäjätunnistuksen asetukset';
 $string['authforcedchangeinstructions'] = 'Ohjeista käyttäjää tilanteessa, jossa salasanan käyttöaika on umpeutunut ja salasanan vaihto on välttämätöntä.';
-$string['authinstructions'] = 'Tähän voi kirjoittaa ohjeet opiskelijoille, mitä tunnusta ja salasanaa heidän tulisi käyttää. Tämä teksti näkyy kirjautumissivulla.';
+$string['authinstructions'] = 'Tähän voit kirjoittaa ohjeet opiskelijoille siitä, mitä tunnusta ja salasanaa heidän tulisi käyttää. Tämä teksti näkyy kirjautumissivulla.';
 $string['auto_add_remote_users'] = 'Lisää automaattisesti etäkäyttäjiä';
 $string['changepassword'] = 'Salasananvaihto-URL';
 $string['changepasswordhelp'] = 'Tässä osoitteessa käyttäjät voivat vaihtaa unohtamansa salasanan. Käyttäjille tämä näkyy painikkeena kirjautumissivulla ja heidän käyttäjätietosivullaan.';

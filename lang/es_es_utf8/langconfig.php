@@ -2,12 +2,12 @@
 // langconfig.php - created with Totara langimport script version 1.1
 
 $string['backupnameformat'] = '%%d%%m%%Y-%%H%%M';
+$string['datepickerplaceholder'] = 'dd/mm/aa';
 $string['decsep'] = ',';
 $string['listsep'] = ';';
 $string['locale'] = 'es_ES.UTF-8';
 $string['oldcharset'] = 'ISO-8859-1';
 $string['parentlanguage'] = 'es_utf8';
-$string['datepickerplaceholder'] = 'dd/mm/aa';
 $string['strftimedate'] = '%%d de %%B de %%Y';
 $string['strftimedateshort'] = ' %%d de %%B ';
 $string['strftimedatetime'] = ' %%d de %%B de %%Y, %%H:%%M';
