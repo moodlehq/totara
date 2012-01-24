@@ -103,7 +103,7 @@
         <KEY NAME="parent" TYPE="foreign" FIELDS="parent" REFTABLE="course_categories" REFFIELDS="id" COMMENT="note that to make this recursive FK working someday, the parent field must be declared NULL" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="course_display" COMMENT="Stores info about how to display the course" PREVIOUS="course_meta" NEXT="course_meta">
+    <TABLE NAME="course_display" COMMENT="Stores info about how to display the course" PREVIOUS="course_categories" NEXT="course_meta">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
