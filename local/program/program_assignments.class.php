@@ -962,10 +962,11 @@ class positions_category extends prog_assignment_category {
         $select = $count ? 'COUNT(u.id)' : 'u.id';
 
         $sql = "SELECT $select
-                FROM {$CFG->prefix}pos_assignment AS pa
-                INNER JOIN {$CFG->prefix}user AS u ON pa.userid=u.id
+                FROM {$CFG->prefix}pos_assignment pa
+                INNER JOIN {$CFG->prefix}user u ON pa.userid = u.id
                 WHERE $where
-                AND u.deleted=0";
+                AND pa.type = " . POSITION_TYPE_PRIMARY . "
+                AND u.deleted = 0";
 
         if ($count) {
             $num = count_records_sql($sql);
