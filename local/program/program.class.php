@@ -272,7 +272,7 @@ class program {
 
         // Get user assignments only if there assignments for this program
         if ($prog_assignments) {
-            if (!$user_assignments = get_records('prog_user_assignment', 'programid', $this->id, '', 'id, *')) {
+            if (!$user_assignments = get_records('prog_user_assignment', 'programid', $this->id)) {
                 $user_assignments = array();
             }
         }
