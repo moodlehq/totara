@@ -5822,7 +5822,7 @@ function print_scale_menu_helpbutton($courseid, $scale, $return=false) {
 function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocations=NULL) {
     global $CFG, $SESSION, $THEME;
 
-    $isajax = is_ajax_request($_SERVER);
+    $isajax = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 
     if (empty($module) || $module === 'moodle' || $module === 'core') {
         $module = 'error';
@@ -6267,10 +6267,29 @@ function redirect($url, $message='', $delay=-1) {
 
 /// when no message and header printed yet, try to redirect
     if (empty($message) and !defined('HEADER_PRINTED')) {
-        if (is_ajax_request($_SERVER) && strstr($url, 'login/index.php')) {
-            // Prevent redirecting to login page if this is an ajax request
-            print_error('sessionerroruser');
-            exit;
+
+        // Technically, HTTP/1.1 requires Location: header to contain
+        // the absolute path. (In practice browsers accept relative
+        // paths - but still, might as well do it properly.)
+        // This code turns relative into absolute.
+        if (!preg_match('|^[a-z]+:|', $url)) {
+            // Get host name http://www.wherever.com
+            $hostpart = preg_replace('|^(.*?[^:/])/.*$|', '$1', $CFG->wwwroot);
+            if (preg_match('|^/|', $url)) {
+                // URLs beginning with / are relative to web server root so we just add them in
+                $url = $hostpart.$url;
+            } else {
+                // URLs not beginning with / are relative to path of current script, so add that on.
+                $url = $hostpart.preg_replace('|\?.*$|','',me()).'/../'.$url;
+            }
+            // Replace all ..s
+            while (true) {
+                $newurl = preg_replace('|/(?!\.\.)[^/]*/\.\./|', '/', $url);
+                if ($newurl == $url) {
+                    break;
+                }
+                $url = $newurl;
+            }
         }
 
         $delay = 0;
