@@ -205,7 +205,7 @@ $string['error:notrequiredlearning'] = 'This program is not required learning';
 $string['error:updatingcompletionrecord'] = 'An error occured when updating a completion record';
 $string['error:updateuserassignment'] = 'An error occured when updating a user assignment record';
 $string['error:updatingprogramassignment'] = 'An error occured when updating a program assignment';
-$string['error:nocompletionrecord'] = 'Error, could not find completion record for assginment';
+$string['error:nocompletionrecord'] = 'Error, could not find completion record for assignment';
 
 // Instructions
 $string['instructions:assignments1'] = 'Categories can be used to assign the program to sets of learners.';

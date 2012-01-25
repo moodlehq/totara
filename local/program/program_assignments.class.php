@@ -1366,7 +1366,7 @@ class user_assignment {
         $this->assignment = $assignment;
         $this->programid = $programid;
 
-        if (!$this->completion = get_record('prog_completion', 'programid', $programid, 'userid', $userid, 'status', '0')) {
+        if (!$this->completion = get_record('prog_completion', 'programid', $programid, 'userid', $userid, 'coursesetid', '0')) {
             if (defined('FULLME') && FULLME === 'cron') {
                 mtrace(get_string('error:nocompletionrecord', 'local_program'));
             } else {
