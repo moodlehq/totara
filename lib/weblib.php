@@ -5822,6 +5822,8 @@ function print_scale_menu_helpbutton($courseid, $scale, $return=false) {
 function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocations=NULL) {
     global $CFG, $SESSION, $THEME;
 
+    $isajax = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+
     if (empty($module) || $module === 'moodle' || $module === 'core') {
         $module = 'error';
     }
