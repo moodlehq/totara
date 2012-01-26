@@ -5591,29 +5591,25 @@ function get_string($identifier, $module='', $a=NULL, $extralocations=NULL) {
                 if (eval($result) === FALSE) {
                     trigger_error('Lang error: '.$identifier.':'.$langfile, E_USER_NOTICE);
                 }
-                if (!empty($parentlang)) {   // found the parent lang!
+                if (!empty($parentlang)) {   // found it!
 
-                    // Loop through all the locations again to find
-                    // the actual lang string
-                    foreach ($locations as $loc) {
-                        //first, see if there's a local file for parent
-                        $locallangfile = $loc.$parentlang.'_local'.'/'.$module.'.php';
-                        if (file_exists($locallangfile)) {
-                            if ($result = get_string_from_file($identifier, $locallangfile, "\$resultstring")) {
-                                if (eval($result) === FALSE) {
-                                    trigger_error('Lang error: '.$identifier.':'.$locallangfile, E_USER_NOTICE);
-                                }
-                                return $resultstring;
+                    //first, see if there's a local file for parent
+                    $locallangfile = $location.$parentlang.'_local'.'/'.$module.'.php';
+                    if (file_exists($locallangfile)) {
+                        if ($result = get_string_from_file($identifier, $locallangfile, "\$resultstring")) {
+                            if (eval($result) === FALSE) {
+                                trigger_error('Lang error: '.$identifier.':'.$locallangfile, E_USER_NOTICE);
                             }
+                            return $resultstring;
                         }
+                    }
 
-                        //if local directory not found, or particular string does not exist in local direcotry
-                        $langfile = $loc.$parentlang.'/'.$module.'.php';
-                        if (file_exists($langfile)) {
-                            if ($result = get_string_from_file($identifier, $langfile, "\$resultstring")) {
-                                eval($result);
-                                return $resultstring;
-                            }
+                    //if local directory not found, or particular string does not exist in local direcotry
+                    $langfile = $location.$parentlang.'/'.$module.'.php';
+                    if (file_exists($langfile)) {
+                        if ($result = get_string_from_file($identifier, $langfile, "\$resultstring")) {
+                            eval($result);
+                            return $resultstring;
                         }
                     }
                 }
