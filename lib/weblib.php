@@ -6599,17 +6599,15 @@ function print_side_block_start($heading='', $attributes = array()) {
 
     global $CFG, $THEME;
 
-    if (strpos($attributes['class'], 'dashlet') === false) {
-        // If there are no special attributes, give a default CSS class
-        if (empty($attributes) || !is_array($attributes)) {
-            $attributes = array('class' => 'sideblock');
+    // If there are no special attributes, give a default CSS class
+    if (empty($attributes) || !is_array($attributes)) {
+        $attributes = array('class' => 'sideblock');
 
-        } else if(!isset($attributes['class'])) {
-            $attributes['class'] = 'sideblock';
+    } else if(!isset($attributes['class'])) {
+        $attributes['class'] = 'sideblock';
 
-        } else if(!strpos($attributes['class'], 'sideblock')) {
-            $attributes['class'] .= ' sideblock';
-        }
+    } else if(!strpos($attributes['class'], 'sideblock')) {
+        $attributes['class'] .= ' sideblock';
     }
 
     // OK, the class is surely there and in addition to anything
