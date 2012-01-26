@@ -957,12 +957,21 @@ function xmldb_main_upgrade($oldversion=0) {
         // Create the table
         $result = $result && create_table($table);
 
-        // Insert initial applications (moodle)
+        // Insert initial applications (moodle and mahara)
         $application = new stdClass();
         $application->name                = 'moodle';
         $application->display_name        = 'Moodle';
         $application->xmlrpc_server_url   = '/mnet/xmlrpc/server.php';
         $application->sso_land_url        = '/auth/mnet/land.php';
+        if ($result) {
+            $newid  = insert_record('mnet_application', $application, false);
+        }
+
+        $application = new stdClass();
+        $application->name                = 'mahara';
+        $application->display_name        = 'Mahara';
+        $application->xmlrpc_server_url   = '/api/xmlrpc/server.php';
+        $application->sso_land_url        = '/auth/xmlrpc/land.php';
         $result = $result && insert_record('mnet_application', $application, false);
 
         // New mnet_host->applicationid field
@@ -1671,7 +1680,7 @@ function xmldb_main_upgrade($oldversion=0) {
         $table = new XMLDBTable('groups');
         $field = new XMLDBField('password');
 
-        if (field_exists($table, $field)) { 
+        if (field_exists($table, $field)) {
     /// 1.7.*/1.6.*/1.5.* - create 'groupings' and 'groupings_groups' + rename password to enrolmentkey
     /// or second run after fixing structure broken from 1.8.x
             $result = $result && upgrade_17_groups();
@@ -1685,7 +1694,7 @@ function xmldb_main_upgrade($oldversion=0) {
             upgrade_18_broken_groups();
             notify('Warning: failed groups upgrade detected! Unfortunately this problem '.
                    'can not be fixed automatically. Mapping of groups to courses was lost, '.
-                   'you can either revert to backup from 1.7.x and run ugprade again or '. 
+                   'you can either revert to backup from 1.7.x and run ugprade again or '.
                    'continue and fill in the missing course ids into groups table manually.');
             $result = false;
         }
@@ -2346,7 +2355,7 @@ function xmldb_main_upgrade($oldversion=0) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
 
     /*
-     * Note: mysql can not create indexes on text fields larger than 333 chars! 
+     * Note: mysql can not create indexes on text fields larger than 333 chars!
      */
 
     /// Adding indexes to table cache_flags
@@ -2391,7 +2400,7 @@ function xmldb_main_upgrade($oldversion=0) {
         if (index_exists($table, $index)) {
             $result = $result && drop_index($table, $index);
         }
-        
+
         $table = new XMLDBTable('cache_flags');
         $index = new XMLDBIndex('flagtype');
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('flagtype'));
@@ -2553,7 +2562,7 @@ function xmldb_main_upgrade($oldversion=0) {
                   FROM {$CFG->prefix}user_lastaccess
                  WHERE NOT EXISTS (SELECT 'x'
                                     FROM {$CFG->prefix}course c
-                                   WHERE c.id = {$CFG->prefix}user_lastaccess.courseid)"; 
+                                   WHERE c.id = {$CFG->prefix}user_lastaccess.courseid)";
         execute_sql($sql);
 
         upgrade_main_savepoint($result, 2007100902);
@@ -2576,16 +2585,16 @@ function xmldb_main_upgrade($oldversion=0) {
 
         upgrade_main_savepoint($result, 2007100903);
     }
-    
+
     if ($result && $oldversion < 2007101500 && !file_exists($CFG->dataroot . '/user')) {
         // Get list of users by browsing moodledata/user
         $oldusersdir = $CFG->dataroot . '/users';
         $folders = get_directory_list($oldusersdir, '', false, true, false);
-        
+
         foreach ($folders as $userid) {
             $olddir = $oldusersdir . '/' . $userid;
             $files = get_directory_list($olddir);
-            
+
             if (empty($files)) {
                 continue;
             }
@@ -2612,7 +2621,7 @@ function xmldb_main_upgrade($oldversion=0) {
         $readmefilename = $oldusersdir . '/README.txt';
         if ($handle = fopen($readmefilename, 'w+b')) {
             if (!fwrite($handle, get_string('olduserdirectory'))) {
-                // Could not write to the readme file. No cause for huge concern 
+                // Could not write to the readme file. No cause for huge concern
                 notify("Could not write to the README.txt file in $readmefilename.");
             }
             fclose($handle);
@@ -2620,22 +2629,22 @@ function xmldb_main_upgrade($oldversion=0) {
             // Could not create the readme file. No cause for huge concern
             notify("Could not create the README.txt file in $readmefilename.");
         }
-    }    
+    }
 
     if ($result && $oldversion < 2007101502) {
 
     /// try to remove duplicate entries
-    
+
         $SQL = "SELECT userid, itemid, COUNT(*)
                FROM {$CFG->prefix}grade_grades
                GROUP BY userid, itemid
                HAVING COUNT( * ) >1";
         // duplicates found
-        
+
         if ($rs = get_recordset_sql($SQL)) {
             if ($rs && $rs->RecordCount() > 0) {
                 while ($dup = rs_fetch_next_record($rs)) {
-                    if ($thisdups = get_records_sql("SELECT id FROM {$CFG->prefix}grade_grades 
+                    if ($thisdups = get_records_sql("SELECT id FROM {$CFG->prefix}grade_grades
                                                     WHERE itemid = $dup->itemid AND userid = $dup->userid
                                                     ORDER BY timemodified DESC")) {
 
@@ -2693,7 +2702,7 @@ function xmldb_main_upgrade($oldversion=0) {
         $sql = "DELETE
                   FROM {$CFG->prefix}context
                  WHERE contextlevel=20";
- 
+
         execute_sql($sql);
 
     /// Main savepoint reached
@@ -2855,7 +2864,7 @@ function xmldb_main_upgrade($oldversion=0) {
     }
 
     if ($result && $oldversion < 2007101508.04) {
-        set_field('tag_instance', 'itemtype', 'post', 'itemtype', 'blog'); 
+        set_field('tag_instance', 'itemtype', 'post', 'itemtype', 'blog');
         upgrade_main_savepoint($result, 2007101508.04);
     }
 
@@ -2932,7 +2941,7 @@ function xmldb_main_upgrade($oldversion=0) {
 
     /// Launch add field name
         $result = $result && add_field($table, $field);
- 
+
     /// Copy data from old field to new field
         $result = $result && execute_sql('UPDATE '.$CFG->prefix.'role_names SET name = text');
 
@@ -3173,8 +3182,6 @@ function xmldb_main_upgrade($oldversion=0) {
 
             $result  = $result && insert_record('log_display', $log_action);
         }
-
-    /// Main savepoint reached
         upgrade_main_savepoint($result, 2007101551);
     }
 
@@ -3293,9 +3300,7 @@ function xmldb_main_upgrade($oldversion=0) {
         if (index_exists($table, $index)) {
             drop_index($table, $index);
         }
-    }
 
-    if ($result && $oldversion < 2007101574.01) {
         // MDL-21011 bring down course sort orders away from maximum values
         $sql = "SELECT id, category, sortorder from {$CFG->prefix}course
                 ORDER BY sortorder ASC;";
@@ -3315,30 +3320,30 @@ function xmldb_main_upgrade($oldversion=0) {
         }
         unset($courses);
 
-        upgrade_main_savepoint($result, 2007101574.01);
+        upgrade_main_savepoint($result, 2007101571.01);
     }
 
-    if ($result && $oldversion < 2007101574.02) {
+    if ($result && $oldversion < 2007101571.02) {
         upgrade_fix_incorrect_mnethostids();
-        upgrade_main_savepoint($result, 2007101574.02);
+        upgrade_main_savepoint($result, 2007101571.02);
     }
 
     /// MDL-17863. Increase the portno column length on mnet_host to handle any port number
-    if ($result && $oldversion < 2007101574.03) {
+    if ($result && $oldversion < 2007101571.03) {
         $table = new XMLDBTable('mnet_host');
         $field = new XMLDBField('portno');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '5', true, true, null, false, false, 0);
         $result = change_field_precision($table, $field);
-        upgrade_main_savepoint($result, 2007101574.03);
+        upgrade_main_savepoint($result, 2007101571.03);
     }
 
     // MDL-21407. Trim leading spaces from default tex latexpreamble causing problems under some confs
-    if ($result && $oldversion < 2007101574.04) {
+    if ($result && $oldversion < 2007101571.04) {
         if ($preamble = $CFG->filter_tex_latexpreamble) {
             $preamble = preg_replace('/^ +/m', '', $preamble);
             set_config('filter_tex_latexpreamble', $preamble);
         }
-        upgrade_main_savepoint($result, 2007101574.04);
+        upgrade_main_savepoint($result, 2007101571.04);
     }
 
     if ($result && $oldversion < 2007101571.05) {
@@ -3356,12 +3361,8 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101590.01);
     }
 
-    if ($result && $oldversion < 2007101590.02) {
-        $result = set_field('modules', 'version', '2007102600', 'name', 'feedback');
-        upgrade_main_savepoint($result, 2007101590.02);
-    }
-
     if ($result && $oldversion < 2007101591.01) {
+
     /// Define index userfieldidx (not unique) to be added to user_info_data
         $table = new XMLDBTable('user_info_data');
         $index = new XMLDBIndex('userfieldidx');
@@ -3376,27 +3377,6 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101591.01);
     }
 
-    // rename some local capabilities
-    // put in core upgrade so it happens before local/db/access.php is checked
-    // as this would delete/add new capabilities and we want to rename them (to
-    // preserve existing permissions)
-    if ($result && $oldversion < 2007101591.03) {
-        foreach (array('competency', 'organisation', 'position') as $hierarchy) {
-            foreach (array('create', 'update', 'delete') as $action) {
-                $sql = "UPDATE {$CFG->prefix}capabilities
-                    SET name = 'moodle/local:{$action}{$hierarchy}class'
-                    WHERE name = 'moodle/local:{$action}{$hierarchy}depth'";
-                $result = $result && execute_sql($sql);
-
-                $sql = "UPDATE {$CFG->prefix}role_capabilities
-                    SET capability = 'moodle/local:{$action}{$hierarchy}class'
-                    WHERE capability = 'moodle/local:{$action}{$hierarchy}depth'";
-                $result = $result && execute_sql($sql);
-            }
-        }
-        upgrade_main_savepoint($result, 2007101591.03);
-    }
-
     if ($result && $oldversion < 2007101591.05) {
         // Remove category_sortorder index that was supposed to be removed long time ago
         $table = new XMLDBTable('course');
@@ -3408,6 +3388,7 @@ function xmldb_main_upgrade($oldversion=0) {
         }
         upgrade_main_savepoint($result, 2007101591.05);
     }
+
 
     return $result;
 }
