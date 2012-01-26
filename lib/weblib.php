@@ -6896,11 +6896,7 @@ function convert_tree_to_html($tree, $row=0) {
 
         if ($tab->inactive || $tab->active || ($tab->selected && !$tab->linkedwhenselected)) {
             // The a tag is used for styling
-            if ($tab->inactive) {
-                $str .= '<a class="nolink inactive"><span>'.$tab->text.'</span></a>';
-            } else {
-                $str .= '<a class="nolink"><span>'.$tab->text.'</span></a>';
-            }
+            $str .= '<a class="nolink"><span>'.$tab->text.'</span></a>';
         } else {
             $str .= '<a href="'.$tab->link.'" title="'.$tab->title.'"><span>'.$tab->text.'</span></a>';
         }
