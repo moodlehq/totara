@@ -1327,7 +1327,7 @@ $targetwindow='self', $selectlabel='', $optionsextra=NULL, $gobutton=NULL) {
         $output .= '<input type="submit" value="'.
             ($gobutton===true ? $go : $gobutton).'" />';
     } else {
-        $output .= '<div id="noscript'.$formid.'" class="totara-noscript" style="display: inline;">';
+        $output .= '<div id="noscript'.$formid.'" style="display: inline;">';
         $output .= '<input type="submit" value="'.$go.'" /></div>';
         $output .= '<script type="text/javascript">'.
                    "\n//<![CDATA[\n".
