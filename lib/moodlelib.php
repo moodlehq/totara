@@ -5567,7 +5567,7 @@ function get_string($identifier, $module='', $a=NULL, $extralocations=NULL) {
     }
     if (substr($module, 0, 6) == 'local_') {
         list($local, $plugin) = explode('_', $module, 2);
-        $locations[] = $CFG->dirroot . '/local/'.$plugin.'/lang/';
+        $location[]= $locations[] = $CFG->dirroot . '/local/'.$plugin.'/lang/';
     }
 
 /// First check all the normal locations for the string in the current language
