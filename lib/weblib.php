@@ -5871,12 +5871,10 @@ function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocat
         $modulelink = $module;
     }
 
-    $message = clean_text('<p class="errormessage">'.$message.'</p>');
-/*
+    $message = clean_text('<p class="errormessage">'.$message.'</p>'.
                '<p class="errorcode">'.
-               '<a href="'.$errordoclink.'/error/'.$modulelink.'/'.$errorcode.'">'.
+               '<a href="'.$errordocroot.'/en/error/'.$modulelink.'/'.$errorcode.'">'.
                  get_string('moreinformation').'</a></p>');
-*/
 
     if (! defined('HEADER_PRINTED')) {
         //header not yet printed
