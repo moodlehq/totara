@@ -1,7 +1,0 @@
-<?php
-// auth_none.php - created with Totara langimport script version 1.1
-
-$string['auth_nonedescription'] = 'De gebruikers kunnen meteen inloggen en een geldige account aanmaken, zonder authenticatie door middel van een externe server en zonder bevestiging via e-mail. Wees voorzichtig met het gebruiken van deze mogelijkheid - denk aan de beveiligings- en beheerproblemen die hieruit zouden kunnen ontstaan.';
-$string['auth_nonetitle'] = 'Geen authenticatie';
-
-?>

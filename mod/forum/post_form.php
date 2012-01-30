@@ -1,4 +1,25 @@
-<?php  // $Id$
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package mod-forum
+ * @copyright Jamie Pratt <me@jamiep.org>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -18,54 +39,55 @@ class mod_forum_post_form extends moodleform {
         $coursecontext = $this->_customdata['coursecontext'];
         $modcontext    = $this->_customdata['modcontext'];
         $forum         = $this->_customdata['forum'];
-        $post          = $this->_customdata['post']; // hack alert
+        $post          = $this->_customdata['post'];
+        // if $forum->maxbytes == '0' means we should use $course->maxbytes
+        if ($forum->maxbytes == '0') {
+            $forum->maxbytes = $course->maxbytes;
+        }
+        // TODO: add max files and max size support
+        $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'trusttext'=>true, 'context'=>$modcontext);
 
-
-        // the upload manager is used directly in post precessing, moodleform::save_files() is not used yet
-        $this->set_upload_manager(new upload_manager('attachment', true, false, $course, false, $forum->maxbytes, true, true));
-
-        $mform->addElement('header', 'general', '');//fill in the data depending on page params
-                                                    //later using set_data
+        $mform->addElement('header', 'general', '');//fill in the data depending on page params later using set_data
         $mform->addElement('text', 'subject', get_string('subject', 'forum'), 'size="48"');
         $mform->setType('subject', PARAM_TEXT);
         $mform->addRule('subject', get_string('required'), 'required', null, 'client');
-        $mform->addRule('subject', get_string('maximumchars', '', 255), 'maxlength', 255, 'client'); 
+        $mform->addRule('subject', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
-        $mform->addElement('htmleditor', 'message', get_string('message', 'forum'), array('cols'=>50, 'rows'=>30));
+        $mform->addElement('editor', 'message', get_string('message', 'forum'), null, $editoroptions);
         $mform->setType('message', PARAM_RAW);
         $mform->addRule('message', get_string('required'), 'required', null, 'client');
-        $mform->setHelpButton('message', array('reading', 'writing', 'questions', 'richtext'), false, 'editorhelpbutton');
-
-        $mform->addElement('format', 'format', get_string('format'));
-
 
         if (isset($forum->id) && forum_is_forcesubscribed($forum)) {
 
             $mform->addElement('static', 'subscribemessage', get_string('subscription', 'forum'), get_string('everyoneissubscribed', 'forum'));
             $mform->addElement('hidden', 'subscribe');
             $mform->setType('subscribe', PARAM_INT);
-            $mform->setHelpButton('subscribemessage', array('subscription', get_string('subscription', 'forum'), 'forum'));
+            $mform->addHelpButton('subscribemessage', 'subscription', 'forum');
 
         } else if (isset($forum->forcesubscribe)&& $forum->forcesubscribe != FORUM_DISALLOWSUBSCRIBE ||
-                    has_capability('moodle/course:manageactivities', $coursecontext)) {
+                   has_capability('moodle/course:manageactivities', $coursecontext)) {
 
-            $options = array();
-            $options[0] = get_string('subscribestop', 'forum');
-            $options[1] = get_string('subscribestart', 'forum');
+                $options = array();
+                $options[0] = get_string('subscribestop', 'forum');
+                $options[1] = get_string('subscribestart', 'forum');
 
-            $mform->addElement('select', 'subscribe', get_string('subscription', 'forum'), $options);
-            $mform->setHelpButton('subscribe', array('subscription', get_string('subscription', 'forum'), 'forum'));
-        } else if ($forum->forcesubscribe == FORUM_DISALLOWSUBSCRIBE) {
-            $mform->addElement('static', 'subscribemessage', get_string('subscription', 'forum'), get_string('disallowsubscribe', 'forum'));
-            $mform->addElement('hidden', 'subscribe');
-            $mform->setType('subscribe', PARAM_INT);
-            $mform->setHelpButton('subscribemessage', array('subscription', get_string('subscription', 'forum'), 'forum'));
-        }
+                $mform->addElement('select', 'subscribe', get_string('subscription', 'forum'), $options);
+                $mform->addHelpButton('subscribe', 'subscription', 'forum');
+            } else if ($forum->forcesubscribe == FORUM_DISALLOWSUBSCRIBE) {
+                $mform->addElement('static', 'subscribemessage', get_string('subscription', 'forum'), get_string('disallowsubscribe', 'forum'));
+                $mform->addElement('hidden', 'subscribe');
+                $mform->setType('subscribe', PARAM_INT);
+                $mform->addHelpButton('subscribemessage', 'subscription', 'forum');
+            }
 
-        if ($forum->maxbytes != 1 && has_capability('mod/forum:createattachment', $modcontext))  {  //  1 = No attachments at all
-            $mform->addElement('file', 'attachment', get_string('attachment', 'forum'));
-            $mform->setHelpButton('attachment', array('attachment', get_string('attachment', 'forum'), 'forum'));
-
+        if (!empty($forum->maxattachments) && $forum->maxbytes != 1 && has_capability('mod/forum:createattachment', $modcontext))  {  //  1 = No attachments at all
+            $mform->addElement('filemanager', 'attachments', get_string('attachment', 'forum'), null,
+                array('subdirs'=>0,
+                      'maxbytes'=>$forum->maxbytes,
+                      'maxfiles'=>$forum->maxattachments,
+                      'accepted_types'=>'*',
+                      'return_types'=>FILE_INTERNAL));
+            $mform->addHelpButton('attachments', 'attachment', 'forum');
         }
 
         if (empty($post->id) && has_capability('moodle/course:manageactivities', $coursecontext)) { // hack alert
@@ -76,10 +98,10 @@ class mod_forum_post_form extends moodleform {
             $mform->addElement('header', '', get_string('displayperiod', 'forum'));
 
             $mform->addElement('date_selector', 'timestart', get_string('displaystart', 'forum'), array('optional'=>true));
-            $mform->setHelpButton('timestart', array('displayperiod', get_string('displayperiod', 'forum'), 'forum'));
+            $mform->addHelpButton('timestart', 'displaystart', 'forum');
 
             $mform->addElement('date_selector', 'timeend', get_string('displayend', 'forum'), array('optional'=>true));
-            $mform->setHelpButton('timeend', array('displayperiod', get_string('displayperiod', 'forum'), 'forum'));
+            $mform->addHelpButton('timeend', 'displayend', 'forum');
 
         } else {
             $mform->addElement('hidden', 'timestart');
@@ -90,16 +112,27 @@ class mod_forum_post_form extends moodleform {
         }
 
         if (groups_get_activity_groupmode($cm, $course)) { // hack alert
-            if (empty($post->groupid)) {
-                $groupname = get_string('allparticipants');
+            $groupdata = groups_get_activity_allowed_groups($cm);
+            $groupcount = count($groupdata);
+            $modulecontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+            $contextcheck = has_capability('mod/forum:movediscussions', $modulecontext) && empty($post->parent) && $groupcount > 1;
+            if ($contextcheck) {
+                $groupinfo = array('0' => get_string('allparticipants'));
+                foreach ($groupdata as $grouptemp) {
+                    $groupinfo[$grouptemp->id] = $grouptemp->name;
+                }
+                $mform->addElement('select','groupinfo', get_string('group'), $groupinfo);
+                $mform->setDefault('groupinfo', $post->groupid);
             } else {
-                $group = groups_get_group($post->groupid);
-                $groupname = format_string($group->name);
+                if (empty($post->groupid)) {
+                    $groupname = get_string('allparticipants');
+                } else {
+                    $groupname = format_string($groupdata[$post->groupid]->name);
+                }
+                $mform->addElement('static', 'groupinfo', get_string('group'), $groupname);
             }
-            $mform->addElement('static', 'groupinfo', get_string('group'), $groupname);
         }
-
-//-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
         // buttons
         if (isset($post->edit)) { // hack alert
             $submit_string = get_string('savechanges');
@@ -131,17 +164,20 @@ class mod_forum_post_form extends moodleform {
 
         $mform->addElement('hidden', 'reply');
         $mform->setType('reply', PARAM_INT);
-
     }
 
     function validation($data, $files) {
         $errors = parent::validation($data, $files);
-        if (($data['timeend']!=0) && ($data['timestart']!=0)
-            && $data['timeend'] <= $data['timestart']) {
-                $errors['timeend'] = get_string('timestartenderror', 'forum');
-            }
+        if (($data['timeend']!=0) && ($data['timestart']!=0) && $data['timeend'] <= $data['timestart']) {
+            $errors['timeend'] = get_string('timestartenderror', 'forum');
+        }
+        if (empty($data['message']['text'])) {
+            $errors['message'] = get_string('erroremptymessage', 'forum');
+        }
+        if (empty($data['subject'])) {
+            $errors['subject'] = get_string('erroremptysubject', 'forum');
+        }
         return $errors;
     }
-
 }
-?>
+

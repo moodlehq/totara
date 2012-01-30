@@ -1,4 +1,8 @@
-<?php //$Id$
+<?php
+
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
 
 require_once($CFG->libdir.'/formslib.php');
 
@@ -9,12 +13,9 @@ class user_message_form extends moodleform {
         $mform->addElement('header', 'general', get_string('message', 'message'));
 
 
-        $mform->addElement('htmleditor', 'messagebody', get_string('messagebody'), array('rows'=>15, 'cols'=>60));
-        $mform->addRule('messagebody', '', 'required', null, 'client');
-        $mform->setHelpButton('messagebody', array('writing', 'reading', 'questions', 'richtext'), false, 'editorhelpbutton');
-        $mform->addElement('format', 'format', get_string('format'));
+        $mform->addElement('editor', 'messagebody', get_string('messagebody'), null, null);
+        $mform->addRule('messagebody', '', 'required', null, 'server');
 
         $this->add_action_buttons();
     }
 }
-?>

@@ -22,7 +22,7 @@
    * - Run your admin/cron.php
    *
    * - Read /tmp/moodle-mailout.log
-   *   
+   *
    *
    * This script will create logfiles in /tmp/ or in $TMPDIR if set.
    * On windows, use php -r 'print sys_get_temp_dir()' to see where the file is saved.
@@ -63,7 +63,7 @@ fclose($stdin);
  *
  * Very useful for perl-like error-handling:
  *
- * do_somethting() or mdie("Something went wrong");
+ * do_something() or mdie("Something went wrong");
  *
  * @param string  $msg       Error message
  * @param integer $errorcode Error code to emit
@@ -74,4 +74,4 @@ function mdie($msg='', $errorcode=1) {
     exit($errorcode);
 }
 
-?>
+

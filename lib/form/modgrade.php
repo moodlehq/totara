@@ -12,7 +12,7 @@ require_once "$CFG->libdir/form/select.php";
 class MoodleQuickForm_modgrade extends MoodleQuickForm_select{
 
     var $_hidenograde = false;
-    
+
     /**
      * Class constructor
      *
@@ -43,7 +43,7 @@ class MoodleQuickForm_modgrade extends MoodleQuickForm_select{
      */
     function onQuickFormEvent($event, $arg, &$caller)
     {
-        global $COURSE, $CFG;
+        global $COURSE, $CFG, $OUTPUT;
         switch ($event) {
             case 'createElement':
                 // Need to call superclass first because we want the constructor
@@ -62,13 +62,10 @@ class MoodleQuickForm_modgrade extends MoodleQuickForm_select{
                     $grades[$i] = $i;
                 }
                 $this->load($grades);
-                $linkobject = '<span class="helplink"><img height="17" width="17" alt="'.$strscales.'" src="'.$CFG->pixpath .'/help.gif" /></span>';
-                $this->setHelpButton(array('/course/scales.php?id='. $COURSE->id .'&amp;list=true', 'ratingscales',
-                                     $linkobject, 400, 500, $strscales, 'none', true), 'link_to_popup_window');
+                //TODO: rewrite mod grading support in modforms
                 return $result;
         }
         return parent::onQuickFormEvent($event, $arg, $caller);
     }
 
 }
-?>

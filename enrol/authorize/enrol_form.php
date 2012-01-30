@@ -1,43 +1,72 @@
-<?php // $Id$
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Authorize.Net enrol plugin implementation.
+ *
+ * @package    enrol
+ * @subpackage authorize
+ * @copyright  2010 Eugene Venter
+ * @author     Eugene Venter
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
 
 class enrol_authorize_form extends moodleform
 {
-    function definition()
-    {
-        global $CFG, $USER;
+    protected $instance;
+
+    function definition() {
+        global $USER;
+
+        $mform = $this->_form;
+        $this->instance = $this->_customdata;
+        $plugin = enrol_get_plugin('authorize');
 
         $paymentmethodsenabled = get_list_of_payment_methods();
         $paymentmethod = optional_param('paymentmethod', $paymentmethodsenabled[0], PARAM_ALPHA);
         if (!in_array($paymentmethod, $paymentmethodsenabled)) {
-            error("Invalid payment method: $paymentmethod");
+            print_error('invalidpaymentmethod', '', '', $paymentmethod);
         }
 
-        $mform =& $this->_form;
-        $course = $this->_customdata['course'];
-
-        $mform->addElement('header', 'general', get_string('paymentrequired'));
         $othermethodstr = $this->other_method_available($paymentmethod);
         if ($othermethodstr) {
             $mform->addElement('static', '', '<div class="mdl-right">' . $othermethodstr . '</div>', '');
         }
 
-        $mform->addElement('hidden', 'id', $course->id);
+        $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
+        $mform->setDefault('id', $this->instance->courseid);
+
+        $mform->addElement('hidden', 'instanceid');
+        $mform->setType('instanceid', PARAM_INT);
+        $mform->setDefault('instanceid', $this->instance->id);
 
         $mform->addElement('hidden', 'paymentmethod', $paymentmethod);
         $mform->setType('paymentmethod', PARAM_ALPHA);
 
         $firstlastnamestr = (AN_METHOD_CC == $paymentmethod) ? get_string('nameoncard', 'enrol_authorize') : get_string('echeckfirslasttname', 'enrol_authorize');
-        $firstlastnamegrp = array();
-        $firstlastnamegrp[] = &$mform->createElement('text', 'firstname', '', 'size="16"');
-        $firstlastnamegrp[] = &$mform->createElement('text', 'lastname', '', 'size="16"');
-        $mform->addGroup($firstlastnamegrp, 'firstlastgrp', $firstlastnamestr, '&nbsp;', false);
-        $firstlastnamegrprules = array();
-        $firstlastnamegrprules['firstname'][] = array(get_string('missingfirstname'), 'required', null, 'client');
-        $firstlastnamegrprules['lastname'][] = array(get_string('missinglastname'), 'required', null, 'client');
-        $mform->addGroupRule('firstlastgrp', $firstlastnamegrprules);
+        $mform->addElement('text', 'firstname', get_string('firstnameoncard', 'enrol_authorize'), 'size="16"');
+        $mform->addElement('text', 'lastname', get_string('lastnameoncard', 'enrol_authorize'), 'size="16"');
+        $mform->addRule('firstname', get_string('missingfirstname'), 'required', null, 'client');
+        $mform->addRule('lastname', get_string('missinglastname'), 'required', null, 'client');
         $mform->setType('firstname', PARAM_ALPHANUM);
         $mform->setType('lastname', PARAM_ALPHANUM);
         $mform->setDefault('firstname', $USER->firstname);
@@ -60,42 +89,36 @@ class enrol_authorize_form extends moodleform
             $endyear = $startyear + 20;
             $yearsmenu = array('' => get_string('choose'));
             for ($i = $startyear; $i < $endyear; $i++) {
-            	$yearsmenu[$i] = $i;
+                $yearsmenu[$i] = $i;
             }
-            $ccexpiregrp = array();
-            $ccexpiregrp[] = &$mform->createElement('select', 'ccexpiremm', '', $monthsmenu);
-            $ccexpiregrp[] = &$mform->createElement('select', 'ccexpireyyyy', '', $yearsmenu);
-            $mform->addGroup($ccexpiregrp, 'ccexpiregrp', get_string('ccexpire', 'enrol_authorize'), '&nbsp;', false);
-            $ccexpiregrprules = array();
-            $ccexpiregrprules['ccexpiremm'][] = array(get_string('missingccexpire', 'enrol_authorize'), 'required', null, 'client');
-            $ccexpiregrprules['ccexpireyyyy'][] = array(get_string('missingccexpire', 'enrol_authorize'), 'required', null, 'client');
-            $mform->addGroupRule('ccexpiregrp', $ccexpiregrprules);
+            $mform->addElement('select', 'ccexpiremm', get_string('expiremonth', 'enrol_authorize'), $monthsmenu);
+            $mform->addElement('select', 'ccexpireyyyy', get_string('expireyear', 'enrol_authorize'), $yearsmenu);
+            $mform->addRule('ccexpiremm', get_string('missingccexpiremonth', 'enrol_authorize'), 'required', null, 'client');
+            $mform->addRule('ccexpireyyyy', get_string('missingccexpireyear', 'enrol_authorize'), 'required', null, 'client');
             $mform->setType('ccexpiremm', PARAM_INT);
             $mform->setType('ccexpireyyyy', PARAM_INT);
             $mform->setDefault('ccexpiremm', '');
             $mform->setDefault('ccexpireyyyy', '');
-            
+
             $creditcardsmenu = array('' => get_string('choose')) + get_list_of_creditcards();
             $mform->addElement('select', 'cctype', get_string('cctype', 'enrol_authorize'), $creditcardsmenu);
             $mform->setType('cctype', PARAM_ALPHA);
             $mform->addRule('cctype', get_string('missingcctype', 'enrol_authorize'), 'required', null, 'client');
             $mform->setDefault('cctype', '');
-            
+
             $mform->addElement('text', 'cvv', get_string('ccvv', 'enrol_authorize'), 'size="4"');
-            $mform->setHelpButton('cvv', array('cvv',get_string('ccvv', 'enrol_authorize'),'enrol/authorize'), true);
             $mform->setType('cvv', PARAM_ALPHANUM);
             $mform->setDefault('cvv', '');
             $mform->addRule('cvv', get_string('missingcvv', 'enrol_authorize'), 'required', null, 'client');
             $mform->addRule('cvv', get_string('missingcvv', 'enrol_authorize'), 'numeric', null, 'client');
 
-            if (!empty($CFG->an_authcode)) {
+            if ($plugin->get_config('an_authcode')) {
                 $ccauthgrp = array();
                 $ccauthgrp[] = &$mform->createElement('checkbox', 'haveauth', null, get_string('haveauthcode', 'enrol_authorize'));
                 $ccauthgrp[] = &$mform->createElement('static', 'nextline', null, '<br />');
                 $ccauthgrp[] = &$mform->createElement('text', 'ccauthcode', '', 'size="8"');
                 $mform->addGroup($ccauthgrp, 'ccauthgrp', get_string('authcode', 'enrol_authorize'), '&nbsp;', false);
-                $mform->setHelpButton('ccauthgrp', array('authcode',get_string('authcode', 'enrol_authorize'),'enrol/authorize'), true);
-                
+
                 $ccauthgrprules = array();
                 $ccauthgrprules['ccauthcode'][] = array(get_string('missingccauthcode', 'enrol_authorize'), 'numeric', null, 'client');
                 $mform->addGroupRule('ccauthgrp', $ccauthgrprules);
@@ -103,7 +126,7 @@ class enrol_authorize_form extends moodleform
                 $mform->setDefault('ccauthcode', '');
             }
 
-            if (!empty($CFG->an_avs)) {
+            if ($plugin->get_config('an_avs')) {
                 $mform->addElement('header', '', '&nbsp;&nbsp;' . get_string('address'), '');
 
                 $mform->addElement('text', 'ccaddress', get_string('address'), 'size="30"');
@@ -111,20 +134,15 @@ class enrol_authorize_form extends moodleform
                 $mform->setDefault('ccaddress', $USER->address);
                 $mform->addRule('ccaddress', get_string('missingaddress', 'enrol_authorize'), 'required', null, 'client');
 
-                $citystategrp = array();
-                $citystategrp[] = &$mform->createElement('text', 'cccity', '', 'size="14"');
-                $citystategrp[] = &$mform->createElement('static', 'sep', null, ' - ');
-                $citystategrp[] = &$mform->createElement('text', 'ccstate', '', 'size="8"');
-                $mform->addGroup($citystategrp, 'citystategrp', get_string('city') . ' - ' . get_string('state'), '&nbsp;', false);
-                $citystategrprules = array();
-                $citystategrprules['cccity'][] = array(get_string('missingcity'), 'required', null, 'client');
-                $mform->addGroupRule('citystategrp', $citystategrprules);
+                $mform->addElement('text', 'cccity', get_string('cccity', 'enrol_authorize'), 'size="14"');
+                $mform->addElement('text', 'ccstate', get_string('ccstate', 'enrol_authorize'), 'size="8"');
+                $mform->addRule('cccity', get_string('missingcity'), 'required', null, 'client');
                 $mform->setType('cccity', PARAM_ALPHANUM);
                 $mform->setType('ccstate', PARAM_ALPHANUM);
                 $mform->setDefault('cccity', $USER->city);
                 $mform->setDefault('ccstate', '');
 
-                $mform->addElement('select', 'cccountry', get_string('country'), get_list_of_countries());
+                $mform->addElement('select', 'cccountry', get_string('country'), get_string_manager()->get_list_of_countries());
                 $mform->addRule('cccountry', get_string('missingcountry'), 'required', null, 'client');
                 $mform->setType('cccountry', PARAM_ALPHA);
                 $mform->setDefault('cccountry', $USER->country);
@@ -137,13 +155,11 @@ class enrol_authorize_form extends moodleform
                 $mform->addElement('hidden', 'cccity', $USER->city);
                 $mform->setType('cccity', PARAM_ALPHANUM);
                 $mform->addElement('hidden', 'cccountry', $USER->country);
+                $mform->setType('ccountry', PARAM_ALPHA);
                 $mform->setDefault('cccountry', $USER->country);
             }
-        }
-        elseif (AN_METHOD_ECHECK == $paymentmethod)
-        {
+        } elseif (AN_METHOD_ECHECK == $paymentmethod) {
             $mform->addElement('text', 'abacode', get_string('echeckabacode', 'enrol_authorize'), 'size="9" maxlength="9"');
-            $mform->setHelpButton('abacode', array('aba',get_string('echeckabacode', 'enrol_authorize'),'enrol/authorize'), true);
             $mform->setType('abacode', PARAM_ALPHANUM);
             $mform->setDefault('abacode', '');
             $mform->addRule('abacode', get_string('missingaba', 'enrol_authorize'), 'required', null, 'client');
@@ -180,10 +196,9 @@ class enrol_authorize_form extends moodleform
         $this->add_action_buttons(false, get_string('sendpaymentbutton', 'enrol_authorize'));
     }
 
-    function validation($data, $files)
-    {
-        global $CFG;
+    function validation($data, $files) {
         $errors = parent::validation($data, $files);
+        $plugin = enrol_get_plugin('authorize');
 
         if (AN_METHOD_CC == $data['paymentmethod'])
         {
@@ -195,14 +210,14 @@ class enrol_authorize_form extends moodleform
             $validcc = $this->validate_cc($data['cc'], $data['cctype'], $expdate);
             if (!$validcc) {
                 if ($validcc === 0) {
-                    $errors['ccexpiregrp'] = get_string('ccexpired', 'enrol_authorize');
+                    $errors['ccexpiremm'] = get_string('ccexpired', 'enrol_authorize');
                 }
                 else {
                     $errors['cc'] = get_string('ccinvalid', 'enrol_authorize');
                 }
             }
 
-            if (!empty($CFG->an_authcode) && !empty($data['haveauth']) && empty($data['ccauthcode'])) {
+            if ($plugin->get_config('an_authcode') && !empty($data['haveauth']) && empty($data['ccauthcode'])) {
                 $errors['ccauthgrp'] = get_string('missingccauthcode', 'enrol_authorize');
             }
         }
@@ -220,18 +235,16 @@ class enrol_authorize_form extends moodleform
         return $errors;
     }
 
-    function other_method_available($currentmethod)
+    private function other_method_available($currentmethod)
     {
-        $course = $this->_customdata['course'];
 
         if ($currentmethod == AN_METHOD_CC) {
             $otheravailable = in_array(AN_METHOD_ECHECK, get_list_of_payment_methods());
-            $url = 'enrol.php?id='.$course->id.'&amp;paymentmethod='.AN_METHOD_ECHECK;
+            $url = 'index.php?id='.$this->instance->courseid.'&amp;paymentmethod='.AN_METHOD_ECHECK;
             $stringtofetch = 'usingecheckmethod';
-        }
-        else {
+        } else {
             $otheravailable = in_array(AN_METHOD_CC, get_list_of_payment_methods());
-            $url = 'enrol.php?id='.$course->id.'&amp;paymentmethod='.AN_METHOD_CC;
+            $url = 'index.php?id='.$this->instance->courseid.'&amp;paymentmethod='.AN_METHOD_CC;
             $stringtofetch = 'usingccmethod';
         }
         if ($otheravailable) {
@@ -244,9 +257,9 @@ class enrol_authorize_form extends moodleform
         }
     }
 
-    function validate_aba($aba)
+    private function validate_aba($aba)
     {
-        if (ereg("^[0-9]{9}$", $aba)) {
+        if (preg_match("/^[0-9]{9}$/", $aba)) {
             $n = 0;
             for($i = 0; $i < 9; $i += 3) {
                 $n += (substr($aba, $i, 1) * 3) + (substr($aba, $i + 1, 1) * 7) + (substr($aba, $i + 2, 1));
@@ -258,7 +271,7 @@ class enrol_authorize_form extends moodleform
         return false;
     }
 
-    function validate_cc($Num, $Name = "n/a", $Exp = "")
+    private function validate_cc($Num, $Name = "n/a", $Exp = "")
     {
         // Check the expiration date first
         if (strlen($Exp))
@@ -276,45 +289,45 @@ class enrol_authorize_form extends moodleform
         $GoodCard = true;
 
         //  Get rid of any non-digits
-        $Num = ereg_replace("[^0-9]", "", $Num);
+        $Num = preg_replace("/[^0-9]~/", "", $Num);
 
         // Perform card-specific checks, if applicable
         switch ($Name)
         {
             case "mcd" :
-                $GoodCard = ereg("^5[1-5].{14}$", $Num);
+                $GoodCard = preg_match("/^5[1-5].{14}$/", $Num);
                 break;
 
             case "vis" :
-                $GoodCard = ereg("^4.{15}$|^4.{12}$", $Num);
+                $GoodCard = preg_match("/^4.{15}$|^4.{12}$/", $Num);
                 break;
 
             case "amx" :
-                $GoodCard = ereg("^3[47].{13}$", $Num);
+                $GoodCard = preg_match("/^3[47].{13}$/", $Num);
                 break;
 
             case "dsc" :
-                $GoodCard = ereg("^6011.{12}$", $Num);
+                $GoodCard = preg_match("/^6011.{12}$/", $Num);
                 break;
 
             case "dnc" :
-                $GoodCard = ereg("^30[0-5].{11}$|^3[68].{12}$", $Num);
+                $GoodCard = preg_match("/^30[0-5].{11}$|^3[68].{12}$/", $Num);
                 break;
 
             case "jcb" :
-                $GoodCard = ereg("^3.{15}$|^2131|1800.{11}$", $Num);
+                $GoodCard = preg_match("/^3.{15}$|^2131|1800.{11}$/", $Num);
                 break;
 
             case "dlt" :
-                $GoodCard = ereg("^4.{15}$", $Num);
+                $GoodCard = preg_match("/^4.{15}$/", $Num);
                 break;
 
             case "swi" :
-                $GoodCard = ereg("^[456].{15}$|^[456].{17,18}$", $Num);
+                $GoodCard = preg_match("/^[456].{15}$|^[456].{17,18}$/", $Num);
                 break;
 
             case "enr" :
-                $GoodCard = ereg("^2014.{11}$|^2149.{11}$", $Num);
+                $GoodCard = preg_match("/^2014.{11}$|^2149.{11}$/", $Num);
                 break;
         }
 
@@ -344,4 +357,4 @@ class enrol_authorize_form extends moodleform
     }
 
 }
-?>
+

@@ -15,6 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
+/**
+ * Form for grader report preferences.
+ *
+ * @package    moodlecore
+ * @subpackage grade
+ * @copyright  2009 Nicolas Connault
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 require_once($CFG->libdir.'/formslib.php');
 
 /**
@@ -32,17 +46,9 @@ class grader_report_preferences_form extends moodleform {
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
         $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 
-        $strgradeboundary       = get_string('gradeboundary', 'grades');
-        $strconfiggradeboundary = get_string('configgradeboundary', 'grades');
-        $strgradeletter         = get_string('gradeletter', 'grades');
-        $strconfiggradeletter   = get_string('configgradeletter', 'grades');
-        $stryes                 = get_string('yes');
-        $strno                  = get_string('no');
-
         $canviewhidden = has_capability('moodle/grade:viewhidden', $context);
 
-
-        $checkbox_default = array(GRADE_REPORT_PREFERENCE_DEFAULT => '*default*', 0 => $strno, 1 => $stryes);
+        $checkbox_default = array(GRADE_REPORT_PREFERENCE_DEFAULT => '*default*', 0 => get_string('no'), 1 => get_string('yes'));
 
         $advanced = array();
 /// form definition with preferences defaults
@@ -100,12 +106,12 @@ class grader_report_preferences_form extends moodleform {
             $preferences['prefgeneral']['aggregationposition'] = array(GRADE_REPORT_PREFERENCE_DEFAULT => '*default*',
                                                                        GRADE_REPORT_AGGREGATION_POSITION_FIRST => get_string('positionfirst', 'grades'),
                                                                        GRADE_REPORT_AGGREGATION_POSITION_LAST => get_string('positionlast', 'grades'));
-            // $preferences['prefgeneral']['enableajax'] = $checkbox_default;
+            $preferences['prefgeneral']['enableajax'] = $checkbox_default;
 
             $preferences['prefshow']['showuserimage'] = $checkbox_default;
-            $preferences['prefshow']['showuseridnumber'] = $checkbox_default;
             $preferences['prefshow']['showactivityicons'] = $checkbox_default;
             $preferences['prefshow']['showranges'] = $checkbox_default;
+            $preferences['prefshow']['showanalysisicon'] = $checkbox_default;
 
             if ($canviewhidden) {
                 $preferences['prefrows']['shownumberofgrades'] = $checkbox_default;
@@ -158,20 +164,16 @@ class grader_report_preferences_form extends moodleform {
                     $default = $CFG->$full_pref;
                 }
 
-                $help_string = get_string("config$lang_string", 'grades');
-
                 // Replace the '*default*' value with the site default language string - 'default' might collide with custom language packs
                 if (!is_null($options) AND isset($options[GRADE_REPORT_PREFERENCE_DEFAULT]) && $options[GRADE_REPORT_PREFERENCE_DEFAULT] == '*default*') {
                     $options[GRADE_REPORT_PREFERENCE_DEFAULT] = get_string('reportdefault', 'grades', $default);
-                } elseif ($type == 'text') {
-                    $help_string = get_string("config{$lang_string}default", 'grades', $default);
                 }
 
                 $label = get_string($lang_string, 'grades') . $number;
 
                 $mform->addElement($type, $full_pref, $label, $options);
                 if ($lang_string != 'showuserimage') {
-                    $mform->setHelpButton($full_pref, array($lang_string, get_string($lang_string, 'grades'), 'grade'), true);
+                    $mform->addHelpButton($full_pref, $lang_string, 'grades');
                 }
                 $mform->setDefault($full_pref, $pref_value);
                 $mform->setType($full_pref, PARAM_ALPHANUM);
@@ -194,4 +196,4 @@ class grader_report_preferences_form extends moodleform {
         return parent::validation($data, $files);
     }
 }
-?>
+

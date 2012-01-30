@@ -1,21 +1,42 @@
-<?php  // $Id$
-/*
-resetcourse.php  - Mark Flach and moodle.com
-The purpose of this feature is to quickly remove all user related data from a course
-in order to make it available for a new semester.  This feature can handle the removal
-of general course data like students, teachers, logs, events and groups as well as module
-specific data.  Each module must be modified to take advantage of this new feature.
-The feature will also reset the start date of the course if necessary.
-*/
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * The purpose of this feature is to quickly remove all user related data from a course
+ * in order to make it available for a new semester.  This feature can handle the removal
+ * of general course data like students, teachers, logs, events and groups as well as module
+ * specific data.  Each module must be modified to take advantage of this new feature.
+ * The feature will also reset the start date of the course if necessary.
+ *
+ * @copyright Mark Flach and moodle.com
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package course
+ */
 
 require('../config.php');
 require_once('reset_form.php');
 
 $id = required_param('id', PARAM_INT);
 
-if (!$course = get_record('course', 'id', $id)) {
-    error("Course is misconfigured");
+if (!$course = $DB->get_record('course', array('id'=>$id))) {
+    print_error("invalidcourseid");
 }
+
+$PAGE->set_url('/course/reset.php', array('id'=>$id));
 
 require_login($course);
 require_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id));
@@ -24,15 +45,16 @@ $strreset       = get_string('reset');
 $strresetcourse = get_string('resetcourse');
 $strremove      = get_string('remove');
 
-$navlinks = array(array('name' => $strresetcourse, 'link' => null, 'type' => 'misc'));
-$navigation = build_navigation($navlinks);
+$PAGE->navbar->add($strresetcourse);
+$PAGE->set_title($course->fullname.': '.$strresetcourse);
+$PAGE->set_heading($course->fullname.': '.$strresetcourse);
 
 $mform = new course_reset_form();
 
 if ($mform->is_cancelled()) {
     redirect($CFG->wwwroot.'/course/view.php?id='.$id);
 
-} else if ($data = $mform->get_data(false)) { // no magic quotes
+} else if ($data = $mform->get_data()) { // no magic quotes
 
     if (isset($data->selectdefault)) {
         $_POST = array();
@@ -44,8 +66,8 @@ if ($mform->is_cancelled()) {
         $mform = new course_reset_form();
 
     } else {
-        print_header($course->fullname.': '.$strresetcourse, $course->fullname.': '.$strresetcourse, $navigation);
-        print_heading($strresetcourse);
+        echo $OUTPUT->header();
+        echo $OUTPUT->heading($strresetcourse);
 
         $data->reset_start_date_old = $course->startdate;
         $status = reset_course_userdata($data);
@@ -59,26 +81,26 @@ if ($mform->is_cancelled()) {
             $data[] = $line;
         }
 
-        $table = new object();
+        $table = new html_table();
         $table->head  = array(get_string('resetcomponent'), get_string('resettask'), get_string('resetstatus'));
         $table->size  = array('20%', '40%', '40%');
         $table->align = array('left', 'left', 'left');
         $table->width = '80%';
         $table->data  = $data;
-        print_table($table);
+        echo html_writer::table($table);
 
-        print_continue('view.php?id='.$course->id);  // Back to course page
-        print_footer($course);
+        echo $OUTPUT->continue_button('view.php?id='.$course->id);  // Back to course page
+        echo $OUTPUT->footer();
         exit;
     }
 }
 
-print_header($course->fullname.': '.$strresetcourse, $course->fullname.': '.$strresetcourse, $navigation);
-print_heading($strresetcourse);
+echo $OUTPUT->header();
+echo $OUTPUT->heading($strresetcourse);
 
-print_simple_box(get_string('resetinfo'), 'center', '60%');
+echo $OUTPUT->box(get_string('resetinfo'));
 
 $mform->display();
-print_footer($course);
+echo $OUTPUT->footer();
 
-?>
+

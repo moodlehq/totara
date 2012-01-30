@@ -1,115 +1,109 @@
-<?php // $Id$
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Imports lesson pages
  *
- * @version $Id$
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package lesson
+ * @package    mod
+ * @subpackage lesson
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  **/
 
-    require_once("../../config.php");
-    require_once("lib.php");
-    require_once("locallib.php");
-    require_once($CFG->libdir.'/questionlib.php');
+require_once("../../config.php");
+require_once($CFG->libdir.'/questionlib.php');
+require_once($CFG->dirroot.'/mod/lesson/locallib.php');
+require_once($CFG->dirroot.'/mod/lesson/import_form.php');
+require_once($CFG->dirroot.'/mod/lesson/format.php');  // Parent class
 
-    $id     = required_param('id', PARAM_INT);         // Course Module ID
-    $pageid = optional_param('pageid', '', PARAM_INT); // Page ID
+$id     = required_param('id', PARAM_INT);         // Course Module ID
+$pageid = optional_param('pageid', '', PARAM_INT); // Page ID
 
-    if (! $cm = get_coursemodule_from_id('lesson', $id)) {
-        error("Course Module ID was incorrect");
+$PAGE->set_url('/mod/lesson/import.php', array('id'=>$id, 'pageid'=>$pageid));
+
+$cm = get_coursemodule_from_id('lesson', $id, 0, false, MUST_EXIST);;
+$course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+$lesson = new lesson($DB->get_record('lesson', array('id' => $cm->instance), '*', MUST_EXIST));
+
+require_login($course, false, $cm);
+$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+require_capability('mod/lesson:edit', $context);
+
+$strimportquestions = get_string("importquestions", "lesson");
+$strlessons = get_string("modulenameplural", "lesson");
+
+$manager = lesson_page_type_manager::get($lesson);
+
+$data = new stdClass;
+$data->id = $PAGE->cm->id;
+$data->pageid = $pageid;
+
+$mform = new lesson_import_form(null, array('formats'=>lesson_get_import_export_formats('import')));
+$mform->set_data($data);
+
+    $PAGE->navbar->add($strimportquestions);
+    $PAGE->set_title($strimportquestions);
+    $PAGE->set_heading($strimportquestions);
+    echo $OUTPUT->header();
+
+echo $OUTPUT->heading_with_help($strimportquestions, 'importquestions', 'lesson' );
+
+if ($data = $mform->get_data()) {
+
+    require_sesskey();
+
+    $realfilename = $mform->get_new_filename('questionfile');
+    //TODO: Leave all imported questions in Questionimport for now.
+    $importfile = "{$CFG->tempdir}/questionimport/{$realfilename}";
+    make_temp_directory('questionimport');
+    if (!$result = $mform->save_file('questionfile', $importfile, true)) {
+        throw new moodle_exception('uploadproblem');
     }
 
-    if (! $course = get_record("course", "id", $cm->course)) {
-        error("Course is misconfigured");
-    }
+    $formatclass = 'qformat_'.$data->format;
+    $formatclassfile = $CFG->dirroot.'/question/format/'.$data->format.'/format.php';
+    if (!is_readable($formatclassfile)) {
+        print_error('unknowformat','', '', $data->format);
+            }
+    require_once($formatclassfile);
+    $format = new $formatclass();
 
-    if (! $lesson = get_record("lesson", "id", $cm->instance)) {
-        error("Course module is incorrect");
-    }
-
-
-    require_login($course->id, false, $cm);
-    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
-    require_capability('mod/lesson:edit', $context);
-
-    $strimportquestions = get_string("importquestions", "lesson");
-    $strlessons = get_string("modulenameplural", "lesson");
-
-    $navigation = build_navigation($strimportquestions, $cm);
-    print_header_simple("$strimportquestions", " $strimportquestions", $navigation);
-
-    if ($form = data_submitted()) {   /// Filename
-
-        $form->format = clean_param($form->format, PARAM_SAFEDIR); // For safety
-
-        if (empty($_FILES['newfile'])) {      // file was just uploaded
-            notify(get_string("uploadproblem") );
-        }
-
-        if ((!is_uploaded_file($_FILES['newfile']['tmp_name']) or $_FILES['newfile']['size'] == 0)) {
-            notify(get_string("uploadnofilefound") );
-
-        } else {  // Valid file is found
-
-            if (! is_readable("$CFG->dirroot/question/format/$form->format/format.php")) {
-                error("Format not known ($form->format)");
+    // Do anything before that we need to
+    if (! $format->importpreprocess()) {
+                print_error('preprocesserror', 'lesson');
             }
 
-            require("format.php");  // Parent class
-            require("$CFG->dirroot/question/format/$form->format/format.php");
-
-            $classname = "qformat_$form->format";
-            $format = new $classname();
-
-            if (! $format->importpreprocess()) {             // Do anything before that we need to
-                error("Error occurred during pre-processing!");
+    // Process the uploaded file
+    if (! $format->importprocess($importfile, $lesson, $pageid)) {
+                print_error('processerror', 'lesson');
             }
 
-            if (! $format->importprocess($_FILES['newfile']['tmp_name'], $lesson, $pageid)) {    // Process the uploaded file
-                error("Error occurred during processing!");
-            }
-
-            if (! $format->importpostprocess()) {                     // In case anything needs to be done after
-                error("Error occurred during post-processing!");
+    // In case anything needs to be done after
+    if (! $format->importpostprocess()) {
+                print_error('postprocesserror', 'lesson');
             }
 
             echo "<hr>";
-            print_continue("view.php?id=$cm->id");
-            print_footer($course);
-            exit;
-        }
-    }
+    echo $OUTPUT->continue_button('view.php?id='.$PAGE->cm->id);
 
-    /// Print upload form
+} else {
 
-    $fileformatnames = get_import_export_formats('import');
+    // Print upload form
+    $mform->display();
+}
 
-    print_heading_with_help($strimportquestions, "import", "lesson");
-
-    print_simple_box_start("center");
-    echo "<form enctype=\"multipart/form-data\" method=\"post\" action=\"import.php\">";
-    echo "<input type=\"hidden\" name=\"id\" value=\"$cm->id\" />\n";
-    echo "<input type=\"hidden\" name=\"pageid\" value=\"$pageid\" />\n";
-    echo "<table cellpadding=\"5\">";
-
-    echo "<tr><td align=\"right\">";
-    print_string("fileformat", "lesson");
-    echo ":</td><td>";
-    choose_from_menu($fileformatnames, "format", "gift", "");
-    echo "</td></tr>";
-
-    echo "<tr><td align=\"right\">";
-    print_string("upload");
-    echo ":</td><td>";
-    echo "<input name=\"newfile\" type=\"file\" size=\"50\" />";
-    echo "</td></tr><tr><td>&nbsp;</td><td>";
-    echo "<input type=\"submit\" name=\"save\" value=\"".get_string("uploadthisfile")."\" />";
-    echo "</td></tr>";
-
-    echo "</table>";
-    echo "</form>";
-    print_simple_box_end();
-
-    print_footer($course);
-
-?>
+echo $OUTPUT->footer();

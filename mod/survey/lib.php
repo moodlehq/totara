@@ -1,9 +1,43 @@
-<?php // $Id$
+<?php
 
-// Graph size
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package   mod-survey
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/**
+ * Graph size
+ * @global int $SURVEY_GHEIGHT
+ */
+global $SURVEY_GHEIGHT;
 $SURVEY_GHEIGHT = 500;
+/**
+ * Graph size
+ * @global int $SURVEY_GWIDTH
+ */
+global $SURVEY_GWIDTH;
 $SURVEY_GWIDTH  = 900;
-
+/**
+ * Question Type
+ * @global array $SURVEY_QTYPE
+ */
+global $SURVEY_QTYPE;
 $SURVEY_QTYPE = array (
         "-3" => "Virtual Actual and Preferred",
         "-2" => "Virtual Preferred",
@@ -23,73 +57,102 @@ define("SURVEY_CIQ",                     "5");
 
 
 // STANDARD FUNCTIONS ////////////////////////////////////////////////////////
-
+/**
+ * Given an object containing all the necessary data,
+ * (defined by the form in mod_form.php) this function
+ * will create a new instance and return the id number
+ * of the new instance.
+ *
+ * @global object
+ * @param object $survey
+ * @return int|bool
+ */
 function survey_add_instance($survey) {
-// Given an object containing all the necessary data, 
-// (defined by the form in mod.html) this function 
-// will create a new instance and return the id number 
-// of the new instance.
+    global $DB;
 
-    if (!$template = get_record("survey", "id", $survey->template)) {
+    if (!$template = $DB->get_record("survey", array("id"=>$survey->template))) {
         return 0;
     }
 
-    $survey->questions    = $template->questions; 
+    $survey->questions    = $template->questions;
     $survey->timecreated  = time();
     $survey->timemodified = $survey->timecreated;
 
-    return insert_record("survey", $survey);
+    return $DB->insert_record("survey", $survey);
 
 }
 
-
+/**
+ * Given an object containing all the necessary data,
+ * (defined by the form in mod_form.php) this function
+ * will update an existing instance with new data.
+ *
+ * @global object
+ * @param object $survey
+ * @return bool
+ */
 function survey_update_instance($survey) {
-// Given an object containing all the necessary data, 
-// (defined by the form in mod.html) this function 
-// will update an existing instance with new data.
+    global $DB;
 
-    if (!$template = get_record("survey", "id", $survey->template)) {
+    if (!$template = $DB->get_record("survey", array("id"=>$survey->template))) {
         return 0;
     }
 
-    $survey->id           = $survey->instance; 
-    $survey->questions    = $template->questions; 
+    $survey->id           = $survey->instance;
+    $survey->questions    = $template->questions;
     $survey->timemodified = time();
 
-    return update_record("survey", $survey);
+    return $DB->update_record("survey", $survey);
 }
 
+/**
+ * Given an ID of an instance of this module,
+ * this function will permanently delete the instance
+ * and any data that depends on it.
+ *
+ * @global object
+ * @param int $id
+ * @return bool
+ */
 function survey_delete_instance($id) {
-// Given an ID of an instance of this module, 
-// this function will permanently delete the instance 
-// and any data that depends on it.  
+    global $DB;
 
-    if (! $survey = get_record("survey", "id", "$id")) {
+    if (! $survey = $DB->get_record("survey", array("id"=>$id))) {
         return false;
     }
 
     $result = true;
 
-    if (! delete_records("survey_analysis", "survey", "$survey->id")) {
+    if (! $DB->delete_records("survey_analysis", array("survey"=>$survey->id))) {
         $result = false;
     }
 
-    if (! delete_records("survey_answers", "survey", "$survey->id")) {
+    if (! $DB->delete_records("survey_answers", array("survey"=>$survey->id))) {
         $result = false;
     }
 
-    if (! delete_records("survey", "id", "$survey->id")) {
+    if (! $DB->delete_records("survey", array("id"=>$survey->id))) {
         $result = false;
     }
 
     return $result;
 }
 
+/**
+ * @global object
+ * @param object $course
+ * @param object $user
+ * @param object $mod
+ * @param object $survey
+ * @return $result
+ */
 function survey_user_outline($course, $user, $mod, $survey) {
-    if ($answers = get_records_select("survey_answers", "survey='$survey->id' AND userid='$user->id'")) {
+    global $DB;
 
+    if ($answers = $DB->get_records("survey_answers", array('survey'=>$survey->id, 'userid'=>$user->id))) {
         $lastanswer = array_pop($answers);
 
+        $result = new stdClass();
         $result->info = get_string("done", "survey");
         $result->time = $lastanswer->time;
         return $result;
@@ -97,22 +160,30 @@ function survey_user_outline($course, $user, $mod, $survey) {
     return NULL;
 }
 
-
+/**
+ * @global stdObject
+ * @global object
+ * @uses SURVEY_CIQ
+ * @param object $course
+ * @param object $user
+ * @param object $mod
+ * @param object $survey
+ */
 function survey_user_complete($course, $user, $mod, $survey) {
-    global $CFG;
+    global $CFG, $DB, $OUTPUT;
 
     if (survey_already_done($survey->id, $user->id)) {
         if ($survey->template == SURVEY_CIQ) { // print out answers for critical incidents
-            $table = NULL;
+            $table = new html_table();
             $table->align = array("left", "left");
 
-            $questions = get_records_list("survey_questions", "id", $survey->questions);
+            $questions = $DB->get_records_list("survey_questions", "id", explode(',', $survey->questions));
             $questionorder = explode(",", $survey->questions);
-            
+
             foreach ($questionorder as $key=>$val) {
                 $question = $questions[$val];
                 $questiontext = get_string($question->shorttext, "survey");
-                
+
                 if ($answer = survey_get_user_answer($survey->id, $question->id, $user->id)) {
                     $answertext = "$answer->answer1";
                 } else {
@@ -120,20 +191,28 @@ function survey_user_complete($course, $user, $mod, $survey) {
                 }
                 $table->data[] = array("<b>$questiontext</b>", $answertext);
             }
-            print_table($table);
-            
+            echo html_writer::table($table);
+
         } else {
-        
+
             survey_print_graph("id=$mod->id&amp;sid=$user->id&amp;type=student.png");
         }
-        
+
     } else {
         print_string("notdone", "survey");
     }
 }
 
+/**
+ * @global stdClass
+ * @global object
+ * @param object $course
+ * @param mixed $viewfullnames
+ * @param int $timestamp
+ * @return bool
+ */
 function survey_print_recent_activity($course, $viewfullnames, $timestart) {
-    global $CFG;
+    global $CFG, $DB, $OUTPUT;
 
     $modinfo = get_fast_modinfo($course);
     $ids = array();
@@ -153,57 +232,63 @@ function survey_print_recent_activity($course, $viewfullnames, $timestart) {
 
     $slist = implode(',', $ids); // there should not be hundreds of glossaries in one course, right?
 
-    if (!$rs = get_recordset_sql("SELECT sa.userid, sa.survey, MAX(sa.time) AS time,
+    $rs = $DB->get_recordset_sql("SELECT sa.userid, sa.survey, MAX(sa.time) AS time,
                                          u.firstname, u.lastname, u.email, u.picture
-                                    FROM {$CFG->prefix}survey_answers sa
-                                         JOIN {$CFG->prefix}user u ON u.id = sa.userid
-                                   WHERE sa.survey IN ($slist) AND sa.time > $timestart
-                                   GROUP BY sa.userid, sa.survey, u.firstname, u.lastname, u.email, u.picture
-                                   ORDER BY time ASC")) {
+                                    FROM {survey_answers} sa
+                                    JOIN {user} u ON u.id = sa.userid
+                                   WHERE sa.survey IN ($slist) AND sa.time > ?
+                                GROUP BY sa.userid, sa.survey, u.firstname, u.lastname, u.email, u.picture
+                                ORDER BY time ASC", array($timestart));
+    if (!$rs->valid()) {
+        $rs->close(); // Not going to iterate (but exit), close rs
         return false;
     }
 
     $surveys = array();
 
-    while ($survey = rs_fetch_next_record($rs)) {
+    foreach ($rs as $survey) {
         $cm = $modinfo->instances['survey'][$survey->survey];
         $survey->name = $cm->name;
         $survey->cmid = $cm->id;
         $surveys[] = $survey;
-    } 
-    rs_close($rs);
+    }
+    $rs->close();
 
     if (!$surveys) {
         return false;
     }
 
-    print_headline(get_string('newsurveyresponses', 'survey').':');
+    echo $OUTPUT->heading(get_string('newsurveyresponses', 'survey').':');
     foreach ($surveys as $survey) {
         $url = $CFG->wwwroot.'/mod/survey/view.php?id='.$survey->cmid;
         print_recent_activity_note($survey->time, $survey, $survey->name, $url, false, $viewfullnames);
     }
- 
+
     return true;
 }
 
+/**
+ * Returns the users with data in one survey
+ * (users with records in survey_analysis and survey_answers, students)
+ *
+ * @todo: deprecated - to be deleted in 2.2
+ *
+ * @param int $surveyid
+ * @return array
+ */
 function survey_get_participants($surveyid) {
-//Returns the users with data in one survey
-//(users with records in survey_analysis and survey_answers, students)
-
-    global $CFG;
+    global $DB;
 
     //Get students from survey_analysis
-    $st_analysis = get_records_sql("SELECT DISTINCT u.id, u.id
-                                    FROM {$CFG->prefix}user u,
-                                         {$CFG->prefix}survey_analysis a
-                                    WHERE a.survey = '$surveyid' and
-                                          u.id = a.userid");
+    $st_analysis = $DB->get_records_sql("SELECT DISTINCT u.id, u.id
+                                           FROM {user} u, {survey_analysis} a
+                                          WHERE a.survey = ? AND
+                                                u.id = a.userid", array($surveyid));
     //Get students from survey_answers
-    $st_answers = get_records_sql("SELECT DISTINCT u.id, u.id
-                                   FROM {$CFG->prefix}user u,
-                                        {$CFG->prefix}survey_answers a
-                                   WHERE a.survey = '$surveyid' and
-                                         u.id = a.userid");
+    $st_answers = $DB->get_records_sql("SELECT DISTINCT u.id, u.id
+                                          FROM {user} u, {survey_answers} a
+                                         WHERE a.survey = ? AND
+                                               u.id = a.userid", array($surveyid));
 
     //Add st_answers to st_analysis
     if ($st_answers) {
@@ -217,102 +302,161 @@ function survey_get_participants($surveyid) {
 
 // SQL FUNCTIONS ////////////////////////////////////////////////////////
 
-
+/**
+ * @global object
+ * @param sting $log
+ * @return array
+ */
 function survey_log_info($log) {
-    global $CFG;
-    return get_record_sql("SELECT s.name, u.firstname, u.lastname, u.picture
-                             FROM {$CFG->prefix}survey s, 
-                                  {$CFG->prefix}user u
-                            WHERE s.id = '$log->info' 
-                              AND u.id = '$log->userid'");
+    global $DB;
+    return $DB->get_record_sql("SELECT s.name, u.firstname, u.lastname, u.picture
+                                  FROM {survey} s, {user} u
+                                 WHERE s.id = ?  AND u.id = ?", array($log->info, $log->userid));
 }
 
+/**
+ * @global object
+ * @param int $surveyid
+ * @param int $groupid
+ * @param int $groupingid
+ * @return array
+ */
 function survey_get_responses($surveyid, $groupid, $groupingid) {
-    global $CFG;
+    global $DB;
+
+    $params = array('surveyid'=>$surveyid, 'groupid'=>$groupid, 'groupingid'=>$groupingid);
 
     if ($groupid) {
-        $groupsjoin = "INNER JOIN {$CFG->prefix}groups_members gm ON u.id = gm.userid AND gm.groupid = '$groupid' ";
+        $groupsjoin = "JOIN {groups_members} gm ON u.id = gm.userid AND gm.groupid = :groupid ";
 
     } else if ($groupingid) {
-        $groupsjoin = "INNER JOIN {$CFG->prefix}groups_members gm ON u.id = gm.userid
-                       INNER JOIN {$CFG->prefix}groupings_groups gg ON gm.groupid = gg.groupid AND gg.groupingid = $groupingid ";
+        $groupsjoin = "JOIN {groups_members} gm ON u.id = gm.userid
+                       JOIN {groupings_groups} gg ON gm.groupid = gg.groupid AND gg.groupingid = :groupingid ";
     } else {
         $groupsjoin = "";
     }
 
-    return get_records_sql("SELECT u.id, u.firstname, u.lastname, u.picture, MAX(a.time) as time
-                            FROM {$CFG->prefix}survey_answers a
-                                INNER JOIN {$CFG->prefix}user u ON a.userid = u.id
-                                $groupsjoin
-                            WHERE a.survey = $surveyid
-                            GROUP BY u.id, u.firstname, u.lastname, u.picture
-                            ORDER BY time ASC");
+    $userfields = user_picture::fields('u');
+    return $DB->get_records_sql("SELECT $userfields, MAX(a.time) as time
+                                   FROM {survey_answers} a
+                                   JOIN {user} u ON a.userid = u.id
+                            $groupsjoin
+                                  WHERE a.survey = :surveyid
+                               GROUP BY $userfields
+                               ORDER BY time ASC", $params);
 }
 
+/**
+ * @global object
+ * @param int $survey
+ * @param int $user
+ * @return array
+ */
 function survey_get_analysis($survey, $user) {
-    global $CFG;
+    global $DB;
 
-    return get_record_sql("SELECT notes 
-                             FROM {$CFG->prefix}survey_analysis 
-                            WHERE survey='$survey' 
-                              AND userid='$user'");
+    return $DB->get_record_sql("SELECT notes
+                                  FROM {survey_analysis}
+                                 WHERE survey=? AND userid=?", array($survey, $user));
 }
 
+/**
+ * @global object
+ * @param int $survey
+ * @param int $user
+ * @param string $notes
+ */
 function survey_update_analysis($survey, $user, $notes) {
-    global $CFG;
+    global $DB;
 
-    return execute_sql("UPDATE {$CFG->prefix}survey_analysis 
-                            SET notes='$notes' 
-                          WHERE survey='$survey' 
-                            AND userid='$user'");
+    return $DB->execute("UPDATE {survey_analysis}
+                            SET notes=?
+                          WHERE survey=?
+                            AND userid=?", array($notes, $survey, $user));
 }
 
-
+/**
+ * @global object
+ * @param int $surveyid
+ * @param int $groupid
+ * @param string $sort
+ * @return array
+ */
 function survey_get_user_answers($surveyid, $questionid, $groupid, $sort="sa.answer1,sa.answer2 ASC") {
-    global $CFG;
+    global $DB;
+
+    $params = array('surveyid'=>$surveyid, 'questionid'=>$questionid);
 
     if ($groupid) {
-        $groupsql = "AND gm.groupid = $groupid AND u.id = gm.userid";
+        $groupfrom = ', {groups_members} gm';
+        $groupsql  = 'AND gm.groupid = :groupid AND u.id = gm.userid';
+        $params['groupid'] = $groupid;
     } else {
-        $groupsql = "";
+        $groupfrom = '';
+        $groupsql  = '';
     }
 
-    return get_records_sql("SELECT sa.*,u.firstname,u.lastname,u.picture 
-                              FROM {$CFG->prefix}survey_answers sa, 
-                                   {$CFG->prefix}user u,
-                                   {$CFG->prefix}groups_members gm 
-                             WHERE sa.survey = '$surveyid' 
-                               AND sa.question = $questionid 
-                               AND u.id = sa.userid $groupsql
-                          ORDER BY $sort");
+    $userfields = user_picture::fields('u');
+    return $DB->get_records_sql("SELECT sa.*, $userfields
+                                   FROM {survey_answers} sa,  {user} u $groupfrom
+                                  WHERE sa.survey = :surveyid
+                                        AND sa.question = :questionid
+                                        AND u.id = sa.userid $groupsql
+                               ORDER BY $sort", $params);
 }
 
+/**
+ * @global object
+ * @param int $surveyid
+ * @param int $questionid
+ * @param int $userid
+ * @return array
+ */
 function survey_get_user_answer($surveyid, $questionid, $userid) {
-    global $CFG;
+    global $DB;
 
-    return get_record_sql("SELECT sa.* 
-                              FROM {$CFG->prefix}survey_answers sa
-                             WHERE sa.survey = '$surveyid' 
-                               AND sa.question = '$questionid' 
-                               AND sa.userid = '$userid'");
+    return $DB->get_record_sql("SELECT sa.*
+                                  FROM {survey_answers} sa
+                                 WHERE sa.survey = ?
+                                       AND sa.question = ?
+                                       AND sa.userid = ?", array($surveyid, $questionid, $userid));
 }
 
 // MODULE FUNCTIONS ////////////////////////////////////////////////////////
-
+/**
+ * @global object
+ * @param int $survey
+ * @param int $user
+ * @param string $notes
+ * @return bool|int
+ */
 function survey_add_analysis($survey, $user, $notes) {
-    global $CFG;
+    global $DB;
 
+    $record = new stdClass();
     $record->survey = $survey;
     $record->userid = $user;
     $record->notes = $notes;
 
-    return insert_record("survey_analysis", $record, false);
+    return $DB->insert_record("survey_analysis", $record, false);
 }
-
+/**
+ * @global object
+ * @param int $survey
+ * @param int $user
+ * @return bool
+ */
 function survey_already_done($survey, $user) {
-   return record_exists("survey_answers", "survey", $survey, "userid", $user);
-}
+    global $DB;
 
+    return $DB->record_exists("survey_answers", array("survey"=>$survey, "userid"=>$user));
+}
+/**
+ * @param int $surveyid
+ * @param int $groupid
+ * @param int $groupingid
+ * @return int
+ */
 function survey_count_responses($surveyid, $groupid, $groupingid) {
     if ($responses = survey_get_responses($surveyid, $groupid, $groupingid)) {
         return count($responses);
@@ -321,28 +465,37 @@ function survey_count_responses($surveyid, $groupid, $groupingid) {
     }
 }
 
-
+/**
+ * @param int $cmid
+ * @param array $results
+ * @param int $courseid
+ */
 function survey_print_all_responses($cmid, $results, $courseid) {
-
+    global $OUTPUT;
+    $table = new html_table();
     $table->head  = array ("", get_string("name"),  get_string("time"));
     $table->align = array ("", "left", "left");
     $table->size = array (35, "", "" );
 
     foreach ($results as $a) {
-        $table->data[] = array(print_user_picture($a->id, $courseid, $a->picture, false, true, false),
-               "<a href=\"report.php?action=student&amp;student=$a->id&amp;id=$cmid\">".fullname($a)."</a>", 
+        $table->data[] = array($OUTPUT->user_picture($a, array('courseid'=>$courseid)),
+               html_writer::link("report.php?action=student&student=$a->id&id=$cmid", fullname($a)),
                userdate($a->time));
     }
 
-    print_table($table);
+    echo html_writer::table($table);
 }
 
-
+/**
+ * @global object
+ * @param int $templateid
+ * @return string
+ */
 function survey_get_template_name($templateid) {
-    global $db;
+    global $DB;
 
     if ($templateid) {
-        if ($ss = get_record("surveys", "id", $templateid)) {
+        if ($ss = $DB->get_record("surveys", array("id"=>$templateid))) {
             return $ss->name;
         }
     } else {
@@ -351,7 +504,11 @@ function survey_get_template_name($templateid) {
 }
 
 
-
+/**
+ * @param string $name
+ * @param array $numwords
+ * @return string
+ */
 function survey_shorten_name ($name, $numwords) {
     $words = explode(" ", $name);
     for ($i=0; $i < $numwords; $i++) {
@@ -360,42 +517,46 @@ function survey_shorten_name ($name, $numwords) {
     return $output;
 }
 
-
-
+/**
+ * @todo Check this function
+ *
+ * @global object
+ * @global object
+ * @global int
+ * @global void This is never defined
+ * @global object This is defined twice?
+ * @param object $question
+ */
 function survey_print_multi($question) {
-    global $USER, $db, $qnum, $checklist;
+    global $USER, $DB, $qnum, $checklist, $DB, $OUTPUT; //TODO: this is sloppy globals abuse
 
     $stripreferthat = get_string("ipreferthat", "survey");
     $strifoundthat = get_string("ifoundthat", "survey");
-    $strdefault    = get_string('default');
+    $strdefault    = get_string('notyetanswered', 'survey');
     $strresponses  = get_string('responses', 'survey');
 
-    print_heading($question->text, null, 3, 'questiontext');
-    echo "\n<table width=\"90%\" cellpadding=\"4\" cellspacing=\"1\" border=\"0\">";
+    echo $OUTPUT->heading($question->text, 3, 'questiontext');
+    echo "\n<table width=\"90%\" cellpadding=\"4\" cellspacing=\"1\" border=\"0\" class=\"surveytable\">";
 
     $options = explode( ",", $question->options);
     $numoptions = count($options);
 
     $oneanswer = ($question->type == 1 || $question->type == 2) ? true : false;
-    if ($question->type == 2) {
-        $P = "P";
-    } else {
-        $P = "";
-    }
 
     echo "<tr class=\"smalltext\"><th scope=\"row\">$strresponses</th>";
+    echo "<th scope=\"col\" class=\"hresponse\">". get_string('notyetanswered', 'survey'). "</th>";
     while (list ($key, $val) = each ($options)) {
         echo "<th scope=\"col\" class=\"hresponse\">$val</th>\n";
     }
-    echo "<th>&nbsp;</th></tr>\n";
+    echo "</tr>\n";
 
     if ($oneanswer) {
-        echo "<tr><th scope=\"col\" colspan=\"6\">$question->intro</th></tr>\n";
+        echo "<tr><th scope=\"col\" colspan=\"7\">$question->intro</th></tr>\n";
     } else {
-        echo "<tr><th scope=\"col\" colspan=\"7\">$question->intro</th></tr>\n"; 
+        echo "<tr><th scope=\"col\" colspan=\"7\">$question->intro</th></tr>\n";
     }
 
-    $subquestions = get_records_list("survey_questions", "id", $question->multi);
+    $subquestions = $DB->get_records_list("survey_questions", "id", explode(',', $question->multi));
 
     foreach ($subquestions as $q) {
         $qnum++;
@@ -404,35 +565,46 @@ function survey_print_multi($question) {
             $q->text = get_string($q->text, "survey");
         }
 
+        $oneanswer = ($q->type == 1 || $q->type == 2) ? true : false;
+        if ($q->type == 2) {
+            $P = "P";
+        } else {
+            $P = "";
+        }
+
         echo "<tr class=\"$rowclass rblock\">";
         if ($oneanswer) {
-
             echo "<th scope=\"row\" class=\"optioncell\">";
             echo "<b class=\"qnumtopcell\">$qnum</b> &nbsp; ";
             echo $q->text ."</th>\n";
+
+            $default = get_accesshide($strdefault);
+            echo "<td class=\"whitecell\"><label for=\"q$P$q->id\"><input type=\"radio\" name=\"q$P$q->id\" id=\"q$P" . $q->id . "_D\" value=\"0\" checked=\"checked\" />$default</label></td>";
+
             for ($i=1;$i<=$numoptions;$i++) {
                 $hiddentext = get_accesshide($options[$i-1]);
                 $id = "q$P" . $q->id . "_$i";
                 echo "<td><label for=\"$id\"><input type=\"radio\" name=\"q$P$q->id\" id=\"$id\" value=\"$i\" />$hiddentext</label></td>";
             }
-            $default = get_accesshide($strdefault, 'label', '', "for=\"q$P$q->id\"");
-            echo "<td class=\"whitecell\"><input type=\"radio\" name=\"q$P$q->id\" id=\"q$P" . $q->id . "_D\" value=\"0\" checked=\"checked\" />$default</td>";
-            $checklist["q$P$q->id"] = $numoptions;
-        
-        } else { 
+            $checklist["q$P$q->id"] = 0;
+
+        } else {
             // yu : fix for MDL-7501, possibly need to use user flag as this is quite ugly.
             echo "<th scope=\"row\" class=\"optioncell\">";
             echo "<b class=\"qnumtopcell\">$qnum</b> &nbsp; ";
             $qnum++;
             echo "<span class=\"preferthat smalltext\">$stripreferthat</span> &nbsp; ";
             echo "<span class=\"option\">$q->text</span></th>\n";
+
+            $default = get_accesshide($strdefault);
+            echo '<td class="whitecell"><label for="qP'. $P.$q->id .'"><input type="radio" name="qP'.$P.$q->id. '" id="qP'. $q->id .'" value="0" checked="checked" />'.$default.'</label></td>';
+
+
             for ($i=1;$i<=$numoptions;$i++) {
                 $hiddentext = get_accesshide($options[$i-1]);
                 $id = "qP" . $q->id . "_$i";
                 echo "<td><label for=\"$id\"><input type=\"radio\" name=\"qP$q->id\" id=\"$id\" value=\"$i\" />$hiddentext</label></td>";
             }
-            $default = get_accesshide($strdefault, 'label', '', "for=\"qP$q->id\"");
-            echo "<td><input type=\"radio\" name=\"qP$q->id\" id=\"qP$q->id\" value=\"0\" checked=\"checked\" />$default</td>";
             echo "</tr>";
 
             echo "<tr class=\"$rowclass rblock\">";
@@ -440,15 +612,18 @@ function survey_print_multi($question) {
             echo "<b class=\"qnumtopcell\">$qnum</b> &nbsp; ";
             echo "<span class=\"foundthat smalltext\">$strifoundthat</span> &nbsp; ";
             echo "<span class=\"option\">$q->text</span></th>\n";
+
+            $default = get_accesshide($strdefault);
+            echo '<td class="whitecell"><label for="q'. $q->id .'"><input type="radio" name="q'.$q->id. '" id="q'. $q->id .'" value="0" checked="checked" />'.$default.'</label></td>';
+
             for ($i=1;$i<=$numoptions;$i++) {
                 $hiddentext = get_accesshide($options[$i-1]);
                 $id = "q" . $q->id . "_$i";
                 echo "<td><label for=\"$id\"><input type=\"radio\" name=\"q$q->id\" id=\"$id\" value=\"$i\" />$hiddentext</label></td>";
             }
-            $default = get_accesshide($strdefault, 'label', '', "for=\"q$q->id\"");
-            echo "<td class=\"buttoncell\"><input type=\"radio\" name=\"q$q->id\" id=\"q$q->id\" value=\"0\" checked=\"checked\" />$default</td>";
-            $checklist["qP$q->id"] = $numoptions;
-            $checklist["q$q->id"] = $numoptions;            
+
+            $checklist["qP$q->id"] = 0;
+            $checklist["q$q->id"] = 0;
         }
         echo "</tr>\n";
     }
@@ -456,9 +631,13 @@ function survey_print_multi($question) {
 }
 
 
-
+/**
+ * @global object
+ * @global int
+ * @param object $question
+ */
 function survey_print_single($question) {
-    global $db, $qnum;
+    global $DB, $qnum, $OUTPUT;
 
     $rowclass = survey_question_rowclass(0);
 
@@ -488,13 +667,18 @@ function survey_print_single($question) {
 
     } else if ($question->type < 0) {     // Choose several of a number
         $options = explode( ",", $question->options);
-        notify("This question type not supported yet");
+        echo $OUTPUT->notification("This question type not supported yet");
     }
 
     echo "</td></tr></table>";
 
 }
 
+/**
+ *
+ * @param int $qnum
+ * @return string
+ */
 function survey_question_rowclass($qnum) {
 
     if ($qnum) {
@@ -504,6 +688,12 @@ function survey_question_rowclass($qnum) {
     }
 }
 
+/**
+ * @global object
+ * @global int
+ * @global int
+ * @param string $url
+ */
 function survey_print_graph($url) {
     global $CFG, $SURVEY_GHEIGHT, $SURVEY_GWIDTH;
 
@@ -516,10 +706,16 @@ function survey_print_graph($url) {
     }
 }
 
+/**
+ * @return array
+ */
 function survey_get_view_actions() {
     return array('download','view all','view form','view graph','view report');
 }
 
+/**
+ * @return array
+ */
 function survey_get_post_actions() {
     return array('submit');
 }
@@ -528,7 +724,8 @@ function survey_get_post_actions() {
 /**
  * Implementation of the function for printing the form elements that control
  * whether the course reset functionality affects the survey.
- * @param $mform form passed by reference
+ *
+ * @param object $mform form passed by reference
  */
 function survey_reset_course_form_definition(&$mform) {
     $mform->addElement('header', 'surveyheader', get_string('modulenameplural', 'survey'));
@@ -539,35 +736,39 @@ function survey_reset_course_form_definition(&$mform) {
 
 /**
  * Course reset form defaults.
+ * @return array
  */
 function survey_reset_course_form_defaults($course) {
     return array('reset_survey_answers'=>1, 'reset_survey_analysis'=>1);
 }
 
 /**
- * Actual implementation of the rest coures functionality, delete all the
+ * Actual implementation of the reset course functionality, delete all the
  * survey responses for course $data->courseid.
+ *
+ * @global object
  * @param $data the data submitted from the reset course.
  * @return array status array
  */
 function survey_reset_userdata($data) {
-    global $CFG;
+    global $DB;
 
     $componentstr = get_string('modulenameplural', 'survey');
     $status = array();
 
     $surveyssql = "SELECT ch.id
-                     FROM {$CFG->prefix}survey ch
-                    WHERE ch.course={$data->courseid}";
+                     FROM {survey} ch
+                    WHERE ch.course=?";
+    $params = array($data->courseid);
 
     if (!empty($data->reset_survey_answers)) {
-        delete_records_select('survey_answers', "survey IN ($surveyssql)");
-        delete_records_select('survey_analysis', "survey IN ($surveyssql)");
+        $DB->delete_records_select('survey_answers', "survey IN ($surveyssql)", $params);
+        $DB->delete_records_select('survey_analysis', "survey IN ($surveyssql)", $params);
         $status[] = array('component'=>$componentstr, 'item'=>get_string('deleteallanswers', 'survey'), 'error'=>false);
     }
 
     if (!empty($data->reset_survey_analysis)) {
-        delete_records_select('survey_analysis', "survey IN ($surveyssql)");
+        $DB->delete_records_select('survey_analysis', "survey IN ($surveyssql)", $params);
         $status[] = array('component'=>$componentstr, 'item'=>get_string('deleteallanswers', 'survey'), 'error'=>false);
     }
 
@@ -577,9 +778,101 @@ function survey_reset_userdata($data) {
 
 /**
  * Returns all other caps used in module
+ *
+ * @return array
  */
 function survey_get_extra_capabilities() {
     return array('moodle/site:accessallgroups');
 }
 
-?>
+/**
+ * @uses FEATURE_GROUPS
+ * @uses FEATURE_GROUPINGS
+ * @uses FEATURE_GROUPMEMBERSONLY
+ * @uses FEATURE_MOD_INTRO
+ * @uses FEATURE_COMPLETION_TRACKS_VIEWS
+ * @uses FEATURE_GRADE_HAS_GRADE
+ * @uses FEATURE_GRADE_OUTCOMES
+ * @param string $feature FEATURE_xx constant for requested feature
+ * @return mixed True if module supports feature, false if not, null if doesn't know
+ */
+function survey_supports($feature) {
+    switch($feature) {
+        case FEATURE_GROUPS:                  return true;
+        case FEATURE_GROUPINGS:               return true;
+        case FEATURE_GROUPMEMBERSONLY:        return true;
+        case FEATURE_MOD_INTRO:               return true;
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        case FEATURE_GRADE_HAS_GRADE:         return false;
+        case FEATURE_GRADE_OUTCOMES:          return false;
+        case FEATURE_BACKUP_MOODLE2:          return true;
+        case FEATURE_SHOW_DESCRIPTION:        return true;
+
+        default: return null;
+    }
+}
+
+/**
+ * This fucntion extends the global navigation for the site.
+ * It is important to note that you should not rely on PAGE objects within this
+ * body of code as there is no guarantee that during an AJAX request they are
+ * available
+ *
+ * @param navigation_node $navigation The quiz node within the global navigation
+ * @param stdClass $course The course object returned from the DB
+ * @param stdClass $module The module object returned from the DB
+ * @param stdClass $cm The course module instance returned from the DB
+ */
+function survey_extend_navigation($navigation, $course, $module, $cm) {
+    /**
+     * This is currently just a stub so  that it can be easily expanded upon.
+     * When expanding just remove this comment and the line below and then add
+     * you content.
+     */
+    $navigation->nodetype = navigation_node::NODETYPE_LEAF;
+}
+
+/**
+ * This function extends the settings navigation block for the site.
+ *
+ * It is safe to rely on PAGE here as we will only ever be within the module
+ * context when this is called
+ *
+ * @param navigation_node $settings
+ * @param navigation_node $surveynode
+ */
+function survey_extend_settings_navigation($settings, $surveynode) {
+    global $PAGE;
+
+    if (has_capability('mod/survey:readresponses', $PAGE->cm->context)) {
+        $responsesnode = $surveynode->add(get_string("responsereports", "survey"));
+
+        $url = new moodle_url('/mod/survey/report.php', array('id' => $PAGE->cm->id, 'action'=>'summary'));
+        $responsesnode->add(get_string("summary", "survey"), $url);
+
+        $url = new moodle_url('/mod/survey/report.php', array('id' => $PAGE->cm->id, 'action'=>'scales'));
+        $responsesnode->add(get_string("scales", "survey"), $url);
+
+        $url = new moodle_url('/mod/survey/report.php', array('id' => $PAGE->cm->id, 'action'=>'questions'));
+        $responsesnode->add(get_string("question", "survey"), $url);
+
+        $url = new moodle_url('/mod/survey/report.php', array('id' => $PAGE->cm->id, 'action'=>'students'));
+        $responsesnode->add(get_string('participants'), $url);
+
+        if (has_capability('mod/survey:download', $PAGE->cm->context)) {
+            $url = new moodle_url('/mod/survey/report.php', array('id' => $PAGE->cm->id, 'action'=>'download'));
+            $surveynode->add(get_string('downloadresults', 'survey'), $url);
+        }
+    }
+}
+
+/**
+ * Return a list of page types
+ * @param string $pagetype current page type
+ * @param stdClass $parentcontext Block's parent context
+ * @param stdClass $currentcontext Current context of block
+ */
+function survey_page_type_list($pagetype, $parentcontext, $currentcontext) {
+    $module_pagetype = array('mod-survey-*'=>get_string('page-mod-survey-x', 'survey'));
+    return $module_pagetype;
+}

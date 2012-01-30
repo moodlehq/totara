@@ -1,4 +1,16 @@
-<?php //$Id$
+<?php
+
+/**
+ * Create//edit group form.
+ *
+ * @copyright &copy; 2006 The Open University
+ * @author N.D.Freear AT open.ac.uk
+ * @author J.White AT open.ac.uk
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package groups
+ */
+
+defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 
@@ -10,27 +22,25 @@ class group_form extends moodleform {
         global $USER, $CFG, $COURSE;
 
         $mform =& $this->_form;
+        $editoroptions = $this->_customdata['editoroptions'];
 
         $mform->addElement('text','name', get_string('groupname', 'group'),'maxlength="254" size="50"');
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_MULTILANG);
 
-        $mform->addElement('htmleditor', 'description', get_string('groupdescription', 'group'), array('rows'=> '15', 'course' => $COURSE->id, 'cols'=>'45'));
-        $mform->setType('description', PARAM_RAW);
+        $mform->addElement('editor', 'description_editor', get_string('groupdescription', 'group'), null, $editoroptions);
+        $mform->setType('description_editor', PARAM_RAW);
 
-        $mform->addElement('passwordunmask', 'enrolmentkey', get_string('enrolmentkey', 'group'), 'maxlength="254" size="24"', get_string('enrolmentkey'));
-        $mform->setHelpButton('enrolmentkey', array('groupenrolmentkey', get_string('enrolmentkey', 'group')), true);
+        $mform->addElement('passwordunmask', 'enrolmentkey', get_string('enrolmentkey', 'group'), 'maxlength="254" size="24"', get_string('enrolmentkey', 'group'));
+        $mform->addHelpButton('enrolmentkey', 'enrolmentkey', 'group');
         $mform->setType('enrolmentkey', PARAM_RAW);
 
-        $maxbytes = get_max_upload_file_size($CFG->maxbytes, $COURSE->maxbytes);
-
-        if (!empty($CFG->gdversion) and $maxbytes) {
+        if (!empty($CFG->gdversion)) {
             $options = array(get_string('no'), get_string('yes'));
             $mform->addElement('select', 'hidepicture', get_string('hidepicture'), $options);
 
-            $this->set_upload_manager(new upload_manager('imagefile', false, false, null, false, 0, true, true, false));
-            $mform->addElement('file', 'imagefile', get_string('newpicture', 'group'));
-            $mform->setHelpButton('imagefile', array ('picture', get_string('helppicture')), true);
+            $mform->addElement('filepicker', 'imagefile', get_string('newpicture', 'group'));
+            $mform->addHelpButton('imagefile', 'newpicture', 'group');
         }
 
         $mform->addElement('hidden','id');
@@ -43,21 +53,21 @@ class group_form extends moodleform {
     }
 
     function validation($data, $files) {
-        global $COURSE, $CFG;
+        global $COURSE, $DB, $CFG;
 
         $errors = parent::validation($data, $files);
 
         $textlib = textlib_get_instance();
 
-        $name = trim(stripslashes($data['name']));
-        if ($data['id'] and $group = get_record('groups', 'id', $data['id'])) {
+        $name = trim($data['name']);
+        if ($data['id'] and $group = $DB->get_record('groups', array('id'=>$data['id']))) {
             if ($textlib->strtolower($group->name) != $textlib->strtolower($name)) {
                 if (groups_get_group_by_name($COURSE->id,  $name)) {
                     $errors['name'] = get_string('groupnameexists', 'group', $name);
                 }
             }
 
-            if (!empty($CFG->enrol_manual_usepasswordpolicy) and $data['enrolmentkey'] != '' and $group->enrolmentkey !== $data['enrolmentkey']) {
+            if (!empty($CFG->groupenrolmentkeypolicy) and $data['enrolmentkey'] != '' and $group->enrolmentkey !== $data['enrolmentkey']) {
                 // enforce password policy only if changing password
                 $errmsg = '';
                 if (!check_password_policy($data['enrolmentkey'], $errmsg)) {
@@ -72,9 +82,7 @@ class group_form extends moodleform {
         return $errors;
     }
 
-    function get_um() {
-        return $this->_upload_manager;
+    function get_editor_options() {
+        return $this->_customdata['editoroptions'];
     }
 }
-
-?>

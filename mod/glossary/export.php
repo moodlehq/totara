@@ -1,62 +1,78 @@
-<?php   // $Id$
+<?php
 
-    require_once("../../config.php");
-    require_once("lib.php");
+require_once("../../config.php");
+require_once("lib.php");
 
-    $id = required_param('id', PARAM_INT);      // Course Module ID
+$id = required_param('id', PARAM_INT);      // Course Module ID
 
-    $mode= optional_param('mode', '', PARAM_ALPHA);           // term entry cat date letter search author approval
-    $hook= optional_param('hook', '', PARAM_CLEAN);           // the term, entry, cat, etc... to look for based on mode
-    $cat = optional_param('cat',0, PARAM_ALPHANUM);
+$mode= optional_param('mode', '', PARAM_ALPHA);           // term entry cat date letter search author approval
+$hook= optional_param('hook', '', PARAM_CLEAN);           // the term, entry, cat, etc... to look for based on mode
+$cat = optional_param('cat',0, PARAM_ALPHANUM);
 
-    if (! $cm = get_coursemodule_from_id('glossary', $id)) {
-        error("Course Module ID was incorrect");
-    }
+$url = new moodle_url('/mod/glossary/export.php', array('id'=>$id));
+if ($cat !== 0) {
+    $url->param('cat', $cat);
+}
+if ($mode !== '') {
+    $url->param('mode', $mode);
+}
 
-    if (! $course = get_record("course", "id", $cm->course)) {
-        error("Course is misconfigured");
-    }
+$PAGE->set_url($url);
 
-    if (! $glossary = get_record("glossary", "id", $cm->instance)) {
-        error("Course module is incorrect");
-    }
+if (! $cm = get_coursemodule_from_id('glossary', $id)) {
+    print_error('invalidcoursemodule');
+}
 
-    require_login($course->id, false, $cm);  
-    
-    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
-    require_capability('mod/glossary:export', $context);
+if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+    print_error('coursemisconf');
+}
 
-    $strglossaries = get_string("modulenameplural", "glossary");
-    $strglossary = get_string("modulename", "glossary");
-    $strallcategories = get_string("allcategories", "glossary");
-    $straddentry = get_string("addentry", "glossary");
-    $strnoentries = get_string("noentries", "glossary");
-    $strsearchconcept = get_string("searchconcept", "glossary");
-    $strsearchindefinition = get_string("searchindefinition", "glossary");
-    $strsearch = get_string("search");
-    $strexportfile = get_string("exportfile", "glossary");
-    $strexportentries = get_string('exportentriestoxml', 'glossary');
+if (! $glossary = $DB->get_record("glossary", array("id"=>$cm->instance))) {
+    print_error('invalidid', 'glossary');
+}
 
-    $navigation = build_navigation($strexportentries, $cm);
-    print_header_simple(format_string($glossary->name), "",$navigation,
-        "", "", true, update_module_button($cm->id, $course->id, $strglossary),
-        navmenu($course, $cm));
+require_login($course->id, false, $cm);
 
-    print_heading($strexportentries);
+$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+require_capability('mod/glossary:export', $context);
 
-    print_box_start('glossarydisplay generalbox');
-    ?>
-    <form action="exportfile.php" method="post">
+$strglossaries = get_string("modulenameplural", "glossary");
+$strglossary = get_string("modulename", "glossary");
+$strallcategories = get_string("allcategories", "glossary");
+$straddentry = get_string("addentry", "glossary");
+$strnoentries = get_string("noentries", "glossary");
+$strsearchindefinition = get_string("searchindefinition", "glossary");
+$strsearch = get_string("search");
+$strexportfile = get_string("exportfile", "glossary");
+$strexportentries = get_string('exportentriestoxml', 'glossary');
+
+$PAGE->set_url('/mod/glossary/export.php', array('id'=>$cm->id));
+$PAGE->navbar->add($strexportentries);
+$PAGE->set_title(format_string($glossary->name));
+$PAGE->set_heading($course->fullname);
+
+echo $OUTPUT->header();
+echo $OUTPUT->heading($strexportentries);
+echo $OUTPUT->box_start('glossarydisplay generalbox');
+$exporturl = moodle_url::make_pluginfile_url($context->id, 'mod_glossary', 'export', 0, "/$cat/", 'export.xml', true);
+
+?>
+    <form action="<?php echo $exporturl->out(); ?>" method="post">
     <table border="0" cellpadding="6" cellspacing="6" width="100%">
     <tr><td align="center">
         <input type="submit" value="<?php p($strexportfile)?>" />
     </td></tr></table>
     <div>
-    <input type="hidden" name="id" value="<?php p($id)?>" />
-    <input type="hidden" name="cat" value="<?php p($cat)?>" />
     </div>
     </form>
 <?php
-    print_box_end();
-    print_footer($course);
+    // don't need cap check here, we share with the general export.
+    if (!empty($CFG->enableportfolios) && $DB->count_records('glossary_entries', array('glossaryid' => $glossary->id))) {
+        require_once($CFG->libdir . '/portfoliolib.php');
+        $button = new portfolio_add_button();
+        $button->set_callback_options('glossary_full_portfolio_caller', array('id' => $cm->id), '/mod/glossary/locallib.php');
+        $button->render();
+    }
+    echo $OUTPUT->box_end();
+    echo $OUTPUT->footer();
 ?>

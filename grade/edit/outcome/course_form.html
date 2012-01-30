@@ -38,9 +38,9 @@
         ?>
         <td>
             <p class="arrow_button">
-                <input name="add" id="add" type="submit" value="<?php echo '&nbsp; '.$THEME->larrow.' &nbsp; &nbsp; '.get_string('add'); ?>" title="<?php print_string('add'); ?>" />
+                <input name="add" id="add" type="submit" value="<?php echo '&nbsp; '.$OUTPUT->larrow().' &nbsp; &nbsp; '.get_string('add'); ?>" title="<?php print_string('add'); ?>" />
                 <br />
-                <input name="remove" id="remove" type="submit" value="<?php echo '&nbsp;'.$THEME->rarrow.' &nbsp; &nbsp; '.get_string('remove'); ?>" title="<?php print_string('remove'); ?>" />
+                <input name="remove" id="remove" type="submit" value="<?php echo '&nbsp;'.$OUTPUT->rarrow().' &nbsp; &nbsp; '.get_string('remove'); ?>" title="<?php print_string('remove'); ?>" />
             </p>
         </td>
         <?php } ?>
@@ -58,6 +58,16 @@
         </td>
     </tr>
 </table>
+
+<?php
+if (has_capability('moodle/grade:manageoutcomes', $context)) {
+?>
+    <p class="mdl-align">
+        <a href="<?php echo $CFG->wwwroot ?>/grade/edit/outcome/index.php?id=<?php echo $courseid; ?>"><?php echo get_string('editoutcomes','grades'); ?></a>
+    </p>
+<?php
+}
+?>
 
 <input name="id" type="hidden" value="<?php echo $courseid?>"/>
 <input type="hidden" name="sesskey" value="<?php echo sesskey() ?>" />

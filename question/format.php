@@ -1,52 +1,116 @@
-<?php  // $Id$
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Defines the base class for question import and export formats.
+ *
+ * @package    moodlecore
+ * @subpackage questionbank
+ * @copyright  1999 onwards Martin Dougiamas {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+
+defined('MOODLE_INTERNAL') || die();
+
+
+/**#@+
+ * The core question types.
+ *
+ * These used to be in lib/questionlib.php, but are being deprecated. Copying
+ * them here to keep the import/export code working for now (there are 135
+ * references to these constants which I don't want to try to fix at the moment.)
+ */
+if (!defined('SHORTANSWER')) {
+    define("SHORTANSWER",   "shortanswer");
+    define("TRUEFALSE",     "truefalse");
+    define("MULTICHOICE",   "multichoice");
+    define("RANDOM",        "random");
+    define("MATCH",         "match");
+    define("RANDOMSAMATCH", "randomsamatch");
+    define("DESCRIPTION",   "description");
+    define("NUMERICAL",     "numerical");
+    define("MULTIANSWER",   "multianswer");
+    define("CALCULATED",    "calculated");
+    define("ESSAY",         "essay");
+}
+/**#@-*/
+
+
 /**
  * Base class for question import and export formats.
  *
- * @author Martin Dougiamas, Howard Miller, and many others.
- *         {@link http://moodle.org}
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package questionbank
- * @subpackage importexport
+ * @copyright  1999 onwards Martin Dougiamas {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qformat_default {
 
-    var $displayerrors = true;
-    var $category = NULL;
-    var $questions = array();
-    var $course = NULL;
-    var $filename = '';
-    var $realfilename = '';
-    var $matchgrades = 'error';
-    var $catfromfile = 0;
-    var $contextfromfile = 0;
-    var $cattofile = 0;
-    var $contexttofile = 0;
-    var $questionids = array();
-    var $importerrors = 0;
-    var $stoponerror = true;
-    var $translator = null;
-    var $canaccessbackupdata = true;
+    public $displayerrors = true;
+    public $category = null;
+    public $questions = array();
+    public $course = null;
+    public $filename = '';
+    public $realfilename = '';
+    public $matchgrades = 'error';
+    public $catfromfile = 0;
+    public $contextfromfile = 0;
+    public $cattofile = 0;
+    public $contexttofile = 0;
+    public $questionids = array();
+    public $importerrors = 0;
+    public $stoponerror = true;
+    public $translator = null;
+    public $canaccessbackupdata = true;
 
+    protected $importcontext = null;
 
-// functions to indicate import/export functionality
-// override to return true if implemented
+    // functions to indicate import/export functionality
+    // override to return true if implemented
 
-    function provide_import() {
-      return false;
+    /** @return bool whether this plugin provides import functionality. */
+    public function provide_import() {
+        return false;
     }
 
-    function provide_export() {
-      return false;
+    /** @return bool whether this plugin provides export functionality. */
+    public function provide_export() {
+        return false;
     }
 
-// Accessor methods
+    /** The string mime-type of the files that this plugin reads or writes. */
+    public function mime_type() {
+        return mimeinfo('type', $this->export_file_extension());
+    }
+
+    /**
+     * @return string the file extension (including .) that is normally used for
+     * files handled by this plugin.
+     */
+    public function export_file_extension() {
+        return '.txt';
+    }
+
+    // Accessor methods
 
     /**
      * set the category
      * @param object category the category object
      */
-    function setCategory( $category ) {
-        if (count($this->questions)){
+    public function setCategory($category) {
+        if (count($this->questions)) {
             debugging('You shouldn\'t call setCategory after setQuestions');
         }
         $this->category = $category;
@@ -58,8 +122,8 @@ class qformat_default {
      * Only used for question export.
      * @param array of question objects
      */
-    function setQuestions( $questions ) {
-        if ($this->category !== null){
+    public function setQuestions($questions) {
+        if ($this->category !== null) {
             debugging('You shouldn\'t call setQuestions after setCategory');
         }
         $this->questions = $questions;
@@ -69,14 +133,15 @@ class qformat_default {
      * set the course class variable
      * @param course object Moodle course variable
      */
-    function setCourse( $course ) {
+    public function setCourse($course) {
         $this->course = $course;
     }
+
     /**
      * set an array of contexts.
      * @param array $contexts Moodle course variable
      */
-    function setContexts($contexts) {
+    public function setContexts($contexts) {
         $this->contexts = $contexts;
         $this->translator = new context_to_string_translator($this->contexts);
     }
@@ -85,7 +150,7 @@ class qformat_default {
      * set the filename
      * @param string filename name of file to import/export
      */
-    function setFilename( $filename ) {
+    public function setFilename($filename) {
         $this->filename = $filename;
     }
 
@@ -94,7 +159,7 @@ class qformat_default {
      * (this is what the user typed, regardless of wha happened next)
      * @param string realfilename name of file as typed by user
      */
-    function setRealfilename( $realfilename ) {
+    public function setRealfilename($realfilename) {
         $this->realfilename = $realfilename;
     }
 
@@ -102,7 +167,7 @@ class qformat_default {
      * set matchgrades
      * @param string matchgrades error or nearest for grades
      */
-    function setMatchgrades( $matchgrades ) {
+    public function setMatchgrades($matchgrades) {
         $this->matchgrades = $matchgrades;
     }
 
@@ -110,7 +175,7 @@ class qformat_default {
      * set catfromfile
      * @param bool catfromfile allow categories embedded in import file
      */
-    function setCatfromfile( $catfromfile ) {
+    public function setCatfromfile($catfromfile) {
         $this->catfromfile = $catfromfile;
     }
 
@@ -118,7 +183,7 @@ class qformat_default {
      * set contextfromfile
      * @param bool $contextfromfile allow contexts embedded in import file
      */
-    function setContextfromfile($contextfromfile) {
+    public function setContextfromfile($contextfromfile) {
         $this->contextfromfile = $contextfromfile;
     }
 
@@ -126,14 +191,15 @@ class qformat_default {
      * set cattofile
      * @param bool cattofile exports categories within export file
      */
-    function setCattofile( $cattofile ) {
+    public function setCattofile($cattofile) {
         $this->cattofile = $cattofile;
     }
+
     /**
      * set contexttofile
      * @param bool cattofile exports categories within export file
      */
-    function setContexttofile($contexttofile) {
+    public function setContexttofile($contexttofile) {
         $this->contexttofile = $contexttofile;
     }
 
@@ -141,27 +207,27 @@ class qformat_default {
      * set stoponerror
      * @param bool stoponerror stops database write if any errors reported
      */
-    function setStoponerror( $stoponerror ) {
+    public function setStoponerror($stoponerror) {
         $this->stoponerror = $stoponerror;
     }
 
     /**
-     * @param boolean $canaccess Whether the current use can access the backup data folder. Determines
+     * @param bool $canaccess Whether the current use can access the backup data folder. Determines
      * where export files are saved.
      */
-    function set_can_access_backupdata($canaccess) {
+    public function set_can_access_backupdata($canaccess) {
         $this->canaccessbackupdata = $canaccess;
     }
 
-/***********************
- * IMPORTING FUNCTIONS
- ***********************/
+    /***********************
+     * IMPORTING FUNCTIONS
+     ***********************/
 
     /**
      * Handle parsing error
      */
-    function error( $message, $text='', $questionname='' ) {
-        $importerrorquestion = get_string('importerrorquestion','quiz');
+    protected function error($message, $text='', $questionname='') {
+        $importerrorquestion = get_string('importerrorquestion', 'question');
 
         echo "<div class=\"importerror\">\n";
         echo "<strong>$importerrorquestion $questionname</strong>";
@@ -184,8 +250,8 @@ class qformat_default {
      * @param qtypehint hint about a question type from format
      * @return object question object suitable for save_options() or false if cannot handle
      */
-    function try_importing_using_qtypes( $data, $question=null, $extra=null, $qtypehint='') {
-        global $QTYPES;
+    public function try_importing_using_qtypes($data, $question = null, $extra = null,
+            $qtypehint = '') {
 
         // work out what format we are using
         $formatname = substr(get_class($this), strlen('qformat_'));
@@ -193,7 +259,7 @@ class qformat_default {
 
         //first try importing using a hint from format
         if (!empty($qtypehint)) {
-            $qtype = $QTYPES[$qtypehint];
+            $qtype = question_bank::get_qtype($qtypehint, false);
             if (is_object($qtype) && method_exists($qtype, $methodname)) {
                 $question = $qtype->$methodname($data, $question, $this, $extra);
                 if ($question) {
@@ -204,9 +270,9 @@ class qformat_default {
 
         // loop through installed questiontypes checking for
         // function to handle this question
-        foreach ($QTYPES as $qtype) {
-            if (method_exists( $qtype, $methodname)) {
-                if ($question = $qtype->$methodname( $data, $question, $this, $extra )) {
+        foreach (question_bank::get_all_qtypes() as $qtype) {
+            if (method_exists($qtype, $methodname)) {
+                if ($question = $qtype->$methodname($data, $question, $this, $extra)) {
                     return $question;
                 }
             }
@@ -216,48 +282,52 @@ class qformat_default {
 
     /**
      * Perform any required pre-processing
-     * @return boolean success
+     * @return bool success
      */
-    function importpreprocess() {
+    public function importpreprocess() {
         return true;
     }
 
     /**
      * Process the file
      * This method should not normally be overidden
-     * @return boolean success
+     * @param object $category
+     * @return bool success
      */
-    function importprocess() {
-        global $USER;
+    public function importprocess($category) {
+        global $USER, $CFG, $DB, $OUTPUT;
 
-       // reset the timer in case file upload was slow
-       @set_time_limit();
+        $context = $category->context;
+        $this->importcontext = $context;
 
-       // STAGE 1: Parse the file
-       notify( get_string('parsingquestions','quiz') );
+        // reset the timer in case file upload was slow
+        set_time_limit(0);
+
+        // STAGE 1: Parse the file
+        echo $OUTPUT->notification(get_string('parsingquestions', 'question'), 'notifysuccess');
 
         if (! $lines = $this->readdata($this->filename)) {
-            notify( get_string('cannotread','quiz') );
+            echo $OUTPUT->notification(get_string('cannotread', 'question'));
             return false;
         }
 
-        if (! $questions = $this->readquestions($lines)) {   // Extract all the questions
-            notify( get_string('noquestionsinfile','quiz') );
+        if (!$questions = $this->readquestions($lines, $context)) {   // Extract all the questions
+            echo $OUTPUT->notification(get_string('noquestionsinfile', 'question'));
             return false;
         }
 
         // STAGE 2: Write data to database
-        notify( get_string('importingquestions','quiz',$this->count_questions($questions)) );
+        echo $OUTPUT->notification(get_string('importingquestions', 'question',
+                $this->count_questions($questions)), 'notifysuccess');
 
         // check for errors before we continue
         if ($this->stoponerror and ($this->importerrors>0)) {
-            notify( get_string('importparseerror','quiz') );
+            echo $OUTPUT->notification(get_string('importparseerror', 'question'));
             return true;
         }
 
         // get list of valid answer grades
-        $grades = get_grade_options();
-        $gradeoptionsfull = $grades->gradeoptionsfull;
+        $gradeoptionsfull = question_bank::fraction_options_full();
 
         // check answer grades are valid
         // (now need to do this here because of 'stop on error': MDL-10689)
@@ -268,20 +338,19 @@ class qformat_default {
                 $fractions = $question->fraction;
                 $answersvalid = true; // in case they are!
                 foreach ($fractions as $key => $fraction) {
-                    $newfraction = match_grade_options($gradeoptionsfull, $fraction, $this->matchgrades);
-                    if ($newfraction===false) {
+                    $newfraction = match_grade_options($gradeoptionsfull, $fraction,
+                            $this->matchgrades);
+                    if ($newfraction === false) {
                         $answersvalid = false;
-                    }
-                    else {
+                    } else {
                         $fractions[$key] = $newfraction;
                     }
                 }
                 if (!$answersvalid) {
-                    notify(get_string('matcherror', 'quiz'));
+                    echo $OUTPUT->notification(get_string('invalidgrade', 'question'));
                     ++$gradeerrors;
                     continue;
-                }
-                else {
+                } else {
                     $question->fraction = $fractions;
                 }
             }
@@ -290,7 +359,7 @@ class qformat_default {
         $questions = $goodquestions;
 
         // check for errors before we continue
-        if ($this->stoponerror and ($gradeerrors>0)) {
+        if ($this->stoponerror && $gradeerrors > 0) {
             return false;
         }
 
@@ -300,10 +369,10 @@ class qformat_default {
         foreach ($questions as $question) {   // Process and store each question
 
             // reset the php timeout
-            @set_time_limit();
+            set_time_limit(0);
 
             // check for category modifiers
-            if ($question->qtype=='category') {
+            if ($question->qtype == 'category') {
                 if ($this->catfromfile) {
                     // find/create category object
                     $catpath = $question->category;
@@ -314,6 +383,7 @@ class qformat_default {
                 }
                 continue;
             }
+            $question->context = $context;
 
             $count++;
 
@@ -327,33 +397,48 @@ class qformat_default {
             $question->modifiedby = $USER->id;
             $question->timemodified = time();
 
-            if (!$question->id = insert_record("question", $question)) {
-                error( get_string('cannotinsert','quiz') );
+            $question->id = $DB->insert_record('question', $question);
+            if (isset($question->questiontextfiles)) {
+                foreach ($question->questiontextfiles as $file) {
+                    question_bank::get_qtype($question->qtype)->import_file(
+                            $context, 'question', 'questiontext', $question->id, $file);
+                }
+            }
+            if (isset($question->generalfeedbackfiles)) {
+                foreach ($question->generalfeedbackfiles as $file) {
+                    question_bank::get_qtype($question->qtype)->import_file(
+                            $context, 'question', 'generalfeedback', $question->id, $file);
+                }
             }
 
             $this->questionids[] = $question->id;
 
             // Now to save all the answers and type-specific options
 
-            global $QTYPES;
-            $result = $QTYPES[$question->qtype]
-                    ->save_question_options($question);
+            $result = question_bank::get_qtype($question->qtype)->save_question_options($question);
+
+            if (!empty($CFG->usetags) && isset($question->tags)) {
+                require_once($CFG->dirroot . '/tag/lib.php');
+                tag_set('question', $question->id, $question->tags);
+            }
 
             if (!empty($result->error)) {
-                notify($result->error);
+                echo $OUTPUT->notification($result->error);
                 return false;
             }
 
             if (!empty($result->notice)) {
-                notify($result->notice);
+                echo $OUTPUT->notification($result->notice);
                 return true;
             }
 
             // Give the question a unique version stamp determined by question_hash()
-            set_field('question', 'version', question_hash($question), 'id', $question->id);
+            $DB->set_field('question', 'version', question_hash($question),
+                    array('id' => $question->id));
         }
         return true;
     }
+
     /**
      * Count all non-category questions in the questions array.
      *
@@ -361,13 +446,14 @@ class qformat_default {
      * @return int The count.
      *
      */
-    function count_questions($questions) {
+    protected function count_questions($questions) {
         $count = 0;
         if (!is_array($questions)) {
             return $count;
         }
         foreach ($questions as $question) {
-            if (!is_object($question) || !isset($question->qtype) || ($question->qtype == 'category')) {
+            if (!is_object($question) || !isset($question->qtype) ||
+                    ($question->qtype == 'category')) {
                 continue;
             }
             $count++;
@@ -386,7 +472,8 @@ class qformat_default {
      * @param int courseid course to search for categories
      * @return mixed category object or null if fails
      */
-    function create_category_path($catpath) {
+    protected function create_category_path($catpath) {
+        global $DB;
         $catnames = $this->split_category_path($catpath);
         $parent = 0;
         $category = null;
@@ -409,21 +496,20 @@ class qformat_default {
 
         // Now create any categories that need to be created.
         foreach ($catnames as $catname) {
-            if ($category = get_record('question_categories', 'name', $catname, 'contextid', $context->id, 'parent', $parent)) {
+            if ($category = $DB->get_record('question_categories',
+                    array('name' => $catname, 'contextid' => $context->id, 'parent' => $parent))) {
                 $parent = $category->id;
             } else {
                 require_capability('moodle/question:managecategory', $context);
                 // create the new category
-                $category = new object;
+                $category = new stdClass();
                 $category->contextid = $context->id;
                 $category->name = $catname;
                 $category->info = '';
                 $category->parent = $parent;
                 $category->sortorder = 999;
                 $category->stamp = make_unique_id_code();
-                if (!($id = insert_record('question_categories', $category))) {
-                    error( "cannot create new category - $catname" );
-                }
+                $id = $DB->insert_record('question_categories', $category);
                 $category->id = $id;
                 $parent = $id;
             }
@@ -436,12 +522,12 @@ class qformat_default {
      * @param string filename name of file
      * @return mixed contents array or false on failure
      */
-    function readdata($filename) {
+    protected function readdata($filename) {
         if (is_readable($filename)) {
             $filearray = file($filename);
 
             /// Check for Macintosh OS line returns (ie file on one line), and fix
-            if (ereg("\r", $filearray[0]) AND !ereg("\n", $filearray[0])) {
+            if (preg_match("~\r~", $filearray[0]) AND !preg_match("~\n~", $filearray[0])) {
                 return explode("\r", $filearray[0]);
             } else {
                 return $filearray;
@@ -460,9 +546,10 @@ class qformat_default {
      * then you will need to override this method. Even then
      * try to use readquestion for each question
      * @param array lines array of lines from readdata
+     * @param object $context
      * @return array array of question objects
      */
-    function readquestions($lines) {
+    protected function readquestions($lines, $context) {
 
         $questions = array();
         $currentquestion = array();
@@ -482,14 +569,13 @@ class qformat_default {
         }
 
         if (!empty($currentquestion)) {  // There may be a final question
-            if ($question = $this->readquestion($currentquestion)) {
+            if ($question = $this->readquestion($currentquestion, $context)) {
                 $questions[] = $question;
             }
         }
 
         return $questions;
     }
-
 
     /**
      * return an "empty" question
@@ -498,21 +584,27 @@ class qformat_default {
      * This should not be overridden.
      * @return object default question
      */
-    function defaultquestion() {
+    protected function defaultquestion() {
         global $CFG;
+        static $defaultshuffleanswers = null;
+        if (is_null($defaultshuffleanswers)) {
+            $defaultshuffleanswers = get_config('quiz', 'shuffleanswers');
+        }
 
         $question = new stdClass();
-        $question->shuffleanswers = $CFG->quiz_shuffleanswers;
-        $question->defaultgrade = 1;
+        $question->shuffleanswers = $defaultshuffleanswers;
+        $question->defaultmark = 1;
         $question->image = "";
         $question->usecase = 0;
         $question->multiplier = array();
+        $question->questiontextformat = FORMAT_MOODLE;
         $question->generalfeedback = '';
+        $question->generalfeedbackformat = FORMAT_MOODLE;
         $question->correctfeedback = '';
         $question->partiallycorrectfeedback = '';
         $question->incorrectfeedback = '';
         $question->answernumbering = 'abc';
-        $question->penalty = 0.1;
+        $question->penalty = 0.3333333;
         $question->length = 1;
 
         // this option in case the questiontypes class wants
@@ -533,67 +625,25 @@ class qformat_default {
      * @param $lines mixed data that represents question
      * @return object question object
      */
-    function readquestion($lines) {
+    protected function readquestion($lines) {
 
-        $formatnotimplemented = get_string( 'formatnotimplemented','quiz' );
+        $formatnotimplemented = get_string('formatnotimplemented', 'question');
         echo "<p>$formatnotimplemented</p>";
 
-        return NULL;
+        return null;
     }
 
     /**
      * Override if any post-processing is required
-     * @return boolean success
+     * @return bool success
      */
-    function importpostprocess() {
+    public function importpostprocess() {
         return true;
     }
 
-    /**
-     * Import an image file encoded in base64 format
-     * @param string path path (in course data) to store picture
-     * @param string base64 encoded picture
-     * @return string filename (nb. collisions are handled)
-     */
-    function importimagefile( $path, $base64 ) {
-        global $CFG;
-
-        // all this to get the destination directory
-        // and filename!
-        $fullpath = "{$CFG->dataroot}/{$this->course->id}/$path";
-        $path_parts = pathinfo( $fullpath );
-        $destination = $path_parts['dirname'];
-        $file = clean_filename( $path_parts['basename'] );
-
-        // check if path exists
-        check_dir_exists($destination, true, true );
-
-        // detect and fix any filename collision - get unique filename
-        $newfiles = resolve_filename_collisions( $destination, array($file) );
-        $newfile = $newfiles[0];
-
-        // convert and save file contents
-        if (!$content = base64_decode( $base64 )) {
-            return '';
-        }
-        $newfullpath = "$destination/$newfile";
-        if (!$fh = fopen( $newfullpath, 'w' )) {
-            return '';
-        }
-        if (!fwrite( $fh, $content )) {
-            return '';
-        }
-        fclose( $fh );
-
-        // return the (possibly) new filename
-        $newfile = ereg_replace("{$CFG->dataroot}/{$this->course->id}/", '',$newfullpath);
-        return $newfile;
-    }
-
-
-/*******************
- * EXPORT FUNCTIONS
- *******************/
+    /*******************
+     * EXPORT FUNCTIONS
+     *******************/
 
     /**
      * Provide export functionality for plugin questiontypes
@@ -603,38 +653,23 @@ class qformat_default {
      * @param extra mixed any addition format specific data needed
      * @return string the data to append to export or false if error (or unhandled)
      */
-    function try_exporting_using_qtypes( $name, $question, $extra=null ) {
-        global $QTYPES;
-
+    protected function try_exporting_using_qtypes($name, $question, $extra=null) {
         // work out the name of format in use
-        $formatname = substr( get_class( $this ), strlen( 'qformat_' ));
+        $formatname = substr(get_class($this), strlen('qformat_'));
         $methodname = "export_to_$formatname";
 
-        if (array_key_exists( $name, $QTYPES )) {
-            $qtype = $QTYPES[ $name ];
-            if (method_exists( $qtype, $methodname )) {
-                if ($data = $qtype->$methodname( $question, $this, $extra )) {
-                    return $data;
-                }
-            }
+        $qtype = question_bank::get_qtype($name, false);
+        if (method_exists($qtype, $methodname)) {
+            return $qtype->$methodname($question, $this, $extra);
         }
         return false;
     }
 
     /**
-     * Return the files extension appropriate for this type
-     * override if you don't want .txt
-     * @return string file extension
-     */
-    function export_file_extension() {
-        return ".txt";
-    }
-
-    /**
      * Do any pre-processing that may be required
-     * @param boolean success
+     * @param bool success
      */
-    function exportpreprocess() {
+    public function exportpreprocess() {
         return true;
     }
 
@@ -645,33 +680,26 @@ class qformat_default {
      * @param string output text
      * @param string processed output text
      */
-    function presave_process( $content ) {
+    protected function presave_process($content) {
         return $content;
     }
 
     /**
      * Do the export
      * For most types this should not need to be overrided
-     * @return boolean success
+     * @return stored_file
      */
-    function exportprocess() {
-        global $CFG;
-
-        // create a directory for the exports (if not already existing)
-        if (! $export_dir = make_upload_directory($this->question_get_export_dir())) {
-              error( get_string('cannotcreatepath','quiz',$export_dir) );
-        }
-        $path = $CFG->dataroot.'/'.$this->question_get_export_dir();
+    public function exportprocess() {
+        global $CFG, $OUTPUT, $DB, $USER;
 
         // get the questions (from database) in this category
         // only get q's with no parents (no cloze subquestions specifically)
-        if ($this->category){
-            $questions = get_questions_category( $this->category, true );
+        if ($this->category) {
+            $questions = get_questions_category($this->category, true);
         } else {
             $questions = $this->questions;
         }
 
-        notify( get_string('exportingquestions','quiz') );
         $count = 0;
 
         // results are first written into string (and then to a file)
@@ -684,7 +712,11 @@ class qformat_default {
         $trackcategory = 0;
 
         // iterate through questions
-        foreach($questions as $question) {
+        foreach ($questions as $question) {
+            // used by file api
+            $contextid = $DB->get_field('question_categories', 'contextid',
+                    array('id' => $question->category));
+            $question->contextid = $contextid;
 
             // do not export hidden questions
             if (!empty($question->hidden)) {
@@ -692,7 +724,7 @@ class qformat_default {
             }
 
             // do not export random questions
-            if ($question->qtype==RANDOM) {
+            if ($question->qtype == 'random') {
                 continue;
             }
 
@@ -703,21 +735,22 @@ class qformat_default {
                     $categoryname = $this->get_category_path($trackcategory, $this->contexttofile);
 
                     // create 'dummy' question for category export
-                    $dummyquestion = new object;
+                    $dummyquestion = new stdClass();
                     $dummyquestion->qtype = 'category';
                     $dummyquestion->category = $categoryname;
                     $dummyquestion->name = 'Switch category to ' . $categoryname;
                     $dummyquestion->id = 0;
                     $dummyquestion->questiontextformat = '';
+                    $dummyquestion->contextid = 0;
                     $expout .= $this->writequestion($dummyquestion) . "\n";
                 }
             }
 
             // export the question displaying message
             $count++;
-            echo "<hr /><p><b>$count</b>. ".$this->format_question_text($question)."</p>";
-            if (question_has_capability_on($question, 'view', $question->category)){
-                $expout .= $this->writequestion( $question ) . "\n";
+
+            if (question_has_capability_on($question, 'view', $question->category)) {
+                $expout .= $this->writequestion($question, $contextid) . "\n";
             }
         }
 
@@ -727,22 +760,12 @@ class qformat_default {
 
         // did we actually process anything
         if ($count==0) {
-            print_error( 'noquestions','quiz',$continuepath );
+            print_error('noquestions', 'question', $continuepath);
         }
 
         // final pre-process on exported data
-        $expout = $this->presave_process( $expout );
-
-        // write file
-        $filepath = $path."/".$this->filename . $this->export_file_extension();
-        if (!$fh=fopen($filepath,"w")) {
-            print_error( 'cannotopen','quiz',$continuepath,$filepath );
-        }
-        if (!fwrite($fh, $expout, strlen($expout) )) {
-            print_error( 'cannotwrite','quiz',$continuepath,$filepath );
-        }
-        fclose($fh);
-        return true;
+        $expout = $this->presave_process($expout);
+        return $expout;
     }
 
     /**
@@ -750,10 +773,11 @@ class qformat_default {
      * @param int id the id of the most nested catgory
      * @return string the path
      */
-    function get_category_path($id, $includecontext = true) {
+    protected function get_category_path($id, $includecontext = true) {
+        global $DB;
 
-        if (!$category = get_record('question_categories','id',$id)) {
-            error('Error getting category record from db - ' . $id);
+        if (!$category = $DB->get_record('question_categories', array('id' => $id))) {
+            print_error('cannotfindcategory', 'error', '', $id);
         }
         $contextstring = $this->translator->context_to_string($category->contextid);
 
@@ -761,9 +785,9 @@ class qformat_default {
         do {
             $pathsections[] = $category->name;
             $id = $category->parent;
-        } while ($category = get_record('question_categories', 'id', $id));
+        } while ($category = $DB->get_record('question_categories', array('id' => $id)));
 
-        if ($includecontext){
+        if ($includecontext) {
             $pathsections[] = '$' . $contextstring . '$';
         }
 
@@ -785,7 +809,7 @@ class qformat_default {
      * @param array $names
      * @return string
      */
-    function assemble_category_path($names) {
+    protected function assemble_category_path($names) {
         $escapednames = array();
         foreach ($names as $name) {
             $escapedname = str_replace('/', '//', $name);
@@ -805,13 +829,12 @@ class qformat_default {
      * back into an array of category names.
      *
      * Each category name is cleaned by a call to clean_param(, PARAM_MULTILANG),
-     * which matches the cleaning in question/category_form.php. Not that this
-     * addslashes the names, ready for insertion into the database.
+     * which matches the cleaning in question/category_form.php.
      *
      * @param string $path
      * @return array of category names.
      */
-    function split_category_path($path) {
+    protected function split_category_path($path) {
         $rawnames = preg_split('~(?<!/)/(?!/)~', $path);
         $names = array();
         foreach ($rawnames as $rawname) {
@@ -822,9 +845,9 @@ class qformat_default {
 
     /**
      * Do an post-processing that may be required
-     * @return boolean success
+     * @return bool success
      */
-    function exportpostprocess() {
+    protected function exportpostprocess() {
         return true;
     }
 
@@ -835,45 +858,22 @@ class qformat_default {
      * @param object question question object
      * @return mixed question export text or null if not implemented
      */
-    function writequestion($question) {
+    protected function writequestion($question) {
         // if not overidden, then this is an error.
-        $formatnotimplemented = get_string( 'formatnotimplemented','quiz' );
+        $formatnotimplemented = get_string('formatnotimplemented', 'question');
         echo "<p>$formatnotimplemented</p>";
-        return NULL;
+        return null;
     }
 
     /**
-     * get directory into which export is going
-     * @return string file path
+     * Convert the question text to plain text, so it can safely be displayed
+     * during import to let the user see roughly what is going on.
      */
-    function question_get_export_dir() {
-        global $USER;
-        if ($this->canaccessbackupdata) {
-            $dirname = get_string("exportfilename","quiz");
-            $path = $this->course->id.'/backupdata/'.$dirname; // backupdata is protected directory
-        } else {
-            $path = 'temp/questionexport/' . $USER->id;
-        }
-        return $path;
-    }
-
-    /**
-     * where question specifies a moodle (text) format this
-     * performs the conversion.
-     */
-    function format_question_text($question) {
-        $formatoptions = new stdClass;
+    protected function format_question_text($question) {
+        global $DB;
+        $formatoptions = new stdClass();
         $formatoptions->noclean = true;
-        $formatoptions->para = false;
-        if (empty($question->questiontextformat)) {
-            $format = FORMAT_MOODLE;
-        } else {
-            $format = $question->questiontextformat;
-        }
-        return format_text(stripslashes($question->questiontext), $format, $formatoptions);
+        return html_to_text(format_text($question->questiontext,
+                $question->questiontextformat, $formatoptions), 0, false);
     }
-
-
 }
-
-?>

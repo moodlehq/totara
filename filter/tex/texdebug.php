@@ -1,17 +1,35 @@
-<?php // $Id$
-      // This function fetches math. images from the data directory
-      // If not, it obtains the corresponding TeX expression from the cache_tex db table
-      // and uses mimeTeX to create the image file
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * This function fetches math. images from the data directory
+ * If not, it obtains the corresponding TeX expression from the cache_tex db table
+ * and uses mimeTeX to create the image file
+ *
+ * @package    filter
+ * @subpackage tex
+ * @copyright  2004 Zbigniew Fiedorowicz fiedorow@math.ohio-state.edu
+ *             Originally based on code provided by Bruno Vernier bruno@vsbeducation.ca
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
     require_once("../../config.php");
 
-    if (empty($CFG->textfilters)) {
-        error ('Filter not enabled!');
-    } else {
-        $filters = explode(',', $CFG->textfilters);
-        if (array_search('filter/tex', $filters) === FALSE) {
-            error ('Filter not enabled!');
-        }
+    if (!filter_is_enabled('filter/tex')) {
+        print_error('filternotenabled');
     }
 
     require_once($CFG->libdir.'/filelib.php');
@@ -24,14 +42,12 @@
     require_login();
     require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM), $USER->id); /// Required cap to run this. MDL-18552
 
-    $query = urldecode($_SERVER['QUERY_STRING']);
-    error_reporting(DEBUG_ALL);
     $output = '';
 
     // look up in cache if required
     if ($action=='ShowDB' or $action=='DeleteDB') {
         $md5 = md5($texexp);
-        $texcache = get_record("cache_filters","filter","tex", "md5key", $md5);
+        $texcache = $DB->get_record("cache_filters", array("filter"=>"tex", "md5key"=>$md5));
     }
 
     // Action: Show DB Entry
@@ -53,7 +69,7 @@
     if ($action=='DeleteDB') {
         if ($texcache) {
             $output = "Deleting DB cache_filters entry for $texexp\n";
-            $result =  delete_records("cache_filters","id",$texcache->id);
+            $result =  $DB->delete_records("cache_filters", array("id"=>$texcache->id));
             if ($result) {
                 $result = 1;
             } else {
@@ -102,13 +118,10 @@
 
 
     function outputText($texexp) {
-        header("Content-type: text/html");
+        header("Content-type: text/html; charset=utf-8");
         echo "<html><body><pre>\n";
         if ($texexp) {
-            $texexp = str_replace('<', '&lt;', $texexp);
-            $texexp = str_replace('>', '&gt;', $texexp);
-            $texexp = str_replace('"', '&quot;', $texexp);
-            echo "$texexp\n\n";
+            echo s($texexp)."\n\n";
         } else {
             echo "No text output available\n\n";
         }
@@ -123,7 +136,6 @@
             return;
         }
 
-        $texexp = stripslashes($texexp);
         $image  = md5($texexp) . ".gif";
         $filetype = 'image/gif';
         if (!file_exists("$CFG->dataroot/filter/tex")) {
@@ -135,8 +147,8 @@
         }
 
         $texexp = '\Large '.$texexp;
-        $commandpath = tex_filter_get_executable(true);
-        $cmd = tex_filter_get_cmd($pathname, $texexp);
+        $commandpath = filter_tex_get_executable(true);
+        $cmd = filter_tex_get_cmd($pathname, $texexp);
         system($cmd, $status);
 
         if ($return) {
@@ -221,7 +233,6 @@
         $img = "$latex->temp_dir/$md5.{$CFG->filter_tex_convertformat}";
 
         // put the expression as a file into the temp area
-        $expression = stripslashes($expression);
         $expression = html_entity_decode($expression);
         $output .= "<p>Processing TeX expression:</p><pre>$expression</pre>\n";
         $doc = $latex->construct_latex_document($expression);
@@ -245,10 +256,12 @@
         $output .= execute($cmd);
 
         if (!$graphic) {
-            echo($output);
-        } else {
+            echo $output;
+        } else if (file_exists($img)){
             send_file($img, "$md5.{$CFG->filter_tex_convertformat}");
-         }
+        } else {
+            echo "Error creating image, see command execution output for more details.";
+        }
     }
 
     function execute($cmd) {
@@ -309,7 +322,7 @@
           </form> <br /> <br />
        <center>
           <iframe name="inlineframe" align="middle" width="80%" height="200">
-          &lt;p&gt;Something is wrong...&lt;/p&gt; 
+          &lt;p&gt;Something is wrong...&lt;/p&gt;
           </iframe>
        </center> <br />
 <hr />
@@ -324,7 +337,7 @@ tag.  The filter/tex/pix.php script then searches the database to find an
 appropriate gif/png image file for that expression and to create one if it doesn't exist.
 It will then use either the LaTex/Ghostscript renderer (using external executables
 on your system) or the bundled Mimetex executable. The full Latex/Ghostscript
-renderer produces better results and is tried first. 
+renderer produces better results and is tried first.
 Here are a few common things that can go wrong and some suggestions on how
 you might try to fix them.</p>
 <ol>
@@ -332,27 +345,27 @@ you might try to fix them.</p>
 process this expression. Then the database entry for that expression contains
 a bad TeX expression in the rawtext field (usually blank). You can fix this
 by clicking on &quot;Delete DB Entry&quot;</li>
-<li>The TeX to gif/png image conversion process does not work. 
+<li>The TeX to gif/png image conversion process does not work.
 If paths are specified in the filter configuation screen for the three
 executables these will be tried first. Note that they still must be correctly
-installed and have the correct permissions. In particular make sure that you 
+installed and have the correct permissions. In particular make sure that you
 have all the packages installed (e.g., on Debian/Ubuntu you need to install
 the 'tetex-extra' package). Running the 'show command execution' test should
 give a big clue.
-If this fails or is not available, the Mimetex executable is tried. If this 
+If this fails or is not available, the Mimetex executable is tried. If this
 fails a likely cause is that the mimetex binary you are using is
 incompatible with your operating system. You can try compiling it from the
 C sources downloaded from <a href="http://www.forkosh.com/mimetex.zip">
 http://www.forkosh.com/mimetex.zip</a>, or looking for an appropriate
 binary at <a href="http://moodle.org/download/mimetex/">
 http://moodle.org/download/mimetex/</a>. You may then also need to
-edit your moodle/filter/tex/pix.php file to add 
+edit your moodle/filter/tex/pix.php file to add
 <br /><?PHP echo "case &quot;" . PHP_OS . "&quot;:" ;?><br ?> to the list of operating systems
 in the switch (PHP_OS) statement. Windows users may have a problem properly
 unzipping mimetex.exe. Make sure that mimetex.exe is is <b>PRECISELY</b>
 433152 bytes in size. If not, download a fresh copy from
 <a href="http://moodle.org/download/mimetex/windows/mimetex.exe">
-http://moodle.org/download/mimetex/windows/mimetex.exe</a>. 
+http://moodle.org/download/mimetex/windows/mimetex.exe</a>.
 Another possible problem which may affect
 both Unix and Windows servers is that the web server doesn't have execute permission
 on the mimetex binary. In that case change permissions accordingly</li>

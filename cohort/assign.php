@@ -25,33 +25,49 @@
  */
 
 require_once('../config.php');
-require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
 
 $id = required_param('id', PARAM_INT);
 
-admin_externalpage_setup('cohorts');
+require_login();
 
-$cohort = get_record('cohort', 'id', $id);
-$context = get_context_instance(CONTEXT_SYSTEM);
+$cohort = $DB->get_record('cohort', array('id'=>$id), '*', MUST_EXIST);
+$context = get_context_instance_by_id($cohort->contextid, MUST_EXIST);
 
-require_capability('local/cohort:assign', $context);
+require_capability('moodle/cohort:assign', $context);
 
-$returnurl = new moodle_url($CFG->wwwroot .'/cohort/index.php');
+$PAGE->set_context($context);
+$PAGE->set_url('/cohort/assign.php', array('id'=>$id));
 
+$returnurl = new moodle_url('/cohort/index.php', array('contextid'=>$cohort->contextid));
 
-if (optional_param('cancel', false, PARAM_BOOL)) {
-    redirect($returnurl->out());
+if (!empty($cohort->component)) {
+    // we can not manually edit cohorts that were created by external systems, sorry
+    redirect($returnurl);
 }
 
-$strheading = get_string('delcohort', 'local_cohort');
+if (optional_param('cancel', false, PARAM_BOOL)) {
+    redirect($returnurl);
+}
 
-admin_externalpage_print_header();
+if ($context->contextlevel == CONTEXT_COURSECAT) {
+    $category = $DB->get_record('course_categories', array('id'=>$context->instanceid), '*', MUST_EXIST);
+    navigation_node::override_active_url(new moodle_url('/cohort/index.php', array('contextid'=>$cohort->contextid)));
+    $PAGE->set_pagelayout('report');
 
-print_heading(format_string($cohort->name));
+} else {
+    navigation_node::override_active_url(new moodle_url('/cohort/index.php', array()));
+    $PAGE->set_pagelayout('admin');
+}
+$PAGE->navbar->add(get_string('assign', 'cohort'));
 
-$currenttab = 'editmembers';
-require_once('tabs.php');
+$PAGE->set_title(get_string('cohort:assign', 'cohort'));
+$PAGE->set_heading($COURSE->fullname);
+
+echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string('assignto', 'cohort', format_string($cohort->name)));
+
+echo $OUTPUT->notification(get_string('removeuserwarning', 'core_cohort'));
 
 // Get the user_selector we will need.
 $potentialuserselector = new cohort_candidate_selector('addselect', array('cohortid'=>$cohort->id));
@@ -65,17 +81,13 @@ if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
 
         foreach ($userstoassign as $adduser) {
             // no duplicates please
-
-            if (!record_exists('cohort_members', 'cohortid', $cohort->id, 'userid', $adduser->id)) {
+            if (!$DB->record_exists('cohort_members', array('cohortid'=>$cohort->id, 'userid'=>$adduser->id))) {
                 cohort_add_member($cohort->id, $adduser->id);
             }
         }
 
         $potentialuserselector->invalidate_selected_users();
         $existinguserselector->invalidate_selected_users();
-
-	// Trigger an event to let anyone know that the membership has changed
-	events_trigger('cohort_membership_changed',$cohort);
     }
 }
 
@@ -88,51 +100,40 @@ if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
         }
         $potentialuserselector->invalidate_selected_users();
         $existinguserselector->invalidate_selected_users();
-
-	// Trigger an event to let anyone know that the membership has changed
-	events_trigger('cohort_membership_changed',$cohort);
     }
 }
 
-// arrange buttons based on language direction
-if (get_string('thisdirection') == 'rtl') {
-    $addarrow = '&#x25BA';
-    $removearrow = '&#x25C4';
-} else {
-    $addarrow = '&#x25C4';
-    $removearrow = '&#x25BA';
-}
 // Print the form.
 ?>
-<form id="assignform" method="post" action="<?php echo $CFG->wwwroot; ?>/cohort/assign.php?id=<?php echo $id; ?>"><div>
+<form id="assignform" method="post" action="<?php echo $PAGE->url ?>"><div>
   <input type="hidden" name="sesskey" value="<?php echo sesskey() ?>" />
 
   <table summary="" class="generaltable generalbox boxaligncenter" cellspacing="0">
     <tr>
       <td id="existingcell">
-          <p><label for="removeselect"><?php print_string('currentusers', 'local_cohort'); ?></label></p>
+          <p><label for="removeselect"><?php print_string('currentusers', 'cohort'); ?></label></p>
           <?php $existinguserselector->display() ?>
       </td>
       <td id="buttonscell">
           <div id="addcontrols">
-              <input name="add" id="add" type="submit" value="<?php echo "{$addarrow}&nbsp;" . get_string('add'); ?>" title="<?php p(get_string('add')); ?>" /><br />
+              <input name="add" id="add" type="submit" value="<?php echo $OUTPUT->larrow().'&nbsp;'.s(get_string('add')); ?>" title="<?php p(get_string('add')); ?>" /><br />
           </div>
 
           <div id="removecontrols">
-              <input name="remove" id="remove" type="submit" value="<?php echo get_string('remove') . "&nbsp;{$removearrow}"; ?>" title="<?php p(get_string('remove')); ?>" />
+              <input name="remove" id="remove" type="submit" value="<?php echo s(get_string('remove')).'&nbsp;'.$OUTPUT->rarrow(); ?>" title="<?php p(get_string('remove')); ?>" />
           </div>
       </td>
       <td id="potentialcell">
-          <p><label for="addselect"><?php print_string('potusers', 'local_cohort'); ?></label></p>
+          <p><label for="addselect"><?php print_string('potusers', 'cohort'); ?></label></p>
           <?php $potentialuserselector->display() ?>
       </td>
     </tr>
     <tr><td colspan="3" id='backcell'>
-      <input type="submit" name="cancel" value="<?php p(get_string('backtocohorts', 'local_cohort')); ?>" />
+      <input type="submit" name="cancel" value="<?php p(get_string('backtocohorts', 'cohort')); ?>" />
     </td></tr>
   </table>
 </div></form>
 
 <?php
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();

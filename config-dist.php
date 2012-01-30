@@ -1,4 +1,4 @@
-<?PHP // $Id$
+<?PHP
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // Moodle configuration file                                             //
@@ -16,7 +16,7 @@
 //                                                                       //
 // This program is free software; you can redistribute it and/or modify  //
 // it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
+// the Free Software Foundation; either version 3 of the License, or     //
 // (at your option) any later version.                                   //
 //                                                                       //
 // This program is distributed in the hope that it will be useful,       //
@@ -28,6 +28,7 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 unset($CFG);  // Ignore this line
+global $CFG;  // This is necessary here for PHPUnit execution
 $CFG = new stdClass();
 
 //=========================================================================
@@ -36,33 +37,33 @@ $CFG = new stdClass();
 // First, you need to configure the database where all Moodle data       //
 // will be stored.  This database must already have been created         //
 // and a username/password created to access it.                         //
-//                                                                       //
-//   mysql      - the prefix is optional, but useful when installing     //
-//                into databases that already contain tables.            //
-//
-//   postgres7  - the prefix is REQUIRED, regardless of whether the      //
-//                database already contains tables.                      //
-//                                                                       //
-// A special case exists when using PostgreSQL databases via sockets.    //
-// Define dbhost as follows, leaving dbname, dbuser, dbpass BLANK!:      //
-//    $CFG->dbhost = " user='muser' password='mpass' dbname='mdata'";    //
-//
 
-$CFG->dbtype    = 'mysql';       // mysql or postgres7 (for now)
-$CFG->dbhost    = 'localhost';   // eg localhost or db.isp.com
-$CFG->dbname    = 'moodle';      // database name, eg moodle
-$CFG->dbuser    = 'username';    // your database username
-$CFG->dbpass    = 'password';    // your database password
-$CFG->prefix    = 'mdl_';        // Prefix to use for all table names
-
-$CFG->dbpersist = false;         // Should database connections be reused?
-$CFG->passwordsaltmain = 'a_long_random_string_of_bgcharacters#@6&*1';
-                 // "false" is the most stable setting
-                 // "true" can improve performance sometimes
+$CFG->dbtype    = 'pgsql';      // 'pgsql', 'mysqli', 'mssql' or 'oci'
+$CFG->dblibrary = 'native';     // 'native' only at the moment
+$CFG->dbhost    = 'localhost';  // eg 'localhost' or 'db.isp.com' or IP
+$CFG->dbname    = 'moodle';     // database name, eg moodle
+$CFG->dbuser    = 'username';   // your database username
+$CFG->dbpass    = 'password';   // your database password
+$CFG->prefix    = 'mdl_';       // prefix to use for all table names
+$CFG->dboptions = array(
+    'dbpersist' => false,       // should persistent database connections be
+                                //  used? set to 'false' for the most stable
+                                //  setting, 'true' can improve performance
+                                //  sometimes
+    'dbsocket'  => false,       // should connection via UNIX socket be used?
+                                //  if you set it to 'true' or custom path
+                                //  here set dbhost to 'localhost',
+                                //  (please note mysql is always using socket
+                                //  if dbhost is 'localhost' - if you need
+                                //  local port connection use '127.0.0.1')
+    'dbport'    => '',          // the TCP port number to use when connecting
+                                //  to the server. keep empty string for the
+                                //  default port
+);
 
 
 //=========================================================================
-// 1.5. SECRET PASSWORD SALT
+// 2. SECRET PASSWORD SALT
 //=========================================================================
 // User password salt is very important security feature, it is created
 // automatically in installer, you have to uncomment and modify value
@@ -83,27 +84,17 @@ $CFG->passwordsaltmain = 'a_long_random_string_of_bgcharacters#@6&*1';
 
 
 //=========================================================================
-// 2. WEB SITE LOCATION
+// 3. WEB SITE LOCATION
 //=========================================================================
 // Now you need to tell Moodle where it is located. Specify the full
 // web address to where moodle has been installed.  If your web site
 // is accessible via multiple URLs then choose the most natural one
 // that your students would use.  Do not include a trailing slash
+//
+// If you need both intranet and Internet access please read
+// http://docs.moodle.org/en/masquerading
 
 $CFG->wwwroot   = 'http://example.com/moodle';
-
-
-//=========================================================================
-// 3. SERVER FILES LOCATION
-//=========================================================================
-// Next, specify the full OS directory path to this same location
-// Make sure the upper/lower case is correct.  Some examples:
-//
-//    $CFG->dirroot = 'C:\program files\easyphp\www\moodle';    // Windows
-//    $CFG->dirroot = '/var/www/html/moodle';     // Redhat Linux
-//    $CFG->dirroot = '/home/example/public_html/moodle'; // Cpanel host
-
-$CFG->dirroot   = '/home/example/public_html/moodle';
 
 
 //=========================================================================
@@ -167,10 +158,6 @@ $CFG->admin = 'admin';
 // any existing key.
 //      $CFG->mnetkeylifetime = 28;
 //
-// Prevent scheduled backups from operating (and hide the GUI for them)
-// Useful for webhost operators who have alternate methods of backups
-//      $CFG->disablescheduledbackups = true;
-//
 // Allow user passwords to be included in backup files. Very dangerous
 // setting as far as it publishes password hashes that can be unencrypted
 // if the backup file is publicy available. Use it only if you can guarantee
@@ -183,6 +170,13 @@ $CFG->admin = 'admin';
 // results in the restore process stopping when a user attempts to restore a
 // course requiring users to be created.
 //     $CFG->disableusercreationonrestore = true;
+//
+// Keep the temporary directories used by backup and restore without being
+// deleted at the end of the process. Use it if you want to debug / view
+// all the information stored there after the process has ended. Note that
+// those directories may be deleted (after some ttl) both by cron and / or
+// by new backup / restore invocations.
+//     $CFG->keeptempdirectoriesonbackup = true;
 //
 // Modify the restore process in order to force the "user checks" to assume
 // that the backup originated from a different site, so detection of matching
@@ -202,25 +196,25 @@ $CFG->admin = 'admin';
 //
 // These variables define DEFAULT block variables for new courses
 // If this one is set it overrides all others and is the only one used.
-//      $CFG->defaultblocks_override = 'participants,activity_modules,search_forums,admin,course_list:news_items,calendar_upcoming,recent_activity';
+//      $CFG->defaultblocks_override = 'participants,activity_modules,search_forums,course_list:news_items,calendar_upcoming,recent_activity';
 //
 // These variables define the specific settings for defined course formats.
 // They override any settings defined in the formats own config file.
-//      $CFG->defaultblocks_site = 'site_main_menu,admin,course_list:course_summary,calendar_month';
-//      $CFG->defaultblocks_social = 'participants,search_forums,calendar_month,calendar_upcoming,social_activities,recent_activity,admin,course_list';
-//      $CFG->defaultblocks_topics = 'participants,activity_modules,search_forums,admin,course_list:news_items,calendar_upcoming,recent_activity';
-//      $CFG->defaultblocks_weeks = 'participants,activity_modules,search_forums,admin,course_list:news_items,calendar_upcoming,recent_activity';
+//      $CFG->defaultblocks_site = 'site_main_menu,course_list:course_summary,calendar_month';
+//      $CFG->defaultblocks_social = 'participants,search_forums,calendar_month,calendar_upcoming,social_activities,recent_activity,course_list';
+//      $CFG->defaultblocks_topics = 'participants,activity_modules,search_forums,course_list:news_items,calendar_upcoming,recent_activity';
+//      $CFG->defaultblocks_weeks = 'participants,activity_modules,search_forums,course_list:news_items,calendar_upcoming,recent_activity';
 //
 // These blocks are used when no other default setting is found.
-//      $CFG->defaultblocks = 'participants,activity_modules,search_forums,admin,course_list:news_items,calendar_upcoming,recent_activity';
+//      $CFG->defaultblocks = 'participants,activity_modules,search_forums,course_list:news_items,calendar_upcoming,recent_activity';
 //
-//
-// Allow unicode characters in uploaded files, generated reports, etc.
-// This setting is new and not much tested, there are known problems
-// with backup/restore that will not be solved, because native infozip
-// binaries are doing some weird conversions - use internal PHP zipping instead.
-// NOT RECOMMENDED FOR PRODUCTION SITES
-//     $CFG->unicodecleanfilename = true;
+// You can specify a different class to be created for the $PAGE global, and to
+// compute which blocks appear on each page. However, I cannot think of any good
+// reason why you would need to change that. It just felt wrong to hard-code the
+// the class name. You are stronly advised not to use these to settings unless
+// you are absolutely sure you know what you are doing.
+//      $CFG->moodlepageclass = 'moodle_page';
+//      $CFG->blockmanagerclass = 'block_manager';
 //
 // Seconds for files to remain in caches. Decrease this if you are worried
 // about students being served outdated versions of uploaded files.
@@ -230,19 +224,12 @@ $CFG->admin = 'admin';
 // logs in. The site front page will always show the same (logged-out) view.
 //     $CFG->disablemycourses = true;
 //
-// Enable this option if you need fully working default frontpage role,
-// please note it might cause serious memory and performance issues,
-// also there should not be any negative capabilities in default
-// frontpage role (MDL-19039).
-//     $CFG->fullusersbycapabilityonfrontpage = true;
-//
-// If this setting is set to true, then Moodle will track the IP of the 
-// current user to make sure it hasn't changed during a session.  This 
-// will prevent the possibility of sessions being hijacked via XSS, but it 
+// If this setting is set to true, then Moodle will track the IP of the
+// current user to make sure it hasn't changed during a session.  This
+// will prevent the possibility of sessions being hijacked via XSS, but it
 // may break things for users coming using proxies that change all the time,
 // like AOL.
 //      $CFG->tracksessionip = true;
-//
 //
 // The following lines are for handling email bounces.
 //      $CFG->handlebounces = true;
@@ -250,17 +237,20 @@ $CFG->admin = 'admin';
 //      $CFG->bounceratio = .20;
 // The next lines are needed both for bounce handling and any other email to module processing.
 // mailprefix must be EXACTLY four characters.
-// Uncomment and customise this block for Postfix 
+// Uncomment and customise this block for Postfix
 //      $CFG->mailprefix = 'mdl+'; // + is the separator for Exim and Postfix.
-//      $CFG->mailprefix = 'mdl-'; // - is the separator for qmail 
+//      $CFG->mailprefix = 'mdl-'; // - is the separator for qmail
 //      $CFG->maildomain = 'youremaildomain.com';
 //
-// The following setting will tell Moodle to respect your PHP session 
-// settings. Use this if you want to control session configuration
-// from php.ini, httpd.conf or .htaccess files. 
-//      $CFG->respectsessionsettings = true;
+// Enable when setting up advanced reverse proxy load balancing configurations,
+// it may be also necessary to enable this when using port forwarding.
+//      $CFG->reverseproxy = true;
 //
-// This setting will cause the userdate() function not to fix %d in 
+// Enable when using external SSL appliance for performance reasons.
+// Please note that site may be accessible via https: or https:, but not both!
+//      $CFG->sslproxy = true;
+//
+// This setting will cause the userdate() function not to fix %d in
 // date strings, and just let them show with a zero prefix.
 //      $CFG->nofixday = true;
 //
@@ -279,12 +269,12 @@ $CFG->admin = 'admin';
 // Custom scripts should not include config.php
 // Warning: Replacing standard moodle scripts may pose security risks and/or may not
 // be compatible with upgrades. Use this option only if you are aware of the risks
-// involved. 
+// involved.
 // Specify the full directory path to the custom scripts
 //      $CFG->customscripts = '/home/example/customscripts';
 //
-// Performance profiling 
-// 
+// Performance profiling
+//
 //   If you set Debug to "Yes" in the Configuration->Variables page some
 //   performance profiling data will show up on your footer (in default theme).
 //   With these settings you get more granular control over the capture
@@ -302,8 +292,15 @@ $CFG->admin = 'admin';
 //   Print to footer (works with the default theme)
 //   define('MDL_PERFTOFOOT', true);
 //
+//   Enable earlier profiling that causes more code to be covered
+//   on every request (db connections, config load, other inits...).
+//   Requires extra configuration to be defined in config.php like:
+//   profilingincluded, profilingexcluded, profilingautofrec,
+//   profilingallowme, profilingallowall, profilinglifetime
+//       $CFG->earlyprofilingenabled = true;
+//
 // Force displayed usernames
-//   A little hack to anonymise user names for all students.  If you set these 
+//   A little hack to anonymise user names for all students.  If you set these
 //   then all non-teachers will always see these for every person.
 //       $CFG->forcefirstname = 'Bruce';
 //       $CFG->forcelastname  = 'Simpson';
@@ -316,16 +313,13 @@ $CFG->admin = 'admin';
 // The following setting will log every database query to a table called adodb_logsql.
 // Use this setting on a development server only, the table grows quickly!
 //     $CFG->logsql = true;
-// By default, only queries that take longer than 0.05 seconds are logged. To change that,
-// set the following variable. For example, to lot all queries:
-//     $CFG->logsqlmintime = 0.0;
 //
 // The following setting will turn on username logging into Apache log. For full details regarding setting
 // up of this function please refer to the install section of the document.
 //     $CFG->apacheloguser = 0; // Turn this feature off. Default value.
 //     $CFG->apacheloguser = 1; // Log user id.
 //     $CFG->apacheloguser = 2; // Log full name in cleaned format. ie, Darth Vader will be displayed as darth_vader.
-//     $CFG->apacheloguser = 3; // Log username. 
+//     $CFG->apacheloguser = 3; // Log username.
 // To get the values logged in Apache's log, add to your httpd.conf
 // the following statements. In the General part put:
 //     LogFormat "%h %l %{MOODLEUSER}n %t \"%r\" %s %b \"%{Referer}i\" \"%{User-Agent}i\"" moodleformat
@@ -334,62 +328,138 @@ $CFG->admin = 'admin';
 // CAUTION: Use of this option will expose usernames in the Apache log,
 // If you are going to publish your log, or the output of your web stats analyzer
 // this will weaken the security of your website.
-// 
-// Email database connection errors to someone.  If Moodle cannot connect to the 
+//
+// Email database connection errors to someone.  If Moodle cannot connect to the
 // database, then email this address with a notice.
 //
 //     $CFG->emailconnectionerrorsto = 'your@emailaddress.com';
-// 
-// NOTE: if you are using custompix in your theme, see /fixpix.php.
-// 
-// special magic evil developer only wanting to edit the xmldb files manually
-// AND don't use the XMLDBEditor nor the prev/next stuff at all (Mahara and others)
-// Uncomment these if you're lazy like Penny
-// $CFG->xmldbdisablecommentchecking = true;
-// $CFG->xmldbdisablenextprevchecking = true;
-//
-// special magig evil developer only wanting to edit xmldb files manually
-// AND allowing the XMLDBEditor to recostruct the prev/next elements every
-// time one file is loaded and saved (Moodle).
-// Uncomment this if you're lazy like Petr
-// $CFG->xmldbreconstructprevnext = true;
 //
 // Set the priority of themes from highest to lowest. This is useful (for
 // example) in sites where the user theme should override all other theme
 // settings for accessibility reasons. You can also disable types of themes
-// by removing them from the array. The default setting is:
-//      $CFG->themeorder = array('page', 'course', 'category', 'session', 'user', 'site');
+// (other than site)  by removing them from the array. The default setting is:
+//      $CFG->themeorder = array('course', 'category', 'session', 'user', 'site');
 // NOTE: course, category, session, user themes still require the
 // respective settings to be enabled
 //
-// When working with production data on test servers, no emails should ever be send to real users
-// $CFG->noemailever = true;
+// It is possible to add extra themes directory stored outside of $CFG->dirroot.
+// This local directory does not have to be accessible from internet.
+//
+//     $CFG->themedir = '/location/of/extra/themes';
+//
+// It is possible to specify different cache and temp directories, use local fast filesystem.
+// The directories must not be accessible via web.
+//
+//     $CFG->tempdir = '/var/www/moodle/temp';
+//     $CFG->cachedir = '/var/www/moodle/cache';
+//
+// If $CFG->langstringcache is enabled (which should always be in production
+// environment), Moodle keeps aggregated strings in its own internal format
+// optimised for performance. By default, this on-disk cache is created in
+// $CFG->cachedir/lang. In cluster environment, you may wish to specify
+// an alternative location of this cache so that each web server in the cluster
+// uses its own local cache and does not need to access the shared dataroot.
+// Make sure that the web server process has write permission to this location
+// and that it has permission to remove the folder, too (so that the cache can
+// be pruned).
+//
+//     $CFG->langcacheroot = '/var/www/moodle/htdocs/altcache/lang';
+//
+// If $CFG->langcache is enabled (which should always be in production
+// environment), Moodle stores the list of available languages in a cache file.
+// By default, the file $CFG->dataroot/languages is used. You may wish to
+// specify an alternative location of this cache file.
+//
+//     $CFG->langmenucachefile = '/var/www/moodle/htdocs/altcache/languages';
+//
+// Site default language can be set via standard administration interface. If you
+// want to have initial error messages for eventual database connection problems
+// localized too, you have to set your language code here.
+//
+//     $CFG->lang = 'yourlangcode'; // for example 'cs'
+//
+// When Moodle is about to perform an intensive operation it raises PHP's memory
+// limit. The following setting should be used on large sites to set the raised
+// memory limit to something higher.
+// The value for the settings should be a valid PHP memory value. e.g. 512M, 1G
+//
+//     $CFG->extramemorylimit = 1G;
+//
+//=========================================================================
+// 8. SETTINGS FOR DEVELOPMENT SERVERS - not intended for production use!!!
+//=========================================================================
+//
+// Force a debugging mode regardless the settings in the site administration
+// @error_reporting(1023);  // NOT FOR PRODUCTION SERVERS!
+// @ini_set('display_errors', '1'); // NOT FOR PRODUCTION SERVERS!
+// $CFG->debug = 38911;  // DEBUG_DEVELOPER // NOT FOR PRODUCTION SERVERS!
+// $CFG->debugdisplay = true;   // NOT FOR PRODUCTION SERVERS!
+//
+// You can specify a comma separated list of user ids that that always see
+// debug messages, this overrides the debug flag in $CFG->debug and $CFG->debugdisplay
+// for these users only.
+// $CFG->debugusers = '2';
+//
+// Prevent theme caching
+// $CFG->themerev = -1; // NOT FOR PRODUCTION SERVERS!
+//
+// Prevent core_string_manager on-disk cache
+// $CFG->langstringcache = false; // NOT FOR PRODUCTION SERVERS!
+//
+// When working with production data on test servers, no emails or other messages
+// should ever be send to real users
+// $CFG->noemailever = true;    // NOT FOR PRODUCTION SERVERS!
 //
 // Divert all outgoing emails to this address to test and debug emailing features
-// $CFG->divertallemailsto = 'root@localhost.local';
+// $CFG->divertallemailsto = 'root@localhost.local'; // NOT FOR PRODUCTION SERVERS!
 //
+// Specify prefix for fake unit test tables. If not specified only tests
+// that do not need fake tables will be executed.
+// $CFG->unittestprefix = 'tst_';   // NOT FOR PRODUCTION SERVERS!
+//
+// special magic evil developer only wanting to edit the xmldb files manually
+// AND don't use the XMLDBEditor nor the prev/next stuff at all (Mahara and others)
+// Uncomment these if you're lazy like Penny
+// $CFG->xmldbdisablecommentchecking = true;    // NOT FOR PRODUCTION SERVERS!
+// $CFG->xmldbdisablenextprevchecking = true;   // NOT FOR PRODUCTION SERVERS!
+//
+// Special magic - evil developer only wanting to edit xmldb files manually
+// AND allowing the XMLDBEditor to reconstruct the prev/next elements every
+// time one file is loaded and saved (Moodle).
+// Uncomment this if you're lazy like Petr
+// $CFG->xmldbreconstructprevnext = true;   // NOT FOR PRODUCTION SERVERS!
+//
+// Since 2.0 sql queries are not shown during upgrade by default.
+// Please note that this setting may produce very long upgrade page on large sites.
+// $CFG->upgradeshowsql = true; // NOT FOR PRODUCTION SERVERS!
+//
+// Add SQL queries to the output of cron, just before their execution
+// $CFG->showcronsql = true;
+//
+// Force developer level debug and add debug info to the output of cron
+// $CFG->showcrondebugging = true;
+//
+//=========================================================================
+// 9. FORCED SETTINGS
+//=========================================================================
+// It is possible to specify normal admin settings here, the point is that
+// they can not be changed through the standard admin settings pages any more.
+//
+// Core settings are specified directly via assignment to $CFG variable.
+// Example:
+//   $CFG->somecoresetting = 'value';
+//
+// Plugin settings have to be put into a special array.
+// Example:
+//   $CFG->forced_plugin_settings = array('pluginname'  => array('settingname' => 'value', 'secondsetting' => 'othervalue'),
+//                                        'otherplugin' => array('mysetting' => 'myvalue', 'thesetting' => 'thevalue'));
+
+
 //=========================================================================
 // ALL DONE!  To continue installation, visit your main page with a browser
 //=========================================================================
-if ($CFG->wwwroot == 'http://example.com/moodle') {
-    echo "<p>Error detected in configuration file</p>";
-    echo "<p>Your server address can not be: \$CFG->wwwroot = 'http://example.com/moodle';</p>";
-    die;
-}
 
-if (file_exists("$CFG->dirroot/lib/setup.php"))  {       // Do not edit
-    include_once("$CFG->dirroot/lib/setup.php");
-} else {
-    if ($CFG->dirroot == dirname(__FILE__)) {
-        echo "<p>Could not find this file: $CFG->dirroot/lib/setup.php</p>";
-        echo "<p>Are you sure all your files have been uploaded?</p>";
-    } else {
-        echo "<p>Error detected in config.php</p>";
-        echo "<p>Error in: \$CFG->dirroot = '$CFG->dirroot';</p>";
-        echo "<p>Try this: \$CFG->dirroot = '".dirname(__FILE__)."';</p>";
-    }
-    die;
-}
-// MAKE SURE WHEN YOU EDIT THIS FILE THAT THERE ARE NO SPACES, BLANK LINES,
-// RETURNS, OR ANYTHING ELSE AFTER THE TWO CHARACTERS ON THE NEXT LINE.
-?>
+require_once(dirname(__FILE__) . '/lib/setup.php'); // Do not edit
+
+// There is no php closing tag in this file,
+// it is intentional because it prevents trailing whitespace problems!

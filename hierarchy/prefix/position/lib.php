@@ -493,7 +493,7 @@ class position_assignment extends data_object {
      * @param array $params associative arrays varname=>value
      * @return object data_object instance or false if none found.
      */
-    public function fetch($params) {
+    public static function fetch($params) {
         return self::fetch_helper($this->table, get_class($this), $params);
     }
 

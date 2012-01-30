@@ -1,142 +1,154 @@
-<?php // $Id: mapcourse.php,v 1.4.2.3 2010/09/29 20:43:27 agrabs Exp $
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
-* print the form to map courses for global feedbacks
-*
-* @version $Id: mapcourse.php,v 1.4.2.3 2010/09/29 20:43:27 agrabs Exp $
-* @author Andreas Grabs
-* @license http://www.gnu.org/copyleft/gpl.html GNU Public License
-* @package feedback
-*/
+ * print the form to map courses for global feedbacks
+ *
+ * @author Andreas Grabs
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package feedback
+ */
 
-    require_once("../../config.php");
-    require_once("lib.php");
-    require_once("$CFG->libdir/tablelib.php");
-    
-    $id = required_param('id', PARAM_INT); // Course Module ID, or
-    $searchcourse = optional_param('searchcourse', '', PARAM_NOTAGS);
-    $coursefilter = optional_param('coursefilter', '', PARAM_INT);
-    $courseid = optional_param('courseid', false, PARAM_INT);
-    
-    if(($formdata = data_submitted('nomatch')) AND !confirm_sesskey()) {
-        error('no sesskey defined');
-    }
-    
-    // $SESSION->feedback->current_tab = 'mapcourse';
-    $current_tab = 'mapcourse';
-    
-    if ($id) {
-        if (! $cm = get_coursemodule_from_id('feedback', $id)) {
-            error("Course Module ID was incorrect");
-        }
-    
-        if (! $course = get_record("course", "id", $cm->course)) {
-            error("Course is misconfigured");
-        }
-        
-        if (! $feedback = get_record("feedback", "id", $cm->instance)) {
-            error("Course module is incorrect");
-        }
-    }
-    $capabilities = feedback_load_capabilities($cm->id);
-    
-    require_login($course->id, true, $cm);
-    
-    if (!$capabilities->mapcourse) {
-        error ('access not allowed');
-    }
-    
-    if ($coursefilter) {
-        $map->feedbackid = $feedback->id;
-        $map->courseid = $coursefilter;
-        // insert a map only if it does exists yet
-        $sql = "select id, feedbackid from {$CFG->prefix}feedback_sitecourse_map where feedbackid = $map->feedbackid and courseid = $map->courseid";
-        if (!get_records_sql($sql) && !insert_record('feedback_sitecourse_map', $map)) {
-            error("Database problem, unable to map feedback = $feedback->id to course = $course->id");
-        }
-    }
-    
-    /// Print the page header
-    // $strfeedbacks = get_string("modulenameplural", "feedback");
-    // $strfeedback = get_string("modulename", "feedback");
-    // $navigation = '';
-    
-    // $feedbackindex = '<a href="'.htmlspecialchars('index.php?id='.$course->id).'">'.$strfeedbacks.'</a> ->';
-    // if ($course->category) {
-        // $navigation = '<a href="'.htmlspecialchars('../../course/view.php?id='.$course->id).'">'.$course->shortname.'</a> ->';
-    // }else if ($courseid > 0 AND $courseid != SITEID) {
-        // $usercourse = get_record('course', 'id', $courseid);
-        // $navigation = '<a href="'.htmlspecialchars('../../course/view.php?id='.$usercourse->id).'">'.$usercourse->shortname.'</a> ->';
-        // $feedbackindex = '';
-    // }
-    
-    // print_header($course->shortname.': '.$feedback->name, $course->fullname,
-                // $navigation.' '.$feedbackindex.' <a href="'.htmlspecialchars('view.php?id='.$id).'">'.$feedback->name.'</a> -> '.get_string('mapcourses', 'feedback'),
-                // '', '', true, update_module_button($cm->id, $course->id, $strfeedback), navmenu($course, $cm));
-    /// Print the page header
-    $strfeedbacks = get_string("modulenameplural", "feedback");
-    $strfeedback  = get_string("modulename", "feedback");
-    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
-    
-    $navlinks = array();
-    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
-    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
-    
-    $navigation = build_navigation($navlinks);
-    
-    print_header_simple(format_string($feedback->name), "",
-                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
+require_once("../../config.php");
+require_once("lib.php");
+require_once("$CFG->libdir/tablelib.php");
 
-    include('tabs.php');
+$id = required_param('id', PARAM_INT); // Course Module ID, or
+$searchcourse = optional_param('searchcourse', '', PARAM_NOTAGS);
+$coursefilter = optional_param('coursefilter', '', PARAM_INT);
+$courseid = optional_param('courseid', false, PARAM_INT);
 
-    // print_simple_box(get_string('mapcourseinfo', 'feedback'), 'center', '80%');
-    print_box(get_string('mapcourseinfo', 'feedback'), 'generalbox boxaligncenter boxwidthwide');
-    // print_simple_box_start('center', '70%');
-    print_box_start('generalbox boxaligncenter boxwidthwide');
-    echo '<form method="post">';
-    echo '<input type="hidden" name="id" value="'.$id.'" />';
-    echo '<input type="hidden" name="sesskey" value="'.$USER->sesskey.'" />';
-    
-    $sql = "select c.id, c.shortname from {$CFG->prefix}course c
-            where
-                c.shortname ".sql_ilike()." '%{$searchcourse}%'
-            OR c.fullname ".sql_ilike()." '%{$searchcourse}%'";
-    
-    if (($courses = get_records_sql_menu($sql)) && !empty($searchcourse)) {
-        echo ' ' . get_string('courses') . ': ';
-        choose_from_menu ($courses, 'coursefilter', $coursefilter, 'choose');
-        echo '<input type="submit" value="'.get_string('mapcourse', 'feedback').'"/>';
-        helpbutton('mapcourses', '', 'feedback', true, true);
-        echo '<input type="button" value="'.get_string('searchagain').'" onclick="document.location=\'mapcourse.php?id='.$id.'\'"/>';
-        echo '<input type="hidden" name="searchcourse" value="'.$searchcourse.'"/>';
-        echo '<input type="hidden" name="feedbackid" value="'.$feedback->id.'"/>';
-        helpbutton('searchcourses', '', 'feedback', true, true);
-    } else {
-        echo '<input type="text" name="searchcourse" value="'.$searchcourse.'"/> <input type="submit" value="'.get_string('searchcourses').'"/>';
-        helpbutton('searchcourses', '', 'feedback', true, true);
-    }
-    
-    echo '</form>';
-    
-    if($coursemap = feedback_get_courses_from_sitecourse_map($feedback->id)) {
-        $table = new flexible_table('coursemaps');
-        $table->define_columns( array('course'));
-        $table->define_headers( array(get_string('mappedcourses', 'feedback')));
-    
-        $table->setup();
-    
-        foreach ($coursemap as $cmap) {
-            $table->add_data(array('<a href="'.htmlspecialchars('unmapcourse.php?id='.$id.'&cmapid='.$cmap->id).'"><img src="'.$CFG->pixpath.'/t/delete.gif" alt="Delete" /></a> ('.$cmap->shortname.') '.$cmap->fullname));
-        }
-    
-        $table->print_html();
-    } else {
-        echo '<h3>'.get_string('mapcoursenone', 'feedback').'</h3>';
-    }
-    
-    
-    // print_simple_box_end();
-    print_box_end();
-    
-    print_footer($course);
+$url = new moodle_url('/mod/feedback/mapcourse.php', array('id'=>$id));
+if ($searchcourse !== '') {
+    $url->param('searchcourse', $searchcourse);
+}
+if ($coursefilter !== '') {
+    $url->param('coursefilter', $coursefilter);
+}
+if ($courseid !== false) {
+    $url->param('courseid', $courseid);
+}
+$PAGE->set_url($url);
 
-?>
+if (($formdata = data_submitted()) AND !confirm_sesskey()) {
+    print_error('invalidsesskey');
+}
+
+$current_tab = 'mapcourse';
+
+if (! $cm = get_coursemodule_from_id('feedback', $id)) {
+    print_error('invalidcoursemodule');
+}
+
+if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+    print_error('coursemisconf');
+}
+
+if (! $feedback = $DB->get_record("feedback", array("id"=>$cm->instance))) {
+    print_error('invalidcoursemodule');
+}
+
+if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
+        print_error('badcontext');
+}
+
+require_login($course->id, true, $cm);
+
+require_capability('mod/feedback:mapcourse', $context);
+
+if ($coursefilter) {
+    $map->feedbackid = $feedback->id;
+    $map->courseid = $coursefilter;
+    // insert a map only if it does exists yet
+    $sql = "SELECT id, feedbackid
+              FROM {feedback_sitecourse_map}
+             WHERE feedbackid = ? AND courseid = ?";
+    if (!$DB->get_records_sql($sql, array($map->feedbackid, $map->courseid))) {
+        $DB->insert_record('feedback_sitecourse_map', $map);
+    }
+}
+
+/// Print the page header
+$strfeedbacks = get_string("modulenameplural", "feedback");
+$strfeedback  = get_string("modulename", "feedback");
+
+$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_title(format_string($feedback->name));
+echo $OUTPUT->header();
+
+require('tabs.php');
+
+echo $OUTPUT->box(get_string('mapcourseinfo', 'feedback'), 'generalbox boxaligncenter boxwidthwide');
+echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+echo '<form method="post">';
+echo '<input type="hidden" name="id" value="'.$id.'" />';
+echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
+
+$sql = "select c.id, c.shortname
+          from {course} c
+         where ".$DB->sql_like('c.shortname', '?', false)."
+               OR ".$DB->sql_like('c.fullname', '?', false);
+$params = array("%{$searchcourse}%", "%{$searchcourse}%");
+
+if (($courses = $DB->get_records_sql_menu($sql, $params)) && !empty($searchcourse)) {
+    echo ' ' . get_string('courses') . ': ';
+    echo html_writer::select($courses, 'coursefilter', $coursefilter);
+    echo '<input type="submit" value="'.get_string('mapcourse', 'feedback').'"/>';
+    echo $OUTPUT->help_icon('mapcourses', 'feedback');
+    echo '<input type="button" '.
+                'value="'.get_string('searchagain').'" '.
+                'onclick="document.location=\'mapcourse.php?id='.$id.'\'"/>';
+
+    echo '<input type="hidden" name="searchcourse" value="'.$searchcourse.'"/>';
+    echo '<input type="hidden" name="feedbackid" value="'.$feedback->id.'"/>';
+    echo $OUTPUT->help_icon('searchcourses', 'feedback');
+} else {
+    echo '<input type="text" name="searchcourse" value="'.$searchcourse.'"/> ';
+    echo '<input type="submit" value="'.get_string('searchcourses').'"/>';
+    echo $OUTPUT->help_icon('searchcourses', 'feedback');
+}
+
+echo '</form>';
+
+if ($coursemap = feedback_get_courses_from_sitecourse_map($feedback->id)) {
+    $table = new flexible_table('coursemaps');
+    $table->define_columns( array('course'));
+    $table->define_headers( array(get_string('mappedcourses', 'feedback')));
+
+    $table->setup();
+
+    $unmapurl = new moodle_url('/mod/feedback/unmapcourse.php');
+    foreach ($coursemap as $cmap) {
+        $cmapcontext = get_context_instance(CONTEXT_COURSE, $cmap->id);
+        $cmapshortname = format_string($cmap->shortname, true, array('context' => $cmapcontext));
+        $coursecontext = get_context_instance(CONTEXT_COURSE, $cmap->courseid);
+        $cmapfullname = format_string($cmap->fullname, true, array('context' => $coursecontext));
+        $unmapurl->params(array('id'=>$id, 'cmapid'=>$cmap->id));
+        $anker = '<a href="'.$unmapurl->out().'">';
+        $anker .= '<img src="'.$OUTPUT->pix_url('t/delete').'" alt="Delete" />';
+        $anker .= '</a>';
+        $table->add_data(array($anker.' ('.$cmapshortname.') '.$cmapfullname));
+    }
+
+    $table->print_html();
+} else {
+    echo '<h3>'.get_string('mapcoursenone', 'feedback').'</h3>';
+}
+
+
+echo $OUTPUT->box_end();
+
+echo $OUTPUT->footer();

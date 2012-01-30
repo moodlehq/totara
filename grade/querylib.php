@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Returns the aggregated or calculated course grade(s) in given course.
  * @public
@@ -31,7 +30,7 @@ function grade_get_course_grades($courseid, $userid_or_ids=null) {
         grade_regrade_final_grades($courseid);
     }
 
-    $item = new object();
+    $item = new stdClass();
     $item->scaleid    = $grade_item->scaleid;
     $item->name       = $grade_item->get_name();
     $item->grademin   = $grade_item->grademin;
@@ -72,7 +71,7 @@ function grade_get_course_grades($courseid, $userid_or_ids=null) {
         foreach ($userids as $userid) {
             $grade_grades[$userid]->grade_item =& $grade_item;
 
-            $grade = new object();
+            $grade = new stdClass();
             $grade->grade          = $grade_grades[$userid]->finalgrade;
             $grade->locked         = $grade_grades[$userid]->is_locked();
             $grade->hidden         = $grade_grades[$userid]->is_hidden();
@@ -97,7 +96,7 @@ function grade_get_course_grades($courseid, $userid_or_ids=null) {
                 if ($grade_item->gradetype == GRADE_TYPE_SCALE or $grade_item->get_displaytype() != GRADE_DISPLAY_TYPE_REAL) {
                     $grade->str_long_grade = $grade->str_grade;
                 } else {
-                    $a = new object();
+                    $a = new stdClass();
                     $a->grade = $grade->str_grade;
                     $a->max   = grade_format_gradevalue($grade_item->grademax, $grade_item);
                     $grade->str_long_grade = get_string('gradelong', 'grades', $a);
@@ -129,7 +128,7 @@ function grade_get_course_grade($userid, $courseid_or_ids=null) {
 
     if (!is_array($courseid_or_ids)) {
         if (empty($courseid_or_ids)) {
-            if (!$courses = get_my_courses($userid, $sort='visible DESC,sortorder ASC', 'id')) {
+            if (!$courses = enrol_get_users_courses($userid)) {
                 return false;
             }
             $courseids = array_keys($courses);
@@ -158,7 +157,7 @@ function grade_get_course_grade($userid, $courseid_or_ids=null) {
             grade_regrade_final_grades($courseid);
         }
 
-        $item = new object();
+        $item = new stdClass();
         $item->scaleid    = $grade_item->scaleid;
         $item->name       = $grade_item->get_name();
         $item->grademin   = $grade_item->grademin;
@@ -185,7 +184,7 @@ function grade_get_course_grade($userid, $courseid_or_ids=null) {
         $grade_grade = new grade_grade(array('userid'=>$userid, 'itemid'=>$grade_item->id));
         $grade_grade->grade_item =& $grade_item;
 
-        $grade = new object();
+        $grade = new stdClass();
         $grade->grade          = $grade_grade->finalgrade;
         $grade->locked         = $grade_grade->is_locked();
         $grade->hidden         = $grade_grade->is_hidden();
@@ -211,7 +210,7 @@ function grade_get_course_grade($userid, $courseid_or_ids=null) {
             if ($grade_item->gradetype == GRADE_TYPE_SCALE or $grade_item->get_displaytype() != GRADE_DISPLAY_TYPE_REAL) {
                 $grade->str_long_grade = $grade->str_grade;
             } else {
-                $a = new object();
+                $a = new stdClass();
                 $a->grade = $grade->str_grade;
                 $a->max   = grade_format_gradevalue($grade_item->grademax, $grade_item);
                 $grade->str_long_grade = get_string('gradelong', 'grades', $a);
@@ -238,13 +237,14 @@ function grade_get_course_grade($userid, $courseid_or_ids=null) {
  * @return mixed - array of grade item instances (one if $only_main_item true), false if error or not found
  */
 function grade_get_grade_items_for_activity($cm, $only_main_item=false) {
-    global $CFG;
+    global $CFG, $DB;
 
     if (!isset($cm->modname)) {
-        $cm = get_record_sql("SELECT cm.*, m.name, md.name as modname
-                                FROM {$CFG->prefix}course_modules cm,
-                                     {$CFG->prefix}modules md,
-                               WHERE cm.id = {$cm->id} AND md.id = cm.module");
+        $params = array($cm->id);
+        $cm = $DB->get_record_sql("SELECT cm.*, m.name, md.name as modname
+                                    FROM {course_modules} cm,
+                                         {modules} md,
+                                   WHERE cm.id = ? AND md.id = cm.module", $params);
     }
 
 
@@ -304,10 +304,10 @@ function grade_is_user_graded_in_activity($cm, $userid) {
  * @return array $cm objects
  */
 function grade_get_gradable_activities($courseid, $modulename='') {
-    global $CFG;
+    global $CFG, $DB;
 
     if (empty($modulename)) {
-        if (!$modules = get_records('modules', 'visible', '1')) {
+        if (!$modules = $DB->get_records('modules', array('visible' => '1'))) {
             return false;
         }
         $result = array();
@@ -323,18 +323,19 @@ function grade_get_gradable_activities($courseid, $modulename='') {
         }
     }
 
+    $params = array($courseid, $modulename, GRADE_TYPE_NONE, $modulename);
     $sql = "SELECT cm.*, m.name, md.name as modname
-              FROM {$CFG->prefix}grade_items gi, {$CFG->prefix}course_modules cm, {$CFG->prefix}modules md, {$CFG->prefix}$modulename m
-             WHERE gi.courseid = $courseid AND
+              FROM {grade_items} gi, {course_modules} cm, {modules} md, {$modulename} m
+             WHERE gi.courseid = ? AND
                    gi.itemtype = 'mod' AND
-                   gi.itemmodule = '$modulename' AND
+                   gi.itemmodule = ? AND
                    gi.itemnumber = 0 AND
-                   gi.gradetype != ".GRADE_TYPE_NONE." AND
+                   gi.gradetype != ? AND
                    gi.iteminstance = cm.instance AND
                    cm.instance = m.id AND
-                   md.name = '$modulename' AND
+                   md.name = ? AND
                    md.id = cm.module";
 
-    return get_records_sql($sql);
+    return $DB->get_records_sql($sql, $params);
 }
-?>
+

@@ -1,76 +1,91 @@
-<?php  // $Id$
+<?php
 
 /** jsupdated.php - notes by Martin Langhoff <martin@catalyst.net.nz>
- ** 
+ **
  ** This is an alternative version of jsupdate.php that acts
  ** as a long-running daemon. It will feed/stall/feed JS updates
  ** to the client. From the module configuration select "Stream"
  ** updates.
- ** 
- ** The client connection is not forever though. Once we reach 
- ** CHAT_MAX_CLIENT_UPDATES, it will force the client to re-fetch it. 
- ** 
+ **
+ ** The client connection is not forever though. Once we reach
+ ** CHAT_MAX_CLIENT_UPDATES, it will force the client to re-fetch it.
+ **
  ** This buys us all the benefits that chatd has, minus the setup,
  ** as we are using apache to do the daemon handling.
  **
  **/
 
 
-    define('CHAT_MAX_CLIENT_UPDATES', 1000);
-    $nomoodlecookie = true;     // Session not needed!
+define('CHAT_MAX_CLIENT_UPDATES', 1000);
+define('NO_MOODLE_COOKIES', true); // session not used here
+define('NO_OUTPUT_BUFFERING', true);
 
-    require('../../../config.php');
-    require('../lib.php');
+require('../../../config.php');
+require('../lib.php');
 
-    // we are going to run for a long time
-    // avoid being terminated by php
-    @set_time_limit(0);
+// we are going to run for a long time
+// avoid being terminated by php
+@set_time_limit(0);
 
-    $chat_sid      = required_param('chat_sid',          PARAM_ALPHANUM);
-    $chat_lasttime = optional_param('chat_lasttime',  0, PARAM_INT);
-    $chat_lastrow  = optional_param('chat_lastrow',   1, PARAM_INT);
-    $chat_lastid   = optional_param('chat_lastid',    0, PARAM_INT);
+$chat_sid      = required_param('chat_sid',          PARAM_ALPHANUM);
+$chat_lasttime = optional_param('chat_lasttime',  0, PARAM_INT);
+$chat_lastrow  = optional_param('chat_lastrow',   1, PARAM_INT);
+$chat_lastid   = optional_param('chat_lastid',    0, PARAM_INT);
 
-    if (!$chatuser = get_record('chat_users', 'sid', $chat_sid)) {
-        error('Not logged in!');
-    }
+$url = new moodle_url('/mod/chat/gui_header_js/jsupdated.php', array('chat_sid'=>$chat_sid));
+if ($chat_lasttime !== 0) {
+    $url->param('chat_lasttime', $chat_lasttime);
+}
+if ($chat_lastrow !== 1) {
+    $url->param('chat_lastrow', $chat_lastrow);
+}
+if ($chat_lastid !== 1) {
+    $url->param('chat_lastid', $chat_lastid);
+}
+$PAGE->set_url($url);
 
-    //Get the minimal course
-    if (!$course = get_record('course','id',$chatuser->course,'','','','','id,theme,lang')) {
-        error('incorrect course id');
-    }
+if (!$chatuser = $DB->get_record('chat_users', array('sid'=>$chat_sid))) {
+    print_error('notlogged', 'chat');
+}
 
-    //Get the user theme and enough info to be used in chat_format_message() which passes it along to
-    // chat_format_message_manually() -- and only id and timezone are used.
-    if (!$USER = get_record('user','id',$chatuser->userid)) { // no optimisation here, it would break again in future!
-        error('User does not exist!');
-    }
-    $USER->description = '';
+//Get the minimal course
+if (!$course = $DB->get_record('course', array('id'=>$chatuser->course))) {
+    print_error('invalidcourseid');
+}
 
-    //Setup course, lang and theme
-    course_setup($course);
+//Get the user theme and enough info to be used in chat_format_message() which passes it along to
+// chat_format_message_manually() -- and only id and timezone are used.
+if (!$USER = $DB->get_record('user', array('id'=>$chatuser->userid))) { // no optimisation here, it would break again in future!
+    print_error('invaliduser');
+}
+$USER->description = '';
 
-    // force deleting of timed out users if there is a silence in room or just entering
-    if ((time() - $chat_lasttime) > $CFG->chat_old_ping) {
-        // must be done before chat_get_latest_message!!!
-        chat_delete_old_users();
-    }
+//Setup course, lang and theme
+$PAGE->set_course($course);
 
-    //
-    // Time to send headers, and lay out the basic JS updater page
-    //
-    header('Expires: Sun, 28 Dec 1997 09:32:45 GMT');
-    header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
-    header('Cache-Control: no-cache, must-revalidate');
-    header('Pragma: no-cache');
-    header('Content-Type: text/html; charset=utf-8');
+// force deleting of timed out users if there is a silence in room or just entering
+if ((time() - $chat_lasttime) > $CFG->chat_old_ping) {
+    // must be done before chat_get_latest_message!!!
+    chat_delete_old_users();
+}
 
-    /// required stylesheets
-    $stylesheetshtml = '';
-    foreach ($CFG->stylesheets as $stylesheet) {
-        $stylesheetshtml .= '<link rel="stylesheet" type="text/css" href="'.$stylesheet.'" />';
-    }
+//
+// Time to send headers, and lay out the basic JS updater page
+//
+header('Expires: Sun, 28 Dec 1997 09:32:45 GMT');
+header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
+header('Cache-Control: no-cache, must-revalidate');
+header('Pragma: no-cache');
+header('Content-Type: text/html; charset=utf-8');
 
+/// required stylesheets
+$stylesheetshtml = '';
+/*foreach ($CFG->stylesheets as $stylesheet) {
+    //TODO: MDL-21120
+    $stylesheetshtml .= '<link rel="stylesheet" type="text/css" href="'.$stylesheet.'" />';
+}*/
+
+$refreshurl = "{$CFG->wwwroot}/mod/chat/gui_header_js/jsupdated.php?chat_sid=$chat_sid&chat_lasttime=$chat_lasttime&chat_lastrow=$chat_newrow&chat_lastid=$chat_lastid";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -98,20 +113,19 @@
         }
         //]]>
         </script>
-   </head>
-   <body>
+    </head>
+    <body>
 
 <?php
 
     // Ensure the HTML head makes it out there
     echo $CHAT_DUMMY_DATA;
-    @ob_end_flush();   
 
-    for ($n=0; $n <= CHAT_MAX_CLIENT_UPDATES; $n++) { 
-        
+    for ($n=0; $n <= CHAT_MAX_CLIENT_UPDATES; $n++) {
+
         // ping first so we can later shortcut as needed.
         $chatuser->lastping = time();
-        set_field('chat_users', 'lastping', $chatuser->lastping, 'id', $chatuser->id  );
+        $DB->set_field('chat_users', 'lastping', $chatuser->lastping, array('id'=>$chatuser->id));
 
         if ($message = chat_get_latest_message($chatuser->chatid, $chatuser->groupid)) {
             $chat_newlasttime = $message->timestamp;
@@ -121,43 +135,41 @@
             $chat_newlastid   = 0;
             print " \n";
             print $CHAT_DUMMY_DATA;
-            @ob_end_flush();
             sleep($CFG->chat_refresh_room);
             continue;
         }
 
         $timenow    = time();
-                
-                
-        $groupselect = $chatuser->groupid ? " AND (groupid='".$chatuser->groupid."' OR groupid='0') " : "";
+
+        $params = array('groupid'=>$chatuser->groupid, 'lastid'=>$chat_lastid, 'lasttime'=>$chat_lasttime, 'chatid'=>$chatuser->chatid);
+        $groupselect = $chatuser->groupid ? " AND (groupid=:groupid OR groupid=0) " : "";
 
         $newcriteria = '';
         if ($chat_lastid > 0) {
-            $newcriteria = "id > $chat_lastid";
+            $newcriteria = "id > :lastid";
         } else {
             if ($chat_lasttime == 0) { //display some previous messages
                 $chat_lasttime = $timenow - $CFG->chat_old_ping; //TO DO - any better value??
             }
-            $newcriteria = "timestamp > $chat_lasttime";
+            $newcriteria = "timestamp > :lasttime";
         }
-        
-        $messages = get_records_select("chat_messages",
-                                       "chatid = '$chatuser->chatid' AND $newcriteria $groupselect",
+
+        $messages = $DB->get_records_select("chat_messages_current",
+                                       "chatid = :chatid AND $newcriteria $groupselect", $params,
                                        "timestamp ASC");
-        
+
         if ($messages) {
             $num = count($messages);
         } else {
             print " \n";
             print $CHAT_DUMMY_DATA;
-            @ob_end_flush();
             sleep($CFG->chat_refresh_room);
             continue;
             $num = 0;
         }
 
         print '<script type="text/javascript">' . "\n";
-        print "//<![CDATA[\n\n"; 
+        print "//<![CDATA[\n\n";
 
         $chat_newrow = ($chat_lastrow + $num) % 2;
 
@@ -166,7 +178,7 @@
         if (($chat_lasttime != $chat_newlasttime) and $messages) {
 
             $beep         = false;
-            $refreshusers = false; 
+            $refreshusers = false;
             foreach ($messages as $message) {
                 $chat_lastrow = ($chat_lastrow + 1) % 2;
                 $formatmessage = chat_format_message($message, $chatuser->course, $USER, $chat_lastrow);
@@ -185,7 +197,7 @@
             $chat_lasttime = $message->timestamp;
             $chat_lastid   = $message->id;
         }
-                
+
         if ($refreshusers) {
             echo "if (parent.users.document.anchors[0] != null) {" .
                 "parent.users.location.href = parent.users.document.anchors[0].href;}\n";
@@ -215,14 +227,13 @@ EOD;
             print '<embed src="../beep.wav" autostart="true" hidden="true" name="beep" />';
         }
         print $CHAT_DUMMY_DATA;
-        @ob_end_flush();
         sleep($CFG->chat_refresh_room);
-    } // here ends the for() loop 
+    } // here ends the for() loop
 
     // here & should be written & :-D
-    $refreshurl = "{$CFG->wwwroot}/mod/chat/gui_header_js/jsupdated.php?chat_sid=$chat_sid&chat_lasttime=$chat_lasttime&chat_lastrow=$chat_newrow&chat_lastid=$chat_lastid"; 
+    $refreshurl = "{$CFG->wwwroot}/mod/chat/gui_header_js/jsupdated.php?chat_sid=$chat_sid&chat_lasttime=$chat_lasttime&chat_lastrow=$chat_newrow&chat_lastid=$chat_lastid";
     print '<script type="text/javascript">' . "\n";
-    print "//<![CDATA[ \n\n"; 
+    print "//<![CDATA[ \n\n";
     print "location.href = '$refreshurl';\n";
     print "//]]>\n";
     print '</script>' . "\n\n";

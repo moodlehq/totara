@@ -1,669 +1,57 @@
-<?php  // $Id$
+<?php
 
-define('RESOURCE_LOCALPATH', 'LOCALPATH');
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-global $RESOURCE_WINDOW_OPTIONS; // must be global because it might be included from a function!
-$RESOURCE_WINDOW_OPTIONS = array('resizable', 'scrollbars', 'directories', 'location',
-                                 'menubar', 'toolbar', 'status', 'width', 'height');
+/**
+ * @package    mod
+ * @subpackage resource
+ * @copyright  2009 Petr Skoda  {@link http://skodak.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-if (!isset($CFG->resource_hide_repository)) {
-    set_config("resource_hide_repository", "1");
+defined('MOODLE_INTERNAL') || die;
+
+/**
+ * List of features supported in Resource module
+ * @param string $feature FEATURE_xx constant for requested feature
+ * @return mixed True if module supports feature, false if not, null if doesn't know
+ */
+function resource_supports($feature) {
+    switch($feature) {
+        case FEATURE_MOD_ARCHETYPE:           return MOD_ARCHETYPE_RESOURCE;
+        case FEATURE_GROUPS:                  return false;
+        case FEATURE_GROUPINGS:               return false;
+        case FEATURE_GROUPMEMBERSONLY:        return true;
+        case FEATURE_MOD_INTRO:               return true;
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        case FEATURE_GRADE_HAS_GRADE:         return false;
+        case FEATURE_GRADE_OUTCOMES:          return false;
+        case FEATURE_BACKUP_MOODLE2:          return true;
+        case FEATURE_SHOW_DESCRIPTION:        return true;
+
+        default: return null;
+    }
 }
 
 /**
-* resource_base is the base class for resource types
-*
-* This class provides all the functionality for a resource
-*/
-
-class resource_base {
-
-    var $cm;
-    var $course;
-    var $resource;
-    var $navlinks;
-
-    /**
-    * Constructor for the base resource class
-    *
-    * Constructor for the base resource class.
-    * If cmid is set create the cm, course, resource objects.
-    * and do some checks to make sure people can be here, and so on.
-    *
-    * @param cmid   integer, the current course module id - not set for new resources
-    */
-    function resource_base($cmid=0) {
-
-        global $CFG, $COURSE;
-        $this->navlinks = array();
-
-        if ($cmid) {
-            if (! $this->cm = get_coursemodule_from_id('resource', $cmid)) {
-                error("Course Module ID was incorrect");
-            }
-
-            if (! $this->course = get_record("course", "id", $this->cm->course)) {
-                error("Course is misconfigured");
-            }
-
-            if (! $this->resource = get_record("resource", "id", $this->cm->instance)) {
-                error("Resource ID was incorrect");
-            }
-
-            $this->strresource  = get_string("modulename", "resource");
-            $this->strresources = get_string("modulenameplural", "resource");
-
-            if (!$this->cm->visible and !has_capability('moodle/course:viewhiddenactivities', get_context_instance(CONTEXT_MODULE, $this->cm->id))) {
-                $pagetitle = strip_tags($this->course->shortname.': '.$this->strresource);
-                $navigation = build_navigation($this->navlinks, $this->cm);
-
-                print_header($pagetitle, $this->course->fullname, $navigation, "", "", true, '', navmenu($this->course, $this->cm));
-                notice(get_string("activityiscurrentlyhidden"), "$CFG->wwwroot/course/view.php?id={$this->course->id}");
-            }
-
-        } else {
-            $this->course = $COURSE;
-        }
-    }
-
-
-    /**
-    * Display function does nothing in the base class
-    */
-    function display() {
-
-    }
-
-
-    /**
-    * Display the resource with the course blocks.
-    */
-    function display_course_blocks_start() {
-
-        global $CFG;
-        global $USER;
-        global $THEME;
-
-        require_once($CFG->libdir.'/blocklib.php');
-        require_once($CFG->libdir.'/pagelib.php');
-        require_once($CFG->dirroot.'/course/lib.php'); //required by some blocks
-
-        $PAGE = page_create_object(PAGE_COURSE_VIEW, $this->course->id);
-        $this->PAGE = $PAGE;
-        $pageblocks = blocks_setup($PAGE);
-
-        $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
-
-    /// Print the page header
-
-        $edit = optional_param('edit', -1, PARAM_BOOL);
-
-        if (($edit != -1) and $PAGE->user_allowed_editing()) {
-            $USER->editing = $edit;
-        }
-
-        $morenavlinks = array($this->strresources   => 'index.php?id='.$this->course->id,
-                                 $this->resource->name => '');
-
-        $PAGE->print_header($this->course->shortname.': %fullname%', $morenavlinks, "", "", 
-                            update_module_button($this->cm->id, $this->course->id, $this->strresource));
-
-        echo '<table id="layout-table"><tr>';
-    
-        $lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;
-        foreach ($lt as $column) {
-            $lt1[] = $column;
-            if ($column == 'middle') break;
-        }
-        foreach ($lt1 as $column) {
-            switch ($column) {
-                case 'left':
-                    if((blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $PAGE->user_is_editing())) {
-                        echo '<td style="width: '.$blocks_preferred_width.'px;" id="left-column">';
-                        print_container_start();
-                        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
-                        print_container_end();
-                        echo '</td>';
-                    }
-                break;
-
-                case 'middle':
-                    echo '<td id="middle-column">';
-                    print_container_start(false, 'middle-column-wrap');
-                    echo '<div id="resource">';
-                break;
-
-                case 'right':
-                    if((blocks_have_content($pageblocks, BLOCK_POS_RIGHT) || $PAGE->user_is_editing())) {
-                        echo '<td style="width: '.$blocks_preferred_width.'px;" id="right-column">';
-                        print_container_start();
-                        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-                        print_container_end();
-                        echo '</td>';
-                    }
-                break;
-            }
-        }
-    }
-
-
-    /**
-     * Finish displaying the resource with the course blocks
-     */
-    function display_course_blocks_end() {
-
-        global $CFG;
-        global $THEME;
-
-        $PAGE = $this->PAGE;
-        $pageblocks = blocks_setup($PAGE);
-        $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_RIGHT]), 210);
-    
-        $lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;
-        foreach ($lt as $column) {
-            if ($column != 'middle') {
-                array_shift($lt);
-            } else if ($column == 'middle') {
-                break;
-            }
-        }
-        foreach ($lt as $column) {
-            switch ($column) {
-                case 'left':
-                    if((blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $PAGE->user_is_editing())) {
-                        echo '<td style="width: '.$blocks_preferred_width.'px;" id="left-column">';
-                        print_container_start();
-                        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
-                        print_container_end();
-                        echo '</td>';
-                    }
-                break;
-
-                case 'middle':
-                    echo '</div>';
-                    print_container_end();
-                    echo '</td>';
-                break;
-
-                case 'right':
-                    if((blocks_have_content($pageblocks, BLOCK_POS_RIGHT) || $PAGE->user_is_editing())) {
-                        echo '<td style="width: '.$blocks_preferred_width.'px;" id="right-column">';
-                        print_container_start();
-                        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-                        print_container_end();
-                        echo '</td>';
-                    }
-                break;
-            }
-        }
-
-        echo '</tr></table>';
-
-        print_footer($this->course);
-
-    }
-
-
-    function add_instance($resource) {
-    // Given an object containing all the necessary data,
-    // (defined by the form in mod.html) this function
-    // will create a new instance and return the id number
-    // of the new instance.
-
-        $resource->timemodified = time();
-
-        return insert_record("resource", $resource);
-    }
-
-
-    function update_instance($resource) {
-    // Given an object containing all the necessary data,
-    // (defined by the form in mod.html) this function
-    // will update an existing instance with new data.
-
-        $resource->id = $resource->instance;
-        $resource->timemodified = time();
-
-        return update_record("resource", $resource);
-    }
-
-
-    function delete_instance($resource) {
-    // Given an object containing the resource data
-    // this function will permanently delete the instance
-    // and any data that depends on it.
-
-        $result = true;
-
-        if (! delete_records("resource", "id", "$resource->id")) {
-            $result = false;
-        }
-
-        return $result;
-    }
-
-    function setup_elements(&$mform) {
-        //override to add your own options
-    }
-
-    function setup_preprocessing(&$default_values){
-        //override to add your own options
-    }
-
-} /// end of class definition
-
-
-
-function resource_add_instance($resource) {
-    global $CFG;
-
-    $resource->type = clean_param($resource->type, PARAM_SAFEDIR);   // Just to be safe
-
-    require_once("$CFG->dirroot/mod/resource/type/$resource->type/resource.class.php");
-    $resourceclass = "resource_$resource->type";
-    $res = new $resourceclass();
-
-    return $res->add_instance($resource);
-}
-
-function resource_update_instance($resource) {
-    global $CFG;
-
-    $resource->type = clean_param($resource->type, PARAM_SAFEDIR);   // Just to be safe
-
-    require_once("$CFG->dirroot/mod/resource/type/$resource->type/resource.class.php");
-    $resourceclass = "resource_$resource->type";
-    $res = new $resourceclass();
-
-    return $res->update_instance($resource);
-}
-
-function resource_delete_instance($id) {
-    global $CFG;
-
-    if (! $resource = get_record("resource", "id", "$id")) {
-        return false;
-    }
-
-    $resource->type = clean_param($resource->type, PARAM_SAFEDIR);   // Just to be safe
-
-    require_once("$CFG->dirroot/mod/resource/type/$resource->type/resource.class.php");
-    $resourceclass = "resource_$resource->type";
-    $res = new $resourceclass();
-
-    return $res->delete_instance($resource);
-}
-
-
-function resource_user_outline($course, $user, $mod, $resource) {
-    if ($logs = get_records_select("log", "userid='$user->id' AND module='resource'
-                                           AND action='view' AND info='$resource->id'", "time ASC")) {
-
-        $numviews = count($logs);
-        $lastlog = array_pop($logs);
-
-        $result = new object();
-        $result->info = get_string("numviews", "", $numviews);
-        $result->time = $lastlog->time;
-
-        return $result;
-    }
-    return NULL;
-}
-
-
-function resource_user_complete($course, $user, $mod, $resource) {
-    global $CFG;
-
-    if ($logs = get_records_select("log", "userid='$user->id' AND module='resource'
-                                           AND action='view' AND info='$resource->id'", "time ASC")) {
-        $numviews = count($logs);
-        $lastlog = array_pop($logs);
-
-        $strmostrecently = get_string("mostrecently");
-        $strnumviews = get_string("numviews", "", $numviews);
-
-        echo "$strnumviews - $strmostrecently ".userdate($lastlog->time);
-
-    } else {
-        print_string("neverseen", "resource");
-    }
-}
-
-function resource_get_participants($resourceid) {
-//Returns the users with data in one resource
-//(NONE, byt must exists on EVERY mod !!)
-
-    return false;
-}
-
-function resource_get_coursemodule_info($coursemodule) {
-/// Given a course_module object, this function returns any
-/// "extra" information that may be needed when printing
-/// this activity in a course listing.
-///
-/// See get_array_of_activities() in course/lib.php
-///
-
-   global $CFG;
-
-   $info = NULL;
-
-   if ($resource = get_record("resource", "id", $coursemodule->instance, '', '', '', '', 'id, popup, reference, type, name')) {
-       $info = new object();
-       $info->name = $resource->name;
-       if (!empty($resource->popup)) {
-           $info->extra =  urlencode("onclick=\"this.target='resource$resource->id'; return ".
-                            "openpopup('/mod/resource/view.php?inpopup=true&amp;id=".
-                            $coursemodule->id.
-                            "','resource$resource->id','$resource->popup');\"");
-       }
-
-       require_once($CFG->libdir.'/filelib.php');
-
-       if ($resource->type == 'file') {
-           $icon = mimeinfo("icon", $resource->reference);
-           if ($icon != 'unknown.gif') {
-               $info->icon ="f/$icon";
-           } else {
-               $info->icon ="f/web.gif";
-           }
-       } else if ($resource->type == 'directory') {
-           $info->icon ="f/folder.gif";
-       }
-   }
-
-   return $info;
-}
-
-function resource_fetch_remote_file ($cm, $url, $headers = "" ) {
-/// Snoopy is an HTTP client in PHP
-
-    global $CFG;
-
-    require_once("$CFG->libdir/snoopy/Snoopy.class.inc");
-
-    $client = new Snoopy();
-    $ua = 'Moodle/'. $CFG->release . ' (+http://moodle.org';
-    if ( $CFG->resource_usecache ) {
-        $ua = $ua . ')';
-    } else {
-        $ua = $ua . '; No cache)';
-    }
-    $client->agent = $ua;
-    $client->read_timeout = 5;
-    $client->use_gzip = true;
-    if (is_array($headers) ) {
-        $client->rawheaders = $headers;
-    }
-
-    @$client->fetch($url);
-    if ( $client->status >= 200 && $client->status < 300 ) {
-        $tags = array("A"      => "href=",
-                      "IMG"    => "src=",
-                      "LINK"   => "href=",
-                      "AREA"   => "href=",
-                      "FRAME"  => "src=",
-                      "IFRAME" => "src=",
-                      "FORM"   => "action=");
-
-        foreach ($tags as $tag => $key) {
-            $prefix = "fetch.php?id=$cm->id&amp;url=";
-            if ( $tag == "IMG" or $tag == "LINK" or $tag == "FORM") {
-                $prefix = "";
-            }
-            $client->results = resource_redirect_tags($client->results, $url, $tag, $key,$prefix);
-        }
-    } else {
-        if ( $client->status >= 400 && $client->status < 500) {
-            $client->results = get_string("fetchclienterror","resource");  // Client error
-        } elseif ( $client->status >= 500 && $client->status < 600) {
-            $client->results = get_string("fetchservererror","resource");  // Server error
-        } else {
-            $client->results = get_string("fetcherror","resource");     // Redirection? HEAD? Unknown error.
-        }
-    }
-    return $client;
-}
-
-function resource_redirect_tags($text, $url, $tagtoparse, $keytoparse,$prefix = "" ) {
-    $valid = 1;
-    if ( strpos($url,"?") == FALSE ) {
-        $valid = 1;
-    }
-    if ( $valid ) {
-        $lastpoint = strrpos($url,".");
-        $lastslash = strrpos($url,"/");
-        if ( $lastpoint > $lastslash ) {
-            $root = substr($url,0,$lastslash+1);
-        } else {
-            $root = $url;
-        }
-        if ( $root == "http://" or
-             $root == "https://") {
-            $root = $url;
-        }
-        if ( substr($root,strlen($root)-1) == '/' ) {
-            $root = substr($root,0,-1);
-        }
-
-        $mainroot = $root;
-        $lastslash = strrpos($mainroot,"/");
-        while ( $lastslash > 9) {
-            $mainroot = substr($mainroot,0,$lastslash);
-
-            $lastslash = strrpos($mainroot,"/");
-        }
-
-        $regex = "/<$tagtoparse (.+?)>/is";
-        $count = preg_match_all($regex, $text, $hrefs);
-        for ( $i = 0; $i < $count; $i++) {
-            $tag = $hrefs[1][$i];
-
-            $poshref = strpos(strtolower($tag),strtolower($keytoparse));
-            $start = $poshref + strlen($keytoparse);
-            $left = substr($tag,0,$start);
-            if ( $tag[$start] == '"' ) {
-                $left .= '"';
-                $start++;
-            }
-            $posspace   = strpos($tag," ", $start+1);
-            $right = "";
-            if ( $posspace != FALSE) {
-                $right = substr($tag, $posspace);
-            }
-            $end = strlen($tag)-1;
-            if ( $tag[$end] == '"' ) {
-                $right = '"' . $right;
-            }
-            $finalurl = substr($tag,$start,$end-$start+$diff);
-            // Here, we could have these possible values for $finalurl:
-            //     file.ext                             Add current root dir
-            //     http://(domain)                      don't care
-            //     http://(domain)/                     don't care
-            //     http://(domain)/folder               don't care
-            //     http://(domain)/folder/              don't care
-            //     http://(domain)/folder/file.ext      don't care
-            //     folder/                              Add current root dir
-            //     folder/file.ext                      Add current root dir
-            //     /folder/                             Add main root dir
-            //     /folder/file.ext                     Add main root dir
-
-            // Special case: If finalurl contains a ?, it won't be parsed
-            $valid = 1;
-
-            if ( strpos($finalurl,"?") == FALSE ) {
-                $valid = 1;
-            }
-            if ( $valid ) {
-                if ( $finalurl[0] == "/" ) {
-                    $finalurl = $mainroot . $finalurl;
-                } elseif ( strtolower(substr($finalurl,0,7)) != "http://" and
-                           strtolower(substr($finalurl,0,8)) != "https://") {
-                     if ( $finalurl[0] == "/") {
-                        $finalurl = $mainroot . $finalurl;
-                     } else {
-                        $finalurl = "$root/$finalurl";
-                     }
-                }
-
-                $text = str_replace($tag,"$left$prefix$finalurl$right",$text);
-            }
-        }
-    }
-    return $text;
-}
-
-function resource_is_url($path) {
-    if (strpos($path, '://')) {     // eg http:// https:// ftp://  etc
-        return true;
-    }
-    if (strpos($path, '/') === 0) { // Starts with slash
-        return true;
-    }
-    return false;
-}
-
-function resource_get_types() {
-    global $CFG;
-
-    $types = array();
-
-    $standardresources = array('text','html','file','directory');
-    foreach ($standardresources as $resourcetype) {
-        $type = new object();
-        $type->modclass = MOD_CLASS_RESOURCE;
-        $type->name = $resourcetype;
-        $type->type = "resource&amp;type=$resourcetype";
-        $type->typestr = resource_get_name($resourcetype);
-        $types[] = $type;
-    }
-
-    /// Drop-in extra resource types
-    $resourcetypes = get_list_of_plugins('mod/resource/type');
-    foreach ($resourcetypes as $resourcetype) {
-        if (!empty($CFG->{'resource_hide_'.$resourcetype})) {  // Not wanted
-            continue;
-        }
-        if (!in_array($resourcetype, $standardresources)) {
-            $type = new object();
-            $type->modclass = MOD_CLASS_RESOURCE;
-            $type->name = $resourcetype;
-            $type->type = "resource&amp;type=$resourcetype";
-            $type->typestr = resource_get_name($resourcetype);
-            $types[] = $type;
-        }
-    }
-
-    return $types;
-}
-
-function resource_get_view_actions() {
-    return array('view','view all');
-}
-
-function resource_get_post_actions() {
-    return array();
-}
-
-function resource_renamefiles($course, $wdir, $oldname, $name) {
-    global $CFG;
-
-    $status = '<p align=\"center\"><strong>'.get_string('affectedresources', 'resource').':</strong><ul>';
-    $updates = false;
-
-    $old = trim($wdir.'/'.$oldname, '/');
-    $new = trim($wdir.'/'.$name, '/');
-
-    $sql = "SELECT r.id, r.reference, r.name, cm.id AS cmid
-             FROM {$CFG->prefix}resource r,
-                  {$CFG->prefix}course_modules cm,
-                  {$CFG->prefix}modules m
-             WHERE r.course    = '{$course->id}'
-               AND m.name      = 'resource'
-               AND cm.module   = m.id
-               AND cm.instance = r.id
-               AND (r.type = 'file' OR r.type = 'directory')
-               AND (r.reference LIKE '{$old}/%' OR r.reference = '{$old}')";
-    if ($resources = get_records_sql($sql)) {
-        foreach ($resources as $resource) {
-            $r = new object();
-            $r->id = $resource->id;
-            $r->reference = '';
-            if ($resource->reference == $old) {
-                $r->reference = addslashes($new);
-            } else {
-                $r->reference = addslashes(preg_replace('|^'.preg_quote($old, '|').'/|', $new.'/', $resource->reference));
-            }
-            if ($r->reference !== '') {
-                $updates = true;
-                $status .= "<li><a href=\"$CFG->wwwroot/mod/resource/view.php?id=$resource->cmid\" target=\"_blank\">$resource->name</a>: $resource->reference ==> $r->reference</li>";
-                if (!empty($CFG->resource_autofilerename)) {
-                    if (!update_record('resource', $r)) {
-                        error("Error updating resource with ID $r->id.");
-                    }
-                }
-            }
-        }
-    }
-    $status .= '</ul></p>';
-
-    if ($updates) {
-        echo $status;
-        if (empty($CFG->resource_autofilerename)) {
-            notify(get_string('warningdisabledrename', 'resource'));
-        }
-    }
-}
-
-function resource_delete_warning($course, $files) {
-    global $CFG;
-
-    $found = array();
-
-    foreach($files as $key=>$file) {
-        $files[$key] = trim($file, '/');
-    }
-    $sql = "SELECT r.id, r.reference, r.name, cm.id AS cmid
-             FROM {$CFG->prefix}resource r,
-                  {$CFG->prefix}course_modules cm,
-                  {$CFG->prefix}modules m
-             WHERE r.course    = '{$course->id}'
-               AND m.name      = 'resource'
-               AND cm.module   = m.id
-               AND cm.instance = r.id
-               AND (r.type = 'file' OR r.type = 'directory')";
-    if ($resources = get_records_sql($sql)) {
-        foreach ($resources as $resource) {
-            if ($resource->reference == '') {
-                continue; // top shared directory does not prevent anything
-            }
-            if (in_array($resource->reference, $files)) {
-                $found[$resource->id] = $resource;
-            } else {
-                foreach($files as $file) {
-                    if (preg_match('|^'.preg_quote($file, '|').'/|', $resource->reference)) {
-                        $found[$resource->id] = $resource;
-                    }
-                }
-            }
-        }
-    }
-
-    if (!empty($found)) {
-
-        print_simple_box_start("center");
-        echo '<p><strong>'.get_string('affectedresources', 'resource').':</strong><ul>';
-        foreach($found as $resource) {
-            echo "<li><a href=\"$CFG->wwwroot/mod/resource/view.php?id=$resource->cmid\" target=\"_blank\">$resource->name</a>: $resource->reference</li>";
-        }
-        echo '</ul></p>';
-        print_simple_box_end();
-
-        return true;
-    } else {
-        return false;
-    }
+ * Returns all other caps used in module
+ * @return array
+ */
+function resource_get_extra_capabilities() {
+    return array('moodle/site:accessallgroups');
 }
 
 /**
@@ -676,33 +64,418 @@ function resource_reset_userdata($data) {
 }
 
 /**
- * Returns all other caps used in module
+ * List of view style log actions
+ * @return array
  */
-function resource_get_extra_capabilities() {
-    return array('moodle/site:accessallgroups');
+function resource_get_view_actions() {
+    return array('view','view all');
 }
 
 /**
- * Returns the full name of the given resource type.  The name can
- * either be set at the resource type level or at the resource module
- * level.
- *
- * @param string $type shortname (or directory name) of the resource type
+ * List of update style log actions
+ * @return array
  */
-function resource_get_name($type) {
-    $name = get_string("resourcetype$type", "resource_$type");
-    if (substr($name, 0, 2) === '[[') {
-        $name = get_string("resourcetype$type", 'resource');
+function resource_get_post_actions() {
+    return array('update', 'add');
+}
+
+/**
+ * Add resource instance.
+ * @param object $data
+ * @param object $mform
+ * @return int new resource instance id
+ */
+function resource_add_instance($data, $mform) {
+    global $CFG, $DB;
+    require_once("$CFG->libdir/resourcelib.php");
+    $cmid = $data->coursemodule;
+    $data->timemodified = time();
+    $displayoptions = array();
+    if ($data->display == RESOURCELIB_DISPLAY_POPUP) {
+        $displayoptions['popupwidth']  = $data->popupwidth;
+        $displayoptions['popupheight'] = $data->popupheight;
     }
-    return $name;
+    if (in_array($data->display, array(RESOURCELIB_DISPLAY_AUTO, RESOURCELIB_DISPLAY_EMBED, RESOURCELIB_DISPLAY_FRAME))) {
+        $displayoptions['printheading'] = (int)!empty($data->printheading);
+        $displayoptions['printintro']   = (int)!empty($data->printintro);
+    }
+    $data->displayoptions = serialize($displayoptions);
+
+    $data->id = $DB->insert_record('resource', $data);
+
+    // we need to use context now, so we need to make sure all needed info is already in db
+    $DB->set_field('course_modules', 'instance', $data->id, array('id'=>$cmid));
+    resource_set_mainfile($data);
+    return $data->id;
 }
 
 /**
- * Tells if files in moddata are trusted and can be served without XSS protection.
- * @return bool true if file can be submitted by teacher only (trusted), false otherwise
+ * Update resource instance.
+ * @param object $data
+ * @param object $mform
+ * @return bool true
  */
-function resource_is_moddata_trusted() {
+function resource_update_instance($data, $mform) {
+    global $CFG, $DB;
+    require_once("$CFG->libdir/resourcelib.php");
+    $data->timemodified = time();
+    $data->id           = $data->instance;
+    $data->revision++;
+
+    $displayoptions = array();
+    if ($data->display == RESOURCELIB_DISPLAY_POPUP) {
+        $displayoptions['popupwidth']  = $data->popupwidth;
+        $displayoptions['popupheight'] = $data->popupheight;
+    }
+    if (in_array($data->display, array(RESOURCELIB_DISPLAY_AUTO, RESOURCELIB_DISPLAY_EMBED, RESOURCELIB_DISPLAY_FRAME))) {
+        $displayoptions['printheading'] = (int)!empty($data->printheading);
+        $displayoptions['printintro']   = (int)!empty($data->printintro);
+    }
+    $data->displayoptions = serialize($displayoptions);
+
+    $DB->update_record('resource', $data);
+    resource_set_mainfile($data);
     return true;
 }
 
-?>
+/**
+ * Delete resource instance.
+ * @param int $id
+ * @return bool true
+ */
+function resource_delete_instance($id) {
+    global $DB;
+
+    if (!$resource = $DB->get_record('resource', array('id'=>$id))) {
+        return false;
+    }
+
+    // note: all context files are deleted automatically
+
+    $DB->delete_records('resource', array('id'=>$resource->id));
+
+    return true;
+}
+
+/**
+ * Return use outline
+ * @param object $course
+ * @param object $user
+ * @param object $mod
+ * @param object $resource
+ * @return object|null
+ */
+function resource_user_outline($course, $user, $mod, $resource) {
+    global $DB;
+
+    if ($logs = $DB->get_records('log', array('userid'=>$user->id, 'module'=>'resource',
+                                              'action'=>'view', 'info'=>$resource->id), 'time ASC')) {
+
+        $numviews = count($logs);
+        $lastlog = array_pop($logs);
+
+        $result = new stdClass();
+        $result->info = get_string('numviews', '', $numviews);
+        $result->time = $lastlog->time;
+
+        return $result;
+    }
+    return NULL;
+}
+
+/**
+ * Return use complete
+ * @param object $course
+ * @param object $user
+ * @param object $mod
+ * @param object $resource
+ */
+function resource_user_complete($course, $user, $mod, $resource) {
+    global $CFG, $DB;
+
+    if ($logs = $DB->get_records('log', array('userid'=>$user->id, 'module'=>'resource',
+                                              'action'=>'view', 'info'=>$resource->id), 'time ASC')) {
+        $numviews = count($logs);
+        $lastlog = array_pop($logs);
+
+        $strmostrecently = get_string('mostrecently');
+        $strnumviews = get_string('numviews', '', $numviews);
+
+        echo "$strnumviews - $strmostrecently ".userdate($lastlog->time);
+
+    } else {
+        print_string('neverseen', 'resource');
+    }
+}
+
+/**
+ * Returns the users with data in one resource
+ *
+ * @todo: deprecated - to be deleted in 2.2
+ *
+ * @param int $resourceid
+ * @return bool false
+ */
+function resource_get_participants($resourceid) {
+    return false;
+}
+
+/**
+ * Given a course_module object, this function returns any
+ * "extra" information that may be needed when printing
+ * this activity in a course listing.
+ *
+ * See {@link get_array_of_activities()} in course/lib.php
+ *
+ * @param cm_info $coursemodule
+ * @return cached_cm_info info
+ */
+function resource_get_coursemodule_info($coursemodule) {
+    global $CFG, $DB;
+    require_once("$CFG->libdir/filelib.php");
+    require_once("$CFG->dirroot/mod/resource/locallib.php");
+    require_once($CFG->libdir.'/completionlib.php');
+
+    $context = get_context_instance(CONTEXT_MODULE, $coursemodule->id);
+
+    if (!$resource = $DB->get_record('resource', array('id'=>$coursemodule->instance),
+            'id, name, display, displayoptions, tobemigrated, revision, intro, introformat')) {
+        return NULL;
+    }
+
+    $info = new cached_cm_info();
+    $info->name = $resource->name;
+    if ($coursemodule->showdescription) {
+        // Convert intro to html. Do not filter cached version, filters run at display time.
+        $info->content = format_module_intro('resource', $resource, $coursemodule->id, false);
+    }
+
+    if ($resource->tobemigrated) {
+        $info->icon ='i/cross_red_big';
+        return $info;
+    }
+    $fs = get_file_storage();
+    $files = $fs->get_area_files($context->id, 'mod_resource', 'content', 0, 'sortorder DESC, id ASC', false); // TODO: this is not very efficient!!
+    if (count($files) >= 1) {
+        $mainfile = reset($files);
+        $info->icon = file_extension_icon($mainfile->get_filename());
+        $resource->mainfile = $mainfile->get_filename();
+    }
+
+    $display = resource_get_final_display_type($resource);
+
+    if ($display == RESOURCELIB_DISPLAY_POPUP) {
+        $fullurl = "$CFG->wwwroot/mod/resource/view.php?id=$coursemodule->id&amp;redirect=1";
+        $options = empty($resource->displayoptions) ? array() : unserialize($resource->displayoptions);
+        $width  = empty($options['popupwidth'])  ? 620 : $options['popupwidth'];
+        $height = empty($options['popupheight']) ? 450 : $options['popupheight'];
+        $wh = "width=$width,height=$height,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes";
+        $info->onclick = "window.open('$fullurl', '', '$wh'); return false;";
+
+    } else if ($display == RESOURCELIB_DISPLAY_NEW) {
+        $fullurl = "$CFG->wwwroot/mod/resource/view.php?id=$coursemodule->id&amp;redirect=1";
+        $info->onclick = "window.open('$fullurl'); return false;";
+
+    } else if ($display == RESOURCELIB_DISPLAY_OPEN) {
+        $fullurl = "$CFG->wwwroot/mod/resource/view.php?id=$coursemodule->id&amp;redirect=1";
+        $info->onclick = "window.location.href ='$fullurl';return false;";
+
+    } else if ($display == RESOURCELIB_DISPLAY_DOWNLOAD) {
+        if (empty($mainfile)) {
+            return NULL;
+        }
+        // do not open any window because it would be left there after download
+        $path = '/'.$context->id.'/mod_resource/content/'.$resource->revision.$mainfile->get_filepath().$mainfile->get_filename();
+        $fullurl = addslashes_js(file_encode_url($CFG->wwwroot.'/pluginfile.php', $path, true));
+
+        // When completion information is enabled for download files, make
+        // the JavaScript version go to the view page with redirect set,
+        // instead of directly to the file, otherwise we can't make it tick
+        // the box for them
+        if (!$course = $DB->get_record('course', array('id'=>$coursemodule->course), 'id, enablecompletion')) {
+            return NULL;
+        }
+        $completion = new completion_info($course);
+        if ($completion->is_enabled($coursemodule) == COMPLETION_TRACKING_AUTOMATIC) {
+            $fullurl = "$CFG->wwwroot/mod/resource/view.php?id=$coursemodule->id&amp;redirect=1";
+        }
+        $info->onclick = "window.open('$fullurl'); return false;";
+    }
+
+    return $info;
+}
+
+
+/**
+ * Lists all browsable file areas
+ * @param object $course
+ * @param object $cm
+ * @param object $context
+ * @return array
+ */
+function resource_get_file_areas($course, $cm, $context) {
+    $areas = array();
+    $areas['content'] = get_string('resourcecontent', 'resource');
+    return $areas;
+}
+
+/**
+ * File browsing support for resource module content area.
+ * @param object $browser
+ * @param object $areas
+ * @param object $course
+ * @param object $cm
+ * @param object $context
+ * @param string $filearea
+ * @param int $itemid
+ * @param string $filepath
+ * @param string $filename
+ * @return object file_info instance or null if not found
+ */
+function resource_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
+    global $CFG;
+
+    if (!has_capability('moodle/course:managefiles', $context)) {
+        // students can not peak here!
+        return null;
+    }
+
+    $fs = get_file_storage();
+
+    if ($filearea === 'content') {
+        $filepath = is_null($filepath) ? '/' : $filepath;
+        $filename = is_null($filename) ? '.' : $filename;
+
+        $urlbase = $CFG->wwwroot.'/pluginfile.php';
+        if (!$storedfile = $fs->get_file($context->id, 'mod_resource', 'content', 0, $filepath, $filename)) {
+            if ($filepath === '/' and $filename === '.') {
+                $storedfile = new virtual_root_file($context->id, 'mod_resource', 'content', 0);
+            } else {
+                // not found
+                return null;
+            }
+        }
+        require_once("$CFG->dirroot/mod/resource/locallib.php");
+        return new resource_content_file_info($browser, $context, $storedfile, $urlbase, $areas[$filearea], true, true, true, false);
+    }
+
+    // note: resource_intro handled in file_browser automatically
+
+    return null;
+}
+
+/**
+ * Serves the resource files.
+ * @param object $course
+ * @param object $cm
+ * @param object $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @return bool false if file not found, does not return if found - just send the file
+ */
+function resource_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+    global $CFG, $DB;
+    require_once("$CFG->libdir/resourcelib.php");
+
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return false;
+    }
+
+    require_course_login($course, true, $cm);
+    if (!has_capability('mod/resource:view', $context)) {
+        return false;
+    }
+
+    if ($filearea !== 'content') {
+        // intro is handled automatically in pluginfile.php
+        return false;
+    }
+
+    array_shift($args); // ignore revision - designed to prevent caching problems only
+
+    $fs = get_file_storage();
+    $relativepath = implode('/', $args);
+    $fullpath = rtrim("/$context->id/mod_resource/$filearea/0/$relativepath", '/');
+    do {
+        if (!$file = $fs->get_file_by_hash(sha1($fullpath))) {
+            if ($fs->get_file_by_hash(sha1("$fullpath/."))) {
+                if ($file = $fs->get_file_by_hash(sha1("$fullpath/index.htm"))) {
+                    break;
+                }
+                if ($file = $fs->get_file_by_hash(sha1("$fullpath/index.html"))) {
+                    break;
+                }
+                if ($file = $fs->get_file_by_hash(sha1("$fullpath/Default.htm"))) {
+                    break;
+                }
+            }
+            $resource = $DB->get_record('resource', array('id'=>$cm->instance), 'id, legacyfiles', MUST_EXIST);
+            if ($resource->legacyfiles != RESOURCELIB_LEGACYFILES_ACTIVE) {
+                return false;
+            }
+            if (!$file = resourcelib_try_file_migration('/'.$relativepath, $cm->id, $cm->course, 'mod_resource', 'content', 0)) {
+                return false;
+            }
+            // file migrate - update flag
+            $resource->legacyfileslast = time();
+            $DB->update_record('resource', $resource);
+        }
+    } while (false);
+
+    // should we apply filters?
+    $mimetype = $file->get_mimetype();
+    if ($mimetype === 'text/html' or $mimetype === 'text/plain') {
+        $filter = $DB->get_field('resource', 'filterfiles', array('id'=>$cm->instance));
+        $CFG->embeddedsoforcelinktarget = true;
+    } else {
+        $filter = 0;
+    }
+
+    // finally send the file
+    send_stored_file($file, 86400, $filter, $forcedownload);
+}
+
+/**
+ * Return a list of page types
+ * @param string $pagetype current page type
+ * @param stdClass $parentcontext Block's parent context
+ * @param stdClass $currentcontext Current context of block
+ */
+function resource_page_type_list($pagetype, $parentcontext, $currentcontext) {
+    $module_pagetype = array('mod-resource-*'=>get_string('page-mod-resource-x', 'resource'));
+    return $module_pagetype;
+}
+
+/**
+ * Export file resource contents
+ *
+ * @return array of file content
+ */
+function resource_export_contents($cm, $baseurl) {
+    global $CFG, $DB;
+    $contents = array();
+    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $resource = $DB->get_record('resource', array('id'=>$cm->instance), '*', MUST_EXIST);
+
+    $fs = get_file_storage();
+    $files = $fs->get_area_files($context->id, 'mod_resource', 'content', 0, 'sortorder DESC, id ASC', false);
+
+    foreach ($files as $fileinfo) {
+        $file = array();
+        $file['type'] = 'file';
+        $file['filename']     = $fileinfo->get_filename();
+        $file['filepath']     = $fileinfo->get_filepath();
+        $file['filesize']     = $fileinfo->get_filesize();
+        $file['fileurl']      = file_encode_url("$CFG->wwwroot/" . $baseurl, '/'.$context->id.'/mod_resource/content/'.$resource->revision.$fileinfo->get_filepath().$fileinfo->get_filename(), true);
+        $file['timecreated']  = $fileinfo->get_timecreated();
+        $file['timemodified'] = $fileinfo->get_timemodified();
+        $file['sortorder']    = $fileinfo->get_sortorder();
+        $file['userid']       = $fileinfo->get_userid();
+        $file['author']       = $fileinfo->get_author();
+        $file['license']      = $fileinfo->get_license();
+        $contents[] = $file;
+    }
+
+    return $contents;
+}

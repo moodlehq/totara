@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -11,8 +11,7 @@
 // This program is free software; you can redistribute it and/or modify  //
 // it under the terms of the GNU General Public License as published by  //
 // the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
+// (at your option) any later version.                                   // //                                                                       //
 // This program is distributed in the hope that it will be useful,       //
 // but WITHOUT ANY WARRANTY; without even the implied warranty of        //
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
@@ -22,49 +21,61 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 
+require_once($CFG->dirroot.'/lib/filelib.php');
+require_once($CFG->dirroot.'/repository/lib.php');
+
 class data_field_textarea extends data_field_base {
 
     var $type = 'textarea';
 
-    function data_field_textarea($field=0, $data=0) {
-        parent::data_field_base($field, $data);
-    }
-
-
     function display_add_field($recordid=0) {
-        global $CFG;
+        global $CFG, $DB, $OUTPUT, $PAGE;
 
         $text   = '';
         $format = 0;
 
-        if ($recordid){
-            if ($content = get_record('data_content', 'fieldid', $this->field->id, 'recordid', $recordid)) {
-                $text   = $content->content;
-                $format = $content->content1;
-            }
-        }
-
         $str = '<div title="'.$this->field->description.'">';
 
-        if (can_use_richtext_editor()) {
-            // Show a rich text html editor.
-            $str .= $this->gen_textarea(true, $text);
-            $str .= helpbutton("richtext", get_string("helprichtext"), 'moodle', true, true, '', true);
-            $str .= '<input type="hidden" name="field_' . $this->field->id . '_content1' . '" value="' . FORMAT_HTML . '" />';
+        editors_head_setup();
 
+        $options = array();
+        $options['trusttext'] = false;
+        $options['forcehttps'] = false;
+        $options['subdirs'] = false;
+        $options['maxfiles'] = 0;
+        $options['maxbytes'] = 0;
+        $options['changeformat'] = 0;
+        $options['noclean'] = false;
+
+        $itemid = $this->field->id;
+        $field = 'field_'.$itemid;
+
+        if ($recordid && $content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))){
+            $text   = $content->content;
+            $format = $content->content1;
+            $text = clean_text($text, $format);
+        } else if (can_use_html_editor()) {
+            $format = FORMAT_HTML;
         } else {
-            // Show a normal textarea. Also let the user specify the format to be used.
-            $str .= $this->gen_textarea(false, $text);
-
-            // Get the available text formats for this field.
-            $formatsForField = format_text_menu();
-            $str .= '<br />';
-
-            $str .= choose_from_menu($formatsForField, 'field_' . $this->field->id .
-                                     '_content1', $format, 'choose', '', '', true);
-
-            $str .= helpbutton('textformat', get_string('helpformatting'), 'moodle', true, false, '', true);
+            $format = FORMAT_PLAIN;
         }
+
+        $editor = editors_get_preferred_editor($format);
+        $strformats = format_text_menu();
+        $formats =  $editor->get_supported_formats();
+        foreach ($formats as $fid) {
+            $formats[$fid] = $strformats[$fid];
+        }
+        $editor->use_editor($field, $options);
+        $str .= '<div><textarea id="'.$field.'" name="'.$field.'" rows="'.$this->field->param3.'" cols="'.$this->field->param2.'">'.s($text).'</textarea></div>';
+        $str .= '<div><select name="'.$field.'_content1">';
+        foreach ($formats as $key=>$desc) {
+            $selected = ($format == $key) ? 'selected="selected"' : '';
+            $str .= '<option value="'.s($key).'" '.$selected.'>'.$desc.'</option>';
+        }
+        $str .= '</select>';
+        $str .= '</div>';
+
         $str .= '</div>';
         return $str;
     }
@@ -79,27 +90,22 @@ class data_field_textarea extends data_field_base {
     }
 
     function generate_sql($tablealias, $value) {
-        return " ({$tablealias}.fieldid = {$this->field->id} AND {$tablealias}.content LIKE '%{$value}%') ";
-    }
+        global $DB;
 
-    function gen_textarea($usehtmleditor, $text='') {
-        // MDL-16018: Don't print htmlarea with < 7 lines height, causes visualization problem
-        $text = clean_text($text);
-        $this->field->param3 = $usehtmleditor && $this->field->param3 < 7 ? 7 : $this->field->param3;
-        return print_textarea($usehtmleditor, $this->field->param3, $this->field->param2,
-                              '', '', 'field_'.$this->field->id, $text, '', true, 'field_' . $this->field->id);
+        static $i=0;
+        $i++;
+        $name = "df_textarea_$i";
+        return array(" ({$tablealias}.fieldid = {$this->field->id} AND ".$DB->sql_like("{$tablealias}.content", ":$name", false).") ", array($name=>"%$value%"));
     }
-
 
     function print_after_form() {
-        if (can_use_richtext_editor()) {
-            use_html_editor('field_' . $this->field->id, '', 'field_' . $this->field->id);
-        }
     }
 
 
     function update_content($recordid, $value, $name='') {
-        $content = new object;
+        global $DB;
+
+        $content = new stdClass();
         $content->fieldid = $this->field->id;
         $content->recordid = $recordid;
 
@@ -110,12 +116,12 @@ class data_field_textarea extends data_field_base {
             $content->content = clean_param($value, PARAM_CLEAN);
         }
 
-        if ($oldcontent = get_record('data_content','fieldid', $this->field->id, 'recordid', $recordid)) {
+        if ($oldcontent = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             $content->id = $oldcontent->id;
-            return update_record('data_content', $content);
+            return $DB->update_record('data_content', $content);
         } else {
-            return insert_record('data_content', $content);
+            return $DB->insert_record('data_content', $content);
         }
     }
 }
-?>
+

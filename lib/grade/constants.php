@@ -1,36 +1,29 @@
-<?php // $Id$
+<?php
 
-///////////////////////////////////////////////////////////////////////////
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.org                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards  Martin Dougiamas  http://moodle.com       //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
-
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * Definitions of constants for gradebook
  *
- * @author Moodle HQ developers
- * @version  $Id$
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package moodlecore
+ * @package    core
+ * @subpackage grade
+ * @copyright  2007 Nicolas Connault
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 
 // category aggregation types
 define('GRADE_AGGREGATE_MEAN', 0);
@@ -56,7 +49,7 @@ define('GRADE_UPDATE_MULTIPLE', 2);
 define('GRADE_UPDATE_ITEM_DELETED', 3);
 define('GRADE_UPDATE_ITEM_LOCKED', 4);
 
-// Grate teables history tracking actions
+// Grade tables history tracking actions
 define('GRADE_HISTORY_INSERT', 1);
 define('GRADE_HISTORY_UPDATE', 2);
 define('GRADE_HISTORY_DELETE', 3);
@@ -94,4 +87,3 @@ define('GRADE_REPORT_MEAN_GRADED', 1);
 define('GRADE_NAVMETHOD_DROPDOWN', 0);
 define('GRADE_NAVMETHOD_TABS', 1);
 define('GRADE_NAVMETHOD_COMBO', 2);
-?>

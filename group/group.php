@@ -26,42 +26,51 @@ if($delete) {
 }
 
 if ($id) {
-    if (!$group = get_record('groups', 'id', $id)) {
-        error('Group ID was incorrect');
+    if (!$group = $DB->get_record('groups', array('id'=>$id))) {
+        print_error('invalidgroupid');
     }
-    $group->description = clean_text($group->description);
     if (empty($courseid)) {
         $courseid = $group->courseid;
 
     } else if ($courseid != $group->courseid) {
-        error('Course ID was incorrect');
+        print_error('invalidcourseid');
     }
 
-    if (!$course = get_record('course', 'id', $courseid)) {
-        error('Course ID was incorrect');
+    if (!$course = $DB->get_record('course', array('id'=>$courseid))) {
+        print_error('invalidcourseid');
     }
 
 } else {
-    if (!$course = get_record('course', 'id', $courseid)) {
-        error('Course ID was incorrect');
+    if (!$course = $DB->get_record('course', array('id'=>$courseid))) {
+        print_error('invalidcourseid');
     }
-    $group = new object();
+    $group = new stdClass();
     $group->courseid = $course->id;
+}
+
+if ($id !== 0) {
+    $PAGE->set_url('/group/group.php', array('id'=>$id));
+} else {
+    $PAGE->set_url('/group/group.php', array('courseid'=>$courseid));
 }
 
 require_login($course);
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 require_capability('moodle/course:managegroups', $context);
 
-$returnurl = $CFG->wwwroot.'/group/index.php?id='.$course->id.'&amp;group='.$id;
+$returnurl = $CFG->wwwroot.'/group/index.php?id='.$course->id.'&group='.$id;
 
 if ($id and $delete) {
     if (!$confirm) {
-        print_header(get_string('deleteselectedgroup', 'group'), get_string('deleteselectedgroup', 'group'));
+        $PAGE->set_title(get_string('deleteselectedgroup', 'group'));
+        $PAGE->set_heading($course->fullname . ': '. get_string('deleteselectedgroup', 'group'));
+        echo $OUTPUT->header();
         $optionsyes = array('id'=>$id, 'delete'=>1, 'courseid'=>$courseid, 'sesskey'=>sesskey(), 'confirm'=>1);
         $optionsno  = array('id'=>$courseid);
-        notice_yesno(get_string('deletegroupconfirm', 'group', $group->name), 'group.php', 'index.php', $optionsyes, $optionsno, 'get', 'get');
-        print_footer();
+        $formcontinue = new single_button(new moodle_url('group.php', $optionsyes), get_string('yes'), 'get');
+        $formcancel = new single_button(new moodle_url($baseurl, $optionsno), get_string('no'), 'get');
+        echo $OUTPUT->confirm(get_string('deletegroupconfirm', 'group', $group->name), $formcontinue, $formcancel);
+        echo $OUTPUT->footer();
         die;
 
     } else if (confirm_sesskey()){
@@ -73,8 +82,16 @@ if ($id and $delete) {
     }
 }
 
+// Prepare the description editor: We do support files for group descriptions
+$editoroptions = array('maxfiles'=>EDITOR_UNLIMITED_FILES, 'maxbytes'=>$course->maxbytes, 'trust'=>false, 'context'=>$context, 'noclean'=>true);
+if (!empty($group->id)) {
+    $group = file_prepare_standard_editor($group, 'description', $editoroptions, $context, 'group', 'description', $group->id);
+} else {
+    $group = file_prepare_standard_editor($group, 'description', $editoroptions, $context, 'group', 'description', null);
+}
+
 /// First create the form
-$editform = new group_form();
+$editform = new group_form(null, array('editoroptions'=>$editoroptions));
 $editform->set_data($group);
 
 if ($editform->is_cancelled()) {
@@ -83,14 +100,10 @@ if ($editform->is_cancelled()) {
 } elseif ($data = $editform->get_data()) {
 
     if ($data->id) {
-        if (!groups_update_group($data, $editform->_upload_manager)) {
-            error('Error updating group');
-        }
+        groups_update_group($data, $editform, $editoroptions);
     } else {
-        if (!$id = groups_create_group($data, $editform->_upload_manager)) {
-            error('Error creating group');
-        }
-        $returnurl = $CFG->wwwroot.'/group/index.php?id='.$course->id.'&amp;group='.$id;
+        $id = groups_create_group($data, $editform, $editoroptions);
+        $returnurl = $CFG->wwwroot.'/group/index.php?id='.$course->id.'&group='.$id;
     }
 
     redirect($returnurl);
@@ -105,20 +118,18 @@ if ($id) {
     $strheading = get_string('creategroup', 'group');
 }
 
-
-$navlinks = array(array('name'=>$strparticipants, 'link'=>$CFG->wwwroot.'/user/index.php?id='.$courseid, 'type'=>'misc'),
-                  array('name'=>$strgroups, 'link'=>$CFG->wwwroot.'/group/index.php?id='.$courseid, 'type'=>'misc'),
-                  array('name'=>$strheading, 'link'=>'', 'type'=>'misc'));
-$navigation = build_navigation($navlinks);
+$PAGE->navbar->add($strparticipants, new moodle_url('/user/index.php', array('id'=>$courseid)));
+$PAGE->navbar->add($strgroups, new moodle_url('/group/index.php', array('id'=>$courseid)));
+$PAGE->navbar->add($strheading);
 
 /// Print header
-print_header_simple($strgroups, ': '.$strgroups, $navigation, '', '', true, '', navmenu($course));
-
+$PAGE->set_title($strgroups);
+$PAGE->set_heading($course->fullname . ': '.$strgroups);
+echo $OUTPUT->header();
 echo '<div id="grouppicture">';
 if ($id) {
     print_group_picture($group, $course->id);
 }
 echo '</div>';
 $editform->display();
-print_footer($course);
-?>
+echo $OUTPUT->footer();

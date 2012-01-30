@@ -1,26 +1,29 @@
 <?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_login();
+require_login(0, false);
 require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
 
-if (!$site = get_site()) {
-    redirect("index.php");
-}
+$site = get_site();
 
 /// get language strings
-$str = get_strings(array('enrolments', 'users', 'administration', 'settings'));
-$navlinks = array();
-$navlinks[] = array('name' => $str->administration, 'link' => "../../$CFG->admin/index.php", 'type' => 'misc');
-$navlinks[] = array('name' => $str->enrolments, 'link' => null, 'type' => 'misc');
-$navlinks[] = array('name' => 'IMS import', 'link' => null, 'type' => 'misc');
-$navigation = build_navigation($navlinks);
+$PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
 
-print_header("$site->shortname: $str->enrolments", $site->fullname, $navigation);
+$PAGE->set_url('/enrol/imsenterprise/importnow.php');
+$PAGE->set_title(get_string('importimsfile', 'enrol_imsenterprise'));
+$PAGE->set_heading(get_string('importimsfile', 'enrol_imsenterprise'));
+$PAGE->navbar->add(get_string('administrationsite'));
+$PAGE->navbar->add(get_string('plugins', 'admin'));
+$PAGE->navbar->add(get_string('enrolments', 'enrol'));
+$PAGE->navbar->add(get_string('pluginname', 'enrol_imsenterprise'), new moodle_url('/admin/settings.php', array('section'=>'enrolsettingsimsenterprise')));
+$PAGE->navbar->add(get_string('importimsfile', 'enrol_imsenterprise'));
+$PAGE->navigation->clear_cache();
 
-require_once('enrol.php');
+echo $OUTPUT->header();
+
+require_once('lib.php');
 
 //echo "Creating the IMS Enterprise enroller object\n";
-$enrol = new enrolment_plugin_imsenterprise();
+$enrol = new enrol_imsenterprise_plugin();
 
 ?>
 <p>Launching the IMS Enterprise "cron" function. The import log will appear below (giving details of any
@@ -29,7 +32,7 @@ problems that might require attention).</p>
 //error_reporting(E_ALL);
 $enrol->cron();
 ?></pre><?php
-print_footer();
+echo $OUTPUT->footer();
 
 exit;
 ?>

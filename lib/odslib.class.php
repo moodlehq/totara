@@ -1,46 +1,50 @@
-<?php // $Id$
+<?php
 
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas        http://dougiamas.com  //
-//           (C) 2001-3001 Eloy Lafuente (stronk7) http://contiento.com  //
-//           (C) 2001-3001 Petr Skoda (skodak)                           //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
+/**
+ * Major Contributors:
+ *     - Eloy Lafuente (stronk7) {@link  http://contiento.com}
+ *     - Petr Skoda (skodak)
+ *
+ * @package    core
+ * @subpackage lib
+ * @copyright  (C) 2001-3001 Eloy Lafuente (stronk7) {@link http://contiento.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+/**
  * The xml used here is derived from output of KSpread 1.6.1
  *
  * Known problems:
  *  - missing formatting
  *  - write_date() works fine in OOo, but it does not work in KOffice - it knows only date or time but not both :-(
+ *
+ * @package   moodlecore
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class MoodleODSWorkbook {
     var $worksheets = array();
     var $filename;
-    var $save;
 
-    function MoodleODSWorkbook($filename, $save=false) {
+    function MoodleODSWorkbook($filename) {
         $this->filename = $filename;
-        $this->save = $save;
     }
 
     /* Create one Moodle Worksheet
@@ -48,7 +52,7 @@ class MoodleODSWorkbook {
      */
     function &add_worksheet($name = '') {
     /// Create the Moodle Worksheet. Returns one pointer to it
-        $ws =& new MoodleODSWorksheet($name);
+        $ws = new MoodleODSWorksheet($name);
         $this->worksheets[] =& $ws;
         return $ws;
     }
@@ -70,10 +74,10 @@ class MoodleODSWorkbook {
         global $CFG;
         require_once($CFG->libdir.'/filelib.php');
 
-        $dir = 'temp/ods/'.time();
-        make_upload_directory($dir, false);
-        make_upload_directory($dir.'/META-INF', false);
-        $dir = "$CFG->dataroot/$dir";
+        $dir = 'ods/'.time();
+        make_temp_directory($dir);
+        make_temp_directory($dir.'/META-INF');
+        $dir = "$CFG->tempdir/$dir";
         $files = array();
 
         $handle = fopen("$dir/mimetype", 'w');
@@ -99,20 +103,13 @@ class MoodleODSWorkbook {
         $filename = "$dir/result.ods";
         zip_files($files, $filename);
 
-        if($this->save){
-            copy($filename, $this->filename);
-        }
-        else{
-            $handle = fopen($filename, 'rb');
-            $contents = fread($handle, filesize($filename));
-            fclose($handle);
-        }
+        $handle = fopen($filename, 'rb');
+        $contents = fread($handle, filesize($filename));
+        fclose($handle);
 
         remove_dir($dir); // cleanup the temp directory
 
-        if(!$this->save){
-            send_file($contents, $this->filename, 0, 0, true, true, 'application/vnd.oasis.opendocument.spreadsheet');
-        }
+        send_file($contents, $this->filename, 0, 0, true, true, 'application/vnd.oasis.opendocument.spreadsheet');
     }
 
     /* Not required to use
@@ -124,6 +121,12 @@ class MoodleODSWorkbook {
 
 }
 
+/**
+ *
+ * @package   moodlecore
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class MoodleODSWorksheet {
     var $data = array();
     var $columns = array();
@@ -148,7 +151,7 @@ class MoodleODSWorksheet {
         if (!array_key_exists($row, $this->data)) {
             $this->data[$row] = array();
         }
-        $this->data[$row][$col] = new object();
+        $this->data[$row][$col] = new stdClass();
         $this->data[$row][$col]->value = $str;
         $this->data[$row][$col]->type = 'string';
         $this->data[$row][$col]->format = $format;
@@ -164,7 +167,7 @@ class MoodleODSWorksheet {
         if (!array_key_exists($row, $this->data)) {
             $this->data[$row] = array();
         }
-        $this->data[$row][$col] = new object();
+        $this->data[$row][$col] = new stdClass();
         $this->data[$row][$col]->value = $num;
         $this->data[$row][$col]->type = 'float';
         $this->data[$row][$col]->format = $format;
@@ -180,7 +183,7 @@ class MoodleODSWorksheet {
         if (!array_key_exists($row, $this->data)) {
             $this->data[$row] = array();
         }
-        $this->data[$row][$col] = new object();
+        $this->data[$row][$col] = new stdClass();
         $this->data[$row][$col]->value = $url;
         $this->data[$row][$col]->type = 'string';
         $this->data[$row][$col]->format = $format;
@@ -196,7 +199,7 @@ class MoodleODSWorksheet {
         if (!array_key_exists($row, $this->data)) {
             $this->data[$row] = array();
         }
-        $this->data[$row][$col] = new object();
+        $this->data[$row][$col] = new stdClass();
         $this->data[$row][$col]->value = $date;
         $this->data[$row][$col]->type = 'date';
         $this->data[$row][$col]->format = $format;
@@ -270,7 +273,7 @@ class MoodleODSWorksheet {
      * @param integer $level  The optional outline level (0-7)
      */
     function set_row($row, $height, $format = 0, $hidden = false, $level = 0) {
-        $this->rows[$row] = new object();
+        $this->rows[$row] = new stdClass();
         $this->rows[$row]->height = $height;
         //$this->rows[$row]->format = $format; // TODO: fix and enable
         $this->rows[$row]->hidden = $hidden;
@@ -286,7 +289,7 @@ class MoodleODSWorksheet {
      */
     function set_column($firstcol, $lastcol, $width, $format = 0, $hidden = false, $level = 0) {
         for($i=$firstcol; $i<=$lastcol; $i++) {
-            $this->columns[$i] = new object();
+            $this->columns[$i] = new stdClass();
             $this->columns[$i]->width = $width;
             //$this->columns[$i]->format = $format; // TODO: fix and enable
             $this->columns[$i]->hidden = $hidden;
@@ -311,7 +314,7 @@ class MoodleODSWorksheet {
     function hide_screen_gridlines() {
         // not implement
     }
-    
+
     /**
     * Insert a 24bit bitmap image in a worksheet.
     *
@@ -341,10 +344,13 @@ class MoodleODSWorksheet {
         // not implement
     }
 }
-
 /**
-* Define and operate over one Format.
-*/
+ * Define and operate over one Format.
+ *
+ * @package   moodlecore
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class MoodleODSFormat {
     var $id;
     var $properties;
@@ -468,7 +474,7 @@ class MoodleODSFormat {
      * @param string $location alignment for the cell ('left', 'right', etc...)
      */
     function set_h_align($location) {
-        set_align($location);
+        $this->set_align($location);
     }
 
     /* Set the cell vertical alignment of the format
@@ -861,4 +867,3 @@ function get_ods_manifest() {
  <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="meta.xml"/>
 </manifest:manifest>';
 }
-?>

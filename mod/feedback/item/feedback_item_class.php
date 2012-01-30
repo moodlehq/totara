@@ -1,31 +1,91 @@
-<?PHP  // $Id: feedback_item_class.php,v 1.3.2.3 2008/06/08 21:15:57 agrabs Exp $
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-class feedback_item_base {
-    var $type;
+abstract class feedback_item_base {
+    protected $type;
+
     /**
-     * The class constructor
+     * constructor
      *
      */
-    function feedback_item_base() {
+    public function __construct() {
         $this->init();
     }
 
-    /**
-     * Fake constructor to keep PHP5 happy
-     *
-     */
-    function __construct() {
-        $this->feedback_item_base();
+    //this function only can used after the call of build_editform()
+    public function show_editform() {
+        $this->item_form->display();
     }
-    
+
+    public function is_cancelled() {
+        return $this->item_form->is_cancelled();
+    }
+
+    public function get_data() {
+        if ($this->item = $this->item_form->get_data()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function value_type() {
+        return PARAM_RAW;
+    }
+
+    public function value_is_array() {
+        return false;
+    }
+
+    abstract public function init();
+    abstract public function build_editform($item, $feedback, $cm);
+    abstract public function save_item();
+    abstract public function check_value($value, $item);
+    abstract public function create_value($data);
+    abstract public function compare_value($item, $dbvalue, $dependvalue);
+    abstract public function get_presentation($data);
+    abstract public function get_hasvalue();
+    abstract public function can_switch_require();
+
     /**
-     * prints the item-related sequenz on the edit-item form
-     * 
+     * @param object $worksheet a reference to the pear_spreadsheet-object
+     * @param integer $row_offset
+     * @param object $item the db-object from feedback_item
+     * @param integer $groupid
+     * @param integer $courseid
+     * @return integer the new row_offset
+     */
+    abstract public function excelprint_item(&$worksheet, $row_offset,
+                                      $xls_formats, $item,
+                                      $groupid, $courseid = false);
+
+    /**
      * @param $item the db-object from feedback_item
-     * @param $usehtmleditor defines whether the editor should be shown or not
+     * @param string $itemnr
+     * @param integer $groupid
+     * @param integer $courseid
+     * @return integer the new itemnr
      */
-    function &show_edit($item, $usehtmleditor = false) {
-    }
+    abstract public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false);
+
+    /**
+     * @param object $item the db-object from feedback_item
+     * @param string $value a item-related value from feedback_values
+     * @return string
+     */
+    abstract public function get_printval($item, $value);
 
     /**
      * returns an Array with three values(typ, name, XXX)
@@ -35,69 +95,87 @@ class feedback_item_base {
      * @param $groupid if given
      * @param $courseid if given
      * @return array
-    */
-    function get_analysed($item, $groupid = false, $courseid = false) {
-        return array();
-    }
+     */
+    abstract public function get_analysed($item, $groupid = false, $courseid = false);
 
-    /**
-     * @param object $item the db-object from feedback_item
-     * @param string $value a item-related value from feedback_values
-     * @return string
-    */
-    function get_printval($item, $value) {
-      return '';
-    }
+    /**     
+     * print the item at the edit-page of feedback
+     *
+     * @global object
+     * @param object $item
+     * @return void
+     */
+    abstract public function print_item_preview($item);
 
-    /**
-     * @param $item the db-object from feedback_item
-     * @param string $itemnr
-     * @param integer $groupid
-     * @param integer $courseid
-     * @return integer the new itemnr
-    */
-    function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
-      return 0;
-    }
+    /**     
+     * print the item at the complete-page of feedback
+     *
+     * @global object
+     * @param object $item
+     * @param string $value
+     * @param bool $highlightrequire
+     * @return void
+     */
+    abstract public function print_item_complete($item, $value = '', $highlightrequire = false);
 
-    /**
-     * @param object $worksheet a reference to the pear_spreadsheet-object
-     * @param integer $rowOffset
-     * @param object $item the db-object from feedback_item
-     * @param integer $groupid
-     * @param integer $courseid
-     * @return integer the new rowOffset
-    */
-    function excelprint_item(&$worksheet, $rowOffset, $item, $groupid, $courseid = false) {
-      return $rowOffset;
-    }
+    /**     
+     * print the item at the complete-page of feedback
+     *
+     * @global object
+     * @param object $item
+     * @param string $value
+     * @return void
+     */
+    abstract public function print_item_show_value($item, $value = '');
 
-    function print_item($item, $value = false, $readonly = false, $edit = false, $highlightrequire = false){
-    }
-
-    function check_value($value, $item) {
-        return true;
-    }
-
-    function create_value($data) {
-        return '';
-    }
-
-    function get_presentation($data) {
-      return '';
-   }
-
-    function get_hasvalue() {
-        return 0;
-    }
 }
 
 //a dummy class to realize pagebreaks
 class feedback_item_pagebreak extends feedback_item_base {
-    var $type = "pagebreak";
-    function init() {
-    
+    protected $type = "pagebreak";
+
+    public function show_editform() {
     }
+    public function is_cancelled() {
+    }
+    public function get_data() {
+    }
+    public function init() {
+    }
+    public function build_editform($item, $feedback, $cm) {
+    }
+    public function save_item() {
+    }
+    public function check_value($value, $item) {
+    }
+    public function create_value($data) {
+    }
+    public function compare_value($item, $dbvalue, $dependvalue) {
+    }
+    public function get_presentation($data) {
+    }
+    public function get_hasvalue() {
+    }
+    public function excelprint_item(&$worksheet, $row_offset,
+                            $xls_formats, $item,
+                            $groupid, $courseid = false) {
+    }
+
+    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
+    }
+    public function get_printval($item, $value) {
+    }
+    public function get_analysed($item, $groupid = false, $courseid = false) {
+    }
+    public function print_item_preview($item) {
+    }
+    public function print_item_complete($item, $value = '', $highlightrequire = false) {
+    }
+    public function print_item_show_value($item, $value = '') {
+    }
+    public function can_switch_require() {
+    }
+
 }
 
-?>
+

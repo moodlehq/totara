@@ -33,15 +33,16 @@ require_once($CFG->dirroot.'/grade/report/lib.php');
 /**
  * @TODO create a set of mock objects to simulate the database operations. We don't want to connect to any real sql server.
  */
-class gradereportlib_test extends UnitTestCase {
+class gradereportlib_test extends UnitTestCaseUsingDatabase {
     var $courseid = 1;
     var $context = null;
     var $report = null;
+    public  static $includecoverage = array('grade/report/lib.php');
 
     function setUp() {
-        $this->report = new grade_report($this->courseid, $this->context);
+        //$this->report = new grade_report($this->courseid, $this->context);
     }
 
 }
 
-?>
+

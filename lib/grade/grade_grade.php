@@ -1,27 +1,29 @@
-<?php // $Id$
+<?php
 
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Definitions of grade grade class
+ *
+ * @package    core
+ * @subpackage grade
+ * @copyright  2006 Nicolas Connault
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
 
 require_once('grade_object.php');
 
@@ -31,13 +33,13 @@ class grade_grade extends grade_object {
      * The DB table.
      * @var string $table
      */
-    var $table = 'grade_grades';
+    public $table = 'grade_grades';
 
     /**
      * Array of required table fields, must start with 'id'.
      * @var array $required_fields
      */
-    var $required_fields = array('id', 'itemid', 'userid', 'rawgrade', 'rawgrademax', 'rawgrademin',
+    public $required_fields = array('id', 'itemid', 'userid', 'rawgrade', 'rawgrademax', 'rawgrademin',
                                  'rawscaleid', 'usermodified', 'finalgrade', 'hidden', 'locked',
                                  'locktime', 'exported', 'overridden', 'excluded', 'timecreated', 'timemodified');
 
@@ -45,109 +47,109 @@ class grade_grade extends grade_object {
      * Array of optional fields with default values (these should match db defaults)
      * @var array $optional_fields
      */
-    var $optional_fields = array('feedback'=>null, 'feedbackformat'=>0, 'information'=>null, 'informationformat'=>0);
+    public $optional_fields = array('feedback'=>null, 'feedbackformat'=>0, 'information'=>null, 'informationformat'=>0);
 
     /**
      * The id of the grade_item this grade belongs to.
      * @var int $itemid
      */
-    var $itemid;
+    public $itemid;
 
     /**
      * The grade_item object referenced by $this->itemid.
      * @var object $grade_item
      */
-    var $grade_item;
+    public $grade_item;
 
     /**
      * The id of the user this grade belongs to.
      * @var int $userid
      */
-    var $userid;
+    public $userid;
 
     /**
      * The grade value of this raw grade, if such was provided by the module.
      * @var float $rawgrade
      */
-    var $rawgrade;
+    public $rawgrade;
 
     /**
      * The maximum allowable grade when this grade was created.
      * @var float $rawgrademax
      */
-    var $rawgrademax = 100;
+    public $rawgrademax = 100;
 
     /**
      * The minimum allowable grade when this grade was created.
      * @var float $rawgrademin
      */
-    var $rawgrademin = 0;
+    public $rawgrademin = 0;
 
     /**
      * id of the scale, if this grade is based on a scale.
      * @var int $rawscaleid
      */
-    var $rawscaleid;
+    public $rawscaleid;
 
     /**
      * The userid of the person who last modified this grade.
      * @var int $usermodified
      */
-    var $usermodified;
+    public $usermodified;
 
     /**
      * The final value of this grade.
      * @var float $finalgrade
      */
-    var $finalgrade;
+    public $finalgrade;
 
     /**
      * 0 if visible, 1 always hidden or date not visible until
      * @var float $hidden
      */
-    var $hidden = 0;
+    public $hidden = 0;
 
     /**
      * 0 not locked, date when the item was locked
      * @var float locked
      */
-    var $locked = 0;
+    public $locked = 0;
 
     /**
      * 0 no automatic locking, date when to lock the grade automatically
      * @var float $locktime
      */
-    var $locktime = 0;
+    public $locktime = 0;
 
     /**
      * Exported flag
      * @var boolean $exported
      */
-    var $exported = 0;
+    public $exported = 0;
 
     /**
      * Overridden flag
      * @var boolean $overridden
      */
-    var $overridden = 0;
+    public $overridden = 0;
 
     /**
      * Grade excluded from aggregation functions
      * @var boolean $excluded
      */
-    var $excluded = 0;
+    public $excluded = 0;
 
     /**
      * TODO: HACK: create a new field datesubmitted - the date of submission if any
      * @var boolean $timecreated
      */
-    var $timecreated = null;
+    public $timecreated = null;
 
     /**
      * TODO: HACK: create a new field dategraded - the date of grading
      * @var boolean $timemodified
      */
-    var $timemodified = null;
+    public $timemodified = null;
 
 
     /**
@@ -157,7 +159,8 @@ class grade_grade extends grade_object {
      * @param bool $include_missing include grades that do not exist yet
      * @return array userid=>grade_grade array
      */
-    function fetch_users_grades($grade_item, $userids, $include_missing=true) {
+    public static function fetch_users_grades($grade_item, $userids, $include_missing=true) {
+        global $DB;
 
         // hmm, there might be a problem with length of sql query
         // if there are too many users requested - we might run out of memory anyway
@@ -170,9 +173,10 @@ class grade_grade extends grade_object {
             return grade_grade::fetch_users_grades($grade_item, $first, $include_missing) + grade_grade::fetch_users_grades($grade_item, $second, $include_missing);
         }
 
-        $user_ids_cvs = implode(',', $userids);
+        list($user_ids_cvs, $params) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED, 'uid0');
+        $params['giid'] = $grade_item->id;
         $result = array();
-        if ($grade_records = get_records_select('grade_grades', "itemid={$grade_item->id} AND userid IN ($user_ids_cvs)")) {
+        if ($grade_records = $DB->get_records_select('grade_grades', "itemid=:giid AND userid $user_ids_cvs", $params)) {
             foreach ($grade_records as $record) {
                 $result[$record->userid] = new grade_grade($record, false);
             }
@@ -195,7 +199,7 @@ class grade_grade extends grade_object {
      * Loads the grade_item object referenced by $this->itemid and saves it as $this->grade_item for easy access.
      * @return object grade_item.
      */
-    function load_grade_item() {
+    public function load_grade_item() {
         if (empty($this->itemid)) {
             debugging('Missing itemid');
             $this->grade_item = null;
@@ -217,7 +221,7 @@ class grade_grade extends grade_object {
      * Is grading object editable?
      * @return boolean
      */
-    function is_editable() {
+    public function is_editable() {
         if ($this->is_locked()) {
             return false;
         }
@@ -238,7 +242,7 @@ class grade_grade extends grade_object {
      *
      * @return boolean true if locked, false if not
      */
-    function is_locked() {
+    public function is_locked() {
         $this->load_grade_item();
         if (empty($this->grade_item)) {
             return !empty($this->locked);
@@ -251,7 +255,7 @@ class grade_grade extends grade_object {
      * Checks if grade overridden
      * @return boolean
      */
-    function is_overridden() {
+    public function is_overridden() {
         return !empty($this->overridden);
     }
 
@@ -260,7 +264,7 @@ class grade_grade extends grade_object {
      * might be null if not submitted.
      * @return int
      */
-    function get_datesubmitted() {
+    public function get_datesubmitted() {
         //TODO: HACK - create new fields in 2.0
         return $this->timecreated;
     }
@@ -270,7 +274,7 @@ class grade_grade extends grade_object {
      * might be null if no grade present.
      * @return int
      */
-    function get_dategraded() {
+    public function get_dategraded() {
         //TODO: HACK - create new fields in 2.0
         if (is_null($this->finalgrade) and is_null($this->feedback)) {
             return null; // no grade == no date
@@ -287,7 +291,7 @@ class grade_grade extends grade_object {
      * @param boolean $refresh refresh grades from external activities if needed
      * @return boolean true is db state changed
      */
-    function set_overridden($state, $refresh = true) {
+    public function set_overridden($state, $refresh = true) {
         if (empty($this->overridden) and $state) {
             $this->overridden = time();
             $this->update();
@@ -311,7 +315,7 @@ class grade_grade extends grade_object {
      * Checks if grade excluded from aggregation functions
      * @return boolean
      */
-    function is_excluded() {
+    public function is_excluded() {
         return !empty($this->excluded);
     }
 
@@ -320,7 +324,7 @@ class grade_grade extends grade_object {
      * @param boolean $state requested excluded state
      * @return boolean true is db state changed
      */
-    function set_excluded($state) {
+    public function set_excluded($state) {
         if (empty($this->excluded) and $state) {
             $this->excluded = time();
             $this->update();
@@ -340,9 +344,9 @@ class grade_grade extends grade_object {
      * @param int $locked 0, 1 or a timestamp int(10) after which date the item will be locked.
      * @param boolean $cascade ignored param
      * @param boolean $refresh refresh grades when unlocking
-     * @return boolean true if sucessful, false if can not set new lock state for grade
+     * @return boolean true if successful, false if can not set new lock state for grade
      */
-    function set_locked($lockedstate, $cascade=false, $refresh=true) {
+    public function set_locked($lockedstate, $cascade=false, $refresh=true) {
         $this->load_grade_item();
 
         if ($lockedstate) {
@@ -380,21 +384,19 @@ class grade_grade extends grade_object {
      * @param array $items array of all grade item ids
      * @return void
      */
-    function check_locktime_all($items) {
-        global $CFG;
-
-        $items_sql = implode(',', $items);
+    public function check_locktime_all($items) {
+        global $CFG, $DB;
 
         $now = time(); // no rounding needed, this is not supposed to be called every 10 seconds
-
-        if ($rs = get_recordset_select('grade_grades', "itemid IN ($items_sql) AND locked = 0 AND locktime > 0 AND locktime < $now")) {
-            while ($grade = rs_fetch_next_record($rs)) {
-                $grade_grade = new grade_grade($grade, false);
-                $grade_grade->locked = time();
-                $grade_grade->update('locktime');
-            }
-            rs_close($rs);
+        list($usql, $params) = $DB->get_in_or_equal($items);
+        $params[] = $now;
+        $rs = $DB->get_recordset_select('grade_grades', "itemid $usql AND locked = 0 AND locktime > 0 AND locktime < ?", $params);
+        foreach ($rs as $grade) {
+            $grade_grade = new grade_grade($grade, false);
+            $grade_grade->locked = time();
+            $grade_grade->update('locktime');
         }
+        $rs->close();
     }
 
     /**
@@ -403,7 +405,7 @@ class grade_grade extends grade_object {
      * @param int $locktime timestamp for lock to activate
      * @return void
      */
-    function set_locktime($locktime) {
+    public function set_locktime($locktime) {
         $this->locktime = $locktime;
         $this->update();
     }
@@ -413,7 +415,7 @@ class grade_grade extends grade_object {
      *
      * @return int $locktime timestamp for lock to activate
      */
-    function get_locktime() {
+    public function get_locktime() {
         $this->load_grade_item();
 
         $item_locktime = $this->grade_item->get_locktime();
@@ -430,7 +432,7 @@ class grade_grade extends grade_object {
      * Check grade hidden status. Uses data from both grade item and grade.
      * @return boolean true if hidden, false if not
      */
-    function is_hidden() {
+    public function is_hidden() {
         $this->load_grade_item();
         if (empty($this->grade_item)) {
             return $this->hidden == 1 or ($this->hidden != 0 and $this->hidden > time());
@@ -443,7 +445,7 @@ class grade_grade extends grade_object {
      * Check grade hidden status. Uses data from both grade item and grade.
      * @return boolean true if hiddenuntil, false if not
      */
-    function is_hiddenuntil() {
+    public function is_hiddenuntil() {
         $this->load_grade_item();
 
         if ($this->hidden == 1 or $this->grade_item->hidden == 1) {
@@ -461,7 +463,7 @@ class grade_grade extends grade_object {
      * Check grade hidden status. Uses data from both grade item and grade.
      * @return int 0 means visible, 1 hidden always, timestamp hidden until
      */
-    function get_hidden() {
+    public function get_hidden() {
         $this->load_grade_item();
 
         $item_hidden = $this->grade_item->get_hidden();
@@ -490,7 +492,7 @@ class grade_grade extends grade_object {
      * @param boolean $cascade ignored
      * @param int $hidden new hidden status
      */
-    function set_hidden($hidden, $cascade=false) {
+    public function set_hidden($hidden, $cascade=false) {
        $this->hidden = $hidden;
        $this->update();
     }
@@ -502,7 +504,7 @@ class grade_grade extends grade_object {
      * @param array $params associative arrays varname=>value
      * @return object grade_grade instance or false if none found.
      */
-    function fetch($params) {
+    public static function fetch($params) {
         return grade_object::fetch_helper('grade_grades', 'grade_grade', $params);
     }
 
@@ -511,9 +513,9 @@ class grade_grade extends grade_object {
      * @static
      *
      * @param array $params associative arrays varname=>value
-     * @return array array of grade_grade insatnces or false if none found.
+     * @return array array of grade_grade instances or false if none found.
      */
-    function fetch_all($params) {
+    public static function fetch_all($params) {
         return grade_object::fetch_all_helper('grade_grades', 'grade_grade', $params);
     }
 
@@ -530,7 +532,7 @@ class grade_grade extends grade_object {
      * @param float $target_max
      * @return float Converted value
      */
-    function standardise_score($rawgrade, $source_min, $source_max, $target_min, $target_max) {
+    public static function standardise_score($rawgrade, $source_min, $source_max, $target_min, $target_max) {
         if (is_null($rawgrade)) {
           return null;
         }
@@ -556,11 +558,11 @@ class grade_grade extends grade_object {
      * @param array $items $grade_items array of grade items, & used for better internal caching
      * @return array
      */
-    function get_hiding_affected(&$grade_grades, &$grade_items) {
+    public static function get_hiding_affected(&$grade_grades, &$grade_items) {
         global $CFG;
 
         if (count($grade_grades) !== count($grade_items)) {
-            error('Incorrect size of arrays in params of grade_grade::get_hiding_affected()!');
+            print_error('invalidarraysize', 'debug', '', 'grade_grade::get_hiding_affected()!');
         }
 
         $dependson = array();
@@ -619,6 +621,7 @@ class grade_grade extends grade_object {
                             unset($todo[$key]);
                             $found = true;
                             continue;
+
                         } else {
                             $grade_category = $grade_items[$do]->load_item_category();
 
@@ -695,7 +698,7 @@ class grade_grade extends grade_object {
      * @param object $grade_item An optional grade_item of which gradepass value we can use, saves having to load the grade_grade's grade_item
      * @return boolean
      */
-    function is_passed($grade_item = null) {
+    public function is_passed($grade_item = null) {
         if (empty($grade_item)) {
             if (!isset($this->grade_item)) {
                 $this->load_grade_item();
@@ -718,7 +721,7 @@ class grade_grade extends grade_object {
         return $this->finalgrade >= $this->grade_item->gradepass;
     }
 
-    function insert($source=null) {
+    public function insert($source=null) {
         // TODO: dategraded hack - do not update times, they are used for submission and grading
         //$this->timecreated = $this->timemodified = time();
         return parent::insert($source);
@@ -730,7 +733,7 @@ class grade_grade extends grade_object {
      * @param string $source from where was the object inserted (mod/forum, manual, etc.)
      * @return boolean success
      */
-    function update($source=null) {
+    public function update($source=null) {
         $this->rawgrade    = grade_floatval($this->rawgrade);
         $this->finalgrade  = grade_floatval($this->finalgrade);
         $this->rawgrademin = grade_floatval($this->rawgrademin);
@@ -744,17 +747,22 @@ class grade_grade extends grade_object {
      * @param bool deleted True if grade was actually deleted
      */
     function notify_changed($deleted) {
+        global $USER, $SESSION, $CFG,$COURSE, $DB;
+
         // Grades may be cached in user session
-        global $USER, $SESSION, $COURSE;
         if ($USER->id == $this->userid) {
             unset($SESSION->gradescorecache[$this->itemid]);
         }
 
         // Ignore during restore
+        // TODO There should be a proper way to determine when we are in restore
+        // so that this hack looking for a $restore global is not needed.
         global $restore;
         if (!empty($restore->backup_unique_code)) {
             return;
         }
+
+        require_once($CFG->libdir.'/completionlib.php');
 
         // Bail out immediately if completion is not enabled for site (saves loading
         // grade item below)
@@ -766,20 +774,15 @@ class grade_grade extends grade_object {
         $this->load_grade_item();
 
         // Only course-modules have completion data
-        if ($this->grade_item->itemtype != 'mod') {
+        if ($this->grade_item->itemtype!='mod') {
             return;
         }
 
         // Use $COURSE if available otherwise get it via item fields
-        if (!empty($COURSE) && $COURSE->id == $this->grade_item->courseid) {
+        if(!empty($COURSE) && $COURSE->id == $this->grade_item->courseid) {
             $course = $COURSE;
         } else {
-            $course = get_record('course', 'id', $this->grade_item->courseid);
-        }
-
-        // Check the course object exists
-        if (!$course) {
-            return;
+            $course = $DB->get_record('course', array('id'=>$this->grade_item->courseid));
         }
 
         // Bail out if completion is not enabled for course
@@ -789,20 +792,17 @@ class grade_grade extends grade_object {
         }
 
         // Get course-module
-        $cm = get_coursemodule_from_instance(
-            $this->grade_item->itemmodule,
-            $this->grade_item->iteminstance,
-            $this->grade_item->courseid
-        );
-
+        $cm = get_coursemodule_from_instance($this->grade_item->itemmodule,
+              $this->grade_item->iteminstance, $this->grade_item->courseid);
+        // If the course-module doesn't exist, display a warning...
         if (!$cm) {
-            // Only show the debug message if we are not deleting the information.
-            // This is because when deleting a course, the course modules get deleted before
-            // the grades...
+            // ...unless the grade is being deleted in which case it's likely
+            // that the course-module was just deleted too, so that's okay.
             if (!$deleted) {
-                debugging("Couldn't find course-module for module
-                    '{$this->grade_item->itemmodule}', instance '{$this->grade_item->iteminstance}',
-                    course '{$this->grade_item->courseid}'");
+                debugging("Couldn't find course-module for module '" .
+                        $this->grade_item->itemmodule . "', instance '" .
+                        $this->grade_item->iteminstance . "', course '" .
+                        $this->grade_item->courseid . "'");
             }
             return;
         }
@@ -811,4 +811,3 @@ class grade_grade extends grade_object {
         $completion->inform_grade_changed($cm, $this->grade_item, $this, $deleted);
      }
 }
-?>

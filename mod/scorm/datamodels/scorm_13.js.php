@@ -1,17 +1,35 @@
 <?php
-    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    if (isset($userdata->status)) {
-        if (!isset($userdata->{'cmi.exit'}) || (($userdata->{'cmi.exit'} == 'time-out') || ($userdata->{'cmi.exit'} == 'normal'))) {
-                $userdata->entry = 'ab-initio';
+require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+
+if (isset($userdata->status)) {
+    if (!isset($userdata->{'cmi.exit'}) || (($userdata->{'cmi.exit'} == 'time-out') || ($userdata->{'cmi.exit'} == 'normal'))) {
+            $userdata->entry = 'ab-initio';
+    } else {
+        if (isset($userdata->{'cmi.exit'}) && (($userdata->{'cmi.exit'} == 'suspend') || ($userdata->{'cmi.exit'} == 'logout'))) {
+            $userdata->entry = 'resume';
         } else {
-            if (isset($userdata->{'cmi.exit'}) && (($userdata->{'cmi.exit'} == 'suspend') || ($userdata->{'cmi.exit'} == 'logout'))) {
-                $userdata->entry = 'resume';
-            } else {
-                $userdata->entry = '';
-            }
+            $userdata->entry = '';
         }
     }
+}
+if (!isset($currentorg)) {
+    $currentorg = '';
+}
 ?>
 
 // Used need to debug cmi content (if you uncomment this, you must comment the definition inside SCORMapi1_3)
@@ -159,11 +177,11 @@ function SCORMapi1_3() {
         'cmi.comments_from_lms.n.comment':{'format':CMILangString4000, 'mod':'r'},
         'cmi.comments_from_lms.n.location':{'format':CMIString250, 'mod':'r'},
         'cmi.comments_from_lms.n.timestamp':{'format':CMITime, 'mod':'r'},
-        'cmi.completion_status':{'defaultvalue':'<?php echo isset($userdata->{'cmi.completion_status'})?$userdata->{'cmi.completion_status'}:'unknown' ?>', 'format':CMICStatus, 'mod':'rw'},
-        'cmi.completion_threshold':{'defaultvalue':<?php echo isset($userdata->threshold)?'\''.$userdata->threshold.'\'':'null' ?>, 'mod':'r'},
-        'cmi.credit':{'defaultvalue':'<?php echo isset($userdata->credit)?$userdata->credit:'' ?>', 'mod':'r'},
+        'cmi.completion_status':{'defaultvalue':'<?php echo !empty($userdata->{'cmi.completion_status'})?$userdata->{'cmi.completion_status'}:'unknown' ?>', 'format':CMICStatus, 'mod':'rw'},
+        'cmi.completion_threshold':{'defaultvalue':<?php echo !empty($userdata->threshold)?'\''.$userdata->threshold.'\'':'null' ?>, 'mod':'r'},
+        'cmi.credit':{'defaultvalue':'<?php echo !empty($userdata->credit)?$userdata->credit:'' ?>', 'mod':'r'},
         'cmi.entry':{'defaultvalue':'<?php echo $userdata->entry ?>', 'mod':'r'},
-        'cmi.exit':{'defaultvalue':'<?php echo isset($userdata->{'cmi.exit'})?$userdata->{'cmi.exit'}:'' ?>', 'format':CMIExit, 'mod':'w'},
+        'cmi.exit':{'defaultvalue':'<?php echo !empty($userdata->{'cmi.exit'})?$userdata->{'cmi.exit'}:'' ?>', 'format':CMIExit, 'mod':'w'},
         'cmi.interactions._children':{'defaultvalue':interactions_children, 'mod':'r'},
         'cmi.interactions._count':{'mod':'r', 'defaultvalue':'0'},
         'cmi.interactions.n.id':{'pattern':CMIIndex, 'format':CMILongIdentifier, 'mod':'rw'},
@@ -178,16 +196,16 @@ function SCORMapi1_3() {
         'cmi.interactions.n.result':{'pattern':CMIIndex, 'format':CMIResult, 'mod':'rw'},
         'cmi.interactions.n.latency':{'pattern':CMIIndex, 'format':CMITimespan, 'mod':'rw'},
         'cmi.interactions.n.description':{'pattern':CMIIndex, 'format':CMILangString250, 'mod':'rw'},
-        'cmi.launch_data':{'defaultvalue':<?php echo isset($userdata->datafromlms)?'\''.$userdata->datafromlms.'\'':'null' ?>, 'mod':'r'},
+        'cmi.launch_data':{'defaultvalue':<?php echo !empty($userdata->datafromlms)?'\''.$userdata->datafromlms.'\'':'null' ?>, 'mod':'r'},
         'cmi.learner_id':{'defaultvalue':'<?php echo $userdata->student_id ?>', 'mod':'r'},
         'cmi.learner_name':{'defaultvalue':'<?php echo $userdata->student_name ?>', 'mod':'r'},
         'cmi.learner_preference._children':{'defaultvalue':student_preference_children, 'mod':'r'},
-        'cmi.learner_preference.audio_level':{'defaultvalue':'1', 'format':CMIDecimal, 'range':audio_range, 'mod':'rw'},
-        'cmi.learner_preference.language':{'defaultvalue':'', 'format':CMILang, 'mod':'rw'},
-        'cmi.learner_preference.delivery_speed':{'defaultvalue':'1', 'format':CMIDecimal, 'range':speed_range, 'mod':'rw'},
-        'cmi.learner_preference.audio_captioning':{'defaultvalue':'0', 'format':CMISInteger, 'range':text_range, 'mod':'rw'},
-        'cmi.location':{'defaultvalue':<?php echo isset($userdata->{'cmi.location'})?'\''.$userdata->{'cmi.location'}.'\'':'null' ?>, 'format':CMIString1000, 'mod':'rw'},
-        'cmi.max_time_allowed':{'defaultvalue':<?php echo isset($userdata->maxtimeallowed)?'\''.$userdata->maxtimeallowed.'\'':'null' ?>, 'mod':'r'},
+        'cmi.learner_preference.audio_level':{'defaultvalue':<?php echo !empty($userdata->{'cmi.learner_preference.audio_level'})?'\''.$userdata->{'cmi.learner_preference.audio_level'}.'\'':'\'1\'' ?>, 'format':CMIDecimal, 'range':audio_range, 'mod':'rw'},
+        'cmi.learner_preference.language':{'defaultvalue':<?php echo !empty($userdata->{'cmi.learner_preference.language'})?'\''.$userdata->{'cmi.learner_preference.language'}.'\'':'\'\'' ?>, 'format':CMILang, 'mod':'rw'},
+        'cmi.learner_preference.delivery_speed':{'defaultvalue':<?php echo !empty($userdata->{'cmi.learner_preference.delivery_speed'})?'\''.$userdata->{'cmi.learner_preference.delivery_speed'}.'\'':'\'1\'' ?>, 'format':CMIDecimal, 'range':speed_range, 'mod':'rw'},
+        'cmi.learner_preference.audio_captioning':{'defaultvalue':<?php echo !empty($userdata->{'cmi.learner_preference.audio_captioning'})?'\''.$userdata->{'cmi.learner_preference.audio_captioning'}.'\'':'\'0\'' ?>, 'format':CMISInteger, 'range':text_range, 'mod':'rw'},
+        'cmi.location':{'defaultvalue':<?php echo !empty($userdata->{'cmi.location'})?'\''.$userdata->{'cmi.location'}.'\'':'null' ?>, 'format':CMIString1000, 'mod':'rw'},
+        'cmi.max_time_allowed':{'defaultvalue':<?php echo !empty($userdata->attemptAbsoluteDurationLimit)?'\''.$userdata->attemptAbsoluteDurationLimit.'\'':'null' ?>, 'mod':'r'},
         'cmi.mode':{'defaultvalue':'<?php echo $userdata->mode ?>', 'mod':'r'},
         'cmi.objectives._children':{'defaultvalue':objectives_children, 'mod':'r'},
         'cmi.objectives._count':{'mod':'r', 'defaultvalue':'0'},
@@ -201,18 +219,18 @@ function SCORMapi1_3() {
         'cmi.objectives.n.completion_status':{'defaultvalue':'unknown', 'pattern':CMIIndex, 'format':CMICStatus, 'mod':'rw'},
         'cmi.objectives.n.progress_measure':{'defaultvalue':null, 'format':CMIDecimal, 'range':progress_range, 'mod':'rw'},
         'cmi.objectives.n.description':{'pattern':CMIIndex, 'format':CMILangString250, 'mod':'rw'},
-        'cmi.progress_measure':{'defaultvalue':<?php echo isset($userdata->{'cmi.progess_measure'})?'\''.$userdata->{'cmi.progress_measure'}.'\'':'null' ?>, 'format':CMIDecimal, 'range':progress_range, 'mod':'rw'},
-        'cmi.scaled_passing_score':{'defaultvalue':<?php echo isset($userdata->{'cmi.scaled_passing_score'})?'\''.$userdata->{'cmi.scaled_passing_score'}.'\'':'null' ?>, 'format':CMIDecimal, 'range':scaled_range, 'mod':'r'},
+        'cmi.progress_measure':{'defaultvalue':<?php echo !empty($userdata->{'cmi.progress_measure'})?'\''.$userdata->{'cmi.progress_measure'}.'\'':'null' ?>, 'format':CMIDecimal, 'range':progress_range, 'mod':'rw'},
+        'cmi.scaled_passing_score':{'defaultvalue':<?php echo !empty($userdata->{'cmi.scaled_passing_score'})?'\''.$userdata->{'cmi.scaled_passing_score'}.'\'':'null' ?>, 'format':CMIDecimal, 'range':scaled_range, 'mod':'r'},
         'cmi.score._children':{'defaultvalue':score_children, 'mod':'r'},
-        'cmi.score.scaled':{'defaultvalue':<?php echo isset($userdata->{'cmi.score.scaled'})?'\''.$userdata->{'cmi.score.scaled'}.'\'':'null' ?>, 'format':CMIDecimal, 'range':scaled_range, 'mod':'rw'},
-        'cmi.score.raw':{'defaultvalue':<?php echo isset($userdata->{'cmi.score.raw'})?'\''.$userdata->{'cmi.score.raw'}.'\'':'null' ?>, 'format':CMIDecimal, 'mod':'rw'},
-        'cmi.score.min':{'defaultvalue':<?php echo isset($userdata->{'cmi.score.min'})?'\''.$userdata->{'cmi.score.min'}.'\'':'null' ?>, 'format':CMIDecimal, 'mod':'rw'},
-        'cmi.score.max':{'defaultvalue':<?php echo isset($userdata->{'cmi.score.max'})?'\''.$userdata->{'cmi.score.max'}.'\'':'null' ?>, 'format':CMIDecimal, 'mod':'rw'},
+        'cmi.score.scaled':{'defaultvalue':<?php echo !empty($userdata->{'cmi.score.scaled'})?'\''.$userdata->{'cmi.score.scaled'}.'\'':'null' ?>, 'format':CMIDecimal, 'range':scaled_range, 'mod':'rw'},
+        'cmi.score.raw':{'defaultvalue':<?php echo !empty($userdata->{'cmi.score.raw'})?'\''.$userdata->{'cmi.score.raw'}.'\'':'null' ?>, 'format':CMIDecimal, 'mod':'rw'},
+        'cmi.score.min':{'defaultvalue':<?php echo !empty($userdata->{'cmi.score.min'})?'\''.$userdata->{'cmi.score.min'}.'\'':'null' ?>, 'format':CMIDecimal, 'mod':'rw'},
+        'cmi.score.max':{'defaultvalue':<?php echo !empty($userdata->{'cmi.score.max'})?'\''.$userdata->{'cmi.score.max'}.'\'':'null' ?>, 'format':CMIDecimal, 'mod':'rw'},
         'cmi.session_time':{'format':CMITimespan, 'mod':'w', 'defaultvalue':'PT0H0M0S'},
-        'cmi.success_status':{'defaultvalue':'<?php echo isset($userdata->{'cmi.success_status'})?$userdata->{'cmi.success_status'}:'unknown' ?>', 'format':CMISStatus, 'mod':'rw'},
-        'cmi.suspend_data':{'defaultvalue':<?php echo isset($userdata->{'cmi.suspend_data'})?'\''.$userdata->{'cmi.suspend_data'}.'\'':'null' ?>, 'format':CMIString64000, 'mod':'rw'},
-        'cmi.time_limit_action':{'defaultvalue':<?php echo isset($userdata->timelimitaction)?'\''.$userdata->timelimitaction.'\'':'null' ?>, 'mod':'r'},
-        'cmi.total_time':{'defaultvalue':'<?php echo isset($userdata->{'cmi.total_time'})?$userdata->{'cmi.total_time'}:'PT0H0M0S' ?>', 'mod':'r'},
+        'cmi.success_status':{'defaultvalue':'<?php echo !empty($userdata->{'cmi.success_status'})?$userdata->{'cmi.success_status'}:'unknown' ?>', 'format':CMISStatus, 'mod':'rw'},
+        'cmi.suspend_data':{'defaultvalue':<?php echo !empty($userdata->{'cmi.suspend_data'})?'\''.$userdata->{'cmi.suspend_data'}.'\'':'null' ?>, 'format':CMIString64000, 'mod':'rw'},
+        'cmi.time_limit_action':{'defaultvalue':<?php echo !empty($userdata->timelimitaction)?'\''.$userdata->timelimitaction.'\'':'null' ?>, 'mod':'r'},
+        'cmi.total_time':{'defaultvalue':'<?php echo !empty($userdata->{'cmi.total_time'})?$userdata->{'cmi.total_time'}:'PT0H0M0S' ?>', 'mod':'r'},
         'adl.nav.request':{'defaultvalue':'_none_', 'format':NAVEvent, 'mod':'rw'}
     };
     //
@@ -263,6 +281,7 @@ function SCORMapi1_3() {
     var Initialized = false;
     var Terminated = false;
     var diagnostic = "";
+    var errorCode = "0";
 
     function Initialize (param) {
         errorCode = "0";
@@ -271,8 +290,7 @@ function SCORMapi1_3() {
                 Initialized = true;
                 errorCode = "0";
                 <?php
-                    if (debugging('',DEBUG_DEVELOPER)) {
-//                        echo 'alert("Initialized SCORM 1.3");';
+                    if (scorm_debugging($scorm)) {
                         echo 'LogAPICall("Initialize", param, "", errorCode);';
                     }
                 ?>
@@ -288,52 +306,71 @@ function SCORMapi1_3() {
             errorCode = "201";
         }
         <?php
-            if (debugging('',DEBUG_DEVELOPER)) {
-//                echo 'alert("Initialize: "+GetErrorString(errorCode));';
+            if (scorm_debugging($scorm)) {
                 echo 'LogAPICall("Initialize", param, "", errorCode);';
             }
         ?>
         return "false";
     }
 
+
+<?php
+    // pull in the TOC callback
+    include_once($CFG->dirroot.'/mod/scorm/datamodels/callback.js.php');
+ ?>
+
+
     function Terminate (param) {
         errorCode = "0";
         if (param == "") {
             if ((Initialized) && (!Terminated)) {
+                var AJAXResult = StoreData(cmi,true);
                 <?php
-                    if (debugging('',DEBUG_DEVELOPER)) {
-//                        echo 'alert("Terminated SCORM 1.3");';
-                        echo 'LogAPICall("Terminate", param, "", 0);';
+                    if (scorm_debugging($scorm)) {
+                        echo 'LogAPICall("Terminate", "AJAXResult", AJAXResult, 0);';
                     }
                 ?>
-                Initialized = false;
-                Terminated = true;
-                var result = StoreData(cmi,true);
-                if (adl.nav.request != '_none_') {
-                    switch (adl.nav.request) {
-                        case 'continue':
-                            setTimeout('top.nextSCO();',500);
-                        break;
-                        case 'previous':
-                            setTimeout('top.prevSCO();',500);
-                        break;
-                        case 'choice':
-                        break;
-                        case 'exit':
-                        break;
-                        case 'exitAll':
-                        break;
-                        case 'abandon':
-                        break;
-                        case 'abandonAll':
-                        break;
+                result = ('true' == AJAXResult) ? 'true' : 'false';
+                errorCode = ('true' == result)? '0' : '101'; // General exception for any AJAX fault
+                <?php
+                    if (scorm_debugging($scorm)) {
+                        echo 'LogAPICall("Terminate", "result", result, errorCode);';
                     }
+                ?>
+                if ('true' == result) {
+                    Initialized = false;
+                    Terminated = true;
+                    if (adl.nav.request != '_none_') {
+                        switch (adl.nav.request) {
+                            case 'continue':
+                                setTimeout('scorm_get_next();',500);
+                            break;
+                            case 'previous':
+                                setTimeout('scorm_get_prev();',500);
+                            break;
+                            case 'choice':
+                            break;
+                            case 'exit':
+                            break;
+                            case 'exitAll':
+                            break;
+                            case 'abandon':
+                            break;
+                            case 'abandonAll':
+                            break;
+                        }
+                    } else {
+                        if (<?php echo $scorm->auto ?> == 1) {
+                            setTimeout('scorm_get_next();',500);
+                        }
+                    }
+                    // trigger TOC update
+                    var sURL = "<?php echo $CFG->wwwroot; ?>" + "/mod/scorm/prereqs.php?a=<?php echo $scorm->id ?>&scoid=<?php echo $scoid ?>&attempt=<?php echo $attempt ?>&mode=<?php echo $mode ?>&currentorg=<?php echo $currentorg ?>&sesskey=<?php echo sesskey(); ?>";
+                    YAHOO.util.Connect.asyncRequest('GET', sURL, this.connectPrereqCallback, null);
                 } else {
-                    if (<?php echo $scorm->auto ?> == 1) {
-                        setTimeout('top.nextSCO();',500);
-                    }
+                    diagnostic = "Failure calling the Terminate remote callback: the server replied with HTTP Status " + AJAXResult;
                 }
-                return "true";
+                return result;
             } else {
                 if (Terminated) {
                     errorCode = "113";
@@ -345,8 +382,8 @@ function SCORMapi1_3() {
             errorCode = "201";
         }
         <?php
-            if (debugging('',DEBUG_DEVELOPER)) {
-                echo 'alert("Terminate: "+GetErrorString(errorCode));';
+            if (scorm_debugging($scorm)) {
+                echo 'LogAPICall("Terminate", param, "", errorCode);';
             }
         ?>
         return "false";
@@ -377,8 +414,7 @@ function SCORMapi1_3() {
                             if ((typeof eval(subelement) != "undefined") && (eval(subelement) != null)) {
                                 errorCode = "0";
                                 <?php
-                                    if (debugging('',DEBUG_DEVELOPER)) {
-//                                        echo 'alert("GetValue("+element+") -> "+eval(element));';
+                                    if (scorm_debugging($scorm)) {
                                         echo 'LogAPICall("GetValue", element, eval(element), 0);';
                                     }
                                 ?>
@@ -443,8 +479,7 @@ function SCORMapi1_3() {
             }
         }
         <?php
-            if (debugging('',DEBUG_DEVELOPER)) {
-//                echo 'alert("GetValue("+element+") -> "+GetErrorString(errorCode));';
+            if (scorm_debugging($scorm)) {
                 echo 'LogAPICall("GetValue", element, "", errorCode);';
             }
         ?>
@@ -692,8 +727,8 @@ function SCORMapi1_3() {
                                                 }
                                              break;
                                          case 'cmi.interactions.n.correct_responses.n.pattern':
-											 subel= subelement.split('.');
-											 subel1= 'cmi.interactions.'+subel[2];
+	                                         subel= subelement.split('.');
+                                             subel1= 'cmi.interactions.'+subel[2];
 
                                                 if (typeof eval(subel1+'.type') == "undefined") {
                                                     errorCode="408";
@@ -740,8 +775,7 @@ function SCORMapi1_3() {
                                             eval(element+'=value;');
                                             errorCode = "0";
                                             <?php
-                                                if (debugging('',DEBUG_DEVELOPER)) {
-//                                                    echo 'alert("SetValue("+element+","+value+") -> OK");';
+                                                if (scorm_debugging($scorm)) {
                                                     echo 'LogAPICall("SetValue", element, value, errorCode);';
                                                 }
                                             ?>
@@ -756,8 +790,7 @@ function SCORMapi1_3() {
                                     eval(element+'=value;');
                                     errorCode = "0";
                                     <?php
-                                        if (debugging('',DEBUG_DEVELOPER)) {
-//                                           echo 'alert("SetValue("+element+","+value+") -> OK");';
+                                        if (scorm_debugging($scorm)) {
                                             echo 'LogAPICall("SetValue", element, value, errorCode);';
                                         }
                                     ?>
@@ -784,7 +817,7 @@ function SCORMapi1_3() {
             }
         }
         <?php
-            if (debugging('',DEBUG_DEVELOPER)) {
+            if (scorm_debugging($scorm)) {
                 echo 'LogAPICall("SetValue", element, value, errorCode);';
             }
         ?>
@@ -909,14 +942,23 @@ function SCORMapi1_3() {
         errorCode = "0";
         if (param == "") {
             if ((Initialized) && (!Terminated)) {
-                result = StoreData(cmi,false);
+                var AJAXResult = StoreData(cmi,false);
                 <?php
-                    if (debugging('',DEBUG_DEVELOPER)) {
-                        echo 'LogAPICall("Commit", param, "", 0);';
-                        //echo 'alert("Data Commited");';
+                    if (scorm_debugging($scorm)) {
+                        echo 'LogAPICall("Commit", "AJAXResult", AJAXResult, 0);';
                     }
                 ?>
-                return "true";
+                var result = ('true' == AJAXResult) ? 'true' : 'false';
+                errorCode = ('true' == result)? '0' : '101'; // General exception for any AJAX fault
+                <?php
+                    if (scorm_debugging($scorm)) {
+                        echo 'LogAPICall("Commit", "result", result, errorCode);';
+                    }
+                ?>
+                if ('false' == result) {
+                    diagnostic = "Failure calling the Commit remote callback: the server replied with HTTP Status " + AJAXResult;
+                }
+                return result;
             } else {
                 if (Terminated) {
                     errorCode = "143";
@@ -928,17 +970,16 @@ function SCORMapi1_3() {
             errorCode = "201";
         }
         <?php
-            if (debugging('',DEBUG_DEVELOPER)) {
-                echo 'LogAPICall("Commit", param, "", 0);';
-//                echo 'alert("Commit: "+GetErrorString(errorCode));';
+            if (scorm_debugging($scorm)) {
+                echo 'LogAPICall("Commit", param, "", errorCode);';
             }
         ?>
         return "false";
     }
 
     function GetLastError () {
-     <?php
-        if (debugging('',DEBUG_DEVELOPER)) {
+    <?php
+        if (scorm_debugging($scorm)) {
             echo 'LogAPICall("GetLastError", "", "", errorCode);';
         }
     ?>
@@ -1029,14 +1070,14 @@ function SCORMapi1_3() {
                 break;
             }
             <?php
-            if (debugging('',DEBUG_DEVELOPER)) {
+            if (scorm_debugging($scorm)) {
                 echo 'LogAPICall("GetErrorString", param,  errorString, 0);';
             }
              ?>
             return errorString;
         } else {
            <?php
-            if (debugging('',DEBUG_DEVELOPER)) {
+            if (scorm_debugging($scorm)) {
                 echo 'LogAPICall("GetErrorString", param,  "No error string found!", 0);';
             }
              ?>
@@ -1047,14 +1088,14 @@ function SCORMapi1_3() {
     function GetDiagnostic (param) {
         if (diagnostic != "") {
             <?php
-                if (debugging('',DEBUG_DEVELOPER)) {
+                if (scorm_debugging($scorm)) {
                     echo 'LogAPICall("GetDiagnostic", param, diagnostic, 0);';
                 }
             ?>
             return diagnostic;
         }
         <?php
-            if (debugging('',DEBUG_DEVELOPER)) {
+            if (scorm_debugging($scorm)) {
                 echo 'LogAPICall("GetDiagnostic", param, param, 0);';
             }
         ?>
@@ -1098,7 +1139,7 @@ function SCORMapi1_3() {
 
     function AddTime (first, second) {
         <?php
-//            if (debugging('',DEBUG_DEVELOPER)) {
+//            if (scorm_debugging($scorm)) {
 //                echo 'alert("AddTime: "+first+" + "+second);';
 //            }
         ?>
@@ -1228,18 +1269,8 @@ function SCORMapi1_3() {
         datastring += navrequest;
         datastring += '&attempt=<?php echo $attempt ?>';
         datastring += '&scoid=<?php echo $scoid ?>';
-        <?php
-//            if (debugging('',DEBUG_DEVELOPER)) {
-//                echo 'popupwin(datastring);';
-//            }
-        ?>
         var myRequest = NewHttpReq();
-        var result = DoRequest(myRequest,"<?php p($CFG->wwwroot) ?>/mod/scorm/datamodel.php","id=<?php p($id) ?>&sesskey=<?php p($USER->sesskey) ?>"+datastring);
-        <?php
-//            if (debugging('',DEBUG_DEVELOPER)) {
-//                echo 'popupwin(result);';
-//            }
-        ?>
+        var result = DoRequest(myRequest,"<?php p($CFG->wwwroot) ?>/mod/scorm/datamodel.php","id=<?php p($id) ?>&a=<?php p($a) ?>&sesskey=<?php echo sesskey() ?>"+datastring);
         var results = String(result).split('\n');
         if ((results.length > 2) && (navrequest != '')) {
             eval(results[2]);
@@ -1263,8 +1294,7 @@ var API_1484_11 = new SCORMapi1_3();
 
 <?php
 // pull in the debugging utilities
-if (debugging('',DEBUG_DEVELOPER)) {
+if (scorm_debugging($scorm)) {
     include_once($CFG->dirroot.'/mod/scorm/datamodels/debug.js.php');
     echo 'AppendToLog("Moodle SCORM 1.3 API Loaded, Activity: '.$scorm->name.', SCO: '.$sco->identifier.'", 0);';
 }
- ?>

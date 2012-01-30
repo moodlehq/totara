@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -34,40 +34,47 @@ class data_field_date extends data_field_base {
     var $month = 0;
     var $year  = 0;
 
-    function data_field_date($field=0, $data=0) {
-        parent::data_field_base($field, $data);
-    }
-
     function display_add_field($recordid=0) {
+        global $DB, $OUTPUT;
 
         if ($recordid) {
-            $content = (int) get_field('data_content', 'content', 'fieldid', $this->field->id, 'recordid', $recordid);
+            $content = (int)$DB->get_field('data_content', 'content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid));
         } else {
             $content = time();
         }
 
         $str = '<div title="'.s($this->field->description).'">';
-        $str .= print_date_selector('field_'.$this->field->id.'_day', 'field_'.$this->field->id.'_month',
-                                    'field_'.$this->field->id.'_year', $content, true);
+        $dayselector = html_writer::select_time('days', 'field_'.$this->field->id.'_day', $content);
+        $monthselector = html_writer::select_time('months', 'field_'.$this->field->id.'_month', $content);
+        $yearselector = html_writer::select_time('years', 'field_'.$this->field->id.'_year', $content);
+        $str .= $dayselector . $monthselector . $yearselector;
         $str .= '</div>';
 
         return $str;
     }
-    
+
     //Enable the following three functions once core API issues have been addressed.
     function display_search_field($value=0) {
-        return false;
+        $selectors = html_writer::select_time('days', 'f_'.$this->field->id.'_d', $value)
+           . html_writer::select_time('months', 'f_'.$this->field->id.'_m', $value)
+           . html_writer::select_time('years', 'f_'.$this->field->id.'_y', $value);
+       return $selectors;
+
         //return print_date_selector('f_'.$this->field->id.'_d', 'f_'.$this->field->id.'_m', 'f_'.$this->field->id.'_y', $value, true);
     }
-    
+
     function generate_sql($tablealias, $value) {
-        return ' 1=1 ';
-        //return " ({$tablealias}.fieldid = {$this->field->id} AND {$tablealias}.content = '$value') "; 
+        global $DB;
+
+        static $i=0;
+        $i++;
+        $name = "df_date_$i";
+        $varcharcontent = $DB->sql_compare_text("{$tablealias}.content");
+        return array(" ({$tablealias}.fieldid = {$this->field->id} AND $varcharcontent = :$name) ", array($name=>$value));
     }
-    
+
     function parse_search_field() {
-        return '';
-       /* 
+
         $day   = optional_param('f_'.$this->field->id.'_d', 0, PARAM_INT);
         $month = optional_param('f_'.$this->field->id.'_m', 0, PARAM_INT);
         $year  = optional_param('f_'.$this->field->id.'_y', 0, PARAM_INT);
@@ -77,10 +84,11 @@ class data_field_date extends data_field_base {
         else {
             return 0;
         }
-        */
+
     }
 
     function update_content($recordid, $value, $name='') {
+        global $DB;
 
         $names = explode('_',$name);
         $name = $names[2];          // day month or year
@@ -89,35 +97,34 @@ class data_field_date extends data_field_base {
 
         if ($this->day and $this->month and $this->year) {  // All of them have been collected now
 
-            $content = new object;
+            $content = new stdClass();
             $content->fieldid = $this->field->id;
             $content->recordid = $recordid;
             $content->content = make_timestamp($this->year, $this->month, $this->day, 12, 0, 0, 0, false);
 
-            if ($oldcontent = get_record('data_content','fieldid', $this->field->id, 'recordid', $recordid)) {
+            if ($oldcontent = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
                 $content->id = $oldcontent->id;
-                return update_record('data_content', $content);
+                return $DB->update_record('data_content', $content);
             } else {
-                return insert_record('data_content', $content);
+                return $DB->insert_record('data_content', $content);
             }
         }
     }
 
     function display_browse_field($recordid, $template) {
+        global $CFG, $DB;
 
-        global $CFG;
-
-        if ($content = get_field('data_content', 'content', 'fieldid', $this->field->id, 'recordid', $recordid)){
+        if ($content = $DB->get_field('data_content', 'content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             return userdate($content, get_string('strftimedate'), 0);
         }
     }
 
     function get_sort_sql($fieldname) {
-
-         return sql_cast_char2int($fieldname, true);
+        global $DB;
+        return $DB->sql_cast_char2int($fieldname, true);
     }
 
 
 }
 
-?>
+

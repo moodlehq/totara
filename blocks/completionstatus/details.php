@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,16 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Block for displayed logged in user's course completion status
  *
- * @package   moodlecore
- * @copyright 2009 Catalyst IT Ltd
- * @author    Aaron Barnes <aaronb@catalyst.net.nz>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block
+ * @subpackage completion
+ * @copyright  2009 Catalyst IT Ltd
+ * @author     Aaron Barnes <aaronb@catalyst.net.nz>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once('../../config.php');
+require_once($CFG->libdir.'/completionlib.php');
+
+
+// TODO:  Make this page Moodle 2.0 compliant
 
 
 ///
@@ -35,21 +39,37 @@ $id = required_param('course', PARAM_INT);
 $userid = optional_param('user', 0, PARAM_INT);
 
 // Load course
-$course = get_record('course', 'id', $id);
+$course = $DB->get_record('course', array('id' => $id));
 
 // Load user
 if ($userid) {
-    if (!$user = get_record('user', 'id', $userid)) {
-        error('User ID incorrect');
-    }
+    $user = $DB->get_record('user', array('id' => $userid), '*', MUST_EXIST);
 } else {
     $user = $USER;
 }
 
 
 // Check permissions
-if (!completion_can_view_data($user->id, $course->id)) {
-    print_error('cannotviewreport', 'block_completionstatus');
+require_login($course);
+
+$coursecontext   = get_context_instance(CONTEXT_COURSE, $course->id);
+$personalcontext = get_context_instance(CONTEXT_USER, $user->id);
+
+$can_view = false;
+
+// Can view own report
+if ($USER->id == $user->id) {
+    $can_view = true;
+} else if (has_capability('moodle/user:viewuseractivitiesreport', $personalcontext)) {
+    $can_view = true;
+} else if (has_capability('report/completion:view', $coursecontext)) {
+    $can_view = true;
+} else if (has_capability('report/completion:view', $personalcontext)) {
+    $can_view = true;
+}
+
+if (!$can_view) {
+    print_error('cannotviewreport');
 }
 
 
@@ -57,16 +77,25 @@ if (!completion_can_view_data($user->id, $course->id)) {
 $info = new completion_info($course);
 
 $returnurl = "{$CFG->wwwroot}/course/view.php?id={$id}";
+
+// Don't display if completion isn't enabled!
 if (!$info->is_enabled()) {
     print_error('completionnotenabled', 'completion', $returnurl);
+}
+
+// Load criteria to display
+$completions = $info->get_completions($user->id);
+
+// Check if this course has any criteria
+if (empty($completions)) {
+    print_error('nocriteriaset', 'completion', $returnurl);
 }
 
 // Check this user is enroled
 if (!$info->is_tracked_user($user->id)) {
     if ($USER->id == $user->id) {
         print_error('notenroled', 'completion', $returnurl);
-    }
-    else {
+    } else {
         print_error('usernotenroled', 'completion', $returnurl);
     }
 }
@@ -80,17 +109,12 @@ if (!$info->is_tracked_user($user->id)) {
 $page = get_string('completionprogressdetails', 'block_completionstatus');
 $title = format_string($course->fullname) . ': ' . $page;
 
-$navlinks = array();
-$navlinks[] = array(
-        'name' => format_string($course->fullname),
-        'link' => "{$CFG->wwwroot}/course/view.php?id={$course->id}",
-        'type' => 'misc'
-);
-$navlinks[] = array('name' => $page, 'link' => null, 'type' => 'misc');
-$navigation = build_navigation($navlinks);
-
-print_header($title, $title, $navigation);
-print_heading($title);
+$PAGE->navbar->add($page);
+$PAGE->set_pagelayout('standard');
+$PAGE->set_url('/blocks/completionstatus/details.php', array('course' => $course->id));
+$PAGE->set_title(get_string('course') . ': ' . $course->fullname);
+$PAGE->set_heading($title);
+echo $OUTPUT->header();
 
 
 // Display completion status
@@ -111,211 +135,122 @@ $coursecomplete = $info->is_course_complete($user->id);
 // Has this user completed any criteria?
 $criteriacomplete = $info->count_course_user_data($user->id);
 
-// Load course completion
-$params = array(
-    'userid' => $user->id,
-    'course' => $course->id,
-);
-$ccompletion = new completion_completion($params);
-
 if ($coursecomplete) {
     echo get_string('complete');
-
-    // Check for RPL
-    if (strlen($ccompletion->rpl)) {
-        echo ' '.get_string('viarpl', 'completion');
-    }
-
-} else if (!$criteriacomplete && !$ccompletion->timestarted) {
+} else if (!$criteriacomplete) {
     echo '<i>'.get_string('notyetstarted', 'completion').'</i>';
 } else {
     echo '<i>'.get_string('inprogress','completion').'</i>';
 }
 
 echo '</td></tr>';
+echo '<tr><td colspan="2"><b>'.get_string('required').':</b> ';
 
-// Show RPL
-if (isset($ccompletion) && strlen($ccompletion->rpl)) {
-    echo '<tr><td colspan="2"><b>'.get_string('courserpl', 'completion').':</b> '.format_string($ccompletion->rpl).'</td></tr>';
-}
+// Get overall aggregation method
+$overall = $info->get_aggregation_method();
 
-// Load criteria to display
-$completions = $info->get_completions($user->id);
-
-// Check if this course has any criteria
-if (empty($completions)) {
-    echo '<tr><td colspan="2"><br />';
-    echo print_box(get_string('err_nocriteria', 'completion'), 'noticebox');
-    echo '</td></tr></tbody></table>';
+if ($overall == COMPLETION_AGGREGATION_ALL) {
+    echo get_string('criteriarequiredall', 'completion');
 } else {
-    echo '<tr><td colspan="2"><b>'.get_string('required').':</b> ';
-
-    // Get overall aggregation method
-    $overall = $info->get_aggregation_method();
-
-    if ($overall == COMPLETION_AGGREGATION_ALL) {
-        echo get_string('criteriarequiredall', 'completion');
-    } else {
-        echo get_string('criteriarequiredany', 'completion');
-    }
-
-    echo '</td></tr></tbody></table>';
-
-    // Generate markup for criteria statuses
-    echo '<table class="generalbox logtable boxaligncenter" id="criteriastatus" width="100%"><tbody>';
-    echo '<tr class="ccheader">';
-    echo '<th class="c0 header" scope="col">'.get_string('criteriagroup', 'block_completionstatus').'</th>';
-    echo '<th class="c1 header" scope="col">'.get_string('criteria', 'completion').'</th>';
-    echo '<th class="c2 header" scope="col">'.get_string('requirement', 'block_completionstatus').'</th>';
-    echo '<th class="c3 header" scope="col">'.get_string('status').'</th>';
-    echo '<th class="c4 header" scope="col">'.get_string('complete').'</th>';
-    echo '<th class="c5 header" scope="col">'.get_string('completiondate', 'coursereport_completion').'</th>';
-    echo '</tr>';
-
-    // Save row data
-    $rows = array();
-
-    global $COMPLETION_CRITERIA_TYPES;
-
-    // Loop through course criteria
-    foreach ($completions as $completion) {
-        $criteria = $completion->get_criteria();
-
-        $row = array();
-        $row['type'] = $criteria->criteriatype;
-        $row['title'] = $criteria->get_title();
-        $row['status'] = $completion->get_status();
-        $row['complete'] = $completion->is_complete();
-        $row['timecompleted'] = $completion->timecompleted;
-        $row['details'] = $criteria->get_details($completion);
-        $rows[] = $row;
-    }
-
-    // Print table
-    $last_type = '';
-    $agg_type = false;
-    $oddeven = 0;
-
-    foreach ($rows as $row) {
-
-        echo '<tr class="r' . $oddeven . '">';
-
-        // Criteria group
-        echo '<td class="cell c0">';
-        if ($last_type !== $row['details']['type']) {
-            $last_type = $row['details']['type'];
-            echo $last_type;
-
-            // Reset agg type
-            $agg_type = true;
-        } else {
-            // Display aggregation type
-            if ($agg_type) {
-                $agg = $info->get_aggregation_method($row['type']);
-
-                echo '(<i>';
-
-                if ($agg == COMPLETION_AGGREGATION_ALL) {
-                    echo strtolower(get_string('aggregateall', 'completion'));
-                } else {
-                    echo strtolower(get_string('aggregateany', 'completion'));
-                }
-
-                echo '</i> '.strtolower(get_string('required')).')';
-                $agg_type = false;
-            }
-        }
-        echo '</td>';
-
-        // Criteria title
-        echo '<td class="cell c1">';
-        echo $row['details']['criteria'];
-        echo '</td>';
-
-        // Requirement
-        echo '<td class="cell c2">';
-        echo $row['details']['requirement'];
-        echo '</td>';
-
-        // Status
-        echo '<td class="cell c3">';
-        echo $row['details']['status'];
-        echo '</td>';
-
-        // Is complete
-        echo '<td class="cell c4">';
-        echo $row['complete'] ? get_string('yes') : get_string('no');
-        echo '</td>';
-
-        // Completion data
-        echo '<td class="cell c5">';
-        if ($row['timecompleted']) {
-            echo userdate($row['timecompleted'], '%e %B %G');
-        } else {
-            echo '-';
-        }
-        echo '</td>';
-        echo '</tr>';
-        // for row striping
-        $oddeven = $oddeven ? 0 : 1;
-    }
-
-    echo '</tbody></table>';
+    echo get_string('criteriarequiredany', 'completion');
 }
 
-echo '<div class="buttons center-buttons">';
-print_single_button("{$CFG->wwwroot}/course/view.php", array('id' => $course->id), get_string('returntocourse'));
-echo '</div>';
+echo '</td></tr></tbody></table>';
 
-/*
-    *
-$shtml = '<tr><td><b>'.get_string('requiredcriteria', 'completion').'</b></td><td style="text-align: right"><b>'.get_string('status').'</b></td></tr>';
+// Generate markup for criteria statuses
+echo '<table class="generalbox boxaligncenter" cellpadding="3"><tbody>';
+echo '<tr class="ccheader">';
+echo '<th class="c0 header" scope="col">'.get_string('criteriagroup', 'block_completionstatus').'</th>';
+echo '<th class="c1 header" scope="col">'.get_string('criteria', 'completion').'</th>';
+echo '<th class="c2 header" scope="col">'.get_string('requirement', 'block_completionstatus').'</th>';
+echo '<th class="c3 header" scope="col">'.get_string('status').'</th>';
+echo '<th class="c4 header" scope="col">'.get_string('complete').'</th>';
+echo '<th class="c5 header" scope="col">'.get_string('completiondate', 'report_completion').'</th>';
+echo '</tr>';
 
-// For aggregating activity completion
-$activities = array();
-$activities_complete = 0;
+// Save row data
+$rows = array();
 
-// Flag to set if current completion data is inconsistent with
-// what is stored in the database
-$pending_update = false;
+global $COMPLETION_CRITERIA_TYPES;
 
 // Loop through course criteria
 foreach ($completions as $completion) {
-
     $criteria = $completion->get_criteria();
     $complete = $completion->is_complete();
 
-    if (!$pending_update && $criteria->is_pending($completion)) {
-        $pending_update = true;
-    }
+    $row = array();
+    $row['type'] = $criteria->criteriatype;
+    $row['title'] = $criteria->get_title();
+    $row['status'] = $completion->get_status();
+    $row['timecompleted'] = $completion->timecompleted;
+    $row['details'] = $criteria->get_details($completion);
+    $rows[] = $row;
+}
 
-    // Activities are a special case, so cache them and leave them till last
-    if ($criteria->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
-        $activities[$criteria->moduleinstance] = $complete;
+// Print table
+$last_type = '';
+$agg_type = false;
 
-        if ($complete) {
-            $activities_complete++;
+foreach ($rows as $row) {
+
+    // Criteria group
+    echo '<td class="c0">';
+    if ($last_type !== $row['details']['type']) {
+        $last_type = $row['details']['type'];
+        echo $last_type;
+
+        // Reset agg type
+        $agg_type = true;
+    } else {
+        // Display aggregation type
+        if ($agg_type) {
+            $agg = $info->get_aggregation_method($row['type']);
+
+            echo '(<i>';
+
+            if ($agg == COMPLETION_AGGREGATION_ALL) {
+                echo strtolower(get_string('all', 'completion'));
+            } else {
+                echo strtolower(get_string('any', 'completion'));
+            }
+
+            echo '</i> '.strtolower(get_string('required')).')';
+            $agg_type = false;
         }
-
-        continue;
     }
+    echo '</td>';
 
-    $shtml .= '<tr><td>';
-    $shtml .= $criteria->get_title();
-    $shtml .= '</td><td style="text-align: right">';
-    $shtml .= $completion->get_status();
-    $shtml .= '</td></tr>';
+    // Criteria title
+    echo '<td class="c1">';
+    echo $row['details']['criteria'];
+    echo '</td>';
+
+    // Requirement
+    echo '<td class="c2">';
+    echo $row['details']['requirement'];
+    echo '</td>';
+
+    // Status
+    echo '<td class="c3">';
+    echo $row['details']['status'];
+    echo '</td>';
+
+    // Is complete
+    echo '<td class="c4">';
+    echo ($row['status'] === get_string('yes')) ? get_string('yes') : get_string('no');
+    echo '</td>';
+
+    // Completion data
+    echo '<td class="c5">';
+    if ($row['timecompleted']) {
+        echo userdate($row['timecompleted'], '%e %B %G');
+    } else {
+        echo '-';
+    }
+    echo '</td>';
+    echo '</tr>';
 }
 
-// Aggregate activities
-if (!empty($activities)) {
+echo '</tbody></table>';
 
-    $shtml .= '<tr><td>';
-    $shtml .= 'Activities complete';
-    $shtml .= '</td><td style="text-align: right">';
-    $shtml .= $activities_complete.' of '.count($activities);
-    $shtml .= '</td></tr>';
-}
- */
-
-print_footer($course);
+echo $OUTPUT->footer();

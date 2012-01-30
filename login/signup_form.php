@@ -1,8 +1,30 @@
-<?php  // $Id$
+<?php
 
-if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
-}
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * User sign-up form.
+ *
+ * @package    core
+ * @subpackage auth
+ * @copyright  1999 onwards Martin Dougiamas  http://dougiamas.com
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
 require_once($CFG->dirroot.'/user/profile/lib.php');
@@ -11,7 +33,7 @@ class login_signup_form extends moodleform {
     function definition() {
         global $USER, $CFG;
 
-        $mform =& $this->_form;
+        $mform = $this->_form;
 
         $mform->addElement('header', '', get_string('createuserandpass'), '');
 
@@ -37,7 +59,7 @@ class login_signup_form extends moodleform {
         $mform->setType('email2', PARAM_NOTAGS);
         $mform->addRule('email2', get_string('missingemail'), 'required', null, 'server');
 
-        $nameordercheck = new object();
+        $nameordercheck = new stdClass();
         $nameordercheck->firstname = 'a';
         $nameordercheck->lastname  = 'b';
         if (fullname($nameordercheck) == 'b a' ) {  // See MDL-4325
@@ -54,11 +76,14 @@ class login_signup_form extends moodleform {
         $mform->setType('lastname', PARAM_TEXT);
         $mform->addRule('lastname', get_string('missinglastname'), 'required', null, 'server');
 
-        $mform->addElement('text', 'city', get_string('city'), 'maxlength="20" size="20"');
+        $mform->addElement('text', 'city', get_string('city'), 'maxlength="120" size="20"');
         $mform->setType('city', PARAM_TEXT);
         $mform->addRule('city', get_string('missingcity'), 'required', null, 'server');
+        if (!empty($CFG->defaultcity)) {
+            $mform->setDefault('city', $CFG->defaultcity);
+        }
 
-        $country = get_list_of_countries();
+        $country = get_string_manager()->get_list_of_countries();
         $default_country[''] = get_string('selectacountry');
         $country = array_merge($default_country, $country);
         $mform->addElement('select', 'country', get_string('country'), $country);
@@ -70,9 +95,9 @@ class login_signup_form extends moodleform {
             $mform->setDefault('country', '');
         }
 
-        if (signup_captcha_enabled()) {
+        if ($this->signup_captcha_enabled()) {
             $mform->addElement('recaptcha', 'recaptcha_element', get_string('recaptcha', 'auth'), array('https' => $CFG->loginhttps));
-            $mform->setHelpButton('recaptcha_element', array('recaptcha', get_string('recaptcha', 'auth')));
+            $mform->addHelpButton('recaptcha_element', 'recaptcha', 'auth');
         }
 
         profile_signup_fields($mform);
@@ -90,26 +115,27 @@ class login_signup_form extends moodleform {
     }
 
     function definition_after_data(){
-        $mform =& $this->_form;
-
-        $mform->applyFilter('username', 'moodle_strtolower');
+        $mform = $this->_form;
         $mform->applyFilter('username', 'trim');
     }
 
     function validation($data, $files) {
-        global $CFG;
+        global $CFG, $DB;
         $errors = parent::validation($data, $files);
 
         $authplugin = get_auth_plugin($CFG->registerauth);
 
-        if (record_exists('user', 'username', $data['username'], 'mnethostid', $CFG->mnet_localhost_id)) {
+        if ($DB->record_exists('user', array('username'=>$data['username'], 'mnethostid'=>$CFG->mnet_localhost_id))) {
             $errors['username'] = get_string('usernameexists');
         } else {
-            if (empty($CFG->extendedusernamechars)) {
-                $string = eregi_replace("[^(-\.[:alnum:])]", '', $data['username']);
-                if (strcmp($data['username'], $string)) {
-                    $errors['username'] = get_string('alphanumerical');
+            //check allowed characters
+            if ($data['username'] !== moodle_strtolower($data['username'])) {
+                $errors['username'] = get_string('usernamelowercase');
+            } else {
+                if ($data['username'] !== clean_param($data['username'], PARAM_USERNAME)) {
+                    $errors['username'] = get_string('invalidusername');
                 }
+
             }
         }
 
@@ -123,7 +149,7 @@ class login_signup_form extends moodleform {
         if (! validate_email($data['email'])) {
             $errors['email'] = get_string('invalidemail');
 
-        } else if (record_exists('user', 'email', $data['email'])) {
+        } else if ($DB->record_exists('user', array('email'=>$data['email']))) {
             $errors['email'] = get_string('emailexists').' <a href="forgot_password.php">'.get_string('newpassword').'?</a>';
         }
         if (empty($data['email2'])) {
@@ -144,7 +170,7 @@ class login_signup_form extends moodleform {
             $errors['password'] = $errmsg;
         }
 
-        if (signup_captcha_enabled()) {
+        if ($this->signup_captcha_enabled()) {
             $recaptcha_element = $this->_form->getElement('recaptcha_element');
             if (!empty($this->_form->_submitValues['recaptcha_challenge_field'])) {
                 $challenge_field = $this->_form->_submitValues['recaptcha_challenge_field'];
@@ -159,8 +185,15 @@ class login_signup_form extends moodleform {
 
         return $errors;
 
-
     }
-}
 
-?>
+    /**
+     * Returns whether or not the captcha element is enabled, and the admin settings fulfil its requirements.
+     * @return bool
+     */
+    function signup_captcha_enabled() {
+        global $CFG;
+        return !empty($CFG->recaptchapublickey) && !empty($CFG->recaptchaprivatekey) && get_config('auth/email', 'recaptcha');
+    }
+
+}

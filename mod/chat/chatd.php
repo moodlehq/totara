@@ -17,7 +17,7 @@ define('CHAT_SIDEKICK_MESSAGE',     0x22);
 define('CHAT_SIDEKICK_BEEP',        0x23);
 
 $phpversion = phpversion();
-echo 'Moodle chat daemon v1.0 on PHP '.$phpversion." (\$Id$)\n\n";
+echo 'Moodle chat daemon v1.0 on PHP '.$phpversion."\n\n";
 
 /// Set up all the variables we need   /////////////////////////////////////
 
@@ -27,7 +27,7 @@ $_SERVER['PHP_SELF']        = 'dummy';
 $_SERVER['SERVER_NAME']     = 'dummy';
 $_SERVER['HTTP_USER_AGENT'] = 'dummy';
 
-$nomoodlecookie = true;
+define('NO_MOODLE_COOKIES', true); // session not used here
 
 include('../../config.php');
 include('lib.php');
@@ -204,6 +204,8 @@ class ChatDaemon {
     }
 
     function user_lazy_update($sessionid) {
+        global $DB;
+
         // TODO: this can and should be written as a single UPDATE query
         if(empty($this->sets_info[$sessionid])) {
             $this->trace('user_lazy_update() called for an invalid SID: '.$sessionid, E_USER_WARNING);
@@ -217,19 +219,18 @@ class ChatDaemon {
         if($now - $this->sets_info[$sessionid]['lastinfocommit'] > $this->_freq_update_records) {
             // commit to permanent storage
             $this->sets_info[$sessionid]['lastinfocommit'] = $now;
-            update_record('chat_users', $this->sets_info[$sessionid]['chatuser']);
+            $DB->update_record('chat_users', $this->sets_info[$sessionid]['chatuser']);
         }
         return true;
     }
 
     function get_user_window($sessionid) {
-
-        global $CFG;
+        global $CFG, $PAGE, $OUTPUT;
 
         static $str;
 
         $info = &$this->sets_info[$sessionid];
-        course_setup($info['course'], $info['user']);
+        $PAGE->set_course($info['course']);
 
         $timenow = time();
 
@@ -277,11 +278,17 @@ EOD;
             $userinfo = $this->sets_info[$usersessionid];
 
             $lastping = $timenow - $userinfo['chatuser']->lastmessageping;
-            $popuppar = '\'/user/view.php?id='.$userinfo['user']->id.'&amp;course='.$userinfo['courseid'].'\',\'user'.$userinfo['chatuser']->id.'\',\'\'';
+
             echo '<tr><td width="35">';
-            echo '<a target="_new" onclick="return openpopup('.$popuppar.');" href="'.$CFG->wwwroot.'/user/view.php?id='.$userinfo['chatuser']->id.'&amp;course='.$userinfo['courseid'].'">';
-            print_user_picture($userinfo['user']->id, 0, $userinfo['user']->picture, false, false, false);
-            echo "</a></td><td valign=\"center\">";
+
+            $link = '/user/view.php?id='.$userinfo['user']->id.'&course='.$userinfo['courseid'];
+            $anchortagcontents = $OUTPUT->user_picture($userinfo['user'], array('courseid'=>$userinfo['courseid']));
+
+            $action = new popup_action('click', $link, 'user'.$userinfo['chatuser']->id);
+            $anchortag = $OUTPUT->action_link($link, $anchortagcontents, $action);
+
+            echo $anchortag;
+            echo "</td><td valign=\"center\">";
             echo "<p><font size=\"1\">";
             echo fullname($userinfo['user'])."<br />";
             echo "<font color=\"#888888\">$str->idle: ".format_time($lastping, $str)."</font> ";
@@ -323,12 +330,12 @@ EOD;
     }
 
     function dispatch_sidekick($handle, $type, $sessionid, $customdata) {
-        global $CFG;
+        global $CFG, $DB;
 
         switch($type) {
             case CHAT_SIDEKICK_BEEP:
                 // Incoming beep
-                $msg = &New stdClass;
+                $msg = New stdClass;
                 $msg->chatid    = $this->sets_info[$sessionid]['chatid'];
                 $msg->userid    = $this->sets_info[$sessionid]['userid'];
                 $msg->groupid   = $this->sets_info[$sessionid]['groupid'];
@@ -337,7 +344,8 @@ EOD;
                 $msg->timestamp = time();
 
                 // Commit to DB
-                insert_record('chat_messages', $msg, false);
+                $DB->insert_record('chat_messages', $msg, false);
+                $DB->insert_record('chat_messages_current', $msg, false);
 
                 // OK, now push it out to all users
                 $this->message_broadcast($msg, $this->sets_info[$sessionid]['user']);
@@ -355,7 +363,7 @@ EOD;
                 $header .= "Connection: close\n";
                 $header .= "Date: ".date('r')."\n";
                 $header .= "Server: Moodle\n";
-                $header .= "Content-Type: text/html\n";
+                $header .= "Content-Type: text/html; charset=utf-8\n";
                 $header .= "Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT\n";
                 $header .= "Cache-Control: no-cache, must-revalidate\n";
                 $header .= "Expires: Wed, 4 Oct 1978 09:32:45 GMT\n";
@@ -375,7 +383,7 @@ EOD;
                 $header .= "Connection: close\n";
                 $header .= "Date: ".date('r')."\n";
                 $header .= "Server: Moodle\n";
-                $header .= "Content-Type: text/html\n";
+                $header .= "Content-Type: text/html; charset=utf-8\n";
                 $header .= "Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT\n";
                 $header .= "Cache-Control: no-cache, must-revalidate\n";
                 $header .= "Expires: Wed, 4 Oct 1978 09:32:45 GMT\n";
@@ -413,7 +421,7 @@ EOD;
                     $this->sets_info[$sessionid]['lastmessageindex'] = $messageindex;
                 }
 
-                $msg = &New stdClass;
+                $msg = New stdClass;
                 $msg->chatid    = $this->sets_info[$sessionid]['chatid'];
                 $msg->userid    = $this->sets_info[$sessionid]['userid'];
                 $msg->groupid   = $this->sets_info[$sessionid]['groupid'];
@@ -428,10 +436,11 @@ EOD;
 
                 // A slight hack to prevent malformed SQL inserts
                 $origmsg = $msg->message;
-                $msg->message = addslashes($msg->message);
+                $msg->message = $msg->message;
 
                 // Commit to DB
-                insert_record('chat_messages', $msg, false);
+                $DB->insert_record('chat_messages', $msg, false);
+                $DB->insert_record('chat_messages_current', $msg, false);
 
                 // Undo the hack
                 $msg->message = $origmsg;
@@ -452,7 +461,7 @@ EOD;
                 $header .= "Connection: close\n";
                 $header .= "Date: ".date('r')."\n";
                 $header .= "Server: Moodle\n";
-                $header .= "Content-Type: text/html\n";
+                $header .= "Content-Type: text/html; charset=utf-8\n";
                 $header .= "Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT\n";
                 $header .= "Cache-Control: no-cache, must-revalidate\n";
                 $header .= "Expires: Wed, 4 Oct 1978 09:32:45 GMT\n";
@@ -470,31 +479,32 @@ EOD;
     }
 
     function promote_final($sessionid, $customdata) {
+        global $DB;
+
         if(isset($this->conn_sets[$sessionid])) {
             $this->trace('Set cannot be finalized: Session '.$sessionid.' is already active');
             return false;
         }
 
-        $chatuser = get_record('chat_users', 'sid', $sessionid);
+        $chatuser = $DB->get_record('chat_users', array('sid'=>$sessionid));
         if($chatuser === false) {
             $this->dismiss_half($sessionid);
             return false;
         }
-        $chat = get_record('chat', 'id', $chatuser->chatid);
+        $chat = $DB->get_record('chat', array('id'=>$chatuser->chatid));
         if($chat === false) {
             $this->dismiss_half($sessionid);
             return false;
         }
-        $user = get_record('user', 'id', $chatuser->userid);
+        $user = $DB->get_record('user', array('id'=>$chatuser->userid));
         if($user === false) {
             $this->dismiss_half($sessionid);
             return false;
         }
-        $course = get_record('course', 'id', $chat->course); {
-       if($course === false) {
+        $course = $DB->get_record('course', array('id'=>$chat->course));
+        if($course === false) {
             $this->dismiss_half($sessionid);
             return false;
-            }
         }
 
         global $CHAT_HTMLHEAD_JS, $CFG;
@@ -534,7 +544,7 @@ EOD;
 
         // Finally, broadcast the "entered the chat" message
 
-        $msg = &New stdClass;
+        $msg = new stdClass;
         $msg->chatid = $chatuser->chatid;
         $msg->userid = $chatuser->userid;
         $msg->groupid = $chatuser->groupid;
@@ -542,7 +552,8 @@ EOD;
         $msg->message = 'enter';
         $msg->timestamp = time();
 
-        insert_record('chat_messages', $msg, false);
+        $DB->insert_record('chat_messages', $msg, false);
+        $DB->insert_record('chat_messages_current', $msg, false);
         $this->message_broadcast($msg, $this->sets_info[$sessionid]['user']);
 
         return true;
@@ -669,7 +680,7 @@ EOD;
             return false;
         }
 
-        $newconn = &New ChatConnection($handle);
+        $newconn = New ChatConnection($handle);
         $id = $this->new_ufo_id();
         $this->conn_ufo[$id] = $newconn;
 
@@ -696,6 +707,8 @@ EOD;
     }
 
     function message_broadcast($message, $sender) {
+        global $PAGE;
+
         if(empty($this->conn_sets)) {
             return true;
         }
@@ -712,7 +725,7 @@ EOD;
             {
 
                 // Simply give them the message
-                course_setup($info['course'], $info['user']);
+                $PAGE->set_course($info['course']);
                 $output = chat_format_message_manually($message, $info['courseid'], $sender, $info['user']);
                 $this->trace('Delivering message "'.$output->text.'" to '.$this->conn_sets[$sessionid][CHAT_CONNECTION_CHANNEL]);
 
@@ -735,10 +748,12 @@ EOD;
     }
 
     function disconnect_session($sessionid) {
+        global $DB;
+
         $info = $this->sets_info[$sessionid];
 
-        delete_records('chat_users', 'sid', $sessionid);
-        $msg = &New stdClass;
+        $DB->delete_records('chat_users', array('sid'=>$sessionid));
+        $msg = New stdClass;
         $msg->chatid = $info['chatid'];
         $msg->userid = $info['userid'];
         $msg->groupid = $info['groupid'];
@@ -747,7 +762,8 @@ EOD;
         $msg->timestamp = time();
 
         $this->trace('User has disconnected, destroying uid '.$info['userid'].' with SID '.$sessionid, E_USER_WARNING);
-        insert_record('chat_messages', $msg, false);
+        $DB->insert_record('chat_messages', $msg, false);
+        $DB->insert_record('chat_messages_current', $msg, false);
 
         // *************************** IMPORTANT
         //
@@ -960,7 +976,7 @@ else {
 $DAEMON->trace('Started Moodle chatd on port '.$CFG->chat_serverport.', listening socket '.$DAEMON->listen_socket, E_USER_WARNING);
 
 /// Clear the decks of old stuff
-delete_records('chat_users', 'version', 'sockets');
+$DB->delete_records('chat_users', array('version'=>'sockets'));
 
 while(true) {
     $active = array();
@@ -985,7 +1001,7 @@ while(true) {
                     continue;
                 }
 
-                if(!ereg('win=(chat|users|message|beep).*&chat_sid=([a-zA-Z0-9]*) HTTP', $data, $info)) {
+                if(!preg_match('/win=(chat|users|message|beep).*&chat_sid=([a-zA-Z0-9]*) HTTP/', $data, $info)) {
                     // Malformed data
                     $DAEMON->trace('UFO with '.$handle.': Request with malformed data; connection closed', E_USER_WARNING);
                     $DAEMON->dismiss_ufo($handle, true, 'Request with malformed data; connection closed');
@@ -1011,7 +1027,7 @@ while(true) {
                     break;
                     case 'beep':
                         $type = CHAT_SIDEKICK_BEEP;
-                        if(!ereg('beep=([^&]*)[& ]', $data, $info)) {
+                        if(!preg_match('/beep=([^&]*)[& ]/', $data, $info)) {
                             $DAEMON->trace('Beep sidekick did not contain a valid userid', E_USER_WARNING);
                             $DAEMON->dismiss_ufo($handle, true, 'Request with malformed data; connection closed');
                             continue;
@@ -1022,7 +1038,7 @@ while(true) {
                     break;
                     case 'message':
                         $type = CHAT_SIDEKICK_MESSAGE;
-                        if(!ereg('chat_message=([^&]*)[& ]chat_msgidnr=([^&]*)[& ]', $data, $info)) {
+                        if(!preg_match('/chat_message=([^&]*)[& ]chat_msgidnr=([^&]*)[& ]/', $data, $info)) {
                             $DAEMON->trace('Message sidekick did not contain a valid message', E_USER_WARNING);
                             $DAEMON->dismiss_ufo($handle, true, 'Request with malformed data; connection closed');
                             continue;
@@ -1061,4 +1077,4 @@ while(true) {
 @socket_shutdown($DAEMON->listen_socket, 0);
 die("\n\n-- terminated --\n");
 
-?>
+

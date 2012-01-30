@@ -1,4 +1,4 @@
-<?php  // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -22,12 +22,10 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 
-    require_once('../../config.php');
-    require_once('lib.php');
-    require_once($CFG->libdir.'/blocklib.php');
-    require_once("$CFG->libdir/rsslib.php");
-
-    require_once('pagelib.php');
+    require_once(dirname(__FILE__) . '/../../config.php');
+    require_once($CFG->dirroot . '/mod/data/lib.php');
+    require_once($CFG->libdir . '/rsslib.php');
+    require_once($CFG->libdir . '/completionlib.php');
 
 /// One of these is necessary!
     $id = optional_param('id', 0, PARAM_INT);  // course module id
@@ -45,50 +43,53 @@
 
     if ($id) {
         if (! $cm = get_coursemodule_from_id('data', $id)) {
-            error('Course Module ID was incorrect');
+            print_error('invalidcoursemodule');
         }
-        if (! $course = get_record('course', 'id', $cm->course)) {
-            error('Course is misconfigured');
+        if (! $course = $DB->get_record('course', array('id'=>$cm->course))) {
+            print_error('coursemisconf');
         }
-        if (! $data = get_record('data', 'id', $cm->instance)) {
-            error('Course module is incorrect');
+        if (! $data = $DB->get_record('data', array('id'=>$cm->instance))) {
+            print_error('invalidcoursemodule');
         }
         $record = NULL;
 
     } else if ($rid) {
-        if (! $record = get_record('data_records', 'id', $rid)) {
-            error('Record ID is incorrect');
+        if (! $record = $DB->get_record('data_records', array('id'=>$rid))) {
+            print_error('invalidrecord', 'data');
         }
-        if (! $data = get_record('data', 'id', $record->dataid)) {
-            error('Data ID is incorrect');
+        if (! $data = $DB->get_record('data', array('id'=>$record->dataid))) {
+            print_error('invalidid', 'data');
         }
-        if (! $course = get_record('course', 'id', $data->course)) {
-            error('Course is misconfigured');
+        if (! $course = $DB->get_record('course', array('id'=>$data->course))) {
+            print_error('coursemisconf');
         }
         if (! $cm = get_coursemodule_from_instance('data', $data->id, $course->id)) {
-            error('Course Module ID was incorrect');
+            print_error('invalidcoursemodule');
         }
     } else {   // We must have $d
-        if (! $data = get_record('data', 'id', $d)) {
-            error('Data ID is incorrect');
+        if (! $data = $DB->get_record('data', array('id'=>$d))) {
+            print_error('invalidid', 'data');
         }
-        if (! $course = get_record('course', 'id', $data->course)) {
-            error('Course is misconfigured');
+        if (! $course = $DB->get_record('course', array('id'=>$data->course))) {
+            print_error('coursemisconf');
         }
         if (! $cm = get_coursemodule_from_instance('data', $data->id, $course->id)) {
-            error('Course Module ID was incorrect');
+            print_error('invalidcoursemodule');
         }
         $record = NULL;
     }
 
     require_course_login($course, true, $cm);
 
+    require_once($CFG->dirroot . '/comment/lib.php');
+    comment::init();
+
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
     require_capability('mod/data:viewentry', $context);
 
 /// If we have an empty Database then redirect because this page is useless without data
     if (has_capability('mod/data:managetemplates', $context)) {
-        if (!record_exists('data_fields','dataid',$data->id)) {      // Brand new database!
+        if (!$DB->record_exists('data_fields', array('dataid'=>$data->id))) {      // Brand new database!
             redirect($CFG->wwwroot.'/mod/data/field.php?d='.$data->id);  // Redirect to field entry
         }
     }
@@ -130,8 +131,8 @@
     if (!empty($advanced)) {
         $search = '';
         $vals = array();
-        $fields = get_records('data_fields', 'dataid', $data->id);
-        
+        $fields = $DB->get_records('data_fields', array('dataid'=>$data->id));
+
         //Added to ammend paging error. This error would occur when attempting to go from one page of advanced
         //search results to another.  All fields were reset in the page transfer, and there was no way of determining
         //whether or not the user reset them.  This would cause a blank search to execute whenever the user attempted
@@ -142,7 +143,7 @@
         //execution falls through to the second condition below, allowing paging to be set to true.
         //Paging remains true and keeps getting passed though the URL until a new search is performed
         //(even if page 0 is revisited).
-        //A false $paging flag generates advanced search results based on the fields input by the user. 
+        //A false $paging flag generates advanced search results based on the fields input by the user.
         //A true $paging flag generates davanced search results from the $SESSION global.
 
         $paging = optional_param('paging', NULL, PARAM_BOOL);
@@ -168,8 +169,8 @@
                     }
                 }
                 if (!empty($val)) {
-                    $search_array[$field->id] = new object();
-                    $search_array[$field->id]->sql  = $searchfield->generate_sql('c'.$field->id, $val);
+                    $search_array[$field->id] = new stdClass();
+                    list($search_array[$field->id]->sql, $search_array[$field->id]->params) = $searchfield->generate_sql('c'.$field->id, $val);
                     $search_array[$field->id]->data = $val;
                     $vals[] = $val;
                 } else {
@@ -188,19 +189,21 @@
             $ln = isset($search_array[DATA_LASTNAME]) ? $search_array[DATA_LASTNAME]->data : '';
         }
         if (!empty($fn)) {
-            $search_array[DATA_FIRSTNAME] = new object();
-            $search_array[DATA_FIRSTNAME]->sql   = '';
-            $search_array[DATA_FIRSTNAME]->field = 'u.firstname';
-            $search_array[DATA_FIRSTNAME]->data  = $fn;
+            $search_array[DATA_FIRSTNAME] = new stdClass();
+            $search_array[DATA_FIRSTNAME]->sql    = '';
+            $search_array[DATA_FIRSTNAME]->params = array();
+            $search_array[DATA_FIRSTNAME]->field  = 'u.firstname';
+            $search_array[DATA_FIRSTNAME]->data   = $fn;
             $vals[] = $fn;
         } else {
             unset($search_array[DATA_FIRSTNAME]);
         }
         if (!empty($ln)) {
-            $search_array[DATA_LASTNAME] = new object();
-            $search_array[DATA_LASTNAME]->sql   = '';
-            $search_array[DATA_LASTNAME]->field = 'u.lastname';
-            $search_array[DATA_LASTNAME]->data  = $ln;
+            $search_array[DATA_LASTNAME] = new stdClass();
+            $search_array[DATA_LASTNAME]->sql     = '';
+            $search_array[DATA_LASTNAME]->params = array();
+            $search_array[DATA_LASTNAME]->field   = 'u.lastname';
+            $search_array[DATA_LASTNAME]->data    = $ln;
             $vals[] = $ln;
         } else {
             unset($search_array[DATA_LASTNAME]);
@@ -253,47 +256,66 @@
     add_to_log($course->id, 'data', 'view', "view.php?id=$cm->id", $data->id, $cm->id);
 
 
+    $urlparams = array('d' => $data->id);
+    if ($record) {
+        $urlparams['rid'] = $record->id;
+    }
+    if ($page) {
+        $urlparams['page'] = $page;
+    }
+    if ($mode) {
+        $urlparams['mode'] = $mode;
+    }
+    if ($filter) {
+        $urlparams['filter'] = $filter;
+    }
 // Initialize $PAGE, compute blocks
-    $PAGE       = page_create_instance($data->id);
-    $pageblocks = blocks_setup($PAGE);
-    $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
+    $PAGE->set_url('/mod/data/view.php', $urlparams);
 
     if (($edit != -1) and $PAGE->user_allowed_editing()) {
         $USER->editing = $edit;
     }
 
+    $courseshortname = format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+
 /// RSS and CSS and JS meta
     $meta = '';
     if (!empty($CFG->enablerssfeeds) && !empty($CFG->data_enablerssfeeds) && $data->rssarticles > 0) {
-        $rsspath = rss_get_url($course->id, $USER->id, 'data', $data->id);
-        $meta .= '<link rel="alternate" type="application/rss+xml" ';
-        $meta .= 'title ="'. format_string($course->shortname) .': %fullname%" href="'.$rsspath.'" />';
+        $rsstitle = $courseshortname . ': %fullname%';
+        rss_add_http_header($context, 'mod_data', $data, $rsstitle);
     }
     if ($data->csstemplate) {
-        $meta .= '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/data/css.php?d='.$data->id.'" /> ';
+        $PAGE->requires->css('/mod/data/css.php?d='.$data->id);
     }
     if ($data->jstemplate) {
-        $meta .= '<script type="text/javascript" src="'.$CFG->wwwroot.'/mod/data/js.php?d='.$data->id.'"></script>';
+        $PAGE->requires->js('/mod/data/js.php?d='.$data->id, true);
     }
 
+    // Mark as viewed
+    $completion = new completion_info($course);
+    $completion->set_module_viewed($cm);
 
 /// Print the page header
-    $PAGE->print_header($course->shortname.': %fullname%', '', $meta);
+    // Note: MDL-19010 there will be further changes to printing header and blocks.
+    // The code will be much nicer than this eventually.
+    $title = $courseshortname.': ' . format_string($data->name);
 
-
-/// If we have blocks, then print the left side here
-    if (!empty($CFG->showblocksonmodpages)) {
-        echo '<table id="layout-table"><tr>';
-        if ((blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $PAGE->user_is_editing())) {
-            echo '<td style="width: '.$blocks_preferred_width.'px;" id="left-column">';
-            print_container_start();
-            blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
-            print_container_end();
-            echo '</td>';
-        }
-        echo '<td id="middle-column">';
-        print_container_start();
+    if ($PAGE->user_allowed_editing()) {
+        $buttons = '<table><tr><td><form method="get" action="view.php"><div>'.
+            '<input type="hidden" name="id" value="'.$cm->id.'" />'.
+            '<input type="hidden" name="edit" value="'.($PAGE->user_is_editing()?'off':'on').'" />'.
+            '<input type="submit" value="'.get_string($PAGE->user_is_editing()?'blockseditoff':'blocksediton').'" /></div></form></td></tr></table>';
+        $PAGE->set_button($buttons);
     }
+
+    if ($mode == 'asearch') {
+        $PAGE->navbar->add(get_string('search'));
+    }
+
+    $PAGE->set_title($title);
+    $PAGE->set_heading($course->fullname);
+
+    echo $OUTPUT->header();
 
 /// Check to see if groups are being used here
     $returnurl = $CFG->wwwroot . '/mod/data/view.php?d='.$data->id.'&amp;search='.s($search).'&amp;sort='.s($sort).'&amp;order='.s($order).'&amp;';
@@ -301,381 +323,422 @@
     $currentgroup = groups_get_activity_group($cm);
     $groupmode = groups_get_activity_groupmode($cm);
 
-    // deletect entries not approved yet and show hint instead of not found error
+    // detect entries not approved yet and show hint instead of not found error
     if ($record and $data->approval and !$record->approved and $record->userid != $USER->id and !has_capability('mod/data:manageentries', $context)) {
         if (!$currentgroup or $record->groupid == $currentgroup or $record->groupid == 0) {
             print_error('notapproved', 'data');
         }
     }
 
-    print_heading(format_string($data->name));
+    echo $OUTPUT->heading(format_string($data->name));
 
     // Do we need to show a link to the RSS feed for the records?
-    if (!empty($CFG->enablerssfeeds) && !empty($CFG->data_enablerssfeeds) && $data->rssarticles > 0) {
+    //this links has been Settings (database activity administration) block
+    /*if (!empty($CFG->enablerssfeeds) && !empty($CFG->data_enablerssfeeds) && $data->rssarticles > 0) {
         echo '<div style="float:right;">';
-        rss_print_link($course->id, $USER->id, 'data', $data->id, get_string('rsstype'));
+        rss_print_link($context->id, $USER->id, 'mod_data', $data->id, get_string('rsstype'));
         echo '</div>';
         echo '<div style="clear:both;"></div>';
-    }
+    }*/
 
     if ($data->intro and empty($page) and empty($record) and $mode != 'single') {
-        $options = new object();
+        $options = new stdClass();
         $options->noclean = true;
-        print_box(format_text($data->intro, FORMAT_MOODLE, $options), 'generalbox', 'intro');
+        echo $OUTPUT->box(format_module_intro('data', $data, $cm->id), 'generalbox', 'intro');
     }
 
 /// Delete any requested records
 
     if ($delete && confirm_sesskey() && (has_capability('mod/data:manageentries', $context) or data_isowner($delete))) {
         if ($confirm = optional_param('confirm',0,PARAM_INT)) {
-            if ($deleterecord = get_record('data_records', 'id', $delete)) {   // Need to check this is valid
+            if ($deleterecord = $DB->get_record('data_records', array('id'=>$delete))) {   // Need to check this is valid
                 if ($deleterecord->dataid == $data->id) {                       // Must be from this database
-                    if ($contents = get_records('data_content','recordid', $deleterecord->id)) {
+                    if ($contents = $DB->get_records('data_content', array('recordid'=>$deleterecord->id))) {
                         foreach ($contents as $content) {  // Delete files or whatever else this field allows
                             if ($field = data_get_field_from_id($content->fieldid, $data)) { // Might not be there
                                 $field->delete_content($content->recordid);
                             }
                         }
                     }
-                    delete_records('data_content','recordid', $deleterecord->id);
-                    delete_records('data_records','id', $deleterecord->id);
+                    $DB->delete_records('data_content', array('recordid'=>$deleterecord->id));
+                    $DB->delete_records('data_records', array('id'=>$deleterecord->id));
 
                     add_to_log($course->id, 'data', 'record delete', "view.php?id=$cm->id", $data->id, $cm->id);
 
-                    notify(get_string('recorddeleted','data'), 'notifysuccess');
+                    echo $OUTPUT->notification(get_string('recorddeleted','data'), 'notifysuccess');
                 }
             }
 
         } else {   // Print a confirmation page
-            if ($deleterecord = get_record('data_records', 'id', $delete)) {   // Need to check this is valid
+            if ($deleterecord = $DB->get_record('data_records', array('id'=>$delete))) {   // Need to check this is valid
                 if ($deleterecord->dataid == $data->id) {                       // Must be from this database
-                    notice_yesno(get_string('confirmdeleterecord','data'),
-                            'view.php?d='.$data->id.'&amp;delete='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(),
-                            'view.php?d='.$data->id);
+                    $deletebutton = new single_button(new moodle_url('/mod/data/view.php?d='.$data->id.'&delete='.$delete.'&confirm=1'), get_string('delete'), 'post');
+                    echo $OUTPUT->confirm(get_string('confirmdeleterecord','data'),
+                            $deletebutton, 'view.php?d='.$data->id);
 
                     $records[] = $deleterecord;
                     echo data_print_template('singletemplate', $records, $data, '', 0, true);
 
-                    print_footer($course);
+                    echo $OUTPUT->footer();
                     exit;
                 }
             }
         }
     }
 
-    //if data activity closed dont let students in
-    $showactivity = true;
-    if (!has_capability('mod/data:manageentries', $context)) {
-        $timenow = time();
-        if (!empty($data->timeavailablefrom) && $data->timeavailablefrom > $timenow) {
-            print_box( get_string('notopenyet', 'data', userdate($data->timeavailablefrom)) );
-            $showactivity = false;
-        } else if (!empty($data->timeavailableto) && $timenow > $data->timeavailableto) {
-            print_box( get_string('expired', 'data', userdate($data->timeavailableto)) );
-            $showactivity = false;
-        }
+
+//if data activity closed dont let students in
+$showactivity = true;
+if (!has_capability('mod/data:manageentries', $context)) {
+    $timenow = time();
+    if (!empty($data->timeavailablefrom) && $data->timeavailablefrom > $timenow) {
+        echo $OUTPUT->notification(get_string('notopenyet', 'data', userdate($data->timeavailablefrom)));
+        $showactivity = false;
+    } else if (!empty($data->timeavailableto) && $timenow > $data->timeavailableto) {
+        echo $OUTPUT->notification(get_string('expired', 'data', userdate($data->timeavailableto)));
+        $showactivity = false;
     }
+}
 
-    if ($showactivity) {
-        // Print the tabs
-        if ($record or $mode == 'single') {
-            $currenttab = 'single';
-        } elseif($mode == 'asearch') {
-            $currenttab = 'asearch';
-        }
-        else {
-            $currenttab = 'list';
-        }
-        include('tabs.php');
+if ($showactivity) {
+    // Print the tabs
+    if ($record or $mode == 'single') {
+        $currenttab = 'single';
+    } elseif($mode == 'asearch') {
+        $currenttab = 'asearch';
+    }
+    else {
+        $currenttab = 'list';
+    }
+    include('tabs.php');
 
-        if ($mode == 'asearch') {
-            $maxcount = 0;
+    if ($mode == 'asearch') {
+        $maxcount = 0;
+
+    } else {
+    /// Approve any requested records
+        $params = array(); // named params array
+
+        $approvecap = has_capability('mod/data:approve', $context);
+
+        if ($approve && confirm_sesskey() && $approvecap) {
+            if ($approverecord = $DB->get_record('data_records', array('id'=>$approve))) {   // Need to check this is valid
+                if ($approverecord->dataid == $data->id) {                       // Must be from this database
+                    $newrecord = new stdClass();
+                    $newrecord->id = $approverecord->id;
+                    $newrecord->approved = 1;
+                    $DB->update_record('data_records', $newrecord);
+                    echo $OUTPUT->notification(get_string('recordapproved','data'), 'notifysuccess');
+                }
+            }
+        }
+
+         $numentries = data_numentries($data);
+    /// Check the number of entries required against the number of entries already made (doesn't apply to teachers)
+        if ($data->requiredentries > 0 && $numentries < $data->requiredentries && !has_capability('mod/data:manageentries', $context)) {
+            $data->entriesleft = $data->requiredentries - $numentries;
+            $strentrieslefttoadd = get_string('entrieslefttoadd', 'data', $data);
+            echo $OUTPUT->notification($strentrieslefttoadd);
+        }
+
+    /// Check the number of entries required before to view other participant's entries against the number of entries already made (doesn't apply to teachers)
+        $requiredentries_allowed = true;
+        if ($data->requiredentriestoview > 0 && $numentries < $data->requiredentriestoview && !has_capability('mod/data:manageentries', $context)) {
+            $data->entrieslefttoview = $data->requiredentriestoview - $numentries;
+            $strentrieslefttoaddtoview = get_string('entrieslefttoaddtoview', 'data', $data);
+            echo $OUTPUT->notification($strentrieslefttoaddtoview);
+            $requiredentries_allowed = false;
+        }
+
+    /// setup group and approve restrictions
+        if (!$approvecap && $data->approval) {
+            if (isloggedin()) {
+                $approveselect = ' AND (r.approved=1 OR r.userid=:myid1) ';
+                $params['myid1'] = $USER->id;
+            } else {
+                $approveselect = ' AND r.approved=1 ';
+            }
+        } else {
+            $approveselect = ' ';
+        }
+
+        if ($currentgroup) {
+            $groupselect = " AND (r.groupid = :currentgroup OR r.groupid = 0)";
+            $params['currentgroup'] = $currentgroup;
+        } else {
+            $groupselect = ' ';
+        }
+
+        // Init some variables to be used by advanced search
+        $advsearchselect = '';
+        $advwhere        = '';
+        $advtables       = '';
+        $advparams       = array();
+
+    /// Find the field we are sorting on
+        if ($sort <= 0 or !$sortfield = data_get_field_from_id($sort, $data)) {
+
+            switch ($sort) {
+                case DATA_LASTNAME:
+                    $ordering = "u.lastname $order, u.firstname $order";
+                    break;
+                case DATA_FIRSTNAME:
+                    $ordering = "u.firstname $order, u.lastname $order";
+                    break;
+                case DATA_APPROVED:
+                    $ordering = "r.approved $order, r.timecreated $order";
+                    break;
+                case DATA_TIMEMODIFIED:
+                    $ordering = "r.timemodified $order";
+                    break;
+                case DATA_TIMEADDED:
+                default:
+                    $sort     = 0;
+                    $ordering = "r.timecreated $order";
+            }
+
+            $what = ' DISTINCT r.id, r.approved, r.timecreated, r.timemodified, r.userid, u.firstname, u.lastname';
+            $count = ' COUNT(DISTINCT c.recordid) ';
+            $tables = '{data_content} c,{data_records} r, {data_content} cs, {user} u ';
+            $where =  'WHERE c.recordid = r.id
+                         AND r.dataid = :dataid
+                         AND r.userid = u.id
+                         AND cs.recordid = r.id ';
+            $params['dataid'] = $data->id;
+            $sortorder = ' ORDER BY '.$ordering.', r.id ASC ';
+            $searchselect = '';
+
+            // If requiredentries is not reached, only show current user's entries
+            if (!$requiredentries_allowed) {
+                $where .= ' AND u.id = :myid2 ';
+                $params['myid2'] = $USER->id;
+            }
+
+            if (!empty($advanced)) {                                                  //If advanced box is checked.
+                $i = 0;
+                foreach($search_array as $key => $val) {                              //what does $search_array hold?
+                    if ($key == DATA_FIRSTNAME or $key == DATA_LASTNAME) {
+                        $i++;
+                        $searchselect .= " AND ".$DB->sql_like($val->field, ":search_flname_$i", false);
+                        $params['search_flname_'.$i] = "%$val->data%";
+                        continue;
+                    }
+                    $advtables .= ', {data_content} c'.$key.' ';
+                    $advwhere .= ' AND c'.$key.'.recordid = r.id';
+                    $advsearchselect .= ' AND ('.$val->sql.') ';
+                    $advparams = array_merge($advparams, $val->params);
+                }
+            } else if ($search) {
+                $searchselect = " AND (".$DB->sql_like('cs.content', ':search1', false)." OR ".$DB->sql_like('u.firstname', ':search2', false)." OR ".$DB->sql_like('u.lastname', ':search3', false)." ) ";
+                $params['search1'] = "%$search%";
+                $params['search2'] = "%$search%";
+                $params['search3'] = "%$search%";
+            } else {
+                $searchselect = ' ';
+            }
 
         } else {
-        /// Approve any requested records
 
-            $approvecap = has_capability('mod/data:approve', $context);
+            $sortcontent = $DB->sql_compare_text('c.' . $sortfield->get_sort_field());
+            $sortcontentfull = $sortfield->get_sort_sql($sortcontent);
 
-            if ($approve && confirm_sesskey() && $approvecap) {
-                if ($approverecord = get_record('data_records', 'id', $approve)) {   // Need to check this is valid
-                    if ($approverecord->dataid == $data->id) {                       // Must be from this database
-                        $newrecord->id = $approverecord->id;
-                        $newrecord->approved = 1;
-                        if (update_record('data_records', $newrecord)) {
-                            notify(get_string('recordapproved','data'), 'notifysuccess');
-                        }
+            $what = ' DISTINCT r.id, r.approved, r.timecreated, r.timemodified, r.userid, u.firstname, u.lastname, ' . $sortcontentfull . ' AS _order ';
+            $count = ' COUNT(DISTINCT c.recordid) ';
+            $tables = '{data_content} c, {data_records} r, {data_content} cs, {user} u ';
+            $where =  'WHERE c.recordid = r.id
+                         AND c.fieldid = :sort
+                         AND r.dataid = :dataid
+                         AND r.userid = u.id
+                         AND cs.recordid = r.id ';
+            $params['dataid'] = $data->id;
+            $params['sort'] = $sort;
+            $sortorder = ' ORDER BY _order '.$order.' , r.id ASC ';
+            $searchselect = '';
+
+            // If requiredentries is not reached, only show current user's entries
+            if (!$requiredentries_allowed) {
+                $where .= ' AND u.id = ' . $USER->id;
+                $params['myid2'] = $USER->id;
+            }
+
+            if (!empty($advanced)) {                                                  //If advanced box is checked.
+                foreach($search_array as $key => $val) {                              //what does $search_array hold?
+                    if ($key == DATA_FIRSTNAME or $key == DATA_LASTNAME) {
+                        $i++;
+                        $searchselect .= " AND ".$DB->sql_like($val->field, ":search_flname_$i", false);
+                        $params['search_flname_'.$i] = "%$val->data%";
+                        continue;
                     }
+                    $advtables .= ', {data_content} c'.$key.' ';
+                    $advwhere .= ' AND c'.$key.'.recordid = r.id AND c'.$key.'.fieldid = '.$key;
+                    $advsearchselect .= ' AND ('.$val->sql.') ';
+                    $advparams = array_merge($advparams, $val->params);
                 }
-            }
-
-            $numentries = data_numentries($data);
-        /// Check the number of entries required against the number of entries already made (doesn't apply to teachers)
-            if ($data->requiredentries > 0 && $numentries < $data->requiredentries && !has_capability('mod/data:manageentries', $context)) {
-                $data->entriesleft = $data->requiredentries - $numentries;
-                $strentrieslefttoadd = get_string('entrieslefttoadd', 'data', $data);
-                notify($strentrieslefttoadd);
-            }
-
-        /// Check the number of entries required before to view other participant's entries against the number of entries already made (doesn't apply to teachers)
-            $requiredentries_allowed = true;
-            if ($data->requiredentriestoview > 0 && $numentries < $data->requiredentriestoview && !has_capability('mod/data:manageentries', $context)) {
-                $data->entrieslefttoview = $data->requiredentriestoview - $numentries;
-                $strentrieslefttoaddtoview = get_string('entrieslefttoaddtoview', 'data', $data);
-                notify($strentrieslefttoaddtoview);
-                $requiredentries_allowed = false;
-            }
-
-        /// setup group and approve restrictions
-            if (!$approvecap && $data->approval) {
-                if (isloggedin()) {
-                    $approveselect = ' AND (r.approved=1 OR r.userid='.$USER->id.') ';
-                } else {
-                    $approveselect = ' AND r.approved=1 ';
-                }
+            } else if ($search) {
+                $searchselect = " AND (".$DB->sql_like('cs.content', ':search1', false)." OR ".$DB->sql_like('u.firstname', ':search2', false)." OR ".$DB->sql_like('u.lastname', ':search3', false)." ) ";
+                $params['search1'] = "%$search%";
+                $params['search2'] = "%$search%";
+                $params['search3'] = "%$search%";
             } else {
-                $approveselect = ' ';
-            }
-
-            if ($currentgroup) {
-                $groupselect = " AND (r.groupid = '$currentgroup' OR r.groupid = 0)";
-            } else {
-                $groupselect = ' ';
-            }
-
-            $ilike = sql_ilike(); //Be case-insensitive
-
-            // Init some variables to be used by advanced search
-            $advsearchselect = '';
-            $advwhere        = '';
-            $advtables       = '';
-
-        /// Find the field we are sorting on
-            if ($sort <= 0 or !$sortfield = data_get_field_from_id($sort, $data)) {
-
-                switch ($sort) {
-                    case DATA_LASTNAME:
-                        $ordering = "u.lastname $order, u.firstname $order";
-                        break;
-                    case DATA_FIRSTNAME:
-                        $ordering = "u.firstname $order, u.lastname $order";
-                        break;
-                    case DATA_APPROVED:
-                        $ordering = "r.approved $order, r.timecreated $order";
-                        break;
-                    case DATA_TIMEMODIFIED:
-                        $ordering = "r.timemodified $order";
-                        break;
-                    case DATA_TIMEADDED:
-                    default:
-                        $sort     = 0;
-                        $ordering = "r.timecreated $order";
-                }
-
-                $what = ' DISTINCT r.id, r.approved, r.timecreated, r.timemodified, r.userid, u.firstname, u.lastname';
-                $count = ' COUNT(DISTINCT c.recordid) ';
-                $tables = $CFG->prefix.'data_content c,'.$CFG->prefix.'data_records r,'.$CFG->prefix.'data_content cs, '.$CFG->prefix.'user u ';
-                $where =  'WHERE c.recordid = r.id
-                             AND r.dataid = '.$data->id.'
-                             AND r.userid = u.id
-                             AND cs.recordid = r.id ';
-                $sortorder = ' ORDER BY '.$ordering.', r.id ASC ';
-                $searchselect = '';
-
-                // If requiredentries is not reached, only show current user's entries
-                if (!$requiredentries_allowed) {
-                    $where .= ' AND u.id = ' . $USER->id;
-                }
-
-                if (!empty($advanced)) {                                                  //If advanced box is checked.
-                    foreach($search_array as $key => $val) {                              //what does $search_array hold?
-                        if ($key == DATA_FIRSTNAME or $key == DATA_LASTNAME) {
-                            $searchselect .= " AND $val->field $ilike '%{$val->data}%'";
-                            continue;
-                        }
-                        $advtables .= ', '.$CFG->prefix.'data_content c'.$key.' ';
-                        $advwhere .= ' AND c'.$key.'.recordid = r.id';
-                        $advsearchselect .= ' AND ('.$val->sql.') ';
-                    }
-                } else if ($search) {
-                    $searchselect = " AND (cs.content $ilike '%$search%' OR u.firstname $ilike '%$search%' OR u.lastname $ilike '%$search%' ) ";
-                } else {
-                    $searchselect = ' ';
-                }
-
-            } else {
-
-                $sortcontent = sql_compare_text('c.' . $sortfield->get_sort_field());
-                $sortcontentfull = $sortfield->get_sort_sql($sortcontent);
-
-                $what = ' DISTINCT r.id, r.approved, r.timecreated, r.timemodified, r.userid, u.firstname, u.lastname, '.$sortcontentfull.' AS _order ';
-                $count = ' COUNT(DISTINCT c.recordid) ';
-                $tables = $CFG->prefix.'data_content c,'.$CFG->prefix.'data_records r,'.$CFG->prefix.'data_content cs, '.$CFG->prefix.'user u ';
-                $where =  'WHERE c.recordid = r.id
-                             AND c.fieldid = '.$sort.'
-                             AND r.dataid = '.$data->id.'
-                             AND r.userid = u.id
-                             AND cs.recordid = r.id ';
-                $sortorder = ' ORDER BY _order '.$order.' , r.id ASC ';
-                $searchselect = '';
-
-                // If requiredentries is not reached, only show current user's entries
-                if (!$requiredentries_allowed) {
-                    $where .= ' AND u.id = ' . $USER->id;
-                }
-
-                if (!empty($advanced)) {                                                  //If advanced box is checked.
-                    foreach($search_array as $key => $val) {                              //what does $search_array hold?
-                        if ($key == DATA_FIRSTNAME or $key == DATA_LASTNAME) {
-                            $searchselect .= " AND $val->field $ilike '%{$val->data}%'";
-                            continue;
-                        }
-                        $advtables .= ', '.$CFG->prefix.'data_content c'.$key.' ';
-                        $advwhere .= ' AND c'.$key.'.recordid = r.id AND c'.$key.'.fieldid = '.$key;
-                        $advsearchselect .= ' AND ('.$val->sql.') ';
-                    }
-                } else if ($search) {
-                    $searchselect = " AND (cs.content $ilike '%$search%' OR u.firstname $ilike '%$search%' OR u.lastname $ilike '%$search%' ) ";
-                } else {
-                    $searchselect = ' ';
-                }
-            }
-
-        /// To actually fetch the records
-
-            $fromsql    = "FROM $tables $advtables $where $advwhere $groupselect $approveselect $searchselect $advsearchselect";
-            $sqlselect  = "SELECT $what $fromsql $sortorder";
-            $sqlcount   = "SELECT $count $fromsql";   // Total number of records when searching
-            $sqlmax     = "SELECT $count FROM $tables $where $groupselect $approveselect"; // number of all recoirds user may see
-
-        /// Work out the paging numbers and counts
-
-            $totalcount = count_records_sql($sqlcount);
-            if (empty($searchselect) && empty($advsearchselect)) {
-                $maxcount = $totalcount;
-            } else {
-                $maxcount = count_records_sql($sqlmax);
-            }
-
-            if ($record) {     // We need to just show one, so where is it in context?
-                $nowperpage = 1;
-                $mode = 'single';
-
-                $page = 0;
-                // TODO: Improve this because we are executing $sqlselect twice (here and some lines below)!
-                if ($allrecordids = get_fieldset_sql($sqlselect)) {
-                    $page = (int)array_search($record->id, $allrecordids);
-                    unset($allrecordids);
-                }
-
-            } else if ($mode == 'single') {  // We rely on ambient $page settings
-                $nowperpage = 1;
-
-            } else {
-                $nowperpage = $perpage;
-            }
-
-        /// Get the actual records
-
-            if (!$records = get_records_sql($sqlselect, $page * $nowperpage, $nowperpage)) {
-                // Nothing to show!
-                if ($record) {         // Something was requested so try to show that at least (bug 5132)
-                    if (has_capability('mod/data:manageentries', $context) || empty($data->approval) ||
-                             $record->approved || (isloggedin() && $record->userid == $USER->id)) {
-                        if (!$currentgroup || $record->groupid == $currentgroup || $record->groupid == 0) {
-                            // OK, we can show this one
-                            $records = array($record->id => $record);
-                            $totalcount = 1;
-                        }
-                    }
-                }
-            }
-
-            if (empty($records)) {
-                if ($maxcount){
-                    $a = new object();
-                    $a->max = $maxcount;
-                    $a->reseturl = "view.php?id=$cm->id&amp;mode=$mode&amp;search=&amp;advanced=0";
-                    notify(get_string('foundnorecords','data', $a));
-                } else {
-                    notify(get_string('norecords','data'));
-                }
-
-            } else { //  We have some records to print
-
-                if ($maxcount != $totalcount) {
-                    $a = new object();
-                    $a->num = $totalcount;
-                    $a->max = $maxcount;
-                    $a->reseturl = "view.php?id=$cm->id&amp;mode=$mode&amp;search=&amp;advanced=0";
-                    notify(get_string('foundrecords', 'data', $a), 'notifysuccess');
-                }
-
-                if ($mode == 'single') {                  // Single template
-                    $baseurl = 'view.php?d=' . $data->id . '&amp;mode=single&amp;';
-                    if (!empty($search)) {
-                        $baseurl .= 'filter=1&amp;';
-                    }
-                    print_paging_bar($totalcount, $page, $nowperpage, $baseurl, $pagevar='page');
-
-                    if (empty($data->singletemplate)){
-                        notify(get_string('nosingletemplate','data'));
-                        data_generate_default_template($data, 'singletemplate', 0, false, false);
-                    }
-
-                    data_print_template('singletemplate', $records, $data, $search, $page);
-
-                    print_paging_bar($totalcount, $page, $nowperpage, $baseurl, $pagevar='page');
-
-                } else {                                  // List template
-                    $baseurl = 'view.php?d='.$data->id.'&amp;';
-                    //send the advanced flag through the URL so it is remembered while paging.
-                    $baseurl .= 'advanced='.$advanced.'&amp;';
-                    if (!empty($search)) {
-                        $baseurl .= 'filter=1&amp;';
-                    }
-                    //pass variable to allow determining whether or not we are paging through results.
-                    $baseurl .= 'paging='.$paging.'&amp;';
-
-                    print_paging_bar($totalcount, $page, $nowperpage, $baseurl, $pagevar='page');
-
-                    if (empty($data->listtemplate)){
-                        notify(get_string('nolisttemplate','data'));
-                        data_generate_default_template($data, 'listtemplate', 0, false, false);
-                    }
-                    echo $data->listtemplateheader;
-                    data_print_template('listtemplate', $records, $data, $search, $page);
-                    echo $data->listtemplatefooter;
-
-                    print_paging_bar($totalcount, $page, $nowperpage, $baseurl, $pagevar='page');
-                }
-
+                $searchselect = ' ';
             }
         }
 
-        $search = trim($search);
+    /// To actually fetch the records
+
+        $fromsql    = "FROM $tables $advtables $where $advwhere $groupselect $approveselect $searchselect $advsearchselect";
+        $sqlselect  = "SELECT $what $fromsql $sortorder";
+        $sqlcount   = "SELECT $count $fromsql";   // Total number of records when searching
+        $sqlmax     = "SELECT $count FROM $tables $where $groupselect $approveselect"; // number of all recoirds user may see
+        $allparams  = array_merge($params, $advparams);
+
+    /// Work out the paging numbers and counts
+
+        $totalcount = $DB->count_records_sql($sqlcount, $allparams);
+        if (empty($searchselect) && empty($advsearchselect)) {
+            $maxcount = $totalcount;
+        } else {
+            $maxcount = $DB->count_records_sql($sqlmax, $params);
+        }
+
+        if ($record) {     // We need to just show one, so where is it in context?
+            $nowperpage = 1;
+            $mode = 'single';
+
+            $page = 0;
+            // TODO: Improve this because we are executing $sqlselect twice (here and some lines below)!
+            if ($allrecordids = $DB->get_fieldset_sql($sqlselect, $allparams)) {
+                $page = (int)array_search($record->id, $allrecordids);
+                unset($allrecordids);
+            }
+
+        } else if ($mode == 'single') {  // We rely on ambient $page settings
+            $nowperpage = 1;
+
+        } else {
+            $nowperpage = $perpage;
+        }
+
+    /// Get the actual records
+
+        if (!$records = $DB->get_records_sql($sqlselect, $allparams, $page * $nowperpage, $nowperpage)) {
+            // Nothing to show!
+            if ($record) {         // Something was requested so try to show that at least (bug 5132)
+                if (has_capability('mod/data:manageentries', $context) || empty($data->approval) ||
+                         $record->approved || (isloggedin() && $record->userid == $USER->id)) {
+                    if (!$currentgroup || $record->groupid == $currentgroup || $record->groupid == 0) {
+                        // OK, we can show this one
+                        $records = array($record->id => $record);
+                        $totalcount = 1;
+                    }
+                }
+            }
+        }
+
         if (empty($records)) {
-            $records = array();
-        }
-
-        //Advanced search form doesn't make sense for single (redirects list view)
-        if (($maxcount || $mode == 'asearch') && $mode != 'single') {
-            data_print_preference_form($data, $perpage, $search, $sort, $order, $search_array, $advanced, $mode);
-        }
-
-    /// If we have blocks, then print the left side here
-        if (!empty($CFG->showblocksonmodpages)) {
-            print_container_end();
-            echo '</td>';   // Middle column
-            if ((blocks_have_content($pageblocks, BLOCK_POS_RIGHT) || $PAGE->user_is_editing())) {
-                echo '<td style="width: '.$blocks_preferred_width.'px;" id="right-column">';
-                print_container_start();
-                blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-                print_container_end();
-                echo '</td>';
+            if ($maxcount){
+                $a = new stdClass();
+                $a->max = $maxcount;
+                $a->reseturl = "view.php?id=$cm->id&amp;mode=$mode&amp;search=&amp;advanced=0";
+                echo $OUTPUT->notification(get_string('foundnorecords','data', $a));
+            } else {
+                echo $OUTPUT->notification(get_string('norecords','data'));
             }
-            echo '</tr></table>';
+
+        } else { //  We have some records to print
+
+            if ($maxcount != $totalcount) {
+                $a = new stdClass();
+                $a->num = $totalcount;
+                $a->max = $maxcount;
+                $a->reseturl = "view.php?id=$cm->id&amp;mode=$mode&amp;search=&amp;advanced=0";
+                echo $OUTPUT->notification(get_string('foundrecords', 'data', $a), 'notifysuccess');
+            }
+
+            if ($mode == 'single') { // Single template
+                $baseurl = 'view.php?d=' . $data->id . '&mode=single&';
+                if (!empty($search)) {
+                    $baseurl .= 'filter=1&';
+                }
+                if (!empty($page)) {
+                    $baseurl .= 'page=' . $page;
+                }
+                echo $OUTPUT->paging_bar($totalcount, $page, $nowperpage, $baseurl);
+
+                if (empty($data->singletemplate)){
+                    echo $OUTPUT->notification(get_string('nosingletemplate','data'));
+                    data_generate_default_template($data, 'singletemplate', 0, false, false);
+                }
+
+                //data_print_template() only adds ratings for singletemplate which is why we're attaching them here
+                //attach ratings to data records
+                require_once($CFG->dirroot.'/rating/lib.php');
+                if ($data->assessed != RATING_AGGREGATE_NONE) {
+                    $ratingoptions = new stdClass;
+                    $ratingoptions->context = $context;
+                    $ratingoptions->component = 'mod_data';
+                    $ratingoptions->ratingarea = 'entry';
+                    $ratingoptions->items = $records;
+                    $ratingoptions->aggregate = $data->assessed;//the aggregation method
+                    $ratingoptions->scaleid = $data->scale;
+                    $ratingoptions->userid = $USER->id;
+                    $ratingoptions->returnurl = $CFG->wwwroot.'/mod/data/'.$baseurl;
+                    $ratingoptions->assesstimestart = $data->assesstimestart;
+                    $ratingoptions->assesstimefinish = $data->assesstimefinish;
+
+                    $rm = new rating_manager();
+                    $records = $rm->get_ratings($ratingoptions);
+                }
+
+                data_print_template('singletemplate', $records, $data, $search, $page);
+
+                echo $OUTPUT->paging_bar($totalcount, $page, $nowperpage, $baseurl);
+
+            } else {                                  // List template
+                $baseurl = 'view.php?d='.$data->id.'&amp;';
+                //send the advanced flag through the URL so it is remembered while paging.
+                $baseurl .= 'advanced='.$advanced.'&amp;';
+                if (!empty($search)) {
+                    $baseurl .= 'filter=1&amp;';
+                }
+                //pass variable to allow determining whether or not we are paging through results.
+                $baseurl .= 'paging='.$paging.'&amp;';
+
+                echo $OUTPUT->paging_bar($totalcount, $page, $nowperpage, $baseurl);
+
+                if (empty($data->listtemplate)){
+                    echo $OUTPUT->notification(get_string('nolisttemplate','data'));
+                    data_generate_default_template($data, 'listtemplate', 0, false, false);
+                }
+                echo $data->listtemplateheader;
+                data_print_template('listtemplate', $records, $data, $search, $page);
+                echo $data->listtemplatefooter;
+
+                echo $OUTPUT->paging_bar($totalcount, $page, $nowperpage, $baseurl);
+            }
+
         }
     }
 
-    print_footer($course);
-?>
+    $search = trim($search);
+    if (empty($records)) {
+        $records = array();
+    }
+
+    if ($mode == '' && !empty($CFG->enableportfolios)) {
+        require_once($CFG->libdir . '/portfoliolib.php');
+        $button = new portfolio_add_button();
+        $button->set_callback_options('data_portfolio_caller', array('id' => $cm->id), '/mod/data/locallib.php');
+        if (data_portfolio_caller::has_files($data)) {
+            $button->set_formats(array(PORTFOLIO_FORMAT_RICHHTML, PORTFOLIO_FORMAT_LEAP2A)); // no plain html for us
+        }
+        echo $button->to_html(PORTFOLIO_ADD_FULL_FORM);
+    }
+
+    //Advanced search form doesn't make sense for single (redirects list view)
+    if (($maxcount || $mode == 'asearch') && $mode != 'single') {
+        data_print_preference_form($data, $perpage, $search, $sort, $order, $search_array, $advanced, $mode);
+    }
+}
+
+echo $OUTPUT->footer();

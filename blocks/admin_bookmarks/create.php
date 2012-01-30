@@ -1,10 +1,12 @@
-<?php // $Id$
+<?php
 
 require('../../config.php');
 
 require_once($CFG->libdir.'/adminlib.php');
 require_login();
-$adminroot =& admin_get_root(false, false);  // settings not required - only pages
+$context = get_context_instance(CONTEXT_SYSTEM);
+$PAGE->set_context($context);
+$adminroot = admin_get_root(false, false);  // settings not required - only pages
 
 if ($section = optional_param('section', '', PARAM_SAFEDIR) and confirm_sesskey()) {
 
@@ -22,7 +24,7 @@ if ($section = optional_param('section', '', PARAM_SAFEDIR) and confirm_sesskey(
 
     $temp = $adminroot->locate($section);
 
-    if (is_a($temp, 'admin_settingpage') || is_a($temp, 'admin_externalpage')) {
+    if ($temp instanceof admin_settingpage || $temp instanceof admin_externalpage) {
         $bookmarks[] = $section;
         $bookmarks = implode(',', $bookmarks);
         set_user_preference('admin_bookmarks', $bookmarks);
@@ -32,10 +34,10 @@ if ($section = optional_param('section', '', PARAM_SAFEDIR) and confirm_sesskey(
         die;
     }
 
-    if (is_a($temp, 'admin_settingpage')) {
+    if ($temp instanceof admin_settingpage) {
         redirect($CFG->wwwroot . '/' . $CFG->admin . '/settings.php?section=' . $section);
 
-    } elseif (is_a($temp, 'admin_externalpage')) {
+    } elseif ($temp instanceof admin_externalpage) {
         redirect($temp->url);
     }
 
@@ -45,4 +47,3 @@ if ($section = optional_param('section', '', PARAM_SAFEDIR) and confirm_sesskey(
 }
 
 
-?>

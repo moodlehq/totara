@@ -1,14 +1,12 @@
-<?php // $Id$
+<?php
       // Display all the interfaces for importing data into a specific course
 
     require_once('../config.php');
 
     $id = required_param('id', PARAM_INT);   // course id to import TO
+    $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
 
-    if (!$course = get_record('course', 'id', $id)) {
-        error("That's an invalid course id");
-    }
-
+    $PAGE->set_pagelayout('standard');
     require_login($course);
 
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
@@ -16,15 +14,15 @@
 
     $strreports = get_string('reports');
 
-    $navlinks = array();
-    $navlinks[] = array('name' => $strreports, 'link' => null, 'type' => 'misc');
-    $navigation = build_navigation($navlinks);
-    print_header($course->fullname.': '.$strreports, $course->fullname.': '.$strreports, $navigation);
+    $PAGE->set_url(new moodle_url('/course/report.php', array('id'=>$id)));
+    $PAGE->set_title($course->fullname.': '.$strreports);
+    $PAGE->set_heading($course->fullname.': '.$strreports);
+    echo $OUTPUT->header();
 
-    $directories = get_list_of_plugins('course/report');
+    $reports = get_plugin_list('coursereport');
 
-    foreach ($directories as $directory) {
-        $pluginfile = $CFG->dirroot.'/course/report/'.$directory.'/mod.php';
+    foreach ($reports as $report => $reportdirectory) {
+        $pluginfile = $reportdirectory.'/mod.php';
         if (file_exists($pluginfile)) {
             ob_start();
             include($pluginfile);  // Fragment for listing
@@ -39,5 +37,5 @@
         }
     }
 
-    print_footer();
-?>
+    echo $OUTPUT->footer();
+

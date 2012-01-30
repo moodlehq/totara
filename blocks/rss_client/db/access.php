@@ -14,7 +14,7 @@
 //
 // It is important that capability names are unique. The naming convention
 // for capabilities that are specific to modules and blocks is as follows:
-//   [mod/block]/<component_name>:<capabilityname>
+//   [mod/block]/<plugin_name>:<capabilityname>
 //
 // component_name should be the same as the directory name of the mod or block.
 //
@@ -25,45 +25,19 @@
 //           block/recent_activity:view
 //           moodle/site:deleteuser
 //
-// The variable name for the capability definitions array follows the format
-//   $<componenttype>_<component_name>_capabilities
-//
-// For the core capabilities, the variable is $moodle_capabilities.
+// The variable name for the capability definitions array is $capabilities
 
 
-$block_rss_client_capabilities = array(
-
-    'block/rss_client:createprivatefeeds' => array(
-
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_BLOCK,
-        'legacy' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
-        )
-    ),
-
-    'block/rss_client:createsharedfeeds' => array(
-
-        'riskbitmask' => RISK_SPAM,
-
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_BLOCK,
-        'legacy' => array(
-            'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
-        )
-    ),
+$capabilities = array(
 
     'block/rss_client:manageownfeeds' => array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
-        'legacy' => array(
+        'archetypes' => array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -73,11 +47,11 @@ $block_rss_client_capabilities = array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
     )
 
 );
 
-?>
+

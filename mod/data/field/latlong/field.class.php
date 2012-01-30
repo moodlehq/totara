@@ -1,4 +1,4 @@
-<?php  // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -43,16 +43,13 @@ class data_field_latlong extends data_field_base {
     );
     // Other map sources listed at http://kvaleberg.com/extensions/mapsources/index.php?params=51_30.4167_N_0_7.65_W_region:earth
 
-    function data_field_latlong($field=0, $data=0) {
-        parent::data_field_base($field, $data);
-    }
-
     function display_add_field($recordid=0) {
-        global $CFG;
+        global $CFG, $DB;
+
         $lat = '';
         $long = '';
         if ($recordid) {
-            if ($content = get_record('data_content', 'fieldid', $this->field->id, 'recordid', $recordid)) {
+            if ($content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
                 $lat  = $content->content;
                 $long = $content->content1;
             }
@@ -69,20 +66,23 @@ class data_field_latlong extends data_field_base {
     }
 
     function display_search_field($value = '') {
-        global $CFG;
-        $varcharlat = sql_compare_text('content');
-        $varcharlong= sql_compare_text('content1');
-        $latlongsrs = get_recordset_sql(
+        global $CFG, $DB;
+
+        $varcharlat = $DB->sql_compare_text('content');
+        $varcharlong= $DB->sql_compare_text('content1');
+        $latlongsrs = $DB->get_recordset_sql(
             "SELECT DISTINCT $varcharlat AS la, $varcharlong AS lo
-              FROM {$CFG->prefix}data_content
-             WHERE fieldid = {$this->field->id}
-             ORDER BY $varcharlat, $varcharlong");
+               FROM {data_content}
+              WHERE fieldid = ?
+             ORDER BY $varcharlat, $varcharlong", array($this->field->id));
+
         $options = array();
-        while ($latlong = rs_fetch_next_record($latlongsrs)) {
+        foreach ($latlongsrs as $latlong) {
             $options[$latlong->la . ',' . $latlong->lo] = $latlong->la . ',' . $latlong->lo;
         }
-        rs_close($latlongsrs);
-        return choose_from_menu($options, 'f_'.$this->field->id, $value, 'choose', '', 0, true);
+        $latlongsrs->close();
+
+       return html_writer::select($options, 'f_'.$this->field->id, $value);
     }
 
     function parse_search_field() {
@@ -90,17 +90,26 @@ class data_field_latlong extends data_field_base {
     }
 
     function generate_sql($tablealias, $value) {
+        global $DB;
+
+        static $i=0;
+        $i++;
+        $name1 = "df_latlong1_$i";
+        $name2 = "df_latlong2_$i";
+        $varcharlat = $DB->sql_compare_text("{$tablealias}.content");
+        $varcharlong= $DB->sql_compare_text("{$tablealias}.content1");
+
+
         $latlong[0] = '';
         $latlong[1] = '';
         $latlong = explode (',', $value, 2);
-        $varcharlat = sql_compare_text("{$tablealias}.content");
-        $varcharlong= sql_compare_text("{$tablealias}.content1");
-        return " ({$tablealias}.fieldid = {$this->field->id} AND $varcharlat = '$latlong[0]' AND $varcharlong = '$latlong[1]') ";
+        return array(" ({$tablealias}.fieldid = {$this->field->id} AND $varcharlat = :$name1 AND $varcharlong = :$name2) ",
+                     array($name1=>$latlong[0], $name2=>$latlong[1]));
     }
 
     function display_browse_field($recordid, $template) {
-        global $CFG;
-        if ($content = get_record('data_content', 'fieldid', $this->field->id, 'recordid', $recordid)) {
+        global $CFG, $DB;
+        if ($content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             $lat = $content->content;
             if (strlen($lat) < 1) {
                 return false;
@@ -161,7 +170,9 @@ class data_field_latlong extends data_field_base {
     }
 
     function update_content($recordid, $value, $name='') {
-        $content = new object;
+        global $DB;
+
+        $content = new stdClass();
         $content->fieldid = $this->field->id;
         $content->recordid = $recordid;
         $value = trim($value);
@@ -183,27 +194,17 @@ class data_field_latlong extends data_field_base {
             default:
                 break;
         }
-        if ($oldcontent = get_record('data_content','fieldid', $this->field->id, 'recordid', $recordid)) {
+        if ($oldcontent = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             $content->id = $oldcontent->id;
-            return update_record('data_content', $content);
+            return $DB->update_record('data_content', $content);
         } else {
-            return insert_record('data_content', $content);
+            return $DB->insert_record('data_content', $content);
         }
     }
 
     function get_sort_sql($fieldname) {
-        global $CFG;
-        switch ($CFG->dbfamily) {
-            case 'mysql':
-                // string in an arithmetic operation is converted to a floating-point number
-                return '('.$fieldname.'+0.0)';
-            case 'postgres':
-                //cast is for PG
-                return 'CAST('.$fieldname.' AS REAL)';
-            default:
-                //Return just the fieldname. TODO: Look behaviour under MSSQL and Oracle
-                return $fieldname;
-        }
+        global $DB;
+        return $DB->sql_cast_char2real($fieldname, true);
     }
 
     function export_text_value($record) {
@@ -212,4 +213,4 @@ class data_field_latlong extends data_field_base {
 
 }
 
-?>
+

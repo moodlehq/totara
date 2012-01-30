@@ -20,11 +20,14 @@ class mnet_xmlrpc_client {
     var $timeout  = 60;
     var $error    = array();
     var $response = '';
+    var $mnet     = null;
 
     /**
      * Constructor returns true
      */
     function mnet_xmlrpc_client() {
+        // make sure we've got this set up before we try and do anything else
+        $this->mnet = get_mnet_environment();
         return true;
     }
 
@@ -36,7 +39,7 @@ class mnet_xmlrpc_client {
     function set_timeout($timeout) {
         if (!is_integer($timeout)) {
             if (is_numeric($timeout)) {
-                $this->timeout = (integer($timeout));
+                $this->timeout = (integer)$timeout;
                 return true;
             }
             return false;
@@ -122,79 +125,32 @@ class mnet_xmlrpc_client {
      *                                  remote function
      */
     function send($mnet_peer) {
-        global $CFG, $MNET;
+        global $CFG, $DB;
 
-        $this->uri = $mnet_peer->wwwroot.$mnet_peer->application->xmlrpc_server_url;
 
-        // Initialize with the target URL
-        $ch = curl_init($this->uri);
-
-        $system_methods = array('system/listMethods', 'system/methodSignature', 'system/methodHelp', 'system/listServices');
-
-        if (in_array($this->method, $system_methods) ) {
-
-            // Executing any system method is permitted.
-
-        } else {
-            $id_list = $mnet_peer->id;
-            if (!empty($CFG->mnet_all_hosts_id)) {
-                $id_list .= ', '.$CFG->mnet_all_hosts_id;
-            }
-
-            // At this point, we don't care if the remote host implements the 
-            // method we're trying to call. We just want to know that:
-            // 1. The method belongs to some service, as far as OUR host knows
-            // 2. We are allowed to subscribe to that service on this mnet_peer
-
-            // Find methods that we subscribe to on this host
-            $sql = "
-                SELECT
-                    r.id
-                FROM
-                    {$CFG->prefix}mnet_rpc r,
-                    {$CFG->prefix}mnet_service2rpc s2r,
-                    {$CFG->prefix}mnet_host2service h2s
-                WHERE
-                    r.xmlrpc_path = '{$this->method}' AND
-                    s2r.rpcid = r.id AND
-                    s2r.serviceid = h2s.serviceid AND
-                    h2s.subscribe = '1' AND
-                    h2s.hostid in ({$id_list})";
-
-            if (!record_exists_sql($sql)) {
-                global $USER;
-                $this->error[] = '7:User with ID '. $USER->id .
-                                 ' attempted to call unauthorised method '.
-                                 $this->method.' on host '.
-                                 $mnet_peer->wwwroot;
-                return false;
-            }
-
+        if (!$this->permission_to_call($mnet_peer)) {
+            mnet_debug("tried and wasn't allowed to call a method on $mnet_peer->wwwroot");
+            return false;
         }
-        $this->requesttext = xmlrpc_encode_request($this->method, $this->params, array("encoding" => "utf-8", "escaping" => "markup"));
-        $rq = $this->requesttext;
-        $rq = mnet_sign_message($this->requesttext);
-        $this->signedrequest = $rq;
-        $rq = mnet_encrypt_message($rq, $mnet_peer->public_key);
-        $this->encryptedrequest = $rq;
 
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Moodle');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $rq);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: text/xml charset=UTF-8"));
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        $this->requesttext = xmlrpc_encode_request($this->method, $this->params, array("encoding" => "utf-8", "escaping" => "markup"));
+        $this->signedrequest = mnet_sign_message($this->requesttext);
+        $this->encryptedrequest = mnet_encrypt_message($this->signedrequest, $mnet_peer->public_key);
+
+        $httprequest = $this->prepare_http_request($mnet_peer);
+        curl_setopt($httprequest, CURLOPT_POSTFIELDS, $this->encryptedrequest);
 
         $timestamp_send    = time();
-        $this->rawresponse = curl_exec($ch);
+        mnet_debug("about to send the curl request");
+        $this->rawresponse = curl_exec($httprequest);
+        mnet_debug("managed to complete a curl request");
         $timestamp_receive = time();
 
         if ($this->rawresponse === false) {
-            $this->error[] = curl_errno($ch) .':'. curl_error($ch);
+            $this->error[] = curl_errno($httprequest) .':'. curl_error($httprequest);
             return false;
         }
+        curl_close($httprequest);
 
         $this->rawresponse = trim($this->rawresponse);
 
@@ -203,53 +159,9 @@ class mnet_xmlrpc_client {
         $crypt_parser = new mnet_encxml_parser();
         $crypt_parser->parse($this->rawresponse);
 
-        if ($crypt_parser->payload_encrypted) {
-
-            $key  = array_pop($crypt_parser->cipher);
-            $data = array_pop($crypt_parser->cipher);
-
-            $crypt_parser->free_resource();
-
-            // Initialize payload var
-            $payload = '';
-
-            //                                          &$payload
-            $isOpen = openssl_open(base64_decode($data), $payload, base64_decode($key), $MNET->get_private_key());
-
-            if (!$isOpen) {
-                // Decryption failed... let's try our archived keys
-                $openssl_history = get_config('mnet', 'openssl_history');
-                if(empty($openssl_history)) {
-                    $openssl_history = array();
-                    set_config('openssl_history', serialize($openssl_history), 'mnet');
-                } else {
-                    $openssl_history = unserialize($openssl_history);
-                }
-                foreach($openssl_history as $keyset) {
-                    $keyresource = openssl_pkey_get_private($keyset['keypair_PEM']);
-                    $isOpen      = openssl_open(base64_decode($data), $payload, base64_decode($key), $keyresource);
-                    if ($isOpen) {
-                        // It's an older code, sir, but it checks out
-                        break;
-                    }
-                }
-            }
-
-            if (!$isOpen) {
-                trigger_error("None of our keys could open the payload from host {$mnet_peer->wwwroot} with id {$mnet_peer->id}.");
-                $this->error[] = '3:No key match';
-                return false;
-            }
-
-            if (strpos(substr($payload, 0, 100), '<signedMessage>')) {
-                $sig_parser = new mnet_encxml_parser();
-                $sig_parser->parse($payload);
-            } else {
-                $this->error[] = '2:Payload not signed: '.$payload;
-                return false;
-            }
-
-        } else {
+        // If we couldn't parse the message, or it doesn't seem to have encrypted contents,
+        // give the most specific error msg available & return
+        if (!$crypt_parser->payload_encrypted) {
             if (! empty($crypt_parser->remoteerror)) {
                 $this->error[] = '4: remote server error: ' . $crypt_parser->remoteerror;
             } else if (! empty($crypt_parser->error)) {
@@ -268,6 +180,50 @@ class mnet_xmlrpc_client {
             }
 
             $crypt_parser->free_resource();
+            return false;
+        }
+
+        $key  = array_pop($crypt_parser->cipher);
+        $data = array_pop($crypt_parser->cipher);
+
+        $crypt_parser->free_resource();
+
+        // Initialize payload var
+        $decryptedenvelope = '';
+
+        //                                          &$decryptedenvelope
+        $isOpen = openssl_open(base64_decode($data), $decryptedenvelope, base64_decode($key), $this->mnet->get_private_key());
+
+        if (!$isOpen) {
+            // Decryption failed... let's try our archived keys
+            $openssl_history = get_config('mnet', 'openssl_history');
+            if(empty($openssl_history)) {
+                $openssl_history = array();
+                set_config('openssl_history', serialize($openssl_history), 'mnet');
+            } else {
+                $openssl_history = unserialize($openssl_history);
+            }
+            foreach($openssl_history as $keyset) {
+                $keyresource = openssl_pkey_get_private($keyset['keypair_PEM']);
+                $isOpen      = openssl_open(base64_decode($data), $decryptedenvelope, base64_decode($key), $keyresource);
+                if ($isOpen) {
+                    // It's an older code, sir, but it checks out
+                    break;
+                }
+            }
+        }
+
+        if (!$isOpen) {
+            trigger_error("None of our keys could open the payload from host {$mnet_peer->wwwroot} with id {$mnet_peer->id}.");
+            $this->error[] = '3:No key match';
+            return false;
+        }
+
+        if (strpos(substr($decryptedenvelope, 0, 100), '<signedMessage>')) {
+            $sig_parser = new mnet_encxml_parser();
+            $sig_parser->parse($decryptedenvelope);
+        } else {
+            $this->error[] = '2:Payload not signed: ' . $decryptedenvelope;
             return false;
         }
 
@@ -297,7 +253,6 @@ class mnet_xmlrpc_client {
 
         $this->xmlrpcresponse = base64_decode($sig_parser->data_object);
         $this->response       = xmlrpc_decode($this->xmlrpcresponse);
-        curl_close($ch);
 
         // xmlrpc errors are pushed onto the $this->error stack
         if (is_array($this->response) && array_key_exists('faultCode', $this->response)) {
@@ -305,32 +260,37 @@ class mnet_xmlrpc_client {
             // The faultString is the new key - let's save it and try again
             // The re_key attribute stops us from getting into a loop
             if($this->response['faultCode'] == 7025 && empty($mnet_peer->re_key)) {
-                $record                     = new stdClass();
-                $record->id                 = $mnet_peer->id;
-                if($this->response['faultString'] == clean_param($this->response['faultString'], PARAM_PEM)) {
-                    $record->public_key         = $this->response['faultString'];
-                    $details                    = openssl_x509_parse($record->public_key);
-                    if(is_array($details) && isset($details['validTo_time_t'])) {
-                        $record->public_key_expires = $details['validTo_time_t'];
-                        update_record('mnet_host', $record);
-                        $mnet_peer2 = new mnet_peer();
-                        $mnet_peer2->set_id($record->id);
-                        $mnet_peer2->re_key = true;
-                        $this->send($mnet_peer2);
-                    } else {
-                        $this->error[] = $this->response['faultCode'] . " : " . $this->response['faultString'];
-                    }
-                } else {
+                mnet_debug('recieved an old-key fault, so trying to get the new key and update our records');
+                // If the new certificate doesn't come thru clean_param() unmolested, error out
+                if($this->response['faultString'] != clean_param($this->response['faultString'], PARAM_PEM)) {
                     $this->error[] = $this->response['faultCode'] . " : " . $this->response['faultString'];
                 }
-            } else {
-                if (!empty($CFG->mnet_rpcdebug)) {
+                $record                     = new stdClass();
+                $record->id                 = $mnet_peer->id;
+                $record->public_key         = $this->response['faultString'];
+                $details                    = openssl_x509_parse($record->public_key);
+                if(!isset($details['validTo_time_t'])) {
+                    $this->error[] = $this->response['faultCode'] . " : " . $this->response['faultString'];
+                }
+                $record->public_key_expires = $details['validTo_time_t'];
+                $DB->update_record('mnet_host', $record);
+
+                // Create a new peer object populated with the new info & try re-sending the request
+                $rekeyed_mnet_peer = new mnet_peer();
+                $rekeyed_mnet_peer->set_id($record->id);
+                $rekeyed_mnet_peer->re_key = true;
+                return $this->send($rekeyed_mnet_peer);
+            }
+            if (!empty($CFG->mnet_rpcdebug)) {
+                if (get_string_manager()->string_exists('error'.$this->response['faultCode'], 'mnet')) {
                     $guidance = get_string('error'.$this->response['faultCode'], 'mnet');
                 } else {
                     $guidance = '';
                 }
-                $this->error[] = $this->response['faultCode'] . " : " . $this->response['faultString'];
+            } else {
+                $guidance = '';
             }
+            $this->error[] = $this->response['faultCode'] . " : " . $this->response['faultString'] ."\n".$guidance;
         }
 
         // ok, it's signed, but is it signed with the right certificate ?
@@ -342,5 +302,74 @@ class mnet_xmlrpc_client {
 
         return empty($this->error);
     }
+
+    /**
+     * Check that we are permitted to call method on specified peer
+     *
+     * @param object $mnet_peer A mnet_peer object with details of the remote host we're connecting to
+     * @return bool True if we permit calls to method on specified peer, False otherwise.
+     */
+
+    function permission_to_call($mnet_peer) {
+        global $DB, $CFG, $USER;
+
+        // Executing any system method is permitted.
+        $system_methods = array('system/listMethods', 'system/methodSignature', 'system/methodHelp', 'system/listServices');
+        if (in_array($this->method, $system_methods) ) {
+            return true;
+        }
+
+        $hostids = array($mnet_peer->id);
+        if (!empty($CFG->mnet_all_hosts_id)) {
+            $hostids[] = $CFG->mnet_all_hosts_id;
+        }
+        // At this point, we don't care if the remote host implements the
+        // method we're trying to call. We just want to know that:
+        // 1. The method belongs to some service, as far as OUR host knows
+        // 2. We are allowed to subscribe to that service on this mnet_peer
+
+        list($hostidsql, $hostidparams) = $DB->get_in_or_equal($hostids);
+
+        $sql = "SELECT r.id
+                  FROM {mnet_remote_rpc} r
+            INNER JOIN {mnet_remote_service2rpc} s2r ON s2r.rpcid = r.id
+            INNER JOIN {mnet_host2service} h2s ON h2s.serviceid = s2r.serviceid
+                 WHERE r.xmlrpcpath = ?
+                       AND h2s.subscribe = ?
+                       AND h2s.hostid $hostidsql";
+
+        $params = array($this->method, 1);
+        $params = array_merge($params, $hostidparams);
+
+        if ($DB->record_exists_sql($sql, $params)) {
+            return true;
+        }
+
+        $this->error[] = '7:User with ID '. $USER->id .
+                         ' attempted to call unauthorised method '.
+                         $this->method.' on host '.
+                         $mnet_peer->wwwroot;
+        return false;
+    }
+
+    /**
+     * Generate a curl handle and prepare it for sending to an mnet host
+     *
+     * @param object $mnet_peer A mnet_peer object with details of the remote host the request will be sent to
+     * @return cURL handle - the almost-ready-to-send http request
+     */
+    function prepare_http_request ($mnet_peer) {
+        $this->uri = $mnet_peer->wwwroot . $mnet_peer->application->xmlrpc_server_url;
+
+        // Initialize request the target URL
+        $httprequest = curl_init($this->uri);
+        curl_setopt($httprequest, CURLOPT_TIMEOUT, $this->timeout);
+        curl_setopt($httprequest, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($httprequest, CURLOPT_POST, true);
+        curl_setopt($httprequest, CURLOPT_USERAGENT, 'Moodle');
+        curl_setopt($httprequest, CURLOPT_HTTPHEADER, array("Content-Type: text/xml charset=UTF-8"));
+        curl_setopt($httprequest, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($httprequest, CURLOPT_SSL_VERIFYHOST, 0);
+        return $httprequest;
+    }
 }
-?>

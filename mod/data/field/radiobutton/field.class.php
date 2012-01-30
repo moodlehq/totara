@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -26,16 +26,11 @@ class data_field_radiobutton extends data_field_base {
 
     var $type = 'radiobutton';
 
-    function data_field_radiobutton($field=0, $data=0) {
-        parent::data_field_base($field, $data);
-    }
-
-
     function display_add_field($recordid=0) {
-        global $CFG;
+        global $CFG, $DB;
 
         if ($recordid){
-            $content = trim(get_field('data_content', 'content', 'fieldid', $this->field->id, 'recordid', $recordid));
+            $content = trim($DB->get_field('data_content', 'content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid)));
         } else {
             $content = '';
         }
@@ -68,14 +63,14 @@ class data_field_radiobutton extends data_field_base {
     }
 
      function display_search_field($value = '') {
-        global $CFG;
+        global $CFG, $DB;
 
-        $varcharcontent = sql_compare_text('content', 255);
-        $used = get_records_sql(
+        $varcharcontent = $DB->sql_compare_text('content', 255);
+        $used = $DB->get_records_sql(
             "SELECT DISTINCT $varcharcontent AS content
-               FROM {$CFG->prefix}data_content
-              WHERE fieldid={$this->field->id}
-             ORDER BY $varcharcontent");
+               FROM {data_content}
+              WHERE fieldid=?
+             ORDER BY $varcharcontent", array($this->field->id));
 
         $options = array();
         if(!empty($used)) {
@@ -83,7 +78,7 @@ class data_field_radiobutton extends data_field_base {
                 $options[$rec->content] = $rec->content;  //Build following indicies from the sql.
             }
         }
-        return choose_from_menu($options, 'f_'.$this->field->id, $value, 'choose', '', 0, true);
+        return html_writer::select($options, 'f_'.$this->field->id, $value);
     }
 
     function parse_search_field() {
@@ -91,9 +86,15 @@ class data_field_radiobutton extends data_field_base {
     }
 
     function generate_sql($tablealias, $value) {
-        $varcharcontent = sql_compare_text("{$tablealias}.content", 255);
-        return " ({$tablealias}.fieldid = {$this->field->id} AND $varcharcontent = '$value') ";
+        global $DB;
+
+        static $i=0;
+        $i++;
+        $name = "df_radiobutton_$i";
+        $varcharcontent = $DB->sql_compare_text("{$tablealias}.content", 255);
+
+        return array(" ({$tablealias}.fieldid = {$this->field->id} AND $varcharcontent = :$name) ", array($name=>$value));
     }
 
 }
-?>
+

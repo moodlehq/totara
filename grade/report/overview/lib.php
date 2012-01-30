@@ -34,18 +34,18 @@ class grade_report_overview extends grade_report {
      * The user.
      * @var object $user
      */
-    var $user;
+    public $user;
 
     /**
      * A flexitable to hold the data.
      * @var object $table
      */
-    var $table;
+    public $table;
 
     /**
      * show student ranks
      */
-    var $showrank;
+    public $showrank;
 
     /**
      * show course/category totals if they contain hidden items
@@ -58,16 +58,15 @@ class grade_report_overview extends grade_report {
      * @param object $gpr grade plugin return tracking object
      * @param string $context
      */
-    function grade_report_overview($userid, $gpr, $context) {
-        global $CFG, $COURSE;
-        parent::grade_report($COURSE->id, $gpr, $context);
+    public function __construct($userid, $gpr, $context) {
+        global $CFG, $COURSE, $DB;
+        parent::__construct($COURSE->id, $gpr, $context);
 
         $this->showrank = grade_get_setting($this->courseid, 'report_overview_showrank', !empty($CFG->grade_report_overview_showrank));
-        
         $this->showtotalsifcontainhidden = grade_get_setting($this->courseid, 'report_overview_showtotalsifcontainhidden', $CFG->grade_report_overview_showtotalsifcontainhidden);
 
         // get the user (for full name)
-        $this->user = get_record('user', 'id', $userid);
+        $this->user = $DB->get_record('user', array('id' => $userid));
 
         // base url for sorting by first/last name
         $this->baseurl = $CFG->wwwroot.'/grade/overview/index.php?id='.$userid;
@@ -79,7 +78,7 @@ class grade_report_overview extends grade_report {
     /**
      * Prepares the headers and attributes of the flexitable.
      */
-    function setup_table() {
+    public function setup_table() {
         /*
          * Table has 3 columns
          *| course  | final grade | rank (optional) |
@@ -109,19 +108,21 @@ class grade_report_overview extends grade_report {
         $this->table->setup();
     }
 
-    function fill_table() {
-        global $CFG;
+    public function fill_table() {
+        global $CFG, $DB, $OUTPUT;
 
-        // MDL-11679, only show 'mycourses' instead of all courses
-        if ($courses = get_my_courses($this->user->id, 'c.sortorder ASC', 'id, shortname, showgrades')) {
+        // MDL-11679, only show user's courses instead of all courses
+        if ($courses = enrol_get_users_courses($this->user->id, false, 'id, shortname, showgrades')) {
             $numusers = $this->get_numusers(false);
 
             foreach ($courses as $course) {
                 if (!$course->showgrades) {
                     continue;
                 }
-                $courselink = '<a href="'.$CFG->wwwroot.'/grade/report/user/index.php?id='.$course->id.'&userid='.$this->user->id.'">'.$course->shortname.'</a>';
-                $canviewhidden = has_capability('moodle/grade:viewhidden', get_context_instance(CONTEXT_COURSE, $course->id));
+                $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+                $courseshortname = format_string($course->shortname, true, array('context' => $coursecontext));
+                $courselink = html_writer::link(new moodle_url('/grade/report/user/index.php', array('id' => $course->id, 'userid' => $this->user->id)), $courseshortname);
+                $canviewhidden = has_capability('moodle/grade:viewhidden', $coursecontext);
 
                 // Get course grade_item
                 $course_item = grade_item::fetch_course_item($course->id);
@@ -147,11 +148,12 @@ class grade_report_overview extends grade_report {
                 } else if (!is_null($finalgrade)) {
                     /// find the number of users with a higher grade
                     /// please note this can not work if hidden grades involved :-( to be fixed in 2.0
+                    $params = array($finalgrade, $course_item->id);
                     $sql = "SELECT COUNT(DISTINCT(userid))
-                              FROM {$CFG->prefix}grade_grades
-                             WHERE finalgrade IS NOT NULL AND finalgrade > $finalgrade
-                                   AND itemid = {$course_item->id}";
-                    $rank = count_records_sql($sql) + 1;
+                              FROM {grade_grades}
+                             WHERE finalgrade IS NOT NULL AND finalgrade > ?
+                                   AND itemid = ?";
+                    $rank = $DB->count_records_sql($sql, $params) + 1;
 
                     $data[] = "$rank/$numusers";
 
@@ -165,7 +167,7 @@ class grade_report_overview extends grade_report {
             return true;
 
         } else {
-            notify(get_string('nocourses', 'grades'));
+            echo $OUTPUT->notification(get_string('nocourses', 'grades'));
             return false;
         }
     }
@@ -175,7 +177,7 @@ class grade_report_overview extends grade_report {
      * @param bool $return Whether or not to return the data instead of printing it directly.
      * @return string
      */
-    function print_table($return=false) {
+    public function print_table($return=false) {
         ob_start();
         $this->table->print_html();
         $html = ob_get_clean();
@@ -192,6 +194,8 @@ class grade_report_overview extends grade_report {
      * @return bool Success or Failure (array of errors).
      */
     function process_data($data) {
+    }
+    function process_action($target, $action) {
     }
 }
 
@@ -210,7 +214,7 @@ function grade_report_overview_settings_definition(&$mform) {
     }
 
     $mform->addElement('select', 'report_overview_showrank', get_string('showrank', 'grades'), $options);
-    $mform->setHelpButton('report_overview_showrank', array('showrank', get_string('showrank', 'grades'), 'grade'));
+    $mform->addHelpButton('report_overview_showrank', 'showrank', 'grades');
 
     //showtotalsifcontainhidden
     $options = array(-1 => get_string('default', 'grades'),
@@ -225,7 +229,7 @@ function grade_report_overview_settings_definition(&$mform) {
     }
 
     $mform->addElement('select', 'report_overview_showtotalsifcontainhidden', get_string('hidetotalifhiddenitems', 'grades'), $options);
-    $mform->setHelpButton('report_overview_showtotalsifcontainhidden', array('hidetotalifhiddenitems', get_string('hidetotalifhiddenitems', 'grades'), 'grade'));
+    $mform->addHelpButton('report_overview_showtotalsifcontainhidden', 'hidetotalifhiddenitems', 'grades');
 }
 
-?>
+

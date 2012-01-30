@@ -13,7 +13,7 @@ class block_guides extends block_list {
     }
 
     function get_content() {
-        global $THEME, $CFG, $USER;
+        global $THEME, $CFG, $USER, $DB;
 
         if($this->content !== NULL) {
             return $this->content;
@@ -33,12 +33,14 @@ class block_guides extends block_list {
                  " class=\"icon\" alt=\"".get_string("coursecategory")."\" />";
         $inprogresscontent = '';
         require_once($CFG->dirroot . '/guides/lib.php');
-        $gissql = 'SELECT g.id, gi.currentstep, gi.guide, gi.id as giid, g.steps, g.name, g.description ' .
-                    'FROM ' . $CFG->prefix . 'block_guides_guide g' .
-                    ' INNER JOIN ' . $CFG->prefix . 'block_guides_guide_instance gi ON gi.guide = g.id ' .
-                    'WHERE gi.deleted = 0 AND gi.userid = ' . $USER->id . ' ' .
-                    'ORDER by g.id asc';
-        $guideinstances = get_records_sql($gissql);
+        $gissql = '
+            SELECT g.id, gi.currentstep, gi.guide, gi.id as giid, g.steps, g.name, g.description
+              FROM {block_guides_guide} g
+             INNER JOIN {block_guides_guide_instance} gi ON gi.guide = g.id
+             WHERE gi.deleted = 0 AND gi.userid = ?
+             ORDER by g.id asc
+        ';
+        $guideinstances = $DB->get_records_sql($gissql, array($USER->id));
         if (empty($guideinstances)) {
             $guideinstances = array();
         }

@@ -1,11 +1,30 @@
-<?php  // $Id$
-       // Provide interface for topics AJAX course formats
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Provide interface for topics AJAX course formats
+ *
+ * @copyright 1999 Martin Dougiamas  http://dougiamas.com
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package course
+ */
 
 require_once('../config.php');
 require_once($CFG->dirroot.'/course/lib.php');
-require_once($CFG->libdir .'/pagelib.php');
-require_once($CFG->libdir .'/blocklib.php');
-
 
 // Initialise ALL the incoming parameters here, up front.
 $courseid   = required_param('courseId', PARAM_INT);
@@ -21,32 +40,20 @@ $summary    = optional_param('summary', '', PARAM_RAW);
 $sequence   = optional_param('sequence', '', PARAM_SEQUENCE);
 $visible    = optional_param('visible', 0, PARAM_INT);
 $pageaction = optional_param('action', '', PARAM_ALPHA); // Used to simulate a DELETE command
-$positiontoinsert = optional_param('positiontoinsert', '', PARAM_ALPHA);
-$positiontoinsertid = optional_param('positiontoinsertid', '', PARAM_RAW);
+
+$PAGE->set_url('/course/rest.php', array('courseId'=>$courseid,'class'=>$class));
+
+//NOTE: when making any changes here please make sure it is using the same access control as course/mod.php !!
+
+require_login();
 
 // Authorise the user and verify some incoming data
-if (!$course = get_record('course', 'id', $courseid)) {
+if (!$course = $DB->get_record('course', array('id'=>$courseid))) {
     error_log('AJAX commands.php: Course does not exist');
     die;
 }
 
-$PAGE = page_create_object(PAGE_COURSE_VIEW, $course->id);
-$pageblocks = blocks_setup($PAGE, BLOCKS_PINNED_BOTH);
-
-if (!empty($instanceid)) {
-    $blockinstance = blocks_find_instance($instanceid, $pageblocks);
-    if (!$blockinstance || $blockinstance->pageid != $course->id
-                        || $blockinstance->pagetype != 'course-view') {
-        error_log('AJAX commands.php: Bad block ID '.$instanceid);
-        die;
-    }
-}
-
-$context = get_context_instance(CONTEXT_COURSE, $course->id);
-require_login($course->id);
-require_capability('moodle/course:update', $context);
-
-if (!empty($CFG->disablecourseajax)) {
+if (empty($CFG->enablecourseajax)) {
     error_log('Course AJAX not allowed');
     die;
 }
@@ -54,105 +61,26 @@ if (!empty($CFG->disablecourseajax)) {
 require_sesskey();
 
 // OK, now let's process the parameters and do stuff
+// MDL-10221 the DELETE method is not allowed on some web servers, so we simulate it with the action URL param
+$requestmethod = $_SERVER['REQUEST_METHOD'];
+if ($pageaction == 'DELETE') {
+    $requestmethod = 'DELETE';
+}
 
-$req_method = ($pageaction == 'DELETE') ? 'DELETE' : $_SERVER['REQUEST_METHOD'];
-
-switch($req_method) {
-
+switch($requestmethod) {
     case 'POST':
 
         switch ($class) {
             case 'block':
-
-                switch ($field) {
-                    case 'visible':
-                        blocks_execute_action($PAGE, $pageblocks, 'toggle', $blockinstance);
-                        break;
-
-                    case 'position':  // Misleading case. Should probably call it 'move'.
-                        // We want to move the block around. This means changing
-                        // the column (position field) and/or block sort order
-                        // (weight field).
-                        $undifinedinsertedid = FALSE;
-                        $isaddednewblock = FALSE;
-
-                        if (!empty($positiontoinsertid) && $positiontoinsertid != 'undefined' && strpos($positiontoinsertid, 'column') === FALSE ) {
-                            $isaddednewblock = (substr($positiontoinsertid,0,1) != 'i') ? TRUE : FALSE;
-                            if ($positiontoinsertid == 'linst0' || $positiontoinsertid == 'rinst0') {
-                               $isaddednewblock = FALSE;
-                            }
-
-                            $positiontoinsertid = clean_param($positiontoinsertid, PARAM_SEQUENCE);
-                        } else if($positiontoinsertid == 'undefined') {
-                            $undifinedinsertedid = TRUE;
-                            $positiontoinsertid = 0;
-                        } else {
-                            $positiontoinsertid = 0;
-                        }
-                        
-                        if ($positiontoinsertid > 0) {
-                            
-                            $instsql = 'SELECT * FROM '. $CFG->prefix .'block_instance WHERE '
-                                .' id = \''. $instanceid .'\' AND position = \''. $column .'\' AND pageId = \''. $courseid .'\'';
-                            $instweight = get_record_sql($instsql);
-
-                            $sql = 'SELECT * FROM '. $CFG->prefix .'block_instance WHERE '
-                                .' id = \''. $positiontoinsertid .'\' AND position = \''. $column .'\' AND pageId = \''. $courseid .'\'';
-                            $targetweight = get_record_sql($sql);
-
-                            //$instweight = get_record("block_instance", 'id', $positiontoinsertid, "position",$column, 'pageId', $courseid);
-                            if (!empty($targetweight->weight) && !empty($instweight->weight)) {
-                                if ($positiontoinsert == "before") {
-                                    if ($targetweight->weight < $instweight->weight || ($instanceid == $positiontoinsertid)) {
-                                        $destweight = ($targetweight->weight == 0 || empty($targetweight->weight)) ? 0 : $targetweight->weight ;
-                                    } else {
-                                        $destweight = ($targetweight->weight == 0 || empty($targetweight->weight)) ? 0 : $targetweight->weight -1 ;
-                                    }
-                                } else if ($positiontoinsert == "after") {
-                                    $destweight = $targetweight->weight + 1;                                    
-                                }
-                            } else {
-                                $destweight = ($targetweight->weight == 0 || empty($targetweight->weight)) ? 0 : $targetweight->weight - 1 ;
-                            }                            
-                        } else {
-                            $sql = 'SELECT max(weight) as weight FROM '. $CFG->prefix .'block_instance WHERE '
-                               .'position = \''. $column .'\' AND pageId = \''. $courseid .'\'';
-                            $instweight = get_record_sql($sql);
-
-                            $countrecords = count_records('block_instance', 'position', $column, 'pageId', $courseid);
-                            $recordexists = record_exists('block_instance', 'position', $column, 'pageId', $courseid, 'id', $instanceid);
-
-                            if ($isaddednewblock || $undifinedinsertedid) {
-                                if (!empty($countrecords)) {
-                                    $destweight = ($recordexists) ? $instweight->weight : $instweight->weight + 1 ;
-                                } else {
-                                    $destweight = 0;
-                                }                                
-                            } else {                   
-                                if (!empty($countrecords)) {
-                                    $destweight = ($recordexists) ? $instweight->weight  : $instweight->weight + 1  ;
-                                } else {
-                                    $destweight = 0;
-                                }
-                            }
-                        }
-                       
-                        blocks_move_block($PAGE, $blockinstance, $column, $destweight);
-                                          
-                        $current_blocks = blocks_get_by_page_pinned($PAGE);
-                        global $COURSE;
-                        foreach ($current_blocks as $pos =>$blocks) {
-                            if (count($current_blocks[$pos]) == 0) {
-                                print_side_block('', '', NULL, NULL, '', array('id'=> $pos.'inst0', 'class'=>'tempblockhandle'), '');                                
-                            }
-                        }
-                        break;
-                }
+                // not used any more
                 break;
 
             case 'section':
+                require_login($course);
+                $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+                require_capability('moodle/course:update', $coursecontext);
 
-                if (!record_exists('course_sections','course',$course->id,'section',$id)) {
+                if (!$DB->record_exists('course_sections', array('course'=>$course->id, 'section'=>$id))) {
                     error_log('AJAX commands.php: Bad Section ID '.$id);
                     die;
                 }
@@ -170,39 +98,47 @@ switch($req_method) {
                 break;
 
             case 'resource':
-                if (!$mod = get_record('course_modules', 'id', $id, 'course', $course->id)) {
+                if (!$cm = get_coursemodule_from_id('', $id, $course->id)) {
                     error_log('AJAX commands.php: Bad course module ID '.$id);
                     die;
                 }
+                require_login($course, false, $cm);
+                $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
                 switch ($field) {
                     case 'visible':
-                        set_coursemodule_visible($mod->id, $value);
+                        require_capability('moodle/course:activityvisibility', $modcontext);
+                        set_coursemodule_visible($cm->id, $value);
                         break;
 
                     case 'groupmode':
-                        set_coursemodule_groupmode($mod->id, $value);
+                        require_capability('moodle/course:manageactivities', $modcontext);
+                        set_coursemodule_groupmode($cm->id, $value);
                         break;
 
                     case 'indentleft':
-                        if ($mod->indent > 0) {
-                            $mod->indent--;
-                            update_record('course_modules', $mod);
+                        require_capability('moodle/course:manageactivities', $modcontext);
+                        if ($cm->indent > 0) {
+                            $cm->indent--;
+                            $DB->update_record('course_modules', $cm);
                         }
                         break;
 
                     case 'indentright':
-                        $mod->indent++;
-                        update_record('course_modules', $mod);
+                        require_capability('moodle/course:manageactivities', $modcontext);
+                        $cm->indent++;
+                        $DB->update_record('course_modules', $cm);
                         break;
 
                     case 'move':
-                        if (!$section = get_record('course_sections','course',$course->id,'section',$sectionid)) {
+                        require_capability('moodle/course:manageactivities', $modcontext);
+                        if (!$section = $DB->get_record('course_sections', array('course'=>$course->id, 'section'=>$sectionid))) {
                             error_log('AJAX commands.php: Bad section ID '.$sectionid);
                             die;
                         }
 
                         if ($beforeid > 0){
-                            $beforemod = get_record('course_modules', 'id', $beforeid);
+                            $beforemod = get_coursemodule_from_id('', $beforeid, $course->id);
+                            $beforemod = $DB->get_record('course_modules', array('id'=>$beforeid));
                         } else {
                             $beforemod = NULL;
                         }
@@ -211,7 +147,7 @@ switch($req_method) {
                             error_log(serialize($beforemod));
                         }
 
-                        moveto_module($mod, $section, $beforemod);
+                        moveto_module($cm, $section, $beforemod);
                         break;
                 }
                 rebuild_course_cache($course->id);
@@ -220,13 +156,13 @@ switch($req_method) {
             case 'course':
                 switch($field) {
                     case 'marker':
-                        $newcourse = new object;
+                        require_login($course);
+                        $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+                        require_capability('moodle/course:update', $coursecontext);
+                        $newcourse = new stdClass();
                         $newcourse->id = $course->id;
                         $newcourse->marker = $value;
-                        if (!update_record('course',$newcourse)) {
-                            error_log('AJAX commands.php: Failed to update course marker for course '.$newcourse->id);
-                            die;
-                        }
+                        $DB->update_record('course', $newcourse);
                         break;
                 }
                 break;
@@ -236,48 +172,61 @@ switch($req_method) {
     case 'DELETE':
         switch ($class) {
             case 'block':
-                blocks_execute_action($PAGE, $pageblocks, 'delete', $blockinstance, false, false);
+                // not used any more
                 break;
 
             case 'resource':
-                if (!$cm = get_record('course_modules', 'id', $id, 'course', $course->id)) {
+                if (!$cm = get_coursemodule_from_id('', $id, $course->id)) {
                     error_log('AJAX rest.php: Bad course module ID '.$id);
                     die;
                 }
-                if (!$mod = get_record('modules', 'id', $cm->module)) {
-                    error_log('AJAX rest.php: Bad module ID '.$cm->module);
-                    die;
-                }
-                $mod->name = clean_param($mod->name, PARAM_SAFEDIR);  // For safety
-                $modlib = "$CFG->dirroot/mod/$mod->name/lib.php";
+                require_login($course, false, $cm);
+                $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+                require_capability('moodle/course:manageactivities', $modcontext);
+                $modlib = "$CFG->dirroot/mod/$cm->modname/lib.php";
 
                 if (file_exists($modlib)) {
                     include_once($modlib);
                 } else {
-                    error_log("Ajax rest.php: This module is missing important code ($modlib)");
+                    error_log("Ajax rest.php: This module is missing mod/$cm->modname/lib.php");
                     die;
                 }
-                $deleteinstancefunction = $mod->name."_delete_instance";
+                $deleteinstancefunction = $cm->modname."_delete_instance";
 
                 // Run the module's cleanup funtion.
                 if (!$deleteinstancefunction($cm->instance)) {
-                    error_log("Ajax rest.php: Could not delete the $mod->name (instance)");
+                    error_log("Ajax rest.php: Could not delete the $cm->modname $cm->name (instance)");
                     die;
+                }
+
+                // remove all module files in case modules forget to do that
+                $fs = get_file_storage();
+                $fs->delete_area_files($modcontext->id);
+
+                if (!delete_course_module($cm->id)) {
+                    error_log("Ajax rest.php: Could not delete the $cm->modname $cm->name (coursemodule)");
                 }
                 // Remove the course_modules entry.
-                if (!delete_course_module($cm->id)) {
-                    error_log("Ajax rest.php: Could not delete the $mod->modulename (coursemodule)");
-                    die;
+                if (!delete_mod_from_section($cm->id, $cm->section)) {
+                    error_log("Ajax rest.php: Could not delete the $cm->modname $cm->name from section");
                 }
+
+                // Trigger a mod_deleted event with information about this module.
+                $eventdata = new stdClass();
+                $eventdata->modulename = $cm->modname;
+                $eventdata->cmid       = $cm->id;
+                $eventdata->courseid   = $course->id;
+                $eventdata->userid     = $USER->id;
+                events_trigger('mod_deleted', $eventdata);
 
                 rebuild_course_cache($course->id);
 
                 add_to_log($courseid, "course", "delete mod",
                            "view.php?id=$courseid",
-                           "$mod->name $cm->instance", $cm->id);
+                           "$cm->modname $cm->instance", $cm->id);
                 break;
         }
         break;
 }
 
-?>
+

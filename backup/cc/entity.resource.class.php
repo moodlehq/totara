@@ -17,14 +17,13 @@
  * @package   moodlecore
  * @subpackage backup-imscc
  * @copyright 2009 Mauro Rondinelli (mauro.rondinelli [AT] uvcms.com)
+ * @copyright 2011 Darko Miletic (dmiletic@moodlerooms.com)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') or die('Direct access to this script is forbidden.');
 
-class resource extends entities {
-
-    private $namespaces = array('wl' => 'http://www.imsglobal.org/xsd/imswl_v1p0');
+class cc_resource extends entities {
 
     public function generate_node () {
 
@@ -44,11 +43,16 @@ class resource extends entities {
     }
 
     private function create_node_course_modules_mod_resource ($sheet_mod_resource, $instance) {
+        global $CFG;
+
+        require_once($CFG->libdir.'/validateurlsyntax.php');
 
         $link = '';
-        $xpath = cc2moodle::newx_path(CC2Moodle::$manifest, CC2Moodle::$namespaces);
+        $mod_alltext = '';
+        $mod_summary = '';
+        $xpath = cc2moodle::newx_path(cc2moodle::$manifest, cc2moodle::$namespaces);
 
-        if ($instance['common_cartriedge_type'] == CC_TYPE_WEBCONTENT || $instance['common_cartriedge_type'] == CC_TYPE_ASSOCIATED_CONTENT) {
+        if ($instance['common_cartriedge_type'] == cc2moodle::CC_TYPE_WEBCONTENT || $instance['common_cartriedge_type'] == cc2moodle::CC_TYPE_ASSOCIATED_CONTENT) {
             $resource = $xpath->query('/imscc:manifest/imscc:resources/imscc:resource[@identifier="' . $instance['resource_indentifier'] . '"]/@href');
             $resource = !empty($resource->item(0)->nodeValue) ? $resource->item(0)->nodeValue : '';
 
@@ -66,7 +70,7 @@ class resource extends entities {
             }
         }
 
-        if ($instance['common_cartriedge_type'] == CC_TYPE_WEBLINK) {
+        if ($instance['common_cartriedge_type'] == cc2moodle::CC_TYPE_WEBLINK) {
 
             $external_resource = $xpath->query('/imscc:manifest/imscc:resources/imscc:resource[@identifier="' . $instance['resource_indentifier'] . '"]/imscc:file/@href')->item(0)->nodeValue;
 
@@ -75,9 +79,21 @@ class resource extends entities {
                 $resource = $this->load_xml_resource(cc2moodle::$path_to_manifest_folder . DIRECTORY_SEPARATOR . $external_resource);
 
                 if (!empty($resource)) {
-                    $xpath = cc2moodle::newx_path($resource, $this->namespaces);
-                    $resource = $xpath->query('/wl:webLink/url/@href');
-                    $link = $resource->item(0)->nodeValue;
+                    $xpath = cc2moodle::newx_path($resource, cc2moodle::getresourcens());
+                    $resource = $xpath->query('//url/@href');
+                    if ($resource->length > 0) {
+                        $rawlink = $resource->item(0)->nodeValue;
+                        if (!validateUrlSyntax($rawlink, 's+')) {
+                            $changed = rawurldecode($rawlink);
+                            if (validateUrlSyntax($changed, 's+')) {
+                                $link = $changed;
+                            } else {
+                                $link = 'http://invalidurldetected/';
+                            }
+                        } else {
+                            $link = $rawlink;
+                        }
+                    }
                 }
             }
         }
@@ -88,17 +104,79 @@ class resource extends entities {
                            '[#mod_reference#]',
                            '[#mod_summary#]',
                            '[#mod_alltext#]',
+                           '[#mod_options#]',
                            '[#date_now#]');
 
+        $mod_type      = 'file';
+        $mod_options   = 'objectframe';
+        $mod_reference = $link;
+        //detected if we are dealing with html file
+        if (!empty($link) && ($instance['common_cartriedge_type'] == cc2moodle::CC_TYPE_WEBCONTENT)) {
+            $ext = strtolower(pathinfo($link, PATHINFO_EXTENSION));
+            if (in_array($ext, array('html', 'htm', 'xhtml'))) {
+                $mod_type = 'html';
+                //extract the content of the file
+                $rootpath = realpath(cc112moodle::$path_to_manifest_folder);
+                $htmlpath = realpath($rootpath . DIRECTORY_SEPARATOR . $link);
+                $dirpath  = dirname($htmlpath);
+                if (file_exists($htmlpath)) {
+                    $fcontent = file_get_contents($htmlpath);
+                    $mod_alltext = clean_param($this->prepare_content($fcontent), PARAM_CLEANHTML);
+                    $mod_reference = '';
+                    $mod_options = '';
+                    //TODO: try to handle embedded resources
+                    /**
+                    * images, linked static resources, applets, videos
+                    */
+                    $doc = new DOMDocument();
+                    $cdir = getcwd();
+                    chdir($dirpath);
+                    try {
+                        $doc->loadHTML($mod_alltext);
+                        $xpath = new DOMXPath($doc);
+                        $attributes = array('href', 'src', 'background', 'archive', 'code');
+                        $qtemplate = "//*[@##][not(contains(@##,'://'))]/@##";
+                        $query = '';
+                        foreach ($attributes as $attrname) {
+                            if (!empty($query)) {
+                                $query .= " | ";
+                            }
+                            $query .= str_replace('##', $attrname, $qtemplate);
+                        }
+                        $list = $xpath->query($query);
+                        $searches = array();
+                        $replaces = array();
+                        foreach ($list as $resrc) {
+                            $rpath = $resrc->nodeValue;
+                            $rtp = realpath($rpath);
+                            if (($rtp !== false) && is_file($rtp)) {
+                                //file is there - we are in business
+                                $strip = str_replace("\\", "/", str_ireplace($rootpath, '', $rtp));
+                                $encoded_file = '$@FILEPHP@$'.str_replace('/', '$@SLASH@$', $strip);
+                                $searches[] = $resrc->nodeValue;
+                                $replaces[] = $encoded_file;
+                            }
+                        }
+                        $mod_alltext = str_replace($searches, $replaces, $mod_alltext);
+                    } catch (Exception $e) {
+                        //silence the complaints
+                    }
+                    chdir($cdir);
+                    $mod_alltext = self::safexml($mod_alltext);
+                }
+            }
+        }
+
         $replace_values = array($instance['instance'],
-                                $instance['title'],
-                                'file',
-                                $link,
+                                self::safexml($instance['title']),
+                                $mod_type,
+                                $mod_reference,
                                 '',
-                                '',
+                                $mod_alltext,
+                                $mod_options,
                                 time());
+
 
         return str_replace($find_tags, $replace_values, $sheet_mod_resource);
     }
 }
-?>

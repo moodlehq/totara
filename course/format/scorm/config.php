@@ -1,4 +1,4 @@
-<?php //$Id$
+<?php
 //
 // Optional course format configuration file
 //
@@ -6,7 +6,6 @@
 // social format.
 //
 // The default blocks layout for this course format:
-    $format['defaultblocks'] = 'participants,social_activities,admin,course_list:'.
-                               'news_items,recent_activity,calendar_upcoming';
+    $format['defaultblocks'] = ':news_items,recent_activity,calendar_upcoming';
 
-?>
+

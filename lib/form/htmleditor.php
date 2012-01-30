@@ -11,13 +11,13 @@ require_once("$CFG->libdir/form/textarea.php");
 class MoodleQuickForm_htmleditor extends MoodleQuickForm_textarea{
     var $_type;
     var $_canUseHtmlEditor;
-    var $_options=array('canUseHtmlEditor'=>'detect','rows'=>10, 'cols'=>45, 'width'=>0,'height'=>0, 'course'=>0);
+    var $_options=array('canUseHtmlEditor'=>'detect','rows'=>10, 'cols'=>45, 'width'=>0,'height'=>0);
     function MoodleQuickForm_htmleditor($elementName=null, $elementLabel=null, $options=array(), $attributes=null){
         parent::MoodleQuickForm_textarea($elementName, $elementLabel, $attributes);
         // set the options, do not bother setting bogus ones
         if (is_array($options)) {
             foreach ($options as $name => $value) {
-                if (isset($this->_options[$name])) {
+                if (array_key_exists($name, $this->_options)) {
                     if (is_array($value) && is_array($this->_options[$name])) {
                         $this->_options[$name] = @array_merge($this->_options[$name], $value);
                     } else {
@@ -36,6 +36,8 @@ class MoodleQuickForm_htmleditor extends MoodleQuickForm_textarea{
             $this->_type='textarea';
         }
         $this->_canUseHtmlEditor = $this->_options['canUseHtmlEditor'];
+
+        editors_head_setup();
     }
     /**
      * set html for help button
@@ -45,28 +47,15 @@ class MoodleQuickForm_htmleditor extends MoodleQuickForm_textarea{
      * @param string $function function name to call to get html
      */
     function setHelpButton($helpbuttonargs, $function='helpbutton'){
-        if (!$this->_canUseHtmlEditor){
-            if ('editorhelpbutton' == $function){
-                $key = array_search('richtext', $helpbuttonargs);
-                if ($key !== FALSE){
-                    array_splice($helpbuttonargs, $key, 1, array('text', 'emoticons'));
-                }
-            } elseif ('helpbutton' == $function && $helpbuttonargs[0] == 'richtext' && ((!isset($helpbuttonargs[2])) || $helpbuttonargs[2] == 'moodle')){
-                //replace single 'richtext' help button with text and emoticon button when htmleditor off.
-                return $this->setHelpButton(array('text', 'emoticons'), 'editorhelpbutton');
-            }
-        }
-        return parent::setHelpButton($helpbuttonargs, $function);
+        debugging('component setHelpButton() is not used any more, please use $mform->setHelpButton() instead');
     }
 
     function toHtml(){
-        if ($this->_canUseHtmlEditor && !$this->_flagFrozen){
-            ob_start();
-            use_html_editor($this->getName(), '', $this->getAttribute('id'));
-            $script=ob_get_clean();
-        } else {
-            $script='';
-        }
+        //if ($this->_canUseHtmlEditor && !$this->_flagFrozen){
+        //    $script = '';
+        //} else {
+        //    $script='';
+        //}
         if ($this->_flagFrozen) {
             return $this->getFrozenHtml();
         } else {
@@ -78,9 +67,9 @@ class MoodleQuickForm_htmleditor extends MoodleQuickForm_textarea{
                                     $this->_options['height'],
                                     $this->getName(),
                                     preg_replace("/(\r\n|\n|\r)/", '&#010;',$this->getValue()),
-                                    $this->_options['course'],
+                                    0, // unused anymore
                                     true,
-                                    $this->getAttribute('id')).$script;
+                                    $this->getAttribute('id'));
         }
     } //end func toHtml
 
@@ -96,4 +85,3 @@ class MoodleQuickForm_htmleditor extends MoodleQuickForm_textarea{
         return $html . $this->_getPersistantData();
     } //end func getFrozenHtml
 }
-?>

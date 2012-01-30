@@ -1,243 +1,171 @@
-<?php  //$Id$
+<?php
 
-    require_once('../../config.php');
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    $contextid = required_param('contextid', PARAM_INT);   // context id
-    $roleid    = optional_param('roleid', 0, PARAM_INT);   // requested role id
-    $userid    = optional_param('userid', 0, PARAM_INT);   // needed for user tabs
-    $courseid  = optional_param('courseid', 0, PARAM_INT); // needed for user tabs
-    $cancel    = optional_param('cancel', 0, PARAM_BOOL);
+/**
+ * Lets you override role definitions in contexts.
+ *
+ * @package    core
+ * @subpackage role
+ * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-    if (!$context = get_record('context', 'id', $contextid)) {
-        error('Bad context ID');
-    }
+require('../../config.php');
+require_once("$CFG->dirroot/$CFG->admin/roles/lib.php");
 
-    if (!$sitecontext = get_context_instance(CONTEXT_SYSTEM)) {
-        error('No site ID');
-    }
+$contextid = required_param('contextid', PARAM_INT);   // context id
+$roleid    = required_param('roleid', PARAM_INT);   // requested role id
 
-    if ($context->id == $sitecontext->id) {
-        error('Can not override base role capabilities');
-    }
+list($context, $course, $cm) = get_context_info_array($contextid);
 
-    $canoverride = has_capability('moodle/role:override', $context);
+$url = new moodle_url('/admin/roles/override.php', array('contextid' => $contextid, 'roleid' => $roleid));
 
-    if (!$canoverride and !has_capability('moodle/role:safeoverride', $context)) {
-        error('You do not have permission to change overrides in this context!');
-    }
-
-    if ($courseid) {
-        if (!$course = get_record('course', 'id', $courseid)) {
-            error('Bad course ID');
-        }
-    } else {
-        $course = clone($SITE);
-        $courseid = SITEID;
-    }
-
-    require_login($course);
-
-    $baseurl = 'override.php?contextid='.$context->id;
-    if (!empty($userid)) {
-        $baseurl .= '&amp;userid='.$userid;
-    }
-    if ($courseid != SITEID) {
-        $baseurl .= '&amp;courseid='.$courseid;
-    }
-
-    if ($cancel) {
-        redirect($baseurl);
-    }
-
-/// needed for tabs.php
-    $overridableroles = get_overridable_roles($context, 'name', ROLENAME_BOTH);
-    $assignableroles  = get_assignable_roles($context, 'name', ROLENAME_BOTH);
-
-/// Get some language strings
-
-    $strroletooverride = get_string('roletooverride', 'role');
-    $straction         = get_string('overrideroles', 'role');
-    $strcurrentrole    = get_string('currentrole', 'role');
-    $strparticipants   = get_string('participants');
-
-/// Make sure this user can override that role
-
-    if ($roleid) {
-        if (!isset($overridableroles[$roleid])) {
-            error ('you can not override this role in this context');
-        }
-    }
-
-    if ($userid) {
-        $user = get_record('user', 'id', $userid);
-        $fullname = fullname($user, has_capability('moodle/site:viewfullnames', $context));
-    }
-
-/// get all cababilities
-    $safeoverridenotice = false;
-    if ($roleid) {
-        if ($capabilities = fetch_context_capabilities($context)) {
-            // find out if we need to lock some capabilities
-            foreach ($capabilities as $capname=>$capability) {
-                $capabilities[$capname]->locked = false;
-                if ($canoverride) {
-                    //ok no locking at all
-                    continue;
-                }
-                //only limited safe overrides - spam only allowed
-                if ((RISK_DATALOSS & (int)$capability->riskbitmask)
-                 or (RISK_MANAGETRUST & (int)$capability->riskbitmask)
-                 or (RISK_CONFIG & (int)$capability->riskbitmask)
-                 or (RISK_XSS & (int)$capability->riskbitmask)
-                 or (RISK_PERSONAL & (int)$capability->riskbitmask)) {
-                    $capabilities[$capname]->locked = true;
-                    $safeoverridenotice = true;
-                }
-            }
-        }
-    } else {
-        $capabilities = null;
-    }
-
-/// Process incoming role override
-    if ($data = data_submitted() and $roleid and confirm_sesskey()) {
-        $allowed_values = array(CAP_INHERIT, CAP_ALLOW, CAP_PREVENT, CAP_PROHIBIT);
-
-        $localoverrides = get_records_select('role_capabilities', "roleid = $roleid AND contextid = $context->id",
-                                             '', 'capability, permission, id');
-
-        foreach ($capabilities as $cap) {
-            if ($cap->locked) {
-                //user not allowed to change this cap
-                continue;
-            }
-
-            if (!isset($data->{$cap->name})) {
-                //cap not specified in form
-                continue;
-            }
-
-            if (islegacy($data->{$cap->name})) {
-                continue;
-            }
-
-            $capname = $cap->name;
-            $value = clean_param($data->{$cap->name}, PARAM_INT);
-            if (!in_array($value, $allowed_values)) {
-                 continue;
-            }
-
-            if (isset($localoverrides[$capname])) {
-                // Something exists, so update it
-                assign_capability($capname, $value, $roleid, $context->id, true);
-            } else { // insert a record
-                if ($value != CAP_INHERIT) {    // Ignore inherits
-                    assign_capability($capname, $value, $roleid, $context->id);
-                }
-            }
-        }
-
-        // force accessinfo refresh for users visiting this context...
-        mark_context_dirty($context->path);
-        $rolename = get_field('role', 'name', 'id', $roleid);
-        add_to_log($course->id, 'role', 'override', 'admin/roles/override.php?contextid='.$context->id.'&roleid='.$roleid, $rolename, '', $USER->id);
-        redirect($baseurl);
-    }
-
-
-/// Print the header and tabs
-
+if ($course) {
+    $isfrontpage = ($course->id == SITEID);
+} else {
+    $isfrontpage = false;
     if ($context->contextlevel == CONTEXT_USER) {
-        $navlinks = array();
-        /// course header
-        if ($course->id != SITEID) {
-            if (has_capability('moodle/course:viewparticipants', get_context_instance(CONTEXT_COURSE, $course->id))) {
-                $navlinks[] = array('name' => $strparticipants, 'link' => "$CFG->wwwroot/user/index.php?id=$course->id", 'type' => 'misc');
-            }
-            $navlinks[] = array('name' => $fullname, 'link' => "$CFG->wwwroot/user/view.php?id=$userid&amp;course=$courseid", 'type' => 'misc');
-            $navlinks[] = array('name' => $straction, 'link' => null, 'type' => 'misc');
-            $navigation = build_navigation($navlinks);
-            print_header("$fullname", "$fullname", $navigation, "", "", true, "&nbsp;", navmenu($course));
-
-        /// site header
-        } else {
-            $navlinks[] = array('name' => $fullname, 'link' => "$CFG->wwwroot/user/view.php?id=$userid&amp;course=$courseid", 'type' => 'misc');
-            $navlinks[] = array('name' => $straction, 'link' => null, 'type' => 'misc');
-            $navigation = build_navigation($navlinks);
-            print_header("$course->fullname: $fullname", $course->fullname, $navigation, "", "", true, "&nbsp;", navmenu($course));
-        }
-        $showroles = 1;
-        $showpositions = 1;
-        $showtasksalerts = 1;
-        $currenttab = 'override';
-        include_once($CFG->dirroot.'/user/tabs.php');
-    } else if ($context->contextlevel==CONTEXT_COURSE and $context->instanceid == SITEID) {
-        require_once($CFG->libdir.'/adminlib.php');
-        admin_externalpage_setup('frontpageroles', '', array('contextid' => $contextid, 'roleid' => $roleid), $CFG->wwwroot . '/' . $CFG->admin . '/roles/override.php');
-        admin_externalpage_print_header();
-        $currenttab = 'override';
-        include_once('tabs.php');
+        $course = $DB->get_record('course', array('id'=>optional_param('courseid', SITEID, PARAM_INT)), '*', MUST_EXIST);
+        $user = $DB->get_record('user', array('id'=>$context->instanceid), '*', MUST_EXIST);
+        $url->param('courseid', $course->id);
+        $url->param('userid', $user->id);
     } else {
-        $currenttab = 'override';
-        include_once('tabs.php');
+        $course = $SITE;
+    }
+}
+
+// security first
+require_login($course, false, $cm);
+if (!has_capability('moodle/role:override', $context)) {
+    require_capability('moodle/role:safeoverride', $context);
+}
+$PAGE->set_url($url);
+$PAGE->set_context($context);
+$PAGE->set_pagelayout('admin');
+
+$courseid = $course->id;
+
+$returnurl = new moodle_url('/admin/roles/permissions.php', array('contextid' => $context->id));
+
+// Handle the cancel button.
+if (optional_param('cancel', false, PARAM_BOOL)) {
+    redirect($returnurl);
+}
+
+$role = $DB->get_record('role', array('id'=>$roleid), '*', MUST_EXIST);
+
+// These are needed early
+$assignableroles  = get_assignable_roles($context, ROLENAME_BOTH);
+list($overridableroles, $overridecounts, $nameswithcounts) = get_overridable_roles($context, ROLENAME_BOTH, true);
+
+// Work out an appropriate page title.
+$contextname = print_context_name($context);
+$straction = get_string('overrideroles', 'role'); // Used by tabs.php
+$a = (object)array('context' => $contextname, 'role' => $overridableroles[$roleid]);
+$title = get_string('overridepermissionsforrole', 'role', $a);
+
+$currenttab = 'permissions';
+
+$PAGE->set_title($title);
+$PAGE->navbar->add($straction);
+switch ($context->contextlevel) {
+    case CONTEXT_SYSTEM:
+        print_error('cannotoverridebaserole', 'error');
+        break;
+    case CONTEXT_USER:
+        $fullname = fullname($user, has_capability('moodle/site:viewfullnames', $context));
+        $PAGE->set_heading($fullname);
+        $showroles = 1;
+        break;
+    case CONTEXT_COURSECAT:
+        $PAGE->set_heading("$SITE->fullname: ".get_string("categories"));
+        break;
+    case CONTEXT_COURSE:
+        if ($isfrontpage) {
+            admin_externalpage_setup('frontpageroles', '', array(), $PAGE->url);
+        } else {
+            $PAGE->set_heading($course->fullname);
+        }
+        break;
+    case CONTEXT_MODULE:
+        $PAGE->set_heading(print_context_name($context, false));
+        $PAGE->set_cacheable(false);
+        break;
+    case CONTEXT_BLOCK:
+        $PAGE->set_heading($PAGE->course->fullname);
+        break;
+}
+
+// Make sure this user can override that role
+if (empty($overridableroles[$roleid])) {
+    $a = new stdClass;
+    $a->roleid = $roleid;
+    $a->context = $contextname;
+    print_error('cannotoverriderolehere', '', get_context_url($context), $a);
+}
+
+// If we are actually overriding a role, create the table object, and save changes if appropriate.
+$overridestable = new override_permissions_table_advanced($context, $roleid, false);
+$overridestable->read_submitted_permissions();
+
+if (optional_param('savechanges', false, PARAM_BOOL) && confirm_sesskey()) {
+    $overridestable->save_changes();
+    $rolename = $overridableroles[$roleid];
+    add_to_log($course->id, 'role', 'override', 'admin/roles/override.php?contextid='.$context->id.'&roleid='.$roleid, $rolename, '', $USER->id);
+    redirect($returnurl);
+}
+
+// Finally start page output
+echo $OUTPUT->header();
+echo $OUTPUT->heading_with_help($title, 'overridepermissions', 'role');
+
+// Show UI for overriding roles.
+if (!empty($capabilities)) {
+    echo $OUTPUT->box(get_string('nocapabilitiesincontext', 'role'), 'generalbox boxaligncenter');
+
+} else {
+    // Print the capabilities overrideable in this context
+    echo $OUTPUT->box_start('generalbox capbox');
+    echo html_writer::start_tag('form', array('id'=>'overrideform', 'action'=>$PAGE->url->out(), 'method'=>'post'));
+    echo html_writer::start_tag('div');
+    echo html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>'sesskey', 'value'=>sesskey()));
+    echo html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>'roleid', 'value'=>$roleid));
+    echo html_writer::tag('p', get_string('highlightedcellsshowinherit', 'role'), array('class'=>'overridenotice'));
+
+    $overridestable->display();
+    if ($overridestable->has_locked_capabilities()) {
+        echo '<p class="overridenotice">' . get_string('safeoverridenotice', 'role') . "</p>\n";
     }
 
-    print_heading_with_help(get_string('overridepermissionsin', 'role', print_context_name($context)), 'overrides');
+    echo html_writer::start_tag('div', array('class'=>'submit_buttons'));
+    echo html_writer::empty_tag('input', array('type'=>'submit', 'name'=>'savechanges', 'value'=>get_string('savechanges')));
+    echo html_writer::empty_tag('input', array('type'=>'submit', 'name'=>'cancel', 'value'=>get_string('cancel')));
+    echo html_writer::end_tag('div');
+    echo html_writer::end_tag('div');
+    echo html_writer::end_tag('form');
+    echo $OUTPUT->box_end();
+}
 
-    if ($roleid) {
-    /// prints a form to swap roles
-        echo '<div class="selector">';
-        $overridableroles = array('0'=>get_string('listallroles', 'role').'...') + $overridableroles;
-        popup_form("$CFG->wwwroot/$CFG->admin/roles/override.php?userid=$userid&amp;courseid=$courseid&amp;contextid=$contextid&amp;roleid=",
-            $overridableroles, 'switchrole', $roleid, '', '', '', false, 'self', $strroletooverride);
-        echo '</div>';
+// Print a form to swap roles, and a link back to the all roles list.
+echo html_writer::start_tag('div', array('class'=>'backlink'));
+$select = new single_select($PAGE->url, 'roleid', $nameswithcounts, $roleid, null);
+$select->label = get_string('overrideanotherrole', 'role');
+echo $OUTPUT->render($select);
+echo html_writer::tag('p', html_writer::tag('a', get_string('backtoallroles', 'role'), array('href'=>$returnurl)));
+echo html_writer::end_tag('div');
 
-        $parentcontexts = get_parent_contexts($context);
-        if (!empty($parentcontexts)) {
-            $parentcontext = array_shift($parentcontexts);
-            $parentcontext = get_context_instance_by_id($parentcontext);
-        } else {
-            $parentcontext = $context; // site level in override??
-        }
-
-        $r_caps = role_context_capabilities($roleid, $parentcontext);
-
-        $localoverrides = get_records_select('role_capabilities', "roleid = $roleid AND contextid = $context->id",
-                                             '', 'capability, permission, id');
-
-        $lang = str_replace('_utf8', '', current_language());
-
-        if (!empty($capabilities)) {
-            // Print the capabilities overrideable in this context
-            print_simple_box_start('center');
-            include('override.html');
-            print_simple_box_end();
-
-        } else {
-            notice(get_string('nocapabilitiesincontext', 'role'),
-                    $CFG->wwwroot.'/'.$CFG->admin.'/roles/'.$baseurl);
-        }
-
-    } else {   // Print overview table
-
-        $table->tablealign = 'center';
-        $table->cellpadding = 5;
-        $table->cellspacing = 0;
-        $table->width = '60%';
-        $table->head = array(get_string('roles', 'role'), get_string('description'), get_string('overrides', 'role'));
-        $table->wrap = array('nowrap', '', 'nowrap');
-        $table->align = array('', '', 'center');
-
-        foreach ($overridableroles as $roleid => $rolename) {
-            $countusers = 0;
-            $overridecount = count_records_select('role_capabilities', "roleid = $roleid AND contextid = $context->id");
-            $description = format_string(get_field('role', 'description', 'id', $roleid));
-            $table->data[] = array('<a href="'.$baseurl.'&amp;roleid='.$roleid.'">'.$rolename.'</a>', $description, $overridecount);
-        }
-
-        print_table($table);
-    }
-
-    print_footer($course);
-
-?>
+echo $OUTPUT->footer();

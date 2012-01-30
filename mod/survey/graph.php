@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
     require_once("../../config.php");
     require_once("$CFG->libdir/graphlib.php");
@@ -10,12 +10,30 @@
     $sid   = optional_param('sid', false, PARAM_INT);  // Student ID
     $qid   = optional_param('qid', 0, PARAM_INT);  // Group ID
 
+    $url = new moodle_url('/mod/survey/graph.php', array('id'=>$id, 'type'=>$type));
+    if ($group !== 0) {
+        $url->param('group', $group);
+    }
+    if ($sid !== false) {
+        $url->param('sid', $sid);
+    }
+    if ($qid !== 0) {
+        $url->param('qid', $qid);
+    }
+    $PAGE->set_url($url);
+
     if (! $cm = get_coursemodule_from_id('survey', $id)) {
-        error("Course Module ID was incorrect");
+        print_error('invalidcoursemodule');
     }
 
-    if (! $course = get_record("course", "id", $cm->course)) {
-        error("Course is misconfigured");
+    if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+        print_error('coursemisconf');
+    }
+
+    if ($sid) {
+        if (!$user = $DB->get_record("user", array("id"=>$sid))) {
+            print_error('invaliduserid');
+        }
     }
 
     require_login($course->id, false, $cm);
@@ -25,33 +43,38 @@
 
     if (!has_capability('mod/survey:readresponses', $context)) {
         if ($type != "student.png" or $sid != $USER->id ) {
-            error("Sorry, you aren't allowed to see this.");
+            print_error('nopermissiontoshow');
         } else if ($groupmode and !groups_is_member($group)) {
-            error("Sorry, you aren't allowed to see this.");
+            print_error('nopermissiontoshow');
         }
     }
 
-    if (! $survey = get_record("survey", "id", $cm->instance)) {
-        error("Survey ID was incorrect");
+    if (! $survey = $DB->get_record("survey", array("id"=>$cm->instance))) {
+        print_error('invalidsurveyid', 'survey');
     }
 
 /// Check to see if groups are being used in this survey
     if ($group) {
-        $users = groups_get_members($group);
-    } else if (!empty($CFG->enablegroupings) && !empty($cm->groupingid)) { 
-        $users = groups_get_grouping_members($cm->groupingid);
+        $users = get_users_by_capability($context, 'mod/survey:participate', '', '', '', '', $group, null, false);
+    } else if (!empty($cm->groupingid)) {
+        $groups = groups_get_all_groups($courseid, 0, $cm->groupingid);
+        $groups = array_keys($groups);
+        $users = get_users_by_capability($context, 'mod/survey:participate', '', '', '', '', $groups, null, false);
     } else {
-        $users = get_course_users($course->id);
+        $users = get_users_by_capability($context, 'mod/survey:participate', '', '', '', '', '', null, false);
         $group = false;
     }
 
     $stractual = get_string("actual", "survey");
     $stractualclass = get_string("actualclass", "survey");
-    $stractualstudent = get_string("actualstudent", "survey", $course->student);
 
     $strpreferred = get_string("preferred", "survey");
     $strpreferredclass = get_string("preferredclass", "survey");
-    $strpreferredstudent = get_string("preferredstudent", "survey", $course->student);
+
+    if ($sid || isset($user)) {
+        $stractualstudent = get_string("actualstudent", "survey", fullname($user));
+        $strpreferredstudent = get_string("preferredstudent", "survey", fullname($user));
+    }
 
     $virtualscales = false; //set default value for case clauses
 
@@ -59,7 +82,7 @@
 
      case "question.png":
 
-       $question = get_record("survey_questions", "id", $qid);
+       $question = $DB->get_record("survey_questions", array("id"=>$qid));
        $question->text = get_string($question->text, "survey");
        $question->options = get_string($question->options, "survey");
 
@@ -70,7 +93,7 @@
            $buckets2[$key] = 0;
        }
 
-       if ($aaa = get_records_select("survey_answers", "survey = '$cm->instance' AND question = '$qid'")) {
+       if ($aaa = $DB->get_records('survey_answers', array('survey'=>$cm->instance, 'question'=>$qid))) {
            foreach ($aaa as $aa) {
                if (!$group or isset($users[$aa->userid])) {
                    if ($a1 = $aa->answer1) {
@@ -127,14 +150,14 @@
 
      case "multiquestion.png":
 
-       $question  = get_record("survey_questions", "id", $qid);
+       $question  = $DB->get_record("survey_questions", array("id"=>$qid));
        $question->text = get_string($question->text, "survey");
        $question->options = get_string($question->options, "survey");
 
        $options = explode(",",$question->options);
        $questionorder = explode( ",", $question->multi);
 
-       $qqq = get_records_list("survey_questions", "id", $question->multi);
+       $qqq = $DB->get_records_list("survey_questions", "id", explode(',',$question->multi));
 
        foreach ($questionorder as $i => $val) {
            $names[$i] = get_string($qqq["$val"]->shorttext, "survey");
@@ -147,7 +170,7 @@
            $stdev2[$i] = 0;
        }
 
-       $aaa = get_records_select("survey_answers", "((survey = $cm->instance) AND (question in ($question->multi)))");
+       $aaa = $DB->get_records_select("survey_answers", "((survey = ?) AND (question in ($question->multi)))", array($cm->instance));
 
        if ($aaa) {
            foreach ($aaa as $a) {
@@ -256,7 +279,7 @@
 
      case "overall.png":
 
-       $qqq = get_records_list("survey_questions", "id", $survey->questions);
+       $qqq = $DB->get_records_list("survey_questions", "id", explode(',', $survey->questions));
 
 
        foreach ($qqq as $key => $qq) {
@@ -291,7 +314,7 @@
            $count1[$i] = 0;
            $count2[$i] = 0;
            $subquestions = $question[$i]->multi;   // otherwise next line doesn't work
-           $aaa = get_records_select("survey_answers", "((survey = $cm->instance) AND (question in ($subquestions)))");
+           $aaa = $DB->get_records_select("survey_answers", "((survey = ?) AND (question in ($subquestions)))", array($cm->instance));
 
            if ($aaa) {
                foreach ($aaa as $a) {
@@ -397,7 +420,7 @@
 
      case "student.png":
 
-       $qqq = get_records_list("survey_questions", "id", $survey->questions);
+       $qqq = $DB->get_records_list("survey_questions", "id", explode(',', $survey->questions));
 
        foreach ($qqq as $key => $qq) {
            if ($qq->multi) {
@@ -436,7 +459,7 @@
            $stdev2[$i] = 0.0;
 
            $subquestions = $question[$i]->multi;   // otherwise next line doesn't work
-           $aaa = get_records_select("survey_answers","((survey = $cm->instance) AND (question in ($subquestions)))");
+           $aaa = $DB->get_records_select("survey_answers","((survey = ?) AND (question in ($subquestions)))", array($cm->instance));
 
            if ($aaa) {
                foreach ($aaa as $a) {
@@ -563,14 +586,14 @@
 
      case "studentmultiquestion.png":
 
-       $question  = get_record("survey_questions", "id", $qid);
+       $question  = $DB->get_record("survey_questions", array("id"=>$qid));
        $question->text = get_string($question->text, "survey");
        $question->options = get_string($question->options, "survey");
 
        $options = explode(",",$question->options);
        $questionorder = explode( ",", $question->multi);
 
-       $qqq = get_records_list("survey_questions", "id", $question->multi);
+       $qqq = $DB->get_records_list("survey_questions", "id", explode(',', $question->multi));
 
        foreach ($questionorder as $i => $val) {
            $names[$i] = get_string($qqq[$val]->shorttext, "survey");
@@ -587,7 +610,7 @@
            $stdev2[$i] = 0.0;
        }
 
-       $aaa = get_records_select("survey_answers", "((survey = $cm->instance) AND (question in ($question->multi)))");
+       $aaa = $DB->get_records_select("survey_answers", "((survey = ?) AND (question in ($question->multi)))", array($cm->instance));
 
        if ($aaa) {
            foreach ($aaa as $a) {
@@ -721,4 +744,4 @@
    exit;
 
 
-?>
+

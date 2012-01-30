@@ -15,13 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Grade import key management page.
+ *
+ * @package   moodlecore
+ * @copyright 2008 Petr Skoda
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-require_once '../../config.php';
-require_once $CFG->dirroot.'/grade/lib.php';
+require_once(dirname(__FILE__).'/../../config.php');
+require_once($CFG->dirroot.'/grade/lib.php');
 
-$id     = required_param('id', PARAM_INT); // course id
+$id = required_param('id', PARAM_INT); // course id
 
-if (!$course = get_record('course', 'id', $id)) {
+$PAGE->set_url('/grade/import/keymanager.php', array('id' => $id));
+
+if (!$course = $DB->get_record('course', array('id'=>$id))) {
     print_error('nocourseid');
 }
 
@@ -32,36 +41,41 @@ require_capability('moodle/grade:import', $context);
 
 print_grade_page_head($course->id, 'import', 'keymanager', get_string('keymanager', 'grades'));
 
-$stredit         = get_string('edit');
-$strdelete       = get_string('delete');
+$stredit   = get_string('edit');
+$strdelete = get_string('delete');
 
 $data = array();
-if ($keys = get_records_select('user_private_key', "script='grade/import' AND instance={$course->id} AND userid={$USER->id}")) {
+$params = array($course->id, $USER->id);
+if ($keys = $DB->get_records_select('user_private_key', "script='grade/import' AND instance=? AND userid=?", $params)) {
     foreach($keys as $key) {
         $line = array();
         $line[0] = format_string($key->value);
         $line[1] = $key->iprestriction;
         $line[2] = empty($key->validuntil) ? get_string('always') : userdate($key->validuntil);
 
-        $buttons  = "<a title=\"$stredit\" href=\"key.php?id=$key->id\"><img".
-                    " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
-        $buttons .= "<a title=\"$strdelete\" href=\"key.php?id=$key->id&amp;delete=1\"><img".
-                    " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+        $url = new moodle_url('key.php', array('id' => $key->id));
+
+        $buttons = $OUTPUT->action_icon($url, new pix_icon('t/edit', $stredit));
+
+        $url->param('delete', 1);
+        $url->param('sesskey', sesskey());
+        $buttons .= $OUTPUT->action_icon($url, new pix_icon('t/delete', $strdelete));
 
         $line[3] = $buttons;
         $data[] = $line;
     }
 }
+$table = new html_table();
 $table->head  = array(get_string('keyvalue', 'userkey'), get_string('keyiprestriction', 'userkey'), get_string('keyvaliduntil', 'userkey'), $stredit);
 $table->size  = array('50%', '30%', '10%', '10%');
 $table->align = array('left', 'left', 'left', 'center');
 $table->width = '90%';
 $table->data  = $data;
-print_table($table);
+echo html_writer::table($table);
 
-echo '<div class="buttons">';
-print_single_button('key.php', array('courseid'=>$course->id), get_string('newuserkey', 'userkey'));
-echo '</div>';
+echo $OUTPUT->container_start('buttons mdl-align');
+echo $OUTPUT->single_button(new moodle_url('key.php', array('courseid'=>$course->id)), get_string('newuserkey', 'userkey'));
+echo $OUTPUT->container_end();
 
-print_footer();
-?>
+echo $OUTPUT->footer();
+

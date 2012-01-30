@@ -1,5 +1,5 @@
 <?php
-
+    global $OUTPUT;
     // set to defaults if undefined
     if (!isset($config->host)) {
         $config->host = 'localhost';
@@ -44,7 +44,7 @@
         $config->setupsql = '';
     }
     if (!isset($config->removeuser)) {
-        $config->removeuser = 0;
+        $config->removeuser = AUTH_REMOVEUSER_KEEP;
     }
 
     $yesno = array( get_string('no'), get_string('yes') );
@@ -53,138 +53,138 @@
 <table cellspacing="0" cellpadding="5" border="0">
 
 <tr valign="top" class="required">
-    <td align="right"><label for="host"><?php print_string("auth_dbhost_key", "auth") ?></label></td>
+    <td align="right"><label for="host"><?php print_string("auth_dbhost_key", "auth_db") ?></label></td>
     <td>
         <input id="host" name="host" type="text" size="30" value="<?php echo $config->host?>" />
         <?php
 
         if (isset($err["host"])) {
-            formerr($err["host"]);
+            echo $OUTPUT->error_text($err["host"]);
         }
 
         ?>
     </td>
-    <td><?php print_string("auth_dbhost", "auth") ?></td>
+    <td><?php print_string("auth_dbhost", "auth_db") ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="menutype"><?php print_string("auth_dbtype_key", "auth") ?></label></td>
+    <td align="right"><label for="menutype"><?php print_string("auth_dbtype_key", "auth_db") ?></label></td>
     <td>
-    <?php  $dbtypes = array("access","ado_access", "ado", "ado_mssql", "borland_ibase", "csv", "db2", "fbsql", "firebird", "ibase", "informix72", "informix", "mssql", "mssql_n", "mysql", "mysqli", "mysqlt", "oci805", "oci8", "oci8po", "odbc", "odbc_mssql", "odbc_oracle", "oracle", "postgres64", "postgres7", "postgres", "proxy", "sqlanywhere", "sybase", "vfp");
+    <?php  $dbtypes = array("access","ado_access", "ado", "ado_mssql", "borland_ibase", "csv", "db2", "fbsql", "firebird", "ibase", "informix72", "informix", "mssql", "mssql_n", "mssqlnative", "mysql", "mysqli", "mysqlt", "oci805", "oci8", "oci8po", "odbc", "odbc_mssql", "odbc_oracle", "oracle", "postgres64", "postgres7", "postgres", "proxy", "sqlanywhere", "sybase", "vfp");
        foreach ($dbtypes as $dbtype) {
            $dboptions[$dbtype] = $dbtype;
        }
-       choose_from_menu($dboptions, "type", $config->type, "");
+       echo html_writer::select($dboptions, "type", $config->type, false);
     ?>
 
     </td>
     <td>
-    <?php print_string("auth_dbtype","auth") ?>
+    <?php print_string("auth_dbtype","auth_db") ?>
     </td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="menusybasequoting"><?php print_string("auth_dbsybasequoting", "auth") ?></label></td>
+    <td align="right"><label for="menusybasequoting"><?php print_string("auth_dbsybasequoting", "auth_db") ?></label></td>
     <td>
-        <?php choose_from_menu($yesno, 'sybasequoting', $config->sybasequoting, ''); ?>
+        <?php echo html_writer::select($yesno, 'sybasequoting', $config->sybasequoting, false); ?>
     </td>
-    <td><?php print_string("auth_dbsybasequotinghelp", "auth") ?></td>
+    <td><?php print_string("auth_dbsybasequotinghelp", "auth_db") ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="name"><?php print_string("auth_dbname_key", "auth") ?></label></td>
+    <td align="right"><label for="name"><?php print_string("auth_dbname_key", "auth_db") ?></label></td>
     <td>
         <input id="name" name="name" type="text" size="30" value="<?php echo $config->name?>" />
         <?php
 
         if (isset($err["name"])) {
-            formerr($err["name"]);
+            echo $OUTPUT->error_text($err["name"]);
         }
 
         ?>
     </td>
-    <td><?php print_string("auth_dbname", "auth") ?></td>
+    <td><?php print_string("auth_dbname", "auth_db") ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="user"><?php print_string("auth_dbuser_key", "auth") ?></label></td>
+    <td align="right"><label for="user"><?php print_string("auth_dbuser_key", "auth_db") ?></label></td>
     <td>
         <input id="user" name="user" type="text" size="30" value="<?php echo $config->user?>" />
         <?php
 
         if (isset($err["user"])) {
-            formerr($err["user"]);
+            echo $OUTPUT->error_text($err["user"]);
         }
 
         ?>
     </td>
-    <td><?php print_string("auth_dbuser", "auth") ?></td>
+    <td><?php print_string("auth_dbuser", "auth_db") ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="pass"><?php print_string("auth_dbpass_key", "auth") ?></label></td>
+    <td align="right"><label for="pass"><?php print_string("auth_dbpass_key", "auth_db") ?></label></td>
     <td>
         <input id="pass" name="pass" type="text" size="30" value="<?php echo $config->pass?>" />
         <?php
 
         if (isset($err["pass"])) {
-            formerr($err["pass"]);
+            echo $OUTPUT->error_text($err["pass"]);
         }
 
         ?>
     </td>
     <td>
-    <?php print_string("auth_dbpass", "auth") ?>
+    <?php print_string("auth_dbpass", "auth_db") ?>
     </td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="table"><?php print_string("auth_dbtable_key", "auth") ?></label></td>
+    <td align="right"><label for="table"><?php print_string("auth_dbtable_key", "auth_db") ?></label></td>
     <td>
         <input id="table" name="table" type="text" size="30" value="<?php echo $config->table?>" />
         <?php
 
         if (isset($err["table"])) {
-            formerr($err["table"]);
+            echo $OUTPUT->error_text($err["table"]);
         }
 
         ?>
     </td>
-    <td><?php print_string("auth_dbtable", "auth") ?></td>
+    <td><?php print_string("auth_dbtable", "auth_db") ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="fielduser"><?php print_string("auth_dbfielduser_key", "auth") ?></label></td>
+    <td align="right"><label for="fielduser"><?php print_string("auth_dbfielduser_key", "auth_db") ?></label></td>
     <td>
         <input id="fielduser" name="fielduser" type="text" size="30" value="<?php echo $config->fielduser?>" />
         <?php
 
         if (isset($err["fielduser"])) {
-            formerr($err["fielduser"]);
+            echo $OUTPUT->error_text($err["fielduser"]);
         }
 
         ?>
     </td>
-    <td><?php print_string("auth_dbfielduser", "auth") ?></td>
+    <td><?php print_string("auth_dbfielduser", "auth_db") ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="fieldpass"><?php print_string("auth_dbfieldpass_key", "auth") ?></label></td>
+    <td align="right"><label for="fieldpass"><?php print_string("auth_dbfieldpass_key", "auth_db") ?></label></td>
     <td>
         <input id="fieldpass" name="fieldpass" type="text" size="30" value="<?php echo $config->fieldpass?>" />
         <?php
 
         if (isset($err["fieldpass"])) {
-            formerr($err["fieldpass"]);
+            echo $OUTPUT->error_text($err["fieldpass"]);
         }
 
         ?>
     </td>
-    <td><?php print_string("auth_dbfieldpass", "auth") ?></td>
+    <td><?php print_string("auth_dbfieldpass", "auth_db") ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="menupasstype"><?php print_string("auth_dbpasstype_key", "auth") ?></label></td>
+    <td align="right"><label for="menupasstype"><?php print_string("auth_dbpasstype_key", "auth_db") ?></label></td>
     <td>
         <?php
         $passtype = array();
@@ -192,90 +192,52 @@
         $passtype["md5"]       = get_string("md5", "auth");
         $passtype["sha1"]      = get_string("sha1", "auth");
         $passtype["internal"]  = get_string("internal", "auth");
-        choose_from_menu($passtype, "passtype", $config->passtype, "");
+        echo html_writer::select($passtype, "passtype", $config->passtype, false);
 
         ?>
     </td>
-    <td><?php print_string("auth_dbpasstype", "auth") ?></td>
+    <td><?php print_string("auth_dbpasstype", "auth_db") ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><label for="expiration"><?php print_string("auth_passexpiration", "auth") ?></label></td>
-    <td>
-        <?php choose_from_menu($yesno, 'expiration', $config->expiration, ''); ?>
-    </td>
-    <td><?php print_string("auth_passexpirationhelp", "auth") ?></td>
-</tr>
-
-<tr valign="top" class="required">
-    <td align="right"><label for="expiration_warning"><?php print_string("auth_passexpirationwarning", "auth") ?></label></td>
-    <td>
-        <input id="expiration_warning" name="expiration_warning" type="text" size="10" value="<?php echo $config->expiration_warning?>" />
-        <?php
-
-        if (isset($err["expiration_warning"])) {
-            formerr($err["expiration_warning"]);
-        }
-
-        ?>
-    </td>
-    <td><?php print_string("auth_passexpirationwarninghelp", "auth") ?></td>
-</tr>
-
-<tr valign="top" class="required">
-    <td align="right"><label for="passwordchangedays"><?php print_string("auth_passchangedays", "auth") ?></label></td>
-    <td>
-        <input id="passwordchangedays" name="passwordchangedays" type="text" size="10" value="<?php echo $config->passwordchangedays?>" />
-        <?php
-
-        if (isset($err["passwordchangedays"])) {
-            formerr($err["passwordchangedays"]);
-        }
-
-        ?>
-    </td>
-    <td><?php print_string("auth_passchangedays", "auth") ?></td>
-</tr>
-
-<tr valign="top" class="required">
-    <td align="right"><label for="extencoding"><?php print_string("auth_dbextencoding", "auth") ?></label></td>
+    <td align="right"><label for="extencoding"><?php print_string("auth_dbextencoding", "auth_db") ?></label></td>
     <td>
         <input id="extencoding" name="extencoding" type="text" value="<?php echo $config->extencoding ?>" />
         <?php
 
         if (isset($err['extencoding'])) {
-            formerr($err['extencoding']);
+            echo $OUTPUT->error_text($err['extencoding']);
         }
 
         ?>
     </td>
-    <td><?php print_string('auth_dbextencodinghelp', 'auth') ?></td>
+    <td><?php print_string('auth_dbextencodinghelp', 'auth_db') ?></td>
 </tr>
 
 <tr valign="top">
-    <td align="right"><label for="setupsql"><?php print_string("auth_dbsetupsql", "auth") ?></label></td>
+    <td align="right"><label for="setupsql"><?php print_string("auth_dbsetupsql", "auth_db") ?></label></td>
     <td>
         <input id="setupsql" name="setupsql" type="text" value="<?php echo $config->setupsql ?>" />
     </td>
-    <td><?php print_string('auth_dbsetupsqlhelp', 'auth') ?></td>
+    <td><?php print_string('auth_dbsetupsqlhelp', 'auth_db') ?></td>
 </tr>
 
 <tr valign="top">
-    <td align="right"><label for="menudebugauthdb"><?php print_string("auth_dbdebugauthdb", "auth") ?></label></td>
+    <td align="right"><label for="menudebugauthdb"><?php print_string("auth_dbdebugauthdb", "auth_db") ?></label></td>
     <td>
-        <?php choose_from_menu($yesno, 'debugauthdb', $config->debugauthdb, ''); ?>
+        <?php echo html_writer::select($yesno, 'debugauthdb', $config->debugauthdb, false); ?>
     </td>
-    <td><?php print_string("auth_dbdebugauthdbhelp", "auth") ?></td>
+    <td><?php print_string("auth_dbdebugauthdbhelp", "auth_db") ?></td>
 </tr>
 
 <tr valign="top">
-    <td align="right"><label for="changepasswordurl"><?php print_string("auth_dbchangepasswordurl_key", "auth") ?></label></td>
+    <td align="right"><label for="changepasswordurl"><?php print_string("auth_dbchangepasswordurl_key", "auth_db") ?></label></td>
     <td>
         <input id="changepasswordurl" name="changepasswordurl" type="text" value="<?php echo $config->changepasswordurl ?>" />
         <?php
 
         if (isset($err['changepasswordurl'])) {
-            formerr($err['changepasswordurl']);
+            echo $OUTPUT->error_text($err['changepasswordurl']);
         }
 
         ?>
@@ -294,10 +256,10 @@
     <td>
     <?php
        $deleteopt = array();
-       $deleteopt['0'] = get_string('auth_remove_keep','auth');
-       $deleteopt['1'] = get_string('auth_remove_suspend','auth');
-       $deleteopt['2'] = get_string('auth_remove_delete','auth');
-       choose_from_menu($deleteopt, 'removeuser', $config->removeuser, '');
+       $deleteopt[AUTH_REMOVEUSER_KEEP] = get_string('auth_remove_keep','auth');
+       $deleteopt[AUTH_REMOVEUSER_SUSPEND] = get_string('auth_remove_suspend','auth');
+       $deleteopt[AUTH_REMOVEUSER_FULLDELETE] = get_string('auth_remove_delete','auth');
+       echo html_writer::select($deleteopt, 'removeuser', $config->removeuser, false);
     ?>
     </td>
     <td>
@@ -307,7 +269,7 @@
 
 <?php
 
-print_auth_lock_options('db', $user_fields, get_string('auth_dbextrafields', 'auth'), true, true);
+print_auth_lock_options('db', $user_fields, get_string('auth_dbextrafields', 'auth_db'), true, true);
 
 ?>
 </table>

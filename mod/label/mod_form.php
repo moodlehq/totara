@@ -1,20 +1,42 @@
-<?php // $Id$
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Add label form
+ *
+ * @package    mod
+ * @subpackage label
+ * @copyright  2006 Jamie Pratt
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die;
+
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 
 class mod_label_mod_form extends moodleform_mod {
 
     function definition() {
 
-        $mform    =& $this->_form;
+        $mform = $this->_form;
 
-        $mform->addElement('htmleditor', 'content', get_string('labeltext', 'label'), array('size'=>'64'));
-        $mform->setType('content', PARAM_RAW);
-        $mform->addRule('content', get_string('required'), 'required', null, 'client');
-        $mform->setHelpButton('content', array('questions', 'richtext'), false, 'editorhelpbutton');
+        $this->add_intro_editor(true, get_string('labeltext', 'label'));
 
-        $features = array('groups'=>false, 'groupings'=>false, 'groupmembersonly'=>true,
-                          'outcomes'=>false, 'gradecat'=>false, 'idnumber'=>false);
-        $this->standard_coursemodule_elements($features);
+        $this->standard_coursemodule_elements();
 
 //-------------------------------------------------------------------------------
 // buttons
@@ -23,4 +45,3 @@ class mod_label_mod_form extends moodleform_mod {
     }
 
 }
-?>

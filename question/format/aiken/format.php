@@ -1,27 +1,31 @@
-<?php  // $Id$ 
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.org                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
+/**
+ * Aiken format question importer.
+ *
+ * @package    qformat
+ * @subpackage aiken
+ * @copyright  2003 Tom Robb <tom@robb.net>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+
+defined('MOODLE_INTERNAL') || die();
+
 
 /**
  * Aiken format - a simple format for creating multiple choice questions (with
@@ -44,24 +48,27 @@
  *
  * Be sure to word "All of the above" type choices like "All of these" in
  * case choices are being shuffled.
+ *
+ * @copyright  2003 Tom Robb <tom@robb.net>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qformat_aiken extends qformat_default {
 
-  function provide_import() {
-    return true;
-  }
+    public function provide_import() {
+        return true;
+    }
 
-    function readquestions($lines) {
+    public function readquestions($lines) {
         $questions = array();
         $question = $this->defaultquestion();
-        $endchar = chr(13); 
+        $endchar = chr(13);
         foreach ($lines as $line) {
             $stp = strpos($line, $endchar, 0);
             $newlines = explode($endchar, $line);
             $foundQ = 0;
             $linescount = count($newlines);
             for ($i=0; $i < $linescount; $i++) {
-                $nowline = addslashes(trim($newlines[$i]));
+                $nowline = trim($newlines[$i]);
                 // Go through the array and build an object called $question
                 // When done, add $question to $questions
                 if (strlen($nowline) < 2) {
@@ -69,12 +76,11 @@ class qformat_aiken extends qformat_default {
                 }
                 if (preg_match('/^[A-Z][).][ \t]/', $nowline)) {
                     // A choice. Trim off the label and space, then save
-                    $question->answer[] = htmlspecialchars(trim(substr($nowline, 2)), ENT_NOQUOTES);
+                    $question->answer[] = $this->text_field(
+                            htmlspecialchars(trim(substr($nowline, 2)), ENT_NOQUOTES));
                     $question->fraction[] = 0;
-                    $question->feedback[] = '';
-                    continue;
-                }
-                if (preg_match('/^ANSWER:/', $nowline)) {
+                    $question->feedback[] = $this->text_field('');
+                } else if (preg_match('/^ANSWER:/', $nowline)) {
                     // The line that indicates the correct answer. This question is finised.
                     $ans = trim(substr($nowline, strpos($nowline, ':') + 1));
                     $ans = substr($ans, 0, 1);
@@ -90,19 +96,35 @@ class qformat_aiken extends qformat_default {
                     // Must be the first line of a new question, since no recognised prefix.
                     $question->qtype = MULTICHOICE;
                     $question->name = shorten_text(s($nowline), 50);
-                    $question->questiontext = s($nowline);
+                    $question->questiontext = htmlspecialchars(trim($nowline), ENT_NOQUOTES);
+                    $question->questiontextformat = FORMAT_HTML;
+                    $question->generalfeedback = '';
+                    $question->generalfeedbackformat = FORMAT_HTML;
                     $question->single = 1;
-                    $question->feedback[] = '';
+                    $question->answer = array();
+                    $question->fraction = array();
+                    $question->feedback = array();
+                    $question->correctfeedback = $this->text_field('');
+                    $question->partiallycorrectfeedback = $this->text_field('');
+                    $question->incorrectfeedback = $this->text_field('');
                 }
             }
         }
         return $questions;
     }
 
-    function readquestion($lines) {
+    protected function text_field($text) {
+        return array(
+            'text' => htmlspecialchars(trim($text), ENT_NOQUOTES),
+            'format' => FORMAT_HTML,
+            'files' => array(),
+        );
+    }
+
+    public function readquestion($lines) {
         //this is no longer needed but might still be called by default.php
         return;
     }
 }
 
-?>
+

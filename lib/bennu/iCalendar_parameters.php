@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 /**
  *  BENNU - PHP iCalendar library
@@ -54,9 +54,9 @@ class iCalendar_parameter {
                 return rfc2445_is_valid_value($value, RFC2445_TYPE_CAL_ADDRESS);
             break;
 
-            // These are textual parameters, so the MUST NOT contain double quotes
+            // RFC-2445: can contain quotes.
             case 'CN':
-                return (strpos($value, '"') === false);
+                return true;
             break;
 
             // These have enumerated legal values
@@ -236,5 +236,3 @@ class iCalendar_parameter {
     }
 
 }
-
-?>

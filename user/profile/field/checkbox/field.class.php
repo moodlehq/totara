@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 class profile_field_checkbox extends profile_field_base {
 
@@ -8,11 +8,12 @@ class profile_field_checkbox extends profile_field_base {
      * the corresponding key for the data if it exists
      */
     function profile_field_checkbox($fieldid=0, $userid=0) {
+        global $DB;
         //first call parent constructor
         $this->profile_field_base($fieldid, $userid);
 
         if (!empty($this->field)) {
-            $datafield = get_field('user_info_data', 'data', 'userid', $this->userid, 'fieldid', $this->fieldid);
+            $datafield = $DB->get_field('user_info_data', 'data', array('userid' => $this->userid, 'fieldid' => $this->fieldid));
             if ($datafield !== false) {
                 $this->data = $datafield;
             } else {
@@ -26,9 +27,9 @@ class profile_field_checkbox extends profile_field_base {
         $checkbox = &$mform->addElement('advcheckbox', $this->inputname, format_string($this->field->name));
         if ($this->data == '1') {
             $checkbox->setChecked(true);
-        }        
+        }
         $mform->setType($this->inputname, PARAM_BOOL);
-        if ($this->is_required() and !has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM, SITEID))) {
+        if ($this->is_required() and !has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM))) {
             $mform->addRule($this->inputname, get_string('required'), 'nonzero', null, 'client');
         }
     }
@@ -37,6 +38,7 @@ class profile_field_checkbox extends profile_field_base {
      * Display the data for this field
      */
     function display_data() {
+        $options = new stdClass();
         $options->para = false;
         $checked = intval($this->data) === 1 ? 'checked="checked"' : '';
         return '<input disabled="disabled" type="checkbox" name="'.$this->inputname.'" '.$checked.' />';
@@ -44,4 +46,4 @@ class profile_field_checkbox extends profile_field_base {
 
 }
 
-?>
+

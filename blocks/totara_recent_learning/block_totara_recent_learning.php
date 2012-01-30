@@ -32,7 +32,7 @@
 class block_totara_recent_learning extends block_base {
 
     public function init() {
-        $this->title   = get_string('recentlearning', 'block_recentlearning');
+        $this->title   = get_string('recentlearning', 'block_totara_recent_learning');
         $this->version = 2010112300;
     }
 
@@ -61,7 +61,7 @@ class block_totara_recent_learning extends block_base {
 
         $courses = get_records_sql($sql);
         if(!$courses) {
-            $this->content->text = get_string('norecentlearning', 'block_recentlearning');
+            $this->content->text = get_string('norecentlearning', 'block_totara_recent_learning');
             return $this->content;
         }
         if ($courses) {

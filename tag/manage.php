@@ -1,4 +1,26 @@
-<?php // $Id$
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package    core
+ * @subpackage tag
+ * @copyright  2007 Luiz Cruz <luiz.laydner@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 require_once('../config.php');
 require_once($CFG->libdir.'/tablelib.php');
@@ -7,9 +29,9 @@ require_once('lib.php');
 define('SHOW_ALL_PAGE_SIZE', 50000);
 define('DEFAULT_PAGE_SIZE', 30);
 
-$tagschecked = optional_param('tagschecked', array(), PARAM_INT);
-$newnames    = optional_param('newname', array(), PARAM_TAG);
-$tagtypes    = optional_param('tagtypes', array(), PARAM_ALPHA);
+$tagschecked = optional_param_array('tagschecked', array(), PARAM_INT);
+$newnames    = optional_param_array('newname', array(), PARAM_TAG);
+$tagtypes    = optional_param_array('tagtypes', array(), PARAM_ALPHA);
 $action      = optional_param('action', '', PARAM_ALPHA);
 $perpage     = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
 
@@ -19,23 +41,29 @@ if (empty($CFG->usetags)) {
     print_error('tagsaredisabled', 'tag');
 }
 
-//managing tags requires moodle/tag:manage capability
-$systemcontext   = get_context_instance(CONTEXT_SYSTEM);
+$systemcontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/tag:manage', $systemcontext);
 
-$navlinks = array();
-$navlinks[] = array('name' => get_string('tags', 'tag'), 'link' => "{$CFG->wwwroot}/tag/search.php", 'type' => '');
-$navlinks[] = array('name' => get_string('managetags', 'tag'), 'link' => '', 'type' => '');
-
-$navigation = build_navigation($navlinks);
-print_header_simple(get_string('managetags', 'tag'), '', $navigation);
+$params = array();
+if ($perpage != DEFAULT_PAGE_SIZE) {
+    $params['perpage'] = $perpage;
+}
+$PAGE->set_url('/tag/manage.php', $params);
+$PAGE->set_context($systemcontext);
+$PAGE->set_blocks_editing_capability('moodle/tag:editblocks');
+$PAGE->navbar->add(get_string('tags', 'tag'), new moodle_url('/tag/search.php'));
+$PAGE->navbar->add(get_string('managetags', 'tag'));
+$PAGE->set_title(get_string('managetags', 'tag'));
+$PAGE->set_heading($COURSE->fullname);
+$PAGE->set_pagelayout('standard');
+echo $OUTPUT->header();
 
 $err_notice = '';
 $notice = '';
 
 // get all the possible tag types from db
 $existing_tagtypes = array();
-if ($ptypes = get_records_sql("SELECT DISTINCT(tagtype) FROM {$CFG->prefix}tag")) {
+if ($ptypes = $DB->get_records_sql("SELECT DISTINCT(tagtype) FROM {tag}")) {
     foreach ($ptypes as $ptype) {
         $existing_tagtypes[$ptype->tagtype] = $ptype->tagtype;
     }
@@ -49,7 +77,7 @@ switch($action) {
         if (!data_submitted() or !confirm_sesskey()) {
             break;
         }
-        
+
         $str_tagschecked = implode(', ', tag_get_name($tagschecked));
         tag_delete($tagschecked);
         $notice = $str_tagschecked.' --  '.get_string('deleted','tag');
@@ -92,7 +120,7 @@ switch($action) {
         if (!data_submitted() or !confirm_sesskey()) {
             break;
         }
-        
+
         $tags_names_changed = array();
         foreach ($tagschecked as $tag_id) {
             if ($newnames[$tag_id] != '') {
@@ -123,6 +151,7 @@ switch($action) {
                 // tag exists, change the type
                 tag_type_set($new_otag_id, 'official');
             } else {
+                require_capability('moodle/tag:create', get_context_instance(CONTEXT_SYSTEM));
                 tag_add($new_otag, 'official');
             }
             $notice .= get_string('addedotag', 'tag', $new_otag) .' ';
@@ -130,22 +159,20 @@ switch($action) {
         break;
 }
 
-echo '<br/>';
-
 if ($err_notice) {
-    notify($err_notice, 'red');
+    echo $OUTPUT->notification($err_notice, 'red');
 }
 if ($notice) {
-    notify($notice, 'green');
+    echo $OUTPUT->notification($notice, 'green');
 }
 
 // small form to add an official tag
 print('<form class="tag-management-form" method="post" action="'.$CFG->wwwroot.'/tag/manage.php">');
-print('<input type="hidden" name="action" value="addofficialtag">');
+print('<input type="hidden" name="action" value="addofficialtag" />');
 print('<div class="tag-management-form generalbox"><label class="accesshide" for="id_otagsadd">'. get_string('addotags', 'tag') .'</label>'.
-    '<input name="otagsadd" id="id_otagsadd" type="text">'.
+    '<input name="otagsadd" id="id_otagsadd" type="text" />'.
     '<input type="hidden" name="sesskey" value="'.sesskey().'">'.
-    '<input name="addotags" value="'. get_string('addotags', 'tag') .'" onclick="skipClientValidation = true;" id="id_addotags" type="submit">'.
+    '<input name="addotags" value="'. get_string('addotags', 'tag') .'" onclick="skipClientValidation = true;" id="id_addotags" type="submit" />'.
     '</div>');
 print('</form>');
 
@@ -193,19 +220,28 @@ if ($table->get_sql_sort()) {
     $sort = '';
 }
 
-if ($table->get_sql_where()) {
-    $where = 'WHERE '. $table->get_sql_where();
-} else {
-    $where = '';
+list($where, $params) = $table->get_sql_where();
+if ($where) {
+    $where = 'WHERE '. $where;
 }
 
-$query = 'SELECT tg.id, tg.name, tg.rawname, tg.tagtype, COUNT(ti.id) AS count, u.id AS owner, tg.flag, tg.timemodified, u.firstname, u.lastname '.
-    'FROM '. $CFG->prefix .'tag_instance ti RIGHT JOIN '. $CFG->prefix .'tag tg ON tg.id = ti.tagid LEFT JOIN '. $CFG->prefix .'user u ON tg.userid = u.id '.
-    $where .' '.
-    'GROUP BY tg.id, tg.name, tg.rawname, tg.tagtype, u.id, tg.flag, tg.timemodified, u.firstname, u.lastname '.
-    $sort;
+$query = "
+        SELECT tg.id, tg.name, tg.rawname, tg.tagtype, tg.flag, tg.timemodified,
+               u.id AS owner, u.firstname, u.lastname,
+               COUNT(ti.id) AS count
+          FROM {tag} tg
+     LEFT JOIN {tag_instance} ti ON ti.tagid = tg.id
+     LEFT JOIN {user} u ON u.id = tg.userid
+               $where
+      GROUP BY tg.id, tg.name, tg.rawname, tg.tagtype, tg.flag, tg.timemodified,
+               u.id, u.firstname, u.lastname
+         $sort";
 
-$totalcount = count_records_sql('SELECT COUNT(DISTINCT(tg.id)) FROM '. $CFG->prefix .'tag tg LEFT JOIN '. $CFG->prefix .'user u ON u.id = tg.userid '. $where);
+$totalcount = $DB->count_records_sql("
+        SELECT COUNT(DISTINCT(tg.id))
+          FROM {tag} tg
+     LEFT JOIN {user} u ON u.id = tg.userid
+        $where", $params);
 
 $table->initialbars(true); // always initial bars
 $table->pagesize($perpage, $totalcount);
@@ -213,13 +249,10 @@ $table->pagesize($perpage, $totalcount);
 echo '<form class="tag-management-form" method="post" action="'.$CFG->wwwroot.'/tag/manage.php"><div>';
 
 //retrieve tags from DB
-if ($tagrecords = get_records_sql($query, $table->get_page_start(),  $table->get_page_size())) {
+if ($tagrecords = $DB->get_records_sql($query, $params, $table->get_page_start(),  $table->get_page_size())) {
 
-    $taglist = array_values($tagrecords);
-
-    //print_tag_cloud(array_values(get_records_sql($query)), false);
     //populate table with data
-    foreach ($taglist as $tag ){
+    foreach ($tagrecords as $tag) {
         $id             =   $tag->id;
         $name           =   '<a href="'.$CFG->wwwroot.'/tag/index.php?id='.$tag->id.'">'. tag_display_name($tag) .'</a>';
         $owner          =   '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$tag->owner.'">' . fullname($tag) . '</a>';
@@ -228,7 +261,7 @@ if ($tagrecords = get_records_sql($query, $table->get_page_start(),  $table->get
         $timemodified   =   format_time(time() - $tag->timemodified);
         $checkbox       =   '<input type="checkbox" name="tagschecked[]" value="'.$tag->id.'" />';
         $text           =   '<input type="text" name="newname['.$tag->id.']" />';
-        $tagtype        =   choose_from_menu($existing_tagtypes, 'tagtypes['.$tag->id.']', $tag->tagtype, '', '', '0', true);
+        $tagtype        =   html_writer::select($existing_tagtypes, 'tagtypes['.$tag->id.']', $tag->tagtype, false);
 
         //if the tag if flagged, highlight it
         if ($tag->flag > 0) {
@@ -273,6 +306,4 @@ if ($perpage == SHOW_ALL_PAGE_SIZE) {
 
 echo '<br/>';
 
-print_footer();
-
-?>
+echo $OUTPUT->footer();

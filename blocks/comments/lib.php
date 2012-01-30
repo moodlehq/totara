@@ -37,12 +37,12 @@ defined('MOODLE_INTERNAL') || die();
  * }
  * @return boolean
  */
-function comments_comment_validate($comment_param) {
-    if ($comment_param->commentarea != 'page_comments_block') {
-        report_error('invalidcommentarea');
+function block_comments_comment_validate($comment_param) {
+    if ($comment_param->commentarea != 'page_comments') {
+        throw new comment_exception('invalidcommentarea');
     }
     if ($comment_param->itemid != 0) {
-        report_error('invalidcommentitemid');
+        throw new comment_exception('invalidcommentitemid');
     }
     return true;
 }
@@ -53,17 +53,8 @@ function comments_comment_validate($comment_param) {
  * @param stdClass $args
  * @return array
  */
-function comments_comment_permissions($args) {
-    if (!empty($args->courseid)) {
-        // Ensure the user has course view access
-        if (has_capability('moodle/course:view', $args->context)) {
-            return array('post'=>true, 'view'=>true);
-        } else {
-            return array('post'=>false, 'view'=>false);
-        }
-    } else {
-        return array('post'=>true, 'view'=>true);
-    }
+function block_comments_comment_permissions($args) {
+    return array('post'=>true, 'view'=>true);
 }
 
 /**
@@ -73,12 +64,12 @@ function comments_comment_permissions($args) {
  * @param stdClass $args
  * @return boolean
  */
-function comments_comment_display($comments, $args) {
-    if ($args->commentarea != 'page_comments_block') {
-        report_error('invalidcommentarea');
+function block_comments_comment_display($comments, $args) {
+    if ($args->commentarea != 'page_comments') {
+        throw new comment_exception('invalidcommentarea');
     }
     if ($args->itemid != 0) {
-        report_error('invalidcommentitemid');
+        throw new comment_exception('invalidcommentitemid');
     }
     return $comments;
 }

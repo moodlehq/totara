@@ -15,6 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Grade import key management form.
+ *
+ * @package   moodlecore
+ * @copyright 2008 Petr Skoda
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 
@@ -30,8 +41,8 @@ class key_form extends moodleform {
         $mform->addElement('text', 'iprestriction', get_string('keyiprestriction', 'userkey'), array('size'=>80));
         $mform->addElement('date_time_selector', 'validuntil', get_string('keyvaliduntil', 'userkey'), array('optional'=>true));
 
-        $mform->setHelpButton('iprestriction', array('keyiprestriction', get_string('keyiprestriction', 'userkey'), 'userkey'));
-        $mform->setHelpButton('validuntil', array('keyvaliduntil', get_string('keyvaliduntil', 'userkey'), 'userkey'));
+        $mform->addHelpButton('iprestriction', 'keyiprestriction', 'userkey');
+        $mform->addHelpButton('validuntil', 'keyvaliduntil', 'userkey');
 
         $mform->addElement('hidden','id');
         $mform->setType('id', PARAM_INT);
@@ -42,5 +53,3 @@ class key_form extends moodleform {
         $this->add_action_buttons();
     }
 }
-
-?>

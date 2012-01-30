@@ -1,331 +1,613 @@
-<?php  //$Id$
-
-// This file keeps track of upgrades to 
-// the scorm module
+<?php
+// This file is part of Moodle - http://moodle.org/
 //
-// Sometimes, changes between versions involve
-// alterations to database structures and other
-// major things that may break installations.
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// The upgrade function in this file will attempt
-// to perform all the necessary actions to upgrade
-// your older installtion to the current version.
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-// If there's something it cannot do itself, it
-// will tell you what you need to do.
-//
-// The commands in here will all be database-neutral,
-// using the functions defined in lib/ddllib.php
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-function xmldb_scorm_upgrade($oldversion=0) {
+/**
+ * Upgrade script for the scorm module.
+ *
+ * @package    mod
+ * @subpackage scorm
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-    global $CFG, $THEME, $db;
 
-    $result = true;
+/**
+ * @global moodle_database $DB
+ * @param int $oldversion
+ * @return bool
+ */
+function xmldb_scorm_upgrade($oldversion) {
+    global $CFG, $DB;
 
-    if ($result && $oldversion < 2006103100) {
-        /// Create the new sco optionals data table
+    $dbman = $DB->get_manager();
 
-        /// Define table scorm_scoes_data to be created
-        $table = new XMLDBTable('scorm_scoes_data');
+//===== 1.9.0 upgrade line ======//
 
-        /// Adding fields to table scorm_scoes_data
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('scoid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('value', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null, null, null);
+    // Adding missing 'whatgrade' field to table scorm
+    if ($oldversion < 2008073000) {
+        $table = new xmldb_table('scorm');
+        $field = new xmldb_field('whatgrade');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'grademethod');
 
-        /// Adding keys to table scorm_scoes_data
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-        /// Adding indexes to table scorm_scoes_data
-        $table->addIndexInfo('scoid', XMLDB_INDEX_NOTUNIQUE, array('scoid'));
-
-        /// Launch create table for scorm_scoes_data
-        $result = $result && create_table($table);
-
-        /// The old fields used in scorm_scoes
-        $fields = array('parameters' => '',
-                        'prerequisites' => '',
-                        'maxtimeallowed' => '',
-                        'timelimitaction' => '',
-                        'datafromlms' => '',
-                        'masteryscore' => '',
-                        'next' => '0',
-                        'previous' => '0');
-
-        /// Retrieve old datas
-        if ($scorms = get_records('scorm')) {
-            foreach ($scorms as $scorm) {
-                if ($olddatas = get_records('scorm_scoes','scorm', $scorm->id)) {
-                    foreach ($olddatas as $olddata) {
-                        $newdata = new stdClass();
-                        $newdata->scoid = $olddata->id;
-                        foreach ($fields as $field => $value) {
-                            if ($olddata->$field != $value) {
-                                $newdata->name = addslashes($field);
-                                $newdata->value = addslashes($olddata->$field);
-                                $id = insert_record('scorm_scoes_data', $newdata);
-                                $result = $result && ($id != 0);
-                            }
-                        }
-                    }
+        /// Launch add field whatgrade
+        if (!$dbman->field_exists($table,$field)) {
+            $dbman->add_field($table, $field);
+            $whatgradefixed = get_config('scorm', 'whatgradefixed');
+            if (empty($whatgradefixed)) {
+                /// fix bad usage of whatgrade/grading method.
+                $scorms = $DB->get_records('scorm');
+                foreach ($scorms as $scorm) {
+                    $scorm->whatgrade = $scorm->grademethod/10;
+                    $DB->update_record('scorm', $scorm);
                 }
             }
-        }
-
-        /// Remove no more used fields
-        $table = new XMLDBTable('scorm_scoes');
-
-        foreach ($fields as $field => $value) {
-            $field = new XMLDBField($field);
-            $result = $result && drop_field($table, $field);
-        }
-    }
-
-    if ($result && $oldversion < 2006120900) {
-    /// Define table scorm_seq_objective to be created
-        $table = new XMLDBTable('scorm_seq_objective');
-
-    /// Adding fields to table scorm_seq_objective
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('scoid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('primaryobj', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('objectiveid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('satisfiedbymeasure', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null, '1');
-        $table->addFieldInfo('minnormalizedmeasure', XMLDB_TYPE_FLOAT, '11, 4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0.0000');
-
-    /// Adding keys to table scorm_seq_objective
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addKeyInfo('scorm_objective_uniq', XMLDB_KEY_UNIQUE, array('scoid', 'id'));
-        $table->addKeyInfo('scorm_objective_scoid', XMLDB_KEY_FOREIGN, array('scoid'), 'scorm_scoes', array('id'));
-
-    /// Launch create table for scorm_seq_objective
-        $result = $result && create_table($table);
-
-    /// Define table scorm_seq_mapinfo to be created
-        $table = new XMLDBTable('scorm_seq_mapinfo');
-
-    /// Adding fields to table scorm_seq_mapinfo
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('scoid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('objectiveid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('targetobjectiveid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('readsatisfiedstatus', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null, '1');
-        $table->addFieldInfo('readnormalizedmeasure', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null, '1');
-        $table->addFieldInfo('writesatisfiedstatus', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('writenormalizedmeasure', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null, '0');
-
-    /// Adding keys to table scorm_seq_mapinfo
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addKeyInfo('scorm_mapinfo_uniq', XMLDB_KEY_UNIQUE, array('scoid', 'id', 'objectiveid'));
-        $table->addKeyInfo('scorm_mapinfo_scoid', XMLDB_KEY_FOREIGN, array('scoid'), 'scorm_scoes', array('id'));
-        $table->addKeyInfo('scorm_mapinfo_objectiveid', XMLDB_KEY_FOREIGN, array('objectiveid'), 'scorm_seq_objective', array('id'));
-
-    /// Launch create table for scorm_seq_mapinfo
-        $result = $result && create_table($table);
-
-    /// Define table scorm_seq_ruleconds to be created
-        $table = new XMLDBTable('scorm_seq_ruleconds');
-
-    /// Adding fields to table scorm_seq_ruleconds
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('scoid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('conditioncombination', XMLDB_TYPE_CHAR, '3', null, XMLDB_NOTNULL, null, null, null, 'all');
-        $table->addFieldInfo('ruletype', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('action', XMLDB_TYPE_CHAR, '25', null, XMLDB_NOTNULL, null, null, null, null);
-
-    /// Adding keys to table scorm_seq_ruleconds
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addKeyInfo('scorm_ruleconds_un', XMLDB_KEY_UNIQUE, array('scoid', 'id'));
-        $table->addKeyInfo('scorm_ruleconds_scoid', XMLDB_KEY_FOREIGN, array('scoid'), 'scorm_scoes', array('id'));
-
-    /// Launch create table for scorm_seq_ruleconds
-        $result = $result && create_table($table);
-
-   /// Define table scorm_seq_rulecond to be created
-        $table = new XMLDBTable('scorm_seq_rulecond');
-
-    /// Adding fields to table scorm_seq_rulecond
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('scoid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('ruleconditionsid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('refrencedobjective', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('measurethreshold', XMLDB_TYPE_FLOAT, '11, 4', null, XMLDB_NOTNULL, null, null, null, '0.0000');
-        $table->addFieldInfo('operator', XMLDB_TYPE_CHAR, '5', null, XMLDB_NOTNULL, null, null, null, 'noOp');
-        $table->addFieldInfo('cond', XMLDB_TYPE_CHAR, '30', null, XMLDB_NOTNULL, null, null, null, 'always');
-
-    /// Adding keys to table scorm_seq_rulecond
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addKeyInfo('scorm_rulecond_uniq', XMLDB_KEY_UNIQUE, array('id', 'scoid', 'ruleconditionsid'));
-        $table->addKeyInfo('scorm_rulecond_scoid', XMLDB_KEY_FOREIGN, array('scoid'), 'scorm_scoes', array('id'));
-        $table->addKeyInfo('scorm_rulecond_ruleconditionsid', XMLDB_KEY_FOREIGN, array('ruleconditionsid'), 'scorm_seq_ruleconds', array('id'));
-
-    /// Launch create table for scorm_seq_rulecond
-        $result = $result && create_table($table);
-
-   /// Define table scorm_seq_rolluprule to be created
-        $table = new XMLDBTable('scorm_seq_rolluprule');
-
-    /// Adding fields to table scorm_seq_rolluprule
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('scoid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('childactivityset', XMLDB_TYPE_CHAR, '15', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('minimumcount', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('minimumpercent', XMLDB_TYPE_FLOAT, '11, 4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0.0000');
-        $table->addFieldInfo('conditioncombination', XMLDB_TYPE_CHAR, '3', null, XMLDB_NOTNULL, null, null, null, 'all');
-        $table->addFieldInfo('action', XMLDB_TYPE_CHAR, '15', null, XMLDB_NOTNULL, null, null, null, null);
-
-    /// Adding keys to table scorm_seq_rolluprule
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addKeyInfo('scorm_rolluprule_uniq', XMLDB_KEY_UNIQUE, array('scoid', 'id'));
-        $table->addKeyInfo('scorm_rolluprule_scoid', XMLDB_KEY_FOREIGN, array('scoid'), 'scorm_scoes', array('id'));
-
-    /// Launch create table for scorm_seq_rolluprule
-        $result = $result && create_table($table);
-
-    /// Define table scorm_seq_rolluprulecond to be created
-        $table = new XMLDBTable('scorm_seq_rolluprulecond');
-
-    /// Adding fields to table scorm_seq_rolluprulecond
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('scoid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('rollupruleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $table->addFieldInfo('operator', XMLDB_TYPE_CHAR, '5', null, XMLDB_NOTNULL, null, null, null, 'noOp');
-        $table->addFieldInfo('cond', XMLDB_TYPE_CHAR, '25', null, XMLDB_NOTNULL, null, null, null, null);
-
-    /// Adding keys to table scorm_seq_rolluprulecond
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addKeyInfo('scorm_rulluprulecond_uniq', XMLDB_KEY_UNIQUE, array('scoid', 'rollupruleid', 'id'));
-        $table->addKeyInfo('scorm_rolluprulecond_scoid', XMLDB_KEY_FOREIGN, array('scoid'), 'scorm_scoes', array('id'));
-        $table->addKeyInfo('scorm_rolluprulecond_rolluprule', XMLDB_KEY_FOREIGN, array('rollupruleid'), 'scorm_seq_rolluprule', array('id'));
-
-    /// Launch create table for scorm_seq_rolluprulecond
-        $result = $result && create_table($table);
-    }
-    
-    //Adding new field to table scorm
-    if ($result && $oldversion < 2007011800) {
-
-    /// Define field format to be added to data_comments
-        $table = new XMLDBTable('scorm');
-        $field = new XMLDBField('md5_result');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '32' , null, null, null, null, null, null, null);
-
-    /// Launch add field format
-        $result = $result && add_field($table, $field);
-
-        $field = new XMLDBField('external');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', null);
-
-        $result = $result && add_field($table, $field);
-    }
-
-    if ($result && $oldversion < 2007012400) {
-
-    /// Rename field external on table scorm to updatefreq
-        $table = new XMLDBTable('scorm');
-        $field = new XMLDBField('external');
-
-        if (field_exists($table, $field)) {
-            $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'maxattempt');
-
-         /// Launch rename field updatefreq
-            $result = $result && rename_field($table, $field, 'updatefreq');
         } else {
-            $field = new XMLDBField('updatefreq');
-            $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'maxattempt');
-
-            $result = $result && add_field($table, $field);
+            //dump this config var as it isn't needed anymore.
+            unset_config('whatgradefixed', 'scorm');
         }
 
-    /// Rename field md5_result on table scorm to md5hash
-        $field = new XMLDBField('md5_result');
-        if (field_exists($table, $field)) {
-            $field->setAttributes(XMLDB_TYPE_CHAR, '32', null, XMLDB_NOTNULL, null, null, null, null, 'updatefreq');
-
-        /// Launch rename field md5hash
-            $result = $result && rename_field($table, $field, 'md5hash');
-        } else {
-            $field = new XMLDBField('md5hash');
-            $field->setAttributes(XMLDB_TYPE_CHAR, '32', null, XMLDB_NOTNULL, null, null, null, '', 'updatefreq');
-            
-            $result = $result && add_field($table, $field);
-        }
+        upgrade_mod_savepoint(true, 2008073000, 'scorm');
     }
 
-    if ($result && $oldversion < 2007031300) {
-        if ($scorms = get_records('scorm')) {
-            foreach ($scorms as $scorm) {
-                if ($scoes = get_records('scorm_scoes','scorm',$scorm->id)) {
-                    foreach ($scoes as $sco) {
-                        if ($tracks = get_records('scorm_scoes_track','scoid',$sco->id)) {
-                            foreach ($tracks as $track) {
-                                $element = preg_replace('/\.N(\d+)\./',".\$1.",$track->element);
-                                if ($track->element != $element) {
-                                    $track->element = $element;
-                                    update_record('scorm_scoes_track',$track);
+     if ($oldversion < 2008082500) {
+
+    /// Define field scormtype to be added to scorm
+        $table = new xmldb_table('scorm');
+        $field = new xmldb_field('scormtype', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, 'local', 'name');
+
+    /// Launch add field scormtype
+        $dbman->add_field($table, $field);
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008082500, 'scorm');
+    }
+
+    if ($oldversion < 2008090300) {
+
+    /// Define field sha1hash to be added to scorm
+        $table = new xmldb_table('scorm');
+        $field = new xmldb_field('sha1hash', XMLDB_TYPE_CHAR, '40', null, null, null, null, 'updatefreq');
+
+    /// Launch add field sha1hash
+        $dbman->add_field($table, $field);
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090300, 'scorm');
+    }
+
+    if ($oldversion < 2008090301) {
+
+    /// Define field revision to be added to scorm
+        $table = new xmldb_table('scorm');
+        $field = new xmldb_field('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'md5hash');
+
+    /// Launch add field revision
+        $dbman->add_field($table, $field);
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090301, 'scorm');
+    }
+
+    if ($oldversion < 2008090302) {
+        $sql = "UPDATE {scorm}
+                   SET scormtype = 'external'
+                 WHERE reference LIKE ? OR reference LIKE ? OR reference LIKE ?";
+        $DB->execute($sql, array('http://%imsmanifest.xml', 'https://%imsmanifest.xml', 'www.%imsmanifest.xml'));
+
+        $sql = "UPDATE {scorm}
+                   SET scormtype = 'localsync'
+                 WHERE reference LIKE ? OR reference LIKE ? OR reference LIKE ?
+                       OR reference LIKE ? OR reference LIKE ? OR reference LIKE ?";
+        $DB->execute($sql, array('http://%.zip', 'https://%.zip', 'www.%.zip', 'http://%.pif', 'https://%.pif', 'www.%.pif'));
+
+        $sql = "UPDATE {scorm} SET scormtype = 'imsrepository' WHERE reference LIKE ?";
+        $DB->execute($sql, array('#%'));
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090302, 'scorm');
+    }
+
+    if ($oldversion < 2008090303) {
+        //remove obsoleted config settings
+        unset_config('scorm_advancedsettings');
+        unset_config('scorm_windowsettings');
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090303, 'scorm');
+    }
+
+    if ($oldversion < 2008090304) {
+        /////////////////////////////////////
+        /// new file storage upgrade code ///
+        /////////////////////////////////////
+
+        require_once("$CFG->dirroot/mod/scorm/db/upgradelib.php");
+
+        $fs = get_file_storage();
+
+        $sqlfrom = "FROM {scorm} s
+                    JOIN {modules} m ON m.name = 'scorm'
+                    JOIN {course_modules} cm ON (cm.module = m.id AND cm.instance = s.id)";
+
+        $count = $DB->count_records_sql("SELECT COUNT('x') $sqlfrom");
+
+        $rs = $DB->get_recordset_sql("SELECT s.id, s.scormtype, s.reference, s.course, cm.id AS cmid $sqlfrom ORDER BY s.course, s.id");
+        if ($rs->valid()) {
+
+            $pbar = new progress_bar('migratescormfiles', 500, true);
+
+            $i = 0;
+            foreach ($rs as $scorm) {
+                $i++;
+                upgrade_set_timeout(180); // set up timeout, may also abort execution
+                $pbar->update($i, $count, "Migrating scorm files - $i/$count.");
+
+                $context       = get_context_instance(CONTEXT_MODULE, $scorm->cmid);
+                $coursecontext = get_context_instance(CONTEXT_COURSE, $scorm->course);
+
+                if ($scorm->scormtype === 'local' and preg_match('/.*(\.zip|\.pif)$/i', $scorm->reference)) {
+                    // first copy local packages if found - do not delete in case they are shared ;-)
+                    $packagefile = clean_param($scorm->reference, PARAM_PATH);
+                    $pathnamehash = sha1("/$coursecontext->id/course/legacy/0/$packagefile");
+                    if ($file = $fs->get_file_by_hash($pathnamehash)) {
+                        $file_record = array('contextid'=>$context->id, 'component'=>'mod_scorm', 'filearea'=>'package',
+                                             'itemid'=>0, 'filepath'=>'/');
+                        try {
+                            $fs->create_file_from_storedfile($file_record, $file);
+                        } catch (Exception $x) {
+                            // ignore any errors, we can not do much anyway
+                        }
+                        $scorm->reference = $file->get_filepath().$file->get_filename();
+
+                    } else {
+                        $scorm->reference = '';
+                    }
+                    $DB->update_record('scorm', $scorm);
+                    // the package should be already extracted, we need to move the files there
+                    // just in case somebody modified it directly there
+                    scorm_migrate_moddata_files($scorm, $context);
+
+                } else if ($scorm->scormtype === 'local' and preg_match('/.*\/imsmanifest\.xml$/i', $scorm->reference)) {
+                    // ignore imsmanifest in course root because we would be duplicating all course files which is not acceptable
+                    // moddata dir is not used at all, ignore any rubbish there
+                    $manifest = clean_param($scorm->reference, PARAM_PATH);
+
+                    $pathnamehash = sha1("/$coursecontext->id/course/legacy/0/$manifest");
+                    if ($file = $fs->get_file_by_hash($pathnamehash)) {
+                        $scorm->reference = $file->get_filepath().$file->get_filename();
+
+                        $manifestdir = '/'.str_ireplace('/imsmanifest.xml', '', $manifest).'/';
+                        $pregmanifestdir = preg_quote($manifestdir, '/');
+                        $file_record = array('contextid'=>$context->id, 'component'=>'mod_scorm', 'filearea'=>'content', 'itemid'=>0);
+                        if ($files = $fs->get_directory_files($coursecontext->id, 'course', 'legacy', 0, $manifestdir, true)) {
+                            foreach ($files as $file) {
+                                $file_record['filepath'] = preg_replace("/^$pregmanifestdir/", '/', $file->get_filepath());
+                                try {
+                                    $fs->create_file_from_storedfile($file_record, $file);
+                                } catch (Exception $x) {
+                                    // ignore any errors, we can not do much anyway
                                 }
                             }
                         }
+
+                    } else {
+                        $scorm->reference = '';
                     }
+                    $DB->update_record('scorm', $scorm);
+
+                } else {
+                    // just try to migrate anything from moddata
+                    scorm_migrate_moddata_files($scorm, $context);
                 }
+
+                // remove dirs if empty
+                @rmdir("$CFG->dataroot/$scorm->course/$CFG->moddata/scorm/$scorm->id/");
+                @rmdir("$CFG->dataroot/$scorm->course/$CFG->moddata/scorm/");
+                @rmdir("$CFG->dataroot/$scorm->course/$CFG->moddata/");
             }
         }
+        $rs->close();
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090304, 'scorm');
     }
 
-    if ($result && $oldversion < 2007081001) {
-        require_once($CFG->dirroot.'/mod/scorm/lib.php');
-        // too much debug output
-        $db->debug = false;
-        scorm_update_grades();
-        $db->debug = true;
-    }  
 
-	// Adding missing 'version' field to table scorm
-    if ($result && $oldversion < 2007110500) {
-        $table = new XMLDBTable('scorm');
-        $field = new XMLDBField('version');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '9', null, XMLDB_NOTNULL, null, null, null, 'scorm_12', 'summary');
+    if ($oldversion < 2008090305) {
 
-        $result = $result && add_field($table, $field);
+    /// Define new fields forcecompleted, forcenewattempt, displayattemptstatus, and displaycoursestructure to be added to scorm
+        $table = new xmldb_table('scorm');
+        $field = new xmldb_field('forcecompleted', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 1, 'maxattempt');
+        if (!$dbman->field_exists($table,$field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('forcenewattempt', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 0, 'forcecompleted');
+        if (!$dbman->field_exists($table,$field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('lastattemptlock', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 0, 'forcenewattempt');
+        if (!$dbman->field_exists($table,$field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('displayattemptstatus', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 1, 'lastattemptlock');
+        if (!$dbman->field_exists($table,$field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('displaycoursestructure', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 1, 'displayattemptstatus');
+        if (!$dbman->field_exists($table,$field)) {
+            $dbman->add_field($table, $field);
+        }
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090305, 'scorm');
     }
 
-   // Adding missing 'whatgrade' field to table scorm
-    if ($result && $oldversion < 2007110501) {
-        $table = new XMLDBTable('scorm');
-        $field = new XMLDBField('whatgrade');
-        
-        /// Launch add field whatgrade
-        if (!field_exists($table, $field)) {
-            $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'grademethod');
-            $result = $result && add_field($table, $field);
+
+    // remove redundant config values
+    if ($oldversion < 2008090306) {
+        /*
+         * comment this out as it is handled by the update mark 2008090310 below
+         * left for historical documentation as some early adopters may have done
+         * this already.
+         $redundant_config = array(
+                         'scorm_allowapidebug',
+                         'scorm_allowtypeexternal',
+                         'scorm_allowtypeimsrepository',
+                         'scorm_allowtypelocalsync',
+                         'scorm_apidebugmask',
+                         'scorm_frameheight',
+                         'scorm_framewidth',
+                         'scorm_maxattempts',
+                         'scorm_updatetime');
+        foreach ($redundant_config as $rcfg) {
+            if (isset($CFG->$rcfg)) {
+                unset_config($rcfg);
+            }
+        }
+         */
+        /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090306, 'scorm');
+    }
+
+
+
+    // remove redundant config values
+    if ($oldversion < 2008090307) {
+        /*
+         * comment this out as it is handled by the update mark 2008090310 below
+         * left for historical documentation as some early adopters may have done
+         * this already.
+         $redundant_config = array(
+                         'scorm_allowapidebug',
+                         'scorm_allowtypeexternal',
+                         'scorm_allowtypeimsrepository',
+                         'scorm_allowtypelocalsync',
+                         'scorm_apidebugmask',
+                         'scorm_frameheight',
+                         'scorm_framewidth',
+                         'scorm_maxattempts',
+                         'scorm_updatetime',
+                         'scorm_resizable',
+                         'scorm_scrollbars',
+                         'scorm_directories',
+                         'scorm_location',
+                         'scorm_menubar',
+                         'scorm_toolbar',
+                         'scorm_status',
+                         'scorm_grademethod',
+                         'scorm_maxgrade',
+                         'scorm_whatgrade',
+                         'scorm_popup',
+                         'scorm_skipview',
+                         'scorm_hidebrowse',
+                         'scorm_hidetoc',
+                         'scorm_hidenav',
+                         'scorm_auto',
+                         'scorm_updatefreq'
+         );
+        foreach ($redundant_config as $rcfg) {
+            if (isset($CFG->$rcfg)) {
+                unset_config($rcfg);
+            }
+        }
+         */
+
+        /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090307, 'scorm');
+    }
+
+    if ($oldversion < 2008090308) {
+        $table = new xmldb_table('scorm');
+        $field = new xmldb_field('timeopen', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'height');
+        if (!$dbman->field_exists($table,$field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('timeclose', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'timeopen');
+        if (!$dbman->field_exists($table,$field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090308, 'scorm');
+    }
+
+
+    if ($oldversion < 2008090310) {
+        // take above blocks that delete config and move the values in to config_plugins
+
+        $redundant_config = array(
+                         'scorm_allowapidebug',
+                         'scorm_allowtypeexternal',
+                         'scorm_allowtypeimsrepository',
+                         'scorm_allowtypelocalsync',
+                         'scorm_apidebugmask',
+                         'scorm_frameheight',
+                         'scorm_framewidth',
+                         'scorm_maxattempts',
+                         'scorm_updatetime',
+                         'scorm_resizable',
+                         'scorm_scrollbars',
+                         'scorm_directories',
+                         'scorm_location',
+                         'scorm_menubar',
+                         'scorm_toolbar',
+                         'scorm_status',
+                         'scorm_grademethod',
+                         'scorm_maxgrade',
+                         'scorm_whatgrade',
+                         'scorm_popup',
+                         'scorm_skipview',
+                         'scorm_hidebrowse',
+                         'scorm_hidetoc',
+                         'scorm_hidenav',
+                         'scorm_auto',
+                         'scorm_updatefreq',
+                         'scorm_displayattemptstatus',
+                         'scorm_displaycoursestructure',
+                         'scorm_forcecompleted',
+                         'scorm_forcenewattempt',
+                         'scorm_lastattemptlock'
+         );
+
+        foreach ($redundant_config as $rcfg) {
+            if (isset($CFG->$rcfg)) {
+                $shortname = substr($rcfg, 6);
+                set_config($shortname, $CFG->$rcfg, 'scorm');
+                unset_config($rcfg);
+            }
+        }
+
+        /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2008090310, 'scorm');
+    }
+
+    if ($oldversion < 2009042000) {
+
+    /// Rename field summary on table scorm to intro
+        $table = new xmldb_table('scorm');
+        $field = new xmldb_field('summary', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null, 'reference');
+
+    /// Launch rename field summary
+        $dbman->rename_field($table, $field, 'intro');
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2009042000, 'scorm');
+    }
+
+    if ($oldversion < 2009042001) {
+
+    /// Define field introformat to be added to scorm
+        $table = new xmldb_table('scorm');
+        $field = new xmldb_field('introformat', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'intro');
+
+    /// Launch add field introformat
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // conditionally migrate to html format in intro
+        if ($CFG->texteditors !== 'textarea') {
+            $rs = $DB->get_recordset('scorm', array('introformat'=>FORMAT_MOODLE), '', 'id,intro,introformat');
+            foreach ($rs as $s) {
+                $s->intro       = text_to_html($s->intro, false, false, true);
+                $s->introformat = FORMAT_HTML;
+                $DB->update_record('scorm', $s);
+                upgrade_set_timeout();
+            }
+            $rs->close();
+        }
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2009042001, 'scorm');
+    }
+
+    if ($oldversion < 2009042002) {
+
+    /// Define field introformat to be added to scorm
+        $table = new xmldb_table('scorm_scoes');
+        $field = new xmldb_field('launch', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null);
+
+    /// Launch add field introformat
+        $dbman->change_field_type($table, $field);
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2009042002, 'scorm');
+    }
+    if ($oldversion < 2010070800) {
+    //check to see if this has already been tidied up by a 1.9 upgrade.
+        $grademethodfixed = get_config('scorm', 'grademethodfixed');
+        if (empty($grademethodfixed)) {
             /// fix bad usage of whatgrade/grading method.
-            $scorms = get_records('scorm');
+            $scorms = $DB->get_records('scorm');
             if (!empty($scorm)) {
                 foreach ($scorms as $scorm) {
-                    $scorm->whatgrade = $scorm->grademethod/10;
-                    update_record('scorm', $scorm);
+                    $scorm->grademethod = $scorm->grademethod%10;
+                    $DB->update_record('scorm', $scorm);
                 }
             }
-            set_config('whatgradefixed', '1', 'scorm'); //set this so that when upgrade to Moodle 2.0 we don't do this again.
+        } else {
+            //dump this config var as it isn't needed anymore.
+            unset_config('grademethodfixed', 'scorm');
         }
+
+    /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2010070800, 'scorm');
     }
-    if ($result && $oldversion < 2007110503) {
-        /// fix bad usage of whatgrade/grading method
-        $scorms = get_records('scorm');
-        if (!empty($scorm)) {
-            foreach ($scorms as $scorm) {
-                $scorm->grademethod = $scorm->grademethod%10;
-                update_record('scorm', $scorm);
+    if ($oldversion < 2010092400) {
+        $count = $DB->count_records('scorm', array('scormtype'=>'external'));
+        if (!empty($count)) {
+            set_config('allowtypeexternal', '1', 'scorm');
+        }
+        $count = $DB->count_records('scorm', array('scormtype'=>'localsync'));
+        if (!empty($count)) {
+            set_config('allowtypelocalsync', '1', 'scorm');
+        }
+        $count = $DB->count_records('scorm', array('scormtype'=>'imsrepository'));
+        if (!empty($count)) {
+            set_config('allowtypeimsrepository', '1', 'scorm');
+        }
+        /// scorm savepoint reached
+        upgrade_mod_savepoint(true, 2010092400, 'scorm');
+    }
+
+    if ($oldversion < 2011011400) {
+        // Fix scorm in the post table after upgrade from 1.9
+        $table = new xmldb_table('scorm');
+        $columns = $DB->get_columns('scorm');
+
+        // forcecompleted should be int(1) not null default 1
+        // Changing to NOT NULL, let's fill the current nulls with default 1
+        $DB->set_field('scorm', 'forcecompleted', 1, array('forcecompleted' => null));
+        $field = new xmldb_field('forcecompleted', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 1, 'maxattempt');
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->change_field_precision($table, $field);
+        }
+
+        if (array_key_exists('forcenewattempt', $columns) && empty($columns['forcenewattempt']->not_null)) {
+            // forcenewattempt should be int(1) not null default 0
+            // Changing to NOT NULL, let's fill the current nulls with default 0
+            $DB->set_field('scorm', 'forcenewattempt', 0, array('forcenewattempt' => null));
+            $field = new xmldb_field('forcenewattempt', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 0, 'forcecompleted');
+            if ($dbman->field_exists($table, $field)) {
+                $dbman->change_field_notnull($table, $field);
             }
         }
-        set_config('grademethodfixed', '1', 'scorm'); //set this so that when upgrade to Moodle 2.0 we don't do this again.
-    }
-    
-//===== 1.9.0 upgrade line ======//
 
-    return $result;
+        if (array_key_exists('lastattemptlock', $columns) && empty($columns['lastattemptlock']->not_null)) {
+            // lastattemptlock should be int(1) not null default 0
+            // Changing to NOT NULL, let's fill the current nulls with default 0
+            $DB->set_field('scorm', 'lastattemptlock', 0, array('lastattemptlock' => null));
+            $field = new xmldb_field('lastattemptlock', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 0, 'forcenewattempt');
+            if ($dbman->field_exists($table, $field)) {
+                $dbman->change_field_notnull($table, $field);
+            }
+        }
+
+        if (array_key_exists('displayattemptstatus', $columns) && empty($columns['displayattemptstatus']->not_null)) {
+            // displayattemptstatus should be int(1) not null default 1
+            // Changing to NOT NULL, let's fill the current nulls with default 1
+            $DB->set_field('scorm', 'displayattemptstatus', 1, array('displayattemptstatus' => null));
+            $field = new xmldb_field('displayattemptstatus', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 1, 'lastattemptlock');
+            if ($dbman->field_exists($table, $field)) {
+                $dbman->change_field_notnull($table, $field);
+            }
+        }
+
+        if (array_key_exists('displaycoursestructure', $columns) && empty($columns['displaycoursestructure']->not_null)) {
+            // displaycoursestructure should be int(1) not null default 1
+            // Changing to NOT NULL, let's fill the current nulls with default 1
+            $DB->set_field('scorm', 'displaycoursestructure', 1, array('displaycoursestructure' => null));
+            $field = new xmldb_field('displaycoursestructure', XMLDB_TYPE_INTEGER, 1, null, XMLDB_NOTNULL, null, 1, 'displayattemptstatus');
+            if ($dbman->field_exists($table, $field)) {
+                $dbman->change_field_notnull($table, $field);
+            }
+        }
+
+        upgrade_mod_savepoint(true, 2011011400, 'scorm');
+    }
+
+    // Moodle v2.1.0 release upgrade line
+    // Put any upgrade step following this
+
+    if ($oldversion < 2011021402) {
+        unset_config('updatetime', 'scorm');
+        upgrade_mod_savepoint(true, 2011021402, 'scorm');
+    }
+
+    if ($oldversion < 2011073100) {
+        // change field type of objectiveid
+        $table = new xmldb_table('scorm_seq_objective');
+        $field = new xmldb_field('objectiveid', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'primaryobj');
+        $dbman->change_field_type($table, $field);
+        upgrade_mod_savepoint(true, 2011073100, 'scorm');
+    }
+
+    if ($oldversion < 2011080100) {
+        //MDL-28295 the behaviour of pop-up windows has now changed - it now loads the full Player in the window
+        //because of this, pop-up windows now include the TOC and the nav bar - disabling these for existing SCORMS
+        //as it is a change that most users won't expect.
+        //get all SCORMS that use a new window.
+        require_once($CFG->dirroot."/mod/scorm/lib.php");
+        $rs = $DB->get_recordset('scorm', array('popup' => 1), '', 'id,hidetoc,hidenav');
+        foreach ($rs as $scorm) {
+            $scorm->hidetoc = SCORM_TOC_DISABLED;
+            $scorm->hidenav = 1;
+            $DB->update_record('scorm', $scorm);
+        }
+        $rs->close();
+
+        upgrade_mod_savepoint(true, 2011080100, 'scorm');
+    }
+    if ($oldversion < 2011110502) {
+
+        // Define table scorm_aicc_session to be created
+        $table = new xmldb_table('scorm_aicc_session');
+
+        // Adding fields to table scorm_aicc_session
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->add_field('scormid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->add_field('hacpsession', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('scoid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, '0');
+        $table->add_field('scormmode', XMLDB_TYPE_CHAR, '50', null, null, null, null);
+        $table->add_field('scormstatus', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('attempt', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->add_field('lessonstatus', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('sessiontime', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+
+        // Adding keys to table scorm_aicc_session
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_key('scormid', XMLDB_KEY_FOREIGN, array('scormid'), 'scorm', array('id'));
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, array('userid'), 'user', array('id'));
+
+        // Conditionally launch create table for scorm_aicc_session
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // scorm savepoint reached
+        upgrade_mod_savepoint(true, 2011110502, 'scorm');
+    }
+
+    // Moodle v2.2.0 release upgrade line
+    // Put any upgrade step following this
+
+    return true;
 }
 
-?>
+

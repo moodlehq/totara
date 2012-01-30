@@ -1,17 +1,31 @@
-<?php // $Id$
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/////////////////////////////////////////////////////////////////////////////////
-///  Code fragment to define the version of scorm
-///  This fragment is called by moodle_needs_upgrading() and /admin/index.php
-/////////////////////////////////////////////////////////////////////////////////
+/**
+ * scorm version information.
+ *
+ * @package    mod
+ * @subpackage scorm
+ * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
+defined('MOODLE_INTERNAL') || die();
 
-// NOTE  The version below was accidentally set a month into the future!  We need to 
-//       catch up now, so until 27th October please only increment in very tiny steps 
-//       in HEAD, until we get past that date..
-
-$module->version  = 2007110503;   // The (date) version of this module
-$module->requires = 2007101509;   // The version of Moodle that is required
-$module->cron     = 300;            // How often should cron check this module (seconds)?
-
-?>
+$module->version   = 2011112901;       // The current module version (Date: YYYYMMDDXX)
+$module->requires  = 2011112900;       // Requires this Moodle version
+$module->component = 'mod_scorm'; // Full name of the plugin (used for diagnostics)
+$module->cron      = 300;

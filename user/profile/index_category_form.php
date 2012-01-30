@@ -1,4 +1,8 @@
-<?php //$Id$
+<?php
+
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 
@@ -28,23 +32,23 @@ class category_form extends moodleform {
 
 /// perform some moodle validation
     function validation($data, $files) {
-        global $CFG;
+        global $CFG, $DB;
         $errors = parent::validation($data, $files);
 
         $data  = (object)$data;
 
-        $duplicate = record_exists('user_info_category', 'name', $data->name);
+        $duplicate = $DB->record_exists('user_info_category', array('name'=>$data->name));
 
         /// Check the name is unique
         if (!empty($data->id)) { // we are editing an existing record
-            $olddata = get_record('user_info_category', 'id', $data->id);
+            $olddata = $DB->get_record('user_info_category', array('id'=>$data->id));
             // name has changed, new name in use, new name in use by another record
             $dupfound = (($olddata->name !== $data->name) && $duplicate && ($data->id != $duplicate->id));
         }
         else { // new profile category
             $dupfound = $duplicate;
         }
-        
+
         if ($dupfound ) {
             $errors['name'] = get_string('profilecategorynamenotunique', 'admin');
         }
@@ -53,4 +57,4 @@ class category_form extends moodleform {
     }
 }
 
-?>
+

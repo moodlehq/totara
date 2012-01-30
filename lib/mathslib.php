@@ -1,13 +1,39 @@
 <?php
 
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package    core
+ * @subpackage lib
+ * @copyright  Petr Skoda (skodak)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+/** @see evalmath/evalmath.class.php */
 require_once $CFG->dirroot.'/lib/evalmath/evalmath.class.php';
 
 /**
  * This class abstracts evaluation of spreadsheet formulas.
  * See unit tests in lib/simpletest/testmathslib.php for sample usage.
  *
- * @author Petr Skoda (skodak)
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package moodlecore
+ * @copyright Petr Skoda (skodak)
+  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class calc_formula {
 
@@ -91,22 +117,20 @@ class calc_formula {
      */
     function localize($formula) {
         $formula = str_replace('.', '$', $formula); // temp placeholder
-        $formula = str_replace(',', get_string('listsep'), $formula);
-        $formula = str_replace('$', get_string('decsep'), $formula);
+        $formula = str_replace(',', get_string('listsep', 'langconfig'), $formula);
+        $formula = str_replace('$', get_string('decsep', 'langconfig'), $formula);
         return $formula;
     }
 
     /**
      * Similar to unformat_float, converts floats and lists to PHP standards.
      * @param string $formula localised formula
-     * @return string 
+     * @return string
      */
     function unlocalize($formula) {
-        $formula = str_replace(get_string('decsep'), '$', $formula);
-        $formula = str_replace(get_string('listsep'), ',', $formula);
+        $formula = str_replace(get_string('decsep', 'langconfig'), '$', $formula);
+        $formula = str_replace(get_string('listsep', 'langconfig'), ',', $formula);
         $formula = str_replace('$', '.', $formula); // temp placeholder
         return $formula;
     }
 }
-
-?>

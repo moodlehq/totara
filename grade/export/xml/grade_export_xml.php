@@ -16,19 +16,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once($CFG->dirroot.'/grade/export/lib.php');
+require_once($CFG->libdir.'/filelib.php');
 
 class grade_export_xml extends grade_export {
 
-    var $plugin = 'xml';
-    var $updatedgradesonly = false; // default to export ALL grades
-    
+    public $plugin = 'xml';
+    public $updatedgradesonly = false; // default to export ALL grades
+
     /**
      * To be implemented by child classes
      * @param boolean $feedback
      * @param boolean $publish Whether to output directly, or send as a file
      * @return string
      */
-    function print_grades($feedback = false) {
+    public function print_grades($feedback = false) {
         global $CFG;
         require_once($CFG->libdir.'/filelib.php');
 
@@ -37,13 +38,13 @@ class grade_export_xml extends grade_export {
         $strgrades = get_string('grades');
 
         /// Calculate file name
-        $downloadfilename = clean_filename("{$this->course->shortname} $strgrades.xml");
+        $shortname = format_string($this->course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $this->course->id)));
+        $downloadfilename = clean_filename("$shortname $strgrades.xml");
 
-        make_upload_directory('temp/gradeexport', false);
-        $tempfilename = $CFG->dataroot .'/temp/gradeexport/'. md5(sesskey().microtime().$downloadfilename);
+        make_temp_directory('gradeexport');
+        $tempfilename = $CFG->tempdir .'/gradeexport/'. md5(sesskey().microtime().$downloadfilename);
         if (!$handle = fopen($tempfilename, 'w+b')) {
-            error("Could not create a temporary file into which to dump the XML data.");
-            return false;
+            print_error('cannotcreatetempdir');
         }
 
         /// time stamp to ensure uniqueness of batch export
@@ -58,7 +59,7 @@ class grade_export_xml extends grade_export {
             $user = $userdata->user;
 
             if (empty($user->idnumber)) {
-                //id number must exist
+                //id number must exist otherwise we cant match up students when importing
                 continue;
             }
 
@@ -67,12 +68,12 @@ class grade_export_xml extends grade_export {
                 $grade_item = $this->grade_items[$itemid];
                 $grade->grade_item =& $grade_item;
                 $gradestr = $this->format_grade($grade); // no formating for now
-                
+
                 // MDL-11669, skip exported grades or bad grades (if setting says so)
                 if ($export_tracking) {
                     $status = $geub->track($grade);
                     if ($this->updatedgradesonly && ($status == 'nochange' || $status == 'unknown')) {
-                        continue; 
+                        continue;
                     }
                 }
 
@@ -99,24 +100,9 @@ class grade_export_xml extends grade_export {
         $gui->close();
         $geub->close();
 
-        if (strpos($CFG->wwwroot, 'https://') === 0) { //https sites - watch out for IE! KB812935 and KB316431
-            @header('Cache-Control: max-age=10');
-            @header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
-            @header('Pragma: ');
-        } else { //normal http - prevent caching at all cost
-            @header('Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0');
-            @header('Expires: '. gmdate('D, d M Y H:i:s', 0) .' GMT');
-            @header('Pragma: no-cache');
-        }
-        header("Content-type: text/xml; charset=UTF-8");
-        header("Content-Disposition: attachment; filename=\"$downloadfilename\"");
-
-        readfile_chunked($tempfilename);
-
-        @unlink($tempfilename);
-
-        exit();
+        @header("Content-type: text/xml; charset=UTF-8");
+        send_temp_file($tempfilename, $downloadfilename, false);
     }
 }
 
-?>
+

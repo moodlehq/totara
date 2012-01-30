@@ -10,14 +10,6 @@
  */
 require_once('../config.php');
 require_once('lib.php');
-ini_set('include_path', $CFG->libdir.'/pear'.PATH_SEPARATOR.ini_get('include_path'));
-require_once('HTML/AJAX/JSON.php');
-
-require_js('yui_yahoo');
-require_js('yui_dom');
-require_js('yui_utilities');
-require_js('yui_connection');
-require_js($CFG->wwwroot.'/group/clientlib.js');
 
 $courseid = required_param('id', PARAM_INT);
 $groupid  = optional_param('group', false, PARAM_INT);
@@ -25,45 +17,47 @@ $userid   = optional_param('user', false, PARAM_INT);
 $action   = groups_param_action();
 // Support either single group= parameter, or array groups[]
 if ($groupid) {
-    $groupids=array($groupid);
+    $groupids = array($groupid);
 } else {
-    $groupids=array();
-    if (isset($_REQUEST['groups'])) {
-        foreach ($_REQUEST['groups'] as $groupid) {
-            if ($groupid = clean_param($groupid, PARAM_INT)) {
-                $groupids[]=$groupid;
-            }
-        }
-    }
+    $groupids = optional_param_array('groups', array(), PARAM_INT);
 }
-$singlegroup=count($groupids) == 1;
+$singlegroup = (count($groupids) == 1);
 
 $returnurl = $CFG->wwwroot.'/group/index.php?id='.$courseid;
 
 // Get the course information so we can print the header and
 // check the course id is valid
 
-if (!$course = get_record('course', 'id',$courseid)) {
-    $success = false;
-    print_error('invalidcourse'); //'The course ID is invalid'
+$course = $DB->get_record('course', array('id'=>$courseid), '*', MUST_EXIST);
+
+$url = new moodle_url('/group/index.php', array('id'=>$courseid));
+if ($userid) {
+    $url->param('user', $userid);
 }
+if ($groupid) {
+    $url->param('group', $groupid);
+}
+$PAGE->set_url($url);
 
 // Make sure that the user has permissions to manage groups.
 require_login($course);
 
-$context = get_context_instance(CONTEXT_COURSE, $courseid);
-if (! has_capability('moodle/course:managegroups', $context)) {
-    redirect(); //"group.php?id=$course->id");   // Not allowed to see all groups
+$PAGE->requires->yui2_lib('connection');
+$PAGE->requires->js('/group/clientlib.js');
+
+$context = get_context_instance(CONTEXT_COURSE, $course->id);
+if (!has_capability('moodle/course:managegroups', $context)) {
+    redirect('/course/view.php', array('id'=>$course->id)); // Not allowed to manage all groups
 }
 
 // Check for multiple/no group errors
-if(!$singlegroup) {
+if (!$singlegroup) {
     switch($action) {
         case 'ajax_getmembersingroup':
         case 'showgroupsettingsform':
         case 'showaddmembersform':
         case 'updatemembers':
-            print_error('errorselectone','group',$returnurl);
+            print_error('errorselectone', 'group', $returnurl);
     }
 }
 
@@ -73,41 +67,45 @@ switch ($action) {
 
     case 'ajax_getmembersingroup':
         $roles = array();
-        if ($groupmemberroles = groups_get_members_by_role($groupids[0],$courseid,'u.id,u.firstname,u.lastname')) {
+        if ($groupmemberroles = groups_get_members_by_role($groupids[0], $courseid, 'u.id,u.firstname,u.lastname')) {
             foreach($groupmemberroles as $roleid=>$roledata) {
-                $shortroledata=new StdClass;
-                $shortroledata->name=$roledata->name;
-                $shortroledata->users=array();
+                $shortroledata = new stdClass();
+                $shortroledata->name = $roledata->name;
+                $shortroledata->users = array();
                 foreach($roledata->users as $member) {
-                    $shortmember=new StdClass;
-                    $shortmember->id=$member->id;
-                    $shortmember->name=fullname($member, true);
-                    $shortroledata->users[]=$shortmember;
+                    $shortmember = new stdClass();
+                    $shortmember->id = $member->id;
+                    $shortmember->name = fullname($member, true);
+                    $shortroledata->users[] = $shortmember;
                 }
-                $roles[]=$shortroledata;
+                $roles[] = $shortroledata;
             }
         }
         echo json_encode($roles);
         die;  // Client side JavaScript takes it from here.
 
     case 'deletegroup':
-        if(count($groupids)==0) {
-            print_error('errorselectsome','group',$returnurl);            
+        if (count($groupids) == 0) {
+            print_error('errorselectsome','group',$returnurl);
         }
-        $groupidlist=implode(',',$groupids);
-        redirect('delete.php?courseid='.$courseid.'&groups='.$groupidlist);
+        $groupidlist = implode(',', $groupids);
+        redirect(new moodle_url('/group/delete.php', array('courseid'=>$courseid, 'groups'=>$groupidlist)));
         break;
 
     case 'showcreateorphangroupform':
-        redirect('group.php?courseid='.$courseid);
+        redirect(new moodle_url('/group/group.php', array('courseid'=>$courseid)));
         break;
 
     case 'showautocreategroupsform':
-        redirect('autogroup.php?courseid='.$courseid);
+        redirect(new moodle_url('/group/autogroup.php', array('courseid'=>$courseid)));
+        break;
+
+    case 'showimportgroups':
+        redirect(new moodle_url('/group/import.php', array('id'=>$courseid)));
         break;
 
     case 'showgroupsettingsform':
-        redirect('group.php?courseid='.$courseid.'&amp;id='.$groupids[0]);
+        redirect(new moodle_url('/group/group.php', array('courseid'=>$courseid, 'id'=>$groupids[0])));
         break;
 
     case 'updategroups': //Currently reloading.
@@ -117,29 +115,27 @@ switch ($action) {
         break;
 
     case 'showaddmembersform':
-        redirect('members.php?group='.$groupids[0]);
+        redirect(new moodle_url('/group/members.php', array('group'=>$groupids[0])));
         break;
 
     case 'updatemembers': //Currently reloading.
         break;
 
     default: //ERROR.
-        if (debugging()) {
-            error('Error, unknown button/action. Probably a user-interface bug!', $returnurl);
+        print_error('unknowaction', '', $returnurl);
         break;
-    }
 }
 
 // Print the page and form
 $strgroups = get_string('groups');
 $strparticipants = get_string('participants');
 
-$navlinks = array(array('name'=>$strparticipants, 'link'=>$CFG->wwwroot.'/user/index.php?id='.$courseid, 'type'=>'misc'),
-                  array('name'=>$strgroups, 'link'=>'', 'type'=>'misc'));
-$navigation = build_navigation($navlinks);
-
 /// Print header
-print_header_simple($strgroups, ': '.$strgroups, $navigation, '', '', true, '', navmenu($course));
+$PAGE->set_title($strgroups);
+$PAGE->set_heading($course->fullname);
+$PAGE->set_pagelayout('standard');
+echo $OUTPUT->header();
+
 // Add tabs
 $currenttab = 'groups';
 require('tabs.php');
@@ -159,7 +155,7 @@ if (ajaxenabled()) {
     $deletegroup_disabled = '';
 }
 
-print_heading(format_string($course->shortname) .' '.$strgroups, 'center', 3);
+echo $OUTPUT->heading(format_string($course->shortname, true, array('context' => $context)) .' '.$strgroups, 3);
 echo '<form id="groupeditform" action="index.php" method="post">'."\n";
 echo '<div>'."\n";
 echo '<input type="hidden" name="id" value="' . $courseid . '" />'."\n";
@@ -169,15 +165,13 @@ echo '<tr>'."\n";
 
 
 echo "<td>\n";
-// NO GROUPINGS YET!
 echo '<p><label for="groups"><span id="groupslabel">'.get_string('groups').':</span><span id="thegrouping">&nbsp;</span></label></p>'."\n";
 
-if (ajaxenabled()) {
-    $onchange = 'membersCombo.refreshMembers();';
+if (ajaxenabled()) { // TODO: move this to JS init!
+    $onchange = 'M.core_group.membersCombo.refreshMembers();';
 } else {
     $onchange = '';
 }
-
 
 echo '<select name="groups[]" multiple="multiple" id="groups" size="15" class="select" onchange="'.$onchange.'"'."\n";
 echo ' onclick="window.status=this.selectedIndex==-1 ? \'\' : this.options[this.selectedIndex].title;" onmouseout="window.status=\'\';">'."\n";
@@ -189,7 +183,7 @@ if ($groups) {
     // Print out the HTML
     foreach ($groups as $group) {
         $select = '';
-        $usercount = (int)count_records('groups_members', 'groupid', $group->id);
+        $usercount = $DB->count_records('groups_members', array('groupid'=>$group->id));
         $groupname = format_string($group->name).' ('.$usercount.')';
         if (in_array($group->id,$groupids)) {
             $select = ' selected="selected"';
@@ -198,7 +192,7 @@ if ($groups) {
                 $selectedname = $groupname;
             }
         }
-        
+
         echo "<option value=\"{$group->id}\"$select title=\"$groupname\">$groupname</option>\n";
     }
 } else {
@@ -220,6 +214,9 @@ echo '<p><input type="submit" name="act_showcreateorphangroupform" id="showcreat
 echo '<p><input type="submit" name="act_showautocreategroupsform" id="showautocreategroupsform" value="'
         . get_string('autocreategroups', 'group') . '" /></p>'."\n";
 
+echo '<p><input type="submit" name="act_showimportgroups" id="showimportgroups" value="'
+        . get_string('importgroups', 'core_group') . '" /></p>'."\n";
+
 echo '</td>'."\n";
 echo '<td>'."\n";
 
@@ -233,10 +230,10 @@ echo ' onclick="window.status=this.options[this.selectedIndex].title;" onmouseou
 $member_names = array();
 
 $atleastonemember = false;
-if ($singlegroup) {    
+if ($singlegroup) {
     if ($groupmemberroles = groups_get_members_by_role($groupids[0],$courseid,'u.id,u.firstname,u.lastname')) {
         foreach($groupmemberroles as $roleid=>$roledata) {
-            echo '<optgroup label="'.htmlspecialchars($roledata->name).'">';
+            echo '<optgroup label="'.s($roledata->name).'">';
             foreach($roledata->users as $member) {
                 echo '<option value="'.$member->id.'">'.fullname($member, true).'</option>';
                 $atleastonemember = true;
@@ -264,15 +261,10 @@ echo '</div>'."\n";
 echo '</form>'."\n";
 
 if (ajaxenabled()) {
-    echo '<script type="text/javascript">'."\n";
-    echo '//<![CDATA['."\n";
-    echo 'var groupsCombo = new UpdatableGroupsCombo("'.$CFG->wwwroot.'", '.$course->id.');'."\n";
-    echo 'var membersCombo = new UpdatableMembersCombo("'.$CFG->wwwroot.'", '.$course->id.');'."\n";
-    echo '//]]>'."\n";
-    echo '</script>'."\n";
+    $PAGE->requires->js_init_call('M.core_group.init_index', array($CFG->wwwroot, $courseid));
 }
 
-print_footer($course);
+echo $OUTPUT->footer();
 
 /**
  * Returns the first button action with the given prefix, taken from
@@ -301,10 +293,8 @@ function groups_param_action($prefix = 'act_') {
     }
     if ($action && !preg_match('/^\w+$/', $action)) {
         $action = false;
-        error('Action had wrong type.');
+        print_error('unknowaction');
     }
     ///if (debugging()) echo 'Debug: '.$action;
     return $action;
 }
-
-?>

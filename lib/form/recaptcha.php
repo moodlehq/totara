@@ -1,4 +1,6 @@
 <?php
+require_once('HTML/QuickForm/input.php');
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
@@ -7,7 +9,6 @@
  * @category  Admin
  * @package   admin
  * @author    Nicolas Connault <nicolasconnault@gmail.com>
- * @version   $Id$
  */
 
 
@@ -51,16 +52,11 @@ class MoodleQuickForm_recaptcha extends HTML_QuickForm_input {
      * @return    string
      */
     function toHtml() {
-        global $CFG;
+        global $CFG, $PAGE;
         require_once $CFG->libdir . '/recaptchalib.php';
 
-        //Accessibility: don't specify a tabindex  MDL-20144
-        $html = '<script type="text/javascript">
-            var RecaptchaOptions = {
-                theme : \'custom\',
-                custom_theme_widget : \'recaptcha_widget\'
-            };
-              </script>' . "\n";
+        $recaptureoptions = Array('theme'=>'custom', 'custom_theme_widget'=>'recaptcha_widget');
+        $html = html_writer::script(js_writer::set_variable('RecaptchaOptions', $recaptureoptions));
 
         $attributes = $this->getAttributes();
         if (empty($attributes['error_message'])) {
@@ -69,7 +65,7 @@ class MoodleQuickForm_recaptcha extends HTML_QuickForm_input {
         }
         $error = $attributes['error_message'];
         unset($attributes['error_message']);
-        
+
         $strincorrectpleasetryagain = get_string('incorrectpleasetryagain', 'auth');
         $strenterthewordsabove = get_string('enterthewordsabove', 'auth');
         $strenterthenumbersyouhear = get_string('enterthenumbersyouhear', 'auth');
@@ -91,11 +87,11 @@ class MoodleQuickForm_recaptcha extends HTML_QuickForm_input {
 <div><a href="javascript:Recaptcha.reload()">' . $strgetanothercaptcha . '</a></div>
 <div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type(\'audio\')">' . $strgetanaudiocaptcha . '</a></div>
 <div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type(\'image\')">' . $strgetanimagecaptcha . '</a></div>
-</div>'; 
+</div>';
 
         return $html . recaptcha_get_html($CFG->recaptchapublickey, $error, $this->_https);
     }
-    
+
     /**
      * set html for help button
      *
@@ -104,20 +100,9 @@ class MoodleQuickForm_recaptcha extends HTML_QuickForm_input {
      * @param string $function function name to call to get html
      */
     function setHelpButton($helpbuttonargs, $function='helpbutton'){
-        if (!is_array($helpbuttonargs)){
-            $helpbuttonargs=array($helpbuttonargs);
-        }else{
-            $helpbuttonargs=$helpbuttonargs;
-        }
-        //we do this to to return html instead of printing it
-        //without having to specify it in every call to make a button.
-        if ('helpbutton' == $function){
-            $defaultargs=array('', '', 'moodle', true, false, '', true);
-            $helpbuttonargs=$helpbuttonargs + $defaultargs ;
-        }
-        $this->_helpbutton=call_user_func_array($function, $helpbuttonargs);
+        debugging('component setHelpButton() is not used any more, please use $mform->setHelpButton() instead');
     }
-    
+
     /**
      * get html for help button
      *
@@ -145,5 +130,3 @@ class MoodleQuickForm_recaptcha extends HTML_QuickForm_input {
         return true;
     }
 }
-
-?>

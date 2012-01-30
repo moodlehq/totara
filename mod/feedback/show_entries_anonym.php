@@ -1,189 +1,253 @@
-<?php // $Id: show_entries_anonym.php,v 1.5.2.3 2008/05/15 10:33:08 agrabs Exp $
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
-* print the single-values of anonymous completeds
-*
-* @version $Id: show_entries_anonym.php,v 1.5.2.3 2008/05/15 10:33:08 agrabs Exp $
-* @author Andreas Grabs
-* @license http://www.gnu.org/copyleft/gpl.html GNU Public License
-* @package feedback
-*/
+ * print the single-values of anonymous completeds
+ *
+ * @author Andreas Grabs
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package feedback
+ */
 
-    require_once("../../config.php");
-    require_once("lib.php");
+require_once("../../config.php");
+require_once("lib.php");
+require_once($CFG->libdir.'/tablelib.php');
 
-    // $SESSION->feedback->current_tab = 'showoneentry';
-    $current_tab = 'showentries';
+$id = required_param('id', PARAM_INT);
+$showcompleted = optional_param('showcompleted', false, PARAM_INT);
+$do_show = optional_param('do_show', false, PARAM_ALPHA);
+$perpage = optional_param('perpage', FEEDBACK_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
+$showall = optional_param('showall', false, PARAM_INT);  // should we show all users
 
-    $id = required_param('id', PARAM_INT); 
-    $userid = optional_param('userid', false, PARAM_INT);
-    
-    if(($formdata = data_submitted('nomatch')) AND !confirm_sesskey()) {
-        error('no sesskey defined');
-    }
+$current_tab = $do_show;
 
-    if ($id) {
-        if (! $cm = get_coursemodule_from_id('feedback', $id)) {
-            error("Course Module ID was incorrect");
-        }
-     
-        if (! $course = get_record("course", "id", $cm->course)) {
-            error("Course is misconfigured");
-        }
-     
-        if (! $feedback = get_record("feedback", "id", $cm->instance)) {
-            error("Course module is incorrect");
-        }
-    }
-    $capabilities = feedback_load_capabilities($cm->id);
+$url = new moodle_url('/mod/feedback/show_entries_anonym.php', array('id'=>$id));
+// if ($userid !== '') {
+    // $url->param('userid', $userid);
+// }
+$PAGE->set_url($url);
 
-    require_login($course->id, true, $cm);
-    
-    if(!$capabilities->viewreports){
-        error(get_string('error'));
-    }
+if (! $cm = get_coursemodule_from_id('feedback', $id)) {
+    print_error('invalidcoursemodule');
+}
 
-    //variable cleanup
-    if (isset($formdata->userid)) {
-        $formdata->userid = ($userid !== false) ? $userid : (int)$formdata->userid;
-    }
-    $formdata->id = isset($formdata->id) ? (int)$formdata->id : $id;
-    if (isset($formdata->completedid)) {
-        $formdata->completedid = (int)$formdata->completedid;
-    }
+if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+    print_error('coursemisconf');
+}
+
+if (! $feedback = $DB->get_record("feedback", array("id"=>$cm->instance))) {
+    print_error('invalidcoursemodule');
+}
+
+if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
+        print_error('badcontext');
+}
+
+require_login($course->id, true, $cm);
+
+require_capability('mod/feedback:viewreports', $context);
+
+/// Print the page header
+$strfeedbacks = get_string("modulenameplural", "feedback");
+$strfeedback  = get_string("modulename", "feedback");
+
+$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_title(format_string($feedback->name));
+echo $OUTPUT->header();
+
+/// Print the main part of the page
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+require('tabs.php');
+
+echo $OUTPUT->heading(format_text($feedback->name));
+
+//print the list with anonymous completeds
+if (!$showcompleted) {
 
     //get the completeds
     // if a new anonymous record has not been assigned a random response number
-    if ($feedbackcompleteds = get_records_select('feedback_completed','feedback='.$feedback->id.' AND random_response=0 AND anonymous_response='.FEEDBACK_ANONYMOUS_YES, 'random_response')){ //arb
-        //then get all of the anonymous records and go through them  
-        $feedbackcompleteds = get_records_select('feedback_completed','feedback='.$feedback->id.' AND anonymous_response='.FEEDBACK_ANONYMOUS_YES,'id'); //arb
+    $params = array('feedback'=>$feedback->id,
+                    'random_response'=>0,
+                    'anonymous_response'=>FEEDBACK_ANONYMOUS_YES);
+
+    if ($feedbackcompleteds = $DB->get_records('feedback_completed', $params, 'random_response')) {
+        //then get all of the anonymous records and go through them
+        $params = array('feedback'=>$feedback->id, 'anonymous_response'=>FEEDBACK_ANONYMOUS_YES);
+        $feedbackcompleteds = $DB->get_records('feedback_completed', $params, 'id'); //arb
         shuffle($feedbackcompleteds);
         $num = 1;
-        foreach($feedbackcompleteds as $compl){
+        foreach ($feedbackcompleteds as $compl) {
             $compl->random_response = $num;
-            update_record('feedback_completed', $compl);
+            $DB->update_record('feedback_completed', $compl);
             $num++;
         }
     }
-    $feedbackcompleteds = get_records_select('feedback_completed','feedback='.$feedback->id.' AND anonymous_response='.FEEDBACK_ANONYMOUS_YES, 'random_response'); //arb
 
-    /// Print the page header
-    $strfeedbacks = get_string("modulenameplural", "feedback");
-    $strfeedback  = get_string("modulename", "feedback");
-    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
-    
-    $navlinks = array();
-    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
-    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
-    
-    $navigation = build_navigation($navlinks);
-    
-    print_header_simple(format_string($feedback->name), "",
-                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
+    $params = array('feedback'=>$feedback->id, 'anonymous_response'=>FEEDBACK_ANONYMOUS_YES);
+    $feedbackcompletedscount = $DB->count_records('feedback_completed', $params);
 
-    /// Print the main part of the page
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-    include('tabs.php');
-    
-    print_heading(format_text($feedback->name));
-    
-    print_continue(htmlspecialchars('show_entries.php?id='.$id.'&do_show=showentries'));
-    //print the list with anonymous completeds
-    // print_simple_box_start("center");
-    print_box_start('generalbox boxaligncenter boxwidthwide');
-?>
-    <script type="text/javascript">
-        function feedbackGo2delete(form)
-        {
-            form.action = "<?php echo $CFG->wwwroot;?>/mod/feedback/delete_completed.php";
-            form.submit();
-        }
-    </script>
+    // preparing the table for output
+    $baseurl = new moodle_url('/mod/feedback/show_entries_anonym.php');
+    $baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'showall'=>$showall));
 
-    <div align="center">
-    <form name="frm" action="<?php echo me();?>" method="post">
-        <table>
-            <tr>
-                <td>
-                    <input type="hidden" name="sesskey" value="<?php echo $USER->sesskey;?>" />
-                    <select name="completedid" size="<?php echo (sizeof($feedbackcompleteds)>10)?10:5;?>">
-<?php
-                    if(is_array($feedbackcompleteds)) {
-                        $num = 1;
-                        foreach($feedbackcompleteds as $compl) {
-                            $selected = (isset($formdata->completedid) AND $formdata->completedid == $compl->id)?'selected="selected"':'';
-                            echo '<option value="'.$compl->id.'" '. $selected .'>'.get_string('response_nr', 'feedback').': '. $compl->random_response. '</option>';//arb
-                            $num++;
-                        }
-                    }
-?>
-                    </select>
-                    <input type="hidden" name="showanonym" value="<?php echo FEEDBACK_ANONYMOUS_YES;?>" />
-                    <input type="hidden" name="id" value="<?php echo $id;?>" />
-                </td>
-                <td valign="top">
-                    <button type="submit"><?php print_string('show_entry', 'feedback');?></button><br />
-                    <button type="button" onclick="feedbackGo2delete(this.form);"><?php print_string('delete_entry', 'feedback');?></button>
-                </td>
-            </tr>
-        </table>
-    </form>
-    </div>
-<?php
-    // print_simple_box_end();
-    print_box_end();
-    if(!isset($formdata->completedid)) {
-        $formdata = null;
+    $tablecolumns = array('response', 'showresponse');
+    $tableheaders = array('', '');
+
+    if (has_capability('mod/feedback:deletesubmissions', $context)) {
+        $tablecolumns[] = 'deleteentry';
+        $tableheaders[] = '';
     }
-    //print the items
-    if(isset($formdata->showanonym) && $formdata->showanonym == FEEDBACK_ANONYMOUS_YES) {
-        //get the feedbackitems
-        $feedbackitems = get_records('feedback_item', 'feedback', $feedback->id, 'position');
-        $feedbackcompleted = get_record('feedback_completed', 'id', $formdata->completedid);
-        if(is_array($feedbackitems)){
-            if($feedbackcompleted) {
-                echo '<p align="center">'.get_string('chosen_feedback_response', 'feedback').'<br />('.get_string('anonymous', 'feedback').')</p>';//arb
-            } else {
-                echo '<p align="center">'.get_string('not_completed_yet','feedback').'</p>';
-            }
-            // print_simple_box_start("center", '50%');
-            print_box_start('generalbox boxaligncenter boxwidthnormal');
-            echo '<form>';
-            echo '<input type="hidden" name="sesskey" value="' . $USER->sesskey . '" />';
-            echo '<table width="100%">';
-            $itemnr = 0;
-            foreach($feedbackitems as $feedbackitem){
-                //get the values
-                $value = get_record_select('feedback_value','completed ='.$feedbackcompleted->id.' AND item='.$feedbackitem->id);
-                echo '<tr>';
-                if($feedbackitem->hasvalue == 1 AND $feedback->autonumbering) {
-                    $itemnr++;
-                    echo '<td valign="top">' . $itemnr . '.&nbsp;</td>';
-                } else {
-                    echo '<td>&nbsp;</td>';
-                }
-                if($feedbackitem->typ != 'pagebreak') {
-                    $itemvalue = isset($value->value) ? $value->value : false;
-                    feedback_print_item($feedbackitem, $itemvalue, true);
-                }else {
-                    echo '<td colspan="2"><hr /></td>';
-                }
-                echo '</tr>';
-            }
-            echo '<tr><td colspan="2" align="center">';
-            echo '</td></tr>';
-            echo '</table>';
-            echo '</form>';
-            // print_simple_box_end();
-            print_box_end();
-        }
+
+    $table = new flexible_table('feedback-showentryanonym-list-'.$course->id);
+
+    $table->define_columns($tablecolumns);
+    $table->define_headers($tableheaders);
+    $table->define_baseurl($baseurl);
+
+    $table->sortable(false);
+    $table->set_attribute('cellspacing', '0');
+    $table->set_attribute('id', 'showentryanonymtable');
+    $table->set_attribute('class', 'generaltable generalbox');
+    $table->set_control_variables(array(
+                TABLE_VAR_SORT    => 'ssort',
+                TABLE_VAR_IFIRST  => 'sifirst',
+                TABLE_VAR_ILAST   => 'silast',
+                TABLE_VAR_PAGE    => 'spage'
+                ));
+    $table->setup();
+
+    $matchcount = $feedbackcompletedscount;
+    $table->initialbars(true);
+
+    if ($showall) {
+        $startpage = false;
+        $pagecount = false;
+    } else {
+        $table->pagesize($perpage, $matchcount);
+        $startpage = $table->get_page_start();
+        $pagecount = $table->get_page_size();
     }
-    /// Finish the page
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
 
-    print_footer($course);
 
-?>
+    $feedbackcompleteds = $DB->get_records('feedback_completed',
+                                        array('feedback'=>$feedback->id, 'anonymous_response'=>FEEDBACK_ANONYMOUS_YES),
+                                        'random_response',
+                                        'id,random_response',
+                                        $startpage,
+                                        $pagecount);
+
+    if (is_array($feedbackcompleteds)) {
+        echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+        echo $OUTPUT->heading(get_string('anonymous_entries', 'feedback'), 3);
+        foreach ($feedbackcompleteds as $compl) {
+            $data = array();
+
+            $data[] = get_string('response_nr', 'feedback').': '. $compl->random_response;
+
+            //link to the entry
+            $showentryurl = new moodle_url($baseurl, array('showcompleted'=>$compl->id));
+            $showentrylink = '<a href="'.$showentryurl->out().'">'.get_string('show_entry', 'feedback').'</a>';
+            $data[] = $showentrylink;
+
+            //link to delete the entry
+            if (has_capability('mod/feedback:deletesubmissions', $context)) {
+                $delet_url_params = array('id'=>$cm->id,
+                                    'completedid'=>$compl->id,
+                                    'do_show'=>'',
+                                    'return'=>'entriesanonym');
+
+                $deleteentryurl = new moodle_url($CFG->wwwroot.'/mod/feedback/delete_completed.php', $delet_url_params);
+                $deleteentrylink = '<a href="'.$deleteentryurl->out().'">'.get_string('delete_entry', 'feedback').'</a>';
+                $data[] = $deleteentrylink;
+            }
+            $table->add_data($data);
+        }
+        $table->print_html();
+
+        $allurl = new moodle_url($baseurl);
+
+        if ($showall) {
+            $allurl->param('showall', 0);
+            $str_showperpage = get_string('showperpage', '', FEEDBACK_DEFAULT_PAGE_COUNT);
+            echo $OUTPUT->container(html_writer::link($allurl, $str_showperpage), array(), 'showall');
+        } else if ($matchcount > 0 && $perpage < $matchcount) {
+            $allurl->param('showall', 1);
+            echo $OUTPUT->container(html_writer::link($allurl, get_string('showall', '', $matchcount)), array(), 'showall');
+        }
+        echo $OUTPUT->box_end();
+    }
+}
+//print the items
+if ($showcompleted) {
+    $continueurl = new moodle_url('/mod/feedback/show_entries_anonym.php',
+                                array('id'=>$id, 'do_show'=>''));
+
+    echo $OUTPUT->continue_button($continueurl);
+
+    //get the feedbackitems
+    $params = array('feedback'=>$feedback->id);
+    $feedbackitems = $DB->get_records('feedback_item', $params, 'position');
+    $feedbackcompleted = $DB->get_record('feedback_completed', array('id'=>$showcompleted));
+    if (is_array($feedbackitems)) {
+        $align = right_to_left() ? 'right' : 'left';
+
+        if ($feedbackcompleted) {
+            echo $OUTPUT->box_start('feedback_info');
+            echo get_string('chosen_feedback_response', 'feedback');
+            echo $OUTPUT->box_end();
+            echo $OUTPUT->box_start('feedback_info');
+            echo get_string('response_nr', 'feedback').': ';
+            echo $feedbackcompleted->random_response.' ('.get_string('anonymous', 'feedback').')';
+            echo $OUTPUT->box_end();
+        } else {
+            echo $OUTPUT->box_start('feedback_info');
+            echo get_string('not_completed_yet', 'feedback');
+            echo $OUTPUT->box_end();
+        }
+
+        echo $OUTPUT->box_start('feedback_items');
+        $itemnr = 0;
+        foreach ($feedbackitems as $feedbackitem) {
+            //get the values
+            $params = array('completed'=>$feedbackcompleted->id, 'item'=>$feedbackitem->id);
+            $value = $DB->get_record('feedback_value', $params);
+            echo $OUTPUT->box_start('feedback_item_box_'.$align);
+            if ($feedbackitem->hasvalue == 1 AND $feedback->autonumbering) {
+                $itemnr++;
+                echo $OUTPUT->box_start('feedback_item_number_'.$align);
+                echo $itemnr;
+                echo $OUTPUT->box_end();
+            }
+            if ($feedbackitem->typ != 'pagebreak') {
+                echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
+                $itemvalue = isset($value->value) ? $value->value : false;
+                feedback_print_item_show_value($feedbackitem, $itemvalue);
+                echo $OUTPUT->box_end();
+            }
+            echo $OUTPUT->box_end();
+        }
+        echo $OUTPUT->box_end();
+    }
+}
+/// Finish the page
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+echo $OUTPUT->footer();
+

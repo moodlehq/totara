@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 // This file defines settingpages and externalpages under the "grades" section
 
@@ -26,28 +26,27 @@ if (has_capability('moodle/grade:manage', $systemcontext)
         // new CFG variable for gradebook (what roles to display)
         $temp->add(new admin_setting_special_gradebookroles());
 
-        // enable outcomes checkbox
-        $temp->add(new admin_setting_configcheckbox('enableoutcomes', get_string('enableoutcomes', 'grades'), get_string('configenableoutcomes', 'grades'), 0, PARAM_INT));
+        // enable outcomes checkbox now in subsystems area
 
         $temp->add(new admin_setting_grade_profilereport());
 
         $temp->add(new admin_setting_configselect('grade_aggregationposition', get_string('aggregationposition', 'grades'),
-                                                  get_string('configaggregationposition', 'grades'), GRADE_REPORT_AGGREGATION_POSITION_LAST,
+                                                  get_string('aggregationposition_help', 'grades'), GRADE_REPORT_AGGREGATION_POSITION_LAST,
                                                   array(GRADE_REPORT_AGGREGATION_POSITION_FIRST => get_string('positionfirst', 'grades'),
                                                         GRADE_REPORT_AGGREGATION_POSITION_LAST => get_string('positionlast', 'grades'))));
 
-        $temp->add(new admin_setting_regradingcheckbox('grade_includescalesinaggregation', get_string('includescalesinaggregation', 'grades'), get_string('configincludescalesinaggregation', 'grades'), 1));
+        $temp->add(new admin_setting_regradingcheckbox('grade_includescalesinaggregation', get_string('includescalesinaggregation', 'grades'), get_string('includescalesinaggregation_help', 'grades'), 1));
 
-        $temp->add(new admin_setting_configcheckbox('grade_hiddenasdate', get_string('hiddenasdate', 'grades'), get_string('confighiddenasdate', 'grades'), 0));
+        $temp->add(new admin_setting_configcheckbox('grade_hiddenasdate', get_string('hiddenasdate', 'grades'), get_string('hiddenasdate_help', 'grades'), 0));
 
         // enable publishing in exports/imports
-        $temp->add(new admin_setting_configcheckbox('gradepublishing', get_string('gradepublishing', 'grades'), get_string('configgradepublishing', 'grades'), 0));
+        $temp->add(new admin_setting_configcheckbox('gradepublishing', get_string('gradepublishing', 'grades'), get_string('gradepublishing_help', 'grades'), 0));
 
         $temp->add(new admin_setting_configselect('grade_export_displaytype', get_string('gradeexportdisplaytype', 'grades'),
-                                                  get_string('configgradeexportdisplaytype', 'grades'), GRADE_DISPLAY_TYPE_REAL, $display_types));
+                                                  get_string('gradeexportdisplaytype_desc', 'grades'), GRADE_DISPLAY_TYPE_REAL, $display_types));
 
         $temp->add(new admin_setting_configselect('grade_export_decimalpoints', get_string('gradeexportdecimalpoints', 'grades'),
-                                                  get_string('configexportdecimalpoints', 'grades'), 2,
+                                                  get_string('gradeexportdecimalpoints_desc', 'grades'), 2,
                                                   array( '0' => '0',
                                                          '1' => '1',
                                                          '2' => '2',
@@ -62,49 +61,13 @@ if (has_capability('moodle/grade:manage', $systemcontext)
         $temp->add(new admin_setting_special_gradeexport());
 
         $temp->add(new admin_setting_special_gradelimiting());
-
-        // Completion system
-        $temp->add(new admin_setting_configcheckbox('enablecompletion', get_string('enablecompletion', 'completion'), get_string('configenablecompletion', 'completion'), COMPLETION_ENABLED));
-        $temp->add(new admin_setting_pickroles('progresstrackedroles', get_string('progresstrackedroles', 'completion'), get_string('configprogresstrackedroles', 'completion')));
-
-        // Condition system
-        $temp->add(new admin_setting_configcheckbox('enableavailability', get_string('enableavailability', 'condition'), get_string('configenableavailability', 'condition'), 0));
-
-        // Course RPL
-        $temp->add(new admin_setting_configcheckbox('enablecourserpl', get_string('enablecourserpl', 'completion'), get_string('configenablecourserpl', 'completion'), 1));
-
-        // Module RPLs
-        // Get module list
-        if ($modules = get_records("modules")) {
-            // Default to all
-            $defaultmodules = array();
-
-            foreach ($modules as $module) {
-                $strmodulename = get_string("modulename", "$module->name");
-                // Deal with modules which are lacking the language string
-                if ($strmodulename == '[[modulename]]') {
-                    $strmodulename = $module->name;
-                }
-                $modulebyname[$module->id] = $strmodulename;
-                $defaultmodules[] = $module->id;
-            }
-            asort($modulebyname, SORT_LOCALE_STRING);
-
-            $temp->add(new admin_setting_configmulticheckbox(
-                            'enablemodulerpl',
-                            get_string('enablemodulerpl', 'completion'),
-                            get_string('configenablemodulerpl', 'completion'),
-                            $defaultmodules,
-                            $modulebyname
-            ));
-        }
     }
     $ADMIN->add('grades', $temp);
 
     /// Grade category settings
     $temp = new admin_settingpage('gradecategorysettings', get_string('gradecategorysettings', 'grades'), 'moodle/grade:manage');
     if ($ADMIN->fulltree) {
-        $temp->add(new admin_setting_configcheckbox('grade_hideforcedsettings', get_string('hideforcedsettings', 'grades'), get_string('confighideforcedsettings', 'grades'), '1'));
+        $temp->add(new admin_setting_configcheckbox('grade_hideforcedsettings', get_string('hideforcedsettings', 'grades'), get_string('hideforcedsettings_help', 'grades'), '1'));
 
         $strnoforce = get_string('noforce', 'grades');
 
@@ -124,7 +87,7 @@ if (has_capability('moodle/grade:manage', $systemcontext)
                                 GRADE_AGGREGATE_MAX, GRADE_AGGREGATE_MODE, GRADE_AGGREGATE_SUM);
 
         $defaults = array('value'=>GRADE_AGGREGATE_WEIGHTED_MEAN2, 'forced'=>false, 'adv'=>false);
-        $temp->add(new admin_setting_gradecat_combo('grade_aggregation', get_string('aggregation', 'grades'), get_string('aggregationhelp', 'grades'), $defaults, $options));
+        $temp->add(new admin_setting_gradecat_combo('grade_aggregation', get_string('aggregation', 'grades'), get_string('aggregation_help', 'grades'), $defaults, $options));
 
         $temp->add(new admin_setting_configmultiselect('grade_aggregations_visible', get_string('aggregationsvisible', 'grades'),
                                                        get_string('aggregationsvisiblehelp', 'grades'), $defaultvisible, $options));
@@ -133,12 +96,12 @@ if (has_capability('moodle/grade:manage', $systemcontext)
 
         $defaults = array('value'=>1, 'forced'=>false, 'adv'=>true);
         $temp->add(new admin_setting_gradecat_combo('grade_aggregateonlygraded', get_string('aggregateonlygraded', 'grades'),
-                    get_string('aggregateonlygradedhelp', 'grades'), $defaults, $options));
+                    get_string('aggregateonlygraded_help', 'grades'), $defaults, $options));
         $defaults = array('value'=>0, 'forced'=>false, 'adv'=>true);
         $temp->add(new admin_setting_gradecat_combo('grade_aggregateoutcomes', get_string('aggregateoutcomes', 'grades'),
-                    get_string('aggregateoutcomeshelp', 'grades'), $defaults, $options));
+                    get_string('aggregateoutcomes_help', 'grades'), $defaults, $options));
         $temp->add(new admin_setting_gradecat_combo('grade_aggregatesubcats', get_string('aggregatesubcats', 'grades'),
-                    get_string('aggregatesubcatshelp', 'grades'), $defaults, $options));
+                    get_string('aggregatesubcats_help', 'grades'), $defaults, $options));
 
         $options = array(0 => get_string('none'));
         for ($i=1; $i<=20; $i++) {
@@ -148,10 +111,10 @@ if (has_capability('moodle/grade:manage', $systemcontext)
         $defaults['value'] = 0;
         $defaults['forced'] = true;
         $temp->add(new admin_setting_gradecat_combo('grade_keephigh', get_string('keephigh', 'grades'),
-                    get_string('keephighhelp', 'grades'), $defaults, $options));
+                    get_string('keephigh_help', 'grades'), $defaults, $options));
         $defaults['forced'] = false;
         $temp->add(new admin_setting_gradecat_combo('grade_droplow', get_string('droplow', 'grades'),
-                    get_string('droplowhelp', 'grades'), $defaults, $options));
+                    get_string('droplow_help', 'grades'), $defaults, $options));
     }
     $ADMIN->add('grades', $temp);
 
@@ -160,10 +123,10 @@ if (has_capability('moodle/grade:manage', $systemcontext)
     $temp = new admin_settingpage('gradeitemsettings', get_string('gradeitemsettings', 'grades'), 'moodle/grade:manage');
     if ($ADMIN->fulltree) {
         $temp->add(new admin_setting_configselect('grade_displaytype', get_string('gradedisplaytype', 'grades'),
-                                                  get_string('configgradedisplaytype', 'grades'), GRADE_DISPLAY_TYPE_REAL, $display_types));
+                                                  get_string('gradedisplaytype_help', 'grades'), GRADE_DISPLAY_TYPE_REAL, $display_types));
 
         $temp->add(new admin_setting_configselect('grade_decimalpoints', get_string('decimalpoints', 'grades'),
-                                                  get_string('configdecimalpoints', 'grades'), 2,
+                                                  get_string('decimalpoints_help', 'grades'), 2,
                                                   array( '0' => '0',
                                                          '1' => '1',
                                                          '2' => '2',
@@ -171,7 +134,7 @@ if (has_capability('moodle/grade:manage', $systemcontext)
                                                          '4' => '4',
                                                          '5' => '5')));
 
-        $temp->add(new admin_setting_configmultiselect('grade_item_advanced', get_string('gradeitemadvanced', 'grades'), get_string('configgradeitemadvanced', 'grades'),
+        $temp->add(new admin_setting_configmultiselect('grade_item_advanced', get_string('gradeitemadvanced', 'grades'), get_string('gradeitemadvanced_help', 'grades'),
                                                        array('iteminfo', 'idnumber', 'gradepass', 'plusfactor', 'multfactor', 'display', 'decimals', 'hiddenuntil', 'locktime'),
                                                        array('iteminfo' => get_string('iteminfo', 'grades'),
                                                              'idnumber' => get_string('idnumbermod'),
@@ -202,52 +165,51 @@ if (has_capability('moodle/grade:manage', $systemcontext)
         $outcomes = new admin_externalpage('outcomes', get_string('outcomes', 'grades'), $CFG->wwwroot.'/grade/edit/outcome/index.php', 'moodle/grade:manage');
         $ADMIN->add('grades', $outcomes);
     }
-    $letters = new admin_externalpage('letters', get_string('letters', 'grades'), $CFG->wwwroot.'/grade/edit/letter/edit.php', 'moodle/grade:manageletters');
+    $letters = new admin_externalpage('letters', get_string('letters', 'grades'), $CFG->wwwroot.'/grade/edit/letter/index.php', 'moodle/grade:manageletters');
     $ADMIN->add('grades', $letters);
 
     // The plugins must implement a settings.php file that adds their admin settings to the $settings object
 
     // Reports
     $ADMIN->add('grades', new admin_category('gradereports', get_string('reportsettings', 'grades')));
-    foreach (get_list_of_plugins('grade/report') as $plugin) {
+    foreach (get_plugin_list('gradereport') as $plugin => $plugindir) {
      // Include all the settings commands for this plugin if there are any
-        if (file_exists($CFG->dirroot.'/grade/report/'.$plugin.'/settings.php')) {
-            $settings = new admin_settingpage('gradereport'.$plugin, get_string('modulename', 'gradereport_'.$plugin), 'moodle/grade:manage');
-            if ($ADMIN->fulltree) {
-                include($CFG->dirroot.'/grade/report/'.$plugin.'/settings.php');
+        if (file_exists($plugindir.'/settings.php')) {
+            $settings = new admin_settingpage('gradereport'.$plugin, get_string('pluginname', 'gradereport_'.$plugin), 'moodle/grade:manage');
+            include($plugindir.'/settings.php');
+            if ($settings) {
+                $ADMIN->add('gradereports', $settings);
             }
-            $ADMIN->add('gradereports', $settings);
         }
     }
 
     // Imports
     $ADMIN->add('grades', new admin_category('gradeimports', get_string('importsettings', 'grades')));
-    foreach (get_list_of_plugins('grade/import') as $plugin) {
+    foreach (get_plugin_list('gradeimport') as $plugin => $plugindir) {
 
      // Include all the settings commands for this plugin if there are any
-        if (file_exists($CFG->dirroot.'/grade/import/'.$plugin.'/settings.php')) {
-            $settings = new admin_settingpage('gradeimport'.$plugin, get_string('modulename', 'gradeimport_'.$plugin), 'moodle/grade:manage');
-            if ($ADMIN->fulltree) {
-                include($CFG->dirroot.'/grade/import/'.$plugin.'/settings.php');
+        if (file_exists($plugindir.'/settings.php')) {
+            $settings = new admin_settingpage('gradeimport'.$plugin, get_string('pluginname', 'gradeimport_'.$plugin), 'moodle/grade:manage');
+            include($plugindir.'/settings.php');
+            if ($settings) {
+                $ADMIN->add('gradeimports', $settings);
             }
-            $ADMIN->add('gradeimports', $settings);
         }
     }
 
 
     // Exports
     $ADMIN->add('grades', new admin_category('gradeexports', get_string('exportsettings', 'grades')));
-    foreach (get_list_of_plugins('grade/export') as $plugin) {
+    foreach (get_plugin_list('gradeexport') as $plugin => $plugindir) {
      // Include all the settings commands for this plugin if there are any
-        if (file_exists($CFG->dirroot.'/grade/export/'.$plugin.'/settings.php')) {
-            $settings = new admin_settingpage('gradeexport'.$plugin, get_string('modulename', 'gradeexport_'.$plugin), 'moodle/grade:manage');
-            if ($ADMIN->fulltree) {
-                include($CFG->dirroot.'/grade/export/'.$plugin.'/settings.php');
+        if (file_exists($plugindir.'/settings.php')) {
+            $settings = new admin_settingpage('gradeexport'.$plugin, get_string('pluginname', 'gradeexport_'.$plugin), 'moodle/grade:manage');
+            include($plugindir.'/settings.php');
+            if ($settings) {
+                $ADMIN->add('gradeexports', $settings);
             }
-            $ADMIN->add('gradeexports', $settings);
         }
     }
 
 } // end of speedup
 
-?>

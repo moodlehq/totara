@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 /**
  *  BENNU - PHP iCalendar library
@@ -21,5 +21,3 @@ if(!defined('_BENNU_VERSION')) {
     include('iCalendar_properties.php');
     include('iCalendar_parameters.php');
 }
-
-?>

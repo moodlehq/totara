@@ -1,4 +1,4 @@
-<?php  //$Id$
+<?php
 
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
@@ -16,7 +16,7 @@ $ufiltering = new user_filtering();
 // array of bulk operations
 // create the bulk operations form
 $action_form = new user_bulk_action_form();
-if ($data = $action_form->get_data(false)) {
+if ($data = $action_form->get_data()) {
     // check if an action should be performed and do so
     switch ($data->action) {
         case 1: redirect($CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk_confirm.php');
@@ -24,13 +24,15 @@ if ($data = $action_form->get_data(false)) {
         case 3: redirect($CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk_delete.php');
         case 4: redirect($CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk_display.php');
         case 5: redirect($CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk_download.php');
-        case 6: redirect($CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk_forcepasswordchange.php');
+        //case 6: redirect($CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk_enrol.php'); //TODO: MDL-24064
+        case 7: redirect($CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk_forcepasswordchange.php');
+        case 8: redirect($CFG->wwwroot.'/'.$CFG->admin.'/user/user_bulk_cohortadd.php');
     }
 }
 
 $user_bulk_form = new user_bulk_form(null, get_selection_data($ufiltering));
 
-if ($data = $user_bulk_form->get_data(false)) {
+if ($data = $user_bulk_form->get_data()) {
     if (!empty($data->addall)) {
         add_selection_all($ufiltering);
 
@@ -73,14 +75,13 @@ if ($data = $user_bulk_form->get_data(false)) {
     $user_bulk_form = new user_bulk_form(null, get_selection_data($ufiltering));
 }
 // do output
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 $ufiltering->display_add();
 $ufiltering->display_active();
 
 $user_bulk_form->display();
+
 $action_form->display();
 
-admin_externalpage_print_footer();
-
-?>
+echo $OUTPUT->footer();

@@ -22,7 +22,7 @@
 
 defined('MOODLE_INTERNAL') or die('Direct access to this script is forbidden.');
 
-class label extends entities {
+class cc_label extends entities {
 
     public function generate_node () {
 
@@ -42,18 +42,22 @@ class label extends entities {
     }
 
     private function create_node_course_modules_mod_label ($sheet_mod_label, $instance) {
+        if ($instance['deep'] <= ROOT_DEEP) {
+            return '';
+        }
 
         $find_tags = array('[#mod_instance#]',
                            '[#mod_name#]',
                            '[#mod_content#]',
                            '[#date_now#]');
 
+        $title = isset($instance['title']) && !empty($instance['title']) ? $instance['title'] : 'Untitled';
+        $content = "<img src=\"$@FILEPHP@$$@SLASH@$"."folder.gif\" alt=\"Folder\" title=\"{$title}\" /> {$title}";
         $replace_values = array($instance['instance'],
-                                $instance['title'],
-                                $instance['title'],
+                                self::safexml($title),
+                                self::safexml($content),
                                 time());
 
         return str_replace($find_tags, $replace_values, $sheet_mod_label);
     }
 }
-?>

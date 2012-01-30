@@ -1,17 +1,20 @@
 <?php
-
+global $OUTPUT;
 // set to defaults if undefined
 if (!isset($config->rpc_negotiation_timeout)) {
     $config->rpc_negotiation_timeout = '30';
 }
+/*
+ See MDL-21327   for why this is commented out
 if (!isset ($config->auto_add_remote_users)) {
     $config->auto_add_remote_users = '0';
 }
+*/
 
 $yesno = array(get_string('no'), get_string('yes'));
 
 if (empty($CFG->mnet_dispatcher_mode) || $CFG->mnet_dispatcher_mode !== 'strict') {
-    print_box(get_string('mnetdisabled','mnet'));
+    echo $OUTPUT->box(get_string('mnetdisabled','mnet'));
 }
 
 ?>
@@ -19,13 +22,13 @@ if (empty($CFG->mnet_dispatcher_mode) || $CFG->mnet_dispatcher_mode !== 'strict'
 <table cellspacing="0" cellpadding="5">
 
 <tr valign="top" class="required">
-    <td align="right"><?php print_string('rpc_negotiation_timeout', 'auth'); ?>: </td>
+    <td align="right"><?php print_string('rpc_negotiation_timeout', 'auth_mnet'); ?>: </td>
     <td>
         <input name="rpc_negotiation_timeout" type="text" size="5" value="<?php echo $config->rpc_negotiation_timeout ?>" />
         <?php
 
         if (isset($err['rpc_negotiation_timeout'])) {
-            formerr($err['rpc_negotiation_timeout']);
+            echo $OUTPUT->error_text($err['rpc_negotiation_timeout']);
         }
 
         ?>
@@ -33,31 +36,34 @@ if (empty($CFG->mnet_dispatcher_mode) || $CFG->mnet_dispatcher_mode !== 'strict'
     <td>
         <?php
 
-        print_string('auth_mnet_rpc_negotiation_timeout', 'auth');
+        print_string('auth_mnet_rpc_negotiation_timeout', 'auth_mnet');
 
         ?>
     </td>
 </tr>
 
+<?php /*
+ See MDL-21327   for why this is commented out
 <tr valign="top" class="required">
-    <td align="right"><?php print_string('auto_add_remote_users', 'auth'); ?>: </td>
+    <td align="right"><?php print_string('auto_add_remote_users', 'auth_mnet'); ?>: </td>
     <td>
         <?php
 
-        choose_from_menu($yesno, 'auto_add_remote_users', $config->auto_add_remote_users, '');
+        echo html_writer::select($yesno, 'auto_add_remote_users', $config->auto_add_remote_users, false);
 
         ?>
     </td>
     <td>
         <?php
 
-        print_string('auth_mnet_auto_add_remote_users', 'auth');
+        print_string('auth_mnet_auto_add_remote_users', 'auth_mnet');
 
         ?>
     </td>
 </tr>
+*/ ?>
 <tr valign="top" class="required">
-    <td colspan="3"><?php print_string('auth_mnet_roamin', 'auth'); ?>: </td>
+    <td colspan="3"><?php print_string('auth_mnet_roamin', 'auth_mnet'); ?>: </td>
 </tr>
 <?php
 foreach($id_providers as $host) {
@@ -70,7 +76,7 @@ foreach($id_providers as $host) {
 }
 ?>
 <tr valign="top" class="required">
-    <td colspan="3"><?php print_string('auth_mnet_roamout', 'auth'); ?>: </td>
+    <td colspan="3"><?php print_string('auth_mnet_roamout', 'auth_mnet'); ?>: </td>
 </tr>
 <?php
 foreach($service_providers as $host) {

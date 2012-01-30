@@ -1,4 +1,4 @@
-<?php //$Id$
+<?php
 /**
 * script for bulk user force password change
 */
@@ -19,52 +19,50 @@ if (empty($SESSION->bulk_users)) {
     redirect($return);
 }
 
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 if ($confirm and confirm_sesskey()) {
     // only force password change if user may actually change the password
-    $authsavailable = get_list_of_plugins('auth');
+    $authsavailable = get_enabled_auth_plugins();
     $changeable = array();
-    foreach($authsavailable as $authname) {
-        if (!$auth = get_auth_plugin($authname)) {
+
+    foreach($authsavailable as $authplugin) {
+        if (!$auth = get_auth_plugin($authplugin)) {
             continue;
         }
-        if (@$auth->is_internal() and @$auth->can_change_password()) { // plugins may not be configured yet, not nice :-(
-            $changeable[$authname] = true;
+        if ($auth->is_internal() and $auth->can_change_password()) {
+            $changeable[$authplugin] = true;
         }
     }
 
     $parts = array_chunk($SESSION->bulk_users, 300);
     foreach ($parts as $users) {
-        $in = implode(',', $users);
-        if ($rs = get_recordset_select('user', "id IN ($in)")) {
-            while ($user = rs_fetch_next_record($rs)) {
-                if (!empty($changeable[$user->auth])) {
-                    set_user_preference('auth_forcepasswordchange', 1, $user->id);
-                    unset($SESSION->bulk_users[$user->id]);
-                } else {
-                    notify(get_string('forcepasswordchangenot', '', fullname($user, true)));
-                }
+        list($in, $params) = $DB->get_in_or_equal($users);
+        $rs = $DB->get_recordset_select('user', "id $in", $params);
+        foreach ($rs as $user) {
+            if (!empty($changeable[$user->auth])) {
+                set_user_preference('auth_forcepasswordchange', 1, $user->id);
+                unset($SESSION->bulk_users[$user->id]);
+            } else {
+                echo $OUTPUT->notification(get_string('forcepasswordchangenot', '', fullname($user, true)));
             }
-            rs_close($rs);
         }
+        $rs->close();
     }
-    notify(get_string('changessaved'), 'notifysuccess');
-    print_continue($return);
+    echo $OUTPUT->notification(get_string('changessaved'), 'notifysuccess');
+    echo $OUTPUT->continue_button($return);
 
 } else {
-    $in = implode(',', $SESSION->bulk_users);
-    $userlist = get_records_select_menu('user', "id IN ($in)", 'fullname', 'id,'.sql_fullname().' AS fullname', 0, MAX_BULK_USERS);
+    list($in, $params) = $DB->get_in_or_equal($SESSION->bulk_users);
+    $userlist = $DB->get_records_select_menu('user', "id $in", $params, 'fullname', 'id,'.$DB->sql_fullname().' AS fullname', 0, MAX_BULK_USERS);
     $usernames = implode(', ', $userlist);
     if (count($SESSION->bulk_users) > MAX_BULK_USERS) {
         $usernames .= ', ...';
     }
-    $optionsyes = array();
-    $optionsyes['confirm'] = 1;
-    $optionsyes['sesskey'] = sesskey();
-    print_heading(get_string('confirmation', 'admin'));
-    notice_yesno(get_string('forcepasswordchangecheckfull', '', $usernames), 'user_bulk_forcepasswordchange.php', 'user_bulk.php', $optionsyes, NULL, 'post', 'get');
+    echo $OUTPUT->heading(get_string('confirmation', 'admin'));
+    $formcontinue = new single_button(new moodle_url('/admin/user/user_bulk_forcepasswordchange.php', array('confirm' => 1)), get_string('yes'));
+    $formcancel = new single_button(new moodle_url('/admin/user/user_bulk.php'), get_string('no'), 'get');
+    echo $OUTPUT->confirm(get_string('forcepasswordchangecheckfull', '', $usernames), $formcontinue, $formcancel);
 }
 
-admin_externalpage_print_footer();
-?>
+echo $OUTPUT->footer();

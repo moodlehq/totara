@@ -16,8 +16,6 @@
 // | Authors: Adam Daniel <adaniel1@eesus.jnj.com>                        |
 // |          Bertrand Mansion <bmansion@mamasam.com>                     |
 // +----------------------------------------------------------------------+
-//
-// $Id$
 
 require_once('HTML/QuickForm/element.php');
 
@@ -31,7 +29,7 @@ require_once('HTML/QuickForm/element.php');
  * @access       public
  */
 class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
-    
+
     // {{{ properties
 
     /** add choose option */
@@ -45,10 +43,10 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
      * @access    private
      */
     var $_optGroups = array();
-    
+
     /**
      * Default values of the SELECT
-     * 
+     *
      * @var       string
      * @since     1.0
      * @access    private
@@ -62,15 +60,15 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
      */
     var $_helpbutton='';
     var $_hiddenLabel=false;
-       
+
     /**
      * Class constructor
-     * 
+     *
      * @param     string    Select name attribute
      * @param     mixed     Label(s) for the select
      * @param     mixed     Data to be used to populate options
      * @param     mixed     An array whose keys are labels for optgroups and whose values are arrays similar to those passed
-     *                          to the select element with keys that are values for options and values are strings for display.  
+     *                          to the select element with keys that are values for options and values are strings for display.
      * @param     mixed     Either a typical HTML attribute string or an associative array
      * @param     bool      add standard moodle "Choose..." option as first item
      * @since     1.0
@@ -87,14 +85,14 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
             $this->loadArrayOptGroups($optgrps);
         }
     } //end constructor
-    
+
     // }}}
     // {{{ apiVersion()
 
 
     /**
      * Sets the default values of the select box
-     * 
+     *
      * @param     mixed    $values  Array or comma delimited string of selected values
      * @since     1.0
      * @access    public
@@ -103,7 +101,7 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
     function setSelected($values)
     {
         if (is_string($values) && $this->getMultiple()) {
-            $values = split("[ ]?,[ ]?", $values);
+            $values = preg_split("/[ ]?,[ ]?/", $values);
         }
         if (is_array($values)) {
             $this->_values = array_values($values);
@@ -111,13 +109,13 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
             $this->_values = array($values);
         }
     } //end func setSelected
-    
+
     // }}}
     // {{{ getSelected()
 
     /**
      * Returns an array of the selected values
-     * 
+     *
      * @since     1.0
      * @access    public
      * @return    array of selected values
@@ -132,7 +130,7 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
 
     /**
      * Sets the input field name
-     * 
+     *
      * @param     string    $name   Input field name attribute
      * @since     1.0
      * @access    public
@@ -142,13 +140,13 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
     {
         $this->updateAttributes(array('name' => $name));
     } //end func setName
-    
+
     // }}}
     // {{{ getName()
 
     /**
      * Returns the element name
-     * 
+     *
      * @since     1.0
      * @access    public
      * @return    string
@@ -163,7 +161,7 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
 
     /**
      * Returns the element name (possibly with brackets appended)
-     * 
+     *
      * @since     1.0
      * @access    public
      * @return    string
@@ -198,7 +196,7 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
 
     /**
      * Returns an array of the selected values
-     * 
+     *
      * @since     1.0
      * @access    public
      * @return    array of selected values
@@ -213,7 +211,7 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
 
     /**
      * Sets the select field size, only applies to 'multiple' selects
-     * 
+     *
      * @param     int    $size  Size of select  field
      * @since     1.0
      * @access    public
@@ -223,13 +221,13 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
     {
         $this->updateAttributes(array('size' => $size));
     } //end func setSize
-    
+
     // }}}
     // {{{ getSize()
 
     /**
      * Returns the select field size
-     * 
+     *
      * @since     1.0
      * @access    public
      * @return    int
@@ -244,7 +242,7 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
 
     /**
      * Sets the select mutiple attribute
-     * 
+     *
      * @param     bool    $multiple  Whether the select supports multi-selections
      * @since     1.2
      * @access    public
@@ -258,13 +256,13 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
             $this->removeAttribute('multiple');
         }
     } //end func setMultiple
-    
+
     // }}}
     // {{{ getMultiple()
 
     /**
      * Returns the select mutiple attribute
-     * 
+     *
      * @since     1.2
      * @access    public
      * @return    bool    true if multiple select, false otherwise
@@ -276,7 +274,7 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
 
     /**
      * Loads the options from an associative array
-     * 
+     *
      * @param     array    $arr     Associative array of options
      * @param     mixed    $values  (optional) Array or comma delimited string of selected values
      * @since     1.0
@@ -297,13 +295,13 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
             $this->addOptGroup($key, $val);
         }
         return true;
-    } 
+    }
     /**
      * Adds a new OPTION to the SELECT
      *
      * @param     string    $text       Display text for the OPTION
      * @param     string    $value      Value for the OPTION
-     * @param     mixed     $attributes Either a typical HTML attribute string 
+     * @param     mixed     $attributes Either a typical HTML attribute string
      *                                  or an associative array
      * @since     1.0
      * @access    public
@@ -320,11 +318,11 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
         $index = count($this->_optGroups);
         $this->_optGroups[$index] = array('attr' => $attributes);
         $this->loadArrayOptions($index, $value);
-    } 
-    
+    }
+
     /**
      * Loads the options from an associative array
-     * 
+     *
      * @param     array    $arr     Associative array of options
      * @param     mixed    $values  (optional) Array or comma delimited string of selected values
      * @since     1.0
@@ -345,14 +343,14 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
             $this->addOption($optgroup, $val, $key);
         }
         return true;
-    }   
+    }
 
     /**
      * Adds a new OPTION to an optgroup
      *
      * @param     string    $text       Display text for the OPTION
      * @param     string    $value      Value for the OPTION
-     * @param     mixed     $attributes Either a typical HTML attribute string 
+     * @param     mixed     $attributes Either a typical HTML attribute string
      *                                  or an associative array
      * @since     1.0
      * @access    public
@@ -376,7 +374,7 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
             $this->_updateAttrArray($attributes, array('value' => $value));
         }
         $this->_optGroups[$optgroup]['options'][] = array('text' => $text, 'attr' => $attributes);
-    } 
+    }
 
     /**
      * Returns the SELECT in HTML
@@ -433,13 +431,13 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
             return $strHtml . $tabs . '</select>';
         }
     } //end func toHtml
-    
+
     // }}}
     // {{{ getFrozenHtml()
 
     /**
      * Returns the value of field without HTML tags
-     * 
+     *
      * @since     1.0
      * @access    public
      * @return    string
@@ -550,24 +548,6 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
     function setHiddenLabel($hiddenLabel){
         $this->_hiddenLabel = $hiddenLabel;
     }
-   /**
-    * Automatically generates and assigns an 'id' attribute for the element.
-    *
-    * Currently used to ensure that labels work on radio buttons and
-    * checkboxes. Per idea of Alexander Radivanovich.
-    * Overriden in moodleforms to remove qf_ prefix.
-    *
-    * @access private
-    * @return void
-    */
-    function _generateId()
-    {
-        static $idx = 1;
-
-        if (!$this->getAttribute('id')) {
-            $this->updateAttributes(array('id' => 'id_'. substr(md5(microtime() . $idx++), 0, 6)));
-        }
-    } // end func _generateId
     /**
      * set html for help button
      *
@@ -576,18 +556,7 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
      * @param string $function function name to call to get html
      */
     function setHelpButton($helpbuttonargs, $function='helpbutton'){
-        if (!is_array($helpbuttonargs)){
-            $helpbuttonargs=array($helpbuttonargs);
-        }else{
-            $helpbuttonargs=$helpbuttonargs;
-        }
-        //we do this to to return html instead of printing it
-        //without having to specify it in every call to make a button.
-        if ('helpbutton' == $function){
-            $defaultargs=array('', '', 'moodle', true, false, '', true);
-            $helpbuttonargs=$helpbuttonargs + $defaultargs ;
-        }
-        $this->_helpbutton=call_user_func_array($function, $helpbuttonargs);
+        debugging('component setHelpButton() is not used any more, please use $mform->setHelpButton() instead');
     }
     /**
      * get html for help button
@@ -612,6 +581,5 @@ class MoodleQuickForm_selectgroups extends HTML_QuickForm_element {
         } else {
             return 'default';
         }
-    } 
+    }
 }
-?>

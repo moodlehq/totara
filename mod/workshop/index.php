@@ -1,135 +1,93 @@
-<?php // $Id$
+<?php
 
-    require("../../config.php");
-    require("lib.php");
-    require("locallib.php");
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    $id = required_param('id',PARAM_INT);   // course
+/**
+ * Prints the list of all workshops in the course
+ *
+ * @package    mod
+ * @subpackage workshop
+ * @copyright  2009 David Mudrak <david.mudrak@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-    if (! $course = get_record("course", "id", $id)) {
-        error("Course ID is incorrect");
-    }
+require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+require_once(dirname(__FILE__).'/lib.php');
 
-    require_course_login($course);
+$id = required_param('id', PARAM_INT);   // course
 
-    add_to_log($course->id, "workshop", "view all", "index.php?id=$course->id", "");
+$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 
-    $strworkshops = get_string("modulenameplural", "workshop");
-    $strworkshop = get_string("modulename", "workshop");
-    $strweek = get_string("week");
-    $strtopic = get_string("topic");
-    $strname = get_string("name");
-    $strinfo = get_string("grade")."/".$strinfo = get_string("phase", "workshop");
-    $strdeadline = get_string("deadline", "workshop");
-    $strsubmitted = get_string("submitted", "assignment");
+require_course_login($course);
 
-    $navlinks = array();
-    $navlinks[] = array('name' => $strworkshops, 'link' => '', 'type' => 'activity');
-    $navigation = build_navigation($navlinks);
+add_to_log($course->id, 'workshop', 'view all', "index.php?id=$course->id", '');
 
-    print_header_simple("$strworkshops", "", $navigation, "", "", true, "", navmenu($course));
+$PAGE->set_pagelayout('incourse');
+$PAGE->set_url('/mod/workshop/index.php', array('id' => $course->id));
+$PAGE->set_title($course->fullname);
+$PAGE->set_heading($course->shortname);
+$PAGE->navbar->add(get_string('modulenameplural', 'workshop'));
 
-    if (! $workshops = get_all_instances_in_course("workshop", $course)) {
-        notice(get_string('thereareno', 'moodle', $strworkshops), "../../course/view.php?id=$course->id");
-        die;
-    }
+/// Output starts here
 
-    $timenow = time();
+echo $OUTPUT->header();
 
-    if ($course->format == "weeks") {
-        $table->head  = array ($strweek, $strname, $strinfo, $strsubmitted, $strdeadline);
-        $table->align = array ("CENTER", "LEFT", "LEFT", "LEFT", "LEFT");
-    } elseif ($course->format == "topics") {
-        $table->head  = array ($strtopic, $strname, $strinfo, $strsubmitted, $strdeadline);
-        $table->align = array ("CENTER", "LEFT", "left", "LEFT", "LEFT");
+/// Get all the appropriate data
+
+if (! $workshops = get_all_instances_in_course('workshop', $course)) {
+    echo $OUTPUT->heading(get_string('noworkshops', 'workshop'), 2);
+    echo $OUTPUT->continue_button(new moodle_url('/course/view.php', array('id' => $course->id)));
+    echo $OUTPUT->footer();
+    die();
+}
+
+$usesections = course_format_uses_sections($course->format);
+if ($usesections) {
+    $sections = get_all_sections($course->id);
+}
+
+$timenow        = time();
+$strsectionname = get_string('sectionname', 'format_'.$course->format);
+$strname        = get_string('name');
+$table          = new html_table();
+
+if ($usesections) {
+    $table->head  = array ($strsectionname, $strname);
+    $table->align = array ('center', 'left');
+} else {
+    $table->head  = array ($strname);
+    $table->align = array ('left');
+}
+
+foreach ($workshops as $workshop) {
+    if (empty($workshop->visible)) {
+        $link = html_writer::link(new moodle_url('/mod/workshop/view.php', array('id' => $workshop->coursemodule)),
+                                  $workshop->name, array('class' => 'dimmed'));
     } else {
-        $table->head  = array ($strname, $strinfo, $strsubmitted, $strdeadline);
-        $table->align = array ("LEFT", "LEFT", "LEFT", "LEFT");
+        $link = html_writer::link(new moodle_url('/mod/workshop/view.php', array('id' => $workshop->coursemodule)),
+                                  $workshop->name);
     }
 
-    foreach ($workshops as $workshop) {
-        if (workshop_is_teacher($workshop, $USER->id)) { // teacher see info (students see grade)
-            $info = workshop_phase($workshop, 'short');
-            if (time() > $workshop->submissionstart) {
-                if ($num = workshop_count_student_submissions_for_assessment($workshop, $USER)) {
-                    $info .= " [".get_string("unassessed", "workshop", $num)."]";
-                }
-            }
-        }
-
-        $due = userdate($workshop->submissionend);
-
-        if ($submissions = workshop_get_user_submissions($workshop, $USER)) {
-            foreach ($submissions as $submission) {
-                if ($submission->timecreated <= $workshop->submissionend) {
-                    $submitted = userdate($submission->timecreated);
-                }
-                else {
-                    $submitted = "<span class=\"redfont\">".userdate($submission->timecreated)."</span>";
-                }
-                if (!$workshop->visible) {
-                    //Show dimmed if the mod is hidden
-                    $link = "<a class=\"dimmed\" href=\"view.php?id=$workshop->coursemodule\">".format_string($workshop->name,true)."</a><br />";
-                } else {
-                    //Show normal if the mod is visible
-                    $link = "<a href=\"view.php?id=$workshop->coursemodule\">".format_string($workshop->name,true)."</a><br />";
-                }
-                if (workshop_is_student($workshop)) {
-                    $link .= " ($submission->title)"; // show students the title of their submission(s)
-                    $gradinggrade = workshop_gradinggrade($workshop, $USER);
-                    $grade = workshop_submission_grade($workshop, $submission);
-                    if ($workshop->wtype) {
-                        if (workshop_count_assessments($submission)) {
-                            $info = get_string("gradeforassessments", "workshop").
-                                ": $gradinggrade/$workshop->gradinggrade; ".get_string("gradeforsubmission",
-                                "workshop").": $grade/$workshop->grade";
-                        } else {
-                            $info = get_string("gradeforassessments", "workshop").
-                                ": $gradinggrade/$workshop->gradinggrade; ".get_string("gradeforsubmission",
-                                "workshop").": ".get_string("noassessments", "workshop");
-                        }
-                     } else { // simple assignemnt, don't show grading grade
-                        $info = get_string("gradeforsubmission", "workshop").": $grade/$workshop->grade";
-                    }
-                    if ($workshop->releasegrades > $timenow) {
-                        $info = get_string("notavailable", "workshop");
-                    }
-                }
-                if ($course->format == "weeks" or $course->format == "topics") {
-                    $table->data[] = array ($workshop->section, $link, $info, $submitted, $due);
-                }
-                else {
-                    $table->data[] = array ($link, $info, $submitted, $due);
-                }
-                if (workshop_is_teacher($workshop)) {
-                    // teacher only needs to see one "submission"
-                    break;
-                }
-            }
-        }
-        else { // no submission
-            $submitted = get_string("no");
-            if (!$workshop->visible) {
-                //Show dimmed if the mod is hidden
-                $link = "<a class=\"dimmed\" href=\"view.php?id=$workshop->coursemodule\">".format_string($workshop->name,true)."</a>";
-            } else {
-                //Show normal if the mod is visible
-                $link = "<a href=\"view.php?id=$workshop->coursemodule\">".format_string($workshop->name,true)."</a>";
-            }
-            if (workshop_is_student($workshop)) {
-                $info = '0';
-            }
-            if ($course->format == "weeks" or $course->format == "topics") {
-                    $table->data[] = array ($workshop->section, $link, $info, $submitted, $due);
-            }
-            else {
-                $table->data[] = array ($link, $info, $submitted, $due);
-            }
-        }
+    if ($usesections) {
+        $table->data[] = array(get_section_name($course, $sections[$workshop->section]), $link);
+    } else {
+        $table->data[] = array($link);
     }
-    echo "<br />";
+}
 
-    print_table($table);
-
-    print_footer($course);
-?>
+echo $OUTPUT->heading(get_string('modulenameplural', 'workshop'), 2);
+echo html_writer::table($table);
+echo $OUTPUT->footer();

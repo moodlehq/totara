@@ -20,10 +20,12 @@ class MoodleQuickForm_textarea extends HTML_QuickForm_textarea{
      * @var string
      */
     var $_helpbutton='';
+
+    var $_hiddenLabel=false;
+
     function MoodleQuickForm_textarea($elementName=null, $elementLabel=null, $attributes=null) {
         parent::HTML_QuickForm_textarea($elementName, $elementLabel, $attributes);
     }
-
     /**
      * set html for help button
      *
@@ -32,24 +34,7 @@ class MoodleQuickForm_textarea extends HTML_QuickForm_textarea{
      * @param string $function function name to call to get html
      */
     function setHelpButton($helpbuttonargs, $function='helpbutton'){
-        global $SESSION;
-        if (!is_array($helpbuttonargs)){
-            $helpbuttonargs=array($helpbuttonargs);
-        }else{
-            $helpbuttonargs=$helpbuttonargs;
-        }
-        //we do this to to return html instead of printing it
-        //without having to specify it in every call to make a button.
-        if ('helpbutton' == $function){
-            $defaultargs=array('', '', 'moodle', true, false, '', true);
-            $helpbuttonargs=$helpbuttonargs + $defaultargs ;
-        } elseif ('editorhelpbutton' == $function){
-            if (in_array('emoticons', $helpbuttonargs)){
-                $SESSION->inserttextform = $this->_formid;
-                $SESSION->inserttextfield = $this->getAttribute('name');
-            }
-        }
-        $this->_helpbutton=call_user_func_array($function, $helpbuttonargs);
+        debugging('component setHelpButton() is not used any more, please use $mform->setHelpButton() instead');
     }
     /**
      * get html for help button
@@ -60,6 +45,21 @@ class MoodleQuickForm_textarea extends HTML_QuickForm_textarea{
     function getHelpButton(){
         return $this->_helpbutton;
     }
+
+    function setHiddenLabel($hiddenLabel){
+        $this->_hiddenLabel = $hiddenLabel;
+    }
+
+    function toHtml(){
+        if ($this->_hiddenLabel){
+            $this->_generateId();
+            return '<label class="accesshide" for="' . $this->getAttribute('id') . '" >' .
+                    $this->getLabel() . '</label>' . parent::toHtml();
+        } else {
+            return parent::toHtml();
+        }
+    }
+
     /**
      * Called by HTML_QuickForm whenever form event is made on this element
      *
@@ -92,4 +92,3 @@ class MoodleQuickForm_textarea extends HTML_QuickForm_textarea{
         }
     }
 }
-?>

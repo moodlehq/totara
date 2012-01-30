@@ -1,5 +1,10 @@
 <?php
-require_once('HTML/QuickForm/submit.php');
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
+global $CFG;
+require_once($CFG->libdir.'/form/submit.php');
 
 /**
  * HTML class for a submit type element
@@ -41,14 +46,13 @@ class MoodleQuickForm_cancel extends MoodleQuickForm_submit
         }
         return parent::onQuickFormEvent($event, $arg, $caller);
     } // end func onQuickFormEvent
-    
+
     function getFrozenHtml(){
         return HTML_QuickForm_submit::getFrozenHtml();
     }
-    
+
     function freeze(){
         return HTML_QuickForm_submit::freeze();
     }
     // }}}
 } //end class MoodleQuickForm_cancel
-?>

@@ -1,6 +1,32 @@
-<?php  //$Id$
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-function tex_filter_get_executable($debug=false) {
+/**
+ * TeX filter library functions.
+ *
+ * @package    filter
+ * @subpackage tex
+ * @copyright  2004 Zbigniew Fiedorowicz fiedorow@math.ohio-state.edu
+ *             Originally based on code provided by Bruno Vernier bruno@vsbeducation.ca
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+function filter_tex_get_executable($debug=false) {
     global $CFG;
 
     $error_message1 = "Your system is not configured to run mimeTeX. You need to download the appropriate<br />"
@@ -21,7 +47,7 @@ function tex_filter_get_executable($debug=false) {
         if (is_executable($custom_commandpath)) {
             return $custom_commandpath;
         } else {
-            error($error_message2.$error_message1);
+            print_error('mimetexnotexecutable', 'error');
         }
     }
 
@@ -31,10 +57,10 @@ function tex_filter_get_executable($debug=false) {
         case "FreeBSD": return "$CFG->dirroot/filter/tex/mimetex.freebsd";
     }
 
-    error($error_message1);
+    print_error('mimetexisnotexist', 'error');
 }
 
-function tex_sanitize_formula($texexp) {
+function filter_tex_sanitize_formula($texexp) {
     /// Check $texexp against blacklist (whitelisting could be more complete but also harder to maintain)
     $tex_blacklist = array(
         'include','command','loop','repeat','open','toks','output',
@@ -51,10 +77,10 @@ function tex_sanitize_formula($texexp) {
     return  str_ireplace($tex_blacklist, 'forbiddenkeyword', $texexp);
 }
 
-function tex_filter_get_cmd($pathname, $texexp) {
-    $texexp = tex_sanitize_formula($texexp);
+function filter_tex_get_cmd($pathname, $texexp) {
+    $texexp = filter_tex_sanitize_formula($texexp);
     $texexp = escapeshellarg($texexp);
-    $executable = tex_filter_get_executable(false);
+    $executable = filter_tex_get_executable(false);
 
     if ((PHP_OS == "WINNT") || (PHP_OS == "WIN32") || (PHP_OS == "Windows")) {
         $executable = str_replace(' ', '^ ', $executable);
@@ -69,7 +95,7 @@ function tex_filter_get_cmd($pathname, $texexp) {
  * Purge all caches when settings changed.
  */
 function filter_tex_updatedcallback($name) {
-    global $CFG;
+    global $CFG, $DB;
     reset_text_filters_cache();
 
     if (file_exists("$CFG->dataroot/filter/tex")) {
@@ -78,12 +104,17 @@ function filter_tex_updatedcallback($name) {
     if (file_exists("$CFG->dataroot/filter/algebra")) {
         remove_dir("$CFG->dataroot/filter/algebra");
     }
-    if (file_exists("$CFG->dataroot/temp/latex")) {
-        remove_dir("$CFG->dataroot/temp/latex");
+    if (file_exists("$CFG->tempdir/latex")) {
+        remove_dir("$CFG->tempdir/latex");
     }
 
-    delete_records('cache_filters', 'filter', 'tex');
-    delete_records('cache_filters', 'filter', 'algebra');
+    $DB->delete_records('cache_filters', array('filter'=>'tex'));
+    $DB->delete_records('cache_filters', array('filter'=>'algebra'));
+
+    if (!isset($CFG->filter_tex_pathlatex)) {
+        // detailed settings not present yet
+        return;
+    }
 
     if (!(is_file($CFG->filter_tex_pathlatex) && is_executable($CFG->filter_tex_pathlatex) &&
           is_file($CFG->filter_tex_pathdvips) && is_executable($CFG->filter_tex_pathdvips) &&
@@ -93,4 +124,4 @@ function filter_tex_updatedcallback($name) {
     }
 }
 
-?>
+

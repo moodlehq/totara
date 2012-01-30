@@ -1,4 +1,4 @@
-<?php  // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -22,45 +22,99 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 
-require_once($CFG->dirroot.'/mod/data/field/file/field.class.php');
-// Base class is 'file'
-
-class data_field_picture extends data_field_file {
+class data_field_picture extends data_field_base {
     var $type = 'picture';
     var $previewwidth  = 50;
     var $previewheight = 50;
 
-    function data_field_picture($field=0, $data=0) {
-        parent::data_field_base($field, $data);
-    }
-
     function display_add_field($recordid=0) {
-        global $CFG;
-        $filepath = '';
-        $filename = '';
-        $description = '';
+        global $CFG, $DB, $OUTPUT, $USER, $PAGE;
+
+        $file        = false;
+        $content     = false;
+        $displayname = '';
+        $alttext     = '';
+        $itemid = null;
+        $fs = get_file_storage();
+
         if ($recordid) {
-            if ($content = get_record('data_content', 'fieldid', $this->field->id, 'recordid', $recordid)) {
-                $filename = $content->content;
-                $description = $content->content1;
+            if ($content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
+                file_prepare_draft_area($itemid, $this->context->id, 'mod_data', 'content', $content->id);
+                if (!empty($content->content)) {
+                    if ($file = $fs->get_file($this->context->id, 'mod_data', 'content', $content->id, '/', $content->content)) {
+                        $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+                        if (!$files = $fs->get_area_files($usercontext->id, 'user', 'draft', $itemid, 'id DESC', false)) {
+                            return false;
+                        }
+                        if ($thumbfile = $fs->get_file($usercontext->id, 'user', 'draft', $itemid, '/', 'thumb_'.$content->content)) {
+                            $thumbfile->delete();
+                        }
+                        if (empty($content->content1)) {
+                            // Print icon if file already exists
+                            $src = moodle_url::make_draftfile_url($itemid, '/', $file->get_filename());
+                            $displayname = '<img src="'.$OUTPUT->pix_url(file_mimetype_icon($file->get_mimetype())).'" class="icon" alt="'.$file->get_mimetype().'" />'. '<a href="'.$src.'" >'.s($file->get_filename()).'</a>';
+
+                        } else {
+                            $displayname = get_string('nofilesattached', 'repository');
+                        }
+                    }
+                }
+                $alttext = $content->content1;
             }
-            $path = $this->data->course.'/'.$CFG->moddata.'/data/'.$this->data->id.'/'.$this->field->id.'/'.$recordid;
-            require_once($CFG->libdir.'/filelib.php');
-            $filepath = get_file_url("$path/$filename");
+        } else {
+            $itemid = file_get_unused_draft_itemid();
         }
+
         $str = '<div title="'.s($this->field->description).'">';
         $str .= '<fieldset><legend><span class="accesshide">'.$this->field->name.'</span></legend>';
-        $str .= '<input type="hidden" name ="field_'.$this->field->id.'_file" id="field_'.$this->field->id.'_file"  value="fakevalue" />';
-        $str .= '<label for="field_'.$this->field->id.'">'.get_string('picture','data'). '</label>&nbsp;<input type="file" name ="field_'.$this->field->id.'" id="field_'.$this->field->id.'" /><br />';
-        $str .= '<label for="field_'.$this->field->id.'_filename">'.get_string('alttext','data') .'</label>&nbsp;<input type="text" name="field_'
-                .$this->field->id.'_filename" id="field_'.$this->field->id.'_filename" value="'.s($description).'" /><br />';
-        $str .= '<input type="hidden" name="MAX_FILE_SIZE" value="'.s($this->field->param3).'" />';
-        if ($filepath) {
-            $str .= '<img width="'.s($this->previewwidth).'" height="'.s($this->previewheight).'" src="'.$filepath.'" alt="" />';
+        if ($file) {
+            $src = file_encode_url($CFG->wwwroot.'/pluginfile.php/', $this->context->id.'/mod_data/content/'.$content->id.'/'.$file->get_filename());
+            $str .= '<img width="'.s($this->previewwidth).'" height="'.s($this->previewheight).'" src="'.$src.'" alt="" />';
         }
+
+        $options = new stdClass();
+        $options->maxbytes  = $this->field->param3;
+        $options->itemid    = $itemid;
+        $options->accepted_types = array('image');
+        $options->return_types = FILE_INTERNAL;
+        $options->context = $PAGE->context;
+        if (!empty($file)) {
+            $options->filename = $file->get_filename();
+            $options->filepath = '/';
+        }
+        $fp = new file_picker($options);
+        $str .= $OUTPUT->render($fp);
+
+
+        $str .= '<div class="mdl-left">';
+        $str .= '<input type="hidden" name="field_'.$this->field->id.'_file" value="'.$itemid.'" />';
+        $str .= '<label for="field_'.$this->field->id.'_alttext">'.get_string('alttext','data') .'</label>&nbsp;<input type="text" name="field_'
+                .$this->field->id.'_alttext" id="field_'.$this->field->id.'_alttext" value="'.s($alttext).'" />';
+        $str .= '</div>';
+
         $str .= '</fieldset>';
         $str .= '</div>';
+
+        $module = array('name'=>'data_imagepicker', 'fullpath'=>'/mod/data/data.js', 'requires'=>array('core_filepicker'));
+        $PAGE->requires->js_init_call('M.data_imagepicker.init', array($fp->options), true, $module);
         return $str;
+    }
+
+    // TODO delete this function and instead subclass data_field_file - see MDL-16493
+
+    function get_file($recordid, $content=null) {
+        global $DB;
+        if (empty($content)) {
+            if (!$content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
+                return null;
+            }
+        }
+        $fs = get_file_storage();
+        if (!$file = $fs->get_file($this->context->id, 'mod_data', 'content', $content->id, '/', $content->content)) {
+            return null;
+        }
+
+        return $file;
     }
 
     function display_search_field($value = '') {
@@ -72,67 +126,71 @@ class data_field_picture extends data_field_file {
     }
 
     function generate_sql($tablealias, $value) {
-        return " ({$tablealias}.fieldid = {$this->field->id} AND {$tablealias}.content LIKE '%{$value}%') ";
+        global $DB;
+
+        static $i=0;
+        $i++;
+        $name = "df_picture_$i";
+        return array(" ({$tablealias}.fieldid = {$this->field->id} AND ".$DB->sql_like("{$tablealias}.content", ":$name", false).") ", array($name=>"%$value%"));
     }
 
     function display_browse_field($recordid, $template) {
-        global $CFG;
-        if ($content = get_record('data_content', 'fieldid', $this->field->id, 'recordid', $recordid)){
-            if (isset($content->content)) {
-                $contents[0] = $content->content;
-                $contents[1] = $content->content1;
-            }
-            if (empty($contents[0])) {
-                // Nothing to show
-                return '';
-            }
-            $alt = empty($contents[1])? '':$contents[1];
-            $title = empty($contents[1])? '':$contents[1];
-            $src = $contents[0];
-            $path = $this->data->course.'/'.$CFG->moddata.'/data/'.$this->data->id.'/'.$this->field->id.'/'.$recordid;
+        global $CFG, $DB;
 
-            $thumbnaillocation = $CFG->dataroot .'/'. $path .'/thumb/'.$src;
-            require_once($CFG->libdir.'/filelib.php');
-            $source = get_file_url("$path/$src");
-            $thumbnailsource = file_exists($thumbnaillocation) ? get_file_url("$path/thumb/$src") : $source;
-
-            if ($template == 'listtemplate') {
-                $width = $this->field->param4 ? ' width="'.s($this->field->param4).'" ' : ' ';
-                $height = $this->field->param5 ? ' height="'.s($this->field->param5).'" ' : ' ';
-                $str = '<a href="view.php?d='.$this->field->dataid.'&amp;rid='.$recordid.'"><img '.
-                     $width.$height.' src="'.$thumbnailsource.'" alt="'.s($alt).'" title="'.s($title).'" style="border:0px" /></a>';
-            } else {
-                $width = $this->field->param1 ? ' width="'.s($this->field->param1).'" ':' ';
-                $height = $this->field->param2 ? ' height="'.s($this->field->param2).'" ':' ';
-                $str = '<a href="'.$source.'"><img '.$width.$height.' src="'.$source.'" alt="'.s($alt).'" title="'.s($title).'" style="border:0px" /></a>';
-            }
-            return $str;
+        if (!$content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
+            return false;
         }
-        return false;
+
+        if (empty($content->content)) {
+            return '';
+        }
+
+        $alt   = $content->content1;
+        $title = $alt;
+
+        if ($template == 'listtemplate') {
+            $src = file_encode_url($CFG->wwwroot.'/pluginfile.php', '/'.$this->context->id.'/mod_data/content/'.$content->id.'/'.'thumb_'.$content->content);
+            // no need to add width/height, because the thumb is resized properly
+            $str = '<a href="view.php?d='.$this->field->dataid.'&amp;rid='.$recordid.'"><img src="'.$src.'" alt="'.s($alt).'" title="'.s($title).'" style="border:0px" /></a>';
+
+        } else {
+            $src = file_encode_url($CFG->wwwroot.'/pluginfile.php', '/'.$this->context->id.'/mod_data/content/'.$content->id.'/'.$content->content);
+            $width  = $this->field->param1 ? ' width="'.s($this->field->param1).'" ':' ';
+            $height = $this->field->param2 ? ' height="'.s($this->field->param2).'" ':' ';
+            $str = '<a href="'.$src.'"><img '.$width.$height.' src="'.$src.'" alt="'.s($alt).'" title="'.s($title).'" style="border:0px" /></a>';
+        }
+
+        return $str;
     }
 
     function update_field() {
+        global $DB, $OUTPUT;
+
         // Get the old field data so that we can check whether the thumbnail dimensions have changed
-        $oldfield = get_record('data_fields', 'id', $this->field->id);
-        if (!update_record('data_fields', $this->field)) {
-            notify('updating of new field failed!');
-            return false;
-        }
+        $oldfield = $DB->get_record('data_fields', array('id'=>$this->field->id));
+        $DB->update_record('data_fields', $this->field);
 
         // Have the thumbnail dimensions changed?
         if ($oldfield && ($oldfield->param4 != $this->field->param4 || $oldfield->param5 != $this->field->param5)) {
             // Check through all existing records and update the thumbnail
-            if ($contents = get_records('data_content', 'fieldid', $this->field->id)) {
+            if ($contents = $DB->get_records('data_content', array('fieldid'=>$this->field->id))) {
+                $fs = get_file_storage();
                 if (count($contents) > 20) {
-                    notify(get_string('resizingimages', 'data'), 'notifysuccess');
+                    echo $OUTPUT->notification(get_string('resizingimages', 'data'), 'notifysuccess');
                     echo "\n\n";
                     // To make sure that ob_flush() has the desired effect
                     ob_flush();
                 }
                 foreach ($contents as $content) {
+                    if (!$file = $fs->get_file($this->context->id, 'mod_data', 'content', $content->id, '/', $content->content)) {
+                        continue;
+                    }
+                    if ($thumbfile = $fs->get_file($this->context->id, 'mod_data', 'content', $content->id, '/', 'thumb_'.$content->content)) {
+                        $thumbfile->delete();
+                    }
                     @set_time_limit(300);
                     // Might be slow!
-                    $this->update_thumbnail($content);
+                    $this->update_thumbnail($content, $file);
                 }
             }
         }
@@ -140,126 +198,76 @@ class data_field_picture extends data_field_file {
     }
 
     function update_content($recordid, $value, $name) {
-        parent::update_content($recordid, $value, $name);
-        $content = get_record('data_content','fieldid', $this->field->id, 'recordid', $recordid);
-        $this->update_thumbnail($content);
-        // Regenerate the thumbnail
+        global $CFG, $DB, $USER;
+
+        if (!$content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
+        // Quickly make one now!
+            $content = new stdClass();
+            $content->fieldid  = $this->field->id;
+            $content->recordid = $recordid;
+            $id = $DB->insert_record('data_content', $content);
+            $content = $DB->get_record('data_content', array('id'=>$id));
+        }
+
+        $names = explode('_', $name);
+        switch ($names[2]) {
+            case 'file':
+                $fs = get_file_storage();
+                $fs->delete_area_files($this->context->id, 'mod_data', 'content', $content->id);
+                $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+                $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $value);
+                if (count($files)<2) {
+                    // no file
+                } else {
+                    $count = 0;
+                    foreach ($files as $draftfile) {
+                        $file_record = array('contextid'=>$this->context->id, 'component'=>'mod_data', 'filearea'=>'content', 'itemid'=>$content->id, 'filepath'=>'/');
+                        if (!$draftfile->is_directory()) {
+                            $file_record['filename'] = $draftfile->get_filename();
+
+                            $content->content = $draftfile->get_filename();
+
+                            $file = $fs->create_file_from_storedfile($file_record, $draftfile);
+                            $DB->update_record('data_content', $content);
+                            $this->update_thumbnail($content, $file);
+
+                            if ($count > 0) {
+                                break;
+                            } else {
+                                $count++;
+                            }
+                        }
+                    }
+                }
+
+                break;
+
+            case 'alttext':
+                // only changing alt tag
+                $content->content1 = clean_param($value, PARAM_NOTAGS);
+                $DB->update_record('data_content', $content);
+                break;
+
+            default:
+                break;
+        }
     }
 
-    function update_thumbnail($content) {
+    function update_thumbnail($content, $file) {
         // (Re)generate thumbnail image according to the dimensions specified in the field settings.
         // If thumbnail width and height are BOTH not specified then no thumbnail is generated, and
         // additionally an attempted delete of the existing thumbnail takes place.
-        global $CFG;
-        require_once($CFG->libdir . '/gdlib.php');
-        $datalocation = $CFG->dataroot .'/'.$this->data->course.'/'.$CFG->moddata.'/data/'.
-                        $this->data->id.'/'.$this->field->id.'/'.$content->recordid;
-        $originalfile = $datalocation.'/'.$content->content;
-        if (!file_exists($originalfile)) {
-            return;
-        }
-        if (!file_exists($datalocation.'/thumb')) {
-            mkdir($datalocation.'/thumb', $CFG->directorypermissions);
-            // robertall: Why hardcode 0777??
-        }
-        $thumbnaillocation = $datalocation.'/thumb/'.$content->content;
-        $imageinfo = GetImageSize($originalfile);
-        $image->width  = $imageinfo[0];
-        $image->height = $imageinfo[1];
-        $image->type   = $imageinfo[2];
-        if (!$image->width || !$image->height) {
-            // Should not happen
-            return;
-        }
-        switch ($image->type) {
-            case 1:
-                if (function_exists('ImageCreateFromGIF')) {
-                    $im = ImageCreateFromGIF($originalfile);
-                } else {
-                    return;
-                }
-                break;
-            case 2:
-                if (function_exists('ImageCreateFromJPEG')) {
-                    $im = ImageCreateFromJPEG($originalfile);
-                } else {
-                    return;
-                }
-                break;
-            case 3:
-                if (function_exists('ImageCreateFromPNG')) {
-                    $im = ImageCreateFromPNG($originalfile);
-                } else {
-                    return;
-                }
-                break;
-        }
-        $thumbwidth  = isset($this->field->param4)?$this->field->param4:'';
-        $thumbheight = isset($this->field->param5)?$this->field->param5:'';
-        if ($thumbwidth || $thumbheight) {
-            // Only if either width OR height specified do we want a thumbnail
-            $wcrop = $image->width;
-            $hcrop = $image->height;
-            if ($thumbwidth && !$thumbheight) {
-                $thumbheight = $image->height * $thumbwidth / $image->width;
-            } else if($thumbheight && !$thumbwidth) {
-                $thumbwidth = $image->width * $thumbheight / $image->height;
-            } else {
-                // BOTH are set - may need to crop if aspect ratio differs
-                $hratio = $image->height / $thumbheight;
-                $wratio = $image->width  / $thumbwidth;
-                if ($wratio > $hratio) {
-                    // Crop the width
-                    $wcrop = intval($thumbwidth * $hratio);
-                } elseif($hratio > $wratio) {
-                    //Crop the height
-                    $hcrop = intval($thumbheight * $wratio);
-                }
-            }
-
-            // At this point both $thumbwidth and $thumbheight are set, and $wcrop and $hcrop
-
-            if (function_exists('ImageCreateTrueColor') and $CFG->gdversion >= 2) {
-                $im1 = ImageCreateTrueColor($thumbwidth,$thumbheight);
-            } else {
-                $im1 = ImageCreate($thumbwidth,$thumbheight);
-            }
-            if ($image->type == 3) {
-                // Prevent alpha blending for PNG images
-                imagealphablending($im1, false);
-            }
-            $cx = $image->width  / 2;
-            $cy = $image->height / 2;
-
-            // These "half" measurements use the "crop" values rather than the actual dimensions
-            $halfwidth  = floor($wcrop * 0.5);
-            $halfheight = floor($hcrop * 0.5);
-
-            ImageCopyBicubic($im1, $im, 0, 0, $cx-$halfwidth, $cy-$halfheight,
-                             $thumbwidth, $thumbheight, $halfwidth*2, $halfheight*2);
-
-            if ($image->type == 3) {
-                // Save alpha transparency for PNG images
-                imagesavealpha($im1, true);
-            }
-            if (function_exists('ImageJpeg') && $image->type != 3) {
-                @touch($thumbnaillocation);
-                // Helps in Safe mode
-                if (ImageJpeg($im1, $thumbnaillocation, 90)) {
-                    @chmod($thumbnaillocation, 0666);
-                    // robertall: Why hardcode 0666??
-                }
-            } elseif (function_exists('ImagePng') && $image->type == 3) {
-                @touch($thumbnaillocation);
-                // Helps in Safe mode
-                if (ImagePng($im1, $thumbnaillocation, 9)) {
-                    @chmod($thumbnaillocation, 0666);
-                    // robertall: Why hardcode 0666??
-                }
-            }
-        } else {
-            // Try to remove the thumbnail - we don't want thumbnailing active
-            @unlink($thumbnaillocation);
+        $fs = get_file_storage();
+        $file_record = array('contextid'=>$file->get_contextid(), 'component'=>$file->get_component(), 'filearea'=>$file->get_filearea(),
+                             'itemid'=>$file->get_itemid(), 'filepath'=>$file->get_filepath(),
+                             'filename'=>'thumb_'.$file->get_filename(), 'userid'=>$file->get_userid());
+        try {
+            // this may fail for various reasons
+            $fs->convert_image($file_record, $file, $this->field->param4, $this->field->param5, true);
+            return true;
+        } catch (Exception $e) {
+            debugging($e->getMessage());
+            return false;
         }
     }
 
@@ -267,6 +275,9 @@ class data_field_picture extends data_field_file {
         return false;
     }
 
+    function file_ok($path) {
+        return true;
+    }
 }
 
-?>
+

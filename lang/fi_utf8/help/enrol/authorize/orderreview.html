@@ -1,9 +1,0 @@
-<p class="center"><strong>Käytä näitä asetuksia tarkastellaksesi tilauksia ennen luottokortin veloitusta.</strong></p>
-<p>Ota rasti pois kentästä 'an_review', jos opiskelijat lisätään kurssille heti, kun he ovat syöttäneet luottokorttitietonsa. </p>
-
-<p>Jos olet valinnut kentän 'an_review', luottokortti tunnistetaan, mutta laskua ei veloiteta ja sinulla on kaksi vaihtoehtoa: 'Manuaalinen veloitus' ja 'Ajastettu veloitus'.
-</p>
-   <ul>
-      <li>Manuaalinen veloitus: syötä kenttään 'an_capture_day´' numero 0. Veloitus perutaan, mikäli et tarkastele sitä 30 päivän kuluessa. Sähköpostin lähetysasetuksissa voit määrittää kuinka monta päivää etukäteen sinua muistutetaan näistä avoinna olevista tilauksista. </li>
-      <li>Ajastettu veloitus: Tarkista, että Cron on aktivoitu. Syötä sitten "an_capture_day" kenttään numero 1 ja 29 väliltä. Luottokortin tiedot otetaan talteen ja käyttäjä lisätään kurssille. Ajastus huolehtii kortin veloittamisesta x päivän kuluttua. Saat sähköpostitse tiedon avoinna olevasta tilauksesta, ja voit joko hyväksyä tai hylätä veloituksen. </li>
-   </ul>

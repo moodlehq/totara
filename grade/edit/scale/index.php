@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 require_once '../../../config.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->libdir.'/gradelib.php';
@@ -23,14 +22,17 @@ require_once $CFG->libdir.'/gradelib.php';
 $courseid = optional_param('id', 0, PARAM_INT);
 $action   = optional_param('action', '', PARAM_ALPHA);
 
+$PAGE->set_url('/grade/edit/scale/index.php', array('id' => $courseid));
+
 /// Make sure they can even access this course
 if ($courseid) {
-    if (!$course = get_record('course', 'id', $courseid)) {
+    if (!$course = $DB->get_record('course', array('id' => $courseid))) {
         print_error('nocourseid');
     }
     require_login($course);
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
     require_capability('moodle/course:managescales', $context);
+    $PAGE->set_pagelayout('admin');
 } else {
     require_once $CFG->libdir.'/adminlib.php';
     admin_externalpage_setup('scales');
@@ -62,24 +64,42 @@ switch ($action) {
         if (empty($scale->courseid)) {
             require_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM));
         } else if ($scale->courseid != $courseid) {
-            error('Incorrect courseid!');
+            print_error('invalidcourseid');
         }
 
         if (!$scale->can_delete()) {
             break;
         }
 
-        //TODO: add confirmation
-        $scale->delete();
+        $deleteconfirmed = optional_param('deleteconfirmed', 0, PARAM_BOOL);
+
+        if (!$deleteconfirmed) {
+            $strdeletescale = get_string('delete'). ' '. get_string('scale');
+            $PAGE->navbar->add($strdeletescale);
+            $PAGE->set_title($strdeletescale);
+            $PAGE->set_heading($COURSE->fullname);
+            echo $OUTPUT->header();
+            $confirmurl = new moodle_url('index.php', array(
+                    'id' => $courseid, 'scaleid' => $scale->id,
+                    'action'=> 'delete',
+                    'sesskey' =>  sesskey(),
+                    'deleteconfirmed'=> 1));
+
+            echo $OUTPUT->confirm(get_string('scaleconfirmdelete', 'grades', $scale->name), $confirmurl, "index.php?id={$courseid}");
+            echo $OUTPUT->footer();
+            die;
+        } else {
+            $scale->delete();
+        }
         break;
 }
 
 if (!$courseid) {
-    admin_externalpage_print_header();
+    echo $OUTPUT->header();
 }
 
-$table = null;
-$table2 = null;
+$table = new html_table();
+$table2 = new html_table();
 $heading = '';
 
 if ($courseid and $scales = grade_scale::fetch_all_local($courseid)) {
@@ -94,11 +114,9 @@ if ($courseid and $scales = grade_scale::fetch_all_local($courseid)) {
         $line[] = $used ? get_string('yes') : get_string('no');
 
         $buttons = "";
-        $buttons .= "<a title=\"$stredit\" href=\"edit.php?courseid=$courseid&amp;id=$scale->id\"><img".
-                    " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
+        $buttons .= grade_button('edit', $courseid, $scale);
         if (!$used) {
-            $buttons .= "<a title=\"$strdelete\" href=\"index.php?id=$courseid&amp;scaleid=$scale->id&amp;action=delete&amp;sesskey=$USER->sesskey\"><img".
-                        " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+            $buttons .= grade_button('delete', $courseid, $scale);
         }
         $line[] = $buttons;
         $data[] = $line;
@@ -106,7 +124,7 @@ if ($courseid and $scales = grade_scale::fetch_all_local($courseid)) {
     $table->head  = array($strscale, $strused, $stredit);
     $table->size  = array('70%', '20%', '10%');
     $table->align = array('left', 'center', 'center');
-    $table->width = '90%';
+    $table->attributes['class'] = 'scaletable localscales generaltable';
     $table->data  = $data;
 }
 
@@ -123,41 +141,31 @@ if ($scales = grade_scale::fetch_all_global()) {
 
         $buttons = "";
         if (has_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM))) {
-            $buttons .= "<a title=\"$stredit\" href=\"edit.php?courseid=$courseid&amp;id=$scale->id\"><img".
-                        " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
+            $buttons .= grade_button('edit', $courseid, $scale);
         }
         if (!$used and has_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM))) {
-            $buttons .= "<a title=\"$strdelete\" href=\"index.php?id=$courseid&amp;scaleid=$scale->id&amp;action=delete&amp;sesskey=$USER->sesskey\"><img".
-                        " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+            $buttons .= grade_button('delete', $courseid, $scale);
         }
         $line[] = $buttons;
         $data[] = $line;
     }
     $table2->head  = array($strscale, $strused, $stredit);
+    $table->attributes['class'] = 'scaletable globalscales generaltable';
     $table2->size  = array('70%', '20%', '10%');
     $table2->align = array('left', 'center', 'center');
-    $table2->width = '90%';
     $table2->data  = $data;
 }
 
 
 if ($courseid) {
-    print_grade_page_head($courseid, 'scale', null, get_string('coursescales', 'grades'));
+    print_grade_page_head($courseid, 'scale', 'scale', get_string('coursescales', 'grades'));
 }
 
-print_heading($strcustomscales, '', 3, 'main');
-print_table($table);
-print_heading($strstandardscale, '', 3, 'main');
-print_table($table2);
-echo '<div class="buttons">';
-print_single_button('edit.php', array('courseid'=>$courseid), $srtcreatenewscale);
-echo '</div>';
-
-if ($courseid) {
-    print_footer($course);
-} else {
-    admin_externalpage_print_footer();
-}
-
-
-?>
+echo $OUTPUT->heading($strcustomscales, 3, 'main');
+echo html_writer::table($table);
+echo $OUTPUT->heading($strstandardscale, 3, 'main');
+echo html_writer::table($table2);
+echo $OUTPUT->container_start('buttons');
+echo $OUTPUT->single_button(new moodle_url('edit.php', array('courseid'=>$courseid)), $srtcreatenewscale);
+echo $OUTPUT->container_end();
+echo $OUTPUT->footer();

@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -25,12 +25,10 @@
 class data_field_number extends data_field_base {
     var $type = 'number';
 
-    function data_field_number($field=0, $data=0) {
-        parent::data_field_base($field, $data);
-    }
-
     function update_content($recordid, $value, $name='') {
-        $content = new object;
+        global $DB;
+
+        $content = new stdClass();
         $content->fieldid = $this->field->id;
         $content->recordid = $recordid;
         $value = trim($value);
@@ -39,16 +37,18 @@ class data_field_number extends data_field_base {
         } else {
             $content->content = null;
         }
-        if ($oldcontent = get_record('data_content','fieldid', $this->field->id, 'recordid', $recordid)) {
+        if ($oldcontent = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             $content->id = $oldcontent->id;
-            return update_record('data_content', $content);
+            return $DB->update_record('data_content', $content);
         } else {
-            return insert_record('data_content', $content);
+            return $DB->insert_record('data_content', $content);
         }
     }
 
     function display_browse_field($recordid, $template) {
-        if ($content = get_record('data_content', 'fieldid', $this->field->id, 'recordid', $recordid)) {
+        global $DB;
+
+        if ($content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             if (strlen($content->content) < 1) {
                 return false;
             }
@@ -77,26 +77,22 @@ class data_field_number extends data_field_base {
         return optional_param('f_'.$this->field->id, '', PARAM_NOTAGS);
     }
 
+    // need to cast?
     function generate_sql($tablealias, $value) {
-        $varcharcontent = sql_compare_text("{$tablealias}.content");
-        return " ({$tablealias}.fieldid = {$this->field->id} AND $varcharcontent = '$value') ";
+        global $DB;
+
+        static $i=0;
+        $i++;
+        $name = "df_number_$i";
+        $varcharcontent = $DB->sql_compare_text("{$tablealias}.content");
+        return array(" ({$tablealias}.fieldid = {$this->field->id} AND $varcharcontent = :$name) ", array($name=>$value));
     }
 
     function get_sort_sql($fieldname) {
-        global $CFG;
-        switch ($CFG->dbfamily) {
-            case 'mysql':
-                // string in an arithmetic operation is converted to a floating-point number
-                return '('.$fieldname.'+0.0)';
-            case 'postgres':
-                // cast for PG
-                return 'CAST('.$fieldname.' AS REAL)';
-            default:
-                // the rest, just the field name. TODO: Analyse behaviour under MSSQL and Oracle
-                return $fieldname;
-        }
+        global $DB;
+        return $DB->sql_cast_char2real($fieldname, true);
     }
 
 }
 
-?>
+

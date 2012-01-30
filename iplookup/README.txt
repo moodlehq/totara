@@ -20,6 +20,4 @@ original Earth map from:
 marker.gif
   custom made in Inkscape
 
-Petr Skoda (skodak), January 2008  
-
-$Id$
+Petr Skoda (skodak), January 2008

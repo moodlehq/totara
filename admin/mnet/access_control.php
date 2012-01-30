@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 // Allows the admin to control user logins from remote moodles.
 
@@ -16,7 +16,7 @@ require_login();
 
 admin_externalpage_setup('ssoaccesscontrol');
 
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 if (!extension_loaded('openssl')) {
     print_error('requiresopenssl', 'mnet');
@@ -27,7 +27,7 @@ $sesskey = sesskey();
 $formerror = array();
 
 // grab the mnet hosts and remove the localhost
-$mnethosts = get_records_menu('mnet_host', '', '', 'name', 'id, name');
+$mnethosts = $DB->get_records_menu('mnet_host', array(), 'name', 'id, name');
 if (array_key_exists($CFG->mnet_localhost_id, $mnethosts)) {
     unset($mnethosts[$CFG->mnet_localhost_id]);
 }
@@ -36,7 +36,7 @@ if (array_key_exists($CFG->mnet_localhost_id, $mnethosts)) {
 
 // process actions
 if (!empty($action) and confirm_sesskey()) {
-    
+
     // boot if insufficient permission
     if (!has_capability('moodle/user:delete', $sitecontext)) {
         print_error('nomodifyacl','mnet');
@@ -44,19 +44,19 @@ if (!empty($action) and confirm_sesskey()) {
 
     // fetch the record in question
     $id = required_param('id', PARAM_INT);
-    if (!$idrec = get_record('mnet_sso_access_control', 'id', $id)) {
+    if (!$idrec = $DB->get_record('mnet_sso_access_control', array('id'=>$id))) {
         print_error('recordnoexists','mnet', "$CFG->wwwroot/$CFG->admin/mnet/access_control.php");
     }
 
     switch ($action) {
 
         case "delete":
-            delete_records('mnet_sso_access_control', 'id', $id);
-            redirect('access_control.php', get_string('deleteuserrecord', 'mnet', array($idrec->username, $mnethosts[$idrec->mnet_host_id])));
+            $DB->delete_records('mnet_sso_access_control', array('id'=>$id));
+            redirect('access_control.php', get_string('deleteuserrecord', 'mnet', array('user'=>$idrec->username, 'host'=>$mnethosts[$idrec->mnet_host_id])));
             break;
 
         case "acl":
-        
+
             // require the access parameter, and it must be 'allow' or 'deny'
             $accessctrl = trim(strtolower(required_param('accessctrl', PARAM_ALPHA)));
             if ($accessctrl != 'allow' and $accessctrl != 'deny') {
@@ -65,9 +65,9 @@ if (!empty($action) and confirm_sesskey()) {
 
             if (mnet_update_sso_access_control($idrec->username, $idrec->mnet_host_id, $accessctrl)) {
                 if ($accessctrl == 'allow') {
-                    redirect('access_control.php', get_string('ssl_acl_allow','mnet', array($idrec->username, $mnethosts[$idrec->mnet_host_id])));
+                    redirect('access_control.php', get_string('ssl_acl_allow','mnet', array('uset'=>$idrec->username, 'host'=>$mnethosts[$idrec->mnet_host_id])));
                 } elseif ($accessctrl == 'deny') {
-                    redirect('access_control.php', get_string('ssl_acl_deny','mnet', array($idrec->username, $mnethosts[$idrec->mnet_host_id])));
+                    redirect('access_control.php', get_string('ssl_acl_deny','mnet', array('user'=>$idrec->username, 'host'=>$mnethosts[$idrec->mnet_host_id])));
                 }
             }
             break;
@@ -107,9 +107,9 @@ if ($form = data_submitted() and confirm_sesskey()) {
             if (!empty($username)) {
                 if (mnet_update_sso_access_control($username, $form->mnet_host_id, $form->accessctrl)) {
                     if ($form->accessctrl == 'allow') {
-                        redirect('access_control.php', get_string('ssl_acl_allow','mnet', array($username, $mnethosts[$form->mnet_host_id])));
+                        redirect('access_control.php', get_string('ssl_acl_allow','mnet', array('user'=>$username, 'host'=>$mnethosts[$form->mnet_host_id])));
                     } elseif ($form->accessctrl == 'deny') {
-                        redirect('access_control.php', get_string('ssl_acl_deny','mnet', array($username, $mnethosts[$form->mnet_host_id])));
+                        redirect('access_control.php', get_string('ssl_acl_deny','mnet', array('user'=>$username, 'host'=>$mnethosts[$form->mnet_host_id])));
                     }
                 }
             }
@@ -119,7 +119,7 @@ if ($form = data_submitted() and confirm_sesskey()) {
 }
 
 // Explain
-print_box(get_string('ssoacldescr','mnet'));
+echo $OUTPUT->box(get_string('ssoacldescr','mnet'));
 // Are the needed bits enabled?
 $warn = '';
 if (empty($CFG->mnet_dispatcher_mode) || $CFG->mnet_dispatcher_mode !== 'strict') {
@@ -130,12 +130,9 @@ if (!is_enabled_auth('mnet')) {
     $warn .= '<p>' .  get_string('authmnetdisabled','mnet').'</p>';
 }
 
-if (get_config('auth/mnet', 'auto_add_remote_users') != true) {
-    $warn .= '<p>' .  get_string('authmnetautoadddisabled','mnet').'</p>';
-}
 if (!empty($warn)) {
     $warn = '<p>' .  get_string('ssoaclneeds','mnet').'</p>' . $warn;
-    print_box($warn);
+    echo $OUTPUT->box($warn);
 }
 // output the ACL table
 $columns = array("username", "mnet_host_id", "access", "delete");
@@ -151,50 +148,52 @@ foreach ($columns as $column) {
     } else {
         $columndir = $dir == "ASC" ? "DESC" : "ASC";
         $columnicon = $dir == "ASC" ? "down" : "up";
-        $columnicon = " <img src=\"$CFG->pixpath/t/$columnicon.gif\" alt=\"\" />";
+        $columnicon = " <img src=\"" . $OUTPUT->pix_url('t/' . $columnicon) . "\" alt=\"\" />";
     }
     $headings[$column] = "<a href=\"?sort=$column&amp;dir=$columndir&amp;\">".$string[$column]."</a>$columnicon";
 }
 $headings['delete'] = '';
-$acl = get_records('mnet_sso_access_control', '', '', "$sort $dir", '*'); //, $page * $perpage, $perpage);
-$aclcount = count_records('mnet_sso_access_control');
+$acl = $DB->get_records('mnet_sso_access_control', null, "$sort $dir", '*'); //, $page * $perpage, $perpage);
+$aclcount = $DB->count_records('mnet_sso_access_control');
 
 if (!$acl) {
-    print_heading(get_string('noaclentries','mnet'));
+    echo $OUTPUT->heading(get_string('noaclentries','mnet'));
     $table = NULL;
 } else {
+    $table = new html_table();
     $table->head = $headings;
     $table->align = array('left', 'left', 'center');
     $table->width = "95%";
     foreach ($acl as $aclrecord) {
         if ($aclrecord->accessctrl == 'allow') {
             $accesscolumn = get_string('allow', 'mnet')
-                . " (<a href=\"?id={$aclrecord->id}&amp;action=acl&amp;accessctrl=deny&amp;sesskey={$USER->sesskey}\">"
+                . " (<a href=\"?id={$aclrecord->id}&amp;action=acl&amp;accessctrl=deny&amp;sesskey=".sesskey()."\">"
                 . get_string('deny', 'mnet') . "</a>)";
         } else {
             $accesscolumn = get_string('deny', 'mnet')
-                . " (<a href=\"?id={$aclrecord->id}&amp;action=acl&amp;accessctrl=allow&amp;sesskey={$USER->sesskey}\">"
+                . " (<a href=\"?id={$aclrecord->id}&amp;action=acl&amp;accessctrl=allow&amp;sesskey=".sesskey()."\">"
                 . get_string('allow', 'mnet') . "</a>)";
         }
-        $deletecolumn = "<a href=\"?id={$aclrecord->id}&amp;action=delete&amp;sesskey={$USER->sesskey}\">"
+        $deletecolumn = "<a href=\"?id={$aclrecord->id}&amp;action=delete&amp;sesskey=".sesskey()."\">"
                 . get_string('delete') . "</a>";
         $table->data[] = array (s($aclrecord->username), $aclrecord->mnet_host_id, $accesscolumn, $deletecolumn);
     }
 }
 
 if (!empty($table)) {
-    print_table($table);
+    echo html_writer::table($table);
     echo '<p>&nbsp;</p>';
-    print_paging_bar($aclcount, $page, $perpage, "?sort=$sort&amp;dir=$dir&amp;perpage=$perpage&amp;");
+    $baseurl = new moodle_url('/admin/mnet/access_control.php', array('sort' => $sort, 'dir' => $dir, 'perpage' => $perpage));
+    echo $OUTPUT->paging_bar($aclcount, $page, $perpage, $baseurl);
 }
 
 
 
 // output the add form
-print_simple_box_start('center','90%','','20');
+echo $OUTPUT->box_start();
 
 ?>
- <div class="mnetaddtoaclform"> 
+ <div class="mnetaddtoaclform">
   <form id="mnetaddtoacl" method="post">
     <input type="hidden" name="sesskey" value="<?php echo $sesskey; ?>" />
 <?php
@@ -211,7 +210,7 @@ echo " " . get_string('remotehost', 'mnet') . ":\n";
 if (!empty($formerror['mnet_host_id'])) {
     echo '<span class="error"> * </span>';
 }
-choose_from_menu($mnethosts, 'mnet_host_id');
+echo html_writer::select($mnethosts, 'mnet_host_id');
 
 // choose an access level
 echo " " . get_string('accesslevel', 'mnet') . ":\n";
@@ -220,7 +219,7 @@ if (!empty($formerror['accessctrl'])) {
 }
 $accessmenu['allow'] = get_string('allow', 'mnet');
 $accessmenu['deny'] = get_string('deny', 'mnet');
-choose_from_menu($accessmenu, 'accessctrl');
+echo html_writer::select($accessmenu, 'accessctrl');
 
 // submit button
 echo '<input type="submit" value="' . get_string('addtoacl', 'mnet') . '" />';
@@ -231,7 +230,5 @@ foreach ($formerror as $error) {
     echo "<br><span class=\"error\">$error<span>";
 }
 
-print_simple_box_end();
-admin_externalpage_print_footer();
-
-?>
+echo $OUTPUT->box_end();
+echo $OUTPUT->footer();

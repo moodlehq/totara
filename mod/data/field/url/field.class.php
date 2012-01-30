@@ -1,4 +1,4 @@
-<?php  // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -25,31 +25,50 @@
 class data_field_url extends data_field_base {
     var $type = 'url';
 
-    function data_field_text($field=0, $data=0) {
-        parent::data_field_base($field, $data);
-    }
-
     function display_add_field($recordid=0) {
-        global $CFG;
+        global $CFG, $DB, $OUTPUT, $PAGE;
+
+        require_once($CFG->dirroot. '/repository/lib.php'); // necessary for the constants used in args
+
+        $args = new stdClass();
+        $args->accepted_types = '*';
+        $args->return_types = FILE_EXTERNAL;
+        $args->context = $this->context;
+        $args->env = 'url';
+        $fp = new file_picker($args);
+        $options = $fp->options;
+
+        $fieldid = 'field_url_'.$options->client_id;
+
+        $straddlink = get_string('choosealink', 'repository');
         $url = '';
         $text = '';
         if ($recordid) {
-            if ($content = get_record('data_content', 'fieldid', $this->field->id, 'recordid', $recordid)) {
+            if ($content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
                 $url  = $content->content;
                 $text = $content->content1;
             }
         }
-        $url = empty($url) ? 'http://' : $url;
         $str = '<div title="'.s($this->field->description).'">';
         if (!empty($this->field->param1) and empty($this->field->param2)) {
             $str .= '<table><tr><td align="right">';
-            $str .= get_string('url','data').':</td><td><input type="text" name="field_'.$this->field->id.'_0" id="field_'.$this->field->id.'_0" value="'.$url.'" size="60" /></td></tr>';
+            $str .= get_string('url','data').':</td><td><input type="text" name="field_'.$this->field->id.'_0" id="'.$fieldid.'" value="'.$url.'" size="60" /></td></tr>';
             $str .= '<tr><td align="right">'.get_string('text','data').':</td><td><input type="text" name="field_'.$this->field->id.'_1" id="field_'.$this->field->id.'_1" value="'.s($text).'" size="60" /></td></tr>';
             $str .= '</table>';
         } else {
             // Just the URL field
-            $str .= '<input type="text" name="field_'.$this->field->id.'_0" id="field_'.$this->field->id.'_0" value="'.s($url).'" size="60" />';
+            $str .= '<input type="text" name="field_'.$this->field->id.'_0" id="'.$fieldid.'" value="'.s($url).'" size="60" />';
         }
+
+        $str .= '<button id="filepicker-button-'.$options->client_id.'" style="display:none">'.$straddlink.'</button>';
+
+        // print out file picker
+        //$str .= $OUTPUT->render($fp);
+
+        $module = array('name'=>'data_urlpicker', 'fullpath'=>'/mod/data/data.js', 'requires'=>array('core_filepicker'));
+        $PAGE->requires->js_init_call('M.data_urlpicker.init', array($options), true, $module);
+        $PAGE->requires->js_function_call('show_item', array('filepicker-button-'.$options->client_id));
+
         $str .= '</div>';
         return $str;
     }
@@ -63,11 +82,18 @@ class data_field_url extends data_field_base {
     }
 
     function generate_sql($tablealias, $value) {
-        return " ({$tablealias}.fieldid = {$this->field->id} AND {$tablealias}.content LIKE '%{$value}%') ";
+        global $DB;
+
+        static $i=0;
+        $i++;
+        $name = "df_url_$i";
+        return array(" ({$tablealias}.fieldid = {$this->field->id} AND ".$DB->sql_like("{$tablealias}.content", ":$name", false).") ", array($name=>"%$value%"));
     }
 
     function display_browse_field($recordid, $template) {
-        if ($content = get_record('data_content', 'fieldid', $this->field->id, 'recordid', $recordid)) {
+        global $DB;
+
+        if ($content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             $url = empty($content->content)? '':$content->content;
             $text = empty($content->content1)? '':$content->content1;
             if (empty($url) or ($url == 'http://')) {
@@ -93,10 +119,13 @@ class data_field_url extends data_field_base {
     }
 
     function update_content($recordid, $value, $name='') {
-        $content = new object;
+        global $DB;
+
+        $content = new stdClass();
         $content->fieldid = $this->field->id;
         $content->recordid = $recordid;
         $names = explode('_', $name);
+
         switch ($names[2]) {
             case 0:
                 // update link
@@ -110,11 +139,15 @@ class data_field_url extends data_field_base {
                 break;
         }
 
-        if ($oldcontent = get_record('data_content','fieldid', $this->field->id, 'recordid', $recordid)) {
+        if (!empty($content->content) && (strpos($content->content, '://') === false) && (strpos($content->content, '/', 0) === false)) {
+            $content->content = 'http://' . $content->content;
+        }
+
+        if ($oldcontent = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             $content->id = $oldcontent->id;
-            return update_record('data_content', $content);
+            return $DB->update_record('data_content', $content);
         } else {
-            return insert_record('data_content', $content);
+            return $DB->insert_record('data_content', $content);
         }
     }
 
@@ -134,4 +167,4 @@ class data_field_url extends data_field_base {
 
 }
 
-?>
+

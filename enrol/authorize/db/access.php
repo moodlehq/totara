@@ -1,13 +1,46 @@
-<?php // $Id$
+<?php
 
-$enrol_authorize_capabilities = array(
+$capabilities = array(
+
+    'enrol/authorize:config' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+        )
+    ),
+
+    'enrol/authorize:manage' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+        )
+    ),
+
+    'enrol/authorize:unenrol' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+        )
+    ),
+
+    'enrol/authorize:unenrolself' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+        )
+    ),
+
 
     'enrol/authorize:managepayments' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -15,11 +48,11 @@ $enrol_authorize_capabilities = array(
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
     )
 
 );
 
-?>
+

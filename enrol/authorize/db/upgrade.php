@@ -1,4 +1,4 @@
-<?php  //$Id$
+<?php
 
 // This file keeps track of upgrades to
 // the authorize enrol plugin
@@ -9,98 +9,95 @@
 //
 // The upgrade function in this file will attempt
 // to perform all the necessary actions to upgrade
-// your older installtion to the current version.
+// your older installation to the current version.
 //
 // If there's something it cannot do itself, it
 // will tell you what you need to do.
 //
 // The commands in here will all be database-neutral,
-// using the functions defined in lib/ddllib.php
+// using the methods of database_manager class
+//
+// Please do not forget to use upgrade_set_timeout()
+// before any action that may take longer time to finish.
 
-function xmldb_enrol_authorize_upgrade($oldversion=0) {
+function xmldb_enrol_authorize_upgrade($oldversion) {
+    global $CFG, $DB, $OUTPUT;
 
-    global $CFG, $THEME, $db;
+    $dbman = $DB->get_manager();
 
-    $result = true;
+    //===== 1.9.0 upgrade line ======//
 
-    if ($result && $oldversion < 2006111700) {
-        $table = new XMLDBTable('enrol_authorize');
-        if (!field_exists($table, new XMLDBField('refundinfo'))) {
-            $field = new XMLDBField('cclastfour');
-            $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'paymentmethod');
-            $result = $result && rename_field($table, $field, 'refundinfo');
-        }
-    }
-
-    if ($result && $oldversion < 2006112900) {
-        if (isset($CFG->an_login)) {
-            if (empty($CFG->an_login)) {
-                unset_config('an_login');
-            }
-            else {
-                $result = $result && set_config('an_login', rc4encrypt($CFG->an_login), 'enrol/authorize') && unset_config('an_login');
-            }
-        }
-        if (isset($CFG->an_tran_key)) {
-            if (empty($CFG->an_tran_key)) {
-                unset_config('an_tran_key');
-            }
-            else {
-                $result = $result && set_config('an_tran_key', rc4encrypt($CFG->an_tran_key), 'enrol/authorize') && unset_config('an_tran_key');
-            }
-        }
-        if (isset($CFG->an_password)) {
-            if (empty($CFG->an_password)) {
-                unset_config('an_password');
-            }
-            else {
-                $result = $result && set_config('an_password', rc4encrypt($CFG->an_password), 'enrol/authorize') && unset_config('an_password');
-            }
-        }
-    }
-
-
-    if ($result && $oldversion < 2006112903) {
+    if ($oldversion < 2008092700) {
         /// enrol_authorize.transid
         /// Define index transid (not unique) to be dropped form enrol_authorize
-        $table = new XMLDBTable('enrol_authorize');
-        $index = new XMLDBIndex('transid');
-        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('transid'));
-        drop_index($table, $index);
+        $table = new xmldb_table('enrol_authorize');
+        $index = new xmldb_index('transid', XMLDB_INDEX_NOTUNIQUE, array('transid'));
+        if ($dbman->index_exists($table, $index)) {
+            $dbman->drop_index($table, $index);
+        }
 
         /// Changing precision of field transid on table enrol_authorize to (20)
-        $table = new XMLDBTable('enrol_authorize');
-        $field = new XMLDBField('transid');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '20', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'userid');
-        change_field_precision($table, $field);
+        $table = new xmldb_table('enrol_authorize');
+        $field = new xmldb_field('transid', XMLDB_TYPE_INTEGER, '20', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'userid');
+        $dbman->change_field_precision($table, $field);
 
         /// Launch add index transid again
-        $table = new XMLDBTable('enrol_authorize');
-        $index = new XMLDBIndex('transid');
-        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('transid'));
-        add_index($table, $index);
+        $table = new xmldb_table('enrol_authorize');
+        $index = new xmldb_index('transid', XMLDB_INDEX_NOTUNIQUE, array('transid'));
+        $dbman->add_index($table, $index);
 
         /// enrol_authorize_refunds.transid
         /// Define index transid (not unique) to be dropped form enrol_authorize_refunds
-        $table = new XMLDBTable('enrol_authorize_refunds');
-        $index = new XMLDBIndex('transid');
-        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('transid'));
-        drop_index($table, $index);
+        $table = new xmldb_table('enrol_authorize_refunds');
+        $index = new xmldb_index('transid', XMLDB_INDEX_NOTUNIQUE, array('transid'));
+        if ($dbman->index_exists($table, $index)) {
+            $dbman->drop_index($table, $index);
+        }
 
         /// Changing precision of field transid on table enrol_authorize_refunds to (20)
-        $table = new XMLDBTable('enrol_authorize_refunds');
-        $field = new XMLDBField('transid');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '20', XMLDB_UNSIGNED, null, null, null, null, '0', 'amount');
-        change_field_precision($table, $field);
+        $table = new xmldb_table('enrol_authorize_refunds');
+        $field = new xmldb_field('transid', XMLDB_TYPE_INTEGER, '20', XMLDB_UNSIGNED, null, null, '0', 'amount');
+        $dbman->change_field_precision($table, $field);
 
         /// Launch add index transid again
-        $table = new XMLDBTable('enrol_authorize_refunds');
-        $index = new XMLDBIndex('transid');
-        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('transid'));
-        add_index($table, $index);
+        $table = new xmldb_table('enrol_authorize_refunds');
+        $index = new xmldb_index('transid', XMLDB_INDEX_NOTUNIQUE, array('transid'));
+        $dbman->add_index($table, $index);
+
+        /// authorize savepoint reached
+        upgrade_plugin_savepoint(true, 2008092700, 'enrol', 'authorize');
     }
 
-    return $result;
-}
+    /// Dropping all enums/check contraints from core. MDL-18577
+    if ($oldversion < 2009042700) {
 
-?>
+    /// Changing list of values (enum) of field paymentmethod on table enrol_authorize to none
+        $table = new xmldb_table('enrol_authorize');
+        $field = new xmldb_field('paymentmethod', XMLDB_TYPE_CHAR, '6', null, XMLDB_NOTNULL, null, 'cc', 'id');
+
+    /// Launch change of list of values for field paymentmethod
+        $dbman->drop_enum_from_field($table, $field);
+
+        /// authorize savepoint reached
+        upgrade_plugin_savepoint(true, 2009042700, 'enrol', 'authorize');
+    }
+
+    // Add instanceid field to enrol_authorize table
+    if ($oldversion < 2010081203) {
+        $table = new xmldb_table('enrol_authorize');
+        $field = new xmldb_field('instanceid');
+        if (!$dbman->field_exists($table, $field)) {
+            $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 0, 'userid');
+            $dbman->add_field($table, $field);
+        }
+        upgrade_plugin_savepoint(true, 2010081203, 'enrol', 'authorize');
+    }
+
+    // Moodle v2.1.0 release upgrade line
+    // Put any upgrade step following this
+
+    // Moodle v2.2.0 release upgrade line
+    // Put any upgrade step following this
+
+    return true;
+}

@@ -1,162 +1,131 @@
-<?php  // $Id$
+<?php
 
-    $nomoodlecookie = true;     // Session not needed!
+define('NO_MOODLE_COOKIES', true); // session not used here
 
-    include('../../../config.php');
-    include('../lib.php');
+require_once('../../../config.php');
+require_once($CFG->dirroot.'/mod/chat/lib.php');
 
-    $chat_sid   = required_param('chat_sid', PARAM_ALPHANUM);
-    $beep       = optional_param('beep', 0, PARAM_INT);  // beep target
+$chat_sid   = required_param('chat_sid', PARAM_ALPHANUM);
+$beep       = optional_param('beep', 0, PARAM_INT);  // beep target
 
-    if (!$chatuser = get_record('chat_users', 'sid', $chat_sid)) {
-        error('Not logged in!');
-    }
+$PAGE->set_url('/mod/chat/gui_header_js/users.php', array('chat_sid'=>$chat_sid));
 
-    //Get the minimal course
-    if (!$course = get_record('course','id',$chatuser->course,'','','','','id,theme,lang')) {
-        error('incorrect course id');
-    }
+if (!$chatuser = $DB->get_record('chat_users', array('sid'=>$chat_sid))) {
+    print_error('notlogged', 'chat');
+}
 
-    //Get the user theme and enough info to be used in chat_format_message() which passes it along to
-    if (!$USER = get_record('user','id',$chatuser->userid)) { // no optimisation here, it would break again in future!
-        error('User does not exist!');
-    }
-    $USER->description = '';
+//Get the minimal course
+if (!$course = $DB->get_record('course', array('id'=>$chatuser->course))) {
+    print_error('invalidcourseid');
+}
 
-    //Setup course, lang and theme
-    course_setup($course);
+//Get the user theme and enough info to be used in chat_format_message() which passes it along to
+if (!$USER = $DB->get_record('user', array('id'=>$chatuser->userid))) { // no optimisation here, it would break again in future!
+    print_error('invaliduser');
+}
 
-    $courseid = $chatuser->course;
+$PAGE->set_pagelayout('embedded');
 
-    if (!$cm = get_coursemodule_from_instance('chat', $chatuser->chatid, $courseid)) {
-        error('Course Module ID was incorrect');
-    }
+$USER->description = '';
 
-    if ($beep) {
-        $message->chatid    = $chatuser->chatid;
-        $message->userid    = $chatuser->userid;
-        $message->groupid   = $chatuser->groupid;
-        $message->message   = "beep $beep";
-        $message->system    = 0;
-        $message->timestamp = time();
+//Setup course, lang and theme
+$PAGE->set_course($course);
 
-        if (!insert_record('chat_messages', $message)) {
-            error('Could not insert a chat message!');
-        }
+$courseid = $chatuser->course;
 
-        $chatuser->lastmessageping = time();          // A beep is a ping  ;-)
-    }
+if (!$cm = get_coursemodule_from_instance('chat', $chatuser->chatid, $courseid)) {
+    print_error('invalidcoursemodule');
+}
 
-    $chatuser->lastping = time();
-    set_field('chat_users', 'lastping', $chatuser->lastping, 'id', $chatuser->id  );
+if ($beep) {
+    $message->chatid    = $chatuser->chatid;
+    $message->userid    = $chatuser->userid;
+    $message->groupid   = $chatuser->groupid;
+    $message->message   = "beep $beep";
+    $message->system    = 0;
+    $message->timestamp = time();
 
-    $refreshurl = "users.php?chat_sid=$chat_sid";
+    $DB->insert_record('chat_messages', $message);
+    $DB->insert_record('chat_messages_current', $message);
 
-    /// Get list of users
+    $chatuser->lastmessageping = time();          // A beep is a ping  ;-)
+}
 
-    if (!$chatusers = chat_get_users($chatuser->chatid, $chatuser->groupid, $cm->groupingid)) {
-        print_error('errornousers', 'chat');
-    }
+$chatuser->lastping = time();
+$DB->set_field('chat_users', 'lastping', $chatuser->lastping, array('id'=>$chatuser->id));
 
-    ob_start();
-    ?>
-    <script type="text/javascript">
-    //<![CDATA[
-    var timer = null
-    var f = 1; //seconds
-    var uidles = new Array(<?php echo count($chatusers) ?>);
-    <?php
-        $i = 0;
-        foreach ($chatusers as $chatuser) {
-            echo "uidles[$i] = 'uidle{$chatuser->id}';\n";
-            $i++;
-        }
-    ?>
+$refreshurl = "users.php?chat_sid=$chat_sid";
 
-    function stop() {
-        clearTimeout(timer)
-    }
+/// Get list of users
 
-    function start() {
-        timer = setTimeout("update()", f*1000);
-    }
+if (!$chatusers = chat_get_users($chatuser->chatid, $chatuser->groupid, $cm->groupingid)) {
+    print_error('errornousers', 'chat');
+}
 
-    function update() {
-        for(i=0; i<uidles.length; i++) {
-            el = document.getElementById(uidles[i]);
-            if (el != null) {
-                parts = el.innerHTML.split(":");
-                time = f + (parseInt(parts[0], 10)*60) + parseInt(parts[1], 10);
-                min = Math.floor(time/60);
-                sec = time % 60;
-                el.innerHTML = ((min < 10) ? "0" : "") + min + ":" + ((sec < 10) ? "0" : "") + sec;
-            }
-        }
-        timer = setTimeout("update()", f*1000);
-    }
-    //]]>
-    </script>
-    <?php
+$uidles = Array();
+foreach ($chatusers as $chatuser) {
+    $uidles[] = $chatuser->id;
+}
 
+$module = array(
+    'name'      => 'mod_chat_header',
+    'fullpath'  => '/mod/chat/gui_header_js/module.js',
+    'requires'  => array('node')
+);
+$PAGE->requires->js_init_call('M.mod_chat_header.init_users', array($uidles), false, $module);
 
-    /// Print headers
-    $meta = ob_get_clean();
+/// Print user panel body
+$timenow    = time();
+$stridle    = get_string('idle', 'chat');
+$strbeep    = get_string('beep', 'chat');
 
+$table = new html_table();
+$table->width = '100%';
+$table->data = array();
+foreach ($chatusers as $chatuser) {
+    $lastping = $timenow - $chatuser->lastmessageping;
+    $min = (int) ($lastping/60);
+    $sec = $lastping - ($min*60);
+    $min = $min < 10 ? '0'.$min : $min;
+    $sec = $sec < 10 ? '0'.$sec : $sec;
+    $idle = $min.':'.$sec;
+    
 
-    // Use ob to support Keep-Alive
-    ob_start();
-    print_header('', '', '', '', $meta, false, '', '', false, 'onload="start()" onunload="stop()"');
+    $row = array();
+    $row[0] = $OUTPUT->user_picture($chatuser, array('courseid'=>$courseid, 'popup'=>true));
+    $row[1]  = html_writer::start_tag('p');
+    $row[1] .= html_writer::start_tag('font', array('size'=>'1'));
+    $row[1] .= fullname($chatuser).'<br />';
+    $row[1] .= html_writer::tag('span', $stridle . html_writer::tag('span', $idle, array('name'=>'uidles', 'id'=>'uidle'.$chatuser->id)), array('class'=>'dimmed_text')).' ';
+    $row[1] .= html_writer::tag('a', $strbeep, array('href'=>new moodle_url('/mod/chat/gui_header_js/users.php', array('chat_sid'=>$chat_sid, 'beep'=>$chatuser->id))));
+    $row[1] .= html_writer::end_tag('font');
+    $row[1] .= html_writer::end_tag('p');
+    $table->data[] = $row;
+}
 
+ob_start();
+echo $OUTPUT->header();
+echo html_writer::tag('div', html_writer::tag('a', 'Refresh link', array('href'=>$refreshurl, 'id'=>'refreshLink')), array('style'=>'display:none')); //TODO: localize
+echo html_writer::table($table);
+echo $OUTPUT->footer();
 
-    /// Print user panel body
-    $timenow    = time();
-    $stridle    = get_string('idle', 'chat');
-    $strbeep    = get_string('beep', 'chat');
+//
+// Support HTTP Keep-Alive by printing Content-Length
+//
+// If the user pane is refreshing often, using keepalives
+// is lighter on the server and faster for most clients.
+//
+// Apache is normally configured to have a 15s timeout on
+// keepalives, so let's observe that. Unfortunately, we cannot
+// autodetect the keepalive timeout.
+//
+// Using keepalives when the refresh is longer than the timeout
+// wastes server resources keeping an apache child around on a
+// connection that will timeout. So we don't.
+if ($CFG->chat_refresh_userlist < 15) {
+    header("Content-Length: " . ob_get_length() );
+    ob_end_flush();
+}
 
+exit; // no further output
 
-    echo '<div style="display: none"><a href="'.$refreshurl.'" id="refreshLink">Refresh link</a></div>';
-    echo '<table width="100%">';
-    foreach ($chatusers as $chatuser) {
-        $lastping = $timenow - $chatuser->lastmessageping;
-        $min = (int) ($lastping/60);
-        $sec = $lastping - ($min*60);
-        $min = $min < 10 ? '0'.$min : $min;
-        $sec = $sec < 10 ? '0'.$sec : $sec;
-        $idle = $min.':'.$sec;
-        echo '<tr><td width="35">';
-        echo "<a target=\"_blank\" onClick=\"return openpopup('/user/view.php?id=$chatuser->id&amp;course=$courseid','user$chatuser->id','');\" href=\"$CFG->wwwroot/user/view.php?id=$chatuser->id&amp;course=$courseid\">";
-        print_user_picture($chatuser->id, 0, $chatuser->picture, false, false, false);
-        echo '</a></td><td valign="center">';
-        echo '<p><font size="1">';
-        echo fullname($chatuser).'<br />';
-        echo "<span class=\"dimmed_text\">$stridle <span name=\"uidles\" id=\"uidle{$chatuser->id}\">$idle</span></span>";
-        echo " <a href=\"users.php?chat_sid=$chat_sid&amp;beep=$chatuser->id\">$strbeep</a>";
-        echo '</font></p>';
-        echo '</td></tr>';
-    }
-    // added 2 </div>s, xhtml strict complaints
-    echo '</table>';
-    print_footer('empty');
-
-    //
-    // Support HTTP Keep-Alive by printing Content-Length
-    //
-    // If the user pane is refreshing often, using keepalives 
-    // is lighter on the server and faster for most clients. 
-    //
-    // Apache is normally configured to have a 15s timeout on 
-    // keepalives, so let's observe that. Unfortunately, we cannot
-    // autodetect the keepalive timeout. 
-    //
-    // Using keepalives when the refresh is longer than the timeout
-    // wastes server resources keeping an apache child around on a  
-    // connection that will timeout. So we don't. 
-    if ($CFG->chat_refresh_userlist < 15) {    
-        header("Content-Length: " . ob_get_length() );
-        ob_end_flush(); 
-    }
-
-    exit; // no further output
-
-
-?>

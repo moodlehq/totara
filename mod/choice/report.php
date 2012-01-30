@@ -1,4 +1,4 @@
-<?php  // $Id$
+<?php
 
     require_once("../../config.php");
     require_once("lib.php");
@@ -7,24 +7,36 @@
     $format     = optional_param('format', CHOICE_PUBLISH_NAMES, PARAM_INT);
     $download   = optional_param('download', '', PARAM_ALPHA);
     $action     = optional_param('action', '', PARAM_ALPHA);
-    $attemptids = optional_param('attemptid', array(), PARAM_INT); //get array of responses to delete.
+    $attemptids = optional_param_array('attemptid', array(), PARAM_INT); //get array of responses to delete.
+
+    $url = new moodle_url('/mod/choice/report.php', array('id'=>$id));
+    if ($format !== CHOICE_PUBLISH_NAMES) {
+        $url->param('format', $format);
+    }
+    if ($download !== '') {
+        $url->param('download', $download);
+    }
+    if ($action !== '') {
+        $url->param('action', $action);
+    }
+    $PAGE->set_url($url);
 
     if (! $cm = get_coursemodule_from_id('choice', $id)) {
-        error("Course Module ID was incorrect");
+        print_error("invalidcoursemodule");
     }
 
-    if (! $course = get_record("course", "id", $cm->course)) {
-        error("Course module is misconfigured");
+    if (! $course = $DB->get_record("course", array("id" => $cm->course))) {
+        print_error("coursemisconf");
     }
 
     require_login($course->id, false, $cm);
-    
+
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
-    
+
     require_capability('mod/choice:readresponses', $context);
-    
+
     if (!$choice = choice_get_choice($cm->instance)) {
-        error("Course module is incorrect");
+        print_error('invalidcoursemodule');
     }
 
     $strchoice = get_string("modulename", "choice");
@@ -34,15 +46,15 @@
     add_to_log($course->id, "choice", "report", "report.php?id=$cm->id", "$choice->id",$cm->id);
 
     if (data_submitted() && $action == 'delete' && has_capability('mod/choice:deleteresponses',$context) && confirm_sesskey()) {
-        choice_delete_responses($attemptids, $choice->id); //delete responses.
+        choice_delete_responses($attemptids, $choice, $cm, $course); //delete responses.
         redirect("report.php?id=$cm->id");
     }
-        
-    if (!$download) {
 
-        $navigation = build_navigation($strresponses, $cm);
-        print_header_simple(format_string($choice->name).": $strresponses", "", $navigation, "", '', true,
-                  update_module_button($cm->id, $course->id, $strchoice), navmenu($course, $cm));
+    if (!$download) {
+        $PAGE->navbar->add($strresponses);
+        $PAGE->set_title(format_string($choice->name).": $strresponses");
+        $PAGE->set_heading($course->fullname);
+        echo $OUTPUT->header();
         /// Check to see if groups are being used in this choice
         $groupmode = groups_get_activity_groupmode($cm);
         if ($groupmode) {
@@ -56,8 +68,8 @@
 
     if ($download == "ods" && has_capability('mod/choice:downloadresponses', $context)) {
         require_once("$CFG->libdir/odslib.class.php");
-  
-    /// Calculate file name 
+
+    /// Calculate file name
         $filename = clean_filename("$course->shortname ".strip_tags(format_string($choice->name,true))).'.ods';
     /// Creating a workbook
         $workbook = new MoodleODSWorkbook("-");
@@ -74,7 +86,7 @@
         $myxls->write_string(0,4,get_string("choice","choice"));
 
     /// generate the data for the body of the spreadsheet
-        $i=0;  
+        $i=0;
         $row=1;
         if ($users) {
             foreach ($users as $option => $userid) {
@@ -109,8 +121,8 @@
     //print spreadsheet if one is asked for:
     if ($download == "xls" && has_capability('mod/choice:downloadresponses', $context)) {
         require_once("$CFG->libdir/excellib.class.php");
-  
-    /// Calculate file name 
+
+    /// Calculate file name
         $filename = clean_filename("$course->shortname ".strip_tags(format_string($choice->name,true))).'.xls';
     /// Creating a workbook
         $workbook = new MoodleExcelWorkbook("-");
@@ -125,10 +137,10 @@
         $myxls->write_string(0,2,get_string("idnumber"));
         $myxls->write_string(0,3,get_string("group"));
         $myxls->write_string(0,4,get_string("choice","choice"));
-        
-              
+
+
     /// generate the data for the body of the spreadsheet
-        $i=0;  
+        $i=0;
         $row=1;
         if ($users) {
             foreach ($users as $option => $userid) {
@@ -158,7 +170,7 @@
         exit;
     }
 
-    // print text file  
+    // print text file
     if ($download == "txt" && has_capability('mod/choice:downloadresponses', $context)) {
         $filename = clean_filename("$course->shortname ".strip_tags(format_string($choice->name,true))).'.txt';
 
@@ -172,10 +184,10 @@
 
         echo get_string("firstname")."\t".get_string("lastname") . "\t". get_string("idnumber") . "\t";
         echo get_string("group"). "\t";
-        echo get_string("choice","choice"). "\n";        
+        echo get_string("choice","choice"). "\n";
 
         /// generate the data for the body of the spreadsheet
-        $i=0;  
+        $i=0;
         if ($users) {
             foreach ($users as $option => $userid) {
                 $option_text = choice_get_option_text($choice, $option);
@@ -203,26 +215,31 @@
         }
         exit;
     }
-    choice_show_results($choice, $course, $cm, $users, $format); //show table with students responses.
 
-   //now give links for downloading spreadsheets. 
+    $results = prepare_choice_show_results($choice, $course, $cm, $users);
+    $renderer = $PAGE->get_renderer('mod_choice');
+    echo $renderer->display_result($results, has_capability('mod/choice:readresponses', $context));
+
+   //now give links for downloading spreadsheets.
     if (!empty($users) && has_capability('mod/choice:downloadresponses',$context)) {
-        echo "<br />\n";
-        echo "<table class=\"downloadreport\"><tr>\n";
-        echo "<td>";
+        $downloadoptions = array();
         $options = array();
-        $options["id"] = "$cm->id";   
+        $options["id"] = "$cm->id";
         $options["download"] = "ods";
-        print_single_button("report.php", $options, get_string("downloadods"));
-        echo "</td><td>";
+        $button =  $OUTPUT->single_button(new moodle_url("report.php", $options), get_string("downloadods"));
+        $downloadoptions[] = html_writer::tag('li', $button, array('class'=>'reportoption'));
+
         $options["download"] = "xls";
-        print_single_button("report.php", $options, get_string("downloadexcel"));
-        echo "</td><td>";
-        $options["download"] = "txt";    
-        print_single_button("report.php", $options, get_string("downloadtext"));
+        $button = $OUTPUT->single_button(new moodle_url("report.php", $options), get_string("downloadexcel"));
+        $downloadoptions[] = html_writer::tag('li', $button, array('class'=>'reportoption'));
 
-        echo "</td></tr></table>";
+        $options["download"] = "txt";
+        $button = $OUTPUT->single_button(new moodle_url("report.php", $options), get_string("downloadtext"));
+        $downloadoptions[] = html_writer::tag('li', $button, array('class'=>'reportoption'));
+
+        $downloadlist = html_writer::tag('ul', implode('', $downloadoptions));
+        $downloadlist .= html_writer::tag('div', '', array('class'=>'clearfloat'));
+        echo html_writer::tag('div',$downloadlist, array('class'=>'downloadreport'));
     }
-    print_footer($course);
+    echo $OUTPUT->footer();
 
-?>

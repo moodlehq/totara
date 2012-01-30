@@ -21,7 +21,9 @@ require_once $CFG->dirroot.'/grade/lib.php';
 
 $courseid = required_param('id', PARAM_INT);                   // course id
 
-if (!$course = get_record('course', 'id', $courseid)) {
+$PAGE->set_url('/grade/report/outcomes/index.php', array('id'=>$courseid));
+
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 
@@ -39,17 +41,17 @@ $outcomes = grade_outcome::fetch_all_available($courseid);
 
 // Get grade_items that use each outcome
 foreach ($outcomes as $outcomeid => $outcome) {
-    $report_info[$outcomeid]['items'] = get_records_select('grade_items', "outcomeid = $outcomeid AND courseid = $courseid");
+    $report_info[$outcomeid]['items'] = $DB->get_records_select('grade_items', "outcomeid = ? AND courseid = ?", array($outcomeid, $courseid));
     $report_info[$outcomeid]['outcome'] = $outcome;
 
     // Get average grades for each item
     if (is_array($report_info[$outcomeid]['items'])) {
         foreach ($report_info[$outcomeid]['items'] as $itemid => $item) {
             $sql = "SELECT itemid, AVG(finalgrade) AS avg, COUNT(finalgrade) AS count
-                      FROM {$CFG->prefix}grade_grades
-                     WHERE itemid = $itemid
+                      FROM {grade_grades}
+                     WHERE itemid = ?
                   GROUP BY itemid";
-            $info = get_records_sql($sql);
+            $info = $DB->get_records_sql($sql, array($itemid));
 
             if (!$info) {
                 unset($report_info[$outcomeid]['items'][$itemid]);
@@ -67,7 +69,7 @@ foreach ($outcomes as $outcomeid => $outcome) {
 }
 
 $html = '<table class="generaltable boxaligncenter" width="90%" cellspacing="1" cellpadding="5" summary="Outcomes Report">' . "\n";
-$html .= '<tr><th class="header c0" scope="col">' . get_string('outcomename', 'grades') . '</th>';
+$html .= '<tr><th class="header c0" scope="col">' . get_string('outcomeshortname', 'grades') . '</th>';
 $html .= '<th class="header c1" scope="col">' . get_string('courseavg', 'grades') . '</th>';
 $html .= '<th class="header c2" scope="col">' . get_string('sitewide', 'grades') . '</th>';
 $html .= '<th class="header c3" scope="col">' . get_string('activities', 'grades') . '</th>';
@@ -152,6 +154,6 @@ print_grade_page_head($courseid, 'report', 'outcomes');
 
 
 echo $html;
-print_footer($course);
+echo $OUTPUT->footer();
 
-?>
+

@@ -1,8 +1,23 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 function scorm_get_resources($blocks) {
     $resources = array();
     foreach ($blocks as $block) {
-        if ($block['name'] == 'RESOURCES') {
+        if ($block['name'] == 'RESOURCES' && isset($block['children'])) {
             foreach ($block['children'] as $resource) {
                 if ($resource['name'] == 'RESOURCE') {
                     $resources[addslashes_js($resource['attrs']['IDENTIFIER'])] = $resource['attrs'];
@@ -13,13 +28,15 @@ function scorm_get_resources($blocks) {
     return $resources;
 }
 
-function scorm_get_manifest($blocks,$scoes) {
+function scorm_get_manifest($blocks, $scoes) {
+    global $OUTPUT;
     static $parents = array();
     static $resources;
 
     static $manifest;
     static $organization;
 
+    $manifestresourcesnotfound = array();
     if (count($blocks) > 0) {
         foreach ($blocks as $block) {
             switch ($block['name']) {
@@ -28,10 +45,10 @@ function scorm_get_manifest($blocks,$scoes) {
                         foreach ($block['children'] as $metadata) {
                             if ($metadata['name'] == 'SCHEMAVERSION') {
                                 if (empty($scoes->version)) {
-                                    if (isset($metadata['tagData']) && (preg_match("/^(1\.2)$|^(CAM )?(1\.3)$/",$metadata['tagData'],$matches))) {
+                                    if (isset($metadata['tagData']) && (preg_match("/^(1\.2)$|^(CAM )?(1\.3)$/", $metadata['tagData'], $matches))) {
                                         $scoes->version = 'SCORM_'.$matches[count($matches)-1];
                                     } else {
-                                        if (isset($metadata['tagData']) && (preg_match("/^2004 (3rd|4th) Edition$/",$metadata['tagData'],$matches))) {
+                                        if (isset($metadata['tagData']) && (preg_match("/^2004 (3rd|4th) Edition$/", $metadata['tagData'], $matches))) {
                                             $scoes->version = 'SCORM_1.3';
                                         } else {
                                             $scoes->version = 'SCORM_1.2';
@@ -43,20 +60,20 @@ function scorm_get_manifest($blocks,$scoes) {
                     }
                 break;
                 case 'MANIFEST':
-                    $manifest = addslashes_js($block['attrs']['IDENTIFIER']);
+                    $manifest = $block['attrs']['IDENTIFIER'];
                     $organization = '';
                     $resources = array();
                     $resources = scorm_get_resources($block['children']);
-                    $scoes = scorm_get_manifest($block['children'],$scoes);
-                    if (count($scoes->elements) <= 0) {
+                    $scoes = scorm_get_manifest($block['children'], $scoes);
+                    if (empty($scoes->elements) || count($scoes->elements) <= 0) {
                         foreach ($resources as $item => $resource) {
                             if (!empty($resource['HREF'])) {
                                 $sco = new stdClass();
                                 $sco->identifier = $item;
                                 $sco->title = $item;
                                 $sco->parent = '/';
-                                $sco->launch = addslashes_js($resource['HREF']);
-                                $sco->scormtype = addslashes_js($resource['ADLCP:SCORMTYPE']);
+                                $sco->launch = $resource['HREF'];
+                                $sco->scormtype = $resource['ADLCP:SCORMTYPE'];
                                 $scoes->elements[$manifest][$organization][$item] = $sco;
                             }
                         }
@@ -64,12 +81,14 @@ function scorm_get_manifest($blocks,$scoes) {
                 break;
                 case 'ORGANIZATIONS':
                     if (!isset($scoes->defaultorg) && isset($block['attrs']['DEFAULT'])) {
-                        $scoes->defaultorg = addslashes_js($block['attrs']['DEFAULT']);
+                        $scoes->defaultorg = $block['attrs']['DEFAULT'];
                     }
-                    $scoes = scorm_get_manifest($block['children'],$scoes);
+                    if (!empty($block['children'])) {
+                        $scoes = scorm_get_manifest($block['children'], $scoes);
+                    }
                 break;
                 case 'ORGANIZATION':
-                    $identifier = addslashes_js($block['attrs']['IDENTIFIER']);
+                    $identifier = $block['attrs']['IDENTIFIER'];
                     $organization = '';
                     $scoes->elements[$manifest][$organization][$identifier]->identifier = $identifier;
                     $scoes->elements[$manifest][$organization][$identifier]->parent = '/';
@@ -83,7 +102,9 @@ function scorm_get_manifest($blocks,$scoes) {
                     array_push($parents, $parent);
                     $organization = $identifier;
 
-                    $scoes = scorm_get_manifest($block['children'],$scoes);
+                    if (!empty($block['children'])) {
+                        $scoes = scorm_get_manifest($block['children'], $scoes);
+                    }
 
                     array_pop($parents);
                 break;
@@ -91,31 +112,36 @@ function scorm_get_manifest($blocks,$scoes) {
                     $parent = array_pop($parents);
                     array_push($parents, $parent);
 
-                    $identifier = addslashes_js($block['attrs']['IDENTIFIER']);
+                    $identifier = $block['attrs']['IDENTIFIER'];
                     $scoes->elements[$manifest][$organization][$identifier]->identifier = $identifier;
                     $scoes->elements[$manifest][$organization][$identifier]->parent = $parent->identifier;
                     if (!isset($block['attrs']['ISVISIBLE'])) {
                         $block['attrs']['ISVISIBLE'] = 'true';
                     }
-                    $scoes->elements[$manifest][$organization][$identifier]->isvisible = addslashes_js($block['attrs']['ISVISIBLE']);
+                    $scoes->elements[$manifest][$organization][$identifier]->isvisible = $block['attrs']['ISVISIBLE'];
                     if (!isset($block['attrs']['PARAMETERS'])) {
                         $block['attrs']['PARAMETERS'] = '';
                     }
-                    $scoes->elements[$manifest][$organization][$identifier]->parameters = addslashes_js($block['attrs']['PARAMETERS']);
+                    $scoes->elements[$manifest][$organization][$identifier]->parameters = $block['attrs']['PARAMETERS'];
                     if (!isset($block['attrs']['IDENTIFIERREF'])) {
                         $scoes->elements[$manifest][$organization][$identifier]->launch = '';
                         $scoes->elements[$manifest][$organization][$identifier]->scormtype = 'asset';
                     } else {
-                        $idref = addslashes_js($block['attrs']['IDENTIFIERREF']);
+                        $idref = $block['attrs']['IDENTIFIERREF'];
                         $base = '';
                         if (isset($resources[$idref]['XML:BASE'])) {
                             $base = $resources[$idref]['XML:BASE'];
                         }
-                        $scoes->elements[$manifest][$organization][$identifier]->launch = addslashes_js($base.$resources[$idref]['HREF']);
-                        if (empty($resources[$idref]['ADLCP:SCORMTYPE'])) {
-                            $resources[$idref]['ADLCP:SCORMTYPE'] = 'asset';
+                        if (!isset($resources[$idref])) {
+                            $manifestresourcesnotfound[] = $idref;
+                            $scoes->elements[$manifest][$organization][$identifier]->launch = '';
+                        } else {
+                            $scoes->elements[$manifest][$organization][$identifier]->launch = $base.$resources[$idref]['HREF'];
+                            if (empty($resources[$idref]['ADLCP:SCORMTYPE'])) {
+                                $resources[$idref]['ADLCP:SCORMTYPE'] = 'asset';
+                            }
+                            $scoes->elements[$manifest][$organization][$identifier]->scormtype = $resources[$idref]['ADLCP:SCORMTYPE'];
                         }
-                        $scoes->elements[$manifest][$organization][$identifier]->scormtype = addslashes_js($resources[$idref]['ADLCP:SCORMTYPE']);
                     }
 
                     $parent = new stdClass();
@@ -123,7 +149,9 @@ function scorm_get_manifest($blocks,$scoes) {
                     $parent->organization = $organization;
                     array_push($parents, $parent);
 
-                    $scoes = scorm_get_manifest($block['children'],$scoes);
+                    if (!empty($block['children'])) {
+                        $scoes = scorm_get_manifest($block['children'], $scoes);
+                    }
 
                     array_pop($parents);
                 break;
@@ -133,7 +161,7 @@ function scorm_get_manifest($blocks,$scoes) {
                     if (!isset($block['tagData'])) {
                         $block['tagData'] = '';
                     }
-                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->title = addslashes_js($block['tagData']);
+                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->title = $block['tagData'];
                 break;
                 case 'ADLCP:PREREQUISITES':
                     if ($block['attrs']['TYPE'] == 'aicc_script') {
@@ -142,7 +170,7 @@ function scorm_get_manifest($blocks,$scoes) {
                         if (!isset($block['tagData'])) {
                             $block['tagData'] = '';
                         }
-                        $scoes->elements[$manifest][$parent->organization][$parent->identifier]->prerequisites = addslashes_js($block['tagData']);
+                        $scoes->elements[$manifest][$parent->organization][$parent->identifier]->prerequisites = $block['tagData'];
                     }
                 break;
                 case 'ADLCP:MAXTIMEALLOWED':
@@ -151,7 +179,7 @@ function scorm_get_manifest($blocks,$scoes) {
                     if (!isset($block['tagData'])) {
                         $block['tagData'] = '';
                     }
-                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->maxtimeallowed = addslashes_js($block['tagData']);
+                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->maxtimeallowed = $block['tagData'];
                 break;
                 case 'ADLCP:TIMELIMITACTION':
                     $parent = array_pop($parents);
@@ -159,7 +187,7 @@ function scorm_get_manifest($blocks,$scoes) {
                     if (!isset($block['tagData'])) {
                         $block['tagData'] = '';
                     }
-                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->timelimitaction = addslashes_js($block['tagData']);
+                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->timelimitaction = $block['tagData'];
                 break;
                 case 'ADLCP:DATAFROMLMS':
                     $parent = array_pop($parents);
@@ -167,7 +195,7 @@ function scorm_get_manifest($blocks,$scoes) {
                     if (!isset($block['tagData'])) {
                         $block['tagData'] = '';
                     }
-                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->datafromlms = addslashes_js($block['tagData']);
+                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->datafromlms = $block['tagData'];
                 break;
                 case 'ADLCP:MASTERYSCORE':
                     $parent = array_pop($parents);
@@ -175,15 +203,15 @@ function scorm_get_manifest($blocks,$scoes) {
                     if (!isset($block['tagData'])) {
                         $block['tagData'] = '';
                     }
-                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->masteryscore = addslashes_js($block['tagData']);
+                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->masteryscore = $block['tagData'];
                 break;
                 case 'ADLCP:COMPLETIONTHRESHOLD':
                     $parent = array_pop($parents);
                     array_push($parents, $parent);
-                    if (!isset($block['tagData'])) {
-                        $block['tagData'] = '';
+                    if (!isset($block['attrs']['MINPROGRESSMEASURE'])) {
+                        $block['attrs']['MINPROGRESSMEASURE'] = '1.0';
                     }
-                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->threshold = addslashes_js($block['tagData']);
+                    $scoes->elements[$manifest][$parent->organization][$parent->identifier]->threshold = $block['attrs']['MINPROGRESSMEASURE'];
                 break;
                 case 'ADLNAV:PRESENTATION':
                     $parent = array_pop($parents);
@@ -276,7 +304,7 @@ function scorm_get_manifest($blocks,$scoes) {
                                                 foreach ($objective['children'] as $objectiveparam) {
                                                     if ($objectiveparam['name']=='IMSSS:MINNORMALIZEDMEASURE') {
                                                         if (isset($objectiveparam['tagData'])) {
-                                                        	$objectivedata->minnormalizedmeasure = $objectiveparam['tagData'];
+                                                            $objectivedata->minnormalizedmeasure = $objectiveparam['tagData'];
                                                         } else {
                                                             $objectivedata->minnormalizedmeasure = 0;
                                                         }
@@ -303,7 +331,7 @@ function scorm_get_manifest($blocks,$scoes) {
                                                         if (isset($objectiveparam['attrs']['WRITENORMALIZEDMEASURE'])) {
                                                             $mapinfo->writenormalizemeasure = $objectiveparam['attrs']['WRITENORMALIZEDMEASURE'] == 'true'?1:0;
                                                         }
-                                                        array_push($mapinfos,$mapinfo);
+                                                        array_push($mapinfos, $mapinfo);
                                                     }
                                                 }
                                                 if (!empty($mapinfos)) {
@@ -312,8 +340,7 @@ function scorm_get_manifest($blocks,$scoes) {
                                             }
                                         break;
                                     }
-//print_object($objectivedata);
-                                    array_push($objectives,$objectivedata);
+                                    array_push($objectives, $objectivedata);
                                 }
                                 $scoes->elements[$manifest][$parent->organization][$parent->identifier]->objectives = $objectives;
                             }
@@ -336,7 +363,7 @@ function scorm_get_manifest($blocks,$scoes) {
                                     $scoes->elements[$manifest][$parent->organization][$parent->identifier]->objectivemeasureweight = $sequencing['attrs']['OBJECTIVEMEASUREWEIGHT'];
                                 }
 
-                                if (!empty($sequencing['children'])){
+                                if (!empty($sequencing['children'])) {
                                     $rolluprules = array();
                                     foreach ($sequencing['children'] as $sequencingrolluprule) {
                                         if ($sequencingrolluprule['name']=='IMSSS:ROLLUPRULE' ) {
@@ -371,7 +398,7 @@ function scorm_get_manifest($blocks,$scoes) {
                                                                 if (isset($rolluprulecondition['attrs']['OPERATOR'])) {
                                                                     $condition->operator = $rolluprulecondition['attrs']['OPERATOR'];
                                                                 }
-                                                                array_push($conditions,$condition);
+                                                                array_push($conditions, $condition);
                                                             }
                                                         }
                                                         $rolluprule->conditions = $conditions;
@@ -431,7 +458,7 @@ function scorm_get_manifest($blocks,$scoes) {
                                                             if (isset($rulecondition['attrs']['REFERENCEDOBJECTIVE'])) {
                                                                 $condition->referencedobjective = $rulecondition['attrs']['REFERENCEDOBJECTIVE'];
                                                             }
-                                                            array_push($ruleconditions,$condition);
+                                                            array_push($ruleconditions, $condition);
                                                         }
                                                     }
                                                     $sequencingrule->ruleconditions = $ruleconditions;
@@ -441,7 +468,7 @@ function scorm_get_manifest($blocks,$scoes) {
                                                 }
                                                 $sequencingrule->type = $conditiontype;
                                             }
-                                            array_push($sequencingrules,$sequencingrule);
+                                            array_push($sequencingrules, $sequencingrule);
                                         }
                                     }
                                     $scoes->elements[$manifest][$parent->organization][$parent->identifier]->sequencingrules = $sequencingrules;
@@ -453,173 +480,180 @@ function scorm_get_manifest($blocks,$scoes) {
             }
         }
     }
+    if (!empty($manifestresourcesnotfound)) {
+        //throw warning to user to let them know manifest contains references to resources that don't appear to exist.
+        if (!defined('DEBUGGING_PRINTED')) { //prevent redirect and display warning
+            define('DEBUGGING_PRINTED', 1);
+        }
+        echo $OUTPUT->notification(get_string('invalidmanifestresource', 'scorm').' '. implode(', ',$manifestresourcesnotfound));
+    }
     return $scoes;
 }
 
-function scorm_parse_scorm($pkgdir,$scormid) {
-    global $CFG;
+function scorm_parse_scorm($scorm, $manifest) {
+    global $CFG, $DB;
 
-    $launch = 0;
-    $manifestfile = $pkgdir.'/imsmanifest.xml';
-
-    if (is_file($manifestfile)) {
-
-        $xmltext = file_get_contents($manifestfile);
-
-        $pattern = '/&(?!\w{2,6};)/';
-        $replacement = '&amp;';
-        $xmltext = preg_replace($pattern, $replacement, $xmltext);
-
-        $objXML = new xml2Array();
-        $manifests = $objXML->parse($xmltext);
-//print_object($manifests);
-        $scoes = new stdClass();
-        $scoes->version = '';
-        $scoes = scorm_get_manifest($manifests,$scoes);
-//print_object($scoes);
-        if (count($scoes->elements) > 0) {
-            $olditems = get_records('scorm_scoes','scorm',$scormid);
-            foreach ($scoes->elements as $manifest => $organizations) {
-                foreach ($organizations as $organization => $items) {
-                    foreach ($items as $identifier => $item) {
-                        // This new db mngt will support all SCORM future extensions
-                        $newitem = new stdClass();
-                        $newitem->scorm = $scormid;
-                        $newitem->manifest = $manifest;
-                        $newitem->organization = $organization;
-                        $standarddatas = array('parent', 'identifier', 'launch', 'scormtype', 'title');
-                        foreach ($standarddatas as $standarddata) {
-                            if (isset($item->$standarddata)) {
-                                $newitem->$standarddata = addslashes_js($item->$standarddata);
-                            }
-                        }
-
-                        // Insert the new SCO, and retain the link between the old and new for later adjustment
-                        $id = insert_record('scorm_scoes',$newitem);
-                        if (!empty($olditems) && ($olditemid = scorm_array_search('identifier',$newitem->identifier,$olditems))) {
-                            $olditems[$olditemid]->newid = $id;
-                        }
-
-                        if ($optionaldatas = scorm_optionals_data($item,$standarddatas)) {
-                            $data = new stdClass();
-                            $data->scoid = $id;
-                            foreach ($optionaldatas as $optionaldata) {
-                                if (isset($item->$optionaldata)) {
-                                    $data->name =  $optionaldata;
-                                    $data->value = addslashes_js($item->$optionaldata);
-                                    $dataid = insert_record('scorm_scoes_data',$data);
-                                }
-                            }
-                        }
-
-                        if (isset($item->sequencingrules)) {
-                            foreach($item->sequencingrules as $sequencingrule) {
-                                $rule = new stdClass();
-                                $rule->scoid = $id;
-                                $rule->ruletype = $sequencingrule->type;
-                                $rule->conditioncombination = $sequencingrule->conditioncombination;
-                                $rule->action = $sequencingrule->action;
-                                $ruleid = insert_record('scorm_seq_ruleconds',$rule);
-                                if (isset($sequencingrule->ruleconditions)) {
-                                    foreach($sequencingrule->ruleconditions as $rulecondition) {
-                                        $rulecond = new stdClass();
-                                        $rulecond->scoid = $id;
-                                        $rulecond->ruleconditionsid = $ruleid;
-                                        $rulecond->referencedobjective = $rulecondition->referencedobjective;
-                                        $rulecond->measurethreshold = $rulecondition->measurethreshold;
-                                        $rulecond->cond = $rulecondition->cond;
-                                        $rulecondid = insert_record('scorm_seq_rulecond',$rulecond);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (isset($item->rolluprules)) {
-                            foreach($item->rolluprules as $rolluprule) {
-                                $rollup = new stdClass();
-                                $rollup->scoid =  $id;
-                                $rollup->childactivityset = $rolluprule->childactivityset;
-                                $rollup->minimumcount = $rolluprule->minimumcount;
-                                $rollup->minimumpercent = $rolluprule->minimumpercent;
-                                $rollup->rollupruleaction = $rolluprule->rollupruleaction;
-                                $rollup->conditioncombination = $rolluprule->conditioncombination;
-
-                                $rollupruleid = insert_record('scorm_seq_rolluprule',$rollup);
-                                if (isset($rollup->conditions)) {
-                                    foreach($rollup->conditions as $condition){
-                                        $cond = new stdClass();
-                                        $cond->scoid = $rollup->scoid;
-                                        $cond->rollupruleid = $rollupruleid;
-                                        $cond->operator = $condition->operator;
-                                        $cond->cond = $condition->cond;
-                                        $conditionid = insert_record('scorm_seq_rolluprulecond',$cond);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (isset($item->objectives)) {
-                            foreach($item->objectives as $objective) {
-                                $obj = new stdClass();
-                                $obj->scoid = $id;
-                                $obj->primaryobj = $objective->primaryobj;
-                                $obj->satisfiedbumeasure = $objective->satisfiedbymeasure;
-                                $obj->objectiveid = $objective->objectiveid;
-                                $obj->minnormalizedmeasure = $objective->minnormalizedmeasure;
-                                $objectiveid = insert_record('scorm_seq_objective',$obj);
-                                if (isset($objective->mapinfos)) {
-//print_object($objective->mapinfos);
-                                    foreach($objective->mapinfos as $objmapinfo) {
-                                        $mapinfo = new stdClass();
-                                        $mapinfo->scoid = $id;
-                                        $mapinfo->objectiveid = $objectiveid;
-                                        $mapinfo->targetobjectiveid = $objmapinfo->targetobjectiveid;
-                                        $mapinfo->readsatisfiedstatus = $objmapinfo->readsatisfiedstatus;
-                                        $mapinfo->writesatisfiedstatus = $objmapinfo->writesatisfiedstatus;
-                                        $mapinfo->readnormalizedmeasure = $objmapinfo->readnormalizedmeasure;
-                                        $mapinfo->writenormalizedmeasure = $objmapinfo->writenormalizedmeasure;
-                                        $mapinfoid = insert_record('scorm_seq_mapinfo',$mapinfo);
-                                    }
-                                }
-                            }
-                        }
-//print_object($item);
-                        if (($launch == 0) && ((empty($scoes->defaultorg)) || ($scoes->defaultorg == $identifier))) {
-                            $launch = $id;
-                        }
-                    }
-                }
-            }
-            if (!empty($olditems)) {
-                foreach($olditems as $olditem) {
-                    delete_records('scorm_scoes','id',$olditem->id);
-                    delete_records('scorm_scoes_data','scoid',$olditem->id);
-                    if (isset($olditem->newid)) {
-                        set_field('scorm_scoes_track', 'scoid', $olditem->newid, 'scoid', $olditem->id);
-                    }
-                    delete_records('scorm_scoes_track','scoid',$olditem->id);
-                    delete_records('scorm_seq_objective','scoid',$olditem->id);
-                    delete_records('scorm_seq_mapinfo','scoid',$olditem->id);
-                    delete_records('scorm_seq_ruleconds','scoid',$olditem->id);
-                    delete_records('scorm_seq_rulecond','scoid',$olditem->id);
-                    delete_records('scorm_seq_rolluprule','scoid',$olditem->id);
-                    delete_records('scorm_seq_rolluprulecond','scoid',$olditem->id);
-                }
-            }
-            if (empty($scoes->version)) {
-                $scoes->version = 'SCORM_1.2';
-            }
-            set_field('scorm','version',$scoes->version,'id',$scormid);
-            $scorm->version = $scoes->version;
-        }
+    // load manifest into string
+    if ($manifest instanceof stored_file) {
+        $xmltext = $manifest->get_content();
+    } else {
+        require_once("$CFG->libdir/filelib.php");
+        $xmltext = download_file_content($manifest);
     }
 
-    return $launch;
+    $launch = 0;
+
+    $pattern = '/&(?!\w{2,6};)/';
+    $replacement = '&amp;';
+    $xmltext = preg_replace($pattern, $replacement, $xmltext);
+
+    $objXML = new xml2Array();
+    $manifests = $objXML->parse($xmltext);
+    $scoes = new stdClass();
+    $scoes->version = '';
+    $scoes = scorm_get_manifest($manifests, $scoes);
+    if (count($scoes->elements) > 0) {
+        $olditems = $DB->get_records('scorm_scoes', array('scorm'=>$scorm->id));
+        foreach ($scoes->elements as $manifest => $organizations) {
+            foreach ($organizations as $organization => $items) {
+                foreach ($items as $identifier => $item) {
+                    // This new db mngt will support all SCORM future extensions
+                    $newitem = new stdClass();
+                    $newitem->scorm = $scorm->id;
+                    $newitem->manifest = $manifest;
+                    $newitem->organization = $organization;
+                    $standarddatas = array('parent', 'identifier', 'launch', 'scormtype', 'title');
+                    foreach ($standarddatas as $standarddata) {
+                        if (isset($item->$standarddata)) {
+                            $newitem->$standarddata = $item->$standarddata;
+                        }
+                    }
+
+                    // Insert the new SCO, and retain the link between the old and new for later adjustment
+                    $id = $DB->insert_record('scorm_scoes', $newitem);
+                    if (!empty($olditems) && ($olditemid = scorm_array_search('identifier', $newitem->identifier, $olditems))) {
+                        $olditems[$olditemid]->newid = $id;
+                    }
+
+                    if ($optionaldatas = scorm_optionals_data($item, $standarddatas)) {
+                        $data = new stdClass();
+                        $data->scoid = $id;
+                        foreach ($optionaldatas as $optionaldata) {
+                            if (isset($item->$optionaldata)) {
+                                $data->name =  $optionaldata;
+                                $data->value = $item->$optionaldata;
+                                $dataid = $DB->insert_record('scorm_scoes_data', $data);
+                            }
+                        }
+                    }
+
+                    if (isset($item->sequencingrules)) {
+                        foreach ($item->sequencingrules as $sequencingrule) {
+                            $rule = new stdClass();
+                            $rule->scoid = $id;
+                            $rule->ruletype = $sequencingrule->type;
+                            $rule->conditioncombination = $sequencingrule->conditioncombination;
+                            $rule->action = $sequencingrule->action;
+                            $ruleid = $DB->insert_record('scorm_seq_ruleconds', $rule);
+                            if (isset($sequencingrule->ruleconditions)) {
+                                foreach ($sequencingrule->ruleconditions as $rulecondition) {
+                                    $rulecond = new stdClass();
+                                    $rulecond->scoid = $id;
+                                    $rulecond->ruleconditionsid = $ruleid;
+                                    $rulecond->referencedobjective = $rulecondition->referencedobjective;
+                                    $rulecond->measurethreshold = $rulecondition->measurethreshold;
+                                    $rulecond->cond = $rulecondition->cond;
+                                    $rulecondid = $DB->insert_record('scorm_seq_rulecond', $rulecond);
+                                }
+                            }
+                        }
+                    }
+
+                    if (isset($item->rolluprules)) {
+                        foreach ($item->rolluprules as $rolluprule) {
+                            $rollup = new stdClass();
+                            $rollup->scoid =  $id;
+                            $rollup->childactivityset = $rolluprule->childactivityset;
+                            $rollup->minimumcount = $rolluprule->minimumcount;
+                            $rollup->minimumpercent = $rolluprule->minimumpercent;
+                            $rollup->rollupruleaction = $rolluprule->rollupruleaction;
+                            $rollup->conditioncombination = $rolluprule->conditioncombination;
+
+                            $rollupruleid = $DB->insert_record('scorm_seq_rolluprule', $rollup);
+                            if (isset($rollup->conditions)) {
+                                foreach ($rollup->conditions as $condition) {
+                                    $cond = new stdClass();
+                                    $cond->scoid = $rollup->scoid;
+                                    $cond->rollupruleid = $rollupruleid;
+                                    $cond->operator = $condition->operator;
+                                    $cond->cond = $condition->cond;
+                                    $conditionid = $DB->insert_record('scorm_seq_rolluprulecond', $cond);
+                                }
+                            }
+                        }
+                    }
+
+                    if (isset($item->objectives)) {
+                        foreach ($item->objectives as $objective) {
+                            $obj = new stdClass();
+                            $obj->scoid = $id;
+                            $obj->primaryobj = $objective->primaryobj;
+                            $obj->satisfiedbumeasure = $objective->satisfiedbymeasure;
+                            $obj->objectiveid = $objective->objectiveid;
+                            $obj->minnormalizedmeasure = trim($objective->minnormalizedmeasure);
+                            $objectiveid = $DB->insert_record('scorm_seq_objective', $obj);
+                            if (isset($objective->mapinfos)) {
+                                foreach ($objective->mapinfos as $objmapinfo) {
+                                    $mapinfo = new stdClass();
+                                    $mapinfo->scoid = $id;
+                                    $mapinfo->objectiveid = $objectiveid;
+                                    $mapinfo->targetobjectiveid = $objmapinfo->targetobjectiveid;
+                                    $mapinfo->readsatisfiedstatus = $objmapinfo->readsatisfiedstatus;
+                                    $mapinfo->writesatisfiedstatus = $objmapinfo->writesatisfiedstatus;
+                                    $mapinfo->readnormalizedmeasure = $objmapinfo->readnormalizedmeasure;
+                                    $mapinfo->writenormalizedmeasure = $objmapinfo->writenormalizedmeasure;
+                                    $mapinfoid = $DB->insert_record('scorm_seq_mapinfo', $mapinfo);
+                                }
+                            }
+                        }
+                    }
+                    if (($launch == 0) && ((empty($scoes->defaultorg)) || ($scoes->defaultorg == $identifier))) {
+                        $launch = $id;
+                    }
+                }
+            }
+        }
+        if (!empty($olditems)) {
+            foreach ($olditems as $olditem) {
+                $DB->delete_records('scorm_scoes', array('id'=>$olditem->id));
+                $DB->delete_records('scorm_scoes_data', array('scoid'=>$olditem->id));
+                if (isset($olditem->newid)) {
+                    $DB->set_field('scorm_scoes_track', 'scoid', $olditem->newid, array('scoid' => $olditem->id));
+                }
+                $DB->delete_records('scorm_scoes_track', array('scoid'=>$olditem->id));
+                $DB->delete_records('scorm_seq_objective', array('scoid'=>$olditem->id));
+                $DB->delete_records('scorm_seq_mapinfo', array('scoid'=>$olditem->id));
+                $DB->delete_records('scorm_seq_ruleconds', array('scoid'=>$olditem->id));
+                $DB->delete_records('scorm_seq_rulecond', array('scoid'=>$olditem->id));
+                $DB->delete_records('scorm_seq_rolluprule', array('scoid'=>$olditem->id));
+                $DB->delete_records('scorm_seq_rolluprulecond', array('scoid'=>$olditem->id));
+            }
+        }
+        if (empty($scoes->version)) {
+            $scoes->version = 'SCORM_1.2';
+        }
+        $DB->set_field('scorm', 'version', $scoes->version, array('id'=>$scorm->id));
+        $scorm->version = $scoes->version;
+    }
+
+    $scorm->launch = $launch;
+
+    return true;
 }
 
 function scorm_optionals_data($item, $standarddata) {
     $result = array();
-    $sequencingdata = array('sequencingrules','rolluprules','objectives');
+    $sequencingdata = array('sequencingrules', 'rolluprules', 'objectives');
     foreach ($item as $element => $value) {
         if (! in_array($element, $standarddata)) {
             if (! in_array($element, $sequencingdata)) {
@@ -631,15 +665,19 @@ function scorm_optionals_data($item, $standarddata) {
 }
 
 function scorm_is_leaf($sco) {
-    if (get_record('scorm_scoes','scorm',$sco->scorm,'parent',$sco->identifier)) {
+    global $DB;
+
+    if ($DB->get_record('scorm_scoes', array('scorm'=>$sco->scorm, 'parent'=>$sco->identifier))) {
         return false;
     }
     return true;
 }
 
 function scorm_get_parent($sco) {
+    global $DB;
+
     if ($sco->parent != '/') {
-        if ($parent = get_record('scorm_scoes','scorm',$sco->scorm,'identifier',$sco->parent)) {
+        if ($parent = $DB->get_record('scorm_scoes', array('scorm'=>$sco->scorm, 'identifier'=>$sco->parent))) {
             return scorm_get_sco($parent->id);
         }
     }
@@ -647,39 +685,45 @@ function scorm_get_parent($sco) {
 }
 
 function scorm_get_children($sco) {
-    if ($children = get_records('scorm_scoes','scorm',$sco->scorm,'parent',$sco->identifier)) {//originally this said parent instead of childrean
+    global $DB;
+
+    if ($children = $DB->get_records('scorm_scoes', array('scorm'=>$sco->scorm, 'parent'=>$sco->identifier))) {//originally this said parent instead of childrean
         return $children;
     }
     return null;
 }
 
-function scorm_get_available_children($sco){
-    $res = get_record('scorm_scoes_track','scoid',$scoid,'userid',$userid,'element','availablechildren');
-    if(!$res || $res == null){
+function scorm_get_available_children($sco) {  // TODO: undefined vars!!!
+    global $DB;
+
+    $res = $DB->get_record('scorm_scoes_track', array('scoid'=>$scoid,
+                                                     'userid'=>$userid,
+                                                     'element'=>'availablechildren'));
+    if (!$res || $res == null) {
         return false;
-    }
-    else{
+    } else {
         return unserialize($res->value);
     }
 }
 
-function scorm_get_available_descendent($descend = array(),$sco){
-    if($sco == null){
+function scorm_get_available_descendent($descend = array(), $sco) {
+    if ($sco == null) {
         return $descend;
-    }
-    else{
+    } else {
         $avchildren = scorm_get_available_children($sco);
-        foreach($avchildren as $avchild){
-            array_push($descend,$avchild);
+        foreach ($avchildren as $avchild) {
+            array_push($descend, $avchild);
         }
-        foreach($avchildren as $avchild){
-            scorm_get_available_descendent($descend,$avchild);
+        foreach ($avchildren as $avchild) {
+            scorm_get_available_descendent($descend, $avchild);
         }
     }
 }
 
 function scorm_get_siblings($sco) {
-    if ($siblings = get_records('scorm_scoes','scorm',$sco->scorm,'parent',$sco->parent)) {
+    global $DB;
+
+    if ($siblings = $DB->get_records('scorm_scoes', array('scorm'=>$sco->scorm, 'parent'=>$sco->parent))) {
         unset($siblings[$sco->id]);
         if (!empty($siblings)) {
             return $siblings;
@@ -687,22 +731,30 @@ function scorm_get_siblings($sco) {
     }
     return null;
 }
-
+//get an array that contains all the parent scos for this sco.
 function scorm_get_ancestors($sco) {
-    if ($sco->parent != '/') {
-        return array_push(scorm_get_ancestors(scorm_get_parent($sco)));
-    } else {
-        return $sco;
+    $ancestors = array();
+    $continue = true;
+    while ($continue) {
+        $ancestor = scorm_get_parent($sco);
+        if (!empty($ancestor) && $ancestor->id !== $sco->id) {
+            $sco = $ancestor;
+            $ancestors[] = $ancestor;
+            if ($sco->parent == '/') {
+                $continue = false;
+            }
+        } else {
+            $continue = false;
+        }
     }
+    return $ancestors;
 }
 
-function scorm_get_preorder($preorder=array(),$sco) {
-
-
+function scorm_get_preorder($preorder=array(), $sco) {
     if ($sco != null) {
-        array_push($preorder,$sco);
+        array_push($preorder, $sco);
         $children = scorm_get_children($sco);
-        foreach ($children as $child){
+        foreach ($children as $child) {
             scorm_get_preorder($sco);
         }
     } else {
@@ -711,10 +763,10 @@ function scorm_get_preorder($preorder=array(),$sco) {
 }
 
 function scorm_find_common_ancestor($ancestors, $sco) {
-    $pos = scorm_array_search('identifier',$sco->parent,$ancestors);
+    $pos = scorm_array_search('identifier', $sco->parent, $ancestors);
     if ($sco->parent != '/') {
         if ($pos === false) {
-            return scorm_find_common_ancestor($ancestors,scorm_get_parent($sco));
+            return scorm_find_common_ancestor($ancestors, scorm_get_parent($sco));
         }
     }
     return $pos;
@@ -730,71 +782,69 @@ function scorm_find_common_ancestor($ancestors, $sco) {
 */
 class xml2Array {
 
-   var $arrOutput = array();
-   var $resParser;
-   var $strXmlData;
+    var $arrOutput = array();
+    var $resParser;
+    var $strXmlData;
 
-   /**
-   * Convert a utf-8 string to html entities
-   *
-   * @param string $str The UTF-8 string
-   * @return string
-   */
-   function utf8_to_entities($str) {
-       global $CFG;
+    /**
+     * Convert a utf-8 string to html entities
+     *
+     * @param string $str The UTF-8 string
+     * @return string
+     */
+    function utf8_to_entities($str) {
+        global $CFG;
 
-       $entities = '';
-       $values = array();
-       $lookingfor = 1;
+        $entities = '';
+        $values = array();
+        $lookingfor = 1;
 
-       return $str;
-   }
+        return $str;
+    }
 
-   /**
-   * Parse an XML text string and create an array tree that rapresent the XML structure
-   *
-   * @param string $strInputXML The XML string
-   * @return array
-   */
-   function parse($strInputXML) {
-           $this->resParser = xml_parser_create ('UTF-8');
-           xml_set_object($this->resParser,$this);
-           xml_set_element_handler($this->resParser, "tagOpen", "tagClosed");
+    /**
+     * Parse an XML text string and create an array tree that rapresent the XML structure
+     *
+     * @param string $strInputXML The XML string
+     * @return array
+     */
+    function parse($strInputXML) {
+        $this->resParser = xml_parser_create ('UTF-8');
+        xml_set_object($this->resParser, $this);
+        xml_set_element_handler($this->resParser, "tagOpen", "tagClosed");
 
-           xml_set_character_data_handler($this->resParser, "tagData");
+        xml_set_character_data_handler($this->resParser, "tagData");
 
-           $this->strXmlData = xml_parse($this->resParser,$strInputXML );
-           if(!$this->strXmlData) {
-               die(sprintf("XML error: %s at line %d",
-                           xml_error_string(xml_get_error_code($this->resParser)),
-                           xml_get_current_line_number($this->resParser)));
-           }
+        $this->strXmlData = xml_parse($this->resParser, $strInputXML );
+        if (!$this->strXmlData) {
+            die(sprintf("XML error: %s at line %d",
+            xml_error_string(xml_get_error_code($this->resParser)),
+            xml_get_current_line_number($this->resParser)));
+        }
 
-           xml_parser_free($this->resParser);
+        xml_parser_free($this->resParser);
 
-           return $this->arrOutput;
-   }
+        return $this->arrOutput;
+    }
 
-   function tagOpen($parser, $name, $attrs) {
-       $tag=array("name"=>$name,"attrs"=>$attrs);
-       array_push($this->arrOutput,$tag);
-   }
+    function tagOpen($parser, $name, $attrs) {
+        $tag=array("name"=>$name, "attrs"=>$attrs);
+        array_push($this->arrOutput, $tag);
+    }
 
-   function tagData($parser, $tagData) {
-       if(trim($tagData)) {
-           if(isset($this->arrOutput[count($this->arrOutput)-1]['tagData'])) {
-               $this->arrOutput[count($this->arrOutput)-1]['tagData'] .= $this->utf8_to_entities($tagData);
-           } else {
-               $this->arrOutput[count($this->arrOutput)-1]['tagData'] = $this->utf8_to_entities($tagData);
-           }
-       }
-   }
+    function tagData($parser, $tagData) {
+        if (trim($tagData)) {
+            if (isset($this->arrOutput[count($this->arrOutput)-1]['tagData'])) {
+                $this->arrOutput[count($this->arrOutput)-1]['tagData'] .= $this->utf8_to_entities($tagData);
+            } else {
+                $this->arrOutput[count($this->arrOutput)-1]['tagData'] = $this->utf8_to_entities($tagData);
+            }
+        }
+    }
 
-   function tagClosed($parser, $name) {
-       $this->arrOutput[count($this->arrOutput)-2]['children'][] = $this->arrOutput[count($this->arrOutput)-1];
-       array_pop($this->arrOutput);
-   }
+    function tagClosed($parser, $name) {
+        $this->arrOutput[count($this->arrOutput)-2]['children'][] = $this->arrOutput[count($this->arrOutput)-1];
+        array_pop($this->arrOutput);
+    }
 
 }
-
-?>

@@ -15,22 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-#require_once $CFG->libdir.'/completion/completion_aggregation.php';
-#require_once $CFG->libdir.'/completion/completion_criteria.php';
-#require_once $CFG->libdir.'/completion/completion_completion.php';
-#require_once $CFG->libdir.'/completion/completion_criteria_completion.php';
-
-
 /**
  * Contains a class used for tracking whether activities have been completed
  * by students ('completion')
  *
  * Completion top-level options (admin setting enablecompletion)
  *
- * @package   moodlecore
- * @copyright 1999 onwards Martin Dougiamas   {@link http://moodle.com}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    core
+ * @subpackage completion
+ * @copyright  1999 onwards Martin Dougiamas   {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
+
+require_once $CFG->libdir.'/completion/completion_aggregation.php';
+require_once $CFG->libdir.'/completion/completion_criteria.php';
+require_once $CFG->libdir.'/completion/completion_completion.php';
+require_once $CFG->libdir.'/completion/completion_criteria_completion.php';
+
 
 /** The completion system is enabled in this site/course */
 define('COMPLETION_ENABLED', 1);
@@ -101,124 +104,13 @@ define('COMPLETION_AGGREGATION_ANY',        2);
 
 
 /**
- * Utility function for checking if the logged in user can view
- * another's completion data for a particular course
- *
- * @access  public
- * @param   int         $userid     Completion data's owner
- * @param   int         $courseid   Course ID (optional)
- * @return  boolean
- */
-function completion_can_view_data($userid, $courseid = null) {
-    global $USER;
-
-    if (!isloggedin()) {
-        return false;
-    }
-
-    // Check if this is the site course
-    if ($courseid == SITEID) {
-        $courseid = null;
-    }
-
-    // Check if completion is enabled
-    if ($courseid) {
-        $course = new object();
-        $course->id = $courseid;
-        $cinfo = new completion_info($course);
-        if (!$cinfo->is_enabled()) {
-            return false;
-        }
-    }
-    else {
-        if (!completion_info::is_enabled_for_site()) {
-            return false;
-        }
-    }
-
-    // Is own user's data?
-    if ($USER->id == $userid) {
-        return true;
-    }
-
-    // Check capabilities
-    $personalcontext = get_context_instance(CONTEXT_USER, $userid);
-
-    if (has_capability('moodle/user:viewuseractivitiesreport', $personalcontext)) {
-        return true;
-    }
-    elseif (has_capability('coursereport/completion:view', $personalcontext)) {
-        return true;
-    }
-
-    if ($courseid) {
-        $coursecontext = get_context_instance(CONTEXT_COURSE, $courseid);
-    }
-    else {
-        $coursecontext = get_system_context();
-    }
-
-    if (has_capability('coursereport/completion:view', $coursecontext)) {
-        return true;
-    }
-
-    return false;
-}
-
-
-/**
- * Check if a module type has RPL enabled for it
- *
- * RPLs for modules are enabled/disabled via $CFG->enablemodulerpl, which can
- * be set on the Site Administration settings page "Grades -> General settings"
- *
- * @access  public
- * @param   mixed   $module     Can either be the (string) name of the module,
- *                              or the module type id (int).
- * @return  bool
- */
-function completion_module_rpl_enabled($module) {
-    global $CFG;
-
-    // If supplied module id, this is easy
-    if (is_integer($module)) {
-        // Check if RPL is enabled for this module
-        return in_array($module, explode(',', $CFG->enablemodulerpl));
-    }
-
-    // If supplied the module string name
-    if (is_string($module)) {
-
-        // Cache modules list
-        static $modules;
-        if ($modules == null) {
-            $modules = get_records('modules', '', '', '', 'name, id');
-            if (!$modules) {
-                $modules = array();
-            }
-        }
-
-        // Check if module exists in DB
-        if (!array_key_exists($module, $modules)) {
-            return false;
-        }
-
-        // Check if RPL is enabled for this module
-        return in_array($modules[$module]->id, explode(',', $CFG->enablemodulerpl));
-    }
-
-    // Incorrect input
-    print_error('error:incorrectdatatypesupplied', 'completion');
-}
-
-
-/**
  * Class represents completion information for a course.
  *
  * Does not contain any data, so you can safely construct it multiple times
  * without causing any problems.
  *
- * @package totara
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package moodlecore
  */
 class completion_info {
     /**
@@ -250,8 +142,8 @@ class completion_info {
      */
     public static function get_aggregation_methods() {
         return array(
-            COMPLETION_AGGREGATION_ALL       => get_string('aggregateall', 'completion'),
-            COMPLETION_AGGREGATION_ANY       => get_string('aggregateany', 'completion'),
+            COMPLETION_AGGREGATION_ALL       => get_string('all'),
+            COMPLETION_AGGREGATION_ANY       => get_string('any', 'completion'),
         );
     }
 
@@ -276,7 +168,7 @@ class completion_info {
      */
     public static function is_enabled_for_site() {
         global $CFG;
-        return !(!isset($CFG->enablecompletion) || $CFG->enablecompletion == COMPLETION_DISABLED);
+        return !empty($CFG->enablecompletion);
     }
 
     /**
@@ -293,16 +185,16 @@ class completion_info {
      *   for a course-module.
      */
     public function is_enabled($cm=null) {
-        global $CFG;
+        global $CFG, $DB;
 
         // First check global completion
-        if (!completion_info::is_enabled_for_site()) {
+        if (!isset($CFG->enablecompletion) || $CFG->enablecompletion == COMPLETION_DISABLED) {
             return COMPLETION_DISABLED;
         }
 
         // Load data if we do not have enough
         if (!isset($this->course->enablecompletion)) {
-            $this->course->enablecompletion = get_field('course', 'enablecompletion', 'id', $this->course->id);
+            $this->course->enablecompletion = $DB->get_field('course', 'enablecompletion', array('id' => $this->course->id));
         }
 
         // Check course completion
@@ -320,21 +212,33 @@ class completion_info {
     }
 
     /**
-     * Print the Your progress help icon if the completion tracking is enabled.
-     * @global object
+     * Displays the 'Your progress' help icon, if completion tracking is enabled.
+     * Just prints the result of display_help_icon().
+     * @deprecated Use display_help_icon instead.
      * @return void
      */
     public function print_help_icon() {
-        global $PAGE;
-        if ($this->is_enabled() && !$PAGE->user_is_editing() && isloggedin() && !isguestuser()) {
-            echo '<span id = "completionprogressid" class="completionprogress">'.get_string('yourprogress','completion').' ';
-            helpbutton('completionicons',get_string('completionicons','completion'),'completion');
-            echo '</span>';
-        }
+        print $this->display_help_icon();
     }
 
     /**
-     * Get a course criteria completion for a user
+     * Returns the 'Your progress' help icon, if completion tracking is enabled.
+     * @global object
+     * @return string HTML code for help icon, or blank if not needed
+     */
+    public function display_help_icon() {
+        global $PAGE, $OUTPUT;
+        $result = '';
+        if ($this->is_enabled() && !$PAGE->user_is_editing() && isloggedin() && !isguestuser()) {
+            $result .= '<span id = "completionprogressid" class="completionprogress">'.get_string('yourprogress','completion').' ';
+            $result .= $OUTPUT->help_icon('completionicons', 'completion');
+            $result .= '</span>';
+        }
+        return $result;
+    }
+
+    /**
+     * Get a course completion for a user
      * @access  public
      * @param   $user_id        int     User id
      * @param   $criteriatype   int     Specific criteria type to return
@@ -381,57 +285,6 @@ class completion_info {
     }
 
     /**
-     * Get all couse completions a user has across the site
-     * @access  public
-     * @param   $user_id    int     User id
-     * @param   $limit      int     Limit number of records returned (0 = no limit, optional)
-     * @return  array
-     */
-    public static function get_all_courses($user_id, $limit = 0) {
-
-        global $CFG;
-
-        $sql = "
-            SELECT
-                c.id AS course,
-                c.fullname AS name,
-                cc.timeenrolled,
-                cc.timestarted,
-                cc.timecompleted,
-                cc.status,
-                cc.rpl
-            FROM
-                {$CFG->prefix}course_completions cc
-            LEFT JOIN
-                {$CFG->prefix}course c
-             ON cc.course = c.id
-            WHERE
-                cc.userid = {$user_id}
-            AND
-            (
-                cc.timeenrolled > 0
-             OR cc.timestarted > 0
-             OR cc.timecompleted > 0
-            )
-            ORDER BY
-                cc.timeenrolled DESC,
-                cc.timestarted DESC,
-                cc.timecompleted DESC
-        ";
-
-        $completions = array();
-
-        if ($ccompletions = get_records_sql($sql, 0, $limit)) {
-            foreach ($ccompletions as $course) {
-                // Create completion_completion instance (without reloading from db)
-                $completions[$course->course] = new completion_completion($course, false);
-            }
-        }
-
-        return $completions;
-    }
-
-    /**
      * Get completion object for a user and a criteria
      * @access  public
      * @param   $user_id        int     User id
@@ -471,13 +324,14 @@ class completion_info {
 
         // Fill cache if empty
         if (!is_array($this->criteria)) {
+            global $DB;
 
             $params = array(
                 'course'    => $this->course->id
             );
 
             // Load criteria from database
-            $records = get_records('course_completion_criteria', $params);
+            $records = (array)$DB->get_records('course_completion_criteria', $params);
 
             // Build array of criteria objects
             $this->criteria = array();
@@ -547,8 +401,9 @@ class completion_info {
      * Clear old course completion criteria
      */
     public function clear_criteria() {
-        delete_records('course_completion_criteria', 'course', $this->course_id);
-        delete_records('course_completion_aggr_methd', 'course', $this->course_id);
+        global $DB;
+        $DB->delete_records('course_completion_criteria', array('course' => $this->course_id));
+        $DB->delete_records('course_completion_aggr_methd', array('course' => $this->course_id));
 
         $this->delete_course_completion_data();
     }
@@ -657,6 +512,7 @@ class completion_info {
      *
      * @global object
      * @global object
+     * @global object
      * @uses COMPLETION_VIEW_REQUIRED
      * @uses COMPLETION_NOT_VIEWED
      * @uses COMPLETION_INCOMPLETE
@@ -669,7 +525,7 @@ class completion_info {
      * @return mixed
      */
     function internal_get_state($cm, $userid, $current) {
-        global $USER, $CFG;
+        global $USER, $DB, $CFG;
 
         // Get user ID
         if (!$userid) {
@@ -685,7 +541,7 @@ class completion_info {
 
         // Modname hopefully is provided in $cm but just in case it isn't, let's grab it
         if (!isset($cm->modname)) {
-            $cm->modname = get_field('modules', 'name', 'id', $cm->module);
+            $cm->modname = $DB->get_field('modules', 'name', array('id'=>$cm->module));
         }
 
         $newstate = COMPLETION_COMPLETE;
@@ -741,6 +597,9 @@ class completion_info {
      * Should be called whenever a module is 'viewed' (it is up to the module how to
      * determine that). Has no effect if viewing is not set as a completion condition.
      *
+     * Note that this function must be called before you print the page header because
+     * it is possible that the navigation block may depend on it. If you call it after
+     * printing the header, it shows a developer debug warning.
      * @uses COMPLETION_VIEW_NOT_REQUIRED
      * @uses COMPLETION_VIEWED
      * @uses COMPLETION_COMPLETE
@@ -749,6 +608,11 @@ class completion_info {
      * @return void
      */
     public function set_module_viewed($cm, $userid=0) {
+        global $PAGE, $UNITTEST;
+        if ($PAGE->headerprinted && empty($UNITTEST->running)) {
+            debugging('set_module_viewed must be called before header is printed',
+                    DEBUG_DEVELOPER);
+        }
         // Don't do anything if view condition is not turned on
         if ($cm->completionview == COMPLETION_VIEW_NOT_REQUIRED || !$this->is_enabled($cm)) {
             return;
@@ -776,17 +640,15 @@ class completion_info {
      *   activity, 0 if none
      */
     public function count_user_data($cm) {
-        global $CFG;
+        global $DB;
 
-        $cmid = (int)$cm->id;
-
-        return get_field_sql("
+        return $DB->get_field_sql("
     SELECT
         COUNT(1)
     FROM
-        {$CFG->prefix}course_modules_completion
+        {course_modules_completion}
     WHERE
-        coursemoduleid = {$cmid} AND completionstate <> 0");
+        coursemoduleid=? AND completionstate<>0", array($cm->id));
     }
 
     /**
@@ -800,23 +662,26 @@ class completion_info {
      *   course, 0 if none
      */
     public function count_course_user_data($user_id = null) {
-        global $CFG;
+        global $DB;
 
-        $sql = "
+        $sql = '
     SELECT
         COUNT(1)
     FROM
-        {$CFG->prefix}course_completion_crit_compl
+        {course_completion_crit_compl}
     WHERE
-        course = {$this->course_id}
-        ";
+        course = ?
+        ';
+
+        $params = array($this->course_id);
 
         // Limit data to a single user if an ID is supplied
         if ($user_id) {
-            $sql .= ' AND userid = '.(int)$user_id;
+            $sql .= ' AND userid = ?';
+            $params[] = $user_id;
         }
 
-        return get_field_sql($sql);
+        return $DB->get_field_sql($sql, $params);
     }
 
     /**
@@ -833,18 +698,14 @@ class completion_info {
      *
      * Intended to be used when unlocking completion criteria settings.
      *
+     * @global  object
      * @return  void
      */
     public function delete_course_completion_data() {
-        global $CFG;
+        global $DB;
 
-        require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
-
-        delete_records('course_completions', 'course', $this->course_id);
-        delete_records('course_completion_crit_compl', 'course', $this->course_id);
-
-        //Remove stats data
-        delete_records('block_totara_stats', 'eventtype', STATS_EVENT_COURSE_COMPLETE, 'data2', $this->course_id);
+        $DB->delete_records('course_completions', array('course' => $this->course_id));
+        $DB->delete_records('course_completion_crit_compl', array('course' => $this->course_id));
     }
 
     /**
@@ -853,13 +714,14 @@ class completion_info {
      * Intended for use only when the activity itself is deleted.
      *
      * @global object
+     * @global object
      * @param object $cm Activity
      */
     public function delete_all_state($cm) {
-        global $SESSION;
+        global $SESSION, $DB;
 
         // Delete from database
-        delete_records('course_modules_completion', 'coursemoduleid', $cm->id);
+        $DB->delete_records('course_modules_completion', array('coursemoduleid'=>$cm->id));
 
         // Erase cache data for current user if applicable
         if (isset($SESSION->completioncache) &&
@@ -876,13 +738,13 @@ class completion_info {
             if ($criterion->moduleinstance == $cm->id) {
                 $acriteria = $criterion;
                 break;
-            }
+    }
         }
 
         if ($acriteria) {
             // Delete all criteria completions relating to this activity
-            delete_records('course_completion_crit_compl', 'course', $this->course_id, 'criteriaid', $acriteria->id);
-            delete_records('course_completions', 'course', $this->course_id);
+            $DB->delete_records('course_completion_crit_compl', array('course' => $this->course_id, 'criteriaid' => $acriteria->id));
+            $DB->delete_records('course_completions', array('course' => $this->course_id));
         }
     }
 
@@ -897,20 +759,22 @@ class completion_info {
      * Resetting state of manual tickbox has same result as deleting state for
      * it.
      *
+     * @global object
      * @uses COMPLETION_TRACKING_MANUAL
      * @uses COMPLETION_UNKNOWN
      * @param object $cm Activity
      */
     public function reset_all_state($cm) {
+        global $DB;
 
         if ($cm->completion == COMPLETION_TRACKING_MANUAL) {
             $this->delete_all_state($cm);
             return;
         }
         // Get current list of users with completion state
-        $rs = get_recordset('course_modules_completion', 'coursemoduleid', $cm->id, '', 'userid');
+        $rs = $DB->get_recordset('course_modules_completion', array('coursemoduleid'=>$cm->id), '', 'userid');
         $keepusers = array();
-        while ($rec = rs_fetch_next_record($rs)) {
+        foreach ($rs as $rec) {
             $keepusers[] = $rec->userid;
         }
         $rs->close();
@@ -952,7 +816,7 @@ class completion_info {
      * @return object Completion data (record from course_modules_completion)
      */
     public function get_data($cm, $wholecourse=false, $userid=0, $modinfo=null) {
-        global $USER, $CFG, $SESSION;
+        global $USER, $CFG, $SESSION, $DB;
 
         // Get user ID
         if (!$userid) {
@@ -986,14 +850,14 @@ class completion_info {
         // Not there, get via SQL
         if ($currentuser && $wholecourse) {
             // Get whole course data for cache
-            $alldatabycmc = get_records_sql("
+            $alldatabycmc = $DB->get_records_sql("
     SELECT
         cmc.*
     FROM
-        {$CFG->prefix}course_modules cm
-        INNER JOIN {$CFG->prefix}course_modules_completion cmc ON cmc.coursemoduleid=cm.id
+        {course_modules} cm
+        INNER JOIN {course_modules_completion} cmc ON cmc.coursemoduleid=cm.id
     WHERE
-        cm.course = {$this->course->id} AND cmc.userid = {$userid}");
+        cm.course=? AND cmc.userid=?", array($this->course->id, $userid));
 
             // Reindex by cm id
             $alldata = array();
@@ -1031,7 +895,7 @@ class completion_info {
 
         } else {
             // Get single record
-            $data = get_record('course_modules_completion', 'coursemoduleid', $cm->id, 'userid', $userid);
+            $data = $DB->get_record('course_modules_completion', array('coursemoduleid'=>$cm->id, 'userid'=>$userid));
             if ($data == false) {
                 // Row not present counts as 'not complete'
                 $data = new StdClass;
@@ -1069,18 +933,27 @@ class completion_info {
      * @param object $data Data about completion for that user
      */
     function internal_set_data($cm, $data) {
-        global $USER, $SESSION;
+        global $USER, $SESSION, $DB;
 
-        if ($data->id) {
-            // Has real (nonzero) id meaning that a database row exists
-            update_record('course_modules_completion', $data);
-        } else {
-            // Didn't exist before, needs creating
-            $data->id = insert_record('course_modules_completion', $data);
+        $transaction = $DB->start_delegated_transaction();
+        if (!$data->id) {
+            // Check there isn't really a row
+            $data->id = $DB->get_field('course_modules_completion', 'id',
+                    array('coursemoduleid'=>$data->coursemoduleid, 'userid'=>$data->userid));
         }
+        if (!$data->id) {
+            // Didn't exist before, needs creating
+            $data->id = $DB->insert_record('course_modules_completion', $data);
+        } else {
+            // Has real (nonzero) id meaning that a database row exists, update
+            $DB->update_record('course_modules_completion', $data);
+        }
+        $transaction->allow_commit();
 
         if ($data->userid == $USER->id) {
             $SESSION->completioncache[$cm->course][$cm->id] = $data;
+            $reset = 'reset';
+            get_fast_modinfo($reset);
         }
     }
 
@@ -1096,9 +969,10 @@ class completion_info {
      *   empty array if none
      */
     public function get_activities($modinfo=null) {
+        global $DB;
 
         // Obtain those activities which have completion turned on
-        $withcompletion = get_records_select('course_modules', 'course='.$this->course->id.
+        $withcompletion = $DB->get_records_select('course_modules', 'course='.$this->course->id.
           ' AND completion<>'.COMPLETION_TRACKING_NONE);
         if (!$withcompletion) {
             return array();
@@ -1124,34 +998,24 @@ class completion_info {
 
 
     /**
-     * Checks to see if the userid has a completion_completions record
-     * or a tracked role in this course.
-     *
-     * We do this because some users could have received a RPL via
-     * a Learning Plan without being enrolled in the course at all.
+     * Checks to see if the userid supplied has a tracked role in
+     * this course
      *
      * @param   $userid     User id
      * @return  bool
      */
     function is_tracked_user($userid) {
+        global $DB;
 
-        // Check for course_completions records
-        $data = array(
-            'userid'    => $userid,
-            'course'    => $this->course_id
-        );
+        $tracked = $this->generate_tracked_user_sql();
 
-        $ccompletion = new completion_completion($data);
-        if ($ccompletion->id) {
-            return true;
-        }
-
-        // Otherwise check for role assignments
         $sql  = "SELECT u.id ";
-        $sql .= $this->generate_tracked_user_sql();
-        $sql .= ' AND u.id = '.(int)$userid;
+        $sql .= $tracked->sql;
+        $sql .= ' AND u.id = :userid';
 
-        return record_exists_sql($sql);
+        $params = $tracked->data;
+        $params['userid'] = (int)$userid;
+        return $DB->record_exists_sql($sql, $params);
     }
 
 
@@ -1160,19 +1024,25 @@ class completion_info {
      *
      * Optionally supply a search's where clause, or a group id
      *
-     * @param   string  $where      Where clause
+     * @param   string  $where          Where clause sql
+     * @param   array   $where_params   Where clause params
      * @param   int     $groupid    Group id
      * @return  int
      */
-    function get_num_tracked_users($where = '', $groupid = 0) {
+    function get_num_tracked_users($where = '', $where_params = array(), $groupid = 0) {
+        global $DB;
+
+        $tracked = $this->generate_tracked_user_sql($groupid);
+
         $sql  = "SELECT COUNT(u.id) ";
-        $sql .= $this->generate_tracked_user_sql($groupid);
+        $sql .= $tracked->sql;
 
         if ($where) {
             $sql .= " AND $where";
         }
 
-        return count_records_sql($sql);
+        $params = array_merge($tracked->data, $where_params);
+        return $DB->count_records_sql($sql, $params);
     }
 
 
@@ -1181,36 +1051,47 @@ class completion_info {
      *
      * Optionally supply a search's where caluse, group id, sorting, paging
      *
-     * @param   string      $where      Where clause (optional)
+     * @param   string      $where          Where clause sql (optional)
+     * @param   array       $where_params   Where clause params (optional)
      * @param   integer     $groupid    Group ID to restrict to (optional)
      * @param   string      $sort       Order by clause (optional)
      * @param   integer     $limitfrom  Result start (optional)
      * @param   integer     $limitnum   Result max size (optional)
+     * @param context $extracontext If set, includes extra user information fields
+     *   as appropriate to display for current user in this context
      * @return  array
      */
-    function get_tracked_users($where = '', $groupid = 0, $sort = '',
-             $limitfrom = '', $limitnum = '') {
+    function get_tracked_users($where = '', $where_params = array(), $groupid = 0,
+             $sort = '', $limitfrom = '', $limitnum = '', context $extracontext = null) {
+
+        global $DB;
+
+        $tracked = $this->generate_tracked_user_sql($groupid);
+        $params = $tracked->data;
 
         $sql = "
             SELECT
                 u.id,
                 u.firstname,
                 u.lastname,
-                u.idnumber,
-                ra.roleid
+                u.idnumber
         ";
+        if ($extracontext) {
+            $sql .= get_extra_user_fields_sql($extracontext, 'u', '', array('idnumber'));
+        }
 
-        $sql .= $this->generate_tracked_user_sql($groupid);
+        $sql .= $tracked->sql;
 
         if ($where) {
             $sql .= " AND $where";
+            $params = array_merge($params, $where_params);
         }
 
         if ($sort) {
             $sql .= " ORDER BY $sort";
         }
 
-        $users = get_records_sql($sql, $limitfrom, $limitnum);
+        $users = $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
         return $users ? $users : array(); // In case it returns false
     }
 
@@ -1218,16 +1099,21 @@ class completion_info {
     /**
      * Generate the SQL for finding tracked users in this course
      *
-     * Optionally supply a group id
+     * Returns an object containing the sql fragment and an array of
+     * bound data params.
      *
      * @param   integer $groupid
-     * @return  string
+     * @return  object
      */
     function generate_tracked_user_sql($groupid = 0) {
         global $CFG;
 
-        if (!empty($CFG->progresstrackedroles)) {
-            $roles = ' AND ra.roleid IN ('.$CFG->progresstrackedroles.')';
+        $return = new stdClass();
+        $return->sql = '';
+        $return->data = array();
+
+        if (!empty($CFG->gradebookroles)) {
+            $roles = ' AND ra.roleid IN ('.$CFG->gradebookroles.')';
         } else {
             // This causes it to default to everyone (if there is no student role)
             $roles = '';
@@ -1244,28 +1130,50 @@ class completion_info {
         $groupjoin   = '';
         $groupselect = '';
         if ($groupid) {
-            $groupjoin   = "JOIN {$CFG->prefix}groups_members gm
+            $groupjoin   = "JOIN {groups_members} gm
                               ON gm.userid = u.id";
-            $groupselect = " AND gm.groupid = $groupid ";
+            $groupselect = " AND gm.groupid = :groupid ";
+            
+            $return->data['groupid'] = $groupid;
         }
 
-        $sql = "
+        $return->sql = "
             FROM
-                {$CFG->prefix}role_assignments ra
-            JOIN
-                {$CFG->prefix}user u
-             ON u.id = ra.userid
-            JOIN
-                {$CFG->prefix}role r
-             ON ra.roleid = r.id
+                {user} u
+            INNER JOIN
+                {role_assignments} ra
+             ON ra.userid = u.id
+            INNER JOIN
+                {role} r
+             ON r.id = ra.roleid
+            INNER JOIN
+                {user_enrolments} ue
+             ON ue.userid = u.id
+            INNER JOIN
+                {enrol} e
+             ON e.id = ue.enrolid
+            INNER JOIN
+                {course} c
+             ON c.id = e.courseid
             $groupjoin
             WHERE
-                (ra.contextid = {$context->id} $parentcontexts)
-                $roles
+                (ra.contextid = :contextid $parentcontexts)
+            AND c.id = :courseid
+            AND ue.status = 0
+            AND e.status = 0
+            AND ue.timestart < :now1
+            AND (ue.timeend > :now2 OR ue.timeend = 0)
                 $groupselect
+                $roles
         ";
 
-        return $sql;
+        $now = time();
+        $return->data['now1'] = $now;
+        $return->data['now2'] = $now;
+        $return->data['contextid'] = $context->id;
+        $return->data['courseid'] = $this->course->id;
+
+        return $return;
     }
 
     /**
@@ -1273,27 +1181,33 @@ class completion_info {
      * for all users in a specific group. Intended for use when displaying progress.
      *
      * This includes only users who, in course context, have one of the roles for
-     * which progress is tracked (the progresstrackedroles admin option).
+     * which progress is tracked (the gradebookroles admin option) and are enrolled in course.
      *
      * Users are included (in the first array) even if they do not have
      * completion progress for any course-module.
      *
      * @global object
+     * @global object
      * @param bool $sortfirstname If true, sort by first name, otherwise sort by
      *   last name
+     * @param string $where Where clause sql (optional)
+     * @param array $where_params Where clause params (optional)
      * @param int $groupid Group ID or 0 (default)/false for all groups
      * @param int $pagesize Number of users to actually return (optional)
      * @param int $start User to start at if paging (optional)
+     * @param context $extracontext If set, includes extra user information fields
+     *   as appropriate to display for current user in this context
      * @return Object with ->total and ->start (same as $start) and ->users;
      *   an array of user objects (like mdl_user id, firstname, lastname)
      *   containing an additional ->progress array of coursemoduleid => completionstate
      */
-    public function get_progress_all($where = '', $groupid = 0, $sort = '', $pagesize = '', $start = '') {
-        global $CFG;
-        $resultobject=new StdClass;
+    public function get_progress_all($where = '', $where_params = array(), $groupid = 0,
+            $sort = '', $pagesize = '', $start = '', context $extracontext = null) {
+        global $CFG, $DB;
 
         // Get list of applicable users
-        $users = $this->get_tracked_users($where, $groupid, $sort, $start, $pagesize);
+        $users = $this->get_tracked_users($where, $where_params, $groupid, $sort,
+                $start, $pagesize, $extracontext);
 
         // Get progress information for these users in groups of 1, 000 (if needed)
         // to avoid making the SQL IN too long
@@ -1308,16 +1222,17 @@ class completion_info {
         for($i=0; $i<count($userids); $i+=1000) {
             $blocksize = count($userids)-$i < 1000 ? count($userids)-$i : 1000;
 
-            $insql = 'IN ('.implode(array_slice($userids, $i, $blocksize), ', ').')';
-            $rs = get_recordset_sql("
-SELECT
-    cmc.*
-FROM
-    {$CFG->prefix}course_modules cm
-    INNER JOIN {$CFG->prefix}course_modules_completion cmc ON cm.id=cmc.coursemoduleid
-WHERE
-    cm.course = {$this->course->id} AND cmc.userid $insql");
-
+            list($insql, $params) = $DB->get_in_or_equal(array_slice($userids, $i, $blocksize));
+            array_splice($params, 0, 0, array($this->course->id));
+            $rs = $DB->get_recordset_sql("
+                SELECT
+                    cmc.*
+                FROM
+                    {course_modules} cm
+                    INNER JOIN {course_modules_completion} cmc ON cm.id=cmc.coursemoduleid
+                WHERE
+                    cm.course=? AND cmc.userid $insql
+    ", $params);
             foreach ($rs as $progress) {
                 $progress = (object)$progress;
                 $results[$progress->userid]->progress[$progress->coursemoduleid] = $progress;
@@ -1329,12 +1244,14 @@ WHERE
     }
 
     /**
-     * @todo Document this function
+     * Called by grade code to inform the completion system when a grade has
+     * been changed. If the changed grade is used to determine completion for
+     * the course-module, then the completion status will be updated.
      *
      * @uses COMPLETION_TRACKING_MANUAL
      * @uses COMPLETION_INCOMPLETE
-     * @param object $cm
-     * @param object $item
+     * @param object $cm Course-module for item that owns grade
+     * @param grade_item $item Grade item
      * @param object $grade
      * @param bool $deleted
      * @return void
@@ -1347,7 +1264,6 @@ WHERE
             $cm->completion == COMPLETION_TRACKING_MANUAL ||
             is_null($cm->completiongradeitemnumber) ||
             $item->itemnumber != $cm->completiongradeitemnumber) {
-
             return;
         }
 
@@ -1358,7 +1274,7 @@ WHERE
         } else {
             $possibleresult = $this->internal_get_grade_state($item, $grade);
         }
-
+        
         // OK, let's update state based on this
         $this->update_state($cm, $possibleresult, $grade->userid);
     }
@@ -1418,7 +1334,7 @@ WHERE
      */
     function internal_systemerror($error) {
         global $CFG;
-        print_error('err_system','completion',
+        throw new moodle_exception('err_system','completion',
             $CFG->wwwroot.'/course/view.php?id='.$this->course->id,null,$error);
     }
 
@@ -1433,6 +1349,3 @@ WHERE
         unset($SESSION->completioncacheuserid);
     }
 }
-
-
-?>

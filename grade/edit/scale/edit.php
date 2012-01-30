@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 require_once '../../../config.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/grade/report/lib.php';
@@ -23,6 +22,9 @@ require_once 'edit_form.php';
 
 $courseid = optional_param('courseid', 0, PARAM_INT);
 $id       = optional_param('id', 0, PARAM_INT);
+
+$PAGE->set_url('/grade/edit/scale/edit.php', array('id' => $id, 'courseid' => $courseid));
+$PAGE->set_pagelayout('admin');
 
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 $heading = '';
@@ -32,13 +34,13 @@ if ($id) {
     $heading = get_string('editscale', 'grades');
 
     /// editing existing scale
-    if (!$scale_rec = get_record('scale', 'id', $id)) {
-        error('Incorrect scale id');
+    if (!$scale_rec = $DB->get_record('scale', array('id' => $id))) {
+        print_error('invalidscaleid');
     }
     if ($scale_rec->courseid) {
         $scale_rec->standard = 0;
-        if (!$course = get_record('course', 'id', $scale_rec->courseid)) {
-            error('Incorrect course id');
+        if (!$course = $DB->get_record('course', array('id' => $scale_rec->courseid))) {
+            print_error('invalidcourseid');
         }
         require_login($course);
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
@@ -46,8 +48,8 @@ if ($id) {
         $courseid = $course->id;
     } else {
         if ($courseid) {
-            if (!$course = get_record('course', 'id', $courseid)) {
-                error('Incorrect course id');
+            if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+                print_error('invalidcourseid');
             }
         }
         $scale_rec->standard = 1;
@@ -59,10 +61,10 @@ if ($id) {
 } else if ($courseid){
     $heading = get_string('addscale', 'grades');
     /// adding new scale from course
-    if (!$course = get_record('course', 'id', $courseid)) {
+    if (!$course = $DB->get_record('course', array('id' => $courseid))) {
         print_error('nocourseid');
     }
-    $scale_rec = new object();
+    $scale_rec = new stdClass();
     $scale_rec->standard = 0;
     $scale_rec->courseid = $courseid;
     require_login($course);
@@ -71,37 +73,59 @@ if ($id) {
 
 } else {
     /// adding new scale from admin section
-    $scale_rec = new object();
+    $scale_rec = new stdClass();
     $scale_rec->standard = 1;
     $scale_rec->courseid = 0;
     require_login();
     require_capability('moodle/course:managescales', $systemcontext);
 }
 
+if (!$courseid) {
+    require_once $CFG->libdir.'/adminlib.php';
+    admin_externalpage_setup('scales');
+}
+
 // default return url
 $gpr = new grade_plugin_return();
 $returnurl = $gpr->get_return_url('index.php?id='.$courseid);
+$editoroptions = array(
+    'maxfiles'  => EDITOR_UNLIMITED_FILES,
+    'maxbytes'  => $CFG->maxbytes,
+    'trusttext' => false,
+    'noclean'   => true,
+    'context'   => $systemcontext
+);
 
-$mform = new edit_scale_form(null, array('gpr'=>$gpr));
+if (!empty($scale_rec->id)) {
+    $scale_rec = file_prepare_standard_editor($scale_rec, 'description', $editoroptions, $systemcontext, 'grade', 'scale', $scale_rec->id);
+} else {
+    $scale_rec = file_prepare_standard_editor($scale_rec, 'description', $editoroptions, $systemcontext, 'grade', 'scale', null);
+}
+$mform = new edit_scale_form(null, compact('gpr', 'editoroptions'));
 
 $mform->set_data($scale_rec);
 
 if ($mform->is_cancelled()) {
     redirect($returnurl);
 
-} else if ($data = $mform->get_data(false)) {
+} else if ($data = $mform->get_data()) {
     $scale = new grade_scale(array('id'=>$id));
     $data->userid = $USER->id;
-    grade_scale::set_properties($scale, $data);
 
     if (empty($scale->id)) {
+        $data->description = $data->description_editor['text'];
+        $data->descriptionformat = $data->description_editor['format'];
+        grade_scale::set_properties($scale, $data);
         if (!has_capability('moodle/grade:manage', $systemcontext)) {
             $data->standard = 0;
         }
         $scale->courseid = !empty($data->standard) ? 0 : $courseid;
         $scale->insert();
-
+        $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $systemcontext, 'grade', 'scale', $scale->id);
+        $DB->set_field($scale->table, 'description', $data->description, array('id'=>$scale->id));
     } else {
+        $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $systemcontext, 'grade', 'scale', $id);
+        grade_scale::set_properties($scale, $data);
         if (isset($data->standard)) {
             $scale->courseid = !empty($data->standard) ? 0 : $courseid;
         } else {
@@ -114,19 +138,10 @@ if ($mform->is_cancelled()) {
 
 if ($courseid) {
     print_grade_page_head($course->id, 'scale', 'edit', $heading);
-
 } else {
-    require_once $CFG->libdir.'/adminlib.php';
-    admin_externalpage_setup('scales');
-    admin_externalpage_print_header();
+    echo $OUTPUT->header();
 }
 
 $mform->display();
 
-if ($courseid) {
-    print_footer($course);
-} else {
-    admin_externalpage_print_footer();
-}
-
-?>
+echo $OUTPUT->footer();

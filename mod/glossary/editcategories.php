@@ -1,119 +1,150 @@
-<?php  // $Id$
+<?php
 
 /// This page allows to edit entries categories for a particular instance of glossary
 
-    require_once("../../config.php");
-    require_once("lib.php");
+require_once("../../config.php");
+require_once("lib.php");
 
-    $id = required_param('id', PARAM_INT);                       // Course Module ID, or
-    $usedynalink = optional_param('usedynalink', 0, PARAM_INT);  // category ID
-    $confirm     = optional_param('confirm', 0, PARAM_INT);      // confirm the action
-    $name        = optional_param('name', '', PARAM_CLEAN);  // confirm the name
+$id = required_param('id', PARAM_INT);                       // Course Module ID, or
+$usedynalink = optional_param('usedynalink', 0, PARAM_INT);  // category ID
+$confirm     = optional_param('confirm', 0, PARAM_INT);      // confirm the action
+$name        = optional_param('name', '', PARAM_CLEAN);  // confirm the name
 
-    $action = optional_param('action', '', PARAM_ALPHA ); // what to do
-    $hook   = optional_param('hook', '', PARAM_ALPHANUM); // category ID
-    $mode   = optional_param('mode', '', PARAM_ALPHA);   // cat
+$action = optional_param('action', '', PARAM_ALPHA ); // what to do
+$hook   = optional_param('hook', '', PARAM_ALPHANUM); // category ID
+$mode   = optional_param('mode', '', PARAM_ALPHA);   // cat
 
-    $action = strtolower($action);
+$action = strtolower($action);
 
-    if (! $cm = get_coursemodule_from_id('glossary', $id)) {
-        error("Course Module ID was incorrect");
-    }
+$url = new moodle_url('/mod/glossary/editcategories.php', array('id'=>$id));
+if ($usedynalink !== 0) {
+    $url->param('usedynalink', $usedynalink);
+}
+if ($confirm !== 0) {
+    $url->param('confirm', $confirm);
+}
+if ($name !== 'name') {
+    $url->param('name', $name);
+}
+if ($action !== 'action') {
+    $url->param('action', $action);
+}
+if ($hook !== 'hook') {
+    $url->param('hook', $hook);
+}
+if ($mode !== 'mode') {
+    $url->param('mode', $mode);
+}
 
-    if (! $course = get_record("course", "id", $cm->course)) {
-        error("Course is misconfigured");
-    }
+$PAGE->set_url($url);
 
-    if (! $glossary = get_record("glossary", "id", $cm->instance)) {
-        error("Course module is incorrect");
-    }
+if (! $cm = get_coursemodule_from_id('glossary', $id)) {
+    print_error('invalidcoursemodule');
+}
 
-    if ($hook > 0) {
-        if ($category = get_record("glossary_categories","id",$hook)) {
-            //Check it belongs to the same glossary
-            if ($category->glossaryid != $glossary->id) {
-                error("Glossary is incorrect");
-            }
-        } else {
-            error("Category is incorrect");
+if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+    print_error('coursemisconf');
+}
+
+if (! $glossary = $DB->get_record("glossary", array("id"=>$cm->instance))) {
+    print_error('invalidcoursemodule');
+}
+
+if ($hook > 0) {
+    if ($category = $DB->get_record("glossary_categories", array("id"=>$hook))) {
+        //Check it belongs to the same glossary
+        if ($category->glossaryid != $glossary->id) {
+            print_error('invalidid', 'glossary');
         }
+    } else {
+        print_error('invalidcategoryid');
     }
+}
 
-    require_login($course->id, false, $cm);
+require_login($course->id, false, $cm);
 
-    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
-    require_capability('mod/glossary:managecategories', $context);
+$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+require_capability('mod/glossary:managecategories', $context);
 
-    $strglossaries   = get_string("modulenameplural", "glossary");
-    $strglossary     = get_string("modulename", "glossary");
+$strglossaries   = get_string("modulenameplural", "glossary");
+$strglossary     = get_string("modulename", "glossary");
 
-    $navlinks = array();
-    $navlinks[] = array('name' => $strglossaries, 'link' => "index.php?id=$course->id", 'type' => 'activity');
-    $navlinks[] = array('name' => format_string($glossary->name), 'link' => "view.php?id=$cm->id&amp;tab=GLOSSARY_CATEGORY_VIEW", 'type' => 'activityinstance');
-    $navlinks[] = array('name' => get_string("categories","glossary"), 'link' => '', 'type' => 'title');
-    
-    $navigation = build_navigation($navlinks);
+$PAGE->navbar->add($strglossaries, new moodle_url('/mod/glossary/index.php', array('id'=>$course->id)));
+$PAGE->navbar->add(get_string("categories","glossary"));
+if (!empty($action)) {
+    $navaction = get_string($action). " " . moodle_strtolower(get_string("category","glossary"));
+    $PAGE->navbar->add($navaction);
+}
+$PAGE->set_title(format_string($glossary->name));
+$PAGE->set_heading($course->fullname);
+echo $OUTPUT->header();
 
-    print_header_simple(format_string($glossary->name), "", $navigation,
-                        "", "", true, update_module_button($cm->id, $course->id, $strglossary),
-                        navmenu($course, $cm));
+// Prepare format_string/text options
+$fmtoptions = array(
+    'context' => $context);
 
-    if ( $hook >0 ) {
+if (right_to_left()) { // RTL table alignment support
+    $rightalignment = 'left';
+    $leftalignment = 'right';
+} else {
+    $rightalignment = 'right';
+    $leftalignment = 'left';
 
-        if ( $action == "edit" ) {
-            if ( $confirm ) {
-                $action = "";
-                $cat->id = $hook;
-                $cat->name = $name;
-                $cat->usedynalink = $usedynalink;
+}
 
-                if ( !update_record("glossary_categories", $cat) ) {
-                    error("Weird error. The category was not updated.");
-                    redirect("editcategories.php?id=$cm->id");
-                } else {
-                    add_to_log($course->id, "glossary", "edit category", "editcategories.php?id=$cm->id", $hook,$cm->id);
-                }
-            } else {
-                echo "<p style=\"text-align:center\">" . get_string("edit"). " " . get_string("category","glossary") . "<span style=\"font-size:1.5em\">";
+if ( $hook >0 ) {
 
-                $name = $category->name;
-                $usedynalink = $category->usedynalink;
-                require "editcategories.html";
-                print_footer();
-                die;
+    if ( $action == "edit" ) {
+        if ( $confirm ) {
+            $action = "";
+            $cat = new stdClass();
+            $cat->id = $hook;
+            $cat->name = $name;
+            $cat->usedynalink = $usedynalink;
+
+            $DB->update_record("glossary_categories", $cat);
+            add_to_log($course->id, "glossary", "edit category", "editcategories.php?id=$cm->id", $hook,$cm->id);
+
+        } else {
+            echo "<h3 class=\"main\">" . get_string("edit"). " " . get_string("category","glossary") . "</h3>";
+
+            $name = $category->name;
+            $usedynalink = $category->usedynalink;
+            require "editcategories.html";
+            echo $OUTPUT->footer();
+            die;
+        }
+
+    } elseif ( $action == "delete" ) {
+        if ( $confirm ) {
+            $DB->delete_records("glossary_entries_categories", array("categoryid"=>$hook));
+            $DB->delete_records("glossary_categories", array("id"=>$hook));
+
+            echo $OUTPUT->box_start('generalbox boxaligncenter errorboxcontent boxwidthnarrow');
+            echo "<div>" . get_string("categorydeleted","glossary") ."</div>";
+            echo $OUTPUT->box_end();
+
+            add_to_log($course->id, "glossary", "delete category", "editcategories.php?id=$cm->id", $hook,$cm->id);
+
+            redirect("editcategories.php?id=$cm->id");
+        } else {
+            echo "<p>" . get_string("delete"). " " . get_string("category","glossary"). "</p>";
+
+            echo $OUTPUT->box_start('generalbox boxaligncenter errorboxcontent boxwidthnarrow');
+            echo "<div class=\"boxaligncenter deletecatconfirm\">".format_string($category->name, true, $fmtoptions)."<br/>";
+
+            $num_entries = $DB->count_records("glossary_entries_categories", array("categoryid"=>$category->id));
+            if ( $num_entries ) {
+                print_string("deletingnoneemptycategory","glossary");
             }
-
-        } elseif ( $action == "delete" ) {
-            if ( $confirm ) {
-                delete_records("glossary_entries_categories","categoryid", $hook);
-                delete_records("glossary_categories","id", $hook);
-
-                print_simple_box_start("center","40%", "#FFBBBB");
-                echo "<div style=\"text-align:center\">" . get_string("categorydeleted","glossary") ."</div>";
-                echo "</center>";
-                print_simple_box_end();
-
-                add_to_log($course->id, "glossary", "delete category", "editcategories.php?id=$cm->id", $hook,$cm->id);
-
-                redirect("editcategories.php?id=$cm->id");
-            } else {
-                echo "<p style=\"text-align:center\">" . get_string("delete"). " " . get_string("category","glossary"). "</p>";
-
-                print_simple_box_start("center","40%", "#FFBBBB");
-                echo "<div class=\"boxaligncenter\"><b>".format_text($category->name, FORMAT_PLAIN)."</b><br/>";
-
-                $num_entries = count_records("glossary_entries_categories","categoryid",$category->id);
-                if ( $num_entries ) {
-                    print_string("deletingnoneemptycategory","glossary");
-                }
-                echo "<p>";
-                print_string("areyousuredelete","glossary");
-                echo "</p>";
+            echo "<p>";
+            print_string("areyousuredelete","glossary");
+            echo "</p>";
 ?>
 
-                <table border="0" width="100">
+                <table border="0" width="100" class="confirmbuttons">
                     <tr>
-                        <td align="right" style="width:50%">                
+                        <td align="$rightalignment" style="width:50%">
                         <form id="form" method="post" action="editcategories.php">
                         <div>
                         <input type="hidden" name="id"          value="<?php p($cm->id) ?>" />
@@ -125,96 +156,91 @@
                         </div>
                         </form>
                         </td>
-                        <td align="left" style="width:50%">
+                        <td align="$leftalignment" style="width:50%">
 
 <?php
-                unset($options);
-                $options = array ("id" => $id);
-                print_single_button("editcategories.php", $options, get_string("no") );
-                echo "</td></tr></table>";
-                echo "</div>";
-                print_simple_box_end();
-            }
+            unset($options);
+            $options = array ("id" => $id);
+            echo $OUTPUT->single_button(new moodle_url("editcategories.php", $options), get_string("no"));
+            echo "</td></tr></table>";
+            echo "</div>";
+            echo $OUTPUT->box_end();
         }
+    }
 
-    } elseif ( $action == "add" ) {
-        if ( $confirm ) {
-            $ILIKE = sql_ilike();
-            $dupcategory = get_records_sql("SELECT * FROM {$CFG->prefix}glossary_categories WHERE name $ILIKE '$name' AND glossaryid=$glossary->id");
-            if ( $dupcategory ) {
-                echo "<p style=\"text-align:center\">" . get_string("add"). " " . get_string("category","glossary");
+} elseif ( $action == "add" ) {
+    if ( $confirm ) {
+        $dupcategory = $DB->get_records_sql("SELECT * FROM {glossary_categories} WHERE ".$DB->sql_like('name','?', false)." AND glossaryid=?", array($name, $glossary->id));
+        if ( $dupcategory ) {
+        echo "<h3 class=\"main\">" . get_string("add"). " " . get_string("category","glossary"). "</h3>";
 
-                print_simple_box_start("center","40%", "#FFBBBB");
-                echo "<div style=\"text-align:center\">" . get_string("duplicatedcategory","glossary") ."</div>";
-                print_simple_box_end();
+            echo $OUTPUT->box_start('generalbox boxaligncenter errorboxcontent boxwidthnarrow');
+            echo "<div>" . get_string("duplicatecategory","glossary") ."</div>";
+            echo $OUTPUT->box_end();
 
-                redirect("editcategories.php?id=$cm->id&amp;action=add&&amp;name=$name");
+            redirect("editcategories.php?id=$cm->id&amp;action=add&amp;name=$name");
 
-            } else {
-                $action = "";
-                $cat->name = $name;
-                $cat->usedynalink = $usedynalink;
-                $cat->glossaryid = $glossary->id;
-
-                if ( ! $cat->id = insert_record("glossary_categories", $cat) ) {
-                    error("Weird error. The category was not inserted.");
-
-                    redirect("editcategories.php?id=$cm->id");
-                } else {
-                    add_to_log($course->id, "glossary", "add category", "editcategories.php?id=$cm->id", $cat->id,$cm->id);
-                }
-            }
         } else {
-            echo "<p style=\"text-align:center\">" . get_string("add"). " " . get_string("category","glossary"). "</p>";
-            $name="";
-            require "editcategories.html";
-        }
-    }
+            $action = "";
+            $cat = new stdClass();
+            $cat->name = $name;
+            $cat->usedynalink = $usedynalink;
+            $cat->glossaryid = $glossary->id;
 
-    if ( $action ) {
-        print_footer();
-        die;
+            $cat->id = $DB->insert_record("glossary_categories", $cat);
+            add_to_log($course->id, "glossary", "add category", "editcategories.php?id=$cm->id", $cat->id,$cm->id);
+        }
+    } else {
+        echo "<h3 class=\"main\">" . get_string("add"). " " . get_string("category","glossary"). "</h3>";
+        $name="";
+        require "editcategories.html";
     }
+}
+
+if ( $action ) {
+    echo $OUTPUT->footer();
+    die;
+}
 
 ?>
 
 <form method="post" action="editcategories.php">
 <table width="40%" class="boxaligncenter generalbox" cellpadding="5">
         <tr>
-          <td style="width:90%" align="center"><b>
-          <?php p(get_string("categories","glossary")) ?></b></td>
-          <td style="width:10%" align="center"><b>
-          <?php p(get_string("action")) ?></b></td>
+          <th style="width:90%" align="center">
+          <?php p(get_string("categories","glossary")) ?></th>
+          <th style="width:10%" align="center">
+          <?php p(get_string("action")) ?></th>
         </tr>
         <tr><td style="width:100%" colspan="2">
 
-        
+
 
 <?php
-    $categories = get_records("glossary_categories","glossaryid",$glossary->id,"name ASC");
+    $categories = $DB->get_records("glossary_categories", array("glossaryid"=>$glossary->id), "name ASC");
 
     if ( $categories ) {
         echo '<table width="100%">';
         foreach ($categories as $category) {
-            $num_entries = count_records("glossary_entries_categories","categoryid",$category->id);
+            $num_entries = $DB->count_records("glossary_entries_categories", array("categoryid"=>$category->id));
 ?>
 
              <tr>
-               <td style="width:90%" align="left">
+               <td style="width:80%" align="$leftalignment">
                <?php
-                    echo "<b>".format_text($category->name, FORMAT_PLAIN)."</b> <span style=\"font-size:0.75em\">($num_entries " . get_string("entries","glossary") . ")</span>";
+                    echo "<span class=\"bold\">".format_string($category->name, true, $fmtoptions)."</span> <span>($num_entries " . get_string("entries","glossary") . ")</span>";
                ?>
                </td>
-               <td style="width:10%" align="center"><b>
+               <td style="width:19%" align="center" class="action">
                <?php
-                echo "<a href=\"editcategories.php?id=$cm->id&amp;action=delete&amp;mode=cat&amp;hook=$category->id\"><img  alt=\"" . get_string("delete") . "\"src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" /></a> ";
-                echo "<a href=\"editcategories.php?id=$cm->id&amp;action=edit&amp;mode=cat&amp;hook=$category->id\"><img  alt=\"" . get_string("edit") . "\" src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" /></a>";
+                echo "<a href=\"editcategories.php?id=$cm->id&amp;action=delete&amp;mode=cat&amp;hook=$category->id\"><img  alt=\"" . get_string("delete") . "\"src=\"" . $OUTPUT->pix_url('t/delete') . "\" class=\"iconsmall\" /></a> ";
+                echo "<a href=\"editcategories.php?id=$cm->id&amp;action=edit&amp;mode=cat&amp;hook=$category->id\"><img  alt=\"" . get_string("edit") . "\" src=\"" . $OUTPUT->pix_url('t/edit') . "\" class=\"iconsmall\" /></a>";
                ?>
-               </b></td>
+               </td>
              </tr>
 
              <?php
-          
+
           }
         echo '</table>';
      }
@@ -228,13 +254,13 @@
              $options['id'] = $cm->id;
              $options['action'] = "add";
 
-             echo "<table border=\"0\"><tr><td align=\"right\">";
-             echo print_single_button("editcategories.php", $options, get_string("add") . " " . get_string("category","glossary"), "get");
-             echo "</td><td align=\"left\">";
+             echo "<table class=\"editbuttons\" border=\"0\"><tr><td align=\"$rightalignment\">";
+             echo $OUTPUT->single_button(new moodle_url("editcategories.php", $options), get_string("add") . " " . get_string("category","glossary"));
+             echo "</td><td align=\"$leftalignment\">";
              unset($options['action']);
              $options['mode'] = 'cat';
              $options['hook'] = $hook;
-             echo print_single_button("view.php", $options, get_string("back","glossary") );
+             echo $OUTPUT->single_button(new moodle_url("view.php", $options), get_string("back","glossary"));
              echo "</td></tr>";
              echo "</table>";
 
@@ -246,4 +272,5 @@
 
 </form>
 
-<?php print_footer() ?>
+<?php
+echo $OUTPUT->footer();

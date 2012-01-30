@@ -25,7 +25,13 @@ $id        = required_param('id', PARAM_INT);
 $section   = optional_param('section', 'calculation', PARAM_ALPHA);
 $idnumbers = optional_param('idnumbers', null, PARAM_RAW);
 
-if (!$course = get_record('course', 'id', $courseid)) {
+$url = new moodle_url('/grade/edit/tree/calculation.php', array('id'=>$id, 'courseid'=>$courseid));
+if ($section !== 'calculation') {
+    $url->param('section', $section);
+}
+$PAGE->set_url($url);
+
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 
@@ -38,12 +44,12 @@ $gpr = new grade_plugin_return();
 $returnurl = $gpr->get_return_url($CFG->wwwroot.'/grade/report.php?id='.$course->id);
 
 if (!$grade_item = grade_item::fetch(array('id'=>$id, 'courseid'=>$course->id))) {
-    error('Incorect item id');
+    print_error('invaliditemid');
 }
 
 // activity items and items without grade can not have calculation
 if ($grade_item->is_external_item() or ($grade_item->gradetype != GRADE_TYPE_VALUE and $grade_item->gradetype != GRADE_TYPE_SCALE)) {
-    redirect($returnurl, get_string('errornocalculationallowed', 'grades')); 
+    redirect($returnurl, get_string('errornocalculationallowed', 'grades'));
 }
 
 $mform = new edit_calculation_form(null, array('gpr'=>$gpr, 'itemid' => $grade_item->id));
@@ -59,7 +65,7 @@ $mform->set_data(array('courseid'=>$grade_item->courseid, 'calculation'=>$calcul
 
 $errors = array();
 
-if ($data = $mform->get_data(false)) {
+if ($data = $mform->get_data()) {
     $calculation = calc_formula::unlocalize($data->calculation);
     $grade_item->set_calculation($calculation);
 
@@ -80,7 +86,7 @@ if ($data = $mform->get_data(false)) {
                 continue;
             }
 
-            if (empty($gi->idnumber) and !$gi->add_idnumber(stripslashes($idnumbers[$gi->id]))) {
+            if (empty($gi->idnumber) and !$gi->add_idnumber($idnumbers[$gi->id])) {
                 $errors[$giid] = get_string('error');
                 continue;
             }
@@ -96,9 +102,10 @@ $strgrades          = get_string('grades');
 $strgraderreport    = get_string('graderreport', 'grades');
 $strcalculationedit = get_string('editcalculation', 'grades');
 
-$navigation = grade_build_nav(__FILE__, $strcalculationedit, array('courseid' => $courseid));
-
-print_header_simple($strgrades . ': ' . $strgraderreport, ': ' . $strcalculationedit, $navigation, '', '', true, '', navmenu($course));
+grade_build_nav(__FILE__, $strcalculationedit, array('courseid' => $courseid));
+$PAGE->set_title($strgrades . ': ' . $strgraderreport);
+$PAGE->set_heading($course->fullname);
+echo $OUTPUT->header();
 
 $mform->display();
 // Now show the gradetree with the idnumbers add/edit form
@@ -127,7 +134,7 @@ echo '
     </div>
 </form>';
 
-print_footer($course);
+echo $OUTPUT->footer();
 die();
 
 
@@ -200,4 +207,4 @@ function get_grade_tree(&$gtree, $element, $current_itemid=null, $errors=null) {
     return $return_string;
 }
 
-?>
+

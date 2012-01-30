@@ -1,50 +1,65 @@
-<?PHP // $Id$
+<?php
 
-    require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-    include_once($CFG->dirroot.'/mnet/lib.php');
-    $stradministration = get_string('administration');
-    $strconfiguration  = get_string('configuration');
-    $strmnetsettings   = get_string('mnetsettings', 'mnet');
-    $strmnetservices   = get_string('mnetservices', 'mnet');
-    $strmnetlog        = get_string('mnetlog', 'mnet');
-    $strmnetedithost   = get_string('reviewhostdetails', 'mnet');
-    require_login();
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    $context = get_context_instance(CONTEXT_SYSTEM);
-    
-    require_capability('moodle/site:config', $context, $USER->id, true, "nopermissions");
 
-    if (!$site = get_site()) {
-        print_error('nosite', '', '', NULL, true);
+/**
+ * Page to allow the administrator to delete networked hosts, with a confirm message
+ *
+ * @package    core
+ * @subpackage mnet
+ * @copyright  2007 Donal McMullan
+ * @copyright  2007 Martin Langhoff
+ * @copyright  2010 Penny Leach
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once($CFG->libdir . '/adminlib.php');
+
+$step   = optional_param('step', 'verify', PARAM_ALPHA);
+$hostid = required_param('hostid', PARAM_INT);
+
+
+require_login();
+
+$context = get_context_instance(CONTEXT_SYSTEM);
+require_capability('moodle/site:config', $context, $USER->id, true, "nopermissions");
+
+$mnet = get_mnet_environment();
+
+$PAGE->set_url('/admin/mnet/delete.php');
+admin_externalpage_setup('mnetpeer' . $hostid);
+
+require_sesskey();
+
+$mnet_peer = new mnet_peer();
+$mnet_peer->set_id($hostid);
+
+if ('verify' == $step) {
+    echo $OUTPUT->header();
+    echo $OUTPUT->heading(get_string('deleteaserver', 'mnet'));
+    if ($live_users = $mnet_peer->count_live_sessions() > 0) {
+        echo $OUTPUT->notification(get_string('usersareonline', 'mnet', $live_users));
     }
-
-/// Initialize variables.
-
-    // Step must be one of:
-    // input   Parse the details of a new host and fetch its public key
-    // commit  Save our changes (to a new OR existing host)
-    $step   = optional_param('step', 'verify', PARAM_ALPHA);
-    $hostid = required_param('hostid', PARAM_INT);
-    $warn = array();
-
-    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        redirect('index.php', get_string('postrequired','mnet') ,7);
-    }
-
-    require_sesskey();
-
-    if ('verify' == $step) {
-        $mnet_peer = new mnet_peer();
-        $mnet_peer->set_id($hostid);
-        $live_users = $mnet_peer->count_live_sessions();
-        if ($live_users > 0) {
-            $warn[] = get_string('usersareonline', 'mnet', $live_users);
-        }
-        include('delete.html');
-    } elseif ('delete' == $step) {
-        $mnet_peer = new mnet_peer();
-        $mnet_peer->set_id($hostid);
-        $mnet_peer->delete();
-        redirect('peers.php', get_string('hostdeleted', 'mnet'), 5);
-    }
-?>
+    $yesurl = new moodle_url('/admin/mnet/delete.php', array('hostid' => $mnet_peer->id, 'step' => 'delete'));
+    $nourl = new moodle_url('/admin/mnet/peers.php');
+    echo $OUTPUT->confirm(get_string('reallydeleteserver', 'mnet')  . ': ' .  $mnet_peer->name, $yesurl, $nourl);
+    echo $OUTPUT->footer();
+} elseif ('delete' == $step) {
+    $mnet_peer->delete();
+    redirect(new moodle_url('/admin/mnet/peers.php'), get_string('hostdeleted', 'mnet'), 5);
+}

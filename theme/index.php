@@ -1,148 +1,200 @@
-<?php // $Id$
+<?php
 
-    require_once("../config.php");
-    require_once($CFG->libdir.'/adminlib.php');
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    $choose = optional_param("choose",'',PARAM_FILE);   // set this theme as default
+/**
+ * This page prvides the Administration -> ... -> Theme selector UI.
+ */
 
-    admin_externalpage_setup('themeselector');
+require_once(dirname(__FILE__) . '/../config.php');
+require_once($CFG->libdir . '/adminlib.php');
 
-    unset($SESSION->theme);
+$choose = optional_param('choose', '', PARAM_PLUGIN);
+$reset  = optional_param('reset', 0, PARAM_BOOL);
+$device = optional_param('device', '', PARAM_TEXT);
 
-    $stradministration = get_string("administration");
-    $strconfiguration = get_string("configuration");
-    $strthemes = get_string("themes");
-    $strpreview = get_string("preview");
-    $strchoose = get_string("choose");
-    $strinfo = get_string("info");
-    $strtheme = get_string("theme");
-    $strthemesaved = get_string("themesaved");
-    $strscreenshot = get_string("screenshot");
-    $stroldtheme = get_string("oldtheme");
+admin_externalpage_setup('themeselector');
 
-
-    if ($choose and confirm_sesskey()) {
-        if (!is_dir($CFG->themedir .'/'. $choose)) {
-            error("This theme is not installed!");
-        }
-        if (set_config("theme", $choose)) {
-            theme_setup($choose);
-            admin_externalpage_print_header();
-            print_heading(get_string("themesaved"));
-
-            if (file_exists("$choose/README.html")) {
-                print_simple_box_start("center");
-                readfile("$choose/README.html");
-                print_simple_box_end();
-
-            } else if (file_exists("$choose/README.txt")) {
-                print_simple_box_start("center");
-                $file = file("$choose/README.txt");
-                echo format_text(implode('', $file), FORMAT_MOODLE);
-                print_simple_box_end();
-            }
-            
-            print_continue("$CFG->wwwroot/");
-            
-            admin_externalpage_print_footer();
-            exit;
-        } else {
-            error("Could not set the theme!");
-        }
+if (!empty($device)) {
+    // Make sure the device requested is valid
+    $devices = get_device_type_list();
+    if (!in_array($device, $devices)) {
+        // The provided device isn't a valid device throw an error
+        print_error('invaliddevicetype');
     }
+}
 
-    admin_externalpage_print_header('themeselector');
+unset($SESSION->theme);
 
+if ($reset and confirm_sesskey()) {
+    theme_reset_all_caches();
 
-    print_heading($strthemes);
+} else if ($choose && $device && confirm_sesskey()) {
 
-    $themes = get_list_of_plugins("theme");
-    $sesskey = !empty($USER->id) ? $USER->sesskey : '';
+    // Load the theme to make sure it is valid.
+    $theme = theme_config::load($choose);
+    // Get the config argument for the chosen device.
+    $themename = get_device_cfg_var_name($device);
+    set_config($themename, $theme->name);
 
-    echo "<table style=\"margin-left:auto;margin-right:auto;\" cellpadding=\"7\" cellspacing=\"5\">\n";
+    // Create a new page for the display of the themes readme.
+    // This ensures that the readme page is shown using the new theme.
+    $confirmpage = new moodle_page();
+    $confirmpage->set_context($PAGE->context);
+    $confirmpage->set_url($PAGE->url);
+    $confirmpage->set_pagelayout($PAGE->pagelayout);
+    $confirmpage->set_pagetype($PAGE->pagetype);
+    $confirmpage->set_title($PAGE->title);
+    $confirmpage->set_heading($PAGE->heading);
 
-    if (!$USER->screenreader) {
-        echo "\t<tr class=\"generaltableheader\">\n\t\t<th scope=\"col\">$strtheme</th>\n";
-        echo "\t\t<th scope=\"col\">$strinfo</th>\n\t</tr>\n";
-    }
+    // Get the core renderer for the new theme.
+    $output = $confirmpage->get_renderer('core');
 
-    $original_theme = fullclone($THEME);
+    echo $output->header();
+    echo $output->heading(get_string('themesaved'));
+    echo $output->box_start();
+    echo format_text(get_string('choosereadme', 'theme_'.$theme->name), FORMAT_MOODLE);
+    echo $output->box_end();
+    echo $output->continue_button($CFG->wwwroot . '/theme/index.php');
+    echo $output->footer();
+    exit;
+}
 
-    foreach ($themes as $theme) {
+// Otherwise, show either a list of devices, or is enabledevicedetection set to no or a
+// device is specified show a list of themes.
 
-        unset($THEME);
+echo $OUTPUT->header('themeselector');
+echo $OUTPUT->heading(get_string('themes'));
 
-        if (!file_exists($CFG->themedir.'/'.$theme.'/config.php')) {   // bad folder
-            continue;
+echo $OUTPUT->single_button(new moodle_url('index.php', array('sesskey' => sesskey(), 'reset' => 1)), get_string('themeresetcaches', 'admin'));
+
+$table = new html_table();
+$table->data = array();
+if (!empty($CFG->enabledevicedetection) && empty($device)) {
+    // Display a list of devices that a user can select a theme for.
+
+    $strthemenotselected = get_string('themenoselected', 'admin');
+    $strthemeselect = get_string('themeselect', 'admin');
+
+    // Display the device selection screen
+    $table->id = 'admindeviceselector';
+    $table->head = array(get_string('devicetype', 'admin'), get_string('theme'), get_string('info'));
+
+    $devices = get_device_type_list();
+    foreach ($devices as $device) {
+
+        $headingthemename = ''; // To output the picked theme name when needed
+        $themename = get_selected_theme_for_device_type($device);
+        if (!$themename && $device == 'default') {
+            $themename = theme_config::DEFAULT_THEME;
         }
 
-        include($CFG->themedir.'/'.$theme.'/config.php');
-
-        if (!empty($THEME->unselectable)) {
-            continue;
-        }
-
-        $readme = '';
-        $screenshot = '';
-        $screenshotpath = '';
-
-        if (file_exists("$theme/README.html")) {
-            $readme =  "\t\t\t\t<li>".
-            link_to_popup_window($CFG->themewww .'/'. $theme .'/README.html', $theme, $strinfo, 400, 500, '', 'none', true)."</li>\n";
-        } else if (file_exists("$theme/README.txt")) {
-            $readme =  "\t\t\t\t<li>".
-            link_to_popup_window($CFG->themewww .'/'. $theme .'/README.txt', $theme, $strinfo, 400, 500, '', 'none', true)."</li>\n";
-        }
-        if (file_exists("$theme/screenshot.png")) {
-            $screenshotpath = "$theme/screenshot.png";
-        } else if (file_exists("$theme/screenshot.jpg")) {
-            $screenshotpath = "$theme/screenshot.jpg";
-        }
-
-        echo "\t<tr>\n";
-
-        // no point showing this if user is using screen reader
-        if (!$USER->screenreader) {
-            echo "\t\t<td align=\"center\">\n";
-            if ($screenshotpath) {
-                $screenshot = "\t\t\t\t<li><a href=\"$theme/screenshot.jpg\">$strscreenshot</a></li>\n";
-                echo "\t\t\t<object type=\"text/html\" data=\"$screenshotpath\" height=\"200\" width=\"400\">$theme</object>\n\t\t</td>\n";
+        $screenshotcell = $strthemenotselected;
+        if ($themename) {
+            // Check the theme exists
+            $themename = clean_param($themename, PARAM_THEME);
+            if (empty($themename)) {
+                // Likely the theme has been deleted
+                unset_config(get_device_cfg_var_name($device));
             } else {
-                echo "\t\t\t<object type=\"text/html\" data=\"preview.php?preview=$theme\" height=\"200\" width=\"400\">$theme</object>\n\t\t</td>\n";
+                $strthemename = get_string('pluginname', 'theme_'.$themename);
+                // link to the screenshot, now mandatory - the image path is hardcoded because we need image from other themes, not the current one
+                $screenshoturl = new moodle_url('/theme/image.php', array('theme' => $themename, 'image' => 'screenshot', 'component' => 'theme'));
+                // Contents of the screenshot/preview cell.
+                $screenshotcell = html_writer::empty_tag('img', array('src' => $screenshoturl, 'alt' => $strthemename));
+                // Show the name of the picked theme
+                $headingthemename = $OUTPUT->heading($strthemename, 3);
             }
         }
 
-        if ($CFG->theme == $theme) {
-            echo "\t\t" . '<td valign="top" style="border-style:solid; border-width:1px; border-color:#555555">'."\n";
-        } else {
-            echo "\t\t" . '<td valign="top">'."\n";
-        }
+        $deviceurl = new moodle_url('/theme/index.php', array('device' => $device, 'sesskey' => sesskey()));
+        $select = new single_button($deviceurl, $strthemeselect, 'get');
 
-        if (isset($THEME->sheets)) {
-            echo "\t\t\t" . '<p style="font-size:1.5em;font-weight:bold;">'.$theme.'</p>'."\n";
-        } else {
-            echo "\t\t\t" . '<p style="font-size:1.5em;font-weight:bold;color:red;">'.$theme.' (Moodle 1.4)</p>'."\n";
-        }
-
-        if ($screenshot or $readme) {
-            echo "\t\t\t<ul>\n";
-            if (!$USER->screenreader) {
-                echo "\t\t\t\t<li><a href=\"preview.php?preview=$theme\">$strpreview</a></li>\n";
-            }
-            echo $screenshot.$readme;
-            echo "\t\t\t</ul>\n";
-        }
-
-        $options = null;
-        $options['choose'] = $theme;
-        $options['sesskey'] = $sesskey;
-        echo "\t\t\t" . print_single_button('index.php', $options, $strchoose, 'get', null, true) . "\n";
-        echo "\t\t</td>\n";
-        echo "\t</tr>\n";
+        $table->data[] = array(
+            $device,
+            $screenshotcell,
+            $headingthemename . $OUTPUT->render($select)
+        );
     }
-    echo "</table>\n";
+} else {
+    // Either a device has been selected of $CFG->enabledevicedetection is off so display a list
+    // of themes to select.
 
-    $THEME = $original_theme;
+    if (empty($device)) {
+        // if $CFG->enabledevicedetection is off this will return 'default'
+        $device = get_device_type();
+    }
 
-    admin_externalpage_print_footer();
-?>
+    $table->id = 'adminthemeselector';
+    $table->head = array(get_string('theme'), get_string('info'));
+
+    $themes = get_plugin_list('theme');
+
+    foreach ($themes as $themename => $themedir) {
+
+        // Load the theme config.
+        try {
+            $theme = theme_config::load($themename);
+        } catch (Exception $e) {
+            // Bad theme, just skip it for now.
+            continue;
+        }
+        if ($themename !== $theme->name) {
+            //obsoleted or broken theme, just skip for now
+            continue;
+        }
+        if (empty($CFG->themedesignermode) && $theme->hidefromselector) {
+            // The theme doesn't want to be shown in the theme selector and as theme
+            // designer mode is switched off we will respect that decision.
+            continue;
+        }
+        $strthemename = get_string('pluginname', 'theme_'.$themename);
+
+        // Build the table row, and also a list of items to go in the second cell.
+        $row = array();
+        $infoitems = array();
+        $rowclasses = array();
+
+        // Set up bools whether this theme is chosen either main or legacy
+        $ischosentheme = ($themename == get_selected_theme_for_device_type($device));
+
+        if ($ischosentheme) {
+            // Is the chosen main theme
+            $rowclasses[] = 'selectedtheme';
+        }
+
+        // link to the screenshot, now mandatory - the image path is hardcoded because we need image from other themes, not the current one
+        $screenshotpath = new moodle_url('/theme/image.php', array('theme'=>$themename, 'image'=>'screenshot', 'component'=>'theme'));
+        // Contents of the first screenshot/preview cell.
+        $row[] = html_writer::empty_tag('img', array('src'=>$screenshotpath, 'alt'=>$strthemename));
+        // Contents of the second cell.
+        $infocell = $OUTPUT->heading($strthemename, 3);
+
+        // Button to choose this as the main theme
+        $maintheme = new single_button(new moodle_url('/theme/index.php', array('device' => $device, 'choose' => $themename, 'sesskey' => sesskey())), get_string('usetheme'), 'get');
+        $maintheme->disabled = $ischosentheme;
+        $infocell .= $OUTPUT->render($maintheme);
+
+        $row[] = $infocell;
+
+        $table->data[$themename] = $row;
+        $table->rowclasses[$themename] = join(' ', $rowclasses);
+    }
+}
+
+echo html_writer::table($table);
+
+echo $OUTPUT->footer();

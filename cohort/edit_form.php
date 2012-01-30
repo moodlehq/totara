@@ -38,34 +38,26 @@ class cohort_edit_form extends moodleform {
     public function definition() {
 
         $mform = $this->_form;
+        $editoroptions = $this->_customdata['editoroptions'];
         $cohort = $this->_customdata['data'];
 
-        $mform->addElement('text', 'name', get_string('name', 'local_cohort'), 'maxlength="254" size="50"');
+        $mform->addElement('text', 'name', get_string('name', 'cohort'), 'maxlength="254" size="50"');
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_MULTILANG);
 
-        $mform->addElement('hidden', 'contextid');
+        $options = $this->get_category_options($cohort->contextid);
+        $mform->addElement('select', 'contextid', get_string('context', 'role'), $options);
 
-        $mform->addElement('text', 'idnumber', get_string('idnumber', 'local_cohort'), 'maxlength="254" size="50"');
-        $mform->setType('idnumber', PARAM_MULTILANG);
+        $mform->addElement('text', 'idnumber', get_string('idnumber', 'cohort'), 'maxlength="254" size="50"');
+        $mform->setType('name', PARAM_RAW);
 
-	if (!$cohort->id) {
-	    $mform->addElement('select', 'cohorttype', get_string('type', 'local_cohort'), cohort::getCohortTypes());
-	    $mform->setHelpButton('cohorttype', array('type', get_string('cohort', 'local_cohort'), 'local_cohort'), true);
-	}
-
-        $mform->addElement('htmleditor', 'description', get_string('description', 'local_cohort'));
-        $mform->setType('description', PARAM_CLEAN);
+        $mform->addElement('editor', 'description_editor', get_string('description', 'cohort'), null, $editoroptions);
+        $mform->setType('description_editor', PARAM_RAW);
 
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 
-	if (!$cohort->id) {
-	    $this->add_action_buttons(true,get_string('assignmemberstocohort','local_cohort'));
-	}
-	else {
-	    $this->add_action_buttons(false);
-	}
+        $this->add_action_buttons();
 
         $this->set_data($cohort);
     }
@@ -80,16 +72,16 @@ class cohort_edit_form extends moodleform {
             // fine, empty is ok
 
         } else if ($data['id']) {
-	    $current = get_record('cohort','id',$data['id']);
-            if (addslashes($current->idnumber) !== $idnumber) {
-                if (record_exists('cohort', 'idnumber', $idnumber)) {
-                    $errors['idnumber'] = get_string('duplicateidnumber', 'local_cohort');
+            $current = $DB->get_record('cohort', array('id'=>$data['id']), '*', MUST_EXIST);
+            if ($current->idnumber !== $idnumber) {
+                if ($DB->record_exists('cohort', array('idnumber'=>$idnumber))) {
+                    $errors['idnumber'] = get_string('duplicateidnumber', 'cohort');
                 }
             }
 
         } else {
-            if (record_exists('cohort', 'idnumber', $idnumber)) {
-                $errors['idnumber'] = get_string('duplicateidnumber', 'local_cohort');
+            if ($DB->record_exists('cohort', array('idnumber'=>$idnumber))) {
+                $errors['idnumber'] = get_string('duplicateidnumber', 'cohort');
             }
         }
 
@@ -99,19 +91,19 @@ class cohort_edit_form extends moodleform {
     protected function get_category_options($currentcontextid) {
         $displaylist = array();
         $parentlist = array();
-        make_categories_list($displaylist, $parentlist, 'local/cohort:manage');
+        make_categories_list($displaylist, $parentlist, 'moodle/cohort:manage');
         $options = array();
         $syscontext = get_context_instance(CONTEXT_SYSTEM);
-        if (has_capability('local/cohort:manage', $syscontext)) {
+        if (has_capability('moodle/cohort:manage', $syscontext)) {
             $options[$syscontext->id] = print_context_name($syscontext);
         }
         foreach ($displaylist as $cid=>$name) {
-            $context = get_context_instance(CONTEXT_COURSECAT, $cid);
+            $context = get_context_instance(CONTEXT_COURSECAT, $cid, MUST_EXIST);
             $options[$context->id] = $name;
         }
         // always add current - this is not likely, but if the logic gets changed it might be a problem
         if (!isset($options[$currentcontextid])) {
-            $context = get_context_instance_by_id($currentcontextid);
+            $context = get_context_instance_by_id($currentcontextid, MUST_EXIST);
             $options[$context->id] = print_context_name($syscontext);
         }
         return $options;

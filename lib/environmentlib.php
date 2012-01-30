@@ -1,69 +1,98 @@
-<?php  //$Id$
+<?php
 
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas     http://dougiamas.com  //
-//           (C) 2001-3001 Eloy Lafuente (stronk7) http://contiento.com  //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
-// This library includes all the necessary stuff to execute some standard
-// tests of required versions and libraries to run Moodle. It can be
-// used from the admin interface, and both at install and upgrade.
+// This file is part of Moodle - http://moodle.org/
 //
-// All the info is stored in the admin/environment.xml file,
-// supporting to have an updated version in dataroot/environment
-
-/// Add required files
-    require_once($CFG->libdir.'/xmlize.php');
-
-/// Define a buch of XML processing errors
-    define('NO_ERROR',                           0);
-    define('NO_VERSION_DATA_FOUND',              1);
-    define('NO_DATABASE_SECTION_FOUND',          2);
-    define('NO_DATABASE_VENDORS_FOUND',          3);
-    define('NO_DATABASE_VENDOR_MYSQL_FOUND',     4);
-    define('NO_DATABASE_VENDOR_POSTGRES_FOUND',  5);
-    define('NO_PHP_SECTION_FOUND',               6);
-    define('NO_PHP_VERSION_FOUND',               7);
-    define('NO_PHP_EXTENSIONS_SECTION_FOUND',    8);
-    define('NO_PHP_EXTENSIONS_NAME_FOUND',       9);
-    define('NO_DATABASE_VENDOR_VERSION_FOUND',  10);
-    define('NO_UNICODE_SECTION_FOUND',          11);
-    define('NO_CUSTOM_CHECK_FOUND',             12);
-    define('CUSTOM_CHECK_FILE_MISSING',         13);
-    define('CUSTOM_CHECK_FUNCTION_MISSING',     14);
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This function will perform the whole check, returning
- * true or false as final result. Also, he full array of
- * environment_result will be returned in the parameter list.
- * The function looks for the best version to compare and
- * everything. This is the only function that should be called
- * ever from the rest of Moodle.
- * @param string version version to check.
- * @param array results array of results checked.
- * @param boolean true/false, whether to print the table or just return results array
- * @return boolean true/false, depending of results
+ * This library includes all the necessary stuff to execute some standard
+ * tests of required versions and libraries to run Moodle. It can be
+ * used from the admin interface, and both at install and upgrade.
+ *
+ * All the info is stored in the admin/environment.xml file,
+ * supporting to have an updated version in dataroot/environment
+ *
+ * @copyright  (C) 2001-3001 Eloy Lafuente (stronk7) {@link http://contiento.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    core
+ * @subpackage admin
  */
-function check_moodle_environment($version, &$environment_results, $print_table=true) {
+
+defined('MOODLE_INTERNAL') || die();
+
+/// Add required files
+/**
+ * Include the necessary
+ */
+    require_once($CFG->libdir.'/xmlize.php');
+
+/// Define a bunch of XML processing errors
+    /** XML Processing Error */
+    define('NO_ERROR',                           0);
+    /** XML Processing Error */
+    define('NO_VERSION_DATA_FOUND',              1);
+    /** XML Processing Error */
+    define('NO_DATABASE_SECTION_FOUND',          2);
+    /** XML Processing Error */
+    define('NO_DATABASE_VENDORS_FOUND',          3);
+    /** XML Processing Error */
+    define('NO_DATABASE_VENDOR_MYSQL_FOUND',     4);
+    /** XML Processing Error */
+    define('NO_DATABASE_VENDOR_POSTGRES_FOUND',  5);
+    /** XML Processing Error */
+    define('NO_PHP_SECTION_FOUND',               6);
+    /** XML Processing Error */
+    define('NO_PHP_VERSION_FOUND',               7);
+    /** XML Processing Error */
+    define('NO_PHP_EXTENSIONS_SECTION_FOUND',    8);
+    /** XML Processing Error */
+    define('NO_PHP_EXTENSIONS_NAME_FOUND',       9);
+    /** XML Processing Error */
+    define('NO_DATABASE_VENDOR_VERSION_FOUND',  10);
+    /** XML Processing Error */
+    define('NO_UNICODE_SECTION_FOUND',          11);
+    /** XML Processing Error */
+    define('NO_CUSTOM_CHECK_FOUND',             12);
+    /** XML Processing Error */
+    define('CUSTOM_CHECK_FILE_MISSING',         13);
+    /** XML Processing Error */
+    define('CUSTOM_CHECK_FUNCTION_MISSING',     14);
+    /** XML Processing Error */
+    define('NO_PHP_SETTINGS_NAME_FOUND',        15);
+
+/// Define algorithm used to select the xml file
+    /** To select the newer file available to perform checks */
+    define('ENV_SELECT_NEWER',                   0);
+    /** To enforce the use of the file under dataroot */
+    define('ENV_SELECT_DATAROOT',                1);
+    /** To enforce the use of the file under admin (release) */
+    define('ENV_SELECT_RELEASE',                 2);
+
+/**
+ * This function checks all the requirements defined in environment.xml.
+ *
+ * @staticvar bool $result
+ * @staticvar array $env_results
+ * @staticvar bool $cache_exists
+ *
+ * @param string $version version to check.
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use. Default ENV_SELECT_NEWER (BC)
+ * @return array with two elements. The first element true/false, depending on
+ *      on whether the check passed. The second element is an array of environment_results
+ *      objects that has detailed information about the checks and which ones passed.
+ */
+function check_moodle_environment($version, $env_select = ENV_SELECT_NEWER) {
 
     $status = true;
 
@@ -78,12 +107,12 @@ function check_moodle_environment($version, &$environment_results, $print_table=
 /// No cache exists, calculate everything
     } else {
     /// Get the more recent version before the requested
-        if (!$version = get_latest_version_available($version)) {
+        if (!$version = get_latest_version_available($version, $env_select)) {
             $status = false;
         }
 
     /// Perform all the checks
-        if (!($environment_results = environment_check($version)) && $status) {
+        if (!($environment_results = environment_check($version, $env_select)) && $status) {
             $status = false;
         }
 
@@ -107,182 +136,115 @@ function check_moodle_environment($version, &$environment_results, $print_table=
         $cache_exists = true;
     } ///End of cache block
 
-/// If we have decided to print all the information, just do it
-    if ($print_table) {
-        print_moodle_environment($result && $status, $environment_results);
-    }
-
-    return ($result && $status);
+    return array($result && $status, $environment_results);
 }
 
+
 /**
- * This function will print one beautiful table with all the environmental
- * configuration and how it suits Moodle needs.
- * @param boolean final result of the check (true/false)
- * @param array environment_results array of results gathered
+ * Returns array of critical errors in plain text format
+ * @param array $environment_results array of results gathered
+ * @return array errors
  */
-function print_moodle_environment($result, $environment_results) {
-/// Get some strings
-    $strname = get_string('name');
-    $strinfo = get_string('info');
-    $strreport = get_string('report');
-    $strstatus = get_string('status');
-    $strok = get_string('ok');
-    $strerror = get_string('error');
-    $strcheck = get_string('check');
-    $strbypassed = get_string('bypassed');
-    $strrestricted = get_string('restricted');
-    $strenvironmenterrortodo = get_string('environmenterrortodo', 'admin');
-/// Table headers
-    $servertable = new stdClass;//table for server checks
-    $servertable->head  = array ($strname, $strinfo, $strreport, $strstatus);
-    $servertable->align = array ('center', 'center', 'left', 'center');
-    $servertable->wrap  = array ('nowrap', '', '', 'nowrap');
-    $servertable->size  = array ('10', 10, '100%', '10');
-    $servertable->width = '90%';
-    $servertable->class = 'environmenttable generaltable';
+function environment_get_errors($environment_results) {
+    global $CFG;
+    $errors = array();
 
-    $serverdata = array('ok'=>array(), 'warn'=>array(), 'error'=>array());
-
-    $othertable = new stdClass;//table for custom checks
-    $othertable->head  = array ($strinfo, $strreport, $strstatus);
-    $othertable->align = array ('center', 'left', 'center');
-    $othertable->wrap  = array ('', '', 'nowrap');
-    $othertable->size  = array (10, '100%', '10');
-    $othertable->width = '90%';
-    $othertable->class = 'environmenttable generaltable';
-
-    $otherdata = array('ok'=>array(), 'warn'=>array(), 'error'=>array());
-
-/// Iterate over each environment_result
-    $continue = true;
+    // Iterate over each environment_result
     foreach ($environment_results as $environment_result) {
-        $errorline   = false;
-        $warningline = false;
-        if ($continue) {
-            $type = $environment_result->getPart();
-            $info = $environment_result->getInfo();
-            $status = $environment_result->getStatus();
-            $error_code = $environment_result->getErrorCode();
-        /// Process Report field
-            $rec = new stdClass();
-        /// Something has gone wrong at parsing time
-            if ($error_code) {
-                $stringtouse = 'environmentxmlerror';
-                $rec->error_code = $error_code;
-                $status = $strerror;
-                $errorline = true;
-                $continue = false;
-            }
+        $type = $environment_result->getPart();
+        $info = $environment_result->getInfo();
+        $status = $environment_result->getStatus();
+        $error_code = $environment_result->getErrorCode();
 
-            if ($continue) {
-            /// We are comparing versions
-                if ($rec->needed = $environment_result->getNeededVersion()) {
-                    $rec->current = $environment_result->getCurrentVersion();
-                    if ($environment_result->getLevel() == 'required') {
-                        $stringtouse = 'environmentrequireversion';
-                    } else {
-                        $stringtouse = 'environmentrecommendversion';
-                    }
-            /// We are checking installed & enabled things
-                } else if ($environment_result->getPart() == 'custom_check') {
-                    if ($environment_result->getLevel() == 'required') {
-                        $stringtouse = 'environmentrequirecustomcheck';
-                    } else {
-                        $stringtouse = 'environmentrecommendcustomcheck';
-                    }
-                } else {
-                    if ($environment_result->getLevel() == 'required') {
-                        $stringtouse = 'environmentrequireinstall';
-                    } else {
-                        $stringtouse = 'environmentrecommendinstall';
-                    }
-                }
-            /// Calculate the status value
-                if ($environment_result->getBypassStr() != '') {            //Handle bypassed result (warning)
-                    $status = $strbypassed;
-                    $warningline = true;
-                } else if ($environment_result->getRestrictStr() != '') {   //Handle restricted result (error)
-                    $status = $strrestricted;
-                    $errorline = true;
-                } else {
-                    if ($status) {                                          //Handle ok result (ok)
-                        $status = $strok;
-                    } else {
-                        if ($environment_result->getLevel() == 'optional') {//Handle check result (warning)
-                            $status = $strcheck;
-                            $warningline = true;
-                        } else {                                            //Handle error result (error)
-                            $status = $strcheck;
-                            $errorline = true;
-                        }
-                    }
-                }
-            }
+        $a = new stdClass();
+        if ($error_code) {
+            $a->error_code = $error_code;
+            $errors[] = array($info, get_string('environmentxmlerror', 'admin', $a));
+            return $errors;
+        }
 
-        /// Build the text
-            $linkparts = array();
-            $linkparts[] = 'admin/environment';
-            $linkparts[] = $type;
-            if (!empty($info)){
-               $linkparts[] = $info;
-            }
-            $report = doc_link(join($linkparts, '/'), get_string($stringtouse, 'admin', $rec));
-
-
-        /// Format error or warning line
-            if ($errorline || $warningline) {
-                $messagetype = $errorline? 'error':'warn';
+        /// Calculate the status value
+        if ($environment_result->getBypassStr() != '') {
+            // not interesting
+            continue;
+        } else if ($environment_result->getRestrictStr() != '') {
+            // error
+        } else {
+            if ($status) {
+                // ok
+                continue;
             } else {
-                $messagetype = 'ok';
-            }
-            $status = '<span class="'.$messagetype.'">'.$status.'</span>';
-        /// Here we'll store all the feedback found
-            $feedbacktext = '';
-            ///Append  the feedback if there is some
-            $feedbacktext .= $environment_result->strToReport($environment_result->getFeedbackStr(), $messagetype);
-        ///Append the bypass if there is some
-            $feedbacktext .= $environment_result->strToReport($environment_result->getBypassStr(), 'warn');
-        ///Append the restrict if there is some
-            $feedbacktext .= $environment_result->strToReport($environment_result->getRestrictStr(), 'error');
-
-            $report .= $feedbacktext;
-        /// Add the row to the table
-
-            if ($environment_result->getPart() == 'custom_check'){
-                $otherdata[$messagetype][] = array ($info, $report, $status);
-            } else {
-                $serverdata[$messagetype][] = array ($type, $info, $report, $status);
+                if ($environment_result->getLevel() == 'optional') {
+                    // just a warning
+                    continue;
+                } else {
+                    // error
+                }
             }
         }
-    }
-    //put errors first in
-    $servertable->data = array_merge($serverdata['error'], $serverdata['warn'], $serverdata['ok']);
-    $othertable->data = array_merge($otherdata['error'], $otherdata['warn'], $otherdata['ok']);
 
-/// Print table
-    print_heading(get_string('serverchecks', 'admin'));
-    print_table($servertable);
-    if (count($othertable->data)){
-        print_heading(get_string('customcheck', 'admin'));
-        print_table($othertable);
+        // We are comparing versions
+        $rec = new stdClass();
+        if ($rec->needed = $environment_result->getNeededVersion()) {
+            $rec->current = $environment_result->getCurrentVersion();
+            if ($environment_result->getLevel() == 'required') {
+                $stringtouse = 'environmentrequireversion';
+            } else {
+                $stringtouse = 'environmentrecommendversion';
+            }
+        // We are checking installed & enabled things
+        } else if ($environment_result->getPart() == 'custom_check') {
+            if ($environment_result->getLevel() == 'required') {
+                $stringtouse = 'environmentrequirecustomcheck';
+            } else {
+                $stringtouse = 'environmentrecommendcustomcheck';
+            }
+        } else if ($environment_result->getPart() == 'php_setting') {
+            if ($status) {
+                $stringtouse = 'environmentsettingok';
+            } else if ($environment_result->getLevel() == 'required') {
+                $stringtouse = 'environmentmustfixsetting';
+            } else {
+                $stringtouse = 'environmentshouldfixsetting';
+            }
+        } else {
+            if ($environment_result->getLevel() == 'required') {
+                $stringtouse = 'environmentrequireinstall';
+            } else {
+                $stringtouse = 'environmentrecommendinstall';
+            }
+        }
+        $report = get_string($stringtouse, 'admin', $rec);
+
+        // Here we'll store all the feedback found
+        $feedbacktext = '';
+        // Append  the feedback if there is some
+        $feedbacktext .= $environment_result->strToReport($environment_result->getFeedbackStr(), 'error');
+        // Append the restrict if there is some
+        $feedbacktext .= $environment_result->strToReport($environment_result->getRestrictStr(), 'error');
+
+        $report .= html_to_text($feedbacktext);
+
+        if ($environment_result->getPart() == 'custom_check'){
+            $errors[] = array($info, $report);
+        } else {
+            $errors[] = array(($info !== '' ? "$type $info" : $type), $report);
+        }
     }
 
-/// Finally, if any error has happened, print the summary box
-    if (!$result) {
-        print_simple_box($strenvironmenterrortodo, 'center', '', '', '', 'environmentbox errorbox');
-    }
+    return $errors;
 }
 
 
 /**
  * This function will normalize any version to just a serie of numbers
  * separated by dots. Everything else will be removed.
+ *
  * @param string $version the original version
  * @return string the normalized version
  */
 function normalize_version($version) {
- 
+
 /// 1.9 Beta 2 should be read 1.9 on enviromental checks, not 1.9.2
 /// we can discard everything after the first space
     $version = trim($version);
@@ -303,9 +265,16 @@ function normalize_version($version) {
 
 /**
  * This function will load the environment.xml file and xmlize it
+ *
+ * @global object
+ * @staticvar mixed $data
+ * @uses ENV_SELECT_NEWER
+ * @uses ENV_SELECT_DATAROOT
+ * @uses ENV_SELECT_RELEASE
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use. Default ENV_SELECT_NEWER (BC)
  * @return mixed the xmlized structure or false on error
  */
-function load_environment_xml() {
+function load_environment_xml($env_select=ENV_SELECT_NEWER) {
 
     global $CFG;
 
@@ -318,12 +287,26 @@ function load_environment_xml() {
 /// First of all, take a look inside $CFG->dataroot/environment/environment.xml
     $file = $CFG->dataroot.'/environment/environment.xml';
     $internalfile = $CFG->dirroot.'/'.$CFG->admin.'/environment.xml';
-    if (!is_file($file) || !is_readable($file) || filemtime($file) < filemtime($internalfile) ||
-        !$contents = file_get_contents($file)) {
-    /// Fallback to fixed $CFG->admin/environment.xml
-        if (!is_file($internalfile) || !is_readable($internalfile) || !$contents = file_get_contents($internalfile)) {
-            return false;
-        }
+    switch ($env_select) {
+        case ENV_SELECT_NEWER:
+            if (!is_file($file) || !is_readable($file) || filemtime($file) < filemtime($internalfile) ||
+                !$contents = file_get_contents($file)) {
+            /// Fallback to fixed $CFG->admin/environment.xml
+                if (!is_file($internalfile) || !is_readable($internalfile) || !$contents = file_get_contents($internalfile)) {
+                    return false;
+                }
+            }
+            break;
+        case ENV_SELECT_DATAROOT:
+            if (!is_file($file) || !is_readable($file) || !$contents = file_get_contents($file)) {
+                return false;
+            }
+            break;
+        case ENV_SELECT_RELEASE:
+            if (!is_file($internalfile) || !is_readable($internalfile) || !$contents = file_get_contents($internalfile)) {
+                return false;
+            }
+            break;
     }
 /// XML the whole file
     $data = xmlize($contents);
@@ -334,6 +317,8 @@ function load_environment_xml() {
 
 /**
  * This function will return the list of Moodle versions available
+ *
+ * @staticvar array $versions
  * @return mixed array of versions. False on error.
  */
 function get_list_of_environment_versions ($contents) {
@@ -357,16 +342,18 @@ function get_list_of_environment_versions ($contents) {
 /**
  * This function will return the most recent version in the environment.xml
  * file previous or equal to the version requested
- * @param string version top version from which we start to look backwards
- * @return string more recent version or false if not found
+ *
+ * @param string $version top version from which we start to look backwards
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
+ * @return string|bool string more recent version or false if not found
  */
-function get_latest_version_available ($version) {
+function get_latest_version_available ($version, $env_select) {
 
 /// Normalize the version requested
     $version = normalize_version($version);
 
 /// Load xml file
-    if (!$contents = load_environment_xml()) {
+    if (!$contents = load_environment_xml($env_select)) {
         return false;
     }
 
@@ -394,15 +381,18 @@ function get_latest_version_available ($version) {
 
 /**
  * This function will return the xmlized data belonging to one Moodle version
+ *
+ * @param string $version top version from which we start to look backwards
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
  * @return mixed the xmlized structure or false on error
  */
-function get_environment_for_version($version) {
+function get_environment_for_version($version, $env_select) {
 
 /// Normalize the version requested
     $version = normalize_version($version);
 
 /// Load xml file
-    if (!$contents = load_environment_xml()) {
+    if (!$contents = load_environment_xml($env_select)) {
         return false;
     }
 
@@ -426,11 +416,13 @@ function get_environment_for_version($version) {
 /**
  * This function will check for everything (DB, PHP and PHP extensions for now)
  * returning an array of environment_result objects.
+ *
+ * @global object
  * @param string $version xml version we are going to use to test this server
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
  * @return array array of results encapsulated in one environment_result object
  */
-function environment_check($version) {
-
+function environment_check($version, $env_select) {
     global $CFG;
 
 /// Normalize the version requested
@@ -439,17 +431,20 @@ function environment_check($version) {
     $results = array(); //To store all the results
 
 /// Only run the moodle versions checker on upgrade, not on install
-    if (empty($CFG->running_installer)) {
-        $results[] = environment_check_moodle($version);
+    if (!empty($CFG->version)) {
+        $results[] = environment_check_moodle($version, $env_select);
     }
-    $results[] = environment_check_unicode($version);
-    $results[] = environment_check_database($version);
-    $results[] = environment_check_php($version);
+    $results[] = environment_check_unicode($version, $env_select);
+    $results[] = environment_check_database($version, $env_select);
+    $results[] = environment_check_php($version, $env_select);
 
-    $phpext_results = environment_check_php_extensions($version);
+    $phpext_results = environment_check_php_extensions($version, $env_select);
     $results = array_merge($results, $phpext_results);
 
-    $custom_results = environment_custom_checks($version);
+    $phpsetting_results = environment_check_php_settings($version, $env_select);
+    $results = array_merge($results, $phpsetting_results);
+
+    $custom_results = environment_custom_checks($version, $env_select);
     $results = array_merge($results, $custom_results);
 
     return $results;
@@ -458,15 +453,20 @@ function environment_check($version) {
 
 /**
  * This function will check if php extensions requirements are satisfied
+ *
+ * @uses NO_VERSION_DATA_FOUND
+ * @uses NO_PHP_EXTENSIONS_SECTION_FOUND
+ * @uses NO_PHP_EXTENSIONS_NAME_FOUND
  * @param string $version xml version we are going to use to test this server
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
  * @return array array of results encapsulated in one environment_result object
  */
-function environment_check_php_extensions($version) {
+function environment_check_php_extensions($version, $env_select) {
 
     $results = array();
 
 /// Get the enviroment version we need
-    if (!$data = get_environment_for_version($version)) {
+    if (!$data = get_environment_for_version($version, $env_select)) {
     /// Error. No version data found
         $result = new environment_results('php_extension');
         $result->setStatus(false);
@@ -515,11 +515,97 @@ function environment_check_php_extensions($version) {
 }
 
 /**
+ * This function will check if php extensions requirements are satisfied
+ *
+ * @uses NO_VERSION_DATA_FOUND
+ * @uses NO_PHP_SETTINGS_NAME_FOUND
+ * @param string $version xml version we are going to use to test this server
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
+ * @return array array of results encapsulated in one environment_result object
+ */
+function environment_check_php_settings($version, $env_select) {
+
+    $results = array();
+
+/// Get the enviroment version we need
+    if (!$data = get_environment_for_version($version, $env_select)) {
+    /// Error. No version data found
+        $result = new environment_results('php_setting');
+        $result->setStatus(false);
+        $result->setErrorCode(NO_VERSION_DATA_FOUND);
+        $results[] = $result;
+        return $results;
+    }
+
+/// Extract the php_setting part
+    if (!isset($data['#']['PHP_SETTINGS']['0']['#']['PHP_SETTING'])) {
+    /// No PHP section found - ignore
+        return $results;
+    }
+/// Iterate over settings checking them and creating the needed environment_results
+    foreach($data['#']['PHP_SETTINGS']['0']['#']['PHP_SETTING'] as $setting) {
+        $result = new environment_results('php_setting');
+    /// Check for level
+        $level = get_level($setting);
+        $result->setLevel($level);
+    /// Check for extension name
+        if (!isset($setting['@']['name'])) {
+            $result->setStatus(false);
+            $result->setErrorCode(NO_PHP_SETTINGS_NAME_FOUND);
+        } else {
+            $setting_name  = $setting['@']['name'];
+            $setting_value = $setting['@']['value'];
+            $result->setInfo($setting_name);
+
+            if ($setting_name == 'memory_limit') {
+                $current = ini_get('memory_limit');
+                if ($current == -1) {
+                    $result->setStatus(true);
+                } else {
+                    $current  = get_real_size($current);
+                    $minlimit = get_real_size($setting_value);
+                    if ($current < $minlimit) {
+                        @ini_set('memory_limit', $setting_value);
+                        $current = ini_get('memory_limit');
+                        $current = get_real_size($current);
+                    }
+                    $result->setStatus($current >= $minlimit);
+                }
+
+            } else {
+                $current = ini_get_bool($setting_name);
+            /// The name exists. Just check if it's an installed extension
+                if ($current == $setting_value) {
+                    $result->setStatus(true);
+                } else {
+                    $result->setStatus(false);
+                }
+            }
+        }
+
+    /// Do any actions defined in the XML file.
+        process_environment_result($setting, $result);
+
+    /// Add the result to the array of results
+        $results[] = $result;
+    }
+
+
+    return $results;
+}
+
+/**
  * This function will do the custom checks.
+ *
+ * @global object
+ * @uses CUSTOM_CHECK_FUNCTION_MISSING
+ * @uses CUSTOM_CHECK_FILE_MISSING
+ * @uses NO_CUSTOM_CHECK_FOUND
  * @param string $version xml version we are going to use to test this server.
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
  * @return array array of results encapsulated in environment_result objects.
  */
-function environment_custom_checks($version) {
+function environment_custom_checks($version, $env_select) {
     global $CFG;
 
     $results = array();
@@ -529,7 +615,7 @@ function environment_custom_checks($version) {
     $current_version = normalize_version($release);
 
 /// Get the enviroment version we need
-    if (!$data = get_environment_for_version($version)) {
+    if (!$data = get_environment_for_version($version, $env_select)) {
     /// Error. No version data found - but this will already have been reported.
         return $results;
     }
@@ -602,15 +688,18 @@ function environment_custom_checks($version) {
 
 /**
  * This function will check if Moodle requirements are satisfied
+ *
+ * @uses NO_VERSION_DATA_FOUND
  * @param string $version xml version we are going to use to test this server
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
  * @return object results encapsulated in one environment_result object
  */
-function environment_check_moodle($version) {
+function environment_check_moodle($version, $env_select) {
 
     $result = new environment_results('moodle');
 
 /// Get the enviroment version we need
-    if (!$data = get_environment_for_version($version)) {
+    if (!$data = get_environment_for_version($version, $env_select)) {
     /// Error. No version data found
         $result->setStatus(false);
         $result->setErrorCode(NO_VERSION_DATA_FOUND);
@@ -643,15 +732,20 @@ function environment_check_moodle($version) {
 
 /**
  * This function will check if php requirements are satisfied
+ *
+ * @uses NO_VERSION_DATA_FOUND
+ * @uses NO_PHP_SECTION_FOUND
+ * @uses NO_PHP_VERSION_FOUND
  * @param string $version xml version we are going to use to test this server
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
  * @return object results encapsulated in one environment_result object
  */
-function environment_check_php($version) {
+function environment_check_php($version, $env_select) {
 
     $result = new environment_results('php');
 
 /// Get the enviroment version we need
-    if (!$data = get_environment_for_version($version)) {
+    if (!$data = get_environment_for_version($version, $env_select)) {
     /// Error. No version data found
         $result->setStatus(false);
         $result->setErrorCode(NO_VERSION_DATA_FOUND);
@@ -698,16 +792,21 @@ function environment_check_php($version) {
 
 /**
  * This function will check if unicode database requirements are satisfied
+ *
+ * @global object
+ * @uses NO_VERSION_DATA_FOUND
+ * @uses NO_UNICODE_SECTION_FOUND
  * @param string $version xml version we are going to use to test this server
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
  * @return object results encapsulated in one environment_result object
  */
-function environment_check_unicode($version) {
-    global $db;
+function environment_check_unicode($version, $env_select) {
+    global $DB;
 
     $result = new environment_results('unicode');
 
     /// Get the enviroment version we need
-    if (!$data = get_environment_for_version($version)) {
+    if (!$data = get_environment_for_version($version, $env_select)) {
     /// Error. No version data found
         $result->setStatus(false);
         $result->setErrorCode(NO_VERSION_DATA_FOUND);
@@ -726,7 +825,7 @@ function environment_check_unicode($version) {
         $level = get_level($data['#']['UNICODE']['0']);
     }
 
-    if (!$unicodedb = setup_is_unicodedb()) {
+    if (!$unicodedb = $DB->setup_is_unicodedb()) {
         $result->setStatus(false);
     } else {
         $result->setStatus(true);
@@ -742,19 +841,28 @@ function environment_check_unicode($version) {
 
 /**
  * This function will check if database requirements are satisfied
+ *
+ * @global object
+ * @uses NO_VERSION_DATA_FOUND
+ * @uses NO_DATABASE_SECTION_FOUND
+ * @uses NO_DATABASE_VENDORS_FOUND
+ * @uses NO_DATABASE_VENDOR_MYSQL_FOUND
+ * @uses NO_DATABASE_VENDOR_POSTGRES_FOUND
+ * @uses NO_DATABASE_VENDOR_VERSION_FOUND
  * @param string $version xml version we are going to use to test this server
+ * @param int $env_select one of ENV_SELECT_NEWER | ENV_SELECT_DATAROOT | ENV_SELECT_RELEASE decide xml to use.
  * @return object results encapsulated in one environment_result object
  */
-function environment_check_database($version) {
+function environment_check_database($version, $env_select) {
 
-    global $db;
+    global $DB;
 
     $result = new environment_results('database');
 
     $vendors = array();  //Array of vendors in version
 
 /// Get the enviroment version we need
-    if (!$data = get_environment_for_version($version)) {
+    if (!$data = get_environment_for_version($version, $env_select)) {
     /// Error. No version data found
         $result->setStatus(false);
         $result->setErrorCode(NO_VERSION_DATA_FOUND);
@@ -801,9 +909,9 @@ function environment_check_database($version) {
     }
 
 /// Now search the version we are using (depending of vendor)
-    $current_vendor = set_dbfamily();
+    $current_vendor = $DB->get_dbfamily();
 
-    $dbinfo = $db->ServerInfo();
+    $dbinfo = $DB->get_server_info();
     $current_version = normalize_version($dbinfo['version']);
     $needed_version = $vendors[$current_vendor];
 
@@ -843,6 +951,7 @@ function environment_check_database($version) {
  *
  * @param string xmldata containing the bypass data
  * @param object result object to be updated
+ * @return void
  */
 function process_environment_bypass($xml, &$result) {
 
@@ -879,6 +988,7 @@ function process_environment_bypass($xml, &$result) {
  *
  * @param string xmldata containing the restrict data
  * @param object result object to be updated
+ * @return void
  */
 function process_environment_restrict($xml, &$result) {
 
@@ -906,6 +1016,7 @@ function process_environment_restrict($xml, &$result) {
 /**
  * This function will detect if there is some message available to be added to the
  * result in order to clarify enviromental details.
+ *
  * @param string xmldata containing the feedback data
  * @param object reult object to be updated
  */
@@ -936,24 +1047,58 @@ function process_environment_messages($xml, &$result) {
 
 
 /**
- * This class is used to return the results of the environment
- * main functions (environment_check_xxxx)
+ * Helper Class to return results to caller
+ *
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package moodlecore
  */
 class environment_results {
-
-    var $part;            //which are we checking (database, php, php_extension)
-    var $status;          //true/false
-    var $error_code;      //integer. See constants at the beginning of the file
-    var $level;           //required/optional
-    var $current_version; //current version detected
-    var $needed_version;  //version needed
-    var $info;            //Aux. info (DB vendor, library...)
-    var $feedback_str;    //String to show on error|on check|on ok
-    var $bypass_str;      //String to show if some bypass has happened
-    var $restrict_str;    //String to show if some restrict has happened
+    /**
+     * @var string Which are we checking (database, php, php_extension, php_extension)
+     */
+    var $part;
+    /**
+     * @var bool
+     */
+    var $status;
+    /**
+     * @var integer See constants at the beginning of the file
+     */
+    var $error_code;
+    /**
+     * @var string required/optional
+     */
+    var $level;
+    /**
+     * @var string current version detected
+     */
+    var $current_version;
+    /**
+     * @var string version needed
+     */
+    var $needed_version;
+    /**
+     * @var string Aux. info (DB vendor, library...)
+     */
+    var $info;
+    /**
+     * @var string String to show on error|on check|on ok
+     */
+    var $feedback_str;
+    /**
+     * @var string String to show if some bypass has happened
+     */
+    var $bypass_str;
+    /**
+     * @var string String to show if some restrict has happened
+     */
+    var $restrict_str;
 
     /**
      * Constructor of the environment_result class. Just set default values
+     *
+     * @param string $part
      */
     function environment_results($part) {
         $this->part=$part;
@@ -970,7 +1115,8 @@ class environment_results {
 
     /**
      * Set the status
-     * @param boolean the status (true/false)
+     *
+     * @param boolean $status the status (true/false)
      */
     function setStatus($status) {
         $this->status=$status;
@@ -981,7 +1127,8 @@ class environment_results {
 
     /**
      * Set the error_code
-     * @param integer the error code (see constants above)
+     *
+     * @param integer $error_code the error code (see constants above)
      */
     function setErrorCode($error_code) {
         $this->error_code=$error_code;
@@ -989,7 +1136,8 @@ class environment_results {
 
     /**
      * Set the level
-     * @param string the level (required, optional)
+     *
+     * @param string $level the level (required, optional)
      */
     function setLevel($level) {
         $this->level=$level;
@@ -997,7 +1145,8 @@ class environment_results {
 
     /**
      * Set the current version
-     * @param string the current version
+     *
+     * @param string $current_version the current version
      */
     function setCurrentVersion($current_version) {
         $this->current_version=$current_version;
@@ -1005,7 +1154,8 @@ class environment_results {
 
     /**
      * Set the needed version
-     * @param string the needed version
+     *
+     * @param string $needed_version the needed version
      */
     function setNeededVersion($needed_version) {
         $this->needed_version=$needed_version;
@@ -1013,7 +1163,8 @@ class environment_results {
 
     /**
      * Set the auxiliary info
-     * @param string the auxiliary info
+     *
+     * @param string $info the auxiliary info
      */
     function setInfo($info) {
         $this->info=$info;
@@ -1021,7 +1172,8 @@ class environment_results {
 
     /**
      * Set the feedback string
-     * @param mixed the feedback string that will be fetched from the admin lang file.
+     *
+     * @param mixed $str the feedback string that will be fetched from the admin lang file.
      *                  pass just the string or pass an array of params for get_string
      *                  You always should put your string in admin.php but a third param is useful
      *                  to pass an $a object / string to get_string
@@ -1033,7 +1185,8 @@ class environment_results {
 
     /**
      * Set the bypass string
-     * @param string the bypass string that will be fetched from the admin lang file.
+     *
+     * @param string $str the bypass string that will be fetched from the admin lang file.
      *                  pass just the string or pass an array of params for get_string
      *                  You always should put your string in admin.php but a third param is useful
      *                  to pass an $a object / string to get_string
@@ -1044,7 +1197,8 @@ class environment_results {
 
     /**
      * Set the restrict string
-     * @param string the restrict string that will be fetched from the admin lang file.
+     *
+     * @param string $str the restrict string that will be fetched from the admin lang file.
      *                  pass just the string or pass an array of params for get_string
      *                  You always should put your string in admin.php but a third param is useful
      *                  to pass an $a object / string to get_string
@@ -1055,6 +1209,7 @@ class environment_results {
 
     /**
      * Get the status
+     *
      * @return boolean result
      */
     function getStatus() {
@@ -1063,6 +1218,7 @@ class environment_results {
 
     /**
      * Get the error code
+     *
      * @return integer error code
      */
     function getErrorCode() {
@@ -1071,6 +1227,7 @@ class environment_results {
 
     /**
      * Get the level
+     *
      * @return string level
      */
     function getLevel() {
@@ -1079,6 +1236,7 @@ class environment_results {
 
     /**
      * Get the current version
+     *
      * @return string current version
      */
     function getCurrentVersion() {
@@ -1087,6 +1245,7 @@ class environment_results {
 
     /**
      * Get the needed version
+     *
      * @return string needed version
      */
     function getNeededVersion() {
@@ -1095,6 +1254,7 @@ class environment_results {
 
     /**
      * Get the aux info
+     *
      * @return string info
      */
     function getInfo() {
@@ -1103,6 +1263,7 @@ class environment_results {
 
     /**
      * Get the part this result belongs to
+     *
      * @return string part
      */
     function getPart() {
@@ -1111,6 +1272,7 @@ class environment_results {
 
     /**
      * Get the feedback string
+     *
      * @return mixed feedback string (can be an array of params for get_string or a single string to fetch from
      *                  admin.php lang file).
      */
@@ -1120,6 +1282,7 @@ class environment_results {
 
     /**
      * Get the bypass string
+     *
      * @return mixed bypass string (can be an array of params for get_string or a single string to fetch from
      *                  admin.php lang file).
      */
@@ -1129,6 +1292,7 @@ class environment_results {
 
     /**
      * Get the restrict string
+     *
      * @return mixed restrict string (can be an array of params for get_string or a single string to fetch from
      *                  admin.php lang file).
      */
@@ -1137,6 +1301,8 @@ class environment_results {
     }
 
     /**
+     * @todo Document this function
+     *
      * @param mixed $string params for get_string, either a string to fetch from admin.php or an array of
      *                       params for get_string.
      * @param string $class css class(es) for message.
@@ -1185,7 +1351,7 @@ function bypass_mysql416_reqs ($result) {
  * This function will restrict PHP reqs if:
  *   - We are using PHP 5.0.x, informing about the buggy version
  *
- * @param object result object to handle
+ * @param object $result object to handle
  * @return boolean true/false to determinate if the restrict has to be performed (true) or no (false)
  */
 function restrict_php50_version($result) {
@@ -1197,23 +1363,9 @@ function restrict_php50_version($result) {
 }
 
 /**
- * This function will restrict PHP reqs if:
- *   - We are using PHP lower than 5.1.6, and inform about minimum version for totara
- *
- * @param object result object to handle
- * @return boolean true/false to determinate if the restrict has to be performed (true) or no (false)
- */
-function restrict_php516_version($result) {
-    if (version_compare($result->getCurrentVersion(), '5.1.6', '<')) {
-        return true;
-    }
-    return false;
-}
-
-/**
  * @param array $element the element from the environment.xml file that should have
  *      either a level="required" or level="optional" attribute.
- * @read string "required" or "optional".
+ * @return string "required" or "optional".
  */
 function get_level($element) {
     $level = 'required';
@@ -1232,6 +1384,7 @@ function get_level($element) {
 /**
  * Once the result has been determined, look in the XML for any
  * messages, or other things that should be done depending on the outcome.
+ *
  * @param array $element the element from the environment.xml file which
  *      may have children defining what should be done with the outcome.
  * @param object $result the result of the test, which may be modified by
@@ -1245,4 +1398,3 @@ function process_environment_result($element, &$result) {
 /// Process restrict, modifying $result if needed.
     process_environment_restrict($element, $result);
 }
-?>

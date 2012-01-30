@@ -17,7 +17,7 @@ Requirements
 ------------
 Moodle 1.9 or later
 
-Installation 
+Installation
 ------------
    The zip-archive includes the same directory hierarchy as moodle
    So you only have to copy the files to the correspondent place.
@@ -135,7 +135,8 @@ Now it only runs on Moodle 1.8 or later
 - roles are full implemented
 - now radiobuttons and checkboxes can be aligned horizontally or vertically
 - now you can insert pagebreakes
-- a feedback what is switch to the next page is saved temporary. the user can cancel the completion and later continue at the last filled page.
+- a feedback what is switch to the next page is saved temporary.
+  the user can cancel the completion and later continue at the last filled page.
 - now you can ex-/import feedbacks into/from a xml-file
 - course-reseting is supported
 

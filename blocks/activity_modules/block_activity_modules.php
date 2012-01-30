@@ -1,13 +1,12 @@
-<?php //$Id$
+<?php
 
 class block_activity_modules extends block_list {
     function init() {
-        $this->title = get_string('activities');
-        $this->version = 2007101509;
+        $this->title = get_string('pluginname', 'block_activity_modules');
     }
 
     function get_content() {
-        global $CFG, $COURSE;
+        global $CFG, $DB, $OUTPUT;
 
         if($this->content !== NULL) {
             return $this->content;
@@ -18,34 +17,44 @@ class block_activity_modules extends block_list {
         $this->content->icons = array();
         $this->content->footer = '';
 
-        if ($COURSE->id == $this->instance->pageid) {
-            $course = $COURSE;
-        } else {
-            $course = get_record('course', 'id', $this->instance->pageid);
-        }
-
-        if (empty($course)) {
-            return '';
-        }
+        $course = $this->page->course;
 
         require_once($CFG->dirroot.'/course/lib.php');
 
         $modinfo = get_fast_modinfo($course);
         $modfullnames = array();
 
+        $archetypes = array();
+
         foreach($modinfo->cms as $cm) {
-            if (!$cm->uservisible) {
+            // Exclude activities which are not visible or have no link (=label)
+            if (!$cm->uservisible or !$cm->has_view()) {
                 continue;
             }
-            $modfullnames[$cm->modname] = $cm->modplural;
+            if (array_key_exists($cm->modname, $modfullnames)) {
+                continue;
+            }
+            if (!array_key_exists($cm->modname, $archetypes)) {
+                $archetypes[$cm->modname] = plugin_supports('mod', $cm->modname, FEATURE_MOD_ARCHETYPE, MOD_ARCHETYPE_OTHER);
+            }
+            if ($archetypes[$cm->modname] == MOD_ARCHETYPE_RESOURCE) {
+                if (!array_key_exists('resources', $modfullnames)) {
+                    $modfullnames['resources'] = get_string('resources');
+                }
+            } else {
+                $modfullnames[$cm->modname] = $cm->modplural;
+            }
         }
 
-        asort($modfullnames, SORT_LOCALE_STRING);
+        collatorlib::asort($modfullnames);
 
         foreach ($modfullnames as $modname => $modfullname) {
-            if ($modname != 'label') {
-                $this->content->items[] = '<a href="'.$CFG->wwwroot.'/mod/'.$modname.'/index.php?id='.$this->instance->pageid.'">'.$modfullname.'</a>';
-                $this->content->icons[] = '<img src="'.$CFG->modpixpath.'/'.$modname.'/icon.gif" class="icon" alt="" />';
+            if ($modname === 'resources') {
+                $icon = '<img src="'.$OUTPUT->pix_url('f/html') . '" class="icon" alt="" />&nbsp;';
+                $this->content->items[] = '<a href="'.$CFG->wwwroot.'/course/resources.php?id='.$course->id.'">'.$icon.$modfullname.'</a>';
+            } else {
+                $icon = '<img src="'.$OUTPUT->pix_url('icon', $modname) . '" class="icon" alt="" />&nbsp;';
+                $this->content->items[] = '<a href="'.$CFG->wwwroot.'/mod/'.$modname.'/index.php?id='.$course->id.'">'.$icon.$modfullname.'</a>';
             }
         }
 
@@ -58,4 +67,4 @@ class block_activity_modules extends block_list {
     }
 }
 
-?>
+

@@ -1,23 +1,17 @@
-<?PHP // $Id$
+<?PHP
       // This function fetches math. images from the data directory
       // If not, it obtains the corresponding TeX expression from the cache_tex db table
       // and uses mimeTeX to create the image file
 
-    $nomoodlecookie = true;     // Because it interferes with caching
+// disable moodle specific debug messages and any errors in output
+define('NO_DEBUG_DISPLAY', true);
+define('NO_MOODLE_COOKIES', true); // Because it interferes with caching
 
     require_once('../../config.php');
 
-    if (empty($CFG->textfilters)) {
-        error ('Filter not enabled!');
-    } else {
-        $filters = explode(',', $CFG->textfilters);
-        if (array_search('filter/algebra', $filters) === FALSE) {
-            error ('Filter not enabled!');
-        }
+    if (!filter_is_enabled('filter/algebra')) {
+        print_error('filternotenabled');
     }
-
-    // disable moodle specific debug messages
-    disable_debugging();
 
     require_once($CFG->libdir.'/filelib.php');
     require_once($CFG->dirroot.'/filter/tex/lib.php');
@@ -25,9 +19,7 @@
     $cmd    = '';               // Initialise these variables
     $status = '';
 
-    //error_reporting(E_ALL);
-
-    $relativepath = get_file_argument('pix.php');
+    $relativepath = get_file_argument();
 
     $args = explode('/', trim($relativepath, '/'));
 
@@ -35,12 +27,12 @@
         $image    = $args[0];
         $pathname = $CFG->dataroot.'/filter/algebra/'.$image;
     } else {
-        error('No valid arguments supplied');
+        print_error('invalidarguments', 'error');
     }
 
     if (!file_exists($pathname)) {
         $md5 = str_replace('.gif','',$image);
-        if ($texcache = get_record('cache_filters', 'filter', 'algebra', 'md5key', $md5)) {
+        if ($texcache = $DB->get_record('cache_filters', array('filter'=>'algebra', 'md5key'=>$md5))) {
             if (!file_exists($CFG->dataroot.'/filter/algebra')) {
                 make_upload_directory('filter/algebra');
             }
@@ -50,7 +42,7 @@
             $texexp = str_replace('&gt;','>',$texexp);
             $texexp = preg_replace('!\r\n?!',' ',$texexp);
             $texexp = '\Large ' . $texexp;
-            $cmd = tex_filter_get_cmd($pathname, $texexp);
+            $cmd = filter_tex_get_cmd($pathname, $texexp);
             system($cmd, $status);
         }
     }
@@ -68,4 +60,4 @@
             echo "Please turn on debug mode in site configuration to see more info here.";
         }
     }
-?>
+

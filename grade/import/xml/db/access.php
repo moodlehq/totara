@@ -15,24 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$gradeimport_xml_capabilities = array(
+$capabilities = array(
 
     'gradeimport/xml:view' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'legacy' => array(
+        'archetypes' => array(
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     ),
 
     'gradeimport/xml:publish' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
     )
 );
 
-?>
+

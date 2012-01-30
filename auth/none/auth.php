@@ -40,8 +40,8 @@ class auth_plugin_none extends auth_plugin_base {
      * @return bool Authentication success or failure.
      */
     function user_login ($username, $password) {
-        global $CFG;
-        if ($user = get_record('user', 'username', $username, 'mnethostid', $CFG->mnet_localhost_id)) {
+        global $CFG, $DB;
+        if ($user = $DB->get_record('user', array('username'=>$username, 'mnethostid'=>$CFG->mnet_localhost_id))) {
             return validate_internal_user_password($user, $password);
         }
         return true;
@@ -52,8 +52,8 @@ class auth_plugin_none extends auth_plugin_base {
      *
      * called when the user password is updated.
      *
-     * @param  object  $user        User table object  (with system magic quotes)
-     * @param  string  $newpassword Plaintext password (with system magic quotes)
+     * @param  object  $user        User table object
+     * @param  string  $newpassword Plaintext password
      * @return boolean result
      *
      */
@@ -89,10 +89,10 @@ class auth_plugin_none extends auth_plugin_base {
      * Returns the URL for changing the user's pw, or empty if the default can
      * be used.
      *
-     * @return string
+     * @return moodle_url
      */
     function change_password_url() {
-        return '';
+        return null;
     }
 
     /**
@@ -125,4 +125,4 @@ class auth_plugin_none extends auth_plugin_base {
 
 }
 
-?>
+

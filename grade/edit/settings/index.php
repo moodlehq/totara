@@ -22,7 +22,10 @@ require_once 'form.php';
 
 $courseid  = optional_param('id', SITEID, PARAM_INT);
 
-if (!$course = get_record('course', 'id', $courseid)) {
+$PAGE->set_url('/grade/edit/settings/index.php', array('id'=>$courseid));
+$PAGE->set_pagelayout('admin');
+
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 require_login($course);
@@ -68,12 +71,12 @@ if ($mform->is_cancelled()) {
 
 print_grade_page_head($courseid, 'settings', 'coursesettings', get_string('coursesettings', 'grades'));
 
-print_box_start('generalbox boxaligncenter boxwidthnormal centerpara');
+echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthnormal centerpara');
 echo get_string('coursesettingsexplanation', 'grades');
-print_box_end();
+echo $OUTPUT->box_end();
 
 $mform->display();
 
-print_footer($course);
+echo $OUTPUT->footer();
 
-?>
+

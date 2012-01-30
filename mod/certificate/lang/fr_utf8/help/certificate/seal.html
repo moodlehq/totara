@@ -1,7 +1,0 @@
-<p align="center"><b>Image logo ou sceau </b></p>
-<p>Cette option vous permet de sélectionner un sceau ou un logo à imprimer sur le certificat à partir du dossier certificate/pix/seals. Quatre images de sceau et un exemple de logo sont inclus. Par défaut cette image est placée dans le coin inférieur droit d'un certificat. Vous pouvez modifier cet emplacement dans le fichier certificate/type/&quot;type name&quot;/certificate.php. </p>
-<p>Dans ce fichier, trouvez la ligne de code similaire à celle-ci :</p>
-<p> print_seal($certificate-&gt;printseal, $orientation, 590, 425, '', ''); </p>
-<p>Les deux nombres reflètent les valeurs d'emplacement X (en partant de la gauche) et Y (en partant du haut) pour cette image. Vous pouvez les modifier si vous le souhaitez. </p>
-<p>Gardez en tête que l'ajout d'images au certificat augmentera la taille du fichier pdf. Vous pouvez ajouter vos propres images au dossier certificate/pix/signatures et elles apparaîtront ici dans le menu déroulant. Les images doivent être au format JPEG (.jpg) ou PNG 8 (.png). </p>
-<p>&nbsp;</p>

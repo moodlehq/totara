@@ -1,21 +1,48 @@
 <?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
- ** This class abstracts PHP's PECL memcached
- ** API to provide
- ** 
- ** - get()
- ** - set()
- ** - delete()
- ** - getforfill()
- ** - releaseforfill()
- **
- ** Author: Martin Langhoff <martin@catalyst.net.nz>
- **
- ** Note: do NOT store booleans here. With memcached, a false value 
- ** is indistinguisable from a "not found in cache" response. 
+ * @package    core
+ * @subpackage lib
+ * @copyright  Martin Langhoff <martin@catalyst.net.nz>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * This class abstracts PHP's PECL memcached
+ * API to provide
+ *
+ * - get()
+ * - set()
+ * - delete()
+ * - getforfill()
+ * - releaseforfill()
+ *
+ * Author: Martin Langhoff <martin@catalyst.net.nz>
+ *
+ * Note: do NOT store booleans here. With memcached, a false value
+ * is indistinguisable from a "not found in cache" response.
+ *
+ * @package   moodlecore
+ * @copyright Martin Langhoff <martin@catalyst.net.nz>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  **/
-
-
 class memcached {
 
     function memcached() {
@@ -27,11 +54,11 @@ class memcached {
         }
         $this->_cache = new Memcache;
 
-        $hosts = split(',', $CFG->memcachedhosts);
+        $hosts = explode(',', $CFG->memcachedhosts);
         if (count($hosts) === 1 && !empty($CFG->memcachedpconn)) {
             // the faster pconnect is only available
             // for single-server setups
-            // NOTE: PHP-PECL client is buggy and pconnect() 
+            // NOTE: PHP-PECL client is buggy and pconnect()
             // will segfault if the server is unavailable
             $this->_cache->pconnect($hosts[0]);
         } else {
@@ -64,31 +91,31 @@ class memcached {
     function get($key) {
         $rec = $this->_cache->get($this->prefix . $key);
         return $rec;
-    } 
-        
+    }
+
     function delete($key) {
         return $this->_cache->delete($this->prefix . $key);
     }
 
     /**
-     * In the simple case, this function will 
+     * In the simple case, this function will
      * get the cached value if available. If the entry
      * is not cached, it will try to get an exclusive
      * lock that announces that this process will
      * populate the cache.
      *
      * If we fail to get the lock -- this means another
-     * process is doing it. 
+     * process is doing it.
      * so we wait (block) for a few microseconds while we wait for
      * the cache to be filled or the lock to timeout.
-     * 
+     *
      * If you get a false from this call, you _must_
      * populate the cache ASAP or indicate that
      * you won't by calling releaseforfill().
      *
-     * This technique forces serialisation and so helps deal 
-     * with thundering herd scenarios where a lot of clients 
-     * ask the for the same idempotent (and costly) operation. 
+     * This technique forces serialisation and so helps deal
+     * with thundering herd scenarios where a lot of clients
+     * ask the for the same idempotent (and costly) operation.
      * The implementation is based on suggestions in this message
      * http://marc.theaimsgroup.com/?l=git&m=116562052506776&w=2
      *
@@ -96,7 +123,7 @@ class memcached {
      * @return mixed on cache hit, NULL otherwise
      */
     function getforfill ($key) {
-        
+
         $rec = $this->_cache->get($this->prefix . $key);
         if ($rec) {
             return $rec;
@@ -120,7 +147,7 @@ class memcached {
     }
 
     /**
-     * Release the exclusive lock obtained by 
+     * Release the exclusive lock obtained by
      * getforfill(). See getforfill()
      * for more details.
      *
@@ -131,5 +158,3 @@ class memcached {
         return $this->_cache->delete($this->prefix . $key . '_forfill');
     }
 }
-
-?>

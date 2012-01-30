@@ -19,7 +19,7 @@ require_once($CFG->dirroot.'/grade/export/lib.php');
 
 class grade_export_ods extends grade_export {
 
-    var $plugin = 'ods';
+    public $plugin = 'ods';
 
     /**
      * To be implemented by child classes
@@ -32,8 +32,10 @@ class grade_export_ods extends grade_export {
 
         $strgrades = get_string('grades');
 
+        $shortname = format_string($this->course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $this->course->id)));
+
     /// Calculate file name
-        $downloadfilename = clean_filename("{$this->course->shortname} $strgrades.ods");
+        $downloadfilename = clean_filename("$shortname $strgrades.ods");
     /// Creating a workbook
         $workbook = new MoodleODSWorkbook("-");
     /// Sending HTTP headers
@@ -103,4 +105,4 @@ class grade_export_ods extends grade_export {
     }
 }
 
-?>
+

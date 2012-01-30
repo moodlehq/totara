@@ -1,4 +1,4 @@
-<?php  // $Id$
+<?php
 
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
@@ -29,7 +29,7 @@
  *
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package course
- *//** */
+ */
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -42,11 +42,11 @@ require_once($CFG->libdir.'/formslib.php');
  */
 class course_request_form extends moodleform {
     function definition() {
-        global $USER;
+        global $DB, $USER;
 
         $mform =& $this->_form;
 
-        if ($pending = get_records('course_request', 'requester', $USER->id)) {
+        if ($pending = $DB->get_records('course_request', array('requester' => $USER->id))) {
             $mform->addElement('header', 'pendinglist', get_string('coursespending'));
             $list = array();
             foreach ($pending as $cp) {
@@ -58,24 +58,19 @@ class course_request_form extends moodleform {
 
         $mform->addElement('header','coursedetails', get_string('courserequestdetails'));
 
-        $mform->addElement('text', 'fullname', get_string('fullname'), 'maxlength="254" size="50"');
-        $mform->setHelpButton('fullname', array('coursefullname', get_string('fullname')), true);
+        $mform->addElement('text', 'fullname', get_string('fullnamecourse'), 'maxlength="254" size="50"');
+        $mform->addHelpButton('fullname', 'fullnamecourse');
         $mform->addRule('fullname', get_string('missingfullname'), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'shortname', get_string('shortname'), 'maxlength="15" size="20"');
-        $mform->setHelpButton('shortname', array('courseshortname', get_string('shortname')), true);
+        $mform->addElement('text', 'shortname', get_string('shortnamecourse'), 'maxlength="100" size="20"');
+        $mform->addHelpButton('shortname', 'shortnamecourse');
         $mform->addRule('shortname', get_string('missingshortname'), 'required', null, 'client');
         $mform->setType('shortname', PARAM_MULTILANG);
 
-        $mform->addElement('htmleditor', 'summary', get_string('summary'), array('rows'=>'15', 'cols'=>'50'));
-        $mform->setHelpButton('summary', array('text', get_string('helptext')), true);
-        $mform->setType('summary', PARAM_RAW);
-
-        $mform->addElement('passwordunmask', 'password', get_string('enrolmentkey'), 'size="25"');
-        $mform->setHelpButton('password', array('enrolmentkey', get_string('enrolmentkey')), true);
-        $mform->setDefault('password', '');
-        $mform->setType('password', PARAM_RAW);
+        $mform->addElement('editor', 'summary_editor', get_string('summary'), null, course_request::summary_editor_options());
+        $mform->addHelpButton('summary_editor', 'coursesummary');
+        $mform->setType('summary_editor', PARAM_RAW);
 
         $mform->addElement('header','requestreason', get_string('courserequestreason'));
 
@@ -87,13 +82,15 @@ class course_request_form extends moodleform {
     }
 
     function validation($data, $files) {
+        global $DB;
+
         $errors = parent::validation($data, $files);
         $foundcourses = null;
         $foundreqcourses = null;
 
         if (!empty($data['shortname'])) {
-            $foundcourses = get_records('course', 'shortname', $data['shortname']);
-            $foundreqcourses = get_records('course_request', 'shortname', $data['shortname']);
+            $foundcourses = $DB->get_records('course', array('shortname'=>$data['shortname']));
+            $foundreqcourses = $DB->get_records('course_request', array('shortname'=>$data['shortname']));
         }
         if (!empty($foundreqcourses)) {
             if (!empty($foundcourses)) {
@@ -143,4 +140,4 @@ class reject_request_form extends moodleform {
         $this->add_action_buttons(true, get_string('reject'));
     }
 }
-?>
+

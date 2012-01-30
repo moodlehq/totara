@@ -1,44 +1,14 @@
-html2text.php is a modified copy of a file shipped with the RoundCube project:
+html2text.php is an unmodified copy of a file shipped with the RoundCube project:
 
   http://trac.roundcube.net/log/trunk/roundcubemail/program/lib/html2text.php
+
+ -- Francois Marier <francois@catalyst.net.nz>  2009-05-22
 
 
 Modifications
 --------------
 
-1- fix for these warnings in cron:
-
-  "html_entity_decode bug - cannot yet handle MBCS in html_entity_decode()!"
-
-by using this code:
-
-  $tl=textlib_get_instance();
-  $text = $tl->entities_to_utf8($text, true);
-
-instead of:
-
-  $text = html_entity_decode($text, ENT_COMPAT, 'UTF-8');
-
-
-2- fixed error in preg_replace_callback on php4
-
---- a/lib/html2text.php
-+++ b/lib/html2text.php
-@@ -468,7 +468,7 @@ class html2text
- 
-         // Run our defined search-and-replace
-         $text = preg_replace($this->search, $this->replace, $text);
--        $text = preg_replace_callback($this->callback_search, array('html2text', '_preg_callback'), $text);
-+        $text = preg_replace_callback($this->callback_search, array(&$this, '_preg_callback'), $text);
- 
-         // Replace known html entities
-         $text = utf8_encode(html_entity_decode($text));
-
-
- -- Francois Marier <francois@catalyst.net.nz>  2009-05-22
-
- 
-2- Don't just strip images, replace them with their alt text.
+1- Don't just strip images, replace them with their alt text.
 
 index b7e3e3e..96ef508 100644
 --- a/lib/html2text.php
@@ -62,6 +32,7 @@ index b7e3e3e..96ef508 100644
 
 -- Tim Hunt 2010-08-04
 
+2- No strip slashes, we do not use magic quotes any more in Moodle 2.0 or later
 
 3- Use textlib, not crappy functions that break UTF-8, in the _strtoupper method.
 

@@ -1,27 +1,40 @@
-<?PHP // $Id$
+<?php
 
     require('../config.php');
+    require_once($CFG->libdir.'/eventslib.php');
 
-    if ($form = data_submitted('nomatch')) { // form submitted, do not check referer (original page unknown)!
+    if ($form = data_submitted()) { // form submitted, do not check referer (original page unknown)!
 
     /// Only deal with real users
-        if (!isloggedin()) { 
+        if (!isloggedin()) {
             redirect($CFG->wwwroot);
         }
 
     /// Work out who to send the message to
         if (!$admin = get_admin() ) {
-            error('Could not find an admin user!');
+            print_error('cannotfindadmin', 'debug');
         }
 
-        $supportuser = new object;
+        $supportuser = new stdClass();
         $supportuser->email = $CFG->supportemail ? $CFG->supportemail : $admin->email;
         $supportuser->firstname = $CFG->supportname ? $CFG->supportname : $admin->firstname;
         $supportuser->lastname = $CFG->supportname ? '' : $admin->lastname;
+        // emailstop could be hard coded "false" to ensure error reports are sent
+        // but then admin's would have to alter their messaging preferences to temporarily stop them
+        $supportuser->emailstop = $admin->emailstop;
         $supportuser->maildisplay = true;
 
-    /// Send the email and redirect
-        email_to_user($supportuser, $USER, 'Error: '. $form->referer .' -> '. $form->requested, $form->text);
+    /// Send the message and redirect
+        $eventdata = new stdClass();
+        $eventdata->modulename        = 'moodle';
+        $eventdata->userfrom          = $USER;
+        $eventdata->userto            = $supportuser;
+        $eventdata->subject           = 'Error: '. $form->referer .' -> '. $form->requested;
+        $eventdata->fullmessage       = $form->text;
+        $eventdata->fullmessageformat = FORMAT_PLAIN;
+        $eventdata->fullmessagehtml   = '';
+        $eventdata->smallmessage      = '';
+        message_send($eventdata);
 
         redirect($CFG->wwwroot .'/course/', 'Message sent, thanks', 3);
         exit;
@@ -31,17 +44,20 @@
     $redirecturl = empty($_SERVER['REDIRECT_URL']) ? '' : $_SERVER['REDIRECT_URL'];
     $httpreferer = empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];
     $requesturi  = empty($_SERVER['REQUEST_URI'])  ? '' : $_SERVER['REQUEST_URI'];
-    
+
     header("HTTP/1.0 404 Not Found");
     header("Status: 404 Not Found");
 
-    print_header($site->fullname .':Error', $site->fullname .': Error 404', 'Error 404 - File not Found', '');
-
-    print_simple_box('<p align="center">'. get_string('pagenotexist', 'error'). '<br />'.s($requesturi).'</p>', 'center');
+    $PAGE->set_url('/error/');
+    $PAGE->set_title($site->fullname .':Error');
+    $PAGE->set_heading($site->fullname .': Error 404');
+    $PAGE->set_context(get_system_context());
+    $PAGE->navbar->add('Error 404 - File not Found');
+    echo $OUTPUT->header();
+    echo $OUTPUT->box(get_string('pagenotexist', 'error'). '<br />'.s($requesturi), 'generalbox boxaligncenter');
 
     if (isloggedin()) {
 ?>
-        <center>
         <p><?php echo get_string('pleasereport', 'error'); ?>
         <p><form action="<?php echo $CFG->wwwroot ?>/error/index.php" method="post">
            <textarea rows="3" cols="50" name="text" id="text"></textarea><br />
@@ -51,7 +67,7 @@
            </form>
 <?php
     } else {
-        print_continue($CFG->wwwroot);
+        echo $OUTPUT->continue_button($CFG->wwwroot);
     }
-    print_footer();
+    echo $OUTPUT->footer();
 ?>

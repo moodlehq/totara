@@ -1,4 +1,4 @@
-<?php //$Id$
+<?php
 
 require_once($CFG->dirroot.'/user/filters/lib.php');
 
@@ -33,7 +33,6 @@ class user_filter_globalrole extends user_filter_type {
      */
     function setupForm(&$mform) {
         $obj =& $mform->addElement('select', $this->_name, $this->_label, $this->get_roles());
-        $obj->setHelpButton(array('globalrole', $this->_label, 'filters'));
         $mform->setDefault($this->_name, 0);
         if ($this->_advanced) {
             $mform->setAdvanced($this->_name);
@@ -57,18 +56,18 @@ class user_filter_globalrole extends user_filter_type {
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array sql string and $params
      */
     function get_sql_filter($data) {
         global $CFG;
-        $value = $data['value'];
+        $value = (int)$data['value'];
 
         $timenow = round(time(), 100);
 
-        return "id IN (SELECT userid
-                         FROM {$CFG->prefix}role_assignments a
-                        WHERE a.contextid=".SYSCONTEXTID." AND a.roleid=$value AND a.timestart<$timenow
-                              AND (a.timeend=0 OR a.timeend>$timenow))";
+        $sql = "id IN (SELECT userid
+                         FROM {role_assignments} a
+                        WHERE a.contextid=".SYSCONTEXTID." AND a.roleid=$value)";
+        return array($sql, array());
     }
 
     /**
@@ -77,9 +76,11 @@ class user_filter_globalrole extends user_filter_type {
      * @return string active filter label
      */
     function get_label($data) {
-        $rolename = get_field('role', 'name', 'id', $data['value']);
+        global $DB;
 
-        $a = new object();
+        $rolename = $DB->get_field('role', 'name', array('id'=>$data['value']));
+
+        $a = new stdClass();
         $a->label = $this->_label;
         $a->value = '"'.format_string($rolename).'"';
 

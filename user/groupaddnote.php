@@ -1,14 +1,47 @@
-<?php  // $Id$
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * This file is part of the User section Moodle
+ *
+ * @copyright 1999 Martin Dougiamas  http://dougiamas.com
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package user
+ */
+
 require_once("../config.php");
 require_once($CFG->dirroot .'/notes/lib.php');
 
 $id    = required_param('id', PARAM_INT);              // course id
-$users = optional_param('userid', array(), PARAM_INT); // array of user id
+$users = optional_param_array('userid', array(), PARAM_INT); // array of user id
 $content = optional_param('content', '', PARAM_RAW); // note content
 $state = optional_param('state', '', PARAM_ALPHA); // note publish state
 
-if (! $course = get_record('course', 'id', $id)) {
-    error("Course ID is incorrect");
+$url = new moodle_url('/user/groupaddnote.php', array('id'=>$id));
+if ($content !== '') {
+    $url->param('content', $content);
+}
+if ($state !== '') {
+    $url->param('state', $state);
+}
+$PAGE->set_url($url);
+
+if (! $course = $DB->get_record('course', array('id'=>$id))) {
+    print_error('invalidcourseid');
 }
 
 $context = get_context_instance(CONTEXT_COURSE, $id);
@@ -22,13 +55,13 @@ if (empty($CFG->enablenotes)) {
 }
 
 if (!empty($users) && !empty($content) && confirm_sesskey()) {
-    $note = new object();
+    $note = new stdClass();
     $note->courseid = $id;
     $note->format = FORMAT_PLAIN;
     $note->content = $content;
     $note->publishstate = $state;
     foreach ($users as $k => $v) {
-        if(!$user = get_record('user', 'id', $v)) {
+        if(!$user = $DB->get_record('user', array('id'=>$v))) {
             continue;
         }
         $note->id = 0;
@@ -41,39 +74,36 @@ if (!empty($users) && !empty($content) && confirm_sesskey()) {
     redirect("$CFG->wwwroot/user/index.php?id=$id");
 }
 
-/// Print headers
-
 $straddnote = get_string('groupaddnewnote', 'notes');
 
-$navlinks = array();
-$navlinks[] = array('name' => $straddnote, 'link' => null, 'type' => 'misc');
-$navigation = build_navigation($navlinks);
+$PAGE->navbar->add($straddnote);
+$PAGE->set_title("$course->shortname: ".get_string('extendenrol'));
+$PAGE->set_heading($course->fullname);
 
-print_header("$course->shortname: ".get_string('extendenrol'), $course->fullname, $navigation, "", "", true, "&nbsp;", navmenu($course));
+/// Print headers
+echo $OUTPUT->header();
 
 // this will contain all available the based On select options, but we'll disable some on them on a per user basis
 
-print_heading($straddnote);
+echo $OUTPUT->heading($straddnote);
 echo '<form method="post" action="groupaddnote.php" >';
 echo '<div style="width:100%;text-align:center;">';
 echo '<input type="hidden" name="id" value="'.$course->id.'" />';
-echo '<input type="hidden" name="sesskey" value="'.$USER->sesskey.'" />';
+echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
 $state_names = note_get_state_names();
 
 // the first time list hack
-if (empty($users)) {
-    foreach ($_POST as $k => $v) {
+if (empty($users) and $post = data_submitted()) {
+    foreach ($post as $k => $v) {
         if (preg_match('/^user(\d+)$/',$k,$m)) {
             $users[] = $m[1];
         }
     }
 }
 
-$strpublishstate = get_string('publishstate', 'notes');
-
 $userlist = array();
 foreach ($users as $k => $v) {
-    if(!$user = get_record('user', 'id', $v)) {
+    if (!$user = $DB->get_record('user', array('id'=>$v))) {
         continue;
     }
     echo '<input type="hidden" name="userid['.$k.']" value="'.$v.'" />';
@@ -84,13 +114,13 @@ echo get_string('users'). ': ' . implode(', ', $userlist) . '.';
 echo '</p>';
 
 echo '<p>' . get_string('content', 'notes');
-helpbutton('writing', get_string('helpwriting'));
 echo '<br /><textarea name="content" rows="5" cols="50">' . strip_tags(@$content) . '</textarea></p>';
 
-echo '<p>' . $strpublishstate;
-helpbutton('status', $strpublishstate, 'notes');
-choose_from_menu($state_names, 'state', empty($state) ? NOTES_STATE_PUBLIC : $state, '');
+echo '<p>';
+echo get_string('publishstate', 'notes');
+echo $OUTPUT->help_icon('publishstate', 'notes');
+echo html_writer::select($state_names, 'state', empty($state) ? NOTES_STATE_PUBLIC : $state, false);
 echo '</p>';
 
 echo '<input type="submit" value="' . get_string('savechanges'). '" /></div></form>';
-print_footer($course);
+echo $OUTPUT->footer();

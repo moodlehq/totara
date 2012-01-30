@@ -23,7 +23,13 @@ require_once 'outcomeitem_form.php';
 $courseid = required_param('courseid', PARAM_INT);
 $id       = optional_param('id', 0, PARAM_INT);
 
-if (!$course = get_record('course', 'id', $courseid)) {
+$url = new moodle_url('/grade/edit/tree/outcomeitem.php', array('courseid'=>$courseid));
+if ($id !== 0) {
+    $url->param('id', $id);
+}
+$PAGE->set_url($url);
+
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 
@@ -95,13 +101,13 @@ if (empty($parent_category)) {
 $mform->set_data($item);
 
 
-if ($data = $mform->get_data(false)) {
+if ($data = $mform->get_data()) {
 
     if (!isset($data->aggregationcoef)) {
         $data->aggregationcoef = 0;
     }
 
-    if (array_key_exists('calculation', $data)) {
+    if (property_exists($data, 'calculation')) {
         $data->calculation = grade_item::normalize_formula($data->calculation, $course->id);
     }
 
@@ -117,7 +123,7 @@ if ($data = $mform->get_data(false)) {
 
     $convert = array('gradepass', 'aggregationcoef');
     foreach ($convert as $param) {
-        if (array_key_exists($param, $data)) {
+        if (property_exists($data, $param)) {
             $data->$param = unformat_float($data->$param);
         }
     }
@@ -134,9 +140,10 @@ if ($data = $mform->get_data(false)) {
         $grade_item->itemnumber   = 0;
 
     } else {
-        $module = get_record_sql("SELECT cm.*, m.name as modname
-                                    FROM {$CFG->prefix}modules m, {$CFG->prefix}course_modules cm
-                                   WHERE cm.id = {$data->cmid} AND cm.module = m.id ");
+        $params = array($data->cmid);
+        $module = $DB->get_record_sql("SELECT cm.*, m.name as modname
+                                    FROM {modules} m, {course_modules} cm
+                                   WHERE cm.id = ? AND cm.module = m.id ", $params);
         $grade_item->itemtype     = 'mod';
         $grade_item->itemmodule   = $module->modname;
         $grade_item->iteminstance = $module->instance;
@@ -203,11 +210,11 @@ if ($data = $mform->get_data(false)) {
 print_grade_page_head($courseid, 'edittree', null, $heading);
 
 if (!grade_outcome::fetch_all_available($COURSE->id)) {
-    notice_yesno(get_string('nooutcomes', 'grades'), $CFG->wwwroot.'/grade/edit/outcome/course.php?id='.$courseid, $returnurl);
-    print_footer($course);
+    echo $OUTPUT->confirm(get_string('nooutcomes', 'grades'), $CFG->wwwroot.'/grade/edit/outcome/course.php?id='.$courseid, $returnurl);
+    echo $OUTPUT->footer();
     die();
 }
 
 $mform->display();
 
-print_footer($course);
+echo $OUTPUT->footer();

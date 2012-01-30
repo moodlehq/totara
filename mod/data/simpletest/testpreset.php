@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
@@ -35,10 +35,11 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
-require_once($CFG->dirroot . '/mod/data/preset_class.php');
+require_once($CFG->dirroot . '/mod/data/lib.php');
 
 class data_preset_test extends UnitTestCase {
-    
+    public static $includecoverage = array('mod/data/lib.php');
+
     function setUp() {
     }
 
@@ -47,18 +48,18 @@ class data_preset_test extends UnitTestCase {
 
     function test_address_in_subnet() {
     }
-    
+
     /**
-     * Modifies $_SERVER['HTTP_USER_AGENT'] manually to check if check_browser_version 
+     * Modifies $_SERVER['HTTP_USER_AGENT'] manually to check if check_browser_version
      * works as expected.
      */
     function test_check_browser_version()
     {
     }
-    
+
     function test_optional_param()
     {
     }
 }
 
-?>
+

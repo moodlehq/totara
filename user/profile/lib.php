@@ -1,4 +1,4 @@
-<?php //$Id$
+<?php
 
 /// Some constants
 
@@ -9,7 +9,7 @@ define ('PROFILE_VISIBLE_NONE',    '0'); // only visible for moodle/user:update 
 
 
 /**
- * Base class for the cusomisable profile fields.
+ * Base class for the customisable profile fields.
  */
 class profile_field_base {
 
@@ -17,10 +17,11 @@ class profile_field_base {
     /// Everything else can be extracted from them
     var $fieldid;
     var $userid;
-    
+
     var $field;
     var $inputname;
     var $data;
+    var $dataformat;
 
     /**
      * Constructor method.
@@ -43,20 +44,21 @@ class profile_field_base {
      * @param  form  instance of the moodleform class
      */
     function edit_field_add(&$mform) {
-        error('This abstract method must be overriden');
+        print_error('mustbeoveride', 'debug', '', 'edit_field_add');
     }
 
-    
+
 /***** The following methods may be overwritten by child classes *****/
 
     /**
      * Display the data for this field
      */
     function display_data() {
+        $options = new stdClass();
         $options->para = false;
         return format_text($this->data, FORMAT_MOODLE, $options);
     }
-    
+
     /**
      * Print out the form field in the edit profile page
      * @param   object   instance of the moodleform class
@@ -96,26 +98,26 @@ class profile_field_base {
      * @return  mixed   returns data id if success of db insert/update, false on fail, 0 if not permitted
      */
     function edit_save_data($usernew) {
+        global $DB;
 
         if (!isset($usernew->{$this->inputname})) {
             // field not present in form, probably locked and invisible - skip it
             return;
         }
-        
-        $usernew->{$this->inputname} = $this->edit_save_data_preprocess($usernew->{$this->inputname});
 
-        $data = new object();
+        $data = new stdClass();
+
+        $usernew->{$this->inputname} = $this->edit_save_data_preprocess($usernew->{$this->inputname}, $data);
+
         $data->userid  = $usernew->id;
         $data->fieldid = $this->field->id;
         $data->data    = $usernew->{$this->inputname};
 
-        if ($dataid = get_field('user_info_data', 'id', 'userid', $data->userid, 'fieldid', $data->fieldid)) {
+        if ($dataid = $DB->get_field('user_info_data', 'id', array('userid'=>$data->userid, 'fieldid'=>$data->fieldid))) {
             $data->id = $dataid;
-            if (!update_record('user_info_data', $data)) {
-                error('Error updating custom profile field!');
-            }
+            $DB->update_record('user_info_data', $data);
         } else {
-            insert_record('user_info_data', $data);
+            $DB->insert_record('user_info_data', $data);
         }
     }
 
@@ -124,12 +126,28 @@ class profile_field_base {
      * @return  string  contains error message otherwise NULL
      **/
     function edit_validate_field($usernew) {
+        global $DB;
+
         $errors = array();
         /// Check for uniqueness of data if required
         if ($this->is_unique()) {
-            if ($userid = get_field('user_info_data', 'userid', 'fieldid', $this->field->id, 'data', $usernew->{$this->inputname})) {
-                if ($userid != $usernew->id) {
-                    $errors["{$this->inputname}"] = get_string('valuealreadyused');
+            $value = (is_array($usernew->{$this->inputname}) and isset($usernew->{$this->inputname}['text'])) ? $usernew->{$this->inputname}['text'] : $usernew->{$this->inputname};
+            $data = $DB->get_records_sql('
+                    SELECT id, userid
+                      FROM {user_info_data}
+                     WHERE fieldid = ?
+                       AND ' . $DB->sql_compare_text('data', 255) . ' = ' . $DB->sql_compare_text('?', 255),
+                    array($this->field->id, $value));
+            if ($data) {
+                $existing = false;
+                foreach ($data as $v) {
+                    if ($v->userid == $usernew->id) {
+                        $existing = true;
+                        break;
+                    }
+                }
+                if (!$existing) {
+                    $errors[$this->inputname] = get_string('valuealreadyused');
                 }
             }
         }
@@ -173,9 +191,10 @@ class profile_field_base {
     /**
      * Hook for child classess to process the data before it gets saved in database
      * @param   mixed
+     * @param   stdClass The object that will be used to save the record
      * @return  mixed
      */
-    function edit_save_data_preprocess($data) {
+    function edit_save_data_preprocess($data, &$datarecord) {
         return $data;
     }
 
@@ -202,7 +221,7 @@ class profile_field_base {
 
 
 /***** The following methods generally should not be overwritten by child classes *****/
-   
+
     /**
      * Accessor method: set the userid for this instance
      * @param   integer   id from the user table
@@ -224,8 +243,10 @@ class profile_field_base {
      * object's fieldid and userid
      */
     function load_data() {
+        global $DB;
+
         /// Load the field object
-        if (($this->fieldid == 0) or (!($field = get_record('user_info_field', 'id', $this->fieldid)))) {
+        if (($this->fieldid == 0) or (!($field = $DB->get_record('user_info_field', array('id'=>$this->fieldid))))) {
             $this->field = NULL;
             $this->inputname = '';
         } else {
@@ -234,10 +255,12 @@ class profile_field_base {
         }
 
         if (!empty($this->field)) {
-            if ($datafield = get_field('user_info_data', 'data', 'userid', $this->userid, 'fieldid', $this->fieldid)) {
-                $this->data = $datafield;
+            if ($data = $DB->get_record('user_info_data', array('userid'=>$this->userid, 'fieldid'=>$this->fieldid), 'data, dataformat')) {
+                $this->data = $data->data;
+                $this->dataformat = $data->dataformat;
             } else {
                 $this->data = $this->field->defaultdata;
+                $this->dataformat = FORMAT_HTML;
             }
         } else {
             $this->data = NULL;
@@ -258,10 +281,12 @@ class profile_field_base {
                 if ($this->userid == $USER->id) {
                     return true;
                 } else {
-                    return has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM));
+                    return has_capability('moodle/user:viewalldetails',
+                            get_context_instance(CONTEXT_USER, $this->userid));
                 }
             default:
-                return has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM));
+                return has_capability('moodle/user:viewalldetails',
+                        get_context_instance(CONTEXT_USER, $this->userid));
         }
     }
 
@@ -304,7 +329,7 @@ class profile_field_base {
     function is_signup_field() {
         return (boolean)$this->field->signup;
     }
-     
+
 
 } /// End of class definition
 
@@ -312,9 +337,9 @@ class profile_field_base {
 /***** General purpose functions for customisable user profiles *****/
 
 function profile_load_data(&$user) {
-    global $CFG;
+    global $CFG, $DB;
 
-    if ($fields = get_records_select('user_info_field')) {
+    if ($fields = $DB->get_records('user_info_field')) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/user/profile/field/'.$field->datatype.'/field.class.php');
             $newfield = 'profile_field_'.$field->datatype;
@@ -329,44 +354,44 @@ function profile_load_data(&$user) {
  * @param  object   instance of the moodleform class
  */
 function profile_definition(&$mform) {
-    global $CFG;
+    global $CFG, $DB;
 
-        // if user is "admin" fields are displayed regardless
-        $update = has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM));
+    // if user is "admin" fields are displayed regardless
+    $update = has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM));
 
-        if ($categories = get_records_select('user_info_category', '', 'sortorder ASC')) {
-            foreach ($categories as $category) {
-                if ($fields = get_records_select('user_info_field', "categoryid=$category->id", 'sortorder ASC')) {
-                    
-                    // check first if *any* fields will be displayed
-                    $display = false;
-                    foreach ($fields as $field) {
-                        if ($field->visible != PROFILE_VISIBLE_NONE) {
-                            $display = true;
-                        }
+    if ($categories = $DB->get_records('user_info_category', null, 'sortorder ASC')) {
+        foreach ($categories as $category) {
+            if ($fields = $DB->get_records('user_info_field', array('categoryid'=>$category->id), 'sortorder ASC')) {
+
+                // check first if *any* fields will be displayed
+                $display = false;
+                foreach ($fields as $field) {
+                    if ($field->visible != PROFILE_VISIBLE_NONE) {
+                        $display = true;
                     }
+                }
 
-                    // display the header and the fields
-                    if ($display or $update) {
-                        $mform->addElement('header', 'category_'.$category->id, format_string($category->name));
-                        foreach ($fields as $field) {
-                            require_once($CFG->dirroot.'/user/profile/field/'.$field->datatype.'/field.class.php');
-                            $newfield = 'profile_field_'.$field->datatype;
-                            $formfield = new $newfield($field->id);
-                            $formfield->edit_field($mform);
-                        }
+                // display the header and the fields
+                if ($display or $update) {
+                    $mform->addElement('header', 'category_'.$category->id, format_string($category->name));
+                    foreach ($fields as $field) {
+                        require_once($CFG->dirroot.'/user/profile/field/'.$field->datatype.'/field.class.php');
+                        $newfield = 'profile_field_'.$field->datatype;
+                        $formfield = new $newfield($field->id);
+                        $formfield->edit_field($mform);
                     }
                 }
             }
         }
     }
+}
 
 function profile_definition_after_data(&$mform, $userid) {
-    global $CFG;
+    global $CFG, $DB;
 
     $userid = ($userid < 0) ? 0 : (int)$userid;
 
-    if ($fields = get_records('user_info_field')) {
+    if ($fields = $DB->get_records('user_info_field')) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/user/profile/field/'.$field->datatype.'/field.class.php');
             $newfield = 'profile_field_'.$field->datatype;
@@ -377,10 +402,10 @@ function profile_definition_after_data(&$mform, $userid) {
 }
 
 function profile_validation($usernew, $files) {
-    global $CFG;
+    global $CFG, $DB;
 
     $err = array();
-    if ($fields = get_records('user_info_field')) {
+    if ($fields = $DB->get_records('user_info_field')) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/user/profile/field/'.$field->datatype.'/field.class.php');
             $newfield = 'profile_field_'.$field->datatype;
@@ -392,9 +417,9 @@ function profile_validation($usernew, $files) {
 }
 
 function profile_save_data($usernew) {
-    global $CFG;
+    global $CFG, $DB;
 
-    if ($fields = get_records_select('user_info_field')) {
+    if ($fields = $DB->get_records('user_info_field')) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/user/profile/field/'.$field->datatype.'/field.class.php');
             $newfield = 'profile_field_'.$field->datatype;
@@ -405,11 +430,11 @@ function profile_save_data($usernew) {
 }
 
 function profile_display_fields($userid) {
-    global $CFG, $USER;
+    global $CFG, $USER, $DB;
 
-    if ($categories = get_records_select('user_info_category', '', 'sortorder ASC')) {
+    if ($categories = $DB->get_records('user_info_category', null, 'sortorder ASC')) {
         foreach ($categories as $category) {
-            if ($fields = get_records_select('user_info_field', "categoryid=$category->id", 'sortorder ASC')) {
+            if ($fields = $DB->get_records('user_info_field', array('categoryid'=>$category->id), 'sortorder ASC')) {
                 foreach ($fields as $field) {
                     require_once($CFG->dirroot.'/user/profile/field/'.$field->datatype.'/field.class.php');
                     $newfield = 'profile_field_'.$field->datatype;
@@ -429,17 +454,17 @@ function profile_display_fields($userid) {
  * @param  object  moodle form object
  */
 function profile_signup_fields(&$mform) {
-    global $CFG;
+    global $CFG, $DB;
 
-    //only retrieve required custom fields (with category information)
+     //only retrieve required custom fields (with category information)
     //results are sort by categories, then by fields
     $sql = "SELECT uf.id as fieldid, ic.id as categoryid, ic.name as categoryname, uf.datatype
-                FROM ".$CFG->prefix."user_info_field uf
-                JOIN ".$CFG->prefix."user_info_category ic
+                FROM {user_info_field} uf
+                JOIN {user_info_category} ic
                 ON uf.categoryid = ic.id AND uf.signup = 1 AND uf.visible<>0
                 ORDER BY ic.sortorder ASC, uf.sortorder ASC";
 
-    if ( $fields = get_records_sql($sql)) {
+    if ( $fields = $DB->get_records_sql($sql)) {
         foreach ($fields as $field) {
             //check if we change the categories
             if (!isset($currentcat) || $currentcat != $field->categoryid) {
@@ -460,21 +485,36 @@ function profile_signup_fields(&$mform) {
  * @return  object
  */
 function profile_user_record($userid) {
-    global $CFG;
+    global $CFG, $DB;
 
-    $user = new object();
+    $usercustomfields = new stdClass();
 
-    if ($fields = get_records_select('user_info_field')) {
+    if ($fields = $DB->get_records('user_info_field')) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/user/profile/field/'.$field->datatype.'/field.class.php');
             $newfield = 'profile_field_'.$field->datatype;
             $formfield = new $newfield($field->id, $userid);
-            if ($formfield->is_user_object_data()) $user->{$field->shortname} = $formfield->data;
+            if ($formfield->is_user_object_data()) {
+                $usercustomfields->{$field->shortname} = $formfield->data;
+            }
         }
     }
 
-    return $user;
+    return $usercustomfields;
+}
+
+/**
+ * Load custom profile fields into user object
+ *
+ * Please note originally in 1.9 we were using the custom field names directly,
+ * but it was causing unexpected collisions when adding new fields to user table,
+ * so instead we now use 'profile_' prefix.
+ *
+ * @param object $user user object
+ * @return void $user object is modified
+ */
+function profile_load_custom_fields(&$user) {
+    $user->profile = (array)profile_user_record($user->id);
 }
 
 
-?>

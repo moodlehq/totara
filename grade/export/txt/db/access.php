@@ -15,16 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$gradeexport_txt_capabilities = array(
+$capabilities = array(
 
     'gradeexport/txt:view' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
-        'legacy' => array(
+        'archetypes' => array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -32,11 +32,11 @@ $gradeexport_txt_capabilities = array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
     )
 
 );
 
-?>
+

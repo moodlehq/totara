@@ -1,4 +1,4 @@
-<?php  // $Id$
+<?php
 
 /// This page prints reports and info about chats
 
@@ -12,20 +12,39 @@
     $confirmdelete = optional_param('confirmdelete', 0, PARAM_BOOL);
     $show_all      = optional_param('show_all', 0, PARAM_BOOL);
 
+    $url = new moodle_url('/mod/chat/report.php', array('id'=>$id));
+    if ($start !== 0) {
+        $url->param('start', $start);
+    }
+    if ($end !== 0) {
+        $url->param('end', $end);
+    }
+    if ($deletesession !== 0) {
+        $url->param('deletesession', $deletesession);
+    }
+    if ($confirmdelete !== 0) {
+        $url->param('confirmdelete', $confirmdelete);
+    }
+    $PAGE->set_url($url);
+
     if (! $cm = get_coursemodule_from_id('chat', $id)) {
-        error('Course Module ID was incorrect');
+        print_error('invalidcoursemodule');
     }
-    if (! $chat = get_record('chat', 'id', $cm->instance)) {
-        error('Course module is incorrect');
+    if (! $chat = $DB->get_record('chat', array('id'=>$cm->instance))) {
+        print_error('invalidcoursemodule');
     }
-    if (! $course = get_record('course', 'id', $chat->course)) {
-        error('Course is misconfigured');
+    if (! $course = $DB->get_record('course', array('id'=>$chat->course))) {
+        print_error('coursemisconf');
     }
 
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $PAGE->set_context($context);
+
     require_login($course->id, false, $cm);
 
-    require_capability('mod/chat:readlog', $context);
+    if (empty($chat->studentlogs) && !has_capability('mod/chat:readlog', $context)) {
+        notice(get_string('nopermissiontoseethechatlog', 'chat'));
+    }
 
     add_to_log($course->id, 'chat', 'report', "report.php?id=$cm->id", $chat->id, $cm->id);
 
@@ -37,64 +56,83 @@
 
     $navlinks = array();
 
+    $canexportsess = has_capability('mod/chat:exportsession', $context);
+
 /// Print a session if one has been specified
 
     if ($start and $end and !$confirmdelete) {   // Show a full transcript
-        $navigation = build_navigation($strchatreport, $cm);
-        print_header_simple(format_string($chat->name).": $strchatreport", '', $navigation,
-                      '', '', true, '', navmenu($course, $cm));
+        $PAGE->navbar->add($strchatreport);
+        $PAGE->set_title(format_string($chat->name).": $strchatreport");
+        echo $OUTPUT->header();
 
     /// Check to see if groups are being used here
         $groupmode = groups_get_activity_groupmode($cm);
         $currentgroup = groups_get_activity_group($cm, true);
         groups_print_activity_menu($cm, $CFG->wwwroot . "/mod/chat/report.php?id=$cm->id");
 
+        $params = array('currentgroup'=>$currentgroup, 'chatid'=>$chat->id, 'start'=>$start, 'end'=>$end);
 
+        // If the user is allocated to a group, only show messages from people
+        // in the same group, or no group
         if ($currentgroup) {
-            $groupselect = " AND (groupid = $currentgroup OR groupid = 0)";
+            $groupselect = " AND (groupid = :currentgroup OR groupid = 0)";
         } else {
             $groupselect = "";
         }
 
         if ($deletesession and has_capability('mod/chat:deletelog', $context)) {
-            notice_yesno(get_string('deletesessionsure', 'chat'),
-                         "report.php?id=$cm->id&amp;deletesession=1&amp;confirmdelete=1&amp;start=$start&amp;end=$end&amp;sesskey=$USER->sesskey",
+            echo $OUTPUT->confirm(get_string('deletesessionsure', 'chat'),
+                         "report.php?id=$cm->id&deletesession=1&confirmdelete=1&start=$start&end=$end",
                          "report.php?id=$cm->id");
         }
 
-        if (!$messages = get_records_select('chat_messages', "chatid = $chat->id AND
-                                                              timestamp >= '$start' AND
-                                                              timestamp <= '$end' $groupselect", "timestamp ASC")) {
-            print_heading(get_string('nomessages', 'chat'));
+        if (!$messages = $DB->get_records_select('chat_messages', "chatid = :chatid AND timestamp >= :start AND timestamp <= :end $groupselect", $params, "timestamp ASC")) {
+            echo $OUTPUT->heading(get_string('nomessages', 'chat'));
 
         } else {
             echo '<p class="boxaligncenter">'.userdate($start).' --> '. userdate($end).'</p>';
 
-            print_simple_box_start('center');
+            echo $OUTPUT->box_start('center');
+            $participates = array();
             foreach ($messages as $message) {  // We are walking FORWARDS through messages
+                if (!isset($participates[$message->userid])) {
+                    $participates[$message->userid] = true;
+                }
                 $formatmessage = chat_format_message($message, $course->id, $USER);
                 if (isset($formatmessage->html)) {
                     echo $formatmessage->html;
                 }
             }
-            print_simple_box_end();
+            $participatedcap = array_key_exists($USER->id, $participates) && has_capability('mod/chat:exportparticipatedsession', $context);
+            if (!empty($CFG->enableportfolios) && ($canexportsess || $participatedcap)) {
+                require_once($CFG->libdir . '/portfoliolib.php');
+                $buttonoptions  = array(
+                    'id'    => $cm->id,
+                    'start' => $start,
+                    'end'   => $end,
+                );
+                $button = new portfolio_add_button();
+                $button->set_callback_options('chat_portfolio_caller', $buttonoptions, '/mod/chat/locallib.php');
+                $button->render();
+            }
+            echo $OUTPUT->box_end();
         }
 
         if (!$deletesession or !has_capability('mod/chat:deletelog', $context)) {
-            print_continue("report.php?id=$cm->id");
+            echo $OUTPUT->continue_button("report.php?id=$cm->id");
         }
 
-        print_footer($course);
+        echo $OUTPUT->footer();
         exit;
     }
 
 
 /// Print the Sessions display
-    $navigation = build_navigation($strchatreport, $cm);
-    print_header_simple(format_string($chat->name).": $strchatreport", '', $navigation,
-                  '', '', true, '', navmenu($course, $cm));
+    $PAGE->navbar->add($strchatreport);
+    $PAGE->set_title(format_string($chat->name).": $strchatreport");
+    echo $OUTPUT->header();
 
-    print_heading(format_string($chat->name).': '.get_string('sessions', 'chat'));
+    echo $OUTPUT->heading(format_string($chat->name).': '.get_string('sessions', 'chat'));
 
 
 /// Check to see if groups are being used here
@@ -105,8 +143,12 @@
         $currentgroup = false;
     }
 
+    $params = array('currentgroup'=>$currentgroup, 'chatid'=>$chat->id, 'start'=>$start, 'end'=>$end);
+
+    // If the user is allocated to a group, only show discussions with people in
+    // the same group, or no group
     if (!empty($currentgroup)) {
-        $groupselect = " AND (groupid = $currentgroup OR groupid = 0)";
+        $groupselect = " AND (groupid = :currentgroup OR groupid = 0)";
     } else {
         $groupselect = "";
     }
@@ -114,30 +156,27 @@
 /// Delete a session if one has been specified
 
     if ($deletesession and has_capability('mod/chat:deletelog', $context) and $confirmdelete and $start and $end and confirm_sesskey()) {
-        delete_records_select('chat_messages', "chatid = $chat->id AND
-                                            timestamp >= '$start' AND
-                                            timestamp <= '$end' $groupselect");
+        $DB->delete_records_select('chat_messages', "chatid = :chatid AND timestamp >= :start AND
+                                                     timestamp <= :end $groupselect", $params);
         $strdeleted  = get_string('deleted');
-        notify("$strdeleted: ".userdate($start).' --> '. userdate($end));
+        echo $OUTPUT->notification("$strdeleted: ".userdate($start).' --> '. userdate($end));
         unset($deletesession);
     }
 
 
 /// Get the messages
-
     if (empty($messages)) {   /// May have already got them above
-        if (!$messages = get_records_select('chat_messages', "chatid = '$chat->id' $groupselect", "timestamp DESC")) {
-            print_heading(get_string('nomessages', 'chat'));
-            print_footer($course);
+        if (!$messages = $DB->get_records_select('chat_messages', "chatid = :chatid $groupselect", $params, "timestamp DESC")) {
+            echo $OUTPUT->heading(get_string('nomessages', 'chat'));
+            echo $OUTPUT->footer();
             exit;
         }
     }
 
     if ($show_all) {
-        print_heading(get_string('listing_all_sessions', 'chat') . 
-                      '&nbsp;<a href="report.php?id='.$cm->id.'&amp;show_all=0">'.
-                      get_string('list_complete_sessions', 'chat').
-                      '</a>', '', 3);
+        echo $OUTPUT->heading(get_string('listing_all_sessions', 'chat') .
+                      '&nbsp;<a href="report.php?id='.$cm->id.'&amp;show_all=0">' .
+                      get_string('list_complete_sessions', 'chat') .  '</a>');
     }
 
 /// Show all the sessions
@@ -177,12 +216,12 @@
 
                 echo '<p align="center">'.userdate($sessionstart).' --> '. userdate($sessionend).'</p>';
 
-                print_simple_box_start('center');
+                echo $OUTPUT->box_start();
 
                 arsort($sessionusers);
                 foreach ($sessionusers as $sessionuser => $usermessagecount) {
-                    if ($user = get_record('user', 'id', $sessionuser)) {
-                        print_user_picture($user, $course->id, $user->picture);
+                    if ($user = $DB->get_record('user', array('id'=>$sessionuser))) {
+                        $OUTPUT->user_picture($user, array('courseid'=>$course->id));
                         echo '&nbsp;'.fullname($user, true); // XXX TODO  use capability instead of true
                         echo "&nbsp;($usermessagecount)<br />";
                     }
@@ -190,11 +229,26 @@
 
                 echo '<p align="right">';
                 echo "<a href=\"report.php?id=$cm->id&amp;start=$sessionstart&amp;end=$sessionend\">$strseesession</a>";
+                $participatedcap = (array_key_exists($USER->id, $sessionusers) && has_capability('mod/chat:exportparticipatedsession', $context));
+                if (!empty($CFG->enableportfolios) && ($canexportsess || $participatedcap)) {
+                    require_once($CFG->libdir . '/portfoliolib.php');
+                    $buttonoptions  = array(
+                        'id'    => $cm->id,
+                        'start' => $sessionstart,
+                        'end'   => $sessionend,
+                    );
+                    $button = new portfolio_add_button();
+                    $button->set_callback_options('chat_portfolio_caller', $buttonoptions, '/mod/chat/locallib.php');
+                    $portfoliobutton = $button->to_html(PORTFOLIO_ADD_TEXT_LINK);
+                    if (!empty($portfoliobutton)) {
+                        echo '<br />' . $portfoliobutton;
+                    }
+                }
                 if (has_capability('mod/chat:deletelog', $context)) {
                     echo "<br /><a href=\"report.php?id=$cm->id&amp;start=$sessionstart&amp;end=$sessionend&amp;deletesession=1\">$strdeletesession</a>";
                 }
                 echo '</p>';
-                print_simple_box_end();
+                echo $OUTPUT->box_end();
             }
             if ($is_complete) {
                 $complete_sessions++;
@@ -207,14 +261,20 @@
         $lasttime = $message->timestamp;
     }
 
+    if (!empty($CFG->enableportfolios) && $canexportsess) {
+        require_once($CFG->libdir . '/portfoliolib.php');
+        $button = new portfolio_add_button();
+        $button->set_callback_options('chat_portfolio_caller', array('id' => $cm->id), '/mod/chat/locallib.php');
+        $button->render(null, get_string('addalltoportfolio', 'portfolio'));
+    }
+
+
     if (!$show_all and $complete_sessions == 0) {
-        print_heading(get_string('no_complete_sessions_found', 'chat') . 
-                      '&nbsp;<a href="report.php?id='.$cm->id.'&amp;show_all=1">'.
-                      get_string('list_all_sessions', 'chat').
-                      '</a>', '', 3);
+        echo $OUTPUT->heading(get_string('no_complete_sessions_found', 'chat') .
+                      '&nbsp;<a href="report.php?id='.$cm->id.'&amp;show_all=1">' .
+                      get_string('list_all_sessions', 'chat') .
+                      '</a>');
     }
 
 /// Finish the page
-    print_footer($course);
-
-?>
+    echo $OUTPUT->footer();

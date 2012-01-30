@@ -11,11 +11,10 @@ class MoodleQuickForm_submitlink extends MoodleQuickForm_submit {
     function toHtml() {
         $text = $this->_attributes['value'];
         $onmouseover = "window.status=\'" . $text . "\';";
-        $onmouseout = "window.status=\'\';"; 
+        $onmouseout = "window.status=\'\';";
 
-        return "<noscript>" . parent::toHtml() . '</noscript><script type="text/javascript">' . $this->_js . "\n" 
-             . 'document.write(\'<a href="#" onclick="' . $this->_onclick . '" onmouseover="' . $onmouseover . '" onmouseout="' . $onmouseout . '">' 
+        return "<noscript><div>" . parent::toHtml() . '</div></noscript><script type="text/javascript">' . $this->_js . "\n"
+             . 'document.write(\'<a href="#" onclick="' . $this->_onclick . '" onmouseover="' . $onmouseover . '" onmouseout="' . $onmouseout . '">'
              . $text . "</a>');\n</script>";
     }
 }
-?>

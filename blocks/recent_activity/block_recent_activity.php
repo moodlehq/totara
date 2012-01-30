@@ -1,14 +1,13 @@
-<?PHP //$Id$
+<?php
+
+require_once($CFG->dirroot.'/course/lib.php');
 
 class block_recent_activity extends block_base {
     function init() {
-        $this->title = get_string('recentactivity');
-        $this->version = 2007101509;
+        $this->title = get_string('pluginname', 'block_recent_activity');
     }
 
     function get_content() {
-        global $COURSE;
-
         if ($this->content !== NULL) {
             return $this->content;
         }
@@ -24,7 +23,7 @@ class block_recent_activity extends block_base {
 
         // Slightly hacky way to do it but...
         ob_start();
-        print_recent_activity($COURSE);
+        print_recent_activity($this->page->course);
         $this->content->text = ob_get_contents();
         ob_end_clean();
 
@@ -35,4 +34,4 @@ class block_recent_activity extends block_base {
         return array('all' => true, 'my' => false, 'tag' => false);
     }
 }
-?>
+

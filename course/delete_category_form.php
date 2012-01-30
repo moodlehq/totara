@@ -1,22 +1,22 @@
-<?php  //$Id$
+<?php
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
 require_once($CFG->libdir.'/formslib.php');
-require_once($CFG->libdir . '/questionlib.php');
+require_once($CFG->libdir.'/questionlib.php');
 
 class delete_category_form extends moodleform {
 
     var $_category;
 
     function definition() {
-        global $CFG;
+        global $CFG, $DB;
 
         $mform    =& $this->_form;
         $category = $this->_customdata;
-        ensure_context_subobj_present($category, CONTEXT_COURSECAT);
+        $categorycontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
         $this->_category = $category;
 
     /// Check permissions, to see if it OK to give the option to delete
@@ -30,15 +30,16 @@ class delete_category_form extends moodleform {
             $checkcat = array_pop($tocheck);
             $childcategoryids[] = $checkcat->id;
             $tocheck = $tocheck + get_child_categories($checkcat->id);
-            if ($candeletecontent && !has_capability('moodle/category:manage', $checkcat->context)) {
+            $chcontext = get_context_instance(CONTEXT_COURSECAT, $checkcat->id);
+            if ($candeletecontent && !has_capability('moodle/category:manage', $chcontext)) {
                 $candeletecontent = false;
             }
         }
 
     /// Are there any courses in here, can they be deleted?
-        $containedcourses = get_records_sql("
-                SELECT id,1 FROM {$CFG->prefix}course c
-                        WHERE c.category IN (" . implode(',', $categoryids) . ")");
+        list($test, $params) = $DB->get_in_or_equal($categoryids);
+        $containedcourses = $DB->get_records_sql(
+                "SELECT id,1 FROM {course} c WHERE c.category $test", $params);
         $containscourses = false;
         if ($containedcourses) {
             $containscourses = true;
@@ -51,7 +52,7 @@ class delete_category_form extends moodleform {
         }
 
     /// Are there any questions in the question bank here?
-        $containsquestions = question_context_has_any_questions($category->context);
+        $containsquestions = question_context_has_any_questions($categorycontext);
 
     /// Get the list of categories we might be able to move to.
         $testcaps = array();
@@ -77,11 +78,11 @@ class delete_category_form extends moodleform {
         }
 
     /// Now build the form.
-        $mform->addElement('header','general', get_string('categorycurrentcontents', '', format_string($category->name)));
+        $mform->addElement('header','general', get_string('categorycurrentcontents', '', format_string($category->name, true, array('context' => $categorycontext))));
 
         if ($containscourses || $containscategories || $containsquestions) {
             if (empty($options)) {
-                print_error('youcannotdeletecategory', 'error', 'index.php', format_string($category->name));
+                print_error('youcannotdeletecategory', 'error', 'index.php', format_string($category->name, true, array('context' => $categorycontext)));
             }
 
         /// Describe the contents of this category.
@@ -145,4 +146,4 @@ class delete_category_form extends moodleform {
         return $errors;
     }
 }
-?>
+

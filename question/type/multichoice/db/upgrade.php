@@ -1,74 +1,158 @@
-<?php  // $Id$
-
-// This file keeps track of upgrades to 
-// the multichoice qtype plugin
+<?php
+// This file is part of Moodle - http://moodle.org/
 //
-// Sometimes, changes between versions involve
-// alterations to database structures and other
-// major things that may break installations.
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// The upgrade function in this file will attempt
-// to perform all the necessary actions to upgrade
-// your older installtion to the current version.
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-// If there's something it cannot do itself, it
-// will tell you what you need to do.
-//
-// The commands in here will all be database-neutral,
-// using the functions defined in lib/ddllib.php
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-function xmldb_qtype_multichoice_upgrade($oldversion=0) {
+/**
+ * Multiple choice question type upgrade code.
+ *
+ * @package    qtype
+ * @subpackage multichoice
+ * @copyright  1999 onwards Martin Dougiamas {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-    global $CFG, $THEME, $db;
 
-    $result = true;
+defined('MOODLE_INTERNAL') || die();
 
-    // This upgrade actually belongs to the description question type,
+
+/**
+ * Upgrade code for the multiple choice question type.
+ * @param int $oldversion the version we are upgrading from.
+ */
+function xmldb_qtype_multichoice_upgrade($oldversion) {
+    global $CFG, $DB;
+
+    $dbman = $DB->get_manager();
+
+    // This upgrade actually belongs to the random question type,
     // but that does not have a DB upgrade script. Therefore, multichoice
     // is doing it.
-    // The need for this is that for a while, descriptions were being created
-    // with a defaultgrade of 1, when it shoud be 0. We need to reset them all to 0.
-    // See MDL-7925. 
-    if ($result && $oldversion < 2006121500) {
-        $result = $result && set_field('question', 'defaultgrade', 0,
-                'qtype', DESCRIPTION, 'defaultgrade', 1);
-    }
+    // Rename random questions to give them more helpful names.
+    if ($oldversion < 2008021800) {
+        require_once($CFG->dirroot . '/question/type/random/questiontype.php');
+        $randomqtype = new qtype_random();
 
-    // Add a field so that question authors can choose whether and how the Choices are numbered.
-    // Subsequently changed to not create an enum constraint, because it was causing problems -
-    // See 2007081700 update.
-    if ($result && $oldversion < 2007041300) {
-        $table = new XMLDBTable('question_multichoice');
-        $field = new XMLDBField('answernumbering');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null, null, 'abc', 'incorrectfeedback');
-        $result = $result && add_field($table, $field);
-    }
+        // Get all categories containing random questions.
+        $categories = $DB->get_recordset_sql("
+                SELECT qc.id, qc.name
+                FROM {question_categories} qc
+                JOIN {question} q ON q.category = qc.id
+                WHERE q.qtype = 'random'
+                GROUP BY qc.id, qc.name");
 
-    // This upgrade actually belongs to the description question type,
-    // but that does not have a DB upgrade script. Therefore, multichoice
-    // is doing it.
-    // The need for this is that for a while, descriptions were being created
-    // with a defaultgrade of 1, when it shoud be 0. We need to reset them all to 0.
-    // This is re-occurrence of MDL-7925, so we need to do it again. 
-    if ($result && $oldversion < 2007072000) {
-        require_once($CFG->libdir . '/questionlib.php');
-        $result = $result && set_field('question', 'defaultgrade', 0,
-                'qtype', DESCRIPTION, 'defaultgrade', 1);
-    }
+        // Rename the random qusetions in those categories.
+        $where = "qtype = 'random' AND category = ? AND " .
+                $DB->sql_compare_text('questiontext') . " = " . $DB->sql_compare_text('?');
+        foreach ($categories as $cat) {
+            $randomqname = $randomqtype->question_name($cat, false);
+            $DB->set_field_select('question', 'name', $randomqname, $where, array($cat->id, '0'));
 
-    // Drop enum constraint on 'answernumbering' column, and change ABC to ABCD becuase MySQL
-    // sometimes can't cope with things that differ only by case.
-    if ($result && $oldversion < 2007081700) {
-        if ($result && $oldversion >= 2007041300) {
-            $table = new XMLDBTable('question_multichoice');
-            $field = new XMLDBField('answernumbering');
-            $field->setAttributes(XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null, null, 'abc', 'incorrectfeedback');
-            $result = $result && change_field_enum($table, $field);
+            $randomqname = $randomqtype->question_name($cat, true);
+            $DB->set_field_select('question', 'name', $randomqname, $where, array($cat->id, '1'));
         }
-        $result = $result && set_field('question_multichoice', 'answernumbering', 'ABCD', 'answernumbering', 'ABC');
+
+        upgrade_plugin_savepoint(true, 2008021800, 'qtype', 'multichoice');
     }
 
-    return $result;
-}
+    if ($oldversion < 2009021801) {
 
-?>
+        // Define field correctfeedbackformat to be added to question_multichoice
+        $table = new xmldb_table('question_multichoice');
+        $field = new xmldb_field('correctfeedbackformat', XMLDB_TYPE_INTEGER, '2', null,
+                XMLDB_NOTNULL, null, '0', 'correctfeedback');
+
+        // Conditionally launch add field correctfeedbackformat
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field partiallycorrectfeedbackformat to be added to question_multichoice
+        $field = new xmldb_field('partiallycorrectfeedbackformat', XMLDB_TYPE_INTEGER, '2', null,
+                XMLDB_NOTNULL, null, '0', 'partiallycorrectfeedback');
+
+        // Conditionally launch add field partiallycorrectfeedbackformat
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field incorrectfeedbackformat to be added to question_multichoice
+        $field = new xmldb_field('incorrectfeedbackformat', XMLDB_TYPE_INTEGER, '2', null,
+                XMLDB_NOTNULL, null, '0', 'incorrectfeedback');
+
+        // Conditionally launch add field incorrectfeedbackformat
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // In the past, the correctfeedback, partiallycorrectfeedback,
+        // incorrectfeedback columns were assumed to contain content of the same
+        // form as questiontextformat. If we are using the HTML editor, then
+        // convert FORMAT_MOODLE content to FORMAT_HTML.
+        $rs = $DB->get_recordset_sql('
+                SELECT qm.*, q.oldquestiontextformat
+                FROM {question_multichoice} qm
+                JOIN {question} q ON qm.question = q.id');
+        foreach ($rs as $record) {
+            if ($CFG->texteditors !== 'textarea' &&
+                    $record->oldquestiontextformat == FORMAT_MOODLE) {
+                $record->correctfeedback = text_to_html(
+                        $record->correctfeedback, false, false, true);
+                $record->correctfeedbackformat = FORMAT_HTML;
+                $record->partiallycorrectfeedback = text_to_html(
+                        $record->partiallycorrectfeedback, false, false, true);
+                $record->partiallycorrectfeedbackformat = FORMAT_HTML;
+                $record->incorrectfeedback = text_to_html(
+                        $record->incorrectfeedback, false, false, true);
+                $record->incorrectfeedbackformat = FORMAT_HTML;
+            } else {
+                $record->correctfeedbackformat = $record->oldquestiontextformat;
+                $record->partiallycorrectfeedbackformat = $record->oldquestiontextformat;
+                $record->incorrectfeedbackformat = $record->oldquestiontextformat;
+            }
+            $DB->update_record('question_multichoice', $record);
+        }
+        $rs->close();
+
+        // multichoice savepoint reached
+        upgrade_plugin_savepoint(true, 2009021801, 'qtype', 'multichoice');
+    }
+
+    // Add new shownumcorrect field. If this is true, then when the user gets a
+    // multiple-response question partially correct, tell them how many choices
+    // they got correct alongside the feedback.
+    if ($oldversion < 2011011200) {
+
+        // Define field shownumcorrect to be added to question_multichoice
+        $table = new xmldb_table('question_multichoice');
+        $field = new xmldb_field('shownumcorrect', XMLDB_TYPE_INTEGER, '2', null,
+                XMLDB_NOTNULL, null, '0', 'answernumbering');
+
+        // Launch add field shownumcorrect
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // multichoice savepoint reached
+        upgrade_plugin_savepoint(true, 2011011200, 'qtype', 'multichoice');
+    }
+
+    // Moodle v2.1.0 release upgrade line
+    // Put any upgrade step following this
+
+    // Moodle v2.2.0 release upgrade line
+    // Put any upgrade step following this
+
+    return true;
+}

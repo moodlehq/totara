@@ -1,13 +1,12 @@
-<?PHP //$Id$
+<?php
 
 class block_news_items extends block_base {
     function init() {
-        $this->title = get_string('latestnews');
-        $this->version = 2007101509;
+        $this->title = get_string('pluginname', 'block_news_items');
     }
 
     function get_content() {
-        global $CFG, $USER, $COURSE;
+        global $CFG, $USER;
 
         if ($this->content !== NULL) {
             return $this->content;
@@ -22,21 +21,25 @@ class block_news_items extends block_base {
         }
 
 
-        if ($COURSE->newsitems) {   // Create a nice listing of recent postings
+        if ($this->page->course->newsitems) {   // Create a nice listing of recent postings
 
             require_once($CFG->dirroot.'/mod/forum/lib.php');   // We'll need this
 
             $text = '';
 
-            if (!$forum = forum_get_course_forum($COURSE->id, 'news')) {
+            if (!$forum = forum_get_course_forum($this->page->course->id, 'news')) {
                 return '';
             }
 
-            $modinfo = get_fast_modinfo($COURSE);
+            $modinfo = get_fast_modinfo($this->page->course);
             if (empty($modinfo->instances['forum'][$forum->id])) {
                 return '';
             }
             $cm = $modinfo->instances['forum'][$forum->id];
+
+            if (!$cm->uservisible) {
+                return '';
+            }
 
             $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 
@@ -57,8 +60,8 @@ class block_news_items extends block_base {
 
         /// Get all the recent discussions we're allowed to see
 
-            if (! $discussions = forum_get_discussions($cm, 'p.modified DESC', false, 
-                                                       $currentgroup, $COURSE->newsitems) ) {
+            if (! $discussions = forum_get_discussions($cm, 'p.modified DESC', false,
+                                                       $currentgroup, $this->page->course->newsitems) ) {
                 $text .= '('.get_string('nonews', 'forum').')';
                 $this->content->text = $text;
                 return $this->content;
@@ -78,7 +81,7 @@ class block_news_items extends block_base {
                 $discussion->subject = format_string($discussion->subject, true, $forum->course);
 
                 $text .= '<li class="post">'.
-                         '<div class="head">'.
+                         '<div class="head clearfix">'.
                          '<div class="date">'.userdate($discussion->modified, $strftimerecent).'</div>'.
                          '<div class="name">'.fullname($discussion).'</div></div>'.
                          '<div class="info">'.$discussion->subject.' '.
@@ -98,16 +101,17 @@ class block_news_items extends block_base {
                 $CFG->enablerssfeeds && $CFG->forum_enablerssfeeds && $forum->rsstype && $forum->rssarticles) {
                 require_once($CFG->dirroot.'/lib/rsslib.php');   // We'll need this
                 if ($forum->rsstype == 1) {
-                    $tooltiptext = get_string('rsssubscriberssdiscussions','forum',format_string($forum->name));
+                    $tooltiptext = get_string('rsssubscriberssdiscussions','forum');
                 } else {
-                    $tooltiptext = get_string('rsssubscriberssposts','forum',format_string($forum->name));
+                    $tooltiptext = get_string('rsssubscriberssposts','forum');
                 }
-                if (empty($USER->id)) {
+                if (!isloggedin()) {
                     $userid = 0;
                 } else {
                     $userid = $USER->id;
                 }
-                $this->content->footer .= '<br />'.rss_get_link($COURSE->id, $userid, 'forum', $forum->id, $tooltiptext);
+
+                $this->content->footer .= '<br />'.rss_get_link($context->id, $userid, 'mod_forum', $forum->id, $tooltiptext);
             }
 
         }
@@ -116,4 +120,4 @@ class block_news_items extends block_base {
     }
 }
 
-?>
+

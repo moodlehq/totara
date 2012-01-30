@@ -1,141 +1,107 @@
-<?php //$Id$
-    //This script is used to configure and execute the backup proccess.
+<?php
 
-    //Define some globals for all the script
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    require_once ("../config.php");
-    require_once ("lib.php");
-    require_once ("backuplib.php");
-    require_once ("$CFG->libdir/blocklib.php");
-    require_once ("$CFG->libdir/adminlib.php");
-
-    $id = optional_param( 'id' );       // course id
-    $to = optional_param( 'to' ); // id of course to import into afterwards.
-    $cancel = optional_param( 'cancel' );
-    $launch = optional_param( 'launch' );
+require_once('../config.php');
+require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
+require_once($CFG->dirroot . '/backup/moodle2/backup_plan_builder.class.php');
 
 
-    if (!empty($id)) {
-        require_login($id);
-        if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_COURSE, $id))) {
-            error("You need to be a teacher or admin user to use this page.", "$CFG->wwwroot/login/index.php");
-        }
-    } else {
-        require_login();
-        if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
-            error("You need to be an admin user to use this page.", "$CFG->wwwroot/login/index.php");
-        }
-    }
+$courseid = required_param('id', PARAM_INT);
+$sectionid = optional_param('section', null, PARAM_INT);
+$cmid = optional_param('cm', null, PARAM_INT);
+/**
+ * Part of the forms in stages after initial, is POST never GET
+ */
+$backupid = optional_param('backup', false, PARAM_ALPHANUM);
 
-    if (!empty($to)) {
-        if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_COURSE, $to))) {
-            error("You need to be a teacher or admin user to use this page.", "$CFG->wwwroot/login/index.php");
-        }
-    }
+$url = new moodle_url('/backup/backup.php', array('id'=>$courseid));
+if ($sectionid !== null) {
+    $url->param('section', $sectionid);
+}
+if ($cmid !== null) {
+    $url->param('cm', $cmid);
+}
+$PAGE->set_url($url);
+$PAGE->set_pagelayout('admin');
 
-    //Check site
-    if (!$site = get_site()) {
-        error("Site not found!");
-    }
+$id = $courseid;
+$cm = null;
+$course = $DB->get_record('course', array('id'=>$courseid), '*', MUST_EXIST);
+$type = backup::TYPE_1COURSE;
+if (!is_null($sectionid)) {
+    $section = $DB->get_record('course_sections', array('course'=>$course->id, 'id'=>$sectionid), '*', MUST_EXIST);
+    $type = backup::TYPE_1SECTION;
+    $id = $sectionid;
+}
+if (!is_null($cmid)) {
+    $cm = get_coursemodule_from_id(null, $cmid, $course->id, false, MUST_EXIST);
+    $type = backup::TYPE_1ACTIVITY;
+    $id = $cmid;
+}
+require_login($course, false, $cm);
 
-    //Check necessary functions exists. Thanks to gregb@crowncollege.edu
-    backup_required_functions();
-
-    //Check backup_version
-    if ($id) {
-        $linkto = "backup.php?id=".$id.((!empty($to)) ? '&to='.$to : '');
-    } else {
-        $linkto = "backup.php";
-    }
-    upgrade_backup_db($linkto);
-
-    //Get strings
-    if (empty($to)) {
-        $strcoursebackup = get_string("coursebackup");
-    }
-    else {
-        $strcoursebackup = get_string('importdata');
-    }
-    $stradministration = get_string("administration");
-
-    //If cancel has been selected, go back to course main page (bug 2817)
-    if ($cancel) {
-        if ($id) {
-            $redirecto = $CFG->wwwroot . '/course/view.php?id=' . $id; //Course page
+switch ($type) {
+    case backup::TYPE_1COURSE :
+        require_capability('moodle/backup:backupcourse', get_context_instance(CONTEXT_COURSE, $course->id));
+        $heading = get_string('backupcourse', 'backup', $course->shortname);
+        break;
+    case backup::TYPE_1SECTION :
+        $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+        require_capability('moodle/backup:backupsection', $coursecontext);
+        if (!empty($section->name)) {
+            $sectionname = format_string($section->name, true, array('context' => $coursecontext));
+            $heading = get_string('backupsection', 'backup', $sectionname);
+            $PAGE->navbar->add($sectionname);
         } else {
-            $redirecto = $CFG->wwwroot.'/';
+            $heading = get_string('backupsection', 'backup', $section->section);
+            $PAGE->navbar->add(get_string('section').' '.$section->section);
         }
-        redirect ($redirecto, get_string('backupcancelled')); //Site page
-        exit;
-    }
+        break;
+    case backup::TYPE_1ACTIVITY :
+        require_capability('moodle/backup:backupactivity', get_context_instance(CONTEXT_MODULE, $cm->id));
+        $heading = get_string('backupactivity', 'backup', $cm->name);
+        break;
+    default :
+        print_error('unknownbackuptype');
+}
 
-    //If no course has been selected, show a list of available courses
+if (!($bc = backup_ui::load_controller($backupid))) {
+    $bc = new backup_controller($type, $id, backup::FORMAT_MOODLE,
+                            backup::INTERACTIVE_YES, backup::MODE_GENERAL, $USER->id);
+}
+$backup = new backup_ui($bc);
+$backup->process();
+if ($backup->get_stage() == backup_ui::STAGE_FINAL) {
+    $backup->execute();
+} else {
+    $backup->save_controller();
+}
 
-    $navlinks = array();
-    if (!$id) {
-        $navlinks[] = array('name' => $stradministration, 'link' => "$CFG->wwwroot/$CFG->admin/index.php", 'type' => 'misc');
-        $navlinks[] = array('name' => $strcoursebackup, 'link' => null, 'type' => 'misc');
-        $navigation = build_navigation($navlinks);
+$PAGE->set_title($heading.': '.$backup->get_stage_name());
+$PAGE->set_heading($heading);
+$PAGE->navbar->add($backup->get_stage_name());
 
-        print_header("$site->shortname: $strcoursebackup", $site->fullname, $navigation);
-
-        if ($courses = get_courses('all','c.shortname','c.id,c.shortname,c.fullname')) {
-            print_heading(get_string("choosecourse"));
-            print_simple_box_start("center");
-            foreach ($courses as $course) {
-                echo '<a href="backup.php?id='.$course->id.'">'.format_string($course->fullname).' ('.format_string($course->shortname).')</a><br />'."\n";
-            }
-            print_simple_box_end();
-        } else {
-            print_heading(get_string("nocoursesyet"));
-            print_continue("$CFG->wwwroot/$CFG->admin/index.php");
-        }
-        print_footer();
-        exit;
-    }
-
-    //Get and check course
-    if (! $course = get_record("course", "id", $id)) {
-        error("Course ID was incorrect (can't find it)");
-    }
-
-    //Print header
-    if (has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
-        $navlinks[] = array('name' => $stradministration, 'link' => "$CFG->wwwroot/$CFG->admin/index.php", 'type' => 'misc');
-        $navlinks[] = array('name' => $strcoursebackup, 'link' => 'backup.php', 'type' => 'misc');
-        $navlinks[] = array('name' => "$course->fullname ($course->shortname)", 'link' => null, 'type' => 'misc');
-        $navigation = build_navigation($navlinks);
-
-        print_header("$site->shortname: $strcoursebackup", $site->fullname, $navigation);
-    } else {
-        $navlinks[] = array('name' => $course->fullname, 'link' => "$CFG->wwwroot/course/view.php?id=$course->id", 'type' => 'misc');
-        $navlinks[] = array('name' => $strcoursebackup, 'link' => null, 'type' => 'misc');
-        $navigation = build_navigation($navlinks);
-        print_header("$course->shortname: $strcoursebackup", $course->fullname, $navigation);
-    }
-
-    //Print form
-    print_heading(format_string("$strcoursebackup: $course->fullname ($course->shortname)"));
-    print_simple_box_start("center");
-
-    //Adjust some php variables to the execution of this script
-    @ini_set("max_execution_time","3000");
-    raise_memory_limit("192M");
-
-    //Call the form, depending the step we are
-    if (!$launch or !data_submitted() or !confirm_sesskey()) {
-        // if we're at the start, clear the cache of prefs
-        if (isset($SESSION->backupprefs[$course->id])) {
-            unset($SESSION->backupprefs[$course->id]);
-        }
-        include_once("backup_form.html");
-    } else if ($launch == "check") {
-        include_once("backup_check.html");
-    } else if ($launch == "execute") {
-        include_once("backup_execute.html");
-    }
-    print_simple_box_end();
-
-    //Print footer
-    print_footer();
-?>
+$renderer = $PAGE->get_renderer('core','backup');
+echo $OUTPUT->header();
+if ($backup->enforce_changed_dependencies()) {
+    echo $renderer->dependency_notification(get_string('dependenciesenforced','backup'));
+}
+echo $renderer->progress_bar($backup->get_progress_bar());
+echo $backup->display();
+$backup->destroy();
+unset($backup);
+echo $OUTPUT->footer();

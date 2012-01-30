@@ -43,7 +43,7 @@ class course_settings_form extends moodleform {
         $mform->addElement('header', 'general', get_string('generalsettings', 'grades'));
         if ($can_view_admin_links) {
             $link = '<a href="' . $CFG->wwwroot.'/'.$CFG->admin.'/settings.php?section=gradessettings">' . $strchangedefaults . '</a>';
-            $mform->addElement('static', 'generalsettingslink', $link);
+            $mform->addElement('static', 'generalsettingslink', null, $link);
         }
         $options = array(-1                                      => get_string('default', 'grades'),
                          GRADE_REPORT_AGGREGATION_POSITION_FIRST => get_string('positionfirst', 'grades'),
@@ -56,13 +56,13 @@ class course_settings_form extends moodleform {
             }
         }
         $mform->addElement('select', 'aggregationposition', get_string('aggregationposition', 'grades'), $options);
-        $mform->setHelpButton('aggregationposition', array('aggregationposition', get_string('aggregationposition', 'grades'), 'grade'));
+        $mform->addHelpButton('aggregationposition', 'aggregationposition', 'grades');
 
         // Grade item settings
         $mform->addElement('header', 'grade_item_settings', get_string('gradeitemsettings', 'grades'));
         if ($can_view_admin_links) {
             $link = '<a href="' . $CFG->wwwroot.'/'.$CFG->admin.'/settings.php?section=gradeitemsettings">' . $strchangedefaults . '</a>';
-            $mform->addElement('static', 'gradeitemsettingslink', $link);
+            $mform->addElement('static', 'gradeitemsettingslink', null, $link);
         }
 
         $options = array(-1                            => get_string('default', 'grades'),
@@ -85,27 +85,27 @@ class course_settings_form extends moodleform {
             }
         }
         $mform->addElement('select', 'displaytype', get_string('gradedisplaytype', 'grades'), $options);
-        $mform->setHelpButton('displaytype', array('gradedisplaytype', get_string('gradedisplaytype', 'grades'), 'grade'));
+        $mform->addHelpButton('displaytype', 'gradedisplaytype', 'grades');
 
 
         $options = array(-1=> get_string('defaultprev', 'grades', $CFG->grade_decimalpoints), 0=>0, 1=>1, 2=>2, 3=>3, 4=>4, 5=>5);
         $mform->addElement('select', 'decimalpoints', get_string('decimalpoints', 'grades'), $options);
-        $mform->setHelpButton('decimalpoints', array('decimalpoints', get_string('decimalpoints', 'grades'), 'grade'));
+        $mform->addHelpButton('decimalpoints', 'decimalpoints', 'grades');
 
 // add setting options for plugins
         $types = array('report', 'export', 'import');
 
         foreach($types as $type) {
-            foreach (get_list_of_plugins('grade/'.$type) as $plugin) {
+            foreach (get_plugin_list('grade'.$type) as $plugin => $plugindir) {
              // Include all the settings commands for this plugin if there are any
-                if (file_exists($CFG->dirroot.'/grade/'.$type.'/'.$plugin.'/lib.php')) {
-                    require_once($CFG->dirroot.'/grade/'.$type.'/'.$plugin.'/lib.php');
+                if (file_exists($plugindir.'/lib.php')) {
+                    require_once($plugindir.'/lib.php');
                     $functionname = 'grade_'.$type.'_'.$plugin.'_settings_definition';
                     if (function_exists($functionname)) {
-                        $mform->addElement('header', 'grade_'.$type.$plugin, get_string('modulename', 'grade'.$type.'_'.$plugin, NULL, $CFG->dirroot.'/grade/'.$type.'/'.$plugin.'/lang/'));
+                        $mform->addElement('header', 'grade_'.$type.$plugin, get_string('pluginname', 'grade'.$type.'_'.$plugin, NULL));
                         if ($can_view_admin_links) {
                             $link = '<a href="' . $CFG->wwwroot.'/'.$CFG->admin.'/settings.php?section=gradereport' . $plugin . '">' . $strchangedefaults . '</a>';
-                            $mform->addElement('static', 'gradeitemsettingslink', $link);
+                            $mform->addElement('static', 'gradeitemsettingslink', null, $link);
                         }
                         $functionname($mform);
                     }
@@ -119,4 +119,4 @@ class course_settings_form extends moodleform {
         $this->add_action_buttons();
     }
 }
-?>
+

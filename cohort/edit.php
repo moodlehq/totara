@@ -26,87 +26,111 @@
  */
 
 require('../config.php');
-require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/cohort/lib.php');
-require_once($CFG->dirroot.'/cohort/edit_form.php');
+require($CFG->dirroot.'/course/lib.php');
+require($CFG->dirroot.'/cohort/lib.php');
+require($CFG->dirroot.'/cohort/edit_form.php');
 
 $id        = optional_param('id', 0, PARAM_INT);
+$contextid = optional_param('contextid', 0, PARAM_INT);
+$delete    = optional_param('delete', 0, PARAM_BOOL);
+$confirm   = optional_param('confirm', 0, PARAM_BOOL);
 
-admin_externalpage_setup('cohorts');
+require_login();
 
-$context = get_context_instance(CONTEXT_SYSTEM);
+$category = null;
 if ($id) {
-    $cohort = get_record('cohort','id',$id);
+    $cohort = $DB->get_record('cohort', array('id'=>$id), '*', MUST_EXIST);
+    $context = get_context_instance_by_id($cohort->contextid, MUST_EXIST);
 } else {
+    $context = get_context_instance_by_id($contextid, MUST_EXIST);
+    if ($context->contextlevel != CONTEXT_COURSECAT and $context->contextlevel != CONTEXT_SYSTEM) {
+        print_error('invalidcontext');
+    }
     $cohort = new stdClass();
     $cohort->id          = 0;
     $cohort->contextid   = $context->id;
     $cohort->name        = '';
     $cohort->description = '';
-    $cohort->cohorttype	 = 1;
 }
 
-require_capability('local/cohort:manage', $context);
+require_capability('moodle/cohort:manage', $context);
 
-$returnurl = new moodle_url($CFG->wwwroot .'/cohort/index.php');
-
+$returnurl = new moodle_url('/cohort/index.php', array('contextid'=>$context->id));
 
 if (!empty($cohort->component)) {
     // we can not manually edit cohorts that were created by external systems, sorry
     redirect($returnurl);
 }
 
+$PAGE->set_context($context);
+$PAGE->set_url('/cohort/edit.php', array('contextid'=>$context->id, 'id'=>$cohort->id));
+$PAGE->set_context($context);
 
+if ($context->contextlevel == CONTEXT_COURSECAT) {
+    $category = $DB->get_record('course_categories', array('id'=>$context->instanceid), '*', MUST_EXIST);
+    navigation_node::override_active_url(new moodle_url('/cohort/index.php', array('contextid'=>$cohort->contextid)));
+    $PAGE->set_pagelayout('report');
+
+} else {
+    navigation_node::override_active_url(new moodle_url('/cohort/index.php', array()));
+    $PAGE->set_pagelayout('admin');
+}
+
+if ($delete and $cohort->id) {
+    $PAGE->url->param('delete', 1);
+    if ($confirm and confirm_sesskey()) {
+        cohort_delete_cohort($cohort);
+        redirect($returnurl);
+    }
+    $strheading = get_string('delcohort', 'cohort');
+    $PAGE->navbar->add($strheading);
+    $PAGE->set_title($strheading);
+    $PAGE->set_heading($COURSE->fullname);
+    echo $OUTPUT->header();
+    echo $OUTPUT->heading($strheading);
+    $yesurl = new moodle_url('/cohort/edit.php', array('id'=>$cohort->id, 'delete'=>1, 'confirm'=>1,'sesskey'=>sesskey()));
+    $message = get_string('delconfirm', 'cohort', format_string($cohort->name));
+    echo $OUTPUT->confirm($message, $yesurl, $returnurl);
+    echo $OUTPUT->footer();
+    die;
+}
+
+$editoroptions = array('maxfiles'=>0, 'context'=>$context);
 if ($cohort->id) {
     // edit existing
-    $strheading = get_string('editcohort', 'local_cohort');
+    $cohort = file_prepare_standard_editor($cohort, 'description', $editoroptions, $context);
+    $strheading = get_string('editcohort', 'cohort');
+
 } else {
     // add new
-    $strheading = get_string('addcohort', 'local_cohort');
+    $cohort = file_prepare_standard_editor($cohort, 'description', $editoroptions, $context);
+    $strheading = get_string('addcohort', 'cohort');
 }
 
+$PAGE->set_title($strheading);
+$PAGE->set_heading($COURSE->fullname);
+$PAGE->navbar->add($strheading);
 
-
-$editform = new cohort_edit_form(null, array('data'=>$cohort));
+$editform = new cohort_edit_form(null, array('editoroptions'=>$editoroptions, 'data'=>$cohort));
 
 if ($editform->is_cancelled()) {
-    redirect($returnurl->out());
+    redirect($returnurl);
 
 } else if ($data = $editform->get_data()) {
+    $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $context);
+
     if ($data->id) {
         cohort_update_cohort($data);
-
-        // Updated
-        $url = new moodle_url($CFG->wwwroot .'/cohort/view.php', array('id'=>$data->id));
-        totara_set_notification(get_string('successfullyupdated','local_cohort'), $url->out(), array('style'=>'notifysuccess'));
-
     } else {
-        $cohortid = cohort_add_cohort($data);
-        if ($data->cohorttype == cohort::TYPE_STATIC) {
-            $url = new moodle_url($CFG->wwwroot .'/cohort/assign.php', array('id'=>$cohortid));
-            redirect($url->out());
-        }
-        else {
-            $url = new moodle_url($CFG->wwwroot .'/cohort/editcriteria.php', array('id'=>$cohortid));
-            redirect($url->out());
-        }
+        cohort_add_cohort($data);
     }
+
+    // use new context id, it could have been changed
+    redirect(new moodle_url('/cohort/index.php', array('contextid'=>$data->contextid)));
 }
 
+echo $OUTPUT->header();
+echo $OUTPUT->heading($strheading);
+echo $editform->display();
+echo $OUTPUT->footer();
 
-
-admin_externalpage_print_header();
-
-
-if ($cohort->id != false) {
-    print_heading(format_string($cohort->name));
-    $currenttab = 'edit';
-    require_once('tabs.php');
-}
-else {
-    print_heading($strheading);
-}
-
-$editform->display();
-
-admin_externalpage_print_footer();

@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 /**
  * Library functions for mnet
  *
@@ -20,9 +20,6 @@ define('RPC_NOSUCHFUNCTION',    3);
 define('RPC_FORBIDDENFUNCTION', 4);
 define('RPC_NOSUCHMETHOD',      5);
 define('RPC_FORBIDDENMETHOD',   6);
-
-$MNET = new mnet_environment();
-$MNET->init();
 
 /**
  * Strip extraneous detail from a URL or URI and return the hostname
@@ -46,7 +43,8 @@ function mnet_get_hostname_from_uri($uri = null) {
  * @return string           A PEM formatted SSL Certificate.
  */
 function mnet_get_public_key($uri, $application=null) {
-    global $CFG, $MNET;
+    global $CFG, $DB;
+    $mnet = get_mnet_environment();
     // The key may be cached in the mnet_set_public_key function...
     // check this first
     $key = mnet_set_public_key($uri);
@@ -55,10 +53,10 @@ function mnet_get_public_key($uri, $application=null) {
     }
 
     if (empty($application)) {
-        $application = get_record('mnet_application', 'name', 'moodle');
+        $application = $DB->get_record('mnet_application', array('name'=>'moodle'));
     }
 
-    $rq = xmlrpc_encode_request('system/keyswap', array($CFG->wwwroot, $MNET->public_key, $application->name), array("encoding" => "utf-8"));
+    $rq = xmlrpc_encode_request('system/keyswap', array($CFG->wwwroot, $mnet->public_key, $application->name), array("encoding" => "utf-8"));
     $ch = curl_init($uri . $application->xmlrpc_server_url);
 
     curl_setopt($ch, CURLOPT_TIMEOUT, 60);
@@ -70,13 +68,42 @@ function mnet_get_public_key($uri, $application=null) {
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 
+    // check for proxy
+    if (!empty($CFG->proxyhost) and !is_proxybypass($uri)) {
+        // SOCKS supported in PHP5 only
+        if (!empty($CFG->proxytype) and ($CFG->proxytype == 'SOCKS5')) {
+            if (defined('CURLPROXY_SOCKS5')) {
+                curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+            } else {
+                curl_close($ch);
+                print_error( 'socksnotsupported','mnet' );
+            }
+        }
+
+        curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, false);
+
+        if (empty($CFG->proxyport)) {
+            curl_setopt($ch, CURLOPT_PROXY, $CFG->proxyhost);
+        } else {
+            curl_setopt($ch, CURLOPT_PROXY, $CFG->proxyhost.':'.$CFG->proxyport);
+        }
+
+        if (!empty($CFG->proxyuser) and !empty($CFG->proxypassword)) {
+            curl_setopt($ch, CURLOPT_PROXYUSERPWD, $CFG->proxyuser.':'.$CFG->proxypassword);
+            if (defined('CURLOPT_PROXYAUTH')) {
+                // any proxy authentication if PHP 5.1
+                curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC | CURLAUTH_NTLM);
+            }
+        }
+    }
+
     $res = xmlrpc_decode(curl_exec($ch));
 
     // check for curl errors
     $curlerrno = curl_errno($ch);
     if ($curlerrno!=0) {
         debugging("Request for $uri failed with curl error $curlerrno");
-    } 
+    }
 
     // check HTTP error code
     $info =  curl_getinfo($ch);
@@ -92,6 +119,9 @@ function mnet_get_public_key($uri, $application=null) {
         if (strlen(trim($public_certificate))) {
             $credentials = openssl_x509_parse($public_certificate);
             $host = $credentials['subject']['CN'];
+            if (array_key_exists( 'subjectAltName', $credentials['subject'])) {
+                $host = $credentials['subject']['subjectAltName'];
+            }
             if (strpos($uri, $host) !== false) {
                 mnet_set_public_key($uri, $public_certificate);
                 return $public_certificate;
@@ -157,13 +187,14 @@ function mnet_set_public_key($uri, $key = null) {
  * @return string                         An XML-DSig document
  */
 function mnet_sign_message($message, $privatekey = null) {
-    global $CFG, $MNET;
+    global $CFG;
     $digest = sha1($message);
 
+    $mnet = get_mnet_environment();
     // If the user hasn't supplied a private key (for example, one of our older,
     //  expired private keys, we get the current default private key and use that.
     if ($privatekey == null) {
-        $privatekey = $MNET->get_private_key();
+        $privatekey = $mnet->get_private_key();
     }
 
     // The '$sig' value below is returned by reference.
@@ -176,7 +207,7 @@ function mnet_sign_message($message, $privatekey = null) {
         <Signature Id="MoodleSignature" xmlns="http://www.w3.org/2000/09/xmldsig#">
             <SignedInfo>
                 <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
-                <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+                <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
                 <Reference URI="#XMLRPC-MSG">
                     <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
                     <DigestValue>'.$digest.'</DigestValue>
@@ -188,7 +219,7 @@ function mnet_sign_message($message, $privatekey = null) {
             </KeyInfo>
         </Signature>
         <object ID="XMLRPC-MSG">'.base64_encode($message).'</object>
-        <wwwroot>'.$MNET->wwwroot.'</wwwroot>
+        <wwwroot>'.$mnet->wwwroot.'</wwwroot>
         <timestamp>'.time().'</timestamp>
     </signedMessage>';
     return $message;
@@ -220,7 +251,7 @@ function mnet_sign_message($message, $privatekey = null) {
  * @return string                         An XML-ENC document
  */
 function mnet_encrypt_message($message, $remote_certificate) {
-    global $MNET;
+    $mnet = get_mnet_environment();
 
     // Generate a key resource from the remote_certificate text string
     $publickey = openssl_get_publickey($remote_certificate);
@@ -264,7 +295,7 @@ function mnet_encrypt_message($message, $remote_certificate) {
             </ReferenceList>
             <CarriedKeyName>XMLENC</CarriedKeyName>
         </EncryptedKey>
-        <wwwroot>'.$MNET->wwwroot.'</wwwroot>
+        <wwwroot>'.$mnet->wwwroot.'</wwwroot>
     </encryptedMessage>';
     return $message;
 }
@@ -279,10 +310,10 @@ function mnet_encrypt_message($message, $remote_certificate) {
  * @return  string              The signature over that text
  */
 function mnet_get_keypair() {
-    global $CFG;
+    global $CFG, $DB;;
     static $keypair = null;
     if (!is_null($keypair)) return $keypair;
-    if ($result = get_field('config_plugins', 'value', 'plugin', 'mnet', 'name', 'openssl')) {
+    if ($result = get_config('mnet', 'openssl')) {
         list($keypair['certificate'], $keypair['keypair_PEM']) = explode('@@@@@@@@', $result);
         $keypair['privatekey'] = openssl_pkey_get_private($keypair['keypair_PEM']);
         $keypair['publickey']  = openssl_pkey_get_public($keypair['certificate']);
@@ -306,7 +337,7 @@ function mnet_get_keypair() {
  * @return  string      The signature over that text
  */
 function mnet_generate_keypair($dn = null, $days=28) {
-    global $CFG, $USER;
+    global $CFG, $USER, $DB;
 
     // check if lifetime has been overriden
     if (!empty($CFG->mnetkeylifetime)) {
@@ -314,22 +345,19 @@ function mnet_generate_keypair($dn = null, $days=28) {
     }
 
     $host = strtolower($CFG->wwwroot);
-    $host = ereg_replace("^http(s)?://",'',$host);
+    $host = preg_replace("~^http(s)?://~",'',$host);
     $break = strpos($host.'/' , '/');
     $host   = substr($host, 0, $break);
 
-    if ($result = get_record_select('course'," id ='".SITEID."' ")) {
-        $organization = $result->fullname;
-    } else {
-        $organization = 'None';
-    }
+    $site = get_site();
+    $organization = $site->fullname;
 
     $keypair = array();
 
     $country  = 'NZ';
     $province = 'Wellington';
     $locality = 'Wellington';
-    $email    = $CFG->noreplyaddress;
+    $email    = !empty($CFG->noreplyaddress) ? $CFG->noreplyaddress : 'noreply@'.$_SERVER['HTTP_HOST'];
 
     if(!empty($USER->country)) {
         $country  = $USER->country;
@@ -349,7 +377,8 @@ function mnet_generate_keypair($dn = null, $days=28) {
            "localityName" => $locality,
            "organizationName" => $organization,
            "organizationalUnitName" => 'Moodle',
-           "commonName" => $CFG->wwwroot,
+           "commonName" => substr($CFG->wwwroot, 0, 64),
+           "subjectAltName" => $CFG->wwwroot,
            "emailAddress" => $email
         );
     }
@@ -370,13 +399,19 @@ function mnet_generate_keypair($dn = null, $days=28) {
 
     // ensure we remove trailing slashes
     $dn["commonName"] = preg_replace(':/$:', '', $dn["commonName"]);
-
     if (!empty($CFG->opensslcnf)) { //allow specification of openssl.cnf especially for Windows installs
         $new_key = openssl_pkey_new(array("config" => $CFG->opensslcnf));
+    } else {
+        $new_key = openssl_pkey_new();
+    }
+    if ($new_key === false) {
+        // can not generate keys - missing openssl.cnf??
+        return null;
+    }
+    if (!empty($CFG->opensslcnf)) { //allow specification of openssl.cnf especially for Windows installs
         $csr_rsc = openssl_csr_new($dn, $new_key, array("config" => $CFG->opensslcnf));
         $selfSignedCert = openssl_csr_sign($csr_rsc, null, $new_key, $days, array("config" => $CFG->opensslcnf));
     } else {
-        $new_key = openssl_pkey_new();
         $csr_rsc = openssl_csr_new($dn, $new_key, array('private_key_bits',2048));
         $selfSignedCert = openssl_csr_sign($csr_rsc, null, $new_key, $days);
     }
@@ -399,169 +434,34 @@ function mnet_generate_keypair($dn = null, $days=28) {
     return $keypair;
 }
 
-/**
- * Check that an IP address falls within the given network/mask
- * ok for export
- *
- * @param  string   $address        Dotted quad
- * @param  string   $network        Dotted quad
- * @param  string   $mask           A number, e.g. 16, 24, 32
- * @return bool
- */
-function ip_in_range($address, $network, $mask) {
-   $lnetwork  = ip2long($network);
-   $laddress  = ip2long($address);
-
-   $binnet    = str_pad( decbin($lnetwork), 32, "0", STR_PAD_LEFT );
-   $firstpart = substr($binnet,0,$mask);
-
-   $binip     = str_pad( decbin($laddress), 32, "0", STR_PAD_LEFT );
-   $firstip   = substr($binip,0,$mask);
-   return(strcmp($firstpart,$firstip)==0);
-}
-
-/**
- * Check that a given function (or method) in an include file has been designated
- * ok for export
- *
- * @param  string   $includefile    The path to the include file
- * @param  string   $functionname   The name of the function (or method) to
- *                                  execute
- * @param  mixed    $class          A class name, or false if we're just testing
- *                                  a function
- * @return int                      Zero (RPC_OK) if all ok - appropriate
- *                                  constant otherwise
- */
-function mnet_permit_rpc_call($includefile, $functionname, $class=false) {
-    global $CFG, $MNET_REMOTE_CLIENT;
-
-    if (file_exists($CFG->dirroot . $includefile)) {
-        include_once $CFG->dirroot . $includefile;
-        // $callprefix matches the rpc convention
-        // of not having a leading slash
-        $callprefix = preg_replace('!^/!', '', $includefile);
-    } else {
-        return RPC_NOSUCHFILE;
-    }
-
-    if ($functionname != clean_param($functionname, PARAM_PATH)) {
-        // Under attack?
-        // Todo: Should really return a much more BROKEN! response
-        return RPC_FORBIDDENMETHOD;
-    }
-
-    $id_list = $MNET_REMOTE_CLIENT->id;
-    if (!empty($CFG->mnet_all_hosts_id)) {
-        $id_list .= ', '.$CFG->mnet_all_hosts_id;
-    }
-
-    // TODO: change to left-join so we can disambiguate:
-    // 1. method doesn't exist
-    // 2. method exists but is prohibited
-    $sql = "
-        SELECT
-            count(r.id)
-        FROM
-            {$CFG->prefix}mnet_host2service h2s,
-            {$CFG->prefix}mnet_service2rpc s2r,
-            {$CFG->prefix}mnet_rpc r
-        WHERE
-            h2s.serviceid = s2r.serviceid AND
-            s2r.rpcid = r.id AND
-            r.xmlrpc_path = '$callprefix/$functionname' AND
-            h2s.hostid in ($id_list) AND
-            h2s.publish = '1'";
-
-    $permission = count_records_sql($sql);
-
-    if (!$permission && 'dangerous' != $CFG->mnet_dispatcher_mode) {
-        return RPC_FORBIDDENMETHOD;
-    }
-
-    // WE'RE LOOKING AT A CLASS/METHOD
-    if (false != $class) {
-        if (!class_exists($class)) {
-            // Generate error response - unable to locate class
-            return RPC_NOSUCHCLASS;
-        }
-
-        $object = new $class();
-
-        if (!method_exists($object, $functionname)) {
-            // Generate error response - unable to locate method
-            return RPC_NOSUCHMETHOD;
-        }
-
-        if (!method_exists($object, 'mnet_publishes')) {
-            // Generate error response - the class doesn't publish
-            // *any* methods, because it doesn't have an mnet_publishes
-            // method
-            return RPC_FORBIDDENMETHOD;
-        }
-
-        // Get the list of published services - initialise method array
-        $servicelist = $object->mnet_publishes();
-        $methodapproved = false;
-
-        // If the method is in the list of approved methods, set the
-        // methodapproved flag to true and break
-        foreach($servicelist as $service) {
-            if (in_array($functionname, $service['methods'])) {
-                $methodapproved = true;
-                break;
-            }
-        }
-
-        if (!$methodapproved) {
-            return RPC_FORBIDDENMETHOD;
-        }
-
-        // Stash the object so we can call the method on it later
-        $MNET_REMOTE_CLIENT->object_to_call($object);
-    // WE'RE LOOKING AT A FUNCTION
-    } else {
-        if (!function_exists($functionname)) {
-            // Generate error response - unable to locate function
-            return RPC_NOSUCHFUNCTION;
-        }
-
-    }
-
-    return RPC_OK;
-}
 
 function mnet_update_sso_access_control($username, $mnet_host_id, $accessctrl) {
-    $mnethost = get_record('mnet_host', 'id', $mnet_host_id);
-    if ($aclrecord = get_record('mnet_sso_access_control', 'username', $username, 'mnet_host_id', $mnet_host_id)) {
+    global $DB;
+
+    $mnethost = $DB->get_record('mnet_host', array('id'=>$mnet_host_id));
+    if ($aclrecord = $DB->get_record('mnet_sso_access_control', array('username'=>$username, 'mnet_host_id'=>$mnet_host_id))) {
         // update
         $aclrecord->accessctrl = $accessctrl;
-        if (update_record('mnet_sso_access_control', $aclrecord)) {
-            add_to_log(SITEID, 'admin/mnet', 'update', 'admin/mnet/access_control.php',
-                    "SSO ACL: $accessctrl user '$username' from {$mnethost->name}");
-        } else {
-            print_error('failedaclwrite', 'mnet', '', $username);
-            return false;
-        }
+        $DB->update_record('mnet_sso_access_control', $aclrecord);
+        add_to_log(SITEID, 'admin/mnet', 'update', 'admin/mnet/access_control.php',
+                "SSO ACL: $accessctrl user '$username' from {$mnethost->name}");
     } else {
         // insert
         $aclrecord->username = $username;
         $aclrecord->accessctrl = $accessctrl;
         $aclrecord->mnet_host_id = $mnet_host_id;
-        if ($id = insert_record('mnet_sso_access_control', $aclrecord)) {
-            add_to_log(SITEID, 'admin/mnet', 'add', 'admin/mnet/access_control.php',
-                    "SSO ACL: $accessctrl user '$username' from {$mnethost->name}");
-        } else {
-            print_error('failedaclwrite', 'mnet', '', $username);
-            return false;
-        }
+        $id = $DB->insert_record('mnet_sso_access_control', $aclrecord);
+        add_to_log(SITEID, 'admin/mnet', 'add', 'admin/mnet/access_control.php',
+                "SSO ACL: $accessctrl user '$username' from {$mnethost->name}");
     }
     return true;
 }
 
 function mnet_get_peer_host ($mnethostid) {
+    global $DB;
     static $hosts;
     if (!isset($hosts[$mnethostid])) {
-        $host = get_record('mnet_host', 'id', $mnethostid);
+        $host = $DB->get_record('mnet_host', array('id' => $mnethostid));
         $hosts[$mnethostid] = $host;
     }
     return $hosts[$mnethostid];
@@ -572,12 +472,12 @@ function mnet_get_peer_host ($mnethostid) {
  * log in at their mnet identity provider (if they are not already logged in)
  * before ultimately being directed to the original url.
  *
- * uses global MNETIDPJUMPURL the url which user should initially be directed to
- *     MNETIDPJUMPURL is a URL associated with a moodle networking peer when it
+ * @param string $jumpurl the url which user should initially be directed to.
+ *     This is a URL associated with a moodle networking peer when it
  *     is fulfiling a role as an identity provider (IDP). Different urls for
  *     different peers, the jumpurl is formed partly from the IDP's webroot, and
  *     partly from a predefined local path within that webwroot.
- *     The result of the user hitting MNETIDPJUMPURL is that they will be asked
+ *     The result of the user hitting this jump url is that they will be asked
  *     to login (at their identity provider (if they aren't already)), mnet
  *     will prepare the necessary authentication information, then redirect
  *     them back to somewhere at the content provider(CP) moodle (this moodle)
@@ -586,9 +486,8 @@ function mnet_get_peer_host ($mnethostid) {
  *     1 - the destination url
  * @return string the url the remote user should be supplied with.
  */
-function mnet_sso_apply_indirection ($url) {
-    global $MNETIDPJUMPURL;
-    global $CFG;
+function mnet_sso_apply_indirection ($jumpurl, $url) {
+    global $USER, $CFG;
 
     $localpart='';
     $urlparts = parse_url($url[1]);
@@ -597,9 +496,9 @@ function mnet_sso_apply_indirection ($url) {
             $path = $urlparts['path'];
             // if our wwwroot has a path component, need to strip that path from beginning of the
             // 'localpart' to make it relative to moodle's wwwroot
-            $wwwrootparts = parse_url($CFG->wwwroot);
-            if (!empty($wwwrootparts['path']) and strpos($path, $wwwrootparts['path']) === 0) {
-                $path = substr($path, strlen($wwwrootparts['path']));
+            $wwwrootpath = parse_url($CFG->wwwroot, PHP_URL_PATH);
+            if (!empty($wwwrootpath) and strpos($path, $wwwrootpath) === 0) {
+                $path = substr($path, strlen($wwwrootpath));
             }
             $localpart .= $path;
         }
@@ -610,7 +509,7 @@ function mnet_sso_apply_indirection ($url) {
             $localpart .= '#'.$urlparts['fragment'];
         }
     }
-    $indirecturl = $MNETIDPJUMPURL . urlencode($localpart);
+    $indirecturl = $jumpurl . urlencode($localpart);
     //If we matched on more than just a url (ie an html link), return the url to an href format
     if ($url[0] != $url[1]) {
         $indirecturl = 'href="'.$indirecturl.'"';
@@ -618,4 +517,376 @@ function mnet_sso_apply_indirection ($url) {
     return $indirecturl;
 }
 
-?>
+function mnet_get_app_jumppath ($applicationid) {
+    global $DB;
+    static $appjumppaths;
+    if (!isset($appjumppaths[$applicationid])) {
+        $ssojumpurl = $DB->get_field('mnet_application', 'sso_jump_url', array('id' => $applicationid));
+        $appjumppaths[$applicationid] = $ssojumpurl;
+    }
+    return $appjumppaths[$applicationid];
+}
+
+
+/**
+ * Output debug information about mnet.  this will go to the <b>error_log</b>.
+ *
+ * @param mixed $debugdata this can be a string, or array or object.
+ * @param int   $debuglevel optional , defaults to 1. bump up for very noisy debug info
+ */
+function mnet_debug($debugdata, $debuglevel=1) {
+    global $CFG;
+    $setlevel = get_config('', 'mnet_rpcdebug');
+    if (empty($setlevel) || $setlevel < $debuglevel) {
+        return;
+    }
+    if (is_object($debugdata)) {
+        $debugdata = (array)$debugdata;
+    }
+    if (is_array($debugdata)) {
+        mnet_debug('DUMPING ARRAY');
+        foreach ($debugdata as $key => $value) {
+            mnet_debug("$key: $value");
+        }
+        mnet_debug('END DUMPING ARRAY');
+        return;
+    }
+    $prefix = 'MNET DEBUG ';
+    if (defined('MNET_SERVER')) {
+        $prefix .= " (server $CFG->wwwroot";
+        if ($peer = get_mnet_remote_client() && !empty($peer->wwwroot)) {
+            $prefix .= ", remote peer " . $peer->wwwroot;
+        }
+        $prefix .= ')';
+    } else {
+        $prefix .= " (client $CFG->wwwroot) ";
+    }
+    error_log("$prefix $debugdata");
+}
+
+/**
+ * Return an array of information about all moodle's profile fields
+ * which ones are optional, which ones are forced.
+ * This is used as the basis of providing lists of profile fields to the administrator
+ * to pick which fields to import/export over MNET
+ *
+ * @return array(forced => array, optional => array)
+ */
+function mnet_profile_field_options() {
+    global $DB;
+    static $info;
+    if (!empty($info)) {
+        return $info;
+    }
+
+    $excludes = array(
+        'id',              // makes no sense
+        'mnethostid',      // makes no sense
+        'timecreated',     // will be set to relative to the host anyway
+        'timemodified',    // will be set to relative to the host anyway
+        'auth',            // going to be set to 'mnet'
+        'deleted',         // we should never get deleted users sent over, but don't send this anyway
+        'confirmed',       // unconfirmed users can't log in to their home site, all remote users considered confirmed
+        'password',        // no password for mnet users
+        'theme',           // handled separately
+        'lastip',          // will be set to relative to the host anyway
+    );
+
+    // these are the ones that user_not_fully_set_up will complain about
+    // and also special case ones
+    $forced = array(
+        'username',
+        'email',
+        'firstname',
+        'lastname',
+        'auth',
+        'wwwroot',
+        'session.gc_lifetime',
+        '_mnet_userpicture_timemodified',
+        '_mnet_userpicture_mimetype',
+    );
+
+    // these are the ones we used to send/receive (pre 2.0)
+    $legacy = array(
+        'username',
+        'email',
+        'auth',
+        'deleted',
+        'firstname',
+        'lastname',
+        'city',
+        'country',
+        'lang',
+        'timezone',
+        'description',
+        'mailformat',
+        'maildigest',
+        'maildisplay',
+        'htmleditor',
+        'wwwroot',
+        'picture',
+    );
+
+    // get a random user record from the database to pull the fields off
+    $randomuser = $DB->get_record('user', array(), '*', IGNORE_MULTIPLE);
+    foreach ($randomuser as $key => $discard) {
+        if (in_array($key, $excludes) || in_array($key, $forced)) {
+            continue;
+        }
+        $fields[$key] = $key;
+    }
+    $info = array(
+        'forced'   => $forced,
+        'optional' => $fields,
+        'legacy'   => $legacy,
+    );
+    return $info;
+}
+
+
+/**
+ * Returns information about MNet peers
+ *
+ * @param bool $withdeleted should the deleted peers be returned too
+ * @return array
+ */
+function mnet_get_hosts($withdeleted = false) {
+    global $CFG, $DB;
+
+    $sql = "SELECT h.id, h.deleted, h.wwwroot, h.ip_address, h.name, h.public_key, h.public_key_expires,
+                   h.transport, h.portno, h.last_connect_time, h.last_log_id, h.applicationid,
+                   a.name as app_name, a.display_name as app_display_name, a.xmlrpc_server_url
+              FROM {mnet_host} h
+              JOIN {mnet_application} a ON h.applicationid = a.id
+             WHERE h.id <> ?";
+
+    if (!$withdeleted) {
+        $sql .= "  AND h.deleted = 0";
+    }
+
+    $sql .= " ORDER BY h.deleted, h.name, h.id";
+
+    return $DB->get_records_sql($sql, array($CFG->mnet_localhost_id));
+}
+
+
+/**
+ * return an array information about services enabled for the given peer.
+ * in two modes, fulldata or very basic data.
+ *
+ * @param mnet_peer $mnet_peer the peer to get information abut
+ * @param boolean   $fulldata whether to just return which services are published/subscribed, or more information (defaults to full)
+ *
+ * @return array  If $fulldata is false, an array is returned like:
+ *                publish => array(
+ *                    serviceid => boolean,
+ *                    serviceid => boolean,
+ *                ),
+ *                subscribe => array(
+ *                    serviceid => boolean,
+ *                    serviceid => boolean,
+ *                )
+ *                If $fulldata is true, an array is returned like:
+ *                servicename => array(
+ *                   apiversion => array(
+ *                        name           => string
+ *                        offer          => boolean
+ *                        apiversion     => int
+ *                        plugintype     => string
+ *                        pluginname     => string
+ *                        hostsubscribes => boolean
+ *                        hostpublishes  => boolean
+ *                   ),
+ *               )
+ */
+function mnet_get_service_info(mnet_peer $mnet_peer, $fulldata=true) {
+    global $CFG, $DB;
+
+    $requestkey = (!empty($fulldata) ? 'fulldata' : 'mydata');
+
+    static $cache = array();
+    if (array_key_exists($mnet_peer->id, $cache)) {
+        return $cache[$mnet_peer->id][$requestkey];
+    }
+
+    $id_list = $mnet_peer->id;
+    if (!empty($CFG->mnet_all_hosts_id)) {
+        $id_list .= ', '.$CFG->mnet_all_hosts_id;
+    }
+
+    $concat = $DB->sql_concat('COALESCE(h2s.id,0) ', ' \'-\' ', ' svc.id', '\'-\'', 'r.plugintype', '\'-\'', 'r.pluginname');
+
+    $query = "
+        SELECT DISTINCT
+            $concat as id,
+            svc.id as serviceid,
+            svc.name,
+            svc.offer,
+            svc.apiversion,
+            r.plugintype,
+            r.pluginname,
+            h2s.hostid,
+            h2s.publish,
+            h2s.subscribe
+        FROM
+            {mnet_service2rpc} s2r,
+            {mnet_rpc} r,
+            {mnet_service} svc
+        LEFT JOIN
+            {mnet_host2service} h2s
+        ON
+            h2s.hostid in ($id_list) AND
+            h2s.serviceid = svc.id
+        WHERE
+            svc.offer = '1' AND
+            s2r.serviceid = svc.id AND
+            s2r.rpcid = r.id
+        ORDER BY
+            svc.name ASC";
+
+    $resultset = $DB->get_records_sql($query);
+
+    if (is_array($resultset)) {
+        $resultset = array_values($resultset);
+    } else {
+        $resultset = array();
+    }
+
+    require_once $CFG->dirroot.'/mnet/xmlrpc/client.php';
+
+    $remoteservices = array();
+    if ($mnet_peer->id != $CFG->mnet_all_hosts_id) {
+        // Create a new request object
+        $mnet_request = new mnet_xmlrpc_client();
+
+        // Tell it the path to the method that we want to execute
+        $mnet_request->set_method('system/listServices');
+        $mnet_request->send($mnet_peer);
+        if (is_array($mnet_request->response)) {
+            foreach($mnet_request->response as $service) {
+                $remoteservices[$service['name']][$service['apiversion']] = $service;
+            }
+        }
+    }
+
+    $myservices = array();
+    $mydata = array();
+    foreach($resultset as $result) {
+        $result->hostpublishes  = false;
+        $result->hostsubscribes = false;
+        if (isset($remoteservices[$result->name][$result->apiversion])) {
+            if ($remoteservices[$result->name][$result->apiversion]['publish'] == 1) {
+                $result->hostpublishes  = true;
+            }
+            if ($remoteservices[$result->name][$result->apiversion]['subscribe'] == 1) {
+                $result->hostsubscribes  = true;
+            }
+        }
+
+        if (empty($myservices[$result->name][$result->apiversion])) {
+            $myservices[$result->name][$result->apiversion] = array('serviceid' => $result->serviceid,
+                                                                    'name' => $result->name,
+                                                                    'offer' => $result->offer,
+                                                                    'apiversion' => $result->apiversion,
+                                                                    'plugintype' => $result->plugintype,
+                                                                    'pluginname' => $result->pluginname,
+                                                                    'hostsubscribes' => $result->hostsubscribes,
+                                                                    'hostpublishes' => $result->hostpublishes
+                                                                    );
+        }
+
+        // allhosts_publish allows us to tell the admin that even though he
+        // is disabling a service, it's still available to the host because
+        // he's also publishing it to 'all hosts'
+        if ($result->hostid == $CFG->mnet_all_hosts_id && $CFG->mnet_all_hosts_id != $mnet_peer->id) {
+            $myservices[$result->name][$result->apiversion]['allhosts_publish'] = $result->publish;
+            $myservices[$result->name][$result->apiversion]['allhosts_subscribe'] = $result->subscribe;
+        } elseif (!empty($result->hostid)) {
+            $myservices[$result->name][$result->apiversion]['I_publish'] = $result->publish;
+            $myservices[$result->name][$result->apiversion]['I_subscribe'] = $result->subscribe;
+        }
+        $mydata['publish'][$result->serviceid] = $result->publish;
+        $mydata['subscribe'][$result->serviceid] = $result->subscribe;
+
+    }
+
+    $cache[$mnet_peer->id]['fulldata'] = $myservices;
+    $cache[$mnet_peer->id]['mydata'] = $mydata;
+
+    return $cache[$mnet_peer->id][$requestkey];
+}
+
+/**
+ * return an array of the profile fields to send
+ * with user information to the given mnet host.
+ *
+ * @param mnet_peer $peer the peer to send the information to
+ *
+ * @return array (like 'username', 'firstname', etc)
+ */
+function mnet_fields_to_send(mnet_peer $peer) {
+    return _mnet_field_helper($peer, 'export');
+}
+
+/**
+ * return an array of the profile fields to import
+ * from the given host, when creating/updating user accounts
+ *
+ * @param mnet_peer $peer the peer we're getting the information from
+ *
+ * @return array (like 'username', 'firstname', etc)
+ */
+function mnet_fields_to_import(mnet_peer $peer) {
+    return _mnet_field_helper($peer, 'import');
+}
+
+/**
+ * helper for {@see mnet_fields_to_import} and {@mnet_fields_to_send}
+ *
+ * @access private
+ *
+ * @param mnet_peer $peer the peer object
+ * @param string    $key 'import' or 'export'
+ *
+ * @return array (like 'username', 'firstname', etc)
+ */
+function _mnet_field_helper(mnet_peer $peer, $key) {
+    $tmp = mnet_profile_field_options();
+    $defaults = explode(',', get_config('moodle', 'mnetprofile' . $key . 'fields'));
+    if ('1' === get_config('mnet', 'host' . $peer->id . $key . 'default')) {
+        return array_merge($tmp['forced'], $defaults);
+    }
+    $hostsettings = get_config('mnet', 'host' . $peer->id . $key . 'fields');
+    if (false === $hostsettings) {
+        return array_merge($tmp['forced'], $defaults);
+    }
+    return array_merge($tmp['forced'], explode(',', $hostsettings));
+}
+
+
+/**
+ * given a user object (or array) and a list of allowed fields,
+ * strip out all the fields that should not be included.
+ * This can be used both for outgoing data and incoming data.
+ *
+ * @param mixed $user array or object representing a database record
+ * @param array $fields an array of allowed fields (usually from mnet_fields_to_{send,import}
+ *
+ * @return mixed array or object, depending what type of $user object was passed (datatype is respected)
+ */
+function mnet_strip_user($user, $fields) {
+    if (is_object($user)) {
+        $user = (array)$user;
+        $wasobject = true; // so we can cast back before we return
+    }
+
+    foreach ($user as $key => $value) {
+        if (!in_array($key, $fields)) {
+            unset($user[$key]);
+        }
+    }
+    if (!empty($wasobject)) {
+        $user = (object)$user;
+    }
+    return $user;
+}

@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 /**
  * Page for creating or editing course category name/parent/description.
  * When called with an id parameter, edits the category with that id.
@@ -9,35 +9,58 @@
 require_once('../config.php');
 require_once('lib.php');
 require_once('editcategory_form.php');
-require_once($CFG->dirroot."/local/program/lib.php"); // required to update programs in categories
 
 require_login();
 
 $id = optional_param('id', 0, PARAM_INT);
+$itemid = 0; //initalise itemid, as all files in category description has item id 0
+
 if ($id) {
-    if (!$category = get_record('course_categories', 'id', $id)) {
-        error("Category not known!");
+    if (!$category = $DB->get_record('course_categories', array('id' => $id))) {
+        print_error('unknowcategory');
     }
-    require_capability('moodle/category:manage', get_context_instance(CONTEXT_COURSECAT, $id));
+    $PAGE->set_url('/course/editcategory.php', array('id' => $id));
+    $categorycontext = get_context_instance(CONTEXT_COURSECAT, $id);
+    $PAGE->set_context($categorycontext);
+    require_capability('moodle/category:manage', $categorycontext);
     $strtitle = get_string('editcategorysettings');
+    $editorcontext = $categorycontext;
+    $title = $strtitle;
+    $fullname = $category->name;
 } else {
     $parent = required_param('parent', PARAM_INT);
+    $PAGE->set_url('/course/editcategory.php', array('parent' => $parent));
     if ($parent) {
-        if (!record_exists('course_categories', 'id', $parent)) {
-            error('Unknown parent category ' . $parent);
+        if (!$DB->record_exists('course_categories', array('id' => $parent))) {
+            print_error('unknowcategory');
         }
         $context = get_context_instance(CONTEXT_COURSECAT, $parent);
     } else {
         $context = get_system_context();
     }
+    $PAGE->set_context($context);
     $category = new stdClass();
     $category->id = 0;
     $category->parent = $parent;
     require_capability('moodle/category:manage', $context);
     $strtitle = get_string("addnewcategory");
+    $editorcontext = $context;
+    $itemid = null; //set this explicitly, so files for parent category should not get loaded in draft area.
+    $title = "$SITE->shortname: ".get_string('addnewcategory');
+    $fullname = $SITE->fullname;
 }
 
-$mform = new editcategory_form('editcategory.php', $category);
+$PAGE->set_pagelayout('admin');
+
+$editoroptions = array(
+    'maxfiles'  => EDITOR_UNLIMITED_FILES,
+    'maxbytes'  => $CFG->maxbytes,
+    'trusttext' => true,
+    'context'   => $editorcontext
+);
+$category = file_prepare_standard_editor($category, 'description', $editoroptions, $editorcontext, 'coursecat', 'description', $itemid);
+
+$mform = new editcategory_form('editcategory.php', compact('category', 'editoroptions'));
 $mform->set_data($category);
 
 if ($mform->is_cancelled()) {
@@ -51,7 +74,8 @@ if ($mform->is_cancelled()) {
 } else if ($data = $mform->get_data()) {
     $newcategory = new stdClass();
     $newcategory->name = $data->name;
-    $newcategory->description = $data->description;
+    $newcategory->idnumber = $data->idnumber;
+    $newcategory->description_editor = $data->description_editor;
     $newcategory->parent = $data->parent; // if $data->parent = 0, the new category will be a top-level category
 
     if (isset($data->theme) && !empty($CFG->allowcategorythemes)) {
@@ -64,60 +88,30 @@ if ($mform->is_cancelled()) {
         if ($newcategory->parent != $category->parent) {
             // check category manage capability if parent changed
             require_capability('moodle/category:manage', get_category_or_system_context((int)$newcategory->parent));
-            $parent_cat = get_record('course_categories', 'id', $newcategory->parent);
+            $parent_cat = $DB->get_record('course_categories', array('id' => $newcategory->parent));
             move_category($newcategory, $parent_cat);
         }
-        if (!update_record('course_categories', $newcategory)) {
-            error( "Could not update the category '$newcategory->name' ");
-        }
-        fix_course_sortorder();
-        prog_fix_program_sortorder();
-
     } else {
         // Create a new category.
+        $newcategory->description = $data->description_editor['text'];
         $newcategory->sortorder = 999;
-        if (!$newcategory->id = insert_record('course_categories', $newcategory)) {
-            error("Could not insert the new category '$newcategory->name' ");
-        }
+        $newcategory->id = $DB->insert_record('course_categories', $newcategory);
         $newcategory->context = get_context_instance(CONTEXT_COURSECAT, $newcategory->id);
+        $categorycontext = $newcategory->context;
         mark_context_dirty($newcategory->context->path);
-        fix_course_sortorder(); // Required to build course_categories.depth and .path.
     }
 
-    redirect('index.php?highlightid='.$newcategory->id.'&amp;categoryedit=on#category'.$newcategory->id);
+    $newcategory = file_postupdate_standard_editor($newcategory, 'description', $editoroptions, $categorycontext, 'coursecat', 'description', 0);
+    $DB->update_record('course_categories', $newcategory);
+    fix_course_sortorder();
+
+    redirect('category.php?id='.$newcategory->id.'&categoryedit=on');
 }
 
-// Print the form
-$straddnewcategory = get_string('addnewcategory');
-$stradministration = get_string('administration');
-$strcategories = get_string('categories');
-$navlinks = array();
-
-if ($id) {
-    $navlinks[] = array('name' => $strtitle,
-                        'link' => null,
-                        'type' => 'misc');
-    $title = $strtitle;
-    $fullname = $category->name;
-} else {
-    $navlinks[] = array('name' => $stradministration,
-                        'link' => "$CFG->wwwroot/$CFG->admin/index.php",
-                        'type' => 'misc');
-    $navlinks[] = array('name' => $strcategories,
-                        'link' => 'index.php',
-                        'type' => 'misc');
-    $navlinks[] = array('name' => $straddnewcategory,
-                        'link' => null,
-                        'type' => 'misc');
-    $title = "$SITE->shortname: $straddnewcategory";
-    $fullname = $SITE->fullname;
-}
-
-$navigation = build_navigation($navlinks);
-print_header($title, $fullname, $navigation, $mform->focus());
-print_heading($strtitle);
-
+$PAGE->set_title($title);
+$PAGE->set_heading($fullname);
+echo $OUTPUT->header();
+echo $OUTPUT->heading($strtitle);
 $mform->display();
+echo $OUTPUT->footer();
 
-print_footer();
-?>

@@ -1,11 +1,15 @@
 <?php
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 
 class mod_data_mod_form extends moodleform_mod {
 
     function definition() {
+        global $CFG, $DB;
 
-        global $CFG;
         $mform =& $this->_form;
 
 //-------------------------------------------------------------------------------
@@ -15,14 +19,11 @@ class mod_data_mod_form extends moodleform_mod {
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
-            $mform->setType('name', PARAM_CLEAN);
+            $mform->setType('name', PARAM_CLEANHTML);
         }
         $mform->addRule('name', null, 'required', null, 'client');
 
-        $mform->addElement('htmleditor', 'intro', get_string('intro', 'data'));
-        $mform->setType('intro', PARAM_RAW);
-        $mform->addRule('intro', null, 'required', null, 'client');
-        $mform->setHelpButton('intro', array('writing', 'questions', 'richtext'), false, 'editorhelpbutton');
+        $this->add_intro_editor(true, get_string('intro', 'data'));
 
         $mform->addElement('date_selector', 'timeavailablefrom', get_string('availablefromdate', 'data'), array('optional'=>true));
 
@@ -37,32 +38,27 @@ class mod_data_mod_form extends moodleform_mod {
                         (array_combine(range(1, DATA_MAX_ENTRIES),//keys
                                         range(1, DATA_MAX_ENTRIES)));//values
         $mform->addElement('select', 'requiredentries', get_string('requiredentries', 'data'), $countoptions);
-        $mform->setHelpButton('requiredentries', array('requiredentries', get_string('requiredentries', 'data'), 'data'));
+        $mform->addHelpButton('requiredentries', 'requiredentries', 'data');
 
         $mform->addElement('select', 'requiredentriestoview', get_string('requiredentriestoview', 'data'), $countoptions);
-        $mform->setHelpButton('requiredentriestoview', array('requiredentriestoview', get_string('requiredentriestoview', 'data'), 'data'));
+        $mform->addHelpButton('requiredentriestoview', 'requiredentriestoview', 'data');
 
         $mform->addElement('select', 'maxentries', get_string('maxentries', 'data'), $countoptions);
-        $mform->setHelpButton('maxentries', array('maxentries', get_string('maxentries', 'data'), 'data'));
+        $mform->addHelpButton('maxentries', 'maxentries', 'data');
 
         $ynoptions = array(0 => get_string('no'), 1 => get_string('yes'));
         $mform->addElement('select', 'comments', get_string('comments', 'data'), $ynoptions);
-        $mform->setHelpButton('comments', array('comments', get_string('allowcomments', 'data'), 'data'));
 
         $mform->addElement('select', 'approval', get_string('requireapproval', 'data'), $ynoptions);
-        $mform->setHelpButton('approval', array('requireapproval', get_string('requireapproval', 'data'), 'data'));
+        $mform->addHelpButton('approval', 'requireapproval', 'data');
 
         if($CFG->enablerssfeeds && $CFG->data_enablerssfeeds){
             $mform->addElement('select', 'rssarticles', get_string('numberrssarticles', 'data') , $countoptions);
         }
 
-        $mform->addElement('checkbox', 'assessed', get_string('allowratings', 'data') , get_string('ratingsuse', 'data'));
+        $this->standard_grading_coursemodule_elements();
 
-        $mform->addElement('modgrade', 'scale', get_string('grade'), false);
-        $mform->disabledIf('scale', 'assessed');
-
-
-        $this->standard_coursemodule_elements(array('groups'=>true, 'groupings'=>true, 'groupmembersonly'=>true));
+        $this->standard_coursemodule_elements();
 
 //-------------------------------------------------------------------------------
         // buttons
@@ -70,10 +66,8 @@ class mod_data_mod_form extends moodleform_mod {
     }
 
     function data_preprocessing(&$default_values){
-        if (empty($default_values['scale'])){
-            $default_values['assessed'] = 0;
-        }        
+        parent::data_preprocessing($default_values);
     }
 
 }
-?>
+

@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
@@ -35,17 +34,16 @@ class edit_scale_form extends moodleform {
         $mform->setType('name', PARAM_TEXT);
 
         $mform->addElement('advcheckbox', 'standard', get_string('scalestandard'));
-        $mform->setHelpButton('standard', array('scalestandard', get_string('scalestandard'), 'grade'));
+        $mform->addHelpButton('standard', 'scalestandard');
 
         $mform->addElement('static', 'used', get_string('used'));
 
         $mform->addElement('textarea', 'scale', get_string('scale'), array('cols'=>50, 'rows'=>2));
-        $mform->setHelpButton('scale', array('scales', get_string('scale')));
+        $mform->addHelpButton('scale', 'scale');
         $mform->addRule('scale', get_string('required'), 'required', null, 'client');
         $mform->setType('scale', PARAM_TEXT);
 
-        $mform->addElement('htmleditor', 'description', get_string('description'), array('cols'=>80, 'rows'=>20));
-
+        $mform->addElement('editor', 'description_editor', get_string('description'), null, $this->_customdata['editoroptions']);
 
         // hidden params
         $mform->addElement('hidden', 'id', 0);
@@ -105,7 +103,7 @@ class edit_scale_form extends moodleform {
 
 /// perform extra validation before submission
     function validation($data, $files) {
-        global $CFG, $COURSE;
+        global $CFG, $COURSE, $DB;
 
         $errors = parent::validation($data, $files);
 
@@ -126,22 +124,30 @@ class edit_scale_form extends moodleform {
         }
 
         if (array_key_exists('scale', $data)) {
-            $count = count_records('scale', 'courseid', $courseid, 'scale', $data['scale']);
+            $scalearray = explode(',', $data['scale']);
+            $scalearray = array_map('trim', $scalearray);
+            $scaleoptioncount = count($scalearray);
 
-            if (empty($old->id) or $old->courseid != $courseid) {
-                if ($count) {
-                    $errors['scale'] = get_string('duplicatescale', 'grades');
-                }
-
-            } else if ($old->scale != $data['scale']) {
-                if ($count) {
-                    $errors['scale'] = get_string('duplicatescale', 'grades');
-                }
-            }
-
-            $options = explode(',', $data['scale']);
-            if (count($options) < 2) {
+            if (count($scalearray) < 2) {
                 $errors['scale'] = get_string('badlyformattedscale', 'grades');
+            } else {
+	            $thescale = implode(',',$scalearray);
+
+	            $textlib = textlib_get_instance();
+                //this check strips out whitespace from the scale we're validating but not from those already in the DB
+	            $count = $DB->count_records_select('scale', "courseid=:courseid AND ".$DB->sql_compare_text('scale', $textlib->strlen($thescale)).'=:scale',
+	                array('courseid'=>$courseid, 'scale'=>$thescale));
+
+                if ($count) {
+                    //if this is a new scale but we found a duplice in the DB
+                    //or we found a duplicate in another course report the error
+                    if (empty($old->id) or $old->courseid != $courseid) {
+	                    $errors['scale'] = get_string('duplicatescale', 'grades');
+                    } else if ($old->scale !== $thescale and $old->scale !== $data['scale']) {
+                        //if the old scale from DB is different but we found a duplicate then we're trying to modify a scale to be a duplicate
+	                    $errors['scale'] = get_string('duplicatescale', 'grades');
+	                }
+	            }
             }
         }
 
@@ -149,4 +155,4 @@ class edit_scale_form extends moodleform {
     }
 }
 
-?>
+

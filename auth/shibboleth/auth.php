@@ -63,12 +63,12 @@ class auth_plugin_shibboleth extends auth_plugin_base {
             } else {
                 // Try to find out using the user's cookie
                 foreach ($_COOKIE as $name => $value){
-                    if (eregi('_shibsession_', $name)){
+                    if (preg_match('/_shibsession_/i', $name)){
                         $sessionkey = $value;
                     }
                 }
             }
-            
+
             // Set shibboleth session ID for logout
             $SESSION->shibboleth_session_id  = $sessionkey;
 
@@ -81,7 +81,7 @@ class auth_plugin_shibboleth extends auth_plugin_base {
     }
 
 
-    
+
     /**
      * Returns the user information for 'external' users. In this case the
      * attributes provided by Shibboleth
@@ -94,7 +94,7 @@ class auth_plugin_shibboleth extends auth_plugin_base {
 
         // Check whether we have got all the essential attributes
         if ( empty($_SERVER[$this->config->user_attribute]) ) {
-            print_error( 'shib_not_all_attributes_error', 'auth' , '', "'".$this->config->user_attribute."' ('".$_SERVER[$this->config->user_attribute]."'), '".$this->config->field_map_firstname."' ('".$_SERVER[$this->config->field_map_firstname]."'), '".$this->config->field_map_lastname."' ('".$_SERVER[$this->config->field_map_lastname]."') and '".$this->config->field_map_email."' ('".$_SERVER[$this->config->field_map_email]."')");
+            print_error( 'shib_not_all_attributes_error', 'auth_shibboleth' , '', "'".$this->config->user_attribute."' ('".$_SERVER[$this->config->user_attribute]."'), '".$this->config->field_map_firstname."' ('".$_SERVER[$this->config->field_map_firstname]."'), '".$this->config->field_map_lastname."' ('".$_SERVER[$this->config->field_map_lastname]."') and '".$this->config->field_map_email."' ('".$_SERVER[$this->config->field_map_email]."')");
         }
 
         $attrmap = $this->get_attributes();
@@ -103,7 +103,7 @@ class auth_plugin_shibboleth extends auth_plugin_base {
         $search_attribs = array();
 
         foreach ($attrmap as $key=>$value) {
-            // Check if attribute is present  
+            // Check if attribute is present
             if (!isset($_SERVER[$value])){
                 $result[$key] = '';
                 continue;
@@ -187,17 +187,17 @@ class auth_plugin_shibboleth extends auth_plugin_base {
 
         return;
     }
-    
+
      /**
      * Hook for logout page
      *
      */
     function logoutpage_hook() {
         global $SESSION, $redirect;
-        
+
         // Only do this if logout handler is defined, and if the user is actually logged in via Shibboleth
         $logouthandlervalid = isset($this->config->logout_handler) && !empty($this->config->logout_handler);
-        if (  isset($SESSION->shibboleth_session_id) && $logouthandlervalid ) {
+        if (isset($SESSION->shibboleth_session_id) && $logouthandlervalid ) {
             // Check if there is an alternative logout return url defined
             if (isset($this->config->logout_return_url) && !empty($this->config->logout_return_url)) {
                 // Set temp_redirect to alternative return url
@@ -206,7 +206,7 @@ class auth_plugin_shibboleth extends auth_plugin_base {
                 // Backup old redirect url
                 $temp_redirect = $redirect;
             }
-            
+
             // Overwrite redirect in order to send user to Shibboleth logout page and let him return back
             $redirect = $this->config->logout_handler.'?return='.urlencode($temp_redirect);
         }
@@ -237,7 +237,7 @@ class auth_plugin_shibboleth extends auth_plugin_base {
 
         // set to defaults if undefined
         if (!isset($config->auth_instructions) or empty($config->user_attribute)) {
-            $config->auth_instructions = get_string('shibboleth_instructions', 'auth', $CFG->wwwroot.'/auth/shibboleth/index.php');
+            $config->auth_instructions = get_string('auth_shib_instructions', 'auth_shibboleth', $CFG->wwwroot.'/auth/shibboleth/index.php');
         }
         if (!isset ($config->user_attribute)) {
             $config->user_attribute = '';
@@ -245,15 +245,15 @@ class auth_plugin_shibboleth extends auth_plugin_base {
         if (!isset ($config->convert_data)) {
             $config->convert_data = '';
         }
-        
+
         if (!isset($config->changepasswordurl)) {
             $config->changepasswordurl = '';
         }
-        
+
         if (!isset($config->login_name)) {
             $config->login_name = 'Shibboleth Login';
         }
-        
+
         // Clean idp list
         if (isset($config->organization_selection) && !empty($config->organization_selection) && isset($config->alt_login) && $config->alt_login == 'on') {
             $idp_list = get_idp_list($config->organization_selection);
@@ -265,11 +265,11 @@ class auth_plugin_shibboleth extends auth_plugin_base {
                 $config->organization_selection .= $idp.', '.$value[0].', '.$value[1]."\n";
             }
         }
-        
+
 
         // save settings
         set_config('user_attribute',    $config->user_attribute,    'auth/shibboleth');
-        
+
         if (isset($config->organization_selection) && !empty($config->organization_selection)) {
             set_config('organization_selection',    $config->organization_selection,    'auth/shibboleth');
         }
@@ -279,27 +279,27 @@ class auth_plugin_shibboleth extends auth_plugin_base {
         set_config('convert_data',      $config->convert_data,      'auth/shibboleth');
         set_config('auth_instructions', $config->auth_instructions, 'auth/shibboleth');
         set_config('changepasswordurl', $config->changepasswordurl, 'auth/shibboleth');
-        
+
         // Overwrite alternative login URL if integrated WAYF is used
         if (isset($config->alt_login) && $config->alt_login == 'on'){
             set_config('alt_login',    $config->alt_login,    'auth/shibboleth');
             set_config('alternateloginurl', $CFG->wwwroot.'/auth/shibboleth/login.php');
         } else {
             // Check if integrated WAYF was enabled and is now turned off
-            // If it was and only then, reset the Moodle alternate URL 
-            if ($this->config->alt_login == 'on'){
+            // If it was and only then, reset the Moodle alternate URL
+            if (isset($this->config->alt_login) and $this->config->alt_login == 'on'){
                 set_config('alt_login',    'off',    'auth/shibboleth');
                 set_config('alternateloginurl', '');
             }
             $config->alt_login = 'off';
         }
-        
+
         // Check values and return false if something is wrong
         // Patch Anyware Technologies (14/05/07)
         if (($config->convert_data != '')&&(!file_exists($config->convert_data) || !is_readable($config->convert_data))){
             return false;
         }
-        
+
         // Check if there is at least one entry in the IdP list
         if (isset($config->organization_selection) && empty($config->organization_selection) && isset($config->alt_login) && $config->alt_login == 'on'){
             return false;
@@ -314,14 +314,14 @@ class auth_plugin_shibboleth extends auth_plugin_base {
      * @param string $string Possibly multi-valued attribute from Shibboleth
      */
     function get_first_string($string) {
-        $list = split( ';', $string);
+        $list = explode( ';', $string);
         $clean_string = rtrim($list[0]);
 
         return $clean_string;
     }
 }
 
-    
+
     /**
      * Sets the standard SAML domain cookie that is also used to preselect
      * the right entry on the local wayf
@@ -340,25 +340,25 @@ class auth_plugin_shibboleth extends auth_plugin_base {
         $IDPArray = appendCookieValue($selectedIDP, $IDPArray);
         setcookie ('_saml_idp', generate_cookie_value($IDPArray), time() + (100*24*3600));
     }
-    
+
      /**
-     * Prints the option elements for the select element of the drop down list 
+     * Prints the option elements for the select element of the drop down list
      *
      */
     function print_idp_list(){
         $config = get_config('auth/shibboleth');
-        
+
         $IdPs = get_idp_list($config->organization_selection);
         if (isset($_COOKIE['_saml_idp'])){
             $idp_cookie = generate_cookie_array($_COOKIE['_saml_idp']);
             do {
                 $selectedIdP = array_pop($idp_cookie);
             } while (!isset($IdPs[$selectedIdP]) && count($idp_cookie) > 0);
-            
+
         } else {
             $selectedIdP = '-';
         }
-        
+
         foreach($IdPs as $IdP => $data){
             if ($IdP == $selectedIdP){
                 echo '<option value="'.$IdP.'" selected="selected">'.$data[0].'</option>';
@@ -367,80 +367,80 @@ class auth_plugin_shibboleth extends auth_plugin_base {
             }
         }
     }
-    
-    
+
+
      /**
      * Generate array of IdPs from Moodle Shibboleth settings
      *
      * @param string Text containing tuble/triple of IdP entityId, name and (optionally) session initiator
-     * @return array Identifier of IdPs and their name/session initiator 
+     * @return array Identifier of IdPs and their name/session initiator
      */
 
     function get_idp_list($organization_selection) {
         $idp_list = array();
-        
-        $idp_raw_list = split("\n",  $organization_selection);
-        
+
+        $idp_raw_list = explode("\n",  $organization_selection);
+
         foreach ($idp_raw_list as $idp_line){
-            $idp_data = split(',', $idp_line);
+            $idp_data = explode(',', $idp_line);
             if (isset($idp_data[2]))
             {
-                $idp_list[trim($idp_data[0])] = array(trim($idp_data[1]),trim($idp_data[2])); 
+                $idp_list[trim($idp_data[0])] = array(trim($idp_data[1]),trim($idp_data[2]));
             }
             elseif(isset($idp_data[1]))
             {
                 $idp_list[trim($idp_data[0])] = array(trim($idp_data[1]));
             }
         }
-        
+
         return $idp_list;
     }
-    
+
     /**
      * Generates an array of IDPs using the cookie value
      *
-     * @param string Value of SAML domain cookie 
-     * @return array Identifiers of IdPs 
+     * @param string Value of SAML domain cookie
+     * @return array Identifiers of IdPs
      */
     function generate_cookie_array($value) {
-        
+
         // Decodes and splits cookie value
-        $CookieArray = split(' ', $value);
+        $CookieArray = explode(' ', $value);
         $CookieArray = array_map('base64_decode', $CookieArray);
-        
+
         return $CookieArray;
     }
-    
+
     /**
      * Generate the value that is stored in the cookie using the list of IDPs
      *
-     * @param array IdP identifiers 
+     * @param array IdP identifiers
      * @return string SAML domain cookie value
      */
     function generate_cookie_value($CookieArray) {
-    
+
         // Merges cookie content and encodes it
         $CookieArray = array_map('base64_encode', $CookieArray);
         $value = implode(' ', $CookieArray);
         return $value;
     }
-    
+
     /**
      * Append a value to the array of IDPs
      *
      * @param string IdP identifier
      * @param array IdP identifiers
-     * @return array IdP identifiers with appended IdP 
+     * @return array IdP identifiers with appended IdP
      */
     function appendCookieValue($value, $CookieArray) {
-        
+
         array_push($CookieArray, $value);
         $CookieArray = array_reverse($CookieArray);
         $CookieArray = array_unique($CookieArray);
         $CookieArray = array_reverse($CookieArray);
-        
+
         return $CookieArray;
     }
 
 
-?>
+

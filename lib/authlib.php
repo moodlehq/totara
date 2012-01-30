@@ -1,14 +1,32 @@
-<?php  // $Id$
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
- * @author Martin Dougiamas
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package moodle multiauth
- *
- * Multiple plugin authentication
- * Support library
+ * Multiple plugin authentication Support library
  *
  * 2006-08-28  File created, AUTH return values defined.
+ *
+ * @package    core
+ * @subpackage auth
+ * @copyright  1999 onwards Martin Dougiamas  http://dougiamas.com
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Returned when the login was successful.
@@ -45,20 +63,26 @@ define('AUTH_REMOVEUSER_FULLDELETE', 2);
 
 /**
  * Abstract authentication plugin.
+ *
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package moodlecore
  */
 class auth_plugin_base {
 
     /**
      * The configuration details for the plugin.
+     * @var object
      */
     var $config;
 
     /**
      * Authentication plugin type - the same as db field.
+     * @var string
      */
     var $authtype;
     /*
      * The fields we can lock and update from/to external authentication backends
+     * @var array
      */
     var $userfields = array(
         'firstname',
@@ -80,7 +104,9 @@ class auth_plugin_base {
     /**
 
      * This is the primary method that is used by the authenticate_user_login()
-     * function in moodlelib.php. This method should return a boolean indicating
+     * function in moodlelib.php.
+     *
+     * This method should return a boolean indicating
      * whether or not the username and password authenticate successfully.
      *
      * Returns true if the username and password work and false if they are
@@ -92,7 +118,7 @@ class auth_plugin_base {
      * @return bool Authentication success or failure.
      */
     function user_login($username, $password) {
-        error('Abstract user_login() method must be overriden.');
+        print_error('mustbeoveride', 'debug', '', 'user_login()' );
     }
 
     /**
@@ -108,20 +134,47 @@ class auth_plugin_base {
 
     /**
      * Returns the URL for changing the users' passwords, or empty if the default
-     * URL can be used. This method is used if can_change_password() returns true.
+     * URL can be used.
+     *
+     * This method is used if can_change_password() returns true.
      * This method is called only when user is logged in, it may use global $USER.
      *
-     * @return string
+     * @return moodle_url url of the profile page or null if standard used
      */
     function change_password_url() {
         //override if needed
-        return '';
+        return null;
     }
 
     /**
-     * Returns true if this authentication plugin is "internal" (which means that
-     * Moodle stores the users' passwords and other details in the local Moodle
-     * database).
+     * Returns true if this authentication plugin can edit the users'
+     * profile.
+     *
+     * @return bool
+     */
+    function can_edit_profile() {
+        //override if needed
+        return true;
+    }
+
+    /**
+     * Returns the URL for editing the users' profile, or empty if the default
+     * URL can be used.
+     *
+     * This method is used if can_edit_profile() returns true.
+     * This method is called only when user is logged in, it may use global $USER.
+     *
+     * @return moodle_url url of the profile page or null if standard used
+     */
+    function edit_profile_url() {
+        //override if needed
+        return null;
+    }
+
+    /**
+     * Returns true if this authentication plugin is "internal".
+     *
+     * Internal plugins use password hashes from Moodle user table for authentication.
      *
      * @return bool
      */
@@ -135,17 +188,29 @@ class auth_plugin_base {
      * @return bool true means md5 password hash stored in user table, false means flag 'not_cached' stored there instead
      */
     function prevent_local_passwords() {
-        // NOTE: this will be changed to true in 2.0
-        return false;
+        return !$this->is_internal();
     }
 
     /**
-     * Updates the user's password. In previous versions of Moodle, the function
+     * Indicates if moodle should automatically update internal user
+     * records with data from external sources using the information
+     * from get_userinfo() method.
+     *
+     * @return bool true means automatically copy data from ext to user table
+     */
+    function is_synchronised_with_external() {
+        return !$this->is_internal();
+    }
+
+    /**
+     * Updates the user's password.
+     *
+     * In previous versions of Moodle, the function
      * auth_user_update_password accepted a username as the first parameter. The
      * revised function expects a user object.
      *
-     * @param  object  $user        User table object  (with system magic quotes)
-     * @param  string  $newpassword Plaintext password (with system magic quotes)
+     * @param  object  $user        User table object
+     * @param  string  $newpassword Plaintext password
      *
      * @return bool                  True on success
      */
@@ -157,7 +222,7 @@ class auth_plugin_base {
     /**
      * Called when the user record is updated.
      * Modifies user in external database. It takes olduser (before changes) and newuser (after changes)
-     * conpares information saved modified information to external db.
+     * compares information saved modified information to external db.
      *
      * @param mixed $olduser     Userobject before modifications    (without system magic quotes)
      * @param mixed $newuser     Userobject new modified userobject (without system magic quotes)
@@ -171,8 +236,11 @@ class auth_plugin_base {
 
     /**
      * User delete requested - internal user record is mared as deleted already, username not present anymore.
+     *
      * Do any action in external database.
+     *
      * @param object $user       Userobject before delete    (without system magic quotes)
+     * @return void
      */
     function user_delete($olduser) {
         //override if needed
@@ -203,12 +271,12 @@ class auth_plugin_base {
      * Sign up a new user ready for confirmation.
      * Password is passed in plaintext.
      *
-     * @param object $user new user object (with system magic quotes)
+     * @param object $user new user object
      * @param boolean $notify print notice with link and terminate
      */
     function user_signup($user, $notify=true) {
         //override when can signup
-        error('user_signup method must be overriden if signup enabled');
+        print_error('mustbeoveride', 'debug', '', 'user_signup()' );
     }
 
     /**
@@ -224,12 +292,12 @@ class auth_plugin_base {
     /**
      * Confirm the new user as registered.
      *
-     * @param string $username (with system magic quotes)
-     * @param string $confirmsecret (with system magic quotes)
+     * @param string $username
+     * @param string $confirmsecret
      */
     function user_confirm($username, $confirmsecret) {
         //override when can confirm
-        error('user_confirm method must be overriden if confirm enabled');
+        print_error('mustbeoveride', 'debug', '', 'user_confirm()' );
     }
 
     /**
@@ -238,7 +306,7 @@ class auth_plugin_base {
      * @param string $username (with system magic quotes)
      * @return bool
      */
-    function user_exists() {
+    function user_exists($username) {
         //override if needed
         return false;
     }
@@ -267,9 +335,9 @@ class auth_plugin_base {
     /**
      * Read user information from external database and returns it as array().
      * Function should return all information available. If you are saving
-     * this information to moodle user-table you should honor syncronization flags
+     * this information to moodle user-table you should honour synchronisation flags
      *
-     * @param string $username username (with system magic quotes)
+     * @param string $username username
      *
      * @return mixed array with no magic quotes or false on error
      */
@@ -283,6 +351,10 @@ class auth_plugin_base {
      *
      * This function is called from admin/auth.php, and outputs a full page with
      * a form for configuring this plugin.
+     *
+     * @param object $config
+     * @param object $err
+     * @param array $user_fields
      */
     function config_form($config, $err, $user_fields) {
         //override if needed
@@ -309,8 +381,11 @@ class auth_plugin_base {
     }
 
     /**
-     * Hook for overriding behavior of login page.
+     * Hook for overriding behaviour of login page.
      * This method is called from login/index.php page for all enabled auth plugins.
+     *
+     * @global object
+     * @global object
      */
     function loginpage_hook() {
         global $frm;  // can be used to override submitted login form
@@ -334,6 +409,8 @@ class auth_plugin_base {
     /**
      * Pre logout hook.
      * This method is called from require_logout() for all enabled auth plugins,
+     *
+     * @global object
      */
     function prelogout_hook() {
         global $USER; // use $USER->auth to find the plugin used for login
@@ -342,8 +419,11 @@ class auth_plugin_base {
     }
 
     /**
-     * Hook for overriding behavior of logout page.
+     * Hook for overriding behaviour of logout page.
      * This method is called from login/logout.php page for all enabled auth plugins.
+     *
+     * @global object
+     * @global string
      */
     function logoutpage_hook() {
         global $USER;     // use $USER->auth to find the plugin used for login
@@ -353,25 +433,41 @@ class auth_plugin_base {
     }
 
     /**
-     * Return the properly translated human-friendly title of this auth plugin
+     * Hook called before timing out of database session.
+     * This is useful for SSO and MNET.
+     *
+     * @param object $user
+     * @param string $sid session id
+     * @param int $timecreated start of session
+     * @param int $timemodified user last seen
+     * @return bool true means do not timeout session yet
      */
-    function get_title() {
-        return auth_get_plugin_title($this->authtype);
+    function ignore_timeout_hook($user, $sid, $timecreated, $timemodified) {
+        return false;
     }
 
     /**
-     *  Get the auth description (from core or own auth lang files)
+     * Return the properly translated human-friendly title of this auth plugin
+     *
+     * @todo Document this function
+     */
+    function get_title() {
+        return get_string('pluginname', "auth_{$this->authtype}");
+    }
+
+    /**
+     * Get the auth description (from core or own auth lang files)
+     *
+     * @return string The description
      */
     function get_description() {
-        $authdescription = get_string("auth_{$this->authtype}description", "auth");
-        if ($authdescription == "[[auth_{$this->authtype}description]]") {
-            $authdescription = get_string("auth_{$this->authtype}description", "auth_{$this->authtype}");
-        }
+        $authdescription = get_string("auth_{$this->authtype}description", "auth_{$this->authtype}");
         return $authdescription;
     }
-    
+
     /**
      * Returns whether or not the captcha element is enabled, and the admin settings fulfil its requirements.
+     *
      * @abstract Implement in child classes
      * @return bool
      */
@@ -379,7 +475,23 @@ class auth_plugin_base {
         return false;
     }
 
+    /**
+     * Returns a list of potential IdPs that this authentication plugin supports.
+     * This is used to provide links on the login page.
+     *
+     * @param string $wantsurl the relative url fragment the user wants to get to.  You can use this to compose a returnurl, for example
+     *
+     * @return array like:
+     *              array(
+     *                  array(
+     *                      'url' => 'http://someurl',
+     *                      'icon' => new pix_icon(...),
+     *                      'name' => get_string('somename', 'auth_yourplugin'),
+     *                 ),
+     *             )
+     */
+    function loginpage_idp_list($wantsurl) {
+        return array();
+    }
 
 }
-
-?>

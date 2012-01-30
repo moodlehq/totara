@@ -1,57 +1,106 @@
-<?php  // $Id$
-       // preferences.php - user prefs for blog modeled on calendar
+<?php
 
-    require_once('../config.php');
-    require_once($CFG->dirroot.'/blog/lib.php');
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-    if ($courseid == SITEID) {
-        require_login();
-        $context = get_context_instance(CONTEXT_SYSTEM);
-    } else {
-        require_login($courseid);
-        $context = get_context_instance(CONTEXT_COURSE, $courseid);
-    }
+/**
+ * Form page for blog preferences
+ *
+ * @package    moodlecore
+ * @subpackage blog
+ * @copyright  2009 Nicolas Connault
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-    if (empty($CFG->bloglevel)) {
-        error('Blogging is disabled!');
-    }
+require_once('../config.php');
+require_once($CFG->dirroot.'/blog/lib.php');
+require_once('preferences_form.php');
 
-    require_capability('moodle/blog:view', $context);
+$courseid = optional_param('courseid', SITEID, PARAM_INT);
+$modid    = optional_param('modid', null, PARAM_INT);
+$userid   = optional_param('userid', null, PARAM_INT);
+$tagid    = optional_param('tagid', null, PARAM_INT);
+$groupid      = optional_param('groupid', null, PARAM_INT);
+
+$url = new moodle_url('/blog/preferences.php');
+if ($courseid !== SITEID) {
+    $url->param('courseid', $courseid);
+}
+if ($modid !== null) {
+    $url->param('modid', $modid);
+}
+if ($userid !== null) {
+    $url->param('userid', $userid);
+}
+if ($tagid !== null) {
+    $url->param('tagid', $tagid);
+}
+if ($groupid !== null) {
+    $url->param('groupid', $groupid);
+}
+
+$PAGE->set_url($url);
+$PAGE->set_pagelayout('standard');
+
+if ($courseid == SITEID) {
+    require_login();
+    $context = get_context_instance(CONTEXT_SYSTEM);
+    $PAGE->set_context($context);
+} else {
+    require_login($courseid);
+    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+}
+
+if (empty($CFG->bloglevel)) {
+    print_error('blogdisable', 'blog');
+}
+
+require_capability('moodle/blog:view', $context);
 
 /// If data submitted, then process and store.
 
-    if (data_submitted() and confirm_sesskey()) {
-        $pagesize = required_param('pagesize', PARAM_INT);
+$mform = new blog_preferences_form('preferences.php');
+$mform->set_data(array('pagesize' => get_user_preferences('blogpagesize')));
 
-        if ($pagesize < 1) {
-            error('invalid page size');
-        }
-        set_user_preference('blogpagesize', $pagesize);
+if (!$mform->is_cancelled() && $data = $mform->get_data()) {
+    $pagesize = $data->pagesize;
 
-        // now try to guess where to go from here ;-)
-        if ($courseid == SITEID) {
-            redirect($CFG->wwwroot.'/blog/index.php');
-        } else {
-            redirect($CFG->wwwroot.'/blog/index.php?filtertype=course&amp;filterselect='.$courseid);
-        }
+    if ($pagesize < 1) {
+        print_error('invalidpagesize');
     }
+    set_user_preference('blogpagesize', $pagesize);
+}
 
-    $site = get_site();
+if ($mform->is_cancelled()){
+    redirect($CFG->wwwroot . '/blog/index.php');
+}
 
-    $strpreferences = get_string('preferences');
-    $strblogs       = get_string('blogs', 'blog');
-    $navlinks = array(array('name' => $strblogs, 'link' => "$CFG->wwwroot/blog/", 'type' => 'misc'));
-    $navlinks[] = array('name' => $strpreferences, 'link' => null, 'type' => 'misc');
-    $navigation = build_navigation($navlinks);
+$site = get_site();
 
-    print_header("$site->shortname: $strblogs : $strpreferences", $strblogs, $navigation);
-    print_heading($strpreferences);
+$strpreferences = get_string('preferences');
+$strblogs       = get_string('blogs', 'blog');
 
-    print_simple_box_start('center', '', '');
-    require('./preferences.html');
-    print_simple_box_end();
+$title = "$site->shortname: $strblogs : $strpreferences";
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
-    print_footer();
-?>
+echo $OUTPUT->header();
+
+echo $OUTPUT->heading("$strblogs : $strpreferences", 2);
+
+$mform->display();
+
+echo $OUTPUT->footer();

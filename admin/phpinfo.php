@@ -1,4 +1,4 @@
-<?PHP  // $Id$
+<?php
        // phpinfo.php - shows phpinfo for the current server
 
     require_once("../config.php");
@@ -6,7 +6,7 @@
 
     admin_externalpage_setup('phpinfo');
 
-    admin_externalpage_print_header();
+    echo $OUTPUT->header();
 
     echo '<div class="phpinfo">';
 
@@ -28,6 +28,6 @@
 
     echo '</div>';
 
-    admin_externalpage_print_footer();
+    echo $OUTPUT->footer();
 
-?>
+

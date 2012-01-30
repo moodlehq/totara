@@ -1,20 +1,45 @@
-// hopefully fool ie IE proof way of getting DOM element
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+?>
+
+<!--// hopefully fool ie IE proof way of getting DOM element
 function safeGetElement(doc, el) {
     return doc.ids ? doc.ids[el] : doc.getElementById ? doc.getElementById(el) : doc.all[el];
 }
-
-// Add in a JS controlled link for toggling the Debug logging
-var logButton = document.createElement('a');
-logButton.id = 'mod-scorm-log-toggle';
-logButton.name = 'logToggle';
-logButton.href = 'javascript:toggleLog();';
-if (getLoggingActive() == "A") {
-    logButton.innerHTML = '<?php print_string('scormloggingon','scorm') ?>';
-} else {
-    logButton.innerHTML = '<?php print_string('scormloggingoff','scorm') ?>';
+// Find elements by class name
+var aryClassElements = new Array();
+function getNextElementByClassName( strClassName, obj ) {
+    if ( obj.className == strClassName ) {
+        aryClassElements[aryClassElements.length] = obj;
+    }
+    for ( var i = 0; i < obj.childNodes.length; i++ )
+        getNextElementByClassName( strClassName, obj.childNodes[i] );
 }
-var content = safeGetElement(document, 'content');
-content.appendChild(logButton);
+
+function getElementsByClassName( strClassName, obj ) {
+    aryClassElements = new Array();
+    getNextElementByClassName( strClassName, obj );
+    if (aryClassElements.length > 0) {
+        return aryClassElements[0];
+    }
+    else {
+        return null;
+    }
+}
 
 // retrieve cookie data
 function getCookie (cookie_name){
@@ -45,11 +70,11 @@ function toggleLog () {
     if (getLoggingActive() == "A") {
         AppendToLog("Moodle Logging Deactivated", 0);
         setLoggingActive('N');
-        logButton.innerHTML = '<?php print_string('scormloggingoff','scorm') ?>';
+        logButton.innerHTML = '--><?php print_string('scormloggingoff', 'scorm') ?>';
     } else {
         setLoggingActive('A');
         AppendToLog("Moodle Logging Activated", 0);
-        logButton.innerHTML = '<?php print_string('scormloggingon','scorm') ?>';
+        logButton.innerHTML = '<?php print_string('scormloggingon', 'scorm') ?>';
         logPopUpWindow.focus();
     }
 }
@@ -60,11 +85,11 @@ var logRow = 0;
 var logPopUpWindow = "N";
 var debugSCORMVersion = '<?php echo $scorm->version; ?>';
 <?php
-   $LMS_prefix = ($scorm->version == 'scorm_12' || $scorm->version == 'SCORM_1.2' || empty($scorm->version)) ? 'LMS' : '';
-   $LMS_api = ($scorm->version == 'scorm_12' || $scorm->version == 'SCORM_1.2' || empty($scorm->version)) ? 'API' : 'API_1484_11';
+   $LMS_prefix = (scorm_version_check($scorm->version, SCORM_12) || empty($scorm->version)) ? 'LMS' : '';
+   $LMS_api = (scorm_version_check($scorm->version, SCORM_12) || empty($scorm->version)) ? 'API' : 'API_1484_11';
 
    $LMS_elements = array();
-   if ($scorm->version == 'scorm_12' || $scorm->version == 'SCORM_1.2' || empty($scorm->version)) {
+   if (scorm_version_check($scorm->version, SCORM_12) || empty($scorm->version)) {
        $LMS_elements = array(   'cmi.core._children',
                                 'cmi.core.student_id',
                                 'cmi.core.student_name',
@@ -628,8 +653,8 @@ function UpdateLog(s) {
         + '             id="commitButton"'
         + '             name="commitButton">'
         + '            <input type="button"'
-        + '             value="<?php echo $scorm->version == 'scorm_12' ? 'LMSFinish' : 'Terminate'; ?>()  "'
-        + '             onclick="try<?php echo $scorm->version == 'scorm_12' ? 'LMSFinish' : 'LMSTerminate'; ?>();"'
+        + '             value="<?php echo scorm_version_check($scorm->version, SCORM_12) ? 'LMSFinish' : 'Terminate'; ?>()  "'
+        + '             onclick="try<?php echo scorm_version_check($scorm->version, SCORM_12) ? 'LMSFinish' : 'LMSTerminate'; ?>();"'
         + '             id="finishButton"'
         + '             name="finishButton">'
         + '         </td>'
@@ -714,3 +739,18 @@ function LogAPICall(func, nam, val, rc) {
     s += ' => ' + String(rc);
     AppendToLog(s, rc);
 }
+
+
+// Add in a JS controlled link for toggling the Debug logging
+var logButton = document.createElement('a');
+logButton.id = 'mod-scorm-log-toggle';
+logButton.name = 'logToggle';
+logButton.href = 'javascript:toggleLog();';
+if (getLoggingActive() == "A") {
+    logButton.innerHTML = '<?php print_string('scormloggingon', 'scorm') ?>';
+} else {
+    logButton.innerHTML = '<?php print_string('scormloggingoff', 'scorm') ?>';
+}
+var content = safeGetElement(document, 'scormpage');
+content.insertBefore(logButton, content.firstChild);
+

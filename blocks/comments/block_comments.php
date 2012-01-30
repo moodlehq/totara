@@ -26,12 +26,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Obviously required
-require_once($CFG->dirroot . '/local/comment/lib.php');
+require_once($CFG->dirroot . '/comment/lib.php');
 
 class block_comments extends block_base {
 
     function init() {
-        $this->version = 2009072000;
         $this->title = get_string('pluginname', 'block_comments');
     }
 
@@ -39,7 +38,6 @@ class block_comments extends block_base {
         // require js for commenting
         comment::init();
     }
-
     function applicable_formats() {
         return array('all' => true);
     }
@@ -48,44 +46,36 @@ class block_comments extends block_base {
         return false;
     }
 
-    function instance_allow_config() {
-        return true;
-    }
-
     function get_content() {
-        global $CFG;
-        /*if (!$CFG->usecomments) {
+        global $CFG, $PAGE;
+        if (!$CFG->usecomments) {
             $this->content->text = '';
-            if ($PAGE->user_is_editing()) {
-                $this->content->text = get_string('disabledcomments', 'block_comments');
+            if ($this->page->user_is_editing()) {
+                $this->content->text = get_string('disabledcomments');
             }
             return $this->content;
-        }*/
+        }
         if ($this->content !== NULL) {
             return $this->content;
         }
         if (empty($this->instance)) {
             return null;
         }
-
-        $context = get_context_instance(CONTEXT_BLOCK, $this->instance->id);
         $this->content->footer = '';
         $this->content->text = '';
-        list($context, $course, $cm) = get_context_info_array($context->id);
+        list($context, $course, $cm) = get_context_info_array($PAGE->context->id);
 
         $args = new stdClass;
-        $args->context   = $context;
+        $args->context   = $PAGE->context;
         $args->course    = $course;
-        $args->area      = 'page_comments_block';
+        $args->area      = 'page_comments';
         $args->itemid    = 0;
         $args->component = 'block_comments';
-        $args->commentsperpage  = !empty($this->config->commentsperpage) ? $this->config->commentsperpage : 15;
-        $args->autostart = isset($this->config->autostart) ? $this->config->autostart : 1;
-        $args->notoggle  = isset($this->config->autostart) ? $this->config->autostart : 1;
-        $args->showcount = isset($this->config->autostart) ? !$this->config->autostart : 0;
-        $args->displaycancel = true;
+        $args->linktext  = get_string('showcomments');
+        $args->notoggle  = true;
+        $args->autostart = true;
+        $args->displaycancel = false;
         $comment = new comment($args);
-        //$comment->linktext  = get_string('showcomments', 'block_comments').' ('.$comment->count().')';
         $comment->set_view_permission(true);
 
         $this->content = new stdClass();

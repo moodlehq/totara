@@ -1,66 +1,61 @@
-<?php  // $Id$
-
-///////////////////
-/// DESCRIPTION ///
-///////////////////
-
-/// QUESTION TYPE CLASS //////////////////
-
+<?php
+// This file is part of Moodle - http://moodle.org/
 //
-// The question type 'description' is not really a question type
-// and it therefore often sticks to some kind of odd behaviour
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
- * @package questionbank
- * @subpackage questiontypes
+ * Question type class for the description 'question' type.
+ *
+ * @package    qtype
+ * @subpackage description
+ * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class description_qtype extends default_questiontype {
 
-    function name() {
-        return 'description';
-    }
 
-    function is_usable_by_random() {
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->libdir . '/questionlib.php');
+
+
+/**
+ * The description 'question' type.
+ *
+ * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class qtype_description extends question_type {
+    public function is_real_question_type() {
         return false;
     }
 
-    function save_question($question, $form, $course) {
+    public function is_usable_by_random() {
+        return false;
+    }
+
+    public function can_analyse_responses() {
+        return false;
+    }
+
+    public function save_question($question, $form) {
         // Make very sure that descriptions can'e be created with a grade of
         // anything other than 0.
-        $form->defaultgrade = 0;
-        return parent::save_question($question, $form, $course);
+        $form->defaultmark = 0;
+        return parent::save_question($question, $form);
     }
 
-    function get_question_options(&$question) {
-        // No options to be restored for this question type
-        return true;
-    }
-
-    function save_question_options($question) {
-        /// No options to be saved for this question type:
-        return true;
-    }
-
-    function print_question(&$question, &$state, $number, $cmoptions, $options) {
-        global $CFG;
-        $isfinished = question_state_is_graded($state->last_graded) || $state->event == QUESTION_EVENTCLOSE;
-
-        // For editing teachers print a link to an editing popup window
-        $editlink = $this->get_question_edit_link($question, $cmoptions, $options);
-
-        $questiontext = $this->format_text($question->questiontext, $question->questiontextformat, $cmoptions);
-        $image = get_question_image($question);
-
-        $generalfeedback = '';
-        if ($isfinished && $options->generalfeedback) {
-            $generalfeedback = $this->format_text($question->generalfeedback,
-                    $question->questiontextformat, $cmoptions);
-        }
-
-        include "$CFG->dirroot/question/type/description/question.html";
-    }
-
-    function actual_number_of_questions($question) {
+    public function actual_number_of_questions($question) {
         /// Used for the feature number-of-questions-per-page
         /// to determine the actual number of questions wrapped
         /// by this question.
@@ -69,17 +64,7 @@ class description_qtype extends default_questiontype {
         return 0;
     }
 
-    function grade_responses(&$question, &$state, $cmoptions) {
-        $state->raw_grade = 0;
-        $state->penalty = 0;
-        return true;
+    public function get_random_guess_score($questiondata) {
+        return null;
     }
-
 }
-//// END OF CLASS ////
-
-//////////////////////////////////////////////////////////////////////////
-//// INITIATION - Without this line the question type is not in use... ///
-//////////////////////////////////////////////////////////////////////////
-question_register_questiontype(new description_qtype());
-?>

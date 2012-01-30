@@ -22,8 +22,10 @@ $courseid = required_param('id', PARAM_INT);
 $action   = required_param('action', PARAM_ALPHA);
 $eid      = required_param('eid', PARAM_ALPHANUM);
 
+$PAGE->set_url('/grade/edit/tree/action.php', array('id'=>$courseid, 'action'=>$action, 'eid'=>$eid));
+
 /// Make sure they can even access this course
-if (!$course = get_record('course', 'id', $courseid)) {
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 require_login($course);
@@ -38,7 +40,7 @@ $gtree = new grade_tree($courseid, false, false);
 
 // what are we working with?
 if (!$element = $gtree->locate_element($eid)) {
-    error('Incorrect element id!', $returnurl);
+    print_error('invalidelementid', '', $returnurl);
 }
 $object = $element['object'];
 $type   = $element['type'];
@@ -48,7 +50,7 @@ switch ($action) {
     case 'hide':
         if ($eid and confirm_sesskey()) {
             if (!has_capability('moodle/grade:manage', $context) and !has_capability('moodle/grade:hide', $context)) {
-                error('No permission to hide!', $returnurl);
+                print_error('nopermissiontohide', '', $returnurl);
             }
             if ($type == 'grade' and empty($object->id)) {
                 $object->insert();
@@ -60,7 +62,7 @@ switch ($action) {
     case 'show':
         if ($eid and confirm_sesskey()) {
             if (!has_capability('moodle/grade:manage', $context) and !has_capability('moodle/grade:hide', $context)) {
-                error('No permission to show!', $returnurl);
+                print_error('nopermissiontoshow', '', $returnurl);
             }
             if ($type == 'grade' and empty($object->id)) {
                 $object->insert();
@@ -72,7 +74,7 @@ switch ($action) {
     case 'lock':
         if ($eid and confirm_sesskey()) {
             if (!has_capability('moodle/grade:manage', $context) and !has_capability('moodle/grade:lock', $context)) {
-                error('No permission to lock!', $returnurl);
+                print_error('nopermissiontolock', '', $returnurl);
             }
             if ($type == 'grade' and empty($object->id)) {
                 $object->insert();
@@ -84,7 +86,7 @@ switch ($action) {
     case 'unlock':
         if ($eid and confirm_sesskey()) {
             if (!has_capability('moodle/grade:manage', $context) and !has_capability('moodle/grade:unlock', $context)) {
-                error('No permission to unlock!', $returnurl);
+                print_error('nopermissiontounlock', '', $returnurl);
             }
             if ($type == 'grade' and empty($object->id)) {
                 $object->insert();
@@ -97,4 +99,4 @@ switch ($action) {
 redirect($returnurl);
 //redirect($returnurl, 'debug delay', 5);
 
-?>
+

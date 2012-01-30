@@ -1,4 +1,4 @@
-<?php //$Id$
+<?php
 
 require_once($CFG->dirroot.'/user/filters/lib.php');
 
@@ -34,7 +34,6 @@ class user_filter_simpleselect extends user_filter_type {
     function setupForm(&$mform) {
         $choices = array(''=>get_string('anyvalue', 'filters')) + $this->_options;
         $mform->addElement('select', $this->_name, $this->_label, $choices);
-        $mform->setHelpButton($this->_name, array('simpleselect', $this->_label, 'filters'));
         if ($this->_advanced) {
             $mform->setAdvanced($this->_name);
         }
@@ -58,15 +57,19 @@ class user_filter_simpleselect extends user_filter_type {
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array sql string and $params
      */
     function get_sql_filter($data) {
-        $value = addslashes($data['value']);
+        static $counter = 0;
+        $name = 'ex_simpleselect'.$counter++;
+
+        $value = $data['value'];
+        $params = array();
         $field = $this->_field;
         if ($value == '') {
             return '';
         }
-        return "$field='$value'";
+        return array("$field=:$name", array($name=>$value));
     }
 
     /**
@@ -77,7 +80,7 @@ class user_filter_simpleselect extends user_filter_type {
     function get_label($data) {
         $value = $data['value'];
 
-        $a = new object();
+        $a = new stdClass();
         $a->label    = $this->_label;
         $a->value    = '"'.s($this->_options[$value]).'"';
         $a->operator = get_string('isequalto','filters');

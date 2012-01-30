@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
@@ -30,7 +30,7 @@
  * @author T.J.Hunt@open.ac.uk
  * @author nicolas@moodle.com
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package mod/forum
+ * @package mod-forum
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -40,7 +40,8 @@ if (!defined('MOODLE_INTERNAL')) {
 require_once($CFG->dirroot . '/mod/forum/lib.php');
 
 class modforumlib_test extends UnitTestCase {
-    
+    public static $includecoverage = array('mod/forum/lib.php');
+
     function setUp() {
     }
 
@@ -58,4 +59,4 @@ class modforumlib_test extends UnitTestCase {
     }
 }
 
-?>
+

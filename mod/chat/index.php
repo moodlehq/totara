@@ -1,90 +1,93 @@
-<?php // $Id$
+<?php
 
-    require_once('../../config.php');
-    require_once('lib.php');
+require_once('../../config.php');
+require_once('lib.php');
 
-    $id = required_param('id', PARAM_INT);   // course
+$id = required_param('id', PARAM_INT);   // course
 
-    if (! $course = get_record('course', 'id', $id)) {
-        error('Course ID is incorrect');
-    }
+$PAGE->set_url('/mod/chat/index.php', array('id'=>$id));
 
-    require_course_login($course);
+if (! $course = $DB->get_record('course', array('id'=>$id))) {
+    print_error('invalidcourseid');
+}
 
-    add_to_log($course->id, 'chat', 'view all', "index.php?id=$course->id", '');
+require_course_login($course);
+$PAGE->set_pagelayout('incourse');
+
+add_to_log($course->id, 'chat', 'view all', "index.php?id=$course->id", '');
 
 
 /// Get all required strings
 
-    $strchats = get_string('modulenameplural', 'chat');
-    $strchat  = get_string('modulename', 'chat');
+$strsectionname = get_string('sectionname', 'format_'.$course->format);
+$strchats = get_string('modulenameplural', 'chat');
+$strchat  = get_string('modulename', 'chat');
 
 
 /// Print the header
-
-    $navlinks = array();
-    $navlinks[] = array('name' => $strchats, 'link' => '', 'type' => 'activity');
-    $navigation = build_navigation($navlinks);
-
-    print_header_simple($strchats, '', $navigation, '', '', true, '', navmenu($course));
+$PAGE->navbar->add($strchats);
+$PAGE->set_title($strchats);
+echo $OUTPUT->header();
 
 /// Get all the appropriate data
 
-    if (! $chats = get_all_instances_in_course('chat', $course)) {
-        notice(get_string('thereareno', 'moodle', $strchats), "../../course/view.php?id=$course->id");
-        die();
-    }
+if (! $chats = get_all_instances_in_course('chat', $course)) {
+    notice(get_string('thereareno', 'moodle', $strchats), "../../course/view.php?id=$course->id");
+    die();
+}
+
+$usesections = course_format_uses_sections($course->format);
+if ($usesections) {
+    $sections = get_all_sections($course->id);
+}
 
 /// Print the list of instances (your module will probably extend this)
 
-    $timenow  = time();
-    $strname  = get_string('name');
-    $strweek  = get_string('week');
-    $strtopic = get_string('topic');
+$timenow  = time();
+$strname  = get_string('name');
 
-    if ($course->format == 'weeks') {
-        $table->head  = array ($strweek, $strname);
-        $table->align = array ('center', 'left');
-    } else if ($course->format == 'topics') {
-        $table->head  = array ($strtopic, $strname);
-        $table->align = array ('center', 'left', 'left', 'left');
+$table = new html_table();
+
+if ($usesections) {
+    $table->head  = array ($strsectionname, $strname);
+    $table->align = array ('center', 'left');
+} else {
+    $table->head  = array ($strname);
+    $table->align = array ('left');
+}
+
+$currentsection = '';
+foreach ($chats as $chat) {
+    if (!$chat->visible) {
+        //Show dimmed if the mod is hidden
+        $link = "<a class=\"dimmed\" href=\"view.php?id=$chat->coursemodule\">".format_string($chat->name,true)."</a>";
     } else {
-        $table->head  = array ($strname);
-        $table->align = array ('left', 'left', 'left');
+        //Show normal if the mod is visible
+        $link = "<a href=\"view.php?id=$chat->coursemodule\">".format_string($chat->name,true)."</a>";
     }
-
-    $currentsection = '';
-    foreach ($chats as $chat) {
-        if (!$chat->visible) {
-            //Show dimmed if the mod is hidden
-            $link = "<a class=\"dimmed\" href=\"view.php?id=$chat->coursemodule\">".format_string($chat->name,true)."</a>";
-        } else {
-            //Show normal if the mod is visible
-            $link = "<a href=\"view.php?id=$chat->coursemodule\">".format_string($chat->name,true)."</a>";
+    $printsection = '';
+    if ($chat->section !== $currentsection) {
+        if ($chat->section) {
+            $printsection = get_section_name($course, $sections[$chat->section]);
         }
-        $printsection = '';
-        if ($chat->section !== $currentsection) {
-            if ($chat->section) {
-                $printsection = $chat->section;
-            }
-            if ($currentsection !== '') {
-                $table->data[] = 'hr';
-            }
-            $currentsection = $chat->section;
+        if ($currentsection !== '') {
+            $table->data[] = 'hr';
         }
-        if ($course->format == 'weeks' or $course->format == 'topics') {
-            $table->data[] = array ($printsection, $link);
-        } else {
-            $table->data[] = array ($link);
-        }
+        $currentsection = $chat->section;
     }
+    if ($usesections) {
+        $table->data[] = array ($printsection, $link);
+    } else {
+        $table->data[] = array ($link);
+    }
+}
 
-    echo '<br />';
+echo '<br />';
 
-    print_table($table);
+echo html_writer::table($table);
 
 /// Finish the page
 
-    print_footer($course);
+echo $OUTPUT->footer();
 
-?>
+

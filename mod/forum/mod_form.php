@@ -1,11 +1,37 @@
 <?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package mod-forum
+ * @copyright Jamie Pratt <me@jamiep.org>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 
 class mod_forum_mod_form extends moodleform_mod {
 
     function definition() {
+        global $CFG, $COURSE, $DB;
 
-        global $CFG, $COURSE;
         $mform    =& $this->_form;
 
 //-------------------------------------------------------------------------------
@@ -15,7 +41,7 @@ class mod_forum_mod_form extends moodleform_mod {
         if (!empty($CFG->formatstringstriptags)) {
         $mform->setType('name', PARAM_TEXT);
         } else {
-            $mform->setType('name', PARAM_CLEAN);
+            $mform->setType('name', PARAM_CLEANHTML);
         }
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
@@ -24,35 +50,37 @@ class mod_forum_mod_form extends moodleform_mod {
 
         asort($forum_types);
         $mform->addElement('select', 'type', get_string('forumtype', 'forum'), $forum_types);
-        $mform->setHelpButton('type', array('forumtype', get_string('forumtype', 'forum'), 'forum'));
+        $mform->addHelpButton('type', 'forumtype', 'forum');
         $mform->setDefault('type', 'general');
 
-        $mform->addElement('htmleditor', 'intro', get_string('forumintro', 'forum'));
-        $mform->setType('intro', PARAM_RAW);
-        $mform->addRule('intro', get_string('required'), 'required', null, 'client');
-        $mform->setHelpButton('intro', array('writing', 'questions', 'richtext'), false, 'editorhelpbutton');
+        $this->add_intro_editor(true, get_string('forumintro', 'forum'));
 
         $options = array();
-        $options[0] = get_string('no');
-        $options[1] = get_string('yesforever', 'forum');
-        $options[FORUM_INITIALSUBSCRIBE] = get_string('yesinitially', 'forum');
-        $options[FORUM_DISALLOWSUBSCRIBE] = get_string('disallowsubscribe','forum');
-        $mform->addElement('select', 'forcesubscribe', get_string('forcesubscribeq', 'forum'), $options);
-        $mform->setHelpButton('forcesubscribe', array('subscription2', get_string('forcesubscribeq', 'forum'), 'forum'));
+        $options[FORUM_CHOOSESUBSCRIBE] = get_string('subscriptionoptional', 'forum');
+        $options[FORUM_FORCESUBSCRIBE] = get_string('subscriptionforced', 'forum');
+        $options[FORUM_INITIALSUBSCRIBE] = get_string('subscriptionauto', 'forum');
+        $options[FORUM_DISALLOWSUBSCRIBE] = get_string('subscriptiondisabled','forum');
+        $mform->addElement('select', 'forcesubscribe', get_string('subscriptionmode', 'forum'), $options);
+        $mform->addHelpButton('forcesubscribe', 'subscriptionmode', 'forum');
 
         $options = array();
         $options[FORUM_TRACKING_OPTIONAL] = get_string('trackingoptional', 'forum');
         $options[FORUM_TRACKING_OFF] = get_string('trackingoff', 'forum');
         $options[FORUM_TRACKING_ON] = get_string('trackingon', 'forum');
         $mform->addElement('select', 'trackingtype', get_string('trackingtype', 'forum'), $options);
-        $mform->setHelpButton('trackingtype', array('trackingtype', get_string('trackingtype', 'forum'), 'forum'));
+        $mform->addHelpButton('trackingtype', 'trackingtype', 'forum');
 
         $choices = get_max_upload_sizes($CFG->maxbytes, $COURSE->maxbytes);
         $choices[1] = get_string('uploadnotallowed');
         $choices[0] = get_string('courseuploadlimit') . ' ('.display_size($COURSE->maxbytes).')';
         $mform->addElement('select', 'maxbytes', get_string('maxattachmentsize', 'forum'), $choices);
-        $mform->setHelpButton('maxbytes', array('maxattachmentsize', get_string('maxattachmentsize', 'forum'), 'forum'));
+        $mform->addHelpButton('maxbytes', 'maxattachmentsize', 'forum');
         $mform->setDefault('maxbytes', $CFG->forum_maxbytes);
+
+        $choices = array(0,1,2,3,4,5,6,7,8,9,10,20,50,100);
+        $mform->addElement('select', 'maxattachments', get_string('maxattachments', 'forum'), $choices);
+        $mform->addHelpButton('maxattachments', 'maxattachments', 'forum');
+        $mform->setDefault('maxattachments', $CFG->forum_maxattachments);
 
         if ($CFG->enablerssfeeds && isset($CFG->forum_enablerssfeeds) && $CFG->forum_enablerssfeeds) {
 //-------------------------------------------------------------------------------
@@ -62,7 +90,7 @@ class mod_forum_mod_form extends moodleform_mod {
             $choices[1] = get_string('discussions', 'forum');
             $choices[2] = get_string('posts', 'forum');
             $mform->addElement('select', 'rsstype', get_string('rsstype'), $choices);
-            $mform->setHelpButton('rsstype', array('rsstype', get_string('rsstype'), 'forum'));
+            $mform->addHelpButton('rsstype', 'rsstype', 'forum');
 
             $choices = array();
             $choices[0] = '0';
@@ -79,30 +107,8 @@ class mod_forum_mod_form extends moodleform_mod {
             $choices[40] = '40';
             $choices[50] = '50';
             $mform->addElement('select', 'rssarticles', get_string('rssarticles'), $choices);
-            $mform->setHelpButton('rssarticles', array('rssarticles', get_string('rssarticles'), 'forum'));
+            $mform->addHelpButton('rssarticles', 'rssarticles', 'forum');
         }
-
-//-------------------------------------------------------------------------------
-        $mform->addElement('header', '', get_string('grade'));
-
-        $mform->addElement('select', 'assessed', get_string('aggregatetype', 'forum') , forum_get_aggregate_types());
-        $mform->setDefault('assessed', 0);
-        $mform->setHelpButton('assessed', array('assessaggregate', get_string('aggregatetype', 'forum'), 'forum'));
-
-        $mform->addElement('modgrade', 'scale', get_string('grade'), false);
-        $mform->disabledIf('scale', 'assessed', 'eq', 0);
-
-        $mform->addElement('checkbox', 'ratingtime', get_string('ratingtime', 'forum'));
-        $mform->disabledIf('ratingtime', 'assessed', 'eq', 0);
-
-        $mform->addElement('date_time_selector', 'assesstimestart', get_string('from'));
-        $mform->disabledIf('assesstimestart', 'assessed', 'eq', 0);
-        $mform->disabledIf('assesstimestart', 'ratingtime');
-
-        $mform->addElement('date_time_selector', 'assesstimefinish', get_string('to'));
-        $mform->disabledIf('assesstimefinish', 'assessed', 'eq', 0);
-        $mform->disabledIf('assesstimefinish', 'ratingtime');
-
 
 //-------------------------------------------------------------------------------
         $mform->addElement('header', '', get_string('blockafter', 'forum'));
@@ -115,14 +121,14 @@ class mod_forum_mod_form extends moodleform_mod {
         $options[60*60*24*5] = '5 '.get_string('days');
         $options[60*60*24*6] = '6 '.get_string('days');
         $options[60*60*24*7] = '1 '.get_string('week');
-        $mform->addElement('select', 'blockperiod', get_string("blockperiod", "forum") , $options);
-        $mform->setHelpButton('blockperiod', array('manageposts', get_string('blockperiod', 'forum'),'forum'));
+        $mform->addElement('select', 'blockperiod', get_string('blockperiod', 'forum'), $options);
+        $mform->addHelpButton('blockperiod', 'blockperiod', 'forum');
 
         $mform->addElement('text', 'blockafter', get_string('blockafter', 'forum'));
         $mform->setType('blockafter', PARAM_INT);
         $mform->setDefault('blockafter', '0');
         $mform->addRule('blockafter', null, 'numeric', null, 'client');
-        $mform->setHelpButton('blockafter', array('manageposts', get_string('blockafter', 'forum'),'forum'));
+        $mform->addHelpButton('blockafter', 'blockafter', 'forum');
         $mform->disabledIf('blockafter', 'blockperiod', 'eq', 0);
 
 
@@ -130,22 +136,21 @@ class mod_forum_mod_form extends moodleform_mod {
         $mform->setType('warnafter', PARAM_INT);
         $mform->setDefault('warnafter', '0');
         $mform->addRule('warnafter', null, 'numeric', null, 'client');
-        $mform->setHelpButton('warnafter', array('manageposts', get_string('warnafter', 'forum'),'forum'));
+        $mform->addHelpButton('warnafter', 'warnafter', 'forum');
         $mform->disabledIf('warnafter', 'blockperiod', 'eq', 0);
 
 //-------------------------------------------------------------------------------
-        $features = new stdClass;
-        $features->groups = true;
-        $features->groupings = true;
-        $features->groupmembersonly = true;
-        $this->standard_coursemodule_elements($features);
+
+        $this->standard_grading_coursemodule_elements();
+
+        $this->standard_coursemodule_elements();
 //-------------------------------------------------------------------------------
 // buttons
         $this->add_action_buttons();
 
     }
 
-    function definition_after_data(){
+    function definition_after_data() {
         parent::definition_after_data();
         $mform     =& $this->_form;
         $type      =& $mform->getElement('type');
@@ -153,13 +158,13 @@ class mod_forum_mod_form extends moodleform_mod {
 
         //we don't want to have these appear as possible selections in the form but
         //we want the form to display them if they are set.
-        if ($typevalue[0]=='news'){
+        if ($typevalue[0]=='news') {
             $type->addOption(get_string('namenews', 'forum'), 'news');
-            $type->setHelpButton(array('forumtypenews', get_string('forumtype', 'forum'), 'forum'));
+            $mform->addHelpButton('type', 'namenews', 'forum');
             $type->freeze();
             $type->setPersistantFreeze(true);
         }
-        if ($typevalue[0]=='social'){
+        if ($typevalue[0]=='social') {
             $type->addOption(get_string('namesocial', 'forum'), 'social');
             $type->freeze();
             $type->setPersistantFreeze(true);
@@ -167,39 +172,30 @@ class mod_forum_mod_form extends moodleform_mod {
 
     }
 
-    function data_preprocessing(&$default_values){
-        if (empty($default_values['scale'])){
-            $default_values['assessed'] = 0;
-        }
-
-        if (empty($default_values['assessed'])){
-            $default_values['ratingtime'] = 0;
-        } else {
-            $default_values['ratingtime']=
-                ($default_values['assesstimestart'] && $default_values['assesstimefinish']) ? 1 : 0;
-        }
+    function data_preprocessing(&$default_values) {
+        parent::data_preprocessing($default_values);
 
         // Set up the completion checkboxes which aren't part of standard data.
         // We also make the default value (if you turn on the checkbox) for those
         // numbers to be 1, this will not apply unless checkbox is ticked.
         $default_values['completiondiscussionsenabled']=
             !empty($default_values['completiondiscussions']) ? 1 : 0;
-        if(empty($default_values['completiondiscussions'])) {
+        if (empty($default_values['completiondiscussions'])) {
             $default_values['completiondiscussions']=1;
         }
         $default_values['completionrepliesenabled']=
             !empty($default_values['completionreplies']) ? 1 : 0;
-        if(empty($default_values['completionreplies'])) {
+        if (empty($default_values['completionreplies'])) {
             $default_values['completionreplies']=1;
         }
         $default_values['completionpostsenabled']=
             !empty($default_values['completionposts']) ? 1 : 0;
-        if(empty($default_values['completionposts'])) {
+        if (empty($default_values['completionposts'])) {
             $default_values['completionposts']=1;
         }
     }
 
-	  function add_completion_rules() {
+      function add_completion_rules() {
         $mform =& $this->_form;
 
         $group=array();
@@ -207,7 +203,6 @@ class mod_forum_mod_form extends moodleform_mod {
         $group[] =& $mform->createElement('text', 'completionposts', '', array('size'=>3));
         $mform->setType('completionposts',PARAM_INT);
         $mform->addGroup($group, 'completionpostsgroup', get_string('completionpostsgroup','forum'), array(' '), false);
-        $mform->setHelpButton('completionpostsgroup', array('completion', get_string('completionpostshelp', 'forum'), 'forum'));
         $mform->disabledIf('completionposts','completionpostsenabled','notchecked');
 
         $group=array();
@@ -215,7 +210,6 @@ class mod_forum_mod_form extends moodleform_mod {
         $group[] =& $mform->createElement('text', 'completiondiscussions', '', array('size'=>3));
         $mform->setType('completiondiscussions',PARAM_INT);
         $mform->addGroup($group, 'completiondiscussionsgroup', get_string('completiondiscussionsgroup','forum'), array(' '), false);
-        $mform->setHelpButton('completiondiscussionsgroup', array('completion', get_string('completiondiscussionshelp', 'forum'), 'forum'));
         $mform->disabledIf('completiondiscussions','completiondiscussionsenabled','notchecked');
 
         $group=array();
@@ -223,7 +217,6 @@ class mod_forum_mod_form extends moodleform_mod {
         $group[] =& $mform->createElement('text', 'completionreplies', '', array('size'=>3));
         $mform->setType('completionreplies',PARAM_INT);
         $mform->addGroup($group, 'completionrepliesgroup', get_string('completionrepliesgroup','forum'), array(' '), false);
-        $mform->setHelpButton('completionrepliesgroup', array('completion', get_string('completionreplieshelp', 'forum'), 'forum'));
         $mform->disabledIf('completionreplies','completionrepliesenabled','notchecked');
 
         return array('completiondiscussionsgroup','completionrepliesgroup','completionpostsgroup');
@@ -235,23 +228,23 @@ class mod_forum_mod_form extends moodleform_mod {
             (!empty($data['completionpostsenabled']) && $data['completionposts']!=0);
     }
 
-    function get_data($slashed=true) {
-        $data=parent::get_data($slashed);
-        if(!$data) {
+    function get_data() {
+        $data = parent::get_data();
+        if (!$data) {
             return false;
         }
         // Turn off completion settings if the checkboxes aren't ticked
-        $autocompletion=!empty($data->completion) && $data->completion==COMPLETION_TRACKING_AUTOMATIC;
-        if(empty($data->completiondiscussionsenabled) || !$autocompletion) {
-            $data->completiondiscussions=0;
+        $autocompletion = !empty($data->completion) && $data->completion==COMPLETION_TRACKING_AUTOMATIC;
+        if (empty($data->completiondiscussionsenabled) || !$autocompletion) {
+            $data->completiondiscussions = 0;
         }
-        if(empty($data->completionrepliesenabled) || !$autocompletion) {
-            $data->completionreplies=0;
+        if (empty($data->completionrepliesenabled) || !$autocompletion) {
+            $data->completionreplies = 0;
         }
-        if(empty($data->completionpostsenabled) || !$autocompletion) {
-            $data->completionposts=0;
+        if (empty($data->completionpostsenabled) || !$autocompletion) {
+            $data->completionposts = 0;
         }
         return $data;
     }
 }
-?>
+

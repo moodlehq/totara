@@ -15,13 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once '../../../config.php';
-require_once 'lib.php';
-require_once 'grade_import_form.php';
+require_once('../../../config.php');
+require_once('lib.php');
+require_once('grade_import_form.php');
 
 $id = required_param('id', PARAM_INT); // course id
 
-if (!$course = get_record('course', 'id', $id)) {
+$PAGE->set_url(new moodle_url('/grade/import/xml/index.php', array('id'=>$id)));
+$PAGE->set_pagelayout('admin');
+
+if (!$course = $DB->get_record('course', array('id'=>$id))) {
     print_error('nocourseid');
 }
 
@@ -32,7 +35,7 @@ require_capability('gradeimport/xml:view', $context);
 
 // print header
 $strgrades = get_string('grades', 'grades');
-$actionstr = get_string('modulename', 'gradeimport_xml');
+$actionstr = get_string('pluginname', 'gradeimport_xml');
 
 if (!empty($CFG->gradepublishing)) {
     $CFG->gradepublishing = has_capability('gradeimport/xml:publish', $context);
@@ -45,25 +48,21 @@ if ($data = $mform->get_data()) {
     // that we'll take longer, and that the process should be recycled soon
     // to free up memory.
     @set_time_limit(0);
-    @raise_memory_limit("256M");
-    if (function_exists('apache_child_terminate')) {
-        @apache_child_terminate();
-    }
+    raise_memory_limit(MEMORY_EXTRA);
 
     if ($text = $mform->get_file_content('userfile')) {
-
         print_grade_page_head($COURSE->id, 'import', 'xml', get_string('importxml', 'grades'));
 
         $error = '';
         $importcode = import_xml_grades($text, $course, $error);
         if ($importcode) {
             grade_import_commit($id, $importcode, $data->feedback, true);
-            print_footer();
+            echo $OUTPUT->footer();
             die;
         } else {
-            notify($error);
-            print_continue($CFG->wwwroot.'/grade/index.php?id='.$course->id);
-            print_footer();
+            echo $OUTPUT->notification($error);
+            echo $OUTPUT->continue_button($CFG->wwwroot.'/grade/index.php?id='.$course->id);
+            echo $OUTPUT->footer();
             die;
         }
 
@@ -81,7 +80,7 @@ if ($data = $mform->get_data()) {
         $link = $CFG->wwwroot.'/grade/import/xml/fetch.php?id='.$id.'&amp;feedback='.(int)($data->feedback).'&amp;url='.urlencode($data->url).'&amp;key='.$data->key;
         echo get_string('import', 'grades').': <a href="'.$link.'">'.$link.'</a>';
         echo '</div>';
-        print_footer();
+        echo $OUTPUT->footer();
         die;
     }
 }
@@ -90,6 +89,6 @@ print_grade_page_head($COURSE->id, 'import', 'xml', get_string('importxml', 'gra
 
 $mform->display();
 
-print_footer();
+echo $OUTPUT->footer();
 
-?>
+

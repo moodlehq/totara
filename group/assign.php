@@ -1,18 +1,40 @@
-<?php  // $Id$
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Add/remove group from grouping.
+ *
+ * @copyright 1999 Martin Dougiamas  http://dougiamas.com
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @package groups
  */
+
 require_once('../config.php');
 require_once('lib.php');
 
 $groupingid = required_param('id', PARAM_INT);
 
-if (!$grouping = get_record('groupings', 'id', $groupingid)) {
-    error('Incorrect group id');
+$PAGE->set_url('/group/assign.php', array('id'=>$groupingid));
+
+if (!$grouping = $DB->get_record('groupings', array('id'=>$groupingid))) {
+    print_error('invalidgroupid');
 }
 
-if (! $course = get_record('course', 'id', $grouping->courseid)) {
+if (!$course = $DB->get_record('course', array('id'=>$grouping->courseid))) {
     print_error('invalidcourse');
 }
 $courseid = $course->id;
@@ -45,8 +67,8 @@ if ($frm = data_submitted() and confirm_sesskey()) {
 $currentmembers = array();
 $potentialmembers  = array();
 
-if ($groups = get_records('groups', 'courseid', $courseid, 'name')) {
-    if ($assignment = get_records('groupings_groups', 'groupingid', $grouping->id)) {
+if ($groups = $DB->get_records('groups', array('courseid'=>$courseid), 'name')) {
+    if ($assignment = $DB->get_records('groupings_groups', array('groupingid'=>$grouping->id))) {
         foreach ($assignment as $ass) {
             $currentmembers[$ass->groupid] = $groups[$ass->groupid];
             unset($groups[$ass->groupid]);
@@ -63,13 +85,12 @@ if ($currentmembers) {
         $currentmemberscount ++;
     }
 
-    // Get course managers so they can be hilited in the list
-    if ($managerroles = get_config('', 'coursemanager')) {
-        $coursemanagerroles = split(',', $managerroles);
-        foreach ($coursemanagerroles as $roleid) {
-            $role = get_record('role','id',$roleid);
-            $canseehidden = has_capability('moodle/role:viewhiddenassigns', $context);
-            $managers = get_role_users($roleid, $context, true, 'u.id', 'u.id ASC', $canseehidden);
+    // Get course managers so they can be highlighted in the list
+    if ($managerroles = get_config('', 'coursecontact')) {
+        $coursecontactroles = explode(',', $managerroles);
+        foreach ($coursecontactroles as $roleid) {
+            $role = $DB->get_record('role', array('id'=>$roleid));
+            $managers = get_role_users($roleid, $context, true, 'u.id', 'u.id ASC');
         }
     }
 } else {
@@ -94,13 +115,17 @@ $straddgroupstogroupings = get_string('addgroupstogroupings', 'group');
 
 $groupingname = format_string($grouping->name);
 
-$navlinks = array();
-$navlinks[] = array('name' => $strparticipants, 'link' => "$CFG->wwwroot/user/index.php?id=$courseid", 'type' => 'misc');
-$navlinks[] = array('name' => $strgroups, 'link' => "$CFG->wwwroot/group/index.php?id=$courseid", 'type' => 'misc');
-$navlinks[] = array('name' => $straddgroupstogroupings, 'link' => null, 'type' => 'misc');
-$navigation = build_navigation($navlinks);
+navigation_node::override_active_url(new moodle_url('/group/index.php', array('id'=>$course->id)));
+$PAGE->set_pagelayout('standard');
 
-print_header("$course->shortname: $strgroups", $course->fullname, $navigation, '', '', true, '', user_login_string($course, $USER));
+$PAGE->navbar->add($strparticipants, new moodle_url('/user/index.php', array('id'=>$courseid)));
+$PAGE->navbar->add($strgroups, new moodle_url('/group/index.php', array('id'=>$courseid)));
+$PAGE->navbar->add($straddgroupstogroupings);
+
+/// Print header
+$PAGE->set_title("$course->shortname: $strgroups");
+$PAGE->set_heading($course->fullname);
+echo $OUTPUT->header();
 
 ?>
 <div id="addmembersform">
@@ -113,7 +138,7 @@ print_header("$course->shortname: $strgroups", $course->fullname, $navigation, '
     <table summary="" cellpadding="5" cellspacing="0">
     <tr>
       <td valign="top">
-          <label for="removeselect"><?php print_string('existingmembers', 'group', $currentmemberscount); //count($contextusers) ?></label>
+          <label for="removeselect"><?php print_string('existingmembers', 'group', $currentmemberscount); ?></label>
           <br />
           <select name="removeselect[]" size="20" id="removeselect" multiple="multiple"
                   onfocus="document.getElementById('assignform').add.disabled=true;
@@ -123,15 +148,14 @@ print_header("$course->shortname: $strgroups", $course->fullname, $navigation, '
           </select></td>
       <td valign="top">
 
-        <?php check_theme_arrows(); ?>
         <p class="arrow_button">
-            <input name="add" id="add" type="submit" value="<?php echo '&nbsp;'.$THEME->larrow.' &nbsp; &nbsp; '.get_string('add'); ?>" title="<?php print_string('add'); ?>" />
+            <input name="add" id="add" type="submit" value="<?php echo '&nbsp;'.$OUTPUT->larrow().' &nbsp; &nbsp; '.get_string('add'); ?>" title="<?php print_string('add'); ?>" />
             <br />
-            <input name="remove" id="remove" type="submit" value="<?php echo '&nbsp; '.$THEME->rarrow.' &nbsp; &nbsp; '.get_string('remove'); ?>" title="<?php print_string('remove'); ?>" />
+            <input name="remove" id="remove" type="submit" value="<?php echo '&nbsp; '.$OUTPUT->rarrow().' &nbsp; &nbsp; '.get_string('remove'); ?>" title="<?php print_string('remove'); ?>" />
         </p>
       </td>
       <td valign="top">
-          <label for="addselect"><?php print_string('potentialmembers', 'group', $potentialmemberscount); //$usercount ?></label>
+          <label for="addselect"><?php print_string('potentialmembers', 'group', $potentialmemberscount); ?></label>
           <br />
           <select name="addselect[]" size="20" id="addselect" multiple="multiple"
                   onfocus="document.getElementById('assignform').add.disabled=false;
@@ -151,7 +175,4 @@ print_header("$course->shortname: $strgroups", $course->fullname, $navigation, '
 </div>
 
 <?php
-    print_footer($course);
-
-
-?>
+    echo $OUTPUT->footer();

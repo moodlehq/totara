@@ -27,7 +27,7 @@ $updatedgradesonly = optional_param('updatedgradesonly', false, PARAM_BOOL);
 $displaytype       = optional_param('displaytype', $CFG->grade_export_displaytype, PARAM_INT);
 $decimalpoints     = optional_param('decimalpoints', $CFG->grade_export_decimalpoints, PARAM_INT);
 
-if (!$course = get_record('course', 'id', $id)) {
+if (!$course = $DB->get_record('course', array('id'=>$id))) {
     print_error('nocourseid');
 }
 
@@ -47,4 +47,4 @@ if (groups_get_course_groupmode($COURSE) == SEPARATEGROUPS and !has_capability('
 $export = new grade_export_ods($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints);
 $export->print_grades();
 
-?>
+

@@ -1,4 +1,20 @@
-<?php // $Id$
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+
 /**
  * Page to edit quizzes
  *
@@ -19,374 +35,545 @@
  * delete       Removes a question from the quiz
  * savechanges  Saves the order and grades for questions in the quiz
  *
- * @author Martin Dougiamas and many others. This has recently been extensively
- *         rewritten by Gustav Delius and other members of the Serving Mathematics project
- *         {@link http://maths.york.ac.uk/serving_maths}
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package quiz
+ * @package    mod
+ * @subpackage quiz
+ * @copyright  1999 onwards Martin Dougiamas and others {@link http://moodle.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-    require_once("../../config.php");
-    require_once($CFG->dirroot.'/mod/quiz/editlib.php');
-
-    /**
-     * Callback function called from question_list() function (which is called from showbank())
-     * Displays action icon as first action for each question.
-     */
-    function module_specific_actions($pageurl, $questionid, $cmid, $canuse){
-        global $CFG;
-        if ($canuse){
-            // for RTL languages: switch right and left arrows /****/
-            if (right_to_left()) { 
-                $movearrow = 'removeright.gif'; 
-            } else { 
-                $movearrow = 'moveleft.gif'; 
-            } 
-            $straddtoquiz = get_string("addtoquiz", "quiz");
-            $out = "<a title=\"$straddtoquiz\" href=\"edit.php?".$pageurl->get_query_string()."&amp;addquestion=$questionid&amp;sesskey=".sesskey()."\"><img
-                  src=\"$CFG->pixpath/t/$movearrow\" alt=\"$straddtoquiz\" /></a>&nbsp;";
-            return $out;
-        } else {
-            return '';
-        }
-    }
-    /**
-     * Callback function called from question_list() function (which is called from showbank())
-     * Displays button in form with checkboxes for each question.
-     */
-    function module_specific_buttons($cmid){
-        global $THEME;
-        $straddtoquiz = get_string("addtoquiz", "quiz");
-        $out = "<input type=\"submit\" name=\"add\" value=\"{$THEME->larrow} $straddtoquiz\" />\n";
-        return $out;
-    }
 
 
-    /**
-     * Callback function called from question_list() function (which is called from showbank())
-     */
-    function module_specific_controls($totalnumber, $recurse, $category, $cmid){
-        global $QTYPES;
-        $out = '';
-        $catcontext = get_context_instance_by_id($category->contextid);
-        if (has_capability('moodle/question:useall', $catcontext)){
-            $randomusablequestions = $QTYPES['random']->get_usable_questions_from_category(
-                    $category->id, $recurse, '0');
-            $maxrand = count($randomusablequestions);
-            if ($maxrand > 0) {
-                for ($i = 1;$i <= min(10, $maxrand); $i++) {
-                    $randomcount[$i] = $i;
-                }
-                for ($i = 20;$i <= min(100, $maxrand); $i += 10) {
-                    $randomcount[$i] = $i;
-                }
-                $out .= '<br />';
-                $out .= get_string('addrandom', 'quiz', choose_from_menu($randomcount, 'randomcount', '1', '', '', '', true));
-                $out .= '<input type="hidden" name="recurse" value="'.$recurse.'" />';
-                $out .= '<input type="hidden" name="categoryid" value="'.$category->id.'" />';
-                $out .= ' <input type="submit" name="addrandom" value="'. get_string('add') .'" />';
-                $out .= helpbutton('random', get_string('random', 'quiz'), 'quiz', true, false, '', true);
-            }
-        }
-        return $out;
-    }
+require_once('../../config.php');
+require_once($CFG->dirroot . '/mod/quiz/editlib.php');
+require_once($CFG->dirroot . '/mod/quiz/addrandomform.php');
+require_once($CFG->dirroot . '/question/category_class.php');
 
-    list($thispageurl, $contexts, $cmid, $cm, $quiz, $pagevars) = question_edit_setup('editq', true);
 
-    //these params are only passed from page request to request while we stay on this page
-    //otherwise they would go in question_edit_setup
-    $quiz_showbreaks = optional_param('showbreaks', -1, PARAM_BOOL);
-    $quiz_reordertool = optional_param('reordertool', 0, PARAM_BOOL);
-    if ($quiz_showbreaks > -1) {
-        $thispageurl->param('showbreaks', $quiz_showbreaks);
+/**
+ * Callback function called from question_list() function
+ * (which is called from showbank())
+ * Displays button in form with checkboxes for each question.
+ */
+function module_specific_buttons($cmid, $cmoptions) {
+    global $OUTPUT;
+    if ($cmoptions->hasattempts) {
+        $disabled = 'disabled="disabled" ';
     } else {
-        $quiz_showbreaks = ($CFG->quiz_questionsperpage < 2) ? 0 : 1;
+        $disabled = '';
     }
-    if ($quiz_reordertool != 0) {
-        $thispageurl->param('reordertool', $quiz_reordertool);
+    $out = '<input type="submit" name="add" value="' . $OUTPUT->larrow() . ' ' .
+            get_string('addtoquiz', 'quiz') . '" ' . $disabled . "/>\n";
+    return $out;
+}
+
+/**
+ * Callback function called from question_list() function
+ * (which is called from showbank())
+ */
+function module_specific_controls($totalnumber, $recurse, $category, $cmid, $cmoptions) {
+    global $OUTPUT;
+    $out = '';
+    $catcontext = get_context_instance_by_id($category->contextid);
+    if (has_capability('moodle/question:useall', $catcontext)) {
+        if ($cmoptions->hasattempts) {
+            $disabled = ' disabled="disabled"';
+        } else {
+            $disabled = '';
+        }
+        $randomusablequestions =
+                question_bank::get_qtype('random')->get_available_questions_from_category(
+                        $category->id, $recurse);
+        $maxrand = count($randomusablequestions);
+        if ($maxrand > 0) {
+            for ($i = 1; $i <= min(10, $maxrand); $i++) {
+                $randomcount[$i] = $i;
+            }
+            for ($i = 20; $i <= min(100, $maxrand); $i += 10) {
+                $randomcount[$i] = $i;
+            }
+        } else {
+            $randomcount[0] = 0;
+            $disabled = ' disabled="disabled"';
+        }
+
+        $out = '<strong><label for="menurandomcount">'.get_string('addrandomfromcategory', 'quiz').
+                '</label></strong><br />';
+        $attributes = array();
+        $attributes['disabled'] = $disabled ? 'disabled' : null;
+        $select = html_writer::select($randomcount, 'randomcount', '1', null, $attributes);
+        $out .= get_string('addrandom', 'quiz', $select);
+        $out .= '<input type="hidden" name="recurse" value="'.$recurse.'" />';
+        $out .= '<input type="hidden" name="categoryid" value="' . $category->id . '" />';
+        $out .= ' <input type="submit" name="addrandom" value="'.
+                get_string('addtoquiz', 'quiz').'"' . $disabled . ' />';
+        $out .= $OUTPUT->help_icon('addarandomquestion', 'quiz');
     }
+    return $out;
+}
 
-    $strquizzes = get_string('modulenameplural', 'quiz');
-    $strquiz = get_string('modulename', 'quiz');
-    $streditingquestions = get_string('editquestions', "quiz");
-    $streditingquiz = get_string('editinga', 'moodle', $strquiz);
+//these params are only passed from page request to request while we stay on
+//this page otherwise they would go in question_edit_setup
+$quiz_reordertool = optional_param('reordertool', -1, PARAM_BOOL);
+$quiz_qbanktool = optional_param('qbanktool', -1, PARAM_BOOL);
+$scrollpos = optional_param('scrollpos', '', PARAM_INT);
 
-    // Get the course object and related bits.
-    if (! $course = get_record("course", "id", $quiz->course)) {
-        error("This course doesn't exist");
-    }
+list($thispageurl, $contexts, $cmid, $cm, $quiz, $pagevars) =
+        question_edit_setup('editq', '/mod/quiz/edit.php', true);
+$quiz->questions = quiz_clean_layout($quiz->questions);
 
-    // Log this visit.
-    add_to_log($cm->course, 'quiz', 'editquestions',
+$defaultcategoryobj = question_make_default_categories($contexts->all());
+$defaultcategory = $defaultcategoryobj->id . ',' . $defaultcategoryobj->contextid;
+
+if ($quiz_qbanktool > -1) {
+    $thispageurl->param('qbanktool', $quiz_qbanktool);
+    set_user_preference('quiz_qbanktool_open', $quiz_qbanktool);
+} else {
+    $quiz_qbanktool = get_user_preferences('quiz_qbanktool_open', 0);
+}
+
+if ($quiz_reordertool > -1) {
+    $thispageurl->param('reordertool', $quiz_reordertool);
+    set_user_preference('quiz_reordertab', $quiz_reordertool);
+} else {
+    $quiz_reordertool = get_user_preferences('quiz_reordertab', 0);
+}
+
+//will be set further down in the code
+$quizhasattempts = quiz_has_attempts($quiz->id);
+
+$PAGE->set_url($thispageurl);
+
+$pagetitle = get_string('editingquiz', 'quiz');
+if ($quiz_reordertool) {
+    $pagetitle = get_string('orderingquiz', 'quiz');
+}
+// Get the course object and related bits.
+$course = $DB->get_record('course', array('id' => $quiz->course));
+if (!$course) {
+    print_error('invalidcourseid', 'error');
+}
+
+$questionbank = new quiz_question_bank_view($contexts, $thispageurl, $course, $cm, $quiz);
+$questionbank->set_quiz_has_attempts($quizhasattempts);
+
+// Log this visit.
+add_to_log($cm->course, 'quiz', 'editquestions',
             "view.php?id=$cm->id", "$quiz->id", $cm->id);
 
-    //you need mod/quiz:manage in addition to question capabilities to access this page.
-    require_capability('mod/quiz:manage', $contexts->lowest());
+// You need mod/quiz:manage in addition to question capabilities to access this page.
+require_capability('mod/quiz:manage', $contexts->lowest());
 
-    if (isset($quiz->instance)
-        && empty($quiz->grades)){  // Construct an array to hold all the grades.
-        $quiz->grades = quiz_get_all_question_grades($quiz);
+if (empty($quiz->grades)) {
+    $quiz->grades = quiz_get_all_question_grades($quiz);
+}
+
+// Process commands ============================================================
+if ($quiz->shufflequestions) {
+    // Strip page breaks before processing actions, so that re-ordering works
+    // as expected when shuffle questions is on.
+    $quiz->questions = quiz_repaginate($quiz->questions, 0);
+}
+
+// Get the list of question ids had their check-boxes ticked.
+$selectedquestionids = array();
+$params = (array) data_submitted();
+foreach ($params as $key => $value) {
+    if (preg_match('!^s([0-9]+)$!', $key, $matches)) {
+        $selectedquestionids[] = $matches[1];
+    }
+}
+
+$afteractionurl = new moodle_url($thispageurl);
+if ($scrollpos) {
+    $afteractionurl->param('scrollpos', $scrollpos);
+}
+if (($up = optional_param('up', false, PARAM_INT)) && confirm_sesskey()) {
+    $quiz->questions = quiz_move_question_up($quiz->questions, $up);
+    $DB->set_field('quiz', 'questions', $quiz->questions, array('id' => $quiz->id));
+    quiz_delete_previews($quiz);
+    redirect($afteractionurl);
+}
+
+if (($down = optional_param('down', false, PARAM_INT)) && confirm_sesskey()) {
+    $quiz->questions = quiz_move_question_down($quiz->questions, $down);
+    $DB->set_field('quiz', 'questions', $quiz->questions, array('id' => $quiz->id));
+    quiz_delete_previews($quiz);
+    redirect($afteractionurl);
+}
+
+if (optional_param('repaginate', false, PARAM_BOOL) && confirm_sesskey()) {
+    // Re-paginate the quiz
+    $questionsperpage = optional_param('questionsperpage', $quiz->questionsperpage, PARAM_INT);
+    $quiz->questions = quiz_repaginate($quiz->questions, $questionsperpage );
+    $DB->set_field('quiz', 'questions', $quiz->questions, array('id' => $quiz->id));
+    quiz_delete_previews($quiz);
+    redirect($afteractionurl);
+}
+
+if (($addquestion = optional_param('addquestion', 0, PARAM_INT)) && confirm_sesskey()) {
+    // Add a single question to the current quiz
+    $addonpage = optional_param('addonpage', 0, PARAM_INT);
+    quiz_add_quiz_question($addquestion, $quiz, $addonpage);
+    quiz_delete_previews($quiz);
+    quiz_update_sumgrades($quiz);
+    $thispageurl->param('lastchanged', $addquestion);
+    redirect($afteractionurl);
+}
+
+if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
+    // Add selected questions to the current quiz
+    $rawdata = (array) data_submitted();
+    foreach ($rawdata as $key => $value) { // Parse input for question ids
+        if (preg_match('!^q([0-9]+)$!', $key, $matches)) {
+            $key = $matches[1];
+            quiz_add_quiz_question($key, $quiz);
+        }
+    }
+    quiz_delete_previews($quiz);
+    quiz_update_sumgrades($quiz);
+    redirect($afteractionurl);
+}
+
+if ((optional_param('addrandom', false, PARAM_BOOL)) && confirm_sesskey()) {
+    // Add random questions to the quiz
+    $recurse = optional_param('recurse', 0, PARAM_BOOL);
+    $addonpage = optional_param('addonpage', 0, PARAM_INT);
+    $categoryid = required_param('categoryid', PARAM_INT);
+    $randomcount = required_param('randomcount', PARAM_INT);
+    quiz_add_random_questions($quiz, $addonpage, $categoryid, $randomcount, $recurse);
+
+    quiz_delete_previews($quiz);
+    quiz_update_sumgrades($quiz);
+    redirect($afteractionurl);
+}
+
+if (optional_param('addnewpagesafterselected', null, PARAM_CLEAN) &&
+        !empty($selectedquestionids) && confirm_sesskey()) {
+    foreach ($selectedquestionids as $questionid) {
+        $quiz->questions = quiz_add_page_break_after($quiz->questions, $questionid);
+    }
+    $DB->set_field('quiz', 'questions', $quiz->questions, array('id' => $quiz->id));
+    quiz_delete_previews($quiz);
+    redirect($afteractionurl);
+}
+
+$addpage = optional_param('addpage', false, PARAM_INT);
+if ($addpage !== false && confirm_sesskey()) {
+    $quiz->questions = quiz_add_page_break_at($quiz->questions, $addpage);
+    $DB->set_field('quiz', 'questions', $quiz->questions, array('id' => $quiz->id));
+    quiz_delete_previews($quiz);
+    redirect($afteractionurl);
+}
+
+$deleteemptypage = optional_param('deleteemptypage', false, PARAM_INT);
+if (($deleteemptypage !== false) && confirm_sesskey()) {
+    $quiz->questions = quiz_delete_empty_page($quiz->questions, $deleteemptypage);
+    $DB->set_field('quiz', 'questions', $quiz->questions, array('id' => $quiz->id));
+    quiz_delete_previews($quiz);
+    redirect($afteractionurl);
+}
+
+$remove = optional_param('remove', false, PARAM_INT);
+if (($remove = optional_param('remove', false, PARAM_INT)) && confirm_sesskey()) {
+    quiz_remove_question($quiz, $remove);
+    quiz_update_sumgrades($quiz);
+    quiz_delete_previews($quiz);
+    redirect($afteractionurl);
+}
+
+if (optional_param('quizdeleteselected', false, PARAM_BOOL) &&
+        !empty($selectedquestionids) && confirm_sesskey()) {
+    foreach ($selectedquestionids as $questionid) {
+        quiz_remove_question($quiz, $questionid);
+    }
+    quiz_delete_previews($quiz);
+    quiz_update_sumgrades($quiz);
+    redirect($afteractionurl);
+}
+
+if (optional_param('savechanges', false, PARAM_BOOL) && confirm_sesskey()) {
+    $deletepreviews = false;
+    $recomputesummarks = false;
+
+    $oldquestions = explode(',', $quiz->questions); // the questions in the old order
+    $questions = array(); // for questions in the new order
+    $rawdata = (array) data_submitted();
+    $moveonpagequestions = array();
+    $moveselectedonpage = optional_param('moveselectedonpagetop', 0, PARAM_INT);
+    if (!$moveselectedonpage) {
+        $moveselectedonpage = optional_param('moveselectedonpagebottom', 0, PARAM_INT);
     }
 
+    foreach ($rawdata as $key => $value) {
+        if (preg_match('!^g([0-9]+)$!', $key, $matches)) {
+            // Parse input for question -> grades
+            $questionid = $matches[1];
+            $quiz->grades[$questionid] = clean_param($value, PARAM_FLOAT);
+            quiz_update_question_instance($quiz->grades[$questionid], $questionid, $quiz);
+            $deletepreviews = true;
+            $recomputesummarks = true;
 
-/// Now, check for commands on this page and modify variables as necessary
-    // If any edit action makes a sifnificant change to the structure of the quiz, then we
-    // will need to delete all preview attempts.
-    $significantchangemade = false;
-
-    if (($up = optional_param('up', false, PARAM_INT)) !== false and confirm_sesskey()) { /// Move the given question up a slot
-        $questions = explode(",", $quiz->questions);
-        if ($up > 0 and isset($questions[$up])) {
-            $prevkey = ($questions[$up-1] == 0) ? $up-2 : $up-1;
-            $swap = $questions[$prevkey];
-            $questions[$prevkey] = $questions[$up];
-            $questions[$up]   = $swap;
-            $quiz->questions = implode(",", $questions);
-            // Always have a page break at the end
-            $quiz->questions = $quiz->questions . ',0';
-            // Avoid duplicate page breaks
-            $quiz->questions = str_replace(',0,0', ',0', $quiz->questions);
-            if (!set_field('quiz', 'questions', $quiz->questions, 'id', $quiz->instance)) {
-                error('Could not save question list');
+        } else if (preg_match('!^o(pg)?([0-9]+)$!', $key, $matches)) {
+            // Parse input for ordering info
+            $questionid = $matches[2];
+            // Make sure two questions don't overwrite each other. If we get a second
+            // question with the same position, shift the second one along to the next gap.
+            $value = clean_param($value, PARAM_INTEGER);
+            while (array_key_exists($value, $questions)) {
+                $value++;
             }
-            $significantchangemade = true;
-        }
-    }
-
-    if (($down = optional_param('down', false, PARAM_INT)) !== false and confirm_sesskey()) { /// Move the given question down a slot
-        $questions = explode(",", $quiz->questions);
-        if ($down < count($questions)) {
-            $nextkey = ($questions[$down+1] == 0) ? $down+2 : $down+1;
-            $swap = $questions[$nextkey];
-            $questions[$nextkey] = $questions[$down];
-            $questions[$down]   = $swap;
-            $quiz->questions = implode(",", $questions);
-            // Avoid duplicate page breaks
-            $quiz->questions = str_replace(',0,0', ',0', $quiz->questions);
-            if (!set_field('quiz', 'questions', $quiz->questions, 'id', $quiz->instance)) {
-                error('Could not save question list');
+            if ($matches[1]) {
+                // This is a page-break entry.
+                $questions[$value] = 0;
+            } else {
+                $questions[$value] = $questionid;
             }
-            $significantchangemade = true;
-        }
-    }
-
-    if (($addquestion = optional_param('addquestion', 0, PARAM_INT)) and confirm_sesskey()) { /// Add a single question to the current quiz
-        quiz_add_quiz_question($addquestion, $quiz);
-        $significantchangemade = true;
-    }
-
-    if (optional_param('add', false, PARAM_BOOL) and confirm_sesskey()) { /// Add selected questions to the current quiz
-        $rawdata = (array) data_submitted();
-        foreach ($rawdata as $key => $value) {    // Parse input for question ids
-            if (preg_match('!^q([0-9]+)$!', $key, $matches)) {
-                $key = $matches[1];
-                quiz_add_quiz_question($key, $quiz);
-            }
-        }
-        $significantchangemade = true;
-    }
-
-    if (optional_param('addrandom', false, PARAM_BOOL) and confirm_sesskey()) { /// Add random questions to the quiz
-        $recurse = optional_param('recurse', 0, PARAM_BOOL);
-        $categoryid = required_param('categoryid', PARAM_INT);
-        $randomcount = required_param('randomcount', PARAM_INT);
-        // load category
-        if (! $category = get_record('question_categories', 'id', $categoryid)) {
-            error('Category ID is incorrect');
-        }
-        $catcontext = get_context_instance_by_id($category->contextid);
-        require_capability('moodle/question:useall', $catcontext);
-        $category->name = addslashes($category->name);
-        // Find existing random questions in this category that are not used by any quiz.
-        if ($existingquestions = get_records_sql(
-                "SELECT * FROM " . $CFG->prefix . "question q
-                WHERE qtype = '" . RANDOM . "'
-                    AND category = $category->id
-                    AND " . sql_compare_text('questiontext') . " = '$recurse'
-                    AND NOT EXISTS (SELECT * FROM " . $CFG->prefix . "quiz_question_instances WHERE question = q.id)
-                ORDER BY id")) {
-            // Take as many of these as needed.
-            while (($existingquestion = array_shift($existingquestions)) and $randomcount > 0) {
-                quiz_add_quiz_question($existingquestion->id, $quiz);
-                $randomcount--;
-            }
-        }
-
-        // If more are needed, create them.
-        if ($randomcount > 0) {
-            $form->questiontext = $recurse; // we use the questiontext field to store the info
-                                            // on whether to include questions in subcategories
-            $form->questiontextformat = 0;
-            $form->image = '';
-            $form->defaultgrade = 1;
-            $form->hidden = 1;
-            for ($i = 0; $i < $randomcount; $i++) {
-                $form->category = "$category->id,$category->contextid";
-                $form->stamp = make_unique_id_code();  // Set the unique code (not to be changed)
-                $question = new stdClass;
-                $question->qtype = RANDOM;
-                $question = $QTYPES[RANDOM]->save_question($question, $form, $course);
-                if(!isset($question->id)) {
-                    error('Could not insert new random question!');
-                }
-                quiz_add_quiz_question($question->id, $quiz);
-            }
-        }
-        $significantchangemade = true;
-    }
-
-    if (optional_param('repaginate', false, PARAM_BOOL) and confirm_sesskey()) { /// Re-paginate the quiz
-        $questionsperpage = optional_param('questionsperpage', $quiz->questionsperpage, PARAM_INT);
-        if ($questionsperpage != $quiz->questionsperpage) {
-            $quiz->questionsperpage = $questionsperpage;
-            if (!set_field('quiz', 'questionsperpage', $quiz->questionsperpage, 'id', $quiz->id)) {
-                error('Could not save number of questions per page');
-            }
-        }
-        $quiz->questions = quiz_repaginate($quiz->questions, $quiz->questionsperpage);
-        if (!set_field('quiz', 'questions', $quiz->questions, 'id', $quiz->id)) {
-            error('Could not save layout');
-        }
-        $significantchangemade = true;
-    }
-    if (($delete = optional_param('delete', false, PARAM_INT)) !== false and confirm_sesskey()) { /// Remove a question from the quiz
-        quiz_delete_quiz_question($delete, $quiz);
-        $significantchangemade = true;
-    }
-
-    if (optional_param('savechanges', false, PARAM_BOOL) and confirm_sesskey()) {
-    /// We need to save the new ordering (if given) and the new grades
-        $oldquestions = explode(",", $quiz->questions); // the questions in the old order
-        $questions = array(); // for questions in the new order
-        $rawgrades = (array) data_submitted();
-        unset($quiz->grades);
-        foreach ($rawgrades as $key => $value) {
-        /// Parse input for question -> grades
-            if (preg_match('!^q([0-9]+)$!', $key, $matches)) {
-                $key = $matches[1];
-                $quiz->grades[$key] = clean_param($value, PARAM_INTEGER);
-                quiz_update_question_instance($quiz->grades[$key], $key, $quiz->instance);
-
-            /// Parse input for ordering info
-            } elseif (preg_match('!^o([0-9]+)$!', $key, $matches)) {
-                $key = $matches[1];
-                // Make sure two questions don't overwrite each other. If we get a second
-                // question with the same position, shift the second one along to the next gap.
-                $value = clean_param($value, PARAM_INTEGER);
-                while (array_key_exists($value, $questions)) {
-                    $value++;
-                }
-                $questions[$value] = $oldquestions[$key];
-            }
-        }
-
-        // If ordering info was given, reorder the questions
-        if ($questions) {
-            ksort($questions);
-            // Make sure that the quiz does not start with a page break.
-            while (reset($questions) == '0') {
-                array_shift($questions);
-            }
-            $quiz->questions = implode(",", $questions);
-            // Always have a page break at the end
-            $quiz->questions = $quiz->questions . ',0';
-            // Avoid duplicate page breaks
-            while (strpos($quiz->questions, ',0,0')) {
-                $quiz->questions = str_replace(',0,0', ',0', $quiz->questions);
-            }
-            if (!set_field('quiz', 'questions', $quiz->questions, 'id', $quiz->instance)) {
-                error('Could not save question list');
-            }
-        }
-
-        // If rescaling is required save the new maximum
-        $maxgrade = optional_param('maxgrade', -1, PARAM_INTEGER);
-        if ($maxgrade >= 0) {
-            if (!quiz_set_grade($maxgrade, $quiz)) {
-                error('Could not set a new maximum grade for the quiz');
-            }
-        }
-        $significantchangemade = true;
-    }
-
-/// Delete any teacher preview attempts if the quiz has been modified
-    if ($significantchangemade) {
-        $previewattempts = get_records_select('quiz_attempts',
-                'quiz = ' . $quiz->id . ' AND preview = 1');
-        if ($previewattempts) {
-            foreach ($previewattempts as $attempt) {
-                quiz_delete_attempt($attempt, $quiz);
-            }
+            $deletepreviews = true;
         }
     }
 
-    question_showbank_actions($thispageurl, $cm);
-
-/// all commands have been dealt with, now print the page
-
-    // Print basic page layout.
-    if (isset($quiz->instance) and record_exists_select('quiz_attempts', "quiz = '$quiz->instance' AND preview = '0'")){
-        // one column layout with table of questions used in this quiz
-        $strupdatemodule = has_capability('moodle/course:manageactivities', $contexts->lowest())
-                    ? update_module_button($cm->id, $course->id, get_string('modulename', 'quiz'))
-                    : "";
-        $navigation = build_navigation($streditingquiz, $cm);
-        print_header_simple($streditingquiz, '', $navigation, "", "",
-                 true, $strupdatemodule);
-
-        $currenttab = 'edit';
-        $mode = 'editq';
-
-        include('tabs.php');
-
-        print_box_start();
-
-        echo "<div class=\"quizattemptcounts\">\n";
-        echo '<a href="report.php?mode=overview&amp;id=' . $cm->id . '">' .
-                quiz_num_attempt_summary($quiz, $cm) . '</a><br />' .
-                get_string('cannoteditafterattempts', 'quiz');
-        echo "</div>\n";
-
-        $sumgrades = quiz_print_question_list($quiz,  $thispageurl, false, $quiz_showbreaks, $quiz_reordertool);
-        if (!set_field('quiz', 'sumgrades', $sumgrades, 'id', $quiz->instance)) {
-            error('Failed to set sumgrades');
-        }
-
-        print_box_end();
-        print_footer($course);
-        exit;
+    // If ordering info was given, reorder the questions
+    if ($questions) {
+        ksort($questions);
+        $questions[] = 0;
+        $quiz->questions = implode(',', $questions);
+        $DB->set_field('quiz', 'questions', $quiz->questions, array('id' => $quiz->id));
+        $deletepreviews = true;
     }
 
-    // two column layout with quiz info in left column
-    $strupdatemodule = has_capability('moodle/course:manageactivities', $contexts->lowest())
-        ? update_module_button($cm->id, $course->id, get_string('modulename', 'quiz'))
-        : "";
-    $navigation = build_navigation($streditingquiz, $cm);
-    print_header_simple($streditingquiz, '', $navigation, "", "", true, $strupdatemodule);
+    //get a list of questions to move, later to be added in the appropriate
+    //place in the string
+    if ($moveselectedonpage) {
+        $questions = explode(',', $quiz->questions);
+        $newquestions = array();
+        //remove the questions from their original positions first
+        foreach ($questions as $questionid) {
+            if (!in_array($questionid, $selectedquestionids)) {
+                $newquestions[] = $questionid;
+            }
+        }
+        $questions = $newquestions;
 
+        //move to the end of the selected page
+        $pagebreakpositions = array_keys($questions, 0);
+        $numpages = count($pagebreakpositions);
+
+        // Ensure the target page number is in range.
+        for ($i = $moveselectedonpage; $i > $numpages; $i--) {
+            $questions[] = 0;
+            $pagebreakpositions[] = count($questions) - 1;
+        }
+        $moveselectedpos = $pagebreakpositions[$moveselectedonpage - 1];
+
+        // Do the move.
+        array_splice($questions, $moveselectedpos, 0, $selectedquestionids);
+        $quiz->questions = implode(',', $questions);
+
+        // Update the database.
+        $DB->set_field('quiz', 'questions', $quiz->questions, array('id' => $quiz->id));
+        $deletepreviews = true;
+    }
+
+    // If rescaling is required save the new maximum
+    $maxgrade = optional_param('maxgrade', -1, PARAM_FLOAT);
+    if ($maxgrade >= 0) {
+        quiz_set_grade($maxgrade, $quiz);
+    }
+
+    if ($deletepreviews) {
+        quiz_delete_previews($quiz);
+    }
+    if ($recomputesummarks) {
+        quiz_update_sumgrades($quiz);
+        quiz_update_all_attempt_sumgrades($quiz);
+        quiz_update_all_final_grades($quiz);
+        quiz_update_grades($quiz, 0, true);
+    }
+    redirect($afteractionurl);
+}
+
+$questionbank->process_actions($thispageurl, $cm);
+
+// End of process commands =====================================================
+
+$PAGE->requires->yui2_lib('container');
+$PAGE->requires->yui2_lib('dragdrop');
+$PAGE->requires->skip_link_to('questionbank',
+        get_string('skipto', 'access', get_string('questionbank', 'question')));
+$PAGE->requires->skip_link_to('quizcontentsblock',
+        get_string('skipto', 'access', get_string('questionsinthisquiz', 'quiz')));
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading($course->fullname);
+$node = $PAGE->settingsnav->find('mod_quiz_edit', navigation_node::TYPE_SETTING);
+if ($node) {
+    $node->make_active();
+}
+echo $OUTPUT->header();
+
+// Initialise the JavaScript.
+$quizeditconfig = new stdClass();
+$quizeditconfig->url = $thispageurl->out(true, array('qbanktool' => '0'));
+$quizeditconfig->dialoglisteners = array();
+$numberoflisteners = max(quiz_number_of_pages($quiz->questions), 1);
+for ($pageiter = 1; $pageiter <= $numberoflisteners; $pageiter++) {
+    $quizeditconfig->dialoglisteners[] = 'addrandomdialoglaunch_' . $pageiter;
+}
+$PAGE->requires->data_for_js('quiz_edit_config', $quizeditconfig);
+$PAGE->requires->js('/question/qengine.js');
+$PAGE->requires->js('/mod/quiz/edit.js');
+$PAGE->requires->js_init_call('quiz_edit_init');
+
+// Print the tabs to switch mode.
+if ($quiz_reordertool) {
+    $currenttab = 'reorder';
+} else {
     $currenttab = 'edit';
-    $mode = 'editq';
+}
+$tabs = array(array(
+    new tabobject('edit', new moodle_url($thispageurl,
+            array('reordertool' => 0)), get_string('editingquiz', 'quiz')),
+    new tabobject('reorder', new moodle_url($thispageurl,
+            array('reordertool' => 1)), get_string('orderingquiz', 'quiz')),
+));
+print_tabs($tabs, $currenttab);
 
-    include('tabs.php');
+if ($quiz_qbanktool) {
+    $bankclass = '';
+    $quizcontentsclass = '';
+} else {
+    $bankclass = 'collapsed ';
+    $quizcontentsclass = 'quizwhenbankcollapsed';
+}
 
-    echo '<table border="0" style="width:100%" cellpadding="2" cellspacing="0">';
-    echo '<tr><td style="width:50%" valign="top">';
-    print_box_start('generalbox quizquestions');
-    print_heading(get_string('questionsinthisquiz', 'quiz'), '', 2);
+echo '<div class="questionbankwindow ' . $bankclass . 'block">';
+echo '<div class="header"><div class="title"><h2>';
+echo get_string('questionbankcontents', 'quiz') .
+        ' <a href="' . $thispageurl->out(true, array('qbanktool' => '1')) .
+       '" id="showbankcmd">[' . get_string('show').
+       ']</a>
+       <a href="' . $thispageurl->out(true, array('qbanktool' => '0')) .
+       '" id="hidebankcmd">[' . get_string('hide').
+       ']</a>';
+echo '</h2></div></div><div class="content">';
 
-    $sumgrades = quiz_print_question_list($quiz, $thispageurl, true, $quiz_showbreaks, $quiz_reordertool);
-    if (!set_field('quiz', 'sumgrades', $sumgrades, 'id', $quiz->instance)) {
-        error('Failed to set sumgrades');
+echo '<span id="questionbank"></span>';
+echo '<div class="container">';
+echo '<div id="module" class="module">';
+echo '<div class="bd">';
+$questionbank->display('editq',
+        $pagevars['qpage'],
+        $pagevars['qperpage'],
+        $pagevars['cat'], $pagevars['recurse'], $pagevars['showhidden'],
+        $pagevars['qbshowtext']);
+echo '</div>';
+echo '</div>';
+echo '</div>';
+
+echo '</div></div>';
+
+echo '<div class="quizcontents ' . $quizcontentsclass . '" id="quizcontentsblock">';
+if ($quiz->shufflequestions) {
+    $repaginatingdisabledhtml = 'disabled="disabled"';
+    $repaginatingdisabled = true;
+    $quiz->questions = quiz_repaginate($quiz->questions, $quiz->questionsperpage);
+} else {
+    $repaginatingdisabledhtml = '';
+    $repaginatingdisabled = false;
+}
+if ($quiz_reordertool) {
+    echo '<div class="repaginatecommand"><button id="repaginatecommand" ' .
+            $repaginatingdisabledhtml.'>'.
+            get_string('repaginatecommand', 'quiz').'...</button>';
+    echo '</div>';
+}
+
+if ($quiz_reordertool) {
+    echo $OUTPUT->heading_with_help(get_string('orderingquiz', 'quiz') . ': ' . $quiz->name,
+            'orderandpaging', 'quiz');
+} else {
+    echo $OUTPUT->heading(get_string('editingquiz', 'quiz') . ': ' . $quiz->name, 2);
+    echo $OUTPUT->help_icon('editingquiz', 'quiz', get_string('basicideasofquiz', 'quiz'));
+}
+quiz_print_status_bar($quiz);
+
+$tabindex = 0;
+if (!$quiz_reordertool) {
+    quiz_print_grading_form($quiz, $thispageurl, $tabindex);
+}
+
+$notifystrings = array();
+if ($quizhasattempts) {
+    $reviewlink = quiz_attempt_summary_link_to_reports($quiz, $cm, $contexts->lowest());
+    $notifystrings[] = get_string('cannoteditafterattempts', 'quiz', $reviewlink);
+}
+if ($quiz->shufflequestions) {
+    $updateurl = new moodle_url("$CFG->wwwroot/course/mod.php",
+            array('return' => 'true', 'update' => $quiz->cmid, 'sesskey' => sesskey()));
+    $updatelink = '<a href="'.$updateurl->out().'">' . get_string('updatethis', '',
+            get_string('modulename', 'quiz')) . '</a>';
+    $notifystrings[] = get_string('shufflequestionsselected', 'quiz', $updatelink);
+}
+if (!empty($notifystrings)) {
+    echo $OUTPUT->box('<p>' . implode('</p><p>', $notifystrings) . '</p>', 'statusdisplay');
+}
+
+if ($quiz_reordertool) {
+    $perpage = array();
+    $perpage[0] = get_string('allinone', 'quiz');
+    for ($i = 1; $i <= 50; ++$i) {
+        $perpage[$i] = $i;
     }
+    $gostring = get_string('go');
+    echo '<div id="repaginatedialog"><div class="hd">';
+    echo get_string('repaginatecommand', 'quiz');
+    echo '</div><div class="bd">';
+    echo '<form action="edit.php" method="post">';
+    echo '<fieldset class="invisiblefieldset">';
+    echo html_writer::input_hidden_params($thispageurl);
+    echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
+    //YUI does not submit the value of the submit button so
+            //we need to add the value:
+    echo '<input type="hidden" name="repaginate" value="'.$gostring.'" />';
+    $attributes = array();
+    $attributes['disabled'] = $repaginatingdisabledhtml ? 'disabled' : null;
+    $select = html_writer::select(
+            $perpage, 'questionsperpage', $quiz->questionsperpage, null, $attributes);
+    print_string('repaginate', 'quiz', $select);
+    echo '<div class="quizquestionlistcontrols">';
+    echo ' <input type="submit" name="repaginate" value="'. $gostring . '" ' .
+            $repaginatingdisabledhtml.' />';
+    echo '</div></fieldset></form></div></div>';
+}
 
-    print_box_end();
+if ($quiz_reordertool) {
+    echo '<div class="reorder">';
+} else {
+    echo '<div class="editq">';
+}
 
-    echo '</td><td style="width:50%" valign="top">';
+quiz_print_question_list($quiz, $thispageurl, true,
+        $quiz_reordertool, $quiz_qbanktool, $quizhasattempts, $defaultcategoryobj);
+echo '</div>';
 
-    question_showbank('editq', $contexts, $thispageurl, $cm, $pagevars['qpage'], $pagevars['qperpage'], $pagevars['qsortorder'], $pagevars['qsortorderdecoded'],
-                    $pagevars['cat'], $pagevars['recurse'], $pagevars['showhidden'], $pagevars['showquestiontext']);
+// Close <div class="quizcontents">:
+echo '</div>';
 
-    echo '</td></tr>';
-    echo '</table>';
-
-    print_footer($course);
-?>
+if (!$quiz_reordertool) {
+    $randomform = new quiz_add_random_form(new moodle_url('/mod/quiz/addrandom.php'), $contexts);
+    $randomform->set_data(array(
+        'category' => $pagevars['cat'],
+        'returnurl' => str_replace($CFG->wwwroot, '', $thispageurl->out(false)),
+        'cmid' => $cm->id,
+    ));
+    ?>
+    <div id="randomquestiondialog">
+    <div class="hd"><?php print_string('addrandomquestiontoquiz', 'quiz', $quiz->name); ?>
+    <span id="pagenumber"><!-- JavaScript will insert the page number here. -->
+    </span>
+    </div>
+    <div class="bd"><?php
+    $randomform->display();
+    ?></div>
+    </div>
+    <?php
+}
+echo $OUTPUT->footer();

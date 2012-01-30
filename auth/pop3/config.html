@@ -21,13 +21,13 @@ if (!isset($config->changepasswordurl)) {
 <table cellspacing="0" cellpadding="5" border="0">
 
 <tr valign="top" class="required">
-    <td align="right"><?php print_string('auth_pop3host_key', 'auth') ?>: </td>
+    <td align="right"><?php print_string('auth_pop3host_key', 'auth_pop3') ?>: </td>
     <td>
         <input name="host" type="text" size="30" value="<?php echo $config->host ?>" />
         <?php
 
         if (isset($err['host'])) {
-            formerr($err['host']);
+            echo $OUTPUT->error_text($err['host']);
         }
 
         ?>
@@ -35,7 +35,7 @@ if (!isset($config->changepasswordurl)) {
     <td>
         <?php
 
-        print_string('auth_pop3host', 'auth');
+        print_string('auth_pop3host', 'auth_pop3');
         print_string('auth_multiplehosts', 'auth');
 
         ?>
@@ -43,7 +43,7 @@ if (!isset($config->changepasswordurl)) {
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><?php print_string('auth_pop3type_key', 'auth') ?>: </td>
+    <td align="right"><?php print_string('auth_pop3type_key', 'auth_pop3') ?>: </td>
     <td>
         <?php
 
@@ -51,51 +51,51 @@ if (!isset($config->changepasswordurl)) {
         foreach ($pop3types as $pop3type) {
             $pop3options[$pop3type] = $pop3type;
         }
-        choose_from_menu($pop3options, 'type', $config->type, '');
+        echo html_writer::select($pop3options, 'type', $config->type, false);
 
         ?>
     </td>
-    <td><?php print_string('auth_pop3type', 'auth') ?></td>
+    <td><?php print_string('auth_pop3type', 'auth_pop3') ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><?php print_string('auth_pop3port_key', 'auth') ?>: </td>
+    <td align="right"><?php print_string('auth_pop3port_key', 'auth_pop3') ?>: </td>
     <td>
         <input name="port" type="text" size="6" value="<?php echo $config->port ?>" />
         <?php
 
         if (isset($err['port'])) {
-            formerr($err['port']);
+            echo $OUTPUT->error_text($err['port']);
         }
 
         ?>
     </td>
-    <td><?php print_string('auth_pop3port', 'auth') ?></td>
+    <td><?php print_string('auth_pop3port', 'auth_pop3') ?></td>
 </tr>
 
 <tr valign="top" class="required">
-    <td align="right"><?php print_string('auth_pop3mailbox_key', 'auth') ?>: </td>
+    <td align="right"><?php print_string('auth_pop3mailbox_key', 'auth_pop3') ?>: </td>
     <td>
         <input name="mailbox" type="text" size="6" value="<?php echo $config->mailbox ?>" />
         <?php
 
         if (isset($err['mailbox'])) {
-            formerr($err['mailbox']);
+            echo $OUTPUT->error_text($err['mailbox']);
         }
 
         ?>
     </td>
-    <td><?php print_string('auth_pop3mailbox', 'auth') ?></td>
+    <td><?php print_string('auth_pop3mailbox', 'auth_pop3') ?></td>
 </tr>
 
 <tr valign="top">
-    <td align="right"><?php print_string('auth_pop3changepasswordurl_key', 'auth') ?>: </td>
+    <td align="right"><?php print_string('auth_pop3changepasswordurl_key', 'auth_pop3') ?>: </td>
     <td>
         <input name="changepasswordurl" type="text" value="<?php echo $config->changepasswordurl ?>" />
         <?php
 
         if (isset($err['changepasswordurl'])) {
-            formerr($err['changepasswordurl']);
+            echo $OUTPUT->error_text($err['changepasswordurl']);
         }
 
         ?>

@@ -1,609 +1,356 @@
 <?php
-// The following flags are set in the configuration
-// $config->allow_allcourses:       expose all courses to external enrolment
-// $config->allowed_categories:     serialised array of courses allowed
-// $config->allowed_courses:        serialised array of courses allowed
 
-class enrolment_plugin_mnet {
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    /// Override the base config_form() function
-    function config_form($frm) {
-        global $CFG;
+/**
+ * Implements the XML-RPC methods this plugin publishes to MNet peers
+ *
+ * This file must be named enrol.php because current MNet framework has the
+ * filename hardcoded in XML-RPC path and we want to be compatible with
+ * Moodle 1.x MNet clients. There is a proposal in MDL-21993 to allow
+ * map XMP-RPC calls to whatever file, function, class or methods. Once this
+ * is fixed, this file will be probably renamed to mnetlib.php (which could
+ * be a common name of a plugin library containing functions/methods callable
+ * via MNet framework.
+ *
+ * @package    enrol
+ * @subpackage mnet
+ * @copyright  2010 David Mudrak <david@moodle.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-       $vars = array('enrol_mnet_allow_allcourses',
-                     'enrol_mnet_allowed_categories',
-                     'enrol_mnet_allowed_courses');
+defined('MOODLE_INTERNAL') || die();
 
-        foreach ($vars as $var) {
-            if (!isset($frm->$var)) {
-                $frm->$var = '';
-            }
-        }
-
-        $mnethosts = $this->list_remote_servers();
-
-        include ("$CFG->dirroot/enrol/mnet/config.html");
-    }
-
-
-    /// Override the base process_config() function
-    function process_config($config) {
-
-        if (!isset($config->enrol_mnet_allow_allcourses)) {
-            $config->enrol_mnet_allow_allcourses = false;
-        }
-        set_config('enrol_mnet_allow_allcourses', $config->enrol_mnet_allow_allcourses);
-
-        if (!isset($config->enrol_mnet_allowed_categories)) {
-            $config->enrol_mnet_allowed_categories = '';
-        }
-        set_config('enrol_mnet_allowed_categories', $config->enrol_mnet_allowed_categories);
-
-        if (!isset($config->enrol_mnet_allowed_courses)) {
-            $config->enrol_mnet_allowed_courses = '';
-        }
-        set_config('enrol_mnet_allowed_courses', $config->enrol_mnet_allowed_courses);
-
-        return true;
-
-    }
-
-    /// Override the get_access_icons() function
-    function get_access_icons($course) {
-    }
+/**
+ * MNet server-side methods that are part of mnetservice_enrol
+ *
+ * The weird name of the class tries to follow a pattern
+ * {plugintype}_{pluginnname}_mnetservice_{servicename}
+ *
+ * Class methods are compatible with API 1 of the service used by Moodle 1.x
+ * and 2.0 peers. The API version might become a part of class name but it is
+ * not neccessary due to how xml-rcp methods are/will be mapped to php methods.
+ */
+class enrol_mnet_mnetservice_enrol {
 
     /**
-     * Override the base cron() function
-     */
-    //function cron() {
-    //
-    //} // end of cron()
-
-
-
-    /***
-     *** MNET functions
-     ***
-     ***/
-    function mnet_publishes() {
-        
-        $enrol = array();
-        $enrol['name']        = 'mnet_enrol'; // Name & Description go in lang file
-        $enrol['apiversion']  = 1;
-        $enrol['methods']     = array('available_courses','user_enrolments', 'enrol_user', 'unenrol_user', 'course_enrolments' );
-
-        return array($enrol);
-    }
-
-    /**
-    * Does Foo
-    *
-    * @param string $username   The username
-    * @param int    $mnethostid The id of the remote mnethost
-    * @return bool              Whether the user can login from the remote host
-    */
-    function available_courses() {
-        global $CFG;
-
-        if (!empty($CFG->enrol_mnet_allow_allcourses)) {
-
-            $query =
-            "SELECT
-                co.id          AS remoteid,
-                ca.id          AS cat_id,
-                ca.name        AS cat_name,
-                ca.description AS cat_description,
-                co.sortorder,
-                co.fullname,
-                co.shortname,
-                co.idnumber,
-                co.summary,
-                co.startdate,
-                co.cost,
-                co.currency,
-                co.defaultrole AS defaultroleid,
-                r.name         AS defaultrolename 
-            FROM
-                {$CFG->prefix}course_categories ca
-            JOIN
-                {$CFG->prefix}course co ON
-                ca.id = co.category
-            LEFT JOIN
-                {$CFG->prefix}role r ON
-                r.id = co.defaultrole
-            WHERE
-                co.visible = '1' AND
-                co.enrollable = '1'
-            ORDER BY
-                sortorder ASC
-                ";
-
-            return get_records_sql($query);
-
-        } elseif (!empty($CFG->enrol_mnet_allowed_categories)) {
-
-            $cats = preg_split('/\s*,\s*/', $CFG->enrol_mnet_allowed_categories);
-            for ($n=0;$n < count($cats); $n++) {
-                $cats[$n] = " ca.path LIKE '%/" . (int)$cats[$n] . "/%' ";
-            }
-            $cats = join(' OR ', $cats);
-
-            $query =
-            "SELECT
-                id, name
-            FROM
-                {$CFG->prefix}course_categories ca
-            WHERE
-                ca.id IN ({$CFG->enrol_mnet_allowed_categories})
-                OR ( $cats )
-            ORDER BY
-                path ASC,
-                depth ASC
-                ";
-            unset($cats);
-
-            $rs = get_records_sql($query);
-
-            if (!empty($rs)) {
-                $cats = array_keys($rs);
-            }
-            $where = ' AND ( ca.id IN (' . join(',', $cats) . ') ';
-
-
-            if (!empty($CFG->enrol_mnet_allowed_courses)) {
-                $where .=  " OR co.id in ({$CFG->enrol_mnet_allowed_courses}) ";
-            }
-
-            $where .= ')';
-
-            $query =
-            "SELECT
-                co.id as remoteid,
-                ca.id as cat_id,
-                ca.name as cat_name,
-                ca.description as cat_description,
-                co.sortorder,
-                co.fullname,
-                co.shortname,
-                co.idnumber,
-                co.summary,
-                co.startdate,
-                co.cost,
-                co.currency,
-                co.defaultrole as defaultroleid,
-                r.name as defaultrolename
-            FROM
-                {$CFG->prefix}course_categories ca
-            JOIN
-                {$CFG->prefix}course co ON
-                ca.id = co.category
-            LEFT JOIN
-                {$CFG->prefix}role r ON
-                r.id = co.defaultrole
-            WHERE
-                co.visible = '1' AND
-                co.enrollable = '1' $where
-            ORDER BY
-                sortorder ASC
-                ";
-
-            return get_records_sql($query);
-
-        } elseif (!empty($CFG->enrol_mnet_allowed_courses)) {
-
-            $query =
-                "SELECT
-                    co.id as remoteid,
-                    ca.id as cat_id,
-                    ca.name as cat_name,
-                    ca.description as cat_description,
-                    co.sortorder,
-                    co.fullname,
-                    co.shortname,
-                    co.idnumber,
-                    co.summary,
-                    co.startdate,
-                    co.cost,
-                    co.currency,
-                    co.defaultrole as defaultroleid,
-                    r.name as defaultrolename
-                FROM
-                    {$CFG->prefix}course_categories ca
-                JOIN
-                    {$CFG->prefix}course co ON
-                    ca.id = co.category
-                LEFT JOIN
-                    {$CFG->prefix}role r ON
-                    r.id = co.defaultrole
-                WHERE
-                    co.visible = '1' AND
-                    co.enrollable = '1' AND
-                    co.id in ({$CFG->enrol_mnet_allowed_courses})
-                ORDER BY
-                    sortorder ASC
-                    ";
-
-            return get_records_sql($query);
-
-        }
-
-        return array();
-    }
-
-    /**
-     * 
-     */
-    function user_enrolments($userid) {
-        return array();
-    }
-
-    /**
-     * Get a list of users from the client server who are enrolled in a course
+     * Returns list of courses that we offer to the caller for remote enrolment of their users
      *
-     * @param   int     $courseid   The Course ID
-     * @param   string  $roles      Comma-separated list of role shortnames
-     * @return  array               Array of usernames who are homed on the 
-     *                              client machine
+     * Since Moodle 2.0, courses are made available for MNet peers by creating an instance
+     * of enrol_mnet plugin for the course. Hidden courses are not returned. If there are two
+     * instances - one specific for the host and one for 'All hosts', the setting of the specific
+     * one is used. The id of the peer is kept in customint1, no other custom fields are used.
+     *
+     * @uses mnet_remote_client Callable via XML-RPC only
+     * @return array
      */
-    function course_enrolments($courseid, $roles = '') {
-        global $MNET_REMOTE_CLIENT, $CFG;
+    public function available_courses() {
+        global $CFG, $DB;
+        require_once($CFG->libdir.'/filelib.php');
 
-        if (! $course = get_record('course', 'id', $courseid) ) {
-            return 'no course';
-            //error("That's an invalid course id");
+        if (!$client = get_mnet_remote_client()) {
+            die('Callable via XML-RPC only');
         }
 
-        $context = get_context_instance(CONTEXT_COURSE, $courseid);
+        // we call our id as 'remoteid' because it will be sent to the peer
+        // the column aliases are required by MNet protocol API for clients 1.x and 2.0
+        $sql = "SELECT c.id AS remoteid, c.fullname, c.shortname, c.idnumber, c.summary, c.summaryformat,
+                       c.sortorder, c.startdate, cat.id AS cat_id, cat.name AS cat_name,
+                       cat.description AS cat_description, cat.descriptionformat AS cat_descriptionformat,
+                       e.cost, e.currency, e.roleid AS defaultroleid, r.name AS defaultrolename,
+                       e.customint1
+                  FROM {enrol} e
+            INNER JOIN {course} c ON c.id = e.courseid
+            INNER JOIN {course_categories} cat ON cat.id = c.category
+            INNER JOIN {role} r ON r.id = e.roleid
+                 WHERE e.enrol = 'mnet'
+                       AND (e.customint1 = 0 OR e.customint1 = ?)
+                       AND c.visible = 1
+              ORDER BY cat.sortorder, c.sortorder, c.shortname";
 
-        $sql = "
-                SELECT
-                    u.id,
-                    u.username,
-                    a.enrol,
-                    a.timemodified,
-                    r.name,
-                    r.shortname
-                FROM
-                    {$CFG->prefix}role_assignments a,
-                    {$CFG->prefix}role r,
-                    {$CFG->prefix}user u
-                WHERE
-                    a.contextid = '{$context->id}' AND
-                    a.roleid = r.id AND
-                    a.userid = u.id AND
-                    u.mnethostid = '{$MNET_REMOTE_CLIENT->id}'
-                    ";
+        $rs = $DB->get_recordset_sql($sql, array($client->id));
 
-        if(!empty($roles)) {
-            // $default_role = get_default_course_role($course); ???
-            $sql .= " AND
-                    a.roleid in ('".str_replace(',',  "', '",  $roles)."')";
-        } 
-
-        $enrolments = get_records_sql($sql);
-
-        $returnarray = array();
-        foreach($enrolments as $user) {
-            $returnarray[$user->username] = array('enrol' => $user->enrol, 
-                                                  'timemodified' => $user->timemodified, 
-                                                  'shortname' => $user->shortname, 
-                                                  'username' => $user->username,
-                                                  'name' => $user->name);
+        $courses = array();
+        foreach ($rs as $course) {
+            // use the record if it does not exist yet or is host-specific
+            if (empty($courses[$course->remoteid]) or ($course->customint1 > 0)) {
+                unset($course->customint1); // the client does not need to know this
+                $context = get_context_instance(CONTEXT_COURSE, $course->remoteid);
+                // Rewrite file URLs so that they are correct
+                $course->summary = file_rewrite_pluginfile_urls($course->summary, 'pluginfile.php', $context->id, 'course', 'summary', false);
+                $courses[$course->remoteid] = $course;
+            }
         }
-        return $returnarray;
+        $rs->close();
+
+        return array_values($courses); // can not use keys for backward compatibility
     }
 
     /**
-    * Enrols user to course with the default role
-    *
-    * @param string $username   The username of the remote use
-    * @param int    $courseid   The id of the local course
-    * @return bool              Whether the enrolment has been successful
-    */
-    function enrol_user($user, $courseid) {
-        global $MNET, $MNET_REMOTE_CLIENT;
+     * This method has never been implemented in Moodle MNet API
+     *
+     * @uses mnet_remote_client Callable via XML-RPC only
+     * @return array empty array
+     */
+    public function user_enrolments() {
+        global $CFG, $DB;
 
-        $userrecord = get_record('user','username',addslashes($user['username']), 'mnethostid',$MNET_REMOTE_CLIENT->id);
+        if (!$client = get_mnet_remote_client()) {
+            die('Callable via XML-RPC only');
+        }
+        return array();
+    }
 
-        if ($userrecord == false) {
-            // We should at least be checking that we allow the remote
-            // site to create users
-            // TODO: more rigour here thanks!
-            $userrecord = new stdClass();
-            $userrecord->username   = addslashes($user['username']);
-            $userrecord->email      = addslashes($user['email']);
-            $userrecord->firstname  = addslashes($user['firstname']);
-            $userrecord->lastname   = addslashes($user['lastname']);
-            $userrecord->mnethostid = $MNET_REMOTE_CLIENT->id;
+    /**
+     * Enrol remote user to our course
+     *
+     * If we do not have local record for the remote user in our database,
+     * it gets created here.
+     *
+     * @uses mnet_remote_client Callable via XML-RPC only
+     * @param array $userdata user details {@see mnet_fields_to_import()}
+     * @param int $courseid our local course id
+     * @return bool true if the enrolment has been successful, throws exception otherwise
+     */
+    public function enrol_user(array $userdata, $courseid) {
+        global $CFG, $DB;
+        require_once(dirname(__FILE__).'/lib.php');
 
-            if ($userrecord->id = insert_record('user', $userrecord)) {
-                $userrecord = get_record('user','id', $userrecord->id);
-            } else {
-                // TODO: Error out
-                return false;
+        if (!$client = get_mnet_remote_client()) {
+            die('Callable via XML-RPC only');
+        }
+
+        if (empty($userdata['username'])) {
+            throw new mnet_server_exception(5021, 'emptyusername', 'enrol_mnet');
+        }
+
+        // do we know the remote user?
+        $user = $DB->get_record('user', array('username'=>$userdata['username'], 'mnethostid'=>$client->id));
+
+        if ($user === false) {
+            // here we could check the setting if the enrol_mnet is allowed to auto-register
+            // users {@link http://tracker.moodle.org/browse/MDL-21327}
+            $user = mnet_strip_user((object)$userdata, mnet_fields_to_import($client));
+            $user->mnethostid = $client->id;
+            try {
+                $user->id = $DB->insert_record('user', $user);
+            } catch (Exception $e) {
+                throw new mnet_server_exception(5011, 'couldnotcreateuser', 'enrol_mnet');
             }
         }
 
-        if (! $course = get_record('course', 'id', $courseid) ) {
-            // TODO: Error out
-            return false;
+        if (! $course = $DB->get_record('course', array('id'=>$courseid))) {
+            throw new mnet_server_exception(5012, 'coursenotfound', 'enrol_mnet');
         }
 
         $courses = $this->available_courses();
-
-        if (!empty($courses[$courseid])) {
-            if (enrol_into_course($course, $userrecord, 'mnet')) {
-                return true;
+        $isavailable = false;
+        foreach ($courses as $available) {
+            if ($available->remoteid == $course->id) {
+                $isavailable = true;
+                break;
             }
         }
-        return false;
-    }
-
-    /**
-    * Unenrol a user from a course
-    *
-    * @param string $username   The username
-    * @param int    $courseid   The id of the local course
-    * @return bool              Whether the user can login from the remote host
-    */
-    function unenrol_user($username, $courseid) {
-        global $MNET_REMOTE_CLIENT;
-
-        $userrecord = get_record('user', 'username', addslashes($username), 'mnethostid', $MNET_REMOTE_CLIENT->id);
-
-        if ($userrecord == false) {
-            return false;
-            // TODO: Error out
+        if (!$isavailable) {
+            throw new mnet_server_exception(5013, 'courseunavailable', 'enrol_mnet');
         }
 
-        if (! $course = get_record('course', 'id', $courseid) ) {
-            return false;
-            // TODO: Error out
+        // try to load host specific enrol_mnet instance first
+        $instance = $DB->get_record('enrol', array('courseid'=>$course->id, 'enrol'=>'mnet', 'customint1'=>$client->id), '*', IGNORE_MISSING);
+
+        if ($instance === false) {
+            // if not found, try to load instance for all hosts
+            $instance = $DB->get_record('enrol', array('courseid'=>$course->id, 'enrol'=>'mnet', 'customint1'=>0), '*', IGNORE_MISSING);
         }
 
-        if (! $context = get_context_instance(CONTEXT_COURSE, $course->id)) {
-            return false;
-            // TODO: Error out (Invalid context)
+        if ($instance === false) {
+            // this should not happen as the course was returned by {@see self::available_courses()}
+            throw new mnet_server_exception(5017, 'noenrolinstance', 'enrol_mnet');
         }
 
-        // Are we a *real* user or the shady MNET Daemon?
-        // require_capability('moodle/role:assign', $context, NULL, false);
+        if (!$enrol = enrol_get_plugin('mnet')) {
+            throw new mnet_server_exception(5018, 'couldnotinstantiate', 'enrol_mnet');
+        }
 
-        if (!role_unassign(0, $userrecord->id, 0, $context->id)) {
-            error("An error occurred while trying to unenrol that person.");
+        try {
+            $enrol->enrol_user($instance, $user->id, $instance->roleid, time());
+
+        } catch (Exception $e) {
+            throw new mnet_server_exception(5019, 'couldnotenrol', 'enrol_mnet', $e->getMessage());
         }
 
         return true;
     }
 
-    /***
-     *** Client RPC behaviour
-     ***
-     ***
-     ***/
-
     /**
-    * Lists remote servers we use 'enrol' services from.
-    *
-    * @return array
-    */
-    function list_remote_servers() {
-        global $CFG;
+     * Unenrol remote user from our course
+     *
+     * Only users enrolled via enrol_mnet plugin can be unenrolled remotely. If the
+     * remote user is enrolled into the local course via some other enrol plugin
+     * (enrol_manual for example), the remote host can't touch such enrolment. Please
+     * do not report this behaviour as bug, it is a feature ;-)
+     *
+     * @uses mnet_remote_client Callable via XML-RPC only
+     * @param string $username of the remote user
+     * @param int $courseid of our local course
+     * @return bool true if the unenrolment has been successful, throws exception otherwise
+     */
+    public function unenrol_user($username, $courseid) {
+        global $CFG, $DB;
 
-        $sql = "
-            SELECT DISTINCT 
-                h.id, 
-                h.name
-            FROM 
-                {$CFG->prefix}mnet_host h,
-                {$CFG->prefix}mnet_host2service h2s,
-                {$CFG->prefix}mnet_service s
-            WHERE
-                h.id          = h2s.hostid   AND
-                h2s.serviceid = s.id         AND
-                s.name        = 'mnet_enrol' AND
-                h2s.subscribe = 1";
-
-        $res = get_records_sql($sql);
-        if (is_array($res)) {
-            return $res;
-        } else {
-            return array();
+        if (!$client = get_mnet_remote_client()) {
+            die('Callable via XML-RPC only');
         }
-    }
 
-    /**
-    * Does Foo
-    *
-    * @param int    $mnethostid The id of the remote mnethost
-    * @return array              Whether the user can login from the remote host
-    */
-    function fetch_remote_courses($mnethostid) {
-        global $CFG;
-        global $USER;
-        global $MNET;
-        require_once $CFG->dirroot . '/mnet/xmlrpc/client.php';
+        $user = $DB->get_record('user', array('username'=>$username, 'mnethostid'=>$client->id));
 
-        // get the Service Provider info
-        $mnet_sp = new mnet_peer();
-        $mnet_sp->set_id($mnethostid);
+        if ($user === false) {
+            throw new mnet_server_exception(5014, 'usernotfound', 'enrol_mnet');
+        }
 
-        // set up the RPC request
-        $mnetrequest = new mnet_xmlrpc_client();
-        $mnetrequest->set_method('enrol/mnet/enrol.php/available_courses');
+        if (! $course = $DB->get_record('course', array('id'=>$courseid))) {
+            throw new mnet_server_exception(5012, 'coursenotfound', 'enrol_mnet');
+        }
 
-        // Initialise $message
-        $message = '';
-
-        // TODO: cache for a while (10 minutes?)
-
-        // Thunderbirds are go! Do RPC call and store response
-        if ($mnetrequest->send($mnet_sp) === true) {
-            $courses = $mnetrequest->response;
-
-            // get the cached courses key'd on remote id - only need remoteid and id fields
-            $cachedcourses = get_records('mnet_enrol_course',
-                                         'hostid', $mnethostid,
-                                         'remoteid', 'remoteid, id' );
-
-            // Update cache and transform $courses into objects
-            // in-place for the benefit of our caller...
-            for ($n=0;$n<count($courses);$n++) {
-
-                $course = &$courses[$n];
-
-                // add/update cached data in mnet_enrol_courses
-                // sanitise data 
-                $course = (object)$course;
-                $course->remoteid        = (int)$course->remoteid;
-                $course->hostid          = $mnethostid;
-                $course->cat_id          = (int)$course->cat_id;
-                $course->sortorder       = (int)$course->sortorder ;
-                $course->startdate       = (int)$course->startdate;
-                $course->cost            = (int)$course->cost;
-                $course->defaultroleid   = (int)$course->defaultroleid;
-
-                // sanitise strings for DB NOTE - these are not sane
-                // for printing, so we'll use a different object
-                $dbcourse = clone($course);
-                $dbcourse->cat_name        = addslashes(substr($dbcourse->cat_name,0,255));
-                $dbcourse->cat_description = addslashes($dbcourse->cat_description);
-                $dbcourse->fullname        = addslashes(substr($dbcourse->fullname,0,254));
-                $dbcourse->shortname       = addslashes(substr($dbcourse->shortname,0,15));
-                $dbcourse->idnumber        = addslashes(substr($dbcourse->idnumber,0,100));
-                $dbcourse->summary         = addslashes($dbcourse->summary);
-                $dbcourse->currency        = addslashes(substr($dbcourse->currency,0,3));
-                $dbcourse->defaultrolename = addslashes(substr($dbcourse->defaultrolename,0,255));
-
-                // insert or update
-                if (empty($cachedcourses[$course->remoteid])) {
-                    $course->id = insert_record('mnet_enrol_course', $dbcourse);
-                } else {
-                    $course->id = $cachedcourses[$course->remoteid]->id;
-                    $cachedcourses[$course->remoteid]->seen=true;
-                    update_record('mnet_enrol_course', $dbcourse);
-                }
-                // free tmp obj
-                unset($dbcourse);
+        $courses = $this->available_courses();
+        $isavailable = false;
+        foreach ($courses as $available) {
+            if ($available->remoteid == $course->id) {
+                $isavailable = true;
+                break;
             }
+        }
+        if (!$isavailable) {
+            // if they can not enrol, they can not unenrol
+            throw new mnet_server_exception(5013, 'courseunavailable', 'enrol_mnet');
+        }
 
-            // prune stale data from cache
-            if (!empty($cachedcourses)) {
-                $stale = array();
-                foreach ($cachedcourses as $id => $cc) {
-                    // TODO: maybe set a deleted flag instead
-                    if (empty($cc->seen)) {
-                        $stale[] = $cc->id;
+        // try to load host specific enrol_mnet instance first
+        $instance = $DB->get_record('enrol', array('courseid'=>$course->id, 'enrol'=>'mnet', 'customint1'=>$client->id), '*', IGNORE_MISSING);
+
+        if ($instance === false) {
+            // if not found, try to load instance for all hosts
+            $instance = $DB->get_record('enrol', array('courseid'=>$course->id, 'enrol'=>'mnet', 'customint1'=>0), '*', IGNORE_MISSING);
+            $instanceforall = true;
+        }
+
+        if ($instance === false) {
+            // this should not happen as the course was returned by {@see self::available_courses()}
+            throw new mnet_server_exception(5017, 'noenrolinstance', 'enrol_mnet');
+        }
+
+        if (!$enrol = enrol_get_plugin('mnet')) {
+            throw new mnet_server_exception(5018, 'couldnotinstantiate', 'enrol_mnet');
+        }
+
+        if ($DB->record_exists('user_enrolments', array('enrolid'=>$instance->id, 'userid'=>$user->id))) {
+            try {
+                $enrol->unenrol_user($instance, $user->id);
+
+            } catch (Exception $e) {
+                throw new mnet_server_exception(5020, 'couldnotunenrol', 'enrol_mnet', $e->getMessage());
+            }
+        }
+
+        if (empty($instanceforall)) {
+            // if the user was enrolled via 'All hosts' instance and the specific one
+            // was created after that, the first enrolment would be kept.
+            $instance = $DB->get_record('enrol', array('courseid'=>$course->id, 'enrol'=>'mnet', 'customint1'=>0), '*', IGNORE_MISSING);
+
+            if ($instance) {
+                // repeat the same procedure for 'All hosts' instance, too. Note that as the host specific
+                // instance exists, it will be used for the future enrolments
+
+                if ($DB->record_exists('user_enrolments', array('enrolid'=>$instance->id, 'userid'=>$user->id))) {
+                    try {
+                        $enrol->unenrol_user($instance, $user->id);
+
+                    } catch (Exception $e) {
+                        throw new mnet_server_exception(5020, 'couldnotunenrol', 'enrol_mnet', $e->getMessage());
                     }
                 }
-                if (!empty($stale)) {
-                    delete_records_select('mnet_enrol_course', 'id IN ('.join(',',$stale).')');
-                }
             }
-
-            return $courses;
-        } else {
-            foreach ($mnetrequest->error as $errormessage) {
-                list($code, $errormessage) = array_map('trim',explode(':', $errormessage, 2));
-                $message .= "ERROR $code:<br/>$errormessage<br/>";
-            }
-            error("RPC enrol/mnet/available_courses:<br/>$message");
         }
-        return false;
+
+        return true;
     }
 
     /**
-    * Does Foo
-    *
-    * @param int    $mnethostid The id of the remote mnethost
-    * @return array              Whether the user can login from the remote host
-    */
-    function req_enrol_user($userid, $courseid) {
-        global $CFG;
-        global $USER;
-        global $MNET;
-        require_once $CFG->dirroot . '/mnet/xmlrpc/client.php';
+     * Returns a list of users from the client server who are enrolled in our course
+     *
+     * Suitable instance of enrol_mnet must be created in the course. This method will not
+     * return any information about the enrolments in courses that are not available for
+     * remote enrolment, even if their users are enrolled into them via other plugin
+     * (note the difference from {@link self::user_enrolments()}).
+     *
+     * This method will return enrolment information for users from hosts regardless
+     * the enrolment plugin. It does not matter if the user was enrolled remotely by
+     * their admin or locally. Once the course is available for remote enrolments, we
+     * will tell them everything about their users.
+     *
+     * In Moodle 1.x the returned array used to be indexed by username. The side effect
+     * of MDL-19219 fix is that we do not need to use such index and therefore we can
+     * return all enrolment records. MNet clients 1.x will only use the last record for
+     * the student, if she is enrolled via multiple plugins.
+     *
+     * @uses mnet_remote_client Callable via XML-RPC only
+     * @param int $courseid ID of our course
+     * @param string|array $roles comma separated list of role shortnames (or array of them)
+     * @return array
+     */
+    public function course_enrolments($courseid, $roles=null) {
+        global $DB, $CFG;
 
-        // Prepare a basic user record
-        // in case the remote host doesn't have it
-        $user = get_record('user', 'id', $userid, '','','','', 'username, email, firstname, lastname');
-        $user = (array)$user;
-
-        $course = get_record('mnet_enrol_course', 'id', $courseid);
-
-        // get the Service Provider info
-        $mnet_sp = new mnet_peer();
-        $mnet_sp->set_id($course->hostid);
-
-        // set up the RPC request
-        $mnetrequest = new mnet_xmlrpc_client();
-        $mnetrequest->set_method('enrol/mnet/enrol.php/enrol_user');
-        $mnetrequest->add_param($user);
-        $mnetrequest->add_param($course->remoteid);
-
-        // Thunderbirds are go! Do RPC call and store response
-        if ($mnetrequest->send($mnet_sp) === true) {
-            if ($mnetrequest->response == true) {
-                // now store it in the mnet_enrol_assignments table
-                $assignment = new StdClass;
-                $assignment->userid = $userid;
-                $assignment->hostid = $course->hostid;
-                $assignment->courseid = $course->id;
-                $assignment->enroltype = 'mnet';
-                // TODO: other fields
-                if (insert_record('mnet_enrol_assignments', $assignment)) {
-                    return true;
-                }
-            }
+        if (!$client = get_mnet_remote_client()) {
+            die('Callable via XML-RPC only');
         }
 
-        return false;
-    }
+        $sql = "SELECT u.username, r.shortname, r.name, e.enrol, ue.timemodified
+                  FROM {user_enrolments} ue
+                  JOIN {user} u ON ue.userid = u.id
+                  JOIN {enrol} e ON ue.enrolid = e.id
+                  JOIN {role} r ON e.roleid = r.id
+                 WHERE u.mnethostid = :mnethostid
+                       AND e.courseid = :courseid
+                       AND u.id <> :guestid
+                       AND u.confirmed = 1
+                       AND u.deleted = 0";
+        $params['mnethostid'] = $client->id;
+        $params['courseid'] = $courseid;
+        $params['guestid'] = $CFG->siteguest;
 
-    /**
-    * Does Foo
-    *
-    * @param int    $mnethostid The id of the remote mnethost
-    * @return array              Whether the user can login from the remote host
-    */
-    function req_unenrol_user($userid, $courseid) {
-        global $CFG;
-        global $USER;
-        global $MNET;
-        require_once $CFG->dirroot . '/mnet/xmlrpc/client.php';
-
-        // in case the remote host doesn't have it
-        $username = get_field('user', 'username', 'id', $userid);
-
-        $course = get_record('mnet_enrol_course', 'id', $courseid);
-
-        // get the Service Provider info
-        $mnet_sp = new mnet_peer();
-        $mnet_sp->set_id($course->hostid);
-
-        // set up the RPC request
-        $mnetrequest = new mnet_xmlrpc_client();
-        $mnetrequest->set_method('enrol/mnet/enrol.php/unenrol_user');
-        $mnetrequest->add_param($username);
-        $mnetrequest->add_param($course->remoteid);
-
-        // TODO - prevent removal of enrolments that are not of
-        // type mnet...
-
-
-        // Thunderbirds are go! Do RPC call and store response
-        if ($mnetrequest->send($mnet_sp) === true) {
-            if ($mnetrequest->response == true) {
-                // remove enrolment cached in mnet_enrol_assignments
-                delete_records_select('mnet_enrol_assignments',
-                                      "userid={$userid} AND courseid={$course->id}");
-
-                return true;
+        if (!is_null($roles)) {
+            if (!is_array($roles)) {
+                $roles = explode(',', $roles);
             }
+            $roles = array_map('trim', $roles);
+            list($rsql, $rparams) = $DB->get_in_or_equal($roles, SQL_PARAMS_NAMED);
+            $sql .= " AND r.shortname $rsql";
+            $params = array_merge($params, $rparams);
         }
-        return false;
+
+        $sql .= " ORDER BY u.lastname, u.firstname";
+
+        $rs = $DB->get_recordset_sql($sql, $params);
+        $list = array();
+        foreach ($rs as $record) {
+            $list[] = $record;
+        }
+        $rs->close();
+
+        return $list;
     }
-
-} // end of class
-
-?>
+}

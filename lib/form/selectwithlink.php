@@ -64,24 +64,7 @@ class MoodleQuickForm_selectwithlink extends HTML_QuickForm_select{
 
         return $retval;
     }
-   /**
-    * Automatically generates and assigns an 'id' attribute for the element.
-    *
-    * Currently used to ensure that labels work on radio buttons and
-    * checkboxes. Per idea of Alexander Radivanovich.
-    * Overriden in moodleforms to remove qf_ prefix.
-    *
-    * @access private
-    * @return void
-    */
-    function _generateId()
-    {
-        static $idx = 1;
 
-        if (!$this->getAttribute('id')) {
-            $this->updateAttributes(array('id' => 'id_'. substr(md5(microtime() . $idx++), 0, 6)));
-        }
-    } // end func _generateId
     /**
      * set html for help button
      *
@@ -90,18 +73,7 @@ class MoodleQuickForm_selectwithlink extends HTML_QuickForm_select{
      * @param string $function function name to call to get html
      */
     function setHelpButton($helpbuttonargs, $function='helpbutton'){
-        if (!is_array($helpbuttonargs)){
-            $helpbuttonargs=array($helpbuttonargs);
-        }else{
-            $helpbuttonargs=$helpbuttonargs;
-        }
-        //we do this to to return html instead of printing it
-        //without having to specify it in every call to make a button.
-        if ('helpbutton' == $function){
-            $defaultargs=array('', '', 'moodle', true, false, '', true);
-            $helpbuttonargs=$helpbuttonargs + $defaultargs ;
-        }
-        $this->_helpbutton=call_user_func_array($function, $helpbuttonargs);
+        debugging('component setHelpButton() is not used any more, please use $mform->setHelpButton() instead');
     }
     /**
      * get html for help button
@@ -159,5 +131,39 @@ class MoodleQuickForm_selectwithlink extends HTML_QuickForm_select{
             return 'default';
         }
     }
+   /**
+    * We check the options and return only the values that _could_ have been
+    * selected. We also return a scalar value if select is not "multiple"
+    */
+    function exportValue(&$submitValues, $assoc = false)
+    {
+        if (empty($this->_options)) {
+            return $this->_prepareValue(null, $assoc);
+        }
+
+        $value = $this->_findValue($submitValues);
+        if (is_null($value)) {
+            $value = $this->getValue();
+        }
+        $value = (array)$value;
+
+        $cleaned = array();
+        foreach ($value as $v) {
+            foreach ($this->_options as $option) {
+                if ((string)$option['attr']['value'] === (string)$v) {
+                    $cleaned[] = (string)$option['attr']['value'];
+                    break;
+                }
+            }
+        }
+
+        if (empty($cleaned)) {
+            return $this->_prepareValue(null, $assoc);
+        }
+        if ($this->getMultiple()) {
+            return $this->_prepareValue($cleaned, $assoc);
+        } else {
+            return $this->_prepareValue($cleaned[0], $assoc);
+        }
+    }
 }
-?>

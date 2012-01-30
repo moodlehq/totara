@@ -23,7 +23,14 @@ require_once 'item_form.php';
 $courseid = required_param('courseid', PARAM_INT);
 $id       = optional_param('id', 0, PARAM_INT);
 
-if (!$course = get_record('course', 'id', $courseid)) {
+$url = new moodle_url('/grade/edit/tree/item.php', array('courseid'=>$courseid));
+if ($id !== 0) {
+    $url->param('id', $id);
+}
+$PAGE->set_url($url);
+$PAGE->set_pagelayout('admin');
+
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 
@@ -118,7 +125,7 @@ if ($mform->is_cancelled()) {
 
     $convert = array('grademax', 'grademin', 'gradepass', 'multfactor', 'plusfactor', 'aggregationcoef');
     foreach ($convert as $param) {
-        if (array_key_exists($param, $data)) {
+        if (property_exists($data, $param)) {
             $data->$param = unformat_float($data->$param);
         }
     }
@@ -128,7 +135,7 @@ if ($mform->is_cancelled()) {
     $grade_item->outcomeid = null;
 
     // Handle null decimals value
-    if (!array_key_exists('decimals', $data) or $data->decimals < 0) {
+    if (!property_exists($data, 'decimals') or $data->decimals < 0) {
         $grade_item->decimals = null;
     }
 
@@ -158,8 +165,11 @@ if ($mform->is_cancelled()) {
     redirect($returnurl);
 }
 
-print_grade_page_head($courseid, 'edittree', null, $heading);
+$return = false;
+$buttons = false;
+$shownavigation = false;
+print_grade_page_head($courseid, 'edittree', null, $heading, $return, $buttons, $shownavigation);
 
 $mform->display();
 
-print_footer($course);
+echo $OUTPUT->footer();

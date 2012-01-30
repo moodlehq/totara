@@ -38,8 +38,8 @@ class auth_plugin_radius extends auth_plugin_base {
      * Returns true if the username and password work and false if they are
      * wrong or don't exist.
      *
-     * @param string $username The username (with system magic quotes)
-     * @param string $password The password (with system magic quotes)
+     * @param string $username The username
+     * @param string $password The password
      * @return bool Authentication success or failure.
      */
     function user_login ($username, $password) {
@@ -64,7 +64,7 @@ class auth_plugin_radius extends auth_plugin_base {
         }
 
         $classname = 'Auth_RADIUS_' . $type;
-        $rauth = new $classname(stripslashes($username), stripslashes($password));
+        $rauth = new $classname($username, $password);
         $rauth->addServer($this->config->host, $this->config->nasport, $this->config->secret);
 
         $rauth->username = $username;
@@ -158,6 +158,8 @@ class auth_plugin_radius extends auth_plugin_base {
      * @param array $page An object containing all the data for this page.
      */
     function config_form($config, $err, $user_fields) {
+        global $OUTPUT;
+
         include "config.html";
     }
 
@@ -194,4 +196,4 @@ class auth_plugin_radius extends auth_plugin_base {
 
 }
 
-?>
+

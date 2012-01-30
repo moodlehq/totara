@@ -14,7 +14,7 @@
 //
 // It is important that capability names are unique. The naming convention
 // for capabilities that are specific to modules and blocks is as follows:
-//   [mod/block]/<component_name>:<capabilityname>
+//   [mod/block]/<plugin_name>:<capabilityname>
 //
 // component_name should be the same as the directory name of the mod or block.
 //
@@ -25,23 +25,20 @@
 //           block/recent_activity:view
 //           moodle/site:deleteuser
 //
-// The variable name for the capability definitions array follows the format
-//   $<componenttype>_<component_name>_capabilities
-//
-// For the core capabilities, the variable is $moodle_capabilities.
+// The variable name for the capability definitions array is $capabilities
 
 
-$mod_survey_capabilities = array(
+$capabilities = array(
 
     'mod/survey:participate' => array(
 
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
+        'archetypes' => array(
             'student' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -49,10 +46,10 @@ $mod_survey_capabilities = array(
 
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
+        'archetypes' => array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -60,13 +57,13 @@ $mod_survey_capabilities = array(
 
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
+        'archetypes' => array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     )
 
 );
 
-?>
+

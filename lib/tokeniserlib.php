@@ -1,48 +1,58 @@
-<?php // $Id$
+<?php
 
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Original code:                                                        //
-//                                                                       //
-// Drupal - The copyright of both the Drupal software and the            //
-//          "Druplicon" logo belongs to all the original authors,        //
-//          though both are licensed under the GPL.                      //
-//          http://drupal.org                                            //
-//                                                                       //
-// Modifications:                                                        //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas        http://dougiamas.com  //
-//           (C) 2001-3001 Eloy Lafuente (stronk7) http://contiento.com  //
-//           (C) 2001-3001 Antonio Vicent          http://ludens.es      //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
+//
+// NOTICE OF COPYRIGHT
+//
+// Original code:
+//
+// Drupal - The copyright of both the Drupal software and the
+//          "Druplicon" logo belongs to all the original authors,
+//          though both are licensed under the GPL.
+//          http://drupal.org
+//
+// Modifications:
+//
+// Moodle - Modular Object-Oriented Dynamic Learning Environment
+//          http://moodle.com
+//
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
 
-/// Based on Drupal's search.module version 1.224
-/// http://cvs.drupal.org/viewcvs/drupal/drupal/modules/search/search.module?view=markup
+/**
+ * Based on Drupal's search.module version 1.224
+ *
+ * {@link http://cvs.drupal.org/viewcvs/drupal/drupal/modules/search/search.module?view=markup}
+ *
+ * Usage: $tokens = tokenise_text($text)
+ * Returns an array of tokens (key) with their score (value)
+ * (see function definition for more info)
+ *
+ * Major Contributors
+ *  - Martin Dougiamas  {@link http://moodle.com}
+ *  - Eloy Lafuente (stronk7) {@link http://contiento.com}
+ *  - Antonio Vicent          {@link http://ludens.es}
+ *
+ * @package   moodlecore
+ * @copyright (C) 2001-3001 Eloy Lafuente (stronk7) {@link http://contiento.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-/// Usage: $tokens = tokenise_text($text)
-/// Returns an array of tokens (key) with their score (value)
-/// (see function definition for more info)
-
-/// Some constants
-
+/**
+ * Some constants
+ */
 define ('MINIMUM_WORD_SIZE',  3); /// Minimum word size to index and search
 define ('MAXIMUM_WORD_SIZE', 50); /// Maximum word size to index and search
 
@@ -139,9 +149,9 @@ define('PREG_CLASS_CJK', '\x{3041}-\x{30ff}\x{31f0}-\x{31ff}\x{3400}-\x{4db5}'.
  * This function process the text passed at input, extracting all the tokens
  * and scoring each one based in their number of ocurrences and relation with
  * some well-known html tags
- * 
+ *
  * @param string  $text the text to be tokenised.
- * @param array   $stop_words array of utf-8 words than can be ignored in 
+ * @param array   $stop_words array of utf-8 words than can be ignored in
  *                the text being processed. There are some cool lists of
  *                stop words at http://snowball.tartarus.org/
  * @param boolean $overlap_cjk option to split CJK text into some overlapping
@@ -401,5 +411,3 @@ function tokenise_truncate_word(&$text) {
     $textlib = textlib_get_instance();
     $text = $textlib->substr($text, 0, MAXIMUM_WORD_SIZE);
 }
-
-?>

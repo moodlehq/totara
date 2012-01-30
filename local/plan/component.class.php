@@ -27,8 +27,6 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
-require_once($CFG->dirroot.'/local/comment/lib.php');
-
 /**
  * Flag for dp_base_component::can_update_settings()
  */

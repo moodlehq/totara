@@ -1,38 +1,51 @@
-<?PHP // $Id$
-      // This function fetches user pictures from the data directory
-      // Syntax:   pix.php/userid/f1.jpg or pix.php/userid/f2.jpg
-      //     OR:   ?file=userid/f1.jpg or ?file=userid/f2.jpg
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    require_once('../config.php');
-    require_once($CFG->libdir.'/filelib.php');
+/**
+ * BC user image location
+ *
+ * @package    core
+ * @subpackage file
+ * @copyright  2010 Petr Skoda (http://skodak.org)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-    if ((!empty($CFG->forcelogin) and !isloggedin()) ||
-        (!empty($CFG->forceloginforprofileimage) && (!isloggedin() || isguestuser()))) {
-        // protect images if login required and not logged in;
-        // also if login is required for profile images and is not logged in or guest
-        // do not use require_login() because it is expensive and not suitable here anyway
-        redirect($CFG->pixpath.'/u/f1.png');
+define('NO_DEBUG_DISPLAY', true);
+define('NOMOODLECOOKIE', 1);
+
+require('../config.php');
+
+$PAGE->set_url('/user/pix.php');
+$PAGE->set_context(null);
+
+$relativepath = get_file_argument('pix.php');
+
+$args = explode('/', trim($relativepath, '/'));
+
+if (count($args) == 2) {
+    $userid = (integer)$args[0];
+    if ($args[1] === 'f1.jpg') {
+        $image = 'f1';
+    } else {
+        $image = 'f2';
     }
-
-    // disable moodle specific debug messages
-    disable_debugging();
-
-    $relativepath = get_file_argument('pix.php');
-
-    $args = explode('/', trim($relativepath, '/'));
-
-    if (count($args) == 2) {
-        $userid   = (integer)$args[0];
-        // do not serve images of deleted users
-        if ($user = get_record('user', 'id', $userid, 'deleted', 0, 'picture', 1)) {
-            $image    = $args[1];
-            $pathname = make_user_directory($userid, true) . "/$image";
-            if (file_exists($pathname) and !is_dir($pathname)) {
-                send_file($pathname, $image);
-            }
-        }
+    if ($usercontext = get_context_instance(CONTEXT_USER, $userid)) {
+        $url = moodle_url::make_pluginfile_url($usercontext->id, 'user', 'icon', NULL, '/', $image);
+        redirect($url);
     }
+}
 
-    // picture was deleted - use default instead
-    redirect($CFG->pixpath.'/u/f1.png');
-?>
+redirect($OUTPUT->pix_url('u/f1'));

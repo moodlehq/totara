@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.98 13 Feb 2008  (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights reserved.
+V5.14 8 Sept 2011  (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -83,7 +83,7 @@ class perf_mysql extends adodb_perf{
 	
 	function perf_mysql(&$conn)
 	{
-		$this->conn =& $conn;
+		$this->conn = $conn;
 	}
 	
 	function Explain($sql,$partial=false)
@@ -269,6 +269,7 @@ class perf_mysql extends adodb_perf{
 			if (isset($_SESSION['INNODB_HIT_PCT'])) return $_SESSION['INNODB_HIT_PCT'];
 			return 0;
 		}
+		return 0;
 	}
 	
 	function GetKeyHitRatio()

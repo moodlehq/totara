@@ -1,25 +1,33 @@
-<?php // $Id$
+<?php
 
 require_once('../config.php');
 //require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->dirroot.'/calendar/lib.php');
 require_once($CFG->libdir.'/bennu/bennu.inc.php');
 
-$username = required_param('username', PARAM_TEXT);
+$userid = optional_param('userid', 0, PARAM_INT);
+$username = optional_param('username', '', PARAM_TEXT);
 $authtoken = required_param('authtoken', PARAM_ALPHANUM);
+$generateurl = optional_param('generateurl', '', PARAM_TEXT);
 
 if (empty($CFG->enablecalendarexport)) {
     die('no export');
 }
 
 //Fetch user information
-if (!$user = get_complete_user_data('username', $username)) {
-   //No such user
+$checkuserid = !empty($userid) && $user = $DB->get_record('user', array('id' => $userid), 'id,password');
+//allowing for fallback check of old url - MDL-27542
+$checkusername = !empty($username) && $user = $DB->get_record('user', array('username' => $username), 'id,password');
+if (!$checkuserid && !$checkusername) {
+    //No such user
     die('Invalid authentication');
 }
 
 //Check authentication token
-if ($authtoken != sha1($username . $user->password . $CFG->calendar_exportsalt)) {
+$authuserid = !empty($userid) && $authtoken == sha1($userid . $user->password . $CFG->calendar_exportsalt);
+//allowing for fallback check of old url - MDL-27542
+$authusername = !empty($username) && $authtoken == sha1($username . $user->password . $CFG->calendar_exportsalt);
+if (!$authuserid && !$authusername) {
     die('Invalid authentication');
 }
 
@@ -31,18 +39,30 @@ $now = usergetdate(time());
 $allowed_what = array('all', 'courses');
 $allowed_time = array('weeknow', 'weeknext', 'monthnow', 'monthnext', 'recentupcoming');
 
+if (!empty($generateurl)) {
+    $authtoken = sha1($user->id . $user->password . $CFG->calendar_exportsalt);
+    $params = array();
+    $params['preset_what'] = $what;
+    $params['preset_time'] = $time;
+    $params['userid'] = $userid;
+    $params['authtoken'] = $authtoken;
+    $params['generateurl'] = true;
+
+    $link = new moodle_url('/calendar/export.php', $params);
+    redirect($link->out());
+    die;
+}
+
 if(!empty($what) && !empty($time)) {
     if(in_array($what, $allowed_what) && in_array($time, $allowed_time)) {
-        $courses = get_my_courses($user->id, NULL, 'id, visible, shortname');
+        $courses = enrol_get_users_courses($user->id, true, 'id, visible, shortname');
 
         if ($what == 'all') {
             $users = $user->id;
             $groups = array();
             foreach ($courses as $course) {
                 $course_groups = groups_get_all_groups($course->id, $user->id);
-                if ($course_groups) {
-                    $groups = array_merge($groups, array_keys($course_groups));
-                }
+                $groups = array_merge($groups, array_keys($course_groups));
             }
             if (empty($groups)) {
                 $groups = false;
@@ -56,7 +76,7 @@ if(!empty($what) && !empty($time)) {
 
         switch($time) {
             case 'weeknow':
-                $startweekday  = get_user_preferences('calendar_startwday', CALENDAR_STARTING_WEEKDAY);
+                $startweekday  = get_user_preferences('calendar_startwday', calendar_get_starting_weekday());
                 $startmonthday = find_day_in_month($now['mday'] - 6, $startweekday, $now['mon'], $now['year']);
                 $startmonth    = $now['mon'];
                 $startyear     = $now['year'];
@@ -75,7 +95,7 @@ if(!empty($what) && !empty($time)) {
                 $timeend = make_timestamp($endyear, $endmonth, $endmonthday) - 1;
             break;
             case 'weeknext':
-                $startweekday  = get_user_preferences('calendar_startwday', CALENDAR_STARTING_WEEKDAY);
+                $startweekday  = get_user_preferences('calendar_startwday', calendar_get_starting_weekday());
                 $startmonthday = find_day_in_month($now['mday'] + 1, $startweekday, $now['mon'], $now['year']);
                 $startmonth    = $now['mon'];
                 $startyear     = $now['year'];
@@ -142,7 +162,8 @@ foreach($events as $event) {
         $ev->add_property('dtend', Bennu::timestamp_to_datetime($event->timestart + $event->timeduration));
     }
     if ($event->courseid != 0) {
-        $ev->add_property('categories', $courses[$event->courseid]->shortname);
+        $coursecontext = get_context_instance(CONTEXT_COURSE, $event->courseid);
+        $ev->add_property('categories', format_string($courses[$event->courseid]->shortname, true, array('context' => $coursecontext)));
     }
     $ical->add_component($ev);
 }
@@ -154,7 +175,7 @@ if(empty($serialized)) {
 }
 
 //IE compatibility HACK!
-if(ini_get('zlib.output_compression')) {
+if (ini_get_bool('zlib.output_compression')) {
     ini_set('zlib.output_compression', 'Off');
 }
 
@@ -167,8 +188,6 @@ header('Pragma: no-cache');
 header('Accept-Ranges: none'); // Comment out if PDFs do not work...
 header('Content-disposition: attachment; filename='.$filename);
 header('Content-length: '.strlen($serialized));
-header('Content-type: text/calendar');
+header('Content-type: text/calendar; charset=utf-8');
 
 echo $serialized;
-
-?>

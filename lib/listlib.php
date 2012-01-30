@@ -1,27 +1,19 @@
-<?php // $Id$
+<?php
 
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Classes for displaying and editing a nested list of items.
@@ -33,10 +25,13 @@
  *    Reordering of items works across pages.
  *    Processing of editing actions on list.
  *
- * @author Jamie Pratt
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package moodlecore
+ * @package    core
+ * @subpackage lib
+ * @copyright  Jamie Pratt
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Clues to reading this code:
@@ -44,55 +39,48 @@
  * The functions that move things around the tree structure just update the
  * database - they don't update the in-memory structure, instead they trigger a
  * page reload so everything is rebuilt from scratch.
+ *
+ * @package moodlecore
+ * @copyright Jamie Pratt
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class moodle_list {
-    var $attributes;
-    var $listitemclassname = 'list_item';
-    /**
-     * An array of $listitemclassname objects.
-     * @var array
-     */
-    var $items = array();
-    /**
-     * ol / ul
-     * @var string
-     */
-    var $type;
-    /**
-     * @var list_item or derived class
-     */
-    var $parentitem = null;
-    var $table;
-    var $fieldnamesparent = 'parent';
-    var $sortby = 'parent, sortorder, name';
-    /**
-     * Records from db, only used in top level list.
-     * @var array
-     */
-    var $records = array();
+abstract class moodle_list {
+    public $attributes;
+    public $listitemclassname = 'list_item';
 
-    var $editable;
+    /** @var array of $listitemclassname objects. */
+    public $items = array();
 
-    /**
-     * Key is child id, value is parent.
-     * @var array
-     */
-    var $childparent;
+    /** @var string 'ol' or 'ul'. */
+    public $type;
+
+    /** @var list_item or derived class. */
+    public $parentitem = null;
+    public $table;
+    public $fieldnamesparent = 'parent';
+
+    /** @var array Records from db, only used in top level list. */
+    public $records = array();
+
+    public $editable;
+
+    /** @var array keys are child ids, values are parents. */
+    public $childparent;
 
 //------------------------------------------------------
 //vars used for pagination.
-    var $page = 0;// 0 means no pagination
-    var $firstitem = 1;
-    var $lastitem = 999999;
-    var $pagecount;
-    var $paged = false;
-    var $offset = 0;
+    public $page = 0; // 0 means no pagination
+    public $firstitem = 1;
+    public $lastitem = 999999;
+    public $pagecount;
+    public $paged = false;
+    public $offset = 0;
 //------------------------------------------------------
-    var $pageurl;
-    var $pageparamname;
+    public $pageurl;
+    public $pageparamname;
 
     /**
-     * Constructor function
+     * Constructor.
      *
      * @param string $type
      * @param string $attributes
@@ -101,9 +89,10 @@ class moodle_list {
      * @param integer $page if 0 no pagination. (These three params only used in top level list.)
      * @param string $pageparamname name of url param that is used for passing page no
      * @param integer $itemsperpage no of top level items.
-     * @return moodle_list
      */
-    function moodle_list($type='ul', $attributes='', $editable = false, $pageurl=null, $page = 0, $pageparamname = 'page', $itemsperpage = 20) {
+    public function __construct($type='ul', $attributes='', $editable = false, $pageurl=null, $page = 0, $pageparamname = 'page', $itemsperpage = 20) {
+        global $PAGE;
+
         $this->editable = $editable;
         $this->attributes = $attributes;
         $this->type = $type;
@@ -111,7 +100,7 @@ class moodle_list {
         $this->pageparamname = $pageparamname;
         $this->itemsperpage = $itemsperpage;
         if ($pageurl === null) {
-            $this->pageurl = new moodle_url();
+            $this->pageurl = new moodle_url($PAGE->url);
             $this->pageurl->params(array($this->pageparamname => $this->page));
         } else {
             $this->pageurl = $pageurl;
@@ -123,7 +112,7 @@ class moodle_list {
      *
      * @param integer $indent depth of indentation.
      */
-    function to_html($indent=0, $extraargs=array()) {
+    public function to_html($indent=0, $extraargs=array()) {
         if (count($this->items)) {
             $tabs = str_repeat("\t", $indent);
             $first = true;
@@ -165,7 +154,7 @@ class moodle_list {
      * @param boolean $suppresserror error if not item found?
      * @return list_item *copy* or null if item is not found
      */
-    function find_item($id, $suppresserror = false) {
+    public function find_item($id, $suppresserror = false) {
         if (isset($this->items)) {
             foreach ($this->items as $key => $child) {
                 if ($child->id == $id) {
@@ -173,7 +162,7 @@ class moodle_list {
                 }
             }
             foreach (array_keys($this->items) as $key) {
-                $thischild =& $this->items[$key];
+                $thischild = $this->items[$key];
                 $ref = $thischild->children->find_item($id, true);//error always reported at top level
                 if ($ref !== null) {
                     return $ref;
@@ -187,12 +176,12 @@ class moodle_list {
         return null;
     }
 
-    function add_item(&$item) {
-        $this->items[] =& $item;
+    public function add_item($item) {
+        $this->items[] = $item;
     }
 
-    function set_parent(&$parent) {
-        $this->parentitem =& $parent;
+    public function set_parent($parent) {
+        $this->parentitem = $parent;
     }
 
     /**
@@ -206,7 +195,7 @@ class moodle_list {
      * @return array(boolean, integer) whether there is more than one page, $offset + how many toplevel items where there in this list.
      *
      */
-    function list_from_records($paged = false, $offset = 0) {
+    public function list_from_records($paged = false, $offset = 0) {
         $this->paged = $paged;
         $this->offset = $offset;
         $this->get_records();
@@ -222,44 +211,48 @@ class moodle_list {
         foreach ($records as $record) {
             $this->childparent[$record->id] = $record->parent;
         }
+
         //create top level list items and they're responsible for creating their children
         foreach ($records as $record) {
-            if (!array_key_exists($record->parent, $this->childparent)) {
-                //if this record is not a child of another record then
-
-                $inpage = ($itemiter >= $this->firstitem && $itemiter <= $this->lastitem);
-                //make list item for top level for all items
-                //we need the info about the top level items for reordering peers.
-                if ($this->parentitem!==null) {
-                    $newattributes = $this->parentitem->attributes;
-                } else {
-                    $newattributes = '';
-
-                }
-                $this->items[$itemiter] =& new $this->listitemclassname($record, $this, $newattributes, $inpage);
-                if ($inpage) {
-                    $this->items[$itemiter]->create_children($records, $this->childparent, $record->id);
-                } else {
-                    //don't recurse down the tree for items that are not on this page
-                    $this->paged = true;
-                }
-                $itemiter++;
+            if (array_key_exists($record->parent, $this->childparent)) {
+                // This record is a child of another record, so it will be dealt
+                // with by a call to list_item::create_children, not here.
+                continue;
             }
+
+            $inpage = $itemiter >= $this->firstitem && $itemiter <= $this->lastitem;
+
+            // Make list item for top level for all items
+            // we need the info about the top level items for reordering peers.
+            if ($this->parentitem !== null) {
+                $newattributes = $this->parentitem->attributes;
+            } else {
+                $newattributes = '';
+            }
+
+            $this->items[$itemiter] = new $this->listitemclassname($record, $this, $newattributes, $inpage);
+
+            if ($inpage) {
+                $this->items[$itemiter]->create_children($records, $this->childparent, $record->id);
+            } else {
+                // Don't recurse down the tree for items that are not on this page
+                $this->paged = true;
+            }
+
+            $itemiter++;
         }
         return array($this->paged, $itemiter);
     }
 
     /**
      * Should be overriden to return an array of records of list items.
-     *
      */
-    function get_records() {
-    }
+    public abstract function get_records();
 
     /**
      * display list of page numbers for navigation
      */
-    function display_page_numbers() {
+    public function display_page_numbers() {
         $html = '';
         $topcount = count($this->items);
         $this->pagecount = (integer) ceil(($topcount + $this->offset)/ QUESTION_PAGE_LENGTH );
@@ -270,7 +263,7 @@ class moodle_list {
                     $html .= " $currentpage \n";
                 }
                 else {
-                    $html .= "<a href=\"".$this->pageurl->out(false, array($this->pageparamname => $currentpage))."\">";
+                    $html .= "<a href=\"".$this->pageurl->out(true, array($this->pageparamname => $currentpage))."\">";
                     $html .= " $currentpage </a>\n";
                 }
             }
@@ -285,7 +278,7 @@ class moodle_list {
      * @param    int itemid - if given, restrict records to those with this parent id.
      * @return   array peer ids
      */
-    function get_items_peers($itemid) {
+    public function get_items_peers($itemid) {
         $itemref = $this->find_item($itemid);
         $peerids = $itemref->parentlist->get_child_ids();
         return $peerids;
@@ -296,7 +289,7 @@ class moodle_list {
      *
      * @return   array peer ids
      */
-    function get_child_ids() {
+    public function get_child_ids() {
         $childids = array();
         foreach ($this->items as $child) {
            $childids[] = $child->id;
@@ -310,7 +303,7 @@ class moodle_list {
      * @param string $direction up / down
      * @param integer $id
      */
-    function move_item_up_down($direction, $id) {
+    public function move_item_up_down($direction, $id) {
         $peers = $this->get_items_peers($id);
         $itemkey = array_search($id, $peers);
         switch ($direction) {
@@ -337,11 +330,10 @@ class moodle_list {
         $this->reorder_peers($peers);
     }
 
-    function reorder_peers($peers) {
+    public function reorder_peers($peers) {
+        global $DB;
         foreach ($peers as $key => $peer) {
-            if (!set_field("{$this->table}", "sortorder", $key, "id", $peer)) {
-                print_error('listupdatefail');
-            }
+            $DB->set_field($this->table, "sortorder", $key, array("id"=>$peer));
         }
     }
 
@@ -349,7 +341,9 @@ class moodle_list {
      * @param integer $id an item index.
      * @return object the item that used to be the parent of the item moved.
      */
-    function move_item_left($id) {
+    public function move_item_left($id) {
+        global $DB;
+
         $item = $this->find_item($id);
         if (!isset($item->parentlist->parentitem->parentlist)) {
             print_error('listcantmoveleft');
@@ -360,13 +354,10 @@ class moodle_list {
             } else {
                 $newparent = 0; // top level item
             }
-            if (!set_field("{$this->table}", "parent", $newparent, "id", $item->id)) {
-                print_error('listupdatefail');
-            } else {
-                $oldparentkey = array_search($item->parentlist->parentitem->id, $newpeers);
-                $neworder = array_merge(array_slice($newpeers, 0, $oldparentkey+1), array($item->id), array_slice($newpeers, $oldparentkey+1));
-                $this->reorder_peers($neworder);
-            }
+            $DB->set_field($this->table, "parent", $newparent, array("id"=>$item->id));
+            $oldparentkey = array_search($item->parentlist->parentitem->id, $newpeers);
+            $neworder = array_merge(array_slice($newpeers, 0, $oldparentkey+1), array($item->id), array_slice($newpeers, $oldparentkey+1));
+            $this->reorder_peers($neworder);
         }
         return $item->parentlist->parentitem;
     }
@@ -376,23 +367,22 @@ class moodle_list {
      *
      * @param integer $id
      */
-    function move_item_right($id) {
+    public function move_item_right($id) {
+        global $DB;
+
         $peers = $this->get_items_peers($id);
         $itemkey = array_search($id, $peers);
         if (!isset($peers[$itemkey-1])) {
             print_error('listcantmoveright');
         } else {
-            if (!set_field("{$this->table}", "parent", $peers[$itemkey-1], "id", $peers[$itemkey])) {
-                print_error('listupdatefail');
-            } else {
-                $newparent = $this->find_item($peers[$itemkey-1]);
-                if (isset($newparent->children)) {
-                    $newpeers = $newparent->children->get_child_ids();
-                }
-                if ($newpeers) {
-                    $newpeers[] = $peers[$itemkey];
-                    $this->reorder_peers($newpeers);
-                }
+            $DB->set_field($this->table, "parent", $peers[$itemkey-1], array("id"=>$peers[$itemkey]));
+            $newparent = $this->find_item($peers[$itemkey-1]);
+            if (isset($newparent->children)) {
+                $newpeers = $newparent->children->get_child_ids();
+            }
+            if ($newpeers) {
+                $newpeers[] = $peers[$itemkey];
+                $this->reorder_peers($newpeers);
             }
         }
     }
@@ -406,7 +396,7 @@ class moodle_list {
      * @param integer $movedown id of item to move down
      * @return unknown
      */
-    function process_actions($left, $right, $moveup, $movedown) {
+    public function process_actions($left, $right, $moveup, $movedown) {
         //should this action be processed by this list object?
         if (!(array_key_exists($left, $this->records) || array_key_exists($right, $this->records) || array_key_exists($moveup, $this->records) || array_key_exists($movedown, $this->records))) {
             return false;
@@ -443,7 +433,7 @@ class moodle_list {
             return false;
         }
 
-        redirect($this->pageurl->out());
+        redirect($this->pageurl);
     }
 
     /**
@@ -451,7 +441,7 @@ class moodle_list {
      * @return boolean Is the item with the given id the first top-level item on
      * the current page?
      */
-    function item_is_first_on_page($itemid) {
+    public function item_is_first_on_page($itemid) {
         return $this->page && isset($this->items[$this->firstitem]) &&
                 $itemid == $this->items[$this->firstitem]->id;
     }
@@ -461,52 +451,47 @@ class moodle_list {
      * @return boolean Is the item with the given id the last top-level item on
      * the current page?
      */
-    function item_is_last_on_page($itemid) {
+    public function item_is_last_on_page($itemid) {
         return $this->page && isset($this->items[$this->lastitem]) &&
                 $itemid == $this->items[$this->lastitem]->id;
     }
 }
 
-class list_item {
-    /**
-     * id of record, used if list is editable
-     * @var integer
-     */
-    var $id;
-    /**
-     * name of this item, used if list is editable
-     * @var string
-     */
-    var $name;
-    /**
-     * The object or string representing this item.
-     * @var mixed
-     */
-    var $item;
-    var $fieldnamesname = 'name';
-    var $attributes;
-    var $display;
-    var $icons = array();
-    /**
-     * @var moodle_list
-     */
-    var $parentlist;
-    /**
-     * Set if there are any children of this listitem.
-     * @var moodle_list
-     */
-    var $children;
+/**
+ * @package moodlecore
+ * @copyright Jamie Pratt
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+abstract class list_item {
+    /** @var integer id of record, used if list is editable. */
+    public $id;
+
+    /** @var string name of this item, used if list is editable. */
+    public $name;
+
+    /** @var mixed The object or string representing this item. */
+    public $item;
+    public $fieldnamesname = 'name';
+    public $attributes;
+    public $display;
+    public $icons = array();
+
+    /** @var moodle_list */
+    public $parentlist;
+
+    /** @var moodle_list Set if there are any children of this listitem. */
+    public $children;
 
     /**
      * Constructor
      * @param mixed $item fragment of html for list item or record
-     * @param object &$parent reference to parent of this item
+     * @param object $parent reference to parent of this item
      * @param string $attributes attributes for li tag
      * @param boolean $display whether this item is displayed. Some items may be loaded so we have a complete
      *                              structure in memory to work with for actions but are not displayed.
      * @return list_item
      */
-    function list_item($item, &$parent, $attributes='', $display = true) {
+    public function __construct($item, $parent, $attributes = '', $display = true) {
         $this->item = $item;
         if (is_object($this->item)) {
             $this->id = $this->item->id;
@@ -515,7 +500,7 @@ class list_item {
         $this->set_parent($parent);
         $this->attributes = $attributes;
         $parentlistclass = get_class($parent);
-        $this->children =& new $parentlistclass($parent->type, $parent->attributes, $parent->editable, $parent->pageurl, 0);
+        $this->children = new $parentlistclass($parent->type, $parent->attributes, $parent->editable, $parent->pageurl, 0);
         $this->children->set_parent($this);
         $this->display = $display;
     }
@@ -524,7 +509,7 @@ class list_item {
      * Output the html just for this item. Called by to_html which adds html for children.
      *
      */
-    function item_html($extraargs = array()) {
+    public function item_html($extraargs = array()) {
         if (is_string($this->item)) {
             $html = $this->item;
         } elseif (is_object($this->item)) {
@@ -543,7 +528,7 @@ class list_item {
      *                            may be used by sub class.
      * @return string html
      */
-    function to_html($indent=0, $extraargs = array()) {
+    public function to_html($indent = 0, $extraargs = array()) {
         if (!$this->display) {
             return '';
         }
@@ -557,56 +542,57 @@ class list_item {
         return $this->item_html($extraargs).'&nbsp;'.(join($this->icons, '')).(($childrenhtml !='')?("\n".$childrenhtml):'');
     }
 
-    function set_icon_html($first, $last, &$lastitem) {
+    public function set_icon_html($first, $last, $lastitem) {
         global $CFG;
         $strmoveup = get_string('moveup');
         $strmovedown = get_string('movedown');
         $strmoveleft = get_string('maketoplevelitem', 'question');
-        $pixpath = $CFG->pixpath;
 
         if (isset($this->parentlist->parentitem)) {
-            $parentitem =& $this->parentlist->parentitem;
+            $parentitem = $this->parentlist->parentitem;
             if (isset($parentitem->parentlist->parentitem)) {
                 $action = get_string('makechildof', 'question', $parentitem->parentlist->parentitem->name);
             } else {
                 $action = $strmoveleft;
             }
-            $this->icons['left'] = $this->image_icon($action, $this->parentlist->pageurl->out_action(array('left'=>$this->id)), 'left');
+            $url = new moodle_url($this->parentlist->pageurl, (array('sesskey'=>sesskey(), 'left'=>$this->id)));
+            $this->icons['left'] = $this->image_icon($action, $url, 'left');
         } else {
             $this->icons['left'] =  $this->image_spacer();
         }
 
         if (!$first) {
-            $this->icons['up'] = $this->image_icon($strmoveup, $this->parentlist->pageurl->out_action(array('moveup'=>$this->id)), 'up');
+            $url = new moodle_url($this->parentlist->pageurl, (array('sesskey'=>sesskey(), 'moveup'=>$this->id)));
+            $this->icons['up'] = $this->image_icon($strmoveup, $url, 'up');
         } else {
             $this->icons['up'] =  $this->image_spacer();
         }
 
         if (!$last) {
-            $this->icons['down'] = $this->image_icon($strmovedown, $this->parentlist->pageurl->out_action(array('movedown'=>$this->id)), 'down');
+            $url = new moodle_url($this->parentlist->pageurl, (array('sesskey'=>sesskey(), 'movedown'=>$this->id)));
+            $this->icons['down'] = $this->image_icon($strmovedown, $url, 'down');
         } else {
             $this->icons['down'] =  $this->image_spacer();
         }
 
         if (!empty($lastitem)) {
             $makechildof = get_string('makechildof', 'question', $lastitem->name);
-            $this->icons['right'] = $this->image_icon($makechildof, $this->parentlist->pageurl->out_action(array('right'=>$this->id)), 'right');
+            $url = new moodle_url($this->parentlist->pageurl, (array('sesskey'=>sesskey(), 'right'=>$this->id)));
+            $this->icons['right'] = $this->image_icon($makechildof, $url, 'right');
         } else {
             $this->icons['right'] =  $this->image_spacer();
         }
     }
 
-    function image_icon($action, $url, $icon) {
-        global $CFG;
-        $pixpath = $CFG->pixpath;
-        return '<a title="' . $action .'" href="'.$url.'">
-                <img src="' . $pixpath . '/t/'.$icon.'.gif" class="iconsmall" alt="' . $action. '" /></a> ';
+    public function image_icon($action, $url, $icon) {
+        global $OUTPUT;
+        return '<a title="' . s($action) .'" href="'.$url.'">
+                <img src="' . $OUTPUT->pix_url('t/'.$icon) . '" class="iconsmall" alt="' . s($action). '" /></a> ';
     }
 
-    function image_spacer() {
-        global $CFG;
-        $pixpath = $CFG->pixpath;
-        return '<img src="' . $pixpath . '/spacer.gif" class="iconsmall" alt="" />';
+    public function image_spacer() {
+        global $OUTPUT;
+        return '<img src="' . $OUTPUT->pix_url('spacer') . '" class="iconsmall" alt="" />';
     }
 
     /**
@@ -616,21 +602,18 @@ class list_item {
      * @param array $children
      * @param integer $thisrecordid
      */
-    function create_children(&$records, &$children, $thisrecordid) {
+    public function create_children(&$records, &$children, $thisrecordid) {
         //keys where value is $thisrecordid
         $thischildren = array_keys($children, $thisrecordid);
-        if (count($thischildren)) {
-            foreach ($thischildren as $child) {
-                $thisclass = get_class($this);
-                $newlistitem =& new $thisclass($records[$child], $this->children, $this->attributes);
-                $this->children->add_item($newlistitem);
-                $newlistitem->create_children($records, $children, $records[$child]->id);
-            }
+        foreach ($thischildren as $child) {
+            $thisclass = get_class($this);
+            $newlistitem = new $thisclass($records[$child], $this->children, $this->attributes);
+            $this->children->add_item($newlistitem);
+            $newlistitem->create_children($records, $children, $records[$child]->id);
         }
     }
 
-    function set_parent(&$parent) {
-        $this->parentlist =& $parent;
+    public function set_parent($parent) {
+        $this->parentlist = $parent;
     }
 }
-?>

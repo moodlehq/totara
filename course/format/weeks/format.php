@@ -1,36 +1,40 @@
-<?php // $Id$
+<?php
       // Display the whole course as "weeks" made of of modules
       // Included from "view.php"
+/**
+ * Evaluation weekly format for course display - NO layout tables, for accessibility, etc.
+ *
+ * A duplicate course format to enable the Moodle development team to evaluate
+ * CSS for the multi-column layout in place of layout tables.
+ * Less risk for the Moodle 1.6 beta release.
+ *   1. Straight copy of weeks/format.php
+ *   2. Replace <table> and <td> with DIVs; inline styles.
+ *   3. Reorder columns so that in linear view content is first then blocks;
+ * styles to maintain original graphical (side by side) view.
+ *
+ * Target: 3-column graphical view using relative widths for pixel screen sizes
+ * 800x600, 1024x768... on IE6, Firefox. Below 800 columns will shift downwards.
+ *
+ * http://www.maxdesign.com.au/presentation/em/ Ideal length for content.
+ * http://www.svendtofte.com/code/max_width_in_ie/ Max width in IE.
+ *
+ * @copyright &copy; 2006 The Open University
+ * @author N.D.Freear@open.ac.uk, and others.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package
+ */
 
-    require_once($CFG->libdir.'/ajax/ajaxlib.php');
+defined('MOODLE_INTERNAL') || die();
+
+    require_once($CFG->libdir.'/filelib.php');
+    require_once($CFG->libdir.'/completionlib.php');
 
     $week = optional_param('week', -1, PARAM_INT);
-
-    // Bounds for block widths
-    // more flexible for theme designers taken from theme config.php
-    $lmin = (empty($THEME->block_l_min_width)) ? 100 : $THEME->block_l_min_width;
-    $lmax = (empty($THEME->block_l_max_width)) ? 210 : $THEME->block_l_max_width;
-    $rmin = (empty($THEME->block_r_min_width)) ? 100 : $THEME->block_r_min_width;
-    $rmax = (empty($THEME->block_r_max_width)) ? 210 : $THEME->block_r_max_width;
-
-    define('BLOCK_L_MIN_WIDTH', $lmin);
-    define('BLOCK_L_MAX_WIDTH', $lmax);
-    define('BLOCK_R_MIN_WIDTH', $rmin);
-    define('BLOCK_R_MAX_WIDTH', $rmax);
-  
-    $preferred_width_left  = bounded_number(BLOCK_L_MIN_WIDTH, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]),  
-                                            BLOCK_L_MAX_WIDTH);
-    $preferred_width_right = bounded_number(BLOCK_R_MIN_WIDTH, blocks_preferred_width($pageblocks[BLOCK_POS_RIGHT]), 
-                                            BLOCK_R_MAX_WIDTH);
 
     if ($week != -1) {
         $displaysection = course_set_display($course->id, $week);
     } else {
-        if (isset($USER->display[$course->id])) {
-            $displaysection = $USER->display[$course->id];
-        } else {
-            $displaysection = course_set_display($course->id, 0);
-        }
+        $displaysection = course_get_display($course->id);
     }
 
     $streditsummary  = get_string('editsummary');
@@ -43,88 +47,74 @@
     $editing         = $PAGE->user_is_editing();
 
     if ($editing) {
-        $strstudents = moodle_strtolower($course->students);
-        $strweekhide = get_string('weekhide', '', $strstudents);
-        $strweekshow = get_string('weekshow', '', $strstudents);
+        $strweekhide = get_string('hideweekfromothers');
+        $strweekshow = get_string('showweekfromothers');
         $strmoveup   = get_string('moveup');
         $strmovedown = get_string('movedown');
     }
 
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
-/// Layout the whole page as three big columns.
-    echo '<table id="layout-table" cellspacing="0" summary="'.get_string('layouttable').'"><tr>';
-    $lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;
-    foreach ($lt as $column) {
-        switch ($column) {
-            case 'left':
- 
-/// The left column ...
 
-    if (blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $editing) {
-        echo '<td style="width:'.$preferred_width_left.'px" id="left-column">';
+    //Print the Your progress icon if the track completion is enabled
+    $completioninfo = new completion_info($course);
+    echo $completioninfo->display_help_icon();
 
-        print_container_start();
-        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
-        print_container_end();
+    echo $OUTPUT->heading(get_string('weeklyoutline'), 2, 'headingblock header outline');
 
-        echo '</td>';
-    }
-            break;
-            case 'middle':
-/// Start main column
-    echo '<td id="middle-column">';
-
-    print_container_start();
-        
-    echo skip_main_destination();
-
-    print_heading_block(get_string('weeklyoutline'), 'outline');
-
-    echo '<table class="weeks" width="100%" summary="'.get_string('layouttable').'">';
+    // Note, an ordered list would confuse - "1" could be the clipboard or summary.
+    echo "<ul class='weeks'>\n";
 
 /// If currently moving a file then show the current clipboard
     if (ismoving($course->id)) {
-        $stractivityclipboard = strip_tags(get_string('activityclipboard', '', addslashes($USER->activitycopyname)));
+        $stractivityclipboard = strip_tags(get_string('activityclipboard', '', $USER->activitycopyname));
         $strcancel= get_string('cancel');
-        echo '<tr class="clipboard">';
-        echo '<td colspan="3">';
-        echo $stractivityclipboard.'&nbsp;&nbsp;(<a href="mod.php?cancelcopy=true&amp;sesskey='.$USER->sesskey.'">'.$strcancel.'</a>)';
-        echo '</td>';
-        echo '</tr>';
+        echo '<li class="clipboard">';
+        echo $stractivityclipboard.'&nbsp;&nbsp;(<a href="mod.php?cancelcopy=true&amp;sesskey='.sesskey().'">'.$strcancel.'</a>)';
+        echo "</li>\n";
     }
 
 /// Print Section 0 with general activities
 
     $section = 0;
     $thissection = $sections[$section];
+    unset($sections[0]);
 
-    if ($thissection->summary or $thissection->sequence or isediting($course->id)) {
-        echo '<tr id="section-0" class="section main">';
-        echo '<td id="sectionblock-0" class="left side">&nbsp;</td>';
-        echo '<td class="content">';
-        
+    if ($thissection->summary or $thissection->sequence or $PAGE->user_is_editing()) {
+
+        // Note, 'right side' is BEFORE content.
+        echo '<li id="section-0" class="section main clearfix" >';
+        echo '<div class="left side">&nbsp;</div>';
+        echo '<div class="right side" >&nbsp;</div>';
+        echo '<div class="content">';
+
+        if (!empty($thissection->name)) {
+            echo $OUTPUT->heading(format_string($thissection->name, true, array('context' => $context)), 3, 'sectionname');
+        }
+
         echo '<div class="summary">';
-        $summaryformatoptions->noclean = true;
-        echo format_text($thissection->summary, FORMAT_HTML, $summaryformatoptions);
 
-        if (isediting($course->id) && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
-            echo '<a title="'.$streditsummary.'" '.
-                 ' href="editsection.php?id='.$thissection->id.'"><img src="'.$CFG->pixpath.'/t/edit.gif" '.
-                 'class="iconsmall edit" alt="'.$streditsummary.'" /></a><br /><br />';
+        $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+        $summarytext = file_rewrite_pluginfile_urls($thissection->summary, 'pluginfile.php', $coursecontext->id, 'course', 'section', $thissection->id);
+        $summaryformatoptions = new stdClass;
+        $summaryformatoptions->noclean = true;
+        $summaryformatoptions->overflowdiv = true;
+        echo format_text($summarytext, $thissection->summaryformat, $summaryformatoptions);
+
+        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+            echo '<p><a title="'.$streditsummary.'" '.
+                 ' href="editsection.php?id='.$thissection->id.'"><img src="'.$OUTPUT->pix_url('t/edit') . '" '.
+                 ' class="iconsmall edit" alt="'.$streditsummary.'" /></a></p>';
         }
         echo '</div>';
-        
+
         print_section($course, $thissection, $mods, $modnamesused);
 
-        if (isediting($course->id)) {
+        if ($PAGE->user_is_editing()) {
             print_section_add_menus($course, $section, $modnames);
         }
 
-        echo '</td>';
-        echo '<td class="right side">&nbsp;</td>';
-        echo '</tr>';
-        echo '<tr class="section separator"><td colspan="3" class="spacer"></td></tr>';
-
+        echo '</div>';
+        echo "</li>\n";
     }
 
 
@@ -154,18 +144,18 @@
             unset($thissection);
             $thissection->course = $course->id;   // Create a new week structure
             $thissection->section = $section;
+            $thissection->name    = null;
             $thissection->summary = '';
+            $thissection->summaryformat = FORMAT_HTML;
             $thissection->visible = 1;
-            if (!$thissection->id = insert_record('course_sections', $thissection)) {
-                notify('Error inserting new week!');
-            }
+            $thissection->id = $DB->insert_record('course_sections', $thissection);
         }
 
         $showsection = (has_capability('moodle/course:viewhiddensections', $context) or $thissection->visible or !$course->hiddensections);
 
         if (!empty($displaysection) and $displaysection != $section) {  // Check this week is visible
             if ($showsection) {
-                $sectionmenu['week='.$section] = s("$strweek $section |     $weekday - $endweekday");
+                $sectionmenu[$section] = get_section_name($course, $thissection);
             }
             $section++;
             $weekdate = $nextweekdate;
@@ -186,102 +176,113 @@
                 $sectionstyle = '';
             }
 
-            echo '<tr id="section-'.$section.'" class="section main'.$sectionstyle.'">';
-            echo '<td id="sectionblock-'.$section.'" class="left side">&nbsp;'.$currenttext.'</td>';
+            echo '<li id="section-'.$section.'" class="section main clearfix'.$sectionstyle.'" >';
+
+            echo '<div class="left side">&nbsp;'.$currenttext.'</div>';
+
+            // Note, 'right side' is BEFORE content.
+            echo '<div class="right side">';
+
+            if ($displaysection == $section) {
+                echo '<a href="view.php?id='.$course->id.'&amp;week=0#section-'.$section.'" title="'.$strshowallweeks.'">'.
+                     '<img src="'.$OUTPUT->pix_url('i/all') . '" class="icon wkall" alt="'.$strshowallweeks.'" /></a><br />';
+            } else {
+                $strshowonlyweek = get_string("showonlyweek", "", $section);
+                echo '<a href="view.php?id='.$course->id.'&amp;week='.$section.'" title="'.$strshowonlyweek.'">'.
+                     '<img src="'.$OUTPUT->pix_url('i/one') . '" class="icon wkone" alt="'.$strshowonlyweek.'" /></a><br />';
+            }
+
+            if ($PAGE->user_is_editing() && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+                if ($thissection->visible) {        // Show the hide/show eye
+                    echo '<a href="view.php?id='.$course->id.'&amp;hide='.$section.'&amp;sesskey='.sesskey().'#section-'.$section.'" title="'.$strweekhide.'">'.
+                         '<img src="'.$OUTPUT->pix_url('i/hide') . '" class="icon hide" alt="'.$strweekhide.'" /></a><br />';
+                } else {
+                    echo '<a href="view.php?id='.$course->id.'&amp;show='.$section.'&amp;sesskey='.sesskey().'#section-'.$section.'" title="'.$strweekshow.'">'.
+                         '<img src="'.$OUTPUT->pix_url('i/show') . '" class="icon hide" alt="'.$strweekshow.'" /></a><br />';
+                }
+                if ($section > 1) {                       // Add a arrow to move section up
+                    echo '<a href="view.php?id='.$course->id.'&amp;random='.rand(1,10000).'&amp;section='.$section.'&amp;move=-1&amp;sesskey='.sesskey().'#section-'.($section-1).'" title="'.$strmoveup.'">'.
+                         '<img src="'.$OUTPUT->pix_url('t/up') . '" class="icon up" alt="'.$strmoveup.'" /></a><br />';
+                }
+
+                if ($section < $course->numsections) {    // Add a arrow to move section down
+                    echo '<a href="view.php?id='.$course->id.'&amp;random='.rand(1,10000).'&amp;section='.$section.'&amp;move=1&amp;sesskey='.sesskey().'#section-'.($section+1).'" title="'.$strmovedown.'">'.
+                         '<img src="'.$OUTPUT->pix_url('t/down') . '" class="icon down" alt="'.$strmovedown.'" /></a><br />';
+                }
+            }
+            echo '</div>';
 
             $weekperiod = $weekday.' - '.$endweekday;
 
-            echo '<td class="content">';
+            echo '<div class="content">';
             if (!has_capability('moodle/course:viewhiddensections', $context) and !$thissection->visible) {   // Hidden for students
-                print_heading($weekperiod.' ('.get_string('notavailable').')', null, 3, 'weekdates');
+                echo $OUTPUT->heading($currenttext.$weekperiod.' ('.get_string('notavailable').')', 3, 'weekdates');
 
             } else {
-                print_heading($weekperiod, null, 3, 'weekdates');
-
+                if (isset($thissection->name) && ($thissection->name !== NULL)) {  // empty string is ok
+                    echo $OUTPUT->heading(format_string($thissection->name, true, array('context' => $context)), 3, 'weekdates');
+                } else {
+                    echo $OUTPUT->heading($currenttext.$weekperiod, 3, 'weekdates');
+                }
                 echo '<div class="summary">';
+                $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+                $summarytext = file_rewrite_pluginfile_urls($thissection->summary, 'pluginfile.php', $coursecontext->id, 'course', 'section', $thissection->id);
+                $summaryformatoptions = new stdClass;
                 $summaryformatoptions->noclean = true;
-                echo format_text($thissection->summary, FORMAT_HTML, $summaryformatoptions);
+                $summaryformatoptions->overflowdiv = true;
+                echo format_text($summarytext, $thissection->summaryformat, $summaryformatoptions);
 
-                if (isediting($course->id) && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+                if ($PAGE->user_is_editing() && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
                     echo ' <a title="'.$streditsummary.'" href="editsection.php?id='.$thissection->id.'">'.
-                         '<img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall edit" alt="'.$streditsummary.'" /></a><br /><br />';
+                         '<img src="'.$OUTPUT->pix_url('t/edit') . '" class="iconsmall edit" alt="'.$streditsummary.'" /></a><br /><br />';
                 }
                 echo '</div>';
 
                 print_section($course, $thissection, $mods, $modnamesused);
 
-                if (isediting($course->id)) {
+                if ($PAGE->user_is_editing()) {
                     print_section_add_menus($course, $section, $modnames);
                 }
             }
-            echo '</td>';
 
-            echo '<td class="right side">';
-
-            if ($displaysection == $section) {
-                echo '<a href="view.php?id='.$course->id.'&amp;week=0#section-'.$section.'" title="'.$strshowallweeks.'">'.
-                     '<img src="'.$CFG->pixpath.'/i/all.gif" class="icon wkall" alt="'.$strshowallweeks.'" /></a><br />';
-            } else {
-                $strshowonlyweek = get_string("showonlyweek", "", $section);
-                echo '<a href="view.php?id='.$course->id.'&amp;week='.$section.'" title="'.$strshowonlyweek.'">'.
-                     '<img src="'.$CFG->pixpath.'/i/one.gif" class="icon wkone" alt="'.$strshowonlyweek.'" /></a><br />';
-            }
-
-            if (isediting($course->id) && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
-                if ($thissection->visible) {        // Show the hide/show eye
-                    echo '<a href="view.php?id='.$course->id.'&amp;hide='.$section.'&amp;sesskey='.$USER->sesskey.'#section-'.$section.'" title="'.$strweekhide.'">'.
-                         '<img src="'.$CFG->pixpath.'/i/hide.gif" class="icon hide" alt="'.$strweekhide.'" /></a><br />';
-                } else {
-                    echo '<a href="view.php?id='.$course->id.'&amp;show='.$section.'&amp;sesskey='.$USER->sesskey.'#section-'.$section.'" title="'.$strweekshow.'">'.
-                         '<img src="'.$CFG->pixpath.'/i/show.gif" class="icon hide" alt="'.$strweekshow.'" /></a><br />';
-                }
-                if ($section > 1) {                       // Add a arrow to move section up
-                    echo '<a href="view.php?id='.$course->id.'&amp;random='.rand(1,10000).'&amp;section='.$section.'&amp;move=-1&amp;sesskey='.$USER->sesskey.'#section-'.($section-1).'" title="'.$strmoveup.'">'.
-                         '<img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall up" alt="'.$strmoveup.'" /></a><br />';
-                }
-
-                if ($section < $course->numsections) {    // Add a arrow to move section down
-                    echo '<a href="view.php?id='.$course->id.'&amp;random='.rand(1,10000).'&amp;section='.$section.'&amp;move=1&amp;sesskey='.$USER->sesskey.'#section-'.($section+1).'" title="'.$strmovedown.'">'.
-                         '<img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall down" alt="'.$strmovedown.'" /></a><br />';
-                }
-            }
-
-            echo '</td></tr>';
-            echo '<tr class="section separator"><td colspan="3" class="spacer"></td></tr>';
+            echo '</div>';
+            echo "</li>\n";
         }
 
+        unset($sections[$section]);
         $section++;
         $weekdate = $nextweekdate;
     }
-    echo '</table>';
 
-    if (!empty($sectionmenu)) {
-        echo '<div class="jumpmenu">';
-        echo popup_form($CFG->wwwroot.'/course/view.php?id='.$course->id.'&amp;', $sectionmenu,
-                   'sectionmenu', '', get_string('jumpto'), '', '', true);
-        echo '</div>';
-    }
+    if (!$displaysection and $PAGE->user_is_editing() and has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+        // print stealth sections if present
+        $modinfo = get_fast_modinfo($course);
+        foreach ($sections as $section=>$thissection) {
+            if (empty($modinfo->sections[$section])) {
+                continue;
+            }
 
-    print_container_end();
+            echo '<li id="section-'.$section.'" class="section main clearfix stealth hidden">'; //'<div class="left side">&nbsp;</div>';
 
-    echo '</td>';
-
-            break;
-            case 'right':
-    // The right column
-    if (blocks_have_content($pageblocks, BLOCK_POS_RIGHT) || $editing) {
-        echo '<td style="width: '.$preferred_width_right.'px;" id="right-column">';
-
-        print_container_start();
-        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-        print_container_end();
-
-        echo '</td>';
-    }
-
-            break;
+            echo '<div class="left side">';
+            echo '</div>';
+            // Note, 'right side' is BEFORE content.
+            echo '<div class="right side">';
+            echo '</div>';
+            echo '<div class="content">';
+            echo $OUTPUT->heading(get_string('orphanedactivities'), 3, 'sectionname');
+            print_section($course, $thissection, $mods, $modnamesused);
+            echo '</div>';
+            echo "</li>\n";
         }
     }
-    echo '</tr></table>';
 
-?>
+    echo "</ul>\n";
+
+    if (!empty($sectionmenu)) {
+        $select = new single_select(new moodle_url('/course/view.php', array('id'=>$course->id)), 'week', $sectionmenu);
+        $select->label = get_string('jumpto');
+        $select->class = 'jumpmenu';
+        $select->formid = 'sectionmenu';
+        echo $OUTPUT->render($select);
+    }

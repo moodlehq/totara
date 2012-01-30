@@ -25,9 +25,18 @@ $id            = required_param('id', PARAM_INT); // course id
 $separator     = optional_param('separator', '', PARAM_ALPHA);
 $verbosescales = optional_param('verbosescales', 1, PARAM_BOOL);
 
+$url = new moodle_url('/grade/import/csv/index.php', array('id'=>$id));
+if ($separator !== '') {
+    $url->param('separator', $separator);
+}
+if ($verbosescales !== 1) {
+    $url->param('verbosescales', $verbosescales);
+}
+$PAGE->set_url($url);
+
 define('GRADE_CSV_LINE_LENGTH', 4096);
 
-if (!$course = get_record('course', 'id', $id)) {
+if (!$course = $DB->get_record('course', array('id'=>$id))) {
     print_error('nocourseid');
 }
 
@@ -41,24 +50,20 @@ $currentgroup = groups_get_course_group($course);
 
 // sort out delimiter
 if (isset($CFG->CSV_DELIMITER)) {
-    $csv_delimiter = '\\' . $CFG->CSV_DELIMITER;
-    $csv_delimiter2 = $CFG->CSV_DELIMITER;
+    $csv_delimiter = $CFG->CSV_DELIMITER;
 
     if (isset($CFG->CSV_ENCODE)) {
         $csv_encode = '/\&\#' . $CFG->CSV_ENCODE . '/';
     }
 } else if ($separator == 'tab') {
     $csv_delimiter = "\t";
-    $csv_delimiter2 = "";
     $csv_encode = "";
 } else {
-    $csv_delimiter = "\,";
-    $csv_delimiter2 = ",";
+    $csv_delimiter = ",";
     $csv_encode = '/\&\#44/';
 }
 
-$actionstr = get_string('csv', 'grades');
-print_grade_page_head($course->id, 'import', 'csv');
+print_grade_page_head($course->id, 'import', 'csv', get_string('importcsv', 'grades'));
 
 // set up import form
 $mform = new grade_import_form(null, array('includeseparator'=>!isset($CFG->CSV_DELIMITER), 'verbosescales'=>true));
@@ -74,16 +79,23 @@ if ($id) {
                 continue;
             }
 
-            // this was idnumber
-            $gradeitems[$grade_item->id] = $grade_item->get_name();
+            $displaystring = null;
+            if (!empty($grade_item->itemmodule)) {
+                $displaystring = get_string('modulename', $grade_item->itemmodule).': '.$grade_item->get_name();
+            } else {
+                $displaystring = $grade_item->get_name();
+            }
+            $gradeitems[$grade_item->id] = $displaystring;
         }
     }
 }
 
 if ($importcode = optional_param('importcode', '', PARAM_FILE)) {
-    $filename = $CFG->dataroot.'/temp/gradeimport/cvs/'.$USER->id.'/'.$importcode;
+    $filename = $CFG->tempdir.'/gradeimport/cvs/'.$USER->id.'/'.$importcode;
     $fp = fopen($filename, "r");
-    $header = split($csv_delimiter, fgets($fp,GRADE_CSV_LINE_LENGTH), PARAM_RAW);
+    $headers = fgets($fp, GRADE_CSV_LINE_LENGTH);
+    $header = explode($csv_delimiter, $headers);
+    fclose($fp);
 }
 
 $mform2 = new grade_import_mapping_form(null, array('gradeitems'=>$gradeitems, 'header'=>$header));
@@ -95,16 +107,11 @@ if ($formdata = $mform->get_data()) {
     // that we'll take longer, and that the process should be recycled soon
     // to free up memory.
     @set_time_limit(0);
-    @raise_memory_limit("192M");
-    if (function_exists('apache_child_terminate')) {
-        @apache_child_terminate();
-    }
+    raise_memory_limit(MEMORY_EXTRA);
 
     // use current (non-conflicting) time stamp
     $importcode = get_new_importcode();
-    if (!$filename = make_upload_directory('temp/gradeimport/cvs/'.$USER->id, true)) {
-        die;
-    }
+    $filename = make_temp_directory('gradeimport/cvs/'.$USER->id);
     $filename = $filename.'/'.$importcode;
 
     $text = $mform->get_file_content('userfile');
@@ -122,12 +129,12 @@ if ($formdata = $mform->get_data()) {
     $fp = fopen($filename, "r");
 
     // --- get header (field names) ---
-    $header = split($csv_delimiter, fgets($fp,GRADE_CSV_LINE_LENGTH), PARAM_RAW);
+    $header = explode($csv_delimiter, fgets($fp, GRADE_CSV_LINE_LENGTH));
 
     // print some preview
     $numlines = 0; // 0 preview lines displayed
 
-    print_heading(get_string('importpreview', 'grades'));
+    echo $OUTPUT->heading(get_string('importpreview', 'grades'));
     echo '<table>';
     echo '<tr>';
     foreach ($header as $h) {
@@ -136,10 +143,10 @@ if ($formdata = $mform->get_data()) {
     }
     echo '</tr>';
     while (!feof ($fp) && $numlines <= $formdata->previewrows) {
-        $lines = split($csv_delimiter, fgets($fp,GRADE_CSV_LINE_LENGTH));
+        $lines = explode($csv_delimiter, fgets($fp, GRADE_CSV_LINE_LENGTH));
         echo '<tr>';
         foreach ($lines as $line) {
-            echo '<td>'.$line.'</td>';;
+            echo '<td>'.$line.'</td>';
         }
         $numlines ++;
         echo '</tr>';
@@ -157,35 +164,37 @@ if ($formdata = $mform->get_data()) {
 } else if ($formdata = $mform2->get_data()) {
 
     $importcode = clean_param($formdata->importcode, PARAM_FILE);
-    $filename = $CFG->dataroot.'/temp/gradeimport/cvs/'.$USER->id.'/'.$importcode;
+    $filename = $CFG->tempdir.'/gradeimport/cvs/'.$USER->id.'/'.$importcode;
 
     if (!file_exists($filename)) {
-        error('error processing upload file');
+        print_error('cannotuploadfile');
     }
 
     if ($fp = fopen($filename, "r")) {
         // --- get header (field names) ---
-        $header = split($csv_delimiter, clean_param(fgets($fp,GRADE_CSV_LINE_LENGTH), PARAM_RAW));
+        $header = explode($csv_delimiter, clean_param(fgets($fp,GRADE_CSV_LINE_LENGTH), PARAM_RAW));
 
         foreach ($header as $i => $h) {
             $h = trim($h); $header[$i] = $h; // remove whitespace
         }
     } else {
-        error ('could not open file');
+        print_error('cannotopenfile');
     }
 
     $map = array();
     // loops mapping_0, mapping_1 .. mapping_n and construct $map array
     foreach ($header as $i => $head) {
-        $map[$i] = $formdata->{'mapping_'.$i};
+        if (isset($formdata->{'mapping_'.$i})) {
+            $map[$i] = $formdata->{'mapping_'.$i};
+        }
     }
 
-    // if mapping informatioin is supplied
+    // if mapping information is supplied
     $map[clean_param($formdata->mapfrom, PARAM_RAW)] = clean_param($formdata->mapto, PARAM_RAW);
 
     // check for mapto collisions
     $maperrors = array();
-    foreach ($map as $i=>$j) {
+    foreach ($map as $i => $j) {
         if ($j == 0) {
             // you can have multiple ignores
             continue;
@@ -196,7 +205,7 @@ if ($formdata = $mform->get_data()) {
                 // collision
                 fclose($fp);
                 unlink($filename); // needs to be uploaded again, sorry
-                error('mapping collision detected, 2 fields maps to the same grade item '.$j);
+                print_error('cannotmapfield', '', '', $j);
             }
         }
     }
@@ -205,23 +214,20 @@ if ($formdata = $mform->get_data()) {
     // that we'll take longer, and that the process should be recycled soon
     // to free up memory.
     @set_time_limit(0);
-    @raise_memory_limit("192M");
-    if (function_exists('apache_child_terminate')) {
-        @apache_child_terminate();
-    }
+    raise_memory_limit(MEMORY_EXTRA);
 
     // we only operate if file is readable
     if ($fp = fopen($filename, "r")) {
 
         // read the first line makes sure this doesn't get read again
-        $header = split($csv_delimiter, fgets($fp,GRADE_CSV_LINE_LENGTH));
+        $header = explode($csv_delimiter, fgets($fp, GRADE_CSV_LINE_LENGTH));
 
         $newgradeitems = array(); // temporary array to keep track of what new headers are processed
         $status = true;
 
         while (!feof ($fp)) {
             // add something
-            $line = split($csv_delimiter, fgets($fp,GRADE_CSV_LINE_LENGTH));
+            $line = explode($csv_delimiter, fgets($fp, GRADE_CSV_LINE_LENGTH));
 
             if(count($line) <= 1){
                 // there is no data on this line, move on
@@ -237,8 +243,8 @@ if ($formdata = $mform->get_data()) {
                 //decode encoded commas
                 $value = clean_param($value, PARAM_RAW);
                 $value = trim($value);
-                if ($csv_encode != $csv_delimiter2) {
-                    $value = preg_replace($csv_encode, $csv_delimiter2, $value);
+                if (!empty($csv_encode)) {
+                    $value = preg_replace($csv_encode, $csv_delimiter, $value);
                 }
 
                 /*
@@ -259,38 +265,38 @@ if ($formdata = $mform->get_data()) {
 
                 switch ($t0) {
                     case 'userid': //
-                        if (!$user = get_record('user','id', addslashes($value))) {
-                            // user not found, abort whold import
+                        if (!$user = $DB->get_record('user', array('id' => $value))) {
+                            // user not found, abort whole import
                             import_cleanup($importcode);
-                            notify("user mapping error, could not find user with id \"$value\"");
+                            echo $OUTPUT->notification("user mapping error, could not find user with id \"$value\"");
                             $status = false;
                             break 3;
                         }
                         $studentid = $value;
                     break;
                     case 'useridnumber':
-                        if (!$user = get_record('user', 'idnumber', addslashes($value))) {
-                             // user not found, abort whold import
+                        if (!$user = $DB->get_record('user', array('idnumber' => $value))) {
+                             // user not found, abort whole import
                             import_cleanup($importcode);
-                            notify("user mapping error, could not find user with idnumber \"$value\"");
+                            echo $OUTPUT->notification("user mapping error, could not find user with idnumber \"$value\"");
                             $status = false;
                             break 3;
                         }
                         $studentid = $user->id;
                     break;
                     case 'useremail':
-                        if (!$user = get_record('user', 'email', addslashes($value))) {
+                        if (!$user = $DB->get_record('user', array('email' => $value))) {
                             import_cleanup($importcode);
-                            notify("user mapping error, could not find user with email address \"$value\"");
+                            echo $OUTPUT->notification("user mapping error, could not find user with email address \"$value\"");
                             $status = false;
                             break 3;
                         }
                         $studentid = $user->id;
                     break;
                     case 'username':
-                        if (!$user = get_record('user', 'username', addslashes($value))) {
+                        if (!$user = $DB->get_record('user', array('username' => $value))) {
                             import_cleanup($importcode);
-                            notify("user mapping error, could not find user with username \"$value\"");
+                            echo $OUTPUT->notification("user mapping error, could not find user with username \"$value\"");
                             $status = false;
                             break 3;
                         }
@@ -301,28 +307,24 @@ if ($formdata = $mform->get_data()) {
 
                         if (empty($newgradeitems[$key])) {
 
-                            $newgradeitem = new object();
+                            $newgradeitem = new stdClass();
                             $newgradeitem->itemname = $header[$key];
                             $newgradeitem->importcode = $importcode;
                             $newgradeitem->importer   = $USER->id;
 
-                            // failed to insert into new grade item buffer
-                            if (!$newgradeitems[$key] = insert_record('grade_import_newitem', addslashes_recursive($newgradeitem))) {
-                                $status = false;
-                                import_cleanup($importcode);
-                                notify(get_string('importfailed', 'grades'));
-                                break 3;
-                            }
-                            // add this to grade_import_newitem table
-                            // add the new id to $newgradeitem[$key]
+                            // insert into new grade item buffer
+                            $newgradeitems[$key] = $DB->insert_record('grade_import_newitem', $newgradeitem);
                         }
-                        $newgrade = new object();
+                        $newgrade = new stdClass();
                         $newgrade->newgradeitem = $newgradeitems[$key];
-                        $newgrade->finalgrade   = $value;
-                        $newgrades[] = $newgrade;
 
-                        // if not, put it in
-                        // else, insert grade into the table
+                        // if the user has a grade for this grade item
+                        if (trim($value) != '-') {
+                            // instead of omitting the grade we could insert one with finalgrade set to 0
+                            // we do not have access to grade item min grade
+                            $newgrade->finalgrade   = $value;
+                            $newgrades[] = $newgrade;
+                        }
                     break;
                     case 'feedback':
                         if ($t1) {
@@ -333,12 +335,12 @@ if ($formdata = $mform->get_data()) {
                                 // had to pick mapping
                                 $status = false;
                                 import_cleanup($importcode);
-                                notify(get_string('importfailed', 'grades'));
+                                echo $OUTPUT->notification(get_string('importfailed', 'grades'));
                                 break 3;
                             }
 
                             // t1 is the id of the grade item
-                            $feedback = new object();
+                            $feedback = new stdClass();
                             $feedback->itemid   = $t1;
                             $feedback->feedback = $value;
                             $newfeedbacks[] = $feedback;
@@ -354,7 +356,7 @@ if ($formdata = $mform->get_data()) {
                                 // had to pick mapping
                                 $status = false;
                                 import_cleanup($importcode);
-                                notify(get_string('importfailed', 'grades'));
+                                echo $OUTPUT->notification(get_string('importfailed', 'grades'));
                                 break 3;
                             }
 
@@ -362,11 +364,11 @@ if ($formdata = $mform->get_data()) {
                             if ($gradeitem->is_locked()) {
                                 $status = false;
                                 import_cleanup($importcode);
-                                notify(get_string('gradeitemlocked', 'grades'));
+                                echo $OUTPUT->notification(get_string('gradeitemlocked', 'grades'));
                                 break 3;
                             }
 
-                            $newgrade = new object();
+                            $newgrade = new stdClass();
                             $newgrade->itemid     = $gradeitem->id;
                             if ($gradeitem->gradetype == GRADE_TYPE_SCALE and $verbosescales) {
                                 if ($value === '' or $value == '-') {
@@ -382,7 +384,7 @@ if ($formdata = $mform->get_data()) {
                                         echo "<br/>grade is $value";
                                         $status = false;
                                         import_cleanup($importcode);
-                                        notify(get_string('badgrade', 'grades'));
+                                        echo $OUTPUT->notification(get_string('badgrade', 'grades'));
                                         break 3;
                                     }
                                     $value = $key;
@@ -398,7 +400,7 @@ if ($formdata = $mform->get_data()) {
                                     echo "<br/>grade is $value";
                                     $status = false;
                                     import_cleanup($importcode);
-                                    notify(get_string('badgrade', 'grades'));
+                                    echo $OUTPUT->notification(get_string('badgrade', 'grades'));
                                     break 3;
                                 }
                                 $newgrade->finalgrade = $value;
@@ -412,10 +414,10 @@ if ($formdata = $mform->get_data()) {
 
             // no user mapping supplied at all, or user mapping failed
             if (empty($studentid) || !is_numeric($studentid)) {
-                // user not found, abort whold import
+                // user not found, abort whole import
                 $status = false;
                 import_cleanup($importcode);
-                notify('user mapping error, could not find user!');
+                echo $OUTPUT->notification('user mapping error, could not find user!');
                 break;
             }
 
@@ -423,7 +425,7 @@ if ($formdata = $mform->get_data()) {
                 // not allowed to import into this group, abort
                 $status = false;
                 import_cleanup($importcode);
-                notify('user not member of current group, can not update!');
+                echo $OUTPUT->notification('user not member of current group, can not update!');
                 break;
             }
 
@@ -438,7 +440,7 @@ if ($formdata = $mform->get_data()) {
                             // individual grade locked
                             $status = false;
                             import_cleanup($importcode);
-                            notify(get_string('gradelocked', 'grades'));
+                            echo $OUTPUT->notification(get_string('gradelocked', 'grades'));
                             break 2;
                         }
                     }
@@ -446,13 +448,7 @@ if ($formdata = $mform->get_data()) {
                     $newgrade->importcode = $importcode;
                     $newgrade->userid     = $studentid;
                     $newgrade->importer   = $USER->id;
-                    if (!insert_record('grade_import_values', addslashes_recursive($newgrade))) {
-                        // could not insert into temporary table
-                        $status = false;
-                        import_cleanup($importcode);
-                        notify(get_string('importfailed', 'grades'));
-                        break 2;
-                    }
+                    $DB->insert_record('grade_import_values', $newgrade);
                 }
             }
 
@@ -460,18 +456,18 @@ if ($formdata = $mform->get_data()) {
             if ($status and !empty($newfeedbacks)) {
                 foreach ($newfeedbacks as $newfeedback) {
                     $sql = "SELECT *
-                              FROM {$CFG->prefix}grade_import_values
-                             WHERE importcode=$importcode AND userid=$studentid AND itemid=$newfeedback->itemid AND importer={$USER->id}";
-                    if ($feedback = get_record_sql($sql)) {
+                              FROM {grade_import_values}
+                             WHERE importcode=? AND userid=? AND itemid=? AND importer=?";
+                    if ($feedback = $DB->get_record_sql($sql, array($importcode, $studentid, $newfeedback->itemid, $USER->id))) {
                         $newfeedback->id = $feedback->id;
-                        update_record('grade_import_values', addslashes_recursive($newfeedback));
+                        $DB->update_record('grade_import_values', $newfeedback);
 
                     } else {
                         // the grade item for this is not updated
                         $newfeedback->importcode = $importcode;
                         $newfeedback->userid     = $studentid;
                         $newfeedback->importer   = $USER->id;
-                        insert_record('grade_import_values', addslashes_recursive($newfeedback));
+                        $DB->insert_record('grade_import_values', $newfeedback);
                     }
                 }
             }
@@ -485,7 +481,7 @@ if ($formdata = $mform->get_data()) {
         fclose($fp);
         unlink($filename);
     } else {
-        error ('import file '.$filename.' not readable');
+        print_error('cannotreadfile');
     }
 
 } else {
@@ -496,5 +492,5 @@ if ($formdata = $mform->get_data()) {
     $mform->display();
 }
 
-print_footer();
-?>
+echo $OUTPUT->footer();
+

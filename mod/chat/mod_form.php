@@ -1,12 +1,16 @@
 <?php
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 
 class mod_chat_mod_form extends moodleform_mod {
 
     function definition() {
-
         global $CFG;
-        $mform    =& $this->_form;
+
+        $mform = $this->_form;
 
 //-------------------------------------------------------------------------------
         $mform->addElement('header', 'general', get_string('general', 'form'));
@@ -15,14 +19,11 @@ class mod_chat_mod_form extends moodleform_mod {
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
-            $mform->setType('name', PARAM_CLEAN);
+            $mform->setType('name', PARAM_CLEANHTML);
         }
         $mform->addRule('name', null, 'required', null, 'client');
 
-        $mform->addElement('htmleditor', 'intro', get_string('chatintro', 'chat'));
-        $mform->setType('intro', PARAM_RAW);
-        $mform->setHelpButton('intro', array('writing', 'questions', 'richtext'), false, 'editorhelpbutton');
-        $mform->addRule('intro', get_string('required'), 'required', null, 'client');
+        $this->add_intro_editor(true, get_string('chatintro', 'chat'));
 
         $mform->addElement('date_time_selector', 'chattime', get_string('chattime', 'chat'));
 
@@ -50,17 +51,10 @@ class mod_chat_mod_form extends moodleform_mod {
         $mform->addElement('select', 'keepdays', get_string('savemessages', 'chat'), $options);
 
         $mform->addElement('selectyesno', 'studentlogs', get_string('studentseereports', 'chat'));
+        $mform->addHelpButton('studentlogs', 'studentseereports', 'chat');
 
-        $features = new stdClass;
-        $features->groups = true;
-        $features->groupings = true;
-        $features->groupmembersonly = true;
-        $this->standard_coursemodule_elements($features);
+        $this->standard_coursemodule_elements();
 
         $this->add_action_buttons();
     }
-
-
-
 }
-?>

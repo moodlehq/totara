@@ -1,4 +1,4 @@
-<?php //$Id$
+<?php
 
 require_once($CFG->dirroot.'/user/filters/lib.php');
 
@@ -50,7 +50,6 @@ class user_filter_select extends user_filter_type {
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->get_operators());
         $objs[] =& $mform->createElement('select', $this->_name, null, $this->_options);
         $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
-        $grp->setHelpButton(array('select', $this->_label, 'filters'));
         $mform->disabledIf($this->_name, $this->_name.'_op', 'eq', 0);
         if (!is_null($this->_default)) {
             $mform->setDefault($this->_name, $this->_default);
@@ -80,22 +79,31 @@ class user_filter_select extends user_filter_type {
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array sql string and $params
      */
     function get_sql_filter($data) {
+        static $counter = 0;
+        $name = 'ex_select'.$counter++;
+
         $operator = $data['operator'];
-        $value    = addslashes($data['value']);
+        $value    = $data['value'];
         $field    = $this->_field;
+
+        $params = array();
 
         switch($operator) {
             case 1: // equal to
-                $res = "='$value'"; break;
+                $res = "=:$name";
+                $params[$name] = $value;
+                break;
             case 2: // not equal to
-                $res = "<>'$value'"; break;
+                $res = "<>:$name";
+                $params[$name] = $value;
+                 break;
             default:
-                return '';
+                return array('', array());
         }
-        return $field.$res;
+        return array($field.$res, $params);
     }
 
     /**
@@ -112,7 +120,7 @@ class user_filter_select extends user_filter_type {
             return '';
         }
 
-        $a = new object();
+        $a = new stdClass();
         $a->label    = $this->_label;
         $a->value    = '"'.s($this->_options[$value]).'"';
         $a->operator = $operators[$operator];

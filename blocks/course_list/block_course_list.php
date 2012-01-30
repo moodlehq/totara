@@ -1,19 +1,18 @@
-<?PHP //$Id$
+<?php
 
 include_once($CFG->dirroot . '/course/lib.php');
 
 class block_course_list extends block_list {
     function init() {
         $this->title = get_string('courses');
-        $this->version = 2007101509;
     }
-    
+
     function has_config() {
         return true;
     }
 
     function get_content() {
-        global $THEME, $CFG, $USER;
+        global $CFG, $USER, $DB, $OUTPUT;
 
         if($this->content !== NULL) {
             return $this->content;
@@ -24,9 +23,8 @@ class block_course_list extends block_list {
         $this->content->icons = array();
         $this->content->footer = '';
 
-        $icon  = "<img src=\"$CFG->pixpath/i/course.gif\"".
-                 " class=\"icon\" alt=\"".get_string("coursecategory")."\" />";
-       
+        $icon  = '<img src="' . $OUTPUT->pix_url('i/course') . '" class="icon" alt="" />&nbsp;';
+
         $adminseesall = true;
         if (isset($CFG->block_course_list_adminview)) {
            if ( $CFG->block_course_list_adminview == 'own'){
@@ -34,19 +32,14 @@ class block_course_list extends block_list {
            }
         }
 
-        if (empty($CFG->disablemycourses) and 
-            !empty($USER->id) and 
-            !(has_capability('moodle/course:update', get_context_instance(CONTEXT_SYSTEM)) and $adminseesall) and
-            !isguest()) {    // Just print My Courses
-            if ($courses = get_my_courses($USER->id, 'visible DESC, fullname ASC')) {
+        if (empty($CFG->disablemycourses) and isloggedin() and !isguestuser() and
+          !(has_capability('moodle/course:update', get_context_instance(CONTEXT_SYSTEM)) and $adminseesall)) {    // Just print My Courses
+            if ($courses = enrol_get_my_courses(NULL, 'visible DESC, fullname ASC')) {
                 foreach ($courses as $course) {
-                    if ($course->id == SITEID) {
-                        continue;
-                    }
+                    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
                     $linkcss = $course->visible ? "" : " class=\"dimmed\" ";
-                    $this->content->items[]="<a $linkcss title=\"" . format_string($course->shortname) . "\" ".
-                               "href=\"$CFG->wwwroot/course/view.php?id=$course->id\">" . format_string($course->fullname) . "</a>";
-                    $this->content->icons[]=$icon;
+                    $this->content->items[]="<a $linkcss title=\"" . format_string($course->shortname, true, array('context' => $coursecontext)) . "\" ".
+                               "href=\"$CFG->wwwroot/course/view.php?id=$course->id\">".$icon.format_string($course->fullname). "</a>";
                 }
                 $this->title = get_string('mycourses');
             /// If we can update any course of the view all isn't hidden, show the view all courses link
@@ -62,11 +55,11 @@ class block_course_list extends block_list {
 
         $categories = get_categories("0");  // Parent = 0   ie top-level categories only
         if ($categories) {   //Check we have categories
-            if (count($categories) > 1 || (count($categories) == 1 && count_records('course') > 200)) {     // Just print top level category links
+            if (count($categories) > 1 || (count($categories) == 1 && $DB->count_records('course') > 200)) {     // Just print top level category links
                 foreach ($categories as $category) {
+                    $categoryname = format_string($category->name, true, array('context' => get_context_instance(CONTEXT_COURSECAT, $category->id)));
                     $linkcss = $category->visible ? "" : " class=\"dimmed\" ";
-                    $this->content->items[]="<a $linkcss href=\"$CFG->wwwroot/course/category.php?id=$category->id\">" . format_string($category->name) . "</a>";
-                    $this->content->icons[]=$icon;
+                    $this->content->items[]="<a $linkcss href=\"$CFG->wwwroot/course/category.php?id=$category->id\">".$icon . $categoryname . "</a>";
                 }
             /// If we can update any course of the view all isn't hidden, show the view all courses link
                 if (has_capability('moodle/course:update', get_context_instance(CONTEXT_SYSTEM)) || empty($CFG->block_course_list_hideallcourseslink)) {
@@ -79,13 +72,13 @@ class block_course_list extends block_list {
 
                 if ($courses) {
                     foreach ($courses as $course) {
+                        $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
                         $linkcss = $course->visible ? "" : " class=\"dimmed\" ";
 
                         $this->content->items[]="<a $linkcss title=\""
-                                   . format_string($course->shortname)."\" ".
-                                   "href=\"$CFG->wwwroot/course/view.php?id=$course->id\">" 
-                                   .  format_string($course->fullname) . "</a>";
-                        $this->content->icons[]=$icon;
+                                   . format_string($course->shortname, true, array('context' => $coursecontext))."\" ".
+                                   "href=\"$CFG->wwwroot/course/view.php?id=$course->id\">"
+                                   .$icon. format_string($course->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id))) . "</a>";
                     }
                 /// If we can update any course of the view all isn't hidden, show the view all courses link
                     if (has_capability('moodle/course:update', get_context_instance(CONTEXT_SYSTEM)) || empty($CFG->block_course_list_hideallcourseslink)) {
@@ -93,7 +86,7 @@ class block_course_list extends block_list {
                     }
                     $this->get_remote_courses();
                 } else {
-                    
+
                     $this->content->icons[] = '';
                     $this->content->items[] = get_string('nocoursesyet');
                     if (has_capability('moodle/course:create', get_context_instance(CONTEXT_COURSECAT, $category->id))) {
@@ -109,17 +102,17 @@ class block_course_list extends block_list {
     }
 
     function get_remote_courses() {
-        global $THEME, $CFG, $USER;
+        global $CFG, $USER, $OUTPUT;
 
         if (!is_enabled_auth('mnet')) {
             // no need to query anything remote related
             return;
         }
 
-        $icon  = '<img src="'.$CFG->pixpath.'/i/mnethost.gif" class="icon" alt="'.get_string('course').'" />';
+        $icon = '<img src="'.$OUTPUT->pix_url('i/mnethost') . '" class="icon" alt="" />&nbsp;';
 
-        // only for logged in users!
-        if (!isloggedin() || isguest()) {
+        // shortcut - the rest is only for logged in users!
+        if (!isloggedin() || isguestuser()) {
             return false;
         }
 
@@ -127,21 +120,20 @@ class block_course_list extends block_list {
             $this->content->items[] = get_string('remotecourses','mnet');
             $this->content->icons[] = '';
             foreach ($courses as $course) {
-                $this->content->items[]="<a title=\"" . format_string($course->shortname) . "\" ".
-                    "href=\"{$CFG->wwwroot}/auth/mnet/jump.php?hostid={$course->hostid}&amp;wantsurl=/course/view.php?id={$course->remoteid}\">" 
-                    . format_string($course->fullname) . "</a>";
-                $this->content->icons[]=$icon;
+                $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+                $this->content->items[]="<a title=\"" . format_string($course->shortname, true, array('context' => $coursecontext)) . "\" ".
+                    "href=\"{$CFG->wwwroot}/auth/mnet/jump.php?hostid={$course->hostid}&amp;wantsurl=/course/view.php?id={$course->remoteid}\">"
+                    .$icon. format_string($course->fullname) . "</a>";
             }
             // if we listed courses, we are done
             return true;
         }
 
         if ($hosts = get_my_remotehosts()) {
-            $this->content->items[] = get_string('remotemoodles','mnet'); 
+            $this->content->items[] = get_string('remotehosts', 'mnet');
             $this->content->icons[] = '';
             foreach($USER->mnet_foreign_host_array as $somehost) {
-                $this->content->items[] = $somehost['count'].get_string('courseson','mnet').'<a title="'.$somehost['name'].'" href="'.$somehost['url'].'">'.$somehost['name'].'</a>';
-                $this->content->icons[] = $icon;
+                $this->content->items[] = $somehost['count'].get_string('courseson','mnet').'<a title="'.$somehost['name'].'" href="'.$somehost['url'].'">'.$icon.$somehost['name'].'</a>';
             }
             // if we listed hosts, done
             return true;
@@ -152,4 +144,4 @@ class block_course_list extends block_list {
 
 }
 
-?>
+

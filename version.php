@@ -1,16 +1,42 @@
 <?php
 
-// MOODLE VERSION INFORMATION
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-// This file defines the current version of the core Moodle code being used.
-// This is compared against the values stored in the database to determine
-// whether upgrades should be performed (see lib/db/*.php)
+/**
+ * MOODLE VERSION INFORMATION
+ *
+ * This file defines the current version of the core Moodle code being used.
+ * This is compared against the values stored in the database to determine
+ * whether upgrades should be performed (see lib/db/*.php)
+ *
+ * @package    core
+ * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-    $version = 2007101591.10; // YYYYMMDD      = date of the 1.9 branch (don't change)
-                              //         X     = release number 1.9.[0,1,2,3,4,5...]
-                              //          Y.YY = micro-increments between releases
+defined('MOODLE_INTERNAL') || die();
 
-    $release = '1.9.16 (Build: 20120109)';     // Human-friendly version name
+
+$version  = 2011120501.00;              // 20111205      = branching date YYYYMMDD - do not modify!
+                                        //         RR    = release increments - 00 in DEV branches
+                                        //           .XX = incremental changes
+
+$release  = '2.2.1 (Build: 20120109)';  // Human-friendly version name
+
+$maturity = MATURITY_STABLE;            // this version's maturity level
 
 
 // TOTARA VERSION INFORMATION
@@ -18,8 +44,7 @@
 // This file defines the current version of the core Totara code being used.
 // This can be used for modules to set a minimum functionality requirement.
 
-    $TOTARA = new object();
-    $TOTARA->version    = '1.1.8+';             # Please keep as string
-    $TOTARA->build      = '20120111.01';        # Please keep as string
-    $TOTARA->release    = "{$TOTARA->version} (Build: {$TOTARA->build})";
-
+$TOTARA = new object();
+$TOTARA->version    = '2.2.0a+';            # Please keep as string
+$TOTARA->build      = '20120127.00';        # Please keep as string
+$TOTARA->release    = "{$TOTARA->version} (Build: {$TOTARA->build})";

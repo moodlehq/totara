@@ -1,9 +1,8 @@
-<?PHP //$Id$
+<?php
 
 class block_mnet_hosts extends block_list {
     function init() {
-        $this->title = get_string('mnet_hosts','block_mnet_hosts') ;
-        $this->version = 2007101509;
+        $this->title = get_string('pluginname','block_mnet_hosts') ;
     }
 
     function has_config() {
@@ -19,30 +18,57 @@ class block_mnet_hosts extends block_list {
     }
 
     function get_content() {
-        global $THEME, $CFG, $USER;
+        global $CFG, $USER, $DB, $OUTPUT;
 
-        // only for logged in users!
-        if (!isloggedin() || isguest()) {
+        // shortcut -  only for logged in users!
+        if (!isloggedin() || isguestuser()) {
             return false;
         }
 
-        if (!is_enabled_auth('mnet')) {
-            // no need to query anything remote related
-            debugging( 'mnet authentication plugin is not enabled', DEBUG_ALL );
-            return '';
-        }
-
-        if (!empty($USER->realuser)) {
+        if (session_is_loggedinas()) {
             $this->content = new stdClass();
-            $this->content->items = array();
-            $this->content->icons = array();
-            $this->content->footer = get_string('notpermittedtojumpas', 'mnet');
+            $this->content->footer = html_writer::tag('span',
+                get_string('notpermittedtojumpas', 'mnet'));
             return $this->content;
         }
 
-        // check for outgoing roaming permission first
+        // according to start_jump_session,
+        // remote users can't on-jump
+        // so don't show this block to them
+        if (is_mnet_remote_user($USER)) {
+            if (debugging() and !empty($CFG->debugdisplay)) {
+                $this->content = new stdClass();
+                $this->content->footer = html_writer::tag('span',
+                    get_string('error_localusersonly', 'block_mnet_hosts'),
+                    array('class' => 'error'));
+                return $this->content;
+            } else {
+                return '';
+            }
+        }
+
+        if (!is_enabled_auth('mnet')) {
+            if (debugging() and !empty($CFG->debugdisplay)) {
+                $this->content = new stdClass();
+                $this->content->footer = html_writer::tag('span',
+                    get_string('error_authmnetneeded', 'block_mnet_hosts'),
+                    array('class' => 'error'));
+                return $this->content;
+            } else {
+                return '';
+            }
+        }
+
         if (!has_capability('moodle/site:mnetlogintoremote', get_context_instance(CONTEXT_SYSTEM), NULL, false)) {
-            return '';
+            if (debugging() and !empty($CFG->debugdisplay)) {
+                $this->content = new stdClass();
+                $this->content->footer = html_writer::tag('span',
+                    get_string('error_roamcapabilityneeded', 'block_mnet_hosts'),
+                    array('class' => 'error'));
+                return $this->content;
+            } else {
+                return '';
+            }
         }
 
         if ($this->content !== NULL) {
@@ -52,21 +78,22 @@ class block_mnet_hosts extends block_list {
         // TODO: Test this query - it's appropriate? It works?
         // get the hosts and whether we are doing SSO with them
         $sql = "
-             SELECT DISTINCT 
-                 h.id, 
+             SELECT DISTINCT
+                 h.id,
                  h.name,
                  h.wwwroot,
                  a.name as application,
                  a.display_name
-             FROM 
-                 {$CFG->prefix}mnet_host h,
-                 {$CFG->prefix}mnet_application a,
-                 {$CFG->prefix}mnet_host2service h2s_IDP,
-                 {$CFG->prefix}mnet_service s_IDP,
-                 {$CFG->prefix}mnet_host2service h2s_SP,
-                 {$CFG->prefix}mnet_service s_SP
+             FROM
+                 {mnet_host} h,
+                 {mnet_application} a,
+                 {mnet_host2service} h2s_IDP,
+                 {mnet_service} s_IDP,
+                 {mnet_host2service} h2s_SP,
+                 {mnet_service} s_SP
              WHERE
-                 h.id != '{$CFG->mnet_localhost_id}' AND
+                 h.id <> ? AND
+                 h.id <> ? AND
                  h.id = h2s_IDP.hostid AND
                  h.deleted = 0 AND
                  h.applicationid = a.id AND
@@ -81,25 +108,24 @@ class block_mnet_hosts extends block_list {
                  a.display_name,
                  h.name";
 
-        $hosts = get_records_sql($sql);
+        $hosts = $DB->get_records_sql($sql, array($CFG->mnet_localhost_id, $CFG->mnet_all_hosts_id));
 
-        $this->content = new stdClass;
+        $this->content = new stdClass();
         $this->content->items = array();
         $this->content->icons = array();
         $this->content->footer = '';
 
         if ($hosts) {
             foreach ($hosts as $host) {
-            $icon  = '<img src="'.$CFG->pixpath.'/i/'.$host->application.'_host.gif"'.
-                ' class="icon" alt="'.get_string('server', 'block_mnet_hosts').'" />';
+                $icon  = '<img src="'.$OUTPUT->pix_url('i/'.$host->application.'_host') . '"'.
+                         ' class="icon" alt="'.get_string('server', 'block_mnet_hosts').'" />&nbsp;';
 
-                $this->content->icons[]=$icon;
                 if ($host->id == $USER->mnethostid) {
                     $this->content->items[]="<a title=\"" .s($host->name).
-                        "\" href=\"{$host->wwwroot}\">". s($host->name) ."</a>";
+                        "\" href=\"{$host->wwwroot}\">".$icon. s($host->name) ."</a>";
                 } else {
                     $this->content->items[]="<a title=\"" .s($host->name).
-                        "\" href=\"{$CFG->wwwroot}/auth/mnet/jump.php?hostid={$host->id}\">" . s($host->name) ."</a>";
+                        "\" href=\"{$CFG->wwwroot}/auth/mnet/jump.php?hostid={$host->id}\">" .$icon. s($host->name) ."</a>";
                 }
             }
         }
@@ -107,5 +133,3 @@ class block_mnet_hosts extends block_list {
         return $this->content;
     }
 }
-
-?>

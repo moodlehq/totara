@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 define('BGR_RANDOMLY',     '0');
 define('BGR_LASTMODIFIED', '1');
@@ -6,19 +6,19 @@ define('BGR_NEXTONE',      '2');
 
 class block_glossary_random extends block_base {
     function init() {
-
-        $this->title = get_string('blockname','block_glossary_random');
-        $this->version = 2007101509;
-
+        $this->title = get_string('pluginname','block_glossary_random');
     }
 
     function specialization() {
-        global $CFG, $COURSE;
-        $this->course = $COURSE;
+        global $CFG, $DB;
+
+        require_once($CFG->libdir . '/filelib.php');
+
+        $this->course = $this->page->course;
 
         // load userdefined title and make sure it's never empty
         if (empty($this->config->title)) {
-            $this->title = get_string('blockname','block_glossary_random');
+            $this->title = get_string('pluginname','block_glossary_random');
         } else {
             $this->title = $this->config->title;
         }
@@ -35,11 +35,17 @@ class block_glossary_random extends block_base {
         if (time() > $this->config->nexttime) {
 
             // place glossary concept and definition in $pref->cache
-            if (!$numberofentries = count_records('glossary_entries','glossaryid',$this->config->glossary,
-                                                  'approved',1)) {
+            if (!$numberofentries = $DB->count_records('glossary_entries',
+                                                       array('glossaryid'=>$this->config->glossary, 'approved'=>1))) {
                 $this->config->cache = get_string('noentriesyet','block_glossary_random');
                 $this->instance_config_commit();
             }
+
+            // Get module and context, to be able to rewrite urls
+            if (! $cm = get_coursemodule_from_instance("glossary", $this->config->glossary, $this->course->id)) {
+                return false;
+            }
+            $glossaryctx = get_context_instance(CONTEXT_MODULE, $cm->id);
 
             $limitfrom = 0;
             $limitnum = 1;
@@ -72,23 +78,24 @@ class block_glossary_random extends block_base {
                     break;
             }
 
-            if ($entry = get_records_sql('  SELECT concept, definition, format '.
-                                         '    FROM '.$CFG->prefix.'glossary_entries'.
-                                         '   WHERE glossaryid = '.$this->config->glossary.
-                                         '     AND approved = 1 '.
-                                         'ORDER BY timemodified '.$SORT, $limitfrom, $limitnum)) {
+            if ($entry = $DB->get_records_sql("SELECT id, concept, definition, definitionformat, definitiontrust
+                                                 FROM {glossary_entries}
+                                                WHERE glossaryid = ? AND approved = 1
+                                             ORDER BY timemodified $SORT", array($this->config->glossary), $limitfrom, $limitnum)) {
 
                 $entry = reset($entry);
 
                 if (empty($this->config->showconcept)) {
                     $text = '';
                 } else {
-                    $text = "<h2>".format_string($entry->concept,true)."</h2>";
-                }  
+                    $text = "<h3>".format_string($entry->concept,true)."</h3>";
+                }
 
-                $options = new object;
-                $options->trusttext = true;
-                $text .= format_text($entry->definition, $entry->format, $options);
+                $options = new stdClass();
+                $options->trusted = $entry->definitiontrust;
+                $options->overflowdiv = true;
+                $entry->definition = file_rewrite_pluginfile_urls($entry->definition, 'pluginfile.php', $glossaryctx->id, 'mod_glossary', 'entry', $entry->id);
+                $text .= format_text($entry->definition, $entry->definitionformat, $options);
 
                 $this->config->nexttime = usergetmidnight(time()) + DAYSECS * $this->config->refresh;
                 $this->config->previous = $i;
@@ -108,52 +115,8 @@ class block_glossary_random extends block_base {
         return true;
     }
 
-    function instance_config_print() {
-        global $CFG;
-
-        if (!isset($this->config)) {
-            // ... teacher has not yet configured the block, let's put some default values here to explain things
-            $this->config->title = get_string('blockname','block_glossary_random');
-            $this->config->refresh = 0;
-            $this->config->showconcept = 1;
-            $this->config->cache= get_string('notyetconfigured','block_glossary_random');
-            $this->config->addentry=get_string('addentry', 'block_glossary_random');
-            $this->config->viewglossary=get_string('viewglossary', 'block_glossary_random');
-            $this->config->invisible=get_string('invisible', 'block_glossary_random');
-        }
-
-        // select glossaries to put in dropdown box ...
-        $glossaries = get_records_select_menu('glossary', 'course='.$this->course->id,'name','id,name');
-
-        //format menu texts to avoid html and to filter multilang values
-        if(!empty($glossaries)) {
-            foreach($glossaries as $key => $value) {
-                $glossaries[$key] = strip_tags(format_string($value,true));
-            }
-        }
-
-        // and select quotetypes to put in dropdown box
-        $type[0] = get_string('random','block_glossary_random');
-        $type[1] = get_string('lastmodified','block_glossary_random');
-        $type[2] = get_string('nextone','block_glossary_random');
-
-        $this->config->nexttime = usergetmidnight(time()) + DAYSECS * $this->config->refresh;
-
-        // display the form
-
-        if (is_file($CFG->dirroot .'/blocks/'. $this->name() .'/config_instance.html')) {
-            print_simple_box_start('center', '', '', 5, 'blockconfigglobal');
-            include($CFG->dirroot .'/blocks/'. $this->name() .'/config_instance.html');
-            print_simple_box_end();
-        } else {
-            notice(get_string('blockconfigbad'), str_replace('blockaction=', 'dummy=', qualified_me()));
-        }
-
-        return true;
-    }
-
     function get_content() {
-        global $USER, $CFG, $COURSE;
+        global $USER, $CFG, $DB;
 
         if (empty($this->config->glossary)) {
             $this->content->text   = get_string('notyetconfigured','block_glossary_random');
@@ -163,11 +126,7 @@ class block_glossary_random extends block_base {
 
         $glossaryid = $this->config->glossary;
 
-        if ($this->course->id == $COURSE->id) {
-            $course = $COURSE;
-        } else {
-            $course = get_record('course', 'id', $this->course->id); 
-        }
+        $course = $this->page->course;
 
         require_once($CFG->dirroot.'/course/lib.php');
         $modinfo = get_fast_modinfo($course);
@@ -202,12 +161,12 @@ class block_glossary_random extends block_base {
         //Obtain the visible property from the instance
         if ($cm->uservisible) {
             if (has_capability('mod/glossary:write', get_context_instance(CONTEXT_MODULE, $cm->id))) {
-                $this->content->footer = '<a href="'.$CFG->wwwroot.'/mod/glossary/edit.php?id='.$cm->id
+                $this->content->footer = '<a href="'.$CFG->wwwroot.'/mod/glossary/edit.php?cmid='.$cm->id
                 .'" title="'.$this->config->addentry.'">'.$this->config->addentry.'</a><br />';
             } else {
                 $this->content->footer = '';
-            }     
-            
+            }
+
             $this->content->footer .= '<a href="'.$CFG->wwwroot.'/mod/glossary/view.php?id='.$cm->id
                 .'" title="'.$this->config->viewglossary.'">'.$this->config->viewglossary.'</a>';
 
@@ -225,18 +184,5 @@ class block_glossary_random extends block_base {
         }
         return false;
     }
-
-    /**
-     * Executed after block instance has been created, we use it to recode
-     * the glossary config setting to point to the new (restored) one
-     */
-    function after_restore($restore) {
-    /// We need to transform the glossary->id from the original one to the restored one
-        if ($rec = backup_getid($restore->backup_unique_code, 'glossary', $this->config->glossary)) {
-            $this->config->glossary = $rec->new_id;
-            $this->instance_config_commit();
-        }
-    }
-
 }
-?>
+

@@ -1,69 +1,101 @@
-<?php // $Id$
+<?php
 
-      //  Set tracking option for the forum.
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    require_once("../../config.php");
-    require_once("lib.php");
+/**
+ * Set tracking option for the forum.
+ *
+ * @package mod-forum
+ * @copyright 2005 mchurch
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-    $f          = required_param('f',PARAM_INT); // The forum to mark
-    $mark       = required_param('mark',PARAM_ALPHA); // Read or unread?
-    $d          = optional_param('d',0,PARAM_INT); // Discussion to mark.
-    $returnpage = optional_param('returnpage', 'index.php', PARAM_FILE);    // Page to return to.
+require_once("../../config.php");
+require_once("lib.php");
 
-    if (! $forum = get_record("forum", "id", $f)) {
-        error("Forum ID was incorrect");
-    }
+$f          = required_param('f',PARAM_INT); // The forum to mark
+$mark       = required_param('mark',PARAM_ALPHA); // Read or unread?
+$d          = optional_param('d',0,PARAM_INT); // Discussion to mark.
+$returnpage = optional_param('returnpage', 'index.php', PARAM_FILE);    // Page to return to.
 
-    if (! $course = get_record("course", "id", $forum->course)) {
-        error("Forum doesn't belong to a course!");
-    }
+$url = new moodle_url('/mod/forum/markposts.php', array('f'=>$f, 'mark'=>$mark));
+if ($d !== 0) {
+    $url->param('d', $d);
+}
+if ($returnpage !== 'index.php') {
+    $url->param('returnpage', $returnpage);
+}
+$PAGE->set_url($url);
 
-    if (!$cm = get_coursemodule_from_instance("forum", $forum->id, $course->id)) {
-        error("Incorrect cm!");
-    }
+if (! $forum = $DB->get_record("forum", array("id" => $f))) {
+    print_error('invalidforumid', 'forum');
+}
 
-    $user = $USER;
+if (! $course = $DB->get_record("course", array("id" => $forum->course))) {
+    print_error('invalidcourseid');
+}
 
-    require_course_login($course, false, $cm);
+if (!$cm = get_coursemodule_from_instance("forum", $forum->id, $course->id)) {
+    print_error('invalidcoursemodule');
+}
 
-    if ($returnpage == 'index.php') {
-        $returnto = forum_go_back_to($returnpage.'?id='.$course->id);
+$user = $USER;
+
+require_login($course, false, $cm);
+
+if ($returnpage == 'index.php') {
+    $returnto = forum_go_back_to($returnpage.'?id='.$course->id);
+} else {
+    $returnto = forum_go_back_to($returnpage.'?f='.$forum->id);
+}
+
+if (isguestuser()) {   // Guests can't change forum
+    $PAGE->set_title($course->shortname);
+    $PAGE->set_heading($course->fullname);
+    echo $OUTPUT->header();
+    echo $OUTPUT->confirm(get_string('noguesttracking', 'forum').'<br /><br />'.get_string('liketologin'), get_login_url(), $returnto);
+    echo $OUTPUT->footer();
+    exit;
+}
+
+$info = new stdClass();
+$info->name  = fullname($user);
+$info->forum = format_string($forum->name);
+
+if ($mark == 'read') {
+    if (!empty($d)) {
+        if (! $discussion = $DB->get_record('forum_discussions', array('id'=> $d, 'forum'=> $forum->id))) {
+            print_error('invaliddiscussionid', 'forum');
+        }
+
+        if (forum_tp_mark_discussion_read($user, $d)) {
+            add_to_log($course->id, "discussion", "mark read", "view.php?f=$forum->id", $d, $cm->id);
+        }
     } else {
-        $returnto = forum_go_back_to($returnpage.'?f='.$forum->id);
-    }
-
-    if (isguest()) {   // Guests can't change forum
-        $wwwroot = $CFG->wwwroot.'/login/index.php';
-        if (!empty($CFG->loginhttps)) {
-            $wwwroot = str_replace('http:','https:', $wwwroot);
+        // Mark all messages read in current group
+        $currentgroup = groups_get_activity_group($cm);
+        if(!$currentgroup) {
+            // mark_forum_read requires ===false, while get_activity_group
+            // may return 0
+            $currentgroup=false;
         }
-
-        $navigation = build_navigation('', $cm);
-        print_header($course->shortname, $course->fullname, $navigation, '', '', true, "", navmenu($course, $cm));
-        notice_yesno(get_string('noguesttracking', 'forum').'<br /><br />'.get_string('liketologin'),
-                     $wwwroot, $returnto);
-        print_footer($course);
-        exit;
-    }
-
-    $info = new object();
-    $info->name  = fullname($user);
-    $info->forum = format_string($forum->name);
-
-    if ($mark == 'read') {
-        if (!empty($d)) {
-            if (! $discussion = get_record('forum_discussions', 'id', $d, 'forum', $forum->id)) {
-                error("Discussion ID was incorrect");
-            }
-
-            if (forum_tp_mark_discussion_read($user, $d)) {
-                add_to_log($course->id, "discussion", "mark read", "view.php?f=$forum->id", $d, $cm->id);
-            }
-        } else {
-            if (forum_tp_mark_forum_read($user, $forum->id)) {
-                add_to_log($course->id, "forum", "mark read", "view.php?f=$forum->id", $forum->id, $cm->id);
-            }
+        if (forum_tp_mark_forum_read($user, $forum->id,$currentgroup)) {
+            add_to_log($course->id, "forum", "mark read", "view.php?f=$forum->id", $forum->id, $cm->id);
         }
+    }
 
 /// FUTURE - Add ability to mark them as unread.
 //    } else { // subscribe
@@ -71,10 +103,9 @@
 //            add_to_log($course->id, "forum", "mark unread", "view.php?f=$forum->id", $forum->id, $cm->id);
 //            redirect($returnto, get_string("nowtracking", "forum", $info), 1);
 //        } else {
-//            error("Could not start tracking that forum", $_SERVER["HTTP_REFERER"]);
+//            print_error("Could not start tracking that forum", $_SERVER["HTTP_REFERER"]);
 //        }
-    }
+}
 
-    redirect($returnto);
+redirect($returnto);
 
-?>

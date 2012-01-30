@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -26,15 +26,11 @@ class data_field_multimenu extends data_field_base {
 
     var $type = 'multimenu';
 
-    function data_field_multimenu($field=0, $data=0) {
-        parent::data_field_base($field, $data);
-    }
-
-
     function display_add_field($recordid=0) {
+        global $DB;
 
         if ($recordid){
-            $content = get_field('data_content', 'content', 'fieldid', $this->field->id, 'recordid', $recordid);
+            $content = $DB->get_field('data_content', 'content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid));
             $content = explode('##', $content);
         } else {
             $content = array();
@@ -63,14 +59,14 @@ class data_field_multimenu extends data_field_base {
     }
 
     function display_search_field($value = '') {
-        global $CFG;
+        global $CFG, $DB;
 
         if (is_array($value)){
             $content     = $value['selected'];
-            $allrequired = $value['allrequired'] ? 'checked = "checked"' : '';
+            $allrequired = $value['allrequired'] ? true : false;
         } else {
             $content     = array();
-            $allrequired = '';
+            $allrequired = false;
         }
 
         static $c = 0;
@@ -78,13 +74,13 @@ class data_field_multimenu extends data_field_base {
         $str = '<select name="f_'.$this->field->id.'[]" multiple="multiple">';
 
         // display only used options
-        $varcharcontent = sql_compare_text('content', 255);
+        $varcharcontent =  $DB->sql_compare_text('content', 255);
         $sql = "SELECT DISTINCT $varcharcontent AS content
-                  FROM {$CFG->prefix}data_content
-                 WHERE fieldid={$this->field->id} AND content IS NOT NULL";
+                  FROM {data_content}
+                 WHERE fieldid=? AND content IS NOT NULL";
 
         $usedoptions = array();
-        if ($used = get_records_sql($sql)) {
+        if ($used = $DB->get_records_sql($sql, array($this->field->id))) {
             foreach ($used as $data) {
                 $valuestr = $data->content;
                 if ($valuestr === '') {
@@ -106,7 +102,7 @@ class data_field_multimenu extends data_field_base {
             $found = true;
             $str .= '<option value="' . s($option) . '"';
 
-            if (in_array(addslashes($option), $content)) {
+            if (in_array($option, $content)) {
                 // Selected by user.
                 $str .= ' selected = "selected"';
             }
@@ -119,16 +115,14 @@ class data_field_multimenu extends data_field_base {
 
         $str .= '</select>';
 
-        $str .= '&nbsp;<input name="f_'.$this->field->id.'_allreq" id="f_'.$this->field->id.'_allreq'.$c.'" type="checkbox" '.$allrequired.'/>';
-        $str .= '<label for="f_'.$this->field->id.'_allreq'.$c.'">'.get_string('selectedrequired', 'data').'</label>';
-        $c++;
+        $str .= html_writer::checkbox('f_'.$this->field->id.'_allreq', null, $allrequired, get_string('selectedrequired', 'data'));
 
         return $str;
 
     }
 
     function parse_search_field() {
-        $selected    = optional_param('f_'.$this->field->id, array(), PARAM_NOTAGS);
+        $selected    = optional_param_array('f_'.$this->field->id, array(), PARAM_NOTAGS);
         $allrequired = optional_param('f_'.$this->field->id.'_allreq', 0, PARAM_BOOL);
         if (empty($selected)) {
             // no searching
@@ -138,41 +132,57 @@ class data_field_multimenu extends data_field_base {
     }
 
     function generate_sql($tablealias, $value) {
+        global $DB;
+
+        static $i=0;
+        $i++;
+        $name = "df_multimenu_{$i}_";
+        $params = array();
+        $varcharcontent = $DB->sql_compare_text("{$tablealias}.content", 255);
+
         $allrequired = $value['allrequired'];
         $selected    = $value['selected'];
-        $varcharcontent = sql_compare_text("{$tablealias}.content", 255);
 
         if ($selected) {
             $conditions = array();
+            $j=0;
             foreach ($selected as $sel) {
+                $j++;
+                $xname = $name.$j;
                 $likesel = str_replace('%', '\%', $sel);
                 $likeselsel = str_replace('_', '\_', $likesel);
-                $conditions[] = "({$tablealias}.fieldid = {$this->field->id} AND ($varcharcontent = '$sel'
-                                                                               OR {$tablealias}.content LIKE '$likesel##%'
-                                                                               OR {$tablealias}.content LIKE '%##$likesel'
-                                                                               OR {$tablealias}.content LIKE '%##$likesel##%'))";
+                $conditions[] = "({$tablealias}.fieldid = {$this->field->id} AND ({$varcharcontent} = :{$xname}a
+                                                                               OR {$tablealias}.content LIKE :{$xname}b
+                                                                               OR {$tablealias}.content LIKE :{$xname}c
+                                                                               OR {$tablealias}.content LIKE :{$xname}d))";
+                $params[$xname.'a'] = $sel;
+                $params[$xname.'b'] = "$likesel##%";
+                $params[$xname.'c'] = "%##$likesel";
+                $params[$xname.'d'] = "%##$likesel##%";
             }
             if ($allrequired) {
-                return " (".implode(" AND ", $conditions).") ";
+                return array(" (".implode(" AND ", $conditions).") ", $params);
             } else {
-                return " (".implode(" OR ", $conditions).") ";
+                return array(" (".implode(" OR ", $conditions).") ", $params);
             }
         } else {
-            return " ";
+            return array(" ", array());
         }
     }
 
     function update_content($recordid, $value, $name='') {
-        $content = new object;
+        global $DB;
+
+        $content = new stdClass();
         $content->fieldid  = $this->field->id;
         $content->recordid = $recordid;
         $content->content  = $this->format_data_field_multimenu_content($value);
 
-        if ($oldcontent = get_record('data_content','fieldid', $this->field->id, 'recordid', $recordid)) {
+        if ($oldcontent = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             $content->id = $oldcontent->id;
-            return update_record('data_content', $content);
+            return $DB->update_record('data_content', $content);
         } else {
-            return insert_record('data_content', $content);
+            return $DB->insert_record('data_content', $content);
         }
     }
 
@@ -188,7 +198,7 @@ class data_field_multimenu extends data_field_base {
             if ($key === 'xxx') {
                 continue;
             }
-            if (!in_array(stripslashes($val), $options)) {
+            if (!in_array($val, $options)) {
                 continue;
             }
             $vals[] = $val;
@@ -203,8 +213,9 @@ class data_field_multimenu extends data_field_base {
 
 
     function display_browse_field($recordid, $template) {
+        global $DB;
 
-        if ($content = get_record('data_content', 'fieldid', $this->field->id, 'recordid', $recordid)) {
+        if ($content = $DB->get_record('data_content', array('fieldid'=>$this->field->id, 'recordid'=>$recordid))) {
             if (empty($content->content)) {
                 return false;
             }
@@ -226,4 +237,4 @@ class data_field_multimenu extends data_field_base {
         return false;
     }
 }
-?>
+

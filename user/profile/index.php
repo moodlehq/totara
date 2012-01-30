@@ -1,4 +1,4 @@
-<?php //$Id$
+<?php
 
 require('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
@@ -41,38 +41,30 @@ switch ($action) {
         break;
     case 'deletecategory':
         $id      = required_param('id', PARAM_INT);
-        $confirm = optional_param('confirm', 0, PARAM_BOOL);
-
-        if (data_submitted() and $confirm and confirm_sesskey()) {
-            profile_delete_category($id);
-            redirect($redirect);
-        }
-
-        //ask for confirmation
-        $fieldcount = count_records('user_info_field', 'categoryid', $id);
-        $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
-        admin_externalpage_print_header();
-        print_heading('profiledeletecategory', 'admin');
-        notice_yesno(get_string('profileconfirmcategorydeletion', 'admin', $fieldcount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
-        admin_externalpage_print_footer();
-        die;
+        profile_delete_category($id);
+        redirect($redirect,get_string('deleted'));
         break;
     case 'deletefield':
         $id      = required_param('id', PARAM_INT);
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
-        if (data_submitted() and $confirm and confirm_sesskey()) {
+        $datacount = $DB->count_records('user_info_data', array('fieldid'=>$id));
+        if (data_submitted() and ($confirm and confirm_sesskey()) or $datacount===0) {
             profile_delete_field($id);
-            redirect($redirect);
+            redirect($redirect,get_string('deleted'));
         }
 
         //ask for confirmation
-        $datacount = count_records('user_info_data', 'fieldid', $id);
+        $fieldname = $DB->get_field('user_info_field', 'name', array('id'=>$id));
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
-        admin_externalpage_print_header();
-        print_heading('profiledeletefield', 'admin');
-        notice_yesno(get_string('profileconfirmfielddeletion', 'admin', $datacount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
-        admin_externalpage_print_footer();
+        $strheading = get_string('profiledeletefield', 'admin', $fieldname);
+        $PAGE->navbar->add($strheading);
+        echo $OUTPUT->header();
+        echo $OUTPUT->heading($strheading);
+        $formcontinue = new single_button(new moodle_url($redirect, $optionsyes), get_string('yes'), 'post');
+        $formcancel = new single_button(new moodle_url($redirect), get_string('no'), 'get');
+        echo $OUTPUT->confirm(get_string('profileconfirmfielddeletion', 'admin', $datacount), $formcontinue, $formcancel);
+        echo $OUTPUT->footer();
         die;
         break;
     case 'editfield':
@@ -93,40 +85,40 @@ switch ($action) {
 }
 
 /// Print the header
-admin_externalpage_print_header();
-print_heading(get_string('profilefields', 'admin'));
+echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string('profilefields', 'admin'));
 
 /// Check that we have at least one category defined
-if (count_records('user_info_category') == 0) {
-    $defaultcategory = new object();
+if ($DB->count_records('user_info_category') == 0) {
+    $defaultcategory = new stdClass();
     $defaultcategory->name = $strdefaultcategory;
     $defaultcategory->sortorder = 1;
-    insert_record('user_info_category', $defaultcategory);
+    $DB->insert_record('user_info_category', $defaultcategory);
     redirect($redirect);
 }
 
 /// Show all categories
-$categories = get_records_select('user_info_category', '', 'sortorder ASC');
+$categories = $DB->get_records('user_info_category', null, 'sortorder ASC');
 
 foreach ($categories as $category) {
-    $table = new object();
+    $table = new html_table();
     $table->head  = array(get_string('profilefield', 'admin'), get_string('edit'));
     $table->align = array('left', 'right');
     $table->width = '95%';
-    $table->class = 'generaltable profilefield';
+    $table->attributes['class'] = 'generaltable profilefield';
     $table->data = array();
 
-    if ($fields = get_records_select('user_info_field', "categoryid=$category->id", 'sortorder ASC')) {
+    if ($fields = $DB->get_records('user_info_field', array('categoryid'=>$category->id), 'sortorder ASC')) {
         foreach ($fields as $field) {
             $table->data[] = array(format_string($field->name), profile_field_icons($field));
         }
     }
 
-    print_heading(format_string($category->name) .' '.profile_category_icons($category));
+    echo $OUTPUT->heading(format_string($category->name) .' '.profile_category_icons($category));
     if (count($table->data)) {
-        print_table($table);
+        echo html_writer::table($table);
     } else {
-        notify($strnofields);
+        echo $OUTPUT->notification($strnofields);
     }
 
 } /// End of $categories foreach
@@ -139,15 +131,21 @@ echo '<div class="profileeditor">';
 
 /// Create a new field link
 $options = profile_list_datatypes();
-popup_form($CFG->wwwroot.'/user/profile/index.php?id=0&amp;action=editfield&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',$strcreatefield);
+$popupurl = new moodle_url('/user/profile/index.php?id=0&action=editfield');
+echo $OUTPUT->single_select($popupurl, 'datatype', $options, '', array(''=>$strcreatefield), 'newfieldform');
+
+//add a div with a class so themers can hide, style or reposition the text
+html_writer::start_tag('div',array('class'=>'adminuseractionhint'));
+echo get_string('or', 'lesson');
+html_writer::end_tag('div');
 
 /// Create a new category link
 $options = array('action'=>'editcategory');
-print_single_button('index.php', $options, get_string('profilecreatecategory', 'admin'));
+echo $OUTPUT->single_button(new moodle_url('index.php', $options), get_string('profilecreatecategory', 'admin'));
 
 echo '</div>';
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();
 die;
 
 
@@ -158,41 +156,41 @@ die;
  * @param   object   the category object
  * @return  string   the icon string
  */
-function profile_category_icons ($category) {
-    global $CFG, $USER;
+function profile_category_icons($category) {
+    global $CFG, $USER, $DB, $OUTPUT;
 
     $strdelete   = get_string('delete');
     $strmoveup   = get_string('moveup');
     $strmovedown = get_string('movedown');
     $stredit     = get_string('edit');
 
-    $categorycount = count_records('user_info_category');
-    $fieldcount    = count_records('user_info_field', 'categoryid', $category->id);
+    $categorycount = $DB->count_records('user_info_category');
+    $fieldcount    = $DB->count_records('user_info_field', array('categoryid'=>$category->id));
 
     /// Edit
-    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$category->id.'&amp;action=editcategory"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
+    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$category->id.'&amp;action=editcategory"><img src="'.$OUTPUT->pix_url('t/edit') . '" alt="'.$stredit.'" class="iconsmall" /></a> ';
 
     /// Delete
     /// Can only delete the last category if there are no fields in it
     if ( ($categorycount > 1) or ($fieldcount == 0) ) {
         $editstr .= '<a title="'.$strdelete.'" href="index.php?id='.$category->id.'&amp;action=deletecategory';
-        $editstr .= '"><img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" class="iconsmall" /></a> ';
+        $editstr .= '"><img src="'.$OUTPUT->pix_url('t/delete') . '" alt="'.$strdelete.'" class="iconsmall" /></a> ';
     } else {
-        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+        $editstr .= '<img src="'.$OUTPUT->pix_url('spacer') . '" alt="" class="iconsmall" /> ';
     }
 
     /// Move up
     if ($category->sortorder > 1) {
-        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$category->id.'&amp;action=movecategory&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$category->id.'&amp;action=movecategory&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$OUTPUT->pix_url('t/up') . '" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
     } else {
-        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+        $editstr .= '<img src="'.$OUTPUT->pix_url('spacer') . '" alt="" class="iconsmall" /> ';
     }
 
     /// Move down
     if ($category->sortorder < $categorycount) {
-        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$category->id.'&amp;action=movecategory&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$category->id.'&amp;action=movecategory&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$OUTPUT->pix_url('t/down') . '" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
     } else {
-        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+        $editstr .= '<img src="'.$OUTPUT->pix_url('spacer') . '" alt="" class="iconsmall" /> ';
     }
 
     return $editstr;
@@ -203,42 +201,40 @@ function profile_category_icons ($category) {
  * @param   object   the field object
  * @return  string   the icon string
  */
-function profile_field_icons ($field) {
-    global $CFG, $USER;
+function profile_field_icons($field) {
+    global $CFG, $USER, $DB, $OUTPUT;
 
-    if (empty($str)) {
-        $strdelete   = get_string('delete');
-        $strmoveup   = get_string('moveup');
-        $strmovedown = get_string('movedown');
-        $stredit     = get_string('edit');
-    }
+    $strdelete   = get_string('delete');
+    $strmoveup   = get_string('moveup');
+    $strmovedown = get_string('movedown');
+    $stredit     = get_string('edit');
 
-    $fieldcount = count_records('user_info_field', 'categoryid',$field->categoryid);
-    $datacount  = count_records('user_info_data', 'fieldid', $field->id);
+    $fieldcount = $DB->count_records('user_info_field', array('categoryid'=>$field->categoryid));
+    $datacount  = $DB->count_records('user_info_data', array('fieldid'=>$field->id));
 
     /// Edit
-    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$field->id.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
+    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$field->id.'&amp;action=editfield"><img src="'.$OUTPUT->pix_url('t/edit') . '" alt="'.$stredit.'" class="iconsmall" /></a> ';
 
     /// Delete
     $editstr .= '<a title="'.$strdelete.'" href="index.php?id='.$field->id.'&amp;action=deletefield';
-    $editstr .= '"><img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" class="iconsmall" /></a> ';
+    $editstr .= '"><img src="'.$OUTPUT->pix_url('t/delete') . '" alt="'.$strdelete.'" class="iconsmall" /></a> ';
 
     /// Move up
     if ($field->sortorder > 1) {
-        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$field->id.'&amp;action=movefield&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$field->id.'&amp;action=movefield&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$OUTPUT->pix_url('t/up') . '" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
      } else {
-        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+        $editstr .= '<img src="'.$OUTPUT->pix_url('spacer') . '" alt="" class="iconsmall" /> ';
     }
 
     /// Move down
     if ($field->sortorder < $fieldcount) {
-        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$field->id.'&amp;action=movefield&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$field->id.'&amp;action=movefield&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$OUTPUT->pix_url('t/down') . '" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
     } else {
-        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+        $editstr .= '<img src="'.$OUTPUT->pix_url('spacer') . '" alt="" class="iconsmall" /> ';
     }
 
     return $editstr;
 }
 
 
-?>
+

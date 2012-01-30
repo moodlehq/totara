@@ -1,4 +1,4 @@
-<?php  // $Id$
+<?php
 ///////////////////////////////////////////////////////////////////////////
 //                                                                       //
 // NOTICE OF COPYRIGHT                                                   //
@@ -27,7 +27,7 @@
 
 
     if (empty($currenttab) or empty($data) or empty($course)) {
-        error('You cannot call this script in that way');
+        print_error('cannotcallscript');
     }
 
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
@@ -48,8 +48,8 @@
     // Add an advanced search tab.
     $row[] = new tabobject('asearch', $CFG->wwwroot.'/mod/data/view.php?d='.$data->id.'&amp;mode=asearch', get_string('search', 'data'));
 
-    if (isloggedin()) {
-        if (data_user_can_add_entry($data, $currentgroup, $groupmode) && !data_atmaxentries($data)) { // took out participation list here!
+    if (isloggedin()) { // just a perf shortcut
+        if (data_user_can_add_entry($data, $currentgroup, $groupmode, $context)) { // took out participation list here!
             $addstring = empty($editentry) ? get_string('add', 'data') : get_string('editentry', 'data');
             $row[] = new tabobject('add', $CFG->wwwroot.'/mod/data/edit.php?d='.$data->id, $addstring);
         }
@@ -105,4 +105,4 @@
 // Print out the tabs and continue!
     print_tabs($tabs, $currenttab, $inactive, $activetwo);
 
-?>
+

@@ -1,102 +1,127 @@
-<?php  // $Id$
-    require_once('../../config.php');
-    require_once('lib.php');
+<?php
 
-    $id    = required_param('id', PARAM_INT);           // course module ID
-    $entry = required_param('entry', PARAM_INT);     // Entry ID
-    $confirm = optional_param('confirm', 0, PARAM_INT); // confirmation
+require_once('../../config.php');
+require_once('lib.php');
 
-    $hook = optional_param('hook', '', PARAM_ALPHANUM);
-    $mode = optional_param('mode', '', PARAM_ALPHA);
-        
-    global $USER, $CFG;
+$id       = required_param('id', PARAM_INT);          // Entry ID
+$confirm  = optional_param('confirm', 0, PARAM_BOOL); // export confirmation
+$prevmode = required_param('prevmode', PARAM_ALPHA);
+$hook     = optional_param('hook', '', PARAM_CLEAN);
 
-    $PermissionGranted = 1;
+$url = new moodle_url('/mod/glossary/exportentry.php', array('id'=>$id,'prevmode'=>$prevmode));
+if ($confirm !== 0) {
+    $url->param('confirm', $confirm);
+}
+if ($hook !== 'ALL') {
+    $url->param('hook', $hook);
+}
+$PAGE->set_url($url);
 
-    $cm = get_coursemodule_from_id('glossary', $id);
-    if ( ! $cm ) {
-        $PermissionGranted = 0;
-    } else {
-        $mainglossary = get_record('glossary','course',$cm->course, 'mainglossary',1);
-        if ( ! $mainglossary ) {
-            $PermissionGranted = 0;
+if (!$entry = $DB->get_record('glossary_entries', array('id'=>$id))) {
+    print_error('invalidentry');
+}
+
+if ($entry->sourceglossaryid) {
+    //already exported
+    if (!$cm = get_coursemodule_from_id('glossary', $entry->sourceglossaryid)) {
+        print_error('invalidcoursemodule');
+    }
+    redirect('view.php?id='.$cm->id.'&amp;mode=entry&amp;hook='.$entry->id);
+}
+
+if (!$cm = get_coursemodule_from_instance('glossary', $entry->glossaryid)) {
+    print_error('invalidcoursemodule');
+}
+
+if (!$glossary = $DB->get_record('glossary', array('id'=>$cm->instance))) {
+    print_error('invalidid', 'glossary');
+}
+
+if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
+    print_error('coursemisconf');
+}
+
+require_course_login($course->id, true, $cm);
+$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+require_capability('mod/glossary:export', $context);
+
+$returnurl = "view.php?id=$cm->id&amp;mode=$prevmode&amp;hook=".urlencode($hook);
+
+if (!$mainglossary = $DB->get_record('glossary', array('course'=>$cm->course, 'mainglossary'=>1))) {
+    //main glossary not present
+    redirect($returnurl);
+}
+
+if (!$maincm = get_coursemodule_from_instance('glossary', $mainglossary->id)) {
+    print_error('invalidcoursemodule');
+}
+
+$context     = get_context_instance(CONTEXT_MODULE, $cm->id);
+$maincontext = get_context_instance(CONTEXT_MODULE, $maincm->id);
+
+if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
+    print_error('coursemisconf');
+}
+
+
+$strglossaries     = get_string('modulenameplural', 'glossary');
+$entryalreadyexist = get_string('entryalreadyexist','glossary');
+$entryexported     = get_string('entryexported','glossary');
+
+if (!$mainglossary->allowduplicatedentries) {
+    if ($DB->record_exists_select('glossary_entries',
+            'glossaryid = :glossaryid AND LOWER(concept) = :concept', array(
+                'glossaryid' => $mainglossary->id,
+                'concept'    => moodle_strtolower($entry->concept)))) {
+        $PAGE->set_title(format_string($glossary->name));
+        $PAGE->set_heading($course->fullname);
+        echo $OUTPUT->header();
+        echo $OUTPUT->notification(get_string('errconceptalreadyexists', 'glossary'));
+        echo $OUTPUT->continue_button($returnurl);
+        echo $OUTPUT->box_end();
+        echo $OUTPUT->footer();
+        die;
+    }
+}
+
+if (!data_submitted() or !$confirm or !confirm_sesskey()) {
+    $PAGE->set_title(format_string($glossary->name));
+    $PAGE->set_heading(format_string($course->fullname));
+    echo $OUTPUT->header();
+    echo '<div class="boxaligncenter">';
+    $areyousure = '<h2>'.format_string($entry->concept).'</h2><p align="center">'.get_string('areyousureexport','glossary').'<br /><b>'.format_string($mainglossary->name).'</b>?';
+    $linkyes    = 'exportentry.php';
+    $linkno     = 'view.php';
+    $optionsyes = array('id'=>$entry->id, 'confirm'=>1, 'sesskey'=>sesskey(), 'prevmode'=>$prevmode, 'hook'=>$hook);
+    $optionsno  = array('id'=>$cm->id, 'mode'=>$prevmode, 'hook'=>$hook);
+
+    echo $OUTPUT->confirm($areyousure, new moodle_url($linkyes, $optionsyes), new moodle_url($linkno, $optionsno));
+    echo '</div>';
+    echo $OUTPUT->footer();
+    die;
+
+} else {
+    $entry->glossaryid       = $mainglossary->id;
+    $entry->sourceglossaryid = $glossary->id;
+
+    $DB->update_record('glossary_entries', $entry);
+
+    // move attachments too
+    $fs = get_file_storage();
+
+    if ($oldfiles = $fs->get_area_files($context->id, 'mod_glossary', 'attachment', $entry->id)) {
+        foreach ($oldfiles as $oldfile) {
+            $file_record = new stdClass();
+            $file_record->contextid = $maincontext->id;
+            $fs->create_file_from_storedfile($file_record, $oldfile);
         }
-    }
-    
-    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
-    require_capability('mod/glossary:export', $context);
-
-    if (! $course = get_record('course', 'id', $cm->course)) {
-        error('Course is misconfigured');
-    }
-
-    if (! $glossary = get_record('glossary', 'id', $cm->instance)) {
-        error('Course module is incorrect');
-    }
-
-    $strglossaries   = get_string('modulenameplural', 'glossary');
-    $entryalreadyexist = get_string('entryalreadyexist','glossary');
-    $entryexported = get_string('entryexported','glossary');
-
-    $navigation = build_navigation('', $cm);
-    print_header_simple(format_string($glossary->name), '', $navigation, '', '', true, '', navmenu($course, $cm));
-
-    if ( $PermissionGranted ) {
-        $entry = get_record('glossary_entries', 'id', $entry);
-
-        if ( !$confirm ) {
-            echo '<div class="boxaligncenter">';
-            $areyousure = get_string('areyousureexport','glossary');
-            notice_yesno ('<h2>'.format_string($entry->concept).'</h2><p align="center">'.$areyousure.'<br /><b>'.format_string($mainglossary->name).'</b>?',
-                'exportentry.php?id='.$id.'&amp;mode='.$mode.'&amp;hook='.$hook.'&amp;entry='.$entry->id.'&amp;confirm=1',
-                'view.php?id='.$cm->id.'&amp;mode='.$mode.'&amp;hook='.$hook);
-            echo '</div>';
-        } else {
-            if ( ! $mainglossary->allowduplicatedentries ) {
-                $dupentry = get_record('glossary_entries','glossaryid', $mainglossary->id, 'lower(concept)',moodle_strtolower(addslashes($entry->concept)));
-                if ( $dupentry ) {
-                    $PermissionGranted = 0;
-                }
-            }
-            if ( $PermissionGranted ) {
-
-                $dbentry = new stdClass;
-                $dbentry->id = $entry->id;
-                $dbentry->glossaryid       = $mainglossary->id;
-                $dbentry->sourceglossaryid = $glossary->id;
-                
-                if (! update_record('glossary_entries', $dbentry)) {
-                    error('Could not export the entry to the main glossary');
-                } else {
-                    print_simple_box_start('center', '60%');
-                    echo '<p align="center"><font size="3">'.$entryexported.'</font></p></font>';
-
-                    print_continue('view.php?id='.$cm->id.'&amp;mode=entry&amp;hook='.$entry->id);
-                    print_simple_box_end();
-
-                    print_footer();
-
-                    redirect('view.php?id='.$cm->id.'&amp;mode=entry&amp;hook='.$entry->id);
-                    die;
-                }
-            } else {
-                print_simple_box_start('center', '60%', '#FFBBBB');
-                echo '<p align="center"><font size="3">'.$entryalreadyexist.'</font></p></font>';
-                echo '<p align="center">';
-
-                print_continue('view.php?id='.$cm->id.'&amp;mode=entry&amp;hook='.$entry->id);
-
-                print_simple_box_end();
-            }
-        }
+        $fs->delete_area_files($context->id, 'mod_glossary', 'attachment', $entry->id);
+        $entry->attachment = '1';
     } else {
-            print_simple_box_start('center', '60%', '#FFBBBB');
-            notice('A weird error was found while trying to export this entry. Operation cancelled.');
-
-            print_continue('view.php?id='.$cm->id.'&amp;mode=entry&amp;hook='.$entry->id);
-
-            print_simple_box_end();
+        $entry->attachment = '0';
     }
+    $DB->update_record('glossary_entries', $entry);
 
-    print_footer();
-?>
+    redirect ($returnurl);
+}
+

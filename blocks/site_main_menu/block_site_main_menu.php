@@ -1,9 +1,8 @@
-<?php   //$Id$
+<?php
 
 class block_site_main_menu extends block_list {
     function init() {
-        $this->title = get_string('mainmenu');
-        $this->version = 2007101509;
+        $this->title = get_string('pluginname', 'block_site_main_menu');
     }
 
     function applicable_formats() {
@@ -11,13 +10,13 @@ class block_site_main_menu extends block_list {
     }
 
     function get_content() {
-        global $USER, $CFG, $COURSE;
+        global $USER, $CFG, $DB, $OUTPUT;
 
         if ($this->content !== NULL) {
             return $this->content;
         }
 
-        $this->content = new object();
+        $this->content = new stdClass();
         $this->content->items = array();
         $this->content->icons = array();
         $this->content->footer = '';
@@ -26,53 +25,45 @@ class block_site_main_menu extends block_list {
             return $this->content;
         }
 
-        if ($COURSE->id == $this->instance->pageid) {
-            $course = $COURSE;
-        } else {
-            $course = get_record('course', 'id', $this->instance->pageid);
-        }
-
+        $course = $this->page->course;
         require_once($CFG->dirroot.'/course/lib.php');
-
         $context = get_context_instance(CONTEXT_COURSE, $course->id);
-        $isediting = isediting($this->instance->pageid) && has_capability('moodle/course:manageactivities', $context);
-        $modinfo =& get_fast_modinfo($course);
+        $isediting = $this->page->user_is_editing() && has_capability('moodle/course:manageactivities', $context);
+        $modinfo = get_fast_modinfo($course);
 
 /// extra fast view mode
         if (!$isediting) {
             if (!empty($modinfo->sections[0])) {
+                $options = array('overflowdiv'=>true);
                 foreach($modinfo->sections[0] as $cmid) {
                     $cm = $modinfo->cms[$cmid];
                     if (!$cm->uservisible) {
                         continue;
                     }
-                    if ($cm->modname == 'label') {
-                        $this->content->items[] = format_text($cm->extra, FORMAT_HTML);
+
+                    list($content, $instancename) =
+                            get_print_section_cm_text($cm, $course);
+
+                    if (!($url = $cm->get_url())) {
+                        $this->content->items[] = $content;
                         $this->content->icons[] = '';
                     } else {
                         $linkcss = $cm->visible ? '' : ' class="dimmed" ';
-                        $instancename = format_string($cm->name, true, $course->id);
-                        $this->content->items[] = '<a title="'.$cm->modplural.'" '.$linkcss.' '.$cm->extra.
-                            ' href="'.$CFG->wwwroot.'/mod/'.$cm->modname.'/view.php?id='.$cm->id.'">'.$instancename.'</a>';
                         //Accessibility: incidental image - should be empty Alt text
-                        if (!empty($cm->icon)) {
-                            $icon = $CFG->pixpath.'/'.$cm->icon;
-                        } else {
-                            $icon = $CFG->modpixpath.'/'.$cm->modname.'/icon.gif';
-                        }
-                        $this->content->icons[] = '<img src="'.$icon.'" class="icon" alt="" />';
+                        $icon = '<img src="' . $cm->get_icon_url() . '" class="icon" alt="" />&nbsp;';
+                        $this->content->items[] = '<a title="'.$cm->modplural.'" '.$linkcss.' '.$cm->extra.
+                                ' href="' . $url . '">' . $icon . $instancename . '</a>';
                     }
                 }
             }
             return $this->content;
         }
 
-
 /// slow & hacky editing mode
-        $ismoving = ismoving($this->instance->pageid);
-        $section  = get_course_section(0, $this->instance->pageid);
+        $ismoving = ismoving($course->id);
+        $section  = get_course_section(0, $course->id);
 
-        get_all_mods($this->instance->pageid, $mods, $modnames, $modnamesplural, $modnamesused);
+        get_all_mods($course->id, $mods, $modnames, $modnamesplural, $modnamesused);
 
         $groupbuttons = $course->groupmode;
         $groupbuttonslink = (!$course->groupmodeforce);
@@ -87,12 +78,13 @@ class block_site_main_menu extends block_list {
         $editbuttons = '';
 
         if ($ismoving) {
-            $this->content->icons[] = '<img src="'.$CFG->pixpath.'/t/move.gif" class="iconsmall" alt="" />';
-            $this->content->items[] = $USER->activitycopyname.'&nbsp;(<a href="'.$CFG->wwwroot.'/course/mod.php?cancelcopy=true&amp;sesskey='.$USER->sesskey.'">'.$strcancel.'</a>)';
+            $this->content->icons[] = '<img src="'.$OUTPUT->pix_url('t/move') . '" class="iconsmall" alt="" />';
+            $this->content->items[] = $USER->activitycopyname.'&nbsp;(<a href="'.$CFG->wwwroot.'/course/mod.php?cancelcopy=true&amp;sesskey='.sesskey().'">'.$strcancel.'</a>)';
         }
 
         if (!empty($section->sequence)) {
             $sectionmods = explode(',', $section->sequence);
+            $options = array('overflowdiv'=>true);
             foreach ($sectionmods as $modnumber) {
                 if (empty($mods[$modnumber])) {
                     continue;
@@ -116,40 +108,30 @@ class block_site_main_menu extends block_list {
                         if ($mod->id == $USER->activitycopy) {
                             continue;
                         }
-                        $this->content->items[] = '<a title="'.$strmovefull.'" href="'.$CFG->wwwroot.'/course/mod.php?moveto='.$mod->id.'&amp;sesskey='.$USER->sesskey.'">'.
-                            '<img style="height:16px; width:80px; border:0px" src="'.$CFG->pixpath.'/movehere.gif" alt="'.$strmovehere.'" /></a>';
+                        $this->content->items[] = '<a title="'.$strmovefull.'" href="'.$CFG->wwwroot.'/course/mod.php?moveto='.$mod->id.'&amp;sesskey='.sesskey().'">'.
+                            '<img style="height:16px; width:80px; border:0px" src="'.$OUTPUT->pix_url('movehere') . '" alt="'.$strmovehere.'" /></a>';
                         $this->content->icons[] = '';
                     }
-                    $instancename = $modinfo->cms[$modnumber]->name;
-                    $instancename = format_string($instancename, true, $this->instance->pageid);
+                    list($content, $instancename) =
+                            get_print_section_cm_text($modinfo->cms[$modnumber], $course);
                     $linkcss = $mod->visible ? '' : ' class="dimmed" ';
-                    if (!empty($modinfo->cms[$modnumber]->extra)) {
-                        $extra = $modinfo->cms[$modnumber]->extra;
-                    } else {
-                        $extra = '';
-                    }
-                    if (!empty($modinfo->cms[$modnumber]->icon)) {
-                        $icon = $CFG->pixpath.'/'.$modinfo->cms[$modnumber]->icon;
-                    } else {
-                        $icon = $CFG->modpixpath.'/'.$mod->modname.'/icon.gif';
-                    }
 
-                    if ($mod->modname == 'label') {
-                        $this->content->items[] = format_text($extra, FORMAT_HTML).$editbuttons;
+                    if (!($url = $mod->get_url())) {
+                        $this->content->items[] = $content . $editbuttons;
                         $this->content->icons[] = '';
                     } else {
-                        $this->content->items[] = '<a title="'.$mod->modfullname.'" '.$linkcss.' '.$extra.
-                            ' href="'.$CFG->wwwroot.'/mod/'.$mod->modname.'/view.php?id='.$mod->id.'">'.$instancename.'</a>'.$editbuttons;
                         //Accessibility: incidental image - should be empty Alt text
-                        $this->content->icons[] = '<img src="'.$icon.'" class="icon" alt="" />';
+                        $icon = '<img src="' . $mod->get_icon_url() . '" class="icon" alt="" />&nbsp;';
+                        $this->content->items[] = '<a title="' . $mod->modfullname . '" ' . $linkcss . ' ' . $mod->extra .
+                            ' href="' . $url . '">' . $icon . $instancename . '</a>' . $editbuttons;
                     }
                 }
             }
         }
 
         if ($ismoving) {
-            $this->content->items[] = '<a title="'.$strmovefull.'" href="'.$CFG->wwwroot.'/course/mod.php?movetosection='.$section->id.'&amp;sesskey='.$USER->sesskey.'">'.
-                                      '<img style="height:16px; width:80px; border:0px" src="'.$CFG->pixpath.'/movehere.gif" alt="'.$strmovehere.'" /></a>';
+            $this->content->items[] = '<a title="'.$strmovefull.'" href="'.$CFG->wwwroot.'/course/mod.php?movetosection='.$section->id.'&amp;sesskey='.sesskey().'">'.
+                                      '<img style="height:16px; width:80px; border:0px" src="'.$OUTPUT->pix_url('movehere') . '" alt="'.$strmovehere.'" /></a>';
             $this->content->icons[] = '';
         }
 
@@ -163,4 +145,4 @@ class block_site_main_menu extends block_list {
     }
 }
 
-?>
+

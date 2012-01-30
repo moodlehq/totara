@@ -1,581 +1,71 @@
-<?php  //$Id$
+<?php
 
-/*
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Upgrade helper functions
+ *
  * This file is used for special upgrade functions - for example groups and gradebook.
  * These functions must use SQL and database related functions only- no other Moodle API,
  * because it might depend on db structures that are not yet present during upgrade.
  * (Do not use functions from accesslib.php, grades classes or group functions at all!)
+ *
+ * @package    core
+ * @subpackage admin
+ * @copyright  2007 Petr Skoda (http://skodak.org)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-/**
- * Migrates the grade_letter data to grade_letters
- */
-function upgrade_18_letters() {
-    global $CFG;
-
-    $table = new XMLDBTable('grade_letters');
-
-    if (table_exists($table)) {
-        // already converted or development site
-        return true;
-    }
-
-    $result = true;
-
-/// Rename field grade_low on table grade_letter to lowerboundary
-    $table = new XMLDBTable('grade_letter');
-    $field = new XMLDBField('grade_low');
-    $field->setAttributes(XMLDB_TYPE_NUMBER, '5, 2', null, XMLDB_NOTNULL, null, null, null, '0.00', 'grade_high');
-
-/// Launch rename field grade_low
-    $result = $result && rename_field($table, $field, 'lowerboundary');
-
-/// Define field grade_high to be dropped from grade_letter
-    $table = new XMLDBTable('grade_letter');
-    $field = new XMLDBField('grade_high');
-
-/// Launch drop field grade_high
-    $result = $result && drop_field($table, $field);
-
-/// Define index courseid (not unique) to be dropped form grade_letter
-    $table = new XMLDBTable('grade_letter');
-    $index = new XMLDBIndex('courseid');
-    $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('courseid'));
-
-/// Launch drop index courseid
-    $result = $result && drop_index($table, $index);
-
-/// Rename field courseid on table grade_letter to contextid
-    $table = new XMLDBTable('grade_letter');
-    $field = new XMLDBField('courseid');
-    $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'id');
-
-/// Launch rename field courseid
-    $result = $result && rename_field($table, $field, 'contextid');
-
-    $sql = "UPDATE {$CFG->prefix}grade_letter
-               SET contextid=COALESCE((SELECT c.id
-                                        FROM {$CFG->prefix}context c
-                                       WHERE c.instanceid={$CFG->prefix}grade_letter.contextid AND c.contextlevel=".CONTEXT_COURSE."), 0)";
-    execute_sql($sql);
-
-/// remove broken records
-    execute_sql("DELETE FROM {$CFG->prefix}grade_letter WHERE contextid=0");
-
-/// Define table grade_letter to be renamed to grade_letters
-    $table = new XMLDBTable('grade_letter');
-
-/// Launch rename table for grade_letter
-    $result = $result && rename_table($table, 'grade_letters');
-
-/// Changing type of field lowerboundary on table grade_letters to number
-    $table = new XMLDBTable('grade_letters');
-    $field = new XMLDBField('lowerboundary');
-    $field->setAttributes(XMLDB_TYPE_NUMBER, '10, 5', null, XMLDB_NOTNULL, null, null, null, null, 'contextid');
-
-/// Launch change of type for field lowerboundary
-    $result = $result && change_field_precision($table, $field);
-    $result = $result && change_field_default($table, $field);
-
-/// Changing the default of field letter on table grade_letters to drop it
-    $table = new XMLDBTable('grade_letters');
-    $field = new XMLDBField('letter');
-    $field->setAttributes(XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null, 'lowerboundary');
-
-/// Launch change of default for field letter
-    $result = $result && change_field_precision($table, $field);
-    $result = $result && change_field_default($table, $field);
-
-/// Define index contextidlowerboundary (not unique) to be added to grade_letters
-    $table = new XMLDBTable('grade_letters');
-    $index = new XMLDBIndex('contextid-lowerboundary');
-    $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('contextid', 'lowerboundary'));
-
-/// Launch add index contextidlowerboundary
-    $result = $result && add_index($table, $index);
-
-    return $result;
-}
-
-
-/**
- * This function is used to migrade old data and settings from old gradebook into new grading system.
- * It is executed only once for each course during upgrade to 1.9, all grade tables must be empty initially.
- * @param int $courseid
- */
-function upgrade_18_gradebook($courseid) {
-    global $CFG;
-
-    require_once($CFG->libdir.'/gradelib.php'); // we need constants only
-
-    // get all grade items with mod details and categories
-    $sql = "SELECT gi.*, cm.idnumber as cmidnumber, m.name as modname
-              FROM {$CFG->prefix}grade_item gi, {$CFG->prefix}course_modules cm, {$CFG->prefix}modules m
-             WHERE gi.courseid=$courseid AND m.id=gi.modid AND cm.instance=gi.cminstance
-          ORDER BY gi.sort_order ASC";
-
-    if (!$olditems = get_records_sql($sql)) {
-        //nothing to do - no items present in old gradebook
-        return true;
-    }
-
-    if (!$oldcats = get_records('grade_category', 'courseid', $courseid, 'id')) {
-        //there should be at least uncategorised category - hmm, nothing to do
-        return true;
-    }
-
-    $order = 1;
-
-    // create course category
-    $course_category = new object();
-    $course_category->courseid     = $courseid;
-    $course_category->fullname     = '?';
-    $course_category->parent       = null;
-    $course_category->aggregation  = GRADE_AGGREGATE_WEIGHTED_MEAN2;
-    $course_category->timemodified = $course_category->timecreated = time();
-    $course_category->aggregateonlygraded = 0;
-    if (!$course_category->id = insert_record('grade_categories', $course_category)) {
-        return false;
-    }
-    $course_category->depth = 1;
-    $course_category->path  = '/'.$course_category->id;
-    if (!update_record('grade_categories', $course_category)) {
-        return false;
-    }
-
-    // create course item
-    $course_item = new object();
-    $course_item->courseid     = $courseid;
-    $course_item->itemtype     = 'course';
-    $course_item->iteminstance = $course_category->id;
-    $course_item->gradetype    = GRADE_TYPE_VALUE;
-    $course_item->display = GRADE_DISPLAY_TYPE_PERCENTAGE;
-    $course_item->sortorder    = $order++;
-    $course_item->timemodified = $course_item->timecreated = $course_category->timemodified;
-    $course_item->needsupdate  = 1;
-    if (!insert_record('grade_items', $course_item)) {
-        return false;
-    }
-
-    // existing categories
-    $categories = array();
-    $hiddenoldcats = array();
-    if (count($oldcats) == 1) {
-        $oldcat = reset($oldcats);
-        if ($oldcat->drop_x_lowest) {
-            $course_category->droplow = $oldcat->drop_x_lowest;
-            update_record('grade_categories', $course_category);
-        }
-        $categories[$oldcat->id] = $course_category;
-
-    } else {
-        foreach ($oldcats as $oldcat) {
-            $category = new object();
-            $category->courseid     = $courseid;
-            $category->fullname     = addslashes($oldcat->name);
-            $category->parent       = $course_category->id;
-            $category->droplow      = $oldcat->drop_x_lowest;
-            $category->aggregation  = GRADE_AGGREGATE_WEIGHTED_MEAN2;
-            $category->timemodified = $category->timecreated = time();
-            $category->aggregateonlygraded = 0;
-            if (!$category->id = insert_record('grade_categories', $category)) {
-                return false;
-            }
-            $category->depth = 2;
-            $category->path  = '/'.$course_category->id.'/'.$category->id;
-            if (!update_record('grade_categories', $category)) {
-                return false;
-            }
-
-            $categories[$oldcat->id] = $category;
-
-            $item = new object();
-            $item->courseid        = $courseid;
-            $item->itemtype        = 'category';
-            $item->iteminstance    = $category->id;
-            $item->gradetype       = GRADE_TYPE_VALUE;
-            $item->display         = GRADE_DISPLAY_TYPE_PERCENTAGE;
-            $item->plusfactor      = $oldcat->bonus_points;
-            $item->hidden          = $oldcat->hidden;
-            $item->aggregationcoef = $oldcat->weight;
-            $item->sortorder       = $order++;
-            $item->timemodified    = $item->timecreated = $category->timemodified;
-            $item->needsupdate     = 1;
-            if (!insert_record('grade_items', $item)) {
-                return false;
-            }
-            if ($item->hidden) {
-                $hiddenoldcats[] = $oldcat->id;
-            }
-        }
-
-        $course_category->aggregation = GRADE_AGGREGATE_WEIGHTED_MEAN2;
-        update_record('grade_categories', $course_category);
-    }
-    unset($oldcats);
-
-    // existing items
-    $newitems = array();
-    foreach ($olditems as $olditem) {
-        if (empty($categories[$olditem->category])) {
-            continue; // faulty record
-        }
-        // proper data are set during activity upgrade or legacy grade fetching
-        $item = new object();
-        $item->courseid        = $courseid;
-        $item->itemtype        = 'mod';
-        $item->itemmodule      = $olditem->modname;
-        $item->iteminstance    = $olditem->cminstance;
-        $item->idnumber        = $olditem->cmidnumber;
-        $item->itemname        = NULL;
-        $item->itemnumber      = 0;
-        $item->gradetype       = GRADE_TYPE_VALUE;
-        $item->multfactor      = $olditem->scale_grade;
-        $item->hidden          = (int)in_array($olditem->category, $hiddenoldcats);
-        $item->aggregationcoef = $olditem->extra_credit;
-        $item->sortorder       = $order++;
-        $item->timemodified    = $item->timecreated = time();
-        $item->needsupdate     = 1;
-        $item->categoryid  = $categories[$olditem->category]->id;
-        if (!$item->id = insert_record('grade_items', $item)) {
-            return false;
-        }
-
-        $newitems[$olditem->id] = $item;
-    }
-    unset($olditems);
-
-    // setup up exception handling - exclude grade from aggregation
-    if ($exceptions = get_records('grade_exceptions', 'courseid', $courseid)) {
-        foreach ($exceptions as $exception) {
-            if (!array_key_exists($exception->grade_itemid, $newitems)) {
-                continue; // broken record
-            }
-            $grade = new object();
-            $grade->excluded     = time();
-            $grade->itemid       = $newitems[$exception->grade_itemid]->id;
-            $grade->userid       = $exception->userid;
-            $grade->timemodified = $grade->timecreated = $grade->excluded;
-            insert_record('grade_grades', $grade);
-        }
-    }
-
-    // flag indicating new 1.9.5 upgrade routine
-    set_config('gradebook_latest195_upgrade', 1);
-
-    return true;
-}
-
-
-
-/**
- * Create new groupings tables for upgrade from 1.7.*|1.6.* and so on.
- */
-function upgrade_17_groups() {
-    global $CFG;
-
-    $result = true;
-
-/// Define table groupings to be created
-    $table = new XMLDBTable('groupings');
-
-/// Adding fields to table groupings
-    $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-    $table->addFieldInfo('courseid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-    $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
-    $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'small', null, null, null, null, null, null);
-    $table->addFieldInfo('configdata', XMLDB_TYPE_TEXT, 'small', null, null, null, null, null, null);
-    $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-    $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-
-/// Adding keys to table groupings
-    $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-    $table->addKeyInfo('courseid', XMLDB_KEY_FOREIGN, array('courseid'), 'course', array('id'));
-
-/// Launch create table for groupings
-    $result = $result && create_table($table);
-
-// ==========================================
-
-/// Define table groupings_groups to be created
-    $table = new XMLDBTable('groupings_groups');
-
-/// Adding fields to table groupings_groups
-    $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-    $table->addFieldInfo('groupingid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-    $table->addFieldInfo('groupid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-    $table->addFieldInfo('timeadded', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-
-/// Adding keys to table groupings_groups
-    $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-    $table->addKeyInfo('groupingid', XMLDB_KEY_FOREIGN, array('groupingid'), 'groupings', array('id'));
-    $table->addKeyInfo('groupid', XMLDB_KEY_FOREIGN, array('groupid'), 'groups', array('id'));
-
-/// Launch create table for groupings_groups
-    $result = $result && create_table($table);
-
-/// fix not null constrain
-    $table = new XMLDBTable('groups');
-    $field = new XMLDBField('password');
-    $field->setAttributes(XMLDB_TYPE_CHAR, '50', null, null, null, null, null, null, 'description');
-    $result = $result && change_field_notnull($table, $field);
-
-/// Rename field password in table groups to enrolmentkey
-    $table = new XMLDBTable('groups');
-    $field = new XMLDBField('password');
-    $field->setAttributes(XMLDB_TYPE_CHAR, '50', null, null, null, null, null, null, 'description');
-    $result = $result && rename_field($table, $field, 'enrolmentkey');
-
-    return $result;
-}
-
-/**
- * Try to fix broken groups from 1.8 - at least partially
- */
-function upgrade_18_broken_groups() {
-    global $db;
-
-/// Undo password -> enrolmentkey
-    $table = new XMLDBTable('groups');
-    $field = new XMLDBField('enrolmentkey');
-    $field->setAttributes(XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null, null, null, 'description');
-    rename_field($table, $field, 'password');
-
-
-/// Readd courseid field
-    $table = new XMLDBTable('groups');
-    $field = new XMLDBField('courseid');
-    $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'id');
-    add_field($table, $field);
-
-/// and courseid key
-    $table = new XMLDBTable('groups');
-    $key = new XMLDBKey('courseid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('courseid'), 'course', array('id'));
-    add_key($table, $key);
-}
-
-/**
- * Drop, add fields and rename tables for groups upgrade from 1.8.*
- * @param XMLDBTable $table 'groups_groupings' table object.
- */
-function upgrade_18_groups() {
-    global $CFG, $db;
-
-    $result = upgrade_18_groups_drop_keys_indexes();
-
-/// Delete not used columns
-    $fields_r = array('viewowngroup', 'viewallgroupsmembers', 'viewallgroupsactivities',
-                      'teachersgroupmark', 'teachersgroupview', 'teachersoverride', 'teacherdeletable');
-    foreach ($fields_r as $fname) {
-        $table = new XMLDBTable('groups_groupings');
-        $field = new XMLDBField($fname);
-        if (field_exists($table, $field)) {
-            $result = $result && drop_field($table, $field);
-        }
-    }
-
-/// Rename 'groups_groupings' to 'groupings'
-    $table = new XMLDBTable('groups_groupings');
-    $result = $result && rename_table($table, 'groupings');
-
-/// Add columns/key 'courseid', exclusivegroups, maxgroupsize, timemodified.
-    $table = new XMLDBTable('groupings');
-    $field = new XMLDBField('courseid');
-    $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'id');
-    $result = $result && add_field($table, $field);
-
-    $table = new XMLDBTable('groupings');
-    $key = new XMLDBKey('courseid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('courseid'), 'course', array('id'));
-    $result = $result && add_key($table, $key);
-
-    $table = new XMLDBTable('groupings');
-    $field = new XMLDBField('configdata');
-    $field->setAttributes(XMLDB_TYPE_TEXT, 'small', null, null, null, null, null, null, 'description');
-    $result = $result && add_field($table, $field);
-
-    $table = new XMLDBTable('groupings');
-    $field = new XMLDBField('timemodified');
-    $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'timecreated');
-    $result = $result && add_field($table, $field);
-
-//==================
-
-/// Add columns/key 'courseid' into groups table
-    $table = new XMLDBTable('groups');
-    $field = new XMLDBField('courseid');
-    $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'id');
-    $result = $result && add_field($table, $field);
-
-    $table = new XMLDBTable('groups');
-    $key = new XMLDBKey('courseid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('courseid'), 'course', array('id'));
-    $result = $result && add_key($table, $key);
-
-    /// Changing nullability of field enrolmentkey on table groups to null
-    $table = new XMLDBTable('groups');
-    $field = new XMLDBField('enrolmentkey');
-    $field->setAttributes(XMLDB_TYPE_CHAR, '50', null, null, null, null, null, null, 'description');
-    $result = $result && change_field_notnull($table, $field);
-//==================
-
-/// Now, rename 'groups_groupings_groups' to 'groupings_groups' and add keys
-    $table = new XMLDBTable('groups_groupings_groups');
-    $result = $result && rename_table($table, 'groupings_groups');
-
-    $table = new XMLDBTable('groupings_groups');
-    $key = new XMLDBKey('groupingid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('groupingid'), 'groupings', array('id'));
-    $result = $result && add_key($table, $key);
-
-    $table = new XMLDBTable('groupings_groups');
-    $key = new XMLDBKey('groupid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('groupid'), 'groups', array('id'));
-    $result = $result && add_key($table, $key);
-
-///=================
-
-/// Transfer courseid from 'mdl_groups_courses_groups' to 'mdl_groups'.
-    if ($result) {
-        $sql = "UPDATE {$CFG->prefix}groups
-                   SET courseid = (
-                        SELECT MAX(courseid)
-                          FROM {$CFG->prefix}groups_courses_groups gcg
-                         WHERE gcg.groupid = {$CFG->prefix}groups.id)";
-        execute_sql($sql);
-    }
-
-/// Transfer courseid from 'groups_courses_groupings' to 'mdl_groupings'.
-    if ($result) {
-        $sql = "UPDATE {$CFG->prefix}groupings
-                   SET courseid = (
-                        SELECT MAX(courseid)
-                          FROM {$CFG->prefix}groups_courses_groupings gcg
-                         WHERE gcg.groupingid = {$CFG->prefix}groupings.id)";
-        execute_sql($sql);
-    }
-
-/// Drop the old tables
-    if ($result) {
-        drop_table(new XMLDBTable('groups_courses_groups'));
-        drop_table(new XMLDBTable('groups_courses_groupings'));
-        drop_table(new XMLDBTable('groups_temp'));
-        drop_table(new XMLDBTable('groups_members_temp'));
-        unset_config('group_version');
-    }
-
-    return $result;
-}
-
-/**
- * Drop keys & indexes for groups upgrade from 1.8.*
- */
-function upgrade_18_groups_drop_keys_indexes() {
-    $result = true;
-
-/// Define index groupid-courseid (unique) to be added to groups_members
-    $table = new XMLDBTable('groups_members');
-    $index = new XMLDBIndex('groupid-courseid');
-    $index->setAttributes(XMLDB_INDEX_UNIQUE, array('groupid', 'userid'));
-    $result = $result && drop_index($table, $index);
-
-/// Define key courseid (foreign) to be added to groups_courses_groups
-    $table = new XMLDBTable('groups_courses_groups');
-    $key = new XMLDBKey('courseid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('courseid'), 'course', array('id'));
-    $result = $result && drop_key($table, $key);
-
-/// Define key groupid (foreign) to be added to groups_courses_groups
-    $table = new XMLDBTable('groups_courses_groups');
-    $key = new XMLDBKey('groupid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('groupid'), 'groups', array('id'));
-    $result = $result && drop_key($table, $key);
-
-/// Define index courseid-groupid (unique) to be added to groups_courses_groups
-    $table = new XMLDBTable('groups_courses_groups');
-    $index = new XMLDBIndex('courseid-groupid');
-    $index->setAttributes(XMLDB_INDEX_UNIQUE, array('courseid', 'groupid'));
-    $result = $result && drop_index($table, $index);
-
-/// Define key courseid (foreign) to be added to groups_courses_groupings
-    $table = new XMLDBTable('groups_courses_groupings');
-    $key = new XMLDBKey('courseid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('courseid'), 'course', array('id'));
-    $result = $result && drop_key($table, $key);
-
-/// Define key groupingid (foreign) to be added to groups_courses_groupings
-    $table = new XMLDBTable('groups_courses_groupings');
-    $key = new XMLDBKey('groupingid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('groupingid'), 'groups_groupings', array('id'));
-    $result = $result && drop_key($table, $key);
-
-/// Define index courseid-groupingid (unique) to be added to groups_courses_groupings
-    $table = new XMLDBTable('groups_courses_groupings');
-    $index = new XMLDBIndex('courseid-groupingid');
-    $index->setAttributes(XMLDB_INDEX_UNIQUE, array('courseid', 'groupingid'));
-    $result = $result && drop_index($table, $index);
-
-
-/// Define key groupingid (foreign) to be added to groups_groupings_groups
-    $table = new XMLDBTable('groups_groupings_groups');
-    $key = new XMLDBKey('groupingid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('groupingid'), 'groups_groupings', array('id'));
-    $result = $result && drop_key($table, $key);
-
-/// Define key groupid (foreign) to be added to groups_groupings_groups
-    $table = new XMLDBTable('groups_groupings_groups');
-    $key = new XMLDBKey('groupid');
-    $key->setAttributes(XMLDB_KEY_FOREIGN, array('groupid'), 'groups', array('id'));
-    $result = $result && drop_key($table, $key);
-
-/// Define index groupingid-groupid (unique) to be added to groups_groupings_groups
-    $table = new XMLDBTable('groups_groupings_groups');
-    $index = new XMLDBIndex('groupingid-groupid');
-    $index->setAttributes(XMLDB_INDEX_UNIQUE, array('groupingid', 'groupid'));
-    $result = $result && drop_index($table, $index);
-
-    return $result;
-}
+defined('MOODLE_INTERNAL') || die();
 
 function upgrade_fix_category_depths() {
-    global $CFG, $db;
+    global $CFG, $DB;
 
     // first fix incorrect parents
     $sql = "SELECT c.id
-              FROM {$CFG->prefix}course_categories c
-             WHERE c.parent > 0 AND c.parent NOT IN (SELECT pc.id FROM {$CFG->prefix}course_categories pc)";
-    if ($rs = get_recordset_sql($sql)) {
-        while ($cat = rs_fetch_next_record($rs)) {
-            $cat->depth  = 1;
-            $cat->path   = '/'.$cat->id;
-            $cat->parent = 0;
-            update_record('course_categories', $cat);
-        }
-        rs_close($rs);
+              FROM {course_categories} c
+             WHERE c.parent > 0 AND c.parent NOT IN (SELECT pc.id FROM {course_categories} pc)";
+    $rs = $DB->get_recordset_sql($sql);
+    foreach ($rs as $cat) {
+        $cat->depth  = 1;
+        $cat->path   = '/'.$cat->id;
+        $cat->parent = 0;
+        $DB->update_record('course_categories', $cat);
     }
+    $rs->close();
 
     // now add path and depth to top level categories
-    $sql = "UPDATE {$CFG->prefix}course_categories
-               SET depth = 1, path = ".sql_concat("'/'", "id")."
+    $sql = "UPDATE {course_categories}
+               SET depth = 1, path = ".$DB->sql_concat("'/'", "id")."
              WHERE parent = 0";
-    execute_sql($sql);
+    $DB->execute($sql);
 
     // now fix all other levels - slow but works in all supported dbs
     $parentdepth = 1;
-    $db->debug = true;
-    while (record_exists('course_categories', 'depth', 0)) {
+    while ($DB->record_exists('course_categories', array('depth'=>0))) {
         $sql = "SELECT c.id, pc.path
-                  FROM {$CFG->prefix}course_categories c, {$CFG->prefix}course_categories pc
-                 WHERE c.parent=pc.id AND c.depth=0 AND pc.depth=$parentdepth";
-        if ($rs = get_recordset_sql($sql)) {
-            while ($cat = rs_fetch_next_record($rs)) {
-                $cat->depth = $parentdepth+1;
-                $cat->path  = $cat->path.'/'.$cat->id;
-                update_record('course_categories', $cat);
-            }
-            rs_close($rs);
+                  FROM {course_categories} c, {course_categories} pc
+                 WHERE c.parent=pc.id AND c.depth=0 AND pc.depth=?";
+        $rs = $DB->get_recordset_sql($sql, array($parentdepth));
+        foreach ($rs as $cat) {
+            $cat->depth = $parentdepth+1;
+            $cat->path  = $cat->path.'/'.$cat->id;
+            $DB->update_record('course_categories', $cat);
         }
+        $rs->close();
         $parentdepth++;
         if ($parentdepth > 100) {
             //something must have gone wrong - nobody can have more than 100 levels of categories, right?
@@ -583,7 +73,388 @@ function upgrade_fix_category_depths() {
             break;
         }
     }
-    $db->debug = true;
+}
+
+/**
+ * Moves all course files except the moddata to new file storage
+ *
+ * Unfortunately this function uses core file related functions - it might be necessary to tweak it if something changes there :-(
+ */
+function upgrade_migrate_files_courses() {
+    global $DB, $CFG;
+    require_once($CFG->libdir.'/filelib.php');
+
+    set_config('upgradenewfilemirgation', 1);
+
+    $count = $DB->count_records('course');
+    $pbar = new progress_bar('migratecoursefiles', 500, true);
+
+    $rs = $DB->get_recordset('course');
+    $i = 0;
+    foreach ($rs as $course) {
+        $i++;
+        upgrade_set_timeout(60*5); // set up timeout, may also abort execution
+        $context = get_context_instance(CONTEXT_COURSE, $course->id);
+        upgrade_migrate_files_course($context, '/', true);
+        $pbar->update($i, $count, "Migrated course files - course $i/$count.");
+    }
+    $rs->close();
+
+    return true;
+}
+
+/**
+ * Moodle 2.0dev was using xx/xx/xx file pool directory structure, this migrates the existing files to xx/xx.
+ * This will not be executed in production upgrades...
+ * @return void
+ */
+function upgrade_simplify_overkill_pool_structure() {
+    global $CFG, $OUTPUT;
+
+    if (isset($CFG->upgradenewfilemirgation)) {
+        // newer upgrade, directory structure is in the form xx/xx already
+        unset_config('upgradenewfilemirgation');
+        return;
+    }
+
+    $filedir = $CFG->dataroot.'/filedir'; // hardcoded hack, do not use elsewhere!!
+
+    echo $OUTPUT->notification("Changing file pool directory structure, this may take a while...", 'notifysuccess');
+
+    $dir_l1 = new DirectoryIterator($filedir);
+    foreach ($dir_l1 as $d1) {
+        if ($d1->isDot() or $d1->isLink() or !$d1->isDir()) {
+            continue;
+        }
+        $name1 = $d1->getFilename();
+        if (strlen($name1) != 2) {
+            continue; //weird
+        }
+        $dir_l2 = new DirectoryIterator("$filedir/$name1");
+        foreach ($dir_l2 as $d2) {
+            if ($d2->isDot() or $d2->isLink() or !$d2->isDir()) {
+                continue;
+            }
+            $name2 = $d2->getFilename();
+            if (strlen($name2) != 2) {
+                continue; //weird
+            }
+            $dir_l3 = new DirectoryIterator("$filedir/$name1/$name2");
+            foreach ($dir_l3 as $d3) {
+                if ($d3->isDot() or $d3->isLink() or !$d3->isDir()) {
+                    continue;
+                }
+                $name3 = $d3->getFilename();
+                if (strlen($name3) != 2) {
+                    continue; //weird
+                }
+                $dir_l4 = new DirectoryIterator("$filedir/$name1/$name2/$name3");
+                foreach ($dir_l4 as $d4) {
+                    if (!$d4->isFile()) {
+                        continue; //. or ..
+                    }
+                    upgrade_set_timeout(60*5); // set up timeout, may also abort execution
+                    $newfile = "$filedir/$name1/$name2/".$d4->getFilename();
+                    $oldfile = "$filedir/$name1/$name2/$name3/".$d4->getFilename();
+                    if (!file_exists($newfile)) {
+                        rename($oldfile, $newfile);
+                    }
+                }
+                unset($d4);
+                unset($dir_l4);
+                rmdir("$filedir/$name1/$name2/$name3");
+            }
+            unset($d3);
+            unset($dir_l3); // release file handles
+        }
+        unset($d2);
+        unset($dir_l2); // release file handles
+    }
+}
+
+/**
+ * Internal function - do not use directly
+ */
+function upgrade_migrate_user_icons() {
+    global $CFG, $OUTPUT, $DB;
+
+    $fs = get_file_storage();
+
+    $icon = array('component'=>'user', 'filearea'=>'icon', 'itemid'=>0, 'filepath'=>'/');
+
+    $count = $DB->count_records('user', array('picture'=>1, 'deleted'=>0));
+    $pbar = new progress_bar('migrateusericons', 500, true);
+
+    $rs = $DB->get_recordset('user', array('picture'=>1, 'deleted'=>0), 'id ASC', 'id, picture');
+    $i = 0;
+    foreach ($rs as $user) {
+        $i++;
+        upgrade_set_timeout(60); /// Give upgrade at least 60 more seconds
+        $pbar->update($i, $count, "Migrated user icons $i/$count.");
+
+        if (!$context = get_context_instance(CONTEXT_USER, $user->id)) {
+            // deleted user
+            continue;
+        }
+
+        if ($fs->file_exists($context->id, 'user', 'icon', 0, '/', 'f1.jpg')) {
+            // already converted!
+            continue;
+        }
+
+        $level1 = floor($user->id / 1000) * 1000;
+        $userdir = "$CFG->dataroot/user/$level1/$user->id";
+        if (!file_exists("$userdir/f1.jpg") or !file_exists("$userdir/f2.jpg")) {
+            $userdir = "$CFG->dataroot/users/$user->id";
+            if (!file_exists("$userdir/f1.jpg") or !file_exists("$userdir/f2.jpg")) {
+                // no image found, sorry
+                $user->picture = 0;
+                $DB->update_record('user', $user);
+                continue;
+            }
+        }
+
+        $icon['contextid'] = $context->id;
+        $icon['filename']  = 'f1.jpg';
+        $fs->create_file_from_pathname($icon, "$userdir/f1.jpg");
+        $icon['filename']  = 'f2.jpg';
+        $fs->create_file_from_pathname($icon, "$userdir/f2.jpg");
+    }
+    $rs->close();
+
+    // purge all old user image dirs
+    remove_dir("$CFG->dataroot/user");
+    remove_dir("$CFG->dataroot/users");
+}
+
+/**
+ * Internal function - do not use directly
+ */
+function upgrade_migrate_group_icons() {
+    global $CFG, $OUTPUT, $DB;
+
+    $fs = get_file_storage();
+
+    $icon = array('component'=>'group', 'filearea'=>'icon', 'filepath'=>'/');
+
+    $count = $DB->count_records('groups', array('picture'=>1));
+    $pbar = new progress_bar('migrategroupfiles', 500, true);
+
+    $rs = $DB->get_recordset('groups', array('picture'=>1), 'courseid ASC', 'id, picture, courseid');
+    $i = 0;
+    foreach ($rs as $group) {
+        $i++;
+        upgrade_set_timeout(60); /// Give upgrade at least 60 more seconds
+        $pbar->update($i, $count, "Migrated group icons  $i/$count.");
+
+        if (!$context = get_context_instance(CONTEXT_COURSE, $group->courseid)) {
+            debugging('Invalid group record (id=' . $group->id . ') found.');
+            continue;
+        }
+
+        if ($fs->file_exists($context->id, 'group', 'icon', $group->id, '/', 'f1.jpg')) {
+            // already converted!
+            continue;
+        }
+
+        $groupdir = "$CFG->dataroot/groups/$group->id";
+        if (!file_exists("$groupdir/f1.jpg") or !file_exists("$groupdir/f2.jpg")) {
+            // no image found, sorry
+            $group->picture = 0;
+            $DB->update_record('groups', $group);
+            continue;
+        }
+
+        $icon['contextid'] = $context->id;
+        $icon['itemid']    = $group->id;
+        $icon['filename']  = 'f1.jpg';
+        $fs->create_file_from_pathname($icon, "$groupdir/f1.jpg");
+        $icon['filename']  = 'f2.jpg';
+        $fs->create_file_from_pathname($icon, "$groupdir/f2.jpg");
+    }
+    $rs->close();
+
+    // purge all old group image dirs
+    remove_dir("$CFG->dataroot/groups");
+}
+
+/**
+ * Internal function - do not use directly
+ */
+function upgrade_migrate_files_course($context, $path, $delete) {
+    global $CFG, $OUTPUT;
+
+    $fullpathname = $CFG->dataroot.'/'.$context->instanceid.$path;
+    if (!file_exists($fullpathname)) {
+        return;
+    }
+    $items = new DirectoryIterator($fullpathname);
+    $fs = get_file_storage();
+
+    $textlib = textlib_get_instance();
+
+    foreach ($items as $item) {
+        if ($item->isDot()) {
+            continue;
+        }
+
+        if ($item->isLink()) {
+            // do not delete symbolic links or its children
+            $delete_this = false;
+        } else {
+            $delete_this = $delete;
+        }
+
+        if (strpos($path, '/backupdata/') === 0) {
+            $component = 'backup';
+            $filearea  = 'course';
+            $filepath  = substr($path, strlen('/backupdata'));
+        } else {
+            $component = 'course';
+            $filearea  = 'legacy';
+            $filepath  = $path;
+        }
+
+        if ($item->isFile()) {
+            if (!$item->isReadable()) {
+                $notification = "File not readable, skipping: ".$fullpathname.$item->getFilename();
+                echo $OUTPUT->notification($notification);
+                upgrade_log(UPGRADE_LOG_NOTICE, null, $notification);
+                continue;
+            }
+
+            $filepath = clean_param($filepath, PARAM_PATH);
+            $filename = clean_param($item->getFilename(), PARAM_FILE);
+
+            if ($filename === '') {
+                //unsupported chars, sorry
+                continue;
+            }
+
+            if ($textlib->strlen($filepath) > 255) {
+                // we need something unique and reproducible, sorry no shortening possible
+                $filepath = '/directory_over_255_chars/'.md5($filepath).'/';
+                $oldfile = $fullpathname.$item->getFilename();
+                $newfile = $filepath.$item->getFilename();
+                $notification = "File path longer than 255 chars '$oldfile', file path truncated to '$newfile'";
+                echo $OUTPUT->notification($notification);
+                upgrade_log(UPGRADE_LOG_NOTICE, null, $notification);
+            }
+
+            if ($textlib->strlen($filename) > 255) {
+                //try to shorten, but look for collisions
+                $oldfile = $fullpathname.$item->getFilename();
+                $parts = explode('.', $filename);
+                $ext = array_pop($parts);
+                $name = implode('.', $parts);
+                $name = $textlib->substr($name, 0, 254-$textlib->strlen($ext));
+                $newfilename = $name . '.' . $ext;
+                if (file_exists($fullpathname.$newfilename) or $fs->file_exists($context->id, $component, $filearea, '0', $filepath, $newfilename)) {
+                    $filename = 'file_name_over_255_chars'.md5($filename).$ext; // bad luck, file with shortened name exists
+                } else {
+                    $filename = $newfilename; // shortened name should not cause collisions
+                }
+                $notification = "File name longer than 255 chars '$oldfile', file name truncated to '$filename'";
+                echo $OUTPUT->notification($notification);
+                upgrade_log(UPGRADE_LOG_NOTICE, null, $notification);
+            }
+
+            if (!$fs->file_exists($context->id, $component, $filearea, '0', $filepath, $filename)) {
+                $file_record = array('contextid'=>$context->id, 'component'=>$component, 'filearea'=>$filearea, 'itemid'=>0, 'filepath'=>$filepath, 'filename'=>$filename,
+                                     'timecreated'=>$item->getCTime(), 'timemodified'=>$item->getMTime());
+                if ($fs->create_file_from_pathname($file_record, $fullpathname.$item->getFilename())) {
+                    if ($delete_this) {
+                        @unlink($fullpathname.$item->getFilename());
+                    }
+                }
+            }
+
+        } else {
+            if ($path == '/' and $item->getFilename() == 'moddata') {
+                continue; // modules are responsible
+            }
+
+            $dirname = clean_param($item->getFilename(), PARAM_PATH);
+            if ($dirname === '') {
+                //unsupported chars, sorry
+                continue;
+            }
+            $filepath = ($filepath.$dirname.'/');
+            if ($filepath !== '/backupdata/' and $textlib->strlen($filepath) <= 255) {
+                $fs->create_directory($context->id, $component, $filearea, 0, $filepath);
+            }
+
+            //migrate recursively all subdirectories
+            upgrade_migrate_files_course($context, $path.$item->getFilename().'/', $delete_this);
+            if ($delete_this) {
+                // delete dir if empty
+                @rmdir($fullpathname.$item->getFilename());
+            }
+        }
+    }
+    unset($items); //release file handles
+}
+
+/**
+ * Moves all block attachments
+ *
+ * Unfortunately this function uses core file related functions - it might be necessary to tweak it if something changes there :-(
+ */
+function upgrade_migrate_files_blog() {
+    global $DB, $CFG, $OUTPUT;
+
+    $fs = get_file_storage();
+
+    $count = $DB->count_records_select('post', "module='blog' AND attachment IS NOT NULL AND attachment <> '1'");
+
+    $rs = $DB->get_recordset_select('post', "module='blog' AND attachment IS NOT NULL AND attachment <> '1'");
+
+    if ($rs->valid()) {
+
+        upgrade_set_timeout(60*20); // set up timeout, may also abort execution
+
+        $pbar = new progress_bar('migrateblogfiles', 500, true);
+
+        $i = 0;
+        foreach ($rs as $entry) {
+            $i++;
+            $pathname = "$CFG->dataroot/blog/attachments/$entry->id/$entry->attachment";
+            if (!file_exists($pathname)) {
+                $entry->attachment = NULL;
+                $DB->update_record('post', $entry);
+                continue;
+            }
+
+            $filename = clean_param($entry->attachment, PARAM_FILE);
+            if ($filename === '') {
+                // weird file name, ignore it
+                $entry->attachment = NULL;
+                $DB->update_record('post', $entry);
+                continue;
+            }
+
+            if (!is_readable($pathname)) {
+                echo $OUTPUT->notification(" File not readable, skipping: ".$pathname);
+                continue;
+            }
+
+            if (!$fs->file_exists(SYSCONTEXTID, 'blog', 'attachment', $entry->id, '/', $filename)) {
+                $file_record = array('contextid'=>SYSCONTEXTID, 'component'=>'blog', 'filearea'=>'attachment', 'itemid'=>$entry->id, 'filepath'=>'/', 'filename'=>$filename,
+                                     'timecreated'=>filectime($pathname), 'timemodified'=>filemtime($pathname), 'userid'=>$entry->userid);
+                $fs->create_file_from_pathname($file_record, $pathname);
+            }
+            @unlink($pathname);
+            @rmdir("$CFG->dataroot/blog/attachments/$entry->id/");
+
+            $entry->attachment = 1; // file name not needed there anymore
+            $DB->update_record('post', $entry);
+            $pbar->update($i, $count, "Migrated blog attachments - $i/$count.");
+        }
+    }
+    $rs->close();
+
+    @rmdir("$CFG->dataroot/blog/attachments/");
+    @rmdir("$CFG->dataroot/blog/");
 }
 
 /**
@@ -594,28 +465,28 @@ function upgrade_fix_category_depths() {
  *
  * Implemented because, at some point, specially in old installations upgraded along
  * multiple versions, sometimes the stuff above has ended being inconsistent, causing
- * problems here and there (noticeablely in backup/restore). MDL-16879
+ * problems here and there (noticeably in backup/restore). MDL-16879
  */
 function upgrade_fix_incorrect_mnethostids() {
 
-    global $CFG;
+    global $CFG, $DB;
 
 /// Get current $CFG/mnet_host records
     $old_mnet_localhost_id = !empty($CFG->mnet_localhost_id) ? $CFG->mnet_localhost_id : 0;
     $old_mnet_all_hosts_id = !empty($CFG->mnet_all_hosts_id) ? $CFG->mnet_all_hosts_id : 0;
 
-    $current_mnet_localhost_host = get_record('mnet_host', 'wwwroot', addslashes($CFG->wwwroot)); /// By wwwroot
-    $current_mnet_all_hosts_host = get_record_select('mnet_host', sql_isempty('mnet_host', 'wwwroot', false, false)); /// By empty wwwroot
+    $current_mnet_localhost_host = $DB->get_record('mnet_host', array('wwwroot' => $CFG->wwwroot)); /// By wwwroot
+    $current_mnet_all_hosts_host = $DB->get_record_select('mnet_host', $DB->sql_isempty('mnet_host', 'wwwroot', false, false)); /// By empty wwwroot
 
-    if (!$moodleapplicationid = get_field('mnet_application', 'id', 'name', 'moodle')) {
+    if (!$moodleapplicationid = $DB->get_field('mnet_application', 'id', array('name' => 'moodle'))) {
         $m = (object)array(
             'name'              => 'moodle',
             'display_name'      => 'Moodle',
             'xmlrpc_server_url' => '/mnet/xmlrpc/server.php',
             'sso_land_url'      => '/auth/mnet/land.php',
-            'sso_jump_url'      => '/auth/mnet/land.php',
+            'sso_jump_url'      => '/auth/mnet/jump.php',
         );
-        $moodleapplicationid = insert_record('mnet_application', $m);
+        $moodleapplicationid = $DB->insert_record('mnet_application', $m);
     }
 
 /// Create localhost_host if necessary (pretty improbable but better to be 100% in the safe side)
@@ -645,7 +516,7 @@ function upgrade_fix_incorrect_mnethostids() {
         } else {
             $current_mnet_localhost_host->ip_address = $_SERVER['SERVER_ADDR'];
         }
-        $current_mnet_localhost_host->id = insert_record('mnet_host', $current_mnet_localhost_host, true);
+        $current_mnet_localhost_host->id = $DB->insert_record('mnet_host', $current_mnet_localhost_host, true);
     }
 
 /// Create all_hosts_host if necessary (pretty improbable but better to be 100% in the safe side)
@@ -661,7 +532,7 @@ function upgrade_fix_incorrect_mnethostids() {
         $current_mnet_all_hosts_host->deleted            = 0;
         $current_mnet_all_hosts_host->name               = 'All Hosts';
         $current_mnet_all_hosts_host->applicationid      = $moodleapplicationid;
-        $current_mnet_all_hosts_host->id                 = insert_record('mnet_host', $current_mnet_all_hosts_host, true);
+        $current_mnet_all_hosts_host->id                 = $DB->insert_record('mnet_host', $current_mnet_all_hosts_host, true);
     }
 
 /// Compare old_mnet_localhost_id and current_mnet_localhost_host
@@ -671,7 +542,7 @@ function upgrade_fix_incorrect_mnethostids() {
         set_config('mnet_localhost_id', $current_mnet_localhost_host->id);
 
     /// Delete $old_mnet_localhost_id if exists (users will be assigned to new one below)
-        delete_records('mnet_host', 'id', $old_mnet_localhost_id);
+        $DB->delete_records('mnet_host', array('id' => $old_mnet_localhost_id));
     }
 
 /// Compare old_mnet_all_hosts_id and current_mnet_all_hosts_host
@@ -681,32 +552,175 @@ function upgrade_fix_incorrect_mnethostids() {
         set_config('mnet_all_hosts_id', $current_mnet_all_hosts_host->id);
 
     /// Delete $old_mnet_all_hosts_id if exists
-        delete_records('mnet_host', 'id', $old_mnet_all_hosts_id);
+        $DB->delete_records('mnet_host', array('id' => $old_mnet_all_hosts_id));
     }
 
 /// Finally, update all the incorrect user->mnethostid to the correct CFG->mnet_localhost_id, preventing UIX dupes
-    $hosts = get_records_menu('mnet_host', '', '', '', 'id, id AS id2');
-    $hosts_str = implode(', ', $hosts);
+    $hosts = $DB->get_records_menu('mnet_host', null, '', 'id, id AS id2');
+    list($in_sql, $in_params) = $DB->get_in_or_equal($hosts, SQL_PARAMS_QM, null, false);
 
     $sql = "SELECT id
-            FROM {$CFG->prefix}user u1
-            WHERE u1.mnethostid NOT IN ($hosts_str)
+            FROM {user} u1
+            WHERE u1.mnethostid $in_sql
               AND NOT EXISTS (
                   SELECT 'x'
-                    FROM {$CFG->prefix}user u2
+                    FROM {user} u2
                    WHERE u2.username = u1.username
-                     AND u2.mnethostid = $current_mnet_localhost_host->id)";
+                     AND u2.mnethostid = ?)";
 
-    $rs = get_recordset_sql($sql);
-    while ($rec = rs_fetch_next_record($rs)) {
-        set_field('user', 'mnethostid', $current_mnet_localhost_host->id, 'id', $rec->id);
+    $params = array_merge($in_params, array($current_mnet_localhost_host->id));
+
+    $rs = $DB->get_recordset_sql($sql, $params);
+    foreach ($rs as $rec) {
+        $DB->set_field('user', 'mnethostid', $current_mnet_localhost_host->id, array('id' => $rec->id));
+        upgrade_set_timeout(60); /// Give upgrade at least 60 more seconds
     }
-    rs_close($rs);
+    $rs->close();
 
     // fix up any host records that have incorrect ids
-    set_field_select('mnet_host', 'applicationid', $moodleapplicationid, "id = $current_mnet_localhost_host->id or id = $current_mnet_all_hosts_host->id");
-
+    $DB->set_field_select('mnet_host', 'applicationid', $moodleapplicationid, 'id = ? or id = ?', array($current_mnet_localhost_host->id, $current_mnet_all_hosts_host->id));
 
 }
 
-?>
+/**
+ * This function is used as part of the great navigation upgrade of 20090828
+ * It is used to clean up contexts that are unique to a blocks that are about
+ * to be removed.
+ *
+ *
+ * Look at {@link blocklib.php::blocks_delete_instance()} the function from
+ * which I based this code. It is important to mention one very important fact
+ * before doing this I checked that the blocks did not override the
+ * {@link block_base::instance_delete()} method. Should this function ever
+ * be repeated check this again
+ *
+ * @link lib/db/upgrade.php
+ *
+ * @since navigation upgrade 20090828
+ * @param array $contextidarray An array of block instance context ids
+ * @return void
+ */
+function upgrade_cleanup_unwanted_block_contexts($contextidarray) {
+    global $DB;
+
+    if (!is_array($contextidarray) || count($contextidarray)===0) {
+        // Ummmm no instances?
+        return;
+    }
+
+    $contextidstring = join(',', $contextidarray);
+
+    $blockcontexts = $DB->get_recordset_select('context', 'contextlevel = '.CONTEXT_BLOCK.' AND id IN ('.$contextidstring.')', array(), '', 'id, contextlevel');
+    $blockcontextids = array();
+    foreach ($blockcontexts as $blockcontext) {
+        $blockcontextids[] = $blockcontext->id;
+    }
+
+    if (count($blockcontextids)===0) {
+        // None of the instances have unique contexts
+        return;
+    }
+
+    $blockcontextidsstring = join(',', $blockcontextids);
+
+    $DB->delete_records_select('role_assignments', 'contextid IN ('.$blockcontextidsstring.')');
+    $DB->delete_records_select('role_capabilities', 'contextid IN ('.$blockcontextidsstring.')');
+    $DB->delete_records_select('role_names', 'contextid IN ('.$blockcontextidsstring.')');
+    $DB->delete_records_select('context', 'id IN ('.$blockcontextidsstring.')');
+}
+
+/**
+ * This function is used to establish the automated backup settings using the
+ * original scheduled backup settings.
+ *
+ * @since 2010111000
+ */
+function update_fix_automated_backup_config() {
+    $mappings = array(
+        // Old setting      => new setting
+        'backup_sche_active'            => 'backup_auto_active',
+        'backup_sche_hour'              => 'backup_auto_hour',
+        'backup_sche_minute'            => 'backup_auto_minute',
+        'backup_sche_destination'       => 'backup_auto_destination',
+        'backup_sche_keep'              => 'backup_auto_keep',
+        'backup_sche_userfiles'         => 'backup_auto_user_files',
+        'backup_sche_modules'           => 'backup_auto_activities',
+        'backup_sche_logs'              => 'backup_auto_logs',
+        'backup_sche_messages'          => 'backup_auto_messages',
+        'backup_sche_blocks'            => 'backup_auto_blocks',
+        'backup_sche_weekdays'          => 'backup_auto_weekdays',
+        'backup_sche_users'             => 'backup_auto_users',
+        'backup_sche_blogs'             => 'backup_auto_blogs',
+        'backup_sche_coursefiles'       => null,
+        'backup_sche_sitefiles'         => null,
+        'backup_sche_withuserdata'      => null,
+        'backup_sche_metacourse'        => null,
+        'backup_sche_running'           => null,
+    );
+
+    $oldconfig = get_config('backup');
+    foreach ($mappings as $oldsetting=>$newsetting) {
+        if (!isset($oldconfig->$oldsetting)) {
+            continue;
+        }
+        if ($newsetting !== null) {
+            $oldvalue = $oldconfig->$oldsetting;
+            set_config($newsetting, $oldvalue, 'backup');
+        }
+        unset_config($oldsetting, 'backup');
+    }
+
+    unset_config('backup_sche_gradebook_history');
+    unset_config('disablescheduleddbackups');
+}
+
+/**
+ * This function is used to set default messaging preferences when the new
+ * admin-level messaging defaults settings have been introduced.
+ */
+function upgrade_populate_default_messaging_prefs() {
+    global $DB;
+
+    $providers = $DB->get_records('message_providers');
+    $processors = $DB->get_records('message_processors');
+    $defaultpreferences = (object)$DB->get_records_menu('config_plugins', array('plugin'=>'message'), '', 'name,value');
+
+    $transaction = $DB->start_delegated_transaction();
+
+    $setting = new stdClass();
+    $setting->plugin = 'message';
+
+    foreach ($providers as $provider) {
+        $componentproviderbase = $provider->component.'_'.$provider->name;
+        // set MESSAGE_PERMITTED to all combinations of message types
+        // (providers) and outputs (processors)
+        foreach ($processors as $processor) {
+            $preferencename = $processor->name.'_provider_'.$componentproviderbase.'_permitted';
+            if (!isset($defaultpreferences->{$preferencename})) {
+                $setting->name = $preferencename;
+                $setting->value = 'permitted';
+                $DB->insert_record('config_plugins', $setting);
+            }
+        }
+        // for email output we also have to set MESSAGE_DEFAULT_OFFLINE + MESSAGE_DEFAULT_ONLINE
+        foreach(array('loggedin', 'loggedoff') as $state) {
+            $preferencename = 'message_provider_'.$componentproviderbase.'_'.$state;
+            if (!isset($defaultpreferences->{$preferencename})) {
+                $setting->name = $preferencename;
+                $setting->value = 'email';
+                // except instant message where default for popup should be
+                // MESSAGE_DEFAULT_LOGGEDIN + MESSAGE_DEFAULT_LOGGEDOFF and for email
+                // MESSAGE_DEFAULT_LOGGEDOFF.
+                if ($componentproviderbase == 'moodle_instantmessage') {
+                    if  ($state == 'loggedoff') {
+                        $setting->value = 'email,popup';
+                    } else {
+                        $setting->value = 'popup';
+                    }
+                }
+                $DB->insert_record('config_plugins', $setting);
+            }
+        }
+    }
+    $transaction->allow_commit();
+}

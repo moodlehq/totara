@@ -22,9 +22,12 @@ require_once '../../lib.php';
 
 $courseid      = required_param('id', PARAM_INT);
 
+$PAGE->set_url(new moodle_url('/grade/report/grader/preferences.php', array('id'=>$courseid)));
+$PAGE->set_pagelayout('admin');
+
 /// Make sure they can even access this course
 
-if (!$course = get_record('course', 'id', $courseid)) {
+if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 
@@ -68,10 +71,10 @@ if (has_capability('moodle/site:config', $systemcontext)) {
     echo "</a></div>\n";
 }
 
-print_simple_box_start("center");
+echo $OUTPUT->box_start();
 
 $mform->display();
-print_simple_box_end();
+echo $OUTPUT->box_end();
 
-print_footer($course);
-?>
+echo $OUTPUT->footer();
+

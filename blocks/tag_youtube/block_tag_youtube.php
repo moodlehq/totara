@@ -1,18 +1,11 @@
-<?php // $id$
-
-require_once($CFG->dirroot.'/tag/lib.php');
-require_once($CFG->libdir . '/filelib.php');
-require_once($CFG->libdir . '/magpie/rss_cache.inc');
-require_once($CFG->libdir . '/phpxml/xml.php');
+<?php
 
 define('DEFAULT_NUMBER_OF_VIDEOS', 5);
-define('YOUTUBE_CACHE_EXPIRATION', 1800);
 
 class block_tag_youtube extends block_base {
 
     function init() {
-        $this->title = get_string('blockname','block_tag_youtube');
-        $this->version = 2007101509;
+        $this->title = get_string('pluginname','block_tag_youtube');
     }
 
     function applicable_formats() {
@@ -20,7 +13,7 @@ class block_tag_youtube extends block_base {
     }
 
     function specialization() {
-        $this->title = !empty($this->config->title) ? $this->config->title : get_string('blockname', 'block_tag_youtube');
+        $this->title = !empty($this->config->title) ? $this->config->title : get_string('pluginname', 'block_tag_youtube');
         // Convert numeric categories (old YouTube API) to
         // textual ones (new Google Data API)
         $this->config->category = !empty($this->config->category) ? $this->category_map_old2new($this->config->category) : '0';
@@ -35,11 +28,17 @@ class block_tag_youtube extends block_base {
     }
 
     function get_content() {
+        global $CFG;
+
+        //note: do NOT include files at the top of this file
+        require_once($CFG->dirroot.'/tag/lib.php');
+        require_once($CFG->libdir . '/filelib.php');
 
         if ($this->content !== NULL) {
             return $this->content;
         }
 
+        $text = '';
         if(!empty($this->config->playlist)){
             //videos from a playlist
             $text = $this->get_videos_by_playlist();
@@ -74,6 +73,7 @@ class block_tag_youtube extends block_base {
                    '?start-index=1&max-results=' .
                    $numberofvideos .
                    '&format=5';
+
         return $this->fetch_request($request);
     }
 
@@ -89,7 +89,7 @@ class block_tag_youtube extends block_base {
         }
 
         if (empty($tagobject)) {
-            print_error('tagnotfound');
+            return '';
         }
 
         $querytag = urlencode($tagobject->name);
@@ -120,7 +120,7 @@ class block_tag_youtube extends block_base {
         }
 
         if (empty($tagobject)) {
-            print_error('tagnotfound');
+            return '';
         }
 
         $querytag = urlencode($tagobject->name);
@@ -131,79 +131,51 @@ class block_tag_youtube extends block_base {
         }
 
         $request = 'http://gdata.youtube.com/feeds/api/videos?category=' .
-                   $this->category_map_old2new($this->config->category) .
+                   $this->config->category .
                    '&vq=' .
                    $querytag .
                    '&start-index=1&max-results=' .
                    $numberofvideos .
                    '&format=5';
 
+
         return $this->fetch_request($request);
     }
 
     function fetch_request($request){
+        $c = new curl(array('cache' => true, 'module_cache'=>'tag_youtube'));
+        $c->setopt(array('CURLOPT_TIMEOUT' => 3, 'CURLOPT_CONNECTTIMEOUT' => 3));
 
-        global $CFG;
+        $response = $c->get($request);
 
-        make_upload_directory('/cache/youtube');
-
-        $cache = new RSSCache($CFG->dataroot . '/cache/youtube',YOUTUBE_CACHE_EXPIRATION);
-        $cache_status = $cache->check_cache( $request);
-
-        if ( $cache_status == 'HIT' ) {
-            $cached_response = $cache->get( $request );
-
-            // TODO: Stop using phpxml, switching to DOM/Simple for this
-            // TODO: Drop lib/phpxml if 0 uses in core/contrib
-            $xmlobj = XML_unserialize($cached_response);
-            return $this->render_video_list($xmlobj);
-        }
-
-        if ( $cache_status == 'STALE' ) {
-            $cached_response = $cache->get( $request );
-        }
-
-        $response = download_file_content($request);
-
-        if(empty($response)){
-            $response = $cached_response;
-        }
-        else{
-            $cache->set($request, $response);
-        }
-
-        // TODO: Stop using phpxml, switching to DOM/Simple for this
-        // TODO: Drop lib/phpxml if 0 uses in core/contrib
-        $xmlobj = XML_unserialize($response);
-        return $this->render_video_list($xmlobj);
+        $xml = new SimpleXMLElement($response);
+        return $this->render_video_list($xml);
     }
 
-    function render_video_list($xmlobj){
+    function render_video_list(SimpleXMLElement $xml){
 
         $text = '';
         $text .= '<ul class="yt-video-entry unlist img-text">';
-        $videos = $xmlobj['feed']['entry'];
 
-        if (is_array($videos) ) {
-            foreach($videos as $video){
-                $url       = s($video['media:group']['media:player attr']['url']);
-                $thumbnail = s($video['media:group']['media:thumbnail']['0 attr']['url']);
-                $title     = s($video['media:group']['media:title']);
-                $seconds   = $video['media:group']['yt:duration attr']['seconds'];
+        foreach($xml->entry as $entry){
+            $media = $entry->children('http://search.yahoo.com/mrss/');
+            $playerattrs = $media->group->player->attributes();
+            $url = s($playerattrs['url']);
+            $thumbattrs = $media->group->thumbnail[0]->attributes();
+            $thumbnail = s($thumbattrs['url']);
+            $title = s($media->group->title);
+            $yt = $media->children('http://gdata.youtube.com/schemas/2007');
+            $secattrs = $yt->duration->attributes();
+            $seconds = $secattrs['seconds'];
 
-                $text .= '<li>';
-                $text .= '<div class="clearfix">';
-                $text .= '<a href="'. $url . '">';
-                $text .= '<img alt="" class="youtube-thumb" src="'. $thumbnail .'" /></a>';
-                $text .= '</div><span><a href="'. $url . '">'. $title .'</a></span>';
-                $text .= '<div>';
-                $text .= format_time($seconds);
-                $text .= "</div></li>\n";
-            }
-        } else {
-            // if youtube is offline, or for whatever reason the previous
-            // call doesn't work...
-            //add_to_log(SITEID, 'blocks/tag_youtube', 'problem in getting videos off youtube');
+            $text .= '<li>';
+            $text .= '<div class="clearfix">';
+            $text .= '<a href="'. $url . '">';
+            $text .= '<img alt="" class="youtube-thumb" src="'. $thumbnail .'" /></a>';
+            $text .= '</div><span><a href="'. $url . '">'. $title .'</a></span>';
+            $text .= '<div>';
+            $text .= format_time($seconds);
+            $text .= "</div></li>\n";
         }
         $text .= "</ul><div class=\"clearer\"></div>\n";
         return $text;
@@ -267,4 +239,4 @@ class block_tag_youtube extends block_base {
         }
     }
 }
-?>
+

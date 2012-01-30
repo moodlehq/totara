@@ -1,38 +1,45 @@
-<?php  // $Id$
+<?php
 
     require_once("../../config.php");
     require_once("lib.php");
 
     $id = required_param('id',PARAM_INT);   // course
 
-    if (! $course = get_record("course", "id", $id)) {
-        error("Course ID is incorrect");
+    $PAGE->set_url('/mod/choice/index.php', array('id'=>$id));
+
+    if (!$course = $DB->get_record('course', array('id'=>$id))) {
+        print_error('invalidcourseid');
     }
 
     require_course_login($course);
+    $PAGE->set_pagelayout('incourse');
 
-    add_to_log($course->id, "choice", "view all", "index?id=$course->id", "");
+    add_to_log($course->id, "choice", "view all", "index.php?id=$course->id", "");
 
     $strchoice = get_string("modulename", "choice");
     $strchoices = get_string("modulenameplural", "choice");
-    $navlinks = array();
-    $navlinks[] = array('name' => $strchoices, 'link' => '', 'type' => 'activity');
-    $navigation = build_navigation($navlinks);
-
-    print_header_simple("$strchoices", "", $navigation, "", "", true, "", navmenu($course));
-
+    $strsectionname  = get_string('sectionname', 'format_'.$course->format);
+    $PAGE->set_title($strchoices);
+    $PAGE->set_heading($course->fullname);
+    $PAGE->navbar->add($strchoices);
+    echo $OUTPUT->header();
 
     if (! $choices = get_all_instances_in_course("choice", $course)) {
         notice(get_string('thereareno', 'moodle', $strchoices), "../../course/view.php?id=$course->id");
     }
 
+    $usesections = course_format_uses_sections($course->format);
+    if ($usesections) {
+        $sections = get_all_sections($course->id);
+    }
+
     $sql = "SELECT cha.*
-              FROM {$CFG->prefix}choice ch, {$CFG->prefix}choice_answers cha
+              FROM {choice} ch, {choice_answers} cha
              WHERE cha.choiceid = ch.id AND
-                   ch.course = $course->id AND cha.userid = $USER->id";
+                   ch.course = ? AND cha.userid = ?";
 
     $answers = array () ;
-    if (isloggedin() and !isguestuser() and $allanswers = get_records_sql($sql)) {
+    if (isloggedin() and !isguestuser() and $allanswers = $DB->get_records_sql($sql, array($course->id, $USER->id))) {
         foreach ($allanswers as $aa) {
             $answers[$aa->choiceid] = $aa;
         }
@@ -42,11 +49,10 @@
 
     $timenow = time();
 
-    if ($course->format == "weeks") {
-        $table->head  = array (get_string("week"), get_string("question"), get_string("answer"));
-        $table->align = array ("center", "left", "left");
-    } else if ($course->format == "topics") {
-        $table->head  = array (get_string("topic"), get_string("question"), get_string("answer"));
+    $table = new html_table();
+
+    if ($usesections) {
+        $table->head  = array ($strsectionname, get_string("question"), get_string("answer"));
         $table->align = array ("center", "left", "left");
     } else {
         $table->head  = array (get_string("question"), get_string("answer"));
@@ -66,17 +72,19 @@
         } else {
             $aa = "";
         }
-        $printsection = "";
-        if ($choice->section !== $currentsection) {
-            if ($choice->section) {
-                $printsection = $choice->section;
+        if ($usesections) {
+            $printsection = "";
+            if ($choice->section !== $currentsection) {
+                if ($choice->section) {
+                    $printsection = get_section_name($course, $sections[$choice->section]);
+                }
+                if ($currentsection !== "") {
+                    $table->data[] = 'hr';
+                }
+                $currentsection = $choice->section;
             }
-            if ($currentsection !== "") {
-                $table->data[] = 'hr';
-            }
-            $currentsection = $choice->section;
         }
-        
+
         //Calculate the href
         if (!$choice->visible) {
             //Show dimmed if the mod is hidden
@@ -85,15 +93,15 @@
             //Show normal if the mod is visible
             $tt_href = "<a href=\"view.php?id=$choice->coursemodule\">".format_string($choice->name,true)."</a>";
         }
-        if ($course->format == "weeks" || $course->format == "topics") {
+        if ($usesections) {
             $table->data[] = array ($printsection, $tt_href, $aa);
         } else {
             $table->data[] = array ($tt_href, $aa);
         }
     }
     echo "<br />";
-    print_table($table);
+    echo html_writer::table($table);
 
-    print_footer($course);
+    echo $OUTPUT->footer();
 
-?>
+

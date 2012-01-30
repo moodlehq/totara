@@ -24,25 +24,21 @@ class MoodleQuickForm_passwordunmask extends MoodleQuickForm_password {
                 $attributes['autocomplete'] = 'off';
             }
         }
-
         parent::MoodleQuickForm_password($elementName, $elementLabel, $attributes);
     }
 
     function toHtml() {
+        global $PAGE;
+
         if ($this->_flagFrozen) {
             return $this->getFrozenHtml();
         } else {
-            $id = $this->getAttribute('id');
             $unmask = get_string('unmaskpassword', 'form');
-            $unmaskjs = '<script type="text/javascript">
-//<![CDATA[
-document.write(\'<div class="unmask"><input id="'.$id.'unmask" value="1" type="checkbox" onclick="unmaskPassword(\\\''.$id.'\\\')"/><label for="'.$id.'unmask">'.addslashes_js($unmask).'<\/label><\/div>\');
-document.getElementById("'.$this->getAttribute('id').'").setAttribute("autocomplete", "off");
-//]]>
-</script>';
-            return $this->_getTabs() . '<input' . $this->_getAttrString($this->_attributes) . ' />'.$unmaskjs;
+            //Pass id of the element, so that unmask checkbox can be attached.
+            $PAGE->requires->yui_module('moodle-form-passwordunmask', 'M.form.passwordunmask',
+                    array(array('formid' => $this->getAttribute('id'), 'checkboxname' => $unmask)));
+            return $this->_getTabs() . '<input' . $this->_getAttrString($this->_attributes) . ' />';
         }
     } //end func toHtml
 
 }
-?>

@@ -1,136 +1,90 @@
-<?php  /// $Id$
-       /// Load up any required Javascript libraries
-
-    if (!defined('MOODLE_INTERNAL')) {
-        die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
-    }
-
-    if (!empty($CFG->aspellpath)) {      // Enable global access to spelling feature.
-        echo '<script type="text/javascript" src="'.$CFG->httpswwwroot.'/lib/speller/spellChecker.js"></script>'."\n";
-    }
-
-    if (!empty($CFG->editorsrc) ) {
-        foreach ( $CFG->editorsrc as $scriptsource ) {
-            echo '<script type="text/javascript" src="'. $scriptsource .'"></script>'."\n";
-        }
-    }
-
-?>
-<!--<style type="text/css">/*<![CDATA[*/ body{behavior:url(<?php echo $CFG->httpswwwroot ?>/lib/csshover.htc);} /*]]>*/</style>-->
-
-<script type="text/javascript" src="<?php echo $CFG->httpswwwroot ?>/lib/javascript-static.js"></script>
-<script type="text/javascript" src="<?php echo $CFG->httpswwwroot ?>/lib/javascript-mod.php"></script>
-<script type="text/javascript" src="<?php echo $CFG->httpswwwroot ?>/lib/overlib/overlib.js"></script>
-<script type="text/javascript" src="<?php echo $CFG->httpswwwroot ?>/lib/overlib/overlib_cssstyle.js"></script>
-<script type="text/javascript" src="<?php echo $CFG->httpswwwroot ?>/lib/cookies.js"></script>
-<script type="text/javascript" src="<?php echo $CFG->httpswwwroot ?>/lib/ufo.js"></script>
-<script type="text/javascript" src="<?php echo $CFG->httpswwwroot ?>/lib/dropdown.js"></script>  
-
-<script type="text/javascript" defer="defer">
-//<![CDATA[
-setTimeout('fix_column_widths()', 20);
-//]]>
-</script>
-<script type="text/javascript">
-//<![CDATA[
-function openpopup(url, name, options, fullscreen) {
-    var fullurl = "<?php echo $CFG->httpswwwroot ?>" + url;
 <?php
-   //code to add session id to url params if necessary for cookieless sessions
-   if (!empty($CFG->usesid) && !isset($_COOKIE[session_name()])){
-       $sessionparams = session_name() .'='. session_id();
-       echo <<<EOF
-   if (-1 == fullurl.indexOf('?')){
-	   fullurl = fullurl+'?$sessionparams';
-   } else {
-	   fullurl = fullurl+'&$sessionparams';
-   }
-EOF;
-   }
-?>
-    var windowobj = window.open(fullurl, name, options);
-    if (!windowobj) {
-        return true;
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * This file is serving optimised JS
+ *
+ * @package    core
+ * @subpackage lib
+ * @copyright  2010 Petr Skoda (skodak)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+// we need just the values from config.php and minlib.php
+define('ABORT_AFTER_CONFIG', true);
+require('../config.php'); // this stops immediately at the beginning of lib/setup.php
+
+ini_set('zlib.output_compression', 'Off');
+
+// setup include path
+set_include_path($CFG->libdir . '/minify/lib' . PATH_SEPARATOR . get_include_path());
+require_once('Minify.php');
+
+$file = min_optional_param('file', '', 'RAW');
+$rev  = min_optional_param('rev', 0, 'INT');
+
+// some security first - pick only files with .js extension in dirroot
+$jsfiles = array();
+$files = explode(',', $file);
+foreach ($files as $fsfile) {
+    $jsfile = realpath($CFG->dirroot.$fsfile);
+    if ($jsfile === false) {
+        // does not exist
+        continue;
     }
-    if (fullscreen) {
-        windowobj.moveTo(0, 0);
-        windowobj.resizeTo(screen.availWidth, screen.availHeight);
+    if (strpos($jsfile, $CFG->dirroot . DIRECTORY_SEPARATOR) !== 0) {
+        // hackers - not in dirroot
+        continue;
     }
-    windowobj.focus();
-    return false;
+    if (substr($jsfile, -3) !== '.js') {
+        // hackers - not a JS file
+        continue;
+    }
+    $jsfiles[] = $jsfile;
 }
 
-function uncheckall() {
-    var inputs = document.getElementsByTagName('input');
-    for(var i = 0; i < inputs.length; i++) {
-        inputs[i].checked = false;
-    }
+if (!$jsfiles) {
+    // bad luck - no valid files
+    die();
 }
 
-function checkall() {
-    var inputs = document.getElementsByTagName('input');
-    for(var i = 0; i < inputs.length; i++) {
-        inputs[i].checked = true;
-    }
-}
+minify($jsfiles);
 
-function inserttext(text) {
-<?php
-    if (!empty($SESSION->inserttextform)) {
-        $insertfield = "opener.document.forms['$SESSION->inserttextform'].$SESSION->inserttextfield";
-    } else {
-        $insertfield = "opener.document.forms['theform'].message";
-    }
-    echo "  text = ' ' + text + ' ';\n";
-    echo "  if ( $insertfield.createTextRange && $insertfield.caretPos) {\n";
-    echo "    var caretPos = $insertfield.caretPos;\n";
-    echo "    caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? text + ' ' : text;\n";
-    echo "  } else {\n";
-    echo "    $insertfield.value  += text;\n";
-    echo "  }\n";
-    echo "  $insertfield.focus();\n";
-?>
-}
-<?php if (!empty($focus)) {
-    if(($pos = strpos($focus, '.')) !== false) {
-        //old style focus using form name - no allowed inXHTML Strict
-        $topelement = substr($focus, 0, $pos);
-        echo "addonload(function() { if(document.$topelement) document.$focus.focus(); });\n";
-    } else {
-        //focus element with given id
-        echo "addonload(function() { if(el = document.getElementById('$focus')) el.focus(); });\n";
-    }
-    $focus=false; // Prevent themes from adding it to body tag which breaks addonload(), MDL-10249
-} ?>
+function minify($files) {
+    global $CFG;
 
-function getElementsByClassName(oElm, strTagName, oClassNames){
-	var arrElements = (strTagName == "*" && oElm.all)? oElm.all : oElm.getElementsByTagName(strTagName);
-	var arrReturnElements = new Array();
-	var arrRegExpClassNames = new Array();
-	if(typeof oClassNames == "object"){
-		for(var i=0; i<oClassNames.length; i++){
-			arrRegExpClassNames.push(new RegExp("(^|\\s)" + oClassNames[i].replace(/\-/g, "\\-") + "(\\s|$)"));
-		}
-	}
-	else{
-		arrRegExpClassNames.push(new RegExp("(^|\\s)" + oClassNames.replace(/\-/g, "\\-") + "(\\s|$)"));
-	}
-	var oElement;
-	var bMatchesAll;
-	for(var j=0; j<arrElements.length; j++){
-		oElement = arrElements[j];
-		bMatchesAll = true;
-		for(var k=0; k<arrRegExpClassNames.length; k++){
-			if(!arrRegExpClassNames[k].test(oElement.className)){
-				bMatchesAll = false;
-				break;
-			}
-		}
-		if(bMatchesAll){
-			arrReturnElements.push(oElement);
-		}
-	}
-	return (arrReturnElements)
+    $cachedir = $CFG->cachedir.'/js';
+    // make sure the cache dir exist
+    if (!file_exists($cachedir)) {
+        @mkdir($cachedir, $CFG->directorypermissions, true);
+    }
+
+    if (0 === stripos(PHP_OS, 'win')) {
+        Minify::setDocRoot(); // IIS may need help
+    }
+    Minify::setCache($cachedir, true);
+
+    $options = array(
+        // Maximum age to cache
+        'maxAge' => (60*60*24*20),
+        // The files to minify
+        'files' => $files
+    );
+
+    Minify::serve('Files', $options);
+    die();
 }
-//]]>
-</script>

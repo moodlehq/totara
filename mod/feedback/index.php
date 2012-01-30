@@ -1,116 +1,129 @@
-<?php // $Id: index.php,v 1.4.2.3 2008/05/15 10:33:07 agrabs Exp $
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
-* prints the overview of all feedbacks included into the current course
-*
-* @version $Id: index.php,v 1.4.2.3 2008/05/15 10:33:07 agrabs Exp $
-* @author Andreas Grabs
-* @license http://www.gnu.org/copyleft/gpl.html GNU Public License
-* @package feedback
-*/
+ * prints the overview of all feedbacks included into the current course
+ *
+ * @author Andreas Grabs
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package feedback
+ */
 
-    require_once("../../config.php");
-    require_once("lib.php");
+require_once("../../config.php");
+require_once("lib.php");
 
-    $id = required_param('id', PARAM_INT);
+$id = required_param('id', PARAM_INT);
 
-    if (! $course = get_record("course", "id", $id)) {
-        error("Course ID is incorrect");
-    }
-    $capabilities = feedback_load_course_capabilities($course->id);
+$url = new moodle_url('/mod/feedback/index.php', array('id'=>$id));
 
-    require_login($course->id);
+$PAGE->set_url($url);
 
-    add_to_log($course->id, 'feedback', 'view all', htmlspecialchars('index.php?id='.$course->id), $course->id);
+if (!$course = $DB->get_record('course', array('id'=>$id))) {
+    print_error('invalidcourseid');
+}
+
+if (!$context = get_context_instance(CONTEXT_COURSE, $course->id)) {
+        print_error('badcontext');
+}
+
+require_login($course->id);
+$PAGE->set_pagelayout('incourse');
+
+add_to_log($course->id, 'feedback', 'view all', $url->out(false), $course->id);
 
 
-    /// Print the page header
-    $strfeedbacks = get_string("modulenameplural", "feedback");
-    $strfeedback  = get_string("modulename", "feedback");
-    
-    $navlinks = array();
-    $navlinks[] = array('name' => $strfeedbacks, 'link' => "", 'type' => 'activity');
-    
-    $navigation = build_navigation($navlinks);
-    
-    print_header_simple(get_string('modulename', 'feedback').' '.get_string('activities'), "",
-                 $navigation, "", "", true, null, navmenu($course));
+/// Print the page header
+$strfeedbacks = get_string("modulenameplural", "feedback");
+$strfeedback  = get_string("modulename", "feedback");
 
-    /// Get all the appropriate data
+$PAGE->navbar->add($strfeedbacks);
+$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_title(get_string('modulename', 'feedback').' '.get_string('activities'));
+echo $OUTPUT->header();
 
-    if (! $feedbacks = get_all_instances_in_course("feedback", $course)) {
-        notice("There are no feedbacks", htmlspecialchars('../../course/view.php?id='.$course->id));
-        die;
-    }
+/// Get all the appropriate data
 
-    /// Print the list of instances (your module will probably extend this)
+if (! $feedbacks = get_all_instances_in_course("feedback", $course)) {
+    $url = new moodle_url('/course/view.php', array('id'=>$course->id));
+    notice(get_string('thereareno', 'moodle', $strfeedbacks), $url);
+    die;
+}
 
-    $timenow = time();
-    $strname  = get_string("name");
-    $strweek  = get_string("week");
-    $strtopic  = get_string("topic");
-    $strresponses = get_string('responses', 'feedback');
+$usesections = course_format_uses_sections($course->format);
+if ($usesections) {
+    $sections = get_all_sections($course->id);
+}
 
-    if ($course->format == "weeks") {
-        if($capabilities->viewreports) {
-            $table->head  = array ($strweek, $strname, $strresponses);
-            $table->align = array ("center", "left", 'center');
-        }else{
-            $table->head  = array ($strweek, $strname);
-            $table->align = array ("center", "left");
-        }
-    } else if ($course->format == "topics") {
-        if($capabilities->viewreports) {
-            $table->head  = array ($strtopic, $strname, $strresponses);
-            $table->align = array ("center", "left", "center");
-        }else{
-            $table->head  = array ($strtopic, $strname);
-            $table->align = array ("center", "left");
-        }
+/// Print the list of instances (your module will probably extend this)
+
+$timenow = time();
+$strname  = get_string("name");
+$strsectionname = get_string('sectionname', 'format_'.$course->format);
+$strresponses = get_string('responses', 'feedback');
+
+$table = new html_table();
+
+if ($usesections) {
+    if (has_capability('mod/feedback:viewreports', $context)) {
+        $table->head  = array ($strsectionname, $strname, $strresponses);
+        $table->align = array ("center", "left", 'center');
     } else {
-        if($capabilities->viewreports) {
-            $table->head  = array ($strname, $strresponses);
-            $table->align = array ("left", "center");
-        }else{
-            $table->head  = array ($strname);
-            $table->align = array ("left");
-        }
+        $table->head  = array ($strsectionname, $strname);
+        $table->align = array ("center", "left");
+    }
+} else {
+    if (has_capability('mod/feedback:viewreports', $context)) {
+        $table->head  = array ($strname, $strresponses);
+        $table->align = array ("left", "center");
+    } else {
+        $table->head  = array ($strname);
+        $table->align = array ("left");
+    }
+}
+
+
+foreach ($feedbacks as $feedback) {
+    //get the responses of each feedback
+    $viewurl = new moodle_url('/mod/feedback/view.php', array('id'=>$feedback->coursemodule));
+
+    if (has_capability('mod/feedback:viewreports', $context)) {
+        $completed_feedback_count = intval(feedback_get_completeds_group_count($feedback));
     }
 
-    
-    foreach ($feedbacks as $feedback) {
-        //get the responses of each feedback
+    $dimmedclass = $feedback->visible ? '' : 'class="dimmed"';
+    $link = '<a '.$dimmedclass.' href="'.$viewurl->out().'">'.$feedback->name.'</a>';
 
-        if($capabilities->viewreports) {
-            $completedFeedbackCount = intval(feedback_get_completeds_group_count($feedback));
-        }
-        
-        if (!$feedback->visible) {
-            //Show dimmed if the mod is hidden
-            $link = '<a class="dimmed" href="'.htmlspecialchars('view.php?id='.$feedback->coursemodule).'">'.$feedback->name.'</a>';
-        } else {
-            //Show normal if the mod is visible
-            $link = '<a href="'.htmlspecialchars('view.php?id='.$feedback->coursemodule).'">'.$feedback->name.'</a>';
-        }
-
-        if ($course->format == "weeks" or $course->format == "topics") {
-            $tabledata = array ($feedback->section, $link);
-        } else {
-            $tabledata = array ($link);
-        }
-        if($capabilities->viewreports) {
-            $tabledata[] = $completedFeedbackCount;
-        }
-        
-        $table->data[] = $tabledata;
-        
+    if ($usesections) {
+        $tabledata = array (get_section_name($course, $sections[$feedback->section]), $link);
+    } else {
+        $tabledata = array ($link);
+    }
+    if (has_capability('mod/feedback:viewreports', $context)) {
+        $tabledata[] = $completed_feedback_count;
     }
 
-    echo "<br />";
+    $table->data[] = $tabledata;
 
-    print_table($table);
+}
 
-    /// Finish the page
+echo "<br />";
 
-    print_footer($course);
+echo html_writer::table($table);
 
-?>
+/// Finish the page
+
+echo $OUTPUT->footer();
+

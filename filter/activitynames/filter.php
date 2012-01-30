@@ -1,36 +1,62 @@
-<?php // $Id$
-    //This function provides automatic linking to
-    //activities when its name (title) is found inside every Moodle text
-    //It's based in the glosssary filter by Williams Castillo
-    //Modifications by stronk7.
+<?php
 
-    function activitynames_filter($courseid, $text) {
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-        global $CFG, $COURSE;
+/**
+ * This filter provides automatic linking to
+ * activities when its name (title) is found inside every Moodle text
+ *
+ * @package    filter
+ * @subpackage activitynames
+ * @copyright  2004 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-        // Trivial-cache - keyed on $cachedcourseid
-        static $activitylist = null;
-        static $cachedcourseid;
+defined('MOODLE_INTERNAL') || die();
 
-        if (empty($courseid)) {
-            $courseid = SITEID;
+/**
+ * Activity name filtering
+ */
+class filter_activitynames extends moodle_text_filter {
+    // Trivial-cache - keyed on $cachedcourseid
+    static $activitylist = null;
+    static $cachedcourseid;
+
+    function filter($text, array $options = array()) {
+        global $CFG, $COURSE, $DB;
+
+        if (!$courseid = get_courseid_from_context($this->context)) {
+            return $text;
         }
 
         // Initialise/invalidate our trivial cache if dealing with a different course
-        if (!isset($cachedcourseid) || $cachedcourseid !== (int)$courseid) {
-            $activitylist = null;
-        } 
-        $cachedcourseid = (int)$courseid;
+        if (!isset($this->cachedcourseid) || $this->cachedcourseid !== (int)$courseid) {
+            $this->activitylist = null;
+        }
+        $this->cachedcourseid = (int)$courseid;
 
         /// It may be cached
 
-        if (is_null($activitylist)) {
-            $activitylist = array();
+        if (is_null($this->activitylist)) {
+            $this->activitylist = array();
 
             if ($COURSE->id == $courseid) {
                 $course = $COURSE;
             } else {
-                $course = get_record("course", "id", $courseid);
+                $course = $DB->get_record("course", array("id"=>$courseid));
             }
 
             if (!isset($course->modinfo)) {
@@ -42,23 +68,23 @@
 
             if (!empty($modinfo)) {
 
-                $activitylist = array();      /// We will store all the activities here
+                $this->activitylist = array();      /// We will store all the activities here
 
                 //Sort modinfo by name length
-                usort($modinfo, 'comparemodulenamesbylength');
+                usort($modinfo, 'filter_activitynames_comparemodulenamesbylength');
 
                 foreach ($modinfo as $activity) {
-                    //Exclude labels, hidden activities and activities for group members only 
+                    //Exclude labels, hidden activities and activities for group members only
                     if ($activity->mod != "label" and $activity->visible and empty($activity->groupmembersonly)) {
-                        $title = s(trim(strip_tags(urldecode($activity->name))));
-                        $currentname = trim(urldecode($activity->name));
+                        $title = s(trim(strip_tags($activity->name)));
+                        $currentname = trim($activity->name);
                         $entitisedname  = s($currentname);
                         /// Avoid empty or unlinkable activity names
                         if (!empty($title)) {
-                            $href_tag_begin = "<a class=\"autolink\" title=\"$title\" href=\"$CFG->wwwroot/mod/$activity->mod/view.php?id=$activity->cm\" $CFG->frametarget>";
-                            $activitylist[] = new filterobject($currentname, $href_tag_begin, '</a>', false, true);
+                            $href_tag_begin = "<a class=\"autolink\" title=\"$title\" href=\"$CFG->wwwroot/mod/$activity->mod/view.php?id=$activity->cm\">";
+                            $this->activitylist[] = new filterobject($currentname, $href_tag_begin, '</a>', false, true);
                             if ($currentname != $entitisedname) { /// If name has some entity (&amp; &quot; &lt; &gt;) add that filter too. MDL-17545
-                                $activitylist[] = new filterobject($entitisedname, $href_tag_begin, '</a>', false, true);
+                                $this->activitylist[] = new filterobject($entitisedname, $href_tag_begin, '</a>', false, true);
                             }
                         }
                     }
@@ -66,20 +92,21 @@
             }
         }
 
-        if ($activitylist) {
-            return $text = filter_phrases ($text, $activitylist);
+        if ($this->activitylist) {
+            return $text = filter_phrases ($text, $this->activitylist);
         } else {
             return $text;
         }
     }
+}
 
 
 
-    //This function is used to order module names from longer to shorter
-    function comparemodulenamesbylength($a, $b)  {
-        if (strlen($a->name) == strlen($b->name)) {
-            return 0;
-        }
-        return (strlen($a->name) < strlen($b->name)) ? 1 : -1;
+//This function is used to order module names from longer to shorter
+function filter_activitynames_comparemodulenamesbylength($a, $b)  {
+    if (strlen($a->name) == strlen($b->name)) {
+        return 0;
     }
-?>
+    return (strlen($a->name) < strlen($b->name)) ? 1 : -1;
+}
+

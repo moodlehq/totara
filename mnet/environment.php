@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 /**
  * Info about the local environment, wrt RPC
  *
@@ -22,54 +22,21 @@ class mnet_environment {
     }
 
     function init() {
-        global $CFG;
-
-        if (empty($CFG->mnet_dispatcher_mode)) {
-            set_config('mnet_dispatcher_mode', 'off');
-        }
+        global $CFG, $DB;
 
         // Bootstrap the object data on first load.
-        if (empty($CFG->mnet_localhost_id) ) {
-            if (!$CFG->mnet_localhost_id = get_config(NULL, 'mnet_localhost_id')) {  // Double-check db
-                $this->wwwroot    = $CFG->wwwroot;
-                if (empty($_SERVER['SERVER_ADDR'])) {
-                    // SERVER_ADDR is only returned by Apache-like webservers
-                    $my_hostname = mnet_get_hostname_from_uri($CFG->wwwroot);
-                    $my_ip       = gethostbyname($my_hostname);  // Returns unmodified hostname on failure. DOH!
-                    if ($my_ip == $my_hostname) {
-                        $this->ip_address = 'UNKNOWN';
-                    } else {
-                        $this->ip_address = $my_ip;
-                    }
-                } else {
-                    $this->ip_address = $_SERVER['SERVER_ADDR'];
-                }
+        if (!$hostobject = $DB->get_record('mnet_host', array('id'=>$CFG->mnet_localhost_id))) {
+            return false;
+        }
+        $temparr = get_object_vars($hostobject);
+        foreach($temparr as $key => $value) {
+            $this->$key = $value;
+        }
+        unset($hostobject, $temparr);
 
-                if ($existingrecord = get_record('mnet_host', 'ip_address', $this->ip_address)) {
-                    $this->id = $existingrecord->id;
-                } else {  // make a new one
-                    $this->id       = insert_record('mnet_host', $this, true);
-                }
-    
-                set_config('mnet_localhost_id', $this->id);
-                $this->get_keypair();
-            }
-        } else {
-            $hostobject = get_record('mnet_host','id', $CFG->mnet_localhost_id);
-            if(is_object($hostobject)) {
-                $temparr = get_object_vars($hostobject);
-                foreach($temparr as $key => $value) {
-                    $this->$key = $value;
-                }
-                unset($hostobject, $temparr);
-            } else {
-                return false;
-            }
-
-            // Unless this is an install/upgrade, generate the SSL keys.
-            if(empty($this->public_key)) {
-                $this->get_keypair();
-            }
+        // Unless this is an install/upgrade, generate the SSL keys.
+        if (empty($this->public_key)) {
+            $this->get_keypair();
         }
 
         // We need to set up a record that represents 'all hosts'. Any rights
@@ -85,7 +52,7 @@ class mnet_environment {
             $hostobject->deleted            = 0;
             $hostobject->name               = 'All Hosts';
 
-            $hostobject->id = insert_record('mnet_host',$hostobject, true);
+            $hostobject->id = $DB->insert_record('mnet_host',$hostobject);
             set_config('mnet_all_hosts_id', $hostobject->id);
             $CFG->mnet_all_hosts_id = $hostobject->id;
             unset($hostobject);
@@ -93,14 +60,17 @@ class mnet_environment {
     }
 
     function get_keypair() {
+        global $DB, $CFG;
+
         // We don't generate keys on install/upgrade because we want the USER
         // record to have an email address, city and country already.
-        if (!empty($_SESSION['upgraderunning'])) return true;
+        if (during_initial_install()) return true;
+        if ($CFG->mnet_dispatcher_mode == 'off') return true;
         if (!extension_loaded("openssl")) return true;
         if (!empty($this->keypair)) return true;
 
         $this->keypair = array();
-        $keypair = get_field('config_plugins', 'value', 'plugin', 'mnet', 'name', 'openssl');
+        $keypair = get_config('mnet', 'openssl');
 
         if (!empty($keypair)) {
             // Explode/Implode is faster than Unserialize/Serialize
@@ -114,7 +84,7 @@ class mnet_environment {
             // Key generation/rotation
 
             // 1. Archive the current key (if there is one).
-            $result = get_field('config_plugins', 'value', 'plugin', 'mnet', 'name', 'openssl_history');
+            $result = get_config('mnet', 'openssl_history');
             if(empty($result)) {
                 set_config('openssl_history', serialize(array()), 'mnet');
                 $openssl_history = array();
@@ -127,9 +97,9 @@ class mnet_environment {
                 array_unshift($openssl_history, $this->keypair);
             }
 
-            // 2. How many old keys do we want to keep? Use array_slice to get 
+            // 2. How many old keys do we want to keep? Use array_slice to get
             // rid of any we don't want
-            $openssl_generations = get_field('config_plugins', 'value', 'plugin', 'mnet', 'name', 'openssl_generations');
+            $openssl_generations = get_config('mnet', 'openssl_generations');
             if(empty($openssl_generations)) {
                 set_config('openssl_generations', 3, 'mnet');
                 $openssl_generations = 3;
@@ -148,13 +118,21 @@ class mnet_environment {
     }
 
     function replace_keys() {
-    	global $CFG;
+        global $DB, $CFG;
+
+        $keypair = mnet_generate_keypair();
+        if (empty($keypair)) {
+            error_log('Can not generate keypair, sorry');
+            return;
+        }
+
         $this->keypair = array();
-        $this->keypair = mnet_generate_keypair();
+        $this->keypair            = $keypair;
         $this->public_key         = $this->keypair['certificate'];
-        $this->wwwroot = $CFG->wwwroot;
         $details                  = openssl_x509_parse($this->public_key);
         $this->public_key_expires = $details['validTo_time_t'];
+
+        $this->wwwroot            = $CFG->wwwroot;
         if (empty($_SERVER['SERVER_ADDR'])) {
             // SERVER_ADDR is only returned by Apache-like webservers
             $my_hostname = mnet_get_hostname_from_uri($CFG->wwwroot);
@@ -167,13 +145,10 @@ class mnet_environment {
         } else {
             $this->ip_address = $_SERVER['SERVER_ADDR'];
         }
+
         set_config('openssl', implode('@@@@@@@@', $this->keypair), 'mnet');
 
-        // clone the proper object and then unset anything that isn't required to go into the database
-        // most fields don't matter but things that are arrays, will break things.
-        $dbobject = (object)clone($this);
-        unset($dbobject->keypair);
-        update_record('mnet_host', addslashes_object($dbobject));
+        $DB->update_record('mnet_host', $this);
         error_log('New public key has been generated. It expires ' . date('Y/m/d h:i:s', $this->public_key_expires));
     }
 
@@ -191,5 +166,3 @@ class mnet_environment {
         return $this->keypair['publickey'];
     }
 }
-
-?>

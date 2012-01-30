@@ -6,14 +6,14 @@ These are main modules in Moodle, allowing various activities.
 
 Each of these modules contains a number of expected components:
 
-  mod.html: a form to setup/update a module instance
+  mod_form.php: a form to setup/update a module instance
 
   version.php: defines some meta-info and provides upgrading code
 
-  icon.gif: a 16x16 icon for the module
+  pix/icon.gif: a 16x16 icon for the module
 
-  db/mysql.sql: an SQL dump of all the required db tables and data
- 
+  db/install.xml: an SQL dump of all the required db tables and data
+
   index.php: a page to list all instances in a course
 
   view.php: a page to view a particular instance
@@ -37,6 +37,6 @@ Each of these modules contains a number of expected components:
 
 
 If you are a developer and interested in developing new Modules see:
-  
+
    Moodle Documentation:  http://moodle.org/doc
    Moodle Community:      http://moodle.org/community

@@ -35,12 +35,11 @@ class grade_import_form extends moodleform {
         }
 
         // course id needs to be passed for auth purposes
-        $mform->addElement('hidden', 'id', optional_param('id'));
+        $mform->addElement('hidden', 'id', optional_param('id', 0, PARAM_INT));
         $mform->setType('id', PARAM_INT);
         $mform->addElement('header', 'general', get_string('importfile', 'grades'));
         // file upload
-        $mform->addElement('file', 'userfile', get_string('file'));
-        $mform->setType('userfile', PARAM_FILE);
+        $mform->addElement('filepicker', 'userfile', get_string('file'));
         $mform->addRule('userfile', null, 'required');
         $textlib = textlib_get_instance();
         $encodings = $textlib->get_encodings();
@@ -56,7 +55,7 @@ class grade_import_form extends moodleform {
 
         if (!empty($features['verbosescales'])) {
             $options = array(1=>get_string('yes'), 0=>get_string('no'));
-            $mform->addElement('select', 'verbosescales', get_string('verbosescales', 'grades'), $options); 
+            $mform->addElement('select', 'verbosescales', get_string('verbosescales', 'grades'), $options);
         }
 
         $options = array('10'=>10, '20'=>20, '100'=>100, '1000'=>1000, '100000'=>100000);
@@ -87,18 +86,16 @@ class grade_import_mapping_form extends moodleform {
             }
         }
         $mform->addElement('select', 'mapfrom', get_string('mapfrom', 'grades'), $mapfromoptions);
-        //choose_from_menu($mapfromoptions, 'mapfrom');
 
         $maptooptions = array('userid'=>'userid', 'username'=>'username', 'useridnumber'=>'useridnumber', 'useremail'=>'useremail', '0'=>'ignore');
-        //choose_from_menu($maptooptions, 'mapto');
         $mform->addElement('select', 'mapto', get_string('mapto', 'grades'), $maptooptions);
 
         $mform->addElement('header', 'general', get_string('mappings', 'grades'));
 
         // add a comment option
 
+        $comments = array();
         if ($gradeitems = $this->_customdata['gradeitems']) {
-            $comments = array();
             foreach ($gradeitems as $itemid => $itemname) {
                 $comments['feedback_'.$itemid] = 'comments for '.$itemname;
             }
@@ -107,14 +104,12 @@ class grade_import_mapping_form extends moodleform {
         if ($header) {
             $i = 0; // index
             foreach ($header as $h) {
-
                 $h = trim($h);
                 // this is what each header maps to
-                $mform->addElement('selectgroups',
-                                   'mapping_'.$i, s($h),
-                                   array('others'=>array('0'=>'ignore', 'new'=>'new gradeitem'),
-                                         'gradeitems'=>$gradeitems,
-                                         'comments'=>$comments));
+                $mform->addElement('selectgroups', 'mapping_'.$i, s($h),
+                    array('others'=>array('0'=>'ignore', 'new'=>'new gradeitem'),
+                    'gradeitems'=>$gradeitems,
+                    'comments'=>$comments));
                 $i++;
             }
         }
@@ -136,4 +131,3 @@ class grade_import_mapping_form extends moodleform {
 
     }
 }
-?>

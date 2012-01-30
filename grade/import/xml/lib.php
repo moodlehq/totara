@@ -21,7 +21,7 @@ require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/grade/import/lib.php';
 
 function import_xml_grades($text, $course, &$error) {
-    global $USER;
+    global $USER, $DB;
 
     $importcode = get_new_importcode();
 
@@ -57,7 +57,7 @@ function import_xml_grades($text, $course, &$error) {
 
             // check if user exist and convert idnumber to user id
             $useridnumber = $result['#']['student'][0]['#'];
-            if (!$user = get_record('user', 'idnumber', addslashes($useridnumber))) {
+            if (!$user = $DB->get_record('user', array('idnumber' =>$useridnumber))) {
                 // no user found, abort
                 $status = false;
                 $error = get_string('errincorrectuseridnumber', 'gradeimport_xml', $useridnumber);
@@ -75,7 +75,7 @@ function import_xml_grades($text, $course, &$error) {
                 }
             }
 
-            $newgrade = new object();
+            $newgrade = new stdClass();
             $newgrade->itemid     = $grade_item->id;
             $newgrade->userid     = $user->id;
             $newgrade->importcode = $importcode;
@@ -102,12 +102,7 @@ function import_xml_grades($text, $course, &$error) {
             }
 
             // insert this grade into a temp table
-            if (!insert_record('grade_import_values', addslashes_recursive($newgrade))) {
-                $status = false;
-                // could not insert into temp table
-                $error = get_string('importfailed', 'grades');
-                break;
-            }
+            $DB->insert_record('grade_import_values', $newgrade);
         }
 
     } else {
@@ -125,4 +120,4 @@ function import_xml_grades($text, $course, &$error) {
         return false;
     }
 }
-?>
+
