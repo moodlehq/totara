@@ -37,6 +37,7 @@ $string['defaultchecked'] = 'Checked by default';
 $string['forceunique'] = 'Should the data be unique?';
 $string['locked'] = 'Is this field locked?';
 $string['nocustomfieldsdefined'] = 'No fields have been defined';
+$string['pluginname'] = 'Customfields';
 $string['shortname'] = 'Short name (must be unique)';
 $string['shortnamenotunique'] = 'This short name is already in use';
 $string['specificsettings'] = 'Specific settings';
