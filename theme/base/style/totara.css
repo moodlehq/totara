@@ -1,0 +1,81 @@
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_core
+ *
+ *
+ * This stylesheet is for layout and *very* basic styling for *general* Totara-specific
+ * elements. For styles that are specific to a particular module, use
+ * totara/[modname]/style.css instead.
+ *
+ * Any styles in here should be suitable for displaying in the 'base' theme.
+ * Additional styling (e.g. colours etc) should go in the Totara theme
+ *
+ * Make sure you comment each section to clearly indicate where it is used
+ */
+
+
+/**
+ * Totara toolbar - used by lib/totaratablelib.php
+ */
+.totaratable .toolbar {
+    background-color: #f3f3f3;
+    padding: 0px 0px;
+}
+.totaratable .toolbar-left-table,
+.totaratable .toolbar-right-table {
+    margin: 0px;
+}
+.totaratable .toolbar-cell {
+    border: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 4px;
+}
+
+/* Align the toolbar items, swapping sides in RTL languages */
+.totaratable .toolbar-left-table {
+    float: left;
+}
+.totaratable .toolbar-right-table {
+    float: right;
+}
+body.dir-rtl .totaratable .toolbar-left-table {
+    float: right;
+}
+body.dir-rtl .totaratable .toolbar-right-table {
+    float: left;
+}
+
+/* modify borders to make toolbars look like a single row */
+.totaratable .toolbar-top td.toolbar,
+.totaratable .toolbar-bottom td.toolbar {
+    border-bottom: none;
+    border-top: none;
+}
+.totaratable .toolbar-top.first td.toolbar,
+.totaratable .toolbar-bottom.first td.toolbar {
+    border-top: 1px solid #ddd;
+}
+.totaratable .toolbar-top.last td.toolbar,
+.totaratable .toolbar-bottom.last td.toolbar {
+    border-bottom: 1px solid #ddd;
+}
+

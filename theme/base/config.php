@@ -48,6 +48,7 @@ $THEME->sheets = array(
     'grade',
     'message',
     'question',
+    'totara',
     'user'
 );
 
