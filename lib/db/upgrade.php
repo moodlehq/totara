@@ -6992,6 +6992,41 @@ FROM
         upgrade_main_savepoint(true, 2011120500.03);
     }
 
+    if ($oldversion < 2011120501.001) {
+
+        // Move old local version number, but only
+        // if upgrading from Totara 1.x
+        // We do this check because we might be upgrading from
+        // a Moodle with local/ code
+        if (!empty($CFG->local_postinst_hasrun)) {
+            $data = array();
+            $data['plugin'] = 'totara_core';
+            $data['>name'] = 'version';
+            $data['value'] = $CFG->local_version;
+            $DB->insert_record('config_plugins', $data);
+
+            // Move old local plugin version numbers
+            $keys = array(
+                'dashboard',
+                'oauth',
+                'plan',
+                'program',
+                'reportbuilder'
+            );
+
+            foreach ($keys as $key) {
+                $data = array();
+                $data['oldkey'] = "local_{$key}";
+                $data['newkey'] = "totara_{$key}";
+
+                $DB->execute('UPDATE {config_plugins} SET plugin = :newkey WHERE plugin = :oldkey', $data);
+            }
+        }
+
+        // Main savepoint reached
+        upgrade_main_savepoint(true, 2011120501.001);
+    }
+
     return true;
 }
 

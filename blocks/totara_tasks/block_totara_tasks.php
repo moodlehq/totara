@@ -11,8 +11,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/local/totara_msg/lib.php');
-
 class block_totara_tasks extends block_base {
     function init() {
         $this->title = get_string('blockname', 'block_totara_tasks');

@@ -7533,6 +7533,7 @@ function get_plugin_types($fullpaths=true) {
                       'plagiarism'    => 'plagiarism',
                       'tool'          => $CFG->admin.'/tool',
                       'theme'         => 'theme',  // this is a bit hacky, themes may be in $CFG->themedir too
+                      'totara'        => 'totara',
         );
 
         $mods = get_plugin_list('mod');
