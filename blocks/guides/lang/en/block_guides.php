@@ -3,7 +3,7 @@
 
 
 $string['action'] = 'Action';
-$string['blockname'] = 'Guides';
+$string['pluginname'] = 'Guides';
 $string['continueguide'] = 'Continue Guide';
 $string['restartguide'] = 'Restart Guide';
 $string['completed'] = 'Completed';

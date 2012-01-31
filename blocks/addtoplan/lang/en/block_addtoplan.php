@@ -3,7 +3,7 @@
 $string['addtoplanhint'] = 'Would you like to add this course to a Learning Plan?';
 $string['add'] = 'Add';
 $string['afteradding'] = 'This course has been added to {$a->planlinkstarttag}your plan</a>.';
-$string['blockname'] = 'Learning Plan';
+$string['pluginname'] = 'Learning Plan';
 $string['coursealreadyinplan'] = 'This course is already included in the Learning Plan:';
 $string['coursealreadyinplans'] = 'This course is already included in the following Learning Plans:';
 $string['courseinplan'] = 'This course is included in the Learning Plan:';

@@ -1,5 +1,5 @@
 <?php
-$string['blockname'] = 'Quicklinks';
+$string['pluginname'] = 'Quicklinks';
 $string['quicklinks:managealllinks'] = 'Manage all links';
 $string['quicklinks:manageownlinks'] = 'Manage own links';
 $string['title'] = 'Quick Links';

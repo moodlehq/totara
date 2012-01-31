@@ -1,6 +1,6 @@
 <?php
 
-$string['blockname'] = 'Statistics';
+$string['pluginname'] = 'Statistics';
 $string['statlearnerhours'] ='$a->count learners spent more than $a->hours hours online';
 $string['statlearnerhours_config'] = 'Show count of users who have spent a certain number of hours online';
 $string['statlearnerhours_confighours'] = 'Number of hours to display';
