@@ -13,7 +13,7 @@ class block_guides extends block_list {
     }
 
     function get_content() {
-        global $THEME, $CFG, $USER, $DB;
+        global $THEME, $CFG, $USER, $DB, $OUTPUT;
 
         if($this->content !== NULL) {
             return $this->content;
@@ -29,7 +29,7 @@ class block_guides extends block_list {
             return $this->content;
         }
 
-        $icon  = "<img src=\"$CFG->pixpath/i/course.gif\"".
+        $icon  = '<img src="'.$OUTPUT->pix_url('i/course.gif').'"'.
                  " class=\"icon\" alt=\"".get_string("coursecategory")."\" />";
         $inprogresscontent = '';
         require_once($CFG->dirroot . '/guides/lib.php');
