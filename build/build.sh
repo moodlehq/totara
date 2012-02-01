@@ -1,57 +1,44 @@
 #!/bin/sh
 
+#
+# This file is part of Totara LMS
+#
+# Copyright (C) 2010-2012 Totara Learning Solutions LTD
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# @author Aaron Barnes <aaron.barnes@totaralms.com>
+# @package totara
+# @subpackage build
+#
 # This accepts one argument:
 # 1/ The base url of the site being tested (including trailing slash)
 
-# Notes on setting up machine this runs on
-#
-# Apache needs a vserver set up to point to the hudson workspace,
-# for selenium to use for testing
-#
-# First, you need to create a second firefox profile, named "selenium"
-# (firefox will on run in one instance per profile)
-#
-# As the user hudson, you need to turn on xvfb and set it up:
-# Xvfb :99 -ac &
-# export DISPLAY=:99
-#
-# In the Hudson selenium config, you then need to load the browser as so:
-#
-
-echo "STEP 1: Generate some test users"
-php -f build/generate-users.php
-
-echo "STEP 2: Run simpletests";
-python build/simpletests.py $1
-
-echo "Convert to Junit XML";
-xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
-
-echo "STEP 3: Run cucumber tests";
-cucumber --tags ~@nightly -p pgsql --format junit --out build/logs/xml/
-
-echo "STEP 4: Run language string tests";
-php -f build/checklang.php . local hierarchy guides customfield
-
-echo "STEP 5: Run help button tests";
-php -f build/checkhelp.php . local hierarchy guides customfield
-
-echo "STEP 6: Run php syntax check";
+echo "STEP 1: Run php syntax check";
 php build/lint.php
 
-echo "STEP 7: Run miscellaneous syntax check";
-php -f build/syntax_check.php
+echo "STEP 2: Generate some test users"
+sudo -u www-data php build/generate_users.php
 
-# too slow
-#echo "Count lines of code";
-#sloccount --wide --details . > build/logs/sloccount.sc
+echo "STEP 3: Run simpletests";
+sudo -u www-data php build/simpletests.php --format=xunit > build/logs/xml/TEST-suite.xml
 
-# echo "Run pDepend";
-# TOO CPU/MEMORY INTENSIVE
-# pdepend --jdepend-xml=build/logs/jdepend.xml .
+echo "STEP 4: Run cucumber tests";
+cucumber --tags ~@nightly -p pgsql2 --format junit --out build/logs/xml/
 
-# echo "Run phpcpd";
-# nice phpcpd --log-pmd=build/logs/pmd.xml .
+echo "STEP 5: Run code scanner";
+echo "php -f m2scanner // TODO"
 
-#echo "Run phpcs";
-#nice phpcs --report=checkstyle . > build/logs/checkstyle.xml
+echo "STEP 6: Run miscellaneous syntax check (to be combined with Step 4?)";
+sudo -u www-data php build/syntax_check.php

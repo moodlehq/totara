@@ -1,4 +1,25 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package totara
+ * @subpackage build
+ */
 
 /**
  * Script to check the code for miscellaneous bad syntax
@@ -45,23 +66,17 @@ function scan_file($filepath){
             continue;
         }
         $matches = array();
-        if (preg_match(
-            // match $var::method(
-            '/(\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*::[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]* *\()/',
-            $line,
-            $matches
-        )) {
-            print "ERROR: static method called on dynamic class:\n";
-            print '    '.trim($line)."\n";
-            print "File '$filepath', line $line_number\n\n";
-        }
 
         // don't check for mdl_ in:
         // - the build/ directory
         // - the blocks/search directory (as this block uses mdl_
         //   in the index names and it's too hard to exclude)
+        // - the lib/dml/simpletest directory
+        // - the mod/quiz/report/statistics/simpletest directory
         if (preg_match('|blocks/search|', $filepath) ||
-           preg_match('|build/|', $filepath)) {
+            preg_match('|build/|', $filepath) ||
+            preg_match('|lib/dml/simpletest|', $filepath) ||
+            preg_match('|mod/quiz/report/statistics/|', $filepath)) {
             continue;
         }
 
