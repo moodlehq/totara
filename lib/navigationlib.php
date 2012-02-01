@@ -2085,6 +2085,10 @@ class global_navigation extends navigation_node {
                 $reporttab->trim_if_empty();
             }
         }
+
+        // Link to users Positions page
+        $usernode->add(get_string('positions'), new moodle_url('/user/positions.php',$baseargs));
+
         return true;
     }
 
