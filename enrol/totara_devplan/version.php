@@ -17,15 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Alastair Munro <alastair.munro@totaralms.com>
+ * @author Peter Bulmer <peter.bulmer@catalyst.net.nz>
  * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage blocks_addtoplan
+ * @subpackage enrol_devplan
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2011052700;       // The current module version (Date: YYYYMMDDXX)
+$plugin->version  = 2010120800;       // The current module version (Date: YYYYMMDDXX)
 $plugin->requires = 2011120501;       // Requires this Moodle version
 $plugin->cron = 0;                    // Period for cron to check this module (secs)
-$plugin->component = 'block_addtoplan'; // To check on upgrade, that module sits in correct place
+$plugin->component = 'enrol_totara_devplan'; // To check on upgrade, that module sits in correct place

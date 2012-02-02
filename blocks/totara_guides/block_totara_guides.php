@@ -2,9 +2,9 @@
 
 require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
 
-class block_guides extends block_list {
+class block_totara_guides extends block_list {
     function init() {
-        $this->title = get_string('guides','block/guides');
+        $this->title = get_string('pluginname', 'block_totara_guides');
         $this->version = 2010073000;
     }
 

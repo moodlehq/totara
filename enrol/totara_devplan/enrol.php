@@ -4,7 +4,7 @@
 require_once("$CFG->dirroot/enrol/enrol.class.php");
 
 
-class enrolment_plugin_devplan {
+class enrolment_plugin_totara_devplan {
 
 
 /// Override the base print_entry() function

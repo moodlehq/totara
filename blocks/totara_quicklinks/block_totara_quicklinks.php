@@ -7,10 +7,10 @@
  * @author    Eugene Venter <aaronb@catalyst.net.nz>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_quicklinks extends block_base {
+class block_totara_quicklinks extends block_base {
 
     function init() {
-        $this->title = get_string('quicklinks', 'block_quicklinks');
+        $this->title = get_string('pluginname', 'block_totara_quicklinks');
         $this->version = 2010111000;
     }
 

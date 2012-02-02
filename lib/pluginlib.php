@@ -344,6 +344,11 @@ class plugin_manager {
                 'rss_client', 'search_forums', 'section_links',
                 'selfcompletion', 'settings', 'site_main_menu',
                 'social_activities', 'tag_flickr', 'tag_youtube', 'tags'
+                // Totara
+                , 'totara_addtoplan', 'totara_alerts', 'totara_guides',
+                'totara_my_learning_nav', 'totara_my_team_nav', 'totara_quicklinks',
+                'totara_recent_learning', 'totara_report_manager', 'totara_stats',
+                'totara_tasks'
             ),
 
             'coursereport' => array(
@@ -367,6 +372,8 @@ class plugin_manager {
                 'authorize', 'category', 'cohort', 'database', 'flatfile',
                 'guest', 'imsenterprise', 'ldap', 'manual', 'meta', 'mnet',
                 'paypal', 'self'
+                // Totara:
+                , 'devplan'
             ),
 
             'filter' => array(
@@ -381,6 +388,8 @@ class plugin_manager {
 
             'gradeexport' => array(
                 'ods', 'txt', 'xls', 'xml'
+                // Totara:
+                , 'fusion'
             ),
 
             'gradeimport' => array(
@@ -482,6 +491,12 @@ class plugin_manager {
                 'health', 'innodb', 'langimport', 'multilangupgrade', 'profiling',
                 'qeupgradehelper', 'replace', 'spamcleaner', 'timezoneimport', 'unittest',
                 'uploaduser', 'unsuproles', 'xmldb'
+            ),
+
+            // Totara:
+            'totara' => array(
+                'core', 'customfield', 'dashboard', 'oauth', 'plan', 'program',
+                'reportbuilder', 'reportheading'
             ),
 
             'webservice' => array(

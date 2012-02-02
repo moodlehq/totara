@@ -13,7 +13,7 @@ defined('MOODLE_INTERNAL') || die();
 
 class block_totara_tasks extends block_base {
     function init() {
-        $this->title = get_string('blockname', 'block_totara_tasks');
+        $this->title = get_string('pluginname', 'block_totara_tasks');
         $this->version = 2010110101;
     }
 

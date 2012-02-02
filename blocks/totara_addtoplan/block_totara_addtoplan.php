@@ -25,17 +25,17 @@
  * @subpackage plan
  */
 
-class block_addtoplan extends block_base {
+class block_totara_addtoplan extends block_base {
 
     function init() {
-        $this->title = get_string('blockname', 'block_addtoplan');
+        $this->title = get_string('pluginname', 'block_totara_addtoplan');
         $this->version = 2011052700;
     }
 
     function get_content() {
         global $CFG, $USER, $COURSE;
 
-        require_once($CFG->dirroot .'/blocks/addtoplan/lib.php');
+        require_once($CFG->dirroot .'/blocks/totara_addtoplan/lib.php');
 
         if ($this->content !== NULL) {
             return $this->content;

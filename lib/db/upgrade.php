@@ -6992,7 +6992,7 @@ FROM
         upgrade_main_savepoint(true, 2011120500.03);
     }
 
-    if ($oldversion < 2011120501.001) {
+    if ($oldversion < 2011120501.002) {
 
         // Move old local version number, but only
         // if upgrading from Totara 1.x
@@ -7001,30 +7001,40 @@ FROM
         if (!empty($CFG->local_postinst_hasrun)) {
             $data = array();
             $data['plugin'] = 'totara_core';
-            $data['>name'] = 'version';
+            $data['name'] = 'version';
             $data['value'] = $CFG->local_version;
             $DB->insert_record('config_plugins', $data);
 
-            // Move old local plugin version numbers
-            $keys = array(
-                'dashboard',
-                'oauth',
-                'plan',
-                'program',
-                'reportbuilder'
+            // Move old plugin version numbers to new locations
+            $keychanges = array(
+                array('local_dashboard', 'totara_dashboard'),
+                array('local_oauth', 'totara_oauth'),
+                array('local_plan', 'totara_plan'),
+                array('local_program', 'totara_program'),
+                array('local_reportbuilder', 'totara_reportbuilder'),
+                array('enrol_devplan', 'enrol_totara_devplan'),
+                array('local_comment', null),
+                array('local_cohort', null),
+                array('local_totara_msg', null),
+                array('local_totara_alert', null),
+                array('local_totara_task', null),
             );
 
-            foreach ($keys as $key) {
+            foreach ($keychanges as $keys) {
                 $data = array();
-                $data['oldkey'] = "local_{$key}";
-                $data['newkey'] = "totara_{$key}";
+                $data['oldkey'] = $key[0];
 
-                $DB->execute('UPDATE {config_plugins} SET plugin = :newkey WHERE plugin = :oldkey', $data);
+                if ($key[1] === null) {
+                    $DB->execute('DELETE FROM {config_plugins} WHERE plugin = :oldkey', $data);
+                } else {
+                    $data['newkey'] = $key[1];
+                    $DB->execute('UPDATE {config_plugins} SET plugin = :newkey WHERE plugin = :oldkey', $data);
+                }
             }
         }
 
         // Main savepoint reached
-        upgrade_main_savepoint(true, 2011120501.001);
+        upgrade_main_savepoint(true, 2011120501.002);
     }
 
     return true;
