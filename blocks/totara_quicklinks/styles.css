@@ -1,0 +1,31 @@
+div.block_totara_quicklinks div.content table {
+    table-layout:fixed; width:100%;
+}
+
+div.block_totara_quicklinks div.content td.linkicon {
+    width: 35px;
+}
+
+div.block_totara_quicklinks div.content td.linkname div.quicklink-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.block_totara_quicklinks .link {
+  border-top:1px solid;
+  border-top-color:#DDDDDD;
+  padding-bottom:5px;
+  font-size:0.82em;
+}
+
+.block_totara_quicklinks .description {
+  color:#555555;
+  font-size:0.78em;
+  padding-left:10px;
+  padding-bottom:8px;
+}
+
+.block_totara_quicklinks .title {
+  font-size:1.0em;
+}

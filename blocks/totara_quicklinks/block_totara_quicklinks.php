@@ -1,10 +1,28 @@
 <?php
 /**
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  * Block for displaying user-defined links
  *
  * @package   totara
  * @copyright 2010 Totara Learning Solutions Ltd
- * @author    Eugene Venter <aaronb@catalyst.net.nz>
+ * @author    Eugene Venter <eugene@catalyst.net.nz>
+ * @author    Alastair Munro <alastair.munro@totaralms.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_totara_quicklinks extends block_base {
@@ -25,12 +43,12 @@ class block_totara_quicklinks extends block_base {
             $this->title = $this->config->title;
         } else {
             // No customized block title, use localized remote news feed string
-            $this->title = get_string('quicklinks', 'block_quicklinks');
+            $this->title = get_string('quicklinks', 'block_totara_quicklinks');
         }
     }
 
     function get_content() {
-        global $CFG, $USER;
+        global $DB, $OUTPUT;
 
         // Check if content is cached
         if($this->content !== NULL) {
@@ -47,27 +65,30 @@ class block_totara_quicklinks extends block_base {
         }
 
         if (empty($this->instance->pinned)) {
-            $context = get_context_instance(CONTEXT_BLOCK, $this->instance->id);
+            $context = context_block::instance($this->instance->id);
         } else {
-            $context = get_context_instance(CONTEXT_SYSTEM); // pinned blocks do not have own context
+            $context = context_system::instance(); // pinned blocks do not have own context
         }
-
-        $html = '';
 
         // Get links to display
-        $links = get_records('block_quicklinks', 'block_instance_id', $this->instance->id, 'displaypos');
-        $links = empty ($links) ? array() : $links;
+        $links = $DB->get_records('block_quicklinks', array('block_instance_id' => $this->instance->id), 'displaypos', 'id, url, title');
 
-	$html .= '<table><tbody>';
-	$counter = 0;
+        $table = new html_table();
+        $table->data = array();
+        $counter = 0;
         foreach ($links as $l) {
-	    $class = ($counter % 2) ? 'noshade' : 'shade';
-	    $counter++;
-            $html .= '<tr class="'.$class.'"><td class="linkicon"></td><td class="linktext"><p class="quicklink-title"><a href="'.format_string($l->url).'">'.format_string($l->title).'</a></p></td></tr>';
+            $rowclass = ($counter % 2) ? 'noshade' : 'shade';
+            $counter++;
+            $cell1 = new html_table_cell($OUTPUT->pix_icon('link', '', 'block_totara_quicklinks'));
+            $cell1->attributes['class'] = 'linkicon';
+            $cell2 = new html_table_cell(html_writer::tag('div', html_writer::link(format_string($l->url), format_string($l->title)), array('class' => 'quicklink-title')));
+            $cell2->attributes['class'] = 'linkname';
+            $row = new html_table_row(array($cell1,$cell2));
+            $row->attributes['class'] = $rowclass;
+            $table->data[] = $row;
         }
-	$html .= '</tbody></table>';
 
-        $this->content->text = $html;
+        $this->content->text = html_writer::table($table);
 
         return $this->content;
     }
@@ -76,112 +97,19 @@ class block_totara_quicklinks extends block_base {
         return true;
     }
 
-    function instance_allow_config() {
-        $context = get_context_instance(CONTEXT_BLOCK, $this->instance->id);
-
-        if (instance_is_dashlet($this)) {
-            return (has_capability('block/quicklinks:manageownlinks', $context) || has_capability('block/quicklinks:managealllinks', $context));
-        } else {
-            return has_capability('block/quicklinks:managealllinks', $context);
-        }
-    }
-
-    function instance_config_save($data) {
-        global $USER;
-
-        if (!empty($data->btnCancel)) {
-            // Do nothing
-            return true;
-        }
-        if (!empty($data->url)) {
-            $addlink = isset($data->btnAddLink);
-            if (empty($data->linktitle)) {
-                if (!empty($data->url)) {
-                    $data->linktitle = $data->url;
-                }
-            }
-           // Save the block link
-           $link = new stdClass;
-           $link->userid = instance_is_dashlet($this) ? $USER->id : 0;
-           $link->block_instance_id = $this->instance->id;
-           $link->title = empty($data->linktitle) ? $data->url : $data->linktitle;
-           $link->url = $data->url;
-           $link->displaypos = count_records('block_quicklinks', 'block_instance_id', $this->instance->id) > 0 ? get_field('block_quicklinks', 'MAX(displaypos)+1', 'block_instance_id', $this->instance->id) : 0;
-           insert_record('block_quicklinks', $link);
-           unset($link);
-        }
-
-
-        unset($data->btnAddLink, $data->linktitle, $data->url);
-        if (parent::instance_config_save($data)) {
-            if (!empty($addlink)) {
-                // HACK: redirect back to the same page
-                redirect(get_referer(false));
-            } else {
-                return true;
-            }
-        }
+    function has_config() {
+        return true;
     }
 
     function instance_create() {
-        global $CFG, $USER;
+        global $CFG, $USER, $DB;
 
         // Add some default quicklinks
-        $links = array();
-        if (instance_is_dashlet($this)) {
-
-
-            // Insert default links, according to role
-            $role = get_dashlet_role($this->instance->pageid);
-            $shortname = ($role == 'manager') ? 'myteam' : 'mylearning';
-
-            switch ($role) {
-                case 'admin':
-                case 'administrator' :
-                    $links = array(get_string('home','block_quicklinks')=>"{$CFG->wwwroot}/index.php",
-                        get_string('logs','block_quicklinks')=>"{$CFG->wwwroot}/course/report/log/index.php",
-                        get_string('managereports','block_quicklinks')=>"{$CFG->wwwroot}/totara/reportbuilder/index.php");
-                    break;
-                case 'manager' :
-                case 'student' :
-                    $sql = "SELECT blocki.id FROM
-                        {$CFG->prefix}dashb_instance i
-                        JOIN
-                            {$CFG->prefix}dashb db
-                                ON i.dashb_id=db.id
-                        JOIN
-                            {$CFG->prefix}dashb_instance_dashlet dbid
-                                ON dbid.dashb_instance_id = i.id
-                        JOIN
-                            {$CFG->prefix}block_instance blocki
-                                ON blocki.id = dbid.block_instance_id
-                        JOIN
-                            {$CFG->prefix}block b
-                                ON b.id = blocki.blockid
-                        WHERE shortname='{$shortname}'
-                          AND userid=0
-                          AND b.name='quicklinks'";
-
-                    if ($default_block_instance_id = get_field_sql($sql)) {
-                        $links = get_records_menu('block_quicklinks', 'block_instance_id', $default_block_instance_id, 'displaypos', 'title, url');
-                    } else {
-                        $links = array(get_string('home','block_quicklinks')=>"{$CFG->wwwroot}/index.php",
-                            get_string('reports','block_quicklinks')=>"{$CFG->wwwroot}/my/reports.php",
-                            get_string('courses','block_quicklinks')=>"{$CFG->wwwroot}/course/find.php");
-                    }
-                    break;
-                default:
-                    $links = array(get_string('home','block_quicklinks')=>"{$CFG->wwwroot}/index.php",
-                        get_string('reports','block_quicklinks')=>"{$CFG->wwwroot}/my/reports.php",
-                        get_string('courses','block_quicklinks')=>"{$CFG->wwwroot}/course/find.php");
-                    break;
-            }
-        } else {
-            // Insert global default links
-            $links = array(get_string('home','block_quicklinks')=>"{$CFG->wwwroot}/index.php",
-                get_string('reports','block_quicklinks')=>"{$CFG->wwwroot}/my/reports.php",
-                get_string('courses','block_quicklinks')=>"{$CFG->wwwroot}/course/find.php");
-        }
+        $links = array(
+            get_string('home',    'block_totara_quicklinks')    => "{$CFG->wwwroot}/index.php",
+            get_string('reports', 'block_totara_quicklinks')    => "{$CFG->wwwroot}/my/reports.php",
+            get_string('courses', 'block_totara_quicklinks')    => "{$CFG->wwwroot}/course/find.php"
+        );
 
         $poscount = 0;
         foreach ($links as $title=>$url) {
@@ -190,8 +118,8 @@ class block_totara_quicklinks extends block_base {
             $link->title = $title;
             $link->url = $url;
             $link->displaypos = $poscount;
-            $link->userid = instance_is_dashlet($this) ? $USER->id : 0;
-            insert_record('block_quicklinks', $link);
+            $link->userid = $USER->id;
+            $DB->insert_record('block_quicklinks', $link);
             $poscount++;
         }
 
@@ -200,9 +128,9 @@ class block_totara_quicklinks extends block_base {
     }
 
     function instance_delete() {
+        global $DB;
         // Do some additional cleanup
-        delete_records('block_quicklinks', 'block_instance_id', $this->instance->id);
-
+        $DB->delete_records('block_quicklinks', array('block_instance_id' => $this->instance->id));
         return true;
     }
 }

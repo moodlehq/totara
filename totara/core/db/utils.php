@@ -70,6 +70,8 @@ function totara_upgrade_mod_savepoint($result, $version, $modname) {
 */
 function totara_get_capability_upgrade_map() {
     $upgrade_caps = array (
+    'block/quicklinks:manageownlinks' => array('newcap'=>'block/totara_quicklinks:manageownlinks', 'component' => 'block_totara_quicklinks'),
+    'block/quicklinks:managealllinks' => array('newcap'=>'block/totara_quicklinks:managealllinks', 'component' => 'block_totara_quicklinks'),
     'moodle/local:markcomplete' => array('newcap'=>'moodle/course:markcomplete', 'component' => 'moodle'),
     'local/comment:delete' => array('newcap'=>'moodle/comment:delete', 'component' => 'moodle'),
     'local/comment:post' => array('newcap'=>'moodle/comment:post', 'component' => 'moodle'),

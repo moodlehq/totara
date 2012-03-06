@@ -17,19 +17,16 @@
 // The commands in here will all be database-neutral,
 // using the functions defined in lib/ddllib.php
 
-function xmldb_block_quicklinks_upgrade($oldversion=0) {
+function xmldb_block_totara_quicklinks_upgrade($oldversion=0) {
 
-    global $CFG, $THEME, $db;
+    global $CFG, $DB;
 
     $result = true;
 
-/// And upgrade begins here. For each one, you'll need one
-/// block of code similar to the next one. Please, delete
-/// this comment lines once this file start handling proper
-/// upgrade code.
-
-    if ($result && $oldversion < 2010111000) {
-        // Do some upgrade
+    if ($result && $oldversion < 2012061501) {
+        // Empty upgrade block to ensure unused capability
+        // 'blocks/quicklinks:managealllinks' is removed
+        // from the database
     }
 
     return $result;

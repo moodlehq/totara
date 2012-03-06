@@ -33,21 +33,12 @@
 
 $capabilities = array(
 
-    'block/quicklinks:manageownlinks' => array(
+    'block/totara_quicklinks:manageownlinks' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
         'legacy' => array(
             'user' => CAP_ALLOW,
-        )
-    ),
-
-    'block/quicklinks:managealllinks' => array(
-        'riskbitmask' => RISK_CONFIG,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_BLOCK,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
         )
     )
 
