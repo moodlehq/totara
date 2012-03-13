@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,11 @@
  * @author Eugene Venter <eugene@catalyst.net.nz>
  * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage plan
+ * @subpackage totara_core
  */
 
 require_once '../../config.php';
-require_once $CFG->dirroot.'/local/js/lib/setup.php';
+require_once $CFG->dirroot.'/totara/core/js/lib/setup.php';
 
 $courseid = optional_param('id', 0, PARAM_INT);
 $ok_string = get_string('ok');

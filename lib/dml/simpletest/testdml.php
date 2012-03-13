@@ -1688,7 +1688,7 @@ class dml_test extends UnitTestCase {
 
         $this->enable_debugging();
         $this->assertEqual(5, $DB->get_field($tablename, 'course', array('course' => 5), IGNORE_MULTIPLE));
-        $this->assertIdentical($this->get_debugging(), '');
+        $this->assertFalse($this->get_debugging() === '');
 
         $this->enable_debugging();
         $this->assertEqual(5, $DB->get_field($tablename, 'course', array('course' => 5), IGNORE_MISSING));

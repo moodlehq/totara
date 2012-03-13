@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Aaron Barnes <aaronb@catalyst.net.nz>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @author Ben Lobo <ben.lobo@kineo.com>
  * @package totara
- * @subpackage dialogs
+ * @subpackage totara_core/dialogs
  */
 
 /**
@@ -29,8 +29,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
-require_once($CFG->dirroot.'/local/program/lib.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
+require_once($CFG->dirroot.'/totara/program/lib.php');
 require_once($CFG->libdir.'/datalib.php');
 
 /**
@@ -99,16 +99,17 @@ class totara_dialog_content_programs extends totara_dialog_content {
      * @access  public
      */
     public function load_categories() {
+        global $DB;
 
         // If category 0, make fake object
         if (!$this->categoryid) {
-            $parent = new object();
+            $parent = new stdClass();
             $parent->id = 0;
         }
         else {
             // Load category
-            if (!$parent = get_record('course_categories', 'id', $this->categoryid)) {
-                error('Category ID was incorrect');
+            if (!$parent = $DB->get_record('course_categories', array('id' => $this->categoryid))) {
+                print_error('error:categoryidincorrect', 'totara_core');
             }
         }
 
@@ -129,7 +130,7 @@ class totara_dialog_content_programs extends totara_dialog_content {
 
             //Dont show category if there are no items in it
             if ($item_count > 0) {
-                $c = new object();
+                $c = new stdClass();
                 $c->id = 'cat'.$category->id;
                 $c->fullname = $category->name;
 

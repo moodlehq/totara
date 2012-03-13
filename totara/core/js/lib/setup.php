@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @author Eugene Venter <eugene@catalyst.net.nz>
- * @author Aaron Barnes <aaronb@catalyst.net.nz>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage plan
+ * @subpackage totara_core
  */
-require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
 
 /**
  * Constants for defining JS to load
@@ -42,78 +42,63 @@ define('TOTARA_JS_UI',             6);
  * @param $options array Array of option constants
  */
 function local_js($options = array()) {
-    global $CFG;
+    global $CFG, $PAGE;
 
     // Include required javascript libraries
-    require_js(array(
-        $CFG->wwwroot.'/local/js/lib/jquery-1.6.4.min.js',
-    ));
+    $PAGE->requires->js('/totara/core/js/lib/jquery-1.6.4.min.js');
+
 
     // If UI
     if (in_array(TOTARA_JS_UI, $options)) {
 
-        require_js(array(
-            $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
-        ));
+        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.7.2.custom.min.js');
+
     }
 
     // If dialog
     if (in_array(TOTARA_JS_DIALOG, $options)) {
 
-        require_js(array(
-            $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
-            $CFG->wwwroot.'/local/js/lib/dialog.js.php',
-            // fix for IE6 select z-index problem
-            // TODO only include for IE6 - conditional comments?
-            $CFG->wwwroot.'/local/js/lib/jquery.bgiframe.min.js',
-        ));
+        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.7.2.custom.min.js');
+        $PAGE->requires->js('/totara/core/js/lib/dialog.js.php');
+        $PAGE->requires->js('/totara/core/js/lib/jquery.bgiframe.min.js');
+
     }
 
     // If treeview enabled
     if (in_array(TOTARA_JS_TREEVIEW, $options)) {
 
-        require_js(array(
-            $CFG->wwwroot.'/local/js/lib/jquery.treeview.min.js',
-        ));
+        $PAGE->requires->js('/totara/core/js/lib/jquery.treeview.min.js');
+
     }
 
     // If datepicker enabled
     if (in_array(TOTARA_JS_DATEPICKER, $options)) {
 
-        $files = array(
-            $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
-        );
+        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.7.2.custom.min.js');
 
-        // get current lang code (without _utf8 suffix)
         $lang = current_language();
-        if(substr($lang, -5) == '_utf8') {
-            $lang = substr($lang, 0, strlen($lang) - 5);
-        }
 
         // include datepicker localization file if present for current language
-        $file = "/local/js/lib/i18n/jquery.ui.datepicker-{$lang}.js";
+        $file = "/totara/core/js/lib/i18n/jquery.ui.datepicker-{$lang}.js";
         if(is_readable($CFG->dirroot . $file)) {
-            $files[] = $CFG->wwwroot . $file;
+            $PAGE->requires->js($file);
         }
 
-        require_js($files);
 
     }
 
     // if placeholder enabled
     if (in_array(TOTARA_JS_PLACEHOLDER, $options)) {
-        require_js(array(
-            $CFG->wwwroot.'/local/js/lib/jquery.placeholder.min.js',
-            $CFG->wwwroot.'/local/js/lib/load.placeholder.js',
-        ));
+        $PAGE->requires->js('/totara/core/js/lib/jquery.placeholder.min.js');
+        $PAGE->requires->js('/totara/core/js/lib/load.placeholder.js');
+
     }
 
     // If Icon preview is enabled
     if (in_array(TOTARA_JS_ICON_PREVIEW, $options)) {
 
-        require_js(array(
-            $CFG->wwwroot.'/local/js/icon.preview.js',
-        ));
+        $PAGE->requires->js('/totara/core/js/icon.preview.js');
+
     }
 }
 
@@ -137,6 +122,7 @@ function build_datepicker_js($selector, $includetags = true, $dateformat=null) {
     if (empty($dateformat)) {
         $dateformat = get_string('datepickerdisplayformat');
     }
+    $button_img = $OUTPUT->pix_url('calendar', 'totara_core');
     // we are choosing to override the isRTL option here, instead float
     // the datepicker fields left/right to get the picker to appear on
     // the correct side
@@ -146,7 +132,7 @@ function build_datepicker_js($selector, $includetags = true, $dateformat=null) {
             {
                 dateFormat: '{$dateformat}',
                 showOn: 'both',
-                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
+                buttonImage: '{$button_img}',
                 buttonImageOnly: true,
                 constrainInput: true,
                 isRTL: false // positioning handled via CSS instead
@@ -183,15 +169,15 @@ function build_search_interface($prefix, $frameworkid=0, $select=true,
  */
 function build_treeview($elements, $error_string, $hierarchy = null, $disabledlist = array()) {
 
-    global $CFG;
+    global $CFG, $OUTPUT;
     // maximum number of items to load (at any one level)
     // before giving up and suggesting search instead.
     $maxitems = 100;
 
     $html = '';
 
-    $buttons = array('addbutton' => 'add.gif',
-                     'deletebutton' => 'delete.gif');
+    $buttons = array('addbutton' => 'add',
+                     'deletebutton' => 'delete');
 
     if (is_array($elements) && !empty($elements)) {
 
@@ -238,7 +224,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
                 }
             }
 
-            $addbutton_html = '<img src="'.$CFG->pixpath.'/t/'.$buttons['addbutton'].'" class="addbutton" />';
+            $addbutton_html = '<img src="'.$OUTPUT->pix_url('t/'.$buttons['addbutton']).'" class="addbutton" />';
 
             // Make disabled elements non-draggable and greyed out
             if (array_key_exists($element->id, $disabledlist)){
@@ -270,7 +256,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
 
     // Add hidden button images that can later be used/cloned by js TODO: add tooltip get_string
     foreach ($buttons as $classname => $pic) {
-        $html .= '<img id="'.$classname.'_ex" src="'.$CFG->pixpath.'/t/'.$pic.'"
+        $html .= '<img id="'.$classname.'_ex" src="'.$OUTPUT->pix_url('t/'.$pic).'"
             class="'.$classname.'" style="display: none;" />';
     }
 
@@ -288,10 +274,10 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
  */
 function build_category_treeview($list, $parents, $load_string) {
 
-    global $CFG;
+    global $CFG, $OUTPUT;
 
-    $buttons = array('addbutton' => 'add.gif',
-                     'deletebutton' => 'delete.gif');
+    $buttons = array('addbutton' => 'add',
+                     'deletebutton' => 'delete');
 
     $html = '';
 
@@ -361,7 +347,7 @@ function build_category_treeview($list, $parents, $load_string) {
 
         // Add hidden button images that can later be used/cloned by js TODO: add tooltip get_string
         foreach ($buttons as $classname => $pic) {
-            $html .= '<img id="'.$classname.'_ex" src="'.$CFG->pixpath.'/t/'.$pic.'"
+            $html .= '<img id="'.$classname.'_ex" src="'.$OUTPUT->pix_url('t/'.$pic).'"
                 class="'.$classname.'" style="display: none;" />';
         }
     }
@@ -384,6 +370,7 @@ function build_category_treeview($list, $parents, $load_string) {
  *
  */
 function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams, $expandurl, $parents = array(), $disabledlist = array()) {
+    global $OUTPUT;
     $html = '<table>';
 
     if (is_array($elements) && !empty($elements)) {
@@ -393,7 +380,7 @@ function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams
             $params = $actionparams + array('add' => $element->id);
             $html .= '<tr>';
             $html .= '<td>';
-            $html .= print_single_button($actionurl, $params, get_string('assign','hierarchy'), 'get', '_self', true, '', array_key_exists($element->id, $disabledlist));
+            $html .= $OUTPUT->single_button(new moodle_url($actionurl, $params), get_string('assign','hierarchy'), 'get', array('disabled' => array_key_exists($element->id, $disabledlist)));
             $html .= '</td><td>';
 
             // Element has children
@@ -474,8 +461,9 @@ function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams, $allfws
  *
  */
 function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
+    global $DB;
     $murl = new moodle_url($url, $urlparams);
-    if($fws = get_records($hierarchy->shortprefix.'_framework', null, null, 'sortorder')) {
+    if ($fws = $DB->get_records($hierarchy->shortprefix.'_framework', null, 'sortorder')) {
         echo '<div id="nojsinstructions"><p>'.PHP_EOL;
         echo get_string('pickaframework','hierarchy');
         echo '</p></div>'.PHP_EOL;
@@ -486,7 +474,7 @@ function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
         }
         echo '</ul></div>'.PHP_EOL;
     } else {
-        error('noframeworks',$hierarchy->prefix);
+        print_error('noframeworks', $hierarchy->prefix);
     }
 }
 
@@ -528,7 +516,7 @@ function build_nojs_positionpicker($url, $urlparams) {
         }
         $html .= '</ul></div>'.PHP_EOL;
     } else {
-        error('nopositions','position');
+        print_error('nopositions', 'position');
     }
     return $html;
 }

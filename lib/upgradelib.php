@@ -1368,7 +1368,7 @@ function install_core($version, $verbose) {
  * @return void, may throw exception
  */
 function upgrade_core($version, $verbose) {
-    global $CFG;
+    global $CFG, $TOTARA;
 
     raise_memory_limit(MEMORY_EXTRA);
 
@@ -1385,12 +1385,33 @@ function upgrade_core($version, $verbose) {
 
         // one time special local migration pre 2.0 upgrade script
         if ($CFG->version < 2007101600) {
-            $pre20upgradefile = "$CFG->dirroot/local/upgrade_pre20.php";
+            $pre20upgradefile = "{$CFG->dirroot}/local/upgrade_pre20.php";
             if (file_exists($pre20upgradefile)) {
                 set_time_limit(0);
                 require($pre20upgradefile);
                 // reset upgrade timeout to default
                 upgrade_set_timeout();
+            }
+        }
+
+        //only run if upgrading a Totara installation
+        if (isset($CFG->totara_release)){
+            if (substr($CFG->totara_release,0,3) == '1.0') {
+                $a = new stdClass();
+                $a->currentversion = $CFG->totara_release;
+                $a->attemptedversion = $TOTARA->release;
+                $a->required = get_string('totara11requiredupgradeversion', 'totara_core');
+                throw new moodle_exception('totaraupgradefrom10', 'totara_core', '', $a);
+            }
+            if (substr($CFG->totara_release,0,3) == '1.1') {
+                //run special one-off Totara upgrades
+                $pre20upgradefile = "{$CFG->dirroot}/totara/core/db/upgrade_pre20.php";
+                if (file_exists($pre20upgradefile)) {
+                    set_time_limit(0);
+                    require_once($pre20upgradefile);
+                    // reset upgrade timeout to default
+                    upgrade_set_timeout();
+                }
             }
         }
 

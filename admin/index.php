@@ -33,15 +33,15 @@ if (!file_exists('../config.php')) {
 if (version_compare(phpversion(), '5.3.2') < 0) {
     $phpversion = phpversion();
     // do NOT localise - lang strings would not work here and we CAN NOT move it to later place
-    echo "Moodle 2.1 or later requires at least PHP 5.3.2 (currently using version $phpversion).<br />";
-    echo "Please upgrade your server software or install older Moodle version.";
+    echo "Totara 2.2 or later requires at least PHP 5.3.2 (currently using version $phpversion).<br />";
+    echo "Please upgrade your server software or install an older Totara version.";
     die();
 }
 
 // make sure iconv is available and actually works
 if (!function_exists('iconv')) {
     // this should not happen, this must be very borked install
-    echo 'Moodle requires the iconv PHP extension. Please install or enable the iconv extension.';
+    echo 'Totara requires the iconv PHP extension. Please install or enable the iconv extension.';
     die();
 }
 if (iconv('UTF-8', 'UTF-8//IGNORE', 'abc') !== 'abc') {
@@ -62,7 +62,7 @@ $confirmrelease = optional_param('confirmrelease', 0, PARAM_BOOL);
 $confirmplugins = optional_param('confirmplugincheck', 0, PARAM_BOOL);
 $showallplugins = optional_param('showallplugins', 0, PARAM_BOOL);
 $agreelicense   = optional_param('agreelicense', 0, PARAM_BOOL);
-
+$geterrors = optional_param('geterrors', 0, PARAM_BOOL);
 // Check some PHP server settings
 
 $PAGE->set_url('/admin/index.php');
@@ -128,7 +128,7 @@ if (!core_tables_exist()) {
         $strlicense = get_string('license');
 
         $PAGE->navbar->add($strlicense);
-        $PAGE->set_title($strinstallation.' - Moodle '.$CFG->target_release);
+        $PAGE->set_title($strinstallation.' - Totara '.$CFG->target_release);
         $PAGE->set_heading($strinstallation);
         $PAGE->set_cacheable(false);
 
@@ -143,7 +143,7 @@ if (!core_tables_exist()) {
 
         $PAGE->navbar->add($strcurrentrelease);
         $PAGE->set_title($strinstallation);
-        $PAGE->set_heading($strinstallation . ' - Moodle ' . $CFG->target_release);
+        $PAGE->set_heading($strinstallation . ' - Totara ' . $CFG->target_release);
         $PAGE->set_cacheable(false);
 
         $output = $PAGE->get_renderer('core', 'admin');
@@ -157,7 +157,7 @@ if (!core_tables_exist()) {
     upgrade_init_javascript();
 
     $PAGE->navbar->add($strdatabasesetup);
-    $PAGE->set_title($strinstallation.' - Moodle '.$CFG->target_release);
+    $PAGE->set_title($strinstallation.' - Totara '.$CFG->target_release);
     $PAGE->set_heading($strinstallation);
     $PAGE->set_cacheable(false);
 
@@ -179,20 +179,51 @@ if (!core_tables_exist()) {
 // and upgrade if possible.
 
 $stradministration = get_string('administration');
-$PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+$PAGE->set_context(context_system::instance());
 
 if (empty($CFG->version)) {
     print_error('missingconfigversion', 'debug');
 }
 
-if ($version > $CFG->version) {  // upgrade
+if ($version > $CFG->version
+            || !isset($CFG->totara_build)
+            || $TOTARA->build > $CFG->totara_build) {  // upgrade
+
     purge_all_caches();
     $PAGE->set_pagelayout('maintenance');
     $PAGE->set_popup_notification_allowed(false);
 
+    $a = new stdClass();
+    $a->oldversion = '';
+    $a->newversion = '';
+
+    // If a Moodle core upgrade:
+    if ($version > $CFG->version) {
+        $prefix = get_string('moodlecore', 'totara_core').':';
+        $a->oldversion .= "{$prefix}<br />{$CFG->release} ({$CFG->version})";
+        $a->newversion .= "{$prefix}<br />{$release} ({$version})";
+    }
+
+    // If a Totara core upgrade
+    if (!isset($CFG->totara_build) || $TOTARA->build > $CFG->totara_build) {
+        $prefix = get_string('totaracore','totara_core').':';
+
+        // If a Moodle and a Totara upgrade, tidy up the markup
+        if ($version > $CFG->version) {
+            $a->oldversion .= '<br /><br />';
+            $a->newversion .= '<br /><br />';
+        }
+
+        if (!isset($CFG->totara_build)) {
+            $a->oldversion .= $prefix.'<br />'.get_string('totarapre11', 'totara_core');
+            $a->newversion .= "{$prefix}<br />{$TOTARA->release}";
+        } else {
+            $a->oldversion .= "{$prefix}<br />{$CFG->totara_release}";
+            $a->newversion .= "{$prefix}<br />{$TOTARA->release}";
+        }
+    }
+
     if (empty($confirmupgrade)) {
-        $a->oldversion = "$CFG->release ($CFG->version)";
-        $a->newversion = "$release ($version)";
         $strdatabasechecking = get_string('databasechecking', '', $a);
 
         $PAGE->set_title($stradministration);
@@ -243,6 +274,14 @@ if ($version > $CFG->version) {  // upgrade
 // Updated human-readable release version if necessary
 if ($release <> $CFG->release) {  // Update the release version
     set_config('release', $release);
+}
+
+if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release
+    || !isset($CFG->totara_build) || $CFG->totara_build <> $TOTARA->build
+    || !isset($CFG->totara_version) || $CFG->totara_version <> $TOTARA->version) {
+    // Also set Totara release (human readable version)
+    set_config("totara_release", $TOTARA->release);
+    set_config("totara_build", $TOTARA->build);
 }
 
 if (moodle_needs_upgrading()) {
@@ -325,7 +364,7 @@ unset($origxmlstrictheaders);
 
 // Check for valid admin user - no guest autologin
 require_login(0, false);
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 require_capability('moodle/site:config', $context);
 
 // check that site is properly customized
@@ -354,7 +393,11 @@ if (any_new_admin_settings($adminroot)){
 }
 
 // Everything should now be set up, and the user is an admin
-
+// Check to see if we are downloading latest errors
+if ($geterrors) {
+    totara_errors_download();
+    die();
+}
 // Print default admin page with notifications.
 $errorsdisplayed = defined('WARN_DISPLAY_ERRORS_ENABLED');
 
@@ -364,6 +407,17 @@ $dbproblems = $DB->diagnose();
 $maintenancemode = !empty($CFG->maintenance_enabled);
 
 admin_externalpage_setup('adminnotifications');
+
+//get Totara specific info
+$oneyearago = time() - 60*60*24*365;
+// See MDL-22481 for why currentlogin is used instead of lastlogin
+$sql = "SELECT COUNT(id)
+          FROM {user}
+         WHERE currentlogin > ?";
+$activeusers = $DB->count_records_sql($sql, array($oneyearago));
+// Check if any errors in log
+$latesterror = $DB->get_record_sql("SELECT timeoccured FROM {errorlog} ORDER BY id DESC", null, 0, 1);
+
 $output = $PAGE->get_renderer('core', 'admin');
 echo $output->admin_notifications_page($maturity, $insecuredataroot, $errorsdisplayed,
-        $cronoverdue, $dbproblems, $maintenancemode);
+        $cronoverdue, $dbproblems, $maintenancemode, $latesterror, $activeusers, $TOTARA->release);

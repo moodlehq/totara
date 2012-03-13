@@ -33,7 +33,7 @@
  * @package totara
  */
 
-require_once(dirname(dirname(__FILE__)) . '/local/utils.php');
+require_once(dirname(dirname(__FILE__)) . '/core/utils.php');
 require_once(dirname(dirname(__FILE__)) . '/customfield/fieldlib.php');
 
 /**

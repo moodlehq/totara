@@ -32,8 +32,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara
  */
-require_once($CFG->dirroot.'/hierarchy/lib.php');
-require_once($CFG->dirroot.'/local/utils.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/core/utils.php');
 
 
 // DO NOT COMMENT OUT IF UNUSED

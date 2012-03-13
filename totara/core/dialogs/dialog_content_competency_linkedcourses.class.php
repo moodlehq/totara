@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
  *
  * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
- * @subpackage dialogs
+ * @subpackage totara_core/dialogs
  */
 
 /**
@@ -28,8 +28,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 
 /**
  * Class for generating single select hierarchy dialog markup
@@ -114,7 +114,7 @@ class totara_dialog_content_competency_linkedcourses extends totara_dialog_conte
         // Make some capability checks
         if (!$this->skip_access_checks) {
             require_login();
-            require_capability("moodle/local:view{$prefix}", get_system_context());
+            require_capability("totara/hierarchy:view{$prefix}", context_system::instance());
         }
 
         // Load hierarchy instance
@@ -152,13 +152,13 @@ class totara_dialog_content_competency_linkedcourses extends totara_dialog_conte
      * @param   $parentid   int
      */
     public function load_items($parentid) {
-        global $CFG;
+        global $DB;
 
         $select = "SELECT
                     c.id as id,
                     c.fullname as fullname";
 
-        $from = " FROM {$CFG->prefix}comp c";
+        $from = " FROM {comp} c";
 
         if ($this->showhidden) {
             $where = " WHERE c.evidencecount > 0";
@@ -168,7 +168,7 @@ class totara_dialog_content_competency_linkedcourses extends totara_dialog_conte
 
         $order = " ORDER BY c.fullname";
 
-        $this->items = get_records_sql($select.$from.$where.$order);
+        $this->items = $DB->get_records_sql($select.$from.$where.$order);
     }
 
 
@@ -190,7 +190,7 @@ class totara_dialog_content_competency_linkedcourses extends totara_dialog_conte
 
         // Grab search page markup
         ob_start();
-        require_once $CFG->dirroot.'/hierarchy/prefix/competency/item/search_linkedcourses.php';
+        require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/item/search_linkedcourses.php');
         return ob_get_clean();
     }
 }

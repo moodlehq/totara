@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  * 
  * This program is free software; you can redistribute it and/or modify  
  * it under the terms of the GNU General Public License as published by  
@@ -17,14 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @author Eugene Venter <eugene@catalyst.net.nz>
- * @author Aaron Barnes <aaronb@catalyst.net.nz>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage plan
+ * @subpackage totara_core
  */
 require_once('../../config.php');
-
+global $OUTPUT;
 $courseid = optional_param('id', 0, PARAM_INT);
 ?>
 // Bind functionality to page on load
@@ -129,7 +129,7 @@ YAHOO.util.Event.onDOMReady(function () {
             var inputvalue = input.val();
             if (inputvalue) {
                 // Change icon
-                $('a.rpledit img', cell).attr('src', '<?php echo $CFG->wwwroot ?>/theme/totara/pix/i/completion-rpl-y.gif');
+                $('a.rpledit img', cell).attr('src', '<?php echo $OUTPUT->pix_url('i/completion-rpl-y', 'theme'); ?>');
 
                 // Save value
                 value.text(inputvalue);
@@ -162,7 +162,7 @@ YAHOO.util.Event.onDOMReady(function () {
                 dots.remove();
 
                 // Change icon
-                $('a.rpledit img', cell).attr('src', '<?php echo $CFG->wwwroot ?>/theme/totara/pix/i/completion-rpl-n.gif');
+                $('a.rpledit img', cell).attr('src', '<?php echo $OUTPUT->pix_url('i/completion-rpl-n', 'theme'); ?>');
             }
 
             // Toggle expander
@@ -201,7 +201,7 @@ YAHOO.util.Event.onDOMReady(function () {
             });
 
             // Create delete button
-            var cancel = $('<a href="#" class="icon rpldelete" title="Delete this RPL"><img src="<?php echo $CFG->wwwroot ?>/theme/totara/pix/i/cross_red_big.gif" alt="Delete" /></a>');
+            var cancel = $('<a href="#" class="icon rpldelete" title="Delete this RPL"><img src="<?php echo $OUTPUT->pix_url('i/cross_red_big', 'theme'); ?>')" alt="Delete" /></a>');
             cancel.click(function(event) {
 
                 event.preventDefault();
@@ -249,7 +249,7 @@ YAHOO.util.Event.onDOMReady(function () {
         var type = fnc_rpltype(cell).substr(4);
 
         // Show loading icon
-        cell.append($('<img class="rplloading" src="<?php echo $CFG->wwwroot ?>/theme/totara/pix/i/loading_small.gif" />'));
+        cell.append($('<img class="rplloading" src="<?php echo $OUTPUT->pix_url('i/loading_small', 'theme'); ?>" />'));
 
         // Save callback
         var fnc_savecallback = function(response) {

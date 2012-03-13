@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="totara/core/db" VERSION="20120312" COMMENT="XMLDB file for Moodle totara/core"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="course_info_category" COMMENT="Custom course fields categories" NEXT="course_info_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="name"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for course_info_category"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="course_info_data" COMMENT="Custom course fields data" PREVIOUS="course_info_category" NEXT="course_info_field">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="courseid"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="fieldid" NEXT="data"/>
+        <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="courseid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for course_info_data"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="course_info_field" COMMENT="Custom course fields" PREVIOUS="course_info_data" NEXT="oldpassword">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="text" LENGTH="medium" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="datatype"/>
+        <FIELD NAME="datatype" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="description" NEXT="categoryid"/>
+        <FIELD NAME="categoryid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="hidden"/>
+        <FIELD NAME="hidden" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="categoryid" NEXT="locked"/>
+        <FIELD NAME="locked" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
+        <FIELD NAME="required" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
+        <FIELD NAME="forceunique" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
+        <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
+        <FIELD NAME="param1" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
+        <FIELD NAME="param2" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
+        <FIELD NAME="param3" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
+        <FIELD NAME="param4" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
+        <FIELD NAME="param5" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for course_info_field"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="oldpassword" COMMENT="Password rotation log of old passwords" PREVIOUS="course_info_field" NEXT="reminder">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="uid"/>
+        <FIELD NAME="uid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="hash"/>
+        <FIELD NAME="hash" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="uid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for oldpassword"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="oldp_uid_ix" UNIQUE="false" FIELDS="uid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="reminder" COMMENT="Totara course reminders" PREVIOUS="oldpassword" NEXT="reminder_message">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="courseid"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="title"/>
+        <FIELD NAME="title" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="courseid" NEXT="type"/>
+        <FIELD NAME="type" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="title" NEXT="config"/>
+        <FIELD NAME="config" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" PREVIOUS="type" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="config" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="modifierid"/>
+        <FIELD NAME="modifierid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="deleted"/>
+        <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="modifierid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for reminder"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="remi_cou_ix" UNIQUE="false" FIELDS="courseid" NEXT="remi_typ_ix"/>
+        <INDEX NAME="remi_typ_ix" UNIQUE="false" FIELDS="type" PREVIOUS="remi_cou_ix" NEXT="remi_del_ix"/>
+        <INDEX NAME="remi_del_ix" UNIQUE="false" FIELDS="deleted" PREVIOUS="remi_typ_ix"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="reminder_message" COMMENT="Totara course reminder messages" PREVIOUS="reminder" NEXT="reminder_sent">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="reminderid"/>
+        <FIELD NAME="reminderid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="type"/>
+        <FIELD NAME="type" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="reminderid" NEXT="period"/>
+        <FIELD NAME="period" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="type" NEXT="copyto"/>
+        <FIELD NAME="copyto" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="period" NEXT="subject"/>
+        <FIELD NAME="subject" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="copyto" NEXT="message"/>
+        <FIELD NAME="message" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" PREVIOUS="subject" NEXT="deleted"/>
+        <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="message"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for reminder_message"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="remimess_rem_ix" UNIQUE="false" FIELDS="reminderid" NEXT="remimess_typ_ix"/>
+        <INDEX NAME="remimess_typ_ix" UNIQUE="false" FIELDS="type" PREVIOUS="remimess_rem_ix" NEXT="remimess_del_ix"/>
+        <INDEX NAME="remimess_del_ix" UNIQUE="false" FIELDS="deleted" PREVIOUS="remimess_typ_ix"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="reminder_sent" COMMENT="Totara course reminders log of messages sent" PREVIOUS="reminder_message" NEXT="errorlog">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="reminderid"/>
+        <FIELD NAME="reminderid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="messageid"/>
+        <FIELD NAME="messageid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="reminderid" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="messageid" NEXT="timesent"/>
+        <FIELD NAME="timesent" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="userid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for reminder_sent"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="remisent_rem_ix" UNIQUE="false" FIELDS="reminderid" NEXT="remisent_mes_ix"/>
+        <INDEX NAME="remisent_mes_ix" UNIQUE="false" FIELDS="messageid" PREVIOUS="remisent_rem_ix" NEXT="remisent_use_ix"/>
+        <INDEX NAME="remisent_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="remisent_mes_ix"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="errorlog" COMMENT="Totara additional errorlog data" PREVIOUS="reminder_sent">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="timeoccured"/>
+        <FIELD NAME="timeoccured" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="version"/>
+        <FIELD NAME="version" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="timeoccured" NEXT="build"/>
+        <FIELD NAME="build" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="version" NEXT="details"/>
+        <FIELD NAME="details" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="build" NEXT="hash"/>
+        <FIELD NAME="hash" TYPE="char" LENGTH="32" NOTNULL="false" SEQUENCE="false" PREVIOUS="details"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for errorlog"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

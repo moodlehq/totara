@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage local
+ * @subpackage totara_core
  */
+    global $DB;
 
     /// Bootstrap custom roles and change sort order of both custom and legacy roles
         $roles = array(
@@ -79,16 +80,15 @@
         $counter = 100;
         foreach ($roles as $shortname => $roledata) {
             if (array_key_exists('legacy', $roledata) &&
-               $oldrole = get_record_select('role', "shortname='".$roledata['legacy']."'")) {
+               $oldrole = $DB->get_record_select('role', "shortname=?", array($roledata['legacy']))) {
                     $oldrole->name        = $roledata['name'];
                     $oldrole->description = $roledata['description'];
-                    update_record('role', $oldrole);
+                    $DB->update_record('role', $oldrole);
             } else {
                 $roledata['shortname'] = $shortname;
                 $roledata['legacy'] = '';
                 $roledata['sortorder'] = $counter++;
-                insert_record('role', (object) $roledata);
+                $DB->insert_record('role', (object) $roledata);
             }
-            $oldrole = get_record_select('role', "name='".$roledata['name']."'");
+            $oldrole = $DB->get_record_select('role', "name=?", array($roledata['name']));
         }
-

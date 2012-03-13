@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  * @author Jonathan Newman <jonathan.newman@catalyst.net.nz>
  * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage local
+ * @subpackage totara_core
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -46,7 +46,7 @@ function totara_set_notification($message, $redirect = null, $options = array())
 
     // Check options is an array
     if (!is_array($options)) {
-        print_error('error:notificationsparamtypewrong', 'local');
+        print_error('error:notificationsparamtypewrong', 'totara_core');
     }
 
     // Add message to options array
@@ -61,7 +61,6 @@ function totara_set_notification($message, $redirect = null, $options = array())
         exit();
     }
 }
-
 
 /**
  * Return an array containing any notifications in $SESSION
@@ -133,57 +132,50 @@ function totara_queue_shift($key, $all = false) {
  * @return bool
  */
 function totara_reset_frontpage_blocks() {
-    global $CFG;
+    global $DB, $SITE;
 
     // first delete pre-set ones
-    execute_sql('DELETE FROM ' . $CFG->prefix . 'block_instance
-        WHERE pageid = ' . SITEID . "
-        AND pagetype = 'course-view'"
-    );
+    $DB->execute('DELETE FROM {block_instances}
+        WHERE parentcontextid = ' . $SITE->id . "
+        AND pagetypepattern = 'course-view-*'");
 
     // build new block array
     $blocks = array(
         (object)array(
-            'blockid'  =>  get_field('block', 'id', 'name', 'admin_tree'),
-            'pageid'   => SITEID,
-            'pagetype' => 'course-view',
-            'position' => 'l',
-            'weight'   => 1,
-            'visible'  => 1,
+            'blockname'=> 'admin_tree',
+            'parentcontextid' => $SITE->id,
+            'showinsubcontexts' => 0,
+            'pagetypepattern' => 'course-view-*',
+            'subpagepattern' => '',
+            'defaultweight' => 1,
             'configdata' => '',
+            'default-region' => 'side-post'
         ),
         (object)array(
-            'blockid'  =>  get_field('block', 'id', 'name', 'messages'),
-            'pageid'   => SITEID,
-            'pagetype' => 'course-view',
-            'position' => 'r',
-            'weight'   => 1,
-            'visible'  => 1,
+            'blockname'=> 'messages',
+            'parentcontextid' => $SITE->id,
+            'showinsubcontexts' => 0,
+            'pagetypepattern' => 'course-view-*',
+            'subpagepattern' => '',
+            'defaultweight' => 1,
             'configdata' => '',
+            'default-region' => 'side-pre'
         ),
         (object)array(
-            'blockid'  =>  get_field('block', 'id', 'name', 'calendar_month'),
-            'pageid'   => SITEID,
-            'pagetype' => 'course-view',
-            'position' => 'r',
-            'weight'   => 2,
-            'visible'  => 1,
+            'blockname'=> 'calendar_month',
+            'parentcontextid' => $SITE->id,
+            'showinsubcontexts' => 0,
+            'pagetypepattern' => 'course-view-*',
+            'subpagepattern' => '',
+            'defaultweight' => 1,
             'configdata' => '',
-        ),
-        /*(object)array(
-            'blockid'  =>  get_field('block', 'id', 'name', 'guides'),
-            'pageid'   => SITEID,
-            'pagetype' => 'course-view',
-            'position' => 'r',
-            'weight'   => 3,
-            'visible'  => 1,
-            'configdata' => '',
-        ),*/
+            'default-region' => 'side-post',
+        )
     );
 
     // insert blocks
     foreach ($blocks as $b) {
-        insert_record('block_instance', $b);
+        $DB->insert_record('block_instances', $b);
     }
 
     return 1;
@@ -192,7 +184,7 @@ function totara_reset_frontpage_blocks() {
 
 
 /**
- * Returns markup for displaying a progress bar for a user's course progress
+ *  Calls mopdule renderer to return markup for displaying a progress bar for a user's course progress
  *
  * Optionally with a link to the user's profile if they have the correct permissions
  *
@@ -203,24 +195,10 @@ function totara_reset_frontpage_blocks() {
  * @return  string
  */
 function totara_display_course_progress_icon($userid, $courseid, $status) {
-    global $CFG, $COMPLETION_STATUS;
+    global $PAGE, $COMPLETION_STATUS;
 
-    if (!isset($status) || !array_key_exists($status, $COMPLETION_STATUS)) {
-        return '';
-    }
-
-    $statusstring = $COMPLETION_STATUS[$status];
-    $status = get_string($statusstring, 'completion');
-
-    // Display progress bar
-    $content = "<span class=\"coursecompletionstatus\">";
-    $content .= "<span class=\"completion-$statusstring\" title=\"$status\">$status</span></span>";
-
-    // Check if user has permissions to see details
-    if (completion_can_view_data($userid, $courseid)) {
-        $content = "<a href=\"{$CFG->wwwroot}/blocks/completionstatus/details.php?course={$courseid}&user={$userid}\">{$content}</a>";
-    }
-
+    $renderer = $PAGE->get_renderer('totara_core');
+    $content = $renderer->display_course_progress_icon($userid, $courseid, $status);
     return $content;
 }
 
@@ -231,160 +209,78 @@ function totara_display_course_progress_icon($userid, $courseid, $status) {
  * @return bool
  */
 function totara_add_guide_block_to_adminpages() {
-    global $CFG;
+    global $DB, $SITE;
 
         $b = (object)array(
-            'blockid'  =>  get_field('block', 'id', 'name', 'guides'),
-            'pageid'   => 0,
-            'pagetype' => 'admin',
-            'position' => 'l',
-            'weight'   => 1,
-            'visible'  => 1,
+            'blockname'=> 'guides',
+            'parentcontextid' => $SITE->id,
+            'showinsubcontexts' => 0,
+            'pagetypepattern' => 'admin-*',
+            'subpagepattern' => '',
+            'defaultweight' => 1,
             'configdata' => '',
+            'default-region' => 'side-pre'
         );
-    insert_record('block_instance', $b);
+    $DB->insert_record('block_instances', $b);
 
 }
 
 /**
 * print out the Totara My Learning nav section
 */
-function totara_print_my_learning_nav($return=false) {
-    global $CFG, $USER;
+function totara_print_my_learning_nav() {
+    global $PAGE;
 
-    $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
-    $returnstr = '
-        <table>
-    ';
-    if (has_capability('local/plan:accessplan', $usercontext)) {
-        $returnstr .= '
-            <tr>
-                <td align="left">
-                    <center><a href="'.$CFG->wwwroot.'/local/plan/index.php" title="'.get_string('developmentplan','local').'">
-                    <img src="'. $CFG->pixpath.'/i/idp.png" alt="'.get_string('developmentplan', 'local').'" /></a></center>
-
-                </td>
-                <td align="left">
-                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/local/plan/index.php">' . get_string('developmentplan', 'local') . '</a></span>
-                </td>
-            </tr>
-        ';
-    }
-    $returnstr .= '
-        <tr>
-            <td align="left">
-                <center><a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title="'.get_string('bookings','local').'">
-                <img src="'.$CFG->pixpath.'/i/bookings.png" alt="'.get_string('bookings', 'local').'" /></a></center>
-            </td>
-            <td align="left">
-                <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/bookings.php?userid='.$USER->id.'">'.get_string('bookings','local').'</a></span>
-            </td>
-        </tr>';
-    if(get_config(NULL, 'idp_showlearnrec')==2){
-        $returnstr .= '<tr>
-            <td align="left">
-                <center><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'" title="'.get_string('recordoflearning', 'local').'">
-                <img src="' . $CFG->pixpath . '/i/rol.png" alt="'.get_string('recordoflearning', 'local').'" /></a></center>
-            </td>
-            <td align="left">
-                <span style="font-size: small"><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span>
-            </td>
-        </tr>';
-    }
-    $returnstr .= '</table>';
-
-    if ($return) {
-        return $returnstr;
-    }
-    echo $returnstr;
+    $renderer = $PAGE->get_renderer('totara_core');
+    $content = $renderer->print_my_learning_nav();
+    return $content;
 }
 
 /**
 * print out the Totara My Team nav section
 */
-function totara_print_my_team_nav($return=false) {
-    global $CFG, $USER;
-
-    $returnstr = '';
+function totara_print_my_team_nav() {
+    global $CFG, $USER, $PAGE;
 
     $managerroleid = $CFG->managerroleid;
 
     // return users with this user as manager
-    $teammembers = totara_get_staff();
-
-    if (!empty($teammembers) && count($teammembers) > 0) {
-        $returnstr = '
-         <table>
-             <tr>
-                 <td align="left">
-                     <a href="'.$CFG->wwwroot.'/my/teammembers.php"><img src="'.$CFG->wwwroot.'/pix/i/teammembers.png" width="32" height="32" alt="'.get_string('viewmyteam','local').'" /></a>
-                 </td>
-                 <td align="left">
-                     <a href="'.$CFG->wwwroot.'/my/teammembers.php">'.get_string('viewmyteam','local').'</a><br />('.count($teammembers).' staff)
-                 </td>
-             </tr>
-         </table>
-        ';
-    }
-    return $returnstr;
+    $teammembers = count(totara_get_staff());
+    //call renderer
+    $renderer = $PAGE->get_renderer('totara_core');
+    $content = $renderer->print_my_team_nav($teammembers);
+    return $content;
 
 }
-
-function totara_print_report_manager($return=false) {
-    global $CFG,$USER;
-    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-    $reports = get_records('report_builder','','','fullname');
+/**
+* print out the table of visible reports
+*/
+function totara_print_report_manager() {
+    global $CFG, $USER, $DB, $PAGE;
+    require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+    $reports = $DB->get_records('report_builder', null, 'fullname');
     if (!is_array($reports)){
         $reports = array();
     }
-    $context = get_context_instance(CONTEXT_SYSTEM);
+    $context = context_system::instance();
+    $showsettings = (has_capability('totara/reportbuilder:managereports',$context) && isset($USER->editing) && $USER->editing) ? true : false;
+    //pre-process to avoid any data logic in renderer
+    $viewablereports = array();
 
-    $rows = array();
-    $counter = 0;
     foreach ($reports as $report) {
-        // show reports user has permission to view, that are not hidden
-        if(reportbuilder::is_capable($report->id) && !$report->hidden) {
-            $viewurl = reportbuilder_get_report_url($report);
-            $class = ($counter % 2) ? 'noshade' : 'shade';
-            $counter++;
-            $row = '
-            <tr class="'.$class.'">
-                <td class="icon">
-                    <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.format_string($report->fullname).'">
-                    <img src="'.$CFG->pixpath.'/i/reports.png" width="32" height="32" /></a>
-                </td>
-                <td class="text">
-                    <span style="font-size: small;"><a href="'.$viewurl.'">'.format_string($report->fullname).'</a>
-                ';
-
-
-            // if admin with edit mode on show settings button too
-            if(has_capability('moodle/local:admin',$context) && isset($USER->editing) && $USER->editing) {
-                $row .= '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.
-                    '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.get_string('settings','local').'"></a>';
-            }
-            $row .= '</span>
-                </td>
-            </tr>
-            ';
-            $rows[] = $row;
+        if (reportbuilder::is_capable($report->id) && !$report->hidden) {
+            $report->viewurl = reportbuilder_get_report_url($report);
+            $viewablereports[] = $report;
         }
     }
 
-    // if there are any rows print them
-    $returnstr = '';
-    if(count($rows)>0) {
-        $returnstr = '<table class="reportmanager">';
-        $returnstr .= implode("\n",$rows);
-        $returnstr .= '</table>';
+    if (count($viewablereports) > 0) {
+        $renderer = $PAGE->get_renderer('totara_core');
+        $returnstr = $renderer->print_report_manager($viewablereports, $showsettings);
     } else {
-        $returnstr = get_string('nouserreports', 'local_reportbuilder');
+        $returnstr = get_string('nouserreports', 'totara_reportbuilder');
     }
-
-    if ($return) {
-        return $returnstr;
-    }
-    echo $returnstr;
+    return $returnstr;
 }
 
 /**
@@ -395,165 +291,108 @@ function totara_print_report_manager($return=false) {
 * @access  public
 * @param   $showoptions   bool
 * @param   $showaddform   bool
-* @param   $sqlclause     string
-* @return  string
+* @param   $sqlclause     array in the form array($where, $params)
+
 */
-function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $sqlclause='') {
-    global $CFG, $USER, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS, $CALENDARDAYS;
+function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $sqlclause=array()) {
+    global $CFG, $DB, $USER, $PAGE, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS, $CALENDARDAYS;
     $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
 
-    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+    require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
     require_once($CFG->dirroot.'/calendar/lib.php');
-    require_once($CFG->dirroot.'/local/reportbuilder/scheduled_forms.php');
+    require_once($CFG->dirroot.'/totara/reportbuilder/scheduled_forms.php');
 
 
     $sql = "SELECT rbs.*, rb.fullname
-            FROM {$CFG->prefix}report_builder_schedule rbs
-            JOIN {$CFG->prefix}report_builder rb
+            FROM {report_builder_schedule} rbs
+            JOIN {report_builder} rb
             ON rbs.reportid=rb.id
-            WHERE rbs.userid={$USER->id}";
-    if ($sqlclause != '') {
-        $sql .= " AND " . $sqlclause;
+            WHERE rbs.userid=?";
+
+    $parameters = array($USER->id);
+
+    if (!empty($sqlclause)) {
+        list($conditions, $params) = $sqlclause;
+        $parameters = array_merge($parameters, $params);
+        $sql .= " AND " . $conditions;
     }
-    if($scheduledreports = get_records_sql($sql)){
-        $columns[] = 'reportname';
-        $headers[] = get_string('reportname', 'local_reportbuilder');
-        $columns[] = 'data';
-        $headers[] = get_string('savedsearch', 'local_reportbuilder');
-        $columns[] = 'format';
-        $headers[] = get_string('format', 'local_reportbuilder');
-        $columns[] = 'schedule';
-        $headers[] = get_string('schedule', 'local_reportbuilder');
-        if ($showoptions) {
-            $columns[] = 'options';
-            $headers[] = get_string('options', 'local');
+    //note from M2.0 these functions return an empty array, not false
+    $scheduledreports = $DB->get_records_sql($sql, $parameters);
+    $dateformat = ($USER->lang == 'en') ? 'jS' : 'j';
+    //pre-process before sending to renderer
+    foreach ($scheduledreports as $sched) {
+        //data column
+        if($sched->savedsearchid!=0){
+            $sched->data = $DB->get_field('report_builder_saved', 'name', array('id' => $sched->savedsearchid));
         }
-        $shortname = 'scheduled_reports';
-        $table = new flexible_table($shortname);
-        $table->define_columns($columns);
-        $table->define_headers($headers);
-        $table->set_attribute('class', 'scheduled-reports generalbox');
-
-        if ($showoptions) {
-            $table->column_class('options', 'options');
+        else {
+            $sched->$data = get_string('alldata', 'totara_reportbuilder');
         }
-        $table->setup();
-        $dateformat = ($USER->lang == 'en_utf8') ? 'jS' : 'j';
-
-        foreach($scheduledreports as $sched) {
-            if(isset($sched->frequency) && isset($sched->schedule)){
-                $schedule = '';
-
-                switch($REPORT_BUILDER_SCHEDULE_CODES[$sched->frequency]){
+        //format column
+        $key = array_search($sched->format, $REPORT_BUILDER_EXPORT_OPTIONS);
+        $sched->format = get_string($key . 'format','local_reportbuilder');
+        //schedule column
+        if(isset($sched->frequency) && isset($sched->schedule)){
+            $schedule = '';
+            switch($REPORT_BUILDER_SCHEDULE_CODES[$sched->frequency]){
                 case 'daily':
-                    $schedule .= get_string('daily', 'local_reportbuilder') . ' ' .  get_string('at', 'local_reportbuilder') . ' ';
+                    $schedule .= get_string('daily', 'totara_reportbuilder') . ' ' .  get_string('at', 'totara_reportbuilder') . ' ';
                     $schedule .= strftime('%l:%M%P' ,mktime($sched->schedule,0,0));
                     break;
                 case 'weekly':
-                    $schedule .= get_string('weekly', 'local_reportbuilder') . ' ' . get_string('on', 'local_reportbuilder') . ' ';
+                    $schedule .= get_string('weekly', 'totara_reportbuilder') . ' ' . get_string('on', 'totara_reportbuilder') . ' ';
                     $schedule .= get_string($CALENDARDAYS[$sched->schedule], 'calendar');
                     break;
                 case 'monthly':
-                    $schedule .= get_string('monthly', 'local_reportbuilder') . ' ' . get_string('onthe', 'local_reportbuilder') . ' ';
+                    $schedule .= get_string('monthly', 'totara_reportbuilder') . ' ' . get_string('onthe', 'totara_reportbuilder') . ' ';
                     $schedule .= date($dateformat ,mktime(0,0,0,0,$sched->schedule));
                     break;
-                }
             }
-            else {
-                $schedule = get_string('schedulenotset', 'local_reportbuilder');
-            }
-
-            foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
-                // bitwise operator to see if option bit is set
-                if($sched->format == $code) {
-                    $format = get_string($option . 'format','local_reportbuilder');
-                }
-            }
-
-            $data = '';
-            if($sched->savedsearchid!=0){
-                $data .= get_field('report_builder_saved', 'name', 'id', $sched->savedsearchid);
-            }
-            else {
-                $data .= get_string('alldata', 'local_reportbuilder');
-            }
-
-            $tablerow = array();
-            $tablerow[] = $sched->fullname;
-            $tablerow[] = $data;
-            $tablerow[] = $format;
-            $tablerow[] = $schedule;
-            if ($showoptions) {
-                $tablerow[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/scheduled.php?id='.$sched->id .'" title="'.get_string('edit').
-                    '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.get_string('edit').'" /></a>'. ' ' .
-                    '<a href="'.$CFG->wwwroot.'/local/reportbuilder/deletescheduled.php?id='.$sched->id.'" title="'.get_string('delete').
-                    '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.get_string('delete').'" /></a>';
-            }
-            $table->add_data($tablerow);
+        } else {
+            $schedule = get_string('schedulenotset', 'totara_reportbuilder');
         }
+        $sched->schedule = $schedule;
+    }
 
-        $table->print_html();
+    if (count($scheduledreports) > 0) {
+        $renderer = $PAGE->get_renderer('totara_core');
+        echo $renderer->print_scheduled_reports($scheduledreports, $showoptions);
+    } else {
+        echo get_string('noscheduledreports', 'totara_reportbuilder') . html_writer::empty_tag('br') . html_writer::empty_tag('br');
     }
-    else {
-        echo get_string('noscheduledreports', 'local_reportbuilder') . '<br /><br />';
-    }
+
     if ($showaddform) {
-        $mform = new scheduled_reports_add_form($CFG->wwwroot . '/local/reportbuilder/scheduled.php', array());
+        $mform = new scheduled_reports_add_form($CFG->wwwroot . '/totara/reportbuilder/scheduled.php', array());
         $mform->display();
     }
-
 
 }
 
 function totara_print_my_courses() {
-    global $CFG,$USER;
+    global $USER, $PAGE, $COMPLETION_STATUS;
     $content = '';
     $courses = completion_info::get_all_courses($USER->id, 10);
-
+    $displaycourses = array();
     if ($courses) {
-        $content .= '<table class="centerblock">
-            <tr><th class="course">'.get_string('course').'</th>'.
-            '<th class="status">'.get_string('status').'</th>'.
-            '<th class="enroldate">'.get_string('enrolled', 'totara_core').'</th>'.
-            '<th class="startdate">'.get_string('started','totara_core').'</th>'.
-            '<th class="completeddate">'.get_string('completed','totara_core').'</th></tr>';
-
         foreach ($courses as $course) {
-            $id = $course->course;
-            $name = format_string($course->name);
+            $displaycourse = new stdClass();
+            $displaycourse->id = $course->course;
+            $displaycourse->$name = format_string($course->name);
             $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;
-
             $starteddate = '';
             if ($course->timestarted != 0) {
-                $starteddate = userdate($course->timestarted, '%e %b %y');
+                $starteddate = userdate($course->timestarted, '%d %b %y');
             }
-            $enroldate = isset($enrolled) && $enrolled != 0 ? userdate($enrolled, '%e %b %y') : null;
-            $completeddate = isset($completed) && $completed != 0 ? userdate($completed, '%e %b %y') : null;
-            // Display deleted courses as unknown
-            if ($name != '') {
-                $content .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
-            } else {
-                $content .= "<tr><td class=\"course\">" . get_string('deletedcourse', 'completion') . "</td>";
-            }
-
-            $status = array_key_exists($id, $courses) ? $courses[$id]->status : COMPLETION_STATUS_NOTYETSTARTED;
-            $completion = totara_display_course_progress_icon($USER->id, $course->course, $status);
-
-            $content .=     "<td class=\"status\">{$completion}</td><td class=\"enroldate\">$enroldate</td>";
-            $content .=     "<td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";
+            $displaycourse->starteddate = $starteddate;
+            $displaycourse->enroldate = isset($enrolled) && $enrolled != 0 ? userdate($enrolled, '%d %b %y') : null;
+            $displaycourse->completeddate = isset($completed) && $completed != 0 ? userdate($completed, '%d %b %y') : null;
+            $displaycourse->status = array_key_exists($id, $courses) ? $courses[$id]->status : COMPLETION_STATUS_NOTYETSTARTED;
+            $displaycourses[] = $displaycourse;
         }
-        $content .= "</table>\n";
-        $content .= '<div class="allmycourses"><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('allmycourses','local').'</a></div>';
     }
-
-    if (empty($content)) {
-        $content = '<span class="noenrollments">'.get_string('notenrolled','totara_core').'</span>';
-    }
-    echo '<div class="mycourses">';
-    echo '<div class="header"><div class="title"><h2>'.get_string('mycoursecompletions','totara_core').'</h2></div></div><div class="content">';
-    echo $content;
-    echo '</div></div>';
+    $renderer = $PAGE->get_renderer('totara_core');
+    echo $renderer->print_my_courses($displaycourses, $USER->id);
 }
 
 /**
@@ -565,15 +404,15 @@ function totara_print_my_courses() {
 * @return string the field value
 */
 function totara_print_user_profile_field($userid=null, $fieldshortname=null) {
-    global $CFG;
+    global $CFG, $DB;
     $sql = "SELECT uid.data
-            FROM {$CFG->prefix}user_info_data uid
-            JOIN {$CFG->prefix}user_info_field uif
+            FROM {user_info_data} uid
+            JOIN {user_info_field} uif
               ON uif.id=uid.fieldid
-            WHERE uif.shortname='{$fieldshortname}'
-            AND uid.userid='{$userid}'
+            WHERE uif.shortname = ?
+            AND uid.userid = ?
             ";
-    return get_field_sql($sql);
+    return $DB->get_field_sql($sql, array($fieldshortname, $userid));
 }
 
 /**
@@ -587,7 +426,7 @@ function totara_print_user_profile_field($userid=null, $fieldshortname=null) {
  * If managerid is not set, uses the current user
 **/
 function totara_is_manager($userid, $managerid=null, $postype=null) {
-    global $CFG, $USER;
+    global $CFG, $DB, $USER;
 
     $userid = (int) $userid;
 
@@ -596,26 +435,28 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
         $managerid = $USER->id;
     }
 
-    require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+    require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
 
+    $params = array($managerid, $userid);
     if ($postype) {
-        $postypewhere = "AND pa.type = {$postype}";
+        $postypewhere = "AND pa.type = ?";
+        $params[] = $postype;
     } else {
         $postypewhere = '';
     }
 
     $sql = "SELECT DISTINCT u.id
         FROM
-            {$CFG->prefix}pos_assignment pa
-            INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
-            INNER JOIN {$CFG->prefix}user u ON ra.userid = u.id
+            {pos_assignment} pa
+            INNER JOIN {role_assignments} ra ON pa.reportstoid = ra.id
+            INNER JOIN {user} u ON ra.userid = u.id
         WHERE
-            ra.userid = {$managerid}
-            AND pa.userid = {$userid}
+            ra.userid = ?
+            AND pa.userid = ?
             AND u.deleted = 0
             {$postypewhere}";
 
-    return record_exists_sql($sql);
+    return $DB->record_exists_sql($sql, $params);
 }
 
 /**
@@ -628,22 +469,22 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
  * If $userid is not set, returns staff of current user
 **/
 function totara_get_staff($userid=null, $postype=null) {
-    global $CFG, $USER;
-    require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+    global $CFG, $DB, $USER;
+    require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
     $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
 
     $userid = !empty($userid) ? (int) $userid : $USER->id;
     $sql = "SELECT DISTINCT u.id
         FROM
-            {$CFG->prefix}pos_assignment pa
-            INNER JOIN {$CFG->prefix}user u ON pa.userid = u.id
-            INNER JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid = ra.id
+            {pos_assignment} pa
+            INNER JOIN {user} u ON pa.userid = u.id
+            INNER JOIN {role_assignments} ra ON pa.reportstoid = ra.id
         WHERE
-            ra.userid = {$userid}
+            ra.userid = ?
             AND u.deleted = 0
-            AND pa.type = {$postype}";
+            AND pa.type = ?";
 
-    if (!$res = get_records_sql($sql)) {
+    if (!$res = $DB->get_records_sql($sql, array($userid, $postype))) {
         // no matches
         return false;
     }
@@ -659,8 +500,8 @@ function totara_get_staff($userid=null, $postype=null) {
  * @return mixed False if no manager. Manager user object from mdl_user if the user has a manager.
  */
 function totara_get_manager($userid, $postype=null){
-    global $CFG;
-    require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+    global $CFG, $DB;
+    require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
     $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
 
     $userid = (int) $userid;
@@ -668,20 +509,20 @@ function totara_get_manager($userid, $postype=null){
         SELECT
             u.*
         FROM
-            {$CFG->prefix}pos_assignment pa
+            {pos_assignment} pa
         INNER JOIN
-            {$CFG->prefix}role_assignments ra
+            {role_assignments} ra
          ON pa.reportstoid = ra.id
         INNER JOIN
-            {$CFG->prefix}user u
+            {user} u
          ON ra.userid = u.id
         WHERE
-            pa.userid = {$userid}
-            AND pa.type = {$postype}
+            pa.userid = ?
+            AND pa.type = ?
             AND u.deleted = 0";
 
     //Return a manager if they have one otherwise false
-    return get_record_sql($sql);
+    return $DB->get_record_sql($sql, array($userid, $postype));
 }
 
 /**
@@ -739,8 +580,11 @@ class totara_page_class_hack extends page_base {
     }
 
     function print_header($title, $morenavlinks=NULL) {
+        global $OUTPUT, $PAGE;
         $nav = build_navigation($morenavlinks);
-        print_header($title, $title, $nav);
+        $PAGE->set_title($title);
+        $PAGE->set_heading($title);
+        echo $OUTPUT->header();
     }
 }
 page_map_class('Totara', 'totara_page_class_hack');
@@ -753,7 +597,7 @@ class totara_dashboard_page_class extends page_base {
     private $dashb_instance;
 
     function init_full() {
-        global $CFG;
+        global $DB;
 
         if ($this->full_init_done) {
             return;
@@ -761,11 +605,11 @@ class totara_dashboard_page_class extends page_base {
 
         // Get the dashboard details
         $sql = "SELECT di.*, d.shortname, d.title
-                FROM {$CFG->prefix}dashb d
-                INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
-                WHERE di.id = {$this->id}";
-        if (!$this->dashb_instance = get_record_sql($sql)) {
-            error('Cannot fully initialize page - could not retrieve dashboard details');
+                FROM {dashb} d
+                INNER JOIN {dashb_instance} di ON d.id = di.dashb_id
+                WHERE di.id = ?";
+        if (!$this->dashb_instance = $DB->get_record_sql($sql, array($this->id))) {
+            print_error('error:dashboardnotfound', 'totara_core');
         }
         $this->full_init_done = true;
     }
@@ -804,8 +648,11 @@ class totara_dashboard_page_class extends page_base {
     }
 
     function print_header($title, $morenavlinks=NULL) {
+        global $PAGE, $OUTPUT;
         $nav = build_navigation($morenavlinks);
-        print_header($title, $title, $nav);
+        $PAGE->set_title($title);
+        $PAGE->set_heading($title);
+        echo $OUTPUT->header();
     }
 
 }
@@ -823,19 +670,19 @@ function totara_local_footer_hook() {
 }
 
 /**
- * resets the customised sticky blocks settings.  designed to be called from /local/db/upgrade.php
+ * resets the customised sticky blocks settings.  designed to be called from /totara/core/db/upgrade.php
  *
  * @param bool   $remove   dictates whether to remove existing sticky blocks
  * @param string $path     path to the stickyblocks definition file
  *
  * @return bool
  */
-function totara_reset_stickyblocks($remove=false, $path='local') {
-    global $CFG;
+function totara_reset_stickyblocks($remove=false, $path='totara/core') {
+    global $CFG, $DB;
 
     if ($remove) {
         // remove existing.  we only remove from the custom pagetypes format_learning and my-collaboration
-        delete_records('block_pinned', 'pagetype', 'format_learning');
+        $DB->delete_records('block_pinned', array('pagetype' => 'format_learning'));
     }
 
     // get the sticky block object
@@ -853,15 +700,15 @@ function totara_reset_stickyblocks($remove=false, $path='local') {
     foreach($blocks as $block) {
 
         // check for existing record
-        $id = get_field('block_pinned', 'id', 'blockid', $block->blockid, 'pagetype', $block->pagetype);
+        $id = $DB->get_field('block_pinned', 'id', array('blockid' => $block->blockid, 'pagetype' => $block->pagetype));
 
         if (empty($id)) {
             // if not there then insert a new record
-            insert_record('block_pinned', $block);
+            $DB->insert_record('block_pinned', $block);
         } else {
             // if there then just update the relevant settings
             $block->id = $id;
-            update_record('block_pinned', $block);
+            $DB->update_record('block_pinned', $block);
         }
     }
 
@@ -886,14 +733,14 @@ function instance_is_dashlet($dashlet) {
  * @return string rolename
  */
 function get_dashlet_role($pageid) {
-    global $CFG;
+    global $DB;
     // get Role of user in this page.
     $sql = "SELECT r.shortname
-            FROM {$CFG->prefix}dashb d
-            INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
-            INNER JOIN {$CFG->prefix}role r on d.roleid = r.id
-            WHERE di.id = {$pageid}";       // The pageid is the dashb instance id
-    $role = get_field_sql($sql);
+            FROM {dashb} d
+            INNER JOIN {dashb_instance} di ON d.id = di.dashb_id
+            INNER JOIN {role} r on d.roleid = r.id
+            WHERE di.id = ?";       // The pageid is the dashb instance id
+    $role = $DB->get_field_sql($sql, array($pageid));
     return $role;
 }
 
@@ -1002,7 +849,8 @@ function totara_date_parse_from_format ($format, $date) {
 
 function get_totara_menu($header=true) {
     global $CFG, $USER;
-    include($CFG->dirroot.'/local/totara_menu.php');
+    //$CFG and $USER are used by totara_menu.php
+    include($CFG->dirroot.'/totara/core/totara_menu.php');
 }
 
 
@@ -1027,9 +875,10 @@ function totara_is_post_request() {
  * @return  void
  */
 function totara_errors_download() {
+    global $DB;
 
     // Load errors from database
-    $errors = get_records('errorlog');
+    $errors = $DB->get_records('errorlog');
     if (!$errors) {
         $errors = array();
     }
@@ -1058,14 +907,16 @@ function totara_errors_download() {
  *
  * @access  public
  * @param   string  $value      Search value
- * @param   bool    $return     Return results rather than print
+ * @param   bool    $return     Return results (always true in M2.0, param left until all calls elsewhere cleaned up!)
  * @param   string  $type       Type of results ('all', 'course', 'program', 'category')
  * @param   int     $category   Parent category (0 means all, -1 means global search)
  * @return  string|void
  */
-function print_totara_search($value = '', $return = false, $type = 'all', $category = -1) {
+function print_totara_search($value = '', $return = true, $type = 'all', $category = -1) {
 
-    global $CFG;
+    global $CFG, $DB, $PAGE;
+    $return = ($return) ? $return : true;
+
     static $count = 0;
 
     $count++;
@@ -1081,7 +932,7 @@ function print_totara_search($value = '', $return = false, $type = 'all', $categ
     // If searching in a category, indicate which category
     if ($category > 0) {
         // Get category name
-        $categoryname = get_field('course_categories', 'name', 'id', $category);
+        $categoryname = $DB->get_field('course_categories', 'name', array('id' => $category));
         if ($categoryname) {
             $strsearch = get_string('searchx', 'moodle', $categoryname);
         } else {
@@ -1100,18 +951,10 @@ function print_totara_search($value = '', $return = false, $type = 'all', $categ
         }
     }
 
-    $output  = '<form id="searchtotara" action="'.$action.'" method="get">';
-    $output .= '<fieldset class="coursesearchbox invisiblefieldset">';
-    $output .= '<input type="hidden" name="viewtype" value="'.$type.'" />';
-    $output .= '<input type="hidden" name="category" value="'.$category.'" />';
-    $output .= '<input type="text" class="search-box" id="navsearchbox" size="20" name="search" alt="'.s($strsearch).'" value="'.s($value, true).'" placeholder="'.s($strsearch).'" />';
-    $output .= '<input type="submit" value="'.get_string('go').'" />';
-    $output .= '</fieldset></form>';
+    $renderer = $PAGE->get_renderer('totara_core');
+    $output = $renderer->print_totara_search($action, $type, $category, $strsearch, $value);
 
-    if ($return) {
-        return $output;
-    }
-    echo $output;
+    return $output;
 }
 
 
@@ -1124,7 +967,7 @@ function print_totara_search($value = '', $return = false, $type = 'all', $categ
  * @return string HTML to display the button
  */
 function totara_print_edit_button($settingname, $params = array()) {
-    global $CFG, $USER;
+    global $CFG, $USER, $OUTPUT;
 
     $currentstate = isset($USER->$settingname) ?
         $USER->$settingname : null;
@@ -1140,7 +983,7 @@ function totara_print_edit_button($settingname, $params = array()) {
 
     // Generate the button HTML.
     $params[$settingname] = $edit;
-    return print_single_button(qualified_me(), $params, $label, 'get', '', true);
+    return $OUTPUT->single_button(new moodle_url(qualified_me(), $params), $label, 'get');
 }
 
 
@@ -1183,11 +1026,11 @@ function get_string_in_user_lang($user, $identifier, $module='', $a=NULL, $extra
  */
 function sql_cast2char($fieldname) {
 
-    global $CFG;
+    global $DB;
 
     $sql = '';
 
-    switch ($CFG->dbfamily) {
+    switch ($DB->get_dbfamily()) {
         case 'mysql':
             $sql = ' CAST(' . $fieldname . ' AS CHAR) ';
             break;
@@ -1215,12 +1058,11 @@ function sql_cast2char($fieldname) {
  * @return string the piece of SQL code to be used in your statement.
  */
 function sql_cast2float($fieldname) {
-
-    global $CFG;
+    global $DB;
 
     $sql = '';
 
-    switch ($CFG->dbfamily) {
+    switch ($DB->get_dbfamily()) {
         case 'mysql':
             $sql = ' CAST(' . $fieldname . ' AS DECIMAL) ';
             break;
@@ -1249,100 +1091,138 @@ function sql_cast2float($fieldname) {
  * @param $unittest set to true if using for unit tests (optional)
  */
 function assign_user_position($assignment, $unittest=false) {
-    global $CFG;
+    global $CFG, $DB;
 
-    begin_sql();
-    // Get old user id
-    $old_managerid = null;
-    if ($assignment->reportstoid) {
-        $old_managerid = get_field('role_assignments', 'userid', 'id', $assignment->reportstoid);
-    } else {
+        $transaction = $DB->start_delegated_transaction();
+
+        // Get old user id
         $old_managerid = null;
-    }
-
-    $managerchanged = false;
-    if ($old_managerid != $assignment->managerid) {
-        $managerchanged = true;
-    }
-
-    // skip this bit during testing as we don't have all the required tables for role assignments
-    if (!$unittest) {
-
-        // Delete role assignment if there was a manager but it changed
-        if ($old_managerid && $managerchanged) {
-            if (!role_unassign(null, null, null, null, null, $assignment->reportstoid)) {
-                rollback_sql();
-                error_log('assign_user_position: Could not delete old manager role assignment');
-                return false;
+        if ($assignment->reportstoid) {
+            $old_managerid = $DB->get_field('role_assignments', 'userid', array('id' => $assignment->reportstoid));
+        } else {
+            $old_managerid = null;
+        }
+        $managerchanged = false;
+        if ($old_managerid != $assignment->managerid) {
+            $managerchanged = true;
+        }
+        // skip this bit during testing as we don't have all the required tables for role assignments
+        if (!$unittest) {
+            // Delete role assignment if there was a manager but it changed
+            if ($old_managerid && $managerchanged) {
+                role_unassign(null, null, null, null, null, $assignment->reportstoid);
+            }
+            // Create new role assignment if there is now and a manager but it changed
+            if ($assignment->managerid && $managerchanged) {
+                // Get context
+                $context = context_user($assignment->userid);
+                // Get manager role id
+                $roleid = $CFG->managerroleid;
+                // Assign manager to user
+                $raid = role_assign(
+                    $roleid,
+                    $assignment->managerid,
+                    null,
+                    $context->id,
+                    (!$assignment->timevalidfrom ? 0 : $assignment->timevalidfrom),
+                    (!$assignment->timevalidto ? 0 : $assignment->timevalidto)
+                );
+                // update reportstoid
+                $assignment->reportstoid = $raid;
             }
         }
+        // Store the date of this assignment
+        require_once($CFG->dirroot.'/totara/program/lib.php');
+        prog_store_position_assignment($assignment);
+        // Save assignment
+        $assignment->save($managerchanged);
+        $transaction->allow_commit();
 
-        // Create new role assignment if there is now and a manager but it changed
-        if ($assignment->managerid && $managerchanged) {
+}
 
-            // Get context
-            $context = get_context_instance(CONTEXT_USER, $assignment->userid);
+/**
+* Loops through the navigation options and returns an array of classes
+*
+* The array contains the navigation option name as a key, and a string
+* to be inserted into a class as the value. The string is either
+* ' selected' if the option is currently selected, or an empty string ('')
+*
+* @param array $navstructure A nested array containing the structure of the menu
+* @param string $primary_selected The name of the primary option
+* @param string $secondary_selected The name of the secondary option
+*
+* @return array Array of strings, keyed on option names
+*/
+function totara_get_nav_select_classes($navstructure, $primary_selected, $secondary_selected) {
 
-            // Get manager role id
-            $roleid = $CFG->managerroleid;
+    $selectedstr = ' selected';
+    $selected = array();
+    foreach($navstructure as $primary => $secondaries) {
+        if($primary_selected == $primary) {
+            $selected[$primary] = $selectedstr;
+        } else {
+            $selected[$primary] = '';
+        }
+        foreach($secondaries as $secondary) {
+            if($secondary_selected == $secondary) {
+                $selected[$secondary] = $selectedstr;
+            } else {
+                $selected[$secondary] = '';
+            }
+        }
+    }
+    return $selected;
+}
 
-            // Assign manager to user
-            $raid = role_assign(
-                $roleid,
-                $assignment->managerid,
-                null,
-                $context->id,
-                (!$assignment->timevalidfrom ? 0 : $assignment->timevalidfrom),
-                (!$assignment->timevalidto ? 0 : $assignment->timevalidto)
-            );
 
-            // update reportstoid
-            $assignment->reportstoid = $raid;
+/**
+ * Returns an array of class strings to add to each navigation tab
+ *
+ * Strings are empty unless the page should be shown as 'selected'. Keys
+ * are the tab names from $navstructure array
+ *
+ * @param array $navstructure Multi-dimensional array of the tab structure
+ * @param array $navmatches URL matches for each tab name
+ *
+ * @return array Array of class strings to add to menu items
+ */
+function totara_get_selected_navs($navstructure, $navmatches) {
+    global $CFG;
+    $page_url = substr(qualified_me(), strlen($CFG->wwwroot));
+
+    $selected = null;
+    foreach ($navmatches as $pagename => $partialurls) {
+        if(is_array($partialurls)) {
+            foreach($partialurls as $partialurl) {
+                if(strncmp($page_url, $partialurl,
+                strlen($partialurl)) == 0) {
+                    $selected = $pagename;
+                }
+            }
+        } else {
+            if(strncmp($page_url, $partialurls,
+            strlen($partialurls)) == 0) {
+                $selected = $pagename;
+            }
         }
     }
 
-    // Store the date of this assignment
-    require_once($CFG->dirroot.'/local/program/lib.php');
-    prog_store_position_assignment($assignment);
-
-    // Save assignment
-    if (!$assignment->save($managerchanged)) {
-        rollback_sql();
+    // now work out if any primary items should be selected
+    $primary_selected = null;
+    $secondary_selected = null;
+    foreach($navstructure as $primary => $secondaries) {
+        // this is a primary item
+        if($selected == $primary) {
+            $primary_selected = $primary;
+            $secondary_selected = null;
+        }
+        // this is a secondary item, find which primary
+        // item it belongs to
+        if(in_array($selected, $secondaries)) {
+            $primary_selected = $primary;
+            $secondary_selected = $selected;
+        }
+        // otherwise, none set
     }
-
-    commit_sql();
-}
-
-
-/**
- * Displays a count of the number of active users in the last year
- */
-function totara_print_active_users() {
-    global $CFG;
-
-    print_box_start('generalbox adminnotice');
-    $oneyearago = time() - 60*60*24*365;
-    // See MDL-22481 for why currentlogin is used instead of lastlogin
-    $sql = "SELECT COUNT(id)
-        FROM {$CFG->prefix}user
-        WHERE currentlogin > $oneyearago";
-    $activeusers = count_records_sql($sql);
-    print_string('numberofactiveusers', 'admin', $activeusers);
-    print_box_end();
-}
-
-
-/**
- * Displays a link to download error log
- */
-function totara_print_errorlog_link() {
-    global $CFG;
-
-    $latesterror = get_record_sql("SELECT timeoccured FROM {$CFG->prefix}errorlog ORDER BY id DESC", true);
-    if ($latesterror) {
-        print_box_start('generalbox adminnotice');
-        print_string('lasterroroccuredat', 'admin', userdate($latesterror->timeoccured));
-        print_single_button("{$CFG->wwwroot}/admin/index.php", array('geterrors' => 1), get_string('downloaderrorlog', 'admin'), 'post');
-        print_box_end();
-    }
+    return array($primary_selected, $secondary_selected);
 }

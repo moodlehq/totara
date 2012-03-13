@@ -84,7 +84,7 @@ if($d && $confirm) {
     if ($scheduled = get_records_select('report_builder_schedule', "savedsearchid={$sid}")) {
         //display a message and list of scheduled reports using this saved search
         ob_start();
-        totara_print_scheduled_reports(false, false, "rbs.savedsearchid={$sid}");
+        totara_print_scheduled_reports(false, false, array("rbs.savedsearchid=?", array($sid)));
         $out = ob_get_contents();
         ob_end_clean();
 

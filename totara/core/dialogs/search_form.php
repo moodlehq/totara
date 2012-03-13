@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
  * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
- * @subpackage dialogs
+ * @subpackage totara_core/dialogs
  */
 
 /**
@@ -97,9 +97,9 @@ class dialog_search_form extends moodleform {
 
         // Show framework selector
         if ($hierarchy && $showpicker) {
-            $hierarchy_include = $CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/lib.php';
+            $hierarchy_include = $CFG->dirroot.'/totara/hierarchy/prefix/'.$prefix.'/lib.php';
             if (file_exists($hierarchy_include)) {
-                require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+                require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
                 $hierarchy = new $prefix;
                 $frameworks = $hierarchy->get_frameworks(array(), $showhidden);
             }
@@ -131,4 +131,3 @@ class dialog_search_form extends moodleform {
 
     }
 }
-

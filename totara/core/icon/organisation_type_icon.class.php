@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,10 @@
  *
  * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
+ * @subpackage totara_core/icon
  */
 
-require_once($CFG->dirroot . '/local/icon/totara_icon.class.php');
+require_once($CFG->dirroot . '/totara/core/icon/totara_icon.class.php');
 
 class organisation_type_icon extends totara_icon {
 

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@
  *
  * @author Jake Salmon <jake.salmon@kineo.com>
  * @package totara
- * @subpackage management
+ * @subpackage totara_core/dialogs
  */
 
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
 
 class totara_dialog_content_manager extends totara_dialog_content {
 
@@ -56,7 +56,6 @@ class totara_dialog_content_manager extends totara_dialog_content {
         // Make some capability checks
         if (!$this->skip_access_checks) {
             require_login();
-            //require_capability("moodle/local:view{$type}", get_system_context());
         }
 
         $this->type = self::TYPE_CHOICE_MULTI;
@@ -105,44 +104,46 @@ class totara_dialog_content_manager extends totara_dialog_content {
     }
 
 
-
+    /**
+     * Return all possible managers
+     *
+     * @return array Array of managers
+     */
     function get_items() {
-        global $CFG;
-        $primarytype = POSITION_TYPE_PRIMARY;
-        return get_records_sql("
+        global $DB;
+        return $DB->get_records_sql("
             SELECT DISTINCT pa.managerid AS sortorder, pa.managerid AS id, u.lastname
-            FROM {$CFG->prefix}pos_assignment pa
-            LEFT JOIN {$CFG->prefix}user u
+            FROM {pos_assignment} pa
+            LEFT JOIN {user} u
             ON pa.managerid = u.id
-            WHERE pa.type = {$primarytype}
-            ORDER BY u.lastname"
+            WHERE pa.type = ?
+            ORDER BY u.lastname", array(POSITION_TYPE_PRIMARY)
         );
     }
 
     /**
      * Get items in a framework by parent
      * @param int $parentid
-     * @return array|false
+     * @return array
      */
     function get_items_by_parent($parentid=false) {
-        global $CFG;
+        global $DB;
 
         if ($parentid) {
-            $primarytype = POSITION_TYPE_PRIMARY;
             // returns users who *are* managers, who's manager is user $parentid
-            return get_records_sql("
-                SELECT u.id, " . sql_fullname() . " as fullname
+            return $DB->get_records_sql("
+                SELECT u.id, " . $DB->sql_fullname() . " as fullname
                 FROM (
                     SELECT DISTINCT managerid AS id
-                    FROM {$CFG->prefix}pos_assignment
-                    WHERE type = $primarytype
+                    FROM {pos_assignment}
+                    WHERE type = ?
                 ) managers
-                INNER JOIN {$CFG->prefix}pos_assignment pa on managers.id = pa.userid
-                INNER JOIN {$CFG->prefix}user u on u.id = pa.userid
-                WHERE pa.managerid = $parentid
-                AND pa.type = $primarytype
+                INNER JOIN {pos_assignment} pa on managers.id = pa.userid
+                INNER JOIN {user} u on u.id = pa.userid
+                WHERE pa.managerid = ?
+                AND pa.type = ?
                 ORDER BY u.lastname, u.id
-            ");
+            ", array(POSITION_TYPE_PRIMARY, $parentid, POSITION_TYPE_PRIMARY));
         }
         else {
             // If no parentid, grab the root node of this framework
@@ -151,24 +152,30 @@ class totara_dialog_content_manager extends totara_dialog_content {
     }
 
 
-    function get_all_root_items($all=false) {
-        global $CFG;
+    /**
+     * Returns all users who are managers but don't have managers, e.g.
+     * the top level of the management hierarchy
+     *
+     * @return array The records for the top level managers
+     */
+    function get_all_root_items() {
+        global $DB;
 
-        $primarytype = POSITION_TYPE_PRIMARY;
         // returns users who *are* managers, but don't *have* a manager
-        return get_records_sql("
-            SELECT u.id, " . sql_fullname() . " as fullname
+        return $DB->get_records_sql("
+            SELECT u.id, " . $DB->sql_fullname() . " as fullname
             FROM (
                 SELECT DISTINCT managerid AS id
-                FROM {$CFG->prefix}pos_assignment
-                WHERE type = $primarytype
+                FROM {pos_assignment}
+                WHERE type = ?
             ) managers
-            LEFT JOIN {$CFG->prefix}pos_assignment pa on managers.id = pa.userid
-            INNER JOIN {$CFG->prefix}user u on u.id = managers.id
+            LEFT JOIN {pos_assignment} pa on managers.id = pa.userid
+            INNER JOIN {user} u on u.id = managers.id
             WHERE pa.managerid IS NULL OR pa.managerid = 0
             ORDER BY u.lastname, u.id
-        ");
+        ", array(POSITION_TYPE_PRIMARY));
     }
+
 
     /**
      * Get all items that are parents
@@ -178,25 +185,20 @@ class totara_dialog_content_manager extends totara_dialog_content {
      * @return  array
      */
     function get_all_parents() {
-        global $CFG;
-        $primarytype = POSITION_TYPE_PRIMARY;
+        global $DB;
 
         // returns users who *are* managers, who also have staff who *are* managers
-        $parents = get_records_sql("
+        $parents = $DB->get_records_sql("
             SELECT DISTINCT managers.id
             FROM (
                 SELECT DISTINCT managerid AS id
-                FROM {$CFG->prefix}pos_assignment
-                WHERE type = $primarytype
+                FROM {pos_assignment}
+                WHERE type = ?
             ) managers
-            INNER JOIN {$CFG->prefix}pos_assignment staff on managers.id = staff.managerid
-            INNER JOIN {$CFG->prefix}pos_assignment pa ON staff.userid = pa.managerid AND pa.type = 1
-            ");
+            INNER JOIN {pos_assignment} staff on managers.id = staff.managerid
+            INNER JOIN {pos_assignment} pa ON staff.userid = pa.managerid AND pa.type = ?
+            ", array(POSITION_TYPE_PRIMARY, POSITION_TYPE_PRIMARY));
 
-        if ($parents) {
-            return $parents;
-        } else {
-            return array();
-        }
+        return $parents;
     }
 }

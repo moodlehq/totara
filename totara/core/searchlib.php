@@ -1,9 +1,8 @@
 <?php
-
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +19,9 @@
  *
  * Library for handling basic search queries
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage local
+ * @subpackage totara_core
  */
 
 /**
@@ -68,12 +67,13 @@ function local_search_parse_keywords($query) {
  * @return string SQL WHERE clause to match the keywords provided
  */
 function local_search_get_keyword_where_clause($keywords, $fields) {
+    global $DB;
 
     $queries = array();
     foreach ($keywords as $keyword) {
         $matches = array();
         foreach ($fields as $field) {
-            $matches[] = $field . ' ' . sql_ilike() . " '%" . $keyword . "%'";
+            $matches[] = $DB->sql_like($field, $keyword);
         }
         // look for each keyword in any field
         $queries[] = '(' . implode(' OR ', $matches) . ')';

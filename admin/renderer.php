@@ -174,6 +174,7 @@ class core_admin_renderer extends plugin_renderer_base {
         return $output;
     }
 
+
     /**
      * Display the admin notifications page.
      * @param int $maturity
@@ -185,7 +186,8 @@ class core_admin_renderer extends plugin_renderer_base {
      * @return string HTML to output.
      */
     public function admin_notifications_page($maturity, $insecuredataroot, $errorsdisplayed,
-            $cronoverdue, $dbproblems, $maintenancemode) {
+            $cronoverdue, $dbproblems, $maintenancemode, $latesterror, $activeusers, $totara_release) {
+        global $PAGE;
         $output = '';
 
         $output .= $this->header();
@@ -196,6 +198,14 @@ class core_admin_renderer extends plugin_renderer_base {
         $output .= $this->db_problems($dbproblems);
         $output .= $this->maintenance_mode_warning($maintenancemode);
 
+        $totara_renderer = $PAGE->get_renderer('totara_core');
+        if ($latesterror) {
+            $output .= $totara_renderer->totara_print_errorlog_link($latesterror);
+        }
+        // list count of active users
+        $output .= $totara_renderer->totara_print_active_users($activeusers);
+        /// Display Totara version information
+        $output .= $totara_renderer->totara_print_copyright($totara_release);
         //////////////////////////////////////////////////////////////////////////////////////////////////
         ////  IT IS ILLEGAL AND A VIOLATION OF THE GPL TO HIDE, REMOVE OR MODIFY THIS COPYRIGHT NOTICE ///
         $output .= $this->moodle_copyright();

@@ -1,9 +1,8 @@
 <?php
-
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Aaron Barnes <aaronb@catalyst.net.nz>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage dialogs
+ * @subpackage totara_core/dialogs
  */
 
 /**
@@ -29,7 +28,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
 require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->libdir.'/datalib.php');
 
@@ -99,16 +98,17 @@ class totara_dialog_content_courses extends totara_dialog_content {
      * @access  public
      */
     public function load_categories() {
+        global $DB;
 
         // If category 0, make fake object
         if (!$this->categoryid) {
-            $parent = new object();
+            $parent = new stdClass();
             $parent->id = 0;
         }
         else {
             // Load category
-            if (!$parent = get_record('course_categories', 'id', $this->categoryid)) {
-                error('Category ID was incorrect');
+            if (!$parent = $DB->get_record('course_categories', array('id' => $this->categoryid))) {
+                print_error('error:categoryidincorrect', 'totara_core');
             }
         }
 
@@ -128,7 +128,7 @@ class totara_dialog_content_courses extends totara_dialog_content {
             $item_count = array_key_exists($category->id, $category_item_counts) ? $category_item_counts[$category->id] : 0;
 
             if ($item_count > 0) {
-                $c = new object();
+                $c = new stdClass();
                 $c->id = 'cat'.$category->id;
                 $c->fullname = $category->name;
 
@@ -148,14 +148,18 @@ class totara_dialog_content_courses extends totara_dialog_content {
      * Load courses to display
      *
      * @access  public
-     * @param   string  $where  Alternate where clause
+     * @param   array  $where  Alternate where clause in the for array($condition, $params)
      */
     public function load_courses($where = false) {
+        global $DB;
         if ($this->categoryid) {
             if ($where === false) {
-                $where = "category = '{$this->categoryid}' AND visible = 1";
+                $conditions = "category = ? AND visible = 1";
+                $params = array($this->categoryid);
+            } else {
+                list($conditions, $params) = $where;
             }
-            $this->courses = get_records_select('course', $where, 'fullname ASC', 'id, fullname, sortorder');
+            $this->courses = $DB->get_records_select('course', $conditions, $params, 'fullname ASC', 'id, fullname, sortorder');
         }
     }
 

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
  *
  * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage local
+ * @subpackage totara_core
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -52,7 +52,8 @@ function totara_setup_error_handlers() {
  * @return  bool
  */
 function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $errcontext = array()) {
-    global $CFG, $TOTARA;
+    global $CFG, $DB, $TOTARA;
+    $dbman = $DB->get_manager();
 
     // Do not record suppressed errors (or any others if error reporting disabled)
     if (!error_reporting()) {
@@ -76,9 +77,9 @@ function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $err
         static $previous_errors = null;
         if (is_null($previous_errors)) {
             // Load hashes from db if table exists (in case of error during upgrade or install)
-            $table = new XMLDBTable('errorlog');
-            if (table_exists($table)) {
-                $previous_errors = get_fieldset_select('errorlog', 'hash', '');
+            $table = new xmldb_table('errorlog');
+            if ($dbman->table_exists($table)) {
+                $previous_errors = $DB->get_fieldset_select('errorlog', 'hash', '');
             }
 
             if (!$previous_errors) {
@@ -97,17 +98,17 @@ function totara_error_handler($errno, $errstr, $errfile = '', $errline = 0, $err
         if (!in_array($hash, $previous_errors)) {
 
             // Record error
-            $error = new object();
+            $error = new stdClass();
             $error->timeoccured = time();
-            $error->version = addslashes($TOTARA->version);
-            $error->build = addslashes($TOTARA->build);
-            $error->details = addslashes($description);
+            $error->version = $TOTARA->version;
+            $error->build = $TOTARA->build;
+            $error->details = $description;
             $error->hash = $hash;
 
             // Only if the table exists (in case of error during upgrade or install)
-            $table = new XMLDBTable('errorlog');
-            if (table_exists($table)) {
-                insert_record('errorlog', $error);
+            $table = new xmldb_table('errorlog');
+            if ($dbman->table_exists($table)) {
+                $DB->insert_record('errorlog', $error);
                 ++$insertcount;
             }
         }
@@ -193,12 +194,12 @@ function totara_exception_handler($exception) {
  * To prevent the table getting too big
  */
 function totara_crop_error_log() {
-    global $CFG;
+    global $DB;
 
     // Get 100th from end errorlog id
-    $errorlog_maxid = get_records_sql("
+    $errorlog_maxid = $DB->get_records_sql("
         SELECT id
-          FROM {$CFG->prefix}errorlog
+          FROM {errorlog}
          ORDER BY id DESC
     ", 100, 1);
 
@@ -207,11 +208,11 @@ function totara_crop_error_log() {
     // Crop errorlog table at 100 entries
     if ($errorlog_maxid) {
         $errorlog_sql = "
-            DELETE FROM {$CFG->prefix}errorlog
-             WHERE id <= {$errorlog_maxid->id}
+            DELETE FROM {errorlog}
+             WHERE id <= ?
         ";
         mtrace('Cropping errorlog table at 100 entries');
-        execute_sql($errorlog_sql, false);
+        $DB->execute($errorlog_sql, array($errorlog_maxid->id));
     }
 
 }

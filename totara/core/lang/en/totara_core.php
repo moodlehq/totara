@@ -1,12 +1,12 @@
 <?php
-/**
- * Moodle - Modular Object-Oriented Dynamic Learning Environment
- *          http://moodle.org
- * Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
+/*
+ * This file is part of Totara LMS
  *
- * This program is free software: you can redistribute it and/or modify
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,79 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    moodle
- * @subpackage local
- * @author     Jonathan Newman <jonathan.newman@catalyst.net.nz>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
- * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
+ * @package totara
+ * @subpackage totara_core
  *
- * local (tao) specific language strings.
- * these should be called like get_string('key', 'local');
+ * totara_core specific language strings.
+ * these should be called like get_string('key', 'totara_core');
+ * Replaces lang/[lang]/local.php from 1.1 series
  */
 
 $string['pluginname'] = 'Totara core';
 
-// Local hierarchy capability strings
-$string['local:viewcompetency'] = 'View a competency';
-$string['local:createcompetency'] = 'Create a competency';
-$string['local:updatecompetency'] = 'Update a competency';
-$string['local:deletecompetency'] = 'Delete a competency';
-$string['local:createcompetencydepth'] = 'Create a competency depth';
-$string['local:updatecompetencydepth'] = 'Update a competency depth';
-$string['local:deletecompetencydepth'] = 'Delete a comptency depth';
-$string['local:createcompetencytype'] = 'Create a competency type';
-$string['local:updatecompetencytype'] = 'Update a competency type';
-$string['local:deletecompetencytype'] = 'Delete a comptency type';
-$string['local:createcompetencyframeworks'] = 'Create a competency framework';
-$string['local:updatecompetencyframeworks'] = 'Update a competency framework';
-$string['local:deletecompetencyframeworks'] = 'Delete a competency framework';
-$string['local:createcompetencytemplate'] = 'Create a competency template';
-$string['local:updatecompetencytemplate'] = 'Update a competency template';
-$string['local:deletecompetencytemplate'] = 'Delete a competency template';
-$string['local:createcompetencycustomfield'] = 'Create a competency custom field';
-$string['local:updatecompetencycustomfield'] = 'Update a competency custom field';
-$string['local:deletecompetencycustomfield'] = 'Delete a competency custom field';
-$string['local:assignselfposition'] = 'Assign self position';
-$string['local:assignuserposition'] = 'Assign user position';
-$string['local:viewposition'] = 'View a position';
-$string['local:createposition'] = 'Create a position';
-$string['local:updateposition'] = 'Update a position';
-$string['local:deleteposition'] = 'Delete a position';
-$string['local:createpositiondepth'] = 'Create a position depth';
-$string['local:updatepositiondepth'] = 'Update a position depth';
-$string['local:deletepositiondepth'] = 'Delete a position depth';
-$string['local:createpositiontype'] = 'Create a position type';
-$string['local:updatepositiontype'] = 'Update a position type';
-$string['local:deletepositiontype'] = 'Delete a position type';
-$string['local:createpositionframeworks'] = 'Create a position framework';
-$string['local:updatepositionframeworks'] = 'Update a position framework';
-$string['local:deletepositionframeworks'] = 'Delete a position framework';
-$string['local:createpositioncustomfield'] = 'Create a position custom field';
-$string['local:updatepositioncustomfield'] = 'Update a position custom field';
-$string['local:deletepositioncustomfield'] = 'Delete a position custom field';
-$string['local:vieworganisation'] = 'View an organisation';
-$string['local:createorganisation'] = 'Create an organisation';
-$string['local:updateorganisation'] = 'Update an organisation';
-$string['local:deleteorganisation'] = 'Delete an organisation';
-$string['local:createorganisationdepth'] = 'Create an organisational depth';
-$string['local:updateorganisationdepth'] = 'Update an organisational depth';
-$string['local:deleteorganisationdepth'] = 'Delete an organisational depth';
-$string['local:createorganisationtype'] = 'Create an organisational type';
-$string['local:updateorganisationtype'] = 'Update an organisational type';
-$string['local:deleteorganisationtype'] = 'Delete an organisational type';
-$string['local:createorganisationframeworks'] = 'Create an organisational framework';
-$string['local:updateorganisationframeworks'] = 'Update an organisational framework';
-$string['local:deleteorganisationframeworks'] = 'Delete an organisational framework';
-$string['local:createorganisationcustomfield'] = 'Create an organisation custom field';
-$string['local:updateorganisationcustomfield'] = 'Update an organisation custom field';
-$string['local:deleteorganisationcustomfield'] = 'Delete an organisation custom field';
-$string['local:createcoursecustomfield'] = 'Create a course custom field';
-$string['local:updatecoursecustomfield'] = 'Update a course custom field';
-$string['local:deletecoursecustomfield'] = 'Delete a course custom field';
-
-// Local Report capability strings
-$string['local:admin'] = 'Perform administrative tasks on report builder reports';
-
+$string['core:createcoursecustomfield'] = 'Create a course custom field';
+$string['core:updatecoursecustomfield'] = 'Update a course custom field';
+$string['core:deletecoursecustomfield'] = 'Delete a course custom field';
+$string['xpercentcomplete'] = '{$a} % complete';
+$string['numberofactiveusers'] = '{$a} users have logged in to this site in the last year';
+$string['lasterroroccuredat'] = 'Last error occured at {$a}';
+$string['downloaderrorlog'] = 'Download error log';
+$string['totaracopyright'] = '<p class="totara-copyright"><a href="http://www.totaralms.com">TotaraLMS</a> is a distribution of Moodle. A "distro" or distribution is a ready-made extended version of the standard product with its own particular focus and vision. Totara is specifically designed for the requirements of corporate, industry and vocational training in contrast to standard Moodle\'s traditional educational setting.</p><p class="totara-copyright"><a href="http://www.totaralms.com">TotaraLMS</a> extensions are Copyright &copy; 2010 onwards, Totara Learning Solutions Limited.</p>';
+$string['totaralogo'] = 'Totara Logo';
 // Course categories
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';
@@ -135,8 +81,8 @@ $string['notfound'] = 'Not found';
 $string['managers'] = 'Manager\'s ';
 $string['positionsarrow'] = 'Positions > ';
 $string['organisationsarrow'] = 'Organisations > ';
-$string['error:columntypenotfound'] = 'The column type \'$a\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy depth level. The best course of action is to delete this column by pressing the red cross to the right.';
-$string['error:columntypenotfound11'] = 'The column type \'$a\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy type. The best course of action is to delete this column by pressing the red cross to the right.';
+$string['error:columntypenotfound'] = 'The column type \'{$a}\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy depth level. The best course of action is to delete this column by pressing the red cross to the right.';
+$string['error:columntypenotfound11'] = 'The column type \'{$a}\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy type. The best course of action is to delete this column by pressing the red cross to the right.';
 $string['error:couldnotcreatedefaultfields'] = 'Could not create default fields';
 
 // Add/Edit competency evidence
@@ -166,10 +112,15 @@ $string['couldnotdeletece'] = 'Could not delete that competency evidence record.
 $string['alreadyselected'] = '(already selected)';
 
 // Installation and Demo data
+$string['totaraupgradefrom10'] = 'You cannot upgrade directly to {$a->attemptedversion} from {$a->currentversion}. Please upgrade to at least {$a->required} before attempting the upgrade to {$a->attemptedversion}.';
+$string['moodlecore'] = 'Moodle core';
+$string['totaracore'] = 'Totara core';
+$string['totarapre11'] = 'Totara (pre version 1.1)';
 $string['installingdemodata'] = 'Installing Demo Data';
 $string['installdemoquestion'] = 'Do you want to include demo data with this installation?<br /><br />(This will take a long time.)';
 $string['performinglocalpostinst'] = 'Local Post-installation setup';
 $string['localpostinstfailed'] = 'There was a problem setting up local modifications to this installation.';
+$string['totara11requiredupgradeversion'] = 'Totara 1.1.13';
 
 // Report Headings
 $string['reportheadings'] = 'Report Headings';
@@ -180,8 +131,6 @@ $string['myteam'] = 'My Team';
 $string['teammembers'] = 'Team Members';
 $string['calendar'] = 'Calendar';
 $string['myteaminstructionaltext'] = 'Choose a team member from the table on the right.';
-
-$string['local:markcomplete'] = 'Mark user\'s complete in course completion';
 
 // Course competencies
 $string['returntocourse'] = 'Return to the course';
@@ -231,13 +180,18 @@ $string['organisation_typeicon'] = 'Organisation type icon';
 $string['error:norolesfound'] = 'No roles found';
 $string['error:notificationsparamtypewrong'] = 'Incorrect param type sent to Totara notifications';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
-
+$string['error:categoryidincorrect'] = 'Category ID was incorrect';
+$string['error:dashboardnotfound'] = 'Cannot fully initialize page - could not retrieve dashboard details';
+$string['error:duplicaterecordsfound'] = '{$a->count} duplicate record(s) found in the {$a->tablename} table...fixing (see error log for details)';
+$string['error:duplicaterecordsdeleted'] = 'Duplicate {$a} record deleted: ';
 //My Team strings
 $string['teammembers_text'] = 'All members of your teams are show below.';
 $string['nostaffassigned'] = 'You currently do not have a team.';
-
+$string['numberofstaff'] = '({$a} staff)';
 //Course Types
 $string['coursetype'] = 'Course Type';
 $string['elearning'] = 'E-learning';
 $string['blended'] = 'Blended';
 $string['facetoface'] = 'Face-to-face';
+
+?>

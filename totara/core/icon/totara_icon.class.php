@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  *
  * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
+ * @subpackage totara_core/icon
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -67,11 +68,11 @@ abstract class totara_icon {
             $data->$iconfield = '';
         }
 
-        $icon_image_tag = '<img src="'.$CFG->wwwroot.'/local/icon/icon.php?icon='.urlencode($data->$iconfield).'&amp;size='.$this->size.'&amp;type='.$this->icontype.'" class="course_icon" id="icon_preview" />';
+        $icon_image_tag = '<img src="'.$CFG->wwwroot.'/totara/core/icon/icon.php?icon='.urlencode($data->$iconfield).'&amp;size='.$this->size.'&amp;type='.$this->icontype.'" class="course_icon" id="icon_preview" />';
 
-        $mform->addElement('header', 'iconheader', get_string($this->icontype.'icon', 'local'));
-        $mform->addElement('static', 'currenticon', get_string('currenticon', 'local'), $icon_image_tag);
-        $mform->addElement('select', 'icon', get_string('icon', 'local'), $this->get_stock_icons($this->icontype));
+        $mform->addElement('header', 'iconheader', get_string($this->icontype.'icon', 'totara_core'));
+        $mform->addElement('static', 'currenticon', get_string('currenticon', 'totara_core'), $icon_image_tag);
+        $mform->addElement('select', 'icon', get_string('icon', 'totara_core'), $this->get_stock_icons($this->icontype));
     }
 
     /**
@@ -81,6 +82,7 @@ abstract class totara_icon {
      * @return bool True if the update succeeds
      */
     function process_form($data) {
+        global $DB;
         $todb = new stdClass;
         $todb->id = $data->id;
         $iconfield = $this->field;
@@ -91,7 +93,7 @@ abstract class totara_icon {
             $todb->$iconfield = $data->icon;
         }
 
-        if (!update_record($this->table, $todb)) {
+        if (!$DB->update_record($this->table, $todb)) {
             return false;
         }
 
@@ -107,31 +109,24 @@ abstract class totara_icon {
      *  @return string Image tag for displaying specified image
      */
     function display($data, $size=null, $attributes=null) {
-        global $CFG;
+        global $CFG, $DB, $PAGE;
 
         if (isset($data->icon)) {
             $iconname = $data->icon;
         } else {
-            if (!$iconname = get_field($this->table, $this->field, 'id', $data->id)) {
+            if (!$iconname = $DB->get_field($this->table, $this->field, array('id' => $data->id))) {
                 // If we can't find the icon for this item show the default
                 $this->icon = 'default'.$this->extension;
             }
         }
 
         $size = $size ? $size : $this->size;
-
-        $filepath = $CFG->dirroot.'/theme/standard/'.$this->icontype.'icons';
-        if (is_file($CFG->themedir.'/'.$CFG->theme.'/'.$this->icondir.'/'.$size.'/'.$iconname)) {
-            $iconurl = $CFG->themewww.'/'.$CFG->theme.'/'.$this->icondir.'/'.$size.'/'.$iconname;
-
+        $themedir = $PAGE->theme->dir;
+        if (is_file($themedir.'/'.$this->icondir.'/'.$size.'/'.$iconname . $this->extension)) {
+            $iconurl = $themedir.'/'.$this->icondir.'/'.$size.'/'.$iconname . $this->extension;
+        } else if (is_file($CFG->dirroot.'/theme/standard/'.$this->icondir.'/'.$size.'/'.$iconname . $this->extension)) {
+            $iconurl = $CFG->dirroot.'/theme/standard/'.$this->icondir.'/'.$size.'/'.$iconname . $this->extension;
         }
-        else if (is_file($CFG->dirroot.'/theme/standard/'.$this->icondir.'/'.$size.'/'.$iconname)) {
-            $iconurl = $CFG->themewww.'/standard/'.$this->icondir.'/'.$size.'/'.$iconname;
-        }
-        else {
-            $iconurl = $CFG->themewww.'/standard/'.$this->icondir.'/'.$size.'/default.png';
-        }
-
         // Add css class
         if (is_array($attributes)) {
             if (!empty($attributes['class'])) {
@@ -161,7 +156,7 @@ abstract class totara_icon {
      */
     function get_stock_icons() {
         global $CFG;
-        $icons = array('none' => get_string('none', 'local'));
+        $icons = array('none' => get_string('none', 'totara_core'));
 
         if ($path = $this->get_stock_icon_dir()) {
             $large_path = $path.'/large/';
@@ -185,14 +180,13 @@ abstract class totara_icon {
      * @return string The folder to get the icon stock
      */
     function get_stock_icon_dir($size='') {
-        global $CFG;
-
-        if (is_dir($CFG->themedir.'/'.$CFG->theme.'/'.$this->icondir.'/'.$size)) {
-            return($CFG->themedir.'/'.$CFG->theme.'/'.$this->icondir.'/'.$size);
-        } else if (is_dir($CFG->themedir.'/standard/'.$this->icondir.'/'.$size)) {
-            return($CFG->themedir.'/standard/'.$this->icondir.'/'.$size);
-        }
-        else {
+        global $CFG, $PAGE;
+        $themedir = $PAGE->theme->dir;
+        if (is_dir($themedir.'/'.$this->icondir.'/'.$size)) {
+            return($themedir.'/'.$this->icondir.'/'.$size);
+        } else if (is_dir($CFG->dirroot.'/theme/standard/'.$this->icondir.'/'.$size)) {
+            return($CFG->dirroot.'/theme/standard/'.$this->icondir.'/'.$size);
+        } else {
             return(false);
         }
     }
@@ -207,8 +201,8 @@ abstract class totara_icon {
     function get_icon_path($icon, $size='large'){
         $icondir = $this->get_stock_icon_dir($size);
 
-        if (is_file($icondir.'/'.$icon)) {
-            return array('icon' => $icon, 'path' => $icondir.'/'.$icon);
+        if (is_file($icondir.'/'.$icon.$this->extension)) {
+            return array('icon' => $icon.$this->extension, 'path' => $icondir.'/'.$icon.$this->extension);
         } else {
             return array('icon' => $this->default.$this->extension, 'path' => $icondir.'/'.$this->default.$this->extension);
         }

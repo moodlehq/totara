@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Aaron Barnes <aaronb@catalyst.net.nz>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage dialogs
+ * @subpackage totara_core/dialogs
  */
 
 /**
@@ -28,8 +28,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 
 /**
  * Class for generating single select hierarchy dialog markup
@@ -116,7 +116,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
         // Make some capability checks
         if (!$this->skip_access_checks) {
             require_login();
-            require_capability("moodle/local:view{$prefix}", get_system_context());
+            require_capability("totara/hierarchy:view{$prefix}", context_system::instance());
         }
 
         // Load hierarchy instance
@@ -219,7 +219,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
 
         // Grab search page markup
         ob_start();
-        require_once $CFG->dirroot.'/hierarchy/item/search.php';
+        require_once $CFG->dirroot.'/totara/hierarchy/item/search.php';
         return ob_get_clean();
     }
 }
@@ -258,4 +258,3 @@ class totara_dialog_content_hierarchy_multi extends totara_dialog_content_hierar
         $this->select_title = 'locate'.$prefix;
     }
 }
-

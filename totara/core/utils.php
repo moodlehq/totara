@@ -3,7 +3,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  *
  * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage utils
+ * @subpackage totara_core
  */
 
 /*
@@ -69,14 +69,14 @@ function totara_pop_n(&$items, $number) {
  * @return string The SQL needed to compare $field to the items in $items
  */
 function sql_sequence($field, $items, $negate = false) {
-    global $CFG;
+    global $DB;
 
     if (!is_array($items) || count($items) == 0) {
         return ($negate) ? '1=1' : '1=0';
     }
 
     $not = $negate ? 'NOT' : '';
-    if ($CFG->dbfamily != 'oracle' || $count($items <= 1000)) {
+    if ($DB->get_dbfamily() != 'oracle' || $count($items <= 1000)) {
         return " $field $not IN (" . implode(',', $items) . ') ';
     }
 
@@ -149,7 +149,7 @@ function totara_group_records($rs, $field) {
         return false;
     }
     $out = array();
-    while ($row = rs_fetch_next_record($rs)) {
+    foreach ($rs as $row) {
         // $field must exist in recordset
         if (!isset($row->$field)) {
             return false;

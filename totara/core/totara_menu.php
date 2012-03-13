@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Newman <jonathan.newman@catalyst.net.nz>
- * @author Simon Coggins <simonc@catalyst.net.nz>
- * @author Aaron Barnes <aaronb@catalyst.net.nz>
- * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
- * @subpackage local
+ * @subpackage totara_core
  */
 
-require_once($CFG->dirroot . '/theme/totara/helpers.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/core/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 
 // multi-dimensional array containing nested list
 // of tab names
@@ -61,15 +61,15 @@ $navmatches = array(
     'home' => '/index.php',
     'profile' => '/user/view.php',
     'learnerdashboard' => '/my/learning.php',
-    'learningplans' => '/local/plan/',
+    'learningplans' => '/totara/plan/',
     'mybookings' => array(
         '/my/bookings.php',
         '/my/pastbookings.php',
     ),
-    'recordoflearning' => '/local/plan/record/',
+    'recordoflearning' => '/totara/plan/record/',
     'requiredlearning' => array(
-        '/local/program/required.php',
-        '/local/program/view.php',
+        '/totara/program/required.php',
+        '/totara/program/view.php',
      ),
     'managerdashboard' => '/my/team.php',
     'teammembers' => '/my/teammembers.php',
@@ -118,7 +118,7 @@ if(in_array($secondary_selected, array(
 if($secondary_selected == 'learningplans') {
     $planid = optional_param('id', null, PARAM_INT);
     if($planid) {
-        $userid = get_field('dp_plan', 'userid', 'id', $planid);
+        $userid = $DB->get_field('dp_plan', 'userid', array('id' => $planid));
         if($userid && $userid != $USER->id) {
             $primary_selected = 'myteam';
             $secondary_selected = null;
@@ -126,7 +126,7 @@ if($secondary_selected == 'learningplans') {
     }
 }
 
-if ((substr(me(), 0, 23)) == '/local/program/view.php') {
+if ((substr(me(), 0, 23)) == '/totara/program/view.php') {
     $primary_selected = 'findcourses';
     $secondary_selecte = 'programs';
 }
@@ -150,8 +150,8 @@ if ($primary_selected == 'findcourses') {
 }
 
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-$canviewdashboards  = has_capability('local/dashboard:view', $sitecontext, $USER->id);
+$sitecontext = context_system::instance();
+$canviewdashboards  = has_capability('totara/dashboard:view', $sitecontext, $USER->id);
 $canviewlearningplans = dp_can_view_users_plans($USER->id);
 
 $u = !empty($userid) ? $userid : $USER->id;
@@ -186,7 +186,7 @@ if($header){
                 $text ='<ul><li class="first last' .
                     $selected['profile'] . '"><a href="' . $CFG->wwwroot .
                     '/user/view.php?id=' . $USER->id . '">' .
-                    get_string('myprofile', 'local') . '</a></li></ul>';
+                    get_string('myprofile', 'totara_core') . '</a></li></ul>';
                 echo $text;
             }
             ?>
@@ -202,13 +202,13 @@ if($header){
                     $defaultmylearning = $CFG->wwwroot.'/my/learning.php';
                 }
                 else if ($canviewlearningplans) {
-                    $defaultmylearning = $CFG->wwwroot.'/local/plan/index.php';
+                    $defaultmylearning = $CFG->wwwroot.'/totara/plan/index.php';
                 }
                 else {
                     $defaultmylearning = $CFG->wwwroot.'/my/bookings.php';
                 }
             ?>
-            <a href="<?php echo $defaultmylearning; ?>"><?php echo get_string('mylearning', 'local') ?></a>
+            <a href="<?php echo $defaultmylearning; ?>"><?php echo get_string('mylearning', 'totara_core') ?></a>
             <?php
             if ($selected['mylearning']) {
                 $text ='<ul>';
@@ -216,27 +216,27 @@ if($header){
                 if ($canviewdashboards) {
                     $text .= '<li class="first' . $selected['learnerdashboard'] .
                         '"><a href="' . $CFG->wwwroot . '/my/learning.php">' .
-                        get_string('dashboard', 'local_dashboard').'</a></li>';
+                        get_string('dashboard', 'totara_dashboard').'</a></li>';
                 }
 
                 if ($canviewlearningplans) {
                     $text .='<li class="' . $selected['learningplans'] .
-                        '"><a href="' . $CFG->wwwroot . '/local/plan/index.php">' .
-                        get_string('learningplans', 'local').'</a></li>';
+                        '"><a href="' . $CFG->wwwroot . '/totara/plan/index.php">' .
+                        get_string('learningplans', 'totara_core').'</a></li>';
                 }
 
                 $text .='<li class="' . $selected['mybookings'] .
                     '"><a href="' . $CFG->wwwroot . '/my/bookings.php">' .
-                    get_string('mybookings', 'local').'</a></li>';
+                    get_string('mybookings', 'totara_core').'</a></li>';
                 $text .='<li class="' . $selected['recordoflearning'] .
                     '"><a href="' . $CFG->wwwroot .
-                    '/local/plan/record/courses.php">' .
-                    get_string('recordoflearning', 'local').'</a></li>';
+                    '/totara/plan/record/courses.php">' .
+                    get_string('recordoflearning', 'totara_core').'</a></li>';
 
                 if ($requiredlearninglink) {
                     $text .='<li class="last' . $selected['requiredlearning'] .
                         '"><a href="' . $requiredlearninglink . '">' .
-                        get_string('requiredlearning', 'local_program').'</a></li>';
+                        get_string('requiredlearning', 'totara_program').'</a></li>';
                     $text .= '</ul>';
                 }
 
@@ -250,19 +250,19 @@ if($header){
     <?php if($staff = totara_get_staff()) { ?>
     <li class="<?php echo $selected['myteam']; ?> menu3">
         <div>
-            <a href="<?php echo ($canviewdashboards ? $CFG->wwwroot.'/my/team.php' : $CFG->wwwroot.'/my/teammembers.php') ?>"><?php echo get_string('myteam', 'local') ?></a>
+            <a href="<?php echo ($canviewdashboards ? $CFG->wwwroot.'/my/team.php' : $CFG->wwwroot.'/my/teammembers.php') ?>"><?php echo get_string('myteam', 'totara_core') ?></a>
             <?php
             if($selected['myteam']) {
                 $text ='<ul>';
                 if($canviewdashboards) {
                     $text .= '<li class="first' . $selected['managerdashboard'] .
                         '"><a href="' . $CFG->wwwroot . '/my/team.php">' .
-                        get_string('dashboard', 'local_dashboard') . '</a></li>';
+                        get_string('dashboard', 'totara_dashboard') . '</a></li>';
                 }
 
                 $text .='<li class="last' . $selected['teammembers'] .
                     '"><a href="' . $CFG->wwwroot . '/my/teammembers.php">' .
-                    get_string('teammembers', 'local') . '</a></li></ul>';
+                    get_string('teammembers', 'totara_core') . '</a></li></ul>';
                 echo $text;
             }
             ?>
@@ -272,14 +272,14 @@ if($header){
 
     <li class="<?php echo $selected['myreports']; ?> menu4">
         <div>
-            <a href="<?php echo $CFG->wwwroot.'/my/reports.php' ?>"><?php echo get_string('myreports', 'local') ?></a>
+            <a href="<?php echo $CFG->wwwroot.'/my/reports.php' ?>"><?php echo get_string('myreports', 'totara_core') ?></a>
         </div>
     </li>
 
 
     <li class="<?php echo $selected['findcourses']; ?> menu5">
         <div>
-        <a href="<?php echo $CFG->wwwroot.'/course/categorylist.php?viewtype=course' ?>"><?php echo get_string('findcourses', 'local') ?></a>
+        <a href="<?php echo $CFG->wwwroot.'/course/categorylist.php?viewtype=course' ?>"><?php echo get_string('findcourses', 'totara_core') ?></a>
             <?php
             if($selected['findcourses']) {
                 $text ='<ul><li class="first' . $selected['courses'] .
@@ -287,7 +287,7 @@ if($header){
                     get_string('courses') . '</a></li>';
                 $text .='<li class="last' . $selected['programs'] .
                     '"><a href="' . $CFG->wwwroot . '/course/categorylist.php?viewtype=program">' .
-                    get_string('programs', 'local_program') . '</a></li>';
+                    get_string('programs', 'totara_program') . '</a></li>';
                 $text .= '</ul>';
                 echo $text;
             }
@@ -298,7 +298,7 @@ if($header){
 
     <li class="last<?php echo $selected['calendar']; ?> menu6">
         <div>
-        <a href="<?php echo $CFG->wwwroot.'/calendar/view.php?view=month' ?>"><?php echo get_string('calendar', 'local') ?></a>
+        <a href="<?php echo $CFG->wwwroot.'/calendar/view.php?view=month' ?>"><?php echo get_string('calendar', 'totara_core') ?></a>
         </div>
     </li>
 </ul>

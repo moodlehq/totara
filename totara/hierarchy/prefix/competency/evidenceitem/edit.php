@@ -105,7 +105,8 @@ if ($nojs) {
     $dialog->selected_title = 'itemstoadd';
 
     // Show only courses with completion enabled
-    $where = "category = '{$parentid}' AND visible = 1 AND enablecompletion = ".COMPLETION_ENABLED;
+    $where = array("category = ? AND visible = 1 AND enablecompletion = ?", array($parentid, COMPLETION_ENABLED));
+
     $dialog->load_courses($where);
 
     // Setup search

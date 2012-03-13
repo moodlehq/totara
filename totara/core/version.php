@@ -19,12 +19,12 @@
  *
  * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
- * @subpackage core
+ * @subpackage totara_core
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2012011000;       // The current module version (Date: YYYYMMDDXX)
+$plugin->version  = 2012032600;       // The current module version (Date: YYYYMMDDXX)
 $plugin->requires = 2011120501;       // Requires this Moodle version
 $plugin->cron = 0;                    // Period for cron to check this module (secs)
 $plugin->component = 'totara_core';   // To check on upgrade, that module sits in correct place

@@ -241,3 +241,8 @@ class completion_completion extends data_object {
         }
     }
 }
+
+/* TODO: Stub function to be fixed when completion is updated in Moodle core (2.3 ?) */
+function completion_eventhander_role_assigned($eventdata) {
+    return true;
+}
