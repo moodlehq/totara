@@ -27,13 +27,13 @@
 # 2/ The cucumber test profile (see cucumber.yml)
 
 echo "STEP 1: Run php syntax check";
-php build/lint.php
+find . \( -name '*.php' -o -name '*.html' \) -print0 | xargs -0 -n1 -P4 ./build/lint.sh | grep -v "No syntax errors detected"
 
 echo "STEP 2: Generate some test users"
-php build/generate-users.php
+sudo -u www-data php build/generate_users.php
 
 echo "STEP 3: Run simpletests";
-php build/simpletests.php --format=xunit > build/logs/xml/TEST-suite.xml
+sudo -u www-data php build/simpletests.php --format=xunit > build/logs/xml/TEST-suite.xml
 
 echo "STEP 4: Run cucumber tests (disabled link checker tests)";
 cucumber -p $2 --format junit --out build/logs/xml/
@@ -49,6 +49,4 @@ then
 fi
 
 echo "STEP 6: Run link checker script as a learner";
-php build/link_checker.php $1 learner 'passworD1!'
-
-
+sudo -u www-data php build/link_checker.php $1 learner 'passworD1!'

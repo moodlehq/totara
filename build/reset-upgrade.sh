@@ -18,7 +18,8 @@ DBNAME="jenkins-$JOB_NAME"
 /var/lib/jenkins/internal-tools/testing/resetupgradedb.sh $DBSERVER $DBTYPE $DBUPNAME $DBNAME
 
 echo "Delete old moodledata"
-rm -Rf ../moodledata/
+sudo -u www-data php build/reset_cleanmoodledata.php
+rmdir ../moodledata/
 
 echo "Re-create moodledata"
 mkdir ../moodledata
