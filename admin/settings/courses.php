@@ -17,7 +17,7 @@ if ($hassiteconfig
     $ADMIN->add('courses', new admin_externalpage('managecategories', get_string('managecategories'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
             array('moodle/category:manage', 'local/program:createprogram')));
 
-    $ADMIN->add('courses', new admin_externalpage('coursecustomfields', get_string('customfields', 'customfields'), $CFG->wwwroot . '/customfield/index.php?prefix=course',
+    $ADMIN->add('courses', new admin_externalpage('coursecustomfields', get_string('customfields', 'totara_customfield'), $CFG->wwwroot . '/customfield/index.php?prefix=course',
             array('moodle/local:createcoursecustomfield', 'moodle/local:updatecoursecustomfield', 'moodle/local:deletecoursecustomfield')));
 
 

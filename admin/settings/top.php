@@ -29,7 +29,7 @@ if ($hassiteconfig) {
 
 $ADMIN->add('root', new admin_category('users', get_string('users','admin')));
 $ADMIN->add('root', new admin_category('hierarchies', get_string('hierarchies','totara_hierarchy')));
-$ADMIN->add('root', new admin_category('local_plan', get_string('learningplans', 'local_plan')));
+$ADMIN->add('root', new admin_category('local_plan', get_string('learningplans', 'totara_plan')));
 $ADMIN->add('root', new admin_category('courses', get_string('courses','admin')));
 $ADMIN->add('root', new admin_category('grades', get_string('grades')));
 $ADMIN->add('root', new admin_category('location', get_string('location','admin')));
