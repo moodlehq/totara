@@ -80,6 +80,10 @@ if ($courseid != SITEID && !empty($courseid)) {
 }
 require_course_login($course);
 
+// Add to log when user views calendar entries
+add_to_log(SITEID, "calendar", "view site calendar", "../calendar/view.php?view=$view&amp;course=$courseid&amp;cal_d=$day&amp;cal_m=$mon&amp;cal_y=$yr");
+
+
 $calendar = new calendar_information($day, $mon, $yr);
 $calendar->prepare_for_view($course, $courses);
 
