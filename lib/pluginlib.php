@@ -372,8 +372,8 @@ class plugin_manager {
                 'authorize', 'category', 'cohort', 'database', 'flatfile',
                 'guest', 'imsenterprise', 'ldap', 'manual', 'meta', 'mnet',
                 'paypal', 'self'
-                // Totara:
-                , 'devplan'
+                // Totara
+                , 'totara_devplan'
             ),
 
             'filter' => array(
@@ -384,6 +384,8 @@ class plugin_manager {
 
             'format' => array(
                 'scorm', 'social', 'topics', 'weeks'
+                // Totara
+                , 'demo'
             ),
 
             'gradeexport' => array(
@@ -419,6 +421,8 @@ class plugin_manager {
                 'assignment', 'chat', 'choice', 'data', 'feedback', 'folder',
                 'forum', 'glossary', 'imscp', 'label', 'lesson', 'lti', 'page',
                 'quiz', 'resource', 'scorm', 'survey', 'url', 'wiki', 'workshop'
+                // Totara
+                , 'book', 'certificate', 'hotpot'
             ),
 
             'plagiarism' => array(
@@ -495,7 +499,7 @@ class plugin_manager {
 
             // Totara:
             'totara' => array(
-                'core', 'customfield', 'dashboard', 'oauth', 'plan', 'program',
+                'core', 'customfield', 'dashboard', 'hierarchy', 'oauth', 'plan', 'program',
                 'reportbuilder', 'reportheading'
             ),
 

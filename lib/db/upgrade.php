@@ -7018,18 +7018,34 @@ FROM
                 array('local_totara_msg', null),
                 array('local_totara_alert', null),
                 array('local_totara_task', null),
+                array('block_addtoplan', 'block_totara_addtoplan'),
+                array('block_guides', 'block_totara_guides'),
+                array('block_quicklinks', 'block_totara_quicklinks')
             );
 
             foreach ($keychanges as $keys) {
                 $data = array();
-                $data['oldkey'] = $key[0];
+                $data['oldkey'] = $keys[0];
 
-                if ($key[1] === null) {
+                if ($keys[1] === null) {
                     $DB->execute('DELETE FROM {config_plugins} WHERE plugin = :oldkey', $data);
                 } else {
-                    $data['newkey'] = $key[1];
+                    $data['newkey'] = $keys[1];
                     $DB->execute('UPDATE {config_plugins} SET plugin = :newkey WHERE plugin = :oldkey', $data);
                 }
+
+                // Update version numbers for blocks
+                if (substr($keys[0], 0, 6) == 'block_') {
+                    $data['oldkey'] = substr($data['oldkey'], 6);
+                    error_log($data['oldkey']);
+                    if ($keys[1] === null) {
+                        $DB->execute('DELETE FROM {block} WHERE name = :oldkey', $data);
+                    } else {
+                        $data['newkey'] = substr($keys[1], 6);
+                        $DB->execute('UPDATE {block} SET name = :newkey WHERE name = :oldkey', $data);
+                    }
+                }
+
             }
         }
 
