@@ -539,7 +539,8 @@ class core_calendar_renderer extends plugin_renderer_base {
             if (isset($durationbyday[$calendar->day])) {
                 $cell->text .= html_writer::start_tag('ul', array('class'=>'events-underway'));
                 foreach($durationbyday[$calendar->day] as $eventindex) {
-                    $cell->text .= html_writer::tag('li', '['.format_string($events[$eventindex]->name,true).']', array('class'=>'events-underway'));
+                    $link = html_writer::link($dayhref, format_string($events[$eventindex]->name, true) . ' (' . get_string('continue'). ')');
+                    $cell->text .= html_writer::tag('li', $link, array('class'=>'events-underway'));
                 }
                 $cell->text .= html_writer::end_tag('ul');
             }
