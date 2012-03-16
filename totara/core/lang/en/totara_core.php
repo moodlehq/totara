@@ -111,6 +111,8 @@ $string['findcourses'] = 'Find Courses';
 $string['viewmyteam'] = 'View My Team';
 
 // My Course Completions block
+$string['courseprogress']='Course progress';
+$string['courseprogresshelp']='This specifies if the course progress block appears on the homepage';
 $string['mycoursecompletions'] = 'My Course Completions';
 $string['notenrolled'] = '<i>You are not currently enrolled in any courses.</i>';
 $string['completed'] = 'Completed';

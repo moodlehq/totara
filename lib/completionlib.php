@@ -1348,4 +1348,11 @@ class completion_info {
         unset($SESSION->completioncache);
         unset($SESSION->completioncacheuserid);
     }
+
+    /**
+     * Empty stub to be replaced when course completion is updated
+     */
+    function get_all_courses($userid, $count) {
+        return array();
+    }
 }

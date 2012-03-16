@@ -514,9 +514,9 @@ function totara_print_my_courses() {
         $content .= '<table class="centerblock">
             <tr><th class="course">'.get_string('course').'</th>'.
             '<th class="status">'.get_string('status').'</th>'.
-            '<th class="enroldate">'.get_string('enrolled', 'local').'</th>'.
-            '<th class="startdate">'.get_string('started','local').'</th>'.
-            '<th class="completeddate">'.get_string('completed','local').'</th></tr>';
+            '<th class="enroldate">'.get_string('enrolled', 'totara_core').'</th>'.
+            '<th class="startdate">'.get_string('started','totara_core').'</th>'.
+            '<th class="completeddate">'.get_string('completed','totara_core').'</th></tr>';
 
         foreach ($courses as $course) {
             $id = $course->course;
@@ -548,10 +548,10 @@ function totara_print_my_courses() {
     }
 
     if (empty($content)) {
-        $content = '<span class="noenrollments">'.get_string('notenrolled','local').'</span>';
+        $content = '<span class="noenrollments">'.get_string('notenrolled','totara_core').'</span>';
     }
     echo '<div class="mycourses">';
-    echo '<div class="header"><div class="title"><h2>'.get_string('mycoursecompletions','local').'</h2></div></div><div class="content">';
+    echo '<div class="header"><div class="title"><h2>'.get_string('mycoursecompletions','totara_core').'</h2></div></div><div class="content">';
     echo $content;
     echo '</div></div>';
 }
