@@ -39,8 +39,34 @@ function cron_run() {
         exit(1);
     }
 
+    /// Cron locking check
+    require_once($CFG->dirroot . '/admin/cron_lockfile.php');
+
+    //Lock the cron file itself
+    //No other instance will run with this
+    //We do this here before including anything else to make it faster
+    $cronlock = new cron_lockfile(__FILE__);
+    if (!$cronlock->locked()) {
+        echo 'Already being executed. Quitting.'.PHP_EOL;
+        return;
+    }
+
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->dirroot . '/admin/cron_procfile.php');
+
+    //// Set time limit for cron
+    set_time_limit(cron_get_max_time());
+
+    /// Set the process file - it will be deleted once the cron finishes execution
+    /// default location is <moodledata>/cron.pid
+    /// in case process file can not be created process ends
+    $procfile = new cron_process_file();
+    if (!$procfile->ok()) {
+        error_log('Unable to create process file!');
+        return;
+    }
+
 
     if (!empty($CFG->showcronsql)) {
         $DB->set_debug(true);

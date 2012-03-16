@@ -28,7 +28,11 @@ Before installing Totara you should have a server with:
 
 5. Using your web browser, visit your domain and step through the installation process.
 6. Set up a cron task to call the file admin/cron.php every fifteen minutes.
-7. Set up a cron task to call the file admin/cron_watcher.php every five minutes.
+7. Set up a root cron task to call the file admin/cron_watcher.php every five minutes.
+   The cron watcher script needs to be called *directly*, not by fetching the page through the web server (e.g. using wget or similar)
+   as it needs sufficient permissions to be able to kill the cron process if it has crashed. This would normally
+   be done using a command like this on the crontab:
+   php /path/to/site/admin/cron_watcher.php > /path/to/logs/watcher.log 2>&1
 8. Setting PHP variables
    There are some PHP configuration variables that may need to be customised, depending on your needs. The variables that are commonly changed
    include "memory_limit", "upload_max_filesize" and "post_max_size".

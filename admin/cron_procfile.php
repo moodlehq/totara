@@ -145,10 +145,9 @@ class cron_process_file {
             //if we locked and process is not running - cron crashed
             //if we did not locked and process is running - it is already running
             //if we did not locked and process is not running - process file was not updated (?!!)
-            $result = $result && !$rpt->locked();
+            $result = $result && $rpt->locked();
             unset($rpt);
         }
-
 
         $this->alreadyrunning = $result;
         return $result;

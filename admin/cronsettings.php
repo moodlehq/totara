@@ -3,8 +3,11 @@
 require(dirname(__FILE__).'/../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once(dirname(__FILE__).'/cronsettings_form.php');
-require_js(array('yui_dom-event', 'yui_connection', 'yui_json'));
-require_js($CFG->wwwroot.'/admin/cronsettings.js');
+
+$PAGE->requires->yui2_lib('dom-event');
+$PAGE->requires->yui2_lib('connection');
+$PAGE->requires->yui2_lib('json');
+$PAGE->requires->js('/admin/cronsettings.js');
 
 require_login();
 
@@ -17,7 +20,7 @@ require_capability('moodle/site:config', $context, $USER->id, true, "nopermissio
 
 /// Print the header stuff
 
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 $cronsettings = new cronsettings_form();
 $fromform = $cronsettings->get_data();
@@ -34,9 +37,9 @@ if (!empty($fromform)) {
 
     //display confirmation
     if ($result) {
-        notify(get_string('changessaved'), 'notifysuccess');
+        echo $OUTPUT->notification(get_string('changessaved'), 'notifysuccess');
     } else {
-        notify(get_string('errorwithsettings'));
+        echo $OUTPUT->notification(get_string('errorwithsettings'));
     }
 
 }
@@ -51,8 +54,8 @@ if (!$cronsettings->is_submitted()) {
 
 
 /// Print the appropriate form
-print_heading(get_string('cron_settings', 'admin'));
+echo $OUTPUT->heading(get_string('cron_settings', 'admin'));
 
 $cronsettings->display();
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();

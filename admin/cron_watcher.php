@@ -1,9 +1,11 @@
 <?php
 
+define('CLI_SCRIPT', true);
+
 require_once (dirname(__FILE__).'/../config.php'    );
 require_once (dirname(__FILE__).'/cron_procfile.php');
 
-if(!empty($_SERVER['GATEWAY_INTERFACE'])){
+if (!empty($_SERVER['GATEWAY_INTERFACE'])){
     error_log("should not be called from web server!");
     return;
 }

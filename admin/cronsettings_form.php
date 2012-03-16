@@ -40,9 +40,7 @@ class cronsettings_form extends moodleform {
                            'cron_watcher_info',
                            '&nbsp;',
                            $cwatcher);
-        $mform->setHelpButton('cron_watcher_info',
-                              array('cron_watcher_info',
-                                    get_string('cron_watcher_info','admin'), 'moodle'));
+        $mform->addHelpButton('cron_watcher_info', 'cron_watcher_info', 'admin');
 
         $mform->addElement('checkbox',
                            'cron_max_time_mail_notify',

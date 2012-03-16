@@ -1083,3 +1083,11 @@ $string['cron_kill_mail_fail_notify_title'] = 'Warning: Cron execution failed to
 $string['cron_kill_mail_fail_notify_msg'] = 'The cron execution took longer than maximum execution time and automatic termination failed! Please check your server settings.';
 $string['cron_watcher_info'] = 'Cron Watcher';
 $string['cron_status_info'] = 'Cron Execution Status';
+$string['cron_watcher_info_help'] = '# Cron Watcher
+
+Cron Watcher is a script located in
+<pre>&lt;TOTARA&gt;/admin/cron_watcher.php</pre> To activate it you need to add it to the list of cron jobs on Linux or create a new scheduled task on Windows.
+
+We recommend you set the script to run every 5 minutes.
+
+See also <a href="http://docs.moodle.org/22/en/Cron" title="Cron help" target="_blank">Cron (at Moodle Wiki)</a>, <a href="http://en.wikipedia.org/wiki/Cron" title="Cron" target="_blank">Cron (at Wikipedia)</a>';
