@@ -1352,7 +1352,7 @@ class completion_info {
     /**
      * Empty stub to be replaced when course completion is updated
      */
-    function get_all_courses($userid, $count) {
+    function get_all_courses($userid, $limit=0) {
         return array();
     }
 }

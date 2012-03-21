@@ -1,28 +1,26 @@
 <?php
-
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Alastair Munro <alastair.munro@@totaralms.com>
+ * @package totara
+ * @subpackage totara_recent_learning
+ */
 
 /**
  * Recent learning block
@@ -37,9 +35,9 @@ class block_totara_recent_learning extends block_base {
     }
 
     public function get_content() {
-        global $CFG, $USER;
+        global $USER, $DB;
 
-        if($this->content !== NULL) {
+        if ($this->content !== NULL) {
             return $this->content;
         }
 
@@ -51,38 +49,39 @@ class block_totara_recent_learning extends block_base {
         $completions = completion_info::get_all_courses($USER->id);
 
         $sql = "SELECT c.id,c.fullname FROM
-            {$CFG->prefix}role_assignments ra
-            INNER JOIN {$CFG->prefix}context cx
+            {role_assignments} ra
+            INNER JOIN {context} cx
                 ON ra.contextid = cx.id AND cx.contextlevel = " . CONTEXT_COURSE . "
-            LEFT JOIN {$CFG->prefix}course c
+            LEFT JOIN {course} c
                 ON cx.instanceid = c.id
-            WHERE ra.userid = " . $USER->id . "
-            ORDER BY ra.timestart DESC";
+            WHERE ra.userid = ?
+            ORDER BY ra.timemodified DESC";
 
-        $courses = get_records_sql($sql);
-        if(!$courses) {
+        $courses = $DB->get_records_sql($sql, array($USER->id));
+        if (!$courses) {
             $this->content->text = get_string('norecentlearning', 'block_totara_recent_learning');
             return $this->content;
         }
         if ($courses) {
-            $html = '<table class=\'recent_learning\'>';
+            $table = new html_table();
+            $table->attributes['class'] = 'recent_learning';
 
-            foreach($courses as $course) {
+            foreach ($courses as $course) {
                 $id = $course->id;
                 $name = $course->fullname;
-
                 $status = array_key_exists($id, $completions) ? $completions[$id]->status : null;
                 $completion = totara_display_course_progress_icon($USER->id, $course->id, $status);
-
-                $html .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
-                $html .= "<td class=\"status\">{$completion}</td></tr>";
+                $link = html_writer::link(new moodle_url('/course/view.php', array('id' => $id)), $name, array('title' => $name));
+                $cell1 = new html_table_cell($link);
+                $cell1->attributes['class'] = 'course';
+                $cell2 = new html_table_cell($completion);
+                $cell2->attributes['class'] = 'status';
+                $table->data[] = new html_table_row(array($cell1, $cell2));
             }
-
-            $html .= '</table>';
-            $this->content->footer = '<a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('allmycourses','local').'</a>';
+            $link = html_writer::link(new moodle_url('/totara/plan/record/courses.php', array('userid' => $USER->id)), get_string('allmycourses', 'totara_core'));
         }
 
-        $this->content->text = $html;
+        $this->content->text = html_writer::table($table);
         return $this->content;
     }
 }
