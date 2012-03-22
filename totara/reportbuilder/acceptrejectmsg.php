@@ -27,8 +27,8 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-require_once($CFG->dirroot.'/local/totara_msg/lib.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/message/lib.php');
 
 $id = required_param('id', PARAM_INT);
 $event = required_param('event', PARAM_RAW);

@@ -28,9 +28,9 @@
 
     require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
     require_once($CFG->libdir.'/adminlib.php');
-    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-    require_once($CFG->dirroot.'/local/reportbuilder/groups_forms.php');
-    require_once($CFG->dirroot.'/local/reportbuilder/groupslib.php');
+    require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+    require_once($CFG->dirroot.'/totara/reportbuilder/groups_forms.php');
+    require_once($CFG->dirroot.'/totara/reportbuilder/groupslib.php');
 
     $id = required_param('id', PARAM_INT); // id of current group
 

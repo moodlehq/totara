@@ -23,8 +23,8 @@
  */
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/report_forms.php');
 
 global $USER;
 $id = required_param('id',PARAM_INT); // report builder id

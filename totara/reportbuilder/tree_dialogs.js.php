@@ -27,7 +27,7 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 ?>
 

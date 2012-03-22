@@ -26,22 +26,22 @@
  * Main Class definition and library functions for report builder
  */
 
-require_once("{$CFG->dirroot}/local/reportbuilder/filters/lib.php");
+require_once("{$CFG->dirroot}/totara/reportbuilder/filters/lib.php");
 require_once($CFG->libdir.'/tablelib.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_source.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_content.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_access.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_preproc.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_embedded.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_join.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_column.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_column_option.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_filter.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_filter_option.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_param.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_param_option.php');
-require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_content_option.php');
-require_once($CFG->dirroot.'/local/utils.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_source.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_content.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_access.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_preproc.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_embedded.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_join.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_column.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_column_option.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_filter.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_filter_option.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_param.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_param_option.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_content_option.php');
+require_once($CFG->dirroot.'/totara/core/utils.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -211,7 +211,7 @@ class reportbuilder {
      */
     function include_js() {
         global $CFG;
-        require_once($CFG->dirroot.'/local/js/lib/setup.php');
+        require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
         $this->get_filtering();
 
@@ -2065,7 +2065,7 @@ class reportbuilder {
      */
     function export_select() {
         global $CFG;
-        require_once($CFG->dirroot.'/local/reportbuilder/export_form.php');
+        require_once($CFG->dirroot.'/totara/reportbuilder/export_form.php');
         $export = new report_builder_export_form(qualified_me());
         $export->display();
     }
@@ -3146,7 +3146,7 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
  */
 function reportbuilder_get_reports($showhidden=false) {
     global $CFG;
-    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+    require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
     $reports = get_records('report_builder','','','fullname');
     if (!is_array($reports)){
         $reports = array();

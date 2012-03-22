@@ -22,8 +22,8 @@
  * @subpackage reportbuilder 
  */
 
-require_once($CFG->dirroot . '/local/reportbuilder/lib.php');
-require_once($CFG->dirroot . '/local/reportbuilder/groupslib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/groupslib.php');
 
 /**
  * Run the cron functions required by report builder

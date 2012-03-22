@@ -24,9 +24,9 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/report_forms.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
 
 global $USER;

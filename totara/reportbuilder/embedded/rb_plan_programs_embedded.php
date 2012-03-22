@@ -22,7 +22,7 @@
  * @subpackage reportbuilder
  */
 
-require_once($CFG->dirroot . '/local/program/lib.php');
+require_once($CFG->dirroot . '/totara/program/lib.php');
 
 class rb_plan_programs_embedded extends rb_base_embedded {
 

@@ -575,7 +575,7 @@ abstract class rb_base_source {
      */
     public function rb_display_plan_status($status, $row){
         global $CFG;
-        require_once($CFG->dirroot.'/local/plan/lib.php');
+        require_once($CFG->dirroot.'/totara/plan/lib.php');
 
         switch ($status){
             case DP_PLAN_STATUS_UNAPPROVED:
@@ -600,7 +600,7 @@ abstract class rb_base_source {
      */
     public function rb_display_plan_item_status($status){
         global $CFG;
-        require_once($CFG->dirroot . '/local/plan/lib.php');
+        require_once($CFG->dirroot . '/totara/plan/lib.php');
 
         switch($status) {
         case DP_APPROVAL_DECLINED:

@@ -29,7 +29,7 @@
 //TODO require admin permissions
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot.'/local/reportbuilder/cron.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/cron.php');
 
 $group = optional_param('group', 0, PARAM_INT);
 if(!confirm_sesskey()) {

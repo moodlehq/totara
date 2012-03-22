@@ -22,7 +22,7 @@
  * @subpackage reportbuilder
  */
 
-require_once($CFG->dirroot.'/local/reportbuilder/filters/lib.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/lib.php');
 
 /**
  * Generic filter based on selecting multiple items from a hierarchy.

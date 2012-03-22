@@ -27,8 +27,8 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-require_once($CFG->dirroot.'/local/totara_msg/lib.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/message/lib.php');
 
 require_login();
 

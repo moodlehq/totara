@@ -1,15 +1,15 @@
 <?php //$Id$
-require_once($CFG->dirroot.'/local/reportbuilder/filters/text.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/textarea.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/number.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/simpleselect.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/select.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/date.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/datetime.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/hierarchy.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/hierarchy_multi.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/multicheck.php');
-require_once($CFG->dirroot.'/local/reportbuilder/filters/filter_forms.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/text.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/textarea.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/number.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/simpleselect.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/select.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/date.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/datetime.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/hierarchy.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/hierarchy_multi.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/multicheck.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/filter_forms.php');
 
 /**
  * Filtering wrapper class.
