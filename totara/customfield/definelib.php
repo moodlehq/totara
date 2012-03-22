@@ -1,4 +1,26 @@
-<?php  //$Id$
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_customfield
+ */
 
 class customfield_define_base {
 
@@ -7,10 +29,10 @@ class customfield_define_base {
      * @param   object   instance of the moodleform class
      */
     function define_form(&$form, $typeid=0, $tableprefix) {
-        $form->addElement('header', '_commonsettings', get_string('commonsettings', 'customfields'));
+        $form->addElement('header', '_commonsettings', get_string('commonsettings', 'totara_customfield'));
         $this->define_form_common($form, $typeid, $tableprefix);
 
-        $form->addElement('header', '_specificsettings', get_string('specificsettings', 'customfields'));
+        $form->addElement('header', '_specificsettings', get_string('specificsettings', 'totara_customfield'));
         $this->define_form_specific($form);
     }
 
@@ -21,32 +43,32 @@ class customfield_define_base {
      */
     function define_form_common(&$form, $typeid=0, $tableprefix) {
 
-        $strrequired = get_string('required');
+        $strrequired = get_string('customfieldrequired', 'totara_customfield');
 
         $form->addElement('text', 'fullname', get_string('fullname'), 'size="50"');
         $form->addRule('fullname', $strrequired, 'required', null, 'client');
         $form->setType('fullname', PARAM_MULTILANG);
-        $form->setHelpButton('fullname', array('customfieldfullname', get_string('fullname')), true);
+        $form->addHelpButton('fullname', 'customfieldfullname', 'totara_customfield');
 
-        $form->addElement('text', 'shortname', get_string('shortname', 'customfields'), 'maxlength="100" size="25"');
+        $form->addElement('text', 'shortname', get_string('shortname', 'totara_customfield'), 'maxlength="100" size="25"');
         $form->addRule('shortname', $strrequired, 'required', null, 'client');
         $form->setType('shortname', PARAM_ALPHANUM);
-        $form->setHelpButton('shortname', array('customfieldshortname', get_string('shortname', 'customfields')), true);
+        $form->addHelpButton('shortname', 'customfieldshortname', 'totara_customfield');
 
-        $form->addElement('htmleditor', 'description', get_string('description', 'customfields'));
-        $form->setHelpButton('description', array('text', get_string('helptext')));
+        $form->addElement('editor', 'description', get_string('description', 'totara_customfield'));
+        $form->addHelpButton('description', 'text', null, '');
 
-        $form->addElement('selectyesno', 'required', get_string('required', 'customfields'));
-        $form->setHelpButton('required', array('customfieldrequired', get_string('required','customfields')), true);
+        $form->addElement('selectyesno', 'required', get_string('customfieldrequired', 'totara_customfield'));
+        $form->addHelpButton('required', 'customfieldrequired', 'totara_customfield');
 
-        $form->addElement('selectyesno', 'locked', get_string('locked', 'customfields'));
-        $form->setHelpButton('locked', array('customfieldlocked', get_string('locked','customfields')), true);
+        $form->addElement('selectyesno', 'locked', get_string('locked', 'totara_customfield'));
+        $form->addHelpButton('locked', 'customfieldlocked', 'totara_customfield');
 
-        $form->addElement('selectyesno', 'forceunique', get_string('forceunique', 'customfields'));
-        $form->setHelpButton('forceunique', array('customfieldforceunique', get_string('forceunique','customfields')), true);
+        $form->addElement('selectyesno', 'forceunique', get_string('forceunique', 'totara_customfield'));
+        $form->addHelpButton('forceunique', 'customfieldforceunique', 'totara_customfield');
 
-        $form->addElement('selectyesno', 'hidden', get_string('visible', 'customfields'));
-        $form->setHelpButton('hidden', array('customfieldhidden', get_string('visible','customfields')), true);
+        $form->addElement('selectyesno', 'hidden', get_string('visible', 'totara_customfield'));
+        $form->addHelpButton('hidden', 'customfieldhidden', 'totara_customfield');
 
     }
 
@@ -56,7 +78,7 @@ class customfield_define_base {
      * @param   object   instance of the moodleform class
      */
     function define_form_specific(&$form) {
-        /// do nothing - overwrite if necessary
+        /// do nothing - override if necessary
     }
 
     /**
@@ -85,23 +107,25 @@ class customfield_define_base {
      * @return  array    associative array of error messages
      */
     function define_validate_common($data, $files, $typeid, $tableprefix) {
+        global $DB;
 
         $err = array();
 
         /// Check the shortname was not truncated by cleaning
         if (empty($data->shortname)) {
-            $err['shortname'] = get_string('required');
+            $err['shortname'] = get_string('customfieldrequired', 'totara_customfield');
 
         } else {
-        /// Fetch field-record from DB
-            if($typeid) {
-                $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname, 'typeid', $typeid);
-            } else {
-                $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname);
+            /// Fetch field-record from DB
+            $params = array('shortname' => $data->shortname);
+            if ($typeid) {
+                $params['typeid'] = $typeid;
             }
+
+            $field = $DB->get_record($tableprefix.'_info_field', $params);
         /// Check the shortname is unique
             if ($field and $field->id <> $data->id) {
-                $err['shortname'] = get_string('shortnamenotunique', 'customfields');
+                $err['shortname'] = get_string('shortnamenotunique', 'totara_customfield');
             }
         }
 
@@ -116,7 +140,7 @@ class customfield_define_base {
      * @return  array    associative array of error messages
      */
     function define_validate_specific($data, $files, $tableprefix) {
-        /// do nothing - overwrite if necessary
+        /// do nothing - override if necessary
         return array();
     }
 
@@ -124,8 +148,8 @@ class customfield_define_base {
      * Alter form based on submitted or existing data
      * @param   object   form
      */
-    function define_after_data(&$mform) {
-        /// do nothing - overwrite if necessary
+    function define_after_data(&$form) {
+        /// do nothing - override if necessary
     }
 
     /**
@@ -134,39 +158,36 @@ class customfield_define_base {
      * @return  boolean  status of the insert/update record
      */
     function define_save($data, $tableprefix) {
+        global $DB;
         $data = $this->define_save_preprocess($data); /// hook for child classes
 
         $old = false;
         if (!empty($data->id)) {
-            $old = get_record($tableprefix.'_info_field', 'id', $data->id);
+            $old = $DB->get_record($tableprefix.'_info_field', array('id' => $data->id));
         }
-        if(!$old) {
-            $data->sortorder = count_records_select($tableprefix.'_info_field') + 1;
+        if (!$old) {
+            $data->sortorder = $DB->count_records_select($tableprefix.'_info_field', '') + 1;
             } else {
             $data->sortorder = $old->sortorder;
         }
 
         if (empty($data->id)) {
             unset($data->id);
-            if (!$data->id = insert_record($tableprefix.'_info_field', $data)) {
-                error('Error creating new field');
-            }
+            $data->id = $DB->insert_record($tableprefix.'_info_field', $data);
         } else {
-            if (!update_record($tableprefix.'_info_field', $data)) {
-                error('Error updating field');
-            }
+            $DB->update_record($tableprefix.'_info_field', $data);
         }
     }
 
     /**
      * Preprocess data from the add/edit custom field form
      * before it is saved. This method is a hook for the child
-     * classes to overwrite.
+     * classes to override.
      * @param   object   data from the add/edit custom field form
      * @return  object   processed data object
      */
     function define_save_preprocess($data) {
-        /// do nothing - overwrite if necessary
+        /// do nothing - override if necessary
         return $data;
     }
 

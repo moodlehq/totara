@@ -1,24 +1,46 @@
-<?php  //$Id$
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_customfield
+ */
 
 class customfield_define_textarea extends customfield_define_base {
 
     function define_form_specific(&$form) {
         /// Default data
-        $form->addElement('htmleditor', 'defaultdata', get_string('defaultdata', 'customfields'));
-        $form->setType('defaultdata', PARAM_CLEAN);
-        $form->setHelpButton('defaultdata', array('customfielddefaultdatatextarea', get_string('defaultdata', 'customfields')), true);
+        $form->addElement('editor', 'defaultdata', get_string('defaultdata', 'totara_customfield'));
+        $form->setType('defaultdata', PARAM_CLEANHTML);
+        $form->addHelpButton('defaultdata', 'customfielddefaultdatatextarea', 'totara_customfield');
 
         /// Param 1 for textarea type is the number of columns
-        $form->addElement('text', 'param1', get_string('fieldcolumns', 'customfields'), 'size="6"');
+        $form->addElement('text', 'param1', get_string('fieldcolumns', 'totara_customfield'), 'size="6"');
         $form->setDefault('param1', 30);
         $form->setType('param1', PARAM_INT);
-        $form->setHelpButton('param1', array('customfieldcolumnstextarea', get_string('fieldcolumns', 'customfields')), true);
+        $form->addHelpButton('param1', 'customfieldcolumnstextarea', 'totara_customfield');
 
         /// Param 2 for text type is the number of rows
-        $form->addElement('text', 'param2', get_string('fieldrows', 'customfields'), 'size="6"');
+        $form->addElement('text', 'param2', get_string('fieldrows', 'totara_customfield'), 'size="6"');
         $form->setDefault('param2', 10);
         $form->setType('param2', PARAM_INT);
-        $form->setHelpButton('param2', array('customfieldrowstextarea', get_string('fieldrows', 'customfields')), true);
+        $form->addHelpButton('param2', 'customfieldrowstextarea', 'totara_customfield');
     }
 
 }

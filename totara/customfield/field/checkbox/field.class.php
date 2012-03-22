@@ -1,4 +1,26 @@
-<?php // $Id$
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_customfield
+ */
 
 class customfield_checkbox extends customfield_base {
 
@@ -8,11 +30,13 @@ class customfield_checkbox extends customfield_base {
      * the corresponding key for the data if it exists
      */
     function customfield_checkbox($fieldid=0, $itemid=0, $prefix, $tableprefix) {
+        global $DB;
+
         //first call parent constructor
         $this->customfield_base($fieldid, $itemid, $prefix, $tableprefix);
 
         if (!empty($this->field)) {
-            $datafield = get_field($tableprefix.'_info_data', 'data', $prefix.'id', $itemid, 'fieldid', $this->fieldid);
+            $datafield = $DB->get_field($tableprefix.'_info_data', 'data', array($prefix.'id' => $itemid, 'fieldid' => $this->fieldid));
             if ($datafield !== false) {
                 $this->data = $datafield;
             } else {
@@ -21,15 +45,15 @@ class customfield_checkbox extends customfield_base {
         }
     }
 
-    function edit_field_add(&$mform) {
+    function edit_field_add(&$form) {
         /// Create the form field
-        $checkbox = &$mform->addElement('advcheckbox', $this->inputname, format_string($this->field->fullname));
+        $checkbox = &$form->addElement('advcheckbox', $this->inputname, format_string($this->field->fullname));
         if ($this->data == '1') {
             $checkbox->setChecked(true);
         }        
-        $mform->setType($this->inputname, PARAM_BOOL);
+        $form->setType($this->inputname, PARAM_BOOL);
         if ($this->is_required()) {
-            $mform->addRule($this->inputname, get_string('required'), 'nonzero', null, 'client');
+            $form->addRule($this->inputname, get_string('customfieldrequired', 'totara_customfield'), 'nonzero', null, 'client');
         }
     }
 
