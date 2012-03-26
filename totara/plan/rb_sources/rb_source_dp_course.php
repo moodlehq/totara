@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 // needed for approval constants etc
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 // needed to access completion status codes
 require_once($CFG->dirroot . '/lib/completion/completion_completion.php');
 
@@ -100,7 +100,7 @@ class rb_source_dp_course extends rb_base_source {
         global $CFG;
 
         // to get access to position type constants
-        require_once($CFG->dirroot . '/local/reportbuilder/classes/rb_join.php');
+        require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_join.php');
 
         /**
          * dp_plan has userid, dp_plan_course_assign has courseid. In order to

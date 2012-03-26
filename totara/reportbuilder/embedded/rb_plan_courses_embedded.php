@@ -33,7 +33,7 @@ class rb_plan_courses_embedded extends rb_base_embedded {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
         $rolstatus = array_key_exists('rolstatus', $data) ? $data['rolstatus'] : null;
 
-        $this->url = '/local/plan/record/courses.php';
+        $this->url = '/totara/plan/record/courses.php';
         $this->source = 'dp_course';
         $this->shortname = 'plan_courses';
         $this->defaultsortcolumn = 'course_courselink';

@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="totara/hierarchy/db" VERSION="20120319" COMMENT="XMLDB file for Moodle totara/hierarchy"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="comp" COMMENT="Default comment for the table, please edit me" NEXT="comp_evidence">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="description" NEXT="frameworkid"/>
+        <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="path"/>
+        <FIELD NAME="path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="parentid"/>
+        <FIELD NAME="parentid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="path" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="parentid" NEXT="aggregationmethod"/>
+        <FIELD NAME="aggregationmethod" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="visible" NEXT="proficiencyexpected"/>
+        <FIELD NAME="proficiencyexpected" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="aggregationmethod" NEXT="evidencecount"/>
+        <FIELD NAME="evidencecount" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="proficiencyexpected" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="evidencecount" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="depthlevel"/>
+        <FIELD NAME="depthlevel" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="depthlevel" NEXT="sortthread"/>
+        <FIELD NAME="sortthread" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid" NEXT="testit"/>
+        <FIELD NAME="testit" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortthread"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="comp_fra_ix" UNIQUE="false" FIELDS="frameworkid" NEXT="comp_par_ix"/>
+        <INDEX NAME="comp_par_ix" UNIQUE="false" FIELDS="parentid" PREVIOUS="comp_fra_ix"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="comp_evidence" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp" NEXT="comp_evidence_items">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="userid" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="competencyid" NEXT="organisationid"/>
+        <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="positionid" NEXT="assessorid"/>
+        <FIELD NAME="assessorid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="organisationid" NEXT="assessorname"/>
+        <FIELD NAME="assessorname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="assessorid" NEXT="assessmenttype"/>
+        <FIELD NAME="assessmenttype" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="assessorname" NEXT="proficiency"/>
+        <FIELD NAME="proficiency" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="assessmenttype" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="proficiency" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="reaggregate"/>
+        <FIELD NAME="reaggregate" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="timemodified" NEXT="manual"/>
+        <FIELD NAME="manual" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="reaggregate"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="compevid_usecom_uix" UNIQUE="true" FIELDS="userid, competencyid" NEXT="compevid_com_ix"/>
+        <INDEX NAME="compevid_com_ix" UNIQUE="false" FIELDS="competencyid" PREVIOUS="compevid_usecom_uix" NEXT="compevid_man_ix"/>
+        <INDEX NAME="compevid_man_ix" UNIQUE="false" FIELDS="manual" PREVIOUS="compevid_com_ix" NEXT="compevid_rea_ix"/>
+        <INDEX NAME="compevid_rea_ix" UNIQUE="false" FIELDS="reaggregate" PREVIOUS="compevid_man_ix" NEXT="compevid_use_ix"/>
+        <INDEX NAME="compevid_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="compevid_rea_ix"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="comp_evidence_items" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_evidence" NEXT="comp_evidence_items_evidence">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="itemtype"/>
+        <FIELD NAME="itemtype" TYPE="char" LENGTH="30" NOTNULL="false" SEQUENCE="false" PREVIOUS="competencyid" NEXT="itemmodule"/>
+        <FIELD NAME="itemmodule" TYPE="char" LENGTH="30" NOTNULL="false" SEQUENCE="false" PREVIOUS="itemtype" NEXT="iteminstance"/>
+        <FIELD NAME="iteminstance" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="itemmodule" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="iteminstance" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="linktype"/>
+        <FIELD NAME="linktype" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="compeviditem_com_ix" UNIQUE="false" FIELDS="competencyid" NEXT="compeviditem_ite2_ix"/>
+        <INDEX NAME="compeviditem_ite2_ix" UNIQUE="false" FIELDS="iteminstance" PREVIOUS="compeviditem_com_ix" NEXT="compeviditem_ite_ix"/>
+        <INDEX NAME="compeviditem_ite_ix" UNIQUE="false" FIELDS="itemtype" PREVIOUS="compeviditem_ite2_ix"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="comp_evidence_items_evidence" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_evidence_items" NEXT="comp_framework">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="userid" NEXT="itemid"/>
+        <FIELD NAME="itemid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="competencyid" NEXT="status"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="2" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="itemid" NEXT="proficiencymeasured"/>
+        <FIELD NAME="proficiencymeasured" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="status" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="proficiencymeasured" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="compeviditemevid_useco_uix" UNIQUE="true" FIELDS="userid, competencyid, itemid" NEXT="compeviditemevid_ite_ix"/>
+        <INDEX NAME="compeviditemevid_ite_ix" UNIQUE="false" FIELDS="itemid" PREVIOUS="compeviditemevid_useco_uix" NEXT="compeviditemevid_pro_ix"/>
+        <INDEX NAME="compeviditemevid_pro_ix" UNIQUE="false" FIELDS="proficiencymeasured" PREVIOUS="compeviditemevid_ite_ix" NEXT="compeviditemevid_tim_ix"/>
+        <INDEX NAME="compeviditemevid_tim_ix" UNIQUE="false" FIELDS="timemodified" PREVIOUS="compeviditemevid_pro_ix" NEXT="compeviditemevid_use_ix"/>
+        <INDEX NAME="compeviditemevid_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="compeviditemevid_tim_ix" NEXT="compeviditemevid_useite_ix"/>
+        <INDEX NAME="compeviditemevid_useite_ix" UNIQUE="false" FIELDS="userid, itemid" PREVIOUS="compeviditemevid_use_ix"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="comp_framework" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_evidence_items_evidence" NEXT="comp_relations">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder" NEXT="hidecustomfields"/>
+        <FIELD NAME="hidecustomfields" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="visible" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="hidecustomfields" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="true" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="compfram_sor_uix" UNIQUE="true" FIELDS="sortorder"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="comp_relations" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_framework" NEXT="comp_scale">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
+        <FIELD NAME="id1" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="id2"/>
+        <FIELD NAME="id2" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id1"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="comp_scale" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_relations" NEXT="comp_scale_assignments">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="name" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="defaultid"/>
+        <FIELD NAME="defaultid" TYPE="int" LENGTH="2" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="comp_scale_assignments" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_scale" NEXT="comp_scale_values">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="scaleid"/>
+        <FIELD NAME="scaleid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="frameworkid"/>
+        <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="scaleid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="comp_scale_values" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_scale_assignments" NEXT="comp_template">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="scaleid"/>
+        <FIELD NAME="scaleid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="numericscore"/>
+        <FIELD NAME="numericscore" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" DECIMALS="5" PREVIOUS="scaleid" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="numericscore" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="proficient"/>
+        <FIELD NAME="proficient" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="comp_template" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_scale_values" NEXT="comp_template_assignment">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="frameworkid"/>
+        <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="competencycount"/>
+        <FIELD NAME="competencycount" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="visible" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="competencycount" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="comp_template_assignment" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_template" NEXT="comp_type">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="templateid"/>
+        <FIELD NAME="templateid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="type"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="templateid" NEXT="instanceid"/>
+        <FIELD NAME="instanceid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="type" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="instanceid" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="comp_type" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_template_assignment" NEXT="comp_type_info_category">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="shortname" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="icon"/>
+        <FIELD NAME="icon" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="icon"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="comptype_idn_ix" UNIQUE="false" FIELDS="idnumber"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="comp_type_info_category" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_type" NEXT="comp_type_info_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="name" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="comp_type_info_data" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_type_info_category" NEXT="comp_type_info_field">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="data"/>
+        <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="data" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fieldid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="comp_type_info_field" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_type_info_data" NEXT="pos">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="datatype"/>
+        <FIELD NAME="datatype" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="hidden"/>
+        <FIELD NAME="hidden" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder" NEXT="locked"/>
+        <FIELD NAME="locked" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
+        <FIELD NAME="required" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
+        <FIELD NAME="forceunique" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
+        <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
+        <FIELD NAME="param1" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
+        <FIELD NAME="param2" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
+        <FIELD NAME="param3" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
+        <FIELD NAME="param4" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
+        <FIELD NAME="param5" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="param5" NEXT="categoryid"/>
+        <FIELD NAME="categoryid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fullname"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="pos" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_type_info_field" NEXT="pos_assignment">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="frameworkid"/>
+        <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="path"/>
+        <FIELD NAME="path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="path" NEXT="timevalidfrom"/>
+        <FIELD NAME="timevalidfrom" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="visible" NEXT="timevalidto"/>
+        <FIELD NAME="timevalidto" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timevalidfrom" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timevalidto" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="parentid"/>
+        <FIELD NAME="parentid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="depthlevel"/>
+        <FIELD NAME="depthlevel" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="parentid" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="depthlevel" NEXT="sortthread"/>
+        <FIELD NAME="sortthread" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="pos_assignment" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos" NEXT="pos_assignment_history">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="timevalidfrom"/>
+        <FIELD NAME="timevalidfrom" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="timevalidto"/>
+        <FIELD NAME="timevalidto" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timevalidfrom" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timevalidto" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="organisationid"/>
+        <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="organisationid" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="userid" NEXT="reportstoid"/>
+        <FIELD NAME="reportstoid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="positionid" NEXT="type"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="reportstoid" NEXT="managerid"/>
+        <FIELD NAME="managerid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="type" NEXT="managerpath"/>
+        <FIELD NAME="managerpath" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="managerid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="posassi_usetyp_uix" UNIQUE="true" FIELDS="userid, type" NEXT="posassi_man_ix"/>
+        <INDEX NAME="posassi_man_ix" UNIQUE="false" FIELDS="managerid" PREVIOUS="posassi_usetyp_uix" NEXT="posassi_use_ix"/>
+        <INDEX NAME="posassi_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="posassi_man_ix"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="pos_assignment_history" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_assignment" NEXT="pos_competencies">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="timevalidfrom"/>
+        <FIELD NAME="timevalidfrom" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="timevalidto"/>
+        <FIELD NAME="timevalidto" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timevalidfrom" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timevalidto" NEXT="timefinished"/>
+        <FIELD NAME="timefinished" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="organisationid"/>
+        <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timefinished" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="organisationid" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="userid" NEXT="reportstoid"/>
+        <FIELD NAME="reportstoid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="positionid" NEXT="type"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="reportstoid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="pos_competencies" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_assignment_history" NEXT="pos_framework">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="positionid" NEXT="templateid"/>
+        <FIELD NAME="templateid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="competencyid" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="templateid" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="linktype"/>
+        <FIELD NAME="linktype" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="pos_framework" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_competencies" NEXT="pos_relations">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="hidecustomfields"/>
+        <FIELD NAME="hidecustomfields" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="visible" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="hidecustomfields"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="posfram_sor_uix" UNIQUE="true" FIELDS="sortorder"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="pos_relations" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_framework" NEXT="pos_type">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
+        <FIELD NAME="id1" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="id2"/>
+        <FIELD NAME="id2" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id1"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="pos_type" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_relations" NEXT="pos_type_info_category">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="icon"/>
+        <FIELD NAME="icon" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="icon"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="postype_idn_ix" UNIQUE="false" FIELDS="idnumber"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="pos_type_info_category" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_type" NEXT="pos_type_info_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="name" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="pos_type_info_data" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_type_info_category" NEXT="pos_type_info_field">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fieldid" NEXT="data"/>
+        <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="positionid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="pos_type_info_field" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_type_info_data" NEXT="org">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="datatype"/>
+        <FIELD NAME="datatype" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="typeid" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="hidden"/>
+        <FIELD NAME="hidden" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder" NEXT="locked"/>
+        <FIELD NAME="locked" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
+        <FIELD NAME="required" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="locked" NEXT="foreceunique"/>
+        <FIELD NAME="foreceunique" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
+        <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="foreceunique" NEXT="param1"/>
+        <FIELD NAME="param1" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
+        <FIELD NAME="param2" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
+        <FIELD NAME="param3" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
+        <FIELD NAME="param4" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
+        <FIELD NAME="param5" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="param5" NEXT="categoryid"/>
+        <FIELD NAME="categoryid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fullname"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="org" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_type_info_field" NEXT="org_competencies">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="description" NEXT="frameworkid"/>
+        <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="path"/>
+        <FIELD NAME="path" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="frameworkid" NEXT="parentid"/>
+        <FIELD NAME="parentid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="path" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="parentid" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="visible" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="depthlevel"/>
+        <FIELD NAME="depthlevel" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="depthlevel" NEXT="sortthread"/>
+        <FIELD NAME="sortthread" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="org_competencies" COMMENT="Default comment for the table, please edit me" PREVIOUS="org" NEXT="org_framework">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="organisationid"/>
+        <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="organisationid" NEXT="templateid"/>
+        <FIELD NAME="templateid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="competencyid" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="templateid" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="linktype"/>
+        <FIELD NAME="linktype" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="org_framework" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_competencies" NEXT="org_relations">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="idnumber" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder" NEXT="hidecustomfields"/>
+        <FIELD NAME="hidecustomfields" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="visible" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="hidecustomfields" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="orgfram_sor_uix" UNIQUE="true" FIELDS="sortorder"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="org_relations" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_framework" NEXT="org_type">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
+        <FIELD NAME="id1" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="id2"/>
+        <FIELD NAME="id2" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id1"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="org_type" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_relations" NEXT="org_type_info_category">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="icon"/>
+        <FIELD NAME="icon" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="icon"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="orgtype" UNIQUE="false" FIELDS="idnumber"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="org_type_info_category" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_type" NEXT="org_type_info_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="name" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="org_type_info_data" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_type_info_category" NEXT="org_type_info_field">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="data"/>
+        <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="data" NEXT="organisationid"/>
+        <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fieldid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="org_type_info_field" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_type_info_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>
+        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="datatype"/>
+        <FIELD NAME="datatype" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="hidden"/>
+        <FIELD NAME="hidden" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder" NEXT="locked"/>
+        <FIELD NAME="locked" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
+        <FIELD NAME="required" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
+        <FIELD NAME="forceunique" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
+        <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
+        <FIELD NAME="param1" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
+        <FIELD NAME="param2" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
+        <FIELD NAME="param3" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>
+        <FIELD NAME="param4" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param3" NEXT="param5"/>
+        <FIELD NAME="param5" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param4" NEXT="fullname"/>
+        <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="param5" NEXT="categoryid"/>
+        <FIELD NAME="categoryid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fullname"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

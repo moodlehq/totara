@@ -1,17 +1,38 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once('../lib.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 
-hierarchy::support_old_url_syntax();
 
 ///
 /// Setup / loading data
 ///
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 
 // Get params
 $id     = required_param('id', PARAM_INT);
@@ -24,11 +45,11 @@ $hierarchy = hierarchy::load_hierarchy($prefix);
 // Setup page and check permissions
 admin_externalpage_setup($prefix.'typemanage');
 
-require_capability('moodle/local:delete'.$prefix.'type', $sitecontext);
+require_capability('totara/hierarchy:delete'.$prefix.'type', $sitecontext);
 
 $type = $hierarchy->get_type_by_id($id);
 
-$back_url = "{$CFG->wwwroot}/hierarchy/type/index.php?prefix={$prefix}";
+$back_url = "{$CFG->wwwroot}/totara/hierarchy/type/index.php?prefix=$prefix";
 
 ///
 /// Display page
@@ -36,15 +57,13 @@ $back_url = "{$CFG->wwwroot}/hierarchy/type/index.php?prefix={$prefix}";
 
 // User hasn't confirmed deletion yet
 if (!$delete) {
-    admin_externalpage_print_header();
-    print_heading(get_string('deletetype', $prefix, format_string($type->fullname)), 'left', 1);
+    echo $OUTPUT->header();
+    echo $OUTPUT->heading(get_string('deletetype', 'totara_hierarchy', format_string($type->fullname)), 1);
 
-    $strdelete = get_string('deletechecktype', 'hierarchy');
-    notice_yesno("$strdelete<br /><br />",
-        "{$CFG->wwwroot}/hierarchy/type/delete.php?prefix={$prefix}&amp;id={$type->id}&amp;delete=".md5($type->timemodified)."&amp;sesskey={$USER->sesskey}",
-        $back_url);
+    $strdelete = get_string('deletechecktype', 'totara_hierarchy');
+    echo $OUTPUT->confirm($strdelete . html_writer::empty_tag('br') . html_writer::empty_tag('br'), "{$CFG->wwwroot}/totara/hierarchy/type/delete.php?prefix=$prefix&amp;id={$type->id}&amp;delete=".md5($type->timemodified)."&amp;sesskey={$USER->sesskey}", $back_url);
 
-    print_footer();
+    echo $OUTPUT->footer();
     exit;
 }
 
@@ -54,7 +73,7 @@ if (!$delete) {
 ///
 
 if ($delete != md5($type->timemodified)) {
-    print_error('error:deletetypecheckvariable','hierarchy');
+    print_error('error:deletetypecheckvariable', 'totara_hierarchy');
 }
 
 if (!confirm_sesskey()) {
@@ -64,9 +83,8 @@ if (!confirm_sesskey()) {
 $deleteresult = $hierarchy->delete_type($type->id);
 
 if ($deleteresult === true) {
-    add_to_log(SITEID, $prefix, 'delete type', "type/index.php?prefix={$prefix}", "$type->fullname (ID $type->id)");
-    totara_set_notification(get_string('deletedtype', $prefix, $type->fullname), "{$CFG->wwwroot}/hierarchy/type/index.php?prefix={$prefix}", array('style'=>'notifysuccess'));
+    add_to_log(SITEID, $prefix, 'delete type', "type/index.php?prefix=$prefix", "$type->fullname (ID $type->id)");
+    totara_set_notification(get_string($prefix.'deletedtype', 'totara_hierarchy', $type->fullname), "{$CFG->wwwroot}/totara/hierarchy/type/index.php?prefix=$prefix", array('style' => 'notifysuccess'));
 } else {
-    totara_set_notification(get_string('error:deletedtype', $prefix, $type->fullname), "{$CFG->wwwroot}/hierarchy/type/index.php?prefix={$prefix}");
+    totara_set_notification(get_string($prefix.'error:deletedtype', 'totara_hierarchy', $type->fullname), "{$CFG->wwwroot}/totara/hierarchy/type/index.php?prefix=$prefix");
 }
-

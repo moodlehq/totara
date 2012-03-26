@@ -1,6 +1,28 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once('../lib.php');
 require_once('lib.php');
 require_once($CFG->libdir.'/adminlib.php');
@@ -9,7 +31,7 @@ require_once($CFG->libdir.'/adminlib.php');
 /// Setup / loading data
 ///
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 
 // Get params
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
@@ -28,16 +50,16 @@ $framework   = $hierarchy->get_framework($frameworkid, true, true);
 // If no frameworks exist
 if (!$framework) {
     // Redirect to frameworks page
-    redirect($CFG->wwwroot.'/hierarchy/framework/index.php?prefix=competency');
+    redirect($CFG->wwwroot.'/totara/hierarchy/framework/index.php?prefix=competency');
     exit();
 }
 
 $frameworkid = $framework->id;
 
 // Cache user capabilities
-$can_add = has_capability('moodle/local:create'.$hierarchy->prefix.'template', $sitecontext);
-$can_edit = has_capability('moodle/local:update'.$hierarchy->prefix.'template', $sitecontext);
-$can_delete = has_capability('moodle/local:delete'.$hierarchy->prefix.'template', $sitecontext);
+$can_add = has_capability('totara/hierarchy:create'.$hierarchy->prefix.'template', $sitecontext);
+$can_edit = has_capability('totara/hierarchy:update'.$hierarchy->prefix.'template', $sitecontext);
+$can_delete = has_capability('totara/hierarchy:delete'.$hierarchy->prefix.'template', $sitecontext);
 
 if ($can_add || $can_edit || $can_delete) {
     $navbaritem = $hierarchy->get_editing_button($edit);
@@ -50,100 +72,7 @@ if ($can_add || $can_edit || $can_delete) {
 // Setup page and check permissions
 admin_externalpage_setup($hierarchy->prefix.'manage', $navbaritem);
 
-/*
-///
-/// Load framework templates after any changes
-///
-
-// Get templates for this framework
-$templates = $hierarchy->get_templates();
-
-
-///
-/// Generate / display page
-///
-$str_edit     = get_string('edit');
-$str_delete   = get_string('delete');
-$str_hide     = get_string('hide');
-$str_show     = get_string('show');
-
-if ($templates) {
-
-    // Create display table
-    $table = new stdclass();
-    $table->class = 'generalbox edit'.$hierarchy->prefix;
-    $table->width = '95%';
-
-    // Setup column headers
-    $table->head = array();
-    $table->align = array();
-    $table->head[] = get_string('template', $hierarchy->prefix);
-    $table->align[] = 'left';
-    $table->head[] = get_string('competencies', $hierarchy->prefix);
-    $table->align[] = 'center';
-    $table->head[] = get_string('createdon', $hierarchy->prefix);
-    $table->align[] = 'left';
-
-    // Add edit column
-    if ($editingon && $can_edit) {
-        $table->head[] = get_string('edit');
-        $table->align[] = 'center';
-    }
-
-    // Add rows to table
-    foreach ($templates as $template) {
-        $row = array();
-
-        $cssclass = !$template->visible ? 'class="dimmed"' : '';
-
-        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/prefix/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->fullname}</a>";
-        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/prefix/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->competencycount}</a>";
-        $row[] = userdate($template->timecreated, '%A, %e %B %Y');
-
-        // Add edit link
-        $buttons = array();
-        if ($editingon && $can_edit) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/{$hierarchy->prefix}/template/edit.php?id={$template->id}\" title=\"$str_edit\">".
-                "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
-        }
-        if ($editingon && $can_delete) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/{$hierarchy->prefix}/template/delete.php?id={$template->id}\" title=\"$str_delete\">".
-                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
-        }
-
-        if ($buttons) {
-            $row[] = implode($buttons, ' ');
-        }
-
-        $table->data[] = $row;
-    }
-}
-
-
-// Display page
-admin_externalpage_print_header();
-
-$hierarchy->display_framework_selector('prefix/competency/template/index.php');
-
-if ($templates) {
-    print_table($table);
-} else {
-    print_heading(get_string('notemplateinframework', $hierarchy->prefix));
-}
-
-
-// Editing buttons
-if ($can_add) {
-    echo '<div class="buttons">';
-
-    // Print button for creating new template
-    $data = array('frameworkid' => $framework->id);
-    print_single_button($CFG->wwwroot.'/hierarchy/prefix/'.$hierarchy->prefix.'/template/edit.php', $data, get_string('addnewtemplate', $hierarchy->prefix), 'get');
-
-    echo '</div>';
-}
-*/
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 $hierarchy->display_framework_selector('prefix/competency/template/index.php');
 $templates = $hierarchy->get_templates();
@@ -152,4 +81,4 @@ if ($templates) {
     competency_template_display_table($templates, $frameworkid);
 }
 
-print_footer();
+echo $OUTPUT->footer();

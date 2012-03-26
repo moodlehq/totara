@@ -88,7 +88,6 @@ $string['returntocourse'] = 'Volver al curso';
 $string['searchcourses'] = 'Buscar cursos';
 $string['selectanassessor'] = 'Seleccione un asesor';
 $string['selectaproficiency'] = 'Seleccione una capacidad';
-$string['selectcompetency'] = 'Seleccione una competencia';
 $string['settings'] = 'Configuración';
 $string['startdate'] = 'Fecha de inicio';
 $string['started'] = 'Iniciado';

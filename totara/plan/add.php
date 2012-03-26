@@ -27,9 +27,9 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
-require_once($CFG->dirroot . '/local/plan/edit_form.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/edit_form.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 global $USER;
 
@@ -71,7 +71,7 @@ if (dp_get_template_permission($template->id, 'plan', 'create', $role) != DP_PER
 /// Data and actions
 ///
 $currenturl = qualified_me();
-$allplansurl = "{$CFG->wwwroot}/local/plan/index.php?userid={$userid}";
+$allplansurl = "{$CFG->wwwroot}/totara/plan/index.php?userid={$userid}";
 
 $form = new plan_edit_form($currenturl, array('action'=>'add'));
 
@@ -125,7 +125,7 @@ if ($data = $form->get_data()) {
             }
         }
 
-        $viewurl = "{$CFG->wwwroot}/local/plan/view.php?id={$newid}";
+        $viewurl = "{$CFG->wwwroot}/totara/plan/view.php?id={$newid}";
         add_to_log(SITEID, 'plan', 'created', "view.php?id={$newid}", $plan->name);
         totara_set_notification(get_string('plancreatesuccess', 'local_plan'), $viewurl, array('style' => 'notifysuccess'));
     }

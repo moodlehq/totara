@@ -1,16 +1,37 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
 
-hierarchy::support_old_url_syntax();
 
 ///
 /// Setup / loading data
 ///
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 
 // Get params
 $id = required_param('id', PARAM_INT);
@@ -21,34 +42,30 @@ $delete = optional_param('delete', '', PARAM_ALPHANUM);
 // Setup page and check permissions
 admin_externalpage_setup($prefix.'manage');
 
-require_capability('moodle/local:deletecompetency', $sitecontext);
+require_capability('totara/hierarchy:deletecompetency', $sitecontext);
 
-if (!$scale = get_record('comp_scale', 'id', $id)) {
-    error('Competency scale ID was incorrect');
+if (!$scale = $DB->get_record('comp_scale', array('id' => $id))) {
+    print_error('incorrectcompetencyscaleid', 'totara_hierarchy');
 }
 
-$returnurl = "{$CFG->wwwroot}/hierarchy/framework/index.php?prefix=competency";
-$deleteurl = "{$CFG->wwwroot}/hierarchy/prefix/competency/scale/delete.php?id={$scale->id}&amp;delete=".md5($scale->timemodified)."&amp;sesskey={$USER->sesskey}&amp;prefix=competency";
+$returnurl = "{$CFG->wwwroot}/totara/hierarchy/framework/index.php?prefix=competency";
+$deleteurl = "{$CFG->wwwroot}/totara/hierarchy/prefix/competency/scale/delete.php?id={$scale->id}&amp;delete=".md5($scale->timemodified)."&amp;sesskey={$USER->sesskey}&amp;prefix=competency";
 
 // Can't delete if the scale is in use or assigned
-if ( competency_scale_is_used($id) ) {
-    print_error('error:nodeletecompetencyscaleinuse', 'competency', $returnurl);
+if (competency_scale_is_used($id)) {
+    print_error('error:nodeletecompetencyscaleinuse', 'totara_hierarchy', $returnurl);
 }
-if ( competency_scale_is_assigned($id) ) {
-    print_error('error:nodeletecompetencyscaleassigned', 'competency', $returnurl);
+if (competency_scale_is_assigned($id)) {
+    print_error('error:nodeletecompetencyscaleassigned', 'totara_hierarchy', $returnurl);
 }
 
 if (!$delete) {
-    admin_externalpage_print_header();
-    $strdelete = get_string('deletecheckscale', 'competency');
+    echo $OUTPUT->header();
+    $strdelete = get_string('deletecheckscale', 'totara_hierarchy');
 
-    notice_yesno(
-        "{$strdelete}<br /><br />".format_string($scale->name),
-        $deleteurl,
-        $returnurl
-    );
+    echo $OUTPUT->confirm($strdelete . html_writer::empty_tag('br') . html_writer::empty_tag('br') . format_string($scale->name), $deleteurl, $returnurl);
 
-    print_footer();
+    echo $OUTPUT->footer();
     exit;
 }
 
@@ -58,37 +75,27 @@ if (!$delete) {
 ///
 
 if ($delete != md5($scale->timemodified)) {
-    error("The check variable was wrong - try again");
+    print_error('checkvariable', 'totara_hierarchy');
 }
 
 if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-begin_sql();
+$transaction = $DB->start_delegated_transaction();
 
 // Delete assignment of scale to frameworks
-if(!delete_records('comp_scale_assignments', 'scaleid', $scale->id)) {
-    rollback_sql();
-    // error
-    totara_set_notification(get_string('error:couldnotdeletescale', 'competency', format_string($scale->name)), $CFG->wwwroot . '/hierarchy/framework/index.php?prefix=competency');
-}
+$DB->delete_records('comp_scale_assignments', array('scaleid' => $scale->id));
 
 // Delete scale values
-if(!delete_records('comp_scale_values', 'scaleid', $scale->id)) {
-    rollback_sql();
-    // error
-    totara_set_notification(get_string('error:couldnotdeletescale', 'competency', format_string($scale->name)), $CFG->wwwroot . '/hierarchy/framework/index.php?prefix=competency');
-}
+$DB->delete_records('comp_scale_values', array('scaleid' => $scale->id));
 
 // Delete scale itself
-if(!delete_records('comp_scale', 'id', $scale->id)) {
-    totara_set_notification(get_string('error:couldnotdeletescale', 'competency', format_string($scale->name)), $CFG->wwwroot . '/hierarchy/framework/index.php?prefix=competency');
-    rollback_sql();
-}
+$DB->delete_records('comp_scale', array('id' => $scale->id));
 
-commit_sql();
-add_to_log(SITEID, 'hierarchy', 'delete competency scale', "framework/index.php?id={$scale->id}&amp;prefix=competency", "$scale->name (ID $scale->id)");
+$transaction->allow_commit();
+
+add_to_log(SITEID, 'competency', 'delete competency scale', "framework/index.php?id={$scale->id}&amp;prefix=competency", "$scale->name (ID $scale->id)");
+
 // redirect
-totara_set_notification(get_string('deletedcompetencyscale', 'competency', format_string($scale->name)), $CFG->wwwroot . '/hierarchy/framework/index.php?prefix=competency', array('style' => 'notifysuccess'));
-
+totara_set_notification(get_string('deletedcompetencyscale', 'totara_hierarchy', format_string($scale->name)), $CFG->wwwroot . '/totara/hierarchy/framework/index.php?prefix=competency', array('style' => 'notifysuccess'));

@@ -1,7 +1,7 @@
 <?php
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/program/lib.php');
+require_once($CFG->dirroot.'/totara/program/lib.php');
 require_once($CFG->dirroot.'/lib/pear/HTML/AJAX/JSON.php');
 
 require_login();
@@ -12,7 +12,7 @@ $htmltype = required_param('htmltype', PARAM_TEXT); // The type of html to retur
 $program = new program($id);
 
 // Permissions check
-if (!has_capability('local/program:configurecontent', $program->get_context())) {
+if (!has_capability('totara/program:configurecontent', $program->get_context())) {
     exit;
 }
 

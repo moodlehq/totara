@@ -46,7 +46,7 @@ admin_externalpage_setup('priorityscales');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
-require_capability('local/plan:managepriorityscales', $sitecontext);
+require_capability('totara/plan:managepriorityscales', $sitecontext);
 if ($id == 0) {
     // Creating new scale value
 
@@ -90,7 +90,7 @@ $valueform->set_data($value);
 // cancelled
 if ($valueform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/local/plan/priorityscales/view.php?id={$value->priorityscaleid}");
+    redirect("$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$value->priorityscaleid}");
 
 // Update data
 } else if ($valuenew = $valueform->get_data()) {
@@ -112,11 +112,11 @@ if ($valueform->is_cancelled()) {
             add_to_log(SITEID, 'priorities', 'scale value added', "view.php?id={$valuenew->priorityscaleid}");
 
             totara_set_notification(get_string('priorityscalevalueadded', 'local_plan', format_string(stripslashes($valuenew->name))),
-                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}",
+                "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}",
                 array('style' => 'notifysuccess'));
         } else {
             totara_set_notification(get_string('error:createpriorityvalue', 'local_plan'),
-                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$priorityscaleid}");
+                "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$priorityscaleid}");
         }
 
     // Updating priority scale value
@@ -127,12 +127,12 @@ if ($valueform->is_cancelled()) {
             add_to_log(SITEID, 'priorities', 'scale value updated', "view.php?id={$valuenew->priorityscaleid}");
 
             totara_set_notification(get_string('priorityscalevalueupdated', 'local_plan', format_string(stripslashes($valuenew->name))),
-                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}",
+                "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}",
                 array('style' => 'notifysuccess'));
 
         } else {
             totara_set_notification(get_string('error:updatepriorityscalevalue', 'local_plan'),
-                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$priorityscaleid}");
+                "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$priorityscaleid}");
         }
     }
 

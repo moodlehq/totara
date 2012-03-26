@@ -39,7 +39,7 @@ class local_oauth_HTTPResponse {
 *
 * @author Andreas Åkre Solberg, UNINETT AS. <andreas.solberg@uninett.no>
 * @author Piers Harding
-* @package local/oauth
+* @package totara/oauth
 * @version $Id$
 */
 class local_oauth_Utilities {

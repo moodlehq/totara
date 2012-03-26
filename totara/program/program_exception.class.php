@@ -188,7 +188,7 @@ abstract class prog_exception {
     protected function set_auto_time_allowance() {
         global $CFG;
 
-        require_once($CFG->dirroot . '/local/program/program.class.php');
+        require_once($CFG->dirroot . '/totara/program/program.class.php');
 
         $program = new program($this->programid);
 
@@ -236,7 +236,7 @@ abstract class prog_exception {
      */
     private function dismiss_exception() {
         global $CFG;
-        require_once($CFG->dirroot . '/local/program/program.class.php');
+        require_once($CFG->dirroot . '/totara/program/program.class.php');
 
         $user_assign = get_record('prog_user_assignment', 'assignmentid', $this->assignmentid, 'userid', $this->userid);
         $learner_assign_todb = new stdClass();

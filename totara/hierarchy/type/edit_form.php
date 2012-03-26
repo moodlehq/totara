@@ -1,4 +1,26 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 
@@ -6,16 +28,13 @@ class type_edit_form extends moodleform {
 
     // Define the form
     function definition() {
-        global $CFG;
+        global $CFG, $TEXTAREA_OPTIONS;
 
         $mform =& $this->_form;
 
         $strgeneral  = get_string('general');
         $prefix   = $this->_customdata['prefix'];
         $page  = $this->_customdata['page'];
-        $type = $this->_customdata['type'];
-
-        require_once($CFG->dirroot.'/local/icon/'.$prefix.'_type_icon.class.php');
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
@@ -30,26 +49,22 @@ class type_edit_form extends moodleform {
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
 
-        $mform->addElement('text', 'fullname', get_string('fullnametype', $prefix), 'maxlength="254" size="50"');
-        $mform->addElement('text', 'idnumber', get_string('idnumber'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('fullname', array('typefullname', get_string('fullnametype', $prefix)), true);
-        $mform->addRule('fullname', get_string('missingnametype', $prefix), 'required', null, 'client');
+        $mform->addElement('text', 'fullname', get_string('fullnametype', 'totara_hierarchy'), 'maxlength="254" size="50"');
+        $mform->addElement('text', 'idnumber', get_string($prefix.'idnumber', 'totara_hierarchy'), 'maxlength="100"  size="10"');
+        $mform->addHelpButton('fullname', 'fullnametype', 'totara_hierarchy', '', true);
+        $mform->addRule('fullname', get_string($prefix.'missingnametype', 'totara_hierarchy'), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);
 
         if (HIERARCHY_DISPLAY_SHORTNAMES) {
-            $mform->addElement('text', 'shortname', get_string('shortnametype', $prefix), 'maxlength="100" size="20"');
-            $mform->setHelpButton('shortname', array('typeshortname', get_string('shortnametype', $prefix)), true);
-            $mform->addRule('shortname', get_string('missingshortnametype', $prefix), 'required', null, 'client');
+            $mform->addElement('text', 'shortname', get_string('shortnametype', 'totara_hierarchy'), 'maxlength="100" size="20"');
+            $mform->addHelpButton('shortname', 'shortnametype', 'totara_hierarchy');
+            $mform->addRule('shortname', get_string('missingshortnametype', 'totara_hierarchy'), 'required', null, 'client');
             $mform->setType('shortname', PARAM_MULTILANG);
         }
 
-        $mform->addElement('htmleditor', 'description', get_string('description'));
-        $mform->setHelpButton('description', array('text', get_string('helptext')), true);
-        $mform->setType('description', PARAM_CLEAN);
-
-        $typename = $prefix.'_type_icon';
-        $type_icon = new $typename();
-        $type_icon->add_to_form($type, $mform);
+        $mform->addElement('editor', 'description_editor', get_string($prefix. 'typedescription', 'totara_hierarchy'), null, $TEXTAREA_OPTIONS);
+        $mform->addHelpButton('description_editor', $prefix. 'typedescription', 'totara_hierarchy');
+        $mform->setType('description_editor', PARAM_CLEANHTML);
 
         $this->add_action_buttons();
     }

@@ -25,9 +25,9 @@
 
 header("Content-Type:text/plain");
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/lib.php');
-require_once($CFG->dirroot.'/local/plan/development_plan.class.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/lib.php');
+require_once($CFG->dirroot.'/totara/plan/development_plan.class.php');
 
 
 // 1. Get information

@@ -23,14 +23,50 @@
  */
 
 class customfield_file extends customfield_base {
-    function edit_field_add(&$mform) {
-        $size = $this->field->param1;
-        $maxlength = $this->field->param2;
-        $fieldtype = ($this->field->param3 == 1 ? 'password' : 'text');
 
+
+    function edit_load_item_data(&$item) {
+        global $FILEPICKER_OPTIONS;
+        $this->data = file_prepare_standard_filemanager($item, $this->inputname, $FILEPICKER_OPTIONS, $FILEPICKER_OPTIONS['context'],
+                                                           'totara_customfield', $this->prefix . '_filemgr', $item->id);
+    }
+
+    /**
+     * Saves the data coming from form
+     * @param   mixed   data coming from the form
+     * @param   string  name of the prefix (ie, competency)
+     * @return  mixed   returns data id if success of db insert/update, false on fail, 0 if not permitted
+     */
+    function edit_save_data($itemnew, $prefix, $tableprefix) {
+        global $DB, $FILEPICKER_OPTIONS;
+
+        if (!isset($itemnew->{$this->inputname})) {
+            // field not present in form, probably locked and invisible - skip it
+            return;
+        }
+        $itemnew->{$this->inputname} = $this->edit_save_data_preprocess($itemnew->{$this->inputname});
+        $itemnew = file_postupdate_standard_filemanager($itemnew, $this->inputname, $FILEPICKER_OPTIONS, $FILEPICKER_OPTIONS['context'],
+                                                                      'totara_customfield', $this->prefix . '_filemgr', $itemnew->id);
+        $data = new stdClass();
+        $data->{$prefix.'id'} = $itemnew->id;
+        $data->fieldid      = $this->field->id;
+        $data->data = $itemnew->id;
+
+        if ($dataid = $DB->get_field($tableprefix.'_info_data', 'id', array($prefix.'id' => $itemnew->id, 'fieldid' => $data->fieldid))) {
+            $data->id = $dataid;
+            if (!$DB->update_record($tableprefix.'_info_data', $data)) {
+                print_error('error:updatecustomfield', 'totara_customfield');
+            }
+        } else {
+            $DB->insert_record($tableprefix.'_info_data', $data);
+        }
+
+    }
+
+    function edit_field_add(&$mform) {
+        global $FILEPICKER_OPTIONS;
         /// Create the file picker
-        $mform->addElement('choosecoursefileorimsrepo', $this->inputname, format_string($this->field->fullname));
-        $mform->setType($this->inputname, PARAM_RAW);  // We need to find a better PARAM
+        $mform->addElement('filemanager', $this->inputname.'_filemanager', format_string($this->field->fullname), null, $FILEPICKER_OPTIONS);
     }
 
     function edit_field_set_locked(&$mform) {
@@ -47,14 +83,28 @@ class customfield_file extends customfield_base {
     /**
      * Display the data for this field
      */
-    static function display_item_data($data) {
+    static function display_item_data($data, $prefix=null) {
         global $OUTPUT;
+
         if (empty($data)) {
             return $data;
         }
-        $strfile = get_string('file');
-        $icon = mimeinfo("icon", $data);
-        return $OUTPUT->action_icon(new moodle_url("/file.php/1/{$data}"), new pix_icon("f/{$icon}", $strfile), null, array('class' => "icon"));
+        $context = context_system::instance();
+        $fs = get_file_storage();
+        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $data, null, false);
+        if (count($files)!=1) {
+            return get_string('filenotfound', 'error');
+        } else {
+            //get the first file in this array (assoc array keyed by internal moodle hashes so use array_shift)
+            $file = array_shift($files);
+            $strfile = get_string('file');
+            $filename = $file->get_filename();
+            $icon = mimeinfo("icon", $filename);
+            $pic = $OUTPUT->pix_icon("f/{$icon}", $strfile);
+            $url = new moodle_url("/pluginfile.php/{$file->get_contextid()}/{$file->get_component()}/{$file->get_filearea()}" . $file->get_filepath() . $file->get_itemid().'/'.$filename);
+            return $OUTPUT->action_link($url, $pic . $filename, null, array('class' => "icon"));
+        }
+
     }
 }
 ?>

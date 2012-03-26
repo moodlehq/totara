@@ -261,8 +261,8 @@ class dp_course_component extends dp_base_component {
 
             // Get course picker
             require_js(array(
-                $CFG->wwwroot.'/local/plan/component.js.php?planid='.$this->plan->id.'&amp;component=course&amp;viewas='.$this->plan->viewas,
-                $CFG->wwwroot.'/local/plan/components/course/find.js.php'
+                $CFG->wwwroot.'/totara/plan/component.js.php?planid='.$this->plan->id.'&amp;component=course&amp;viewas='.$this->plan->viewas,
+                $CFG->wwwroot.'/totara/plan/components/course/find.js.php'
             ));
         }
     }
@@ -505,7 +505,7 @@ class dp_course_component extends dp_base_component {
             '&amp;id=' . $item->courseid .
             '&amp;size=small&amp;type=course" alt="' . format_string($item->fullname).
             '" /><a' . $class .' href="' . $CFG->wwwroot .
-            '/local/plan/components/' . $this->component.'/view.php?id=' .
+            '/totara/plan/components/' . $this->component.'/view.php?id=' .
             $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
             '</a>'. $launch;
     }
@@ -913,7 +913,7 @@ class dp_course_component extends dp_base_component {
 
         if ($cansetcompletion && $approved && $CFG->enablecourserpl) {
             $strrpl = get_string('addrpl', 'local_plan');
-            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/course/rpl.php?id='.$this->plan->id.'&courseid='.$item->courseid.'" title="'.$strrpl.'">
+            $proficient = '<a href="'.$CFG->wwwroot.'/totara/plan/components/course/rpl.php?id='.$this->plan->id.'&courseid='.$item->courseid.'" title="'.$strrpl.'">
                 <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';
             $markup .= $proficient;
         }

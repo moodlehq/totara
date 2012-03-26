@@ -1,10 +1,32 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_hierarchy.class.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 
 ///
@@ -27,9 +49,9 @@ $treeonly = optional_param('treeonly', false, PARAM_BOOL);
 $showhidden = optional_param('showhidden', false, PARAM_BOOL);
 
 // check they have permissions on hidden frameworks in case parameter is changed manually
-$context = get_context_instance(CONTEXT_SYSTEM);
-if ($showhidden && !has_capability('moodle/local:updatecompetencyframeworks', $context)) {
-    print_error('nopermviewhiddenframeworks', 'hierarchy');
+$context = context_system::instance();
+if ($showhidden && !has_capability('totara/hierarchy:updatecompetencyframeworks', $context)) {
+    print_error('nopermviewhiddenframeworks', 'totara_hierarchy');
 }
 
 // No javascript parameters
@@ -38,14 +60,13 @@ $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // string of params needed in non-js url strings
-$data = array(
+$urlparams = array(
                'id'          => $id,
                'frameworkid' => $frameworkid,
                'nojs'        => $nojs,
                'returnurl'   => $returnurl,
                's'           => $s
-             );
-$urlparams = http_build_query($data);
+           );
 
 if (empty($CFG->competencyuseresourcelevelevidence)) {
     $hierarchy = new competency();
@@ -86,8 +107,8 @@ if (!$nojs) {
 
 } else {
     // Check permissions
-    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-    require_capability('moodle/local:updatecompetency', $sitecontext);
+    $sitecontext = context_system::instance();
+    require_capability('totara/hierarchy:updatecompetency', $sitecontext);
 
     // Setup hierarchy object
     $hierarchy = new competency();
@@ -100,23 +121,23 @@ if (!$nojs) {
 
     // Load framework
     if (!$framework = $hierarchy->get_framework($frameworkid, $showhidden)) {
-        error('Competency framework could not be found');
+        print_error('competencyframeworknotfound', 'totara_hierarchy');
     }
 
     // Load competencies to display
     $competencies = $hierarchy->get_items_by_parent($parentid);
 
-    // none JS version of page
-    admin_externalpage_print_header();
-    echo '<h2>'.get_string('assigncompetency', $hierarchy->prefix).'</h2>';
+    // non JS version of page
+    echo $OUTPUT->header();
+    $out = html_writer::tag('h2', get_string('assigncompetency', 'totara_hierarchy'));
+    $link = html_writer::link($returnurl, get_string('cancelwithoutassigning','totara_hierarchy'));
+    $out .= html_writer::tag('p', $link);
 
-    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
+    if (empty($frameworkid) || $frameworkid == 0) {
 
-    if(empty($frameworkid) || $frameworkid == 0) {
-
-        echo build_nojs_frameworkpicker(
+        $out .= build_nojs_frameworkpicker(
             $hierarchy,
-            $CFG->wwwroot.'/hierarchy/prefix/competency/course/add.php',
+            '/totara/hierarchy/prefix/competency/course/add.php',
             array(
                 'returnurl' => $returnurl,
                 's' => $s,
@@ -127,12 +148,10 @@ if (!$nojs) {
         );
 
     } else {
-        ?>
-<div id="nojsinstructions">
-<?php
-        echo build_nojs_breadcrumbs($hierarchy,
+        $out .= html_writer::start_tag('div', array('id' => 'nojsinstructions'));
+        $out .= build_nojs_breadcrumbs($hierarchy,
             $parentid,
-            $CFG->wwwroot.'/hierarchy/prefix/competency/course/add.php',
+            '/totara/hierarchy/prefix/competency/course/add.php',
             array(
                 'id' => $id,
                 'returnurl' => $returnurl,
@@ -141,19 +160,15 @@ if (!$nojs) {
                 'frameworkid' => $frameworkid,
             )
         );
+        $out .= html_writer::tag('p', get_string('clicktoassign', 'totara_hierarchy') . ' ' . get_string('clicktoviewchildren', 'totara_hierarchy'));
+        $out .= html_writer::end_tag('div');
 
-?>
-<p>
-<?php echo  get_string('clicktoassign', $hierarchy->prefix).' '.
-            get_string('clicktoviewchildren', $hierarchy->prefix) ?>
-</p>
-</div>
-<div class="nojsselect">
-<?php
-         echo build_nojs_treeview(
+        $out .= html_writer::start_tag('div', array('class' => 'nojsselect'));
+
+        $out .= build_nojs_treeview(
             $competencies,
-            get_string('nochildcompetenciesfound', 'competency'),
-            $CFG->wwwroot.'/hierarchy/prefix/competency/course/evidence.php',
+            get_string('nochildcompetenciesfound', 'totara_hierarchy'),
+            '/totara/hierarchy/prefix/competency/course/evidence.php',
             array(
                 's' => $s,
                 'returnurl' => $returnurl,
@@ -161,15 +176,12 @@ if (!$nojs) {
                 'frameworkid' => $frameworkid,
                 'id' => $id,
             ),
-            $CFG->wwwroot.'/hierarchy/prefix/competency/course/add.php?'.$urlparams,
+            '/totara/hierarchy/prefix/competency/course/add.php',
+            $urlparams,
             $hierarchy->get_all_parents()
         );
-
-?>
-</div>
-<?php
+        $out .= html_writer::end_tag('div');
     }
-
-    print_footer();
-
+    echo $out;
+    echo $OUTPUT->footer();
 }

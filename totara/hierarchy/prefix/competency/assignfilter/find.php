@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,12 @@
  * @subpackage hierarchy
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_hierarchy.class.php');
 
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 // Page title
 $pagetitle = 'assigncompetencies';

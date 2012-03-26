@@ -24,8 +24,8 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_courses.class.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/dialogs/core/dialog_content_courses.class.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
@@ -46,7 +46,7 @@ $categoryid = (int) substr($categoryid, 3);
 ///
 /// Load plan
 ///
-require_capability('local/plan:accessplan', get_system_context());
+require_capability('totara/plan:accessplan', get_system_context());
 
 $plan = new development_plan($id);
 $component = $plan->get_component('course');
@@ -80,7 +80,7 @@ $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 $dialog->selected_title = 'itemstoadd';
 
 // Setup search
-$dialog->search_code = '/local/plan/components/course/course_search.php';
+$dialog->search_code = '/totara/plan/components/course/course_search.php';
 
 // Add data
 $dialog->load_courses();

@@ -24,8 +24,8 @@
  */
 
 require_once('../../../../config.php');
-require_once($CFG->dirroot.'/local/plan/components/competency/dialog_content_linked_competencies.class.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/plan/components/competency/dialog_content_linked_competencies.class.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
@@ -39,7 +39,7 @@ $courseid = required_param('courseid', PARAM_INT);
 ///
 /// Load plan
 ///
-require_capability('local/plan:accessplan', get_system_context());
+require_capability('totara/plan:accessplan', get_system_context());
 
 $plan = new development_plan($planid);
 $component = $plan->get_component('course');

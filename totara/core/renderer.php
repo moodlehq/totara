@@ -400,15 +400,41 @@ class totara_core_renderer extends plugin_renderer_base {
     /**
     * Generate markup for search box
     */
-    public function print_totara_search($action, $type, $category, $strsearch, $value) {
-        $output = html_writer::start_tag('form', array('id'=>'searchtotara', 'action'=>$action, 'method'=>'get'));
+    public function print_totara_search($action, $hiddenfields = null, $placeholder = '', $value = '', $formid = null, $inputid = null) {
+
+        $attr = array(
+            'action' => $action,
+            'method' => 'get',
+        );
+        if (isset($formid)) {
+            $attr['id'] = $formid;
+        }
+        $output = html_writer::start_tag('form', $attr);
         $output .= html_writer::start_tag('fieldset', array('class' => 'coursesearchbox invisiblefieldset'));
-        $output .= html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>'viewtype', 'value'=>$type));
-        $output .= html_writer::empty_tag('input', array('type'=>'hidden', 'name'=>'category', 'value'=>$category));
-        $output .= html_writer::empty_tag('input', array('type'=>'text', 'id' => 'navsearchbox',
-                                                        'class' => 'search-box', 'name'=>'search', 'value'=>s($value, true),
-                                                        'size' => '20', 'alt' => s($strsearch), 'placeholder' => s($strsearch)
-        ));
+        if (isset($hiddenfields)) {
+            foreach ($hiddenfields as $fname => $fvalue) {
+                $attr = array(
+                    'type' => 'hidden',
+                    'name' => $fname,
+                    'value' => $fvalue
+                );
+                $output .= html_writer::empty_tag('input', $attr);
+            }
+        }
+        $attr = array(
+            'type' => 'text',
+            'class' => 'search-box',
+            'name' => 'query',
+            'placeholder' => $placeholder,
+            'alt' => $placeholder,
+        );
+        if (strlen($value) != 0) {
+            $attr['value'] = $value;
+        }
+        if (isset($inputid)) {
+            $attr['id'] = $inputid;
+        }
+        $output .= html_writer::empty_tag('input', $attr);
         $output .= html_writer::empty_tag('input', array('type'=>'submit', 'value'=>get_string('go')));
         $output .= html_writer::end_tag('fieldset');
         $output .= html_writer::end_tag('form');

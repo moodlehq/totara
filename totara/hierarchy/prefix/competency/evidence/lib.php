@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
  * @package totara
  * @subpackage hierarchy
  */
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/evidence.php');
 
 
 /**
@@ -36,9 +36,10 @@ require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php')
  *                      string name and the second element is the lang string file
  */
 function hierarchy_can_add_competency_evidence($plan, $component, $userid, $competencyid) {
+    global $DB;
 
     $systemcontext = get_system_context();
-    if (!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+    if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         return array('error:nopermissions', 'local_plan');
     }
 
@@ -52,7 +53,7 @@ function hierarchy_can_add_competency_evidence($plan, $component, $userid, $comp
     }
 
     // Validate whether this competency is even in the plan
-    $compassign = get_record('dp_plan_competency_assign', 'planid', $plan->id, 'competencyid', $competencyid, '', '', 'id, approved');
+    $compassign = $DB->get_record('dp_plan_competency_assign', array('planid' => $plan->id, 'competencyid' => $competencyid), 'id, approved');
     if (!$compassign) {
         return array('error:competencynotfound','local_plan');
     }
@@ -80,6 +81,7 @@ function hierarchy_can_add_competency_evidence($plan, $component, $userid, $comp
  * @return  int
  */
 function hierarchy_add_competency_evidence($competencyid, $userid, $prof, $component, $details, $reaggregate = true, $notify = true) {
+    global $DB;
 
     $todb = new competency_evidence(
         array(
@@ -124,17 +126,17 @@ function hierarchy_add_competency_evidence($competencyid, $userid, $prof, $compo
     $event = STATS_EVENT_COMP_ACHIEVED;
     $data2 = $competencyid;
     $time = $todb->reaggregate;
-    $count = count_records('block_totara_stats', 'userid', $currentuser, 'eventtype', $event, 'data2', $data2);
-    $isproficient = get_field('comp_scale_values', 'proficient', 'id', $prof);
+    $count = $DB->count_records('block_totara_stats', array('userid' => $currentuser, 'eventtype' => $event, 'data2' => $data2));
+    $isproficient = $DB->get_field('comp_scale_values', 'proficient', array('id' => $prof));
 
     if ($notify) {
         // check the proficiency is set to "proficient" and check for duplicate data
         if ($isproficient && $count == 0) {
             totara_stats_add_event($time, $currentuser, $event, '', $data2);
             //Send Alert
-            $alert_detail = new object();
-            $alert_detail->itemname = get_field('comp', 'fullname', 'id', $data2);
-            $alert_detail->text = get_string('competencycompleted', 'local_plan');
+            $alert_detail = new stdClass();
+            $alert_detail->itemname = $DB->get_field('comp', 'fullname', array('id' => $data2));
+            $alert_detail->text = get_string('competencycompleted', 'totara_plan');
             $component->send_component_complete_alert($alert_detail);
         }
         // check record exists for removal and is set to "not proficient"
@@ -153,22 +155,20 @@ function hierarchy_add_competency_evidence($competencyid, $userid, $prof, $compo
  * @return boolean True if all delete operations succeeded, false otherwise
  */
 function hierarchy_delete_competency_evidence($courseid) {
-    global $CFG;
+    global $DB;
+
     if (empty($courseid)) {
         return false;
     }
 
     // Remove all competency evidence items evidence
-    if (!delete_records_select("comp_evidence_items_evidence",
-        "itemid IN (SELECT id FROM {$CFG->prefix}comp_evidence_items WHERE itemtype LIKE 'course%' AND iteminstance={$courseid})")) {
-        return false;
-    }
+    $like_sql = $DB->sql_like('itemtype', '?');
+    $like_param = 'course%';
+    $DB->delete_records_select("comp_evidence_items_evidence",
+        "itemid IN (SELECT id FROM {comp_evidence_items} WHERE $like_sql AND iteminstance = ?)", array($like_param, $courseid));
 
-    if (!delete_records_select("comp_evidence_items",
-        "(itemtype = 'coursecompletion' OR itemtype='coursegrade') AND iteminstance={$courseid}")) {
-        return false;
-    }
+    $DB->delete_records_select("comp_evidence_items",
+        "(itemtype = 'coursecompletion' OR itemtype='coursegrade') AND iteminstance = ?", array($courseid));
 
     return true;
 }
-

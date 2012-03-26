@@ -29,6 +29,7 @@ require_once('tablelib.php');
 class totara_table extends flexible_table {
 
     protected $toolbar;
+    protected $no_records_message;
 
     function __construct($uniqueid) {
         parent::__construct($uniqueid);
@@ -36,6 +37,27 @@ class totara_table extends flexible_table {
             'top' => array(),
             'bottom' => array()
         );
+    }
+
+    /**
+    * This method is used to retrieve the no_records_message property.
+    * @return string the value of property no_records_message.
+    */
+    function get_no_records_message() {
+        if (isset($this->no_records_message)) {
+            return $this->no_records_message;
+        } else {
+            return get_string('nothingtodisplay');
+        }
+    }
+
+    /**
+    * This method is used to set the no_records_message property.
+    * @param string $message value to set property to
+    * @return void
+    */
+    function set_no_records_message($message) {
+        $this->no_records_message = $message;
     }
 
     /**
@@ -111,7 +133,7 @@ class totara_table extends flexible_table {
             if (!empty($row['right'])) {
                 echo html_writer::start_tag('table', array('class' => 'toolbar-right-table'));
                 echo html_writer::start_tag('tr', array('class' => 'toolbar-row'));
-                foreach ($row['right'] as $item) {
+                foreach (array_reverse($row['right']) as $item) {
                     echo html_writer::tag('td', $item, array('class' => 'toolbar-cell'));
                 }
                 echo html_writer::end_tag('tr');
@@ -138,37 +160,97 @@ class totara_table extends flexible_table {
 
 
     /**
-     * Start outputing content
+     * Add pagination to one of the table's toolbars
      *
-     * The only change made to parent function is to insert the call to print_toolbars()
+     * @param string $side Which side pagination should be added. Either 'left' or 'right'
+     * @param string $position Which toolbar to add pagination to. Either 'top' or 'bottom'
+     * @param integer $index Which toolbar to add pagination to
+     * @return boolean If the content could be added or not
+     */
+    function add_toolbar_pagination($side = 'left', $position = 'top', $index = 0) {
+
+        global $OUTPUT;
+
+        // paging bar
+        if ($this->use_pages) {
+            $pagingbar = new paging_bar($this->totalrows, $this->currpage, $this->pagesize, $this->baseurl);
+            $pagingbar->pagevar = $this->request[TABLE_VAR_PAGE];
+
+            $content = $OUTPUT->render($pagingbar);
+        }
+
+        // don't add if there's nothing to show
+        // TODO when creating custom paging renderer, return nothing if there's no links instead of empty div
+        if ($content != '<div class="paging"></div>') {
+            $this->add_toolbar_content($content, $side, $position, $index);
+        }
+
+    }
+
+    /**
+     * Start outputing the HTML
+     *
+     * Change made to parent function:
+     * - insert the call to print_toolbars()
+     * - remove pagination outside of table
      *
      * @return null
      */
-    function start_output() {
-        $this->started_output = true;
-        if ($this->exportclass!==null) {
-            $this->exportclass->start_table($this->sheettitle);
-            $this->exportclass->output_headers($this->headers);
-        } else {
-            $this->start_html();
-            $this->print_toolbars('top');
-            $this->print_headers();
+    function start_html() {
+        // Do we need to print initial bars?
+        $this->print_initials_bar();
+
+        if (in_array(TABLE_P_TOP, $this->showdownloadbuttonsat)) {
+            echo $this->download_buttons();
         }
+
+        $this->wrap_html_start();
+        // Start of main data table
+
+        echo html_writer::start_tag('div', array('class' => 'no-overflow'));
+        echo html_writer::start_tag('table', $this->attributes);
+
+        $this->print_toolbars('top');
     }
 
     /**
      * Output the end of the table
      *
-     * The only change made to parent function is to insert the call to print_toolbars()
+     * Change made to parent function:
+     * - insert the call to print_toolbars()
+     * - remove pagination outside of table
      *
      * @return null|false
      */
-    function print_html() {
-        if (!$this->setup) {
-            return false;
+    function finish_html() {
+        if (!$this->started_output) {
+            //no data has been added to the table.
+            $this->print_nothing_to_display();
         }
+
         $this->print_toolbars('bottom');
-        $this->finish_html();
+        echo html_writer::end_tag('table');
+        echo html_writer::end_tag('div');
+        $this->wrap_html_finish();
+
+        if (in_array(TABLE_P_BOTTOM, $this->showdownloadbuttonsat)) {
+            echo $this->download_buttons();
+        }
+
+    }
+
+    /**
+     * In Totara tables, we print the table anyway, just with a message
+     * saying there are no records
+     */
+    function print_nothing_to_display() {
+        $this->print_initials_bar();
+
+        echo $this->start_html();
+        echo html_writer::tag('tr',
+            html_writer::tag('td',
+                $this->get_no_records_message(),
+                array('colspan' => count($this->columns), 'class' => 'norecords')));
     }
 
     /**

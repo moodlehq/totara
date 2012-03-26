@@ -1,11 +1,33 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_hierarchy.class.php');
 
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 
 ///
@@ -24,7 +46,7 @@ $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // string of params needed in non-js url strings
-$urlparams = 'templateid='.$id.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
+$urlparams = array('templateid' => $id, 'nojs' => $nojs, 'returnurl' => urlencode($returnurl), 's' => $s);;
 
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/template/assign_competency.php');
@@ -34,7 +56,7 @@ $hierarchy = new competency();
 
 // Load template
 if (!$template = $hierarchy->get_template($id)) {
-    error('Template ID was incorrect');
+    print_error('incorrecttemplateid', 'totara_hierarchy');
 }
 
 // Load competencies to display
@@ -46,7 +68,7 @@ if (!$competenciesintemplate = $hierarchy->get_assigned_to_template($id)) {
 /// Display page
 ///
 
-if(!$nojs) {
+if (!$nojs) {
     // Load dialog content generator
     $dialog = new totara_dialog_content_hierarchy_multi('competency', $template->frameworkid);
 
@@ -66,28 +88,26 @@ if(!$nojs) {
     echo $dialog->generate_markup();
 
 } else {
-    // none JS version of page
+    // non JS version of page
     // Check permissions
-    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-    require_capability('moodle/local:updatecompetencytemplate', $sitecontext);
+    $sitecontext = context_system::instance();
+    require_capability('totara/hierarchy:updatecompetencytemplate', $sitecontext);
 
     // Load framework
     if (!$framework = $hierarchy->get_framework($template->frameworkid)) {
-        error('Competency framework could not be found');
+        print_error('competencyframeworknotfound', 'totara_hierarchy');
     }
     $competencies = $hierarchy->get_items_by_parent($parentid);
 
-    admin_externalpage_print_header();
-    echo '<h2>'.get_string('assigncompetency', $hierarchy->prefix).'</h2>';
+    echo $OUTPUT->header();
+    $out = html_writer::tag('h2', get_string('assigncompetency', 'totara_hierarchy'));
+    $link = html_writer::link($returnurl, get_string('cancelwithoutassigning','totara_hierarchy'));
+    $out .= html_writer::tag('p', $link);
 
-    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
-
-    ?>
-<div id="nojsinstructions">
-<?php
-    echo build_nojs_breadcrumbs($hierarchy,
+    $out .= html_writer::start_tag('div', array('id' => 'nojsinstructions'));
+    $out .= build_nojs_breadcrumbs($hierarchy,
         $parentid,
-        $CFG->wwwroot.'/hierarchy/prefix/competency/template/find_competency.php',
+        '/totara/hierarchy/prefix/competency/template/find_competency.php',
         array(
             'templateid' => $id,
             'returnurl' => $returnurl,
@@ -96,35 +116,26 @@ if(!$nojs) {
         ),
         false
     );
+    $out .= html_writer::tag('p', get_string('clicktoassign', 'totara_hierarchy') . ' ' . get_string('clicktoviewchildren', 'totara_hierarchy'));
+    $out .= html_writer::end_tag('div');
 
-?>
-<p>
-<?php echo  get_string('clicktoassign', $hierarchy->prefix).' '.
-            get_string('clicktoviewchildren', $hierarchy->prefix) ?>
-</p>
-</div>
-<div class="nojsselect">
-<?php
-     echo build_nojs_treeview(
+    $out .= html_writer::start_tag('div', array('class' => 'nojsselect'));
+    $out .=build_nojs_treeview(
         $competencies,
-        get_string('nochildcompetenciesfound', 'competency'),
-        $CFG->wwwroot.'/hierarchy/prefix/competency/template/save_competency.php',
+        get_string('nochildcompetenciesfound', 'totara_hierarchy'),
+        '/totara/hierarchy/prefix/competency/template/save_competency.php',
         array(
             's' => $s,
             'returnurl' => $returnurl,
             'nojs' => 1,
             'templateid' => $id,
         ),
-        $CFG->wwwroot.'/hierarchy/prefix/competency/template/find_competency.php?'.$urlparams,
+        '/totara/hierarchy/prefix/competency/template/find_competency.php',
+        $urlparams,
         $hierarchy->get_all_parents(),
         $competenciesintemplate
     );
-
-?>
-</div>
-<?php
-
-    print_footer();
-
-
+    $out .= html_writer::end_tag('div');
+    echo $out;
+    echo $OUTPUT->footer();
 }

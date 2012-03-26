@@ -1,8 +1,8 @@
 <?php
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
-require_once($CFG->dirroot.'/local/program/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/program/lib.php');
 require_login();
 
 $id = required_param('id', PARAM_INT);
@@ -64,7 +64,7 @@ function category(id, name, find_url, title) {
     this.id = id;
     this.name = name;
     this.items = new Array();
-    this.url = '<?php echo $CFG->wwwroot; ?>/local/program/assignment/';
+    this.url = '<?php echo $CFG->wwwroot; ?>/totara/program/assignment/';
     this.title = title;
 
     this.ajax_url = this.url + 'get_item.php?cat=' + this.name;
@@ -423,7 +423,7 @@ $(function() {
     });
 
     $('#category_select button').click(function() {
-    var url = '<?php echo "$CFG->wwwroot/local/program/assignment/get_items.php?progid=$id"; ?>';
+    var url = '<?php echo "$CFG->wwwroot/totara/program/assignment/get_items.php?progid=$id"; ?>';
 
     var select = $("#category_select select");
     var option = $("option:selected", select);
@@ -533,7 +533,7 @@ totaraDialog_program_cat = function(category, catid, name, find_url, title) {
     this.category = category;
     this.catid = catid;
     this.name = name;
-    this.url = '<?php echo $CFG->wwwroot; ?>/local/program/assignment/';
+    this.url = '<?php echo $CFG->wwwroot; ?>/totara/program/assignment/';
     this.ajax_url = this.url + 'get_item.php?cat=' + this.name;
 
     // Setup the handler

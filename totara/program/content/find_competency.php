@@ -24,8 +24,8 @@
 
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_competency_linkedcourses.class.php');
-require_once("{$CFG->dirroot}/local/program/lib.php");
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_competency_linkedcourses.class.php');
+require_once("{$CFG->dirroot}/totara/program/lib.php");
 
 require_login();
 
@@ -49,7 +49,7 @@ $selected = array();
 
 $unremovable = $selected;
 
-require_capability('local/program:configurecontent', program_get_context($id));
+require_capability('totara/program:configurecontent', program_get_context($id));
 
 ///
 /// Setup dialog

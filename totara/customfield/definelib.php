@@ -42,7 +42,7 @@ class customfield_define_base {
      * @param   object   instance of the moodleform class
      */
     function define_form_common(&$form, $typeid=0, $tableprefix) {
-
+        global $TEXTAREA_OPTIONS;
         $strrequired = get_string('customfieldrequired', 'totara_customfield');
 
         $form->addElement('text', 'fullname', get_string('fullname'), 'size="50"');
@@ -55,8 +55,8 @@ class customfield_define_base {
         $form->setType('shortname', PARAM_ALPHANUM);
         $form->addHelpButton('shortname', 'customfieldshortname', 'totara_customfield');
 
-        $form->addElement('editor', 'description', get_string('description', 'totara_customfield'));
-        $form->addHelpButton('description', 'text', null, '');
+        $form->addElement('editor', 'description_editor', get_string('description', 'totara_customfield'), null, $TEXTAREA_OPTIONS);
+        $form->addHelpButton('description_editor', 'description', 'totara_customfield');
 
         $form->addElement('selectyesno', 'required', get_string('customfieldrequired', 'totara_customfield'));
         $form->addHelpButton('required', 'customfieldrequired', 'totara_customfield');
@@ -158,9 +158,8 @@ class customfield_define_base {
      * @return  boolean  status of the insert/update record
      */
     function define_save($data, $tableprefix) {
-        global $DB;
+        global $DB, $TEXTAREA_OPTIONS;
         $data = $this->define_save_preprocess($data); /// hook for child classes
-
         $old = false;
         if (!empty($data->id)) {
             $old = $DB->get_record($tableprefix.'_info_field', array('id' => $data->id));
@@ -176,6 +175,12 @@ class customfield_define_base {
             $data->id = $DB->insert_record($tableprefix.'_info_field', $data);
         } else {
             $DB->update_record($tableprefix.'_info_field', $data);
+        }
+        $data = file_postupdate_standard_editor($data, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', 'textarea', $data->id);
+        $DB->set_field($tableprefix.'_info_field', 'description', $data->description, array('id' => $data->id));
+        if ($data->datatype == 'textarea') {
+            $data = file_postupdate_standard_editor($data, 'defaultdata', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', 'textarea', $data->id);
+            $DB->set_field($tableprefix.'_info_field', 'defaultdata', $data->defaultdata, array('id' => $data->id));
         }
     }
 

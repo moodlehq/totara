@@ -1,7 +1,7 @@
 <?php
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot . '/local/program/lib.php');
+require_once($CFG->dirroot . '/totara/program/lib.php');
 
 $action = required_param('action', PARAM_INT);
 $selectedexceptioncount = required_param('selectedexceptioncount', PARAM_INT);

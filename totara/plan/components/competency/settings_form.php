@@ -32,7 +32,7 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 // Include main component class
-require_once($CFG->dirroot.'/local/plan/components/competency/competency.class.php');
+require_once($CFG->dirroot.'/totara/plan/components/competency/competency.class.php');
 
 
 /**
@@ -156,7 +156,7 @@ function dp_competency_component_process_settings_form($fromform, $id) {
     global $CFG, $DP_AVAILABLE_ROLES;
 
     $currenturl = $CFG->wwwroot .
-        '/local/plan/template/advancedworkflow.php?id=' . $id .
+        '/totara/plan/template/advancedworkflow.php?id=' . $id .
         '&amp;component=competency';
 
     begin_sql();

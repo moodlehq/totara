@@ -24,8 +24,8 @@
 
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/reportheading/lib.php');
-require_once($CFG->dirroot.'/local/reportheading/report_forms.php');
+require_once($CFG->dirroot.'/totara/reportheading/lib.php');
+require_once($CFG->dirroot.'/totara/reportheading/report_forms.php');
 
 global $USER;
 $d = optional_param('d', null, PARAM_TEXT); // delete
@@ -34,7 +34,7 @@ $cid = optional_param('cid',null,PARAM_INT); //column id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
 admin_externalpage_setup('reportheading');
-$returnurl = $CFG->wwwroot."/local/reportheading/index.php";
+$returnurl = $CFG->wwwroot."/totara/reportheading/index.php";
 
 $heading = new reportheading();
 // delete column
@@ -79,7 +79,7 @@ $mform = new report_heading_columns_form(null, compact('heading'));
 
 // form results check
 if ($mform->is_cancelled()) {
-    redirect($CFG->wwwroot.'/local/reportheading/index.php');
+    redirect($CFG->wwwroot.'/totara/reportheading/index.php');
 }
 if ($fromform = $mform->get_data()) {
 

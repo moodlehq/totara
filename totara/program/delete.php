@@ -12,10 +12,10 @@ if (!$program = new program($id)) {
     print_error('error:programid', 'local_program');
 }
 
-admin_externalpage_setup('manageprograms', '', array('id' => $id, 'delete' => $delete), $CFG->wwwroot.'/local/program/delete.php');
+admin_externalpage_setup('manageprograms', '', array('id' => $id, 'delete' => $delete), $CFG->wwwroot.'/totara/program/delete.php');
 
-$returnurl = "{$CFG->wwwroot}/local/program/edit.php?id={$program->id}";
-$deleteurl = "{$CFG->wwwroot}/local/program/delete.php?id={$program->id}&amp;sesskey={$USER->sesskey}&amp;delete=".md5($program->timemodified);
+$returnurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$program->id}";
+$deleteurl = "{$CFG->wwwroot}/totara/program/delete.php?id={$program->id}&amp;sesskey={$USER->sesskey}&amp;delete=".md5($program->timemodified);
 
 if (!$delete) {
     admin_externalpage_print_header();

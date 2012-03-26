@@ -3,7 +3,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class type_change_form extends moodleform {
 
     // Define the form
     function definition() {
-        global $CFG;
+        global $CFG, $OUTPUT;
 
         $mform =& $this->_form;
 
@@ -58,20 +58,19 @@ class type_change_form extends moodleform {
         if (!$current_type_cfs || $affected_data_count == false) {
             // old type has no custom fields
             // (or it has fields, but there's no data in them)
-            $confirmtext = get_string('confirmproceed', 'hierarchy');
-            $buttontext = get_string('reclassifyitems', 'hierarchy');
+            $confirmtext = get_string('confirmproceed', 'totara_hierarchy');
+            $buttontext = get_string('reclassifyitems', 'totara_hierarchy');
 
         } else if (!$new_type_cfs) {
             // new type has no custom fields
-            $message = '<ul>';
+            $message = array();
             if ($cfs = hierarchy_get_formatted_custom_fields($current_type_cfs)) {
                 foreach ($cfs as $cf) {
-                    $message .= '<li>' . $cf . '</li>';
+                    $message[] = $cf;
                 }
             }
-            $message .= '</ul>';
-            $confirmtext = get_string('deletedataconfirmproceed', 'hierarchy', $message);
-            $buttontext = get_string('reclassifyitemsanddelete', 'hierarchy');
+            $confirmtext = get_string('deletedataconfirmproceed', 'totara_hierarchy', html_writer::alist($message));
+            $buttontext = get_string('reclassifyitemsanddelete', 'totara_hierarchy');
 
             // mark old fields for deletion
             if ($old_cfs = hierarchy_get_formatted_custom_fields($current_type_cfs)) {
@@ -83,7 +82,7 @@ class type_change_form extends moodleform {
 
         } else {
             // old and new types both have custom fields
-            $mform->addElement('html', get_string('choosewhattodowithdata', 'hierarchy'));
+            $mform->addElement('html', get_string('choosewhattodowithdata', 'totara_hierarchy'));
 
             $old_cfs = hierarchy_get_formatted_custom_fields($current_type_cfs);
             $new_cfs = hierarchy_get_formatted_custom_fields($new_type_cfs);
@@ -94,28 +93,28 @@ class type_change_form extends moodleform {
                     // affected here
 
                     // build list of options for the pulldown menu
-                    $options = array(0 => get_string('deletethisdata', 'hierarchy'));
+                    $options = array(0 => get_string('deletethisdata', 'totara_hierarchy'));
                     foreach ($new_type_cfs as $new_cf) {
-                        if(hierarchy_allowed_datatype_conversion($old_cf->datatype, $new_cf->datatype)) {
-                            $options[$new_cf->id] = get_string('transfertox', 'hierarchy', $new_cfs[$new_cf->id]);
+                        if (hierarchy_allowed_datatype_conversion($old_cf->datatype, $new_cf->datatype)) {
+                            $options[$new_cf->id] = get_string('transfertox', 'totara_hierarchy', $new_cfs[$new_cf->id]);
                         }
                     }
 
                     if (array_key_exists($old_cf->id, $affected_data_count) && count($options) > 1) {
-                        $mform->addElement('select', 'field[' . $old_cf->id . ']', get_string('datainx', 'hierarchy', $old_cfs[$old_cf->id]), $options);
+                        $mform->addElement('select', 'field[' . $old_cf->id . ']', get_string('datainx', 'totara_hierarchy', $old_cfs[$old_cf->id]), $options);
                         $mform->setType('field[' . $old_cf->id . ']', PARAM_INT);
                     } else if (array_key_exists($old_cf->id, $affected_data_count)) {
-                        $mform->addElement('static', 'message[' . $old_cf->id . ']', get_string('datainx', 'hierarchy', $old_cfs[$old_cf->id]), get_string('deletethisdata', 'hierarchy'));
+                        $mform->addElement('static', 'message[' . $old_cf->id . ']', get_string('datainx', 'totara_hierarchy', $old_cfs[$old_cf->id]), get_string('deletethisdata', 'totara_hierarchy'));
                         $mform->addElement('hidden', 'field[' . $old_cf->id . ']', 0);
                         $mform->setType('field[' . $old_cf->id . ']', PARAM_INT);
                     } else {
-                        $mform->addElement('static', 'field[' . $old_cf->id . ']', get_string('datainx', 'hierarchy', $old_cfs[$old_cf->id]), get_string('nodata', 'hierarchy'));
+                        $mform->addElement('static', 'field[' . $old_cf->id . ']', get_string('datainx', 'totara_hierarchy', $old_cfs[$old_cf->id]), get_string('nodata', 'totara_hierarchy'));
                     }
                 }
             }
 
             $confirmtext = '';
-            $buttontext = get_string('reclassifyitemsandtransfer', 'hierarchy');
+            $buttontext = get_string('reclassifyitemsandtransfer', 'totara_hierarchy');
         }
 
         $mform->addElement('html', $confirmtext);
@@ -156,7 +155,7 @@ class type_change_form extends moodleform {
 
                 // each field can only be assigned once
                 if (in_array($newfield, $used)) {
-                    $errors['field[' . $oldcf->id . ']'] = get_string('error:alreadyassigned', 'hierarchy');
+                    $errors['field[' . $oldcf->id . ']'] = get_string('error:alreadyassigned', 'totara_hierarchy');
                 }
 
                 // add this one to the list of fields that have been used
@@ -165,10 +164,10 @@ class type_change_form extends moodleform {
                 $newcf = $new_type_cfs[$newfield];
                 // check that the old field can be converted to the new field's type
                 if (!hierarchy_allowed_datatype_conversion($oldcf->datatype, $newcf->datatype)) {
-                    $a = new object();
+                    $a = new stdClass();
                     $a->from = get_string('customfieldtype' . $oldcf->datatype, 'customfields');
                     $a->to = get_string('customfieldtype' . $newcf->datatype, 'customfields');
-                    $errors['field[' . $oldcf->id . ']'] = get_string('error:cannotconvertfieldfromxtoy', 'hierarchy', $a);
+                    $errors['field[' . $oldcf->id . ']'] = get_string('error:cannotconvertfieldfromxtoy', 'totara_hierarchy', $a);
 
                 }
             }
@@ -178,4 +177,3 @@ class type_change_form extends moodleform {
     }
 
 }
-

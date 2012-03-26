@@ -33,7 +33,7 @@ require_once('report_forms.php');
 require_login();
 
 $id = optional_param('id',null,PARAM_INT); // id for report to save
-$returnurl = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id;
+$returnurl = $CFG->wwwroot.'/totara/reportbuilder/report.php?id='.$id;
 
 $report = new reportbuilder($id);
 if(!$report->is_capable($id)) {
@@ -58,7 +58,7 @@ if ($fromform = $mform->get_data()) {
     $todb->name = $fromform->name;
     $todb->ispublic = $fromform->ispublic;
     if(insert_record('report_builder_saved', $todb)) {
-        redirect($CFG->wwwroot.'/local/reportbuilder/savedsearches.php?id='.$id);
+        redirect($CFG->wwwroot.'/totara/reportbuilder/savedsearches.php?id='.$id);
     } else {
         redirect($returnurl, get_string('error:couldnotsavesearch','local_reportbuilder'));
     }

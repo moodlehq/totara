@@ -18,7 +18,7 @@ if ($hassiteconfig
             array('moodle/category:manage', 'local/program:createprogram')));
 
     $ADMIN->add('courses', new admin_externalpage('coursecustomfields', get_string('customfields', 'totara_customfield'), $CFG->wwwroot . '/customfield/index.php?prefix=course',
-            array('moodle/local:createcoursecustomfield', 'moodle/local:updatecoursecustomfield', 'moodle/local:deletecoursecustomfield')));
+            array('totara/core:createcoursecustomfield', 'totara/core:updatecoursecustomfield', 'totara/core:deletecoursecustomfield')));
 
 
 /// Course Default Settings Page

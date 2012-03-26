@@ -1,35 +1,29 @@
 <?php
-
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
-/**
- * @copyright Catalyst IT Limited
- * @author Aaron Barnes
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
+ * @subpackage totara_hierarchy
  */
-require_once($CFG->libdir.'/data_object.php');
+
+require_once("{$CFG->libdir}/completion/data_object.php");
 
 /**
  * Competency evidence
@@ -67,7 +61,7 @@ class competency_evidence extends data_object {
     /**
      * Finds and returns a data_object instance based on params.
      *
-     * @param array $params associative arrays varname=>value
+     * @param array $params associative arrays varname => value
      * @return object data_object instance or false if none found.
      */
     public static function fetch($params) {
@@ -122,12 +116,12 @@ class competency_evidence extends data_object {
         // Update database
         if (!$this->id) {
             if (!$this->insert()) {
-                error('Could not insert new evidence item evidence');
+                print_error('insertevidenceitem', 'totara_hierarchy');
             }
         }
         else {
             if (!$this->update()) {
-                error('Could not update evidence item evidence');
+                print_error('updateevidenceitem', 'totara_hierarchy');
             }
         }
     }
@@ -138,9 +132,10 @@ class competency_evidence extends data_object {
      * @return  void
      */
     private function _trigger_parent_reaggregation() {
+        global $DB;
 
         // Check if this competency has a parent
-        $competency = get_record('comp', 'id', $this->competencyid);
+        $competency = $DB->get_record('comp', array('id' => $this->competencyid));
 
         if (!$competency->parentid) {
             return;

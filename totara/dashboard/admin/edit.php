@@ -24,12 +24,12 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/dashboard/lib.php');
+require_once($CFG->dirroot.'/totara/dashboard/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 require_login();
 
-require_capability('local/dashboard:admin', get_context_instance(CONTEXT_SYSTEM));
+require_capability('totara/dashboard:admin', get_context_instance(CONTEXT_SYSTEM));
 
 $shortname = optional_param('item', 0, PARAM_ALPHANUM);   // dashboard id
 $dashaction = optional_param('dashaction', 0, PARAM_ALPHANUM);   // action to perform
@@ -59,7 +59,7 @@ $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_FALSE);
 
 // First, handle any actions
 if (!empty($dashaction) && !empty($dletid) && confirm_sesskey() && $dashb->is_using_default_instance()) {
-    $redirect = "{$CFG->wwwroot}/local/dashboard/admin/edit.php?item={$shortname}";
+    $redirect = "{$CFG->wwwroot}/totara/dashboard/admin/edit.php?item={$shortname}";
 
     switch ($dashaction) {
         case 'toggle' :
@@ -101,7 +101,7 @@ if (!empty($dashb->data->title)) {
     $strheading .= ' - '. get_string($dashb->data->shortname, 'local_dashboard');
 }
 
-$navlinks[] = array('name' => get_string('dashboards', 'local_dashboard'), 'link' => "{$CFG->wwwroot}/local/dashboard/admin/index.php", 'type' => 'misc');
+$navlinks[] = array('name' => get_string('dashboards', 'local_dashboard'), 'link' => "{$CFG->wwwroot}/totara/dashboard/admin/index.php", 'type' => 'misc');
 $navlinks[] = array('name' => get_string('editdashboard', 'local_dashboard'), 'link' => '', 'type' => 'misc');
 $navigation = build_navigation($navlinks);
 
@@ -110,7 +110,7 @@ print_header_simple($strheading, '', $navigation, '', null, true);
 print_heading($strheading);
 
 print_container_start(false, 'mdl-right');
-echo "<a href=\"{$CFG->wwwroot}/local/dashboard/admin/index.php\">".get_string('back')."</a>";
+echo html_writer::link(new moodle_url('/totara/dashboard/admin/index.php'), get_string('back'));
 print_container_end();
 
 $dashb->output();

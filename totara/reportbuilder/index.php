@@ -40,7 +40,7 @@
 
     global $USER;
 
-    $returnurl = $CFG->wwwroot.'/local/reportbuilder/index.php';
+    $returnurl = $CFG->wwwroot.'/totara/reportbuilder/index.php';
     $type = $em ? 'reload' : 'delete';
 
     // delete an existing report
@@ -190,7 +190,7 @@
         }
 
         commit_sql();
-        redirect($CFG->wwwroot.'/local/reportbuilder/general.php?id='.$newid);
+        redirect($CFG->wwwroot.'/totara/reportbuilder/general.php?id='.$newid);
     }
 
     admin_externalpage_print_header();
@@ -210,11 +210,11 @@
             $strsettings = get_string('settings','local_reportbuilder');
             $strdelete = get_string('delete','local_reportbuilder');
             $viewurl = reportbuilder_get_report_url($report);
-            $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'" title="'.$strsettings.'">' .
+            $settings = '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/general.php?id='.$report->id.'" title="'.$strsettings.'">' .
                 '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'" /></a>';
-            $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
+            $delete = '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/index.php?d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
                 '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" /></a>';
-            $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.format_string($report->fullname).'</a>' .
+            $row[] = '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/general.php?id='.$report->id.'">'.format_string($report->fullname).'</a>' .
                 ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
             $src = reportbuilder::get_source_object($report->source);
             $srcname = $src->sourcetitle;
@@ -254,12 +254,12 @@
             $fullname = format_string($embed->fullname);
             $shortname = $embed->shortname;
             $url = $embed->url;
-            $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$id.'" title="'.$strsettings.'">' .
+            $settings = '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/general.php?id='.$id.'" title="'.$strsettings.'">' .
                 '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'" /></a>';
-            $reload = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?em=1&amp;d=1&amp;id='.$id.'" title="'.$strreload.'">' .
+            $reload = '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/index.php?em=1&amp;d=1&amp;id='.$id.'" title="'.$strreload.'">' .
                 '<img src="'.$CFG->pixpath.'/t/reload.gif" alt="'.$strreload.'" /></a>';
             $row = array();
-            $row[] = '<a href="' . $CFG->wwwroot . '/local/reportbuilder/general.php?id=' . $id . '">' . $fullname . '</a> (<a href="' . $CFG->wwwroot . $url . '">' . get_string('view') . '</a>)';
+            $row[] = '<a href="' . $CFG->wwwroot . '/totara/reportbuilder/general.php?id=' . $id . '">' . $fullname . '</a> (<a href="' . $CFG->wwwroot . $url . '">' . get_string('view') . '</a>)';
             $src = reportbuilder::get_source_object($embed->source);
             $srcname = $src->sourcetitle;
             $row[] = $srcname;

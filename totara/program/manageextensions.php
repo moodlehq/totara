@@ -73,7 +73,7 @@ if ($submitted && confirm_sesskey()) {
                 $messagedata->userfrom         = $userfrom;
                 $messagedata->roleid           = $roleid;
                 $messagedata->subject          = get_string('extensiondenied', 'local_program');;
-                $messagedata->contexturl       = $CFG->wwwroot.'/local/program/required.php?id='.$extension->programid;
+                $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
                 $messagedata->contexturlname   = get_string('launchprogram', 'local_program');
                 $messagedata->fullmessage      = get_string('extensiondeniedmessage', 'local_program');
 
@@ -128,7 +128,7 @@ if ($submitted && confirm_sesskey()) {
                     $messagedata->userfrom         = $userfrom;
                     $messagedata->roleid           = $roleid;
                     $messagedata->subject          = get_string('extensiongranted', 'local_program');
-                    $messagedata->contexturl       = $CFG->wwwroot.'/local/program/required.php?id='.$extension->programid;
+                    $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
                     $messagedata->contexturlname   = get_string('launchprogram', 'local_program');
                     $messagedata->fullmessage      = get_string('extensiongrantedmessage', 'local_program', userdate($extension->extensiondate, '%d/%m/%Y', $CFG->timezone));
 
@@ -171,7 +171,7 @@ print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
 if (!empty($userid)) {
     $backstr = "&laquo" . get_string('backtoallextrequests', 'local_program');
-    echo "<p><a href=\"{$CFG->wwwroot}/local/program/manageextensions.php\">{$backstr}</a></p>";
+    echo "<p><a href=\"{$CFG->wwwroot}/totara/program/manageextensions.php\">{$backstr}</a></p>";
 }
 
 print_heading($heading);

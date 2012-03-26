@@ -1,7 +1,29 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
 require_once($CFG->dirroot.'/lib/formslib.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 
 class item_bulkadd_form extends moodleform {
 
@@ -25,7 +47,7 @@ class item_bulkadd_form extends moodleform {
         $parents = array();
 
         // Add top as an option
-        $parents[0] = get_string('top', 'hierarchy');
+        $parents[0] = get_string('top', 'totara_hierarchy');
 
         if ($items) {
             // Cache breadcrumbs
@@ -53,22 +75,21 @@ class item_bulkadd_form extends moodleform {
         $mform->addElement('hidden', 'page', $page);
         $mform->setType('page', PARAM_INT);
 
-        $mform->addElement('static', 'framework', get_string('framework', $prefix), $framework->fullname);
+        $mform->addElement('static', 'framework', get_string($prefix.'framework', 'totara_hierarchy'), $framework->fullname);
 
-        $mform->addElement('select', 'parentid', get_string('parent', $prefix), $parents, totara_select_width_limiter());
+        $mform->addElement('select', 'parentid', get_string('parent', 'totara_hierarchy'), $parents, totara_select_width_limiter());
         $mform->addRule('parentid', null, 'required');
         $mform->setType('parentid', PARAM_INT);
-        $mform->setHelpButton('parentid', array($prefix.'parent', get_string('parent', $prefix)), true);
-
+        $mform->addHelpButton('parentid', $prefix.'parent', 'totara_hierarchy');
         if ($types) {
             // new item
             // show type picker if there are choices
-            $select = array('0'=> '');
+            $select = array('0' => '');
             foreach ($types as $type) {
                 $select[$type->id] = $type->fullname;
             }
-            $mform->addElement('select', 'typeid', get_string('type', $prefix), $select);
-            $mform->setHelpButton('typeid', array($prefix.'type', get_string('type', $prefix)), true);
+            $mform->addElement('select', 'typeid', get_string('type', 'totara_hierarchy'), $select);
+            $mform->addHelpButton('typeid', $prefix.'type', 'totara_hierarchy');
         } else {
             // new item
             // but no types exist
@@ -77,7 +98,7 @@ class item_bulkadd_form extends moodleform {
         }
 
 
-        $mform->addElement('textarea', 'itemnames', get_string('enternamesoneperline', 'hierarchy', get_string($prefix, $prefix)), 'rows="15" cols="50"');
+        $mform->addElement('textarea', 'itemnames', get_string('enternamesoneperline', 'totara_hierarchy', get_string($prefix, 'totara_hierarchy')), 'rows="15" cols="50"');
         $mform->addRule('itemnames', null, 'required');
         $mform->setType('itemnames', PARAM_TEXT);
 

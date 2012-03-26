@@ -90,7 +90,7 @@ function get_backup_list() {
     global $CFG;
 
     // get list of hierarchies from directories in hierarchy/prefix/
-    $prefixdir = "$CFG->dirroot/hierarchy/prefix";
+    $prefixdir = "$CFG->dirroot/totara/hierarchy/prefix";
     $hierarchies = array();
     $dir = opendir($prefixdir);
     while (false !== ($file = readdir($dir))) {
@@ -100,19 +100,19 @@ function get_backup_list() {
         $hierarchies[] = $file;
     }
 
-    if(!is_array($hierarchies) || count($hierarchies) < 1) {
+    if (!is_array($hierarchies) || count($hierarchies) < 1) {
         return false;
     }
 
     // exclude hierarchy directories without a backuplib.php
     $hlist = array();
-    foreach($hierarchies AS $hname) {
-        $hbackupfile = "$CFG->dirroot/hierarchy/prefix/$hname/backuplib.php";
+    foreach ($hierarchies as $hname) {
+        $hbackupfile = "$CFG->dirroot/totara/hierarchy/prefix/$hname/backuplib.php";
         $hbackup = $hname."_backup";
 
-        if(file_exists($hbackupfile)) {
+        if (file_exists($hbackupfile)) {
             include_once($hbackupfile);
-            if(function_exists($hbackup)) {
+            if (function_exists($hbackup)) {
                 $hlist[] = $hname;
             }
         }
@@ -120,5 +120,3 @@ function get_backup_list() {
     return $hlist;
 
 }
-
-

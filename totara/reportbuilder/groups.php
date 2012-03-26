@@ -46,7 +46,7 @@
     $d = optional_param('d',false, PARAM_BOOL); // delete group?
     $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
 
-    $returnurl = $CFG->wwwroot . '/local/reportbuilder/groups.php';
+    $returnurl = $CFG->wwwroot . '/totara/reportbuilder/groups.php';
 
     admin_externalpage_setup('activitygroups');
 
@@ -95,7 +95,7 @@
 
         $errorcode = 'error:groupnotcreated';
         if($newid = create_group($fromform, $errorcode)) {
-            redirect($CFG->wwwroot.'/local/reportbuilder/groupsettings.php?id=' .
+            redirect($CFG->wwwroot.'/totara/reportbuilder/groupsettings.php?id=' .
                 $newid);
             die;
         } else {
@@ -167,17 +167,17 @@
             $strdelete = get_string('delete','local_reportbuilder');
             $strcron = get_string('refreshdataforthisgroup','local_reportbuilder');
             $settings = '<a href="' . $CFG->wwwroot .
-                '/local/reportbuilder/groupsettings.php?id=' . $group->id .
+                '/totara/reportbuilder/groupsettings.php?id=' . $group->id .
                 '" title="' . $strsettings . '">' .
                 '<img src="' . $CFG->pixpath . '/t/edit.gif" alt="' .
                 $strsettings . '"></a>';
             $delete = '<a href="' . $CFG->wwwroot .
-                '/local/reportbuilder/groups.php?d=1&amp;id=' . $group->id .
+                '/totara/reportbuilder/groups.php?d=1&amp;id=' . $group->id .
                 '" title="' . $strdelete . '">' .
                 '<img src="' . $CFG->pixpath . '/t/delete.gif" alt="' .
                 $strdelete . '"></a>';
             $cron = link_to_popup_window(
-                $CFG->wwwroot . '/local/reportbuilder/runcron.php?group=' .
+                $CFG->wwwroot . '/totara/reportbuilder/runcron.php?group=' .
                 $group->id . '&amp;sesskey=' . $USER->sesskey,
                 null,
                 '<img src="' . $CFG->pixpath . '/t/reload.gif" alt="' .
@@ -185,7 +185,7 @@
                 500, 750, $strcron, null, true);
 
             $row[] = '<a href="' . $CFG->wwwroot .
-                '/local/reportbuilder/groupsettings.php?id=' . $group->id .
+                '/totara/reportbuilder/groupsettings.php?id=' . $group->id .
                 '">' . $group->name . '</a>';
             //$row[] = $group->preproc;
             $row[] = $group->tagname;

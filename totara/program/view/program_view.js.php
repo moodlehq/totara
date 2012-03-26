@@ -23,8 +23,8 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
-require_once($CFG->dirroot.'/local/program/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/program/lib.php');
 
 require_login();
 
@@ -49,7 +49,7 @@ $(function() {
 // Define the extension request dialog
 totaraDialog_extension = function() {
 
-    this.url = '<?php echo $CFG->wwwroot; ?>/local/program/view/set_extension.php?id=<?php echo $id ?>&amp;userid=<?php echo $userid ?>';
+    this.url = '<?php echo $CFG->wwwroot; ?>/totara/program/view/set_extension.php?id=<?php echo $id ?>&amp;userid=<?php echo $userid ?>';
 
     // Setup the handler
     var handler = new totaraDialog_extension_handler();
@@ -124,7 +124,7 @@ totaraDialog_extension_handler.prototype._save = function() {
 
         $.ajax({
             type: 'POST',
-            url: '<?php echo "{$CFG->wwwroot}/local/program/extension.php"; ?>',
+            url: '<?php echo "{$CFG->wwwroot}/totara/program/extension.php"; ?>',
             data: data,
             success: totara_program_extension_update,
             error: totara_program_extension_error

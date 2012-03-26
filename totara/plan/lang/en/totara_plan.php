@@ -638,7 +638,7 @@ $string['checkplanreactivate'] = 'Are you sure you want to reactivate the plan \
 $string['planreactivatesuccess'] = 'Successfully reactivated plan $a';
 $string['planreactivatefail'] = 'There was a problem while trying to reactivate plan \"$a\"';
 $string['cannotdelete_inuse'] = 'You cannot delete this template because there are plans using it.';
-$string['planapprovalrequested'] = 'Plan approval requested for <a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
+$string['planapprovalrequested'] = 'Plan approval requested for <a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
 $string['requestremoval'] = 'Request removal';
 $string['reactivate'] = 'Reactivate';
 $string['error:reactivatedatebeforenow'] = 'Error, the new end date specified is before now.';

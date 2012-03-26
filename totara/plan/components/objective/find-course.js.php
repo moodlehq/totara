@@ -39,7 +39,7 @@ $(function() {
     }
 
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/objective/';
+        var url = '<?php echo $CFG->wwwroot ?>/totara/plan/components/objective/';
         var saveurl = url + 'update-course.php?planid='+plan_id+'&objectiveid='+objective_id+'&update=';
 
         var handler = new totaraDialog_handler_preRequisite();

@@ -29,7 +29,7 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -43,7 +43,7 @@ $instances = get_records('dp_plan', 'templateid', $id);
 
 $navlinks = array();    // Breadcrumbs
 $navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-                    'link'=>"{$CFG->wwwroot}/local/plan/template/index.php",
+                    'link'=>"{$CFG->wwwroot}/totara/plan/template/index.php",
                     'type'=>'misc');
 $navlinks[] = array('name'=>get_string('templateinstances', 'local_plan'), 'link'=>'', 'type'=>'misc');
 
@@ -71,7 +71,7 @@ if($instances){
     $table->setup();
     foreach($instances as $instance) {
         $tablerow = array();
-        $tablerow[] = '<a href=' . $CFG->wwwroot . '/local/plan/view.php?id=' . $instance->id . '>' . $instance->name . '</a>';
+        $tablerow[] = '<a href=' . $CFG->wwwroot . '/totara/plan/view.php?id=' . $instance->id . '>' . $instance->name . '</a>';
         $user = get_record('user', 'id', $instance->userid);
         $tablerow[] = '<a href=' . $CFG->wwwroot . '/user/view.php?id='.$user->id . '>' . $user->firstname .' '. $user->lastname . '</a>';
         $tablerow[] = date('j M Y', $instance->startdate);

@@ -68,7 +68,7 @@ var rb_init_addbutton = function(filterselector) {
     addbutton.bind('click', function(e) {
         e.preventDefault();
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/filter.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/filter.php'; ?>",
             type: "POST",
             data: ({action: 'add', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, filter: filterselector.val(), advanced: Number(advancedCheck.is(':checked'))}),
             beforeSend: function() {
@@ -145,7 +145,7 @@ var rb_init_deletebuttons = function() {
 
         var filterrow = $(this).closest('tr');
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/filter.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/filter.php'; ?>",
             type: "POST",
             data: ({action: 'delete', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, fid: filterrow.attr('fid')}),
             beforeSend: function() {
@@ -229,7 +229,7 @@ var rb_init_movedown_btns = function() {
         var loadingimg = '<img src="<?php echo "{$CFG->pixpath}/i/ajaxloader.gif"; ?>" alt="Moving..." class="iconsmall" />';
 
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/filter.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/filter.php'; ?>",
             type: "POST",
             data: ({action: 'movedown', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, fid: filterrow.attr('fid')}),
             beforeSend: function() {
@@ -291,7 +291,7 @@ var rb_init_moveup_btns = function() {
         var loadingimg = '<img src="<?php echo "{$CFG->pixpath}/i/ajaxloader.gif"; ?>" alt="Moving..." class="iconsmall" />';
 
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/filter.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/filter.php'; ?>",
             type: "POST",
             data: ({action: 'moveup', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, fid: filterrow.attr('fid')}),
             beforeSend: function() {
@@ -357,19 +357,19 @@ var rb_reload_option_btns = function(filterrow) {
 
 
 var rb_get_btn_delete = function(reportid, fid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/filters.php?id='; ?>' + reportid + '&fid='+fid+'&d=1" class="deletefilterbtn"><img src="<?php echo "{$CFG->pixpath}/t/delete.gif"; ?>" alt="Delete" class="iconsmall" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/filters.php?id='; ?>' + reportid + '&fid='+fid+'&d=1" class="deletefilterbtn"><img src="<?php echo "{$CFG->pixpath}/t/delete.gif"; ?>" alt="Delete" class="iconsmall" /></a>');
 }
 
 var rb_get_btn_up = function (reportid, fid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/filters.php?id='; ?>' + reportid + '&fid='+fid+'&m=up" class="movefilterupbtn"><img src="<?php echo "{$CFG->pixpath}/t/up.gif"; ?>" alt="Move up" class="iconsmall" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/filters.php?id='; ?>' + reportid + '&fid='+fid+'&m=up" class="movefilterupbtn"><img src="<?php echo "{$CFG->pixpath}/t/up.gif"; ?>" alt="Move up" class="iconsmall" /></a>');
 }
 
 var rb_get_btn_down = function (reportid, fid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/filters.php?id='; ?>' + reportid + '&fid='+fid+'&m=down" class="movefilterdownbtn"><img src="<?php echo "{$CFG->pixpath}/t/down.gif"; ?>" alt="Move down" class="iconsmall" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/filters.php?id='; ?>' + reportid + '&fid='+fid+'&m=down" class="movefilterdownbtn"><img src="<?php echo "{$CFG->pixpath}/t/down.gif"; ?>" alt="Move down" class="iconsmall" /></a>');
 }
 
 var rb_get_btn_add = function (reportid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/filters.php?id='; ?>' + reportid + '" class="addfilterbtn"><input type="button" value="<?php echo addslashes_js(get_string('add')); ?>" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/filters.php?id='; ?>' + reportid + '" class="addfilterbtn"><input type="button" value="<?php echo addslashes_js(get_string('add')); ?>" /></a>');
 }
 
 

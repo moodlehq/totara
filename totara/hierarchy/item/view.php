@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,20 +23,18 @@
  * @subpackage plan
  */
 
-require_once('../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
-require_once($CFG->dirroot.'/customfield/fieldlib.php');
-require($CFG->libdir.'/filelib.php');
-
-hierarchy::support_old_url_syntax();
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/customfield/fieldlib.php');
+require_once($CFG->libdir.'/filelib.php');
 
 // Get data
 $prefix        = required_param('prefix', PARAM_ALPHA);
 $id          = required_param('id', PARAM_INT);
 $edit        = optional_param('edit', -1, PARAM_BOOL);
 $frameworkid = optional_param('framework', 0, PARAM_INT);
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 $shortprefix = hierarchy::get_short_prefix($prefix);
 
 $hierarchy = hierarchy::load_hierarchy($prefix);
@@ -44,23 +42,24 @@ $hierarchy = hierarchy::load_hierarchy($prefix);
 ///
 /// Setup / loading data
 ///
+require_login();
 
 if (!$item = $hierarchy->get_item($id)) {
-    error('This ' . $prefix . ' item does not exist');
+    print_error('itemdoesntexist', 'totara_hierarchy', null, $prefix);
 }
 $framework = $hierarchy->get_framework($item->frameworkid);
 
 // Cache user capabilities
-$can_add_item    = has_capability('moodle/local:create'.$prefix, $sitecontext);
-$can_edit_item   = has_capability('moodle/local:update'.$prefix, $sitecontext);
-$can_delete_item = has_capability('moodle/local:delete'.$prefix, $sitecontext);
+$can_add_item    = has_capability('totara/hierarchy:create'.$prefix, $sitecontext);
+$can_edit_item   = has_capability('totara/hierarchy:update'.$prefix, $sitecontext);
+$can_delete_item = has_capability('totara/hierarchy:delete'.$prefix, $sitecontext);
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:view'.$prefix, $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:view'.$prefix, $sitecontext);
 
 // Cache user capabilities
-$can_edit = has_capability('moodle/local:update'.$prefix, $sitecontext);
-$can_manage_fw = has_capability('moodle/local:update'.$prefix.'frameworks', $sitecontext);
+$can_edit = has_capability('totara/hierarchy:update'.$prefix, $sitecontext);
+$can_manage_fw = has_capability('totara/hierarchy:update'.$prefix.'frameworks', $sitecontext);
 
 ///
 /// Display page
@@ -77,20 +76,23 @@ $hierarchy->hierarchy_page_setup('item/view', $setupitem);
 unset($setupitem);
 
 // Display page header
-$pagetitle = format_string($framework->fullname.' - '.$item->fullname);
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("{$prefix}frameworks", $prefix), 'link'=>$CFG->wwwroot . '/hierarchy/framework/index.php?prefix='.$prefix, 'type'=>'misc');
+
+$PAGE->set_context($sitecontext);
+$pagetitle = format_string($framework->fullname.' - '.$item->fullname);
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading('');
+$PAGE->set_url('/totara/hierarchy/item/view.php', array('prefix' => $prefix, 'id' => $id));
+$PAGE->set_pagelayout('admin');
+$PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url("../index.php", array('prefix' => $prefix)));
 
 if ($can_manage_fw) {
-    $navlinks[] = array('name' => get_string('manage'.$prefix,$prefix), 'link'=> $CFG->wwwroot.'/hierarchy/index.php?prefix='.$prefix.'&amp;frameworkid='.$framework->id, 'type'=>'title');
+    $PAGE->navbar->add(get_string('manage'.$prefix, 'totara_hierarchy'), new moodle_url("../index.php", array('prefix' => $prefix, 'frameworkid' => $framework->id)));
 } else {
-    $navlinks[] = array('name' => get_string('manage'.$prefix,$prefix), 'link'=> '', 'type'=>'title');
+    $PAGE->navbar->add(get_string('manage'.$prefix, 'totara_hierarchy'));
 }
-$navlinks[] = array('name'=>format_string($item->fullname), 'link'=>'', 'type'=>'title');
-$navigation = build_navigation($navlinks);
-
-print_header_simple($pagetitle, '', $navigation, '', null, true);
+$PAGE->navbar->add(format_string($item->fullname));
+echo $OUTPUT->header();
 
 $heading = format_string("{$framework->fullname} - {$item->fullname}");
 
@@ -98,32 +100,27 @@ $heading = format_string("{$framework->fullname} - {$item->fullname}");
 $str_edit = get_string('edit');
 $str_remove = get_string('remove');
 
-$heading .= " <a href=\"{$CFG->wwwroot}/hierarchy/item/edit.php?prefix={$prefix}&amp;frameworkid=$framework->id&id={$item->id}\" title=\"$str_edit\">".
-    "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+$heading .= ' ' . $OUTPUT->action_icon(new moodle_url("edit.php", array('prefix' => $prefix, 'frameworkid' => $framework->id, 'id' => $item->id)), new pix_icon('t/edit', $str_edit, 'moodle', array('class' => 'iconsmall')));
 
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 $data = $hierarchy->get_item_data($item);
 $cfdata = $hierarchy->get_custom_fields($item->id);
 if ($cfdata) {
     foreach ($cfdata as $cf) {
         // don't show hidden custom fields
-        if($cf->hidden) {
+        if ($cf->hidden) {
             continue;
         }
         $cf_class = "customfield_{$cf->datatype}";
-        require_once($CFG->dirroot.'/customfield/field/'.$cf->datatype.'/field.class.php');
+        require_once($CFG->dirroot.'/totara/customfield/field/'.$cf->datatype.'/field.class.php');
         $data[] = array(
             'title' => $cf->fullname,
-            'value' => call_user_func(array($cf_class, 'display_item_data'), $cf->data)
+            'value' => call_user_func(array($cf_class, 'display_item_data'), $cf->data, $prefix, $item->id)
         );
     }
 }
-?>
-<table class="generalbox viewhierarchyitem">
-<tbody>
-<?php
 
-$oddeven = 1;
+$table = new html_table();
 
 foreach ($data as $ditem) {
 
@@ -132,35 +129,24 @@ foreach ($data as $ditem) {
         continue;
     }
 
-    $oddeven = ++$oddeven % 2;
-
-    echo '<tr class="r'.$oddeven.'">';
-    echo '<th class="header">'.format_string($ditem['title']).'</th>';
-    echo '<td class="cell">'.format_string($ditem['value']).'</td>';
-    echo '</tr>'.PHP_EOL;
+    $header = new html_table_cell(format_string($ditem['title']));
+    $header->header = true;
+    $cell = new html_table_cell($ditem['value']);
+    $row = new html_table_row(array($header, $cell));
+    $table->data[] = $row;
 }
 
-?>
-</tbody>
-</table>
-<?php
+echo html_writer::table($table);
 
 // Print extra info
 $hierarchy->display_extra_view_info($item, $frameworkid);
 
 if ($can_edit) {
-    echo '<div class="buttons">';
+    $options = array('prefix' => $prefix,'frameworkid' => $framework->id);
+    $button = $OUTPUT->single_button(new moodle_url('../index.php', $options), get_string($prefix.'returntoframework', 'totara_hierarchy'), 'get');
 
-    $options = array('prefix'=>$prefix,'frameworkid' => $framework->id);
-    print_single_button(
-        $CFG->wwwroot.'/hierarchy/index.php',
-        $options,
-        get_string('returntoframework', $prefix),
-        'get'
-    );
-
-    echo '</div>';
+    echo html_writer::tag('div', $button, array('class' => 'buttons'));
 }
 /// and proper footer
-add_to_log(SITEID, $prefix, 'view item', "item/view.php?prefix={$prefix}&amp;framework={$framework->id}&amp;id={$item->id}", substr(strip_tags($item->fullname), 0, 200) . " (ID {$item->id})");
-print_footer();
+add_to_log(SITEID, $prefix, 'view item', "item/view.php?prefix=$prefix&amp;framework={$framework->id}&amp;id={$item->id}", substr(strip_tags($item->fullname), 0, 200) . " (ID {$item->id})");
+echo $OUTPUT->footer();

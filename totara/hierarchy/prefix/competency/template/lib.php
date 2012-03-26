@@ -1,4 +1,27 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 /**
  * template/lib.php
  *
@@ -7,10 +30,6 @@
  * Note: Functions in this library should have names beginning with "competency_template",
  * in order to avoid name collisions
  *
- * @copyright Catalyst IT Limited
- * @author Eugene Venter
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package totara
  */
 
 /**
@@ -21,15 +40,15 @@
  * @return html
  */
 function competency_template_display_table($templates, $frameworkid) {
-    global $CFG;
+    global $OUTPUT;
 
-    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    $sitecontext = context_system::instance();
     $editing     = optional_param('edit', -1, PARAM_BOOL);
 
     // Cache user capabilities
-    $can_add = has_capability('moodle/local:createcompetencytemplate', $sitecontext);
-    $can_edit = has_capability('moodle/local:updatecompetencytemplate', $sitecontext);
-    $can_delete = has_capability('moodle/local:deletecompetencytemplate', $sitecontext);
+    $can_add = has_capability('totara/hierarchy:createcompetencytemplate', $sitecontext);
+    $can_edit = has_capability('totara/hierarchy:updatecompetencytemplate', $sitecontext);
+    $can_delete = has_capability('totara/hierarchy:deletecompetencytemplate', $sitecontext);
 
     if (($can_add || $can_edit || $can_delete) && $editing) {
         $editingon = $USER->templateediting = 1;
@@ -48,18 +67,16 @@ function competency_template_display_table($templates, $frameworkid) {
     if ($templates) {
 
         // Create display table
-        $table = new stdclass();
-        $table->class = 'generaltable editcompetency';
-        $table->width = '95%';
+        $table = new html_table();
 
         // Setup column headers
         $table->head = array();
         $table->align = array();
-        $table->head[] = get_string('template', 'competency');
+        $table->head[] = get_string('template', 'totara_hierarchy');
         $table->align[] = 'left';
-        $table->head[] = get_string('competencies', 'competency');
+        $table->head[] = get_string('competencies', 'totara_hierarchy');
         $table->align[] = 'center';
-        $table->head[] = get_string('createdon', 'competency');
+        $table->head[] = get_string('createdon', 'totara_hierarchy');
         $table->align[] = 'left';
 
         // Add edit column
@@ -72,21 +89,21 @@ function competency_template_display_table($templates, $frameworkid) {
         foreach ($templates as $template) {
             $row = array();
 
-            $cssclass = !$template->visible ? 'class="dimmed"' : '';
+            $cssclass = !$template->visible ? 'dimmed' : '';
 
-            $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/template/view.php?id={$template->id}\">{$template->fullname}</a>";
-            $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/template/view.php?id={$template->id}\">{$template->competencycount}</a>";
+            $row[] = $OUTPUT->action_link(new moodle_url('prefix/competency/template/view.php', array('id' => $template->id)), $template->fullname, null, array('class' => $cssclass));
+            $row[] = $OUTPUT->action_link(new moodle_url('prefix/competency/template/view.php', array('id' => $template->id)), $template->competencycount, null, array('class' => $cssclass));
             $row[] = userdate($template->timecreated, '%A, %e %B %Y');
 
             // Add edit link
             $buttons = array();
             if ($editingon && $can_edit) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/template/edit.php?id={$template->id}\" title=\"$str_edit\">".
-                    "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+                $buttons[] = $OUTPUT->action_icon(new moodle_url('prefix/competency/template/edit.php', array('id' => $template->id)),
+                    new pix_icon('t/edit.gif', $stredit), null, array('class' => 'iconsmall', 'title' => $str_edit));
             }
             if ($editingon && $can_delete) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/template/delete.php?id={$template->id}\" title=\"$str_delete\">".
-                    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+                $buttons[] = $OUTPUT->action_icon(new moodle_url('prefix/competency/template/delete.php', array('id' => $template->id)),
+                    new pix_icon('t/delete.gif', $strdelete), null, array('class' => 'iconsmall', 'title' => $str_delete));
             }
 
             if ($buttons) {
@@ -97,31 +114,24 @@ function competency_template_display_table($templates, $frameworkid) {
         }
     }
 
-
     // Display page
-    //$hierarchy->display_framework_selector('prefix/competency/template/index.php');
 
-    print_heading(get_string('competencytemplates', 'competency'));
+    echo $OUTPUT->heading(get_string('competencytemplates', 'totara_hierarchy'));
 
     if ($templates) {
-        print_table($table);
+        echo html_writer::table($table);
     } else {
-        echo '<p>'.get_string('notemplateinframework', 'competency').'</p>';
+        echo html_writer::tag('p', get_string('notemplateinframework', 'totara_hierarchy'));
     }
-
 
     // Editing buttons
     if ($can_add) {
-        echo '<div class="buttons">';
+        $data = array('frameworkid' => $frameworkid);
 
         // Print button for creating new template
-        $data = array('frameworkid' => $frameworkid);
-        print_single_button($CFG->wwwroot.'/hierarchy/prefix/competency/template/edit.php', $data, get_string('addnewtemplate', 'competency'), 'get');
-
-        echo '</div>';
+        echo html_writer::tag('div',
+        $OUTPUT->single_button(new moodle_url('prefix/competency/template/edit.php', $data), get_string('addnewtemplate', 'totara_hierarchy'), 'get'),
+        array('class' => 'buttons'));
     }
-
-
 }
-
 ?>

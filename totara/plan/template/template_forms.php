@@ -128,7 +128,7 @@ class dp_template_workflow_form extends moodleform {
         $radiogroup = array();
 
         foreach($DP_AVAILABLE_WORKFLOWS as $workflow) {
-            $classfile = $CFG->dirroot . "/local/plan/workflows/$workflow/$workflow.class.php";
+            $classfile = $CFG->dirroot . "/totara/plan/workflows/$workflow/$workflow.class.php";
             if(!is_readable($classfile)) {
                 $string_parameters = new object();
                 $string_parameters->classfile = $classfile;
@@ -173,11 +173,11 @@ class dp_template_advanced_workflow_form extends moodleform {
 
         if($component == 'plan') {
             $class = 'development_plan';
-            require_once("{$CFG->dirroot}/local/plan/settings_form.php");
+            require_once("{$CFG->dirroot}/totara/plan/settings_form.php");
         } else {
             // Include each components form file
             // Component path
-            $cpath = "{$CFG->dirroot}/local/plan/components/{$component}";
+            $cpath = "{$CFG->dirroot}/totara/plan/components/{$component}";
             $formfile  = "{$cpath}/settings_form.php";
 
             if(!is_readable($formfile)) {
@@ -253,15 +253,15 @@ class dp_components_form extends moodleform {
                 $buttons = array();
 
                 if ($component->enabled) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;hide={$component->id}\" title=\"$str_disable\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/components.php?id={$templateid}&amp;hide={$component->id}\" title=\"$str_disable\">".
                         "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_disable\" /></a>";
                 } else {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;show={$component->id}\" title=\"$str_enable\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/components.php?id={$templateid}&amp;show={$component->id}\" title=\"$str_enable\">".
                         "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_enable\" /></a>";
                 }
 
                 if ($count > 1) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;moveup={$component->id}\" title=\"$str_moveup\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/components.php?id={$templateid}&amp;moveup={$component->id}\" title=\"$str_moveup\">".
                         "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
                 } else {
                     $buttons[] = $spacer;
@@ -269,7 +269,7 @@ class dp_components_form extends moodleform {
 
                 // If value can be moved down
                 if ($count < $numvalues) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;movedown={$component->id}\" title=\"$str_movedown\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/components.php?id={$templateid}&amp;movedown={$component->id}\" title=\"$str_movedown\">".
                         "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
                 } else {
                     $buttons[] = $spacer;

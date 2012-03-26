@@ -23,8 +23,8 @@
  * @subpackage plan
  */
 
-require_once($CFG->dirroot.'/local/program/lib.php');
-require_once($CFG->dirroot.'/local/program/program.class.php');
+require_once($CFG->dirroot.'/totara/program/lib.php');
+require_once($CFG->dirroot.'/totara/program/program.class.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -567,8 +567,8 @@ class dp_program_component extends dp_base_component {
 
             // Get course picker
             require_js(array(
-                $CFG->wwwroot.'/local/plan/component.js.php?planid='.$this->plan->id.'&amp;component=program&amp;viewas='.$this->plan->viewas,
-                $CFG->wwwroot.'/local/plan/components/program/find.js.php'
+                $CFG->wwwroot.'/totara/plan/component.js.php?planid='.$this->plan->id.'&amp;component=program&amp;viewas='.$this->plan->viewas,
+                $CFG->wwwroot.'/totara/plan/components/program/find.js.php'
             ));
         }
     }
@@ -670,7 +670,7 @@ class dp_program_component extends dp_base_component {
                 '&amp;id=' . $item->programid .
                 '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
                 '" /><a href="' . $CFG->wwwroot .
-                '/local/plan/components/' . $this->component.'/view.php?id=' .
+                '/totara/plan/components/' . $this->component.'/view.php?id=' .
                 $this->plan->id . '&amp;itemid=' . $item->id . $extraparams . '">' . format_string($item->fullname) .
                 '</a>';
         } elseif (!$approved && $accessible) {

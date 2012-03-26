@@ -39,7 +39,7 @@
 $capabilities = array(
 
     // View a program
-    'local/program:viewprogram' => array(
+    'totara/program:viewprogram' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
@@ -49,7 +49,7 @@ $capabilities = array(
     ),
 
     // View hidden programs
-    'local/program:viewhiddenprograms' => array(
+    'totara/program:viewhiddenprograms' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
@@ -61,7 +61,7 @@ $capabilities = array(
     ),
 
     // Access any user's programs
-    'local/program:accessanyprogram' => array(
+    'totara/program:accessanyprogram' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -71,7 +71,7 @@ $capabilities = array(
     ),
 
     // Create new programs
-    'local/program:createprogram' => array(
+    'totara/program:createprogram' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
@@ -80,7 +80,7 @@ $capabilities = array(
     ),
 
     // Ability to edit and delete programs
-    'local/program:configureprogram' => array(
+    'totara/program:configureprogram' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',
@@ -91,7 +91,7 @@ $capabilities = array(
     ),
 
     // Ability to add and remove program content and configure the flow of content
-    'local/program:configurecontent' => array(
+    'totara/program:configurecontent' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',
@@ -102,7 +102,7 @@ $capabilities = array(
     ),
 
     // Ability to add and remove program assignments
-    'local/program:configureassignments' => array(
+    'totara/program:configureassignments' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',
@@ -113,7 +113,7 @@ $capabilities = array(
     ),
 
     // Ability to add and remove program messages
-    'local/program:configuremessages' => array(
+    'totara/program:configuremessages' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',
@@ -124,7 +124,7 @@ $capabilities = array(
     ),
 
     // Ability to view exception reports and handle exceptions
-    'local/program:handleexceptions' => array(
+    'totara/program:handleexceptions' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',

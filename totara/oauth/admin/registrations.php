@@ -28,8 +28,8 @@ define('MOODLE_URL_2', 1);
 require('../../../config.php');
 
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/oauth/admin/forms.php');
-require_once($CFG->dirroot.'/local/oauth/lib.php');
+require_once($CFG->dirroot.'/totara/oauth/admin/forms.php');
+require_once($CFG->dirroot.'/totara/oauth/lib.php');
 require_once($CFG->dirroot .'/local/libs/outputlib.php');       // Functions for generating output
 require_once('../renderer.php');
 //global $PAGE;

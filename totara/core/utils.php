@@ -66,27 +66,33 @@ function totara_pop_n(&$items, $number) {
  * @param array $items Array of items. If text they must already be quoted.
  * @param boolean $negate Return code for NOT IN () instead of IN ()
  *
- * @return string The SQL needed to compare $field to the items in $items
+ * @return array In the form array(sql, params) The SQL needed to compare $field to the items
+ *              in $items and associated parameters
  */
-function sql_sequence($field, $items, $negate = false) {
+function sql_sequence($field, $items, $type=SQL_PARAMS_QM, $negate = false) {
     global $DB;
 
     if (!is_array($items) || count($items) == 0) {
-        return ($negate) ? '1=1' : '1=0';
+        return ($negate) ? array('1=1', array()) : array('1=0', array());
     }
 
     $not = $negate ? 'NOT' : '';
     if ($DB->get_dbfamily() != 'oracle' || $count($items <= 1000)) {
-        return " $field $not IN (" . implode(',', $items) . ') ';
+        list($sql, $params) = $DB->get_in_or_equal($items, $type, 'param', !$negate);
+
+        return array(" $field " . $sql, $params);
     }
 
     $out = array();
     while ($some_items = totara_pop_n($items, 1000)) {
-        $out[] =" $field $not IN (" . implode(',', $items) . ') ';
+        list($sql, $params) = $DB->get_in_or_equal($items, $type, 'param', !$negate);
+        $out[] =" $field " . $sql;
+        $outparams = array_merge($outparams, $params);
+
     }
 
     $operator = $negate ? ' AND ' : ' OR ';
-    return '(' . implode($operator, $out) . ')';
+    return array('(' . implode($operator, $out) . ')', $outparams);
 }
 
 
@@ -107,7 +113,7 @@ function sql_sequence($field, $items, $negate = false) {
 function check_string($identifier, $module='', $extralocations=null) {
     $result = @get_string($identifier, $module, null, $extralocations);
 
-    if($result == '[[' . $identifier . ']]') {
+    if ($result == '[[' . $identifier . ']]') {
         return false;
     } else {
         return true;
@@ -145,7 +151,7 @@ function totara_select_width_limiter() {
  * @return array|false Associative array of results or false if none found or $field invalid
  */
 function totara_group_records($rs, $field) {
-    if(!$rs) {
+    if (!$rs) {
         return false;
     }
     $out = array();

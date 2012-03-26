@@ -23,7 +23,7 @@
  */
 
 require_once("{$CFG->libdir}/formslib.php");
-require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
+require_once($CFG->dirroot.'/totara/core/icon/program_icon.class.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -81,10 +81,10 @@ class program_edit_form extends moodleform {
         }
 
         // Must have create program capability in both categories in order to move program
-        if (has_capability('local/program:createprogram', $categorycontext)) {
+        if (has_capability('totara/program:createprogram', $categorycontext)) {
             $displaylist = array();
             $parentlist = array();
-            make_categories_list($displaylist, $parentlist, 'local/program:createprogram');
+            make_categories_list($displaylist, $parentlist, 'totara/program:createprogram');
             $mform->addElement('select', 'category', get_string('category', 'local_program'), $displaylist);
             $mform->setType('category', PARAM_INT);
         } else {
@@ -311,7 +311,7 @@ class program_content_nonedit_form extends moodleform {
         $program = $this->_customdata['program'];
 
         // Check capabilities
-        if (has_capability('local/program:configurecontent', $program->get_context())) {
+        if (has_capability('totara/program:configurecontent', $program->get_context())) {
             print_single_button(
                 $this->_form->getAttribute('action'),
                 array('id' => $program->id),
@@ -357,7 +357,7 @@ class program_assignments_nonedit_form extends moodleform {
         $program = $this->_customdata['program'];
 
         // Check capabilities
-        if (has_capability('local/program:configureassignments', $program->get_context())) {
+        if (has_capability('totara/program:configureassignments', $program->get_context())) {
             print_single_button(
                 $this->_form->getAttribute('action'),
                 array('id' => $program->id),
@@ -403,7 +403,7 @@ class program_messages_nonedit_form extends moodleform {
         $program = $this->_customdata['program'];
 
         // Check capabilities
-        if (has_capability('local/program:configuremessages', $program->get_context())) {
+        if (has_capability('totara/program:configuremessages', $program->get_context())) {
             print_single_button(
                 $this->_form->getAttribute('action'),
                 array('id' => $program->id),

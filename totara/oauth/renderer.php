@@ -33,7 +33,7 @@ class local_oauth_renderer {
     public function __construct() {
         //parent::__construct($page, $target);
 //        $this->page->requires->css('/lib/gallery/assets/skins/sam/gallery-lightbox-skin.css');
-        //$this->page->requires->css('/local/oauth/styles.css');
+        //$this->page->requires->css('/totara/oauth/styles.css');
     }
 
     /**
@@ -57,8 +57,8 @@ class local_oauth_renderer {
         global $OUTPUT;
         $optionsyes = array('delete'=>$site->id, 'confirm'=>1, 'sesskey'=>sesskey());
         $optionsno  = array('sesskey'=>sesskey());
-        $formcontinue = new single_button(new moodle_url("/local/oauth/admin/registrations.php", $optionsyes), get_string('delete'), 'post');
-        $formcancel = new single_button(new moodle_url("/local/oauth/admin/registrations.php", $optionsno), get_string('cancel'), 'get');
+        $formcontinue = new single_button(new moodle_url("/totara/oauth/admin/registrations.php", $optionsyes), get_string('delete'), 'post');
+        $formcancel = new single_button(new moodle_url("/totara/oauth/admin/registrations.php", $optionsno), get_string('cancel'), 'get');
         $sitename = html_writer::tag('strong', $site->name);
         $output = html_writer::start_tag('div', array('id' => 'notice', 'class' => 'box '.renderer_base::prepare_classes('generalbox')));
         $output .= html_writer::tag('p', get_string('deleteconfirmation', 'local_oauth', $sitename));
@@ -168,14 +168,14 @@ class local_oauth_renderer {
                 if ($withwriteaccess) {
                     //edit button
                     /*$editmsg = get_string('edit', 'local_oauth');
-                    $editurl = new moodle_url("/local/oauth/admin/registrations.php",
+                    $editurl = new moodle_url("/totara/oauth/admin/registrations.php",
                             array('sesskey' => sesskey(), 'edit' => $site->id));
                     $editbutton = new single_button($editurl, $editmsg);
 //                    $editbuttonhtml = $OUTPUT->render($editbutton);
                     $editbuttonhtml = core_renderer::render_single_button($editbutton);*/
 
                     //Edit link
-                    $editurl = new moodle_url("/local/oauth/admin/registrations.php",
+                    $editurl = new moodle_url("/totara/oauth/admin/registrations.php",
                             array('sesskey' => sesskey(), 'edit' => $site->id));
                     $editimgtag = html_writer::empty_tag('img', array('src' => $CFG->pixpath.'/t/edit.gif',
                                 'class' => 'siteimage', 'alt' => get_string('edit')));
@@ -193,12 +193,12 @@ class local_oauth_renderer {
                                 'class' => 'siteimage', 'alt' => get_string('enable')));
                         $makeenabled = true;
                     }
-                    $enabledurl = new moodle_url("/local/oauth/admin/registrations.php",
+                    $enabledurl = new moodle_url("/totara/oauth/admin/registrations.php",
                             array('sesskey' => sesskey(), 'enabled' => $makeenabled, 'id' => $site->id));
                     $enabledhtml = html_writer::tag('a', $hideimgtag, array('href' => $enabledurl));
 
                     //delete link
-                    $deleteurl = new moodle_url("/local/oauth/admin/registrations.php",
+                    $deleteurl = new moodle_url("/totara/oauth/admin/registrations.php",
                             array('sesskey' => sesskey(), 'delete' => $site->id));
                     $deleteimgtag = html_writer::empty_tag('img', array('src' => $CFG->pixpath.'/t/delete.gif',
                                 'class' => 'siteimage', 'alt' => get_string('delete')));

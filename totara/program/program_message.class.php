@@ -23,7 +23,8 @@
  * @subpackage program
  */
 
-require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+// Uncomment once totara messages are finished
+//require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -491,7 +492,7 @@ abstract class prog_noneventbased_message extends prog_message {
             'roleid'            => $this->studentrole,
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -542,7 +543,7 @@ abstract class prog_noneventbased_message extends prog_message {
             $this->managermessagedata->userfrom = $recipient;
             $this->managermessagedata->subject = $this->replacevars($this->managermessagedata->subject);
             $this->managermessagedata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
-            $this->managermessagedata->contexturl = $CFG->wwwroot.'/local/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
+            $this->managermessagedata->contexturl = $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
             $result = $result && tm_alert_send($this->managermessagedata);
         }
 
@@ -588,7 +589,7 @@ abstract class prog_eventbased_message extends prog_message {
             'roleid'            => $this->studentrole,
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -670,7 +671,7 @@ abstract class prog_eventbased_message extends prog_message {
             $this->managermessagedata->userfrom = $recipient;
             $this->managermessagedata->subject = $this->replacevars($this->managermessagedata->subject);
             $this->managermessagedata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
-            $this->managermessagedata->contexturl = $CFG->wwwroot.'/local/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
+            $this->managermessagedata->contexturl = $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
             $result = $result && tm_alert_send($this->managermessagedata);
         }
 
@@ -717,7 +718,7 @@ class prog_enrolment_message extends prog_noneventbased_message {
             'roleid'            => $this->managerrole,
             'subject'           => get_string('learnerenrolled', 'local_program'),
             'fullmessage'       => $this->managermessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -763,7 +764,7 @@ class prog_exception_report_message extends prog_noneventbased_message {
             'roleid'            => $this->studentrole,
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/exceptions.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/exceptions.php?id='.$this->programid,
             'contexturlname'    => get_string('viewexceptions', 'local_program'),
         );
 
@@ -815,7 +816,7 @@ class prog_unenrolment_message extends prog_noneventbased_message {
             'roleid'            => $this->managerrole,
             'subject'           => get_string('learnerunenrolled', 'local_program'),
             'fullmessage'       => $this->managermessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -841,7 +842,7 @@ class prog_program_completed_message extends prog_noneventbased_message {
             'roleid'            => $this->managerrole,
             'subject'           => get_string('programcompleted', 'local_program'),
             'fullmessage'       => $this->managermessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -867,7 +868,7 @@ class prog_courseset_completed_message extends prog_noneventbased_message {
             'roleid'            => $this->managerrole,
             'subject'           => get_string('coursesetcompleted', 'local_program'),
             'fullmessage'       => $this->managermessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -895,7 +896,7 @@ class prog_program_due_message extends prog_eventbased_message {
             'roleid'            => $this->managerrole,
             'subject'           => get_string('programdue', 'local_program'),
             'fullmessage'       => $this->managermessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -923,7 +924,7 @@ class prog_courseset_due_message extends prog_eventbased_message {
             'roleid'            => $this->managerrole,
             'subject'           => get_string('coursesetdue', 'local_program'),
             'fullmessage'       => $this->managermessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -951,7 +952,7 @@ class prog_program_overdue_message extends prog_eventbased_message {
             'roleid'            => $this->managerrole,
             'subject'           => get_string('programoverdue', 'local_program'),
             'fullmessage'       => $this->managermessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -979,7 +980,7 @@ class prog_courseset_overdue_message extends prog_eventbased_message {
             'roleid'            => $this->managerrole,
             'subject'           => get_string('coursesetoverdue', 'local_program'),
             'fullmessage'       => $this->managermessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/view.php?id='.$this->programid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
             'contexturlname'    => get_string('launchprogram', 'local_program'),
         );
 
@@ -1050,7 +1051,7 @@ class prog_extension_request_message extends prog_noneventbased_message {
             'roleid'            => $this->managerrole,
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
-            'contexturl'        => $CFG->wwwroot.'/local/program/manageextensions.php?userid='.$this->userid,
+            'contexturl'        => $CFG->wwwroot.'/totara/program/manageextensions.php?userid='.$this->userid,
             'contexturlname'    => get_string('manageextensionrequests', 'local_program'),
         );
 

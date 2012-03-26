@@ -29,14 +29,14 @@ class customfield_checkbox extends customfield_base {
      * Pulls out the options for the checkbox from the database and sets the
      * the corresponding key for the data if it exists
      */
-    function customfield_checkbox($fieldid=0, $itemid=0, $prefix, $tableprefix) {
+    function customfield_checkbox($fieldid=0, $item, $prefix, $tableprefix) {
         global $DB;
 
         //first call parent constructor
-        $this->customfield_base($fieldid, $itemid, $prefix, $tableprefix);
+        $this->customfield_base($fieldid, $item, $prefix, $tableprefix);
 
         if (!empty($this->field)) {
-            $datafield = $DB->get_field($tableprefix.'_info_data', 'data', array($prefix.'id' => $itemid, 'fieldid' => $this->fieldid));
+            $datafield = $DB->get_field($tableprefix.'_info_data', 'data', array($prefix.'id' => $item->id, 'fieldid' => $this->fieldid));
             if ($datafield !== false) {
                 $this->data = $datafield;
             } else {
@@ -60,7 +60,7 @@ class customfield_checkbox extends customfield_base {
     /**
      * Display the data for this field
      */
-    static function display_item_data($data) {
+    static function display_item_data($data, $prefix=null) {
         $options->para = false;
         if (intval($data) === 1) {
             return get_string('yes');

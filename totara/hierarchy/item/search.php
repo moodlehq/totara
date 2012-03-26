@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,10 @@
  */
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
-require_once($CFG->dirroot . '/hierarchy/lib.php');
-require_once($CFG->dirroot . '/local/dialogs/search_form.php');
-require_once($CFG->dirroot . '/local/dialogs/dialog_content_hierarchy.class.php');
-require_once($CFG->dirroot . '/local/searchlib.php');
+require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
+require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
+require_once($CFG->dirroot . '/totara/core/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot . '/totara/core/searchlib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
@@ -64,9 +64,9 @@ if (!isset($templates)) {
 if (!isset($showhidden)) {
     $showhidden = optional_param('showhidden', false, PARAM_BOOL); // include hidden frameworks
     // check they have permissions on hidden frameworks in case parameter is changed manually
-    $context = get_context_instance(CONTEXT_SYSTEM);
-    if ($showhidden && !has_capability('moodle/local:update'.$prefix.'frameworks', $context)) {
-        print_error('nopermviewhiddenframeworks', 'hierarchy');
+    $context = context_system::instance();
+    if ($showhidden && !has_capability('totara/hierarchy:update'.$prefix.'frameworks', $context)) {
+        print_error('nopermviewhiddenframeworks', 'totara_hierarchy');
     }
 }
 
@@ -74,8 +74,8 @@ $query = optional_param('query', null, PARAM_TEXT); // search query
 $page = optional_param('page', 0, PARAM_INT); // results page number
 
 $strsearch = get_string('search');
-$stritemplural = get_string($prefix . 'plural', $prefix);
-$strqueryerror = get_string('queryerror', 'hierarchy');
+$stritemplural = get_string($prefix . 'plural', 'totara_hierarchy');
+$strqueryerror = get_string('queryerror', 'totara_hierarchy');
 
 $hierarchy = hierarchy::load_hierarchy($prefix);
 
@@ -91,7 +91,7 @@ $disabledlist = serialize($disabledlist);
 $hidden = compact('prefix', 'select', 'templates', 'disabledlist');
 
 // Create form
-$mform = new dialog_search_form($CFG->wwwroot. '/hierarchy/item/search.php',
+$mform = new dialog_search_form($CFG->wwwroot . '/totara/hierarchy/item/search.php',
     compact('hidden', 'query', 'frameworkid', 'shortprefix', 'prefix', 'showhidden'));
 
 // Display form
@@ -101,12 +101,12 @@ $mform->display();
 if (strlen($query)) {
 
     // extract quoted strings from query
-    $keywords = local_search_parse_keywords($query);
+    $keywords = totara_search_parse_keywords($query);
 
     $fields = 'SELECT i.id,i.fullname';
     $count = 'SELECT COUNT(*)';
-    $from = " FROM {$CFG->prefix}{$shortprefix} i
-        JOIN {$CFG->prefix}{$shortprefix}_framework f
+    $from = " FROM {$shortprefix} i
+        JOIN {{$shortprefix}_framework} f
         ON frameworkid = f.id";
     $order = ' ORDER BY frameworkid,sortthread';
 
@@ -118,25 +118,27 @@ if (strlen($query)) {
 
     // match search terms
     $dbfields = array('i.fullname', 'i.shortname', 'i.description');
-    $where = ' WHERE ' . local_search_get_keyword_where_clause($keywords, $dbfields);
+    list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $dbfields);
+    $where = ' WHERE ' . $searchsql;
 
     // restrict by framework if required
     if ($frameworkid) {
-        $where .= " AND i.frameworkid=$frameworkid";
+        $where .= " AND i.frameworkid = ?";
+        $params[] = $frameworkid;
     }
 
     // don't show hidden items
-    $where .= ' AND i.visible=1';
+    $where .= ' AND i.visible = 1';
     if (!$showhidden) {
-        $where .= ' AND f.visible=1';
+        $where .= ' AND f.visible = 1';
     }
 
-    $total = count_records_sql($count . $from . $where);
+    $total = $DB->count_records_sql($count . $from . $where, $params);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;
 
     if ($total) {
-        if ($results = get_records_sql($fields . $from . $where .
-            $order, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
+        if ($results = $DB->get_records_sql($fields . $from . $where .
+            $order, $params, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
 
             $data = array('prefix' => $prefix,
                     'frameworkid' => $frameworkid,
@@ -145,12 +147,13 @@ if (strlen($query)) {
                     'disabledlist' => serialize($disabledlist),
                     'templates' => $templates,
             );
-            $url = new moodle_url($CFG->wwwroot . '/hierarchy/item/search.php', $data);
-            print '<div class="search-paging">';
-            print print_paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url, 'page', false, true, 5);
-            print '</div>';
+            $url = new moodle_url('/totara/hierarchy/item/search.php', $data);
+            print html_writer::start_tag('div', array('class' => 'search-paging'));
+            $pagingbar = new paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url);
+            $OUTPUT->render($pagingbar);
+            print html_writer::end_tag('div');
 
-            $addbutton_html = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" />';
+            $addbutton_html = new pix_icon('add', get_string('add'), 'theme', array('class' => 'addbutton'));
 
             // Generate some treeview data
             $dialog = new totara_dialog_content_hierarchy($prefix, $frameworkid);
@@ -161,7 +164,7 @@ if (strlen($query)) {
             foreach ($results as $result) {
                 $title = hierarchy_search_get_path($hierarchy, $result->id);
 
-                $item = new object();
+                $item = new stdClass();
                 $item->id = $result->id;
                 $item->fullname = $result->fullname;
                 $item->hover = $title;
@@ -177,19 +180,18 @@ if (strlen($query)) {
             print $strqueryerror;
         }
     } else {
-        $params = new object();
+        $params = new stdClass();
         $params->query = stripslashes($query);
         if ($frameworkid) {
             $errorstr = 'noresultsforinframework';
-            $params->framework = get_field($shortprefix . '_framework',
-                'fullname', 'id', $frameworkid);
+            $params->framework = $DB->get_field($shortprefix . '_framework', 'fullname', array('id' => $frameworkid));
         } else {
             $errorstr = 'noresultsfor';
         }
-        print '<p class="message">' . get_string($errorstr, 'hierarchy', $params). '</p>';
+        print html_writer::tag('p', get_string($errorstr, 'totara_hierarchy', $params), array('class' => 'message'));
     }
 } else {
-    print '<br />';
+    print html_writer::empty_tag('br');
 }
 
 
@@ -235,4 +237,3 @@ function hierarchy_search_get_path($hierarchy, $id) {
 
     return $path;
 }
-

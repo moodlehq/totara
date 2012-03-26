@@ -1,9 +1,31 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/organisation/lib.php');
 
 
 ///
@@ -31,8 +53,8 @@ $s = optional_param('s', '', PARAM_TEXT);
 admin_externalpage_setup('organisationmanage');
 
 // Check permissions
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updateorganisation', $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:updateorganisation', $sitecontext);
 
 // Setup hierarchy objects
 $competencies = new competency();
@@ -40,7 +62,7 @@ $organisations = new organisation();
 
 // Load organisation
 if (!$organisation = $organisations->get_item($assignto)) {
-    error('Position could not be found');
+    print_error('positionnotfound', 'totara_hierarchy');
 }
 
 // Currently assigned competencies
@@ -60,7 +82,7 @@ if ($deleteexisting) {
     $removeditems = array_diff(array_keys($currentlyassigned), $add);
 
     foreach ($removeditems as $rid) {
-        delete_records('org_competencies', 'organisationid', $organisation->id, 'templateid', $rid);
+        $DB->delete_records('org_competencies', array('organisationid' => $organisation->id, 'templateid' => $rid));
         //TODO: add delete log
 
         echo " ~~~RELOAD PAGE~~~ ";  // Indicate to the js that a page reload is required
@@ -75,11 +97,11 @@ $str_remove = get_string('remove');
 foreach ($add as $addition) {
     // Check id
     if (!is_numeric($addition)) {
-        error('Supplied bad data - non numeric id');
+        print_error('baddatanonnumeric', 'totara_hierarchy', 'id');
     }
 
     // If the template is already assigned to the organisation, skip it over
-    if ( count_records('org_competencies','organisationid', $organisation->id, 'templateid', $addition)){
+    if ($DB->count_records('org_competencies', array('organisationid' => $organisation->id, 'templateid' => $addition))) {
         continue;
     }
 
@@ -96,30 +118,24 @@ foreach ($add as $addition) {
     $relationship->timecreated = $time;
     $relationship->usermodified = $USER->id;
 
-    $relationship->id = insert_record('org_competencies', $relationship);
+    $relationship->id = $DB->insert_record('org_competencies', $relationship);
 
-    if($nojs) {
+    if ($nojs) {
         // If JS disabled, redirect back to original page (only if session key matches)
         $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
         redirect($url);
     } else {
 
         // Return html
-        echo '<tr class="r1">';
+        $row = new html_table_row();
 
-        echo '<td class="cell c0">';
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?prefix=competency&frameworkid={$framework->id}\">{$framework->fullname}</a>";
-        echo '</td>';
+        $row->cells[] = new html_table_cell($OUTPUT->action_link(new moodle_url('index.php', array('prefix' => 'competency', 'frameworkid' => $framework->id)), $framework->fullname));
 
-        echo '<td class="cell c1">';
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/template/view.php?id={$related->id}\">{$related->fullname}</a>";
-        echo '</td>';
+        $row->cells[] = new html_table_cell($OUTPUT->action_link(new moodle_url('/totara/hierarchy/prefix/competency/template/view.php', array('id' => $related->id)), $related->fullname));
 
-        echo '<td class="cell c2">';
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/organisation/assigncompetency/remove.php?id={$relationship->id}&organisation={$organisation->id}\" title=\"$str_remove\">".
-             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-        echo '</td>';
+        $row->cells[] = new html_table_cell($OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/organisation/assigncompetency/remove.php', array('id' => $relationship->id, 'organisation' => $organisation->id)),
+             new pix_icon('t/delete.gif', $str_remove), null, array('class' => 'iconsmall', 'title' => $str_remove)));
 
-        echo '</tr>'.PHP_EOL;
+        echo $row;
     }
 }

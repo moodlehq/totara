@@ -32,8 +32,8 @@ $ADMIN->add('modules', new admin_category('local_dashboard', get_string('dashboa
 $ADMIN->add('local_dashboard',
     new admin_externalpage('managedashboards',
         get_string('managedashboards','local_dashboard'),
-        "$CFG->wwwroot/local/dashboard/admin/index.php",
-        array('local/dashboard:admin')
+        "$CFG->wwwroot/totara/dashboard/admin/index.php",
+        array('totara/dashboard:admin')
     )
 );
 

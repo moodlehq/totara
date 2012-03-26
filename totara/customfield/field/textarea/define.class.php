@@ -25,10 +25,11 @@
 class customfield_define_textarea extends customfield_define_base {
 
     function define_form_specific(&$form) {
+        global $TEXTAREA_OPTIONS;
         /// Default data
-        $form->addElement('editor', 'defaultdata', get_string('defaultdata', 'totara_customfield'));
-        $form->setType('defaultdata', PARAM_CLEANHTML);
-        $form->addHelpButton('defaultdata', 'customfielddefaultdatatextarea', 'totara_customfield');
+        $form->addElement('editor', 'defaultdata_editor', get_string('defaultdata', 'totara_customfield'), null, $TEXTAREA_OPTIONS);
+        $form->setType('defaultdata_editor', PARAM_CLEANHTML);
+        $form->addHelpButton('defaultdata_editor', 'customfielddefaultdatatextarea', 'totara_customfield');
 
         /// Param 1 for textarea type is the number of columns
         $form->addElement('text', 'param1', get_string('fieldcolumns', 'totara_customfield'), 'size="6"');

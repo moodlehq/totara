@@ -25,7 +25,7 @@
 /**
  * Set a SESSION var to store the visibility of a report builder column
  *
- * Called via AJAX from local/reportbuilder/showhide.php
+ * Called via AJAX from totara/reportbuilder/showhide.php
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');

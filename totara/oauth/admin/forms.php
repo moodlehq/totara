@@ -28,7 +28,7 @@
  */
 
 require_once($CFG->dirroot.'/lib/formslib.php');
-require_once($CFG->dirroot.'/local/oauth/lib.php');
+require_once($CFG->dirroot.'/totara/oauth/lib.php');
 
 /**
  * This form displays oauth settings

@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 
 /**
  * A report builder source for DP objectives
@@ -73,7 +73,7 @@ class rb_source_dp_objective extends rb_base_source {
         global $CFG;
 
         // to get access to position type constants
-        require_once($CFG->dirroot . '/local/reportbuilder/classes/rb_join.php');
+        require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_join.php');
 
         $joinlist[] = new rb_join(
                 'dp',
@@ -382,7 +382,7 @@ class rb_source_dp_objective extends rb_base_source {
 
     private function define_paramoptions() {
         global $CFG;
-        require_once($CFG->dirroot.'/local/plan/lib.php');
+        require_once($CFG->dirroot.'/totara/plan/lib.php');
         $paramoptions = array();
 
         $paramoptions[] = new rb_param_option(
@@ -410,13 +410,13 @@ class rb_source_dp_objective extends rb_base_source {
     public function rb_display_objectivelink($objective, $row){
         global $CFG;
 
-        return "<a href=\"{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$row->plan_id}&amp;itemid={$row->objective_id}\">$objective</a>";
+        return "<a href=\"{$CFG->wwwroot}/totara/plan/components/objective/view.php?id={$row->plan_id}&amp;itemid={$row->objective_id}\">$objective</a>";
     }
 
     function rb_display_proficiency_and_approval($status, $row) {
         global $CFG;
         // needed for approval constants
-        require_once($CFG->dirroot . '/local/plan/lib.php');
+        require_once($CFG->dirroot . '/totara/plan/lib.php');
 
         $approved = isset($row->approved) ? $row->approved : null;
 

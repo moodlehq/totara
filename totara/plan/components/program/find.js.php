@@ -41,7 +41,7 @@ $(function() {
     }
 
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/program/';
+        var url = '<?php echo $CFG->wwwroot ?>/totara/plan/components/program/';
         var saveurl = url + 'update.php?id='+plan_id+'&update=';
 
         var handler = new totaraDialog_handler_preRequisite();

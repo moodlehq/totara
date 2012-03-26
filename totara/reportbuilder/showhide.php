@@ -77,7 +77,7 @@ $('#column-checkboxes input').click(function() {
     }
 
     $.ajax({
-        url: '<?php print $CFG->wwwroot; ?>/local/reportbuilder/showhide_save.php',
+        url: '<?php print $CFG->wwwroot; ?>/totara/reportbuilder/showhide_save.php',
         data: {'shortname' : shortname,
                'column' : $(this).attr('name'),
                'value' : value

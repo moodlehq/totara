@@ -29,18 +29,18 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 $id = required_param('id', PARAM_INT); // program id
 $page = optional_param('page', 0, PARAM_INT);
 $searchterm = optional_param('search', '', PARAM_TEXT);
 
-admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/local/program/exceptions.php');
+admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/exceptions.php');
 
 // Permissions check
 $systemcontext = get_system_context();
 
-if( ! has_capability('local/program:handleexceptions', $systemcontext)) {
+if( ! has_capability('totara/program:handleexceptions', $systemcontext)) {
     print_error('error:nopermissions', 'local_program');
 }
 
@@ -67,7 +67,7 @@ $programexceptionsmanager = $program->get_exceptionsmanager();
 $programexceptions = $programexceptionsmanager->search_exceptions($page, $searchterm);
 //if ((count($programexceptions) == 0) && ($exceptions > 0) && empty($searchterm)) {
 //    $newpage = floor($exceptions / RESULTS_PER_PAGE);
-//    redirect("{$CFG->wwwroot}/local/program/exceptions.php?id={$program->id}&amp;page={$newpage}");
+//    redirect("{$CFG->wwwroot}/totara/program/exceptions.php?id={$program->id}&amp;page={$newpage}");
 //}
 $foundexceptionscount = $programexceptionsmanager->search_exceptions($page, $searchterm, '', true);
 $programexceptionsmanager->set_selections($selectiontype, $searchterm);
@@ -123,7 +123,7 @@ $params = array('id' => $program->id);
 if (!empty($searchterm)) {
     $params['search'] = $searchterm;
 }
-$base_url = new moodle_url($CFG->wwwroot . '/local/program/exceptions.php', $params);
+$base_url = new moodle_url($CFG->wwwroot . '/totara/program/exceptions.php', $params);
 print_paging_bar($foundexceptionscount, $page, RESULTS_PER_PAGE, $base_url);
 
 echo '</fieldset>';
@@ -235,7 +235,7 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
     var self = this;
     $(this.checkbox).click(function() {
 
-            var url = '<?php echo $CFG->wwwroot.'/local/program/exception/updateselections.php?id='.$id ?>';
+            var url = '<?php echo $CFG->wwwroot.'/totara/program/exception/updateselections.php?id='.$id ?>';
             var searchterm = '<?php echo $searchterm ?>';
             var checked = $(this).is(":checked");
 
@@ -285,7 +285,7 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
     // Hook onto the type selection dropdown
     $('#selectiontype').change(function() {
 
-        var url = '<?php echo $CFG->wwwroot.'/local/program/exception/updateselections.php?id='.$id ?>';
+        var url = '<?php echo $CFG->wwwroot.'/totara/program/exception/updateselections.php?id='.$id ?>';
             var searchterm = '<?php echo $searchterm ?>';
             var selectedId = $(this).find('option:selected').val();
 
@@ -315,12 +315,12 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
             {
         buttons: {
             '<?php echo get_string('cancel'); ?>': function() { handler._cancel() },
-            '<?php echo get_string('ok'); ?>': function() { dialog.save('<?php echo $CFG->wwwroot; ?>/local/program/exception/resolve.php?id=<?php echo $id ?>'); }
+            '<?php echo get_string('ok'); ?>': function() { dialog.save('<?php echo $CFG->wwwroot; ?>/totara/program/exception/resolve.php?id=<?php echo $id ?>'); }
         },
         title: '<?php echo '<h2>'.get_string('confirmresolution', 'local_program').'</h2>'; ?>',
                 height: '250'
         },
-            '<?php echo $CFG->wwwroot ?>/local/program/exception/confirm_resolution.php',
+            '<?php echo $CFG->wwwroot ?>/totara/program/exception/confirm_resolution.php',
             handler
         );
 
@@ -351,7 +351,7 @@ $handledActions = $programexceptionsmanager->get_handled_actions_for_selection('
 
     dialog._update = function(response, searchterm) {
         this.hide();
-        window.location.href = '<?php echo $CFG->wwwroot . '/local/program/exceptions.php?id=' . $id . '&search='; ?>'+searchterm;
+        window.location.href = '<?php echo $CFG->wwwroot . '/totara/program/exceptions.php?id=' . $id . '&search='; ?>'+searchterm;
     }
 
     totaraDialogs['applyaction'] = dialog;

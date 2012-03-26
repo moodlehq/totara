@@ -22,7 +22,7 @@
  * @subpackage plan
  */
 require_once('../../../../config.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
@@ -43,7 +43,7 @@ else {
     $idlist = explode(',', $idlist);
 }
 
-require_capability('local/plan:accessplan', get_system_context());
+require_capability('totara/plan:accessplan', get_system_context());
 $plan = new development_plan($planid);
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $component = $plan->get_component('competency');

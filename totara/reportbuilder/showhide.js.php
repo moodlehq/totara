@@ -42,7 +42,7 @@ $(function() {
         if(window.id===undefined) {return;}
 
         $('#show-showhide-dialog').css('display','block');
-        var url = '<?php echo $CFG->wwwroot ?>/local/reportbuilder/';
+        var url = '<?php echo $CFG->wwwroot ?>/totara/reportbuilder/';
 
         var handler = new totaraDialog_handler();
         var name = 'showhide';

@@ -1,36 +1,29 @@
 <?php
-
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
-/**
- * @copyright Catalyst IT Limited
- * @author Aaron Barnes
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
+ * @subpackage totara_hierarchy
  */
 
-require_once $CFG->dirroot.'/hierarchy/prefix/competency/evidenceitem/type/evidence.php';
+require_once $CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/type/evidence.php';
 
 /**
  * Course completion competency evidence type
@@ -49,12 +42,12 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
      * @return  string
      */
     public function get_name() {
-        global $CFG;
+        global $CFG, $DB;
 
         // Get course name
-        $course = get_field('course', 'fullname', 'id', $this->iteminstance);
-
-        return '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$this->iteminstance.'">'.format_string($course).'</a>';
+        $course = $DB->get_field('course', 'fullname', array('id' => $this->iteminstance));
+        $url = new moodle_url('/course/view.php', array('id' => $this->iteminstance));
+        return html_writer::link($url, format_string($course));
     }
 
     /**
@@ -66,8 +59,8 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
         global $CFG;
 
         $name = $this->get_type_name();
-
-        return '<a href="'.$CFG->wwwroot.'/course/report/completion/index.php?course='.$this->iteminstance.'">'.format_string($name).'</a>';
+        $url = new moodle_url('/course/report/completion/index.php', array('course' => $this->iteminstance));
+        return html_writer::link($url, format_string($name));
     }
 
     /**
@@ -86,7 +79,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
      */
     public function cron() {
 
-        global $CFG;
+        global $CFG, $DB;
 
         // Only select course completions that have changed
         // since an evidence item evidence was last changed
@@ -111,30 +104,30 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
                 proficient.proficient,
                 cs.defaultid
             FROM
-                {$CFG->prefix}comp_evidence_items cei
+                {comp_evidence_items} cei
             INNER JOIN
-                {$CFG->prefix}comp co
+                {comp} co
              ON cei.competencyid = co.id
             INNER JOIN
-                {$CFG->prefix}course c
+                {course} c
              ON cei.iteminstance = c.id
             INNER JOIN
-                {$CFG->prefix}course_completions cc
+                {course_completions} cc
             ON cc.course = c.id
             INNER JOIN
-                {$CFG->prefix}comp_scale_assignments csa
+                {comp_scale_assignments} csa
             ON co.frameworkid = csa.frameworkid
             INNER JOIN
-                {$CFG->prefix}comp_scale cs
+                {comp_scale} cs
                 ON csa.scaleid = cs.id
             INNER JOIN
             (
                 SELECT csv.scaleid, csv.id AS proficient
-                FROM {$CFG->prefix}comp_scale_values csv
+                FROM {comp_scale_values} csv
                 INNER JOIN
                 (
                     SELECT scaleid, MAX(sortorder) AS maxsort
-                    FROM {$CFG->prefix}comp_scale_values
+                    FROM {comp_scale_values}
                     WHERE proficient = 1
                     GROUP BY scaleid
                 ) grouped
@@ -142,7 +135,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
             ) proficient
             ON cs.id = proficient.scaleid
             LEFT JOIN
-                {$CFG->prefix}comp_evidence_items_evidence ceie
+                {comp_evidence_items_evidence} ceie
              ON ceie.itemid = cei.id
             AND ceie.userid = cc.userid
             WHERE
@@ -165,7 +158,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
         ";
 
         // Loop through evidence itmes, and mark as complete
-        if ($rs = get_recordset_sql($sql)) {
+        if ($rs = $DB->get_recordset_sql($sql)) {
             foreach ($rs as $record) {
 
                 if (debugging()) {
@@ -174,11 +167,11 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
 
                 $evidence = new competency_evidence_item_evidence((array)$record, false);
 
-                if ($record['timecompleted']) {
-                    $evidence->proficiencymeasured = $record['proficient'];
+                if ($record->timecompleted) {
+                    $evidence->proficiencymeasured = $record->proficient;
                 }
-                elseif ($record['defaultid']) {
-                    $evidence->proficiencymeasured = $record['defaultid'];
+                else if ($record->defaultid) {
+                    $evidence->proficiencymeasured = $record->defaultid;
                 }
                 else {
                     continue;

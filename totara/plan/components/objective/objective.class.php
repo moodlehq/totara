@@ -26,7 +26,7 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 class dp_objective_component extends dp_base_component {
 
@@ -170,7 +170,7 @@ class dp_objective_component extends dp_base_component {
             ));
 
             require_js(array(
-                $CFG->wwwroot.'/local/plan/component.js.php?planid='.$this->plan->id.'&amp;component=objective&amp;viewas='.$this->plan->viewas,
+                $CFG->wwwroot.'/totara/plan/component.js.php?planid='.$this->plan->id.'&amp;component=objective&amp;viewas='.$this->plan->viewas,
             ));
         }
     }
@@ -285,7 +285,7 @@ class dp_objective_component extends dp_base_component {
             $CFG->wwwroot . '/local/icon/icon.php?icon=' . $icon .
             '&amp;size=small&amp;type=msg" alt="' . format_string($item->fullname).
             '"><a' . $class .' href="' . $CFG->wwwroot .
-            '/local/plan/components/' . $this->component.'/view.php?id=' .
+            '/totara/plan/components/' . $this->component.'/view.php?id=' .
             $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
             '</a>';
     }
@@ -311,7 +311,7 @@ class dp_objective_component extends dp_base_component {
      */
     function objective_form($objectiveid=null) {
         global $CFG;
-        require_once($CFG->dirroot.'/local/plan/components/objective/edit_form.php');
+        require_once($CFG->dirroot.'/totara/plan/components/objective/edit_form.php');
         $customdata = array(
             'plan' => $this->plan,
             'objective' => $this
@@ -674,12 +674,12 @@ class dp_objective_component extends dp_base_component {
      */
     function send_deletion_alert($objective) {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
         $event = new stdClass;
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
-        $event->contexturl = "{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}";
+        $event->contexturl = "{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}";
         $event->icon = 'objective-remove';
         $a = new stdClass;
         $a->objective = $objective->fullname;
@@ -718,16 +718,16 @@ class dp_objective_component extends dp_base_component {
      */
     function send_creation_alert($objid, $fullname) {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
         $event = new stdClass;
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
-        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objid}";
+        $event->contexturl = "{$CFG->wwwroot}/totara/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objid}";
         $event->icon = 'objective-add';
         $a = new stdClass;
         $a->objective = "<a href=\"{$event->contexturl}\">".stripslashes($fullname)."</a>";
-        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->userfrom = $this->current_user_link();
 
         // did they create it themselves?
@@ -763,16 +763,16 @@ class dp_objective_component extends dp_base_component {
      */
     function send_edit_alert($objective, $field) {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
         $event = new stdClass;
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
-        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
+        $event->contexturl = "{$CFG->wwwroot}/totara/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
         $event->icon = 'objective-update';
         $a = new stdClass;
         $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
-        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->userfrom = $this->current_user_link();
 
         // did they edit it themselves?
@@ -811,7 +811,7 @@ class dp_objective_component extends dp_base_component {
      */
     function send_status_alert($objective) {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
         // determined achieved/non-achieved status
         $achieved = get_field('dp_objective_scale_value', 'achieved', 'id', $objective->scalevalueid);
@@ -821,11 +821,11 @@ class dp_objective_component extends dp_base_component {
         $event = new stdClass;
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
-        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
+        $event->contexturl = "{$CFG->wwwroot}/totara/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
         $event->icon = 'objective-'.($status == 'complete' ? 'complete' : 'fail');
         $a = new stdClass;
         $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
-        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->userfrom = $this->current_user_link();
 
         // did they complete it themselves?
@@ -982,7 +982,7 @@ class dp_objective_component extends dp_base_component {
 
         if ($this->can_delete_item($item)) {
             $deleteurl = $CFG->wwwroot
-                . '/local/plan/components/objective/edit.php?id='
+                . '/totara/plan/components/objective/edit.php?id='
                 . $this->plan->id
                 . '&itemid='
                 . $item->id
@@ -1017,7 +1017,7 @@ class dp_objective_component extends dp_base_component {
         }
 
         $html = '<div class="buttons plan-add-item-button-wrapper">';
-        $html .= print_single_button("{$CFG->wwwroot}/local/plan/components/objective/edit.php", array('id'=>$this->plan->id), $btntext, 'get', '_SELF', true);
+        $html .= print_single_button("{$CFG->wwwroot}/totara/plan/components/objective/edit.php", array('id'=>$this->plan->id), $btntext, 'get', '_SELF', true);
         $html .= '</div>';
 
         return $html;
@@ -1113,7 +1113,7 @@ SQL;
                 $buttonlabel = get_string('editdetails', 'local_plan');
             }
             $out .= '<div class="add-linked-course">' . print_single_button(
-                "{$CFG->wwwroot}/local/plan/components/objective/edit.php",
+                "{$CFG->wwwroot}/totara/plan/components/objective/edit.php",
                 array('id'=>$this->plan->id, 'itemid'=>$objectiveid),
                 $buttonlabel,
                 null,

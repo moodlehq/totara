@@ -313,7 +313,7 @@ abstract class dp_base_component {
      */
     public function get_url() {
         global $CFG;
-        return "{$CFG->wwwroot}/local/plan/component.php?id={$this->plan->id}&amp;c={$this->component}";
+        return "{$CFG->wwwroot}/totara/plan/component.php?id={$this->plan->id}&amp;c={$this->component}";
     }
 
 
@@ -796,7 +796,7 @@ abstract class dp_base_component {
      */
     function send_component_update_alert($update_info='') {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
         $event = new stdClass;
         $userfrom = get_record('user', 'id', $USER->id);
@@ -804,7 +804,7 @@ abstract class dp_base_component {
         $event->contexturl = $this->get_url();
         $event->icon = $this->component.'-update';
         $a = new stdClass;
-        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->component = get_string($this->component.'plural', 'local_plan');
         $a->updates = $update_info;
 
@@ -840,7 +840,7 @@ abstract class dp_base_component {
      */
     function send_component_approval_alert($approval) {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
         if($approval->after == DP_APPROVAL_DECLINED) {
             $type = 'decline';
         } else if($approval->after == DP_APPROVAL_APPROVED) {
@@ -853,7 +853,7 @@ abstract class dp_base_component {
         $event->contexturl = $this->get_url();
         $event->icon = $this->component.'-'.$type;
         $a = new stdClass;
-        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->component = get_string($this->component.'plural', 'local_plan');
         $a->updates = $approval->text;
         $a->name = $approval->itemname;
@@ -890,7 +890,7 @@ abstract class dp_base_component {
      */
     function send_component_complete_alert($completion) {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
         $event = new stdClass;
         $userfrom = get_record('user', 'id', $USER->id);
@@ -898,7 +898,7 @@ abstract class dp_base_component {
         $event->contexturl = $this->get_url();
         $event->icon = $this->component.'-complete';
         $a = new stdClass;
-        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->component = get_string($this->component.'plural', 'local_plan');
         $a->updates = $completion->text;
         $a->name = $completion->itemname;
@@ -1219,7 +1219,7 @@ abstract class dp_base_component {
             $tooltip = get_string('nocomments', 'local_plan');
             $commentclass = 'comments-icon-none';
         }
-        return '<a href="'.$CFG->wwwroot.'/local/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
+        return '<a href="'.$CFG->wwwroot.'/totara/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
                 class="' . $commentclass . '" title="'.$tooltip.'">'.$count.'</a>';
     }
 
@@ -1501,7 +1501,7 @@ abstract class dp_base_component {
      */
     function display_back_to_index_link() {
         global $CFG;
-        return '<p><a href="' . $CFG->wwwroot . '/local/plan/component.php?id='.$this->plan->id.
+        return '<p><a href="' . $CFG->wwwroot . '/totara/plan/component.php?id='.$this->plan->id.
             '&c='.$this->component.'">'.
             get_string('backtoallx','local_plan', get_string("{$this->component}plural", 'local_plan')).
             '</a></p>';

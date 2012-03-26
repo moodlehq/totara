@@ -288,7 +288,7 @@ class local_oauth {
 
                 // Authorize the request token
                 $SESSION->wantsurl = $FULLME;
-                $return_to = new moodle_url($CFG->wwwroot."/local/oauth/authenticate.php", array('id' => $this->site->id));
+                $return_to = new moodle_url($CFG->wwwroot."/totara/oauth/authenticate.php", array('id' => $this->site->id));
                 $this->add_to_log('authorise request token');
                 $this->consumer->getAuthorizeRequest($this->site->authorize_token_url, $this->request_token, TRUE, $return_to->out());
             }

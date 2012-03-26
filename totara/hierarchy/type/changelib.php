@@ -3,7 +3,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,15 +29,16 @@
  * Returns the appropriate name of a hierarchy type
  */
 function hierarchy_get_type_name($typeid, $shortprefix) {
+    global $DB;
 
     if ($typeid != 0) {
-        if ($typename = get_field($shortprefix . '_type', 'fullname', 'id', $typeid)) {
+        if ($typename = $DB->get_field($shortprefix . '_type', 'fullname', array('id' => $typeid))) {
             return format_string($typename);
         } else {
             return get_string('unknown');
         }
     } else {
-        return get_string('unclassified', 'hierarchy');
+        return get_string('unclassified', 'totara_hierarchy');
     }
 }
 
@@ -58,8 +59,8 @@ function hierarchy_get_formatted_custom_fields($data) {
         if (!isset($item->id) || !isset($item->fullname) || !isset($item->datatype)) {
             continue;
         }
-        $hidden = ($item->hidden) ? get_string('hidden', 'hierarchy') . ' ' : '';
-        $fields[$item->id] = format_string($item->fullname) . ' (' . $hidden . get_string('customfieldtype' . $item->datatype, 'customfields') . ')';
+        $hidden = ($item->hidden) ? get_string('hidden', 'totara_hierarchy') . ' ' : '';
+        $fields[$item->id] = format_string($item->fullname) . ' (' . $hidden . get_string('customfieldtype' . $item->datatype, 'totara_customfield') . ')';
     }
 
     if (count($fields) == 0) {

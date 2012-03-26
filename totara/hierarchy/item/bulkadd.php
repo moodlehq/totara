@@ -1,9 +1,31 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/item/bulkadd_form.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/item/bulkadd_form.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 
 ///
 /// Setup / loading data
@@ -18,15 +40,15 @@ $page       = optional_param('page', 0, PARAM_INT);
 $hierarchy = hierarchy::load_hierarchy($prefix);
 
 // Make this page appear under the manage competencies admin item
-admin_externalpage_setup($prefix.'manage', '', array('prefix'=>$prefix));
+admin_externalpage_setup($prefix.'manage', '', array('prefix' => $prefix));
 
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 
-require_capability('moodle/local:create'.$prefix, $context);
+require_capability('totara/hierarchy:create'.$prefix, $context);
 
 // Load framework
-if (!$framework = get_record($shortprefix.'_framework', 'id', $frameworkid)) {
-    error($prefix.' framework ID was incorrect');
+if (!$framework = $DB->get_record($shortprefix.'_framework', array('id' => $frameworkid))) {
+    print_error('invalidframeworkid', 'totara_hierarchy', $prefix);
 }
 
 
@@ -40,39 +62,38 @@ $mform = new item_bulkadd_form(null, compact('prefix', 'frameworkid', 'page'));
 // cancelled
 if ($mform->is_cancelled()) {
 
-    redirect("{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;frameworkid={$item->frameworkid}&amp;page={$page}");
+    redirect("{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$item->frameworkid}&amp;page={$page}");
 
 // Update data
 } else if ($formdata = $mform->get_data()) {
 
     $items_to_add = hierarchy_construct_items_to_add($formdata);
     if (!$items_to_add) {
-        totara_set_notification(get_string('bulkaddfailed', 'hierarchy'), "{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;frameworkid={$frameworkid}&amp;page={$page}");
+        totara_set_notification(get_string('bulkaddfailed', 'totara_hierarchy'), "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$frameworkid}&amp;page={$page}");
     }
 
-    if ($new_ids = $hierarchy->add_multiple_hierarchy_items($formdata->parentid, $items_to_add, $frameworkid, false)) {
+    if ($new_ids = $hierarchy->add_multiple_hierarchy_items($formdata->parentid, $items_to_add, $frameworkid)) {
         add_to_log(SITEID, $prefix, 'bulk add', "index.php?id={$frameworkid}&amp;prefix={$prefix}", 'New IDs '. implode(',', $new_ids));
-        totara_set_notification(get_string('bulkaddsuccess', 'hierarchy', count($new_ids)), "{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;frameworkid={$frameworkid}&amp;page={$page}", array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('bulkaddsuccess', 'totara_hierarchy', count($new_ids)), "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$frameworkid}&amp;page={$page}", array('style' => 'notifysuccess'));
     } else {
-        totara_set_notification(get_string('bulkaddfailed', 'hierarchy'), "{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;frameworkid={$frameworkid}&amp;page={$page}");
+        totara_set_notification(get_string('bulkaddfailed', 'totara_hierarchy'), "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$frameworkid}&amp;page={$page}");
 
     }
 }
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("{$prefix}frameworks", $prefix), 'link'=>$CFG->wwwroot . '/hierarchy/framework/index.php?prefix='.$prefix, 'type'=>'misc');
-$navlinks[] = array('name'=>format_string($framework->fullname), 'link'=>$CFG->wwwroot . '/hierarchy/index.php?prefix='.$prefix.'&amp;frameworkid='.$framework->id, 'type'=>'misc');
-$navlinks[] = array('name'=>get_string('addmultiplenew'.$prefix, $prefix), 'link'=>'', 'type'=>'title');
+$PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => $prefix)));
+$PAGE->navbar->add(format_string($framework->fullname), new moodle_url('/totara/hierarchy/index.php', array('prefix' => $prefix, 'frameworkid' => $framework->id)));
+$PAGE->navbar->add(get_string('addmultiplenew'.$prefix, 'totara_hierarchy'));
 
 /// Display page header
-admin_externalpage_print_header('' ,$navlinks);
+echo $OUTPUT->header();
 
-print_heading(get_string('addmultiplenew'.$prefix, $prefix));
+echo $OUTPUT->heading(get_string('addmultiplenew'.$prefix, 'totara_hierarchy'));
 
 /// Finally display the form
 $mform->display();
 
-print_footer();
+echo $OUTPUT->footer();
 
 
 /**

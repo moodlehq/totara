@@ -30,7 +30,7 @@
 
 require_once('../../config.php');
 require_once('lib.php');
-require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
 require_login();
 
@@ -256,8 +256,8 @@ if (!empty($complete)) {
 /// Reactivate
 ///
 if (!empty($reactivate)) {
-    require_once($CFG->dirroot.'/local/plan/reactivate_form.php');
-    require_once($CFG->dirroot . '/local/js/lib/setup.php');
+    require_once($CFG->dirroot.'/totara/plan/reactivate_form.php');
+    require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
     local_js(array(
         TOTARA_JS_DATEPICKER,

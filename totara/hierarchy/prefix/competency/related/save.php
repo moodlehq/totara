@@ -1,9 +1,31 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once('lib.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 
 
 ///
@@ -30,18 +52,18 @@ if (!$currentlyrelated = comp_relation_get_relations($compid)) {
 }
 
 // Setup page
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/related/save.php');
+admin_externalpage_setup('competencymanage', '', array(), $CFG->wwwroot.'/competency/related/save.php');
 
 // Check permissions
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:updatecompetency', $sitecontext);
 
 // Setup hierarchy object
 $hierarchy = new competency();
 
 // Load competency
 if (!$competency = $hierarchy->get_item($compid)) {
-    error('Competency could not be found');
+    print_error('competencynotfound', 'totara_hierarchy');
 }
 
 $str_remove = get_string('remove');
@@ -55,10 +77,9 @@ $time = time();
 ///
 if ($deleteexisting) {
     $removeditems = array_diff($currentlyrelated, $relidlist);
-    
     foreach ($removeditems as $ritem) {
-        delete_records('comp_relations', 'id1', $compid, 'id2', $ritem);
-        delete_records('comp_relations', 'id2', $compid, 'id1', $ritem);
+        $DB->delete_records('comp_relations', array('id1' => $compid, 'id2' => $ritem));
+        $DB->delete_records('comp_relations', array('id2' => $compid, 'id1' => $ritem));
     }
 }
 
@@ -70,24 +91,25 @@ if ($deleteexisting) {
 foreach ($relidlist as $relid) {
     // Check id
     if (!is_numeric($relid)) {
-        error('Supplied bad data - non numeric id');
+        print_error('baddatanonnumeric', 'totara_hierarchy', null, $relid);
     }
 
     // Don't relate a competency to itself
-    if ( $compid == $relid ){
+    if ($compid == $relid) {
         continue;
     }
 
     // Check to see if the relationship already exists.
-    $alreadyrelated = get_records_select(
+    $alreadyrelated = $DB->get_records_select(
             'comp_relations',
-            "(id1={$compid} and id2={$relid}) or (id1={$relid} and id2={$compid})",
+            "(id1 = ? and id2 = ?) or (id1 = ? and id2 = ?)",
+            array($compid, $relid, $relid, $compid),
             '',
             'id',
             0,
             1
     );
-    if ( is_array($alreadyrelated) && count($alreadyrelated) > 0 ){
+    if (is_array($alreadyrelated) && count($alreadyrelated) > 0) {
         continue;
     }
 
@@ -105,10 +127,10 @@ foreach ($relidlist as $relid) {
     $relationship->id1 = $competency->id;
     $relationship->id2 = $related->id;
 
-    $relationship->id = insert_record('comp_relations', $relationship);
+    $relationship->id = $DB->insert_record('comp_relations', $relationship);
 }
 
-if($nojs) {
+if ($nojs) {
     // If JS disabled, redirect back to original page (only if session key matches)
     $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
     redirect($url);

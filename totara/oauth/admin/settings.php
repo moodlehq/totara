@@ -29,7 +29,7 @@
 
 require('../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/oauth/admin/forms.php');
+require_once($CFG->dirroot.'/totara/oauth/admin/forms.php');
 
 admin_externalpage_setup('oauthsettings');
 

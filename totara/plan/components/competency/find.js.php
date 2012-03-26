@@ -42,7 +42,7 @@ $(function() {
 
     (function() {
 
-        var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/competency/';
+        var url = '<?php echo $CFG->wwwroot ?>/totara/plan/components/competency/';
         var continueurl = url + 'confirm.php?id='+plan_id+'&update=';
         var saveurl = url + 'update.php?id='+plan_id+'&update=';
         var continueskipurl = saveurl + 'id='+plan_id+'&update=';

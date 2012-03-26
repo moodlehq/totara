@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/plan/db" VERSION="20110722" COMMENT="XMLDB file for Moodle local/plan"
+<XMLDB PATH="totara/plan/db" VERSION="20110722" COMMENT="XMLDB file for Moodle totara/plan"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >

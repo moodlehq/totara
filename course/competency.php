@@ -25,9 +25,9 @@
 
 // View/add course competencies
 
-require_once('../config.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once(dirname(dirname(__FILE__)) . '/config.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 // Get paramaters
 $id = required_param('id', PARAM_INT);                  // course id
@@ -44,19 +44,19 @@ if($id == SITEID){
     print_error('cannoteditsiteform');
 }
 
-if (!$course = get_record('course', 'id', $id)) {
+if (!$course = $DB->get_record('course', array('id' => $id))) {
     print_error('invalidcourseid');
 }
 
 $hierarchy = new competency();
 
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 
 require_login($course->id);
-require_capability('moodle/local:viewcompetency', $context);
+require_capability('totara/hierarchy:viewcompetency', $context);
 
 // Can edit?
-$can_edit = has_capability('moodle/local:updatecompetency', $context);
+$can_edit = has_capability('totara/hierarchy:updatecompetency', $context);
 
 
 local_js(array(
@@ -64,11 +64,9 @@ local_js(array(
     TOTARA_JS_TREEVIEW
 ));
 
-require_js(array(
-    $CFG->wwwroot.'/local/js/course.competency.js.php?id='.$course->id,
-));
+$PAGE->requires->js('/totara/core/js/course.competency.js.php?id='.$course->id);
 
-$strcompetenciesusedincourse = get_string("competenciesusedincourse", 'competency');
+$strcompetenciesusedincourse = get_string("competenciesusedincourse", 'totara_hierarchy');
 $navlinks = array();
 
 $navlinks[] = array('name' => $strcompetenciesusedincourse,
@@ -78,8 +76,12 @@ $title = $strcompetenciesusedincourse;
 $fullname = $course->fullname;
 
 $navigation = build_navigation($navlinks);
-print_header($title, $fullname, $navigation);
-print_heading($strcompetenciesusedincourse);
+$PAGE->set_title($title);
+$PAGE->set_url(new moodle_url('/course/competency.php', array('id' => $id)));
+$PAGE->set_heading($fullname);
+/* SCANMSG: may be additional work required for $navigation variable */
+echo $OUTPUT->header();
+echo $OUTPUT->heading($strcompetenciesusedincourse);
 
 
 echo '<div id="coursecompetency-table-container">';
@@ -103,9 +105,9 @@ if ($can_edit) {
     <form action="<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/course/add.php?id=<?php echo $id ?>" method="get">
         <div>
             <?php if (!empty($CFG->competencyuseresourcelevelevidence)) { ?>
-                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('addcourseevidencetocompetencies', 'competency'); ?>" />
+                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('addcourseevidencetocompetencies', 'totara_hierarchy'); ?>" />
             <?php } else { ?>
-                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('assigncoursecompletiontocompetencies', 'competency'); ?>" />
+                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('assigncoursecompletiontocompetencies', 'totara_hierarchy'); ?>" />
             <?php } ?>
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="nojs" value="1">
@@ -124,15 +126,15 @@ if ($can_edit) {
 echo '<br /><div class="buttons"><div class="centerbutton">';
 
 $options = array('id'=>$id);
-print_single_button(
-    $CFG->wwwroot.'/course/view.php',
-    $options,
-    get_string('returntocourse', 'local'),
+echo $OUTPUT->single_button(
+    new moodle_url('/course/view.php',
+    $options),
+    get_string('returntocourse', 'totara_core'),
     'get'
 );
 
 echo '</div></div>';
 
-print_footer($course);
+$OUTPUT->footer($course);
 
 ?>

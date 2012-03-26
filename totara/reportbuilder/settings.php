@@ -34,22 +34,22 @@ $ADMIN->add('reports',
 $ADMIN->add('local_reportbuilder',
     new admin_externalpage('managereports',
         get_string('managereports','local_reportbuilder'),
-        "$CFG->wwwroot/local/reportbuilder/index.php",
-        array('local/reportbuilder:managereports')
+        "$CFG->wwwroot/totara/reportbuilder/index.php",
+        array('totara/reportbuilder:managereports')
     )
 );
 $ADMIN->add('local_reportbuilder',
     new admin_externalpage('globalreportsettings',
         get_string('globalsettings','local_reportbuilder'),
-        "$CFG->wwwroot/local/reportbuilder/globalsettings.php",
-        array('local/reportbuilder:managereports')
+        "$CFG->wwwroot/totara/reportbuilder/globalsettings.php",
+        array('totara/reportbuilder:managereports')
     )
 );
 $ADMIN->add('local_reportbuilder',
     new admin_externalpage('activitygroups',
         get_string('activitygroups','local_reportbuilder'),
-        "$CFG->wwwroot/local/reportbuilder/groups.php",
-        array('local/reportbuilder:managereports')
+        "$CFG->wwwroot/totara/reportbuilder/groups.php",
+        array('totara/reportbuilder:managereports')
     )
 );
 

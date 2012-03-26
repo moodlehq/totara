@@ -28,9 +28,7 @@ class block_totara_guides extends block_list {
         if(!has_capability('block/guides:viewownguide', $context)) {
             return $this->content;
         }
-
-        $icon  = '<img src="'.$OUTPUT->pix_url('i/course.gif').'"'.
-                 " class=\"icon\" alt=\"".get_string("coursecategory")."\" />";
+        $icon  = $OUTPUT->pix_icon('i/course.gif', get_string("coursecategory"), null, array('class' => 'icon'));
         $inprogresscontent = '';
         require_once($CFG->dirroot . '/guides/lib.php');
         $gissql = '
@@ -55,19 +53,19 @@ class block_totara_guides extends block_list {
                 $pixeloffset = round($pixelvalue - 120);
                 $percent = round($percentvalue);
                 $guideinstances[$guideid]->progress = $percent;
-                $inprogresscontent .= '<form action="' . $CFG->wwwroot . '/guides/delete.php?gi=' . $guideinstance->giid . '" method="post">';
-                $inprogresscontent .= '<a href="' . $CFG->wwwroot . '/guides/view.php?gi=' . $guideinstance->giid . '">' .
-                        $guideinstance->name . '</a>';
-                $inprogresscontent .= ' <input type="hidden" name="gi" value="' . $guideinstance->giid . '" />';
-                $inprogresscontent .= '<input type="image" class="iconsmall" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" alt="delete guide progress" />';
-                $inprogresscontent .= '<img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $percent . '%" style="background: white url(' . $CFG->wwwroot . '/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;" /> ';
+                $inprogresscontent .= html_writer::start_tag('form', array('action' => new moodle_url('/guides/delete.php', array('gi' => $guideinstance->giid)),  'method' => 'post'));
+                $url = new moodle_url('/guides/view.php', array('gi' => $guideinstance->giid));
+                $inprogresscontent .= html_writer::link($url, $guideinstance->name);
+                $inprogresscontent .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "gi", 'value' => $guideinstance->giid));
+                $inprogresscontent .= html_writer::empty_tag('input', array('type' => 'image', 'class' => "iconsmall", 'alt' => get_string('deleteguideprogress', 'block_totara_guides'), 'src' => $OUTPUT->pix_url('/t/delete.gif', 'theme')));
+                $inprogresscontent .= $OUTPUT->pix_icon('/percentImage', $percent . '%', 'block_totara_guides', array('class' => 'icon percentImage', 'style' => "background-position: ' . $pixeloffset . 'px 0pt;"));
                 $inprogresscontent .= " $percent %";
-                $inprogresscontent .= '</form>';
+                $inprogresscontent .= html_writer::end_tag('form');
                 $this->content->items[] = $inprogresscontent;
             }
-            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">' . get_string('moredetail', 'block/guides') . '</a>';
+            $this->content->footer = html_writer::link(new moodle_url('/guides/index.php'), get_string('moredetail', 'block_totara_guides'));
         } else {
-            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">' . get_string('viewallguides', 'block/guides') . '</a>';
+            $this->content->footer = html_writer::link(new moodle_url('/guides/index.php'), get_string('viewallguides', 'block_totara_guides'));
         }
         return $this->content;
     }

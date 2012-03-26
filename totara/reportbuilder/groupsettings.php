@@ -34,7 +34,7 @@
 
     $id = required_param('id', PARAM_INT); // id of current group
 
-    $returnurl = $CFG->wwwroot.'/local/reportbuilder/groupsettings.php';
+    $returnurl = $CFG->wwwroot.'/totara/reportbuilder/groupsettings.php';
 
     admin_externalpage_setup('activitygroups');
 
@@ -83,7 +83,7 @@
 
     admin_externalpage_print_header();
 
-    print_single_button($CFG->wwwroot . '/local/reportbuilder/groups.php', null,
+    print_single_button($CFG->wwwroot . '/totara/reportbuilder/groups.php', null,
         get_string('backtoallgroups','local_reportbuilder'));
 
     print_heading(get_string('activitygroupingx','local_reportbuilder',$group->name));
@@ -162,12 +162,12 @@
             $strdelete = get_string('delete','local_reportbuilder');
 
             $settings = '<a href="'.$CFG->wwwroot .
-                '/local/reportbuilder/general.php?id=' . $report->id .
+                '/totara/reportbuilder/general.php?id=' . $report->id .
                 '" title="' . $strsettings . '">' .
                 '<img src="' . $CFG->pixpath . '/t/edit.gif" alt="' .
                 $strsettings . '"></a>';
             $delete = '<a href="' . $CFG->wwwroot .
-                '/local/reportbuilder/index.php?d=1&amp;id=' . $report->id .
+                '/totara/reportbuilder/index.php?d=1&amp;id=' . $report->id .
                 '" title="' . $strdelete . '">' .
                 '<img src="'.$CFG->pixpath . '/t/delete.gif" alt="' .
                 $strdelete . '"></a>';

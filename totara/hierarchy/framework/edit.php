@@ -1,39 +1,61 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 
-hierarchy::support_old_url_syntax();
 
 $prefix    = required_param('prefix', PARAM_ALPHA); // hierarchy prefix
+
 $shortprefix = hierarchy::get_short_prefix($prefix);
 $id      = optional_param('id', 0, PARAM_INT);    // 0 if creating a new framework
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 
 $hierarchy = hierarchy::load_hierarchy($prefix);
 
 // If the hierarchy prefix has framework editing files use them else use the generic files
-if (file_exists($CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/framework/edit.php')) {
-    require_once($CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/framework/edit_form.php');
-    require_once($CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/framework/edit.php');
+if (file_exists($CFG->dirroot.'/totara/hierarchy/prefix/'.$prefix.'/framework/edit.php')) {
+    require_once($CFG->dirroot.'/totara/hierarchy/prefix/'.$prefix.'/framework/edit_form.php');
+    require_once($CFG->dirroot.'/totara/hierarchy/prefix/'.$prefix.'/framework/edit.php');
     die;
 } else {
-    require_once($CFG->dirroot.'/hierarchy/framework/edit_form.php');
+    require_once($CFG->dirroot.'/totara/hierarchy/framework/edit_form.php');
 }
 
 // Make this page appear under the manage 'hierarchy' admin menu
-admin_externalpage_setup($prefix.'manage', '', array('prefix'=>$prefix, 'id' => $id), $CFG->wwwroot.'/hierarchy/framework/edit.php');
+admin_externalpage_setup($prefix.'manage', '', array('prefix' => $prefix, 'id' => $id), $CFG->wwwroot.'/totara/hierarchy/framework/edit.php');
 
 if ($id == 0) {
     // Creating new framework
-    require_capability('moodle/local:create'.$prefix.'frameworks', $context);
+    require_capability('totara/hierarchy:create'.$prefix.'frameworks', $context);
 
-    $framework = new object();
+    $framework = new stdClass();
     $framework->id = 0;
     $framework->visible = 1;
-
-    $framework->sortorder = get_field($shortprefix.'_framework', 'MAX(sortorder) + 1', '', '');
+    $framework->description = '';
+    $framework->sortorder = $DB->get_field($shortprefix.'_framework', 'MAX(sortorder) + 1', array());
     if (!$framework->sortorder) {
         $framework->sortorder = 1;
     }
@@ -41,21 +63,24 @@ if ($id == 0) {
 
 } else {
     // Editing existing framework
-    require_capability('moodle/local:update'.$prefix.'frameworks', $context);
+    require_capability('totara/hierarchy:update'.$prefix.'frameworks', $context);
 
-    if (!$framework = get_record($shortprefix.'_framework', 'id', $id)) {
-        error($prefix.' framework ID was incorrect');
+    if (!$framework = $DB->get_record($shortprefix.'_framework', array('id' => $id))) {
+        print_error('invalidframeworkid', 'totara_hierarchy', $prefix);
     }
 }
 
 // create form
-$frameworkform = new framework_edit_form(null, array('prefix'=>$prefix));
+$framework->descriptionformat = FORMAT_HTML;
+$framework = file_prepare_standard_editor($framework, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                          'totara_hierarchy', $shortprefix.'_framework', $framework->id);
+$frameworkform = new framework_edit_form(null, array('prefix' => $prefix));
 $frameworkform->set_data($framework);
 
 // cancelled
 if ($frameworkform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/hierarchy/framework/index.php?prefix=$prefix");
+    redirect("$CFG->wwwroot/totara/hierarchy/framework/index.php?prefix=$prefix");
 
 // Update data
 } else if ($frameworknew = $frameworkform->get_data()) {
@@ -65,61 +90,59 @@ if ($frameworkform->is_cancelled()) {
     $frameworknew->timemodified = $time;
     $frameworknew->usermodified = $USER->id;
     // Save
-    // New framework
+    $notification = new stdClass();
+
     if ($frameworknew->id == 0) {
+        // New framework
         unset($frameworknew->id);
 
         $frameworknew->timecreated = $time;
 
-        if (!$frameworknew->id = insert_record($shortprefix.'_framework', $frameworknew)) {
-            error('Error creating '.$prefix.' framework record');
+        if (!$frameworknew->id = $DB->insert_record($shortprefix.'_framework', $frameworknew)) {
+           print_error('createframeworkrecord', 'totara_hierarchy', $prefix);
         }
 
         // Log
-        add_to_log(SITEID, $prefix, 'framework create', "index.php?prefix={$prefix}&amp;frameworkid={$frameworknew->id}", "$frameworknew->fullname (ID $frameworknew->id)");
+        add_to_log(SITEID, $prefix, 'framework create', "index.php?prefix=$prefix&amp;frameworkid={$frameworknew->id}", "$frameworknew->fullname (ID $frameworknew->id)");
+        $notification->text = 'addedframework';
 
-        totara_set_notification(get_string('addedframework', $prefix, format_string(stripslashes($frameworknew->fullname))), "$CFG->wwwroot/hierarchy/framework/index.php?prefix=$prefix", array('style' => 'notifysuccess'));
-    // Existing framework
     } else {
-        if (!update_record($shortprefix.'_framework', $frameworknew)) {
-            error('Error updating '.$prefix.' framework record');
+        // Existing framework
+        if (!$DB->update_record($shortprefix.'_framework', $frameworknew)) {
+           print_error('updateframeworkrecord', 'totara_hierarchy', $prefix);
         }
 
         // Log
-        add_to_log(SITEID, $prefix, 'framework update', "framework/view.php?prefix={$prefix}&amp;frameworkid={$frameworknew->id}", "$framework->fullname (ID $framework->id)");
-
-        totara_set_notification(get_string('updatedframework', $prefix, format_string(stripslashes($frameworknew->fullname))), "$CFG->wwwroot/hierarchy/framework/index.php?prefix=$prefix", array('style' => 'notifysuccess'));
+        add_to_log(SITEID, $prefix, 'framework update', "framework/view.php?prefix=$prefix&amp;frameworkid={$frameworknew->id}", "$framework->fullname (ID $framework->id)");
+        $notification->text = 'updatedframework';
     }
+    //fix the description field and redirect
+    $frameworknew = file_postupdate_standard_editor($frameworknew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_hierarchy', $shortprefix.'_framework', $frameworknew->id);
+    $DB->set_field($shortprefix.'_framework', 'description', $frameworknew->description, array('id' => $frameworknew->id));
+    totara_set_notification(get_string($prefix.$notification->text, 'totara_hierarchy', format_string($frameworknew->fullname)), "$CFG->wwwroot/totara/hierarchy/framework/index.php?prefix=$prefix", array('style' => 'notifysuccess'));
 
-    // Reload from db
-    $frameworknew = get_record($shortprefix.'_framework', 'id', $frameworknew->id);
-
-    redirect("$CFG->wwwroot/hierarchy/framework/index.php?prefix=$prefix");
-    //never reached
 }
 
 
 /// Display page header
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("{$prefix}frameworks", $prefix),
-                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?prefix={$prefix}",
-                    'type'=>'misc');
+$PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'),
+                    new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => $prefix)));
 if ($framework->id == 0) {
-    $navlinks[] = array('name'=>get_string('addnewframework', $prefix), 'link'=>'', 'type'=>'misc');
+    $PAGE->navbar->add(get_string($prefix.'addnewframework', 'totara_hierarchy'));
 } else {
-    $navlinks[] = array('name'=>get_string('editgeneric', $prefix, $framework->fullname), 'link'=>'', 'type'=>'misc');
+    $PAGE->navbar->add(get_string('editgeneric', 'totara_hierarchy', $framework->fullname));
 }
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
 if ($framework->id == 0) {
-    print_heading(get_string('addnewframework', $prefix));
+    echo $OUTPUT->heading(get_string($prefix.'addnewframework', 'totara_hierarchy'));
 } else {
-    print_heading(format_string($framework->fullname), '', 1);
+    echo $OUTPUT->heading(format_string($framework->fullname), 1);
 }
 
 /// Finally display THE form
 $frameworkform->display();
 
 /// and proper footer
-print_footer();
+echo $OUTPUT->footer();

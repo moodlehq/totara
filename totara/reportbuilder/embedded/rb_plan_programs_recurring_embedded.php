@@ -36,7 +36,7 @@ class rb_plan_programs_recurring_embedded extends rb_base_embedded {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
         $programid = array_key_exists('programid', $data) ? $data['programid'] : null;
 
-        $this->url = '/local/plan/record/programs_recurring.php';
+        $this->url = '/totara/plan/record/programs_recurring.php';
         $this->source = 'dp_program_recurring';
         $this->shortname = 'plan_programs_recurring';
         $this->fullname = get_string('recordoflearningprogramsrecurring', 'local_plan');
@@ -70,7 +70,7 @@ class rb_plan_programs_recurring_embedded extends rb_base_embedded {
         }
 
         $context = get_context_instance(CONTEXT_SYSTEM);
-        if(!has_capability('local/program:viewhiddenprograms', $context)) {
+        if(!has_capability('totara/program:viewhiddenprograms', $context)) {
             // don't show hidden programs to none-admins
             $this->embeddedparams['visible'] = 1;
         }

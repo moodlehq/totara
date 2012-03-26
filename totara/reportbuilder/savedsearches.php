@@ -39,7 +39,7 @@ $id = optional_param('id',null,PARAM_INT); // id for report
 $sid = optional_param('sid',null,PARAM_INT); // id for saved search
 $d = optional_param('d',false, PARAM_BOOL); // delete saved search?
 $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
-$returnurl = $CFG->wwwroot.'/local/reportbuilder/savedsearches.php?id='.$id;
+$returnurl = $CFG->wwwroot.'/totara/reportbuilder/savedsearches.php?id='.$id;
 
 $report = new reportbuilder($id);
 if(!$report->is_capable($id)) {
@@ -124,11 +124,11 @@ if($searches = get_records_select('report_builder_saved', 'userid='.$USER->id.' 
         $row = array();
         $strdelete = get_string('delete','local_reportbuilder');
 
-        $row[] = '<a href="' . $CFG->wwwroot . '/local/reportbuilder/report.php?id=' . $id .
+        $row[] = '<a href="' . $CFG->wwwroot . '/totara/reportbuilder/report.php?id=' . $id .
             '&amp;sid='.$search->id.'">' . $search->name . '</a>';
 
         $delete = '<a href="' . $CFG->wwwroot .
-            '/local/reportbuilder/savedsearches.php?d=1&amp;id=' . $id . '&amp;sid=' .
+            '/totara/reportbuilder/savedsearches.php?d=1&amp;id=' . $id . '&amp;sid=' .
             $search->id . '" title="' . $strdelete . '">' .
             '<img src="' . $CFG->pixpath . '/t/delete.gif" alt="' .
             $strdelete . '"></a>';

@@ -27,7 +27,7 @@ require_once('../../../config.php');
 /// Check access
 require_sesskey();
 require_login();
-require_capability('local/reportbuilder:managereports', get_context_instance(CONTEXT_SYSTEM));
+require_capability('totara/reportbuilder:managereports', get_context_instance(CONTEXT_SYSTEM));
 
 /// Get params
 $action = required_param('action', PARAM_TEXT);

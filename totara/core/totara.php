@@ -951,8 +951,17 @@ function print_totara_search($value = '', $return = true, $type = 'all', $catego
         }
     }
 
+    $hiddenfields = array(
+        'viewtype' => $type,
+        'category' => $category,
+    );
+    $formid = 'searchtotara';
+    $inputid = 'navsearchbox';
+    $value = s($value, true);
+    $strsearch = s($strsearch);
+
     $renderer = $PAGE->get_renderer('totara_core');
-    $output = $renderer->print_totara_search($action, $type, $category, $strsearch, $value);
+    $output = $renderer->print_totara_search($action, $hiddenfields, $strsearch, $value, $formid, $inputid);
 
     return $output;
 }

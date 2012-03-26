@@ -38,7 +38,6 @@ class field_form extends moodleform {
         $prefix      = $datasent['prefix'];
         $typeid      = $datasent['typeid'];
         $tableprefix = $datasent['tableprefix'];
-
         require_once($CFG->dirroot.'/totara/customfield/field/'.$datasent['datatype'].'/define.class.php');
         $newfield = 'customfield_define_'.$datasent['datatype'];
         $this->field = new $newfield();

@@ -44,7 +44,7 @@ $confirm = optional_param('confirm', 0, PARAM_INT); //Confirmation of delete
 admin_externalpage_setup('objectivescales');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('local/plan:manageobjectivescales', $sitecontext);
+require_capability('totara/plan:manageobjectivescales', $sitecontext);
 
 if (!$objective = get_record('dp_objective_scale', 'id', $id)) {
     error(get_string('error:objectivescaleidincorrect', 'local_plan'));
@@ -73,21 +73,21 @@ if($delete) {
         begin_sql();
         if(!delete_records('dp_objective_scale_value', 'id', $delete)) {
             rollback_sql();
-            totara_set_notification(get_string('error:deletedobjectivescalevalue', 'local_plan'), $CFG->wwwroot.'/local/plan/objectivescales/view.php?id='.$objective->id);
+            totara_set_notification(get_string('error:deletedobjectivescalevalue', 'local_plan'), $CFG->wwwroot.'/totara/plan/objectivescales/view.php?id='.$objective->id);
         }
 
         $sql = "UPDATE {$CFG->prefix}dp_objective_scale_value SET sortorder=sortorder-1 WHERE objscaleid={$objective->id} AND sortorder > {$value->sortorder}";
         if(!execute_sql($sql, false)) {
             rollback_sql();
-            totara_set_notification(get_string('error:deletedobjectivescalevalue', 'local_plan'), $CFG->wwwroot.'/local/plan/objectivescales/view.php?id='.$objective->id);
+            totara_set_notification(get_string('error:deletedobjectivescalevalue', 'local_plan'), $CFG->wwwroot.'/totara/plan/objectivescales/view.php?id='.$objective->id);
         }
 
         commit_sql();
-        totara_set_notification(get_string('deletedobjectivescalevalue', 'local_plan', format_string($objective->name)), $CFG->wwwroot.'/local/plan/objectivescales/view.php?id='.$objective->id, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('deletedobjectivescalevalue', 'local_plan', format_string($objective->name)), $CFG->wwwroot.'/totara/plan/objectivescales/view.php?id='.$objective->id, array('style' => 'notifysuccess'));
 
     } else {
-        $returnurl = "{$CFG->wwwroot}/local/plan/objectivescales/view.php?id={$objective->id}";
-        $deleteurl = "{$CFG->wwwroot}/local/plan/objectivescales/view.php?id={$objective->id}&amp;delete={$delete}&amp;confirm=1&amp;sesskey=" . sesskey();
+        $returnurl = "{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}";
+        $deleteurl = "{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}&amp;delete={$delete}&amp;confirm=1&amp;sesskey=" . sesskey();
 
         admin_externalpage_print_header();
         $strdelete = get_string('deletecheckobjectivevalue', 'local_plan');
@@ -121,7 +121,7 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     // Can't reorder a scale that's in use
     if ( $scale_used ) {
-        $returnurl = "{$CFG->wwwroot}/local/plan/objectivescales/view.php?id={$objective->id}";
+        $returnurl = "{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}";
         print_error('error:noreorderobjectiveinuse', 'local_plan', $returnurl);
     }
 
@@ -204,13 +204,13 @@ $values = get_records('dp_objective_scale_value', 'objscaleid', $objective->id, 
 
 $navlinks = array();    // Breadcrumbs
 $navlinks[] = array('name'=>get_string("objectivescales", 'local_plan'),
-                    'link'=>"{$CFG->wwwroot}/local/plan/objectivescales/index.php",
+                    'link'=>"{$CFG->wwwroot}/totara/plan/objectivescales/index.php",
                     'type'=>'misc');
 $navlinks[] = array('name'=>format_string($objective->name), 'link'=>'', 'type'=>'misc');
 
 admin_externalpage_print_header('', $navlinks);
 
-print_single_button($CFG->wwwroot . '/local/plan/objectivescales/index.php', null, get_string('allobjectivescales', 'local_plan'));
+print_single_button($CFG->wwwroot . '/totara/plan/objectivescales/index.php', null, get_string('allobjectivescales', 'local_plan'));
 
 // Display info about scale
 print_heading(get_string('objectivescalex', 'local_plan', format_string($objective->name)), '', 1);
@@ -230,7 +230,7 @@ if(isset($max_achieved) && isset($min_notachieved) && $max_achieved > $min_notac
 
 // Display objective scale values
 if ($values) {
-    echo "<form id=\"objscaleupdateform\" action=\"{$CFG->wwwroot}/local/plan/objectivescales/view.php?id={$id}\" method=\"POST\">\n";
+    echo "<form id=\"objscaleupdateform\" action=\"{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$id}\" method=\"POST\">\n";
     echo "<input type=\"hidden\" name=\"id\" value=\"{$id}\" />\n";
 
     $table = new object();
@@ -280,14 +280,14 @@ if ($values) {
             $row[] = get_string('no');
         }
 
-        $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/objectivescales/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
+        $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
         if(!$scale_used) {
             if($value->id == $objective->defaultid) {
                 $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteobjectivescalevaluedefault', 'local_plan') . "\" title=\"" . get_string('error:nodeleteobjectivescalevaluedefault', 'local_plan') . "\" /></a>";
             } else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/objectivescales/view.php?id={$objective->id}&amp;delete={$value->id}\" title=\"$str_delete\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}&amp;delete={$value->id}\" title=\"$str_delete\">".
                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
             }
         } else {
@@ -296,7 +296,7 @@ if ($values) {
 
         // If value can be moved up
         if ($count > 1 && !$scale_used) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/objectivescales/view.php?id={$objective->id}&moveup={$value->id}\" title=\"$str_moveup\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}&moveup={$value->id}\" title=\"$str_moveup\">".
                 "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
         } else {
             $buttons[] = $spacer;
@@ -304,7 +304,7 @@ if ($values) {
 
         // If value can be moved down
         if ($count < $numvalues && !$scale_used) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/objectivescales/view.php?id={$objective->id}&movedown={$value->id}\" title=\"$str_movedown\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}&movedown={$value->id}\" title=\"$str_movedown\">".
                 "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
         } else {
             $buttons[] = $spacer;
@@ -338,7 +338,7 @@ echo '<div class="buttons">';
 // Print button for creating new objective scale value
 if(!$scale_used) {
     $options = array('objscaleid' => $objective->id);
-    print_single_button($CFG->wwwroot.'/local/plan/objectivescales/editvalue.php', $options, get_string('addnewobjectivevalue', 'local_plan'), 'get');
+    print_single_button($CFG->wwwroot.'/totara/plan/objectivescales/editvalue.php', $options, get_string('addnewobjectivevalue', 'local_plan'), 'get');
 }
 
 echo '</div>';

@@ -11,25 +11,25 @@ $row = array();
 // overview tab
 $row[] = new tabobject(
     'courses',
-    $CFG->wwwroot . '/local/plan/record/courses.php?' . $userstr .
+    $CFG->wwwroot . '/totara/plan/record/courses.php?' . $userstr .
     'status=' . $rolstatus,
     get_string($rolstatus.'courses', 'local_plan')
 );
 $row[] = new tabobject(
     'competencies',
-    $CFG->wwwroot . '/local/plan/record/competencies.php?' . $userstr .
+    $CFG->wwwroot . '/totara/plan/record/competencies.php?' . $userstr .
     'status=' . $rolstatus,
     get_string($rolstatus.'competencies', 'local_plan')
 );
 $row[] = new tabobject(
     'objectives',
-    $CFG->wwwroot . '/local/plan/record/objectives.php?' . $userstr .
+    $CFG->wwwroot . '/totara/plan/record/objectives.php?' . $userstr .
     'status=' . $rolstatus,
     get_string($rolstatus.'objectives', 'local_plan')
 );
 $row[] = new tabobject(
     'programs',
-    $CFG->wwwroot . '/local/plan/record/programs.php?' . $userstr .
+    $CFG->wwwroot . '/totara/plan/record/programs.php?' . $userstr .
     'status=' . $rolstatus,
     get_string($rolstatus.'programs', 'local_plan')
 );

@@ -29,7 +29,7 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 
 require_login();
 
@@ -37,7 +37,7 @@ $id = required_param('id', PARAM_INT); // plan id
 $action = optional_param('action', 'view', PARAM_TEXT);
 
 if ($action == 'edit') {
-    require_once($CFG->dirroot . '/local/js/lib/setup.php');
+    require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
     //Javascript include
     local_js(array(
@@ -57,7 +57,7 @@ $plan = new development_plan($id);
 
 // Permissions check
 $systemcontext = get_system_context();
-if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+if(!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'local_plan');
 }
 
@@ -89,7 +89,7 @@ if ($data = $form->get_data()) {
             print_error('error:nopermissions', 'local_plan');
         }
         if ($plan->delete()) {
-            totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), "{$CFG->wwwroot}/local/plan/index.php?userid={$plan->userid}", array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), "{$CFG->wwwroot}/totara/plan/index.php?userid={$plan->userid}", array('style' => 'notifysuccess'));
         } else {
             totara_set_notification(get_string('plandeletefail', 'local_plan', $plan->name), $viewurl);
         }
@@ -149,7 +149,7 @@ $form->display();
 
 if ($action == 'view') {
     // Comments
-    require_once($CFG->dirroot.'/local/comment/lib.php');
+    require_once($CFG->dirroot.'/totara/comment/lib.php');
     comment::init();
     $options->area    = 'plan-overview';
     $options->context = $systemcontext;

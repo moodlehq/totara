@@ -1,4 +1,26 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 
@@ -6,20 +28,17 @@ class framework_edit_form extends moodleform {
 
     // Define the form
     function definition() {
-        global $CFG;
+        global $CFG, $DB, $TEXTAREA_OPTIONS;
 
         $mform =& $this->_form;
-
         $strgeneral  = get_string('general');
 
         /// Load competency scales
         $scales = array();
         $scales_raw = competency_scales_available();
 
-        if ($scales_raw) {
-            foreach ($scales_raw as $scale) {
-                $scales[$scale->id] = $scale->name;
-            }
+        foreach ($scales_raw as $scale) {
+            $scales[$scale->id] = $scale->name;
         }
 
         /// Add some extra hidden fields
@@ -36,34 +55,34 @@ class framework_edit_form extends moodleform {
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
-        $mform->setHelpButton('moodle', array('competencyframeworkgeneral', $strgeneral), true);
+        $mform->addHelpButton('moodle', 'competencyframeworkgeneral', 'totara_hierarchy');
 
-        $mform->addElement('text', 'fullname', get_string('fullnameframework', 'competency'), 'maxlength="254" size="50"');
-        $mform->setHelpButton('fullname', array('competencyframeworkfullname', get_string('fullnameframework', 'competency')), true);
-        $mform->addRule('fullname', get_string('missingnameframework', 'competency'), 'required', null, 'client');
+        $mform->addElement('text', 'fullname', get_string('competencyframeworkfullname', 'totara_hierarchy'), 'maxlength="254" size="50"');
+        $mform->addHelpButton('fullname', 'competencyframeworkfullname', 'totara_hierarchy');
+        $mform->addRule('fullname', get_string('competencymissingnameframework', 'totara_hierarchy'), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);
 
         if (HIERARCHY_DISPLAY_SHORTNAMES) {
-            $mform->addElement('text', 'shortname', get_string('shortnameframework', 'competency'), 'maxlength="100" size="20"');
-            $mform->setHelpButton('shortname', array('competencyframeworkshortname', get_string('shortnameframework', 'competency')), true);
-            $mform->addRule('shortname', get_string('missingshortnameframework', 'competency'), 'required', null, 'client');
+            $mform->addElement('text', 'shortname', get_string('shortnameframework', 'totara_hierarchy'), 'maxlength="100" size="20"');
+            $mform->addHelpButton('shortname', 'competencyframeworkshortname', 'totara_hierarchy');
+            $mform->addRule('shortname', get_string('missingshortnameframework', 'totara_hierarchy'), 'required', null, 'client');
             $mform->setType('shortname', PARAM_MULTILANG);
         }
 
-        $mform->addElement('text', 'idnumber', get_string('idnumberframework', 'competency'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('idnumber', array('competencyframeworkidnumber', get_string('idnumberframework', 'competency')), true);
-        $mform->setType('idnumber', PARAM_CLEAN);
+        $mform->addElement('text', 'idnumber', get_string('competencyframeworkidnumber', 'totara_hierarchy'), 'maxlength="100"  size="10"');
+        $mform->addHelpButton('idnumber', 'competencyframeworkidnumber', 'totara_hierarchy');
+        $mform->setType('idnumber', PARAM_INT);
 
-        $mform->addElement('htmleditor', 'description', get_string('description'));
-        $mform->setHelpButton('description', array('text', get_string('helptext')), true);
-        $mform->setType('description', PARAM_CLEAN);
+        $mform->addElement('editor', 'description_editor', get_string('competencyframeworkdescription', 'totara_hierarchy'), null, $TEXTAREA_OPTIONS);
+        $mform->addHelpButton('description_editor', 'competencyframeworkdescription', 'totara_hierarchy');
+        $mform->setType('description_editor', PARAM_CLEANHTML);
 
         $mform->addElement('select', 'scale', get_string('scale'), $scales);
-        $mform->setHelpButton('scale', array('competencyframeworkscale', get_string('scale')), true);
-        $mform->addRule('scale', get_string('missingscale', 'competency'), 'required', null, 'client');
+        $mform->addHelpButton('scale', 'competencyframeworkscale', 'totara_hierarchy');
+        $mform->addRule('scale', get_string('missingscale', 'totara_hierarchy'), 'required', null, 'client');
 
         // Don't allow reassigning the scale, if the framework has at least one competency
-        if ( isset($this->_customdata['frameworkid']) && count_records('comp','frameworkid',$this->_customdata['frameworkid'])){
+        if (isset($this->_customdata['frameworkid']) && $DB->count_records('comp', array('frameworkid' => $this->_customdata['frameworkid']))) {
             $mform->getElement('scale')->freeze();
         }
 

@@ -33,11 +33,8 @@
  *
  * @return array Array of individual keywords parsed from input string
  */
-function local_search_parse_keywords($query) {
-    // query arrives with quotes escaped, but quotes have special meaning
-    // within a query. Strip out slashes, then re-add any that are left
-    // after parsing done (to protect against SQL injection)
-    $query = stripslashes(trim($query));
+function totara_search_parse_keywords($query) {
+    $query = trim($query);
 
     $out = array();
     // break query down into quoted and unquoted sections
@@ -46,11 +43,11 @@ function local_search_parse_keywords($query) {
     foreach ($split_quoted as $item) {
         // strip quotes from quoted strings but leave spaces
         if (preg_match('/^(["\'])(.*)\\1$/', trim($item), $matches)) {
-            $out[] = addslashes($matches[2]);
+            $out[] = $matches[2];
         } else {
             // split unquoted text on whitespace
-            $keyword = addslashes_recursive(preg_split('/\s/', $item, 0,
-                PREG_SPLIT_NO_EMPTY));
+            $keyword = preg_split('/\s/', $item, 0,
+                PREG_SPLIT_NO_EMPTY);
             $out = array_merge($out, $keyword);
         }
     }
@@ -63,21 +60,34 @@ function local_search_parse_keywords($query) {
  *
  * @param array $keywords Array of strings to search for
  * @param array $fields Array of SQL fields to search against
+ * @param int $type bound param type SQL_PARAMS_QM or SQL_PARAMS_NAMED
+ * @param string $prefix named parameter placeholder prefix (unique counter value is appended to each parameter name)
  *
- * @return string SQL WHERE clause to match the keywords provided
+ * @return array Containing SQL WHERE clause and parameters
  */
-function local_search_get_keyword_where_clause($keywords, $fields) {
+function totara_search_get_keyword_where_clause($keywords, $fields, $type=SQL_PARAMS_QM, $prefix='param') {
     global $DB;
 
     $queries = array();
+    $params = array();
+    static $TOTARA_SEARCH_PARAM_COUNTER = 1;
     foreach ($keywords as $keyword) {
         $matches = array();
         foreach ($fields as $field) {
-            $matches[] = $DB->sql_like($field, $keyword);
+            if ($type == SQL_PARAMS_QM) {
+                $matches[] = $DB->sql_like($field, '?');
+                $params[] = '%' . $DB->sql_like_escape($keyword) . '%';
+            } else {
+                $paramname = $prefix . $TOTARA_SEARCH_PARAM_COUNTER;
+                $matches[] = $DB->sql_like($field, ":$paramname");
+                $params[$paramname] = '%' . $DB->sql_like_escape($keyword) . '%';
+
+                $TOTARA_SEARCH_PARAM_COUNTER++;
+            }
         }
         // look for each keyword in any field
         $queries[] = '(' . implode(' OR ', $matches) . ')';
     }
     // all keywords must be found in at least one field
-    return implode(' AND ', $queries);
+    return array(implode(' AND ', $queries), $params);
 }

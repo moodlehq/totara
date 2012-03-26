@@ -27,7 +27,7 @@
  */
 
 require_once "$CFG->dirroot/lib/formslib.php";
-include_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_content.php');
+include_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_content.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -136,7 +136,7 @@ class report_builder_global_settings_form extends moodleform {
         $group = array();
         $oauthenabled = get_config('local_oauth', 'oauthenabled');
         $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-        $oauthcap = has_capability('local/oauth:negotiate', $sitecontext);
+        $oauthcap = has_capability('totara/oauth:negotiate', $sitecontext);
         foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
             // specific checks for fusion tables export
             if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {
@@ -210,14 +210,14 @@ class report_builder_edit_filters_form extends moodleform {
                     $mform->setDefault("advanced{$fid}",$advanced);
 
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'" class="deletefilterbtn"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/filters.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'" class="deletefilterbtn"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                     if($i != 1) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'" class="movefilterupbtn"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/filters.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'" class="movefilterupbtn"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
                     if($i != $filtercount) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'" class="movefilterdownbtn"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/filters.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'" class="movefilterdownbtn"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
@@ -347,22 +347,22 @@ class report_builder_edit_columns_form extends moodleform {
                         $mform->addElement('html','</td><td>');
                         // show/hide link
                         if($column->hidden == 0) {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?h=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strhide.'" class="hidecolbtn"><img src="'.$CFG->pixpath.'/t/hide.gif" class="iconsmall" alt="'.$strhide.'" /></a>');
+                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?h=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strhide.'" class="hidecolbtn"><img src="'.$CFG->pixpath.'/t/hide.gif" class="iconsmall" alt="'.$strhide.'" /></a>');
                         } else {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?h=0&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strshow.'" class="showcolbtn"><img src="'.$CFG->pixpath.'/t/show.gif" class="iconsmall" alt="'.$strshow.'" /></a>');
+                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?h=0&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strshow.'" class="showcolbtn"><img src="'.$CFG->pixpath.'/t/show.gif" class="iconsmall" alt="'.$strshow.'" /></a>');
                         }
                         // delete link
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'" class="deletecolbtn"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'" class="deletecolbtn"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                         // move up link
                         if($i != 1) {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'" class="movecolupbtn"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'" class="movecolupbtn"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
                         } else {
                             $mform->addElement('html', $spacer);
                         }
 
                         // move down link
                         if($i != $colcount) {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'" class="movecoldownbtn"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'" class="movecoldownbtn"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                         } else {
                             $mform->addElement('html', $spacer);
                         }
@@ -429,7 +429,7 @@ class report_builder_edit_columns_form extends moodleform {
                         '</td><td>' . $bad['value'] .
                         '</td><td>' .$bad['heading'] . '</td><td>' .
                         '<a href="' . $CFG->wwwroot .
-                        '/local/reportbuilder/columns.php?d=1&amp;id=' . $id .
+                        '/totara/reportbuilder/columns.php?d=1&amp;id=' . $id .
                         '&amp;cid=' . $bad['id'] . '" title="' . $strdelete .
                         '" class="deletecolbtn"><img src="' . $CFG->pixpath .
                         '/t/delete.gif" class="iconsmall" alt="' . $strdelete

@@ -25,9 +25,9 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
-require_once($CFG->dirroot . '/local/plan/components/objective/edit_form.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/components/objective/edit_form.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // objective assignment id
@@ -38,7 +38,7 @@ $plan = new development_plan($id);
 
 //Permissions check
 $systemcontext = get_system_context();
-if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+if(!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'local_plan');
 }
 
@@ -47,7 +47,7 @@ $componentname = 'objective';
 $component = $plan->get_component($componentname);
 $objectivename = get_string($componentname, 'local_plan');
 $coursename = get_string('courseplural', 'local_plan');
-$currenturl = $CFG->wwwroot . '/local/plan/components/objective/view.php?id='.$id.'&amp;itemid='.$caid;
+$currenturl = $CFG->wwwroot . '/totara/plan/components/objective/view.php?id='.$id.'&amp;itemid='.$caid;
 $canupdate = $component->can_update_items();
 
 /// Javascript stuff
@@ -61,7 +61,7 @@ if ($canupdate) {
 
     // Get course picker
     require_js(array(
-        $CFG->wwwroot.'/local/plan/components/objective/find-course.js.php'
+        $CFG->wwwroot.'/totara/plan/components/objective/find-course.js.php'
     ));
 }
 
@@ -104,9 +104,9 @@ if ($data = data_submitted() && $canupdate) {
 $mform = $component->objective_form($caid, 'view');
 if ($data = $mform->get_data()){
     if (isset($data->edit)){
-        redirect("{$CFG->wwwroot}/local/plan/components/objective/edit.php?id={$id}&itemid={$caid}");
+        redirect("{$CFG->wwwroot}/totara/plan/components/objective/edit.php?id={$id}&itemid={$caid}");
     } elseif (isset($data->delete)){
-        redirect("{$CFG->wwwroot}/local/plan/components/objective/edit.php?id={$id}&itemid={$caid}&d=1");
+        redirect("{$CFG->wwwroot}/totara/plan/components/objective/edit.php?id={$id}&itemid={$caid}&d=1");
     }
 }
 //$mform = new moodleform();
@@ -115,7 +115,7 @@ $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
+$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$id, 'type'=>'title');
 $navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
 $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
 
@@ -150,7 +150,7 @@ if ($plan->get_component('course')->get_setting('enabled')) {
 }
 
 // Comments
-require_once($CFG->dirroot.'/local/comment/lib.php');
+require_once($CFG->dirroot.'/totara/comment/lib.php');
 comment::init();
 $options = new stdClass;
 $options->area    = 'plan-objective-item';

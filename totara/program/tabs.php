@@ -43,7 +43,7 @@ $activated = array();
 $inactive = array();
 
 // Overview Tab
-$toprow[] = new tabobject('overview', $CFG->wwwroot.'/local/program/edit.php?id='.$id, get_string('overview', 'local_program'));
+$toprow[] = new tabobject('overview', $CFG->wwwroot.'/totara/program/edit.php?id='.$id, get_string('overview', 'local_program'));
 if (substr($currenttab, 0, 7) == 'overview'){
     $activated[] = 'overview';
 }
@@ -53,31 +53,31 @@ if (substr($currenttab, 0, 7) == 'overview'){
 if ($id == 0) {
     $toprow[] = new tabobject('details', '#', get_string('details', 'local_program'));
 } else {
-    $toprow[] = new tabobject('details', $CFG->wwwroot.'/local/program/edit.php?id='.$id.'&amp;action=edit', get_string('details', 'local_program'));
+    $toprow[] = new tabobject('details', $CFG->wwwroot.'/totara/program/edit.php?id='.$id.'&amp;action=edit', get_string('details', 'local_program'));
 }
 if (substr($currenttab, 0, 7) == 'details'){
     $activated[] = 'details';
 }
 
 // Content Tab
-if (has_capability('local/program:configurecontent', $context)) {
-    $toprow[] = new tabobject('content', $CFG->wwwroot.'/local/program/edit_content.php?id='.$id, get_string('content', 'local_program'));
+if (has_capability('totara/program:configurecontent', $context)) {
+    $toprow[] = new tabobject('content', $CFG->wwwroot.'/totara/program/edit_content.php?id='.$id, get_string('content', 'local_program'));
     if (substr($currenttab, 0, 7) == 'content'){
         $activated[] = 'content';
     }
 }
 
 // Assignments Tab
-if (has_capability('local/program:configureassignments', $context)) {
-    $toprow[] = new tabobject('assignments', $CFG->wwwroot.'/local/program/edit_assignments.php?id='.$id, get_string('assignments', 'local_program'));
+if (has_capability('totara/program:configureassignments', $context)) {
+    $toprow[] = new tabobject('assignments', $CFG->wwwroot.'/totara/program/edit_assignments.php?id='.$id, get_string('assignments', 'local_program'));
     if (substr($currenttab, 0, 11) == 'assignments'){
         $activated[] = 'assignments';
     }
 }
 
 // Messages Tab
-if (has_capability('local/program:configuremessages', $context)) {
-    $toprow[] = new tabobject('messages', $CFG->wwwroot.'/local/program/edit_messages.php?id='.$id, get_string('messages', 'local_program'));
+if (has_capability('totara/program:configuremessages', $context)) {
+    $toprow[] = new tabobject('messages', $CFG->wwwroot.'/totara/program/edit_messages.php?id='.$id, get_string('messages', 'local_program'));
     if (substr($currenttab, 0, 8) == 'messages'){
         $activated[] = 'messages';
     }
@@ -87,7 +87,7 @@ if (has_capability('local/program:configuremessages', $context)) {
 // Only show if there are exceptions or you are on the exceptions tab already
 if ($exceptions || (substr($currenttab, 0, 10) == 'exceptions')) {
     $exceptioncount = $exceptions ? $exceptions : '0';
-    $toprow[] = new tabobject('exceptions', $CFG->wwwroot.'/local/program/exceptions.php?id='.$id, get_string('exceptions', 'local_program', $exceptioncount));
+    $toprow[] = new tabobject('exceptions', $CFG->wwwroot.'/totara/program/exceptions.php?id='.$id, get_string('exceptions', 'local_program', $exceptioncount));
     if (substr($currenttab, 0, 10) == 'exceptions'){
         $activated[] = 'exceptions';
     }

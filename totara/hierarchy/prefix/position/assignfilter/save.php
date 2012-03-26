@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,18 +23,20 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php');
-require_once($CFG->dirroot . '/local/utils.php');
-require_once($CFG->dirroot . '/local/reportbuilder/filters/hierarchy_multi.php');
+require_once($CFG->dirroot . '/totara/core/utils.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/hierarchy_multi.php');
 
 $ids = required_param('ids', PARAM_SEQUENCE);
 $filtername = required_param('filtername', PARAM_TEXT);
 
 require_login();
 
-echo '<div class="list-' . $filtername . '">';
-if (!empty($ids) && $items = get_records_select('pos', "id IN ($ids)")) {
+echo html_writer::start_tag('div', array('class' => 'list-' . $filtername));
+$ids = explode(',', $ids);
+list($in_sql, $in_params) = $DB->get_in_or_equal($ids);
+if (!empty($ids) && $items = $DB->get_records_select('pos', "id $in_sql", $in_params)) {
     foreach ($items as $item) {
         echo display_selected_hierarchy_item($item, $filtername);
     }
 }
-echo '</div>';
+echo html_writer::end_tag('div');

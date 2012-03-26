@@ -49,14 +49,19 @@ if ($prefix == 'course') {
     $tableprefix = $shortprefix.'_type';
 }
 
+$sitecontext = context_system::instance();
+$PAGE->set_url('/totara/customfield/index.php');
+$PAGE->set_context($sitecontext);
+
 $redirectoptions = array('prefix' => $prefix);
-$redirect = new moodle_url('/totara/customfield/index.php', $redirectoptions);
 if ($typeid) {
     $redirectoptions['typeid'] = $typeid;
 }
 if ($id) {
     $redirectoptions['id'] = $id;
 }
+
+$redirect = new moodle_url('/totara/customfield/index.php', $redirectoptions);
 
 // get some relevant data
 if ($typeid) {
@@ -81,7 +86,6 @@ if ($typeid) {
 
 $navlinks = $PAGE->navbar->has_items();
 
-$sitecontext = context_system::instance();
 require_capability('totara/hierarchy:update'.$prefix.'customfield', $sitecontext);
 admin_externalpage_setup($adminpagename, '', array('prefix' => $prefix));
 
@@ -108,12 +112,23 @@ switch ($action) {
         }
 
         //ask for confirmation
-        $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
+        $datacount = $DB->count_records($tableprefix.'_info_data', array('fieldid' => $id));
+        switch ($datacount) {
+        case 0:
+            $deletestr = get_string('confirmfielddeletionnodata', 'totara_customfield');
+            break;
+        case 1:
+            $deletestr = get_string('confirmfielddeletionsingle', 'totara_customfield');
+            break;
+        default:
+            $deletestr = get_string('confirmfielddeletionplural', 'totara_customfield', $datacount);
+        }
+        $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey(), 'typeid'=>$typeid);
         echo $OUTPUT->header();
         echo $OUTPUT->heading(get_string('deletefield', 'totara_customfield'), '1');
-        $formcontinue = html_form::make_button($redirect, $optionsyes, get_string('yes'), 'post');
-        $formcancel = html_form::make_button($redirect, $redirectoptions, get_string('no'), 'get');
-        echo $OUTPUT->confirm(get_string('confirmfielddeletion', 'totara_customfield', $datacount), $formcontinue, $formcancel);
+        $formcontinue = new single_button(new moodle_url($redirect, $optionsyes), get_string('yes'), 'post');
+        $formcancel = new single_button(new moodle_url($redirect, $redirectoptions), get_string('no'), 'get');
+        echo $OUTPUT->confirm($deletestr, $formcontinue, $formcancel);
         echo $OUTPUT->footer();
         die;
         break;
@@ -134,7 +149,7 @@ echo $OUTPUT->header();
 // Print return to type link
 if ($prefix != 'course') {
     $url = $OUTPUT->action_link(new moodle_url('/totara/hierarchy/type/index.php', array('prefix' => $prefix, 'typeid' => $typeid)),
-                                "&laquo;" . get_string('alltypes', 'totara_hierarchy'));
+                                "&laquo; " . get_string('alltypes', 'totara_hierarchy'));
     echo html_writer::tag('p', $url);
 }
 
@@ -147,10 +162,7 @@ if ($prefix == 'course') {
 
 // show custom fields for the given type
 $table = new html_table();
-$table->head  = array(get_string('customfield', 'totara_customfield'), get_string('edit'));
-$table->align = array('left', 'right');
-$table->width = '95%';
-$table->class = 'generaltable customfields';
+$table->head  = array(get_string('customfield', 'totara_customfield'), get_string('type', 'totara_hierarchy'), get_string('edit'));
 if ($prefix == 'course') {
     $table->id = 'customfields_course';
 } else {
@@ -171,11 +183,11 @@ if ($fields = $DB->get_records($tableprefix.'_info_field', array($field => $valu
     $fieldcount = count($fields);
 
     foreach ($fields as $field) {
-        $table->data[] = array($field->fullname, customfield_edit_icons($field, $fieldcount, $typeid, $prefix));
+        $table->data[] = array($field->fullname, get_string('customfieldtype'.$field->datatype, 'totara_customfield'), customfield_edit_icons($field, $fieldcount, $typeid, $prefix));
     }
 }
 if (count($table->data)) {
-    echo $OUTPUT->table($table);
+    echo html_writer::table($table);
 } else {
     echo $OUTPUT->notification(get_string('nocustomfieldsdefined', 'totara_customfield'));
 }
@@ -184,12 +196,12 @@ echo html_writer::empty_tag('br');
 $options = customfield_list_datatypes();
 
 if ($prefix == 'course') {
-    $select = $OUTPUT->single_select(new moodle_url('index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'datatype' => '')), 'datatype', $options);
-    $select->formid = 'newfieldform';
+    $select = new single_select(new moodle_url('index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
+    $select->set_label(get_string('createnewcustomfield', 'totara_customfield'));
     echo $OUTPUT->render($select);
 } else {
-    $select = $OUTPUT->single_select(new moodle_url('index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'typeid' => $typeid, 'datatype' => '')), 'datatype', $options);
-    $select->formid = 'newfieldform';
+    $select = new single_select(new moodle_url('index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'typeid' => $typeid, 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
+    $select->set_label(get_string('createnewcustomfield', 'totara_customfield'));
     echo $OUTPUT->render($select);
 }
 

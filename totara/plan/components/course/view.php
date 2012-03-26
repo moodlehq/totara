@@ -25,8 +25,8 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 require_login();
 
@@ -39,14 +39,14 @@ $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 
 //Permissions check
 $systemcontext = get_system_context();
-if (!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'local_plan');
 }
 
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'course';
 $component = $plan->get_component($componentname);
-$currenturl = $CFG->wwwroot . '/local/plan/components/course/view.php?id='.$id.'&amp;itemid='.$caid;
+$currenturl = $CFG->wwwroot . '/totara/plan/components/course/view.php?id='.$id.'&amp;itemid='.$caid;
 $competenciesenabled = $plan->get_component('competency')->get_setting('enabled');
 $competencyname = get_string('competencyplural', 'local_plan');
 $objectivesenabled = $plan->get_component('objective')->get_setting('enabled');
@@ -94,7 +94,7 @@ if ($data = data_submitted() && $canupdate) {
 
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
+$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$id, 'type'=>'title');
 $navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
 $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
 
@@ -109,7 +109,7 @@ if ($canupdate) {
 
     // Get competency picker
     require_js(array(
-        $CFG->wwwroot.'/local/plan/components/course/find-competency.js.php'
+        $CFG->wwwroot.'/totara/plan/components/course/find-competency.js.php'
     ));
 }
 
@@ -155,7 +155,7 @@ if ($objectivesenabled) {
 }
 
 // Comments
-require_once($CFG->dirroot.'/local/comment/lib.php');
+require_once($CFG->dirroot.'/totara/comment/lib.php');
 comment::init();
 $options = new stdClass;
 $options->area    = 'plan-course-item';

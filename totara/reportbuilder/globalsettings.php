@@ -30,7 +30,7 @@ global $USER;
 
 admin_externalpage_setup('globalreportsettings');
 
-$returnurl = $CFG->wwwroot."/local/reportbuilder/globalsettings.php";
+$returnurl = $CFG->wwwroot."/totara/reportbuilder/globalsettings.php";
 
 // form definition
 $mform = new report_builder_global_settings_form();
@@ -55,7 +55,7 @@ if ($fromform = $mform->get_data()) {
 admin_externalpage_print_header();
 
 print_container_start(true, 'reportbuilder-navbuttons');
-print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
+print_single_button($CFG->wwwroot.'/totara/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
 print_container_end();
 
 print_heading(get_string('reportbuilderglobalsettings','local_reportbuilder'));

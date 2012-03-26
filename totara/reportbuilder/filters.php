@@ -37,14 +37,14 @@ $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
 admin_externalpage_setup('managereports');
 
-$returnurl = $CFG->wwwroot."/local/reportbuilder/filters.php?id=$id";
+$returnurl = $CFG->wwwroot."/totara/reportbuilder/filters.php?id=$id";
 
 $report = new reportbuilder($id);
 
 // include jquery
 local_js();
 // include js to handle column actions
-require_js(array($CFG->wwwroot . '/local/reportbuilder/filters.js.php'));
+require_js(array($CFG->wwwroot . '/totara/reportbuilder/filters.js.php'));
 
 
 // delete fields or columns
@@ -94,7 +94,7 @@ $mform = new report_builder_edit_filters_form(null, compact('id','report'));
 
 // form results check
 if ($mform->is_cancelled()) {
-    redirect($CFG->wwwroot.'/local/reportbuilder/index.php');
+    redirect($CFG->wwwroot.'/totara/reportbuilder/index.php');
 }
 if ($fromform = $mform->get_data()) {
 
@@ -115,7 +115,7 @@ if ($fromform = $mform->get_data()) {
 admin_externalpage_print_header();
 
 print_container_start(true, 'reportbuilder-navbuttons');
-print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
+print_single_button($CFG->wwwroot.'/totara/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
 print $report->view_button();
 print_container_end();
 

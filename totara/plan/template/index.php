@@ -29,8 +29,8 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 require_once('template_forms.php');
 
 $notice = optional_param('notice', 0, PARAM_INT); // notice flag
@@ -51,11 +51,11 @@ local_js(array(
 ));
 
 
-$returnurl = "{$CFG->wwwroot}/local/plan/template/index.php";
+$returnurl = "{$CFG->wwwroot}/totara/plan/template/index.php";
 
 if ($show) {
     if (!$template = get_record('dp_template', 'id', $show)) {
-        totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
+        totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
     } else {
         $visible = 1;
         if (!set_field('dp_template', 'visible', $visible, 'id', $template->id)) {
@@ -66,7 +66,7 @@ if ($show) {
 
 if ($hide) {
     if (!$template = get_record('dp_template', 'id', $hide)) {
-        totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
+        totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
     } else {
         $visible = 0;
         if (!set_field('dp_template', 'visible', $visible, 'id', $template->id)) {
@@ -129,31 +129,31 @@ if ($delete && $confirm) {
         begin_sql();
         if (!delete_records('dp_template', 'id', $delete) || !delete_records('dp_component_settings', 'templateid', $delete)){
             rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
+            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
         }
 
         if (!delete_records('dp_competency_settings', 'templateid', $delete)){
             rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
+            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
         }
 
         if (!delete_records('dp_course_settings', 'templateid', $delete)){
             rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
+            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
         }
 
         if (!delete_records('dp_objective_settings', 'templateid', $delete)){
             rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
+            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
         }
 
         if (!delete_records('dp_permissions', 'templateid', $delete)){
             rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
+            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
         }
 
         commit_sql();
-        totara_set_notification(get_string('deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php', array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php', array('style' => 'notifysuccess'));
     }
 } else if ($delete) {
     if (!$template = get_record('dp_template', 'id', $delete)) {
@@ -161,12 +161,12 @@ if ($delete && $confirm) {
     }
 
     if (count_records('dp_plan', 'templateid', $template->id) > 0) {
-        totara_set_notification(get_string('cannotdelete_inuse', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
+        totara_set_notification(get_string('cannotdelete_inuse', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
     }
 
     admin_externalpage_print_header();
-    $deleteurl = $CFG->wwwroot.'/local/plan/template/index.php?delete='.$delete.'&amp;confirm=true&amp;sesskey='.sesskey();
-    $returnurl = $CFG->wwwroot.'/local/plan/template/index.php';
+    $deleteurl = $CFG->wwwroot.'/totara/plan/template/index.php?delete='.$delete.'&amp;confirm=true&amp;sesskey='.sesskey();
+    $returnurl = $CFG->wwwroot.'/totara/plan/template/index.php';
     $strdelete = get_string('deletecheckdptemplate', 'local_plan');
     notice_yesno(
         "{$strdelete}<br /><br />".format_string($template->fullname),
@@ -201,10 +201,10 @@ if ($fromform = $mform->get_data()) {
 
         if ($newtemplateid) {
             redirect($CFG->wwwroot .
-                '/local/plan/template/general.php?id=' .
+                '/totara/plan/template/general.php?id=' .
                 $newtemplateid);
         } else {
-            totara_set_notification($error, $CFG->wwwroot . '/local/plan/template/index.php');
+            totara_set_notification($error, $CFG->wwwroot . '/totara/plan/template/index.php');
         }
     }
 }
@@ -246,7 +246,7 @@ if ($templates) {
 
         $cssclass = !$template->visible ? 'class="dimmed"' : '';
 
-        $title = "<a $cssclass href=\"$CFG->wwwroot/local/plan/template/general.php?id=$template->id\">$template->fullname</a>";
+        $title = "<a $cssclass href=\"$CFG->wwwroot/totara/plan/template/general.php?id=$template->id\">$template->fullname</a>";
         if ($count==1) {
             $title .= ' ('.get_string('default').')';
         }
@@ -261,24 +261,24 @@ if ($templates) {
 
         $buttons = array();
 
-        $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/general.php?id={$template->id}\" title=\"$str_edit\">".
+        $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/general.php?id={$template->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
-        $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/index.php?delete={$template->id}\" title=\"$str_remove\">".
+        $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?delete={$template->id}\" title=\"$str_remove\">".
             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
 
         // Re-add this once multiple templates can be selected
         /*if ($template->visible) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/index.php?hide={$template->id}\" title=\"$str_hide\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?hide={$template->id}\" title=\"$str_hide\">".
                 "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
         } else {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/index.php?show={$template->id}\" title=\"$str_show\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?show={$template->id}\" title=\"$str_show\">".
                 "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
         }*/
 
         if ($count > 1) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/index.php?moveup={$template->id}\" title=\"$str_moveup\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?moveup={$template->id}\" title=\"$str_moveup\">".
                 "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
         } else {
             $buttons[] = $spacer;
@@ -286,7 +286,7 @@ if ($templates) {
 
         // If value can be moved down
         if ($count < $numvalues) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/index.php?movedown={$template->id}\" title=\"$str_movedown\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?movedown={$template->id}\" title=\"$str_movedown\">".
                 "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
         } else {
             $buttons[] = $spacer;

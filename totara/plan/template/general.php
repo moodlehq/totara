@@ -28,9 +28,9 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 require_once('template_forms.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 
 $id = required_param('id', PARAM_INT);
 $notice = optional_param('notice', 0, PARAM_INT); // notice flag
@@ -44,7 +44,7 @@ local_js(array(
     TOTARA_JS_PLACEHOLDER
 ));
 
-$returnurl = $CFG->wwwroot."/local/plan/template/general.php?id=$id";
+$returnurl = $CFG->wwwroot."/totara/plan/template/general.php?id=$id";
 
 if ($id) {
     if (!$template = get_record('dp_template', 'id', $id)) {
@@ -72,7 +72,7 @@ if ($fromform = $mform->get_data()) {
 
 $navlinks = array();    // Breadcrumbs
 $navlinks[] = array('name' => get_string("managetemplates", "local_plan"),
-                    'link' => "{$CFG->wwwroot}/local/plan/template/index.php",
+                    'link' => "{$CFG->wwwroot}/totara/plan/template/index.php",
                     'type' => 'misc');
 $navlinks[] = array('name' => format_string($template->fullname), 'link' => '', 'type' => 'misc');
 

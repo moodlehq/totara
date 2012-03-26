@@ -9,6 +9,7 @@ $string['restartguide'] = 'Restart Guide';
 $string['completed'] = 'Completed';
 $string['deletedguide'] = 'Deleted guide.';
 $string['deleteguide'] = 'Deleting guide.';
+$string['deleteguideprogress'] = 'Delete guide progress';
 $string['deleteguidecheck'] = 'Are you sure you want to delete your record of progress on this guide?';
 $string['finishstep'] = 'Finish step';
 $string['guide'] = 'Guide';

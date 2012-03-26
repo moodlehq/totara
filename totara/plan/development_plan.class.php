@@ -26,9 +26,10 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
-require_once ($CFG->dirroot . '/local/totara_msg/eventdata.class.php');
-require_once ($CFG->dirroot.'/local/totara_msg/messagelib.php');
-require_once ($CFG->dirroot.'/local/plan/lib.php');
+//TODO: Uncomment once totara messages are finished
+//require_once ($CFG->dirroot . '/local/totara_msg/eventdata.class.php');
+//require_once ($CFG->dirroot.'/totara/totara_msg/messagelib.php');
+require_once ($CFG->dirroot.'/totara/plan/lib.php');
 
 
 class development_plan {
@@ -130,7 +131,7 @@ class development_plan {
         foreach ($DP_AVAILABLE_ROLES as $role) {
             // include each class file
             $classfile = $CFG->dirroot .
-                "/local/plan/roles/{$role}/{$role}.class.php";
+                "/totara/plan/roles/{$role}/{$role}.class.php";
             if(!is_readable($classfile)) {
                 $string_params = new object();
                 $string_params->classfile = $classfile;
@@ -182,7 +183,7 @@ class development_plan {
         foreach($DP_AVAILABLE_COMPONENTS as $component) {
             // include each class file
             $classfile = $CFG->dirroot .
-                "/local/plan/components/{$component}/{$component}.class.php";
+                "/totara/plan/components/{$component}/{$component}.class.php";
             if(!is_readable($classfile)) {
                 $string_params = new object();
                 $string_params->classfile = $classfile;
@@ -391,7 +392,7 @@ class development_plan {
         global $CFG;
 
         $out = '';
-        $out .= "<div class=\"dp-summary-widget-title\"><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->id}\">{$this->name} </a></div>";
+        $out .= "<div class=\"dp-summary-widget-title\"><a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->id}\">{$this->name} </a></div>";
         $components = get_records_select('dp_component_settings', "templateid={$this->templateid} AND enabled=1", 'sortorder');
         $total = count($components);
         $pendingitems = $this->num_pendingitems();
@@ -420,7 +421,7 @@ class development_plan {
             if ($pendingitems) {
                 $out .= '<span class="dp-summary-widget-pendingitems-text">'.get_string('pendingitemsx', 'local_plan',
                     (object)array('count'=>$pendingitems,
-                    'link'=>"{$CFG->wwwroot}/local/plan/approve.php?id={$this->id}")).'</span>';
+                    'link'=>"{$CFG->wwwroot}/totara/plan/approve.php?id={$this->id}")).'</span>';
             }
 
 
@@ -442,7 +443,7 @@ class development_plan {
         global $CFG;
 
         $out = '';
-        $out .= "<a href=\"{$CFG->wwwroot}/local/plan/edit.php\"><img src=\"{$CFG->wwwtheme}/pix/t/add.gif\" title=\"".get_string('addplan', 'local_plan')."\" alt=\"".get_string('addplan', 'local_plan')."\"/></a>";
+        $out .= "<a href=\"{$CFG->wwwroot}/totara/plan/edit.php\"><img src=\"{$CFG->wwwtheme}/pix/t/add.gif\" title=\"".get_string('addplan', 'local_plan')."\" alt=\"".get_string('addplan', 'local_plan')."\"/></a>";
 
         return $out;
     }
@@ -521,7 +522,7 @@ class development_plan {
             $out = get_string('planstatusunapproved', 'local_plan');
             // Approval request
             if ($this->get_setting('approve') == DP_PERMISSION_REQUEST) {
-                $out .= '<br /><a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;approvalrequest=1&amp;sesskey='.sesskey().'" title="'.get_string('sendapprovalrequest', 'local_plan').'">'.
+                $out .= '<br /><a href="'.$CFG->wwwroot.'/totara/plan/action.php?id='.$this->id.'&amp;approvalrequest=1&amp;sesskey='.sesskey().'" title="'.get_string('sendapprovalrequest', 'local_plan').'">'.
                     get_string('requestapproval', 'local_plan').
                     '</a>';
             }
@@ -593,10 +594,10 @@ class development_plan {
 
             // Approve/Decline
             if (in_array($this->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
-                echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;approve=1&amp;sesskey='.sesskey().'" title="'.get_string('approve', 'local_plan').'">
+                echo '<a href="'.$CFG->wwwroot.'/totara/plan/action.php?id='.$this->id.'&amp;approve=1&amp;sesskey='.sesskey().'" title="'.get_string('approve', 'local_plan').'">
                     <img src="'.$CFG->pixpath.'/t/go.gif" alt="'.get_string('approve', 'local_plan').'" />
                     </a>';
-                echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;decline=1&amp;sesskey='.sesskey().'" title="'.get_string('decline', 'local_plan').'">
+                echo '<a href="'.$CFG->wwwroot.'/totara/plan/action.php?id='.$this->id.'&amp;decline=1&amp;sesskey='.sesskey().'" title="'.get_string('decline', 'local_plan').'">
                     <img src="'.$CFG->pixpath.'/t/stop.gif" alt="'.get_string('decline', 'local_plan').'" />
                     </a>';
             }
@@ -604,21 +605,21 @@ class development_plan {
 
         // Complete
         if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('completereactivate') >= DP_PERMISSION_ALLOW  && $this->get_setting('manualcomplete')) {
-            echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;complete=1&amp;sesskey='.sesskey().'" title="'.get_string('plancomplete', 'local_plan').'">
+            echo '<a href="'.$CFG->wwwroot.'/totara/plan/action.php?id='.$this->id.'&amp;complete=1&amp;sesskey='.sesskey().'" title="'.get_string('plancomplete', 'local_plan').'">
                 <img src="'.$CFG->pixpath.'/t/favourite_on.gif" alt="'.get_string('plancomplete', 'local_plan').'" />
                 </a>';
         }
 
         // Reactivate
         if ($this->status == DP_PLAN_STATUS_COMPLETE && $this->get_setting('completereactivate') >= DP_PERMISSION_ALLOW) {
-            echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;reactivate=1&amp;sesskey='.sesskey().'" title="'.get_string('planreactivate', 'local_plan').'">
+            echo '<a href="'.$CFG->wwwroot.'/totara/plan/action.php?id='.$this->id.'&amp;reactivate=1&amp;sesskey='.sesskey().'" title="'.get_string('planreactivate', 'local_plan').'">
                 <img src="'.$CFG->pixpath.'/t/plan_reactivate.gif" alt="'.get_string('planreactivate', 'local_plan').'" />
                 </a>';
         }
 
         // Delete
         if ($this->get_setting('delete') == DP_PERMISSION_ALLOW) {
-            echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;delete=1&amp;sesskey='.sesskey().'" title="'.get_string('delete').'">
+            echo '<a href="'.$CFG->wwwroot.'/totara/plan/action.php?id='.$this->id.'&amp;delete=1&amp;sesskey='.sesskey().'" title="'.get_string('delete').'">
                 <img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.get_string('delete').'" />
                 </a>';
         }
@@ -1013,7 +1014,7 @@ class development_plan {
 
             $extramessage = '';
             if ($this->get_setting('completereactivate') == DP_PERMISSION_ALLOW) {
-                $url = "{$CFG->wwwroot}/local/plan/action.php?id={$this->id}&amp;reactivate=1&amp;sesskey=".sesskey();
+                $url = "{$CFG->wwwroot}/totara/plan/action.php?id={$this->id}&amp;reactivate=1&amp;sesskey=".sesskey();
                 $extramessage = '<p>' . get_string('reactivateplantext', 'local_plan', $url) . '</p>';
             }
             return '<p>' . $message . '</p>'. $extramessage;
@@ -1033,7 +1034,7 @@ class development_plan {
         $canrequestapproval = ($this->get_setting('approve') == DP_PERMISSION_REQUEST);
         $out = '';
 
-        $out .= "<form action=\"{$CFG->wwwroot}/local/plan/action.php\" method=\"POST\" class=\"approvalform\">";
+        $out .= "<form action=\"{$CFG->wwwroot}/totara/plan/action.php\" method=\"POST\" class=\"approvalform\">";
         $out .= "<input type=\"hidden\" name=\"id\" value=\"{$this->id}\"/>";
         $out .= "<input type=\"hidden\" name=\"sesskey\" value=\"".sesskey()."\"/>";
         $out .= '<table width="100%" border="0"><tr>';
@@ -1152,7 +1153,7 @@ class development_plan {
 
         // Show request button if plan is active
         if ($this->status == DP_PLAN_STATUS_APPROVED) {
-            $out .= "<form action=\"{$CFG->wwwroot}/local/plan/action.php\" method=\"POST\">";
+            $out .= "<form action=\"{$CFG->wwwroot}/totara/plan/action.php\" method=\"POST\">";
             $out .= "<input type=\"hidden\" name=\"id\" value=\"{$this->id}\"/>";
             $out .= "<input type=\"hidden\" name=\"sesskey\" value=\"".sesskey()."\"/>";
             $out .= '<input type="submit" name="approvalrequest" value="'.get_string('sendapprovalrequest', 'local_plan').'" />';
@@ -1446,7 +1447,7 @@ class development_plan {
 
         $event = new tm_task_eventdata($manager, 'plan', $data, $data);
         $event->userfrom = $learner;
-        $event->contexturl = "{$CFG->wwwroot}/local/plan/approve.php?id={$this->id}";
+        $event->contexturl = "{$CFG->wwwroot}/totara/plan/approve.php?id={$this->id}";
         $event->contexturlname = $this->name;
         $event->roleid = $CFG->managerroleid;
         $event->icon = 'learningplan-request';
@@ -1524,7 +1525,7 @@ class development_plan {
      */
     function send_approved_alert() {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
         $userto = get_record('user', 'id', $this->userid);
         $userfrom = get_record('user', 'id', $USER->id);
@@ -1533,7 +1534,7 @@ class development_plan {
         $event->userfrom = $userfrom;
         $event->userto = $userto;
         $event->icon = 'learningplan-approve';
-        $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
+        $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
         $event->fullmessage = get_string_in_user_lang($userto, 'planapproved', 'local_plan', $this->name);
         tm_alert_send($event);
     }
@@ -1548,7 +1549,7 @@ class development_plan {
      */
     function send_declined_alert() {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
         $userto = get_record('user', 'id', $this->userid);
         $userfrom = get_record('user', 'id', $USER->id);
@@ -1557,7 +1558,7 @@ class development_plan {
         $event->userfrom = $userfrom;
         $event->userto = $userto;
         $event->icon = 'learningplan-decline';
-        $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
+        $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
         $event->fullmessage = format_string(get_string_in_user_lang($userto, 'plandeclined', 'local_plan', $this->name));
         tm_alert_send($event);
     }
@@ -1572,7 +1573,7 @@ class development_plan {
      */
     function send_completion_alert() {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
         $learner = get_record('user', 'id', $this->userid);
 
         // Send alert to manager
@@ -1584,7 +1585,7 @@ class development_plan {
             $event->userto = $manager;
             $event->userfrom = $learner;
             $event->icon = 'learningplan-complete';
-            $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
+            $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
             $a = new stdClass();
             $a->learner = fullname($learner);
             $a->plan = $this->name;
@@ -1598,7 +1599,7 @@ class development_plan {
         $event = new stdClass();
         $event->userto = $learner;
         $event->icon = 'learningplan-complete';
-        $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
+        $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
         $event->fullmessage = format_text(get_string_in_user_lang($learner, 'plancompletesuccess', 'local_plan', $this->name));
         tm_alert_send($event);
     }
@@ -1611,10 +1612,10 @@ class development_plan {
     public function get_display_url(){
         global $CFG;
         if (record_exists('dp_plan', 'id', $this->id)) {
-            return "{$CFG->wwwroot}/local/plan/view.php?id={$this->id}";
+            return "{$CFG->wwwroot}/totara/plan/view.php?id={$this->id}";
         } else {
             //If plan doesnt exist show plan index page for that user
-            return "{$CFG->wwwroot}/local/plan/index.php?userid={$this->userid}";
+            return "{$CFG->wwwroot}/totara/plan/index.php?userid={$this->userid}";
         }
 
     }
@@ -1638,7 +1639,7 @@ class development_plan {
         // Overview tab
         $row[] = new tabobject(
                 'plan',
-                "{$CFG->wwwroot}/local/plan/view.php?id={$this->id}",
+                "{$CFG->wwwroot}/totara/plan/view.php?id={$this->id}",
                 get_string('overview', 'local_plan')
         );
 
@@ -1660,7 +1661,7 @@ class development_plan {
         if ($pitems = $this->num_pendingitems()) {
             $row[] = new tabobject(
                 'pendingitems',
-                "{$CFG->wwwroot}/local/plan/approve.php?id={$this->id}",
+                "{$CFG->wwwroot}/totara/plan/approve.php?id={$this->id}",
                 get_string('pendingitems', 'local_plan').' ('.$pitems.')'
             );
         }
@@ -1682,7 +1683,7 @@ class development_plan {
      */
     public function print_header($currenttab, $navlinks = array(), $printinstructions=true) {
         global $CFG;
-        require("{$CFG->dirroot}/local/plan/header.php");
+        require("{$CFG->dirroot}/totara/plan/header.php");
     }
 
 

@@ -25,8 +25,8 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 require_login();
 
@@ -38,7 +38,7 @@ $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 
 //Permissions check
 $systemcontext = get_system_context();
-if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+if(!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'local_plan');
 }
 
@@ -50,20 +50,20 @@ local_js(array(
 // Get extension dialog content
 if ($programid = get_field('dp_plan_program_assign', 'programid', 'id', $progassid)) {
     require_js(array(
-        $CFG->wwwroot . '/local/program/view/program_view.js.php?id=' . $programid
+        $CFG->wwwroot . '/totara/program/view/program_view.js.php?id=' . $programid
     ));
 }
 
 $componentname = 'program';
 $component = $plan->get_component($componentname);
-$currenturl = $CFG->wwwroot . '/local/plan/components/program/view.php?id='.$id.'&amp;itemid='.$progassid;
+$currenturl = $CFG->wwwroot . '/totara/plan/components/program/view.php?id='.$id.'&amp;itemid='.$progassid;
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
 
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
+$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$id, 'type'=>'title');
 $navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
 $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
 
@@ -77,7 +77,7 @@ print $component->display_program_detail($progassid);
 
 
 // Comments
-require_once($CFG->dirroot.'/local/comment/lib.php');
+require_once($CFG->dirroot.'/totara/comment/lib.php');
 comment::init();
 $options = new stdClass;
 $options->area    = 'plan-program-item';

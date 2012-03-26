@@ -39,7 +39,7 @@ $id = optional_param('id', 0, PARAM_INT); // Objective id; 0 if creating a new o
 admin_externalpage_setup('objectivescales');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
-require_capability('local/plan:manageobjectivescales', $sitecontext);
+require_capability('totara/plan:manageobjectivescales', $sitecontext);
 if ($id == 0) {
     // creating new idp objective
 
@@ -69,7 +69,7 @@ $mform->set_data($objective);
 // If cancelled
 if ($mform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/local/plan/objectivescales/index.php");
+    redirect("$CFG->wwwroot/totara/plan/objectivescales/index.php");
 
 // Update data
 } else if ($objectivenew = $mform->get_data()) {
@@ -131,7 +131,7 @@ if ($mform->is_cancelled()) {
             add_to_log(SITEID, 'objectives', 'updated', "view.php?id=$objectivenew->id");
             totara_set_notification(get_string('objectivescaleupdated', 'local_plan',
                 format_string(stripslashes($objectivenew->name))),
-                "$CFG->wwwroot/local/plan/objectivescales/view.php?id={$objectivenew->id}",
+                "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$objectivenew->id}",
                 array('style' => 'notifysuccess'));
         } else {
             error(get_string('error:updateobjectivescale', 'local_plan'));
@@ -141,14 +141,14 @@ if ($mform->is_cancelled()) {
     // Log
     add_to_log(SITEID, 'objectives', 'added', "view.php?id=$objectivenew->id");
     totara_set_notification(get_string('objectivescaleadded', 'local_plan', format_string(stripslashes($objectivenew->name))),
-        "$CFG->wwwroot/local/plan/objectivescales/view.php?id={$objectivenew->id}",
+        "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$objectivenew->id}",
         array('style' => 'notifysuccess'));
 }
 
 /// Print Page
 $navlinks = array();    // Breadcrumbs
 $navlinks[] = array('name'=>get_string("objectivescales", 'local_plan'),
-                    'link'=>"{$CFG->wwwroot}/local/plan/objectivescales/index.php",
+                    'link'=>"{$CFG->wwwroot}/totara/plan/objectivescales/index.php",
                     'type'=>'misc');
 if ($id == 0) { // Add
     $navlinks[] = array('name'=>get_string('objectivesscalecreate', 'local_plan'), 'link'=>'', 'type'=>'misc');

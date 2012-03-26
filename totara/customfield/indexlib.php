@@ -103,7 +103,7 @@ function customfield_delete_field($id, $tableprefix) {
 function customfield_move_field($id, $move, $tableprefix) {
     global $DB;
     /// Get the field object
-    $field = $DB->get_record($tableprefix.'_info_field', array('id' => $id), 'id, sortorder');
+    $field = $DB->get_record($tableprefix.'_info_field', array('id' => $id), 'id, typeid, sortorder');
 
     /// Count the number of fields
     $fieldcount = $DB->count_records($tableprefix.'_info_field');
@@ -118,7 +118,7 @@ function customfield_move_field($id, $move, $tableprefix) {
     }
 
     /// Retrieve the field object that is currently residing in the new position
-    $swapfield = $DB->get_record($tableprefix.'_info_field', array('sortorder' => $neworder));
+    $swapfield = $DB->get_record($tableprefix.'_info_field', array('sortorder' => $neworder, 'typeid' => $field->typeid));
 
     /// Swap the sortorders
     $swapfield->sortorder = $field->sortorder;
@@ -156,16 +156,24 @@ function customfield_list_datatypes() {
 
 
 function customfield_edit_field($id, $datatype, $typeid=0, $redirect, $tableprefix, $prefix, $navlinks=false) {
-    global $CFG, $DB, $OUTPUT, $PAGE;
+    global $CFG, $DB, $OUTPUT, $PAGE, $TEXTAREA_OPTIONS;
 
     if (!$field = $DB->get_record($tableprefix.'_info_field', array('id' => $id))) {
         $field = new stdClass();
+        $field->id = 0;
         $field->datatype = $datatype;
+        $field->description = '';
+        $field->defaultdata = '';
     }
 
     $displayadminheader = $prefix == 'type' ? 1 : 0;
-
     require_once($CFG->dirroot.'/totara/customfield/index_field_form.php');
+    $field->descriptionformat = FORMAT_HTML;
+    $field = file_prepare_standard_editor($field, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', 'textarea', $field->id);
+    if ($field->datatype == 'textarea') {
+        $field->defaultdataformat = FORMAT_HTML;
+        $field = file_prepare_standard_editor($field, 'defaultdata', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', 'textarea', $field->id);
+    }
     $datatosend = array('datatype' => $field->datatype, 'prefix' => $prefix,
                         'typeid' => $typeid, 'tableprefix' => $tableprefix);
     $fieldform = new field_form(null, $datatosend);
@@ -220,17 +228,26 @@ function customfield_edit_field($id, $datatype, $typeid=0, $redirect, $tablepref
 
 
 /**
- * Reorder the custom fields starting
- * at the field at the given startorder
+ * Reorder the custom fields, with each type getting it's own sort numbering
+ *
+ * @param string $tableprefix
+ * @return boolean true
  */
 function customfield_reorder_fields($tableprefix) {
-    global $DB;
-    $i = 1;
-    $fields = $DB->get_records($tableprefix.'_info_field', array(), 'sortorder ASC');
-    foreach ($fields as $field) {
-        $f = new stdClass();
-        $f->id = $field->id;
-        $f->sortorder = $i++;
-        $DB->update_record($tableprefix.'_info_field', $f);
+    global $CFG, $DB;
+    require_once($CFG->dirroot . '/totara/core/utils.php');
+    $rs = $DB->get_recordset($tableprefix.'_info_field', array(), 'sortorder ASC');
+    if ($types = totara_group_records($rs, 'typeid')) {
+        foreach ($types as $unused => $fields) {
+            $i = 1;
+            foreach ($fields as $field) {
+                $f = new stdClass();
+                $f->id = $field->id;
+                $f->sortorder = $i++;
+                $DB->update_record($tableprefix.'_info_field', $f);
+            }
+        }
     }
+    $rs->close();
+    return true;
 }

@@ -49,7 +49,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 if ($id == 0) {
     // Creating new scale value
-    require_capability('local/plan:manageobjectivescales', $sitecontext);
+    require_capability('totara/plan:manageobjectivescales', $sitecontext);
 
     $value = new stdClass();
     $value->id = 0;
@@ -61,7 +61,7 @@ if ($id == 0) {
 
 } else {
     // Editing scale value
-    require_capability('local/plan:manageobjectivescales', $sitecontext);
+    require_capability('totara/plan:manageobjectivescales', $sitecontext);
 
     if (!$value = get_record('dp_objective_scale_value', 'id', $id)) {
         error(get_string('error:objectivescalevalueidincorrect', 'local_plan'));
@@ -93,7 +93,7 @@ $valueform->set_data($value);
 // cancelled
 if ($valueform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/local/plan/objectivescales/view.php?id={$value->objscaleid}");
+    redirect("$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$value->objscaleid}");
 
 // Update data
 } else if ($valuenew = $valueform->get_data()) {
@@ -113,7 +113,7 @@ if ($valueform->is_cancelled()) {
         if ($valuenew->id = insert_record('dp_objective_scale_value', $valuenew)) {
             add_to_log(SITEID, 'objectives', 'scale value added', "view.php?id={$valuenew->objscaleid}");
 
-            totara_set_notification(get_string('objectivescalevalueadded', 'local_plan', format_string(stripslashes($valuenew->name))), "$CFG->wwwroot/local/plan/objectivescales/view.php?id={$valuenew->objscaleid}", array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('objectivescalevalueadded', 'local_plan', format_string(stripslashes($valuenew->name))), "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$valuenew->objscaleid}", array('style' => 'notifysuccess'));
         } else {
             error(get_string('error:createobjectivevalue', 'local_plan'));
         }
@@ -124,7 +124,7 @@ if ($valueform->is_cancelled()) {
             // Log
             add_to_log(SITEID, 'objectives', 'scale value updated', "view.php?id={$valuenew->objscaleid}");
 
-            totara_set_notification(get_string('objectivescalevalueupdated', 'local_plan', format_string(stripslashes($valuenew->name))), "$CFG->wwwroot/local/plan/objectivescales/view.php?id={$valuenew->objscaleid}", array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('objectivescalevalueupdated', 'local_plan', format_string(stripslashes($valuenew->name))), "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$valuenew->objscaleid}", array('style' => 'notifysuccess'));
         } else {
             error(get_string('error:updateobjectivescalevalue', 'local_plan'));
         }

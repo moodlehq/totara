@@ -1,31 +1,33 @@
 <?php
-
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
 /**
  * Cron job for reviewing and aggregating competency evidence
- *
- * @package   totara
- * @copyright 2009 Catalyst IT Ltd
- * @author    Aaron Barnes <aaronb@catalyst.net.nz>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once $CFG->dirroot.'/hierarchy/prefix/competency/lib.php';
-require_once $CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php';
+require_once $CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php';
+require_once $CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/evidence.php';
 
 
 /**
@@ -38,7 +40,7 @@ require_once $CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php';
  * @return  void
  */
 function competency_cron() {
-    global $CFG;
+    global $DB;
 
     competency_cron_evidence_items();
 
@@ -48,17 +50,17 @@ function competency_cron() {
     // Loop through each depth level, lowest levels first, processing individually
     $sql = "
         SELECT
-            DISTINCT " .sql_concat_join("'|'", array(sql_cast2char('depthlevel'), sql_cast2char('frameworkid'))) ." AS depthkey, depthlevel, frameworkid
+            DISTINCT " . $DB->sql_concat_join("'|'", array(sql_cast2char('depthlevel'), sql_cast2char('frameworkid'))) ." AS depthkey, depthlevel, frameworkid
         FROM
-            {$CFG->prefix}comp
+            {comp}
         ORDER BY
             frameworkid,
             depthlevel DESC
     ";
 
-    if ($rs = get_recordset_sql($sql)) {
+    if ($rs = $DB->get_recordset_sql($sql)) {
 
-        while ($record = rs_fetch_next_record($rs)) {
+        foreach ($rs as $record) {
             // Aggregate this depth level
             competency_cron_aggregate_evidence($timestarted, $record);
         }
@@ -73,15 +75,15 @@ function competency_cron() {
 
     $sql = "
         UPDATE
-            {$CFG->prefix}comp_evidence
+            {comp_evidence}
         SET
             reaggregate = 0
         WHERE
-            reaggregate <= {$timestarted}
+            reaggregate <= ?
         AND reaggregate > 0
     ";
 
-    execute_sql($sql, false);
+    $DB->execute($sql, array($timestarted));
 
 }
 
@@ -101,7 +103,7 @@ function competency_cron_evidence_items() {
     foreach ($COMPETENCY_EVIDENCE_TYPES as $type) {
 
         $object = 'competency_evidence_type_'.$type;
-        $source = $CFG->dirroot.'/hierarchy/prefix/competency/evidenceitem/type/'.$type.'.php';
+        $source = $CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/type/'.$type.'.php';
 
         if (!file_exists($source)) {
             continue;
@@ -129,14 +131,14 @@ function competency_cron_evidence_items() {
  * @return  void
  */
 function competency_cron_aggregate_evidence($timestarted, $depth) {
-    global $CFG, $COMP_AGGREGATION;
+    global $DB, $COMP_AGGREGATION;
 
     if (debugging()) {
         mtrace('Aggregating competency evidence for depth level '.$depth->depthlevel. ' and frameworkid '. $depth->frameworkid);
     }
 
     // Grab all competency scale values
-    $scale_values = get_records('comp_scale_values');
+    $scale_values = $DB->get_records('comp_scale_values');
 
     // Grab all competency evidence items for a depth level
     //
@@ -194,36 +196,36 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
                     competencyid,
                     NULL AS childid
                 FROM
-                    {$CFG->prefix}comp_evidence_items
+                    {comp_evidence_items}
                 UNION
                 SELECT
                     NULL AS evidenceid,
                     parentid AS competencyid,
                     id AS childid
                 FROM
-                    {$CFG->prefix}comp
+                    {comp}
                 WHERE
                     parentid <> 0
-                AND frameworkid = {$depth->frameworkid}
-                AND depthlevel <> {$depth->depthlevel}
+                AND frameworkid = ?
+                AND depthlevel <> ?
             ) cei
         INNER JOIN
-            {$CFG->prefix}comp c
+            {comp} c
          ON cei.competencyid = c.id
         INNER JOIN
-            {$CFG->prefix}comp_evidence ce
+            {comp_evidence} ce
          ON ce.competencyid = c.id
         INNER JOIN
-            {$CFG->prefix}comp_scale_assignments csa
+            {comp_scale_assignments} csa
          ON c.frameworkid = csa.frameworkid
         INNER JOIN
         (
             SELECT csv.scaleid, csv.id AS proficient
-            FROM {$CFG->prefix}comp_scale_values csv
+            FROM {comp_scale_values} csv
             INNER JOIN
             (
                 SELECT scaleid, MAX(sortorder) AS maxsort
-                FROM {$CFG->prefix}comp_scale_values
+                FROM {comp_scale_values}
                 WHERE proficient = 1
                 GROUP BY scaleid
             ) grouped
@@ -231,28 +233,27 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
         ) proficient
         ON csa.scaleid = proficient.scaleid
         LEFT JOIN
-            {$CFG->prefix}comp_evidence_items_evidence ceie
+            {comp_evidence_items_evidence} ceie
          ON cei.evidenceid = ceie.itemid
         AND ce.userid = ceie.userid
         LEFT JOIN
-            {$CFG->prefix}comp_evidence cce
+            {comp_evidence} cce
          ON cce.competencyid = cei.childid
         AND ce.userid = cce.userid
         WHERE
             ce.reaggregate > 0
-        AND ce.reaggregate <= {$timestarted}
+        AND ce.reaggregate <= ?
         AND ce.manual = 0
-        AND c.depthlevel = {$depth->depthlevel}
-        AND c.aggregationmethod <> {$COMP_AGGREGATION['OFF']}
+        AND c.depthlevel = ?
+        AND c.aggregationmethod <> ?
         ORDER BY
             competencyid,
             userid
     ";
 
-    // Check if result is empty
-    if (!$rs = get_recordset_sql($sql)) {
-        return;
-    }
+    $params = array($depth->frameworkid, $depth->depthlevel, $timestarted, $depth->depthlevel, $COMP_AGGREGATION['OFF']);
+
+    $rs = $DB->get_recordset_sql($sql, $params);
 
     $current_user = null;
     $current_competency = null;
@@ -261,7 +262,7 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
     while (1) {
 
         // Grab records for current user/competency
-        while ($record = rs_fetch_next_record($rs)) {
+        foreach ($rs as $record) {
 
             // If we are still grabbing the same users evidence
             $record = (object)$record;

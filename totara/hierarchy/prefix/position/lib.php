@@ -1,39 +1,36 @@
-<?php // $Id$
-
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Jonathan Newman
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
 /**
  * hierarchy/prefix/position/lib.php
  *
  * Library to construct position hierarchies
- * @copyright Catalyst IT Limited
- * @author Jonathan Newman
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package totara
  */
-require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
-require_once($CFG->dirroot.'/totara/core/utils.php');
+require_once("{$CFG->dirroot}/totara/hierarchy/lib.php");
+require_once("{$CFG->dirroot}/totara/core/utils.php");
+require_once("{$CFG->libdir}/completion/data_object.php");
 
 
 // DO NOT COMMENT OUT IF UNUSED
@@ -71,14 +68,14 @@ class position extends hierarchy {
      * @return void
      */
     function hierarchy_page_setup($page = '', $item) {
-        global $CFG;
+        global $CFG, $PAGE;
 
         if ($page !== 'item/view') {
             return;
         }
 
         // Setup custom javascript
-        require_once($CFG->dirroot.'/local/js/lib/setup.php');
+        require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
         // Setup lightbox
         local_js(array(
@@ -86,9 +83,8 @@ class position extends hierarchy {
             TOTARA_JS_TREEVIEW
         ));
 
-        require_js(array(
-            $CFG->wwwroot.'/local/js/position.item.js.php?id='.$item->id.'&frameworkid='.$item->frameworkid,
-        ));
+        $PAGE->requires->js('/totara/core/js/position.item.js.php?id='.$item->id.'&frameworkid='.$item->frameworkid);
+
     }
 
     /**
@@ -97,37 +93,31 @@ class position extends hierarchy {
      * @return void
      */
     function display_extra_view_info($item, $frameworkid=0) {
-        global $CFG;
+        global $CFG, $OUTPUT, $PAGE;
 
-        $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-        $can_edit = has_capability('moodle/local:updateposition', $sitecontext);
+        $sitecontext = context_system::instance();
+        $can_edit = has_capability('totara/hierarchy:updateposition', $sitecontext);
         $comptype = optional_param('comptype', 'competencies', PARAM_TEXT);
 
-        if ($can_edit) {
-            $str_edit = get_string('edit');
-            $str_remove = get_string('remove');
-        }
-
-        echo '<div class="list-assignedcompetencies">';
-        print_heading(get_string('assignedcompetencies', 'competency'));
+        echo html_writer::start_tag('div', array('class' => "list-assignedcompetencies"));
+        echo $OUTPUT->heading(get_string('assignedcompetencies', 'totara_hierarchy'));
 
         echo $this->print_comp_framework_picker($item->id, $frameworkid);
 
-        if ($comptype=='competencies') {
+        if ($comptype == 'competencies') {
             // Display assigned competencies
             $items = $this->get_assigned_competencies($item, $frameworkid);
-            $addurl = $CFG->wwwroot.'/hierarchy/prefix/position/assigncompetency/find.php?assignto='.$item->id;
+            $addurl = new moodle_url('/totara/hierarchy/prefix/position/assigncompetency/find.php', array('assignto' => $item->id));
             $displaytitle = 'assignedcompetencies';
-            $displayprefix = 'competency';
-        } elseif($comptype == 'comptemplates') {
+        } elseif ($comptype == 'comptemplates') {
             // Display assigned competencies
             $items = $this->get_assigned_competency_templates($item, $frameworkid);
-            $addurl = $CFG->wwwroot.'/hierarchy/prefix/position/assigncompetencytemplate/find.php?assignto='.$item->id;
+            $addurl = new moodle_url('/totara/hierarchy/prefix/position/assigncompetencytemplate/find.php', array('assignto' => $item->id));
             $displaytitle = 'assignedcompetencytemplates';
         }
-        $displayprefix = 'competency';
-        require $CFG->dirroot.'/hierarchy/prefix/position/view-hierarchy-items.html';
-        echo '</div>';
+        $renderer = $PAGE->get_renderer('totara_hierarchy');
+        echo $renderer->print_hierarchy_items($frameworkid, $this->shortprefix, $displaytitle, $addurl, $item->id, $items, $can_edit);
+        echo html_writer::end_tag('div');
     }
 
     /**
@@ -138,7 +128,7 @@ class position extends hierarchy {
      * @return array List of assigned competencies
      */
     function get_assigned_competencies($item, $frameworkid=0, $excluded_ids=false) {
-        global $CFG;
+        global $DB;
 
         if (is_object($item)) {
             $itemid = $item->id;
@@ -148,6 +138,8 @@ class position extends hierarchy {
             return false;
         }
 
+        $params = array($itemid);
+
         $sql = "SELECT
                     c.*,
                     cf.id AS fid,
@@ -156,35 +148,44 @@ class position extends hierarchy {
                     pc.id AS aid,
                     pc.linktype as linktype
                 FROM
-                    {$CFG->prefix}pos_competencies pc
+                    {pos_competencies} pc
                 INNER JOIN
-                    {$CFG->prefix}comp c
+                    {comp} c
                  ON pc.competencyid = c.id
                 INNER JOIN
-                    {$CFG->prefix}comp_framework cf
+                    {comp_framework} cf
                  ON c.frameworkid = cf.id
                 LEFT JOIN
-                    {$CFG->prefix}comp_type ct
+                    {comp_type} ct
                  ON c.typeid = ct.id
                 WHERE
                     pc.templateid IS NULL
-                AND pc.positionid = {$itemid}";
+                AND pc.positionid = ?";
 
         if (!empty($frameworkid)) {
-            $sql .= " AND c.frameworkid = {$frameworkid}";
+            $sql .= " AND c.frameworkid = ?";
+            $params[] = $frameworkid;
         }
+        $ids = null;
         if (is_array($excluded_ids) && !empty($excluded_ids)) {
-            $ids = implode(',', $excluded_ids);
-            $sql .= " AND c.id NOT IN({$ids})";
+            list($excluded_sql, $excluded_params) = $DB->get_in_or_equal($excluded_ids, SQL_PARAMS_QM, 'param', false);
+            $sql .= " AND c.id {$excluded_sql}";
+            $params = array_merge($params, $excluded_params);
         }
 
         $sql .= " ORDER BY c.fullname";
 
-        return get_records_sql($sql);
+        return $DB->get_records_sql($sql, $params);
     }
 
+   /**
+    * get assigne competency templates for an item
+    *
+    * @param int|object $item
+    * @param int $frameworkid
+    */
     function get_assigned_competency_templates($item, $frameworkid=0) {
-        global $CFG;
+        global $DB;
 
         if (is_object($item)) {
             $itemid = $item->id;
@@ -192,28 +193,31 @@ class position extends hierarchy {
             $itemid = $item;
         }
 
+        $params = array($itemid);
+
         $sql = "SELECT
                     c.*,
                     cf.id AS fid,
                     cf.fullname AS framework,
                     pc.id AS aid
                 FROM
-                    {$CFG->prefix}pos_competencies pc
+                    {pos_competencies} pc
                 INNER JOIN
-                    {$CFG->prefix}comp_template c
+                    {comp_template} c
                  ON pc.templateid = c.id
                 INNER JOIN
-                    {$CFG->prefix}comp_framework cf
+                    {comp_framework} cf
                  ON c.frameworkid = cf.id
                 WHERE
                     pc.competencyid IS NULL
-                AND pc.positionid = {$itemid}";
+                AND pc.positionid = ?";
 
         if (!empty($frameworkid)) {
-            $sql .= " AND c.frameworkid = {$frameworkid}";
+            $sql .= " AND c.frameworkid = ?";
+            $params[] = $frameworkid;
         }
 
-        return get_records_sql($sql);
+        return $DB->get_records_sql($sql, $params);
     }
 
     /**
@@ -221,27 +225,27 @@ class position extends hierarchy {
      * indexed by assignment type
      *
      * @param   $user   object  User object
-     * @return  array|false
+     * @return  array
      */
     function get_user_positions($user) {
-        global $CFG;
+        global $DB;
 
-        return get_records_sql(
+        $sql =
             "
                 SELECT
                     pa.type,
                     p.*
                 FROM
-                    {$CFG->prefix}pos p
+                    {pos} p
                 INNER JOIN
-                    {$CFG->prefix}pos_assignment pa
+                    {pos_assignment} pa
                  ON p.id = pa.positionid
                 WHERE
-                    pa.userid = {$user->id}
+                    pa.userid = ?
                 ORDER BY
                    pa.type ASC
-            "
-        );
+            ";
+        return $DB->get_records_sql($sql, array($user->id));
     }
 
     /**
@@ -264,7 +268,7 @@ class position extends hierarchy {
         // Format options
         $options = array();
         foreach ($positions as $type => $pos) {
-            $text = get_string('type'.$POSITION_TYPES[$type], 'position').': '.$pos->fullname;
+            $text = get_string('type'.$POSITION_TYPES[$type], 'totara_hierarchy').': '.$pos->fullname;
             $options[$pos->id] = $text;
         }
 
@@ -285,27 +289,29 @@ class position extends hierarchy {
      * @return boolean True if items and associated data were successfully deleted
      */
     protected function _delete_hierarchy_items($items) {
-        global $CFG;
+        global $CFG, $DB;
 
         // First call the deleter for the parent class
         if (!parent::_delete_hierarchy_items($items)) {
             return false;
         }
 
+        list($items_sql, $items_params) = $DB->get_in_or_equal($items);
+
         // nullify all references to these positions in comp_evidence table
         $sql = 'UPDATE ' . $CFG->prefix . hierarchy::get_short_prefix('competency') .
             "_evidence
             SET positionid = NULL
-            WHERE positionid IN (" . implode(',', $items) . ')';
-        if (!execute_sql($sql, false)) {
+            WHERE positionid {$items_sql}";
+        if (!$DB->execute($sql, $items_params)) {
             return false;
         }
 
         // nullify all references to these positions in course_completions table
-        $sql = "UPDATE {$CFG->prefix}course_completions
+        $sql = "UPDATE {course_completions}
             SET positionid = NULL
-            WHERE positionid IN (" . implode(',', $items). ')';
-        if (!execute_sql($sql, false)) {
+            WHERE positionid {$items_sql}";
+        if (!$DB->execute($sql, $item_params)) {
             return false;
         }
 
@@ -318,9 +324,10 @@ class position extends hierarchy {
             $this->shortprefix.'_relations' => 'id1',
             $this->shortprefix.'_relations' => 'id2',
         );
+
         foreach ($db_data as $table => $field) {
-            $select = "$field IN (" . implode(',', $items) . ')';
-            if (!delete_records_select($table, $select)) {
+            $select = "$field {$items_sql}";
+            if (!$DB->delete_records_select($table, $select, $items_params)) {
                 return false;
             }
         }
@@ -329,27 +336,33 @@ class position extends hierarchy {
 
     }
 
-
+    /**
+     * prints the competency framework picker
+     *
+     * @param int $positionid
+     * @param int $currentfw
+     * @return object html for the picker
+     */
     function print_comp_framework_picker($positionid, $currentfw) {
-        global $CFG;
+      global $CFG, $DB, $OUTPUT;
 
-        require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+        require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 
         $edit = optional_param('edit', 'off', PARAM_TEXT);
 
         $competency = new competency();
         $frameworks = $competency->get_frameworks();
 
-        $assignedcounts = get_records_sql_menu("SELECT comp.frameworkid, COUNT(*)
-                                                FROM {$CFG->prefix}pos_competencies poscomp
-                                                INNER JOIN {$CFG->prefix}comp comp
+        $assignedcounts = $DB->get_records_sql_menu("SELECT comp.frameworkid, COUNT(*)
+                                                FROM {pos_competencies} poscomp
+                                                INNER JOIN {comp} comp
                                                 ON poscomp.competencyid=comp.id
-                                                WHERE poscomp.positionid={$positionid}
-                                                GROUP BY comp.frameworkid");
+                                                WHERE poscomp.positionid = ?
+                                                GROUP BY comp.frameworkid", array($positionid));
 
-        ob_start();
+        $out = '';
 
-        echo '<div class="frameworkpicker">';
+        $out .= html_writer::start_tag('div', array('class' => "frameworkpicker"));
         if (!empty($frameworks)) {
             $fwoptions = array();
             foreach ($frameworks as $fw) {
@@ -357,16 +370,20 @@ class position extends hierarchy {
                 $fwoptions[$fw->id] = $fw->fullname . " ({$count})";
             }
             $fwoptions = count($fwoptions) > 1 ? array(0 => get_string('all')) + $fwoptions : $fwoptions;
-            echo '<div class="hierarchyframeworkpicker">';
-            popup_form($CFG->wwwroot.'/hierarchy/item/view.php?id='.$positionid.'&amp;edit='.$edit.'&amp;prefix=position&amp;framework=', $fwoptions, 'switchframework', $currentfw, '', '', '', false, 'self', get_string('filterframework', 'hierarchy'));
-            echo '</div>';
-        } else {
-            echo get_string('noframeworks', 'competency');
-        }
-        echo '</div>';
+            $out .= html_writer::start_tag('div', array('class' => "hierarchyframeworkpicker"));
 
-        $out = ob_get_contents();
-        ob_end_clean();
+            $url = new moodle_url('/totara/hierarchy/item/view.php', array('id' => $positionid, 'edit' => $edit, 'prefix' => 'position'));
+            $name = get_string('filterframework', 'totara_hierarchy');
+            $options = $fwoptions;
+            $selected = $currentfw;
+            $formid = 'switchframework';
+            $out .= $OUTPUT->single_select($url, 'framework', $options, $selected, array('' => $name), $formid);
+
+            $out .= html_writer::end_tag('div');
+        } else {
+            $out .= get_string('competencynoframeworks', 'totara_hierarchy');
+        }
+        $out .= html_writer::end_tag('div');
 
         return $out;
    }
@@ -379,6 +396,8 @@ class position extends hierarchy {
      * @return array Associative array containing stats
      */
     public function get_item_stats($id) {
+        global $DB;
+
         if (!$data = parent::get_item_stats($id)) {
             return false;
         }
@@ -390,13 +409,12 @@ class position extends hierarchy {
 
         $ids = array_keys($children);
 
+        list($idssql, $idsparams) = sql_sequence('positionid', $ids);
         // number of organisation assignment records
-        $data['pos_assignment'] = count_records_select('pos_assignment',
-            sql_sequence('positionid', $ids));
+        $data['pos_assignment'] = $DB->count_records_select('pos_assignment', $idssql, $idsparams);
 
         // number of assigned competencies
-        $data['assigned_comps'] = count_records_select('pos_competencies',
-            sql_sequence('positionid', $ids));
+        $data['assigned_comps'] = $DB->count_records_select('pos_competencies', $idssql, $idsparams);
 
         return $data;
     }
@@ -412,11 +430,11 @@ class position extends hierarchy {
         $message = parent::output_delete_message($stats);
 
         if ($stats['pos_assignment'] > 0) {
-            $message .= get_string('deleteincludexposassignments', 'position', $stats['pos_assignment']) . '<br />';
+            $message .= get_string('positiondeleteincludexposassignments', 'totara_hierarchy', $stats['pos_assignment']) . html_writer::empty_tag('br');
         }
 
         if ($stats['assigned_comps'] > 0) {
-            $message .= get_string('deleteincludexlinkedcompetencies', 'position', $stats['assigned_comps']). '<br />';
+            $message .= get_string('positiondeleteincludexlinkedcompetencies', 'totara_hierarchy', $stats['assigned_comps']). html_writer::empty_tag('br');
         }
 
         return $message;
@@ -490,7 +508,7 @@ class position_assignment extends data_object {
      * Finds and returns a data_object instance based on params.
      * @static abstract
      *
-     * @param array $params associative arrays varname=>value
+     * @param array $params associative arrays varname => value
      * @return object data_object instance or false if none found.
      */
     public static function fetch($params) {
@@ -498,7 +516,7 @@ class position_assignment extends data_object {
     }
 
     public function save($managerchanged = true) {
-        global $USER, $CFG;
+        global $USER, $DB;
 
         // Get time (expensive on vservers)
         $time = time();
@@ -543,7 +561,7 @@ class position_assignment extends data_object {
 
         if ($managerchanged) {
             // now recalculate managerpath
-            $manager_relations = get_records_menu('pos_assignment', 'type', POSITION_TYPE_PRIMARY, 'userid', 'userid,managerid');
+            $manager_relations = $DB->get_records_menu('pos_assignment', array('type' => POSITION_TYPE_PRIMARY), 'userid', 'userid,managerid');
             //Manager relation for this assignment's user is wrong so we have to fix it
             $manager_relations[$this->userid] = $this->managerid;
             $this->managerpath = '/' . implode(totara_get_lineage($manager_relations, $this->userid), '/');
@@ -551,19 +569,21 @@ class position_assignment extends data_object {
             $newpath = $this->managerpath;
 
             // Update child items
-            $substr3rdparam = '';
-            if ($CFG->dbfamily == 'mssql') {
-                $substr3rdparam = ', len(managerpath)';
-            }
-            $length_sql = sql_length("'/{$this->userid}/'");
-            $position_sql = sql_position("'/{$this->userid}/'", 'managerpath');
-            $substr_sql = sql_substr() . "(managerpath, {$position_sql} + {$length_sql}{$substr3rdparam})";
+            $length_sql = $DB->sql_length("/{$this->userid}/");
+            $position_sql = $DB->sql_position("/{$this->userid}/", 'managerpath');
+            $substr_sql = $DB->sql_substr('managerpath', "$position_sql + $length_sql");
 
-            $sql = "UPDATE {$CFG->prefix}pos_assignment
-                SET managerpath=" . sql_concat("'{$newpath}/'", $substr_sql) . "
-                WHERE type = " . POSITION_TYPE_PRIMARY . " AND (managerpath LIKE '%/{$this->userid}/%')";
+            $managerpath = $DB->sql_concat("{$newpath}/", $substr_sql);
+            $like = $DB->sql_like('managerpath', '?');
+            $sql = "UPDATE {pos_assignment}
+                SET managerpath = {$managerpath}
+                WHERE type = ? AND $like";
+            $params = array(
+                POSITION_TYPE_PRIMARY,
+                "%/{$this->userid}/%"
+            );
 
-            if (!execute_sql($sql, false)) {
+            if (!$DB->execute($sql, $params)) {
                 error_log('assign_user_position: Could not update manager path of child items in manager hierarchy');
                 return false;
             }
@@ -591,20 +611,20 @@ class position_assignment extends data_object {
 function pos_can_edit_position_assignment($userid) {
     global $USER;
 
-    $personalcontext = get_context_instance(CONTEXT_USER, $userid);
+    $personalcontext = context_user::instance($userid);
 
     // can assign any user's position
-    if (has_capability('moodle/local:assignuserposition', get_context_instance(CONTEXT_SYSTEM))) {
+    if (has_capability('totara/hierarchy:assignuserposition', context_system::instance())) {
         return true;
     }
 
     // can assign this particular user's position
-    if (has_capability('moodle/local:assignuserposition', $personalcontext)) {
+    if (has_capability('totara/hierarchy:assignuserposition', $personalcontext)) {
         return true;
     }
 
     // editing own position and have capability to assign own position
-    if ($USER->id == $userid && has_capability('moodle/local:assignselfposition', get_context_instance(CONTEXT_SYSTEM))) {
+    if ($USER->id == $userid && has_capability('totara/hierarchy:assignselfposition', context_system::instance())) {
         return true;
     }
 

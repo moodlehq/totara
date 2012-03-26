@@ -36,7 +36,7 @@
  */
 
 (defined('MOODLE_INTERNAL') && isset($this)) || die();
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 // Check if this is a component
 if (array_key_exists($currenttab, $this->get_components())) {

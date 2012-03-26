@@ -29,9 +29,9 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 require_once('template_forms.php');
-require_once($CFG->dirroot."/local/js/lib/setup.php");
+require_once($CFG->dirroot."/totara/core/js/lib/setup.php");
 
 $id = required_param('id', PARAM_INT);
 $notice = optional_param('notice', 0, PARAM_INT); // notice flag
@@ -42,7 +42,7 @@ if ($currentcomponent == 'competency') {
     local_js();
     require_js(
         array(
-            $CFG->wwwroot .  '/local/plan/components/competency/competency.settings.js'
+            $CFG->wwwroot .  '/totara/plan/components/competency/competency.settings.js'
         )
     );
 }
@@ -71,11 +71,11 @@ if ($fromform = $mform->get_data()) {
 
     if($component == 'plan') {
         $class = 'development_plan';
-        require_once("{$CFG->dirroot}/local/plan/settings_form.php");
+        require_once("{$CFG->dirroot}/totara/plan/settings_form.php");
     } else {
         // Include each components form file
         // Component path
-        $cpath = "{$CFG->dirroot}/local/plan/components/{$component}";
+        $cpath = "{$CFG->dirroot}/totara/plan/components/{$component}";
         $formfile  = "{$cpath}/settings_form.php";
 
         if(!is_readable($formfile)) {
@@ -102,12 +102,12 @@ if ($fromform = $mform->get_data()) {
     $process_form = "{$class}_process_settings_form";
     $process_form($fromform, $id);
 
-    redirect($CFG->wwwroot . '/local/plan/template/advancedworkflow.php?id='.$id.'&amp;component='.$component);
+    redirect($CFG->wwwroot . '/totara/plan/template/advancedworkflow.php?id='.$id.'&amp;component='.$component);
 }
 
 $navlinks = array();    // Breadcrumbs
 $navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-    'link'=>"{$CFG->wwwroot}/local/plan/template/index.php",
+    'link'=>"{$CFG->wwwroot}/totara/plan/template/index.php",
     'type'=>'misc');
 $navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
 
@@ -122,7 +122,7 @@ if($template){
 $currenttab = 'workflowplan';
 require('tabs.php');
 
-print_single_button($CFG->wwwroot.'/local/plan/template/workflow.php', array('id' => $id), get_string('simpleworkflow', 'local_plan'));
+print_single_button($CFG->wwwroot.'/totara/plan/template/workflow.php', array('id' => $id), get_string('simpleworkflow', 'local_plan'));
 
 $mform->display();
 

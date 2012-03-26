@@ -39,7 +39,7 @@
 $capabilities = array(
 
     // Access the plan front end
-    'local/plan:accessplan' => array(
+    'totara/plan:accessplan' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
@@ -50,7 +50,7 @@ $capabilities = array(
     ),
 
     // Access any user's plan
-    'local/plan:accessanyplan' => array(
+    'totara/plan:accessanyplan' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -60,7 +60,7 @@ $capabilities = array(
     ),
 
     // Ability to create, edit and delete plan templates
-    'local/plan:configureplans' => array(
+    'totara/plan:configureplans' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -70,7 +70,7 @@ $capabilities = array(
     ),
 
     // Ability to manage Priority scales
-    'local/plan:managepriorityscales' => array(
+    'totara/plan:managepriorityscales' => array(
         'riskbitmask' => RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -80,7 +80,7 @@ $capabilities = array(
     ),
 
     // Ability to manage Objective scales
-    'local/plan:manageobjectivescales' => array(
+    'totara/plan:manageobjectivescales' => array(
         'riskbitmask' => RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,

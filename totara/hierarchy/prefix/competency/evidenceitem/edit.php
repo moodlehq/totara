@@ -1,11 +1,33 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_courses.class.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_courses.class.php');
 
 require_once($CFG->dirroot.'/course/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 
 ///
@@ -23,13 +45,13 @@ $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // Check perms
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
+admin_externalpage_setup('competencymanage', '', array(), $CFG->wwwroot.'/competency/edit.php');
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:updatecompetency', $sitecontext);
 
-if (!$competency = get_record('comp', 'id', $id)) {
-    error('Competency ID was incorrect');
+if (!$competency = $DB->get_record('comp', array('id' => $id))) {
+    print_error('incorrectcompetencyid', 'totara_hierarchy');
 }
 
 if (empty($CFG->competencyuseresourcelevelevidence)) {
@@ -38,10 +60,10 @@ if (empty($CFG->competencyuseresourcelevelevidence)) {
     ///
     $selected = array();
     $sql = "SELECT c.* FROM
-        {$CFG->prefix}comp_evidence_items ei
-        INNER JOIN {$CFG->prefix}course c ON ei.iteminstance = c.id
-        WHERE ei.competencyid = {$id}";
-    $assigned = get_records_sql($sql);
+        {comp_evidence_items} ei
+        INNER JOIN {course} c ON ei.iteminstance = c.id
+        WHERE ei.competencyid = ?";
+    $assigned = $DB->get_records_sql($sql, array($id));
     $assigned = !empty($assigned) ? $assigned : array();
     foreach ($assigned as $item) {
         $item->id = $item->id;
@@ -63,31 +85,32 @@ if ($nojs) {
     $parents = array();
     make_categories_list($categories, $parents);
 
-    admin_externalpage_print_header();
-    echo '<h2>' . get_string('assignnewevidenceitem', 'competency') . '</h2>';
-    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
-    echo '<p>'. get_string('selectcategoryandcourse','competency'). '</p>';
-    echo '<form action="'.me().' method="get">';
-    choose_from_menu($categories, 'category', $category);
-    echo '<input type="hidden" name="id" value="' . $id . '">';
-    echo '<input type="hidden" name="nojs" value="' . $nojs . '">';
-    echo '<input type="hidden" name="returnurl" value="' . $returnurl . '">';
-    echo '<input type="hidden" name="s" value="' . $s . '">';
-    echo '<input type="submit" name="submit" value="'.get_string('go').'">';
-    echo '</form>';
+    echo $OUTPUT->header();
+    $out = html_writer::tag('h2', get_string('assignnewevidenceitem', 'totara_hierarchy'));
+    $link = html_writer::link($returnurl, get_string('cancelwithoutassigning','totara_hierarchy'));
+    $out .= html_writer::tag('p', $link);
+    $out .= html_writer::start_tag('form', array('action' => me(), 'method' => 'get'));
+    $out .= html_writer::select($categories, 'category', $category);
+    $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "id", 'value' => $id));
+    $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "nojs", 'value' => $nojs));
+    $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "returnurl", 'value' => $returnurl));
+    $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "s", 'value' => $s));
+    $out .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => "submit", 'value' => get_string('go')));
+    $out .= html_writer::end_tag('form');
+    echo $out;
 
     if ($category != 0) {
-        if($courses = get_records('course', 'category', $category, 'sortorder')) {
-            echo '<ul>';
-            foreach($courses as $course) {
-                echo '<li><a href="'.$CFG->wwwroot.'/hierarchy/prefix/competency/evidenceitem/course.php?id='.$course->id.'&amp;competency='.$id.'&amp;nojs='.$nojs.'&amp;s='.$s.'&amp;returnurl='.urlencode($returnurl).'">' . $course->fullname . '</a></li>';
+        if ($courses = $DB->get_records('course', array('category' => $category), 'sortorder')) {
+            $list = array();
+            foreach ($courses as $course) {
+                $list[] = $OUTPUT->action_link(new moodle_url('course.php', array('id' => $course->id, 'competency' => $id, 'nojs' => $nojs, 's' => $s, 'returnurl' => urlencode($returnurl))), $course->fullname);
             }
-            echo '</ul>';
+            echo html_writer::alist($list);
         } else {
-            print '<p>'. get_string('nocoursesincat','competency').'</p>';
+            print html_writer::tag('p', get_string('nocoursesincat','totara_hierarchy'));
         }
     }
-    print_footer();
+    echo $OUTPUT->footer();
 
 } else {
 

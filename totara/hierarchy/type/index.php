@@ -3,7 +3,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,17 +23,16 @@
  * @subpackage hierarchy
  */
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
+require_once("{$CFG->libdir}/adminlib.php");
+require_once("{$CFG->dirroot}/totara/hierarchy/lib.php");
 
-hierarchy::support_old_url_syntax();
 
 ///
 /// Setup / loading data
 ///
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 
 // Get params
 $prefix        = required_param('prefix', PARAM_ALPHA);
@@ -44,20 +43,20 @@ $hierarchy = hierarchy::load_hierarchy($prefix);
 
 // @todo add capabilities
     // Cache user capabilities
-    $can_add = has_capability('moodle/local:create'.$prefix.'type', $sitecontext);
-    $can_edit = has_capability('moodle/local:update'.$prefix.'type', $sitecontext);
-    $can_delete = has_capability('moodle/local:delete'.$prefix.'type', $sitecontext);
-    $can_edit_custom_fields = has_capability('moodle/local:update'.$prefix.'customfield', $sitecontext);
+    $can_add = has_capability('totara/hierarchy:create'.$prefix.'type', $sitecontext);
+    $can_edit = has_capability('totara/hierarchy:update'.$prefix.'type', $sitecontext);
+    $can_delete = has_capability('totara/hierarchy:delete'.$prefix.'type', $sitecontext);
+    $can_edit_custom_fields = has_capability('totara/hierarchy:update'.$prefix.'customfield', $sitecontext);
 
     // Setup page and check permissions
-    admin_externalpage_setup($prefix.'typemanage', null, array('prefix'=>$prefix));
+    admin_externalpage_setup($prefix.'typemanage', null, array('prefix' => $prefix));
 
 ///
 /// Load data for type details
 ///
 
 // Get types for this page
-$types = $hierarchy->get_types(array('custom_field_count' => 1, 'item_count'=>1));
+$types = $hierarchy->get_types(array('custom_field_count' => 1, 'item_count' => 1));
 
 // Get count of unclassified items
 $unclassified = $hierarchy->get_unclassified_items(true);
@@ -71,14 +70,12 @@ $str_delete   = get_string('delete');
 
 if ($types) {
     // Create display table
-    $table = new stdclass();
-    $table->class = 'generaltable edit'.$prefix;
-    $table->width = '95%';
+    $table = new html_table();
 
     // Setup column headers
-    $table->head = array(get_string('name', $prefix),
-        get_string($prefix . 'plural', $prefix),
-        get_string("{$prefix}customfields", $prefix));
+    $table->head = array(get_string('name', 'totara_hierarchy'),
+        get_string($prefix . 'plural', 'totara_hierarchy'),
+        get_string("customfields", 'totara_hierarchy'));
     $table->align = array('left', 'center');
 
     // Add edit column
@@ -94,7 +91,7 @@ if ($types) {
         $cssclass = '';
 
         if ($can_edit_custom_fields) {
-            $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/customfield/index.php?prefix={$prefix}&amp;typeid={$type->id}\">" . format_string($type->fullname) . "</a>";
+            $row[] = $OUTPUT->action_link(new moodle_url('/totara/customfield/index.php', array('prefix' => $prefix, 'typeid' => $type->id)), format_string($type->fullname));
         } else {
             $row[] = format_string($type->fullname);
         }
@@ -104,12 +101,12 @@ if ($types) {
         // Add edit link
         $buttons = array();
         if ($can_edit) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/edit.php?prefix={$prefix}&amp;id={$type->id}\" title=\"$str_edit\">".
-                "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('edit.php', array('prefix' => $prefix, 'id' => $type->id)),
+                new pix_icon('t/edit', $str_edit), null, array('title' => $str_edit, 'class' => 'iconsmall'));
         }
         if ($can_delete) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/delete.php?prefix={$prefix}&amp;id={$type->id}\" title=\"$str_delete\">".
-                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('delete.php', array('prefix' => $prefix, 'id' => $type->id)),
+                new pix_icon('t/delete', $str_delete), null, array('title' => $str_delete, 'class' => 'iconsmall'));
         }
         if ($buttons) {
             $row[] = implode($buttons, ' ');
@@ -121,7 +118,7 @@ if ($types) {
     // Add a row for unclassified items
     if ($unclassified) {
         $row = array();
-        $row[] = get_string('unclassified', 'hierarchy');
+        $row[] = get_string('unclassified', 'totara_hierarchy');
         $row[] = $unclassified;
         $row[] = '&nbsp;';
         $row[] = '&nbsp;';
@@ -130,27 +127,20 @@ if ($types) {
 
 }
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string($prefix.'types', $prefix), 'link'=>'', 'type'=>'misc');
+echo $OUTPUT->header();
 
-admin_externalpage_print_header('', $navlinks);
-
-print_heading(get_string($prefix.'types', $prefix) . ' ' . helpbutton('types', get_string('type', $prefix), 'moodle', true, false, '', true), 'left', 1);
+echo $OUTPUT->heading(get_string('types', 'totara_hierarchy') . ' ' . $OUTPUT->help_icon($prefix.'type', 'totara_hierarchy', false), 1);
 
 // Add type button
 if ($can_add) {
-    echo '<div class="add-type-button">';
-
     // Print button for creating new type
-    $hierarchy->display_add_type_button();
-
-    echo '</div>';
+    echo html_writer::tag('div', $hierarchy->display_add_type_button(), array('class' => 'add-type-button'));
 }
 
 $options = array();
 
 if ($types) {
-    print_table($table);
+    echo html_writer::table($table);
 
     foreach ($types as $type) {
         // only let user select type that contain items
@@ -159,7 +149,7 @@ if ($types) {
         }
     }
 } else {
-    echo "<p>".get_string('notypes', $prefix)."</p>";
+    echo html_writer::tag("p", get_string($prefix.'notypes', 'totara_hierarchy'));
 }
 
 // only show bulk re-classify form if there is at least one type with items
@@ -168,29 +158,17 @@ $showbulkform = (count($options) > 0);
 
 // add an option to change all unclassified items to a new type (if there are any)
 if ($unclassified) {
-    // work around issue with default selection in popup_form()
-    // we want unclassified to have a typeid of 0, but it seems that if you
-    // use 0, that option will get selected in preference to 'Choose', even if you
-    // set $selected to ''. So we'll use -1 instead and switch it on the next page
-    $options[-1] = get_string('unclassified', 'hierarchy');
+    $options[0] = get_string('unclassified', 'totara_hierarchy');
 }
 
 if ($showbulkform) {
-    echo '<br />';
-    print_heading(get_string('bulktypechanges', 'hierarchy'), 'left', 1);
+    echo html_writer::empty_tag('br');
+    echo $OUTPUT->heading(get_string('bulktypechanges', 'totara_hierarchy'), 1);
 
-    print_container(get_string('bulktypechangesdesc', 'hierarchy'));
+    echo $OUTPUT->container(get_string('bulktypechangesdesc', 'totara_hierarchy'));
 
-    popup_form($CFG->wwwroot.'/hierarchy/type/change.php?prefix='.$prefix.'&amp;typeid=', $options, 'changetype', null);
+    echo $OUTPUT->single_select(new moodle_url("change.php", array('prefix' => $prefix)), 'typeid', $options, 'changetype');
 }
 
-// Display templates
-/*if (file_exists($CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/template/lib.php')) {
-    include($CFG->dirroot.'/hierarchy/prefix/'.$prefix.'/template/lib.php');
-    $templates = $hierarchy->get_templates();
-
-    call_user_func("{$prefix}_template_display_table", $templates, $frameworkid);
-}*/
-
 add_to_log(SITEID, $prefix, 'view type list', "type/index.php?prefix=$prefix", '');
-print_footer();
+echo $OUTPUT->footer();

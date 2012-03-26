@@ -28,7 +28,7 @@
  * Library of functions related to Learning Plan priorities.
  */
 
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 
 /**
  * Determine whether an priority scale is assigned to any components of
@@ -73,7 +73,7 @@ function dp_priority_scale_is_used($scaleid) {
     $used = false;
     foreach ($DP_AVAILABLE_COMPONENTS as $component) {
         $component_class = "dp_{$component}_component";
-        $component_class_file = $CFG->dirroot . "/local/plan/components/{$component}/{$component}.class.php";
+        $component_class_file = $CFG->dirroot . "/totara/plan/components/{$component}/{$component}.class.php";
         if (!is_readable($component_class_file)) {
             continue;
         }
@@ -99,8 +99,8 @@ function dp_priority_display_table($priorities, $editingon=0) {
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
     // Cache permissions
-    $can_edit = has_capability('local/plan:managepriorityscales', $sitecontext);
-    $can_delete = has_capability('local/plan:managepriorityscales', $sitecontext);
+    $can_edit = has_capability('totara/plan:managepriorityscales', $sitecontext);
+    $can_delete = has_capability('totara/plan:managepriorityscales', $sitecontext);
 
     // Make sure user has capability to edit
     if (!(($can_edit || $can_delete) && $editingon)) {
@@ -138,7 +138,7 @@ function dp_priority_display_table($priorities, $editingon=0) {
             $count++;
             $line = array();
 
-            $title = "<a href=\"$CFG->wwwroot/local/plan/priorityscales/view.php?id={$priority->id}\">".format_string($priority->name)."</a>";
+            $title = "<a href=\"$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$priority->id}\">".format_string($priority->name)."</a>";
             if ($count==1){
                 $title .= ' ('.get_string('default').')';
             }
@@ -155,7 +155,7 @@ function dp_priority_display_table($priorities, $editingon=0) {
             $buttons = array();
             if ($editingon) {
                 if ($can_edit) {
-                    $buttons[] = "<a title=\"$stredit\" href=\"$CFG->wwwroot/local/plan/priorityscales/edit.php?id=$priority->id\"><img".
+                    $buttons[] = "<a title=\"$stredit\" href=\"$CFG->wwwroot/totara/plan/priorityscales/edit.php?id=$priority->id\"><img".
                         " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
                 }
 
@@ -165,13 +165,13 @@ function dp_priority_display_table($priorities, $editingon=0) {
                     } else if ($scale_assigned) {
                         $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeletepriorityscaleassigned', 'local_plan') . "\" title=\"" . get_string('error:nodeletepriorityscaleassigned', 'local_plan') . "\" /></a>";
                     } else {
-                        $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/local/plan/priorityscales/index.php?delete=$priority->id\"><img".
+                        $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/totara/plan/priorityscales/index.php?delete=$priority->id\"><img".
                             " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
                     }
                 }
                 // If value can be moved up
                 if ($can_edit && $count > 1) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/priorityscales/index.php?moveup={$priority->id}\" title=\"$str_moveup\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/priorityscales/index.php?moveup={$priority->id}\" title=\"$str_moveup\">".
                         "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
                 } else {
                     $buttons[] = $spacer;
@@ -179,7 +179,7 @@ function dp_priority_display_table($priorities, $editingon=0) {
 
                 // If value can be moved down
                 if ($can_edit && $count < $numvalues) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/priorityscales/index.php?movedown={$priority->id}\" title=\"$str_movedown\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/priorityscales/index.php?movedown={$priority->id}\" title=\"$str_movedown\">".
                         "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
                 } else {
                     $buttons[] = $spacer;
@@ -199,7 +199,7 @@ function dp_priority_display_table($priorities, $editingon=0) {
     }
 
     echo '<div class="buttons">';
-    print_single_button("$CFG->wwwroot/local/plan/priorityscales/edit.php", null, get_string('priorityscalecreate', 'local_plan'));
+    print_single_button("$CFG->wwwroot/totara/plan/priorityscales/edit.php", null, get_string('priorityscalecreate', 'local_plan'));
     echo '</div>';
 }
 

@@ -1,15 +1,37 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 
 
 ///
 /// Setup / loading data
 ///
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 
 // Relationship id
 $id       = required_param('id', PARAM_INT);
@@ -19,59 +41,52 @@ $frameworkid = optional_param('framework', PARAM_INT);
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
-require_capability('moodle/local:updateposition', $sitecontext);
+require_capability('totara/hierarchy:updateposition', $sitecontext);
 
 // Setup page and check permissions
 admin_externalpage_setup('positionmanage');
 
 // Load assignment
-if (!$assignment = get_record('pos_competencies', 'id', $id)) {
-    error('Position competency assignment does not exist');
+if (!$assignment = $DB->get_record('pos_competencies', array('id' => $id))) {
+    print_error('posassignmentnotexist', 'totara_hierarchy');
 }
 
 // Load competency
 if ($assignment->competencyid) {
-    $competency = get_record('comp', 'id', $assignment->competencyid);
+    $competency = $DB->get_record('comp', array('id' => $assignment->competencyid));
     $fullname = $competency->fullname;
 }
 else {
-    $template = get_record('comp_template', 'id', $assignment->templateid);
+    $template = $DB->get_record('comp_template', array('id' => $assignment->templateid));
     $fullname = $template->fullname;
 }
 
 
-$returnurl = $CFG->wwwroot.'/hierarchy/item/view.php?prefix=position&amp;id='.$position.'&amp;framework='.$frameworkid;
-$deleteurl = $CFG->wwwroot.'/hierarchy/prefix/position/assigncompetency/remove.php?id='.$id.'&amp;position='.$position.'&amp;framework='.$frameworkid.'&amp;delete='.md5($assignment->timecreated).'&amp;sesskey='.$USER->sesskey;
+$returnurl = new moodle_url('item/view.php', array('prefix' => 'position', 'id' => $position, 'framework' => $frameworkid));
+$deleteurl = new moodle_url('prefix/position/assigncompetency/remove.php',
+    array('id' => $id, 'position' => $position, 'framework' => $frameworkid, 'delete' => md5($assignment->timecreated), 'sesskey' => $USER->sesskey));
 
 if ($delete) {
     /// Delete
     if ($delete != md5($assignment->timecreated)) {
-        print_error('error:checkvariable', 'hierarchy');
+        print_error('error:checkvariable', 'totara_hierarchy');
     }
 
     if (!confirm_sesskey()) {
         print_error('confirmsesskeybad', 'error');
     }
 
-    if (delete_records('pos_competencies', 'id', $id)) {
-        add_to_log(SITEID, 'position', 'delete competency assignment', "item/view.php?id={$position}&amp;prefix=position", "$fullname (ID $assignment->id)");
-        totara_set_notification(get_string('deletedassignedcompetency','position'), $returnurl, array('style'=>'notifysuccess'));
-    } else {
-        totara_set_notification(get_string('deleteassignedcompetency','position'), $returnurl);
-    }
+    $DB->delete_records('pos_competencies', array('id' => $id));
+
+    add_to_log(SITEID, 'position', 'delete competency assignment', "item/view.php?id={$position}&amp;prefix=position", "$fullname (ID $assignment->id)");
+    totara_set_notification(get_string('positiondeletedassignedcompetency','totara_hierarchy'), $returnurl, array('style' => 'notifysuccess'));
 } else {
     /// Display page
-    admin_externalpage_print_header();
-    $strdelete = get_string('competencyassigndeletecheck', 'position');
+    echo $OUTPUT->header();
+    $strdelete = get_string('competencyassigndeletecheck', 'totara_hierarchy');
 
-    notice_yesno(
-        "$strdelete<br /><br />" . format_string($fullname),
-        $deleteurl,
-        $returnurl
-    );
+    echo $OUTPUT->confirm($strdelete . html_writer::empty_tag('br') . html_writer::empty_tag('br') . format_string($fullname), $deleteurl, $returnurl);
 
-    print_footer();
+    echo $OUTPUT->footer();
     exit;
 }
-
-

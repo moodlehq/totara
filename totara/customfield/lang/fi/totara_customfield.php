@@ -48,55 +48,29 @@ $string['shortname'] = 'Lyhenne (pitää olla uniikki)';
 $string['shortnamenotunique'] = 'Tämä lyhenne on jo käytössä';
 $string['specificsettings'] = 'Yksityiskohtaiset asetukset';
 $string['visible'] = 'Piilotetaan asetussivulla?';
-$string['customfieldhidden_help'] = '# Piilotetaanko asetussivulla?
-
-Kun valitset Kyllä, tämä lisäkenttä ei näy asetussivulla eikä missään muuallakaan. Kun valinta on Ei, lisäkenttä on näkyvissä.';
-$string['customfieldfullname_help'] = '# Lisäkentän nimi
-
-Lisäkentän täydellinen nimi';
-$string['customfieldforceunique_help'] = '# Tuleeko tiedon olla yksilöllistä?
-
-Kun tämä asetus on Kyllä, lisäkentän tiedon tulee olla yksilöllistä. Mikäli tässä kentässä yritetään käyttää kahta identtistä merkintää/valintaa, tallennusta ei sallita.
+$string['customfieldhidden_help'] = 'Kun valitset Kyllä, tämä lisäkenttä ei näy asetussivulla eikä missään muuallakaan. Kun valinta on Ei, lisäkenttä on näkyvissä.';
+$string['customfieldfullname_help'] = 'Lisäkentän täydellinen nimi';
+$string['customfieldforceunique_help'] = 'Kun tämä asetus on Kyllä, lisäkentän tiedon tulee olla yksilöllistä. Mikäli tässä kentässä yritetään käyttää kahta identtistä merkintää/valintaa, tallennusta ei sallita.
 
 Kun tämä asetus on Ei, lisäkenttään kelpaa mikä tahansa arvo/merkintä.';
-$string['customfieldlocked_help'] = '# Onko tämä kenttä lukittu?
-
-Kun valinta on Kyllä, kentässä näkyy ainoastaan tiedot, jotka on syötetty kentän luomisvaiheessa. Kenttää ei voida muokata.';
-$string['customfieldmenuoptions_help'] = '# Valikko (Valikon vaihtoehdot)
-
-Syötä vaihtehdot, jotka haluat näkyvän alasvetovalikossa.
+$string['customfieldlocked_help'] = 'Kun valinta on Kyllä, kentässä näkyy ainoastaan tiedot, jotka on syötetty kentän luomisvaiheessa. Kenttää ei voida muokata.';
+$string['customfieldmenuoptions_help'] = 'Syötä vaihtehdot, jotka haluat näkyvän alasvetovalikossa.
 
 Vain yksi vaihtoehto per rivi.';
-$string['customfieldshortname_help'] = '# Lisäkentän lyhenne
-
-Lisäkentän lyhennettä voidaan käyttää eri näkymissä viittaamaan kyseiseen lisäkenttään.
+$string['customfieldshortname_help'] = 'Lisäkentän lyhennettä voidaan käyttää eri näkymissä viittaamaan kyseiseen lisäkenttään.
 
 Lisäkentät näkyvät valintoina sellaisten kohteiden muokkaustiloissa, jotka ovat samalla tasolla kyseisten lisäkenttien kanssa.';
-$string['customfieldrowstextarea_help'] = '# Rivit (tekstialue)
-
-Aseta tekstialueen maksimikorkeus (rivien määrä).';
-$string['customfieldrequired_help'] = '# Onko tämä kenttä pakollinen?
-
-Onko tämä kenttä pakollinen? Mikäli asetus on Kyllä, kenttä näkyy pakollisena kun tälle tasolle luodaan uusia kohteita.
+$string['customfieldrowstextarea_help'] = 'Aseta tekstialueen maksimikorkeus (rivien määrä).';
+$string['customfieldrequired_help'] = 'Onko tämä kenttä pakollinen? Mikäli asetus on Kyllä, kenttä näkyy pakollisena kun tälle tasolle luodaan uusia kohteita.
 
 Mikäli asetus on Ei, kenttä on valinnainen kun tälle tasolle luodaan uusia kohteita.';
-$string['customfieldfieldsizetext_help'] = '# Näyttökoko (tekstinsyöttö)
-
-Näyttökoko määrittelee tekstialueen merkkien koon.';
-$string['customfieldmaxlengthtext_help'] = '# Maksimipituus (tekstinsyöttö)
-
-Maksimipituus määrittelee memrkkien maksimimäärän tekstikentässä.';
-$string['customfielddefaultdatatext_help'] = '# Oletusarvo (tekstinsyöttö)
-
-Oletusarvo on teksti, joka on tekstikentässä oletuksena.
+$string['customfieldfieldsizetext_help'] = 'Näyttökoko määrittelee tekstialueen merkkien koon.';
+$string['customfieldmaxlengthtext_help'] = 'Maksimipituus määrittelee memrkkien maksimimäärän tekstikentässä.';
+$string['customfielddefaultdatatext_help'] = 'Oletusarvo on teksti, joka on tekstikentässä oletuksena.
 
 Jätä tämä tyhjäksi, mikäli oletustekstiä ei tarvita.';
-$string['customfieldcategory_help'] = '# Kategoria
-
-**Kategoria** luodaan, jotta voidaan ryhmitellä räätälöityjä lisäkenttiä sellaisilla sivuilla kuten Kompetenssit, Asemat tai Organisaatiot.';
-$string['customfieldcategories_help'] = '# Lisäkenttien kategoriat
-
-**Lisäkenttien kategoriat** -toiminnolla voit luoda räätälöityjä kategorioita, jotka määräävät lisäkentät tietyn tason alle.
+$string['customfieldcategory_help'] = '**Kategoria** luodaan, jotta voidaan ryhmitellä räätälöityjä lisäkenttiä sellaisilla sivuilla kuten Kompetenssit, Asemat tai Organisaatiot.';
+$string['customfieldcategories_help'] = '**Lisäkenttien kategoriat** -toiminnolla voit luoda räätälöityjä kategorioita, jotka määräävät lisäkentät tietyn tason alle.
 
 Lisäkenttien kategoriat ja lisäkentät luodaan, jotta kaikkia hierarkisten kohteiden tarvittavia tietoja voidaan hallita ja saada näkyviin \'Lisää/muokkaa hierarkioita\' -sivulla.
 
@@ -105,27 +79,17 @@ Lisäkenttien kategorioiden nimien tulee olla yksilöllisiä kyseisellä tasolla
 **Lisäkenttäkategorian lisääminen: **Klikkaa **Luo lisäkenttäkategoria** -painiketta kun haluat luoda uuden kategorian.
 
 **Muokkaa/Poista lisäkenttäkategoria(a): **Klikkaa **Muokkaustila päälle** kun haluat muokata tai poistaa lisäkenttäkategorian.';
-$string['customfielddefaultdatatextarea_help'] = '# Oletusarvo (tekstinsyöttö)
-
-Oletusarvo on teksti, joka on tekstikentässä oletuksena.
+$string['customfielddefaultdatatextarea_help'] = 'Oletusarvo on teksti, joka on tekstikentässä oletuksena.
 
 Jätä tämä tyhjäksi, mikäli oletustekstiä ei tarvita.';
-$string['customfieldcategoryname_help'] = '# Lisäkenttäkategorian nimi
-
-**Lisäkenttäkategorian** nimi auttaa sinua ryhmittelemään lisäkenttiä ja nimen tulee olla yksilöllinen sillä tasolla, jossa työskentelet. 
+$string['customfieldcategoryname_help'] = '**Lisäkenttäkategorian** nimi auttaa sinua ryhmittelemään lisäkenttiä ja nimen tulee olla yksilöllinen sillä tasolla, jossa työskentelet.
 
 Kirjoita nimi ja klikkaa **Tallenan muutokset**.';
-$string['customfieldcolumnstextarea_help'] = '# Sarakkeet (tekstialue)
-
-**Sarakkeet ** määrittelee tekstialueen maksimileveyden.';
-$string['customfielddefaultdatamenu_help'] = '# Oletusarvo (valikko)
-
-Aseta oletusarvo, joka näkyy alasvetovalikossa. Oletusarvon tulee olla yksi valikon arvoista, jotka on listattu ylhäällä.
+$string['customfieldcolumnstextarea_help'] = '**Sarakkeet ** määrittelee tekstialueen maksimileveyden.';
+$string['customfielddefaultdatamenu_help'] = 'Aseta oletusarvo, joka näkyy alasvetovalikossa. Oletusarvon tulee olla yksi valikon arvoista, jotka on listattu ylhäällä.
 
 Jätä tyhjäksi, mikäli oletusarvoa ei tarvita.';
-$string['customfielddefaultdatacheckbox_help'] = '# Oletusvalinta (Valintaruutu)
-
-Kun valinta on Kyllä, lisäkentän valintaruutu on oletusarvoisesti valittuna.
+$string['customfielddefaultdatacheckbox_help'] = 'Kun valinta on Kyllä, lisäkentän valintaruutu on oletusarvoisesti valittuna.
 
 Kun valinta on Ei, lisäkentän valintaruutu ei ole oletusarvoisesti valittuna.';
 

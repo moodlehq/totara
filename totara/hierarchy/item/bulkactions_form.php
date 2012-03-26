@@ -1,13 +1,35 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
 require_once($CFG->dirroot.'/lib/formslib.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 
 class item_bulkaction_form extends moodleform {
 
     // Define the form
     function definition() {
-        global $CFG, $SESSION;
+        global $CFG, $SESSION, $OUTPUT;
 
         $mform =& $this->_form;
 
@@ -48,75 +70,60 @@ class item_bulkaction_form extends moodleform {
         // this shouldn't really be possible as unneeded children are also removed from the list
         // at the time the items are added
         if (count($all_selected_item_ids) != count($hierarchy->get_items_excluding_children($all_selected_item_ids))) {
-            $message = get_string('parentchildselectedwarning' . $action, 'hierarchy');
-            $mform->addElement('html', print_container($message, true, 'hierarchy-bulk-'.$action.'-warning', '', true));
+            $message = get_string('parentchildselectedwarning' . $action, 'totara_hierarchy');
+            $mform->addElement('html', $OUTPUT->container($message, 'hierarchy-bulk-'.$action.'-warning'));
         }
 
-        $available_str = get_string('availablex', 'hierarchy', get_string($prefix . 'plural', $prefix));
-        $selected_str = get_string('selectedx', 'hierarchy', get_string($prefix . 'plural', $prefix));
+        $available_str = get_string('availablex', 'totara_hierarchy', get_string($prefix . 'plural', 'totara_hierarchy'));
+        $selected_str = get_string('selectedx', 'totara_hierarchy', get_string($prefix . 'plural', 'totara_hierarchy'));
 
         // the main 'bulk actions' form is formatted using HTML, and the renderers
         // overridden to get rid of all of formslib's default formatting
-        $mform->addElement('html', "
-<table id=\"hierarchy-bulk-actions-form\">
-    <tr>
-        <th class=\"available-column\">
-        $available_str
-        </th>
-        <th class=\"action-column\">&nbsp;</th>
-        <th class=\"selected-column\">
-        $selected_str
-        </th>
-    </tr>
-    <tr>
-        <td class=\"available-column\">");
+        $html = html_writer::start_tag('table', array('id' => 'hierarchy-bulk-actions-form'));
+        $html .= html_writer::start_tag('tr') . html_writer::tag('th', $available_str, array('class' => 'available-column'));
+        $html .= html_writer::tag('th', '&nbsp;', array('class' => 'action-column'));
+        $html .= html_writer::tag('th', $selected_str, array('class' => 'selected-column'));
+        $html .= html_writer::end_tag('tr');
+        $html .= html_writer::start_tag('tr') . html_writer::start_tag('td', array('class' => 'available-column'));
+        $mform->addElement('html', $html);
 
         $mform->addElement('text', 'search', '',
-            array('placeholder' => get_string('searchavailable', 'hierarchy')));
+            array('placeholder' => get_string('searchavailable', 'totara_hierarchy')));
         $mform->setDefault('search', stripslashes($searchterm));
         $mform->setType('search', PARAM_TEXT);
         $mform->addElement('submit', 'submitsearch', get_string('search'));
         if (strlen(trim($searchterm)) != 0) {
-            $mform->addElement('submit', 'clearsearch', get_string('showall'));
+            $mform->addElement('submit', 'clearsearch', get_string('showall', 'moodle', get_string($prefix.'plural', 'totara_hierarchy')));
         }
 
-        $mform->addElement('html', '
-        </td>
-        <td class="action-column">&nbsp;</td>
-        <td class="selected-column">');
+        $html = html_writer::end_tag('td') . html_writer::tag('td', '&nbsp;', array('class' => 'action-column'));
+        $html .= html_writer::start_tag('td', array('class' => 'selected-column'));
+        $mform->addElement('html', $html);
 
         $remove_attr = array('class' => 'removebutton');
         if ($count_selected_items == 0) {
             $remove_attr['disabled'] = 'disabled';
         }
         $mform->addElement('submit', 'remove_all_items',
-            get_string('clearselection', 'hierarchy'), $remove_attr);
+            get_string('clearselection', 'totara_hierarchy'), $remove_attr);
 
-        $mform->addElement('html', '</td>
-    </tr>');
+        $html = html_writer::end_tag('td') . html_writer::end_tag('tr');
+        $mform->addElement('html', $html);
 
-        $apaging = print_paging_bar($count_available_items, $apage, HIERARCHY_BULK_AVAILABLE_PER_PAGE, $CFG->wwwroot . '/hierarchy/item/bulkactions.php?prefix='.$prefix.'&amp;action='.$action.'&amp;frameworkid='.$frameworkid.'&amp;spage='.$spage.'&amp;', 'apage', false, true, 5);
+        $apaging = $OUTPUT->paging_bar($count_available_items, $apage, HIERARCHY_BULK_AVAILABLE_PER_PAGE, new moodle_url('bulkactions.php', array('prefix' => $prefix, 'action' => $action, 'frameworkid' => $frameworkid, 'spage' => $spage)), 'apage', false, true, 5);
 
-        $spaging = print_paging_bar($count_selected_items, $spage, HIERARCHY_BULK_SELECTED_PER_PAGE, $CFG->wwwroot . '/hierarchy/item/bulkactions.php?prefix='.$prefix.'&amp;action='.$action.'&amp;frameworkid='.$frameworkid.'&amp;apage='.$apage.'&amp;', 'spage', false, true, 5);
+        $spaging = $OUTPUT->paging_bar($count_selected_items, $spage, HIERARCHY_BULK_SELECTED_PER_PAGE, new moodle_url('bulkactions.php', array('prefix' => $prefix, 'action' => $action, 'frameworkid' => $frameworkid, 'apage' => $apage)), 'spage', false, true, 5);
 
         // only show the paging row if necessary
         if ($apaging != '' || $spaging != '') {
-
-            $mform->addElement('html', "
-    <tr>
-        <td class=\"available-column\">
-        $apaging
-        </td>
-        <td class=\"action-column\">&nbsp;</td>
-        <td class=\"selected-column\">
-        $spaging
-        </td>
-    </tr>");
+            $html = html_writer::start_tag('tr') . html_writer::tag('th', $apaging, array('class' => 'available-column'));
+            $html .= html_writer::tag('th', '&nbsp;', array('class' => 'action-column'));
+            $html .= html_writer::tag('th', $spaging, array('class' => 'selected-column'));
+            $html .= html_writer::end_tag('tr');
+            $mform->addElement('html', $html);
         }
-
-        $mform->addElement('html', '
-    <tr>
-        <td class="available-column">');
+        $html = html_writer::start_tag('tr') . html_writer::start_tag('td', array('class' => 'available-column'));
+        $mform->addElement('html', $html);
         // build the select options manually to allow for disabled options
         $select =& $mform->createElement('select', 'available', '', array(),
             array('multiple' => 'multiple', 'size' => 25, 'class' => 'itemslist', 'width' => 200));
@@ -127,16 +134,15 @@ class item_bulkaction_form extends moodleform {
                 $select->addOption($name, $id, $attr);
             }
         } else {
-            $select->addOption(get_string('noxfound', 'hierarchy',
-                strtolower(get_string($prefix.'plural', $prefix))), '',
+            $select->addOption(get_string('noxfound', 'totara_hierarchy',
+                strtolower(get_string($prefix.'plural', 'totara_hierarchy'))), '',
                 array('disabled' => 'disabled'));
         }
         $mform->addElement($select);
         $mform->setType('available', PARAM_INT);
 
-        $mform->addElement('html', '
-        </td>
-        <td class="action-column">');
+        $html = html_writer::end_tag('td') . html_writer::start_tag('td', array('class' => 'action-column'));
+        $mform->addElement('html', $html);
 
         $add_attr = array();
         if ($count_selected_items == $count_available_items) {
@@ -145,24 +151,21 @@ class item_bulkaction_form extends moodleform {
         $mform->addElement('submit', 'add_items', get_string('add') . ' >', $add_attr);
 
         $mform->addElement('submit', 'remove_items', '< ' . get_string('remove'), $remove_attr);
-        $mform->addElement('html', '
-        </td>
-        <td class="selected-column">');
+        $html = html_writer::end_tag('td') . html_writer::start_tag('td', array('class' => 'selected-column'));
+        $mform->addElement('html', $html);
 
         $mform->addElement('select', 'selected', '',  $displayed_selected_items,
             array('multiple' => 'multiple', 'size' => 25, 'class' => 'itemslist', 'width' => 200));
         $mform->setType('selected', PARAM_INT);
 
-        $mform->addElement('html', '
-        </td>
-    </tr>
-</table>');
+        $html = html_writer::end_tag('td') . html_writer::end_tag('tr') . html_writer::end_tag('table');
+        $mform->addElement('html', $html);
 
         switch ($action) {
         case 'delete':
             $mform->addElement('submit', 'deletebutton',
-                get_string('deleteselectedx', 'hierarchy',
-                strtolower(get_string($prefix.'plural', $prefix))));
+                get_string('deleteselectedx', 'totara_hierarchy',
+                strtolower(get_string($prefix.'plural', 'totara_hierarchy'))));
             break;
         case 'move':
             $movearray = array();
@@ -173,12 +176,12 @@ class item_bulkaction_form extends moodleform {
             $mform->setType('newparent', PARAM_INT);
             $movearray[] =& $mform->createElement('submit', 'movebutton', get_string('move'));
             $mform->addGroup($movearray, 'movegroup',
-                get_string('moveselectedxto', 'hierarchy',
-                strtolower(get_string($prefix.'plural', $prefix))), ' ', false);
+                get_string('moveselectedxto', 'totara_hierarchy',
+                strtolower(get_string($prefix.'plural', 'totara_hierarchy'))), ' ', false);
             break;
         default:
             // this shouldn't happen
-            print_error('error:unknownaction', 'hierarchy');
+            print_error('error:unknownaction', 'totara_hierarchy');
         }
 
         // change default render template for bulk action form elements

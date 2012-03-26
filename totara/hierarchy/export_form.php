@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,11 +43,11 @@ class hierarchy_export_form extends moodleform {
         $mform =& $this->_form;
 
         $select = array();
-        $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-        foreach($HIERARCHY_EXPORT_OPTIONS as $option => $code) {
-            $select[$option] = get_string('export'.$option,'hierarchy');
+        $sitecontext = context_system::instance();
+        foreach ($HIERARCHY_EXPORT_OPTIONS as $option => $code) {
+            $select[$option] = get_string('export'.$option, 'totara_hierarchy');
         }
-        if(count($select) == 0) {
+        if (count($select) == 0) {
             // no export options - don't show form
             return false;
         } else if (count($select) == 1) {
@@ -58,10 +58,8 @@ class hierarchy_export_form extends moodleform {
             // show pulldown menu
             $group=array();
             $group[] =& $mform->createElement('select','format', null, $select);
-            $group[] =& $mform->createElement('submit', 'export', get_string('export','hierarchy'));
+            $group[] =& $mform->createElement('submit', 'export', get_string('export', 'totara_hierarchy'));
             $mform->addGroup($group, 'exportgroup', '', array(' '), false);
         }
     }
 }
-
-

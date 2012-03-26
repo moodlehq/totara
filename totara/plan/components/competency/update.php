@@ -24,7 +24,7 @@
  */
 
 require_once('../../../../config.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 

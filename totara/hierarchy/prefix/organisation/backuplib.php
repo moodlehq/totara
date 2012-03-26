@@ -1,16 +1,38 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
 function organisation_backup($bf, $frameworks, $options) {
     // only create hierarchy tag if there are frameworks
-    if(is_array($frameworks) && array_keys($frameworks, '1')) {
+    if (is_array($frameworks) && array_keys($frameworks, '1')) {
         fwrite($bf,start_tag('HIERARCHY',2,true));
         fwrite($bf,full_tag('NAME', 3, false, 'organisation'));
         // only backup frameworks if at least one is selected
-        if(is_array($frameworks) && array_keys($frameworks, '1')) {
+        if (is_array($frameworks) && array_keys($frameworks, '1')) {
             print '<li>Backing up frameworks</li>';
             fwrite($bf,start_tag('FRAMEWORKS',3, true));
-            foreach($frameworks AS $fwid => $include) {
-                if($include) {
+            foreach ($frameworks as $fwid => $include) {
+                if ($include) {
                     organisation_backup_framework($bf, $fwid, $options);
                 }
             }
@@ -22,8 +44,8 @@ function organisation_backup($bf, $frameworks, $options) {
 }
 
 function organisation_backup_framework($bf, $fwid, $options) {
-     if(is_numeric($fwid)) {
-        $framework = get_record('org_framework','id',$fwid);
+     if (is_numeric($fwid)) {
+        $framework = $DB->get_record('org_framework', array('id' => $fwid));
     }
 
     $status = true;
@@ -48,12 +70,12 @@ function organisation_backup_framework($bf, $fwid, $options) {
 }
 
 function organisation_backup_depth($bf, $fwid, $options) {
-    if(is_numeric($fwid)) {
-        $depths = get_records('org_depth', 'frameworkid', $fwid);
+    if (is_numeric($fwid)) {
+        $depths = $DB->get_records('org_depth', array('frameworkid' => $fwid));
     }
-    if($depths) {
+    if ($depths) {
         fwrite($bf, start_tag('DEPTHS', 5, true));
-        foreach($depths AS $depth) {
+        foreach ($depths as $depth) {
             fwrite($bf, start_tag('DEPTH', 6, true));
             fwrite($bf, full_tag('ID', 7, false, $depth->id));
             fwrite($bf, full_tag('FULLNAME', 7, false, $depth->fullname));
@@ -64,7 +86,7 @@ function organisation_backup_depth($bf, $fwid, $options) {
             fwrite($bf, full_tag('TIMECREATED', 7, false, $depth->timecreated));
             fwrite($bf, full_tag('TIMEMODIFIED', 7, false, $depth->timemodified));
             fwrite($bf, full_tag('USERMODIFIED', 7, false, $depth->usermodified));
-            if(isset($options->inc_custom) && $options->inc_custom) {
+            if (isset($options->inc_custom) && $options->inc_custom) {
                 organisation_backup_custom_category($bf, $depth->id, $options);
             }
             fwrite($bf, end_tag('DEPTH', 6, true));
@@ -74,12 +96,12 @@ function organisation_backup_depth($bf, $fwid, $options) {
 }
 
 function organisation_backup_custom_category($bf, $depthid, $options) {
-    if(is_numeric($depthid)) {
-        $categories = get_records('org_depth_info_category','depthid', $depthid);
+    if (is_numeric($depthid)) {
+        $categories = $DB->get_records('org_depth_info_category', array('depthid' => $depthid));
     }
-    if($categories) {
+    if ($categories) {
         fwrite($bf, start_tag('DEPTH_CATEGORIES', 7, true));
-        foreach($categories AS $category) {
+        foreach ($categories as $category) {
             fwrite($bf, start_tag('DEPTH_CATEGORY', 8, true));
             fwrite($bf, full_tag('ID', 9, false, $category->id));
             fwrite($bf, full_tag('NAME', 9, false, $category->name));
@@ -95,12 +117,12 @@ function organisation_backup_custom_category($bf, $depthid, $options) {
 }
 
 function organisation_backup_custom_field($bf, $categoryid, $options) {
-    if(is_numeric($categoryid)) {
-        $fields = get_records('org_depth_info_field','categoryid', $categoryid);
+    if (is_numeric($categoryid)) {
+        $fields = $DB->get_records('org_depth_info_field', array('categoryid' => $categoryid));
     }
-    if($fields) {
+    if ($fields) {
         fwrite($bf, start_tag('CUSTOM_FIELDS', 9, true));
-        foreach($fields AS $field) {
+        foreach ($fields as $field) {
             fwrite($bf, start_tag('CUSTOM_FIELD', 10, true));
             fwrite($bf, full_tag('ID', 11, false, $field->id));
             fwrite($bf, full_tag('FULLNAME', 11, false, $field->fullname));
@@ -127,12 +149,12 @@ function organisation_backup_custom_field($bf, $categoryid, $options) {
 }
 
 function organisation_backup_organisation($bf, $fwid, $options) {
-    if(is_numeric($fwid)) {
-        $organisations = get_records('org', 'frameworkid', $fwid);
+    if (is_numeric($fwid)) {
+        $organisations = $DB->get_records('org', array('frameworkid' => $fwid));
     }
-    if($organisations) {
+    if ($organisations) {
         fwrite($bf, start_tag('ORGANISATIONS', 5, true));
-        foreach($organisations AS $organisation) {
+        foreach ($organisations as $organisation) {
             fwrite($bf, start_tag('ORGANISATION', 6, true));
             fwrite($bf, full_tag('ID', 7, false, $organisation->id));
             fwrite($bf, full_tag('FULLNAME', 7, false, $organisation->fullname));
@@ -149,7 +171,7 @@ function organisation_backup_organisation($bf, $fwid, $options) {
             fwrite($bf, full_tag('TIMEMODIFIED', 7, false, $organisation->timemodified));
             fwrite($bf, full_tag('USERMODIFIED', 7, false, $organisation->usermodified));
 
-            if(isset($options->inc_custom) && $options->inc_custom) {
+            if (isset($options->inc_custom) && $options->inc_custom) {
                 organisation_backup_custom_data($bf, $organisation->id, $options);
             }
 
@@ -160,12 +182,12 @@ function organisation_backup_organisation($bf, $fwid, $options) {
 }
 
 function organisation_backup_custom_data($bf, $posid, $options) {
-    if(is_numeric($posid)) {
-        $values = get_records('org_depth_info_data','organisationid',$posid);
+    if (is_numeric($posid)) {
+        $values = $DB->get_records('org_depth_info_data', array('organisationid' => $posid));
     }
-    if($values) {
+    if ($values) {
         fwrite($bf, start_tag('CUSTOM_VALUES', 7, true));
-        foreach($values AS $value) {
+        foreach ($values as $value) {
             fwrite($bf, start_tag('CUSTOM_VALUE', 8, true));
             fwrite($bf, full_tag('ID', 9, false, $value->id));
             fwrite($bf, full_tag('FIELDID', 9, false, $value->fieldid));
@@ -209,4 +231,3 @@ function organisation_get_item_tag($plural=false) {
         return "ORGANISATION";
     }
 }
-

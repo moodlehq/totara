@@ -1,12 +1,33 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('editvalue_form.php');
-require_once($CFG->dirroot . '/hierarchy/prefix/competency/scale/lib.php');
-require_once($CFG->dirroot . '/hierarchy/lib.php');
+require_once($CFG->dirroot . '/totara/hierarchy/prefix/competency/scale/lib.php');
+require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
 
-hierarchy::support_old_url_syntax();
 
 ///
 /// Setup / loading data
@@ -20,38 +41,39 @@ $scaleid = optional_param('scaleid', 0, PARAM_INT);
 
 // Make sure we have at least one or the other
 if (!$id && !$scaleid) {
-    error('Incorrect parameters');
+    print_error('incorrectparameters', 'totara_hierarchy');
 }
 
 
 // Page setup and check permissions
 admin_externalpage_setup($prefix.'manage');
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 
 if ($id == 0) {
     // Creating new scale value
-    require_capability('moodle/local:createcompetency', $sitecontext);
+    require_capability('totara/hierarchy:createcompetency', $sitecontext);
 
-    $value = new object();
+    $value = new stdClass();
     $value->id = 0;
+    $value->description = '';
     $value->scaleid = $scaleid;
-    $value->sortorder = get_field('comp_scale_values', 'MAX(sortorder) + 1', 'scaleid', $value->scaleid);
+    $value->sortorder = $DB->get_field('comp_scale_values', 'MAX(sortorder) + 1', array('scaleid' => $value->scaleid));
     if (!$value->sortorder) {
         $value->sortorder = 1;
     }
 
 } else {
     // Editing scale value
-    require_capability('moodle/local:updatecompetency', $sitecontext);
+    require_capability('totara/hierarchy:updatecompetency', $sitecontext);
 
-    if (!$value = get_record('comp_scale_values', 'id', $id)) {
-        error('Scale value ID was incorrect');
+    if (!$value = $DB->get_record('comp_scale_values', array('id' => $id))) {
+        print_error('incorrectcompetencyscalevalueid', 'totara_hierarchy');
     }
 }
 
-if (!$scale = get_record('comp_scale', 'id', $value->scaleid)) {
-    error('Competency scale ID was incorrect');
+if (!$scale = $DB->get_record('comp_scale', array('id' => $value->scaleid))) {
+        print_error('incorrectcompetencyscaleid', 'totara_hierarchy');
 }
 
 $scale_used = competency_scale_is_used($scale->id);
@@ -60,8 +82,8 @@ $scale_used = competency_scale_is_used($scale->id);
 $value->scalename = $scale->name;
 
 // check scale isn't being used when adding new scale values
-if($value->id == 0 && $scale_used) {
-    error('You cannot add a scale value to a scale that is in use.');
+if ($value->id == 0 && $scale_used) {
+    print_error('usedscale', 'totara_hierarchy');
 }
 
 ///
@@ -69,13 +91,16 @@ if($value->id == 0 && $scale_used) {
 ///
 
 // Create form
+$value->descriptionformat = FORMAT_HTML;
+$value = file_prepare_standard_editor($value, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                          'totara_hierarchy', 'comp_scale_values', $value->id);
 $valueform = new competencyscalevalue_edit_form(null, array('scaleid' => $scale->id, 'id' => $id));
 $valueform->set_data($value);
 
 // cancelled
 if ($valueform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/hierarchy/prefix/competency/scale/view.php?id={$value->scaleid}&amp;prefix=competency");
+    redirect("$CFG->wwwroot/totara/hierarchy/prefix/competency/scale/view.php?id={$value->scaleid}&amp;prefix=competency");
 
 // Update data
 } else if ($valuenew = $valueform->get_data()) {
@@ -88,47 +113,56 @@ if ($valueform->is_cancelled()) {
     }
 
     // Save
+    //class to hold totara_set_notification info
+    $notification = new stdClass();
     // New scale value
     if ($valuenew->id == 0) {
         unset($valuenew->id);
 
-        if ($valuenew->id = insert_record('comp_scale_values', $valuenew)) {
+        if ($valuenew->id = $DB->insert_record('comp_scale_values', $valuenew)) {
             // Log
             add_to_log(SITEID, 'competency', 'added scale value', "prefix/competency/scale/view.php?id={$valuenew->scaleid}&amp;prefix=competency");
-
-            totara_set_notification(get_string('scalevalueadded', 'competency', format_string(stripslashes($valuenew->name))),"$CFG->wwwroot/hierarchy/prefix/competency/scale/view.php?id={$valuenew->scaleid}&amp;prefix=competency", array('style' => 'notifysuccess'));
+            $notification->text = 'scalevalueadded';
+            $notification->url = "$CFG->wwwroot/totara/hierarchy/prefix/competency/scale/view.php?id={$valuenew->scaleid}&amp;prefix=competency";
+            $notification->params = array('style' => 'notifysuccess');
         } else {
-            error('Error creating scale value record');
+            print_error('createscalevaluerecord', 'totara_hierarchy');
         }
 
     // Updating scale value
     } else {
-        if (update_record('comp_scale_values', $valuenew)) {
+        if ($DB->update_record('comp_scale_values', $valuenew)) {
             // Log
             add_to_log(SITEID, 'competency', 'update scale value', "prefix/competency/scale/view.php?id={$valuenew->scaleid}&amp;prefix=competency");
-
-            totara_set_notification(get_string('scalevalueupdated', 'competency', format_string(stripslashes($valuenew->name))),"$CFG->wwwroot/hierarchy/prefix/competency/scale/view.php?id={$valuenew->scaleid}&amp;prefix=competency", array('style' => 'notifysuccess'));
+            $notification->text = 'scalevalueupdated';
+            $notification->url = "$CFG->wwwroot/totara/hierarchy/prefix/competency/scale/view.php?id={$valuenew->scaleid}&amp;prefix=competency";
+            $notification->params = array('style' => 'notifysuccess');
         } else {
-            error('Error updating scale value record');
+          print_error('updatescalevaluerecord', 'totara_hierarchy');
         }
     }
+    //fix the description field and redirect
+    $valuenew = file_postupdate_standard_editor($valuenew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_hierarchy', 'comp_scale_values', $valuenew->id);
+    $DB->set_field('comp_scale_values', 'description', $valuenew->description, array('id' => $valuenew->id));
+    totara_set_notification(get_string($notification->text, 'totara_hierarchy', format_string(stripslashes($valuenew->name))),
+                        $notification->url, $notification->params);
 }
 
 // Display page header
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 if ($id == 0) {
-    print_heading(get_string('addnewscalevalue', 'competency'));
+    echo $OUTPUT->heading(get_string('addnewscalevalue', 'totara_hierarchy'));
 } else {
-    print_heading(get_string('editscalevalue', 'competency'));
+    echo $OUTPUT->heading(get_string('editscalevalue', 'totara_hierarchy'));
 }
 
 // Display warning if scale is in use
-if($scale_used) {
-    print_container(get_string('competencyscaleinuse', 'competency'), true, 'notifysuccess');
+if ($scale_used) {
+    echo $OUTPUT->container(get_string('competencyscaleinuse', 'totara_hierarchy'), 'notifysuccess');
 }
 
 $valueform->display();
 
 /// and proper footer
-print_footer();
+echo $OUTPUT->footer();

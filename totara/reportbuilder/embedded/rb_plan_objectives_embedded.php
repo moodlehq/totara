@@ -33,7 +33,7 @@ class rb_plan_objectives_embedded extends rb_base_embedded {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
         $rolstatus = array_key_exists('rolstatus', $data) ? $data['rolstatus'] : null;
 
-        $this->url = '/local/plan/record/objectives.php';
+        $this->url = '/totara/plan/record/objectives.php';
         $this->source = 'dp_objective';
         $this->defaultsortcolumn = 'objective_fullnamelink';
         $this->shortname = 'plan_objectives';

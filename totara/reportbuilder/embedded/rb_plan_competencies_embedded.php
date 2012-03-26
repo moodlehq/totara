@@ -33,7 +33,7 @@ class rb_plan_competencies_embedded extends rb_base_embedded {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
         $rolstatus = array_key_exists('rolstatus', $data) ? $data['rolstatus'] : null;
 
-        $this->url = '/local/plan/record/competencies.php';
+        $this->url = '/totara/plan/record/competencies.php';
         $this->source = 'dp_competency';
         $this->defaultsortcolumn = 'competency_fullname';
         $this->shortname = 'plan_competencies';

@@ -35,7 +35,7 @@ global $PAGE, $OUTPUT, $SESSION, $COURSE;
 
 add_to_log(SITEID, 'local_oauth', 'trigger oauth authentication', "", '');
 
-//$PAGE->set_url('/local/oauth/authenticate.php', array());
+//$PAGE->set_url('/totara/oauth/authenticate.php', array());
 //$PAGE->set_title(get_string('oauth', 'local_oauth'));
 //$PAGE->set_heading(get_string('authentication', 'local_oauth'));
 
@@ -88,7 +88,7 @@ if (empty($SESSION->local_oauth[$site->name])) {
 }
 
 $context = get_context_instance(CONTEXT_SYSTEM);
-if (!has_capability('local/oauth:negotiate', $context)) {
+if (!has_capability('totara/oauth:negotiate', $context)) {
     print_heading(get_string('authentication', 'local_oauth'));
     print_error(get_string('notallowed', 'local_oauth'));
     print_footer();

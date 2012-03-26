@@ -62,7 +62,7 @@
 $capabilities = array(
 
 // Ability to administer dashboards; default dashboard layout, dashlets, etc.
-'local/dashboard:admin' => array(
+'totara/dashboard:admin' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -72,7 +72,7 @@ $capabilities = array(
     ),
 
 // Ability to view dashboard
-'local/dashboard:view' => array(
+'totara/dashboard:view' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
@@ -88,7 +88,7 @@ $capabilities = array(
     ),
 
 // Ability to edit a dasboard: add/edit/move dashlets, etc.
-'local/dashboard:edit' => array(
+'totara/dashboard:edit' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,

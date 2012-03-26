@@ -28,9 +28,9 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 // needed for approval constants etc
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 // needed for instatiating and checking programs
-require_once($CFG->dirroot . '/local/program/lib.php');
+require_once($CFG->dirroot . '/totara/program/lib.php');
 
 class rb_source_dp_program_recurring extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;

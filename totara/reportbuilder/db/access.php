@@ -64,7 +64,7 @@ $capabilities = array(
 
 // Ability to create, edit and delete report builder reports view
 // the report builder administrative pages
-'local/reportbuilder:managereports' => array(
+'totara/reportbuilder:managereports' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,

@@ -24,8 +24,8 @@
 
 
 require_once('../../../../config.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_hierarchy.class.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
@@ -49,7 +49,7 @@ $treeonly = optional_param('treeonly', false, PARAM_BOOL);
 ///
 /// Load plan
 ///
-require_capability('local/plan:accessplan', get_system_context());
+require_capability('totara/plan:accessplan', get_system_context());
 
 $plan = new development_plan($id);
 $component = $plan->get_component('competency');

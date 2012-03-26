@@ -26,8 +26,8 @@ class dp_userdriven_workflow extends dp_base_workflow {
 
     function __construct() {
         global $CFG;
-        require_once($CFG->dirroot.'/local/plan/objectivescales/lib.php');
-        require_once($CFG->dirroot.'/local/plan/priorityscales/lib.php');
+        require_once($CFG->dirroot.'/totara/plan/objectivescales/lib.php');
+        require_once($CFG->dirroot.'/totara/plan/priorityscales/lib.php');
         $defaultpriority = dp_priority_default_scale_id();
         $defaultobjective = dp_objective_default_scale_id();
 

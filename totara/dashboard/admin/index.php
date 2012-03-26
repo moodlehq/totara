@@ -24,14 +24,14 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/dashboard/lib.php');
+require_once($CFG->dirroot.'/totara/dashboard/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 require_login();
 
 global $USER;
 
-require_capability('local/dashboard:admin', get_context_instance(CONTEXT_SYSTEM));
+require_capability('totara/dashboard:admin', get_context_instance(CONTEXT_SYSTEM));
 
 admin_externalpage_setup('managedashboards');
 admin_externalpage_print_header();
@@ -46,7 +46,7 @@ $headings = array(get_string('shortname', 'local_dashboard'),
     );
 
 $table = new flexible_table(get_string('dashboards', 'local_dashboard'));
-$table->define_baseurl($CFG->wwwroot.'/local/dashboard/admin/index.php');
+$table->define_baseurl($CFG->wwwroot.'/totara/dashboard/admin/index.php');
 $table->define_columns($columns);
 $table->define_headers($headings);
 $table->set_attribute('id', 'list-managedashboards');
@@ -60,7 +60,7 @@ if ($dashboards = local_dashboard_get_dashboards()) {
 
         $content[] = $d->shortname;
         $dashboard_title = get_string($d->shortname, 'local_dashboard');
-        $content[] = "<a href=\" {$CFG->wwwroot}/local/dashboard/admin/edit.php?item={$d->shortname}\">{$dashboard_title}</a>";
+        $content[] = html_writer::link(new moodle_url('/totara/dashboard/admin/edit.php', array('item' => $d->shortname)), $dashboard_title);
         $content[] = $d->rolename;
         $content[] = $d->active_dashlets;
         $table->add_data($content);

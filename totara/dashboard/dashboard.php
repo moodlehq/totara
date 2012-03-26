@@ -23,7 +23,7 @@
  */
 
 require_once('../config.php');
-require_once($CFG->dirroot.'/local/dashboard/lib.php');
+require_once($CFG->dirroot.'/totara/dashboard/lib.php');
 
 require_login();
 
@@ -34,8 +34,8 @@ $edit=optional_param('edit', -1, PARAM_BOOL);
 
 // Check user capabilities
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('local/dashboard:view', $sitecontext, $USER->id);
-$canedit = (has_capability('local/dashboard:edit', $sitecontext, $USER->id));
+require_capability('totara/dashboard:view', $sitecontext, $USER->id);
+$canedit = (has_capability('totara/dashboard:edit', $sitecontext, $USER->id));
 //TODO: maybe add some dashboard-specific caps here
 
 $dashb = new Dashboard('mylearning', $USER->id, 'user');

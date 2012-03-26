@@ -369,41 +369,34 @@ function build_category_treeview($list, $parents, $load_string) {
  * @return string HTML code displaying the treeview based on input params
  *
  */
-function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams, $expandurl, $parents = array(), $disabledlist = array()) {
+function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams, $expandurl, $expandparams, $parents = array(), $disabledlist = array()) {
     global $OUTPUT;
-    $html = '<table>';
+    $table = new html_table();
 
     if (is_array($elements) && !empty($elements)) {
 
         // Loop through elements
         foreach ($elements as $element) {
             $params = $actionparams + array('add' => $element->id);
-            $html .= '<tr>';
-            $html .= '<td>';
-            $html .= $OUTPUT->single_button(new moodle_url($actionurl, $params), get_string('assign','hierarchy'), 'get', array('disabled' => array_key_exists($element->id, $disabledlist)));
-            $html .= '</td><td>';
-
+            $cells = array();
+            $cells[] = new html_table_cell($OUTPUT->single_button(new moodle_url($actionurl, $params), get_string('assign','totara_hierarchy'), 'get', array('disabled' => array_key_exists($element->id, $disabledlist))));
             // Element has children
             if (array_key_exists($element->id, $parents)) {
-                $html .= '<a href="'.$expandurl.'&amp;parentid='.$element->id.'">';
-                $html .= format_string($element->fullname);
-                if(!empty($element->idnumber)) $html .= ' - '.$element->idnumber;
-                $html .= '</a>';
+                $linktext = format_string($element->fullname);
+                if (!empty($element->idnumber)) $linktext .= ' - '.$element->idnumber;
+                $cellcontent = html_writer::link(new moodle_url($expandurl, array_merge($expandparams, array('parentid' => $element->id))), $linktext);
             } else {
-                $html .= format_string($element->fullname);
-                if(!empty($element->idnumber)) $html .= ' - '.$element->idnumber;
+                $cellcontent = format_string($element->fullname);
+                if (!empty($element->idnumber)) $cellcontent .= ' - '.$element->idnumber;
             }
-
-            $html .= '</td></tr>'.PHP_EOL;
+            $cells[] = $cellcontent;
+            $table->data[] = new html_table_row($cells);
         }
     }
     else {
-        $html .= '<tr><td>';
-        $html .= $error_string;
-        $html .= '</td></tr>'.PHP_EOL;
+        $table->data[] = new html_table_row(array(new html_table_cell($error_string)));
     }
-    $html .= '</table>';
-    return $html;
+    return html_writer::table($table);
 }
 
 /*
@@ -423,30 +416,30 @@ function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams, $allfws
     $murl = new moodle_url($url, $urlparams);
     $nofwurl = $murl->out(false, array('frameworkid' => 0));
 
-    $html = '<div class="breadcrumb"><h2 class="accesshide " >You are here</h2> <ul>';
+    $html = html_writer::start_tag('div', array('class' => 'breadcrumb')) . html_writer::tag('h2', get_string('youarehere','access'), array('class' => 'accesshide'));
+    $html .= html_writer::start_tag('ul');
     $first = true;
-    if($allfws) {
+    if ($allfws) {
         $first = false;
-        $html .= '<li class="first"><a href="'.$nofwurl.'">'.
-            get_string('allframeworks','hierarchy').'</a></li>';
+        $html .= html_writer::tag('li', html_writer::link($nofwurl, get_string('allframeworks','totara_hierarchy')), array('class' => 'first'));
     }
-    if($parentid) {
-        if($lineage = $hierarchy->get_item_lineage($parentid)) {
+    if ($parentid) {
+        if ($lineage = $hierarchy->get_item_lineage($parentid)) {
             // correct order for breadcrumbs
             $items = array_reverse($lineage);
-            foreach($items as $item) {
+            foreach ($items as $item) {
                 $itemurl = $murl->out(false, array('parentid'=>$item->parentid));
-                $html .= '<li> <span class="accesshide " >/&nbsp;</span>';
-                if(!$first) {
-                    $html .= '<span class="arrow sep">&#x25BA;</span>';
+                $html .= html_writer::start_tag('li') . html_writer::tag('span', '&nbsp;', array('class' => 'accesshide'));
+                if (!$first) {
+                    $html .= html_writer::tag('span', '&#x25BA;', array('class' => 'arrow sep'));
                 } else {
                     $first = false;
                 }
-                $html .= '<a href="'.$itemurl.'">'.$item->fullname.'</a></li>';
+                $html .= html_writer::link($itemurl, $item->fullname) . html_writer::end_tag('li');
             }
         }
     }
-    $html .= '</ul></div>';
+    $html .= html_writer::end_tag('ul') . html_writer::end_tag('div');
     return $html;
 }
 
@@ -464,17 +457,18 @@ function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
     global $DB;
     $murl = new moodle_url($url, $urlparams);
     if ($fws = $DB->get_records($hierarchy->shortprefix.'_framework', null, 'sortorder')) {
-        echo '<div id="nojsinstructions"><p>'.PHP_EOL;
-        echo get_string('pickaframework','hierarchy');
-        echo '</p></div>'.PHP_EOL;
-        echo '<div class="nojsselect"><ul>'.PHP_EOL;
+        $out = html_writer::start_tag('div', array('id' => 'nojsinstructions'));
+        $out .= html_writer::tag('p', get_string('pickaframework','totara_hierarchy'));
+        $out .= html_writer::end_tag('div');
+        $out .= html_writer::start_tag('div', array('class' => 'nojsselect')) . html_writer::start_tag('ul');
         foreach ($fws as $fw) {
             $fullurl = $murl->out(false, array('frameworkid' => $fw->id));
-            echo '<li><a href="'.$fullurl.'">'.$fw->fullname.'</a></li>'.PHP_EOL;
+            $out .= html_writer::tag('li', html_writer::link($fullurl, $fw->fullname));
         }
-        echo '</ul></div>'.PHP_EOL;
+        $out .= html_writer::end_tag('ul') . html_writer::end_tag('div');
+        return $out;
     } else {
-        print_error('noframeworks', $hierarchy->prefix);
+        print_error($hierarchy->prefix . 'noframeworks', 'totara_hierarchy');
     }
 }
 
@@ -487,34 +481,39 @@ function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
  * @return string HTML to print the position picker list
  */
 function build_nojs_positionpicker($url, $urlparams) {
-    global $USER, $CFG;
+    global $USER, $CFG, $OUTPUT;
     // TODO add other html to this function (see picker above)
     $murl = new moodle_url($url, $urlparams);
     $html = '';
     $positionhierarchy = new position();
     $positions = $positionhierarchy->get_user_positions($USER);
     if ($positions) {
-        $html .= '<div id="nojsinstructions"><p>'.PHP_EOL;
+        $html .= $OUTPUT->container_start(null, 'nojsinstructions');
+        $html .= html_writer::start_tag('p');
         $html .= get_string('chooseposition','position');
-        $html .= '</p></div>'.PHP_EOL;
-        $html .= '<div class="nojsselect"><ul>'.PHP_EOL;
-        foreach($positions as $position) {
+        $html .= html_writer::end_tag('p');
+        $html .= $OUTPUT->container_end();
+        $html .= $OUTPUT->container_start('nojsselect');
+        $html .= html_writer::start_tag('ul');
+        foreach ($positions as $position) {
             $fullurl = $murl->out(false, array('frameworkid' => $position->id));
-            $html .= '<li><a href="'.$fullurl.'">'.$position->fullname.'</a>';
+            $html .= html_writer::start_tag('li');
+            $html .= html_writer::link($fullurl, $position->fullname);
             switch ($position->type) {
             case 1:
-                $html .= ' (Primary Position)';
+                $html .= ' (' . get_string('typeprimary', 'totara_hierarchy') . ')';
                 break;
             case 2:
-                $html .= ' (Secondary Position)';
+                $html .= ' (' . get_string('typesecondary', 'totara_hierarchy') . ')';
                 break;
             case 3:
-                $html .= ' (Aspirational Position)';
+                $html .= ' (' . get_string('typeaspirational', 'totara_hierarchy') . ')';
                 break;
             }
-            $html .= '</li>';
+            $html .= html_writer::end_tag('li');
         }
-        $html .= '</ul></div>'.PHP_EOL;
+        $html .= html_writer::end_tag('ul');
+        $html .= $OUTPUT->container_end();
     } else {
         print_error('nopositions', 'position');
     }
@@ -529,13 +528,18 @@ function build_nojs_positionpicker($url, $urlparams) {
  */
 function dialog_display_currently_selected($label, $title='') {
 
-    $html = ' <span id="treeview_currently_selected_span_'.$title.'" style="display: none;">';
-    $html .= '(<label for="treeview_selected_text_'.$title.'">'.$label.'</label>:&nbsp;';
-    $html .= '<em><span id="treeview_selected_text_'.$title.'"></span></em>'; 
-    $html .= ')</span>';
+    $outerid = "treeview_currently_selected_span_{$title}";
+    $innerid = "treeview_selected_text_{$title}";
+    $valid = "treeview_selected_val_{$title}";
+
+    $html = ' ' . html_writer::start_tag('span', array('id' => $outerid, 'style' => 'display: none;'));
+    $html .= '(' . html_writer::tag('label', $label, array('for' => $innerid)) . ':&nbsp;';
+    $html .= html_writer::tag('em', html_writer::tag('span', '', array('id' => $innerid)));
+    $html .= ')' . html_writer::end_tag('span');
 
     // Also add a hidden field that can hold the currently selected value
-    $html .= '<input type="hidden" id="treeview_selected_val_'.$title.'" name="treeview_selected_val_'.$title.'" value="" />';
+    $attr = array('type' => 'hidden', 'id' => $valid, 'name' => $valid, 'value' => '');
+    $html .= html_writer::empty_tag('input', $attr);
 
     return $html;
 }

@@ -28,9 +28,9 @@
  */
 
 require_once('../../../../config.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
-require_once($CFG->dirroot . '/local/plan/components/objective/edit_form.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/plan/components/objective/edit_form.php');
 
 global $USER;
 
@@ -84,7 +84,7 @@ if ( $objectiveid == null ){
 
 $objallurl = $component->get_url();
 if ( $objectiveid ){
-    $objviewurl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$planid}&amp;itemid={$objectiveid}";
+    $objviewurl = "{$CFG->wwwroot}/totara/plan/components/objective/view.php?id={$planid}&amp;itemid={$objectiveid}";
 } else {
     $objviewurl = $objallurl;
 }
@@ -93,7 +93,7 @@ if ( $objectiveid ){
 ///
 /// Permissions check
 ///
-require_capability('local/plan:accessplan', get_system_context());
+require_capability('totara/plan:accessplan', get_system_context());
 if ( !$component->can_update_items() ) {
     print_error('error:cannotupdateobjectives', 'local_plan');
 }
@@ -191,7 +191,7 @@ $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$planid, 'type'=>'title');
+$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$planid, 'type'=>'title');
 $navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => '', 'type' => 'title');
 $navigation = build_navigation($navlinks);
 
@@ -217,8 +217,8 @@ switch($action){
         $component->display_objective_detail($objectiveid);
         notice_yesno(
                 get_string('deleteobjectiveareyousure', 'local_plan'),
-                $CFG->wwwroot.'/local/plan/components/objective/edit.php',
-                $CFG->wwwroot.'/local/plan/components/objective/edit.php',
+                $CFG->wwwroot.'/totara/plan/components/objective/edit.php',
+                $CFG->wwwroot.'/totara/plan/components/objective/edit.php',
                 array('id'=>$planid, 'itemid'=>$objectiveid, 'deleteyes'=>'Yes', 'sesskey'=>sesskey()),
                 array('id'=>$planid, 'itemid'=>$objectiveid, 'deleteno'=>'No')
         );

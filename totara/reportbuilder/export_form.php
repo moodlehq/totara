@@ -45,7 +45,7 @@ class report_builder_export_form extends moodleform {
         $select = array();
         $oauthenabled = get_config('local_oauth', 'oauthenabled');
         $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-        $oauthcap = has_capability('local/oauth:negotiate', $sitecontext);
+        $oauthcap = has_capability('totara/oauth:negotiate', $sitecontext);
         foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
             // specific checks for fusion tables export
             if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {

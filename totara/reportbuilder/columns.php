@@ -39,14 +39,14 @@ $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
 admin_externalpage_setup('managereports');
 
-$returnurl = $CFG->wwwroot."/local/reportbuilder/columns.php?id=$id";
+$returnurl = $CFG->wwwroot."/totara/reportbuilder/columns.php?id=$id";
 
 $report = new reportbuilder($id);
 
 // include jquery
 local_js();
 // include js to handle column actions
-require_js(array($CFG->wwwroot . '/local/reportbuilder/columns.js.php'));
+require_js(array($CFG->wwwroot . '/totara/reportbuilder/columns.js.php'));
 
 // toggle show/hide column
 if ($h !== null && isset($cid)) {
@@ -127,7 +127,7 @@ if ($fromform = $mform->get_data()) {
 admin_externalpage_print_header();
 
 print_container_start(true, 'reportbuilder-navbuttons');
-print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
+print_single_button($CFG->wwwroot.'/totara/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
 print $report->view_button();
 print_container_end();
 

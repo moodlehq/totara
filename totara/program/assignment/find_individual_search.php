@@ -3,9 +3,9 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
-require_once($CFG->dirroot . '/local/dialogs/search_form.php');
-require_once($CFG->dirroot . '/local/dialogs/dialog_content_hierarchy.class.php');
-require_once("{$CFG->dirroot}/local/program/lib.php");
+require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
+require_once($CFG->dirroot . '/totara/core/dialogs/dialog_content_hierarchy.class.php');
+require_once("{$CFG->dirroot}/totara/program/lib.php");
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
@@ -15,7 +15,7 @@ $programid = required_param('programid', PARAM_INT);
 
 // Get program id and check capabilities
 $programid = required_param('programid', PARAM_INT);
-require_capability('local/program:configureassignments', program_get_context($programid));
+require_capability('totara/program:configureassignments', program_get_context($programid));
 
 /**
  * How many search results to show before paginating
@@ -39,7 +39,7 @@ $query = urldecode(trim($query));
 $hidden = array();
 
 // Create form
-$formurl = "{$CFG->wwwroot}/local/program/assignment/find_individual_search.php?programid={$programid}";
+$formurl = "{$CFG->wwwroot}/totara/program/assignment/find_individual_search.php?programid={$programid}";
 $mform = new dialog_search_form($formurl, compact('hidden', 'query'));
 
 // Display form
@@ -82,7 +82,7 @@ if (strlen($query)) {
 
             $data = array('query' => urlencode(stripslashes($query)), 'programid' => $programid);
 
-            $url = new moodle_url($CFG->wwwroot . '/local/program/assignment/find_individual_search.php', $data);
+            $url = new moodle_url($CFG->wwwroot . '/totara/program/assignment/find_individual_search.php', $data);
             print '<div class="search-paging">';
             print print_paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url, 'page', false, true, 5);
             print '</div>';

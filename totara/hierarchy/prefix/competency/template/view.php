@@ -1,8 +1,30 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 
 
 ///
@@ -11,7 +33,7 @@ require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
 
 $id          = required_param('id', PARAM_INT);
 $edit        = optional_param('edit', -1, PARAM_BOOL);
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 
 $hierarchy         = new competency();
 $item              = $hierarchy->get_template($id);
@@ -21,7 +43,7 @@ $framework         = $hierarchy->get_framework($item->frameworkid);
 $competencies = $hierarchy->get_assigned_to_template($id);
 
 // Cache user capabilities
-$can_edit   = has_capability('moodle/local:update'.$hierarchy->prefix.'template', $sitecontext);
+$can_edit   = has_capability('totara/hierarchy:update'.$hierarchy->prefix.'template', $sitecontext);
 
 if ($can_edit) {
     $options = array('id' => $item->id);
@@ -34,8 +56,8 @@ if ($can_edit) {
 // Make this page appear under the manage items admin menu
 admin_externalpage_setup($hierarchy->prefix.'manage', $navbaritem);
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:view'.$hierarchy->prefix, $sitecontext);
 
 
 ///
@@ -46,40 +68,37 @@ require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
 $hierarchy->hierarchy_page_setup('template/view', $item);
 
 /// Display page header
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("competencyframeworks", 'competency'),
-                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?prefix=competency",
-                    'type'=>'misc');
-$navlinks[] = array('name'=>format_string($framework->fullname),
-                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?prefix=competency&frameworkid={$framework->id}",
-                    'type'=>'misc');    // Framework View
-$navlinks[] = array('name'=>format_string($item->fullname), 'link'=>'', 'type'=>'misc');
+$PAGE->navbar->add(get_string("competencyframeworks", 'totara_hierarchy'),
+                    new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => 'competency')));
+$PAGE->navbar->add(format_string($framework->fullname),
+                    new moodle_url('/totara/hierarchy/framework/view.php', array('prefix' => 'competency', 'frameworkid' => $framework->id)));
+$PAGE->navbar->add(format_string($item->fullname));
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-$heading = "{$item->fullname}";
+$heading = $item->fullname;
 
 // If editing on, add edit icon
 if ($editingon) {
     $str_edit = get_string('edit');
     $str_remove = get_string('remove');
 
-    $heading .= " <a href=\"{$CFG->wwwroot}/hierarchy/prefix/{$hierarchy->prefix}/template/edit.php?id={$item->id}\" title=\"$str_edit\">".
-            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+    $heading .= $OUTPUT->action_icon(new moodle_url("prefix/{$hierarchy->prefix}/template/edit.php", array('id' => $item->id)),
+        new pix_icon('t/edit.gif',$str_edit), null, array('class' => 'iconsmall', 'title' => $str_edit));
 }
 
-print_heading($heading, '', 1);
+echo $OUTPUT->heading($heading, 1);
 
-echo '<p>'.format_text($item->description, FORMAT_HTML).'</p>';
+echo html_writer::tag('p', format_text($item->description, FORMAT_HTML));
 
 
 ///
 /// Display assigned competencies
 ///
-print_heading(get_string('assignedcompetencies', $hierarchy->prefix));
+echo $OUTPUT->heading(get_string('assignedcompetencies', 'totara_hierarchy'));
 
 if ($competencies) {
-    $table = new object();
+    $table = new stdClass();
     $table->id = 'list-assignment';
     $table->class = 'generaltable';
     $table->data = array();
@@ -88,7 +107,7 @@ if ($competencies) {
     $table->head = array(get_string('name'));
     $table->align = array('left');
     if ($editingon) {
-        $table->head[] = get_string('options', $hierarchy->prefix);
+        $table->head[] = get_string('options', 'totara_hierarchy');
         $table->align[] = 'center';
     }
 
@@ -97,63 +116,39 @@ if ($competencies) {
         $row[] = $competency->competency;
         if ($editingon) {
 
-            $row[] = "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$item->id}&assignment={$competency->id}\" title=\"$str_remove\">".
-    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-
+          $row[] = $OUTPUT->action_icon(new moodle_url("prefix/{$hierarchy->prefix}/template/remove_assignment.php", array('templateid' => $item->id, 'assignment' => $competencyid)),
+              new pix_icon('t/delete', $str_remove), null, array('class' => 'iconsmall', 'title' => $str_remove));
         }
 
         $table->data[] = $row;
     }
-    print_table($table);
+    echo html_writer::table($table);
 } else {
-    // # cols varies TODO
-    //$cols = $editingon ? 3 : 2;
-    echo '<p>'.get_string('noassignedcompetenciestotemplate', $hierarchy->prefix).'</p>';
-    //echo '<tr class="noitems-assignment"><td colspan="'.$cols.'"><i>'.get_string('noassignedcompetenciestotemplate', $hierarchy->prefix).'</i></td></tr>';
+    echo html_writer::tag('p', get_string('noassignedcompetenciestotemplate', 'totara_hierarchy'));
 }
 
 // Navigation / editing buttons
-echo '<div class="buttons">';
 
+$out = html_writer::start_tag('div', array('class' => 'buttons'));
 // Display assign competency button
 if ($can_edit) {
-
-?>
-
-<script type="text/javascript">
-    <!-- //
-    var <?php echo $hierarchy->prefix ?>_template_id = '<?php echo $item->id ?>';
-    // -->
-</script>
-
-<br>
-<div class="singlebutton">
-<form action="<?php echo $CFG->wwwroot ?>/hierarchy/prefix/<?php echo $hierarchy->prefix ?>/template/find_competency.php?templateid=<?php echo $item->id ?>" method="get">
-<div>
-<input type="submit" id="show-assignment-dialog" value="<?php echo get_string('assignnewcompetency', $hierarchy->prefix) ?>" />
-<input type="hidden" name="templateid" value="<?php echo $item->id ?>">
-<input type="hidden" name="nojs" value="1">
-<input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">
-<input type="hidden" name="s" value="<?php echo sesskey(); ?>">
-<input type="hidden" name="frameworkid" value="<?php echo $item->frameworkid ?>">
-</div>
-</form>
-</div>
-
-<?php
-
+    $out .= html_writer::script('var ' . $hierarchy->prefix . '_template_id = '. $item->id .';');
+    $out .= html_writer::empty_tag('br');
+    $out .= html_writer::start_tag('div', array('class' => 'singlebutton'));
+    $action = new moodle_url('/totara/hierarchy/prefix/' . $hierarchy->prefix . '/template/find_competency.php', array('templateid' => $item->id));
+    $out .= html_writer::start_tag('form', array('action' => $action->out(), 'method' => 'get'));
+    $out .= html_writer::start_tag('div');
+    $out .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => "show-assignment-dialog", 'value' => get_string('assignnewcompetency', 'totara_hierarchy')));
+    $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "templateid", 'value' => $item->id));
+    $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "nojs", 'value' => '1'));
+    $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "returnurl", 'value' => qualified_me()));
+    $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "s", 'value' => sesskey()));
+    $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "frameworkid", 'value' => $item->frameworkid));
+    $out .= html_writer::end_tag('div');
+    $out .= html_writer::end_tag('form');
+    $out .= html_writer::end_tag('div');
 }
-/*
-// Return to template list
-$options = array('frameworkid' => $framework->id);
-print_single_button(
-    $CFG->wwwroot.'/hierarchy/prefix/'.$hierarchy->prefix.'/template/index.php',
-    $options,
-    get_string('returntotemplates', $hierarchy->prefix),
-    'get'
-);
-*/
-echo '</div>';
-
+$out .= html_writer::end_tag('div');
+echo $out;
 /// and proper footer
-print_footer();
+echo $OUTPUT->footer();

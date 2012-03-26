@@ -13,8 +13,8 @@
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
-require_once($CFG->dirroot . '/local/dialogs/search_form.php');
-require_once($CFG->dirroot . '/local/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
+require_once($CFG->dirroot . '/totara/core/dialogs/dialog_content_hierarchy.class.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
@@ -32,7 +32,7 @@ $page = optional_param('page', 0, PARAM_INT); // results page number
 
 $strsearch = get_string('search');
 #$stritemplural = get_string($type . 'plural', $type);
-$strqueryerror = get_string('queryerror', 'hierarchy');
+$strqueryerror = get_string('queryerror', 'totara_hierarchy');
 
 // Trim whitespace off seach query
 $query = urldecode(trim($query));
@@ -42,7 +42,7 @@ $query = urldecode(trim($query));
 $hidden = array();
 
 // Create form
-$mform = new dialog_search_form($CFG->wwwroot. '/local/plan/components/course/course_search.php',
+$mform = new dialog_search_form($CFG->wwwroot. '/totara/plan/components/course/course_search.php',
     compact('hidden', 'query'));
 
 // Display form
@@ -86,7 +86,7 @@ if (strlen($query)) {
 
             $data = array('query' => urlencode(stripslashes($query)));
 
-            $url = new moodle_url($CFG->wwwroot . '/local/plan/components/course/course_search.php', $data);
+            $url = new moodle_url($CFG->wwwroot . '/totara/plan/components/course/course_search.php', $data);
             print '<div class="search-paging">';
             print print_paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url, 'page', false, true, 5);
             print '</div>';

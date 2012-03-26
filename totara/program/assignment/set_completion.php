@@ -23,8 +23,8 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/program/lib.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
+require_once($CFG->dirroot.'/totara/program/lib.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
 
 require_login();
 

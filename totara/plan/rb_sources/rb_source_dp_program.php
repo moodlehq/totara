@@ -27,9 +27,9 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 // needed for approval constants etc
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 // needed for instatiating and checking programs
-require_once($CFG->dirroot . '/local/program/lib.php');
+require_once($CFG->dirroot . '/totara/program/lib.php');
 
 class rb_source_dp_program extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
@@ -263,7 +263,7 @@ class rb_source_dp_program extends rb_base_source {
             $courseset = $coursesets[0];
             if ($courseset->is_recurring()) {
                 $recurringcourse = $courseset->course;
-                $link = get_string('yes') . ' (<a href="'.$CFG->wwwroot.'/local/plan/record/programs_recurring.php?programid='.$program->id.'&amp;userid='.$userid.'">' .  get_string('viewrecurringprogramhistory', 'local_program') . '</a>)';
+                $link = get_string('yes') . ' (<a href="'.$CFG->wwwroot.'/totara/plan/record/programs_recurring.php?programid='.$program->id.'&amp;userid='.$userid.'">' .  get_string('viewrecurringprogramhistory', 'local_program') . '</a>)';
                 return $link;
             }
         }
@@ -280,7 +280,7 @@ class rb_source_dp_program extends rb_base_source {
         $iconurl = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($programicon)."&amp;id=$programid&amp;size=small&amp;type=program\" alt=\"$programname\" />";
 
         if ($program->is_accessible()) {
-            $html = "<a href=\"{$CFG->wwwroot}/local/program/view.php?id={$programid}\">{$iconurl}{$programname}</a>";
+            $html = "<a href=\"{$CFG->wwwroot}/totara/program/view.php?id={$programid}\">{$iconurl}{$programname}</a>";
         } else {
             $html = $iconurl.$programname;
         }

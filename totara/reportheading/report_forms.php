@@ -107,17 +107,17 @@ class report_heading_columns_form extends moodleform {
 
                 $mform->addElement('html','<td>');
                 // delete link
-                $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportheading/index.php?d=1&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportheading/index.php?d=1&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                 // move up link
                 if($i != 1) {
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportheading/index.php?m=up&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportheading/index.php?m=up&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
                 } else {
                     $mform->addElement('html', $spacer);
                 }
 
                 // move down link
                 if($i != $colcount) {
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportheading/index.php?m=down&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportheading/index.php?m=down&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                 } else {
                     $mform->addElement('html', $spacer);
                 }

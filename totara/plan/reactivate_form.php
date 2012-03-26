@@ -23,7 +23,7 @@
  */
 
 require_once("{$CFG->libdir}/formslib.php");
-require_once("{$CFG->dirroot}/local/plan/development_plan.class.php");
+require_once("{$CFG->dirroot}/totara/plan/development_plan.class.php");
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page

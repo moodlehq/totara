@@ -25,7 +25,7 @@
 require_once($CFG->dirroot . '/course/lib.php');
 require_once($CFG->dirroot . '/lib/datalib.php');
 require_once($CFG->dirroot . '/lib/ddllib.php');
-require_once($CFG->dirroot . '/local/program/program.class.php');
+require_once($CFG->dirroot . '/totara/program/program.class.php');
 
 
 /**
@@ -84,7 +84,7 @@ function local_program_initial_install() {
  */
 function prog_setup_initial_plan_settings() {
     global $CFG;
-    require_once($CFG->dirroot . '/local/plan/priorityscales/lib.php');
+    require_once($CFG->dirroot . '/totara/plan/priorityscales/lib.php');
 
     // retrieve all the existing templates (if any exist)
     $templates = get_records('dp_template', '', '', 'id', 'id');
@@ -187,12 +187,12 @@ function prog_can_view_users_required_learning($learnerid) {
     $systemcontext = get_system_context();
 
     // If the user can view any programs
-    if (has_capability('local/program:accessanyprogram', $systemcontext)) {
+    if (has_capability('totara/program:accessanyprogram', $systemcontext)) {
         return true;
     }
 
     // If the user cannot view any programs
-    if (!has_capability('local/program:viewprogram', $systemcontext)) {
+    if (!has_capability('totara/program:viewprogram', $systemcontext)) {
         return false;
     }
 
@@ -277,7 +277,7 @@ function prog_display_required_programs($userid) {
     $tableheaders[] = get_string('progress', 'local_program');;
     $tablecols[] = 'progress';
 
-    $baseurl = $CFG->wwwroot . '/local/program/required.php?userid='.$userid;
+    $baseurl = $CFG->wwwroot . '/totara/program/required.php?userid='.$userid;
 
     $table = new flexible_table($tablename);
     $table->define_headers($tableheaders);
@@ -385,7 +385,7 @@ function prog_get_required_learning_base_navlinks(&$navlinks, $userid) {
     // the user is viewing their own learning
     if($userid == $USER->id) {
         $navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
-        $navlinks[] = array('name' => get_string('requiredlearning','local_program'), 'link'=> $CFG->wwwroot . '/local/program/required.php', 'type'=>'title');
+        $navlinks[] = array('name' => get_string('requiredlearning','local_program'), 'link'=> $CFG->wwwroot . '/totara/program/required.php', 'type'=>'title');
         return true;
     }
 
@@ -394,9 +394,9 @@ function prog_get_required_learning_base_navlinks(&$navlinks, $userid) {
     if($user) {
         $navlinks[] = array('name' => get_string('myteam','local'), 'link'=> $CFG->wwwroot . '/my/team.php', 'type'=>'title');
         $navlinks[] = array('name' => get_string('teammembers','local'), 'link'=> $CFG->wwwroot . '/my/teammembers.php', 'type'=>'title');
-        $navlinks[] = array('name' => get_string('xsrequiredlearning','local_program', fullname($user)), 'link'=> $CFG->wwwroot . '/local/program/required.php?userid='.$userid, 'type'=>'title');
+        $navlinks[] = array('name' => get_string('xsrequiredlearning','local_program', fullname($user)), 'link'=> $CFG->wwwroot . '/totara/program/required.php?userid='.$userid, 'type'=>'title');
     } else {
-        $navlinks[] = array('name' => get_string('unknownusersrequiredlearning','local_program'), 'link'=> $CFG->wwwroot . '/local/program/required.php?userid='.$userid, 'type'=>'title');
+        $navlinks[] = array('name' => get_string('unknownusersrequiredlearning','local_program'), 'link'=> $CFG->wwwroot . '/totara/program/required.php?userid='.$userid, 'type'=>'title');
     }
 }
 
@@ -438,7 +438,7 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
             $program = make_context_subobj($program);
             if (isset($program->visible) && $program->visible <= 0) {
                 // for hidden programs, require visibility check
-                if (has_capability('local/program:viewhiddenprograms', $program->context)) {
+                if (has_capability('totara/program:viewhiddenprograms', $program->context)) {
                     $visibleprograms [] = $program;
                 }
             } else {
@@ -495,7 +495,7 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
         $program = make_context_subobj($program);
         if ($program->visible <= 0) {
             // for hidden programs, require visibility check
-            if (has_capability('local/program:viewhiddenprograms', $program->context)) {
+            if (has_capability('totara/program:viewhiddenprograms', $program->context)) {
                 $totalcount++;
                 if ($totalcount > $limitfrom && (!$limitnum or count($visibleprograms) < $limitnum)) {
                     $visibleprograms [] = $program;
@@ -596,18 +596,18 @@ function prog_print_programs($category) {
                 continue;
             }
             if ($program->visible == 1
-                || has_capability('local/program:viewhiddenprograms',$program->context)) {
+                || has_capability('totara/program:viewhiddenprograms',$program->context)) {
                 prog_print_program($program);
             }
         }
     } else {
         print_heading(get_string("noprogramsyet",'local_program'));
         $context = get_context_instance(CONTEXT_SYSTEM);
-        if (has_capability('local/program:createprogram', $context)) {
+        if (has_capability('totara/program:createprogram', $context)) {
             $options = array();
             $options['category'] = $category->id;
             echo '<div class="addprogrambutton">';
-            print_single_button($CFG->wwwroot.'/local/program/add.php', $options, get_string("addnewprogram",'local_program'));
+            print_single_button($CFG->wwwroot.'/totara/program/add.php', $options, get_string("addnewprogram",'local_program'));
             echo '</div>';
         }
     }
@@ -769,7 +769,7 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
 function prog_print_program($program, $highlightterms = '') {
     global $CFG, $USER;
 
-    require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
+    require_once($CFG->dirroot.'/totara/core/icon/program_icon.class.php');
 
     $prog = new program($program->id);
 
@@ -805,7 +805,7 @@ function prog_print_program($program, $highlightterms = '') {
     echo '<div class="coursebox programbox clearfix">';
     echo '<div class="info">';
     echo '<div class="name"> '. $program_icon->display($program, 'small'). '<a title="'.get_string('viewprogram', 'local_program').'"'.
-         $linkcss.' href="'.$CFG->wwwroot.'/local/program/view.php?id='.$program->id.'">'.
+         $linkcss.' href="'.$CFG->wwwroot.'/totara/program/view.php?id='.$program->id.'">'.
          highlight($highlightterms, format_string($program->fullname)).'</a>';
     echo '</div>';
 
@@ -893,7 +893,7 @@ function prog_print_category_info($category, $depth, $showprograms = false) {
     global $CFG, $USER;
     static $strallowguests, $strrequireskey, $strsummary;
 
-    require_once($CFG->dirroot.'/local/icon/program_icon.class.php');
+    require_once($CFG->dirroot.'/totara/core/icon/program_icon.class.php');
 
     if (empty($strsummary)) {
         $strallowguests = get_string('allowguests');
@@ -956,11 +956,11 @@ function prog_print_category_info($category, $depth, $showprograms = false) {
                 echo '<tr><td valign="top">&nbsp;';
                 echo '</td><td valign="top" class="course name">';
                 echo $program_icon->display($program, 'small');
-                echo ' <a '.$linkcss.' href="'.$CFG->wwwroot.'/local/program/view.php?id='.$program->id.'">'. format_string($program->fullname).'</a>';
+                echo ' <a '.$linkcss.' href="'.$CFG->wwwroot.'/totara/program/view.php?id='.$program->id.'">'. format_string($program->fullname).'</a>';
                 echo '</td><td align="right" valign="top" class="course info">';
 
                 if ($program->summary) {
-                    link_to_popup_window ('/local/program/info.php?id='.$program->id, 'courseinfo',
+                    link_to_popup_window ('/totara/program/info.php?id='.$program->id, 'courseinfo',
                                           '<img alt="'.$strsummary.'" src="'.$CFG->pixpath.'/i/info.gif" />',
                                            400, 500, $strsummary);
                 } else {
@@ -1234,7 +1234,7 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
                 }
             }
 
-            if ($program->visible || has_capability('local/program:viewhiddenprograms', $program->context)) {
+            if ($program->visible || has_capability('totara/program:viewhiddenprograms', $program->context)) {
                 // Don't exit this loop till the end
                 // we need to count all the visible courses
                 // to update $totalcount
@@ -1365,7 +1365,7 @@ function prog_eventhandler_program_unassigned($eventdata) {
  */
 function prog_eventhandler_program_completed($eventdata) {
     global $CFG;
-    require_once($CFG->dirroot.'/local/plan/lib.php');
+    require_once($CFG->dirroot.'/totara/plan/lib.php');
 
     $program = $eventdata->program;
     $userid = $eventdata->userid;
@@ -1471,9 +1471,9 @@ function prog_get_tab_link($userid) {
             if (!$prog->is_accessible()) {
                 return false;
             }
-            return $CFG->wwwroot . '/local/program/required.php?id=' . $program->id;
+            return $CFG->wwwroot . '/totara/program/required.php?id=' . $program->id;
         } else if ($requiredlearningcount > 1) {
-            return $CFG->wwwroot . '/local/program/required.php';
+            return $CFG->wwwroot . '/totara/program/required.php';
         }
     }
 

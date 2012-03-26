@@ -1,14 +1,14 @@
 <?php
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
-require_once("{$CFG->dirroot}/local/program/lib.php");
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
+require_once("{$CFG->dirroot}/totara/program/lib.php");
 
 require_login();
 
 // Get program id and check capabilities
 $programid = required_param('programid', PARAM_INT);
-require_capability('local/program:configureassignments', program_get_context($programid));
+require_capability('totara/program:configureassignments', program_get_context($programid));
 
 
 // Already selected items

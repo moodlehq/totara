@@ -24,7 +24,7 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 
 require_login();
 
@@ -36,7 +36,7 @@ $confirm = optional_param('confirm', 0, PARAM_INT); // confirm the action
 $plan = new development_plan($id);
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
-$currenturl = $CFG->wwwroot . '/local/plan/components/objective/approval.php?id='.$id.'&amp;itemid='.$caid.'&amp;action='.$action;
+$currenturl = $CFG->wwwroot . '/totara/plan/components/objective/approval.php?id='.$id.'&amp;itemid='.$caid.'&amp;action='.$action;
 $returnurl = $component->get_url();
 $canapproveobjective = $component->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
 
@@ -73,7 +73,7 @@ $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
+$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$id, 'type'=>'title');
 $navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
 $navlinks[] = array('name' => get_string('itemapproval','local_plan'), 'link' => '', 'type' => 'title');
 

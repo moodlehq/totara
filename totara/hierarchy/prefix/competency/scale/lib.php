@@ -1,4 +1,27 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Aaron Wells <aaronw@catalyst.net.nz>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 /**
  * competency/lib.php
  *
@@ -6,13 +29,7 @@
  *
  * Note: Functions in this library should have names beginning with "competency_scale",
  * in order to avoid name collisions
- *
- * @copyright Catalyst IT Limited
- * @author Aaron Wells
- * @author Simon Coggins <simonc@catalyst.net.nz>
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package totara
- */
+  */
 
 /**
  * Determine whether an competency scale is assigned to any frameworks
@@ -25,7 +42,8 @@
  * @return boolean
  */
 function competency_scale_is_assigned($scaleid) {
-    return record_exists('comp_scale_assignments', 'scaleid', $scaleid);
+    global $DB;
+    return $DB->record_exists('comp_scale_assignments', array('scaleid' => $scaleid));
 }
 
 
@@ -43,28 +61,28 @@ function competency_scale_is_assigned($scaleid) {
  * @param <type> $scaleid
  * @return boolean
  */
-function competency_scale_is_used( $scaleid ){
-    global $CFG;
+function competency_scale_is_used($scaleid) {
+    global $DB;
 
     $sql = "SELECT
                 ce.competencyid
             FROM
-                {$CFG->prefix}comp_evidence ce
-            LEFT JOIN {$CFG->prefix}comp_scale_values csv
+                {comp_evidence} ce
+            LEFT JOIN {comp_scale_values} csv
               ON csv.id = ce.proficiency
-            WHERE csv.scaleid = {$scaleid}";
+            WHERE csv.scaleid = ?";
 
 
     $sql2 = "SELECT
                 pca.scalevalueid
              FROM
-                {$CFG->prefix}dp_plan_competency_assign pca
-             JOIN {$CFG->prefix}comp_scale_values csv
+                {dp_plan_competency_assign} pca
+             JOIN {comp_scale_values} csv
                 ON pca.scalevalueid = csv.id
             WHERE
-                csv.scaleid = {$scaleid}";
+                csv.scaleid = ?";
 
-    return (record_exists_sql($sql) || record_exists_sql($sql2));
+    return ($DB->record_exists_sql($sql, array($scaleid)) || $DB->record_exists_sql($sql2, array($scaleid)));
 }
 
 
@@ -76,47 +94,43 @@ function competency_scale_is_used( $scaleid ){
  * @return integer|false The ID of the sole proficient scale value or false
  */
 function competency_scale_only_proficient_value($scaleid) {
-    global $CFG;
+    global $DB;
     $sql = "
         SELECT csv.id
-        FROM {$CFG->prefix}comp_scale_values csv
+        FROM {comp_scale_values} csv
         INNER JOIN (
             SELECT scaleid, SUM(proficient) AS sum
-            FROM {$CFG->prefix}comp_scale_values
+            FROM {comp_scale_values}
             GROUP BY scaleid
         ) count
         ON count.scaleid = csv.scaleid
         WHERE proficient = 1
             AND sum = 1
-            AND csv.scaleid={$scaleid}";
+            AND csv.scaleid = ?";
 
-    if($id = get_field_sql($sql)) {
-        return $id;
-    } else {
-        return false;
-    }
+    return $DB->get_field_sql($sql, array($scaleid));
 }
 
 
 /**
  * Get competency scales available for use by frameworks
  *
- * @return  array|false
+ * @return array
  */
 function competency_scales_available() {
-    global $CFG;
+    global $DB;
 
     $sql = "
         SELECT
             id,
             name
-        FROM {$CFG->prefix}comp_scale scale
+        FROM {comp_scale} scale
         WHERE EXISTS
         (
             SELECT
                 1
             FROM
-                {$CFG->prefix}comp_scale_values scaleval
+                {comp_scale_values} scaleval
             WHERE
                 scaleval.scaleid = scale.id
         )
@@ -124,7 +138,7 @@ function competency_scales_available() {
             name ASC
     ";
 
-    return get_records_sql($sql);
+    return $DB->get_records_sql($sql);
 }
 
 
@@ -134,13 +148,13 @@ function competency_scales_available() {
  * @return html
  */
 function competency_scale_display_table($scales, $editingon=0) {
-    global $CFG;
+    global $CFG, $OUTPUT;
 
-    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    $sitecontext = context_system::instance();
 
     // Cache permissions
-    $can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);
-    $can_delete = has_capability('moodle/local:deletecompetency', $sitecontext);
+    $can_edit = has_capability('totara/hierarchy:updatecompetency', $sitecontext);
+    $can_delete = has_capability('totara/hierarchy:deletecompetency', $sitecontext);
 
     // Make sure user has capability to edit
     if (!(($can_edit || $can_delete) && $editingon)) {
@@ -149,33 +163,28 @@ function competency_scale_display_table($scales, $editingon=0) {
 
     $stredit = get_string('edit');
     $strdelete = get_string('delete');
-    $stroptions = get_string('options','local');
+    $stroptions = get_string('options', 'totara_core');
     ///
     /// Build page
     ///
 
     if ($scales) {
-        $table = new stdClass();
+        $table = new html_table();
         $table->head  = array(get_string('scale'), get_string('used'));
-        $table->size = array('70%', '20%');
-        $table->align = array('left', 'center');
-        $table->width = '95%';
         if ($editingon) {
             $table->head[] = $stroptions;
-            $table->align[] = 'center';
-            $table->size[] = '10%';
         }
 
         $table->data = array();
-        foreach($scales as $scale) {
+        foreach ($scales as $scale) {
             $scale_used = competency_scale_is_used($scale->id);
             $scale_assigned = competency_scale_is_assigned($scale->id);
             $line = array();
-            $line[] = "<a href=\"$CFG->wwwroot/hierarchy/prefix/competency/scale/view.php?id={$scale->id}&amp;prefix=competency\">".format_string($scale->name)."</a>";
+            $line[] = $OUTPUT->action_link(new moodle_url('/totara/hierarchy/prefix/competency/scale/view.php', array('id' => $scale->id, 'prefix' => 'competency')), format_string($scale->name));
             if ($scale_used) {
                 $line[] = get_string('yes');
             } else if ($scale_assigned) {
-                $line[] = get_string('assignedonly', 'competency');
+                $line[] = get_string('assignedonly', 'totara_hierarchy');
             } else {
                 $line[] = get_string('no');
             }
@@ -183,18 +192,20 @@ function competency_scale_display_table($scales, $editingon=0) {
             $buttons = array();
             if ($editingon) {
                 if ($can_edit) {
-                    $buttons[] = "<a title=\"$stredit\" href=\"$CFG->wwwroot/hierarchy/prefix/competency/scale/edit.php?id=$scale->id&amp;prefix=competency\"><img".
-                        " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
+                    $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/competency/scale/edit.php', array('id' => $scale->id, 'prefix' => 'competency')),
+                        new pix_icon('t/edit', $stredit), null, array('title' => $stredit));
                 }
 
                 if ($can_delete) {
-                    if($scale_used) {
-                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeletecompetencyscaleinuse', 'competency') . "\" title=\"" . get_string('error:nodeletecompetencyscaleinuse', 'competency') . "\" /></a>";
-                    } else if($scale_assigned) {
-                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeletecompetencyscaleassigned', 'competency') . "\" title=\"" . get_string('error:nodeletecompetencyscaleassigned', 'competency') . "\" /></a>";
+                    if ($scale_used) {
+                        $buttons[] = $OUTPUT->pix_icon('nodelete', get_string('error:nodeletecompetencyscaleinuse', 'totara_hierarchy'), 'totara_core',
+                            array('class' => 'iconsmall', 'title' => get_string('error:nodeletecompetencyscaleinuse', 'totara_hierarchy')));
+                    } else if ($scale_assigned) {
+                        $buttons[] = $OUTPUT->pix_icon('nodelete', get_string('error:nodeletecompetencyscaleassigned', 'totara_hierarchy'), 'totara_core',
+                            array('class' => 'iconsmall', 'title' => get_string('error:nodeletecompetencyscaleassigned', 'totara_hierarchy')));
                     } else {
-                        $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/hierarchy/prefix/competency/scale/delete.php?id=$scale->id&amp;prefix=competency\"><img".
-                            " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+                        $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/competency/scale/delete.php', array('id' => $scale->id, 'prefix' => 'competency')),
+                            new pix_icon('t/delete', $strdelete), null, array('title' => $strdelete));
                     }
                 }
                 $line[] = implode($buttons, ' ');
@@ -204,18 +215,18 @@ function competency_scale_display_table($scales, $editingon=0) {
         }
     }
 
-    print_heading(get_string('competencyscales', 'competency'));
+    echo $OUTPUT->heading(get_string('competencyscales', 'totara_hierarchy'));
 
     if ($scales) {
-        print_table($table);
+        echo html_writer::table($table);
     } else {
-        echo '<p>'.get_string('noscalesdefined', 'competency').'</p>';
+        echo html_writer::tag('p', get_string('noscalesdefined', 'totara_hierarchy'));
     }
 
-    echo '<div class="buttons">';
-    print_single_button("$CFG->wwwroot/hierarchy/prefix/competency/scale/edit.php", array('prefix'=>'competency'), get_string('scalescustomcreate'));
-    helpbutton('competencyscalesgeneral', get_string('competencyscales', 'competency'));
-    echo '</div>';
+    echo html_writer::tag('div',
+        $OUTPUT->single_button(new moodle_url('/totara/hierarchy/prefix/competency/scale/edit.php', array('prefix' => 'competency')), get_string('scalescustomcreate', 'totara_hierarchy'), 'get')
+        . $OUTPUT->help_icon('competencyscalesgeneral', 'totara_hierarchy'),
+    array('class' => 'buttons'));
 }
 
 ?>

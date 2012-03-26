@@ -37,7 +37,7 @@ $reportid = optional_param('reportid', PARAM_INT); //report that a schedule is b
 $id = optional_param('id', 0, PARAM_INT); //id if editing schedule
 
 $myreportsurl = $CFG->wwwroot . '/my/reports.php';
-$returnurl = $CFG->wwwroot . '/local/reportbuilder/scheduled.php';
+$returnurl = $CFG->wwwroot . '/totara/reportbuilder/scheduled.php';
 
 $PAGE = page_create_object('Totara', $USER->id);
 

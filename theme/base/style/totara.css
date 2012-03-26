@@ -31,6 +31,11 @@
  * Make sure you comment each section to clearly indicate where it is used
  */
 
+/* Class for full width content */
+.fullwidth {
+    width: 100%;
+}
+
 /* Override help link size */
 .helplink img {
     height: 14px;
@@ -87,3 +92,13 @@ body.dir-rtl .totaratable .toolbar-right-table {
     border-bottom: 1px solid #ddd;
 }
 
+/* Reduce the margin for paging bars inside the toolbar */
+.totaratable .paging {
+    margin: 0px;
+}
+
+/* Message displayed if there are no records to show */
+.totaratable .norecords {
+    padding: 20px;
+    text-align: center;
+}

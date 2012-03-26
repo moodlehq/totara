@@ -1,9 +1,31 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/organisation/lib.php');
 
 
 ///
@@ -31,8 +53,8 @@ $s = optional_param('s', '', PARAM_TEXT);
 admin_externalpage_setup('organisationmanage');
 
 // Check permissions
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updateorganisation', $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:updateorganisation', $sitecontext);
 
 // Setup hierarchy objects
 $competencies = new competency();
@@ -40,7 +62,7 @@ $organisations = new organisation();
 
 // Load organisation
 if (!$organisation = $organisations->get_item($assignto)) {
-    error('Position could not be found');
+    print_error('positionnotfound', 'totara_hierarchy');
 }
 
 // Currently assigned competencies
@@ -61,7 +83,7 @@ if ($deleteexisting) {
     $removeditems = array_diff(array_keys($currentlyassigned), $add);
 
     foreach ($removeditems as $rid) {
-        delete_records('org_competencies', 'organisationid', $organisation->id, 'competencyid', $rid);
+        $DB->delete_records('org_competencies', array('organisationid' => $organisation->id, 'competencyid' => $rid));
         add_to_log(SITEID, 'organisation', 'delete competency assignment', "item/view.php?id={$assignto}&amp;prefix=organisation", "Organisation (ID $organisation->id)");
     }
 }
@@ -82,7 +104,7 @@ foreach ($add as $addition) {
     }
     // Check id
     if (!is_numeric($addition)) {
-        error('Supplied bad data - non numeric id');
+        print_error('baddatanonnumeric', 'totara_hierarchy', 'id');
     }
 
     // Load competency
@@ -101,15 +123,14 @@ foreach ($add as $addition) {
     $relationship->timecreated = $time;
     $relationship->usermodified = $USER->id;
 
-    $relationship->id = insert_record('org_competencies', $relationship);
+    $relationship->id = $DB->insert_record('org_competencies', $relationship);
     add_to_log(SITEID, 'organisation', 'create competency assignment', "item/view.php?id={$assignto}&amp;prefix=organisation", "$related->fullname (ID $related->id)");
 }
 
-if($nojs) {
+if ($nojs) {
     // If JS disabled, redirect back to original page (only if session key matches)
     $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
     redirect($url);
 } else {
     $organisations->display_extra_view_info($organisation, $frameworkid);
 }
-

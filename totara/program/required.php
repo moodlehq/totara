@@ -24,8 +24,8 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot . '/local/program/lib.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/program/lib.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 require_login();
 
@@ -63,7 +63,7 @@ if ($programid) {
 
         // Get item pickers
         require_js(array(
-            $CFG->wwwroot . '/local/program/view/program_view.js.php?id=' . $program->id
+            $CFG->wwwroot . '/totara/program/view/program_view.js.php?id=' . $program->id
         ));
 
 

@@ -1,8 +1,30 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidenceitem/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/lib.php');
 
 ///
 /// Setup / loading data
@@ -22,25 +44,24 @@ $s = optional_param('s', '', PARAM_TEXT);
 $urlparams = 'nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
 // Check perms
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
+admin_externalpage_setup('competencymanage', '', array(), $CFG->wwwroot.'/competency/edit.php');
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:updatecompetency', $sitecontext);
 
-if($nojs) {
-    admin_externalpage_print_header();
+if ($nojs) {
+    echo $OUTPUT->header();
 }
 
 // Load course
-if (!$course = get_record('course', 'id', $id)) {
-    error('Course ID was incorrect');
+if (!$course = $DB->get_record('course', array('id' => $id))) {
+    print_error('incorrectcourseid', 'totara_hierarchy');
 }
-echo '<h3>'.$course->fullname.'</h3>';
+echo html_writer::tag('h3', $course->fullname);
+
+comp_evitem_print_course_evitems($course, $competency_id, "{$CFG->wwwroot}/totara/hierarchy/prefix/competency/evidenceitem/add.php?competency={$competency_id}&{$urlparams}" );
 
 
-comp_evitem_print_course_evitems($course, $competency_id, "{$CFG->wwwroot}/hierarchy/prefix/competency/evidenceitem/add.php?competency={$competency_id}&{$urlparams}" );
-
-
-if($nojs) {
-    print_footer();
+if ($nojs) {
+    echo $OUTPUT->footer();
 }

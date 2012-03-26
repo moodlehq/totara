@@ -22,7 +22,7 @@
  * @subpackage program
 */
 
-require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -145,7 +145,7 @@ class prog_assignments {
      */
     public function count_active_user_assignments() {
         global $CFG;
-        require_once($CFG->dirroot . '/local/program/program.class.php');
+        require_once($CFG->dirroot . '/totara/program/program.class.php');
 
         $count = count_records_sql("SELECT COUNT(DISTINCT userid) FROM {$CFG->prefix}prog_user_assignment WHERE programid={$this->programid} AND exceptionstatus IN (" . PROGRAM_EXCEPTION_NONE ."," . PROGRAM_EXCEPTION_RESOLVED . ")");
         return $count;
@@ -1460,7 +1460,7 @@ class prog_assigment_completion_position_start_date extends prog_assignment_comp
 
         return "
             totaraDialogs['completionevent'].set_to_none();
-            totaraDialogs['completionevent'].default_url = '$CFG->wwwroot/local/program/assignment/completion/find_position.php?';
+            totaraDialogs['completionevent'].default_url = '$CFG->wwwroot/totara/program/assignment/completion/find_position.php?';
             totaraDialogs['completionevent'].open();
 
             $('#instancetitle').unbind('click').click(function() {
@@ -1508,7 +1508,7 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
 
         return "
             totaraDialogs['completionevent'].set_to_none();
-            totaraDialogs['completionevent'].default_url = '$CFG->wwwroot/local/program/assignment/completion/find_program.php?';
+            totaraDialogs['completionevent'].default_url = '$CFG->wwwroot/totara/program/assignment/completion/find_program.php?';
             totaraDialogs['completionevent'].open();
 
             $('#instancetitle').unbind('click').click(function() {
@@ -1558,7 +1558,7 @@ class prog_assigment_completion_course_completion extends prog_assignment_comple
 
         return "
             totaraDialogs['completionevent'].set_to_none();
-            totaraDialogs['completionevent'].default_url = '$CFG->wwwroot/local/program/assignment/completion/find_course.php?';
+            totaraDialogs['completionevent'].default_url = '$CFG->wwwroot/totara/program/assignment/completion/find_course.php?';
             totaraDialogs['completionevent'].open();
 
             $('#instancetitle').unbind('click').click(function() {
@@ -1608,7 +1608,7 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
 
         return "
             totaraDialogs['completionevent'].set_to_none();
-            totaraDialogs['completionevent'].default_url = '$CFG->wwwroot/local/program/assignment/completion/find_profile_field.php?';
+            totaraDialogs['completionevent'].default_url = '$CFG->wwwroot/totara/program/assignment/completion/find_profile_field.php?';
             totaraDialogs['completionevent'].open();
 
             $('#instancetitle').unbind('click').click(function() {

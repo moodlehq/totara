@@ -1,16 +1,38 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidenceitem/type/abstract.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/type/abstract.php');
 
 
 ///
 /// Setup / loading data
 ///
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 
 // Get params
 $id     = required_param('id', PARAM_INT);
@@ -24,12 +46,12 @@ $hierarchy         = new competency();
 $item              = competency_evidence_type::factory($id);
 
 // Load competency
-if (!$competency = get_record('comp', 'id', $item->competencyid)) {
-    error('Competency ID was incorrect');
+if (!$competency = $DB->get_record('comp', array('id' => $item->competencyid))) {
+    print_error('incorrectcompetencyid', 'totara_hierarchy');
 }
 
 // Check capabilities
-require_capability('moodle/local:update'.$hierarchy->prefix, $sitecontext);
+require_capability('totara/hierarchy:update'.$hierarchy->prefix, $sitecontext);
 
 // Setup page and check permissions
 admin_externalpage_setup($hierarchy->prefix.'manage');
@@ -39,37 +61,36 @@ admin_externalpage_setup($hierarchy->prefix.'manage');
 /// Display page
 ///
 
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 // Cancel/return url
 if (!$course) {
-    $return = "{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$hierarchy->prefix}&id={$item->competencyid}";
+    $return = "{$CFG->wwwroot}/totara/hierarchy/item/view.php?prefix={$hierarchy->prefix}&id={$item->competencyid}";
 } else {
     $return = "{$CFG->wwwroot}/course/competency.php?id={$course}";
 }
 
 
-$compname = get_field('comp', 'fullname', 'id', $item->competencyid);
+$compname = $DB->get_field('comp', 'fullname', array('id' => $item->competencyid));
 if (!$delete) {
-    if(!$course){
-        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, $compname).'<br /><br />';
+    if (!$course) {
+        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, $compname) . html_writer::empty_tag('br') . html_writer::empty_tag('br');
         $message .= $item->get_name() .' ('. $item->get_type().')';
-    }
-    else {
-        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, $item->get_name()).'<br /><br />';
+    } else {
+        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, $item->get_name()) . html_writer::empty_tag('br') . html_writer::empty_tag('br');
         $message .= format_string($compname .' ('. $item->get_type().')');
     }
 
-    $action = "{$CFG->wwwroot}/hierarchy/prefix/{$hierarchy->prefix}/evidenceitem/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}";
+    $action = "{$CFG->wwwroot}/totara/hierarchy/prefix/{$hierarchy->prefix}/evidenceitem/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}";
 
     // If called from the course view
     if ($course) {
         $action .= "&amp;course={$course}";
     }
 
-    notice_yesno($message, $action, $return);
+    echo $OUTPUT->confirm($message, $action, $return);
 
-    print_footer();
+    echo $OUTPUT->footer();
     exit;
 }
 
@@ -79,7 +100,7 @@ if (!$delete) {
 ///
 
 if ($delete != md5($item->timemodified)) {
-    error("The check variable was wrong - try again");
+    print_error('checkvariable', 'totara_hierarchy');
 }
 
 if (!confirm_sesskey()) {
@@ -92,6 +113,6 @@ add_to_log(SITEID, 'competency', 'delete evidence', "item/view.php?id={$item->id
 
 $message = get_string('removed'.$hierarchy->prefix.'evidenceitem', $hierarchy->prefix, format_string($compname .' ('. $item->get_type().')'));
 
-print_heading($message);
-print_continue($return);
-print_footer();
+echo $OUTPUT->heading($message);
+echo $OUTPUT->continue_button($return);
+echo $OUTPUT->footer();

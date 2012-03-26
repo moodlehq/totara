@@ -2087,7 +2087,7 @@ class global_navigation extends navigation_node {
         }
 
         // Link to users Positions page
-        $usernode->add(get_string('positions'), new moodle_url('/user/positions.php',$baseargs));
+        $usernode->add(get_string('positions', 'totara_hierarchy'), new moodle_url('/user/positions.php', $baseargs));
 
         return true;
     }

@@ -25,8 +25,8 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_programs.class.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_programs.class.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
@@ -50,7 +50,7 @@ $dialog = new totara_dialog_content_programs($categoryid);
 $dialog->selected_title = 'currentlyselected';
 
 // Setup search
-$dialog->search_code = '/local/program/search.php';
+$dialog->search_code = '/totara/program/search.php';
 
 // Add data
 $dialog->load_programs();

@@ -25,8 +25,8 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 
 //
@@ -45,7 +45,7 @@ require_login();
 $plan = new development_plan($id);
 
 $systemcontext = get_system_context();
-if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+if(!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'local_plan');
 }
 

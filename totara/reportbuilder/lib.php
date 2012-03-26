@@ -224,7 +224,7 @@ class reportbuilder {
             strlen('graphical_feedback_questions')) ==
             'graphical_feedback_questions');
         if(!$graph) {
-            $js['showhide'] = $CFG->wwwroot.'/local/reportbuilder/showhide.js.php';
+            $js['showhide'] = $CFG->wwwroot.'/totara/reportbuilder/showhide.js.php';
             $dialog = true;
         }
 
@@ -237,7 +237,7 @@ class reportbuilder {
             case 'orgmulti':
             case 'compmulti':
             case 'orgmulti':
-                $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
+                $js['dialog'] = $CFG->wwwroot . '/totara/reportbuilder/tree_dialogs.js.php';
                 $dialog = $treeview = true;
                 break;
             default:
@@ -767,7 +767,7 @@ class reportbuilder {
     function report_url() {
         global $CFG;
         if($this->embeddedurl === null) {
-            return $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$this->_id;
+            return $CFG->wwwroot.'/totara/reportbuilder/report.php?id='.$this->_id;
         } else {
             return $CFG->wwwroot . $this->embeddedurl;
         }
@@ -2085,7 +2085,7 @@ class reportbuilder {
         $out = "<center><table><tr>";
         $oauthenabled = get_config('local_oauth', 'oauthenabled');
         $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-        $oauthcap = has_capability('local/oauth:negotiate', $sitecontext);
+        $oauthcap = has_capability('totara/oauth:negotiate', $sitecontext);
         foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
             // specific checks for fusion tables export
             if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {
@@ -2127,7 +2127,7 @@ class reportbuilder {
         $search = optional_param('addfilter', null, PARAM_TEXT);
         if($search) {
             $params = array('id' => $this->_id);
-            return print_single_button($CFG->wwwroot.'/local/reportbuilder/save.php', $params, get_string('savesearch','local_reportbuilder'), 'get', '_self', true);
+            return print_single_button($CFG->wwwroot.'/totara/reportbuilder/save.php', $params, get_string('savesearch','local_reportbuilder'), 'get', '_self', true);
         } else {
             return '';
         }
@@ -2143,7 +2143,7 @@ class reportbuilder {
         $id = $this->_id;
         $sid = $this->_sid;
         $savedoptions = array();
-        $common = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id.'&amp;sid=';
+        $common = $CFG->wwwroot.'/totara/reportbuilder/report.php?id='.$id.'&amp;sid=';
         // are there saved searches for this report and user?
         if ($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND userid='.$USER->id)) {
             foreach ($saved as $item) {
@@ -2175,8 +2175,8 @@ class reportbuilder {
         global $CFG;
         $context = get_context_instance(CONTEXT_SYSTEM);
         // TODO what capability should be required here?
-        if(has_capability('local/reportbuilder:managereports',$context)) {
-            return print_single_button($CFG->wwwroot.'/local/reportbuilder/general.php', array('id'=>$this->_id), get_string('editthisreport','local_reportbuilder'), 'get', '_self', true);
+        if(has_capability('totara/reportbuilder:managereports',$context)) {
+            return print_single_button($CFG->wwwroot.'/totara/reportbuilder/general.php', array('id'=>$this->_id), get_string('editthisreport','local_reportbuilder'), 'get', '_self', true);
         } else {
             return '';
         }
@@ -2489,7 +2489,7 @@ class reportbuilder {
         var_dump($SESSION->reportbuilder_report);
         */
 
-        $jump = new moodle_url($CFG->wwwroot."/local/reportbuilder/fusionexporter.php", array('id' => $this->_id, 'sid' => $this->_sid));
+        $jump = new moodle_url($CFG->wwwroot."/totara/reportbuilder/fusionexporter.php", array('id' => $this->_id, 'sid' => $this->_sid));
         redirect($jump->out());
         die;
     }
@@ -3377,7 +3377,7 @@ function get_next_monthly($time, $day){
 function reportbuilder_get_report_url($report) {
     global $CFG;
     if($report->embedded == 0) {
-        return $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id;
+        return $CFG->wwwroot.'/totara/reportbuilder/report.php?id='.$report->id;
     } else {
         // use report shortname to find appropriate embedded report object
         if ($embed = reportbuilder_get_embedded_report_object($report->shortname)) {
@@ -3405,7 +3405,7 @@ function reportbuilder_get_report_url($report) {
  */
 function reportbuilder_get_embedded_report_object($embedname, $data=array()) {
     global $CFG;
-    $sourcepath = $CFG->dirroot . '/local/reportbuilder/embedded/';
+    $sourcepath = $CFG->dirroot . '/totara/reportbuilder/embedded/';
 
     $classfile = $sourcepath . 'rb_' . $embedname . '_embedded.php';
     if(is_readable($classfile)) {
@@ -3445,7 +3445,7 @@ function reportbuilder_get_embedded_report($embedname, $data=array()) {
 /**
  * Returns an array of all embedded reports found in the filesystem, sorted by name
  *
- * Looks in the local/reportbuilder/embedded/ directory and creates a new
+ * Looks in the totara/reportbuilder/embedded/ directory and creates a new
  * object for each embedded report definition found. These are returned
  * as an array, sorted by the report fullname
  *
@@ -3453,7 +3453,7 @@ function reportbuilder_get_embedded_report($embedname, $data=array()) {
  */
 function reportbuilder_get_all_embedded_reports() {
     global $CFG;
-    $sourcepath = $CFG->dirroot . '/local/reportbuilder/embedded/';
+    $sourcepath = $CFG->dirroot . '/totara/reportbuilder/embedded/';
 
     $embedded = array();
     if($dh = opendir($sourcepath)) {

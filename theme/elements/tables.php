@@ -193,7 +193,27 @@ $table->add_data(array('Top Left', 'Top Right'));
 $table->add_data(array('Bottom Left', 'Bottom Right'));
 $table->finish_html();
 
+echo $OUTPUT->heading('By default tables are as small as possible given the content. Use the fullwidth class if you want the table to span all available horizontal space', 4);
 
+$table = new html_table();
+$table->attributes['class'] = 'fullwidth';
+$table->head = array('Name', 'Grade');
+$table->data = array(
+    array('Harry Potter', '76%'),
+    array('Hermione Granger', '100%'),
+);
+echo html_writer::table($table);
+
+echo $OUTPUT->heading('By default tables are left aligned. Use the boxaligncenter class if you want the table to be centred instead', 4);
+
+$table = new html_table();
+$table->attributes['class'] = 'boxaligncenter';
+$table->head = array('Name', 'Grade');
+$table->data = array(
+    array('Harry Potter', '76%'),
+    array('Hermione Granger', '100%'),
+);
+echo html_writer::table($table);
 echo $OUTPUT->container_end();
 
 echo $OUTPUT->box_end();

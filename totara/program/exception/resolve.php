@@ -24,7 +24,7 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot . '/local/program/lib.php');
+require_once($CFG->dirroot . '/totara/program/lib.php');
 
 $programid = required_param('id', PARAM_INT);
 $action = required_param('action', PARAM_INT);

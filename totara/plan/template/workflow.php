@@ -29,7 +29,7 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 require_once('template_forms.php');
 
 $id = optional_param('id', null, PARAM_INT);
@@ -43,10 +43,10 @@ if(!$template = get_record('dp_template', 'id', $id)){
 
 if($confirm) {
     $workflow = $confirm;
-    $returnurl = $CFG->wwwroot . '/local/plan/template/workflow.php?id=' . $id;
+    $returnurl = $CFG->wwwroot . '/totara/plan/template/workflow.php?id=' . $id;
 
     $classfile = $CFG->dirroot .
-        "/local/plan/workflows/{$workflow}/{$workflow}.class.php";
+        "/totara/plan/workflows/{$workflow}/{$workflow}.class.php";
     if(!is_readable($classfile)) {
         $string_parameters = new object();
         $string_parameters->classfile = $classfile;
@@ -89,24 +89,24 @@ $mform = new dp_template_workflow_form(null,
 
 if ($mform->is_cancelled()){
     // user cancelled form
-    redirect($CFG->wwwroot . '/local/plan/template/workflow.php?id=' . $id);
+    redirect($CFG->wwwroot . '/totara/plan/template/workflow.php?id=' . $id);
 }
 elseif ($mform->no_submit_button_pressed()) {
     // user pressed advanced options button
-    redirect($CFG->wwwroot . '/local/plan/template/advancedworkflow.php?id='.$id);
+    redirect($CFG->wwwroot . '/totara/plan/template/advancedworkflow.php?id='.$id);
 }
 
 if ($fromform = $mform->get_data()) {
     $workflow = $fromform->workflow;
-    $returnurl = $CFG->wwwroot . '/local/plan/template/workflow.php?id=' . $id;
-    $changeurl = $CFG->wwwroot . '/local/plan/template/workflow.php?id=' . $id . '&amp;confirm=' . $workflow;
+    $returnurl = $CFG->wwwroot . '/totara/plan/template/workflow.php?id=' . $id;
+    $changeurl = $CFG->wwwroot . '/totara/plan/template/workflow.php?id=' . $id . '&amp;confirm=' . $workflow;
     if($workflow != 'custom') {
         // handle form submission
         if($template->workflow != $workflow) {
             admin_externalpage_print_header();
             print_heading($template->fullname);
             $classfile = $CFG->dirroot .
-                "/local/plan/workflows/{$workflow}/{$workflow}.class.php";
+                "/totara/plan/workflows/{$workflow}/{$workflow}.class.php";
             if(!is_readable($classfile)) {
                 $string_parameters = new object();
                 $string_parameters->classfile = $classfile;
@@ -159,7 +159,7 @@ if ($fromform = $mform->get_data()) {
 } else {
     $navlinks = array();    // Breadcrumbs
     $navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-        'link'=>"{$CFG->wwwroot}/local/plan/template/index.php",
+        'link'=>"{$CFG->wwwroot}/totara/plan/template/index.php",
         'type'=>'misc');
     $navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
 

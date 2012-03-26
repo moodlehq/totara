@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/oauth/db" VERSION="20100519" COMMENT="XMLDB file for Moodle local/oauth"
+<XMLDB PATH="totara/oauth/db" VERSION="20100519" COMMENT="XMLDB file for Moodle totara/oauth"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >

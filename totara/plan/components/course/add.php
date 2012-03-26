@@ -24,7 +24,7 @@
  */
 
 require_once('../../../../config.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
@@ -61,7 +61,7 @@ foreach( $currentlist as $rec ){
 ///
 /// Permissions check
 ///
-require_capability('local/plan:accessplan', get_system_context());
+require_capability('totara/plan:accessplan', get_system_context());
 
 if (!$component->can_update_items()) {
     notice(get_string('error:cannotupdateitems', 'local_plan'));

@@ -29,16 +29,16 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 $id = required_param('id', PARAM_INT); // program id
 
-admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/local/program/edit_assignments.php');
+admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_assignments.php');
 
 $program = new program($id);
 
 // Additional permissions check
-if (!has_capability('local/program:configureassignments', $program->get_context())) {
+if (!has_capability('totara/program:configureassignments', $program->get_context())) {
     print_error('error:nopermissions', 'local_program');
 }
 
@@ -88,7 +88,7 @@ local_js(array(
 
 // Get item pickers
 require_js(array(
-    $CFG->wwwroot . '/local/program/assignment/program_assignment.js.php?id=' . $program->id
+    $CFG->wwwroot . '/totara/program/assignment/program_assignment.js.php?id=' . $program->id
 ));
 
 $currenturl = qualified_me();

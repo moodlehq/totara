@@ -34,10 +34,10 @@ require_once('edit_form.php');
 $id = required_param('id', PARAM_INT); // program id
 $action = optional_param('action', 'view', PARAM_TEXT);
 
-admin_externalpage_setup('manageprograms', '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/local/program/edit.php');
+admin_externalpage_setup('manageprograms', '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php');
 
 if ($action == 'edit') {
-    require_once($CFG->dirroot . '/local/js/lib/setup.php');
+    require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
     //Javascript include
     local_js(array(
@@ -46,13 +46,13 @@ if ($action == 'edit') {
         TOTARA_JS_PLACEHOLDER
     ));
     require_js(array(
-        "{$CFG->wwwroot}/local/program/program.edit.js",
+        "{$CFG->wwwroot}/totara/program/program.edit.js",
     ));
 }
 
 $program = new program($id);
 
-if (!has_capability('local/program:configureprogram', $program->get_context())) {
+if (!has_capability('totara/program:configureprogram', $program->get_context())) {
     print_error('error:nopermissions', 'local_program');
 }
 
@@ -66,9 +66,9 @@ $currenturl_noquerystring = strip_querystring($currenturl);
 $viewurl = $currenturl_noquerystring."?id={$id}&action=view";
 $editurl = $currenturl_noquerystring."?id={$id}&action=edit";
 $categoryindexurl = "{$CFG->wwwroot}/course/category.php?id={$category->id}&amp;viewtype=program";
-$editcontenturl = "{$CFG->wwwroot}/local/program/edit_content.php?id={$program->id}";
-$editassignmentsurl = "{$CFG->wwwroot}/local/program/edit_assignments.php?id={$program->id}";
-$editmessagesurl = "{$CFG->wwwroot}/local/program/edit_messages.php?id={$program->id}";
+$editcontenturl = "{$CFG->wwwroot}/totara/program/edit_content.php?id={$program->id}";
+$editassignmentsurl = "{$CFG->wwwroot}/totara/program/edit_assignments.php?id={$program->id}";
+$editmessagesurl = "{$CFG->wwwroot}/totara/program/edit_messages.php?id={$program->id}";
 
 $detailsform = new program_edit_form($currenturl, array('program'=>$program, 'action'=>$action, 'category'=>$category), 'post', '', array('name'=>'form_prog_details'));
 
@@ -78,7 +78,7 @@ if ($detailsform->is_cancelled()) {
 
 // Redirect to delete page if deleting
 if ($action == 'delete') {
-    redirect("{$CFG->wwwroot}/local/program/delete.php?id={$id}");
+    redirect("{$CFG->wwwroot}/totara/program/delete.php?id={$id}");
 }
 
 // Handle form submits

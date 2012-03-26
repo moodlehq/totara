@@ -1,40 +1,36 @@
-<?php // $Id$
-
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Jonathan Newman
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
 /**
  * competency/lib.php
  *
  * Library to construct competency hierarchies
- * @copyright Catalyst IT Limited
- * @author Jonathan Newman
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package totara
  */
-require_once($CFG->dirroot.'/hierarchy/lib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidenceitem/type/abstract.php');
-require_once($CFG->dirroot.'/local/utils.php');
+require_once("{$CFG->dirroot}/totara/hierarchy/lib.php");
+require_once("{$CFG->dirroot}/totara/hierarchy/prefix/competency/evidenceitem/type/abstract.php");
+require_once("{$CFG->dirroot}/totara/core/utils.php");
 
 /**
  * Competency aggregation methods
@@ -76,7 +72,8 @@ class competency extends hierarchy {
      * @return object|false
      */
     function get_template($id) {
-        return get_record($this->shortprefix.'_template', 'id', $id);
+        global $DB;
+        return $DB->get_record($this->shortprefix.'_template', array('id' => $id));
     }
 
     /**
@@ -86,8 +83,8 @@ class competency extends hierarchy {
      * @return array
      */
     function get_templates() {
-        global $CFG;
-        return get_records($this->shortprefix.'_template', 'frameworkid', $this->frameworkid, 'fullname');
+        global $DB;
+        return $DB->get_records($this->shortprefix.'_template', array('frameworkid' => $this->frameworkid), 'fullname');
     }
 
     /**
@@ -96,12 +93,11 @@ class competency extends hierarchy {
      * @return void
      */
     function hide_template($id) {
+        global $DB;
         $template = $this->get_template($id);
         if ($template) {
             $visible = 0;
-            if (!set_field($this->shortprefix.'_template', 'visible', $visible, 'id', $template->id)) {
-                notify('Could not update that '.$this->prefix.' template!');
-            }
+            $DB->set_field($this->shortprefix.'_template', 'visible', $visible, array('id' => $template->id));
         }
     }
 
@@ -111,12 +107,11 @@ class competency extends hierarchy {
      * @return void
      */
     function show_template($id) {
+        global $DB;
         $template = $this->get_template($id);
         if ($template) {
             $visible = 1;
-            if (!set_field($this->shortprefix.'_template', 'visible', $visible, 'id', $template->id)) {
-                notify('Could not update that '.$this->prefix.' template!');
-            }
+            $DB->set_field($this->shortprefix.'_template', 'visible', $visible, array('id' => $template->id));
         }
     }
 
@@ -127,23 +122,19 @@ class competency extends hierarchy {
      * @return  void
      */
     function delete_framework($triggerevent = true) {
+        global $DB;
 
         // Start transaction
-        begin_sql();
+        $transaction = $DB->start_delegated_transaction();
 
         // Run parent method
         parent::delete_framework();
-
         // Delete references to scales
-        if (count_records($this->shortprefix.'_scale_assignments', 'frameworkid', $this->frameworkid)) {
-            if (!delete_records($this->shortprefix.'_scale_assignments', 'frameworkid', $this->frameworkid)) {
-                rollback_sql();
-                return false;
-            }
+        if ($DB->count_records($this->shortprefix.'_scale_assignments', array('frameworkid' => $this->frameworkid))) {
+            $DB->delete_records($this->shortprefix.'_scale_assignments', array('frameworkid' => $this->frameworkid));
         }
-
         // End transaction
-        commit_sql();
+        $transaction->allow_commit();
         return true;
     }
 
@@ -161,10 +152,10 @@ class competency extends hierarchy {
      * @return boolean True if items and associated data were successfully deleted
      */
     protected function _delete_hierarchy_items($items) {
-        global $CFG;
+        global $DB;
 
         // First call the deleter for the parent class
-        if (!parent::_delete_hierarchy_items($items)){
+        if (!parent::_delete_hierarchy_items($items)) {
             return false;
         }
 
@@ -179,11 +170,10 @@ class competency extends hierarchy {
             hierarchy::get_short_prefix('organisation').'_competencies' => 'competencyid',
             'dp_plan_competency_assign' => 'competencyid',
         );
+        list($items_sql, $items_params) = $DB->get_in_or_equal($items);
         foreach ($db_data as $table => $field) {
-            $select = "$field IN (" . implode(',', $items) . ')';
-            if (!delete_records_select($table, $select)) {
-                return false;
-            }
+            $select = "$field {$items_sql}";
+            $DB->delete_records_select($table, $select, $items_params);
         }
 
 
@@ -193,9 +183,9 @@ class competency extends hierarchy {
         $modified_templates = array();
         $sql = "
             SELECT DISTINCT templateid
-            FROM {$CFG->prefix}{$this->shortprefix}_template_assignment
-            WHERE type=1 AND instanceid IN (" . implode(',', $items) . ")";
-        $records = get_records_sql($sql);
+            FROM {{$this->shortprefix}_template_assignment}
+            WHERE type = ? AND instanceid {$items_sql}";
+        $records = $DB->get_records_sql($sql, array_merge(array('1'), $items_params));
         if ($records) {
             foreach ($records as $template) {
                 $modified_templates[] = $template->templateid;
@@ -203,58 +193,54 @@ class competency extends hierarchy {
         }
 
         // now delete the template assignments
-        if(!delete_records_select($this->shortprefix.'_template_assignment',
-            'type = 1 AND instanceid IN (' . implode(',', $items). ')')) {
+        $DB->delete_records_select($this->shortprefix.'_template_assignment',
+            'type = ? AND instanceid ' . $items_sql, array_merge(array('1'), $items_params));
 
-            return false;
-        }
 
         // only continue if at least one template has changed
         if (count($modified_templates) > 0) {
-            $templatecounts = get_records_sql(
+            list($templates_sql, $templates_params) = $DB->get_in_or_equal($modified_templates);
+            $templatecounts = $DB->get_records_sql(
                 "SELECT templateid, COUNT(instanceid) AS count
-                FROM {$CFG->prefix}{$this->shortprefix}_template_assignment
-                WHERE type = 1
+                FROM {{$this->shortprefix}_template_assignment}
+                WHERE type = ?
                 GROUP BY templateid
-                HAVING templateid IN (" . implode(',', $modified_templates) . ')'
-            );
+                HAVING templateid {$templates_sql}", array_merge(array('1'), $templates_params));
 
             if ($templatecounts) {
                 foreach ($templatecounts as $templatecount) {
                     // now update count for templates that still have at least one assignment
                     // this won't catch templates that now have zero competencies as there
                     // won't be any entries in comp_template_assignment
-                    $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}_template
-                        SET competencycount = {$templatecount->count}
-                        WHERE id = {$templatecount->templateid}";
-                    if (!execute_sql($sql, false)) {
-                        return false;
-                    }
+                    $sql = "UPDATE {{$this->shortprefix}_template}
+                        SET competencycount = ?
+                        WHERE id = ?";
+                    $DB->execute($sql, array($templatecount->count, $templatecount->templateid));
                 }
             }
 
             // figure out if any of the modified templates are now empty
             $empty_templates = $modified_templates;
             $sql = "SELECT DISTINCT templateid
-                FROM {$CFG->prefix}{$this->shortprefix}_template_assignment";
-            $records = get_recordset_sql($sql);
-            while ($record = rs_fetch_next_record($records)) {
+                FROM {{$this->shortprefix}_template_assignment}";
+            $records = $DB->get_recordset_sql($sql);
+            foreach ($records as $record) {
                 $key = array_search($record->templateid, $empty_templates);
                 if ($key !== false) {
                     // it's not empty if there's an assignment
                     unset($empty_templates[$key]);
                 }
             }
+            $records->close();
 
             // finally, set the count to zero for any of the templates that no longer
             // have any assignments
             if (count($empty_templates) > 0) {
-                $sql = "UPDATE {$CFG->prefix}{$this->shortprefix}_template
+                list($in_sql, $in_params) = $DB->get_in_or_equal($emptytemplates);
+                $sql = "UPDATE {{$this->shortprefix}_template}
                     SET competencycount = 0
-                    WHERE id IN (" . implode(',', $empty_templates). ")";
-                if (!execute_sql($sql, false)) {
-                    return false;
-                }
+                    WHERE id {$in_sql}";
+                $DB->execute($sql, $in_params);
             }
         }
 
@@ -269,59 +255,61 @@ class competency extends hierarchy {
      * @return  void
      */
     function delete_template($id) {
-        delete_records($this->shortprefix.'_template_assignment','templateid',$id);
-        delete_records(hierarchy::get_short_prefix('position').'_competencies','templateid',$id);
+        global $DB;
+        $DB->delete_records($this->shortprefix.'_template_assignment', array('templateid' => $id));
+        $DB->delete_records(hierarchy::get_short_prefix('position').'_competencies', array('templateid' => $id));
 
         // Delete this item
-        delete_records($this->shortprefix.'_template', 'id', $id);
+        $DB->delete_records($this->shortprefix.'_template', array('id' => $id));
     }
 
     /**
      * Get competencies assigned to a template
      * @param int $id Template id
-     * @return array|false
+     * @return array
      */
     function get_assigned_to_template($id) {
-        global $CFG;
+        global $DB;
 
-        return get_records_sql(
+        return $DB->get_records_sql(
             "
             SELECT
                 c.id AS id,
                 c.fullname AS competency,
                 c.fullname AS fullname    /* used in some places (for genericness) */
             FROM
-                {$CFG->prefix}{$this->shortprefix}_template_assignment a
+                {{$this->shortprefix}_template_assignment} a
             LEFT JOIN
-                {$CFG->prefix}{$this->shortprefix}_template t
+                {{$this->shortprefix}_template} t
              ON t.id = a.templateid
             LEFT JOIN
-                {$CFG->prefix}{$this->shortprefix} c
+                {{$this->shortprefix}} c
              ON a.instanceid = c.id
             WHERE
-                t.id = {$id}
+                t.id = ?
             "
-        );
+        , array($id));
     }
 
     /**
      * Get evidence items for a competency
      * @param $item object Competency
-     * @return array|false
+     * @return array
      */
     function get_evidence($item) {
-        return get_records($this->shortprefix.'_evidence_items', 'competencyid', $item->id, 'id');
+        global $DB;
+        return $DB->get_records($this->shortprefix.'_evidence_items', array('competencyid' => $item->id), 'id');
     }
 
     /**
      * Get related competencies
      * @param $item object Competency
-     * @return array|false
+     * @return array
      */
     function get_related($item) {
-        global $CFG;
+        global $DB;
 
-        return get_records_sql(
+        return $DB->get_records_sql(
             "
             SELECT DISTINCT
                 c.id AS id,
@@ -330,35 +318,35 @@ class competency extends hierarchy {
                 f.fullname AS framework,
                 it.fullname AS itemtype
             FROM
-                {$CFG->prefix}{$this->shortprefix}_relations r
+                {{$this->shortprefix}_relations} r
             INNER JOIN
-                {$CFG->prefix}{$this->shortprefix} c
+                {{$this->shortprefix}} c
              ON r.id1 = c.id
              OR r.id2 = c.id
             INNER JOIN
-                {$CFG->prefix}{$this->shortprefix}_framework f
+                {{$this->shortprefix}_framework} f
              ON f.id = c.frameworkid
             LEFT JOIN
-                {$CFG->prefix}{$this->shortprefix}_type it
+                {{$this->shortprefix}_type} it
              ON it.id = c.typeid
             WHERE
-                (r.id1 = {$item->id} OR r.id2 = {$item->id})
-            AND c.id != {$item->id}
+                (r.id1 = ? OR r.id2 = ?)
+            AND c.id != ?
             ORDER BY c.fullname
-            "
-        );
+            ",
+        array($item->id, $item->id, $item->id));
     }
 
     /**
      * Get competency evidence using in a course
      *
      * @param   $courseid   int
-     * @return  array|false
+     * @return  array
      */
     function get_course_evidence($courseid) {
-        global $CFG;
+        global $DB;
 
-        return get_records_sql(
+        return $DB->get_records_sql(
                 "
                 SELECT DISTINCT
                     cei.id AS evidenceid,
@@ -371,36 +359,36 @@ class competency extends hierarchy {
                     cei.itemmodule AS evidencemodule,
                     cei.linktype as linktype
                 FROM
-                    {$CFG->prefix}{$this->shortprefix}_evidence_items cei
+                    {{$this->shortprefix}_evidence_items} cei
                 INNER JOIN
-                    {$CFG->prefix}{$this->shortprefix} c
+                    {{$this->shortprefix}} c
                  ON cei.competencyid = c.id
                 INNER JOIN
-                    {$CFG->prefix}{$this->shortprefix}_framework f
+                    {{$this->shortprefix}_framework} f
                  ON f.id = c.frameworkid
                 LEFT JOIN
-                    {$CFG->prefix}modules m
+                    {modules} m
                  ON cei.itemtype = 'activitycompletion'
                 AND m.name = cei.itemmodule
                 LEFT JOIN
-                    {$CFG->prefix}course_modules cm
+                    {course_modules} cm
                  ON cei.itemtype = 'activitycompletion'
                 AND cm.instance = cei.iteminstance
                 AND cm.module = m.id
                 WHERE
                 (
                         cei.itemtype <> 'activitycompletion'
-                    AND cei.iteminstance = {$courseid}
+                    AND cei.iteminstance = ?
                 )
                 OR
                 (
                         cei.itemtype = 'activitycompletion'
-                    AND cm.course = {$courseid}
+                    AND cm.course = ?
                 )
                 ORDER BY
                     c.fullname
-                "
-        );
+                ",
+        array($courseid, $courseid));
     }
 
     /**
@@ -409,14 +397,14 @@ class competency extends hierarchy {
      * @return void
      */
     function hierarchy_page_setup($page = '', $item=null) {
-        global $CFG, $USER;
+        global $CFG, $USER, $PAGE;
 
         if (!in_array($page, array('template/view', 'item/view', 'item/add'))) {
             return;
         }
 
         // Setup custom javascript
-        require_once($CFG->dirroot.'/local/js/lib/setup.php');
+        require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
         // Setup lightbox
         local_js(array(
@@ -427,21 +415,18 @@ class competency extends hierarchy {
         switch ($page) {
             case 'item/view':
                 $itemid = !(empty($item->id)) ? "?id={$item->id}" : '';
-                require_js(array(
-                    $CFG->wwwroot.'/local/js/competency.item.js.php'.$itemid,
-                ));
+                $PAGE->requires->js('/totara/core/js/competency.item.js.php'.$itemid);
+
                 break;
             case 'template/view':
                 $itemid = !(empty($item->id)) ? "?id={$item->id}" : '';
-                require_js(array(
-                    $CFG->wwwroot.'/local/js/competency.template.js.php'.$itemid,
-                ));
+                $PAGE->requires->js('/totara/core/js/competency.template.js.php'.$itemid);
+
                 break;
             case 'item/add':
-                require_js(array(
-                    $CFG->wwwroot.'/local/js/competency.add.js.php',
-                    $CFG->wwwroot.'/local/js/position.user.js.php?userid='.$USER->id,
-                ));
+                $PAGE->requires->js('/totara/core/js/competency.add.js.php');
+                $PAGE->requires->js('/totara/core/js/position.user.js.php?userid='.$USER->id);
+
                 break;
         }
     }
@@ -452,27 +437,28 @@ class competency extends hierarchy {
      * @return void
      */
     function display_extra_view_info($item, $section='') {
-        global $CFG;
+        global $CFG, $PAGE;
+        $renderer = $PAGE->get_renderer('totara_hierarchy');
 
-        $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-        $can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);
+        $sitecontext = context_system::instance();
+        $can_edit = has_capability('totara/hierarchy:updatecompetency', $sitecontext);
         if ($can_edit) {
             $str_edit = get_string('edit');
             $str_remove = get_string('remove');
         }
 
-        if (!$section || $section=='related') {
+        if (!$section || $section == 'related') {
             // Display related competencies
-            echo '<div class="list-related">';
+            echo html_writer::start_tag('div', array('class' => 'list-related'));
             $related = $this->get_related($item);
-            require $CFG->dirroot.'/hierarchy/prefix/competency/view-related.html';
-            echo '</div>';
+            echo $renderer->print_competency_view_related($item, $can_edit, $related);
+            echo html_writer::end_tag('div');
         }
 
-        if (!$section || $section=='evidence') {
+        if (!$section || $section == 'evidence') {
             // Display evidence
             $evidence = $this->get_evidence($item);
-            require $CFG->dirroot.'/hierarchy/prefix/competency/view-evidence.html';
+            echo $renderer->print_competency_view_evidence($item, $evidence, $can_edit);
         }
     }
 
@@ -495,8 +481,8 @@ class competency extends hierarchy {
 
         // Add aggregation method
         $data[] = array(
-            'title' => get_string('aggregationmethodview', $this->prefix),
-            'value' => get_string('aggregationmethod'.$item->aggregationmethod, $this->prefix)
+            'title' => get_string('aggregationmethodview', 'totara_hierarchy', $this->prefix),
+            'value' => get_string('aggregationmethod'.$item->aggregationmethod, 'totara_hierarchy')
         );
 
         return $data;
@@ -509,27 +495,22 @@ class competency extends hierarchy {
      * @global object $CFG
      * @return object
      */
-    function get_competency_scale(){
-        global $CFG;
-        $sql = <<<SQL
-            select scale.*
-            from
-                {$CFG->prefix}{$this->shortprefix}_scale_assignments sa,
-                {$CFG->prefix}{$this->shortprefix}_scale scale
-            where
+    function get_competency_scale() {
+        global $DB;
+        $sql = "
+            SELECT scale.*
+            FROM
+                {{$this->shortprefix}_scale_assignments} sa,
+                {{$this->shortprefix}_scale} scale
+            WHERE
                 sa.scaleid = scale.id
-                and sa.frameworkid = {$this->frameworkid}
-SQL;
-        $scale = get_record_sql($sql);
-        if ( !$scale ){
-            return false;
-        }
+                AND sa.frameworkid = ?
+        ";
+        $scale = $DB->get_record_sql($sql, array($this->frameworkid));
 
-        $valuelist = get_records($this->shortprefix.'_scale_values', 'scaleid', $scale->id, 'sortorder');
-        if ( $valuelist ){
+        $valuelist = $DB->get_records($this->shortprefix.'_scale_values', array('scaleid' => $scale->id), 'sortorder');
+        if ($valuelist) {
             $scale->valuelist = $valuelist;
-        } else {
-            $scale->valuelist = array();
         }
         return $scale;
     }
@@ -537,10 +518,11 @@ SQL;
 
     /**
      * Get scales for a competency
-     * @return array|false
+     * @return array
      */
     function get_scales() {
-        return get_records($this->shortprefix.'_scale', '', '', 'name');
+        global $DB;
+        return $DB->get_records($this->shortprefix.'_scale', null, 'name');
     }
 
     /**
@@ -550,12 +532,13 @@ SQL;
      * @return void;
      */
     function delete_assigned_template_competency($templateid, $competencyid) {
+        global $DB;
         if (!$template = $this->get_template($templateid)) {
             return;
         }
 
         // Delete assignment
-        delete_records('comp_template_assignment', 'templateid', $template->id, 'instanceid', $competencyid);
+        $DB->delete_records('comp_template_assignment', array('templateid' => $template->id, 'instanceid' => $competencyid));
 
         // Reduce competency count for template
         $template->competencycount--;
@@ -564,7 +547,7 @@ SQL;
             $template->competencycount = 0;
         }
 
-        update_record('comp_template', $template);
+        $DB->update_record('comp_template', $template);
 
         add_to_log(SITEID, 'competency', 'template remove competency assignment',
                     "prefix/competency/template/view.php?id={$template->id}", "Competency ID $competencyid");
@@ -578,23 +561,23 @@ SQL;
      * proficiency and 0 otherwise
      */
     static function get_proficiencies($userid) {
-        global $CFG;
+        global $DB;
         $sql = "SELECT ce.competencyid, prof.proficiency, csv.proficient AS isproficient
-            FROM {$CFG->prefix}comp_evidence ce
-            LEFT JOIN {$CFG->prefix}comp c ON c.id=ce.competencyid
-            LEFT JOIN {$CFG->prefix}comp_scale_assignments csa
+            FROM {comp_evidence} ce
+            LEFT JOIN {comp} c ON c.id=ce.competencyid
+            LEFT JOIN {comp_scale_assignments} csa
                 ON c.frameworkid = csa.frameworkid
-            LEFT JOIN {$CFG->prefix}comp_scale_values csv
+            LEFT JOIN {comp_scale_values} csv
                 ON csv.scaleid=csa.scaleid
                 AND csv.id=ce.proficiency
             LEFT JOIN (
                 SELECT scaleid, MAX(id) AS proficiency
-                FROM {$CFG->prefix}comp_scale_values
+                FROM {comp_scale_values}
                 WHERE proficient=1
                 GROUP BY scaleid
             ) prof on prof.scaleid=csa.scaleid
-            WHERE ce.userid=$userid";
-        return get_records_sql($sql);
+            WHERE ce.userid = ?";
+        return $DB->get_records_sql($sql, array($userid));
     }
 
 
@@ -605,123 +588,146 @@ SQL;
      * @return string
      */
     function print_linked_evidence_list($courseid) {
-        global $CFG;
+        global $CFG, $DB, $OUTPUT;
 
-        $can_edit = has_capability('moodle/local:updatecompetency', get_context_instance(CONTEXT_SYSTEM));
-        $can_manage_fw = has_capability('moodle/local:updatecompetencyframeworks', get_context_instance(CONTEXT_SYSTEM));
+        $system_context = context_system::instance();
 
-        if (!$course = get_record('course', 'id', $courseid)) {
-            print_error('invalidcourseid');
-        }
+        $can_edit = has_capability('totara/hierarchy:updatecompetency', $system_context);
+        $can_manage_fw = has_capability('totara/hierarchy:updatecompetencyframeworks', $system_context);
 
-        $out = '<table width="95%" cellpadding="5" cellspacing="1" id="list-coursecompetency"
-            class="generalbox editcompetency boxaligncenter">
-            <tr>
-                <th style="vertical-align:top; white-space:nowrap;" class="header c0" scope="col">'.
-                    get_string('framework', 'competency').
-                '</th>
+        $course = $DB->get_record('course', array('id' => $courseid));
 
-                <th style="vertical-align:top; white-space:nowrap;" class="header c2" scope="col">'.
-                    get_string('name').
-                '</th>';
+        // define the table
+        $out = new html_table();
+        $out->id = 'list-coursecompetency';
+        $out->attributes = array(
+                'class' => 'boxaligncenter',
+        );
+        $out->head = array();
+        $out->rowclasses[0] = 'header';
+
+        // header row
+        $header = new html_table_row();
+        $header->attributes = array('scope' => 'col');
+        $header->cells = array();
+        $head = array();
+
+        // header cells
+        $heading0 = new html_table_cell();
+        $heading0->text = get_string('competencyframework', 'totara_hierarchy');
+        $heading0->header = true;
+        $head[] = $heading0;
+
+        $heading1 = new html_table_cell();
+        $heading1->text = get_string('name');
+        $heading1->header = true;
+        $head[] = $heading1;
 
         if (!empty($CFG->competencyuseresourcelevelevidence)) {
-            $out .= '<th style="vertical-align:top; white-space:nowrap;" class="header c3" scope="col">'.
-                get_string('evidence', 'competency').
-            '</th>';
+            $heading2 = new html_table_cell();
+            $heading2->text = get_string('evidence', 'totara_hierarchy');
+            $heading2->header = true;
+            $head[] = $heading2;
         }
 
         if ($can_edit) {
-            require_once($CFG->dirroot.'/local/plan/lib.php');
-            $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c4" scope="col">'.
-                get_string('linktype', 'local_plan').
-            '</th>';
-            $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c4" scope="col">'.
-                get_string('options', 'competency').
-            '</th>';
+            require_once($CFG->dirroot.'/totara/plan/lib.php');
+            $heading3 = new html_table_cell();
+            $heading3->text = get_string('linktype', 'totara_plan');
+            $heading3->header = true;
+            $head[] = $heading3;
+
+            $heading4 = new html_table_cell();
+            $heading4->text = get_string('options', 'totara_hierarchy');
+            $heading4->header = true;
+            $head[] = $heading4;
         } // if ($can_edit)
-        $out .= '</tr>';
+        // add the completed row to the table
+        $out->head = $head;
 
         // Get any competencies used in this course
         $competencies = $this->get_course_evidence($course->id);
-        $oddeven = 0;
         if ($competencies) {
 
             $str_remove = get_string('remove');
 
             $activities = array();
 
+            $data = array();
             foreach ($competencies as $competency) {
                 $framework_text = ($can_manage_fw) ?
-                    "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?prefix=competency&amp;frameworkid={$competency->fid}\">" .
-                    format_string($competency->framework) . "</a>" : format_string($competency->framework);
+                     $OUTPUT->action_link(new moodle_url('index.php', array('prefix' => 'competency', 'frameworkid' => $competency->fid)), format_string($competency->framework))
+                     : format_string($competency->framework);
 
-                $out .= '<tr class="r' . $oddeven . '">';
-                $out .= "<td>{$framework_text}</td>";
-                $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?prefix=competency&amp;id={$competency->id}\">" . format_string($competency->fullname) . "</a></td>";
+                // define a data row
+                $row = new html_table_row();
+
+                //define data cells
+                $cell = new html_table_cell($framework_text);
+                $row->cells[] = $cell;
+
+                $cell = new html_table_cell($OUTPUT->action_link(new moodle_url('item/view.php', array('prefix' => 'competency', 'id' => $competency->id)), format_string($competency->fullname)));
+                $row->cells[] = $cell;
 
                 // Create evidence object
-                $evidence = new object();
+                $evidence = new stdClass();
                 $evidence->id = $competency->evidenceid;
                 $evidence->itemtype = $competency->evidencetype;
                 $evidence->iteminstance = $competency->evidenceinstance;
                 $evidence->itemmodule = $competency->evidencemodule;
 
                 if (!empty($CFG->competencyuseresourcelevelevidence)) {
-                    $out .= '<td>';
+                    $cell = new html_table_cell();
 
                     $evidence = competency_evidence_type::factory($evidence);
 
-                    $out .= $evidence->get_type();
+                    $cell->text = $evidence->get_type();
                     if ($evidence->itemtype == 'activitycompletion') {
-                        $out .= ' - '.$evidence->get_name();
+                        $cell->text .= ' - '.$evidence->get_name();
                     }
 
-                    $out .= '</td>';
+                    $row->cells[] = $cell;
                 }
 
                 // Options column
                 if ($can_edit) {
-                    $out .= '<td align="center">';
-                    $out .= choose_from_menu(
+                    $cell = new html_table_cell();
+                    $select = $OUTPUT->single_select(
+                        new moodle_url('/totara/plan/update-linktype.php', array('type' => 'course', 'c' => $competency->evidenceid, 'sesskey' => sesskey(), 't' => '$this.val()')),
+                        'c', // ?? name'linktype'
                         array(
-                            PLAN_LINKTYPE_MANDATORY => get_string('mandatory','hierarchy'),
-                            PLAN_LINKTYPE_OPTIONAL => get_string('optional','hierarchy'),
+                            PLAN_LINKTYPE_MANDATORY => get_string('mandatory','totara_hierarchy'),
+                            PLAN_LINKTYPE_OPTIONAL => get_string('optional','totara_hierarchy'),
                         ),
-                        'linktype', //$name,
-                        (isset($competency->linktype) ? $competency->linktype : PLAN_LINKTYPE_MANDATORY), //$selected,
-                        '', //$nothing,
-                        "\$.get(".
-                            "'{$CFG->wwwroot}/local/plan/update-linktype.php".
-                            "?type=course&amp;c={$competency->evidenceid}".
-                            "&amp;sesskey=".sesskey().
-                            "&amp;t=' + $(this).val()".
-                        ");",
-                        '', //$nothingvalue,
-                        true //$return
+                        (isset($competency->linktype) ? $competency->linktype : PLAN_LINKTYPE_MANDATORY),
+                        null
                     );
-                    $out .= '</td>';
-                    $out .= '<td align="center">';
-                    $out .= "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/evidenceitem/remove.php?id={$evidence->id}&course={$courseid}\" title=\"$str_remove\">".
-                         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-                    $out .= '</td>';
+                    $cell->text = $select;
+                    $row->cells[] = $cell;
+
+                    $cell = new html_table_cell();
+                    $cell->text = $OUTPUT->action_icon(new moodle_url('prefix/competency/evidenceitem/remove.php', array('id' => $evidence->id, 'course' => $courseid)),
+                        new pix_icon('t/delete', $str_remove), null, array('class' => 'iconsmall', 'alt' => $str_remove, 'title' => $str_remove));
+                    $row->cells[] = $cell;
                 }
 
-                $out .= '</tr>';
-
-                // for row striping
-                $oddeven = $oddeven ? 0 : 1;
+                $data[] = $row;
             }
+            $out->data = $data;
 
         } else {
+            $row = new html_table_row();
+            $row->attributes['class'] = 'noitems-coursecompetency';
 
-            $cols = 5;
-            $out .= '<tr class="noitems-coursecompetency"><td colspan="'.$cols.'"><i>'.get_string('nocoursecompetencies', 'competency').'</i></td></tr>';
+            $cell = new html_table_cell();
+            $cell->colspan = 5;
+            $cell->text = html_writer::tag('i', get_string('nocoursecompetencies', 'totara_hierarchy'));
+            $row->cell[0] = $cell;
+
+            $out->data = array($row);
         }
 
-        $out .= '</table>';
-
-        return $out;
+        return html_writer::table($out);
     }
 
     /**
@@ -730,18 +736,18 @@ SQL;
      * @return array list of ids of completed competencies
      */
     static function get_user_completed_competencies($userid) {
-        global $CFG;
+        global $DB;
 
         $proficient_sql = "SELECT
             ce.competencyid
             FROM
-                {$CFG->prefix}comp_evidence ce
+                {comp_evidence} ce
             JOIN
-                {$CFG->prefix}comp_scale_values csv ON csv.id = ce.proficiency
+                {comp_scale_values} csv ON csv.id = ce.proficiency
             WHERE csv.proficient = 1
-              AND ce.userid={$userid}
+              AND ce.userid = ?
               ";
-        $completed = get_records_sql($proficient_sql);
+        $completed = $DB->get_records_sql($proficient_sql, array($userid));
 
         return is_array($completed) ? array_keys($completed) : array();
     }
@@ -753,7 +759,7 @@ SQL;
      * @param object &$mform Moodle form object (passed by reference)
      */
     function add_additional_item_form_fields(&$mform) {
-        global $CFG;
+        global $DB;
 
         $frameworkid = $this->frameworkid;
 
@@ -761,28 +767,28 @@ SQL;
         global $COMP_AGGREGATION;
         $aggregations = array();
         foreach ($COMP_AGGREGATION as $title => $key) {
-            $aggregations[$key] = get_string('aggregationmethod'.$key, 'competency');
+            $aggregations[$key] = get_string('aggregationmethod'.$key, 'totara_hierarchy');
         }
 
         // Get the name of the framework's scale. (Note this code expects there
         // to be only one scale per framework, even though the DB structure
         // allows there to be multiple since we're using a go-between table)
-        $scaledesc = get_field_sql("
-            select s.name
-            from
-        {$CFG->prefix}{$this->shortprefix}_scale s,
-        {$CFG->prefix}{$this->shortprefix}_scale_assignments a
-        where
-        a.frameworkid = {$frameworkid}
-        and a.scaleid = s.id
-        ");
+        $scaledesc = $DB->get_field_sql("
+                SELECT s.name
+                FROM
+                {{$this->shortprefix}_scale} s,
+                {{$this->shortprefix}_scale_assignments} a
+                WHERE
+                a.frameworkid = ?
+                AND a.scaleid = s.id
+        ", array($frameworkid));
 
-        $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'competency'), $aggregations);
-        $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competency')), true);
-        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competency'), 'required', null);
+        $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'totara_hierarchy'), $aggregations);
+        $mform->addHelpButton('aggregationmethod', 'competencyaggregationmethod', 'totara_hierarchy');
+        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'totara_hierarchy'), 'required', null);
 
         $mform->addElement('static', 'scalename', get_string('scale'), ($scaledesc)?$scaledesc:get_string('none'));
-        $mform->setHelpButton('scalename', array('competencyscale', get_string('scale')), true);
+        $mform->addHelpButton('scalename', 'competencyscale', 'totara_hierarchy');
 
         $mform->addElement('hidden', 'proficiencyexpected', 1);
         $mform->addElement('hidden', 'evidencecount', 0);
@@ -796,7 +802,8 @@ SQL;
      * @return array Associative array containing stats
      */
     public function get_item_stats($id) {
-        if (!$data = parent::get_item_stats($id)){
+        global $DB;
+        if (!$data = parent::get_item_stats($id)) {
             return false;
         }
 
@@ -807,17 +814,18 @@ SQL;
 
         $ids = array_keys($children);
 
+        list($idssql, $idsparams) = sql_sequence('competencyid', $ids);
         // number of comp_evidence records
-        $data['user_achievement'] = count_records_select('comp_evidence',
-            sql_sequence('competencyid', $ids));
+        $data['user_achievement'] = $DB->count_records_select('comp_evidence', $idssql, $idsparams);
 
         // number of comp_evidence_item records
-        $data['evidence'] = count_records_select('comp_evidence_items',
-            sql_sequence('competencyid', $ids));
+        $data['evidence'] = $DB->count_records_select('comp_evidence_items', $idssql, $idsparams);
 
         // number of comp_relations records
-        $data['related'] = count_records_select('comp_relations',
-            sql_sequence('id1', $ids) . ' OR ' . sql_sequence('id2', $ids));
+        list($ids1sql, $ids1params) = sql_sequence('id1', $ids);
+        list($ids2sql, $ids2params) = sql_sequence('id2', $ids);
+        $data['related'] = $DB->count_records_select('comp_relations',
+            $ids1sql . ' OR ' . $ids2sql, array_merge($ids1params, $ids2params));
 
         return $data;
     }
@@ -832,15 +840,15 @@ SQL;
         $message = parent::output_delete_message($stats);
 
         if ($stats['user_achievement'] > 0) {
-            $message .= get_string('deleteincludexuserstatusrecords', 'competency', $stats['user_achievement']) . '<br />';
+            $message .= get_string('deleteincludexuserstatusrecords', 'totara_hierarchy', $stats['user_achievement']) . html_writer::empty_tag('br');
         }
 
         if ($stats['evidence'] > 0) {
-            $message .= get_string('deleteincludexevidence', 'competency', $stats['evidence']) . '<br />';
+            $message .= get_string('deleteincludexevidence', 'totara_hierarchy', $stats['evidence']) . html_writer::empty_tag('br');
         }
 
         if ($stats['related'] > 0) {
-            $message .= get_string('deleteincludexrelatedcompetencies', 'competency', $stats['related']). '<br />';
+            $message .= get_string('deleteincludexrelatedcompetencies', 'totara_hierarchy', $stats['related']). html_writer::empty_tag('br');
         }
 
         return $message;

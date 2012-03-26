@@ -26,14 +26,14 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
-require_once($CFG->dirroot . '/local/program/program_content.class.php');
-require_once($CFG->dirroot . '/local/program/program_courseset.class.php');
-require_once($CFG->dirroot . '/local/program/program_assignments.class.php');
-require_once($CFG->dirroot . '/local/program/program_messages.class.php');
-require_once($CFG->dirroot . '/local/program/program_message.class.php');
-require_once($CFG->dirroot . '/local/program/program_exceptions.class.php');
-require_once($CFG->dirroot . '/local/program/program_exception.class.php');
-require_once($CFG->dirroot . '/local/program/program_user_assignment.class.php');
+require_once($CFG->dirroot . '/totara/program/program_content.class.php');
+require_once($CFG->dirroot . '/totara/program/program_courseset.class.php');
+require_once($CFG->dirroot . '/totara/program/program_assignments.class.php');
+require_once($CFG->dirroot . '/totara/program/program_messages.class.php');
+require_once($CFG->dirroot . '/totara/program/program_message.class.php');
+require_once($CFG->dirroot . '/totara/program/program_exceptions.class.php');
+require_once($CFG->dirroot . '/totara/program/program_exception.class.php');
+require_once($CFG->dirroot . '/totara/program/program_user_assignment.class.php');
 
 define('STATUS_PROGRAM_INCOMPLETE', 0);
 define('STATUS_PROGRAM_COMPLETE', 1);
@@ -1061,7 +1061,7 @@ class program {
             if (!$viewinganothersprogram && $userid && $this->assigned_to_users_required_learning($userid) && totara_get_manager($userid)) {
                 if (!$extension = get_record('prog_extension', 'userid', $userid, 'programid', $this->id, 'status', 0)) {
                     // Show extension link
-                    $out .= ' <a href="'.$CFG->wwwroot.'/local/program/view.php?id='.$this->id.'&amp;extrequest=1">'.get_string('requestextension', 'local_program').'</a>';
+                    $out .= ' <a href="'.$CFG->wwwroot.'/totara/program/view.php?id='.$this->id.'&amp;extrequest=1">'.get_string('requestextension', 'local_program').'</a>';
                 } else {
                     // Show pending text
                     $out .= ' ' . get_string('pendingextension', 'local_program');
@@ -1089,7 +1089,7 @@ class program {
         }
 
         $out = '';
-        $out .= "<div class=\"dp-summary-widget-title\"><a href=\"{$CFG->wwwroot}/local/program/required.php?id={$this->id}{$extraparams}\">{$this->fullname} </a></div>";
+        $out .= "<div class=\"dp-summary-widget-title\"><a href=\"{$CFG->wwwroot}/totara/program/required.php?id={$this->id}{$extraparams}\">{$this->fullname} </a></div>";
         $out .= "<div class=\"dp-summary-widget-description\">{$this->summary}</div>";
 
         return $out;
@@ -1291,7 +1291,7 @@ class program {
         }
 
         // If this user is able to view hidden programs then let it be visible
-        if (has_capability('local/program:viewhiddenprograms', get_system_context(), $user->id)) {
+        if (has_capability('totara/program:viewhiddenprograms', get_system_context(), $user->id)) {
             return true;
         }
 
@@ -1355,7 +1355,7 @@ class program {
      */
     public function get_cancel_button($url='') {
         global $CFG;
-        $link = empty($url) ? "{$CFG->wwwroot}/local/program/edit.php?id={$this->id}" : $url;
+        $link = empty($url) ? "{$CFG->wwwroot}/totara/program/edit.php?id={$this->id}" : $url;
         return '<a href="'.$link.'" id="cancelprogramedits">'.get_string('cancelprogrammanagement', 'local_program').'</a><br />';
     }
 
@@ -1455,7 +1455,7 @@ class program {
     public function assigned_through_plan($userid) {
         global $CFG;
 
-        require_once($CFG->dirroot . '/local/plan/lib.php');
+        require_once($CFG->dirroot . '/totara/plan/lib.php');
 
         $sql = "SELECT COUNT(*) FROM
                 {$CFG->prefix}dp_plan p

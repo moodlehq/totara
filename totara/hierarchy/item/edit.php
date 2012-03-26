@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +22,12 @@
  * @subpackage hierarchy
  */
 
-require_once('../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/customfield/fieldlib.php');
-require_once($CFG->dirroot.'/hierarchy/item/edit_form.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/customfield/fieldlib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/item/edit_form.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 
-hierarchy::support_old_url_syntax();
 
 ///
 /// Setup / loading data
@@ -48,42 +47,42 @@ $hierarchy = hierarchy::load_hierarchy($prefix);
 
 // We require either an id for editing, or a framework for creating
 if (!$id && !$frameworkid) {
-    error('Incorrect parameters');
+    print_error('incorrectparameters', 'totara_hierarchy');
 }
 
 // Make this page appear under the manage competencies admin item
-admin_externalpage_setup($prefix.'manage', '', array('prefix'=>$prefix));
+admin_externalpage_setup($prefix.'manage', '', array('prefix' => $prefix));
 
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 
 if ($id == 0) {
     // creating new item
-    require_capability('moodle/local:create'.$prefix, $context);
+    require_capability('totara/hierarchy:create'.$prefix, $context);
 
-    $item = new object();
+    $item = new stdClass();
     $item->id = 0;
+    $item->description = '';
     $item->frameworkid = $frameworkid;
     $item->visible = 1;
     $item->typeid = 0;
 
 } else {
     // editing existing item
-    require_capability('moodle/local:update'.$prefix, $context);
+    require_capability('totara/hierarchy:update'.$prefix, $context);
 
-    if (!$item = get_record($shortprefix, 'id', $id)) {
-        error($prefix.' ID was incorrect');
+    if (!$item = $DB->get_record($shortprefix, array('id' => $id))) {
+        print_error('incorrectid', 'totara_hierarchy');
     }
     $frameworkid = $item->frameworkid;
-
-    // load custom fields data
+    // load custom fields data - customfield values need to be available in $item before the call to set_data
     if ($id != 0) {
         customfield_load_data($item, $prefix, $shortprefix.'_type');
     }
 }
 
 // Load framework
-if (!$framework = get_record($shortprefix.'_framework', 'id', $frameworkid)) {
-    error($prefix.' framework ID was incorrect');
+if (!$framework = $DB->get_record($shortprefix.'_framework', array('id' => $frameworkid))) {
+    print_error('invalidframeworkid', 'totara_hierarchy', $prefix);
 }
 $item->framework = $framework->fullname;
 
@@ -93,6 +92,9 @@ $item->framework = $framework->fullname;
 ///
 
 // create form
+$item->descriptionformat = FORMAT_HTML;
+$item = file_prepare_standard_editor($item, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                          'totara_hierarchy', $shortprefix, $item->id);
 $datatosend = array('prefix' => $prefix, 'item' => $item, 'page' => $page);
 $itemform = new item_edit_form(null, $datatosend);
 $itemform->set_data($item);
@@ -100,13 +102,13 @@ $itemform->set_data($item);
 // cancelled
 if ($itemform->is_cancelled()) {
 
-    redirect("{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&amp;frameworkid={$item->frameworkid}&amp;page=$page");
+    redirect("{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$item->frameworkid}&amp;page=$page");
 
 // Update data
 } else if ($itemnew = $itemform->get_data()) {
 
     if (isset($itemnew->changetype)) {
-        redirect($CFG->wwwroot . "/hierarchy/type/change.php?prefix={$prefix}&amp;frameworkid={$item->frameworkid}&amp;page={$page}&typeid={$itemnew->typeid}&amp;itemid={$itemnew->id}");
+        redirect($CFG->wwwroot . "/totara/hierarchy/type/change.php?prefix=$prefix&amp;frameworkid={$item->frameworkid}&amp;page={$page}&typeid={$itemnew->typeid}&amp;itemid={$itemnew->id}");
     }
     $itemnew->timemodified = time();
     $itemnew->usermodified = $USER->id;
@@ -120,59 +122,57 @@ if ($itemform->is_cancelled()) {
 
 
     // Save
-    // New item
+    //class to hold totara_set_notification info
+    $notification = new stdClass();
+
     if ($itemnew->id == 0) {
-
-        if ($newitem = $hierarchy->add_hierarchy_item($itemnew, $itemnew->parentid, $itemnew->frameworkid, false)) {
-
-            add_to_log(SITEID, $prefix, 'added item', "item/view.php?id={$newitem->id}&amp;prefix={$prefix}", substr(strip_tags($newitem->fullname), 0, 200) . " (ID {$newitem->id})");
-            totara_set_notification(get_string('added'.$prefix, $prefix, $newitem->fullname), "{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$newitem->id}", array('style' => 'notifysuccess'));
-
+        // Add New item
+        if ($updateditem = $hierarchy->add_hierarchy_item($itemnew, $itemnew->parentid, $itemnew->frameworkid, false)) {
+            add_to_log(SITEID, $prefix, 'added item', "item/view.php?id={$updateditem->id}&amp;prefix={$prefix}", substr(strip_tags($updateditem->fullname), 0, 200) . " (ID {$updateditem->id})");
+            $notification->text = 'added';
+            $notification->url = "{$CFG->wwwroot}/totara/hierarchy/item/view.php?prefix=$prefix&id={$updateditem->id}";
+            $notification->params = array('style' => 'notifysuccess');
         } else {
-
-            totara_set_notification(get_string('error:add'.$prefix, $prefix, $itemnew->fullname), "{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}");
-
+            $notification->text = 'error:add';
+            $notification->url = "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix";
+            $notification->params = array();
         }
-    // Existing item
     } else {
-        begin_sql();
-
+        // Update existing item
+        $transaction = $DB->start_delegated_transaction();
         $updateditem = $hierarchy->update_hierarchy_item($itemnew->id, $itemnew, false, false);
         customfield_save_data($itemnew, $prefix, $shortprefix.'_type');
-
-        if (!$updateditem) {
-            rollback_sql();
-            totara_set_notification(get_string('error:update'.$prefix, $prefix, $itemnew->fullname), "{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$itemnew->id}");
-        }
-
-        commit_sql();
-
-        add_to_log(SITEID, $prefix, 'update item', "item/view.php?id={$updateditem->id}&amp;prefix={$prefix}", substr(strip_tags($updateditem->fullname), 0, 200) . " (ID {$updateditem->id})");
-        totara_set_notification(get_string('updated'.$prefix, $prefix, $updateditem->fullname), "{$CFG->wwwroot}/hierarchy/item/view.php?prefix={$prefix}&id={$updateditem->id}", array('style' => 'notifysuccess'));
+        $transaction->allow_commit();
+        $notification->text = 'updated';
+        $notification->url = "{$CFG->wwwroot}/totara/hierarchy/item/view.php?prefix=$prefix&id={$itemnew->id}";
+        $notification->params = array('style' => 'notifysuccess');
     }
+    //fix the description field and redirect
+    $itemnew = file_postupdate_standard_editor($itemnew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_hierarchy', $shortprefix, $itemnew->id);
+    $DB->set_field($shortprefix, 'description', $itemnew->description, array('id' => $itemnew->id));
+    totara_set_notification(get_string($notification->text . $prefix, 'totara_hierarchy', format_string($itemnew->fullname)), $notification->url, $notification->params);
 }
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("{$prefix}frameworks", $prefix), 'link'=>$CFG->wwwroot . '/hierarchy/framework/index.php?prefix='.$prefix, 'type'=>'misc');
-$navlinks[] = array('name'=>format_string($framework->fullname), 'link'=>$CFG->wwwroot . '/hierarchy/index.php?prefix='.$prefix.'&amp;frameworkid='.$framework->id, 'type'=>'misc');
-if($item->id) {
-    $navlinks[] = array('name'=>format_string($item->fullname), 'link'=>$CFG->wwwroot . '/hierarchy/item/view.php?prefix='.$prefix.'&amp;id='.$item->id, 'type'=>'misc');
-    $navlinks[] = array('name'=>get_string('edit'.$prefix, $prefix), 'link'=>'', 'type'=>'title');
+$PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => $prefix)));
+$PAGE->navbar->add(format_string($framework->fullname), new moodle_url('/totara/hierarchy/index.php', array('prefix' => $prefix, 'frameworkid' => $framework->id)));
+if ($item->id) {
+    $PAGE->navbar->add(format_string($item->fullname), new moodle_url('/totara/hierarchy/item/view.php', array('prefix' => $prefix, 'id' => $item->id)));
+    $PAGE->navbar->add(get_string('edit'.$prefix, 'totara_hierarchy'));
 } else {
-    $navlinks[] = array('name'=>get_string('addnew'.$prefix, $prefix), 'link'=>'', 'type'=>'title');
+    $PAGE->navbar->add(get_string('addnew'.$prefix, 'totara_hierarchy'));
 }
 
 /// Display page header
-admin_externalpage_print_header('' ,$navlinks);
+echo $OUTPUT->header();
 
 if ($item->id == 0) {
-    print_heading(get_string('addnew'.$prefix, $prefix));
+    echo $OUTPUT->heading(get_string('addnew'.$prefix, 'totara_hierarchy'));
 } else {
-    print_heading(get_string('edit'.$prefix, $prefix));
+    echo $OUTPUT->heading(get_string('edit'.$prefix, 'totara_hierarchy'));
 }
 
 /// Finally display THE form
 $itemform->display();
 
 /// and proper footer
-print_footer();
+echo $OUTPUT->footer();

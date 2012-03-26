@@ -1,8 +1,30 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 require_once('HTML/AJAX/JSON.php');
 
 
@@ -40,14 +62,12 @@ if (empty($CFG->competencyuseresourcelevelevidence)) {
 // Check perms
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
-$can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:updatecompetency', $sitecontext);
+$can_edit = has_capability('totara/hierarchy:updatecompetency', $sitecontext);
 
 // Load competency
-if (!$competency = get_record('comp', 'id', $id)) {
-    error('Competency ID was incorrect');
-}
+$competency = $DB->get_record('comp', array('id' => $id));
 
 // Check type is available
 $avail_types = array('coursecompletion', 'coursegrade', 'activitycompletion');
@@ -57,7 +77,7 @@ if (!in_array($type, $avail_types)) {
 }
 
 if (!empty($CFG->competencyuseresourcelevelevidence)) {
-    $data = new object();
+    $data = new stdClass();
     $data->itemtype = $type;
     $evidence = competency_evidence_type::factory($data);
     $evidence->iteminstance = $instance;
@@ -65,9 +85,9 @@ if (!empty($CFG->competencyuseresourcelevelevidence)) {
     $newevidenceid = $evidence->add($competency);
 }
 
-if($nojs) {
-    // redirect for none JS version
-    if($s == sesskey()) {
+if ($nojs) {
+    // redirect for non JS version
+    if ($s == sesskey()) {
         $murl = new moodle_url($returnurl);
         $returnurl = $murl->out(false, array('nojs' => 1));
     } else {
@@ -80,12 +100,12 @@ if($nojs) {
     ///
     if ($deleteexisting && !empty($idlist)) {
 
-        $assigned = get_records('comp_evidence_items', 'competencyid', $id);
+        $assigned = $DB->get_records('comp_evidence_items', array('competencyid' => $id));
         $assigned = !empty($assigned) ? $assigned : array();
 
         foreach ($assigned as $ritem) {
-            if (!in_array($ritem->iteminstance, $idlist)){
-                $data = new object();
+            if (!in_array($ritem->iteminstance, $idlist)) {
+                $data = new stdClass();
                 $data->id = $ritem->id;
                 $data->itemtype = $ritem->itemtype;
                 $evidence = competency_evidence_type::factory($data);
@@ -98,7 +118,7 @@ if($nojs) {
     // HTML to return for JS version
     if (empty($CFG->competencyuseresourcelevelevidence)) {
         foreach ($idlist as $instance) {
-            $data = new object();
+            $data = new stdClass();
             $data->itemtype = $type;
             $evidence = competency_evidence_type::factory($data);
             $evidence->iteminstance = $instance;
@@ -107,41 +127,36 @@ if($nojs) {
         }
 
         $editingon = 1;
-        $evidence = get_records('comp_evidence_items', 'competencyid', $id);
+        $evidence = $DB->get_records('comp_evidence_items', array('competencyid' => $id));
         $str_edit = get_string('edit');
         $str_remove = get_string('remove');
         $item = $competency;
 
-        require $CFG->dirroot.'/hierarchy/prefix/competency/view-evidence.html';
+        $renderer = $PAGE->get_renderer('totara_hierarchy');
+        echo $renderer->print_competency_view_evidence($item, $evidence, $can_edit);
 
     } else {  //resource-level evidence functionality
-        $out = '';
         // If $newevidenceid is false, it means the evidence item wasn't added, so
         // return nothing
-        if ( $newevidenceid !== false ){
+        if ($newevidenceid !== false) {
 
-            $out .= '<tr>';
-            $out .= '<td>'.$evidence->get_name().'</td>';
-            $out .= '<td>'.$evidence->get_type().'</td>';
-            $out .= '<td>'.$evidence->get_activity_type().'</td>';
+            $row = new html_table_row(array($evidence->get_name(), $evidence->get_type(), $evidence->get_activity_type()));
 
             if ($can_edit) {
 
                 $str_edit = get_string('edit');
                 $str_remove = get_string('remove');
 
-                $out .= "<td style=\"text-align: center;\">";
+                $link = $OUTPUT->action_icon(new moodle_url('prefix/competency/evidenceitem/remove.php', array('id' => $evidence->id, 'title' => $str_remove)),
+                         new pix_url('t/delete'), array('class' => 'iconsmall', 'alt' => '$str_remove'));
 
-                $out .= "<a href=\"{$CFG->wwwroot}/hierarchy/prefix/competency/evidenceitem/remove.php?id={$evidence->id}\" title=\"$str_remove\">".
-                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+                $cell4 = new html_table_cell($link);
+                $cell4->attributes['style'] = 'text-align: center';
 
-                $out .= "</td>";
+                $row->cells[] = $cell4;
+                $data = array($row);
             }
-
-            $out .= '</tr>';
-        } else {
-            $out .= '';
         }
-        echo $out;
+        echo $OUTPUT->table($data);
     }
 }

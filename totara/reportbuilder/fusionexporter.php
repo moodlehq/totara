@@ -23,7 +23,7 @@
  */
 
 require_once '../../config.php';
-require_once '../../local/oauth/fusionlib.php';
+require_once '../../totara/oauth/fusionlib.php';
 require_once 'lib.php';
 
 require_login();

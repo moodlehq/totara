@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 
 /**
  * A report builder source for DP competencies
@@ -98,7 +98,7 @@ class rb_source_dp_competency extends rb_base_source {
         global $CFG;
 
         // to get access to position type constants
-        require_once($CFG->dirroot . '/local/reportbuilder/classes/rb_join.php');
+        require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_join.php');
 
         /**
          * dp_plan has userid, dp_plan_competency_assign has competencyid. In order to
@@ -530,7 +530,7 @@ from
 
     private function define_paramoptions() {
         global $CFG;
-        require_once($CFG->dirroot.'/local/plan/lib.php');
+        require_once($CFG->dirroot.'/totara/plan/lib.php');
         $paramoptions = array();
 
         $paramoptions[] = new rb_param_option(
@@ -558,7 +558,7 @@ from
     function rb_display_proficiency_and_approval($status, $row) {
         global $CFG;
         // needed for approval constants
-        require_once($CFG->dirroot . '/local/plan/lib.php');
+        require_once($CFG->dirroot . '/totara/plan/lib.php');
 
         $content = array();
         $approved = isset($row->approved) ? $row->approved : null;
@@ -625,8 +625,8 @@ from
     public function rb_display_proficiency_and_approval_menu($status, $row) {
         global $CFG;
         // needed for approval constants
-        require_once($CFG->dirroot . '/local/plan/lib.php');
-        require_once($CFG->dirroot."/local/js/lib/setup.php");
+        require_once($CFG->dirroot . '/totara/plan/lib.php');
+        require_once($CFG->dirroot."/totara/core/js/lib/setup.php");
 
         $content = array();
         $approved = isset($row->approved) ? $row->approved : null;
@@ -677,7 +677,7 @@ from
                     "if (this.value > 0) { ".
                         "var response; ".
                         "response = \$.get(".
-                            "'{$CFG->wwwroot}/local/plan/components/competency/update-competency-setting.php".
+                            "'{$CFG->wwwroot}/totara/plan/components/competency/update-competency-setting.php".
                             "?competencyid={$competencyid}".
                             "&amp;planid={$planid}".
                             "&amp;prof=' + $(this).val()".

@@ -39,7 +39,7 @@ $id = optional_param('id', 0, PARAM_INT); // Priority id; 0 if creating a new pr
 admin_externalpage_setup('priorityscales');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
-require_capability('local/plan:managepriorityscales', $sitecontext);
+require_capability('totara/plan:managepriorityscales', $sitecontext);
 if ($id == 0) {
     // creating new Learning Plan priority
     $priority = new object();
@@ -66,7 +66,7 @@ $mform->set_data($priority);
 // If cancelled
 if ($mform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/local/plan/priorityscales/index.php");
+    redirect("$CFG->wwwroot/totara/plan/priorityscales/index.php");
 
 // Update data
 } else if ($prioritynew = $mform->get_data()) {
@@ -127,7 +127,7 @@ if ($mform->is_cancelled()) {
         if (update_record('dp_priority_scale', $prioritynew)) {
             add_to_log(SITEID, 'priorities', 'updated', "view.php?id=$prioritynew->id");
             totara_set_notification(get_string('priorityscaleupdated', 'local_plan', format_string(stripslashes($prioritynew->name))),
-                "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$prioritynew->id}",
+                "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$prioritynew->id}",
                 array('style' => 'notifysuccess'));
         } else {
             error(get_string('error:updatingpriorityscale', 'local_plan'));
@@ -137,14 +137,14 @@ if ($mform->is_cancelled()) {
     // Log
     add_to_log(SITEID, 'priorities', 'added', "view.php?id=$prioritynew->id");
     totara_set_notification(get_string('priorityscaleadded', 'local_plan', format_string(stripslashes($prioritynew->name))),
-        "$CFG->wwwroot/local/plan/priorityscales/view.php?id={$prioritynew->id}",
+        "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$prioritynew->id}",
         array('style' => 'notifysuccess'));
 }
 
 /// Print Page
 $navlinks = array();    // Breadcrumbs
 $navlinks[] = array('name'=>get_string("priorityscales", 'local_plan'),
-                    'link'=>"{$CFG->wwwroot}/local/plan/priorityscales/index.php",
+                    'link'=>"{$CFG->wwwroot}/totara/plan/priorityscales/index.php",
                     'type'=>'misc');
 if ($id == 0) { // Add
     $navlinks[] = array('name'=>get_string('priorityscalecreate', 'local_plan'), 'link'=>'', 'type'=>'misc');

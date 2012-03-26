@@ -35,7 +35,7 @@ class rb_plan_programs_embedded extends rb_base_embedded {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
         $rolstatus = array_key_exists('rolstatus', $data) ? $data['rolstatus'] : null;
 
-        $this->url = '/local/plan/record/programs.php';
+        $this->url = '/totara/plan/record/programs.php';
         $this->source = 'dp_program';
         $this->shortname = 'plan_programs';
         $this->fullname = get_string('recordoflearningprograms', 'local_plan');
@@ -106,7 +106,7 @@ class rb_plan_programs_embedded extends rb_base_embedded {
         }
 
         $context = get_context_instance(CONTEXT_SYSTEM);
-        if(!has_capability('local/program:viewhiddenprograms', $context)) {
+        if(!has_capability('totara/program:viewhiddenprograms', $context)) {
             // don't show hidden programs to none-admins
             $this->embeddedparams['visible'] = 1;
         }

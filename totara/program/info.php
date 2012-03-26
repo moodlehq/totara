@@ -53,7 +53,7 @@ if ($CFG->forcelogin) {
 }
 
 $context = get_context_instance(CONTEXT_PROGRAM, $program->id);
-if (( ! $program->visible) && !has_capability('local/program:viewhiddenprograms', $context)) {
+if (( ! $program->visible) && !has_capability('totara/program:viewhiddenprograms', $context)) {
     print_error('programhidden', '', $CFG->wwwroot .'/');
 }
 

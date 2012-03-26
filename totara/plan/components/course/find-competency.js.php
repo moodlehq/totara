@@ -36,7 +36,7 @@ $(function() {
     /// Find competency prerequisites
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/course/';
+        var url = '<?php echo $CFG->wwwroot ?>/totara/plan/components/course/';
         var saveurl = url + 'update-competency.php?planid='+plan_id+'&courseid='+course_id+'&update=';
 
         var handler = new totaraDialog_handler_preRequisite();

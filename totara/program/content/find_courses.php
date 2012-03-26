@@ -23,8 +23,8 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_courses.class.php');
-require_once("{$CFG->dirroot}/local/program/lib.php");
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_courses.class.php');
+require_once("{$CFG->dirroot}/totara/program/lib.php");
 
 require_login();
 
@@ -32,7 +32,7 @@ $id = required_param('id', PARAM_INT); // Program id
 $selected_courseids = optional_param('selectedcourseids', '', PARAM_SEQUENCE);
 $categoryid = optional_param('parentid', 'cat0', PARAM_ALPHANUM); // Category id
 
-require_capability('local/program:configurecontent', program_get_context($id));
+require_capability('totara/program:configurecontent', program_get_context($id));
 
 // Strip cat from begining of categoryid
 $categoryid = (int) substr($categoryid, 3);

@@ -30,12 +30,12 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once 'HTML/QuickForm/Renderer/QuickHtml.php';
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 require_once('edit_messages_form.php');
 
 $id = required_param('id', PARAM_INT); // program id
 
-admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/local/program/edit_messages.php');
+admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_messages.php');
 
 $program = new program($id);
 
@@ -45,7 +45,7 @@ local_js(array(
 ));
 
 // Additional permissions check
-if (!has_capability('local/program:configuremessages', $program->get_context())) {
+if (!has_capability('totara/program:configuremessages', $program->get_context())) {
     print_error('error:nopermissions', 'local_program');
 }
 
@@ -54,7 +54,7 @@ $programmessagemanager = $program->get_messagesmanager();
 $currenturl = qualified_me();
 $currenturl_noquerystring = strip_querystring($currenturl);
 $viewurl = $currenturl_noquerystring."?id={$id}";
-$overviewurl = $CFG->wwwroot."/local/program/edit.php?id={$id}&action=view";
+$overviewurl = $CFG->wwwroot."/totara/program/edit.php?id={$id}&action=view";
 
 // if the form has been submitted we need to make sure that the program object
 // contains all the submitted data before the form is created and validated as
@@ -151,7 +151,7 @@ $navlinks[] = array('name' => get_string('editprogrammessages', 'local_program')
 
 //Javascript includes
 require_js(array(
-    $CFG->wwwroot.'/local/program/messages/program_messages.js.php?id='.$program->id,
+    $CFG->wwwroot.'/totara/program/messages/program_messages.js.php?id='.$program->id,
 ));
 
 admin_externalpage_print_header('', $navlinks);

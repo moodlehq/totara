@@ -1,9 +1,8 @@
 <?php
-
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage hierarchy
+ * @subpackage totara_hierarchy
  */
 
-require_once(dirname(dirname(__FILE__)) . '/config.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->libdir.'/tablelib.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
-require_once($CFG->dirroot.'/local/searchlib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->libdir.'/totaratablelib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
+require_once($CFG->dirroot.'/totara/core/searchlib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
-hierarchy::support_old_url_syntax();
 
 local_js(array(TOTARA_JS_PLACEHOLDER));
 
 define('DEFAULT_PAGE_SIZE', 50);
 define('SHOW_ALL_PAGE_SIZE', 5000);
 
-$sitecontext    = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext    = context_system::instance();
 $prefix         = required_param('prefix', PARAM_ALPHA);
 $shortprefix = hierarchy::get_short_prefix($prefix);
 $frameworkid    = optional_param('frameworkid', 0, PARAM_INT);
@@ -64,19 +62,19 @@ $framework   = $hierarchy->get_framework($frameworkid, true);
 // If no frameworks exist
 if (!$framework) {
     // Redirect to frameworks page
-    redirect($CFG->wwwroot.'/hierarchy/framework/index.php?prefix='.$prefix);
+    redirect(new moodle_url('index.php', array('prefix' => $prefix)));
     exit();
 }
 
 // Cache user capabilities
-$can_add_item    = has_capability('moodle/local:create'.$prefix, $sitecontext);
-$can_edit_item   = has_capability('moodle/local:update'.$prefix, $sitecontext);
-$can_delete_item = has_capability('moodle/local:delete'.$prefix, $sitecontext);
-$can_manage_type = has_capability('moodle/local:update'.$prefix.'type', $sitecontext);
+$can_add_item    = has_capability('totara/hierarchy:create'.$prefix, $sitecontext);
+$can_edit_item   = has_capability('totara/hierarchy:update'.$prefix, $sitecontext);
+$can_delete_item = has_capability('totara/hierarchy:delete'.$prefix, $sitecontext);
+$can_manage_type = has_capability('totara/hierarchy:update'.$prefix.'type', $sitecontext);
 
 // process actions
 if ($can_edit_item) {
-    require_capability('moodle/local:update'.$prefix, $sitecontext);
+    require_capability('totara/hierarchy:update'.$prefix, $sitecontext);
     if ($hide && confirm_sesskey()) {
         $hierarchy->hide_item($hide);
     } elseif ($show && confirm_sesskey()) {
@@ -96,8 +94,7 @@ if ($format!='') {
 
 // if setdisplay parameter set, update the displaymode
 if ($setdisplay != -1) {
-    set_field($shortprefix.'_framework', 'hidecustomfields',
-        $setdisplay, 'id', $framework->id);
+    $DB->set_field($shortprefix.'_framework', 'hidecustomfields', $setdisplay, array('id' => $framework->id));
     $displaymode = $setdisplay;
 } else {
     $displaymode = $framework->hidecustomfields;
@@ -107,34 +104,34 @@ $frameworkid = $framework->id;
 
 
 // Setup page and check permissions
-admin_externalpage_setup($prefix.'manage', null, array('prefix'=>$prefix, 'frameworkid' => $frameworkid), $CFG->wwwroot.'/hierarchy/index.php');
+admin_externalpage_setup($prefix.'manage', null, array('prefix' => $prefix, 'frameworkid' => $frameworkid));
 
 // build query now as we need the count for flexible tables
 $select = "SELECT hierarchy.*";
 $count = "SELECT COUNT(hierarchy.id)";
-$from   = " FROM {$CFG->prefix}{$shortprefix} hierarchy";
-$where  = " WHERE frameworkid={$framework->id}";
+$from   = " FROM {{$shortprefix}} hierarchy";
+$where  = " WHERE frameworkid = ?";
+$params = array($framework->id);
 $order  = " ORDER BY sortthread";
 // if a search is happening, or custom fields are being displayed,
 // also join to get custom field data
 if ($searchactive || !$displaymode) {
-    if ($custom_fields = get_records($shortprefix.'_type_info_field')) {
-        foreach ($custom_fields as $custom_field) {
-            // add one join per custom field
-            $fieldid = $custom_field->id;
-            $select .= ", cf_{$fieldid}.data AS cf_{$fieldid}";
-            $from .= " LEFT JOIN {$CFG->prefix}{$shortprefix}_type_info_data cf_{$fieldid}
-                ON hierarchy.id = cf_{$fieldid}.{$prefix}id AND cf_{$fieldid}.fieldid = {$fieldid}";
-        }
+    $custom_fields = $DB->get_records($shortprefix.'_type_info_field');
+    foreach ($custom_fields as $custom_field) {
+        // add one join per custom field
+        $fieldid = $custom_field->id;
+        $select .= ", cf_{$fieldid}.data AS cf_{$fieldid}";
+        $from .= " LEFT JOIN {{$shortprefix}_type_info_data} cf_{$fieldid}
+            ON hierarchy.id = cf_{$fieldid}.{$prefix}id AND cf_{$fieldid}.fieldid = {$fieldid}";
     }
 }
 
-$matchcount = count_records_sql($count.$from.$where);
+$matchcount = $DB->count_records_sql($count.$from.$where, $params);
 
 // include search terms if any set
 if ($searchactive) {
     // extract quoted strings from query
-    $keywords = local_search_parse_keywords($query);
+    $keywords = totara_search_parse_keywords($query);
     // match search terms against the following fields
     $dbfields = array('fullname', 'shortname', 'description', 'idnumber');
     if (is_array($custom_fields)) {
@@ -142,32 +139,33 @@ if ($searchactive) {
             $dbfields[] = "cf_{$cf->id}.data";
         }
     }
-    $where .= ' AND (' . local_search_get_keyword_where_clause($keywords, $dbfields). ')';
+    list($searchsql, $searchparams) = totara_search_get_keyword_where_clause($keywords, $dbfields);
+    $where .= ' AND (' . $searchsql . ')';
+    $params = array_merge($params, $searchparams);
 }
+$filteredcount = $DB->count_records_sql($count.$from.$where, $params);
 
-$filteredcount = count_records_sql($count.$from.$where);
-
-$table = new flexible_table($prefix.'-framework-index-'.$frameworkid);
-$table->define_baseurl("{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&frameworkid={$frameworkid}");
+$table = new totara_table($prefix.'-framework-index-'.$frameworkid);
+$table->define_baseurl(new moodle_url('index.php', array('prefix' => $prefix, 'frameworkid' => $frameworkid)));
 
 $headerdata = array();
 
-$row = new object();
+$row = new stdClass();
 $row->type = 'name';
 $row->value->fullname = get_string('name');
 $headerdata[] = $row;
 
 if ($extrafields = $hierarchy->get_extrafields()) {
     foreach ($extrafields as $extrafield) {
-        $row = new object();
+        $row = new stdClass();
         $row->type = 'extrafield';
         $row->extrafield = $extrafield;
-        $row->value->fullname = get_string($extrafield, $prefix);
+        $row->value->fullname = get_string($prefix . $extrafield, 'totara_hierarchy');
         $headerdata[] = $row;
     }
 }
 
-$row = new object();
+$row = new stdClass();
 $row->type = 'actions';
 $row->value->fullname = get_string('actions');
 $headerdata[] = $row;
@@ -182,50 +180,55 @@ foreach ($headerdata as $key => $head) {
 $table->define_headers($headers);
 $table->define_columns($columns);
 
-$table->define_baseurl("{$CFG->wwwroot}/hierarchy/index.php?prefix={$prefix}&frameworkid={$frameworkid}");
-$table->column_style('actions','width','80px');
-$table->set_attribute('cellspacing', '0');
-$table->set_attribute('class', 'generaltable generalbox hierarchy-index');
-$table->set_attribute('width', '100%');
+$table->define_baseurl(new moodle_url('index.php', array('prefix' => $prefix, 'frameworkid' => $frameworkid)));
+$table->set_attribute('class', 'hierarchy-index fullwidth');
 $table->setup();
 $table->pagesize($perpage, $filteredcount);
 
-$records = get_recordset_sql($select.$from.$where.$order, $table->get_page_start(), $table->get_page_size());
+$records = $DB->get_recordset_sql($select.$from.$where.$order, $params, $table->get_page_start(), $table->get_page_size());
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("{$prefix}frameworks", $prefix), 'link'=>$CFG->wwwroot . '/hierarchy/framework/index.php?prefix='.$prefix, 'type'=>'misc');
-$navlinks[] = array('name'=>format_string($framework->fullname), 'link'=>'', 'type'=>'misc');
+$PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url('index.php', array('prefix' => $prefix)));
+$PAGE->navbar->add(format_string($framework->fullname));
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-echo '<div class="back-link"><a href="'.$CFG->wwwroot . '/hierarchy/framework/index.php?prefix='.$prefix.'">&laquo; '. get_string('backtoallframeworks', $prefix) . '</a></div>';
+echo $OUTPUT->container($OUTPUT->action_link(
+    new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => $prefix)), '&laquo; ' . get_string($prefix.'backtoallframeworks', 'totara_hierarchy')), 'back-link'
+);
+echo $OUTPUT->heading(format_string($framework->fullname));
 
-print_heading(format_string($framework->fullname));
-print_container(format_string($framework->description));
-echo '<br clear="all" />';
+$framework->description = file_rewrite_pluginfile_urls($framework->description, 'pluginfile.php', $sitecontext->id, 'totara_hierarchy', $shortprefix.'_framework', $frameworkid);
+echo $OUTPUT->container($framework->description);
+echo html_writer::tag('div', '', array('class' => 'clearfix'));
 
+$table->add_toolbar_content($hierarchy->display_action_buttons($can_add_item, $page), 'right');
+$table->add_toolbar_content($hierarchy->display_bulk_actions_picker($can_add_item, $can_edit_item, $can_delete_item, $can_manage_type, $page), 'left' , 'top', 1);
+$table->add_toolbar_content($hierarchy->display_showhide_detail_button($displaymode, $query, $page), 'right', 'top', 1);
 $placeholder = get_string('search') . ' ' . format_string($framework->fullname);
-$hierarchy->display_action_buttons($can_add_item, $page);
-$hierarchy->display_bulk_actions_picker($can_add_item, $can_edit_item, $can_delete_item, $can_manage_type, $page);
-echo $hierarchy->display_showhide_detail_button($displaymode, $query, $page);
-echo $hierarchy->display_search_box($query, $placeholder);
+$table->add_toolbar_content($hierarchy->display_search_box($query, $placeholder), 'left');
 
-echo '<br clear="all" />';
+$table->add_toolbar_pagination('right', 'top', 1);
+$table->add_toolbar_pagination('left', 'bottom');
+$table->set_no_records_message(get_string('no'.$prefix, 'totara_hierarchy'));
 
-if($searchactive) {
-    if($filteredcount > 0) {
-        $a = new object();
+echo html_writer::tag('div', '', array('class' => 'clearfix'));
+
+if ($searchactive) {
+    if ($filteredcount > 0) {
+        $a = new stdClass();
         $a->filteredcount = $filteredcount;
         $a->allcount = $matchcount;
-        $a->query = stripslashes($query);
-        echo '<p><strong>' . get_string('showingxofyforsearchz', 'hierarchy', $a);
+        $a->query = $query;
+        echo html_writer::start_tag('p');
+        echo html_writer::tag('strong', get_string('showingxofyforsearchz', 'totara_hierarchy', $a));
     } else {
-        echo '<p><strong>' . get_string('noresultsforsearchx', 'hierarchy', stripslashes($query));
+        echo html_writer::start_tag('p');
+        echo html_writer::tag('strong', get_string('noresultsforsearchx', 'totara_hierarchy', $query));
     }
-    echo ' <a href="' . $CFG->wwwroot . '/hierarchy/index.php?prefix='.$prefix.'&amp;frameworkid='.$frameworkid . '">';
-    echo get_string('clearsearch', 'hierarchy') . '</a></strong></p>';
-
+    echo $OUTPUT->action_link(new moodle_url('index.php', array('prefix' => $prefix, 'frameworkid' => $frameworkid)), get_string('clearsearch', 'totara_hierarchy'));
+    echo html_writer::end_tag('p');
 }
+
 $num_on_page = 0;
 if ($matchcount > 0) {
     if ($records) {
@@ -243,9 +246,8 @@ if ($matchcount > 0) {
         $types = $hierarchy->get_types();
 
         // figure out which custom fields are used by which types
-        $cfields = get_records($shortprefix.'_type_info_field');
-
-        while ($record = rs_fetch_next_record($records)) {
+        $cfields = $DB->get_records($shortprefix.'_type_info_field');
+        foreach ($records as $record) {
             $row = array();
             // don't display items indented by depth if it's a search
             $showdepth = !$searchactive;
@@ -263,27 +265,19 @@ if ($matchcount > 0) {
             $table->add_data($row);
             ++$num_on_page;
         }
+
         if ($filteredcount > 0) {
-            $table->hide_empty_cols();
-            $table->print_html();
+            //TODO SCANMSG: Implement function in 2.2 and then uncomment
+            //$table->hide_empty_cols();
         }
-
     }
-} else {
-    echo '<p>' .get_string('no'.$prefix, $prefix) . '</p>';
 }
+$table->finish_html();
 
-// print another set of buttons at the bottom of the list
-// (unless the list is too short)
-if ($num_on_page > 10) {
-    $hierarchy->display_action_buttons($can_add_item, $page);
-
-    $hierarchy->display_bulk_actions_picker($can_add_item, $can_edit_item, $can_delete_item, $can_manage_type, $page);
-}
+$records->close();
 
 if ($num_on_page > 0) {
     $hierarchy->export_select();
 }
 
-print_footer();
-
+echo $OUTPUT->footer();

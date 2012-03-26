@@ -26,11 +26,11 @@
  * @subpackage plan
  */
 
-require_once($CFG->dirroot . '/local/plan/development_plan.class.php');
-require_once($CFG->dirroot . '/local/plan/role.class.php');
-require_once($CFG->dirroot . '/local/plan/component.class.php');
-require_once($CFG->dirroot . '/local/plan/workflow.class.php');
-require_once($CFG->dirroot . '/local/program/lib.php'); // needed to display required learning in plans menu
+require_once($CFG->dirroot . '/totara/plan/development_plan.class.php');
+require_once($CFG->dirroot . '/totara/plan/role.class.php');
+require_once($CFG->dirroot . '/totara/plan/component.class.php');
+require_once($CFG->dirroot . '/totara/plan/workflow.class.php');
+require_once($CFG->dirroot . '/totara/program/lib.php'); // needed to display required learning in plans menu
 require_once($CFG->libdir . '/tablelib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -91,7 +91,7 @@ define('PLAN_LINKTYPE_OPTIONAL', 0);
 
 // roles available to development plans
 // each must have a class definition in
-// local/plan/roles/[ROLE]/[ROLE].class.php
+// totara/plan/roles/[ROLE]/[ROLE].class.php
 global $DP_AVAILABLE_ROLES;
 $DP_AVAILABLE_ROLES = array(
     'learner',
@@ -147,12 +147,12 @@ function dp_can_view_users_plans($ownerid) {
     }
 
     // If the user can view any plans
-    if (has_capability('local/plan:accessanyplan', $systemcontext)) {
+    if (has_capability('totara/plan:accessanyplan', $systemcontext)) {
         return true;
     }
 
     // If the user cannot view any plans
-    if (!has_capability('local/plan:accessplan', $systemcontext)) {
+    if (!has_capability('totara/plan:accessplan', $systemcontext)) {
         return false;
     }
 
@@ -220,7 +220,7 @@ function dp_get_alert_receivers($contextuser, $type) {
 
     $receivers = array();
 
-    $users = get_users_by_capability($contextuser, "local/plan:receive{$type}alerts");
+    $users = get_users_by_capability($contextuser, "totara/plan:receive{$type}alerts");
     if ($users and count($users) > 0) {
         foreach ($users as $key => $user) {
             if ($user->id != $USER->id) {
@@ -488,7 +488,7 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
     $tableheaders[] = '';
     $tablecols[] = 'actioncontrols';
 
-    $baseurl = $CFG->wwwroot . '/local/plan/index.php';
+    $baseurl = $CFG->wwwroot . '/totara/plan/index.php';
     if($userid != $USER->id) {
         $baseurl .= '?userid=' . $userid;
     }
@@ -582,7 +582,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
             // TODO: make this more efficient
             $user = get_record('user','id',$userid);
             $class = $selectedid == 0 ? 'class="dp-menu-selected"' : '';
-            $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">{$user->firstname} {$user->lastname}</a></li></ul>";
+            $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/totara/plan/index.php?userid={$userid}\">{$user->firstname} {$user->lastname}</a></li></ul>";
         }
     }
 
@@ -597,7 +597,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
             $out .= "<ul>";
             foreach ($plans as $p) {
                 $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
-                $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+                $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
             }
             $out .= "</ul>";
         if ($role == 'manager') {
@@ -616,7 +616,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
         $out .= "<ul>";
         foreach ($plans as $p) {
             $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
-            $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+            $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
         }
         $out .= "</ul>";
         if ($role == 'manager') {
@@ -635,7 +635,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
             $out .= "<ul>";
             foreach ($plans as $p) {
                 $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
-                $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+                $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
             }
             $out .= "</ul>";
         if ($role == 'manager') {
@@ -659,7 +659,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
             $maxprogstodisplay = 5;
             foreach ($programs as $p) {
                 if ($progcount > $maxprogstodisplay) {
-                    $out .= "<li><a href=\"{$CFG->wwwroot}/local/program/required.php?{$extraparams}\">" . get_string('viewallrequiredlearning', 'local_program') . "</a></li>";
+                    $out .= "<li><a href=\"{$CFG->wwwroot}/totara/program/required.php?{$extraparams}\">" . get_string('viewallrequiredlearning', 'local_program') . "</a></li>";
                     break;
                 }
                 // hide inaccessible programs
@@ -668,7 +668,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
                     continue;
                 }
                 $class = $p->id == $selectedprogid ? 'class="dp-menu-selected"' : '';
-                $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/program/required.php?id={$p->id}{$extraparams}\">{$p->fullname}</a></li>";
+                $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/totara/program/required.php?id={$p->id}{$extraparams}\">{$p->fullname}</a></li>";
                 $progcount++;
             }
             $out .= "</ul>";
@@ -700,7 +700,7 @@ function dp_display_add_plan_icon($userid) {
     global $CFG;
 
     $out = '';
-    $href = "{$CFG->wwwroot}/local/plan/add.php?userid={$userid}";
+    $href = "{$CFG->wwwroot}/totara/plan/add.php?userid={$userid}";
     $title = get_string('createnewlearningplan', 'local_plan');
     $out = '';
     $out .= '<div class="dp-add-plan-link">';
@@ -816,7 +816,7 @@ function dp_record_status_picker($pagename, $status, $userid=null) {
 
     // display status pulldown
     $out .= popup_form(
-        $CFG->wwwroot . '/local/plan/record/' . $pagename . '.php?' . $userstr . 'status=',
+        $CFG->wwwroot . '/totara/plan/record/' . $pagename . '.php?' . $userstr . 'status=',
         $options,
         'viewbystatus',
         $selected,
@@ -855,7 +855,7 @@ function dp_record_status_menu($pagename, $status, $userid=null) {
         $filter[$s] = get_string($s . 'learning', 'local_plan');
         $class = $status == $s ? 'class="dp-menu-selected"' : '';
 
-        $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/local/plan/record/";
+        $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/totara/plan/record/";
         $out .= $pagename . '.php?' . $userstr . 'status=' . $s;
         $out .= "\">" . $filter[$s];
         $out .= "</a></li></ul>";
@@ -879,7 +879,7 @@ function dp_get_plan_base_navlinks(&$navlinks, $userid) {
     // the user is viewing their own plan
     if($userid == $USER->id) {
         $navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
-        $navlinks[] = array('name' => get_string('learningplans','local_plan'), 'link'=> $CFG->wwwroot . '/local/plan/index.php', 'type'=>'title');
+        $navlinks[] = array('name' => get_string('learningplans','local_plan'), 'link'=> $CFG->wwwroot . '/totara/plan/index.php', 'type'=>'title');
         return true;
     }
 
@@ -888,9 +888,9 @@ function dp_get_plan_base_navlinks(&$navlinks, $userid) {
     if($user) {
         $navlinks[] = array('name' => get_string('myteam','local'), 'link'=> $CFG->wwwroot . '/my/team.php', 'type'=>'title');
         $navlinks[] = array('name' => get_string('teammembers','local'), 'link'=> $CFG->wwwroot . '/my/teammembers.php', 'type'=>'title');
-        $navlinks[] = array('name' => get_string('xslearningplans','local_plan', fullname($user)), 'link'=> $CFG->wwwroot . '/local/plan/index.php?userid='.$userid, 'type'=>'title');
+        $navlinks[] = array('name' => get_string('xslearningplans','local_plan', fullname($user)), 'link'=> $CFG->wwwroot . '/totara/plan/index.php?userid='.$userid, 'type'=>'title');
     } else {
-        $navlinks[] = array('name' => get_string('unknownuserslearningplans','local_plan'), 'link'=> $CFG->wwwroot . '/local/plan/index.php?userid='.$userid, 'type'=>'title');
+        $navlinks[] = array('name' => get_string('unknownuserslearningplans','local_plan'), 'link'=> $CFG->wwwroot . '/totara/plan/index.php?userid='.$userid, 'type'=>'title');
     }
 }
 
@@ -958,7 +958,7 @@ function dp_create_template($templatename, $enddate, &$error) {
     global $DP_AVAILABLE_COMPONENTS;
     foreach($DP_AVAILABLE_COMPONENTS as $component){
         $classfile = $CFG->dirroot .
-            "/local/plan/components/{$component}/{$component}.class.php";
+            "/totara/plan/components/{$component}/{$component}.class.php";
         if(!is_readable($classfile)) {
             $string_properties = new object();
             $string_properties->classfile = $classfile;
@@ -994,7 +994,7 @@ function dp_create_template($templatename, $enddate, &$error) {
         }
     }
 
-    $classfile = $CFG->dirroot . "/local/plan/workflows/{$workflow}/{$workflow}.class.php";
+    $classfile = $CFG->dirroot . "/totara/plan/workflows/{$workflow}/{$workflow}.class.php";
     if(!is_readable($classfile)) {
         $string_properties = new object();
         $string_properties->classfile = $classfile;
@@ -1040,7 +1040,7 @@ function dp_create_template($templatename, $enddate, &$error) {
 function dp_plan_item_updated($userid, $component, $componentid) {
     global $CFG;
     // Include component class file
-    $component_include = $CFG->dirroot . '/local/plan/components/' . $component . '/' . $component . '.class.php';
+    $component_include = $CFG->dirroot . '/totara/plan/components/' . $component . '/' . $component . '.class.php';
     if (file_exists($component_include)) {
         require_once($component_include);
     }
@@ -1100,7 +1100,7 @@ function plan_comment_permissions($details) {
 
     $plan = new development_plan($planid);
 
-    if(!has_capability('local/plan:accessanyplan', $details->context) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+    if(!has_capability('totara/plan:accessanyplan', $details->context) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         return array('post' => false, 'view' => false);
     } else {
         return array('post' => true, 'view' => true);
@@ -1137,7 +1137,7 @@ function plan_comment_add($comment) {
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
 
-            $contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$plan->id.'#comments';
+            $contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$plan->id.'#comments';
             $contexturlname = $plan->name;
             $icon = 'elearning-newcomment';
             break;
@@ -1160,7 +1160,7 @@ function plan_comment_add($comment) {
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
 
-            $contexturl = $CFG->wwwroot.'/local/plan/components/course/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
+            $contexturl = $CFG->wwwroot.'/totara/plan/components/course/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
             $icon = 'course-newcomment';
             break;
@@ -1183,7 +1183,7 @@ function plan_comment_add($comment) {
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
 
-            $contexturl = $CFG->wwwroot.'/local/plan/components/competency/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
+            $contexturl = $CFG->wwwroot.'/totara/plan/components/competency/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
             $icon = 'competency-newcomment';
             break;
@@ -1202,7 +1202,7 @@ function plan_comment_add($comment) {
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
 
-            $contexturl = $CFG->wwwroot.'/local/plan/components/objective/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
+            $contexturl = $CFG->wwwroot.'/totara/plan/components/objective/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
             $icon = 'objective-newcomment';
             break;
@@ -1225,7 +1225,7 @@ function plan_comment_add($comment) {
             $msgobj->commentby = fullname($commentuser);
             $msgobj->commentdate = userdate($comment->timecreated);
 
-            $contexturl = $CFG->wwwroot.'/local/plan/components/program/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
+            $contexturl = $CFG->wwwroot.'/totara/plan/components/program/view.php?id='.$plan->id.'&amp;itemid='.$comment->itemid.'#comments';
             $contexturlname = $record->fullname;
             $icon = 'program-newcomment';
 
@@ -1264,8 +1264,8 @@ function plan_comment_add($comment) {
     }
 
     /// Send message
-    require_once($CFG->dirroot.'/local/totara_msg/eventdata.class.php');
-    require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+    require_once($CFG->dirroot.'/totara/totara_msg/eventdata.class.php');
+    require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
     $result = true;
     foreach ($subscribers as $sid) {
         $userto = get_record('user', 'id', $sid);
@@ -1340,7 +1340,7 @@ function plan_mark_competency_default($competencyid, $userid, $component) {
 
     $rec = array_pop($records);
     $default = $rec->defaultid;
-    require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/lib.php');
+    require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/lib.php');
 
     $details = new object();
     $details->assessmenttype = get_string('automateddefault', 'local_plan');

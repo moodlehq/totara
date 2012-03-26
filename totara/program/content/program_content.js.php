@@ -23,8 +23,8 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/program/lib.php');
-require_once $CFG->dirroot.'/local/js/lib/setup.php';
+require_once($CFG->dirroot.'/totara/program/lib.php');
+require_once $CFG->dirroot.'/totara/core/js/lib/setup.php';
 
 require_login();
 
@@ -149,7 +149,7 @@ function amendCourses(coursesetprefix) {
 
     var selectedcourses_encoded = encodeURI(selectedcourses);
 
-    var dialog_url = '<?php echo $CFG->wwwroot; ?>/local/program/content/find_courses.php?id=<?php echo $id ?>&selectedcourseids=' + selectedcourses_encoded;
+    var dialog_url = '<?php echo $CFG->wwwroot; ?>/totara/program/content/find_courses.php?id=<?php echo $id ?>&selectedcourseids=' + selectedcourses_encoded;
 
     var mydialog = totaraDialogs['amendcourses'];
     mydialog.default_url = dialog_url;
@@ -167,7 +167,7 @@ function amendCourses(coursesetprefix) {
 // delete the course from the set (if confirmed)
 function deleteCourse(coursesetid, coursesetprefix, coursetodelete_id) {
 
-    var contenturl = '<?php echo $CFG->wwwroot; ?>/local/program/content/get_html.php?id=<?php echo $id ?>';
+    var contenturl = '<?php echo $CFG->wwwroot; ?>/totara/program/content/get_html.php?id=<?php echo $id ?>';
 
     var courseids_str = $('input[name='+coursesetprefix+'courses]').val();
     var sortorder = $('input[name='+coursesetprefix+'sortorder]').val();
@@ -238,7 +238,7 @@ function handleSaveChanges() {
 // Define the dialog and handler for adding a multi course set
 totaraDialog_addmulticourse = function() {
 
-    this.url = '<?php echo $CFG->wwwroot; ?>/local/program/content/';
+    this.url = '<?php echo $CFG->wwwroot; ?>/totara/program/content/';
     this.find_url = 'find_courses.php?id=<?php echo $id ?>';
     this.ajax_url = 'get_html.php?id=<?php echo $id ?>';
 
@@ -308,7 +308,7 @@ totaraDialog_handler_addmulticourse.prototype._save = function() {
 // Define the dialog and handler for adding a competency course set
 totaraDialog_addcompetency = function() {
 
-    this.url = '<?php echo $CFG->wwwroot; ?>/local/program/content/';
+    this.url = '<?php echo $CFG->wwwroot; ?>/totara/program/content/';
     this.find_url = 'find_competency.php?id=<?php echo $id ?>';
     this.ajax_url = 'get_html.php?id=<?php echo $id ?>';
 
@@ -379,7 +379,7 @@ totaraDialog_handler_addcompetency.prototype._save = function() {
 // Define the dialog and handler for adding a recurring course set
 totaraDialog_addrecurringcourse = function() {
 
-    this.url = '<?php echo $CFG->wwwroot; ?>/local/program/content/';
+    this.url = '<?php echo $CFG->wwwroot; ?>/totara/program/content/';
     this.find_url = 'find_course.php?id=<?php echo $id ?>';
     this.ajax_url = 'get_html.php?id=<?php echo $id ?>';
 
@@ -445,7 +445,7 @@ totaraDialog_handler_addrecurringcourse.prototype._save = function() {
 // Define the dialog and handler for adding/removing courses from a multi course set
 totaraDialog_amendmulticourse = function() {
 
-    var url = '<?php echo $CFG->wwwroot; ?>/local/program/content/';
+    var url = '<?php echo $CFG->wwwroot; ?>/totara/program/content/';
 
     this.find_url = 'find_courses.php?id=<?php echo $id ?>';
     this.ajax_url = 'get_html.php?id=<?php echo $id ?>';

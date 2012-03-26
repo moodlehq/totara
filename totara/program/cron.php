@@ -29,7 +29,7 @@
 require_once $CFG->dirroot.'/backup/lib.php';
 require_once $CFG->dirroot.'/backup/backuplib.php';
 require_once $CFG->dirroot.'/backup/restorelib.php';
-require_once $CFG->dirroot.'/local/program/lib.php';
+require_once $CFG->dirroot.'/totara/program/lib.php';
 
 /**
  * Update programs

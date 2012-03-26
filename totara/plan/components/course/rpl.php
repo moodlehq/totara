@@ -24,8 +24,8 @@
  */
 
 require_once('../../../../config.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
-require_once($CFG->dirroot . '/local/plan/components/course/rpl_form.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/components/course/rpl_form.php');
 
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('courseid', PARAM_INT);
@@ -35,7 +35,7 @@ $plan = new development_plan($id);
 
 //Permissions check
 $systemcontext = get_system_context();
-if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+if(!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'local_plan');
 }
 

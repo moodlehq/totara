@@ -1,0 +1,127 @@
+/* Set the item indentation on the hierarchy index page */
+table.hierarchy-index .hierarchyitem {
+    background-repeat: no-repeat;
+}
+table.hierarchy-index .depth1 {
+    background-position: left top;
+    margin-left: 5px;
+    padding-left: 20px;
+}
+table.hierarchy-index .depth2 {
+    background-position: left top;
+    margin-left: 35px;
+    padding-left: 20px;
+}
+table.hierarchy-index .depth3 {
+    background-position: left top;
+    margin-left: 65px;
+    padding-left: 20px;
+}
+table.hierarchy-index .depth4 {
+    background-position: left top;
+    margin-left: 95px;
+    padding-left: 20px;
+}
+table.hierarchy-index .depth5 {
+    background-position: left top;
+    margin-left: 125px;
+    padding-left: 20px;
+}
+table.hierarchy-index .depth6 {
+    background-position: left top;
+    margin-left: 155px;
+    padding-left: 20px;
+}
+table.hierarchy-index .depth7 {
+    background-position: left top;
+    margin-left: 185px;
+    padding-left: 20px;
+}
+table.hierarchy-index .depth8 {
+    background-position: left top;
+    margin-left: 215px;
+    padding-left: 20px;
+}
+table.hierarchy-index .depth9 {
+    background-position: left top;
+    margin-left: 245px;
+    padding-left: 20px;
+}
+table.hierarchy-index .depth10 {
+    background-position: left top;
+    margin-left: 275px;
+    padding-left: 20px;
+}
+
+/* override in RTL languages */
+
+.dir-rtl table.hierarchy-index .depth1 {
+    background-position: right top;
+    margin-right: 5px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.dir-rtl table.hierarchy-index .depth2 {
+    background-position: right top;
+    margin-right: 35px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.dir-rtl table.hierarchy-index .depth3 {
+    background-position: right top;
+    margin-right: 65px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.dir-rtl table.hierarchy-index .depth4 {
+    background-position: right top;
+    margin-right: 95px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.dir-rtl table.hierarchy-index .depth5 {
+    background-position: right top;
+    margin-right: 125px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.dir-rtl table.hierarchy-index .depth6 {
+    background-position: right top;
+    margin-right: 155px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.dir-rtl table.hierarchy-index .depth7 {
+    background-position: right top;
+    margin-right: 185px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.dir-rtl table.hierarchy-index .depth8 {
+    background-position: right top;
+    margin-right: 215px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.dir-rtl table.hierarchy-index .depth9 {
+    background-position: right top;
+    margin-right: 245px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.dir-rtl table.hierarchy-index .depth10 {
+    background-position: right top;
+    margin-right: 275px;
+    padding-right: 20px;
+    margin-left: 0px;
+    padding-left: 0px;
+}

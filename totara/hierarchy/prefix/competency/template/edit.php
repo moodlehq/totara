@@ -1,8 +1,30 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/template/edit_form.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/template/edit_form.php');
 
 
 ///
@@ -16,45 +38,49 @@ $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
 // We require either an id for editing, or a framework for creating
 if (!$id && !$frameworkid) {
-    error('Incorrect parameters');
+    print_error('incorrectparameters', 'totara_hierarchy');
 }
 
 // Make this page appear under the manage templates admin item
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/template/edit.php');
 
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 
 if ($id == 0) {
     // Creating new competency template
-    require_capability('moodle/local:createcompetencytemplate', $context);
+    require_capability('totara/hierarchy:createcompetencytemplate', $context);
 
-    $template = new object();
+    $template = new stdClass();
     $template->id = 0;
+    $template->description = '';
     $template->visible = 1;
     $template->frameworkid = $frameworkid;
 
 } else {
     // Editing existing competency template
-    require_capability('moodle/local:updatecompetencytemplate', $context);
+    require_capability('totara/hierarchy:updatecompetencytemplate', $context);
 
-    if (!$template = get_record('comp_template', 'id', $id)) {
-        error('Competency template ID was incorrect');
+    if (!$template = $DB->get_record('comp_template', array('id' => $id))) {
+    print_error('incorrectcompetencytemplateid', 'totara_hierarchy');
     }
 }
 
 // Load framework
-if (!$framework = get_record('comp_framework', 'id', $template->frameworkid)) {
-    error('Competency framework ID was incorrect');
+if (!$framework = $DB->get_record('comp_framework', array('id' => $template->frameworkid))) {
+    print_error('incorrectcompetencyframeworkid', 'totara_hierarchy');
 }
 
 // create form
-$form = new competencytemplate_edit_form();
+$template->descriptionformat = FORMAT_HTML;
+$template = file_prepare_standard_editor($template, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                          'totara_hierarchy', 'comp_template', $template->id);
+$form = new competencytemplate_edit_form(null, array());
 $form->set_data($template);
 
 // cancelled
 if ($form->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/hierarchy/framework/view.php?prefix=competency&frameworkid=".$framework->id);
+    redirect("$CFG->wwwroot/totara/hierarchy/framework/view.php?prefix=competency&frameworkid=".$framework->id);
 
 // Update data
 } else if ($templatenew = $form->get_data()) {
@@ -72,50 +98,46 @@ if ($form->is_cancelled()) {
         $templatenew->timecreated = $time;
         $templatenew->competencycount = 0;
 
-        if (!$frameworknew->id = insert_record('comp_template', $templatenew)) {
-            error('Error creating competency template record');
+        if (!$templatenew->id = $DB->insert_record('comp_template', $templatenew)) {
+            print_error('createcompetencytemplaterecord', 'totara_hierarchy');
         }
 
     // Existing template
     } else {
-        if (!update_record('comp_template', $templatenew)) {
-            error('Error updating competency template record');
+        if (!$DB->update_record('comp_template', $templatenew)) {
+            print_error('updatecompetencytemplaterecord', 'totara_hierarchy');
         }
     }
 
-    // Reload from db
-    $templatenew = get_record('comp_template', 'id', $templatenew->id);
-
     // Log
     add_to_log(SITEID, 'competency', 'template update', "hierarchy/prefix/competency/template/view.php?id={$templatenew->id}", '');
-
-    redirect("$CFG->wwwroot/hierarchy/framework/view.php?prefix=competency&frameworkid=".$framework->id);
+    //fix the description field and redirect
+    $templatenew = file_postupdate_standard_editor($templatenew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_hierarchy', 'comp_template', $templatenew->id);
+    $DB->set_field('comp_template', 'description', $templatenew->description, array('id' => $templatenew->id));
+    redirect("$CFG->wwwroot/totara/hierarchy/framework/view.php?prefix=competency&frameworkid=".$framework->id);
     //never reached
 }
 
 
 /// Display page header
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("competencyframeworks", 'competency'),
-                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?prefix=competency",
-                    'type'=>'misc');
-$navlinks[] = array('name'=>format_string($framework->fullname),
-                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?prefix=competency&frameworkid={$framework->id}",
-                    'type'=>'misc');    // Framework View
+$PAGE->navbar->add(get_string("competencyframeworks", 'totara_hierarchy'),
+                    new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => 'competency')));
+$PAGE->navbar->add(format_string($framework->fullname),
+                    new moodle_url('totara/hierarchy/framework/view.php', array('prefix' => 'competency', 'frameworkid' => $framework->id)));
 if ($template->id == 0) {
-    $heading = get_string('addnewtemplate', 'competency');
-    $navlinks[] = array('name'=>$heading, 'link'=>'', 'type'=>'misc');
+    $heading = get_string('addnewtemplate', 'totara_hierarchy');
+    $PAGE->navbar->add($heading);
 } else {
-    $heading = get_string('editgeneric', 'competency', format_string($template->fullname));
-    $navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
+    $heading = get_string('editgeneric', 'totara_hierarchy', format_string($template->fullname));
+    $PAGE->navbar->add(format_string($template->fullname));
 }
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
 /// Finally display THE form
 $form->display();
 
 /// and proper footer
-print_footer();
+echo $OUTPUT->footer();

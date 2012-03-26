@@ -27,7 +27,9 @@ $string['categorynamemustbeunique'] = 'Category name (must be unique)';
 $string['categorynamenotunique'] = 'This category name is already in use';
 $string['confirmcategorydeletion'] = 'There is/are {$a} field/s in this category which will be moved into the category above (or below if in the top category). <br />Do you still wish to delete this category?';
 $string['commonsettings'] = 'Common settings';
-$string['confirmfielddeletion'] = 'There is/are {$a} record/s for this field which will be deleted. <br />Do you still wish to delete this field?';
+$string['confirmfielddeletionnodata'] = 'Are you sure you want to delete this field?';
+$string['confirmfielddeletionsingle'] = 'There is 1 record for this field which will be deleted. <br />Do you still wish to delete this field?';
+$string['confirmfielddeletionplural'] = 'There are {$a} records for this field which will be deleted. <br />Do you still wish to delete this field?';
 $string['coursecustomfields'] = 'Course custom fields';
 $string['createcustomfieldcategory'] = 'Create custom field category';
 $string['createnewcustomfield'] = 'Create a new custom field';
@@ -83,55 +85,34 @@ $string['wanttime'] = 'Include time?';
 $string['error:abstractmethod'] = 'This abstract method must be overriden';
 $string['error:updatecustomfield'] = 'Error updating custom field!';
 // HELP strings
-$string['customfieldhidden_help'] = '# Hidden on the settings page?
-
-When set to Yes the custom field will not be visible on the settings page or elsewhere where it would have been shown. When No the custom field will be visible.';
-$string['customfieldfullname_help'] = '# Custom field full name
-
-Custom field full name is the complete title of the custom field.';
-$string['customfieldforceunique_help'] = '# Should the data be unique?
-
-When set to Yes the custom field will only accept a unique value. If a duplicate value is used in this field the system will not allow the item to be saved.
+$string['customfieldhidden_help'] = 'When set to Yes the custom field will not be visible on the settings page or elsewhere where it would have been shown. When No the custom field will be visible.';
+$string['customfieldfullname_help'] = 'Custom field full name is the complete title of the custom field.';
+$string['customfieldforceunique_help'] = 'When set to Yes the custom field will only accept a unique value. If a duplicate value is used in this field the system will not allow the item to be saved.
 
 When set to No the custom field will accept any value in the field.';
-$string['customfieldlocked_help'] = '# Is this field locked?
-
-When set to Yes the custom field will only display the information set when the field was set up. The field cannot be edited.';
-$string['customfieldmenuoptions_help'] = '# Menu options (Menu of choices)
-
-Enter the menu options that will appear in the drop down box.
+$string['customfieldlocked_help'] = 'When set to Yes the custom field will only display the information set when the field was set up. The field cannot be edited.';
+$string['customfieldmenuoptions'] = 'Menu options (Menu of choices)';
+$string['customfieldmenuoptions_help'] = 'Enter the menu options that will appear in the drop down box.
 
 Only enter one option per line.';
-$string['customfieldshortname_help'] = '# Custom Field Short name
-
-Custom field short name is the abbreviated name of the custom field and can be used for display purposes.
+$string['customfieldshortname_help'] = 'Custom field short name is the abbreviated name of the custom field and can be used for display purposes.
 
 Custom fields will appear as options on the edit item screen for items at the same depth level as this custom field is assigned.';
-$string['customfieldrowstextarea_help'] = '# Rows (text area)
-
-Set the height of the text area that will be available (number of lines).';
-$string['customfieldrequired_help'] = '# Is this field required?
-
-Is this field required? If set to Yes, it will be a compulsory field when creating new items at this depth level.
+$string['customfieldrowstextarea'] = 'Rows (text area)';
+$string['customfieldrowstextarea_help'] = 'Set the height of the text area that will be available (number of lines).';
+$string['customfieldrequired_help'] = 'Is this field required? If set to Yes, it will be a compulsory field when creating new items at this depth level.
 
 If set to No, it will be an optional field when creating new items at this depth level.';
-$string['customfieldfieldsizetext_help'] = '# Display size (Text input)
-
-Display size sets that number of characters that will be displayed in the text field.';
-$string['customfieldmaxlengthtext_help'] = '# Maximum length (Text Input)
-
-Maximum length sets the maximum number of characters the text field will accept.';
-$string['customfielddefaultdatatext_help'] = '# Default value (Text input)
-
-Default value is the text that will appear in the text field by default.
+$string['customfieldfieldsizetext'] = 'Display size (Text input)';
+$string['customfieldfieldsizetext_help'] = 'Display size sets that number of characters that will be displayed in the text field.';
+$string['customfieldmaxlengthtext'] = 'Maximum length (Text Input)';
+$string['customfieldmaxlengthtext_help'] = 'Maximum length sets the maximum number of characters the text field will accept.';
+$string['customfielddefaultdatatext'] = 'Default value (Text input)';
+$string['customfielddefaultdatatext_help'] = 'Default value is the text that will appear in the text field by default.
 
 Leave this field blank if no default text is required.';
-$string['customfieldcategory_help'] = '# Category
-
-A **Category** is created to group together additional customised fields on a page, e.g. a on a competency, positions or organisations page.';
-$string['customfieldcategories_help'] = '# Custom Field Categories
-
-**Custom field categories** allow you to set up customised categories to hold custom fields under a depth level.
+$string['customfieldcategory_help'] = 'A **Category** is created to group together additional customised fields on a page, e.g. a on a competency, positions or organisations page.';
+$string['customfieldcategories_help'] = '**Custom field categories** allow you to set up customised categories to hold custom fields under a depth level.
 
 Custom field categories and Custom fields are set up to allow all the relevant information for hierarchy items to be captured and appear on the \'Add/Edit Hierarchy Item\' pages.
 
@@ -140,27 +121,20 @@ Custom field category names must be unique to the depth level. You need to have 
 **Adding a Custom Category: **Click **Create Custom field category** to add a new custom field category.
 
 **Edit/Delete a custom category: **Click **Turn editing on** to edit or delete an existing custom field category.';
-$string['customfielddefaultdatatextarea_help'] = '# Default value (text area)
-
-Default value is the text that will appear in the text area by default.
+$string['customfielddefaultdatatextarea_help'] = 'Default value is the text that will appear in the text area by default.
 
 Leave this field blank if no default text is required.';
-$string['customfieldcategoryname_help'] = '# Custom Field Category Name
-
-The **Custom field category** name helps to group together the types of customised fields you require and must be unique to the depth level you are working in. 
+$string['customfieldcategoryname_help'] = 'The **Custom field category** name helps to group together the types of customised fields you require and must be unique to the depth level you are working in.
 
 Type in the name and click **Save changes**.';
-$string['customfieldcolumnstextarea_help'] = '# Columns (text area)
-
-**Columns** sets the width of text area that will be available.';
-$string['customfielddefaultdatamenu_help'] = '# Default value (menu of choices)
-
-Set the default value that will appear in the drop down box. The default value must appear in the menu options above.
+$string['customfieldcolumnstextarea'] = 'Columns (text area)';
+$string['customfieldcolumnstextarea_help'] = '**Columns** sets the width of text area that will be available.';
+$string['customfielddefaultdatamenu'] = 'Default value (menu of choices)';
+$string['customfielddefaultdatamenu_help'] = 'Set the default value that will appear in the drop down box. The default value must appear in the menu options above.
 
 Leave blank if there is no default entry required.';
-$string['customfielddefaultdatacheckbox_help'] = '# Checked by default (Checkbox)
-
-When set to Yes the Custom field checkbox will be checked by default.
+$string['customfielddefaultdatacheckbox'] = 'Checked by default (Checkbox)';
+$string['customfielddefaultdatacheckbox_help'] = 'When set to Yes the Custom field checkbox will be checked by default.
 
 When set to No the Custom field checkbox will not be checked by default.';
-
+$string['description_help'] = 'A text description of this custom field';

@@ -326,7 +326,7 @@ class rb_source_user extends rb_base_source {
         $disp = '<span style="white-space:nowrap;">';
 
         // Learning Records icon
-        $disp = '<a href="' . $CFG->wwwroot . '/local/plan/record/courses.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/record.gif" title="' . get_string('learningrecords', 'local') . '" /></a>';
+        $disp = '<a href="' . $CFG->wwwroot . '/totara/plan/record/courses.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/record.gif" title="' . get_string('learningrecords', 'local') . '" /></a>';
 
         // Face To Face Bookings icon
         if ($this->staff_f2f) {
@@ -334,8 +334,8 @@ class rb_source_user extends rb_base_source {
         }
 
         // Individual Development Plans icon
-        if (has_capability('local/plan:accessplan', $systemcontext)) {
-            $disp .= '<a href="'.$CFG->wwwroot.'/local/plan/index.php?userid='.$itemid.'">';
+        if (has_capability('totara/plan:accessplan', $systemcontext)) {
+            $disp .= '<a href="'.$CFG->wwwroot.'/totara/plan/index.php?userid='.$itemid.'">';
             $disp .= '<img src="'.$CFG->pixpath.'/i/plan.gif" title="'.get_string('learningplans', 'local_plan').'" />';
             $disp .= '</a>';
         }
@@ -349,7 +349,7 @@ class rb_source_user extends rb_base_source {
         global $CFG;
 
         if (!empty($extensioncount)) {
-            return "<a href=\"{$CFG->wwwroot}/local/program/manageextensions.php?userid={$row->user_id}\">{$extensioncount}</a>";
+            return "<a href=\"{$CFG->wwwroot}/totara/program/manageextensions.php?userid={$row->user_id}\">{$extensioncount}</a>";
         } else {
             return '0';
         }
@@ -373,8 +373,8 @@ class rb_source_user extends rb_base_source {
         $profilestr = get_string('profile', 'rb_source_user');
         $bookingstr = get_string('bookings', 'rb_source_user');
 
-        $rol_link = "<a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}\">{$recordstr}</a>";
-        $plan_link = "<a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">{$planstr}</a>";
+        $rol_link = "<a href=\"{$CFG->wwwroot}/totara/plan/record/courses.php?userid={$userid}\">{$recordstr}</a>";
+        $plan_link = "<a href=\"{$CFG->wwwroot}/totara/plan/index.php?userid={$userid}\">{$planstr}</a>";
         $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$profilestr}</a>";
         $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">{$bookingstr}</a>";
 

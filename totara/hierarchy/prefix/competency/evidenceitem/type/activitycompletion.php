@@ -1,33 +1,26 @@
 <?php
-
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
-/**
- * @copyright Catalyst IT Limited
- * @author Aaron Barnes
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
+ * @subpackage totara_hierarchy
  */
 
 /**
@@ -54,29 +47,25 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
      * @return  void
      */
     public function add($competency) {
-        global $CFG;
+        global $DB;
 
         // Set item details
-        $cmrec = get_record_sql("
+        $cmrec = $DB->get_record_sql("
             SELECT
                 cm.*,
                 md.name as modname
             FROM
-                {$CFG->prefix}course_modules cm,
-                {$CFG->prefix}modules md
+                {course_modules} cm,
+                {modules} md
             WHERE
-                cm.id = '{$this->iteminstance}'
+                cm.id = ?
             AND md.id = cm.module
-        ");
+        ", array($this->iteminstance));
 
-        if (!$cmrec) {
-            error('Could not load module from course_modules');
-        }
+       $this->iteminstance = $cmrec->instance;
+       $this->itemmodule = $cmrec->modname;
 
-        $this->iteminstance = $cmrec->instance;
-        $this->itemmodule = $cmrec->modname;
-
-        return parent::add($competency);
+       return parent::add($competency);
     }
 
     /**
@@ -85,19 +74,18 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
      * @return object
      */
     private function _get_module() {
+        global $DB;
 
         // If already loaded
         if ($this->_module) {
             return $this->_module;
         }
 
-        global $CFG;
-
         // Get module
-        $module = get_record($this->itemmodule, 'id', $this->iteminstance);
+        $module = $DB->get_record($this->itemmodule, array('id' => $this->iteminstance));
 
         if (!$module) {
-            error('Could not load '.$this->itemmodule.' module with id of '.$this->iteminstance);
+            print_error('loadmoduleinstance', 'totara_hierarchy', array($a => $this->itemmodule, $b => $this->iteminstance));
         }
 
         // Save module instanace
@@ -140,7 +128,7 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
      */
     public function cron() {
 
-        global $CFG;
+        global $CFG, $DB;
 
         // Only select activity completions that have changed
         // since an evidence item evidence was last changed
@@ -165,27 +153,27 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
                 proficient.proficient,
                 cs.defaultid
             FROM
-                {$CFG->prefix}comp_evidence_items cei
+                {comp_evidence_items} cei
             INNER JOIN
-                {$CFG->prefix}comp co
+                {comp} co
              ON cei.competencyid = co.id
             INNER JOIN
-                {$CFG->prefix}course_modules_completion cmc
+                {course_modules_completion} cmc
              ON cei.iteminstance = cmc.coursemoduleid
             INNER JOIN
-                {$CFG->prefix}comp_scale_assignments csa
+                {comp_scale_assignments} csa
             ON co.frameworkid = csa.frameworkid
             INNER JOIN
-                {$CFG->prefix}comp_scale cs
+                {comp_scale} cs
              ON csa.scaleid = cs.id
             INNER JOIN
             (
                 SELECT csv.scaleid, csv.id AS proficient
-                FROM {$CFG->prefix}comp_scale_values csv
+                FROM {comp_scale_values} csv
                 INNER JOIN
                 (
                     SELECT scaleid, MAX(sortorder) AS maxsort
-                    FROM {$CFG->prefix}comp_scale_values
+                    FROM {comp_scale_values}
                     WHERE proficient = 1
                     GROUP BY scaleid
                 ) grouped
@@ -193,7 +181,7 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
             ) proficient
             ON cs.id = proficient.scaleid
             LEFT JOIN
-                {$CFG->prefix}comp_evidence_items_evidence ceie
+                {comp_evidence_items_evidence} ceie
              ON ceie.itemid = cei.id
             AND ceie.userid = cmc.userid
             WHERE
@@ -211,14 +199,14 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
         ";
 
         // Loop through evidence itmes, and mark as complete
-        if ($rs = get_recordset_sql($sql)) {
+        if ($rs = $DB->get_recordset_sql($sql)) {
             foreach ($rs as $record) {
 
                 if (debugging()) {
                     mtrace('.', '');
                 }
 
-                require_once($CFG->dirroot . '/hierarchy/prefix/competency/evidenceitem/type/evidence.php');
+                require_once($CFG->dirroot . '/totara/hierarchy/prefix/competency/evidenceitem/type/evidence.php');
                 $evidence = new competency_evidence_item_evidence((array)$record, false);
 
                 if (in_array($record['completionstate'], array(COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS))) {

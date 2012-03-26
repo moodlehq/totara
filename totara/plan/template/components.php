@@ -44,7 +44,7 @@ if(!$template = get_record('dp_template', 'id', $id)){
     error(get_string('error:invalidtemplateid', 'local_plan'));
 }
 
-$returnurl = $CFG->wwwroot . '/local/plan/template/components.php?id=' . $id;
+$returnurl = $CFG->wwwroot . '/totara/plan/template/components.php?id=' . $id;
 
 if($save){
     if(update_plan_component_name('componentname', $id)){
@@ -139,7 +139,7 @@ if($hide) {
 
 $navlinks = array();    // Breadcrumbs
 $navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-                    'link'=>"{$CFG->wwwroot}/local/plan/template/index.php",
+                    'link'=>"{$CFG->wwwroot}/totara/plan/template/index.php",
                     'type'=>'misc');
 $navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
 

@@ -29,7 +29,7 @@ class rb_findprograms_embedded extends rb_base_embedded {
     public $hidden, $accessmode, $accesssettings, $shortname;
 
     public function __construct($data) {
-        $this->url = '/local/program/find.php';
+        $this->url = '/totara/program/find.php';
         $this->source = 'program';
         $this->shortname = 'findprograms';
         $this->fullname = get_string('findprograms', 'local_program');
@@ -68,7 +68,7 @@ class rb_findprograms_embedded extends rb_base_embedded {
         );
 
         $context = get_context_instance(CONTEXT_SYSTEM);
-        if(!has_capability('local/program:viewhiddenprograms', $context)) {
+        if(!has_capability('totara/program:viewhiddenprograms', $context)) {
             // don't show hidden courses to none-admins
             $this->embeddedparams['visible'] = 1;
         }

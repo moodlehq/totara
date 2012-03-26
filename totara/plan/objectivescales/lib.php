@@ -25,7 +25,7 @@
  */
 
 /**
- * local/plan/objectivescales/lib.php
+ * totara/plan/objectivescales/lib.php
  *
  * Library of functions related to Objective priorities.
  */
@@ -86,8 +86,8 @@ function dp_objective_display_table($objectives, $editingon=0) {
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
     // Cache permissions
-    $can_edit = has_capability('local/plan:manageobjectivescales', $sitecontext);
-    $can_delete = has_capability('local/plan:manageobjectivescales', $sitecontext);
+    $can_edit = has_capability('totara/plan:manageobjectivescales', $sitecontext);
+    $can_delete = has_capability('totara/plan:manageobjectivescales', $sitecontext);
 
     // Make sure user has capability to edit
     if (!(($can_edit || $can_delete) && $editingon)) {
@@ -125,7 +125,7 @@ function dp_objective_display_table($objectives, $editingon=0) {
             $count++;
             $line = array();
 
-            $title = "<a href=\"$CFG->wwwroot/local/plan/objectivescales/view.php?id={$objective->id}\">".format_string($objective->name)."</a>";
+            $title = "<a href=\"$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$objective->id}\">".format_string($objective->name)."</a>";
             if ($count==1){
                 $title .= ' ('.get_string('default').')';
             }
@@ -142,7 +142,7 @@ function dp_objective_display_table($objectives, $editingon=0) {
             $buttons = array();
             if ($editingon) {
                 if ($can_edit) {
-                    $buttons[] = "<a title=\"$stredit\" href=\"$CFG->wwwroot/local/plan/objectivescales/edit.php?id=$objective->id\"><img".
+                    $buttons[] = "<a title=\"$stredit\" href=\"$CFG->wwwroot/totara/plan/objectivescales/edit.php?id=$objective->id\"><img".
                         " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
                 }
 
@@ -152,14 +152,14 @@ function dp_objective_display_table($objectives, $editingon=0) {
                     } else if ($scale_assigned) {
                         $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteobjectivescaleassigned', 'local_plan') . "\" title=\"" . get_string('error:nodeleteobjectivescaleassigned', 'local_plan') . "\" /></a>";
                     } else {
-                        $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/local/plan/objectivescales/index.php?delete=$objective->id\"><img".
+                        $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/totara/plan/objectivescales/index.php?delete=$objective->id\"><img".
                                 " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
                     }
                 }
 
                 // If value can be moved up
                 if ($can_edit && $count > 1) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/objectivescales/index.php?moveup={$objective->id}\" title=\"$str_moveup\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/index.php?moveup={$objective->id}\" title=\"$str_moveup\">".
                         "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
                 } else {
                     $buttons[] = $spacer;
@@ -167,7 +167,7 @@ function dp_objective_display_table($objectives, $editingon=0) {
 
                 // If value can be moved down
                 if ($can_edit && $count < $numvalues) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/objectivescales/index.php?movedown={$objective->id}\" title=\"$str_movedown\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/index.php?movedown={$objective->id}\" title=\"$str_movedown\">".
                         "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
                 } else {
                     $buttons[] = $spacer;
@@ -187,7 +187,7 @@ function dp_objective_display_table($objectives, $editingon=0) {
     }
 
     echo '<div class="buttons">';
-    print_single_button("$CFG->wwwroot/local/plan/objectivescales/edit.php", null, get_string('objectivesscalecreate', 'local_plan'));
+    print_single_button("$CFG->wwwroot/totara/plan/objectivescales/edit.php", null, get_string('objectivesscalecreate', 'local_plan'));
     echo '</div>';
 }
 

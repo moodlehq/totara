@@ -96,20 +96,12 @@ $string['proficiency'] = 'Proficiency';
 $string['positionatcompletion'] = 'Position at completion';
 $string['organisationatcompletion'] = 'Organisation at completion';
 $string['timecompleted'] = 'Time completed';
-$string['editcompetencyevidence'] = 'Edit Competency Evidence Record';
-$string['addcompetencyevidence'] = 'Add Competency Evidence Record';
 $string['error:usernotfound'] = 'User not found';
-$string['addforthisuser'] = 'Add new competency evidence for this user';
 $string['selectaproficiency'] = 'Select a proficiency...';
 $string['recordnotcreated'] = 'Record could not be created';
 $string['recordnotupdated'] = 'Record could not be updated';
 $string['selectanassessor'] = 'Select an assessor...';
 $string['noassessors'] = 'No assessors found';
-$string['firstselectcompetency'] = 'First select a competency';
-$string['selectcompetency'] = 'Select a competency';
-$string['deletecompetencyevidence'] = 'Delete Competency Evidence';
-$string['confirmdeletece'] = 'Are you sure you want to delete this competency evidence record?';
-$string['couldnotdeletece'] = 'Could not delete that competency evidence record.';
 $string['alreadyselected'] = '(already selected)';
 
 // Installation and Demo data

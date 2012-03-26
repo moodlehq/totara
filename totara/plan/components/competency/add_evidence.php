@@ -24,13 +24,13 @@
  */
 
 require_once('../../../../config.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 require_once('add_evidence_form.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/evidence.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/evidence.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/lib.php');
 
 ///
 /// Setup / loading data
@@ -136,7 +136,7 @@ $fullname = get_string('addcompetencyevidence', 'local');
 $pagetitle = format_string($fullname);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$plan->id, 'type'=>'title');
+$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$plan->id, 'type'=>'title');
 $navigation = build_navigation($navlinks);
 
 

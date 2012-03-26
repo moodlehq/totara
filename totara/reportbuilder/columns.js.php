@@ -119,7 +119,7 @@ var rb_init_addbutton = function(colselector) {
     addbutton.bind('click', function(e) {
         e.preventDefault();
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/column.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/column.php'; ?>",
             type: "POST",
             data: ({action: 'add', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, col: colselector.val(), heading: newHeadingBox.val()}),
             beforeSend: function() {
@@ -210,7 +210,7 @@ var rb_init_deletebuttons = function() {
 
         var colrow = $(this).closest('tr');
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/column.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/column.php'; ?>",
             type: "POST",
             data: ({action: 'delete', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, cid: colrow.attr('colid')}),
             beforeSend: function() {
@@ -286,7 +286,7 @@ var rb_init_hidebuttons = function() {
 
         var colrow = $(this).closest('tr');
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/column.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/column.php'; ?>",
             type: "POST",
             data: ({action: 'hide', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, cid: colrow.attr('colid')}),
             beforeSend: function() {
@@ -326,7 +326,7 @@ var rb_init_showbuttons = function() {
 
         var colrow = $(this).closest('tr');
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/column.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/column.php'; ?>",
             type: "POST",
             data: ({action: 'show', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, cid: colrow.attr('colid')}),
             beforeSend: function() {
@@ -380,7 +380,7 @@ var rb_init_movedown_btns = function() {
         var loadingimg = '<img src="<?php echo "{$CFG->pixpath}/i/ajaxloader.gif"; ?>" alt="Saving..." class="iconsmall" />';
 
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/column.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/column.php'; ?>",
             type: "POST",
             data: ({action: 'movedown', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, cid: colrow.attr('colid')}),
             beforeSend: function() {
@@ -443,7 +443,7 @@ var rb_init_moveup_btns = function() {
         var loadingimg = '<img src="<?php echo "{$CFG->pixpath}/i/ajaxloader.gif"; ?>" alt="Saving..." class="iconsmall" />';
 
         $.ajax({
-            url: "<?php echo $CFG->wwwroot.'/local/reportbuilder/ajax/column.php'; ?>",
+            url: "<?php echo $CFG->wwwroot.'/totara/reportbuilder/ajax/column.php'; ?>",
             type: "POST",
             data: ({action: 'moveup', sesskey: '<?php echo $USER->sesskey; ?>', id: rb_reportid, cid: colrow.attr('colid')}),
             beforeSend: function() {
@@ -515,25 +515,25 @@ var rb_reload_option_btns = function(colrow) {
 
 
 var rb_get_btn_hide = function(reportid, colid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&h=1" class="hidecolbtn"><img src="<?php echo "{$CFG->pixpath}/t/hide.gif"; ?>" alt="Hide" class="iconsmall" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&h=1" class="hidecolbtn"><img src="<?php echo "{$CFG->pixpath}/t/hide.gif"; ?>" alt="Hide" class="iconsmall" /></a>');
 };
 
 var rb_get_btn_show = function(reportid, colid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&h=0" class="showcolbtn"><img src="<?php echo "{$CFG->pixpath}/t/show.gif"; ?>" alt="Show" class="iconsmall" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&h=0" class="showcolbtn"><img src="<?php echo "{$CFG->pixpath}/t/show.gif"; ?>" alt="Show" class="iconsmall" /></a>');
 };
 
 var rb_get_btn_delete = function(reportid, colid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&d=1" class="deletecolbtn"><img src="<?php echo "{$CFG->pixpath}/t/delete.gif"; ?>" alt="Delete" class="iconsmall" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&d=1" class="deletecolbtn"><img src="<?php echo "{$CFG->pixpath}/t/delete.gif"; ?>" alt="Delete" class="iconsmall" /></a>');
 }
 
 var rb_get_btn_up = function (reportid, colid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&m=up" class="movecolupbtn"><img src="<?php echo "{$CFG->pixpath}/t/up.gif"; ?>" alt="Move up" class="iconsmall" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&m=up" class="movecolupbtn"><img src="<?php echo "{$CFG->pixpath}/t/up.gif"; ?>" alt="Move up" class="iconsmall" /></a>');
 }
 
 var rb_get_btn_down = function (reportid, colid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&m=down" class="movecoldownbtn"><img src="<?php echo "{$CFG->pixpath}/t/down.gif"; ?>" alt="Move down" class="iconsmall" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/columns.php?id='; ?>' + reportid + '&cid='+colid+'&m=down" class="movecoldownbtn"><img src="<?php echo "{$CFG->pixpath}/t/down.gif"; ?>" alt="Move down" class="iconsmall" /></a>');
 }
 
 var rb_get_btn_add = function (reportid) {
-    return $('<a href="<?php echo $CFG->wwwroot.'/local/reportbuilder/columns.php?id='; ?>' + reportid + '" class="addcolbtn"><input type="button" value="<?php echo addslashes_js(get_string('add')); ?>" /></a>');
+    return $('<a href="<?php echo $CFG->wwwroot.'/totara/reportbuilder/columns.php?id='; ?>' + reportid + '" class="addcolbtn"><input type="button" value="<?php echo addslashes_js(get_string('add')); ?>" /></a>');
 }

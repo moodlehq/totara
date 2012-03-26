@@ -23,7 +23,7 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/program/lib.php');
+require_once($CFG->dirroot.'/totara/program/lib.php');
 require_once($CFG->dirroot.'/lib/pear/HTML/AJAX/JSON.php');
 require_login();
 

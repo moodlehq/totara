@@ -30,7 +30,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
 require_once('edit_form.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 admin_externalpage_setup('manageprograms');
 
@@ -46,7 +46,7 @@ if ($categoryid) { // creating new program in this category
     if (!$category = get_record('course_categories', 'id', $categoryid)) {
         print_error('Category ID was incorrect');
     }
-    require_capability('local/program:createprogram', get_context_instance(CONTEXT_COURSECAT, $category->id));
+    require_capability('totara/program:createprogram', get_context_instance(CONTEXT_COURSECAT, $category->id));
 } else {
     print_error('Program category must be specified');
 }
@@ -104,7 +104,7 @@ if ($data = $form->get_data()) {
 
         add_to_log(SITEID, 'program', 'created', "edit.php?id={$newid}", $program->fullname);
 
-        $viewurl = "{$CFG->wwwroot}/local/program/edit.php?id={$newid}&amp;action=edit";
+        $viewurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$newid}&amp;action=edit";
 
         totara_set_notification(get_string('programcreatesuccess', 'local_program'), $viewurl, array('style' => 'notifysuccess'));
 

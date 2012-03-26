@@ -37,7 +37,7 @@
 
 
 $capabilities = array(
-        'local/oauth:negotiate' => array(
+        'totara/oauth:negotiate' => array(
                 'riskbitmask' => RISK_PERSONAL,
                 'captype' => 'read',
                 'contextlevel' => CONTEXT_SYSTEM,

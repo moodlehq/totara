@@ -304,7 +304,7 @@ class prog_exceptions_manager {
 
     private function build_link() {
         global $CFG;
-        return $CFG->wwwroot . '/local/program/exceptions.php?id='. $this->programid;
+        return $CFG->wwwroot . '/totara/program/exceptions.php?id='. $this->programid;
     }
 
     public function print_search($previoussearch='',$return=false) {

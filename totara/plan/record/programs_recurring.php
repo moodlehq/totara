@@ -24,8 +24,8 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
@@ -102,7 +102,7 @@ $report->include_js();
 
 $navlinks = array();
 $navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
-$navlinks[] = array('name' => $strheading, 'link' => $CFG->wwwroot . '/local/plan/record/programs.php', 'type' => 'misc');
+$navlinks[] = array('name' => $strheading, 'link' => $CFG->wwwroot . '/totara/plan/record/programs.php', 'type' => 'misc');
 $navlinks[] = array('name' => $strsubheading, 'link' => null, 'type' => 'misc');
 
 print_header($strheading, $strheading, build_navigation($navlinks));
@@ -120,7 +120,7 @@ echo '<h1>'.$strheading.'</h1>';
 $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
 
 //$currenttab = 'programs';
-//require_once($CFG->dirroot . '/local/plan/record/tabs.php');
+//require_once($CFG->dirroot . '/totara/plan/record/tabs.php');
 
 // display table here
 $fullname = $report->fullname;

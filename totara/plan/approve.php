@@ -24,8 +24,8 @@
  */
 
 require_once('../../config.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 require_login();
 
@@ -40,7 +40,7 @@ $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
 /// Load data
 ///
 $currenturl = qualified_me();
-$planurl = "{$CFG->wwwroot}/local/plan/view.php?id={$id}";
+$planurl = "{$CFG->wwwroot}/totara/plan/view.php?id={$id}";
 $plan = new development_plan($id);
 
 if (!dp_can_view_users_plans($plan->userid)) {
@@ -105,7 +105,7 @@ $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan', 'local_plan').': '.$fullname);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}/local/plan/view.php?id={$id}", 'type' => 'title');
+$navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}/totara/plan/view.php?id={$id}", 'type' => 'title');
 $navlinks[] = array('name' => get_string('pendingitems', 'local_plan'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);

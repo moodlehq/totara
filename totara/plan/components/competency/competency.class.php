@@ -23,8 +23,8 @@
  * @subpackage plan
  */
 
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidence/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/lib.php');
 
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -226,8 +226,8 @@ class dp_competency_component extends dp_base_component {
 
             // Get course picker
             require_js(array(
-                $CFG->wwwroot.'/local/plan/component.js.php?planid='.$this->plan->id.'&amp;component=competency&amp;viewas='.$this->plan->viewas,
-                $CFG->wwwroot.'/local/plan/components/competency/find.js.php'
+                $CFG->wwwroot.'/totara/plan/component.js.php?planid='.$this->plan->id.'&amp;component=competency&amp;viewas='.$this->plan->viewas,
+                $CFG->wwwroot.'/totara/plan/components/competency/find.js.php'
             ));
         }
     }
@@ -286,7 +286,7 @@ class dp_competency_component extends dp_base_component {
                 }
 
 
-                echo "<form method=\"get\" action=\"{$CFG->wwwroot}/local/plan/component.php\">";
+                echo "<form method=\"get\" action=\"{$CFG->wwwroot}/totara/plan/component.php\">";
                 echo "<input type=\"hidden\" name=\"d\" value=\"{$delete}\" />";
                 echo "<input type=\"hidden\" name=\"c\" value=\"competency\" />";
                 echo "<input type=\"hidden\" name=\"confirm\" value=\"1\" />";
@@ -331,7 +331,7 @@ class dp_competency_component extends dp_base_component {
     function get_course_evidence_items($competencies) {
         global $CFG;
         // for access to evidence item type constants
-        require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+        require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 
         // invalid input
         if (!is_array($competencies)) {
@@ -627,7 +627,7 @@ class dp_competency_component extends dp_base_component {
             $CFG->wwwroot . '/local/icon/icon.php?icon=' . $icon .
             '&amp;size=small&amp;type=msg" alt="' . format_string($item->fullname).
             '"><a' . $class .' href="' . $CFG->wwwroot .
-            '/local/plan/components/' . $this->component.'/view.php?id=' .
+            '/totara/plan/components/' . $this->component.'/view.php?id=' .
             $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
             '</a>';
     }
@@ -1205,7 +1205,7 @@ class dp_competency_component extends dp_base_component {
         $includecourses = $this->get_setting('autoassigncourses');
         $includecompleted = $this->get_setting('includecompleted');
 
-        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+        require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
 
         // Get primary position
         $position_assignment = new position_assignment(
@@ -1254,7 +1254,7 @@ class dp_competency_component extends dp_base_component {
         $includecourses = $this->get_setting('autoassigncourses');
         $includecompleted = $this->get_setting('includecompleted');
 
-        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+        require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
         // Get primary position
         $position_assignment = new position_assignment(
             array(
@@ -1267,7 +1267,7 @@ class dp_competency_component extends dp_base_component {
             return true;
         }
 
-        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
+        require_once($CFG->dirroot.'/totara/hierarchy/prefix/organisation/lib.php');
         $org = new organisation();
         if ($includecompleted) {
             $competencies = $org->get_assigned_competencies($position_assignment->organisationid);
@@ -1387,7 +1387,7 @@ class dp_competency_component extends dp_base_component {
         global $CFG;
         if ($this->can_update_competency_evidence($item)) {
             $straddevidence = get_string('addevidence', 'local_plan');
-            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&amp;id='.$this->plan->id.'&amp;competencyid='.$item->competencyid.
+            $proficient = '<a href="'.$CFG->wwwroot.'/totara/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&amp;id='.$this->plan->id.'&amp;competencyid='.$item->competencyid.
                 '&amp;returnurl='.urlencode($returnurl).'"
                 title="'.$straddevidence.'">
                 <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';

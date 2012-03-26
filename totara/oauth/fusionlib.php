@@ -22,7 +22,7 @@
  */
 
 
-require_once($CFG->dirroot.'/local/oauth/lib.php');
+require_once($CFG->dirroot.'/totara/oauth/lib.php');
 
 class local_oauth_fusion_exception extends Exception { };
 

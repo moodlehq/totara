@@ -226,7 +226,7 @@ abstract class dp_base_workflow {
     function copy_to_db($templateid) {
         global $CFG;
 
-        $returnurl = $CFG->wwwroot . '/local/plan/template/workflow?id=' . $templateid;
+        $returnurl = $CFG->wwwroot . '/totara/plan/template/workflow?id=' . $templateid;
 
         if(!$templateid) {
             error(get_string('error:templateid', 'local_plan'));

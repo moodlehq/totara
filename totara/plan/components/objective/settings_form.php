@@ -32,7 +32,7 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 // Include main component class
-require_once($CFG->dirroot.'/local/plan/components/objective/objective.class.php');
+require_once($CFG->dirroot.'/totara/plan/components/objective/objective.class.php');
 
 
 /**
@@ -139,7 +139,7 @@ function dp_objective_component_process_settings_form($fromform, $id) {
     global $CFG, $DP_AVAILABLE_ROLES;
 
     $currenturl = $CFG->wwwroot .
-        '/local/plan/template/advancedworkflow.php?id=' . $id .
+        '/totara/plan/template/advancedworkflow.php?id=' . $id .
         '&amp;component=objective';
 
     begin_sql();

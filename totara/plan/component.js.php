@@ -25,8 +25,8 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once($CFG->dirroot.'/local/plan/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 // Load parameters
 $plan_id = required_param('planid', PARAM_INT);
@@ -58,7 +58,7 @@ $(function() {
         data[$(this).attr('name')] = $(this).val();
 
         $.post(
-            '<?php echo "{$CFG->wwwroot}/local/plan/component.php?id={$plan->id}&c={$component_name}"; ?>',
+            '<?php echo "{$CFG->wwwroot}/totara/plan/component.php?id={$plan->id}&c={$component_name}"; ?>',
             data,
             totara_local_plan_update
         );

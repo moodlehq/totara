@@ -24,7 +24,7 @@
 
 require_once('../../config.php');
 
-require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
 $format = optional_param('format','', PARAM_TEXT); // export format
 
@@ -49,7 +49,7 @@ $report->include_js();
 
 $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
-$navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}" . "/local/program/find.php", 'type' => 'title');
+$navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}" . "/totara/program/find.php", 'type' => 'title');
 $navlinks[] = array('name' => get_string('search'), 'link' => null, 'type' => 'title');
 
 $navigation = build_navigation($navlinks);

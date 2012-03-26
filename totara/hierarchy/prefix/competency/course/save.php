@@ -1,8 +1,30 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 require_once('HTML/AJAX/JSON.php');
 
 
@@ -44,8 +66,8 @@ $deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
 // Check perms
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:updatecompetency', $sitecontext);
 
 
 $hierarchy = new competency();
@@ -58,7 +80,7 @@ $rowclass = 'r1';
 foreach ($idlist as $id) {
     // Load competency
     if (!$competency = $hierarchy->get_item($id)) {
-        print_error('Competency ID was incorrect');
+        print_error('invalidcompetencyid', 'totara_hierarchy');
     }
 
     // Check type is available
@@ -68,7 +90,7 @@ foreach ($idlist as $id) {
         die('type unavailable');
     }
 
-    $data = new object();
+    $data = new stdClass();
     $data->itemtype = $type;
     $evidence = competency_evidence_type::factory($data);
     $evidence->iteminstance = $instance;
@@ -94,8 +116,8 @@ if ($deleteexisting) {
 
     foreach ($removeditems as $ritem) {
         // Load competency
-        if (!$competency = get_record('comp', 'id', $oldassigned[$assignedcomps[$ritem]]->id)) {
-            print_rerror('Could not update items - competency ID was incorrect');
+        if (!$competency = $DB->get_record('comp', array('id' => $oldassigned[$assignedcomps[$ritem]]->id))) {
+            print_error('updatecompetencyitems', 'totara_hierarchy');
         }
 
         $item = competency_evidence_type::factory($assignedcomps[$ritem]);
@@ -104,9 +126,9 @@ if ($deleteexisting) {
     }
 }
 
-if($nojs) {
-    // redirect back to original page for none JS version
-    if($s == sesskey()) {
+if ($nojs) {
+    // redirect back to original page for non JS version
+    if ($s == sesskey()) {
         $murl = new moodle_url($returnurl);
         $returnurl = $murl->out(false, array('nojs' => 1));
     } else {

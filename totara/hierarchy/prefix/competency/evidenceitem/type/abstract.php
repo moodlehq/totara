@@ -1,35 +1,29 @@
 <?php
-
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
-/**
- * @copyright Catalyst IT Limited
- * @author Aaron Barnes
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Aaron Barnes <aaron.barnes@totaralms.com>
  * @package totara
+ * @subpackage totara_hierarchy
  */
-require_once($CFG->libdir.'/data_object.php');
+
+require_once("{$CFG->libdir}/completion/data_object.php");
 
 /**
  * Competency evidence type constants
@@ -83,20 +77,20 @@ abstract class competency_evidence_type extends data_object {
      * @return  object  comptency_evidence_type_*
      */
     public static function factory($data) {
-        global $CFG, $COMPETENCY_EVIDENCE_TYPES;
+        global $CFG, $DB, $COMPETENCY_EVIDENCE_TYPES;
 
         // If supplied an ID, load record
         if (is_numeric($data)) {
-            $data = get_record('comp_evidence_items', 'id', $data);
+            $data = $DB->get_record('comp_evidence_items', array('id' => $data));
         }
 
         // Check this competency evidence type is installed
         if (!isset($data->itemtype) || !isset($COMPETENCY_EVIDENCE_TYPES[$data->itemtype])) {
-            error('invalidevidencetype', 'competency');
+            print_error('invalidevidencetype', 'totara_hierarchy');
         }
 
         // Load class file
-        require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidenceitem/type/'.$data->itemtype.'.php');
+        require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/type/'.$data->itemtype.'.php');
         $class = 'competency_evidence_type_'.$data->itemtype;
 
         // Create new and return
@@ -110,14 +104,24 @@ abstract class competency_evidence_type extends data_object {
      * @return  mixed The ID of the newly created evidence record, or false if the record is a duplicate
      */
     public function add($competency) {
-        global $USER;
+        global $USER, $DB;
 
         // Don't allow duplicate evidence items
-        $wherestr = "competencyid={$competency->id}";
-        $wherestr .= " and itemtype='" . ( isset($this->itemtype) ? $this->itemtype : '' ) . "'";
-        $wherestr .= " and itemmodule='" . ( isset($this->itemmodule) ? $this->itemmodule : '' ) . "'";
-        $wherestr .= " and iteminstance={$this->iteminstance}";
-        if ( count_records_select('comp_evidence_items',$wherestr) ){
+        $params = array(
+            'competencyid' => $competency->id,
+            'itemtype'     => ( isset($this->itemtype) ? $this->itemtype : '' ),
+            'itemmodule'   => ( isset($this->itemmodule) ? $this->itemmodule : '' ),
+            'iteminstance' => $this->iteminstance
+        );
+
+        $wherestr = "
+            competencyid = :competencyid
+            AND itemtype = :itemtype
+            AND itemmodule = :itemmodule
+            AND iteminstance = :iteminstance
+        ";
+
+        if ($DB->count_records_select('comp_evidence_items', $wherestr, $params) ) {
             return false;
         }
 
@@ -132,18 +136,18 @@ abstract class competency_evidence_type extends data_object {
         // Insert into database
         $newid = parent::insert();
         if (!$newid) {
-            error('Could not insert new evidence item');
+            print_error('insertevidenceitem', 'totara_hierarchy');
         }
 
         // Update evidence count
         // Get latest count
-        $count = get_field('comp_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
-        $todb = new object();
+        $count = $DB->get_field('comp_evidence_items', 'COUNT(*)', array('competencyid' => $competency->id));
+        $todb = new stdClass();
         $todb->id = $competency->id;
         $todb->evidencecount = (int) $count;
 
-        if (!update_record('comp', $todb)) {
-            error('Could not update competency evidence count');
+        if (!$DB->update_record('comp', $todb)) {
+            print_error('updatecompetencyevidencecount', 'totara_hierarchy');
         }
         return $newid;
     }
@@ -155,24 +159,25 @@ abstract class competency_evidence_type extends data_object {
      * @return  void
      */
     public function delete($competency = null) {
+        global $DB;
 
         // Delete evidence item from database
         if (!parent::delete()) {
-            error('Could not delete evidence item');
+            print_error('deleteevidencetype', 'totara_hierarchy');
         }
 
         // Delete any evidence items evidence
-        delete_records('comp_evidence_items_evidence', 'itemid', $this->id);
+        $DB->delete_records('comp_evidence_items_evidence', array('itemid' => $this->id));
 
         // Update evidence count
         // Get latest count
-        $count = get_field('comp_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
-        $todb = new object();
+        $count = $DB->get_field('comp_evidence_items', 'COUNT(*)', array('competencyid' => $competency->id));
+        $todb = new stdClass();
         $todb->id = $competency->id;
         $todb->evidencecount = (int) $count;
 
-        if (!update_record('comp', $todb)) {
-            error('Could not update competency evidence count');
+        if (!$DB->update_record('comp', $todb)) {
+            print_error('updatecompetencyevidencecount', 'totara_hierarchy');
         }
     }
 
@@ -182,7 +187,7 @@ abstract class competency_evidence_type extends data_object {
      * @return  string
      */
     public function get_type_name() {
-        return get_string('evidence'.$this->itemtype, 'competency');
+        return get_string('evidence'.$this->itemtype, 'totara_hierarchy');
     }
 
     /**

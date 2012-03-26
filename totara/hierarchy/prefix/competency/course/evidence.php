@@ -1,8 +1,30 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/competency/evidenceitem/lib.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/lib.php');
 
 ///
 /// Setup / loading data
@@ -25,34 +47,28 @@ $nojsparams = 'nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s
 // Check perms
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+$sitecontext = context_system::instance();
+require_capability('totara/hierarchy:updatecompetency', $sitecontext);
 
 // Load course
-if (!$course = get_record('course', 'id', $id)) {
-    error('Course ID was incorrect');
+if (!$course = $DB->get_record('course', array('id' => $id))) {
+    print_error('incorrectcourseid', 'totara_hierarchy');
 }
 
 // Display page
-
-if($nojs) {
-    // include header/footer for none JS version
-    admin_externalpage_print_header();
-    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
+$out = '';
+if ($nojs) {
+    // include header/footer for non JS version
+    echo $OUTPUT->header();
+    $out = html_writer::tag('p', html_writer::link($returnurl, get_string('cancelwithoutassigning', 'totara_hierarchy')));
 }
-?>
+$out .= html_writer::start_tag('div', array('class' => 'selectcompetencies'));
+$out .= html_writer::tag('p', get_string('chooseevidencetype','totara_hierarchy'));
+$out .= html_writer::tag('h3', $course->fullname);
+echo $out;
+comp_evitem_print_course_evitems( $course, $competency_id, "{$CFG->wwwroot}/totara/hierarchy/prefix/competency/course/save.php?competency={$competency_id}&course={$course->id}&{$nojsparams}" );
 
-<div class="selectcompetencies">
-
-<p>Choose an evidence type</p>
-
-<h3><?php echo $course->fullname ?></h3>
-
-<?php
-
-comp_evitem_print_course_evitems( $course, $competency_id, "{$CFG->wwwroot}/hierarchy/prefix/competency/course/save.php?competency={$competency_id}&course={$course->id}&{$nojsparams}" );
-
-if($nojs) {
-    // include footer for none JS version
-    print_footer();
+if ($nojs) {
+    // include footer for non JS version
+    echo $OUTPUT->footer();
 }

@@ -1,4 +1,26 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_hierarchy
+ */
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 
@@ -6,10 +28,9 @@ class competencytemplate_edit_form extends moodleform {
 
     // Define the form
     function definition() {
-        global $CFG;
+        global $CFG, $TEXTAREA_OPTIONS;
 
         $mform =& $this->_form;
-
         $strgeneral  = get_string('general');
 
         /// Add some extra hidden fields
@@ -22,21 +43,21 @@ class competencytemplate_edit_form extends moodleform {
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
-        $mform->setHelpButton('moodle', array('competencytemplategeneral', $strgeneral), true);
+        $mform->addHelpButton('moodle', 'competencytemplategeneral', 'totara_hierarchy');
 
-        $mform->addElement('text', 'fullname', get_string('fullnametemplate', 'competency'), 'maxlength="254" size="50"');
-        $mform->setHelpButton('fullname', array('competencytemplatefullname', get_string('fullnametemplate', 'competency')), true);
-        $mform->addRule('fullname', get_string('missingfullnametemplate', 'competency'), 'required', null, 'client');
+        $mform->addElement('text', 'fullname', get_string('fullnametemplate', 'totara_hierarchy'), 'maxlength="254" size="50"');
+        $mform->addHelpButton('fullname', 'competencytemplatefullname', 'totara_hierarchy');
+        $mform->addRule('fullname', get_string('missingfullnametemplate', 'totara_hierarchy'), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'shortname', get_string('shortnametemplate', 'competency'), 'maxlength="100" size="20"');
-        $mform->setHelpButton('shortname', array('competencytemplateshortname', get_string('shortnametemplate', 'competency')), true);
-        $mform->addRule('shortname', get_string('missingshortnametemplate', 'competency'), 'required', null, 'client');
+        $mform->addElement('text', 'shortname', get_string('shortnametemplate', 'totara_hierarchy'), 'maxlength="100" size="20"');
+        $mform->addHelpButton('shortname', 'competencytemplateshortname', 'totara_hierarchy');
+        $mform->addRule('shortname', get_string('missingshortnametemplate', 'totara_hierarchy'), 'required', null, 'client');
         $mform->setType('shortname', PARAM_MULTILANG);
 
-        $mform->addElement('htmleditor', 'description', get_string('description'));
-        $mform->setHelpButton('description', array('text', get_string('helptext')), true);
-        $mform->setType('description', PARAM_CLEAN);
+        $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
+        $mform->addHelpButton('description_editor', 'text', null);
+        $mform->setType('description_editor', PARAM_RAW);
 
         $this->add_action_buttons();
     }

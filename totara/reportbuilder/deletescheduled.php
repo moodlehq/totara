@@ -44,7 +44,7 @@ $reportname = get_field('report_builder', 'fullname', 'id', $report->reportid);
 print_header(' ', ' ', null);
 
 $returnurl = "{$CFG->wwwroot}/my/reports.php";
-$deleteurl = "{$CFG->wwwroot}/local/reportbuilder/deletescheduled.php?id={$report->id}&amp;confirm=1&amp;sesskey={$USER->sesskey}";
+$deleteurl = "{$CFG->wwwroot}/totara/reportbuilder/deletescheduled.php?id={$report->id}&amp;confirm=1&amp;sesskey={$USER->sesskey}";
 
 if (!$confirm) {
     $strdelete = get_string('deletecheckschedulereport', 'local_reportbuilder');
@@ -63,7 +63,7 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-add_to_log(SITEID, 'scheduledreport', 'delete', "local/reportbuilder/scheduled.php?id=$report->id", "$reportname (ID $report->id)");
+add_to_log(SITEID, 'scheduledreport', 'delete', "totara/reportbuilder/scheduled.php?id=$report->id", "$reportname (ID $report->id)");
 
 delete_records('report_builder_schedule', 'id', $report->id);
 
