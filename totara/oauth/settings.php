@@ -23,14 +23,14 @@
 
 
 /// Add oauth administration pages to the Moodle administration menu
-$ADMIN->add('authsettings', new admin_category('local_oauth', get_string('oauth', 'local_oauth')));
-$ADMIN->add('local_oauth', new admin_externalpage('oauthsettings', get_string('settings', 'local_oauth'),
+$ADMIN->add('root', new admin_category('totara_oauth', get_string('oauth', 'totara_oauth')));
+$ADMIN->add('totara_oauth', new admin_externalpage('oauthsettings', get_string('settings', 'totara_oauth'),
         $CFG->wwwroot."/totara/oauth/admin/settings.php",
         'moodle/site:config'));
-$ADMIN->add('local_oauth', new admin_externalpage('oauthregistrations', get_string('registrations', 'local_oauth'),
+$ADMIN->add('totara_oauth', new admin_externalpage('oauthregistrations', get_string('registrations', 'totara_oauth'),
         $CFG->wwwroot."/totara/oauth/admin/registrations.php",
         'moodle/site:config'));
-$ADMIN->add('local_oauth', new admin_externalpage('oauthfusiontables', get_string('fusiontables', 'local_oauth'),
+$ADMIN->add('totara_oauth', new admin_externalpage('oauthfusiontables', get_string('fusiontables', 'totara_oauth'),
         "http://tables.googlelabs.com",
         'moodle/site:config'));
 

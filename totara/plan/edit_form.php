@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * 
  * This program is free software; you can redistribute it and/or modify  
  * it under the terms of the GNU General Public License as published by  
@@ -31,11 +31,10 @@ if (!defined('MOODLE_INTERNAL')) {
 class plan_edit_form extends moodleform {
 
     function definition() {
-        global $CFG, $USER;
+        global $CFG, $USER, $TEXTAREA_OPTIONS;
 
         $mform =& $this->_form;
         $action = $this->_customdata['action'];
-
         if (isset($this->_customdata['plan'])) {
             $plan = $this->_customdata['plan'];
         }
@@ -57,7 +56,7 @@ class plan_edit_form extends moodleform {
 
         if ($action == 'delete') {
             // Only show delete confirmation
-            $mform->addElement('html', get_string('checkplandelete', 'local_plan', $plan->name));
+            $mform->addElement('html', get_string('checkplandelete', 'totara_plan', $plan->name));
             $buttonarray = array();
             $buttonarray[] = $mform->createElement('submit', 'deleteyes', get_string('yes'));
             $buttonarray[] = $mform->createElement('submit', 'deleteno', get_string('no'));
@@ -68,9 +67,9 @@ class plan_edit_form extends moodleform {
         }
         if ($action == 'complete') {
             // Only show complete plan confirmation
-            $mform->addElement('html', get_string('checkplancomplete11', 'local_plan', $plan->name));
+            $mform->addElement('html', get_string('checkplancomplete11', 'totara_plan', $plan->name));
             $buttonarray = array();
-            $buttonarray[] = $mform->createElement('submit', 'completeyes', get_string('completeplan', 'local_plan'));
+            $buttonarray[] = $mform->createElement('submit', 'completeyes', get_string('completeplan', 'totara_plan'));
             $buttonarray[] = $mform->createElement('submit', 'completeno', get_string('no'));
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
@@ -78,30 +77,30 @@ class plan_edit_form extends moodleform {
             return;
         }
 
-        $mform->addElement('date_selector', 'startdate', get_string('datecreated', 'local_plan'));
+        $mform->addElement('date_selector', 'startdate', get_string('datecreated', 'totara_plan'));
         $mform->freeze('startdate');
 
-        $mform->addElement('text', 'name', get_string('planname', 'local_plan'), array('size'=>50));
+        $mform->addElement('text', 'name', get_string('planname', 'totara_plan'), array('size' => 50));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->setDefault('name', $template->fullname);
-        $mform->addElement('htmleditor', 'description', get_string('plandescription', 'local_plan'));
-        $mform->setType('description', PARAM_CLEAN);
-        $mform->addElement('text', 'enddate', get_string('completiondate', 'local_plan'), array('placeholder'=>get_string('datepickerplaceholder', 'totara_core')));
+        $mform->addElement('editor', 'description_editor', get_string('plandescription', 'totara_plan'), null, $TEXTAREA_OPTIONS);
+        $mform->setType('description_editor', PARAM_RAW);
+        $mform->addElement('text', 'enddate', get_string('completiondate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
         $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->setDefault('enddate', userdate($template->enddate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false));
 
         if ($action == 'view') {
-            $mform->hardFreeze(array('name', 'description', 'enddate'));
+            $mform->hardFreeze(array('name', 'description_editor', 'enddate'));
             $buttonarray = array();
             if ($plan->get_setting('update') == DP_PERMISSION_ALLOW && $plan->status != DP_PLAN_STATUS_COMPLETE) {;
-                $buttonarray[] = $mform->createElement('submit', 'edit', get_string('editdetails', 'local_plan'));
+                $buttonarray[] = $mform->createElement('submit', 'edit', get_string('editdetails', 'totara_plan'));
             }
             if ($plan->get_setting('delete') == DP_PERMISSION_ALLOW) {
-                $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteplan', 'local_plan'));
+                $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteplan', 'totara_plan'));
             }
             if ($plan->get_setting('completereactivate') >= DP_PERMISSION_ALLOW && $plan->status == DP_PLAN_STATUS_APPROVED) {
-                $buttonarray[] = $mform->createElement('submit', 'complete', get_string('plancomplete', 'local_plan'));
+                $buttonarray[] = $mform->createElement('submit', 'complete', get_string('plancomplete', 'totara_plan'));
             }
 
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
@@ -117,7 +116,7 @@ class plan_edit_form extends moodleform {
             default:
                 $actionstr = null;
             }
-            $this->add_action_buttons(true, get_string($actionstr,'local_plan'));
+            $this->add_action_buttons(true, get_string($actionstr, 'totara_plan'));
         }
     }
 
@@ -132,12 +131,12 @@ class plan_edit_form extends moodleform {
 
             $datepattern = get_string('datepickerregexphp', 'totara_core');
             if (preg_match($datepattern, $enddate, $matches) == 0) {
-                $errstr = get_string('error:dateformat','local_plan', get_string('datepickerplaceholder', 'totara_core'));
+                $errstr = get_string('error:dateformat','totara_plan', get_string('datepickerplaceholder', 'totara_core'));
                 $result['enddate'] = $errstr;
                 unset($errstr);
             } elseif ( $startdate > totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddate) && $startdate !== false && $enddate !== false ) {
                 // Enforce start date before finish date
-                $errstr = get_string('error:creationaftercompletion','local_plan');
+                $errstr = get_string('error:creationaftercompletion', 'totara_plan');
                 $result['enddate'] = $errstr;
                 unset($errstr);
             }

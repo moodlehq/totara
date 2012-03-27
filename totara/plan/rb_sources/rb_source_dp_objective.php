@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas 
  * 
  * This program is free software; you can redistribute it and/or modify  
@@ -39,10 +39,8 @@ class rb_source_dp_objective extends rb_base_source {
 
     /**
      * Constructor
-     * @global object $CFG
      */
     public function __construct() {
-        global $CFG;
         $this->base = '{dp_plan_objective}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
@@ -69,8 +67,8 @@ class rb_source_dp_objective extends rb_base_source {
      * @return array
      */
     private function define_joinlist() {
-        $joinlist = array();
         global $CFG;
+        $joinlist = array();
 
         // to get access to position type constants
         require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_join.php');
@@ -144,7 +142,7 @@ class rb_source_dp_objective extends rb_base_source {
                     'defaultheading' => get_string('plan', 'rb_source_dp_objective'),
                     'joins' => 'dp',
                     'displayfunc' => 'planlink',
-                    'extrafields' => array( 'plan_id'=>'dp.id' )
+                    'extrafields' => array( 'plan_id' => 'dp.id' )
                 )
         );
         $columnoptions[] = new rb_column_option(
@@ -194,8 +192,8 @@ class rb_source_dp_objective extends rb_base_source {
                 get_string('templatestartdate', 'rb_source_dp_objective'),
                 'template.startdate',
                 array(
-                    'joins'=>'template',
-                    'displayfunc'=>'nice_date'
+                    'joins' => 'template',
+                    'displayfunc' => 'nice_date'
                 )
         );
         $columnoptions[] = new rb_column_option(
@@ -204,8 +202,8 @@ class rb_source_dp_objective extends rb_base_source {
                 get_string('templateenddate', 'rb_source_dp_objective'),
                 'template.enddate',
                 array(
-                    'joins'=>'template',
-                    'displayfunc'=>'nice_date'
+                    'joins' => 'template',
+                    'displayfunc' => 'nice_date'
                 )
         );
 
@@ -382,8 +380,9 @@ class rb_source_dp_objective extends rb_base_source {
 
     private function define_paramoptions() {
         global $CFG;
-        require_once($CFG->dirroot.'/totara/plan/lib.php');
+
         $paramoptions = array();
+        require_once($CFG->dirroot.'/totara/plan/lib.php');
 
         $paramoptions[] = new rb_param_option(
                 'userid',
@@ -407,10 +406,10 @@ class rb_source_dp_objective extends rb_base_source {
      * @param object $row Object containing other fields
      * @return string
      */
-    public function rb_display_objectivelink($objective, $row){
-        global $CFG;
+    public function rb_display_objectivelink($objective, $row) {
+        global $OUTPUT;
 
-        return "<a href=\"{$CFG->wwwroot}/totara/plan/components/objective/view.php?id={$row->plan_id}&amp;itemid={$row->objective_id}\">$objective</a>";
+        return $OUTPUT->action_link(new moodle_url('/totara/plan/components/objective/view.php', array('id' => $row->plan_id, 'itemid' => $row->objective_id)), $objective);
     }
 
     function rb_display_proficiency_and_approval($status, $row) {
@@ -423,9 +422,9 @@ class rb_source_dp_objective extends rb_base_source {
         $content = $status;
 
         // highlight if the item has not yet been approved
-        if($approved == DP_APPROVAL_UNAPPROVED ||
+        if ($approved == DP_APPROVAL_UNAPPROVED ||
             $approved == DP_APPROVAL_REQUESTED) {
-            $content .= '<br />' . $this->rb_display_plan_item_status($approved);
+            $content .= html_writer::empty_tag('br') . $this->rb_display_plan_item_status($approved);
         }
         return $content;
     }

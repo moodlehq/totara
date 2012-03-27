@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,9 +24,10 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
-require_once($CFG->dirroot.'/totara/dialogs/core/dialog_content_courses.class.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_courses.class.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
+$PAGE->set_context(get_system_context());
 require_login();
 
 ///
@@ -53,11 +54,12 @@ $component = $plan->get_component('course');
 
 // Access control check
 if (!$permission = $component->can_update_items()) {
-    print_error('error:cannotupdatecourses', 'local_plan');
+    print_error('error:cannotupdatecourses', 'totara_plan');
 }
 
 $selected = array();
 $unremovable = array();
+
 foreach ($component->get_assigned_items() as $item) {
     $item->id = $item->courseid;
     $selected[$item->courseid] = $item;

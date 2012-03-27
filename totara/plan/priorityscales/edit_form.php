@@ -2,8 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,29 +26,30 @@ require_once $CFG->libdir.'/formslib.php';
 
 class edit_priority_form extends moodleform {
     function definition() {
-        global $CFG;
+        global $OUTPUT, $TEXTAREA_OPTIONS;
         $mform =& $this->_form;
-
         // visible elements
-        $mform->addElement('header', 'general', get_string('priority', 'local_plan'));
+        $mform->addElement('header', 'general', get_string('priority', 'totara_plan'));
 
         $mform->addElement('text', 'name', get_string('name'), 'size="40"');
-        $mform->setHelpButton('name', array('priorityscalename', get_string('name'), 'local_plan'));
+        $mform->addHelpButton('name', 'priorityscalename', 'totara_plan');
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_TEXT);
 
         // If it's a new priority, give them the option to define priority values.
-        if ( $this->_customdata['priorityid'] == 0 ){
-            $mform->addElement('static', 'priorityvaluesexplain', '', get_string('explainpriorityscalevals', 'local_plan'));
-            $mform->addElement('textarea', 'priorityvalues', get_string('priorityvalues', 'local_plan'), 'rows="5" cols="30"');
+        if ($this->_customdata['priorityid'] == 0) {
+            $mform->addElement('static', 'priorityvaluesexplain', '', get_string('explainpriorityscalevals', 'totara_plan'));
+            $mform->addElement('textarea', 'priorityvalues', get_string('priorityvalues', 'totara_plan'), 'rows="5" cols="30"');
             $mform->addRule('priorityvalues', get_string('required'), 'required', null, 'server');
-            $mform->setHelpButton('priorityvalues', array('priorityscalevalues', get_string('priority', 'local_plan'), 'local_plan'));
+            $mform->addHelpButton('priorityvalues', 'priorityscalevalues', 'totara_plan');
             $mform->setType('priorityvalues', PARAM_TEXT);
         } else {
-            $mform->addElement('html', '<div class="fitem"><div class="fitemtitle">&nbsp;</div><div class="felement">'.get_string('linktopriorityvalues','local_plan',clean_param($this->_customdata['priorityid'], PARAM_INT))."</div></div>\n");
+            $mform->addELement('html', $OUTPUT->container(
+                $OUTPUT->container('&nbsp;', "fitemtitle") .
+                $OUTPUT->container(get_string('linktopriorityvalues', 'totara_plan', clean_param($this->_customdata['priorityid'], PARAM_INT)), "felement"),
+                "fitem") . html_writer::empty_tag('br'));
         }
-
-        $mform->addElement('htmleditor', 'description', get_string('description'));
+        $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
 
         // hidden params
         $mform->addElement('hidden', 'id', 0);
@@ -66,11 +66,11 @@ class edit_priority_form extends moodleform {
         $valuenew = (object) $valuenew;
 
         // make sure at least one priority scale value is defined
-        if(isset($valuenew->priorityvalues) && trim($valuenew->priorityvalues) == '') {
+        if (isset($valuenew->priorityvalues) && trim($valuenew->priorityvalues) == '') {
             $err['priorityvalues'] = get_string('required');
         }
 
-        if(count($err) > 0) {
+        if (count($err) > 0) {
             return $err;
         }
 

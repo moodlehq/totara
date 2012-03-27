@@ -26,12 +26,12 @@
  * Add dashboard administration menu settings
  */
 
-$ADMIN->add('modules', new admin_category('local_dashboard', get_string('dashboards','local_dashboard')));
+$ADMIN->add('modules', new admin_category('totara_dashboard', get_string('dashboards','totara_dashboard')));
 
 // add link to dashboard management
-$ADMIN->add('local_dashboard',
+$ADMIN->add('totara_dashboard',
     new admin_externalpage('managedashboards',
-        get_string('managedashboards','local_dashboard'),
+        get_string('managedashboards','totara_dashboard'),
         "$CFG->wwwroot/totara/dashboard/admin/index.php",
         array('totara/dashboard:admin')
     )

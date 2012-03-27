@@ -451,7 +451,7 @@ class competency extends hierarchy {
                 break;
             case 'item/add':
                 $args = array('args'=>'{"userid":'.$USER->id.'}');
-
+                $PAGE->requires->strings_for_js(array('chooseposition', 'chooseorganisation','choosemanager'), 'totara_hierarchy');
                 // Include competency add and position user js modules
                 $jsmodule = array(
                         'name' => 'totara_positionuser',

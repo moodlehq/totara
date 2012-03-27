@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas 
  * 
  * This program is free software; you can redistribute it and/or modify  
@@ -20,7 +20,7 @@
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -43,14 +43,14 @@ class totara_course_rpl_form extends moodleform {
         $mform->addElement('hidden', 'id', $id);
         $mform->addElement('hidden', 'courseid', $course);
         $mform->addElement('hidden', 'userid', $user);
-        if($rplid){
+        if ($rplid) {
             $mform->addElement('hidden', 'rplid', $rplid);
         }
 
-        $mform->addElement('header', 'rpl_general', get_string('coursecompletion','local_plan'));
+        $mform->addElement('header', 'rpl_general', get_string('coursecompletion', 'totara_plan'));
 
-        $mform->addElement('text', 'rpl', get_string('rpl', 'local_plan'), array('maxsize'=>'255', 'size'=>'50'));
-        if($rpltext) {
+        $mform->addElement('text', 'rpl', get_string('rpl', 'totara_plan'), array('maxsize' => '255', 'size' => '50'));
+        if ($rpltext) {
             $mform->setDefault('rpl', $rpltext);
         }
 

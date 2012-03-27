@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,10 @@
  * @subpackage plan
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
+$PAGE->set_context(context_system::instance());
 require_login();
 
 ///
@@ -49,13 +50,13 @@ $component = $plan->get_component($componentname);
 
 // Basic access control checks
 if (!$component->can_update_items()) {
-    print_error('error:cannotupdateitems', 'local_plan');
+    print_error('error:cannotupdateitems', 'totara_plan');
 }
 
 // get array of competencies already assigned
-$assigned = $component->get_assigned_items();
 $assigned_ids = array();
-foreach($assigned as $item) {
+$assigned = $component->get_assigned_items();
+foreach ($assigned as $item) {
     $assigned_ids[] = $item->competencyid;
 }
 
@@ -74,34 +75,38 @@ if (count($evidence) == 0) {
 }
 
 // get names of competencies with linked courses
-$compnames = get_records_select_menu('comp', 'id IN (' . implode(',', $idlist) . ')', 'id', 'id,fullname');
+list($insql, $inparams) = $DB->get_in_or_equal($idlist);
+$compnames = $DB->get_records_select_menu('comp', "id $insql", $inparams, 'id', 'id,fullname');
 
 // display a form to allow the user to select required linked courses
-print '<h2>' . get_string('confirmlinkedcourses', 'local_plan') . '</h2>';
-print '<p>' . get_string('confirmlinkedcoursesdesc', 'local_plan') . '</p>';
-print '<form>';
-print '<input type="hidden" name="id" value="' . $id . '" />';
-print '<input type="hidden" name="update" value="' . implode(',', $idlist) . '" />';
+$form = $OUTPUT->heading(get_string('confirmlinkedcourses', 'totara_plan'));
+$form .= html_writer::tag('p', get_string('confirmlinkedcoursesdesc', 'totara_plan'));
+$form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id));
+$form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'update', 'value' => implode(',', $idlist)));
 
 foreach ($evidence as $compid => $linkedcourses) {
-    print get_string('competency', 'competency') . ' '. format_string($compnames[$compid]) . ':<br />';
-
+    $form .= get_string('competency', 'totara_hierarchy') . ' '. format_string($compnames[$compid]) . ':' . html_writer::empty_tag('br');
+    $comp_linked = array();
+    $comp_mandatory=array();
     foreach ($linkedcourses as $linkedcourse) {
+        $message = '';
         if ($plan->get_component('course')->is_item_assigned($linkedcourse->courseid)) {
-            $message = ' ('.get_string('alreadyassignedtoplan', 'local_plan').')';
-        } else {
-            $message = '';
+            $message = ' ('.get_string('alreadyassignedtoplan', 'totara_plan').')';
         }
 
         if ($linkedcourse->linktype == PLAN_LINKTYPE_MANDATORY) {
-            print '<input type="checkbox" checked="checked" disabled="disabled" value="1"> ';
-            print '<input type="hidden" name="linkedcourses['.$compid.']['.$linkedcourse->courseid.']" value="1" />';
-            print '<input type="hidden" name="mandatory['.$compid.']['.$linkedcourse->courseid.']" value="1" />';
-            print format_string($linkedcourse->fullname) . $message .'<br />';
+            $form .= html_writer::checkbox(null, '1', true, '', array('disabled' => "disabled"));
+            $comp_linked[] = $linkedcourse->courseid;
+            $comp_mandatory[] = $linkedcourse->courseid;
+            $form .= format_string($linkedcourse->fullname) . $message .html_writer::empty_tag('br');
         } else {
-            print '<input type="checkbox" checked="checked" name="linkedcourses[' . $compid . '][' . $linkedcourse->courseid . ']" value="1"> ';
-            print format_string($linkedcourse->fullname) . $message . '<br />';
+            $comp_linked[] = $linkedcourse->courseid;
+            $form .= html_writer::checkbox("linkedcourses[{$compid}]", $linkedcourse->courseid, true);
+            $form .= format_string($linkedcourse->fullname) . $message . html_writer::empty_tag('br');
         }
+        $form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "linkedcourses[{$compid}]", 'value' => implode(',', $comp_linked)));
+        $form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "mandatory[{$compid}]", 'value' => implode(',', $comp_mandatory)));
     }
+
 }
-print '</form>';
+print html_writer::tag('form', $form);

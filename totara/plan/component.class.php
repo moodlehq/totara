@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,12 +76,12 @@ abstract class dp_base_component {
             'component',
             'permissions',
         );
-        foreach($properties as $property) {
+        foreach ($properties as $property) {
             if (!property_exists($this, $property) && !property_exists(get_class($this), $property)) {
-                $string_properties = new object();
+                $string_properties = new stdClass();
                 $string_properties->property = $property;
                 $string_properties->class = get_class($this);
-                throw new Exception(get_string('error:propertymustbeset', 'local_plan', $string_properties));
+                throw new Exception(get_string('error:propertymustbeset', 'totara_plan', $string_properties));
             }
         }
     }
@@ -170,7 +170,7 @@ abstract class dp_base_component {
         $can['setpriority'] = $this->get_setting('prioritymode') && $this->get_setting('setpriority') >= DP_PERMISSION_ALLOW;
         $can['approve'.$this->component] = $this->get_setting('update'.$this->component) == DP_PERMISSION_APPROVE;
 
-        if(method_exists($this, 'can_update_settings_extra')) {
+        if (method_exists($this, 'can_update_settings_extra')) {
             $can = $this->can_update_settings_extra($can);
         }
 
@@ -222,33 +222,29 @@ abstract class dp_base_component {
      * @return  integer
      */
     public function count_assigned_items($approved = null) {
-        global $CFG;
+        global $CFG, $DB;
 
         // Generate where clause
-        $where = "a.planid = {$this->plan->id}";
+        $where = "a.planid = ?";
+        $params = array($this->plan->id);
         if ($approved !== null) {
-            if (is_array($approved)) {
-                $approved = implode(', ', $approved);
-            }
-            $where .= " AND a.approved IN ({$approved})";
+            list($approved_sql, $approved_params) = $DB->get_in_or_equal($approved);
+            $where .= " AND a.approved $approved_sql";
+            $params = array_merge($params, $approved_params);
         }
 
         $tablename = $this->get_component_table_name();
 
-        $count = count_records_sql(
+        $count = $DB->count_records_sql(
             "
             SELECT
                 COUNT(a.id)
             FROM
-                {$CFG->prefix}{$tablename} a
+                {{$tablename}} a
             WHERE
                 $where
-            "
+            ", $params
         );
-
-        if (!$count) {
-            $count = 0;
-        }
 
         return $count;
     }
@@ -312,8 +308,8 @@ abstract class dp_base_component {
      * @return  string
      */
     public function get_url() {
-        global $CFG;
-        return "{$CFG->wwwroot}/totara/plan/component.php?id={$this->plan->id}&amp;c={$this->component}";
+
+        return new moodle_url('/totara/plan/component.php', array('id' => $this->plan->id, 'c' => $this->component));
     }
 
 
@@ -327,24 +323,23 @@ abstract class dp_base_component {
      * @return  string
      */
     public function display_list($restrict = null) {
-        global $CFG;
-
         // If no items, return message instead of table
         if (!$count = $this->count_assigned_items($restrict)) {
-            $plural = strtolower(get_string($this->component.'plural', 'local_plan'));
-            return '<span class="noitems-assign'.$this->component.'">'.get_string('nox', 'local_plan', $plural).'</span>';
+            $plural = strtolower(get_string($this->component.'plural', 'totara_plan'));
+            return html_writer::tag('span', get_string('nox', 'totara_plan', $plural), array('class' => 'noitems-assign'.$this->component));
         }
 
         // Get table headers/columns
         $headers = $this->get_list_headers();
-
+        // Return instead of outputting table contents
+        ob_start();
         // Generate table
         $table = new flexible_table($this->component.'list');
         $table->define_columns($headers->columns);
         $table->define_headers($headers->headers);
         $table->define_baseurl($this->get_url());
 
-        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
+        $table->set_attribute('class', 'dp-plan-component-items');
         $table->sortable(true, 'name');
         $table->no_sorting('status');
         $table->no_sorting('actions');
@@ -364,14 +359,12 @@ abstract class dp_base_component {
             $table->add_data($row);
         }
 
-        // Hide empty columns
-        if (!empty($headers->hide_if_empty)) {
+        // Hide empty columns TODO SCANMSG Readd once functionality is readded
+        /*if (!empty($headers->hide_if_empty)) {
             $table->hide_empty_cols($headers->hide_if_empty);
-        }
+        }*/
 
-        // Return instead of outputting table contents
-        ob_start();
-        $table->print_html();
+        $table->finish_html();
         $out = ob_get_contents();
         ob_end_clean();
 
@@ -396,8 +389,8 @@ abstract class dp_base_component {
 
         // Generate table headers
         $tableheaders = array(
-            get_string($this->component.'name', 'local_plan'),
-            get_string('status', 'local_plan'),
+            get_string($this->component.'name', 'totara_plan'),
+            get_string('status', 'totara_plan'),
         );
 
         $tablecolumns = array(
@@ -407,21 +400,21 @@ abstract class dp_base_component {
 
         $tablehide = array();
 
-        if(($this->component == 'competency' || $this->component == 'objective')
+        if (($this->component == 'competency' || $this->component == 'objective')
             && $this->plan->get_component('course')->get_setting('enabled')) {
-            $tableheaders[] = get_string('numberoflinkedcourses','local_plan');
+            $tableheaders[] = get_string('numberoflinkedcourses', 'totara_plan');
             $tablecolumns[] = 'linkedcourses';
             $tablehide[] = 'linkedcourses';
         }
 
         if ($showpriorities) {
-            $tableheaders[] = get_string('priority', 'local_plan');
+            $tableheaders[] = get_string('priority', 'totara_plan');
             $tablecolumns[] = 'priority';
             $tablehide[] = 'priority';
         }
 
         if ($showduedates) {
-            $tableheaders[] = get_string('duedate', 'local_plan');
+            $tableheaders[] = get_string('duedate', 'totara_plan');
             $tablecolumns[] = 'duedate';
             $tablehide[] = 'duedate';
         }
@@ -437,11 +430,11 @@ abstract class dp_base_component {
         $tablecolumns[] = 'comments';
         $tablehide[] = 'comments';
 
-        $tableheaders[] = get_string('actions', 'local_plan');
+        $tableheaders[] = get_string('actions', 'totara_plan');
         $tablecolumns[] = 'actions';
         $tablehide[] = 'actions';
 
-        $return = new object();
+        $return = new stdClass();
         $return->headers = $tableheaders;
         $return->columns = $tablecolumns;
         $return->hide_if_empty = $tablehide;
@@ -479,17 +472,15 @@ abstract class dp_base_component {
      * to approval confirmation
      */
     public function display_approval_list($pendingitems) {
-        $table = new object();
-        $table->class = 'generaltable learning-plan-pending-approval-table';
-        $table->data = array();
-        foreach($pendingitems as $item) {
+        $table = new html_table();
+        foreach ($pendingitems as $item) {
             $row = array();
             // @todo write abstracted display_item_name() and use here
             $row[] = format_string($item->fullname);
             $row[] = $this->display_approval_options($item, $item->approved);
             $table->data[] = $row;
         }
-        return print_table($table, true);
+        return html_writer::table($table, true);
     }
 
 
@@ -508,7 +499,7 @@ abstract class dp_base_component {
      * @return array Array of IDs of all linked items, or false
      */
     function get_linked_components($id, $componentrequired) {
-        global $CFG;
+        global $DB;
         // name of the current component
         $thiscomponent = $this->component;
 
@@ -538,15 +529,16 @@ abstract class dp_base_component {
                 id,
                 $searchedid AS itemid
             FROM
-                {$CFG->prefix}dp_plan_component_relation
+                {dp_plan_component_relation}
             WHERE
-                $matchedcomp = '$thiscomponent'
-            AND $matchedid = $id
-            AND $searchedcomp = '$componentrequired'
+                $matchedcomp = ?
+            AND $matchedid = ?
+            AND $searchedcomp = ?
         ";
+        $params = array($thiscomponent, $id, $componentrequired);
 
         // return an array of IDs
-        if ($result = get_records_sql($sql)) {
+        if ($result = $DB->get_records_sql($sql, $params)) {
             $out = array();
             foreach ($result as $item) {
                 $out[] = $item->itemid;
@@ -573,7 +565,7 @@ abstract class dp_base_component {
      * @return void
      */
     function update_linked_components($thiscomponentid, $componentupdatetype, $componentids) {
-        global $CFG;
+        global $DB;
         // name of the current component
         $thiscomponent = $this->component;
 
@@ -601,21 +593,20 @@ abstract class dp_base_component {
 
         // find all matching relations in db
         $sql = "SELECT id, $searchedid AS itemid
-            FROM {$CFG->prefix}dp_plan_component_relation
-            WHERE $matchedcomp = '$thiscomponent' AND
-                $matchedid = $thiscomponentid AND
-                $searchedcomp = '$componentupdatetype'";
-        if($result = get_records_sql($sql)) {
-            $dbcomponentids = array();
-            foreach($result as $item) {
-                $position = array_search($item->itemid, $componentids);
-                if ($position === false) {
-                    //Item in db isn't in the array of items to keep - delete from db:
-                    delete_records('dp_plan_component_relation', 'id', $item->id);
-                } else {
-                    //Item in array of items to keep is already in db - delete from keep array
-                    unset($componentids[$position]);
-                }
+            FROM {dp_plan_component_relation}
+            WHERE $matchedcomp = ? AND
+                $matchedid = ? AND
+                $searchedcomp = ?";
+        $params = array($thiscomponent, $thiscomponentid, $componentupdatetype);
+        $result = $DB->get_records_sql($sql, $params);
+        foreach ($result as $item) {
+            $position = array_search($item->itemid, $componentids);
+            if ($position === false) {
+                //Item in db isn't in the array of items to keep - delete from db:
+                $DB->delete_records('dp_plan_component_relation', array('id' => $item->id));
+            } else {
+                //Item in array of items to keep is already in db - delete from keep array
+                unset($componentids[$position]);
             }
         }
         if (!empty($componentids)) {
@@ -625,7 +616,7 @@ abstract class dp_base_component {
             foreach ($componentids as $linkedcomponentid) {
                 $relation->itemid1 = $thiscomponentfirst ? $thiscomponentid : $linkedcomponentid;
                 $relation->itemid2 = $thiscomponentfirst ? $linkedcomponentid : $thiscomponentid;
-                insert_record('dp_plan_component_relation', $relation);
+                $DB->insert_record('dp_plan_component_relation', $relation);
             }
         }
     }
@@ -640,7 +631,7 @@ abstract class dp_base_component {
      * @return array Array of matches
      */
     function get_all_linked_components($componentrequired) {
-        global $CFG;
+        global $DB;
         // name of the current component
         $thiscomponent = $this->component;
 
@@ -667,18 +658,14 @@ abstract class dp_base_component {
         // @todo doesn't current exclude unapproved items
         $sql = "SELECT $matchedid AS id,
                 COUNT($searchedid) AS items
-            FROM {$CFG->prefix}dp_plan_component_relation
-            WHERE $matchedcomp = '$thiscomponent' AND
-                  $searchedcomp = '$componentrequired'
+            FROM {dp_plan_component_relation}
+            WHERE $matchedcomp = ? AND
+                  $searchedcomp = ?
             GROUP BY $matchedid";
+        $params = array($thiscomponent, $componentrequired);
 
-        $results = get_records_sql($sql);
-        $return = array();
-        foreach($results as $result) {
-            $return[$results->id] = $results->items;
-        }
+        return $DB->get_records_sql_menu($sql, $params);
 
-        return $return;
     }
 
 
@@ -690,31 +677,25 @@ abstract class dp_base_component {
      * @return  bool
      */
     protected function is_mandatory_relation($itemid) {
-        global $CFG;
+        global $CFG, $DB;
 
         // Count mandatory records
         $sql = "
             SELECT
                 *
             FROM
-                {$CFG->prefix}dp_plan_component_relation
+                {dp_plan_component_relation}
             WHERE
-                mandatory = '{$this->component}'
+                mandatory = ?
             AND
             (
-                (
-                    component1 = '{$this->component}'
-                AND itemid1 = $itemid
-                )
-                OR
-                (
-                    component2 = '{$this->component}'
-                AND itemid2 = $itemid
-                )
+                (component1 = ? AND itemid1 = ?) OR
+                (component2 = ? AND itemid2 = ?)
             )
         ";
+        $params = array($this->component, $this->component, $itemid, $this->component, $itemid);
 
-        return record_exists_sql($sql);
+        return $DB->record_exists_sql($sql, $params);
     }
 
 
@@ -726,7 +707,7 @@ abstract class dp_base_component {
      * @return  void
      */
     public function update_assigned_items($items) {
-        global $USER;
+        global $USER, $DB;
         $item_id_name = $this->component . 'id';
 
         // Get currently assigned items
@@ -739,48 +720,39 @@ abstract class dp_base_component {
             && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
         $updates = '';
 
-        begin_sql();
+        $transaction = $DB->start_delegated_transaction();
 
         if ($items) {
             foreach ($items as $itemid) {
-
                 // Validate id
                 if (!is_numeric($itemid)) {
-                    error(get_string('baddata','local_plan'));
+                    throw new Exception(get_string('baddata', 'totara_plan'));
                 }
-
                 // Check if not already assigned
                 if (!isset($assigned_ids[$itemid])) {
                     $result = $this->assign_new_item($itemid);
                     if (!$result) {
-                        rollback_sql();
-                        print_error('error:couldnotassignnewitem', 'local_plan');
+                        print_error('error:couldnotassignnewitem', 'totara_plan');
                     }
-
-                    $updates .= get_string('addedx', 'local_plan', $result->fullname).'<br>';
+                    $updates .= get_string('addedx', 'totara_plan', $result->fullname).html_writer::empty_tag('br');
                 }
-
                 // Remove from list to prevent deletion
                 unset($assigned_ids[$itemid]);
             }
         }
-
         // Remaining items to be deleted
         foreach ($assigned as $item) {
-            if(!isset($assigned_ids[$item->$item_id_name])) {
+            if (!isset($assigned_ids[$item->$item_id_name])) {
                 continue;
             }
-
             // Check the user has permission on each item individually
             if (!$this->can_delete_item($item)) {
                 continue;
             }
-
             $this->unassign_item($item);
-            $updates .= get_string('removedx', 'local_plan', $assigned[$item->id]->fullname).'<br>';
+            $updates .= get_string('removedx', 'totara_plan', $assigned[$item->id]->fullname).html_writer::empty_tag('br');
         }
-
-        commit_sql();
+        $transaction->allow_commit();
 
         if ($sendalert) {
             $this->send_component_update_alert($updates);
@@ -795,19 +767,22 @@ abstract class dp_base_component {
      * @return void
      */
     function send_component_update_alert($update_info='') {
-        global $USER, $CFG;
-        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
+
+        global $USER, $CFG, $DB, $OUTPUT;
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
 
         $event = new stdClass;
-        $userfrom = get_record('user', 'id', $USER->id);
+        $userfrom = $DB->get_record('user', array('id' => $USER->id));
         $event->userfrom = $userfrom;
         $event->contexturl = $this->get_url();
         $event->icon = $this->component.'-update';
         $a = new stdClass;
-        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-        $a->component = get_string($this->component.'plural', 'local_plan');
+        $a->plan = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
+            $this->plan->name, null, array('title' => $this->plan->name));
+        $a->component = get_string($this->component.'plural', 'totara_plan');
         $a->updates = $update_info;
 
+        $stringmanager = get_string_manager();
         // did they edit it themselves?
         if ($USER->id == $this->plan->userid) {
             // notify their manager
@@ -815,17 +790,17 @@ abstract class dp_base_component {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
                     $a->user = $this->current_user_link();
-                    $event->subject = get_string('componentupdateshortmanager', 'local_plan', $a, $manager->lang);
-                    $event->fullmessage = get_string('componentupdatelongmanager', 'local_plan', $a, $manager->lang);
+                    $event->subject = $stringmanager->get_string('componentupdateshortmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessage = $stringmanager->get_string('componentupdatelongmanager', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
         } else {
             // notify user that someone else did it
-            $userto = get_record('user', 'id', $this->plan->userid);
+            $userto = $DB->get_record('user', array('id' => $this->plan->userid));
             $event->userto = $userto;
-            $event->subject = get_string('componentupdateshortlearner', 'local_plan', $a->component, $userto->lang);
-            $event->fullmessage = get_string('componentupdatelonglearner', 'local_plan', $a, $userto->lang);
+            $event->subject = $stringmanager->get_string('componentupdateshortlearner', 'totara_plan', $a->component, $userto->lang);
+            $event->fullmessage = $stringmanager->get_string('componentupdatelonglearner', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -838,43 +813,46 @@ abstract class dp_base_component {
      * @return void
      */
     function send_component_approval_alert($approval) {
-        global $USER, $CFG;
-        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
-        if($approval->after == DP_APPROVAL_DECLINED) {
+        global $USER, $CFG, $DB, $OUTPUT;
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
+        if ($approval->after == DP_APPROVAL_DECLINED) {
             $type = 'decline';
-        } else if($approval->after == DP_APPROVAL_APPROVED) {
+        } else if ($approval->after == DP_APPROVAL_APPROVED) {
             $type = 'approve';
         }
 
         $event = new stdClass;
-        $userfrom = get_record('user', 'id', $USER->id);
-        $event->userfrom = $userfrom;
+        $event->userfrom = $USER;
         $event->contexturl = $this->get_url();
         $event->icon = $this->component.'-'.$type;
         $a = new stdClass;
-        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-        $a->component = get_string($this->component.'plural', 'local_plan');
+
+        $a->plan = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
+            $this->plan->name, null, array('title' => $this->plan->name));
+        $a->component = get_string($this->component.'plural', 'totara_plan');
+
         $a->updates = $approval->text;
         $a->name = $approval->itemname;
 
         // did they edit it themselves?
+        $stringmanager = get_string_manager();
         if ($USER->id == $this->plan->userid) {
             // notify their manager
             if ($this->plan->is_active()) {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
                     $a->user = $this->current_user_link();
-                    $event->subject = get_string('component'.$type.'shortmanager', 'local_plan', $a, $manager->lang);
-                    $event->fullmessage = get_string('component'.$type.'longmanager', 'local_plan', $a, $manager->lang);
+                    $event->subject = $stringmanager->get_string('component'.$type.'shortmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessage = $stringmanager->get_string('component'.$type.'longmanager', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
         } else {
             // notify user that someone else did it
-            $userto = get_record('user', 'id', $this->plan->userid);
+            $userto = $DB->get_record('user', array('id' => $this->plan->userid));
             $event->userto = $userto;
-            $event->subject = get_string('component'.$type.'shortlearner', 'local_plan', $a, $userto->lang);
-            $event->fullmessage = get_string('component'.$type.'longlearner', 'local_plan', $a, $userto->lang);
+            $event->subject = $stringmanager->get_string('component'.$type.'shortlearner', 'totara_plan', $a, $userto->lang);
+            $event->fullmessage = $stringmanager->get_string('component'.$type.'longlearner', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -887,38 +865,41 @@ abstract class dp_base_component {
      * @return void
      */
     function send_component_complete_alert($completion) {
-        global $USER, $CFG;
-        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
+        global $USER, $CFG, $DB, $OUTPUT;
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
 
         $event = new stdClass;
-        $userfrom = get_record('user', 'id', $USER->id);
-        $event->userfrom = $userfrom;
+        $event->userfrom = $USER;
         $event->contexturl = $this->get_url();
         $event->icon = $this->component.'-complete';
         $a = new stdClass;
-        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-        $a->component = get_string($this->component.'plural', 'local_plan');
+
+        $a->plan = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
+            $this->plan->name, null, array('title' => $this->plan->name));
+        $a->component = get_string($this->component.'plural', 'totara_plan');
+
         $a->updates = $completion->text;
         $a->name = $completion->itemname;
 
         // did they edit it themselves?
+        $stringmanager = get_string_manager();
         if ($USER->id == $this->plan->userid) {
             // notify their manager
             if ($this->plan->is_active()) {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
                     $a->user = $this->current_user_link();
-                    $event->subject = get_string('componentcompleteshortmanager', 'local_plan', $a, $manager->lang);
-                    $event->fullmessage = get_string('componentcompletelongmanager', 'local_plan', $a, $manager->lang);
+                    $event->subject = $stringmanager->get_string('componentcompleteshortmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessage = $stringmanager->get_string('componentcompletelongmanager', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
         } else {
             // notify user that someone else did it
-            $userto = get_record('user', 'id', $this->plan->userid);
+            $userto = $DB->get_record('user', array('id' => $this->plan->userid));
             $event->userto = $userto;
-            $event->subject = get_string('componentcompleteshortlearner', 'local_plan', $a, $userto->lang);
-            $event->fullmessage = get_string('componentcompletelonglearner', 'local_plan', $a, $userto->lang);
+            $event->subject = $stringmanager->get_string('componentcompleteshortlearner', 'totara_plan', $a, $userto->lang);
+            $event->fullmessage = $stringmanager->get_string('componentcompletelonglearner', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -930,25 +911,20 @@ abstract class dp_base_component {
      * @return  boolean
      */
     public function unassign_item($item) {
+        global $DB;
 
         // Get approval value for new item
         if (!$permission = $this->can_update_items()) {
-            print_error('error:cannotupdateitems', 'local_plan');
+            print_error('error:cannotupdateitems', 'totara_plan');
         }
 
         // If allowed, or assignment not yet approved, remove assignment
         if ($permission >= DP_PERMISSION_ALLOW || $item->approved <= DP_APPROVAL_UNAPPROVED) {
-            $result = delete_records(
-                'dp_plan_'.$this->component.'_assign',
-                'id', $item->id,
-                'planid', $this->plan->id
-            );
+            $DB->delete_records('dp_plan_'.$this->component.'_assign', array('id' => $item->id, 'planid' => $this->plan->id));
             // Delete mappings
-            if ($result) {
-                $result = delete_records('dp_plan_component_relation', 'component1', $this->component, 'itemid1', $item->id);
-                $result = $result && delete_records('dp_plan_component_relation', 'component2', $this->component, 'itemid2', $item->id);
-            }
-            return $result;
+            $DB->delete_records('dp_plan_component_relation', array('component1' => $this->component, 'itemid1' => $item->id));
+            $DB->delete_records('dp_plan_component_relation', array('component2' => $this->component, 'itemid2' => $item->id));
+            return true;
         }
 
         return false;
@@ -962,6 +938,8 @@ abstract class dp_base_component {
      * @return  int
      */
     public function get_default_priority() {
+        global $DB;
+
         if (!$comp = $this->plan->get_component($this->component)) {
             return null;
         }
@@ -970,7 +948,7 @@ abstract class dp_base_component {
             return null;
         }
 
-        $scale = get_record('dp_priority_scale', 'id', $comp->get_setting('priorityscale'));
+        $scale = $DB->get_record('dp_priority_scale', array('id' => $comp->get_setting('priorityscale')));
 
         return $scale ? $scale->defaultid : null;
     }
@@ -984,23 +962,21 @@ abstract class dp_base_component {
      * @return  array
      */
     public function make_items_requested($items) {
+        global $DB;
 
         $table = $this->get_component_table_name();
 
         $updated = array();
         foreach ($items as $item) {
             // Attempt to load item
-            $record = get_record($table, 'id', $item->id);
+            $record = $DB->get_record($table, array('id' => $item->id));
             if (!$record) {
                 continue;
             }
 
             // Attempt to update record
             $record->approved = DP_APPROVAL_REQUESTED;
-            $record = addslashes_recursive($record);
-            if (!update_record($table, $record)) {
-                continue;
-            }
+            $DB->update_record($table, $record);
 
             // Save in updated list
             $updated[] = $item;
@@ -1062,7 +1038,7 @@ abstract class dp_base_component {
         $complete = true;
         $items = $this->get_assigned_items();
 
-        foreach($items as $i) {
+        foreach ($items as $i) {
             $complete = $complete && $this->is_item_complete($i);
         }
 
@@ -1080,10 +1056,12 @@ abstract class dp_base_component {
      * @return boolean true if is assigned
      */
     public function is_item_assigned($itemid) {
+        global $DB;
+
         $component = $this->component;
         $table = "dp_plan_{$component}_assign";
         $itemname = "{$component}id";
-        return record_exists($table, 'planid', $this->plan->id, $itemname, $itemid);
+        return $DB->record_exists($table, array('planid' => $this->plan->id, $itemname => $itemid));
     }
 
 
@@ -1132,15 +1110,12 @@ abstract class dp_base_component {
      * @return  array
      */
     public function get_priority_values() {
+        global $DB;
+
         static $values;
         if (!isset($values[$this->component])) {
             $priorityscaleid = $this->get_setting('priorityscale') ? $this->get_setting('priorityscale') : -1;
-            $v = get_records('dp_priority_scale_value', 'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
-
-            if (!$v) {
-                $v = array();
-            }
-
+            $v = $DB->get_records('dp_priority_scale_value', array('priorityscaleid' => $priorityscaleid), 'sortorder', 'id,name,sortorder');
             $values[$this->component] = $v;
         }
 
@@ -1197,27 +1172,30 @@ abstract class dp_base_component {
      * @return string html
      */
     protected function display_list_item_comments($item) {
-        global $CFG;
+        global $OUTPUT;
 
         $options = new stdClass;
         $options->area    = 'plan-'.$this->component.'-item';
-        $options->context = get_context_instance(CONTEXT_SYSTEM);
+        $options->context = context_system::instance();
         $options->itemid  = $item->id;
-        $options->component = 'local_plan';
+        $options->component = 'totara_plan';
 
-        $comment = new comment($options);
+
+        // TODO SCANMSG: Readd once Comments is ported
+        /*$comment = new comment($options);
 
         if ($count = $comment->count()) {
             $latestcomment = $comment->get_latest_comment();
-            $tooltip = get_string('latestcommentby', 'local_plan').' '.$latestcomment->firstname.' '.get_string('on', 'local_plan').' '.userdate($latestcomment->ctimecreated).': '.format_string(substr($latestcomment->ccontent, 0, 50));
+            $tooltip = get_string('latestcommentby', 'totara_plan').' '.$latestcomment->firstname.' '.get_string('on', 'totara_plan').' '.userdate($latestcomment->ctimecreated).': '.format_string(substr($latestcomment->ccontent, 0, 50));
             $tooltip = format_string(strip_tags($tooltip));
             $commentclass = 'comments-icon-some';
         } else {
-            $tooltip = get_string('nocomments', 'local_plan');
+            $tooltip = get_string('nocomments', 'totara_plan');
             $commentclass = 'comments-icon-none';
         }
-        return '<a href="'.$CFG->wwwroot.'/totara/plan/components/'.$this->component.'/view.php?id='.$this->plan->id.'&amp;itemid='.$item->id.'#comments"
-                class="' . $commentclass . '" title="'.$tooltip.'">'.$count.'</a>';
+        return $OUTPUT->action_link(new moodle_url("/totara/plan/components/{$this->component}/view.php", array('id' => $this->plan->id, 'itemid' => $item->id.'#comments')),
+            $count, null, array('class' => $commentclass, 'title' => $tooltip));*/
+        return '';
     }
 
 
@@ -1236,7 +1214,7 @@ abstract class dp_base_component {
 
         if ($approved && !$completed) {
             return $this->display_duedate_highlight_info($item->duedate);
-        } elseif (!$approved) {
+        } else if (!$approved) {
             return $this->display_approval($item, $canapproveitems);
         }
 
@@ -1251,8 +1229,9 @@ abstract class dp_base_component {
      * @return string
      */
     protected function display_list_item_linkedcourses($item) {
-            return '<div class="centertext">' .
-                $item->linkedcourses . '</div>';
+            global $OUTPUT;
+
+            return $OUTPUT->container($item->linkedcourses, 'centertext');
     }
 
     abstract protected function display_list_item_progress($item);
@@ -1276,6 +1255,7 @@ abstract class dp_base_component {
      * @return  string
      */
     public function display_picker() {
+        global $OUTPUT;
 
         if (!$permission = $this->can_update_items()) {
             return '';
@@ -1284,18 +1264,16 @@ abstract class dp_base_component {
         // Check for allow/approve permissions
         $canupdate = ($permission >= DP_PERMISSION_ALLOW ? 'true' : 'false');
 
-        $html  = '<div class="buttons plan-add-item-button-wrapper">';
-        $html .= '<div class="singlebutton dp-plan-assign-button">';
-        $html .= '<div>';
-        $html .= '<script type="text/javascript">';
-        $html .= "var plan_id = {$this->plan->id};";
-        $html .= "var comp_update_allowed = {$canupdate};";
-        $html .= '</script>';
-        $html .= '<input type="submit" class="plan-add-item-button" id="show-'.$this->component.'-dialog" value="'.get_string('add'.$this->component.'s', 'local_plan').'" />';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
-
+        // TODO SCANMSG sesskey no longer included as a hidden input - does this still function correctly?
+        $add_button_text = get_string('add'.$this->component.'s', 'totara_plan');
+        $html = html_writer::start_tag('div', array('class' => 'buttons plan-add-item-button-wrapper'));
+        $html .= html_writer::start_tag('div', array('class' => 'singlebutton dp-plan-assign-button'));
+        $js = html_writer::script('var plan_id = ' . $this->plan->id . '; var comp_update_allowed = ' . $canupdate . ';');
+        $html .= html_writer::start_tag('div') . $js;
+        $html .= $OUTPUT->single_submit($add_button_text, array('id' => 'show-'.$this->component.'-dialog', 'class' => 'plan-add-item-button'));
+        $html .= html_writer::end_tag('div');
+        $html .= html_writer::end_tag('div');
+        $html .= html_writer::end_tag('div');
         return $html;
     }
 
@@ -1316,7 +1294,7 @@ abstract class dp_base_component {
         $out = '';
 
         // only show a form if they have permission to change due dates
-        if($cansetduedate) {
+        if ($cansetduedate) {
             $class = in_array($itemid, $baddates) ? 'dp-plan-component-input-error' : '';
             $out .= $this->display_duedate_as_form($duedate, "duedate_{$this->component}[{$itemid}]", $class, $itemid);
         } else {
@@ -1339,7 +1317,9 @@ abstract class dp_base_component {
     function display_duedate_as_form($duedate, $name, $inputclass='', $itemid) {
         global $CFG;
         $duedatestr = !empty($duedate) ? userdate($duedate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) : '';
-        return '<input id="'.$name.'" type="text" name="'.$name.'" placeholder="' . get_string('datepickerplaceholder', 'totara_core') . '" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\" />";
+        return html_writer::empty_tag('input',
+            array('id' => $name, 'type' => "text", 'name' => $name, 'placeholder' => get_string('datepickerplaceholder', 'totara_core'),
+                'value' => $duedatestr, 'size' => "8", 'maxlength' => "20", 'class' => $inputclass));
     }
 
 
@@ -1369,13 +1349,13 @@ abstract class dp_base_component {
         $out = '';
         $now = time();
         if (!empty($duedate)) {
-            if(($duedate < $now) && ($now - $duedate < 60*60*24)) {
-                $out .= '<span class="plan_highlight">' . get_string('duetoday', 'local_plan') . '</span>';
-            } else if($duedate < $now) {
-                $out .= '<span class="plan_highlight">' . get_string('overdue', 'local_plan') . '</span>';
+            if (($duedate < $now) && ($now - $duedate < 60*60*24)) {
+                $out .= html_writer::tag('span', get_string('duetoday', 'totara_plan'), array('class' => 'plan_highlight'));
+            } else if ($duedate < $now) {
+                $out .= html_writer::tag('span', get_string('overdue', 'totara_plan'), array('class' => 'plan_highlight'));
             } else if ($duedate - $now < 60*60*24*7) {
                 $days = ceil(($duedate - $now)/(60*60*24));
-                $out .= '<span class="plan_highlight">' . get_string('dueinxdays', 'local_plan', $days) . '</span>';
+                $out .= html_writer::tag('span', get_string('dueinxdays', 'totara_plan', $days), array('class' => 'plan_highlight'));
             }
         }
         return $out;
@@ -1439,29 +1419,28 @@ abstract class dp_base_component {
         if (!$priorityvalues) {
             return '';
         }
-
         $options = array();
 
-        foreach($priorityvalues as $id => $val) {
+        foreach ($priorityvalues as $id => $val) {
             $options[$id] = $val->name;
 
-            if($id == $prioritydefaultid) {
+            if ($id == $prioritydefaultid) {
                 $defaultchooseval = $id;
                 $defaultchoose = $val->name;
             }
         }
 
         // only include 'none' option if priorities are optional
-        $choose = ($priorityrequired) ? null : get_string('none','local_plan');
+        $choose = ($priorityrequired) ? null : get_string('none', 'totara_plan');
         $chooseval = ($priorityrequired) ? null : 0;
 
-        if($priorityid) {
+        if ($priorityid) {
             $selected = $priorityid;
         } else {
             $selected = ($priorityrequired) ? $defaultchooseval : 0;
         }
 
-        return choose_from_menu($options, $name, $selected, $choose, '', $chooseval, true);
+        return html_writer::select($options, $name, $selected, array('choose' => $choose), array());
     }
 
     /**
@@ -1478,13 +1457,13 @@ abstract class dp_base_component {
         // priorityXofY
         // theme only defines styles up to DP_MAX_PRIORITY_OPTIONS so limit
         // the highest values set to this range
-        if ( $priorityid ){
+        if ($priorityid) {
             $class = 'priority' .
                 min($priorityvalues[$priorityid]->sortorder, DP_MAX_PRIORITY_OPTIONS) .
                 'of' .
                 min(count($priorityvalues), DP_MAX_PRIORITY_OPTIONS);
 
-            return '<span class="'.$class.'">'.$priorityname.'</span>';
+            return html_writer::tag('span', $priorityname, array('class' => $class));
         } else {
             return ' ';
         }
@@ -1497,11 +1476,13 @@ abstract class dp_base_component {
      * @return string
      */
     function display_back_to_index_link() {
-        global $CFG;
-        return '<p><a href="' . $CFG->wwwroot . '/totara/plan/component.php?id='.$this->plan->id.
-            '&c='.$this->component.'">'.
-            get_string('backtoallx','local_plan', get_string("{$this->component}plural", 'local_plan')).
-            '</a></p>';
+
+        global $OUTPUT;
+        $url = new moodle_url('/totara/plan/component.php', array('id' => $this->plan->id, 'c' => $this->component));
+        $link = $OUTPUT->action_link($url,
+            get_string('backtoallx', 'totara_plan', get_string("{$this->component}plural", 'totara_plan')));
+
+        return html_writer::tag('p', $link);
     }
 
     /**
@@ -1512,7 +1493,7 @@ abstract class dp_base_component {
      * @return $out string an html string
      */
     function display_approval($obj, $canapprove) {
-        global $CFG;
+        global $OUTPUT;
 
         // Get data
         $id = $obj->id;
@@ -1527,23 +1508,24 @@ abstract class dp_base_component {
 
         switch($approvalstatus) {
         case DP_APPROVAL_DECLINED:
-            $out .= '<span class="plan_highlight">' . get_string('declined', 'local_plan') . '</span>';
+            $out .= html_writer::tag('span', get_string('declined', 'totara_plan'), array('class' => 'plan_highlight'));
             break;
         case DP_APPROVAL_UNAPPROVED:
-            $out .= '<img src="'.$CFG->pixpath.'/i/learning_plan_alert.gif" /> ';
-            $out .= get_string('unapproved', 'local_plan');
+            $out .= $OUTPUT->pix_icon('/learning_plan_alert', get_string('unapproved', 'totara_plan'), 'totara_plan');
+            $out .= get_string('unapproved', 'totara_plan');
             if ($canapprove) {
                 $out .= ' '.$this->display_approval_options($obj, $approvalstatus);
             }
             break;
         case DP_APPROVAL_REQUESTED:
-            $out .= '<span class="plan_highlight">' . get_string('pendingapproval', 'local_plan') . '</span><br />';
+            $out .= html_writer::tag('span', get_string('pendingapproval', 'totara_plan'), array('class' => 'plan_highlight'));
+            $out .= html_writer::empty_tag('br');
             if ($canapprove) {
                 $out .= ' '.$this->display_approval_options($obj, $approvalstatus);
             }
             break;
         case DP_APPROVAL_APPROVED:
-            $out .= get_string('approved', 'local_plan');
+            $out .= get_string('approved', 'totara_plan');
         }
 
         return $out;
@@ -1560,27 +1542,20 @@ abstract class dp_base_component {
      * @return string The html for an approval picker
      */
     function display_approval_options($obj, $approvalstatus) {
+        global $OUTPUT;
         $name = "approve_{$this->component}[{$obj->id}]";
 
         $options = array(
-            DP_APPROVAL_APPROVED => get_string('approve', 'local_plan'),
-            DP_APPROVAL_DECLINED => get_string('decline', 'local_plan'),
+            DP_APPROVAL_APPROVED => get_string('approve', 'totara_plan'),
+            DP_APPROVAL_DECLINED => get_string('decline', 'totara_plan'),
         );
 
-        return choose_from_menu(
+        return html_writer::select(
             $options,
             $name,
             $approvalstatus,
-            'choose',
-            '',
-            0,
-            true,
-            false,
-            0,
-            '',
-            false,
-            false,
-            'approval'
+            array(0 => 'choose'),
+            array('class' => 'approval')
         );
     }
 
@@ -1589,11 +1564,11 @@ abstract class dp_base_component {
      * @return string user link
      */
     function current_user_link() {
-        global $USER, $CFG;
+        global $USER, $OUTPUT;
 
-        $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
+        $userfrom_link = new moodle_url('/user/view.php', array('id' => $USER->id));
         $fromname = fullname($USER);
-        return "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a>";
+        return $OUTPUT->action_link($userfrom_link, $fromname, null, array('title' => '$fromname'));
     }
 
     /**
@@ -1605,11 +1580,13 @@ abstract class dp_base_component {
      * @return array Array with assignment IDs as the key and item IDs as the value or false if there are none
      */
     function get_item_assignments() {
+        global $DB;
+
         $component = $this->component;
         $table = "dp_plan_{$component}_assign";
         $field = "{$component}id";
 
-        return get_records_menu($table, 'planid', $this->plan->id, 'id', "id,$field");
+        return $DB->get_records_menu($table, array('planid' => $this->plan->id), 'id', "id, $field");
     }
 
     /**

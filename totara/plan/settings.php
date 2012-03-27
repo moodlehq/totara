@@ -1,8 +1,8 @@
-<?php // $Id$
+<?php
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,33 +25,30 @@
 /**
  * Add learning plans administration menu settings
  */
+defined('MOODLE_INTERNAL') || die;
 
-$ADMIN->add('root',
-    new admin_category('local_plan',
-    get_string('learningplans','local_plan'))
-);
+    $ADMIN->add('totara_plan',
+        new admin_externalpage('managetemplates',
+            get_string('managetemplates', 'totara_plan'),
+            "$CFG->wwwroot/totara/plan/template/index.php",
+            array('totara/plan:configureplans')
+        )
+    );
 
-$ADMIN->add('local_plan',
-    new admin_externalpage('managetemplates',
-        get_string('managetemplates', 'local_plan'),
-        "$CFG->wwwroot/totara/plan/template/index.php",
-        array('totara/plan:configureplans')
-    )
-);
+    $ADMIN->add('totara_plan',
+        new admin_externalpage('priorityscales',
+            get_string('priorityscales', 'totara_plan'),
+            "$CFG->wwwroot/totara/plan/priorityscales/index.php",
+            array('totara/plan:configureplans')
+        )
+    );
 
-$ADMIN->add('local_plan',
-    new admin_externalpage('priorityscales',
-        get_string('priorityscales', 'local_plan'),
-        "$CFG->wwwroot/totara/plan/priorityscales/index.php",
-        array('totara/plan:configureplans')
-    )
-);
+    $ADMIN->add('totara_plan',
+        new admin_externalpage('objectivescales',
+            get_string('objectivescales', 'totara_plan'),
+            "$CFG->wwwroot/totara/plan/objectivescales/index.php",
+            array('totara/plan:configureplans')
+        )
+    );
 
-$ADMIN->add('local_plan',
-    new admin_externalpage('objectivescales',
-        get_string('objectivescales', 'local_plan'),
-        "$CFG->wwwroot/totara/plan/objectivescales/index.php",
-        array('totara/plan:configureplans')
-    )
-);
 ?>

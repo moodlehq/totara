@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * 
  * This program is free software; you can redistribute it and/or modify  
  * it under the terms of the GNU General Public License as published by  
@@ -100,24 +100,23 @@ abstract class dp_base_workflow {
             'perm_objective_setduedate_manager',
             'perm_objective_setproficiency_learner',
             'perm_objective_setproficiency_manager',
-            
         );
-        foreach($properties as $property) {
-            if(!property_exists($this, $property)) {
-                $msg = new object();
+        foreach ($properties as $property) {
+            if (!property_exists($this, $property)) {
+                $msg = new stdClass();
                 $msg->class = get_class($this);
                 $msg->property = $property;
-                throw new Exception(get_string('error:propertymustbeset', 'local_plan', $msg));
+                throw new Exception(get_string('error:propertymustbeset', 'totara_plan', $msg));
             }
         }
         // reserve the name 'custom' for use by the system
-        if($this->classname == 'custom') {
-            throw new Exception(get_string('error:cantcreatecustomworkflow', 'local_plan'));
+        if ($this->classname == 'custom') {
+            throw new Exception(get_string('error:cantcreatecustomworkflow', 'totara_plan'));
         }
 
         // get name and description lang string based on name
-        $this->name = get_string($this->classname . 'workflowname', 'local_plan');
-        $this->description = get_string($this->classname . 'workflowdesc', 'local_plan');
+        $this->name = get_string($this->classname . 'workflowname', 'totara_plan');
+        $this->description = get_string($this->classname . 'workflowdesc', 'totara_plan');
     }
 
 
@@ -130,34 +129,42 @@ abstract class dp_base_workflow {
      * @return array diff an array of changes
      */
     function list_differences($templateid) {
-        global $CFG;
-        $diff = array();
+        global $DB;
 
-        if(!$course_settings = get_record('dp_course_settings', 'templateid', $templateid)) {
-            error(get_string('error:missingcoursesettings', 'local_plan'));
+        if (!$course_settings = $DB->get_record('dp_course_settings', array('templateid' => $templateid))) {
+            print_error('error:missingcoursesettings', 'totara_plan');
         }
 
-        if(!$competency_settings = get_record('dp_competency_settings', 'templateid', $templateid)) {
-            error(get_string('error:missingcompetencysettings', 'local_plan'));
+        if (!$competency_settings = $DB->get_record('dp_competency_settings', array('templateid' => $templateid))) {
+            print_error('error:missingcompetencysettings', 'totara_plan');
         }
 
-        if(!$objective_settings = get_record('dp_objective_settings', 'templateid', $templateid)) {
-            error(get_string('error:missingobjectivesettings', 'local_plan'));
+        if (!$objective_settings = $DB->get_record('dp_objective_settings', array('templateid' => $templateid))) {
+            print_error('error:missingobjectivesettings', 'totara_plan');
         }
 
-        $template_in_use = count_records('dp_plan', 'templateid', $templateid) > 0;
+        if (!$program_settings = $DB->get_record('dp_program_settings', array('templateid' => $templateid))) {
+            print_error('error:missingprogramsettings', 'totara_plan');
+        }
+        $template_in_use = $DB->count_records('dp_plan', array('templateid' => $templateid)) > 0;
 
-        foreach(get_object_vars($this) as $property => $value) {
+        foreach (get_object_vars($this) as $property => $value) {
             $parts = explode('_', $property);
-            if($parts[0] == 'cfg') {
-                switch($parts[1]){
+            if ($parts[0] == 'cfg') {
+                switch($parts[1]) {
+                case 'program':
+                    $attribute = $parts[2];
+                    if ($value != $course_settings->$attribute) {
+                        $diff[$property] = array('before' => $course_settings->$attribute, 'after' => $value);
+                    }
+                    break;
                 case 'course':
                     $attribute = $parts[2];
-                    if($value != $course_settings->$attribute) {
-                        if($attribute == 'priorityscale') {
-                            $before = get_field('dp_priority_scale', 'name', 'id', $course_settings->$attribute);
-                            $after = get_field('dp_priority_scale', 'name', 'id', $value);
-                            if(!$template_in_use) {
+                    if ($value != $course_settings->$attribute) {
+                        if ($attribute == 'priorityscale') {
+                            $before = $DB->get_field('dp_priority_scale', 'name', array('id' => $course_settings->$attribute));
+                            $after = $DB->get_field('dp_priority_scale', 'name', array('id' => $value));
+                            if (!$template_in_use) {
                                 $diff[$property] = array('before' => $before, 'after' => $after);
                             }
                         } else {
@@ -167,11 +174,11 @@ abstract class dp_base_workflow {
                     break;
                 case 'competency':
                     $attribute = $parts[2];
-                    if($value != $competency_settings->$attribute) {
-                        if($attribute == 'priorityscale') {
-                            $before = get_field('dp_priority_scale', 'name', 'id', $competency_settings->$attribute);
-                            $after = get_field('dp_priority_scale', 'name', 'id', $value);
-                            if(!$template_in_use) {
+                    if ($value != $competency_settings->$attribute) {
+                        if ($attribute == 'priorityscale') {
+                            $before = $DB->get_field('dp_priority_scale', 'name', array('id' => $competency_settings->$attribute));
+                            $after = $DB->get_field('dp_priority_scale', 'name', array('id' => $value));
+                            if (!$template_in_use) {
                                 $diff[$property] = array('before' => $before, 'after' => $after);
                             }
                         } else {
@@ -181,17 +188,17 @@ abstract class dp_base_workflow {
                     break;
                 case 'objective':
                     $attribute = $parts[2];
-                    if($value != $objective_settings->$attribute) {
-                        if($attribute == 'priorityscale') {
-                            $before = get_field('dp_priority_scale', 'name', 'id', $competency_settings->$attribute);
-                            $after = get_field('dp_priority_scale', 'name', 'id', $value);
-                            if(!$template_in_use) {
+                    if ($value != $objective_settings->$attribute) {
+                        if ($attribute == 'priorityscale') {
+                            $before = $DB->get_field('dp_priority_scale', 'name', array('id' => $competency_settings->$attribute));
+                            $after = $DB->get_field('dp_priority_scale', 'name', array('id' => $value));
+                            if (!$template_in_use) {
                                 $diff[$property] = array('before' => $before, 'after' => $after);
                             }
                         } else if ($attribute == 'objectivescale') {
-                            $before = get_field('dp_objective_scale', 'name', 'id', $competency_settings->$attribute);
-                            $after = get_field('dp_objective_scale', 'name', 'id', $value);
-                            if(!$template_in_use) {
+                            $before = $DB->get_field('dp_objective_scale', 'name', array('id' => $competency_settings->$attribute));
+                            $after = $DB->get_field('dp_objective_scale', 'name', array('id' => $value));
+                            if (!$template_in_use) {
                                 $diff[$property] = array('before' => $before, 'after' => $after);
                             }
                         } else {
@@ -201,13 +208,11 @@ abstract class dp_base_workflow {
                     break;
                 }
 
-            } elseif ($parts[0] == 'perm') {
-                $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE templateid={$templateid} AND role='{$parts[3]}' AND component='{$parts[1]}' AND action='{$parts[2]}'";
-                if(!$dbval = get_field_sql($sql)) {
-                    echo(get_string('error:missingpermissionsetting', 'local_plan'));
-                }
+            } else if ($parts[0] == 'perm') {
+                $sql = "SELECT value FROM {dp_permissions} WHERE templateid = ? AND role = ? AND component = ? AND action = ?";
+                $dbval = $DB->get_field_sql($sql, array($templateid, $parts[3], $parts[1], $parts[2]));
 
-                if($value != $dbval){
+                if ($value != $dbval) {
                     $diff[$property] = array('before' => $dbval, 'after' => $value);
                 }
 
@@ -224,192 +229,131 @@ abstract class dp_base_workflow {
      * @return bool
      */
     function copy_to_db($templateid) {
-        global $CFG;
+        global $CFG, $DB;
 
         $returnurl = $CFG->wwwroot . '/totara/plan/template/workflow?id=' . $templateid;
 
-        if(!$templateid) {
-            error(get_string('error:templateid', 'local_plan'));
+        if (!$templateid) {
+            print_error('error:templateid', 'totara_plan');
         }
 
-        $plan_todb = new object();
-        if ($plan_settings = get_record('dp_plan_settings', 'templateid', $templateid)) {
+        $plan_todb = new stdClass();
+        if ($plan_settings = $DB->get_record('dp_plan_settings', array('templateid' => $templateid))) {
             $plan_todb->id = $plan_settings->id;
         }
-
-        $course_todb = new object();
-        if ($course_settings = get_record('dp_course_settings', 'templateid', $templateid)) {
+        $course_todb = new stdClass();
+        if ($course_settings = $DB->get_record('dp_course_settings', array('templateid' => $templateid))) {
             $course_todb->id = $course_settings->id;
         }
-
-        $competency_todb = new object();
-        if ($competency_settings = get_record('dp_competency_settings', 'templateid', $templateid)) {
+        $competency_todb = new stdClass();
+        if ($competency_settings = $DB->get_record('dp_competency_settings', array('templateid' => $templateid))) {
             $competency_todb->id = $competency_settings->id;
         }
-
-        $objective_todb = new object();
-        if ($objective_settings = get_record('dp_objective_settings', 'templateid', $templateid)) {
+        $objective_todb = new stdClass();
+        if ($objective_settings = $DB->get_record('dp_objective_settings', array('templateid' => $templateid))) {
             $objective_todb->id = $objective_settings->id;
         }
-
-        $program_todb = new object();
-        if ($program_settings = get_record('dp_program_settings', 'templateid', $templateid)) {
+        $program_todb = new stdClass();
+        if ($program_settings = $DB->get_record('dp_program_settings', array('templateid' => $templateid))) {
             $program_todb->id = $program_settings->id;
         }
+        $template_in_use = $DB->count_records('dp_plan', array('templateid' => $templateid)) > 0;
 
-        $template_in_use = count_records('dp_plan', 'templateid', $templateid) > 0;
+            $transaction = $DB->start_delegated_transaction();
 
-        begin_sql();
-        foreach(get_object_vars($this) as $property => $value) {
-            $parts = explode('_', $property);
-            if($parts[0] == 'cfg') {
-                switch($parts[1]){
-                case 'plan':
-                    $plan_todb->$parts[2] = $value;
-                    break;
-                case 'course':
-                    if($parts[2] == 'priorityscale'){
-                        if(!$template_in_use) {
+            foreach (get_object_vars($this) as $property => $value) {
+                $parts = explode('_', $property);
+                if ($parts[0] == 'cfg') {
+                    switch($parts[1]) {
+                    case 'plan':
+                        $plan_todb->$parts[2] = $value;
+                        break;
+                    case 'course':
+                        if ($parts[2] == 'priorityscale') {
+                            if (!$template_in_use) {
+                                $course_todb->$parts[2] = $value;
+                            }
+                        } else {
                             $course_todb->$parts[2] = $value;
                         }
-                    } else {
-                        $course_todb->$parts[2] = $value;
-                    }
-                    break;
-                case 'competency':
-                    if($parts[2] == 'priorityscale'){
-                        if(!$template_in_use) {
+                        break;
+                    case 'competency':
+                        if ($parts[2] == 'priorityscale') {
+                            if (!$template_in_use) {
+                                $competency_todb->$parts[2] = $value;
+                            }
+                        } else {
                             $competency_todb->$parts[2] = $value;
                         }
-                    } else {
-                        $competency_todb->$parts[2] = $value;
-                    }
-                    break;
-                case 'objective':
-                    if($parts[2] == 'priorityscale' || $parts[2] == 'objectivescale'){
-                        if(!$template_in_use) {
+                        break;
+                    case 'objective':
+                        if ($parts[2] == 'priorityscale' || $parts[2] == 'objectivescale') {
+                            if (!$template_in_use) {
+                                $objective_todb->$parts[2] = $value;
+                            }
+                        } else {
                             $objective_todb->$parts[2] = $value;
                         }
-                    } else {
-                        $objective_todb->$parts[2] = $value;
-                    }
-                    break;
-                case 'program':
-                    if($parts[2] == 'priorityscale'){
-                        if(!$template_in_use) {
+                        break;
+                    case 'program':
+                        if ($parts[2] == 'priorityscale') {
+                            if (!$template_in_use) {
+                                $program_todb->$parts[2] = $value;
+                            }
+                        } else {
                             $program_todb->$parts[2] = $value;
                         }
+                    }
+                } else if ($parts[0] == 'perm') {
+                    $perm_todb = new stdClass();
+                    $perm_todb->templateid = $templateid;
+                    $perm_todb->role = $parts[3];
+                    $perm_todb->component = $parts[1];
+                    $perm_todb->action = $parts[2];
+                    $perm_todb->value = $value;
+                    $sql = "SELECT * FROM {dp_permissions} WHERE templateid = ? AND role = ? AND component = ? AND action = ?";
+                    if ($record = $DB->get_record_sql($sql, array($templateid, $parts[3], $parts[1], $parts[2]), IGNORE_MISSING)) {
+                        //update
+                        $perm_todb->id = $record->id;
+                        $DB->update_record('dp_permissions', $perm_todb);
                     } else {
-                        $program_todb->$parts[2] = $value;
-                    }
-                }
-
-            } elseif ($parts[0] == 'perm') {
-                $perm_todb = new object();
-                $perm_todb->templateid = $templateid;
-                $perm_todb->role = $parts[3];
-                $perm_todb->component = $parts[1];
-                $perm_todb->action = $parts[2];
-                $perm_todb->value = $value;
-
-                $sql = "SELECT * FROM {$CFG->prefix}dp_permissions WHERE templateid={$templateid} AND role='{$parts[3]}' AND component='{$parts[1]}' AND action='{$parts[2]}'";
-                if(!$record = get_record_sql($sql)) {
-                    //insert
-                    if(!insert_record('dp_permissions', $perm_todb)){
-                        rollback_sql();
-                        totara_set_notification(get_string('todb_updatepermissionserror', 'local_plan'), $returnurl);
-                        return false;
-                    }
-                } else {
-                    //update
-                    $perm_todb->id = $record->id;
-                    if(!update_record('dp_permissions', $perm_todb)){
-                        rollback_sql();
-                        totara_set_notification(get_string('todb_updatepermissionserror', 'local_plan'), $returnurl);
-                        return false;
+                        //insert
+                        $newid = $DB->insert_record('dp_permissions', $perm_todb);
                     }
                 }
             }
-        }
-
-        //Write settings to tables
-        if ($plan_settings) {
-            if (!update_record('dp_plan_settings', $plan_todb)) {
-                rollback_sql();
-                totara_set_notification(get_string('todb_plansettingerror', 'local_plan'), $returnurl);
-                return false;
+            //Write settings to tables
+            if ($plan_settings) {
+                $DB->update_record('dp_plan_settings', $plan_todb);
+            } else {
+                $plan_todb->templateid = $templateid;
+                $DB->insert_record('dp_plan_settings', $plan_todb);
             }
-        } else {
-            $plan_todb->templateid = $templateid;
-            if (!insert_record('dp_plan_settings', $plan_todb)){
-                rollback_sql();
-                totara_set_notification(get_string('todb_plansettingerror', 'local_plan'), $returnurl);
-                return false;
+            if ($course_settings) {
+                $DB->update_record('dp_course_settings', $course_todb);
+            } else {
+                $course_todb->templateid = $templateid;
+                $DB->insert_record('dp_course_settings', $course_todb);
             }
-        }
-
-
-        if($course_settings) {
-            if(!update_record('dp_course_settings', $course_todb)) {
-                rollback_sql();
-                totara_set_notification(get_string('todb_coursesettingerror', 'local_plan'), $returnurl);
-                return false;
+            if ($competency_settings) {
+                $DB->update_record('dp_competency_settings', $competency_todb);
+            } else {
+                $competency_todb->templateid = $templateid;
+                $DB->insert_record('dp_competency_settings', $competency_todb);
             }
-        } else {
-            $course_todb->templateid = $templateid;
-            if(!insert_record('dp_course_settings', $course_todb)){
-                rollback_sql();
-                totara_set_notification(get_string('todb_coursesettingerror', 'local_plan'), $returnurl);
-                return false;
+            if ($objective_settings) {
+                $DB->update_record('dp_objective_settings', $objective_todb);
+            } else {
+                $objective_todb->templateid = $templateid;
+                $DB->insert_record('dp_objective_settings', $objective_todb);
             }
-        }
-
-        if($competency_settings) {
-            if(!update_record('dp_competency_settings', $competency_todb)) {
-                rollback_sql();
-                totara_set_notification(get_string('todb_competencysettingerror', 'local_plan'), $returnurl);
-                return false;
+            if ($program_settings) {
+                $DB->update_record('dp_program_settings', $program_todb);
+            } else {
+                $program_todb->templateid = $templateid;
+                $DB->insert_record('dp_program_settings', $program_todb);
             }
-        } else {
-            $competency_todb->templateid = $templateid;
-            if(!insert_record('dp_competency_settings', $competency_todb)){
-                rollback_sql();
-                totara_set_notification(get_string('todb_competencysettingerror', 'local_plan'), $returnurl);
-                return false;
-            }
-        }
-
-        if($objective_settings) {
-            if(!update_record('dp_objective_settings', $objective_todb)) {
-                rollback_sql();
-                totara_set_notification(get_string('todb_objectivesettingerror', 'local_plan'), $returnurl);
-                return false;
-            }
-        } else {
-            $objective_todb->templateid = $templateid;
-            if(!insert_record('dp_objective_settings', $objective_todb)){
-                rollback_sql();
-                totara_set_notification(get_string('todb_objectivesettingerror', 'local_plan'), $returnurl);
-                return false;
-            }
-        }
-
-        if($program_settings) {
-            if(!update_record('dp_program_settings', $program_todb)) {
-                rollback_sql();
-                totara_set_notification(get_string('todb_programsettingerror', 'local_plan'), $returnurl);
-                return false;
-            }
-        } else {
-            $program_todb->templateid = $templateid;
-            if(!insert_record('dp_program_settings', $program_todb)){
-                rollback_sql();
-                totara_set_notification(get_string('todb_programsettingerror', 'local_plan'), $returnurl);
-                return false;
-            }
-        }
-
-        commit_sql();
+            $transaction->allow_commit();
         return true;
 
     }

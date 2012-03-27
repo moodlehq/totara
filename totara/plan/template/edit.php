@@ -1,8 +1,8 @@
-<?php // $Id$
+<?php
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas 
  * 
  * This program is free software; you can redistribute it and/or modify  
@@ -35,20 +35,20 @@ $id = optional_param('id', null, PARAM_INT);
 
 admin_externalpage_setup('managetemplates');
 
-if(!$template = get_record('dp_template', 'id', $id)){
-    error('error:invalidtemplateid');
+if (!$template = $DB->get_record('dp_template', array('id' => $id))) {
+    print_error('error:invalidtemplateid', 'totata_plan');
 }
 
 
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
-print_heading($template->fullname);
+echo $OUTPUT->heading($template->fullname);
 
 require('tabs.php');
 
 
 
 
-print_footer();
+echo $OUTPUT->footer();
 
 ?>

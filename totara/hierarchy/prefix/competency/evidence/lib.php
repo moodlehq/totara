@@ -22,7 +22,7 @@
  * @subpackage hierarchy
  */
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/evidence.php');
-
+require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
 
 /**
  * Determine whether the current logged-in user is able to rate a competency proficiency for the given competency
@@ -38,29 +38,29 @@ require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/evidenc
 function hierarchy_can_add_competency_evidence($plan, $component, $userid, $competencyid) {
     global $DB;
 
-    $systemcontext = get_system_context();
+    $systemcontext = context_system::instance();
     if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
-        return array('error:nopermissions', 'local_plan');
+        return array('error:nopermissions', 'totara_plan');
     }
 
     if ($component->get_setting('setproficiency') != DP_PERMISSION_ALLOW) {
-        return array('error:competencystatuspermission', 'local_plan');
+        return array('error:competencystatuspermission', 'totara_plan');
     }
 
     // Validate whether the plan belongs to the specified user
     if (!$plan->userid == $userid) {
-        return array('error:usernotfound','local_plan');
+        return array('error:usernotfound','totara_plan');
     }
 
     // Validate whether this competency is even in the plan
     $compassign = $DB->get_record('dp_plan_competency_assign', array('planid' => $plan->id, 'competencyid' => $competencyid), 'id, approved');
     if (!$compassign) {
-        return array('error:competencynotfound','local_plan');
+        return array('error:competencynotfound','totara_plan');
     }
 
     // Check whether the plan's competencies can still be updated
     if (!$component->can_update_competency_evidence($compassign)) {
-        return array('error:cannotupdatecompetencies','local_plan');
+        return array('error:cannotupdatecompetencies','totara_plan');
     }
 
     return true;

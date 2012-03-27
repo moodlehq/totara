@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,9 @@ class dp_course_component extends dp_base_component {
      * @return  void
      */
     public function initialize_settings(&$settings) {
-        if ($coursesettings = get_record('dp_course_settings', 'templateid', $this->plan->templateid)) {
+        global $DB;
+
+        if ($coursesettings = $DB->get_record('dp_course_settings', array('templateid' => $this->plan->templateid))) {
             $settings[$this->component.'_duedatemode'] = $coursesettings->duedatemode;
             $settings[$this->component.'_prioritymode'] = $coursesettings->prioritymode;
             $settings[$this->component.'_priorityscale'] = $coursesettings->priorityscale;
@@ -65,25 +67,23 @@ class dp_course_component extends dp_base_component {
      * @return  object|false
      */
     public function get_assignment($assignmentid) {
-        global $CFG;
-
-        $assignment = get_record_sql(
-            "
+        global $DB;
+        $sql = "
             SELECT
                 a.*,
                 c.fullname
             FROM
-                {$CFG->prefix}dp_plan_course_assign a
+                {dp_plan_course_assign} a
             INNER JOIN
-                {$CFG->prefix}course c
+                {course} c
              ON c.id = a.courseid
             WHERE
-                a.planid = {$this->plan->id}
-            AND a.id = {$assignmentid}
-            "
-        );
+                a.planid = ?
+            AND a.id = ?
+            ";
+        $params = array($this->plan->id, $assignmentid);
 
-        return $assignment;
+        return $DB->get_record_sql($sql, $params);
     }
 
     /**
@@ -94,11 +94,9 @@ class dp_course_component extends dp_base_component {
      * @return  object|false
      */
     public function get_assigned_item($itemid) {
-        global $CFG;
+        global $DB;
 
-        $item = get_record_sql(
-            "
-            SELECT
+        $sql = "SELECT
                 a.id,
                 a.planid,
                 a.courseid,
@@ -106,17 +104,16 @@ class dp_course_component extends dp_base_component {
                 c.fullname,
                 a.approved
             FROM
-                {$CFG->prefix}dp_plan_course_assign a
+                {dp_plan_course_assign} a
             INNER JOIN
-                {$CFG->prefix}course c
+                {course} c
              ON c.id = a.courseid
             WHERE
-                a.planid = {$this->plan->id}
-            AND c.id = {$itemid}
-            "
-        );
+                a.planid = ?
+            AND c.id = ?";
+        $params = array($this->plan->id, $itemid);
 
-        return $item;
+        return $DB->get_record_sql($sql, $params);
     }
 
 
@@ -133,15 +130,16 @@ class dp_course_component extends dp_base_component {
      * @return  array
      */
     public function get_assigned_items($approved = null, $orderby='', $limitfrom='', $limitnum='') {
-        global $CFG;
+        global $DB;
+        //TODO SCANMSG: check this works now it's using prepared statements
 
-        // Generate where clause
-        $where = "c.visible = 1 AND a.planid = {$this->plan->id}";
+        // Generate where clause (using named parameters because of how query is built)
+        $where = "c.visible = 1 AND a.planid = :planid";
+        $params = array('planid' => $this->plan->id);
         if ($approved !== null) {
-            if (is_array($approved)) {
-                $approved = implode(', ', $approved);
-            }
-            $where .= " AND a.approved IN ({$approved})";
+            list($approvedsql, $approvedparams) = $DB->get_in_or_equal($approved, SQL_PARAMS_NAMED, 'approved');
+            $where .= " AND a.approved {$approvedsql}";
+            $params = array_merge($params, $approvedparams);
         }
         // Generate order by clause
         if ($orderby) {
@@ -162,12 +160,13 @@ class dp_course_component extends dp_base_component {
             // can be sorted
             $completion_field .= 'cc.status AS progress,';
             $completion_joins = "LEFT JOIN
-                {$CFG->prefix}course_completions cc
+                {course_completions} cc
                 ON ( cc.course = a.courseid
-                AND cc.userid = {$this->plan->userid} )";
+                AND cc.userid = :planuserid )";
+            $params['planuserid'] = $this->plan->userid;
         }
 
-        $assigned = get_records_sql(
+        return $DB->get_records_sql(
             "
             SELECT
                 a.*,
@@ -177,24 +176,20 @@ class dp_course_component extends dp_base_component {
                 c.icon,
                 c.enablecompletion
             FROM
-                {$CFG->prefix}dp_plan_course_assign a
+                {dp_plan_course_assign} a
                 $completion_joins
             INNER JOIN
-                {$CFG->prefix}course c
+                {course} c
              ON c.id = a.courseid
             WHERE
                 $where
                 $orderby
             ",
+            $params,
             $limitfrom,
             $limitnum
         );
 
-        if (!$assigned) {
-            $assigned = array();
-        }
-
-        return $assigned;
     }
 
 
@@ -221,22 +216,22 @@ class dp_course_component extends dp_base_component {
 
             // Load item
             if (!$deleteitem = $this->get_assignment($delete)) {
-                print_error('error:couldnotfindassigneditem', 'local_plan');
+                print_error('error:couldnotfindassigneditem', 'totara_plan');
             }
 
             // Check mandatory permissions
             if (!$this->can_delete_item($deleteitem)) {
-                print_error('error:nopermissiondeletemandatorycourse', 'local_plan');
+                print_error('error:nopermissiondeletemandatorycourse', 'totara_plan');
             }
 
             // Unassign item
             if ($this->unassign_item($deleteitem)) {
                 add_to_log(SITEID, 'plan', 'removed course', "component.php?id={$this->plan->id}&amp;c=course", "{$deleteitem->fullname} (ID:{$deleteitem->id})");
                 dp_plan_check_plan_complete(array($this->plan->id));
-                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('class' => 'notifysuccess'));
+                totara_set_notification(get_string('canremoveitem', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
 
             } else {
-                print_error('error:couldnotunassignitem', 'local_plan');
+                print_error('error:couldnotunassignitem', 'totara_plan');
             }
         }
     }
@@ -249,8 +244,7 @@ class dp_course_component extends dp_base_component {
      * @return  void
      */
     public function setup_picker() {
-        global $CFG;
-
+        global $PAGE;
         // If we are showing dialog
         if ($this->can_update_items()) {
             // Setup lightbox
@@ -259,11 +253,24 @@ class dp_course_component extends dp_base_component {
                 TOTARA_JS_TREEVIEW
             ));
 
-            // Get course picker
-            require_js(array(
-                $CFG->wwwroot.'/totara/plan/component.js.php?planid='.$this->plan->id.'&amp;component=course&amp;viewas='.$this->plan->viewas,
-                $CFG->wwwroot.'/totara/plan/components/course/find.js.php'
-            ));
+            $component_name = required_param('c', PARAM_ALPHA);
+            $sesskey = sesskey();
+
+            $jsmodule = array(
+                'name' => 'totara_plan_component',
+                'fullpath' => '/totara/plan/component.js',
+                'requires' => array('json'));
+            $PAGE->requires->js_init_call('M.totara_plan_component.init', array('args' => '{"plan_id":'.$this->plan->id.', "component_name":"'.$component_name.'", "sesskey":"'.$sesskey.'"}'), false, $jsmodule);
+
+            $PAGE->requires->string_for_js('save', 'totara_core');
+            $PAGE->requires->string_for_js('cancel', 'moodle');
+            $PAGE->requires->string_for_js('addcourses', 'totara_plan');
+
+            $jsmodule = array(
+                'name' => 'totara_plan_course_find',
+                'fullpath' => '/totara/plan/components/course/find.js',
+                'requires' => array('json'));
+            $PAGE->requires->js_init_call('M.totara_plan_course_find.init', array('args' => '{"plan_id":'.$this->plan->id.'}'), false, $jsmodule);
         }
     }
 
@@ -275,13 +282,13 @@ class dp_course_component extends dp_base_component {
      * @return  void
      */
     public function post_header_hook() {
-
+        global $OUTPUT;
         $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
         $currenturl = $this->get_url();
-
+        $continueurl = new moodle_url($currenturl->out(), array('d' => $delete, 'confirm' => '1', 'sesskey' => sesskey()));
         if ($delete) {
-            notice_yesno(get_string('confirmitemdelete','local_plan'), $currenturl.'&amp;d='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(), $currenturl);
-            print_footer();
+            echo $OUTPUT->confirm(get_string('confirmitemdelete', 'totara_plan'), $continueurl, $currenturl);
+            echo $OUTPUT->footer();
             die();
         }
     }
@@ -297,17 +304,18 @@ class dp_course_component extends dp_base_component {
      * @return  object  Inserted record
      */
     public function assign_new_item($itemid, $checkpermissions = true, $manual = true) {
+        global $DB;
 
         // Get approval value for new item if required
         if ($checkpermissions) {
             if (!$permission = $this->can_update_items()) {
-                print_error('error:cannotupdatecourses', 'local_plan');
+                print_error('error:cannotupdatecourses', 'totara_plan');
             }
         } else {
             $permission = DP_PERMISSION_ALLOW;
         }
 
-        $item = new object();
+        $item = new stdClass();
         $item->planid = $this->plan->id;
         $item->courseid = $itemid;
         $item->priority = null;
@@ -326,7 +334,7 @@ class dp_course_component extends dp_base_component {
         }
 
         // Set approved status
-        if ( $permission >= DP_PERMISSION_ALLOW ) {
+        if ($permission >= DP_PERMISSION_ALLOW) {
             $item->approved = DP_APPROVAL_APPROVED;
         }
         else { # $permission == DP_PERMISSION_REQUEST
@@ -334,15 +342,13 @@ class dp_course_component extends dp_base_component {
         }
 
         // Load fullname of item
-        $item->fullname = get_field('course', 'fullname', 'id', $itemid);
+        $item->fullname = $DB->get_field('course', 'fullname', array('id' => $itemid));
 
+        $result = $DB->insert_record('dp_plan_course_assign', $item);
         add_to_log(SITEID, 'plan', 'added course', "component.php?id={$this->plan->id}&amp;c=course", "Course ID: {$itemid}");
+        $item->id = $result;
 
-        if ($result = insert_record('dp_plan_course_assign', $item)) {
-            $item->id = $result;
-        }
-
-        return $result ? $item : $result;
+        return $item;
     }
 
 
@@ -353,7 +359,7 @@ class dp_course_component extends dp_base_component {
      * @return  false|string  $out  the table to display
      */
     function display_linked_courses($list) {
-        global $CFG;
+        global $DB;
 
         if (!is_array($list) || count($list) == 0) {
             return false;
@@ -366,6 +372,7 @@ class dp_course_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
+        $params = array();
         if ($this->plan->is_complete()) {
             // Use the 'snapshot' status value
             $completion_field = 'ca.completionstatus AS coursecompletion,';
@@ -380,72 +387,75 @@ class dp_course_component extends dp_base_component {
             // can be sorted
             $completion_field .= 'ca.completionstatus AS progress ';
             $completion_joins = "LEFT JOIN
-                {$CFG->prefix}course_completions cc
+                {course_completions} cc
                 ON ( cc.course = ca.courseid
-                AND cc.userid = {$this->plan->userid} )";
+                AND cc.userid = :userid )";
+            $params['userid'] = $this->plan->userid;
         }
 
-        $select = 'SELECT ca.*, c.fullname, c.icon, psv.name AS priorityname, '. $completion_field;
+        $select = "SELECT ca.*, c.fullname, c.icon, psv.name AS priorityname, $completion_field";
 
         // get courses assigned to this plan
         // and related details
         $from = "
             FROM
-                {$CFG->prefix}dp_plan_course_assign ca
+                {dp_plan_course_assign} ca
             LEFT JOIN
-                {$CFG->prefix}course c
+                {course} c
              ON c.id = ca.courseid
             LEFT JOIN
-                {$CFG->prefix}dp_priority_scale_value psv
+                {dp_priority_scale_value} psv
             ON  (ca.priority = psv.id
-            AND psv.priorityscaleid = $priorityscaleid)
-                {$completion_joins}
+            AND psv.priorityscaleid = :pscaleid )
+            $completion_joins
         ";
-
-        $where = " WHERE ca.id IN (" . implode(',', $list) . ")
-            AND ca.approved = ".DP_APPROVAL_APPROVED;
-
+        $params['pscaleid'] = $priorityscaleid;
+        list($insql, $inparams) = $DB->get_in_or_equal($list, SQL_PARAMS_NAMED);
+        $where = " WHERE ca.id $insql
+            AND ca.approved = :approved ";
+        $params = array_merge($params, $inparams);
+        $params['approved'] = DP_APPROVAL_APPROVED;
         $sort = " ORDER BY c.fullname";
 
-
         $tableheaders = array(
-            get_string('coursename','local_plan'),
+            get_string('coursename', 'totara_plan'),
         );
         $tablecolumns = array(
             'fullname',
         );
 
         if ($showpriorities) {
-            $tableheaders[] = get_string('priority', 'local_plan');
+            $tableheaders[] = get_string('priority', 'totara_plan');
             $tablecolumns[] = 'priority';
         }
 
         if ($showduedates) {
-            $tableheaders[] = get_string('duedate', 'local_plan');
+            $tableheaders[] = get_string('duedate', 'totara_plan');
             $tablecolumns[] = 'duedate';
         }
 
-        $tableheaders[] = get_string('progress','local_plan');
+        $tableheaders[] = get_string('progress', 'totara_plan');
         $tablecolumns[] = 'progress';
 
         if (!$this->plan->is_complete() && $this->can_update_items()) {
-            $tableheaders[] = get_string('remove', 'local_plan');
+            $tableheaders[] = get_string('remove', 'totara_plan', get_string('courses'));
             $tablecolumns[] = 'remove';
         }
-
+        //start output buffering to bypass echo statements in $table->add_data()
+        ob_start();
         $table = new flexible_table('linkedcourselist');
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
-
+        $table->define_baseurl($this->get_url());
         $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->setup();
 
-        if ($records = get_recordset_sql($select.$from.$where.$sort)) {
+        $sql = $select.$from.$where.$sort;
+        if ($records = $DB->get_recordset_sql($sql, $params)) {
             // get the scale values used for competencies in this plan
-            $priorityvalues = get_records('dp_priority_scale_value',
-                'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+            $priorityvalues = $DB->get_records('dp_priority_scale_value', array('priorityscaleid' => $priorityscaleid), 'sortorder', 'id,name,sortorder');
 
-            while ($ca = rs_fetch_next_record($records)) {
+            foreach ($records as $ca) {
                 $row = array();
                 $row[] = $this->display_item_name($ca);
 
@@ -460,17 +470,16 @@ class dp_course_component extends dp_base_component {
                 $row[] = $this->display_status_as_progress_bar($ca);
 
                 if (!$this->plan->is_complete() && $this->can_update_items()) {
-                    $row[] = '<input type="checkbox" value="1" name="delete_linked_course_assign['.$ca->id.']" />';
+                    $row[] = html_writer::checkbox('delete_linked_course_assign['.$ca->id.']', '1', false);
                 }
 
                 $table->add_data($row);
             }
 
-            rs_close($records);
+            $records->close();
 
             // return instead of outputing table contents
-            ob_start();
-            $table->print_html();
+            $table->finish_html();
             $out = ob_get_contents();
             ob_end_clean();
 
@@ -493,11 +502,13 @@ class dp_course_component extends dp_base_component {
 
         if ($approved) {
             $class = '';
-            $launch = $OUTPUT->container($OUTPUT->action_link(new moodle_url('/course/view.php', array('id' => $item->courseid)), get_string('launchcourse', 'totara_plan')), "plan-launch-course-button");
+            $action_link = $OUTPUT->action_link(new moodle_url('/course/view.php', array('id' => $item->courseid)), get_string('launchcourse', 'totara_plan'), null, array('class' => 'link-as-button'));
+            $launch = $OUTPUT->container(html_writer::tag('small', $action_link), "plan-launch-course-button");
         } else {
             $class = 'dimmed';
             $launch = '';
         }
+        $item->icon = (empty($item->icon)) ? 'default' : $item->icon;
         $img = $OUTPUT->pix_icon("/courseicons/" . $item->icon, format_string($item->fullname), 'totara_core');
         $url = new moodle_url('/totara/plan/components/' . $this->component . '/view.php', array('id' => $this->plan->id, 'itemid' => $item->id));
         $link = $OUTPUT->action_link($url, format_string($item->fullname), null, array('class' => $class));
@@ -513,12 +524,13 @@ class dp_course_component extends dp_base_component {
      * @return string HTML string to display the course information
      */
     function display_course_detail($caid) {
-        global $CFG, $OUTPUT;
+        global $DB, $OUTPUT;
 
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
         $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
         $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
 
+        $params = array();
         if ($this->plan->is_complete()) {
             $completion_field = 'ca.completionstatus AS coursecompletion';
 
@@ -526,68 +538,60 @@ class dp_course_component extends dp_base_component {
         } else {
             $completion_field = 'cc.status AS coursecompletion';
 
-            $completion_joins = "LEFT JOIN {$CFG->prefix}course_completions cc
+            $completion_joins = "LEFT JOIN {course_completions} cc
                     ON (cc.course = ca.courseid
-                    AND cc.userid = {$this->plan->userid})";
+                    AND cc.userid = :userid)";
+            $params['userid'] = $this->plan->userid;
         }
 
         $sql = "SELECT ca.*, course.*, psv.name AS priorityname, {$completion_field}
-            FROM {$CFG->prefix}dp_plan_course_assign ca
-                LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
+            FROM {dp_plan_course_assign} ca
+                LEFT JOIN {dp_priority_scale_value} psv
                     ON (ca.priority = psv.id
-                    AND psv.priorityscaleid = {$priorityscaleid})
-                LEFT JOIN {$CFG->prefix}course course
+                    AND psv.priorityscaleid = :pscaleid)
+                LEFT JOIN {course} course
                     ON course.id = ca.courseid
                 {$completion_joins}
-            WHERE ca.id = $caid";
-        $item = get_record_sql($sql);
+            WHERE ca.id = :completeid";
+        $params['pscaleid'] = $priorityscaleid;
+        $params['completeid'] = $caid;
+        $item = $DB->get_record_sql($sql, $params);
 
         if (!$item) {
-            return get_string('coursenotfound', 'local_plan');
+            return get_string('coursenotfound', 'totara_plan');
         }
 
         $out = '';
 
         // get the priority values used for competencies in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+        $priorityvalues = $DB->get_records('dp_priority_scale_value', array('priorityscaleid' => $priorityscaleid), 'sortorder', 'id,name,sortorder');
 
         if ($this->is_item_approved($item->approved)) {
-            $out .=  '<div class="plan-launch-course-button">' .
-                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">'. get_string('launchcourse', 'local_plan') .'</a>' .
-                '</div>';
+            $action_link = $OUTPUT->action_link(new moodle_url('/course/view.php', array('id' => $item->courseid)), get_string('launchcourse', 'totara_plan'));
+            $out = $OUTPUT->container($action_link, "plan-launch-course-button");
         }
 
         $icon = $OUTPUT->pix_icon('/courseicons/' . $item->icon, format_string($item->fullname), 'totara_core');
-        $out .= $OUTPUT->heading($icon . format_string($item->fullname), 3);
-        $out .= '<table border="0" class="planiteminfobox">';
-        $out .= "<tr>";
+        $OUTPUT->heading($icon . format_string($item->fullname), 3);
+        $cell = array();
+
         if ($priorityenabled && !empty($item->priority)) {
-            $out .= '<td>';
-            $out .= get_string('priority', 'local_plan') . ': ';
-            $out .= $this->display_priority_as_text($item->priority,
-                $item->priorityname, $priorityvalues);
-            $out .= '</td>';
+            $cell[] = new html_table_cell(get_string('priority', 'totara_plan') . ': ' . $this->display_priority_as_text($item->priority, $item->priorityname, $priorityvalues));
         }
         if ($duedateenabled && !empty($item->duedate)) {
-            $out .= '<td>';
-            $out .= get_string('duedate', 'local_plan') . ': ';
-            $out .= $this->display_duedate_as_text($item->duedate);
-            $out .= '<br />';
-            $out .= $this->display_duedate_highlight_info($item->duedate);
-            $out .= '</td>';
+            $cell[] = new html_table_cell(get_string('duedate', 'totara_plan') . ': ' . $this->display_duedate_as_text($item->duedate) . html_writer::empty_tag('br') . $this->display_duedate_highlight_info($item->duedate));
         }
         if ($progressbar = $this->display_status_as_progress_bar($item)) {
             unset($completionstatus);
-            $out .= '<td><table border="0"><tr><td style="border:0px;">';
-            $out .= get_string('progress', 'local_plan').': </td><td style="border:0px;">'.$progressbar;
-            $out .= '</td></tr></table></td>';
+            $cell[] = new html_table_cell(get_string('progress', 'totara_plan'));
+            $cell[] = new html_table_cell($progressbar);
         }
-        $out .= "</tr>";
-        $out .= '</table>';
-        $out .= '<p>' . format_string($item->summary) . '</p>';
+        $row = new html_table_row($cell);
+        $table = new html_table();
+        $table->data = array($row);
+        $table->attributes = array('class' => 'planiteminfobox');
 
-        return $out;
+        return html_writer::table($table) . html_writer::tag('p', format_string($item->summary));
     }
 
 
@@ -626,7 +630,7 @@ class dp_course_component extends dp_base_component {
         // if duedatemode is required
         // @todo consider handling differently - currently all updates must
         // work or nothing is changed - is that the best way?
-        global $CFG;
+        global $CFG, $DB;
 
         if (!confirm_sesskey()) {
             return 0;
@@ -634,9 +638,9 @@ class dp_course_component extends dp_base_component {
         $cansetduedates = ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $canapprovecourses = ($this->get_setting('updatecourse') == DP_PERMISSION_APPROVE);
-        $duedates = optional_param('duedate_course', array(), PARAM_TEXT);
-        $priorities = optional_param('priorities_course', array(), PARAM_TEXT);
-        $approvals = optional_param('approve_course', array(), PARAM_INT);
+        $duedates = optional_param_array('duedate_course', array(), PARAM_TEXT);
+        $priorities = optional_param_array('priorities_course', array(), PARAM_TEXT);
+        $approvals = optional_param_array('approve_course', array(), PARAM_INT);
         $currenturl = qualified_me();
         $stored_records = array();
 
@@ -663,7 +667,7 @@ class dp_course_component extends dp_base_component {
                     $duedateout = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $duedate);
                 }
 
-                $todb = new object();
+                $todb = new stdClass();
                 $todb->id = $id;
                 $todb->duedate = $duedateout;
                 $stored_records[$id] = $todb;
@@ -678,7 +682,7 @@ class dp_course_component extends dp_base_component {
                     $stored_records[$pid]->priority = $priority;
                 } else {
                     // create a new update object
-                    $todb = new object();
+                    $todb = new stdClass();
                     $todb->id = $pid;
                     $todb->priority = $priority;
                     $stored_records[$pid] = $todb;
@@ -697,7 +701,7 @@ class dp_course_component extends dp_base_component {
                     $stored_records[$id]->approved = $approval;
                 } else {
                     // create a new update object
-                    $todb = new object();
+                    $todb = new stdClass();
                     $todb->id = $id;
                     $todb->approved = $approval;
                     $stored_records[$id] = $todb;
@@ -707,50 +711,46 @@ class dp_course_component extends dp_base_component {
 
         $status = true;
         if (!empty($stored_records)) {
-            $oldrecords = get_records_list('dp_plan_course_assign', 'id', implode(',', array_keys($stored_records)));
+            $oldrecords = $DB->get_records_list('dp_plan_course_assign', 'id', array_keys($stored_records));
 
             $updates = '';
             $approvals = array();
-            begin_sql();
-            foreach ($stored_records as $itemid => $record) {
-                // Update the record
-                $status = $status & update_record('dp_plan_course_assign', $record);
-            }
+                $transaction = $DB->start_delegated_transaction();
 
-            if ($status) {
-                commit_sql();
+                foreach ($stored_records as $itemid => $record) {
+                    // Update the record
+                    $DB->update_record('dp_plan_course_assign', $record);
+                }
+                $transaction->allow_commit();
 
                 // Process update alerts
                 foreach ($stored_records as $itemid => $record) {
                     // Record the updates for later use
-                    $course = get_record('course', 'id', $oldrecords[$itemid]->courseid);
-                    $courseheader = '<p><strong>'.format_string($course->fullname).": </strong><br>";
+                    $course = $DB->get_record('course', array('id' => $oldrecords[$itemid]->courseid));
+                    $courseheader = html_writer::tag('p', html_writer::tag('strong', format_string($course->fullname).':')) . html_writer::empty_tag('br');
                     $courseprinted = false;
                     if (!empty($record->priority) && $oldrecords[$itemid]->priority != $record->priority) {
-                        $oldpriority = get_field('dp_priority_scale_value', 'name', 'id', $oldrecords[$itemid]->priority);
-                        $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
+                        $oldpriority = $DB->get_field('dp_priority_scale_value', 'name', array('id' => $oldrecords[$itemid]->priority));
+                        $newpriority = $DB->get_field('dp_priority_scale_value', 'name', array('id' => $record->priority));
                         $updates .= $courseheader;
                         $courseprinted = true;
-                        $updates .= get_string('priority', 'local_plan').' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                                (object)array('before'=>$oldpriority, 'after'=>$newpriority))."<br>";
+                        $updates .= get_string('priority', 'totara_plan').' - '.
+                            get_string('changedfromxtoy', 'totara_plan', (object)array('before' => $oldpriority, 'after' => $newpriority)).html_writer::empty_tag('br');
                     }
                     if (!empty($record->duedate) && $oldrecords[$itemid]->duedate != $record->duedate) {
                         $updates .= $courseprinted ? '' : $courseheader;
                         $courseprinted = true;
-                        $updates .= get_string('duedate', 'local_plan').' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                            (object)array('before'=>empty($oldrecords[$itemid]->duedate) ? '' :
+                        $updates .= get_string('duedate', 'totara_plan').' - '.
+                            get_string('changedfromxtoy', 'totara_plan', (object)array('before' => empty($oldrecords[$itemid]->duedate) ? '' :
                                 userdate($oldrecords[$itemid]->duedate, '%e %h %Y', $CFG->timezone, false),
-                            'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
+                            'after' => userdate($record->duedate, '%e %h %Y', $CFG->timezone, false))).html_writer::empty_tag('br');
                     }
                     if (!empty($record->approved) && $oldrecords[$itemid]->approved != $record->approved) {
-                        $approval = new object();
+                        $approval = new stdClass();
                         $text = $courseheader;
-                        $text .= get_string('approval', 'local_plan').' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                            (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
-                            'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                        $text .= get_string('approval', 'totara_plan').' - '.
+                            get_string('changedfromxtoy', 'totara_plan', (object)array('before' => dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
+                            'after' => dp_get_approval_status_from_code($record->approved))).html_writer::empty_tag('br');
                         $approval->text = $text;
                         $approval->itemname = $course->fullname;
                         $approval->before = $oldrecords[$itemid]->approved;
@@ -758,7 +758,7 @@ class dp_course_component extends dp_base_component {
                         $approvals[] = $approval;
 
                     }
-                    $updates .= $courseprinted ? '</p>' : '';
+                    $updates .= $courseprinted ? html_writer::end_tag('p') : '';
                 }  // foreach
 
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
@@ -775,14 +775,12 @@ class dp_course_component extends dp_base_component {
                     $this->send_component_update_alert($updates);
                 }
 
-            } else {
-                rollback_sql();
             }
 
             $currenturl = new moodle_url($currenturl);
             $currenturl->remove_params('badduedates');
             if (!empty($badduedates)) {
-                $currenturl->params(array('badduedates'=>implode(',', $badduedates)));
+                $currenturl->params(array('badduedates' => implode(',', $badduedates)));
             }
             $currenturl = $currenturl->out();
 
@@ -794,21 +792,20 @@ class dp_course_component extends dp_base_component {
                     $issuesnotification = '';
                     if (!empty($badduedates)) {
                         $issuesnotification .= $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED ?
-                            '<br>'.get_string('noteduedateswrongformatorrequired', 'local_plan') : '<br>'.get_string('noteduedateswrongformat', 'local_plan');
+                            html_writer::empty_tag('br').get_string('noteduedateswrongformatorrequired', 'totara_plan') : html_writer::empty_tag('br').get_string('noteduedateswrongformat', 'totara_plan');
                     }
 
                     // Do not create notification or redirect if ajax request
                     if (!$ajax) {
-                        totara_set_notification(get_string('coursesupdated','local_plan').$issuesnotification, $currenturl, array('class' => 'notifysuccess'));
+                        totara_set_notification(get_string('coursesupdated', 'totara_plan').$issuesnotification, $currenturl, array('class' => 'notifysuccess'));
                     }
                 } else {
                     // Do not create notification or redirect if ajax request
                     if (!$ajax) {
-                        totara_set_notification(get_string('coursesnotupdated','local_plan'), $currenturl);
+                        totara_set_notification(get_string('coursesnotupdated', 'totara_plan'), $currenturl);
                     }
                 }
             }
-        }
 
         if ($this->plan->reviewing_pending) {
             return null;
@@ -828,15 +825,16 @@ class dp_course_component extends dp_base_component {
      * return boolean
      */
     public static function is_priority_scale_used($scaleid) {
-        global $CFG;
+        global $DB;
+
         $sql = "
             SELECT ca.id
-            FROM {$CFG->prefix}dp_plan_course_assign ca
+            FROM {dp_plan_course_assign} ca
             LEFT JOIN
-                {$CFG->prefix}dp_priority_scale_value psv
+                {dp_priority_scale_value} psv
             ON ca.priority = psv.id
-            WHERE psv.priorityscaleid = {$scaleid}";
-        return record_exists_sql($sql);
+            WHERE psv.priorityscaleid = ?";
+        return $DB->record_exists_sql($sql, array($scaleid));
     }
 
 
@@ -848,10 +846,10 @@ class dp_course_component extends dp_base_component {
     function get_list_headers() {
         $headers = parent::get_list_headers();
 
-        foreach ($headers->headers as $i=>$h) {
-            if ($h == get_string('status', 'local_plan')) {
+        foreach ($headers->headers as $i => $h) {
+            if ($h == get_string('status', 'totara_plan')) {
                 // Replace 'Status' header with 'Progress'
-                $headers->headers[$i] = get_string('progress', 'local_plan');
+                $headers->headers[$i] = get_string('progress', 'totara_plan');
                 break;
             }
         }
@@ -880,7 +878,7 @@ class dp_course_component extends dp_base_component {
      * @return string $markup the display markup
      */
     protected function display_list_item_actions($item) {
-        global $CFG;
+        global $OUTPUT, $CFG;
 
         $markup = '';
 
@@ -888,7 +886,7 @@ class dp_course_component extends dp_base_component {
         $cansetcompletion = !$this->plan->is_complete() && $this->get_setting('setcompletionstatus') >= DP_PERMISSION_ALLOW;
 
         // Check course has completion enabled
-        $course = new object();
+        $course = new stdClass();
         $course->id = $item->courseid;
         $course->enablecompletion = $item->enablecompletion;
         $cinfo = new completion_info($course);
@@ -900,16 +898,17 @@ class dp_course_component extends dp_base_component {
 
         // Actions
         if ($this->can_delete_item($item)) {
+            $strdelete = get_string('delete', 'totara_plan');
             $currenturl = $this->get_url();
-            $strdelete = get_string('delete', 'local_plan');
-            $delete = '<a href="'.$currenturl.'&amp;d='.$item->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+            $currenturl->params(array('d' => $item->id, 'title' => $strdelete));
+            $delete = $OUTPUT->action_icon($currenturl, new pix_icon('/t/delete', $strdelete));
             $markup .= $delete;
         }
 
         if ($cansetcompletion && $approved && $CFG->enablecourserpl) {
-            $strrpl = get_string('addrpl', 'local_plan');
-            $proficient = '<a href="'.$CFG->wwwroot.'/totara/plan/components/course/rpl.php?id='.$this->plan->id.'&courseid='.$item->courseid.'" title="'.$strrpl.'">
-                <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';
+            $strrpl = get_string('addrpl', 'totara_plan');
+            $proficient = $OUTPUT->action_icon(new moodle_url('/totara/plan/components/course/rpl.php', array('id' => $this->plan->id, 'courseid' => $item->courseid)),
+                new pix_icon('/t/ranges', $strrpl));
             $markup .= $proficient;
         }
 
@@ -956,10 +955,10 @@ class dp_course_component extends dp_base_component {
         }
 
         $progress_str = "{$completedcount}/" . count($courses) . " " .
-            get_string('coursescomplete', 'local_plan') . ", {$inprogresscount} " .
-            get_string('inprogress', 'local_plan') . "\n";
+            get_string('coursescomplete', 'totara_plan') . ", {$inprogresscount} " .
+            get_string('inprogress', 'totara_plan') . "\n";
 
-        $progress = new object();
+        $progress = new stdClass();
         $progress->complete = $completionsum;
         $progress->total = count($courses);
         $progress->text = $progress_str;
@@ -974,12 +973,11 @@ class dp_course_component extends dp_base_component {
      * @return bool
      */
     public function reactivate_items() {
-        global $CFG;
-        $sql = "UPDATE {$CFG->prefix}dp_plan_course_assign SET completionstatus=null WHERE planid={$this->plan->id}";
-        if (!execute_sql($sql, false)) {
-            return false;
-        }
-        return true;
+        global $DB;
+
+        $sql = "UPDATE {dp_plan_course_assign} SET completionstatus = null WHERE planid = ?";
+
+        return $DB->execute($sql, array($this->plan->id));
     }
 
 
@@ -991,26 +989,23 @@ class dp_course_component extends dp_base_component {
      * @return array|false $plans ids of plans with specified course
      */
     public static function get_plans_containing_item($courseid, $userid) {
-        global $CFG;
+        global $DB;
+
         $sql = "SELECT DISTINCT
                 planid
             FROM
-                {$CFG->prefix}dp_plan_course_assign ca
+                {dp_plan_course_assign} ca
             JOIN
-                {$CFG->prefix}dp_plan p
+                {dp_plan} p
               ON
                 ca.planid = p.id
             WHERE
-                ca.courseid = {$courseid}
+                ca.courseid = ?
             AND
-                p.userid = {$userid}";
+                p.userid = ?";
 
-        if (!$plans = get_records_sql($sql)) {
-            // There are no plans with this course
-            return false;
-        }
-
-        return array_keys($plans);
+        $plans = $DB->get_fieldset_sql($sql, array($courseid, $userid));
+        return $plans;
     }
 
     /*
@@ -1021,22 +1016,23 @@ class dp_course_component extends dp_base_component {
      * @return  string markup for javascript course picker
      */
     public function display_competency_picker($courseid) {
+        global $OUTPUT;
 
         if (!$permission = $this->can_update_items()) {
             return '';
         }
 
-        $btntext = get_string('addlinkedcompetencies', 'local_plan');
+        $btntext = get_string('addlinkedcompetencies', 'totara_plan');
 
-        $html  = '<div class="buttons">';
-        $html .= '<div class="singlebutton dp-plan-assign-button">';
-        $html .= '<div>';
-        $html .= '<script type="text/javascript">var course_id = ' . $courseid . ';';
-        $html .= 'var plan_id = ' . $this->plan->id . ';</script>';
-        $html .= '<input type="submit" id="show-competency-dialog" value="' . $btntext . '" />';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
+        $html = $OUTPUT->container_start('buttons');
+        $html .= $OUTPUT->container_start('singlebutton dp-plan-assign-button');
+        $html .= $OUTPUT->container_start();
+        $html .= html_writer::tag('script', 'var competency_id = ' . $courseid . ';' . 'var plan_id = ' . $this->plan->id, array('type' => 'text/javascript'));
+        $html .= $OUTPUT->single_submit($btntext, array('id' => "show-competency-dialog"));
+
+        $html .= $OUTPUT->container_end();
+        $html .= $OUTPUT->container_end();
+        $html .= $OUTPUT->container_end();
 
         return $html;
     }

@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -29,12 +29,11 @@ require_login();
 
 $planuser = optional_param('userid', $USER->id, PARAM_INT); // show plans for this user
 
-
 //
 /// Permission checks
 //
 if (!dp_can_view_users_plans($planuser)) {
-    print_error('error:nopermissions', 'local_plan');
+    print_error('error:nopermissions', 'totara_plan');
 }
 
 // Check if we are viewing these plans as a manager or a learner
@@ -45,7 +44,7 @@ if ($planuser != $USER->id) {
 }
 
 if (!$template = dp_get_first_template()) {
-    print_error('notemplatesetup', 'local_plan');
+    print_error('notemplatesetup', 'totara_plan');
 }
 
 $canaddplan = (dp_get_template_permission($template->id, 'plan', 'create', $role) == DP_PERMISSION_ALLOW);
@@ -55,62 +54,66 @@ $canaddplan = (dp_get_template_permission($template->id, 'plan', 'create', $role
 //
 // Display plan list
 //
-$heading = get_string('learningplans', 'local_plan');
-$pagetitle = format_string(get_string('learningplans','local_plan'));
-$navlinks = array();
+$PAGE->set_url('/totara/plan/index.php');
+$PAGE->set_context(context_system::instance());
+$PAGE->set_pagelayout('noblocks');
+$PAGE->set_totara_menu_selected('learningplans');
+$heading = get_string('learningplans', 'totara_plan');
+$pagetitle = get_string('learningplans', 'totara_plan');
 
-dp_get_plan_base_navlinks($navlinks, $planuser);
+dp_get_plan_base_navlinks($PAGE->navbar, $planuser);
 
-$navigation = build_navigation($navlinks);
-print_header($heading, $pagetitle, $navigation);
+$PAGE->set_title($heading);
+$PAGE->set_heading($pagetitle);
+echo $OUTPUT->header();
 
 // Plan menu
 echo dp_display_plans_menu($planuser,0,$role);
 
 // Plan page content
-print_container_start(false, '', 'dp-plan-content');
+echo $OUTPUT->container_start('', 'dp-plan-content');
 
-if($planuser != $USER->id) {
+if ($planuser != $USER->id) {
     echo dp_display_user_message_box($planuser);
 }
 
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
-print_container_start(false, '', 'dp-plans-description');
+echo $OUTPUT->container_start('', 'dp-plans-description');
 if ($planuser == $USER->id) {
-    $planinstructions = '<div class="instructional_text">' . get_string('planinstructions', 'local_plan') . ' ';
+    $planinstructions = get_string('planinstructions', 'totara_plan') . ' ';
     add_to_log(SITEID, 'plan', 'view all', "index.php?userid={$planuser}");
 } else {
-    $user = get_record('user', 'id', $planuser);
+    $user = $DB->get_record('user', array('id' => $planuser));
     $userfullname = fullname($user);
-    $planinstructions = '<div class="instructional_text">' . get_string('planinstructionsuser', 'local_plan', $userfullname) . ' ';
+    $planinstructions = get_string('planinstructionsuser', 'totara_plan', $userfullname) . ' ';
     add_to_log(SITEID, 'plan', 'view all', "index.php?userid={$planuser}", $userfullname);
 }
 if ($canaddplan) {
-    $planinstructions .= get_string('planinstructions_add', 'local_plan');
+    $planinstructions .= get_string('planinstructions_add', 'totara_plan');
 }
-$planinstructions .= '</div>';
 
-echo $planinstructions;
+echo $OUTPUT->container($planinstructions, 'instructional_text');;
 
 if ($canaddplan) {
-    echo dp_display_add_plan_icon($planuser);
+    $renderer = $PAGE->get_renderer('totara_plan');
+    echo $renderer->print_add_plan_button($planuser);
 }
-echo '<div style="clear:both;"></div>';
-print_container_end();
+echo $OUTPUT->container('', 'clearfix');
+echo $OUTPUT->container_end();
 
-print_container_start(false, '', 'dp-plans-list-active-plans');
-echo dp_display_plans($planuser, array(DP_PLAN_STATUS_APPROVED), array('enddate', 'status'), get_string('activeplans', 'local_plan'));
-print_container_end();
+echo $OUTPUT->container_start('', 'dp-plans-list-active-plans');
+echo dp_display_plans($planuser, array(DP_PLAN_STATUS_APPROVED), array('enddate', 'status'), get_string('activeplans', 'totara_plan'));
+echo $OUTPUT->container_end();
 
-print_container_start(false, '', 'dp-plans-list-unapproved-plans');
-echo dp_display_plans($planuser, array(DP_PLAN_STATUS_UNAPPROVED), array('status'), get_string('unapprovedplans', 'local_plan'));
-print_container_end();
+echo $OUTPUT->container_start('', 'dp-plans-list-unapproved-plans');
+echo dp_display_plans($planuser, array(DP_PLAN_STATUS_UNAPPROVED), array('status'), get_string('unapprovedplans', 'totara_plan'));
+echo $OUTPUT->container_end();
 
-print_container_start(false, '', 'dp-plans-list-completed-plans');
-echo dp_display_plans($planuser, DP_PLAN_STATUS_COMPLETE, array('completed'), get_string('completedplans', 'local_plan'));
-print_container_end();
+echo $OUTPUT->container_start('', 'dp-plans-list-completed-plans');
+echo dp_display_plans($planuser, DP_PLAN_STATUS_COMPLETE, array('completed'), get_string('completedplans', 'totara_plan'));
+echo $OUTPUT->container_end();
 
-print_container_end();
+echo $OUTPUT->container_end();
 
-print_footer();
+echo $OUTPUT->footer();

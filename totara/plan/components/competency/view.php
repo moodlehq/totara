@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,30 +35,56 @@ $action = optional_param('action', 'view', PARAM_TEXT);
 $plan = new development_plan($id);
 
 //Permissions check
-$systemcontext = get_system_context();
-if(!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
-        print_error('error:nopermissions', 'local_plan');
+$systemcontext = context_system::instance();
+if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+        print_error('error:nopermissions', 'totara_plan');
 }
 
+// TODO SCANMSG: Check context is correct
+$PAGE->set_context($systemcontext);
+$PAGE->set_url('/totara/plan/components/competency/view.php', array('id' => $id, 'itemid' => $caid));
+$PAGE->set_pagelayout('noblocks');
+$PAGE->set_totara_menu_selected('learningplans');
 
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
-$currenturl = $CFG->wwwroot . '/totara/plan/components/competency/view.php?id='.$id.'&amp;itemid='.$caid;
+$currenturl = new moodle_url('/totara/plan/components/competency/view.php', array('id' => $id, 'itemid' => $caid));
 $coursesenabled = $plan->get_component('course')->get_setting('enabled');
-$coursename = get_string('courseplural', 'local_plan');
+$coursename = get_string('courseplural', 'totara_plan');
 $canupdate = $component->can_update_items();
+
+/// Javascript stuff
+// If we are showing dialog
+if ($canupdate) {
+    // Setup lightbox
+    local_js(array(
+    TOTARA_JS_DIALOG,
+    TOTARA_JS_TREEVIEW
+    ));
+
+    $PAGE->requires->string_for_js('save', 'totara_core');
+    $PAGE->requires->string_for_js('cancel', 'moodle');
+    $PAGE->requires->string_for_js('addlinkedcourses', 'totara_plan');
+
+    // Get course picker
+    $jsmodule = array(
+        'name' => 'totara_plan_competency_find_course',
+        'fullpath' => '/totara/plan/components/competency/find-course.js',
+        'requires' => array('json'));
+    $PAGE->requires->js_init_call('M.totara_plan_competency_find_course.init', array('args' => '{"plan_id":'.$id.', "competency_id":'.$caid.'}'), false, $jsmodule);
+}
 
 // Check if we are performing an action
 if ($data = data_submitted() && $canupdate) {
     if ($action === 'removelinkedcourses' && !$plan->is_complete()) {
-        $deletions = array();
+      $deletions = array();
 
         // Load existing list of linked courses
         $fullidlist = $component->get_linked_components($caid, 'course');
 
         // Grab all linked items for deletion
-        $course_assigns = optional_param('delete_linked_course_assign', array(), PARAM_BOOL);
+        $course_assigns = optional_param_array('delete_linked_course_assign', array(), PARAM_BOOL);
         if ($course_assigns) {
             foreach ($course_assigns as $linkedid => $delete) {
                 if (!$delete) {
@@ -75,7 +101,7 @@ if ($data = data_submitted() && $canupdate) {
         }
 
         if ($deletions) {
-            totara_set_notification(get_string('selectedlinkedcoursesremovedfromcompetency', 'local_plan'), $currenturl, array('class' => 'notifysuccess'));
+            totara_set_notification(get_string('selectedlinkedcoursesremovedfromcompetency', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
         } else {
             redirect($currenturl);
         }
@@ -83,78 +109,60 @@ if ($data = data_submitted() && $canupdate) {
     }
 }
 
-
 $fullname = $plan->name;
-$pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
-$navlinks = array();
-dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$id, 'type'=>'title');
-$navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
-$navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
+$pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading($pagetitle);
+dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+$PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $id)));
+$PAGE->navbar->add(get_string($component->component, 'totara_plan'), new moodle_url($component->get_url()));
+$PAGE->navbar->add(get_string('viewitem', 'totara_plan'));
+$plan->print_header($componentname);
 
-/// Javascript stuff
-// If we are showing dialog
-if ($canupdate) {
-    // Setup lightbox
-    local_js(array(
-        TOTARA_JS_DIALOG,
-        TOTARA_JS_TREEVIEW
-    ));
+echo $component->display_back_to_index_link();
 
-    // Get course picker
-    require_js(array(
-        $CFG->wwwroot.'/totara/plan/components/competency/find-course.js.php'
-    ));
-}
-
-$navigation = build_navigation($navlinks);
-
-$plan->print_header($componentname, $navlinks, false);
-
-print $component->display_back_to_index_link();
-
-print $component->display_competency_detail($caid);
+echo $component->display_competency_detail($caid);
 
 if ($coursesenabled) {
-    print '<br />';
-    print '<h3>'.get_string('linkedx', 'local_plan', $coursename).'</h3>';
-    print '<div id="dp-competency-courses-container">';
+    echo html_writer::empty_tag('br');
+    echo $OUTPUT->heading(get_string('linkedx', 'totara_plan', $coursename), 3);
+    echo $OUTPUT->container_start('', "dp-competency-courses-container");
 
     if ($linkedcourses = $component->get_linked_components($caid, 'course')) {
-        $formurl = $currenturl.'&action=removelinkedcourses';
-        print '<form action="'.$formurl.'" method="post" />';
-        print $plan->get_component('course')->display_linked_courses($linkedcourses);
+        $currenturl->param('action', 'removelinkedcourses');
+        echo html_writer::start_tag('form', array('id' => "dp-component-update",  'action' => $currenturl->out(false), "method" => "POST"));
+        echo $plan->get_component('course')->display_linked_courses($linkedcourses);
         if ($canupdate) {
-            print '<input type="submit" class="plan-remove-selected" value="'.get_string('removeselected', 'local_plan').'" />';
+            echo html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('removeselected', 'totara_plan'), 'class' => 'plan-remove-selected'));
         }
-        print '</form>';
+        echo html_writer::end_tag('form');
     } else {
-        print '<p class="noitems-assigncourses">'.get_string('nolinkedx', 'local_plan', strtolower($coursename)).'</p>';
+        echo html_writer::tag('p', get_string('nolinkedx', 'totara_plan', strtolower($coursename)), array('class' => 'noitems-assigncourses'));
     }
-    print '</div>';
+    echo $OUTPUT->container_end();
 
     if (!$plancompleted) {
-        print $component->display_course_picker($caid);
+        echo $component->display_course_picker($caid);
     }
 }
 
-// Comments
-require_once($CFG->dirroot.'/totara/comment/lib.php');
+// Comments TODO SCANMSG: fix once comments are ported
+/*require_once($CFG->dirroot.'/totara/comment/lib.php');
 comment::init();
 $options = new stdClass;
 $options->area    = 'plan-competency-item';
 $options->context = $systemcontext;
 $options->itemid  = $caid;
 $options->showcount = true;
-$options->component = 'local_plan';
+$options->component = 'totara_plan';
 $options->autostart = true;
 $options->notoggle = true;
 $comment = new comment($options);
 echo $comment->output(true);
+ */
+echo $OUTPUT->container_end();
 
-print_container_end();
-
-print_footer();
+echo $OUTPUT->footer();
 
 
 ?>

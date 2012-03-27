@@ -1245,7 +1245,7 @@ function totara_build_menu() {
         'name' => 'recordoflearning',
         'linktext' => get_string('recordoflearning', 'totara_core'),
         'parent' => 'mylearning',
-        'url' => '/torara/plan/record/courses.php'
+        'url' => '/totara/plan/record/courses.php'
     );
 
     if ($requiredlearninglink) {

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @subpackage plan
  */
 
-require_once('../../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
 
@@ -41,63 +41,52 @@ $confirm = optional_param('confirm', 0, PARAM_INT); //Confirmation of delete
 
 // Page setup and check permissions
 admin_externalpage_setup('priorityscales');
+$context = context_system::instance();
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('totara/plan:managepriorityscales', $sitecontext);
+require_capability('totara/plan:managepriorityscales', $context);
 
-if (!$priority = get_record('dp_priority_scale', 'id', $id)) {
-    error(get_string('error:priorityscaleidincorrect', 'local_plan'));
+if (!$priority = $DB->get_record('dp_priority_scale', array('id' => $id))) {
+    print_error('error:priorityscaleidincorrect', 'totara_plan');
 }
-
 $scale_used = dp_priority_scale_is_used($id);
 
 // Delete logic
-if($delete) {
-    if(!$value = get_record('dp_priority_scale_value', 'id', $delete)) {
-       print_error('error:invalidpriorityscalevalueid', 'local_plan');
+if ($delete) {
+    if (!$value = $DB->get_record('dp_priority_scale_value', array('id' => $delete))) {
+        print_error('error:invalidpriorityscalevalueid', 'totara_plan');
+    }
+    if ($scale_used) {
+        print_error('error:nodeletepriorityscalevalueinuse', 'totara_plan');
     }
 
-    if($scale_used) {
-        print_error('error:nodeletepriorityscalevalueinuse', 'local_plan');
+    if ($value->id == $priority->defaultid) {
+        print_error('error:nodeletepriorityscalevaluedefault', 'totara_plan');
     }
 
-    if($value->id == $priority->defaultid) {
-        print_error('error:nodeletepriorityscalevaluedefault', 'local_plan');
-    }
-
-    if($confirm) {
+    if ($confirm) {
         if (!confirm_sesskey()) {
             print_error('confirmsesskeybad', 'error');
         }
 
-        begin_sql();
-        if(!delete_records('dp_priority_scale_value', 'id', $delete)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedpriorityscalevalue', 'local_plan'), $CFG->wwwroot.'/totara/plan/priorityscales/view.php?id='.$priority->id);
-        }
+        $transaction = $DB->start_delegated_transaction();
 
-        $sql = "UPDATE {$CFG->prefix}dp_priority_scale_value SET sortorder=sortorder-1 WHERE priorityscaleid={$priority->id} AND sortorder > {$value->sortorder}";
-        if(!execute_sql($sql, false)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedpriorityscalevalue', 'local_plan'), $CFG->wwwroot.'/totara/plan/priorityscales/view.php?id='.$priority->id);
-        }
+        $DB->delete_records('dp_priority_scale_value', array('id' => $delete));
+        $sql = "UPDATE {dp_priority_scale_value} SET sortorder = sortorder-1 WHERE priorityscaleid = ? AND sortorder > ?";
+        $DB->execute($sql, array($priority->id, $value->sortorder));
 
-        commit_sql();
-        totara_set_notification(get_string('deletedpriorityscalevalue', 'local_plan', format_string($value->name)), $CFG->wwwroot.'/totara/plan/priorityscales/view.php?id='.$priority->id, array('class' => 'notifysuccess'));
+        $transaction->allow_commit();
+        totara_set_notification(get_string('deletedpriorityscalevalue', 'totara_plan', format_string($value->name)), $CFG->wwwroot.'/totara/plan/priorityscales/view.php?id='.$priority->id, array('class' => 'notifysuccess'));
     } else {
-        $returnurl = "{$CFG->wwwroot}/totara/plan/priorityscales/view.php?id={$priority->id}";
-        $deleteurl = "{$CFG->wwwroot}/totara/plan/priorityscales/view.php?id={$priority->id}&amp;delete={$delete}&amp;confirm=1&amp;sesskey=" . sesskey();
+        $returnurl = new moodle_url('/totara/plan/priorityscales/view.php', array('id' => $priority->id));
+        $deleteurl = new moodle_url('/totara/plan/priorityscales/view.php', array('id' => $priority->id, 'delete' => $delete, 'confirm' => '1', 'sesskey' => sesskey()));
 
-        admin_externalpage_print_header();
-        $strdelete = get_string('deletecheckpriorityvalue', 'local_plan');
+        echo $OUTPUT->header();
+        $strdelete = get_string('deletecheckpriorityvalue', 'totara_plan');
+        $strbreak = html_writer::empty_tag('br') . html_writer::empty_tag('br');
 
-        notice_yesno(
-            "{$strdelete}<br /><br />".format_string($value->name),
-            $deleteurl,
-            $returnurl
-        );
+        echo $OUTPUT->confirm("{$strdelete}{$strbreak}".format_string($value->name), $deleteurl, $returnurl);
 
-        print_footer();
+        echo $OUTPUT->footer();
         exit;
     }
 }
@@ -108,8 +97,8 @@ $str_edit = get_string('edit');
 $str_delete = get_string('delete');
 $str_moveup = get_string('moveup');
 $str_movedown = get_string('movedown');
-$str_changeto = get_string('changeto', 'local_plan');
-$str_set = get_string('set', 'local_plan');
+$str_changeto = get_string('changeto', 'totara_plan');
+$str_set = get_string('set', 'totara_plan');
 
 
 ///
@@ -121,8 +110,8 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     // Can't reorder a scale that's in use
     if  ($scale_used) {
-        $returnurl = "{$CFG->wwwroot}/totara/plan/priorityscales/view.php?id={$priority->id}";
-        print_error('error:noreorderpriorityinuse', 'local_plan', $returnurl);
+        $returnurl = new moodle_url('/totara/plan/priorityscales/view.php', array('id' => $priority->id));
+        print_error('error:noreorderpriorityinuse', 'totara_plan', $returnurl);
     }
 
     $move = NULL;
@@ -130,30 +119,30 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     // Get value to move, and value to replace
     if (!empty($moveup)) {
-        $move = get_record('dp_priority_scale_value', 'id', $moveup);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_priority_scale_value', array('id' => $moveup));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_priority_scale_value
+            FROM {dp_priority_scale_value}
             WHERE
-            priorityscaleid = {$priority->id}
-            AND sortorder < {$move->sortorder}
-            ORDER BY sortorder DESC", 0, 1
+            priorityscaleid = ?
+            AND sortorder < ?
+            ORDER BY sortorder DESC", array($priority->id, $move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if ($resultset && count($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
     } else {
-        $move = get_record('dp_priority_scale_value', 'id', $movedown);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_priority_scale_value', array('id' => $movedown));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_priority_scale_value
+            FROM {dp_priority_scale_value}
             WHERE
-            priorityscaleid = {$priority->id}
-            AND sortorder > {$move->sortorder}
-            ORDER BY sortorder ASC", 0, 1
+            priorityscaleid = ?
+            AND sortorder > ?
+            ORDER BY sortorder ASC", array($priority->id, $move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if ($resultset && count($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
@@ -161,13 +150,12 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     if ($swap && $move) {
         // Swap sortorders
-        begin_sql();
-        if (!(    set_field('dp_priority_scale_value', 'sortorder', $move->sortorder, 'id', $swap->id)
-            && set_field('dp_priority_scale_value', 'sortorder', $swap->sortorder, 'id', $move->id)
-        )) {
-            error(get_string('error:updatepriorityscalevalue', 'local_plan'));
-        }
-        commit_sql();
+        $transaction = $DB->start_delegated_transaction();
+
+        $DB->set_field('dp_priority_scale_value', 'sortorder', $move->sortorder, array('id' => $swap->id));
+        $DB->set_field('dp_priority_scale_value', 'sortorder', $swap->sortorder, array('id' => $move->id));
+
+        $transaction->allow_commit();
     }
 }
 
@@ -176,22 +164,17 @@ if ($default) {
     $value = $default;
 
     // Check value exists
-    if (!get_record('dp_priority_scale_value', 'id', $value)) {
-        error('error:priorityscalevalueidincorrect', 'local_plan');
-    }
+    $DB->get_record('dp_priority_scale_value', array('id' => $value));
 
     // Update
-    $s = new object();
+    $s = new stdClass();
     $s->id = $priority->id;
     $s->defaultid = $default;
 
-    if (!update_record('dp_priority_scale', $s)) {
-        error(get_string('error:updatingpriorityscale', 'local_plan'));
-    } else {
-        totara_set_notification(get_string('priorityscaledefaultupdated', 'local_plan'), null, array('class' => 'notifysuccess'));
-        // Fetch the update scale record so it'll show up to the user.
-        $priority = get_record('dp_priority_scale', 'id', $id);
-    }
+    $DB->update_record('dp_priority_scale', $s);
+    totara_set_notification(get_string('priorityscaledefaultupdated', 'totara_plan'), null, array('class' => 'notifysuccess'));
+    // Fetch the update scale record so it'll show up to the user.
+    $priority = $DB->get_record('dp_priority_scale', array('id' => $id));
 }
 
 ///
@@ -199,93 +182,84 @@ if ($default) {
 ///
 
 // Load values
-$values = get_records('dp_priority_scale_value', 'priorityscaleid', $priority->id, 'sortorder');
+$values = $DB->get_records('dp_priority_scale_value', array('priorityscaleid' => $priority->id), 'sortorder');
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("priorityscales", 'local_plan'),
-                    'link'=>"{$CFG->wwwroot}/totara/plan/priorityscales/index.php",
-                    'type'=>'misc');
-$navlinks[] = array('name'=>format_string($priority->name), 'link'=>'', 'type'=>'misc');
+$PAGE->navbar->add(format_string($priority->name));
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-print_single_button($CFG->wwwroot . '/totara/plan/priorityscales/index.php', null, get_string('allpriorityscales', 'local_plan'));
+echo $OUTPUT->single_button(new moodle_url('/totara/plan/priorityscales/index.php'), get_string('allpriorityscales', 'totara_plan'), 'get');
 
 // Display info about scale
-print_heading(get_string('priorityscalex', 'local_plan', format_string($priority->name)),'', 1);
-echo '<p>'.format_string($priority->description, FORMAT_HTML).'</p>';
+echo $OUTPUT->heading(get_string('priorityscalex', 'totara_plan', format_string($priority->name)), 1);
+$priority->description = file_rewrite_pluginfile_urls($priority->description, 'pluginfile.php', $context->id, 'totara_plan', 'dp_priority_scale', $priority->id);
+echo html_writer::tag('p', format_text($priority->description, FORMAT_HTML));
 
 // Display warning if scale is in use
-if($scale_used) {
-    print_container(get_string('priorityscaleinuse', 'local_plan'), true, 'notifysuccess');
+if ($scale_used) {
+    echo $OUTPUT->container(get_string('priorityscaleinuse', 'totara_plan'), 'notifysuccess');
 }
 
 // Display priority scale values
 if ($values) {
-    echo "<form id=\"dppriorityscaledefaultform\" action=\"{$CFG->wwwroot}/totara/plan/priorityscales/view.php?id={$id}\" method=\"POST\">\n";
-    echo "<input type=\"hidden\" name=\"id\" value=\"{$id}\" />\n";
+    echo html_writer::start_tag('form', array('id' => "dppriorityscaledefaultform", 'action' => new moodle_url('/totara/plan/priorityscales/view.php', array('id' => $id)), 'method' => "POST"));
+    echo html_writer::empty_tag('input', array('type' => "hidden", 'name' => "id", 'value' => $id));
 
-    $table = new object();
-    $table->class = 'generaltable';
-    $table->data = array();
+    $table = new html_table();
+    $table->attributes = array('class' => 'generaltable');
 
     // Headers
     $table->head = array(get_string('name'));
     $table->align = array('left');
 
-    $table->head[] = get_string('defaultvalue', 'local_plan').' '.
-        helpbutton('priorityscaledefault', 'Help with Default Value', 'local_plan', true, false, '', true);
+    $table->head[] = get_string('defaultvalue', 'totara_plan').' '.
+        $OUTPUT->help_icon('priorityscaledefault', 'totara_plan', false);
     $table->align[] = 'center';
 
     $table->head[] = get_string('edit');
     $table->align[] = 'center';
 
-    $spacer = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" />";
+    $spacer = $OUTPUT->spacer();
     $numvalues = count($values);
 
     // Add rows to table
     $count = 0;
     foreach ($values as $value) {
         $count++;
-
         $row = array();
+        $buttons = array();
         $row[] = $value->name;
 
-        $buttons = array();
 
         // Is this the default value?
-        $disabled = ($numvalues == 1) ? ' disabled="disabled"' : '';
+        $disabled = ($numvalues == 1) ? 'disabled' : '';
         if ($value->id == $priority->defaultid) {
-            $row[] = '<input type="radio" name="default" value="'.$value->id.'" checked="checked" ' . $disabled . ' />';
+            $row[] = html_writer::empty_tag('input', array('type' => "radio", 'name' => "default", 'value' => $value->id, 'checked' => "checked", 'disabled' => $disabled));
         }
         else {
-            $row[] = '<input type="radio" name="default" value="'.$value->id.'" ' . $disabled . ' />';
+            $row[] = html_writer::empty_tag('input', array('type' => "radio", 'name' => "default", 'value' => $value->id, $disabled => $disabled));
         }
 
-        $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/priorityscales/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
-            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+        $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/priorityscales/editvalue.php', array('id' => $value->id)), new pix_icon('t/edit', $str_edit));
 
-        if(!$scale_used) {
-            if($value->id == $priority->defaultid) {
-                $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteprioritycalevaluedefault', 'local_plan') . "\" title=\"" . get_string('error:nodeletepriorityscalevaluedefault', 'local_plan') . "\" /></a>";
+        if (!$scale_used) {
+            if ($value->id == $priority->defaultid) {
+                $buttons[] = $OUTPUT->action_icon('', new pix_icon('nodelete', get_string('error:nodeletepriorityscalevaluedefault', 'totara_plan'), 'totara_core'));
             } else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/priorityscales/view.php?id={$priority->id}&amp;delete={$value->id}\" title=\"$str_delete\">".
-                    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+                $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/priorityscales/view.php', array('id' => $priority->id, 'delete' => $value->id)), new pix_icon('t/delete', $str_delete));
             }
         }
 
         // If value can be moved up
         if ($count > 1 && !$scale_used) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/priorityscales/view.php?id={$priority->id}&moveup={$value->id}\" title=\"$str_moveup\">".
-                "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/priorityscales/view.php', array('id' => $priority->id, 'moveup' => $value->id)), new pix_icon('t/up', $str_moveup));
         } else {
             $buttons[] = $spacer;
         }
 
         // If value can be moved down
         if ($count < $numvalues && !$scale_used) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/priorityscales/view.php?id={$priority->id}&movedown={$value->id}\" title=\"$str_movedown\">".
-                "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/priorityscales/view.php', array('id' => $priority->id, 'movedown' => $value->id)), new pix_icon('t/down', $str_movedown));
         } else {
             $buttons[] = $spacer;
         }
@@ -294,30 +268,29 @@ if ($values) {
         $table->data[] = $row;
     }
 
-    if($numvalues != 1) {
+    if ($numvalues != 1) {
         $row = array();
         $row[] = '';
-        $row[] = '<input type="submit" value="Update" />';
+        $row[] = html_writer::empty_tag('input', array('type' => 'submit', 'value' => 'Update'));
         $row[] = '';
         $table->data[] = $row;
     }
 
-    print_table($table);
-    echo "</form>\n";
+    echo html_writer::table($table);
+    echo html_writer::end_tag('form');
 } else {
-    echo '<br /><div>'.get_string('nopriorityscalevalues','local_plan').'</div><br />';
+    echo html_writer::empty_tag('br') . $OUTPUT->container(get_string('nopriorityscalevalues', 'totara_plan')) . html_writer::empty_tag('br');
+}
+
+$button = '';
+// Print button for creating new priority scale value
+if (!$scale_used) {
+    $options = array('priorityscaleid' => $priority->id);
+    $button = $OUTPUT->single_button(new moodle_url('/totara/plan/priorityscales/editvalue.php', $options), get_string('addnewpriorityvalue', 'totara_plan'), 'get');
 }
 
 // Navigation / editing buttons
-echo '<div class="buttons">';
-
-// Print button for creating new priority scale value
-if(!$scale_used) {
-    $options = array('priorityscaleid' => $priority->id);
-    print_single_button($CFG->wwwroot.'/totara/plan/priorityscales/editvalue.php', $options, get_string('addnewpriorityvalue', 'local_plan'), 'get');
-}
-
-echo '</div>';
+echo $OUTPUT->container($button, "buttons");
 
 /// and proper footer
-print_footer();
+echo $OUTPUT->footer();

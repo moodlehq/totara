@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,16 +35,16 @@ class rb_source_dp_competency extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
     public $defaultfilters, $requiredcolumns, $sourcetitle;
+    public $dp_plans;
 
 
     /**
      * Constructor
-     * @global object $CFG
      */
     public function __construct() {
-        global $CFG, $DB;
+        global $DB;
 
-        $this->base = "( select distinct ".
+        $this->base = "(select distinct ".
                 $DB->sql_concat_join(
                         "','",
                         array(
@@ -68,7 +68,7 @@ class rb_source_dp_competency extends rb_base_source {
                 "p1.userid as userid, pca1.competencyid as competencyid ".
                 "from {dp_plan_competency_assign} pca1 ".
                 "inner join {dp_plan} p1 ".
-                "on pca1.planid=p1.id )";
+                "on pca1.planid = p1.id)";
 
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
@@ -78,6 +78,7 @@ class rb_source_dp_competency extends rb_base_source {
         $this->defaultcolumns = array();
         $this->defaultfilters = array();
         $this->requiredcolumns = array();
+        $this->dp_plans = array();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_dp_competency');
         parent::__construct();
     }
@@ -95,8 +96,9 @@ class rb_source_dp_competency extends rb_base_source {
      * @return array
      */
     private function define_joinlist() {
-        $joinlist = array();
         global $CFG;
+
+        $joinlist = array();
 
         // to get access to position type constants
         require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_join.php');
@@ -173,7 +175,7 @@ from
                 "(SELECT itemid1 AS compassignid,
                     count(id) AS count
                     FROM {dp_plan_component_relation}
-                    WHERE component1='competency' AND component2='course'
+                    WHERE component1 = 'competency' AND component2 = 'course'
                     GROUP BY itemid1)",
                 'dp_competency.id = linkedcourses.compassignid',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
@@ -240,7 +242,7 @@ from
                     'defaultheading' => get_string('plan', 'rb_source_dp_competency'),
                     'joins' => 'dp_competency',
                     'displayfunc' => 'planlink',
-                    'extrafields' => array( 'plan_id'=>'dp_competency.planid' )
+                    'extrafields' => array( 'plan_id' => 'dp_competency.planid' )
                 )
         );
         $columnoptions[] = new rb_column_option(
@@ -290,8 +292,8 @@ from
                 get_string('templatestartdate', 'rb_source_dp_competency'),
                 'template.startdate',
                 array(
-                    'joins'=>'template',
-                    'displayfunc'=>'nice_date'
+                    'joins' => 'template',
+                    'displayfunc' => 'nice_date'
                 )
         );
         $columnoptions[] = new rb_column_option(
@@ -300,8 +302,8 @@ from
                 get_string('templateenddate', 'rb_source_dp_competency'),
                 'template.enddate',
                 array(
-                    'joins'=>'template',
-                    'displayfunc'=>'nice_date'
+                    'joins' => 'template',
+                    'displayfunc' => 'nice_date'
                 )
         );
 
@@ -533,7 +535,6 @@ from
         global $CFG;
         require_once($CFG->dirroot.'/totara/plan/lib.php');
         $paramoptions = array();
-
         $paramoptions[] = new rb_param_option(
                 'userid',
                 'base.userid'
@@ -564,21 +565,20 @@ from
         $content = array();
         $approved = isset($row->approved) ? $row->approved : null;
 
-        if($status) {
+        if ($status) {
             $content[] = $status;
         }
 
         // highlight if the item has not yet been approved
-        if($approved != DP_APPROVAL_APPROVED) {
+        if ($approved != DP_APPROVAL_APPROVED) {
             $itemstatus = $this->rb_display_plan_item_status($approved);
-            if($itemstatus) {
+            if ($itemstatus) {
                 $content[] = $itemstatus;
             }
         }
-        return implode('<br />', $content);
+        return implode(html_writer::empty_tag('br'), $content);
     }
 
-    private $dp_plans = array();
 
     /**
      * Displays an icon linked to the "add competency evidence" page for this competency
@@ -586,7 +586,6 @@ from
      * @param $row
      */
     public function rb_display_addcompetencyevidencelink($competencyid, $row) {
-        global $CFG;
 
         $planid = isset($row->planid) ? $row->planid : null;
         if ($planid) {
@@ -661,42 +660,30 @@ from
                                 ON c.frameworkid = csa.frameworkid
                             JOIN {comp_scale} cs
                                 ON csa.scaleid = cs.id
-                            WHERE c.id = ?";
-                    if (!$scaledetails = $DB->get_record_sql($sql, array($competencyid))) {
-                        // what should this do?
-                    }
+                            WHERE c.id= ?";
+                    $scaledetails = $DB->get_record_sql($sql, array($competencyid));
                     $compscale = $DB->get_records_menu('comp_scale_values', array('scaleid' => $scaledetails->scaleid), 'sortorder');
                     $this->compscales[$compframeworkid] = $compscale;
                 }
 
                 local_js();
-                /* TODO implement js snippet below somewhere
-                $content[] = choose_from_menu(
-                    $compscale,
-                    'competencyevidencestatus'.$plancompid,
-                    $compevscalevalueid,
-                    ($compevscalevalueid ? '' : get_string('notset', 'totara_reportbuilder')),
-                    "if (this.value > 0) { ".
-                        "var response; ".
-                        "response = \$.get(".
-                            "'{$CFG->wwwroot}/totara/plan/components/competency/update-competency-setting.php".
-                            "?competencyid={$competencyid}".
-                            "&amp;planid={$planid}".
-                            "&amp;prof=' + $(this).val()".
-                        "); ".
-                        "$(this).children('[option[value=\'0\']').remove(); ".
-                    "}",
-                    ($compevscalevalueid ? '' : 0),
-                    true
-                ); //. $this->rb_display_addcompetencyevidencelink( $competencyid, $row );
-                */
 
+                $action = "if (this.value > 0) { ".
+                              "var response; ".
+                              "response = \$.get(".
+                              "'{$CFG->wwwroot}/totara/plan/components/competency/update-competency-setting.php".
+                              "?competencyid={$competencyid}".
+                              "&amp;planid={$planid}".
+                              "&amp;prof=' + $(this).val()".
+                              "); ".
+                              "$(this).children('[option[value=\'0\']').remove(); ".
+                          "}";
+                $attributes = array('onchange' => $action);
                 $content[] = html_writer::select($compscale,
-                    'competencyevidencestatus'.$plancompid,
-                    $compevscalevalueid,
-                    array(($compevscalevalueid ? '' : 0) => ($compevscalevalueid ? '' : get_string('notset', 'totara_reportbuilder'))),
-                    $attributes);
-
+                                              'competencyevidencestatus'.$plancompid,
+                                              $compevscalevalueid,
+                                              array(($compevscalevalueid ? '' : 0) => ($compevscalevalueid ? '' : get_string('notset', 'totara_reportbuilder'))),
+                                              $attributes);
             } else if ($status) {
                 $content[] = $status;
             }

@@ -1,4 +1,26 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @package totara
+ * @subpackage totara_plan
+ */
 //
 // Capability definitions for the plan module.
 //
@@ -18,8 +40,8 @@
 //
 // component_name should be the same as the directory name of the mod or block.
 //
-// For local modules the naming convention is:
-//   local/<component_name>:<capabilityname>
+// For totara modules the naming convention is:
+//   totara/<component_name>:<capabilityname>
 //
 // Core moodle capabilities are defined thus:
 //    moodle/<capabilityclass>:<capabilityname>
@@ -33,8 +55,8 @@
 //
 // For the core capabilities, the variable is $moodle_capabilities.
 //
-// For local modules, the variable is $capabilities in 2.0 and
-// $local_<component_name>_capabilities in 1.9.
+// For totara modules, the variable is $capabilities in 2.0 and
+// $totara_<component_name>_capabilities in 1.9.
 
 $capabilities = array(
 
@@ -42,10 +64,10 @@ $capabilities = array(
     'totara/plan:accessplan' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW,
+        'archetypes' => array(
             'user' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
+            'staffmanager' => CAP_ALLOW
         )
     ),
 
@@ -54,8 +76,8 @@ $capabilities = array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -64,8 +86,8 @@ $capabilities = array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -74,8 +96,8 @@ $capabilities = array(
         'riskbitmask' => RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -84,10 +106,10 @@ $capabilities = array(
         'riskbitmask' => RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
-    ),
+    )
 
 );
 

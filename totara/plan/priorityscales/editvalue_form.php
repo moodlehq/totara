@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,10 +30,9 @@ class dp_priority_scale_value_edit_form extends moodleform {
 
     // Define the form
     function definition() {
-        global $CFG;
+        global $TEXTAREA_OPTIONS;
 
         $mform =& $this->_form;
-
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
@@ -45,32 +44,30 @@ class dp_priority_scale_value_edit_form extends moodleform {
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', get_string('general'));
 
-        $mform->addElement('static', 'scalename', get_string('priorityscale', 'local_plan'));
-        $mform->setHelpButton('scalename', array('priorityscaleassign', get_string('priorityscale', 'local_plan'), 'local_plan'), true);
+        $mform->addElement('static', 'scalename', get_string('priorityscale', 'totara_plan'));
+        $mform->addHelpButton('scalename', 'priorityscaleassign', 'totara_plan', '', true);
 
-        $mform->addElement('text', 'name', get_string('priorityscalevaluename', 'local_plan'), 'maxlength="100" size="20"');
-        $mform->setHelpButton('name', array('priorityscalevaluename', get_string('priorityscalevaluename', 'local_plan'), 'local_plan'), true);
-        $mform->addRule('name', get_string('missingpriorityscalevaluename', 'local_plan'), 'required', null, 'client');
+        $mform->addElement('text', 'name', get_string('priorityscalevaluename', 'totara_plan'), 'maxlength="100" size="20"');
+        $mform->addHelpButton('name', 'priorityscalevaluename', 'totara_plan', '', true);
+        $mform->addRule('name', get_string('missingpriorityscalevaluename', 'totara_plan'), 'required', null, 'client');
         $mform->setType('name', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'idnumber', get_string('priorityscalevalueidnumber', 'local_plan'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('idnumber', array('priorityscalevalueidnumber', get_string('priorityscalevalueidnumber', 'local_plan'), 'local_plan'), true);
+        $mform->addElement('text', 'idnumber', get_string('priorityscalevalueidnumber', 'totara_plan'), 'maxlength="100"  size="10"');
+        $mform->addHelpButton('idnumber', 'priorityscalevalueidnumber', 'totara_plan', '', true);
         $mform->setType('idnumber', PARAM_RAW);
 
-        $mform->addElement('text', 'numericscore', get_string('priorityscalevaluenumericalvalue', 'local_plan'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('numericscore', array('priorityscalevaluenumeric', get_string('priorityscalevaluenumericalvalue', 'local_plan'), 'local_plan'), true);
+        $mform->addElement('text', 'numericscore', get_string('priorityscalevaluenumeric', 'totara_plan'), 'maxlength="100"  size="10"');
+        $mform->addHelpButton('numericscore', 'priorityscalevaluenumeric', 'totara_plan', '', true);
         $mform->setType('numericscore', PARAM_RAW);
 
-        $mform->addElement('htmleditor', 'description', get_string('description'));
-        $mform->setHelpButton('description', array('text', get_string('helptext')), true);
-        $mform->setType('description', PARAM_RAW);
+        $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
+        $mform->setType('description_editor', PARAM_RAW);
 
         $this->add_action_buttons();
     }
 
     function validation($valuenew) {
 
-        $err = array();
         $valuenew = (object)$valuenew;
 
         // Check the numericscore field was either empty or a number
@@ -79,7 +76,7 @@ class dp_priority_scale_value_edit_form extends moodleform {
             if (is_numeric($valuenew->numericscore)) {
                 $valuenew->numericscore = (float)$valuenew->numericscore;
             } else {
-                $err['numericscore'] = get_string('invalidnumeric', 'local_plan');
+                $err['numericscore'] = get_string('invalidnumeric', 'totara_plan');
                 return $err;
             }
         } else {

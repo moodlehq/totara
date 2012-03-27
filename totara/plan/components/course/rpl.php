@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  * @subpackage plan
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot . '/totara/plan/lib.php');
 require_once($CFG->dirroot . '/totara/plan/components/course/rpl_form.php');
 
@@ -34,21 +34,23 @@ require_login();
 $plan = new development_plan($id);
 
 //Permissions check
-$systemcontext = get_system_context();
-if(!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
-        print_error('error:nopermissions', 'local_plan');
+$systemcontext = context_system::instance();
+$PAGE->set_context($systemcontext);
+$PAGE->set_url(new moodle_url('/totara/plan/components/course/rpl.php', array('id' => $id, 'courseid' => $courseid)));
+if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+        print_error('error:nopermissions', 'totara_plan');
 }
 
 $userid = $plan->userid;
 $componentname = 'course';
 $component = $plan->get_component($componentname);
 
-if($component->get_setting('setcompletionstatus') != DP_PERMISSION_ALLOW) {
-    error(get_string('error:coursecompletionpermission', 'local_plan'));
+if ($component->get_setting('setcompletionstatus') != DP_PERMISSION_ALLOW) {
+    print_error('error:coursecompletionpermission', 'totara_plan');
 }
 
 // Check completion is enabled for course
-$course = new object();
+$course = new stdClass();
 $course->id = $courseid;
 $info = new completion_info($course);
 
@@ -61,8 +63,8 @@ if (!$CFG->enablecourserpl) {
     print_error('error:courserplsaredisabled', 'completion', $component->get_url());
 }
 
-if($rpl = get_record('course_completions', 'userid', $userid, 'course', $courseid)){
-    $rpltext = stripslashes($rpl->rpl);
+if ($rpl = $DB->get_record('course_completions', array('userid' => $userid, 'course' => $courseid))) {
+    $rpltext = $rpl->rpl;
     $rplid = $rpl->id;
 } else {
     $rpltext = '';
@@ -77,8 +79,8 @@ if ($mform->is_cancelled()) {
     redirect($returnurl);
 }
 if ($fromform = $mform->get_data()) {
-    if(empty($fromform->submitbutton)) {
-        totara_set_notification(get_string('error:unknownbuttonclicked', 'local_plan'), $returnurl);
+    if (empty($fromform->submitbutton)) {
+        totara_set_notification(get_string('error:unknownbuttonclicked', 'totara_plan'), $returnurl);
     }
 
     $rpl = $fromform->rpl;
@@ -96,11 +98,11 @@ if ($fromform = $mform->get_data()) {
 
     /// Complete user
     if (strlen($rpl)) {
-        $completion->rpl = addslashes($rpl);
+         $completion->rpl = $rpl;
         $completion->mark_complete();
-        $alert_detail = new object();
-        $alert_detail->itemname = get_field('course', 'fullname', 'id', $completion->course);
-        $alert_detail->text = get_string('completedviarpl', 'local_plan', $completion->rpl);
+        $alert_detail = new stdClass();
+        $alert_detail->itemname = $DB->get_field('course', 'fullname', array('id' => $completion->course));
+        $alert_detail->text = get_string('completedviarpl', 'totara_plan', $completion->rpl);
         $component->send_component_complete_alert($alert_detail);
 
         add_to_log(SITEID, 'plan', 'completed course', "component.php?id={$plan->id}&amp;c=course", "{$alert_detail->itemname} RPL set (ID:{$completion->course})");
@@ -111,7 +113,7 @@ if ($fromform = $mform->get_data()) {
     }
 
     totara_set_notification(
-        get_string('rplupdated', 'local_plan'),
+        get_string('rplupdated', 'totara_plan'),
         $returnurl,
         array('class' => 'notifysuccess')
     );
@@ -119,33 +121,32 @@ if ($fromform = $mform->get_data()) {
 
 
 $fullname = $plan->name;
-$pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
-$navlinks = array();
-dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $plan->get_display_url(), 'type'=>'title');
-$navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => '', 'type' => 'title');
+$pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
+dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+$PAGE->navbar->add($fullname, $plan->get_display_url());
+$PAGE->navbar->add(get_string($component->component, 'totara_plan'));
 
-$navigation = build_navigation($navlinks);
 
 ///
 /// Display page
 ///
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+$PAGE->set_title($pagetitle);
+echo $OUTPUT->header();
 
 // Plan menu
 echo dp_display_plans_menu($plan->userid,$plan->id,$plan->role);
 
 // Plan page content
-print_container_start(false, '', 'dp-plan-content');
+echo $OUTPUT->container_start('', 'dp-plan-content');
 
 print $plan->display_plan_message_box();
 
-print_heading($fullname);
+echo $OUTPUT->heading($fullname);
 print $plan->display_tabs($componentname);
 
 $mform->display();
 
-print_container_end();
-print_footer();
+echo $OUTPUT->container_end();
+echo $OUTPUT->footer();
 
 ?>

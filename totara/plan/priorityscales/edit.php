@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @subpackage plan
  */
 
-require_once '../../../config.php';
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once $CFG->libdir.'/adminlib.php';
 require_once 'edit_form.php';
 
@@ -37,28 +37,31 @@ require_once 'edit_form.php';
 $id = optional_param('id', 0, PARAM_INT); // Priority id; 0 if creating a new priority
 // Page setup and check permissions
 admin_externalpage_setup('priorityscales');
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-
-require_capability('totara/plan:managepriorityscales', $sitecontext);
+$context = context_system::instance();
+$PAGE->set_context($context);
+require_capability('totara/plan:managepriorityscales', $context);
 if ($id == 0) {
     // creating new Learning Plan priority
-    $priority = new object();
+    $priority = new stdClass();
     $priority->id = 0;
+    $priority->description = '';
 } else {
     // editing existing Learning Plan priority
-    if (!$priority = get_record('dp_priority_scale', 'id', $id)) {
-        error(get_string('error:priorityscaleidincorrect', 'local_plan'));
+    if (!$priority = $DB->get_record('dp_priority_scale', array('id' => $id))) {
+        print_error('error:priorityscaleidincorrect', 'totara_plan');
     }
 }
 
 ///
 /// Handle form data
 ///
-
+$priority->descriptionformat = FORMAT_HTML;
+$priority = file_prepare_standard_editor($priority, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                         'totara_plan', 'dp_priority_scale', $priority->id);
 $mform = new edit_priority_form(
         null, // method (default)
         array( // customdata
-            'priorityid'=>$id
+            'priorityid' => $id
         )
 );
 $mform->set_data($priority);
@@ -73,90 +76,69 @@ if ($mform->is_cancelled()) {
 
     $prioritynew->timemodified = time();
     $prioritynew->usermodified = $USER->id;
-    $prioritynew->sortorder = 1 + get_field_sql("select max(sortorder) from {$CFG->prefix}dp_priority_scale");
+    $prioritynew->sortorder = 1 + $DB->get_field_sql("SELECT MAX(sortorder) FROM {dp_priority_scale}");
 
-    // New priority
     if (empty($prioritynew->id)) {
+        // New priority
         unset($prioritynew->id);
-
-        begin_sql();
-
-        try {
-            if (!$prioritynew->id = insert_record('dp_priority_scale', $prioritynew)) {
-                throw new Exception('error:createnewpriorityscale' ,'local_plan');
+        //set editor field to empty, will be updated properly later
+        $prioritynew->description = '';
+        $transaction = $DB->start_delegated_transaction();
+        $prioritynew->id = $DB->insert_record('dp_priority_scale', $prioritynew);
+        $priorityvalues = explode("\n", trim($prioritynew->priorityvalues));
+        unset($prioritynew->priorityvalues);
+        $sortorder = 1;
+        $priorityidlist = array();
+        foreach ($priorityvalues as $priorityval) {
+            if (strlen(trim($priorityval)) != 0) {
+                $priorityvalrec = new stdClass();
+                $priorityvalrec->priorityscaleid = $prioritynew->id;
+                $priorityvalrec->name = trim($priorityval);
+                $priorityvalrec->sortorder = $sortorder;
+                $priorityvalrec->timemodified = time();
+                $priorityvalrec->usermodified = $USER->id;
+                $priorityidlist[] = $DB->insert_record('dp_priority_scale_value', $priorityvalrec);
+                $sortorder++;
             }
-
-            $priorityvalues = explode("\n", trim($prioritynew->priorityvalues));
-            unset($prioritynew->priorityvalues);
-
-            $sortorder = 1;
-            $priorityidlist = array();
-            foreach ($priorityvalues as $priorityval){
-                if (strlen(trim($priorityval)) != 0){
-                    $priorityvalrec = new stdClass();
-                    $priorityvalrec->priorityscaleid = $prioritynew->id;
-                    $priorityvalrec->name = trim($priorityval);
-                    $priorityvalrec->sortorder = $sortorder;
-                    $priorityvalrec->timemodified = time();
-                    $priorityvalrec->usermodified = $USER->id;
-
-                    $result = insert_record('dp_priority_scale_value', $priorityvalrec);
-                    if (!$result){
-                        throw new Exception('Error creating new IDP priority values');
-                    }
-                    $priorityidlist[] = $result;
-                    $sortorder++;
-                }
-            }
-
-            // Set the default priority value to the least competent one, and the
-            // "proficient" priority value to the most competent one
-            if ( count($priorityidlist) ){
-                $prioritynew->defaultid = $priorityidlist[count($priorityidlist)-1];
-                $prioritynew->proficient = $priorityidlist[0];
-                update_record('dp_priority_scale', $prioritynew);
-            }
-
-            commit_sql();
-        } catch ( Exception $e ){
-            rollback_sql();
-            error( $e->getMessage() );
         }
-    // Existing priority
+        // Set the default priority value to the least competent one, and the
+        // "proficient" priority value to the most competent one
+        if (count($priorityidlist)) {
+            $prioritynew->defaultid = $priorityidlist[count($priorityidlist)-1];
+            $prioritynew->proficient = $priorityidlist[0];
+            $DB->update_record('dp_priority_scale', $prioritynew);
+        }
+        $notification = get_string('priorityscaleadded', 'totara_plan', format_string(stripslashes($prioritynew->name)));
+        $transaction->allow_commit();
     } else {
-        if (update_record('dp_priority_scale', $prioritynew)) {
-            add_to_log(SITEID, 'priorities', 'updated', "view.php?id=$prioritynew->id");
-            totara_set_notification(get_string('priorityscaleupdated', 'local_plan', format_string(stripslashes($prioritynew->name))),
-                "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$prioritynew->id}",
-                array('class' => 'notifysuccess'));
-        } else {
-            error(get_string('error:updatingpriorityscale', 'local_plan'));
-        }
+        // Existing priority
+        $DB->update_record('dp_priority_scale', $prioritynew);
+        add_to_log(SITEID, 'priorityscales', 'updated', "view.php?id=$prioritynew->id");
+        $notification = get_string('priorityscaleupdated', 'totara_plan', format_string(stripslashes($prioritynew->name)));
     }
-
+    $prioritynew = file_postupdate_standard_editor($prioritynew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_plan', 'dp_priority_scale', $prioritynew->id);
+    $DB->set_field('dp_priority_scale', 'description', $prioritynew->description, array('id' => $prioritynew->id));
     // Log
-    add_to_log(SITEID, 'priorities', 'added', "view.php?id=$prioritynew->id");
-    totara_set_notification(get_string('priorityscaleadded', 'local_plan', format_string(stripslashes($prioritynew->name))),
+    add_to_log(SITEID, 'priorityscales', 'added', "view.php?id=$prioritynew->id");
+    totara_set_notification($notification,
         "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$prioritynew->id}",
         array('class' => 'notifysuccess'));
 }
 
 /// Print Page
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("priorityscales", 'local_plan'),
-                    'link'=>"{$CFG->wwwroot}/totara/plan/priorityscales/index.php",
-                    'type'=>'misc');
+$PAGE->navbar->add(get_string("priorityscales", 'totara_plan'), new moodle_url('/totara/plan/priorityscales/index.php'));
+
 if ($id == 0) { // Add
-    $navlinks[] = array('name'=>get_string('priorityscalecreate', 'local_plan'), 'link'=>'', 'type'=>'misc');
-    $heading = get_string('priorityscalecreate', 'local_plan');
+    $PAGE->navbar->add(get_string('priorityscalecreate', 'totara_plan'));
+    $heading = get_string('priorityscalecreate', 'totara_plan');
 } else {    //Edit
-    $navlinks[] = array('name'=>get_string('editpriority', 'local_plan', format_string($priority->name)), 'link'=>'', 'type'=>'misc');
-    $heading = get_string('editpriority', 'local_plan');
+    $PAGE->navbar->add(get_string('editpriority', 'totara_plan', format_string($priority->name)));
+    $heading = get_string('editpriority', 'totara_plan');
 }
 
-admin_externalpage_print_header('', $navlinks);
-print_heading($heading);
+echo $OUTPUT->header();
+echo $OUTPUT->heading($heading);
 $mform->display();
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();
 ?>

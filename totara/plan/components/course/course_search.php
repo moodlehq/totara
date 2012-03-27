@@ -1,20 +1,38 @@
-<?php // $Id$
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Aaron Barnes
+ * @package totara
+ * @subpackage totara_plan
+ */
 
 /**
  * Page containing dependency search results
  *
- * @copyright Totara Learning Solution Limited
- * @author Simon Coggins
- * @author Aaron Barnes
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package totara
- * @subpackage dialog
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot . '/totara/core/searchlib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
@@ -33,7 +51,8 @@ $page = optional_param('page', 0, PARAM_INT); // results page number
 $strsearch = get_string('search');
 #$stritemplural = get_string($type . 'plural', $type);
 $strqueryerror = get_string('queryerror', 'totara_hierarchy');
-
+$context = context_system::instance();
+$PAGE->set_context($context);
 // Trim whitespace off seach query
 $query = urldecode(trim($query));
 
@@ -52,7 +71,7 @@ $mform->display();
 if (strlen($query)) {
 
     // extract quoted strings from query
-    $keywords = course_search_parse_keywords($query);
+    $keywords = totara_search_parse_keywords($query);
 
     $fields = "
         SELECT
@@ -64,40 +83,42 @@ if (strlen($query)) {
 
     $from = "
         FROM
-            {$CFG->prefix}course c
+            {course} c
     ";
 
     $order = ' ORDER BY c.sortorder ASC';
 
     // Match search terms
-    $where = course_search_get_keyword_where_clause($keywords);
-
+    list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, array('c.fullname', 'c.shortname'));
+    $where = ' WHERE ' . $searchsql;
     // Only show courses with completion enabled
     $where .= "
-        AND c.id <> ".SITEID."
+        AND c.id <> ?
         AND c.visible = 1
     ";
-
-    $total = count_records_sql($count . $from . $where);
+    $params[] = SITEID;
+    $total = $DB->count_records_sql($count . $from . $where, $params);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;
     if ($total) {
-        if($results = get_records_sql($fields . $from . $where .
-            $order, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
+        if ($results = $DB->get_records_sql($fields . $from . $where .
+            $order, $params, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
 
             $data = array('query' => urlencode(stripslashes($query)));
 
-            $url = new moodle_url($CFG->wwwroot . '/totara/plan/components/course/course_search.php', $data);
-            print '<div class="search-paging">';
-            print print_paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url, 'page', false, true, 5);
-            print '</div>';
+            $url = new moodle_url('course_search.php', $data);
+
+            $pagingbar = new paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url);
+            $pagingbar->pagevar = 'page';
+            $output = $OUTPUT->render($pagingbar);
+            print $OUTPUT->container($output, "search-paging");
 
             // Generate some treeview data
             $dialog = new totara_dialog_content();
             $dialog->items = array();
             $dialog->parent_items = array();
 
-            foreach($results as $result) {
-                $item = new object();
+            foreach ($results as $result) {
+                $item = new stdClass();
                 $item->id = $result->id;
                 $item->fullname = $result->fullname;
 
@@ -112,71 +133,11 @@ if (strlen($query)) {
             print $strqueryerror;
         }
     } else {
-        $params = new object();
+        $params = new stdClass();
         $params->query = stripslashes($query);
         $errorstr = 'noresultsfor';
-        print '<p class="message">' . get_string($errorstr, 'hierarchy', $params). '</p>';
+        print html_writer::tag('p', get_string($errorstr, 'totara_core', $params), array('class' => "message"));
     }
 } else {
-    print '<br />';
-}
-
-
-/**
- * Parse a query into individual keywords, treating quoted phrases one item
- *
- * Pairs of matching double or single quotes are treated as a single keyword.
- *
- * @param string $query Text from user search field
- *
- * @return array Array of individual keywords parsed from input string
- */
-function course_search_parse_keywords($query) {
-    // query arrives with quotes escaped, but quotes have special meaning
-    // within a query. Strip out slashes, then re-add any that are left
-    // after parsing done (to protect against SQL injection)
-    $query = stripslashes($query);
-
-    $out = array();
-    // break query down into quoted and unquoted sections
-    $split_quoted = preg_split('/(\'[^\']+\')|("[^"]+")/', $query, 0,
-        PREG_SPLIT_DELIM_CAPTURE);
-    foreach($split_quoted as $item) {
-        // strip quotes from quoted strings but leave spaces
-        if(preg_match('/^(["\'])(.*)\\1$/', trim($item), $matches)) {
-            $out[] = addslashes($matches[2]);
-        } else {
-            // split unquoted text on whitespace
-            $keyword = addslashes_recursive(preg_split('/\s/', $item, 0,
-                PREG_SPLIT_NO_EMPTY));
-            $out = array_merge($out, $keyword);
-        }
-    }
-    return $out;
-}
-
-
-/**
- * Return an SQL WHERE clause to search for the given keywords
- *
- * @param array $keywords Array of strings to search for
- *
- * @return string SQL WHERE clause to match the keywords provided
- */
-function course_search_get_keyword_where_clause($keywords) {
-
-    // fields to search
-    $fields = array('c.fullname', 'c.shortname');
-
-    $queries = array();
-    foreach($keywords as $keyword) {
-        $matches = array();
-        foreach($fields as $field) {
-            $matches[] = $field . ' ' . sql_ilike() . " '%" . $keyword . "%'";
-        }
-        // look for each keyword in any field
-        $queries[] = '(' . implode(' OR ', $matches) . ')';
-    }
-    // all keywords must be found in at least one field
-    return ' WHERE ' . implode(' AND ', $queries);
+    print html_writer::empty_tag('br');
 }

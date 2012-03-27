@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas 
  * 
  * This program is free software; you can redistribute it and/or modify  
@@ -35,64 +35,61 @@ $id = required_param('id', PARAM_INT);
 
 admin_externalpage_setup('managetemplates');
 
-if(!get_record('dp_template', 'id', $id)) {
-    error('Invalid template id');
+if (!$DB->get_record('dp_template', array('id' => $id))) {
+    print_error('error:invalidtemplateid', 'totara_plan');
 }
+$instances = $DB->get_records('dp_plan', array('templateid' => $id));
 
-$instances = get_records('dp_plan', 'templateid', $id);
+$PAGE->navbar->add(get_string("managetemplates", "totara_plan"), new moodle_url("/totara/plan/template/index.php"));
+$PAGE->navbar->add(get_string('templateinstances', 'totara_plan'));
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-                    'link'=>"{$CFG->wwwroot}/totara/plan/template/index.php",
-                    'type'=>'misc');
-$navlinks[] = array('name'=>get_string('templateinstances', 'local_plan'), 'link'=>'', 'type'=>'misc');
+echo $OUTPUT->header();
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->heading(get_string('templateinstances', 'totara_plan'));
 
-print_heading(get_string('templateinstances','local_plan'));
-
-if($instances){
+if ($instances) {
     $columns[] = 'name';
-    $headers[] = get_string('name', 'local_plan');
+    $headers[] = get_string('name', 'totara_plan');
     $columns[] = 'user';
     $headers[] = get_string('user');
     $columns[] = 'startdate';
-    $headers[] = get_string('startdate', 'local_plan');
+    $headers[] = get_string('startdate', 'totara_plan');
     $columns[] = 'enddate';
-    $headers[] = get_string('enddate', 'local_plan');
+    $headers[] = get_string('enddate', 'totara_plan');
     $columns[] = 'status';
-    $headers[] = get_string('status', 'local_plan');
+    $headers[] = get_string('status', 'totara_plan');
 
     $table = new flexible_table('Template_instances');
     $table->define_columns($columns);
     $table->define_headers($headers);
+    $table->define_baseurl(new moodle_url('/totara/plan/template/templateinstances.php', array('id' => $id)));
     $table->set_attribute('class', 'generalbox dp-template-instances');
 
     $table->setup();
-    foreach($instances as $instance) {
+    foreach ($instances as $instance) {
         $tablerow = array();
-        $tablerow[] = '<a href=' . $CFG->wwwroot . '/totara/plan/view.php?id=' . $instance->id . '>' . $instance->name . '</a>';
-        $user = get_record('user', 'id', $instance->userid);
-        $tablerow[] = '<a href=' . $CFG->wwwroot . '/user/view.php?id='.$user->id . '>' . $user->firstname .' '. $user->lastname . '</a>';
+        $tablerow[] = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $instance->id)), $instance->name);
+        $user = $DB->get_record('user', array('id' => $instance->userid));
+        $tablerow[] = $OUTPUT->action_link(new moodle_url('/user/view.php', array('id' => $user->id)), $user->firstname . ' ' . $user->lastname);
         $tablerow[] = date('j M Y', $instance->startdate);
         $tablerow[] = date('j M Y', $instance->enddate);
 
-        switch($instance->status){
+        switch($instance->status) {
             case DP_PLAN_STATUS_UNAPPROVED:
-                $status = get_string('unapproved', 'local_plan');
+                $status = get_string('unapproved', 'totara_plan');
                 break;
             case DP_PLAN_STATUS_APPROVED:
-                $status = get_string('approved', 'local_plan');
+                $status = get_string('approved', 'totara_plan');
                 break;
 
             case DP_PLAN_STATUS_COMPLETE:
-                $status = get_string('complete', 'local_plan');
+                $status = get_string('complete', 'totara_plan');
                 break;
         }
         $tablerow[] = $status;
         $table->add_data($tablerow);
     }
-    $table->print_html();
+    $table->finish_html();
 }
-print_footer();
+echo $OUTPUT->footer();
 ?>

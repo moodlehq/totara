@@ -2,8 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +45,9 @@ class dp_program_component extends dp_base_component {
      * @return  void
      */
     public function initialize_settings(&$settings) {
-        if ($programsettings = get_record('dp_program_settings', 'templateid', $this->plan->templateid)) {
+        global $DB;
+
+        if ($programsettings = $DB->get_record('dp_program_settings', array('templateid' => $this->plan->templateid))) {
             $settings[$this->component.'_duedatemode'] = $programsettings->duedatemode;
             $settings[$this->component.'_prioritymode'] = $programsettings->prioritymode;
             $settings[$this->component.'_priorityscale'] = $programsettings->priorityscale;
@@ -60,10 +61,8 @@ class dp_program_component extends dp_base_component {
      * @return  object|false
      */
     public function get_assigned_item($itemid) {
-        global $CFG;
-
-        $assigned = get_record_sql(
-            "
+        global $DB;
+        $sql = "
             SELECT
                 a.id,
                 a.planid,
@@ -72,17 +71,15 @@ class dp_program_component extends dp_base_component {
                 p.fullname,
                 a.approved
             FROM
-                {$CFG->prefix}dp_plan_program_assign a
+                {dp_plan_program_assign} a
             INNER JOIN
-                {$CFG->prefix}prog p
+                {prog} p
              ON p.id = a.programid
             WHERE
-                a.planid = {$this->plan->id}
-            AND a.id = {$itemid}
-            "
-        );
-
-        return $assigned;
+                a.planid = ?
+            AND a.id = ?";
+        $params = array($this->plan->id, $itemid);
+        return $DB->get_record_sql($sql, $params);
     }
 
     /**
@@ -98,15 +95,16 @@ class dp_program_component extends dp_base_component {
      * @return  array
      */
     public function get_assigned_items($approved = null, $orderby='', $limitfrom='', $limitnum='') {
-        global $CFG;
+        global $DB;
+        //TODO SCANMSG: check this works now it's using prepared statements
 
-        // Generate where clause
-        $where = "a.planid = {$this->plan->id}";
+        // Generate where clause (using named parameters because of how query is built)
+        $where = "a.planid = :planid";
+        $params = array('planid' => $this->plan->id);
         if ($approved !== null) {
-            if (is_array($approved)) {
-                $approved = implode(', ', $approved);
-            }
-            $where .= " AND a.approved IN ({$approved})";
+            list($approvedsql, $approvedparams) = $DB->get_in_or_equal($approved, SQL_PARAMS_NAMED, 'approved');
+            $where .= " AND a.approved {$approvedsql}";
+            $params = array_merge($params, $approvedparams);
         }
         // Generate order by clause
         if ($orderby) {
@@ -118,12 +116,13 @@ class dp_program_component extends dp_base_component {
         // can be sorted
         $completion_field .= 'pc.status AS progress,';
         $completion_joins = "LEFT JOIN
-            {$CFG->prefix}prog_completion pc
+            {prog_completion} pc
             ON ( pc.programid = a.programid
-            AND pc.userid = {$this->plan->userid}
+            AND pc.userid = :planuserid
             AND pc.coursesetid = 0)";
+        $params['planuserid'] = $this->plan->userid;
 
-        $assigned = get_records_sql(
+        return $DB->get_records_sql(
             "
             SELECT
                 a.*,
@@ -132,24 +131,20 @@ class dp_program_component extends dp_base_component {
                 p.fullname AS name,
                 p.icon
             FROM
-                {$CFG->prefix}dp_plan_program_assign a
+                {dp_plan_program_assign} a
                 $completion_joins
             INNER JOIN
-                {$CFG->prefix}prog p
+                {prog} p
              ON p.id = a.programid
             WHERE
                 $where
                 $orderby
             ",
+            $params,
             $limitfrom,
             $limitnum
         );
 
-        if (!$assigned) {
-            $assigned = array();
-        }
-
-        return $assigned;
     }
 
     /**
@@ -174,15 +169,15 @@ class dp_program_component extends dp_base_component {
 
             // Load item
             if (!$deleteitem = $this->get_assigned_item($delete)) {
-                print_error('error:couldnotfindassigneditem', 'local_plan');
+                print_error('error:couldnotfindassigneditem', 'totara_plan');
             }
 
             // Unassign item
             if ($this->unassign_item($deleteitem)) {
                 add_to_log(SITEID, 'plan', 'removed program', "component.php?id={$this->plan->id}&amp;c=program", "{$deleteitem->fullname} (ID:{$deleteitem->id})");
-                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('class' => 'notifysuccess'));
+                totara_set_notification(get_string('canremoveitem', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
             } else {
-                print_error('error:couldnotunassignitem', 'local_plan');
+                print_error('error:couldnotunassignitem', 'totara_plan');
             }
         }
     }
@@ -199,7 +194,7 @@ class dp_program_component extends dp_base_component {
         // if duedatemode is required
         // @todo consider handling differently - currently all updates must
         // work or nothing is changed - is that the best way?
-        global $CFG;
+        global $CFG, $DB;
 
         if (!confirm_sesskey()) {
             return 0;
@@ -211,13 +206,12 @@ class dp_program_component extends dp_base_component {
         $priorities = optional_param('priorities_program', array(), PARAM_TEXT);
         $approvals = optional_param('approve_program', array(), PARAM_INT);
         $currenturl = qualified_me();
-        $stored_records = array();
 
-        if(!empty($duedates) && $cansetduedates) {
-            $badduedates = array();  // Record naughty duedates
-            foreach($duedates as $id => $duedate) {
+        if (!empty($duedates) && $cansetduedates) {
+            $datepickerplaceholder = get_string('datepickerplaceholder', 'totara_core');
+            foreach ($duedates as $id => $duedate) {
                 // allow empty due dates
-                if($duedate == '' || $duedate == 'dd/mm/yy') {
+                if ($duedate == '' || $duedate == $datepickerplaceholder) {
                     // set all empty due dates to the plan due date
                     // if they are required
                     if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
@@ -240,22 +234,22 @@ class dp_program_component extends dp_base_component {
                     $duedateout = mktime(0, 0, 0, $mon, $day, $year);
                 }
 
-                $todb = new object();
+                $todb = new stdClass();
                 $todb->id = $id;
                 $todb->duedate = $duedateout;
                 $stored_records[$id] = $todb;
             }
         }
 
-        if(!empty($priorities)) {
-            foreach($priorities as $pid => $priority) {
+        if (!empty($priorities)) {
+            foreach ($priorities as $pid => $priority) {
                 $priority = (int) $priority;
-                if(array_key_exists($pid, $stored_records)) {
+                if (array_key_exists($pid, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$pid]->priority = $priority;
                 } else {
                     // create a new update object
-                    $todb = new object();
+                    $todb = new stdClass();
                     $todb->id = $pid;
                     $todb->priority = $priority;
                     $stored_records[$pid] = $todb;
@@ -270,12 +264,12 @@ class dp_program_component extends dp_base_component {
                     continue;
                 }
                 $approval = (int) $approval;
-                if(array_key_exists($id, $stored_records)) {
+                if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$id]->approved = $approval;
                 } else {
                     // create a new update object
-                    $todb = new object();
+                    $todb = new stdClass();
                     $todb->id = $id;
                     $todb->approved = $approval;
                     $stored_records[$id] = $todb;
@@ -283,119 +277,100 @@ class dp_program_component extends dp_base_component {
             }
         }
 
-        $status = true;
         if (!empty($stored_records)) {
-            $oldrecords = get_records_list('dp_plan_program_assign', 'id', implode(',', array_keys($stored_records)));
+            $oldrecords = $DB->get_records_list('dp_plan_program_assign', 'id', array_keys($stored_records));
 
             $updates = '';
-            $approvals = array();
-            begin_sql();
-            foreach($stored_records as $itemid => $record) {
-                // Update the record
-                $status = $status & update_record('dp_plan_program_assign', $record);
+            $transaction = $DB->start_delegated_transaction();
 
+            foreach ($stored_records as $itemid => $record) {
+                // Update the record
+                $DB->update_record('dp_plan_program_assign', $record);
                 // update the due date for the program completion record
                 if (isset($record->duedate)) {
-                    if ($prog_plan = get_record('dp_plan_program_assign', 'id', $record->id)) {
+                    if ($prog_plan = $DB->get_record('dp_plan_program_assign', array('id' => $record->id))) {
                         $program = new program($prog_plan->programid);
                         $completionsettings = array(
-                            'timedue' => $record->duedate
-                        );
-
-                        $status = $status & $program->update_program_complete($this->plan->userid, $completionsettings);
+                                'timedue' => $record->duedate
+                                );
+                        $program->update_program_complete($this->plan->userid, $completionsettings);
                     }
                 }
             }
+            $transaction->allow_commit();
 
-            if ($status) {
-                commit_sql();
-
-                // Process update alerts
-                foreach($stored_records as $itemid => $record) {
-                    // Record the updates for later use
-                    $program = get_record('prog', 'id', $oldrecords[$itemid]->programid);
-                    $programheader = '<p><strong>'.format_string($program->fullname).": </strong><br>";
-                    $programprinted = false;
-                    if (!empty($record->priority) && $oldrecords[$itemid]->priority != $record->priority) {
-                        $oldpriority = get_field('dp_priority_scale_value', 'name', 'id', $oldrecords[$itemid]->priority);
-                        $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
-                        $updates .= $programheader;
-                        $programprinted = true;
-                        $updates .= get_string('priority', 'local_plan').' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                                (object)array('before'=>$oldpriority, 'after'=>$newpriority))."<br>";
-                    }
-                    if (!empty($record->duedate) && $oldrecords[$itemid]->duedate != $record->duedate) {
-                        $updates .= $programprinted ? '' : $programheader;
-                        $programprinted = true;
-                        $updates .= get_string('duedate', 'local_plan').' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                            (object)array('before'=>empty($oldrecords[$itemid]->duedate) ? '' :
-                                userdate($oldrecords[$itemid]->duedate, '%e %h %Y', $CFG->timezone, false),
-                            'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
-                    }
-                    if (!empty($record->approved) && $oldrecords[$itemid]->approved != $record->approved) {
-                        $approval = new object();
-                        $text = $programheader;
-                        $text .= get_string('approval', 'local_plan').' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                            (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
-                            'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
-                        $approval->text = $text;
-                        $approval->itemname = $program->fullname;
-                        $approval->before = $oldrecords[$itemid]->approved;
-                        $approval->after = $record->approved;
-                        $approvals[] = $approval;
-
-                    }
-                    $updates .= $programprinted ? '</p>' : '';
-                }  // foreach
-
-                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
-                    foreach($approvals as $approval) {
-                        $this->send_component_approval_alert($approval);
-
-                        $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';
-                        add_to_log(SITEID, 'plan', "{$action} program", "component.php?id={$this->plan->id}&amp;c=program", $approval->itemname);
-                    }
+            // Process update alerts
+            foreach ($stored_records as $itemid => $record) {
+                // Record the updates for later use
+                $program = $DB->get_record('prog', array('id' => $oldrecords[$itemid]->programid));
+                $programheader = html_writer::start_tag('p', html_writer::tag('strong', format_string($program->fullname).':')) . html_writer::empty_tag('br');
+                $programprinted = false;
+                if (!empty($record->priority) && $oldrecords[$itemid]->priority != $record->priority) {
+                    $oldpriority = $DB->get_field('dp_priority_scale_value', 'name', array('id' => $oldrecords[$itemid]->priority));
+                    $newpriority = $DB->get_field('dp_priority_scale_value', 'name', array('id' => $record->priority));
+                    $updates .= $programheader;
+                    $programprinted = true;
+                    $updates .= get_string('priority', 'totara_plan').' - '.
+                        get_string('changedfromxtoy', 'totara_plan', (object)array('before' => $oldpriority, 'after' => $newpriority)).html_writer::empty_tag('br');
                 }
-
-                // Send update alert
-                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
-                    $this->send_component_update_alert($updates);
+                if (!empty($record->duedate) && $oldrecords[$itemid]->duedate != $record->duedate) {
+                    $updates .= $programprinted ? '' : $programheader;
+                    $programprinted = true;
+                    $updates .= get_string('duedate', 'totara_plan').' - '.
+                        get_string('changedfromxtoy', 'totara_plan', (object)array('before' => empty($oldrecords[$itemid]->duedate) ? '' :
+                                    userdate($oldrecords[$itemid]->duedate, '%e %h %Y', $CFG->timezone, false),
+                                    'after' => userdate($record->duedate, '%e %h %Y', $CFG->timezone, false))).html_writer::empty_tag('br');
                 }
+                if (!empty($record->approved) && $oldrecords[$itemid]->approved != $record->approved) {
+                    $approval = new stdClass();
+                    $text = $programheader;
+                    $text .= get_string('approval', 'totara_plan').' - '.
+                        get_string('changedfromxtoy', 'totara_plan', (object)array('before' => dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
+                                    'after' => dp_get_approval_status_from_code($record->approved))).html_writer::empty_tag('br');
+                    $approval->text = $text;
+                    $approval->itemname = $program->fullname;
+                    $approval->before = $oldrecords[$itemid]->approved;
+                    $approval->after = $record->approved;
+                    $approvals[] = $approval;
 
-            } else {
-                rollback_sql();
+                }
+                $updates .= $programprinted ? html_writer::end_tag('p') : '';
+            }  // foreach
+
+            if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
+                foreach ($approvals as $approval) {
+                    $this->send_component_approval_alert($approval);
+
+                    $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';
+                    add_to_log(SITEID, 'plan', "{$action} program", "component.php?id={$this->plan->id}&amp;c=program", $approval->itemname);
+                }
+            }
+
+            // Send update alert
+            if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
+                $this->send_component_update_alert($updates);
             }
 
             $currenturl = new moodle_url($currenturl);
             $currenturl->remove_params('badduedates');
             if (!empty($badduedates)) {
-                $currenturl->params(array('badduedates'=>implode(',', $badduedates)));
+                $currenturl->params(array('badduedates' => implode(',', $badduedates)));
             }
             $currenturl = $currenturl->out();
 
             if ($this->plan->reviewing_pending) {
-                return $status;
+                return true;
             }
             else {
-                if ($status) {
-                    $issuesnotification = '';
-                    if (!empty($badduedates)) {
-                        $issuesnotification .= $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED ?
-                            '<br>'.get_string('noteduedateswrongformatorrequired', 'local_plan') : '<br>'.get_string('noteduedateswrongformat', 'local_plan');
-                    }
+                $issuesnotification = '';
+                if (!empty($badduedates)) {
+                    $issuesnotification .= $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED ?
+                        html_writer::empty_tag('br').get_string('noteduedateswrongformatorrequired', 'totara_plan') : html_writer::empty_tag('br').get_string('noteduedateswrongformat', 'totara_plan');
+                }
 
-                    // Do not create notification or redirect if ajax request
-                    if (!$ajax) {
-                        totara_set_notification(get_string('programsupdated','local_plan').$issuesnotification, $currenturl, array('class' => 'notifysuccess'));
-                    }
-                } else {
-                    // Do not create notification or redirect if ajax request
-                    if (!$ajax) {
-                        totara_set_notification(get_string('programsnotupdated','local_plan'), $currenturl);
-                    }
+                // Do not create notification or redirect if ajax request
+                if (!$ajax) {
+                    totara_set_notification(get_string('programsupdated', 'totara_plan').$issuesnotification, $currenturl, array('class' => 'notifysuccess'));
                 }
             }
         }
@@ -417,15 +392,16 @@ class dp_program_component extends dp_base_component {
      * return boolean
      */
     public static function is_priority_scale_used($scaleid) {
-        global $CFG;
+        global $DB;
         $sql = "
             SELECT pa.id
-            FROM {$CFG->prefix}dp_plan_program_assign pa
+            FROM {dp_plan_program_assign} pa
             LEFT JOIN
-                {$CFG->prefix}dp_priority_scale_value psv
+                {dp_priority_scale_value} psv
             ON pa.priority = psv.id
-            WHERE psv.priorityscaleid = {$scaleid}";
-        return record_exists_sql($sql);
+            WHERE psv.priorityscaleid = ?";
+        $params = array($scaleid);
+        return $DB->record_exists_sql($sql, $params);
     }
 
     /**
@@ -437,10 +413,10 @@ class dp_program_component extends dp_base_component {
     public function post_header_hook() {
         $delete = optional_param('d', 0, PARAM_INT); // program assignment id to delete
         $currenturl = $this->get_url();
-
+        $continueurl = new moodle_url($currenturl->out(), array('d' => $delete, 'confirm' => '1', 'sesskey' => sesskey()));
         if ($delete) {
-            notice_yesno(get_string('confirmitemdelete','local_plan'), $currenturl.'&amp;d='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(), $currenturl);
-            print_footer();
+            echo $OUTPUT->confirm(get_string('confirmitemdelete', 'totara_plan'), $continueurl, $currenturl);
+            echo $OUTPUT->footer();
             die();
         }
     }
@@ -455,17 +431,18 @@ class dp_program_component extends dp_base_component {
      * @return  object  Inserted record
      */
     public function assign_new_item($itemid, $checkpermissions = true, $manual = true) {
+        global $DB;
 
         // Get approval value for new item if required
         if ($checkpermissions) {
             if (!$permission = $this->can_update_items()) {
-                print_error('error:cannotupdateprograms', 'local_plan');
+                print_error('error:cannotupdateprograms', 'totara_plan');
             }
         } else {
             $permission = DP_PERMISSION_ALLOW;
         }
 
-        $item = new object();
+        $item = new stdClass();
         $item->planid = $this->plan->id;
         $item->programid = $itemid;
         $item->priority = null;
@@ -482,7 +459,7 @@ class dp_program_component extends dp_base_component {
         }
 
         // Set approved status
-        if ( $permission >= DP_PERMISSION_ALLOW ) {
+        if ($permission >= DP_PERMISSION_ALLOW) {
             $item->approved = DP_APPROVAL_APPROVED;
         }
         else { # $permission == DP_PERMISSION_REQUEST
@@ -490,24 +467,22 @@ class dp_program_component extends dp_base_component {
         }
 
         // Load fullname of item
-        $item->fullname = get_field('prog', 'fullname', 'id', $itemid);
+        $item->fullname = $DB->get_field('prog', 'fullname', array('id' => $itemid));
 
+        $result = $DB->insert_record('dp_plan_program_assign', $item);
         add_to_log(SITEID, 'plan', 'added program', "component.php?id={$this->plan->id}&amp;c=program", "Program ID: {$itemid}");
+        $item->id = $result;
 
-        if ($result = insert_record('dp_plan_program_assign', $item)) {
-            $item->id = $result;
+        // create a completion record for this program for this plan's user to
+        // record when the program was started and when it is due
+        $program = new program($item->programid);
+        $completionsettings = array(
+            'status'        => STATUS_PROGRAM_INCOMPLETE,
+            'timestarted'   => time(),
+            'timedue'       => $item->duedate !== null ? $item->duedate : 0
+        );
 
-            // create a completion record for this program for this plan's user to
-            // record when the program was started and when it is due
-            $program = new program($item->programid);
-            $completionsettings = array(
-                'status'        => STATUS_PROGRAM_INCOMPLETE,
-                'timestarted'   => time(),
-                'timedue'       => $item->duedate !== null ? $item->duedate : 0
-            );
-
-            $program->update_program_complete($this->plan->userid, $completionsettings);
-        }
+        $program->update_program_complete($this->plan->userid, $completionsettings);
 
         return $result ? $item : $result;
     }
@@ -539,7 +514,7 @@ class dp_program_component extends dp_base_component {
             }
 
             // check that the program is not complete (don't delete the history record if the program has already been completed)
-            if ( ! $program->is_program_complete($userid)) {
+            if (!$program->is_program_complete($userid)) {
                 $result = $program->delete_completion_record($userid);
             }
             return $result;
@@ -555,8 +530,7 @@ class dp_program_component extends dp_base_component {
      * @return  void
      */
     public function setup_picker() {
-        global $CFG;
-
+            global $PAGE;
         // If we are showing dialog
         if ($this->can_update_items()) {
             // Setup lightbox
@@ -565,11 +539,26 @@ class dp_program_component extends dp_base_component {
                 TOTARA_JS_TREEVIEW
             ));
 
+            $component_name = required_param('c', PARAM_ALPHA);
+            $sesskey = sesskey();
+
             // Get course picker
-            require_js(array(
-                $CFG->wwwroot.'/totara/plan/component.js.php?planid='.$this->plan->id.'&amp;component=program&amp;viewas='.$this->plan->viewas,
-                $CFG->wwwroot.'/totara/plan/components/program/find.js.php'
-            ));
+            $jsmodule = array(
+                'name' => 'totara_plan_component',
+                'fullpath' => '/totara/plan/component.js',
+                'requires' => array('json'));
+            $PAGE->requires->js_init_call('M.totara_plan_component.init', array('args' => '{"plan_id":'.$this->plan->id.', "component_name":"'.$component_name.'", "sesskey":"'.$sesskey.'"}'), false, $jsmodule);
+
+            $PAGE->requires->string_for_js('save', 'totara_core');
+            $PAGE->requires->string_for_js('cancel', 'moodle');
+            $PAGE->requires->string_for_js('continue', 'moodle');
+            $PAGE->requires->string_for_js('addprograms', 'totara_plan');
+
+            $jsmodule = array(
+                'name' => 'totara_plan_program_find',
+                'fullpath' => '/totara/plan/components/program/find.js',
+                'requires' => array('json'));
+            $PAGE->requires->js_init_call('M.totara_plan_program_find.init', array('args' => '{"plan_id":'.$this->plan->id.'}'), false, $jsmodule);
         }
     }
 
@@ -599,7 +588,7 @@ class dp_program_component extends dp_base_component {
      */
     protected function display_list_item_progress($item) {
         $program = new program($item->programid);
-        return $this->is_item_approved($item->approved) ? $program->display_progress($this->plan->userid) : get_string('unapproved', 'local_plan');
+        return $this->is_item_approved($item->approved) ? $program->display_progress($this->plan->userid) : get_string('unapproved', 'totara_plan');
     }
 
     /**
@@ -610,10 +599,10 @@ class dp_program_component extends dp_base_component {
     function get_list_headers() {
         $headers = parent::get_list_headers();
 
-        foreach ($headers->headers as $i=>$h) {
-            if ($h == get_string('status', 'local_plan')) {
+        foreach ($headers->headers as $i => $h) {
+            if ($h == get_string('status', 'totara_plan')) {
                 // Replace 'Status' header with 'Progress'
-                $headers->headers[$i] = get_string('progress', 'local_plan');
+                $headers->headers[$i] = get_string('progress', 'totara_plan');
                 break;
             }
         }
@@ -629,15 +618,15 @@ class dp_program_component extends dp_base_component {
      * @return string $markup the display markup
      */
     protected function display_list_item_actions($item) {
-        global $CFG;
+        global $OUTPUT;
 
         $markup = '';
 
         // Actions
         if ($this->can_delete_item($item)) {
             $currenturl = $this->get_url();
-            $strdelete = get_string('delete', 'local_plan');
-            $delete = '<a href="'.$currenturl.'&amp;d='.$item->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+            $strdelete = get_string('delete', 'totara_plan');
+            $delete = $OUTPUT->action_icon(new moodle_url($currenturl, array('d' => $item->id)), new pix_icon('/t/delete', $strdelete));
             $markup .= $delete;
         }
         return $markup;
@@ -658,11 +647,12 @@ class dp_program_component extends dp_base_component {
 
         $extraparams = '';
         if ($viewingasmanager) {
-            $extraparams = '&amp;userid='.$this->plan->userid;
+            $extraparams = $this->plan->userid;
         }
 
         $prog = new program($item->programid);
         $accessible = $prog->is_accessible();
+
 
         $img = $OUTPUT->pix_icon('/programicons/' . $item->icon, format_string($item->fullname), 'totara_core');
         if ($approved && $accessible) {
@@ -686,21 +676,21 @@ class dp_program_component extends dp_base_component {
      * @return string HTML string to display the course information
      */
     function display_program_detail($progassid) {
-        global $CFG, $OUTPUT;
+        global $DB, $OUTPUT;
 
         $sql = "SELECT pa.*, prog.*, pc.status AS programcompletion
-                FROM {$CFG->prefix}dp_plan_program_assign pa
-                LEFT JOIN {$CFG->prefix}prog prog ON prog.id = pa.programid
-                LEFT JOIN {$CFG->prefix}prog_completion pc ON ( prog.id = pc.programid AND pc.userid = {$this->plan->userid} AND pc.coursesetid = 0)
-                WHERE pa.id = $progassid";
-        $item = get_record_sql($sql);
+                FROM {dp_plan_program_assign} pa
+                LEFT JOIN {prog} prog ON prog.id = pa.programid
+                LEFT JOIN {prog_completion} pc ON ( prog.id = pc.programid AND pc.userid = ? AND pc.coursesetid = 0)
+                WHERE pa.id = ?";
+        $params = array($this->plan->userid, $progassid);
+        $item = $DB->get_record_sql($sql, $params);
 
         if (!$item) {
-            return get_string('programnotfound', 'local_plan');
+            return get_string('programnotfound', 'totara_plan');
         }
 
         $out = '';
-
         $icon = $OUTPUT->pix_icon("/programicons/" . $item->icon, format_string($item->fullname), 'totara_core');
         $out .= $OUTPUT->heading($icon . format_string($item->fullname), 3);
 
@@ -750,10 +740,10 @@ class dp_program_component extends dp_base_component {
         }
 
         $progress_str = "{$completedcount}/" . count($programs) . " " .
-            get_string('programscomplete', 'local_program') . ", {$inprogresscount} " .
-            get_string('inprogress', 'local_plan') . "\n";
+            get_string('programscomplete', 'totara_program') . ", {$inprogresscount} " .
+            get_string('inprogress', 'totara_plan') . "\n";
 
-        $progress = new object();
+        $progress = new stdClass();
         $progress->complete = $completionsum;
         $progress->total = count($programs);
         $progress->text = $progress_str;
@@ -770,26 +760,24 @@ class dp_program_component extends dp_base_component {
      * @return array|false $plans ids of plans with specified program
      */
     public static function get_plans_containing_item($programid, $userid) {
-        global $CFG;
+        global $DB;
+
         $sql = "SELECT DISTINCT
                 planid
             FROM
-                {$CFG->prefix}dp_plan_program_assign pa
+                {dp_plan_program_assign} pa
             JOIN
-                {$CFG->prefix}dp_plan p
+                {dp_plan} p
               ON
                 pa.planid = p.id
             WHERE
-                pa.programid = {$programid}
+                pa.programid = ?
             AND
-                p.userid = {$userid}";
+                p.userid = ?";
+        $params = array($programid, $userid);
 
-        if (!$plans = get_records_sql($sql)) {
-            // There are no plans with this program
-            return false;
-        }
-
-        return array_keys($plans);
+        $plans = $DB->get_fieldset_sql($sql, $params);
+        return $plans;
     }
 
     /**

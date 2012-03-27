@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas 
  * 
  * This program is free software; you can redistribute it and/or modify  
@@ -34,31 +34,26 @@ $caid = required_param('itemid', PARAM_INT); // course assignment id
 $plan = new development_plan($id);
 $componentname = 'course';
 $component = $plan->get_component($componentname);
-$returnurl = $CFG->wwwroot . '/totara/plan/components/course/view.php?id='.$id.'&amp;itemid='.$caid;
-$currenturl = $CFG->wwwroot . '/totara/plan/components/course/assess.php?id='.$id.'&amp;itemid='.$caid;
 
 $fullname = $plan->name;
-$pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
-$navlinks = array();
-dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$id, 'type'=>'title');
-$navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
-$navlinks[] = array('name' => get_string('assessitem','local_plan'), 'link' => '', 'type' => 'title');
+$pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
+dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+$PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $planid)));
+$PAGE->navbar->add(get_string($component->component, 'totara_plan'), $component->get_url());
+$PAGE->navbar->add(get_string('assessitem', 'totara_plan'));
 
-$navigation = build_navigation($navlinks);
+$PAGE->set_title($pagetitle);
 
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+echo $OUTPUT->header();
 
 print $plan->display_plan_message_box();
 
-print_heading($fullname);
+echo $OUTPUT->heading($fullname);
 
 print $plan->display_tabs($componentname);
 
 print $component->display_back_to_index_link();
 
-
-print_footer();
-
+echo $OUTPUT->footer();
 
 ?>

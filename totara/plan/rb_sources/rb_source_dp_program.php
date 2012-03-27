@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ class rb_source_dp_program extends rb_base_source {
     public $defaultfilters, $requiredcolumns, $sourcetitle;
 
     function __construct() {
-        global $CFG;
         $this->base = '{prog}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
@@ -58,7 +57,6 @@ class rb_source_dp_program extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
 
         $joinlist = array(
             new rb_join(
@@ -209,16 +207,16 @@ class rb_source_dp_program extends rb_base_source {
     }
 
     function rb_display_program_completion_progress($status,$row) {
-        global $CFG;
         $program = new program($row->programid);
         return $program->display_progress($row->userid);
     }
 
     function rb_display_timedue_date($time,$row) {
+        global $OUTPUT;
 
         $completionstatus = $row->completionstatus;
 
-        if ($time==0) {
+        if ($time == 0) {
             return get_string('noduedate', 'totara_plan');;
         }
 
@@ -235,17 +233,15 @@ class rb_source_dp_program extends rb_base_source {
                 $days = get_string('overdue', 'totara_plan');
             }
         }
-
         if ($days != '') {
-            $out .= html_writer::empty_tag('br');
-            $out .= html_writer::tag('span', $days, array('class' => 'error'));
+            $out .= html_writer::empty_tag('br') . $OUTPUT->error_text($days);
         }
 
         return $out;
     }
 
     function rb_display_mandatory_status($id) {
-        global $CFG, $OUTPUT;
+        global $OUTPUT;
         if (!empty($id)) {
             return $OUTPUT->pix_icon('/i/tick_green_big', get_string('yes'));
         }
@@ -253,7 +249,7 @@ class rb_source_dp_program extends rb_base_source {
     }
 
     function rb_display_recurring_status($programid, $row) {
-        global $CFG;
+        global $OUTPUT;
 
         $userid = $row->userid;
 
@@ -264,10 +260,8 @@ class rb_source_dp_program extends rb_base_source {
             $courseset = $coursesets[0];
             if ($courseset->is_recurring()) {
                 $recurringcourse = $courseset->course;
-                $viewurl = new moodle_url('/totara/plan/record/programs_recurring.php',
-                    array('programid' => $program->id, 'userid' => $userid));
-                $link = get_string('yes').
-                    html_writer::link($viewurl, get_string('viewrecurringprogramhistory', 'totara_program'));
+                $link = get_string('yes');
+                $link .= $OUTPUT->action_link(new moodle_url('/totara/plan/record/programs_recurring.php', array('programid' => $program->id, 'userid' => $userid)), get_string('viewrecurringprogramhistory', 'totara_program'));
                 return $link;
             }
         }

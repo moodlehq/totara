@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,21 +40,15 @@ $currentcomponent = $component;
 
 if ($currentcomponent == 'competency') {
     local_js();
-    require_js(
-        array(
-            $CFG->wwwroot .  '/totara/plan/components/competency/competency.settings.js'
-        )
-    );
+    $PAGE->requires->js('/totara/plan/components/competency/competency.settings.js');
 }
 
 admin_externalpage_setup('managetemplates');
 
-if(!$template = get_record('dp_template', 'id', $id)){
-    error(get_string('error:invalidtemplateid', 'local_plan'));
-}
+$template = $DB->get_record('dp_template', array('id' => $id));
 
-$components = get_records('dp_component_settings', 'templateid', $id, 'sortorder');
-$plans = count_records('dp_plan', 'templateid', $id);
+$components = $DB->get_records('dp_component_settings', array('templateid' => $id), 'sortorder');
+$plans = $DB->count_records('dp_plan', array('templateid' => $id));
 if (!empty($plans)) {
     $templateinuse = true;
 } else {
@@ -64,12 +58,12 @@ if (!empty($plans)) {
 $mform = new dp_template_advanced_workflow_form(null,
     array('id' => $id, 'component' => $component, 'templateinuse' => $templateinuse));
 
-if ($mform->is_cancelled()){
+if ($mform->is_cancelled()) {
     // user cancelled form
 }
 if ($fromform = $mform->get_data()) {
 
-    if($component == 'plan') {
+    if ($component == 'plan') {
         $class = 'development_plan';
         require_once("{$CFG->dirroot}/totara/plan/settings_form.php");
     } else {
@@ -78,21 +72,21 @@ if ($fromform = $mform->get_data()) {
         $cpath = "{$CFG->dirroot}/totara/plan/components/{$component}";
         $formfile  = "{$cpath}/settings_form.php";
 
-        if(!is_readable($formfile)) {
-            $string_properties = new object();
+        if (!is_readable($formfile)) {
+            $string_properties = new stdClass();
             $string_properties->classfile = $classfile;
             $string_properties->component = $component;
-            throw new PlanException(get_string('noclassfileforcomponent', 'local_plan', $string_properties));
+            throw new PlanException(get_string('noclassfileforcomponent', 'totara_plan', $string_properties));
         }
         require_once($formfile);
 
         // Check class exists
         $class = "dp_{$component}_component";
-        if(!class_exists($class)) {
-            $string_properties = new object();
+        if (!class_exists($class)) {
+            $string_properties = new stdClass();
             $string_properties->class = $class;
             $string_properties->component = $component;
-            throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_properties));
+            throw new PlanException(get_string('noclassforcomponent', 'totara_plan', $string_properties));
         }
     }
     if ($templateinuse) {
@@ -101,29 +95,24 @@ if ($fromform = $mform->get_data()) {
 
     $process_form = "{$class}_process_settings_form";
     $process_form($fromform, $id);
-
-    redirect($CFG->wwwroot . '/totara/plan/template/advancedworkflow.php?id='.$id.'&amp;component='.$component);
+    redirect(new moodle_url('/totara/plan/template/advancedworkflow.php', array('id' => $id, 'component' => $component)));
 }
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-    'link'=>"{$CFG->wwwroot}/totara/plan/template/index.php",
-    'type'=>'misc');
-$navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
+$PAGE->navbar->add(format_string($template->fullname));
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-if($template){
-    print_heading($template->fullname);
+if ($template) {
+    echo $OUTPUT->heading($template->fullname);
 } else {
-    print_heading(get_string('newtemplate', 'local_plan'));
+    echo $OUTPUT->heading(get_string('newtemplate', 'totara_plan'));
 }
 
 $currenttab = 'workflowplan';
 require('tabs.php');
 
-print_single_button($CFG->wwwroot.'/totara/plan/template/workflow.php', array('id' => $id), get_string('simpleworkflow', 'local_plan'));
+echo $OUTPUT->single_button(new moodle_url('/totara/plan/template/workflow.php', array('id' => $id)), get_string('simpleworkflow', 'totara_plan'), 'get');
 
 $mform->display();
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();

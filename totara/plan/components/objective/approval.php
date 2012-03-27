@@ -2,8 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * 
  * This program is free software; you can redistribute it and/or modify  
  * it under the terms of the GNU General Public License as published by  
@@ -20,7 +19,7 @@
  *
  * @author Aaron Wells <aaronw@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
@@ -36,62 +35,53 @@ $confirm = optional_param('confirm', 0, PARAM_INT); // confirm the action
 $plan = new development_plan($id);
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
-$currenturl = $CFG->wwwroot . '/totara/plan/components/objective/approval.php?id='.$id.'&amp;itemid='.$caid.'&amp;action='.$action;
+$currenturl = new moodle_url('/totara/plan/components/objective/approval.php', array('id' => $id, 'itemid' => $caid, 'action' => $action));
 $returnurl = $component->get_url();
 $canapproveobjective = $component->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
 
-if($confirm) {
-    if(!confirm_sesskey()) {
+if ($confirm) {
+    if (!confirm_sesskey()) {
         totara_set_notification(get_string('confirmsesskeybad','error'), $returnurl);
     }
-    if(!$canapproveobjective) {
+    if (!$canapproveobjective) {
         // no permission to complete the action
-        totara_set_notification(get_string('nopermission', 'local_plan'),
+        totara_set_notification(get_string('nopermission', 'totara_plan'),
             $returnurl);
         die();
     }
 
-    $todb = new object();
+    $todb = new stdClass();
     $todb->id = $caid;
-    if($action=='decline') {
+    if ($action == 'decline') {
         $todb->approved = DP_APPROVAL_DECLINED;
     } else if ($action == 'approve') {
         $todb->approved = DP_APPROVAL_APPROVED;
     }
 
-    if(update_record('dp_plan_objective', $todb)) {
-        //@todo send notifications/emails
-        totara_set_notification(get_string('request'.$action,'local_plan'), $returnurl, array('class' => 'notifysuccess'));
-    } else {
-        //@todo send notifications/emails
-        totara_set_notification(get_string('requestnot'.$action, 'local_plan'), $returnurl);
-    }
+    $DB->update_record('dp_plan_objective', $todb);
+    //@todo send notifications/emails
+    totara_set_notification(get_string('request'.$action, 'totara_plan'), $returnurl, array('class' => 'notifysuccess'));
 
 }
 
 $fullname = $plan->name;
-$pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
-$navlinks = array();
-dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$id, 'type'=>'title');
-$navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
-$navlinks[] = array('name' => get_string('itemapproval','local_plan'), 'link' => '', 'type' => 'title');
+$pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
+dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+$PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $planid)));
+$PAGE->navbar->add(get_string($component->component, 'totara_plan'), $component->get_url());
+$PAGE->navbar->add(get_string('itemapproval', 'totara_plan'));
+$PAGE->set_title($pagetitle);
 
-$navigation = build_navigation($navlinks);
+echo $OUTPUT->header();
 
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+echo $OUTPUT->heading($fullname);
 
-print_heading($fullname);
-
-notice_yesno(get_string('confirmrequest'.$action, 'local_plan'),
-    $currenturl.'&amp;confirm=1&amp;sesskey='.sesskey(),
-    $returnurl
-);
+echo $OUTPUT->confirm(get_string('confirmrequest'.$action, 'totara_plan'), $currenturl.'&amp;confirm=1&amp;sesskey='.sesskey(), $returnurl);
 
 $component->display_objective_detail($caid);
 
 
-print_footer();
+echo $OUTPUT->footer();
 
 
 ?>

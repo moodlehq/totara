@@ -2,14 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 /**
@@ -37,61 +36,61 @@ $confirm = optional_param('confirm', null, PARAM_ALPHA); // notice flag
 
 admin_externalpage_setup('managetemplates');
 
-if(!$template = get_record('dp_template', 'id', $id)){
-    error(get_string('error:invalidtemplateid', 'local_plan'));
+if (!$template = $DB->get_record('dp_template', array('id' => $id))) {
+    print_error('error:invalidtemplateid', 'totara_plan');
 }
 
-if($confirm) {
+if ($confirm) {
     $workflow = $confirm;
     $returnurl = $CFG->wwwroot . '/totara/plan/template/workflow.php?id=' . $id;
 
     $classfile = $CFG->dirroot .
         "/totara/plan/workflows/{$workflow}/{$workflow}.class.php";
-    if(!is_readable($classfile)) {
-        $string_parameters = new object();
+    if (!is_readable($classfile)) {
+        $string_parameters = new stdClass();
         $string_parameters->classfile = $classfile;
         $string_parameters->workflow = $workflow;
-        throw new PlanException(get_string('noclassfileforworkflow', 'local_plan', $string_parameters));
+        throw new PlanException(get_string('noclassfileforworkflow', 'totara_plan', $string_parameters));
     }
     include_once($classfile);
 
     // check class exists
     $class = "dp_{$workflow}_workflow";
-    if(!class_exists($class)) {
-        $string_parameters = new object();
+    if (!class_exists($class)) {
+        $string_parameters = new stdClass();
         $string_parameters->class = $class;
         $string_parameters->workflow = $workflow;
-        throw new PlanException(get_string('noclassforworkflow', 'local_plan', $string_parameters));
+        throw new PlanException(get_string('noclassforworkflow', 'totara_plan', $string_parameters));
     }
 
     // create an instance and save as a property for easy access
     $wf = new $class();
 
-    if(!$wf->copy_to_db($template->id)) {
-        totara_set_notification(get_string('error:update_workflow_settings','local_plan'), $returnurl);
+    if (!$wf->copy_to_db($template->id)) {
+        totara_set_notification(get_string('error:update_workflow_settings', 'totara_plan'), $returnurl);
     }
 
     // Add checking to this method
-    begin_sql();
-    if(!set_field('dp_template', 'workflow', $workflow, 'id', $id)){
-        rollback_sql();
-        totara_set_notification(get_string('error:update_workflow_settings','local_plan'), $returnurl);
-    }
+     //SCANMSG: transactions may need additional fixing
+        $transaction = $DB->start_delegated_transaction();
 
-    commit_sql();
+        if (!$DB->set_field('dp_template', 'workflow', $workflow, array('id' => $id))) {
+            totara_set_notification(get_string('error:update_workflow_settings', 'totara_plan'), $returnurl);
+        }
+        $transaction->allow_commit();
     add_to_log(SITEID, 'plan', 'changed workflow', "template/workflow.php?id={$id}", "Template ID:{$id}");
-    totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('class' => 'notifysuccess'));
+    totara_set_notification(get_string('update_workflow_settings', 'totara_plan'), $returnurl, array('class' => 'notifysuccess'));
 
 }
 
 $mform = new dp_template_workflow_form(null,
     array('id' => $id, 'workflow' => $template->workflow));
 
-if ($mform->is_cancelled()){
+if ($mform->is_cancelled()) {
     // user cancelled form
     redirect($CFG->wwwroot . '/totara/plan/template/workflow.php?id=' . $id);
 }
-elseif ($mform->no_submit_button_pressed()) {
+else if ($mform->no_submit_button_pressed()) {
     // user pressed advanced options button
     redirect($CFG->wwwroot . '/totara/plan/template/advancedworkflow.php?id='.$id);
 }
@@ -100,72 +99,65 @@ if ($fromform = $mform->get_data()) {
     $workflow = $fromform->workflow;
     $returnurl = $CFG->wwwroot . '/totara/plan/template/workflow.php?id=' . $id;
     $changeurl = $CFG->wwwroot . '/totara/plan/template/workflow.php?id=' . $id . '&amp;confirm=' . $workflow;
-    if($workflow != 'custom') {
+    if ($workflow != 'custom') {
         // handle form submission
-        if($template->workflow != $workflow) {
-            admin_externalpage_print_header();
-            print_heading($template->fullname);
+        if ($template->workflow != $workflow) {
+            echo $OUTPUT->header();
+            echo $OUTPUT->heading($template->fullname);
             $classfile = $CFG->dirroot .
                 "/totara/plan/workflows/{$workflow}/{$workflow}.class.php";
-            if(!is_readable($classfile)) {
-                $string_parameters = new object();
+            if (!is_readable($classfile)) {
+                $string_parameters = new stdClass();
                 $string_parameters->classfile = $classfile;
                 $string_parameters->workflow = $workflow;
-                throw new PlanException(get_string('noclassfileforworkflow', 'local_plan', $string_parameters));
+                throw new PlanException(get_string('noclassfileforworkflow', 'totara_plan', $string_parameters));
             }
             include_once($classfile);
 
             // check class exists
             $class = "dp_{$workflow}_workflow";
-            if(!class_exists($class)) {
-                $string_parameters = new object();
+            if (!class_exists($class)) {
+                $string_parameters = new stdClass();
                 $string_parameters->class = $class;
                 $string_parameters->workflow = $workflow;
-                throw new PlanException(get_string('noclassforworkflow', 'local_plan', $string_parameters));
+                throw new PlanException(get_string('noclassforworkflow', 'totara_plan', $string_parameters));
             }
 
             // create an instance and save as a property for easy access
             $wf = new $class();
             $diff = $wf->list_differences($template->id);
-            if(!$diff) {
-                $differences = '<p>' . get_string('nochanges', 'local_plan') . '</p>';
+            if (!$diff) {
+                $differences = html_writer::tag('p', get_string('nochanges', 'totara_plan'));
             } else {
                 $differences = dp_print_workflow_diff($diff);
             }
 
-            $template_in_use = count_records('dp_plan', 'templateid', $template->id) > 0;
+            $template_in_use = $DB->count_records('dp_plan', array('templateid' => $template->id)) > 0;
             $scales_locked = '';
-            if($template_in_use){
-                $scales_locked = '<p><b>' . get_string('scaleslocked','local_plan') . '</b></p>';
+            if ($template_in_use) {
+                $scales_locked = html_writer::tag('p', html_writer::tag('b', get_string('scaleslocked', 'totara_plan')));
             }
 
-            $changeworkflowconfirm = get_string('changeworkflowconfirm', 'local_plan', get_string($fromform->workflow.'workflowname', 'local_plan')) . $scales_locked . $differences;
+            $changeworkflowconfirm = get_string('changeworkflowconfirm', 'totara_plan', get_string($fromform->workflow.'workflowname', 'totara_plan')) . $scales_locked . $differences;
 
-            notice_yesno(
-                $changeworkflowconfirm,
-                $changeurl,
-                $returnurl
-            );
+            echo $OUTPUT->confirm($changeworkflowconfirm, $changeurl, $returnurl);
         } else {
             //If no change and saving just show notification with no processing
-            totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('class' => 'notifysuccess'));
+            totara_set_notification(get_string('update_workflow_settings', 'totara_plan'), $returnurl, array('class' => 'notifysuccess'));
         }
     } else {
         // Add checking to this method
-        set_field('dp_template', 'workflow', $workflow, 'id', $id);
-        totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('class' => 'notifysuccess'));
+        $DB->set_field('dp_template', 'workflow', $workflow, array('id' => $id));
+        totara_set_notification(get_string('update_workflow_settings', 'totara_plan'), $returnurl, array('class' => 'notifysuccess'));
     }
 
 } else {
-    $navlinks = array();    // Breadcrumbs
-    $navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-        'link'=>"{$CFG->wwwroot}/totara/plan/template/index.php",
-        'type'=>'misc');
-    $navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
+    $PAGE->navbar->add(get_string("managetemplates", "totara_plan"), new moodle_url("/totara/plan/template/index.php"));
+    $PAGE->navbar->add(format_string($template->fullname));
 
-    admin_externalpage_print_header('', $navlinks);
+    echo $OUTPUT->header();
 
-    print_heading($template->fullname);
+    echo $OUTPUT->heading($template->fullname);
 
     $currenttab = 'workflow';
     require('tabs.php');
@@ -173,6 +165,6 @@ if ($fromform = $mform->get_data()) {
     $mform->display();
 }
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();
 
 ?>

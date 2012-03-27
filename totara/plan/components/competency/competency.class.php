@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ class dp_competency_component extends dp_base_component {
      */
     public function __construct($plan) {
         parent::__construct($plan);
-        $this->defaultname = get_string('competencies', 'local_plan');
+        $this->defaultname = get_string('competencies', 'totara_plan');
     }
 
 
@@ -64,7 +64,9 @@ class dp_competency_component extends dp_base_component {
      * @return  void
      */
     public function initialize_settings(&$settings) {
-        if ($competencysettings = get_record('dp_competency_settings', 'templateid', $this->plan->templateid)) {
+        global $DB;
+
+        if ($competencysettings = $DB->get_record('dp_competency_settings', array('templateid' => $this->plan->templateid))) {
             $settings[$this->component.'_duedatemode'] = $competencysettings->duedatemode;
             $settings[$this->component.'_prioritymode'] = $competencysettings->prioritymode;
             $settings[$this->component.'_priorityscale'] = $competencysettings->priorityscale;
@@ -90,15 +92,16 @@ class dp_competency_component extends dp_base_component {
      * @return  array
      */
     public function get_assigned_items($approved = null, $orderby='', $limitfrom='', $limitnum='') {
-        global $CFG;
+        global $DB;
+        //TODO SCANMSG: check this works now it's using prepared statements
 
         // Generate where clause
-        $where = "c.visible = 1 AND a.planid = {$this->plan->id}";
+        $where = "c.visible = 1 AND a.planid = :planid";
+        $params = array('planid' => $this->plan->id);
         if ($approved !== null) {
-            if (is_array($approved)) {
-                $approved = implode(', ', $approved);
-            }
-            $where .= " AND a.approved IN ({$approved})";
+            list($approvedsql, $approvedparams) = $DB->get_in_or_equal($approved, SQL_PARAMS_NAMED, 'approved');
+            $where .= " AND a.approved {$approvedsql}";
+            $params = array_merge($params, $approvedparams);
         }
 
         // Generate order by clause
@@ -109,20 +112,21 @@ class dp_competency_component extends dp_base_component {
         // Generate status code
         if ($this->plan->is_complete()) {
             // Use the 'snapshot' status value
-            $status = "LEFT JOIN {$CFG->prefix}comp_scale_values csv ON a.scalevalueid = csv.id ";
+            $status = "LEFT JOIN {comp_scale_values} csv ON a.scalevalueid = csv.id ";
         } else {
             // Use the 'live' status value
             $status = "
                 LEFT JOIN
-                    {$CFG->prefix}comp_evidence ce
+                    {comp_evidence} ce
                  ON a.competencyid = ce.competencyid
-                AND ce.userid = {$this->plan->userid}
+                AND ce.userid = :planuserid
                 LEFT JOIN
-                    {$CFG->prefix}comp_scale_values csv
+                    {comp_scale_values} csv
                  ON ce.proficiency = csv.id";
+            $params['planuserid'] = $this->plan->userid;
         }
 
-        $assigned = get_records_sql(
+        return  $DB->get_records_sql(
             "
             SELECT
                 a.*,
@@ -136,16 +140,16 @@ class dp_competency_component extends dp_base_component {
                 csv.name AS status,
                 csv.sortorder AS profsort
             FROM
-                {$CFG->prefix}dp_plan_competency_assign a
+                {dp_plan_competency_assign} a
             INNER JOIN
-                {$CFG->prefix}comp c
+                {comp} c
                 ON c.id = a.competencyid
             LEFT JOIN
                 (SELECT itemid1 AS assignid,
                     count(id) AS count
-                    FROM {$CFG->prefix}dp_plan_component_relation
-                    WHERE component1='competency' AND
-                        component2='course'
+                    FROM {dp_plan_component_relation}
+                    WHERE component1 = 'competency' AND
+                        component2 = 'course'
                     GROUP BY itemid1) linkedcourses
                 ON linkedcourses.assignid = a.id
             $status
@@ -153,15 +157,11 @@ class dp_competency_component extends dp_base_component {
                 $where
                 $orderby
             ",
+            $params,
             $limitfrom,
             $limitnum
         );
 
-        if (!$assigned) {
-            $assigned = array();
-        }
-
-        return $assigned;
     }
 
 
@@ -187,21 +187,20 @@ class dp_competency_component extends dp_base_component {
             if ($this->remove_competency_assignment($delete)) {
                 add_to_log(SITEID, 'plan', 'removed competency', "component.php?id={$this->plan->id}&c=competency", "Competency (ID:{$delete})");
 
-                $dropcourselist = optional_param('dropcourse', false, PARAM_INT);
-                if ($dropcourselist){
-                    if (!is_array($dropcourselist)){
+                $dropcourselist = optional_param_array('dropcourse', array(), PARAM_INT);
+                if ($dropcourselist) {
+                    if (!is_array($dropcourselist)) {
                         $dropcourselist = array($dropcourselist);
                     }
                     $coursecomponent = $this->plan->get_component('course');
-                    foreach( $dropcourselist as $courseid ){
+                    foreach ($dropcourselist as $courseid) {
                         add_to_log(SITEID, 'plan', 'removed course', "component.php?id={$this->plan->id}&c=course", "Course (ID:{$courseid}) via Competency {$delete}");
                         $coursecomponent->unassign_item($coursecomponent->get_assignment($courseid));
                     }
                 }
-
-                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('class' => 'notifysuccess'));
+                totara_set_notification(get_string('canremoveitem', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
             } else {
-                totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);
+                totara_set_notification(get_string('cannotremoveitem', 'totara_plan'), $currenturl);
             }
         }
     }
@@ -214,8 +213,7 @@ class dp_competency_component extends dp_base_component {
      * @return  void
      */
     public function setup_picker() {
-        global $CFG;
-
+        global $PAGE;
         // If we are showing dialog
         if ($this->can_update_items()) {
             // Setup lightbox
@@ -224,11 +222,26 @@ class dp_competency_component extends dp_base_component {
                 TOTARA_JS_TREEVIEW
             ));
 
+            $component_name = required_param('c', PARAM_ALPHA);
+            $sesskey = sesskey();
+
             // Get course picker
-            require_js(array(
-                $CFG->wwwroot.'/totara/plan/component.js.php?planid='.$this->plan->id.'&amp;component=competency&amp;viewas='.$this->plan->viewas,
-                $CFG->wwwroot.'/totara/plan/components/competency/find.js.php'
-            ));
+            $jsmodule = array(
+                'name' => 'totara_plan_component',
+                'fullpath' => '/totara/plan/component.js',
+                'requires' => array('json'));
+            $PAGE->requires->js_init_call('M.totara_plan_component.init', array('args' => '{"plan_id":'.$this->plan->id.', "component_name":"'.$component_name.'", "sesskey":"'.$sesskey.'"}'), false, $jsmodule);
+
+            $PAGE->requires->string_for_js('save', 'totara_core');
+            $PAGE->requires->string_for_js('cancel', 'moodle');
+            $PAGE->requires->string_for_js('continue', 'moodle');
+            $PAGE->requires->string_for_js('addcompetencys', 'totara_plan');
+
+            $jsmodule = array(
+                'name' => 'totara_plan_competency_find',
+                'fullpath' => '/totara/plan/components/competency/find.js',
+                'requires' => array('json'));
+            $PAGE->requires->js_init_call('M.totara_plan_competency_find.init', array('args' => '{"plan_id":'.$this->plan->id.'}'), false, $jsmodule);
         }
     }
 
@@ -240,7 +253,7 @@ class dp_competency_component extends dp_base_component {
      * @return  void
      */
     public function post_header_hook() {
-        global $CFG, $USER;
+        global $CFG, $USER, $DB, $OUTPUT;
 
         $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
         $currenturl = $this->get_url();
@@ -248,65 +261,62 @@ class dp_competency_component extends dp_base_component {
         if ($delete) {
             // Print a list of linked courses
             $sql = "
-                select courseasn.id, course.fullname
-                from
-                    {$CFG->prefix}course as course
-                    inner join {$CFG->prefix}dp_plan_course_assign courseasn
-                        on course.id = courseasn.courseid
-                    inner join {$CFG->prefix}dp_plan_component_relation rel
-                        on rel.itemid2=courseasn.id
-                where
-                    rel.component1='competency'
-                    and rel.itemid1={$delete}
-                    and rel.component2='course'
-                    and not exists (
-                        select 1
-                        from {$CFG->prefix}dp_plan_component_relation rel2
-                        where
-                            rel2.component1='competency'
-                            and rel2.itemid1<>{$delete}
-                            and rel2.component2='course'
-                            and rel2.itemid2=courseasn.id
+                SELECT courseasn.id, course.fullname
+                FROM
+                    {course} AS course
+                    INNER JOIN {dp_plan_course_assign} courseasn
+                        ON course.id = courseasn.courseid
+                    INNER JOIN {dp_plan_component_relation} rel
+                        ON rel.itemid2 = courseasn.id
+                WHERE
+                    rel.component1 = 'competency'
+                    AND rel.itemid1 = ?
+                    AND rel.component2 = 'course'
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM {dp_plan_component_relation} rel2
+                        WHERE
+                            rel2.component1 = 'competency'
+                            AND rel2.itemid1 <> ?
+                            AND rel2.component2 = 'course'
+                            AND rel2.itemid2 = courseasn.id
                     )
             ";
-            $courses = get_records_sql($sql);
-            if ($courses){
-                print_box_start('generalbox','notice');
-                $compname = get_field_sql("select comp.fullname from {$CFG->prefix}comp comp inner join {$CFG->prefix}dp_plan_competency_assign compasn on comp.id=compasn.competencyid where compasn.id={$delete}");
-                print_heading(get_string('deletelinkedcoursesheader','local_plan', s($compname)));
+            $courses = $DB->get_records_sql($sql, array($delete, $delete));
+            if ($courses) {
+                echo $OUTPUT->box_start('generalbox', 'notice');
+                $compname = $DB->get_field_sql("SELECT comp.fullname FROM {comp} comp INNER JOIN {dp_plan_competency_assign} compasn ON comp.id = compasn.competencyid WHERE compasn.id = ?", array($delete));
+                echo $OUTPUT->heading(get_string('deletelinkedcoursesheader', 'totara_plan', s($compname)));
 
                 if ($USER->id == $this->plan->userid) {
-                    echo '<p>'.get_string('deletelinkedcoursesinstructionslearner','local_plan').'</p>';
+                    echo html_writer::tag('p', get_string('deletelinkedcoursesinstructionslearner', 'totara_plan'));
                 } else {
-                    if ($planowner = get_record('user', 'id', $this->plan->userid, null, null, null, null, 'firstname, lastname')) {
+                    if ($planowner = $DB->get_record('user', array('id' => $this->plan->userid), 'firstname, lastname')) {
                         $planowner_name = fullname($planowner);
                     }
 
-                    echo '<p>'.get_string('deletelinkedcoursesinstructionsmanager','local_plan', $planowner_name).'</p>';
+                    echo html_writer::tag('p', get_string('deletelinkedcoursesinstructionsmanager', 'totara_plan', $planowner_name));
                 }
 
-
-                echo "<form method=\"get\" action=\"{$CFG->wwwroot}/totara/plan/component.php\">";
-                echo "<input type=\"hidden\" name=\"d\" value=\"{$delete}\" />";
-                echo "<input type=\"hidden\" name=\"c\" value=\"competency\" />";
-                echo "<input type=\"hidden\" name=\"confirm\" value=\"1\" />";
-                echo "<input type=\"hidden\" name=\"sesskey\" value=\"".sesskey()."\" />";
-                echo "<input type=\"hidden\" name=\"id\" value=\"{$this->plan->id}\" />";
-                foreach( $courses as $rec ){
-                    echo "<p><input type=\"checkbox\" name=\"dropcourse[]\" value=\"{$rec->id}\" checked=\"checked\" /> {$rec->fullname}</p>\n";
+                $form = html_writer::start_tag('form', array('method' => 'get', 'action' => "{$CFG->wwwroot}/totara/plan/component.php"));
+                $form .= html_writer::empty_tag("input", array('type' => "hidden", 'name' => "d", 'value' => "$delete"));
+                $form .= html_writer::empty_tag("input", array('type' => "hidden", 'name' => "c", 'value' => "competency"));
+                $form .= html_writer::empty_tag("input", array('type' => "hidden", 'name' => "confirm", 'value' => "1"));
+                $form .= html_writer::empty_tag("input", array('type' => "hidden", 'name' => "sesskey", 'value' => sesskey()));
+                $form .= html_writer::empty_tag("input", array('type' => "hidden", 'name' => "id", 'value' => $this->plan->id));
+                foreach ($courses as $rec) {
+                    $form .= html_writer::tag('p', html_writer::checkbox('dropcourse[]',$rec->id, true, $rec->fullname));
                 }
-                echo "<div class=\"buttons\">";
-                echo "<input type=\"submit\" value=\"".s(get_string('deletelinkedcoursessubmit','local_plan'))."\" />";
-                echo "</div>";
-                echo "</form>";
-
-                print_box_end();
-                print_footer();
+                $form .= $OUTPUT->container(html_writer::empty_tag("input", array('type' => "submit", 'value' => s(get_string('deletelinkedcoursessubmit', 'totara_plan')))), 'buttons');
+                $form .= html_writer::end_tag('form');
+                echo $form;
+                echo $OUTPUT->box_end();
+                echo $OUTPUT->footer();
                 die();
             } else {
-
-                notice_yesno(get_string('confirmitemdelete','local_plan'), $currenturl.'&amp;d='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(), $currenturl);
-                print_footer();
+                $continueurl = new moodle_url($currenturl->out(), array('d' => $delete, 'confirm' => '1', 'sesskey' => sesskey()));
+                echo $OUTPUT->confirm(get_string('confirmitemdelete', 'totara_plan'), $continueurl, $currenturl);
+                echo $OUTPUT->footer();
                 die();
 
             }
@@ -329,7 +339,7 @@ class dp_competency_component extends dp_base_component {
      * @return array Array of objects, keyed on the competency ids provided. Each element contains an object containing course id and name
      */
     function get_course_evidence_items($competencies) {
-        global $CFG;
+        global $CFG, $DB;
         // for access to evidence item type constants
         require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 
@@ -343,6 +353,7 @@ class dp_competency_component extends dp_base_component {
             return array();
         }
 
+        list($insql, $inparams) = $DB->get_in_or_equal($competencies);
         $sql = "
             SELECT
                 cei.id,
@@ -351,31 +362,19 @@ class dp_competency_component extends dp_base_component {
                 c.fullname,
                 cei.linktype
             FROM
-                {$CFG->prefix}comp_evidence_items cei
+                {comp_evidence_items} cei
             LEFT JOIN
-                {$CFG->prefix}course c
+                {course} c
              ON cei.iteminstance = c.id
             WHERE
-                cei.itemtype = '".COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION."'
-            AND cei.competencyid IN (".implode(',', $competencies).")
+                cei.itemtype = ?
+            AND cei.competencyid $insql
         ";
-        $records = get_records_sql($sql);
-
-        // restructure into 2d array for easy access
-        $out = array();
-        if ($records) {
-            foreach ($records as $record) {
-                $compid = $record->competencyid;
-
-                if (!array_key_exists($compid, $out)) {
-                    // start an array
-                    $out[$compid] = array($record);
-                } else {
-                    // append to array
-                    $out[$compid][] = $record;
-                }
-            }
-        }
+        $params = array(COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION);
+        $params = array_merge($params, $inparams);
+        $rs = $DB->get_recordset_sql($sql, $params);
+        $out = totara_group_records($rs, 'competencyid');
+        $rs->close();
 
         return $out;
     }
@@ -388,17 +387,16 @@ class dp_competency_component extends dp_base_component {
      * @return false|string  the table to display
      */
     function display_approval_list($pendingitems) {
+        global $DB, $OUTPUT;
+
         $competencies = array();
         foreach ($pendingitems as $item) {
             $competencies[] = $item->competencyid;
         }
         $evidence = $this->get_course_evidence_items($competencies);
 
-        $table = new object();
-        $table->class = 'generaltable learning-plan-pending-approval-table';
-        $table->data = array();
+        $table = new html_table();
         foreach ($pendingitems as $item) {
-            $row = array();
             // @todo write abstracted display_item_name() and use here
             $name = format_string($item->fullname);
 
@@ -406,29 +404,26 @@ class dp_competency_component extends dp_base_component {
             // competency with checkboxes and a description
             if (array_key_exists($item->competencyid, $evidence)) {
                 // @todo lang string
-                $name .= '<br /><div class="related-courses"><strong>Include related courses:</strong>';
+                $name .= html_writer::empty_tag('br');
+                $name .= html_writer::tag('strong', get_string('includerelatedcourses', 'totara_plan'));
                 foreach ($evidence[$item->competencyid] as $course) {
+                    $message = '';
                     if ($this->plan->get_component('course')->is_item_assigned($course->courseid)) {
-                        $message = ' (' .
-                            get_string('alreadyassignedtoplan', 'local_plan'). ')';
-                    } else {
-                        $message = '';
+                        $message = ' (' . get_string('alreadyassignedtoplan', 'totara_plan') . ')';
                     }
-                    $name .= '<br />' .
-                        // @todo add code to disable unless
-                        // pulldown set to approve
-                        '<input type="checkbox" checked="checked" name="linkedcourses[' . $item->id . '][' . $course->courseid . ']" value="1"> ' .
-                        $course->fullname . $message;
+                    $name .= html_writer::empty_tag('br');
+                    // @todo add code to disable unless
+                    // pulldown set to approve
+                    $name .= $OUTPUT->checkbox("linkedcourses[{$item->id}][{$course->courseid}]", "1", true) . $course->fullname . $message;
                 }
-                $name .= '</div>';
+                $OUTPUT->container($name, "related-courses");
             }
 
             $row[] = $name;
-                ;
             $row[] = $this->display_approval_options($item, $item->approved);
             $table->data[] = $row;
         }
-        return print_table($table, true);
+        return html_writer::table($table, true);
     }
 
 
@@ -439,7 +434,7 @@ class dp_competency_component extends dp_base_component {
      * @return false|string  $out  the table to display
      */
     function display_linked_competencies($list) {
-        global $CFG;
+        global $DB, $OUTPUT;
 
         if (!is_array($list) || count($list) == 0) {
             return false;
@@ -452,37 +447,39 @@ class dp_competency_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
-        $select = 'SELECT ca.*, c.fullname, csv.name AS ' .
-            ' status, csv.sortorder AS profsort, psv.name ' .
-            ' AS priorityname ';
+        $params = array();
+        $select = 'SELECT ca.*, c.fullname, csv.name AS  status, csv.sortorder AS profsort,
+                   psv.name AS priorityname ';
 
         // get competencies assigned to this plan
-        $from = "FROM {$CFG->prefix}dp_plan_competency_assign ca
-                LEFT JOIN
-                {$CFG->prefix}comp c ON c.id = ca.competencyid ";
+        $from = "FROM {dp_plan_competency_assign} ca
+            LEFT JOIN {comp} c
+                   ON c.id = ca.competencyid ";
         if ($this->plan->status == DP_PLAN_STATUS_COMPLETE) {
             // Use the 'snapshot' status value
-            $from .= "LEFT JOIN {$CFG->prefix}comp_scale_values csv ON ca.scalevalueid = csv.id ";
+            $from .= "LEFT JOIN {comp_scale_values} csv ON ca.scalevalueid = csv.id ";
         } else {
             // Use the 'live' status value
-            $from .= "LEFT JOIN {$CFG->prefix}comp_evidence ce
-                    ON ca.competencyid = ce.competencyid
-                    AND ce.userid = {$this->plan->userid}
-                LEFT JOIN {$CFG->prefix}comp_scale_values csv
-                    ON ce.proficiency = csv.id ";
+            $from .= "LEFT JOIN {comp_evidence} ce
+                             ON ca.competencyid = ce.competencyid AND ce.userid = ?
+                      LEFT JOIN {comp_scale_values} csv
+                             ON ce.proficiency = csv.id ";
+            $params[] = $this->plan->userid;
         }
-        $from .= "LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
-                ON (ca.priority = psv.id
-                AND psv.priorityscaleid = {$priorityscaleid}) ";
-
-        $where = "WHERE ca.id IN (" . implode(',', $list) . ")
-            AND ca.approved=" . DP_APPROVAL_APPROVED . ' ';
-
+        $from .= "LEFT JOIN {dp_priority_scale_value} psv
+                         ON (ca.priority = psv.id
+                        AND psv.priorityscaleid = ? ) ";
+        $params[] = $priorityscaleid;
+        list($insql, $inparams) = $DB->get_in_or_equal($list);
+        $where = "WHERE ca.id $insql
+                    AND ca.approved = ? ";
+        $params = array_merge($params, $inparams);
+        $params[] = DP_APPROVAL_APPROVED;
         $sort = "ORDER BY c.fullname";
 
         $tableheaders = array(
-            get_string('name','local_plan'),
-            get_string('status', 'local_plan'),
+            get_string('name', 'totara_plan'),
+            get_string('status', 'totara_plan'),
         );
         $tablecolumns = array(
             'fullname',
@@ -490,21 +487,22 @@ class dp_competency_component extends dp_base_component {
         );
 
         if ($showpriorities) {
-            $tableheaders[] = get_string('priority', 'local_plan');
+            $tableheaders[] = get_string('priority', 'totara_plan');
             $tablecolumns[] = 'priority';
         }
 
         if ($showduedates) {
-            $tableheaders[] = get_string('duedate', 'local_plan');
+            $tableheaders[] = get_string('duedate', 'totara_plan');
             $tablecolumns[] = 'duedate';
         }
 
         if (!$this->plan->is_complete() && $this->can_update_items()) {
-            $tableheaders[] = get_string('remove', 'local_plan');
+            $tableheaders[] = get_string('remove', 'totara_plan');
             $tablecolumns[] = 'remove';
         }
 
         $table = new flexible_table('linkedcompetencylist');
+        $table->define_baseurl(qualified_me());
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
 
@@ -512,12 +510,11 @@ class dp_competency_component extends dp_base_component {
         $table->setup();
 
         // get the scale values used for competencies in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+        $priorityvalues = $DB->get_records('dp_priority_scale_value', array('priorityscaleid' => $priorityscaleid), 'sortorder', 'id,name,sortorder');
 
-        if ($records = get_recordset_sql($select.$from.$where.$sort)) {
+        if ($records = $DB->get_recordset_sql($select.$from.$where.$sort, $params)) {
 
-            while($ca = rs_fetch_next_record($records)) {
+            foreach ($records as $ca) {
                 $proficient = $this->is_item_complete($ca);
 
                 $row = array();
@@ -534,17 +531,16 @@ class dp_competency_component extends dp_base_component {
                 }
 
                 if (!$this->plan->is_complete() && $this->can_update_items()) {
-                    $row[] = '<input type="checkbox" value="1" name="delete_linked_comp_assign['.$ca->id.']" />';
+                    $row[] = html_writer::checkbox("delete_linked_comp_assign['.$ca->id.']", '1');
                 }
 
                 $table->add_data($row);
             }
-
-            rs_close($records);
+            $records->close();
 
             // return instead of outputing table contents
             ob_start();
-            $table->print_html();
+            $table->finish_html();
             $out = ob_get_contents();
             ob_end_clean();
 
@@ -592,9 +588,7 @@ class dp_competency_component extends dp_base_component {
     private function get_item_proficiency($item) {
 
         // Get proficiencies
-        if (!$proficiencies = competency::get_proficiencies($this->plan->userid)) {
-            $proficiencies = array();
-        }
+        $proficiencies = competency::get_proficiencies($this->plan->userid);
 
         // If no record
         if (!array_key_exists($item->id, $proficiencies)) {
@@ -624,6 +618,7 @@ class dp_competency_component extends dp_base_component {
         $class = ($approved) ? '' : 'dimmed';
         $icon = $this->determine_item_icon($item);
         $img = $OUTPUT->pix_icon("/msgicons/" . $icon, format_string($item->fullname), 'totara_core', array('class' => 'competency-state-icon'));
+
         $link = $OUTPUT->action_link(
                 new moodle_url('/totara/plan/components/' . $this->component . '/view.php',array('id' => $this->plan->id, 'itemid' => $item->id)),
                 format_string($item->fullname),null, array('class' => $class)
@@ -653,7 +648,7 @@ class dp_competency_component extends dp_base_component {
      * @return string HTML string to display the competency information
      */
     function display_competency_detail($caid) {
-        global $CFG, $OUTPUT;
+        global $DB, $OUTPUT;
 
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
@@ -661,54 +656,44 @@ class dp_competency_component extends dp_base_component {
         $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
 
         // get competency assignment and competency details
-        $sql = 'SELECT ca.*, comp.*, psv.name AS priorityname ' .
-            "FROM {$CFG->prefix}dp_plan_competency_assign ca
-                LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
+        $sql = "SELECT ca.*, comp.*, psv.name AS priorityname
+            FROM {dp_plan_competency_assign} ca
+                LEFT JOIN {dp_priority_scale_value} psv
                     ON (ca.priority = psv.id
-                    AND psv.priorityscaleid = {$priorityscaleid})
-                LEFT JOIN {$CFG->prefix}comp comp ON comp.id = ca.competencyid
-                WHERE ca.id = $caid";
-        $item = get_record_sql($sql);
+                    AND psv.priorityscaleid = ?)
+                LEFT JOIN {comp} comp ON comp.id = ca.competencyid
+                WHERE ca.id = ?";
+        $item = $DB->get_record_sql($sql, array($priorityscaleid, $caid));
 
         if (!$item) {
-            return get_string('error:competencynotfound','local_plan');
+            return get_string('error:competencynotfound', 'totara_plan');
         }
 
         $out = '';
 
         // get the priority values used for competencies in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+        $priorityvalues = $DB->get_records('dp_priority_scale_value', array('priorityscaleid' => $priorityscaleid), 'sortorder', 'id,name,sortorder');
 
         $icon = $this->determine_item_icon($item);
         $icon = $OUTPUT->pix_icon("/msgicons/" . $icon, format_string($item->fullname), 'totara_core', array('class' => "competency_state_icon"));
         $out .= $OUTPUT->heading($icon . format_string($item->fullname), 3);
-        $out .= '<table border="0" class="planiteminfobox">';
-        $out .= '<tr>';
+        $t = new html_table();
+        $t->class = "planiteminfobox";
+        $cells = array();
+
         if ($priorityenabled && !empty($item->priority)) {
-            $out .= "<td>";
-            $out .= get_string('priority', 'local_plan') . ': ';
-            $out .= $this->display_priority_as_text($item->priority,
-                $item->priorityname, $priorityvalues);
-            $out .= '</td>';
+            $cells[] = new html_table_cell(get_string('priority', 'totara_plan') . ': ' . $this->display_priority_as_text($item->priority, $item->priorityname, $priorityvalues));
         }
         if ($duedateenabled && !empty($item->duedate)) {
-            $out .= '<td>';
-            $out .= get_string('duedate', 'local_plan') . ': ';
-            $out .= $this->display_duedate_as_text($item->duedate);
-            $out .= '<br>';
-            $out .= $this->display_duedate_highlight_info($item->duedate);
-            $out .= '</td>';
+            $cells[] = new html_table_cell(get_string('duedate', 'totara_plan') . ': ' . $this->display_duedate_as_text($item->duedate) . html_writer::empty_tag('br') . $this->display_duedate_highlight_info($item->duedate));
         }
         if ($status = $this->get_status($item->competencyid)) {
-            $out .= '<td>';
-            $out .= get_string('status', 'local_plan').': ';
-            $out .= $status;
-            $out .= '</td>';
+            $cells[] = new html_table_cell(get_string('status', 'totara_plan'). ': ' . $status);
         }
-        $out .= "</tr>";
-        $out .= '</table>';
-        $out .= '<p>' . format_string($item->description) . '</p>';
+        $rows = new html_table_row($cells);
+        $t->data = array($rows);
+        $out .= html_writer::table($t);
+        $out .= html_writer::tag('p', format_string($item->description));
 
         return $out;
     }
@@ -735,7 +720,7 @@ class dp_competency_component extends dp_base_component {
      * @return  void
      */
     public function process_settings_update($ajax = false) {
-        global $CFG, $USER;
+        global $CFG, $USER, $DB;
 
         if (!confirm_sesskey()) {
             return 0;
@@ -745,18 +730,15 @@ class dp_competency_component extends dp_base_component {
         $cansetduedates = ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $canapprovecomps = ($this->get_setting('updatecompetency') == DP_PERMISSION_APPROVE);
-        $duedates = optional_param('duedate_competency', array(), PARAM_TEXT);
-        $priorities = optional_param('priorities_competency', array(), PARAM_INT);
-        $approvals = optional_param('approve_competency', array(), PARAM_INT);
-        $evidences = optional_param('compprof_competency', array(), PARAM_INT);
-        $linkedcourses = optional_param('linkedcourses', array(), PARAM_INT);
+        $duedates = optional_param_array('duedate_competency', array(), PARAM_TEXT);
+        $priorities = optional_param_array('priorities_competency', array(), PARAM_INT);
+        $approvals = optional_param_array('approve_competency', array(), PARAM_INT);
+        $evidences = optional_param_array('compprof_competency', array(), PARAM_INT);
+        $linkedcourses = optional_param_array('linkedcourses', array(), PARAM_INT);
         $currenturl = qualified_me();
-        $stored_records = array();
 
-        $oldrecords = get_records_list('dp_plan_competency_assign', 'planid', $this->plan->id);
-
+        $oldrecords = $DB->get_records_list('dp_plan_competency_assign', 'planid', array($this->plan->id), null, 'id, planid, competencyid');
         $status = true;
-
         if (!empty($evidences)) {
             // Update evidence
             foreach ($evidences as $id => $evidence) {
@@ -767,21 +749,19 @@ class dp_competency_component extends dp_base_component {
 
                 if (hierarchy_can_add_competency_evidence($this->plan, $this, $this->plan->userid, $competencyid)) {
                     // Update the competency evidence
-                    $details = new object();
+                    $details = new stdClass();
 
                     // Get user's current primary position and organisation (if any)
-                    $posrec = get_record('pos_assignment', 'userid', $this->plan->userid, 'type', POSITION_TYPE_PRIMARY, '','','id, positionid, organisationid');
+                    $posrec = $DB->get_record('pos_assignment', array('userid' => $this->plan->userid, 'type' => POSITION_TYPE_PRIMARY), 'id, positionid, organisationid');
                     if ($posrec) {
                         $details->positionid = $posrec->positionid;
                         $details->organisationid = $posrec->organisationid;
                         unset($posrec);
                     }
 
-                    $details->assessorname = addslashes(fullname($USER));
+                    $details->assessorname = fullname($USER);
                     $details->assessorid = $USER->id;
-
                     $result = hierarchy_add_competency_evidence($competencyid, $this->plan->userid, $evidence, $this, $details);
-
                     if ($result) {
                         dp_plan_item_updated($this->plan->userid, 'competency', $competencyid);
                     }
@@ -790,7 +770,6 @@ class dp_competency_component extends dp_base_component {
         }
 
         if (!empty($duedates) && $cansetduedates) {
-            $badduedates = array();  // Record naughty duedates
             // Update duedates
             foreach ($duedates as $id => $duedate) {
                 // allow empty due dates
@@ -813,7 +792,7 @@ class dp_competency_component extends dp_base_component {
                     $duedateout = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $duedate);
                 }
 
-                $todb = new object();
+                $todb = new stdClass();
                 $todb->id = $id;
                 $todb->duedate = $duedateout;
                 $stored_records[$id] = $todb;
@@ -828,7 +807,7 @@ class dp_competency_component extends dp_base_component {
                     $stored_records[$id]->priority = $priority;
                 } else {
                     // create a new update object
-                    $todb = new object();
+                    $todb = new stdClass();
                     $todb->id = $id;
                     $todb->priority = $priority;
                     $stored_records[$id] = $todb;
@@ -847,7 +826,7 @@ class dp_competency_component extends dp_base_component {
                     $stored_records[$id]->approved = $approval;
                 } else {
                     // create a new update object
-                    $todb = new object();
+                    $todb = new stdClass();
                     $todb->id = $id;
                     $todb->approved = $approval;
                     $stored_records[$id] = $todb;
@@ -859,14 +838,14 @@ class dp_competency_component extends dp_base_component {
         if (!empty($stored_records)) {
             $updates = '';
             $approvals = null;
-            begin_sql();
+            $transaction = $DB->start_delegated_transaction();
+
             foreach ($stored_records as $itemid => $record) {
                 // Update the record
-                $status = $status & update_record('dp_plan_competency_assign', $record);
+                $DB->update_record('dp_plan_competency_assign', $record);
                 // if the record was updated check for linked courses
                 if (isset($record->approved) && $record->approved == DP_APPROVAL_APPROVED) {
-                    if (isset($linkedcourses[$record->id]) &&
-                        is_array($linkedcourses[$record->id])) {
+                    if (isset($linkedcourses[$record->id]) && is_array($linkedcourses[$record->id])) {
                         //   add the linked courses
                         foreach ($linkedcourses[$record->id] as $course => $unused) {
                             // add course if it's not already in this plan
@@ -875,8 +854,7 @@ class dp_competency_component extends dp_base_component {
                                 $this->plan->get_component('course')->assign_new_item($course);
                             }
                             // now we need to grab the assignment ID
-                            $assignmentid = get_field('dp_plan_course_assign',
-                                'id', 'planid', $this->plan->id, 'courseid', $course);
+                            $assignmentid = $DB->get_field('dp_plan_course_assign', 'id', array('planid' => $this->plan->id, 'courseid' => $course), IGNORE_MISSING);
                             if (!$assignmentid) {
                                 // something went wrong trying to assign the course
                                 // don't attempt to create a relation
@@ -885,44 +863,41 @@ class dp_competency_component extends dp_base_component {
                             }
                             // create relation
                             $this->plan->add_component_relation('competency', $record->id, 'course', $assignmentid);
-
                         }
                     }
                 }
             }
 
             if ($status) {
-                commit_sql();
-
+                $transaction->allow_commit();
                 // Process update alerts
-                foreach($stored_records as $itemid => $record) {
-                    $competency = get_record('comp', 'id', $oldrecords[$itemid]->competencyid);
-                    $compheader = '<p><strong>'.format_string($competency->fullname).": </strong><br>";
+                foreach ($stored_records as $itemid => $record) {
+                    $competency = $DB->get_record('comp', array('id' => $oldrecords[$itemid]->competencyid));
+                    $compheader = html_writer::tag('p', html_writer::tag('strong', format_string($competency->fullname)). ': ') . html_writer::empty_tag('br');
                     $compprinted = false;
                     if (!empty($record->priority) && $oldrecords[$itemid]->priority != $record->priority) {
-                        $oldpriority = get_field('dp_priority_scale_value', 'name', 'id', $oldrecords[$itemid]->priority);
-                        $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
+                        $oldpriority = $DB->get_field('dp_priority_scale_value', 'name', array('id' => $oldrecords[$itemid]->priority));
+                        $newpriority = $DB->get_field('dp_priority_scale_value', 'name', array('id' => $record->priority));
                         $updates .= $compheader;
                         $compprinted = true;
-                        $updates .= get_string('priority', 'local_plan').' - '.get_string('changedfromxtoy',
-                            'local_plan', (object)array('before'=>$oldpriority, 'after'=>$newpriority))."<br>";
+                        $updates .= get_string('priority', 'totara_plan').' - '.get_string('changedfromxtoy',
+                            'totara_plan', (object)array('before' => $oldpriority, 'after' => $newpriority)).html_writer::empty_tag('br');
                     }
                     if (!empty($record->duedate) && $oldrecords[$itemid]->duedate != $record->duedate) {
                         $updates .= $compprinted ? '' : $compheader;
                         $compprinted = true;
-                        $updates .= get_string('duedate', 'local_plan').' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                                (object)array('before'=>empty($oldrecords[$itemid]->duedate) ? '' :
-                                    userdate($oldrecords[$itemid]->duedate, '%e %h %Y', $CFG->timezone, false),
-                                'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
+                        $dateformat = get_string('strftimedateshortmonth', 'totara_core');
+                        $updates .= get_string('duedate', 'totara_plan').' - '.
+                            get_string('changedfromxtoy', 'totara_plan', (object)array('before' => empty($oldrecords[$itemid]->duedate) ? '' :
+                                    userdate($oldrecords[$itemid]->duedate, $dateformat, $CFG->timezone, false),
+                                'after' => userdate($record->duedate, $dateformat, $CFG->timezone, false))).html_writer::empty_tag('br');
                     }
                     if (!empty($record->approved) && $oldrecords[$itemid]->approved != $record->approved) {
-                        $approval = new object();
+                        $approval = new stdClass();
                         $text = $compheader;
-                        $text .= get_string('approval', 'local_plan').' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                            (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
-                            'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                        $text .= get_string('approval', 'totara_plan').' - '.
+                            get_string('changedfromxtoy', 'totara_plan', (object)array('before' => dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
+                            'after' => dp_get_approval_status_from_code($record->approved))).html_writer::empty_tag('br');
                         $approval->text = $text;
                         $approval->itemname = $competency->fullname;
                         $approval->before = $oldrecords[$itemid]->approved;
@@ -937,7 +912,7 @@ class dp_competency_component extends dp_base_component {
                         }
                     }
                     // TODO: proficiencies ??
-                    $updates .= $compprinted ? '</p>' : '';
+                    $updates .= $compprinted ? html_writer::end_tag('p') : '';
                 }  // foreach
 
                 // Send update alert
@@ -946,21 +921,19 @@ class dp_competency_component extends dp_base_component {
                 }
 
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
-                    foreach($approvals as $approval) {
+                    foreach ($approvals as $approval) {
                         $this->send_component_approval_alert($approval);
 
                         $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';
                         add_to_log(SITEID, 'plan', "{$action} competency", "component.php?id={$this->plan->id}&amp;c=competency", $approval->itemname);
                     }
                 }
-            } else {
-                rollback_sql();
             }
 
             $currenturl = new moodle_url($currenturl);
             $currenturl->remove_params('badduedates');
             if (!empty($badduedates)) {
-                $currenturl->params(array('badduedates'=>implode(',', $badduedates)));
+                $currenturl->params(array('badduedates' => implode(',', $badduedates)));
             }
             $currenturl = $currenturl->out();
 
@@ -973,17 +946,17 @@ class dp_competency_component extends dp_base_component {
                     $issuesnotification = '';
                     if (!empty($badduedates)) {
                         $issuesnotification .= $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED ?
-                            '<br>'.get_string('noteduedateswrongformatorrequired', 'local_plan') : '<br>'.get_string('noteduedateswrongformat', 'local_plan');
+                            html_writer::empty_tag('br').get_string('noteduedateswrongformatorrequired', 'totara_plan') : html_writer::empty_tag('br').get_string('noteduedateswrongformat', 'totara_plan');
                     }
 
                     // Do not create notification or redirect if ajax request
                     if (!$ajax) {
-                        totara_set_notification(get_string('competenciesupdated','local_plan').$issuesnotification, $currenturl, array('class' => 'notifysuccess'));
+                        totara_set_notification(get_string('competenciesupdated', 'totara_plan').$issuesnotification, $currenturl, array('class' => 'notifysuccess'));
                     }
                 } else {
                     // Do not create notification or redirect if ajax request
                     if (!$ajax) {
-                        totara_set_notification(get_string('error:competenciesupdated','local_plan'), $currenturl);
+                        totara_set_notification(get_string('error:competenciesupdated', 'totara_plan'), $currenturl);
                     }
                 }
             }
@@ -1007,15 +980,16 @@ class dp_competency_component extends dp_base_component {
      * return boolean
      */
     public static function is_priority_scale_used($scaleid) {
-        global $CFG;
+        global $DB;
+
         $sql = "
             SELECT ca.id
-            FROM {$CFG->prefix}dp_plan_competency_assign ca
+            FROM {dp_plan_competency_assign} ca
             LEFT JOIN
-                {$CFG->prefix}dp_priority_scale_value psv
+                {dp_priority_scale_value} psv
             ON ca.priority = psv.id
-            WHERE psv.priorityscaleid = {$scaleid}";
-        return record_exists_sql($sql);
+            WHERE psv.priorityscaleid = ?";
+        return $DB->record_exists_sql($sql, array($scaleid));
     }
 
 
@@ -1026,15 +1000,17 @@ class dp_competency_component extends dp_base_component {
      * @return boolean
      */
     function remove_competency_assignment($caid) {
+        global $DB;
+
         // Load item
-        $item = get_record('dp_plan_competency_assign', 'id', $caid);
+        $item = $DB->get_record('dp_plan_competency_assign', array('id' => $caid));
 
         if (!$item) {
             return false;
         }
 
         if (!$this->can_delete_item($item)) {
-            print_error('error:nopermissiondeletemandatorycomp', 'local_plan');
+            print_error('error:nopermissiondeletemandatorycomp', 'totara_plan');
         }
 
         $item->itemid = $item->id;
@@ -1052,17 +1028,17 @@ class dp_competency_component extends dp_base_component {
      * @return  object  Inserted record
      */
     public function assign_new_item($itemid, $checkpermissions = true, $manual = true) {
-
+        global $DB;
         // Get approval value for new item if required
         if ($checkpermissions) {
             if (!$permission = $this->can_update_items()) {
-                print_error('error:cannotupdatecompetencies', 'local_plan');
+                print_error('error:cannotupdatecompetencies', 'totara_plan');
             }
         } else {
             $permission = DP_PERMISSION_ALLOW;
         }
 
-        $item = new object();
+        $item = new stdClass();
         $item->planid = $this->plan->id;
         $item->competencyid = $itemid;
         $item->priority = null;
@@ -1081,7 +1057,7 @@ class dp_competency_component extends dp_base_component {
         }
 
         // Set approved status
-        if ($permission >= DP_PERMISSION_ALLOW ) {
+        if ($permission >= DP_PERMISSION_ALLOW) {
             $item->approved = DP_APPROVAL_APPROVED;
         }
         else { # $permission == DP_PERMISSION_REQUEST
@@ -1089,11 +1065,11 @@ class dp_competency_component extends dp_base_component {
         }
 
         // Load fullname of item
-        $item->fullname = get_field('comp', 'fullname', 'id', $itemid);
+        $item->fullname = $DB->get_field('comp', 'fullname', array('id' => $itemid));
 
         add_to_log(SITEID, 'plan', 'added competency', "component.php?id={$this->plan->id}&amp;c=competency", "Competency ID: {$itemid}");
 
-        if ($result = insert_record('dp_plan_competency_assign', $item)) {
+        if ($result = $DB->insert_record('dp_plan_competency_assign', $item)) {
             $item->id = $result;
 
             // Check if we are auto marking competencies with default evidence values
@@ -1118,31 +1094,28 @@ class dp_competency_component extends dp_base_component {
      * @return bool
      */
     function auto_assign_competencies($competencies, $checkpermissions = true, $relation = false) {
+        global $DB;
 
-        begin_sql();
+            $transaction = $DB->start_delegated_transaction();
 
-        // Get all currently-assigned competencies
-        $assigned = get_records('dp_plan_competency_assign', 'planid', $this->plan->id, '', 'competencyid');
-        $assigned = !empty($assigned) ? array_keys($assigned) : array();
-
-        foreach ($competencies as $c) {
-            // Don't assign duplicate competencies
-            if (!in_array($c->id, $assigned)) {
-                // Assign competency item (false = assigned automatically)
-                if (!$assignment = $this->assign_new_item($c->id, $checkpermissions, false)) {
-                    rollback_sql();
-                    return false;
+            // Get all currently-assigned competencies
+            $assigned = $DB->get_records('dp_plan_competency_assign', array('planid' => $this->plan->id), '', 'competencyid');
+            $assigned = array_keys($assigned);
+            foreach ($competencies as $c) {
+                // Don't assign duplicate competencies
+                if (!in_array($c->id, $assigned)) {
+                    // Assign competency item (false = assigned automatically)
+                    if (!$assignment = $this->assign_new_item($c->id, $checkpermissions, false)) {
+                        return false;
+                    }
+                }
+                // Add relation
+                if ($relation) {
+                    $mandatory = $c->linktype == PLAN_LINKTYPE_MANDATORY ? 'competency' : '';
+                    $this->plan->add_component_relation($relation['component'], $relation['id'], 'competency', $assignment->id, $mandatory);
                 }
             }
-
-            // Add relation
-            if ($relation) {
-                $mandatory = $c->linktype == PLAN_LINKTYPE_MANDATORY ? 'competency' : '';
-                $this->plan->add_component_relation($relation['component'], $relation['id'], 'competency', $assignment->id, $mandatory);
-            }
-        }
-
-        commit_sql();
+            $transaction->allow_commit();
         return true;
     }
 
@@ -1155,8 +1128,8 @@ class dp_competency_component extends dp_base_component {
      * @return void
      */
     function assign_linked_courses($competencies, $checkpermissions=true) {
+        global $DB;
         // get array of competency ids
-        $cids = array();
         foreach ($competencies as $competency) {
             $cids[] = $competency->id;
         }
@@ -1172,7 +1145,7 @@ class dp_competency_component extends dp_base_component {
                         $this->plan->get_component('course')->assign_new_item($courseid, $checkpermissions);
                     }
 
-                    $assignmentid = get_field('dp_plan_course_assign', 'id', 'planid', $this->plan->id, 'courseid', $courseid);
+                    $assignmentid = $DB->get_field('dp_plan_course_assign', 'id', array('planid' => $this->plan->id, 'courseid' => $courseid));
                     if (!$assignmentid) {
                         // something went wrong trying to assign the course
                         // don't attempt to create a relation
@@ -1314,31 +1287,30 @@ class dp_competency_component extends dp_base_component {
      * that out and make them both call the same function.
      * @param $item
      */
-    public function get_competency_menu($item){
-        global $CFG;
+    public function get_competency_menu($item) {
+        global $DB;
+
         // Get the info we need about the framework
         $sql = "SELECT
                     cs.defaultid as defaultid, cs.id as scaleid
-                FROM {$CFG->prefix}comp c
-                JOIN {$CFG->prefix}comp_scale_assignments csa
+                FROM {comp} c
+                JOIN {comp_scale_assignments} csa
                     ON c.frameworkid = csa.frameworkid
-                JOIN {$CFG->prefix}comp_scale cs
+                JOIN {comp_scale} cs
                     ON csa.scaleid = cs.id
-                WHERE c.id={$item->competencyid}";
-        if (!$scaledetails = get_record_sql($sql)) {
-            // what should this do?
-        }
-        $compscale = get_records_menu('comp_scale_values','scaleid',$scaledetails->scaleid,'sortorder');
+                WHERE c.id = ?";
+        $scaledetails = $DB->get_record_sql($sql, array($item->competencyid), MUST_EXIST);
 
-        return choose_from_menu(
-            $compscale,
-            "compprof_{$this->component}[{$item->id}]",
-            $item->profscalevalueid,
-            ($item->profscalevalueid ? '' : get_string('notset','local_reportbuilder')),
-            '',
-            ($item->profscalevalueid ? '' : 0),
-            true
-        );
+        $compscale = $DB->get_records_menu('comp_scale_values', array('scaleid' => $scaledetails->scaleid), 'sortorder');
+
+        $attributes = array(); //in this case no attributes are set
+        $output = html_writer::select($compscale,
+                                    "compprof_{$this->component}[{$item->id}]",
+                                    $item->profscalevalueid,
+                                    array(($item->profscalevalueid ? '' : 0) => ($item->profscalevalueid ? '' : get_string('notset', 'totara_reportbuilder'))),
+                                    $attributes);
+
+        return $output;
     }
 
     /**
@@ -1349,7 +1321,6 @@ class dp_competency_component extends dp_base_component {
      * @return string $markup the display html
      */
     protected function display_list_item_actions($item) {
-        global $CFG;
 
         $markup = '';
         $markup .= $this->display_comp_delete_icon($item);
@@ -1364,14 +1335,12 @@ class dp_competency_component extends dp_base_component {
      * @param object $item
      * @return string
      */
-    protected function display_comp_delete_icon($item){
-        global $CFG;
+    protected function display_comp_delete_icon($item) {
+        global $OUTPUT;
         if ($this->can_delete_item($item)) {
             $currenturl = $this->get_url();
-            $strdelete = get_string('delete', 'local_plan');
-            $delete = '<a href="'.$currenturl.'&amp;d='.$item->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
-
-            return $delete;
+            $strdelete = get_string('delete', 'totara_plan');
+            return $OUTPUT->action_icon(new moodle_url($currenturl, array('d' => $item->id, 'title' => $strdelete)), new pix_icon('/t/delete', $strdelete));
         }
         return '';
     }
@@ -1383,16 +1352,13 @@ class dp_competency_component extends dp_base_component {
      * @param string $returnurl The URL to tell the add evidence page to return to
      * @return $string
      */
-    public function display_comp_add_evidence_icon($item, $returnurl=false){
-        global $CFG;
+    public function display_comp_add_evidence_icon($item, $returnurl=false) {
+        global $OUTPUT;
         if ($this->can_update_competency_evidence($item)) {
-            $straddevidence = get_string('addevidence', 'local_plan');
-            $proficient = '<a href="'.$CFG->wwwroot.'/totara/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&amp;id='.$this->plan->id.'&amp;competencyid='.$item->competencyid.
-                '&amp;returnurl='.urlencode($returnurl).'"
-                title="'.$straddevidence.'">
-                <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';
-
-            return $proficient;
+            $straddevidence = get_string('addevidence', 'totara_plan');
+            return $OUTPUT->action_icon(new moodle_url('/totara/plan/components/competency/add_evidence.php',
+                array('userid' => $this->plan->userid, 'id' => $this->plan->id, 'competencyid' => $item->competencyid, 'returnurl' => $returnurl)),
+                new pix_icon('/t/ranges', $straddevidence));
         }
         return '';
     }
@@ -1401,7 +1367,7 @@ class dp_competency_component extends dp_base_component {
      * Can you add competency evidence to this competency?
      * @param $item (must contain "approved" field)
      */
-    public function can_update_competency_evidence($item){
+    public function can_update_competency_evidence($item) {
         // Get permissions
         $cansetproficiency = !$this->plan->is_complete() && $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
         $approved = $this->is_item_approved($item->approved);
@@ -1437,22 +1403,23 @@ class dp_competency_component extends dp_base_component {
      * @return  string markup for javascript course picker
      */
     public function display_course_picker($competencyid) {
+        global $OUTPUT;
 
         if (!$permission = $this->can_update_items()) {
             return '';
         }
 
-        $btntext = get_string('addlinkedcourses', 'local_plan');
+        $btntext = get_string('addlinkedcourses', 'totara_plan');
 
-        $html  = '<div class="buttons">';
-        $html .= '<div class="singlebutton dp-plan-assign-button">';
-        $html .= '<div>';
-        $html .= '<script type="text/javascript">var competency_id = ' . $competencyid . ';';
-        $html .= 'var plan_id = ' . $this->plan->id . ';</script>';
-        $html .= '<input type="submit" id="show-course-dialog" value="' . $btntext . '" />';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
+        $html = $OUTPUT->container_start('buttons');
+        $html .= $OUTPUT->container_start('singlebutton dp-plan-assign-button');
+        $html .= $OUTPUT->container_start();
+        $html .= html_writer::script('var competency_id = ' . $competencyid . ';' . 'var plan_id = ' . $this->plan->id . ';');
+        $html .= $OUTPUT->single_submit($btntext, array('id' => "show-course-dialog"));
+
+        $html .= $OUTPUT->container_end();
+        $html .= $OUTPUT->container_end();
+        $html .= $OUTPUT->container_end();
 
         return $html;
     }
@@ -1466,29 +1433,29 @@ class dp_competency_component extends dp_base_component {
      * @return  string the status
      */
     public function get_status($compid) {
-        global $CFG;
+        global $DB;
 
         $sql = "SELECT csv.name
-            FROM {$CFG->prefix}dp_plan_competency_assign ca ";
+            FROM {dp_plan_competency_assign} ca ";
 
         if ($this->plan->is_complete()) {
             // Use the 'snapshot' status value
-            $sql .= "LEFT JOIN {$CFG->prefix}comp_scale_values csv ON ca.scalevalueid = csv.id ";
+            $sql .= "LEFT JOIN {comp_scale_values} csv ON ca.scalevalueid = csv.id ";
         } else {
             // Use the 'live' status value
             $sql .= "
                 LEFT JOIN
-                    {$CFG->prefix}comp_evidence ce
+                    {comp_evidence} ce
                  ON ca.competencyid = ce.competencyid
-                AND ce.userid = {$this->plan->userid}
+                AND ce.userid = ?
                 LEFT JOIN
-                    {$CFG->prefix}comp_scale_values csv
+                    {comp_scale_values} csv
                  ON ce.proficiency = csv.id ";
         }
 
-        $sql .= "WHERE ca.competencyid = {$compid}";
+        $sql .= "WHERE ca.competencyid = ? AND ca.planid = ?";
 
-        return get_field_sql($sql);
+        return $DB->get_field_sql($sql, array($this->plan->userid, $compid, $this->plan->id));
     }
 
 
@@ -1503,9 +1470,10 @@ class dp_competency_component extends dp_base_component {
      *    $progress->text => String description of completion (for use in tooltip)
      */
     public function progress_stats() {
+        global $DB;
 
         // array of all comp scale value ids that represent a status of proficient
-        $proficient_scale_values = get_records('comp_scale_values', 'proficient', 1);
+        $proficient_scale_values = $DB->get_records('comp_scale_values', array('proficient' => 1));
         $proficient_ids = ($proficient_scale_values) ? array_keys($proficient_scale_values) : array();
 
         $completedcount = 0;
@@ -1527,10 +1495,13 @@ class dp_competency_component extends dp_base_component {
                 }
             }
         }
-        $progress_str = "{$completedcount}/" . count($competencies) . " " .
-            get_string('competenciesachieved', 'local_plan') . "\n";
+        $a = new stdClass();
+        $a->count = $completedcount;
+        $a->total = count($competencies);
+        $progress_str =  get_string('xofy', 'totara_core', $a) . " " .
+            get_string('competenciesachieved', 'totara_plan') . "\n";
 
-        $progress = new object();
+        $progress = new stdClass();
         $progress->complete = $completedcount;
         $progress->total = count($competencies);
         $progress->text = $progress_str;
@@ -1545,11 +1516,10 @@ class dp_competency_component extends dp_base_component {
      * @return bool
      */
     public function reactivate_items() {
-        global $CFG;
-        $sql = "UPDATE {$CFG->prefix}dp_plan_competency_assign SET scalevalueid=0 WHERE planid={$this->plan->id}";
-        if (!execute_sql($sql, false)) {
-            return false;
-        }
+        global $DB;
+
+        $sql = "UPDATE {dp_plan_competency_assign} SET scalevalueid = 0 WHERE planid = ?";
+        $DB->execute($sql, array($this->plan->id));
         return true;
     }
 
@@ -1562,26 +1532,23 @@ class dp_competency_component extends dp_base_component {
      * @return array|false $plans ids of plans with specified competency
      */
     public static function get_plans_containing_item($competencyid, $userid) {
-        global $CFG;
+        global $DB;
+
         $sql = "SELECT DISTINCT
                 planid
             FROM
-                {$CFG->prefix}dp_plan_competency_assign ca
+                {dp_plan_competency_assign} ca
             JOIN
-                {$CFG->prefix}dp_plan p
+                {dp_plan} p
               ON
                 ca.planid = p.id
             WHERE
-                ca.competencyid = {$competencyid}
+                ca.competencyid = ?
             AND
-                p.userid = {$userid}";
+                p.userid = ?";
 
-        if (!$plans = get_records_sql($sql)) {
-            // There are no plans with this competency
-            return false;
-        }
+        $plans = $DB->get_fieldset_sql($sql, array($competencyid, $userid));
 
-        return array_keys($plans);
+        return $plans;
     }
 }
-

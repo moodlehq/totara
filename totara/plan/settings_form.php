@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,13 +41,13 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 function development_plan_build_settings_form(&$mform, $customdata) {
-    global $CFG, $DP_AVAILABLE_ROLES;
+    global $DP_AVAILABLE_ROLES, $DB;
 
     //Settings
-    $mform->addElement('header', 'plansettings', get_string('plansettings', 'local_plan'));
-    $mform->setHelpButton('plansettings', array('advancedsettingsplansettings', get_string('plansettings', 'local_plan'), 'local_plan'), true);
+    $mform->addElement('header', 'plansettings', get_string('plansettings', 'totara_plan'));
+    $mform->addHelpButton('plansettings', 'advancedsettingsplansettings', 'totara_plan', '', true);
 
-    if($templatesettings = get_record('dp_plan_settings', 'templateid', $customdata['id'])) {
+    if ($templatesettings = $DB->get_record('dp_plan_settings', array('templateid' => $customdata['id']))) {
         $defaultmanualcomplete = $templatesettings->manualcomplete;
         $defaultautobyitems = $templatesettings->autobyitems;
         $defaultautobyplandate = $templatesettings->autobyplandate;
@@ -58,34 +58,33 @@ function development_plan_build_settings_form(&$mform, $customdata) {
     }
 
     $plancompletiongroup = array();
-    $plancompletiongroup[] =& $mform->createElement('advcheckbox', 'manualcomplete', null, get_string('manualcomplete', 'local_plan'));
-    $plancompletiongroup[] =& $mform->createElement('advcheckbox', 'autobyitems', null, get_string('autobyitems', 'local_plan'));
-    $plancompletiongroup[] =& $mform->createElement('advcheckbox', 'autobyplandate', null, get_string('autobyplandate', 'local_plan'));
+    $plancompletiongroup[] =& $mform->createElement('advcheckbox', 'manualcomplete', null, get_string('manualcomplete', 'totara_plan'));
+    $plancompletiongroup[] =& $mform->createElement('advcheckbox', 'autobyitems', null, get_string('autobyitems', 'totara_plan'));
+    $plancompletiongroup[] =& $mform->createElement('advcheckbox', 'autobyplandate', null, get_string('autobyplandate', 'totara_plan'));
 
-    $mform->addGroup($plancompletiongroup, 'plancomplete', get_string('planmarkedcomplete', 'local_plan'), array('<br />'), false);
+    $mform->addGroup($plancompletiongroup, 'plancomplete', get_string('planmarkedcomplete', 'totara_plan'), array(html_writer::empty_tag('br')), false);
     $mform->setDefault('manualcomplete', $defaultmanualcomplete);
     $mform->setDefault('autobyitems', $defaultautobyitems);
     $mform->setDefault('autobyplandate', $defaultautobyplandate);
 
 
     //Permissions
-    $mform->addElement('header', 'planpermissions', get_string('planpermissions', 'local_plan'));
-    $mform->setHelpButton('planpermissions', array('advancedsettingsplanpermissions', get_string('planpermissions', 'local_plan'), 'local_plan'), true);
+    $mform->addElement('header', 'planpermissions', get_string('planpermissions', 'totara_plan'));
+    $mform->addHelpButton('planpermissions', 'advancedsettingsplanpermissions', 'totara_plan', '', true);
 
     dp_add_permissions_table_headings($mform);
-
-    foreach(development_plan::$permissions as $action => $requestable) {
-        dp_add_permissions_table_row($mform, $action, get_string($action, 'local_plan'), $requestable);
+    foreach (development_plan::$permissions as $action => $requestable) {
+        dp_add_permissions_table_row($mform, $action, get_string($action, 'totara_plan'), $requestable);
     }
-
-    foreach(development_plan::$permissions as $action => $requestable) {
-        foreach($DP_AVAILABLE_ROLES as $role){
-            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='plan' AND action='{$action}' AND templateid='{$customdata['id']}'";
-            $defaultvalue = get_field_sql($sql);
+    foreach (development_plan::$permissions as $action => $requestable) {
+        foreach ($DP_AVAILABLE_ROLES as $role) {
+            $sql = "SELECT value FROM {dp_permissions} WHERE role = ? AND component = ? AND action = ? AND templateid = ?";
+            $params = array($role, 'plan', $action, $customdata['id']);
+            $defaultvalue = $DB->get_field_sql($sql, $params);
             $mform->setDefault($action.$role, $defaultvalue);
         }
     }
-    $mform->addElement('html', '</table></div>');
+    $mform->addElement('html', html_writer::end_tag('table') . html_writer::end_tag('div'));
 }
 
 
@@ -98,75 +97,54 @@ function development_plan_build_settings_form(&$mform, $customdata) {
  * @return  void
  */
 function development_plan_process_settings_form($fromform, $id) {
-    global $CFG, $DP_AVAILABLE_ROLES;
+    global $CFG, $DP_AVAILABLE_ROLES, $DB;
 
     $currenturl = qualified_me() . '?id='.$id.'&amp;component=plan';
-    begin_sql();
+        $transaction = $DB->start_delegated_transaction();
 
-    // process plan settings here
-
-    $currentworkflow = get_field('dp_template', 'workflow', 'id', $id);
-    if($currentworkflow != 'custom') {
-        $template_update = new object();
-        $template_update->id = $id;
-        $template_update->workflow = 'custom';
-        if(!update_record('dp_template', $template_update)){
-            rollback_sql();
-            totara_set_notification(get_string('error:update_plan_settings','local_plan'), $currenturl);
+        // process plan settings here
+        $currentworkflow = $DB->get_field('dp_template', 'workflow', array('id' => $id));
+        if ($currentworkflow != 'custom') {
+            $template_update = new stdClass();
+            $template_update->id = $id;
+            $template_update->workflow = 'custom';
+            $DB->update_record('dp_template', $template_update);
         }
-    }
-
-    $todb = new object();
-    $todb->templateid = $id;
-    $todb->manualcomplete = $fromform->manualcomplete;
-    $todb->autobyitems = $fromform->autobyitems;
-    $todb->autobyplandate = $fromform->autobyplandate;
-
-    if ($plansettings = get_record('dp_plan_settings', 'templateid', $id)) {
-        //update
-        $todb->id = $plansettings->id;
-        if (!update_record('dp_plan_settings', $todb)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:update_plan_settings', 'local_plan'), $currenturl);
+        $todb = new stdClass();
+        $todb->templateid = $id;
+        $todb->manualcomplete = $fromform->manualcomplete;
+        $todb->autobyitems = $fromform->autobyitems;
+        $todb->autobyplandate = $fromform->autobyplandate;
+        if ($plansettings = $DB->get_record('dp_plan_settings', array('templateid' => $id))) {
+            //update
+            $todb->id = $plansettings->id;
+            $DB->update_record('dp_plan_settings', $todb);
+        } else {
+            //insert
+            $DB->insert_record('dp_plan_settings', $todb);
         }
-    } else {
-        //insert
-        if (!insert_record('dp_plan_settings', $todb)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:update_plan_settings','local_plan'), $currenturl);
-        }
-    }
-
-    foreach(development_plan::$permissions as $action => $requestable) {
-        foreach($DP_AVAILABLE_ROLES as $role) {
-            $permission_todb = new object();
-            $permission_todb->templateid = $id;
-            $permission_todb->component = 'plan';
-            $permission_todb->action = $action;
-            $permission_todb->role = $role;
-            $temp = $action . $role;
-            $permission_todb->value = $fromform->$temp;
-
-            $sql = "SELECT * FROM {$CFG->prefix}dp_permissions WHERE templateid={$id} AND component='plan' AND action='{$action}' AND role='{$role}'";
-
-            if($permission_setting = get_record_sql($sql)){
-                //update
-                $permission_todb->id = $permission_setting->id;
-                if(!update_record('dp_permissions', $permission_todb)) {
-                    rollback_sql();
-                    totara_set_notification(get_string('error:update_plan_settings','local_plan'), $currenturl);
-                }
-            } else {
-                //insert
-                if(!insert_record('dp_permissions', $permission_todb)) {
-                    rollback_sql();
-                    totara_set_notification(get_string('error:update_plan_settings','local_plan'), $currenturl);
+        foreach (development_plan::$permissions as $action => $requestable) {
+            foreach ($DP_AVAILABLE_ROLES as $role) {
+                $permission_todb = new stdClass();
+                $permission_todb->templateid = $id;
+                $permission_todb->component = 'plan';
+                $permission_todb->action = $action;
+                $permission_todb->role = $role;
+                $temp = $action . $role;
+                $permission_todb->value = $fromform->$temp;
+                $sql = "SELECT * FROM {dp_permissions} WHERE templateid = ? AND component = ? AND action = ? AND role = ?";
+                $params = array($id, 'plan', $action, $role);
+                if ($permission_setting = $DB->get_record_sql($sql, $params, IGNORE_MISSING)) {
+                    //update
+                    $permission_todb->id = $permission_setting->id;
+                    $DB->update_record('dp_permissions', $permission_todb);
+                } else {
+                    //insert
+                    $DB->insert_record('dp_permissions', $permission_todb);
                 }
             }
         }
-    }
-
-    commit_sql();
+        $transaction->allow_commit();
     add_to_log(SITEID, 'plan', 'changed workflow', "template/workflow.php?id={$id}", "Template ID:{$id}");
-    totara_set_notification(get_string('update_plan_settings','local_plan'), $currenturl, array('class' => 'notifysuccess'));
+    totara_set_notification(get_string('update_plan_settings', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
 }

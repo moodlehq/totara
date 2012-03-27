@@ -57,14 +57,21 @@ M.totara_core = M.totara_core || {
      * @param string    selector to bind the datepicker instance to
      * @param string    format for date display
      * @param array     values to determine datepicker icon
-     * @param bool      langconfig text direction
      */
-    build_datepicker: function(Y, selector, dateformat, button_img, direction){
+    build_datepicker: function(Y, selector, dateformat, button_img){
+        var icon;
+        if (button_img) {
+            icon = button_img;
+        } else {
+            icon = ['t/calendar','totara_core'];
+        }
+
+        var direction = (M.util.get_string('thisdirection', 'langconfig') === 'rtl');
         $(selector).datepicker(
             {
                 dateFormat: dateformat,
                 showOn: 'both',
-                buttonImage: M.util.image_url(button_img[0], button_img[1]),
+                buttonImage: M.util.image_url(icon[0], icon[1]),
                 buttonImageOnly: true,
                 constrainInput: true,
                 isRTL: direction

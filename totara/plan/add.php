@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -36,12 +36,17 @@ global $USER;
 require_login();
 
 $userid = required_param('userid', PARAM_INT); // user id
+$context = context_system::instance();
+$PAGE->set_context($context);
+$PAGE->set_url('/totara/plan/add.php', array('userid' => $userid));
+$PAGE->set_pagelayout('noblocks');
+$PAGE->set_totara_menu_selected('learningplans');
 
 ///
 /// Permission checks
 ///
 if (!dp_can_view_users_plans($userid)) {
-    print_error('error:nopermissions', 'local_plan');
+    print_error('error:nopermissions', 'totara_plan');
 }
 
 
@@ -51,18 +56,18 @@ if ($userid != $USER->id) {
     if (totara_is_manager($userid) || isadmin()) {
         $role = 'manager';
     } else {
-        print_error('error:nopermissions', 'local_plan');
+        print_error('error:nopermissions', 'totara_plan');
     }
 } else {
     $role = 'learner';
 }
 
 if (!$template = dp_get_first_template()) {
-    print_error('notemplatesetup', 'local_plan');
+    print_error('notemplatesetup', 'totara_plan');
 }
 
 if (dp_get_template_permission($template->id, 'plan', 'create', $role) != DP_PERMISSION_ALLOW) {
-    print_error('error:nopermissions', 'local_plan');
+    print_error('error:nopermissions', 'totara_plan');
 }
 // END HACK
 
@@ -73,7 +78,14 @@ if (dp_get_template_permission($template->id, 'plan', 'create', $role) != DP_PER
 $currenturl = qualified_me();
 $allplansurl = "{$CFG->wwwroot}/totara/plan/index.php?userid={$userid}";
 
-$form = new plan_edit_form($currenturl, array('action'=>'add'));
+$obj = new stdClass();
+$obj->id = 0;
+$obj->description = '';
+$obj->descriptionformat = FORMAT_HTML;
+$obj = file_prepare_standard_editor($obj, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                    'totara_plan', 'dp_plan', $obj->id);
+
+$form = new plan_edit_form($currenturl, array('action' => 'add'));
 
 if ($form->is_cancelled()) {
     redirect($allplansurl);
@@ -82,52 +94,45 @@ if ($form->is_cancelled()) {
 // Handle form submit
 if ($data = $form->get_data()) {
     if (isset($data->submitbutton)) {
-        begin_sql();
+            $transaction = $DB->start_delegated_transaction();
 
-        $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->enddate);  // convert to timestamp
-
-        // Set up the plan
-        if (!$newid = insert_record('dp_plan', $data)) {
-            rollback_sql();
-            totara_set_notification(get_string('plancreatefail', 'local_plan', get_string('couldnotinsertnewrecord', 'local_plan')), $currenturl);
-        }
-        $plan = new development_plan($newid);
-
-        // Update plan status and plan history
-        $plan->set_status(DP_PLAN_STATUS_UNAPPROVED, DP_PLAN_REASON_CREATE);
-
-        if ($plan->get_component('competency')->get_setting('enabled')) {
-            // Auto-assign competencies
-            $competencycomponent = $plan->get_component('competency');
-            if ($competencycomponent->get_setting('autoassignorg')) {
-                // From organisation
-                if (!$competencycomponent->assign_from_org()) {
-                    rollback_sql();
-                    totara_set_notification(get_string('plancreatefail', 'local_plan', get_string('unabletoassigncompsfromorg', 'local_plan')), $currenturl);
+            $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->enddate);  // convert to timestamp
+            // Set up the plan
+            $newid = $DB->insert_record('dp_plan', $data);
+            $data->id = $newid;
+            $plan = new development_plan($newid);
+            // Update plan status and plan history
+            $plan->set_status(DP_PLAN_STATUS_UNAPPROVED, DP_PLAN_REASON_CREATE);
+            if ($plan->get_component('competency')->get_setting('enabled')) {
+                // Auto-assign competencies
+                $competencycomponent = $plan->get_component('competency');
+                if ($competencycomponent->get_setting('autoassignorg')) {
+                    // From organisation
+                    if (!$competencycomponent->assign_from_org()) {
+                        totara_set_notification(get_string('plancreatefail', 'totara_plan', get_string('unabletoassigncompsfromorg', 'totara_plan')), $currenturl);
+                    }
                 }
-            }
-            if ($competencycomponent->get_setting('autoassignpos')) {
-                // From position
-                if (!$competencycomponent->assign_from_pos()) {
-                    rollback_sql();
-                    totara_set_notification(get_string('plancreatefail', 'local_plan', get_string('unabletoassigncompsfrompos', 'local_plan')), $currenturl);
+                if ($competencycomponent->get_setting('autoassignpos')) {
+                    // From position
+                    if (!$competencycomponent->assign_from_pos()) {
+                        totara_set_notification(get_string('plancreatefail', 'totara_plan', get_string('unabletoassigncompsfrompos', 'totara_plan')), $currenturl);
+                    }
                 }
+                unset($competencycomponent);
             }
-            unset($competencycomponent);
-        }
-
-        commit_sql();
+            $transaction->allow_commit();
 
         // Send out a notification?
         if ($plan->is_active()) {
-            if ( $role == 'manager' ) {
+            if ($role == 'manager') {
                 $plan->send_alert(true,'learningplan-update.png','plan-add-learner-short','plan-add-learner-long');
             }
         }
-
+        $data = file_postupdate_standard_editor($data, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_plan', 'dp_plan', $data->id);
+        $DB->set_field('dp_plan', 'description', $data->description, array('id' => $data->id));
         $viewurl = "{$CFG->wwwroot}/totara/plan/view.php?id={$newid}";
         add_to_log(SITEID, 'plan', 'created', "view.php?id={$newid}", $plan->name);
-        totara_set_notification(get_string('plancreatesuccess', 'local_plan'), $viewurl, array('class' => 'notifysuccess'));
+        totara_set_notification(get_string('plancreatesuccess', 'totara_plan'), $viewurl, array('class' => 'notifysuccess'));
     }
 }
 
@@ -135,40 +140,39 @@ if ($data = $form->get_data()) {
 ///
 /// Display
 ///
-$heading = get_string('createnewlearningplan', 'local_plan');
-$pagetitle = format_string(get_string('learningplan','local_plan').': '.$heading);
-$navlinks = array();
-dp_get_plan_base_navlinks($navlinks, $userid);
-$navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
-
-$navigation = build_navigation($navlinks);
+$heading = get_string('createnewlearningplan', 'totara_plan');
+$pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$heading);
+dp_get_plan_base_navlinks($PAGE->navbar, $userid);
+$PAGE->navbar->add($heading);
 
 //Javascript include
 local_js(array(
     TOTARA_JS_DATEPICKER,
     TOTARA_JS_PLACEHOLDER
 ));
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading($heading);
+echo $OUTPUT->header();
 
 // Plan menu
 echo dp_display_plans_menu($userid);
 
 // Plan page content
-print_container_start(false, '', 'dp-plan-content');
+echo $OUTPUT->container_start('', 'dp-plan-content');
 
 if ($USER->id != $userid) {
     echo dp_display_user_message_box($userid);
 }
 
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
-print '<p>' . get_string('createplan_instructions', 'local_plan') . '</p>';
+echo html_writer::tag('p', get_string('createplan_instructions', 'totara_plan'));
 
-$form->set_data((object)array('userid'=>$userid));
+$form->set_data((object)array('userid' => $userid));
 $form->display();
 
-print_container_end();
+echo $OUTPUT->container_end();
 
 echo build_datepicker_js('input[name="enddate"]');
 
-print_footer();
+echo $OUTPUT->footer();

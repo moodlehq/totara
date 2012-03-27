@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  * @subpackage plan
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
@@ -47,6 +47,8 @@ $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 $nojs = optional_param('nojs', 0, PARAM_INT);
 
 require_login();
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url(qualified_me());
 $plan = new development_plan($id);
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
@@ -54,10 +56,10 @@ $component = $plan->get_component($componentname);
 //Permissions check
 $result = hierarchy_can_add_competency_evidence($plan, $component, $userid, $competencyid);
 if ($result !== true) {
-    error($result[0], $result[1]);
+    print_error($result[0], $result[1]);
 }
 
-if($evidence_record = get_record('comp_evidence', 'userid', $userid, 'competencyid', $competencyid)) {
+if ($evidence_record = $DB->get_record('comp_evidence', array('userid' => $userid, 'competencyid' => $competencyid))) {
     $evidenceid = $evidence_record->id;
     $evidence_record->evidenceid = $evidence_record->id;
     $evidence_record->id = null;
@@ -67,18 +69,18 @@ if($evidence_record = get_record('comp_evidence', 'userid', $userid, 'competency
 
 $fullname = $plan->name;
 
-if($u = get_record('user','id',$userid)) {
-    $toform = new object();
+if ($u = $DB->get_record('user', array('id' => $userid))) {
+    $toform = new stdClass();
     $toform->user = fullname($u);
 } else {
-    error('error:usernotfound','local');
+    print_error('error:usernotfound','totara_plan');
 }
 
 // Check permissions
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
-if($component->get_setting('setproficiency') != DP_PERMISSION_ALLOW) {
-    error(get_string('error:competencystatuspermission', 'local_plan'));
+if ($component->get_setting('setproficiency') != DP_PERMISSION_ALLOW) {
+    print_error('error:competencystatuspermission', 'totara_plan');
 }
 
 if (!$returnurl) {
@@ -92,13 +94,13 @@ $mform->set_data($evidence_record);
 if ($mform->is_cancelled()) {
     redirect($returnurl);
 }
-if($fromform = $mform->get_data()) { // Form submitted
+if ($fromform = $mform->get_data()) { // Form submitted
     if (empty($fromform->submitbutton)) {
-        print_error('error:unknownbuttonclicked', 'local', $returnurl);
+        print_error('error:unknownbuttonclicked', 'totara_core', $returnurl);
     }
 
     // Setup data
-    $details = new object();
+    $details = new stdClass();
     if ($fromform->positionid != 0) {
         $details->positionid = $fromform->positionid;
     }
@@ -117,7 +119,7 @@ if($fromform = $mform->get_data()) { // Form submitted
     if ($result) {
         redirect($returnurl);
     } else {
-        redirect($returnurl, get_string('recordnotcreated','local'));
+        redirect($returnurl, get_string('recordnotcreated', 'totara_core'));
     }
 
 } else {
@@ -132,29 +134,28 @@ $prefix = 'competency';
 $hierarchy = new $prefix();
 $hierarchy->hierarchy_page_setup('item/add');
 
-$fullname = get_string('addcompetencyevidence', 'local');
+$fullname = get_string('addcompetencyevidence', 'totara_hierarchy');
 $pagetitle = format_string($fullname);
-$navlinks = array();
-dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$plan->id, 'type'=>'title');
-$navigation = build_navigation($navlinks);
 
+dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+$PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $plan->id)));
 
-print_header_simple($pagetitle, '', $navigation, '', null, true, null);
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading('');
+echo $OUTPUT->header();
 
 // Plan menu
 echo dp_display_plans_menu($plan->userid,$plan->id,$plan->role);
 
 // Plan page content
-print_container_start(false, '', 'dp-plan-content');
+echo $OUTPUT->container_start('', 'dp-plan-content');
 
 print $plan->display_plan_message_box();
 
-print_heading($fullname);
+echo $OUTPUT->heading($fullname);
 print $plan->display_tabs($prefix);
 
 $mform->display();
 
-print_container_end();
-print_footer();
-
+echo $OUTPUT->container_end();
+echo $OUTPUT->footer();

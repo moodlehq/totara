@@ -1,8 +1,8 @@
-<?php // $Id$
+<?php
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,11 +44,11 @@ local_js(array(
     TOTARA_JS_PLACEHOLDER
 ));
 
-$returnurl = $CFG->wwwroot."/totara/plan/template/general.php?id=$id";
-
+$returnurl = new moodle_url('/totara/plan/template/general.php', array('id' => $id));
+$cancelurl = new moodle_url('/totara/plan/template/index.php');
 if ($id) {
-    if (!$template = get_record('dp_template', 'id', $id)) {
-        error(get_string('error:invalidtemplateid', 'local_plan'));
+    if (!$template = $DB->get_record('dp_template', array('id' => $id))) {
+        print_error('error:invalidtemplateid', 'totara_plan');
     }
 }
 
@@ -56,32 +56,28 @@ $mform = new dp_template_general_settings_form(null, compact('id'));
 
 // form results check
 if ($mform->is_cancelled()) {
-    redirect($returnurl);
+    redirect($cancelurl);
 }
 if ($fromform = $mform->get_data()) {
 
     if (empty($fromform->submitbutton)) {
-        totara_set_notification(get_string('error:unknownbuttonclicked', 'local_plan'), $returnurl);
+        totara_set_notification(get_string('error:unknownbuttonclicked', 'totara_plan'), $returnurl);
     }
     if (update_general_settings($id, $fromform)) {
-        totara_set_notification(get_string('update_general_settings', 'local_plan'), $returnurl, array('class' => 'notifysuccess'));
+        totara_set_notification(get_string('update_general_settings', 'totara_plan'), $returnurl, array('class' => 'notifysuccess'));
     } else {
-        totara_set_notification(get_string('error:update_general_settings', 'local_plan'), $returnurl);
+        totara_set_notification(get_string('error:update_general_settings', 'totara_plan'), $returnurl);
     }
 }
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name' => get_string("managetemplates", "local_plan"),
-                    'link' => "{$CFG->wwwroot}/totara/plan/template/index.php",
-                    'type' => 'misc');
-$navlinks[] = array('name' => format_string($template->fullname), 'link' => '', 'type' => 'misc');
+$PAGE->navbar->add(format_string($template->fullname));
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
 if ($template) {
-    print_heading($template->fullname);
+    echo $OUTPUT->heading($template->fullname);
 } else {
-    print_heading(get_string('newtemplate', 'local_plan'));
+    echo $OUTPUT->heading(get_string('newtemplate', 'totara_plan'));
 }
 
 $currenttab = 'general';
@@ -91,22 +87,21 @@ $mform->display();
 
 echo build_datepicker_js('#id_startdate, #id_enddate');
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();
 
 
-function update_general_settings($id, $fromform){
-    $todb = new object();
+function update_general_settings($id, $fromform) {
+    global $DB;
+
+    $todb = new stdClass();
     $todb->id = $id;
     $todb->fullname = $fromform->templatename;
     $todb->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $fromform->enddate);
 
-    begin_sql();
-    if(!update_record('dp_template', $todb)){
-        rollback_sql();
-        return false;
-    }
+    $transaction = $DB->start_delegated_transaction();
 
-    commit_sql();
+    $DB->update_record('dp_template', $todb);
+    $transaction->allow_commit();
     return true;
 }
 

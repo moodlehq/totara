@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,12 +44,12 @@ require_once($CFG->dirroot.'/totara/plan/components/competency/competency.class.
  * @return  void
  */
 function dp_competency_component_build_settings_form(&$mform, $customdata) {
-    global $CFG, $DP_AVAILABLE_ROLES;
+    global $CFG, $DP_AVAILABLE_ROLES, $DB;
 
-    $mform->addElement('header', 'competencysettings', get_string('competencysettings', 'local_plan'));
-    $mform->setHelpButton('competencysettings', array('advancedsettingscompetencysettings', get_string('competencysettings', 'local_plan'), 'local_plan'), true);
+    $mform->addElement('header', 'competencysettings', get_string('competencysettings', 'totara_plan'));
+    $mform->addHelpButton('competencysettings', 'advancedsettingscompetencysettings', 'totara_plan', '', true);
 
-    if ($templatesettings = get_record('dp_competency_settings', 'templateid', $customdata['id'])) {
+    if ($templatesettings = $DB->get_record('dp_competency_settings', array('templateid' => $customdata['id']))) {
         $defaultduedatesmode = $templatesettings->duedatemode;
         $defaultprioritymode = $templatesettings->prioritymode;
         $defaultpriorityscale = $templatesettings->priorityscale;
@@ -70,77 +70,79 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
     }
     // due date mode options
     $radiogroup = array();
-    $radiogroup[] =& $mform->createElement('radio', 'duedatemode', '', get_string('none', 'local_plan'), DP_DUEDATES_NONE);
-    $radiogroup[] =& $mform->createElement('radio', 'duedatemode', '', get_string('optional', 'local_plan'), DP_DUEDATES_OPTIONAL);
-    $radiogroup[] =& $mform->createElement('radio', 'duedatemode', '', get_string('required', 'local_plan'), DP_DUEDATES_REQUIRED);
-    $mform->addGroup($radiogroup, 'duedategroup', get_string('duedates','local_plan'), '<br />', false);
+    $radiogroup[] =& $mform->createElement('radio', 'duedatemode', '', get_string('none', 'totara_plan'), DP_DUEDATES_NONE);
+    $radiogroup[] =& $mform->createElement('radio', 'duedatemode', '', get_string('optional', 'totara_plan'), DP_DUEDATES_OPTIONAL);
+    $radiogroup[] =& $mform->createElement('radio', 'duedatemode', '', get_string('required', 'totara_plan'), DP_DUEDATES_REQUIRED);
+    $mform->addGroup($radiogroup, 'duedategroup', get_string('duedates', 'totara_plan'), html_writer::empty_tag('br'), false);
     $mform->setDefault('duedatemode', $defaultduedatesmode);
 
     // priorities mode options
     $radiogroup = array();
-    $radiogroup[] =& $mform->createElement('radio', 'prioritymode', '', get_string('none', 'local_plan'), DP_PRIORITY_NONE);
-    $radiogroup[] =& $mform->createElement('radio', 'prioritymode', '', get_string('optional', 'local_plan'), DP_PRIORITY_OPTIONAL);
-    $radiogroup[] =& $mform->createElement('radio', 'prioritymode', '', get_string('required', 'local_plan'), DP_PRIORITY_REQUIRED);
-    $mform->addGroup($radiogroup, 'prioritygroup', get_string('priorities','local_plan'), '<br />', false);
+    $radiogroup[] =& $mform->createElement('radio', 'prioritymode', '', get_string('none', 'totara_plan'), DP_PRIORITY_NONE);
+    $radiogroup[] =& $mform->createElement('radio', 'prioritymode', '', get_string('optional', 'totara_plan'), DP_PRIORITY_OPTIONAL);
+    $radiogroup[] =& $mform->createElement('radio', 'prioritymode', '', get_string('required', 'totara_plan'), DP_PRIORITY_REQUIRED);
+    $mform->addGroup($radiogroup, 'prioritygroup', get_string('priorities', 'totara_plan'), html_writer::empty_tag('br'), false);
     $mform->setDefault('prioritymode', $defaultprioritymode);
 
     // priority scale selector
     $prioritymenu = array();
-    if($priorities = dp_get_priorities()) {
-        foreach($priorities as $priority) {
+    if ($priorities = dp_get_priorities()) {
+        foreach ($priorities as $priority) {
             $prioritymenu[$priority->id] = $priority->name;
         }
     } else {
-        $mform->addElement('static', 'nopriorityscales', null, get_string('nopriorityscales', 'local_plan'));
+        $mform->addElement('static', 'nopriorityscales', null, get_string('nopriorityscales', 'totara_plan'));
         $mform->addElement('hidden', 'disabled', 'yes');
     }
 
     $mform->disabledIf('prioritygroup', 'disabled', 'eq', 'yes');
     $mform->disabledIf('priorityscale', 'disabled', 'eq', 'yes');
 
-    $mform->addElement('select', 'priorityscale', get_string('priorityscale', 'local_plan'), $prioritymenu);
+    $mform->addElement('select', 'priorityscale', get_string('priorityscale', 'totara_plan'), $prioritymenu);
     $mform->disabledIf('priorityscale', 'prioritymode', 'eq', DP_PRIORITY_NONE);
     if (!empty($customdata['templateinuse'])) {
-        $mform->addElement('static', 'priorityscalesdisabledtemplateinuse', null, get_string('priorityscalesdisabledtemplateinuse', 'local_plan'));
+        $mform->addElement('static', 'priorityscalesdisabledtemplateinuse', null, get_string('priorityscalesdisabledtemplateinuse', 'totara_plan'));
         $mform->disabledIf('priorityscale', 'prioritymode', 'neq', -777);
     }
     $mform->setDefault('priorityscale', $defaultpriorityscale);
 
     // auto assign options
     $autoassigngroup = array();
-    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassignpos', null, get_string('autoassignpos', 'local_plan'));
-    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassignorg', null, get_string('autoassignorg', 'local_plan'));
-    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'includecompleted', null, get_string('includecompleted', 'local_plan'));
-    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassigncourses', null, get_string('autoassigncourses', 'local_plan'));
+    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassignpos', null, get_string('autoassignpos', 'totara_plan'));
+    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassignorg', null, get_string('autoassignorg', 'totara_plan'));
+    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'includecompleted', null, get_string('includecompleted', 'totara_plan'));
+    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassigncourses', null, get_string('autoassigncourses', 'totara_plan'));
 
-    $mform->addGroup($autoassigngroup, 'autoassign', get_string('autoassign', 'local_plan'), array('<br />'), false);
+    $mform->addGroup($autoassigngroup, 'autoassign', get_string('autoassign', 'totara_plan'), array(html_writer::empty_tag('br')), false);
     $mform->setDefault('autoassignpos', $defaultautoassignpos);
     $mform->setDefault('autoassignorg', $defaultautoassignorg);
     $mform->setDefault('includecompleted', $defaultincludecompleted);
     $mform->setDefault('autoassigncourses', $defaultautoassigncourses);
 
-    $mform->addElement('advcheckbox', 'autoadddefaultevidence', get_string('defaultstatus', 'local_plan'), get_string('setdefaultstatus', 'local_plan'), null, array(0,1));
+    $mform->addElement('advcheckbox', 'autoadddefaultevidence', get_string('defaultstatus', 'totara_plan'), get_string('setdefaultstatus', 'totara_plan'), null, array(0,1));
     $mform->setDefault('autoadddefaultevidence', $defaultautoadddefaultevidence);
 
 
     //Permissions
-    $mform->addElement('header', 'competencypermissions', get_string('competencypermissions', 'local_plan'));
-    $mform->setHelpButton('competencypermissions', array('advancedsettingscompetencypermissions', get_string('competencypermissions', 'local_plan'), 'local_plan'), true);
+    $mform->addElement('header', 'competencypermissions', get_string('competencypermissions', 'totara_plan'));
+    $mform->addHelpButton('competencypermissions', 'advancedsettingscompetencypermissions', 'totara_plan', '', true);
 
     dp_add_permissions_table_headings($mform);
 
-    foreach(dp_competency_component::$permissions as $action => $requestable) {
-        dp_add_permissions_table_row($mform, $action, get_string($action, 'local_plan'), $requestable);
+    foreach (dp_competency_component::$permissions as $action => $requestable) {
+        dp_add_permissions_table_row($mform, $action, get_string($action, 'totara_plan'), $requestable);
     }
 
-    foreach(dp_competency_component::$permissions as $action => $requestable) {
-        foreach($DP_AVAILABLE_ROLES as $role){
-            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='competency' AND action='{$action}' AND templateid='{$customdata['id']}'";
-            $defaultvalue = get_field_sql($sql);
+    foreach (dp_competency_component::$permissions as $action => $requestable) {
+        foreach ($DP_AVAILABLE_ROLES as $role) {
+            $sql = "SELECT value FROM {dp_permissions}
+                WHERE role = ? AND component = ? AND action = ? AND templateid = ?";
+            $params = array($role, 'competency', $action, $customdata['id']);
+            $defaultvalue = $DB->get_field_sql($sql, $params);
             $mform->setDefault($action.$role, $defaultvalue);
         }
     }
-    $mform->addElement('html', '</table></div>');
+    $mform->addElement('html', html_writer::end_tag('table') . html_writer::end_tag('div'));
 }
 
 
@@ -153,25 +155,22 @@ function dp_competency_component_build_settings_form(&$mform, $customdata) {
  * @return  void
  */
 function dp_competency_component_process_settings_form($fromform, $id) {
-    global $CFG, $DP_AVAILABLE_ROLES;
 
-    $currenturl = $CFG->wwwroot .
-        '/totara/plan/template/advancedworkflow.php?id=' . $id .
-        '&amp;component=competency';
+    global $CFG, $DP_AVAILABLE_ROLES, $DB;
 
-    begin_sql();
-    $currentworkflow = get_field('dp_template', 'workflow', 'id', $id);
-    if($currentworkflow != 'custom') {
-        $template_update = new object();
+    $currenturl = new moodle_url('/totara/plan/template/advancedworkflow.php', array('id' => $id, 'component' => 'competency'));
+
+
+    $transaction = $DB->start_delegated_transaction();
+
+    $currentworkflow = $DB->get_field('dp_template', 'workflow', array('id' => $id));
+    if ($currentworkflow != 'custom') {
+        $template_update = new stdClass();
         $template_update->id = $id;
         $template_update->workflow = 'custom';
-        if(!update_record('dp_template', $template_update)){
-            rollback_sql();
-            totara_set_notification(get_string('error:update_competency_settings','local_plan'), $currenturl);
-        }
+        $DB->update_record('dp_template', $template_update);
     }
-
-    $todb = new object();
+    $todb = new stdClass();
     $todb->templateid = $id;
     $todb->duedatemode = $fromform->duedatemode;
     $todb->prioritymode = $fromform->prioritymode;
@@ -183,53 +182,41 @@ function dp_competency_component_process_settings_form($fromform, $id) {
     $todb->includecompleted = $fromform->includecompleted;
     $todb->autoassigncourses = $fromform->autoassigncourses;
     $todb->autoadddefaultevidence = $fromform->autoadddefaultevidence;
-
-    if($competencysettings = get_record('dp_competency_settings', 'templateid', $id)) {
+    if ($competencysettings = $DB->get_record('dp_competency_settings', array('templateid' => $id))) {
         // update
         $todb->id = $competencysettings->id;
-        if(!update_record('dp_competency_settings', $todb)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:update_competency_settings','local_plan'), $currenturl);
+        if (!$DB->update_record('dp_competency_settings', $todb)) {
+            totara_set_notification(get_string('error:update_competency_settings', 'totara_plan'), $currenturl);
         }
     } else {
         // insert
-        if(!insert_record('dp_competency_settings', $todb)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:update_competency_settings','local_plan'), $currenturl);
+        if (!$DB->insert_record('dp_competency_settings', $todb)) {
+            totara_set_notification(get_string('error:update_competency_settings', 'totara_plan'), $currenturl);
         }
     }
-
-
-    foreach(dp_competency_component::$permissions as $action => $requestable) {
-        foreach($DP_AVAILABLE_ROLES as $role) {
-            $permission_todb = new object();
+    foreach (dp_competency_component::$permissions as $action => $requestable) {
+        foreach ($DP_AVAILABLE_ROLES as $role) {
+            $permission_todb = new stdClass();
             $permission_todb->templateid = $id;
             $permission_todb->component = 'competency';
             $permission_todb->action = $action;
             $permission_todb->role = $role;
             $temp = $action . $role;
             $permission_todb->value = $fromform->$temp;
-
-            $sql = "SELECT * FROM {$CFG->prefix}dp_permissions WHERE templateid={$id} AND component='competency' AND action='{$action}' AND role='{$role}'";
-
-            if($permission_setting = get_record_sql($sql)){
+            $sql = "SELECT id FROM {dp_permissions}
+                WHERE templateid = ? AND component = ? AND action = ? AND role = ?";
+            $params = array($id, 'competency', $action, $role);
+            if ($permission_setting_id = $DB->get_field_sql($sql, $params, IGNORE_MISSING)) {
                 //update
-                $permission_todb->id = $permission_setting->id;
-                if(!update_record('dp_permissions', $permission_todb)) {
-                    rollback_sql();
-                    totara_set_notification(get_string('error:update_competency_settings','local_plan'), $currenturl);
-                }
+                $permission_todb->id = $permission_setting_id;
+                $DB->update_record('dp_permissions', $permission_todb);
             } else {
                 //insert
-                if(!insert_record('dp_permissions', $permission_todb)) {
-                    rollback_sql();
-                    totara_set_notification(get_string('error:update_competency_settings','local_plan'), $currenturl);
-                }
+                $DB->insert_record('dp_permissions', $permission_todb);
             }
         }
     }
-
-    commit_sql();
+    $transaction->allow_commit();
     add_to_log(SITEID, 'plan', 'changed workflow', "template/workflow.php?id={$id}", "Template ID:{$id}");
-    totara_set_notification(get_string('update_competency_settings','local_plan'), $currenturl, array('class' => 'notifysuccess'));
+    totara_set_notification(get_string('update_competency_settings', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
 }

@@ -105,6 +105,23 @@ totara_fix_nullable_charfield('reminder_message', 'type', 'reminderid', '10', nu
 totara_fix_nullable_charfield('errorlog', 'version', 'timeoccured', '255');
 totara_fix_nullable_charfield('errorlog', 'build', 'version', '255');
 totara_fix_nullable_charfield('errorlog', 'hash', 'details', '32');
+
+
+//plans
+totara_fix_nullable_charfield('dp_template', 'fullname', 'id', '255');
+totara_fix_nullable_charfield('dp_template', 'workflow', 'visible', '255');
+totara_fix_nullable_charfield('dp_permissions', 'role', 'templateid', '255');
+totara_fix_nullable_charfield('dp_permissions', 'component', 'role', '255');
+totara_fix_nullable_charfield('dp_permissions', 'action', 'component', '255');
+totara_fix_nullable_charfield('dp_priority_scale', 'name', 'id', '255');
+totara_fix_nullable_charfield('dp_priority_scale_value', 'name', 'id', '255');
+totara_fix_nullable_charfield('dp_objective_scale', 'name', 'id', '255');
+totara_fix_nullable_charfield('dp_objective_scale_value', 'name', 'objscaleid', '255');
+totara_fix_nullable_charfield('dp_plan_component_relation', 'component1', 'id', '255');
+totara_fix_nullable_charfield('dp_plan_component_relation', 'component2', 'itemid1', '255');
+totara_fix_nullable_charfield('dp_plan_evidence', 'name', 'planid', '255');
+totara_fix_nullable_charfield('dp_plan_objective', 'fullname', 'planid', '255');
+
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Change nullable character fields');
 echo $OUTPUT->heading('Change nullable database fields');
 echo $OUTPUT->notification($success, 'notifysuccess');

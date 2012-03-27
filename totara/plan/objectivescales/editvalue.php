@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @subpackage plan
  */
 
-require_once('../../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('editvalue_form.php');
 require_once('lib.php');
@@ -39,36 +39,38 @@ $objectivescaleid = optional_param('objscaleid', 0, PARAM_INT); // Objective sca
 
 // Make sure we have at least one or the other
 if (!$id && !$objectivescaleid) {
-    error(get_string('error:incorrectparameters', 'local_plan'));
+    print_error('error:incorrectparameters', 'totara_plan');
 }
 
 // Page setup and check permissions
 admin_externalpage_setup('objectivescales');
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
+$PAGE->set_context($context);
 
 if ($id == 0) {
     // Creating new scale value
-    require_capability('totara/plan:manageobjectivescales', $sitecontext);
+    require_capability('totara/plan:manageobjectivescales', $context);
 
     $value = new stdClass();
     $value->id = 0;
     $value->objscaleid = $objectivescaleid;
-    $value->sortorder = get_field('dp_objective_scale_value', 'MAX(sortorder) + 1', 'objscaleid', $value->objscaleid);
+    $value->sortorder = $DB->get_field('dp_objective_scale_value', 'MAX(sortorder) + 1', array('objscaleid' => $value->objscaleid));
     if (!$value->sortorder) {
         $value->sortorder = 1;
     }
+    $value->description = '';
 
 } else {
     // Editing scale value
-    require_capability('totara/plan:manageobjectivescales', $sitecontext);
+    require_capability('totara/plan:manageobjectivescales', $context);
 
-    if (!$value = get_record('dp_objective_scale_value', 'id', $id)) {
-        error(get_string('error:objectivescalevalueidincorrect', 'local_plan'));
+    if (!$value = $DB->get_record('dp_objective_scale_value', array('id' => $id))) {
+        print_error('error:objectivescalevalueidincorrect', 'totara_plan');
     }
 }
-if (!$scale = get_record('dp_objective_scale', 'id', $value->objscaleid)) {
-    error(get_string('error:objectivescaleidincorrect','local_plan'));
+if (!$scale = $DB->get_record('dp_objective_scale', array('id' => $value->objscaleid))) {
+    print_error('error:objectivescaleidincorrect', 'totara_plan');
 }
 
 $scale_used = dp_objective_scale_is_used($scale->id);
@@ -77,8 +79,8 @@ $scale_used = dp_objective_scale_is_used($scale->id);
 $value->scalename = format_string($scale->name);
 
 // check scale isn't being used when adding new scale values
-if($value->id == 0 && $scale_used) {
-    error('You cannot add a scale value to a scale that is in use.');
+if ($value->id == 0 && $scale_used) {
+    print_error('error:cannotaddscalevalue', 'totara_plan');
 }
 
 
@@ -87,6 +89,9 @@ if($value->id == 0 && $scale_used) {
 ///
 
 // Create form
+$value->descriptionformat = FORMAT_HTML;
+$value = file_prepare_standard_editor($value, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                      'totara_plan', 'dp_objective_scale_value', $value->id);
 $valueform = new dp_objective_scale_value_edit_form(null, array('scaleid' => $scale->id));
 $valueform->set_data($value);
 
@@ -106,46 +111,39 @@ if ($valueform->is_cancelled()) {
     }
 
     // Save
-    // New objective scale value
     if ($valuenew->id == 0) {
+        // New objective scale value
         unset($valuenew->id);
-
-        if ($valuenew->id = insert_record('dp_objective_scale_value', $valuenew)) {
-            add_to_log(SITEID, 'objectives', 'scale value added', "view.php?id={$valuenew->objscaleid}");
-
-            totara_set_notification(get_string('objectivescalevalueadded', 'local_plan', format_string(stripslashes($valuenew->name))), "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$valuenew->objscaleid}", array('class' => 'notifysuccess'));
-        } else {
-            error(get_string('error:createobjectivevalue', 'local_plan'));
-        }
-
-    // Updating objective scale value
+        $valuenew->id = $DB->insert_record('dp_objective_scale_value', $valuenew);
+        add_to_log(SITEID, 'objectivescales', 'scale value added', "view.php?id={$valuenew->objscaleid}");
+        $notification = get_string('objectivescalevalueadded', 'totara_plan', format_string(stripslashes($valuenew->name)));
     } else {
-        if (update_record('dp_objective_scale_value', $valuenew)) {
-            // Log
-            add_to_log(SITEID, 'objectives', 'scale value updated', "view.php?id={$valuenew->objscaleid}");
-
-            totara_set_notification(get_string('objectivescalevalueupdated', 'local_plan', format_string(stripslashes($valuenew->name))), "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$valuenew->objscaleid}", array('class' => 'notifysuccess'));
-        } else {
-            error(get_string('error:updateobjectivescalevalue', 'local_plan'));
-        }
+        // Updating objective scale value
+        $DB->update_record('dp_objective_scale_value', $valuenew);
+        // Log
+        add_to_log(SITEID, 'objectivescales', 'scale value updated', "view.php?id={$valuenew->objscaleid}");
+       $notification = get_string('objectivescalevalueupdated', 'totara_plan', format_string(stripslashes($valuenew->name)));
     }
+    $valuenew = file_postupdate_standard_editor($valuenew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_plan', 'dp_objective_scale_value', $valuenew->id);
+    $DB->set_field('dp_objective_scale_value', 'description', $valuenew->description, array('id' => $valuenew->id));
+    totara_set_notification($notification, "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$valuenew->objscaleid}", array('class' => 'notifysuccess'));
 }
 
 // Display page header
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 if ($id == 0) {
-    print_heading(get_string('addnewobjectivevalue', 'local_plan'));
+    echo $OUTPUT->heading(get_string('addnewobjectivevalue', 'totara_plan'));
 } else {
-    print_heading(get_string('editobjectivevalue', 'local_plan'));
+    echo $OUTPUT->heading(get_string('editobjectivevalue', 'totara_plan'));
 }
 
 // Display warning if scale is in use
-if($scale_used) {
-    print_container(get_string('objectivescaleinuse', 'local_plan'), true, 'notifysuccess');
+if ($scale_used) {
+    echo $OUTPUT->container(get_string('objectivescaleinuse', 'totara_plan'), 'notifysuccess');
 }
 
 $valueform->display();
 
 /// and proper footer
-print_footer();
+echo $OUTPUT->footer();

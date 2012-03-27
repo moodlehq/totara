@@ -2,8 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +21,8 @@
  * @package totara
  * @subpackage plan
  */
-require_once('../../../../config.php');
+
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
@@ -39,28 +39,28 @@ $courseid = required_param('courseid', PARAM_INT);
 $idlist = optional_param('update', null, PARAM_SEQUENCE);
 if ($idlist == null) {
     $idlist = array();
-}
-else {
+} else {
     $idlist = explode(',', $idlist);
 }
 
-require_capability('totara/plan:accessplan', get_system_context());
+require_capability('totara/plan:accessplan', context_system::instance());
 $plan = new development_plan($planid);
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $component = $plan->get_component('course');
 
-if ( !$component->can_update_items() ) {
-    print_error('error:cannotupdatecourses', 'local_plan');
+if (!$component->can_update_items()) {
+    print_error('error:cannotupdatecourses', 'totara_plan');
 }
-if ( $plancompleted ){
-    print_error('plancompleted', 'local_plan');
+if ($plancompleted) {
+    print_error('plancompleted', 'totara_plan');
 }
 
 $component->update_linked_components($courseid, 'competency', $idlist);
-if($linkedcompetencies =
+if ($linkedcompetencies =
     $component->get_linked_components($courseid, 'competency')) {
     echo $plan->get_component('competency')->display_linked_competencies($linkedcompetencies);
 } else {
-    $competencyname = get_string('competencyplural', 'local_plan');
-    echo '<p class="noitems-assigncompetencies">' . get_string('nolinkedx', 'local_plan', strtolower($competencyname)). '</p>';
+    $competencyname = get_string('competencyplural', 'totara_plan');
+    $message = get_string('nolinkedx', 'totara_plan', strtolower($competencyname));
+    echo html_writer::tag('p', $message, array('class' => 'noitems-assigncompetencies'));
 }

@@ -1,15 +1,14 @@
-<?php // $Id$
+<?php
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Alastair Munro <alastair@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 /**
@@ -29,6 +28,7 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 require_once('template_forms.php');
 
 $id = optional_param('id', null, PARAM_INT);
@@ -40,17 +40,17 @@ $show = optional_param('show', 0, PARAM_INT);
 
 admin_externalpage_setup('managetemplates');
 
-if(!$template = get_record('dp_template', 'id', $id)){
-    error(get_string('error:invalidtemplateid', 'local_plan'));
+if (!$template = $DB->get_record('dp_template', array('id' => $id))) {
+    print_error('error:invalidtemplateid', 'totara_plan');
 }
 
 $returnurl = $CFG->wwwroot . '/totara/plan/template/components.php?id=' . $id;
 
-if($save){
-    if(update_plan_component_name('componentname', $id)){
-        totara_set_notification(get_string('update_components_settings', 'local_plan'), $returnurl, array('class' => 'notifysuccess'));
+if ($save) {
+    if (update_plan_component_name('componentname', $id)) {
+        totara_set_notification(get_string('update_components_settings', 'totara_plan'), $returnurl, array('class' => 'notifysuccess'));
     } else {
-        totara_set_notification(get_string('error:update_components_settings', 'local_plan'), $returnurl);
+        totara_set_notification(get_string('error:update_components_settings', 'totara_plan'), $returnurl);
     }
 }
 
@@ -61,30 +61,30 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     // Get value to move, and value to replace
     if (!empty($moveup)) {
-        $move = get_record('dp_component_settings', 'id', $moveup);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_component_settings', array('id' => $moveup));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_component_settings
+            FROM {dp_component_settings}
             WHERE
-            templateid = {$template->id}
-            AND sortorder < {$move->sortorder}
-            ORDER BY sortorder DESC", 0, 1
+            templateid = ?
+            AND sortorder < ?
+            ORDER BY sortorder DESC", array($template->id, $move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if ($resultset && count($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
     } else {
-        $move = get_record('dp_component_settings', 'id', $movedown);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_component_settings', array('id' => $movedown));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_component_settings
+            FROM {dp_component_settings}
             WHERE
-            templateid = {$template->id}
-            AND sortorder > {$move->sortorder}
-            ORDER BY sortorder ASC", 0, 1
+            templateid = ?
+            AND sortorder > ?
+            ORDER BY sortorder ASC", array($template->id, $move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if ($resultset && count($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
@@ -92,63 +92,50 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     if ($swap && $move) {
         // Swap sortorders
-        begin_sql();
-        if (!(set_field('dp_component_settings', 'sortorder', $move->sortorder, 'id', $swap->id)
-            && set_field('dp_component_settings', 'sortorder', $swap->sortorder, 'id', $move->id)
-        )) {
-            rollback_sql();
-            totara_set_notification(get_string('error:update_components_sortorder', 'local_plan'), $returnurl);
-        }
-        commit_sql();
+        $transaction = $DB->start_delegated_transaction();
+        $DB->set_field('dp_component_settings', 'sortorder', $move->sortorder, array('id' => $swap->id));
+        $DB->set_field('dp_component_settings', 'sortorder', $swap->sortorder, array('id' => $move->id));
+
+        $transaction->allow_commit();
     }
 }
 
-if($show) {
-    if(!$component = get_record('dp_component_settings', 'id', $show)){
-            totara_set_notification(get_string('error:invalid_component_id', 'local_plan'), $returnurl);
+if ($show) {
+    if (!$component = $DB->get_record('dp_component_settings', array('id' => $show))) {
+        totara_set_notification(get_string('error:invalid_component_id', 'totara_plan'), $returnurl);
     } else {
+        $transaction = $DB->start_delegated_transaction();
         $enabled = 1;
-        if (!set_field('dp_component_settings', 'enabled', $enabled, 'id', $component->id)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:update_components_enabled', 'local_plan'), $returnurl);
-        } else {
-            commit_sql();
-            if ($plans = get_records('dp_plan', 'templateid', $template->id, '', 'id')) {
-                dp_plan_check_plan_complete(array_keys($plans));
-            }
-        }
+        $DB->set_field('dp_component_settings', 'enabled', $enabled, array('id' => $component->id));
+        $transaction->allow_commit();
+        $plans = $DB->get_records('dp_plan', array('templateid' => $template->id), '', 'id');
+        dp_plan_check_plan_complete(array_keys($plans));
     }
+
 }
 
-if($hide) {
-    if(!$component = get_record('dp_component_settings', 'id', $hide)){
-            totara_set_notification(get_string('error:invalid_component_id', 'local_plan'), $returnurl);
+if ($hide) {
+    if (!$component = $DB->get_record('dp_component_settings', array('id' => $hide))) {
+        totara_set_notification(get_string('error:invalid_component_id', 'totara_plan'), $returnurl);
     } else {
+        $transaction = $DB->start_delegated_transaction();
         $enabled = 0;
-        if (!set_field('dp_component_settings', 'enabled', $enabled, 'id', $component->id)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:update_components_enabled', 'local_plan'), $returnurl);
-        } else {
-            commit_sql();
-            if ($plans = get_records('dp_plan', 'templateid', $template->id, '', 'id')) {
-                dp_plan_check_plan_complete(array_keys($plans));
-            }
-        }
+        $DB->set_field('dp_component_settings', 'enabled', $enabled, array('id' => $component->id));
+        $transaction->allow_commit();
+        $plans = $DB->get_records('dp_plan', array('templateid' => $template->id), '', 'id');
+        dp_plan_check_plan_complete(array_keys($plans));
     }
 }
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-                    'link'=>"{$CFG->wwwroot}/totara/plan/template/index.php",
-                    'type'=>'misc');
-$navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
+$PAGE->navbar->add(get_string("managetemplates", "totara_plan"), new moodle_url("/totara/plan/template/index.php"));
+$PAGE->navbar->add(format_string($template->fullname));
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-if($template){
-    print_heading($template->fullname);
+if ($template) {
+    echo $OUTPUT->heading($template->fullname);
 } else {
-    print_heading(get_string('newtemplate', 'local_plan'));
+    echo $OUTPUT->heading(get_string('newtemplate', 'totara_plan'));
 }
 
 $currenttab = 'components';
@@ -157,6 +144,6 @@ require('tabs.php');
 $mform = new dp_components_form(null, compact('id'));
 $mform->display();
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();
 
 ?>

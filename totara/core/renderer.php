@@ -528,4 +528,57 @@ class totara_core_renderer extends plugin_renderer_base {
         return $output;
     }
 
+
+    /**
+     * Displays relevant progress bar
+     * @param $percent int a percentage value (0-100)
+     * @param $size string large, medium...
+     * @param $showlabel boolean show completion text label
+     * @param $tooltip string required tooltip text
+     * @return $out html string
+     */
+    public function print_totara_progressbar($percent, $size='medium', $showlabel=false, $tooltip='DEFAULTTOOLTIP') {
+        $percent = round($percent);
+
+        if ($percent < 0 || $percent > 100) {
+            return 'progress bar error- invalid value...';
+        }
+
+        // Add more sizes if as neccessary :)!
+        switch ($size) {
+        case 'large' :
+            $bar_background = 'progressbar_back-large';
+            $pixelvalue = ($percent / 100) * 121;
+            $pixeloffset = round($pixelvalue - 120);
+            $class = 'totara_progress_bar_large';
+            break;
+        case 'medium' :
+        default :
+            $bar_background = 'progressbar_back-medium';
+            $pixelvalue = ($percent / 100) * 61;
+            $pixeloffset = round($pixelvalue - 60);
+            $class = 'totara_progress_bar_medium';
+            break;
+        }
+
+        if ($tooltip == 'DEFAULTTOOLTIP') {
+            $tooltip = get_string('xpercent', 'totara_core', $percent);
+        }
+
+        if (right_to_left()) {
+            // Negate offset and add 1 to
+            // fix display in RTL
+            $pixeloffset  = -$pixeloffset + 1;
+        }
+
+        $out = '';
+
+        $out .= $this->pix_icon($bar_background, $tooltip, 'totara_core', array('title' => $tooltip, 'style' => "background-position: ' . $pixeloffset . 'px 0pt;", 'class' => $class));
+        if ($showlabel) {
+            $out .= ' ' . get_string('xpercentcomplete', 'totara_core', $percent) . html_writer::empty_tag('br');
+        }
+
+        return $out;
+    }
+
 }

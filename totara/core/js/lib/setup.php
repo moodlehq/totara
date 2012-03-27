@@ -96,6 +96,9 @@ function local_js($options = array()) {
 
         $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.8.20.custom.min.js');
 
+        $PAGE->requires->string_for_js('datepickerdisplayformat', 'totara_core');
+        $PAGE->requires->string_for_js('thisdirection', 'langconfig');
+
         $lang = current_language();
 
         // include datepicker localization file if present for current language
@@ -123,22 +126,19 @@ function local_js($options = array()) {
 }
 
 /**
- * Returns a code snippet to initialize a JS datepicker
+ * Adds JS datepicker setup call to page
  *
  * @param string $selector A JQuery Selector string referencing the element to add
  *                         the picker to
- * @param boolean $includetags If true, also surrounds the JS in script tags
  * @param string $dateformat (optional) provide if format should not be standard dd/mm/yy
- * @return string Script contents to be included in the page
  */
-function build_datepicker_js($selector, $includetags = true, $dateformat=null) {
+function build_datepicker_js($selector, $dateformat=null) {
     global $PAGE;
     if (empty($dateformat)) {
         $dateformat = get_string('datepickerdisplayformat', 'totara_core');
     }
-    $button_img = array('calendar', 'totara_core');
-    $dir = (get_string('thisdirection', 'langconfig') == 'rtl');
-    $args = array($selector, $dateformat, $button_img, $dir);
+    $button_img = array('t/calendar', 'totara_core');
+    $args = array($selector, $dateformat, $button_img);
     $PAGE->requires->js_init_call('M.totara_core.build_datepicker', $args);
 }
 

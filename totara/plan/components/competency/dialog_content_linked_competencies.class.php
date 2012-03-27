@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class totara_dialog_linked_competencies_content_competencies extends totara_dial
      * @var     integer planid  id of development plan for which linked competencies should be loaded
      */
     public function load_competencies($planid) {
-        global $CFG;
+        global $DB;
 
         $planid = (int) $planid;
 
@@ -49,20 +49,18 @@ class totara_dialog_linked_competencies_content_competencies extends totara_dial
                 dppca.id AS id,
                 c.fullname AS fullname
             FROM
-                {$CFG->prefix}dp_plan_competency_assign dppca
+                {dp_plan_competency_assign} dppca
             INNER JOIN
-                {$CFG->prefix}comp c
+                {comp} c
              ON c.id = dppca.competencyid
             WHERE
-                dppca.planid = {$planid}
+                dppca.planid = ?
             ORDER BY
                 c.fullname
         ";
+        $params = array($planid);
 
-        $this->items = get_records_sql($sql);
+        $this->items = $DB->get_records_sql($sql, $params);
 
-        if (empty($this->items)) {
-            $this->items = array();
-        }
     }
 }

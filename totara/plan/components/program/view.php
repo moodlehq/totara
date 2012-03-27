@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,12 +34,11 @@ $id = required_param('id', PARAM_INT); // plan id
 $progassid = required_param('itemid', PARAM_INT); // program assignment id
 
 $plan = new development_plan($id);
-$systemcontext = get_context_instance(CONTEXT_SYSTEM);
 
 //Permissions check
-$systemcontext = get_system_context();
-if(!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
-        print_error('error:nopermissions', 'local_plan');
+$systemcontext = context_system::instance();
+if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+        print_error('error:nopermissions', 'totara_plan');
 }
 
 //Javascript include
@@ -48,28 +47,34 @@ local_js(array(
 ));
 
 // Get extension dialog content
-if ($programid = get_field('dp_plan_program_assign', 'programid', 'id', $progassid)) {
-    require_js(array(
-        $CFG->wwwroot . '/totara/program/view/program_view.js.php?id=' . $programid
-    ));
+if ($programid = $DB->get_field('dp_plan_program_assign', 'programid', array('id' => $progassid))) {
+    $PAGE->requires->strings_for_js(array('pleaseentervaliddate', 'pleaseentervalidreason', 'extensionrequest', 'cancel', 'ok'), 'totara_program');
+    $notify_html = trim($OUTPUT->notification(get_string("extensionrequestsent", "totara_program"), "notifysuccess"));
+    $notify_html_fail = trim($OUTPUT->notification(get_string("extensionrequestnotsent", "totara_program"), null));
+    $args = array('args'=>'{"id":'.$programid.', "userid":'.$USER->id.', "notify_html_fail":"'.$notify_html_fail.'", "notify_html":"'.$notify_html.'"}');
+    $jsmodule = array(
+                 'name' => 'totara_programview',
+                 'fullpath' => '/totara/program/messages/program_view.js',
+                 'requires' => array('json')
+              );
+    $PAGE->requires->js_init_call('M.totara_programview.init',$args, false, $jsmodule);
 }
 
 $componentname = 'program';
 $component = $plan->get_component($componentname);
-$currenturl = $CFG->wwwroot . '/totara/plan/components/program/view.php?id='.$id.'&amp;itemid='.$progassid;
+
+$currenturl = new moodle_url('/totara/plan/components/program/view.php', array('id' => $id, 'itemid' => $caid));
 
 $fullname = $plan->name;
-$pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
+$pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
 
-$navlinks = array();
-dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$id, 'type'=>'title');
-$navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
-$navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
+dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+$PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $planid)));
+$PAGE->navbar->add(get_string('viewitem', 'totara_plan'));
 
-$navigation = build_navigation($navlinks);
 
-$plan->print_header($componentname, $navlinks, false);
+$plan->print_heading($componentname);
+echo $OUTPUT->header();
 
 print $component->display_back_to_index_link();
 
@@ -77,6 +82,7 @@ print $component->display_program_detail($progassid);
 
 
 // Comments
+/*TODO SCANMSG re-enable when comments merged
 require_once($CFG->dirroot.'/totara/comment/lib.php');
 comment::init();
 $options = new stdClass;
@@ -84,15 +90,15 @@ $options->area    = 'plan-program-item';
 $options->context = $systemcontext;
 $options->itemid  = $progassid;
 $options->showcount = true;
-$options->component = 'local_plan';
+$options->component = 'totara_plan';
 $options->autostart = true;
 $options->notoggle = true;
 $comment = new comment($options);
 echo $comment->output(true);
+*/
+echo $OUTPUT->container_end();
 
-print_container_end();
-
-print_footer();
+echo $OUTPUT->footer();
 
 
 ?>

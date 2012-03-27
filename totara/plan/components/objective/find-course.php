@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
  * @subpackage plan
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/plan/components/course/dialog_content_linked_courses.class.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
@@ -38,26 +38,26 @@ $objectiveid = required_param('objectiveid', PARAM_INT);
 ///
 /// Load plan
 ///
-require_capability('totara/plan:accessplan', get_system_context());
+$context = context_system::instance();
+$PAGE->set_context($context);
+require_capability('totara/plan:accessplan', $context);
 
 $plan = new development_plan($planid);
 $component = $plan->get_component('objective');
 $linkedcourses = $component->get_linked_components($objectiveid, 'course');
 $selected = array();
 if (!empty($linkedcourses)) {
+    list($insql, $params) = $DB->get_in_or_equal($linkedcourses);
     $sql = "SELECT ca.id, c.fullname, c.sortorder
-            FROM {$CFG->prefix}dp_plan_course_assign ca
-            INNER JOIN {$CFG->prefix}course c ON ca.courseid = c.id
-            WHERE ca.id IN (".implode(',', $linkedcourses).')
-            ORDER BY c.fullname, c.sortorder';
-    $courses = get_records_sql($sql);
-    if (!empty($courses)) {
-        $selected = $courses;
-    }
+            FROM {dp_plan_course_assign} ca
+            INNER JOIN {course} c ON ca.courseid = c.id
+            WHERE ca.id $insql
+            ORDER BY c.fullname, c.sortorder";
+    $selected = $DB->get_records_sql($sql, $params);
 }
 // Access control check
 if (!$permission = $component->can_update_items()) {
-    print_error('error:cannotupdatecourses', 'local_plan');
+    print_error('error:cannotupdatecourses', 'totara_plan');
 }
 
 

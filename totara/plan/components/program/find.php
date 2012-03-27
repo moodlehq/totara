@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
  * @subpackage plan
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_programs.class.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
@@ -53,7 +53,7 @@ $component = $plan->get_component('program');
 
 // Access control check
 if (!$permission = $component->can_update_items()) {
-    print_error('error:cannotupdateprograms', 'local_plan');
+    print_error('error:cannotupdateprograms', 'totara_plan');
 }
 
 $selected = array();

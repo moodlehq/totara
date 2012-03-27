@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,29 +32,29 @@ require_once("$CFG->libdir/tablelib.php");
 class dp_template_general_settings_form extends moodleform {
 
     function definition() {
-        global $CFG;
+        global $DB;
         $mform =& $this->_form;
 
         $id = $this->_customdata['id'];
-        $template = get_record('dp_template', 'id', $id);
+        $template = $DB->get_record('dp_template', array('id' => $id));
         $templatename = $template->fullname;
         $enddate = $template->enddate == 0 ? '' : date(get_string('datepickerparseformat', 'totara_core'), $template->enddate);
 
         $mform->addElement('hidden', 'id', $id);
 
-        $mform->addElement('header', 'generalsettings', get_string('generalsettings', 'local_plan'));
+        $mform->addElement('header', 'generalsettings', get_string('generalsettings', 'totara_plan'));
 
-        $mform->addElement('text', 'templatename', get_string('name', 'local_plan'), 'maxlength="255"');
+        $mform->addElement('text', 'templatename', get_string('name', 'totara_plan'), 'maxlength="255"');
         $mform->setType('templatename', PARAM_TEXT);
         $mform->setDefault('templatename', $templatename);
         $mform->addRule('templatename', null, 'required');
 
-        $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->addElement('text', 'enddate', get_string('enddate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
         $mform->setType('enddate', PARAM_TEXT);
         $mform->setDefault('enddate', $enddate);
-        $mform->addRule('enddate', get_string('error:dateformat','local_plan', get_string('datepickerplaceholder', 'totara_core')), 'regex', get_string('datepickerregexphp', 'totara_core'));
+        $mform->addRule('enddate', get_string('error:dateformat', 'totara_plan', get_string('datepickerplaceholder', 'totara_core')), 'regex', get_string('datepickerregexphp', 'totara_core'));
         $mform->addRule('enddate', null, 'required');
-        $mform->setHelpButton('enddate', array('templateenddate', get_string('enddate', 'local_plan'), 'local_plan'), true);
+        $mform->addHelpButton('enddate', 'templateenddate', 'totara_plan', '', true);
 
         $this->add_action_buttons();
     }
@@ -62,14 +62,14 @@ class dp_template_general_settings_form extends moodleform {
 
     function validation($data, $files) {
         $mform =& $this->_form;
-        $result = array();
 
+        $result = array();
         $enddatestr = isset($data['enddate']) ? $data['enddate'] : '';
         $enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddatestr);
 
         // Enforce valid dates
         if (false === $enddate && $enddatestr !== get_string('datepickerplaceholder', 'totara_core') && $enddatestr !== '') {
-            $result['enddate'] = get_string('error:dateformat','local_plan', get_string('datepickerplaceholder', 'totara_core'));
+            $result['enddate'] = get_string('error:dateformat', 'totara_plan', get_string('datepickerplaceholder', 'totara_core'));
         }
 
         return $result;
@@ -78,21 +78,20 @@ class dp_template_general_settings_form extends moodleform {
 
 
 class dp_template_new_form extends moodleform {
-    function definition(){
-        global $CFG;
+    function definition() {
         $mform =& $this->_form;
 
-        $mform->addElement('header', 'newtemplate', get_string('newtemplate', 'local_plan'));
+        $mform->addElement('header', 'newtemplate', get_string('newtemplate', 'totara_plan'));
 
-        $mform->addElement('text', 'templatename', get_string('name', 'local_plan'), 'maxlength="255"');
+        $mform->addElement('text', 'templatename', get_string('name', 'totara_plan'), 'maxlength="255"');
         $mform->setType('templatename', PARAM_TEXT);
         $mform->addRule('templatename', null, 'required');
 
-        $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        $mform->addElement('text', 'enddate', get_string('enddate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
         $mform->setType('enddate', PARAM_TEXT);
-        $mform->addRule('enddate', get_string('error:dateformat','local_plan', get_string('datepickerplaceholder', 'totara_core')), 'regex', get_string('datepickerregexphp', 'totara_core'));
+        $mform->addRule('enddate', get_string('error:dateformat','totara_plan', get_string('datepickerplaceholder', 'totara_core')), 'regex', get_string('datepickerregexphp', 'totara_core'));
         $mform->addRule('enddate', null, 'required');
-        $mform->setHelpButton('enddate', array('templateenddate', get_string('enddate', 'local_plan'), 'local_plan'), true);
+        $mform->addHelpButton('enddate', 'templateenddate', 'totara_plan', '', true);
 
         $this->add_action_buttons();
     }
@@ -100,14 +99,15 @@ class dp_template_new_form extends moodleform {
 
     function validation($data, $files) {
         $mform =& $this->_form;
+
         $result = array();
 
         $enddatestr = isset($data['enddate']) ? $data['enddate'] : '';
-        $enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddatestr);
+        $enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddatestr );
 
         // Enforce valid dates
         if (false === $enddate && $enddatestr !== get_string('datepickerplaceholder', 'totara_core') && $enddatestr !== '') {
-            $result['enddate'] = get_string('error:dateformat', 'local_plan', get_string('datepickerplaceholder', 'totara_core'));
+            $result['enddate'] = get_string('error:dateformat', 'totara_plan', get_string('datepickerplaceholder', 'totara_core'));
         }
 
         return $result;
@@ -117,44 +117,44 @@ class dp_template_new_form extends moodleform {
 
 
 class dp_template_workflow_form extends moodleform {
-    function definition(){
+    function definition() {
         global $CFG, $DP_AVAILABLE_WORKFLOWS;
         $mform =& $this->_form;
         $id = $this->_customdata['id'];
         $defaultworkflow = $this->_customdata['workflow'];
 
-        $mform->addElement('header', 'workflowsettings', get_string('workflowsettings', 'local_plan'));
+        $mform->addElement('header', 'workflowsettings', get_string('workflowsettings', 'totara_plan'));
 
         $radiogroup = array();
 
-        foreach($DP_AVAILABLE_WORKFLOWS as $workflow) {
+        foreach ($DP_AVAILABLE_WORKFLOWS as $workflow) {
             $classfile = $CFG->dirroot . "/totara/plan/workflows/$workflow/$workflow.class.php";
-            if(!is_readable($classfile)) {
-                $string_parameters = new object();
+            if (!is_readable($classfile)) {
+                $string_parameters = new stdClass();
                 $string_parameters->classfile = $classfile;
                 $string_parameters->workflow = $workflow;
-                throw new PlanException(get_string('noclassfileforworkflow', 'local_plan', $string_parameters));
+                throw new PlanException(get_string('noclassfileforworkflow', 'totara_plan', $string_parameters));
             }
             include_once($classfile);
 
             $classname = "dp_{$workflow}_workflow";
-            if(!class_exists($classname)) {
-                $string_parameters = new object();
+            if (!class_exists($classname)) {
+                $string_parameters = new stdClass();
                 $string_parameters->class = $classfile;
                 $string_parameters->workflow = $workflow;
-                throw new PlanException(get_string('noclassforworkflow', 'local_plan', $string_parameters));
+                throw new PlanException(get_string('noclassforworkflow', 'totara_plan', $string_parameters));
             }
             $wf = new $classname();
-            $radiogroup[] =& $mform->createElement('radio', 'workflow', '', '<b>' .$wf->name . '</b><br />' . $wf->description, $wf->classname);
+            $radiogroup[] =& $mform->createElement('radio', 'workflow', '', html_writer::tag('b', $wf->name) . html_writer::empty_tag('br') . $wf->description, $wf->classname);
 
         }
 
-        $radiogroup[] =& $mform->createElement('radio', 'workflow', '', '<b>' .get_string('customworkflowname', 'local_plan') . '</b><br />' . get_string('customworkflowdesc', 'local_plan'), 'custom');
-        $mform->addGroup($radiogroup, 'radiogroup', '', '<br /><br />', false);
+        $radiogroup[] =& $mform->createElement('radio', 'workflow', '', html_writer::tag('b', get_string('customworkflowname', 'totara_plan')) . html_writer::empty_tag('br') . get_string('customworkflowdesc', 'totara_plan'), 'custom');
+        $mform->addGroup($radiogroup, 'radiogroup', '', html_writer::empty_tag('br') . html_writer::empty_tag('br'), false);
         $mform->setDefault('workflow', $defaultworkflow);
 
         $mform->registerNoSubmitButton('advancedsubmitbutton');
-        $mform->addElement('submit', 'advancedsubmitbutton', get_string('advancedworkflow', 'local_plan'));
+        $mform->addElement('submit', 'advancedsubmitbutton', get_string('advancedworkflow', 'totara_plan'));
         $mform->disabledIf('advancedsubmitbutton', 'workflow', 'neq', 'custom');
 
         $mform->addElement('hidden', 'id', $id);
@@ -170,8 +170,7 @@ class dp_template_advanced_workflow_form extends moodleform {
         $id = $this->_customdata['id'];
         $component = $this->_customdata['component'];
         $templateinuse = $this->_customdata['templateinuse'];
-
-        if($component == 'plan') {
+        if ($component == 'plan') {
             $class = 'development_plan';
             require_once("{$CFG->dirroot}/totara/plan/settings_form.php");
         } else {
@@ -180,21 +179,20 @@ class dp_template_advanced_workflow_form extends moodleform {
             $cpath = "{$CFG->dirroot}/totara/plan/components/{$component}";
             $formfile  = "{$cpath}/settings_form.php";
 
-            if(!is_readable($formfile)) {
-                $string_parameters = new object();
+            if (!is_readable($formfile)) {
+                $string_parameters = new stdClass();
                 $string_parameters->classfile = $classfile;
                 $string_parameters->component = $component;
-                throw new PlanException(get_string('noclassfileforcomponent', 'local_plan', $string_parameters));
+                throw new PlanException(get_string('noclassfileforcomponent', 'totara_plan', $string_parameters));
             }
             include_once($formfile);
-
             // check class exists
             $class = "dp_{$component}_component";
-            if(!class_exists($class)) {
-                $string_parameters = new object();
+            if (!class_exists($class)) {
+                $string_parameters = new stdClass();
                 $string_parameters->class = $class;
                 $string_parameters->component = $component;
-                throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_parameters));
+                throw new PlanException(get_string('noclassforcomponent', 'totara_plan', $string_parameters));
             }
         }
         $build_form = "{$class}_build_settings_form";
@@ -209,17 +207,17 @@ class dp_template_advanced_workflow_form extends moodleform {
 
 class dp_components_form extends moodleform {
     function definition() {
-        global $CFG;
+        global $DB, $OUTPUT;
 
         $mform =& $this->_form;
         $templateid = $this->_customdata['id'];
 
-        $mform->addElement('header', 'componentsettings', get_string('componentsettings', 'local_plan'));
-        $mform->setHelpButton('componentsettings', array('templatecomponentsettings', get_string('componentsettings', 'local_plan'), 'local_plan'), true);
+        $mform->addElement('header', 'componentsettings', get_string('componentsettings', 'totara_plan'));
+        $mform->addHelpButton('componentsettings', 'templatecomponentsettings', 'totara_plan', '', true);
 
-        $components = get_records('dp_component_settings', 'templateid', $templateid, 'sortorder');
+        $components = $DB->get_records('dp_component_settings', array('templateid' => $templateid), 'sortorder');
 
-        if($components) {
+        if ($components) {
 
             $str_disable = get_string('disable');
             $str_enable = get_string('enable');
@@ -227,11 +225,12 @@ class dp_components_form extends moodleform {
             $str_movedown = get_string('movedown');
 
             $columns[] = 'component';
-            $headers[] = get_string('component', 'local_plan');
+            $headers[] = get_string('component', 'totara_plan');
             $columns[] = 'options';
-            $headers[] = get_string('options', 'local_plan');
+            $headers[] = get_string('options', 'totara_plan');
 
             $table = new flexible_table('components');
+            $table->define_baseurl('/totara/plan/template/components.php?id=' . $templateid);
             $table->define_columns($columns);
             $table->define_headers($headers);
             $table->set_attribute('id', 'dpcomponents');
@@ -239,38 +238,34 @@ class dp_components_form extends moodleform {
             $table->column_class('options', 'options');
 
             $table->setup();
-            $spacer = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" />";
-            $count=0;
+            $spacer = $OUTPUT->spacer();
+            $count = 0;
             $numvalues = count($components);
-            foreach($components as $component) {
+            foreach ($components as $component) {
                 $count++;
                 $tablerow = array();
-                $configsetting = get_config(null, 'dp_'.$component->component);
-                $cssclass = !$component->enabled ? 'class="dimmed"' : '';
-                $compname = $configsetting ? $configsetting : get_string($component->component.'plural', 'local_plan');
-                $tablerow[] = '<span '.$cssclass.'>' . $compname . '</span>';
-
                 $buttons = array();
+                $configsetting = get_config(null, 'dp_'.$component->component);
+                $cssclass = !$component->enabled ? 'dimmed' : '';
+                $compname = $configsetting ? $configsetting : get_string($component->component.'plural', 'totara_plan');
+                $tablerow[] = html_writer::tag('span', $compname, array('class' => $cssclass));
+
 
                 if ($component->enabled) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/components.php?id={$templateid}&amp;hide={$component->id}\" title=\"$str_disable\">".
-                        "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_disable\" /></a>";
+                    $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/components.php', array('id' => $templateid, 'hide' => $component->id)), new pix_icon('t/hide', $str_disable));
                 } else {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/components.php?id={$templateid}&amp;show={$component->id}\" title=\"$str_enable\">".
-                        "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_enable\" /></a>";
+                    $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/components.php', array('id' => $templateid, 'show' => $component->id)), new pix_icon('t/show', $str_enable));
                 }
 
                 if ($count > 1) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/components.php?id={$templateid}&amp;moveup={$component->id}\" title=\"$str_moveup\">".
-                        "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
+                    $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/components.php', array('id' => $templateid, 'moveup' => $component->id)), new pix_icon('t/up', $str_moveup));
                 } else {
                     $buttons[] = $spacer;
                 }
 
                 // If value can be moved down
                 if ($count < $numvalues) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/components.php?id={$templateid}&amp;movedown={$component->id}\" title=\"$str_movedown\">".
-                        "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
+                    $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/components.php', array('id' => $templateid, 'movedown' => $component->id)), new pix_icon('t/down', $str_movedown));
                 } else {
                     $buttons[] = $spacer;
                 }
@@ -279,11 +274,11 @@ class dp_components_form extends moodleform {
                 $table->add_data($tablerow);
             }
             ob_start();
-            $table->print_html();
+            $table->finish_html();
             $html = ob_get_contents();
             ob_end_clean();
 
-            $mform->addElement('html', '<center>'.$html.'</center>');
+            $mform->addElement('html', html_writer::tag('center', $html));
         }
     }
 

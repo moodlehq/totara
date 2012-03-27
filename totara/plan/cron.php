@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ require_once("{$CFG->dirroot}/totara/plan/lib.php");
  * @return  void
  */
 function plan_cron() {
-    global $CFG;
+    global $DB;
 
     $time = time();
     $approved = DP_PLAN_STATUS_APPROVED;
@@ -47,25 +47,24 @@ function plan_cron() {
         SELECT
             plan.id as planid
         FROM
-            {$CFG->prefix}dp_plan plan
+            {dp_plan} plan
         JOIN
-            {$CFG->prefix}dp_plan_settings ps
+            {dp_plan_settings} ps
          ON plan.templateid = ps.templateid
         WHERE
             ps.autobyplandate = 1
-        AND plan.enddate <= {$time}
-        AND plan.status = {$approved}
+        AND plan.enddate <= ?
+        AND plan.status = ?
     ";
+    $params = array($time, $approved);
 
     // Complete them!
-    if ($plans = get_records_sql($sql)) {
-        foreach ($plans as $p) {
-            $plan = new development_plan($p->planid);
-            mtrace("Completing plan: {$plan->name}(ID:{$plan->id})");
-            $plan->set_status(DP_PLAN_STATUS_COMPLETE, DP_PLAN_REASON_AUTO_COMPLETE_DATE);
-        }
+    $plans = $DB->get_records_sql($sql, $params);
+    foreach ($plans as $p) {
+        $plan = new development_plan($p->planid);
+        mtrace("Completing plan: {$plan->name}(ID:{$plan->id})");
+        $plan->set_status(DP_PLAN_STATUS_COMPLETE, DP_PLAN_REASON_AUTO_COMPLETE_DATE);
     }
 
     return true;
 }
-

@@ -370,6 +370,15 @@ $string['numericalvalue'] = 'Numerical value';
 $string['options'] = 'Options';
 $string['parent'] = 'Parent';
 // duplication required to make help buttons work
+$string['competencyevidenceuser'] = 'Competency Evidence User';
+$string['competencyevidencecompetency'] = 'Evidence Competency';
+$string['competencyevidenceassessor'] = 'Evidence Assessor';
+$string['competencyevidenceassessorname'] = 'Evidence Assessor Name';
+$string['competencyevidenceassessmenttype'] = 'Assessment Type';
+$string['competencyevidenceposition'] = 'Evidence Position';
+$string['competencyevidenceorganisation'] = 'Evidence Organisation';
+$string['competencyevidencetimecompleted'] = 'Time Evidence Completed';
+$string['addcompetencyevidence'] = 'Add Competency Evidence';
 $string['organisationparent'] = 'Parent';
 $string['positionparent'] = 'Parent';
 $string['competencyparent'] = 'Parent';

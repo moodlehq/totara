@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -27,29 +27,30 @@ require_once $CFG->libdir.'/formslib.php';
 
 class edit_objective_form extends moodleform {
     function definition() {
-        global $CFG;
+        global $OUTPUT, $TEXTAREA_OPTIONS;
         $mform =& $this->_form;
-
         // visible elements
-        $mform->addElement('header', 'general', get_string('objective', 'local_plan'));
+        $mform->addElement('header', 'general', get_string('objective', 'totara_plan'));
 
         $mform->addElement('text', 'name', get_string('name'), 'size="40"');
-        $mform->setHelpButton('name', array('objectivescalename', get_string('name'), 'local_plan'));
+        $mform->addHelpButton('name', 'objectivescalename', 'totara_plan');
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_TEXT);
 
         // If it's a new objective, give them the option to define objective values.
-        if ( $this->_customdata['objectiveid'] == 0 ){
-            $mform->addElement('static', 'objectivevaluesexplain', '', get_string('explainobjscalevals', 'local_plan'));
-            $mform->addElement('textarea', 'objectivevalues', get_string('objectivevalues', 'local_plan'), 'rows="5" cols="30"');
+        if ($this->_customdata['objectiveid'] == 0) {
+            $mform->addElement('static', 'objectivevaluesexplain', '', get_string('explainobjscalevals', 'totara_plan'));
+            $mform->addElement('textarea', 'objectivevalues', get_string('objectivevalues', 'totara_plan'), 'rows="5" cols="30"');
             $mform->addRule('objectivevalues', get_string('required'), 'required', null, 'server');
-            $mform->setHelpButton('objectivevalues', array('objectivescalevalues', get_string('objective', 'local_plan'), 'local_plan'));
+            $mform->addHelpButton('objectivevalues', 'objectivescalevalues', 'totara_plan');
             $mform->setType('objectivevalues', PARAM_TEXT);
         } else {
-            $mform->addELement('html', '<div class="fitem"><div class="fitemtitle">&nbsp;</div><div class="felement">'.get_string('linktoobjectivevalues','local_plan',clean_param($this->_customdata['objectiveid'], PARAM_INT))."</div></div>\n");
+            $mform->addELement('html', $OUTPUT->container(
+                $OUTPUT->container('&nbsp;', "fitemtitle") .
+                $OUTPUT->container(get_string('linktoobjectivevalues', 'totara_plan', clean_param($this->_customdata['objectiveid'], PARAM_INT)), "felement"),
+                "fitem") . html_writer::empty_tag('br'));
         }
-
-        $mform->addElement('htmleditor', 'description', get_string('description'));
+        $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
 
         // hidden params
         $mform->addElement('hidden', 'id', 0);
@@ -65,11 +66,11 @@ class edit_objective_form extends moodleform {
         $valuenew = (object) $valuenew;
 
         // make sure at least one objective value is defined
-        if(isset($valuenew->objectivevalues) && trim($valuenew->objectivevalues) == '') {
+        if (isset($valuenew->objectivevalues) && trim($valuenew->objectivevalues) == '') {
             $err['objectivevalues'] = get_string('required');
         }
 
-        if(count($err) > 0) {
+        if (count($err) > 0) {
             return $err;
         }
 

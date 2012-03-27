@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ class dp_objective_component extends dp_base_component {
      */
     public function __construct($plan) {
         parent::__construct($plan);
-        $this->defaultname = get_string('objectives', 'local_plan');
+        $this->defaultname = get_string('objectives', 'totara_plan');
     }
 
 
@@ -60,7 +60,8 @@ class dp_objective_component extends dp_base_component {
      * @return  void
      */
     public function initialize_settings(&$settings) {
-        if ($objectivesettings = get_record('dp_objective_settings', 'templateid', $this->plan->templateid)) {
+        global $DB;
+        if ($objectivesettings = $DB->get_record('dp_objective_settings', array('templateid' => $this->plan->templateid))) {
             $settings[$this->component.'_duedatemode'] = $objectivesettings->duedatemode;
             $settings[$this->component.'_prioritymode'] = $objectivesettings->prioritymode;
             $settings[$this->component.'_priorityscale'] = $objectivesettings->priorityscale;
@@ -82,15 +83,16 @@ class dp_objective_component extends dp_base_component {
      * @return  array
      */
     public function get_assigned_items($approved = null, $orderby='', $limitfrom='', $limitnum='') {
-        global $CFG;
+        global $DB;
+        //TODO SCANMSG: check this works now it's using prepared statements
 
         // Generate where clause
-        $where = "a.planid = {$this->plan->id}";
+        $where = "a.planid = :planid";
+        $params = array('planid' => $this->plan->id);
         if ($approved !== null) {
-            if (is_array($approved)) {
-                $approved = implode(', ', $approved);
-            }
-            $where .= " AND a.approved IN ({$approved})";
+            list($approvedsql, $approvedparams) = $DB->get_in_or_equal($approved, SQL_PARAMS_NAMED, 'approved');
+            $where .= " AND a.approved $approvedsql";
+            $params = array_merge($params, $approvedparams);
         }
 
         // Generate order by clause
@@ -99,11 +101,8 @@ class dp_objective_component extends dp_base_component {
         }
 
         // Generate status code
-        $status = "LEFT JOIN {$CFG->prefix}dp_objective_scale_value osv ON a.scalevalueid = osv.id ";
-
-        $assigned = get_records_sql(
-            "
-            SELECT
+        $status = "LEFT JOIN {dp_objective_scale_value} osv ON a.scalevalueid = osv.id ";
+        $sql = "SELECT
                 a.*,
                 a.scalevalueid AS progress,
                 a.fullname AS name,
@@ -112,29 +111,24 @@ class dp_objective_component extends dp_base_component {
                 END AS linkedcourses,
                 osv.achieved
             FROM
-                {$CFG->prefix}dp_plan_objective a
+                {dp_plan_objective} a
             LEFT JOIN
                 (SELECT itemid2 AS assignid,
                     count(id) AS count
-                    FROM {$CFG->prefix}dp_plan_component_relation
-                    WHERE component2='objective' AND
-                        component1='course'
+                    FROM {dp_plan_component_relation}
+                    WHERE component2 = :comp1 AND
+                        component1 = :comp2
                     GROUP BY itemid2) linkedcourses
-                ON linkedcourses.assignid = a.id
+            ON linkedcourses.assignid = a.id
             $status
             WHERE
                 $where
                 $orderby
-            ",
-            $limitfrom,
-            $limitnum
-        );
+            ";
+        $params['comp1'] = 'objective';
+        $params['comp2'] = 'course';
+        return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
 
-        if (!$assigned) {
-            $assigned = array();
-        }
-
-        return $assigned;
     }
 
 
@@ -159,8 +153,7 @@ class dp_objective_component extends dp_base_component {
      * @return  void
      */
     public function setup_picker() {
-        global $CFG;
-
+        global $PAGE;
         // If we are showing dialog
         if ($this->can_update_items()) {
             // Setup lightbox
@@ -168,10 +161,15 @@ class dp_objective_component extends dp_base_component {
                 TOTARA_JS_DIALOG,
                 TOTARA_JS_TREEVIEW
             ));
+            $component_name = required_param('c', PARAM_ALPHA);
+            $sesskey = sesskey();
 
-            require_js(array(
-                $CFG->wwwroot.'/totara/plan/component.js.php?planid='.$this->plan->id.'&amp;component=objective&amp;viewas='.$this->plan->viewas,
-            ));
+            $jsmodule = array(
+                            'name' => 'totara_plan_component',
+                            'fullpath' => '/totara/plan/component.js',
+                            'requires' => array('json'));
+            $PAGE->requires->js_init_call('M.totara_plan_component.init', array('args' => '{"plan_id":'.$this->plan->id.', "component_name":"'.$component_name.'", "sesskey":"'.$sesskey.'"}'), false, $jsmodule);
+
         }
     }
 
@@ -185,9 +183,9 @@ class dp_objective_component extends dp_base_component {
      * @return string
      */
     function display_linked_objectives($list) {
-        global $CFG;
+        global $DB;
 
-        if(!is_array($list) || count($list) == 0) {
+        if (!is_array($list) || count($list) == 0) {
             return false;
         }
 
@@ -197,60 +195,60 @@ class dp_objective_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
-        $objectivename = get_string('objective', 'local_plan');
+        $objectivename = get_string('objective', 'totara_plan');
 
         // Get data
         $select = 'SELECT po.*, po.fullname AS objname,
             osv.name AS proficiency, psv.name AS priorityname ';
-        $from = "FROM {$CFG->prefix}dp_plan_objective po
-            LEFT JOIN {$CFG->prefix}dp_objective_scale_value osv ON po.scalevalueid = osv.id
-            LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
-                ON po.priority = psv.id AND psv.priorityscaleid = {$priorityscaleid} ";
-        $where = 'WHERE po.id IN ('.implode(',', $list).') ';
-        $sort = "ORDER BY po.fullname ";
-        if (!$records = get_recordset_sql($select.$from.$where.$sort)) {
-            return false;
-        }
+        $from = "FROM {dp_plan_objective} po
+            LEFT JOIN {dp_objective_scale_value} osv ON po.scalevalueid = osv.id
+            LEFT JOIN {dp_priority_scale_value} psv
+                ON po.priority = psv.id AND psv.priorityscaleid = ? ";
+        $params = array($priorityscaleid);
+        list($insql, $inparams) = $DB->get_in_or_equal($list);
+        $where = "WHERE po.id $insql ";
+        $params = array_merge($params, $inparams);
+        $sort = "ORDER BY po.fullname";
+        $records = $DB->get_recordset_sql($select.$from.$where.$sort, $params);
 
         // get the scale values used for competencies in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+        $priorityvalues = $DB->get_records('dp_priority_scale_value', array('priorityscaleid' => $priorityscaleid), 'sortorder', 'id,name,sortorder');
 
         // Set up table
         $tableheaders = array(
             get_string('name'),
-            get_string('status', 'local_plan'),
+            get_string('status', 'totara_plan'),
         );
         $tablecolumns = array(
             'fullname',
             'proficiency',
         );
 
-        if($showpriorities) {
-            $tableheaders[] = get_string('priority', 'local_plan');
+        if ($showpriorities) {
+            $tableheaders[] = get_string('priority', 'totara_plan');
             $tablecolumns[] = 'priorityname';
         }
 
-        if($showduedates) {
-            $tableheaders[] = get_string('duedate', 'local_plan');
+        if ($showduedates) {
+            $tableheaders[] = get_string('duedate', 'totara_plan');
             $tablecolumns[] = 'duedate';
         }
 
         $table = new flexible_table('linkedobjectivelist');
+        $table->define_baseurl(qualified_me());
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
 
         $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->setup();
 
-        while ($o = rs_fetch_next_record($records)) {
-            $row = array();
+        foreach ($records as $o) {
             $row[] = $this->display_item_name($o);
             $row[] = $o->proficiency;
-            if($showpriorities) {
+            if ($showpriorities) {
                 $row[] = $this->display_priority_as_text($o->priority, $o->priorityname, $priorityvalues);
             }
-            if($showduedates) {
+            if ($showduedates) {
                 $row[] = $this->display_duedate_as_text($o->duedate);
             }
 
@@ -259,7 +257,7 @@ class dp_objective_component extends dp_base_component {
 
         // return instead of outputing table contents
         ob_start();
-        $table->print_html();
+        $table->finish_html();
         $out = ob_get_contents();
         ob_end_clean();
 
@@ -309,18 +307,18 @@ class dp_objective_component extends dp_base_component {
      * @return plan_objective_edit_form
      */
     function objective_form($objectiveid=null) {
-        global $CFG;
+        global $CFG, $DB;
         require_once($CFG->dirroot.'/totara/plan/components/objective/edit_form.php');
         $customdata = array(
             'plan' => $this->plan,
             'objective' => $this
         );
-        if ( empty($objectiveid) ){
+        if (empty($objectiveid)) {
             return new plan_objective_edit_form( null, $customdata );
         } else {
 
-            if (!$objective = get_record('dp_plan_objective', 'id', $objectiveid)){
-                error(get_string('error:objectiveidincorrect', 'local_plan'));
+            if (!$objective = $DB->get_record('dp_plan_objective', array('id' => $objectiveid))) {
+                print_error('error:objectiveidincorrect', 'totara_plan');
             }
             $objective->itemid = $objective->id;
             $objective->id = $objective->planid;
@@ -329,9 +327,9 @@ class dp_objective_component extends dp_base_component {
             $mform = new plan_objective_edit_form(
                     null,
                     array(
-                        'plan'=>$this->plan,
-                        'objective'=>$this,
-                        'objectiveid'=>$objectiveid
+                        'plan' => $this->plan,
+                        'objective' => $this,
+                        'objectiveid' => $objectiveid
                     )
             );
             $mform->set_data($objective);
@@ -348,7 +346,7 @@ class dp_objective_component extends dp_base_component {
      * @return  void
      */
     public function process_settings_update($ajax = false) {
-        global $CFG;
+        global $CFG, $DB;
 
         if (!confirm_sesskey()) {
             return 0;
@@ -359,14 +357,13 @@ class dp_objective_component extends dp_base_component {
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $cansetprofs = ($this->get_setting('setproficiency') == DP_PERMISSION_ALLOW);
         $canapprovecomps = ($this->get_setting('updateobjective') == DP_PERMISSION_APPROVE);
-        $duedates = optional_param('duedate_objective', array(), PARAM_TEXT);
-        $priorities = optional_param('priorities_objective', array(), PARAM_INT);
-        $proficiencies = optional_param('proficiencies', array(), PARAM_INT);
-        $approvals = optional_param('approve_objective', array(), PARAM_INT);
+        $duedates = optional_param_array('duedate_objective', array(), PARAM_TEXT);
+        $priorities = optional_param_array('priorities_objective', array(), PARAM_INT);
+        $proficiencies = optional_param_array('proficiencies', array(), PARAM_INT);
+        $approvals = optional_param_array('approve_objective', array(), PARAM_INT);
         $currenturl = qualified_me();
-        $stored_records = array();
         $currentuser = $this->plan->userid;
-
+        $stored_records = array();
         $status = true;
         if (!empty($duedates) && $cansetduedates) {
             // Update duedates
@@ -386,7 +383,7 @@ class dp_objective_component extends dp_base_component {
                     }
                     $duedateout = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $duedate);
                 }
-                $todb = new object();
+                $todb = new stdClass();
                 $todb->id = $id;
                 $todb->duedate = $duedateout;
                 $stored_records[$id] = $todb;
@@ -401,7 +398,7 @@ class dp_objective_component extends dp_base_component {
                     $stored_records[$id]->priority = $priority;
                 } else {
                     // create a new update object
-                    $todb = new object();
+                    $todb = new stdClass();
                     $todb->id = $id;
                     $todb->priority = $priority;
                     $stored_records[$id] = $todb;
@@ -410,9 +407,9 @@ class dp_objective_component extends dp_base_component {
         }
 
         if (!empty($proficiencies) && $cansetprofs) {
-            foreach ($proficiencies as $id => $proficiency){
+            foreach ($proficiencies as $id => $proficiency) {
                 $proficiency = (int) $proficiency;
-                if (array_key_exists($id, $stored_records) ){
+                if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$id]->scalevalueid = $proficiency;
                 } else {
@@ -422,10 +419,11 @@ class dp_objective_component extends dp_base_component {
                     $todb->scalevalueid = $proficiency;
                     $stored_records[$id] = $todb;
                 }
-                $count = count_records('block_totara_stats', 'userid', $currentuser, 'eventtype', STATS_EVENT_OBJ_ACHIEVED, 'data2', $id);
-                $scalevalue = get_record('dp_objective_scale_value', 'id', $proficiency);
+                require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
+                $count = $DB->count_records('block_totara_stats', array('userid' => $currentuser, 'eventtype' => STATS_EVENT_OBJ_ACHIEVED, 'data2' => $id));
+                $scalevalue = $DB->get_record('dp_objective_scale_value', array('id' => $proficiency));
                 if (empty($scalevalue)) {
-                    error(get_string('error:priorityscalevalueidincorrect','local_plan'));
+                    print_error('error:priorityscalevalueidincorrect', 'totara_plan');
                     // checks objective can only be achieved once.
                 } else if ($scalevalue->achieved == 1 && $count < 1) {
                     totara_stats_add_event(time(), $currentuser, STATS_EVENT_OBJ_ACHIEVED, '', $id);
@@ -447,126 +445,112 @@ class dp_objective_component extends dp_base_component {
                     $stored_records[$id]->approved = $approval;
                 } else {
                     // create a new update object
-                    $todb = new object();
+                    $todb = new stdClass();
                     $todb->id = $id;
                     $todb->approved = $approval;
                     $stored_records[$id] = $todb;
                 }
             }
         }
-        $status = true;
 
         // save before snapshot of objectives
 
         if (!empty($stored_records)) {
-            $orig_objectives = get_records_list('dp_plan_objective', 'id', implode(',', array_keys($stored_records)));
-            begin_sql();
+            $orig_objectives = $DB->get_records_list('dp_plan_objective', 'id', array_keys($stored_records));
+            $transaction = $DB->start_delegated_transaction();
 
             foreach ($stored_records as $itemid => $record) {
-                $record = addslashes_recursive($record);
-                $status = $status & update_record('dp_plan_objective', $record);
-
+                $DB->update_record('dp_plan_objective', $record);
                 if (isset($record->scalevalueid)) {
-                    $scale_value_record = get_record('dp_objective_scale_value', 'id', $record->scalevalueid);
+                    $scale_value_record = $DB->get_record('dp_objective_scale_value', array('id' => $record->scalevalueid));
                     if ($scale_value_record->achieved == 1) {
                         dp_plan_item_updated($currentuser, 'objective', $id);
                     }
                 }
             }
-            if ($status) {
-                commit_sql();
+            $transaction->allow_commit();
 
-                // Process update alerts
-                $updates = '';
-                $approvals = null;
-                $objheader = '<p><strong>'.format_string($orig_objectives[$itemid]->fullname).": </strong><br>";
-                $objprinted = false;
-                $currentuserobj = get_record('user', 'id', $currentuser);
-                foreach ($stored_records as $itemid => $record) {
-                    // priority may have been updated
-                    if (!empty($record->priority) && array_key_exists($itemid, $orig_objectives) &&
-                        $record->priority != $orig_objectives[$itemid]->priority) {
+            // Process update alerts
+            $updates = '';
+            $approvals = null;
+            $objheader = html_writer::tag('strong', format_string($orig_objectives[$itemid]->fullname) . ': ');
+            $objheader = html_writer::tag('p', $objheader);
+            $objprinted = false;
+            $currentuserobj = $DB->get_record('user', array('id' => $currentuser));
+            $stringmanager = get_string_manager();
+            foreach ($stored_records as $itemid => $record) {
+                // priority may have been updated
+                if (!empty($record->priority) && array_key_exists($itemid, $orig_objectives) &&
+                    $record->priority != $orig_objectives[$itemid]->priority) {
 
-                        $oldpriority = get_field('dp_priority_scale_value', 'name', 'id',
-                            $orig_objectives[$itemid]->priority);
-                        $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
-                        $updates .= $objheader;
-                        $objprinted = true;
-                        $updates .= get_string('priority', 'local_plan', null, $currentuserobj->lang).' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                            (object)array('before'=>$oldpriority, 'after'=>$newpriority), $currentuserobj->lang)."<br>";
-                    }
+                    $oldpriority = $DB->get_field('dp_priority_scale_value', 'name', array('id' => $orig_objectives[$itemid]->priority));
+                    $newpriority = $DB->get_field('dp_priority_scale_value', 'name', array('id' => $record->priority));
+                    $updates .= $objheader;
+                    $objprinted = true;
+                    $updates .= get_string('priority', 'totara_plan').' - '.
+                        get_string('changedfromxtoy', 'totara_plan',
+                        (object)array('before' => $oldpriority, 'after' => $newpriority)) . html_writer::empty_tag('br');
+                }
 
-                    // duedate may have been updated
-                    if (!empty($record->duedate) && array_key_exists($itemid, $orig_objectives) &&
-                        $record->duedate != $orig_objectives[$itemid]->duedate) {
-
-                        $updates .= $objprinted ? '' : $objheader;
-                        $objprinted = true;
-                        $updates .= get_string('duedate', 'local_plan', null, $currentuserobj->lang).' - '.
-                            get_string('changedfromxtoy', 'local_plan',
+                // duedate may have been updated
+                if (!empty($record->duedate) && array_key_exists($itemid, $orig_objectives) &&
+                     $record->duedate != $orig_objectives[$itemid]->duedate) {
+                    $updates .= $objprinted ? '' : $objheader;
+                    $objprinted = true;
+                    $updates .= $stringmanager->get_string('duedate', 'totara_plan', null, $currentuserobj->lang).' - '.
+                            get_string('changedfromxtoy', 'totara_plan',
                             (object)array('before'=>empty($orig_objectives[$itemid]->duedate) ? '' :
                                 userdate($orig_objectives[$itemid]->duedate, get_string('strftimedate'), $CFG->timezone, false),
-                                'after'=>userdate($record->duedate, get_string('strftimedate'), $CFG->timezone, false)), $currentuserobj->lang)."<br>";
-                    }
+                                'after' => userdate($record->duedate, get_string('strftimedate'), $CFG->timezone, false))) . html_writer::empty_tag('br');
+                }
 
-                    // proficiency may have been updated
-                    if (!empty($record->scalevalueid) && array_key_exists($itemid, $orig_objectives) &&
-                        $record->scalevalueid != $orig_objectives[$itemid]->scalevalueid) {
+                // proficiency may have been updated
+                if (!empty($record->scalevalueid) && array_key_exists($itemid, $orig_objectives) &&
+                    $record->scalevalueid != $orig_objectives[$itemid]->scalevalueid) {
 
-                        $oldprof = get_field('dp_objective_scale_value', 'name', 'id',
-                            $orig_objectives[$itemid]->scalevalueid);
-                        $newprof = get_field('dp_objective_scale_value', 'name', 'id', $record->scalevalueid);
-                        $updates .= $objprinted ? '' : $objheader;
-                        $objprinted = true;
-                        $updates .= get_string('status', 'local_plan', null, $currentuserobj->lang).' - '.
-                            get_string('changedfromxtoy', 'local_plan',
-                            (object)array('before'=>$oldprof, 'after'=>$newprof), $currentuserobj->lang)."<br>";
-                    }
+                    $oldprof = $DB->get_field('dp_objective_scale_value', 'name', array('id' => $orig_objectives[$itemid]->scalevalueid));
+                    $newprof = $DB->get_field('dp_objective_scale_value', 'name', array('id' => $record->scalevalueid));
+                    $updates .= $objprinted ? '' : $objheader;
+                    $objprinted = true;
+                    $updates .= $stringmanager->get_string('status', 'totara_plan', null, $currentuserobj->lang).' - '.
+                        get_string('changedfromxtoy', 'totara_plan',
+                        (object)array('before' => $oldprof, 'after' => $newprof)) . html_writer::empty_tag('br');
+                }
 
-                    // approval status change
-                    if (!empty($record->approved) && array_key_exists($itemid, $orig_objectives) &&
+                // approval status change
+                if (!empty($record->approved) && array_key_exists($itemid, $orig_objectives) &&
                         $record->approved != $orig_objectives[$itemid]->approved) {
-
-                        $approval = new object();
-                        $text = $objheader;
-                        $text .= get_string('approval', 'local_plan', null, $currentuserobj->lang).' - '.
-                            get_string('changedfromxtoy', 'local_plan',
+                    $approval = new stdClass();
+                    $text = $objheader;
+                    $text .= $stringmanager->get_string('approval', 'totara_plan', null, $currentuserobj->lang).' - '.
+                            get_string('changedfromxtoy', 'totara_plan',
                             (object)array('before'=>dp_get_approval_status_from_code($orig_objectives[$itemid]->approved),
-                            'after'=>dp_get_approval_status_from_code($record->approved)), $currentuserobj->lang)."<br>";
-                        $approval->text = $text;
-                        $approval->itemname = $orig_objectives[$itemid]->fullname;
-                        $approval->before = $orig_objectives[$itemid]->approved;
-                        $approval->after = $record->approved;
-                        $approvals[] = $approval;
-                    }
-                }  // foreach
-
-                // Send update alert
-                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
-                    $this->send_component_update_alert($updates);
+                            'after' => dp_get_approval_status_from_code($record->approved))) . html_writer::empty_tag('br');
+                    $approval->text = $text;
+                    $approval->itemname = $orig_objectives[$itemid]->fullname;
+                    $approval->before = $orig_objectives[$itemid]->approved;
+                    $approval->after = $record->approved;
+                    $approvals[] = $approval;
                 }
+            }  // foreach
 
-                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
-                    foreach($approvals as $approval) {
-                        $this->send_component_approval_alert($approval);
+            // Send update alert
+            if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
+                $this->send_component_update_alert($updates);
+            }
 
-                        $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';
-                        add_to_log(SITEID, 'plan', "{$action} objective", "component.php?id={$this->plan->id}&amp;c=objective", $approval->itemname);
-                    }
+            if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
+                foreach ($approvals as $approval) {
+                    $this->send_component_approval_alert($approval);
+                    $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';
+                    add_to_log(SITEID, 'plan', "{$action} objective", "component.php?id={$this->plan->id}&amp;c=objective", $approval->itemname);
                 }
-            } else {
-                rollback_sql();
             }
 
             if ($this->plan->reviewing_pending) {
-                return $status;
-            } elseif (!$ajax) {
-                if ($status) {
-                    totara_set_notification(get_string('objectivesupdated','local_plan'), $currenturl, array('class' => 'notifysuccess'));
-                } else {
-                    totara_set_notification(get_string('objectivesnotupdated','local_plan'), $currenturl);
-                }
+                return true;
+            } else if (!$ajax) {
+                totara_set_notification(get_string('objectivesupdated', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
             }
         }
 
@@ -588,47 +572,49 @@ class dp_objective_component extends dp_base_component {
      * return boolean
      */
     public static function is_priority_scale_used($scaleid) {
-        global $CFG;
+        global $DB;
+
         $sql = "
             SELECT o.id
-            FROM {$CFG->prefix}dp_plan_objective o
+            FROM {dp_plan_objective} o
             LEFT JOIN
-                {$CFG->prefix}dp_priority_scale_value psv
+                {dp_priority_scale_value} psv
             ON o.priority = psv.id
-            WHERE psv.priorityscaleid = {$scaleid}";
-        return record_exists_sql($sql);
+            WHERE psv.priorityscaleid = ?";
+        $params = array($scaleid);
+        return $DB->record_exists_sql($sql, $params);
     }
 
 
     /**
      * Completely delete an objective
      * @param int $caid
-     * @return boolean success or failure
+     * @return true|exception
      */
     function delete_objective($caid) {
-        global $USER;
+        global $USER, $DB;
         // need permission to remove this objective
         if (!$this->can_update_items()) {
             return false;
         }
 
         // store objective details for alerts
-        $objective = get_record('dp_plan_objective', 'id', $caid);
+        $objective = $DB->get_record('dp_plan_objective', array('id' => $caid));
 
-        begin_sql();
-        $result = delete_records('dp_plan_objective', 'id', $caid);
-        $result = $result && delete_records('dp_plan_component_relation', 'component1', 'objective', 'itemid1', $caid);
-        $result = $result && delete_records('dp_plan_component_relation', 'component2', 'objective', 'itemid2', $caid);
-        commit_sql();
+        $transaction = $DB->start_delegated_transaction();
+
+        $DB->delete_records('dp_plan_objective', array('id' => $caid));
+        $DB->delete_records('dp_plan_component_relation', array('component1' => 'objective', 'itemid1' => $caid));
+        $DB->delete_records('dp_plan_component_relation', array('component2' => 'objective', 'itemid2' => $caid));
+
+        $transaction->allow_commit();
 
         // are we OK? then send the alerts
-        if ($result) {
-            add_to_log(SITEID, 'plan', 'deleted objective', "component.php?id={$this->plan->id}&amp;c=objective", "{$objective->fullname} (ID:{$caid})");
-            $this->send_deletion_alert($objective);
-            dp_plan_check_plan_complete(array($this->plan->id));
-        }
+        add_to_log(SITEID, 'plan', 'deleted objective', "component.php?id={$this->plan->id}&amp;c=objective", "{$objective->fullname} (ID:{$caid})");
+        $this->send_deletion_alert($objective);
+        dp_plan_check_plan_complete(array($this->plan->id));
 
-        return $result;
+        return true;
     }
 
     /**
@@ -640,11 +626,11 @@ class dp_objective_component extends dp_base_component {
      * @param int $duedate The objective's due date (optional)
      * @param int $scalevalueid The objective's objective scale value (optional)
      *
-     * @return boolean True on success
+     * @return true|exception
      */
     public function create_objective($fullname, $description=null, $priority=null, $duedate=null, $scalevalueid=null) {
-        global $USER;
-        if ( !$this->can_update_items() ){
+        global $USER, $DB;
+        if (!$this->can_update_items()) {
             return false;
         }
 
@@ -654,16 +640,15 @@ class dp_objective_component extends dp_base_component {
         $rec->description = $description;
         $rec->priority = $priority;
         $rec->duedate = $duedate;
-        $rec->scalevalueid = $scalevalueid ? $scalevalueid : get_field('dp_objective_scale', 'defaultid', 'id', $this->get_setting('objectivescale'));
+        $rec->scalevalueid = $scalevalueid ? $scalevalueid : $DB->get_field('dp_objective_scale', 'defaultid', array('id' => $this->get_setting('objectivescale')));
         $rec->approved = $this->approval_status_after_update();
 
-        if($result = insert_record('dp_plan_objective', $rec)) {
-            $this->send_creation_alert($result, $fullname);
-            add_to_log(SITEID, 'plan', 'added objective', "component.php?id={$rec->planid}&amp;c=objective", $rec->fullname);
-            dp_plan_item_updated($USER->id, 'objective', $result);
-        }
+        $newid = $DB->insert_record('dp_plan_objective', $rec);
+        $this->send_creation_alert($newid, $fullname);
+        add_to_log(SITEID, 'plan', 'added objective', "component.php?id={$rec->planid}&amp;c=objective", $rec->fullname);
+        dp_plan_item_updated($USER->id, 'objective', $newid);
 
-        return $result;
+        return $newid;
     }
 
     /**
@@ -672,19 +657,20 @@ class dp_objective_component extends dp_base_component {
      * @return nothing
      */
     function send_deletion_alert($objective) {
-        global $USER, $CFG;
-        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
-        $event = new stdClass;
-        $userfrom = get_record('user', 'id', $USER->id);
+        global $USER, $CFG, $DB, $OUTPUT;
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
+
+        $event = new stdClass();
+        $userfrom = $DB->get_record('user', array('id' => $USER->id));
         $event->userfrom = $userfrom;
-        $event->contexturl = "{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}";
+        $event->contexturl = new moodle_url("/totara/plan/view.php", array('id' => $this->plan->id));
         $event->icon = 'objective-remove';
-        $a = new stdClass;
+        $a = new stdClass();
         $a->objective = $objective->fullname;
         $a->userfrom = $this->current_user_link();
-        $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-
+        $a->plan = $OUTPUT->action_link($event->contexturl, $this->plan->name, null, array('title' => $this->plan->name));
+        $stringmanager = get_string_manager();
         // did they delete it themselves?
         if ($USER->id == $this->plan->userid) {
             // don't bother if the plan is not active
@@ -692,18 +678,18 @@ class dp_objective_component extends dp_base_component {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $event->subject = get_string('objectivedeleteshortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
-                    $event->fullmessage = get_string('objectivedeletelongmanager', 'local_plan', $a, $manager->lang);
+                    $event->subject = $stringmanager->get_string('objectivedeleteshortmanager', 'totara_plan', $this->current_user_link(), $manager->lang);
+                    $event->fullmessage = $stringmanager->get_string('objectivedeletelongmanager', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
         }
         // notify user that someone else did it
         else {
-            $userto = get_record('user', 'id', $this->plan->userid);
+            $userto = $DB->get_record('user', array('id' => $this->plan->userid));
             $event->userto = $userto;
-            $event->subject = get_string('objectivedeleteshortlearner', 'local_plan', $a->objective, $userto->lang);
-            $event->fullmessage = get_string('objectivedeletelonglearner', 'local_plan', $a, $userto->lang);
+            $event->subject = $stringmanager->get_string('objectivedeleteshortlearner', 'totara_plan', $a->objective, $userto->lang);
+            $event->fullmessage = $stringmanager->get_string('objectivedeletelonglearner', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -715,19 +701,22 @@ class dp_objective_component extends dp_base_component {
      * @return nothing
      */
     function send_creation_alert($objid, $fullname) {
-        global $USER, $CFG;
-        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
-        $event = new stdClass;
-        $userfrom = get_record('user', 'id', $USER->id);
+        global $USER, $CFG, $DB, $OUTPUT;
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
+
+        $event = new stdClass();
+        $userfrom = $DB->get_record('user', array('id' => $USER->id));
         $event->userfrom = $userfrom;
-        $event->contexturl = "{$CFG->wwwroot}/totara/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objid}";
+        $event->contexturl = new moodle_url('/totara/plan/components/objective/view.php', array('id' => $this->plan->id, 'itemid' => $objid));
         $event->icon = 'objective-add';
-        $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\">".stripslashes($fullname)."</a>";
-        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a = new stdClass();
+        $a->objective = new action_link($event->contexturl, stripslashes($fullname));
+        $url = new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id));
+        $a->plan = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
         $a->userfrom = $this->current_user_link();
 
+        $stringmanager = get_string_manager();
         // did they create it themselves?
         if ($USER->id == $this->plan->userid) {
             // don't bother if the plan is not active
@@ -735,18 +724,18 @@ class dp_objective_component extends dp_base_component {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $event->subject = get_string('objectivenewshortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
-                    $event->fullmessage = get_string('objectivenewlongmanager', 'local_plan', $a, $manager->lang);
+                    $event->subject = $stringmanager->get_string('objectivenewshortmanager', 'totara_plan', $this->current_user_link(), $manager->lang);
+                    $event->fullmessage = $stringmanager->get_string('objectivenewlongmanager', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
         }
         // notify user that someone else did it
         else {
-            $userto = get_record('user', 'id', $this->plan->userid);
+            $userto = $DB->get_record('user', array('id' => $this->plan->userid));
             $event->userto = $userto;
-            $event->subject = get_string('objectivenewshortlearner', 'local_plan', $fullname, $userto->lang);
-            $event->fullmessage = get_string('objectivenewlonglearner', 'local_plan', $a, $userto->lang);
+            $event->subject = $stringmanager->get_string('objectivenewshortlearner', 'totara_plan', $fullname, $userto->lang);
+            $event->fullmessage = $stringmanager->get_string('objectivenewlonglearner', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -759,40 +748,42 @@ class dp_objective_component extends dp_base_component {
      * @return nothing
      */
     function send_edit_alert($objective, $field) {
-        global $USER, $CFG;
-        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 
-        $event = new stdClass;
-        $userfrom = get_record('user', 'id', $USER->id);
+        global $USER, $CFG, $DB, $OUTPUT;
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
+
+        $event = new stdClass();
+        $userfrom = $DB->get_record('user', array('id' => $USER->id));
         $event->userfrom = $userfrom;
-        $event->contexturl = "{$CFG->wwwroot}/totara/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
+        $event->contexturl = new moodle_url("/totara/plan/components/objective/view.php", array('id' => $this->plan->id, 'itemid' => $objective->id));
         $event->icon = 'objective-update';
-        $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
-        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a = new stdClass();
+        $a->objective = new action_link($event->contexturl, $objective->fullname);
+        $url = new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id));
+        $a->plan = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
         $a->userfrom = $this->current_user_link();
 
+        $stringmanager = get_string_manager();
         // did they edit it themselves?
         if ($USER->id == $this->plan->userid) {
             // don't bother if the plan is not active
             if ($this->plan->is_active()) {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
-                    $a->field = get_string('objective'.$field, 'local_plan', $manager->lang);
+                    $a->field = $stringmanager->get_string('objective'.$field, 'totara_plan', $manager->lang);
                     $event->userto = $manager;
-                    $event->subject = get_string('objectiveeditshortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
-                    $event->fullmessage = get_string('objectiveeditlongmanager', 'local_plan', $a, $manager->lang);
+                    $event->subject = $stringmanager->get_string('objectiveeditshortmanager', 'totara_plan', $this->current_user_link(), $manager->lang);
+                    $event->fullmessage = $stringmanager->get_string('objectiveeditlongmanager', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
-        }
-        // notify user that someone else did it
-        else {
-            $userto = get_record('user', 'id', $this->plan->userid);
-            $a->field = get_string('objective'.$field, 'local_plan', null, $userto->lang);
+        } else {
+            // notify user that someone else did it
+            $userto = $DB->get_record('user', array('id' => $this->plan->userid));
+            $a->field = $stringmanager->get_string('objective'.$field, 'totara_plan', null, $userto->lang);
             $event->userto = $userto;
-            $event->subject = get_string('objectiveeditshortlearner', 'local_plan', $a->objective, $userto->lang);
-            $event->fullmessage = get_string('objectiveeditlonglearner', 'local_plan', $a, $userto->lang);
+            $event->subject = $stringmanager->get_string('objectiveeditshortlearner', 'totara_plan', $a->objective, $userto->lang);
+            $event->fullmessage = $stringmanager->get_string('objectiveeditlonglearner', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -806,24 +797,27 @@ class dp_objective_component extends dp_base_component {
      * @return nothing
      */
     function send_status_alert($objective) {
-        global $USER, $CFG;
-        require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
+
+        global $USER, $CFG, $DB, $OUTPUT;
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
 
         // determined achieved/non-achieved status
-        $achieved = get_field('dp_objective_scale_value', 'achieved', 'id', $objective->scalevalueid);
+        $achieved = $DB->get_field('dp_objective_scale_value', 'achieved', array('id' => $objective->scalevalueid));
         $status = ($achieved ? 'complete' : 'incomplete');
 
         // build event message
-        $event = new stdClass;
-        $userfrom = get_record('user', 'id', $USER->id);
+        $event = new stdClass();
+        $userfrom = $DB->get_record('user', array('id' => $USER->id));
         $event->userfrom = $userfrom;
-        $event->contexturl = "{$CFG->wwwroot}/totara/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
+        $event->contexturl = new moodle_url("/totara/plan/components/objective/view.php", array('id' => $this->plan->id, 'itemid' => $objective->id));
         $event->icon = 'objective-'.($status == 'complete' ? 'complete' : 'fail');
         $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
-        $a->plan = "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->objective = new action_link($event->contexturl, $objective->fullname);
+        $url = new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id));
+        $a->plan = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
         $a->userfrom = $this->current_user_link();
 
+        $stringmanager = get_string_manager();
         // did they complete it themselves?
         if ($USER->id == $this->plan->userid) {
             // don't bother if the plan is not active
@@ -831,18 +825,17 @@ class dp_objective_component extends dp_base_component {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $event->subject = get_string('objective'.$status.'shortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
-                    $event->fullmessage = get_string('objective'.$status.'longmanager', 'local_plan', $a, $manager->lang);
+                    $event->subject = $stringmanager->get_string('objective'.$status.'shortmanager', 'totara_plan', $this->current_user_link(), $manager->lang);
+                    $event->fullmessage = $stringmanager->get_string('objective'.$status.'longmanager', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
-        }
-        // notify user that someone else did it
-        else {
-            $userto = get_record('user', 'id', $this->plan->userid);
+        } else {
+            // notify user that someone else did it
+            $userto = $DB->get_record('user', array('id' => $this->plan->userid));
             $event->userto = $userto;
-            $event->subject = get_string('objective'.$status.'shortlearner', 'local_plan', $a->objective, $userto->lang);
-            $event->fullmessage = get_string('objective'.$status.'longlearner', 'local_plan', $a, $userto->lang);
+            $event->subject = $stringmanager->get_string('objective'.$status.'shortlearner', 'totara_plan', $a->objective, $userto->lang);
+            $event->fullmessage = $stringmanager->get_string('objective'.$status.'longlearner', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -861,11 +854,12 @@ class dp_objective_component extends dp_base_component {
      * @return void
      */
     function update_linked_components($thiscomponentid, $componentupdatetype, $componentids) {
+        global $DB;
 
         parent::update_linked_components($thiscomponentid, $componentupdatetype, $componentids);
 
         if ($componentupdatetype == 'course') {
-            $objective = get_record('dp_plan_objective', 'id', $thiscomponentid);
+            $objective = $DB->get_record('dp_plan_objective', array('id' => $thiscomponentid));
             $this->send_edit_alert($objective, 'course');
         }
 
@@ -877,8 +871,10 @@ class dp_objective_component extends dp_base_component {
      * @param int $caid
      * return int
      */
-    public function get_approval($caid){
-        return get_field('dp_plan_objective', 'approved', 'id', $caid);
+    public function get_approval($caid) {
+        global $DB;
+
+        return $DB->get_field('dp_plan_objective', 'approved', array('id' => $caid));
     }
 
     /**
@@ -886,12 +882,12 @@ class dp_objective_component extends dp_base_component {
      * is updated.
      * @return int (or false on failure)
      */
-    public function approval_status_after_update( ){
+    public function approval_status_after_update() {
         $perm = $this->can_update_items();
-        if ( $perm == DP_PERMISSION_REQUEST ){
+        if ($perm == DP_PERMISSION_REQUEST) {
             return DP_APPROVAL_UNAPPROVED;
         }
-        if ( in_array( $perm, array( DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE ) ) ){
+        if (in_array($perm, array( DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
             return DP_APPROVAL_APPROVED;
         }
 
@@ -906,14 +902,11 @@ class dp_objective_component extends dp_base_component {
      * @param <type> $caid
      * @return boolean
      */
-    public function will_an_update_revoke_approval( $caid ){
+    public function will_an_update_revoke_approval($caid) {
         // If the resource is already approved, and the user has only REQUEST
         // permission, then it will revoke the approved status. Otherwise,
         // no change.
-        if (
-                $this->can_update_items() == DP_PERMISSION_REQUEST
-                && $this->get_approval($caid) != DP_APPROVAL_UNAPPROVED
-        ){
+        if ($this->can_update_items() == DP_PERMISSION_REQUEST && $this->get_approval($caid) != DP_APPROVAL_UNAPPROVED) {
             return true;
         } else {
             return false;
@@ -971,19 +964,16 @@ class dp_objective_component extends dp_base_component {
      * @return string $markup the display html
      */
     protected function display_list_item_actions($item) {
-        global $CFG;
+        global $OUTPUT;
 
         $markup = '';
 
         if ($this->can_delete_item($item)) {
-            $deleteurl = $CFG->wwwroot
-                . '/totara/plan/components/objective/edit.php?id='
-                . $this->plan->id
-                . '&itemid='
-                . $item->id
-                . '&d=1';
-            $strdelete = get_string('delete', 'local_plan');
-            $markup .= '<a href="'.$deleteurl.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+            $deleteurl = new moodle_url('/totara/plan/components/objective/edit.php',
+                array('id' => $this->plan->id, 'itemid' => $item->id, 'd' => 1));
+            $strdelete = get_string('delete', 'totara_plan');
+            $pixicon = new pix_icon('/t/delete', $strdelete, 'moodle', array('class' => 'iconsmall'));
+            $markup .= $OUTPUT->action_icon($deleteurl, $pixicon);
         }
 
         return $markup;
@@ -998,7 +988,7 @@ class dp_objective_component extends dp_base_component {
      * @return string
      */
     public function display_picker() {
-        global $CFG;
+        global $OUTPUT;
 
         if (!$permission = $this->can_update_items()) {
             return '';
@@ -1006,16 +996,14 @@ class dp_objective_component extends dp_base_component {
 
         // Decide on button text
         if ($permission >= DP_PERMISSION_ALLOW) {
-            $btntext = get_string('addnewobjective', 'local_plan');
+            $btntext = get_string('addnewobjective', 'totara_plan');
         } else {
-            $btntext = get_string('requestednewobjective', 'local_plan');
+            $btntext = get_string('requestednewobjective', 'totara_plan');
         }
 
-        $html = '<div class="buttons plan-add-item-button-wrapper">';
-        $html .= print_single_button("{$CFG->wwwroot}/totara/plan/components/objective/edit.php", array('id'=>$this->plan->id), $btntext, 'get', '_SELF', true);
-        $html .= '</div>';
+        $button = $OUTPUT->single_button(new moodle_url("/totara/plan/components/objective/edit.php", array('id' => $this->plan->id)), $btntext, 'get');
 
-        return $html;
+        return $OUTPUT->container($button, "buttons plan-add-item-button-wrapper");
     }
 
 
@@ -1026,24 +1014,21 @@ class dp_objective_component extends dp_base_component {
      * @return  string
      */
     public function display_course_picker($objectiveid) {
+        global $OUTPUT;
 
         if (!$permission = $this->can_update_items()) {
             return '';
         }
 
-        $btntext = get_string('addlinkedcourses', 'local_plan');
+        $btntext = get_string('addlinkedcourses', 'totara_plan');
 
-        $html  = '<div class="buttons">';
-        $html .= '<div class="singlebutton dp-plan-assign-button">';
-        $html .= '<div>';
-        $html .= '<script type="text/javascript">var objective_id = ' . $objectiveid . ';';
-        $html .= 'var plan_id = ' . $this->plan->id . ';</script>';
-        $html .= '<input type="submit" id="show-course-dialog" value="' . $btntext . '" />';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
+        $button = $OUTPUT->container(
+                html_writer::script('var objective_id = ' . $objectiveid . ';' . 'var plan_id = ' . $this->plan->id . ';') .
+                $OUTPUT->single_submit($btntext, array('id' => "show-course-dialog")),
+            'singlebutton dp-plan-assign-button'
+        );
 
-        return $html;
+        return $OUTPUT->container($button, 'buttons');
     }
 
 
@@ -1053,8 +1038,8 @@ class dp_objective_component extends dp_base_component {
      * @param int $objectiveid
      * @return void
      */
-    public function display_objective_detail($objectiveid){
-        global $CFG, $OUTPUT;
+    public function display_objective_detail($objectiveid) {
+        global $DB, $OUTPUT;
 
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
         $objectivescaleid = $this->get_setting('objectivescale');
@@ -1062,8 +1047,8 @@ class dp_objective_component extends dp_base_component {
         $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
         $requiresapproval = $this->get_setting('updateobjective') == DP_PERMISSION_REQUEST;
 
-        $sql = <<<SQL
-            select
+        $sql = "
+            SELECT
                 o.id,
                 o.fullname,
                 o.description,
@@ -1073,24 +1058,23 @@ class dp_objective_component extends dp_base_component {
                 psv.name AS priorityname,
                 osv.name AS profname,
                 osv.achieved
-            from
-                {$CFG->prefix}dp_plan_objective o
-                left join {$CFG->prefix}dp_objective_scale_value osv on (o.scalevalueid=osv.id and osv.objscaleid={$objectivescaleid})
-                left join {$CFG->prefix}dp_priority_scale_value psv on (o.priority=psv.id and psv.priorityscaleid={$priorityscaleid})
-            where
-                o.id={$objectiveid}
-SQL;
-        $item = get_record_sql($sql);
+            FROM
+                {dp_plan_objective} o
+                LEFT JOIN {dp_objective_scale_value} osv ON (o.scalevalueid = osv.id and osv.objscaleid = ?)
+                LEFT JOIN {dp_priority_scale_value} psv ON (o.priority = psv.id and psv.priorityscaleid = ?)
+            WHERE
+                o.id = ?
+        ";
+        $item = $DB->get_record_sql($sql, array($objectivescaleid, $priorityscaleid, $objectiveid));
 
         if (!$item) {
-            return get_string('error:objectivenotfound','local_plan');
+            return get_string('error:objectivenotfound', 'totara_plan');
         }
 
         $out = '';
 
         // get the priority values used for competencies in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+        $priorityvalues = $DB->get_records('dp_priority_scale_value', array('priorityscaleid' => $priorityscaleid), 'sortorder', 'id,name,sortorder');
 
         $icon = $this->determine_item_icon($item);
         $icon = $OUTPUT->pix_icon("/msgicons/" . $icon, format_string($item->fullname), 'totara_core', array('class' => 'objective_state_icon'));
@@ -1101,53 +1085,41 @@ SQL;
 
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
 
-        if ( !$plancompleted && ($canupdate = $this->can_update_items()) ){
+        if (!$plancompleted && ($canupdate = $this->can_update_items())) {
 
-            if ( $this->will_an_update_revoke_approval( $objectiveid ) ){
-                $buttonlabel = get_string('editdetailswithapproval', 'local_plan');
+            if ($this->will_an_update_revoke_approval( $objectiveid )) {
+                $buttonlabel = get_string('editdetailswithapproval', 'totara_plan');
             } else {
-                $buttonlabel = get_string('editdetails', 'local_plan');
+                $buttonlabel = get_string('editdetails', 'totara_plan');
             }
-            $out .= '<div class="add-linked-course">' . print_single_button(
-                "{$CFG->wwwroot}/totara/plan/components/objective/edit.php",
-                array('id'=>$this->plan->id, 'itemid'=>$objectiveid),
-                $buttonlabel,
-                null,
-                null,
-                true
-            ) . '</div>';
+            $out .= $OUTPUT->container($OUTPUT->single_button(new moodle_url("/totara/plan/components/objective/edit.php", array('id' => $this->plan->id, 'itemid' => $objectiveid)), $buttonlabel), 'add-linked-course');
         }
 
-        $out .= "<table border=\"0\" class=\"planiteminfobox\">\n";
-        $out .= "<tr>\n";
-        if($priorityenabled && !empty($item->priority)) {
-            $out .= '<td>';
-            $out .= get_string('priority', 'local_plan') . ': ';
-            $out .= $this->display_priority_as_text($item->priority,
-                $item->priorityname, $priorityvalues);
-            $out .= '</td>';
+        $row = new html_table_row();
+        if ($priorityenabled && !empty($item->priority)) {
+            $row->cells[] = get_string('priority', 'totara_plan') . ': ' . $this->display_priority_as_text($item->priority, $item->priorityname, $priorityvalues);
         }
-        if($duedateenabled && !empty($item->duedate)) {
-            $out .= '<td>';
-            $out .= get_string('duedate', 'local_plan') . ': ';
-            $out .= $this->display_duedate_as_text($item->duedate);
-            if ( !$item->achieved ){
-                $out .= '<br />';
-                $out .= $this->display_duedate_highlight_info($item->duedate);
+        if ($duedateenabled && !empty($item->duedate)) {
+            $cell = get_string('duedate', 'totara_plan') . ': ' . $this->display_duedate_as_text($item->duedate);
+            if (!$item->achieved) {
+                $cell .= html_writer::empty_tag('br') . $this->display_duedate_highlight_info($item->duedate);
             }
-            $out .= '</td>';
+            $row->cells[] = $cell;
         }
         if (!empty($item->profname)) {
-            $out .= "  <td>" . get_string('status', 'local_plan') .": \n";
-            $out .= "  {$item->profname}</td>\n";
+            $row->cells[] = get_string('status', 'totara_plan') .": \n" . "  {$item->profname}\n";
         }
 
-        if ($requiresapproval){
-            $out .= "  <td>" . get_string('status') .": \n";
-            $out .= $this->display_approval($item, false, false)."</td>\n";
+        if ($requiresapproval) {
+            $row->cells[] = get_string('status') .": \n" . $this->display_approval($item, false, false)."\n";
         }
-        $out .= '</table>';
-        $out .= "  <p>" . format_string($item->description) . "</p>\n";
+        $table = new html_table();
+        $table->border = "0";
+        $table->attributes = array('class' => 'planiteminfobox');
+        $table->data = array($row);
+        $out .= html_writer::table($table);
+        $item->description = file_rewrite_pluginfile_urls($item->description, 'pluginfile.php', context_system::instance()->id, 'totara_plan', 'dp_plan_objective', $item->id);
+        $out .= html_writer::tag('p', format_text($item->description, FORMAT_HTML));
 
         print $out;
     }
@@ -1159,12 +1131,12 @@ SQL;
      * @return string
      */
     function display_proficiency($ca) {
-        global $CFG;
+        global $DB;
 
         // Get the proficiency values for this plan
         static $proficiencyvalues;
         if (!isset($proficiencyvalues)) {
-            $proficiencyvalues = get_records('dp_objective_scale_value', 'objscaleid', $this->get_setting('objectivescale'), 'sortorder','id,name,achieved');
+            $proficiencyvalues = $DB->get_records('dp_objective_scale_value', array('objscaleid' => $this->get_setting('objectivescale')), 'sortorder', 'id,name,achieved');
         }
 
         $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
@@ -1179,21 +1151,19 @@ SQL;
                 $options[$id] = $val->name;
             }
 
-            return choose_from_menu(
+            return html_writer::select(
                 $options,
                 "proficiencies[{$ca->id}]",
                 $selected,
                 null,
-                '',
-                null,
-                true
+                array()
             );
 
         } else {
             // They can't change the setting, so show it as-is
             $out = format_string($proficiencyvalues[$selected]->name);
             if ($proficiencyvalues[$selected]->achieved) {
-                $out = '<b>'.$out.'</b>';
+                $out = html_writer::tag('b', $out);
             }
             return $out;
         }
@@ -1216,9 +1186,10 @@ SQL;
      *    $progress->text => String description of completion (for use in tooltip)
      */
     public function progress_stats() {
+        global $DB;
 
         // array of all objective scale value ids that are 'achieved'
-        $achieved_scale_values = get_records('dp_objective_scale_value', 'achieved', '1', '', 'id');
+        $achieved_scale_values = $DB->get_records('dp_objective_scale_value', array('achieved' => '1'), '', 'id');
         $achieved_ids = ($achieved_scale_values) ? array_keys($achieved_scale_values) : array();
 
         $completedcount = 0;
@@ -1241,9 +1212,9 @@ SQL;
             }
         }
         $progress_str = "{$completedcount}/" . count($objectives) . " " .
-            get_string('objectivesmet', 'local_plan') . "\n";
+            get_string('objectivesmet', 'totara_plan') . "\n";
 
-        $progress = new object();
+        $progress = new stdClass();
         $progress->complete = $completedcount;
         $progress->total = count($objectives);
         $progress->text = $progress_str;
@@ -1270,24 +1241,21 @@ SQL;
      * @return array|false $plans ids of plans with specified objective
      */
     public static function get_plans_containing_item($objectiveid, $userid) {
-        global $CFG;
+        global $DB;
+
         $sql = "SELECT DISTINCT
                 planid
             FROM
-                {$CFG->prefix}dp_plan_objective obj
+                {dp_plan_objective} obj
             JOIN
-                {$CFG->prefix}dp_plan p
+                {dp_plan} p
               ON
                 obj.planid = p.id
             WHERE
-                p.userid = {$userid}";
+                p.userid = ?";
+        $params = array($userid);
 
-        if (!$plans = get_records_sql($sql)) {
-            // There are no plans with this objective
-            return false;
-        }
-
-        return array_keys($plans);
+        $plans = $DB->get_fieldset_sql($sql, $params);
+        return $plans;
     }
 }
-

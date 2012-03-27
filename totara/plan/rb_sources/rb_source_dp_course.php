@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas 
  * 
  * This program is free software; you can redistribute it and/or modify  
@@ -42,12 +42,11 @@ class rb_source_dp_course extends rb_base_source {
 
     /**
      * Constructor
-     * @global object $CFG
      */
     public function __construct() {
         global $DB;
 
-        $this->base = "( select distinct ".
+        $this->base = "(select distinct ".
                 $DB->sql_concat_join(
                         "','",
                         array(
@@ -71,7 +70,7 @@ class rb_source_dp_course extends rb_base_source {
                 "p1.userid as userid, pca1.courseid as courseid ".
                 "from {dp_plan_course_assign} pca1 ".
                 "inner join {dp_plan} p1 ".
-                "on pca1.planid=p1.id )";
+                "on pca1.planid = p1.id)";
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -97,8 +96,8 @@ class rb_source_dp_course extends rb_base_source {
      * @return array
      */
     private function define_joinlist() {
-        $joinlist = array();
         global $CFG;
+        $joinlist = array();
 
         // to get access to position type constants
         require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_join.php');
@@ -225,7 +224,7 @@ from
                     'defaultheading' => get_string('plan', 'rb_source_dp_course'),
                     'joins' => 'dp_course',
                     'displayfunc' => 'planlink',
-                    'extrafields' => array( 'plan_id'=>'dp_course.planid' )
+                    'extrafields' => array( 'plan_id' => 'dp_course.planid' )
                 )
         );
         $columnoptions[] = new rb_column_option(
@@ -320,8 +319,8 @@ from
                 get_string('templatestartdate', 'rb_source_dp_course'),
                 'dp_template.startdate',
                 array(
-                    'joins'=>'dp_template',
-                    'displayfunc'=>'nice_date'
+                    'joins' => 'dp_template',
+                    'displayfunc' => 'nice_date'
                 )
         );
         $columnoptions[] = new rb_column_option(
@@ -330,8 +329,8 @@ from
                 get_string('templateenddate', 'rb_source_dp_course'),
                 'dp_template.enddate',
                 array(
-                    'joins'=>'dp_template',
-                    'displayfunc'=>'nice_date'
+                    'joins' => 'dp_template',
+                    'displayfunc' => 'nice_date'
                 )
         );
         $columnoptions[] = new rb_column_option(
@@ -479,9 +478,8 @@ from
     }
 
     private function define_paramoptions() {
-        global $CFG;
-        $paramoptions = array();
 
+        $paramoptions = array();
         $paramoptions[] = new rb_param_option(
                 'userid',
                 'base.userid',
@@ -519,7 +517,6 @@ from
     }
 
     function rb_display_course_completion_progress_and_approval($status, $row) {
-        global $CFG;
 
         $approved = isset($row->approved) ? $row->approved : null;
 
@@ -527,7 +524,7 @@ from
         $content = $this->rb_display_course_completion_progress($status, $row);
 
         // highlight if the item has not yet been approved
-        if($approved == DP_APPROVAL_UNAPPROVED ||
+        if ($approved == DP_APPROVAL_UNAPPROVED ||
             $approved == DP_APPROVAL_REQUESTED) {
             $content .= $this->rb_display_plan_item_status($approved);
         }
@@ -535,7 +532,7 @@ from
     }
 
     function rb_filter_coursecompletion_status() {
-        global $CFG, $COMPLETION_STATUS;
+        global $COMPLETION_STATUS;
 
         $out = array();
         foreach ($COMPLETION_STATUS as $code => $statusstring) {

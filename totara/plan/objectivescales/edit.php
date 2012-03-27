@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @subpackage plan
  */
 
-require_once '../../../config.php';
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once $CFG->libdir.'/adminlib.php';
 require_once 'edit_form.php';
 
@@ -37,19 +37,19 @@ require_once 'edit_form.php';
 $id = optional_param('id', 0, PARAM_INT); // Objective id; 0 if creating a new objective
 // Page setup and check permissions
 admin_externalpage_setup('objectivescales');
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
+$PAGE->set_context($context);
+require_capability('totara/plan:manageobjectivescales', $context);
 
-require_capability('totara/plan:manageobjectivescales', $sitecontext);
 if ($id == 0) {
     // creating new idp objective
-
-    $objective = new object();
+    $objective = new stdClass();
     $objective->id = 0;
+    $objective->description = '';
 } else {
     // editing existing idp objective
-
-    if (!$objective = get_record('dp_objective_scale', 'id', $id)) {
-        error(get_string('error:objectivescaledidincorrect', 'local_plan'));
+    if (!$objective = $DB->get_record('dp_objective_scale', array('id' => $id))) {
+        print_error('error:objectivescaledidincorrect', 'totara_plan');
     }
 }
 
@@ -57,11 +57,13 @@ if ($id == 0) {
 ///
 /// Handle form data
 ///
-
+$objective->descriptionformat = FORMAT_HTML;
+$objective = file_prepare_standard_editor($objective, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                         'totara_plan', 'dp_objective_scale', $objective->id);
 $mform = new edit_objective_form(
         null, // method (default)
         array( // customdata
-            'objectiveid'=>$id
+            'objectiveid' => $id
         )
 );
 $mform->set_data($objective);
@@ -76,91 +78,71 @@ if ($mform->is_cancelled()) {
 
     $objectivenew->timemodified = time();
     $objectivenew->usermodified = $USER->id;
-    $objectivenew->sortorder = 1 + get_field_sql("select max(sortorder) from {$CFG->prefix}dp_objective_scale");
+    $objectivenew->sortorder = 1 + $DB->get_field_sql("select max(sortorder) from {dp_objective_scale}");
 
-    // New objective
     if (empty($objectivenew->id)) {
+        // New objective
         unset($objectivenew->id);
-
-        begin_sql();
-
-        try {
-            if (!$objectivenew->id = insert_record('dp_objective_scale', $objectivenew)) {
-                throw new Exception(get_string('error:createnewobjectivescale' ,'local_plan'));
+        //set editor field to empty, will be updated properly later
+        $objectivenew->description = '';
+        $transaction = $DB->start_delegated_transaction();
+        $objectivenew->id = $DB->insert_record('dp_objective_scale', $objectivenew);
+        $objectivevalues = explode("\n", trim($objectivenew->objectivevalues));
+        unset($objectivenew->objectivevalues);
+        $sortorder = 1;
+        $objectiveidlist = array();
+        foreach ($objectivevalues as $objectiveval) {
+            if (strlen(trim($objectiveval)) != 0) {
+                $objectivevalrec = new stdClass();
+                $objectivevalrec->objscaleid = $objectivenew->id;
+                $objectivevalrec->name = trim($objectiveval);
+                $objectivevalrec->sortorder = $sortorder;
+                $objectivevalrec->timemodified = time();
+                $objectivevalrec->usermodified = $USER->id;
+                // Set the "achieved" objective value to the most competent one
+                $objectivevalrec->achieved = ($sortorder == 1) ? 1 : 0;
+                $objectiveidlist[] = $DB->insert_record('dp_objective_scale_value', $objectivevalrec);
+                $sortorder++;
             }
-
-            $objectivevalues = explode("\n", trim($objectivenew->objectivevalues));
-            unset($objectivenew->objectivevalues);
-
-            $sortorder = 1;
-            $objectiveidlist = array();
-            foreach ($objectivevalues as $objectiveval){
-                if (strlen(trim($objectiveval)) != 0){
-                    $objectivevalrec = new stdClass();
-                    $objectivevalrec->objscaleid = $objectivenew->id;
-                    $objectivevalrec->name = trim($objectiveval);
-                    $objectivevalrec->sortorder = $sortorder;
-                    $objectivevalrec->timemodified = time();
-                    $objectivevalrec->usermodified = $USER->id;
-                    // Set the "achieved" objective value to the most competent one
-                    $objectivevalrec->achieved = ($sortorder == 1) ? 1 : 0;
-
-                    $result = insert_record('dp_objective_scale_value', $objectivevalrec);
-                    if (!$result){
-                        throw new Exception(get_string('error:creatingobjectivescalevalues', 'local_plan'));
-                    }
-                    $objectiveidlist[] = $result;
-                    $sortorder++;
-                }
-            }
-
-            // Set the default objective value to the least competent one
-            if ( count($objectiveidlist) ){
-                $objectivenew->defaultid = $objectiveidlist[count($objectiveidlist)-1];
-                update_record('dp_objective_scale', $objectivenew);
-            }
-
-            commit_sql();
-        } catch ( Exception $e ){
-            rollback_sql();
-            error( $e->getMessage() );
         }
-    // Existing objective
+
+        // Set the default objective value to the least competent one
+        if (count($objectiveidlist)) {
+            $objectivenew->defaultid = $objectiveidlist[count($objectiveidlist)-1];
+            $DB->update_record('dp_objective_scale', $objectivenew);
+        }
+        $notification = get_string('objectivescaleadded', 'totara_plan', format_string($objectivenew->name));
+        $transaction->allow_commit();
     } else {
-        if (update_record('dp_objective_scale', $objectivenew)) {
-            add_to_log(SITEID, 'objectives', 'updated', "view.php?id=$objectivenew->id");
-            totara_set_notification(get_string('objectivescaleupdated', 'local_plan',
-                format_string(stripslashes($objectivenew->name))),
-                "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$objectivenew->id}",
-                array('class' => 'notifysuccess'));
-        } else {
-            error(get_string('error:updateobjectivescale', 'local_plan'));
-        }
+        // Existing objective
+        $DB->update_record('dp_objective_scale', $objectivenew);
+        add_to_log(SITEID, 'objectivescales', 'updated', "view.php?id=$objectivenew->id");
+        $notification = get_string('objectivescaleupdated', 'totara_plan', format_string($objectivenew->name));
     }
 
+    //update description
+    $objectivenew = file_postupdate_standard_editor($objectivenew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_plan', 'dp_objective_scale', $objectivenew->id);
+    $DB->set_field('dp_objective_scale', 'description', $objectivenew->description, array('id' => $objectivenew->id));
     // Log
-    add_to_log(SITEID, 'objectives', 'added', "view.php?id=$objectivenew->id");
-    totara_set_notification(get_string('objectivescaleadded', 'local_plan', format_string(stripslashes($objectivenew->name))),
+    add_to_log(SITEID, 'objectivescales', 'added', "view.php?id=$objectivenew->id");
+    totara_set_notification($notification,
         "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$objectivenew->id}",
         array('class' => 'notifysuccess'));
 }
 
 /// Print Page
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("objectivescales", 'local_plan'),
-                    'link'=>"{$CFG->wwwroot}/totara/plan/objectivescales/index.php",
-                    'type'=>'misc');
+$PAGE->navbar->add(get_string("objectivescales", 'totara_plan'), new moodle_url('/totara/plan/objectivescales/index.php'));
 if ($id == 0) { // Add
-    $navlinks[] = array('name'=>get_string('objectivesscalecreate', 'local_plan'), 'link'=>'', 'type'=>'misc');
-    $heading = get_string('objectivesscalecreate', 'local_plan');
+    $PAGE->navbar->add(get_string('objectivesscalecreate', 'totara_plan'));
+    $heading = get_string('objectivesscalecreate', 'totara_plan');
 } else {    //Edit
-    $navlinks[] = array('name'=>get_string('editobjective', 'local_plan', format_string($objective->name)), 'link'=>'', 'type'=>'misc');
-    $heading = get_string('editobjective', 'local_plan');
+    $PAGE->navbar->add(get_string('editobjective', 'totara_plan', format_string($objective->name)));
+    $heading = get_string('editobjective', 'totara_plan', format_string($objective->name));
 }
 
-admin_externalpage_print_header('', $navlinks);
-print_heading($heading);
+echo $OUTPUT->header();
+echo $OUTPUT->heading($heading);
 $mform->display();
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();
 ?>

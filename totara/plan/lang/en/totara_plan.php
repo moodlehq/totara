@@ -26,7 +26,7 @@ $string['reviewitemstext'] = 'Please review the changes to the attached plan';
 $string['items'] = 'Items';
 $string['learningplan'] = 'Learning Plan';
 $string['learningplans'] = 'Learning Plans';
-$string['xslearningplans'] = '$a\'s Learning Plans';
+$string['xslearningplans'] = '{$a}\'s Learning Plans';
 $string['unknownuserslearningplans'] = 'Unknown User\'s Learning Plans';
 $string['globalsettings'] = 'Global Settings';
 $string['managetemplates'] = 'Manage templates';
@@ -41,7 +41,7 @@ $string['createplan'] = 'Create plan';
 $string['updateplan'] = 'Update plan';
 $string['completed'] = 'Completed';
 $string['baddata'] = 'Supplied bad data - non numeric id';
-$string['planidnotfound'] = 'Plan ID of \'$a\' not found';
+$string['planidnotfound'] = 'Plan ID of \'{$a}\' not found';
 $string['pendingremoval'] = 'Pending removal';
 $string['learning'] = 'Learning';
 $string['alllearning'] = 'All Learning';
@@ -68,15 +68,18 @@ $string['planstatusunapproved'] = 'Unapproved';
 $string['planhasunapproveditems'] = 'This plan has draft items:';
 $string['planhasunapproveditem'] = 'This plan has a draft item:';
 $string['error:creationaftercompletion'] = 'Completion Date must not be before Date Created';
+$string['advancedsettingsplansettings'] = 'Plan settings';
+$string['advancedsettingsplanpermissions'] = 'Plan permissions';
+$string['advancedsettingsprogramsettings'] = 'Program settings';
+$string['advancedsettingsprogrampermissions'] = 'Program permissions';
+$string['noclassfileforrole'] = 'Class file \'{$a->classfile}\' could not be found for role of \'{$a->role}\'';
+$string['noclassforrole'] = 'Class \'{$a->class}\' does not exist for role \'{$a->role}\'.';
 
-$string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$a->role\'';
-$string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';
+$string['noclassfileforcomponent'] = 'Class file \'{$a->classfile}\' could not be found for component \'{$a->component}\'';
+$string['noclassforcomponent'] = 'Class \'{$a->class}\' does not exist for component \'{$a->component}\'.';
 
-$string['noclassfileforcomponent'] = 'Class file \'$a->classfile\' could not be found for component \'$a->component\'';
-$string['noclassforcomponent'] = 'Class \'$a->class\' does not exist for component \'$a->component\'.';
-
-$string['noclassfileforworkflow'] = 'Class file \'$a->classfile\' could not be found for workflow \'$a->workflow\'';
-$string['noclassforworkflow'] = 'Class \'$a->class\' does not exist for workflow \'$a->workflow\'';
+$string['noclassfileforworkflow'] = 'Class file \'{$a->classfile}\' could not be found for workflow \'{$a->workflow}\'';
+$string['noclassforworkflow'] = 'Class \'{$a->class}\' does not exist for workflow \'{$a->workflow}\'';
 $string['pendingitems'] = 'Pending approval';
 $string['removeselected'] = 'Remove selected';
 $string['selectedlinkedcompetenciesremovedfromcourse'] = 'The selected linked competencies have been removed from this course';
@@ -87,45 +90,47 @@ $string['selectedlinkedcoursesremovedfromobjective'] = 'The selected linked cour
 //Instruction text
 $string['planinstructions'] = 'Your current and completed learning plans are shown below. ';
 $string['planinstructionsuser'] = '{$a}\'s current and completed learning plans are shown below. ';
-$string['planinstructions_add'] = 'You can create a new learning plan by clicking \"Create a new learning plan\" to the right of the screen. ';
-$string['createplan_instructions'] = 'To create a new plan please add the plan title, a short description of the plan and a date by which the plan should be completed. You can click \"Create plan\" once you have entered this information.';
+$string['planinstructions_add'] = 'You can create a new learning plan by clicking "Create a new learning plan" to the right of the screen. ';
+$string['createplan_instructions'] = 'To create a new plan please add the plan title, a short description of the plan and a date by which the plan should be completed. You can click "Create plan" once you have entered this information.';
 
 $string['plan_instructions_manager'] = 'Below is a short summary of your team member\'s learning plan.';
 $string['plan_instructions_learner'] = 'Below is a short summary of your learning plan.';
-$string['plan_instructions_edit'] = 'You can click the \"Edit details\" button to ammend the learning plan title, short description or completion date.';
-$string['plan_instructions_delete'] = 'You can delete this learning plan by clicking the \"Deleting plan\" button.';
+$string['plan_instructions_edit'] = 'You can click the "Edit details" button to ammend the learning plan title, short description or completion date.';
+$string['plan_instructions_delete'] = 'You can delete this learning plan by clicking the "Deleting plan" button.';
 
 $string['competency_instructions_learner'] = 'All the competencies that will be addressed by your learning plan are shown below.';
 $string['competency_instructions_manager'] = 'All the competencies that will be addressed by your team member\'s learning plan area shown below.';
 $string['competency_instructions_detail'] = 'You can view more details about any competency by clicking its title.';
-$string['competency_instructions_add'] = 'You can add additional competencies by clicking the \"Add/remove competencies\" button to the right of the screen.';
-$string['competency_instructions_add11'] = 'You can add additional competencies by clicking the \"Add competencies\" button.';
-$string['competency_instructions_request'] = 'Clicking \"Update requested competencies\" will allow you to request to add new competencies to this learning plan.';
+$string['competency_instructions_add'] = 'You can add additional competencies by clicking the "Add/remove competencies" button to the right of the screen.';
+$string['competency_instructions_add11'] = 'You can add additional competencies by clicking the "Add competencies" button.';
+$string['competency_instructions_request'] = 'Clicking "Update requested competencies" will allow you to request to add new competencies to this learning plan.';
 
 $string['course_instructions_manager'] = 'All the courses that form your team member\'s learning plan are show below.';
 $string['course_instructions_learner'] = 'All the courses that form your learning plan are shown below.';
 $string['course_instructions_detail'] = 'You can view any course by clicking the course title.';
-$string['course_instructions_add'] = 'Clicking \"Add/remove Courses\" will allow you to add new courses to this learning plan.';
-$string['course_instructions_add11'] = 'Clicking \"Add Courses\" will allow you to add new courses to this learning plan.';
-$string['course_instructions_request'] = 'Clicking \"Update requested courses\" will allow you to request to add new courses to this learning plan.';
+$string['course_instructions_add'] = 'Clicking "Add/remove Courses" will allow you to add new courses to this learning plan.';
+$string['course_instructions_add11'] = 'Clicking "Add Courses" will allow you to add new courses to this learning plan.';
+$string['course_instructions_request'] = 'Clicking "Update requested courses" will allow you to request to add new courses to this learning plan.';
 
 $string['program_instructions_manager'] = 'All the programs that form your team member\'s learning plan are show below.';
 $string['program_instructions_learner'] = 'All the programs that form your learning plan are shown below.';
 $string['program_instructions_detail'] = 'You can view any program by clicking the program title.';
-$string['program_instructions_add'] = 'Clicking \"Add/remove programs\" will allow you to add new programs to this learning plan.';
-$string['program_instructions_add11'] = 'Clicking \"Add programs\" will allow you to add new programs to this learning plan.';
-$string['program_instructions_request'] = 'Clicking \"Update requested programs\" will allow you to request to add new programs to this learning plan.';
+$string['program_instructions_add'] = 'Clicking "Add/remove programs" will allow you to add new programs to this learning plan.';
+$string['program_instructions_add11'] = 'Clicking "Add programs" will allow you to add new programs to this learning plan.';
+$string['program_instructions_request'] = 'Clicking "Update requested programs" will allow you to request to add new programs to this learning plan.';
 
 $string['objective_instructions_manager'] = 'All the objectives that form your team member\'s learning plan are show below.';
 $string['objective_instructions_learner'] = 'All the objectives that form your learning plan are shown below.';
 $string['objective_instructions_detail'] = 'You can view any objective by clicking the objective title.';
-$string['objective_instructions_add'] = 'Clicking \"Add New Objective\" will allow you to add new objectives to this learning plan.';
-$string['objective_instructions_add11'] = 'Clicking \"Add New Objective\" will allow you to add new objectives to this learning plan.';
-$string['objective_instructions_request'] = 'Clicking \"Update requested objectives\" will allow you to request to add new objectives to this learning plan.';
+$string['objective_instructions_add'] = 'Clicking "Add New Objective" will allow you to add new objectives to this learning plan.';
+$string['objective_instructions_add11'] = 'Clicking "Add New Objective" will allow you to add new objectives to this learning plan.';
+$string['objective_instructions_request'] = 'Clicking "Update requested objectives" will allow you to request to add new objectives to this learning plan.';
 
 
 
 // Manage Templates
+$string['templateenddate'] = 'End Date';
+$string['templatecomponentsettings'] = 'Component Settings';
 $string['instances'] = 'Instances';
 $string['addtemplate'] = 'Add new Template';
 $string['templateinstances'] = 'Template Instances';
@@ -151,7 +156,7 @@ $string['autoassignpos'] = 'Automatically assign by position';
 $string['autoassignorg'] = 'Automatically assign by organisation';
 $string['includecompleted'] = 'Include completed competencies';
 $string['autoassigncourses'] = 'Include linked courses';
-$string['error:dateformat'] = 'Please enter a date in the format $a.';
+$string['error:dateformat'] = 'Please enter a date in the format {$a}.';
 
 // Generic Strings
 $string['name'] = 'Name';
@@ -177,8 +182,8 @@ $string['setduedate'] = 'Set Due Date';
 $string['setcompletionstatus'] = 'Set Completion Status';
 $string['completereactivate'] = 'Complete/reactivate';
 $string['deletemandatory'] = 'Delete Mandatory';
-$string['add'] = 'Add $a';
-$string['remove'] = 'Remove $a';
+$string['add'] = 'Add {$a}';
+$string['remove'] = 'Remove {$a}';
 $string['competency'] = 'Competency';
 $string['view'] = 'View';
 $string['addevidence'] = 'Add Evidence';
@@ -187,6 +192,7 @@ $string['update'] = 'Update';
 $string['delete'] = 'Delete';
 $string['confirm'] = 'Confirm';
 $string['signoff'] = 'Sign-off';
+$string['changes'] = 'Changes';
 $string['setting'] = 'Setting';
 $string['before'] = 'Before';
 $string['after'] = 'After';
@@ -201,11 +207,11 @@ $string['error:nopermissiondeletemandatorycourse'] = 'You do not have permission
 $string['error:nopermissiondeletemandatorycomp'] = 'You do not have permission to delete a mandatory competency';
 $string['error:couldnotassignnewitem'] = 'Could not assign new item to plan';
 // Strings with placeholder for custom-editable component names
-$string['updatelinkedx'] = 'Update linked $a';
-$string['nox'] = 'No $a.';
-$string['nolinkedx'] = 'No linked $a.';
-$string['linkedx'] = 'Linked $a';
-$string['backtoallx'] = '&laquo; Back to all $a';
+$string['updatelinkedx'] = 'Update linked {$a}';
+$string['nox'] = 'No {$a}.';
+$string['nolinkedx'] = 'No linked {$a}.';
+$string['linkedx'] = 'Linked {$a}';
+$string['backtoallx'] = '&laquo; Back to all {$a}';
 
 
 // Course Strings
@@ -217,7 +223,8 @@ $string['addcourses'] = 'Add courses';
 $string['addlinkedcourses'] = 'Add linked courses';
 $string['assessitem'] = 'Assess item';
 $string['coursenotfound'] = 'Course not found';
-
+$string['advancedsettingscoursesettings'] = 'Course settings';
+$string['advancedsettingscoursepermissions'] = 'Course permissions';
 
 //Competency Strings
 $string['competency'] = 'Competency';
@@ -242,7 +249,8 @@ $string['error:cannotupdatecompetencies'] = 'Cannot update competencies';
 $string['confirmlinkedcourses'] = 'Confirm linked courses';
 $string['confirmlinkedcoursesdesc'] = 'Some of those competencies have linked courses. If checked below, these courses will also be added to this plan:';
 $string['alreadyassignedtoplan'] = 'Already assigned to this plan';
-
+$string['advancedsettingscompetencysettings'] = 'Competency settings';
+$string['advancedsettingscompetencypermissions'] = 'Competency permissions';
 // Program strings
 $string['error:cannotupdateprograms'] = 'Cannot update programs';
 $string['launchprogram'] = 'Launch program';
@@ -279,10 +287,10 @@ $string['error:objectivedeleted'] = 'Objective not deleted';
 $string['error:objectiveidincorrect'] = 'Objective ID incorrect';
 $string['nonsensicalachievedvalues'] = 'Warning: You have achieved values below non-achieved values in this scale. Remember that your scale should be ordered from most accomplished at the top, to least accomplished at the bottom.';
 $string['objectivescaledefaultupdated'] = 'The scale\'s default value has been updated';
-$string['objectivescaleadded'] = 'Objective scale \"{$a}\" added';
-$string['objectivescalevalueadded'] = 'Objective scale value \"{$a}\" added';
-$string['objectivescaleupdated'] = 'Objective scale \"{$a}\" updated';
-$string['objectivescalevalueupdated'] = 'Objective scale value \"{$a}\" updated';
+$string['objectivescaleadded'] = 'Objective scale "{$a}" added';
+$string['objectivescalevalueadded'] = 'Objective scale value "{$a}" added';
+$string['objectivescaleupdated'] = 'Objective scale "{$a}" updated';
+$string['objectivescalevalueupdated'] = 'Objective scale value "{$a}" updated';
 $string['objectivetitle'] = 'Objective Title';
 $string['objectivedescription'] = 'Objective Description';
 $string['objectivepriority'] = 'Objective Priority';
@@ -293,40 +301,41 @@ $string['objectiveapproved'] = 'Objective Approval';
 $string['objectivefullname'] = 'Objective title';
 $string['objectivedescription'] = 'Objective description';
 $string['error:cannotupdateobjectives'] = 'Cannot update objectives';
-$string['objectivescalex'] = 'Objective scale \"{$a}\"';
+$string['objectivescalex'] = 'Objective scale "{$a}"';
 $string['objectivesnotupdated'] = 'Objectives not updated';
 $string['deleteobjective'] = 'Delete objective';
 $string['deleteobjectiveareyousure'] = 'Are you sure you want to delete this objective?';
 $string['editobjective'] = 'Edit objective';
-
+$string['advancedsettingsobjectivesettings'] = 'Objective settings';
+$string['advancedsettingsobjectivepermissions'] = 'Objective permissions';
 // new objective
-$string['objectivenewshortlearner'] = 'New objective \"$a\" assigned';
-$string['objectivenewlonglearner'] = '$a->userfrom has assigned new objective \"$a->objective\" to learning plan \"$a->plan\"';
-$string['objectivenewshortmanager'] = '$a created new objective';
-$string['objectivenewlongmanager'] = '$a->userfrom has created new objective \"$a->objective\" in learning plan \"$a->plan\"';
+$string['objectivenewshortlearner'] = 'New objective "{$a}" assigned';
+$string['objectivenewlonglearner'] = '{$a->userfrom} has assigned new objective "{$a->objective}" to learning plan "{$a->plan}"';
+$string['objectivenewshortmanager'] = '{$a} created new objective';
+$string['objectivenewlongmanager'] = '{$a->userfrom} has created new objective "{$a->objective}" in learning plan "{$a->plan}"';
 
 // delete objective
-$string['objectivedeleteshortlearner'] = 'Objective \"$a\" has been deleted';
-$string['objectivedeletelonglearner'] = '$a->userfrom has deleted objective \"$a->objective\" in learning plan \"$a->plan\"';
-$string['objectivedeleteshortmanager'] = '$a has deleted an objective';
-$string['objectivedeletelongmanager'] = '$a->userfrom has deleted the objective \"$a->objective\" in learning plan \"$a->plan\"';
+$string['objectivedeleteshortlearner'] = 'Objective "{$a}" has been deleted';
+$string['objectivedeletelonglearner'] = '{$a->userfrom} has deleted objective "{$a->objective}" in learning plan "{$a->plan}"';
+$string['objectivedeleteshortmanager'] = '{$a} has deleted an objective';
+$string['objectivedeletelongmanager'] = '{$a->userfrom} has deleted the objective "{$a->objective}" in learning plan "{$a->plan}"';
 
 // change an objective
-$string['objectiveeditshortlearner'] = 'Objective \"$a\" has been edited';
-$string['objectiveeditlonglearner'] = '$a->userfrom has edited $a->field for objective \"$a->objective\"';
-$string['objectiveeditshortmanager'] = '$a has edited their objectives';
-$string['objectiveeditlongmanager'] = '$a->userfrom has edited $a->field for objective \"$a->objective\" in learning plan \"$a->plan\"';
+$string['objectiveeditshortlearner'] = 'Objective "{$a}" has been edited';
+$string['objectiveeditlonglearner'] = '{$a->userfrom} has edited {$a->field} for objective "{$a->objective}"';
+$string['objectiveeditshortmanager'] = '{$a} has edited their objectives';
+$string['objectiveeditlongmanager'] = '{$a->userfrom} has edited {$a->field} for objective "{$a->objective}" in learning plan "{$a->plan}"';
 
 // objective complete/incomplete
-$string['objectivecompleteshortlearner'] = 'Completed objective \"$a\"';
-$string['objectivecompletelonglearner'] = '$a->userfrom has changed objective \"$a->objective\" to completed';
-$string['objectivecompleteshortmanager'] = '$a has completed an objective';
-$string['objectivecompletelongmanager'] = '$a->userfrom has changed objective \"$a->objective\" to completed in learning plan \"$a->plan\"';
+$string['objectivecompleteshortlearner'] = 'Completed objective "{$a}"';
+$string['objectivecompletelonglearner'] = '{$a->userfrom} has changed objective "{$a->objective}" to completed';
+$string['objectivecompleteshortmanager'] = '{$a} has completed an objective';
+$string['objectivecompletelongmanager'] = '{$a->userfrom} has changed objective "{$a->objective}" to completed in learning plan "{$a->plan}"';
 
-$string['objectiveincompleteshortlearner'] = 'Objective \"$a\" incomplete';
-$string['objectiveincompletelonglearner'] = '$a->userfrom has changed objective \"$a->objective\" to incomplete';
-$string['objectiveincompleteshortmanager'] = '$a has an incomplete objective';
-$string['objectiveincompletelongmanager'] = '$a->userfrom has changed objective \"$a->objective\" to incomplete in learning plan \"$a->plan\"';
+$string['objectiveincompleteshortlearner'] = 'Objective "{$a}" incomplete';
+$string['objectiveincompletelonglearner'] = '{$a->userfrom} has changed objective "{$a->objective}" to incomplete';
+$string['objectiveincompleteshortmanager'] = '{$a} has an incomplete objective';
+$string['objectiveincompletelongmanager'] = '{$a->userfrom} has changed objective "{$a->objective}" to incomplete in learning plan "{$a->plan}"';
 
 
 //Plan Settings strings
@@ -427,14 +436,14 @@ $string['optional'] = 'Optional';
 $string['required'] = 'Required';
 $string['coursesettingsupdated'] = 'Course settings updated';
 $string['coursesettingsnotupdated'] = 'There was a problem updating the course settings';
-$string['dueinxdays'] = 'Due in $a day(s)';
+$string['dueinxdays'] = 'Due in {$a} day(s)';
 $string['overdue'] = 'Overdue!';
 $string['duetoday'] = 'Due today';
 $string['updatesettings'] = 'Update Settings';
 $string['coursesupdated'] = 'Course settings updated.';
 $string['coursesnotupdated'] = 'There was a problem updating your courses.';
 $string['priority'] = 'Priority';
-$string['changeworkflowconfirm'] = 'Are you sure you wish to change the workflow for this template. This will override all settings and permissions, and use the default settings for the \"$a\".';
+$string['changeworkflowconfirm'] = 'Are you sure you wish to change the workflow for this template. This will override all settings and permissions, and use the default settings for the "{$a}".';
 $string['nochanges'] = 'There are no changes';
 $string['na'] = 'N/A';
 $string['role'] = 'Role';
@@ -442,13 +451,14 @@ $string['role'] = 'Role';
 $string['duedatemode'] = 'Due dates';
 $string['prioritymode'] = 'Priorities';
 $string['error:cantcreatecustomworkflow'] = 'You cannot create a workflow called \'custom\' as this is used by the system.';
-$string['error:propertymustbeset'] = 'Property \'$a->property\' must be set in class $a->class';
+$string['error:propertymustbeset'] = 'Property \'{$a->property}\' must be set in class {$a->class}';
 
 // General errors
 $string['error:incorrectparameters'] = 'Incorrect parameters';
 $string['error:invalidtemplateid'] = 'Invalid template id';
 $string['error:missingcompetencysettings'] = 'Missing Competency settings';
 $string['error:missingobjectivesettings'] = 'Missing Objective settings';
+$string['error:missingprogramsettings'] = 'Missing Program settings';
 $string['error:missingcoursesettings'] = 'Missing Course settings';
 $string['error:missingpermissionsetting'] = 'Missing permission setting';
 $string['error:objectivescaledidincorrect'] = 'Incorrect Objective Scale ID';
@@ -465,16 +475,19 @@ $string['noteduedateswrongformatorrequired'] = 'NOTE: The indicated duedate fiel
 
 // Priority Scales
 $string['allpriorityscales'] = 'All priority scales';
+$string['priorityscalename'] = 'Priority scale name';
+$string['priorityscalevalues'] = 'Priority scale values';
+$string['priorityscaleassign'] = 'Priority scale assign';
 $string['assignedonly'] = 'Assigned but not used';
 $string['priorityscales'] = 'Priority scales';
 $string['priorityscale'] = 'Priority scale';
-$string['priorityscalex'] = 'Priority scale \"{$a}\"';
+$string['priorityscalex'] = 'Priority scale "{$a}"';
 $string['noprioritiesdefined'] = 'No priorities defined';
 $string['priorityscalecreate'] = 'Add a new priority scale';
-$string['priorityscaleadded'] = 'Priority scale \"{$a}\" added';
-$string['priorityscalevalueadded'] = 'Priority scale value \"{$a}\" added';
-$string['priorityscaleupdated'] = 'Priority scale \"{$a}\" updated';
-$string['priorityscalevalueupdated'] = 'Priority scale value \"{$a}\" updated';
+$string['priorityscaleadded'] = 'Priority scale "{$a}" added';
+$string['priorityscalevalueadded'] = 'Priority scale value "{$a}" added';
+$string['priorityscaleupdated'] = 'Priority scale "{$a}" updated';
+$string['priorityscalevalueupdated'] = 'Priority scale value "{$a}" updated';
 $string['priorityscaledefaultupdated'] = 'The scale\'s default value has been updated';
 $string['priorityvalues'] = 'Priority values';
 $string['priority'] = 'Priority';
@@ -485,26 +498,27 @@ $string['error:nodeletepriorityscaleassigned'] = 'You cannot delete that priorit
 $string['error:nodeletepriorityscalevaluedefault'] = 'You cannot delete that priority scale value because it is the default value';
 $string['deletecheckpriority'] = 'Are you absolutely sure you want to completely delete this priority scale?';
 $string['deletecheckpriorityvalue'] = 'Are you absolutely sure you want to delete this priority scale value?';
-$string['deletedpriorityscale'] = 'The priority scale \"{$a}\" has been completely deleted.';
-$string['deletedpriorityscalevalue'] = 'The priority scale value \"{$a}\" has been deleted.';
+$string['deletedpriorityscale'] = 'The priority scale "{$a}" has been completely deleted.';
+$string['deletedpriorityscalevalue'] = 'The priority scale value "{$a}" has been deleted.';
 $string['error:deletedpriorityscalevalue'] = 'Could not delete priority scale value.';
 $string['error:updatepriorityscalevalue'] = 'Could not update priority scale value.';
 $string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale that is in use.';
-$string['linktopriorityvalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
+$string['linktopriorityvalues'] = '<a href="view.php?id={$a}">Click here</a> to view/edit the scale values for this priority scale.';
 $string['priorityscaleinuse'] = 'This scale is in use (i.e. users have items marked with values from this scale). Scale values cannot be created, re-ordered or deleted to preserve data integrity. You can still rename scale values but this may confuse users when their priorities changes without warning.';
 $string['explainpriorityscalevals'] = 'One priority per line (highest to lowest)';
 $string['changeto'] = 'Change to';
 $string['set'] = 'Set';
 $string['save'] = 'Save';
 $string['defaultvalue'] = 'Default value';
+$string['priorityscaledefault'] = 'Default value';
 $string['scales'] = 'Priority Scales';
 $string['missingpriorityscalevaluename'] = 'Missing priority scale value name';
 $string['nopriorityscalevalues'] = 'There are no priority scale values defined for this priority scale.';
 $string['priorityscalesdisabledtemplateinuse'] = 'NOTE: Cannot change priority scale - there are plans using this template';
 $string['objectivescalesdisabledtemplateinuse'] = 'NOTE: Cannot change objective scale - there are plans using this template';
-$string['editpriority'] = 'Edit priority $a';
+$string['editpriority'] = 'Edit priority {$a}';
 $string['editpriorityvalue'] = 'Edit priority value';
-$string['priorityscalevaluenumericalvalue'] = 'Priority scale numerical value';
+$string['priorityscalevaluenumeric'] = 'Priority scale numerical value';
 $string['priorityscalevalueidnumber'] = 'Scale value ID number';
 $string['priorityscalevaluename'] = 'Scale value name';
 $string['invalidnumeric'] = 'Numerical value must be numerical (or not set)';
@@ -521,6 +535,11 @@ $string['nopriorityscales'] = 'To use priorities setup a priority scale';
 // Objective Scales
 $string['objectivescales'] = 'Objective scales';
 $string['objectivescale'] = 'Objective scale';
+$string['objectivescaledefault'] = 'Default value';
+$string['objectivescalevalueachieved'] = 'Achieved';
+$string['objectivescaleassign'] = 'Objective scale';
+$string['objectivescalename'] = 'Objective scale name';
+$string['objectivescalevalues'] = 'Objective scale values';
 $string['noobjectivesdefined'] = 'No objectives defined';
 $string['objectivesscalecreate'] = 'Add a new objective scale';
 $string['objective'] = 'Objective';
@@ -528,9 +547,9 @@ $string['objectivevalues'] = 'Objective Values';
 $string['noobjectivescalevalues'] = 'There are no objective scale values defined for this objective scale.';
 $string['addnewobjectivevalue'] = 'Add new objective scale value';
 $string['achieved'] = 'Achieved';
-$string['editobjective'] = 'Edit objective $a';
+$string['editobjective'] = 'Edit objective {$a}';
 $string['editobjectivevalue'] = 'Edit objective value';
-$string['linktoobjectivevalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this objective scale.';
+$string['linktoobjectivevalues'] = '<a href="view.php?id={$a}">Click here</a> to view/edit the scale values for this objective scale.';
 $string['explainobjscalevals'] = 'One value per line (highest to lowest)';
 $string['missingobjectivescalevaluename'] = 'Objective Scale Value name is Required';
 $string['objectivescaleinuse'] = 'This scale is in use (i.e. users have objectives marked with values from this scale). Scale values cannot be created, re-ordered or deleted to preserve data integrity. You can still rename scale values but this may confuse users when their objective status changes without warning.';
@@ -548,14 +567,14 @@ $string['error:updateobjectivescale'] = 'An error occured while updating objecti
 $string['error:createobjectivevalue'] = 'Error creating objective scale value record';
 $string['error:creatingobjectivescalevalues'] = 'An error occured when creating objective scale values';
 $string['error:deletedobjectivescalevalue'] = 'An error occured when deleting objective scale value';
-
+$string['error:cannotaddscalevalue'] = 'You cannot add a scale value to a scale that is in use';
 $string['objectivescalevaluename'] = 'Scale value name';
 $string['objectivescalevalueidnumber'] = 'Scale value ID number';
-$string['objectivescalevaluenumericalvalue'] = 'Objective scale numerical value';
+$string['objectivescalevaluenumeric'] = 'Objective scale numerical value';
 $string['deletecheckobjective'] = 'Are you absolutely sure you want to completely delete this objective scale?';
 $string['deletecheckobjectivevalue'] = 'Are you absolutely sure you want to delete this objective scale value?';
-$string['deletedobjectivescale'] = 'The objective scale \"{$a}\" has been completely deleted.';
-$string['deletedobjectivescalevalue'] = 'The objective scale value \"{$a}\" has been deleted.';
+$string['deletedobjectivescale'] = 'The objective scale "{$a}" has been completely deleted.';
+$string['deletedobjectivescalevalue'] = 'The objective scale value "{$a}" has been deleted.';
 $string['noobjectivescales'] = 'To use objectives setup an objective scale';
 
 
@@ -565,22 +584,22 @@ $string['courseplural'] = 'Courses';
 $string['overview'] = 'Overview';
 $string['viewitem'] = 'View item';
 $string['itemapproval'] = 'Item approval';
-$string['xitemspending'] = '<a href=\"{$a->link}\">{$a->number} {$a->name}</a> pending';
-$string['pendingitemsx'] = '<a href=\"$a->link\" title=\"Plan item(s) requiring approval ($a->count)\"><span class=\"redfont\">Pending ($a->count)</span></a>';
+$string['xitemspending'] = '<a href="{$a->link}">{$a->number} {$a->name}</a> pending';
+$string['pendingitemsx'] = '<a href="{$a->link}" title="Plan item(s) requiring approval ({$a->count})"><span class="redfont">Pending ({$a->count})</span></a>';
 $string['thefollowingitemsarepending_s'] = 'This plan contains the following pending item:';
 $string['thefollowingitemsrequireyourapproval_s'] = 'This plan contains a new item that requires your approval:';
 $string['thefollowingitemsarepending_p'] = 'This plan contains the following pending items:';
 $string['thefollowingitemsrequireyourapproval_p'] = 'This plan contains new items that require your approval:';
-$string['xitemsunapproved'] = '<a href=\"{$a->uri}\">{$a->number} {$a->name}</a>';
+$string['xitemsunapproved'] = '<a href="{$a->uri}">{$a->number} {$a->name}</a>';
 $string['plancompleted'] = 'This plan has been marked as complete. It can no longer be edited, and all status indicators show the status at the time of the plan\'s completion.';
 $string['planautocompleteditems'] = 'This plan has been automatically completed because all the items in it have been completed.';
 $string['planautocompleteddate'] = 'This plan has be automatically completed because the end date for the plan has passed.';
 $string['plandeclinedtryagain'] = 'This plan has been declined. If desired, you can make changes and request plan approval again.';
 $string['plannotapproved'] = 'This plan has not yet been approved';
 $string['awaitingapproval'] = 'Awaiting approval';
-$string['youareviewingxsplan'] = '<strong>You are viewing <a href=\"{$a->site}/user/view.php?id={$a->userid}\">{$a->name}\'s</a> plan.</strong>';
-$string['youareviewingxsplans'] = '<strong>You are viewing <a href=\"{$a->site}/user/view.php?id={$a->userid}\">{$a->name}\'s</a> plans.</strong>';
-$string['reactivateplantext'] = 'If you want to make changes or continue using this plan is must be reactivated.<br /><a href=\"{$a}\">Reactivate</a> this plan.';
+$string['youareviewingxsplan'] = '<strong>You are viewing <a href="{$a->site}/user/view.php?id={$a->userid}">{$a->name}\'s</a> plan.</strong>';
+$string['youareviewingxsplans'] = '<strong>You are viewing <a href="{$a->site}/user/view.php?id={$a->userid}">{$a->name}\'s</a> plans.</strong>';
+$string['reactivateplantext'] = 'If you want to make changes or continue using this plan is must be reactivated.<br /><a href="{$a}">Reactivate</a> this plan.';
 $string['notcompleted'] = 'Not completed';
 $string['coursescomplete'] = 'Courses complete';
 $string['inprogress'] = 'In progress';
@@ -604,15 +623,15 @@ $string['plandescription'] = 'Plan description';
 $string['datestarted'] = 'Date started';
 $string['datecreated'] = 'Date created';
 $string['plancreatesuccess'] = 'Plan creation successful';
-$string['plancreatefail'] = 'Plan \"$a\" could not be created';
+$string['plancreatefail'] = 'Plan "{$a}" could not be created';
 $string['planupdatesuccess'] = 'Plan update successful';
 $string['planupdatefail'] = 'Plan update failed';
 $string['planupdatecancelled'] = 'Plan update cancelled';
 $string['editdetails'] = 'Edit details';
 $string['editdetailswithapproval'] = 'Edit details (will require approval)';
 $string['deleteplan'] = 'Delete plan';
-$string['plandeletesuccess'] = 'Successfully deleted plan \"$a\"';
-$string['plandeletefail'] = 'Could not delete plan \"$a\"';
+$string['plandeletesuccess'] = 'Successfully deleted plan "{$a}"';
+$string['plandeletefail'] = 'Could not delete plan "{$a}"';
 $string['checkplandelete'] = 'Are you sure you want to delete this plan and all its related items?';
 $string['sendapprovalrequest'] = 'Send approval request';
 $string['requestapproval'] = 'Request approval';
@@ -625,20 +644,20 @@ $string['requestnotapprove'] = 'There was a problem while trying to approve that
 $string['nopermission'] = 'You don\'t have permission to perform that action';
 $string['nomanager'] = 'You don\'t have a manager allocated in your profile positions';
 $string['notemplatesetup'] = 'No plan templates have been set up yet';
-$string['planapproved'] = 'Plan \"$a\" has been approved';
-$string['plandeclined'] = 'Plan \"$a\" has been declined';
-$string['approvalrequestsent'] = 'Approval request sent for plan \"$a\"';
+$string['planapproved'] = 'Plan "{$a}" has been approved';
+$string['plandeclined'] = 'Plan "{$a}" has been declined';
+$string['approvalrequestsent'] = 'Approval request sent for plan "{$a}"';
 $string['plancomplete'] = 'Complete plan';
-$string['checkplancomplete'] = 'Are you sure you want to mark the plan \"$a\" as complete?<br /><br />Once a plan is marked complete then no further changes can be made. This operation cannot be undone. Are you sure you want to proceed?';
-$string['checkplancomplete11'] = 'Are you sure you want to mark the plan \"$a\" as complete?<br /><br /> Once the plan is marked complete it will be locked and will have to be reactivated to make any further changes. Are you sure you want to proceed?';
-$string['plancompletesuccess'] = 'Successfully completed plan $a';
-$string['plancompletefail'] = 'There was a problem while trying to mark plan \"$a\" as complete';
+$string['checkplancomplete'] = 'Are you sure you want to mark the plan "{$a}" as complete?<br /><br />Once a plan is marked complete then no further changes can be made. This operation cannot be undone. Are you sure you want to proceed?';
+$string['checkplancomplete11'] = 'Are you sure you want to mark the plan "{$a}" as complete?<br /><br /> Once the plan is marked complete it will be locked and will have to be reactivated to make any further changes. Are you sure you want to proceed?';
+$string['plancompletesuccess'] = 'Successfully completed plan {$a}';
+$string['plancompletefail'] = 'There was a problem while trying to mark plan "{$a}" as complete';
 $string['planreactivate'] = 'Reactivate plan';
-$string['checkplanreactivate'] = 'Are you sure you want to reactivate the plan \"$a\"?<br />';
-$string['planreactivatesuccess'] = 'Successfully reactivated plan $a';
-$string['planreactivatefail'] = 'There was a problem while trying to reactivate plan \"$a\"';
+$string['checkplanreactivate'] = 'Are you sure you want to reactivate the plan "{$a}"?<br />';
+$string['planreactivatesuccess'] = 'Successfully reactivated plan {$a}';
+$string['planreactivatefail'] = 'There was a problem while trying to reactivate plan "{$a}"';
 $string['cannotdelete_inuse'] = 'You cannot delete this template because there are plans using it.';
-$string['planapprovalrequested'] = 'Plan approval requested for <a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
+$string['planapprovalrequested'] = 'Plan approval requested for <a href="{$CFG->wwwroot}/totara/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['requestremoval'] = 'Request removal';
 $string['reactivate'] = 'Reactivate';
 $string['error:reactivatedatebeforenow'] = 'Error, the new end date specified is before now.';
@@ -648,72 +667,72 @@ $string['error:planhistory'] = 'Error, plan history not found';
 //// Messaging
 // Plan messages
 $string['plan-request-learner-short'] = 'New plan approval request';
-$string['plan-request-learner-long'] = 'Requested approval for new learning plan \"$a->plan\"';
-$string['plan-request-manager-short'] = 'New plan approval request by $a->learner';
-$string['plan-request-manager-long'] = '$a->learner has requested approval for a new learning plan \"$a->plan\"';
-$string['plan-add-learner-short'] = 'New plan \"$a->plan\" assigned';
-$string['plan-add-learner-long'] = 'New learning plan \"$a->plan\" has been assigned by $a->manager';
-$string['plan-approve-learner-short'] = 'New plan \"$a->plan\" approved';
-$string['plan-approve-learner-long'] = 'Approval request for learning plan \"$a->plan\" has been granted';
+$string['plan-request-learner-long'] = 'Requested approval for new learning plan "{$a->plan}"';
+$string['plan-request-manager-short'] = 'New plan approval request by {$a->learner}';
+$string['plan-request-manager-long'] = '{$a->learner} has requested approval for a new learning plan "{$a->plan}"';
+$string['plan-add-learner-short'] = 'New plan "{$a->plan}" assigned';
+$string['plan-add-learner-long'] = 'New learning plan "{$a->plan}" has been assigned by {$a->manager}';
+$string['plan-approve-learner-short'] = 'New plan "{$a->plan}" approved';
+$string['plan-approve-learner-long'] = 'Approval request for learning plan "{$a->plan}" has been granted';
 $string['plan-decline-learner-short'] = 'New plan approval request declined';
-$string['plan-decline-learner-long'] = 'Approval request for learning plan \"$a->plan\" has been declined';
+$string['plan-decline-learner-long'] = 'Approval request for learning plan "{$a->plan}" has been declined';
 $string['plan-duedate-update-learner-short'] = 'Plan due date has been changed';
-$string['plan-duedate-update-learner-long'] = 'Due date for learning plan \"$a->plan\" has been changed';
-$string['plan-duedate-update-manager-short'] = '$a->learner changed a plan due date';
-$string['plan-duedate-update-manager-long'] = 'Due date for $a->learner\'s learning plan \"$a->plan\" has been changed';
-$string['plan-due-learner-short'] = 'Plan \"$a->plan\" is due in $a->numdays days';
-$string['plan-due-learner-long'] = 'Learning plan \"$a->plan\" is due in $a->numdays days';
-$string['plan-due-today-learner-short'] = 'Plan \"$a->plan\" is due today';
-$string['plan-due-today-learner-long'] = 'Learning plan \"$a->plan\" is due today';
-$string['plan-complete-manager-short'] = '$a->learner completed plan';
-$string['plan-complete-manager-long'] = '$a->learner completed learning plan \"$a->plan\"';
-$string['plan-overdue-learner-short'] = 'Plan \"$a->plan\" is overdue';
-$string['plan-overdue-learner-long'] = 'Learning plan \"$a->plan\" is overdue';
-$string['plan-overdue-manager-short'] = '$a->learner\s plan is overdue';
-$string['plan-overdue-manager-long'] = '$a->learner\s learning plan \"$a->plan\" is overdue';
-$string['plan-newcomment-learner-short'] = '$a->manager commented on plan';
-$string['plan-newcomment-learner-long'] = '$a->manager commented on learning plan \"$a->plan\"';
-$string['plan-newcomment-manager-short'] = '$a->learner commented on plan';
-$string['plan-newcomment-manager-long'] = '$a->learner commented on learning plan \"$a->plan\"';
-$string['plan-remove-learner-short'] = 'Plan \"$a->plan\" has been deleted';
-$string['plan-remove-learner-long'] = 'Learning plan \"$a->plan\" has been deleted by $a->manager';
-$string['plan-remove-manager-short'] = '$a->learner has deleted plan';
-$string['plan-remove-manager-long'] = '$a->learner has deleted the learning plan \"$a->plan\"';
-$string['item-request-manager-short'] = 'Item approval request by $a->learner';
-$string['item-request-manager-long'] = '$a->learner has requested approval for new learning plan items in \"$a->plan\": $a->data';
+$string['plan-duedate-update-learner-long'] = 'Due date for learning plan "{$a->plan}" has been changed';
+$string['plan-duedate-update-manager-short'] = '{$a->learner} changed a plan due date';
+$string['plan-duedate-update-manager-long'] = 'Due date for {$a->learner}\'s learning plan "{$a->plan}" has been changed';
+$string['plan-due-learner-short'] = 'Plan "{$a->plan}" is due in {$a->numdays} days';
+$string['plan-due-learner-long'] = 'Learning plan "{$a->plan}" is due in {$a->numdays} days';
+$string['plan-due-today-learner-short'] = 'Plan "{$a->plan}" is due today';
+$string['plan-due-today-learner-long'] = 'Learning plan "{$a->plan}" is due today';
+$string['plan-complete-manager-short'] = '{$a->learner} completed plan';
+$string['plan-complete-manager-long'] = '{$a->learner} completed learning plan "{$a->plan}"';
+$string['plan-overdue-learner-short'] = 'Plan "{$a->plan}" is overdue';
+$string['plan-overdue-learner-long'] = 'Learning plan "{$a->plan}" is overdue';
+$string['plan-overdue-manager-short'] = '{$a->learner}\s plan is overdue';
+$string['plan-overdue-manager-long'] = '{$a->learner}\s learning plan "{$a->plan}" is overdue';
+$string['plan-newcomment-learner-short'] = '{$a->manager} commented on plan';
+$string['plan-newcomment-learner-long'] = '{$a->manager} commented on learning plan "{$a->plan}"';
+$string['plan-newcomment-manager-short'] = '{$a->learner} commented on plan';
+$string['plan-newcomment-manager-long'] = '{$a->learner} commented on learning plan "{$a->plan}"';
+$string['plan-remove-learner-short'] = 'Plan "{$a->plan}" has been deleted';
+$string['plan-remove-learner-long'] = 'Learning plan "{$a->plan}" has been deleted by {$a->manager}';
+$string['plan-remove-manager-short'] = '{$a->learner} has deleted plan';
+$string['plan-remove-manager-long'] = '{$a->learner} has deleted the learning plan "{$a->plan}"';
+$string['item-request-manager-short'] = 'Item approval request by {$a->learner}';
+$string['item-request-manager-long'] = '{$a->learner} has requested approval for new learning plan items in "{$a->plan}": {$a->data}';
 
 // Reactivate plan
-$string['plan-reactivate-learner-short'] = 'Plan \"$a->plan\" has been reactivated';
-$string['plan-reactivate-learner-long'] = 'Learning plan \"$a->plan\" has been reactivated by $a->manager';
-$string['plan-reactivate-manager-short'] = '$a->learner has reactivated plan';
-$string['plan-reactivate-manager-long'] = '$a->learner has reactivated the learning plan \"$a->plan\"';
+$string['plan-reactivate-learner-short'] = 'Plan "{$a->plan}" has been reactivated';
+$string['plan-reactivate-learner-long'] = 'Learning plan "{$a->plan}" has been reactivated by {$a->manager}';
+$string['plan-reactivate-manager-short'] = '{$a->learner} has reactivated plan';
+$string['plan-reactivate-manager-long'] = '{$a->learner} has reactivated the learning plan "{$a->plan}"';
 
 // Component messages
-$string['addedx'] = 'Added \"$a\"';
-$string['removedx'] = 'Removed \"$a\"';
-$string['changedfromxtoy'] = 'Changed from \"$a->before\" to \"$a->after\"';
-$string['componentupdateshortlearner'] = '$a updated';
-$string['componentupdatelonglearner'] = '$a->component in learning plan \"$a->plan\" updated:<br> $a->updates';
-$string['componentupdateshortmanager'] = '$a->user updated $a->component';
-$string['componentupdatelongmanager'] = '$a->component in learning plan \"$a->plan\" updated:<br> $a->updates';
+$string['addedx'] = 'Added "{$a}"';
+$string['removedx'] = 'Removed "{$a}"';
+$string['changedfromxtoy'] = 'Changed from "{$a->before}" to "{$a->after}"';
+$string['componentupdateshortlearner'] = '{$a} updated';
+$string['componentupdatelonglearner'] = '{$a->component} in learning plan "{$a->plan}" updated:<br /> {$a->updates}';
+$string['componentupdateshortmanager'] = '{$a->user} updated {$a->component}';
+$string['componentupdatelongmanager'] = '{$a->component} in learning plan "{$a->plan}" updated:<br /> {$a->updates}';
 
-$string['componentapproveshortlearner'] = '$a->name approved';
-$string['componentapprovelonglearner'] = '$a->component in learning plan \"$a->plan\" approved:<br> $a->updates';
-$string['componentapproveshortmanager'] = '$a->user approved $a->component $a->name';
-$string['componentapprovelongmanager'] = '$a->component in learning plan \"$a->plan\" approved:<br> $a->updates';
+$string['componentapproveshortlearner'] = '{$a->name} approved';
+$string['componentapprovelonglearner'] = '{$a->component} in learning plan "{$a->plan}" approved:<br /> {$a->updates}';
+$string['componentapproveshortmanager'] = '{$a->user} approved {$a->component} {$a->name}';
+$string['componentapprovelongmanager'] = '{$a->component} in learning plan "{$a->plan}" approved:<br /> {$a->updates}';
 
-$string['componentdeclineshortlearner'] = '$a->name declined';
-$string['componentdeclinelonglearner'] = '$a->component in learning plan \"$a->plan\" declined:<br> $a->updates';
-$string['componentdeclineshortmanager'] = '$a->user declined $a->component $a->name';
-$string['componentdeclinelongmanager'] = '$a->component in learning plan \"$a->plan\" declined:<br> $a->updates';
+$string['componentdeclineshortlearner'] = '{$a->name} declined';
+$string['componentdeclinelonglearner'] = '{$a->component} in learning plan "{$a->plan}" declined:<br /> {$a->updates}';
+$string['componentdeclineshortmanager'] = '{$a->user} declined {$a->component} {$a->name}';
+$string['componentdeclinelongmanager'] = '{$a->component} in learning plan "{$a->plan}" declined:<br /> {$a->updates}';
 
-$string['componentcompleteshortlearner'] = '$a->name completed';
-$string['componentcompletelonglearner'] = '$a->component in learning plan \"$a->plan\" completed:<br> $a->updates';
-$string['componentcompleteshortmanager'] = '$a->user completed $a->component $a->name';
-$string['componentcompletelongmanager'] = '$a->component in learning plan \"$a->plan\" completed:<br> $a->updates';
+$string['componentcompleteshortlearner'] = '{$a->name} completed';
+$string['componentcompletelonglearner'] = '{$a->component} in learning plan "{$a->plan}" completed:<br /> {$a->updates}';
+$string['componentcompleteshortmanager'] = '{$a->user} completed {$a->component} {$a->name}';
+$string['componentcompletelongmanager'] = '{$a->component} in learning plan "{$a->plan}" completed:<br /> {$a->updates}';
 
 
-$string['completedviarpl'] = 'Completed via RPL: $a';
+$string['completedviarpl'] = 'Completed via RPL: {$a}';
 $string['competencycompleted'] = 'Competency Completed';
 
 
@@ -749,17 +768,17 @@ $string['latestcommentby'] = 'Latest comment by';
 $string['nocomments'] = 'No comments';
 $string['commenterror:itemnotfound'] = 'Comment error: Comment item not found';
 $string['commenterror:unsupportedcomment'] = 'Comment error: Unsupported comment';
-$string['commentmsg:planoverview'] = 'New comment on $a->planowner\'s plan \"$a->plan\"';
-$string['commentmsg:planoverviewdetail'] = 'There has been a new comment on the plan.<br><br>
-<strong>Learner: </strong> $a->planowner<br>
-<strong>Plan: </strong> $a->plan<br>
-<strong>Comment: </strong>$a->comment - <em>Comment by $a->commentby on $a->commentdate</em>';
-$string['commentmsg:componentitem'] = 'New comment on $a->component item of $a->planowner\'s plan \"$a->plan\"';
-$string['commentmsg:componentitemdetail'] = 'There has been a new comment on $a->component item of the plan.<br><br>
-<strong>Learner: </strong> $a->planowner<br>
-<strong>Plan:</strong> $a->plan<br>
-<strong>$a->component:</strong> $a->componentname<br>
-<strong>Comment:</strong>$a->comment - <em>Comment by $a->commentby on $a->commentdate</em>';
+$string['commentmsg:planoverview'] = 'New comment on {$a->planowner}\'s plan "{$a->plan}"';
+$string['commentmsg:planoverviewdetail'] = 'There has been a new comment on the plan.<br /><br />
+<strong>Learner: </strong> {$a->planowner}<br />
+<strong>Plan: </strong> {$a->plan}<br />
+<strong>Comment: </strong>{$a->comment} - <em>Comment by {$a->commentby} on {$a->commentdate}</em>';
+$string['commentmsg:componentitem'] = 'New comment on {$a->component} item of {$a->planowner}\'s plan "{$a->plan}"';
+$string['commentmsg:componentitemdetail'] = 'There has been a new comment on {$a->component} item of the plan.<br /><br />
+<strong>Learner: </strong> {$a->planowner}<br />
+<strong>Plan:</strong> {$a->plan}<br />
+<strong>{$a->component}:</strong> {$a->componentname}<br />
+<strong>Comment:</strong>{$a->comment} - <em>Comment by {$a->commentby} on {$a->commentdate}</em>';
 
 // Manditory courses/competencies
 $string['linktype'] = 'Link type';
@@ -767,9 +786,9 @@ $string['error:updateingrecord'] = 'Error, no such link type';
 $string['error:updatinglinktype'] = 'Error: could not update link type';
 
 // Deleting linked courses
-$string['deletelinkedcoursesheader'] = 'Removing \"$a\" from plan';
+$string['deletelinkedcoursesheader'] = 'Removing "{$a}" from plan';
 $string['deletelinkedcoursesinstructionslearner'] = 'The following courses are linked to this competency in your plan. If checked, they will be removed from your plan at this time. If unchecked, they will remain in your plan.';
-$string['deletelinkedcoursesinstructionsmanager'] = 'The following courses are linked to this competency in $a\'s plan. If checked, they will be removed from the plan at this time. If unchecked, they will remain in the plan.';
+$string['deletelinkedcoursesinstructionsmanager'] = 'The following courses are linked to this competency in {$a}\'s plan. If checked, they will be removed from the plan at this time. If unchecked, they will remain in the plan.';
 $string['deletelinkedcoursessubmit'] = 'Remove from plan';
 
 $string['activecourses'] = 'Courses';
@@ -801,3 +820,124 @@ $string['allcoursessubhead'] = 'All Courses';
 $string['allcompetenciessubhead'] = 'All Competencies';
 $string['allobjectivessubhead'] = 'All Objectives';
 $string['allprogramssubhead'] = 'All Programs';
+//Help title strings
+$string['competencyevidencestatus'] = 'Evidence Status';
+//Help Strings
+$string['objectivescalevalues_help'] = 'Enter a list of values for the new objective scale (one value per line), in order from highest to lowest. For example:
+
+<p class="indent">
+  <i> High<br /> Medium<br /> Low </i>
+</p>';
+$string['priorityscaleassign_help'] = 'A **Priority scale** is the name of the priority scale you are working in.';
+$string['objectivescalevaluenumeric_help'] = '**Objective scale value numerical value** allows you to assign a numerical value alongside a description (name) for the scale value.';
+$string['objectivescalevalueidnumber_help'] = 'Scale ID number is a unique number used to represent the scale value.';
+$string['priorityscaledefault_help'] = 'The **Default Value** is the value which is automatically assigned to a learning plan item when the priority scale first appears in the learner\'s plan. The priority can later be changed by the learner/manager once active within the learning plan.';
+$string['objectivescalevaluename_help'] = '**Scale value name** is the name of the objective scale value you are adding or editing.
+
+A scale value is used to measure the learning plan objectives. You can add as many scale values as required.';
+$string['priorityscalevalueidnumber_help'] = 'Scale ID number is a unique number used to represent the scale value.';
+$string['templatecomponentsettings_help'] = 'The **Component Settings** allows you to show/hide components in the learning plan and define the order in which they appear.
+
+Click **Hide** to remove a component from the learning plan template.
+
+Use the up and down arrows to change the order of the components.';
+$string['templateenddate_help'] = 'Click the calendar icon to select the **End date** for the learning plan template.';
+$string['priorityscalevalues_help'] = 'Enter a list of values for the new priority scale (one priority per line), in order from highest priority to lowest. For example:
+
+<p class="indent">
+  <i> High<br /> Medium<br /> Low </i>
+</p>';
+$string['priorityscalevaluenumeric_help'] = '**Priority scale value numerical value** enables you to assign a numerical value to this scale value as well as the description (name).';
+$string['objectivescalevalueachieved_help'] = 'When **Achieved** is checked this objective scale value will be used to indicate the objective is achieved by the learner.
+
+You can have multiple values marked as **Achieved** allowing degrees of achievement.';
+$string['priorityscalevaluename_help'] = '**Scale value name** is the name of the value you are adding or editing for a specific priority scale.
+
+A scale value is used to define the priority for a learning plan item. You can add as many scale values as required.';
+$string['priorityscalename_help'] = 'The name of the priority scale used by a learning plan.';
+$string['objectivescaledefault_help'] = 'The **Default Value** is the value automatically assigned to an objective in a learning plan when the objective is first added by a learner or manager.';
+$string['advancedsettingscoursesettings_help'] = '**Course settings** allow you to define the settings available for courses within the plan.
+
+Select the **‘Due dates’** setting. When **‘Due dates’** is set to ‘None’ the column does not appear on the learning plan.
+
+Select the **‘Priorities’ **setting. When **‘Priorities’ **is set to ‘None’ the column does not appear on the learning plan.
+
+When you are using **‘Priorities’** you need a **‘Priority Scale’**. Click the dropdown menu to select the priority scale.
+
+**Note: **The option to set up such a scale is in Learning Plans>Priority Scales.';
+$string['advancedsettingsobjectivepermissions_help'] = '**Objective permissions** allow you to define the actions that can be performed by the Learner and Manager in the learning plan when setting up objectives.
+
+There are four available permission levels:
+
+*   **Allow** allows the user to perform the action
+*   **Deny** prevents the user from performing the action
+*   **Request** allows the user to request that this action
+*   **Approve** allows the user to approve the action.';
+$string['advancedsettingscoursepermissions_help'] = '**Course permissions** allow you to define which course settings are available and the types of actions that can be performed by the Learner and Manager in the learning plan.
+
+There are four available permission levels:
+
+*   **Allow** allows the user to perform the action
+*   **Deny** prevents the user from performing the action
+*   **Request** allows the user to request that this action
+*   **Approve** allows the user to approve a action.';
+$string['advancedsettingscompetencysettings_help'] = '**Competency settings** allow you to define which settings are available for competencies within the plan.
+
+Select the **‘Due dates’** setting. When **‘Due dates’** is set to ‘None’ the column does not appear on the learning plan.
+
+Select the **‘Priorities’ **setting. When you are using **‘Priorities’** you need a **‘Priority Scale’**. Click the dropdown menu to select the priority scale.
+
+** Note: **The option to set up such a scale is in Learning Plans>Priority Scales.
+**Automatic assignment **enables you to automatically display competencies in a learning plan which have previously been assigned to a user’s position or organisation.
+
+**Default status** determines the status of a competency when it is is first approved within a plan. If \'Assign newly approved competencies their default status\' is checked, all competencies will be given the default status for that competency\'s scale at the moment the competency is approved. If left unchecked no initial status will be set.';
+$string['advancedsettingscompetencypermissions_help'] = '**Competency permissions** allow you to define the types of actions that can be performed by the Learner and Manager for competencies within the learning plan.
+
+There are four permission levels available:
+
+*   **Allow** allows the user to perform the action
+*   **Deny** prevents the user from performing the action
+*   **Request** allows the user to request that this action is performed
+*   **Approve** allows the user to approve a requested action.';
+$string['objectivescalename_help'] = 'The name of the objective scale used by a learning plan.';
+$string['advancedsettingsobjectivesettings_help'] = '**Objective settings **allow you define the settings available for objectives within the plan.
+
+Select the **‘Due dates’** setting. When **‘Due dates’** is set to ‘None’ the column does not appear on the learning plan.
+
+Select the **‘Priorities’ **setting. When **‘Priorities’ **is set to ‘None’ the column does not appear on the learning plan.
+
+When you are using **‘Priorities’** you need a **‘Priority Scale’**. Click the dropdown menu to select the priority scale.
+
+**Note: **The option to set up such a scale is in Learning Plans>Priority Scales.
+
+**Objective scale** is used to measure a learners’ progress towards their objectives. Set up objective scales using the menu option under Site Administration>Learning Plans.';
+$string['advancedsettingsplanpermissions_help'] = 'The advanced workflow settings allows you to define the type of actions which can be performed by learners and managers. For each type of action there are four permission levels available:
+
+*   **Allow** allows the user to perform the action.
+*   **Deny** prevents the user from performing the action.
+*   **Request** allows the user to request that this action is performed.
+*   **Approve** allows the user to approve an action.';
+$string['advancedsettingsprogrampermissions_help'] = 'The advanced workflow settings allows you to define the type of actions which can be performed by learners and managers. For each type of action there are four permission levels available:
+
+*   **Allow** allows the user to perform the action.
+*   **Deny** prevents the user from performing the action.
+*   **Request** allows the user to request that this action is performed.
+*   **Approve** allows the user to approve an action.';
+$string['competencyevidencestatus_help'] = 'This field records the user\'s status in the assigned competency. The options that appear in the pulldown depend on the competency scale assigned to the chosen competency, so the competency must be selected before this field can be modified. A value scale must be set to add or update a competency evidence record.';
+$string['advancedsettingsplansettings_help'] = '**Plan settings **allow you define general settings for the plan.
+
+The Learning Plan is able to be marked as complete based on the following choices.
+*   **Manually, by a user with \'complete\' permission**
+    The learning plan is able to be marked as complete by a Learner or Manager who has Allow selected in the Approve row of the Plan Permissions.
+*   **Automatically, when all items have been completed**
+    The learning plan is marked as completed when all of the courses, competencies, Objectives or programs that are included in the learning plan have been marked as completed
+*   **Automatically, when the plan completion date has passed**
+    The learning plan is marked as complete when the Completion Date that has been saved with the Learning Plan has passed';
+$string['advancedsettingsprogramsettings_help'] = 'The Learning Plan is able to be marked as complete based on the following choices.
+*   **Manually, by a user with \'complete\' permission**
+    The learning plan is able to be marked as complete by a Learner or Manager who has Allow selected in the Approve row of the Plan Permissions.
+*   **Automatically, when all items have been completed**
+    The learning plan is marked as completed when all of the courses, competencies, Objectives or programs that are included in the learning plan have been marked as completed
+*   **Automatically, when the plan completion date has passed**
+    The learning plan is marked as complete when the Completion Date that has been saved with the Learning Plan has passed';
+$string['objectivescaleassign_help'] = 'A Objective scales define the criteria by which an objective can be measured. This is the name of scale the value is being added to.';

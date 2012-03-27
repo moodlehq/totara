@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,17 +55,17 @@ if ($result !== true) {
 add_to_log(SITEID, 'plan', 'competency proficiency updated', "update-competency-setting.php?competencyid={$competencyid}&prof={$prof}&planid={$planid}", 'ajax');
 
 // Update the competency evidence
-$details = new object();
+$details = new stdClass();
 
 // Get user's current primary position and organisation (if any)
-$posrec = get_record('pos_assignment', 'userid', $userid, 'type', POSITION_TYPE_PRIMARY, '','','id, positionid, organisationid');
+$posrec = $DB->get_record('pos_assignment', array('userid' => $userid, 'type' => POSITION_TYPE_PRIMARY), 'id, positionid, organisationid');
 if ($posrec) {
     $details->positionid = $posrec->positionid;
     $details->organisationid = $posrec->organisationid;
     unset($posrec);
 }
 
-$details->assessorname = addslashes(fullname($USER));
+$details->assessorname = fullname($USER);
 $details->assessorid = $USER->id;
 
 $result = hierarchy_add_competency_evidence($competencyid, $userid, $prof, $component, $details);

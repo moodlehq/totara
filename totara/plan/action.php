@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 
 require_once('../../config.php');
 require_once('lib.php');
-require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
+require_once($CFG->dirroot.'/totara/message/messagelib.php');
 
 require_login();
 
@@ -64,7 +64,18 @@ if (!confirm_sesskey()) {
     }
 }
 
-
+$context = context_system::instance();
+$PAGE->set_context($context);
+$pageparams = array('id' => $id, 'sesskey' => sesskey());
+if (!empty($approve)) {$pageparams['approve'] = $approve;}
+if (!empty($decline)) {$pageparams['decline'] = $decline;}
+if (!empty($approvalrequest)) {$pageparams['approvalrequest'] = $approvalrequest;}
+if (!empty($delete)) {$pageparams['delete'] = $delete;}
+if (!empty($complete)) {$pageparams['complete'] = $complete;}
+if (!empty($reactivate)) {$pageparams['reactivate'] = $reactivate;}
+if (!empty($ajax)) {$pageparams['ajax'] = $ajax;}
+if (!empty($referer)) {$pageparams['referer'] = $referer;}
+$PAGE->set_url(new moodle_url('/totara/plan/action.php', $pageparams));
 
 ///
 /// Load plan
@@ -76,7 +87,7 @@ $plan = new development_plan($id);
 /// Permissions check
 ///
 if (!dp_can_view_users_plans($plan->userid)) {
-    print_error('error:nopermissions', 'local_plan');
+    print_error('error:nopermissions', 'totara_plan');
 }
 
 
@@ -88,10 +99,10 @@ if (!empty($approve)) {
     if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
        $plan->set_status(DP_PLAN_STATUS_APPROVED, DP_PLAN_REASON_MANUAL_APPROVE);
        $plan->send_approved_alert();
-       totara_set_notification(get_string('planapproved', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
+       totara_set_notification(get_string('planapproved', 'totara_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
     } else {
         if (empty($ajax)) {
-            totara_set_notification(get_string('nopermission', 'local_plan'), $referer, array('class' => 'notifysuccess'));
+            totara_set_notification(get_string('nopermission', 'totara_plan'), $referer, array('class' => 'notifysuccess'));
         }
     }
 }
@@ -104,10 +115,10 @@ if (!empty($decline)) {
     if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
         $plan->send_declined_alert();
         add_to_log(SITEID, 'plan', 'declined', "view.php?id={$plan->id}", $plan->name);
-        totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
+        totara_set_notification(get_string('plandeclined', 'totara_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
     } else {
         if (empty($ajax)) {
-            totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+            totara_set_notification(get_string('nopermission', 'totara_plan'), $referer);
         }
     }
 }
@@ -128,14 +139,14 @@ if (!empty($approvalrequest)) {
                     add_to_log(SITEID, 'plan', 'requested approval', "view.php?id={$plan->id}", $plan->name);
                 }
                 else {
-                    totara_set_notification(get_string('nomanager', 'local_plan'), $referer);
+                    totara_set_notification(get_string('nomanager', 'totara_plan'), $referer);
                 }
             }
-            totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
+            totara_set_notification(get_string('approvalrequestsent', 'totara_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
             // @todo: send approval request email to relevant user(s)
         } else {
             if (empty($ajax)) {
-                totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+                totara_set_notification(get_string('nopermission', 'totara_plan'), $referer);
             }
         }
     }
@@ -145,7 +156,7 @@ if (!empty($approvalrequest)) {
         // Check this is the owner of the plan
         if ($plan->role !== 'learner') {
             if (empty($ajax)) {
-                totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+                totara_set_notification(get_string('nopermission', 'totara_plan'), $referer);
             }
         }
 
@@ -156,11 +167,11 @@ if (!empty($approvalrequest)) {
                 $plan->send_manager_item_approval_request($unapproved);
             }
             else {
-                totara_set_notification(get_string('nomanager', 'local_plan'), $referer);
+                totara_set_notification(get_string('nomanager', 'totara_plan'), $referer);
             }
 
             if (empty($ajax)) {
-                totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
+                totara_set_notification(get_string('approvalrequestsent', 'totara_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
             }
 
         }
@@ -177,25 +188,22 @@ if (!empty($delete)) {
 
         if (!$confirm && empty($ajax)) {
             // Show confirmation message
-            print_header_simple();
+            echo $OUTPUT->header();
             $confirmurl = new moodle_url(qualified_me());
             $confirmurl->param('confirm', 'true');
             $confirmurl->param('referer', $referer);
-            $strdelete = get_string('checkplandelete', 'local_plan', $plan->name);
-            notice_yesno(
-                "{$strdelete}<br /><br />".format_string($plan->name),
-                $confirmurl->out(),
-                $referer
-            );
+            $strdelete = get_string('checkplandelete', 'totara_plan', $plan->name);
+            $strbreak = html_writer::empty_tag('br') . html_writer::empty_tag('br');
+            echo $OUTPUT->confirm("{$strdelete}{$strbreak}".format_string($plan->name), $confirmurl->out(), $referer);
 
-            print_footer();
+            echo $OUTPUT->footer();
             exit;
         } else {
             // Delete the plan
             $is_active = $plan->is_active();
             $plan->delete();
 
-            if ( $plan->userid == $USER->id ){
+            if ($plan->userid == $USER->id) {
                 // don't bother unless the plan was active
                 if ($is_active) {
                     // User was deleting their own plan, notify their manager
@@ -206,11 +214,11 @@ if (!empty($delete)) {
                 $plan->send_alert(true,'learningplan-remove.png','plan-remove-learner-short','plan-remove-learner-long');
             }
             add_to_log(SITEID, 'plan', 'deleted', "index.php?userid={$plan->userid}", "{$plan->name} (ID:{$plan->id})");
-            totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
+            totara_set_notification(get_string('plandeletesuccess', 'totara_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
         }
     } else {
         if (empty($ajax)) {
-            totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+            totara_set_notification(get_string('nopermission', 'totara_plan'), $referer);
         }
     }
 }
@@ -225,29 +233,26 @@ if (!empty($complete)) {
 
         if (!$confirm && empty($ajax)) {
             // Show confirmation message
-            print_header_simple();
+            echo $OUTPUT->header();
             $confirmurl = new moodle_url(qualified_me());
             $confirmurl->param('confirm', 'true');
             $confirmurl->param('referer', $referer);
-            $strcomplete = get_string('checkplancomplete11', 'local_plan', $plan->name);
-            notice_yesno(
-                "{$strcomplete}<br><br>",
-                $confirmurl->out(),
-                $referer
-            );
+            $strcomplete = get_string('checkplancomplete11', 'totara_plan', $plan->name);
+            $strbreak = html_writer::empty_tag('br') . html_writer::empty_tag('br');
+            echo $OUTPUT->confirm("{$strcomplete}{$strbreak}", $confirmurl->out(), $referer);
 
-            print_footer();
+            echo $OUTPUT->footer();
             exit;
         } else {
             // Set plan status to complete
             $plan->set_status(DP_PLAN_STATUS_COMPLETE, DP_PLAN_REASON_MANUAL_COMPLETE);
             $plan->send_completion_alert();
             add_to_log(SITEID, 'plan', 'completed', "view.php?id={$plan->id}", $plan->name);
-            totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
+            totara_set_notification(get_string('plancompletesuccess', 'totara_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
         }
     } else {
         if (empty($ajax)) {
-            totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+            totara_set_notification(get_string('nopermission', 'totara_plan'), $referer);
         }
     }
 }
@@ -256,7 +261,7 @@ if (!empty($complete)) {
 /// Reactivate
 ///
 if (!empty($reactivate)) {
-    require_once($CFG->dirroot.'/totara/plan/reactivate_form.php');
+    require_once($CFG->dirroot . '/totara/plan/reactivate_form.php');
     require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
     local_js(array(
@@ -279,30 +284,30 @@ if (!empty($reactivate)) {
 
             // Reactivate plan
             if (!$plan->reactivate_plan($new_date)) {
-                totara_set_notification(get_string('planreactivatefail', 'local_plan', $plan->name), $referer);
+                totara_set_notification(get_string('planreactivatefail', 'totara_plan', $plan->name), $referer);
             } else {
                 add_to_log(SITEID, 'plan', 'reactivated', "view.php?id={$plan->id}", $plan->name);
-                totara_set_notification(get_string('planreactivatesuccess', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
+                totara_set_notification(get_string('planreactivatesuccess', 'totara_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
             }
         }
 
-        print_header_simple();
-        print_heading(get_string('planreactivate', 'local_plan'), '', 2, 'reactivateheading');
+        echo $OUTPUT->header();
+        echo $OUTPUT->heading(get_string('planreactivate', 'totara_plan'), 2, 'reactivateheading');
 
         $form->display();
 
         echo build_datepicker_js('#id_enddate');
 
-        print_footer();
+        echo $OUTPUT->footer();
         exit;
 
     } else {
         if (empty($ajax)) {
-            totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+            totara_set_notification(get_string('nopermission', 'totara_plan'), $referer);
         }
     }
 }
 
 if (empty($ajax)) {
-    totara_set_notification(get_string('error:incorrectparameters', 'local_plan'), $referer);
+    totara_set_notification(get_string('error:incorrectparameters', 'totara_plan'), $referer);
 }

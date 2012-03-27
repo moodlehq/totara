@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas 
  * 
  * This program is free software; you can redistribute it and/or modify  
@@ -36,62 +36,51 @@ $confirm = optional_param('confirm', 0, PARAM_INT); // confirm the action
 $plan = new development_plan($id);
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
-$currenturl = $CFG->wwwroot . '/totara/plan/components/competency/approval.php?id='.$id.'&amp;itemid='.$caid.'&amp;action='.$action;
+$currenturl = new moodle_url('/totara/plan/components/competency/approval.php', array('id' => $id, 'itemid' => $caid, 'action' => $action));
+
 $returnurl = $component->get_url();
 $canapprovecompetency = $component->get_setting('updatecompetency') == DP_PERMISSION_APPROVE;
 
-if($confirm) {
-    if(!confirm_sesskey()) {
+if ($confirm) {
+    if (!confirm_sesskey()) {
         totara_set_notification(get_string('confirmsesskeybad','error'), $returnurl);
     }
-    if(!$canapprovecompetency) {
+    if (!$canapprovecompetency) {
         // no permission to complete the action
-        totara_set_notification(get_string('nopermission', 'local_plan'),
-            $returnurl);
-        die();
+        print_error('nopermission', 'totara_plan', $returnurl);
     }
 
-    $todb = new object();
+    $todb = new stdClass();
     $todb->id = $caid;
-    if($action=='decline') {
+    if ($action == 'decline') {
         $todb->approved = DP_APPROVAL_DECLINED;
     } else if ($action == 'approve') {
         $todb->approved = DP_APPROVAL_APPROVED;
     }
 
-    if(update_record('dp_plan_competency_assign', $todb)) {
-        //@todo send notifications/emails
-        totara_set_notification(get_string('request'.$action,'local_plan'), $returnurl, array('class' => 'notifysuccess'));
-    } else {
-        //@todo send notifications/emails
-        totara_set_notification(get_string('requestnot'.$action, 'local_plan'), $returnurl);
-    }
+    $DB->update_record('dp_plan_competency_assign', $todb);
+    //@todo send notifications/emails
+    totara_set_notification(get_string('request'.$action, 'totara_plan'), $returnurl, array('class' => 'notifysuccess'));
 
 }
 
 $fullname = $plan->name;
-$pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
-$navlinks = array();
-dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/totara/plan/view.php?id='.$id, 'type'=>'title');
-$navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
-$navlinks[] = array('name' => get_string('itemapproval','local_plan'), 'link' => '', 'type' => 'title');
+$pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
+dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+$PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $planid)));
+$PAGE->navbar->add(get_string($component->component, 'totara_plan'), $component->get_url());
+$PAGE->navbar->add(get_string('itemapproval', 'totara_plan'));
 
-$navigation = build_navigation($navlinks);
+$PAGE->set_title($pagetitle);
 
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+echo $OUTPUT->header();
 
-print_heading($fullname);
+echo $OUTPUT->heading($fullname);
 
-notice_yesno(get_string('confirmrequest'.$action, 'local_plan'),
-    $currenturl.'&amp;confirm=1&amp;sesskey='.sesskey(),
-    $returnurl
-);
+echo $OUTPUT->confirm(get_string('confirmrequest'.$action, 'totara_plan'), $currenturl.'&amp;confirm=1&amp;sesskey='.sesskey(), $returnurl);
 
 print $component->display_competency_detail($caid);
 
-
-print_footer();
-
+echo $OUTPUT->footer();
 
 ?>

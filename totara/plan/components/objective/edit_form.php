@@ -2,14 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,7 +19,7 @@
  *
  * @author Aaron Wells <aaronw@catalyst.net.nz>
  * @package totara
- * @subpackage plan 
+ * @subpackage plan
  */
 
 /**
@@ -39,18 +38,17 @@ class plan_objective_edit_form extends moodleform {
      * Requires the following $_customdata to be passed in to the constructor:
      * plan, objective, objectiveid (optional)
      *
-     * @global object $CFG
      * @global object $USER
+     * @global object $DB
      */
     function definition() {
-        global $CFG, $USER;
+        global $USER, $DB, $TEXTAREA_OPTIONS;
 
         $mform =& $this->_form;
 
         // Determine permissions from objective
         $plan = $this->_customdata['plan'];
         $objective = $this->_customdata['objective'];
-
         // Figure out permissions & settings
         $duedatemode = $objective->get_setting('duedatemode');
         $duedateallow = in_array( $objective->get_setting('setduedate'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE));
@@ -62,30 +60,28 @@ class plan_objective_edit_form extends moodleform {
         if ($prioritymode > DP_PRIORITY_NONE) {
 
             $scaleid = $objective->get_setting('priorityscale');
-            if ( $scaleid ){
-                $priorityvalues = get_records('dp_priority_scale_value','priorityscaleid', $scaleid, 'sortorder', 'id,name,sortorder');
-                $select = array();
-                if ( $prioritymode == DP_PRIORITY_OPTIONAL ){
-                    $select[] = get_string('none','local_plan');
+            if ($scaleid) {
+                $priorityvalues = $DB->get_records('dp_priority_scale_value', array('priorityscaleid' => $scaleid), 'sortorder', 'id,name,sortorder');
+                if ($prioritymode == DP_PRIORITY_OPTIONAL) {
+                    $select[] = get_string('none', 'totara_plan');
                 }
                 foreach ($priorityvalues as $pv) {
                     $select[$pv->id] = $pv->name;
                 }
                 $prioritylist = $select;
-                $prioritydefaultid = get_field('dp_priority_scale', 'defaultid', 'id', $scaleid);
+                $prioritydefaultid = $DB->get_field('dp_priority_scale', 'defaultid', array('id' => $scaleid));
             } else {
-                $prioritylist = array( get_string('none', 'local_plan') );
+                $prioritylist = array( get_string('none', 'totara_plan') );
             }
         }
 
         // Generate list of proficiencies
-        $proflist = array();
         $objscaleid = $objective->get_setting('objectivescale');
-        $defaultobjscalevalueid = get_field('dp_objective_scale', 'defaultid', 'id', $objscaleid);
+        $defaultobjscalevalueid = $DB->get_field('dp_objective_scale', 'defaultid', array('id' => $objscaleid));
 
-        if ( $objscaleid ){
-            $vals = get_records('dp_objective_scale_value', 'objscaleid', $objscaleid, 'sortorder', 'id, name, sortorder');
-            foreach ( $vals as $v ){
+        if ($objscaleid) {
+            $vals = $DB->get_records('dp_objective_scale_value', array('objscaleid' => $objscaleid), 'sortorder', 'id, name, sortorder');
+            foreach ($vals as $v) {
                 $proflist[$v->id] = $v->name;
             }
         }
@@ -100,18 +96,18 @@ class plan_objective_edit_form extends moodleform {
         $mform->addElement('hidden', 'id', $plan->id);
         $mform->setType('id', PARAM_INT);
 
-        $mform->addElement('text', 'fullname', get_string('objectivetitle', 'local_plan'));
+        $mform->addElement('text', 'fullname', get_string('objectivetitle', 'totara_plan'));
         $mform->setType('fullname', PARAM_TEXT);
         $mform->addRule('fullname', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-        $mform->addElement('htmleditor', 'description', get_string('objectivedescription', 'local_plan'));
-        $mform->setType('description', PARAM_CLEAN);
+        $mform->addElement('editor', 'description_editor', get_string('objectivedescription', 'totara_plan'), null, $TEXTAREA_OPTIONS);
+        $mform->setType('description_editor', PARAM_RAW);
 
         // Due dates
         if ($duedateallow && ($duedatemode == DP_DUEDATES_OPTIONAL || $duedatemode == DP_DUEDATES_REQUIRED)) {
-            $mform->addElement('text', 'duedate', get_string('duedate', 'local_plan'), array('placeholder'=>get_string('datepickerplaceholder', 'totara_core')));
+            $mform->addElement('text', 'duedate', get_string('duedate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
             $mform->setType('duedate', PARAM_TEXT);
 
-            $mform->addRule('duedate', get_string('error:dateformat','local_plan', get_string('datepickerplaceholder', 'totara_core')), 'regex', get_string('datepickerregexphp', 'totara_core'));
+            $mform->addRule('duedate', get_string('error:dateformat', 'totara_plan', get_string('datepickerplaceholder', 'totara_core')), 'regex', get_string('datepickerregexphp', 'totara_core'));
 
             // Whether to make the field optional
             if ($duedatemode == DP_DUEDATES_REQUIRED) {
@@ -120,33 +116,32 @@ class plan_objective_edit_form extends moodleform {
         }
 
         // Priorities
-        if ( $prioritymode == DP_PRIORITY_OPTIONAL || $prioritymode == DP_PRIORITY_REQUIRED ){
-            $mform->addElement('select', 'priority', get_string('priority', 'local_plan'), $prioritylist);
+        if ($prioritymode == DP_PRIORITY_OPTIONAL || $prioritymode == DP_PRIORITY_REQUIRED) {
+            $mform->addElement('select', 'priority', get_string('priority', 'totara_plan'), $prioritylist);
             $mform->setDefault('priority', $prioritydefaultid);
-            if ( $prioritymode == DP_PRIORITY_REQUIRED ){
+            if ($prioritymode == DP_PRIORITY_REQUIRED) {
                 $mform->addRule('priority', get_string('err_required', 'form'), 'required', '', 'client', false, false);
             }
-            if ( !$priorityallow ){
+            if (!$priorityallow) {
                 $mform->freeze(array('priority'));
             }
         }
 
         // Proficiency
-        $mform->addElement('select', 'scalevalueid', get_string('status', 'local_plan'), $proflist);
+        $mform->addElement('select', 'scalevalueid', get_string('status', 'totara_plan'), $proflist);
         $mform->addRule('scalevalueid', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->setDefault('scalevalueid', $defaultobjscalevalueid);
 
-        if ( !$profallow ){
+        if (!$profallow) {
             $mform->freeze(array('scalevalueid'));
         }
 
         $this->add_action_buttons(true, empty($this->_customdata['objectiveid']) ?
-            get_string('addobjective', 'local_plan') : get_string('updateobjective', 'local_plan'));
+            get_string('addobjective', 'totara_plan') : get_string('updateobjective', 'totara_plan'));
     }
 
     function validation($data) {
         $errors = array();
-
         return $errors;
     }
 }

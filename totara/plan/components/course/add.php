@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * @subpackage plan
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
@@ -50,11 +50,10 @@ $fromblock = optional_param('fromblock', false, PARAM_BOOL);
 $plan = new development_plan($id);
 $componentname = 'course';
 $component = $plan->get_component($componentname);
-if(false) $component = new dp_course_component();
 $currentlist = $component->get_assigned_items();
 
 $full = $addlist;
-foreach( $currentlist as $rec ){
+foreach ($currentlist as $rec) {
     $full[] = $rec->courseid;
 }
 
@@ -64,7 +63,7 @@ foreach( $currentlist as $rec ){
 require_capability('totara/plan:accessplan', get_system_context());
 
 if (!$component->can_update_items()) {
-    notice(get_string('error:cannotupdateitems', 'local_plan'));
+    notice(get_string('error:cannotupdateitems', 'totara_plan'));
 }
 
 ///
@@ -75,7 +74,7 @@ $component->update_assigned_items($full);
 if ($fromblock) {
     require_once($CFG->dirroot . '/blocks/addtoplan/lib.php');
 
-    if(count($addlist) == 1) {
+    if (count($addlist) == 1) {
         $courseid = $addlist[0];
         echo get_addtoplan_block_content($courseid, $plan->userid);
     } else {

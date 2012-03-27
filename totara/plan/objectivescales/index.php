@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  * @subpackage plan
  */
 
-require_once('../../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('../lib.php');
 require_once('lib.php');
@@ -35,7 +35,7 @@ $moveup = optional_param('moveup', null, PARAM_INT);
 $movedown = optional_param('movedown', null, PARAM_INT);
 
 /// Setup / loading data
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext = context_system::instance();
 
 // Setup page and check permissions
 admin_externalpage_setup('objectivescales');
@@ -47,28 +47,30 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     // Get value to move, and value to replace
     if (!empty($moveup)) {
-        $move = get_record('dp_objective_scale', 'id', $moveup);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_objective_scale', array('id' => $moveup));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_objective_scale
+            FROM {dp_objective_scale}
             WHERE
-            sortorder < {$move->sortorder}
-            ORDER BY sortorder DESC", 0, 1
+            sortorder < ?
+            ORDER BY sortorder DESC",
+            array($move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if (!empty($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
     } else {
-        $move = get_record('dp_objective_scale', 'id', $movedown);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_objective_scale', array('id' => $movedown));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_objective_scale
+            FROM {dp_objective_scale}
             WHERE
-            sortorder > {$move->sortorder}
-            ORDER BY sortorder ASC", 0, 1
+            sortorder > ?
+            ORDER BY sortorder ASC",
+            array($move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if (!empty($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
@@ -76,61 +78,56 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     if ($swap && $move) {
         // Swap sortorders
-        begin_sql();
-        if (!(set_field('dp_objective_scale', 'sortorder', $move->sortorder, 'id', $swap->id)
-            && set_field('dp_objective_scale', 'sortorder', $swap->sortorder, 'id', $move->id)
-        )) {
-            error(get_string('error:updateobjectivescaleordering', 'local_plan'));
-        }
-        commit_sql();
+        $transaction = $DB->start_delegated_transaction();
+
+        $DB->set_field('dp_objective_scale', 'sortorder', $move->sortorder, array('id' => $swap->id));
+        $DB->set_field('dp_objective_scale', 'sortorder', $swap->sortorder, array('id' => $move->id));
+
+        $transaction->allow_commit();
     }
 }
 
-if($delete) {
-    if(!$scale = get_record('dp_objective_scale', 'id', $delete)) {
-       print_error('error:invalidobjectivescaleid', 'local_plan');
+if ($delete) {
+    if (!$scale = $DB->get_record('dp_objective_scale', array('id' => $delete))) {
+        print_error('error:invalidobjectivescaleid', 'totara_plan');
     }
-    if ( dp_objective_scale_is_used($delete) ){
-        print_error('error:nodeleteobjectivescaleinuse', 'local_plan');
+    if (dp_objective_scale_is_used($delete)) {
+        print_error('error:nodeleteobjectivescaleinuse', 'totara_plan');
     }
-    if(dp_objective_scale_is_assigned($delete)) {
-        print_error('error:nodeleteobjectivescaleassigned', 'local_plan');
+    if (dp_objective_scale_is_assigned($delete)) {
+        print_error('error:nodeleteobjectivescaleassigned', 'totara_plan');
     }
 
-
-    if($confirm) {
+    if ($confirm) {
         if (!confirm_sesskey()) {
             print_error('confirmsesskeybad', 'error');
         }
 
-        delete_records('dp_objective_scale_value', 'objscaleid', $scale->id); // Delete scale values
-        delete_records('dp_objective_scale', 'id', $scale->id); // Delete scale itself
-        totara_set_notification(get_string('deletedobjectivescale', 'local_plan', format_string($scale->name)), $CFG->wwwroot.'/totara/plan/objectivescales/index.php', array('class' => 'notifysuccess'));
+        $DB->delete_records('dp_objective_scale_value', array('objscaleid' => $scale->id)); // Delete scale values
+        $DB->delete_records('dp_objective_scale', array('id' => $scale->id)); // Delete scale itself
+        totara_set_notification(get_string('deletedobjectivescale', 'totara_plan', format_string($scale->name)), $CFG->wwwroot.'/totara/plan/objectivescales/index.php', array('class' => 'notifysuccess'));
 
     } else {
-        $returnurl = "{$CFG->wwwroot}/totara/plan/objectivescales/index.php";
-        $deleteurl = "{$CFG->wwwroot}/totara/plan/objectivescales/index.php?delete={$delete}&amp;confirm=1&amp;sesskey=" . sesskey();
+        $returnurl = new moodle_url('/totara/plan/objectivescales/index.php');
+        $deleteurl = new moodle_url('/totara/plan/objectivescales/index.php', array('delete' => $delete, 'confirm' => '1', 'sesskey' => sesskey()));
 
-        admin_externalpage_print_header();
-        $strdelete = get_string('deletecheckobjective', 'local_plan');
+        echo $OUTPUT->header();
+        $strdelete = get_string('deletecheckobjective', 'totara_plan');
+        $strbreak = html_writer::empty_tag('br') . html_writer::empty_tag('br');
 
-        notice_yesno(
-            "{$strdelete}<br /><br />".format_string($scale->name),
-            $deleteurl,
-            $returnurl
-        );
+        echo $OUTPUT->confirm("{$strdelete}{$strbreak}".format_string($scale->name), $deleteurl, $returnurl);
 
-        print_footer();
+        echo $OUTPUT->footer();
         exit;
     }
 }
 
 /// Build page
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 $objectives = dp_get_objectives();
 dp_objective_display_table($objectives, $editingon=1);
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();
 
 ?>

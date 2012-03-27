@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,30 +51,24 @@ local_js(array(
 ));
 
 
-$returnurl = "{$CFG->wwwroot}/totara/plan/template/index.php";
+
+$returnurl = new moodle_url('/totara/plan/template/index.php');
 
 if ($show) {
-    if (!$template = get_record('dp_template', 'id', $show)) {
-        totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
+    if (!$template = $DB->get_record('dp_template', array('id' => $show))) {
+        totara_set_notification(get_string('error:templateid', 'totara_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
     } else {
         $visible = 1;
-        if (!set_field('dp_template', 'visible', $visible, 'id', $template->id)) {
-            notify('Could not update that '.$template->fullname.' framework!');
-        }
+        $DB->set_field('dp_template', 'visible', $visible, array('id' => $template->id));
     }
 }
 
 if ($hide) {
-    if (!$template = get_record('dp_template', 'id', $hide)) {
-        totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
+    if (!$template = $DB->get_record('dp_template', array('id' => $hide))) {
+        totara_set_notification(get_string('error:templateid', 'totara_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
     } else {
         $visible = 0;
-        if (!set_field('dp_template', 'visible', $visible, 'id', $template->id)) {
-            rollback_sql();
-            notify('Could not update visibility of '.$template->fullname.' template!');
-        } else {
-            commit_sql();
-        }
+        $DB->set_field('dp_template', 'visible', $visible, array('id' => $template->id));
     }
 }
 
@@ -85,28 +79,28 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     // Get value to move, and value to replace
     if (!empty($moveup)) {
-        $move = get_record('dp_template', 'id', $moveup);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_template', array('id' => $moveup));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_template
+            FROM {dp_template}
             WHERE
-            sortorder < {$move->sortorder}
-            ORDER BY sortorder DESC", 0, 1
+            sortorder < ?
+            ORDER BY sortorder DESC", array($move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if (!empty($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
     } else {
-        $move = get_record('dp_template', 'id', $movedown);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_template', array('id' => $movedown));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_template
+            FROM {dp_template}
             WHERE
-            sortorder > {$move->sortorder}
-            ORDER BY sortorder ASC", 0, 1
+            sortorder > ?
+            ORDER BY sortorder ASC", array($move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if (!empty($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
@@ -114,67 +108,45 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     if ($swap && $move) {
         // Swap sortorders
-        begin_sql();
-        if (!(set_field('dp_template', 'sortorder', $move->sortorder, 'id', $swap->id)
-            && set_field('dp_template', 'sortorder', $swap->sortorder, 'id', $move->id)
-        )) {
-            error(get_string('error:updatetemplateordering', 'local_plan'));
-        }
-        commit_sql();
+            $transaction = $DB->start_delegated_transaction();
+
+            $DB->set_field('dp_template', 'sortorder', $move->sortorder, array('id' => $swap->id));
+            $DB->set_field('dp_template', 'sortorder', $swap->sortorder, array('id' => $move->id));
+
+            $transaction->allow_commit();
     }
 }
 
 if ($delete && $confirm) {
     if (confirm_sesskey()) {
-        begin_sql();
-        if (!delete_records('dp_template', 'id', $delete) || !delete_records('dp_component_settings', 'templateid', $delete)){
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
-        }
+        $transaction = $DB->start_delegated_transaction();
 
-        if (!delete_records('dp_competency_settings', 'templateid', $delete)){
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
-        }
+        $DB->delete_records('dp_template',              array('id'         => $delete));
+        $DB->delete_records('dp_component_settings',    array('templateid' => $delete));
+        $DB->delete_records('dp_competency_settings',   array('templateid' => $delete));
+        $DB->delete_records('dp_course_settings',       array('templateid' => $delete));
+        $DB->delete_records('dp_objective_settings',    array('templateid' => $delete));
+        $DB->delete_records('dp_permissions',           array('templateid' => $delete));
 
-        if (!delete_records('dp_course_settings', 'templateid', $delete)){
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
-        }
-
-        if (!delete_records('dp_objective_settings', 'templateid', $delete)){
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
-        }
-
-        if (!delete_records('dp_permissions', 'templateid', $delete)){
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
-        }
-
-        commit_sql();
-        totara_set_notification(get_string('deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php', array('class' => 'notifysuccess'));
+        $transaction->allow_commit();
+        totara_set_notification(get_string('deletedp', 'totara_plan'), $CFG->wwwroot.'/totara/plan/template/index.php', array('class' => 'notifysuccess'));
     }
 } else if ($delete) {
-    if (!$template = get_record('dp_template', 'id', $delete)) {
-        error(get_string('error:templateid', 'local_plan'));
+    $template = $DB->get_record('dp_template', array('id' => $delete));
+
+    if ($DB->count_records('dp_plan', array('templateid' => $template->id)) > 0) {
+        totara_set_notification(get_string('cannotdelete_inuse', 'totara_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
     }
 
-    if (count_records('dp_plan', 'templateid', $template->id) > 0) {
-        totara_set_notification(get_string('cannotdelete_inuse', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
-    }
+    echo $OUTPUT->header();
+    $deleteurl = new moodle_url('/totara/plan/template/index.php', array('delete' => $delete, 'confirm' => 'true', 'sesskey' => sesskey()));
+    $returnurl = new moodle_url('/totara/plan/template/index.php');
+    $strdelete = get_string('deletecheckdptemplate', 'totara_plan');
+    $strbreak = $OUTPUT->line_break(2);
 
-    admin_externalpage_print_header();
-    $deleteurl = $CFG->wwwroot.'/totara/plan/template/index.php?delete='.$delete.'&amp;confirm=true&amp;sesskey='.sesskey();
-    $returnurl = $CFG->wwwroot.'/totara/plan/template/index.php';
-    $strdelete = get_string('deletecheckdptemplate', 'local_plan');
-    notice_yesno(
-        "{$strdelete}<br /><br />".format_string($template->fullname),
-        $deleteurl,
-        $returnurl
-    );
+    echo $OUTPUT->confirm("{$strdelete}{$strbreak}".format_string($template->fullname), $deleteurl, $returnurl);
 
-    print_footer();
+    echo $OUTPUT->footer();
     exit;
 }
 
@@ -188,32 +160,29 @@ if ($fromform = $mform->get_data()) {
         redirect($returnurl);
     }
     else {
-        if ( !count_records('dp_priority_scale') ){
-            print_error('error:notemplatewithoutpriorityscale', 'local_plan');
+        if (!$DB->count_records('dp_priority_scale')) {
+            print_error('error:notemplatewithoutpriorityscale', 'totara_plan');
         }
-
-        if ( !count_records('dp_objective_scale') ){
-            print_error('error:notemplatewithoutobjectivescale', 'local_plan');
+        if (!$DB->count_records('dp_objective_scale')) {
+            print_error('error:notemplatewithoutobjectivescale', 'totara_plan');
         }
 
         $error = '';
         $newtemplateid = dp_create_template($fromform->templatename, $fromform->enddate, $error);
 
         if ($newtemplateid) {
-            redirect($CFG->wwwroot .
-                '/totara/plan/template/general.php?id=' .
-                $newtemplateid);
+            redirect(new moodle_url('/totara/plan/template/general.php', array('id' => $newtemplateid)));
         } else {
             totara_set_notification($error, $CFG->wwwroot . '/totara/plan/template/index.php');
         }
     }
 }
 
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
-print_heading(get_string('managetemplates','local_plan'));
+echo $OUTPUT->heading(get_string('managetemplates', 'totara_plan'));
 
-$templates = get_records('dp_template', null, null, 'sortorder');
+$templates = $DB->get_records('dp_template', null, 'sortorder');
 
 if ($templates) {
 
@@ -225,69 +194,56 @@ if ($templates) {
     $str_movedown = get_string('movedown');
 
     $columns[] = 'name';
-    $headers[] = get_string('name', 'local_plan');
+    $headers[] = get_string('name', 'totara_plan');
     $columns[] = 'instances';
-    $headers[] = get_string('instances', 'local_plan');
+    $headers[] = get_string('instances', 'totara_plan');
     $columns[] = 'options';
-    $headers[] = get_string('options', 'local_plan');
+    $headers[] = get_string('options', 'totara_plan');
+    $baseurl = $CFG->wwwroot . '/totara/plan/template/index.php';
 
     $table = new flexible_table('Templates');
     $table->define_columns($columns);
     $table->define_headers($headers);
+    $table->define_baseurl($baseurl);
     $table->set_attribute('class', 'generalbox dp-templates');
 
     $table->setup();
-    $spacer = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" />";
+    $spacer = $OUTPUT->spacer();
     $count = 0;
     $numvalues = count($templates);
     foreach ($templates as $template) {
-        $count++;
         $tablerow = array();
+        $buttons = array();
+        $count++;
 
-        $cssclass = !$template->visible ? 'class="dimmed"' : '';
+        $cssclass = !$template->visible ? 'dimmed' : '';
 
-        $title = "<a $cssclass href=\"$CFG->wwwroot/totara/plan/template/general.php?id=$template->id\">$template->fullname</a>";
-        if ($count==1) {
+        $title = html_writer::link(new moodle_url('/totara/plan/template/general.php', array('id' => $template->id)), $template->fullname, array('class' => $cssclass));
+        if ($count == 1) {
             $title .= ' ('.get_string('default').')';
         }
         $tablerow[] = $title;
 
-        $instancecount = count_records('dp_plan', 'templateid', $template->id);
+        $instancecount = $DB->count_records('dp_plan', array('templateid' => $template->id));
         if ($instancecount) {
-            $tablerow[] = '<a href=templateinstances.php?id='.$template->id.'>' . $instancecount . '</a>';
+            $tablerow[] = html_writer::link(new moodle_url('templateinstances.php', array('id' => $template->id)), $instancecount);
         } else {
             $tablerow[] = $instancecount;
         }
 
-        $buttons = array();
+        $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/general.php', array('id' => $template->id)), new pix_icon('t/edit', $str_edit));
 
-        $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/general.php?id={$template->id}\" title=\"$str_edit\">".
-            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
-
-        $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?delete={$template->id}\" title=\"$str_remove\">".
-            "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-
-
-        // Re-add this once multiple templates can be selected
-        /*if ($template->visible) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?hide={$template->id}\" title=\"$str_hide\">".
-                "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
-        } else {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?show={$template->id}\" title=\"$str_show\">".
-                "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
-        }*/
+        $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/index.php', array('delete' => $template->id)), new pix_icon('t/delete', $str_remove));
 
         if ($count > 1) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?moveup={$template->id}\" title=\"$str_moveup\">".
-                "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/index.php', array('moveup' => $template->id)), new pix_icon('t/up', $str_moveup));
         } else {
             $buttons[] = $spacer;
         }
 
         // If value can be moved down
         if ($count < $numvalues) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/template/index.php?movedown={$template->id}\" title=\"$str_movedown\">".
-                "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/index.php', array('movedown' => $template->id)), new pix_icon('t/down', $str_movedown));
         } else {
             $buttons[] = $spacer;
         }
@@ -296,14 +252,14 @@ if ($templates) {
 
         $table->add_data($tablerow);
     }
-    $table->print_html();
+    $table->finish_html();
 }
 else {
-    echo get_string('notemplates', 'local_plan');
+    echo get_string('notemplates', 'totara_plan');
 }
 
 $mform->display();
 
 echo build_datepicker_js('#id_enddate');
 
-print_footer();
+echo $OUTPUT->footer();

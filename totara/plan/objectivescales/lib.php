@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -42,7 +42,8 @@
  * @return boolean
  */
 function dp_objective_scale_is_assigned($scaleid) {
-    return record_exists('dp_objective_settings', 'objectivescale', $scaleid);
+    global $DB;
+    return $DB->record_exists('dp_objective_settings', array('objectivescale' => $scaleid));
 }
 
 /**
@@ -60,19 +61,19 @@ function dp_objective_scale_is_assigned($scaleid) {
  * @return boolean
  */
 function dp_objective_scale_is_used($scaleid) {
-    global $CFG;
+    global $DB;
 
     $sql = "SELECT
                 o.id
             FROM
-                {$CFG->prefix}dp_plan_objective o
+                {dp_plan_objective} o
             LEFT JOIN
-                {$CFG->prefix}dp_objective_scale_value osv
+                {dp_objective_scale_value} osv
             ON osv.id = o.scalevalueid
-            WHERE osv.objscaleid = {$scaleid}
+            WHERE osv.objscaleid = ?
     ";
 
-    return record_exists_sql($sql);
+    return $DB->record_exists_sql($sql, array($scaleid));
 }
 
 /**
@@ -81,9 +82,9 @@ function dp_objective_scale_is_used($scaleid) {
  * @return html
  */
 function dp_objective_display_table($objectives, $editingon=0) {
-    global $CFG;
+    global $CFG, $OUTPUT;
 
-    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    $sitecontext = context_system::instance();
 
     // Cache permissions
     $can_edit = has_capability('totara/plan:manageobjectivescales', $sitecontext);
@@ -96,7 +97,7 @@ function dp_objective_display_table($objectives, $editingon=0) {
 
     $stredit = get_string('edit');
     $strdelete = get_string('delete');
-    $stroptions = get_string('options','local');
+    $stroptions = get_string('options', 'totara_core');
     $str_moveup = get_string('moveup');
     $str_movedown = get_string('movedown');
     ///
@@ -104,29 +105,25 @@ function dp_objective_display_table($objectives, $editingon=0) {
     ///
 
     if ($objectives) {
-        $table = new stdClass();
+        $table = new html_table();
         $table->head  = array(get_string('scale'), get_string('used'));
-        $table->size = array('70%', '20%');
-        $table->align = array('left', 'center');
-        $table->width = '95%';
         if ($editingon) {
             $table->head[] = $stroptions;
-            $table->align[] = 'center';
-            $table->size[] = '10%';
         }
 
         $table->data = array();
-        $spacer = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" />";
+        $spacer = $OUTPUT->spacer();
         $count = 0;
         $numvalues = count($objectives);
-        foreach($objectives as $objective) {
+        foreach ($objectives as $objective) {
+            $buttons = array();
             $scale_used = dp_objective_scale_is_used($objective->id);
             $scale_assigned = dp_objective_scale_is_assigned($objective->id);
             $count++;
             $line = array();
 
-            $title = "<a href=\"$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$objective->id}\">".format_string($objective->name)."</a>";
-            if ($count==1){
+            $title = $OUTPUT->action_link(new moodle_url("/totara/plan/objectivescales/view.php", array('id' => $objective->id)), format_string($objective->name));
+            if ($count == 1) {
                 $title .= ' ('.get_string('default').')';
             }
             $line[] = $title;
@@ -134,41 +131,36 @@ function dp_objective_display_table($objectives, $editingon=0) {
             if ($scale_used) {
                 $line[] = get_string('yes');
             } else if ($scale_assigned) {
-                $line[] = get_string('assignedonly', 'local_plan');
+                $line[] = get_string('assignedonly', 'totara_plan');
             } else {
                 $line[] = get_string('no');
             }
 
-            $buttons = array();
             if ($editingon) {
                 if ($can_edit) {
-                    $buttons[] = "<a title=\"$stredit\" href=\"$CFG->wwwroot/totara/plan/objectivescales/edit.php?id=$objective->id\"><img".
-                        " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
+                    $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/objectivescales/edit.php', array('id' => $objective->id)), new pix_icon('t/edit', $stredit));
                 }
 
                 if ($can_delete) {
-                    if($scale_used) {
-                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteobjectivescaleinuse', 'local_plan') . "\" title=\"" . get_string('error:nodeleteobjectivescaleinuse', 'local_plan') . "\" /></a>";
+                    if ($scale_used) {
+                        $buttons[] = $OUTPUT->pix_icon('t/delete_grey', get_string('error:nodeleteobjectivescaleinuse', 'totara_plan'), 'totara_core');
                     } else if ($scale_assigned) {
-                        $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteobjectivescaleassigned', 'local_plan') . "\" title=\"" . get_string('error:nodeleteobjectivescaleassigned', 'local_plan') . "\" /></a>";
+                        $buttons[] = $OUTPUT->pix_icon('t/delete_grey', get_string('error:nodeleteobjectivescaleassigned', 'totara_plan'), 'totara_core');
                     } else {
-                        $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/totara/plan/objectivescales/index.php?delete=$objective->id\"><img".
-                                " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+                        $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/objectivescales/index.php', array('delete' => $objective->id)), new pix_icon('t/delete', $strdelete));
                     }
                 }
 
                 // If value can be moved up
                 if ($can_edit && $count > 1) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/index.php?moveup={$objective->id}\" title=\"$str_moveup\">".
-                        "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
+                    $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/objectivescales/index.php', array('moveup' => $objective->id)), new pix_icon('t/up', $str_moveup));
                 } else {
                     $buttons[] = $spacer;
                 }
 
                 // If value can be moved down
                 if ($can_edit && $count < $numvalues) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/index.php?movedown={$objective->id}\" title=\"$str_movedown\">".
-                        "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
+                    $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/objectivescales/index.php', array('movedown' => $objective->id)), new pix_icon('t/down', $str_movedown));
                 } else {
                     $buttons[] = $spacer;
                 }
@@ -178,17 +170,16 @@ function dp_objective_display_table($objectives, $editingon=0) {
             $table->data[] = $line;
         }
     }
-    print_heading(get_string('objectivescales', 'local_plan'));
+    echo $OUTPUT->heading(get_string('objectivescales', 'totara_plan'));
 
     if ($objectives) {
-        print_table($table);
+        echo html_writer::table($table);
     } else {
-        echo '<p>'.get_string('noobjectivesdefined', 'local_plan').'</p>';
+        echo html_writer::tag('p', get_string('noobjectivesdefined', 'totara_plan'));
     }
 
-    echo '<div class="buttons">';
-    print_single_button("$CFG->wwwroot/totara/plan/objectivescales/edit.php", null, get_string('objectivesscalecreate', 'local_plan'));
-    echo '</div>';
+    $button = $OUTPUT->single_button(new moodle_url("edit.php"), get_string('objectivesscalecreate', 'totara_plan'), 'get');
+    echo $OUTPUT->container($button, "buttons");
 }
 
 /**
@@ -196,8 +187,9 @@ function dp_objective_display_table($objectives, $editingon=0) {
  *
  * @return object the objective
  */
-function dp_objective_default_scale(){
-    if (!$objective = get_records('dp_objective_scale', '','', 'sortorder', '*', '', 1)) {;
+function dp_objective_default_scale() {
+    global $DB;
+    if (!$objective = $DB->get_records('dp_objective_scale', null, 'sortorder', '*', '', 1)) {;
         return false;
     }
 
@@ -209,9 +201,9 @@ function dp_objective_default_scale(){
  *
  * @return object the objective
  */
-function dp_objective_default_scale_id(){
+function dp_objective_default_scale_id() {
     $objective = dp_objective_default_scale();
-    if ( $objective && isset($objective->id) ){
+    if ($objective && isset($objective->id)) {
         return $objective->id;
     } else {
         return false;

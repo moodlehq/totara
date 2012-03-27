@@ -1,13 +1,12 @@
 <?php
-
-/**
- * Moodle - Modular Object-Oriented Dynamic Learning Environment
- *          http://moodle.org
- * Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
+/*
+ * This file is part of Totara LMS
  *
- * This program is free software: you can redistribute it and/or modify
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,17 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    moodle
- * @subpackage totara
- * @author     Aaron Wells <aaronw@catalyst.net.nz>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
- * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
- *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Aaron Wells <aaronw@catalyst.net.nz>
+ * @package totara
+ * @subpackage totara_plan
+ */
+
+/**
  * Displays collaborative features for the current user
  *
  */
 
-    require_once('../../../config.php');
+    require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
     require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
     require_once($CFG->dirroot.'/totara/plan/lib.php');
 
@@ -44,40 +44,45 @@
     }
 
     // default to current user
-    if(empty($userid)) {
+    if (empty($userid)) {
         $userid = $USER->id;
     }
 
-    if (! $user = get_record('user', 'id', $userid)) {
-        error(get_string('error:usernotfound', 'local_plan'));
+    if (!$user = $DB->get_record('user', array('id' => $userid))) {
+        print_error('error:usernotfound', 'totara_plan');
     }
 
-    $context = get_context_instance(CONTEXT_SYSTEM);
+    $context = context_system::instance();
     // users can only view their own and their staff's pages
     // or if they are an admin
-    if ($USER->id != $userid && !totara_is_manager($userid) && !has_capability('moodle/site:doanything',$context)) {
-        error(get_string('error:cannotviewpage', 'local_plan'));
+    if ($USER->id != $userid && !totara_is_manager($userid) && !has_capability('totara/plan:accessanyplan',$context)) {
+        print_error('error:cannotviewpage', 'totara_plan');
     }
+
+    $PAGE->set_context($context);
+    $PAGE->set_url(new moodle_url('/totara/plan/record/courses.php',
+        array('userid' => $userid, 'status' => $rolstatus)));
+    $PAGE->set_pagelayout('noblocks');
 
     $renderer =  $PAGE->get_renderer('totara_reportbuilder');
 
     if ($USER->id != $userid) {
-        $strheading = get_string('recordoflearningfor','local').fullname($user, true);
+        $strheading = get_string('recordoflearningfor', 'totara_core').fullname($user, true);
     } else {
-        $strheading = get_string('recordoflearning', 'local');
+        $strheading = get_string('recordoflearning', 'totara_core');
     }
     // get subheading name for display
-    $strsubheading = get_string($rolstatus.'coursessubhead', 'local_plan');
+    $strsubheading = get_string($rolstatus.'coursessubhead', 'totara_plan');
 
     $shortname = 'plan_courses';
     $data = array(
         'userid' => $userid,
     );
-    if ($rolstatus !== 'all' ){
+    if ($rolstatus !== 'all') {
         $data['rolstatus'] = $rolstatus;
     }
     if (!$report = reportbuilder_get_embedded_report($shortname, $data)) {
-        print_error('error:couldnotgenerateembeddedreport', 'local_reportbuilder');
+        print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
     }
 
     $query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
@@ -97,12 +102,12 @@
     /// Display the page
     ///
 
-    $navlinks = array();
-    $navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
-    $navlinks[] = array('name' => $strheading, 'link' => $CFG->wwwroot . '/totara/plan/record/courses.php', 'type' => 'misc');
-    $navlinks[] = array('name' => $strsubheading, 'link' => null, 'type' => 'misc');
-
-    print_header($strheading, $strheading, build_navigation($navlinks));
+    $PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/learning.php'));
+    $PAGE->navbar->add($strheading, new moodle_url('/totara/plan/record/courses.php'));
+    $PAGE->navbar->add($strsubheading);
+    $PAGE->set_title($strheading);
+    $PAGE->set_heading($strheading);
+    echo $OUTPUT->header();
 
     $ownplan = $USER->id == $userid;
 
@@ -110,9 +115,9 @@
 
     echo dp_display_plans_menu($userid, 0, $usertype, 'courses', $rolstatus);
 
-    print_container_start(false, '', 'dp-plan-content');
+    echo $OUTPUT->container_start('', 'dp-plan-content');
 
-    echo '<h1>'.$strheading.' : '.$strsubheading.'</h1>';
+    echo $OUTPUT->heading($strheading.' : '.$strsubheading, 1);
 
     $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
 
@@ -125,22 +130,21 @@
     $countall = $report->get_full_count();
 
     $heading = $renderer->print_result_count_string($countfiltered, $countall);
-    print_heading($heading);
+    echo $OUTPUT->heading($heading);
 
-    print $renderer->print_description($report->description, $report->_id);
+    echo $renderer->print_description($report->description, $report->_id);
 
     $report->display_search();
 
     if ($countfiltered > 0) {
-        print $renderer->showhide_button($report->_id, $report->shortname);
+        echo $renderer->showhide_button($report->_id, $report->shortname);
         $report->display_table();
-        print $renderer->edit_button();
+        echo $report->edit_button();
         // export button
         $renderer->export_select($report->_id);
     }
 
-    print_container_end();
+    echo $OUTPUT->container_end();
 
-    print_footer();
-
+    echo $OUTPUT->footer();
 ?>

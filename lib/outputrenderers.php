@@ -2567,6 +2567,26 @@ EOD;
 
         return $content;
     }
+
+    /**
+     * render a simple submit button without a form wrapped
+     * around it
+     * @param string $value the button label
+     * @param array $options the properties for the button
+     * @return string HTML fragment
+     */
+    public function single_submit($value, array $options=null) {
+        $attributes = array('type' => 'submit', 'value' => $value);
+
+        // add extra  attributes
+        $attributes = array_merge($attributes, (array)$options);
+
+        // first the input element
+        $output = html_writer::empty_tag('input', $attributes);
+
+        // then div wrapper for xhtml strictness
+        return html_writer::tag('div', $output);
+    }
 }
 
 /// RENDERERS
@@ -2720,5 +2740,5 @@ class core_renderer_ajax extends core_renderer {
 
     public function heading($text, $level = 2, $classes = 'main', $id = null) {
     }
-}
 
+}

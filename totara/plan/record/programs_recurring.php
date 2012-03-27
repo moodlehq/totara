@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,12 +40,12 @@ if ($programid) {
     try {
         $program = new program($programid);
     } catch (ProgramException $e) {
-        print_error('error:invalidid', 'local_program');
+        print_error('error:invalidid', 'totara_program');
     }
 } else {
     // show all recurring programs if no id given
     // needed to fix link from manage report page
-    $program = new object();
+    $program = new stdClass();
     $program->fullname = '';
 }
 
@@ -54,16 +54,21 @@ if (empty($userid)) {
     $userid = $USER->id;
 }
 
-if (! $user = get_record('user', 'id', $userid)) {
-    error(get_string('error:usernotfound', 'local_plan'));
+if (!$user = $DB->get_record('user', array('id' => $userid))) {
+    print_error('error:usernotfound', 'totara_plan');
 }
 
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 // users can only view their own and their staff's pages
 // or if they are an admin
-if ($USER->id != $userid && !totara_is_manager($userid) && !has_capability('moodle/site:doanything',$context)) {
-    error(get_string('error:cannotviewpage', 'local_plan'));
+if ($USER->id != $userid && !totara_is_manager($userid) && !has_capability('totara/plan:accessanyplan',$context)) {
+    print_error('error:cannotviewpage', 'totara_plan');
 }
+
+$PAGE->set_context($context);
+$PAGE->set_url(new moodle_url('/totara/plan/record/programs_recurring.php',
+    array('userid' => $userid, 'status' => $rolstatus)));
+$PAGE->set_pagelayout('noblocks');
 
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
 
@@ -71,12 +76,12 @@ if ($USER->id != $userid) {
     $a = new stdClass();
     $a->username = fullname($user, true);
     $a->progname = format_string($program->fullname);
-    $strheading = get_string('recurringprogramhistoryfor', 'local_program', $a);
+    $strheading = get_string('recurringprogramhistoryfor', 'totara_program', $a);
 } else {
-    $strheading = get_string('recurringprogramhistory', 'local_program', format_string($program->fullname));
+    $strheading = get_string('recurringprogramhistory', 'totara_program', format_string($program->fullname));
 }
 // get subheading name for display
-$strsubheading = get_string('recurringprograms', 'local_program');
+$strsubheading = get_string('recurringprograms', 'totara_program');
 
 $shortname = 'plan_programs_recurring';
 $data = array(
@@ -101,13 +106,12 @@ $report->include_js();
 ///
 /// Display the page
 ///
-
-$navlinks = array();
-$navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
-$navlinks[] = array('name' => $strheading, 'link' => $CFG->wwwroot . '/totara/plan/record/programs.php', 'type' => 'misc');
-$navlinks[] = array('name' => $strsubheading, 'link' => null, 'type' => 'misc');
-
-print_header($strheading, $strheading, build_navigation($navlinks));
+$PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/learning.php'));
+$PAGE->navbar->add($strheading, new moodle_url('/totara/plan/record/programs.php'));
+$PAGE->navbar->add($strsubheading);
+$PAGE->set_title($strheading);
+$PAGE->set_heading($strheading);
+echo $OUTPUT->header();
 
 $ownplan = $USER->id == $userid;
 
@@ -115,14 +119,14 @@ $usertype = ($ownplan) ? 'learner' : 'manager';
 
 echo dp_display_plans_menu($userid, 0, $usertype, 'courses', 'none');
 
-print_container_start(false, '', 'dp-plan-content');
+echo $OUTPUT->container_start('', 'dp-plan-content');
 
-echo '<h1>'.$strheading.'</h1>';
+echo $OUTPUT->heading($strheading, 1);
 
 $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
 
-//$currenttab = 'programs';
-//require_once($CFG->dirroot . '/totara/plan/record/tabs.php');
+$currenttab = 'programs';
+require_once($CFG->dirroot . '/totara/plan/record/tabs.php');
 
 // display table here
 $fullname = $report->fullname;
@@ -130,22 +134,20 @@ $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
 
 $heading = $renderer->print_result_count_string($countfiltered, $countall);
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
-print $renderer->print_description($report->description, $report->_id);
+echo $renderer->print_description($report->description, $report->_id);
 
 $report->display_search();
 
 if ($countfiltered > 0) {
-    print $renderer->showhide_button($report->_id, $report->shortname);
+    echo $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
-    print $report->edit_button();
+    echo $report->edit_button();
     // export button
     $renderer->export_select($report->_id);
 }
 
-print_container_end();
-
-print_footer();
-
+echo $OUTPUT->container_end();
+echo $OUTPUT->footer();
 ?>

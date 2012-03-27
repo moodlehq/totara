@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
-
+require_once($CFG->dirroot.'/lib/completionlib.php');
 
 //
 // Load parameters
@@ -42,18 +42,21 @@ require_login();
 //
 // Load plan, component and check permissions
 //
+$systemcontext = context_system::instance();
+$PAGE->set_context($systemcontext);
+$PAGE->set_pagelayout('noblocks');
+$PAGE->set_totara_menu_selected('learningplans');
 $plan = new development_plan($id);
 
-$systemcontext = get_system_context();
-if(!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
-        print_error('error:nopermissions', 'local_plan');
+if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+        print_error('error:nopermissions', 'totara_plan');
 }
 
 
 // Check for valid component, before proceeding
 // Check against active components to prevent hackery
 if (!in_array($componentname, array_keys($plan->get_components()))) {
-    print_error('error:invalidcomponent', 'local_plan');
+    print_error('error:invalidcomponent', 'totara_plan');
 }
 
 $component = $plan->get_component($componentname);
@@ -64,7 +67,6 @@ $component = $plan->get_component($componentname);
 //
 if ($submitted && confirm_sesskey()) {
     $component->process_settings_update($ajax);
-
     // If ajax, no need to recreate entire page
     if ($ajax) {
         // Print list and message box so page can be updated
@@ -81,18 +83,18 @@ $component->process_action_hook();
 // Display header
 //
 $component->setup_picker();
+$PAGE->set_context($systemcontext);
+$PAGE->set_url(new moodle_url('/totara/plan/component.php', array('id' => $id, 'c' => $componentname)));
+$PAGE->navbar->add(get_string($component->component.'plural', 'totara_plan'));
+$plan->print_header($componentname);
 
-$navlinks = array(
-    array('name' => get_string($component->component.'plural', 'local_plan'), 'link' => '', 'type' => 'title')
-);
-$plan->print_header($componentname, $navlinks);
+echo $component->display_picker();
 
-print $component->display_picker();
+$form = html_writer::start_tag('form', array('id' => "dp-component-update",  'action' => $component->get_url(), "method" => "POST"));
+$form .= html_writer::empty_tag('input', array('type' => "hidden", 'id' => "sesskey",  'name' => "sesskey", 'value' => sesskey()));
 
-print '<form id="dp-component-update" action="'.$component->get_url().'" method="POST">';
-print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';
-
-print '<div id="dp-component-update-table">'.$component->display_list().'</div>';
+$table = $component->display_list();
+$form .= html_writer::tag('div', $table, array('id' => 'dp-component-update-table'));
 
 if ($component->can_update_settings(false)) {
     if (!$component->get_assigned_items()) {
@@ -100,13 +102,13 @@ if ($component->can_update_settings(false)) {
     } else {
         $display = 'block';
     }
-
-    print '<noscript><div id="dp-component-update-submit" style="display: '.$display.';"><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" /></div></noscript>';
+    $button = html_writer::empty_tag('input', array('type' => "submit", 'name' => "submitbutton", 'value' => get_string('updatesettings', 'totara_plan')));
+    $form .= html_writer::tag('noscript', $OUTPUT->container($button, array('id' => "dp-component-update-submit",  'style' => "display: {$display};")));
 }
 
-print '</form>';
-print_container_end();
+$form .= html_writer::end_tag('form');
+echo $form;
 
-echo build_datepicker_js("[id^=duedate_{$componentname}]", true);
-
-print_footer();
+echo build_datepicker_js("[id^=duedate_{$componentname}]");
+echo $OUTPUT->container_end();
+echo $OUTPUT->footer();

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,8 +39,6 @@ class rb_source_dp_program_recurring extends rb_base_source {
     public $sourcewhere;
 
     function __construct() {
-
-        global $CFG;
         $this->base = '{prog_completion_history}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
@@ -63,7 +61,6 @@ class rb_source_dp_program_recurring extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
 
         $joinlist = array(
             new rb_join(
@@ -81,14 +78,14 @@ class rb_source_dp_program_recurring extends rb_base_source {
     function define_columnoptions() {
         $columnoptions = array();
 
-    $columnoptions[] = new rb_column_option(
+        $columnoptions[] = new rb_column_option(
             'program',
             'fullname',
             get_string('programname', 'totara_program'),
             "prog.fullname",
             array('joins' => 'prog')
         );
-    $columnoptions[] = new rb_column_option(
+        $columnoptions[] = new rb_column_option(
             'program',
             'shortname',
             get_string('programshortname', 'totara_program'),
@@ -109,7 +106,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
             "base.programid"
         );
 
-    $columnoptions[] = new rb_column_option(
+        $columnoptions[] = new rb_column_option(
             'program_completion_history',
             'courselink',
             get_string('coursenamelink', 'totara_program'),
@@ -147,12 +144,12 @@ class rb_source_dp_program_recurring extends rb_base_source {
     }
 
     function rb_display_program_completion_status($status,$row) {
-        global $CFG;
+        global $OUTPUT;
 
-        if ($status == STATUS_PROGRAM_COMPLETE){
+        if ($status == STATUS_PROGRAM_COMPLETE) {
             return get_string('complete', 'totara_program');
         } else if ($status == STATUS_PROGRAM_INCOMPLETE) {
-            return html_writer::tag('span', get_string('incomplete', 'totara_program'), array('class' => 'error'));
+            return $OUTPUT->error_text(get_string('incomplete', 'totara_program'));
         } else {
             return get_string('unknownstatus', 'totara_program');
         }
@@ -160,7 +157,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
     }
 
     function rb_display_completion_date($time) {
-        if ($time==0) {
+        if ($time == 0) {
             return '';
         } else {
             return userdate($time, '%d/%m/%Y');
@@ -168,13 +165,12 @@ class rb_source_dp_program_recurring extends rb_base_source {
     }
 
     function rb_display_link_course_name($courseid) {
-        global $CFG, $DB;
+        global $DB, $OUTPUT;
 
         $html = '';
 
         if ($course = $DB->get_record('course', array('id' => $courseid))) {
-            $courseurl = new moodle_url('/course/view.php', array('id' => $course->id));
-            $html = html_writer::link($courseurl, $course->fullname);
+            $html = $OUTPUT->action_link(new moodle_url('/course/view.php', array('id' => $course->id)), $course->fullname);
         } else {
             $html = get_string('coursenotfound', 'totara_plan');
         }
@@ -254,4 +250,3 @@ class rb_source_dp_program_recurring extends rb_base_source {
 
 
 } // end of rb_source_dp_program_recurring class
-

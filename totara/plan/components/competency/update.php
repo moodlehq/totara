@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +23,28 @@
  * @subpackage plan
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
-
+$context = context_system::instance();
+$PAGE->set_context($context);
 ///
 /// Setup / loading data
 ///
 
 // Plan id
 $id = required_param('id', PARAM_INT);
-$linkedcourses = optional_param('linkedcourses', array(), PARAM_INT);
-$mandatorycourses = optional_param('mandatory', array(), PARAM_INT);
+$linkedcourses = optional_param_array('linkedcourses', array(), PARAM_SEQUENCE);
+$mandatorycourses = optional_param_array('mandatory', array(), PARAM_SEQUENCE);
+
+//magic to get around the clean_param call in optional_param_array: we are not allowed to pass nested arrays in M2.2
+foreach ($linkedcourses as $key => $sequence) {
+    $linkedcourses[$key] = explode(',', $sequence);
+}
+foreach ($mandatorycourses as $key => $sequence) {
+    $mandatorycourses[$key] = explode(',', $sequence);
+}
 
 // Updated course lists
 $idlist = optional_param('update', null, PARAM_SEQUENCE);
@@ -52,62 +61,43 @@ $component = $plan->get_component($componentname);
 
 // Basic access control checks
 if (!$component->can_update_items()) {
-    print_error('error:cannotupdateitems', 'local_plan');
+    print_error('error:cannotupdateitems', 'totara_plan');
 }
 
-$status = true;
-begin_sql();
+/* SCANMSG re-add when messages in transactions re-enabled MDL-30029
+$transaction = $DB->start_delegated_transaction();
+*/
 $component->update_assigned_items($idlist);
-
 // now assign the linked courses
 if (count($linkedcourses) != 0) {
     foreach ($linkedcourses as $compid => $courses) {
-        foreach ($courses as $course => $unused) {
-
+        foreach ($courses as $key => $course) {
             // add course if it's not already in this plan
             // @todo what if course is assigned but not approved?
             if (!$plan->get_component('course')->is_item_assigned($course)) {
                 // Last "false" is because it was assigned automatically
                 $plan->get_component('course')->assign_new_item($course, true, false);
             }
-
             // Now we need to grab the assignment ID
-            $assignmentid = get_field('dp_plan_course_assign', 'id', 'planid', $plan->id, 'courseid', $course);
-
-            if (!$assignmentid) {
-                // something went wrong trying to assign the course
-                // don't attempt to create a relation
-                $status = false;
-                continue;
-            }
+            $assignmentid = $DB->get_field('dp_plan_course_assign', 'id', array('planid' => $plan->id, 'courseid' => $course), MUST_EXIST);
 
             // Get the competency assignment ID from the competency
-            $compassignid = get_field('dp_plan_competency_assign', 'id', 'competencyid', $compid, 'planid', $plan->id);
-
-            if (!$compassignid) {
-                $status = false;
-                continue;
-            }
+            $compassignid = $DB->get_field('dp_plan_competency_assign', 'id', array('competencyid' => $compid, 'planid' => $plan->id), MUST_EXIST);
 
             // Check if this is mandatory
-            if (!empty($mandatorycourses[$compid][$course])) {
+            if (in_array($course, $mandatorycourses[$compid])) {
                 $mandatory = 'course';
             } else {
                 $mandatory = '';
             }
-
             // Create relation
             $plan->add_component_relation('competency', $compassignid, 'course', $assignmentid, $mandatory);
         }
     }
 }
 
-// Only make dialog changes if everything worked
-if ($status) {
-    commit_sql();
-} else {
-    rollback_sql();
-}
-
+/* SCANMSG re-add when messages in transactions re-enabled MDL-30029
+$transaction->allow_commit();
+*/
 echo $component->display_list();
 echo $plan->display_plan_message_box();

@@ -509,3 +509,11 @@ foreach (get_plugin_list('local') as $plugin => $plugindir) {
         continue;
     }
 }
+//add any settings from totara modules
+foreach (get_plugin_list('totara') as $plugin => $plugindir) {
+    $settings_path = "$plugindir/settings.php";
+    if (file_exists($settings_path)) {
+        include($settings_path);
+        continue;
+    }
+}

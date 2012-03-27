@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ class totara_dialog_linked_courses_content_courses extends totara_dialog_content
      * @var     integer planid  id of development plan for which linked courses should be loaded
      */
     public function load_courses($planid) {
-        global $CFG;
+        global $DB;
 
         $planid = (int) $planid;
 
@@ -58,20 +58,18 @@ class totara_dialog_linked_courses_content_courses extends totara_dialog_content
                 c.fullname AS fullname,
                 c.sortorder AS sortorder
             FROM
-                {$CFG->prefix}dp_plan_course_assign dppca
+                {dp_plan_course_assign} dppca
             INNER JOIN
-                {$CFG->prefix}course c
+                {course} c
              ON c.id = dppca.courseid
             WHERE
-                dppca.planid = {$planid}
+                dppca.planid = ?
             ORDER BY
                 c.fullname
         ";
+        $params = array($planid);
 
-        $this->courses = get_records_sql($sql);
+        $this->courses = $DB->get_records_sql($sql, $params);
 
-        if (empty($this->courses)) {
-            $this->courses = array();
-        }
     }
 }

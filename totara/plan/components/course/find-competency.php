@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,10 +23,11 @@
  * @subpackage plan
  */
 
-require_once('../../../../config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/plan/components/competency/dialog_content_linked_competencies.class.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
+$PAGE->set_context(get_system_context());
 require_login();
 
 ///
@@ -46,19 +47,17 @@ $component = $plan->get_component('course');
 $linkedcompetencies = $component->get_linked_components($courseid, 'competency');
 $selected = array();
 if (!empty($linkedcompetencies)) {
+    list($insql, $params) = $DB->get_in_or_equal($linkedcompetencies);
     $sql = "SELECT ca.id, c.fullname
-            FROM {$CFG->prefix}dp_plan_competency_assign ca
-            INNER JOIN {$CFG->prefix}comp c ON ca.competencyid = c.id
-            WHERE ca.id IN (".implode(',', $linkedcompetencies).')
-            ORDER BY c.fullname';
-    $competencies = get_records_sql($sql);
-    if (!empty($competencies)) {
-        $selected = $competencies;
-    }
+            FROM {dp_plan_competency_assign} ca
+            INNER JOIN {comp} c ON ca.competencyid = c.id
+            WHERE ca.id $insql
+            ORDER BY c.fullname";
+    $selected = $DB->get_records_sql($sql, $params);
 }
 // Access control check
 if (!$permission = $component->can_update_items()) {
-    print_error('error:cannotupdatecompetencies', 'local_plan');
+    print_error('error:cannotupdatecompetencies', 'totara_plan');
 }
 
 

@@ -2,8 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +23,7 @@
  * @subpackage plan
  */
 
-require_once('../../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
 
@@ -42,63 +41,50 @@ $confirm = optional_param('confirm', 0, PARAM_INT); //Confirmation of delete
 
 // Page setup and check permissions
 admin_externalpage_setup('objectivescales');
+$context = context_system::instance();
+require_capability('totara/plan:manageobjectivescales', $context);
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('totara/plan:manageobjectivescales', $sitecontext);
-
-if (!$objective = get_record('dp_objective_scale', 'id', $id)) {
-    error(get_string('error:objectivescaleidincorrect', 'local_plan'));
+if (!$objective = $DB->get_record('dp_objective_scale', array('id' => $id))) {
+    print_error('error:objectivescaleidincorrect', 'totara_plan');
 }
 
 $scale_used = dp_objective_scale_is_used($id);
 
-if($delete) {
-    if(!$value = get_record('dp_objective_scale_value', 'id', $delete)) {
-       print_error('error:invalidobjectivescalevalueid', 'local_plan');
+if ($delete) {
+    if (!$value = $DB->get_record('dp_objective_scale_value', array('id' => $delete))) {
+        print_error('error:invalidobjectivescalevalueid', 'totara_plan');
+    }
+    if ($scale_used) {
+        print_error('error:nodeleteobjectivescalevalueinuse', 'totara_plan');
     }
 
-    if($scale_used) {
-        print_error('error:nodeleteobjectivescalevalueinuse', 'local_plan');
+    if ($value->id == $objective->defaultid) {
+        print_error('error:nodeleteobjectivescalevaluedefault', 'totara_plan');
     }
 
-    if($value->id == $objective->defaultid) {
-        print_error('error:nodeleteobjectivescalevaluedefault', 'local_plan');
-    }
-
-    if($confirm) {
+    if ($confirm) {
         if (!confirm_sesskey()) {
             print_error('confirmsesskeybad', 'error');
         }
 
-        begin_sql();
-        if(!delete_records('dp_objective_scale_value', 'id', $delete)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedobjectivescalevalue', 'local_plan'), $CFG->wwwroot.'/totara/plan/objectivescales/view.php?id='.$objective->id);
-        }
-
-        $sql = "UPDATE {$CFG->prefix}dp_objective_scale_value SET sortorder=sortorder-1 WHERE objscaleid={$objective->id} AND sortorder > {$value->sortorder}";
-        if(!execute_sql($sql, false)) {
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedobjectivescalevalue', 'local_plan'), $CFG->wwwroot.'/totara/plan/objectivescales/view.php?id='.$objective->id);
-        }
-
-        commit_sql();
-        totara_set_notification(get_string('deletedobjectivescalevalue', 'local_plan', format_string($objective->name)), $CFG->wwwroot.'/totara/plan/objectivescales/view.php?id='.$objective->id, array('class' => 'notifysuccess'));
+        $transaction = $DB->start_delegated_transaction();
+        $DB->delete_records('dp_objective_scale_value', array('id' => $delete));
+        $sql = "UPDATE {dp_objective_scale_value} SET sortorder = sortorder-1 WHERE objscaleid = ? AND sortorder > ?";
+        $DB->execute($sql, array($objective->id, $value->sortorder));
+        $transaction->allow_commit();
+        totara_set_notification(get_string('deletedobjectivescalevalue', 'totara_plan', format_string($objective->name)), $CFG->wwwroot.'/totara/plan/objectivescales/view.php?id='.$objective->id, array('class' => 'notifysuccess'));
 
     } else {
-        $returnurl = "{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}";
-        $deleteurl = "{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}&amp;delete={$delete}&amp;confirm=1&amp;sesskey=" . sesskey();
+        $returnurl = new moodle_url('/totara/plan/objectivescales/view.php', array('id' => $objective->id));
+        $deleteurl = new moodle_url('/totara/plan/objectivescales/view.php', array('id' => $objective->id, 'delete' => $delete, 'confirm' => '1', 'sesskey' => sesskey()));
 
-        admin_externalpage_print_header();
-        $strdelete = get_string('deletecheckobjectivevalue', 'local_plan');
+        echo $OUTPUT->header();
+        $strdelete = get_string('deletecheckobjectivevalue', 'totara_plan');
+        $strbreak = html_writer::empty_tag('br') . html_writer::empty_tag('br');
 
-        notice_yesno(
-            "{$strdelete}<br /><br />".format_string($value->name),
-            $deleteurl,
-            $returnurl
-        );
+        echo $OUTPUT->confirm("{$strdelete}{$strbreak}".format_string($value->name), $deleteurl, $returnurl);
 
-        print_footer();
+        echo $OUTPUT->footer();
         exit;
     }
 }
@@ -108,8 +94,8 @@ $str_edit = get_string('edit');
 $str_delete = get_string('delete');
 $str_moveup = get_string('moveup');
 $str_movedown = get_string('movedown');
-$str_changeto = get_string('changeto', 'local_plan');
-$str_set = get_string('set', 'local_plan');
+$str_changeto = get_string('changeto', 'totara_plan');
+$str_set = get_string('set', 'totara_plan');
 
 
 ///
@@ -120,9 +106,9 @@ $str_set = get_string('set', 'local_plan');
 if ((!empty($moveup) or !empty($movedown))) {
 
     // Can't reorder a scale that's in use
-    if ( $scale_used ) {
+    if ($scale_used) {
         $returnurl = "{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}";
-        print_error('error:noreorderobjectiveinuse', 'local_plan', $returnurl);
+        print_error('error:noreorderobjectiveinuse', 'totara_plan', $returnurl);
     }
 
     $move = NULL;
@@ -130,30 +116,30 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     // Get value to move, and value to replace
     if (!empty($moveup)) {
-        $move = get_record('dp_objective_scale_value', 'id', $moveup);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_objective_scale_value', array('id' => $moveup));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_objective_scale_value
+            FROM {dp_objective_scale_value}
             WHERE
-            objscaleid = {$objective->id}
-            AND sortorder < {$move->sortorder}
-            ORDER BY sortorder DESC", 0, 1
+            objscaleid = ?
+            AND sortorder < ?
+            ORDER BY sortorder DESC", array($objective->id, $move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if ($resultset && count($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
     } else {
-        $move = get_record('dp_objective_scale_value', 'id', $movedown);
-        $resultset = get_records_sql("
+        $move = $DB->get_record('dp_objective_scale_value', array('id' => $movedown));
+        $resultset = $DB->get_records_sql("
             SELECT *
-            FROM {$CFG->prefix}dp_objective_scale_value
+            FROM {dp_objective_scale_value}
             WHERE
-            objscaleid = {$objective->id}
-            AND sortorder > {$move->sortorder}
-            ORDER BY sortorder ASC", 0, 1
+            objscaleid = ?
+            AND sortorder > ?
+            ORDER BY sortorder ASC", array($objective->id, $move->sortorder), 0, 1
         );
-        if ( $resultset && count($resultset) ){
+        if ($resultset && count($resultset)) {
             $swap = reset($resultset);
             unset($resultset);
         }
@@ -161,13 +147,12 @@ if ((!empty($moveup) or !empty($movedown))) {
 
     if ($swap && $move) {
         // Swap sortorders
-        begin_sql();
-        if (!(    set_field('dp_objective_scale_value', 'sortorder', $move->sortorder, 'id', $swap->id)
-            && set_field('dp_objective_scale_value', 'sortorder', $swap->sortorder, 'id', $move->id)
-        )) {
-            error(get_string('error:updateobjectivescalevalue', 'local_plan'));
-        }
-        commit_sql();
+        $transaction = $DB->start_delegated_transaction();
+
+        $DB->set_field('dp_objective_scale_value', 'sortorder', $move->sortorder, array('id' => $swap->id));
+        $DB->set_field('dp_objective_scale_value', 'sortorder', $swap->sortorder, array('id' => $move->id));
+
+        $transaction->allow_commit();
     }
 }
 
@@ -176,22 +161,18 @@ if ($default) {
     $value = $default;
 
     // Check value exists
-    if (!get_record('dp_objective_scale_value', 'id', $value)) {
-        error(get_string('error:objectivescalevalueidincorrect', 'local_plan'));
-    }
+    $DB->get_record('dp_objective_scale_value', array('id' => $value));
 
     // Update
-    $s = new object();
+    $s = new stdClass();
     $s->id = $objective->id;
     $s->defaultid = $default;
 
-    if (!update_record('dp_objective_scale', $s)) {
-        error(get_string('error:updateobjectivescale','local_plan'));
-    } else {
-        totara_set_notification(get_string('objectivescaledefaultupdated', 'local_plan'), null, array('class' => 'notifysuccess'));
-        // Fetch the update scale record so it'll show up to the user.
-        $objective = get_record('dp_objective_scale', 'id', $id);
-    }
+    $DB->update_record('dp_objective_scale', $s);
+
+    totara_set_notification(get_string('objectivescaledefaultupdated', 'totara_plan'), null, array('class' => 'notifysuccess'));
+    // Fetch the update scale record so it'll show up to the user.
+    $objective = $DB->get_record('dp_objective_scale', array('id' => $id));
 }
 
 
@@ -200,78 +181,72 @@ if ($default) {
 ///
 
 // Load values
-$values = get_records('dp_objective_scale_value', 'objscaleid', $objective->id, 'sortorder');
+$values = $DB->get_records('dp_objective_scale_value', array('objscaleid' => $objective->id), 'sortorder');
 
-$navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("objectivescales", 'local_plan'),
-                    'link'=>"{$CFG->wwwroot}/totara/plan/objectivescales/index.php",
-                    'type'=>'misc');
-$navlinks[] = array('name'=>format_string($objective->name), 'link'=>'', 'type'=>'misc');
+$PAGE->navbar->add(format_string($objective->name));
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-print_single_button($CFG->wwwroot . '/totara/plan/objectivescales/index.php', null, get_string('allobjectivescales', 'local_plan'));
+echo $OUTPUT->single_button('/totara/plan/objectivescales/index.php', get_string('allobjectivescales', 'totara_plan'), 'get');
 
 // Display info about scale
-print_heading(get_string('objectivescalex', 'local_plan', format_string($objective->name)), '', 1);
-echo '<p>'.format_string($objective->description, FORMAT_HTML).'</p>';
+echo $OUTPUT->heading(get_string('objectivescalex', 'totara_plan', format_string($objective->name)), 1);
+$objective->description = file_rewrite_pluginfile_urls($objective->description, 'pluginfile.php', $context->id, 'totara_plan', 'dp_objective_scale', $objective->id);
+echo html_writer::tag('p', format_text($objective->description, FORMAT_HTML));
 
 // Display warning if scale is in use
-if($scale_used) {
-    print_container(get_string('objectivescaleinuse', 'local_plan'), true, 'notifysuccess');
+if ($scale_used) {
+    echo $OUTPUT->container(get_string('objectivescaleinuse', 'totara_plan'), 'notifysuccess');
 }
 
 // Display warning if proficient values don't make sense
-$max_achieved = get_field('dp_objective_scale_value', 'MAX(sortorder)', 'achieved', 1, 'objscaleid', $id);
-$min_notachieved = get_field('dp_objective_scale_value', 'MIN(sortorder)', 'achieved', 0, 'objscaleid', $id);
-if(isset($max_achieved) && isset($min_notachieved) && $max_achieved > $min_notachieved) {
-    print_container(get_string('nonsensicalachievedvalues', 'local_plan'), true, 'notifyproblem');
+$max_achieved = $DB->get_field('dp_objective_scale_value', 'MAX(sortorder)', array('achieved' => 1, 'objscaleid' => $id));
+$min_notachieved = $DB->get_field('dp_objective_scale_value', 'MIN(sortorder)', array('achieved' => 0, 'objscaleid' => $id));
+if (isset($max_achieved) && isset($min_notachieved) && $max_achieved > $min_notachieved) {
+    echo $OUTPUT->container(get_string('nonsensicalachievedvalues', 'totara_plan'), 'notifyproblem');
 }
 
 // Display objective scale values
 if ($values) {
-    echo "<form id=\"objscaleupdateform\" action=\"{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$id}\" method=\"POST\">\n";
-    echo "<input type=\"hidden\" name=\"id\" value=\"{$id}\" />\n";
+    echo html_writer::start_tag('form', array('id' => "objscaleupdateform", 'action' => new moodle_url('/totara/plan/objectivescales/view.php', array('id' => $id)), 'method' => "POST"));
+    echo html_writer::empty_tag('input', array('type' => "hidden", 'name' => "id", 'value' => $id));
 
-    $table = new object();
-    $table->class = 'generaltable';
-    $table->data = array();
+    $table = new html_table();
+    $table->attributes = array('class' => 'generaltable');
 
     // Headers
     $table->head = array(get_string('name'));
     $table->align = array('left');
 
-    $table->head[] = get_string('defaultvalue', 'local_plan').' '.
-        helpbutton('objectivescaledefault', 'Help with Default Value', 'local_plan', true, false, '', true);
+    $table->head[] = get_string('defaultvalue', 'totara_plan').' '.
+        $OUTPUT->help_icon('objectivescaledefault', 'totara_plan', false);
     $table->align[] = 'center';
 
-    $table->head[] = get_string('achieved', 'local_plan').' '.
-        helpbutton('objectivescalevalueachieved', 'Help with Proficient Value', 'local_plan', true, false, '', true);
+    $table->head[] = get_string('achieved', 'totara_plan').' '.
+        $OUTPUT->help_icon('objectivescalevalueachieved', 'totara_plan', false);
     $table->align[] = 'center';
 
     $table->head[] = get_string('edit');
     $table->align[] = 'center';
 
-    $spacer = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" />";
+    $spacer = $OUTPUT->spacer();
     $numvalues = count($values);
 
     // Add rows to table
     $count = 0;
     foreach ($values as $value) {
         $count++;
-
         $row = array();
+        $buttons = array();
         $row[] = $value->name;
 
-        $buttons = array();
 
         // Is this the default value?
-        $disabled = ($numvalues == 1) ? ' disabled="disabled"' : '';
+        $disabled = ($numvalues == 1) ? 'disabled' : '';
         if ($value->id == $objective->defaultid) {
-            $row[] = '<input type="radio" name="default" value="'.$value->id.'" checked="checked" ' .
-                $disabled . ' />';
+            $row[] = html_writer::empty_tag('input', array('type' => "radio", 'name' => 'default', 'value' => $value->id, 'checked' => "checked", 'disabled' => $disabled));
         } else {
-            $row[] = '<input type="radio" name="default" value="'.$value->id.'" ' . $disabled . ' />';
+            $row[] = html_writer::empty_tag('input', array('type' => "radio", 'name' => 'default', 'value' => $value->id, $disabled => $disabled));
         }
 
         if ($value->achieved) {
@@ -280,32 +255,28 @@ if ($values) {
             $row[] = get_string('no');
         }
 
-        $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
-            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+        $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/objectivescales/editvalue.php', array('id' => $value->id)), new pix_icon('t/edit', $str_edit));
 
-        if(!$scale_used) {
-            if($value->id == $objective->defaultid) {
-                $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteobjectivescalevaluedefault', 'local_plan') . "\" title=\"" . get_string('error:nodeleteobjectivescalevaluedefault', 'local_plan') . "\" /></a>";
+        if (!$scale_used) {
+            if ($value->id == $objective->defaultid) {
+                $buttons[] = $OUTPUT->pix_icon('nodelete', get_string('error:nodeleteobjectivescalevaluedefault', 'totara_plan'), 'totara_core');
             } else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}&amp;delete={$value->id}\" title=\"$str_delete\">".
-                    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+                $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/objectivescales/view.php', array('id' => $objective->id, 'delete' => $value->id)), new pix_icon('t/delete', $str_delete));
             }
         } else {
-            $buttons[] = "<img src=\"{$CFG->pixpath}/t/dismiss.gif\" class=\"iconsmall\" alt=\"" . get_string('error:nodeleteobjectivescalevalueinuse', 'local_plan') . "\" title=\"" . get_string('error:nodeleteobjectivescalevalueinuse', 'local_plan') . "\" /></a>";
+            $buttons[] = $OUTPUT->pix_icon('nodelete', get_string('error:nodeleteobjectivescalevalueinuse', 'totara_plan'), 'totara_core');
         }
 
         // If value can be moved up
         if ($count > 1 && !$scale_used) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}&moveup={$value->id}\" title=\"$str_moveup\">".
-                "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/objectivescales/view.php', array('id' => $objective->id, 'moveup' => $value->id)), new pix_icon('t/up', $str_moveup));
         } else {
             $buttons[] = $spacer;
         }
 
         // If value can be moved down
         if ($count < $numvalues && !$scale_used) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}&movedown={$value->id}\" title=\"$str_movedown\">".
-                "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/objectivescales/view.php', array('id' => $objective->id, 'movedown' => $value->id)), new pix_icon('t/down', $str_movedown));
         } else {
             $buttons[] = $spacer;
         }
@@ -315,33 +286,32 @@ if ($values) {
         $table->data[] = $row;
     }
 
-    if($numvalues != 1) {
+    if ($numvalues != 1) {
         $row = array();
         $row[] = '';
-        $row[] = '<input type="submit" value="Update" />';
+        $row[] = html_writer::empty_tag('input', array('type' => 'submit', 'value' => 'Update'));
         $row[] = '';
         $row[] = '';
         $table->data[] = $row;
     }
 
-    print_table($table);
-    echo "</form>\n";
+    echo html_writer::table($table);
+    echo html_writer::end_tag('form');
 
 } else {
-    echo '<br /><div>'.get_string('noobjectivescalevalues','local_plan').'</div><br />';
+    echo html_writer::empty_tag('br') . $OUTPUT->container(get_string('noobjectivescalevalues', 'totara_plan')) . html_writer::empty_tag('br');
 
+}
+
+// Print button for creating new objective scale value
+$button = '';
+if (!$scale_used) {
+    $options = array('objscaleid' => $objective->id);
+    $button = $OUTPUT->single_button(new moodle_url('/totara/plan/objectivescales/editvalue.php', $options), get_string('addnewobjectivevalue', 'totara_plan'), 'get');
 }
 
 // Navigation / editing buttons
-echo '<div class="buttons">';
-
-// Print button for creating new objective scale value
-if(!$scale_used) {
-    $options = array('objscaleid' => $objective->id);
-    print_single_button($CFG->wwwroot.'/totara/plan/objectivescales/editvalue.php', $options, get_string('addnewobjectivevalue', 'local_plan'), 'get');
-}
-
-echo '</div>';
+echo $OUTPUT->container($button, "buttons");
 
 /// and proper footer
-print_footer();
+echo $OUTPUT->footer();

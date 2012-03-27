@@ -32,17 +32,22 @@ $string['datepickerplaceholder'] = 'dd/mm/yy'; //how the datepicker placeholder 
 $string['datepickerparseformat'] = 'd/m/y'; //how php parses the datepicker dates to a timestamp (in totara_date_parse_from_format)
 $string['datepickerregexjs'] = '[0-3][0-9]/(0|1)[0-9]/[0-9]{2}';
 $string['datepickerregexphp'] = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
+$string['strftimedateshortmonth'] = '%d %b %Y';
 
 $string['core:createcoursecustomfield'] = 'Create a course custom field';
 $string['core:updatecoursecustomfield'] = 'Update a course custom field';
 $string['core:deletecoursecustomfield'] = 'Delete a course custom field';
+$string['xpercent'] = '{$a}%';
 $string['xpercentcomplete'] = '{$a} % complete';
+$string['xofy'] = '{$a->count} / {$a->total}';
 $string['numberofactiveusers'] = '{$a} users have logged in to this site in the last year';
 $string['lasterroroccuredat'] = 'Last error occured at {$a}';
 $string['downloaderrorlog'] = 'Download error log';
 $string['totaracopyright'] = '<p class="totara-copyright"><a href="http://www.totaralms.com">TotaraLMS</a> is a distribution of Moodle. A "distro" or distribution is a ready-made extended version of the standard product with its own particular focus and vision. Totara is specifically designed for the requirements of corporate, industry and vocational training in contrast to standard Moodle\'s traditional educational setting.</p><p class="totara-copyright"><a href="http://www.totaralms.com">TotaraLMS</a> extensions are Copyright &copy; 2010 onwards, Totara Learning Solutions Limited.</p>';
 $string['totaralogo'] = 'Totara Logo';
 $string['totaramenu'] = 'Totara Menu';
+$string['requiresjs'] = 'This {$a} requires Javascript to be enabled.';
+
 // Course categories
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';
