@@ -414,4 +414,73 @@ class totara_core_renderer extends plugin_renderer_base {
         $output .= html_writer::end_tag('form');
         return $output;
     }
+
+    /**
+     * Generate markup for totara menu
+     */
+    public function print_totara_menu($menudata, $parent=null, $selected_items=array()) {
+        global $PAGE;
+
+        $output = '';
+
+        // Gets selected items, only done first time
+        if (!$selected_items && $PAGE->totara_menu_selected) {
+            $relationships = array();
+            foreach ($menudata as $item) {
+                $relationships[$item->name] = array($item->name);
+                if ($item->parent) {
+                    $relationships[$item->name][] = $item->parent;
+                    if (!empty($relationships[$item->parent])) {
+                        $relationships[$item->name] = array_merge($relationships[$item->name], $relationships[$item->parent]);
+                    } elseif (!isset($relationships[$item->parent])) {
+                        throw new coding_exception('Totara menu definition is incorrect');
+                    }
+                }
+            }
+
+            $selected_items = $relationships[$PAGE->totara_menu_selected];
+        }
+
+        $currentlevel = array();
+        foreach ($menudata as $menuitem) {
+            if ($menuitem->parent == $parent) {
+                $currentlevel[] = $menuitem;
+            }
+        }
+
+        $numitems = count($currentlevel);
+
+        $count = 0;
+        if ($numitems > 0) {
+            // Print out Structure
+            $output .= html_writer::start_tag('ul');
+            foreach ($currentlevel as $menuitem) {
+                $class = 'menu-' . $menuitem->name;
+                if ($count == 0) {
+                    $class .= ' first';
+                }
+
+                if ($count == $numitems - 1) {
+                    $class .= ' last';
+                }
+
+                if (in_array($menuitem->name, $selected_items)) {
+                    $class .= ' selected';
+                }
+
+                $output .= html_writer::start_tag('li');
+                $url = new moodle_url($menuitem->url);
+
+                $output .= $this->output->action_link($url, $menuitem->linktext, null, array('class' => $class));
+
+                $output .= $this->print_totara_menu($menudata, $menuitem->name, $selected_items);
+                $output .= html_writer::end_tag('li');
+
+                $count++;
+            }
+
+            $output .= html_writer::end_tag('ul');
+        }
+        return $output;
+    }
 }

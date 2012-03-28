@@ -1176,53 +1176,169 @@ function totara_get_nav_select_classes($navstructure, $primary_selected, $second
 
 
 /**
- * Returns an array of class strings to add to each navigation tab
+ * Builds Totara menu, returns an array of objects that
+ * represent the stucture of the menu
  *
- * Strings are empty unless the page should be shown as 'selected'. Keys
- * are the tab names from $navstructure array
+ * The parents must be defined before the children so we
+ * can correctly figure out which items should be selected
  *
- * @param array $navstructure Multi-dimensional array of the tab structure
- * @param array $navmatches URL matches for each tab name
- *
- * @return array Array of class strings to add to menu items
+ * @return Array of menu item objects
  */
-function totara_get_selected_navs($navstructure, $navmatches) {
-    global $CFG;
-    $page_url = substr(qualified_me(), strlen($CFG->wwwroot));
+function totara_build_menu() {
+    global $USER, $SESSION;
 
-    $selected = null;
-    foreach ($navmatches as $pagename => $partialurls) {
-        if(is_array($partialurls)) {
-            foreach($partialurls as $partialurl) {
-                if(strncmp($page_url, $partialurl,
-                strlen($partialurl)) == 0) {
-                    $selected = $pagename;
-                }
-            }
-        } else {
-            if(strncmp($page_url, $partialurls,
-            strlen($partialurls)) == 0) {
-                $selected = $pagename;
-            }
-        }
+    if (isset($SESSION->viewtype) && $SESSION->viewtype == 'course') {
+        $findcourse_type = 'courses';
+    } else {
+        $findcourse_type = 'programs';
     }
 
-    // now work out if any primary items should be selected
-    $primary_selected = null;
-    $secondary_selected = null;
-    foreach($navstructure as $primary => $secondaries) {
-        // this is a primary item
-        if($selected == $primary) {
-            $primary_selected = $primary;
-            $secondary_selected = null;
-        }
-        // this is a secondary item, find which primary
-        // item it belongs to
-        if(in_array($selected, $secondaries)) {
-            $primary_selected = $primary;
-            $secondary_selected = $selected;
-        }
-        // otherwise, none set
+
+    $sitecontext = context_system::instance();
+    $canviewdashboards  = has_capability('totara/dashboard:view', $sitecontext, $USER->id);
+    // TODO: Uncomment this once plans are ported
+    //$canviewlearningplans = dp_can_view_users_plans($USER->id);
+    $canviewlearningplans = true;
+
+    // TODO: Uncomment this once programs are ported
+    //$requiredlearninglink = prog_get_tab_link($USER->id);
+    $requiredlearninglink = null;
+
+    $tree = array();
+
+    $tree[] = (object)array(
+        'name' => 'home',
+        'linktext' => get_string('home'),
+        'parent' => null,
+        'url' => '/index.php'
+    );
+
+    $tree[] = (object)array(
+        'name' => 'profile',
+        'linktext' => get_string('profile'),
+        'parent' => 'home',
+        'url' => '/user/view.php'
+    );
+
+    if ($canviewdashboards) {
+        $mylearning_link = '/my/learning.php';
     }
-    return array($primary_selected, $secondary_selected);
+    else if ($canviewlearningplans) {
+        $mylearning_link = '/totara/plan/index.php';
+    }
+    else {
+        $mylearning_link = '/my/bookings.php';
+    }
+
+    $tree[] = (object)array(
+        'name' => 'mylearning',
+        'linktext' => get_string('mylearning', 'totara_core'),
+        'parent' => null,
+        'url' => $mylearning_link
+    );
+
+    if ($canviewdashboards) {
+        $tree[] = (object)array(
+            'name' => 'learnerdashboard',
+            'linktext' => get_string('dashboard', 'totara_dashboard'),
+            'parent' => 'mylearning',
+            'url' => '/my/learning.php'
+        );
+    }
+
+    if ($canviewlearningplans) {
+        $tree[] = (object)array(
+            'name' => 'learningplans',
+            'linktext' => get_string('learningplans', 'totara_core'),
+            'parent' => 'mylearning',
+            'url' => '/totara/plan/index.php'
+        );
+    }
+
+    $tree[] = (object)array(
+        'name' => 'mybookings',
+        'linktext' => get_string('mybookings', 'totara_core'),
+        'parent' => 'mylearning',
+        'url' => '/my/bookings.php'
+    );
+
+    $tree[] = (object)array(
+        'name' => 'recordoflearning',
+        'linktext' => get_string('recordoflearning', 'totara_core'),
+        'parent' => 'mylearning',
+        'url' => '/torara/plan/record/courses.php'
+    );
+
+    if ($requiredlearninglink) {
+        $tree[] = (object)array(
+            'name' => 'requiredlearning',
+            'linktext' => get_string('requiredlearning', 'totara_program'),
+            'parent' => 'mylearning',
+            'url' => $requiredlearninglink
+        );
+    }
+
+    if ($staff = totara_get_staff()) {
+        $myteam_link = $canviewdashboards ? '/my/team.php' : '/my/teammembers.php';
+
+        $tree[] = (object)array(
+            'name' => 'myteam',
+            'linktext' => get_string('myteam', 'totara_core'),
+            'parent' => null,
+            'url' => $myteam_link
+        );
+
+        if ($canviewdashboards) {
+            $tree[] = (object)array(
+                'name' => 'managerdashboard',
+                'linktext' => get_string('dashboard', 'totara_dashboard'),
+                'parent' => 'myteam',
+                'url' => '/my/team.php'
+            );
+        }
+
+        $tree[] = (object)array(
+            'name' => 'teammembers',
+            'linktext' => get_string('teammembers', 'totara_core'),
+            'parent' => 'myteam',
+            'url' => '/my/teammembers.php'
+        );
+    }
+
+    $tree[] = (object)array(
+        'name' => 'myreports',
+        'linktext' => get_string('myreports', 'totara_core'),
+        'parent' => null,
+        'url' => '/my/reports.php'
+    );
+
+    $tree[] = (object)array(
+        'name' => 'findcourses',
+        'linktext' => get_string('findcourses', 'totara_core'),
+        'parent' => null,
+        'url' => '/course/categorylist.php?viewtype=' . $findcourse_type
+    );
+
+    $tree[] = (object)array(
+        'name' => 'courses',
+        'linktext' => get_string('courses'),
+        'parent' => 'findcourses',
+        'url' => '/course/categorylist.php?viewtype=course'
+    );
+
+    $tree[] = (object)array(
+        'name' => 'programs',
+        'linktext' => get_string('programs', 'totara_program'),
+        'parent' => 'findcourses',
+        'url' => '/course/categorylist.php?viewtype=program'
+    );
+
+    $tree[] = (object)array(
+        'name' => 'calendar',
+        'linktext' => get_string('calendar', 'totara_core'),
+        'parent' => null,
+        'url' => '/calendar/view.php'
+    );
+
+    return $tree;
 }

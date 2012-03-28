@@ -36,6 +36,7 @@ $string['lasterroroccuredat'] = 'Last error occured at {$a}';
 $string['downloaderrorlog'] = 'Download error log';
 $string['totaracopyright'] = '<p class="totara-copyright"><a href="http://www.totaralms.com">TotaraLMS</a> is a distribution of Moodle. A "distro" or distribution is a ready-made extended version of the standard product with its own particular focus and vision. Totara is specifically designed for the requirements of corporate, industry and vocational training in contrast to standard Moodle\'s traditional educational setting.</p><p class="totara-copyright"><a href="http://www.totaralms.com">TotaraLMS</a> extensions are Copyright &copy; 2010 onwards, Totara Learning Solutions Limited.</p>';
 $string['totaralogo'] = 'Totara Logo';
+$string['totaramenu'] = 'Totara Menu';
 // Course categories
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';

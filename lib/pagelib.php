@@ -228,6 +228,11 @@ class moodle_page {
 
     protected $_popup_notification_allowed = true;
 
+    /**
+     * Totara specific Page variable
+     */
+    protected $_totara_menu_selected = null;
+
 /// Magic getter methods =============================================================
 /// Due to the __get magic below, you normally do not call these as $PAGE->magic_get_x
 /// methods, but instead use the $PAGE->x syntax.
@@ -604,6 +609,14 @@ class moodle_page {
     }
 
     /**
+     * Returns the totara menu selected string
+     * @return String totara_menu_selected
+     */
+    protected function magic_get_totara_menu_selected() {
+        return $this->_totara_menu_selected;
+    }
+
+    /**
      * PHP overloading magic to make the $PAGE->course syntax work by redirecting
      * it to the corresponding $PAGE->magic_get_course() method if there is one, and
      * throwing an exception if not.
@@ -934,6 +947,13 @@ class moodle_page {
      */
     public function set_headingmenu($menu) {
         $this->_headingmenu = $menu;
+    }
+
+    /**
+     * @param string $menuitemname The name of the bottom level selected item
+     */
+    public function set_totara_menu_selected($menuitemname) {
+        $this->_totara_menu_selected = $menuitemname;
     }
 
     /**
