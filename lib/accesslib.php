@@ -2747,6 +2747,7 @@ function get_component_string($component, $contextlevel) {
             case CONTEXT_SYSTEM:    return get_string('coresystem');
             case CONTEXT_USER:      return get_string('users');
             case CONTEXT_COURSECAT: return get_string('categories');
+            case CONTEXT_PROGRAM:   return get_string('program', 'totara_program');
             case CONTEXT_COURSE:    return get_string('course');
             case CONTEXT_MODULE:    return get_string('activities');
             case CONTEXT_BLOCK:     return get_string('block');
@@ -5242,6 +5243,7 @@ class context_helper extends context {
             CONTEXT_SYSTEM    => 'context_system',
             CONTEXT_USER      => 'context_user',
             CONTEXT_COURSECAT => 'context_coursecat',
+            CONTEXT_PROGRAM   => 'context_program',
             CONTEXT_COURSE    => 'context_course',
             CONTEXT_MODULE    => 'context_module',
             CONTEXT_BLOCK     => 'context_block',
@@ -6283,6 +6285,221 @@ class context_course extends context {
                       FROM {context} ctx
                       JOIN {course} c ON (c.id = ctx.instanceid AND ctx.contextlevel = ".CONTEXT_COURSE." AND c.category <> 0)
                       JOIN {context} pctx ON (pctx.instanceid = c.category AND pctx.contextlevel = ".CONTEXT_COURSECAT.")
+                     WHERE pctx.path IS NOT NULL AND pctx.depth > 0
+                           $ctxemptyclause";
+            $trans = $DB->start_delegated_transaction();
+            $DB->delete_records('context_temp');
+            $DB->execute($sql);
+            context::merge_context_temp_table();
+            $DB->delete_records('context_temp');
+            $trans->allow_commit();
+        }
+    }
+}
+
+
+/**
+ * Program context class
+ * @author Alastair Munro
+ * @since Totara 2.2
+ */
+class context_program extends context {
+    /**
+     * Please use context_course::instance($courseid) if you need the instance of context.
+     * Alternatively if you know only the context id use context::instance_by_id($contextid)
+     *
+     * @param stdClass $record
+     */
+    protected function __construct(stdClass $record) {
+        parent::__construct($record);
+        if ($record->contextlevel != CONTEXT_PROGRAM) {
+            throw new coding_exception('Invalid $record->contextlevel in context_program constructor.');
+        }
+    }
+
+    /**
+     * Returns human readable context level name.
+     *
+     * @static
+     * @return string the human readable context level name.
+     */
+    protected static function get_level_name() {
+        return get_string('program', 'totara_program');
+    }
+
+    /**
+     * Returns human readable context identifier.
+     *
+     * @param boolean $withprefix whether to prefix the name of the context with Program
+     * @param boolean $short whether to use the short name of the thing.
+     * @return string the human readable context name.
+     */
+    public function get_context_name($withprefix = true, $short = false) {
+        global $DB;
+
+        $name = '';
+        if ($this->_instanceid == SITEID) {
+            $name = get_string('frontpage', 'admin');
+        } else {
+            if ($program = $DB->get_record('prog', array('id' => $this->_instanceid))) {
+                if ($withprefix){
+                    $name = get_string('program', 'totara_program').': ';
+                }
+                if ($short){
+                    $name .= format_string($program->shortname, true, array('context' => $this));
+                } else {
+                    $name .= format_string($program->fullname);
+               }
+            }
+        }
+        return $name;
+    }
+
+    /**
+     * Returns the most relevant URL for this context.
+     *
+     * @return moodle_url
+     */
+    public function get_url() {
+        if ($this->_instanceid != SITEID) {
+            return new moodle_url('/totara/program/view.php', array('id'=>$this->_instanceid));
+        }
+
+        return new moodle_url('/');
+    }
+
+    /**
+     * Returns array of relevant context capability records.
+     *
+     * @return array
+     */
+    public function get_capabilities() {
+        global $DB;
+
+        $sort = 'ORDER BY contextlevel,component,name';   // To group them sensibly for display
+
+        $params = array();
+        $sql = "SELECT *
+                  FROM {capabilities}
+                 WHERE contextlevel IN (".CONTEXT_PROGRAM.",".CONTEXT_MODULE.",".CONTEXT_BLOCK.")";
+
+        return $DB->get_records_sql($sql.' '.$sort, $params);
+    }
+
+    /**
+     * Is this context part of any program? If yes return program context.
+     *
+     * @param bool $strict true means throw exception if not found, false means return false if not found
+     * @return program_context context of the enclosing program, null if not found or exception
+     */
+    public function get_program_context($strict = true) {
+        return $this;
+    }
+
+    /**
+     * Returns program context instance.
+     *
+     * @static
+     * @param int $instanceid
+     * @param int $strictness
+     * @return context_program context instance
+     */
+    public static function instance($instanceid, $strictness = MUST_EXIST) {
+        global $DB;
+
+        if ($context = context::cache_get(CONTEXT_PROGRAM, $instanceid)) {
+            return $context;
+        }
+
+        if (!$record = $DB->get_record('context', array('contextlevel' => CONTEXT_PROGRAM, 'instanceid' => $instanceid))) {
+            if ($program = $DB->get_record('prog', array('id' => $instanceid), 'id, category', $strictness)) {
+                if ($program->category) {
+                    $parentcontext = context_coursecat::instance($program->category);
+                    $record = context::insert_context_record(CONTEXT_PROGRAM, $program->id, $parentcontext->path);
+                } else {
+                    $record = context::insert_context_record(CONTEXT_PROGRAM, $program->id, '/'.SYSCONTEXTID, 0);
+                }
+            }
+        }
+
+        if ($record) {
+            $context = new context_program($record);
+            context::cache_add($context);
+            return $context;
+        }
+
+        return false;
+    }
+
+    /**
+     * Create missing context instances at program context level
+     * @static
+     */
+    protected static function create_level_instances() {
+        global $DB;
+
+        $sql = "INSERT INTO {context} (contextlevel, instanceid)
+                SELECT ".CONTEXT_PROGRAM.", p.id
+                  FROM {prog} p
+                 WHERE NOT EXISTS (SELECT 'x'
+                                     FROM {context} cx
+                                    WHERE p.id = cx.instanceid AND cx.contextlevel=".CONTEXT_PROGRAM.")";
+        $DB->execute($sql);
+    }
+
+    /**
+     * Returns sql necessary for purging of stale context instances.
+     *
+     * @static
+     * @return string cleanup SQL
+     */
+    protected static function get_cleanup_sql() {
+        $sql = "
+                  SELECT c.*
+                    FROM {context} c
+         LEFT OUTER JOIN {prog} p ON c.instanceid = p.id
+                   WHERE p.id IS NULL AND c.contextlevel = ".CONTEXT_PROGRAM."
+               ";
+
+        return $sql;
+    }
+
+    /**
+     * Rebuild context paths and depths at program context level.
+     *
+     * @static
+     * @param $force
+     */
+    protected static function build_paths($force) {
+        global $DB;
+
+        if ($force or $DB->record_exists_select('context', "contextlevel = ".CONTEXT_PROGRAM." AND (depth = 0 OR path IS NULL)")) {
+            if ($force) {
+                $ctxemptyclause = $emptyclause = '';
+            } else {
+                $ctxemptyclause = "AND (ctx.path IS NULL OR ctx.depth = 0)";
+                $emptyclause    = "AND ({context}.path IS NULL OR {context}.depth = 0)";
+            }
+
+            $base = '/'.SYSCONTEXTID;
+
+            // Standard frontpage
+            $sql = "UPDATE {context}
+                       SET depth = 2,
+                           path = ".$DB->sql_concat("'$base/'", 'id')."
+                     WHERE contextlevel = ".CONTEXT_PROGRAM."
+                           AND EXISTS (SELECT 'x'
+                                         FROM {prog} p
+                                        WHERE p.id = {context}.instanceid AND p.category = 0)
+                           $emptyclause";
+            $DB->execute($sql);
+
+            // standard programs
+            $sql = "INSERT INTO {context_temp} (id, path, depth)
+                    SELECT ctx.id, ".$DB->sql_concat('pctx.path', "'/'", 'ctx.id').", pctx.depth+1
+                      FROM {context} ctx
+                      JOIN {prog} p ON (p.id = ctx.instanceid AND ctx.contextlevel = ".CONTEXT_PROGRAM." AND p.category <> 0)
+                      JOIN {context} pctx ON (pctx.instanceid = p.category AND pctx.contextlevel = ".CONTEXT_COURSECAT.")
                      WHERE pctx.path IS NOT NULL AND pctx.depth > 0
                            $ctxemptyclause";
             $trans = $DB->start_delegated_transaction();

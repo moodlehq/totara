@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,9 @@ $id = required_param('id', PARAM_INT); // program id
 
 $program = new program($id);
 
+$PAGE->set_context(context_program::instance($program->id));
+$PAGE->set_url('/totara/program/view.php', array('id' => $id));
+$PAGE->set_pagelayout('noblocks');
 add_to_log(SITEID, 'program', 'view', "view.php?id={$program->id}&amp;userid={$USER->id}", $program->fullname);
 
 //Javascript include
@@ -45,9 +48,17 @@ local_js(array(
 ));
 
 // Get extension dialog content
-require_js(array(
-    $CFG->wwwroot . '/totara/program/view/program_view.js.php?id=' . $program->id
-));
+$PAGE->requires->strings_for_js(array('pleaseentervaliddate', 'pleaseentervalidreason', 'extensionrequest', 'cancel', 'ok'), 'totara_program');
+$PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder'), 'totara_core');
+$notify_html = trim($OUTPUT->notification(get_string("extensionrequestsent", "totara_program"), "notifysuccess"));
+$notify_html_fail = trim($OUTPUT->notification(get_string("extensionrequestnotsent", "totara_program"), null));
+$args = array('args'=>'{"id":'.$program->id.', "userid":'.$USER->id.', "notify_html_fail":'.json_encode($notify_html_fail).', "notify_html":'.json_encode($notify_html).'}');
+$jsmodule = array(
+     'name' => 'totara_programview',
+     'fullpath' => '/totara/program/view/program_view.js',
+     'requires' => array('json', 'totara_core')
+     );
+$PAGE->requires->js_init_call('M.totara_programview.init',$args, false, $jsmodule);
 
 ///
 /// Display
@@ -58,26 +69,26 @@ $adminediting = !empty($USER->categoryedit);
 $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
 $heading = $program->fullname;
-$pagetitle = format_string(get_string('program', 'local_program').': '.$heading);
+$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
 $navlinks = array();
 if ($adminediting) {
-    $navlinks[] = array('name' => get_string('manageprograms', 'admin'), 'link' => $CFG->wwwroot . '/course/categorylist.php?viewtype=program', 'type' => 'misc');
-    $navlinks = array_merge($navlinks, $category_breadcrumbs);
+    $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
+    //$navlinks = array_merge($navlinks, $category_breadcrumbs);
 } else {
-    $navlinks[] = array('name' => get_string('findprograms', 'local_program'), 'link' => $CFG->wwwroot . '/course/categorylist.php?viewtype=program', 'type'=>'misc');
-    $navlinks = array_merge($navlinks, $category_breadcrumbs);
+    $PAGE->navbar->add(get_string('findprograms', 'totara_program'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
+    //$navlinks = array_merge($navlinks, $category_breadcrumbs);
 }
 
-$navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
+$PAGE->navbar->add($heading);
 
-$navigation = build_navigation($navlinks);
-
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading('');
+echo $OUTPUT->header();
 
 // Program page content
-print_container_start(false, '', 'view-program-content');
+echo $OUTPUT->container_start('', 'view-program-content');
 
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
 /* if the logged in user has been assigned this program,
  * then they should always see their progress - even on
@@ -88,6 +99,6 @@ if ($program->user_is_assigned($USER->id)) {
     echo $program->display();
 }
 
-print_container_end();
+echo $OUTPUT->container_end();
 
-print_footer();
+echo $OUTPUT->footer();

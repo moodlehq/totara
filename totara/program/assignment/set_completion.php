@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,35 +27,9 @@ require_once($CFG->dirroot.'/totara/program/lib.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
 
 require_login();
+$PAGE->set_context(context_system::instance());
 
-// Put the html here for now
-// The Javascript is all in the new handler
+
+echo $PAGE->get_renderer('totara_program')->display_set_completion();
 
 ?>
-
-<div id="prog-completion-fixed-date">
-    <label><?php echo get_string('completeby', 'local_program'); ?></label>
-
-    <input type="text" class="completiontime" name="completiontime" placeholder="<?php echo get_string('datepickerplaceholder', 'totara_core'); ?>"/>
-
-    <button class="fixeddate" ><?php echo get_string('setfixedcompletiondate', 'local_program'); ?></button>
-</div>
-
-<div id="prog-completion-or-string">
-    <?php echo get_string('or', 'local_program'); ?>
-</div>
-
-<div id="prog-completion-relative-date">
-    <?php echo get_string('completewithin', 'local_program'); ?>
-
-    <?php echo program_utilities::print_duration_selector($prefix='', $periodelementname='timeperiod', $periodvalue='', $numberelementname='timeamount', $numbervalue='1', $return=true, $includehours=false); ?>
-
-    <?php echo get_string('of', 'local_program'); ?>
-
-    <?php echo prog_assignments::get_completion_events_dropdown(); ?>
-
-    <input type="hidden" id="instance" name="instance" value="" />
-    <a id="instancetitle" href="#" > </a>
-
-    <button class="relativeeventtime" ><?php echo get_string('settimerelativetoevent', 'local_program'); ?></button>
-</div>

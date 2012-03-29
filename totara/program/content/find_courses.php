@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_courses.class.php');
 require_once("{$CFG->dirroot}/totara/program/lib.php");
 
+$PAGE->set_context(get_system_context());
 require_login();
 
 $id = required_param('id', PARAM_INT); // Program id
@@ -38,10 +39,10 @@ require_capability('totara/program:configurecontent', program_get_context($id));
 $categoryid = (int) substr($categoryid, 3);
 
 $selected = array();
-if( ! empty($selected_courseids)) {
+if (!empty($selected_courseids)) {
     $selected_courseids_array = explode(',', $selected_courseids);
-    foreach($selected_courseids_array as $selected_courseid) {
-        if($course = get_record('course', 'id', $selected_courseid)) {
+    foreach ($selected_courseids_array as $selected_courseid) {
+        if ($course = $DB->get_record('course', array('id' => $selected_courseid))) {
             $selected[] = $course;
         }
     }

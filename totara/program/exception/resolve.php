@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot . '/totara/program/lib.php');
+
 
 $programid = required_param('id', PARAM_INT);
 $action = required_param('action', PARAM_INT);
@@ -68,7 +69,7 @@ if (!empty($selected_exceptions)) {
         // the specified action it will also return true.  Otherwise it will return false.
         $success = $exception->handle($action);
 
-        if ( ! $success) {
+        if (!$success) {
             // report this to the user
             $failed_ids[] = $exception->id;
         }
@@ -78,12 +79,12 @@ if (!empty($selected_exceptions)) {
 unset($_SESSION['exceptions_selectiontype']);
 unset($_SESSION['exceptions_added']);
 unset($_SESSION['exceptions_removed']);
-$_SESSION['exceptions_resolved'] = true; // set a flag to indicate tat issues have been resolved
+$_SESSION['exceptions_resolved'] = true; // set a flag to indicate that issues have been resolved
 
 if (count($failed_ids) == 0) {
-    totara_set_notification(get_string('successfullyresolvedexceptions','local_program'), null, array('class' => 'notifysuccess'));
+    totara_set_notification(get_string('successfullyresolvedexceptions', 'totara_program'), null, array('class' => 'notifysuccess'));
 }
 else {
-    totara_set_notification(get_string('failedtoresolve','local_program') . ': ' . implode(', ', $failed_ids));
+    totara_set_notification(get_string('failedtoresolve', 'totara_program') . ': ' . implode(', ', $failed_ids));
 }
 ?>

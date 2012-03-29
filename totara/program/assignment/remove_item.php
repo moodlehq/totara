@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot.'/totara/program/lib.php');
-require_once($CFG->dirroot.'/lib/pear/HTML/AJAX/JSON.php');
 require_login();
 
 
@@ -40,7 +39,7 @@ if (class_exists($classname)) {
     $a = new stdClass();
     $a->itemname = $item->fullname;
     $a->affectedusers = $users;
-    $html = get_string('youhaveremoved','local_program',$a);
+    $html = get_string('youhaveremoved', 'totara_program', $a);
 
     $data = array(
     'html'      => $html

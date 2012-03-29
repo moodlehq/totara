@@ -23,7 +23,7 @@
  */
 
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
 

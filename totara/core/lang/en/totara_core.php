@@ -53,7 +53,11 @@ $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';
 $string['browse'] = 'Browse';
 $string['browsecategories'] = 'Browse Categories';
+$string['couldntreaddataforblockid'] = 'Could not read data for blockid={$a}';
+$string['couldntreaddataforcourseid'] = 'Could not ready data for courseid={$a}';
 $string['developmentplan'] = 'Development Planner';
+$string['errorfindingcategory'] = 'Error finding the category';
+$string['errorfindingprogram'] = 'Error finding the program';
 $string['findcourses'] = 'Find Courses';
 $string['mydevelopmentplans'] = 'My development plans';
 $string['learningplans'] = 'Learning Plans';
@@ -63,6 +67,7 @@ $string['myrecordoflearning'] = 'My Record of Learning';
 $string['recordoflearningfor'] = 'Record of Learning for ';
 $string['notapplicable'] = 'Not applicable';
 $string['notavailable'] = 'Not available';
+$string['progdoesntbelongcat'] = 'The program doesn\'t belong to this category';
 $string['recordoflearning'] = 'Record of Learning';
 $string['searchx'] = 'Search {$a}';
 $string['searchcourses'] = 'Search Courses';
@@ -179,11 +184,12 @@ $string['column'] = 'Column';
 $string['heading'] = 'Heading';
 $string['settings'] = 'Settings';
 
-//Course and Category icons
+//Icon Strings
 $string['icon'] = 'Icon';
 $string['none'] = 'None';
 $string['currenticon'] = 'Current icon';
 $string['courseicon'] = 'Course icon';
+$string['programicon'] = 'Program icon';
 $string['coursecategoryicon'] = 'Category icon';
 $string['typeicon'] = 'Type icon';
 $string['position_typeicon'] = 'Position type icon';

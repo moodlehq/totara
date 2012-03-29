@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_hierarchy.class.php');
 require_once("{$CFG->dirroot}/totara/program/lib.php");
 
+$PAGE->set_context(get_system_context());
 require_login();
 
 ///
@@ -54,10 +55,8 @@ $treeonly = optional_param('treeonly', false, PARAM_BOOL);
 // Already selected items
 $selected = optional_param('selected', array(), PARAM_SEQUENCE);
 if ($selected != false) {
-    $selected = get_records_select($table,"id IN ($selected)");
-    if (!$selected) {
-    $selected = array();
-    }
+    list($selectedsql, $selectedparams) = $DB->get_in_or_equal(explode(',', $selected));
+    $selected = $DB->get_records_select($table, "id {$selectedsql}", $selectedparams);
 }
 
 // Don't let them remove the currently selected ones

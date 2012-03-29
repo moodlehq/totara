@@ -26,7 +26,7 @@
 /*
  * Page containing hierarchy item search results
  */
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
@@ -36,6 +36,10 @@ require_once($CFG->dirroot . '/totara/core/searchlib.php');
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
 }
+
+global $PAGE;
+$PAGE->set_context(get_system_context());
+require_login();
 
 /**
  * How many search results to show before paginating

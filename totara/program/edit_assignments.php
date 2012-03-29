@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,8 +39,35 @@ $program = new program($id);
 
 // Additional permissions check
 if (!has_capability('totara/program:configureassignments', $program->get_context())) {
-    print_error('error:nopermissions', 'local_program');
+    print_error('error:nopermissions', 'totara_program');
 }
+
+//Javascript include
+local_js(array(
+TOTARA_JS_DIALOG,
+TOTARA_JS_TREEVIEW,
+TOTARA_JS_DATEPICKER,
+TOTARA_JS_PLACEHOLDER
+));
+
+// Get item pickers
+$PAGE->requires->strings_for_js(array('youhaveunsavedchanges','pleasesetcompletiontimes',
+                'cancel','ok','completioncriteria','pleaseentervaliddate',
+                'pleaseentervalidunit','pleasepickaninstance','editassignments',
+                'saveallchanges','confirmassignmentchanges','chooseitem'), 'totara_program');
+$PAGE->requires->string_for_js('loading', 'admin');
+$PAGE->requires->string_for_js('none', 'moodle');
+$display_selected = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'completion-event-dialog'));
+$args = array('args' => '{"id":"'.$program->id.'",'.
+                         '"confirmation_template":'.prog_assignments::get_confirmation_template().','.
+                         '"COMPLETION_EVENT_NONE":"'.COMPLETION_EVENT_NONE.'",'.
+                         '"COMPLETION_EVENT_FIRST_LOGIN":"'.COMPLETION_EVENT_FIRST_LOGIN.'",'.
+                         '"display_selected_completion_event":'.$display_selected.'}');
+$jsmodule = array(
+        'name' => 'totara_programassignment',
+        'fullpath' => '/totara/program/assignment/program_assignment.js',
+        'requires' => array('json', 'totara_core'));
+$PAGE->requires->js_init_call('M.totara_programassignment.init',$args, false, $jsmodule);
 
 // Define the categorys to appear on the page
 $categories = prog_assignment_category::get_categories();
@@ -70,26 +97,13 @@ if ($data = data_submitted()) {
     $prog_update->id = $id;
     $prog_update->timemodified = time();
     $prog_update->usermodified = $USER->id;
-    update_record('prog', $prog_update);
+    $DB->update_record('prog', $prog_update);
 
-    if(isset($data->savechanges)) {
-        totara_set_notification(get_string('programassignmentssaved', 'local_program'), 'edit_assignments.php?id='.$id, array('class' => 'notifysuccess'));
+    if (isset($data->savechanges)) {
+        totara_set_notification(get_string('programassignmentssaved', 'totara_program'), 'edit_assignments.php?id='.$id, array('class' => 'notifysuccess'));
     }
 
 }
-
-//Javascript include
-local_js(array(
-    TOTARA_JS_DIALOG,
-    TOTARA_JS_TREEVIEW,
-    TOTARA_JS_DATEPICKER,
-    TOTARA_JS_PLACEHOLDER
-));
-
-// Get item pickers
-require_js(array(
-    $CFG->wwwroot . '/totara/program/assignment/program_assignment.js.php?id=' . $program->id
-));
 
 $currenturl = qualified_me();
 $currenturl_noquerystring = strip_querystring($currenturl);
@@ -102,22 +116,24 @@ add_to_log(SITEID, 'program', 'view assignments', "edit_assignments.php?id={$pro
 /// Display
 ///
 
-$category_breadcrumbs = get_category_breadcrumbs($program->category);
+//$category_breadcrumbs = get_category_breadcrumbs($program->category);
 
 $heading = format_string($program->fullname);
-$pagetitle = format_string(get_string('program', 'local_program').': '.$heading);
-$navlinks = array();
-$navlinks[] = array('name' => get_string('manageprograms', 'admin'), 'link'=> $CFG->wwwroot . '/course/categorylist.php?viewtype=program', 'type'=>'title');
-$navlinks = array_merge($navlinks, $category_breadcrumbs);
+$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
+//$navlinks = array();
+$PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
 
-$navlinks[] = array('name' => format_string($program->shortname), 'link'=> $viewurl, 'type'=>'title');
-$navlinks[] = array('name' => get_string('editprogramassignments', 'local_program'), 'link'=> '', 'type'=>'title');
+//$navlinks = array_merge($navlinks, $category_breadcrumbs);
 
-admin_externalpage_print_header('', $navlinks);
+$PAGE->navbar->add(format_string($program->shortname), $viewurl);
+$PAGE->navbar->add(get_string('editprogramassignments', 'totara_program'));
 
-print_container_start(false, 'program assignments', 'program-assignments');
+echo $OUTPUT->header();
 
-print_heading($heading);
+echo $OUTPUT->container_start('program assignments', 'program-assignments');
+
+echo $OUTPUT->heading($heading);
+$renderer = $PAGE->get_renderer('totara_program');
 
 // Display the current status
 echo $program->display_current_status();
@@ -125,60 +141,10 @@ $exceptions = $program->get_exception_count();
 $currenttab = 'assignments';
 require('tabs.php');
 
-$dropdown_options = array();
-$available_categories = array();
+echo $renderer->display_edit_assignment_form($id, $categories);
 
-foreach ($categories as $category) {
-    $category->build_table($CFG->prefix, $program->id);
-    if (!$category->has_items()) {
-        $dropdown_options[$category->id] = $category->name;
-    }
-}
+echo $renderer->get_cancel_button(array('id' => $program->id));
 
-echo '<form name="form_prog_assignments" method="post">';
+echo $OUTPUT->container_end();
 
-echo '<fieldset id="programassignments">';
-echo '<legend class="ftoggler">'.get_string('programassignments', 'local_program').'</legend>';
-echo '<p>'.get_string('instructions:programassignments', 'local_program').'</p>';
-
-echo '<div id="assignment_categories">';
-// Display the categories!
-foreach ($categories as $category) {
-    if ($category->has_items()) {
-        echo $category->display(true);
-        echo '<script type="text/javascript">' . $category->get_js($id) . '</script>';
-    }
-}
-echo '</div>';
-
-echo '</fieldset>';
-
-// Display the drop-down if there's any categories that aren't yet being used
-if (!empty($dropdown_options)) {
-    $html = '<div id="category_select">';
-    $html .= get_string('addnew','local_program');
-    $html .= ' <select>';
-    foreach ($dropdown_options as $value => $name) {
-        $html .= '<option value="'.$value.'">'.$name.'</option>';
-    }
-    $html .= '</select> ';
-    $html .= get_string('toprogram','local_program');
-    $html .= '<button>'.get_string('add').'</button>';
-    $html .= '</div>';
-    echo $html;
-}
-
-$helpbutton = helpbutton('totalassignments', get_string('totalassignments', 'local_program'), 'local_program', true, false, '', true);
-echo '<div class="overall_total">'.$helpbutton.' '.get_string('totalassignments','local_program').': <span class="total">0</span></div>';
-
-echo '<input type="hidden" name="id" value="'.$id.'" />';
-echo '<input type="hidden" name="sesskey" value="'.sesskey().'"/>';
-echo '<input type="submit" name="savechanges" value="'.get_string('savechanges').'"  class="savechanges-overview program-savechanges" />';
-echo '</form>';
-
-echo $program->get_cancel_button();
-
-print_container_end();
-
-admin_externalpage_print_footer();
-
+echo $OUTPUT->footer();

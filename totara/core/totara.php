@@ -184,7 +184,7 @@ function totara_reset_frontpage_blocks() {
 
 
 /**
- *  Calls mopdule renderer to return markup for displaying a progress bar for a user's course progress
+ *  Calls module renderer to return markup for displaying a progress bar for a user's course progress
  *
  * Optionally with a link to the user's profile if they have the correct permissions
  *
@@ -229,6 +229,7 @@ function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default')
             $icons[$iconfile] = ucwords($iconname);
         }
         $mform->addElement('select', 'icon', get_string('icon', 'totara_core'), $icons);
+        $mform->setDefault('icon', $currenticon);
     }
 }
 /**
@@ -1197,8 +1198,7 @@ function totara_build_menu() {
     $canviewlearningplans = dp_can_view_users_plans($USER->id);
 
     // SCANMSG TODO: Uncomment this once programs are ported
-    //$requiredlearninglink = prog_get_tab_link($USER->id);
-    $requiredlearninglink = null;
+    $requiredlearninglink = prog_get_tab_link($USER->id);
 
     $tree = array();
 

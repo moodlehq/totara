@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
  * @author Jake Salmon <jake.salmon@kineo.com>
  * @package totara
- * @subpackage plan
+ * @subpackage program
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
@@ -28,7 +28,7 @@ require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_courses.class.ph
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
-
+$PAGE->set_context(context_system::instance());
 ///
 /// Setup / loading data
 ///

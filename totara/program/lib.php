@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,149 +27,6 @@ require_once($CFG->dirroot . '/lib/datalib.php');
 require_once($CFG->dirroot . '/lib/ddllib.php');
 require_once($CFG->dirroot . '/totara/program/program.class.php');
 
-
-/**
- * This function is called automatically when the program module is installed.
- *
- * @return bool Success
- */
-function local_program_install() {
-    global $CFG;
-
-    // Check if the 'programcount' field has been added to the 'course_categories'
-    // table and add it if not
-    $table = new XMLDBTable('course_categories');
-    $field = new XMLDBField('programcount');
-    $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'theme');
-
-    if (!field_exists($table, $field)) {
-        // Launch add field programcount
-        add_field($table, $field);
-    }
-
-    // Set a config value to ensure that the program cron tasks are included
-    // in the cron schedule
-    if ( ! isset($CFG->local_program_cron)) {
-        // hack to get cron working via admin/cron.php
-        set_config('local_program_cron', 60);
-    }
-
-    prog_setup_initial_plan_settings();
-
-    return true;
-}
-
-/**
- * This function is called as part of the local_postinst() function defined in
- * /local/lib.php which is run automatically after all other installation has
- * taken place when Moodle or Totara is installed for the first time (i.e new
- * install or upgrade from Moodle).
- *
- * @return bool Success
- */
-function local_program_initial_install() {
-
-    prog_setup_initial_plan_settings();
-
-    return true;
-
-}
-
-/**
- * This function is called both when Moodle/Totara is first installed or when
- * the program module is installed into an existing Totara instance.
- *
- * The function adds default settings for the program component of the learning
- * plans framework.
- */
-function prog_setup_initial_plan_settings() {
-    global $CFG;
-    require_once($CFG->dirroot . '/totara/plan/priorityscales/lib.php');
-
-    // retrieve all the existing templates (if any exist)
-    $templates = get_records('dp_template', '', '', 'id', 'id');
-
-    // Create program settings for existing templates so they don't break
-    // but disable programs by default in existing templates
-    if ( is_array($templates) ){
-        foreach( $templates as $t ){
-            begin_sql();
-            if($settings = get_record('dp_component_settings', 'templateid', $t->id, 'component', 'program')) {
-                $settings->enabled=0;
-                $settings->sortorder = 1 + count_records('dp_component_settings', 'templateid', $t->id);
-                update_record('dp_component_settings', $settings);
-            } else {
-                $settings = new stdClass();
-                $settings->templateid=$t->id;
-                $settings->component='program';
-                $settings->enabled=0;
-                $settings->sortorder = 1 + count_records('dp_component_settings', 'templateid', $t->id);
-                insert_record('dp_component_settings', $settings);
-            }
-            commit_sql();
-        }
-    }
-
-    // Fill in permissions and settings for programs in existing templates
-    if ( is_array($templates) ){
-        $roles = array('learner','manager');
-        $actions=array('updateprogram','setpriority','setduedate');
-
-        $defaultduedatemode = DP_DUEDATES_OPTIONAL;
-        $defaultprioritymode = DP_PRIORITY_NONE;
-        if (!$defaultpriorityscaleid = dp_priority_default_scale_id()) {
-            $defaultpriorityscaleid = 0;
-        }
-
-        $action_values = array(
-            'learner' => array(
-                'updateprogram' => DP_PERMISSION_REQUEST,
-                'setpriority' => DP_PERMISSION_DENY,
-                'setduedate' => DP_PERMISSION_DENY),
-            'manager' => array(
-                'updateprogram' => DP_PERMISSION_APPROVE,
-                'setpriority' => DP_PERMISSION_ALLOW,
-                'setduedate' => DP_PERMISSION_ALLOW));
-
-        foreach ($templates as $t) {
-            begin_sql();
-            $perm = new stdClass();
-            $perm->templateid = $t->id;
-            foreach ($action_values as $role => $actions) {
-                foreach ($actions as $action => $permissionvalue) {
-                    if ($rec = get_record_select('dp_permissions', "templateid={$perm->templateid} AND role='$role' AND component='program' AND action='$action'")) {
-                        $rec->value=$permissionvalue;
-                        update_record('dp_permissions', $rec);
-                    } else {
-                        $perm->role = $role;
-                        $perm->action = $action;
-                        $perm->value=$permissionvalue;
-                        $perm->component = 'program';
-                        insert_record('dp_permissions', $perm);
-                    }
-                }
-            }
-
-            if($progset = get_record_select('dp_program_settings', "templateid={$t->id}")) {
-                $progset->duedatemode=$defaultduedatemode;
-                $progset->prioritymode=$defaultprioritymode;
-                $progset->priorityscale=$defaultpriorityscaleid;
-                update_record('dp_program_settings', $progset);
-            } else {
-                $progset = new stdClass();
-                $progset->templateid = $t->id;
-                $progset->duedatemode=$defaultduedatemode;
-                $progset->prioritymode=$defaultprioritymode;
-                $progset->priorityscale=$defaultpriorityscaleid;
-                insert_record('dp_program_settings', $progset);
-            }
-
-            commit_sql();
-        }
-    }
-}
-
-
 /**
  * Can logged in user view user's required learning
  *
@@ -184,7 +41,7 @@ function prog_can_view_users_required_learning($learnerid) {
         return false;
     }
 
-    $systemcontext = get_system_context();
+    $systemcontext = context_system::instance();
 
     // If the user can view any programs
     if (has_capability('totara/program:accessanyprogram', $systemcontext)) {
@@ -212,7 +69,7 @@ function prog_can_view_users_required_learning($learnerid) {
 /**
  * Return a list of a user's required programs or a count
  *
- * @global object $CFG
+ * @global object $DB
  * @param int $userid
  * @param string $sort The order in which to sort the programs
  * @param int $limitfrom return a subset of records, starting at this point (optional, required if $limitnum is set).
@@ -222,31 +79,32 @@ function prog_can_view_users_required_learning($learnerid) {
  * @return array|int
  */
 function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum='', $returncount=false, $showhidden=false) {
-    global $CFG;
+    global $DB;
 
     // Construct sql query
     $count = 'SELECT COUNT(*) ';
     $select = 'SELECT p.*, p.fullname AS progname, pc.timedue AS duedate ';
+    list($insql, $params) = $DB->get_in_or_equal(array(PROGRAM_EXCEPTION_RAISED, PROGRAM_EXCEPTION_DISMISSED), SQL_PARAMS_QM, 'param', false);
+    $from = "FROM {prog} p
+            INNER JOIN {prog_completion} pc ON p.id = pc.programid AND pc.coursesetid = 0
+            INNER JOIN (SELECT DISTINCT userid, programid FROM {prog_user_assignment}
+            WHERE exceptionstatus {$insql}) pua
+            ON (pc.programid = pua.programid AND pc.userid = pua.userid)";
 
-    $from = "FROM {$CFG->prefix}prog p
-            INNER JOIN {$CFG->prefix}prog_completion pc ON p.id = pc.programid AND pc.coursesetid = 0
-            INNER JOIN (SELECT DISTINCT userid, programid FROM {$CFG->prefix}prog_user_assignment WHERE exceptionstatus NOT IN (".PROGRAM_EXCEPTION_RAISED.",".PROGRAM_EXCEPTION_DISMISSED.")) pua
-            ON (pc.programid=pua.programid AND pc.userid=pua.userid) ";
-
-
-    $where = "WHERE pc.userid = $userid
-        AND pc.status <> ".STATUS_PROGRAM_COMPLETE;
-
+    $where = "WHERE pc.userid = ?
+            AND pc.status <> ?";
+    $params[] = $userid;
+    $params[] = STATUS_PROGRAM_COMPLETE;
     if (!$showhidden) {
-        $where .= " AND p.visible = 1";
+        $where .= " AND p.visible = ?";
+        $params[] = 1;
     }
 
     if ($returncount) {
-        return count_records_sql($count.$from.$where);
+        return $DB->count_records_sql($count.$from.$where, $params);
     } else {
-        return get_records_sql($select.$from.$where.$sort, $limitfrom, $limitnum);
+        return $DB->get_records_sql($select.$from.$where.$sort, $params, $limitfrom, $limitnum);
     }
-
 }
 
 /**
@@ -260,21 +118,21 @@ function prog_get_required_programs($userid, $sort='', $limitfrom='', $limitnum=
  * @return  string
  */
 function prog_display_required_programs($userid) {
-    global $CFG;
+    global $CFG, $OUTPUT;
 
     $count = prog_get_required_programs($userid, '', '', '', true, true);
 
     // Set up table
     $tablename = 'progs-list';
-    $tableheaders = array(get_string('programname', 'local_program'));
+    $tableheaders = array(get_string('programname', 'totara_program'));
     $tablecols = array('progname');
 
     // Due date
-    $tableheaders[] = get_string('duedate', 'local_program');;
+    $tableheaders[] = get_string('duedate', 'totara_program');
     $tablecols[] = 'duedate';
 
     // Progress
-    $tableheaders[] = get_string('progress', 'local_program');;
+    $tableheaders[] = get_string('progress', 'totara_program');
     $tablecols[] = 'progress';
 
     $baseurl = $CFG->wwwroot . '/totara/program/required.php?userid='.$userid;
@@ -283,8 +141,7 @@ function prog_display_required_programs($userid) {
     $table->define_headers($tableheaders);
     $table->define_columns($tablecols);
     $table->define_baseurl($baseurl);
-    $table->set_attribute('class', 'logtable generalbox');
-    $table->set_attribute('width', '100%');
+    $table->set_attribute('class', 'fullwidth');
     $table->set_control_variables(array(
         TABLE_VAR_SORT    => 'tsort',
     ));
@@ -302,7 +159,7 @@ function prog_display_required_programs($userid) {
     if (!$programs) {
         return '';
     }
-
+    $rowcount = 0;
     foreach ($programs as $p) {
         $program = new program($p->id);
         if (!$program->is_accessible()) {
@@ -313,20 +170,21 @@ function prog_display_required_programs($userid) {
         $row[] = $program->display_duedate($p->duedate);
         $row[] = $program->display_progress($userid);
         $table->add_data($row);
+        $rowcount++;
     }
 
     unset($programs);
 
-    if(!empty($table->data)) {
+    if ($rowcount > 0) {
+        //2.2 flexible_table class no longer supports $table->data and echos directly on each call to add_data
         ob_start();
-        $table->print_html();
+        $table->finish_html();
         $out = ob_get_contents();
         ob_end_clean();
+        return $out;
     } else {
-        $out = '';
+        return '';
     }
-
-    return $out;
 }
 
 /**
@@ -337,36 +195,34 @@ function prog_display_required_programs($userid) {
  * @return string $out      the display code
  */
 function prog_display_user_message_box($programuser) {
-    global $CFG;
-    $user = get_record('user', 'id', $programuser);
-    if(!$user) {
+    global $CFG, $PAGE, $DB;
+    $user = $DB->get_record('user', array('id' => $programuser));
+    if (!$user) {
         return false;
     }
+    $userpic = new user_picture();
+    $userpic->user = $user;
+    $userpic->courseid = 1;
 
-    $out = '<div class="plan_box plan_box_plain">';
-    $out .= '<table border="0" width="100%"><tr><td width="50">';
-    $out .= print_user_picture($user, 1, null, 0, true);
-    $out .= '</td><td>';
-    $a = new object();
+    $a = new stdClass();
     $a->name = fullname($user);
     $a->userid = $programuser;
     $a->site = $CFG->wwwroot;
-    $out .= get_string('youareviewingxsrequiredlearning', 'local_program', $a);
-    $out .= '</td></tr></table></div>';
+
+    $renderer = $PAGE->get_renderer('totara_program');
+    $out = $renderer->display_user_message_box($userpic, $a);
     return $out;
 }
 
 /**
  * Add lowest levels of breadcrumbs to program
  *
- * @param array &$navlinks The navlinks array to update (passed by reference)
  * @return void
  */
-function prog_get_base_navlinks(&$navlinks) {
-    global $CFG, $USER;
+function prog_add_base_navlinks() {
+    global $PAGE;
 
-    $navlinks[] = array('name' => get_string('browsecategories', 'local_program'), 'link' => $CFG->wwwroot.'/course/index.php?viewtype=program', 'type' => 'title');
-
+    $PAGE->navbar->add(get_string('browsecategories', 'totara_program'), new moodle_url('/course/index.php', array('viewtype' => 'program')));
 }
 
 /**
@@ -380,24 +236,27 @@ function prog_get_base_navlinks(&$navlinks) {
  *
  * @return boolean True if it is the user's own required learning
  */
-function prog_get_required_learning_base_navlinks(&$navlinks, $userid) {
-    global $CFG, $USER;
+function prog_add_required_learning_base_navlinks($userid) {
+    global $USER, $PAGE;
+
     // the user is viewing their own learning
-    if($userid == $USER->id) {
-        $navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
-        $navlinks[] = array('name' => get_string('requiredlearning','local_program'), 'link'=> $CFG->wwwroot . '/totara/program/required.php', 'type'=>'title');
+    if ($userid == $USER->id) {
+        $PAGE->navbar->add(get_string('mylearning', 'totara_core'), '/my/learning.php');
+        $PAGE->navbar->add(get_string('requiredlearning', 'totara_program'), new moodle_url('/totara/program/required.php'));
         return true;
     }
 
     // the user is viewing someone else's learning
-    $user = get_record('user', 'id', $userid);
-    if($user) {
-        $navlinks[] = array('name' => get_string('myteam','local'), 'link'=> $CFG->wwwroot . '/my/team.php', 'type'=>'title');
-        $navlinks[] = array('name' => get_string('teammembers','local'), 'link'=> $CFG->wwwroot . '/my/teammembers.php', 'type'=>'title');
-        $navlinks[] = array('name' => get_string('xsrequiredlearning','local_program', fullname($user)), 'link'=> $CFG->wwwroot . '/totara/program/required.php?userid='.$userid, 'type'=>'title');
+    $user = $DB->get_record('user', array('id' => $userid));
+    if ($user) {
+        $PAGE->navbar->add(get_string('myteam', 'totara_core'), new moodle_url('/my/team.php'));
+        $PAGE->navbar->add(get_string('teammembers', 'totara_core'), new moodle_url('/my/teammembers.php'));
+        $PAGE->navbar->add(get_string('xsrequiredlearning', 'totara_program', fullname($user)), new moodle_url('/totara/program/required.php', array('userid' => $userid)));
     } else {
-        $navlinks[] = array('name' => get_string('unknownusersrequiredlearning','local_program'), 'link'=> $CFG->wwwroot . '/totara/program/required.php?userid='.$userid, 'type'=>'title');
+        $PAGE->navbar->add(get_string('unknownusersrequiredlearning', 'totara_program'), new moodle_url('/totara/program/required.php', array('userid' => $userid)));
     }
+
+    return true;
 }
 
 /**
@@ -406,10 +265,12 @@ function prog_get_required_learning_base_navlinks(&$navlinks, $userid) {
  */
 function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="p.*") {
 
-    global $USER, $CFG;
+    global $USER, $DB;
 
+    $params = array(CONTEXT_PROGRAM);
     if ($categoryid != "all" && is_numeric($categoryid)) {
-        $categoryselect = "WHERE p.category = '$categoryid'";
+        $categoryselect = "WHERE p.category = ?";
+        $params[] = $categoryid;
     } else {
         $categoryselect = "";
     }
@@ -423,29 +284,29 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
     $visibleprograms = array();
 
     // pull out all programs matching the cat
-    if ($programs = get_records_sql("SELECT $fields,
+    $programs = $DB->get_records_sql("SELECT $fields,
                                     ctx.id AS ctxid, ctx.path AS ctxpath,
                                     ctx.depth AS ctxdepth, ctx.contextlevel AS ctxlevel
-                                    FROM {$CFG->prefix}prog p
-                                    JOIN {$CFG->prefix}context ctx
+                                    FROM {prog} p
+                                    JOIN {context} ctx
                                       ON (p.id = ctx.instanceid
-                                          AND ctx.contextlevel=".CONTEXT_PROGRAM.")
+                                          AND ctx.contextlevel = ?)
                                     $categoryselect
-                                    $sortstatement")) {
+                                    $sortstatement", $params);
 
-        // loop throught them
-        foreach ($programs as $program) {
-            $program = make_context_subobj($program);
-            if (isset($program->visible) && $program->visible <= 0) {
-                // for hidden programs, require visibility check
-                if (has_capability('totara/program:viewhiddenprograms', $program->context)) {
-                    $visibleprograms [] = $program;
-                }
-            } else {
-                $visibleprograms [] = $program;
+    // loop through them
+    foreach ($programs as $program) {
+        context_helper::preload_from_record($program);
+        if (isset($program->visible) && $program->visible <= 0) {
+            // for hidden programs, require visibility check
+            if (has_capability('totara/program:viewhiddenprograms', $program->context)) {
+                $visibleprograms[] = $program;
             }
+        } else {
+            $visibleprograms[] = $program;
         }
     }
+
     return $visibleprograms;
 
 }
@@ -461,11 +322,13 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
                           $fields="p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible",
                           &$totalcount, $limitfrom="", $limitnum="") {
 
-    global $USER, $CFG;
+    global $DB;
 
+    $params = array(CONTEXT_PROGRAM);
     $categoryselect = "";
     if ($categoryid != "all" && is_numeric($categoryid)) {
-        $categoryselect = " WHERE p.category = '$categoryid' ";
+        $categoryselect = " WHERE p.category = ? ";
+        $params[] = $categoryid;
     }
 
     // pull out all programs matching the cat
@@ -474,15 +337,13 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
     $progselect = "SELECT $fields, 'program' AS listtype,
                           ctx.id AS ctxid, ctx.path AS ctxpath,
                           ctx.depth AS ctxdepth, ctx.contextlevel AS ctxlevel
-                   FROM {$CFG->prefix}prog p
-                   JOIN {$CFG->prefix}context ctx
-                     ON (p.id = ctx.instanceid AND ctx.contextlevel=".CONTEXT_PROGRAM.")";
+                   FROM {prog} p
+                   JOIN {context} ctx
+                     ON (p.id = ctx.instanceid AND ctx.contextlevel = ?)";
 
     $select = $progselect.$categoryselect.' ORDER BY '.$sort;
 
-    if (!($rs = get_recordset_sql($select))) {
-        return $visibleprograms;
-    }
+    $rs = $DB->get_recordset_sql($select, $params);
 
     $totalcount = 0;
 
@@ -491,8 +352,8 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
     }
 
     // iteration will have to be done inside loop to keep track of the limitfrom and limitnum
-    while ($program = rs_fetch_next_record($rs)) {
-        $program = make_context_subobj($program);
+    foreach ($rs as $program) {
+        context_helper::preload_from_record($program);
         if ($program->visible <= 0) {
             // for hidden programs, require visibility check
             if (has_capability('totara/program:viewhiddenprograms', $program->context)) {
@@ -508,9 +369,10 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
             }
         }
     }
-    rs_close($rs);
-    return $visibleprograms;
 
+    $rs->close();
+
+    return $visibleprograms;
 }
 
 /**
@@ -523,7 +385,7 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
  **/
 function prog_move_programs ($programids, $categoryid) {
 
-    global $CFG;
+    global $DB, $OUTPUT;
 
     if (!empty($programids)) {
 
@@ -531,12 +393,12 @@ function prog_move_programs ($programids, $categoryid) {
 
             foreach ($programids as $programid) {
 
-                if (! $program  = get_record("prog", "id", $programid)) {
-                    notify("Error finding program $programid");
+                if (!$program  = $DB->get_record("prog", array("id" => $programid))) {
+                    echo $OUTPUT->notification(get_string('error:findingprogram', 'totara_program'));
                 } else {
                     // figure out a sortorder that we can use in the destination category
-                    $sortorder = get_field_sql('SELECT MIN(sortorder)-1 AS min
-                                                    FROM ' . $CFG->prefix . 'prog WHERE category=' . $categoryid);
+                    $sortorder = $DB->get_field_sql('SELECT MIN(sortorder)-1 AS min
+                                                    FROM {prog} WHERE category = ?', array($categoryid));
                     if (is_null($sortorder) || $sortorder === false) {
                         // the category is empty
                         // rather than let the db default to 0
@@ -549,12 +411,12 @@ function prog_move_programs ($programids, $categoryid) {
                     $program->category  = $categoryid;
                     $program->sortorder = $sortorder;
 
-                    if (!update_record('prog', addslashes_recursive($program))) {
-                        notify("An error occurred - program not moved!");
+                    if (!$DB->update_record('prog', $program)) {
+                        echo $OUTPUT->notification(get_string('error:prognotmoved', 'totara_program'));
                     }
 
-                    $context   = get_context_instance(CONTEXT_PROGRAM, $program->id);
-                    $newparent = get_context_instance(CONTEXT_COURSECAT, $program->category);
+                    $context   = context_program::instance($program->id);
+                    $newparent = context_coursecat::instance($program->category);
                     context_moved($context, $newparent);
                 }
             }
@@ -572,7 +434,7 @@ function prog_move_programs ($programids, $categoryid) {
 function prog_print_programs($category) {
 /// Category is 0 (for all programs) or an object
 
-    global $CFG, $USER;
+    global $OUTPUT, $USER;
 
     $fields = "p.id,p.sortorder,p.shortname,p.fullname,p.summary,p.visible";
 
@@ -596,19 +458,19 @@ function prog_print_programs($category) {
                 continue;
             }
             if ($program->visible == 1
-                || has_capability('totara/program:viewhiddenprograms',$program->context)) {
+                || has_capability('totara/program:viewhiddenprograms', $program->context)) {
                 prog_print_program($program);
             }
         }
     } else {
-        print_heading(get_string("noprogramsyet",'local_program'));
-        $context = get_context_instance(CONTEXT_SYSTEM);
+        echo $OUTPUT->heading(get_string("noprogramsyet", 'totara_program'));
+        $context = context_system::instance();
         if (has_capability('totara/program:createprogram', $context)) {
             $options = array();
             $options['category'] = $category->id;
-            echo '<div class="addprogrambutton">';
-            print_single_button($CFG->wwwroot.'/totara/program/add.php', $options, get_string("addnewprogram",'local_program'));
-            echo '</div>';
+            echo html_writer::start_tag('div', array('class' => 'addprogrambutton'));
+            echo $OUTPUT->single_button(new moodle_url('/totara/program/add.php', $options), get_string("addnewprogram", 'totara_program'), 'get');
+            echo html_writer::end_tag('div');
         }
     }
 }
@@ -631,7 +493,7 @@ function prog_print_programs($category) {
  */
 function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $path='') {
 
-    global $CFG;
+    global $DB;
 
     $count = 0;
 
@@ -640,13 +502,13 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
 
     if ($categoryid > 0){
         // update depth and path
-        $cat   = get_record('course_categories', 'id', $categoryid);
+        $cat   = $DB->get_record('course_categories', array('id' => $categoryid));
         if ($cat->parent == 0) {
             $depth = 0;
             $path  = '';
         } else if ($depth == 0 ) { // doesn't make sense; get from DB
             // this is only called if the $depth parameter looks dodgy
-            $parent = get_record('course_categories', 'id', $cat->parent);
+            $parent = $DB->get_record('course_categories', array('id' => $cat->parent));
             $path  = $parent->path;
             $depth = $parent->depth;
         }
@@ -654,19 +516,19 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
         $depth = $depth + 1;
 
         if ($cat->path !== $path) {
-            set_field('course_categories', 'path',  addslashes($path),  'id', $categoryid);
+            $DB->set_field('course_categories', 'path', $path, array('id' => $categoryid));
         }
         if ($cat->depth != $depth) {
-            set_field('course_categories', 'depth', $depth, 'id', $categoryid);
+            $DB->set_field('course_categories', 'depth', $depth, array('id' => $categoryid));
         }
     }
 
     // get some basic info about programs in the category
-    $info = get_record_sql('SELECT MIN(sortorder) AS min,
-                                   MAX(sortorder) AS max,
-                                   COUNT(sortorder)  AS count
-                            FROM ' . $CFG->prefix . 'prog
-                            WHERE category=' . $categoryid);
+    $info = $DB->get_record_sql('SELECT MIN(sortorder) AS min,
+                                        MAX(sortorder) AS max,
+                                        COUNT(sortorder)  AS count
+                                   FROM {prog}
+                                  WHERE category = ?', array($categoryid));
     if (is_object($info)) { // no courses?
         $max   = $info->max;
         $count = $info->count;
@@ -674,7 +536,7 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
         unset($info);
     }
 
-    if ($categoryid > 0 && $n==0) { // only passed category so don't shift it
+    if ($categoryid > 0 && $n == 0) { // only passed category so don't shift it
         $n = $min;
     }
 
@@ -698,42 +560,42 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
     //  - they are too close to the 'bottom'
     if ($count && ( $safe || $hasgap || $mustshift ) ) {
         // special, optimized case where all we need is to shift
-        if ( $mustshift && !$safe && !$hasgap) {
+        if ($mustshift && !$safe && !$hasgap) {
             $shift = $n + $catgap - $min;
             if ($shift < $count) {
                 $shift = $count + $catgap;
             }
 
-            execute_sql("UPDATE {$CFG->prefix}prog
-                         SET sortorder=sortorder+$shift
-                         WHERE category=$categoryid", 0);
+            $DB->execute("UPDATE {prog}
+                         SET sortorder = sortorder + ?
+                         WHERE category = ?", array($shift, $categoryid));
             $n = $n + $catgap + $count;
 
         } else { // do it slowly
             $n = $n + $catgap;
             // if the new sequence overlaps the current sequence, lack of transactions
             // will stop us -- shift things aside for a moment...
-            if ($safe || ($n >= $min && $n+$count+1 < $min && $CFG->dbfamily==='mysql')) {
+            if ($safe || ($n >= $min && $n+$count+1 < $min && $DB->get_dbfamily() === 'mysql')) {
                 $shift = $max + $n + 1000;
-                execute_sql("UPDATE {$CFG->prefix}prog
-                         SET sortorder=sortorder+$shift
-                         WHERE category=$categoryid", 0);
+                $DB->execute("UPDATE {prog}
+                         SET sortorder = sortorder+$shift
+                         WHERE category = ?". array($categoryid));
             }
 
             $programs = prog_get_programs($categoryid, 'p.sortorder ASC', 'p.id,p.sortorder');
-            begin_sql();
+
+            $transaction = $DB->start_delegated_transaction();
+
             $tx = true; // transaction sanity
             foreach ($programs as $program) {
                 if ($tx && $program->sortorder != $n ) { // save db traffic
-                    $tx = $tx && set_field('prog', 'sortorder', $n,
-                                           'id', $program->id);
+                    $tx = $tx && $DB->set_field('prog', 'sortorder', $n, array('id' => $program->id));
                 }
                 $n++;
             }
             if ($tx) {
-                commit_sql();
+                $transaction->allow_commit();
             } else {
-                rollback_sql();
                 if (!$safe) {
                     // if we failed when called with !safe, try
                     // to recover calling self with safe=true
@@ -742,10 +604,10 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
             }
         }
     }
-    set_field('course_categories', 'programcount', $count, 'id', $categoryid);
+    $DB->set_field('course_categories', 'programcount', $count, array('id' => $categoryid));
 
     // $n could need updating
-    $max = get_field_sql("SELECT MAX(sortorder) from {$CFG->prefix}prog WHERE category=$categoryid");
+    $max = $DB->get_field_sql("SELECT MAX(sortorder) from {prog} WHERE category = ?", array($categoryid));
     if ($max > $n) {
         $n = $max;
     }
@@ -767,10 +629,7 @@ function prog_fix_program_sortorder($categoryid=0, $n=0, $safe=0, $depth=0, $pat
  * @param string $highlightterms (optional) some search terms that should be highlighted in the display.
  */
 function prog_print_program($program, $highlightterms = '') {
-    global $CFG, $USER;
-
-    require_once($CFG->dirroot.'/totara/core/icon/program_icon.class.php');
-
+    global $PAGE;
     $prog = new program($program->id);
 
     $accessible = false;
@@ -781,42 +640,22 @@ function prog_print_program($program, $highlightterms = '') {
     if (isset($program->context)) {
         $context = $program->context;
     } else {
-        $context = get_context_instance(CONTEXT_PROGRAM, $program->id);
+        $context = context_program::instance($program->id);
     }
 
-    $program_icon = new program_icon();
+    //object for all info required by renderer
+    $data = new stdClass();
 
-    if ($accessible) {
-        if ($program->visible) {
-            $linkcss = '';
-        } else {
-            $linkcss = ' class="dimmed" ';
-        }
-    } else {
-        if ($program->visible) {
-            $linkcss = ' class="inaccessible " ';
-        } else {
-            $linkcss = ' class="dimmed inaccessible" ';
-        }
-    }
+    $data->accessible = $accessible;
+    $data->visible = $program->visible;
+    $data->icon = (empty($prog->icon)) ? 'default' : $prog->icon;
+    $data->progid = $program->id;
+    $data->fullname = $program->fullname;
+    $data->summary = $program->summary;
+    $data->highlightterms = $highlightterms;
 
-
-
-    echo '<div class="coursebox programbox clearfix">';
-    echo '<div class="info">';
-    echo '<div class="name"> '. $program_icon->display($program, 'small'). '<a title="'.get_string('viewprogram', 'local_program').'"'.
-         $linkcss.' href="'.$CFG->wwwroot.'/totara/program/view.php?id='.$program->id.'">'.
-         highlight($highlightterms, format_string($program->fullname)).'</a>';
-    echo '</div>';
-
-    echo '</div>';
-
-    echo '<div class="summary">';
-    $options = NULL;
-    $options->noclean = true;
-    $options->para = false;
-    echo highlight($highlightterms, format_text($program->summary, FORMAT_MOODLE, $options,  $program->id));
-    echo '</div></div>';
+    $renderer = $PAGE->get_renderer('totara_program');
+    echo $renderer->print_program($data);
 }
 
 /**
@@ -846,8 +685,8 @@ function prog_print_whole_category_list($category=NULL, $displaylist=NULL, $pare
     }
 
     if ($category) {
-        if ($category->visible or has_capability('moodle/category:viewhiddencategories', get_context_instance(CONTEXT_SYSTEM))) {
-            prog_print_category_info($category, $depth, $showprograms);
+        if ($category->visible or has_capability('moodle/category:viewhiddencategories', context_system::instance())) {
+            echo prog_print_category_info($category, $depth, $showprograms);
         } else {
             return;  // Don't bother printing children of invisible categories
         }
@@ -890,106 +729,23 @@ function prog_print_whole_category_list($category=NULL, $displaylist=NULL, $pare
  * @param <type> $showprograms
  */
 function prog_print_category_info($category, $depth, $showprograms = false) {
-    global $CFG, $USER;
-    static $strallowguests, $strrequireskey, $strsummary;
-
-    require_once($CFG->dirroot.'/totara/core/icon/program_icon.class.php');
-
-    if (empty($strsummary)) {
-        $strallowguests = get_string('allowguests');
-        $strrequireskey = get_string('requireskey');
-        $strsummary = get_string('summary');
-    }
-
-    $catlinkcss = $category->visible ? '' : ' class="dimmed" ';
+    global $CFG, $DB, $PAGE;
 
     static $programcount = null;
     if (null === $programcount) {
         // only need to check this once
-        $programcount = count_records('prog') <= FRONTPAGECOURSELIMIT;
+        $programcount = $DB->count_records('prog') <= FRONTPAGECOURSELIMIT;
     }
-
-    if ($showprograms and $programcount) {
-        $catimage = '<img src="'.$CFG->pixpath.'/i/course.gif" alt="" />';
-    } else {
-        $catimage = "&nbsp;";
-    }
-
-    echo "\n\n".'<table class="categorylist">';
 
     $programs = prog_get_programs($category->id, 'p.sortorder ASC',
-            'p.id,p.sortorder,p.visible,p.fullname,p.shortname,p.summary,p.icon');
+                'p.id,p.sortorder,p.visible,p.fullname,p.shortname,p.summary,p.icon');
 
-    if ($showprograms and $programcount) {
+    // does the depth exceed maxcategorydepth
+    // maxcategorydepth == 0 or unset meant no limit
+    $limit = ($CFG->maxcategorydepth == 0) || (!(isset($CFG->maxcategorydepth) && ($depth >= $CFG->maxcategorydepth-1)));
 
-        echo '<tr>';
-
-        if ($depth) {
-            $indent = $depth*30;
-            $rows = count($programs) + 1;
-            echo '<td class="category indentation" rowspan="'.$rows.'" valign="top">';
-            print_spacer(10, $indent);
-            echo '</td>';
-        }
-
-        echo '<td valign="top" class="category image">&nbsp;</td>';
-        echo '<td class="category name">';
-        echo '<a '.$catlinkcss.' href="'.$CFG->wwwroot.'/course/category.php?id='.$category->id.'">'. format_string($category->name).'</a>';
-        echo '</td>';
-        echo '<td class="category info">&nbsp;</td>';
-        echo '</tr>';
-
-        // does the depth exceed maxcategorydepth
-        // maxcategorydepth == 0 or unset meant no limit
-
-        $limit = !(isset($CFG->maxcategorydepth) && ($depth >= $CFG->maxcategorydepth-1));
-
-        if ($programs && ($limit || $CFG->maxcategorydepth == 0)) {
-            $program_icon = new program_icon();
-
-            foreach ($programs as $program) {
-                $prog = new program($program->id);
-                if (!$prog->is_accessible($USER)) {
-                    continue;
-                }
-                $linkcss = $program->visible ? '' : ' class="dimmed" ';
-                echo '<tr><td valign="top">&nbsp;';
-                echo '</td><td valign="top" class="course name">';
-                echo $program_icon->display($program, 'small');
-                echo ' <a '.$linkcss.' href="'.$CFG->wwwroot.'/totara/program/view.php?id='.$program->id.'">'. format_string($program->fullname).'</a>';
-                echo '</td><td align="right" valign="top" class="course info">';
-
-                if ($program->summary) {
-                    link_to_popup_window ('/totara/program/info.php?id='.$program->id, 'courseinfo',
-                                          '<img alt="'.$strsummary.'" src="'.$CFG->pixpath.'/i/info.gif" />',
-                                           400, 500, $strsummary);
-                } else {
-                    echo '<img alt="" style="width:18px;height:16px;" src="'.$CFG->pixpath.'/spacer.gif" />';
-                }
-                echo '</td></tr>';
-            }
-        }
-    } else {
-
-        echo '<tr>';
-
-        if ($depth) {
-            $indent = $depth*20;
-            echo '<td class="category indentation" valign="top">';
-            print_spacer(10, $indent);
-            echo '</td>';
-        }
-
-        echo '<td valign="top" class="category name">';
-        echo '<a '.$catlinkcss.' href="'.$CFG->wwwroot.'/course/category.php?id='.$category->id.'">'. format_string($category->name).'</a>';
-        echo '</td>';
-        echo '<td valign="top" class="category number">';
-        if (count($programs)) {
-           echo count($programs);
-        }
-        echo '</td></tr>';
-    }
-    echo '</table>';
+    $renderer = $PAGE->get_renderer('totara_program');
+    return $renderer->prog_print_category_info($category, $programs, $depth, $limit, $showprograms, $programcount);
 }
 
 /**
@@ -1021,14 +777,14 @@ function prog_print_viewtype_selector($pagetype, $viewtype, $options=null) {
     }
 
     $row = array();
-    $row[] = new tabobject('courses', $courselink, get_string('courses', 'local_program'));
-    $row[] = new tabobject('programs', $programlink, get_string('programs', 'local_program'));
+    $row[] = new tabobject('courses', $courselink, get_string('courses', 'totara_program'));
+    $row[] = new tabobject('programs', $programlink, get_string('programs', 'totara_program'));
 
     $tabs = array($row);
 
-    echo '<div id="viewtypepicker">';
+    echo html_writer::start_tag('div', array('id' => 'viewtypepicker'));
     print_tabs($tabs, $currenttab);
-    echo '</div>';
+    echo html_writer::end_tag('div');
 
 }
 
@@ -1043,7 +799,7 @@ function prog_print_viewtype_selector($pagetype, $viewtype, $options=null) {
  * @return void
  */
 function prog_can_enter_course($user, $course) {
-    global $CFG;
+    global $DB;
 
     if (!$courserole = get_default_course_role($course)) {
         return;
@@ -1057,31 +813,29 @@ function prog_can_enter_course($user, $course) {
     // Get programs that this user is assigned to, either via learning plans or required learning
     $get_programs = "
         SELECT p.id
-          FROM {$CFG->prefix}prog p
+          FROM {prog} p
          WHERE p.id IN
              (
                 SELECT pc.programid
-                  FROM {$CFG->prefix}dp_plan_program_assign pc
-            INNER JOIN {$CFG->prefix}dp_plan pln ON pln.id = pc.planid
-                 WHERE pc.approved >= ".DP_APPROVAL_APPROVED."
-                   AND pln.userid = {$user->id}
-                   AND pln.status = ".DP_PLAN_STATUS_APPROVED."
+                  FROM {dp_plan_program_assign} pc
+            INNER JOIN {dp_plan} pln ON pln.id = pc.planid
+                 WHERE pc.approved >= ?
+                   AND pln.userid = ?
+                   AND pln.status = ?
              )
             OR p.id IN
              (
                 SELECT pua.programid
-                  FROM {$CFG->prefix}prog_user_assignment pua
-             LEFT JOIN {$CFG->prefix}prog_completion pc
+                  FROM {prog_user_assignment} pua
+             LEFT JOIN {prog_completion} pc
                     ON pua.programid = pc.programid AND pua.userid = pc.userid
-                 WHERE pua.userid = {$user->id}
-                   AND pc.coursesetid = 0
-                   AND pc.status <> ".STATUS_PROGRAM_COMPLETE."
+                 WHERE pua.userid = ?
+                   AND pc.coursesetid = ?
+                   AND pc.status <> ?
              )
     ";
-
-    if (!$program_records = get_records_sql($get_programs)) {
-        return;
-    }
+    $params = array(DP_APPROVAL_APPROVED, $user->id, DP_PLAN_STATUS_APPROVED, $user->id, 0, STATUS_PROGRAM_COMPLETE);
+    $program_records = $DB->get_records_sql($get_programs, $params);
 
     foreach ($program_records as $program_record) {
         $program = new program($program_record->id);
@@ -1096,50 +850,36 @@ function prog_can_enter_course($user, $course) {
 /**
  * A list of programs that match a search
  *
- * @uses $CFG
+ * @uses $DB, $USER
  * @param array $searchterms ?
  * @param string $sort ?
  * @param int $page ?
  * @param int $recordsperpage ?
  * @param int $totalcount Passed in by reference. ?
  * @param string $whereclause Addition where clause
+ * @param array $whereparams Parameters needed for $whereclause
  * @return object {@link $COURSE} records
  */
-function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $whereclause) {
-    global $CFG, $USER;
+// TODO SCANMSG: Fix this function to work in Moodle 2 way
+// See lib/datalib.php -> get_courses_search for example
+function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $whereclause, $whereparams) {
+    global $DB, $USER;
 
-    //to allow case-insensitive search for postgesql
-    if ($CFG->dbfamily == 'postgres') {
-        $LIKE = 'ILIKE';
-        $NOTLIKE = 'NOT ILIKE';   // case-insensitive
-        $REGEXP = '~*';
-        $NOTREGEXP = '!~*';
-    } else {
-        $LIKE = 'LIKE';
-        $NOTLIKE = 'NOT LIKE';
-        $REGEXP = 'REGEXP';
-        $NOTREGEXP = 'NOT REGEXP';
-    }
+    $REGEXP    = $DB->sql_regex(true);
+    $NOTREGEXP = $DB->sql_regex(false);
 
     $fullnamesearch = '';
     $summarysearch = '';
     $idnumbersearch = '';
     $shortnamesearch = '';
 
+    $fullnamesearchparams = array();
+    $summarysearchparams = array();
+    $idnumbersearchparams = array();
+    $shortnamesearchparams = array();
+    $params = array();
+
     foreach ($searchterms as $searchterm) {
-
-        $NOT = ''; /// Initially we aren't going to perform NOT LIKE searches, only MSSQL and Oracle
-                   /// will use it to simulate the "-" operator with LIKE clause
-
-    /// Under Oracle and MSSQL, trim the + and - operators and perform
-    /// simpler LIKE (or NOT LIKE) queries
-        if ($CFG->dbfamily == 'oracle' || $CFG->dbfamily == 'mssql') {
-            if (substr($searchterm, 0, 1) == '-') {
-                $NOT = ' NOT ';
-            }
-            $searchterm = trim($searchterm, '+-');
-        }
-
         if ($fullnamesearch) {
             $fullnamesearch .= ' AND ';
         }
@@ -1166,10 +906,17 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
             $idnumbersearch .= " p.idnumber $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
             $shortnamesearch .= " p.shortname $NOTREGEXP '(^|[^a-zA-Z0-9])$searchterm([^a-zA-Z0-9]|$)' ";
         } else {
-            $summarysearch .= ' summary '. $NOT . $LIKE .' \'%'. $searchterm .'%\' ';
-            $fullnamesearch .= ' fullname '. $NOT . $LIKE .' \'%'. $searchterm .'%\' ';
-            $idnumbersearch .= ' idnumber '. $NOT . $LIKE .' \'%'. $searchterm .'%\' ';
-            $shortnamesearch .= ' shortname '. $NOT . $LIKE .' \'%'. $searchterm .'%\' ';
+            $summarysearch .= $DB->sql_like('summary', '?', false, true, false) . ' ';
+            $summarysearchparams[] = '%' . $searchterm . '%';
+
+            $fullnamesearch .= $DB->sql_like('fullname', '?', false, true, false) . ' ';
+            $fullnamesearchparams[] = '%' . $searchterm . '%';
+
+            $idnumbersearch .= $DB->sql_like('idnumber', '?', false, true, false) . ' ';
+            $idnumbersearchparams[] = '%' . $searchterm . '%';
+
+            $shortnamesearch .= $DB->sql_like('shortname', '?', false, true, false) . ' ';
+            $shortnamesearchparams[] = '%' . $searchterm . '%';
         }
     }
 
@@ -1179,6 +926,7 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
             WHERE (( $fullnamesearch ) OR ( $summarysearch ) OR ( $idnumbersearch ) OR ( $shortnamesearch ))
             AND category > 0
         ";
+        $params = array_merge($params, $fullnamesearchparams, $summarysearchparams, $idnumbersearchparams, $shortnamesearchparams);
     } else {
         // Otherwise return everything
         $where = " WHERE category > 0 ";
@@ -1187,14 +935,15 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
     // Add any additional sql supplied to where clause
     if ($whereclause) {
         $where .= " AND {$whereclause}";
+        $params = array_merge($params, $whereparams);
     }
 
     $sql = "SELECT p.*,
                    ctx.id AS ctxid, ctx.path AS ctxpath,
                    ctx.depth AS ctxdepth, ctx.contextlevel AS ctxlevel
-            FROM {$CFG->prefix}prog p
-            JOIN {$CFG->prefix}context ctx
-             ON (p.id = ctx.instanceid AND ctx.contextlevel=".CONTEXT_PROGRAM.")
+            FROM {prog} p
+            JOIN {context} ctx
+             ON (p.id = ctx.instanceid AND ctx.contextlevel = ".CONTEXT_PROGRAM.")
             $where
             ORDER BY " . $sort;
 
@@ -1205,94 +954,50 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
     $limitto   = $limitfrom + $recordsperpage;
     $c = 0; // counts how many visible programs we've seen
 
-    if ($rs = get_recordset_sql($sql)) {
+    $rs = $DB->get_recordset_sql($sql, $params);
 
-        while ($program = rs_fetch_next_record($rs)) {
-            $program = make_context_subobj($program);
-
-            if (!is_siteadmin($USER->id)) {
-                // Check if this program is not available, if it's not then deny access
-                if ($program->available == 0) {
-                    continue;
-                }
-
-                if (isset($USER->timezone))
-                {
-                    $now = usertime(time(),$USER->timezone);
-                } else {
-                    $now = usertime(time());
-                }
-
-                // Check if the programme isn't accessible yet
-                if ($program->availablefrom > 0 && $program->availablefrom > $now) {
-                    continue;
-                }
-
-                // Check if the programme isn't accessible anymore
-                if ($program->availableuntil > 0 && $program->availableuntil < $now) {
-                    continue;
-                }
+    foreach ($rs as $program) {
+        context_helper::preload_from_record($program);
+        if (!is_siteadmin($USER->id)) {
+            // Check if this program is not available, if it's not then deny access
+            if ($program->available == 0) {
+                continue;
             }
 
-            if ($program->visible || has_capability('totara/program:viewhiddenprograms', $program->context)) {
-                // Don't exit this loop till the end
-                // we need to count all the visible courses
-                // to update $totalcount
-                if ($c >= $limitfrom && $c < $limitto) {
-                    $programs[] = $program;
-                }
-                $c++;
+            if (isset($USER->timezone)) {
+                $now = usertime(time(),$USER->timezone);
+            } else {
+                $now = usertime(time());
+            }
+
+            // Check if the programme isn't accessible yet
+            if ($program->availablefrom > 0 && $program->availablefrom > $now) {
+                continue;
+            }
+
+            // Check if the programme isn't accessible anymore
+            if ($program->availableuntil > 0 && $program->availableuntil < $now) {
+                continue;
             }
         }
+
+        if ($program->visible || has_capability('totara/program:viewhiddenprograms', $program->context)) {
+            // Don't exit this loop till the end
+            // we need to count all the visible courses
+            // to update $totalcount
+            if ($c >= $limitfrom && $c < $limitto) {
+                $programs[] = $program;
+            }
+            $c++;
+        }
     }
+
+    $rs->close();
 
     // our caller expects 2 bits of data - our return
     // array, and an updated $totalcount
     $totalcount = $c;
     return $programs;
-}
-
-function prog_print_program_search($value="", $return=false, $format="plain") {
-    global $CFG;
-    static $count = 0;
-
-    $count++;
-
-    $id = 'coursesearch';
-
-    if ($count > 1) {
-        $id .= $count;
-    }
-
-    $strsearchcourses= get_string("searchprograms", 'local_program');
-
-    if ($format == 'plain') {
-        $output  = '<form id="'.$id.'" action="'.$CFG->wwwroot.'/course/search.php" method="get">';
-        $output .= '<fieldset class="coursesearchbox invisiblefieldset">';
-        $output .= '<label for="coursesearchbox">'.$strsearchcourses.': </label>';
-        $output .= '<input type="text" id="coursesearchbox" size="30" name="search" value="'.s($value, true).'" />';
-        $output .= '<input type="submit" value="'.get_string('go').'" />';
-        $output .= '</fieldset></form>';
-    } else if ($format == 'short') {
-        $output  = '<form id="'.$id.'" action="'.$CFG->wwwroot.'/course/search.php" method="get">';
-        $output .= '<fieldset class="coursesearchbox invisiblefieldset">';
-        $output .= '<label for="shortsearchbox">'.$strsearchcourses.': </label>';
-        $output .= '<input type="text" id="shortsearchbox" size="12" name="search" alt="'.s($strsearchcourses).'" value="'.s($value, true).'" />';
-        $output .= '<input type="submit" value="'.get_string('go').'" />';
-        $output .= '</fieldset></form>';
-    } else if ($format == 'navbar') {
-        $output  = '<form id="coursesearchnavbar" action="'.$CFG->wwwroot.'/course/search.php" method="get">';
-        $output .= '<fieldset class="coursesearchbox invisiblefieldset">';
-        $output .= '<label for="navsearchbox">'.$strsearchcourses.': </label>';
-        $output .= '<input type="text" id="navsearchbox" size="20" name="search" alt="'.s($strsearchcourses).'" value="'.s($value, true).'" />';
-        $output .= '<input type="submit" value="'.get_string('go').'" />';
-        $output .= '</fieldset></form>';
-    }
-
-    if ($return) {
-        return $output;
-    }
-    echo $output;
 }
 
 /**
@@ -1302,7 +1007,7 @@ function prog_print_program_search($value="", $return=false, $format="plain") {
  * @return bool Success status
  */
 function prog_eventhandler_program_assigned($eventdata) {
-
+    global $DB;
     $programid = $eventdata->programid;
     $userid = $eventdata->userid;
 
@@ -1316,9 +1021,9 @@ function prog_eventhandler_program_assigned($eventdata) {
     $messages = $messagesmanager->get_messages();
 
     // send notifications to user and (optionally) the user's manager
-    foreach($messages as $message) {
-        if($message->messagetype==MESSAGETYPE_ENROLMENT) {
-            if($user = get_record('user', 'id', $userid)) {
+    foreach ($messages as $message) {
+        if ($message->messagetype == MESSAGETYPE_ENROLMENT) {
+            if ($user = $DB->get_record('user', array('id' => $userid))) {
                 $message->send_message($user);
             }
         }
@@ -1333,7 +1038,7 @@ function prog_eventhandler_program_assigned($eventdata) {
  * @return bool Success status
  */
 function prog_eventhandler_program_unassigned($eventdata) {
-
+    global $DB;
     $programid = $eventdata->programid;
     $userid = $eventdata->userid;
 
@@ -1347,9 +1052,9 @@ function prog_eventhandler_program_unassigned($eventdata) {
     $messages = $messagesmanager->get_messages();
 
     // send notifications to user and (optionally) the user's manager
-    foreach($messages as $message) {
-        if($message->messagetype==MESSAGETYPE_UNENROLMENT) {
-            if($user = get_record('user', 'id', $userid)) {
+    foreach ($messages as $message) {
+        if ($message->messagetype == MESSAGETYPE_UNENROLMENT) {
+            if ($user = $DB->get_record('user', array('id' => $userid))) {
                 $message->send_message($user);
             }
         }
@@ -1364,7 +1069,7 @@ function prog_eventhandler_program_unassigned($eventdata) {
  * @return bool Success status
  */
 function prog_eventhandler_program_completed($eventdata) {
-    global $CFG;
+    global $CFG, $DB;
     require_once($CFG->dirroot.'/totara/plan/lib.php');
 
     $program = $eventdata->program;
@@ -1374,9 +1079,9 @@ function prog_eventhandler_program_completed($eventdata) {
     $messages = $messagesmanager->get_messages();
 
     // send notification to user
-    foreach($messages as $message) {
-        if($message->messagetype==MESSAGETYPE_PROGRAM_COMPLETED) {
-            if($user = get_record('user', 'id', $userid)) {
+    foreach ($messages as $message) {
+        if ($message->messagetype == MESSAGETYPE_PROGRAM_COMPLETED) {
+            if ($user = $DB->get_record('user', array('id' => $userid))) {
                 $message->send_message($user);
             }
         }
@@ -1395,7 +1100,7 @@ function prog_eventhandler_program_completed($eventdata) {
  * @return bool Success status
  */
 function prog_eventhandler_courseset_completed($eventdata) {
-
+    global $DB;
     $program = new program($eventdata->courseset->programid);
     $userid = $eventdata->userid;
 
@@ -1403,9 +1108,9 @@ function prog_eventhandler_courseset_completed($eventdata) {
     $messages = $messagesmanager->get_messages();
 
     // send notification to user
-    foreach($messages as $message) {
-        if($message->messagetype==MESSAGETYPE_COURSESET_COMPLETED) {
-            if($user = get_record('user', 'id', $userid)) {
+    foreach ($messages as $message) {
+        if ($message->messagetype == MESSAGETYPE_COURSESET_COMPLETED) {
+            if ($user = $DB->get_record('user', array('id' => $userid))) {
                 $message->send_message($user, null, array('coursesetid'=>$eventdata->courseset->id));
             }
         }
@@ -1415,19 +1120,20 @@ function prog_eventhandler_courseset_completed($eventdata) {
 }
 
 function prog_store_position_assignment($assignment) {
-    $position_assignment_history = get_record('prog_pos_assignment','userid',$assignment->userid,'type',$assignment->type);
+    global $DB;
+    $position_assignment_history = $DB->get_record('prog_pos_assignment', array('userid' => $assignment->userid, 'type' => $assignment->type));
     if (!$position_assignment_history) {
         $position_assignment_history = new stdClass();
         $position_assignment_history->userid = $assignment->userid;
         $position_assignment_history->positionid = $assignment->positionid;
         $position_assignment_history->type = $assignment->type;
         $position_assignment_history->timeassigned = time();
-        insert_record('prog_pos_assignment', $position_assignment_history);
+        $DB->insert_record('prog_pos_assignment', $position_assignment_history);
     }
     else if ($position_assignment_history->positionid != $assignment->positionid) {
         $position_assignment_history->positionid = $assignment->positionid;
         $position_assignment_history->timeassigned = time();
-        update_record('prog_pos_assignment', $position_assignment_history);
+        $DB->update_record('prog_pos_assignment', $position_assignment_history);
     }
 }
 
@@ -1438,31 +1144,29 @@ function prog_store_position_assignment($assignment) {
  * @return array
  */
 function prog_get_recurring_programs() {
-
+    global $DB;
     $recurring_programs = array();
 
     // get all programs
-    if($program_records = get_records('prog')) {
-        foreach($program_records as $program_record) {
-            $program = new program($program_record->id);
-            $content = $program->get_content();
-            $coursesets = $content->get_course_sets();
+    $program_records = $DB->get_records('prog');
+    foreach ($program_records as $program_record) {
+        $program = new program($program_record->id);
+        $content = $program->get_content();
+        $coursesets = $content->get_course_sets();
 
-            if ((count($coursesets)==1) && ($coursesets[0]->is_recurring())) {
-                $recurring_programs[] = $program;
-            }
+        if ((count($coursesets) == 1) && ($coursesets[0]->is_recurring())) {
+            $recurring_programs[] = $program;
         }
     }
 
     return $recurring_programs;
-
 }
 
 function prog_get_tab_link($userid) {
-    global $CFG;
-
-    $progtable = new XMLDBTable('prog');
-    if (table_exists($progtable)) {
+    global $CFG, $DB;
+    $dbman = $DB->get_manager();
+    $progtable = new xmldb_table('prog');
+    if ($dbman->table_exists($progtable)) {
 
         $requiredlearningcount = prog_get_required_programs($userid, '', '', '', true, true);
         if ($requiredlearningcount == 1) {
@@ -1491,7 +1195,7 @@ function prog_get_tab_link($userid) {
  *  @return boolean True if all the update_learner_assignments() succeeded or there was nothing to do
  */
 function prog_assignments_firstlogin($user) {
-    global $CFG;
+    global $DB;
 
     $status = true;
 
@@ -1500,17 +1204,16 @@ function prog_assignments_firstlogin($user) {
     // we are looking for:
     // - future assignments for this user
     // - that relate to a "first login" assignment
-    $rs = get_recordset_sql(
+    $rs = $DB->get_recordset_sql(
         "SELECT pfua.* FROM
-            {$CFG->prefix}prog_future_user_assignment pfua
+            {prog_future_user_assignment} pfua
         LEFT JOIN
-            {$CFG->prefix}prog_assignment pa
+            {prog_assignment} pa
             ON pfua.assignmentid = pa.id
         WHERE
-            pfua.userid = {$user->id}
-            AND pa.completionevent = " . COMPLETION_EVENT_FIRST_LOGIN
-    );
-
+            pfua.userid = ?
+            AND pa.completionevent = ?"
+    , array($user->id, COMPLETION_EVENT_FIRST_LOGIN));
     // group the future assignments by 'programid'
     $pending_by_program = totara_group_records($rs, 'programid');
 
@@ -1526,8 +1229,8 @@ function prog_assignments_firstlogin($user) {
                     $future_assignments_to_delete[] = $assignment->id;
                 }
                 if (!empty($future_assignments_to_delete)) {
-                    $delete_ids = implode(',', $future_assignments_to_delete);
-                    delete_records_select('prog_future_user_assignment', "id IN ({$delete_ids})");
+                    list($deleteids_sql, $deleteids_params) = $DB->get_in_or_equal($future_assignments_to_delete);
+                    $DB->delete_records_select('prog_future_user_assignment', "id {$deleteids_sql}", array($deleteids_params));
                 }
             } else {
                 $status = false;
@@ -1536,4 +1239,13 @@ function prog_assignments_firstlogin($user) {
     }
 
     return $status;
+}
+
+/**
+ * Run the program cron
+ */
+function totara_program_cron() {
+    global $CFG;
+    require_once($CFG->dirroot . '/totara/program/cron.php');
+    program_cron();
 }

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,19 +23,22 @@
  */
 
 require_once('../../config.php');
-
 require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
 $format = optional_param('format','', PARAM_TEXT); // export format
 
-require_login();
+$PAGE->set_context(context_system::instance());
+if ($CFG->forcelogin) {
+    require_login();
+}
 
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
-
-$strheading = get_string('searchprograms', 'local_program');
+$strheading = get_string('searchprograms', 'totara_program');
 $shortname = 'findprograms';
 
-$report = reportbuilder_get_embedded_report($shortname);
+if (!$report = reportbuilder_get_embedded_report($shortname)) {
+    print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
+}
 
 if ($format != '') {
     add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id=' . $report->_id,
@@ -49,35 +52,38 @@ add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_i
 
 $report->include_js();
 
-$fullname = $report->fullname;
-$pagetitle = format_string(get_string('report','local').': '.$fullname);
-$navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}" . "/totara/program/find.php", 'type' => 'title');
-$navlinks[] = array('name' => get_string('search'), 'link' => null, 'type' => 'title');
+$fullname = format_string($report->fullname);
+$pagetitle = format_string(get_string('report', 'totara_core').': '.$fullname);
 
-$navigation = build_navigation($navlinks);
-
-print_header_simple($pagetitle, '', $navigation, '', null, true, null);
+$PAGE->set_url('/totara/program/find.php');
+$PAGE->set_pagelayout('admin');
+$PAGE->navbar->add($fullname, new moodle_url('/totara/program/find.php'));
+$PAGE->navbar->add(get_string('search'));
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading('');
+echo $OUTPUT->header();
 
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
 
 $heading = $strheading . ': ' .
     $renderer->print_result_count_string($countfiltered, $countall);
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
 print $renderer->print_description($report->description, $report->_id);
 
 $report->display_search();
 
 // print saved search buttons if appropriate
-print '<table align="right" border="0"><tr><td>';
-print $renderer->save_button($report->_id);
-print '</td><td>';
-print $report->view_saved_menu();
-print '</td></tr></table>';
-print "<br /><br />";
+$table = new html_table();
+$cells = array();
+$cells[] = new html_table_cell($renderer->save_button($report->_id));
+$cells[] = new html_table_cell($report->view_saved_menu());
+$table->data[] = new html_table_row($cells);
+echo html_writer::table($table);
+echo html_writer::empty_tag('br'). html_writer::empty_tag('br');
 
-if ($countfiltered > 0) {
+if ($countfiltered>0) {
     print $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     print $report->edit_button();
@@ -85,6 +91,6 @@ if ($countfiltered > 0) {
     $renderer->export_select($report->_id);
 }
 
-print_footer();
+echo $OUTPUT->footer();
 
 ?>

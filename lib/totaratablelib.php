@@ -100,60 +100,14 @@ class totara_table extends flexible_table {
      * @return boolean True if the toolbar was successfully rendered
      */
     function print_toolbars($position = 'top') {
+        global $PAGE;
         if (!in_array($position, array('top', 'bottom'))) {
             debugging("print_toolbars: Unknown position '{$position}', should be 'top' or 'bottom'");
             return false;
         }
         $numcols = count($this->columns);
-        ksort($this->toolbar[$position]);
-
-        $count = 1;
-        $totalcount = count($this->toolbar[$position]);
-        foreach ($this->toolbar[$position] as $index => $row) {
-            // don't render empty toolbars
-            // if you want to render one, add an empty content string to the toolbar
-            if (empty($row['left']) && empty($row['right'])) {
-                continue;
-            }
-
-            $trclass = "toolbar-{$position}";
-            if ($count == 1) {
-                $trclass .= ' first';
-            }
-            if ($count == $totalcount) {
-                $trclass .= ' last';
-            }
-
-            echo html_writer::start_tag('tr', array('class' => $trclass));
-            echo html_writer::start_tag('td', array('class' => 'toolbar', 'colspan' => $numcols));
-
-            // nested tables are unfortunately necessary to get IE support without nasty CSS hacks
-
-            // put right side first so it floats on top of left side when insufficent horizontal space
-            if (!empty($row['right'])) {
-                echo html_writer::start_tag('table', array('class' => 'toolbar-right-table'));
-                echo html_writer::start_tag('tr', array('class' => 'toolbar-row'));
-                foreach (array_reverse($row['right']) as $item) {
-                    echo html_writer::tag('td', $item, array('class' => 'toolbar-cell'));
-                }
-                echo html_writer::end_tag('tr');
-                echo html_writer::end_tag('table');
-            }
-
-            if (!empty($row['left'])) {
-                echo html_writer::start_tag('table', array('class' => 'toolbar-left-table'));
-                echo html_writer::start_tag('tr', array('class' => 'toolbar-row'));
-                foreach ($row['left'] as $item) {
-                    echo html_writer::tag('td', $item, array('class' => 'toolbar-cell'));
-                }
-                echo html_writer::end_tag('tr');
-                echo html_writer::end_tag('table');
-            }
-
-            echo html_writer::end_tag('td');
-            echo html_writer::end_tag('tr');
-            $count++;
-        }
+        $renderer = $PAGE->get_renderer('totara_core');
+        $renderer->print_toolbars($position, $numcols, $this->toolbar[$position]);
 
         return true;
     }

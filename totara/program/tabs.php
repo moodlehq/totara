@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
  *
  * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
- * @subpackage plan
+ * @subpackage program
  */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -33,7 +33,7 @@ if (!isset($currenttab)) {
     $currenttab = 'details';
 }
 
-if(!isset($context)) {
+if (!isset($context)) {
     $context = $program->get_context();
 }
 
@@ -43,7 +43,7 @@ $activated = array();
 $inactive = array();
 
 // Overview Tab
-$toprow[] = new tabobject('overview', $CFG->wwwroot.'/totara/program/edit.php?id='.$id, get_string('overview', 'local_program'));
+$toprow[] = new tabobject('overview', $CFG->wwwroot.'/totara/program/edit.php?id='.$id, get_string('overview', 'totara_program'));
 if (substr($currenttab, 0, 7) == 'overview'){
     $activated[] = 'overview';
 }
@@ -51,9 +51,9 @@ if (substr($currenttab, 0, 7) == 'overview'){
 // Details Tab
 //disable link if creating a new program to avoid fatal error
 if ($id == 0) {
-    $toprow[] = new tabobject('details', '#', get_string('details', 'local_program'));
+    $toprow[] = new tabobject('details', '#', get_string('details', 'totara_program'));
 } else {
-    $toprow[] = new tabobject('details', $CFG->wwwroot.'/totara/program/edit.php?id='.$id.'&amp;action=edit', get_string('details', 'local_program'));
+    $toprow[] = new tabobject('details', $CFG->wwwroot.'/totara/program/edit.php?id='.$id.'&amp;action=edit', get_string('details', 'totara_program'));
 }
 if (substr($currenttab, 0, 7) == 'details'){
     $activated[] = 'details';
@@ -61,7 +61,7 @@ if (substr($currenttab, 0, 7) == 'details'){
 
 // Content Tab
 if (has_capability('totara/program:configurecontent', $context)) {
-    $toprow[] = new tabobject('content', $CFG->wwwroot.'/totara/program/edit_content.php?id='.$id, get_string('content', 'local_program'));
+    $toprow[] = new tabobject('content', $CFG->wwwroot.'/totara/program/edit_content.php?id='.$id, get_string('content', 'totara_program'));
     if (substr($currenttab, 0, 7) == 'content'){
         $activated[] = 'content';
     }
@@ -69,7 +69,7 @@ if (has_capability('totara/program:configurecontent', $context)) {
 
 // Assignments Tab
 if (has_capability('totara/program:configureassignments', $context)) {
-    $toprow[] = new tabobject('assignments', $CFG->wwwroot.'/totara/program/edit_assignments.php?id='.$id, get_string('assignments', 'local_program'));
+    $toprow[] = new tabobject('assignments', $CFG->wwwroot.'/totara/program/edit_assignments.php?id='.$id, get_string('assignments', 'totara_program'));
     if (substr($currenttab, 0, 11) == 'assignments'){
         $activated[] = 'assignments';
     }
@@ -77,7 +77,7 @@ if (has_capability('totara/program:configureassignments', $context)) {
 
 // Messages Tab
 if (has_capability('totara/program:configuremessages', $context)) {
-    $toprow[] = new tabobject('messages', $CFG->wwwroot.'/totara/program/edit_messages.php?id='.$id, get_string('messages', 'local_program'));
+    $toprow[] = new tabobject('messages', $CFG->wwwroot.'/totara/program/edit_messages.php?id='.$id, get_string('messages', 'totara_program'));
     if (substr($currenttab, 0, 8) == 'messages'){
         $activated[] = 'messages';
     }
@@ -87,7 +87,7 @@ if (has_capability('totara/program:configuremessages', $context)) {
 // Only show if there are exceptions or you are on the exceptions tab already
 if ($exceptions || (substr($currenttab, 0, 10) == 'exceptions')) {
     $exceptioncount = $exceptions ? $exceptions : '0';
-    $toprow[] = new tabobject('exceptions', $CFG->wwwroot.'/totara/program/exceptions.php?id='.$id, get_string('exceptions', 'local_program', $exceptioncount));
+    $toprow[] = new tabobject('exceptions', $CFG->wwwroot.'/totara/program/exceptions.php?id='.$id, get_string('exceptions', 'totara_program', $exceptioncount));
     if (substr($currenttab, 0, 10) == 'exceptions'){
         $activated[] = 'exceptions';
     }

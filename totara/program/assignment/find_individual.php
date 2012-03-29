@@ -1,9 +1,30 @@
 <?php
-
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package totara
+ * @subpackage program
+ */
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
 require_once("{$CFG->dirroot}/totara/program/lib.php");
 
+$PAGE->set_context(get_system_context());
 require_login();
 
 // Get program id and check capabilities
@@ -13,17 +34,12 @@ require_capability('totara/program:configureassignments', program_get_context($p
 // Already selected items
 $selected = optional_param('selected', array(), PARAM_SEQUENCE);
 if ($selected != false) {
-    $selected = get_records_select('user',"id IN ($selected)",'','id, ' . sql_fullname('firstname', 'lastname') . ' as fullname');
-    if (!$selected) {
-	$selected = array();
-    }
+    list($selectedsql, $selectedparams) = $DB->get_in_or_equal(explode(',', $selected));
+    $selected = $DB->get_records_select('user', "id {$selectedsql}", $selectedparams, '', 'id, ' . $DB->sql_fullname() . ' as fullname');
 }
 
 // Get all users that are managers
-$items = get_records_select('user', 'username <> \'guest\' AND deleted = 0', '', 'id, ' . sql_fullname('firstname', 'lastname') . ' as fullname');
-if (!$items) {
-    $items = array();
-}
+$items = $DB->get_records_select('user', 'username <> ? AND deleted = 0', array('guest'), '', 'id, ' . $DB->sql_fullname() . ' as fullname');
 
 // Don't let them remove the currently selected ones
 $unremovable = $selected;

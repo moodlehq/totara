@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,10 +65,10 @@ class prog_exceptions_manager {
         );
 
         $this->exceptiontype_descriptors = array(
-            EXCEPTIONTYPE_TIME_ALLOWANCE    => get_string('timeallowance', 'local_program'),
-            EXCEPTIONTYPE_ALREADY_ASSIGNED  => get_string('currentlyassigned', 'local_program'),
-            EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN  => get_string('completiontimeunknown', 'local_program'),
-            EXCEPTIONTYPE_UNKNOWN => get_string('unknownexception', 'local_program')
+            EXCEPTIONTYPE_TIME_ALLOWANCE    => get_string('timeallowance', 'totara_program'),
+            EXCEPTIONTYPE_ALREADY_ASSIGNED  => get_string('currentlyassigned', 'totara_program'),
+            EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN  => get_string('completiontimeunknown', 'totara_program'),
+            EXCEPTIONTYPE_UNKNOWN => get_string('unknownexception', 'totara_program')
         );
 
         $this->exception_actions = array(
@@ -120,101 +120,88 @@ class prog_exceptions_manager {
      * @return bool Success status
      */
     public static function delete_exceptions_by_assignment($assignmentid, $userid=0) {
-        global $CFG;
+        global $DB;
 
-        begin_sql();
+        $transaction = $DB->start_delegated_transaction();
 
         // first delete all exception_data entries for exceptions relating to this assignment
-        $subquery = "SELECT id FROM {$CFG->prefix}prog_exception WHERE assignmentid = {$assignmentid}";
+        $subquery = "SELECT id FROM {prog_exception} WHERE assignmentid = ?";
+        $params = array($assignmentid);
         if ($userid) {
-            $subquery .= " AND userid = {$userid}";
+            $subquery .= " AND userid = ?";
+            $params[] = $userid;
         }
         $select = "exceptionid IN ($subquery)";
-        if (delete_records_select('prog_exception_data', $select)!==false) {
-            $exceptionselect = "assignmentid = $assignmentid";
-            if ($userid) {
-                $exceptionselect .= " AND userid = {$userid}";
-            }
-            if (delete_records_select('prog_exception', $exceptionselect)!==false) {
-
-                // Deleted exceptions, now update exception
-                // status for user assignments
-                $update_sql = "UPDATE {$CFG->prefix}prog_user_assignment SET exceptionstatus=0 WHERE assignmentid={$assignmentid}";
-                if ($userid) {
-                    $update_sql .= " AND userid = {$userid}";
-                }
-                if (execute_sql($update_sql, false)) {
-                    commit_sql();
-                    return true;
-                } else {
-                    rollback_sql();
-                    return false;
-                }
-            }
+        $DB->delete_records_select('prog_exception_data', $select, $params);
+        $exceptionselect = "assignmentid = ?";
+        $params = array($assignmentid);
+        if ($userid) {
+            $exceptionselect .= " AND userid = ?";
+            $params[] = $userid;
         }
 
-        rollback_sql();
-        return false;
+        $DB->delete_records_select('prog_exception', $exceptionselect, $params);
+        // Deleted exceptions, now update exception
+        // status for user assignments
+        $update_sql = "UPDATE {prog_user_assignment} SET exceptionstatus = 0 WHERE assignmentid = ?";
+        $params = array($assignmentid);
+        if ($userid) {
+            $update_sql .= " AND userid = ?";
+            $params[] = $userid;
+        }
+
+        $DB->execute($update_sql, $params);
+        $transaction->allow_commit();
+        return true;
     }
 
     /**
      * Deletes all exceptions and exception-related data for this program
      *
-     * @return bool
+     * @return true
      */
     public function delete() {
+        global $DB;
 
-        $result = true;
+        $transaction = $DB->start_delegated_transaction();
 
-        begin_sql();
-
-        if($result) {
-            if($exceptions = get_records('prog_exception', 'programid', $this->programid)) {
-                foreach($exceptions as $exception) {
-                    $result = $result && delete_records('prog_exception_data', 'exceptionid', $exception->id);
-                }
-            }
+        $exceptions = $DB->get_records('prog_exception', array('programid' => $this->programid));
+        foreach ($exceptions as $exception) {
+            $DB->delete_records('prog_exception_data', array('exceptionid' => $exception->id));
         }
 
-        if($result) {
-            $result = $result && delete_records('prog_exception', 'programid', $this->programid);
-        }
+        $DB->delete_records('prog_exception', array('programid' => $this->programid));
 
-        if ($result) {
-            commit_sql();
-        }
-        else {
-            rollback_sql();
-        }
+        $transaction->allow_commit();
 
-        return $result;
+        return true;
     }
 
     public function handle_exceptions($action, $formdata) {
-        foreach($this->selectedexceptions as $selectedexception) {
+        foreach ($this->selectedexceptions as $selectedexception) {
             return $this->handle_exception($selectedexception->id, $action);
         }
     }
 
     public function count_exceptions() {
-        global $CFG;
+        global $DB;
 
         $sql = "SELECT COUNT(ex.id)
-        FROM {$CFG->prefix}prog_exception ex
-        INNER JOIN {$CFG->prefix}user us ON us.id = ex.userid
-        WHERE ex.programid = {$this->programid} AND us.deleted = 0";
+                  FROM {prog_exception} ex
+            INNER JOIN {user} us ON us.id = ex.userid
+                 WHERE ex.programid = ? AND us.deleted = ?";
 
-        return count_records_sql($sql);
+        return $DB->count_records_sql($sql, array($this->programid, 0));
     }
 
     public function handle_exception($exceptionid, $action) {
-
-        if( ! $exception = get_record('prog_exception', 'id', $exceptionid)) {
-            throw new ProgramExceptionException(get_string('exceptionnotfound','local_program'));
+        global $DB;
+        if (!$exception = $DB->get_record('prog_exception', array('id' => $exceptionid))) {
+            throw new ProgramExceptionException(get_string('exceptionnotfound', 'totara_program'));
         }
 
-        if( ! array_key_exists($exceptiontype, $this->exceptiontype_classnames)) {
-            throw new ProgramExceptionException(get_string('exceptiontypenotfound','local_program'));
+        if (!array_key_exists($exceptiontype, $this->exceptiontype_classnames)) {
+            throw new ProgramExceptionException(get_string('exceptiontypenotfound', 'totara_program'));
         }
 
         $exception_classname = $this->exceptiontype_classnames[$exception->exceptiontype];
@@ -260,7 +247,7 @@ class prog_exceptions_manager {
     }
 
     public function search_exceptions($page='all', $searchterm='', $exceptiontype='', $count=false) {
-        global $CFG;
+        global $DB;
 
         $fields = 'ex.*, us.firstname as firstname, us.lastname as lastname, us.id as userid';
         if ($count) {
@@ -268,159 +255,75 @@ class prog_exceptions_manager {
         }
 
         $sql = "SELECT $fields
-        FROM {$CFG->prefix}prog_exception ex
-        INNER JOIN {$CFG->prefix}user us ON us.id = ex.userid
-        WHERE ex.programid = {$this->programid} AND us.deleted = 0";
-
+        FROM {prog_exception} ex
+        INNER JOIN {user} us ON us.id = ex.userid
+        WHERE ex.programid = ? AND us.deleted = 0";
+        $params = array($this->programid);
         if (!empty($exceptiontype)) {
-            $sql .= " AND ex.exceptiontype = $exceptiontype";
+            $sql .= " AND ex.exceptiontype = ?";
+            $params[] = $exceptiontype;
         }
 
         if (!empty($searchterm)) {
             if (is_numeric($searchterm)) {
-                $sql .= " AND us.id = $searchterm";
-            }
-            else {
-                $sql .= " AND " . sql_concat('us.firstname','us.lastname') . " " . sql_ilike() . " '%{$searchterm}%'";
+                $sql .= " AND us.id = ?";
+                $params[] = $searchterm;
+            } else {
+                $sql .= " AND " . $DB->sql_like($DB->sql_concat('us.firstname','us.lastname'), '?', false);
+                $params[] = '%' . $DB->sql_like_escape($searchterm) . '%';
             }
         }
 
         if ($count) {
-            return count_records_sql($sql);
+            return $DB->count_records_sql($sql, $params);
         }
 
         $limit = is_int($page) ? RESULTS_PER_PAGE : '';
         $offset = is_int($page) ? (($page) * RESULTS_PER_PAGE) : '';
 
-        $exceptions = get_records_sql($sql, $offset, $limit);
+        $exceptions = $DB->get_records_sql($sql, $params, $offset, $limit);
 
-        if (!empty($exceptions)) {
-            return $exceptions;
-        } else {
-            return array();
-        }
+        return $exceptions;
 
     }
 
-    private function build_link() {
-        global $CFG;
-        return $CFG->wwwroot . '/totara/program/exceptions.php?id='. $this->programid;
-    }
-
-    public function print_search($previoussearch='',$return=false) {
-        global $CFG;
-
-        $out = '<form method="get" action="'. $this->build_link() .'">';
-        $out .= '<label for="exception_search" >'. get_string('searchforindividual', 'local_program') .' </label>';
-        $out .= '<input type="text" id="exception_search" name="search" value="'.stripslashes($previoussearch).'" />';
-        $out .= '<input type="hidden" name="id" value="'. $this->programid .'" />';
-        $out .= '<input type="submit" value="'. get_string('search') .'" />';
-        $out .= '</form>';
-
-        if ($return) {
-            return $out;
-        }
-        echo $out;
-    }
-
-    public function print_exceptions_form($exceptions, $selectedexceptions=null, $selectiontype=SELECTIONTYPE_NONE, $return=false) {
-        global $CFG;
-
-        if ($selectedexceptions==null) {
-            $selectedexceptions = $this->selectedexceptions;
-        }
-
-        $out = '';
+    public function print_exceptions_form($programid, $exceptions, $selectedexceptions=null, $selectiontype=SELECTIONTYPE_NONE) {
+        global $PAGE;
         $numexceptions = count($exceptions);
         $numselectedexceptions = count($selectedexceptions);
 
-        if($numexceptions == 0) {
-            $out .= '<p>'.get_string('noprogramexceptions', 'local_program').'</p>';
-        } else {
+        $tabledata = array();
 
-            $out .= '<form name="exceptionsform" method="post" action="">';
-            $out .= '<input type="hidden" name="id" value="'.$this->programid.'" />';
+        foreach ($exceptions as $exception) {
+            $rowdata = new stdClass();
 
-            $out .= '<div class="exceptionactions">';
+            $user = new stdClass();
+            $user->id = $exception->userid;
+            $user->firstname = $exception->firstname;
+            $user->lastname = $exception->lastname;
+            $rowdata->exceptionid = $exception->id;
+            $rowdata->user = $user;
+            $rowdata->firstname = $exception->firstname;
+            $rowdata->lastname = $exception->lastname;
+            $rowdata->selected = isset($selectedexceptions[$exception->id]) ? true : false;
 
-            $out .= '<div>';
-            $out .= '<select name="selectiontype" id="selectiontype">';
-            $out .= '<option value="'.SELECTIONTYPE_NONE.'"'.($selectiontype==SELECTIONTYPE_NONE ? ' selected="selected"' : '').'>'.get_string('select', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONTYPE_ALL.'"'.($selectiontype==SELECTIONTYPE_ALL ? ' selected="selected"' : '').'>'.get_string('alllearners', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONTYPE_TIME_ALLOWANCE.'"'.($selectiontype==SELECTIONTYPE_TIME_ALLOWANCE ? ' selected="selected"' : '').'>'.get_string('alltimeallowanceissues', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONTYPE_ALREADY_ASSIGNED.'"'.($selectiontype==SELECTIONTYPE_ALREADY_ASSIGNED ? ' selected="selected"' : '').'>'.get_string('allcurrentlyassignedissues', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONTYPE_COMPLETION_TIME_UNKNOWN.'"'.($selectiontype==SELECTIONTYPE_COMPLETION_TIME_UNKNOWN ? ' selected="selected"' : '').'>'.get_string('allcompletiontimeunknownissues', 'local_program').'</option>';
-            $out .= '</select>';
-            $out .= '</div>';
-
-            $out .= '<div>';
-            $out .= '<select name="selectionaction" id="selectionaction">';
-            $out .= '<option value="'.SELECTIONACTION_NONE.'">'.get_string('action', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONACTION_AUTO_TIME_ALLOWANCE.'">'.get_string('setrealistictimeallowance', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONACTION_OVERRIDE_EXCEPTION.'">'.get_string('overrideandaddprogram', 'local_program').'</option>';
-            $out .= '<option value="'.SELECTIONACTION_DISMISS_EXCEPTION.'">'.get_string('dismissandtakenoaction', 'local_program').'</option>';
-            $out .= '</select>';
-            $out .= '</div>';
-
-            $out .= '<div>';
-            $out .= '<input id="applyactionbutton" type="submit" name="submit" value="Proceed with this action" />';
-            $out .= '</div>';
-
-            $out .= '<div>';
-            $out .= '<p><span id="numselectedexceptions">'. $numselectedexceptions .'</span> '.get_string('learnersselected', 'local_program').'</p>';
-            $out .= '</div>';
-
-            $out .= '</div>';
-
-            $table = new stdClass();
-            $table->id = 'exceptions';
-
-            $table->head = array(
-                get_string('header:hash','local_program'),
-                get_string('header:learners','local_program'),
-                get_string('header:id','local_program'),
-                get_string('header:issue','local_program'),
-            );
-
-            foreach($exceptions as $exception) {
-
-                $row = array();
-
-                $user = new object();
-                $user->id = $exception->userid;
-                $user->firstname = $exception->firstname;
-                $user->lastname = $exception->lastname;
-
-                $selectedstr = isset($selectedexceptions[$exception->id]) ? ' checked="checked"' : '';
-
-                $row[] = '<input type="checkbox" name="exceptionid" value="'.$exception->id.'"'.$selectedstr.' />';
-                $row[] = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'">'.fullname($user).'</a>';
-                $row[] = '#'.$exception->id;
-                if (isset($this->exceptiontype_descriptors[$exception->exceptiontype])) {
-                    $exceptiontype = $exception->exceptiontype;
-                    $descriptor = $this->exceptiontype_descriptors[$exceptiontype];
-                } else {
-                    $exceptiontype = EXCEPTIONTYPE_UNKNOWN;
-                    $descriptor = $this->exceptiontype_descriptors[$exceptiontype];
-                }
-                $row[] = $descriptor . '<span class="type" style="display:none;">'.$exceptiontype.'</span>';
-
-
-                $table->data[] = $row;
-                $table->rowclass[] = 'exceptionrow';
+            if (isset($this->exceptiontype_descriptors[$exception->exceptiontype])) {
+                $exceptiontype = $exception->exceptiontype;
+                $descriptor = $this->exceptiontype_descriptors[$exceptiontype];
+            } else {
+                $exceptiontype = EXCEPTIONTYPE_UNKNOWN;
+                $descriptor = $this->exceptiontype_descriptors[$exceptiontype];
             }
 
-            $out .= print_table($table, true);
+            $rowdata->exceptiontype = $exceptiontype;
+            $rowdata->descriptor = $descriptor;
 
-            $out .= '</form>';
+            $tabledata[] = $rowdata;
         }
-
-        if($return) {
-            return $out;
-        } else {
-            echo $out;
-        }
+        $renderer = $PAGE->get_renderer('totara_program');
+        echo $renderer->print_exceptions_form($numexceptions, $numselectedexceptions, $programid, $selectiontype, $tabledata);
     }
+
 
     /**
      * Get a multidimensional array of the different exception types and the
@@ -443,8 +346,7 @@ class prog_exceptions_manager {
             }
         }
 
-        if ($returntype=='json') {
-            require_once($CFG->dirroot.'/lib/pear/HTML/AJAX/JSON.php');
+        if ($returntype == 'json') {
             return json_encode($handledActions);
         } else {
             return $handledActions;
@@ -462,7 +364,7 @@ class prog_exceptions_manager {
     public function get_handled_actions_for_selection($returntype='array', $selectedexceptions=null) {
         global $CFG;
 
-        if ($selectedexceptions==null) {
+        if ($selectedexceptions == null) {
             $selectedexceptions = $this->selectedexceptions;
         }
 
@@ -490,15 +392,14 @@ class prog_exceptions_manager {
                 $exceptionob = new $classname($this->programid, $selectedexception);
 
                 foreach ($handledActions as $action => $handles) {
-                    if ( ! $exceptionob->handles($action)) {
+                    if (!$exceptionob->handles($action)) {
                         $handledActions[$action] = false;
                     }
                 }
             }
         }
 
-        if ($returntype=='json') {
-            require_once($CFG->dirroot.'/lib/pear/HTML/AJAX/JSON.php');
+        if ($returntype == 'json') {
             return json_encode($handledActions);
         } else {
             return $handledActions;

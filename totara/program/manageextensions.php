@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,8 @@ require_login();
 $submitted = optional_param('submitbutton', null, PARAM_TEXT); //form submitted
 $userid = optional_param('userid', 0, PARAM_INT);
 
-if ((!empty($userid) && !totara_is_manager($userid, $USER->id)) && !has_capability('moodle/site:doanything', get_context_instance(CONTEXT_SYSTEM))) {
-    error(get_string('nopermissions', 'error', get_string('manageextensions', 'local_program')));
+if ((!empty($userid) && !totara_is_manager($userid, $USER->id)) && !is_siteadmin()) {
+    print_error('nopermissions', 'error', '', get_string('manageextensions', 'totara_program'));
 }
 
 define('PROG_EXTENSION_GRANT', 1);
@@ -51,30 +51,30 @@ if ($submitted && confirm_sesskey()) {
 
             $update_extension_count++;
 
-            if (!$extension = get_record('prog_extension', 'id', $id)) {
-                error(get_string('error:couldnotloadextension', 'local_program'));
+            if (!$extension = $DB->get_record('prog_extension', array('id' => $id))) {
+                print_error('error:couldnotloadextension', 'totara_program');
             }
 
             if (!totara_is_manager($extension->userid)) {
-                error(get_string('error:notusersmanager', 'local_program'));
+                print_error('error:notusersmanager', 'totara_program');
             }
 
             if (!$roleid = $CFG->learnerroleid) {
-                print_error('error:failedtofindstudentrole', 'local_program');
+                print_error('error:failedtofindstudentrole', 'totara_program');
             }
 
             if ($action == PROG_EXTENSION_DENY) {
 
-                $userto = get_record('user', 'id', $extension->userid);
+                $userto = $DB->get_record('user', array('id' => $extension->userid));
                 $userfrom = totara_get_manager($extension->userid);
 
                 $messagedata = new stdClass();
                 $messagedata->userto           = $userto;
                 $messagedata->userfrom         = $userfrom;
-                $messagedata->subject          = get_string('extensiondenied', 'local_program');;
+                $messagedata->subject          = get_string('extensiondenied', 'totara_program');;
                 $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
-                $messagedata->contexturlname   = get_string('launchprogram', 'local_program');
-                $messagedata->fullmessage      = get_string('extensiondeniedmessage', 'local_program');
+                $messagedata->contexturlname   = get_string('launchprogram', 'totara_program');
+                $messagedata->fullmessage      = get_string('extensiondeniedmessage', 'totara_program');
 
                 $eventdata = new stdClass();
                 $eventdata->message = $messagedata;
@@ -85,17 +85,17 @@ if ($submitted && confirm_sesskey()) {
                     $extension_todb->id = $extension->id;
                     $extension_todb->status = PROG_EXTENSION_DENY;
 
-                    if (!update_record('prog_extension', $extension_todb)) {
+                    if (!$DB->update_record('prog_extension', $extension_todb)) {
                         $update_fail_count++;
                     }
                 } else {
-                    error(get_string('error:failedsendextensiondenyalert' ,'local_program'));
+                    print_error('error:failedsendextensiondenyalert', 'totara_program');
                 }
             } elseif ($action == PROG_EXTENSION_GRANT) {
                 // Load the program for this extension
                 $extension_program = new program($extension->programid);
 
-                if ($prog_completion = get_record('prog_completion', 'programid', $extension_program->id, 'userid', $extension->userid, 'coursesetid', 0)) {
+                if ($prog_completion = $DB->get_record('prog_completion', array('programid' => $extension_program->id, 'userid' => $extension->userid, 'coursesetid' => 0))) {
                     $duedate = empty($prog_completion->timedue) ? 0 : $prog_completion->timedue;
 
                     if ($extension->extensiondate < $duedate) {
@@ -115,9 +115,9 @@ if ($submitted && confirm_sesskey()) {
                     $update_fail_count++;
                     continue;
                 } else {
-                    $userto = get_record('user', 'id', $extension->userid);
+                    $userto = $DB->get_record('user', array('id' => $extension->userid));
                     if (!$userto) {
-                        print_error('error:failedtofinduser', 'local_program', $extension->userid);
+                        print_error('error:failedtofinduser', 'totara_program', $extension->userid);
                     }
 
                     $userfrom = totara_get_manager($extension->userid);
@@ -125,10 +125,10 @@ if ($submitted && confirm_sesskey()) {
                     $messagedata = new stdClass();
                     $messagedata->userto           = $userto;
                     $messagedata->userfrom         = $userfrom;
-                    $messagedata->subject          = get_string('extensiongranted', 'local_program');
+                    $messagedata->subject          = get_string('extensiongranted', 'totara_program');
                     $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
-                    $messagedata->contexturlname   = get_string('launchprogram', 'local_program');
-                    $messagedata->fullmessage      = get_string('extensiongrantedmessage', 'local_program', userdate($extension->extensiondate, '%d/%m/%Y', $CFG->timezone));
+                    $messagedata->contexturlname   = get_string('launchprogram', 'totara_program');
+                    $messagedata->fullmessage      = get_string('extensiongrantedmessage', 'totara_program', userdate($extension->extensiondate, '%d/%m/%Y', $CFG->timezone));
 
                     if ($result = tm_alert_send($messagedata)) {
 
@@ -136,11 +136,11 @@ if ($submitted && confirm_sesskey()) {
                         $extension_todb->id = $extension->id;
                         $extension_todb->status = PROG_EXTENSION_GRANT;
 
-                        if (!update_record('prog_extension', $extension_todb)) {
+                        if (!$DB->update_record('prog_extension', $extension_todb)) {
                             $update_fail_count++;
                         }
                     } else {
-                        error(get_string('error:failedsendextensiongrantalert','local_program'));
+                        print_error('error:failedsendextensiongrantalert', 'totara_program');
                     }
                 }
             }
@@ -148,35 +148,37 @@ if ($submitted && confirm_sesskey()) {
 
         if ($update_extension_count == 0) {
             redirect('manageextensions.php');
-        } elseif($update_fail_count == $update_extension_count && $update_fail_count > 0) {
-            totara_set_notification(get_string('updateextensionfailall', 'local_program'), 'manageextensions.php?userid='.$userid);
+        } elseif ($update_fail_count == $update_extension_count && $update_fail_count > 0) {
+            totara_set_notification(get_string('updateextensionfailall', 'totara_program'), 'manageextensions.php?userid='.$userid);
         } elseif ($update_fail_count > 0) {
-            totara_set_notification(get_string('updateextensionfailcount', 'local_program', $update_fail_count), 'manageextensions.php?userid='.$userid);
+            totara_set_notification(get_string('updateextensionfailcount', 'totara_program', $update_fail_count), 'manageextensions.php?userid='.$userid);
         } else {
-            totara_set_notification(get_string('updateextensionsuccess', 'local_program'), 'manageextensions.php?userid='.$userid, array('class' => 'notifysuccess'));
+            totara_set_notification(get_string('updateextensionsuccess', 'totara_program'), 'manageextensions.php?userid='.$userid, array('class' => 'notifysuccess'));
         }
     }
 }
 
 
-$heading = get_string('manageextensions', 'local_program');
-$pagetitle = get_string('extensions', 'local_program');
-$navlinks = array();
-$navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
-$navigation = build_navigation($navlinks);
+$heading = get_string('manageextensions', 'totara_program');
+$pagetitle = get_string('extensions', 'totara_program');
 
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+$PAGE->navbar->add($heading);
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading('');
+echo $OUTPUT->header();
 
 if (!empty($userid)) {
-    $backstr = "&laquo" . get_string('backtoallextrequests', 'local_program');
-    echo "<p><a href=\"{$CFG->wwwroot}/totara/program/manageextensions.php\">{$backstr}</a></p>";
+    $backstr = "&laquo" . get_string('backtoallextrequests', 'totara_program');
+    $url = new moodle_url('/totara/program/manageextensions.php');
+    $link = html_writer::link($url, $backstr);
+    echo html_writer::start_tag('p') . $link . html_writer::end_tag('p');
 }
 
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
-if(!empty($userid)) {
-    if(!$user = get_record('user', 'id', $userid)) {
-        error('Invalid userid');
+if (!empty($userid)) {
+    if (!$user = $DB->get_record('user', array('id' => $userid))) {
+        print_error(get_string('error:invaliduser', 'totara_program'));
     }
     $user_fullname = fullname($user);
 
@@ -186,26 +188,27 @@ if(!empty($userid)) {
 }
 
 if (!empty($staff_ids)) {
-    $sql = "SELECT * FROM {$CFG->prefix}prog_extension
+    list($staff_sql, $staff_params) = $DB->get_in_or_equal($staff_ids);
+    $sql = "SELECT * FROM {prog_extension}
         WHERE status = 0
-        AND userid IN ({$staff_ids})";
+        AND userid {$staff_sql}";
 
-    $extensions = get_records_sql($sql);
+    $extensions = $DB->get_records_sql($sql, $staff_params);
 
     if ($extensions) {
 
         $columns[] = 'user';
         $headers[] = get_string('name');
         $columns[] = 'program';
-        $headers[] = get_string('program', 'local_program');
+        $headers[] = get_string('program', 'totara_program');
         $columns[] = 'currentdate';
-        $headers[] = get_string('currentduedate', 'local_program');
+        $headers[] = get_string('currentduedate', 'totara_program');
         $columns[] = 'extensiondate';
-        $headers[] = get_string('extensiondate', 'local_program');
+        $headers[] = get_string('extensiondate', 'totara_program');
         $columns[] = 'reason';
-        $headers[] = get_string('reason', 'local_program');
+        $headers[] = get_string('reason', 'totara_program');
         $columns[] = 'grant';
-        $headers[] = get_string('grantdeny', 'local_program');
+        $headers[] = get_string('grantdeny', 'totara_program');
 
         $table = new flexible_table('Extensions');
         $table->define_columns($columns);
@@ -214,43 +217,36 @@ if (!empty($staff_ids)) {
         $table->setup();
 
         $options = array(
-            PROG_EXTENSION_GRANT => get_string('grant', 'local_program'),
-            PROG_EXTENSION_DENY => get_string('deny', 'local_program'),
+            PROG_EXTENSION_GRANT => get_string('grant', 'totara_program'),
+            PROG_EXTENSION_DENY => get_string('deny', 'totara_program'),
         );
 
         foreach ($extensions as $extension) {
             $tablerow = array();
 
-            if ($prog_completion = get_record('prog_completion', 'programid', $extension->programid, 'userid', $extension->userid, 'coursesetid', 0)) {
-                $duedatestr = empty($prog_completion->timedue) ? get_string('duedatenotset', 'local_program') : userdate($prog_completion->timedue, '%e %h %Y', $CFG->timezone, false);
+            if ($prog_completion = $DB->get_record('prog_completion', array('programid' => $extension->programid, 'userid' => $extension->userid, 'coursesetid' => 0))) {
+                $duedatestr = empty($prog_completion->timedue) ? get_string('duedatenotset', 'totara_program') : userdate($prog_completion->timedue, get_string('strftimedate', 'langconfig'), $CFG->timezone, false);
             }
 
-            $prog_name = get_field('prog', 'fullname', 'id', $extension->programid);
+            $prog_name = $DB->get_field('prog', 'fullname', array('id' => $extension->programid));
             $prog_name = empty($prog_name) ? '' : $prog_name;
 
-            $user = get_record('user', 'id', $extension->userid);
+            $user = $DB->get_record('user', array('id' => $extension->userid));
             $tablerow[] = fullname($user);
             $tablerow[] = $prog_name;
             $tablerow[] = $duedatestr;
-            $tablerow[] = userdate($extension->extensiondate, '%e %h %Y', $CFG->timezone, false);
+            $tablerow[] = userdate($extension->extensiondate, get_string('strftimedate', 'langconfig'), $CFG->timezone, false);
             $tablerow[] = $extension->extensionreason;
 
             $pulldown_name = "extension[{$extension->id}]";
-            $pulldown_menu = choose_from_menu(
-                $options,
-                $pulldown_name,
-                $extension->status,
-                'choose',
-                '',
-                0,
-                true,
-                false,
-                0,
-                '',
-                false,
-                false,
-                'approval'
-            );
+            $attributes = array();
+            $attributes['disabled'] = false;
+            $attributes['tabindex'] = 0;
+            $attributes['multiple'] = false;
+            $attributes['class'] = 'approval';
+            $attributes['id'] = null;
+
+            $pulldown_menu = html_writer::select($options, $pulldown_name, $extension->status, array(0 => 'choose'), $attributes);
 
             $tablerow[] = $pulldown_menu;
             $table->add_data($tablerow);
@@ -259,25 +255,25 @@ if (!empty($staff_ids)) {
         $currenturl = qualified_me();
 
         if (!empty($userid)) {
-            echo '<p>' . get_string('viewinguserextrequests', 'local_program', $user_fullname) . '</p>';
+            echo html_writer::tag('p', get_string('viewinguserextrequests', 'totara_program', $user_fullname));
         }
 
-        print '<form id="program-extension-update" action="' . $currenturl . '" method="POST">';
-        print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';
+        echo html_writer::start_tag('form', array('id'=>'program-extension-update', 'action'=>$currenturl, 'method'=>'POST'));
+        echo html_writer::empty_tag('input', array('type'=>'hidden', 'id' => 'sesskey', 'name'=>'sesskey', 'value'=>sesskey()));
+        $table->finish_html();
+        echo html_writer::empty_tag('br');
+        echo html_writer::empty_tag('input', array('type'=>'submit', 'name' => 'submitbutton', 'value' => get_string('updateextensions', 'totara_program')));
+        html_writer::end_tag('form');
 
-        $table->print_html();
-
-        print '<br /><input type="submit" name="submitbutton" value="'.get_string('updateextensions', 'local_program').'" />';
-        print '</form>';
     } elseif (!empty($userid)) {
-        echo '<p>' . get_string('nouserextensions', 'local_program', $user_fullname) . '</p>';
+        echo html_writer::start_tag('p', get_string('nouserextensions', 'totara_program', $user_fullname));
     } else {
-        echo '<p>' . get_string('noextensions', 'local_program') . '</p>';
+        echo html_writer::start_tag('p', get_string('noextensions', 'totara_program'));
     }
 } else {
-    echo '<p>' . get_string('notmanager', 'local_program') . '</p>';
+    echo html_writer::start_tag('p', get_string('notmanager', 'totara_program'));
 }
 
-print_footer();
+echo $OUTPUT->footer();
 
 ?>

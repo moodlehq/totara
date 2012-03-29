@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,16 +33,16 @@ $id   = optional_param('id', false, PARAM_INT); // Program id
 $name = optional_param('name', false, PARAM_TEXT); // Program short name
 
 if (!$id and !$name) {
-    error("Must specify program id or short name");
+    print_error(get_string('error:noprogramid', 'totara_program'));
 }
 
 if ($name) {
-    if (! $program = get_record("prog", "shortname", $name) ) {
-        print_error('error:invalidshortname','local_program');
+    if (!$program = $DB->get_record("prog", array("shortname" => $name))) {
+        print_error('error:invalidshortname','totara_program');
     }
 } else {
-    if (! $program = get_record("prog", "id", $id) ) {
-        print_error('error:invalidid','local_program');
+    if (!$program = $DB->get_record("prog", array("id" => $id))) {
+        print_error('error:invalidid','totara_program');
     }
 }
 
@@ -52,25 +52,26 @@ if ($CFG->forcelogin) {
     require_login();
 }
 
-$context = get_context_instance(CONTEXT_PROGRAM, $program->id);
-if (( ! $program->visible) && !has_capability('totara/program:viewhiddenprograms', $context)) {
+$context = context_program::instance($program->id);
+if ((!$program->visible) && !has_capability('totara/program:viewhiddenprograms', $context)) {
     print_error('programhidden', '', $CFG->wwwroot .'/');
 }
 
-print_header(get_string("summaryof", "", $program->fullname));
+$PAGE->set_title(get_string("summaryof", "", $program->fullname));
+echo $OUTPUT->header();
 
-print_heading(format_string($program->fullname) . '<br />(' . format_string($program->shortname) . ')');
+echo $OUTPUT->heading(format_string($program->fullname) . html_writer::empty_tag('br') . '(' . format_string($program->shortname) . ')');
 
-print_box_start('generalbox info');
+echo $OUTPUT->box_start('generalbox info');
 
 echo filter_text(text_to_html($program->summary),$program->id);
 
-print_box_end();
+echo $OUTPUT->box_end();
 
-echo "<br />";
+echo html_writer::empty_tag('br');
 
-close_window_button();
+echo $OUTPUT->close_window_button();
 
-print_footer();
+echo $OUTPUT->footer();
 
 ?>

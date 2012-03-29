@@ -8,14 +8,13 @@
     require_once($CFG->libdir.'/totaratablelib.php');
 
     $categoryedit = optional_param('categoryedit', -1, PARAM_BOOL);
-    $viewtype = optional_param('viewtype', '', PARAM_TEXT);
+    $viewtype = optional_param('viewtype', 'course', PARAM_TEXT);
 
     // Set the view type as a session value so that either courses or programs
     // are displayed by default
     if ($viewtype == 'program') {
         $SESSION->viewtype = 'program';
-    }
-    else if ($viewtype == 'course' || empty($SESSION->viewtype)) {
+    } else if ($viewtype == 'course' || empty($SESSION->viewtype)) {
         $SESSION->viewtype = 'course';
     }
 
@@ -35,9 +34,8 @@
     // save editing state
     if ($categoryedit !== -1) {
         $USER->categoryedit = $categoryedit;
-        $USER->editing = $categoryedit;
     }
-    $editingon = !empty($USER->editing);
+    $editingon = !empty($USER->categoryedit);
 
     // determine how to display this page
     $canmanagecourses = has_any_capability(array('moodle/course:create', 'moodle/course:update'), $context);
@@ -106,15 +104,12 @@
 
     $buttoncontainer = null;
     if ($adminediting) {
-        $buttoncontainer = $OUTPUT->container_start('buttons');
-
+        $buttoncontainer = $OUTPUT->container_start();
         if ($SESSION->viewtype == 'course' &&
             has_capability('moodle/course:create', $context)) {
-
         /// Print button to create a new course (no specific category)
             $buttoncontainer .= $OUTPUT->single_button(new moodle_url('/course/edit.php', array('category' => $CFG->defaultrequestcategory)), get_string('addnewcourse'), 'get');
         }
-
         if ($SESSION->viewtype == 'program' &&
             has_capability('totara/program:createprogram', $context)) {
         /// Print button to create a new program
@@ -147,8 +142,7 @@
         }
         if (count($viscats) == 0) {
             echo html_writer::tag('p', $strnoitems);
-        }
-        else {
+        } else {
             echo $OUTPUT->heading(get_string('browsebycategory', 'totara_coursecatalog'), 3);
 
             require_once($CFG->dirroot.'/lib/tablelib.php');
@@ -188,7 +182,7 @@
                     continue;
                 }
 
-                $url = new moodle_url('/course/category.php', array('id' => $topcat->id));
+                $url = new moodle_url('/course/category.php', array('id' => $topcat->id, 'viewtype' => $viewtype));
                 $text = format_string($topcat->name).' ('.$item_count.')';
                 $tablerow[] = $OUTPUT->heading(html_writer::link($url, $text, array('class' => $catlinkcss)), 3) .
                         totara_print_main_subcategories($topcat->id, $secondarycats, $secondary_item_counts, $adminediting);
@@ -209,9 +203,4 @@
     }
     echo $OUTPUT->container_end();
 
-    if ($adminediting) {
-        echo $OUTPUT->footer();
-    }
-    else {
-        echo $OUTPUT->footer();
-    }
+    echo $OUTPUT->footer();

@@ -15,10 +15,16 @@ require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot . '/totara/core/searchlib.php');
+require_once($CFG->libdir . '/completionlib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
 }
+
+global $PAGE;
+$PAGE->set_context(get_system_context());
+require_login();
 
 /**
  * How many search results to show before paginating
@@ -55,8 +61,8 @@ if (strlen($query)) {
 
     // extract quoted strings from query
     $keywords = totara_search_parse_keywords($query);
-
-    $fields = "
+    $fields = array('c.fullname');
+    $select = "
         SELECT
             c.id,
             c.fullname
@@ -72,30 +78,28 @@ if (strlen($query)) {
     $order = ' ORDER BY c.sortorder ASC';
 
     // Match search terms
-    $fields = array('c.fullname', 'c.shortname');
-    list($where, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
+    list($keywordsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
+
+    $where = "WHERE {$keywordsql}";
 
     // Only show courses with completion enabled
     $where .= "
         AND c.enablecompletion = ?
         AND c.visible = 1
     ";
-    $params[]= COMPLETION_ENABLED;
+    $params[] = COMPLETION_ENABLED;
 
     $total = $DB->count_records_sql($count . $from . $where, $params);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;
     if ($total) {
-        if ($results = $DB->get_records_sql($fields . $from . $where . $order, $params, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
+        if ($results = $DB->get_records_sql($select . $from . $where . $order, $params, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
 
             $data = array('query' => urlencode($query));
 
             $url = new moodle_url($CFG->wwwroot . '/course/completion_dependency_search.php', $data);
-            $pagingbar = new paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url);
-            $pagingbar->pagevar = 'page';
-            $output = $OUTPUT->render($pagingbar);
-            echo html_writer::tag('div',
-                            $output,
-                            array('class' => 'search-paging'));
+            print $OUTPUT->container_start('search-paging');
+            print $OUTPUT->paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url);
+            print $OUTPUT->container_end();
 
             // Generate some treeview data
             $dialog = new totara_dialog_content();
@@ -118,11 +122,11 @@ if (strlen($query)) {
             echo $strqueryerror;
         }
     } else {
-        $params = new stdClass();
+        $params = new object();
         $params->query = $query;
         $errorstr = 'noresultsfor';
-        echo html_writer::tag('p', get_string($errorstr, 'totara_hierarchy', $params), array('class' => 'message'));
+        print html_writer::tag('p', get_string($errorstr, 'totara_hierarchy', $params), array('class' => 'message'));
     }
 } else {
-    echo html_writer::empty_tag('br');
+    print html_writer::empty_tag('br');
 }

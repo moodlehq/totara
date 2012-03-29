@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,15 @@ require_login();
 $userid = optional_param('userid', $USER->id, PARAM_INT); // show required learning for this user
 $programid = optional_param('id', 0, PARAM_INT);
 
+$PAGE->set_context(get_system_context());
+$PAGE->set_url('/totara/program/required.php');
+$PAGE->set_pagelayout('noblocks');
+
 //
 /// Permission checks
 //
 if (!prog_can_view_users_required_learning($userid)) {
-    print_error('error:nopermissions', 'local_program');
+    print_error('error:nopermissions', 'totara_program');
 }
 
 // Check if we are viewing the required learning as a manager or a learner
@@ -49,7 +53,7 @@ if ($userid != $USER->id) {
 if ($programid) {
     $program = new program($programid);
     if (!$program->is_required_learning()) {
-        print_error('error:notrequiredlearning', 'local_program');
+        print_error('error:notrequiredlearning', 'totara_program');
     }
 
     if ($program->is_accessible()) {
@@ -58,111 +62,123 @@ if ($programid) {
         local_js(array(
             TOTARA_JS_DIALOG,
             TOTARA_JS_TREEVIEW,
-            TOTARA_JS_PLACEHOLDER
+            TOTARA_JS_PLACEHOLDER,
+            TOTARA_JS_DATEPICKER
         ));
 
-        // Get item pickers
-        require_js(array(
-            $CFG->wwwroot . '/totara/program/view/program_view.js.php?id=' . $program->id
-        ));
-
+        $PAGE->requires->strings_for_js(array('pleaseentervaliddate', 'pleaseentervalidreason', 'extensionrequest', 'cancel', 'ok'), 'totara_program');
+        $notify_html = trim($OUTPUT->notification(get_string("extensionrequestsent", "totara_program"), "notifysuccess"));
+        $notify_html_fail = trim($OUTPUT->notification(get_string("extensionrequestnotsent", "totara_program"), null));
+        $args = array('args'=>'{"id":'.$program->id.', "userid":'.$USER->id.', "notify_html_fail":'.json_encode($notify_html_fail).', "notify_html":'.json_encode($notify_html).'}');
+        $jsmodule = array(
+             'name' => 'totara_programview',
+             'fullpath' => '/totara/program/view/program_view.js',
+             'requires' => array('json', 'totara_core')
+             );
+        $PAGE->requires->js_init_call('M.totara_programview.init',$args, false, $jsmodule);
 
         ///
         /// Display
         ///
 
         $heading = $program->fullname;
-        $pagetitle = format_string(get_string('program', 'local_program').': '.$heading);
-        $navlinks = array();
-        prog_get_required_learning_base_navlinks($navlinks, $userid);
-        $navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
-        $navigation = build_navigation($navlinks);
+        $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
 
-        print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+        prog_add_required_learning_base_navlinks($userid);
+
+        $PAGE->navbar->add($heading);
+
+        $PAGE->set_title($pagetitle);
+        $PAGE->set_heading('');
+        echo $OUTPUT->header();
 
         echo dp_display_plans_menu($userid, 0 , $role, 'courses', 'none', true, $program->id, true);
 
         // Program page content
-        print_container_start(false, '', 'program-content');
+        echo $OUTPUT->container_start('', 'program-content');
 
-        print_heading($heading);
+        echo $OUTPUT->heading($heading);
 
         echo $program->display($userid);
 
-        print_container_end();
+        echo $OUTPUT->container_end();
 
-        print_footer();
+        echo $OUTPUT->footer();
     } else {
         // If the program is not accessible then print heading
         // and unavailiable message
 
         $heading = $program->fullname;
-        $pagetitle = format_string(get_string('program', 'local_program').': '.$heading);
-        $navlinks = array();
-        prog_get_required_learning_base_navlinks($navlinks, $userid);
-        $navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
-        $navigation = build_navigation($navlinks);
+        $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
 
-        print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+        prog_add_required_learning_base_navlinks($userid);
 
-        print_heading($heading);
+        $PAGE->navbar->add($heading);
 
-        echo '<p>' . get_string('programnotcurrentlyavailable', 'local_program') . '</p>';
+        $PAGE->set_title($pagetitle);
+        $PAGE->set_heading('');
+        echo $OUTPUT->header();
 
-        print_footer();
+        echo $OUTPUT->heading($heading);
+
+        echo html_writer::start_tag('p') . get_string('programnotcurrentlyavailable', 'totara_program') . html_writer::end_tag('p');
+
+        echo $OUTPUT->footer();
     }
 } else {
     //
     // Display program list
     //
 
-    $heading = get_string('requiredlearning', 'local_program');
-    $pagetitle = format_string(get_string('requiredlearning','local_program'));
-    $navlinks = array();
-    prog_get_required_learning_base_navlinks($navlinks, $userid);
-    $navigation = build_navigation($navlinks);
-    print_header($heading, $pagetitle, $navigation);
+    $heading = get_string('requiredlearning', 'totara_program');
+    $pagetitle = format_string(get_string('requiredlearning', 'totara_program'));
+
+    prog_add_required_learning_base_navlinks($userid);
+
+    $PAGE->set_title($heading);
+    $PAGE->set_heading($pagetitle);
+    echo $OUTPUT->header();
 
     // Plan menu
     echo dp_display_plans_menu($userid, 0, $role, 'courses', 'none');
 
     // Required learning page content
-    print_container_start(false, '', 'required-learning');
+    echo $OUTPUT->container_start('', 'required-learning');
 
-    if($userid != $USER->id) {
+    if ($userid != $USER->id) {
         echo prog_display_user_message_box($userid);
     }
 
-    print_heading($heading);
+    echo $OUTPUT->heading($heading);
 
-    print_container_start(false, '', 'required-learning-description');
+    echo $OUTPUT->container_start('', 'required-learning-description');
 
-    if($userid == $USER->id) {
-        $requiredlearninginstructions = '<div class="instructional_text">' . get_string('requiredlearninginstructions', 'local_program') . '</div>';
+    if ($userid == $USER->id) {
+        $requiredlearninginstructions = html_writer::start_tag('div', array('class' => 'instructional_text')) . get_string('requiredlearninginstructions', 'totara_program') . html_writer::end_tag('div');
         add_to_log(SITEID, 'program', 'view required', "required.php?userid={$userid}");
     } else {
-        $user = get_record('user', 'id', $userid);
+        $user = $DB->get_record('user', array('id' => $userid));
         $userfullname = fullname($user);
-        $requiredlearninginstructions = '<div class="instructional_text">' . get_string('requiredlearninginstructionsuser', 'local_program', $userfullname) . '</div>';
+        $requiredlearninginstructions = html_writer::start_tag('div', array('class' => 'instructional_text')) . get_string('requiredlearninginstructionsuser', 'totara_program', $userfullname) . html_writer::end_tag('div');
         add_to_log(SITEID, 'program', 'view required', "required.php?userid={$userid}", $userfullname);
     }
 
     echo $requiredlearninginstructions;
 
-    echo '<div style="clear:both;"></div>';
-    print_container_end();
+    echo html_writer::start_tag('div', array('style' => 'clear: both;')) . html_writer::end_tag('div');
+    echo $OUTPUT->container_end();
 
-    print_container_start(false, '', 'required-learning-list');
+    echo $OUTPUT->container_start('', 'required-learning-list');
 
     $requiredlearninghtml = prog_display_required_programs($userid);
 
     if (empty($requiredlearninghtml)) {
-        echo get_string('norequiredlearning', 'local_program');
+        echo get_string('norequiredlearning', 'totara_program');
     } else {
         echo $requiredlearninghtml;
     }
 
-    print_container_end();
-    print_container_end();
-    print_footer();
+    echo $OUTPUT->container_end();
+    echo $OUTPUT->container_end();
+    echo $OUTPUT->footer();
 }

@@ -1,15 +1,44 @@
 <?php
 $string['pluginname'] = 'Course Catalog';
 
+$string['backtoallcourse'] = 'Back to all courses';
+$string['backtoallprogram'] = 'Back to all programs';
+$string['backtocategoryx'] = 'Back to {$a}';
+$string['backtocourselisting'] = 'Back to course listing';
+
 $string['backtoparent'] = '&laquo; Back to parent';
 $string['backtoallcategory'] = 'Back to all Categories';
 $string['browsebycategory'] = 'Browse by category';
 $string['dontsend'] = 'Don\'t send this message';
-$string['searchallcategories'] = 'Search all categories';
+$string['search'] = 'Search';
+$string['searchagain'] = 'Search again';
+$string['showallcategorys'] = 'Show all categories';
+$string['showallcourses'] = 'Show all courses';
+$string['showallprograms'] = 'Show all programs';
 $string['searchallcourses'] = 'Search all courses';
+$string['searchallcategories'] = 'Search all categories';
 $string['searchallprograms'] = 'Search all programs';
+$string['searchcategories'] = 'Search categories';
+$string['viewallcourses'] = 'View all courses';
+$string['viewallprograms'] = 'View all programs';
+$string['viewallcategories'] = 'View all categories';
+$string['orviewcourses'] = 'or view courses in this category ({$a})';
+$string['orviewprograms'] = 'or view programs in this category ({$a})';
+$string['searchcategoriesmatchesplural'] = '{$a->count} categories match search "{$a->terms}"';
+$string['searchcategoriesmatchessingle'] = '1 category matches search "{$a->terms}"';
+$string['searchcategoriesshowall'] = 'Showing all categories';
+$string['searchcourses'] = 'Search courses';
+$string['searchcoursesmatchesplural'] = '{$a->count} courses match search "{$a->terms}"';
+$string['searchcoursesmatchessingle'] = '1 course matches search "{$a->terms}"';
+$string['searchcoursesshowall'] = 'Showing all courses';
+$string['searchprogramsmatchesplural'] = '{$a->count} programs match search "{$a->terms}"';
+$string['searchprogramsmatchessingle'] = '1 program matches search "{$a->terms}"';
+$string['searchprogramsshowall'] = 'Showing all programs';
 $string['therearenocoursestodisplay'] = 'There are no courses to display';
 
+$string['performsearchoncourses'] = 'or perform this search on courses';
+$string['performsearchonprograms'] = 'or perform this search on programs';
+$string['noprogramsfound'] = 'No programs were found with the words "{$a}"';
 $string['programs'] = 'Programs';
 $string['noeditsite'] = 'You cannot edit the site course using this form';
 $string['reminder'] = 'Reminder';

@@ -1,9 +1,29 @@
 <?php
-
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package totara
+ * @subpackage program
+ */
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot.'/totara/program/lib.php');
-require_once($CFG->dirroot.'/lib/pear/HTML/AJAX/JSON.php');
 
+$PAGE->set_context(get_system_context());
 require_login();
 
 $id = required_param('id', PARAM_INT); // The program id
@@ -15,10 +35,9 @@ $program = new program($id);
 if (!has_capability('totara/program:configurecontent', $program->get_context())) {
     exit;
 }
-
 $programcontent = $program->get_content();
 
-if($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
+if ($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
 
     $courseids_str = required_param('courseids', PARAM_TEXT); // the ids of the courses to be added to the new set
     $sortorder = required_param('sortorder', PARAM_INT); // the sort order of the new set
@@ -35,28 +54,28 @@ if($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
     $newcourseset->completiontype = COMPLETIONTYPE_ALL;
     $newcourseset->courses = array();
     $newcourseset->islastset = true;
-    $newcourseset->label = get_string('legend:courseset', 'local_program', $sortorder);
+    $newcourseset->label = get_string('legend:courseset', 'totara_program', $sortorder);
 
-    foreach($courseids as $courseid) {
-        if($course = get_record('course', 'id', $courseid)) {
+    foreach ($courseids as $courseid) {
+        if ($course = $DB->get_record('course', array('id' => $courseid))) {
             $newcourseset->courses[] = $course;
         }
     }
 
     // retrieve the html for the new set
-    $html .= $newcourseset->print_set_minimal(true);
+    $html .= $newcourseset->print_set_minimal();
 
     $coursesetprefix = $newcourseset->get_set_prefix();
     $setprefixesstr = empty($setprefixes) ? $coursesetprefix : $setprefixes.','.$coursesetprefix;
 
     $data = array(
-	'html'          => $html,
+        'html'          => $html,
         'setprefixes'   => $setprefixesstr
     );
 
     echo json_encode($data);
 
-} else if($htmltype == 'competencyset') {
+} else if ($htmltype == 'competencyset') {
 
     $competencyid = required_param('competencyid', PARAM_INT);
     $sortorder = required_param('sortorder', PARAM_INT);
@@ -69,21 +88,21 @@ if($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
     $newcourseset->sortorder = $sortorder;
     $newcourseset->completiontype = $newcourseset->get_completion_type();
     $newcourseset->islastset = true;
-    $newcourseset->label = get_string('legend:courseset', 'local_program', $sortorder);
+    $newcourseset->label = get_string('legend:courseset', 'totara_program', $sortorder);
 
-    $html .= $newcourseset->print_set_minimal(true);
+    $html .= $newcourseset->print_set_minimal();
 
     $coursesetprefix = $newcourseset->get_set_prefix();
     $setprefixesstr = empty($setprefixes) ? $coursesetprefix : $setprefixes.','.$coursesetprefix;
 
     $data = array(
-	'html'          => $html,
+        'html'          => $html,
         'setprefixes'   => $setprefixesstr
     );
 
     echo json_encode($data);
 
-} else if($htmltype == 'recurringset') {
+} else if ($htmltype == 'recurringset') {
 
     $courseid = required_param('courseid', PARAM_INT);
 
@@ -91,25 +110,25 @@ if($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
     $newcourseset->sortorder = 1;
     $newcourseset->isfirstset = true;
     $newcourseset->islastset = true;
-    $newcourseset->label = get_string('legend:recurringcourseset', 'local_program');
+    $newcourseset->label = get_string('legend:recurringcourseset', 'totara_program');
 
-    if($course = get_record('course', 'id', $courseid)) {
+    if ($course = $DB->get_record('course', array('id' => $courseid))) {
         $newcourseset->course = $course;
     }
 
-    $html = $newcourseset->print_set_minimal(true);
+    $html = $newcourseset->print_set_minimal();
 
     $coursesetprefix = $newcourseset->get_set_prefix();
     $setprefixesstr = empty($setprefixes) ? $coursesetprefix : $setprefixes.','.$coursesetprefix;
 
     $data = array(
-	'html'          => $html,
+        'html'          => $html,
         'setprefixes'   => $setprefixesstr
     );
 
     echo json_encode($data);
 
-} else if($htmltype == 'amendcourses') {
+} else if ($htmltype == 'amendcourses') {
 
     $courseids_str = required_param('courseids', PARAM_SEQUENCE); // the selected course ids
     $coursesetid = required_param('coursesetid', PARAM_INT);
@@ -119,16 +138,16 @@ if($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
 
     $courseids = explode(',', $courseids_str); // an array containing the selected course ids
 
-    $setob = get_record('prog_courseset', 'id', $coursesetid);
+    $setob = $DB->get_record('prog_courseset', array('id' => $coursesetid));
 
     $newcourseset = new multi_course_set($id, $setob, $coursesetprefix);
     $newcourseset->sortorder = $sortorder;
     $newcourseset->completiontype = $completiontype;
 
     // work out if we need to mark any courses as deleted
-    if( ! empty($newcourseset->courses)) {
-        foreach($newcourseset->courses as $course) {
-            if( ! in_array($course->id, $courseids)) {
+    if (!empty($newcourseset->courses)) {
+        foreach ($newcourseset->courses as $course) {
+            if (!in_array($course->id, $courseids)) {
                 $newcourseset->courses_deleted_ids[] = $course->id;
             }
         }
@@ -138,18 +157,18 @@ if($htmltype == 'multicourseset') { // if a new mulitcourse set is being added
     $newcourseset->courses = array();
 
     // add the selected courses to the course set object
-    foreach($courseids as $courseid) {
-        if($courseid && $course = get_record('course', 'id', $courseid)) {
+    foreach ($courseids as $courseid) {
+        if ($courseid && $course = $DB->get_record('course', array('id' => $courseid))) {
             $newcourseset->courses[] = $course;
         }
     }
 
-    $courselisthtml = $newcourseset->print_courses(true);
-    $deletedcourseshtml = $newcourseset->print_deleted_courses(true);
+    $courselisthtml = $newcourseset->print_courses();
+    $deletedcourseshtml = $newcourseset->print_deleted_courses();
 
     $data = array(
-	'courselisthtml'	    => $courselisthtml,
-	'deletedcourseshtml'	    => $deletedcourseshtml
+        'courselisthtml'        => $courselisthtml,
+        'deletedcourseshtml'    => $deletedcourseshtml
     );
 
     echo json_encode($data);

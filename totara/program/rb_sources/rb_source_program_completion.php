@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify

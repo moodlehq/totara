@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,15 +57,15 @@ function program_hourly_cron() {
 
     $timenow  = time();
     $hourlycron = 60 * 60; // one hour
-    $lasthourlycron = get_config(null, 'local_program_lasthourlycron');
+    $lasthourlycron = get_config(null, 'totara_program_lasthourlycron');
 
-    if($lasthourlycron && ($timenow - $lasthourlycron <= $hourlycron)) {
+    if ($lasthourlycron && ($timenow - $lasthourlycron <= $hourlycron)) {
         // not enough time has elapsed to rerun hourly cron
         mtrace("No need to run program hourly cron - has already been run recently.");
         return true;
     }
 
-    if (!set_config('local_program_lasthourlycron', $timenow)) {
+    if (!set_config('totara_program_lasthourlycron', $timenow)) {
         mtrace("Error: could not update lasthourlycron timestamp for program module.");
     }
 
@@ -82,15 +82,15 @@ function program_hourly_cron() {
 function program_daily_cron() {
     $timenow  = time();
     $dailycron = 60 * 60 * 24; // one day
-    $lastdailycron = get_config(null, 'local_program_lastdailycron');
+    $lastdailycron = get_config(null, 'totara_program_lastdailycron');
 
-    if($lastdailycron && ($timenow - $lastdailycron <= $dailycron)) {
+    if ($lastdailycron && ($timenow - $lastdailycron <= $dailycron)) {
         // not enough time has elapsed to rerun daily cron
         mtrace("No need to run program daily cron - has already been run today.");
         return true;
     }
 
-    if (! set_config('local_program_lastdailycron', $timenow)) {
+    if (!set_config('totara_program_lastdailycron', $timenow)) {
         mtrace("Error: could not update lastdailycron timestamp for program module.");
     }
 
@@ -159,10 +159,10 @@ function program_cron_send_messages() {
  * and therefore need to be switched over as the new recurring course in the
  * program.
  *
- * @global object $CFG
+ * @global object $CFG, $DB
  */
 function program_cron_switch_recurring_courses() {
-    global $CFG;
+    global $CFG, $DB;
 
     $debugging = debugging();
     $now = time();
@@ -187,7 +187,7 @@ function program_cron_switch_recurring_courses() {
         // if the recurring course has no enrolment end date set we can't check
         // when the course is supposed to be changed over (as this is what the
         // change over date is based on for want of a better option)
-        if ( ! isset($course->enrolenddate) || $course->enrolenddate==0) {
+        if (!isset($course->enrolenddate) || $course->enrolenddate==0) {
             continue;
         }
 
@@ -198,10 +198,10 @@ function program_cron_switch_recurring_courses() {
         }
 
         // check that the next course has been created for this program
-        if ($recurrence_rec = get_record('prog_recurrence', 'programid', $program->id, 'currentcourseid', $course->id)) {
+        if ($recurrence_rec = $DB->get_record('prog_recurrence', array('programid' => $program->id, 'currentcourseid' => $course->id))) {
 
             // check that the next course actually exists
-            if ($newcourse = get_record('course', 'id', $recurrence_rec->nextcourseid)) {
+            if ($newcourse = $DB->get_record('course', array('id' => $recurrence_rec->nextcourseid))) {
 
                 // Before we set the new course in the program, we have to first save the history
                 // record of any users who have not completed the current course and notify
@@ -211,56 +211,43 @@ function program_cron_switch_recurring_courses() {
 
                 // Query to retrieve all the users who have not completed the program
                 $sql = "SELECT DISTINCT(pc.userid) AS id, pc.id AS completionid, u.*
-                        FROM {$CFG->prefix}prog_completion AS pc
-                        LEFT JOIN {$CFG->prefix}user AS u ON pc.userid=u.id
-                        WHERE pc.programid = {$program->id}
-                        AND pc.status = ".STATUS_PROGRAM_INCOMPLETE."
-                        AND pc.coursesetid = 0";
+                        FROM {prog_completion} AS pc
+                        LEFT JOIN {user} AS u ON pc.userid = u.id
+                        WHERE pc.programid = ?
+                        AND pc.status = ?
+                        AND pc.coursesetid = ?";
 
                 // get all the users matching the query
-                if ($users = get_records_sql($sql)) {
-                    foreach($users as $user) {
+                $users = $DB->get_records_sql($sql, array($program->id, STATUS_PROGRAM_INCOMPLETE, 0));
+                foreach ($users as $user) {
+                    $transaction = $DB->start_delegated_transaction();
 
-                        begin_sql();
+                    // copy the existing completion records for the user in to the
+                    // history table so that we have a record to show that the
+                    // course has not been completed
+                    $select = "programid = ? AND userid = ? AND coursesetid = 0";
+                    $params = array($program->id, $user->id);
+                    $completion_records_history = $DB->get_records_select('prog_completion', $select, $params);
+                    $backup_success = true;
+                    foreach ($completion_records_history as $completion_record) {
+                        // we need to store the id of the course that belonged to this recurring program at the time
+                        // it was added to the history table so that we can report on the course history later if necessary
+                        $completion_record->recurringcourseid = $course->id;
+                        $backup_success = $DB->insert_record('prog_completion_history', $completion_record);
 
-                        // copy the existing completion records for the user in to the
-                        // history table so that we have a record to show that the
-                        // course has not been completed
-                        $select = "programid={$program->id} AND userid={$user->id} AND coursesetid=0";
-                        if ($completion_records_history = get_records_select('prog_completion', $select)) {
-
-                            $backup_success = true;
-                            foreach($completion_records_history as $completion_record) {
-
-                                // we need to store the id of the course that belonged to this recurring program at the time
-                                // it was added to the history table so that we can report on the course history later if necessary
-                                $completion_record->recurringcourseid = $course->id;
-
-                                if ( ! $backup_success = insert_record('prog_completion_history', $completion_record)) {
-                                    rollback_sql();
-                                    break;
-                                }
-                            }
-
-                            if ($backup_success) {
-
-                                // send a message to the user to let them know that the course
-                                // has changed and that they haven't completed it
-                                $messagedata = new stdClass();
-                                $messagedata->userto = $user;
-                                $messagedata->userfrom = get_admin();
-                                $messagedata->subject = get_string('z:incompleterecurringprogramsubject', 'local_program');
-                                $messagedata->fullmessage = get_string('z:incompleterecurringprogrammessage', 'local_program');
-                                $messagedata->contexturl = $CFG->wwwroot.'/course/view.php?id='.$course->id;
-                                $messagedata->contexturlname = get_string('launchcourse', 'local_program');;
-                                $result = tm_alert_send($messagedata);
-
-                                commit_sql();
-                            } else {
-                                rollback_sql();
-                            }
-                        }
+                        // send a message to the user to let them know that the course
+                        // has changed and that they haven't completed it
+                        $messagedata = new stdClass();
+                        $messagedata->userto = $user;
+                        $messagedata->userfrom = get_admin();
+                        $messagedata->subject = get_string('z:incompleterecurringprogramsubject', 'totara_program');
+                        $messagedata->fullmessage = get_string('z:incompleterecurringprogrammessage', 'totara_program');
+                        $messagedata->contexturl = $CFG->wwwroot.'/course/view.php?id='.$course->id;
+                        $messagedata->contexturlname = get_string('launchcourse', 'totara_program');;
+                        $result = tm_alert_send($messagedata);
                     }
+                    $transaction->allow_commit();
+
                 }
 
                 // Now we can set the next course as the current course in the program
@@ -271,7 +258,7 @@ function program_cron_switch_recurring_courses() {
             // delete the record from the recurrence table (otherwise the system
             // won't create a new copy of the recurring course when this one
             // expires in the future)
-            delete_records('prog_recurrence', 'programid', $program->id, 'currentcourseid', $course->id);
+            $DB->delete_records('prog_recurrence', array('programid' => $program->id, 'currentcourseid' => $course->id));
 
         }
     }
@@ -284,10 +271,10 @@ function program_cron_switch_recurring_courses() {
  * 'prog_recurrence' table to enable the system to know that the course has been
  * copied.
  *
- * @global object $CFG
+ * @global object $DB
  */
 function program_cron_copy_recurring_courses() {
-    global $CFG;
+    global $DB;
 
     $debugging = debugging();
     $now = time();
@@ -298,7 +285,7 @@ function program_cron_copy_recurring_courses() {
 
     $recurring_programs = prog_get_recurring_programs();
 
-    foreach($recurring_programs as $program) {
+    foreach ($recurring_programs as $program) {
 
         $content = $program->get_content();
         $coursesets = $content->get_course_sets();
@@ -312,7 +299,7 @@ function program_cron_copy_recurring_courses() {
         // if the recurring course has no enrolment end date set we can't check
         // when the course is supposed to be changed over (as this is what the
         // change over date is based on for want of a better option)
-        if ( ! isset($course->enrolenddate) || $course->enrolenddate==0) {
+        if (!isset($course->enrolenddate) || $course->enrolenddate == 0) {
             continue;
         }
 
@@ -325,12 +312,12 @@ function program_cron_copy_recurring_courses() {
 
         // check if a course has already been created for this program. If so,
         // and the course actually exists, we don't need to do anything
-        if ($recurrence_rec = get_record('prog_recurrence', 'programid', $program->id, 'currentcourseid', $course->id)) {
-            if (record_exists('course', 'id', $recurrence_rec->nextcourseid)) {
+        if ($recurrence_rec = $DB->get_record('prog_recurrence', array('programid' => $program->id, 'currentcourseid' => $course->id))) {
+            if ($DB->record_exists('course', array('id' => $recurrence_rec->nextcourseid))) {
                 continue;
             } else {
                 // this means the next course must have been deleted so we need to create a new one
-                delete_records('prog_recurrence', 'programid', $program->id, 'currentcourseid', $course->id);
+                $DB->delete_records('prog_recurrence', array('programid' => $program->id, 'currentcourseid' => $course->id));
             }
         }
 
@@ -341,7 +328,7 @@ function program_cron_copy_recurring_courses() {
         $errorstr = null;
 
         // backup the course
-        if($backupfile = backup_course_silently($course->id, $prefs, $errorstr)) {
+        if ($backupfile = backup_course_silently($course->id, $prefs, $errorstr)) {
 
             if ($debugging) {
                 mtrace("Course '{$course->shortname}' with id {$course->id} successfully backed up to: $backupfile");
@@ -370,8 +357,8 @@ function program_cron_copy_recurring_courses() {
             $newcourseob->enrolenddate = $now + $courseset->recurcreatetime + $courseset->recurrencetime; // this should prevent the system from trying to create another new course the next time the cron is run
             $newcourseob->visible = false;
 
-            if($newcourse = create_course($newcourseob)) {
-                if($restoresuccess = import_backup_file_silently($backupfile, $newcourse->id, true, false, array())) {
+            if ($newcourse = create_course($newcourseob)) {
+                if ($restoresuccess = import_backup_file_silently($backupfile, $newcourse->id, true, false, array())) {
                     if ($debugging) {
                         mtrace("Backup file $backupfile was successfully restored into course with id {$newcourse->id}");
                     }
@@ -383,7 +370,7 @@ function program_cron_copy_recurring_courses() {
                     $new_recurrence_rec->programid = $program->id;
                     $new_recurrence_rec->currentcourseid = $course->id;
                     $new_recurrence_rec->nextcourseid = $newcourse->id;
-                    insert_record('prog_recurrence', $new_recurrence_rec);
+                    $DB->insert_record('prog_recurrence', $new_recurrence_rec);
 
                 } else {
                     if ($debugging) {
@@ -409,87 +396,86 @@ function program_cron_copy_recurring_courses() {
  * @return void
  */
 function program_cron_completions() {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Checking program completions');
     }
 
     // get all programs
-    if($program_records = get_records('prog')) {
+    $program_records = $DB->get_records('prog');
 
-        foreach($program_records as $program_record) {
+    foreach ($program_records as $program_record) {
 
-            $program = new program($program_record->id);
+        $program = new program($program_record->id);
 
-            // get all the users enrolled on this program
-            $program_users = $program->get_program_learners();
+        // get all the users enrolled on this program
+        $program_users = $program->get_program_learners();
 
-            if(count($program_users)==0) {
-                return;
-            }
+        if (count($program_users) == 0) {
+            return;
+        }
 
-            // get the program content
-            $program_content = $program->get_content();
+        // get the program content
+        $program_content = $program->get_content();
 
-            // get the program course sets in the groups that they exist in the program
-            $courseset_groups = $program_content->get_courseset_groups();
+        // get the program course sets in the groups that they exist in the program
+        $courseset_groups = $program_content->get_courseset_groups();
 
-            if (!empty($program_users)) {
-                foreach($program_users as $user) {
+        if (!empty($program_users)) {
+            foreach ($program_users as $user) {
 
-                    // first check if the program is already marked as complete for this user and do nothing if it is
-                    if($program->is_program_complete($user->id)) {
-                        continue;
-                    }
+                // first check if the program is already marked as complete for this user and do nothing if it is
+                if ($program->is_program_complete($user->id)) {
+                    continue;
+                }
+
+                $courseset_group_completed = false;
+                $previous_courseset_group_completed = false;
+
+                // go through the course set groups to determine the user's completion status
+                foreach ($courseset_groups as $courseset_group) {
 
                     $courseset_group_completed = false;
-                    $previous_courseset_group_completed = false;
 
-                    // go through the course set groups to determine the user's completion status
-                    foreach($courseset_groups as $courseset_group) {
+                    // check if the user has completed any of the course sets in the group - this constitutes completion of the group
+                    foreach ($courseset_group as $courseset) {
 
-                        $courseset_group_completed = false;
-
-                        // check if the user has completed any of the course sets in the group - this constitutes completion of the group
-                        foreach($courseset_group as $courseset) {
-
-                            // first check if the course set is already marked as complete
-                            if($courseset->is_courseset_complete($user->id)) {
-                                $courseset_group_completed = true;
-                                $previous_courseset_group_completed = true;
-                                break;
-                            }
-
-                            // otherwise carry out a check to see if the course set should be marked as complete and mark it as complete if so
-                            if($courseset->check_courseset_complete($user->id)) {
-                                $courseset_group_completed = true;
-                                $previous_courseset_group_completed = true;
-                                break;
-                            }
+                        // first check if the course set is already marked as complete
+                        if ($courseset->is_courseset_complete($user->id)) {
+                            $courseset_group_completed = true;
+                            $previous_courseset_group_completed = true;
+                            break;
                         }
 
-                        // if the user has not completed the course group the program is not complete
-                        if( ! $courseset_group_completed) {
-                            // set the timedue for the course set in this group with the shortest
-                            // time allowance so that course set due reminders will be triggered
-                            // at the appropriate time
-                            if ($previous_courseset_group_completed) {
-                                $program_content->set_courseset_group_timedue($courseset_group, $user->id);
-                                $previous_courseset_group_completed = false;
-                            }
+                        // otherwise carry out a check to see if the course set should be marked as complete and mark it as complete if so
+                        if ($courseset->check_courseset_complete($user->id)) {
+                            $courseset_group_completed = true;
+                            $previous_courseset_group_completed = true;
                             break;
                         }
                     }
 
-                    // $courseset_group_completed will be true if all the course groups in the program have been completed
-                    if($courseset_group_completed) {
-                        $completionsettings = array(
-                            'status'        => STATUS_PROGRAM_COMPLETE,
-                            'timecompleted' => time()
-                            );
-                        return $program->update_program_complete($user->id, $completionsettings);
+                    // if the user has not completed the course group the program is not complete
+                    if (!$courseset_group_completed) {
+                        // set the timedue for the course set in this group with the shortest
+                        // time allowance so that course set due reminders will be triggered
+                        // at the appropriate time
+                        if ($previous_courseset_group_completed) {
+                            $program_content->set_courseset_group_timedue($courseset_group, $user->id);
+                            $previous_courseset_group_completed = false;
+                        }
+                        break;
                     }
+                }
+
+                // $courseset_group_completed will be true if all the course groups in the program have been completed
+                if ($courseset_group_completed) {
+                    $completionsettings = array(
+                        'status'        => STATUS_PROGRAM_COMPLETE,
+                        'timecompleted' => time()
+                        );
+                    return $program->update_program_complete($user->id, $completionsettings);
                 }
             }
         }
@@ -501,18 +487,17 @@ function program_cron_completions() {
  * unassigns as necessary or raises exceptions if issues are found
  */
 function program_cron_user_assignments() {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Checking program user assignments');
     }
 
     // get all programs
-    if($program_records = get_records('prog')) {
-        foreach($program_records as $program_record) {
-            $program = new program($program_record->id);
-            $program->update_learner_assignments();
-        }
+    $program_records = $DB->get_records('prog');
+    foreach ($program_records as $program_record) {
+        $program = new program($program_record->id);
+        $program->update_learner_assignments();
     }
 }
 
@@ -523,7 +508,7 @@ function program_cron_user_assignments() {
  * @param array $programs An array of program objects. This is passed by reference so that it can be populated and re-used
  */
 function program_cron_programs_due(&$programs) {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Checking programs that are due to be completed');
@@ -536,21 +521,20 @@ function program_cron_programs_due(&$programs) {
     // there are any program due messages defined by the program with trigger
     // times that match the user's due dates
     $sql = "SELECT u.*, pc.programid, pc.timedue, pm.id AS messageid, pm.triggertime
-            FROM {$CFG->prefix}user AS u
-            INNER JOIN {$CFG->prefix}prog_completion AS pc ON u.id=pc.userid
-            INNER JOIN {$CFG->prefix}prog_user_assignment AS pua ON (pc.userid=pua.userid AND pc.programid=pua.programid)
-            INNER JOIN {$CFG->prefix}prog_message AS pm ON pc.programid=pm.programid
-            WHERE pc.timecompleted = 0
-            AND pc.coursesetid = 0
-            AND pm.messagetype = ".MESSAGETYPE_PROGRAM_DUE."
-            AND (pc.timedue - pm.triggertime) < ".$now."
+            FROM {user} AS u
+            INNER JOIN {prog_completion} AS pc ON u.id = pc.userid
+            INNER JOIN {prog_user_assignment} AS pua ON (pc.userid = pua.userid AND pc.programid = pua.programid)
+            INNER JOIN {prog_message} AS pm ON pc.programid = pm.programid
+            WHERE pc.timecompleted = ?
+            AND pc.coursesetid = ?
+            AND pm.messagetype = ?
+            AND (pc.timedue - pm.triggertime) < ?
             ORDER BY pc.programid, u.id";
 
     // get the records
-    $rs = get_recordset_sql($sql);
+    $rs = $DB->get_recordset_sql($sql, array(0, 0, MESSAGETYPE_PROGRAM_DUE, $now));
 
-    while ($user = rs_fetch_next_record($rs)) {
-
+    foreach ($rs as $user) {
         if (isset($programs[$user->programid])) { // Use the existing program object if it is available
             $program = $programs[$user->programid];
         } else { // Create a new program object and store it if it has not already been instantiated
@@ -562,12 +546,14 @@ function program_cron_programs_due(&$programs) {
         $messages = $messagesmanager->get_messages();
 
         // send program due notifications to user and (optionally) the user's manager
-        foreach($messages as $message) {
-            if($message->id==$user->messageid && $message->messagetype==MESSAGETYPE_PROGRAM_DUE) {
+        foreach ($messages as $message) {
+            if ($message->id == $user->messageid && $message->messagetype == MESSAGETYPE_PROGRAM_DUE) {
                 $message->send_message($user);
             }
         }
     }
+
+    $rs->close();
 }
 
 /**
@@ -577,7 +563,7 @@ function program_cron_programs_due(&$programs) {
  * @param array $programs An array of program objects. This is passed by reference so that it can be populated and re-used
  */
 function program_cron_coursesets_due(&$programs) {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Checking course sets that are due to be completed');
@@ -590,20 +576,20 @@ function program_cron_coursesets_due(&$programs) {
     // there are any course set due messages defined by the program with trigger
     // times that match the user's due dates
     $sql = "SELECT u.*, pc.programid, pc.timedue, pm.id AS messageid, pm.triggertime, pc.coursesetid
-            FROM {$CFG->prefix}user AS u
-            INNER JOIN {$CFG->prefix}prog_completion AS pc ON u.id=pc.userid
-            INNER JOIN {$CFG->prefix}prog_user_assignment AS pua ON (pc.userid=pua.userid AND pc.programid=pua.programid)
-            INNER JOIN {$CFG->prefix}prog_message AS pm ON pc.programid=pm.programid
-            WHERE pc.timecompleted = 0
-            AND pc.coursesetid <> 0
-            AND pm.messagetype = ".MESSAGETYPE_COURSESET_DUE."
-            AND (pc.timedue - pm.triggertime) < ".$now."
+            FROM {user} AS u
+            INNER JOIN {prog_completion} AS pc ON u.id = pc.userid
+            INNER JOIN {prog_user_assignment} AS pua ON (pc.userid = pua.userid AND pc.programid = pua.programid)
+            INNER JOIN {prog_message} AS pm ON pc.programid = pm.programid
+            WHERE pc.timecompleted = ?
+            AND pc.coursesetid <> ?
+            AND pm.messagetype = ?
+            AND (pc.timedue - pm.triggertime) < ?
             ORDER BY pc.programid, u.id";
 
     // get the records
-    $rs = get_recordset_sql($sql);
+    $rs = $DB->get_recordset_sql($sql, array(0, 0, MESSAGETYPE_COURSESET_DUE, $now));
 
-    while ($user = rs_fetch_next_record($rs)) {
+    foreach ($rs as $user) {
 
         if (isset($programs[$user->programid])) { // Use the existing program object if it is available
             $program = $programs[$user->programid];
@@ -616,12 +602,14 @@ function program_cron_coursesets_due(&$programs) {
         $messages = $messagesmanager->get_messages();
 
         // send course set due notifications to user and (optionally) the user's manager
-        foreach($messages as $message) {
-            if($message->id==$user->messageid && $message->messagetype==MESSAGETYPE_COURSESET_DUE) {
-                $message->send_message($user, null, array('coursesetid'=>$user->coursesetid));
+        foreach ($messages as $message) {
+            if ($message->id == $user->messageid && $message->messagetype == MESSAGETYPE_COURSESET_DUE) {
+                $message->send_message($user, null, array('coursesetid' => $user->coursesetid));
             }
         }
     }
+
+    $rs->close();
 }
 
 /**
@@ -631,7 +619,7 @@ function program_cron_coursesets_due(&$programs) {
  * @param array $programs An array of program objects. This is passed by reference so that it can be populated and re-used
  */
 function program_cron_programs_overdue(&$programs) {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Checking programs that are overdue');
@@ -643,20 +631,20 @@ function program_cron_programs_overdue(&$programs) {
     // based on their program due dates and the trigger dates in any program
     // overdue messages that are defined by the program
     $sql = "SELECT u.*, pc.programid, pc.timedue, pm.id AS messageid, pm.triggertime
-            FROM {$CFG->prefix}user AS u
-            INNER JOIN {$CFG->prefix}prog_completion AS pc ON u.id=pc.userid
-            INNER JOIN {$CFG->prefix}prog_user_assignment AS pua ON (pc.userid=pua.userid AND pc.programid=pua.programid)
-            INNER JOIN {$CFG->prefix}prog_message AS pm ON pc.programid=pm.programid
-            WHERE pc.timecompleted = 0
-            AND pc.coursesetid = 0
-            AND pm.messagetype = ".MESSAGETYPE_PROGRAM_OVERDUE."
-            AND (pc.timedue + pm.triggertime) < ".$now."
+            FROM {user} AS u
+            INNER JOIN {prog_completion} AS pc ON u.id = pc.userid
+            INNER JOIN {prog_user_assignment} AS pua ON (pc.userid = pua.userid AND pc.programid = pua.programid)
+            INNER JOIN {prog_message} AS pm ON pc.programid = pm.programid
+            WHERE pc.timecompleted = ?
+            AND pc.coursesetid = ?
+            AND pm.messagetype = ?
+            AND (pc.timedue + pm.triggertime) < ?
             ORDER BY pc.programid, u.id";
 
     // get the records
-    $rs = get_recordset_sql($sql);
+    $rs = $DB->get_recordset_sql($sql, array(0, 0, MESSAGETYPE_PROGRAM_OVERDUE, $now));
 
-    while ($user = rs_fetch_next_record($rs)) {
+    foreach ($rs as $user) {
 
         if (isset($programs[$user->programid])) { // Use the existing program object if it is available
             $program = $programs[$user->programid];
@@ -669,12 +657,14 @@ function program_cron_programs_overdue(&$programs) {
         $messages = $messagesmanager->get_messages();
 
         // send program overdue notifications to user and (optionally) the user's manager
-        foreach($messages as $message) {
-            if($message->id==$user->messageid && $message->messagetype==MESSAGETYPE_PROGRAM_OVERDUE) {
+        foreach ($messages as $message) {
+            if ($message->id == $user->messageid && $message->messagetype == MESSAGETYPE_PROGRAM_OVERDUE) {
                 $message->send_message($user);
             }
         }
     }
+
+    $rs->close();
 }
 
 /**
@@ -684,7 +674,7 @@ function program_cron_programs_overdue(&$programs) {
  * @param array $programs An array of program objects. This is passed by reference so that it can be populated and re-used
  */
 function program_cron_coursesets_overdue(&$programs) {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Checking course sets that are overdue');
@@ -696,20 +686,20 @@ function program_cron_coursesets_overdue(&$programs) {
     // based on their course set due dates and the trigger dates in any course set
     // overdue messages that are defined by the program
     $sql = "SELECT u.*, pc.programid, pc.timedue, pm.id AS messageid, pm.triggertime, pc.coursesetid
-            FROM {$CFG->prefix}user AS u
-            INNER JOIN {$CFG->prefix}prog_completion AS pc ON u.id=pc.userid
-            INNER JOIN {$CFG->prefix}prog_user_assignment AS pua ON (pc.userid=pua.userid AND pc.programid=pua.programid)
-            INNER JOIN {$CFG->prefix}prog_message AS pm ON pc.programid=pm.programid
-            WHERE pc.timecompleted = 0
-            AND pc.coursesetid <> 0
-            AND pm.messagetype = ".MESSAGETYPE_COURSESET_OVERDUE."
-            AND (pc.timedue + pm.triggertime) < ".$now."
+            FROM {user} AS u
+            INNER JOIN {prog_completion} AS pc ON u.id = pc.userid
+            INNER JOIN {prog_user_assignment} AS pua ON (pc.userid = pua.userid AND pc.programid = pua.programid)
+            INNER JOIN {prog_message} AS pm ON pc.programid = pm.programid
+            WHERE pc.timecompleted = ?
+            AND pc.coursesetid <> ?
+            AND pm.messagetype = ?
+            AND (pc.timedue + pm.triggertime) < ?
             ORDER BY pc.programid, u.id";
 
     // get the records
-    $rs = get_recordset_sql($sql);
+    $rs = $DB->get_recordset_sql($sql, array(0, 0, MESSAGETYPE_COURSESET_OVERDUE, $now));
 
-    while ($user = rs_fetch_next_record($rs)) {
+    foreach ($rs as $user) {
 
         if (isset($programs[$user->programid])) { // Use the existing program object if it is available
             $program = $programs[$user->programid];
@@ -722,12 +712,14 @@ function program_cron_coursesets_overdue(&$programs) {
         $messages = $messagesmanager->get_messages();
 
         // send course set overdue notifications to user and (optionally) the user's manager
-        foreach($messages as $message) {
-            if($message->id==$user->messageid && $message->messagetype==MESSAGETYPE_COURSESET_OVERDUE) {
-                $message->send_message($user, null, array('coursesetid'=>$user->coursesetid));
+        foreach ($messages as $message) {
+            if ($message->id == $user->messageid && $message->messagetype == MESSAGETYPE_COURSESET_OVERDUE) {
+                $message->send_message($user, null, array('coursesetid' => $user->coursesetid));
             }
         }
     }
+
+    $rs->close();
 }
 
 /**
@@ -737,7 +729,7 @@ function program_cron_coursesets_overdue(&$programs) {
  * @param array $programs An array of program objects. This is passed by reference so that it can be populated and re-used
  */
 function program_cron_learner_followups(&$programs) {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Checking for any follow-up messages to be sent');
@@ -749,19 +741,19 @@ function program_cron_learner_followups(&$programs) {
     // based on their course completion dates and the trigger dates in any
     // follow-up messages that are defined by the program
     $sql = "SELECT u.id, pc.programid, pc.timecompleted, pm.id AS messageid, pm.triggertime
-            FROM {$CFG->prefix}user AS u
-            INNER JOIN {$CFG->prefix}prog_completion AS pc ON u.id=pc.userid
-            INNER JOIN {$CFG->prefix}prog_user_assignment AS pua ON (pc.userid=pua.userid AND pc.programid=pua.programid)
-            INNER JOIN {$CFG->prefix}prog_message AS pm ON pc.programid=pm.programid
-            WHERE pc.status = ".STATUS_PROGRAM_COMPLETE."
-            AND pm.messagetype = ".MESSAGETYPE_LEARNER_FOLLOWUP."
-            AND (pc.timecompleted + pm.triggertime) < ".$now."
+            FROM {user} AS u
+            INNER JOIN {prog_completion} AS pc ON u.id = pc.userid
+            INNER JOIN {prog_user_assignment} AS pua ON (pc.userid = pua.userid AND pc.programid = pua.programid)
+            INNER JOIN {prog_message} AS pm ON pc.programid = pm.programid
+            WHERE pc.status = ?
+            AND pm.messagetype = ?
+            AND (pc.timecompleted + pm.triggertime) < ?
             ORDER BY pc.programid, u.id";
 
     // get the records
-    $rs = get_recordset_sql($sql);
+    $rs = $DB->get_recordset_sql($sql, array(STATUS_PROGRAM_COMPLETE, MESSAGETYPE_LEARNER_FOLLOWUP, $now));
 
-    while ($user = rs_fetch_next_record($rs)) {
+    foreach ($rs as $user) {
 
         if (isset($programs[$user->programid])) { // Use the existing program object if it is available
             $program = $programs[$user->programid];
@@ -774,12 +766,14 @@ function program_cron_learner_followups(&$programs) {
         $messages = $messagesmanager->get_messages();
 
         // send course set overdue notifications to user and (optionally) the user's manager
-        foreach($messages as $message) {
-            if($message->id==$user->messageid && $message->messagetype==MESSAGETYPE_LEARNER_FOLLOWUP) {
+        foreach ($messages as $message) {
+            if ($message->id == $user->messageid && $message->messagetype == MESSAGETYPE_LEARNER_FOLLOWUP) {
                 $message->send_message($user);
             }
         }
     }
+
+    $rs->close();
 }
 
 /**
@@ -789,7 +783,7 @@ function program_cron_learner_followups(&$programs) {
  * @param array $programs An array of program objects. This is passed by reference so that it can be populated and re-used
  */
 function program_cron_exceptions_raised(&$programs) {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Checking if any exceptions exist');
@@ -802,41 +796,41 @@ function program_cron_exceptions_raised(&$programs) {
 
     // Query to retrieve any programs that have unhandled exceptions
     $sql = "SELECT DISTINCT(p.id) AS id
-            FROM {$CFG->prefix}prog AS p
-            JOIN {$CFG->prefix}prog_exception AS pe
-               ON p.id=pe.programid
-            WHERE p.exceptionssent=0";
+            FROM {prog} AS p
+            JOIN {prog_exception} AS pe
+               ON p.id = pe.programid
+            WHERE p.exceptionssent = ?";
 
-    if ($progsfound = get_records_sql($sql)) {
+    $progsfound = $DB->get_records_sql($sql, array(0));
 
-        foreach ($progsfound as $progfound) {
+    foreach ($progsfound as $progfound) {
 
-            if (isset($programs[$progfound->id])) { // Use the existing program object if it is available
-                $program = $programs[$progfound->id];
-            } else { // Create a new program object and store it if it has not already been instantiated
-                $program = new program($progfound->id);
-                $programs[$progfound->id] = $program;
-            }
+        if (isset($programs[$progfound->id])) { // Use the existing program object if it is available
+            $program = $programs[$progfound->id];
+        } else { // Create a new program object and store it if it has not already been instantiated
+            $program = new program($progfound->id);
+            $programs[$progfound->id] = $program;
+        }
 
-            $messagesmanager = $program->get_messagesmanager();
-            $messages = $messagesmanager->get_messages();
+        $messagesmanager = $program->get_messagesmanager();
+        $messages = $messagesmanager->get_messages();
 
-            // send alerts for each program to the admin user
+        // send alerts for each program to the admin user
 
-            foreach ($messages as $message) {
-                if ($message->messagetype == MESSAGETYPE_EXCEPTION_REPORT) {
+        foreach ($messages as $message) {
+            if ($message->messagetype == MESSAGETYPE_EXCEPTION_REPORT) {
 
-                    // Update program with exceptions sent
-                    $prog_notify_todb = new stdClass;
-                    $prog_notify_todb->id = $message->programid;
-                    $prog_notify_todb->exceptionssent = 1;
-                    update_record('prog', $prog_notify_todb);
+                // Update program with exceptions sent
+                $prog_notify_todb = new stdClass;
+                $prog_notify_todb->id = $message->programid;
+                $prog_notify_todb->exceptionssent = 1;
+                $DB->update_record('prog', $prog_notify_todb);
 
-                    $message->send_message($admin);
-                }
+                $message->send_message($admin);
             }
         }
     }
+
 }
 
 
@@ -851,7 +845,7 @@ function program_cron_exceptions_raised(&$programs) {
  * @global <type> $CFG
  */
 function program_cron_recurrence() {
-    global $CFG;
+    global $DB;
 
     if (debugging()) {
         mtrace('Checking program recurrence');
@@ -859,7 +853,7 @@ function program_cron_recurrence() {
 
     $recurring_programs = prog_get_recurring_programs();
 
-    foreach($recurring_programs as $program) {
+    foreach ($recurring_programs as $program) {
 
         $content = $program->get_content();
         $coursesets = $content->get_course_sets();
@@ -878,60 +872,45 @@ function program_cron_recurrence() {
         // part of their required learning) who have completed the program
         // and whose completion dates are beyond the recurrence time period
         $sql = "SELECT DISTINCT(pc.userid) AS id, pc.id AS completionid, pua.id AS userassignmentid, pua.assignmentid, u.*
-                FROM {$CFG->prefix}user AS u
-                JOIN {$CFG->prefix}prog_completion AS pc ON u.id=pc.userid
-                JOIN {$CFG->prefix}prog_user_assignment AS pua ON u.id=pua.userid
-                WHERE pc.programid = {$program->id}
-                AND pc.status = ".STATUS_PROGRAM_COMPLETE."
-                AND pc.coursesetid = 0
-                AND pc.timecompleted < ".$recurrencetime_comparison;
+                FROM {user} AS u
+                JOIN {prog_completion} AS pc ON u.id = pc.userid
+                JOIN {prog_user_assignment} AS pua ON u.id = pua.userid
+                WHERE pc.programid = ?
+                AND pc.status = ?
+                AND pc.coursesetid = ?
+                AND pc.timecompleted < ?";
 
         // get all the users matching the query
-        if($users = get_records_sql($sql)) {
-            foreach($users as $user) {
+        $users = $DB->get_records_sql($sql, array($program->id, STATUS_PROGRAM_COMPLETE, 0, $recurrencetime_comparison));
+        foreach ($users as $user) {
 
-                begin_sql();
+            $transaction = $DB->start_delegated_transaction();
 
-                // copy the existing completion records for the user in to a
-                // history table so that we have a record of past completions
-                $select = "programid={$program->id} AND userid={$user->id}";
-                if ($completion_records_history = get_records_select('prog_completion', $select)) {
+            // copy the existing completion records for the user in to a
+            // history table so that we have a record of past completions
+            $select = "programid = ? AND userid = ?";
+            $params = array($program->id, $user->id);
+            $completion_records_history = $DB->get_records_select('prog_completion', $select, $params);
+            $backup_success = true;
+            foreach ($completion_records_history as $completion_record) {
+                // we need to store the id of the course that belonged to this recurring program at the time
+                // it was added to the history table so that we can report on the course history later if necessary
+                $completion_record->recurringcourseid = $recurringcourse->id;
 
-                    $backup_success = true;
-                    foreach($completion_records_history as $completion_record) {
-
-                        // we need to store the id of the course that belonged to this recurring program at the time
-                        // it was added to the history table so that we can report on the course history later if necessary
-                        $completion_record->recurringcourseid = $recurringcourse->id;
-
-                        if ( ! $backup_success = insert_record('prog_completion_history', $completion_record)) {
-                            rollback_sql();
-                            break;
-                        }
-                    }
-
-                    $completion_delete_success = false;
-                    if ($backup_success) {
-                        // delete all the previous completion records for this user in this program.
-                        // A new completion record will be added when the user is re-assigned when the
-                        // assignments cron task runs
-                        if ( ! $completion_delete_success = delete_records('prog_completion', 'programid', $program->id, 'userid', $user->id)) {
-                            rollback_sql();
-                        }
-                    }
-
-                    if ($completion_delete_success) {
-                        // delete the user's assignment record for this program.
-                        // This will be re-created and the user will be re-assigned to the program
-                        // when the assignments cron task runs
-                        if (delete_records('prog_user_assignment', 'programid', $program->id, 'userid', $user->id)) {
-                            commit_sql();
-                        } else {
-                            rollback_sql();
-                        }
-                    }
-                }
+                $DB->insert_record('prog_completion_history', $completion_record);
             }
+
+            // delete all the previous completion records for this user in this program.
+            // A new completion record will be added when the user is re-assigned when the
+            // assignments cron task runs
+            $DB->delete_records('prog_completion', array('programid' => $program->id, 'userid' => $user->id));
+
+            // delete the user's assignment record for this program.
+            // This will be re-created and the user will be re-assigned to the program
+            // when the assignments cron task runs
+            $DB->delete_records('prog_user_assignment', array('programid' => $program->id, 'userid' => $user->id));
+
+            $transaction->allow_commit();
         }
     }
 }
@@ -943,26 +922,24 @@ function program_cron_recurrence() {
  *
  */
 function program_cron_recurrence_history() {
-
+    global $DB;
     if (debugging()) {
         mtrace('Checking program recurrence history');
     }
 
-    if ($history_records = get_records('prog_completion_history', 'status', STATUS_PROGRAM_INCOMPLETE)) {
+    $history_records = $DB->get_records('prog_completion_history', array('status' => STATUS_PROGRAM_INCOMPLETE));
 
-        foreach($history_records as $history_record) {
+    foreach ($history_records as $history_record) {
 
-            if ($course = get_record('course', 'id', $history_record->recurringcourseid)) {
+        if ($course = $DB->get_record('course', array('id' => $history_record->recurringcourseid))) {
 
-                // create a new completion object for this course
-                $completion_info = new completion_info($course);
-
-                // check if the course is complete
-                if ($completion_info->is_course_complete($history_record->userid)) {
-                    $history_record->status = STATUS_PROGRAM_COMPLETE;
-                    $history_record->timecompleted = time();
-                    update_record('prog_completion_history', $history_record);
-                }
+            // create a new completion object for this course
+            $completion_info = new completion_info($course);
+            // check if the course is complete
+            if ($completion_info->is_course_complete($history_record->userid)) {
+                $history_record->status = STATUS_PROGRAM_COMPLETE;
+                $history_record->timecompleted = time();
+                $DB->update_record('prog_completion_history', $history_record);
             }
         }
     }
@@ -978,16 +955,15 @@ function program_cron_recurrence_history() {
  * event trigger added.
  */
 function program_cron_first_login_assignments() {
-    global $CFG;
+    global $DB;
     $pending_user_sql = "SELECT u.*
-                        FROM {$CFG->prefix}user u
-                        INNER JOIN {$CFG->prefix}prog_future_user_assignment pfa
+                        FROM {user} u
+                        INNER JOIN {prog_future_user_assignment} pfa
                         ON pfa.userid = u.id
                         WHERE u.firstaccess > 0";
 
-    if ($pending_users = get_records_sql($pending_user_sql)) {
-        foreach ($pending_users as $pending_user) {
-            prog_assignments_firstlogin($pending_user);
-        }
+    $pending_users = $DB->get_records_sql($pending_user_sql);
+    foreach ($pending_users as $pending_user) {
+        prog_assignments_firstlogin($pending_user);
     }
 }

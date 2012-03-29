@@ -3,7 +3,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,31 +30,33 @@ if (!defined('MOODLE_INTERNAL')) {
 
 abstract class prog_exception {
     public $id, $programid, $exceptiontype, $userid, $timeraised;
+
     public function __construct($programid, $exceptionob=null) {
 
-        if(is_object($exceptionob)) {
+        if (is_object($exceptionob)) {
             $this->id = $exceptionob->id;
             $this->programid = $exceptionob->programid;
             $this->exceptiontype = $exceptionob->exceptiontype;
             $this->userid = $exceptionob->userid;
             $this->timeraised = $exceptionob->timeraised;
-        $this->assignmentid = $exceptionob->assignmentid;
+            $this->assignmentid = $exceptionob->assignmentid;
         } else {
             $this->id = 0;
             $this->programid = $programid;
             $this->exceptiontype = 0;
             $this->userid = 0;
             $this->timeraised = time();
-        $this->assignmentid = 0;
+            $this->assignmentid = 0;
         }
 
     }
 
     public static function insert_exception($programid, $exceptiontype, $userid, $assignmentid, $timeraised=null, $exceptiondata=array()) {
+        global $DB;
         $dataobjects = array();
 
-        if( ! empty($exceptiondata)) {
-            foreach($exceptiondata as $dataname=>$datavalue) {
+        if (!empty($exceptiondata)) {
+            foreach ($exceptiondata as $dataname=>$datavalue) {
                 $ob = new stdClass();
                 $ob->dataname = $dataname;
                 $ob->datavalue = $datavalue;
@@ -62,7 +64,7 @@ abstract class prog_exception {
             }
         }
 
-        if( ! $timeraised) {
+        if (!$timeraised) {
             $timeraised = time();
         }
 
@@ -73,30 +75,23 @@ abstract class prog_exception {
         $exception->timeraised = $timeraised;
         $exception->assignmentid = $assignmentid;
 
-        begin_sql();
 
-        if($exceptionid = insert_record('prog_exception', $exception)) {
+        if ($exceptionid = $DB->insert_record('prog_exception', $exception)) {
+            $transaction = $DB->start_delegated_transaction();
+
             $prog_notify_todb = new stdClass;
             $prog_notify_todb->id = $programid;
             $prog_notify_todb->exceptionssent = 0;
-            if (!update_record('prog', $prog_notify_todb)) {
-                rollback_sql();
-                return false;
-            }
+            $DB->update_record('prog', $prog_notify_todb);
 
-            foreach($dataobjects as $dataobject) {
+            foreach ($dataobjects as $dataobject) {
                 $dataobject->exceptionid = $exceptionid;
-                if( ! insert_record('prog_exception_data', $dataobject)) {
-                    rollback_sql();
-                    return false;
-                }
+
+                $DB->insert_record('prog_exception_data', $dataobject);
             }
-
-            commit_sql();
+            $transaction->allow_commit();
             return $exceptionid;
-
         } else {
-            rollback_sql();
             return false;
         }
 
@@ -112,7 +107,8 @@ abstract class prog_exception {
      *  @return bool True if exception exists
      */
     public static function exception_exists($programid, $exceptiontype, $userid) {
-        return record_exists_select('prog_exception', "programid = $programid AND exceptiontype = $exceptiontype AND userid = $userid");
+        global $DB;
+        return $DB->record_exists_select('prog_exception', "programid = ? AND exceptiontype = ? AND userid = ?", array($programid, $exceptiontype, $userid));
     }
 
 
@@ -123,23 +119,17 @@ abstract class prog_exception {
      *  @return bool Success status
      */
     public static function delete_exception($exceptionid) {
+        global $DB;
         // first delete any data relating to this exception
-        if (!delete_records('prog_exception_data', 'exceptionid', $exceptionid)) {
+        if (!$DB->delete_records('prog_exception_data', array('exceptionid' => $exceptionid))) {
             return false;
         }
         // then delete the exception itself
-        return delete_records('prog_exception', 'id', $exceptionid);
+        return $DB->delete_records('prog_exception', array('id' => $exceptionid));
     }
 
     public function handles($action) {
-        switch($action) {
-        case SELECTIONACTION_DISMISS_EXCEPTION:
-            return true;
-            break;
-        default:
-            return false;
-            break;
-        }
+        return $action == SELECTIONACTION_DISMISS_EXCEPTION ? true : false;
     }
 
     public function handle($action=null) {
@@ -149,25 +139,25 @@ abstract class prog_exception {
         }
 
         switch($action) {
-        case SELECTIONACTION_DISMISS_EXCEPTION:
-            return $this->dismiss_exception();
-            break;
-        default:
-            return true;
-            break;
+            case SELECTIONACTION_DISMISS_EXCEPTION:
+                return $this->dismiss_exception();
+                break;
+            default:
+                return true;
+                break;
         }
     }
 
     protected function override_and_add_program() {
-
+        global $DB;
         $program = new program($this->programid);
 
-        $user_assign = get_record('prog_user_assignment', 'assignmentid', $this->assignmentid, 'userid', $this->userid);
+        $user_assign = $DB->get_record('prog_user_assignment', array('assignmentid' => $this->assignmentid, 'userid' => $this->userid));
         $learner_assign_todb = new stdClass();
         $learner_assign_todb->id = $user_assign->id;
         $learner_assign_todb->exceptionstatus = PROGRAM_EXCEPTION_RESOLVED;
 
-        if (!update_record('prog_user_assignment', $learner_assign_todb)) {
+        if (!$DB->update_record('prog_user_assignment', $learner_assign_todb)) {
             return false;
         }
 
@@ -186,13 +176,13 @@ abstract class prog_exception {
      * @return boolean success
      */
     protected function set_auto_time_allowance() {
-        global $CFG;
+        global $CFG, $DB;
 
         require_once($CFG->dirroot . '/totara/program/program.class.php');
 
         $program = new program($this->programid);
 
-        $assignment_record = get_record('prog_assignment','id',$this->assignmentid);
+        $assignment_record = $DB->get_record('prog_assignment', array('id' => $this->assignmentid));
         if (!$assignment_record) {
             return false;
         }
@@ -210,14 +200,12 @@ abstract class prog_exception {
         }
 
         // Update user_assignment
-        $user_assign = get_record('prog_user_assignment', 'assignmentid', $this->assignmentid, 'userid', $this->userid);
+        $user_assign = $DB->get_record('prog_user_assignment', array('assignmentid' => $this->assignmentid, 'userid' => $this->userid));
         $learner_assign_todb = new stdClass();
         $learner_assign_todb->id = $user_assign->id;
         $learner_assign_todb->exceptionstatus = PROGRAM_EXCEPTION_RESOLVED;
 
-        if (!update_record('prog_user_assignment', $learner_assign_todb)) {
-            return false;
-        }
+        $DB->update_record('prog_user_assignment', $learner_assign_todb);
 
         //Event trigger to send notification when
         //exception is resolved
@@ -235,14 +223,14 @@ abstract class prog_exception {
      * @return boolean success
      */
     private function dismiss_exception() {
-        global $CFG;
+        global $CFG, $DB;
         require_once($CFG->dirroot . '/totara/program/program.class.php');
 
-        $user_assign = get_record('prog_user_assignment', 'assignmentid', $this->assignmentid, 'userid', $this->userid);
+        $user_assign = $DB->get_record('prog_user_assignment', array('assignmentid' => $this->assignmentid, 'userid' => $this->userid));
         $learner_assign_todb = new stdClass();
         $learner_assign_todb->id = $user_assign->id;
         $learner_assign_todb->exceptionstatus = PROGRAM_EXCEPTION_DISMISSED;
-        if (!update_record('prog_user_assignment', $learner_assign_todb)) {
+        if (!$DB->update_record('prog_user_assignment', $learner_assign_todb)) {
             return false;
         }
 
@@ -258,34 +246,29 @@ class time_allowance_exception extends prog_exception {
     }
 
     public function handles($action) {
-        switch($action) {
-            case SELECTIONACTION_OVERRIDE_EXCEPTION:
-            case SELECTIONACTION_AUTO_TIME_ALLOWANCE:
-            case SELECTIONACTION_DISMISS_EXCEPTION:
-                return true;
-            break;
-            default:
-                return false;
-            break;
+        if (in_array($action, array(SELECTIONACTION_OVERRIDE_EXCEPTION, SELECTIONACTION_AUTO_TIME_ALLOWANCE, SELECTIONACTION_DISMISS_EXCEPTION))) {
+            return true;
         }
+
+        return false;
     }
 
     public function handle($action=null) {
 
-        if( ! $this->handles($action)) {
+        if (!$this->handles($action)) {
             return true;
         }
 
-        switch($action) {
+        switch ($action) {
             case SELECTIONACTION_AUTO_TIME_ALLOWANCE:
                 return $this->set_auto_time_allowance();
-            break;
+                break;
             case SELECTIONACTION_OVERRIDE_EXCEPTION:
                 return $this->override_and_add_program();
-            break;
+                break;
             default:
                 return parent::handle($action);
-            break;
+                break;
         }
     }
 }
@@ -298,30 +281,26 @@ class already_assigned_exception extends prog_exception {
     }
 
     public function handles($action) {
-        switch($action) {
-            case SELECTIONACTION_OVERRIDE_EXCEPTION:
-            case SELECTIONACTION_DISMISS_EXCEPTION:
-                return true;
-            break;
-            default:
-                return false;
-            break;
+        if (in_array($action, array(SELECTIONACTION_OVERRIDE_EXCEPTION, SELECTIONACTION_DISMISS_EXCEPTION))) {
+            return true;
         }
+
+        return false;
     }
 
     public function handle($action=null) {
 
-        if( ! $this->handles($action)) {
+        if (!$this->handles($action)) {
             return true;
         }
 
-        switch($action) {
+        switch ($action) {
             case SELECTIONACTION_OVERRIDE_EXCEPTION:
                 return $this->override_and_add_program();
-            break;
+                break;
             default:
                 return parent::handle($action);;
-            break;
+                break;
         }
     }
 
@@ -334,29 +313,25 @@ class completion_time_unknown_exception extends prog_exception {
     }
 
     public function handles($action) {
-        switch($action) {
-            case SELECTIONACTION_AUTO_TIME_ALLOWANCE:
-            case SELECTIONACTION_DISMISS_EXCEPTION:
-                return true;
-            break;
-            default:
-                return false;
-            break;
-        }
-    }
-
-    public function handle($action=null) {
-        if( ! $this->handles($action)) {
+        if (in_array($action, array(SELECTIONACTION_AUTO_TIME_ALLOWANCE, SELECTIONACTION_DISMISS_EXCEPTION))) {
             return true;
         }
 
-        switch($action) {
+        return false;
+    }
+
+    public function handle($action=null) {
+        if (!$this->handles($action)) {
+            return true;
+        }
+
+        switch ($action) {
             case SELECTIONACTION_AUTO_TIME_ALLOWANCE:
                 return $this->set_auto_time_allowance();
-            break;
+                break;
             default:
                 return parent::handle($action);
-            break;
+                break;
         }
     }
 }

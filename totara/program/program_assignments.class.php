@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,10 +81,10 @@ class prog_assignments {
      * @param int $programid
      */
     public function init_assignments($programid) {
+        global $DB;
         $this->assignments = array();
-        if($assignments = get_records('prog_assignment', 'programid', $programid)) {
-            $this->assignments = $assignments;
-        }
+        $assignments = $DB->get_records('prog_assignment', array('programid' => $programid));
+        $this->assignments = $assignments;
     }
 
     public function get_assignments() {
@@ -94,7 +94,7 @@ class prog_assignments {
     public static function factory($assignmenttype) {
         global $ASSIGNMENT_CATEGORY_CLASSNAMES;
 
-        if( ! array_key_exists($assignmenttype, $ASSIGNMENT_CATEGORY_CLASSNAMES)) {
+        if (!array_key_exists($assignmenttype, $ASSIGNMENT_CATEGORY_CLASSNAMES)) {
             throw new Exception('Assignment category type not found');
         }
 
@@ -109,32 +109,22 @@ class prog_assignments {
     /**
      * Deletes all the assignments and user assignments for this program
      *
-     * @return bool Success
+     * @return bool true|Exception
      */
     public function delete() {
-
-        begin_sql();
+        global $DB;
+        $transaction = $DB->start_delegated_transaction();
 
         // delete all user assignments
-        $result = delete_records('prog_user_assignment', 'programid', $this->programid);
-
+        $DB->delete_records('prog_user_assignment', array('programid' => $this->programid));
         // also delete future user assignments
-        if ($result) {
-            $result = $result && delete_records('prog_future_user_assignment', 'programid', $this->programid);
-        }
-
+        $DB->delete_records('prog_future_user_assignment', array('programid' => $this->programid));
         // delete all configured assignments
-        if ($result) {
-            $result = $result && delete_records('prog_assignment', 'programid', $this->programid);
-        }
+        $DB->delete_records('prog_assignment', array('programid' => $this->programid));
 
-        if ($result) {
-            commit_sql();
-        } else {
-            rollback_sql();
-        }
+        $transaction->allow_commit();
 
-        return $result;
+        return true;
     }
 
     /**
@@ -144,10 +134,13 @@ class prog_assignments {
      * @return integer The number of user assignments
      */
     public function count_active_user_assignments() {
-        global $CFG;
+        global $CFG, $DB;
         require_once($CFG->dirroot . '/totara/program/program.class.php');
 
-        $count = count_records_sql("SELECT COUNT(DISTINCT userid) FROM {$CFG->prefix}prog_user_assignment WHERE programid={$this->programid} AND exceptionstatus IN (" . PROGRAM_EXCEPTION_NONE ."," . PROGRAM_EXCEPTION_RESOLVED . ")");
+        list($exception_sql, $params) = $DB->get_in_or_equal(array(PROGRAM_EXCEPTION_NONE, PROGRAM_EXCEPTION_RESOLVED));
+        $params[] = $this->programid;
+
+        $count = $DB->count_records_sql("SELECT COUNT(DISTINCT userid) FROM {prog_user_assignment} WHERE exceptionstatus {$exception_sql} AND programid = ?", $params);
         return $count;
     }
 
@@ -157,12 +150,12 @@ class prog_assignments {
      * @return integer The number of users assigned to the current program
      */
     public function count_total_user_assignments() {
-        global $CFG;
+        global $DB;
 
         // also include future assignments in total
-        $sql = "SELECT COUNT(DISTINCT userid) FROM (SELECT userid FROM {$CFG->prefix}prog_user_assignment WHERE programid = {$this->programid}
-            UNION SELECT userid FROM {$CFG->prefix}prog_future_user_assignment WHERE programid = {$this->programid}) q";
-        $count = count_records_sql($sql);
+        $sql = "SELECT COUNT(DISTINCT userid) FROM (SELECT userid FROM {prog_user_assignment} WHERE programid = ?
+            UNION SELECT userid FROM {prog_future_user_assignment} WHERE programid = ?) q";
+        $count = $DB->count_records_sql($sql, array($this->programid, $this->programid));
 
         return $count;
     }
@@ -174,10 +167,10 @@ class prog_assignments {
      * @return integer The number of users
      */
     public function count_user_assignment_exceptions() {
-        global $CFG;
+        global $DB;
 
-        $sql = "SELECT COUNT(DISTINCT userid) FROM {$CFG->prefix}prog_exception WHERE programid = {$this->programid}";
-        return count_records_sql($sql);
+        $sql = "SELECT COUNT(DISTINCT userid) FROM {prog_exception} WHERE programid = ?";
+        return $DB->count_records_sql($sql, array($this->programid));
     }
 
     /**
@@ -188,7 +181,7 @@ class prog_assignments {
      */
     public function display_form_label() {
         $out = '';
-        $out .= get_string('instructions:assignments1', 'local_program');
+        $out .= get_string('instructions:assignments1', 'totara_program');
         return $out;
     }
 
@@ -199,7 +192,7 @@ class prog_assignments {
      * @return string
      */
     public function display_form_element() {
-        global $ASSIGNMENT_CATEGORY_CLASSNAMES;
+        global $OUTPUT, $ASSIGNMENT_CATEGORY_CLASSNAMES;
 
         $emptyarray = array(
             'typecount' => 0,
@@ -216,38 +209,38 @@ class prog_assignments {
 
         $out = '';
 
-        if(count($this->assignments)) {
+        if (count($this->assignments)) {
 
             $usertotal = 0;
 
-            foreach($this->assignments as $assignment) {
+            foreach ($this->assignments as $assignment) {
                 $assignmentob = prog_assignments::factory($assignment->assignmenttype);
 
                 $assignmentdata[$assignment->assignmenttype]['typecount']++;
 
                 $users = $assignmentob->get_affected_users_by_assignment($assignment);
                 $usercount = count($users);
-                if($users) {
+                if ($users) {
                     $assignmentdata[$assignment->assignmenttype]['users'] += $usercount;
                 }
                 $usertotal += $usercount;
             }
 
-            $table = new stdClass();
+            $table = new html_table();
             $table->head = array(
-                get_string('overview', 'local_program'),
-                get_string('numlearners', 'local_program')
+                get_string('overview', 'totara_program'),
+                get_string('numlearners', 'totara_program')
             );
             $table->data = array();
 
             $categoryrow = 0;
-            foreach($assignmentdata as $categorytype => $data) {
+            foreach ($assignmentdata as $categorytype => $data) {
                 $categoryclassname = $ASSIGNMENT_CATEGORY_CLASSNAMES[$categorytype];
 
                 $styleclass = ($categoryrow % 2 == 0) ? 'even' : 'odd';
 
                 $row = array();
-                $row[] = $data['typecount'].' '.get_string($categoryclassname, 'local_program');
+                $row[] = $data['typecount'].' '.get_string($categoryclassname, 'totara_program');
                 $row[] = $data['users'];
 
                 $table->data[] = $row;
@@ -255,45 +248,18 @@ class prog_assignments {
 
                 $categoryrow++;
             }
-            $helpbutton = helpbutton('totalassignments', get_string('totalassignments', 'local_program'), 'local_program', true, false, '', true);
+            $helpbutton = $OUTPUT->help_icon('totalassignments', 'totara_program');
             $table->data[] = array(
-                '<strong>'.get_string('totalassignments', 'local_program').' '.$helpbutton.'</strong>',
-                '<strong>'.$usertotal.'</strong>',
+                html_writer::tag('strong', get_string('totalassignments', 'totara_program')),
+                html_writer::tag('strong', $usertotal)
             );
             $table->rowclass[] = 'total';
 
-            $out .= print_table($table, true);
+            $out .= html_writer::table($table, true);
 
         } else {
-            $out .= get_string('noprogramassignments', 'local_program');
+            $out .= get_string('noprogramassignments', 'totara_program');
         }
-
-        return $out;
-    }
-
-    /**
-     * Returns html for the dropdown of different completion events
-     *
-     * @global array $COMPLETION_EVENTS_CLASSNAMES
-     * @param string $name
-     * @return string
-     */
-    public static function get_completion_events_dropdown($name="eventtype") {
-        global $COMPLETION_EVENTS_CLASSNAMES;
-
-        // The javascript part of this element was initially factored out
-        // and added using jQuery when the page was loaded but this didn't work
-        // in IE8 so it was added in here instead.
-        $out = '<select class="'.$name.'" id="'.$name.'" name="'.$name.'" onchange="handle_completion_selection(this.options[this.selectedIndex].value);">';
-        foreach ($COMPLETION_EVENTS_CLASSNAMES as $class) {
-            $event = new $class();
-            $out .= '<option value="'. $event->get_id() .'">'. $event->get_name() .'</option>';
-        }
-        $out .= '</select>';
-
-        $out .= '<script type="text/javascript">';
-        $out .= prog_assignments::get_completion_events_script($name);
-        $out .= '</script>';
 
         return $out;
     }
@@ -328,38 +294,36 @@ class prog_assignments {
     }
 
     public static function get_confirmation_template() {
-        global $CFG;
-        require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
-
-        $table = new stdClass();
-        $table->head = array('', get_string('added', 'local_program'), get_string('removed', 'local_program'));
-        $table->data = array();
         global $ASSIGNMENT_CATEGORY_CLASSNAMES;
+
+        $table = new html_table();
+        $table->head = array('', get_string('added', 'totara_program'), get_string('removed', 'totara_program'));
+        $table->data = array();
         foreach ($ASSIGNMENT_CATEGORY_CLASSNAMES as $classname) {
             $category = new $classname();
-            $spanAdded = '<span class="added_'.$category->id.'">0</span>';
-            $spanRemoved = '<span class="removed_'.$category->id.'">0</span>';
+            $spanAdded = html_writer::tag('span', '0', array('class' => 'added_'.$category->id));
+            $spanRemoved = html_writer::tag('span', '0', array('class' => 'removed_'.$category->id));
             $table->data[] = array($category->name,$spanAdded,$spanRemoved);
         }
 
-        $spanTotalAdded = '<strong><span class="total_added">0</span></strong>';
-        $spanTotalRemoved = '<strong><span class="total_removed">0</span></strong>';
-        $table->data[] = array('<strong>'.get_string('total').'</strong>',$spanTotalAdded,$spanTotalRemoved);
+        $spanTotalAdded = html_writer::tag('strong', html_writer::tag('span', '0', array('class' => 'total_added')));
+        $spanTotalRemoved = html_writer::tag('strong', html_writer::tag('span', '0', array('class' => 'total_removed')));
+        $table->data[] = array(html_writer::tag('strong', get_string('total')), $spanTotalAdded, $spanTotalRemoved);
 
-        $tableHTML = print_table($table, true);
+        $tableHTML = html_writer::table($table, true);
         // Strip new lines as they screw up the JS
         $order   = array("\r\n", "\n", "\r");
         $table = str_replace($order, '', $tableHTML);
 
         $data = array();
-        $data['html'] = '<div>' . get_string('youhavemadefollowingchanges','local_program') . '<br /><br />' . $tableHTML . '<br />' . get_string('tosaveassignments','local_program') . '</div>';
+        $data['html'] = html_writer::tag('div', get_string('youhavemadefollowingchanges', 'totara_program') . html_writer::empty_tag('br') . html_writer::empty_tag('br') . $tableHTML . html_writer::empty_tag('br') . get_string('tosaveassignments','totara_program'));
 
         return json_encode($data);
     }
 }
 
 /**
- * Abstract class for a cateogry which appears on the program assignments screen.
+ * Abstract class for a category which appears on the program assignments screen.
  */
 abstract class prog_assignment_category {
     public $id;
@@ -370,59 +334,16 @@ abstract class prog_assignment_category {
     protected $data = array(); // array of arrays of strings (html)
 
     /**
-     * Prints out the actualy html for the category, by looking at the headers
+     * Prints out the actual html for the category, by looking at the headers
      * and data which should have been set by sub class
      *
      * @param bool $return
      * @return string html
      */
-    function display($return = false) {
-
-        $categoryclassstr = strtolower(str_replace(' ', '', $this->name));
-
-        $html = '<fieldset class="assignment_category '.$categoryclassstr.'" id="category-'. $this->id.'" >';
-        $html .= '<legend>'. $this->name .'</legend>';
-
-        $html .= '<table>';
-        $html .= '<tbody>';
-
-        $html .= '<tr>';
-        $colcount = 0;
-
-        // Add the headers
-        foreach ($this->headers as $header) {
-            $headerclassstr = strtolower(str_replace(' ', '', $header));
-            $headerclassstr = strtolower(str_replace('#', '', $headerclassstr));
-            $html .= '<th class="'.$headerclassstr.' col'.$colcount.'">'.$header.'</th>';
-            $colcount++;
-        }
-        $html .= '</tr>';
-
-        // And the main data
-        if ( ! empty($this->data)) {
-            foreach ($this->data as $row) {
-                $html .= '<tr>';
-                $colcount = 0;
-                foreach ($row as $cell) {
-                    $html .= '<td class="col'.$colcount.'">'.$cell.'</td>';
-                    $colcount++;
-                }
-                $html .= '</tr>';
-            }
-        }
-
-        $html .= '</tbody>';
-        $html .= '</table>';
-
-        // Add a button for adding new items to the category
-        $html .= '<button id="add-assignment-' . $this->id . '" >'. $this->buttonname .'</button>';
-        $html .= '<div class="total_user_count">'. get_string('total','local_program') .': <span class="user_count">0</span></div>';
-        $html .= '</fieldset>';
-
-        if ($return) {
-            return $html;
-        }
-        echo $html;
+    function display() {
+        global $PAGE;
+        $renderer = $PAGE->get_renderer('totara_program');
+        return $renderer->assignment_category_display($this, $this->headers, $this->buttonname, $this->data);
     }
 
     /**
@@ -440,7 +361,7 @@ abstract class prog_assignment_category {
      * @param string $prefix
      * @param int $programid
      */
-    abstract function build_table($prefix, $programid);
+    abstract function build_table($programid);
 
     /**
      * Builds a single row by looking at the passed in item
@@ -481,7 +402,7 @@ abstract class prog_assignment_category {
      * Updates the assignments by looking at the post data
      */
     function update_assignments($data) {
-        global $CFG;
+        global $DB;
 
         // Store list of seen ids
         $seenids = array();
@@ -493,11 +414,11 @@ abstract class prog_assignment_category {
             $itemids = array_keys($data->item[$this->id]);
             $seenids = $itemids;
 
-            $inserts = array();
-
+            $insertssql = array();
+            $insertsparams = array();
             // Get a list of assignments
-            $sql = "SELECT p.assignmenttypeid as hashkey, p.* FROM {$CFG->prefix}prog_assignment p WHERE programid = $data->id AND assignmenttype = $this->id";
-            $assignment_hashmap = get_records_sql($sql);
+            $sql = "SELECT p.assignmenttypeid as hashkey, p.* FROM {prog_assignment} p WHERE programid = ? AND assignmenttype = ?";
+            $assignment_hashmap = $DB->get_records_sql($sql, array($data->id, $this->id));
 
             foreach ($itemids as $itemid) {
                 $object = isset($assignment_hashmap[$itemid]) ? $assignment_hashmap[$itemid] : false;
@@ -555,69 +476,66 @@ abstract class prog_assignment_category {
                             prog_exceptions_manager::delete_exceptions_by_assignment($object->id);
 
                             // Create comma separated list to use in deletions
-                            $user_assignments_sql = "SELECT userid FROM {$CFG->prefix}prog_user_assignment WHERE assignmentid={$object->id}";
-                            if ($user_assignments = get_records_sql($user_assignments_sql)) {
-                                $assignment_userids = implode(',', array_keys($user_assignments));
+                            $user_assignments_sql = "SELECT userid FROM {prog_user_assignment} WHERE assignmentid = ?";
+                            $user_assignments = $DB->get_records_sql($user_assignments_sql, array($object->id));
+                            if (count($user_assignments) > 0) {
+                                list($assignment_userid_sql, $assignment_userid_params) = $DB->get_in_or_equal(array_keys($user_assignments));
+                                $transaction = $DB->start_delegated_transaction();
+                                $delete_user_assign_sql = "DELETE FROM {prog_user_assignment} WHERE assignmentid = ?";
+                                $DB->execute($delete_user_assign_sql, array($object->id));
+                                $delete_completions_sql = "DELETE FROM {prog_completion} WHERE coursesetid = 0 AND userid {$assignment_userid_sql} AND programid = ?";
+                                $DB->execute($delete_completions_sql, array_shift($assignment_userids, array($object->programid)));
+                                $transaction->allow_commit();
                             }
 
-                            begin_sql();
-
-                            $delete_user_assign_sql = "DELETE FROM {$CFG->prefix}prog_user_assignment WHERE assignmentid={$object->id}";
-                            if (!execute_sql($delete_user_assign_sql, false)) {
-                                rollback_sql();
-                                return false;
-                            }
-
-                            $delete_completions_sql = "DELETE FROM {$CFG->prefix}prog_completion WHERE coursesetid=0 AND userid IN ({$assignment_userids}) AND programid={$object->programid}";
-                            if (!execute_sql($delete_completions_sql, false)) {
-                                rollback_sql();
-                                return false;
-                            }
-
-                            commit_sql();
                         } else if ($object->completiontime != $original_object->completiontime) {
                             // Completion date changed
                             // Delete old exceptions
                             prog_exceptions_manager::delete_exceptions_by_assignment($object->id);
                         }
 
-                        if (!update_record('prog_assignment', $object)) {
-                            print_error('error:updatingprogramassignment', 'local_program');
+                        if (!$DB->update_record('prog_assignment', $object)) {
+                            print_error('error:updatingprogramassignment', 'totara_program');
                         }
                     }
-                }
-                else {
+                } else {
                     // Create new assignment
-                    $inserts[] = "($object->programid, $object->assignmenttype, $object->assignmenttypeid, $object->includechildren, $object->completiontime, $object->completionevent, $object->completioninstance)";
+                    $insertssql[] = "(?, ?, ?, ?, ?, ?, ?)";
+                    $insertsparams[] = array($object->programid, $object->assignmenttype, $object->assignmenttypeid, $object->includechildren, $object->completiontime, $object->completionevent, $object->completioninstance);
                 }
             }
 
             // Execute inserts
-            if (count($inserts) > 0) {
-                $sql = "INSERT INTO {$CFG->prefix}prog_assignment (programid, assignmenttype, assignmenttypeid, includechildren, completiontime, completionevent, completioninstance) VALUES " . implode(', ', $inserts);
-
-                execute_sql($sql, false);
+            if (count($insertssql) > 0) {
+                $sql = "INSERT INTO {prog_assignment} (programid, assignmenttype, assignmenttypeid, includechildren, completiontime, completionevent, completioninstance) VALUES " . implode(', ', $insertssql);
+                $params = array();
+                foreach ($insertsparams as $p) {
+                    $params = array_merge($params, $p);
+                }
+                $DB->execute($sql, $params);
             }
         }
 
         // Delete any records which exist in the prog_assignment table but that
         // weren't submitted just now. Also delete any existing exceptions that
         // related to the assignment being deleted
-        $where = "programid = $data->id AND assignmenttype = $this->id";
+        $where = "programid = ? AND assignmenttype = ?";
+        $params = array($data->id, $this->id);
         if (count($seenids) > 0) {
-            $where .= " AND assignmenttypeid NOT IN (". implode(',', $seenids) .")";
+            list($idssql, $idsparams) = $DB->get_in_or_equal($seenids, SQL_PARAMS_QM, 'param', false);
+            $where .= " AND assignmenttypeid {$idssql}";
+            $params = array_merge($params, $idsparams);
         }
-        if ($assignments_to_delete = get_records_select('prog_assignment', $where)) {
-            foreach ($assignments_to_delete as $assignment_to_delete) {
-                // delete any exceptions related to this assignment
-                prog_exceptions_manager::delete_exceptions_by_assignment($assignment_to_delete->id);
+        $assignments_to_delete = $DB->get_records_select('prog_assignment', $where, $params);
+        foreach ($assignments_to_delete as $assignment_to_delete) {
+            // delete any exceptions related to this assignment
+            prog_exceptions_manager::delete_exceptions_by_assignment($assignment_to_delete->id);
 
-                // delete any future user assignments related to this assignment
-                delete_records('prog_future_user_assignment', 'assignmentid', $assignment_to_delete->id,
-                    'programid', $data->id);
-            }
-            delete_records_select('prog_assignment', $where);
+            // delete any future user assignments related to this assignment
+            $DB->delete_records('prog_future_user_assignment', array('assignmentid' => $assignment_to_delete->id, 'programid' => $data->id));
         }
+        $DB->delete_records_select('prog_assignment', $where, $params);
+
     }
 
     /**
@@ -629,7 +547,7 @@ abstract class prog_assignment_category {
 
     function get_completion($item) {
         global $CFG;
-        $completion_string = get_string('setcompletion', 'local_program');
+        $completion_string = get_string('setcompletion', 'totara_program');
 
         if (!isset($item->completiontime)) {
             $item->completiontime = '';
@@ -650,20 +568,27 @@ abstract class prog_assignment_category {
                 // Print a date
                 $item->completiontime = trim( userdate($item->completiontime, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) );
                 $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
-            }
-            else {
+            } else {
                 $parts = program_utilities::duration_explode($item->completiontime);
                 $item->completiontime = $parts->num . ' ' . $parts->period;
                 $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
             }
         }
-
-        $html = '<input type="hidden" name="completiontime['.$this->id.']['.$item->id.']" value="'. $item->completiontime .'" />';
-        $html .= '<input type="hidden" name="completionevent['.$this->id.']['.$item->id.']" value="'. $item->completionevent .'" />';
-        $html .= '<input type="hidden" name="completioninstance['.$this->id.']['.$item->id.']" value="'. $item->completioninstance .'" />';
-        $html .= '<a href="#" class="completionlink">' . format_string($completion_string) . '</a>';
-
+        $html = html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'completiontime['.$this->id.']['.$item->id.']', 'value' => $item->completiontime));
+        $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'completionevent['.$this->id.']['.$item->id.']', 'value' => $item->completionevent));
+        $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'completioninstance['.$this->id.']['.$item->id.']', 'value' => $item->completioninstance));
+        $html .= html_writer::link('#', $completion_string, array('class' => 'completionlink'));
         return $html;
+    }
+
+    public function build_first_table_cell($name, $id, $itemid) {
+        global $OUTPUT;
+        $output = html_writer::start_tag('div', array('class' => 'item'));
+        $output .= format_string($name);
+        $output .= $OUTPUT->action_icon('#', new pix_icon('t/delete', get_string('delete')), null, array('class' => 'deletelink'));
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'item['.$id.']['.$itemid.']', 'value' => '1'));
+        return $output;
     }
 
     public static function build_completion_string($completiontime, $completionevent, $completioninstance) {
@@ -682,9 +607,8 @@ abstract class prog_assignment_category {
 
             $a->num = $parts[0];
             if (isset($TIMEALLOWANCESTRINGS[$parts[1]])) {
-                $a->period = get_string($TIMEALLOWANCESTRINGS[$parts[1]]);
-            }
-            else {
+                $a->period = get_string($TIMEALLOWANCESTRINGS[$parts[1]], 'totara_program');
+            } else {
                 return '';
             }
             $a->event = $eventobject->get_completion_string();
@@ -694,15 +618,14 @@ abstract class prog_assignment_category {
                 $a->instance = "'$a->instance'";
             }
 
-            return get_string('completewithinevent','local_program',$a);
+            return get_string('completewithinevent', 'totara_program', $a);
         }
         else {
             $datepattern = get_string('datepickerregexphp', 'totara_core');
             if (preg_match($datepattern, $completiontime, $matches) == 0) {
                 return '';
-            }
-            else {
-                return get_string('completebytime','local_program',$completiontime);
+            } else {
+                return get_string('completebytime', 'totara_program', $completiontime);
             }
         }
     }
@@ -728,27 +651,27 @@ class organisations_category extends prog_assignment_category {
 
     function __construct() {
         $this->id = ASSIGNTYPE_ORGANISATION;
-        $this->name = get_string('organisations','local_program');
-        $this->buttonname = get_string('addorganisationstoprogram','local_program');
+        $this->name = get_string('organisations', 'totara_program');
+        $this->buttonname = get_string('addorganisationstoprogram', 'totara_program');
     }
 
-    function build_table($prefix, $programid) {
-        global $CFG;
+    function build_table($programid) {
+        global $DB;
 
         $this->headers = array(
-            get_string('organisationname','local_program'),
-            get_string('allbelow','local_program'),
-            get_string('complete','local_program'),
-            get_string('numlearners','local_program')
+            get_string('organisationname', 'totara_program'),
+            get_string('allbelow', 'totara_program'),
+            get_string('complete','totara_program'),
+            get_string('numlearners','totara_program')
         );
 
         // Go to the database and gets the assignments
-        $items = get_records_sql(
+        $items = $DB->get_records_sql(
             "SELECT org.id, org.fullname, org.path, prog_assignment.includechildren, prog_assignment.completiontime, prog_assignment.completionevent, prog_assignment.completioninstance
-	    FROM {$prefix}prog_assignment prog_assignment
-	    INNER JOIN {$prefix}org org on org.id = prog_assignment.assignmenttypeid
-	    WHERE prog_assignment.programid = $programid
-	    AND prog_assignment.assignmenttype = $this->id");
+        FROM {prog_assignment} prog_assignment
+        INNER JOIN {org} org on org.id = prog_assignment.assignmenttypeid
+        WHERE prog_assignment.programid = ?
+        AND prog_assignment.assignmenttype = ?", array($programid, $this->id));
 
         // Convert these into html
         if (!empty($items)) {
@@ -759,21 +682,21 @@ class organisations_category extends prog_assignment_category {
     }
 
     function get_item($itemid) {
-        return get_record('org','id',$itemid);
+        global $DB;
+        return $DB->get_record('org', array('id' => $itemid));
     }
 
     function build_row($item) {
-        global $CFG;
 
         if (is_int($item)) {
             $item = $this->get_item($item);
         }
 
-        $checked = (isset($item->includechildren) && $item->includechildren == 1) ? 'checked="checked"' : '';
+        $checked = (isset($item->includechildren) && $item->includechildren == 1) ? true : false;
 
         $row = array();
-        $row[] = '<div class="item">'.format_string($item->fullname).'<a href="#" class="deletelink">'.'<img src="'.$CFG->pixpath.'/t/delete.gif"'.' /></a></div><input type="hidden" name="item['.$this->id.']['.$item->id.']" value="1"/>';
-        $row[] = '<input type="checkbox" name="includechildren['.$this->id.']['.$item->id.']" '. $checked .' />';
+        $row[] = $this->build_first_table_cell($item->fullname, $this->id, $item->id);
+        $row[] = html_writer::checkbox('includechildren['.$this->id.']['.$item->id.']', '', $checked);
         $row[] = $this->get_completion($item);
         $row[] = $this->user_affected_count($item);
 
@@ -797,38 +720,40 @@ class organisations_category extends prog_assignment_category {
      *
      * @global object $CFG
      * @param object $item The assignment record
-     * @return array|false
+     * @param boolean $count If true return the record count instead of the records
+     * @return integer|array Record count or array of records
      */
     function get_affected_users($item, $count=false) {
-        global $CFG;
+        global $DB;
 
-        $where = "pa.organisationid = $item->id";
+        $params = array();
+        $where = "pa.organisationid = ?";
+        $params[] = $item->id;
         if (isset($item->includechildren) && $item->includechildren == 1 && isset($item->path)) {
-            $children = get_records_select('org', "path LIKE '$item->path/%'", '', 'id');
-            $children = $children == false ? array() : array_keys($children);
+            $children = $DB->get_fieldset_select('org', 'id', $DB->sql_like('path', '?'), array($item->path . '/%'));
             $children[] = $item->id;
-            $where = 'pa.organisationid IN ('. implode(',', $children) .')';
+            //replace the existing $params
+            list($usql, $params) = $DB->get_in_or_equal($children);
+            $where = "pa.organisationid {$usql}";
         }
 
         $select = $count ? 'COUNT(u.id)' : 'u.id';
 
         $sql = "SELECT $select
-                FROM {$CFG->prefix}pos_assignment AS pa
-                INNER JOIN {$CFG->prefix}user AS u ON pa.userid=u.id
+                FROM {pos_assignment} AS pa
+                INNER JOIN {user} AS u ON pa.userid=u.id
                 WHERE $where
-                AND u.deleted=0";
-
+                AND u.deleted = 0";
         if ($count) {
-            $num = count_records_sql($sql);
-            return !$num ? 0 : $num;
+            return $DB->count_records_sql($sql, $params);
         }
         else {
-            return get_records_sql($sql);
+            return $DB->get_records_sql($sql, $params);
         }
     }
 
     function get_affected_users_by_assignment($assignment) {
-        global $CFG;
+        global $DB;
 
         // Query to retrieves the data required to determine the number of users
         //affected by an assignment
@@ -839,11 +764,11 @@ class organisations_category extends prog_assignment_category {
                         prog_assignment.completiontime,
                         prog_assignment.completionevent,
                         prog_assignment.completioninstance
-                FROM {$CFG->prefix}prog_assignment prog_assignment
-                INNER JOIN {$CFG->prefix}org org ON org.id = prog_assignment.assignmenttypeid
-                WHERE prog_assignment.id = $assignment->id";
+                FROM {prog_assignment} prog_assignment
+                INNER JOIN {org} org ON org.id = prog_assignment.assignmenttypeid
+                WHERE prog_assignment.id = ?";
 
-        if ($item = get_record_sql($sql)) {
+        if ($item = $DB->get_record_sql($sql, array($assignment->id))) {
             return $this->get_affected_users($item);
         } else {
             return false;
@@ -862,16 +787,9 @@ class organisations_category extends prog_assignment_category {
     }
 
     function get_js($programid) {
-        global $CFG;
-
-        return "
-            (function() {
-                var id = {$this->id};
-                var programid = {$programid};
-                var title = '". get_string('addorganisationstoprogram','local_program') ."';
-                program_assignment.add_category(new category(id, 'organisations', 'find_hierarchy.php?type=organisation&table=org&programid='+programid, title));
-            })();
-        ";
+        $title = get_string('addorganisationstoprogram', 'totara_program');
+        $url = 'find_hierarchy.php?type=organisation&table=org&programid='.$programid;
+        return "M.totara_programassignment.add_category({$this->id}, 'organisations', '{$url}', '{$title}');";
     }
 }
 
@@ -879,50 +797,48 @@ class positions_category extends prog_assignment_category {
 
     function __construct() {
         $this->id = ASSIGNTYPE_POSITION;
-        $this->name = get_string('positions','local_program');
-        $this->buttonname = get_string('addpositiontoprogram','local_program');
+        $this->name = get_string('positions', 'totara_program');
+        $this->buttonname = get_string('addpositiontoprogram', 'totara_program');
     }
 
-    function build_table($prefix, $programid) {
+    function build_table($programid) {
+        global $DB;
         $this->headers = array(
-            get_string('positionsname','local_program'),
-            get_string('allbelow','local_program'),
-            get_string('complete','local_program'),
-            get_string('numlearners','local_program')
+            get_string('positionsname', 'totara_program'),
+            get_string('allbelow', 'totara_program'),
+            get_string('complete','totara_program'),
+            get_string('numlearners','totara_program')
         );
 
         // Go to the database and gets the assignments
-        $items = get_records_sql(
+        $items = $DB->get_records_sql(
             "SELECT pos.id, pos.fullname, pos.path, prog_assignment.includechildren, prog_assignment.completiontime, prog_assignment.completionevent, prog_assignment.completioninstance
-	    FROM {$prefix}prog_assignment prog_assignment
-	    INNER JOIN {$prefix}pos pos on pos.id = prog_assignment.assignmenttypeid
-	    WHERE prog_assignment.programid = $programid
-	    AND prog_assignment.assignmenttype = $this->id");
+               FROM {prog_assignment} prog_assignment
+         INNER JOIN {pos} pos on pos.id = prog_assignment.assignmenttypeid
+              WHERE prog_assignment.programid = ?
+                AND prog_assignment.assignmenttype = ?", array($programid, $this->id));
 
         // Convert these into html
-        if (!empty($items)) {
-            foreach ($items as $item) {
-                $this->data[] = $this->build_row($item);
-            }
+        foreach ($items as $item) {
+            $this->data[] = $this->build_row($item);
         }
     }
 
     function get_item($itemid) {
-        return get_record('pos','id',$itemid);
+        global $DB;
+        return $DB->get_record('pos', array('id' => $itemid));
     }
 
     function build_row($item) {
-        global $CFG;
-
         if (is_int($item)) {
             $item = $this->get_item($item);
         }
 
-        $checked = (isset($item->includechildren) && $item->includechildren == 1) ? 'checked="checked"' : '';
+        $checked = (isset($item->includechildren) && $item->includechildren == 1) ? true : false;
 
         $row = array();
-        $row[] = '<div class="item">'.format_string($item->fullname).'<a href="#" class="deletelink">'.'<img src="'.$CFG->pixpath.'/t/delete.gif"'.' /></a></div><input type="hidden" name="item['.$this->id.']['.$item->id.']" value="1"/>';
-        $row[] = '<input type="checkbox" name="includechildren['.$this->id.']['.$item->id.']" '. $checked .' />';
+        $row[] = $this->build_first_table_cell($item->fullname, $this->id, $item->id);
+        $row[] = html_writer::checkbox('includechildren['.$this->id.']['.$item->id.']', '', $checked);
         $row[] = $this->get_completion($item);
         $row[] = $this->user_affected_count($item);
 
@@ -946,39 +862,41 @@ class positions_category extends prog_assignment_category {
      *
      * @global object $CFG
      * @param object $assignment The assignment record
-     * @return array|false
+     * @param boolean $count If true return the record count instead of the records
+     * @return integer|array Record count or array of records
      */
     function get_affected_users($item, $count=false) {
-        global $CFG;
+        global $DB;
 
-        $where = "pa.positionid = $item->id";
+        $where = "pa.positionid = ?";
+        $params = array($item->id);
         if (isset($item->includechildren) && $item->includechildren == 1 && isset($item->path)) {
-            $children = get_records_select('pos', "path LIKE '$item->path/%'", '', 'id');
-            $children = $children == false ? array() : array_keys($children);
+            $children = $DB->get_fieldset_select('pos', 'id', $DB->sql_like('path', '?'), array($item->path . '/%'));
             $children[] = $item->id;
-            $where = 'pa.positionid IN ('. implode(',', $children) .')';
+            //replace the existing $params
+            list($usql, $params) = $DB->get_in_or_equal($children);
+            $where = "pa.positionid $usql";
         }
 
         $select = $count ? 'COUNT(u.id)' : 'u.id';
 
         $sql = "SELECT $select
-                FROM {$CFG->prefix}pos_assignment pa
-                INNER JOIN {$CFG->prefix}user u ON pa.userid = u.id
+                FROM {pos_assignment} pa
+                INNER JOIN {user} u ON pa.userid = u.id
                 WHERE $where
-                AND pa.type = " . POSITION_TYPE_PRIMARY . "
+                AND pa.type = ?
                 AND u.deleted = 0";
-
+        $params[] = POSITION_TYPE_PRIMARY;
         if ($count) {
-            $num = count_records_sql($sql);
-            return !$num ? 0 : $num;
+            return $DB->count_records_sql($sql, $params);
         }
         else {
-            return get_records_sql($sql);
+            return $DB->get_records_sql($sql, $params);
         }
     }
 
     function get_affected_users_by_assignment($assignment) {
-        global $CFG;
+        global $DB;
 
         // Query to retrieves the data required to determine the number of users
         //affected by an assignment
@@ -989,11 +907,11 @@ class positions_category extends prog_assignment_category {
                         prog_assignment.completiontime,
                         prog_assignment.completionevent,
                         prog_assignment.completioninstance
-                FROM {$CFG->prefix}prog_assignment prog_assignment
-                INNER JOIN {$CFG->prefix}pos pos on pos.id = prog_assignment.assignmenttypeid
-                WHERE prog_assignment.id = $assignment->id";
+                FROM {prog_assignment} prog_assignment
+                INNER JOIN {pos} pos on pos.id = prog_assignment.assignmenttypeid
+                WHERE prog_assignment.id = ?";
 
-        if ($item = get_record_sql($sql)) {
+        if ($item = $DB->get_record_sql($sql, array($assignment->id))) {
             return $this->get_affected_users($item);
         } else {
             return false;
@@ -1012,16 +930,9 @@ class positions_category extends prog_assignment_category {
     }
 
     function get_js($programid) {
-        global $CFG;
-
-        return "
-            (function() {
-                var id = {$this->id};
-                var programid = {$programid};
-                var title = '". get_string('addpositiontoprogram','local_program') ."';
-                program_assignment.add_category(new category(id, 'positions', 'find_hierarchy.php?type=position&table=pos&programid='+programid, title));
-            })();
-        ";
+        $title = get_string('addpositiontoprogram', 'totara_program');
+        $url = 'find_hierarchy.php?type=position&table=pos&programid='.$programid;
+        return "M.totara_programassignment.add_category({$this->id}, 'positions', '{$url}', '{$title}');";
     }
 }
 
@@ -1029,25 +940,26 @@ class cohorts_category extends prog_assignment_category {
 
     function __construct() {
         $this->id = ASSIGNTYPE_COHORT;
-        $this->name = get_string('cohorts','local_program');
-        $this->buttonname = get_string('addcohortstoprogram','local_program');
+        $this->name = get_string('cohorts', 'totara_program');
+        $this->buttonname = get_string('addcohortstoprogram', 'totara_program');
     }
 
-    function build_table($prefix, $programid) {
+    function build_table($programid) {
+        global $DB;
         $this->headers = array(
-            get_string('cohortname','local_program'),
-            get_string('type','local_program'),
-            get_string('complete','local_program'),
-            get_string('numlearners','local_program')
+            get_string('cohortname', 'totara_program'),
+            get_string('type', 'totara_program'),
+            get_string('complete','totara_program'),
+            get_string('numlearners','totara_program')
         );
 
         // Go to the database and gets the assignments
-        $items = get_records_sql(
+        $items = $DB->get_records_sql(
             "SELECT cohort.id, cohort.name as fullname, cohort.cohorttype, prog_assignment.completiontime, prog_assignment.completionevent, prog_assignment.completioninstance
-	    FROM {$prefix}prog_assignment prog_assignment
-	    INNER JOIN {$prefix}cohort cohort ON cohort.id = prog_assignment.assignmenttypeid
-	    WHERE prog_assignment.programid = $programid
-	    AND prog_assignment.assignmenttype = $this->id");
+            FROM {prog_assignment} prog_assignment
+            INNER JOIN {cohort} cohort ON cohort.id = prog_assignment.assignmenttypeid
+            WHERE prog_assignment.programid = ?
+            AND prog_assignment.assignmenttype = ?", array($programid, $this->id));
 
         // Convert these into html
         if (!empty($items)) {
@@ -1058,7 +970,8 @@ class cohorts_category extends prog_assignment_category {
     }
 
     function get_item($itemid) {
-        return get_record('cohort','id',$itemid,'','','','','id, name as fullname, cohorttype');
+        global $DB;
+        return $DB->get_record('cohort', array('id' => $itemid), 'id, name as fullname, cohorttype');
     }
 
     function build_row($item) {
@@ -1074,7 +987,7 @@ class cohorts_category extends prog_assignment_category {
         $cohortstring = $cohorttypes[$item->cohorttype];
 
         $row = array();
-        $row[] = '<div class="item">'.format_string($item->fullname).'<a href="#" class="deletelink">'.'<img src="'.$CFG->pixpath.'/t/delete.gif"'.' /></a></div><input type="hidden" name="item['.$this->id.']['.$item->id.']" value="1"/>';
+        $row[] = $this->build_first_table_cell($item->fullname, $this->id, $item->id);
         $row[] = $cohortstring;
         $row[] = $this->get_completion($item);
         $row[] = $this->user_affected_count($item);
@@ -1087,20 +1000,19 @@ class cohorts_category extends prog_assignment_category {
     }
 
     function get_affected_users($item, $count=false) {
-        global $CFG;
+        global $DB;
         $select = $count ? 'COUNT(u.id)' : 'u.id';
         $sql = "SELECT $select
-                FROM {$CFG->prefix}cohort_members AS cm
-                INNER JOIN {$CFG->prefix}user AS u ON cm.userid=u.id
-                WHERE cm.cohortid = $item->id
-                AND u.deleted=0";
-
+                  FROM {cohort_members} AS cm
+            INNER JOIN {user} AS u ON cm.userid=u.id
+                 WHERE cm.cohortid = ?
+                   AND u.deleted = 0";
+        $params = array($item->id);
         if ($count) {
-            $num = count_records_sql($sql);
-            return !$num ? 0 : $num;
+            return $DB->count_records_sql($sql, $params);
         }
         else {
-            return get_records_sql($sql);
+            return $DB->get_records_sql($sql, $params);
         }
     }
 
@@ -1118,16 +1030,9 @@ class cohorts_category extends prog_assignment_category {
     }
 
     function get_js($programid) {
-        global $CFG;
-
-        return "
-            (function() {
-                var id = {$this->id};
-                var programid = {$programid};
-                var title = '". get_string('addcohortstoprogram','local_program') ."';
-                program_assignment.add_category(new category(id, 'cohorts', 'find_cohort.php?programid='+programid, title));
-            })();
-        ";
+        $title = get_string('addcohortstoprogram', 'totara_program');
+        $url = 'find_cohort.php?programid='.$programid;
+        return "M.totara_programassignment.add_category({$this->id}, 'cohorts', '{$url}', '{$title}');";
     }
 }
 
@@ -1135,30 +1040,30 @@ class managers_category extends prog_assignment_category {
 
     function __construct() {
         $this->id = ASSIGNTYPE_MANAGER;
-        $this->name = get_string('managementhierarchy','local_program');
-        $this->buttonname = get_string('addmanagerstoprogram','local_program');
+        $this->name = get_string('managementhierarchy', 'totara_program');
+        $this->buttonname = get_string('addmanagerstoprogram', 'totara_program');
     }
 
-    function build_table($prefix, $programid) {
-        $primarytype = POSITION_TYPE_PRIMARY;
+    function build_table($programid) {
+        global $DB;
         $this->headers = array(
-            get_string('managername','local_program'),
-            get_string('for','local_program'),
-            get_string('complete','local_program'),
-            get_string('numlearners','local_program')
+            get_string('managername', 'totara_program'),
+            get_string('for', 'totara_program'),
+            get_string('complete','totara_program'),
+            get_string('numlearners','totara_program')
         );
 
         // Go to the database and gets the assignments
-        $items = get_records_sql("
-            SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " as fullname,
+        $items = $DB->get_records_sql("
+            SELECT u.id, " . $DB->sql_fullname('u.firstname', 'u.lastname') . " as fullname,
                 pa.managerpath AS path, prog_assignment.includechildren, prog_assignment.completiontime,
                 prog_assignment.completionevent, prog_assignment.completioninstance
-            FROM {$prefix}prog_assignment prog_assignment
-            INNER JOIN {$prefix}user u ON u.id = prog_assignment.assignmenttypeid
-                INNER JOIN {$prefix}pos_assignment pa ON pa.userid = u.id AND pa.type = $primarytype
-            WHERE prog_assignment.programid = $programid
-            AND prog_assignment.assignmenttype = $this->id
-        ");
+              FROM {prog_assignment} prog_assignment
+        INNER JOIN {user} u ON u.id = prog_assignment.assignmenttypeid
+        INNER JOIN {pos_assignment} pa ON pa.userid = u.id AND pa.type = ?
+             WHERE prog_assignment.programid = ?
+               AND prog_assignment.assignmenttype = ?
+        ", array(POSITION_TYPE_PRIMARY, $programid, $this->id));
 
         // Convert these into html
         if (!empty($items)) {
@@ -1169,17 +1074,16 @@ class managers_category extends prog_assignment_category {
     }
 
     function get_item($itemid) {
-        global $CFG;
-        $primarytype = POSITION_TYPE_PRIMARY;
-        $sql = "SELECT u.id, " . sql_fullname('u.firstname', 'u.lastname') . " AS fullname, pa.managerpath AS path
-                FROM {$CFG->prefix}user AS u
-                INNER JOIN {$CFG->prefix}pos_assignment pa ON u.id = pa.userid AND pa.type = $primarytype
-                WHERE u.id = {$itemid}";
-        return get_record_sql($sql);
+        global $DB;
+        $sql = "SELECT u.id, " . $DB->sql_fullname('u.firstname', 'u.lastname') . " AS fullname, pa.managerpath AS path
+                  FROM {user} AS u
+            INNER JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
+                 WHERE u.id = ?";
+        return $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $itemid));
     }
 
     function build_row($item) {
-        global $CFG;
+        global $OUTPUT;
 
         if (is_int($item)) {
             $item = $this->get_item($item);
@@ -1187,17 +1091,12 @@ class managers_category extends prog_assignment_category {
 
         $selectedid = (isset($item->includechildren) && $item->includechildren == 1) ? 1 : 0;
         $options = array(
-            0 => get_string('directteam','local_program'),
-            1 => get_string('allbelowlower','local_program'));
-
-        $optionhtml = '';
-        foreach ($options as $id => $string) {
-            $optionhtml .= '<option value="'. $id .'" '. (($id == $selectedid) ? 'selected="selected"' : '') .' >'. $string .'</option>';
-        }
+            0 => get_string('directteam', 'totara_program'),
+            1 => get_string('allbelowlower', 'totara_program'));
 
         $row = array();
-        $row[] = '<div class="item">'.format_string($item->fullname).'<a href="#" class="deletelink">'.'<img src="'.$CFG->pixpath.'/t/delete.gif"'.' /></a></div><input type="hidden" name="item['.$this->id.']['.$item->id.']" value="1"/>';
-        $row[] = '<select name="includechildren['.$this->id.']['.$item->id.']">'. $optionhtml .'</select>';
+        $row[] = $this->build_first_table_cell($item->fullname, $this->id, $item->id);
+        $row[] = html_writer::select($options, 'includechildren['.$this->id.']['.$item->id.']', $selectedid);
         $row[] = $this->get_completion($item);
         $row[] = $this->user_affected_count($item);
 
@@ -1209,47 +1108,47 @@ class managers_category extends prog_assignment_category {
     }
 
     function get_affected_users($item, $count=false) {
-        global $CFG;
+        global $DB;
         $primarytype = POSITION_TYPE_PRIMARY;
 
         if (isset($item->includechildren) && $item->includechildren == 1 && isset($item->path)) {
             // for a manager's entire team
-            $where = "pa.type = {$primarytype} AND pa.managerpath LIKE '{$item->path}/%'";
+            $where = "pa.type = ? AND " . $DB->sql_like('pa.managerpath', '?');
+            $params = array($primarytype, $item->path . '/%');
         } else {
             // for a manager's direct team
-            $where = "pa.type = {$primarytype} AND pa.managerid = {$item->id}";
+            $where = "pa.type = ? AND pa.managerid = ?";
+            $params = array($primarytype, $item->id);
         }
 
         $select = $count ? 'COUNT(pa.userid) AS id' : 'pa.userid AS id';
 
         $sql = "SELECT $select
-                FROM {$CFG->prefix}pos_assignment pa
-                INNER JOIN {$CFG->prefix}user u ON (pa.userid = u.id AND u.deleted = 0)
-                WHERE {$where}";
+                  FROM {pos_assignment} pa
+            INNER JOIN {user} u ON (pa.userid = u.id AND u.deleted = 0)
+                 WHERE {$where}";
 
         if ($count) {
-            $num = count_records_sql($sql);
-            return !$num ? 0 : $num;
+            return $DB->count_records_sql($sql, $params);
         } else {
-            return get_records_sql($sql);
+            return $DB->get_records_sql($sql, $params);
         }
     }
 
     function get_affected_users_by_assignment($assignment) {
-        global $CFG;
-        $primarytype = POSITION_TYPE_PRIMARY;
+        global $DB;
 
         // Query to retrieves the data required to determine the number of users
         //affected by an assignment
         $sql = "SELECT u.id,
                         pa.managerpath AS path,
                         prog_assignment.includechildren
-                FROM {$CFG->prefix}prog_assignment prog_assignment
-                INNER JOIN {$CFG->prefix}user u ON u.id = prog_assignment.assignmenttypeid
-                INNER JOIN {$CFG->prefix}pos_assignment pa ON u.id = pa.userid AND pa.type = $primarytype
-                WHERE prog_assignment.id = $assignment->id";
+                  FROM {prog_assignment} prog_assignment
+            INNER JOIN {user} u ON u.id = prog_assignment.assignmenttypeid
+            INNER JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
+                 WHERE prog_assignment.id = ?";
 
-        if ($item = get_record_sql($sql)) {
+        if ($item = $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $assignment->id))) {
             return $this->get_affected_users($item);
         } else {
             return false;
@@ -1262,16 +1161,9 @@ class managers_category extends prog_assignment_category {
     }
 
     function get_js($programid) {
-        global $CFG;
-
-        return "
-            (function() {
-                var id = {$this->id};
-                var programid = {$programid};
-                var title = '". get_string('addmanagerstoprogram','local_program') ."';
-                program_assignment.add_category(new category(id, 'managers', 'find_manager_hierarchy.php?programid='+programid, title));
-            })();
-        ";
+        $title = get_string('addmanagerstoprogram', 'totara_program');
+        $url = 'find_manager_hierarchy.php?programid='.$programid;
+        return "M.totara_programassignment.add_category({$this->id}, 'managers', '{$url}', '{$title}');";
     }
 }
 
@@ -1279,24 +1171,25 @@ class individuals_category extends prog_assignment_category {
 
     function __construct() {
         $this->id = ASSIGNTYPE_INDIVIDUAL;
-        $this->name = get_string('individuals','local_program');
-        $this->buttonname = get_string('addindividualstoprogram','local_program');
+        $this->name = get_string('individuals', 'totara_program');
+        $this->buttonname = get_string('addindividualstoprogram', 'totara_program');
     }
 
-    function build_table($prefix, $programid) {
+    function build_table($programid) {
+        global $DB;
         $this->headers = array(
-            get_string('individualname','local_program'),
-            get_string('userid','local_program'),
-            get_string('complete','local_program')
+            get_string('individualname', 'totara_program'),
+            get_string('userid', 'totara_program'),
+            get_string('complete','totara_program')
         );
 
         // Go to the database and gets the assignments
-        $items = get_records_sql(
-            "SELECT individual.id, " . sql_fullname('individual.firstname', 'individual.lastname') . " as fullname, prog_assignment.completiontime, prog_assignment.completionevent, prog_assignment.completioninstance
-	    FROM {$prefix}prog_assignment prog_assignment
-	    INNER JOIN {$prefix}user individual ON individual.id = prog_assignment.assignmenttypeid
-	    WHERE prog_assignment.programid = $programid
-	    AND prog_assignment.assignmenttype = $this->id");
+        $items = $DB->get_records_sql(
+            "SELECT individual.id, " . $DB->sql_fullname('individual.firstname', 'individual.lastname') . " as fullname, prog_assignment.completiontime, prog_assignment.completionevent, prog_assignment.completioninstance
+               FROM {prog_assignment} prog_assignment
+         INNER JOIN {user} individual ON individual.id = prog_assignment.assignmenttypeid
+              WHERE prog_assignment.programid = ?
+                AND prog_assignment.assignmenttype = ?", array($programid, $this->id));
 
         // Convert these into html
         if (!empty($items)) {
@@ -1307,20 +1200,20 @@ class individuals_category extends prog_assignment_category {
     }
 
     function get_item($itemid) {
-        global $CFG;
+        global $DB;
 
-        return get_record_select('user',"id = $itemid",'id, ' . sql_fullname('firstname', 'lastname') . ' as fullname');
+        return $DB->get_record_select('user',"id = ?", array($itemid), 'id, ' . $DB->sql_fullname() . ' as fullname');
     }
 
     function build_row($item) {
-        global $CFG;
+        global $OUTPUT;
 
         if (is_int($item)) {
             $item = $this->get_item($item);
         }
 
         $row = array();
-        $row[] = '<div class="item">'.format_string($item->fullname).'<a href="#" class="deletelink">'.'<img src="'.$CFG->pixpath.'/t/delete.gif"'.' /></a></div><input type="hidden" name="item['.$this->id.']['.$item->id.']" value="1"/>';
+        $row[] = $this->build_first_table_cell($item->fullname, $this->id, $item->id);
         $row[] = $item->id;
         $row[] = $this->get_completion($item);
 
@@ -1345,16 +1238,9 @@ class individuals_category extends prog_assignment_category {
     }
 
     function get_js($programid) {
-        global $CFG;
-
-        return "
-            (function() {
-                var id = {$this->id};
-                var programid = {$programid};
-                var title = '". get_string('addindividualstoprogram','local_program') ."';
-                program_assignment.add_category(new category(id, 'individuals', 'find_individual.php?programid='+programid, title));
-            })();
-        ";
+        $title = get_string('addindividualstoprogram', 'totara_program');
+        $url = 'find_individual.php?programid='.$programid;
+        return "M.totara_programassignment.add_category({$this->id}, 'individuals', '{$url}', '{$title}');";
     }
 }
 
@@ -1362,17 +1248,12 @@ class user_assignment {
     public $userid, $assignment, $timedue;
 
     public function __construct($userid, $assignment, $programid) {
+        global $DB;
         $this->userid = $userid;
         $this->assignment = $assignment;
         $this->programid = $programid;
 
-        if (!$this->completion = get_record('prog_completion', 'programid', $programid, 'userid', $userid, 'coursesetid', '0')) {
-            if (defined('FULLME') && FULLME === 'cron') {
-                mtrace(get_string('error:nocompletionrecord', 'local_program'));
-            } else {
-                print_error('error:nocompletionrecord', 'local_program');
-            }
-        }
+        $this->completion = $DB->get_record('prog_completion', array('programid' => $programid, 'userid' => $userid, 'coursesetid' => '0'));
     }
 
     /*
@@ -1382,15 +1263,14 @@ class user_assignment {
      *  @return bool Success
      */
     public function update($timedue) {
+        global $DB;
         if (!empty($this->completion)) {
             $completion_todb = new stdClass();
             $completion_todb->id = $this->completion->id;
             $completion_todb->timedue = $timedue;
 
-            if (!update_record('prog_completion', $completion_todb)) {
-                // Failed to update completion with new date
-                return false;
-            }
+            $DB->update_record('prog_completion', $completion_todb);
+
             return true;
         }
 
@@ -1414,7 +1294,7 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
         return COMPLETION_EVENT_FIRST_LOGIN;
     }
     public function get_name() {
-        return get_string('firstlogin','local_program');
+        return get_string('firstlogin', 'totara_program');
     }
     public function get_script() {
         return "
@@ -1428,7 +1308,8 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
         return 'first login';
     }
     private function load_data() {
-        $this->timestamps = get_records_select('user','','','id, firstaccess, lastaccess');
+        global $DB;
+        $this->timestamps = $DB->get_records_select('user','', null, '','id, firstaccess, lastaccess');
     }
     public function get_timestamp($userid,$instanceid) {
         // lazy load data when required
@@ -1453,7 +1334,7 @@ class prog_assigment_completion_position_start_date extends prog_assignment_comp
         return COMPLETION_EVENT_POSITION_START_DATE;
     }
     public function get_name() {
-        return get_string('positionstartdate','local_program');
+        return get_string('positionstartdate', 'totara_program');
     }
     public function get_script() {
         global $CFG;
@@ -1470,8 +1351,9 @@ class prog_assigment_completion_position_start_date extends prog_assignment_comp
         ";
     }
     private function load_data() {
-        $this->names = get_records_select('pos','','','id, fullname');
-        $this->timestamps = get_records_select('prog_pos_assignment','type = 1','',sql_concat('userid',"'-'",'positionid') . ' as hash, timeassigned');
+        global $DB;
+        $this->names = $DB->get_records_select('pos', '', null, '', 'id, fullname');
+        $this->timestamps = $DB->get_records_select('prog_pos_assignment', 'type = ?', array(POSITION_TYPE_PRIMARY), '', $DB->sql_concat('userid',"'-'",'positionid') . ' as hash, timeassigned');
     }
     public function get_item_name($instanceid) {
         // lazy load data when required
@@ -1481,7 +1363,7 @@ class prog_assigment_completion_position_start_date extends prog_assignment_comp
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
-        return get_string('startinposition', 'local_program');
+        return get_string('startinposition', 'totara_program');
     }
     public function get_timestamp($userid,$instanceid) {
         // lazy load data when required
@@ -1501,7 +1383,7 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
         return COMPLETION_EVENT_PROGRAM_COMPLETION;
     }
     public function get_name() {
-        return get_string('programcompletion','local_program');
+        return get_string('programcompletion', 'totara_program');
     }
     public function get_script() {
         global $CFG;
@@ -1520,8 +1402,9 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
         ";
     }
     private function load_data() {
-        $this->names = get_records_select('prog','','','id, fullname');
-        $this->timestamps = get_records_select('prog_completion','','',sql_concat('userid',"'-'",'programid') . ' as hash, timecompleted');
+        global $DB;
+        $this->names = $DB->get_records_select('prog', '', null, '', 'id, fullname');
+        $this->timestamps = $DB->get_records_select('prog_completion', '', null, '', $DB->sql_concat('userid',"'-'",'programid') . ' as hash, timecompleted');
     }
     public function get_item_name($instanceid) {
         // lazy load data when required
@@ -1531,7 +1414,7 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
-        return get_string('completionofprogram', 'local_program');
+        return get_string('completionofprogram', 'totara_program');
     }
     public function get_timestamp($userid,$instanceid) {
         // lazy load data when required
@@ -1551,7 +1434,7 @@ class prog_assigment_completion_course_completion extends prog_assignment_comple
         return COMPLETION_EVENT_COURSE_COMPLETION;
     }
     public function get_name() {
-        return get_string('coursecompletion','local_program');
+        return get_string('coursecompletion', 'totara_program');
     }
     public function get_script() {
         global $CFG;
@@ -1570,8 +1453,9 @@ class prog_assigment_completion_course_completion extends prog_assignment_comple
         ";
     }
     private function load_data() {
-        $this->names = get_records_select('course','','','id, fullname');
-        $this->timestamps = get_records_select('course_completions','','',sql_concat('userid',"'-'",'course') . ' as hash, timecompleted');
+        global $DB;
+        $this->names = $DB->get_records_select('course', '', null, '', 'id, fullname');
+        $this->timestamps = $DB->get_records_select('course_completions', '', null, '', $DB->sql_concat('userid',"'-'",'course') . ' as hash, timecompleted');
     }
     public function get_item_name($instanceid) {
         // lazy load data when required
@@ -1581,7 +1465,7 @@ class prog_assigment_completion_course_completion extends prog_assignment_comple
         return $this->names[$instanceid]->fullname;
     }
     public function get_completion_string() {
-        return get_string('completionofcourse', 'local_program');
+        return get_string('completionofcourse', 'totara_program');
     }
     public function get_timestamp($userid,$instanceid) {
         // lazy load data when required
@@ -1601,7 +1485,7 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
         return COMPLETION_EVENT_PROFILE_FIELD_DATE;
     }
     public function get_name() {
-        return get_string('profilefielddate','local_program');
+        return get_string('profilefielddate', 'totara_program');
     }
     public function get_script() {
         global $CFG;
@@ -1618,8 +1502,9 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
         ";
     }
     private function load_data() {
-        $this->names = get_records_select('user_info_field','','','id, name');
-        $this->timestamps = get_records_select('user_info_data','','',sql_concat('userid',"'-'",'fieldid') . ' as hash, data');
+        global $DB;
+        $this->names = $DB->get_records_select('user_info_field', '', null, '', 'id, name');
+        $this->timestamps = $DB->get_records_select('user_info_data', '', null, '', $DB->sql_concat('userid',"'-'",'fieldid') . ' as hash, data');
     }
     public function get_item_name($instanceid) {
         // lazy load data when required
@@ -1629,7 +1514,7 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
         return $this->names[$instanceid]->name;
     }
     public function get_completion_string() {
-        return get_string('dateinprofilefield', 'local_program');
+        return get_string('dateinprofilefield', 'totara_program');
     }
     public function get_timestamp($userid,$instanceid) {
         // lazy load data when required

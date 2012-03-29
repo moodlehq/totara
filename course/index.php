@@ -36,7 +36,7 @@ $move     = optional_param('move',0,PARAM_INT);
 $moveto   = optional_param('moveto',-1,PARAM_INT);
 $moveup   = optional_param('moveup',0,PARAM_INT);
 $movedown = optional_param('movedown',0,PARAM_INT);
-$viewtype = optional_param('viewtype','',PARAM_TEXT);
+$viewtype = optional_param('viewtype','course',PARAM_TEXT);
 // Set the view type as a session value so that either courses or programs
 // are displayed by default
 if ($viewtype == 'program') {
@@ -46,18 +46,24 @@ if ($viewtype == 'program') {
 }
 $site = get_site();
 
-$systemcontext = get_context_instance(CONTEXT_SYSTEM);
+$systemcontext = context_system::instance();
 
 $PAGE->set_url('/course/index.php');
 $PAGE->set_context($systemcontext);
 $PAGE->set_pagelayout('admin');
-
+$editbutton = null;
 if (can_edit_in_category()) {
     if ($categoryedit !== -1) {
+        $USER->categoryedit = $categoryedit;
         $USER->editing = $categoryedit;
+        $adminediting = true;
+    } else {
+        $USER->categoryedit = null;
+        $USER->editing = null;
     }
     require_login();
     $adminediting = $PAGE->user_is_editing();
+    $editbutton = update_category_button();
 } else {
     if ($CFG->forcelogin) {
         require_login();
@@ -75,6 +81,13 @@ $straction = get_string('action');
 $strfulllistofcourses = get_string('fulllistofcourses');
 
 
+$buttoncontainer = null;
+if (has_capability('moodle/course:create', $systemcontext)) {
+    /// Print link to create a new course
+    $options = array('category' => $CFG->defaultrequestcategory);
+    $buttoncontainer .= $OUTPUT->single_button(new moodle_url('edit.php', $options), get_string('addnewcourse'), 'get');
+}
+
 /// Unless it's an editing admin, just print the regular listing of courses/categories
 if (!$adminediting) {
 
@@ -88,7 +101,6 @@ if (!$adminediting) {
         $PAGE->navbar->add($strcategories);
         $PAGE->set_title("$site->shortname: $strcategories");
         $PAGE->set_heading($COURSE->fullname);
-        $PAGE->set_button(update_category_button());
         echo $OUTPUT->header();
         echo $OUTPUT->heading($strcategories);
         echo $OUTPUT->skip_link_target();
@@ -100,7 +112,6 @@ if (!$adminediting) {
         $PAGE->navbar->add($strfulllistofcourses);
         $PAGE->set_title("$site->shortname: $strfulllistofcourses");
         $PAGE->set_heading($COURSE->fullname);
-        $PAGE->set_button(update_category_button());
         echo $OUTPUT->header();
         echo $OUTPUT->skip_link_target();
         echo $OUTPUT->box_start('courseboxes');
@@ -109,12 +120,6 @@ if (!$adminediting) {
     }
 
     echo $OUTPUT->container_start('buttons');
-    if (has_capability('moodle/course:create', $systemcontext)) {
-    /// Print link to create a new course
-    /// Get the 1st available category
-        $options = array('category' => $CFG->defaultrequestcategory);
-        echo $OUTPUT->single_button(new moodle_url('edit.php', $options), get_string('addnewcourse'), 'get');
-    }
     print_course_request_buttons($systemcontext);
     echo $OUTPUT->container_end();
     echo $OUTPUT->footer();
@@ -122,7 +127,7 @@ if (!$adminediting) {
 }
 /// Everything else is editing on mode.
 require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('managecategories');
+admin_externalpage_setup('managecategories', $editbutton);
 
 /// Delete a category.
 if (!empty($delete) and confirm_sesskey()) {
@@ -249,17 +254,34 @@ if ((!empty($moveup) or !empty($movedown)) and confirm_sesskey()) {
 /// Print headings
 echo $OUTPUT->header();
 
+$addcategorycontainer = null;
 if (has_capability('moodle/category:manage', $systemcontext)) {
     // Print button for creating new categories
     $options = array();
     $options['parent'] = 0;
-    echo $OUTPUT->container($OUTPUT->single_button(new moodle_url('editcategory.php', $options), get_string('addnewcategory'), 'get'), 'buttons');
+    $addcategorycontainer = $OUTPUT->container($OUTPUT->single_button(new moodle_url('editcategory.php', $options), get_string('addnewcategory'), 'get'), 'buttons');
 }
-print print_totara_search('', true, 'category', 0);
 
 echo $OUTPUT->heading($strcategories);
 
 /// Print out the categories with all the knobs
+//print a 'toolbar' table with search and editing options
+$stralllink = get_string('viewallcourses', 'totara_coursecatalog');
+echo '<table border="0" class="generalbox totaratable fullwidth boxaligncenter">';
+$toolbar = array('top' => array());
+$toolbar['top'][0] = array();
+$toolbar['top'][0]['left'] = array(print_totara_search('', false, 'course', 0));
+if ($buttoncontainer) {
+    $toolbar['top'][0]['right'] = array($buttoncontainer);
+}
+if ($addcategorycontainer) {
+    $toolbar['top'][1]['right'] = array($addcategorycontainer);
+}
+$toolbar['top'][1]['left'] = array(html_writer::link(new moodle_url('/course/search.php', array('category' => '0', 'viewtype' => 'course', 'search' => '')), $stralllink));
+$renderer = $PAGE->get_renderer('totara_core');
+$renderer->print_toolbars('top', 2, $toolbar['top']);
+echo '</table>';
+
 $strcategories = get_string('categories');
 $strcourses = get_string('courses');
 $strprograms = get_string('programs', 'totara_coursecatalog');
@@ -272,7 +294,7 @@ $parentlist = array();
 $displaylist[0] = get_string('top');
 make_categories_list($displaylist, $parentlist);
 
-echo '<table class="generalbox editcourse boxaligncenter"><tr class="header">';
+echo '<table class="generalbox fullwidth editcourse boxaligncenter"><tr class="header">';
 echo '<th class="header" scope="col">'.$strcategories.'</th>';
 echo '<th class="header" scope="col">'.$strcourses.'</th>';
 echo '<th class="header" scope="col">'.$strprograms.'</th>';

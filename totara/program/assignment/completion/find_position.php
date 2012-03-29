@@ -3,7 +3,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,14 +21,14 @@
  *
  * @author Jake Salmon <jake.salmon@kineo.com>
  * @package totara
- * @subpackage plan
+ * @subpackage program
  */
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_hierarchy.class.php');
 
 require_login();
-
+$PAGE->set_context(context_system::instance());
 ///
 /// Setup / loading data
 ///

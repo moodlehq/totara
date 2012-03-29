@@ -42,8 +42,8 @@ $capabilities = array(
     'totara/program:viewprogram' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
             'user' => CAP_ALLOW,
         )
     ),
@@ -52,11 +52,11 @@ $capabilities = array(
     'totara/program:viewhiddenprograms' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
+        'archetypes' => array(
             'coursecreator' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -65,8 +65,8 @@ $capabilities = array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -74,8 +74,8 @@ $capabilities = array(
     'totara/program:createprogram' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
         )
     ),
 
@@ -85,8 +85,8 @@ $capabilities = array(
             RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
         )
     ),
 
@@ -96,8 +96,8 @@ $capabilities = array(
             RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
         )
     ),
 
@@ -107,8 +107,8 @@ $capabilities = array(
             RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
         )
     ),
 
@@ -118,8 +118,8 @@ $capabilities = array(
             RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
         )
     ),
 
@@ -129,8 +129,8 @@ $capabilities = array(
             RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
         )
     ),
 

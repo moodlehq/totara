@@ -132,7 +132,10 @@ table.invisiblepadded td{
    padding: 5px;
  }
 
-
+.course_icon, .program_icon{
+    padding-right: 5px;
+    vertical-align: top;
+}
 /**
  * Boxes
  */

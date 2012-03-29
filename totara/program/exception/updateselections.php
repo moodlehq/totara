@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot . '/totara/program/lib.php');
-require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
 
 $programid = required_param('id', PARAM_INT);
 $action = required_param('action', PARAM_TEXT);
@@ -63,7 +62,7 @@ switch ($action) {
         $exceptionid = optional_param('exceptionid', 0, PARAM_INT);
         $checked = optional_param('checked', 'false', PARAM_TEXT);
 
-        if ( ! $exception = get_record('prog_exception', 'id', $exceptionid)) {
+        if (!$exception = $DB->get_record('prog_exception', array('id' => $exceptionid))) {
             $data = array(
                 'error' => true,
             );
@@ -84,7 +83,7 @@ switch ($action) {
         }
 
         // if the exception is being added to the selection
-        if($checked=='true') {
+        if ($checked == 'true') {
             // first check if the exception being added already belongs to the global selection
             if (isset($selected_exceptions[$exceptionid])) {
                 // if so, it must previously have been manually removed so we

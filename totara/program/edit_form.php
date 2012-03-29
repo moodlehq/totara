@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,23 +31,23 @@ if (!defined('MOODLE_INTERNAL')) {
 class program_edit_form extends moodleform {
 
     function definition() {
-        global $CFG, $USER;
+        global $CFG, $USER, $OUTPUT;
 
         $mform =& $this->_form;
         $action = $this->_customdata['action'];
         $category = $this->_customdata['category'];
-
+        $editoroptions = $this->_customdata['editoroptions'];
         if (isset($this->_customdata['program'])) {
             $program = $this->_customdata['program'];
         } else {
             $program = false;
         }
 
-        $systemcontext = get_context_instance(CONTEXT_SYSTEM);
-        $categorycontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
+        $systemcontext = context_system::instance();
+        $categorycontext = context_coursecat::instance($category->id);
 
-        if($program) {
-            $programcontext = get_context_instance(CONTEXT_PROGRAM, $program->id);
+        if ($program) {
+            $programcontext = context_program::instance($program->id);
         }
 
         // Add some hidden fields
@@ -61,7 +61,7 @@ class program_edit_form extends moodleform {
 
         if ($action == 'delete') {
             // Only show delete confirmation
-            $mform->addElement('html', get_string('checkprogramdelete', 'local_program', $program->fullname));
+            $mform->addElement('html', get_string('checkprogramdelete', 'totara_program', $program->fullname));
             $buttonarray = array();
             $buttonarray[] = $mform->createElement('submit', 'deleteyes', get_string('yes'));
             $buttonarray[] = $mform->createElement('submit', 'deleteno', get_string('no'));
@@ -73,10 +73,10 @@ class program_edit_form extends moodleform {
 
 /// form definition with new program defaults
 //--------------------------------------------------------------------------------
-        $mform->addElement('header','programdetails', get_string('programdetails', 'local_program'));
+        $mform->addElement('header','programdetails', get_string('programdetails', 'totara_program'));
 
-        if ($action=='edit') {
-            $mform->addElement('html', '<p class="instructions">'.get_string('instructions:programdetails', 'local_program').'<p>');
+        if ($action == 'edit') {
+            $mform->addElement('html', html_writer::start_tag('p', array('class' => 'instructions')) . get_string('instructions:programdetails', 'totara_program') . html_writer::end_tag('p'));
         }
 
         // Must have create program capability in both categories in order to move program
@@ -84,131 +84,126 @@ class program_edit_form extends moodleform {
             $displaylist = array();
             $parentlist = array();
             make_categories_list($displaylist, $parentlist, 'totara/program:createprogram');
-            $mform->addElement('select', 'category', get_string('category', 'local_program'), $displaylist);
+            $mform->addElement('select', 'category', get_string('category', 'totara_program'), $displaylist);
             $mform->setType('category', PARAM_INT);
         } else {
             $mform->addElement('hidden', 'category', null);
             $mform->setType('category', PARAM_INT);
         }
 
-        if ($action=='view') {
+        if ($action == 'view') {
             $mform->hardFreeze('category');
         } else if ($program and !has_capability('moodle/course:changecategory', $categorycontext)) {
         // Use the course permissions to decide if a user can change a program's category (as programs are treated like courses in this respect)
             $mform->hardFreeze('category');
             $mform->setConstant('category', $category->id);
         } else {
-            $mform->setHelpButton('category', array('programcategory', get_string('category', 'local_program'), 'local_program'));
+            $mform->addHelpButton('category', 'programcategory', 'totara_program');
             $mform->setDefault('category', $category->id);
         }
 
-        if ($action=='view') {
-        $mform->addElement('static', 'visibledisplay', get_string('visible', 'local_program'), $program->visible ? get_string('yes') : get_string('no'));
+        if ($action == 'view') {
+            $mform->addElement('static', 'visibledisplay', get_string('visible', 'totara_program'), $program->visible ? get_string('yes') : get_string('no'));
         } else {
-            $mform->addElement('advcheckbox','visible', get_string('visible', 'local_program'), null, null, array(0,1));
-            $mform->setHelpButton('visible', array('programvisibility', get_string('visible', 'local_program'), 'local_program'), true);
+            $mform->addElement('advcheckbox','visible', get_string('visible', 'totara_program'), null, null, array(0,1));
+            $mform->addHelpButton('visible', 'programvisibility', 'totara_program');
             $mform->setDefault('visible', true);
             $mform->setType('visible', PARAM_BOOL);
         }
 
-        $mform->addElement('text','fullname', get_string('fullname', 'local_program'),'maxlength="254" size="50"');
-        if ($action=='view') {
+        $mform->addElement('text','fullname', get_string('fullname', 'totara_program'),'maxlength="254" size="50"');
+        if ($action == 'view') {
             $mform->hardFreeze('fullname');
         } else {
-            $mform->setHelpButton('fullname', array('programfullname', get_string('fullname', 'local_program'), 'local_program'), true);
-            $mform->setDefault('fullname', get_string('defaultprogramfullname', 'local_program'));
+            $mform->addHelpButton('fullname', 'programfullname', 'totara_program');
+            $mform->setDefault('fullname', get_string('defaultprogramfullname', 'totara_program'));
             $mform->addRule('fullname', get_string('missingfullname'), 'required', null, 'client');
             $mform->setType('fullname', PARAM_MULTILANG);
         }
 
-        $mform->addElement('text','shortname', get_string('shortname', 'local_program'),'maxlength="100" size="20"');
+        $mform->addElement('text','shortname', get_string('shortname', 'totara_program'),'maxlength="100" size="20"');
         if ($action=='view') {
             $mform->hardFreeze('shortname');
         } else {
-            $mform->setHelpButton('shortname', array('programshortname', get_string('shortname', 'local_program'), 'local_program'), true);
-            $mform->setDefault('shortname', get_string('defaultprogramshortname', 'local_program'));
-            $mform->addRule('shortname', get_string('missingshortname', 'local_program'), 'required', null, 'client');
+            $mform->addHelpButton('shortname', 'programshortname', 'totara_program');
+            $mform->setDefault('shortname', get_string('defaultprogramshortname', 'totara_program'));
+            $mform->addRule('shortname', get_string('missingshortname', 'totara_program'), 'required', null, 'client');
             $mform->setType('shortname', PARAM_MULTILANG);
         }
 
-        $mform->addElement('text','idnumber', get_string('idnumberprogram', 'local_program'),'maxlength="100"  size="10"');
-        if ($action=='view') {
+        $mform->addElement('text','idnumber', get_string('idnumberprogram', 'totara_program'),'maxlength="100"  size="10"');
+        if ($action == 'view') {
             $mform->hardFreeze('idnumber');
         } else {
-            $mform->setHelpButton('idnumber', array('programidnumber', get_string('idnumberprogram', 'local_program'), 'local_program'), true);
+            $mform->addHelpButton('idnumber', 'programidnumber', 'totara_program');
             $mform->setType('idnumber', PARAM_MULTILANG);
         }
 
         $availabilityoptions = array(
-            AVAILABILITY_TO_STUDENTS => get_string('availabletostudents', 'local_program'),
-            AVAILABILITY_NOT_TO_STUDENTS => get_string('availabletostudentsnot', 'local_program'),
+            AVAILABILITY_TO_STUDENTS => get_string('availabletostudents', 'totara_program'),
+            AVAILABILITY_NOT_TO_STUDENTS => get_string('availabletostudentsnot', 'totara_program'),
         );
-        $mform->addElement('select', 'available', get_string('availability', 'local_program'), $availabilityoptions);
-        if ($action=='view') {
+        $mform->addElement('select', 'available', get_string('availability', 'totara_program'), $availabilityoptions);
+        if ($action == 'view') {
             $mform->hardFreeze('available');
         } else {
-            $mform->setHelpButton('available', array('programavailability', get_string('availability', 'local_program'), 'local_program'), true);
+            $mform->addHelpButton('available', 'programavailability', 'totara_program');
             $mform->setDefault('available', AVAILABILITY_TO_STUDENTS);
             $mform->setType('available', PARAM_INT);
         }
 
-        $mform->addElement('text', 'availablefromselector', get_string('availablefrom', 'local_program'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
-        if ($action=='view') {
+        $mform->addElement('text', 'availablefromselector', get_string('availablefrom', 'totara_program'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        if ($action == 'view') {
             $mform->hardFreeze('availablefromselector');
         } else {
-            $mform->setHelpButton('availablefromselector', array('programavailability', get_string('availablefrom', 'local_program'), 'local_program'), true);
+            $mform->addHelpButton('availablefromselector', 'programavailability', 'totara_program');
             $mform->setType('availablefromselector', PARAM_MULTILANG);
         }
 
         $mform->addElement('hidden', 'availablefrom');
         $mform->setType('availablefrom', PARAM_INT);
 
-        $mform->addElement('text', 'availableuntilselector', get_string('availableuntil', 'local_program'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
-        if ($action=='view') {
+        $mform->addElement('text', 'availableuntilselector', get_string('availableuntil', 'totara_program'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
+        if ($action == 'view') {
             $mform->hardFreeze('availableuntilselector');
         } else {
-            $mform->setHelpButton('availableuntilselector', array('programavailability', get_string('availableuntil', 'local_program'), 'local_program'), true);
+            $mform->addHelpButton('availableuntilselector', 'programavailability', 'totara_program');
             $mform->setType('availableuntilselector', PARAM_MULTILANG);
         }
 
         $mform->addElement('hidden', 'availableuntil');
         $mform->setType('availableuntil', PARAM_INT);
 
-        $mform->addElement('htmleditor','summary', get_string('description', 'local_program'), array('rows'=> '10', 'cols'=>'65'));
-        if ($action=='view') {
-            $mform->hardFreeze('summary');
+        $mform->addElement('editor', 'summary_editor', get_string('description', 'totara_program'), null, $editoroptions);
+        if ($action == 'view') {
+            $mform->hardFreeze('summary_editor');
         } else {
-            $mform->setHelpButton('summary', array('text', get_string('helptext')), true);
-            $mform->setType('summary', PARAM_CLEAN);
+            $mform->addHelpButton('summary_editor', 'summary', 'totara_program');
+            $mform->setType('summary_editor', PARAM_RAW);
         }
 
-        $mform->addElement('htmleditor','endnote', get_string('endnote', 'local_program'), array('rows'=> '10', 'cols'=>'65'));
-        if ($action=='view') {
-            $mform->hardFreeze('endnote');
+        $mform->addElement('editor', 'endnote_editor', get_string('endnote', 'totara_program'), null, $editoroptions);
+        if ($action == 'view') {
+            $mform->hardFreeze('endnote_editor');
         } else {
-            $mform->setHelpButton('endnote', array('text', get_string('helptext')), true);
-            $mform->setType('endnote', PARAM_CLEAN);
+            $mform->addHelpButton('endnote_editor', 'endnote', 'totara_program');
+            $mform->setType('endnote_editor', PARAM_RAW);
         }
 
 
         //replacement for old totara/core/icon classes
-        $program->icon = isset($program->icon) ? $program->icon : 'default';
+        $program->icon = (!empty($program->icon)) ? $program->icon : 'default';
         totara_add_icon_picker($mform, $action, 'program', $program->icon);
 
-        if($action == 'add') {
+        if ($action == 'add') {
             $buttonarray = array();
             $buttonarray[] = $mform->createElement('submit', 'savechanges', get_string('savechanges'), 'class="savechanges-overview program-savechanges"');
-            $buttonarray[] = $mform->createElement('cancel', 'cancel', get_string('cancel', 'local_program'), 'class="program-cancel"');
+            $buttonarray[] = $mform->createElement('cancel', 'cancel', get_string('cancel', 'totara_program'), 'class="program-cancel"');
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
-        } else if($action == 'edit') {
+        } else if ($action == 'edit') {
             $buttonarray = array();
             $buttonarray[] = $mform->createElement('submit', 'savechanges', get_string('savechanges'), 'class="savechanges-overview program-savechanges"');
-            $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
-            $mform->closeHeaderBefore('buttonar');
-        } else {
-            $buttonarray = array();
-            $buttonarray[] = $mform->createElement('submit', 'edit', get_string('editprogramdetails', 'local_program'));
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
         }
@@ -223,20 +218,20 @@ class program_edit_form extends moodleform {
         if (!empty($data['availablefromselector'])) {
             $availablefrom = $data['availablefromselector'];
             if (!empty($availablefrom) && !totara_date_parse_from_format($dateparseformat, $availablefrom)) {
-                $errors['availablefromselector'] = get_string('error:invaliddate', 'local_program');
+                $errors['availablefromselector'] = get_string('error:invaliddate', 'totara_program');
             }
         }
 
         if (!empty($data['availableuntilselector'])) {
             $availableuntil = $data['availableuntilselector'];
             if (!empty($availableuntil) &&  !totara_date_parse_from_format($dateparseformat, $availableuntil)) {
-                $errors['availableuntilselector'] = get_string('error:invaliddate', 'local_program');
+                $errors['availableuntilselector'] = get_string('error:invaliddate', 'totara_program');
             }
         }
 
         if (!empty($availablefrom) && !empty($availableuntil)) {
             if (totara_date_parse_from_format($dateparseformat, $availablefrom) > totara_date_parse_from_format($dateparseformat, $availableuntil)) {
-                $errors['availableuntilselector'] = get_string('error:availibileuntilearlierthanfrom', 'local_program');
+                $errors['availableuntilselector'] = get_string('error:availibileuntilearlierthanfrom', 'totara_program');
             }
         }
 
@@ -260,10 +255,10 @@ class program_content_nonedit_form extends moodleform {
 /// form definition
 //--------------------------------------------------------------------------------
 
-       $mform->addElement('header','programcontent', get_string('programcontent', 'local_program'));
+       $mform->addElement('header','programcontent', get_string('programcontent', 'totara_program'));
 
-       if(count($coursesets)) {
-            foreach($coursesets as $courseset) {
+       if (count($coursesets)) {
+            foreach ($coursesets as $courseset) {
 
                 $elementname = $courseset->get_set_prefix();
                 $formlabel = $courseset->display_form_label();
@@ -273,20 +268,20 @@ class program_content_nonedit_form extends moodleform {
 
             }
         } else {
-            $mform->addElement('static', 'progcontent', '', get_string('noprogramcontent', 'local_program'));
+            $mform->addElement('static', 'progcontent', '', get_string('noprogramcontent', 'totara_program'));
         }
 
-	// Get the total time allowed for this program
-	$total_time_allowed = $content->get_total_time_allowance();
+    // Get the total time allowed for this program
+    $total_time_allowed = $content->get_total_time_allowance();
 
         // Only display the time allowance if it is greater than zero
         if ($total_time_allowed > 0) {
             // Break the time allowed details down into human readable form
             $timeallowance = program_utilities::duration_explode($total_time_allowed);
 
-            $timeallowedstr = '<p class="timeallowed">';
-            $timeallowedstr .= get_string('allowtimeforprogram', 'local_program', $timeallowance);
-            $timeallowedstr .= '</p>';
+            $timeallowedstr = html_writer::start_tag('p', array('class' => 'timeallowed'));
+            $timeallowedstr .= get_string('allowtimeforprogram', 'totara_program', $timeallowance);
+            $timeallowedstr .= html_writer::end_tag('p');
             $mform->addElement('static', 'timeallowance', '', $timeallowedstr);
         }
     }
@@ -299,17 +294,15 @@ class program_content_nonedit_form extends moodleform {
      * @return  void
      */
     public function display() {
+        global $OUTPUT;
+
         parent::display();
 
         $program = $this->_customdata['program'];
 
         // Check capabilities
         if (has_capability('totara/program:configurecontent', $program->get_context())) {
-            print_single_button(
-                $this->_form->getAttribute('action'),
-                array('id' => $program->id),
-                get_string('editprogramcontent', 'local_program')
-            );
+            echo $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'), array('id' => $program->id)), get_string('editprogramcontent', 'totara_program'), 'get');
         }
     }
 }
@@ -328,7 +321,7 @@ class program_assignments_nonedit_form extends moodleform {
 /// form definition
 //--------------------------------------------------------------------------------
 
-        $mform->addElement('header','programassignments', get_string('programassignments', 'local_program'));
+        $mform->addElement('header','programassignments', get_string('programassignments', 'totara_program'));
 
         $elementname = 'assignments';
         $formlabel = $assignments->display_form_label();
@@ -345,17 +338,14 @@ class program_assignments_nonedit_form extends moodleform {
      * @return  void
      */
     public function display() {
+        global $OUTPUT;
         parent::display();
 
         $program = $this->_customdata['program'];
 
         // Check capabilities
         if (has_capability('totara/program:configureassignments', $program->get_context())) {
-            print_single_button(
-                $this->_form->getAttribute('action'),
-                array('id' => $program->id),
-                get_string('editprogramassignments', 'local_program')
-            );
+            echo $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'), array('id' => $program->id)), get_string('editprogramassignments', 'totara_program'), 'get');
         }
     }
 }
@@ -374,7 +364,7 @@ class program_messages_nonedit_form extends moodleform {
 /// form definition
 //--------------------------------------------------------------------------------
 
-        $mform->addElement('header','programmessages', get_string('programmessages', 'local_program'));
+        $mform->addElement('header','programmessages', get_string('programmessages', 'totara_program'));
 
         $elementname = 'messages';
         $formlabel = $messagesmanager->display_form_label();
@@ -391,17 +381,15 @@ class program_messages_nonedit_form extends moodleform {
      * @return  void
      */
     public function display() {
+        global $OUTPUT;
+
         parent::display();
 
         $program = $this->_customdata['program'];
 
         // Check capabilities
         if (has_capability('totara/program:configuremessages', $program->get_context())) {
-            print_single_button(
-                $this->_form->getAttribute('action'),
-                array('id' => $program->id),
-                get_string('editprogrammessages', 'local_program')
-            );
+            echo $OUTPUT->single_button(new moodle_url($this->_form->getAttribute('action'), array('id' => $program->id)), get_string('editprogrammessages', 'totara_program'), 'get');
         }
     }
 }
@@ -424,7 +412,7 @@ class program_delete_form extends moodleform {
 //--------------------------------------------------------------------------------
 
         $buttonarray = array();
-        $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteprogrambutton', 'local_program'));
+        $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteprogrambutton', 'totara_program'));
         $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
 
     }

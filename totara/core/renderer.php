@@ -397,6 +397,64 @@ class totara_core_renderer extends plugin_renderer_base {
     }
 
     /**
+    * Render a set of toolbars (either top or bottom)
+    *
+    * @param string $position 'top' or 'bottom'
+    * @param int $numcolumns
+    * @param array $toolbar array of left and right arrays
+    *              eg. $toolbar[0]['left'] = <first row left content>
+    *                  $toolbar[0]['right'] = <first row right content>
+    *                  $toolbar[1]['left'] = <second row left content>
+    * @return boolean True if the toolbar was successfully rendered
+    */
+    public function print_toolbars($position='top', $numcolumns, $toolbar) {
+
+        ksort($toolbar);
+        $count = 1;
+        $totalcount = count($toolbar);
+        foreach ($toolbar as $index => $row) {
+            // don't render empty toolbars
+            // if you want to render one, add an empty content string to the toolbar
+            if (empty($row['left']) && empty($row['right'])) {
+                continue;
+            }
+            $trclass = "toolbar-{$position}";
+            if ($count == 1) {
+                $trclass .= ' first';
+            }
+            if ($count == $totalcount) {
+                $trclass .= ' last';
+            }
+            echo html_writer::start_tag('tr', array('class' => $trclass));
+            echo html_writer::start_tag('td', array('class' => 'toolbar', 'colspan' => $numcolumns));
+            // nested tables are unfortunately necessary to get IE support without nasty CSS hacks
+
+            // put right side first so it floats on top of left side when insufficent horizontal space
+            if (!empty($row['right'])) {
+                echo html_writer::start_tag('table', array('class' => 'toolbar-right-table'));
+                echo html_writer::start_tag('tr', array('class' => 'toolbar-row'));
+                foreach (array_reverse($row['right']) as $item) {
+                    echo html_writer::tag('td', $item, array('class' => 'toolbar-cell'));
+                }
+                echo html_writer::end_tag('tr');
+                echo html_writer::end_tag('table');
+            }
+            if (!empty($row['left'])) {
+                echo html_writer::start_tag('table', array('class' => 'toolbar-left-table'));
+                echo html_writer::start_tag('tr', array('class' => 'toolbar-row'));
+                foreach ($row['left'] as $item) {
+                    echo html_writer::tag('td', $item, array('class' => 'toolbar-cell'));
+                }
+                echo html_writer::end_tag('tr');
+                echo html_writer::end_tag('table');
+            }
+            echo html_writer::end_tag('td');
+            echo html_writer::end_tag('tr');
+            $count++;
+        }
+    }
+
+    /**
     * Generate markup for search box
     */
     public function print_totara_search($action, $hiddenfields = null, $placeholder = '', $value = '', $formid = null, $inputid = null) {

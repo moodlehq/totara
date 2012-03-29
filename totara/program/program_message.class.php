@@ -3,7 +3,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,7 @@
  * @subpackage program
  */
 
-// Uncomment once totara messages are finished
-//require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
+require_once($CFG->dirroot.'/totara/message/messagelib.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -82,7 +81,7 @@ abstract class prog_message {
     public function __construct($programid, $messageob=null, $uniqueid=null) {
         global $CFG;
 
-        if(is_object($messageob)) {
+        if (is_object($messageob)) {
             $this->id = $messageob->id;
             $this->programid = $messageob->programid;
             $this->sortorder = $messageob->sortorder;
@@ -110,21 +109,21 @@ abstract class prog_message {
 
         $this->fieldsetlegend = '';
 
-        if($uniqueid) {
+        if ($uniqueid) {
             $this->uniqueid = $uniqueid;
         } else {
             $this->uniqueid = rand();
         }
 
-	$this->studentrole = $CFG->learnerroleid;
-	$this->managerrole = $CFG->managerroleid;
+    $this->studentrole = $CFG->learnerroleid;
+    $this->managerrole = $CFG->managerroleid;
 
-	if (!$this->studentrole) {
-	    print_error('error:failedtofindstudentrole', 'local_program');
-	}
-	if (!$this->managerrole) {
-	    print_error('error:failedtofindmanagerrole', 'local_program');
-	}
+    if (!$this->studentrole) {
+        print_error('error:failedtofindstudentrole', 'totara_program');
+    }
+    if (!$this->managerrole) {
+        print_error('error:failedtofindmanagerrole', 'totara_program');
+    }
 
     }
 
@@ -160,8 +159,8 @@ abstract class prog_message {
     }
 
     public function save_message() {
+        global $DB;
         //Create object to save
-
         $message_todb = new stdClass();
         $message_todb->programid = $this->programid;
         $message_todb->messagetype = $this->messagetype;
@@ -170,27 +169,26 @@ abstract class prog_message {
         $message_todb->notifymanager = $this->notifymanager;
         $message_todb->triggertime = $this->triggertime;
 
-        if($this->id > 0) { // if this message already exists in the database
+        if ($this->id > 0) { // if this message already exists in the database
             $message_todb->id = $this->id;
             $message_todb->messagesubject = $this->messagesubject;
             $message_todb->mainmessage = $this->mainmessage;
             $message_todb->managermessage = $this->managermessage;
-            return update_record('prog_message', $message_todb);
+            $DB->update_record('prog_message', $message_todb);
+            return true;
         } else {
-            $message_todb->messagesubject = addslashes($this->messagesubject);
-            $message_todb->mainmessage = addslashes($this->mainmessage);
-            $message_todb->managermessage = addslashes($this->managermessage);
-            if($id = insert_record('prog_message', $message_todb)) {
-                $this->id = $id;
-                return true;
-            }
-            return false;
+            $message_todb->messagesubject = $this->messagesubject;
+            $message_todb->mainmessage = $this->mainmessage;
+            $message_todb->managermessage = $this->managermessage;
+            $id = $DB->insert_record('prog_message', $message_todb);
+            $this->id = $id;
+            return true;
         }
     }
 
     public function replacevars($text) {
-
-        if ($programfullname = get_field('prog', 'fullname', 'id', $this->programid)) {
+        global $DB;
+        if ($programfullname = $DB->get_field('prog', 'fullname', array('id' => $this->programid))) {
             $this->replacementvars['programfullname'] = $programfullname;
         }
 
@@ -213,7 +211,7 @@ abstract class prog_message {
         (!isset($messagedata->msgtype))     && $messagedata->msgtype    = TOTARA_MSG_TYPE_UNKNOWN;
         (!isset($messagedata->urgency))     && $messagedata->urgency    = TOTARA_MSG_URGENCY_NORMAL;
 
-        if(tm_alert_send($messagedata)) {
+        if (tm_alert_send($messagedata)) {
             return true;
         } else {
             return false;
@@ -256,7 +254,7 @@ abstract class prog_message {
         $templatehtml = '';
 
         // Add the message set id
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('hidden', $prefix.'id', $this->id);
             $mform->setType($prefix.'id', PARAM_INT);
             $mform->setConstant($prefix.'id', $this->id);
@@ -266,7 +264,7 @@ abstract class prog_message {
         $formdataobject->{$prefix.'id'} = $this->id;
 
         // Add the message sort order
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('hidden', $prefix.'sortorder', $this->sortorder);
             $mform->setType($prefix.'sortorder', PARAM_INT);
             $mform->setConstant($prefix.'sortorder', $this->sortorder);
@@ -276,7 +274,7 @@ abstract class prog_message {
         $formdataobject->{$prefix.'sortorder'} = $this->sortorder;
 
         // Add the message type
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('hidden', $prefix.'messagetype', $this->messagetype);
             $mform->setType($prefix.'messagetype', PARAM_INT);
             $mform->setConstant($prefix.'messagetype', $this->messagetype);
@@ -286,55 +284,53 @@ abstract class prog_message {
         $formdataobject->{$prefix.'messagetype'} = $this->messagetype;
 
         return $templatehtml;
-
     }
 
     /**
      * Defines the default subject and message body form elements that
      * several message types use
      *
-     * @param <type> $mform
-     * @param <type> $template_values
-     * @param <type> $formdataobject
-     * @param <type> $updateform
-     * @return <type>
+     * @param object $mform
+     * @param array $template_values
+     * @param object $formdataobject
+     * @param bool $updateform
+     * @return string HTML Fragment
      */
     public function get_generic_basic_fields_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
-
+        global $OUTPUT;
         $prefix = $this->get_message_prefix();
 
         $templatehtml = '';
 
         // Add the message subject
         $safe_messagesubject = format_string($this->messagesubject);
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('text', $prefix.'messagesubject', '', array('size'=>'50', 'maxlength'=>'255'));
             $mform->setType($prefix.'messagesubject', PARAM_TEXT);
             $template_values['%'.$prefix.'messagesubject%'] = array('name'=>$prefix.'messagesubject', 'value'=>null);
         }
-        $helpbutton = helpbutton('messagesubject', get_string('label:subject', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<div class="fline">';
-        $templatehtml .= '<div class="flabel"><label for="'.$prefix.'messagesubject">'.get_string('label:subject', 'local_program').' '.$helpbutton.'</label></div>';
-        $templatehtml .= '<div class="fitem">%'.$prefix.'messagesubject%</div>';
-        $templatehtml .= '</div>';
+        $helpbutton = $OUTPUT->help_icon('messagesubject', 'totara_program');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
+        $templatehtml .= html_writer::tag('div', html_writer::tag('label', get_string('label:subject', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'messagesubject')), array('class' => 'flabel'));
+        $templatehtml .= html_writer::tag('div', '%'.$prefix.'messagesubject%', array('class' => 'fitem'));
+        $templatehtml .= html_writer::end_tag('div');
         $formdataobject->{$prefix.'messagesubject'} = $safe_messagesubject;
 
         // Add the main message
         $safe_mainmessage = format_string($this->mainmessage);
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('textarea', $prefix.'mainmessage', '', array('cols'=>'40', 'rows'=>'5'));
             $mform->setType($prefix.'mainmessage', PARAM_TEXT);
             $template_values['%'.$prefix.'mainmessage%'] = array('name'=>$prefix.'mainmessage', 'value'=>null);
         }
-        $helpbutton = helpbutton('mainmessage', get_string('label:message', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<div class="fline">';
-        $templatehtml .= '<div class="flabel"><label for="'.$prefix.'mainmessage">'.get_string('label:message', 'local_program').' '.$helpbutton.'</label></div>';
-        $templatehtml .= '<div class="fitem">%'.$prefix.'mainmessage%</div>';
-        $templatehtml .= '</div>';
+        $helpbutton = $OUTPUT->help_icon('mainmessage', 'totara_program');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
+        $templatehtml .= html_writer::tag('div', html_writer::tag('label', get_string('label:message', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'mainmessage')), array('class' => 'flabel'));
+        $templatehtml .= html_writer::tag('div', '%'.$prefix.'mainmessage%', array('class' => 'fitem'));
+        $templatehtml .= html_writer::end_tag('div');
         $formdataobject->{$prefix.'mainmessage'} = $safe_mainmessage;
 
         return $templatehtml;
-
     }
 
     /**
@@ -348,43 +344,44 @@ abstract class prog_message {
      * @return <type>
      */
     public function get_generic_manager_fields_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
-
+        global $OUTPUT;
         $prefix = $this->get_message_prefix();
 
         $templatehtml = '';
 
         // Add the notify manager checkbox
         $attributes = array();
-        if(isset($this->notifymanager) && $this->notifymanager==true) $attributes['checked'] = "checked";
-        if($updateform) {
+        if (isset($this->notifymanager) && $this->notifymanager == true) {
+            $attributes['checked'] = "checked";
+        }
+        if ($updateform) {
             $mform->addElement('checkbox', $prefix.'notifymanager', '', '', $attributes);
             $mform->setType($prefix.'notifymanager', PARAM_BOOL);
             $template_values['%'.$prefix.'notifymanager%'] = array('name'=>$prefix.'notifymanager', 'value'=>null);
         }
-        $helpbutton = helpbutton('notifymanager', get_string('label:sendnoticetomanager', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<div class="fline">';
-        $templatehtml .= '<div class="flabel"><label for="'.$prefix.'notifymanager">'.get_string('label:sendnoticetomanager', 'local_program').' '.$helpbutton.'</label></div>';
-        $templatehtml .= '<div class="fitem">%'.$prefix.'notifymanager%</div>';
-        $templatehtml .= '</div>';
+        $helpbutton = $OUTPUT->help_icon('notifymanager', 'totara_program');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
+        $templatehtml .= html_writer::tag('div', html_writer::tag('label', get_string('label:sendnoticetomanager', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'notifymanager')), array('class' => 'flabel'));
+        $templatehtml .= html_writer::tag('div', '%'.$prefix.'notifymanager%', array('class' => 'fitem'));
+        $templatehtml .= html_writer::end_tag('div');
         $formdataobject->{$prefix.'notifymanager'} = (bool)$this->notifymanager;
 
         // Add the manager message
         $safe_managermessage = format_string($this->managermessage);
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('textarea', $prefix.'managermessage', $safe_managermessage, array('cols'=>'40', 'rows'=>'5'));
             //$mform->disabledIf($prefix.'managermessage', $prefix.'notifymanager', 'notchecked');
             $mform->setType($prefix.'managermessage', PARAM_TEXT);
             $template_values['%'.$prefix.'managermessage%'] = array('name'=>$prefix.'managermessage', 'value'=>null);
         }
-        $helpbutton = helpbutton('managermessage', get_string('label:noticeformanager', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<div class="fline">';
-        $templatehtml .= '<div class="flabel"><label for="'.$prefix.'managermessage">'.get_string('label:noticeformanager', 'local_program').' '.$helpbutton.'</label></div>';
-        $templatehtml .= '<div class="fitem">%'.$prefix.'managermessage%</div>';
-        $templatehtml .= '</div>';
+        $helpbutton = $OUTPUT->help_icon('managermessage', 'totara_program');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
+        $templatehtml .= html_writer::tag('div', html_writer::tag('label', get_string('label:noticeformanager', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'managermessage')), array('class' => 'flabel'));
+        $templatehtml .= html_writer::tag('div', '%'.$prefix.'managermessage%', array('class' => 'fitem'));
+        $templatehtml .= html_writer::end_tag('div');
         $formdataobject->{$prefix.'managermessage'} = $safe_managermessage;
 
         return $templatehtml;
-
     }
 
     /**
@@ -397,13 +394,13 @@ abstract class prog_message {
      * @return <type>
      */
     public function get_generic_trigger_fields_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
-
+        global $OUTPUT;
         $prefix = $this->get_message_prefix();
 
         $templatehtml = '';
 
         // Add the trigger period selection group
-        if($updateform) {
+        if ($updateform) {
 
             $mform->addElement('text', $prefix.'triggernum', '', array('size'=>4, 'maxlength'=>3));
             $mform->setType($prefix.'triggernum', PARAM_INT);
@@ -417,16 +414,15 @@ abstract class prog_message {
             $template_values['%'.$prefix.'triggernum%'] = array('name'=>$prefix.'triggernum', 'value'=>null);
             $template_values['%'.$prefix.'triggerperiod%'] = array('name'=>$prefix.'triggerperiod', 'value'=>null);
         }
-        $helpbutton = helpbutton('trigger', get_string('label:trigger', 'local_program'), 'local_program', true, false, '', true);
-        $templatehtml .= '<div class="fline">';
-        $templatehtml .= '<div class="flabel"><label for="'.$prefix.'triggernum">'.get_string('label:trigger', 'local_program').' '.$helpbutton.'</label></div>';
-        $templatehtml .= '<div class="fitem">%'.$prefix.'triggernum% %'.$prefix.'triggerperiod% '.$this->triggereventstr.'</div>';
-        $templatehtml .= '</div>';
+        $helpbutton = $OUTPUT->help_icon('trigger', 'totara_program');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
+        $templatehtml .= html_writer::tag('div', html_writer::tag('label', get_string('label:trigger', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'triggernum')), array('class' => 'flabel'));
+        $templatehtml .= html_writer::tag('div', '%'.$prefix.'triggernum% %' . $prefix . 'triggerperiod% ' . $this->triggereventstr, array('class' => 'fitem'));
+        $templatehtml .= html_writer::end_tag('div');
         $formdataobject->{$prefix.'triggernum'} = $this->triggernum;
         $formdataobject->{$prefix.'triggerperiod'} = $this->triggerperiod;
 
         return $templatehtml;
-
     }
 
     /**
@@ -444,41 +440,43 @@ abstract class prog_message {
 
         $templatehtml = '';
 
-        $templatehtml .= '<div class="messagebuttons">';
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'messagebuttons'));
 
         // Add the move up button for this message
-        if($updateform) {
+        if ($updateform) {
             $attributes = array();
             $attributes['class'] = isset($this->isfirstmoveablemessage) ? 'moveup fieldsetbutton disabled' : 'moveup fieldsetbutton';
-            if(isset($this->isfirstmoveablemessage)) $attributes['disabled'] = 'disabled';
-            $mform->addElement('submit', $prefix.'moveup', get_string('moveup', 'local_program'), $attributes);
+            if (isset($this->isfirstmoveablemessage)) {
+                $attributes['disabled'] = 'disabled';
+            }
+            $mform->addElement('submit', $prefix.'moveup', get_string('moveup', 'totara_program'), $attributes);
             $template_values['%'.$prefix.'moveup%'] = array('name'=>$prefix.'moveup', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'moveup%'."\n";
 
         // Add the move down button for this message
-        if($updateform) {
+        if ($updateform) {
             $attributes = array();
             $attributes['class'] = isset($this->islastmessage) ? 'movedown fieldsetbutton disabled' : 'movedown fieldsetbutton';
-            if(isset($this->islastmessage)) $attributes['disabled'] = 'disabled';
-            $mform->addElement('submit', $prefix.'movedown', get_string('movedown', 'local_program'), $attributes);
+            if (isset($this->islastmessage)) {
+                $attributes['disabled'] = 'disabled';
+            }
+            $mform->addElement('submit', $prefix.'movedown', get_string('movedown', 'totara_program'), $attributes);
             $template_values['%'.$prefix.'movedown%'] = array('name'=>$prefix.'movedown', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'movedown%'."\n";
 
          // Add the delete button for this message
-        if($updateform) {
-            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'local_program'), array('class'=>"delete fieldsetbutton deletedmessagebutton"));
+        if ($updateform) {
+            $mform->addElement('submit', $prefix.'delete', get_string('delete', 'totara_program'), array('class'=>"delete fieldsetbutton deletedmessagebutton"));
             $template_values['%'.$prefix.'delete%'] = array('name'=>$prefix.'delete', 'value'=>null);
         }
         $templatehtml .= '%'.$prefix.'delete%'."\n";
 
-        $templatehtml .= '</div>';
+        $templatehtml .= html_writer::end_tag('div');
 
         return $templatehtml;
-
     }
-
 }
 
 abstract class prog_noneventbased_message extends prog_message {
@@ -493,7 +491,7 @@ abstract class prog_noneventbased_message extends prog_message {
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->studentmessagedata = new prog_message_data($studentmessagedata);
@@ -509,21 +507,21 @@ abstract class prog_noneventbased_message extends prog_message {
      * @return bool Success
      */
     public function send_message($recipient, $sender=null, $options=array()) {
-        global $CFG;
+        global $CFG, $DB;
 
         $result = true;
 
         $coursesetid = isset($options['coursesetid']) ? $options['coursesetid'] : 0;
 
         // retrieve the course set label if we know the id (this is so that it can be substituted in the message)
-        if ($setlabel = get_field('prog_courseset', 'label', 'id', $coursesetid)) {
+        if ($setlabel = $DB->get_field('prog_courseset', 'label', array('id' => $coursesetid))) {
             $this->replacementvars['setlabel'] = $setlabel;
         }
 
         $manager = totara_get_manager($recipient->id);
 
-        if($sender == null) {
-            if( ! $manager) {
+        if ($sender == null) {
+            if (!$manager) {
                 $sender = $recipient;
             } else {
                 $sender = $manager;
@@ -538,7 +536,7 @@ abstract class prog_noneventbased_message extends prog_message {
         $result = $result && tm_alert_send($this->studentmessagedata);
 
         // send the message to the manager
-        if($result && $this->notifymanager && $manager) {
+        if ($result && $this->notifymanager && $manager) {
             $this->managermessagedata->userto = $manager;
             $this->managermessagedata->userfrom = $recipient;
             $this->managermessagedata->subject = $this->replacevars($this->managermessagedata->subject);
@@ -551,25 +549,24 @@ abstract class prog_noneventbased_message extends prog_message {
     }
 
     public function get_message_form_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
-
+        global $OUTPUT;
         $prefix = $this->get_message_prefix();
 
-        $helpbutton = helpbutton($this->helppage, $this->fieldsetlegend, 'local_program', true, false, '', true);
+        $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= '<fieldset id="'.$prefix.'" class="message">';
-        $templatehtml .= '<legend>'.$this->fieldsetlegend.' '.$helpbutton.'</legend>';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_manager_fields_template($mform, $template_values, $formdataobject, $updateform);
 
-        $templatehtml .= '</fieldset>';
+        $templatehtml .= html_writer::end_tag('fieldset');
 
         return $templatehtml;
     }
-
 }
 
 
@@ -590,7 +587,7 @@ abstract class prog_eventbased_message extends prog_message {
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->studentmessagedata = new prog_message_data($studentmessagedata);
@@ -598,13 +595,13 @@ abstract class prog_eventbased_message extends prog_message {
     }
 
     public function save_message() {
-
+        global $DB;
         // check if the trigger time has changed and delete all message logs for
         // this message if so
-        if($this->id > 0) { // if this message already exists in the database
-            $triggertime = get_field('prog_message', 'triggertime', 'id', $this->id);
-            if($triggertime != $this->triggertime) {
-                delete_records('prog_messagelog', 'messageid', $this->id);
+        if ($this->id > 0) { // if this message already exists in the database
+            $triggertime = $DB->get_field('prog_message', 'triggertime', array('id' => $this->id));
+            if ($triggertime != $this->triggertime) {
+                $DB->delete_records('prog_messagelog', array('messageid' => $this->id));
             }
         }
 
@@ -620,18 +617,18 @@ abstract class prog_eventbased_message extends prog_message {
      * @return bool Success
      */
     public function send_message($recipient, $sender=null, $options=array()) {
-        global $CFG;
+        global $CFG, $DB;
 
         $coursesetid = isset($options['coursesetid']) ? $options['coursesetid'] : 0;
 
         // only send the message if it has not already been sent to the recipient
         // as we don't want the same program due message to be sent more than once
-        if($message_log = get_record('prog_messagelog', 'messageid', $this->id, 'userid', $recipient->id, 'coursesetid', $coursesetid)) {
+        if ($message_log = $DB->get_record('prog_messagelog', array('messageid' => $this->id, 'userid' => $recipient->id, 'coursesetid' => $coursesetid))) {
             return true;
         }
 
         // retrieve the course set label if we know the id (this is so that it can be substituted in the message)
-        if ($setlabel = get_field('prog_courseset', 'label', 'id', $coursesetid)) {
+        if ($setlabel = $DB->get_field('prog_courseset', 'label', array('id' => $coursesetid))) {
             $this->replacementvars['setlabel'] = $setlabel;
         }
 
@@ -639,8 +636,8 @@ abstract class prog_eventbased_message extends prog_message {
 
         $manager = totara_get_manager($recipient->id);
 
-        if($sender == null) {
-            if( ! $manager) {
+        if ($sender == null) {
+            if (!$manager) {
                 $sender = $recipient;
             } else {
                 $sender = $manager;
@@ -656,17 +653,17 @@ abstract class prog_eventbased_message extends prog_message {
 
         // if the message was sent, add a record to the message log to
         // prevent it from being sent again
-        if($result) {
+        if ($result) {
             $ob = new stdClass();
             $ob->messageid = $this->id;
             $ob->userid = $recipient->id;
             $ob->coursesetid = $coursesetid;
             $ob->timeissued = time();
-            insert_record('prog_messagelog', $ob);
+            $DB->insert_record('prog_messagelog', $ob);
         }
 
         // send the message to the manager
-        if($result && $this->notifymanager && $manager) {
+        if ($result && $this->notifymanager && $manager) {
             $this->managermessagedata->userto = $manager;
             $this->managermessagedata->userfrom = $recipient;
             $this->managermessagedata->subject = $this->replacevars($this->managermessagedata->subject);
@@ -679,14 +676,14 @@ abstract class prog_eventbased_message extends prog_message {
     }
 
     public function get_message_form_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
-
+        global $OUTPUT;
         $prefix = $this->get_message_prefix();
 
-        $helpbutton = helpbutton($this->helppage, $this->fieldsetlegend, 'local_program', true, false, '', true);
+        $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= '<fieldset id="'.$prefix.'" class="message">';
-        $templatehtml .= '<legend>'.$this->fieldsetlegend.' '.$helpbutton.'</legend>';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
@@ -694,11 +691,10 @@ abstract class prog_eventbased_message extends prog_message {
         $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_manager_fields_template($mform, $template_values, $formdataobject, $updateform);
 
-        $templatehtml .= '</fieldset>';
+        $templatehtml .= html_writer::end_tag('fieldset');
 
         return $templatehtml;
     }
-    
 }
 
 class prog_enrolment_message extends prog_noneventbased_message {
@@ -712,39 +708,37 @@ class prog_enrolment_message extends prog_noneventbased_message {
         $this->helppage = 'enrolmentmessage';
         $this->locked = true;
         $this->sortorder = 1;
-        $this->fieldsetlegend = get_string('legend:enrolmentmessage', 'local_program');
+        $this->fieldsetlegend = get_string('legend:enrolmentmessage', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
-            'subject'           => get_string('learnerenrolled', 'local_program'),
+            'subject'           => get_string('learnerenrolled', 'totara_program'),
             'fullmessage'       => $this->managermessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->managermessagedata = new prog_message_data($managermessagedata);
-
     }
 
     public function get_message_form_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
-
+        global $OUTPUT;
         $prefix = $this->get_message_prefix();
 
-        $helpbutton = helpbutton($this->helppage, $this->fieldsetlegend, 'local_program', true, false, '', true);
+        $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= '<fieldset id="'.$prefix.'" class="message">';
-        $templatehtml .= '<legend>'.$this->fieldsetlegend.' '.$helpbutton.'</legend>';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_manager_fields_template($mform, $template_values, $formdataobject, $updateform);
 
-        $templatehtml .= '</fieldset>';
+        $templatehtml .= html_writer::end_tag('fieldset');
 
         return $templatehtml;
     }
-
 }
 
 class prog_exception_report_message extends prog_noneventbased_message {
@@ -758,38 +752,36 @@ class prog_exception_report_message extends prog_noneventbased_message {
         $this->helppage = 'exceptionreportmessage';
         $this->locked = true;
         $this->sortorder = 2;
-        $this->fieldsetlegend = get_string('legend:exceptionreportmessage', 'local_program');
+        $this->fieldsetlegend = get_string('legend:exceptionreportmessage', 'totara_program');
 
         $studentmessagedata = array(
             'roleid'            => $this->studentrole,
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/exceptions.php?id='.$this->programid,
-            'contexturlname'    => get_string('viewexceptions', 'local_program'),
+            'contexturlname'    => get_string('viewexceptions', 'totara_program'),
         );
 
         $this->studentmessagedata = new prog_message_data($studentmessagedata);
-
     }
 
     public function get_message_form_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
-
+        global $OUTPUT;
         $prefix = $this->get_message_prefix();
 
-        $helpbutton = helpbutton($this->helppage, $this->fieldsetlegend, 'local_program', true, false, '', true);
+        $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= '<fieldset id="'.$prefix.'" class="message">';
-        $templatehtml .= '<legend>'.$this->fieldsetlegend.' '.$helpbutton.'</legend>';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
 
-        $templatehtml .= '</fieldset>';
+        $templatehtml .= html_writer::end_tag('fieldset');
 
         return $templatehtml;
     }
-
 }
 
 class prog_unenrolment_message extends prog_noneventbased_message {
@@ -802,7 +794,7 @@ class prog_unenrolment_message extends prog_noneventbased_message {
         $this->messagetype = MESSAGETYPE_UNENROLMENT;
         $this->helppage = 'unenrolmentmessage';
         $this->locked = false;
-        $this->fieldsetlegend = get_string('legend:unenrolmentmessage', 'local_program');
+        $this->fieldsetlegend = get_string('legend:unenrolmentmessage', 'totara_program');
 
         $studentmessagedata = array(
             'roleid'            => $this->studentrole,
@@ -814,16 +806,14 @@ class prog_unenrolment_message extends prog_noneventbased_message {
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
-            'subject'           => get_string('learnerunenrolled', 'local_program'),
+            'subject'           => get_string('learnerunenrolled', 'totara_program'),
             'fullmessage'       => $this->managermessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->managermessagedata = new prog_message_data($managermessagedata);
-
     }
-
 }
 
 class prog_program_completed_message extends prog_noneventbased_message {
@@ -836,20 +826,18 @@ class prog_program_completed_message extends prog_noneventbased_message {
         $this->messagetype = MESSAGETYPE_PROGRAM_COMPLETED;
         $this->helppage = 'programcompletedmessage';
         $this->locked = false;
-        $this->fieldsetlegend = get_string('legend:programcompletedmessage', 'local_program');
+        $this->fieldsetlegend = get_string('legend:programcompletedmessage', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
-            'subject'           => get_string('programcompleted', 'local_program'),
+            'subject'           => get_string('programcompleted', 'totara_program'),
             'fullmessage'       => $this->managermessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->managermessagedata = new prog_message_data($managermessagedata);
-
     }
-
 }
 
 class prog_courseset_completed_message extends prog_noneventbased_message {
@@ -862,20 +850,18 @@ class prog_courseset_completed_message extends prog_noneventbased_message {
         $this->messagetype = MESSAGETYPE_COURSESET_COMPLETED;
         $this->helppage = 'coursesetcompletedmessage';
         $this->locked = false;
-        $this->fieldsetlegend = get_string('legend:coursesetcompletedmessage', 'local_program');
+        $this->fieldsetlegend = get_string('legend:coursesetcompletedmessage', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
-            'subject'           => get_string('coursesetcompleted', 'local_program'),
+            'subject'           => get_string('coursesetcompleted', 'totara_program'),
             'fullmessage'       => $this->managermessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->managermessagedata = new prog_message_data($managermessagedata);
-
     }
-
 }
 
 class prog_program_due_message extends prog_eventbased_message {
@@ -888,22 +874,20 @@ class prog_program_due_message extends prog_eventbased_message {
         $this->messagetype = MESSAGETYPE_PROGRAM_DUE;
         $this->helppage = 'programduemessage';
         $this->locked = false;
-        $this->fieldsetlegend = get_string('legend:programduemessage', 'local_program');
-        $this->triggereventstr = get_string('beforeprogramisdue', 'local_program');
-        $this->managermessagedata->subject = get_string('programdue', 'local_program');
+        $this->fieldsetlegend = get_string('legend:programduemessage', 'totara_program');
+        $this->triggereventstr = get_string('beforeprogramisdue', 'totara_program');
+        $this->managermessagedata->subject = get_string('programdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
-            'subject'           => get_string('programdue', 'local_program'),
+            'subject'           => get_string('programdue', 'totara_program'),
             'fullmessage'       => $this->managermessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->managermessagedata = new prog_message_data($managermessagedata);
-
     }
-
 }
 
 class prog_courseset_due_message extends prog_eventbased_message {
@@ -916,22 +900,20 @@ class prog_courseset_due_message extends prog_eventbased_message {
         $this->messagetype = MESSAGETYPE_COURSESET_DUE;
         $this->helppage = 'coursesetduemessage';
         $this->locked = false;
-        $this->fieldsetlegend = get_string('legend:coursesetduemessage', 'local_program');
-        $this->triggereventstr = get_string('beforesetisdue', 'local_program');
-        $this->managermessagedata->subject = get_string('coursesetdue', 'local_program');
+        $this->fieldsetlegend = get_string('legend:coursesetduemessage', 'totara_program');
+        $this->triggereventstr = get_string('beforesetisdue', 'totara_program');
+        $this->managermessagedata->subject = get_string('coursesetdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
-            'subject'           => get_string('coursesetdue', 'local_program'),
+            'subject'           => get_string('coursesetdue', 'totara_program'),
             'fullmessage'       => $this->managermessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->managermessagedata = new prog_message_data($managermessagedata);
-
     }
-
 }
 
 class prog_program_overdue_message extends prog_eventbased_message {
@@ -944,22 +926,20 @@ class prog_program_overdue_message extends prog_eventbased_message {
         $this->messagetype = MESSAGETYPE_PROGRAM_OVERDUE;
         $this->helppage = 'programoverduemessage';
         $this->locked = false;
-        $this->fieldsetlegend = get_string('legend:programoverduemessage', 'local_program');
-        $this->triggereventstr = get_string('afterprogramisdue', 'local_program');
-        $this->managermessagedata->subject = get_string('programoverdue', 'local_program');
+        $this->fieldsetlegend = get_string('legend:programoverduemessage', 'totara_program');
+        $this->triggereventstr = get_string('afterprogramisdue', 'totara_program');
+        $this->managermessagedata->subject = get_string('programoverdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
-            'subject'           => get_string('programoverdue', 'local_program'),
+            'subject'           => get_string('programoverdue', 'totara_program'),
             'fullmessage'       => $this->managermessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->managermessagedata = new prog_message_data($managermessagedata);
-
     }
-
 }
 
 class prog_courseset_overdue_message extends prog_eventbased_message {
@@ -972,22 +952,20 @@ class prog_courseset_overdue_message extends prog_eventbased_message {
         $this->messagetype = MESSAGETYPE_COURSESET_OVERDUE;
         $this->helppage = 'coursesetoverduemessage';
         $this->locked = false;
-        $this->fieldsetlegend = get_string('legend:coursesetoverduemessage', 'local_program');
-        $this->triggereventstr = get_string('aftersetisdue', 'local_program');
-        $this->managermessagedata->subject = get_string('coursesetoverdue', 'local_program');
+        $this->fieldsetlegend = get_string('legend:coursesetoverduemessage', 'totara_program');
+        $this->triggereventstr = get_string('aftersetisdue', 'totara_program');
+        $this->managermessagedata->subject = get_string('coursesetoverdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
-            'subject'           => get_string('coursesetoverdue', 'local_program'),
+            'subject'           => get_string('coursesetoverdue', 'totara_program'),
             'fullmessage'       => $this->managermessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid,
-            'contexturlname'    => get_string('launchprogram', 'local_program'),
+            'contexturlname'    => get_string('launchprogram', 'totara_program'),
         );
 
         $this->managermessagedata = new prog_message_data($managermessagedata);
-
     }
-
 }
 
 class prog_learner_followup_message extends prog_eventbased_message {
@@ -1000,32 +978,30 @@ class prog_learner_followup_message extends prog_eventbased_message {
         $this->messagetype = MESSAGETYPE_LEARNER_FOLLOWUP;
         $this->helppage = 'learnerfollowupmessage';
         $this->locked = false;
-        $this->fieldsetlegend = get_string('legend:learnerfollowupmessage', 'local_program');
-        $this->triggereventstr = get_string('afterprogramiscompleted', 'local_program');
+        $this->fieldsetlegend = get_string('legend:learnerfollowupmessage', 'totara_program');
+        $this->triggereventstr = get_string('afterprogramiscompleted', 'totara_program');
         $this->notifymanager = false;
-
     }
 
     public function get_message_form_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
-
+        global $OUTPUT;
         $prefix = $this->get_message_prefix();
 
-        $helpbutton = helpbutton($this->helppage, $this->fieldsetlegend, 'local_program', true, false, '', true);
+        $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= '<fieldset id="'.$prefix.'" class="message">';
-        $templatehtml .= '<legend>'.$this->fieldsetlegend.' '.$helpbutton.'</legend>';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
 
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_trigger_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
 
-        $templatehtml .= '</fieldset>';
+        $templatehtml .= html_writer::end_tag('fieldset');
 
         return $templatehtml;
     }
-
 }
 
 /**
@@ -1044,7 +1020,7 @@ class prog_extension_request_message extends prog_noneventbased_message {
         $this->messagetype = MESSAGETYPE_EXTENSION_REQUEST;
         $this->helppage = 'extensionrequestmessage';
         $this->locked = false;
-        $this->fieldsetlegend = get_string('legend:extensionrequestmessage', 'local_program');
+        $this->fieldsetlegend = get_string('legend:extensionrequestmessage', 'totara_program');
         $this->userid = $userid;
 
         $managermessagedata = array(
@@ -1052,17 +1028,16 @@ class prog_extension_request_message extends prog_noneventbased_message {
             'subject'           => $this->messagesubject,
             'fullmessage'       => $this->mainmessage,
             'contexturl'        => $CFG->wwwroot.'/totara/program/manageextensions.php?userid='.$this->userid,
-            'contexturlname'    => get_string('manageextensionrequests', 'local_program'),
+            'contexturlname'    => get_string('manageextensionrequests', 'totara_program'),
         );
 
         $this->managermessagedata = new prog_message_data($managermessagedata);
-
     }
 
     public function send_message($recipient, $sender=null, $options=array()) {
         global $CFG;
 
-        if($sender == null) {
+        if ($sender == null) {
             return false;
         }
 
@@ -1077,23 +1052,19 @@ class prog_extension_request_message extends prog_noneventbased_message {
     }
 
     public function get_message_form_template(&$mform, &$template_values, &$formdataobject, $updateform=true) {
-
+        global $OUTPUT;
         $prefix = $this->get_message_prefix();
 
-        $helpbutton = helpbutton($this->helppage, $this->fieldsetlegend, 'local_program', true, false, '', true);
+        $helpbutton = $OUTPUT->help_icon($this->helppage, 'totara_program');
 
         $templatehtml = '';
-        $templatehtml .= '<fieldset id="'.$prefix.'" class="message">';
-        $templatehtml .= '<legend>'.$this->fieldsetlegend.' '.$helpbutton.'</legend>';
-
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => $prefix, 'class' => 'message'));
+        $templatehtml .= html_writer::tag('legend', $this->fieldsetlegend . ' ' . $helpbutton);
         $templatehtml .= $this->get_generic_hidden_fields_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_message_buttons_template($mform, $template_values, $formdataobject, $updateform);
         $templatehtml .= $this->get_generic_basic_fields_template($mform, $template_values, $formdataobject, $updateform);
-
-        $templatehtml .= '</fieldset>';
+        $templatehtml .= html_writer::end_tag('fieldset');
 
         return $templatehtml;
     }
-
-
 }

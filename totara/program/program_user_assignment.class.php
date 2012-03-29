@@ -3,7 +3,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,11 +43,11 @@ abstract class prog_user_assignment {
     protected $assignment;
 
     public function __construct($id) {
-
+        global $DB;
         // get user assignment db record
-        $userassignment = get_record('prog_user_assignment', 'id', $id);
+        $userassignment = $DB->get_record('prog_user_assignment', array('id' => $id));
 
-        if(!$userassignment) {
+        if (!$userassignment) {
             throw new UserAssignmentException('User assignment record not found');
         }
 
@@ -58,10 +58,10 @@ abstract class prog_user_assignment {
         $this->assignmentid = $userassignment->assignmentid;
         $this->timeassigned = $userassignment->timeassigned;
 
-        $this->assignment = get_record('prog_assignment', 'id', $userassignment->assignmentid);
-	if (!$this->assignment) {
-	    throw new UserAssignmentException('Assignment record not found');
-	}
+        $this->assignment = $DB->get_record('prog_assignment', array('id' => $userassignment->assignmentid));
+        if (!$this->assignment) {
+            throw new UserAssignmentException(get_string('error:assignmentnotfound', 'totara_program'));
+        }
         // $this->completion = get_record('prog_completion', 'programid', $userassignment->programid, 'userid', $userassignment->userid, 'courseset', 0);
 
     }
@@ -69,15 +69,15 @@ abstract class prog_user_assignment {
     public static function factory($assignmenttype, $assignmentid) {
         global $USER_ASSIGNMENT_CLASSNAMES;
 
-        if( ! array_key_exists($assignmenttype, $USER_ASSIGNMENT_CLASSNAMES)) {
-            throw new UserAssignmentException('User assignment type not found');
+        if (!array_key_exists($assignmenttype, $USER_ASSIGNMENT_CLASSNAMES)) {
+            throw new UserAssignmentException(get_string('error:userassignmenttypenotfound', 'totara_program'));
         }
 
         if (class_exists($USER_ASSIGNMENT_CLASSNAMES[$assignmenttype])) {
             $classname = $USER_ASSIGNMENT_CLASSNAMES[$assignmenttype];
             return new $classname($assignmentid);
         } else {
-            throw new UserAssignmentException('User assignment class not found');
+            throw new UserAssignmentException(get_string('error:userassignmentclassnotfound', 'totara_program'));
         }
     }
 
@@ -90,14 +90,9 @@ abstract class prog_user_assignment {
      * @return string
      */
     function display_date_as_text($mydate) {
-        global $CFG;
 
-        if(isset($mydate)) {
-            if($CFG->ostype == 'WINDOWS') {
-                return userdate($mydate, '%#d %b %Y', $CFG->timezone, false);
-            } else {
-                return userdate($mydate, '%e %h %Y', $CFG->timezone, false);
-            }
+        if (isset($mydate)) {
+            return userdate($mydate, get_string('strftimedate', 'langconfig'), $CFG->timezone, false);
         } else {
             return '';
         }
@@ -111,7 +106,8 @@ abstract class prog_user_assignment {
      * @return array of records or false
      */
     public static function get_user_assignments($programid, $userid) {
-	return get_records_select('prog_user_assignment', "programid=$programid AND userid=$userid");
+        global $DB;
+        return $DB->get_records_select('prog_user_assignment', "programid = ? AND userid = ?", array($programid, $userid));
     }
 
 }
@@ -119,11 +115,14 @@ abstract class prog_user_assignment {
 class prog_organisation_assignment extends prog_user_assignment {
 
     public function display_criteria() {
-        $organisation_name = get_field('org','fullname','id',$this->assignment->assignmenttypeid);
+        global $DB;
+        $organisation_name = $DB->get_field('org', 'fullname', array('id' => $this->assignment->assignmenttypeid));
         $out = '';
-        $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">' . get_string('memberoforg', 'local_program', $organisation_name) . '</span> ';
-        $out .= '</li>';
+        $out .= html_writer::start_tag('li', array('class' => 'assignmentcriteria'));
+        $out .= html_writer::start_tag('span', array('class' => 'criteria'));
+        $out .= get_string('memberoforg', 'totara_program', $organisation_name);
+        $out .= html_writer::end_tag('span');
+        $out .= html_writer::end_tag('li');
         return $out;
     }
 
@@ -132,11 +131,14 @@ class prog_organisation_assignment extends prog_user_assignment {
 class prog_position_assignment extends prog_user_assignment {
 
     public function display_criteria() {
-        $position_name = get_field('pos','fullname','id',$this->assignment->assignmenttypeid);
+        global $DB;
+        $position_name = $DB->get_field('pos', 'fullname', array('id' => $this->assignment->assignmenttypeid));
         $out = '';
-        $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">' . get_string('holdposof', 'local_program', $position_name) . '</span> ';
-        $out .= '</li>';
+        $out .= html_writer::start_tag('li', array('class' => 'assignmentcriteria'));
+        $out .= html_writer::start_tag('span', array('class' => 'criteria'));
+        $out .= get_string('holdposof', 'totara_program', $position_name);
+        $out .= html_writer::end_tag('span');
+        $out .= html_writer::end_tag('li');
         return $out;
     }
 
@@ -145,11 +147,14 @@ class prog_position_assignment extends prog_user_assignment {
 class prog_cohort_assignment extends prog_user_assignment {
 
     public function display_criteria() {
-        $cohort_name = get_field('cohort','name','id',$this->assignment->assignmenttypeid);
+        global $DB;
+        $cohort_name = $DB->get_field('cohort', 'name', array('id' => $this->assignment->assignmenttypeid));
         $out = '';
-        $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">' . get_string('memberofcohort', 'local_program', $cohort_name) . '</span> ';
-        $out .= '</li>';
+        $out .= html_writer::start_tag('li', array('class' => 'assignmentcriteria'));
+        $out .= html_writer::start_tag('span', array('class' => 'criteria'));
+        $out .= get_string('memberofcohort', 'totara_program', $cohort_name);
+        $out .= html_writer::end_tag('span');
+        $out .= html_writer::end_tag('li');
         return $out;
     }
 
@@ -158,11 +163,14 @@ class prog_cohort_assignment extends prog_user_assignment {
 class prog_manager_assignment extends prog_user_assignment {
 
     public function display_criteria() {
-        $managers_name = get_record_select('user', "id = $this->assignment->assignmenttypeid", sql_fullname() . ' as fullname');
+        global $DB;
+        $managers_name = $DB->get_record_select('user', "id = ?", array($this->assignment->assignmenttypeid), $DB->sql_fullname() . ' as fullname');
         $out = '';
-        $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">' . get_string('partofteam', 'local_program', $managers_name->fullname) . '</span> ';
-        $out .= '</li>';
+        $out .= html_writer::start_tag('li', array('class' => 'assignmentcriteria'));
+        $out .= html_writer::start_tag('span', array('class' => 'criteria'));
+        $out .= get_string('partofteam', 'totara_program', $managers_name->fullname);
+        $out .= html_writer::end_tag('span');
+        $out .= html_writer::end_tag('li');
         return $out;
     }
 
@@ -172,9 +180,11 @@ class prog_individual_assignment extends prog_user_assignment {
 
     public function display_criteria() {
         $out = '';
-        $out .= '<li class="assignmentcriteria">';
-        $out .= '<span class="criteria">' . get_string('assignedasindividual', 'local_program') . '</span> ';
-        $out .= '</li>';
+        $out .= html_writer::start_tag('li', array('class' => 'assignmentcriteria'));
+        $out .= html_writer::start_tag('span', array('class' => 'criteria'));
+        $out .= get_string('assignedasindividual', 'totara_program');
+        $out .= html_writer::end_tag('span');
+        $out .= html_writer::end_tag('li');
         return $out;
     }
 }

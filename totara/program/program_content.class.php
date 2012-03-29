@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,24 +51,21 @@ class prog_content {
     );
 
     function __construct($programid) {
-
+        global $DB;
         $this->programid = $programid;
         $this->coursesets = array();
         $this->coursesets_deleted_ids = array();
         $this->formdataobject = new stdClass();
 
-        if($sets = get_records('prog_courseset', 'programid', $programid, 'sortorder ASC')) {
-            foreach($sets as $set) {
+        $sets = $DB->get_records('prog_courseset', array('programid' => $programid), 'sortorder ASC');
 
-                if( ! array_key_exists($set->contenttype, $this->courseset_classnames)) {
-                    throw new ProgramContentException(get_string('contenttypenotfound','local_program'));
-                }
-
-                $courseset_classname = $this->courseset_classnames[$set->contenttype];
-                $coursesetob = new $courseset_classname($programid, $set);
-
-                $this->coursesets[] = $coursesetob;
+        foreach ($sets as $set) {
+            if (!array_key_exists($set->contenttype, $this->courseset_classnames)) {
+                throw new ProgramContentException(get_string('contenttypenotfound', 'totara_program'));
             }
+            $courseset_classname = $this->courseset_classnames[$set->contenttype];
+            $coursesetob = new $courseset_classname($programid, $set);
+            $this->coursesets[] = $coursesetob;
         }
 
         $this->fix_set_sortorder($this->coursesets);
@@ -83,8 +80,8 @@ class prog_content {
      * @return <type>
      */
     static function cmp_set_sortorder( $a, $b ) {
-        if(  $a->sortorder ==  $b->sortorder ){ return 0 ; }
-            return ($a->sortorder < $b->sortorder) ? -1 : 1;
+        if ($a->sortorder ==  $b->sortorder) { return 0 ; }
+        return ($a->sortorder < $b->sortorder) ? -1 : 1;
     }
 
     /**
@@ -98,30 +95,22 @@ class prog_content {
 
     /**
      * Deletes all the content for this program
+     *
+     * @return bool true|Exception
      */
     function delete() {
-        $result = true;
-        begin_sql();
+        global $DB;
+        $transaction = $DB->start_delegated_transaction();
 
-        foreach($this->coursesets as $courseset) {
-            if($result) {
-                $result = $result && delete_records('prog_courseset_course', 'coursesetid', $courseset->id);
-            } else {
-                break;
-            }
+        foreach ($this->coursesets as $courseset) {
+            $DB->delete_records('prog_courseset_course', array('coursesetid' => $courseset->id));
         }
 
-        if($result) {
-            $result = $result && delete_records('prog_courseset', 'programid', $this->programid);
-        }
+        $DB->delete_records('prog_courseset', array('programid' => $this->programid));
 
-        if ($result) {
-            commit_sql();
-        }
-        else {
-            rollback_sql();
-        }
-        return $result;
+        $transaction->allow_commit();
+
+        return true;
     }
 
     /**
@@ -136,24 +125,24 @@ class prog_content {
      */
     public function fix_set_sortorder(&$coursesets=null) {
 
-        if($coursesets==null) {
+        if ($coursesets == null) {
             $coursesets = $this->coursesets;
         }
 
         usort($coursesets, array('prog_content', 'cmp_set_sortorder'));
 
         $pos = 1;
-        foreach($coursesets as $courseset) {
+        foreach ($coursesets as $courseset) {
 
             $courseset->sortorder = $pos;
 
             unset($courseset->isfirstset);
-            if($pos == 1) {
+            if ($pos == 1) {
                 $courseset->isfirstset = true;
             }
 
             unset($courseset->islastset);
-            if($pos == count($coursesets)) {
+            if ($pos == count($coursesets)) {
                 $courseset->islastset = true;
             }
 
@@ -181,16 +170,16 @@ class prog_content {
 
         $this->coursesets = array();
 
-        foreach($courseset_prefixes as $prefix) {
+        foreach ($courseset_prefixes as $prefix) {
 
-            if(isset($formdata->{$prefix.'contenttype'})) {
+            if (isset($formdata->{$prefix.'contenttype'})) {
                 $contenttype = $formdata->{$prefix.'contenttype'};
             } else {
                 continue;
             }
 
-            if( ! array_key_exists($contenttype, $this->courseset_classnames)) {
-                throw new ProgramContentException(get_string('contenttypenotfound','local_program'));
+            if (!array_key_exists($contenttype, $this->courseset_classnames)) {
+                throw new ProgramContentException(get_string('contenttypenotfound', 'totara_program'));
             }
 
             $courseset_classname = $this->courseset_classnames[$contenttype];
@@ -219,7 +208,7 @@ class prog_content {
      */
     public function get_last_courseset_pos() {
         $sortorder = null;
-        foreach($this->coursesets as $set) {
+        foreach ($this->coursesets as $set) {
             $sortorder = max($sortorder, $set->sortorder);
         }
         return $sortorder;
@@ -234,9 +223,9 @@ class prog_content {
      * @return array
      */
     public function get_courseset_prefixes($formdata) {
-        if( ! isset($formdata->setprefixes) || empty($formdata->setprefixes)) {
+        if (!isset($formdata->setprefixes) || empty($formdata->setprefixes)) {
             return array();
-        } else  {
+        } else {
             return explode(',', $formdata->setprefixes);
         }
     }
@@ -249,7 +238,7 @@ class prog_content {
      * @return <type>
      */
     public function get_deleted_coursesets($formdata) {
-        if( ! isset($formdata->deleted_coursesets) || empty($formdata->deleted_coursesets)) {
+        if (!isset($formdata->deleted_coursesets) || empty($formdata->deleted_coursesets)) {
             return array();
         }
         return explode(',', $formdata->deleted_coursesets);
@@ -270,8 +259,8 @@ class prog_content {
 
         // if a submit button was clicked, try to determine if it relates to a
         // course set and, if so, return the course set sort order
-        foreach($courseset_prefixes as $prefix) {
-            if(isset($formdata->{$prefix.$action})) {
+        foreach ($courseset_prefixes as $prefix) {
+            if (isset($formdata->{$prefix.$action})) {
                 return $formdata->{$prefix.'sortorder'};
             }
         }
@@ -279,8 +268,8 @@ class prog_content {
         // if a submit button was clicked, try to determine if it relates to a
         // course within a course set and, if so, return the course set sort
         // order and the course id in an object
-        foreach($this->coursesets as $courseset) {
-            if($courseid = $courseset->check_course_action($action, $formdata)) {
+        foreach ($this->coursesets as $courseset) {
+            if ($courseid = $courseset->check_course_action($action, $formdata)) {
                 $ob = new stdClass();
                 $ob->courseid = $courseid;
                 $ob->setnumber = $courseset->sortorder;
@@ -292,28 +281,28 @@ class prog_content {
     }
 
     public function save_content() {
-
+        global $DB;
         $this->fix_set_sortorder($this->coursesets);
 
         // first delete any course sets from the database that have been marked for deletion
-        foreach($this->coursesets_deleted_ids as $coursesetid) {
-            if($courseset = get_record('prog_courseset', 'id', $coursesetid)) {
+        foreach ($this->coursesets_deleted_ids as $coursesetid) {
+            if ($courseset = $DB->get_record('prog_courseset', array('id' => $coursesetid))) {
 
                 // delete and courses linked to the course set
-                if( ! delete_records('prog_courseset_course', 'coursesetid', $coursesetid)) {
+                if (!$DB->delete_records('prog_courseset_course', array('coursesetid' => $coursesetid))) {
                     return false;
                 }
 
                 // delete the course set
-                if( ! delete_records('prog_courseset', 'id', $coursesetid)) {
+                if (!$DB->delete_records('prog_courseset', array('id' => $coursesetid))) {
                     return false;
                 }
             }
         }
 
         // then save the new and changed course sets
-        foreach($this->coursesets as $courseset) {
-            if( ! $courseset->save_set()) {
+        foreach ($this->coursesets as $courseset) {
+            if (!$courseset->save_set()) {
                 return false;
             }
         }
@@ -329,18 +318,18 @@ class prog_content {
      */
     public function move_set_up($settomove_sortorder) {
 
-        foreach($this->coursesets as $current_set) {
+        foreach ($this->coursesets as $current_set) {
 
-            if($current_set->sortorder == $settomove_sortorder) {
+            if ($current_set->sortorder == $settomove_sortorder) {
                 $settomoveup = $current_set;
             }
 
-            if($current_set->sortorder == $settomove_sortorder-1) {
+            if ($current_set->sortorder == $settomove_sortorder-1) {
                 $settomovedown = $current_set;
             }
         }
 
-        if($settomoveup && $settomovedown) {
+        if ($settomoveup && $settomovedown) {
             $moveup_sortorder = $settomoveup->sortorder;
             $movedown_sortorder = $settomovedown->sortorder;
             $settomoveup->sortorder = $movedown_sortorder;
@@ -360,18 +349,18 @@ class prog_content {
      */
     public function move_set_down($settomove_sortorder) {
 
-        foreach($this->coursesets as $current_set) {
+        foreach ($this->coursesets as $current_set) {
 
-            if($current_set->sortorder == $settomove_sortorder) {
+            if ($current_set->sortorder == $settomove_sortorder) {
                 $settomovedown = $current_set;
             }
 
-            if($current_set->sortorder == $settomove_sortorder+1) {
+            if ($current_set->sortorder == $settomove_sortorder+1) {
                 $settomoveup = $current_set;
             }
         }
 
-        if($settomovedown && $settomoveup) {
+        if ($settomovedown && $settomoveup) {
             $movedown_sortorder = $settomovedown->sortorder;
             $moveup_sortorder = $settomoveup->sortorder;
             $settomovedown->sortorder = $moveup_sortorder;
@@ -394,20 +383,20 @@ class prog_content {
 
         $lastsetpos = $this->get_last_courseset_pos();
 
-        if( ! array_key_exists($contenttype, $this->courseset_classnames)) {
-            throw new ProgramContentException(get_string('contenttypenotfound','local_program'));
+        if (!array_key_exists($contenttype, $this->courseset_classnames)) {
+            throw new ProgramContentException(get_string('contenttypenotfound', 'totara_program'));
         }
 
         $courseset_classname = $this->courseset_classnames[$contenttype];
         $courseset = new $courseset_classname($this->programid);
 
-        if($lastsetpos !== null) {
+        if ($lastsetpos !== null) {
             $courseset->sortorder = $lastsetpos + 1;
         } else {
             $courseset->sortorder = 1;
         }
 
-        $courseset->label = get_string('legend:courseset', 'local_program', $courseset->sortorder);
+        $courseset->label = get_string('legend:courseset', 'totara_program', $courseset->sortorder);
 
         $this->coursesets[] = $courseset;
         $this->fix_set_sortorder($this->coursesets);
@@ -430,7 +419,7 @@ class prog_content {
         $setfound = false;
         $previous_set = null;
 
-        foreach($this->coursesets as $courseset) {
+        foreach ($this->coursesets as $courseset) {
             if ($courseset->sortorder == $settodelete_sortorder) {
                 $setfound = true;
                 if ($courseset->id > 0) { // if this set already exists in the database
@@ -482,9 +471,9 @@ class prog_content {
      * @return <type>
      */
     public function add_course($set_sortorder, $formdata) {
-        foreach($this->coursesets as $courseset) {
-            if($courseset->sortorder == $set_sortorder) {
-                if( ! $courseset->add_course($formdata)) {
+        foreach ($this->coursesets as $courseset) {
+            if ($courseset->sortorder == $set_sortorder) {
+                if (!$courseset->add_course($formdata)) {
                     return false;
                 } else {
                     $this->fix_set_sortorder($this->coursesets);
@@ -496,9 +485,9 @@ class prog_content {
     }
 
     public function delete_course($set_sortorder, $courseid, $formdata) {
-        foreach($this->coursesets as $courseset) {
-            if($courseset->sortorder == $set_sortorder) {
-                if( ! $courseset->delete_course($courseid)) {
+        foreach ($this->coursesets as $courseset) {
+            if ($courseset->sortorder == $set_sortorder) {
+                if (!$courseset->delete_course($courseid)) {
                     return false;
                 } else {
                     $this->fix_set_sortorder($this->coursesets);
@@ -517,9 +506,9 @@ class prog_content {
      * @return <type>
      */
     public function add_competency($set_sortorder, $formdata) {
-        foreach($this->coursesets as $courseset) {
-            if($courseset->sortorder == $set_sortorder) {
-                if( ! $courseset->add_competency($formdata)) {
+        foreach ($this->coursesets as $courseset) {
+            if ($courseset->sortorder == $set_sortorder) {
+                if (!$courseset->add_competency($formdata)) {
                     return false;
                 } else {
                     $this->fix_set_sortorder($this->coursesets);
@@ -538,31 +527,25 @@ class prog_content {
      */
     public function get_total_time_allowance() {
 
-    // Store the maximum time allowance to be returned
-    $total_time_allowance = 0;
-
+        // Store the maximum time allowance to be returned
+        $total_time_allowance = 0;
         // retrieve the course sets in the way that they are grouped in the program
         $courseset_groups = $this->get_courseset_groups();
 
-    if (empty($courseset_groups)) {
-        return 0; // raise an exception? or give infinite time?
-    }
+        if (empty($courseset_groups)) {
+            return 0; // raise an exception? or give infinite time?
+        }
 
-    foreach ($courseset_groups as $courseset_group) {
-
+        foreach ($courseset_groups as $courseset_group) {
             $max_time_allowance_in_group = 0;
-
-            foreach($courseset_group as $courseset) {
+            foreach ($courseset_group as $courseset) {
                 if ($courseset->timeallowed > $max_time_allowance_in_group) {
                     $max_time_allowance_in_group = $courseset->timeallowed;
                 }
             }
-
             $total_time_allowance += $max_time_allowance_in_group;
-
-    }
-
-    return $total_time_allowance;
+        }
+        return $total_time_allowance;
     }
 
     /**
@@ -586,45 +569,45 @@ class prog_content {
 
         $courseset_groups = array();
 
-    if (empty($this->coursesets)) {
-        return $courseset_groups;
-    }
+        if (empty($this->coursesets)) {
+            return $courseset_groups;
+        }
 
-    // Helpers for handling the sets of OR's
-    $last_handled_OR_operator = false;
-    $courseset_group = array();
+        // Helpers for handling the sets of OR's
+        $last_handled_OR_operator = false;
+        $courseset_group = array();
 
-    foreach ($this->coursesets as $courseset) {
-        if ($courseset->nextsetoperator == NEXTSETOPERATOR_OR) {
-        // Add to the outstanding 'or' list
-        $last_handled_OR_operator = true;
-        $courseset_group[] = $courseset;
+        foreach ($this->coursesets as $courseset) {
+            if ($courseset->nextsetoperator == NEXTSETOPERATOR_OR) {
+                // Add to the outstanding 'or' list
+                $last_handled_OR_operator = true;
+                $courseset_group[] = $courseset;
 
                 // slight hack to check if this is the last course set (nextsetoperator should not be set in this case but sometimes it is)
                 if (isset($courseset->islastset) && $courseset->islastset) {
                     $courseset_groups[] = $courseset_group;
                 }
-        } else { // If THEN operator or no operator next..
-        if ($last_handled_OR_operator) {
-            // Add each course set in the group of ORs to an array
-            $courseset_group[] = $courseset;
+            } else { // If THEN operator or no operator next..
+                if ($last_handled_OR_operator) {
+                    // Add each course set in the group of ORs to an array
+                    $courseset_group[] = $courseset;
 
-            // Add this group of course sets to the array of groups
-            $courseset_groups[] = $courseset_group;
+                    // Add this group of course sets to the array of groups
+                    $courseset_groups[] = $courseset_group;
 
-            // Reset the OR bits
-            $last_handled_OR_operator = false;
-            $courseset_group = array();
-        } else {
+                    // Reset the OR bits
+                    $last_handled_OR_operator = false;
+                    $courseset_group = array();
+                } else {
                     $courseset_group[] = $courseset;
                     $courseset_groups[] = $courseset_group;
                     $courseset_group = array();
                 }
 
+            }
         }
-    }
 
-    return $courseset_groups;
+        return $courseset_groups;
     }
 
     /**
@@ -640,16 +623,16 @@ class prog_content {
      * @return void
      */
     public function set_courseset_group_timedue($courseset_group, $userid) {
-
+        global $DB;
         if (count($courseset_group)<1) {
             return;
         }
 
-    $now = time();
+        $now = time();
         $courseset_selected = $courseset_group[0];
 
         // select the course set with the shortest time allowance
-        foreach($courseset_group as $courseset) {
+        foreach ($courseset_group as $courseset) {
             $courseset_selected = ($courseset->timeallowed < $courseset_selected->timeallowed) ? $courseset : $courseset_selected;
         }
 
@@ -657,7 +640,7 @@ class prog_content {
 
         // insert a record to set the time that this course set will be due
         if ($timeallowance>0) {
-            if ( ! $cc = get_record('prog_completion', 'programid', $this->programid, 'userid', $userid, 'coursesetid', $courseset_selected->id)) {
+            if (!$cc = $DB->get_record('prog_completion', array('programid' => $this->programid, 'userid' => $userid, 'coursesetid' => $courseset_selected->id))) {
                 $cc = new stdClass();
                 $cc->programid = $this->programid;
                 $cc->userid = $userid;
@@ -665,7 +648,7 @@ class prog_content {
                 $cc->status = STATUS_COURSESET_INCOMPLETE;
                 $cc->timestarted = $now;
                 $cc->timedue = $now + $timeallowance;
-                insert_record('prog_completion', $cc);
+                $DB->insert_record('prog_completion', $cc);
             }
         }
 
@@ -674,8 +657,9 @@ class prog_content {
     }
 
     public function get_content_form_template(&$mform, &$template_values, $coursesets=null, $updateform=true) {
+        global $OUTPUT;
 
-        if($coursesets==null) {
+        if ($coursesets==null) {
             $coursesets = $this->coursesets;
         }
 
@@ -688,14 +672,14 @@ class prog_content {
         // behaviour. This is not official browser behaviour but in most browsers
         // this should result in this button being submitted (where a form has
         // multiple submit buttons like this one)
-        if($updateform) {
-            $mform->addElement('submit', 'update', get_string('update', 'local_program'));
+        if ($updateform) {
+            $mform->addElement('submit', 'update', get_string('update', 'totara_program'));
             $template_values['%update%'] = array('name'=>'update', 'value'=>null);
         }
         $templatehtml .= '%update%'."\n";
 
         // Add the program id
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('hidden', 'id');
             $mform->setType('id', PARAM_INT);
             $template_values['%programid%'] = array('name'=>'id', 'value'=>null);
@@ -707,7 +691,7 @@ class prog_content {
         // (used by javascript to determine whether or not to display a
         // dialog when the user leaves the page)
         $contentchanged = $this->contentchanged ? '1' : '0';
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('hidden', 'contentchanged', $contentchanged);
             $mform->setType('contentchanged', PARAM_BOOL);
             $mform->setConstant('contentchanged', $contentchanged);
@@ -717,13 +701,13 @@ class prog_content {
         $this->formdataobject->contentchanged = $contentchanged;
 
         // Add the deleted course set ids
-        if($this->coursesets_deleted_ids) {
+        if ($this->coursesets_deleted_ids) {
             $deletedcoursesetidsarray = array();
-            foreach($this->coursesets_deleted_ids as $deleted_courseset_id) {
+            foreach ($this->coursesets_deleted_ids as $deleted_courseset_id) {
                 $deletedcoursesetidsarray[] = $deleted_courseset_id;
             }
             $deletedcourseidsstr = implode(',', $deletedcoursesetidsarray);
-            if($updateform) {
+            if ($updateform) {
                 $mform->addElement('hidden', 'deleted_coursesets', $deletedcourseidsstr);
                 $mform->setType('deleted_coursesets', PARAM_SEQUENCE);
                 $mform->setConstant('deleted_coursesets', $deletedcourseidsstr);
@@ -733,17 +717,17 @@ class prog_content {
             $this->formdataobject->deleted_coursesets = $deletedcourseidsstr;
         }
 
-        $templatehtml .= '<fieldset id="programcontent">';
-        $templatehtml .= '<legend class="ftoggler">'.get_string('programcontent', 'local_program').'</legend>';
-        $templatehtml .= '<p>'.get_string('instructions:programcontent', 'local_program').'</p>';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => 'programcontent'));
+        $templatehtml .= html_writer::start_tag('legend', array('class' => 'ftoggler')) . get_string('programcontent', 'totara_program') . html_writer::end_tag('legend');
+        $templatehtml .= html_writer::start_tag('p') . get_string('instructions:programcontent', 'totara_program') . html_writer::end_tag('p');
 
-        $templatehtml .= '<div id="course_sets">';
+        $templatehtml .= html_writer::start_tag('div', array('id' => 'course_sets'));
         $coursesetprefixesarray = array();
 
-        if($numcoursesets==0) { // if there's no content yet
-            $templatehtml .= '<p>'.get_string('noprogramcontent', 'local_program').'</p>';
+        if ($numcoursesets==0) { // if there's no content yet
+            $templatehtml .= html_writer::start_tag('p') . get_string('noprogramcontent', 'totara_program') . html_writer::end_tag('p');
         } else {
-            foreach($coursesets as $courseset) {
+            foreach ($coursesets as $courseset) {
                 $coursesetprefixesarray[] = $courseset->get_set_prefix();
 
                 // Add the course sets
@@ -755,7 +739,7 @@ class prog_content {
 
         // Add the set prefixes
         $setprefixesstr = implode(',', $coursesetprefixesarray);
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('hidden', 'setprefixes', $setprefixesstr);
             $mform->setType('setprefixes', PARAM_TEXT);
             $mform->setConstant('setprefixes', $setprefixesstr);
@@ -764,62 +748,50 @@ class prog_content {
         $templatehtml .= '%setprefixes%'."\n";
         $this->formdataobject->setprefixes = $setprefixesstr;
 
-        $templatehtml .= '</div>';
-        $templatehtml .= '</fieldset>';
-        $templatehtml .= '<br />';
+        $templatehtml .= html_writer::end_tag('div');
+        $templatehtml .= html_writer::end_tag('fieldset');
+        $templatehtml .= html_writer::empty_tag('br');
 
-        if( ! $recurring) {
+        if (!$recurring) {
             // Add the add content drop down
-            if($updateform) {
+            if ($updateform) {
                 $contentoptions = array(
-                    CONTENTTYPE_MULTICOURSE => get_string('setofcourses', 'local_program'),
-                    CONTENTTYPE_COMPETENCY => get_string('competency', 'local_program')
+                    CONTENTTYPE_MULTICOURSE => get_string('setofcourses', 'totara_program'),
+                    CONTENTTYPE_COMPETENCY => get_string('competency', 'totara_program')
                 );
-                if($numcoursesets==0) { // don't allow recurring course to be added if the program already has other content
-                    $contentoptions[CONTENTTYPE_RECURRING] = get_string('recurringcourse', 'local_program');
+                if ($numcoursesets==0) { // don't allow recurring course to be added if the program already has other content
+                    $contentoptions[CONTENTTYPE_RECURRING] = get_string('recurringcourse', 'totara_program');
                 }
-                $mform->addElement('select', 'contenttype', get_string('addnew', 'local_program'), $contentoptions, array('id'=>'contenttype'));
+                $mform->addElement('select', 'contenttype', get_string('addnew', 'totara_program'), $contentoptions, array('id'=>'contenttype'));
                 $mform->setType('contenttype', PARAM_INT);
                 $template_values['%contenttype%'] = array('name'=>'contenttype', 'value'=>null);
             }
-            $templatehtml .= '<label for="contenttype">'.get_string('addnew', 'local_program').' </label>';
+            $templatehtml .= html_writer::start_tag('label', array('for' => 'contenttype')) . get_string('addnew', 'totara_program') . html_writer::end_tag('label');
             $templatehtml .= '%contenttype%';
-            $templatehtml .= ' '.get_string('toprogram', 'local_program').' ';
+            $templatehtml .= ' '.get_string('toprogram', 'totara_program').' ';
 
             // Add the add content button
-            if($updateform) {
+            if ($updateform) {
                 $mform->addElement('submit', 'addcontent', get_string('add'), array('id'=>'addcontent'));
                 $template_values['%addcontent%'] = array('name'=>'addcontent', 'value'=>null);
             }
             $templatehtml .= '%addcontent%'."\n";
-            $helpbutton = helpbutton('addprogramcontent', get_string('addnew', 'local_program'), 'local_program', true, false, '', true);
+            $helpbutton = $OUTPUT->help_icon('addprogramcontent', 'totara_program');
             $templatehtml .= $helpbutton;
         }
 
-        $templatehtml .= '<br />';
-
-        if ($updateform) {
-//            $this->add_action_buttons();
-
-        }
+        $templatehtml .= html_writer::empty_tag('br');
 
         // Add the save and return button
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('submit', 'savechanges', get_string('savechanges'), array('class'=>"savechanges-content program-savechanges"));
             $template_values['%savechanges%'] = array('name'=>'savechanges', 'value'=>null);
         }
         $templatehtml .= '%savechanges%'."\n";
 
-/*        // Add the save and next button
-        if($updateform) {
-            $mform->addElement('submit', 'saveandnext', get_string('saveandnext', 'local_program'), array('class'=>'next-assignments'));
-            $template_values['%saveandnext%'] = array('name'=>'saveandnext', 'value'=>null);
-        }
-        $templatehtml .= '%saveandnext%'."\n";*/
-
         // Add the cancel button
-        if($updateform) {
-            $mform->addElement('cancel', 'cancel', get_string('cancel', 'local_program'));
+        if ($updateform) {
+            $mform->addElement('cancel', 'cancel', get_string('cancel', 'totara_program'));
             $template_values['%cancel%'] = array('name'=>'cancel', 'value'=>null);
         }
         $templatehtml .= '%cancel%'."\n";

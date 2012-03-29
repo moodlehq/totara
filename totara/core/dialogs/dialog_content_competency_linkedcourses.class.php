@@ -138,7 +138,7 @@ class totara_dialog_content_competency_linkedcourses extends totara_dialog_conte
      * @param   $frameworkid    int
      */
     public function set_framework($frameworkid) {
-        $this->framework = $this->hierarchy->get_framework($frameworkid, $this->showhidden);
+        $this->framework = $this->hierarchy->get_framework($frameworkid, $this->showhidden, true);
     }
 
 
@@ -189,5 +189,22 @@ class totara_dialog_content_competency_linkedcourses extends totara_dialog_conte
         ob_start();
         require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/item/search_linkedcourses.php');
         return ob_get_clean();
+    }
+
+
+    /**
+     * Override generate markup if there is no frameworks
+     *
+     * @access public
+     * @return string
+     */
+    public function generate_markup() {
+        if (!empty($this->framework)) {
+            $markup = parent::generate_markup();
+        } else {
+            $markup = html_writer::tag('p', get_string('competencynoframeworks', 'totara_hierarchy'));
+        }
+
+        return $markup;
     }
 }

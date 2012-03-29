@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,22 +45,33 @@ local_js(array(
 ));
 
 if ($categoryid) { // creating new program in this category
-    if (!$category = get_record('course_categories', 'id', $categoryid)) {
+    if (!$category = $DB->get_record('course_categories', array('id' => $categoryid))) {
         print_error('Category ID was incorrect');
     }
-    require_capability('totara/program:createprogram', get_context_instance(CONTEXT_COURSECAT, $category->id));
+    require_capability('totara/program:createprogram', context_coursecat::instance($category->id));
 } else {
     print_error('Program category must be specified');
 }
-
 ///
 /// Data and actions
 ///
 
+$item = new stdClass();
+$item->id = 0;
+$item->endnote = '';
+$item->endnoteformat = FORMAT_HTML;
+$item->summary = '';
+$item->summaryformat = FORMAT_HTML;
+
 $currenturl = qualified_me();
 $progindexurl = "{$CFG->wwwroot}/course/index.php?viewtype=program";
 
-$form = new program_edit_form($currenturl, array('action'=>'add', 'category'=>$category));
+$item = file_prepare_standard_editor($item, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                          'totara_program', 'progsummary', 0);
+
+$item = file_prepare_standard_editor($item, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                          'totara_program', 'progendnote', 0);
+$form = new program_edit_form($currenturl, array('action'=>'add', 'category'=>$category, 'editoroptions' => $TEXTAREA_OPTIONS));
 
 if ($form->is_cancelled()) {
     redirect($progindexurl);
@@ -75,7 +86,7 @@ if ($data = $form->get_data()) {
         $program_todb->availablefrom = ($data->availablefromselector) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->availablefromselector) : 0;
         $program_todb->availableuntil = ($data->availableuntilselector) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->availableuntilselector) : 0;
         //Calcuate sortorder
-        $sortorder = get_field('prog', 'MAX(sortorder) + 1', '', '');
+        $sortorder = $DB->get_field('prog', 'MAX(sortorder) + 1', array());
 
         $now = time();
         $program_todb->timecreated = $now;
@@ -86,60 +97,60 @@ if ($data = $form->get_data()) {
         $program_todb->fullname = $data->fullname;
         $program_todb->idnumber = $data->idnumber;
         $program_todb->available = $data->available;
-        $program_todb->summary = $data->summary;
-        $program_todb->endnote = $data->endnote;
         $program_todb->sortorder = !empty($sortorder) ? $sortorder : 0;
         $program_todb->icon = $data->icon;
         $program_todb->exceptionssent = 0;
         $program_todb->visible = $data->visible;
+        //text editor fields will be updated later
+        $program_todb->summary = '';
+        $program_todb->endnote ='';
+        $newid = 0;
 
-        begin_sql();
-
+        $transaction = $DB->start_delegated_transaction();
         // Set up the program
-        if (!$newid = insert_record('prog', $program_todb)) {
-            rollback_sql();
-            totara_set_notification(get_string('programcreatefail', 'local_program', get_string('couldnotinsertnewrecord', 'local_program')), $currenturl);
-        }
+        $newid = $DB->insert_record('prog', $program_todb);
         $program = new program($newid);
+        $transaction->allow_commit();
 
-        commit_sql();
+        $data = file_postupdate_standard_editor($data, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_program', 'progsummary', $newid);
+        $data = file_postupdate_standard_editor($data, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_program', 'progendnote', $newid);
+        $DB->set_field('prog', 'summary', $data->summary, array('id' => $newid));
+        $DB->set_field('prog', 'endnote', $data->endnote, array('id' => $newid));
 
         add_to_log(SITEID, 'program', 'created', "edit.php?id={$newid}", $program->fullname);
 
         $viewurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$newid}&amp;action=edit";
 
-        totara_set_notification(get_string('programcreatesuccess', 'local_program'), $viewurl, array('class' => 'notifysuccess'));
-
+        totara_set_notification(get_string('programcreatesuccess', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
     }
 }
 
 ///
 /// Display
 ///
-$heading = get_string('createnewprogram', 'local_program');
-$pagetitle = format_string(get_string('program', 'local_program').': '.$heading);
-$navlinks = array();
-prog_get_base_navlinks($navlinks);
-$navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
+$heading = get_string('createnewprogram', 'totara_program');
+$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
+prog_add_base_navlinks();
+$PAGE->navbar->add($heading);
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-print_container_start(false, 'program add', 'program-add');
+echo $OUTPUT->container_start('program add', 'program-add');
 
 //$id = $program->id;
-$context = get_context_instance(CONTEXT_COURSECAT, $category->id);
+$context = context_coursecat::instance($category->id);
 $exceptions = 0;
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
 require('tabs.php');
 
 $form->display();
 
-print_container_end();
+echo $OUTPUT->container_end();
 
 echo build_datepicker_js(
     'input[name="availablefromselector"], input[name="availableuntilselector"]'
 );
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();
 

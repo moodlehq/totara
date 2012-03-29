@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ local_js(array(
 
 // Additional permissions check
 if (!has_capability('totara/program:configuremessages', $program->get_context())) {
-    print_error('error:nopermissions', 'local_program');
+    print_error('error:nopermissions', 'totara_program');
 }
 
 $programmessagemanager = $program->get_messagesmanager();
@@ -61,22 +61,22 @@ $overviewurl = $CFG->wwwroot."/totara/program/edit.php?id={$id}&action=view";
 // the form is defined based on the status of the program object. This MUST
 // only READ data from the database and MUST NOT WRITE anything as nothing has
 // been checked or validated yet.
-if($rawdata = data_submitted()) {
+if ($rawdata = data_submitted()) {
 
-    if( ! $programmessagemanager->setup_messages($rawdata)) {
-        print_error('Unable to set up program messages.');
+    if (!$programmessagemanager->setup_messages($rawdata)) {
+        print_error('error:setupprogrammessages', 'totara_program');
     }
 
-    if(isset($rawdata->addmessage)) {
-        if( ! $programmessagemanager->add_message($rawdata->messagetype)) {
-            notify('Unable to add new message. Message type not recognised.');
+    if (isset($rawdata->addmessage)) {
+        if (!$programmessagemanager->add_message($rawdata->messagetype)) {
+            echo $OUTPUT->notification(get_string('error:unableaddmessagetypeunrecog', 'totara_program'));
         }
-    } else if(isset($rawdata->update)) {
+    } else if (isset($rawdata->update)) {
         $programmessagemanager->update_messages();
-        notify('Program messages updated (not yet saved)');
+        echo $OUTPUT->notification(get_string('progmessageupdated', 'totara_program'));
     } else if ($messagenumber = $programmessagemanager->check_message_action('delete', $rawdata)) {
-        if( ! $programmessagemanager->delete_message($messagenumber)) {
-            notify('Unable to delete message. Message not found.');
+        if (!$programmessagemanager->delete_message($messagenumber)) {
+            echo $OUTPUT->notification(get_string('error:unabledeletemessagenotfound', 'totara_program'));
         }
     } else if ($messagenumber = $programmessagemanager->check_message_action('update', $rawdata)) {
         $programmessagemanager->update_messages();
@@ -92,25 +92,26 @@ $messageseditform = new program_messages_edit_form($currenturl, array('program'=
 
 // this removes the 'mform' class which is set be default on the form and which
 // causes problems with the styling
-$messageseditform->_form->updateAttributes(array('class'=>''));
+// TODO SCANMSG This may cause issues when styling
+//$messageseditform->_form->updateAttributes(array('class'=>''));
 
 if ($messageseditform->is_cancelled()) {
-    totara_set_notification(get_string('programupdatecancelled', 'local_program'), $overviewurl, array('class' => 'notifysuccess'));
+    totara_set_notification(get_string('programupdatecancelled', 'totara_program'), $overviewurl, array('class' => 'notifysuccess'));
 }
 
 // if the form has not been submitted, fill in the saved values and defaults
-if( ! $rawdata) {
+if (!$rawdata) {
     $messageseditform->set_data($programmessagemanager->formdataobject);
 }
 
 // This is where we validate and check the submitted data before saving it
-if($data = $messageseditform->get_data()) {
+if ($data = $messageseditform->get_data()) {
 
-    if(isset($data->savechanges)) {
+    if (isset($data->savechanges)) {
 
         // first set up the messages manager using the checked and validated form data
-        if( ! $programmessagemanager->setup_messages($data)) {
-            print_error('Unable to set up program messages.');
+        if (!$programmessagemanager->setup_messages($data)) {
+            print_error('error:setupprogrammessages', 'totara_program');
         }
 
         // log this request
@@ -120,13 +121,13 @@ if($data = $messageseditform->get_data()) {
         $prog_update->id = $id;
         $prog_update->timemodified = time();
         $prog_update->usermodified = $USER->id;
-        update_record('prog', $prog_update);
+        $DB->update_record('prog', $prog_update);
 
         // then save the messages
-        if( ! $programmessagemanager->save_messages($data)) {
-            totara_set_notification(get_string('programupdatefail', 'local_program'), $currenturl);
+        if (!$programmessagemanager->save_messages($data)) {
+            totara_set_notification(get_string('programupdatefail', 'totara_program'), $currenturl);
         } else {
-            totara_set_notification(get_string('programmessagessaved', 'local_program'), 'edit_messages.php?id='.$id, array('class' => 'notifysuccess'));
+            totara_set_notification(get_string('programmessagessaved', 'totara_program'), 'edit_messages.php?id='.$id, array('class' => 'notifysuccess'));
         }
     }
 
@@ -142,24 +143,32 @@ add_to_log(SITEID, 'program', 'view messages', "edit_messages.php?id={$program->
 $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
 $heading = format_string($program->fullname);
-$pagetitle = format_string(get_string('program', 'local_program').': '.$heading);
+$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
 $navlinks = array();
 $navlinks[] = array('name' => get_string('manageprograms', 'admin'), 'link'=> $CFG->wwwroot . '/course/categorylist.php?viewtype=program', 'type'=>'title');
 $navlinks = array_merge($navlinks, $category_breadcrumbs);
 $navlinks[] = array('name' => format_string($program->shortname), 'link'=> $viewurl, 'type'=>'title');
-$navlinks[] = array('name' => get_string('editprogrammessages', 'local_program'), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string('editprogrammessages', 'totara_program'), 'link'=> '', 'type'=>'title');
 
 //Javascript includes
-require_js(array(
-    $CFG->wwwroot.'/totara/program/messages/program_messages.js.php?id='.$program->id,
-));
+$PAGE->requires->strings_for_js(array('editmessages','saveallchanges',
+         'confirmmessagechanges','youhaveunsavedchanges','youhaveunsavedchanges',
+         'tosavemessages'),
+      'totara_program');
+$args = array('args'=>'{"id":'.$program->id.'}');
+$jsmodule = array(
+     'name' => 'totara_programmessages',
+     'fullpath' => '/totara/program/messages/program_messages.js',
+     'requires' => array('json'));
+$PAGE->requires->js_init_call('M.totara_programmessages.init',$args, false, $jsmodule);
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-print_container_start(false, 'program messages', 'program-messages');
+echo $OUTPUT->container_start('program messages', 'program-messages');
 
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
+$renderer = $PAGE->get_renderer('totara_program');
 // Display the current status
 echo $program->display_current_status();
 $exceptions = $program->get_exception_count();
@@ -170,8 +179,8 @@ require('tabs.php');
 // Display the form
 $messageseditform->display();
 
-echo $program->get_cancel_button();
+echo $renderer->get_cancel_button(array('id' => $program->id));
 
-print_container_end();
+echo $OUTPUT->container_end();
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();

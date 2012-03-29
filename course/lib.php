@@ -4359,3 +4359,11 @@ function get_course_custom_fields($courseid) {
 
     return $DB->get_records_sql($sql, array($courseid));
 }
+
+/**
+ * TODO SCANMSG
+ * Stub to stop errors during porting
+ */
+function get_category_breadcrumbs($category) {
+    return array();
+}

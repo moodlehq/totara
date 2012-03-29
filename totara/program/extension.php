@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ $extensionreason = optional_param('extreason', '', PARAM_TEXT);
 
 if ($USER->id != $userid) {
     @header('HTTP/1.0 404 Not Found');
-    echo get_string('error:cannotrequestextnotuser', 'local_program');
+    echo get_string('error:cannotrequestextnotuser', 'totara_program');
     return false;
 }
 
@@ -43,13 +43,13 @@ $program = new program($programid);
 
 if (!$extensionrequest || !$extensiondate || !$extensionreason) {
     @header('HTTP/1.0 404 Not Found');
-    echo get_string('error:processingextrequest', 'local_program');
+    echo get_string('error:processingextrequest', 'totara_program');
     return false;
 }
 
 if (!$manager = totara_get_manager($userid)) {
     @header('HTTP/1.0 404 Not Found');
-    echo get_string('extensionrequestfailed:nomanager', 'local_program');
+    echo get_string('extensionrequestfailed:nomanager', 'totara_program');
     return false;
 }
 
@@ -75,39 +75,39 @@ $extension->extensiondate = $extensiondate_timestamp;
 
 // Validated extension date to make sure it is after
 // current due date and not in the past
-if ($prog_completion = get_record('prog_completion', 'programid', $program->id, 'userid', $userid, 'coursesetid', 0)) {
+if ($prog_completion = $DB->get_record('prog_completion', array('programid' => $program->id, 'userid' => $userid, 'coursesetid' => 0))) {
     $duedate = empty($prog_completion->timedue) ? 0 : $prog_completion->timedue;
 
     if ($extensiondate_timestamp < $duedate) {
         @header('HTTP/1.0 404 Not Found');
-        echo get_string('extensionearlierthanduedate', 'local_program');
+        echo get_string('extensionearlierthanduedate', 'totara_program');
         return false;
     }
 } else {
     @header('HTTP/1.0 404 Not Found');
-    echo get_string('error:noprogramcompletionfound', 'local_program');
+    echo get_string('error:noprogramcompletionfound', 'totara_program');
     return false;
 }
 
 $now = time();
 if ($extensiondate_timestamp < $now) {
     @header('HTTP/1.0 404 Not Found');
-    echo get_string('extensionbeforenow', 'local_program');
+    echo get_string('extensionbeforenow', 'totara_program');
     return false;
 }
 
 $extension->extensionreason = $extensionreason;
 $extension->status = 0;
 
-if ($extensionid = insert_record('prog_extension', $extension)) {
+if ($extensionid = $DB->insert_record('prog_extension', $extension)) {
 
     $extension_message = new prog_extension_request_message($program->id, $extension->userid);
     $managermessagedata = $extension_message->get_manager_message_data();
-    $managermessagedata->subject = get_string('extensionrequest', 'local_program');
-    $managermessagedata->fullmessage = stripslashes(get_string('extensionrequestmessage', 'local_program', (object)$extensiondata));
+    $managermessagedata->subject = get_string('extensionrequest', 'totara_program');
+    $managermessagedata->fullmessage = get_string('extensionrequestmessage', 'totara_program', (object)$extensiondata);
 
     // Get user to send message to
-    $user = get_record('user', 'id', $userid);
+    $user = $DB->get_record('user', array('id' => $userid));
 
     if ($extension_message->send_message($manager, $user)) {
         // Calcuate the new time and print pending extension text
@@ -115,12 +115,12 @@ if ($extensionid = insert_record('prog_extension', $extension)) {
         echo $program->get_time_allowance_and_extension_text($userid, false);
     } else {
         @header('HTTP/1.0 404 Not Found');
-        echo get_string('extensionrequestnotsent', 'local_program');
+        echo get_string('extensionrequestnotsent', 'totara_program');
         return false;
     }
 
 } else {
     @header('HTTP/1.0 404 Not Found');
-    echo get_string('extensionrequestfailed', 'local_program');
+    echo get_string('extensionrequestfailed', 'totara_program');
     return false;
 }

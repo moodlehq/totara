@@ -54,7 +54,7 @@ if ($programid = $DB->get_field('dp_plan_program_assign', 'programid', array('id
     $args = array('args'=>'{"id":'.$programid.', "userid":'.$USER->id.', "notify_html_fail":"'.$notify_html_fail.'", "notify_html":"'.$notify_html.'"}');
     $jsmodule = array(
                  'name' => 'totara_programview',
-                 'fullpath' => '/totara/program/messages/program_view.js',
+                 'fullpath' => '/totara/program/view/program_view.js',
                  'requires' => array('json')
               );
     $PAGE->requires->js_init_call('M.totara_programview.init',$args, false, $jsmodule);

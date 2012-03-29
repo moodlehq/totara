@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,20 +46,32 @@ if ($action == 'edit') {
         TOTARA_JS_ICON_PREVIEW,
         TOTARA_JS_PLACEHOLDER
     ));
-    require_js(array(
-        "{$CFG->wwwroot}/totara/program/program.edit.js",
-    ));
+
+    $PAGE->requires->string_for_js('youhaveunsavedchanges', 'totara_program');
+    $args = array('args'=>'{"id":'.$id.'}');
+    $jsmodule = array(
+            'name' => 'totara_programedit',
+            'fullpath' => '/totara/program/program_edit.js',
+            'requires' => array('json'));
+    $PAGE->requires->js_init_call('M.totara_programedit.init',$args, false, $jsmodule);
+
+    // attach a date picker to the available until/from fields
+    build_datepicker_js(
+        'input[name="availablefromselector"], input[name="availableuntilselector"]'
+    );
+
 }
+
 
 $program = new program($id);
+$programcontext = $program->get_context();
 
-if (!has_capability('totara/program:configureprogram', $program->get_context())) {
-    print_error('error:nopermissions', 'local_program');
+if (!has_capability('totara/program:configureprogram', $programcontext)) {
+    print_error('error:nopermissions', 'totara_program');
 }
 
-
-if (!$category = get_record('course_categories', 'id', $program->category)) {
-    print_error('Unable to determine the program\'s category');
+if (!$category = $DB->get_record('course_categories', array('id' => $program->category))) {
+    print_error('error:determineprogcat', 'totara_program');
 }
 
 $currenturl = qualified_me();
@@ -70,11 +82,18 @@ $categoryindexurl = "{$CFG->wwwroot}/course/category.php?id={$category->id}&amp;
 $editcontenturl = "{$CFG->wwwroot}/totara/program/edit_content.php?id={$program->id}";
 $editassignmentsurl = "{$CFG->wwwroot}/totara/program/edit_assignments.php?id={$program->id}";
 $editmessagesurl = "{$CFG->wwwroot}/totara/program/edit_messages.php?id={$program->id}";
+//set up textareas
+$program->endnoteformat = FORMAT_HTML;
+$program->summaryformat = FORMAT_HTML;
+$program = file_prepare_standard_editor($program, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                          'totara_program', 'progsummary', $id);
 
-$detailsform = new program_edit_form($currenturl, array('program'=>$program, 'action'=>$action, 'category'=>$category), 'post', '', array('name'=>'form_prog_details'));
+$program = file_prepare_standard_editor($program, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+                                          'totara_program', 'progendnote', $id);
+$detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $category, 'editoroptions' => $TEXTAREA_OPTIONS), 'post', '', array('name'=>'form_prog_details'));
 
 if ($detailsform->is_cancelled()) {
-    totara_set_notification(get_string('programupdatecancelled', 'local_program'), $viewurl, array('class' => 'notifysuccess'));
+    totara_set_notification(get_string('programupdatecancelled', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
 }
 
 // Redirect to delete page if deleting
@@ -86,7 +105,7 @@ if ($action == 'delete') {
 if ($data = $detailsform->get_data()) {
     if (isset($data->edit)) {
         redirect($editurl);
-    } else if(isset($data->savechanges)) {
+    } else if (isset($data->savechanges)) {
 
         // Preprocess to convert string dates e.g. '23/11/2012' to a unix timestamp
         $data->availablefrom = ($data->availablefromselector) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->availablefromselector) : 0;
@@ -101,14 +120,12 @@ if ($data = $detailsform->get_data()) {
         }
 
         // Save program data
-        if (!update_record('prog', $data)) {
-            totara_set_notification(get_string('programupdatefail', 'local_program'), $editurl);
-        } else {
-            if(isset($data->savechanges)) {
-                $nexturl = $viewurl;
-            }
-            totara_set_notification(get_string('programdetailssaved', 'local_program'), $nexturl, array('class' => 'notifysuccess'));
+        $DB->update_record('prog', $data);
+
+        if (isset($data->savechanges)) {
+            $nexturl = $viewurl;
         }
+        totara_set_notification(get_string('programdetailssaved', 'totara_program'), $nexturl, array('class' => 'notifysuccess'));
     }
 
     // Reload program to reflect any changes
@@ -125,7 +142,7 @@ add_to_log(SITEID, 'program', 'view', "edit.php?id={$program->id}", $program->fu
 $programpagelinks = '';
 $pageid = 'program-overview';
 
-if($action=='edit') {
+if ($action == 'edit') {
     $currenttab = 'details';
     $heading = $program->fullname;
     $pageid = 'program-overview-details';
@@ -135,34 +152,32 @@ if($action=='edit') {
 }
 
 
-$pagetitle = format_string(get_string('program', 'local_program').': '.$heading);
-$navlinks = array();
+$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
 
 $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
-if($action=='edit') {
-    $navlinks[] = array('name' => get_string('manageprograms', 'admin'), 'link'=> $CFG->wwwroot . '/course/categorylist.php?viewtype=program', 'type'=>'title');
-    $navlinks = array_merge($navlinks, $category_breadcrumbs);
-    $navlinks[] = array('name' => $program->shortname, 'link'=> $viewurl, 'type'=>'title');
-    $navlinks[] = array('name' => ucwords($action), 'link'=> '', 'type'=>'title');
+if ($action == 'edit') {
+    $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
+    foreach ($category_breadcrumbs as $node) {
+        $PAGE->add($node);
+    }
+    $PAGE->navbar->add($program->shortname, $viewurl);
+    $PAGE->navbar->add(ucwords($action));
 } else {
-    $navlinks[] = array('name' => get_string('manageprograms', 'admin'), 'link'=> $CFG->wwwroot . '/course/categorylist.php?viewtype=program', 'type'=>'title');
-    $navlinks = array_merge($navlinks, $category_breadcrumbs);
-    $navlinks[] = array('name' => $program->shortname, 'link'=> '', 'type'=>'title');
+    $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
+    foreach ($category_breadcrumbs as $node) {
+        $PAGE->add($node);
+    }
+    $PAGE->navbar->add($program->shortname);
 }
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-/// Print link to roles
-if (has_capability('moodle/role:assign', $program->get_context())) {
-    echo '<div class="rolelink"><a href="'.$CFG->wwwroot.'/'.$CFG->admin.'/roles/assign.php?contextid='.
-        $program->get_context()->id.'">'.get_string('assignroles','role').'</a></div>';
-}
+echo $OUTPUT->container_start('program overview', $pageid);
 
-print_container_start(false, 'program overview', $pageid);
+echo $OUTPUT->heading($heading);
 
-print_heading($heading);
-
+$renderer = $PAGE->get_renderer('totara_program');
 // Display the current status
 echo $program->display_current_status();
 $exceptions = $program->get_exception_count();
@@ -176,8 +191,11 @@ $program->availableuntilselector = $program->availableuntil > 0 ? userdate($prog
 $detailsform->set_data($program);
 $detailsform->display();
 
+if ($action == 'view') {
+    echo $OUTPUT->single_button(new moodle_url('/totara/program/edit.php', array('id' => $program->id, 'action' => 'edit')), get_string('editprogramdetails', 'totara_program'), 'get');
+}
 // display content, assignments and messages if in view mode
-if($action=='view') {
+if ($action == 'view') {
 
     // display the content form
     $contentform = new program_content_nonedit_form($editcontenturl, array('program'=>$program), 'get');
@@ -202,112 +220,8 @@ if($action=='view') {
 }
 
 if ($action == 'edit') {
-    echo $program->get_cancel_button();
+    echo $renderer->get_cancel_button(array('id' => $program->id));
 }
 
-print_container_end();
-
-if ($action == 'edit') {
-    $unsavedchangesstr = get_string('youhaveunsavedchanges','local_program');
-
-    // attach a date picker to the available until/from fields
-    echo build_datepicker_js(
-        'input[name="availablefromselector"], input[name="availableuntilselector"]'
-    );
-
-    print <<<HEREDOC
-<script type="text/javascript">
-
-    $(function() {
-
-        // attach a function to the page to prevent unsaved changes from being lost
-        // when navigating away
-        window.onbeforeunload = function(e) {
-
-            var modified = isFormModified();
-
-            if(modified==true) {
-
-                // For IE and Firefox
-                if (e) {
-                    e.returnValue = "{$unsavedchangesstr}";
-                }
-
-                // For Safari
-                return "{$unsavedchangesstr}";
-
-            }
-        };
-
-        // remove the 'unsaved changes' confirmation when submitting the form
-        $('form[name="form_prog_details"]').submit(function(){
-            window.onbeforeunload = null;
-        });
-
-        // Remove the 'unsaved changes' confirmation when clicking th 'Cancel program management' link
-        $('#cancelprogramedits').click(function(){
-            window.onbeforeunload = null;
-            return true;
-        });
-
-
-        storeInitialFormValues();
-    });
-
-    // Stores the initial values of the form when the page is loaded
-    function storeInitialFormValues() {
-        var form = $('form[name="form_prog_details"]');
-        $('input[type="text"], textarea, select', form).each(function() {
-            $(this).attr('initialValue', $(this).val());
-        });
-
-        $('input[type="checkbox"]', form).each(function() {
-            var checked = $(this).attr('checked') ? 1 : 0;
-            $(this).attr('initialValue', checked);
-        });
-    }
-
-    // Checks if the form is modified by comparing the initial and current values
-    function isFormModified() {
-        var form = $('form[name="form_prog_details"]');
-        var isModified = false;
-
-        // Check if text inputs or selects have been changed
-        $('input[type="text"], select', form).each(function() {
-            if ($(this).attr('initialValue') != $(this).val()) {
-                isModified = true;
-            }
-        });
-
-        // Check if check boxes have changed
-        $('input[type="checkbox"]', form).each(function() {
-            var checked = $(this).attr('checked') ? 1 : 0;
-            if ($(this).attr('initialValue') != checked) {
-                isModified = true;
-            }
-        });
-
-        // Check if textareas have been changed
-        $('textarea', form).each(function() {
-            // See if there's a tiny MCE instance for this text area
-            var instance = tinyMCE.getInstanceById($(this).attr('id'));
-            if (instance != undefined) {
-                if (instance.isDirty()) {
-                    isModified = true;
-                }
-            } else {
-                // normal textarea (not tinyMCE)
-                if ($(this).attr('initialValue') != $(this).val()) {
-                    isModified = true;
-                }
-            }
-        });
-
-        return isModified;
-    }
-
-</script>
-HEREDOC;
-}
-
-admin_externalpage_print_footer();
+echo $OUTPUT->container_end();
+echo $OUTPUT->footer();

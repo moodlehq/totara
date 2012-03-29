@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot.'/totara/program/lib.php');
-require_once($CFG->dirroot.'/lib/pear/HTML/AJAX/JSON.php');
 
+$PAGE->set_context(context_system::instance());
 require_login();
 
 
@@ -66,23 +66,23 @@ if (class_exists($classname)) {
     $itemnames .= '"'.$items[0]->fullname.'"';
     }
     else {
-    for($i = 0; $i < $num; $i++) {
+    for ($i = 0; $i < $num; $i++) {
         // If not last item
         if ($i == 0) {
-        $itemnames .= ' "'.$items[$i]->fullname.'"';
+            $itemnames .= ' "'.$items[$i]->fullname.'"';
         }
         else if ($i != $num-1) {
-        $itemnames .= ', "'.$items[$i]->fullname.'"';
+            $itemnames .= ', "'.$items[$i]->fullname.'"';
         }
         else {
-        $itemnames .= ' and "'.$items[$i]->fullname.'"';
+            $itemnames .= ' and "'.$items[$i]->fullname.'"';
         }
     }
     }
     $a = new stdClass();
     $a->itemnames = $itemnames;
     $a->affectedusers = $users;
-    $html = get_string('youhaveadded','local_program',$a);
+    $html = get_string('youhaveadded', 'totara_program', $a);
 
     $data = array(
     'html'      => $html,

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
  *
  * @author Ben Lobo <ben.lobo@kineo.com>
  * @package totara
- * @subpackage plan
+ * @subpackage program
  */
 
 
@@ -27,6 +27,7 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_competency_linkedcourses.class.php');
 require_once("{$CFG->dirroot}/totara/program/lib.php");
 
+$PAGE->set_context(get_system_context());
 require_login();
 
 ///
@@ -57,7 +58,7 @@ require_capability('totara/program:configurecontent', program_get_context($id));
 
 // Load dialog content generator
 $dialog = new totara_dialog_content_competency_linkedcourses($frameworkid);
-
+$dialog->lang_file = 'totara_hierarchy';
 // Toggle treeview only display
 $dialog->show_treeview_only = $treeonly;
 

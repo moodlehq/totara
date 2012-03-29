@@ -1,0 +1,41 @@
+img.program-warning {
+    float: left;
+    padding-right: 5px;
+}
+
+/*****************************************************************************/
+/** Program Exceptions **/
+/*****************************************************************************/
+
+#programexceptions .exceptionactions div{
+    float:left;
+    padding-right:5px;
+    padding-left:0px;
+}
+
+#programexceptions .exceptionactions{
+    float: none;
+    height: 35px;
+    margin-top: 10px;
+    padding-top: 10px;
+    margin-bottom:20px;
+}
+
+#programexceptions .exceptionactions p{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+body.course h1.main,
+body.course h3.main {
+    text-align: left;
+}
+
+p.course-prog-alt-view {
+    float: right;
+}
+
+#programexceptions .exceptionactions{
+    background: none repeat scroll 0 0 #F0F0F0;
+}
+

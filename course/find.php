@@ -29,7 +29,7 @@ require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
 $format = optional_param('format','', PARAM_TEXT); // export format
 
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 if ($CFG->forcelogin) {
     require_login();
 }
@@ -58,7 +58,6 @@ $fullname = format_string($report->fullname);
 $pagetitle = format_string(get_string('report','totara_core').': '.$fullname);
 
 $PAGE->set_url('/course/find.php');
-$PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('admin');
 $PAGE->navbar->add($fullname, new moodle_url("/course/find.php"));
 $PAGE->navbar->add(get_string('search'));

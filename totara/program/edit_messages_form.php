@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,7 +99,7 @@ class program_messages_edit_form extends moodleform {
 
         $template_values = $this->template_values;
 
-        foreach($template_values as $replacestr=>$namevaluepair) {
+        foreach ($template_values as $replacestr => $namevaluepair) {
             $elementname = $namevaluepair['name'];
             $elementvalue = $namevaluepair['value'];
             $this->interpolated_html = str_replace($replacestr, $this->renderer->elementToHtml($elementname, $elementvalue), $this->interpolated_html);
@@ -116,22 +116,21 @@ class program_messages_edit_form extends moodleform {
         $mform = $this->_form;
         $html = '';
 
-        if(isset($mform->_errors) && !empty($mform->_errors)) {
+        if (isset($mform->_errors) && !empty($mform->_errors)) {
 
             $mform->addElement('static', 'errors');
-            $mform->setConstant('errors', get_string('errorsinform', 'local_program'));
-            $this->template_values['%errors%'] = array('name'=>'errors', 'value'=>null);
-            $html .= '<div class="error">%errors%</div>';
+            $mform->setConstant('errors', get_string('errorsinform', 'totara_program'));
+            $this->template_values['%errors%'] = array('name' => 'errors', 'value' => null);
+            $html .= html_writer::start_tag('div', array('class' => 'error')) . '%errors%' . html_writer::end_tag('div');
 
-            $html .= '<ul id="errors">';
-
-            foreach($mform->_errors as $error_element=>$error_message) {
+            $html .= html_writer::start_tag('ul', array('id' => 'errors'));
+            foreach ($mform->_errors as $error_element => $error_message) {
                 $mform->addElement('static', $error_element.'_error');
                 $mform->setConstant($error_element.'_error', $error_message);
-                $this->template_values['%'.$error_element.'_error%'] = array('name'=>$error_element.'_error', 'value'=>null);
-                $html .= '<li class="error">%'.$error_element.'_error%</li>';
+                $this->template_values['%'.$error_element.'_error%'] = array('name' => $error_element.'_error', 'value' => null);
+                $html .= html_writer::start_tag('li', array('class' => 'error')) .'%'.$error_element.'_error%' . html_writer::end_tag('li');
             }
-            $html .= '</ul>';
+            $html .= html_writer::end_tag('ul');
 
             $this->template_html = $html.$this->template_html;
         }
@@ -148,27 +147,25 @@ class program_messages_edit_form extends moodleform {
         $mform = $this->_form;
         $errors = array();
 
-        foreach($data as $elementname=>$elementvalue) {
+        foreach ($data as $elementname => $elementvalue) {
 
             // check for time allowance issues
-            if(preg_match('/[0-9]messagesubject/', $elementname)) {
+            if (preg_match('/[0-9]messagesubject/', $elementname)) {
                 $messagesubject = $elementvalue;
-                if($messagesubject == '') {
-                    $errors[$elementname] = get_string('error:messagesubject_empty', 'local_program');
+                if ($messagesubject == '') {
+                    $errors[$elementname] = get_string('error:messagesubject_empty', 'totara_program');
                 }
             }
 
             // check for course sets with no courses
-            if(preg_match('/[0-9]mainmessage/', $elementname)) {
+            if (preg_match('/[0-9]mainmessage/', $elementname)) {
                 $mainmessage = $elementvalue;
-                if(empty($mainmessage)) {
-                    $errors[$elementname] = get_string('error:mainmessage_empty', 'local_program');
+                if (empty($mainmessage)) {
+                    $errors[$elementname] = get_string('error:mainmessage_empty', 'totara_program');
                 }
             }
-
         }
 
         return $errors;
     }
-
 }

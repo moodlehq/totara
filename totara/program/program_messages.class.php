@@ -3,7 +3,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,17 +68,18 @@ class prog_messages_manager {
     );
 
     function __construct($programid) {
-
+        global $DB;
         $this->programid = $programid;
         $this->messages = array();
         $this->messages_deleted_ids = array();
         $this->formdataobject = new stdClass();
 
-        if ($messages = get_records('prog_message', 'programid', $programid, 'sortorder ASC')) {
+        $messages = $DB->get_records('prog_message', array('programid' => $programid), 'sortorder ASC');
+        if (count($messages) > 0) {
             foreach ($messages as $message) {
 
                 if (!array_key_exists($message->messagetype, $this->message_classnames)) {
-                    throw new ProgramMessageException(get_string('meesagetypenotfound','local_program'));
+                    throw new ProgramMessageException(get_string('meesagetypenotfound', 'totara_program'));
                 }
 
                 $message_class = $this->message_classnames[$message->messagetype];
@@ -89,14 +90,14 @@ class prog_messages_manager {
         } else { // if the default messages don't already exist, create them
             $enrolment_message_class = $this->message_classnames[MESSAGETYPE_ENROLMENT];
             $enrolment_message = new $enrolment_message_class($programid);
-            $enrolment_message->messagesubject = get_string('defaultenrolmentmessage_subject', 'local_program');
-            $enrolment_message->mainmessage = get_string('defaultenrolmentmessage_message', 'local_program');
+            $enrolment_message->messagesubject = get_string('defaultenrolmentmessage_subject', 'totara_program');
+            $enrolment_message->mainmessage = get_string('defaultenrolmentmessage_message', 'totara_program');
             $this->messages[] = $enrolment_message;
 
             $exception_report_message_class = $this->message_classnames[MESSAGETYPE_EXCEPTION_REPORT];
             $exception_report_message = new $exception_report_message_class($programid);
-            $exception_report_message->messagesubject = get_string('defaultexceptionreportmessage_subject', 'local_program');
-            $exception_report_message->mainmessage = get_string('defaultexceptionreportmessage_message', 'local_program');
+            $exception_report_message->messagesubject = get_string('defaultexceptionreportmessage_subject', 'totara_program');
+            $exception_report_message->mainmessage = get_string('defaultexceptionreportmessage_message', 'totara_program');
             $this->messages[] = $exception_report_message;
 
             // the default message must be saved at this point
@@ -115,7 +116,7 @@ class prog_messages_manager {
      * @return <type>
      */
     static function cmp_message_sortorder( $a, $b ) {
-        if(  $a->sortorder ==  $b->sortorder ){ return 0 ; }
+        if ($a->sortorder ==  $b->sortorder ) { return 0 ; }
         return ($a->sortorder < $b->sortorder) ? -1 : 1;
     }
 
@@ -135,33 +136,20 @@ class prog_messages_manager {
      * @return bool
      */
     public function delete() {
+        global $DB;
 
-        $result = true;
-
-	begin_sql();
+        $transaction = $DB->start_delegated_transaction();
 
         // delete the history of all sent messages
-        foreach($this->messages as $message) {
-            if($result) {
-                $result = $result && delete_records('prog_messagelog', 'messageid', $message->id);
-            } else {
-                break;
-            }
+        foreach ($this->messages as $message) {
+            $DB->delete_records('prog_messagelog', array('messageid' => $message->id));
         }
-
         // delete all messages
-        if($result) {
-            $result = $result && delete_records('prog_message', 'programid', $this->programid);
-        }
+        $DB->delete_records('prog_message', array('programid' => $this->programid));
 
-	if ($result) {
-	    commit_sql();
-	}
-	else {
-	    rollback_sql();
-	}
+        $transaction->allow_commit();
 
-        return $result;
+        return true;
     }
 
     /**
@@ -176,29 +164,29 @@ class prog_messages_manager {
      */
     public function fix_message_sortorder(&$messages=null) {
 
-        if($messages==null) {
+        if ($messages == null) {
             $messages = $this->messages;
         }
 
         usort($messages, array('prog_messages_manager', 'cmp_message_sortorder'));
 
         $pos = 1;
-        foreach($messages as $message) {
+        foreach ($messages as $message) {
 
             $message->sortorder = $pos;
 
             unset($message->isfirstmessage);
-            if($pos == 1) {
+            if ($pos == 1) {
                 $message->isfirstmessage = true;
             }
 
             unset($message->isfirstmoveablemessage);
-            if($pos == 3) {
+            if ($pos == 3) {
                 $message->isfirstmoveablemessage = true;
             }
 
             unset($message->islastmessage);
-            if($pos == count($messages)) {
+            if ($pos == count($messages)) {
                 $message->islastmessage = true;
             }
 
@@ -226,12 +214,12 @@ class prog_messages_manager {
 
         $this->messages = array();
 
-        foreach($message_prefixes as $prefix) {
+        foreach ($message_prefixes as $prefix) {
 
             $messagetype = $formdata->{$prefix.'messagetype'};
 
-            if( ! array_key_exists($messagetype, $this->message_classnames)) {
-                throw new ProgramMessageException(get_string('meesagetypenotfound','local_program'));
+            if (!array_key_exists($messagetype, $this->message_classnames)) {
+                throw new ProgramMessageException(get_string('meesagetypenotfound', 'totara_program'));
             }
 
             $message_class = $this->message_classnames[$messagetype];
@@ -253,7 +241,7 @@ class prog_messages_manager {
      */
     public function get_last_message_pos() {
         $sortorder = null;
-        foreach($this->messages as $message) {
+        foreach ($this->messages as $message) {
             $sortorder = max($sortorder, $message->sortorder);
         }
         return $sortorder;
@@ -268,7 +256,7 @@ class prog_messages_manager {
      * @return array
      */
     public function get_message_prefixes($formdata) {
-        if( ! isset($formdata->messageprefixes) || empty($formdata->messageprefixes)) {
+        if (!isset($formdata->messageprefixes) || empty($formdata->messageprefixes)) {
             return array();
         } else {
             return explode(',', $formdata->messageprefixes);
@@ -283,7 +271,7 @@ class prog_messages_manager {
      * @return <type>
      */
     public function get_deleted_messages($formdata) {
-        if( ! isset($formdata->deletedmessages) || empty($formdata->deletedmessages)) {
+        if (!isset($formdata->deletedmessages) || empty($formdata->deletedmessages)) {
             return array();
         }
         return explode(',', $formdata->deletedmessages);
@@ -304,8 +292,8 @@ class prog_messages_manager {
 
         // if a submit button was clicked, try to determine if it relates to a
         // message and, if so, return the message sort order
-        foreach($message_prefixes as $prefix) {
-            if(isset($formdata->{$prefix.$action})) {
+        foreach ($message_prefixes as $prefix) {
+            if (isset($formdata->{$prefix.$action})) {
                 return $formdata->{$prefix.'sortorder'};
             }
         }
@@ -314,27 +302,23 @@ class prog_messages_manager {
     }
 
     public function save_messages() {
-
+        global $DB;
         $this->fix_message_sortorder($this->messages);
 
         // first delete any messages from the database that have been marked for deletion
-        foreach($this->messages_deleted_ids as $messageid) {
+        foreach ($this->messages_deleted_ids as $messageid) {
 
-            if($message = get_record('prog_message', 'id', $messageid)) {
-
+            if ($message = $DB->get_record('prog_message', array('id' => $messageid))) {
                 // delete any logged messages sent for this message
-                delete_records('prog_messagelog', 'messageid', $messageid);
-
+                $DB->delete_records('prog_messagelog', array('messageid' => $messageid));
                 // delete the message
-                if( ! delete_records('prog_message', 'id', $messageid)) {
-                    return false;
-                }
+                $DB->delete_records('prog_message', array('id' => $messageid));
             }
         }
 
         // then save the new and changed messages
-        foreach($this->messages as $message) {
-            if( ! $message->save_message()) {
+        foreach ($this->messages as $message) {
+            if (!$message->save_message()) {
                 return false;
             }
         }
@@ -349,18 +333,18 @@ class prog_messages_manager {
      */
     public function move_message_up($messagetomove_sortorder) {
 
-        foreach($this->messages as $current_message) {
+        foreach ($this->messages as $current_message) {
 
-            if($current_message->sortorder == $messagetomove_sortorder) {
+            if ($current_message->sortorder == $messagetomove_sortorder) {
                 $messagetomoveup = $current_message;
             }
 
-            if($current_message->sortorder == $messagetomove_sortorder-1) {
+            if ($current_message->sortorder == $messagetomove_sortorder-1) {
                 $messagetomovedown = $current_message;
             }
         }
 
-        if($messagetomoveup && $messagetomovedown) {
+        if ($messagetomoveup && $messagetomovedown) {
             $moveup_sortorder = $messagetomoveup->sortorder;
             $movedown_sortorder = $messagetomovedown->sortorder;
             $messagetomoveup->sortorder = $movedown_sortorder;
@@ -380,18 +364,18 @@ class prog_messages_manager {
      */
     public function move_message_down($messagetomove_sortorder) {
 
-        foreach($this->messages as $current_message) {
+        foreach ($this->messages as $current_message) {
 
-            if($current_message->sortorder == $messagetomove_sortorder) {
+            if ($current_message->sortorder == $messagetomove_sortorder) {
                 $messagetomovedown = $current_message;
             }
 
-            if($current_message->sortorder == $messagetomove_sortorder+1) {
+            if ($current_message->sortorder == $messagetomove_sortorder+1) {
                 $messagetomoveup = $current_message;
             }
         }
 
-        if($messagetomovedown && $messagetomoveup) {
+        if ($messagetomovedown && $messagetomoveup) {
             $movedown_sortorder = $messagetomovedown->sortorder;
             $moveup_sortorder = $messagetomoveup->sortorder;
             $messagetomovedown->sortorder = $moveup_sortorder;
@@ -413,14 +397,14 @@ class prog_messages_manager {
 
         $lastmessagepos = $this->get_last_message_pos();
 
-        if( ! array_key_exists($messagetype, $this->message_classnames)) {
-            throw new ProgramMessageException(get_string('meesagetypenotfound','local_program'));
+        if (!array_key_exists($messagetype, $this->message_classnames)) {
+            throw new ProgramMessageException(get_string('meesagetypenotfound', 'totara_program'));
         }
 
         $message_class = $this->message_classnames[$messagetype];
         $message = new $message_class($this->programid);
 
-        if($lastmessagepos !== null) {
+        if ($lastmessagepos !== null) {
             $message->sortorder = $lastmessagepos + 1;
         } else {
             $message->sortorder = 1;
@@ -445,10 +429,10 @@ class prog_messages_manager {
         $new_messages = array();
         $messagefound = false;
 
-        foreach($this->messages as $message) {
-            if($message->sortorder == $messagetodelete_sortorder) {
+        foreach ($this->messages as $message) {
+            if ($message->sortorder == $messagetodelete_sortorder) {
                 $messagefound = true;
-                if($message->id > 0) { // if this message already exists in the database
+                if ($message->id > 0) { // if this message already exists in the database
                     $this->messages_deleted_ids[] = $message->id;
                 }
             } else {
@@ -456,7 +440,7 @@ class prog_messages_manager {
             }
         }
 
-        if($messagefound) {
+        if ($messagefound) {
             $this->messages = $new_messages;
             $this->fix_message_sortorder($this->messages);
             return true;
@@ -477,7 +461,7 @@ class prog_messages_manager {
      */
     public function display_form_label() {
         $out = '';
-        $out .= get_string('instructions:messages1', 'local_program');
+        $out .= get_string('instructions:messages1', 'totara_program');
         return $out;
     }
 
@@ -491,16 +475,16 @@ class prog_messages_manager {
 
         $out = '';
 
-        if(count($this->messages)) {
+        if (count($this->messages)) {
             $messagecount = 0;
-            foreach($this->messages as $message) {
+            foreach ($this->messages as $message) {
                 $messageclassname = $this->message_classnames[$message->messagetype];
                 $styleclass = ($messagecount % 2 == 0) ? 'even' : 'odd';
-                $out .= '<p class="'.$styleclass.'">'.get_string($messageclassname, 'local_program').'</p>';
+                $out .= html_writer::tag('p', get_string($messageclassname, 'totara_program'), array('class' => $styleclass));
                 $messagecount++;
             }
         } else {
-            $out .= get_string('noprogrammessages', 'local_program');
+            $out .= get_string('noprogrammessages', 'totara_program');
         }
 
         return $out;
@@ -508,7 +492,7 @@ class prog_messages_manager {
 
     public function get_message_form_template(&$mform, &$template_values, $messages=null, $updateform=true) {
 
-        if($messages==null) {
+        if ($messages == null) {
             $messages = $this->messages;
         }
 
@@ -521,14 +505,14 @@ class prog_messages_manager {
         // behaviour. This is not official browser behaviour but in most browsers
         // this should result in this button being submitted (where a form has
         // multiple submit buttons like this one)
-        if($updateform) {
-            $mform->addElement('submit', 'update', get_string('update', 'local_program'));
+        if ($updateform) {
+            $mform->addElement('submit', 'update', get_string('update', 'totara_program'));
             $template_values['%update%'] = array('name'=>'update', 'value'=>null);
         }
         $templatehtml .= '%update%'."\n";
 
         // Add the program id
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('hidden', 'id');
             $mform->setType('id', PARAM_INT);
             $template_values['%programid%'] = array('name'=>'id', 'value'=>null);
@@ -540,7 +524,7 @@ class prog_messages_manager {
         // (used by javascript to determine whether or not to display a
         // dialog when the user leaves the page)
         $messageschanged = $this->messageschanged ? '1' : '0';
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('hidden', 'messageschanged', $messageschanged);
             $mform->setType('messageschanged', PARAM_BOOL);
             $mform->setConstant('messageschanged', $messageschanged);
@@ -550,13 +534,13 @@ class prog_messages_manager {
         $this->formdataobject->messageschanged = $messageschanged;
 
         // Add the deleted message ids
-        if($this->messages_deleted_ids) {
+        if ($this->messages_deleted_ids) {
             $deletedmessageidsarray = array();
-            foreach($this->messages_deleted_ids as $deleted_message_id) {
+            foreach ($this->messages_deleted_ids as $deleted_message_id) {
                 $deletedmessageidsarray[] = $deleted_message_id;
             }
             $deletedmessageidsstr = implode(',', $deletedmessageidsarray);
-            if($updateform) {
+            if ($updateform) {
                 $mform->addElement('hidden', 'deletedmessages', $deletedmessageidsstr);
                 $mform->setType('deletedmessages', PARAM_SEQUENCE);
                 $mform->setConstant('deletedmessages', $deletedmessageidsstr);
@@ -566,26 +550,25 @@ class prog_messages_manager {
             $this->formdataobject->deletedmessages = $deletedmessageidsstr;
         }
 
-        $templatehtml .= '<fieldset id="programmessages">';
-        $templatehtml .= '<legend class="ftoggler">'.get_string('programmessages', 'local_program').'</legend>';
-        $templatehtml .= '<p>'.get_string('instructions:programmessages', 'local_program').'</p>';
+        $templatehtml .= html_writer::start_tag('fieldset', array('id' => 'programmessages'));
+        $templatehtml .= html_writer::tag('legend', get_string('programmessages', 'totara_program'), array('class' => 'ftoggler'));
+        $templatehtml .= html_writer::tag('p', get_string('instructions:programmessages', 'totara_program'));
 
-        $templatehtml .= '<div id="messages">';
+        $templatehtml .= html_writer::start_tag('div', array('id' => 'messages'));
 
-        if($nummessages==0) { // if there are no messages yet
-            $templatehtml .= '<p>'.get_string('noprogrammessages', 'local_program').'</p>';
+        if ($nummessages == 0) { // if there are no messages yet
+            $templatehtml .= html_writer::tag('p', get_string('noprogrammessages', 'totara_program'));
         } else {
             $messageprefixesarray = array();
-            foreach($messages as $message) {
+            foreach ($messages as $message) {
                 $messageprefixesarray[] = $message->get_message_prefix();
-
                 // Add the messages
                 $templatehtml .= $message->get_message_form_template($mform, $template_values, $this->formdataobject, $updateform);
             }
 
             // Add the set prefixes
             $messageprefixesstr = implode(',', $messageprefixesarray);
-            if($updateform) {
+            if ($updateform) {
                 $mform->addElement('hidden', 'messageprefixes', $messageprefixesstr);
                 $mform->setType('messageprefixes', PARAM_TEXT);
                 $mform->setConstant('messageprefixes', $messageprefixesstr);
@@ -595,51 +578,57 @@ class prog_messages_manager {
             $this->formdataobject->messageprefixes = $messageprefixesstr;
         }
 
-        $templatehtml .= '</div>';
-        $templatehtml .= '</fieldset>';
-        $templatehtml .= '<br />';
+        $templatehtml .= html_writer::end_tag('div');
+        $templatehtml .= html_writer::end_tag('fieldset');
+        $templatehtml .= html_writer::empty_tag('br');
 
-        if($canaddmessage) {
+        if ($canaddmessage) {
             // Add the add message drop down
-            if($updateform) {
+            if ($updateform) {
                 $messageoptions = array(
-                    MESSAGETYPE_UNENROLMENT => get_string('unenrolment', 'local_program'),
-                    MESSAGETYPE_PROGRAM_DUE => get_string('programdue', 'local_program'),
-                    MESSAGETYPE_PROGRAM_OVERDUE => get_string('programoverdue', 'local_program'),
-                    MESSAGETYPE_PROGRAM_COMPLETED => get_string('programcompleted', 'local_program'),
-                    MESSAGETYPE_COURSESET_DUE => get_string('coursesetdue', 'local_program'),
-                    MESSAGETYPE_COURSESET_OVERDUE => get_string('coursesetoverdue', 'local_program'),
-                    MESSAGETYPE_COURSESET_COMPLETED => get_string('coursesetcompleted', 'local_program'),
-                    MESSAGETYPE_LEARNER_FOLLOWUP => get_string('learnerfollowup', 'local_program')
+                    MESSAGETYPE_UNENROLMENT => get_string('unenrolment', 'totara_program'),
+                    MESSAGETYPE_PROGRAM_DUE => get_string('programdue', 'totara_program'),
+                    MESSAGETYPE_PROGRAM_OVERDUE => get_string('programoverdue', 'totara_program'),
+                    MESSAGETYPE_PROGRAM_COMPLETED => get_string('programcompleted', 'totara_program'),
+                    MESSAGETYPE_COURSESET_DUE => get_string('coursesetdue', 'totara_program'),
+                    MESSAGETYPE_COURSESET_OVERDUE => get_string('coursesetoverdue', 'totara_program'),
+                    MESSAGETYPE_COURSESET_COMPLETED => get_string('coursesetcompleted', 'totara_program'),
+                    MESSAGETYPE_LEARNER_FOLLOWUP => get_string('learnerfollowup', 'totara_program')
                 );
-                $mform->addElement('select', 'messagetype', get_string('addnew', 'local_program'), $messageoptions, array('id'=>'messagetype'));
+                //remove message types already added
+                foreach ($messages as $message) {
+                    if (isset($messageoptions[$message->messagetype])) {
+                        unset($messageoptions[$message->messagetype]);
+                    }
+                }
+                $mform->addElement('select', 'messagetype', get_string('addnew', 'totara_program'), $messageoptions, array('id'=>'messagetype'));
                 $mform->setType('messagetype', PARAM_INT);
                 $template_values['%messagetype%'] = array('name'=>'messagetype', 'value'=>null);
             }
-            $templatehtml .= '<label for="messagetype">'.get_string('addnew', 'local_program').'</label>';
+            $templatehtml .= html_writer::tag('label', get_string('addnew', 'totara_program'), array('for' => 'messagetype'));
             $templatehtml .= '%messagetype%';
-            $templatehtml .= get_string('toprogram', 'local_program');
+            $templatehtml .= get_string('toprogram', 'totara_program');
 
             // Add the add content button
-            if($updateform) {
+            if ($updateform) {
                 $mform->addElement('submit', 'addmessage', get_string('add'), array('id'=>'addmessage'));
                 $template_values['%addmessage%'] = array('name'=>'addmessage', 'value'=>null);
             }
             $templatehtml .= '%addmessage%'."\n";
         }
 
-        $templatehtml .= '<br />';
+        $templatehtml .= html_writer::empty_tag('br');
 
         // Add the save and return button
-        if($updateform) {
+        if ($updateform) {
             $mform->addElement('submit', 'savechanges', get_string('savechanges'), array('class'=>'return-overview'));
             $template_values['%savechanges%'] = array('name'=>'savechanges', 'value'=>null);
         }
         $templatehtml .= '%savechanges%'."\n";
 
         // Add the cancel button
-        if($updateform) {
-            $mform->addElement('cancel', 'cancel', get_string('cancel', 'local_program'));
+        if ($updateform) {
+            $mform->addElement('cancel', 'cancel', get_string('cancel', 'totara_program'));
             $template_values['%cancel%'] = array('name'=>'cancel', 'value'=>null);
         }
         $templatehtml .= '%cancel%'."\n";

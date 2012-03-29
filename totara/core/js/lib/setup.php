@@ -96,14 +96,14 @@ function local_js($options = array()) {
 
         $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.8.20.custom.min.js');
 
-        $PAGE->requires->string_for_js('datepickerdisplayformat', 'totara_core');
+        $PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder', 'datepickerregexjs'), 'totara_core');
         $PAGE->requires->string_for_js('thisdirection', 'langconfig');
 
         $lang = current_language();
 
         // include datepicker localization file if present for current language
         $file = "/totara/core/js/lib/i18n/jquery.ui.datepicker-{$lang}.js";
-        if(is_readable($CFG->dirroot . $file)) {
+        if (is_readable($CFG->dirroot . $file)) {
             $PAGE->requires->js($file);
         }
 
@@ -134,6 +134,9 @@ function local_js($options = array()) {
  */
 function build_datepicker_js($selector, $dateformat=null) {
     global $PAGE;
+
+    $PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder', 'datepickerregexjs'), 'totara_core');
+
     if (empty($dateformat)) {
         $dateformat = get_string('datepickerdisplayformat', 'totara_core');
     }

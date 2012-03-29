@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ local_js(array(
 
 // Additional permissions check
 if (!has_capability('totara/program:configurecontent', $program->get_context())) {
-    print_error('error:nopermissions', 'local_program');
+    print_error('error:nopermissions', 'totara_program');
 }
 
 $programcontent = $program->get_content();
@@ -64,22 +64,22 @@ $overviewurl = $CFG->wwwroot."/totara/program/edit.php?id={$id}&action=view";
 // populate the $program obect.
 // This process MUST only READ data from the database and MUST NOT WRITE
 // anything as nothing has been checked or validated yet.
-if($rawdata = data_submitted()) {
+if ($rawdata = data_submitted()) {
 
-    if( ! $programcontent->setup_content($rawdata)) {
-        print_error('error:unabletosetupprogcontent', 'local_program');
+    if (!$programcontent->setup_content($rawdata)) {
+        print_error('error:unabletosetupprogcontent', 'totara_program');
     }
 
-    if(isset($rawdata->addcontent)) {
-        if( ! $programcontent->add_set($rawdata->contenttype)) {
-            notify(get_string('error:unabletoaddset', 'local_program'));
+    if (isset($rawdata->addcontent)) {
+        if (!$programcontent->add_set($rawdata->contenttype)) {
+            echo $OUTPUT->notification(get_string('error:unabletoaddset', 'totara_program'));
         }
-    } else if(isset($rawdata->update)) {
+    } else if (isset($rawdata->update)) {
         $programcontent->update_content();
-        notify(get_string('contentupdatednotsaved', 'local_program'));
+        echo $OUTPUT->notification(get_string('contentupdatednotsaved', 'totara_program'));
     } else if ($setnumber = $programcontent->check_set_action('delete', $rawdata)) {
-        if( ! $programcontent->delete_set($setnumber)) {
-            notify(get_string('error:deleteset', 'local_program'));
+        if (!$programcontent->delete_set($setnumber)) {
+            echo $OUTPUT->notification(get_string('error:deleteset', 'totara_program'));
         }
     } else if ($setnumber = $programcontent->check_set_action('update', $rawdata)) {
         $programcontent->update_set($setnumber);
@@ -88,19 +88,17 @@ if($rawdata = data_submitted()) {
     } else if ($setnumber = $programcontent->check_set_action('movedown', $rawdata)) {
         $programcontent->move_set_down($setnumber);
     } else if ($setnumber = $programcontent->check_set_action('addcourse', $rawdata)) {
-        if( ! $programcontent->add_course($setnumber, $rawdata)) {
-            notify(get_string('error:setunabletoaddcourse', 'local_program'));
+        if (!$programcontent->add_course($setnumber, $rawdata)) {
+            echo $OUTPUT->notification(get_string('error:setunabletoaddcourse', 'totara_program'));
         }
     } else if ($setnumber = $programcontent->check_set_action('addcompetency', $rawdata)) {
-        if( ! $programcontent->add_competency($setnumber, $rawdata)) {
-            notify(get_string('error:setunableaddcompetency', 'local_program'));
+        if (!$programcontent->add_competency($setnumber, $rawdata)) {
+            echo $OUTPUT->notification(get_string('error:setunableaddcompetency', 'totara_program'));
         }
     } else if ($action = $programcontent->check_set_action('deletecourse', $rawdata)) {
-        if( ! $programcontent->delete_course($action->setnumber, $action->courseid, $rawdata)) {
-            notify(get_string('error:setunabletodeletecourse', 'local_program', $action->setnumber));
+        if (!$programcontent->delete_course($action->setnumber, $action->courseid, $rawdata)) {
+            echo $OUTPUT->notification(get_string('error:setunabletodeletecourse', 'totara_program', $action->setnumber));
         }
-    } else {
-        //$programcontent->update_content();
     }
 
 }
@@ -109,30 +107,31 @@ $contenteditform = new program_content_edit_form($currenturl, array('program'=>$
 
 // this removes the 'mform' class which is set be default on the form and which
 // causes problems with the styling
-$contenteditform->_form->updateAttributes(array('class'=>''));
+// TODO SCANMSG This may cause issues when styling
+//$contenteditform->_form->updateAttributes(array('class' => ''));
 
 if ($contenteditform->is_cancelled()) {
-    totara_set_notification(get_string('programupdatecancelled', 'local_program'), $overviewurl, array('class' => 'notifysuccess'));
+    totara_set_notification(get_string('programupdatecancelled', 'totara_program'), $overviewurl, array('class' => 'notifysuccess'));
 }
 
 // if the form has not been submitted, fill in the saved values and defaults
-if( ! $rawdata) {
+if (!$rawdata) {
     $contenteditform->set_data($programcontent->formdataobject);
 }
 
 // This is where we validate and check the submitted data before saving it
-if($data = $contenteditform->get_data()) {
+if ($data = $contenteditform->get_data()) {
 
-    if(isset($data->savechanges)) {
+    if (isset($data->savechanges)) {
 
         // first set up the program content with the validated and checked submitted data
-        if( ! $programcontent->setup_content($data)) {
-            print_error('error:setupprogcontent', 'local_program');
+        if (!$programcontent->setup_content($data)) {
+            print_error('error:setupprogcontent', 'totara_program');
         }
 
         // Save program content
         if (!$programcontent->save_content()) {
-            totara_set_notification(get_string('programupdatefail', 'local_program'), $currenturl);
+            totara_set_notification(get_string('programupdatefail', 'totara_program'), $currenturl);
         } else {
 
             // log this request
@@ -142,10 +141,10 @@ if($data = $contenteditform->get_data()) {
             $prog_update->id = $id;
             $prog_update->timemodified = time();
             $prog_update->usermodified = $USER->id;
-            update_record('prog', $prog_update);
+            $DB->update_record('prog', $prog_update);
 
-            if(isset($data->savechanges)) {
-                totara_set_notification(get_string('programcontentsaved', 'local_program'), 'edit_content.php?id='.$id, array('class' => 'notifysuccess'));
+            if (isset($data->savechanges)) {
+                totara_set_notification(get_string('programcontentsaved', 'totara_program'), 'edit_content.php?id='.$id, array('class' => 'notifysuccess'));
             }
         }
     }
@@ -155,30 +154,46 @@ if($data = $contenteditform->get_data()) {
 // log this request
 add_to_log(SITEID, 'program', 'view content', "edit_content.php?id={$program->id}", $program->fullname);
 
-$category_breadcrumbs = get_category_breadcrumbs($program->category);
-
 ///
 /// Display
 ///
 
 $heading = $program->fullname;
-$pagetitle = format_string(get_string('program', 'local_program').': '.$heading);
-$navlinks = array();
-$navlinks[] = array('name' => get_string('manageprograms', 'admin'), 'link'=> $CFG->wwwroot . '/course/categorylist.php?viewtype=program', 'type'=>'title');
-$navlinks = array_merge($navlinks, $category_breadcrumbs);
-$navlinks[] = array('name' => $program->shortname, 'link'=> $viewurl, 'type'=>'title');
-$navlinks[] = array('name' => get_string('editprogramcontent', 'local_program'), 'link'=> '', 'type'=>'title');
+$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
+
+$PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
+$PAGE->navbar->add($program->shortname, $viewurl);
+$PAGE->navbar->add(get_string('editprogramcontent', 'totara_program'));
 
 //Javascript includes
-require_js(array(
-    $CFG->wwwroot.'/totara/program/content/program_content.js.php?id='.$program->id,
-));
+$PAGE->requires->strings_for_js(array('addcourses','cancel', 'ok','addcompetency',
+            'addcourse','addcourses','editcontent','saveallchanges','confirmcontentchanges',
+            'youhaveunsavedchanges','youhaveunsavedchanges','or','and','affectedusercount',
+            'tosavecontent'),
+        'totara_program');
+$selected_addrecurringcourse = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'addrecurringcourse'));
+$selected_addcompetency = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'addcompetency'));
+$args = array('args'=> '{"id":'.$program->id.','.
+                        '"display_selected_addcompetency":'.$selected_addcompetency.','.
+                        '"display_selected_addrecurringcourse":'.$selected_addrecurringcourse.','.
+                        '"COMPLETIONTYPE_ANY":"'.COMPLETIONTYPE_ANY.'",'.
+                        '"CONTENTTYPE_MULTICOURSE":"'.CONTENTTYPE_MULTICOURSE.'",'.
+                        '"CONTENTTYPE_COMPETENCY":"'.CONTENTTYPE_COMPETENCY.'",'.
+                        '"CONTENTTYPE_RECURRING":"'.CONTENTTYPE_RECURRING.'"}');
+$jsmodule = array(
+     'name' => 'totara_programcontent',
+     'fullpath' => '/totara/program/content/program_content.js',
+     'requires' => array('json','event-delegate')
+     );
+$PAGE->requires->js_init_call('M.totara_programcontent.init',$args, false, $jsmodule);
 
-admin_externalpage_print_header('', $navlinks);
+echo $OUTPUT->header();
 
-print_container_start(false, 'program content', 'edit-program-content');
+echo $OUTPUT->container_start('program content', 'edit-program-content');
 
-print_heading($heading);
+echo $OUTPUT->heading($heading);
+$renderer = $PAGE->get_renderer('totara_program');
+// Display the current status
 echo $program->display_current_status();
 
 $exceptions = $program->get_exception_count();
@@ -190,9 +205,9 @@ require('tabs.php');
 // Display the form
 $contenteditform->display();
 
-print_container_end();
+echo $OUTPUT->container_end();
 
-echo $program->get_cancel_button();
+echo $renderer->get_cancel_button(array('id' => $program->id));
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();
 

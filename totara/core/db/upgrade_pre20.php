@@ -81,6 +81,10 @@ foreach ($tables as $table) {
         upgrade_set_timeout();
     }
 }
+
+// Fix program icons that are set to "none"
+$DB->execute("UPDATE {prog} SET icon = '' WHERE icon = 'none'");
+
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Totara icon extensions fixed');
 echo $OUTPUT->heading('Totara icon extensions fixed');
 echo $OUTPUT->notification($success, 'notifysuccess');
@@ -93,18 +97,15 @@ totara_fix_nullable_charfield('course_info_field', 'shortname', 'fullname', '100
 totara_fix_nullable_charfield('course_info_field', 'datatype', 'shortname', '255');
 totara_fix_nullable_charfield('oldpassword', 'hash', 'uid', '100');
 
-$idx = array();
-$idx[] = new xmldb_index('remi_typ_ix', XMLDB_INDEX_NOTUNIQUE, array('type'));
+$idx = array(new xmldb_index('remi_typ_ix', XMLDB_INDEX_NOTUNIQUE, array('type')));
 totara_fix_nullable_charfield('reminder', 'type', 'title', '10', null, null, $idx);
 
-$idx = array();
-$idx[] = new xmldb_index('remimess_typ_ix', XMLDB_INDEX_NOTUNIQUE, array('type'));
+$idx = array(new xmldb_index('remimess_typ_ix', XMLDB_INDEX_NOTUNIQUE, array('type')));
 totara_fix_nullable_charfield('reminder_message', 'type', 'reminderid', '10', null, null, $idx);
 
 totara_fix_nullable_charfield('errorlog', 'version', 'timeoccured', '255');
 totara_fix_nullable_charfield('errorlog', 'build', 'version', '255');
 totara_fix_nullable_charfield('errorlog', 'hash', 'details', '32');
-
 
 //plans
 totara_fix_nullable_charfield('dp_template', 'fullname', 'id', '255');
@@ -120,6 +121,17 @@ totara_fix_nullable_charfield('dp_plan_component_relation', 'component1', 'id', 
 totara_fix_nullable_charfield('dp_plan_component_relation', 'component2', 'itemid1', '255');
 totara_fix_nullable_charfield('dp_plan_evidence', 'name', 'planid', '255');
 totara_fix_nullable_charfield('dp_plan_objective', 'fullname', 'planid', '255');
+
+//program management
+totara_fix_nullable_charfield('prog', 'fullname', 'sortorder', '254');
+$idx = array(new xmldb_index('prog_idn_ix', XMLDB_INDEX_NOTUNIQUE, array('idnumber')));
+totara_fix_nullable_charfield('prog', 'idnumber', 'shortname', '100', null, null, $idx);
+totara_fix_nullable_charfield('prog', 'icon', 'usermodified', '100');
+$idx = array(new xmldb_index('prog_sho_ix', XMLDB_INDEX_NOTUNIQUE, array('shortname')));
+totara_fix_nullable_charfield('prog', 'shortname', 'fullname', '100', null, null, $idx);
+totara_fix_nullable_charfield('prog_courseset', 'label', 'contenttype', '255');
+totara_fix_nullable_charfield('prog_exception_data', 'dataname', 'exceptionid', '50');
+totara_fix_nullable_charfield('prog_message', 'messagesubject', 'locked', '255');
 
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Change nullable character fields');
 echo $OUTPUT->heading('Change nullable database fields');

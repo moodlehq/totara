@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,14 @@
  *
  * @author Jake Salmon <jake.salmon@kineo.com>
  * @package totara
- * @subpackage management
+ * @subpackage program
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/dialog_content_manager.class.php');
+
+$PAGE->set_context(get_system_context());
+require_login();
 
 // Parent id
 $parentid = optional_param('parentid', 0, PARAM_INT);
