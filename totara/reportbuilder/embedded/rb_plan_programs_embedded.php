@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -38,32 +38,32 @@ class rb_plan_programs_embedded extends rb_base_embedded {
         $this->url = '/totara/plan/record/programs.php';
         $this->source = 'dp_program';
         $this->shortname = 'plan_programs';
-        $this->fullname = get_string('recordoflearningprograms', 'local_plan');
+        $this->fullname = get_string('recordoflearningprograms', 'totara_plan');
         $this->columns = array(
             array(
                 'type' => 'program',
                 'value' => 'proglinkicon',
-                'heading' => get_string('programname', 'local_program'),
+                'heading' => get_string('programname', 'totara_program'),
             ),
             array(
                 'type' => 'program',
                 'value' => 'mandatory',
-                'heading' => get_string('mandatory', 'local_program'),
+                'heading' => get_string('mandatory', 'totara_program'),
             ),
             array(
                 'type' => 'program',
                 'value' => 'recurring',
-                'heading' => get_string('recurring', 'local_program'),
+                'heading' => get_string('recurring', 'totara_program'),
             ),
             array(
                 'type' => 'program',
                 'value' => 'timedue',
-                'heading' => get_string('duestatus', 'local_program'),
+                'heading' => get_string('duestatus', 'totara_program'),
             ),
             array(
                 'type' => 'program_completion',
                 'value' => 'status',
-                'heading' => get_string('progress', 'local_program'),
+                'heading' => get_string('progress', 'totara_program'),
             ),
         );
 
@@ -88,11 +88,11 @@ class rb_plan_programs_embedded extends rb_base_embedded {
             'category' => '!0',
         );
 
-        if(isset($userid)) {
+        if (isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
         }
 
-        if(isset($rolstatus)) {
+        if (isset($rolstatus)) {
             $this->embeddedparams['programstatus'] = null;
             switch ($rolstatus) {
                 case 'active':
@@ -105,8 +105,8 @@ class rb_plan_programs_embedded extends rb_base_embedded {
             $this->embeddedparams['rolstatus'] = $rolstatus;
         }
 
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        if(!has_capability('totara/program:viewhiddenprograms', $context)) {
+        $context = context_system::instance();
+        if (!has_capability('totara/program:viewhiddenprograms', $context)) {
             // don't show hidden programs to none-admins
             $this->embeddedparams['visible'] = 1;
         }

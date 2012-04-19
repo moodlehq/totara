@@ -6,10 +6,9 @@ class rb_source_scorm extends rb_base_source {
     public $defaultfilters, $requiredcolumns, $sourcetitle;
 
     function __construct() {
-        global $CFG;
         // scorm base table is a sub-query
         $this->base = '(SELECT max(id) as id, userid, scormid, scoid, attempt ' .
-            "from {$CFG->prefix}scorm_scoes_track " .
+            "from {scorm_scoes_track} " .
             'GROUP BY userid, scormid, scoid, attempt)';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
@@ -39,20 +38,18 @@ class rb_source_scorm extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
-
         $joinlist = array(
             new rb_join(
                 'scorm',
                 'LEFT',
-                $CFG->prefix . 'scorm',
+                '{scorm}',
                 'scorm.id = base.scormid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'sco',
                 'LEFT',
-                $CFG->prefix . 'scorm_scoes',
+                '{scorm_scoes}',
                 'sco.id = base.scoid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
@@ -74,7 +71,7 @@ class rb_source_scorm extends rb_base_source {
             $joinlist[] = new rb_join(
                 $key,
                 'LEFT',
-                $CFG->prefix . 'scorm_scoes_track',
+                '{scorm_scoes_track}',
                 "($key.userid = base.userid AND $key.scormid = base.scormid" .
                 " AND $key.scoid = base.scoid AND $key.attempt = " .
                 " base.attempt AND $key.element = '$element')",
@@ -100,6 +97,8 @@ class rb_source_scorm extends rb_base_source {
     }
 
     function define_columnoptions() {
+        global $DB;
+
         $columnoptions = array(
             /*
             // array of rb_column_option objects, e.g:
@@ -129,7 +128,7 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'starttime',
                 get_string('time', 'rb_source_scorm'),
-                sql_cast_char2int('sco_starttime.value', true),
+                $DB->sql_cast_char2int('sco_starttime.value', true),
                 array(
                     'joins' => 'sco_starttime',
                     'displayfunc' => 'nice_datetime',
@@ -288,6 +287,8 @@ class rb_source_scorm extends rb_base_source {
     }
 
     function define_contentoptions() {
+        global $DB;
+
         $contentoptions = array(
             new rb_content_option(
                 'current_org',                      // class name
@@ -303,7 +304,7 @@ class rb_source_scorm extends rb_base_source {
             new rb_content_option(
                 'date',
                 get_string('thedate', 'rb_source_scorm'),
-                sql_cast_char2int('sco_starttime.value'),
+                $DB->sql_cast_char2int('sco_starttime.value'),
                 'sco_starttime'
             ),
         );
@@ -446,9 +447,9 @@ class rb_source_scorm extends rb_base_source {
     //
 
     function rb_filter_scorm_attempt_list() {
-        global $CFG;
-        if (!$max = get_field_sql('SELECT ' . sql_max('attempt') .
-            " FROM {$CFG->prefix}scorm_scoes_track")) {
+        global $DB;
+
+        if (!$max = $DB->get_field_sql('SELECT MAX(attempt) FROM {scorm_scoes_track}')) {
             $max = 10;
         }
         $attemptselect = array();
@@ -459,14 +460,16 @@ class rb_source_scorm extends rb_base_source {
     }
 
     function rb_filter_scorm_status_list() {
-        global $CFG;
+        global $DB;
+
         // get all available options
-        if($records = get_records_sql("SELECT DISTINCT " .
-            sql_compare_text("value") . " AS value FROM " .
-            "{$CFG->prefix}scorm_scoes_track " .
-            "WHERE element = 'cmi.core.lesson_status'")) {
+        $records = $DB->get_records_sql("SELECT DISTINCT " .
+            $DB->sql_compare_text("value") . " AS value FROM " .
+            "{scorm_scoes_track} " .
+            "WHERE element = 'cmi.core.lesson_status'");
+        if (!empty($records)) {
             $statusselect = array();
-            foreach($records as $record) {
+            foreach ($records as $record) {
                 $statusselect[$record->value] = ucfirst($record->value);
             }
         } else {

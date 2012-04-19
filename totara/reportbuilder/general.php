@@ -1,14 +1,14 @@
-<?php // $Id$
+<?php
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -28,61 +28,60 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/report_forms.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/report_forms.php');
 
-global $USER;
-$id = required_param('id',PARAM_INT); // report builder id
+$id = required_param('id', PARAM_INT); // report builder id
 
-admin_externalpage_setup('managereports');
+admin_externalpage_setup('rbmanagereports');
 
-$returnurl = $CFG->wwwroot."/totara/reportbuilder/general.php?id=$id";
+$output = $PAGE->get_renderer('totara_reportbuilder');
+
+$returnurl = $CFG->wwwroot . "/totara/reportbuilder/general.php?id=$id";
 
 $report = new reportbuilder($id);
+$report->descriptionformat = FORMAT_HTML;
+$report = file_prepare_standard_editor($report, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+    'totara_reportbuilder', 'report_builder', $id);
 
 // form definition
-$mform = new report_builder_edit_form(null, compact('id','report'));
+$mform = new report_builder_edit_form(null, compact('id', 'report'));
 
 // form results check
 if ($mform->is_cancelled()) {
-    redirect($CFG->wwwroot.'/totara/reportbuilder/index.php');
+    redirect($CFG->wwwroot . '/totara/reportbuilder/index.php');
 }
 if ($fromform = $mform->get_data()) {
 
-    if(empty($fromform->submitbutton)) {
-        totara_set_notification(get_string('error:unknownbuttonclicked','local_reportbuilder'), $returnurl);
+    if (empty($fromform->submitbutton)) {
+        totara_set_notification(get_string('error:unknownbuttonclicked', 'totara_reportbuilder'), $returnurl);
     }
 
-    $todb = new object();
+    $todb = new stdClass();
     $todb->id = $id;
-    $todb->fullname = addslashes($fromform->fullname);
+    $todb->fullname = $fromform->fullname;
     $todb->hidden = $fromform->hidden;
-    $todb->description = addslashes($fromform->description);
-    if((int)$fromform->recordsperpage > 5000) {
-        $rpp = 5000;
-    } else if ((int)$fromform->recordsperpage < 1) {
-        $rpp = 1;
-    } else {
-        $rpp = (int)$fromform->recordsperpage;
-    }
+    $todb->description_editor = $fromform->description_editor;
+    // ensure we show between 1 and 9999 records
+    $rpp = min(9999, max(1, (int) $fromform->recordsperpage));
     $todb->recordsperpage = $rpp;
-    if(update_record('report_builder',$todb)) {
-        add_to_log(SITEID, 'reportbuilder', 'update report', 'general.php?id='. $id,
-            'General Settings: Report ID=' . $id);
-        totara_set_notification(get_string('reportupdated', 'local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
-    } else {
-        totara_set_notification(get_string('error:couldnotupdatereport','local_reportbuilder'), $returnurl);
-    }
+    $todb = file_postupdate_standard_editor($todb, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
+        'totara_reportbuilder', 'report_builder', $todb->id);
+
+    $DB->update_record('report_builder', $todb);
+    add_to_log(SITEID, 'reportbuilder', 'update report', 'general.php?id='. $id,
+        'General Settings: Report ID=' . $id);
+    totara_set_notification(get_string('reportupdated', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
 }
 
-admin_externalpage_print_header();
+echo $output->header();
 
-print_container_start(true, 'reportbuilder-navbuttons');
-print_single_button($CFG->wwwroot.'/totara/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
-print $report->view_button();
-print_container_end();
+echo $output->container_start('reportbuilder-navlinks');
+echo $output->view_all_reports_link() . ' | ';
+echo $output->view_report_link($report->report_url());
+echo $output->container_end();
 
-print_heading(get_string('editreport','local_reportbuilder', format_string($report->fullname)));
+echo $output->heading(get_string('editreport', 'totara_reportbuilder', format_string($report->fullname)));
 
 $currenttab = 'general';
 include_once('tabs.php');
@@ -90,7 +89,7 @@ include_once('tabs.php');
 // display the form
 $mform->display();
 
-admin_externalpage_print_footer();
+echo $output->footer();
 
 
 ?>

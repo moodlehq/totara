@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,44 +17,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Piers Harding <piers@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
-require_once('../../config.php');
+
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once('../lib.php');
+require_once($CFG->dirroot . '/totara/core/lib.php');
 
 require_login();
-
-/// Setup / loading data
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 // Get params
 $id = required_param('id', PARAM_INT); //ID
 $confirm = optional_param('confirm', '', PARAM_INT); // Delete confirmation hash
 
-if (!$report = get_record('report_builder_schedule', 'id', $id)) {
-    error(get_string('error:invalidreportscheduleid','local_reportbuilder'));
+$PAGE->set_context(context_user::instance($USER->id));
+$PAGE->set_url('/totara/reportbuilder/deletescheduled.php', array('id' => $id));
+
+if (!$report = $DB->get_record('report_builder_schedule', array('id' => $id))) {
+    print_error('error:invalidreportscheduleid', 'totara_reportbuilder');
 }
 
-$reportname = get_field('report_builder', 'fullname', 'id', $report->reportid);
+$reportname = $DB->get_field('report_builder', 'fullname', array('id' => $report->reportid));
 
 /// Display page
-print_header(' ', ' ', null);
+$PAGE->set_title(' ');
+$PAGE->set_heading(' ');
+echo $OUTPUT->header();
 
-$returnurl = "{$CFG->wwwroot}/my/reports.php";
-$deleteurl = "{$CFG->wwwroot}/totara/reportbuilder/deletescheduled.php?id={$report->id}&amp;confirm=1&amp;sesskey={$USER->sesskey}";
+$returnurl = new moodle_url('/my/reports.php');
+$deleteurl = new moodle_url('/totara/reportbuilder/deletescheduled.php', array('id' => $report->id, 'confirm' => '1', 'sesskey' => $USER->sesskey));
 
 if (!$confirm) {
-    $strdelete = get_string('deletecheckschedulereport', 'local_reportbuilder');
-    notice_yesno(
-        "{$strdelete}<br /><br />".format_string($reportname),
-        $deleteurl,
-        $returnurl
-    );
+    $strdelete = get_string('deletecheckschedulereport', 'totara_reportbuilder');
+    echo $OUTPUT->confirm($strdelete . str_repeat(html_writer::empty_tag('br'), 2) . format_string($reportname), $deleteurl, $returnurl);
 
-    print_footer();
+    echo $OUTPUT->footer();
     exit;
 }
 
@@ -63,10 +62,9 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
+$DB->delete_records('report_builder_schedule', array('id' => $report->id));
 add_to_log(SITEID, 'reportbuilder', 'delete', "scheduled.php?id=$report->id", "$reportname (ID $report->id)");
 
-delete_records('report_builder_schedule', 'id', $report->id);
-
-echo '<p>'.get_string('deletedscheduledreport', 'local_reportbuilder', format_string($reportname)).'</p>';
-print_continue($returnurl);
-print_footer();
+echo html_writer::tag('p', get_string('deletedscheduledreport', 'totara_reportbuilder', format_string($reportname)));
+echo $OUTPUT->continue_button($returnurl);
+echo $OUTPUT->footer();

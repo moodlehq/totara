@@ -2,14 +2,14 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * Copyright (C) 1999 onwards Martin Dougiamas 
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ * Copyright (C) 1999 onwards Martin Dougiamas
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,9 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -31,8 +31,7 @@ class rb_source_courses extends rb_base_source {
     public $defaultfilters, $requiredcolumns, $sourcetitle;
 
     function __construct() {
-        global $CFG;
-        $this->base = $CFG->prefix . 'course';
+        $this->base = '{course}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -52,15 +51,14 @@ class rb_source_courses extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
 
         $joinlist = array(
             new rb_join(
                 'mods',
                 'LEFT',
-                '(SELECT cm.course,' .
-                sql_group_concat(sql_cast2char('m.name'),'|', true) .
-                " AS list FROM {$CFG->prefix}course_modules cm LEFT JOIN {$CFG->prefix}modules m ON m.id = cm.module GROUP BY cm.course)",
+                '(SELECT cm.course, ' .
+                sql_group_concat(sql_cast2char('m.name'), '|', true) .
+                " AS list FROM {course_modules} cm LEFT JOIN {modules} m ON m.id = cm.module GROUP BY cm.course)",
                 'mods.course = base.id',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
@@ -201,7 +199,7 @@ class rb_source_courses extends rb_base_source {
 
 
     function rb_display_modicons($mods, $row) {
-        global $CFG;
+        global $OUTPUT, $CFG;
         $modules = explode('|', $mods);
 
         // Sort module list before displaying to make
@@ -209,12 +207,19 @@ class rb_source_courses extends rb_base_source {
         sort($modules);
 
         $out = '';
-        foreach($modules as $module) {
-            $icon = '/mod/' . $module . '/icon.gif';
-            if(file_exists($CFG->dirroot . $icon)) {
-                $out .= '<img src="' . $CFG->wwwroot .
-                    $icon . '" alt="' . ucfirst($module) .
-                    '" title="' . ucfirst($module) . '" /> ';
+        foreach ($modules as $module) {
+            if (empty($module)) {
+                continue;
+            }
+            $name = (get_string_manager()->string_exists('pluginname', $module)) ?
+                get_string('pluginname', $module) : ucfirst($module);
+
+            if (file_exists($CFG->dirroot . '/mod/' . $module . '/pix/icon.gif') ||
+                file_exists($CFG->dirroot . '/mod/' . $module . '/pix/icon.png')) {
+
+                $out .= $OUTPUT->pix_icon('icon', $name, $module);
+            } else {
+                $out .= $name;
             }
         }
         return $out;

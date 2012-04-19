@@ -1,6 +1,29 @@
-<?php //$Id$
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @package totara
+ * @subpackage reportbuilder
+ */
 
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
 
 /**
  * Generic filter based on a list of values.
@@ -38,19 +61,19 @@ class filter_simpleselect extends filter_type {
         $options = $this->_options;
         $attr = $this->_attributes;
 
-        $choices = array(''=>get_string('anyvalue','filters')) + $options;
+        $choices = array('' => get_string('anyvalue', 'filters')) + $options;
         $mform->addElement('select', $this->_name, $label, $choices, $attr);
-        $mform->setHelpButton($this->_name, array('simpleselect', $label, 'filters'));
+        $mform->addHelpButton($this->_name, 'filtersimpleselect', 'filters');
         if ($advanced) {
             $mform->setAdvanced($this->_name);
         }
 
         // set default values
-        if(array_key_exists($this->_name, $SESSION->{$sessionname})) {
+        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
             $defaults = $SESSION->{$sessionname}[$this->_name];
         }
         //TODO get rid of need for [0]
-        if(isset($defaults[0]['value'])) {
+        if (isset($defaults[0]['value'])) {
             $mform->setDefault($this->_name, $defaults[0]['value']);
         }
 
@@ -74,22 +97,22 @@ class filter_simpleselect extends filter_type {
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array containing filtering condition SQL clause and params
      */
     function get_sql_filter($data) {
-        $value    = addslashes($data['value']);
+        $value    = $data['value'];
         $query    = $this->_filter->get_field();
 
         if ($value == '') {
             // return 1=1 instead of TRUE for MSSQL support
-            return ' 1=1 ';
+            return array(' 1=1 ', array());
         }
 
-        if (isset($this->_attributes['datatype']) && $this->_attributes['datatype'] == 'text') {
-            return "$query = '$value'";
-        } else {
-            return "$query = $value";
-        }
+        $uniqueparam = rb_unique_param('fss');
+        $sql = "$query = :{$uniqueparam}";
+        $params = array($uniqueparam => $value);
+
+        return array($sql, $params);
     }
 
     /**
@@ -101,14 +124,14 @@ class filter_simpleselect extends filter_type {
         $value     = $data['value'];
         $label = $this->_filter->label;
 
-        if($value == '') {
+        if ($value == '') {
             return '';
         }
 
-        $a = new object();
+        $a = new stdClass();
         $a->label    = $label;
-        $a->value    = '"'.s($this->_options[$value]).'"';
-        $a->operator = get_string('isequalto','filters');
+        $a->value    = '"' . s($this->_options[$value]) . '"';
+        $a->operator = get_string('isequalto', 'filters');
 
         return get_string('selectlabel', 'filters', $a);
     }

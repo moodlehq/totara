@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -27,10 +27,13 @@ $string['access'] = 'Access';
 $string['accessbyrole'] = 'Restrict access by role';
 $string['accessbyrole'] = 'Restrict access by role';
 $string['accesscontrols'] = 'Access Controls';
+$string['add'] = 'Add';
+$string['abstractmethodcalled'] = 'Abstract method {$a} called - must be implemented';
 $string['activities'] = 'Activities';
 $string['activitygroupdesc'] = 'Activity groups let you define sets of activites for the purpose of site-wide reporting.';
-$string['activitygroupingx'] = 'Activity grouping \'$a\'';
+$string['activitygroupingx'] = 'Activity grouping \'{$a}\'';
 $string['activitygroups'] = 'Activity groups';
+$string['activitygroupnotfound'] = 'The activity group could not be found';
 $string['addanothercolumn'] = 'Add another column...';
 $string['addanotherfilter'] = 'Add another filter...';
 $string['addedscheduledreport'] = 'Added new scheduled report';
@@ -52,7 +55,7 @@ $string['backtoallgroups'] = 'Back to all groups';
 $string['baseactivity'] = 'Base activity';
 $string['basedon'] = 'Group based on';
 $string['baseitem'] = 'Base item';
-$string['baseitemdesc'] = 'The aggregated data available to this group is based on the questions in the activity \'<a href=\"{$a->url}\">{$a->activity}</a>\'.';
+$string['baseitemdesc'] = 'The aggregated data available to this group is based on the questions in the activity \'<a href="{$a->url}">{$a->activity}</a>\'.';
 $string['both'] = 'Both';
 $string['bydateenable'] = 'Show records based on the record date';
 $string['bytrainerenable'] = 'Show records by trainer';
@@ -73,9 +76,13 @@ $string['columns'] = 'Columns';
 $string['columns_updated'] = 'Columns updated';
 $string['competency_evidence'] = 'Competency Evidence';
 $string['completedorgenable'] = 'Show records completed in the user\'s organisation';
+$string['confirmcolumndelete'] = 'Are you sure you want to delete this column?';
+$string['confirmfilterdelete'] = 'Are you sure you want to delete this filter?';
 $string['content'] = 'Content';
+$string['contentclassnotexist'] = 'Content class {$a} does not exist';
 $string['contentcontrols'] = 'Content Controls';
 $string['context'] = 'Context';
+$string['couldnotsortjoinlist'] = 'Could not sort join list. Source either contains circular dependencies or references a none-existent join';
 $string['course_completion'] = 'Course Completion';
 $string['coursenotset'] = 'Course Not Set';
 $string['coursetagenable'] = 'Show records by course tag';
@@ -91,11 +98,11 @@ $string['defaultsortcolumn'] = 'Default column';
 $string['defaultsortorder'] = 'Default order';
 $string['delete'] = 'Delete';
 $string['deletecheckschedulereport'] = 'Are you sure you would like to delete this scheduled report?';
-$string['deletedscheduledreport'] = 'Successfully deleted Scheduled Report \'$a\'';
+$string['deletedscheduledreport'] = 'Successfully deleted Scheduled Report \'{$a}\'';
 $string['deletereport'] = 'Report Deleted';
 $string['descending'] = 'Descending (Z to A, 9 to 1)';
 $string['disabled'] = 'Disabled?';
-$string['editreport'] = 'Edit Report \'$a\'';
+$string['editreport'] = 'Edit Report \'{$a}\'';
 $string['editscheduledreport'] = 'Edit Scheduled Report';
 $string['editthisreport'] = 'Edit this report';
 $string['embedded'] = 'Embedded';
@@ -108,6 +115,7 @@ $string['error:column_not_deleted'] = 'There was a problem deleting that column'
 $string['error:column_not_moved'] = 'There was a problem moving that column';
 $string['error:column_vis_not_updated'] = 'Column visibility could not be updated';
 $string['error:columns_not_updated'] = 'There was a problem updating the columns.';
+$string['error:creatingembeddedrecord'] = 'Error creating embedded record: {$a}';
 $string['error:couldnotcreatenewreport'] = 'Could not create new report';
 $string['error:couldnotgenerateembeddedreport'] = 'There was a problem generating that report';
 $string['error:couldnotsavesearch'] = 'Could not save search';
@@ -122,14 +130,15 @@ $string['error:groupnotcreated'] = 'Group could not be created';
 $string['error:groupnotcreatedinitfail'] = 'Group could not be created - failed to initialize tables!';
 $string['error:groupnotcreatedpreproc'] = 'Group could not be created - preprocessor not found!';
 $string['error:groupnotdeleted'] = 'Group could not be deleted';
+$string['error:invalideventtype'] = 'Invalid event type: ';
 $string['error:invalidreportid'] = 'Invalid report ID';
 $string['error:invalidreportscheduleid'] = 'Invalid scheduled report ID';
 $string['error:invaliduserid'] = 'Invalid user ID';
 $string['error:mustselectsource'] = 'You must pick a source for the report';
-$string['error:nocolumns'] = 'No columns found. Ask your developer to add column options to the \'$a\' source.';
+$string['error:nocolumns'] = 'No columns found. Ask your developer to add column options to the \'{$a}\' source.';
 $string['error:nocolumnsdefined'] = 'No columns have been defined for this report. Ask you site administrator to add some columns.';
-$string['error:nocontentrestrictions'] = 'No content restrictions are available for this source. To use restrictions, ask your developer to add the necessary code to the \'$a\' source.';
-$string['error:nopermissionsforscheduledreport'] = 'Scheduled Report Error: User $a->userid is not capable of viewing report $a->reportid.';
+$string['error:nocontentrestrictions'] = 'No content restrictions are available for this source. To use restrictions, ask your developer to add the necessary code to the \'{$a}\' source.';
+$string['error:nopermissionsforscheduledreport'] = 'Scheduled Report Error: User {$a->userid} is not capable of viewing report {$a->reportid}.';
 $string['error:norolesfound'] = 'No roles found';
 $string['error:nosavedsearches'] = 'This report does not yet have any saved searches';
 $string['error:nosources'] ='No sources found. You must have at least one source before you can add reports. Ask your developer to add the necessary files to the codebase.';
@@ -137,14 +146,14 @@ $string['error:savedsearchnotdeleted'] = 'Saved search could not be deleted';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
 $string['error:updatescheduledreport'] = 'Error updating Scheduled Report';
 $string['error:problemobtainingreportdata'] = 'There was a problem obtaining the data for this report';
-$string['error:propertyxmustbesetiny'] = 'Property \"{$a->property}\" must be set in class \"{$a->class}\"';
-$string['error:joinxusedmorethanonceiny'] = 'Join name \"{$a->join}\" used more than once in source \"{$a->source}\"';
-$string['error:joinxisreservediny'] = 'Join name \"{$a->join}\" in source \"{$a->source}\" is an SQL reserved word. Please rename the join';
-$string['error:joinxhasdependencyyinz'] = 'Join name \"{$a->join}\" contains a dependency \"{$a->dependency}\" that does not exist in the joinlist for source \"{$a->source}\"';
-$string['error:joinsfortypexandvalueynotfoundinz'] = 'Joins for columns with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
-$string['error:columnoptiontypexandvalueynotfoundinz'] = 'Column option with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
-$string['error:filteroptiontypexandvalueynotfoundinz'] = 'Filter option with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
-$string['error:joinsforfiltertypexandvalueynotfoundinz'] = 'Joins for filter with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
+$string['error:propertyxmustbesetiny'] = 'Property "{$a->property}" must be set in class "{$a->class}"';
+$string['error:joinxusedmorethanonceiny'] = 'Join name "{$a->join}" used more than once in source "{$a->source}"';
+$string['error:joinxisreservediny'] = 'Join name "{$a->join}" in source "{$a->source}" is an SQL reserved word. Please rename the join';
+$string['error:joinxhasdependencyyinz'] = 'Join name "{$a->join}" contains a dependency "{$a->dependency}" that does not exist in the joinlist for source "{$a->source}"';
+$string['error:joinsfortypexandvalueynotfoundinz'] = 'Joins for columns with type "{$a->type}" and value "{$a->value}" not found in source "{$a->source}"';
+$string['error:columnoptiontypexandvalueynotfoundinz'] = 'Column option with type "{$a->type}" and value "{$a->value}" not found in source "{$a->source}"';
+$string['error:filteroptiontypexandvalueynotfoundinz'] = 'Filter option with type "{$a->type}" and value "{$a->value}" not found in source "{$a->source}"';
+$string['error:joinsforfiltertypexandvalueynotfoundinz'] = 'Joins for filter with type "{$a->type}" and value "{$a->value}" not found in source "{$a->source}"';
 $string['error:invalidsavedsearchid'] = 'Invalid saved search ID';
 $string['excludecoursetags'] = 'Exclude records tagged with';
 $string['export'] = 'Export';
@@ -154,10 +163,12 @@ $string['exportods'] = 'Export in ODS format';
 $string['exportoptions'] = 'Report Export options';
 $string['exportproblem'] = 'There was a problem downloading the file';
 $string['exportxls'] = 'Export in Excel format';
+$string['extrasqlshouldusenamedparams'] = 'get_sql_filter() extra sql should use named parameters';
 $string['filter'] = 'Filter';
 $string['confirmfilterdelete'] = 'Are you sure you want to delete this filter?';
 $string['filter_deleted']=  'Filter deleted';
 $string['filter_moved'] = 'Filter moved';
+$string['filternameformatincorrect'] = 'get_filter_joins(): filter name format incorrect. Query snippets may have included a dash character.';
 $string['filters'] = 'Filters';
 $string['filters_updated'] = 'Filters updated';
 $string['format'] = 'Format';
@@ -167,9 +178,11 @@ $string['gradeandgradetocomplete'] = '{$a->grade}%% ({$a->pass}%% to complete)';
 $string['groupconfirmdelete'] = 'Are you sure you want to delete this group?';
 $string['groupcontents'] = 'This group currently contains {$a->count} feedback activities tagged with the <strong>\'{$a->tag}\'</strong> official tag:';
 $string['groupdeleted'] = 'Group deleted.';
+$string['groupingfuncnotinfieldoftypeandvalue'] = 'Grouping function \'{$a->groupfunc}\' doesn\'t exist in field of type \'{$a->type}\' and value \'{$a->$value}\'';
 $string['groupname'] = 'Group name';
 $string['grouptag'] = 'Group tag';
 $string['heading'] = 'Heading';
+$string['hide'] = 'Hide';
 $string['customiseheading'] = 'Customise heading';
 $string['help:columnsdesc'] = 'The choices below determine which columns appear in the report and how those columns are labelled.';
 $string['help:restrictionoptions'] = 'The checkboxes below determine who has access to this report, and which records they are able to view. If no options are checked no results are visible. Click the help icon for more information';
@@ -184,9 +197,11 @@ $string['includetrainerrecords'] = 'Include records from particular trainers';
 $string['includeuserrecords'] = 'Include records from particular users';
 $string['is'] = 'is';
 $string['isbelow'] = 'is below';
+$string['isnotfound'] = ' is NOT FOUND';
 $string['isnt'] = 'isn\'t';
 $string['isnttaggedwith'] = 'isn\'t tagged with';
 $string['istaggedwith'] = 'is tagged with';
+$string['joinnotinjoinlist'] = '\'{$a->join}\' not in join list for {$a->usage}';
 $string['last30days'] = 'The last 30 days';
 $string['lastchecked'] = 'Last process date';
 $string['lastfinancial'] = 'The previous financial year';
@@ -205,6 +220,8 @@ $string['nocolumnsyet'] = 'No columns have been created yet - add them by select
 $string['nocontentrestriction'] = 'Show all records';
 $string['nodeletereport'] = 'Report could not be deleted';
 $string['noembeddedreports'] = 'There are no embedded reports. Embedded reports are reports that are hard-coded directly into a page. Typically they will be set up by your site developer.';
+$string['nofilteraskdeveloper'] = 'No filters found. Ask your developer to add filter options to the \'{$a}\' source.';
+$string['nofiltersetfortypewithvalue'] = 'get_field(): no filter set in filteroptions for type\'{$a->type}\' with value \'{$a->value}\'';
 $string['nofiltersyet'] = 'No search fields have been created yet - add them by selecting a search term in the pulldown below.';
 $string['nogroups'] = 'There are currently no activity groups';
 $string['noheadingcolumnsdefined'] = 'No heading columns defined';
@@ -218,7 +235,7 @@ $string['noreports'] = 'No reports have been created. You can create a report us
 $string['noreportscount'] = 'No reports using this group';
 $string['norestriction'] = 'All users can view this report';
 $string['norestriction'] = 'All users can view this report';
-$string['norestrictionsfound'] = 'No restrictions found. Ask your developer to add restrictions to /totara/reportbuilder/sources/$a/restrictionoptions.php';
+$string['norestrictionsfound'] = 'No restrictions found. Ask your developer to add restrictions to /totara/reportbuilder/sources/{$a}/restrictionoptions.php';
 $string['noresultsfound'] = 'No results found';
 $string['noscheduledreports'] = 'There are no scheduled reports';
 $string['noshortnameorid'] = 'Invalid report id or shortname';
@@ -227,6 +244,7 @@ $string['notset'] = 'Not set...';
 $string['notspecified'] = 'Not specified';
 $string['notyetchecked'] = 'Not yet processed';
 $string['nouserreports'] = 'You do not have any reports. Report access is configured by your site administrator. If you are expecting to see a report, ask them to check the access permissions on the report.';
+$string['numresponses'] = '{$a} response(s).';
 $string['occurredafter'] = 'occurred after';
 $string['occurredbefore'] = 'occurred before';
 $string['occurredprevfinancialyear'] = 'occurred in the previous financial year';
@@ -241,7 +259,9 @@ $string['or'] = ' or ';
 $string['orsuborg'] = '(or a sub organisation)';
 $string['orsubpos'] = '(or a sub position)';
 $string['pluginname'] = 'Report Builder';
+$string['pluginadministration'] = 'Report Builder administration';
 $string['publicallyavailable'] = 'Let other users view';
+$string['records'] = 'Records';
 $string['recordsperpage'] = 'Number of records per page';
 $string['refreshdataforthisgroup'] = 'Refresh data for this group';
 $string['reloadreport'] = 'Report settings have been reset';
@@ -261,7 +281,9 @@ $string['reportcolumns'] = 'Report Columns';
 $string['reportconfirmdelete'] = 'Are you sure you want to delete this report?';
 $string['reportconfirmreload'] = 'This is an embedded report so you cannot delete it (that must be done by your site developer). You can choose to reset the report settings to their original values. Do you want to continue?';
 $string['reportcontents'] = 'This report contains records matching the following criteria:';
-$string['reportcount'] = '$a report(s) based on this group:';
+$string['reportcount'] = '{$a} report(s) based on this group:';
+$string['reportmustbedefined'] = 'Report must be defined';
+$string['reportshortnamemustbedefined'] = 'Report shortname must be defined';
 $string['reportname'] = 'Report Name';
 $string['reports'] = 'Reports';
 $string['reportsettings'] = 'Report Settings';
@@ -270,33 +292,37 @@ $string['reportsto'] = 'reports to';
 $string['reporttitle'] = 'Report Title';
 $string['reporttype'] = 'Report type';
 $string['reportupdated'] = 'Report Updated';
+$string['reportwithidnotfound'] = 'Report with id of \'{$a}\' not found in database.';
 $string['restoredefaults'] = 'Restore Default Settings';
 $string['restrictaccess'] = 'Restrict access';
 $string['restrictcontent'] = 'Report content';
 $string['restriction'] = 'Restriction';
 $string['restrictionswarning'] = '<strong>Warning:</strong> If none of these boxes are checked, all users will be able to view all available records from this source.';
+$string['resultsfromfeedback'] = 'Results from <strong>{$a}</strong> completed feedback(s).';
 $string['roleswithaccess'] = 'Roles with permission to view this report';
+$string['saving'] = 'Saving...';
 $string['savedsearch'] = 'Saved Search';
-$string['savedsearchinscheduleddelete'] = 'This saved search is currently being used in the following scheduled reports: <br/> $a <br/> Deleting this saved search will change these scheduled reports to run the full report instead.';
+$string['savedsearchinscheduleddelete'] = 'This saved search is currently being used in the following scheduled reports: <br/> {$a} <br/> Deleting this saved search will change these scheduled reports to run the full report instead.';
 $string['savedsearchconfirmdelete'] = 'Are you sure you want to delete this saved search?';
 $string['savedsearchdeleted'] = 'Saved search deleted';
 $string['savedsearchdesc'] = 'By giving this search a name you will be able to easily access it later or save it to your bookmarks.';
 $string['savedsearches'] = 'Saved Searches';
-$string['savedsearchmessage'] = 'Only the data matching the \'$a\' search is included.';
+$string['savedsearchmessage'] = 'Only the data matching the \'{$a}\' search is included.';
+$string['savedsearchnotfoundornotpublic'] = 'Saved search not found or search is not public';
 $string['savesearch'] = 'Save this search';
 $string['schedule'] = 'Schedule';
 $string['scheduledaily'] = 'Daily';
 $string['scheduledreports'] = 'Scheduled Reports';
-$string['scheduledreportmessage'] = 'Attached is a copy of the \'$a->reportname\' report in $a->exporttype. $a->savedtext
+$string['scheduledreportmessage'] = 'Attached is a copy of the \'{$a->reportname}\' report in {$a->exporttype}. {$a->savedtext}
 
 You can also view this report online at:
 
-$a->reporturl
+{$a->reporturl}
 
-You are scheduled to receive this report $a->schedule.
+You are scheduled to receive this report {$a->schedule}.
 To delete or update your scheduled report settings, visit:
 
-$a->scheduledreportsindex';
+{$a->scheduledreportsindex}';
 $string['scheduledreportsettings'] = 'Scheduled report settings';
 $string['schedulemonthly'] = 'Monthly';
 $string['schedulenotset'] = 'Schedule not set';
@@ -309,7 +335,8 @@ $string['searchoptions'] = 'Report Search Options';
 $string['selectsource'] = 'Select a source...';
 $string['settings'] = 'Settings';
 $string['shortnametaken'] = 'That shortname is already in use';
-$string['showbasedonx'] = 'Show records based on $a';
+$string['show'] = 'Show';
+$string['showbasedonx'] = 'Show records based on {$a}';
 $string['showbycompletedorg'] = 'Show by completed organisation';
 $string['showbycoursetag'] = 'Show by course tag';
 $string['showbycurrentorg'] = 'Show by current organisation';
@@ -317,7 +344,7 @@ $string['showbycurrentpos'] = 'Show by current position';
 $string['showbydate'] = 'Show by date';
 $string['showbytrainer'] = 'Show by trainer';
 $string['showbyuser'] = 'Show by user';
-$string['showbyx'] = 'Show by $a';
+$string['showbyx'] = 'Show by {$a}';
 $string['showhidecolumns'] = 'Show/Hide Columns';
 $string['showing'] = 'Showing';
 $string['showrecordsinposandbelow'] = 'Staff at or below the user\'s position';
@@ -352,8 +379,8 @@ $string['withrestriction'] = 'Only certain users can view this report (see below
 $string['xlsformat'] = 'Excel format';
 $string['xofyrecord'] = '{$a->filtered} of {$a->unfiltered} record shown';
 $string['xofyrecords'] = '{$a->filtered} of {$a->unfiltered} records shown';
-$string['xrecord'] = '$a record shown';
-$string['xrecords'] = '$a records shown';
+$string['xrecord'] = '{$a} record shown';
+$string['xrecords'] = '{$a} records shown';
 
 // column and filter titles used by add_* methods
 
@@ -435,4 +462,198 @@ $string['type_org_type'] = 'Organisation custom fields';
 $string['type_pos_type'] = 'Position custom fields';
 $string['type_comp_type'] = 'Competency custom fields';
 $string['type_prog'] = 'Program';
+$string['reportbuildergroupname'] = 'Report Builder: Group Name';
+$string['reportbuildergroupname_help'] = '
+The name of the group. This will allow you to identify the group when you want to create a new report based on it. Look for the name in the report source pulldown menu.';
+$string['reportbuildergrouptag'] = 'Report Builder: Group Tag';
+$string['reportbuildergrouptag_help'] = '
+When you create a group using a tag, any activities that are tagged with the official tag specified automatically form part of the group. If you add or remove tags from an activity, the group will be updated to include/exclude that activity.';
+$string['reportbuilderfullname'] = 'Report Name';
+$string['reportbuilderfullname_help'] = 'This is the name that will appear at the top of your report page and in the \'Report Manager\' block.';
+$string['reportbuilderfilters'] = 'Search Options (Filters)';
+$string['reportbuilderfilters_help'] = '
+**Search Options** allows you to customise the filters that appear on your report. The available filters are determined by the **Source** of the report. Each report source has a set of default filters.
+
+Filters can be added, sorted and removed.
+
+**Adding filters:** To add a new filter to the report choose the required filter from the \'Add another filter...\' dropdown menu and click **Save changes**. When **Advanced** is checked the filter will not appear in the \'Search by\' box by default, they use can click **Show advanced** to see these filters.
+
+**Moving filters:** The filters will appear in the \'Search by\' box in the order they are listed. Use the up and down arrows to change the order.
+
+**Deleting filters:** Click the **Delete** button (the cross icon) to the right of the report filter to remove that filter from the report.
+
+**Changing multiple filter types:** You can modify multiple filter types at the same time by selecting a different filter from the dropdown menu and clicking **Save changes**.';
+$string['reportbuilderhidden'] = 'Hide in My Reports';
+$string['reportbuilderhidden_help'] = '
+When **Hide in My Reports** is checked the report will not appear on the \'My Reports\' page for any logged in users.
+
+**Note:** The **Hide in My Reports** option only hides the link to the report. Users with the correct access permissions may still access the report using the URL.';
+$string['reportbuilderexportoptions'] = 'Report Export Settings';
+$string['reportbuilderexportoptions_help'] = '
+**Report export settings** allows a user with the appropriate permissions to specify the export options that are available for users at the bottom of a report page. This setting affects all **Report builder** reports.
+
+When multiple options are selected the user can choose their preferred options from the export dropdown menu.
+
+When no options are selected the export function is disabled..';
+$string['reportbuilderrolesaccess'] = 'Roles with Access';
+$string['reportbuilderrolesaccess_help'] = '
+When **Restrict access** is set to **Only certain users can view this report** you can specify which roles can view the report using **Roles with permission to view the report**.
+
+You can select one or multiple roles from the list.
+
+When **Restrict access** is set to **All users can view this report** these options will be disabled.';
+$string['reportbuildertrainer'] = 'Report Builder: Show by trainer';
+$string['reportbuildertrainer_help'] = '
+This criteria is enabled by selecting the \'Show records by trainer\' checkbox. If selected, then the report will show different records depending on who the face-to-face trainer was for the feedback being given.
+
+If \'Show records where the user is the trainer\' is selected, the report will show feedback for sessions where the user viewing the report was the trainer.
+
+If \'Records where one of the user\'s direct reports is the trainer\' is selected, then the report will show records for sessions trained by staff of the person viewing the report.
+
+If \'Both\' is selected, then both of the above records will be shown.';
+$string['reportbuilderuser'] = 'Show by User';
+$string['reportbuilderuser_help'] = '
+When **Show records by user** is selected the report will show different records depending on the user viewing the report and their relationship to other users.
+
+**Include records from a particular user** controls what records a user viewing the report can see:
+
+*   When set to **A user\'s own records** the user can see their own records only.
+*   When set to **Records for user\'s direct reports** the user can see the records belonging to any user who reports to them (A user is assigned a manager in their user profile on the \'Positions tab\').
+*   When set to **Both** the user can view both their own records and those of their direct reports.';
+$string['reportbuildersource'] = 'Source';
+$string['reportbuildersource_help'] = '
+The **Source** of a report defines the primary type of data used. Further filtering options are available once you start editing the report.
+
+Once saved, the report source cannot be changed.
+
+**Note:** If no options are available in the **Source** field, or the source you require does not appear you will need your Totara installation to be configured to include the source data you require (This cannot be done via the Totara interface).';
+$string['reportbuildersorting'] = 'Sorting';
+$string['reportbuildersorting_help'] = '
+**Sorting** allows you to set a default column and sort order on a report.
+
+A user is still able to manually sort a report while viewing it. The users preferences will be saved during the active session. When they finish the session the report will return to the default sort settings set here.';
+$string['reportbuilderdialogfilter'] = 'Report Builder: Dialog filter';
+$string['reportbuilderdialogfilter_help'] = '
+This filter allows you to filter information based on a hierarchy. The filter has the following options:
+
+*   is any value - this option disables the filter (i.e. all information is accepted by this filter)
+*   is equal to - this option allows only information that is equal to the value selected from the list
+*   is not equal to - this option allows only information that is different from the value selected from the list
+
+Once a framework item has been selected you can use the \'Include children?\' checkbox to choose whether to match only that item, or match that item and any sub-items belonging to that item.';
+$string['reportbuildershortname'] = 'Report Builder: Unique name';
+$string['reportbuildershortname_help'] = '
+The shortname is used by moodle to keep track of this report. No two reports can be given the same shortname, even if they are based on the same source. Avoid using special characters in this field (text, numbers and underscores are okay).';
+$string['reportbuilderrecordsperpage'] = 'Number of Records per Page';
+$string['reportbuilderrecordsperpage_help'] = '
+**Number of records per page** allows you define how many records display on a report page.
+
+The maximum number of records that can be displayed on a page is 9999. The more records set to display on a page the longer the report pages take to display.
+
+Recommendation is to **limit the number of records per page to 40**.';
+$string['reportbuilderdate'] = 'Show by date';
+$string['reportbuilderdate_help'] = '
+When **Show records based on the record date** is selected the report only displays records within the selected timeframe.
+
+The **Include records from** options allow you to set the timeframe for the report:
+
+*   When set to **The past** the report only shows records with a date older than the current date.
+*   When set to **The future** the report only shows records with a future date set from the current date.
+*   When set to **The last 30 days** the report only shows records between the current time and 30 days before.
+*   When set to **The next 30 days** the report only shows records between the current time and 30 days into the future.';
+$string['reportbuilderdescription'] = 'Description';
+$string['reportbuilderdescription_help'] = 'When a report description is created the information displays in a box above the search filters on the report page.';
+$string['reportbuildercolumns'] = 'Columns';
+$string['reportbuildercolumns_help'] = '
+**Report Columns** allows you to customise the columns that appear on your report. The available columns are determined by the data **Source** of the report. Each report source has a set of default columns set up.
+
+Columns can be added, removed, renamed and sorted.
+
+**Adding Columns:** To add a new column to the report choose the required column from the \'Add another column...\' dropdown list and click **Save changes**. The new column will be added to the end of the list.
+
+**Note:** You can only create one column of each type within a single report. You will receive a validation error if you try to include the same column more than once.
+
+**Hiding columns:** By default all columns appear when a user views the report. Use the \'show/hide\' button (the eye icon) to hide columns you do not want users to see by default.
+
+**Note:** A hidden column is still available to a user viewing the report. Delete columns (the cross icon) that you do not want users to see at all.
+
+**Moving columns:** The columns will appear on the report in the order they are listed. Use the up and down arrows to change the order.
+
+**Deleting columns:** Click the \'Delete\' button (the cross icon) to the right of the report column to remove that column from the report.
+
+**Renaming columns:** You can customise the name of a column by changing the **Heading** name and clicking **Save changes**. The **Heading** is the name that will appear on the report.
+
+**Changing multiple column types:** You can modify multiple column types at the same time by selecting a different column from the dropdown menu and clicking **Save changes**.';
+$string['reportbuilderbaseitem'] = 'Report Builder: Base item';
+$string['reportbuilderbaseitem_help'] = '
+By grouping a set of activities you are saying that they have something in common, which will allow reports to be generated for all the activities in a group. The base item defines the properties that are considered when aggregation is performed on each member of the group.';
+$string['reportbuilderaccessmode'] = 'Access Mode';
+$string['reportbuilderaccessmode_help'] = '
+Access controls are used to restrict which users can view the report.
+
+**Restrict access** sets the overall access setting for the report.
+
+When set to **All users can view this report** there are no restrictions applied to the report and all users will be able to view the report.
+
+When set to **Only certain users can view this report** the report will be restricted to the user groups selected below.
+
+**Note:** access restrictions only control who can view the report, not which records it contains. See the \'Content\' tab for controlling the report contents.';
+$string['reportbuildercontentmode'] = 'Content Mode';
+$string['reportbuildercontentmode_help'] = '
+Content controls allow you to restrict the records and information that are available when a report is viewed.
+
+**Report content** allows you to select the overall content control settings for this report:
+
+When **Show all records** is selected, every available record for this source will be shown and no restrictions will be placed on the content available.
+
+When **Show records matching any of the checked criteria** is selected the report will display records that match any of the criteria set below.
+
+**Note:** If no criteria is set the report will display no records.
+
+When **Show records matching all of the checked criteria** is selected the report will display records that match all the criteria set below.
+**Note:** If no criteria is set the report will display no records.';
+$string['reportbuildercompletedorg'] = 'Show by Completed Organisation';
+$string['reportbuildercompletedorg_help'] = '
+When **Show records completed in the user\'s organisation** is selected the report displays different completed records depending on the organisation the user has been assigned to. (A user is assigned an organisation in their \'User Profile\' on the \'Positions\' tab).
+
+When **Include records from child organisations** is set to:
+
+*   **Yes** the user viewing the report will be able to view completed records related to their organisation and any child organisations of that organisation
+*   **No** the user can only view completed records related to their organisation.';
+$string['reportbuildercontext'] = 'Restrict Access by Role';
+$string['reportbuildercontext_help'] = '
+Context is the location or level within the system that the user has access to. For example a Site Administrator would have System level access (context), while a learner may only have Course level access (context).
+
+**Context** allows you to set the context in which a user has been assigned a role to view the report.
+
+A user can be assigned a role at the system level giving them site wide access or just within a particular context. For instance a trainer may only be assigned the role at the course level.
+
+When **Users must have role in the system context** is selected the user must be assigned the role at a system level (i.e. at a site-wide level) to be able to view the report.
+
+When **User may have role in any context** is selected a user can view the report when they have been assigned the selected role anywhere in the system.';
+$string['reportbuildercurrentorg'] = 'Show by Current Organisation';
+$string['reportbuildercurrentorg_help'] = '
+When **Show records from staff in the user\'s organisation** is selected the report displays different results depending on the organisation the user has been assigned to. (A user is assigned an organisation in their \'User Profile\' on the \'Positions\' tab).
+
+When **Include records from child organisations** is set to:
+
+*   **Yes** the user viewing the report will be able to view records related to their organisation and any child organisations of that organisation
+*   **No** the user can only view records related to their organisation.';
+$string['reportbuildercurrentpos'] = 'Show by Current Position';
+$string['reportbuildercurrentpos_help'] = '
+When **Show records from staff in the user\'s position** is selected the report will display different records depending on their assigned position (A user is assigned a position in their \'User Profile\' on the \'Positions\' tab).
+
+When **Include records from child positions** is set to:
+
+*   **Yes** the user viewing the report can view records related to their positions and any child positions related to their positions
+*   **No** the user viewing the report can only view records related to their position.';
+$string['reportbuildercoursetag'] = 'Report Builder: Show by course tag';
+$string['reportbuildercoursetag_help'] = '
+This criteria is enabled by selecting the \'Show records by course tag\' checkbox. If selected, the report will show results based on whether the record belongs to a course that is tagged with particular tags.
+
+If any tags in the \'Include records tagged with\' section are selected, only records belonging to a course tagged with all the selected tags will be shown. Records belonging to courses with no tags will **not** be shown.
+
+If any tags in the \'Exclude records tagged with\' section are selected, records belonging to a coures tagged with the selected tags will **not** be shown. All records belonging to courses without any tags will be shown.
+
+It is possible to include and exclude tags at the same time, but a single tag cannot be both included and excluded.';
 

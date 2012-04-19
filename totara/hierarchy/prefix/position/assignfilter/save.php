@@ -22,21 +22,23 @@
  * @subpackage hierarchy
  */
 
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php');
-require_once($CFG->dirroot . '/totara/core/utils.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/hierarchy_multi.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))).'/config.php');
+require_once($CFG->dirroot.'/totara/core/utils.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/filters/hierarchy_multi.php');
 
 $ids = required_param('ids', PARAM_SEQUENCE);
+$ids = explode(',', $ids);
 $filtername = required_param('filtername', PARAM_TEXT);
 
 require_login();
 
-echo html_writer::start_tag('div', array('class' => 'list-' . $filtername));
-$ids = explode(',', $ids);
+$PAGE->set_context(context_system::instance());
+
+echo $OUTPUT->container_start('list-' . $filtername);
 list($in_sql, $in_params) = $DB->get_in_or_equal($ids);
-if (!empty($ids) && $items = $DB->get_records_select('pos', "id $in_sql", $in_params)) {
+if (!empty($ids) && $items = $DB->get_records_select('pos', "id {$in_sql}", $in_params)) {
     foreach ($items as $item) {
         echo display_selected_hierarchy_item($item, $filtername);
     }
 }
-echo html_writer::end_tag('div');
+echo $OUTPUT->container_end();

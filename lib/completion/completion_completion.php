@@ -26,6 +26,23 @@
  */
 require_once($CFG->libdir.'/completion/data_object.php');
 
+/**
+ * Course completion status constants
+ *
+ * For translating database recorded integers to strings and back
+ */
+define('COMPLETION_STATUS_NOTYETSTARTED',   10);
+define('COMPLETION_STATUS_INPROGRESS',      25);
+define('COMPLETION_STATUS_COMPLETE',        50);
+define('COMPLETION_STATUS_COMPLETEVIARPL',  75);
+
+global $COMPLETION_STATUS;
+$COMPLETION_STATUS = array(
+    COMPLETION_STATUS_NOTYETSTARTED => 'notyetstarted',
+    COMPLETION_STATUS_INPROGRESS => 'inprogress',
+    COMPLETION_STATUS_COMPLETE => 'complete',
+    COMPLETION_STATUS_COMPLETEVIARPL => 'completeviarpl',
+);
 
 /**
  * Course completion status for a particular user/course

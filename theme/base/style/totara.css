@@ -44,6 +44,13 @@
     background: url([[pix:moodle|help-hover]]) 100 100 no-repeat;
 }
 
+/* Notification message box */
+.notifymessage {
+    border: 1px solid black;
+    background-color: #ffc;
+    padding: 10px;
+}
+
 
 /**
  * Totara toolbar - used by lib/totaratablelib.php

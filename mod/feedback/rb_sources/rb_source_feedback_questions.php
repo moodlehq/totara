@@ -53,30 +53,30 @@ class rb_source_feedback_questions extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
+        global $CFG, $DB;
 
         // get the trainer role's id (or set a dummy value)
-        $trainerroleid = get_field('role', 'id', 'shortname', 'trainer');
+        $trainerroleid = $DB->get_field('role', 'id', array('shortname' => 'trainer'));
         if(!$trainerroleid) {
             $trainerroleid = 0;
         }
 
         // to get access to position type constants
-        require_once($CFG->dirroot . '/hierarchy/prefix/position/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
 
         // joinlist for this source
         $joinlist = array(
             new rb_join(
                 'feedback',
                 'LEFT',
-                $CFG->prefix . 'feedback',
+                '{feedback}',
                 'feedback.id = base.feedbackid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'sessiontrainer',
                 'LEFT',
-                $CFG->prefix . 'facetoface_session_roles',
+                '{facetoface_session_roles}',
                 '(sessiontrainer.sessionid = base.sessionid AND ' .
                     "sessiontrainer.roleid = $trainerroleid)",
                 // potentially multiple trainers in a session
@@ -85,7 +85,7 @@ class rb_source_feedback_questions extends rb_base_source {
             new rb_join(
                 'trainer',
                 'LEFT',
-                $CFG->prefix . 'user',
+                '{user}',
                 'trainer.id = sessiontrainer.userid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
                 'sessiontrainer'
@@ -93,7 +93,7 @@ class rb_source_feedback_questions extends rb_base_source {
             new rb_join(
                 'trainer_position_assignment',
                 'LEFT',
-                $CFG->prefix . 'pos_assignment',
+                '{pos_assignment}',
                 '(trainer_position_assignment.userid = ' .
                     'sessiontrainer.userid AND
                     trainer_position_assignment.type = ' .
@@ -104,7 +104,7 @@ class rb_source_feedback_questions extends rb_base_source {
             new rb_join(
                 'trainer_position',
                 'LEFT',
-                $CFG->prefix . 'pos',
+                '{pos}',
                 'trainer_position.id = ' .
                     'trainer_position_assignment.positionid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
@@ -113,7 +113,7 @@ class rb_source_feedback_questions extends rb_base_source {
             new rb_join(
                 'trainer_organisation',
                 'LEFT',
-                $CFG->prefix . 'org',
+                '{org}',
                 'trainer_organisation.id = ' .
                     'trainer_position_assignment.organisationid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
@@ -138,6 +138,8 @@ class rb_source_feedback_questions extends rb_base_source {
     }
 
     function define_columnoptions() {
+        global $DB;
+
         $columnoptions = array(
             new rb_column_option(
                 'responses',
@@ -177,7 +179,7 @@ class rb_source_feedback_questions extends rb_base_source {
                 'trainer',
                 'fullname',
                 get_string('trainerfullname', 'rb_source_feedback_questions'),
-                sql_fullname('trainer.firstname', 'trainer.lastname'),
+                $DB->sql_fullname('trainer.firstname', 'trainer.lastname'),
                 array('joins' => 'trainer')
             ),
             new rb_column_option(
@@ -213,142 +215,140 @@ class rb_source_feedback_questions extends rb_base_source {
 
         // only create fields if being called on a group
         if($this->groupid !== null) {
-            if($questions = get_records($this->grouptables . 'q', '', '',
-                'sortorder')) {
+            $questions = $DB->get_records($this->grouptables . 'q', null, 'sortorder');
 
-                foreach($questions as $question) {
-                    $qid = $question->sortorder;
-                    $qname = $question->name;
-                    switch($question->typ) {
-                    case 'radio':
-                    case 'radiorated':
-                    case 'dropdown':
-                    case 'dropdownrated':
-                    case 'check':
-                        if($options = get_records($this->grouptables . 'opt',
-                            'qid', $qid, 'sortorder')) {
+            foreach ($questions as $question) {
+                $qid = $question->sortorder;
+                $qname = $question->name;
+                switch($question->typ) {
+                case 'radio':
+                case 'radiorated':
+                case 'dropdown':
+                case 'dropdownrated':
+                case 'check':
+                    $options = $DB->get_records($this->grouptables . 'opt', array('qid' => $qid), 'sortorder');
+                    if (!empty($options)) {
 
-                            foreach($options as $option) {
-                                $oid = $option->sortorder;
-                                // number that selected this option
-                                $columnoptions[] = new rb_column_option(
-                                    'q' . $qid,
-                                    $oid . '_sum',
-                                    'Q' . $qid . get_string('numoption', 'rb_source_feedback_questions') . $oid,
-                                    'base.q' . $qid . '_' . $oid,
-                                    array('grouping' => 'sum')
-                                );
-                                // percentage that selected this option
-                                $columnoptions[] = new rb_column_option(
-                                    'q' . $qid,
-                                    $oid . '_perc',
-                                    'Q' . $qid . get_string('percentoption', 'rb_source_feedback_questions') . $oid,
-                                    'base.q' . $qid . '_' . $oid,
-                                    array('grouping' => 'percent')
-                                );
-                            }
-                            // total to answer question
+                        foreach ($options as $option) {
+                            $oid = $option->sortorder;
+                            // number that selected this option
                             $columnoptions[] = new rb_column_option(
                                 'q' . $qid,
-                                'total',
-                                'Q' . $qid . get_string('numresponses', 'rb_source_feedback_questions'),
-                                'base.q' . $qid . '_value',
-                                array('grouping' => 'count')
+                                $oid . '_sum',
+                                'Q' . $qid . get_string('numoption', 'rb_source_feedback_questions') . $oid,
+                                'base.q' . $qid . '_' . $oid,
+                                array('grouping' => 'sum')
                             );
-                            // average answer to question
+                            // percentage that selected this option
                             $columnoptions[] = new rb_column_option(
                                 'q' . $qid,
-                                'average',
-                                'Q' . $qid . get_string('average', 'rb_source_feedback_questions'),
-                                'base.q' . $qid . '_value',
-                                array(
-                                    'displayfunc' => 'round2',
-                                    'grouping' => 'average',
-                                )
+                                $oid . '_perc',
+                                'Q' . $qid . get_string('percentoption', 'rb_source_feedback_questions') . $oid,
+                                'base.q' . $qid . '_' . $oid,
+                                array('grouping' => 'percent')
                             );
                         }
-                        break;
-                    case 'textarea':
-                    case 'textfield':
-                        // count of number of submissions
+                        // total to answer question
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
-                            'count',
-                            'Q' . $qid . get_string('numanswers', 'rb_source_feedback_questions'),
-                            'base.q' . $qid . '_answer',
+                            'total',
+                            'Q' . $qid . get_string('numresponses', 'rb_source_feedback_questions'),
+                            'base.q' . $qid . '_value',
                             array('grouping' => 'count')
                         );
-                        // list of all answers provided
-                        $columnoptions[] = new rb_column_option(
-                            'q' . $qid,
-                            'list',
-                            'Q' . $qid . get_string('allanswers', 'rb_source_feedback_questions'),
-                            'base.q' . $qid . '_answer',
-                            array(
-                                'grouping' => 'list_dash',
-                                'style' => array('min-width' => '200px'),
-                            )
-                        );
-                        break;
-                        // options for number based fields
-                    case 'numeric':
-                        // count of number of submissions
-                        $columnoptions[] = new rb_column_option(
-                            'q' . $qid,
-                            'count',
-                            'Q' . $qid . get_string('numanswers', 'rb_source_feedback_questions'),
-                            'base.q' . $qid . '_answer',
-                            array('grouping' => 'count')
-                        );
-                        // sum of all answers provided
-                        $columnoptions[] = new rb_column_option(
-                            'q' . $qid,
-                            'sum',
-                            'Q' . $qid . get_string('sum', 'rb_source_feedback_questions'),
-                            'base.q' . $qid . '_answer',
-                            array('grouping' => 'sum')
-                        );
-                        // average of all answers provided
+                        // average answer to question
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
                             'average',
-                            'Q' . $qid . ': Average',
-                            'base.q' . $qid . '_answer',
+                            'Q' . $qid . get_string('average', 'rb_source_feedback_questions'),
+                            'base.q' . $qid . '_value',
                             array(
                                 'displayfunc' => 'round2',
                                 'grouping' => 'average',
                             )
                         );
-                        // min of all answers provided
-                        $columnoptions[] = new rb_column_option(
-                            'q' . $qid,
-                            'min',
-                            'Q' . $qid . get_string('min', 'rb_source_feedback_questions'),
-                            'base.q' . $qid . '_answer',
-                            array('grouping' => 'min')
-                        );
-                        // max of all answers provided
-                        $columnoptions[] = new rb_column_option(
-                            'q' . $qid,
-                            'max',
-                            'Q' . $qid . get_string('max', 'rb_source_feedback_questions'),
-                            'base.q' . $qid . '_answer',
-                            array('grouping' => 'max')
-                        );
-                        // standard deviation of all answers provided
-                        $columnoptions[] = new rb_column_option(
-                            'q' . $qid,
-                            'stddev',
-                            'Q' . $qid . get_string('stddev', 'rb_source_feedback_questions'),
-                            'base.q' . $qid . '_answer',
-                            array(
-                                'displayfunc' => 'round2',
-                                'grouping' => 'stddev',
-                            )
-                        );
-                        break;
-                    default:
                     }
+                    break;
+                case 'textarea':
+                case 'textfield':
+                    // count of number of submissions
+                    $columnoptions[] = new rb_column_option(
+                        'q' . $qid,
+                        'count',
+                        'Q' . $qid . get_string('numanswers', 'rb_source_feedback_questions'),
+                        'base.q' . $qid . '_answer',
+                        array('grouping' => 'count')
+                    );
+                    // list of all answers provided
+                    $columnoptions[] = new rb_column_option(
+                        'q' . $qid,
+                        'list',
+                        'Q' . $qid . get_string('allanswers', 'rb_source_feedback_questions'),
+                        'base.q' . $qid . '_answer',
+                        array(
+                            'grouping' => 'list_dash',
+                            'style' => array('min-width' => '200px'),
+                        )
+                    );
+                    break;
+                    // options for number based fields
+                case 'numeric':
+                    // count of number of submissions
+                    $columnoptions[] = new rb_column_option(
+                        'q' . $qid,
+                        'count',
+                        'Q' . $qid . get_string('numanswers', 'rb_source_feedback_questions'),
+                        'base.q' . $qid . '_answer',
+                        array('grouping' => 'count')
+                    );
+                    // sum of all answers provided
+                    $columnoptions[] = new rb_column_option(
+                        'q' . $qid,
+                        'sum',
+                        'Q' . $qid . get_string('sum', 'rb_source_feedback_questions'),
+                        'base.q' . $qid . '_answer',
+                        array('grouping' => 'sum')
+                    );
+                    // average of all answers provided
+                    $columnoptions[] = new rb_column_option(
+                        'q' . $qid,
+                        'average',
+                        'Q' . $qid . ': Average',
+                        'base.q' . $qid . '_answer',
+                        array(
+                            'displayfunc' => 'round2',
+                            'grouping' => 'average',
+                        )
+                    );
+                    // min of all answers provided
+                    $columnoptions[] = new rb_column_option(
+                        'q' . $qid,
+                        'min',
+                        'Q' . $qid . get_string('min', 'rb_source_feedback_questions'),
+                        'base.q' . $qid . '_answer',
+                        array('grouping' => 'min')
+                    );
+                    // max of all answers provided
+                    $columnoptions[] = new rb_column_option(
+                        'q' . $qid,
+                        'max',
+                        'Q' . $qid . get_string('max', 'rb_source_feedback_questions'),
+                        'base.q' . $qid . '_answer',
+                        array('grouping' => 'max')
+                    );
+                    // standard deviation of all answers provided
+                    $columnoptions[] = new rb_column_option(
+                        'q' . $qid,
+                        'stddev',
+                        'Q' . $qid . get_string('stddev', 'rb_source_feedback_questions'),
+                        'base.q' . $qid . '_answer',
+                        array(
+                            'displayfunc' => 'round2',
+                            'grouping' => 'stddev',
+                        )
+                    );
+                    break;
+                default:
                 }
             }
         }
@@ -487,6 +487,8 @@ class rb_source_feedback_questions extends rb_base_source {
     }
 
     function define_defaultcolumns() {
+        global $DB;
+
         $defaultcolumns = array(
             array(
                 'type' => 'course',
@@ -505,32 +507,31 @@ class rb_source_feedback_questions extends rb_base_source {
 
         // only create fields if being called on a group
         if($this->groupid !== null) {
-            if($questions = get_records($this->grouptables.'q','', '', 'sortorder')) {
-                foreach($questions as $question) {
-                    $qid = $question->sortorder;
-                    $name = $question->name;
-                    switch($question->typ) {
-                    case 'radio':
-                    case 'radiorated':
-                    case 'dropdown':
-                    case 'dropdownrated':
-                    case 'check':
-                        // average answer
-                        $defaultcolumns[] = array(
-                            'type' => 'q' . $qid,
-                            'value' => 'average',
-                        );
-                    break;
-                    case 'textarea':
-                    case 'textfield':
-                    case 'numeric':
-                        // count of number of submissions
-                        $defaultcolumns[] = array(
-                            'type' => 'q' . $qid,
-                            'value' => 'count',
-                        );
-                    break;
-                    }
+            $questions = $DB->get_records($this->grouptables.'q', null, 'sortorder');
+            foreach ($questions as $question) {
+                $qid = $question->sortorder;
+                $name = $question->name;
+                switch($question->typ) {
+                case 'radio':
+                case 'radiorated':
+                case 'dropdown':
+                case 'dropdownrated':
+                case 'check':
+                    // average answer
+                    $defaultcolumns[] = array(
+                        'type' => 'q' . $qid,
+                        'value' => 'average',
+                    );
+                break;
+                case 'textarea':
+                case 'textfield':
+                case 'numeric':
+                    // count of number of submissions
+                    $defaultcolumns[] = array(
+                        'type' => 'q' . $qid,
+                        'value' => 'count',
+                    );
+                break;
                 }
             }
         }
@@ -539,6 +540,7 @@ class rb_source_feedback_questions extends rb_base_source {
     }
 
     function define_defaultfilters() {
+        global $DB;
 
         $defaultfilters = array(
             array(
@@ -547,14 +549,13 @@ class rb_source_feedback_questions extends rb_base_source {
             ),
         );
         // by default add each tag filter as an advanced option
-        if($tags = get_records('tag', 'tagtype', 'official')) {
-            foreach($tags as $tag) {
-                $defaultfilters[] = array(
-                    'type' => 'tags',
-                    'value' => 'course_tag_' . $tag->id,
-                    'advanced' => 1,
-                );
-            }
+        $tags = $DB->get_records('tag', array('tagtype' => 'official'));
+        foreach ($tags as $tag) {
+            $defaultfilters[] = array(
+                'type' => 'tags',
+                'value' => 'course_tag_' . $tag->id,
+                'advanced' => 1,
+            );
         }
 
         return $defaultfilters;

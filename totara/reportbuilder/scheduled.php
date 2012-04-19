@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Alastair Munro <alastair@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -28,29 +28,30 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/scheduled_forms.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/scheduled_forms.php');
 
 require_login();
+$PAGE->set_context(context_user::instance($USER->id));
+$PAGE->set_url('/totara/reportbuilder/scheduled.php');
 
-$reportid = optional_param('reportid', PARAM_INT); //report that a schedule is being added for
+$reportid = optional_param('reportid', 0, PARAM_INT); //report that a schedule is being added for
 $id = optional_param('id', 0, PARAM_INT); //id if editing schedule
 
 $myreportsurl = $CFG->wwwroot . '/my/reports.php';
 $returnurl = $CFG->wwwroot . '/totara/reportbuilder/scheduled.php';
+$output = $PAGE->get_renderer('totara_reportbuilder');
 
-$PAGE = page_create_object('Totara', $USER->id);
-
-if($id == 0){
-    $report = new object();
+if ($id == 0) {
+    $report = new stdClass();
     $report->id = 0;
     $report->reportid = $reportid;
     $report->frequency = null;
     $report->schedule = null;
 }
 else{
-    if(!$report = get_record('report_builder_schedule', 'id', $id)){
-        error(get_string('error:invalidreportscheduleid', 'local_reportbuilder'));
+    if (!$report = $DB->get_record('report_builder_schedule', array('id' => $id))) {
+        print_error('error:invalidreportscheduleid', 'totara_reportbuilder');
     }
 }
 
@@ -67,71 +68,71 @@ $mform = new scheduled_reports_new_form(
 
 $mform->set_data($report);
 
-if($mform->is_cancelled()){
+if ($mform->is_cancelled()) {
     redirect($myreportsurl);
 }
-if($fromform = $mform->get_data()){
-    if(empty($fromform->submitbutton)) {
-        totara_set_notification(get_string('error:unknownbuttonclicked','local_reportbuilder'), $returnurl);
+if ($fromform = $mform->get_data()) {
+    if (empty($fromform->submitbutton)) {
+        totara_set_notification(get_string('error:unknownbuttonclicked', 'totara_reportbuilder'), $returnurl);
     }
 
-    if($fromform->id){
-        if($newid = add_scheduled_report($fromform)) {
-            totara_set_notification(get_string('updatescheduledreport','local_reportbuilder'), $myreportsurl, array('class' => 'notifysuccess'));
+    if ($fromform->id) {
+        if ($newid = add_scheduled_report($fromform)) {
+            totara_set_notification(get_string('updatescheduledreport', 'totara_reportbuilder'), $myreportsurl, array('class' => 'notifysuccess'));
         }
         else {
-            totara_set_notification(get_string('error:updatescheduledreport','local_reportbuilder'), $returnurl);
+            totara_set_notification(get_string('error:updatescheduledreport', 'totara_reportbuilder'), $returnurl);
         }
     }
     else {
-        if($newid = add_scheduled_report($fromform)) {
-            totara_set_notification(get_string('addedscheduledreport','local_reportbuilder'), $myreportsurl, array('class' => 'notifysuccess'));
+        if ($newid = add_scheduled_report($fromform)) {
+            totara_set_notification(get_string('addedscheduledreport', 'totara_reportbuilder'), $myreportsurl, array('class' => 'notifysuccess'));
         }
         else {
-            totara_set_notification(get_string('error:addscheduledreport','local_reportbuilder'), $returnurl);
+            totara_set_notification(get_string('error:addscheduledreport', 'totara_reportbuilder'), $returnurl);
         }
     }
 }
 
-if($id==0) {
+if ($id == 0) {
     $pagename = 'addscheduledreport';
 } else {
     $pagename = 'editscheduledreport';
 }
 
-$navlinks[] = array('name' => get_string('myreports','local_reportbuilder'), 'link'=> $CFG->wwwroot . '/my/reports.php', 'type'=>'title');
-$navlinks[] = array('name' => get_string($pagename, 'local_reportbuilder'), 'link'=> '', 'type'=>'title');
+$PAGE->set_title(get_string($pagename, 'totara_reportbuilder'));
+$PAGE->set_cacheable(true);
+$PAGE->navbar->add(get_string('myreports', 'totara_reportbuilder'), new moodle_url('/my/reports.php'));
+$PAGE->navbar->add(get_string($pagename, 'totara_reportbuilder'));
+echo $output->header();
 
-$PAGE->print_header(get_string($pagename, 'local_reportbuilder'), $navlinks);
+echo $output->container_start('reportbuilder-navlinks');
+echo $output->view_all_reports_link();
+echo $output->container_end();
 
-print_container_start(true, 'reportbuilder-navbuttons');
-print_single_button($CFG->wwwroot.'/my/reports.php#scheduled', null, get_string('allscheduledreports','local_reportbuilder'));
-print_container_end();
-
-print_heading(get_string($pagename, 'local_reportbuilder'));
+echo $output->heading(get_string($pagename, 'totara_reportbuilder'));
 
 $mform->display();
 
-print_footer();
+echo $output->footer();
 
-function add_scheduled_report($fromform){
-    global $USER, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS;
+function add_scheduled_report($fromform) {
+    global $DB, $USER, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS;
 
     $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
-    begin_sql();
 
-    if(isset($fromform->reportid) && isset($fromform->format) && isset($fromform->frequency)) {
-        $todb = new object();
-        if($id = $fromform->id){
+    if (isset($fromform->reportid) && isset($fromform->format) && isset($fromform->frequency)) {
+        $transaction = $DB->start_delegated_transaction();
+        $todb = new stdClass();
+        if ($id = $fromform->id) {
             $todb->id = $id;
         }
-
         $todb->reportid = $fromform->reportid;
         $todb->savedsearchid = $fromform->savedsearchid;
         $todb->userid = $USER->id;
         $todb->format = $fromform->format;
         $todb->frequency = $fromform->frequency;
-        switch($REPORT_BUILDER_SCHEDULE_CODES[$fromform->frequency]){
+        switch($REPORT_BUILDER_SCHEDULE_CODES[$fromform->frequency]) {
             case 'daily':
                 $todb->schedule = $fromform->daily;
                 break;
@@ -142,22 +143,15 @@ function add_scheduled_report($fromform){
                 $todb->schedule = $fromform->monthly;
                 break;
         }
-
-        if(!$id){
-            if(!$newid = insert_record('report_builder_schedule', $todb)) {
-                rollback_sql();
-                return false;
-            }
-        }
-        else {
+        if (!$id) {
+            $newid = $DB->insert_record('report_builder_schedule', $todb);
+        } else {
             $todb->nextreport = null;
-
-            if(!$newid = update_record('report_builder_schedule', $todb)) {
-                rollback_sql();
-                return false;
-            }
+            $DB->update_record('report_builder_schedule', $todb);
+            $newid = $todb->id;
         }
-        commit_sql();
+
+        $transaction->allow_commit();
         return $newid;
     }
     return false;

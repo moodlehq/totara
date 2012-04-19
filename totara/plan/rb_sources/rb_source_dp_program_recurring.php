@@ -41,7 +41,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
     function __construct() {
 
         global $CFG;
-        $this->base = $CFG->prefix . 'prog_completion_history';
+        $this->base = '{prog_completion_history}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -50,7 +50,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
-        $this->sourcetitle = get_string('recordoflearningprogramsrecurring','local_plan');
+        $this->sourcetitle = get_string('recordoflearningprogramsrecurring', 'totara_plan');
         // only consider whole programs - not courseset completion
         $this->sourcewhere = 'base.coursesetid = 0';
         parent::__construct();
@@ -69,7 +69,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
             new rb_join(
                 'prog', // table alias
                 'LEFT', // type of join
-                $CFG->prefix . 'prog',
+                '{prog}',
                 'base.programid = prog.id', //how it is joined
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
@@ -84,35 +84,35 @@ class rb_source_dp_program_recurring extends rb_base_source {
     $columnoptions[] = new rb_column_option(
             'program',
             'fullname',
-            get_string('programname','local_program'),
+            get_string('programname', 'totara_program'),
             "prog.fullname",
             array('joins' => 'prog')
         );
     $columnoptions[] = new rb_column_option(
             'program',
             'shortname',
-            get_string('programshortname','local_program'),
+            get_string('programshortname', 'totara_program'),
             "prog.shortname",
             array('joins' => 'prog')
         );
         $columnoptions[] = new rb_column_option(
             'program',
             'idnumber',
-            get_string('programidnumber','local_program'),
+            get_string('programidnumber', 'totara_program'),
             "prog.idnumber",
             array('joins' => 'prog')
         );
         $columnoptions[] = new rb_column_option(
             'program',
             'id',
-            get_string('programid','local_program'),
+            get_string('programid', 'totara_program'),
             "base.programid"
         );
 
     $columnoptions[] = new rb_column_option(
             'program_completion_history',
             'courselink',
-            get_string('coursenamelink','local_program'),
+            get_string('coursenamelink', 'totara_program'),
             "base.recurringcourseid",
             array(
                 'displayfunc' => 'link_course_name',
@@ -122,7 +122,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
         $columnoptions[] = new rb_column_option(
             'program_completion_history',
             'status',
-            get_string('completionstatus','local_program'),
+            get_string('completionstatus', 'totara_program'),
             "base.status",
             array(
                 'displayfunc' => 'program_completion_status',
@@ -136,7 +136,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
         $columnoptions[] = new rb_column_option(
             'program_completion_history',
             'timecompleted',
-            get_string('completiondate','local_program'),
+            get_string('completiondate', 'totara_program'),
             "base.timecompleted",
             array(
                 'displayfunc' => 'completion_date',
@@ -150,11 +150,11 @@ class rb_source_dp_program_recurring extends rb_base_source {
         global $CFG;
 
         if ($status == STATUS_PROGRAM_COMPLETE){
-            return get_string('complete', 'local_program');
+            return get_string('complete', 'totara_program');
         } else if ($status == STATUS_PROGRAM_INCOMPLETE) {
-            return '<span class="error">' . get_string('incomplete', 'local_program') . '</span>';
+            return html_writer::tag('span', get_string('incomplete', 'totara_program'), array('class' => 'error'));
         } else {
-            return get_string('unknownstatus', 'local_program');
+            return get_string('unknownstatus', 'totara_program');
         }
 
     }
@@ -168,14 +168,15 @@ class rb_source_dp_program_recurring extends rb_base_source {
     }
 
     function rb_display_link_course_name($courseid) {
-        global $CFG;
+        global $CFG, $DB;
 
         $html = '';
 
-        if ($course = get_record('course', 'id', $courseid)) {
-            $html = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.$course->fullname.'</a>';
+        if ($course = $DB->get_record('course', array('id' => $courseid))) {
+            $courseurl = new moodle_url('/course/view.php', array('id' => $course->id));
+            $html = html_writer::link($courseurl, $course->fullname);
         } else {
-            $html = 'Course not found';
+            $html = get_string('coursenotfound', 'totara_plan');
         }
 
         return $html;

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,38 +39,38 @@ class rb_plan_programs_recurring_embedded extends rb_base_embedded {
         $this->url = '/totara/plan/record/programs_recurring.php';
         $this->source = 'dp_program_recurring';
         $this->shortname = 'plan_programs_recurring';
-        $this->fullname = get_string('recordoflearningprogramsrecurring', 'local_plan');
+        $this->fullname = get_string('recordoflearningprogramsrecurring', 'totara_plan');
         $this->columns = array(
             array(
                 'type' => 'program_completion_history',
                 'value' => 'courselink',
-                'heading' => get_string('coursenamelink','local_program'),
+                'heading' => get_string('coursenamelink', 'totara_program'),
             ),
             array(
                 'type' => 'program_completion_history',
                 'value' => 'status',
-                'heading' => get_string('completionstatus','local_program'),
+                'heading' => get_string('completionstatus', 'totara_program'),
             ),
             array(
                 'type' => 'program_completion_history',
                 'value' => 'timecompleted',
-                'heading' => get_string('completiondate','local_program'),
+                'heading' => get_string('completiondate', 'totara_program'),
             ),
         );
 
         // no restrictions
         $this->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
 
-        if(isset($userid)) {
+        if (isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
         }
 
-        if(isset($programid)) {
+        if (isset($programid)) {
             $this->embeddedparams['programid'] = $programid;
         }
 
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        if(!has_capability('totara/program:viewhiddenprograms', $context)) {
+        $context = context_system::instance();
+        if (!has_capability('totara/program:viewhiddenprograms', $context)) {
             // don't show hidden programs to none-admins
             $this->embeddedparams['visible'] = 1;
         }

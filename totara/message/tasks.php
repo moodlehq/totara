@@ -43,6 +43,7 @@ $id = $USER->id;
 
 $context = context_system::instance();
 $PAGE->set_context($context);
+$PAGE->set_url('/totara/message/tasks.php');
 // users can only view their own and their staff's pages
 // or if they are an admin
 if (($USER->id != $id && !totara_is_manager($id) && !has_capability('totara/message:viewallmessages',$context)) || !confirm_sesskey()) {
@@ -90,8 +91,11 @@ if (strstr($referer, 'my/learning.php')) {
 $PAGE->navbar->add($strheading);
 $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);
-echo $OUTPUT->header();
-echo $OUTPUT->heading($strheading, 1);
+
+$output = $PAGE->get_renderer('totara_reportbuilder');
+
+echo $output->header();
+echo $output->heading($strheading, 1);
 if (!empty($backlink)) {
     new moodle_url($backlink, array('gi' => $guideinstance->giid));
     echo html_writer::tag('p', html_writer::link($backlink, "<< ".get_string('backtodashboard', 'totara_dashboard')));
@@ -104,46 +108,47 @@ $countall = $report->get_full_count();
 
 // display heading including filtering stats
 if ($countfiltered == $countall) {
-    echo $OUTPUT->heading("$countall".get_string("records"));
+    echo $output->heading("$countall ".get_string('records', 'totara_reportbuilder'));
 } else {
-    echo $OUTPUT->heading("$countfiltered/$countall".get_string("recordsshown", "totara_plan"));
+    echo $output->heading("$countfiltered/$countall".get_string("recordsshown", "totara_plan"));
 }
 
 if (empty($report->description)) {
     $report->description = get_string('task_description', 'totara_message');
 }
 
-print $report->print_description();
+echo $output->print_description($report->description, $report->_id);
 
 $report->display_search();
 
-if ($countfiltered > 0) {
-    print $report->showhide_button();
-    print html_writer::start_tag('form', array('id' => 'totara_messages', 'name' => 'totara_messages', 'action' => new moodle_url('/totara/message/action.php'),  'method' => 'post'));
-    $report->display_table();
-    print totara_message_action_button('dismiss');
-    print totara_message_action_button('accept');
-    print totara_message_action_button('reject');
+$PAGE->requires->string_for_js('reviewitems', 'block_totara_alerts');
+$PAGE->requires->js_init_call('M.totara_message.dismiss_input_toggle');
 
-    $out = $OUTPUT->box_start('generalbox', 'totara_message_actions');
+if ($countfiltered > 0) {
+    echo $output->showhide_button($report->_id, $report->shortname);
+    echo html_writer::start_tag('form', array('id' => 'totara_messages', 'name' => 'totara_messages', 'action' => new moodle_url('/totara/message/action.php'),  'method' => 'post'));
+    $report->display_table();
+    echo totara_message_action_button('dismiss');
+    echo totara_message_action_button('accept');
+    echo totara_message_action_button('reject');
+
+    $out = $output->box_start('generalbox', 'totara_message_actions');
     $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'returnto', 'value' => $FULLME));
     $out .= html_writer::start_tag('center');
     $tab = new html_table();
-    $tab->set_attribute('class', 'fullwidth');
+    $tab->attributes = array('class', 'fullwidth');
     $dismisslink = html_writer::empty_tag('input', array('type' => 'submit', 'name' => 'dismiss', 'id' => 'totara-dismiss', 'disabled' => 'true', 'value' => get_string('dismiss', 'totara_message'), 'style' => 'display:none;')).
     html_writer::tag('noscript', get_string('noscript', 'totara_message'));
     $tab->data[]  = new html_table_row(array(get_string('withselected', 'totara_message'), $dismisslink));
     $out .= html_writer::table($tab);
     $out .= html_writer::end_tag('center');
-    $out .= $OUTPUT->box_end();
-    print $out;
-    print html_writer::end_tag('form');
+    $out .= $output->box_end();
+    echo $out;
+    echo html_writer::end_tag('form');
     // export button
-    $report->export_select();
-    print totara_message_checkbox_all_none();
+    $output->export_select($report->_id);
+    echo totara_message_checkbox_all_none();
 }
-echo $OUTPUT->footer();
-
-$PAGE->requires->js_init_call('M.totara_message.dismiss_input_toggle');
+echo $output->footer();
 
 ?>

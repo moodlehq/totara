@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -286,12 +286,12 @@ class rb_column {
         $extrafields = isset($this->extrafields) ? $this->extrafields : null;
 
         $fields = array();
-        if($this->grouping == 'none') {
-            if($field !== null) {
+        if ($this->grouping == 'none') {
+            if ($field !== null) {
                 $fields[] = $field . " AS {$type}_{$value}";
             }
-            if($extrafields !== null) {
-                foreach($extrafields as $alias => $extrafield) {
+            if ($extrafields !== null) {
+                foreach ($extrafields as $alias => $extrafield) {
                     $fields[] = "$extrafield AS $alias";
                 }
             }
@@ -299,12 +299,13 @@ class rb_column {
             // field is grouped
             // if grouping function doesn't exist, exit with error
             $groupfunc = 'rb_group_' . $this->grouping;
-            if(!method_exists($src, $groupfunc)) {
-                throw new ReportBuilderException("Grouping function '$groupfunc'" .
-                   " doesn't exist in field of type '$type' and value '$value'");
+            if (!method_exists($src, $groupfunc)) {
+                throw new ReportBuilderException(get_string('groupingfuncnotinfieldoftypeandvalue',
+                    'totara_reportbuilder',
+                    (object)array('groupfunc' => $groupfunc, 'type' => $type, 'value' => $value)));
             }
             // apply grouping function and ignore extrafields
-            if($field !== null) {
+            if ($field !== null) {
                 $fields[] = $src->$groupfunc($field)  . " AS {$type}_{$value}";
             }
         }
@@ -319,18 +320,18 @@ class rb_column {
      */
     function display_column($isexport=false) {
         // don't print the column if heading is blank
-        if($this->heading == '') {
+        if ($this->heading == '') {
             return false;
         }
 
         // don't print the column if column has noexport set and this is an export
-        if($isexport && $this->noexport) {
+        if ($isexport && $this->noexport) {
             return false;
         }
 
         // don't display column if capability is required and user doesn't have it
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        if(isset($this->capability) && !has_capability($this->capability, $context)) {
+        $context = context_system::instance();
+        if (isset($this->capability) && !has_capability($this->capability, $context)) {
             return false;
         }
 

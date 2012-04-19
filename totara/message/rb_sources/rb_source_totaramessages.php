@@ -25,8 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(dirname(dirname(dirname(__FILE__))).'/totara/message/lib.php');
-
 class rb_source_totaramessages extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
@@ -34,7 +32,6 @@ class rb_source_totaramessages extends rb_base_source {
 
     function __construct() {
         global $CFG;
-        //$this->base = $CFG->prefix . 'message_working';
         $this->base = '{message_metadata}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
@@ -352,21 +349,17 @@ class rb_source_totaramessages extends rb_base_source {
 
     // generate dismiss message link
     function rb_display_dismiss_link($id, $row) {
+        global $PAGE;
 
         $table = new html_table();
         $table->attributes['class'] = 'totara_messages_actions';
         $table->attributes['border'] = 0;
         $cells = array();
         $cells[] = new html_table_cell(totara_message_dismiss_action($id));
-        $js_str = "// bind functionality to page on load
-                $(function() {
-                    // checkbox
-                    (function() {
-                        $('#totara_msgcbox_".$id."').css('display','block');
-                    })();
-                });";
-        $content = html_writer::script($js_str);
-        $content .= html_writer::checkbox('totara_message_' . $id, $id, false, '', array('id' => 'totara_msgcbox_'.$id, 'class' => "selectbox", 'style' => "display:none;"));
+
+        $PAGE->requires->js_init_call('M.totara_message.message_dismiss', array('selector' => '#totara_msgcbox_'.$id));
+
+        $content = html_writer::checkbox('totara_message_' . $id, $id, false, '', array('id' => 'totara_msgcbox_'.$id, 'class' => "selectbox"));
         $cells[] = new html_table_cell($content);
         $table->data[] = new html_table_row($cells);
         $out = html_writer::tag('div', html_writer::table($table), array('class' => 'totara_alerts_actions'));
@@ -382,15 +375,10 @@ class rb_source_totaramessages extends rb_base_source {
         $cells = array();
         $cells[] = new html_table_cell(totara_message_accept_reject_action($id));
         $cells[] = new html_table_cell(totara_message_dismiss_action($id));
-        $js_str = "// bind functionality to page on load
-                        $(function() {
-                            // checkbox
-                            (function() {
-                                $('#totara_msgcbox_".$id."').css('display','block');
-                            })();
-                        });";
-        $content = html_writer::script($js_str);
-        $content .= html_writer::checkbox('totara_message_' . $id, $id, false, '', array('id' => 'totara_msgcbox_'.$id, 'class' => "selectbox", 'style' => "display:none;"));
+
+        $PAGE->requires->js_init_call('M.totara_message.message_dismiss', array('selector' => '#totara_msgcbox_'.$id));
+
+        $content .= html_writer::checkbox('totara_message_' . $id, $id, false, '', array('id' => 'totara_msgcbox_'.$id, 'class' => "selectbox"));
         $cells[] = new html_table_cell($content);
         $table->data[] = new html_table_row($cells);
         $out = html_writer::tag('div', html_writer::table($table), array('class' => 'totara_tasks_actions'));
@@ -426,7 +414,7 @@ class rb_source_totaramessages extends rb_base_source {
     function rb_filter_message_type_list() {
         global $OUTPUT;
         $out = array();
-        foreach(array('blended', 'competency', 'course', 'elearning',
+        foreach (array('blended', 'competency', 'course', 'elearning',
             'evidence', 'facetoface', 'learningplan', 'objective', 'resource')
             as $type) {
 

@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -27,30 +27,31 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
-require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 $format    = optional_param('format', '', PARAM_TEXT);
-$id = required_param('id',PARAM_INT);
+$id = required_param('id', PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
 $debug = optional_param('debug', 0, PARAM_INT);
 
 require_login();
 
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url('/totara/reportbuilder/report.php', array('id' => $id));
 
 // new report object
 $report = new reportbuilder($id, null, false, $sid);
-if(!$report->is_capable($id)) {
-    error(get_string('nopermission','local_reportbuilder'));
+if (!$report->is_capable($id)) {
+    print_error('nopermission', 'totara_reportbuilder');
 }
 
-
-if($report->embeddedurl !== null) {
+if ($report->embeddedurl !== null) {
     // redirect to embedded url
     redirect($CFG->wwwroot . $report->embeddedurl);
 }
 
-if($format!='') {
+if ($format != '') {
     add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id='.$id, $report->fullname);
     $report->export_data($format);
     die;
@@ -58,6 +59,7 @@ if($format!='') {
 
 add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='.$id, $report->fullname);
 
+$PAGE->requires->string_for_js('reviewitems', 'block_totara_alerts');
 $report->include_js();
 
 // display results as graph if report uses the graphical_feedback_questions source
@@ -70,56 +72,59 @@ $countfiltered = $report->get_filtered_count();
 $countall = ($report->get_sql_filter() == '') ? $countfiltered : $report->get_full_count();
 
 $fullname = format_string($report->fullname);
-$pagetitle = format_string(get_string('report','local_reportbuilder').': '.$fullname);
-$navlinks[] = array('name' => get_string('myreports','local_reportbuilder'), 'link'=> $CFG->wwwroot . '/my/reports.php', 'type'=>'title');
-$navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
+$pagetitle = format_string(get_string('report', 'totara_reportbuilder').': '.$fullname);
 
-$navigation = build_navigation($navlinks);
+$PAGE->set_title($pagetitle);
+$PAGE->set_button($report->edit_button());
+$PAGE->navbar->add(get_string('myreports', 'totara_reportbuilder'), new moodle_url('/my/reports.php'));
+$PAGE->navbar->add($fullname);
 
-print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_button());
+$output = $PAGE->get_renderer('totara_reportbuilder');
+
+echo $output->header();
 
 // display heading including filtering stats
-if($graph) {
-    print_heading($fullname);
+if ($graph) {
+    echo $output->heading($fullname);
 } else {
-    print_heading("$fullname: ".
-        $report->print_result_count_string($countfiltered, $countall));
+    echo $output->heading("$fullname: " .
+        $output->print_result_count_string($countfiltered, $countall));
 }
 
-if($debug) {
+if ($debug) {
     $report->debug($debug);
 }
 
 // print report description if set
-print $report->print_description();
+echo $output->print_description($report->description, $report->_id);
 
 // print filters
 $report->display_search();
 
 // print saved search buttons if appropriate
-print '<table align="right" border="0"><tr><td>';
-print $report->save_button();
-print '</td><td>';
-print $report->view_saved_menu();
-print '</td></tr></table>';
-print "<br /><br />";
+echo html_writer::start_tag('table', array('align' => 'right', 'border' => '0'));
+echo html_writer::start_tag('tr') . html_writer::start_tag('td');
+echo $output->save_button($report->_id);
+echo html_writer::end_tag('td') . html_writer::start_tag('td');
+echo $report->view_saved_menu();
+echo html_writer::end_tag('td') . html_writer::end_tag('tr') . html_writer::end_tag('table');
+echo str_repeat(html_writer::empty_tag('br'), 2);
 
 // show results
-if($countfiltered>0) {
-    if($graph) {
+if ($countfiltered > 0) {
+    if ($graph) {
         print $report->print_feedback_results();
     } else {
-        print $report->showhide_button();
+        echo $output->showhide_button($report->_id, $report->shortname);
         $report->display_table();
     }
     // export button
-    $report->export_select();
+    $output->export_select($report->_id, $sid);
 } else {
-    print_box_start();
-    print get_string('noresultsfound','local_reportbuilder');
-    print_box_end();
+    echo $output->box_start();
+    print get_string('noresultsfound', 'totara_reportbuilder');
+    echo $output->box_end();
 }
 
-
-print_footer();
+echo $output->footer();
 

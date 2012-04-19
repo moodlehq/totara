@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -42,13 +42,13 @@ $row = array();
 $activated = array();
 $inactive = array();
 
-$row[] = new tabobject('general',$CFG->wwwroot.'/totara/reportbuilder/general.php?id='.$id, get_string('general'));
-$row[] = new tabobject('columns',$CFG->wwwroot.'/totara/reportbuilder/columns.php?id='.$id, get_string('columns','local_reportbuilder'));
-$row[] = new tabobject('filters',$CFG->wwwroot.'/totara/reportbuilder/filters.php?id='.$id, get_string('filters','local_reportbuilder'));
-$row[] = new tabobject('content',$CFG->wwwroot.'/totara/reportbuilder/content.php?id='.$id, get_string('content','local_reportbuilder'));
+$row[] = new tabobject('general', $CFG->wwwroot . '/totara/reportbuilder/general.php?id=' . $id, get_string('general'));
+$row[] = new tabobject('columns', $CFG->wwwroot . '/totara/reportbuilder/columns.php?id=' . $id, get_string('columns', 'totara_reportbuilder'));
+$row[] = new tabobject('filters', $CFG->wwwroot . '/totara/reportbuilder/filters.php?id=' . $id, get_string('filters', 'totara_reportbuilder'));
+$row[] = new tabobject('content', $CFG->wwwroot . '/totara/reportbuilder/content.php?id=' . $id, get_string('content', 'totara_reportbuilder'));
 // hide access tab for embedded reports
-if(!$report->embeddedurl) {
-    $row[] = new tabobject('access',$CFG->wwwroot.'/totara/reportbuilder/access.php?id='.$id, get_string('access','local_reportbuilder'));
+if (!$report->embeddedurl) {
+    $row[] = new tabobject('access', $CFG->wwwroot . '/totara/reportbuilder/access.php?id=' . $id, get_string('access', 'totara_reportbuilder'));
 }
 
 $tabs[] = $row;

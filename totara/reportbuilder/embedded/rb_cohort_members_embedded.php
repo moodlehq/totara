@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,12 +43,12 @@ class rb_cohort_members_embedded extends rb_base_embedded {
         array(
                 'type' => 'user',
                 'value' => 'position',
-                'heading' => get_string('position','totara_cohort')
+                'heading' => get_string('position', 'totara_cohort')
             ),
         array(
                 'type' => 'user',
                 'value' => 'organisation',
-                'heading' => get_string('organisation','totara_cohort')
+                'heading' => get_string('organisation', 'totara_cohort')
             ),
         );
 

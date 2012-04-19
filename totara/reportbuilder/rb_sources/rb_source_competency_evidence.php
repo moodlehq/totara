@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -31,8 +31,7 @@ class rb_source_competency_evidence extends rb_base_source {
     public $defaultfilters, $requiredcolumns, $sourcetitle;
 
     function __construct() {
-        global $CFG;
-        $this->base = $CFG->prefix . 'comp_evidence';
+        $this->base = '{comp_evidence}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -62,41 +61,40 @@ class rb_source_competency_evidence extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
 
         $joinlist = array(
             new rb_join(
                 'competency',
                 'LEFT',
-                $CFG->prefix . 'comp',
+                '{comp}',
                 'competency.id = base.competencyid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'scale_values',
                 'LEFT',
-                $CFG->prefix . 'comp_scale_values',
+                '{comp_scale_values}',
                 'scale_values.id = base.proficiency',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'assessor',
                 'LEFT',
-                $CFG->prefix . 'user',
+                '{user}',
                 'assessor.id = base.assessorid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'completion_organisation',
                 'LEFT',
-                $CFG->prefix . 'org',
+                '{org}',
                 'completion_organisation.id = base.organisationid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'completion_position',
                 'LEFT',
-                $CFG->prefix . 'pos',
+                '{pos}',
                 'completion_position.id = base.positionid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
@@ -114,6 +112,8 @@ class rb_source_competency_evidence extends rb_base_source {
     }
 
     function define_columnoptions() {
+        global $DB;
+
         $columnoptions = array(
             new rb_column_option(
                 'competency_evidence',  // type
@@ -193,7 +193,7 @@ class rb_source_competency_evidence extends rb_base_source {
                 'competency_evidence',
                 'assessor',
                 get_string('assessorname', 'rb_source_competency_evidence'),
-                sql_fullname("assessor.firstname","assessor.lastname"),
+                $DB->sql_fullname("assessor.firstname", "assessor.lastname"),
                 array('joins' => 'assessor')
             ),
             new rb_column_option(
@@ -525,9 +525,9 @@ class rb_source_competency_evidence extends rb_base_source {
     // requires the competency_id extra field
     // in column definition
     function rb_display_link_competency($comp, $row) {
-        global $CFG;
         $compid = $row->competency_id;
-        return "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?prefix=competency&id={$compid}\">{$comp}</a>";
+        $url = new moodle_url('/hierarchy/item/view.php', array('prefix' => 'competency', 'id' => $compid));
+        return html_writer::link($url, $comp);
     }
 
     //
@@ -537,18 +537,11 @@ class rb_source_competency_evidence extends rb_base_source {
     //
 
     function rb_filter_proficiency_list() {
+        global $DB;
 
-        $proficiencies = array();
-        // use all possible scale values
-        if($scale_values = get_records('comp_scale_values', '', '', 'scaleid, sortorder')) {
-            foreach($scale_values as $scale_value) {
-                $id = $scale_value->id;
-                $name = $scale_value->name;
-                $proficiencies[$id] = $name;
-            }
-        }
+        // include all possible scale values (from every scale)
+        return $DB->get_records_menu('comp_scale_values', null, 'scaleid, sortorder', 'id, name');
 
-        return $proficiencies;
     }
 
 } // end of rb_source_competency_evidence class

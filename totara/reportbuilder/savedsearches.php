@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -27,125 +27,99 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once('report_forms.php');
 
 require_login();
 
-define('REPORT_BUILDER_SAVED_SEARCHES_CONFIRM_DELETE', 1);
-define('REPORT_BUILDER_SAVED_SEARCHES_FAILED_DELETE', 2);
-
-$id = optional_param('id',null,PARAM_INT); // id for report
-$sid = optional_param('sid',null,PARAM_INT); // id for saved search
-$d = optional_param('d',false, PARAM_BOOL); // delete saved search?
+$id = optional_param('id', null, PARAM_INT); // id for report
+$sid = optional_param('sid', null, PARAM_INT); // id for saved search
+$d = optional_param('d', false, PARAM_BOOL); // delete saved search?
 $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
-$returnurl = $CFG->wwwroot.'/totara/reportbuilder/savedsearches.php?id='.$id;
+$returnurl = $CFG->wwwroot . '/totara/reportbuilder/savedsearches.php?id=' . $id;
+
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url('/totara/reportbuilder/savedsearches.php', array('id' => $id, 'sid' => $sid));
+
+$output = $PAGE->get_renderer('totara_reportbuilder');
 
 $report = new reportbuilder($id);
-if(!$report->is_capable($id)) {
-    error(get_string('nopermission','local_reportbuilder'));
+if (!$report->is_capable($id)) {
+    print_error('nopermission', 'totara_reportbuilder');
 }
 
-if($d && $confirm) {
+if ($d && $confirm) {
     // delete an existing saved search
-    if(!confirm_sesskey()) {
-        totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
+    if (!confirm_sesskey()) {
+        totara_set_notification(get_string('error:bad_sesskey', 'totara_reportbuilder'), $returnurl);
     }
-    $deleteok = true;
-    begin_sql();
-    if(!delete_records('report_builder_saved', 'id', $sid)) {
-        rollback_sql();
-        $deleteok = false;
-    } else {
-        $sql = "UPDATE {$CFG->prefix}report_builder_schedule SET savedsearchid=0 WHERE savedsearchid=$sid";
-        if (!execute_sql($sql, false)) {
-            rollback_sql();
-            $deleteok = false;
-        }
-    }
-    if ($deleteok) {
-        commit_sql();
-        totara_set_notification(get_string('savedsearchdeleted','local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
-    } else {
-        totara_set_notification(get_string('error:savedsearchnotdeleted','local_reportbuilder'), $returnurl);
-    }
-} else if($d) {
+
+    $transaction = $DB->start_delegated_transaction();
+
+    $DB->delete_records('report_builder_saved', array('id' => $sid));
+    $sql = "UPDATE {report_builder_schedule} SET savedsearchid = ? WHERE savedsearchid = ?";
+    $params = array(0, $sid);
+    $DB->execute($sql, $params);
+
+    $transaction->allow_commit();
+
+    totara_set_notification(get_string('savedsearchdeleted', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
+
+} else if ($d) {
     $fullname = $report->fullname;
-    $pagetitle = format_string(get_string('savesearch','local_reportbuilder').': '.$fullname);
-    $navlinks[] = array('name' => get_string('report','local_reportbuilder'), 'link'=> '', 'type'=>'title');
-    $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
-    $navlinks[] = array('name' => get_string('savedsearches','local_reportbuilder'), 'link'=> '', 'type'=>'title');
+    $pagetitle = format_string(get_string('savesearch', 'totara_reportbuilder') . ': ' . $fullname);
 
-    $navigation = build_navigation($navlinks);
-    print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_button());
+    $PAGE->set_title($pagetitle);
+    $PAGE->set_button($report->edit_button());
+    $PAGE->navbar->add(get_string('report', 'totara_reportbuilder'));
+    $PAGE->navbar->add($fullname);
+    $PAGE->navbar->add(get_string('savedsearches', 'totara_reportbuilder'));
+    echo $output->header();
 
-    print_heading(get_string('savedsearches','local_reportbuilder'), '', 1);
+    echo $output->heading(get_string('savedsearches', 'totara_reportbuilder'), 1);
     //is this saved search being used in any scheduled reports?
-    if ($scheduled = get_records_select('report_builder_schedule', "savedsearchid={$sid}")) {
+    if ($scheduled = $DB->get_records('report_builder_schedule', array('savedsearchid' => $sid))) {
         //display a message and list of scheduled reports using this saved search
         ob_start();
-        totara_print_scheduled_reports(false, false, array("rbs.savedsearchid=?", array($sid)));
+        totara_print_scheduled_reports(false, false, array("rbs.savedsearchid = ?", array($sid)));
         $out = ob_get_contents();
         ob_end_clean();
 
-        $messageend = get_string('savedsearchinscheduleddelete', 'local_reportbuilder', $out) . '<br /><br />';
+        $messageend = get_string('savedsearchinscheduleddelete', 'totara_reportbuilder', $out) . str_repeat(html_writer::empty_tag('br'), 2);
     } else {
         $messageend = '';
     }
 
-    $messageend .= get_string('savedsearchconfirmdelete','local_reportbuilder');
+    $messageend .= get_string('savedsearchconfirmdelete', 'totara_reportbuilder');
     // prompt to delete
-    notice_yesno($messageend,
-        "savedsearches.php?id={$id}&amp;sid={$sid}&amp;d=1&amp;confirm=1&amp;" .
+    echo $output->confirm($messageend, "savedsearches.php?id={$id}&amp;sid={$sid}&amp;d=1&amp;confirm=1&amp;" .
         "sesskey={$USER->sesskey}", $returnurl);
 
-    print_footer();
-    die;
+    echo $output->footer();
+    exit;
 }
 
 $fullname = $report->fullname;
-$pagetitle = format_string(get_string('savesearch','local_reportbuilder').': '.$fullname);
-$navlinks[] = array('name' => get_string('report','local_reportbuilder'), 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => get_string('savedsearches','local_reportbuilder'), 'link'=> '', 'type'=>'title');
+$pagetitle = format_string(get_string('savesearch', 'totara_reportbuilder') . ': ' . $fullname);
 
-$navigation = build_navigation($navlinks);
-print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_button());
+$PAGE->set_title($pagetitle);
+$PAGE->set_button($report->edit_button());
+$PAGE->navbar->add(get_string('report', 'totara_reportbuilder'));
+$PAGE->navbar->add($fullname);
+$PAGE->navbar->add(get_string('savedsearches', 'totara_reportbuilder'));
+echo $output->header();
 
-print $report->view_button();
-print_heading(get_string('savedsearches','local_reportbuilder'));
+echo $output->view_report_link($report->report_url());
+echo $output->heading(get_string('savedsearches', 'totara_reportbuilder'));
 
-if($searches = get_records_select('report_builder_saved', 'userid='.$USER->id.' AND reportid='.$id, 'name')) {
-    $tableheader = array(get_string('name','local_reportbuilder'),
-                         get_string('options','local_reportbuilder'));
-    $data = array();
-
-    foreach($searches as $search) {
-        $row = array();
-        $strdelete = get_string('delete','local_reportbuilder');
-
-        $row[] = '<a href="' . $CFG->wwwroot . '/totara/reportbuilder/report.php?id=' . $id .
-            '&amp;sid='.$search->id.'">' . $search->name . '</a>';
-
-        $delete = '<a href="' . $CFG->wwwroot .
-            '/totara/reportbuilder/savedsearches.php?d=1&amp;id=' . $id . '&amp;sid=' .
-            $search->id . '" title="' . $strdelete . '">' .
-            '<img src="' . $CFG->pixpath . '/t/delete.gif" alt="' .
-            $strdelete . '"></a>';
-        $row[] = $delete;
-        $data[] = $row;
-    }
-    $table = new object();
-    $table->summary = '';
-    $table->head = $tableheader;
-    $table->data = $data;
-    print_table($table);
-
+$searches = $DB->get_records('report_builder_saved', array('userid' => $USER->id, 'reportid' => $id), 'name');
+if (!empty($searches)) {
+    echo $output->saved_searches_table($searches);
 } else {
-    print_error('error:nosavedsearches','local_reportbuilder');
+    echo html_writer::tag('p', get_string('error:nosavedsearches', 'totara_reportbuilder'));
 }
 
-print_footer();
+echo $output->footer();
 
 
 ?>

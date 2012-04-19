@@ -26,11 +26,8 @@
 require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
-
-/*
-SCANMSG re-add once reportbuilder merged
 require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
-*/
+
 $id = optional_param('id', null, PARAM_INT);
 
 admin_externalpage_setup('cohorts');
@@ -44,10 +41,7 @@ if (isset($id)) {
         print_error('error:doesnotexist', 'cohort');
     }
 }
-/*
-SCANMSG re-add once reportbuilder merged
 $report = reportbuilder_get_embedded_report('cohort_members', array('cohortid' => $id));
-*/
 $strheading = get_string('editcohort', 'totara_cohort');
 
 echo $OUTPUT->header();
@@ -58,10 +52,7 @@ if (isset($id)) {
     require_once('tabs.php');
 }
 
-/*
-SCANMSG re-add once reportbuilder merged
 $report->display_search();
 
 $report->display_table();
-*/
 echo $OUTPUT->footer();

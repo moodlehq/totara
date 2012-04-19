@@ -45,9 +45,10 @@ class rb_source_dp_course extends rb_base_source {
      * @global object $CFG
      */
     public function __construct() {
-        global $CFG;
+        global $DB;
+
         $this->base = "( select distinct ".
-                sql_concat_join(
+                $DB->sql_concat_join(
                         "','",
                         array(
                             sql_cast2char('ra.userid'),
@@ -55,12 +56,12 @@ class rb_source_dp_course extends rb_base_source {
                         )
                 ) . " as id, ".
                 "ra.userid as userid, cx.instanceid as courseid ".
-                "from {$CFG->prefix}role_assignments ra ".
-                "inner join {$CFG->prefix}context cx ".
+                "from {role_assignments} ra ".
+                "inner join {context} cx ".
                 "on ra.contextid = cx.id and cx.contextlevel = " . CONTEXT_COURSE .
                 " UNION ".
                 "select distinct ".
-                sql_concat_join(
+                $DB->sql_concat_join(
                         "','",
                         array(
                             sql_cast2char('p1.userid'),
@@ -68,8 +69,8 @@ class rb_source_dp_course extends rb_base_source {
                         )
                 )." as id, ".
                 "p1.userid as userid, pca1.courseid as courseid ".
-                "from {$CFG->prefix}dp_plan_course_assign pca1 ".
-                "inner join {$CFG->prefix}dp_plan p1 ".
+                "from {dp_plan_course_assign} pca1 ".
+                "inner join {dp_plan} p1 ".
                 "on pca1.planid=p1.id )";
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
@@ -127,8 +128,8 @@ class rb_source_dp_course extends rb_base_source {
   pc.completionstatus as completionstatus,
   pc.grade as grade
 from
-  {$CFG->prefix}dp_plan p
-  inner join {$CFG->prefix}dp_plan_course_assign pc
+  {dp_plan} p
+  inner join {dp_plan_course_assign} pc
   on p.id = pc.planid)",
                 'dp_course.userid = base.userid and dp_course.courseid = base.courseid',
                 REPORT_BUILDER_RELATION_ONE_TO_MANY,
@@ -138,7 +139,7 @@ from
         $joinlist[] = new rb_join(
                 'dp_template',
                 'LEFT',
-                $CFG->prefix . 'dp_template',
+                '{dp_template}',
                 'dp_course.templateid = dp_template.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
                 array('dp_course','base')
@@ -147,7 +148,7 @@ from
         $joinlist[] = new rb_join(
                 'priority',
                 'LEFT',
-                $CFG->prefix . 'dp_priority_scale_value',
+                '{dp_priority_scale_value}',
                 'dp_course.priority = priority.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
                 array('dp_course','base')
@@ -155,7 +156,7 @@ from
         $joinlist[] = new rb_join(
                 'course_completion',
                 'LEFT',
-                $CFG->prefix . 'course_completions',
+                '{course_completions}',
                 '(base.courseid = course_completion.course
                     AND base.userid = course_completion.userid)',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
@@ -163,7 +164,7 @@ from
         $joinlist[] = new rb_join(
                 'criteria',
                 'LEFT',
-                $CFG->prefix . 'course_completion_criteria',
+                '{course_completion_criteria}',
                 '(criteria.course = base.courseid AND ' .
                     'criteria.criteriatype = ' .
                     COMPLETION_CRITERIA_TYPE_GRADE . ')',
@@ -172,7 +173,7 @@ from
         $joinlist[] = new rb_join(
                 'grade_items',
                 'LEFT',
-                $CFG->prefix . 'grade_items',
+                '{grade_items}',
                 '(grade_items.courseid = base.courseid AND ' .
                     'grade_items.itemtype = \'course\')',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
@@ -180,7 +181,7 @@ from
         $joinlist[] = new rb_join(
                 'grade_grades',
                 'LEFT',
-                $CFG->prefix . 'grade_grades',
+                '{grade_grades}',
                 '(grade_grades.itemid = grade_items.id AND ' .
                     'grade_grades.userid = base.userid)',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,

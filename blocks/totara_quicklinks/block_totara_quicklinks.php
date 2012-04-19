@@ -140,7 +140,7 @@ class block_totara_quicklinks extends block_base {
                 case 'administrator' :
                     $links = array(get_string('home','block_quicklinks')=>"{$CFG->wwwroot}/index.php",
                         get_string('logs','block_quicklinks')=>"{$CFG->wwwroot}/course/report/log/index.php",
-                        get_string('managereports','block_quicklinks')=>"{$CFG->wwwroot}/local/reportbuilder/index.php");
+                        get_string('managereports','block_quicklinks')=>"{$CFG->wwwroot}/totara/reportbuilder/index.php");
                     break;
                 case 'manager' :
                 case 'student' :

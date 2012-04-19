@@ -19,7 +19,7 @@ class rb_source_feedback_summary extends rb_base_source {
 
     function __construct($groupid=null) {
         global $CFG;
-        $this->base = $CFG->prefix . 'feedback_completed';
+        $this->base = '{feedback_completed}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -47,23 +47,23 @@ class rb_source_feedback_summary extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
+        global $CFG, $DB;
 
         // get the trainer role's id (or set a dummy value)
-        $trainerroleid = get_field('role', 'id', 'shortname', 'trainer');
+        $trainerroleid = $DB->get_field('role', 'id', array('shortname' => 'trainer'));
         if(!$trainerroleid) {
             $trainerroleid = 0;
         }
 
         // to get access to position type constants
-        require_once($CFG->dirroot . '/hierarchy/prefix/position/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
 
         // joinlist for this source
         $joinlist = array(
             new rb_join(
                 'feedback',
                 'LEFT',
-                $CFG->prefix . 'feedback',
+                '{feedback}',
                 'feedback.id = base.feedback',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
@@ -72,8 +72,8 @@ class rb_source_feedback_summary extends rb_base_source {
                 'LEFT',
                 // subquery as table
                 "(SELECT i.feedback, v.value
-                    FROM {$CFG->prefix}feedback_item i
-                    JOIN {$CFG->prefix}feedback_value v
+                    FROM {feedback_item} i
+                    JOIN {feedback_value} v
                         ON v.item=i.id AND i.typ='trainer')",
                 'session_value.feedback = base.feedback',
                 // potentially could be multiple trainer questions
@@ -83,9 +83,9 @@ class rb_source_feedback_summary extends rb_base_source {
             new rb_join(
                 'sessiontrainer',
                 'LEFT',
-                $CFG->prefix . 'facetoface_session_roles',
+                '{facetoface_session_roles}',
                 '(sessiontrainer.userid = ' .
-                    sql_cast_char2int(sql_compare_text('session_value.value')) . ' AND ' .
+                    $DB->sql_cast_char2int($DB->sql_compare_text('session_value.value')) . ' AND ' .
                     "sessiontrainer.roleid = $trainerroleid)",
                 // potentially multiple trainers in a session
                 REPORT_BUILDER_RELATION_ONE_TO_MANY,
@@ -94,7 +94,7 @@ class rb_source_feedback_summary extends rb_base_source {
             new rb_join(
                 'trainer',
                 'LEFT',
-                $CFG->prefix . 'user',
+                '{user}',
                 'trainer.id = sessiontrainer.userid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
                 'sessiontrainer'
@@ -102,7 +102,7 @@ class rb_source_feedback_summary extends rb_base_source {
             new rb_join(
                 'trainer_position_assignment',
                 'LEFT',
-                $CFG->prefix . 'pos_assignment',
+                '{pos_assignment}',
                 '(trainer_position_assignment.userid = ' .
                     'sessiontrainer.userid AND
                     trainer_position_assignment.type = ' .
@@ -113,7 +113,7 @@ class rb_source_feedback_summary extends rb_base_source {
             new rb_join(
                 'trainer_position',
                 'LEFT',
-                $CFG->prefix . 'pos',
+                '{pos}',
                 'trainer_position.id = ' .
                     'trainer_position_assignment.positionid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
@@ -122,7 +122,7 @@ class rb_source_feedback_summary extends rb_base_source {
             new rb_join(
                 'trainer_organisation',
                 'LEFT',
-                $CFG->prefix . 'org',
+                '{org}',
                 'trainer_organisation.id = ' .
                     'trainer_position_assignment.organisationid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
@@ -146,6 +146,8 @@ class rb_source_feedback_summary extends rb_base_source {
     }
 
     function define_columnoptions() {
+        global $DB;
+
         $columnoptions = array(
             new rb_column_option(
                 'responses',
@@ -172,7 +174,7 @@ class rb_source_feedback_summary extends rb_base_source {
                 'trainer',
                 'fullname',
                 get_string('trainerfullname', 'rb_source_feedback_questions'),
-                sql_fullname('trainer.firstname', 'trainer.lastname'),
+                $DB->sql_fullname('trainer.firstname', 'trainer.lastname'),
                 array('joins' => 'trainer')
             ),
             new rb_column_option(
@@ -276,7 +278,7 @@ class rb_source_feedback_summary extends rb_base_source {
         $contentoptions = array(
             new rb_content_option(
                 'user',
-                get_string('theuser', 'rb_source_feedback_questions'),
+                get_string('user', 'rb_source_feedback_questions'),
                 'base.userid'
             ),
             new rb_content_option(

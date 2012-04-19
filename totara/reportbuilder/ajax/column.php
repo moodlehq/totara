@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,159 +22,113 @@
  * @subpackage reportbuilder
  */
 
-require_once('../../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 
 /// Check access
 require_sesskey();
 require_login();
-require_capability('totara/reportbuilder:managereports', get_context_instance(CONTEXT_SYSTEM));
+require_capability('totara/reportbuilder:managereports', context_system::instance());
 
 /// Get params
-$action = required_param('action', PARAM_TEXT);
+$action = required_param('action', PARAM_ALPHA);
 $reportid = required_param('id', PARAM_INT);
 
 switch ($action) {
     case 'add' :
         $column = required_param('col', PARAM_TEXT);
+        $heading = optional_param('heading', '', PARAM_TEXT);
+
         $column = explode('-', $column);
         $coltype = $column[0];
         $colvalue = $column[1];
-        $heading = optional_param('heading', '', PARAM_TEXT);
 
         /// Prevent duplicates
-        $sql = "SELECT id FROM {$CFG->prefix}report_builder_columns c
-            WHERE reportid = {$reportid}
-            AND type = '{$coltype}'
-            AND value = '{$colvalue}'";
-
-        if (get_record_sql($sql)) {
+        $params = array('reportid' => $reportid, 'type' => $coltype, 'value' => $colvalue);
+        if ($DB->record_exists('report_builder_columns', $params)) {
             echo false;
             exit;
         }
 
         /// Save column
-        $todb = new object();
+        $todb = new stdClass();
         $todb->reportid = $reportid;
         $todb->type = $coltype;
         $todb->value = $colvalue;
         $todb->heading = $heading;
-        $sortorder = get_field('report_builder_columns', 'MAX(sortorder) + 1', 'reportid', $reportid);
-        if(!$sortorder) {
+        $sortorder = $DB->get_field('report_builder_columns', 'MAX(sortorder) + 1', array('reportid' => $reportid));
+        if (!$sortorder) {
             $sortorder = 1;
         }
         $todb->sortorder = $sortorder;
-
-        $id = insert_record('report_builder_columns', $todb);
+        $id = $DB->insert_record('report_builder_columns', $todb);
 
         echo $id;
         break;
     case 'delete':
         $colid = required_param('cid', PARAM_INT);
-        if ($column = get_record('report_builder_columns', 'id', $colid)) {
-            if (delete_records('report_builder_columns', 'id', $colid)) {
-                require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
-                echo json_encode((array)$column);
-            } else {
-                echo false;
-            }
+
+        if ($column = $DB->get_record('report_builder_columns', array('id' => $colid))) {
+            $DB->delete_records('report_builder_columns', array('id' => $colid));
+            echo json_encode((array) $column);
         } else {
             echo false;
         }
         break;
     case 'hide':
         $colid = required_param('cid', PARAM_INT);
-        $todb = new stdClass;
+
+        $todb = new stdClass();
         $todb->id = $colid;
         $todb->hidden = 1;
+        $DB->update_record('report_builder_columns', $todb);
 
-        if (update_record('report_builder_columns', $todb)) {
-            echo $colid;
-        } else {
-            echo false;
-        }
+        echo $colid;
         break;
     case 'show':
         $colid = required_param('cid', PARAM_INT);
-        $todb = new stdClass;
+
+        $todb = new stdClass();
         $todb->id = $colid;
         $todb->hidden = 0;
+        $DB->update_record('report_builder_columns', $todb);
 
-        if (update_record('report_builder_columns', $todb)) {
-            echo $colid;
-        } else {
-            echo false;
-        }
+        echo $colid;
         break;
     case 'movedown':
-        $colid = required_param('cid', PARAM_INT);
-
-        $col = get_record('report_builder_columns', 'id', $colid);
-        $sql = "SELECT * FROM {$CFG->prefix}report_builder_columns
-            WHERE reportid = {$reportid} AND sortorder > {$col->sortorder}
-            ORDER BY sortorder";
-        if (!$lowersibling = get_record_sql($sql, true)) {
-            echo false;
-            exit;
-        }
-
-        $todb = new stdClass;
-        $todb->id = $col->id;
-        $todb->sortorder = $lowersibling->sortorder;
-
-        if (!update_record('report_builder_columns', $todb)) {
-            echo false;
-            exit;
-        }
-
-        $todb = new stdClass;
-        $todb->id = $lowersibling->id;
-        $todb->sortorder = $col->sortorder;
-
-        if (!update_record('report_builder_columns', $todb)) {
-            echo false;
-            exit;
-        }
-
-        echo "1";
-        break;
     case 'moveup':
         $colid = required_param('cid', PARAM_INT);
 
-        $col = get_record('report_builder_columns', 'id', $colid);
-        $sql = "SELECT * FROM {$CFG->prefix}report_builder_columns
-            WHERE reportid = {$reportid} AND sortorder < {$col->sortorder}
-            ORDER BY sortorder DESC";
-        if (!$uppersibling = get_record_sql($sql, true)) {
+        $operator = ($action == 'movedown') ? '>' : '<';
+        $sortorder = ($action == 'movedown') ? 'ASC' : 'DESC';
+
+        $col = $DB->get_record('report_builder_columns', array('id' => $colid));
+        $sql = "SELECT * FROM {report_builder_columns}
+            WHERE reportid = ? AND sortorder $operator ?
+            ORDER BY sortorder $sortorder";
+        if (!$sibling = $DB->get_record_sql($sql, array($reportid, $col->sortorder), IGNORE_MULTIPLE)) {
             echo false;
             exit;
         }
 
-        $todb = new stdClass;
+        $transaction = $DB->start_delegated_transaction();
+
+        $todb = new stdClass();
         $todb->id = $col->id;
-        $todb->sortorder = $uppersibling->sortorder;
+        $todb->sortorder = $sibling->sortorder;
+        $DB->update_record('report_builder_columns', $todb);
 
-        if (!update_record('report_builder_columns', $todb)) {
-            echo false;
-            exit;
-        }
-
-        $todb = new stdClass;
-        $todb->id = $uppersibling->id;
+        $todb = new stdClass();
+        $todb->id = $sibling->id;
         $todb->sortorder = $col->sortorder;
+        $DB->update_record('report_builder_columns', $todb);
 
-        if (!update_record('report_builder_columns', $todb)) {
-            echo false;
-            exit;
-        }
+        $transaction->allow_commit();
 
         echo "1";
         break;
-
     default:
         echo '';
         break;
 }
-
-exit;
 
 ?>

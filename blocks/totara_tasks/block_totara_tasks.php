@@ -54,10 +54,10 @@ class block_totara_tasks extends block_base {
         }
 
         $this->content = new stdClass;
-
         // initialise jquery and confirm requirements
         require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
         require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+
         $code = array();
         $code[] = TOTARA_JS_DIALOG;
         local_js($code);
@@ -66,6 +66,8 @@ class block_totara_tasks extends block_base {
         // just get the tasks for this user
         $total = tm_messages_count('totara_task', false);
         $this->msgs = tm_messages_get('totara_task', 'timecreated DESC ', false, true);
+        $count = is_array($this->msgs) ? count($this->msgs) : 0;
+
         $this->title = get_string('tasks', 'block_totara_tasks');
 
         if (empty($this->instance)) {

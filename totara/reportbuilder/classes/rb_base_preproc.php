@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -52,8 +52,8 @@ abstract class rb_base_preproc {
             'name',
             'prefix',
         );
-        foreach($properties as $property) {
-            if(!property_exists($this, $property)) {
+        foreach ($properties as $property) {
+            if (!property_exists($this, $property)) {
                 throw new Exception("Property '$property' must be set in class " .
                     get_class($this));
             }
@@ -77,21 +77,17 @@ abstract class rb_base_preproc {
      * @return array Array of items (usually IDs) in that group
      */
     function get_group_items() {
-        global $CFG;
+        global $DB;
         $groupid = $this->groupid;
 
         // group id of zero refers to all items
         // delegate getting all items to the specific pre-processor
-        if($groupid == 0) {
+        if ($groupid == 0) {
             return $this->get_all_items();
         }
 
-        if($items = get_records('report_builder_group_assign',
-            'groupid', $groupid, 'itemid', 'itemid')) {
-            return array_keys($items);
-        }
-
-        return array();
+        $items = $DB->get_records('report_builder_group_assign', array('groupid' => $groupid), 'itemid', 'itemid');
+        return array_keys($items);
     }
 
 
@@ -103,21 +99,22 @@ abstract class rb_base_preproc {
      * @return boolean True if succeeds in disabling, false otherwise
      */
     function disable_item($item) {
+        global $DB;
+
         $groupid = $this->groupid;
         // single record assured by unique index on fields
-        if($record = get_record('report_builder_preproc_track',
-            'groupid', $groupid, 'itemid', $item)) {
-            $todb = new object();
+        if ($record = $DB->get_record('report_builder_preproc_track', array('groupid' => $groupid, 'itemid' => $item))) {
+            $todb = new stdClass();
             $todb->id = $record->id;
             $todb->disabled = 1;
-            return update_record('report_builder_preproc_track', $todb);
+            return $DB->update_record('report_builder_preproc_track', $todb);
         } else {
-            $todb = new object();
+            $todb = new stdClass();
             $todb->groupid = $groupid;
             $todb->itemid = $item;
             $todb->disabled = 1;
             $todb->lastchecked = time();
-            return insert_record('report_builder_preproc_track', $todb);
+            return $DB->insert_record('report_builder_preproc_track', $todb);
         }
     }
 
@@ -131,12 +128,12 @@ abstract class rb_base_preproc {
      *               timestamp of last process time
      */
     function get_track_info() {
+        global $DB;
+
         $groupid = $this->groupid;
         // groupid/itemid fields have a unique index so every itemid
         // returned by this query will be unique
-        $trackinfo = get_records('report_builder_preproc_track',
-            'groupid', $groupid, 'itemid', 'itemid,lastchecked,disabled');
-        return $trackinfo ? $trackinfo : array();
+        return $DB->get_records('report_builder_preproc_track', array('groupid' => $groupid), 'itemid', 'itemid, lastchecked, disabled');
     }
 
 
@@ -149,22 +146,23 @@ abstract class rb_base_preproc {
      * @return boolean True if successful, false otherwise
      */
     function update_track_info($itemid) {
+        global $DB;
+
         $groupid = $this->groupid;
-        if($record = get_record('report_builder_preproc_track',
-            'groupid', $groupid, 'itemid', $itemid)) {
+        if ($record = $DB->get_record('report_builder_preproc_track', array('groupid' => $groupid, 'itemid' => $itemid))) {
             // update existing record
-            $todb = new object();
+            $todb = new stdClass();
             $todb->id = $record->id;
             $todb->lastchecked = time();
-            return update_record('report_builder_preproc_track', $todb);
+            return $DB->update_record('report_builder_preproc_track', $todb);
         } else {
             // create a new record
-            $todb = new object();
+            $todb = new stdClass();
             $todb->groupid = $groupid;
             $todb->itemid = $itemid;
             $todb->lastchecked = time();
             $todb->disabled = 0;
-            return insert_record('report_builder_preproc_track', $todb);
+            return $DB->insert_record('report_builder_preproc_track', $todb);
         }
     }
 

@@ -37,7 +37,7 @@
     global $SESSION,$USER;
 
     $userid     = optional_param('userid', null, PARAM_INT);                       // which user to show
-    $format     = optional_param('format','',PARAM_TEXT); //export format
+    $format = optional_param('format','', PARAM_TEXT); // export format
     $rolstatus = optional_param('status', 'all', PARAM_ALPHANUM);
     if (!in_array($rolstatus, array('active','completed','all'))) {
         $rolstatus = 'all';
@@ -58,6 +58,8 @@
     if ($USER->id != $userid && !totara_is_manager($userid) && !has_capability('moodle/site:doanything',$context)) {
         error('You cannot view this page');
     }
+
+    $renderer = $PAGE->get_renderer('totara_reportbuilder');
 
     if ($USER->id != $userid) {
         $strheading = get_string('recordoflearningfor','local').fullname($user, true);
@@ -81,7 +83,7 @@
     $query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
     $log_url = 'record/objectives.php'.$query_string;
 
-    if($format!='') {
+    if ($format != '') {
         add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
         $report->export_data($format);
         die;
@@ -122,19 +124,19 @@
     $countfiltered = $report->get_filtered_count();
     $countall = $report->get_full_count();
 
-    $heading = $report->print_result_count_string($countfiltered, $countall);
+    $heading = $renderer->print_result_count_string($countfiltered, $countall);
     print_heading($heading);
 
-    print $report->print_description();
+    print $renderer->print_description($report->description, $report->_id);
 
     $report->display_search();
 
-    if($countfiltered>0) {
-        print $report->showhide_button();
+    if ($countfiltered > 0) {
+        print $renderer->showhide_button($report->_id, $report->shortname);
         $report->display_table();
         print $report->edit_button();
         // export button
-        $report->export_select();
+        $renderer->export_select($report->_id);
     }
 
     print_container_end();

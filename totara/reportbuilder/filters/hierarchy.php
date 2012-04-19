@@ -1,6 +1,29 @@
-<?php //$Id$
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @package totara
+ * @subpackage reportbuilder
+ */
 
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
 
 /**
  * Generic filter based on a hierarchy.
@@ -29,9 +52,9 @@ class filter_hierarchy extends filter_type {
      * @return array of comparison operators
      */
     function get_operators() {
-        return array(0 => get_string('isanyvalue','filters'),
-                     1 => get_string('isequalto','filters'),
-                     2 => get_string('isnotequalto','filters'));
+        return array(0 => get_string('isanyvalue', 'filters'),
+                     1 => get_string('isequalto', 'filters'),
+                     2 => get_string('isnotequalto', 'filters'));
     }
 
     /**
@@ -47,56 +70,60 @@ class filter_hierarchy extends filter_type {
 
         // manually disable buttons - can't use disabledIf because
         // button isn't created using form element
-        $attr = "onChange=\"if(this.value == 0) {
-            $('input[name=" . $this->_name."_rec]').attr('disabled',true);
-            $('#show-" . $this->_name."-dialog').attr('disabled',true);
+        $attr = "onChange=\"if (this.value == 0) {
+            $('input[name=" . $this->_name . "_rec]').attr('disabled', true);
+            $('#show-" . $this->_name . "-dialog').attr('disabled', true);
         } else {
-            $('input[name=" . $this->_name."_rec]').removeAttr('disabled');
-            $('#show-" . $this->_name."-dialog').removeAttr('disabled');
+            $('input[name=" . $this->_name . "_rec]').removeAttr('disabled');
+            $('#show-" . $this->_name . "-dialog').removeAttr('disabled');
         }\"";
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->get_operators(), $attr);
-        $objs[] =& $mform->createElement('static', 'title'.$this->_name, '', '<span id="' . $this->_name . 'title" class="dialog-result-title"></span>');
+        $objs[] =& $mform->createElement('static', 'title'.$this->_name, '',
+            html_writer::tag('span', '', array('id' => $this->_name . 'title', 'class' => 'dialog-result-title')));
         // can't use a button because id must be 'show-*-dialog' and
         // formslib appends 'id_' to ID
         // TODO change dialogs to bind to any id
         $objs[] =& $mform->createElement('static', 'selectorbutton',
             '',
-            '<input type="button" class="rb-filter-choose-' . $this->_type . '" value="' .
-            get_string('choose'.$this->_type, 'local_reportbuilder') .
-            '" id="show-' . $this->_name . '-dialog" />');
+            html_writer::empty_tag('input', array('type' => 'button',
+                'class' => 'rb-filter-choose-' . $this->_type,
+                'value' => get_string('choose' . $this->_type, 'totara_reportbuilder'),
+                'id' => 'show-' . $this->_name . '-dialog')));
         $objs[] =& $mform->createElement('checkbox', $this->_name . '_rec', '', get_string('includesubcategories', 'filters'));
 
         $grp =& $mform->addElement('group', $this->_name.'_grp', $label, $objs, '', false);
-        $grp->setHelpButton(array('reportbuilderdialogfilter', $label, 'local_reportbuilder'));
+        $mform->addHelpButton($grp->_name, 'reportbuilderdialogfilter', 'totara_reportbuilder');
         if ($advanced) {
             $mform->setAdvanced($this->_name.'_grp');
         }
 
         $mform->addElement('hidden', $this->_name);
 
-        if(array_key_exists($this->_name, $SESSION->{$sessionname})) {
+        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
             $defaults = $SESSION->{$sessionname}[$this->_name];
         }
-        if(isset($defaults[0]['value'])) {
+        if (isset($defaults[0]['value'])) {
             $mform->setDefault($this->_name, $defaults[0]['value']);
         }
 
         // set other default values
         //TODO get rid of need for [0]
-        if(isset($defaults[0]['operator'])) {
+        if (isset($defaults[0]['operator'])) {
             $mform->setDefault($this->_name.'_op', $defaults[0]['operator']);
         }
-        if(isset($defaults[0]['recursive'])) {
+        if (isset($defaults[0]['recursive'])) {
             $mform->setDefault($this->_name.'_rec', $defaults[0]['recursive']);
         }
     }
 
     function definition_after_data(&$mform) {
-        if($id = $mform->getElementValue($this->_name)) {
-            if($title = get_field($this->_type, 'fullname', 'id', $id)) {
+        global $DB;
+
+        if ($id = $mform->getElementValue($this->_name)) {
+            if ($title = $DB->get_field($this->_type, 'fullname', array('id' => $id))) {
                 $mform->setDefault('title'.$this->_name,
-                    '<span id="' . $this->_name . 'title" class="dialog-result-title">'.$title.'</span>');
+                html_writer::tag('span', $title, array('id' => $this->_name . 'title', 'class' => 'dialog-result-title')));
             }
         }
     }
@@ -116,7 +143,7 @@ class filter_hierarchy extends filter_type {
             $formdata->$field != '') {
             $data = array('operator' => (int)$formdata->$operator,
                           'value'    => (string)$formdata->$field);
-            if(isset($formdata->$recursive)) {
+            if (isset($formdata->$recursive)) {
                 $data['recursive'] = (int)$formdata->$recursive;
             } else {
                 $data['recursive'] = 0;
@@ -131,34 +158,42 @@ class filter_hierarchy extends filter_type {
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array containing filtering condition SQL clause and params
      */
     function get_sql_filter($data) {
+        global $DB;
+
         $operator = $data['operator'];
         $recursive = (isset($data['recursive'])
             && $data['recursive']) ? '%' : '';
-        $value    = addslashes($data['value']);
+        $value    = $data['value'];
         $query    = $this->_filter->get_field();
 
         switch($operator) {
             case 1:
-                $token = ' LIKE ';
+                $not = false;
                 break;
             case 2:
-                $token = ' NOT LIKE ';
+                $not = true;
                 break;
             default:
                 // return 1=1 instead of TRUE for MSSQL support
-                return ' 1=1 ';
+                return array(' 1=1 ', array());
         }
 
-        $path = get_field($this->_type, 'path', 'id', $value);
-        if($operator == 2) {
+        $path = $DB->get_field($this->_type, 'path', array('id' => $value));
+        $params = array();
+        $uniqueparam = rb_unique_param("fh{$operator}_");
+        if ($operator == 2) {
             // check for null case for is not operator
-            return '('.$query.$token."'$path$recursive' OR ".$query.' IS NULL)';
+            $sql = '(' . $DB->sql_like($query, ":{$uniqueparam}", true, true, $not) . " OR {$query} IS NULL)";
+            $params[$uniqueparam] = $DB->sql_like_escape($path) . $recursive;
         } else {
-            return $query.$token."'$path$recursive'";
+            $sql = $DB->sql_like($query, ":{$uniqueparam}", true, true, $not);
+            $params[$uniqueparam] = $DB->sql_like_escape($path) . $recursive;
         }
+
+        return array($sql, $params);
     }
 
     /**
@@ -167,6 +202,8 @@ class filter_hierarchy extends filter_type {
      * @return string active filter label
      */
     function get_label($data) {
+        global $DB;
+
         $operators = $this->get_operators();
         $operator  = $data['operator'];
         $recursive = $data['recursive'];
@@ -177,12 +214,12 @@ class filter_hierarchy extends filter_type {
             return '';
         }
 
-        $itemname = get_field($this->_type, 'fullname', 'id', $value);
+        $itemname = $DB->get_field($this->_type, 'fullname', array('id' => $value));
 
-        $a = new object();
+        $a = new stdClass();
         $a->label    = $label;
         $a->value    = '"'.s($itemname).'"';
-        if($recursive) {
+        if ($recursive) {
             $a->value .= ' (and children)';
         }
         $a->operator = $operators[$operator];

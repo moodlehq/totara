@@ -33,7 +33,7 @@ class rb_source_program extends rb_base_source {
 
     function __construct() {
         global $CFG;
-        $this->base = $CFG->prefix . 'prog';
+        $this->base = '{prog}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -42,7 +42,7 @@ class rb_source_program extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
-        $this->sourcetitle = get_string('programs','local_program');
+        $this->sourcetitle = get_string('programs', 'totara_program');
         parent::__construct();
     }
 

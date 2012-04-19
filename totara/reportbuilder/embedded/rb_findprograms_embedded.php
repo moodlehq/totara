@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -32,7 +32,7 @@ class rb_findprograms_embedded extends rb_base_embedded {
         $this->url = '/totara/program/find.php';
         $this->source = 'program';
         $this->shortname = 'findprograms';
-        $this->fullname = get_string('findprograms', 'local_program');
+        $this->fullname = get_string('findprograms', 'totara_program');
         $this->columns = array(
             array(
                 'type' => 'prog',
@@ -67,8 +67,8 @@ class rb_findprograms_embedded extends rb_base_embedded {
             'category' => '!0',
         );
 
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        if(!has_capability('totara/program:viewhiddenprograms', $context)) {
+        $context = context_system::instance();
+        if (!has_capability('totara/program:viewhiddenprograms', $context)) {
             // don't show hidden courses to none-admins
             $this->embeddedparams['visible'] = 1;
         }

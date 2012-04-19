@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,30 +17,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Eugene Venter <eugene@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
  * Main Class definition and library functions for report builder
  */
 
-require_once("{$CFG->dirroot}/totara/reportbuilder/filters/lib.php");
+require_once($CFG->dirroot . '/calendar/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_source.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_content.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_access.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_preproc.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_embedded.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_join.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_column.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_column_option.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_filter.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_filter_option.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_param.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_param_option.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_content_option.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_source.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_content.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_access.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_preproc.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_embedded.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_join.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_column.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_column_option.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_filter.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_filter_option.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_param.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_param_option.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_content_option.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -120,29 +122,29 @@ class reportbuilder {
      *                           (or null to use the current user)
      *
      */
-    function reportbuilder($id=null, $shortname=null, $embed=false, $sid=null, $reportfor=null) {
-        global $CFG, $USER;
+    function __construct($id=null, $shortname=null, $embed=false, $sid=null, $reportfor=null) {
+        global $USER, $DB;
 
-        if($id != null) {
+        if ($id != null) {
             // look for existing report by id
-            $report = get_record('report_builder', 'id', $id);
+            $report = $DB->get_record('report_builder', array('id' => $id), '*', IGNORE_MISSING);
         } else if ($shortname != null) {
             // look for existing report by shortname
-            $report = get_record('report_builder', 'shortname', $shortname);
+            $report = $DB->get_record('report_builder', array('shortname' => $shortname), '*', IGNORE_MISSING);
         } else {
             // either id or shortname is required
-            error(get_string('noshortnameorid','local_reportbuilder'));
+            print_error('noshortnameorid', 'totara_reportbuilder');
         }
 
         // handle if report not found in db
-        if(!$report) {
-            if($embed) {
-                if(! $id = reportbuilder_create_embedded_record($shortname, $embed, $error)) {
-                    error('Error creating embedded record: '.$error);
+        if (!$report) {
+            if ($embed) {
+                if (! $id = reportbuilder_create_embedded_record($shortname, $embed, $error)) {
+                    print_error('error:creatingembeddedrecord', 'totara_reportbuilder', '', $error);
                 }
-                $report = get_record('report_builder','id', $id);
+                $report = $DB->get_record('report_builder', array('id' => $id));
             } else {
-                error("Report with ID of '$id' not found in database.");
+                print_error('reportwithidnotfound', 'totara_reportbuilder', '', $id);
             }
         }
 
@@ -150,15 +152,15 @@ class reportbuilder {
             $this->_id = $report->id;
             $this->source = $report->source;
             $this->src = self::get_source_object($this->source);
-            $this->shortname = stripslashes($report->shortname);
-            $this->fullname = stripslashes($report->fullname);
+            $this->shortname = $report->shortname;
+            $this->fullname = $report->fullname;
             $this->hidden = $report->hidden;
-            $this->description = stripslashes($report->description);
+            $this->description = $report->description;
             $this->embedded = $report->embedded;
             $this->contentmode = $report->contentmode;
             // store the embedded URL for embedded reports only
-            if($report->embedded) {
-                if($embedobj = reportbuilder_get_embedded_report_object($report->shortname)) {
+            if ($report->embedded) {
+                if ($embedobj = reportbuilder_get_embedded_report_object($report->shortname)) {
                     $this->embeddedurl = $embedobj->url;
                 }
             }
@@ -182,21 +184,21 @@ class reportbuilder {
             $this->filters = $this->get_filters();
 
         } else {
-            error("Report with id of '$id' not found in database.");
+            print_error('reportwithidnotfound', 'totara_reportbuilder', '', $id);
         }
 
-        if($embed) {
+        if ($embed) {
             $this->_embeddedparams = $embed->embeddedparams;
         }
         $this->_params = $this->get_current_params();
 
-        if($sid) {
+        if ($sid) {
             $this->restore_saved_search();
         }
 
         // determine who is viewing or receiving the report
         // used for access and content restriction checks
-        if(isset($reportfor)) {
+        if (isset($reportfor)) {
             $this->reportfor = $reportfor;
         } else {
             $this->reportfor = $USER->id;
@@ -209,8 +211,8 @@ class reportbuilder {
      * Include javascript code needed by report builder
      */
     function include_js() {
-        global $CFG;
-        require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+        global $CFG, $PAGE, $SESSION;
+        require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
         $this->get_filtering();
 
@@ -222,40 +224,76 @@ class reportbuilder {
         $graph = (substr($this->source, 0,
             strlen('graphical_feedback_questions')) ==
             'graphical_feedback_questions');
-        if(!$graph) {
-            $js['showhide'] = $CFG->wwwroot.'/totara/reportbuilder/showhide.js.php';
+        if (!$graph) {
+            $jsdetails = new stdClass();
+            $jsdetails->initcall = 'M.totara_reportbuilder_showhide.init';
+            $jsdetails->jsmodule = array('name' => 'totara_reportbuilder_showhide',
+                'fullpath' => '/totara/reportbuilder/showhide.js');
+            $jsdetails->args = array('hiddencols' => $this->js_get_hidden_columns());
+            $jsdetails->strings = array(
+                'totara_reportbuilder' => array('showhidecolumns'),
+                'moodle' => array('ok')
+            );
+            $js[] = $jsdetails;
             $dialog = true;
         }
 
         // include JS for dialogs if required for filters
-        foreach($this->filters as $filter) {
-            switch($filter->filtertype) {
-            case 'org':
-            case 'comp':
-            case 'pos':
-            case 'orgmulti':
-            case 'compmulti':
-            case 'orgmulti':
-                $js['dialog'] = $CFG->wwwroot . '/totara/reportbuilder/tree_dialogs.js.php';
+        foreach ($this->filters as $filter) {
+            if (in_array($filter->filtertype, array('org', 'comp', 'pos', 'orgmulti', 'compmulti', 'posmulti'))) {
+                $jsdetails = new stdClass();
+                $jsdetails->initcall = 'M.totara_reportbuilder_filterdialogs.init';
+                $jsdetails->jsmodule = array('name' => 'totara_reportbuilder_filterdialogs',
+                    'fullpath' => '/totara/reportbuilder/filter_dialogs.js');
+                $jsdetails->strings = array(
+                    'totara_hierarchy' => array('chooseposition', 'selected', 'chooseorganisation', 'currentlyselected', 'selectcompetency'),
+                    'totara_reportbuilder' => array('chooseorgplural', 'chooseposplural', 'choosecompplural')
+                );
+
+                // add currently selected as args
+                $cargs = array();
+                foreach ($this->filters as $f) {
+                    if (!in_array($f->filtertype, array('org', 'comp', 'pos'))) {
+                        continue;
+                    }
+                    $title = $f->type . '-' . $f->value;
+                    $currentlyselected = json_encode(dialog_display_currently_selected(
+                        get_string('currentlyselected', 'totara_hierarchy'), $title));
+                    $cargs[] = "\"{$title}-currentlyselected\":{$currentlyselected}";
+                }
+                if (!empty($cargs)) {
+                    $cargs = implode(', ', $cargs);
+                    $jsdetails->args = array('args' => '{' . $cargs . '}');
+                }
+
+                $js[] = $jsdetails;
+
                 $dialog = $treeview = true;
                 break;
-            default:
             }
         }
 
 
         $code = array();
-        if($dialog) {
+        if ($dialog) {
             $code[] = TOTARA_JS_DIALOG;
         }
-        if($treeview) {
+        if ($treeview) {
             $code[] = TOTARA_JS_TREEVIEW;
         }
 
 
         local_js($code);
-        if(count($js)) {
-            require_js(array_values($js));
+        foreach ($js as $jsdetails) {
+            if (!empty($jsdetails->strings)) {
+                foreach ($jsdetails->strings as $scomponent => $sstrings) {
+                    $PAGE->requires->strings_for_js($sstrings, $scomponent);
+                }
+            }
+
+            $PAGE->requires->js_init_call($jsdetails->initcall,
+                empty($jsdetails->args) ? null : $jsdetails->args,
+                false, $jsdetails->jsmodule);
         }
 
     }
@@ -269,7 +307,7 @@ class reportbuilder {
      * @return boolean True if set, false if has been set previously
      */
     function get_filtering($ignorecache = false) {
-        if(!$ignorecache && $this->_filtering === null) {
+        if (!$ignorecache && $this->_filtering === null) {
             $this->_filtering = new filtering($this, $this->get_current_url());
             return true;
         }
@@ -281,20 +319,20 @@ class reportbuilder {
      * Method for debugging SQL statement generated by report builder
      */
     function debug($level=1) {
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        if(!has_capability('moodle/site:doanything', $context)) {
+        global $OUTPUT;
+        $context = context_system::instance();
+        if (!is_siteadmin()) {
             return false;
         }
-        print '<div style="border: 1px solid black; background-color: #ffc; padding: 10px;">';
-        print '<h3>Query:</h3>';
-        print '<pre>';
-        print_r($this->build_query(false, true));
-        print '</pre>';
-        if($level>1) {
-            print '<h3>Reportbuilder Object</h3>';
-            var_dump($this);
+        list($sql, $params) = $this->build_query(false, true);
+        echo $OUTPUT->heading('Query', 3);
+        echo html_writer::tag('pre', $sql, array('class' => 'notifymessage'));
+        echo $OUTPUT->heading('Query params', 3);
+        echo html_writer::tag('pre', s(print_r($params, true)), array('class' => 'notifymessage'));
+        if ($level > 1) {
+            echo $OUTPUT->heading('Reportbuilder Object', 3);
+            echo html_writer::tag('pre', s(print_r($this, true)), array('class' => 'notifymessage'));
         }
-        print '</div>';
     }
 
     /**
@@ -309,12 +347,12 @@ class reportbuilder {
      */
     static function get_preproc_object($preproc, $groupid) {
         $sourcepaths = self::find_source_dirs();
-        foreach($sourcepaths as $sourcepath) {
+        foreach ($sourcepaths as $sourcepath) {
             $classfile = $sourcepath . 'rb_preproc_' . $preproc . '.php';
-            if(is_readable($classfile)) {
+            if (is_readable($classfile)) {
                 include_once($classfile);
-                $classname = 'rb_preproc_'.$preproc;
-                if(class_exists($classname)) {
+                $classname = 'rb_preproc_' . $preproc;
+                if (class_exists($classname)) {
                     return new $classname($groupid);
                 }
             }
@@ -332,12 +370,12 @@ class reportbuilder {
      */
     static function get_source_object($source) {
         $sourcepaths = self::find_source_dirs();
-        foreach($sourcepaths as $sourcepath) {
+        foreach ($sourcepaths as $sourcepath) {
             $classfile = $sourcepath . 'rb_source_' . $source . '.php';
-            if(is_readable($classfile)) {
+            if (is_readable($classfile)) {
                 include_once($classfile);
-                $classname = 'rb_source_'.$source;
-                if(class_exists($classname)) {
+                $classname = 'rb_source_' . $source;
+                if (class_exists($classname)) {
                     return new $classname();
                 }
             }
@@ -346,15 +384,15 @@ class reportbuilder {
         // if exact match not found, look for match with group suffix
         // of the form: [sourcename]_grp_[grp_id]
         // if found, call the base source passing the groupid as an argument
-        if(preg_match('/^(.+)_grp_([0-9]+)$/', $source, $matches)) {
+        if (preg_match('/^(.+)_grp_([0-9]+)$/', $source, $matches)) {
             $basesource = $matches[1];
             $groupid = $matches[2];
-            foreach($sourcepaths as $sourcepath) {
+            foreach ($sourcepaths as $sourcepath) {
                 $classfile = $sourcepath . 'rb_source_' . $basesource . '.php';
-                if(is_readable($classfile)) {
+                if (is_readable($classfile)) {
                     include_once($classfile);
                     $classname = 'rb_source_' . $basesource;
-                    if(class_exists($classname)) {
+                    if (class_exists($classname)) {
                         return new $classname($groupid);
                     }
                 }
@@ -364,14 +402,14 @@ class reportbuilder {
         // if still not found, look for match with group suffix
         // of the form: [sourcename]_grp_all
         // if found, call the base source passing a groupid of 0 as an argument
-        if(preg_match('/^(.+)_grp_all$/', $source, $matches)) {
+        if (preg_match('/^(.+)_grp_all$/', $source, $matches)) {
             $basesource = $matches[1];
-            foreach($sourcepaths as $sourcepath) {
+            foreach ($sourcepaths as $sourcepath) {
                 $classfile = $sourcepath . 'rb_source_' . $basesource . '.php';
-                if(is_readable($classfile)) {
+                if (is_readable($classfile)) {
                     include_once($classfile);
                     $classname = 'rb_source_' . $basesource;
-                    if(class_exists($classname)) {
+                    if (class_exists($classname)) {
                         return new $classname(0);
                     }
                 }
@@ -390,12 +428,14 @@ class reportbuilder {
      *               to be used in a select element.
      */
     static function get_source_list() {
+        global $DB;
+
         $output = array();
 
-        foreach(self::find_source_dirs() as $dir) {
-            if(is_dir($dir) && $dh = opendir($dir)) {
+        foreach (self::find_source_dirs() as $dir) {
+            if (is_dir($dir) && $dh = opendir($dir)) {
                 while(($file = readdir($dh)) !== false) {
-                    if(is_dir($file) ||
+                    if (is_dir($file) ||
                     !preg_match('|^rb_source_(.*)\.php$|', $file, $matches)) {
                         continue;
                     }
@@ -404,18 +444,16 @@ class reportbuilder {
                     $sourcename = $src->sourcetitle;
                     $preproc = $src->preproc;
 
-                    if($src->grouptype == 'all') {
+                    if ($src->grouptype == 'all') {
                         $sourcestr = $source . '_grp_all';
                         $output[$sourcestr] = $sourcename;
-                    } else if($src->grouptype != 'none') {
+                    } else if ($src->grouptype != 'none') {
                         // create a source for every group that's based on
                         // this source's preprocessor
-                        if($groups = get_records('report_builder_group',
-                            'preproc', $preproc)) {
-                            foreach($groups as $group) {
-                                $sourcestr = $source . '_grp_' . $group->id;
-                                $output[$sourcestr] = $sourcename . ': ' . $group->name;
-                            }
+                        $groups = $DB->get_records('report_builder_group', array('preproc' => $preproc));
+                        foreach ($groups as $group) {
+                            $sourcestr = $source . '_grp_' . $group->id;
+                            $output[$sourcestr] = $sourcename . ': ' . $group->name;
                         }
                     } else {
                         // otherwise, just create a single source
@@ -455,9 +493,9 @@ class reportbuilder {
             }
         }
 
-        // search for local/*/rb_sources/ directories
-        foreach (get_list_of_plugins('local', 'db') as $localmod) {
-            $dir = "{$CFG->dirroot}/local/$localmod/rb_sources/";
+        // search for totara/*/rb_sources/ directories
+        foreach (get_list_of_plugins('totara', 'db') as $totaramod) {
+            $dir = "{$CFG->dirroot}/totara/$totaramod/rb_sources/";
             if (file_exists($dir) && is_dir($dir)) {
                 $sourcepaths[] = $dir;
             }
@@ -481,16 +519,16 @@ class reportbuilder {
      *               the conditions
      */
     function reduce_items($items, $conditions, $multiple=true) {
-        if(!is_array($items)) {
+        if (!is_array($items)) {
             throw new ReportBuilderException('Input not an array');
         }
-        if(!is_array($conditions)) {
+        if (!is_array($conditions)) {
             throw new ReportBuilderException('Conditions not an array');
         }
         $output = array();
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $status = true;
-            foreach($conditions as $name => $value) {
+            foreach ($conditions as $name => $value) {
                 // condition fails if property missing
                 if (!property_exists($item, $name)) {
                     $status = false;
@@ -501,7 +539,7 @@ class reportbuilder {
                     break;
                 }
             }
-            if($status && $multiple) {
+            if ($status && $multiple) {
                 $output[] = $item;
             } else if ($status) {
                 return $item;
@@ -526,25 +564,25 @@ class reportbuilder {
      */
     static function check_joins($joinlist, $joins) {
         // nothing to check
-        if($joins === null) {
+        if ($joins === null) {
             return true;
         }
 
         // get array of available names from join list provided
         $joinnames = array('base');
-        foreach($joinlist as $item) {
+        foreach ($joinlist as $item) {
             $joinnames[] = $item->name;
         }
 
         // return false if any listed joins don't exist
-        if(is_array($joins)) {
-            foreach($joins as $join) {
-                if(!in_array($join, $joinnames)) {
+        if (is_array($joins)) {
+            foreach ($joins as $join) {
+                if (!in_array($join, $joinnames)) {
                     return false;
                 }
             }
         } else {
-            if(!in_array($joins, $joinnames)) {
+            if (!in_array($joins, $joinnames)) {
                 return false;
             }
         }
@@ -559,19 +597,19 @@ class reportbuilder {
      * @return Boolean True if user can view, error otherwise
      */
     function restore_saved_search() {
-        global $SESSION,$USER;
+        global $SESSION, $USER, $DB;
         // reload ignoring the cache to ensure we've got an up to date
         // version
         $this->get_filtering(true);
-        $filtername = 'filtering_'.$this->shortname;
-        if($saved = get_record('report_builder_saved','id',$this->_sid)) {
-            if($saved->ispublic != 0 || $saved->userid == $USER->id) {
+        $filtername = 'filtering_' . $this->shortname;
+        if ($saved = $DB->get_record('report_builder_saved', array('id' => $this->_sid))) {
+            if ($saved->ispublic != 0 || $saved->userid == $USER->id) {
                 $SESSION->$filtername = unserialize($saved->search);
             } else {
                 if (defined('FULLME') and FULLME === 'cron') {
                     mtrace('Saved search not found or search is not public');
                 } else {
-                    error('Saved search not found or search is not public');
+                    print_error('savedsearchnotfoundornotpublic', 'totara_reportbuilder');
                 }
                 return false;
             }
@@ -579,7 +617,7 @@ class reportbuilder {
             if (defined('FULLME') and FULLME === 'cron') {
                 mtrace('Saved search not found or search is not public');
             } else {
-                error('Saved search not found or search is not public');
+                print_error('savedsearchnotfoundornotpublic', 'totara_reportbuilder');
             }
             return false;
         }
@@ -592,26 +630,27 @@ class reportbuilder {
      * @return array Array of filters for current report or empty array if none set
      */
     function get_filters() {
+        global $DB;
+
         $out = array();
         $id = isset($this->_id) ? $this->_id : null;
-        if(empty($id)) {
+        if (empty($id)) {
             return $out;
         }
-        if($filters = get_records('report_builder_filters','reportid', $id, 'sortorder')) {
-            foreach ($filters as $filter) {
-                try {
-                    $out[$filter->id] = $this->src->new_filter_from_option(
-                        $filter->type,
-                        $filter->value,
-                        $filter->advanced
-                    );
-                    // enabled report grouping if any filters are grouped
-                    if($out[$filter->id]->grouping != 'none') {
-                        $this->grouped = true;
-                    }
-                } catch (ReportBuilderException $e) {
-                    trigger_error($e->getMessage(), E_USER_WARNING);
+        $filters = $DB->get_records('report_builder_filters', array('reportid' => $id), 'sortorder');
+        foreach ($filters as $filter) {
+            try {
+                $out[$filter->id] = $this->src->new_filter_from_option(
+                    $filter->type,
+                    $filter->value,
+                    $filter->advanced
+                );
+                // enabled report grouping if any filters are grouped
+                if ($out[$filter->id]->grouping != 'none') {
+                    $this->grouped = true;
                 }
+            } catch (ReportBuilderException $e) {
+                trigger_error($e->getMessage(), E_USER_WARNING);
             }
         }
         return $out;
@@ -623,61 +662,61 @@ class reportbuilder {
      * @return array Array of columns for current report or empty array if none set
      */
     function get_columns() {
+        global $DB;
+
         $out = array();
         $id = isset($this->_id) ? $this->_id : null;
-        if(empty($id)) {
+        if (empty($id)) {
             return $out;
         }
-        if($columns = get_records('report_builder_columns',
-            'reportid', $id, 'sortorder')) {
-            foreach ($columns as $column) {
-                // to properly support multiple languages - only use value
-                // in database if it's different from the default. If it's the
-                // same as the default for that column, use the default string
-                // directly
-                if ($column->customheading) {
-                    // use value from database
-                    $heading = $column->heading;
-                } else {
-                    // use default value
-                    $defaultheadings = $this->get_default_headings_array();
-                    $heading = isset($defaultheadings[$column->type . '-' . $column->value]) ?
-                        $defaultheadings[$column->type . '-' . $column->value] : null;
-                }
+        $columns = $DB->get_records('report_builder_columns', array('reportid' => $id), 'sortorder');
+        foreach ($columns as $column) {
+            // to properly support multiple languages - only use value
+            // in database if it's different from the default. If it's the
+            // same as the default for that column, use the default string
+            // directly
+            if ($column->customheading) {
+                // use value from database
+                $heading = $column->heading;
+            } else {
+                // use default value
+                $defaultheadings = $this->get_default_headings_array();
+                $heading = isset($defaultheadings[$column->type . '-' . $column->value]) ?
+                    $defaultheadings[$column->type . '-' . $column->value] : null;
+            }
 
-                try {
-                    $out[$column->id] = $this->src->new_column_from_option(
-                        $column->type,
-                        $column->value,
-                        $heading,
-                        $column->customheading,
-                        $column->hidden
-                    );
-                    // enabled report grouping if any columns are grouped
-                    if($out[$column->id]->grouping != 'none') {
-                        $this->grouped = true;
-                    }
+            try {
+                $out[$column->id] = $this->src->new_column_from_option(
+                    $column->type,
+                    $column->value,
+                    $heading,
+                    $column->customheading,
+                    $column->hidden
+                );
+                // enabled report grouping if any columns are grouped
+                if ($out[$column->id]->grouping != 'none') {
+                    $this->grouped = true;
                 }
-                catch (ReportBuilderException $e) {
-                    // save list of bad columns
-                    $this->badcolumns[] = array(
-                        'id' => $column->id,
-                        'type' => $column->type,
-                        'value' => $column->value,
-                        'heading' => $column->heading
-                    );
-                    trigger_error($e->getMessage(), E_USER_WARNING);
-                }
+            }
+            catch (ReportBuilderException $e) {
+                // save list of bad columns
+                $this->badcolumns[] = array(
+                    'id' => $column->id,
+                    'type' => $column->type,
+                    'value' => $column->value,
+                    'heading' => $column->heading
+                );
+                trigger_error($e->getMessage(), E_USER_WARNING);
             }
         }
 
         // now append any required columns
-        if(is_array($this->requiredcolumns)) {
-            foreach($this->requiredcolumns as $column) {
+        if (is_array($this->requiredcolumns)) {
+            foreach ($this->requiredcolumns as $column) {
                 $column->required = true;
                 $out[] = $column;
                 // enabled report grouping if any columns are grouped
-                if($column->grouping != 'none') {
+                if ($column->grouping != 'none') {
                     $this->grouped = true;
                 }
             }
@@ -737,24 +776,26 @@ class reportbuilder {
      * @return string A unique shortname suitable for this report
      */
     public static function create_shortname($fullname) {
+        global $DB;
+
         // leaves only letters and numbers
         // replaces spaces + dashes with underscores
-        $validchars = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/','/[\s-]/'), array('','_'), $fullname));
+        $validchars = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/', '/[\s-]/'), array('', '_'), $fullname));
         $shortname = "report_{$validchars}";
         $try = $shortname;
         $i = 1;
-        while($i<1000) {
-            if(get_field('report_builder','id','shortname',$try)) {
-                    // name exists, try adding a number to make unique
+        while($i < 1000) {
+            if ($DB->get_field('report_builder', 'id', array('shortname' => $try))) {
+                // name exists, try adding a number to make unique
                 $try = $shortname . $i;
-            $i++;
+                $i++;
             } else {
-            // return the shortname
-            return $try;
-                }
+                // return the shortname
+                return $try;
+            }
         }
         // if all 1000 name tries fail, give up and use a timestamp
-        return "report_".time();
+        return "report_" . time();
     }
 
 
@@ -765,8 +806,8 @@ class reportbuilder {
      */
     function report_url() {
         global $CFG;
-        if($this->embeddedurl === null) {
-            return $CFG->wwwroot.'/totara/reportbuilder/report.php?id='.$this->_id;
+        if ($this->embeddedurl === null) {
+            return $CFG->wwwroot . '/totara/reportbuilder/report.php?id=' . $this->_id;
         } else {
             return $CFG->wwwroot . $this->embeddedurl;
         }
@@ -781,11 +822,11 @@ class reportbuilder {
      */
     function get_current_url() {
         // array of parameters to remove from query string
-        $strip_params = array('spage','ssort','sid');
+        $strip_params = array('spage', 'ssort', 'sid');
 
         $url = new moodle_url(qualified_me());
-        foreach ($url->params as $name =>$value) {
-            if(in_array($name, $strip_params)) {
+        foreach ($url->params() as $name =>$value) {
+            if (in_array($name, $strip_params)) {
                 $url->remove_params($name);
             }
         }
@@ -802,23 +843,23 @@ class reportbuilder {
      */
     function get_current_params() {
         $out = array();
-        if(empty($this->_paramoptions)) {
+        if (empty($this->_paramoptions)) {
             return $out;
         }
         foreach ($this->_paramoptions as $param) {
             $name = $param->name;
-            if ( $param->type == 'string' ){
+            if ($param->type == 'string') {
                 $var = optional_param($name, null, PARAM_TEXT);
             } else {
                 $var = optional_param($name, null, PARAM_INT);
             }
 
-            if(isset($this->_embeddedparams[$name])) {
+            if (isset($this->_embeddedparams[$name])) {
                 // embedded params take priority over url params
                 $res = new rb_param($name, $this->_paramoptions);
                 $res->value = $this->_embeddedparams[$name];
                 $out[] = $res;
-            } else if(isset($var)) {
+            } else if (isset($var)) {
                 // this url param exists, add to params to use
                 $res = new rb_param($name, $this->_paramoptions);
                 $res->value = $var; // save the value
@@ -854,7 +895,6 @@ class reportbuilder {
     }
 
 
-
     /** Returns true if the current user has permission to view this report
      *
      * @param integer $id ID of the report to be viewed
@@ -862,11 +902,11 @@ class reportbuilder {
      * @return boolean True if they have any of the required capabilities
      */
     public static function is_capable($id, $userid=null) {
-        global $USER;
+        global $USER, $DB;
 
         // if the 'accessmode' flag is set to 0 let anyone view it
-        $accessmode = get_field('report_builder', 'accessmode', 'id', $id);
-        if($accessmode == REPORT_BUILDER_ACCESS_MODE_NONE) {
+        $accessmode = $DB->get_field('report_builder', 'accessmode', array('id' => $id));
+        if ($accessmode == REPORT_BUILDER_ACCESS_MODE_NONE) {
             return true;
         }
 
@@ -876,13 +916,13 @@ class reportbuilder {
         $any = false;
         $all = true;
         // loop round classes, only considering classes that extend rb_base_access
-        foreach(get_declared_classes() as $class) {
-            if(is_subclass_of($class, 'rb_base_access')) {
+        foreach (get_declared_classes() as $class) {
+            if (is_subclass_of($class, 'rb_base_access')) {
                 // remove rb_ prefix
                 $settingname = substr($class, 3);
                 $obj = new $class($foruser);
                 // is this option enabled?
-                if(reportbuilder::get_setting($id, $settingname, 'enable')) {
+                if (reportbuilder::get_setting($id, $settingname, 'enable')) {
                     // does user have permission for this access option?
                     $allowed = $obj->access_restriction($id);
                     $any = $any || $allowed;
@@ -891,7 +931,7 @@ class reportbuilder {
             }
         }
 
-        if($accessmode == REPORT_BUILDER_ACCESS_MODE_ANY) {
+        if ($accessmode == REPORT_BUILDER_ACCESS_MODE_ANY) {
             // any enabled options can be true
             return $any;
         } else {
@@ -917,13 +957,15 @@ class reportbuilder {
      * Returns an SQL snippet that, when applied to the WHERE clause of the query,
      * reduces the results to only include those matched by any specified URL parameters
      *
-     * @return string SQL snippet created from URL parameters
+     * @return array containing SQL snippet (created from URL parameters) and SQL params
      */
     function get_param_restrictions() {
-        $out=array();
+        $out = array();
+        $sqlparams = array();
         $params = $this->_params;
-        if(is_array($params)) {
-            foreach($params as $param) {
+        if (is_array($params)) {
+            $count = 1;
+            foreach ($params as $param) {
                 $field = $param->field;
                 $value = $param->value;
                 $type = $param->type;
@@ -936,28 +978,25 @@ class reportbuilder {
 
                 // if value starts with '!', do a not equals match
                 // to the rest of the string
-                if(substr($value, 0, 1) == '!') {
-                    $wherestr .= ' != ';
+                $uniqueparam = rb_unique_param("pr{$count}_");
+                if (substr($value, 0, 1) == '!') {
+                    $wherestr .= " != :{$uniqueparam}";
                     // Strip off the leading '!'
-                    $value = substr($value,1);
+                    $sqlparams[$uniqueparam] = substr($value, 1);
                 } else {
                     // normal match
-                    $wherestr .= ' = ';
+                    $wherestr .= " = :{$uniqueparam}";
+                    $sqlparams[$uniqueparam] = $value;
                 }
 
-                // A string should be surrounded in quotes, an int should not
-                if($type == 'string'){
-                    $wherestr .= "'{$value}'";
-                } else {
-                    $wherestr .= $value;
-                }
                 $out[] = $wherestr;
+                $count++;
             }
         }
-        if(count($out)==0) {
-            return '';
+        if (count($out) == 0) {
+            return array('', array());
         }
-        return "(" . implode(" AND ",$out) . ")";
+        return array('(' . implode(' AND ', $out) . ')', $sqlparams);
     }
 
 
@@ -966,14 +1005,13 @@ class reportbuilder {
      * reduces the results to only include those matched by any specified content
      * restrictions
      *
-     * @return string SQL snippet created from content restrictions
+     * @return array containing SQL snippet created from content restrictions, as well as SQL params array
      */
     function get_content_restrictions() {
-        global $CFG;
         // if no content restrictions enabled return a TRUE snippet
         // use 1=1 instead of TRUE for MSSQL support
-        if($this->contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
-            return "( 1=1 )";
+        if ($this->contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
+            return array("( 1=1 )", array());
         } else if ($this->contentmode == REPORT_BUILDER_CONTENT_MODE_ALL) {
             // require all to match
             $op = ' AND ';
@@ -984,33 +1022,36 @@ class reportbuilder {
 
         $reportid = $this->_id;
         $out = array();
+        $params = array();
 
         // go through the content options
-        if(isset($this->contentoptions) && is_array($this->contentoptions)) {
-            foreach($this->contentoptions as $option) {
+        if (isset($this->contentoptions) && is_array($this->contentoptions)) {
+            foreach ($this->contentoptions as $option) {
                 $name = $option->classname;
                 $classname = 'rb_' . $name . '_content';
                 $settingname = $name . '_content';
                 $field = $option->field;
-                if(class_exists($classname)) {
+                if (class_exists($classname)) {
                     $class = new $classname($this->reportfor);
-                    if(reportbuilder::get_setting($reportid, $settingname,
+                    if (reportbuilder::get_setting($reportid, $settingname,
                         'enable')) {
                         // this content option is enabled
                         // call function to get SQL snippet
-                        $out[] = $class->sql_restriction($field, $reportid);
+                        list($out[], $contentparams) = $class->sql_restriction($field, $reportid);
+                        $params = array_merge($params, $contentparams);
                     }
                 } else {
-                    error("Content class $classname does not exist");
+                    print_error('contentclassnotexist', 'totara_reportbuilder', '', $classname);
                 }
             }
         }
         // show nothing if no content restrictions enabled
-        if(count($out)==0) {
+        if (count($out) == 0) {
             // use 1=0 instead of FALSE for MSSQL support
-            return '(1=0)';
+            return array('(1=0)', array());
         }
-        return '('.implode($op, $out).')';
+
+        return array('(' . implode($op, $out) . ')', $params);
     }
 
     /**
@@ -1025,35 +1066,34 @@ class reportbuilder {
      *               of any restrictions applied to this report
      */
     function get_restriction_descriptions($which='all') {
-        global $CFG;
         // include content restrictions
         $content_restrictions = array();
         $reportid = $this->_id;
         $res = array();
-        if($this->contentmode != REPORT_BUILDER_CONTENT_MODE_NONE) {
-            foreach($this->contentoptions as $option) {
+        if ($this->contentmode != REPORT_BUILDER_CONTENT_MODE_NONE) {
+            foreach ($this->contentoptions as $option) {
                 $name = $option->classname;
                 $classname = 'rb_' . $name . '_content';
                 $settingname = $name . '_content';
                 $title = $option->title;
-                if(class_exists($classname)) {
+                if (class_exists($classname)) {
                     $class = new $classname($this->reportfor);
-                    if(reportbuilder::get_setting($reportid, $settingname,
+                    if (reportbuilder::get_setting($reportid, $settingname,
                         'enable')) {
                         // this content option is enabled
                         // call function to get text string
                         $res[] = $class->text_restriction($title, $reportid);
                     }
                 } else {
-                    error("Content class function $classname does not exist");
+                    print_error('contentclassnotexist', 'totara_reportbuilder', '', $classname);
                 }
             }
-            if($this->contentmode == REPORT_BUILDER_CONTENT_MODE_ALL) {
+            if ($this->contentmode == REPORT_BUILDER_CONTENT_MODE_ALL) {
                 // 'and' show one per line
                 $content_restrictions = $res;
             } else {
                 // 'or' show as a single line
-                $content_restrictions[] = implode(get_string('or','local_reportbuilder'), $res);
+                $content_restrictions[] = implode(get_string('or', 'totara_reportbuilder'), $res);
             }
         }
 
@@ -1089,7 +1129,7 @@ class reportbuilder {
     function get_column_fields() {
         $fields = array();
         $src = $this->src;
-        foreach($this->columns as $column) {
+        foreach ($this->columns as $column) {
             $fields = array_merge($fields, $column->get_fields($src));
         }
         return $fields;
@@ -1104,7 +1144,7 @@ class reportbuilder {
     function get_joinlist_names() {
         $joinlist = $this->_joinlist;
         $joinnames = array();
-        foreach($joinlist as $item) {
+        foreach ($joinlist as $item) {
             $joinnames[] = $item->name;
         }
         return $joinnames;
@@ -1120,8 +1160,8 @@ class reportbuilder {
      */
     function get_joinlist_item($name) {
         $joinlist = $this->_joinlist;
-        foreach($joinlist as $item) {
-            if($item->name == $name) {
+        foreach ($joinlist as $item) {
+            if ($item->name == $name) {
                 return $item;
             }
         }
@@ -1142,7 +1182,7 @@ class reportbuilder {
         $output = array();
 
         // extract the list of joins into an array format
-        if(isset($item->joins) && is_array($item->joins)) {
+        if (isset($item->joins) && is_array($item->joins)) {
             $joins = $item->joins;
         } else if (isset($item->joins)) {
             $joins = array($item->joins);
@@ -1150,8 +1190,8 @@ class reportbuilder {
             $joins = array();
         }
 
-        foreach($joins as $join) {
-            if($join == 'base') {
+        foreach ($joins as $join) {
+            if ($join == 'base') {
                 continue;
             }
             $joinobj = $this->get_single_join($join, $usage);
@@ -1175,11 +1215,11 @@ class reportbuilder {
      */
     function get_single_join($join, $usage) {
 
-        if($match = $this->get_joinlist_item($join)) {
+        if ($match = $this->get_joinlist_item($join)) {
             // return the join object for the item
             return $match;
         } else {
-            error("'{$join}' not in join list for {$usage}");
+            print_error('joinnotinjoinlist', 'totara_reportbuilder', '', (object)array('join' => $join, 'usage' => $usage));
             return false;
         }
     }
@@ -1192,13 +1232,13 @@ class reportbuilder {
 
         // get array of dependencies, excluding references to the
         // base table
-        if(isset($joinobj->dependencies)
+        if (isset($joinobj->dependencies)
             && is_array($joinobj->dependencies)) {
 
             $dependencies = array();
-            foreach($joinobj->dependencies as $item) {
+            foreach ($joinobj->dependencies as $item) {
                 // ignore references to base as a dependency
-                if($item == 'base') {
+                if ($item == 'base') {
                     continue;
                 }
                 $dependencies[] = $item;
@@ -1213,9 +1253,9 @@ class reportbuilder {
 
         // loop through dependencies, adding any that aren't already
         // included
-        foreach($dependencies as $dependency) {
+        foreach ($dependencies as $dependency) {
             $joinobj = $this->get_single_join($dependency, 'dependencies');
-            if(in_array($joinobj, $joins)) {
+            if (in_array($joinobj, $joins)) {
                 // prevents infinite loop if dependencies include
                 // circular references
                 continue;
@@ -1239,16 +1279,16 @@ class reportbuilder {
     function get_content_joins() {
         $reportid = $this->_id;
 
-        if($this->contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
+        if ($this->contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
             // no limit on content so no joins necessary
             return array();
         }
         $contentjoins = array();
-        foreach($this->contentoptions as $option) {
+        foreach ($this->contentoptions as $option) {
             $name = $option->classname;
             $classname = 'rb_' . $name . '_content';
-            if(class_exists($classname)) {
-                if(reportbuilder::get_setting($reportid, $name . '_content', 'enable')) {
+            if (class_exists($classname)) {
+                if (reportbuilder::get_setting($reportid, $name . '_content', 'enable')) {
                     // this content option is enabled
                     // get required joins
                     $contentjoins = array_merge($contentjoins,
@@ -1268,7 +1308,7 @@ class reportbuilder {
      */
     function get_column_joins() {
         $coljoins = array();
-        foreach($this->columns as $column) {
+        foreach ($this->columns as $column) {
             $coljoins = array_merge($coljoins,
                 $this->get_joins($column, 'column'));
         }
@@ -1283,10 +1323,10 @@ class reportbuilder {
      */
     function get_param_joins() {
         $paramjoins = array();
-        foreach($this->_params as $param) {
+        foreach ($this->_params as $param) {
             $value = $param->value;
             // don't include joins if param not set
-            if(!isset($value) || $value=='') {
+            if (!isset($value) || $value == '') {
                 continue;
             }
             $paramjoins = array_merge($paramjoins,
@@ -1314,7 +1354,7 @@ class reportbuilder {
             return array();
         }
 
-        $item = new object();
+        $item = new stdClass();
         $item->joins = $this->src->sourcejoins;
 
         return $this->get_joins($item, 'source');
@@ -1335,13 +1375,13 @@ class reportbuilder {
         $filterjoins = array();
         // check session variable for any active filters
         // if they exist we need to make sure we have included joins for them too
-        $filtername = 'filtering_'.$shortname;
+        $filtername = 'filtering_' . $shortname;
         if (isset($SESSION->$filtername)) {
             foreach ($SESSION->$filtername as $filter => $unused) {
                 // parse the filtername for type and value
-                $parts = explode('-',$filter);
+                $parts = explode('-', $filter);
                 if (count($parts) != 2) {
-                    error("get_filter_joins(): filter name format incorrect. Query snippets may have included a dash character.");
+                    print_error('filternameformatincorrect', 'totara_reportbuilder');
                     continue;
                 }
                 $type = $parts[0];
@@ -1365,13 +1405,13 @@ class reportbuilder {
     function get_join_sql($joins) {
         $out = array();
 
-        foreach($joins as $join) {
+        foreach ($joins as $join) {
             $name = $join->name;
             $type = $join->type;
             $table = $join->table;
             $conditions = $join->conditions;
 
-            if(array_key_exists($name, $out)) {
+            if (array_key_exists($name, $out)) {
                 // we've already added this join
                 continue;
             }
@@ -1421,7 +1461,7 @@ class reportbuilder {
 
         // make an index of the join objects with name as key
         $joinsbyname = array();
-        foreach($unsortedjoins as $join) {
+        foreach ($unsortedjoins as $join) {
             $joinsbyname[$join->name] = $join;
         }
 
@@ -1438,7 +1478,7 @@ class reportbuilder {
             // items with empty dependencies array
             $nodeps = $this->get_independent_items($items);
 
-            foreach($nodeps as $nodep) {
+            foreach ($nodeps as $nodep) {
                 $output[] = $joinsbyname[$nodep];
                 unset($items[$nodep]);
                 // remove references to this item from all
@@ -1449,7 +1489,7 @@ class reportbuilder {
             // stop when no more items can be removed
             // if all goes well, this will be after all items
             // have been removed
-            if(count($nodeps) == 0) {
+            if (count($nodeps) == 0) {
                 break;
             }
 
@@ -1457,9 +1497,8 @@ class reportbuilder {
         }
 
         // we shouldn't have any items left once we've left the loop
-        if(count($items) != 0) {
-            error('Could not sort join list. Source either contains ' .
-                'circular dependencies or references a none-existent join');
+        if (count($items) != 0) {
+            print_error('couldnotsortjoinlist', 'totara_reportbuilder');
         }
 
         return $output;
@@ -1501,7 +1540,7 @@ class reportbuilder {
 
         // make an index of the join objects with name as key
         $joinsbyname = array();
-        foreach($unprunedjoins as $join) {
+        foreach ($unprunedjoins as $join) {
             $joinsbyname[$join->name] = $join;
         }
 
@@ -1514,8 +1553,8 @@ class reportbuilder {
             $prunecount = 0;
             // items with empty dependencies array
             $nodeps = $this->get_independent_items($items);
-            foreach($nodeps as $nodep) {
-                if($joinsbyname[$nodep]->pruneable()) {
+            foreach ($nodeps as $nodep) {
+                if ($joinsbyname[$nodep]->pruneable()) {
                     unset($items[$nodep]);
                     $this->remove_from_dep_list($items, $nodep);
                     unset($joinsbyname[$nodep]);
@@ -1524,7 +1563,7 @@ class reportbuilder {
             }
 
             // stop when no more items can be removed
-            if($prunecount == 0) {
+            if ($prunecount == 0) {
                 break;
             }
 
@@ -1557,16 +1596,16 @@ class reportbuilder {
      *
      * @return array Array of join dependencies
      */
-    private function get_dependencies_array($joins){
+    private function get_dependencies_array($joins) {
         $items = array();
-        foreach($joins as $join) {
+        foreach ($joins as $join) {
 
             // group joins in a more consistent way and remove all
             // references to 'base'
-            if(is_array($join->dependencies)) {
+            if (is_array($join->dependencies)) {
                 $deps = array();
-                foreach($join->dependencies as $dep) {
-                    if($dep == 'base') {
+                foreach ($join->dependencies as $dep) {
+                    if ($dep == 'base') {
                         continue;
                     }
                     $deps[] = $dep;
@@ -1597,9 +1636,9 @@ class reportbuilder {
      * @return true;
      */
     private function remove_from_dep_list(&$items, $joinname) {
-        foreach($items as $join => $deps) {
-            foreach($deps as $key => $dep) {
-                if($dep == $joinname) {
+        foreach ($items as $join => $deps) {
+            foreach ($deps as $key => $dep) {
+                if ($dep == $joinname) {
                     unset($items[$join][$key]);
                 }
             }
@@ -1621,8 +1660,8 @@ class reportbuilder {
      */
     private function get_independent_items($items) {
         $nodeps = array();
-        foreach($items as $join => $deps) {
-            if(count($deps) == 0) {
+        foreach ($items as $join => $deps) {
+            if (count($deps) == 0) {
                 $nodeps[] = $join;
             }
         }
@@ -1637,14 +1676,14 @@ class reportbuilder {
      *                           query requests the fields needed for columns too.
      * @param boolean $filtered If true, includes any active filters in the query,
      *                           otherwise returns results without filtering
-     * @return string The full SQL query
+     * @return array containing the full SQL query and SQL params
      */
     function build_query($countonly=false, $filtered=false) {
-        global $CFG;
         $source = $this->source;
         $columns = $this->columns;
         $joinlist = $this->_joinlist;
         $base = $this->_base;
+        $sqlparams = array();
 
         $this->get_filtering();
         // get the fields needed to display requested columns
@@ -1655,7 +1694,7 @@ class reportbuilder {
 
         // if we are only counting, don't need all the column joins. Remove
         // any that don't affect the count
-        if($countonly && !$this->grouped) {
+        if ($countonly && !$this->grouped) {
             $columnjoins = $this->prune_joins($columnjoins);
         }
 
@@ -1673,11 +1712,11 @@ class reportbuilder {
         // now build the query from the snippets
 
         // need a unique field for get_records() so include id as first column
-        if($countonly && !$this->grouped) {
+        if ($countonly && !$this->grouped) {
             $select = "SELECT COUNT(*) ";
         } else {
             $baseid = ($this->grouped) ? "min(base.id) AS id,\n    " : "base.id,\n    ";
-            $select = "SELECT $baseid ".implode($fields,",\n     ")." \n";
+            $select = "SELECT $baseid " . implode($fields, ",\n     ") . " \n";
         }
 
         // build query starting from base table then adding required joins
@@ -1688,63 +1727,69 @@ class reportbuilder {
         $whereclauses = array();
         $havingclauses = array();
 
-        $restrictions = $this->get_content_restrictions();
-        if($restrictions != '') {
+        list($restrictions, $contentparams) = $this->get_content_restrictions();
+        if ($restrictions != '') {
             $whereclauses[] = $restrictions;
+            $sqlparams = array_merge($sqlparams, $contentparams);
         }
+        unset($contentparams);
 
-        if($filtered===true) {
-            $sqls = $this->get_sql_filter();
-            if(isset($sqls['where']) && $sqls['where'] != '') {
+        if ($filtered === true) {
+            list($sqls, $filterparams) = $this->get_sql_filter();
+            if (isset($sqls['where']) && $sqls['where'] != '') {
                 $whereclauses[] = $sqls['where'];
             }
-            if(isset($sqls['having']) && $sqls['having'] != '') {
+            if (isset($sqls['having']) && $sqls['having'] != '') {
                 $havingclauses[] = $sqls['having'];
             }
+            $sqlparams = array_merge($sqlparams, $filterparams);
+            unset($filterparams);
         }
 
-        $paramrestrictions = $this->get_param_restrictions();
-        if($paramrestrictions != '') {
+        list($paramrestrictions, $paramparams) = $this->get_param_restrictions();
+        if ($paramrestrictions != '') {
             $whereclauses[] = $paramrestrictions;
+            $sqlparams = array_merge($sqlparams, $paramparams);
         }
+        unset($paramparams);
 
         // apply any SQL specified by the source
         if (!empty($this->src->sourcewhere)) {
             $whereclauses[] = $this->src->sourcewhere;
         }
 
-        $where = (count($whereclauses) > 0) ? "WHERE ".implode(' AND ',$whereclauses)."\n" : '';
+        $where = (count($whereclauses) > 0) ? "WHERE " . implode(' AND ', $whereclauses) . "\n" : '';
 
         $groupby = '';
-        if($this->grouped) {
+        if ($this->grouped) {
             $groups_array = array();
             $allgrouped = true;
-            foreach($this->columns as $column) {
-                if($column->grouping == 'none') {
+            foreach ($this->columns as $column) {
+                if ($column->grouping == 'none') {
                     $allgrouped = false;
                     $groups_array[] = $column->field;
-                    if($column->extrafields !== null) {
-                        foreach($column->extrafields as $field) {
+                    if ($column->extrafields !== null) {
+                        foreach ($column->extrafields as $field) {
                             $groups_array[] = $field;
                         }
                     }
                 }
             }
-            if(count($groups_array) > 0 && !$allgrouped) {
+            if (count($groups_array) > 0 && !$allgrouped) {
                 $groupby .= ' GROUP BY ' . implode(', ', $groups_array) . ' ';
             }
 
-            if(count($havingclauses) > 0) {
+            if (count($havingclauses) > 0) {
                 $groupby .= ' HAVING ' . implode(' AND ', $havingclauses) . "\n";
             }
         }
 
-        if($countonly && $this->grouped) {
+        if ($countonly && $this->grouped) {
             $sql = "SELECT COUNT(*) FROM ($select $from $where $groupby) AS query";
         } else {
             $sql = "$select $from $where $groupby";
         }
-        return $sql;
+        return array($sql, $sqlparams);
     }
 
     /**
@@ -1754,10 +1799,12 @@ class reportbuilder {
      * @return integer Record count
      */
     function get_full_count() {
+        global $DB;
+
         // use cached value if present
-        if(empty($this->_fullcount)) {
-            $sql = $this->build_query(true);
-            $this->_fullcount = count_records_sql($sql);
+        if (empty($this->_fullcount)) {
+            list($sql, $params) = $this->build_query(true);
+            $this->_fullcount = $DB->count_records_sql($sql, $params);
         }
         return $this->_fullcount;
     }
@@ -1768,11 +1815,13 @@ class reportbuilder {
      * @return integer Filtered record count
      */
     function get_filtered_count() {
+        global $DB;
+
         $this->get_filtering();
         // use cached value if present
-        if(empty($this->_filteredcount)) {
-            $sql = $this->build_query(true, true);
-            $this->_filteredcount = count_records_sql($sql);
+        if (empty($this->_filteredcount)) {
+            list($sql, $params) = $this->build_query(true, true);
+            $this->_filteredcount = $DB->count_records_sql($sql, $params);
         }
         return $this->_filteredcount;
     }
@@ -1789,34 +1838,31 @@ class reportbuilder {
         $shortname = $this->shortname;
         $this->get_filtering();
         $count = $this->get_filtered_count();
-        $sql = $this->build_query(false, true);
+        list($sql, $params) = $this->build_query(false, true);
 
-        // need to create flexible table object to get sort order
-        // from session var
-        $table = new flexible_table($shortname);
-        $sort = $table->get_sql_sort($shortname);
-        $order = ($sort!='') ? " ORDER BY $sort" : '';
+        $sort = flexible_table::get_sort_for_table($shortname);
+        $order = ($sort != '') ? " ORDER BY $sort" : '';
 
         // array of filters that have been applied
         // for including in report where possible
         $restrictions = $this->get_restriction_descriptions();
 
         $headings = array();
-        foreach($columns as $column) {
+        foreach ($columns as $column) {
             // check that column should be included
-            if($column->display_column(true)) {
+            if ($column->display_column(true)) {
                 $headings[] = strip_tags($column->heading);
             }
         }
         switch($format) {
             case 'ods':
-                $this->download_ods($headings, $sql.$order, $count, $restrictions);
+                $this->download_ods($headings, $sql . $order, $params, $count, $restrictions);
             case 'xls':
-                $this->download_xls($headings, $sql.$order, $count, $restrictions);
+                $this->download_xls($headings, $sql . $order, $params, $count, $restrictions);
             case 'csv':
-                $this->download_csv($headings, $sql.$order, $count);
+                $this->download_csv($headings, $sql . $order, $params, $count);
             case 'fusion':
-                $this->download_fusion($headings, $sql.$order, $count, $restrictions);
+                $this->download_fusion($headings, $sql . $order, $params, $count, $restrictions);
         }
         die;
     }
@@ -1827,30 +1873,30 @@ class reportbuilder {
      * @return No return value but prints the current data table
      */
     function display_table() {
-        global $CFG, $SESSION;
+        global $SESSION;
         define('DEFAULT_PAGE_SIZE', $this->recordsperpage);
-        define('SHOW_ALL_PAGE_SIZE', 5000);
+        define('SHOW_ALL_PAGE_SIZE', 9999);
         $spage     = optional_param('spage', 0, PARAM_INT);                    // which page to show
         $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
-        $ssort     = optional_param('ssort');
+        $ssort     = optional_param('ssort', '', PARAM_TEXT);
 
         $columns = $this->columns;
         $shortname = $this->shortname;
         $countfiltered = $this->get_filtered_count();
 
-        if(count($columns) == 0) {
-            print '<p>' . get_string('error:nocolumnsdefined','local_reportbuilder') . '</p>';
+        if (count($columns) == 0) {
+            echo html_writer::tag('p', get_string('error:nocolumnsdefined', 'totara_reportbuilder'));
             return false;
         }
 
-        $sql = $this->build_query(false, true);
+        list($sql, $params) = $this->build_query(false, true);
 
         $tablecolumns = array();
         $tableheaders = array();
-        foreach($columns as $column) {
+        foreach ($columns as $column) {
             $type = $column->type;
             $value = $column->value;
-            if($column->display_column()) {
+            if ($column->display_column()) {
                 $tablecolumns[] = "{$type}_{$value}"; // used for sorting
                 $tableheaders[] = format_string($column->heading);
             }
@@ -1860,19 +1906,19 @@ class reportbuilder {
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
         $table->define_baseurl($this->get_current_url());
-        foreach($columns as $column) {
-            if($column->display_column()) {
+        foreach ($columns as $column) {
+            if ($column->display_column()) {
                 $ident = "{$column->type}_{$column->value}";
                 // assign $type_$value class to each column
-                $table->column_class($ident, ' '.$ident);
+                $table->column_class($ident, ' ' . $ident);
                 // apply any column-specific styling
-                if(is_array($column->style)) {
-                    foreach($column->style as $property => $value) {
+                if (is_array($column->style)) {
+                    foreach ($column->style as $property => $value) {
                         $table->column_style($ident, $property, $value);
                     }
                 }
                 // hide any columns where hidden flag is set
-                if($column->hidden != 0) {
+                if ($column->hidden != 0) {
                     $table->column_style($ident, 'display', 'none');
                 }
 
@@ -1903,52 +1949,49 @@ class reportbuilder {
         $this->check_sort_keys();
         // get the ORDER BY SQL fragment from table
         $sort = $table->get_sql_sort();
-        if ($sort!='') {
+        if ($sort != '') {
             $order = " ORDER BY $sort";
         } else {
            $order = '';
         }
-        if ($data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size())) {
+        if ($data = $this->fetch_data($sql . $order, $params, $table->get_page_start(), $table->get_page_size())) {
             // add data to flexible table
             foreach ($data as $row) {
                 $table->add_data($row);
             }
         } else if ($data === false) {
-            print_error('error:problemobtainingreportdata', 'local_reportbuilder');
+            print_error('error:problemobtainingreportdata', 'totara_reportbuilder');
         }
 
         // display the table
         $table->print_html();
-
-        print $this->hide_columns();
     }
 
 
     /**
-     * Produce javascript to hide any columns as indicated by the session
+     * Get column identifiers of columns that should be hidden on page load
+     * The hidden columns are stored in the session
      *
-     * @return string HTML to display javascript to hide required columns
+     * @return array of column identifiers, usable by js selectors
      */
-    function hide_columns() {
+    function js_get_hidden_columns() {
         global $SESSION;
-        $out = '';
+        $cols = array();
+
         $shortname = $this->shortname;
         // javascript to hide columns based on session variable
-        if(isset($SESSION->rb_showhide_columns[$shortname])) {
-            $out .= '<script type="text/javascript">';
-            $out .= "$(document).ready(function(){";
-            foreach($this->columns as $column) {
+        if (isset($SESSION->rb_showhide_columns[$shortname])) {
+            foreach ($this->columns as $column) {
                 $ident = "{$column->type}_{$column->value}";
-                if(isset($SESSION->rb_showhide_columns[$shortname][$ident])) {
-                    if($SESSION->rb_showhide_columns[$shortname][$ident] == 0) {
-                        $out .= "$('#$shortname .$ident').hide();";
+                if (isset($SESSION->rb_showhide_columns[$shortname][$ident])) {
+                    if ($SESSION->rb_showhide_columns[$shortname][$ident] == 0) {
+                        $cols[] = "#{$shortname} .{$ident}";
                     }
                 }
             }
-            $out .= '});';
-            $out .= '</script>';
         }
-        return $out;
+
+        return $cols;
     }
 
     /**
@@ -1962,17 +2005,17 @@ class reportbuilder {
         global $SESSION;
         $shortname = $this->shortname;
         $sortarray = isset($SESSION->flextable[$shortname]->sortby) ? $SESSION->flextable[$shortname]->sortby : null;
-        if(is_array($sortarray)) {
-            foreach($sortarray as $sortelement => $unused) {
+        if (is_array($sortarray)) {
+            foreach ($sortarray as $sortelement => $unused) {
                 // see if sort element is in columns array
                 $set = false;
-                foreach($this->columns as $col) {
-                    if($col->type.'_'.$col->value == $sortelement) {
+                foreach ($this->columns as $col) {
+                    if ($col->type . '_' . $col->value == $sortelement) {
                         $set = true;
                     }
                 }
                 // if it's not remove it from sort SESSION var
-                if($set === false) {
+                if ($set === false) {
                     unset($SESSION->flextable[$shortname]->sortby[$sortelement]);
                 }
             }
@@ -1987,6 +2030,7 @@ class reportbuilder {
      * data is passed to the display function and the result included instead.
      *
      * @param string $sql The SQL query, excluding offset/limit
+     * @param array $params The SQL query params
      * @param integer $start The first row to extract
      * @param integer $size The total number of rows to extract
      * @param boolean $striptags If true, returns the data with any html tags removed
@@ -1994,26 +2038,26 @@ class reportbuilder {
      * @return array Outer array are table rows, inner array are columns
      *               False is returned if the SQL query failed entirely
      */
-    function fetch_data($sql, $start=null, $size=null, $striptags=false, $isexport=false) {
-        global $CFG;
+    function fetch_data($sql, $params, $start=null, $size=null, $striptags=false, $isexport=false) {
+        global $DB;
         $columns = $this->columns;
         $columnoptions = $this->columnoptions;
 
-        $records = get_recordset_sql($sql, $start, $size);
+        $records = $DB->get_recordset_sql($sql, $params, $start, $size);
         $ret = array();
         if ($records) {
-            while ($record = rs_fetch_next_record($records)) {
+            foreach ($records as $record) {
                 $tabledata = array();
                 foreach ($columns as $column) {
                     // check column should be shown
-                    if($column->display_column($isexport)) {
+                    if ($column->display_column($isexport)) {
                         $type = $column->type;
                         $value = $column->value;
                         $field = "{$type}_{$value}";
                         // treat fields different if display function exists
                         if (isset($column->displayfunc)) {
-                            $func = 'rb_display_'.$column->displayfunc;
-                            if(method_exists($this->src, $func)) {
+                            $func = 'rb_display_' . $column->displayfunc;
+                            if (method_exists($this->src, $func)) {
                                 $tabledata[] = $this->src->$func($record->$field, $record, $isexport);
                             } else {
                                 $tabledata[] = $record->$field;
@@ -2025,12 +2069,12 @@ class reportbuilder {
                 }
                 $ret[] = $tabledata;
             }
-            rs_close($records);
+            $records->close();
         } else {
             // this indicates a failed query, not just 0 results
             return false;
         }
-        if($striptags === true) {
+        if ($striptags === true) {
             return $this->strip_tags_r($ret);
         } else {
             return $ret;
@@ -2045,92 +2089,10 @@ class reportbuilder {
      * @return array The same array with HTML stripped from all strings
      */
     function strip_tags_r($value) {
-        return is_array($value) ? array_map(array($this,'strip_tags_r'), $value) :
+        return is_array($value) ? array_map(array($this, 'strip_tags_r'), $value) :
             strip_tags($value);
     }
 
-
-    /** Prints select box and Export button to export current report.
-     *
-     * A select is shown if the global settings allow exporting in
-     * multiple formats. If only one format specified, prints a button.
-     * If no formats are set in global settings, no export options are shown
-     *
-     * for this to work page must contain:
-     * if($format!=''){$report->export_data($format);die;}
-     * before header printed
-     *
-     * @return No return value but prints export select form
-     */
-    function export_select() {
-        global $CFG;
-        require_once($CFG->dirroot.'/totara/reportbuilder/export_form.php');
-        $export = new report_builder_export_form(qualified_me());
-        $export->display();
-    }
-
-    /** Prints separate buttons to export current report in the allowed
-     * formats
-     * for this to work page must contain:
-     * if($format!=''){$report->export_data($format);die;}
-     * before header printed
-     *
-     * @return string Returns the code for the export buttons
-     */
-    function export_buttons() {
-        global $REPORT_BUILDER_EXPORT_OPTIONS;
-        $exportoptions = get_config('reportbuilder', 'exportoptions');
-
-        $out = "<center><table><tr>";
-        $oauthenabled = get_config('local_oauth', 'oauthenabled');
-        $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-        $oauthcap = has_capability('totara/oauth:negotiate', $sitecontext);
-        foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
-            // specific checks for fusion tables export
-            if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {
-                continue;
-            }
-
-            // bitwise operator to see if option bit is set
-            if(($exportoptions & $code) == $code) {
-                $out .= '<td>';
-                $out .= print_single_button(qualified_me(),array('format'=>$option),get_string('export'.$option,'local_reportbuilder'),'post','_self', true);
-                $out .= '</td>';
-            }
-        }
-	    $out .= "<tr></table></center>";
-	    return $out;
-    }
-
-    /**
-     * Returns a button that when clicked, takes the user to a page which displays
-     * the report
-     *
-     * @return string HTML to display the button
-     */
-    function view_button() {
-        global $CFG;
-        $viewurl = $this->report_url();
-        $url = new moodle_url($this->report_url());
-        return print_single_button($url->out(true), $url->params, get_string('viewreport','local_reportbuilder'), 'get', '_self', true);
-    }
-
-    /**
-     * Returns a button that when clicked, takes the user to a page where they can
-     * save the results of a search for the current report
-     *
-     * @return string HTML to display the button
-     */
-    function save_button() {
-        global $CFG;
-        $search = optional_param('addfilter', null, PARAM_TEXT);
-        if($search) {
-            $params = array('id' => $this->_id);
-            return print_single_button($CFG->wwwroot.'/totara/reportbuilder/save.php', $params, get_string('savesearch','local_reportbuilder'), 'get', '_self', true);
-        } else {
-            return '';
-        }
-    }
 
     /**
      * Returns a menu that when selected, takes the user to the specified saved search
@@ -2138,26 +2100,29 @@ class reportbuilder {
      * @return string HTML to display a pulldown menu with saved search options
      */
     function view_saved_menu() {
-        global $CFG,$USER;
+        global $USER, $DB, $OUTPUT;
         $id = $this->_id;
         $sid = $this->_sid;
         $savedoptions = array();
-        $common = $CFG->wwwroot.'/totara/reportbuilder/report.php?id='.$id.'&amp;sid=';
+        $common = new moodle_url('/totara/reportbuilder/report.php', array('id' => $id, 'sid' => ''));
         // are there saved searches for this report and user?
-        if ($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND userid='.$USER->id)) {
-            foreach ($saved as $item) {
-                $savedoptions[$item->id] = format_string($item->name);
-            }
+        $saved = $DB->get_records('report_builder_saved', array('reportid' => $id, 'userid' => $USER->id));
+        foreach ($saved as $item) {
+            $savedoptions[$item->id] = format_string($item->name);
         }
         // are there public saved searches for this report?
-        if ($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND ispublic=1')) {
-            foreach ($saved as $item) {
-                $savedoptions[$item->id] = format_string($item->name);
-            }
+        $saved = $DB->get_records('report_builder_saved', array('reportid' => $id, 'ispublic' => 1));
+        foreach ($saved as $item) {
+            $savedoptions[$item->id] = format_string($item->name);
         }
 
         if (count($savedoptions) > 0) {
-            return popup_form($common, $savedoptions, 'viewsavedsearch', $sid, get_string('viewsavedsearch','local_reportbuilder'),'','',true);
+            $select = new single_select($common, 'sid', $savedoptions, $sid);
+            $select->label = get_string('viewsavedsearch', 'totara_reportbuilder');
+            $select->formid = 'viewsavedsearch';
+
+            return $OUTPUT->render($select);
+
         } else {
             return '';
         }
@@ -2171,97 +2136,41 @@ class reportbuilder {
      * @return string HTML to display the button
      */
     function edit_button() {
-        global $CFG;
-        $context = get_context_instance(CONTEXT_SYSTEM);
+        global $OUTPUT;
+        $context = context_system::instance();
         // TODO what capability should be required here?
-        if(has_capability('totara/reportbuilder:managereports',$context)) {
-            return print_single_button($CFG->wwwroot.'/totara/reportbuilder/general.php', array('id'=>$this->_id), get_string('editthisreport','local_reportbuilder'), 'get', '_self', true);
+        if (has_capability('totara/reportbuilder:managereports', $context)) {
+            return $OUTPUT->single_button(new moodle_url('/totara/reportbuilder/general.php', array('id' => $this->_id)), get_string('editthisreport', 'totara_reportbuilder'), 'get');
         } else {
             return '';
         }
     }
 
-    /**
-     * Returns HTML for a button that lets users show and hide report columns
-     * interactively within the report
-     *
-     * JQuery, dialog code and showhide.js.php should be included in page
-     * when this is used (see code in report.php)
-     *
-     * @return string HTML to display the button
-     */
-    function showhide_button() {
-        // hide if javascript disabled
-        return '<script type="text/javascript">
-            var id = ' . $this->_id . ';' .
-            "var shortname = '{$this->shortname}';" .
-            '</script><form><input type="button" name="rb_showhide_columns" ' .
-            'id="show-showhide-dialog" value="' .
-            get_string('showhidecolumns', 'local_reportbuilder') .
-            '" style="display:none; float: right;" /></form>';
-
-    }
-
-
-    function print_description() {
-        $out = '';
-        if(isset($this->description) &&
-            trim(strip_tags($this->description)) != '') {
-            $out .= print_box_start('generalbox reportbuilder-description', '', true);
-            $out .= $this->description;
-            $out .= print_box_end(true);
-        }
-        return $out;
-    }
-
-
-    /**
-     * Return the appropriate string describing the search matches
-     *
-     * @param integer $countfiltered Number of records that matched the search query
-     * @param integer $countall Number of records in total (with no search)
-     *
-     * @return string Text describing the number of results
-     */
-    function print_result_count_string($countfiltered, $countall) {
-        // get pluralisation right
-        $resultstr = $countall == 1 ? 'record' : 'records';
-
-        if($countfiltered == $countall) {
-            $heading = get_string('x' . $resultstr, 'local_reportbuilder', $countall);
-        } else {
-            $a = new object();
-            $a->filtered = $countfiltered;
-            $a->unfiltered = $countall;
-            $heading = get_string('xofy' . $resultstr, 'local_reportbuilder', $a);
-        }
-        return $heading;
-    }
 
     /** Download current table in ODS format
      * @param array $fields Array of column headings
      * @param string $query SQL query to run to get results
+     * @param array $params SQL query params
      * @param integer $count Number of filtered records in query
      * @param array $restrictions Array of strings containing info
      *                            about the content of the report
      * @return Returns the ODS file
      */
-    function download_ods($fields, $query, $count, $restrictions=array(), $file=null) {
+    function download_ods($fields, $query, $params, $count, $restrictions=array(), $file=null) {
         global $CFG;
         require_once("$CFG->libdir/odslib.class.php");
         $shortname = $this->shortname;
-        $filename = clean_filename($shortname.'_report.ods');
+        $filename = clean_filename($shortname . '_report.ods');
         $blocksize = 1000;
 
-        if(!$file){
+        if (!$file) {
             header("Content-Type: application/download\n");
             header("Content-Disposition: attachment; filename=$filename");
             header("Expires: 0");
             header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
             header("Pragma: public");
         }
-        
-        if($file){
+        if ($file) {
             $workbook = new MoodleODSWorkbook($file, true);
         }
         else{
@@ -2275,10 +2184,10 @@ class reportbuilder {
         $row = 0;
         $col = 0;
 
-        if(is_array($restrictions) && count($restrictions)>0) {
-            $worksheet[0]->write($row, 0, get_string('reportcontents','local_reportbuilder'));
+        if (is_array($restrictions) && count($restrictions) > 0) {
+            $worksheet[0]->write($row, 0, get_string('reportcontents', 'totara_reportbuilder'));
             $row++;
-            foreach($restrictions as $restriction) {
+            foreach ($restrictions as $restriction) {
                 $worksheet[0]->write($row, 0, $restriction);
                 $row++;
             }
@@ -2294,15 +2203,15 @@ class reportbuilder {
         $numfields = count($fields);
 
         //break the data into blocks as single array gets too big
-        for($k=0;$k<=floor($count/$blocksize);$k++) {
-            $start = $k*$blocksize;
-            $data = $this->fetch_data($query, $start, $blocksize, true, true);
+        for($k = 0; $k <= floor($count/$blocksize); $k++) {
+            $start = $k * $blocksize;
+            $data = $this->fetch_data($query, $params, $start, $blocksize, true, true);
 
             $filerow = 0;
             if ($data) {
                 foreach ($data as $datarow) {
                     for($col=0; $col<$numfields;$col++) {
-                        if(isset($data[$filerow][$col])) {
+                        if (isset($data[$filerow][$col])) {
                             $worksheet[0]->write($row, $col, html_entity_decode($data[$filerow][$col], ENT_COMPAT, 'UTF-8'));
                         }
                     }
@@ -2313,7 +2222,7 @@ class reportbuilder {
         }
 
         $workbook->close();
-        if(!$file){
+        if (!$file) {
             die;
         }
     }
@@ -2321,21 +2230,22 @@ class reportbuilder {
     /** Download current table in XLS format
      * @param array $fields Array of column headings
      * @param string $query SQL query to run to get results
+     * @param array $params SQL query params
      * @param integer $count Number of filtered records in query
      * @param array $restrictions Array of strings containing info
      *                            about the content of the report
      * @return Returns the Excel file
      */
-    function download_xls($fields, $query, $count, $restrictions=array(), $file=null) {
+    function download_xls($fields, $query, $params, $count, $restrictions=array(), $file=null) {
         global $CFG;
 
         require_once("$CFG->libdir/excellib.class.php");
 
         $shortname = $this->shortname;
-        $filename = clean_filename($shortname.'_report.xls');
+        $filename = clean_filename($shortname . '_report.xls');
         $blocksize = 1000;
 
-        if(!$file){
+        if (!$file) {
             header("Content-Type: application/download\n");
             header("Content-Disposition: attachment; filename=$filename");
             header("Expires: 0");
@@ -2355,10 +2265,10 @@ class reportbuilder {
         $row = 0;
         $col = 0;
 
-        if(is_array($restrictions) && count($restrictions)>0) {
-            $worksheet[0]->write($row, 0, get_string('reportcontents','local_reportbuilder'));
+        if (is_array($restrictions) && count($restrictions) > 0) {
+            $worksheet[0]->write($row, 0, get_string('reportcontents', 'totara_reportbuilder'));
             $row++;
-            foreach($restrictions as $restriction) {
+            foreach ($restrictions as $restriction) {
                 $worksheet[0]->write($row, 0, $restriction);
                 $row++;
             }
@@ -2374,15 +2284,15 @@ class reportbuilder {
         $numfields = count($fields);
 
         // break the data into blocks as single array gets too big
-        for($k=0;$k<=floor($count/$blocksize);$k++) {
-            $start = $k*$blocksize;
-            $data = $this->fetch_data($query, $start, $blocksize, true, true);
+        for($k = 0; $k <= floor($count/$blocksize); $k++) {
+            $start = $k * $blocksize;
+            $data = $this->fetch_data($query, $params, $start, $blocksize, true, true);
 
             $filerow = 0;
             if ($data) {
                 foreach ($data as $datarow) {
                     for($col=0; $col<$numfields; $col++) {
-                        if(isset($data[$filerow][$col])) {
+                        if (isset($data[$filerow][$col])) {
                             $worksheet[0]->write($row, $col, html_entity_decode($data[$filerow][$col], ENT_COMPAT, 'UTF-8'));
                         }
                     }
@@ -2393,7 +2303,7 @@ class reportbuilder {
         }
 
         $workbook->close();
-        if(!$file){
+        if (!$file) {
             die;
         }
     }
@@ -2401,17 +2311,16 @@ class reportbuilder {
      /** Download current table in CSV format
      * @param array $fields Array of column headings
      * @param string $query SQL query to run to get results
+     * @param array $params SQL query params
      * @param integer $count Number of filtered records in query
      * @return Returns the CSV file
      */
-    function download_csv($fields, $query, $count, $file=null) {
-        global $CFG;
+    function download_csv($fields, $query, $params, $count, $file=null) {
         $shortname = $this->shortname;
-        $filename = clean_filename($shortname.'_report.csv');
+        $filename = clean_filename($shortname . '_report.csv');
         $blocksize = 1000;
         $csv = '';
-        
-        if(!$file){
+        if (!$file) {
             header("Content-Type: application/download\n");
             header("Content-Disposition: attachment; filename=$filename");
             header("Expires: 0");
@@ -2419,38 +2328,38 @@ class reportbuilder {
             header("Pragma: public");
         }
 
-        $delimiter = get_string('listsep');
-        $encdelim  = '&#'.ord($delimiter).';';
+        $delimiter = get_string('listsep', 'langconfig');
+        $encdelim  = '&#' . ord($delimiter) . ';';
         $row = array();
         foreach ($fields as $fieldname) {
             $row[] = str_replace($delimiter, $encdelim, $fieldname);
         }
 
-        $csv .= implode($delimiter, $row)."\n";
+        $csv .= implode($delimiter, $row) . "\n";
 
         $numfields = count($fields);
         // break the data into blocks as single array gets too big
-        for($k=0;$k<=floor($count/$blocksize);$k++) {
-            $start = $k*$blocksize;
-            $data = $this->fetch_data($query, $start, $blocksize, true, true);
+        for($k = 0; $k <= floor($count/$blocksize); $k++) {
+            $start = $k * $blocksize;
+            $data = $this->fetch_data($query, $params, $start, $blocksize, true, true);
             $i = 0;
             if ($data) {
                 foreach ($data AS $row) {
                     $row = array();
                     for($j=0; $j<$numfields; $j++) {
-                        if(isset($data[$i][$j])) {
+                        if (isset($data[$i][$j])) {
                             $row[] = html_entity_decode(str_replace($delimiter, $encdelim, $data[$i][$j]), ENT_COMPAT, 'UTF-8');
                         } else {
                             $row[] = '';
                         }
                     }
-                    $csv .= implode($delimiter, $row)."\n";
+                    $csv .= implode($delimiter, $row) . "\n";
                     $i++;
                 }
             }
         }
 
-        if($file) {
+        if ($file) {
             $fp = fopen ($file, "w");
             fwrite($fp, $csv);
             fclose($fp);
@@ -2468,27 +2377,8 @@ class reportbuilder {
      *                            about the content of the report
      * @return Returns never
      */
-    function download_fusion($fields, $query, $count, $restriction) {
-        global $CFG;
-        /*
-        global $SESSION;
-        if (!isset($SESSION->reportbuilder_report)) {
-            $SESSION->reportbuilder_report = array();
-        }
-        $SESSION->reportbuilder_report[$this->shortname] = array(
-                                                            'shortname' => serialize($this->shortname),
-                                                            'fields' => serialize($fields),
-                                                            'query' => serialize($query),
-                                                            'count' => serialize($count),
-                                                            'restrictions' => serialize($restrictions),
-                                                            );
-        var_dump($fields);
-        var_dump($query);
-        var_dump($count);
-        var_dump($SESSION->reportbuilder_report);
-        */
-
-        $jump = new moodle_url($CFG->wwwroot."/totara/reportbuilder/fusionexporter.php", array('id' => $this->_id, 'sid' => $this->_sid));
+    function download_fusion($fields, $query, $params, $count, $restriction) {
+        $jump = new moodle_url('/totara/reportbuilder/fusionexporter.php', array('id' => $this->_id, 'sid' => $this->_sid));
         redirect($jump->out());
         die;
     }
@@ -2501,8 +2391,8 @@ class reportbuilder {
     function get_content_options() {
 
         $contentoptions = array();
-        if(isset($this->contentoptions) && is_array($this->contentoptions)) {
-            foreach($this->contentoptions as $option) {
+        if (isset($this->contentoptions) && is_array($this->contentoptions)) {
+            foreach ($this->contentoptions as $option) {
                 $contentoptions[] = $option->classname;
             }
         }
@@ -2540,14 +2430,14 @@ class reportbuilder {
         foreach ($filters as $filter) {
             $langstr = 'type_' . $filter->type;
             // is there a type string in the source file?
-            if (string_exists($langstr, 'rb_source_' . $sourcename)) {
+            if (get_string_manager()->string_exists($langstr, 'rb_source_' . $sourcename)) {
                 $section = get_string($langstr, 'rb_source_' . $sourcename);
             // how about in report builder?
-            } else if (string_exists($langstr, 'local_reportbuilder')) {
-                $section = get_string($langstr, 'local_reportbuilder');
+            } else if (get_string_manager()->string_exists($langstr, 'totara_reportbuilder')) {
+                $section = get_string($langstr, 'totara_reportbuilder');
             } else {
             // fall back on original approach to cope with dynamic types in feedback sources
-                $section = ucwords(str_replace(array('_','-'),array(' ',' '), $filter->type));
+                $section = ucwords(str_replace(array('_', '-'), array(' ', ' '), $filter->type));
             }
 
             $key = $filter->type . '-' . $filter->value;
@@ -2585,14 +2475,14 @@ class reportbuilder {
             }
             $langstr = 'type_' . $column->type;
             // is there a type string in the source file?
-            if (string_exists($langstr, 'rb_source_' . $sourcename)) {
+            if (get_string_manager()->string_exists($langstr, 'rb_source_' . $sourcename)) {
                 $section = get_string($langstr, 'rb_source_' . $sourcename);
             // how about in report builder?
-            } else if (string_exists($langstr, 'local_reportbuilder')) {
-                $section = get_string($langstr, 'local_reportbuilder');
+            } else if (get_string_manager()->string_exists($langstr, 'totara_reportbuilder')) {
+                $section = get_string($langstr, 'totara_reportbuilder');
             } else {
             // fall back on original approach to cope with dynamic types in feedback sources
-                $section = ucwords(str_replace(array('_','-'),array(' ',' '), $column->type));
+                $section = ucwords(str_replace(array('_', '-'), array(' ', ' '), $column->type));
             }
 
             $key = $column->type . '-' . $column->value;
@@ -2610,16 +2500,18 @@ class reportbuilder {
      * @return boolean True on success, false otherwise
      */
     function showhide_column($cid, $hide) {
-        $col = get_record('report_builder_columns', 'id', $cid);
-        if(!$col) {
+        global $DB;
+
+        $col = $DB->get_record('report_builder_columns', array('id' => $cid));
+        if (!$col) {
             return false;
         }
 
-        $todb = new object();
+        $todb = new stdClass();
         $todb->id = $cid;
         $todb->hidden = $hide;
-        return update_record('report_builder_columns', $todb);
-
+        $DB->update_record('report_builder_columns', $todb);
+        return true;
     }
 
     /**
@@ -2629,34 +2521,29 @@ class reportbuilder {
      * @return boolean True on success, false otherwise
      */
     function delete_column($cid) {
+        global $DB;
+
         $id = $this->_id;
-        begin_sql();
-        $sortorder = get_field('report_builder_columns','sortorder', 'id', $cid);
-        if(!$sortorder) {
-            rollback_sql();
+        $sortorder = $DB->get_field('report_builder_columns', 'sortorder', array('id' => $cid));
+        if (!$sortorder) {
             return false;
         }
-        if(!delete_records('report_builder_columns','id',$cid)) {
-            rollback_sql();
-            return false;
-        }
-        if($allcolumns = get_records('report_builder_columns', 'reportid', $id)) {
-            foreach($allcolumns as $column) {
-                if($column->sortorder > $sortorder) {
-                    $todb = new object();
-                    $todb->id = $column->id;
-                    $todb->sortorder = $column->sortorder - 1;
-                    if(!update_record('report_builder_columns', $todb)) {
-                        rollback_sql();
-                        return false;
-                    }
-                }
+        $transaction = $DB->start_delegated_transaction();
+
+        $DB->delete_records('report_builder_columns', array('id' => $cid));
+        $allcolumns = $DB->get_records('report_builder_columns', array('reportid' => $id));
+        foreach ($allcolumns as $column) {
+            if ($column->sortorder > $sortorder) {
+                $todb = new stdClass();
+                $todb->id = $column->id;
+                $todb->sortorder = $column->sortorder - 1;
+                $DB->update_record('report_builder_columns', $todb);
             }
         }
-        commit_sql();
+        $transaction->allow_commit();
+
         $this->columns = $this->get_columns();
         return true;
-
     }
 
     /**
@@ -2667,31 +2554,30 @@ class reportbuilder {
      * @return boolean True on success, false otherwise
      */
     function delete_filter($fid) {
+        global $DB;
+
         $id = $this->_id;
-        begin_sql();
-        $sortorder = get_field('report_builder_filters','sortorder', 'id', $fid);
-        if(!$sortorder) {
-            rollback_sql();
+
+        $sortorder = $DB->get_field('report_builder_filters', 'sortorder', array('id' => $fid));
+        if (!$sortorder) {
             return false;
         }
-        if(!delete_records('report_builder_filters','id',$fid)) {
-            rollback_sql();
-            return false;
-        }
-        if($allfilters = get_records('report_builder_filters', 'reportid', $id)) {
-            foreach($allfilters as $filter) {
-                if($filter->sortorder > $sortorder) {
-                    $todb = new object();
-                    $todb->id = $filter->id;
-                    $todb->sortorder = $filter->sortorder - 1;
-                    if(!update_record('report_builder_filters', $todb)) {
-                        rollback_sql();
-                        return false;
-                    }
-                }
+
+        $transaction = $DB->start_delegated_transaction();
+
+        $DB->delete_records('report_builder_filters', array('id' => $fid));
+        $allfilters = $DB->get_records('report_builder_filters', array('reportid' => $id));
+        foreach ($allfilters as $filter) {
+            if ($filter->sortorder > $sortorder) {
+                $todb = new stdClass();
+                $todb->id = $filter->id;
+                $todb->sortorder = $filter->sortorder - 1;
+                $DB->update_record('report_builder_filters', $todb);
             }
         }
-        commit_sql();
+
+        $transaction->allow_commit();
+
         $this->filters = $this->get_filters();
         return true;
     }
@@ -2704,46 +2590,40 @@ class reportbuilder {
      * @return boolean True on success, false otherwise
      */
     function move_column($cid, $updown) {
+        global $DB;
+
         $id = $this->_id;
-        begin_sql();
 
         // assumes sort order is well behaved (no gaps)
-        if(!$itemsort = get_field('report_builder_columns', 'sortorder', 'id', $cid)) {
-            rollback_sql();
+        if (!$itemsort = $DB->get_field('report_builder_columns', 'sortorder', array('id' => $cid))) {
             return false;
         }
-        if($updown == 'up') {
+        if ($updown == 'up') {
             $newsort = $itemsort - 1;
         } else if ($updown == 'down') {
             $newsort = $itemsort + 1;
         } else {
             // invalid updown string
-            rollback_sql();
             return false;
         }
-        if($neighbour = get_record('report_builder_columns', 'reportid', $id, 'sortorder', $newsort)) {
+        if ($neighbour = $DB->get_record('report_builder_columns', array('reportid' => $id, 'sortorder' => $newsort))) {
+            $transaction = $DB->start_delegated_transaction();
             // swap sort orders
-            $todb = new object();
+            $todb = new stdClass();
             $todb->id = $cid;
             $todb->sortorder = $neighbour->sortorder;
-            $todb2 = new object();
+            $todb2 = new stdClass();
             $todb2->id = $neighbour->id;
             $todb2->sortorder = $itemsort;
-            if(!update_record('report_builder_columns', $todb) ||
-               !update_record('report_builder_columns', $todb2)) {
-                rollback_sql();
-                return false;
-            }
+            $DB->update_record('report_builder_columns', $todb);
+            $DB->update_record('report_builder_columns', $todb2);
+            $transaction->allow_commit();
         } else {
             // no neighbour
-            rollback_sql();
             return false;
         }
-
-        commit_sql();
         $this->columns = $this->get_columns();
         return true;
-
     }
 
 
@@ -2755,49 +2635,40 @@ class reportbuilder {
      * @return boolean True on success, false otherwise
      */
     function move_filter($fid, $updown) {
+        global $DB;
+
         $id = $this->_id;
 
-        begin_sql();
-
         // assumes sort order is well behaved (no gaps)
-        if(!$itemsort = get_field('report_builder_filters', 'sortorder', 'id', $fid)) {
-            rollback_sql();
+        if (!$itemsort = $DB->get_field('report_builder_filters', 'sortorder', array('id' => $fid))) {
             return false;
         }
-
-        if($updown == 'up') {
+        if ($updown == 'up') {
             $newsort = $itemsort - 1;
         } else if ($updown == 'down') {
             $newsort = $itemsort + 1;
         } else {
             // invalid updown string
-            rollback_sql();
             return false;
         }
-
-        if($neighbour = get_record('report_builder_filters', 'reportid', $id, 'sortorder', $newsort)) {
+        if ($neighbour = $DB->get_record('report_builder_filters', array('reportid' => $id, 'sortorder' => $newsort))) {
+            $transaction = $DB->start_delegated_transaction();
             // swap sort orders
-            $todb = new object();
+            $todb = new stdClass();
             $todb->id = $fid;
             $todb->sortorder = $neighbour->sortorder;
-            $todb2 = new object();
+            $todb2 = new stdClass();
             $todb2->id = $neighbour->id;
             $todb2->sortorder = $itemsort;
-            if(!update_record('report_builder_filters', $todb) ||
-               !update_record('report_builder_filters', $todb2)) {
-                rollback_sql();
-                return false;
-            }
+            $DB->update_record('report_builder_filters', $todb);
+            $DB->update_record('report_builder_filters', $todb2);
+            $transaction->allow_commit();
         } else {
             // no neighbour
-            rollback_sql();
             return false;
         }
-
-        commit_sql();
         $this->filters = $this->get_filters();
         return true;
-
     }
 
     /**
@@ -2809,8 +2680,9 @@ class reportbuilder {
      * @return mixed The value of the setting $name or null if it doesn't exist
      */
     static function get_setting($reportid, $type, $name) {
-        return get_field('report_builder_settings', 'value', 'reportid',
-            $reportid, 'type', $type, 'name', $name);
+        global $DB;
+
+        return $DB->get_field('report_builder_settings', 'value', array('reportid' => $reportid, 'type' => $type, 'name' => $name));
     }
 
     /**
@@ -2821,12 +2693,12 @@ class reportbuilder {
      * @return array Associative array of name|value settings
      */
     static function get_all_settings($reportid, $type) {
+        global $DB;
+
         $settings = array();
-        if($records = get_records_select('report_builder_settings',
-            "reportid = $reportid AND type = '$type'")) {
-            foreach($records as $record) {
-                $settings[$record->name] = $record->value;
-            }
+        $records = $DB->get_records('report_builder_settings', array('reportid' => $reportid, 'type' => $type));
+        foreach ($records as $record) {
+            $settings[$record->name] = $record->value;
         }
         return $settings;
     }
@@ -2843,25 +2715,22 @@ class reportbuilder {
      * @return boolean True if the setting could be updated or created
      */
     static function update_setting($reportid, $type, $name, $value) {
-        if($record = get_record('report_builder_settings', 'reportid',
-            $reportid, 'type', $type, 'name', $name)) {
+        global $DB;
+
+        if ($record = $DB->get_record('report_builder_settings', array('reportid' => $reportid, 'type' => $type, 'name' => $name))) {
             // update record
-            $todb = new object();
+            $todb = new stdClass();
             $todb->id = $record->id;
-            $todb->value = addslashes($value);
-            if(!update_record('report_builder_settings', $todb)) {
-                return false;
-            }
+            $todb->value = $value;
+            $DB->update_record('report_builder_settings', $todb);
         } else {
             // insert record
-            $todb = new object();
+            $todb = new stdClass();
             $todb->reportid = $reportid;
             $todb->type = $type;
             $todb->name = $name;
             $todb->value = $value;
-            if(!insert_record('report_builder_settings', $todb)) {
-                return false;
-            }
+            $DB->insert_record('report_builder_settings', $todb);
         }
         return true;
     }
@@ -2871,55 +2740,55 @@ class reportbuilder {
      * Return HTML to display the results of a feedback activity
      */
     function print_feedback_results() {
-        global $CFG;
+        global $DB, $OUTPUT;
         // get paging parameters
         define('DEFAULT_PAGE_SIZE', $this->recordsperpage);
-        define('SHOW_ALL_PAGE_SIZE', 5000);
+        define('SHOW_ALL_PAGE_SIZE', 9999);
         $spage     = optional_param('spage', 0, PARAM_INT);                    // which page to show
         $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
         $countfiltered = $this->get_filtered_count();
 
         $out = '';
         $groupid = $this->src->groupid;
-        $out .= print_box_start('generalbox', '', true);
+        $out .= $OUTPUT->box_start();
 
-        if(!$groupid) {
-            $out .= 'The activity group could not be found';
+        if (!$groupid) {
+            $out .= get_string('activitygroupnotfound', 'totara_reportbuilder');
         }
         $questionstable = "report_builder_fbq_{$groupid}_q";
         $optionstable = "report_builder_fbq_{$groupid}_opt";
         $answerstable = "report_builder_fbq_{$groupid}_a";
 
-        $questions = get_records($questionstable, '', '', 'sortorder');
-        $options = get_records($optionstable, '', '', 'qid,sortorder');
+        $questions = $DB->get_records($questionstable, null, 'sortorder');
+        $options = $DB->get_records($optionstable, null, 'qid, sortorder');
         $grouped_options = array();
-        foreach($options as $option) {
+        foreach ($options as $option) {
             $grouped_options[$option->qid][] = $option;
         }
 
         // get first column and use as heading
         $columns = $this->columns;
-        if(count($columns) > 0) {
+        if (count($columns) > 0) {
             $primary_field = current($columns);
-            if($primary_field->required == true) {
+            if ($primary_field->required == true) {
                 $primary_field = null;
             }
 
             // get any extra (none required) columns
             $additional_fields = array();
             while($col = next($columns)) {
-                if($col->required == false) {
+                if ($col->required == false) {
                     $additional_fields[] = $col;
                 }
             }
         }
 
         // get data
-        $sql = $this->build_query(false, true);
+        list($sql, $params) = $this->build_query(false, true);
 
         // use default sort data if set
-        if(isset($this->defaultsortcolumn)) {
-            if(isset($this->defaultsortorder) &&
+        if (isset($this->defaultsortcolumn)) {
+            if (isset($this->defaultsortorder) &&
                 $this->defaultsortorder == SORT_DESC) {
                 $order = 'DESC';
             } else {
@@ -2928,12 +2797,12 @@ class reportbuilder {
 
             // see if sort element is in columns array
             $set = false;
-            foreach($this->columns as $col) {
-                if($col->type.'_'.$col->value == $this->defaultsortcolumn) {
+            foreach ($this->columns as $col) {
+                if ($col->type . '_' . $col->value == $this->defaultsortcolumn) {
                     $set = true;
                 }
             }
-            if($set) {
+            if ($set) {
                 $sort = " ORDER BY {$this->defaultsortcolumn} {$order}";
             } else {
                 $sort = '';
@@ -2941,101 +2810,102 @@ class reportbuilder {
         } else {
             $sort = '';
         }
-        $data = get_records_sql($sql . $sort, $spage * $perpage, $perpage);
+        $data = $DB->get_records_sql($sql . $sort, $params, $spage * $perpage, $perpage);
         $first = true;
-        if($data) {
 
-            foreach($data as $item) {
-                // dividers between feedback results
-                if($first) {
-                    $out .= print_paging_bar($countfiltered, $spage, $perpage,
-                        $this->report_url(). '&amp;', 'spage', false, true);
-                    $first = false;
-                } else {
-                    $out .= '<hr class="feedback-separator"/>';
-                }
+        foreach ($data as $item) {
+            // dividers between feedback results
+            if ($first) {
+                $pagingbar = new paging_bar($countfiltered, $spage, $perpage, $this->report_url());
+                $pagingbar->pagevar = 'spage';
+                $out .= $OUTPUT->render($pagingbar);
 
-                if(isset($primary_field)) {
-                    // print primary heading
-                    $primaryname = $primary_field->type . '_' . $primary_field->value;
-                    $primaryheading = $primary_field->heading;
+                $first = false;
+            } else {
+                $out .= html_writer::empty_tag('hr', array('class' => 'feedback-separator'));
+            }
 
-                    // treat fields different if display function exists
-                    if (isset($primary_field->displayfunc)) {
-                        $func = 'rb_display_'.$primary_field->displayfunc;
-                        if(method_exists($this->src, $func)) {
-                            $primaryvalue = $this->src->$func($item->$primaryname, $item, false);
-                        } else {
-                            $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
-                        }
+            if (isset($primary_field)) {
+                // print primary heading
+                $primaryname = $primary_field->type . '_' . $primary_field->value;
+                $primaryheading = $primary_field->heading;
+
+                // treat fields different if display function exists
+                if (isset($primary_field->displayfunc)) {
+                    $func = 'rb_display_' . $primary_field->displayfunc;
+                    if (method_exists($this->src, $func)) {
+                        $primaryvalue = $this->src->$func($item->$primaryname, $item, false);
                     } else {
                         $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
                     }
-
-                    $out .= '<h2>' . $primaryheading . ': '.$primaryvalue . '</h2>';
+                } else {
+                    $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
                 }
 
-                if(isset($additional_fields)) {
-                    // print secondary details
-                    foreach($additional_fields as $additional_field) {
-                        $addname = $additional_field->type . '_' . $additional_field->value;
-                        $addheading = $additional_field->heading;
-                        $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
-                        // treat fields different if display function exists
-                        if (isset($additional_field->displayfunc)) {
-                            $func = 'rb_display_'.$additional_field->displayfunc;
-                            if(method_exists($this->src, $func)) {
-                                $addvalue = $this->src->$func($item->$addname, $item);
-                            } else {
-                                $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
-                            }
+                $out .= $OUTPUT->heading($primaryheading . ': ' . $primaryvalue, 2);
+            }
+
+            if (isset($additional_fields)) {
+                // print secondary details
+                foreach ($additional_fields as $additional_field) {
+                    $addname = $additional_field->type . '_' . $additional_field->value;
+                    $addheading = $additional_field->heading;
+                    $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
+                    // treat fields different if display function exists
+                    if (isset($additional_field->displayfunc)) {
+                        $func = 'rb_display_' . $additional_field->displayfunc;
+                        if (method_exists($this->src, $func)) {
+                            $addvalue = $this->src->$func($item->$addname, $item);
                         } else {
                             $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
                         }
-
-                        $out .= '<strong>' . $addheading . ': '. $addvalue . '</strong><br />';
-                    }
-                }
-
-                // print count of number of results
-                $out .= '<p>Results from <strong>' . $item->responses_number . '</strong> completed feedback(s).</p>';
-
-                // display answers
-                foreach($questions as $question) {
-                    $qnum = $question->sortorder;;
-                    $qname = stripslashes($question->name);
-                    $qid = $question->id;
-                    $out .= '<h3>Q' . $qnum . ': ' . $qname . '</h3>';
-
-                    switch($question->typ) {
-                    case 'dropdown':
-                    case 'dropdownrated':
-                    case 'check':
-                    case 'radio':
-                    case 'radiorated':
-                        // if it's an option based question, display bar chart if there are options
-                        if(!array_key_exists($qid, $grouped_options)) {
-                            continue;
-                        }
-                        $out .= $this->get_feedback_option_answer($qid, $grouped_options[$qid], $item);
-                        break;
-                    case 'textarea':
-                    case 'textfield':
-                        // if it's a text based question, print all answers in a text field
-                        $out .= $this->get_feedback_standard_answer($qid, $item);
-                        break;
-                    case 'numeric':
-                    default:
+                    } else {
+                        $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
                     }
 
+                    $out .= html_writer::tag('strong', $addheading . ': '. $addvalue) . html_writer::empty_tag('br');
                 }
+            }
+
+            // print count of number of results
+            $out .= html_writer::tag('p', get_string('resultsfromfeedback', 'totara_reportbuilder', $item->responses_number));
+
+            // display answers
+            foreach ($questions as $question) {
+                $qnum = $question->sortorder;;
+                $qname = $question->name;
+                $qid = $question->id;
+                $out .= $OUTPUT->heading('Q' . $qnum . ': ' . $qname, 3);
+
+                switch($question->typ) {
+                case 'dropdown':
+                case 'dropdownrated':
+                case 'check':
+                case 'radio':
+                case 'radiorated':
+                    // if it's an option based question, display bar chart if there are options
+                    if (!array_key_exists($qid, $grouped_options)) {
+                        continue;
+                    }
+                    $out .= $this->get_feedback_option_answer($qid, $grouped_options[$qid], $item);
+                    break;
+                case 'textarea':
+                case 'textfield':
+                    // if it's a text based question, print all answers in a text field
+                    $out .= $this->get_feedback_standard_answer($qid, $item);
+                    break;
+                case 'numeric':
+                default:
+                }
+
             }
         }
 
-        $out .= print_paging_bar($countfiltered, $spage, $perpage,
-            $this->report_url(). '&amp;', 'spage', false, true);
+        $pagingbar = new paging_bar($countfiltered, $spage, $perpage, $this->report_url());
+        $pagingbar->pagevar = 'spage';
+        $out .= $OUTPUT->render($pagingbar);
 
-        $out .= print_box_end(true);
+        $out .= $OUTPUT->box_end();
 
         return $out;
     }
@@ -3044,12 +2914,12 @@ class reportbuilder {
         $out = '';
         $count = 'q' . $qid . '_count';
         $answer = 'q' . $qid . '_list';
-        if(isset($item->$count)) {
-            $out .= '<p>' . $item->$count . ' response(s).</p>';
+        if (isset($item->$count)) {
+            $out .= html_writer::tag('p', get_string('numresponses', 'totara_reportbuilder', $item->$count));
         }
-        if(isset($item->$answer) && $item->$answer != '') {
-            $responses = str_replace(array('<br />'),array("\n"), stripslashes($item->$answer));
-            $out .= '<textarea rows="6" cols="100">' . $responses . '</textarea>';
+        if (isset($item->$answer) && $item->$answer != '') {
+            $responses = str_replace(array('<br />'), array("\n"), $item->$answer);
+            $out .= html_writer::tag('textarea', $responses, array('rows' => '6', 'cols' => '100'));
         }
         return $out;
     }
@@ -3059,16 +2929,16 @@ class reportbuilder {
         $count = array();
         $perc = array();
         // group answer counts and percentages
-        foreach($options as $option) {
+        foreach ($options as $option) {
             $oid = $option->sortorder;
             $countname = 'q' . $qid . '_' . $oid . '_sum';
             $percname = 'q' . $qid . '_' . $oid . '_perc';
-            if(isset($item->$countname)) {
+            if (isset($item->$countname)) {
                 $count[$oid] = $item->$countname;
             } else {
                 $count[$oid] = null;
             }
-            if(isset($item->$percname)) {
+            if (isset($item->$percname)) {
                 $perc[$oid] = $item->$percname;
             } else {
                 $perc[$oid] = null;
@@ -3078,30 +2948,48 @@ class reportbuilder {
         $maxbarwidth = 100; // percent
 
         $numresp = 'q' . $qid . '_total';
-        if(isset($item->$numresp)) {
-            $out .= '<p>' . $item->$numresp . ' response(s).</p>';
+        if (isset($item->$numresp)) {
+            $out .= html_writer::tag('p', get_string('numresponses', 'totara_reportbuilder', $item->$numresp));
         }
 
-        $out .= '<table class="feedback-table">';
-        foreach($options as $option) {
+        $table =- new html_table();
+        $table->attributes['class'] = 'feedback-table';
+        foreach ($options as $option) {
+            $cells = array();
             $oid = $option->sortorder;
-            $out .= '<tr>';
-            $out .= '<th class="feedback-option-number">' . $oid . '</th>';
-            $out .= '<td class="feedback-option-name">' . stripslashes($option->name) . "</td>\n";
+            $cell = new html_table_cell($oid);
+            $cell->attributes['class'] = 'feedback-option-number';
+            $cells[] = $cell;
+            $cell = new html_table_cell($option->name);
+            $cell->attributes['class'] = 'feedback-option-name';
+            $cells[] = $cell;
             $barwidth = $perc[$oid];
             $spacewidth = 100 - $barwidth;
-            $out .= '<td class="feedback-option-chart"><table class="feedback-bar-chart"><tr>';
-            $out .= '<td class="feedback-bar-color" width="'.$barwidth.'%"></td>' . "\n";
-            $out .= '<td class="feedback-bar-blank" width="'.$spacewidth.'%"></td>'. "\n";
-            $out .= '</tr></table>';
-            $out .= '<td class="feedback-option-count"> ' . $count[$oid];
-            if(isset($perc[$oid])) {
-                $out .= ' (' . $perc[$oid] . '%)';
+            $innertable = new html_table();
+            $innertable->attributes['class'] = 'feedback-bar-chart';
+            $innercells = array();
+            $cell = new html_table_cell('');
+            $cell->attributes['class'] = 'feedback-bar-color';
+            $cell->attributes['width'] = $barwidth.'%';
+            $innercells[] = $cell;
+            $cell = new html_table_cell('');
+            $cell->attributes['class'] = 'feedback-bar-blank';
+            $cell->attributes['width'] = $spacewidth.'%';
+            $innercells[] = $cell;
+            $innertable->data[] = new html_table_row($innercells);
+            $cell = new html_table_cell(html_writer::table($innertable));
+            $cell->attributes['class'] = 'feedback-option-chart';
+            $cells[] = $cell;
+            $content = $count[$oid];
+            if (isset($perc[$oid])) {
+                $content .= ' (' . $perc[$oid] . '%)';
             }
-            $out .= ' </td>' . "\n";
-            $out .= '</tr>';
+            $cell = new html_table_cell($content);
+            $cell->attributes['class'] = 'feedback-option-count';
+            $cells[] = $cell;
+            $table->data[] = new html_table_row($cells);
         }
-        $out .= '</table>';
+        $out .= html_writer::table($table);
         return $out;
     }
 } // End of reportbuilder class
@@ -3109,17 +2997,26 @@ class reportbuilder {
 class ReportBuilderException extends Exception { }
 
 /**
+ * Run the reportbuilder cron
+ */
+function totara_reportbuilder_cron() {
+    global $CFG;
+    require_once($CFG->dirroot . '/totara/reportbuilder/cron.php');
+    reportbuilder_cron();
+}
+
+/**
  * Returns the proper SQL to aggregate a field by joining with a specified delimiter
  *
  *
  */
 function sql_group_concat($field, $delimiter=', ', $unique=false) {
-    global $CFG;
+    global $DB;
 
     // if not supported, just return single value - use min()
     $sql = " MIN($field) ";
 
-    switch ($CFG->dbfamily) {
+    switch ($DB->get_dbfamily()) {
         case 'mysql':
             // use native function
             $distinct = $unique ? 'DISTINCT' : '';
@@ -3127,7 +3024,7 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
             break;
         case 'postgres':
             // use custom aggregate function - must have been defined
-            // in local/db/upgrade.php
+            // in db/upgrade.php
             $distinct = $unique ? 'TRUE' : 'FALSE';
             $sql = " GROUP_CONCAT($field, '$delimiter', $distinct) ";
             break;
@@ -3144,19 +3041,15 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
  * @return array Array of report objects
  */
 function reportbuilder_get_reports($showhidden=false) {
-    global $CFG;
-    require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
-    $reports = get_records('report_builder','','','fullname');
-    if (!is_array($reports)){
-        $reports = array();
-    }
-    $context = get_context_instance(CONTEXT_SYSTEM);
+    global $DB;
+    $reports = $DB->get_records('report_builder', null, 'fullname');
+    $context = context_system::instance();
 
     $return = array();
     foreach ($reports as $report) {
         // show reports user has permission to view, that are not hidden
-        if(reportbuilder::is_capable($report->id)) {
-            if($showhidden || !$report->hidden) {
+        if (reportbuilder::is_capable($report->id)) {
+            if ($showhidden || !$report->hidden) {
                 $return[] = $report;
             }
         }
@@ -3174,28 +3067,29 @@ function reportbuilder_get_reports($showhidden=false) {
  *
  *  @return boolean True if email was successfully sent
  */
-function send_scheduled_report($sched){
-    global $CFG, $REPORT_BUILDER_EXPORT_OPTIONS, $CALENDARDAYS;
+function send_scheduled_report($sched) {
+    global $CFG, $DB, $REPORT_BUILDER_EXPORT_OPTIONS;
+    $CALENDARDAYS = calendar_get_days();
     $export_codes = array_flip($REPORT_BUILDER_EXPORT_OPTIONS);
 
-    if(!$user = get_record('user', 'id', $sched->userid)) {
-        error_log(get_string('error:invaliduserid', 'local_reportbuilder'));
+    if (!$user = $DB->get_record('user', array('id' => $sched->userid))) {
+        error_log(get_string('error:invaliduserid', 'totara_reportbuilder'));
         return false;
     }
 
-    if(!$report = get_record('report_builder', 'id', $sched->reportid)) {
-        error_log(get_string('error:invalidreportid', 'local_reportbuilder'));
+    if (!$report = $DB->get_record('report_builder', array('id' => $sched->reportid))) {
+        error_log(get_string('error:invalidreportid', 'totara_reportbuilder'));
         return false;
     }
 
     // don't send the report if the user doesn't have permission
     // to view it
-    if(!reportbuilder::is_capable($sched->reportid, $sched->userid)) {
-        error_log(get_string('error:nopermissionsforscheduledreport','local_reportbuilder', $sched));
+    if (!reportbuilder::is_capable($sched->reportid, $sched->userid)) {
+        error_log(get_string('error:nopermissionsforscheduledreport', 'totara_reportbuilder', $sched));
         return false;
     }
 
-    if($sched->savedsearchid!=0) {
+    if ($sched->savedsearchid != 0) {
         $attachment = create_attachment($sched->reportid, $sched->format, $user->id, $sched->savedsearchid);
     } else {
         $attachment = create_attachment($sched->reportid, $sched->format, $user->id);
@@ -3214,13 +3108,13 @@ function send_scheduled_report($sched){
     }
 
     $reporturl = reportbuilder_get_report_url($report);
-    if($sched->savedsearchid!=0) {
+    if ($sched->savedsearchid != 0) {
         $reporturl .= '&sid=' . $sched->savedsearchid;
     }
 
-    $messagedetails = new object();
+    $messagedetails = new stdClass();
     $messagedetails->reportname = $report->fullname;
-    $messagedetails->exporttype = get_string($export_codes[$sched->format] . 'format', 'local_reportbuilder');
+    $messagedetails->exporttype = get_string($export_codes[$sched->format] . 'format', 'totara_reportbuilder');
     $messagedetails->reporturl = $reporturl;
     $messagedetails->scheduledreportsindex = $CFG->wwwroot . '/my/reports.php#scheduled';
 
@@ -3228,40 +3122,40 @@ function send_scheduled_report($sched){
     $schedule = '';
     switch($sched->frequency) {
         case REPORT_BUILDER_SCHEDULE_DAILY:
-            $schedule .= get_string('daily', 'local_reportbuilder') . ' ' .  get_string('at', 'local_reportbuilder');
-            $schedule .= strftime('%l:%M%P' ,mktime($sched->schedule,0,0));
+            $schedule .= get_string('daily', 'totara_reportbuilder') . ' ' .  get_string('at', 'totara_reportbuilder');
+            $schedule .= strftime('%l:%M%P' , mktime($sched->schedule, 0, 0));
             break;
         case REPORT_BUILDER_SCHEDULE_WEEKLY:
-            $schedule .= get_string('weekly', 'local_reportbuilder') . ' ' . get_string('on', 'local_reportbuilder');
+            $schedule .= get_string('weekly', 'totara_reportbuilder') . ' ' . get_string('on', 'totara_reportbuilder');
             $schedule .= get_string($CALENDARDAYS[$sched->schedule], 'calendar');
             break;
         case REPORT_BUILDER_SCHEDULE_MONTHLY:
-            $schedule .= get_string('monthly', 'local_reportbuilder') . ' ' . get_string('onthe', 'local_reportbuilder');
-            $schedule .= date($dateformat ,mktime(0,0,0,0,$sched->schedule));
+            $schedule .= get_string('monthly', 'totara_reportbuilder') . ' ' . get_string('onthe', 'totara_reportbuilder');
+            $schedule .= date($dateformat , mktime(0, 0, 0, 0, $sched->schedule));
             break;
     }
     $messagedetails->schedule = $schedule;
 
-    $subject = $report->fullname . ' ' . get_string('report', 'local_reportbuilder');
+    $subject = $report->fullname . ' ' . get_string('report', 'totara_reportbuilder');
 
-    if($sched->savedsearchid!=0) {
-        if(!$savename = get_field('report_builder_saved', 'name', 'id', $sched->savedsearchid)) {
-            mtrace(get_string('error:invalidsavedsearchid', 'local_reportbuilder'));
+    if ($sched->savedsearchid != 0) {
+        if (!$savename = $DB->get_field('report_builder_saved', 'name', array('id' => $sched->savedsearchid))) {
+            mtrace(get_string('error:invalidsavedsearchid', 'totara_reportbuilder'));
         } else {
-            $messagedetails->savedtext = get_string('savedsearchmessage', 'local_reportbuilder', $savename);
+            $messagedetails->savedtext = get_string('savedsearchmessage', 'totara_reportbuilder', $savename);
         }
     } else {
         $messagedetails->savedtext = '';
     }
 
-    $message = get_string('scheduledreportmessage', 'local_reportbuilder', $messagedetails);
+    $message = get_string('scheduledreportmessage', 'totara_reportbuilder', $messagedetails);
 
     $fromaddress = $CFG->noreplyaddress;
 
     $emailed = email_to_user($user, $fromaddress, $subject, $message, '', $attachment, $attachmentfilename);
 
-    if(!unlink($CFG->dataroot . '/' . $attachment)) {
-        mtrace(get_string('error:failedtoremovetempfile', 'local_reportbuilder'));
+    if (!unlink($CFG->dataroot . '/' . $attachment)) {
+        mtrace(get_string('error:failedtoremovetempfile', 'totara_reportbuilder'));
     }
 
     return $emailed;
@@ -3278,23 +3172,23 @@ function send_scheduled_report($sched){
  *
  *  @return string Filename of the created attachment
  */
-function create_attachment($reportid, $format, $userid, $sid=null){
+function create_attachment($reportid, $format, $userid, $sid=null) {
     global $CFG;
 
     $report = new reportbuilder($reportid, null, false, $sid, $userid);
     $columns = $report->columns;
     $shortname = $report->shortname;
     $count = $report->get_filtered_count();
-    $sql = $report->build_query(false, true);
+    list($sql, $params) = $report->build_query(false, true);
 
     // array of filters that have been applied
     // for including in report where possible
     $restrictions = $report->get_restriction_descriptions();
 
     $headings = array();
-    foreach($columns as $column) {
+    foreach ($columns as $column) {
         // check that column should be included
-        if($column->display_column(true)) {
+        if ($column->display_column(true)) {
             $headings[] = strip_tags($column->heading);
         }
     }
@@ -3303,13 +3197,13 @@ function create_attachment($reportid, $format, $userid, $sid=null){
 
     switch($format) {
         case REPORT_BUILDER_EXPORT_ODS:
-            $filename = $report->download_ods($headings, $sql, $count, $restrictions, $tempfilepathname);
+            $filename = $report->download_ods($headings, $sql, $params, $count, $restrictions, $tempfilepathname);
             break;
         case REPORT_BUILDER_EXPORT_EXCEL:
-            $filename = $report->download_xls($headings, $sql, $count, $restrictions, $tempfilepathname);
+            $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $tempfilepathname);
             break;
         case REPORT_BUILDER_EXPORT_CSV:
-            $filename = $report->download_csv($headings, $sql, $count, $tempfilepathname);
+            $filename = $report->download_csv($headings, $sql, $params, $count, $tempfilepathname);
             break;
     }
 
@@ -3326,7 +3220,7 @@ function create_attachment($reportid, $format, $userid, $sid=null){
  *
  * @return integer Calculated date at midnight
  */
-function get_next_monthly($time, $day){
+function get_next_monthly($time, $day) {
     $currentday = date('j', $time);
     $currentmonth = date('n', $time);
     $currentyear = date('Y', $time);
@@ -3334,14 +3228,14 @@ function get_next_monthly($time, $day){
     // if the day we want hasn't already passed, the next day will
     // be in the current month. Otherwise it will be in the following
     // month - offset it accordingly
-    if($currentday >= $day){
-        $offset=1;
+    if ($currentday >= $day) {
+        $offset = 1;
     } else {
-        $offset=0;
+        $offset = 0;
     }
     $newmonth = $currentmonth+$offset;
 
-    if($newmonth == 13) { //The end of the year
+    if ($newmonth == 13) { //The end of the year
         $newyear = $currentyear+1;
         $newmonth = 1;
     } else {
@@ -3351,13 +3245,13 @@ function get_next_monthly($time, $day){
     $daysinmonth = date('t', mktime(0, 0, 0, $newmonth, 3, $newyear));
     // If the new day is greater than the days in the month
     // then set it to be the last day of the month
-    if($day > $daysinmonth){
+    if ($day > $daysinmonth) {
         $newday = $daysinmonth;
     } else {
         $newday = $day;
     }
 
-    $nexttime = mktime(0,0,0,$newmonth,$newday,$newyear);
+    $nexttime = mktime(0, 0, 0, $newmonth, $newday, $newyear);
 
     return $nexttime;
 }
@@ -3375,8 +3269,8 @@ function get_next_monthly($time, $day){
  */
 function reportbuilder_get_report_url($report) {
     global $CFG;
-    if($report->embedded == 0) {
-        return $CFG->wwwroot.'/totara/reportbuilder/report.php?id='.$report->id;
+    if ($report->embedded == 0) {
+        return $CFG->wwwroot . '/totara/reportbuilder/report.php?id=' . $report->id;
     } else {
         // use report shortname to find appropriate embedded report object
         if ($embed = reportbuilder_get_embedded_report_object($report->shortname)) {
@@ -3407,10 +3301,10 @@ function reportbuilder_get_embedded_report_object($embedname, $data=array()) {
     $sourcepath = $CFG->dirroot . '/totara/reportbuilder/embedded/';
 
     $classfile = $sourcepath . 'rb_' . $embedname . '_embedded.php';
-    if(is_readable($classfile)) {
+    if (is_readable($classfile)) {
         include_once($classfile);
         $classname = 'rb_' . $embedname . '_embedded';
-        if(class_exists($classname)) {
+        if (class_exists($classname)) {
             return new $classname($data);
         }
     }
@@ -3433,7 +3327,7 @@ function reportbuilder_get_embedded_report_object($embedname, $data=array()) {
  * @return object Embedded report
  */
 function reportbuilder_get_embedded_report($embedname, $data=array()) {
-    if($embed = reportbuilder_get_embedded_report_object($embedname, $data)) {
+    if ($embed = reportbuilder_get_embedded_report_object($embedname, $data)) {
         return new reportbuilder(null, $embedname, $embed);
     }
     // file or class not found
@@ -3455,15 +3349,15 @@ function reportbuilder_get_all_embedded_reports() {
     $sourcepath = $CFG->dirroot . '/totara/reportbuilder/embedded/';
 
     $embedded = array();
-    if($dh = opendir($sourcepath)) {
+    if ($dh = opendir($sourcepath)) {
         while(($file = readdir($dh)) !== false) {
-            if(is_dir($file) ||
+            if (is_dir($file) ||
                 !preg_match('|^rb_(.*)_embedded\.php$|', $file, $matches)) {
                 continue;
             }
             $name = $matches[1];
             $embed = false;
-            if($embed = reportbuilder_get_embedded_report_object($name)) {
+            if ($embed = reportbuilder_get_embedded_report_object($name)) {
                 $embedded[] = $embed;
             }
         }
@@ -3503,9 +3397,9 @@ function reportbuilder_sortbyfullname($a, $b) {
  */
 function reportbuilder_get_embedded_id_from_shortname($shortname, $embedded_ids) {
     // return existing ID if a database record exists already
-    if(is_array($embedded_ids)) {
+    if (is_array($embedded_ids)) {
         foreach ($embedded_ids as $id => $embed_shortname) {
-            if($shortname == $embed_shortname) {
+            if ($shortname == $embed_shortname) {
                 return $id;
             }
         }
@@ -3529,22 +3423,22 @@ function reportbuilder_get_embedded_id_from_shortname($shortname, $embedded_ids)
  * @return boolean ID of new database record, or false on failure
  */
 function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
-    global $CFG;
+    global $DB;
     $error = null;
 
     // check input
-    if(!isset($shortname)) {
+    if (!isset($shortname)) {
         $error = 'Bad shortname';
         return false;
     }
-    if(!isset($embed->source)) {
+    if (!isset($embed->source)) {
         $error = 'Bad source';
         return false;
     }
-    if(!isset($embed->filters) || !is_array($embed->filters)) {
+    if (!isset($embed->filters) || !is_array($embed->filters)) {
         $embed->filters = array();
     }
-    if(!isset($embed->columns) || !is_array($embed->columns)) {
+    if (!isset($embed->columns) || !is_array($embed->columns)) {
         $error = 'Bad columns';
         return false;
     }
@@ -3559,7 +3453,7 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
     $embed->defaultsortcolumn = isset($embed->defaultsortcolumn) ? $embed->defaultsortcolumn : '';
     $embed->defaultsortorder = isset($embed->defaultsortorder) ? $embed->defaultsortorder : SORT_ASC;
 
-    $todb = new object();
+    $todb = new stdClass();
     $todb->shortname = $shortname;
     $todb->fullname = $embed->fullname;
     $todb->source = $embed->source;
@@ -3570,154 +3464,110 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
     $todb->defaultsortcolumn = $embed->defaultsortcolumn;
     $todb->defaultsortorder = $embed->defaultsortorder;
 
-    begin_sql();
-    if (!$newid = insert_record('report_builder', $todb)) {
-        $error = 'DB insert error';
-        rollback_sql();
+    try {
+        $transaction = $DB->start_delegated_transaction();
+
+        $newid = $DB->insert_record('report_builder', $todb);
+        // add columns
+        $so = 1;
+        foreach ($embed->columns as $column) {
+            $todb = new stdClass();
+            $todb->reportid = $newid;
+            $todb->type = $column['type'];
+            $todb->value = $column['value'];
+            $todb->heading = $column['heading'];
+            $todb->sortorder = $so;
+            $todb->customheading = 0; // initially no columns are customised
+            $DB->insert_record('report_builder_columns', $todb);
+            $so++;
+        }
+        // add filters
+        $so = 1;
+        foreach ($embed->filters as $filter) {
+            $todb = new stdClass();
+            $todb->reportid = $newid;
+            $todb->type = $filter['type'];
+            $todb->value = $filter['value'];
+            $todb->advanced = $filter['advanced'];
+            $todb->sortorder = $so;
+            $DB->insert_record('report_builder_filters', $todb);
+            $so++;
+        }
+        // add content restrictions
+        foreach ($embed->contentsettings as $option => $settings) {
+            $classname = $option . '_content';
+            if (class_exists('rb_' . $classname)) {
+                foreach ($settings as $name => $value) {
+                    if (!reportbuilder::update_setting($newid, $classname, $name,
+                        $value)) {
+                            throw new moodle_exception('Error inserting content restrictions');
+                        }
+                }
+            }
+        }
+        // add access restrictions
+        foreach ($embed->accesssettings as $option => $settings) {
+            $classname = $option . '_access';
+            if (class_exists($classname)) {
+                foreach ($settings as $name => $value) {
+                    if (!reportbuilder::update_setting($newid, $classname, $name,
+                        $value)) {
+                            throw new moodle_exception('Error inserting access restrictions');
+                        }
+                }
+            }
+        }
+        $transaction->allow_commit();
+    } catch (Exception $e) {
+        $transaction->rollback($e);
+        $error = $e->getMessage();
         return false;
     }
 
-    // add columns
-    $so = 1;
-    foreach($embed->columns as $column) {
-        $todb = new object();
-        $todb->reportid = $newid;
-        $todb->type = $column['type'];
-        $todb->value = $column['value'];
-        $todb->heading = addslashes($column['heading']);
-        $todb->sortorder = $so;
-        $todb->customheading = 0; // initially no columns are customised
-
-        if(!insert_record('report_builder_columns', $todb)) {
-            rollback_sql();
-            $error = 'Error inserting columns';
-            return false;
-        }
-        $so++;
-    }
-
-    // add filters
-    $so = 1;
-    foreach($embed->filters as $filter) {
-        $todb = new object();
-        $todb->reportid = $newid;
-        $todb->type = $filter['type'];
-        $todb->value = $filter['value'];
-        $todb->advanced = $filter['advanced'];
-        $todb->sortorder = $so;
-        if(!insert_record('report_builder_filters', $todb)) {
-            rollback_sql();
-            $error = 'Error inserting filters';
-            return false;
-        }
-        $so++;
-    }
-
-    // add content restrictions
-    foreach($embed->contentsettings as $option => $settings) {
-        $classname = $option . '_content';
-        if (class_exists('rb_' . $classname)) {
-            foreach($settings as $name => $value) {
-                if(!reportbuilder::update_setting($newid, $classname, $name,
-                    $value)) {
-                        rollback_sql();
-                        $error = 'Error inserting content restrictions';
-                        return false;
-                    }
-            }
-        }
-    }
-
-    // add access restrictions
-    foreach($embed->accesssettings as $option => $settings) {
-        $classname = $option . '_access';
-        if(class_exists($classname)) {
-            foreach($settings as $name => $value) {
-                if(!reportbuilder::update_setting($newid, $classname, $name,
-                    $value)) {
-                        rollback_sql();
-                        $error = 'Error inserting access restrictions';
-                        return false;
-                    }
-            }
-        }
-    }
-
-    commit_sql();
     return $newid;
 }
 
 
 /**
- * Implementation of PHP function lcfirst for PHP 5.2 support
+ * Attempt to ensure an SQL named param is unique by appending a random number value
+ * and keeping records of other param names
  *
- * @param string $string A string to modify
- *
- * @return string The string with the first character in lower case
+ * @param string $name the param name to make unique
+ * @return string the unique string
  */
-function lowerfirst($string) {
-    return strtolower(substr($string, 0, 1)) . substr($string, 1);
+function rb_unique_param($name) {
+    static $UNIQUE_PARAMS = array();
+
+    $param = $name . rand(1, 30777);
+
+    while (in_array($param, $UNIQUE_PARAMS)) {
+        $param = $name . rand(1, 30777);
+    }
+
+    $UNIQUE_PARAMS[] = $param;
+
+    return $param;
 }
 
 /**
- * This function is run when reportbuilder is first installed
- *
- * Add code here that should be run when the module is first installed
- */
-function local_reportbuilder_install() {
-    global $CFG;
-
-    // hack to get cron working via admin/cron.php
-    // at some point we should create a local_modules table
-    // based on data in version.php
-    set_config('local_reportbuilder_cron', 60);
-
-    // set global export options to include all current
-    // formats except fusion tables (excel, csv and ods)
-    set_config('exportoptions', 7, 'reportbuilder');
-
-    // create stored procedure for aggregating text by concatenation
-    // mysql supports by default. The code below adds postgres support
-    // see sql_group_concat() function for usage
-    if($CFG->dbfamily == 'postgres') {
-        $sql = '
-            CREATE TYPE tp_concat AS (data TEXT[], delimiter TEXT);
-            CREATE OR REPLACE FUNCTION group_concat_iterate(_state
-                tp_concat, _value TEXT, delimiter TEXT, is_distinct boolean)
-                RETURNS tp_concat AS
-                $BODY$
-                SELECT
-                CASE
-                    WHEN $1 IS NULL THEN ARRAY[$2]
-                    WHEN $4 AND $1.data @> ARRAY[$2] THEN $1.data
-                    ELSE $1.data || $2
-                        END,
-                        $3
-                        $BODY$
-                        LANGUAGE \'sql\' VOLATILE;
-
-            CREATE OR REPLACE FUNCTION group_concat_finish(_state tp_concat)
-                RETURNS text AS
-                $BODY$
-                SELECT array_to_string($1.data, $1.delimiter)
-                $BODY$
-                LANGUAGE \'sql\' VOLATILE;
-
-            DROP AGGREGATE IF EXISTS group_concat(text, text, boolean);
-            CREATE AGGREGATE group_concat(text, text, boolean) (SFUNC =
-                group_concat_iterate, STYPE = tp_concat, FINALFUNC =
-                group_concat_finish)';
-
-
-        return execute_sql($sql);
-        /* To undo this, use the following:
-         * DROP AGGREGATE group_concat(text, text, boolean);
-         * DROP FUNCTION group_concat_finish(tp_concat);
-         * DROP FUNCTION group_concat_iterate(tp_concat, text, text, boolean);
-         * DROP TYPE tp_concat;
-         */
+* Serves reportbuilder file type files. Required for M2 File API
+*
+* @param object $course
+* @param object $cm
+* @param object $context
+* @param string $filearea
+* @param array $args
+* @param bool $forcedownload
+* @return bool false if file not found, does not return if found - just send the file
+*/
+function totara_reportbuilder_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+    $fs = get_file_storage();
+    $relativepath = implode('/', $args);
+    $fullpath = "/{$context->id}/totara_reportbuilder/$filearea/$args[0]/$args[1]";
+    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        return false;
     }
-
-    return true;
+    // finally send the file
+    send_stored_file($file); // download MUST be forced - security!
 }
 

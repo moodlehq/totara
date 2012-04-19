@@ -14,8 +14,7 @@ class rb_source_[source_name] extends rb_base_source {
     public $contentoptions, $paramoptions, $requiredcolumns;
 
     function __construct() {
-        global $CFG;
-        $this->base = ''; // a table name, with moodle prefix
+        $this->base = ''; // a {tablename}, or subquery
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -32,13 +31,20 @@ class rb_source_[source_name] extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
         $joinlist = array(
-            // associative array of join names and SQL snippets, e.g:
-            // 'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id"
+        /*
+            // rb_join object
+            new rb_join(
+                'joinname', // unique identifier
+                'LEFT',     // type of join
+                'joinname.foreignkey = anotherjoin.primarykey', // what to join on
+                REPORT_BUILDER_ONE_TO_MANY, // type of relationship between two tables
+                array('anotherjoin', 'onemore'), // dependencies (required by this join)
+        */
         );
 
         // optionally include some standard joins
+        // see functions in classes/rb_base_source.php for some options
         //$this->add_user_custom_fields_to_joinlist($joinlist);
 
         return $joinlist;
@@ -104,6 +110,7 @@ class rb_source_[source_name] extends rb_base_source {
         $contentoptions = array(
             /*
             // array of rb_content_option objects, e.g:
+            // see classes/rb_base_content.php for some you can use
             new rb_content_option(
                 '',     // class name
                 '',     // title
@@ -134,6 +141,8 @@ class rb_source_[source_name] extends rb_base_source {
         $requiredcolumns = array(
             /*
             // array of rb_column objects, e.g:
+            // these columns will always appear in the report
+            // with no option to remove them on the columns tab
             new rb_column(
                 '',         // type
                 '',         // value
@@ -161,10 +170,11 @@ class rb_source_[source_name] extends rb_base_source {
 
     // add methods here with [name] matching column option displayfunc
     /*
-    function rb_display_[name]($item, $row) {
+    function rb_display_[name]($item, $row, $isexport) {
         // variable $item refers to the current item
         // $row is an object containing the whole row
         // which will include any extrafields
+        // $isexport is true when exporting
         //
         // should return a string containing what should be displayed
     }

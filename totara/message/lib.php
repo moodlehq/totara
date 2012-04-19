@@ -156,13 +156,13 @@ function totara_message_dismiss_action($id) {
     // TODO SCANMSG: Check this still outputs required markup in no/script render
     // Construct HTML for dismiss button
     $str = get_string('dismiss', 'block_totara_alerts');
-    $out = html_writer::empty_tag('input', array('id' => 'dismissmsg'.$id.'-dialog', 'type' => 'image', 'name' => 'tm_dismiss_msg', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_path('t/dismiss'), 'title' => $str, 'alt' => $str, 'style' => 'display:none;'));
+    $out = html_writer::empty_tag('input', array('id' => 'dismissmsg'.$id.'-dialog', 'type' => 'image', 'name' => 'tm_dismiss_msg', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_url('t/delete_grey', 'totara_core'), 'title' => $str, 'alt' => $str));
 
     $out .= html_writer::tag('noscript',
         html_writer::tag('form',
             html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id)) .
             html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'returnto', 'value' => $clean_fullme)) .
-            html_writer::empty_tag('input', array('type' => 'image', 'class' => 'iconsmall', 'src' => $OUTPUT->pix_path('t/dismiss.gif'), 'title' => $str, 'alt' => $str)),
+            html_writer::empty_tag('input', array('type' => 'image', 'class' => 'iconsmall', 'src' => $OUTPUT->pix_url('t/delete', 'delete_grey'), 'title' => $str, 'alt' => $str)),
         array('action' => $CFG->wwwroot . '/totara/message/dismiss.php?id=' . $id, 'method' => 'post'))
     );
     return $out;
@@ -271,13 +271,13 @@ function totara_message_accept_reject_action($id) {
 
         // Construct HTML for accept button
         $out .= html_writer::tag('form',
-            html_writer::empty_tag('input', array('id' => "acceptmsg'.$id.'-dialog", 'type' => 'image', 'name' => 'tm_accept_msg', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_path('t/accept'), 'title' => $onaccept_str, 'alt' => $onaccept_str, 'style' => 'display:none;'))
+            html_writer::empty_tag('input', array('id' => "acceptmsg'.$id.'-dialog", 'type' => 'image', 'name' => 'tm_accept_msg', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_url('t/accept'), 'title' => $onaccept_str, 'alt' => $onaccept_str, 'style' => 'display:none;'))
         );
         $out .= html_writer::tag('noscript',
             html_writer::tag('form',
                 html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id)) .
                 html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'returnto', 'value' => $returnto)) .
-                html_writer::empty_tag('input', array('type' => 'image', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_path('t/accept.gif'), 'title' => $onaccept_str, 'alt' => $onaccept_str)),
+                html_writer::empty_tag('input', array('type' => 'image', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_url('t/accept'), 'title' => $onaccept_str, 'alt' => $onaccept_str)),
             array('action' => $CFG->wwwroot . '/totara/message/accept.php?id=' . $id, 'method' => 'post'))
         );
     }
@@ -289,13 +289,13 @@ function totara_message_accept_reject_action($id) {
 
         // Construct HTML for accept button
         $out .= html_writer::tag('form',
-            html_writer::empty_tag('input', array('id' => "rejectmsg'.$id.'-dialog", 'type' => 'image', 'name' => 'tm_reject_msg', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_path('t/delete'), 'title' => $onreject_str, 'alt' => $onreject_str, 'style' => 'display:none;'))
+            html_writer::empty_tag('input', array('id' => "rejectmsg'.$id.'-dialog", 'type' => 'image', 'name' => 'tm_reject_msg', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_url('t/delete'), 'title' => $onreject_str, 'alt' => $onreject_str, 'style' => 'display:none;'))
         );
         $out .= html_writer::tag('noscript',
             html_writer::tag('form',
                 html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id)) .
                 html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'returnto', 'value' => $clean_fullme)) .
-                html_writer::empty_tag('input', array('type' => 'image', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_path('t/delete.gif'), 'title' => $onreject_str, 'alt' => $onreject_str)),
+                html_writer::empty_tag('input', array('type' => 'image', 'class' => 'iconsmall action', 'src' => $OUTPUT->pix_url('t/delete'), 'title' => $onreject_str, 'alt' => $onreject_str)),
             array('action' => $CFG->wwwroot . '/totara/message/reject.php?id=' . $id, 'method' => 'post'))
         );
     }

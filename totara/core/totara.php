@@ -301,7 +301,8 @@ function totara_print_report_manager() {
 
 */
 function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $sqlclause=array()) {
-    global $CFG, $DB, $USER, $PAGE, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS, $CALENDARDAYS;
+    global $CFG, $DB, $USER, $PAGE, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS;
+    $CALENDARDAYS = calendar_get_days();
     $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
 
     require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
@@ -328,17 +329,17 @@ function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $s
     //pre-process before sending to renderer
     foreach ($scheduledreports as $sched) {
         //data column
-        if($sched->savedsearchid!=0){
+        if ($sched->savedsearchid != 0){
             $sched->data = $DB->get_field('report_builder_saved', 'name', array('id' => $sched->savedsearchid));
         }
         else {
-            $sched->$data = get_string('alldata', 'totara_reportbuilder');
+            $sched->data = get_string('alldata', 'totara_reportbuilder');
         }
         //format column
         $key = array_search($sched->format, $REPORT_BUILDER_EXPORT_OPTIONS);
-        $sched->format = get_string($key . 'format','local_reportbuilder');
+        $sched->format = get_string($key . 'format','totara_reportbuilder');
         //schedule column
-        if(isset($sched->frequency) && isset($sched->schedule)){
+        if (isset($sched->frequency) && isset($sched->schedule)){
             $schedule = '';
             switch($REPORT_BUILDER_SCHEDULE_CODES[$sched->frequency]){
                 case 'daily':
@@ -371,7 +372,6 @@ function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $s
         $mform = new scheduled_reports_add_form($CFG->wwwroot . '/totara/reportbuilder/scheduled.php', array());
         $mform->display();
     }
-
 }
 
 function totara_print_my_courses() {

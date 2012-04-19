@@ -30,8 +30,57 @@ $string['anycourse'] = 'any course';
 $string['anyfield'] = 'any field';
 $string['anyrole'] = 'any role';
 $string['anyvalue'] = 'any value';
+$string['matchesanyselected'] = 'matches any selected';
+$string['matchesallselected'] = 'matches all selected';
 $string['applyto'] = 'Apply to';
 $string['categoryrole'] = 'Category role';
+$string['filtercheckbox'] = 'Checkbox filter';
+$string['filtercheckbox_help'] = '
+This filter allows you to filter information based on a set of checkboxes.
+
+The filter has the following options:
+
+* is any value - this option disables the filter (i.e. all information is accepted by this filter)
+* matches any selected - this option allows information, if it matches any of the checked options
+* matches all selected - this option allows information, if it matches all of the checked options';
+$string['filterdate'] = 'Date filter';
+$string['filterdate_help'] = 'This filter allows you to filter information from before and/or after selected dates.';
+$string['filternumber'] = 'Number filter';
+$string['filternumber_help'] = '
+This filter allows you to filter numerical information based on its value.
+
+The filter has the following options:
+
+* is equal to - this option allows only information that is equal to the text entered (if no text is entered, then the filter is disabled)
+* is not equal to - this option allows only information that is not equal to the text entered (if no text is entered, then the filter is disabled)
+* is greater than - this option allows only information that has a numerical value greater than the text entered (if no text is entered, then the filter is disabled)
+* is greater than - this option allows only information that has a numerical value greater than the text entered (if no text is entered, then the filter is disabled)
+* is less than - this option allows only information that has a numerical value less than the text entered (if no text is entered, then the filter is disabled)
+* is greater than or equal to- this option allows only information that has a numerical value greater than or equal to the text entered (if no text is entered, then the filter is disabled)
+* is less than or equal to- this option allows only information that has a numerical value less than or equal to the text entered (if no text is entered, then the filter is disabled)';
+$string['filtersimpleselect'] = 'Simple select filter';
+$string['filtersimpleselect_help'] = 'This filter allows you to filter information based on a drop down list. This filter does not have any extra options.';
+$string['filtertext'] = 'Text filter';
+$string['filtertext_help'] = '
+This filter allows you to filter information based on a free form text.
+
+The filter has the following options:
+
+* contains - this option allows only information that contains the text entered (if no text is entered, then the filter is disabled)
+* doesn\'t contain - this option allows only information that does not contain the text entered (if no text is entered, then the filter is disabled)
+* is equal to - this option allows only information that is equal to the text entered (if no text is entered, then the filter is disabled)
+* starts with - this option allows only information that starts with the text entered (if no text is entered, then the filter is disabled)
+* ends with - this option allows only information that ends with the text entered (if no text is entered, then the filter is disabled)
+* is empty - this option allows only information that is equal to an empty string (the text entered is ignored)';
+$string['filterselect'] = 'Select filter';
+$string['filterselect_help'] = '
+This filter allows you to filter information based on a drop down list.
+
+The filter has the following options:
+
+* is any value - this option disables the filter (i.e. all information is accepted by this filter)
+* is equal to - this option allows only information that is equal to the value selected from the list
+* is not equal to - this option allows only information that is different from the value selected from the list';
 $string['contains'] = 'contains';
 $string['content'] = 'Content';
 $string['contentandheadings'] = 'Content and headings';
@@ -54,6 +103,7 @@ $string['filtersettingsforin'] = 'Filter settings for {$a->filter} in {$a->conte
 $string['filtersettingsin'] = 'Filter settings in {$a}';
 $string['firstaccess'] = 'First access';
 $string['globalrolelabel'] = '{$a->label} is {$a->value}';
+$string['includesubcategories'] = 'Include sub-categories?';
 $string['isactive'] = 'Active?';
 $string['isafter'] = 'is after';
 $string['isanyvalue'] = 'is any value';
@@ -61,6 +111,10 @@ $string['isbefore'] = 'is before';
 $string['isdefined'] = 'is defined';
 $string['isempty'] = 'is empty';
 $string['isequalto'] = 'is equal to';
+$string['isgreaterthan'] = 'is greater than';
+$string['islessthan'] = 'is less than';
+$string['isgreaterorequalto'] = 'is greater than or equal to';
+$string['islessthanorequalto'] = 'is less than or equal to';
 $string['isnotdefined'] = 'isn\'t defined';
 $string['isnotequalto'] = 'isn\'t equal to';
 $string['neveraccessed'] = 'Never accessed';

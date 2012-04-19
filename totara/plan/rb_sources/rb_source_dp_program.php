@@ -38,7 +38,7 @@ class rb_source_dp_program extends rb_base_source {
 
     function __construct() {
         global $CFG;
-        $this->base = $CFG->prefix . 'prog';
+        $this->base = '{prog}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -47,7 +47,7 @@ class rb_source_dp_program extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
-        $this->sourcetitle = get_string('rolprogramsourcename', 'local_program');
+        $this->sourcetitle = get_string('rolprogramsourcename', 'totara_program');
         parent::__construct();
     }
 
@@ -64,7 +64,7 @@ class rb_source_dp_program extends rb_base_source {
             new rb_join(
                 'program_completion', // table alias
                 'INNER', // type of join
-                $CFG->prefix . 'prog_completion',
+                '{prog_completion}',
                 'base.id = program_completion.programid AND program_completion.coursesetid = 0', //how it is joined
                 REPORT_BUILDER_RELATION_ONE_TO_MANY,
                 array('base')
@@ -72,7 +72,7 @@ class rb_source_dp_program extends rb_base_source {
             new rb_join(
                 'prog_user_assignment', // table alias
                 'LEFT', // type of join
-                $CFG->prefix . 'prog_user_assignment',
+                '{prog_user_assignment}',
                 'program_completion.programid = prog_user_assignment.programid AND program_completion.userid = prog_user_assignment.userid', //how it is joined
                 REPORT_BUILDER_RELATION_ONE_TO_MANY,
                 array('program_completion')
@@ -80,7 +80,7 @@ class rb_source_dp_program extends rb_base_source {
             new rb_join(
                 'dp_plan', // table alias
                 'LEFT', // type of join
-                $CFG->prefix . 'dp_plan', // actual table name
+                '{dp_plan}', // actual table name
                 'dp_plan.id = prog_plan_assignment.planid', //how it is joined
                 REPORT_BUILDER_RELATION_ONE_TO_MANY,
                 array('prog_plan_assignment')
@@ -88,7 +88,7 @@ class rb_source_dp_program extends rb_base_source {
             new rb_join(
                 'prog_plan_assignment', // table alias
                 'LEFT', // type of join
-                $CFG->prefix . 'dp_plan_program_assignment', // actual table name
+                '{dp_plan_program_assignment}', // actual table name
                 'base.id = prog_plan_assignment.programid = ', //how it is joined
                 REPORT_BUILDER_RELATION_ONE_TO_MANY,
                 array('base')
@@ -103,43 +103,43 @@ class rb_source_dp_program extends rb_base_source {
     function define_columnoptions() {
         $columnoptions = array();
 
-    $columnoptions[] = new rb_column_option(
+        $columnoptions[] = new rb_column_option(
             'program',
             'fullname',
-            get_string('programname','local_program'),
+            get_string('programname', 'totara_program'),
             "base.fullname",
             array('joins' => 'base')
         );
-    $columnoptions[] = new rb_column_option(
+        $columnoptions[] = new rb_column_option(
             'program',
             'shortname',
-            get_string('programshortname','local_program'),
+            get_string('programshortname', 'totara_program'),
             "base.shortname",
             array('joins' => 'base')
         );
         $columnoptions[] = new rb_column_option(
             'program',
             'idnumber',
-           get_string('programidnumber','local_program'),
+           get_string('programidnumber', 'totara_program'),
             "base.idnumber",
             array('joins' => 'base')
         );
         $columnoptions[] = new rb_column_option(
             'program',
             'id',
-            get_string('programid','local_program'),
+            get_string('programid', 'totara_program'),
             "base.id",
             array('joins' => 'base')
         );
-    $columnoptions[] = new rb_column_option(
+        $columnoptions[] = new rb_column_option(
             'program',
             'proglinkicon',
-            get_string('prognamelinkedicon','local_program'),
+            get_string('prognamelinkedicon', 'totara_program'),
             "base.fullname",
             array(
                 'joins' => 'base',
                 'displayfunc' => 'link_program_icon',
-                'defaultheading' => 'Program Name',
+                'defaultheading' => get_string('programname', 'totara_program'),
                 'extrafields' => array(
                     'program_id' => "base.id",
                     'program_icon' => "base.icon"
@@ -150,7 +150,7 @@ class rb_source_dp_program extends rb_base_source {
         $columnoptions[] = new rb_column_option(
             'program',
             'timedue',
-            get_string('programduedate','local_program'),
+            get_string('programduedate', 'totara_program'),
             "program_completion.timedue",
             array(
                 'joins' => 'program_completion',
@@ -164,7 +164,7 @@ class rb_source_dp_program extends rb_base_source {
         $columnoptions[] = new rb_column_option(
             'program',
             'mandatory',
-            get_string('programmandatory','local_program'),
+            get_string('programmandatory', 'totara_program'),
             "prog_user_assignment.id",
             array(
                 'joins' => 'prog_user_assignment',
@@ -175,7 +175,7 @@ class rb_source_dp_program extends rb_base_source {
         $columnoptions[] = new rb_column_option(
             'program',
             'recurring',
-            get_string('programrecurring','local_program'),
+            get_string('programrecurring', 'totara_program'),
             "base.id",
             array(
                 'joins' => 'program_completion',
@@ -219,7 +219,7 @@ class rb_source_dp_program extends rb_base_source {
         $completionstatus = $row->completionstatus;
 
         if ($time==0) {
-            return get_string('noduedate', 'local_plan');;
+            return get_string('noduedate', 'totara_plan');;
         }
 
         $out = userdate($time, '%d/%m/%Y');
@@ -228,25 +228,26 @@ class rb_source_dp_program extends rb_base_source {
         if ($completionstatus != STATUS_PROGRAM_COMPLETE) {
             $days_remaining = floor(($time - time()) / 86400);
             if ($days_remaining == 1) {
-                $days = get_string('onedayremaining', 'local_program');
+                $days = get_string('onedayremaining', 'totara_program');
             } else if ($days_remaining < 10 && $days_remaining > 0) {
-                $days = get_string('daysremaining', 'local_program', $days_remaining);
+                $days = get_string('daysremaining', 'totara_program', $days_remaining);
             } else if ($time < time()) {
-                $days = get_string('overdue', 'local_plan');
+                $days = get_string('overdue', 'totara_plan');
             }
         }
 
         if ($days != '') {
-            $out .= '<br /><span class="error">' . $days . '</span>';
+            $out .= html_writer::empty_tag('br');
+            $out .= html_writer::tag('span', $days, array('class' => 'error'));
         }
 
         return $out;
     }
 
     function rb_display_mandatory_status($id) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         if (!empty($id)) {
-            return '<img src="' . $CFG->pixpath . '/i/tick_green_big.gif" />';
+            return $OUTPUT->pix_icon('/i/tick_green_big', get_string('yes'));
         }
         return get_string('no');
     }
@@ -263,7 +264,10 @@ class rb_source_dp_program extends rb_base_source {
             $courseset = $coursesets[0];
             if ($courseset->is_recurring()) {
                 $recurringcourse = $courseset->course;
-                $link = get_string('yes') . ' (<a href="'.$CFG->wwwroot.'/totara/plan/record/programs_recurring.php?programid='.$program->id.'&amp;userid='.$userid.'">' .  get_string('viewrecurringprogramhistory', 'local_program') . '</a>)';
+                $viewurl = new moodle_url('/totara/plan/record/programs_recurring.php',
+                    array('programid' => $program->id, 'userid' => $userid));
+                $link = get_string('yes').
+                    html_writer::link($viewurl, get_string('viewrecurringprogramhistory', 'totara_program'));
                 return $link;
             }
         }
@@ -295,7 +299,7 @@ class rb_source_dp_program extends rb_base_source {
         new rb_filter_option(
         'program',
         'fullname',
-        get_string('programname','local_program'),
+        get_string('programname', 'totara_program'),
         'text'
         )
         );

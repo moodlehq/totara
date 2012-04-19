@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -33,7 +33,7 @@ class rb_trainer_content extends rb_base_content {
      * @param string $field SQL field to apply the restriction against
      * @param integer $reportid ID of the report
      *
-     * @return string SQL snippet to be used in a WHERE clause
+     * @return array containing SQL snippet to be used in a WHERE clause, as well as array of SQL params
      */
     function sql_restriction($field, $reportid) {
 
@@ -42,30 +42,33 @@ class rb_trainer_content extends rb_base_content {
         $settings = reportbuilder::get_all_settings($reportid, $type);
         $userid = $this->reportfor;
 
+        $uniqueparam = rb_unique_param('ctr');
         $who = isset($settings['who']) ? $settings['who'] : null;
-        if($who == 'own') {
+        if ($who == 'own') {
             // show own records
-            return $field . ' = ' . $userid;
+            return array("{$field} = :{$uniqueparam}", array($uniqueparam => $userid));
         } else if ($who == 'reports') {
             // show staff records
-            if($staff = totara_get_staff()) {
-                return $field . ' IN (' . implode(',', $staff) .')';
+            if ($staff = totara_get_staff()) {
+                list($isql, $iparams) = $DB->get_in_or_equal($staff, SQL_PARAMS_NAMED, $uniqueparam.'_');
+                return array("{$field} {$isql}", $iparams);
             } else {
                 // using 1=0 instead of FALSE for MSSQL support
-                return '1=0';
+                return array('1=0', array());
             }
         } else if ($who == 'ownandreports') {
             // show own and staff records
-            if($staff = totara_get_staff()) {
-                return $field . ' IN (' . $userid . ',' .
-                    implode(',', $staff) . ')';
+            if ($staff = totara_get_staff()) {
+                $staff[] = $userid;
+                list($isql, $iparams) = $DB->get_in_or_equal($staff, SQL_PARAMS_NAMED, $uniqueparam.'_');
+                return array("{$field} {$isql}", $iparams);
             } else {
-                return $field . ' = ' . $userid;
+                return array("{$field} = :{$uniqueparam}", array($uniqueparam => $userid));
             }
         } else {
             // anything unexpected
             // using 1=0 instead of FALSE for MSSQL support
-            return '1=0';
+            return array('1=0', array());
         }
     }
 
@@ -78,26 +81,27 @@ class rb_trainer_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
+        global $DB;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
         $userid = $this->reportfor;
 
-        $user = get_record('user','id',$userid);
+        $user = $DB->get_record('user', array('id' => $userid));
         switch ($settings['who']) {
         case 'own':
-            return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') . ' "' .
                 fullname($user) . '"';
         case 'reports':
-            return $title . ' ' . get_string('reportsto','local_reportbuilder') . ' "' .
+            return $title . ' ' . get_string('reportsto', 'totara_reportbuilder') . ' "' .
                 fullname($user) . '"';
         case 'ownandreports':
-            return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .
-                fullname($user) . '"' . get_string('or','local_reportbuilder') .
-                get_string('reportsto','local_reportbuilder') . ' "' . fullname($user) . '"';
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') . ' "' .
+                fullname($user) . '"' . get_string('or', 'totara_reportbuilder') .
+                get_string('reportsto', 'totara_reportbuilder') . ' "' . fullname($user) . '"';
         default:
-            return $title . ' is NOT FOUND';
+            return $title . ' ' . get_string('isnotfound', 'totara_reportbuilder');
         }
     }
 
@@ -117,25 +121,24 @@ class rb_trainer_content extends rb_base_content {
         $who = reportbuilder::get_setting($reportid, $type, 'who');
 
         $mform->addElement('header', 'trainer_header', get_string('showbyx',
-            'local_reportbuilder', lowerfirst($title)));
+            'totara_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'trainer_enable', '',
-            get_string('showbasedonx', 'local_reportbuilder', lowerfirst($title)));
+            get_string('showbasedonx', 'totara_reportbuilder', lcfirst($title)));
         $mform->disabledIf('trainer_enable', 'contentenabled', 'eq', 0);
         $mform->setDefault('trainer_enable', $enable);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'trainer_who', '',
-            get_string('trainerownrecords', 'local_reportbuilder'), 'own');
+            get_string('trainerownrecords', 'totara_reportbuilder'), 'own');
         $radiogroup[] =& $mform->createElement('radio', 'trainer_who', '',
-            get_string('trainerstaffrecords', 'local_reportbuilder'), 'reports');
+            get_string('trainerstaffrecords', 'totara_reportbuilder'), 'reports');
         $radiogroup[] =& $mform->createElement('radio', 'trainer_who', '',
-            get_string('both', 'local_reportbuilder'), 'ownandreports');
+            get_string('both', 'totara_reportbuilder'), 'ownandreports');
         $mform->addGroup($radiogroup, 'trainer_who_group',
-            get_string('includetrainerrecords', 'local_reportbuilder'), '<br />', false);
+            get_string('includetrainerrecords', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
         $mform->setDefault('trainer_who', $who);
-        $mform->disabledIf('trainer_who_group','contentenabled', 'eq', 0);
-        $mform->disabledIf('trainer_who_group','trainer_enable', 'notchecked');
-        $mform->setHelpButton('trainer_header', array('reportbuildertrainer',
-            get_string('showbytrainer', 'local_reportbuilder'), 'local_reportbuilder'));
+        $mform->disabledIf('trainer_who_group', 'contentenabled', 'eq', 0);
+        $mform->disabledIf('trainer_who_group', 'trainer_enable', 'notchecked');
+        $mform->addHelpButton('trainer_header', 'reportbuildertrainer', 'totara_reportbuilder');
     }
 
     /**

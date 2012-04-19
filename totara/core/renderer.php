@@ -286,7 +286,7 @@ class totara_core_renderer extends plugin_renderer_base {
         }
         $table->head = $headers;
 
-        foreach($scheduledreports as $sched) {
+        foreach ($scheduledreports as $sched) {
             $cells = array();
             $cells[] = new html_table_cell($sched->fullname);
             $cells[] = new html_table_cell($sched->data);
@@ -296,14 +296,14 @@ class totara_core_renderer extends plugin_renderer_base {
                 $text = get_string('edit');
                 $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('/t/edit'),
                                                         'alt' => $text, 'class' =>'iconsmall'));
-                $url = new moodle_url('/totara/reportbuilder/scheduled.php?id='.$sched->id);
+                $url = new moodle_url('/totara/reportbuilder/scheduled.php', array('id' => $sched->id));
                 $attributes = array('href' => $url);
                 $cellcontent = html_writer::tag('a', $icon, $attributes);
                 $cellcontent .= ' ';
                 $text = get_string('delete');
-                $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('/t/edit'),
+                $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('/t/delete'),
                                                         'alt' => $text, 'class' =>'iconsmall'));
-                $url = new moodle_url('/totara/reportbuilder/deletescheduled.php?id='.$sched->id);
+                $url = new moodle_url('/totara/reportbuilder/deletescheduled.php', array('id' => $sched->id));
                 $attributes = array('href' => $url);
                 $cellcontent .= html_writer::tag('a', $icon, $attributes);
                 $cell = new html_table_cell($cellcontent);

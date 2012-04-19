@@ -42,9 +42,11 @@ defined('MOODLE_INTERNAL') || die();
 class MoodleODSWorkbook {
     var $worksheets = array();
     var $filename;
+    var $save;
 
-    function MoodleODSWorkbook($filename) {
+    function MoodleODSWorkbook($filename, $save=false) {
         $this->filename = $filename;
+        $this->save = $save;
     }
 
     /* Create one Moodle Worksheet
@@ -65,7 +67,7 @@ class MoodleODSWorkbook {
      */
     function &add_format($properties = array()) {
         $format = new MoodleODSFormat($properties);
-        return $format;;
+        return $format;
     }
 
     /* Close the Moodle Workbook
@@ -103,13 +105,19 @@ class MoodleODSWorkbook {
         $filename = "$dir/result.ods";
         zip_files($files, $filename);
 
-        $handle = fopen($filename, 'rb');
-        $contents = fread($handle, filesize($filename));
-        fclose($handle);
+        if ($this->save) {
+            copy($filename, $this->filename);
+        } else {
+            $handle = fopen($filename, 'rb');
+            $contents = fread($handle, filesize($filename));
+            fclose($handle);
+        }
 
         remove_dir($dir); // cleanup the temp directory
 
-        send_file($contents, $this->filename, 0, 0, true, true, 'application/vnd.oasis.opendocument.spreadsheet');
+        if (!$this->save) {
+            send_file($contents, $this->filename, 0, 0, true, true, 'application/vnd.oasis.opendocument.spreadsheet');
+        }
     }
 
     /* Not required to use

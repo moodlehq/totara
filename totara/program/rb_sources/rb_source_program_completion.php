@@ -33,7 +33,7 @@ class rb_source_program_completion extends rb_base_source {
 
     function __construct() {
         global $CFG;
-        $this->base = $CFG->prefix . 'prog_completion';
+        $this->base = '{prog_completion}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -61,14 +61,14 @@ class rb_source_program_completion extends rb_base_source {
             new rb_join(
                 'completion_organisation',
                 'LEFT',
-                $CFG->prefix . 'org',
+                '{org}',
                 'completion_organisation.id = base.organisationid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'completion_position',
                 'LEFT',
-                $CFG->prefix . 'pos',
+                '{pos}',
                 'completion_position.id = base.positionid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
@@ -215,8 +215,8 @@ class rb_source_program_completion extends rb_base_source {
             'simpleselect',
             array (
                 'selectchoices' => array(
-                    0 => get_string('incomplete', 'local_program'),
-                    1 => get_string('complete', 'local_program'),
+                    0 => get_string('incomplete', 'totara_program'),
+                    1 => get_string('complete', 'totara_program'),
                 ),
                 'selectoptions' => rb_filter_option::select_width_limiter(),
             )
@@ -383,9 +383,9 @@ class rb_source_program_completion extends rb_base_source {
             return '';
         }
         if ($status) {
-            return get_string('complete', 'local_program');
+            return get_string('complete', 'totara_program');
         } else {
-            return get_string('incomplete', 'local_program');
+            return get_string('incomplete', 'totara_program');
         }
     }
     //

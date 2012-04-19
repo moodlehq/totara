@@ -28,46 +28,42 @@
  *
  */
 
-require_once('../config.php');
-require_once($CFG->libdir.'/blocklib.php');
-require_once($CFG->libdir.'/tablelib.php');
-require_once($CFG->dirroot.'/tag/lib.php');
+require_once(dirname(dirname(__FILE__)) . '/config.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 
 require_login();
 
-define('DEFAULT_PAGE_SIZE', 20);
-define('SHOW_ALL_PAGE_SIZE', 5000);
+$strheading = get_string('myreports', 'totara_core');
 
-global $SESSION,$USER;
-$strheading = get_string('myreports', 'local');
+$PAGE->set_context(context_system::instance());
+$PAGE->set_title($strheading);
+$PAGE->set_url(new moodle_url('/my/reports.php'));
+$PAGE->navbar->add($strheading);
 
-$PAGE = page_create_object('Totara', $USER->id);
+$output = $PAGE->get_renderer('totara_reportbuilder');
 
-// see which reports exist in db and add columns for them to table
-// these reports should have the "userid" url parameter enabled to allow
-// viewing of individual reports
-$staff_records = get_field('report_builder','id','shortname','staff_learning_records');
-$staff_f2f = get_field('report_builder','id','shortname','staff_facetoface_sessions');
-
-$PAGE->print_header($strheading, $strheading);
+echo $output->header();
 
 add_to_log(SITEID, 'my', 'reports', 'reports.php');
 
-echo '<h1>'.$strheading.'</h1>';
-print_container_start(false, '', 'myreports_section');
-totara_print_report_manager();
-print_container_end();
+echo $output->heading($strheading, 1);
 
-if(reportbuilder_get_reports()){
-    print_container_start(false, '', 'scheduledreports_section');
-    print_container_start(false, '', 'scheduledreports_section_inner');
-    echo '<br /><a name="scheduled"></a><h1>'.get_string('scheduledreports', 'local_reportbuilder').'</h1>';
+echo $output->container_start(null, 'myreports_section');
+echo totara_print_report_manager();
+echo $output->container_end();
+
+if (reportbuilder_get_reports()){
+    echo $output->container_start(null, 'scheduledreports_section');
+    echo $output->container_start(null, 'scheduledreports_section_inner');
+    echo html_writer::empty_tag('br');
+    echo html_writer::tag('a', '', array('name' => 'scheduled'));
+    echo $output->heading(get_string('scheduledreports', 'totara_reportbuilder'), 1);
 
     totara_print_scheduled_reports();
-    print_container_end();
-    print_container_end();
+    echo $output->container_end();
+    echo $output->container_end();
 }
 
-print_footer();
+echo $output->footer();
 
 ?>

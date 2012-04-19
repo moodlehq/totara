@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -37,22 +37,22 @@ class rb_plan_competencies_embedded extends rb_base_embedded {
         $this->source = 'dp_competency';
         $this->defaultsortcolumn = 'competency_fullname';
         $this->shortname = 'plan_competencies';
-        $this->fullname = get_string('recordoflearningcompetencies', 'local_plan');
+        $this->fullname = get_string('recordoflearningcompetencies', 'totara_plan');
         $this->columns = array(
             array(
                 'type' => 'plan',
                 'value' => 'planlink',
-                'heading' => get_string('plan', 'local_plan'),
+                'heading' => get_string('plan', 'totara_plan'),
             ),
             array(
                 'type' => 'plan',
                 'value' => 'status',
-                'heading' => get_string('planstatus', 'local_plan'),
+                'heading' => get_string('planstatus', 'totara_plan'),
             ),
             array(
                 'type' => 'competency',
                 'value' => 'fullname',
-                'heading' => get_string('competency', 'competency'),
+                'heading' => get_string('competency', 'totara_hierarchy'),
             ),
             array(
                 'type' => 'competency',
@@ -98,10 +98,10 @@ class rb_plan_competencies_embedded extends rb_base_embedded {
         $this->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
 
         $this->embeddedparams = array();
-        if(isset($userid)) {
+        if (isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
         }
-        if(isset($rolstatus)) {
+        if (isset($rolstatus)) {
             $this->embeddedparams['rolstatus'] = $rolstatus;
         }
 

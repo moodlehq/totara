@@ -285,6 +285,7 @@ $string['depthlevel'] = 'Depth level';
 $string['depthlevels'] = 'Depth levels';
 $string['deletedepth'] = 'Delete {$a}';
 $string['descriptionview'] = 'Description';
+$string['selectcompetency'] = 'Select competency';
 $string['selectedcompetencies'] = 'Selected competencies:';
 $string['selectacompetencyframework'] = 'Select a competency framework';
 $string['clicktoassign'] = 'Click the assign button to select a competency.';

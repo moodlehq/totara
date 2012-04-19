@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,137 +22,93 @@
  * @subpackage reportbuilder
  */
 
-require_once('../../../config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 
 /// Check access
 require_sesskey();
 require_login();
-require_capability('totara/reportbuilder:managereports', get_context_instance(CONTEXT_SYSTEM));
+require_capability('totara/reportbuilder:managereports', context_system::instance());
 
 /// Get params
-$action = required_param('action', PARAM_TEXT);
+$action = required_param('action', PARAM_ALPHA);
 $reportid = required_param('id', PARAM_INT);
 
 switch ($action) {
     case 'add' :
         $filter = required_param('filter', PARAM_TEXT);
+        $advanced = optional_param('advanced', 0, PARAM_BOOL);
+
         $filter = explode('-', $filter);
         $ftype = $filter[0];
         $fvalue = $filter[1];
-        $advanced = optional_param('advanced', 0, PARAM_BOOL);
 
         /// Prevent duplicates
-        $sql = "SELECT id FROM {$CFG->prefix}report_builder_filters f
-            WHERE reportid = {$reportid}
-            AND type = '{$ftype}'
-            AND value = '{$fvalue}'";
-
-        if (get_record_sql($sql)) {
+        $params = array('reportid' => $reportid, 'type' => $ftype, 'value' => $fvalue);
+        if ($DB->record_exists('report_builder_filters', $params)) {
             echo false;
             exit;
         }
 
         /// Save filter
-        $todb = new object();
+        $todb = new stdClass();
         $todb->reportid = $reportid;
         $todb->type = $ftype;
         $todb->value = $fvalue;
         $todb->advanced = $advanced;
-        $sortorder = get_field('report_builder_filters', 'MAX(sortorder) + 1', 'reportid', $reportid);
-        if(!$sortorder) {
+        $sortorder = $DB->get_field('report_builder_filters', 'MAX(sortorder) + 1', array('reportid' => $reportid));
+        if (!$sortorder) {
             $sortorder = 1;
         }
         $todb->sortorder = $sortorder;
-
-        $id = insert_record('report_builder_filters', $todb);
+        $id = $DB->insert_record('report_builder_filters', $todb);
 
         echo $id;
         break;
     case 'delete':
         $fid = required_param('fid', PARAM_INT);
-        if ($filter = get_record('report_builder_filters', 'id', $fid)) {
-            if (delete_records('report_builder_filters', 'id', $fid)) {
-                require_once($CFG->dirroot . '/lib/pear/HTML/AJAX/JSON.php'); // required for PHP5.2 JSON support
-                echo json_encode((array)$filter);
-            } else {
-                echo false;
-                exit;
-            }
+
+        if ($filter = $DB->get_record('report_builder_filters', array('id' => $fid))) {
+            $DB->delete_records('report_builder_filters', array('id' => $fid));
+            echo json_encode((array)$filter);
         } else {
             echo false;
-            exit;
         }
         break;
     case 'movedown':
-        $fid = required_param('fid', PARAM_INT);
-
-        $filter = get_record('report_builder_filters', 'id', $fid);
-        $sql = "SELECT * FROM {$CFG->prefix}report_builder_filters
-            WHERE reportid = {$reportid} AND sortorder > {$filter->sortorder}
-            ORDER BY sortorder";
-        if (!$lowersibling = get_record_sql($sql, true)) {
-            echo false;
-            exit;
-        }
-
-        $todb = new stdClass;
-        $todb->id = $filter->id;
-        $todb->sortorder = $lowersibling->sortorder;
-
-        if (!update_record('report_builder_filters', $todb)) {
-            echo false;
-            exit;
-        }
-
-        $todb = new stdClass;
-        $todb->id = $lowersibling->id;
-        $todb->sortorder = $filter->sortorder;
-
-        if (!update_record('report_builder_filters', $todb)) {
-            echo false;
-            exit;
-        }
-
-        echo "1";
-        break;
     case 'moveup':
         $fid = required_param('fid', PARAM_INT);
 
-        $filter = get_record('report_builder_filters', 'id', $fid);
-        $sql = "SELECT * FROM {$CFG->prefix}report_builder_filters
-            WHERE reportid = {$reportid} AND sortorder < {$filter->sortorder}
-            ORDER BY sortorder DESC";
-        if (!$uppersibling = get_record_sql($sql, true)) {
+        $operator = ($action == 'movedown') ? '>' : '<';
+        $sortorder = ($action == 'movedown') ? 'ASC' : 'DESC';
+
+        $filter = $DB->get_record('report_builder_filters', array('id' => $fid));
+        $sql = "SELECT * FROM {report_builder_filters}
+            WHERE reportid = ? AND sortorder $operator ?
+            ORDER BY sortorder $sortorder";
+        if (!$sibling = $DB->get_record_sql($sql, array($reportid, $filter->sortorder), IGNORE_MULTIPLE)) {
             echo false;
             exit;
         }
 
-        $todb = new stdClass;
+        $transaction = $DB->start_delegated_transaction();
+
+        $todb = new stdClass();
         $todb->id = $filter->id;
-        $todb->sortorder = $uppersibling->sortorder;
+        $todb->sortorder = $sibling->sortorder;
+        $DB->update_record('report_builder_filters', $todb);
 
-        if (!update_record('report_builder_filters', $todb)) {
-            echo false;
-            exit;
-        }
-
-        $todb = new stdClass;
-        $todb->id = $uppersibling->id;
+        $todb = new stdClass();
+        $todb->id = $sibling->id;
         $todb->sortorder = $filter->sortorder;
+        $DB->update_record('report_builder_filters', $todb);
 
-        if (!update_record('report_builder_filters', $todb)) {
-            echo false;
-            exit;
-        }
+        $transaction->allow_commit();
 
         echo "1";
         break;
-
     default:
         echo '';
         break;
 }
-
-exit;
 
 ?>

@@ -138,7 +138,7 @@ M.totara_message = M.totara_message || {
                     this.dialog.html('');
                     this.showLoading();
                     msgids = [];
-                    $('form#totara_messages INPUT[@name=totara_message][type="checkbox"][checked=true]').each(
+                    $('form#totara_messages input[type="checkbox"]:checked').each(
                                 function () {
                                     msgids.push($(this).attr('value'));
                                 });
@@ -207,8 +207,8 @@ M.totara_message = M.totara_message || {
      *
      */
     select_all_none_checkbox: function(){
-        $('th.message_values_dismiss_link').html('<div id="totara_message_selects"><a id="all">'+M.util.get_string('all')+
-                                        '</a>/<a id="none">'+M.util.get_string('none')+'</a></div>');
+        $('th.message_values_dismiss_link').html('<div id="totara_message_selects"><a id="all">'+M.util.get_string('all', 'moodle')+
+                                        '</a>/<a id="none">'+M.util.get_string('none', 'moodle')+'</a></div>');
         function jqCheckAll( id, name, flag ) {
            if (flag === 0) {
               $("form#" + id + " INPUT[@name=" + name + "][type='checkbox']").attr('checked', false);
@@ -229,6 +229,13 @@ M.totara_message = M.totara_message || {
         }
         $('#totara_message_selects #all').click(function() {jqCheckAll('totara_messages', 'totara_message', 1); return false;});
         $('#totara_message_selects #none').click(function() {jqCheckAll('totara_messages', 'totara_message', 0); return false;});
+    },
+
+    /**
+     *
+     */
+    message_dismiss: function(Y, selector){
+        $(selector).css('display','block');
     }
 };
 
@@ -260,7 +267,7 @@ totaraDialog_handler_confirm.prototype._confirm = function(url, returnto) {
     // grab message ids if available
     msgids = [];
 
-    $("form#totara_messages INPUT[@name=totara_message][type='checkbox'][checked=true]").each(
+    $('form#totara_messages input[type="checkbox"]:checked').each(
                 function () {
                     msgids.push($(this).attr('value'));
                 });

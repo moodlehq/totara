@@ -1,6 +1,29 @@
-<?php //$Id$
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @package totara
+ * @subpackage reportbuilder
+ */
 
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
 
 /**
  * Generic filter based on a date.
@@ -36,7 +59,7 @@ class filter_date extends filter_type {
         $objs[] =& $mform->createElement('checkbox', $this->_name.'_eck', null, get_string('isbefore', 'filters'));
         $objs[] =& $mform->createElement('date_selector', $this->_name.'_edt', null);
         $grp =& $mform->addElement('group', $this->_name.'_grp', $label, $objs, '', false);
-        $grp->setHelpButton(array('date',$label,'filters'));
+        $mform->addHelpButton($grp->_name, 'filterdate', 'filters');
 
         if ($advanced) {
             $mform->setAdvanced($this->_name.'_grp');
@@ -50,15 +73,15 @@ class filter_date extends filter_type {
         $mform->disabledIf($this->_name.'_edt[year]', $this->_name.'_eck', 'notchecked');
 
         // set default values
-        if(array_key_exists($this->_name, $SESSION->{$sessionname})) {
+        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
             $defaults = $SESSION->{$sessionname}[$this->_name];
         }
         //TODO get rid of need for [0]
-        if(isset($defaults[0]['after']) && $defaults[0]['after']!=0) {
+        if (isset($defaults[0]['after']) && $defaults[0]['after'] != 0) {
             $mform->setDefault($this->_name.'_sck', 1);
             $mform->setDefault($this->_name.'_sdt', $defaults[0]['after']);
         }
-        if(isset($defaults[0]['before']) && $defaults[0]['before']!=0) {
+        if (isset($defaults[0]['before']) && $defaults[0]['before'] != 0) {
             $mform->setDefault($this->_name.'_eck', 1);
             $mform->setDefault($this->_name.'_edt', $defaults[0]['before']);
         }
@@ -96,7 +119,7 @@ class filter_date extends filter_type {
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array containing filtering condition SQL clause and params
      */
     function get_sql_filter($data) {
         $after  = $data['after'];
@@ -104,18 +127,23 @@ class filter_date extends filter_type {
         $query  = $this->_filter->get_field();
 
         if (empty($after) and empty($before)) {
-            return '';
+            return array('', array());
         }
 
+        $params = array();
         $res = "$query > 0" ;
 
         if ($after) {
-            $res .= " AND $query >= $after";
+            $uniqueparam = rb_unique_param('fdafter');
+            $res .= " AND {$query} >= :{$uniqueparam}";
+            $params[$uniqueparam] = $after;
         }
         if ($before) {
-            $res .= " AND $query <= $before";
+            $uniqueparam = rb_unique_param('fdbefore');
+            $res .= " AND {$query} <= :{$uniqueparam}";
+            $params[$uniqueparam] = $before;
         }
-        return $res;
+        return array($res, $params);
     }
 
     /**
@@ -128,7 +156,7 @@ class filter_date extends filter_type {
         $before = $data['before'];
         $label  = $this->_filter->label;
 
-        $a = new object();
+        $a = new stdClass();
         $a->label  = $label;
         $a->after  = userdate($after);
         $a->before = userdate($before);

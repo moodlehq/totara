@@ -43,7 +43,7 @@ class rb_source_dp_objective extends rb_base_source {
      */
     public function __construct() {
         global $CFG;
-        $this->base = $CFG->prefix . 'dp_plan_objective';
+        $this->base = '{dp_plan_objective}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -78,7 +78,7 @@ class rb_source_dp_objective extends rb_base_source {
         $joinlist[] = new rb_join(
                 'dp',
                 'LEFT',
-                $CFG->prefix . 'dp_plan',
+                '{dp_plan}',
                 'base.planid = dp.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
                 array()
@@ -87,7 +87,7 @@ class rb_source_dp_objective extends rb_base_source {
         $joinlist[] = new rb_join(
                 'template',
                 'LEFT',
-                $CFG->prefix . 'dp_template',
+                '{dp_template}',
                 'dp.templateid = template.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
                 array('dp')
@@ -96,7 +96,7 @@ class rb_source_dp_objective extends rb_base_source {
         $joinlist[] = new rb_join(
                 'priority',
                 'LEFT',
-                $CFG->prefix . 'dp_priority_scale_value',
+                '{dp_priority_scale_value}',
                 'base.priority = priority.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
                 array()
@@ -105,7 +105,7 @@ class rb_source_dp_objective extends rb_base_source {
         $joinlist[] = new rb_join(
                 'objective_scale_value',
                 'LEFT',
-                $CFG->prefix . 'dp_objective_scale_value',
+                '{dp_objective_scale_value}',
                 'base.scalevalueid = objective_scale_value.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
                 array()

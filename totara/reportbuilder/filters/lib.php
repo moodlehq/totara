@@ -1,15 +1,38 @@
-<?php //$Id$
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/text.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/textarea.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/number.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/simpleselect.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/select.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/date.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/datetime.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/hierarchy.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/hierarchy_multi.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/multicheck.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/filter_forms.php');
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @package totara
+ * @subpackage reportbuilder
+ */
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/text.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/textarea.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/number.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/simpleselect.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/select.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/date.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/datetime.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/hierarchy.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/hierarchy_multi.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/multicheck.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/filter_forms.php');
 
 /**
  * Filtering wrapper class.
@@ -31,16 +54,16 @@ class filtering {
     function filtering($report=null, $baseurl=null, $extraparams=null) {
         global $SESSION;
 
-        if($report == null) {
-            error('Report must be defined');
+        if ($report == null) {
+            print_error('reportmustbedefined', 'totara_reportbuilder');
         }
 
         $this->_report = $report;
 
         $shortname = $report->shortname;
 
-        if($shortname == null) {
-            error('Report shortname must be defined');
+        if ($shortname == null) {
+            print_error('reportshortnamemustbedefined', 'totara_reportbuilder');
         }
 
         // initialise session var based on unique shortname
@@ -52,7 +75,7 @@ class filtering {
 
         // generate arrays of field names and queries based on input array
         $this->_fields  = array();
-        if($report->filters) {
+        if ($report->filters) {
             foreach ($report->filters as $filter) {
                 $type = $filter->type;
                 $value = $filter->value;
@@ -64,22 +87,22 @@ class filtering {
         }
 
         // the new filter form
-        $this->_addform = new add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'shortname' => $shortname));
+        $this->_addform = new add_filter_form($baseurl, array('fields' => $this->_fields, 'extraparams' => $extraparams, 'shortname' => $shortname));
 
         if ($adddata = $this->_addform->get_data(false)) {
 
-            if(isset($adddata->clearfilter)) {
+            if (isset($adddata->submitgroup['clearfilter'])) {
                     $SESSION->{$filtername} = array();
                     $_POST = array();
-                    $this->_addform = new add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'shortname' => $shortname));
+                    $this->_addform = new add_filter_form($baseurl, array('fields' => $this->_fields, 'extraparams' => $extraparams, 'shortname' => $shortname));
 
             } else {
 
-                foreach($this->_fields as $fname=>$field) {
+                foreach ($this->_fields as $fname => $field) {
                     $data = $field->check_data($adddata);
                     if ($data === false) {
                         // unset existing result if field has been set back to "not set" position
-                        if(array_key_exists($fname, $SESSION->{$filtername})){
+                        if (array_key_exists($fname, $SESSION->{$filtername})) {
                             unset($SESSION->{$filtername}[$fname]);
                         }
                         continue;
@@ -134,7 +157,7 @@ class filtering {
             case 'multicheck':
                 $selectfunc = 'rb_filter_'.$filter->selectfunc;
                 $options = $filter->selectoptions;
-                if(method_exists($this->_report->src, $selectfunc)) {
+                if (method_exists($this->_report->src, $selectfunc)) {
                     $selectfield = $this->_report->src->$selectfunc(
                         $this->_report->contentmode,
                         $this->_report->contentoptions,
@@ -146,21 +169,22 @@ class filtering {
                 }
                 return new $filtername($filter, $sessionname, $selectfield, null, $options);
             default:
-                trigger_error("No filter found for filter type '$filtertype'.",E_USER_WARNING);
+                trigger_error("No filter found for filter type '$filtertype'.", E_USER_WARNING);
                 return null;
             }
 
         } else {
-            error("get_field(): no filter set in filteroptions for type '$type' with value '$value'");
+            print_error('nofiltersetfortypewithvalue', 'totara_reportbuilder', '', (object)array('type' => $type, 'value' => $value));
         }
     }
 
     /**
      * Returns sql where statement based on active filters
-     * @param string $extra sql
-     * @return array Associative array containing 'where' and 'having' strings
+     * @param string $extrasql
+     * @param array $extraparams for the extra sql clause (named params)
+     * @return array containing one array of SQL clauses and one array of params
      */
-    function get_sql_filter($extra='') {
+    function get_sql_filter($extrasql='', $extraparams=array()) {
         global $SESSION;
 
         $shortname = $this->_report->shortname;
@@ -168,36 +192,42 @@ class filtering {
 
         $where_sqls = array();
         $having_sqls = array();
+        $filterparams = array();
 
-        if ($extra != '') {
+        if ($extrasql != '') {
+            if (strpos($extrasql, '?')) {
+                print_error('extrasqlshouldusenamedparams', 'totara_reportbuilder');
+            }
             $where_sqls[] = $extra;
         }
 
 
         if (!empty($SESSION->{$filtername})) {
-            foreach ($SESSION->{$filtername} as $fname=>$datas) {
+            foreach ($SESSION->{$filtername} as $fname => $datas) {
                 if (!array_key_exists($fname, $this->_fields)) {
                     continue; // filter not used
                 }
                 $field = $this->_fields[$fname];
-                foreach($datas as $i=>$data) {
-                    if($field->_filter->is_grouped()) {
-                        $having_sqls[] = $field->get_sql_filter($data);
+                foreach ($datas as $i => $data) {
+                    if ($field->_filter->is_grouped()) {
+                        list($having_sqls[], $params) = $field->get_sql_filter($data);
                     } else {
-                        $where_sqls[] = $field->get_sql_filter($data);
+                        list($where_sqls[], $params) = $field->get_sql_filter($data);
                     }
+                    $filterparams = array_merge($filterparams, $params);
                 }
             }
         }
 
         $out = array();
-        if(!empty($having_sqls)) {
+        if (!empty($having_sqls)) {
             $out['having'] = implode(' AND ', $having_sqls);
         }
-        if(!empty($where_sqls)) {
+        if (!empty($where_sqls)) {
             $out['where'] = implode(' AND ', $where_sqls);
         }
-        return $out;
+
+        return array($out, array_merge($filterparams, $extraparams));
     }
 
     /**
@@ -224,13 +254,13 @@ class filtering {
         $filtername = 'filtering_'.$shortname;
         $fields = $this->_fields;
         $out = array();
-        if(!empty($SESSION->{$filtername})) {
-            foreach($SESSION->{$filtername} as $fname => $datas) {
-                if(!array_key_exists($fname, $fields)) {
+        if (!empty($SESSION->{$filtername})) {
+            foreach ($SESSION->{$filtername} as $fname => $datas) {
+                if (!array_key_exists($fname, $fields)) {
                     continue; // filter not used
                 }
                 $field = $fields[$fname];
-                foreach($datas as $i => $data) {
+                foreach ($datas as $i => $data) {
                     $out[] = $field->get_label($data);
                 }
             }
@@ -264,7 +294,7 @@ class filter_type {
      * @return string the filtering condition or null if the filter is disabled
      */
     function get_sql_filter($data) {
-        error('Abstract method get_sql_filter() called - must be implemented');
+        print_error('abstractmethodcalled', 'totara_reportbuilder', '', 'get_sql_filter()');
     }
 
     /**
@@ -273,7 +303,7 @@ class filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        error('Abstract method check_data() called - must be implemented');
+        print_error('abstractmethodcalled', 'totara_reportbuilder', '', 'check_data()');
     }
 
     /**
@@ -281,7 +311,7 @@ class filter_type {
      * @param object $mform a MoodleForm object to setup
      */
     function setupForm(&$mform) {
-        error('Abstract method setupForm() called - must be implemented');
+        print_error('abstractmethodcalled', 'totara_reportbuilder', '', 'setupForm()');
     }
 
     /**
@@ -290,69 +320,63 @@ class filter_type {
      * @return string active filter label
      */
     function get_label($data) {
-        error('Abstract method get_label() called - must be implemented');
+        print_error('abstractmethodcalled', 'totara_reportbuilder', '', 'get_label()');
     }
-}
-
-
-/**
- * Parse a query into individual keywords, treating quoted phrases one item
- *
- * Pairs of matching double or single quotes are treated as a single keyword.
- *
- * @param string $query Text from user search field
- *
- * @return array Array of individual keywords parsed from input string
- */
-function search_parse_keywords($query) {
-    // query arrives with quotes escaped, but quotes have special meaning
-    // within a query. Strip out slashes, then re-add any that are left
-    // after parsing done (to protect against SQL injection)
-    $query = stripslashes($query);
-
-    $out = array();
-    // break query down into quoted and unquoted sections
-    $split_quoted = preg_split('/(\'[^\']+\')|("[^"]+")/', $query, 0,
-        PREG_SPLIT_DELIM_CAPTURE);
-    foreach($split_quoted as $item) {
-        // strip quotes from quoted strings but leave spaces
-        if(preg_match('/^(["\'])(.*)\\1$/', trim($item), $matches)) {
-            $out[] = addslashes($matches[2]);
-        } else {
-            // split unquoted text on whitespace
-            $keyword = addslashes_recursive(preg_split('/\s/', $item, 0,
-                PREG_SPLIT_NO_EMPTY));
-            $out = array_merge($out, $keyword);
-        }
-    }
-    return $out;
 }
 
 
 /**
  * Return an SQL snippet to search for the given keywords
  *
+ * @param string $field the field to search in
  * @param array $keywords Array of strings to search for
+ * @param boolean $negate negate the conditions
+ * @param string $operator can be 'contains', 'equal', 'startswith', 'endswith'
  *
- * @return string SQL WHERE clause to match the keywords provided
+ * @return array containing SQL clause and params
  */
-function search_get_keyword_where_clause($field, $keywords, $negate=false) {
-    if($negate) {
-        $not = ' NOT ';
+function search_get_keyword_where_clause($field, $keywords, $negate=false, $operator='contains') {
+    global $DB;
+
+    if ($negate) {
+        $not = true;
         $token = ' OR ';
     } else {
-        $not = '';
+        $not = false;
         $token = ' AND ';
     }
 
-    // fields to search
-    $fields = array('fullname', 'shortname', 'idnumber', 'description');
+    $presign = '';
+    $postsign = '';
+    switch ($operator) {
+        case 'contains':
+            $presign = $postsign = '%';
+            break;
+        case 'startswith':
+            $presign = '';
+            $postsign = '%';
+            break;
+        case 'endswith':
+            $presign = '%';
+            $postsign = '';
+            break;
+        default:
+            break;
+    }
 
     $queries = array();
-    foreach($keywords as $keyword) {
-        $queries[] = $field . ' ' . $not . sql_ilike() . " '%" . $keyword . "%'";
+    $params = array();
+    $count = 1;
+    foreach ($keywords as $keyword) {
+        $uniqueparam = rb_unique_param("skww{$operator}_{$count}_");
+        $queries[] = $DB->sql_like($field, ":{$uniqueparam}", false, true, $not);
+        $params[$uniqueparam] = $presign.$DB->sql_like_escape($keyword).$postsign;
+
+        $count++;
     }
-    // all keywords must be found in at least one field
-    return '(' . implode($token, $queries) . ')';
+
+    $sql = '(' . implode($token, $queries) . ')';
+
+    return array($sql, $params);
 }
 

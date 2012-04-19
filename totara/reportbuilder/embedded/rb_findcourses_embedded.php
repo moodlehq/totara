@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -34,27 +34,27 @@ class rb_findcourses_embedded extends rb_base_embedded {
         $this->source = 'courses';
         $this->defaultsortcolumn = 'course_courselinkicon';
         $this->shortname = 'findcourses';
-        $this->fullname = get_string('findcourses', 'local');
+        $this->fullname = get_string('findcourses', 'totara_core');
         $this->columns = array(
             array(
                 'type' => 'course',
                 'value' => 'courselinkicon',
-                'heading' => get_string('coursename', 'local_reportbuilder'),
+                'heading' => get_string('coursename', 'totara_reportbuilder'),
             ),
             array(
                 'type' => 'course_category',
                 'value' => 'namelink',
-                'heading' => get_string('category', 'local_reportbuilder'),
+                'heading' => get_string('category', 'totara_reportbuilder'),
             ),
             array(
                 'type' => 'course',
                 'value' => 'startdate',
-                'heading' => get_string('report:startdate', 'local_reportbuilder'),
+                'heading' => get_string('report:startdate', 'totara_reportbuilder'),
             ),
             array(
                 'type' => 'course',
                 'value' => 'mods',
-                'heading' => get_string('content', 'local_reportbuilder'),
+                'heading' => get_string('content', 'totara_reportbuilder'),
             ),
         );
 
@@ -90,9 +90,9 @@ class rb_findcourses_embedded extends rb_base_embedded {
             'category' => '!0',
         );
 
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        if(!has_capability('moodle/site:doanything', $context)) {
-            // don't show hidden courses to none-admins
+        $context = context_system::instance();
+        if (!is_siteadmin()) {
+            // don't show hidden courses to non-admins
             $this->embeddedparams['visible'] = 1;
         }
 

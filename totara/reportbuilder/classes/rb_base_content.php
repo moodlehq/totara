@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -68,12 +68,13 @@ class rb_current_pos_content extends rb_base_content {
      * @param string $field SQL field to apply the restriction against
      * @param integer $reportid ID of the report
      *
-     * @return string SQL snippet to be used in a WHERE clause
+     * @return array containing SQL snippet to be used in a WHERE clause, as well as array of SQL params
      */
     function sql_restriction($field, $reportid) {
-        global $CFG;
-        require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+        global $CFG, $DB;
+
+        require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -81,12 +82,11 @@ class rb_current_pos_content extends rb_base_content {
         $userid = $this->reportfor;
 
         // get the user's positionid (for primary position)
-        $posid = get_field('pos_assignment', 'positionid', 'userid', $userid,
-            'type', 1);
+        $posid = $DB->get_field('pos_assignment', 'positionid', array('userid' => $userid, 'type' => 1));
         // no results if they don't have one
-        if(empty($posid)) {
+        if (empty($posid)) {
             // using 1=0 instead of FALSE for MSSQL support
-            return '1=0';
+            return array('1=0', array());
         }
 
         if ($settings['recursive']) {
@@ -99,7 +99,7 @@ class rb_current_pos_content extends rb_base_content {
                 if ($settings['recursive'] == 2 && $child->id == $posid) {
                     continue;
                 }
-                $plist[] = "'{$child->id}'";
+                $plist[] = $child->id;
             }
         } else {
             $plist = array($posid);
@@ -108,18 +108,21 @@ class rb_current_pos_content extends rb_base_content {
         // no positions found
         if (count($plist) == 0) {
             // using 1=0 instead of FALSE for MSSQL support
-            return '1=0';
+            return array('1=0', array());
         }
 
         // return users who are in a position in that list
-        $users = get_records_select('pos_assignment',
-            "positionid IN (" . implode(',', $plist) . ")", '', 'DISTINCT userid');
+        list($isql, $iparams) = $DB->get_in_or_equal($plist);
+        $users = $DB->get_records_select('pos_assignment',
+            "positionid {$isql}", $iparams, '', 'DISTINCT userid');
 
         $ulist = array();
         foreach ($users as $user) {
             $ulist[] = $user->userid;
         }
-        return $field.' IN ('. implode(',',$ulist). ')';
+
+        list($isql, $iparams) = $DB->get_in_or_equal($ulist, SQL_PARAMS_NAMED, rb_unique_param('cpr').'_');
+        return array("{$field} {$isql}", $iparams);
     }
 
     /**
@@ -131,25 +134,26 @@ class rb_current_pos_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
+        global $DB;
+
         $userid = $this->reportfor;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
 
-        $posid = get_field('pos_assignment', 'positionid',
-            'userid', $userid, 'type', 1);
-        $posname = get_field('pos','fullname','id', $posid);
+        $posid = $DB->get_field('pos_assignment', 'positionid', array('userid' => $userid, 'type' => 1));
+        $posname = $DB->get_field('pos', 'fullname', array('id' => $posid));
 
         switch ($settings['recursive']) {
         case 0:
-            return $title . ' ' . get_string('is', 'local_reportbuilder') .
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') .
                 ': "' . $posname . '"';
         case 1:
-            return $title . ' ' . get_string('is', 'local_reportbuilder') .
-                ': "' . $posname . '" ' . get_string('orsubpos', 'local_reportbuilder');
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') .
+                ': "' . $posname . '" ' . get_string('orsubpos', 'totara_reportbuilder');
         case 2:
-            return $title . ' ' . get_string('isbelow', 'local_reportbuilder') .
+            return $title . ' ' . get_string('isbelow', 'totara_reportbuilder') .
                 ': "' . $posname . '"';
         default:
             return '';
@@ -171,28 +175,26 @@ class rb_current_pos_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'current_pos_header',
-            get_string('showbyx','local_reportbuilder', lowerfirst($title)));
+            get_string('showbyx', 'totara_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'current_pos_enable', '',
-            get_string('currentposenable','local_reportbuilder'));
+            get_string('currentposenable', 'totara_reportbuilder'));
         $mform->setDefault('current_pos_enable', $enable);
-        $mform->disabledIf('current_pos_enable','contentenabled', 'eq', 0);
+        $mform->disabledIf('current_pos_enable', 'contentenabled', 'eq', 0);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'current_pos_recursive',
-            '', get_string('showrecordsinposandbelow', 'local_reportbuilder'), 1);
+            '', get_string('showrecordsinposandbelow', 'totara_reportbuilder'), 1);
         $radiogroup[] =& $mform->createElement('radio', 'current_pos_recursive',
-            '', get_string('showrecordsinpos', 'local_reportbuilder'), 0);
+            '', get_string('showrecordsinpos', 'totara_reportbuilder'), 0);
         $radiogroup[] =& $mform->createElement('radio', 'current_pos_recursive',
-            '', get_string('showrecordsbelowposonly', 'local_reportbuilder'), 2);
+            '', get_string('showrecordsbelowposonly', 'totara_reportbuilder'), 2);
         $mform->addGroup($radiogroup, 'current_pos_recursive_group',
-            get_string('includechildpos','local_reportbuilder'), '<br />', false);
+            get_string('includechildpos', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
         $mform->setDefault('current_pos_recursive', $recursive);
         $mform->disabledIf('current_pos_recursive_group', 'contentenabled',
             'eq', 0);
         $mform->disabledIf('current_pos_recursive_group', 'current_pos_enable',
             'notchecked');
-        $mform->setHelpButton('current_pos_header',
-            array('reportbuildercurrentpos',
-            get_string('showbycurrentpos', 'local_reportbuilder'), 'local_reportbuilder'));
+        $mform->addHelpButton('current_pos_header', 'reportbuildercurrentpos', 'totara_reportbuilder');
     }
 
     /**
@@ -240,12 +242,13 @@ class rb_current_org_content extends rb_base_content {
      * @param string $field SQL field to apply the restriction against
      * @param integer $reportid ID of the report
      *
-     * @return string SQL snippet to be used in a WHERE clause
+     * @return array containing SQL snippet to be used in a WHERE clause, as well as array of SQL params
      */
     function sql_restriction($field, $reportid) {
-        global $CFG;
-        require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
+        global $CFG, $DB;
+
+        require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/organisation/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -253,12 +256,11 @@ class rb_current_org_content extends rb_base_content {
         $userid = $this->reportfor;
 
         // get the user's organisationid (for primary position)
-        $orgid = get_field('pos_assignment', 'organisationid', 'userid', $userid,
-            'type', 1);
+        $orgid = $DB->get_field('pos_assignment', 'organisationid', array('userid' => $userid, 'type' => 1));
         // no results if they don't have one
-        if(empty($orgid)) {
+        if (empty($orgid)) {
             // using 1=0 instead of FALSE for MSSQL support
-            return '1=0';
+            return array('1=0', array());
         }
 
         if ($settings['recursive']) {
@@ -271,7 +273,7 @@ class rb_current_org_content extends rb_base_content {
                 if ($settings['recursive'] == 2 && $child->id == $orgid) {
                     continue;
                 }
-                $olist[] = "'{$child->id}'";
+                $olist[] = $child->id;
             }
         } else {
             $olist = array($orgid);
@@ -280,17 +282,20 @@ class rb_current_org_content extends rb_base_content {
         // no orgs found
         if (count($olist) == 0) {
             // using 1=0 instead of FALSE for MSSQL support
-            return '1=0';
+            return array('1=0', array());
         }
 
         // return users who are in an organisation in that list
-        $users = get_records_select('pos_assignment',
-            "organisationid IN (" . implode(',', $olist) . ")", '', 'DISTINCT userid');
+        list($isql, $iparams) = $DB->get_in_or_equal($olist);
+        $users = $DB->get_records_select('pos_assignment',
+            "organisationid {$isql}", $iparams, '', 'DISTINCT userid');
         $ulist = array();
         foreach ($users as $user) {
             $ulist[] = $user->userid;
         }
-        return $field.' IN ('. implode(',',$ulist). ')';
+
+        list($isql, $iparams) = $DB->get_in_or_equal($ulist, SQL_PARAMS_NAMED, rb_unique_param('cor').'_');
+        return array("{$field} {$isql}", $iparams);
     }
 
     /**
@@ -302,25 +307,26 @@ class rb_current_org_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
+        global $DB;
+
         $userid = $this->reportfor;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
 
-        $orgid = get_field('pos_assignment', 'organisationid',
-            'userid', $userid, 'type', 1);
-        $orgname = get_field('org','fullname','id', $orgid);
+        $orgid = $DB->get_field('pos_assignment', 'organisationid', array('userid' => $userid, 'type' => 1));
+        $orgname = $DB->get_field('org', 'fullname', array('id' => $orgid));
 
         switch ($settings['recursive']) {
         case 0:
-            return $title . ' ' . get_string('is', 'local_reportbuilder') .
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') .
                 ': "' . $orgname . '"';
         case 1:
-            return $title . ' ' . get_string('is', 'local_reportbuilder') .
-                ': "' . $orgname . '" ' . get_string('orsuborg', 'local_reportbuilder');
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') .
+                ': "' . $orgname . '" ' . get_string('orsuborg', 'totara_reportbuilder');
         case 2:
-            return $title . ' ' . get_string('isbelow', 'local_reportbuilder') .
+            return $title . ' ' . get_string('isbelow', 'totara_reportbuilder') .
                 ': "' . $orgname . '"';
         default:
             return '';
@@ -343,28 +349,26 @@ class rb_current_org_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'current_org_header',
-            get_string('showbyx','local_reportbuilder', lowerfirst($title)));
+            get_string('showbyx', 'totara_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'current_org_enable', '',
-            get_string('currentorgenable','local_reportbuilder'));
+            get_string('currentorgenable', 'totara_reportbuilder'));
         $mform->setDefault('current_org_enable', $enable);
-        $mform->disabledIf('current_org_enable','contentenabled', 'eq', 0);
+        $mform->disabledIf('current_org_enable', 'contentenabled', 'eq', 0);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive',
-            '', get_string('showrecordsinorgandbelow', 'local_reportbuilder'), 1);
+            '', get_string('showrecordsinorgandbelow', 'totara_reportbuilder'), 1);
         $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive',
-            '', get_string('showrecordsinorg', 'local_reportbuilder'), 0);
+            '', get_string('showrecordsinorg', 'totara_reportbuilder'), 0);
         $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive',
-            '', get_string('showrecordsbeloworgonly', 'local_reportbuilder'), 2);
+            '', get_string('showrecordsbeloworgonly', 'totara_reportbuilder'), 2);
         $mform->addGroup($radiogroup, 'current_org_recursive_group',
-            get_string('includechildorgs','local_reportbuilder'), '<br />', false);
+            get_string('includechildorgs', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
         $mform->setDefault('current_org_recursive', $recursive);
         $mform->disabledIf('current_org_recursive_group', 'contentenabled',
             'eq', 0);
         $mform->disabledIf('current_org_recursive_group', 'current_org_enable',
             'notchecked');
-        $mform->setHelpButton('current_org_header',
-            array('reportbuildercurrentorg',
-            get_string('showbycurrentorg', 'local_reportbuilder'), 'local_reportbuilder'));
+        $mform->addHelpButton('current_org_header', 'reportbuildercurrentorg', 'totara_reportbuilder');
     }
 
 
@@ -410,12 +414,12 @@ class rb_completed_org_content extends rb_base_content {
      * @param string $field SQL field to apply the restriction against
      * @param integer $reportid ID of the report
      *
-     * @return string SQL snippet to be used in a WHERE clause
+     * @return array containing SQL snippet to be used in a WHERE clause, as well as array of SQL params
      */
     function sql_restriction($field, $reportid) {
-        global $CFG;
-        require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
+        global $CFG, $DB;
+        require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/organisation/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -423,13 +427,13 @@ class rb_completed_org_content extends rb_base_content {
 
         $userid = $this->reportfor;
         // get the user's organisationid (for primary position)
-        $orgid = get_field('pos_assignment','organisationid','userid',$userid,
-            'type', 1);
+        $orgid = $DB->get_field('pos_assignment', 'organisationid', array('userid' => $userid, 'type' => 1));
         // no results if they don't have one
-        if(empty($orgid)) {
+        if (empty($orgid)) {
             // using 1=0 instead of FALSE for MSSQL support
-            return '1=0';
+            return array('1=0', array());
         }
+        $uniqueparam = rb_unique_param('ccor');
         if ($settings['recursive']) {
             // get list of organisations to match against
             $hierarchy = new organisation();
@@ -440,17 +444,18 @@ class rb_completed_org_content extends rb_base_content {
                 if ($settings['recursive'] == 2 && $child->id == $orgid) {
                     continue;
                 }
-                $olist[] = "'{$child->id}'";
+                $olist[] = $child->id;
             }
             // no organisations found
             if (count($olist) == 0) {
                 // using 1=0 instead of FALSE for MSSQL support
-                return '1=0';
+                return array('1=0', array());
             }
-            return $field.' IN ('. implode(',',$olist).')';
+            list($isql, $iparams) = $DB->get_in_or_equal($olist, SQL_PARAMS_NAMED, $uniqueparam.'_');
+            return array("{$field} {$isql}", $iparams);
         } else {
             // just the users organisation
-            return $field.' = '. $orgid;
+            return array("{$field} = :{$uniqueparam}", array($uniqueparam => $orgid));
         }
     }
 
@@ -463,28 +468,29 @@ class rb_completed_org_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
+        global $DB;
+
         $userid = $this->reportfor;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
 
-        $orgid = get_field('pos_assignment', 'organisationid',
-            'userid', $userid, 'type', 1);
-        if(empty($orgid)) {
-            return $title . ' ' . get_string('is','local_reportbuilder') . ' "UNASSIGNED"';
+        $orgid = $DB->get_field('pos_assignment', 'organisationid', array('userid' => $userid, 'type' => 1));
+        if (empty($orgid)) {
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') . ' "UNASSIGNED"';
         }
-        $orgname = get_field('org','fullname','id', $orgid);
+        $orgname = $DB->get_field('org', 'fullname', array('id' => $orgid));
 
         switch ($settings['recursive']) {
         case 0:
-            return $title . ' ' . get_string('is', 'local_reportbuilder') .
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') .
                 ': "' . $orgname . '"';
         case 1:
-            return $title . ' ' . get_string('is', 'local_reportbuilder') .
-                ': "' . $orgname . '" ' . get_string('orsuborg', 'local_reportbuilder');
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') .
+                ': "' . $orgname . '" ' . get_string('orsuborg', 'totara_reportbuilder');
         case 2:
-            return $title . ' ' . get_string('isbelow', 'local_reportbuilder') .
+            return $title . ' ' . get_string('isbelow', 'totara_reportbuilder') .
                 ': "' . $orgname . '"';
         default:
             return '';
@@ -507,28 +513,26 @@ class rb_completed_org_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'completed_org_header',
-            get_string('showbyx', 'local_reportbuilder', lowerfirst($title)));
+            get_string('showbyx', 'totara_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'completed_org_enable', '',
-            get_string('completedorgenable', 'local_reportbuilder'));
+            get_string('completedorgenable', 'totara_reportbuilder'));
         $mform->setDefault('completed_org_enable', $enable);
-        $mform->disabledIf('completed_org_enable','contentenabled', 'eq', 0);
+        $mform->disabledIf('completed_org_enable', 'contentenabled', 'eq', 0);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive',
-            '', get_string('showrecordsinorgandbelow', 'local_reportbuilder'), 1);
+            '', get_string('showrecordsinorgandbelow', 'totara_reportbuilder'), 1);
         $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive',
-            '', get_string('showrecordsinorg', 'local_reportbuilder'), 0);
+            '', get_string('showrecordsinorg', 'totara_reportbuilder'), 0);
         $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive',
-            '', get_string('showrecordsbeloworgonly', 'local_reportbuilder'), 2);
+            '', get_string('showrecordsbeloworgonly', 'totara_reportbuilder'), 2);
         $mform->addGroup($radiogroup, 'completed_org_recursive_group',
-            get_string('includechildorgs','local_reportbuilder'), '<br />', false);
+            get_string('includechildorgs', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
         $mform->setDefault('completed_org_recursive', $recursive);
-        $mform->disabledIf('completed_org_recursive_group','contentenabled',
+        $mform->disabledIf('completed_org_recursive_group', 'contentenabled',
             'eq', 0);
         $mform->disabledIf('completed_org_recursive_group',
             'completed_org_enable', 'notchecked');
-        $mform->setHelpButton('completed_org_header',
-            array('reportbuildercompletedorg',
-            get_string('showbycompletedorg', 'local_reportbuilder'), 'local_reportbuilder'));
+        $mform->addHelpButton('completed_org_header', 'reportbuildercompletedorg', 'totara_reportbuilder');
     }
 
 
@@ -574,9 +578,11 @@ class rb_user_content extends rb_base_content {
      * @param string $field SQL field to apply the restriction against
      * @param integer $reportid ID of the report
      *
-     * @return string SQL snippet to be used in a WHERE clause
+     * @return array containing SQL snippet to be used in a WHERE clause, as well as array of SQL params
      */
     function sql_restriction($field, $reportid) {
+        global $DB;
+
         $userid = $this->reportfor;
 
         // remove rb_ from start of classname
@@ -584,29 +590,32 @@ class rb_user_content extends rb_base_content {
         $settings = reportbuilder::get_all_settings($reportid, $type);
 
         $who = isset($settings['who']) ? $settings['who'] : null;
-        if($who == 'own') {
+        $uniqueparam = rb_unique_param('cur');
+        if ($who == 'own') {
             // show own records
-            return $field . ' = ' . $userid;
+            return array("{$field} = :{$uniqueparam}", array($uniqueparam => $userid));
         } else if ($who == 'reports') {
             // show staff records
-            if($staff = totara_get_staff()) {
-                return $field . ' IN (' . implode(',', $staff) .')';
+            if ($staff = totara_get_staff()) {
+                list($isql, $iparams) = $DB->get_in_or_equal($staff, SQL_PARAMS_NAMED, $uniqueparam.'_');
+                return array("{$field} {$isql}", $iparams);
             } else {
                 // using 1=0 instead of FALSE for MSSQL support
-                return '1=0';
+                return array('1=0', array());
             }
         } else if ($who == 'ownandreports') {
             // show own and staff records
-            if($staff = totara_get_staff()) {
-                return $field . ' IN (' . $userid . ',' .
-                    implode(',', $staff) . ')';
+            if ($staff = totara_get_staff()) {
+                $staff[] = $userid;
+                list($isql, $iparams) = $DB->get_in_or_equal($staff, SQL_PARAMS_NAMED, $uniqueparam.'_');
+                return array("{$field} {$isql}", $iparams);
             } else {
-                return $field . ' = ' . $userid;
+                return array("{$field} = :{$uniqueparam}", array($uniqueparam => $userid));
             }
         } else {
             // anything unexpected
             // using 1=0 instead of FALSE for MSSQL support
-            return '1=0';
+            return array('1=0', array());
         }
     }
 
@@ -619,26 +628,27 @@ class rb_user_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
+        global $DB;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
         $userid = $this->reportfor;
 
-        $user = get_record('user','id',$userid);
+        $user = $DB->get_record('user', array('id' => $userid));
         switch ($settings['who']) {
         case 'own':
-            return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') . ' "' .
                 fullname($user) . '"';
         case 'reports':
-            return $title . ' ' . get_string('reportsto','local_reportbuilder') . ' "' .
+            return $title . ' ' . get_string('reportsto', 'totara_reportbuilder') . ' "' .
                 fullname($user) . '"';
         case 'ownandreports':
-            return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .
-                fullname($user) . '"' . get_string('or','local_reportbuilder') .
-                get_string('reportsto','local_reportbuilder') . ' "' . fullname($user) . '"';
+            return $title . ' ' . get_string('is', 'totara_reportbuilder') . ' "' .
+                fullname($user) . '"' . get_string('or', 'totara_reportbuilder') .
+                get_string('reportsto', 'totara_reportbuilder') . ' "' . fullname($user) . '"';
         default:
-            return $title . ' is NOT FOUND';
+            return $title . ' ' . get_string('isnotfound', 'totara_reportbuilder');
         }
     }
 
@@ -659,25 +669,24 @@ class rb_user_content extends rb_base_content {
         $who = reportbuilder::get_setting($reportid, $type, 'who');
 
         $mform->addElement('header', 'user_header', get_string('showbyx',
-            'local_reportbuilder', lowerfirst($title)));
+            'totara_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'user_enable', '',
-            get_string('showbasedonx', 'local_reportbuilder', lowerfirst($title)));
+            get_string('showbasedonx', 'totara_reportbuilder', lcfirst($title)));
         $mform->disabledIf('user_enable', 'contentenabled', 'eq', 0);
         $mform->setDefault('user_enable', $enable);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'user_who', '',
-            get_string('userownrecords', 'local_reportbuilder'), 'own');
+            get_string('userownrecords', 'totara_reportbuilder'), 'own');
         $radiogroup[] =& $mform->createElement('radio', 'user_who', '',
-            get_string('userstaffrecords', 'local_reportbuilder'), 'reports');
+            get_string('userstaffrecords', 'totara_reportbuilder'), 'reports');
         $radiogroup[] =& $mform->createElement('radio', 'user_who', '',
-            get_string('both', 'local_reportbuilder'), 'ownandreports');
+            get_string('both', 'totara_reportbuilder'), 'ownandreports');
         $mform->addGroup($radiogroup, 'user_who_group',
-            get_string('includeuserrecords', 'local_reportbuilder'), '<br />', false);
+            get_string('includeuserrecords', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
         $mform->setDefault('user_who', $who);
-        $mform->disabledIf('user_who_group','contentenabled', 'eq', 0);
-        $mform->disabledIf('user_who_group','user_enable', 'notchecked');
-        $mform->setHelpButton('user_header', array('reportbuilderuser',
-            get_string('showbyuser', 'local_reportbuilder'), 'local_reportbuilder'));
+        $mform->disabledIf('user_who_group', 'contentenabled', 'eq', 0);
+        $mform->disabledIf('user_who_group', 'user_enable', 'notchecked');
+        $mform->addHelpButton('user_header', 'reportbuilderuser', 'totara_reportbuilder');
     }
 
 
@@ -723,9 +732,10 @@ class rb_date_content extends rb_base_content {
      * @param string $field SQL field to apply the restriction against
      * @param integer $reportid ID of the report
      *
-     * @return string SQL snippet to be used in a WHERE clause
+     * @return array containing SQL snippet to be used in a WHERE clause, as well as array of SQL params
      */
     function sql_restriction($field, $reportid) {
+        global $DB;
         $now = time();
 
         // remove rb_ from start of classname
@@ -735,49 +745,53 @@ class rb_date_content extends rb_base_content {
         // option to include empty date fields
         $includenulls = (isset($settings['incnulls']) &&
             $settings['incnulls']) ?
-            " OR $field IS NULL OR $field = 0 " : " AND $field != 0 ";
+            " OR {$field} IS NULL OR {$field} = 0 " : " AND {$field} != 0 ";
 
         switch ($settings['when']) {
         case 'past':
-            return '(' . $field.' < '. $now . $includenulls . ')';
+            return array("({$field} < {$now} {$includenulls})", array());
         case 'future':
-            return '(' . $field.' > '. $now . $includenulls . ')';
+            return array("({$field} > {$now} {$includenulls})", array());
         case 'last30days':
-            return '( (' . $field . ' < ' . $now . ' AND ' . $field . ' > ' .
-                ($now - 60*60*24*30) . ')' . $includenulls . ')';
+            $sql = "( ({$field} < {$now}  AND {$field}  >
+                ({$now} - 60*60*24*30)) {$includenulls})";
+            return array($sql, array());
         case 'next30days':
-            return '( (' . $field . ' > ' . $now . ' AND ' . $field . ' < ' .
-                ($now + 60*60*24*30) . ')' . $includenulls . ')';
+            $sql = "( ({$field} > {$now} AND {$field} <
+                ({$now} + 60*60*24*30)) {$includenulls})";
+            return array($sql, array());
         case 'currentfinancial':
             $required_year = date('Y', $now);
             $year_before = $required_year - 1;
             $year_after = $required_year + 1;
-            if(date('z', $now) >= 181) { // date is on or after 1st July
+            if (date('z', $now) >= 181) { // date is on or after 1st July
                 $start = mktime(0, 0, 0, 7, 1, $required_year);
                 $end = mktime(0, 0, 0, 7, 1, $year_after);
             } else {
                 $start = mktime(0, 0, 0, 7, 1, $year_before);
                 $end = mktime(0, 0, 0, 7, 1, $required_year);
             }
-            return '( (' . $field . ' >= ' . $start . ' AND ' . $field . ' < ' .
-                $end . ')' . $includenulls . ')';
+            $sql = "( ({$field} >= {$start} AND {$field} <
+                {$end}) {$includenulls})";
+            return array($sql, array());
         case 'lastfinancial':
             $required_year = date('Y', $now) - 1;
             $year_before = $required_year - 1;
             $year_after = $required_year + 1;
-            if(date('z', $now) >= 181) { // date is on or after 1st July
+            if (date('z', $now) >= 181) { // date is on or after 1st July
                 $start = mktime(0, 0, 0, 7, 1, $required_year);
                 $end = mktime(0, 0, 0, 7, 1, $year_after);
             } else {
                 $start = mktime(0, 0, 0, 7, 1, $year_before);
                 $end = mktime(0, 0, 0, 7, 1, $required_year);
             }
-            return '( (' . $field . ' >= ' . $start . ' AND ' . $field . ' < ' .
-                $end . ')' . $includenulls . ')';
+            $sql = "( ({$field} >= {$start} AND {$field} <
+                {$end}) {$includenulls})";
+            return array($sql, array());
         default:
             // no match
             // using 1=0 instead of FALSE for MSSQL support
-            return '(1=0' . $includenulls . ')';
+            return array("(1=0 {$includenulls})", array());
         }
 
     }
@@ -802,27 +816,27 @@ class rb_date_content extends rb_base_content {
 
         switch ($settings['when']) {
         case 'past':
-            return $title . ' ' . get_string('occurredbefore', 'local_reportbuilder') . ' ' .
+            return $title . ' ' . get_string('occurredbefore', 'totara_reportbuilder') . ' ' .
                 userdate(time(), '%c'). $includenulls;
         case 'future':
-            return $title . ' ' . get_string('occurredafter', 'local_reportbuilder') . ' ' .
+            return $title . ' ' . get_string('occurredafter', 'totara_reportbuilder') . ' ' .
                 userdate(time(), '%c'). $includenulls;
         case 'last30days':
-            return $title . ' ' . get_string('occurredafter','local_reportbuilder') . ' ' .
-                userdate(time() - 60*60*24*30, '%c') . get_string('and','local_reportbuilder') .
-                get_string('occurredbefore','local_reportbuilder') . userdate(time(),'%c') .
+            return $title . ' ' . get_string('occurredafter', 'totara_reportbuilder') . ' ' .
+                userdate(time() - 60*60*24*30, '%c') . get_string('and', 'totara_reportbuilder') .
+                get_string('occurredbefore', 'totara_reportbuilder') . userdate(time(), '%c') .
                 $includenulls;
 
         case 'next30days':
-            return $title . ' ' . get_string('occurredafter','local_reportbuilder') . ' ' .
-                userdate(time(), '%c') . get_string('and', 'local_reportbuilder') .
-                get_string('occurredbefore', 'local_reportbuilder') .
-                userdate(time() + 60*60*24*30,'%c') . $includenulls;
+            return $title . ' ' . get_string('occurredafter', 'totara_reportbuilder') . ' ' .
+                userdate(time(), '%c') . get_string('and', 'totara_reportbuilder') .
+                get_string('occurredbefore', 'totara_reportbuilder') .
+                userdate(time() + 60*60*24*30, '%c') . $includenulls;
         case 'currentfinancial':
-            return $title . ' ' . get_string('occurredthisfinancialyear','local_reportbuilder') .
+            return $title . ' ' . get_string('occurredthisfinancialyear', 'totara_reportbuilder') .
                 $includenulls;
         case 'lastfinancial':
-            return $title . ' ' . get_string('occurredprevfinancialyear','local_reportbuilder') .
+            return $title . ' ' . get_string('occurredprevfinancialyear', 'totara_reportbuilder') .
                 $includenulls;
         default:
             return 'Error with date content restriction';
@@ -846,36 +860,34 @@ class rb_date_content extends rb_base_content {
         $incnulls = reportbuilder::get_setting($reportid, $type, 'incnulls');
 
         $mform->addElement('header', 'date_header', get_string('showbyx',
-            'local_reportbuilder', lowerfirst($title)));
+            'totara_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'date_enable', '',
-            get_string('showbasedonx', 'local_reportbuilder',
-            lowerfirst($title)));
+            get_string('showbasedonx', 'totara_reportbuilder',
+            lcfirst($title)));
         $mform->setDefault('date_enable', $enable);
         $mform->disabledIf('date_enable', 'contentenabled', 'eq', 0);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('thepast', 'local_reportbuilder'), 'past');
+            get_string('thepast', 'totara_reportbuilder'), 'past');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('thefuture', 'local_reportbuilder'), 'future');
+            get_string('thefuture', 'totara_reportbuilder'), 'future');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('last30days', 'local_reportbuilder'), 'last30days');
+            get_string('last30days', 'totara_reportbuilder'), 'last30days');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('next30days', 'local_reportbuilder'), 'next30days');
+            get_string('next30days', 'totara_reportbuilder'), 'next30days');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('currentfinancial', 'local_reportbuilder'), 'currentfinancial');
+            get_string('currentfinancial', 'totara_reportbuilder'), 'currentfinancial');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('lastfinancial', 'local_reportbuilder'), 'lastfinancial');
+            get_string('lastfinancial', 'totara_reportbuilder'), 'lastfinancial');
         $mform->addGroup($radiogroup, 'date_when_group',
-            get_string('includerecordsfrom', 'local_reportbuilder'), '<br />', false);
+            get_string('includerecordsfrom', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
         $mform->setDefault('date_when', $when);
         $mform->disabledIf('date_when_group', 'contentenabled', 'eq', 0);
         $mform->disabledIf('date_when_group', 'date_enable', 'notchecked');
-        $mform->setHelpButton('date_header',
-            array('reportbuilderdate',
-            get_string('showbydate', 'local_reportbuilder'), 'local_reportbuilder'));
+        $mform->addHelpButton('date_header', 'reportbuilderdate', 'totara_reportbuilder');
 
         $mform->addElement('checkbox', 'date_incnulls',
-            get_string('includeemptydates', 'local_reportbuilder'));
+            get_string('includeemptydates', 'totara_reportbuilder'));
         $mform->setDefault('date_incnulls', $incnulls);
         $mform->disabledIf('date_incnulls', 'date_enable', 'notchecked');
         $mform->disabledIf('date_incnulls', 'contentenabled', 'eq', 0);
@@ -930,9 +942,11 @@ class rb_course_tag_content extends rb_base_content {
      * @param string $field SQL field to apply the restriction against
      * @param integer $reportid ID of the report
      *
-     * @return string SQL snippet to be used in a WHERE clause
+     * @return array containing SQL snippet to be used in a WHERE clause, as well as array of SQL params
      */
     function sql_restriction($field, $reportid) {
+        global $DB;
+
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
 
@@ -951,24 +965,60 @@ class rb_course_tag_content extends rb_base_content {
             $settings['exclude_logic'] == 0) ? ' OR ' : ' AND ';
 
         // loop through current official tags
-        $tags = get_records('tag', 'tagtype', 'official', 'name');
-        if($tags) {
-            foreach($tags as $tag) {
-                // if found, add the SQL
-                // we can't just use LIKE '%tag%' because we might get
-                // partial number matches
-                if(in_array($tag->id, $itags)) {
-                    $include_sql[] = "($field LIKE '{$tag->id}' OR " .
-                    "$field LIKE '{$tag->id}|%' OR " .
-                    "$field LIKE '%|{$tag->id}' OR " .
-                    "$field LIKE '%|{$tag->id}|%')\n";
-                }
-                if(in_array($tag->id, $etags)) {
-                    $exclude_sql[] = "($field NOT LIKE '{$tag->id}' AND " .
-                    "$field NOT LIKE '{$tag->id}|%' AND " .
-                    "$field NOT LIKE '%|{$tag->id}' AND " .
-                    "$field NOT LIKE '%|{$tag->id}|%')\n";
-                }
+        $tags = $DB->get_records('tag', array('tagtype' => 'official'), 'name');
+        $params = array();
+        $count = 1;
+        foreach ($tags as $tag) {
+            // if found, add the SQL
+            // we can't just use LIKE '%tag%' because we might get
+            // partial number matches
+            if (in_array($tag->id, $itags)) {
+                $uniqueparam = rb_unique_param("cctre_{$count}_");
+                $elike = $DB->sql_like($field, ":{$uniqueparam}");
+                $params[$uniqueparam] = $DB->sql_like_escape($tag->id);
+
+                $uniqueparam = rb_unique_param("cctrew_{$count}_");
+                $ewlike = $DB->sql_like($field, ":{$uniqueparam}");
+                $params[$uniqueparam] = $DB->sql_like_escape($tag->id).'|%';
+
+                $uniqueparam = rb_unique_param("cctrsw_{$count}_");
+                $swlike = $DB->sql_like($field, ":{$uniqueparam}");
+                $params[$uniqueparam] = '%|'.$DB->sql_like_escape($tag->id);
+
+                $uniqueparam = rb_unique_param("cctrsc_{$count}_");
+                $clike = $DB->sql_like($field, ":{$uniqueparam}");
+                $params[$uniqueparam] = '%|'.$DB->sql_like_escape($tag->id).'|%';
+
+                $include_sql[] = "({$elike} OR
+                {$ewlike} OR
+                {$swlike} OR
+                {$clike})\n";
+
+                $count++;
+            }
+            if (in_array($tag->id, $etags)) {
+                $uniqueparam = rb_unique_param("cctre_{$count}_");
+                $enotlike = $DB->sql_like($field, ":{$uniqueparam}", true, true, true);
+                $params[$uniqueparam] = $DB->sql_like_escape($tag->id);
+
+                $uniqueparam = rb_unique_param("cctrew_{$count}_");
+                $ewnotlike = $DB->sql_like($field, ":{$uniqueparam}", true, true, true);
+                $params[$uniqueparam] = $DB->sql_like_escape($tag->id).'|%';
+
+                $uniqueparam = rb_unique_param("cctrsw_{$count}_");
+                $swnotlike = $DB->sql_like($field, ":{$uniqueparam}", true, true, true);
+                $params[$uniqueparam] = '%|'.$DB->sql_like_escape($tag->id);
+
+                $uniqueparam = rb_unique_param("cctrsc_{$count}_");
+                $cnotlike = $DB->sql_like($field, ":{$uniqueparam}", true, true, true);
+                $params[$uniqueparam] = '%|'.$DB->sql_like_escape($tag->id).'|%';
+
+                $include_sql[] = "({$enotlike} AND
+                {$ewnotlike} AND
+                {$swnotlike} AND
+                {$cnotlike})\n";
+
+                $count++;
             }
         }
 
@@ -977,15 +1027,15 @@ class rb_course_tag_content extends rb_base_content {
         $excludestr = implode($exclude_logic, $exclude_sql);
 
         // now merge together
-        if($includestr && $excludestr) {
-            return " ($includestr AND $excludestr) ";
+        if ($includestr && $excludestr) {
+            return array(" ($includestr AND $excludestr) ", $params);
         } else if ($includestr) {
-            return " $includestr ";
+            return array(" $includestr ", $params);
         } else if ($excludestr) {
-            return " $excludestr ";
+            return array(" $excludestr ", $params);
         } else {
             // using 1=0 instead of FALSE for MSSQL support
-            return '1=0';
+            return array('1=0', $params);
         }
     }
 
@@ -998,6 +1048,8 @@ class rb_course_tag_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
+        global $DB;
+
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
@@ -1014,33 +1066,31 @@ class rb_course_tag_content extends rb_base_content {
         $exclude_logic = (isset($settings['exclude_logic']) &&
             $settings['exclude_logic'] == 0) ? 'and' : 'or';
 
-        $tags = get_records('tag', 'tagtype', 'official', 'name');
-        if($tags) {
-            foreach($tags as $tag) {
-                if(in_array($tag->id, $itags)) {
-                    $include_text[] = '"' . $tag->name . '"';
-                }
-                if(in_array($tag->id, $etags)) {
-                    $exclude_text[] = '"' . $tag->name . '"';
-                }
+        $tags = $DB->get_records('tag', array('tagtype' => 'official'), 'name');
+        foreach ($tags as $tag) {
+            if (in_array($tag->id, $itags)) {
+                $include_text[] = '"' . $tag->name . '"';
+            }
+            if (in_array($tag->id, $etags)) {
+                $exclude_text[] = '"' . $tag->name . '"';
             }
         }
 
-        if(count($include_text) > 0) {
-            $includestr = $title . ' ' . get_string('istaggedwith', 'local_reportbuilder') .
-                ' ' . implode(get_string($include_logic, 'local_reportbuilder'), $include_text);
+        if (count($include_text) > 0) {
+            $includestr = $title . ' ' . get_string('istaggedwith', 'totara_reportbuilder') .
+                ' ' . implode(get_string($include_logic, 'totara_reportbuilder'), $include_text);
         } else {
             $includestr = '';
         }
-        if(count($exclude_text) > 0) {
-            $excludestr = $title . ' ' . get_string('isnttaggedwith', 'local_reportbuilder') .
-                ' ' . implode(get_string($exclude_logic, 'local_reportbuilder'), $exclude_text);
+        if (count($exclude_text) > 0) {
+            $excludestr = $title . ' ' . get_string('isnttaggedwith', 'totara_reportbuilder') .
+                ' ' . implode(get_string($exclude_logic, 'totara_reportbuilder'), $exclude_text);
         } else {
             $excludestr = '';
         }
 
-        if($includestr && $excludestr) {
-            return $includestr . get_string('and','local_reportbuilder') . $excludestr;
+        if ($includestr && $excludestr) {
+            return $includestr . get_string('and', 'totara_reportbuilder') . $excludestr;
         } else if ($includestr) {
             return $includestr;
         } else if ($excludestr) {
@@ -1060,6 +1110,7 @@ class rb_course_tag_content extends rb_base_content {
      * @param string $title Name of the field the restriction is acting on
      */
     function form_template(&$mform, $reportid, $title) {
+        global $DB;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -1072,67 +1123,65 @@ class rb_course_tag_content extends rb_base_content {
             reportbuilder::get_setting($reportid, $type, 'excluded'));
 
         $mform->addElement('header', 'course_tag_header',
-            get_string('showbycoursetag','local_reportbuilder'));
-        $mform->setHelpButton('course_tag_header',
-            array('reportbuildercoursetag',
-            get_string('showbycoursetag', 'local_reportbuilder'), 'local_reportbuilder'));
+            get_string('showbycoursetag', 'totara_reportbuilder'));
+        $mform->addHelpButton('course_tag_header', 'reportbuildercoursetag', 'totara_reportbuilder');
 
         $mform->addElement('checkbox', 'course_tag_enable', '',
-            get_string('coursetagenable','local_reportbuilder'));
+            get_string('coursetagenable', 'totara_reportbuilder'));
         $mform->setDefault('course_tag_enable', $enable);
-        $mform->disabledIf('course_tag_enable','contentenabled', 'eq', 0);
+        $mform->disabledIf('course_tag_enable', 'contentenabled', 'eq', 0);
 
-        $mform->addElement('html', '<br />');
+        $mform->addElement('html', html_writer::empty_tag('br'));
 
         // include the following tags
         $checkgroup = array();
-        $tags = get_records('tag', 'tagtype', 'official','name');
-        if($tags) {
-            $opts = array(1 => get_string('anyofthefollowing','local_reportbuilder'),
-                          0 => get_string('allofthefollowing','local_reportbuilder'));
-            $mform->addElement('select','course_tag_include_logic', get_string('includecoursetags','local_reportbuilder'), $opts);
+        $tags = $DB->get_records('tag', array('tagtype' => 'official'), 'name');
+        if (!empty($tags)) {
+            $opts = array(1 => get_string('anyofthefollowing', 'totara_reportbuilder'),
+                          0 => get_string('allofthefollowing', 'totara_reportbuilder'));
+            $mform->addElement('select', 'course_tag_include_logic', get_string('includecoursetags', 'totara_reportbuilder'), $opts);
             $mform->setDefault('course_tag_include_logic', $include_logic);
-            $mform->disabledIf('course_tag_enable','contentenabled', 'eq', 0);
-            foreach($tags as $tag) {
+            $mform->disabledIf('course_tag_enable', 'contentenabled', 'eq', 0);
+            foreach ($tags as $tag) {
                 $checkgroup[] =& $mform->createElement('checkbox',
                     'course_tag_include_option_' . $tag->id, '', $tag->name, 1);
                 $mform->disabledIf('course_tag_include_option_' . $tag->id,
                     'course_tag_exclude_option_' . $tag->id, 'checked');
-                if(in_array($tag->id, $activeincludes)) {
+                if (in_array($tag->id, $activeincludes)) {
                     $mform->setDefault('course_tag_include_option_' . $tag->id, 1);
                 }
             }
         }
         $mform->addGroup($checkgroup, 'course_tag_include_group',
-            '', '<br />', false);
+            '', html_writer::empty_tag('br'), false);
         $mform->disabledIf('course_tag_include_group', 'contentenabled', 'eq', 0);
         $mform->disabledIf('course_tag_include_group', 'course_tag_enable',
             'notchecked');
 
-        $mform->addElement('html', '<br /><br />');
+        $mform->addElement('html', str_repeat(html_writer::empty_tag('br'), 2));
 
         // exclude the following tags
         $checkgroup = array();
-        if($tags) {
-            $opts = array(1 => get_string('anyofthefollowing','local_reportbuilder'),
-                          0 => get_string('allofthefollowing','local_reportbuilder'));
-            $mform->addElement('select','course_tag_exclude_logic', get_string('excludecoursetags','local_reportbuilder'), $opts);
+        if ($tags) {
+            $opts = array(1 => get_string('anyofthefollowing', 'totara_reportbuilder'),
+                          0 => get_string('allofthefollowing', 'totara_reportbuilder'));
+            $mform->addElement('select', 'course_tag_exclude_logic', get_string('excludecoursetags', 'totara_reportbuilder'), $opts);
             $mform->setDefault('course_tag_exclude_logic', $exclude_logic);
-            $mform->disabledIf('course_tag_enable','contentenabled', 'eq', 0);
-            foreach($tags as $tag) {
+            $mform->disabledIf('course_tag_enable', 'contentenabled', 'eq', 0);
+            foreach ($tags as $tag) {
                 $checkgroup[] =& $mform->createElement('checkbox',
                     'course_tag_exclude_option_' . $tag->id, '', $tag->name, 1);
                 $mform->disabledIf('course_tag_exclude_option_' . $tag->id,
                     'course_tag_include_option_' . $tag->id, 'checked');
-                if(in_array($tag->id, $activeexcludes)) {
+                if (in_array($tag->id, $activeexcludes)) {
                     $mform->setDefault('course_tag_exclude_option_' . $tag->id, 1);
                 }
             }
         }
         $mform->addGroup($checkgroup, 'course_tag_exclude_group',
-            '', '<br />', false);
-        $mform->disabledIf('course_tag_exclude_group','contentenabled', 'eq', 0);
-        $mform->disabledIf('course_tag_exclude_group','course_tag_enable',
+            '', html_writer::empty_tag('br'), false);
+        $mform->disabledIf('course_tag_exclude_group', 'contentenabled', 'eq', 0);
+        $mform->disabledIf('course_tag_exclude_group', 'course_tag_enable',
             'notchecked');
 
     }
@@ -1147,6 +1196,8 @@ class rb_course_tag_content extends rb_base_content {
      * @return boolean True if form was successfully processed
      */
     function form_process($reportid, $fromform) {
+        global $DB;
+
         $status = true;
         // remove the rb_ from class
         $type = substr(get_class($this), 3);
@@ -1170,24 +1221,24 @@ class rb_course_tag_content extends rb_base_content {
             'exclude_logic', $excludelogic);
 
         // tag settings
-        $tags = get_records('tag', 'tagtype', 'official');
-        if($tags) {
+        $tags = $DB->get_records('tag', array('tagtype' => 'official'));
+        if (!empty($tags)) {
             $activeincludes = array();
             $activeexcludes = array();
-            foreach($tags as $tag) {
+            foreach ($tags as $tag) {
                 $includename = 'course_tag_include_option_' . $tag->id;
                 $excludename = 'course_tag_exclude_option_' . $tag->id;
 
                 // included tags
-                if(isset($fromform->$includename)) {
-                    if($fromform->$includename == 1) {
+                if (isset($fromform->$includename)) {
+                    if ($fromform->$includename == 1) {
                         $activeincludes[] = $tag->id;
                     }
                 }
 
                 // excluded tags
-                if(isset($fromform->$excludename)) {
-                    if($fromform->$excludename == 1) {
+                if (isset($fromform->$excludename)) {
+                    if ($fromform->$excludename == 1) {
                         $activeexcludes[] = $tag->id;
                     }
                 }

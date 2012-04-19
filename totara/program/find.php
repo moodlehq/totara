@@ -30,13 +30,15 @@ $format = optional_param('format','', PARAM_TEXT); // export format
 
 require_login();
 
+$renderer = $PAGE->get_renderer('totara_reportbuilder');
+
 $strheading = get_string('searchprograms', 'local_program');
 $shortname = 'findprograms';
 
 $report = reportbuilder_get_embedded_report($shortname);
 
-if($format!='') {
-    add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id='. $report->_id,
+if ($format != '') {
+    add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id=' . $report->_id,
         $report->fullname);
     $report->export_data($format);
     die;
@@ -60,27 +62,27 @@ $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
 
 $heading = $strheading . ': ' .
-    $report->print_result_count_string($countfiltered, $countall);
+    $renderer->print_result_count_string($countfiltered, $countall);
 print_heading($heading);
 
-print $report->print_description();
+print $renderer->print_description($report->description, $report->_id);
 
 $report->display_search();
 
 // print saved search buttons if appropriate
 print '<table align="right" border="0"><tr><td>';
-print $report->save_button();
+print $renderer->save_button($report->_id);
 print '</td><td>';
 print $report->view_saved_menu();
 print '</td></tr></table>';
 print "<br /><br />";
 
-if($countfiltered>0) {
-    print $report->showhide_button();
+if ($countfiltered > 0) {
+    print $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     print $report->edit_button();
     // export button
-    $report->export_select();
+    $renderer->export_select($report->_id);
 }
 
 print_footer();

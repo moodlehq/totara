@@ -1,5 +1,29 @@
-<?php //$Id$
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/lib.php');
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @package totara
+ * @subpackage reportbuilder
+ */
+
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
 
 /**
  * Generic filter for numbers.
@@ -21,11 +45,11 @@ class filter_number extends filter_type {
      */
     function getOperators() {
         return array(0 => get_string('isequalto', 'filters'),
-                     1 => get_string('isnotequalto','filters'),
-                     2 => get_string('isgreaterthan','filters'),
-                     3 => get_string('islessthan','filters'),
-                     4 => get_string('isgreaterorequalto','filters'),
-                     5 => get_string('islessthanorequalto','filters'));
+                     1 => get_string('isnotequalto', 'filters'),
+                     2 => get_string('isgreaterthan', 'filters'),
+                     3 => get_string('islessthan', 'filters'),
+                     4 => get_string('isgreaterorequalto', 'filters'),
+                     5 => get_string('islessthanorequalto', 'filters'));
     }
 
     /**
@@ -39,23 +63,23 @@ class filter_number extends filter_type {
         $advanced = $this->_filter->advanced;
 
         $objs = array();
-        $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->getOperators());
+        $objs[] =& $mform->createElement('select', $this->_name . '_op', null, $this->getOperators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
-        $grp =& $mform->addElement('group', $this->_name.'_grp', $label, $objs, '', false);
-        $grp->setHelpButton(array('number',$label,'filters'));
+        $grp =& $mform->addElement('group', $this->_name . '_grp', $label, $objs, '', false);
+        $mform->addHelpButton($grp->_name, 'filternumber', 'filters');
         if ($advanced) {
-            $mform->setAdvanced($this->_name.'_grp');
+            $mform->setAdvanced($this->_name . '_grp');
         }
 
         // set default values
-        if(array_key_exists($this->_name,$SESSION->{$sessionname})) {
+        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
             $defaults = $SESSION->{$sessionname}[$this->_name];
         }
         // TODO get rid of need for [0]
-        if(isset($defaults[0]['operator'])) {
-            $mform->setDefault($this->_name.'_op', $defaults[0]['operator']);
+        if (isset($defaults[0]['operator'])) {
+            $mform->setDefault($this->_name . '_op', $defaults[0]['operator']);
         }
-        if(isset($defaults[0]['value'])) {
+        if (isset($defaults[0]['value'])) {
             $mform->setDefault($this->_name, $defaults[0]['value']);
         }
     }
@@ -67,14 +91,14 @@ class filter_number extends filter_type {
      */
     function check_data($formdata) {
         $field    = $this->_name;
-        $operator = $field.'_op';
+        $operator = $field . '_op';
         $value = (isset($formdata->$field)) ? $formdata->$field : '';
         if (array_key_exists($operator, $formdata)) {
             if ($value == '') {
                 // no data - no change except for empty filter
                 return false;
             }
-            return array('operator'=>(int)$formdata->$operator, 'value'=>$value);
+            return array('operator' => (int)$formdata->$operator, 'value' => $value);
         }
 
         return false;
@@ -83,36 +107,41 @@ class filter_number extends filter_type {
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array containing filtering condition SQL clause and params
      */
     function get_sql_filter($data) {
         $operator = $data['operator'];
-        $value    = (float) addslashes($data['value']);
+        $value    = (float) $data['value'];
         $query    = $this->_filter->get_field();
 
         if ($value === '') {
-            return '';
+            return array('', array());
         }
 
+        $uniqueparam = rb_unique_param('fn');
         switch($operator) {
             case 0: // equal
-                $res = "= $value"; break;
+                $res = "= :{$uniqueparam}"; break;
             case 1: // not equal
-                $res = "!= $value"; break;
+                $res = "!= :{$uniqueparam}"; break;
             case 2: // greater than
-                $res = "> $value"; break;
+                $res = "> :{$uniqueparam}"; break;
             case 3: // less than
-                $res = "< $value"; break;
+                $res = "< :{$uniqueparam}"; break;
             case 4: // greater or equal to
-                $res = ">= $value"; break;
+                $res = ">= :{$uniqueparam}"; break;
             case 5: // less than or equal to
-                $res = "<= $value"; break;
+                $res = "<= :{$uniqueparam}"; break;
             default:
-                return '';
+                return array('', array());
         }
+        $params = array($uniqueparam => $value);
+
         // this will cope with empty values but not anything that can't be cast to a float
         // make sure the source column only contains numbers!
-        return 'CASE WHEN '.$query.' IS NULL THEN 0 ELSE ' . sql_cast2float($query) . ' END '.$res;
+        $sql = 'CASE WHEN ' . $query . ' IS NULL THEN 0 ELSE ' . sql_cast2float($query) . ' END ' . $res;
+
+        return array($sql, $params);
     }
 
     /**
@@ -126,9 +155,9 @@ class filter_number extends filter_type {
         $operators = $this->getOperators();
         $label     = $this->_filter->label;
 
-        $a = new object();
+        $a = new stdClass();
         $a->label    = $label;
-        $a->value    = '"'.s($value).'"';
+        $a->value    = '"' . s($value) . '"';
         $a->operator = $operators[$operator];
 
 

@@ -1,0 +1,12 @@
+
+/* Spacing for the multicheck report builder filter */
+div.multicheck-items fieldset.felement span {
+    display: block;
+    float: left;
+    width: 30%;
+}
+
+/* Override the normal margin on the form elements on the report column/filter pages
+ * so they fit nicely in the html table */
+div.reportbuilderform .fitem .felement {margin-left: 0px;}
+

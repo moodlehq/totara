@@ -38,12 +38,11 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      *               group is set to 'all'
      */
     function get_all_items() {
+        global $DB;
+
         // return all feedback item IDs
-        if($all = get_records('feedback', '', '', 'id', 'id')) {
-            return array_keys($all);
-        } else {
-            return array();
-        }
+        $all = $DB->get_records('feedback', null, 'id', 'id');
+        return array_keys($all);
     }
 
     /*
@@ -56,7 +55,8 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return boolean True if update was successful
      */
     function run($item, $lastchecked, &$message) {
-        global $CFG;
+        global $CFG, $DB;
+
         $groupid = $this->groupid;
         // need access to DB modification functions
         require_once($CFG->libdir . '/ddllib.php');
@@ -82,7 +82,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
         }
 
         // get list of questions that should be processed for this group
-        $valid_questions = get_records($questionstable, '', '', 'id');
+        $valid_questions = $DB->get_records($questionstable, null, 'id');
 
         mtrace('Processing ' . count($responses) .
             ' responses for feedback ' . $item);
@@ -129,14 +129,15 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return boolean True if records found
      */
     private function remove_deleted_items() {
-        global $CFG;
+        global $DB;
+
         $answerstable = "report_builder_{$this->prefix}_{$this->groupid}_a";
 
         // returns response IDs that are in answer table
         // but not in feedback_completed
-        $deleted = get_records_sql("SELECT a.responseid
-            FROM {$CFG->prefix}$answerstable a
-            LEFT JOIN {$CFG->prefix}feedback_completed fc
+        $deleted = $DB->get_records_sql("SELECT a.responseid
+            FROM {{$answerstable}} a
+            LEFT JOIN {feedback_completed} fc
             ON fc.id = a.responseid
             WHERE fc.id IS NULL");
 
@@ -145,7 +146,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
             foreach(array_keys($deleted) as $responseid) {
                 mtrace('Removing out of date record with response ID of ' .
                     $responseid);
-                delete_records($answerstable, 'responseid', $responseid);
+                $DB->delete_records($answerstable, array('responseid' => $responseid));
             }
             return true;
         }
@@ -178,6 +179,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      */
     private function process_responses($responses, $lastchecked,
         $valid_questions, $item) {
+        global $DB;
 
         $groupid = $this->groupid;
         $answerstable = "report_builder_{$this->prefix}_{$groupid}_a";
@@ -207,7 +209,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
             $responsecount = 0;
 
             // create a skeleton DB object
-            $todb = new object();
+            $todb = new stdClass();
             $todb->feedbackid = $item;
             $todb->responseid = $response->id;
             // don't store userid if response was anonymous
@@ -256,7 +258,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
                 continue;
             }
 
-            if(!insert_record($answerstable, $todb)) {
+            if (!$DB->insert_record($answerstable, $todb)) {
                 // something went wrong saving the data
                 $counts['failedinsert']++;
             }
@@ -303,38 +305,38 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
     private function add_response_answer(&$todb, $value, $question) {
         $qid = $question->id;
         $type = $question->typ;
-        switch($type) {
+        switch ($type) {
         // The trainer question actually saves the facetoface session
         // ID, rather than the trainer ID, as this allows trainers to
         // be added after the feedback has been recorded
         case 'trainer':
-            if($value != '') {
-                $todb->sessionid = addslashes($value);
+            if ($value != '') {
+                $todb->sessionid = $value;
             }
         case 'textfield':
         case 'textarea':
         case 'numeric':
-            if($value != '') {
+            if ($value != '') {
                 $fieldname = 'q' . $qid . '_answer';
-                $todb->$fieldname = addslashes($value);
+                $todb->$fieldname = $value;
             }
             break;
         case 'radio':
         case 'radiorated':
         case 'dropdown':
         case 'dropdownrated':
-            if($value != 0) {
+            if ($value != 0) {
                 $options = $this->extract_item_options($question);
                 $opt_num = 1;
-                foreach($options as $option) {
+                foreach ($options as $option) {
                     $answername = 'q' . $qid . '_answer';
                     $valuename = 'q' . $qid . '_value';
                     $optionname = 'q' . $qid . '_' . $opt_num;
-                    if($opt_num == $value) {
+                    if ($opt_num == $value) {
                         // if value matches this option, save the answer,
                         // value and set that option field to 1
-                        $todb->$answername = addslashes($option->name);
-                        $todb->$valuename = addslashes($option->value);
+                        $todb->$answername = $option->name;
+                        $todb->$valuename = $option->value;
                         $todb->$optionname = 1;
                     } else {
                         $todb->$optionname = 0;
@@ -344,7 +346,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
             }
             break;
         case 'check':
-            if($value != 0) {
+            if ($value != 0) {
                 $options = $this->extract_item_options($question);
                 $answername = 'q' . $qid . '_answer';
                 $valuename = 'q' . $qid . '_value';
@@ -357,15 +359,15 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
                 $values = array();
 
                 $opt_num = 1;
-                foreach($options as $option) {
+                foreach ($options as $option) {
                     // first assume that it's not checked
                     $optionname = 'q' . $qid . '_' . $opt_num;
                     $todb->$optionname = 0;
 
                     // if it is checked, override the individual option field
                     // and add this item to the names and values arrays
-                    foreach($allpicked as $picked) {
-                        if($opt_num == $picked) {
+                    foreach ($allpicked as $picked) {
+                        if ($opt_num == $picked) {
                             $todb->$optionname = 1;
                             $names[] = $option->name;
                             $values[] = $option->value;
@@ -375,11 +377,11 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
                 }
 
                 // add an answers field if any fields checked
-                if(count($names) > 0) {
-                    $todb->$answername = addslashes(implode(', ', $names));
+                if (count($names) > 0) {
+                    $todb->$answername = implode(', ', $names);
                 }
                 // add an average value field if any fields checked
-                if(count($values) > 0) {
+                if (count($values) > 0) {
                     $todb->$valuename = array_sum($values) / count($values);
                 }
             }
@@ -419,16 +421,16 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return array Array of answer objects, or an empty array if none found
      */
     private function get_response_answers($responseid) {
-        global $CFG;
-        $answers = get_records_sql("
+        global $DB;
+
+        return $DB->get_records_sql("
             SELECT i.name, i.presentation, i.typ, v.value
-            FROM {$CFG->prefix}feedback_value v
-            JOIN {$CFG->prefix}feedback_item i ON i.id = v.item
+            FROM {feedback_value} v
+            JOIN {feedback_item} i ON i.id = v.item
             WHERE i.hasvalue = 1
-            AND v.completed = $responseid
+            AND v.completed = ?
             ORDER BY i.position
-        ");
-        return $answers ? $answers : array();
+        ", array($responseid));
     }
 
 
@@ -440,13 +442,9 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return array Array of response objects, or an empty array if none found
      */
     private function get_completed_responses($item) {
-        if($responses = get_records('feedback_completed', 'feedback', $item,
-            'id')) {
-            return $responses;
-        } else {
-            return array();
-        }
+        global $DB;
 
+        return $DB->get_records('feedback_completed', array('feedback' => $item), 'id');
     }
 
     /*
@@ -462,6 +460,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      *
      */
     function is_initialized() {
+        global $DB;
 
         $groupid = $this->groupid;
 
@@ -473,11 +472,12 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
         );
 
         // check all tables needed by this preprocessor and group exist
-        foreach($suffixes as $suffix) {
+        $dbman = $DB->get_manager();
+        foreach ($suffixes as $suffix) {
             $name = 'report_builder_' . $this->prefix . '_' .
                 $groupid . '_' . $suffix;
-            $table = new XMLDBTable($name);
-            if(!table_exists($table)) {
+            $table = new xmldb_table($name);
+            if (!$dbman->table_exists($table)) {
                 return false;
             }
         }
@@ -498,11 +498,12 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return boolean True if initialization successful
      */
     function initialize_group($item=null) {
+        global $DB;
+
         $status = true;
 
         // find out which item to use as the template for initializing
-        $baseitem = get_field('report_builder_group', 'baseitem', 'id',
-            $this->groupid);
+        $baseitem = $DB->get_field('report_builder_group', 'baseitem', array('id' => $this->groupid));
         if($item === null && $baseitem === null) {
             return false;
         } else if ($baseitem === null) {
@@ -529,6 +530,8 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return boolean True if tables removed successfully
      */
     function drop_group_tables() {
+        global $DB;
+
         $status = true;
         $groupid = $this->groupid;
 
@@ -540,12 +543,13 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
         );
 
         // check all tables needed by this preprocessor and group exist
+        $dbman = $DB->get_manager();
         foreach($suffixes as $suffix) {
             $name = 'report_builder_' . $this->prefix . '_' .
                 $groupid . '_' . $suffix;
-            $table = new XMLDBTable($name);
-            if(table_exists($table)) {
-                $status = $status && drop_table($table, true, false);
+            $table = new xmldb_table($name);
+            if ($dbman->table_exists($table)) {
+                $status = $status && $dbman->drop_table($table, true, false);
             }
         }
 
@@ -562,57 +566,48 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return boolean True if initialization successful
      */
     private function initialize_questions_table($item) {
-        global $CFG;
+        global $DB;
+
         $groupid = $this->groupid;
         $status = true;
         // create questions table
+        $dbman = $DB->get_manager();
         $questionstable = "report_builder_{$this->prefix}_{$groupid}_q";
-        $table = new XMLDBTable($questionstable);
-        if(!table_exists($table)) {
+        $table = new xmldb_table($questionstable);
+        if (!$dbman->table_exists($table)) {
 
             /// Adding fields to questions table
-            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10',
-                XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-            $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null,
-                XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('presentation', XMLDB_TYPE_TEXT, 'medium',
-                XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('typ', XMLDB_TYPE_CHAR, '255', null,
-                XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10',
-                XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null);
+            $table->add_field('presentation', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null);
+            $table->add_field('typ', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null);
+            $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
 
             /// Adding keys to questions table
-            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-            $status = $status && create_table($table, true, false);
-
-            //mtrace('Creating questions table for preprocessor '.
-            //    $this->name . ' and group ' . $groupid . ' using item ' .
-            //    $item . ' as template.');
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $dbman->create_table($table, true, false);
 
             // add questions for this item
-            if($questions = get_records_sql("
+            $questions = $DB->get_records_sql("
                 SELECT i.name, i.presentation, i.typ
-                FROM {$CFG->prefix}feedback f
-                LEFT JOIN {$CFG->prefix}feedback_item i
+                FROM {feedback} f
+                LEFT JOIN {feedback_item} i
                 ON f.id = i.feedback
-                WHERE f.id = {$item} AND i.hasvalue != 0
-                ORDER BY i.position")) {
+                WHERE f.id = ? AND i.hasvalue != 0
+                ORDER BY i.position", array($item));
 
-                $i = 1;
-                foreach($questions as $question) {
-                    //mtrace('Inserting question ' . $i);
-                    $todb = new object();
-                    $todb->name = addslashes($question->name);
-                    $todb->presentation = addslashes($question->presentation);
-                    $todb->typ = addslashes($question->typ);
-                    $todb->sortorder = $i;
-                    $status = $status && insert_record($questionstable, $todb);
-                    $i++;
-                }
-
+            $i = 1;
+            foreach ($questions as $question) {
+                $todb = new stdClass();
+                $todb->name = $question->name;
+                $todb->presentation = $question->presentation;
+                $todb->typ = $question->typ;
+                $todb->sortorder = $i;
+                $status = $status && $DB->insert_record($questionstable, $todb);
+                $i++;
             }
         }
+
         return $status;
     }
 
@@ -627,59 +622,60 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return boolean True if initialization successful
      */
     private function initialize_question_options_table($item) {
+        global $DB;
+
         $status = true;
         $groupid = $this->groupid;
         $questionstable = "report_builder_{$this->prefix}_{$groupid}_q";
-        if($questions = get_records($questionstable)) {
-            $optionstable = "report_builder_{$this->prefix}_{$groupid}_opt";
-            $table = new XMLDBTable($optionstable);
-            if(!table_exists($table)) {
+        $questions = $DB->get_records($questionstable);
 
-                /// Adding fields to question options table
-                $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10',
-                    XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null,
-                    null);
-                $table->addFieldInfo('qid', XMLDB_TYPE_INTEGER, '10',
-                    XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-                $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null,
-                    XMLDB_NOTNULL, null, null);
-                $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10',
-                    XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        if (empty($questions)) {
+            return false;
+        }
 
-                /// Adding keys to question options table
-                $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-                $status = $status && create_table($table, true, false);
-                //mtrace('Creating question options table for preprocessor '.
-                //    $this->name . ' and group ' . $groupid . ' using item ' .
-                //    $item . ' as template.');
+        $dbman = $DB->get_manager();
+        $optionstable = "report_builder_{$this->prefix}_{$groupid}_opt";
+        $table = new xmldb_table($optionstable);
+        if (!$dbman->table_exists($table)) {
 
-                // question types that have options
-                // (and are supported)
-                $option_types = array('radio', 'radiorated', 'check', 'dropdown',
-                    'dropdownrated');
+            /// Adding fields to question options table
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('qid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null);
+            $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
 
-                foreach($questions as $question) {
-                    if(in_array($question->typ, $option_types)) {
-                        //mtrace('Inserting options for question ' . $question->id);
-                        // get details about any options in this question
-                        $options = $this->extract_item_options($question);
-                        if(is_array($options)) {
-                            // save each question option
-                            foreach($options as $option) {
-                                $todb = new object();
-                                $todb->qid = $option->qid;
-                                $todb->name = addslashes($option->name);
-                                $todb->sortorder = $option->sortorder;
-                                $status = $status &&
-                                    insert_record($optionstable, $todb);
-                            }
+            /// Adding keys to question options table
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $dbman->create_table($table, true, false);
+            //mtrace('Creating question options table for preprocessor '.
+            //    $this->name . ' and group ' . $groupid . ' using item ' .
+            //    $item . ' as template.');
+
+            // question types that have options
+            // (and are supported)
+            $option_types = array('radio', 'radiorated', 'check', 'dropdown',
+                'dropdownrated');
+
+            foreach ($questions as $question) {
+                if (in_array($question->typ, $option_types)) {
+                    //mtrace('Inserting options for question ' . $question->id);
+                    // get details about any options in this question
+                    $options = $this->extract_item_options($question);
+                    if (is_array($options)) {
+                        // save each question option
+                        foreach ($options as $option) {
+                            $todb = new stdClass();
+                            $todb->qid = $option->qid;
+                            $todb->name = $option->name;
+                            $todb->sortorder = $option->sortorder;
+                            $status = $status &&
+                                $DB->insert_record($optionstable, $todb);
                         }
                     }
                 }
             }
-        } else {
-            $status = false;
         }
+
         return $status;
     }
 
@@ -694,7 +690,6 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      *               have any options (like a textarea)
      */
     private function extract_item_options($question) {
-        global $CFG;
         $type = $question->typ;
         $status = true;
 
@@ -744,7 +739,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
             }
 
             // save the option info to the table
-            $optioninfo = new object();
+            $optioninfo = new stdClass();
             $optioninfo->qid = $question->id;
             $optioninfo->name = trim($name);
             $optioninfo->value = trim($value);
@@ -849,48 +844,44 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return boolean True if initialization successful
      */
     private function initialize_answers_table($item) {
+        global $DB;
+
         $groupid = $this->groupid;
         $status = true;
         $questionstable = "report_builder_{$this->prefix}_{$groupid}_q";
         $optionstable = "report_builder_{$this->prefix}_{$groupid}_opt";
 
         // create answers table
+        $dbman = $DB->get_manager();
         $answerstable = "report_builder_{$this->prefix}_{$groupid}_a";
-        $table = new XMLDBTable($answerstable);
-        if(!table_exists($table)) {
+        $table = new xmldb_table($answerstable);
+        if (!$dbman->table_exists($table)) {
 
             /// Adding standard fields to answers table
-            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10',
-                XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-            $table->addFieldInfo('feedbackid', XMLDB_TYPE_INTEGER, '10',
-                XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10',
-                XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('responseid', XMLDB_TYPE_INTEGER, '10',
-                XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('sessionid', XMLDB_TYPE_INTEGER, '10',
-                XMLDB_UNSIGNED, null, null, null, null, null);
-            $table->addFieldInfo('completedtime', XMLDB_TYPE_INTEGER, '10',
-                XMLDB_UNSIGNED, null, null, null, null, null);
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('feedbackid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            $table->add_field('responseid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            $table->add_field('sessionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+            $table->add_field('completedtime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
 
             // loop through questions and add the right columns for the
             // particular question type
-            if($questions = get_records($questionstable, '', '', 'sortorder')) {
-                $qnum = 1;
-                foreach($questions as $question) {
-                    $status = $status &&
-                        $this->add_question_fields($table, $qnum, $question->typ,
-                        $optionstable);
-                    $qnum++;
-                }
-            } else {
-                //mtrace("Can't generate answers table without questions!");
+            $questions = $DB->get_records($questionstable, null, 'sortorder');
+            if (empty($questions)) {
                 return false;
+            }
+            $qnum = 1;
+            foreach ($questions as $question) {
+                $status = $status &&
+                    $this->add_question_fields($table, $qnum, $question->typ,
+                    $optionstable);
+                $qnum++;
             }
 
             // Adding keys to questions table
-            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-            $status = $status && create_table($table, true, false);
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+            $dbman->create_table($table, true, false);
 
             //mtrace('Creating answers table for preprocessor '.
             //    $this->name . ' and group ' . $groupid . ' using item ' .
@@ -911,22 +902,21 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
      * @return boolean True if all fields are added okay
      */
     private function add_question_fields(&$table, $qnum, $type, $optionstable) {
+        global $DB;
+
         $status = true;
         switch($type) {
         case 'textfield':
             $status = $status &&
-                $table->addFieldInfo('q' . $qnum . '_answer',
-                    XMLDB_TYPE_CHAR, '255', null, null, null, null);
+                $table->add_field('q' . $qnum . '_answer', XMLDB_TYPE_CHAR, '255', null, null, null);
             break;
         case 'textarea':
             $status = $status &&
-                $table->addFieldInfo('q' . $qnum . '_answer',
-                    XMLDB_TYPE_TEXT, 'medium', null, null, null, null);
+                $table->add_field('q' . $qnum . '_answer', XMLDB_TYPE_TEXT, 'medium', null, null, null);
             break;
         case 'numeric':
             $status = $status &&
-                $table->addFieldInfo('q' . $qnum . '_answer',
-                    XMLDB_TYPE_NUMBER, '10', null, null, null, null);
+                $table->add_field('q' . $qnum . '_answer', XMLDB_TYPE_NUMBER, '10', null, null, null);
             break;
         case 'radio':
         case 'check':
@@ -934,18 +924,16 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
         case 'radiorated':
         case 'dropdownrated':
             $status = $status &&
-                $table->addFieldInfo('q' . $qnum . '_answer',
-                    XMLDB_TYPE_CHAR, '255', null, null, null, null);
+                $table->add_field('q' . $qnum . '_answer', XMLDB_TYPE_CHAR, '255', null, null, null);
             $status = $status &&
-                $table->addFieldInfo('q' . $qnum . '_value',
-                    XMLDB_TYPE_NUMBER, '10', null, null, null, null);
-            if($options = get_records($optionstable, 'qid', $qnum, 'sortorder')) {
+                $table->add_field('q' . $qnum . '_value', XMLDB_TYPE_NUMBER, '10', null, null, null);
+            $options = $DB->get_records($optionstable, array('qid' => $qnum), 'sortorder');
+            if (!empty($options)) {
                 $optnum = 1;
-                foreach($options as $option) {
+                foreach ($options as $option) {
 
                     $status = $status &&
-                        $table->addFieldInfo('q' . $qnum . '_' . $optnum,
-                            XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+                        $table->add_field('q' . $qnum . '_' . $optnum, XMLDB_TYPE_INTEGER, '10', null, null, null);
                     $optnum++;
                 }
             } else {

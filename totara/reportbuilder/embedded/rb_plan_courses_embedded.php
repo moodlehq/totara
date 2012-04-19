@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -37,12 +37,12 @@ class rb_plan_courses_embedded extends rb_base_embedded {
         $this->source = 'dp_course';
         $this->shortname = 'plan_courses';
         $this->defaultsortcolumn = 'course_courselink';
-        $this->fullname = get_string('recordoflearningcourses', 'local_plan');
+        $this->fullname = get_string('recordoflearningcourses', 'totara_plan');
         $this->columns = array(
             array(
                 'type' => 'course',
                 'value' => 'coursetypeicon',
-                'heading' => get_string('coursetypeicon', 'local_reportbuilder'),
+                'heading' => get_string('coursetypeicon', 'totara_reportbuilder'),
             ),
             array(
                 'type' => 'course',
@@ -76,7 +76,7 @@ class rb_plan_courses_embedded extends rb_base_embedded {
                 'type' => 'course',
                 'value' => 'status',
                 'advanced' => 1,
-            ),*/
+            ), */
             array(
                 'type' => 'plan',
                 'value' => 'name',
@@ -93,10 +93,10 @@ class rb_plan_courses_embedded extends rb_base_embedded {
         $this->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
 
         $this->embeddedparams = array();
-        if(isset($userid)) {
+        if (isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
         }
-        if(isset($rolstatus)) {
+        if (isset($rolstatus)) {
             $this->embeddedparams['rolstatus'] = $rolstatus;
         }
 

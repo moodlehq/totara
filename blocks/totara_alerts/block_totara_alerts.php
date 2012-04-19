@@ -57,6 +57,7 @@ class block_totara_alerts extends block_base {
         // initialise jquery requirements
         require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
         require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+
         $code = array();
         $code[] = TOTARA_JS_DIALOG;
         local_js($code);
@@ -92,7 +93,7 @@ class block_totara_alerts extends block_base {
                 //build the array of 3 table cell objects
                 $cells = array();
 
-                $icon = $OUTPUT->pix_icon('i/info', format_string($msg->subject), 'moodle', array('class' => 'msgicon',  'alt'=>format_string($msg->subject)));
+                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'theme', array('class' => 'msgicon',  'alt'=>format_string($msg->subject)));
                 if (!empty($msglink)) {
                     $url = new moodle_url($msglink);
                     $attributes = array('href' => $url);

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -31,8 +31,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
     public $defaultfilters, $requiredcolumns, $sourcetitle;
 
     function __construct() {
-        global $CFG;
-        $this->base = $CFG->prefix . 'course_completions';
+        $this->base = '{course_completions}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -61,28 +60,27 @@ class rb_source_course_completion_by_org extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
 
         // joinlist for this source
         $joinlist = array(
             new rb_join(
                 'completion_organisation',
                 'LEFT',
-                $CFG->prefix . 'org',
+                '{org}',
                 'completion_organisation.id = base.organisationid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'completion_position',
                 'LEFT',
-                $CFG->prefix . 'pos',
+                '{pos}',
                 'completion_position.id = base.positionid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'criteria',
                 'LEFT',
-                $CFG->prefix . 'course_completion_criteria',
+                '{course_completion_criteria}',
                 '(criteria.course = base.course AND ' .
                     'criteria.criteriatype = ' .
                     COMPLETION_CRITERIA_TYPE_GRADE . ')',
@@ -91,7 +89,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_join(
                 'critcompl',
                 'LEFT',
-                $CFG->prefix . 'course_completion_crit_compl',
+                '{course_completion_crit_compl}',
                 '(critcompl.userid = base.userid AND ' .
                     'critcompl.criteriaid = criteria.id AND ' .
                     '(critcompl.deleted IS NULL OR critcompl.deleted = 0))',
@@ -117,6 +115,8 @@ class rb_source_course_completion_by_org extends rb_base_source {
     }
 
     function define_columnoptions() {
+        global $DB;
+
         $columnoptions = array(
             // none-aggregated columns
             new rb_column_option(
@@ -144,7 +144,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
                 'user',
                 'fullname',
                 get_string('participants', 'rb_source_course_completion_by_org'),
-                sql_fullname('auser.firstname','auser.lastname'),
+                $DB->sql_fullname('auser.firstname', 'auser.lastname'),
                 array(
                     'joins' => 'auser',
                     'grouping' => 'comma_list_unique'
@@ -163,7 +163,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
                 get_string('numcompleted', 'rb_source_course_completion_by_org'),
                 'CASE WHEN base.timecompleted > 0 AND ' .
                     '(base.rpl IS NULL OR ' .
-                    sql_isempty('base', 'rpl', false, false) .
+                    $DB->sql_isempty('base', 'rpl', false, false) .
                     ') THEN 1 ELSE NULL END',
                 array('grouping' => 'count')
             ),
@@ -173,7 +173,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
                 get_string('percentagecompleted', 'rb_source_course_completion_by_org'),
                 'CASE WHEN base.timecompleted > 0 AND ' .
                     '(base.rpl IS NULL OR ' .
-                    sql_isempty('base', 'rpl', false, false) .
+                    $DB->sql_isempty('base', 'rpl', false, false) .
                     ') THEN 1 ELSE 0 END',
                 array('grouping' => 'percent')
             ),
@@ -183,7 +183,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
                 get_string('numcompletedviarpl', 'rb_source_course_completion_by_org'),
                 'CASE WHEN base.timecompleted > 0 AND ' .
                     '(base.rpl IS NOT NULL AND ' .
-                    sql_isnotempty('base', 'rpl', false, false) .
+                    $DB->sql_isnotempty('base', 'rpl', false, false) .
                     ') THEN 1 ELSE NULL END',
                 array('grouping' => 'count')
             ),
@@ -381,17 +381,6 @@ class rb_source_course_completion_by_org extends rb_base_source {
                 'value' => 'organisationpath',
                 'advanced' => 1,
             ),
-            /*
-            array(
-                'type' => 'course_completion',
-                'value' => 'completeddate',
-                'advanced' => 1,
-            ),
-            array(
-                'type' => 'course_completion',
-                'value' => 'status',
-                'advanced' => 1,
-            ),*/
         );
 
         return $defaultfilters;
@@ -434,14 +423,6 @@ class rb_source_course_completion_by_org extends rb_base_source {
     //
     //
 
-    function rb_filter_completion_status_list() {
-        // TODO obtain this scale from single source - db?
-        $proficiencyselect = array();
-        $proficiencyselect['Completed'] = 'Completed';
-        $proficiencyselect['Not Completed'] = 'Not Completed';
-
-        return $proficiencyselect;
-    }
 
 } // end of rb_source_course_completion class
 

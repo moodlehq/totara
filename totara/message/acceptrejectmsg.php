@@ -28,6 +28,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot.'/message/lib.php');
+require_once($CFG->dirroot.'/totara/message/lib.php');
 
 $id = required_param('id', PARAM_INT);
 $event = required_param('event', PARAM_RAW);
@@ -43,7 +44,7 @@ if (!in_array($event, array('onaccept', 'onreject'))) {
 }
 
 $metadata = $DB->get_record('message_metadata', array('messageid' => $id));
-$eventdata = totara_msg_eventdata($id, $event, $metadata);
+$eventdata = totara_message_eventdata($id, $event, $metadata);
 $msgtext = isset($eventdata->text) ? $eventdata->text : '';
 
 // check message ownership
@@ -52,7 +53,7 @@ if (!$msg || $msg->useridto != $USER->id || !confirm_sesskey()) {
     print_error('notyours', 'totara_message', $id);
 }
 
-$display = totara_msg_msgtype_text($metadata->msgtype);
+$display = totara_message_msgtype_text($metadata->msgtype);
 $type = $display['icon'];
 $subject = format_string($msg->subject);
 $type_alt = $display['text'];

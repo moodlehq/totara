@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -45,12 +45,12 @@ abstract class rb_base_source {
             'columnoptions',
             'filteroptions',
         );
-        foreach($properties as $property) {
-            if(!property_exists($this, $property)) {
-                $a = new object();
+        foreach ($properties as $property) {
+            if (!property_exists($this, $property)) {
+                $a = new stdClass();
                 $a->property = $property;
                 $a->class = get_class($this);
-                throw new Exception(get_string('error:propertyxmustbesetiny', 'local_reportbuilder', $a));
+                throw new Exception(get_string('error:propertyxmustbesetiny', 'totara_reportbuilder', $a));
             }
         }
 
@@ -63,8 +63,8 @@ abstract class rb_base_source {
             'grouptype' => 'none',
             'groupid' => null,
         );
-        foreach($defaults as $property => $default) {
-            if(!property_exists($this, $property)) {
+        foreach ($defaults as $property => $default) {
+            if (!property_exists($this, $property)) {
                 $this->$property = $default;
             } else if ($this->$property === null) {
                 $this->$property = $default;
@@ -91,51 +91,51 @@ abstract class rb_base_source {
         $reserved_words = explode(', ', 'access, accessible, add, all, alter, analyse, analyze, and, any, array, as, asc, asensitive, asymmetric, audit, authorization, autoincrement, avg, backup, before, begin, between, bigint, binary, blob, both, break, browse, bulk, by, call, cascade, case, cast, change, char, character, check, checkpoint, close, cluster, clustered, coalesce, collate, column, comment, commit, committed, compress, compute, condition, confirm, connect, connection, constraint, contains, containstable, continue, controlrow, convert, count, create, cross, current, current_date, current_role, current_time, current_timestamp, current_user, cursor, database, databases, date, day_hour, day_microsecond, day_minute, day_second, dbcc, deallocate, dec, decimal, declare, default, deferrable, delayed, delete, deny, desc, describe, deterministic, disk, distinct, distinctrow, distributed, div, do, double, drop, dual, dummy, dump, each, else, elseif, enclosed, end, errlvl, errorexit, escape, escaped, except, exclusive, exec, execute, exists, exit, explain, external, false, fetch, file, fillfactor, float, float4, float8, floppy, for, force, foreign, freetext, freetexttable, freeze, from, full, fulltext, function, goto, grant, group, having, high_priority, holdlock, hour_microsecond, hour_minute, hour_second, identified, identity, identity_insert, identitycol, if, ignore, ilike, immediate, in, increment, index, infile, initial, initially, inner, inout, insensitive, insert, int, int1, int2, int3, int4, int8, integer, intersect, interval, into, is, isnull, isolation, iterate, join, key, keys, kill, leading, leave, left, level, like, limit, linear, lineno, lines, load, localtime, localtimestamp, lock, long, longblob, longtext, loop, low_priority, master_heartbeat_period, master_ssl_verify_server_cert, match, max, maxextents, mediumblob, mediumint, mediumtext, middleint, min, minus, minute_microsecond, minute_second, mirrorexit, mlslabel, mod, mode, modifies, modify, national, natural, new,' .
             ' no_write_to_binlog, noaudit, nocheck, nocompress, nonclustered, not, notnull, nowait, null, nullif, number, numeric, of, off, offline, offset, offsets, old, on, once, online, only, open, opendatasource, openquery, openrowset, openxml, optimize, option, optionally, or, order, out, outer, outfile, over, overlaps, overwrite, pctfree, percent, perm, permanent, pipe, pivot, placing, plan, precision, prepare, primary, print, prior, privileges, proc, procedure, processexit, public, purge, raid0, raiserror, range, raw, read, read_only, read_write, reads, readtext, real, reconfigure, references, regexp, release, rename, repeat, repeatable, replace, replication, require, resource, restore, restrict, return, returning, revoke, right, rlike, rollback, row, rowcount, rowguidcol, rowid, rownum, rows, rule, save, schema, schemas, second_microsecond, select, sensitive, separator, serializable, session, session_user, set, setuser, share, show, shutdown, similar, size, smallint, some, soname, spatial, specific, sql, sql_big_result, sql_calc_found_rows, sql_small_result, sqlexception, sqlstate, sqlwarning, ssl, start, starting, statistics, straight_join, successful, sum, symmetric, synonym, sysdate, system_user, table, tape, temp, temporary, terminated, textsize, then, tinyblob, tinyint, tinytext, to, top, trailing, tran, transaction, trigger, true, truncate, tsequal, uid, uncommitted, undo, union, unique, unlock, unsigned, update, updatetext, upgrade, usage, use, user, using, utc_date, utc_time, utc_timestamp, validate, values, varbinary, varchar, varchar2, varcharacter, varying, verbose, view, waitfor, when, whenever, where, while, with, work, write, writetext, x509, xor, year_month, zerofill');
 
-        foreach($joinlist as $item) {
+        foreach ($joinlist as $item) {
             // check join list for duplicate names
-            if(in_array($item->name, $joins_used)) {
-                $a = new object();
+            if (in_array($item->name, $joins_used)) {
+                $a = new stdClass();
                 $a->join = $item->name;
                 $a->source = get_class($this);
-                throw new ReportBuilderException(get_string('error:joinxusedmorethanonceiny', 'local_reportbuilder', $a));
+                throw new ReportBuilderException(get_string('error:joinxusedmorethanonceiny', 'totara_reportbuilder', $a));
             } else {
                 $joins_used[] = $item->name;
             }
 
-            if(in_array($item->name, $reserved_words)) {
-                $a = new object();
+            if (in_array($item->name, $reserved_words)) {
+                $a = new stdClass();
                 $a->join = $item->name;
                 $a->source = get_class($this);
-                throw new ReportBuilderException(get_string('error:joinxisreservediny', 'local_reportbuilder', $a));
+                throw new ReportBuilderException(get_string('error:joinxisreservediny', 'totara_reportbuilder', $a));
             }
         }
 
-        foreach($joinlist as $item) {
+        foreach ($joinlist as $item) {
             // check that dependencies exist
-            if(isset($item->dependencies) &&
+            if (isset($item->dependencies) &&
                 is_array($item->dependencies)) {
 
-                foreach($item->dependencies as $dep) {
-                    if($dep == 'base') {
+                foreach ($item->dependencies as $dep) {
+                    if ($dep == 'base') {
                         continue;
                     }
-                    if(!in_array($dep, $joins_used)) {
-                        $a = new object();
+                    if (!in_array($dep, $joins_used)) {
+                        $a = new stdClass();
                         $a->join = $item->name;
                         $a->source = get_class($this);
                         $a->dependency = $dep;
-                        throw new ReportBuilderException(get_string('error:joinxhasdependencyyinz', 'local_reportbuilder', $a));
+                        throw new ReportBuilderException(get_string('error:joinxhasdependencyyinz', 'totara_reportbuilder', $a));
                     }
                 }
             } else if (isset($item->dependencies) &&
                 $item->dependencies != 'base') {
 
-                if(!in_array($item->dependencies, $joins_used)) {
-                    $a = new object();
+                if (!in_array($item->dependencies, $joins_used)) {
+                    $a = new stdClass();
                     $a->join = $item->name;
                     $a->source = get_class($this);
                     $a->dependency = $item->dependencies;
-                    throw new ReportBuilderException(get_string('error:joinxhasdependencyyinz', 'local_reportbuilder', $a));
+                    throw new ReportBuilderException(get_string('error:joinxhasdependencyyinz', 'totara_reportbuilder', $a));
                 }
             }
         }
@@ -165,19 +165,19 @@ abstract class rb_base_source {
     function new_column_from_option($type, $value, $heading=null, $customheading = true, $hidden=0) {
         $columnoptions = $this->columnoptions;
         $joinlist = $this->joinlist;
-        if($coloption =
+        if ($coloption =
             reportbuilder::get_single_item($columnoptions, $type, $value)) {
 
             // make sure joins are defined before adding column
-            if(!reportbuilder::check_joins($joinlist, $coloption->joins)) {
-                $a = new object();
+            if (!reportbuilder::check_joins($joinlist, $coloption->joins)) {
+                $a = new stdClass();
                 $a->type = $coloption->type;
                 $a->value = $coloption->value;
                 $a->source = get_class($this);
-                throw new ReportBuilderException(get_string('error:joinsfortypexandvalueynotfoundinz', 'local_reportbuilder', $a));
+                throw new ReportBuilderException(get_string('error:joinsfortypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
             }
 
-            if($heading === null) {
+            if ($heading === null) {
                 $heading = ($coloption->defaultheading !== null) ?
                     $coloption->defaultheading : $coloption->name;
             }
@@ -202,11 +202,11 @@ abstract class rb_base_source {
                 )
             );
         } else {
-            $a = new object();
+            $a = new stdClass();
             $a->type = $type;
             $a->value = $value;
             $a->source = get_class($this);
-            throw new ReportBuilderException(get_string('error:columnoptiontypexandvalueynotfoundinz', 'local_reportbuilder', $a));
+            throw new ReportBuilderException(get_string('error:columnoptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
         }
     }
 
@@ -228,36 +228,36 @@ abstract class rb_base_source {
         $columnoptions = $this->columnoptions;
         $joinlist = $this->joinlist;
 
-        if(!$filteroption =
+        if (!$filteroption =
             reportbuilder::get_single_item($filteroptions, $type, $value)) {
 
-            $a = new object();
+            $a = new stdClass();
             $a->type = $type;
             $a->value = $value;
             $a->source = get_class($this);
-            throw new ReportBuilderException(get_string('error:filteroptiontypexandvalueynotfoundinz', 'local_reportbuilder', $a));
+            throw new ReportBuilderException(get_string('error:filteroptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
         }
-        if(!$columnoption =
+        if (!$columnoption =
             reportbuilder::get_single_item($columnoptions, $type, $value)) {
 
-            $a = new object();
+            $a = new stdClass();
             $a->type = $type;
             $a->value = $value;
             $a->source = get_class($this);
-            throw new ReportBuilderException(get_string('error:columnoptiontypexandvalueynotfoundinz', 'local_reportbuilder', $a));
+            throw new ReportBuilderException(get_string('error:columnoptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
         }
 
         // make sure joins are defined before adding column
-        if(!reportbuilder::check_joins($joinlist, $columnoption->joins)) {
-            $a = new object();
+        if (!reportbuilder::check_joins($joinlist, $columnoption->joins)) {
+            $a = new stdClass();
             $a->type = $columnoption->type;
             $a->value = $columnoption->value;
             $a->source = get_class($this);
-            throw new ReportBuilderException(get_string('error:joinsforfiltertypexandvalueynotfoundinz', 'local_reportbuilder', $a));
+            throw new ReportBuilderException(get_string('error:joinsforfiltertypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
 
         }
 
-        if($advanced === null) {
+        if ($advanced === null) {
             $advanced = $filteroption->defaultadvanced;
         }
         return new rb_filter(
@@ -294,8 +294,8 @@ abstract class rb_base_source {
      * @return string Date in a nice format
      */
     function rb_display_nice_date($date, $row) {
-        if($date && $date > 0) {
-            return userdate($date, get_string('strfdateshortmonth'));
+        if ($date && $date > 0) {
+            return userdate($date, get_string('strfdateshortmonth', 'langconfig'));
         } else {
             return '';
         }
@@ -310,8 +310,8 @@ abstract class rb_base_source {
      * @return string Time in a nice format
      */
     function rb_display_nice_time($date, $row) {
-        if($date && $date > 0) {
-            return userdate($date, get_string('strftimeshort'));
+        if ($date && $date > 0) {
+            return userdate($date, get_string('strftimeshort', 'langconfig'));
         } else {
             return '';
         }
@@ -327,8 +327,8 @@ abstract class rb_base_source {
      * @return string Date and time in a nice format
      */
     function rb_display_nice_datetime($date, $row) {
-        if($date && $date > 0) {
-            return userdate($date, get_string('strfdateattime'));
+        if ($date && $date > 0) {
+            return userdate($date, get_string('strfdateattime', 'langconfig'));
         } else {
             return '';
         }
@@ -344,7 +344,7 @@ abstract class rb_base_source {
      */
     function rb_display_nice_datetime_seconds($date, $row) {
         if ($date && $date > 0) {
-            return userdate($date, get_string('strftimedateseconds'));
+            return userdate($date, get_string('strftimedateseconds', 'langconfig'));
         } else {
             return '';
         }
@@ -358,7 +358,7 @@ abstract class rb_base_source {
      * @return string yes or no, or null for values other than 1 or 0
      */
     function rb_display_yes_or_no($value, $row) {
-        if($value == 1) {
+        if ($value == 1) {
             return get_string('yes');
         } else if ($value == 0) {
             return get_string('no');
@@ -394,19 +394,25 @@ abstract class rb_base_source {
     // requires the user_id extra field
     // in column definition
     function rb_display_link_user($user, $row, $isexport = false) {
-        global $CFG;
-        $userid = $row->user_id;
         if ($isexport) {
             return $user;
-        } else {
-            return "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
         }
+
+        $userid = $row->user_id;
+        $url = new moodle_url('/user/view.php', array('id' => $userid));
+        return html_writer::link($url, $user);
     }
 
 
     function rb_display_link_user_icon($user, $row, $isexport = false) {
-        global $CFG;
+        global $OUTPUT;
+
+        if ($isexport) {
+            return $user;
+        }
+
         $userid = $row->user_id;
+        $url = new moodle_url('/user/view.php', array('id' => $userid));
 
         $picuser = new stdClass();
         $picuser->id = $userid;
@@ -414,13 +420,11 @@ abstract class rb_base_source {
         $picuser->imagealt = $row->userpic_imagealt;
         $picuser->firstname = $row->userpic_firstname;
         $picuser->lastname = $row->userpic_lastname;
+        $picuser->email = $row->userpic_email;
 
-        if ($isexport) {
-            return $user;
-        } else {
-            return print_user_picture($picuser, 1, null, null, true) .
-                "&nbsp;<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
-        }
+
+        return $OUTPUT->user_picture($picuser, array('courseid' => 1)) .
+            "&nbsp;" . html_writer::link($url, $user);
 
     }
 
@@ -433,69 +437,81 @@ abstract class rb_base_source {
      * @return string
      */
     function rb_display_user_picture($itemid, $row, $isexport = false) {
+        global $OUTPUT;
+
         $picuser = new stdClass();
         $picuser->id = $itemid;
         $picuser->picture = $row->userpic_picture;
         $picuser->imagealt = $row->userpic_imagealt;
         $picuser->firstname = $row->userpic_firstname;
         $picuser->lastname = $row->userpic_lastname;
+        $picuser->email = $row->userpic_email;
 
         // don't show picture in spreadsheet
         if ($isexport) {
             return '';
         } else {
-            return print_user_picture($picuser, 1, null, null, true);
+            return $OUTPUT->user_picture($picuser, array('courseid' => 1));
         }
     }
 
 
     // convert a course name into a link to that course
     function rb_display_link_course($course, $row, $isexport = false) {
-        global $CFG;
+
+        if ($isexport) {
+            return format_string($course);
+        }
+
         $courseid = $row->course_id;
         $course = format_string($course);
-        $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
-        if ($isexport) {
-            return $course;
-        } else {
-            return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
-        }
+        $attr = (isset($row->course_visible) && $row->course_visible == 0) ? array('class' => 'dimmed') : array();
+        $url = new moodle_url('/course/view.php', array('id' => $courseid));
+        return html_writer::link($url, $course, $attr);
     }
 
     // convert a course name into a link to that course and shows
     // the course icon next to it
     function rb_display_link_course_icon($course, $row, $isexport = false) {
         global $OUTPUT;
+
+        if ($isexport) {
+            return format_string($course);
+        }
+
         $courseid = $row->course_id;
-        $courseicon = $row->course_icon;
+        $courseicon = !empty($row->course_icon) ? $row->course_icon : 'default';
         $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? 'dimmed' : '';
         $course = format_string($course);
-        if ($isexport) {
-            return $course;
-        } else {
-            $icon = $OUTPUT->pix_icon('/courseicons/' . $courseicon, $course, 'totara_core', array('class' => 'course_icon'));
-            $link = $OUTPUT->action_link(
-                new moodle_url('/course/view.php' . $this->component . '/view.php', array('id' => $courseid)),
-                $icon . $course, null, array('class' => $cssclass)
-            );
-            return $link;
-        }
+        $icon = $OUTPUT->pix_icon('/courseicons/'.$courseicon, $course, 'totara_core', array('class' => 'course_icon'));
+        $link = $OUTPUT->action_link(
+            new moodle_url('/course/view.php', array('id' => $courseid)),
+            $icon . $course, null, array('class' => $cssclass)
+        );
+        return $link;
     }
 
     // display an icon based on the course icon field
     function rb_display_course_icon($icon, $row, $isexport = false) {
         global $OUTPUT;
-        $coursename = format_string($row->course_name);
+        $icon = !empty($icon) ? $icon : 'default';
+
         if ($isexport) {
-            return $coursename;
-        } else {
-            return $OUTPUT->pix_icon('/courseicons/' . $icon, $coursename, 'totara_core', array('class' => 'course_icon'));
+            return format_string($row->course_name);
         }
+
+        $coursename = format_string($row->course_name);
+        return $OUTPUT->pix_icon('/courseicons/' . $icon, $coursename, 'totara_core', array('class' => 'course_icon'));
     }
 
     // display an icon for the course type
     function rb_display_course_type_icon($type, $row, $isexport = false) {
         global $OUTPUT;
+
+        if ($isexport) {
+            // don't return icon if exporting to spreadsheet
+            return '';
+        }
 
         switch ($type) {
         case null:
@@ -514,58 +530,53 @@ abstract class rb_base_source {
         $alt = get_string($image, 'rb_source_dp_course');
         $icon = $OUTPUT->pix_icon('/msgicons/' . $image . '-regular', $alt, 'totara_core', array('title' => $alt));
 
-        if ($isexport) {
-            // don't return icon if exporting to spreadsheet
-            return '';
-        } else {
-            return $icon;
-        }
+        return $icon;
     }
 
     // convert a course category name into a link to that category's page
     function rb_display_link_course_category($category, $row, $isexport = false) {
-        global $CFG;
+
+        if ($isexport) {
+            return format_string($category);
+        }
+
         $catid = $row->cat_id;
         $category = format_string($category);
-        if($catid == 0 || !$catid) {
+        if ($catid == 0 || !$catid) {
             return '';
         }
-        $cssclass = (isset($row->cat_visible) && $row->cat_visible == 0) ? ' class="dimmed"' : '';
-        if ($isexport) {
-            return $category;
-        } else {
-            return "<a $cssclass href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\">{$category}</a>";
-        }
+        $attr = (isset($row->cat_visible) && $row->cat_visible == 0) ? array('class' => 'dimmed') : array();
+        $url = new moodle_url('/course/category.php', array('id' => $catid));
+        return html_writer::link($url, $category, $attr);
     }
 
 
     /**
      * Generate the plan title with a link to the plan
-     * @global object $CFG
      * @param string $planname
      * @param object $row
      * @param boolean $isexport If the report is being exported or viewed
      * @return string
      */
-    public function rb_display_planlink($planname, $row, $isexport = false){
-        global $CFG;
+    public function rb_display_planlink($planname, $row, $isexport = false) {
 
         // no text
         if (strlen($planname) == 0) {
             return '';
         }
 
+        $planname = format_string($planname);
+
         // invalid id - show without a link
         if (empty($row->plan_id)) {
             return $planname;
         }
 
-        $planname = format_string($planname);
         if ($isexport) {
             return $planname;
-        } else {
-            return "<a href=\"{$CFG->wwwroot}/totara/plan/view.php?id={$row->plan_id}\">$planname</a>";
         }
+        $url = new moodle_url('/totara/plan/view.php', array('id' => $row->plan_id));
+        return html_writer::link($url, $planname);
     }
 
 
@@ -577,19 +588,19 @@ abstract class rb_base_source {
      * @param object $row
      * @return string
      */
-    public function rb_display_plan_status($status, $row){
+    public function rb_display_plan_status($status, $row) {
         global $CFG;
-        require_once($CFG->dirroot.'/totara/plan/lib.php');
+        require_once($CFG->dirroot . '/totara/plan/lib.php');
 
-        switch ($status){
+        switch ($status) {
             case DP_PLAN_STATUS_UNAPPROVED:
-                return get_string('unapproved', 'local_plan');
+                return get_string('unapproved', 'totara_plan');
                 break;
             case DP_PLAN_STATUS_APPROVED:
-                return get_string('approved', 'local_plan');
+                return get_string('approved', 'totara_plan');
                 break;
             case DP_PLAN_STATUS_COMPLETE:
-                return get_string('complete', 'local_plan');
+                return get_string('complete', 'totara_plan');
                 break;
         }
     }
@@ -602,19 +613,19 @@ abstract class rb_base_source {
      * @param int $status
      * @return string
      */
-    public function rb_display_plan_item_status($status){
+    public function rb_display_plan_item_status($status) {
         global $CFG;
         require_once($CFG->dirroot . '/totara/plan/lib.php');
 
         switch($status) {
         case DP_APPROVAL_DECLINED:
-            return get_string('declined','local_plan');
+            return get_string('declined', 'totara_plan');
         case DP_APPROVAL_UNAPPROVED:
-            return get_string('unapproved', 'local_plan');
+            return get_string('unapproved', 'totara_plan');
         case DP_APPROVAL_REQUESTED:
-            return get_string('pendingapproval', 'local_plan');
+            return get_string('pendingapproval', 'totara_plan');
         case DP_APPROVAL_APPROVED:
-            return get_string('approved', 'local_plan');
+            return get_string('approved', 'totara_plan');
         default:
             return '';
         }
@@ -634,7 +645,7 @@ abstract class rb_base_source {
     // convert an integer number of minutes into a
     // formatted duration (e.g. 90 mins => 1h 30m)
     function rb_display_hours_minutes($mins, $row) {
-        if($mins === null) {
+        if ($mins === null) {
             return '';
         } else {
             $minutes = abs((int) $mins);
@@ -646,7 +657,7 @@ abstract class rb_base_source {
 
     // convert a 2 digit country code into the country name
     function rb_display_country_code($code, $row) {
-        $countries = get_list_of_countries();
+        $countries = get_string_manager()->get_list_of_countries();
 
         if (isset($countries[$code])) {
             return $countries[$code];
@@ -659,18 +670,14 @@ abstract class rb_base_source {
     function rb_display_language_code($code, $row) {
         global $CFG;
         if (empty($code)) {
-            return get_string('notspecified', 'local_reportbuilder');
+            return get_string('notspecified', 'totara_reportbuilder');
         }
-        $string = array();
-        $langfile = $CFG->dirroot . '/lang/' . $code . '/langconfig.php';
-        if (!file_exists($langfile)) {
-            return get_string('unknown', 'local_reportbuilder');
+        $countries = get_string_manager()->get_list_of_languages();
+        if (!array_key_exists($code, $countries)) {
+            return get_string('unknown', 'totara_reportbuilder');
         }
-        include($langfile);
-        if (!isset($string['thislanguage']) || empty($string['thislanguage'])) {
-            return get_string('unknown', 'local_reportbuilder');
-        }
-        return $string['thislanguage'];
+
+        return $countries[$code];
     }
 
     function rb_display_user_email($email, $row, $isexport = false) {
@@ -683,7 +690,7 @@ abstract class rb_base_source {
         // respect users email privacy setting
         // at some point we may want to allow admins to view anyway
         if ($maildisplay != 1) {
-            return get_string('useremailprivate', 'local_reportbuilder');
+            return get_string('useremailprivate', 'totara_reportbuilder');
         }
 
         if ($isexport) {
@@ -696,13 +703,13 @@ abstract class rb_base_source {
 
 
     function rb_display_link_program_icon($program, $row) {
-        global $CFG, $OUTPUT;
+        global $OUTPUT;
         $programid = $row->program_id;
         $programicon = $row->program_icon;
         $icon = $OUTPUT->pix_icon('/programicons/' . $programicon, $program, 'totara_core', array('class' => 'course_icon'));
         $link = $OUTPUT->action_link(
             new moodle_url('/totara/program/view.php', array('id' => $programid)),
-            $icon . $program, null, array('class' => $cssclass)
+            $icon . $program, null, array('class' => 'course_icon')
         );
         return $link;
     }
@@ -718,10 +725,10 @@ abstract class rb_base_source {
         } else if ($passgrade === null) {
             return "{$usergrade}%";
         } else {
-            $a = new object();
+            $a = new stdClass();
             $a->grade = $usergrade;
             $a->pass = $passgrade;
-            return get_string('gradeandgradetocomplete', 'local_reportbuilder', $a);
+            return get_string('gradeandgradetocomplete', 'totara_reportbuilder', $a);
         }
     }
 
@@ -739,32 +746,34 @@ abstract class rb_base_source {
     }
 
     function rb_filter_modules_list() {
-        global $CFG;
+        global $DB, $OUTPUT, $CFG;
+
         $out = array();
-        if($mods = get_records('modules', 'visible', 1, 'id', 'id,name')) {
-            foreach($mods as $mod) {
-                $modname = get_string('modulename', format_string($mod->name));
-                $icon = '/mod/' . $mod->name . '/icon.gif';
-                if(file_exists($CFG->dirroot . $icon)) {
-                    $out[$mod->name] = '<img src="'. $CFG->wwwroot .
-                        '/mod/' . $mod->name . '/icon.gif" alt="'.
-                        $modname . '" />&nbsp;' .
-                        $modname;
-                } else {
-                    $out[$mod->name] = $modname;
-                }
+        $mods = $DB->get_records('modules', array('visible' => 1), 'id', 'id, name');
+        foreach ($mods as $mod) {
+            $modname = (get_string_manager()->string_exists('pluginname', $mod->name)) ?
+                get_string('pluginname', $mod->name) : ucfirst($mod->name);
+
+            if (file_exists($CFG->dirroot . '/mod/' . $mod->name . '/pix/icon.gif') ||
+                file_exists($CFG->dirroot . '/mod/' . $mod->name . '/pix/icon.png')) {
+                $icon = $OUTPUT->pix_icon('icon', $modname, $mod->name) . '&nbsp;';
+            } else {
+                $icon = '';
             }
+
+            $out[$mod->name] = $icon . $modname;
         }
         return $out;
     }
 
     function rb_filter_organisations_list($contentmode, $contentoptions, $reportid) {
-        global $CFG,$USER;
-        require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
+        global $CFG, $USER, $DB;
+
+        require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/organisation/lib.php');
 
         // show all options if no content restrictions set
-        if($contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
+        if ($contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
             $hierarchy = new organisation();
             $hierarchy->make_hierarchy_list($orgs, null, true, false);
             return $orgs;
@@ -775,18 +784,18 @@ abstract class rb_base_source {
         $localset = false;
         $nonlocal = false;
         // are enabled content restrictions local or not?
-        if(isset($contentoptions) && is_array($contentoptions)) {
-            foreach($contentoptions as $option) {
+        if (isset($contentoptions) && is_array($contentoptions)) {
+            foreach ($contentoptions as $option) {
                 $name = $option->classname;
                 $classname = 'rb_' . $name . '_content';
-                if(class_exists($classname)) {
-                    if($name == 'completed_org' || $name == 'current_org') {
-                        if(reportbuilder::get_setting($reportid, $classname,
+                if (class_exists($classname)) {
+                    if ($name == 'completed_org' || $name == 'current_org') {
+                        if (reportbuilder::get_setting($reportid, $classname,
                             'enable')) {
                             $localset = true;
                         }
                     } else {
-                        if(reportbuilder::get_setting($reportid, $classname,
+                        if (reportbuilder::get_setting($reportid, $classname,
                             'enable')) {
                         $nonlocal = true;
                         }
@@ -795,17 +804,17 @@ abstract class rb_base_source {
             }
         }
 
-        if($contentmode == REPORT_BUILDER_CONTENT_MODE_ANY) {
-            if($localset && !$nonlocal) {
+        if ($contentmode == REPORT_BUILDER_CONTENT_MODE_ANY) {
+            if ($localset && !$nonlocal) {
                 // only restrict the org list if all content restrictions are local ones
-                if($orgid = get_field('pos_assignment','organisationid','userid',$USER->id)) {
+                if ($orgid = $DB->get_field('pos_assignment', 'organisationid', array('userid' => $USER->id))) {
                     $baseorg = $orgid;
                 }
             }
         } else if ($contentmode == REPORT_BUILDER_CONTENT_MODE_ALL) {
-            if($localset) {
+            if ($localset) {
                 // restrict the org list if any content restrictions are local ones
-                if($orgid = get_field('pos_assignment','organisationid','userid',$USER->id)) {
+                if ($orgid = $DB->get_field('pos_assignment', 'organisationid', array('userid' => $USER->id))) {
                     $baseorg = $orgid;
                 }
             }
@@ -820,8 +829,8 @@ abstract class rb_base_source {
 
     function rb_filter_positions_list() {
         global $CFG;
-        require_once($CFG->dirroot.'/hierarchy/lib.php');
-        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
 
         $hierarchy = new position();
         $hierarchy->make_hierarchy_list($positions, null, true, false);
@@ -832,7 +841,7 @@ abstract class rb_base_source {
 
     function rb_filter_course_categories_list() {
         global $CFG;
-        require_once($CFG->dirroot.'/course/lib.php');
+        require_once($CFG->dirroot . '/course/lib.php');
         make_categories_list($cats, $unused);
 
         return $cats;
@@ -841,10 +850,10 @@ abstract class rb_base_source {
 
     function rb_filter_competency_type_list() {
         global $CFG;
-        require_once($CFG->dirroot.'/hierarchy/prefix/competency/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/competency/lib.php');
 
         $competencyhierarchy = new competency();
-        $unclassified_option = array(0 => get_string('unclassified', 'hierarchy'));
+        $unclassified_option = array(0 => get_string('unclassified', 'totara_hierarchy'));
         $typelist = $unclassified_option + $competencyhierarchy->get_types_list();
 
         return $typelist;
@@ -853,10 +862,10 @@ abstract class rb_base_source {
 
     function rb_filter_position_type_list() {
         global $CFG;
-        require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
 
         $positionhierarchy = new position();
-        $unclassified_option = array(0 => get_string('unclassified', 'hierarchy'));
+        $unclassified_option = array(0 => get_string('unclassified', 'totara_hierarchy'));
         $typelist = $unclassified_option + $positionhierarchy->get_types_list();
 
         return $typelist;
@@ -865,23 +874,22 @@ abstract class rb_base_source {
 
     function rb_filter_organisation_type_list() {
         global $CFG;
-        require_once($CFG->dirroot.'/hierarchy/prefix/organisation/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/organisation/lib.php');
 
         $organisationhierarchy = new organisation();
-        $unclassified_option = array(0 => get_string('unclassified', 'hierarchy'));
+        $unclassified_option = array(0 => get_string('unclassified', 'totara_hierarchy'));
         $typelist = $unclassified_option + $organisationhierarchy->get_types_list();
 
         return $typelist;
     }
 
     function rb_filter_course_languages() {
-        global $CFG;
+        global $DB;
         $out = array();
-        if ($langs = get_records_sql("SELECT DISTINCT lang
-            FROM {$CFG->prefix}course ORDER BY lang")) {
-            foreach($langs as $row) {
-                $out[$row->lang] = $this->rb_display_language_code($row->lang, array());
-            }
+        $langs = $DB->get_records_sql("SELECT DISTINCT lang
+            FROM {course} ORDER BY lang");
+        foreach ($langs as $row) {
+            $out[$row->lang] = $this->rb_display_language_code($row->lang, array());
         }
 
         return $out;
@@ -923,7 +931,9 @@ abstract class rb_base_source {
     // can be used to 'fake' a percentage, if matching values return 1 and
     // all other values return 0 or null
     function rb_group_percent($field) {
-        return sql_cast_char2int("AVG($field)*100.0");
+        global $DB;
+
+        return $DB->sql_cast_char2int("AVG($field)*100.0");
     }
 
     // return list as single field, separated by commas
@@ -938,17 +948,17 @@ abstract class rb_base_source {
 
     // return list as single field, one per line
     function rb_group_list($field) {
-        return sql_group_concat($field, '<br />');
+        return sql_group_concat($field, html_writer::empty_tag('br'));
     }
 
     // return unique list items as single field, one per line
     function rb_group_list_unique($field) {
-        return sql_group_concat($field, '<br />', true);
+        return sql_group_concat($field, html_writer::empty_tag('br'), true);
     }
 
     // return list as single field, separated by a line with - on (in HTML)
     function rb_group_list_dash($field) {
-        return sql_group_concat($field, '<br />-<br />');
+        return sql_group_concat($field, html_writer::empty_tag('br') . '-' . html_writer::empty_tag('br'));
     }
 
     //
@@ -975,13 +985,12 @@ abstract class rb_base_source {
      * @return boolean True
      */
     protected function add_user_table_to_joinlist(&$joinlist, $join, $field) {
-        global $CFG;
 
         // join uses 'auser' as name because 'user' is a reserved keyword
         $joinlist[] = new rb_join(
             'auser',
             'LEFT',
-            $CFG->prefix . 'user',
+            '{user}',
             "auser.id = $join.$field",
             REPORT_BUILDER_RELATION_ONE_TO_ONE,
             $join
@@ -1001,40 +1010,42 @@ abstract class rb_base_source {
      */
     protected function add_user_fields_to_columns(&$columnoptions,
         $join='auser') {
+        global $DB;
 
         $columnoptions[] = new rb_column_option(
             'user',
             'fullname',
-            get_string('userfullname', 'local_reportbuilder'),
-            sql_fullname("$join.firstname", "$join.lastname"),
+            get_string('userfullname', 'totara_reportbuilder'),
+            $DB->sql_fullname("$join.firstname", "$join.lastname"),
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'namelink',
-            get_string('usernamelink', 'local_reportbuilder'),
-            sql_fullname("$join.firstname", "$join.lastname"),
+            get_string('usernamelink', 'totara_reportbuilder'),
+            $DB->sql_fullname("$join.firstname", "$join.lastname"),
             array(
                 'joins' => $join,
                 'displayfunc' => 'link_user',
-                'defaultheading' => get_string('userfullname', 'local_reportbuilder'),
+                'defaultheading' => get_string('userfullname', 'totara_reportbuilder'),
                 'extrafields' => array('user_id' => "$join.id"),
             )
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'namelinkicon',
-            get_string('usernamelinkicon', 'local_reportbuilder'),
-            sql_fullname("$join.firstname", "$join.lastname"),
+            get_string('usernamelinkicon', 'totara_reportbuilder'),
+            $DB->sql_fullname("$join.firstname", "$join.lastname"),
             array(
                 'joins' => $join,
                 'displayfunc' => 'link_user_icon',
-                'defaultheading' => get_string('userfullname', 'local_reportbuilder'),
+                'defaultheading' => get_string('userfullname', 'totara_reportbuilder'),
                 'extrafields' => array(
                     'user_id' => "$join.id",
                     'userpic_picture' => "$join.picture",
                     'userpic_firstname' => "$join.firstname",
                     'userpic_lastname' => "$join.lastname",
+                    'userpic_email' => "$join.email",
                     'userpic_imagealt' => "$join.imagealt"
                 ),
                 'style' => array('white-space' => 'nowrap'),
@@ -1043,7 +1054,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'email',
-            get_string('useremail', 'local_reportbuilder'),
+            get_string('useremail', 'totara_reportbuilder'),
             // use CASE to include/exclude email in SQL
             // so search won't reveal hidden results
             "CASE WHEN $join.maildisplay <> 1 THEN '-' ELSE $join.email END",
@@ -1059,7 +1070,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'lastlogin',
-            get_string('userlastlogin', 'local_reportbuilder'),
+            get_string('userlastlogin', 'totara_reportbuilder'),
             // See MDL-22481 for why currentlogin is used instead of lastlogin
             "$join.currentlogin",
             array(
@@ -1069,16 +1080,16 @@ abstract class rb_base_source {
         );
         // auto-generate columns for user fields
         $fields = array(
-            'firstname' => get_string('userfirstname', 'local_reportbuilder'),
-            'lastname' => get_string('userlastname', 'local_reportbuilder'),
-            'username' => get_string('username', 'local_reportbuilder'),
-            'idnumber' => get_string('useridnumber', 'local_reportbuilder'),
-            'id' => get_string('userid', 'local_reportbuilder'),
-            'phone1' => get_string('userphone', 'local_reportbuilder'),
-            'institution' => get_string('userinstitution', 'local_reportbuilder'),
-            'department' => get_string('userdepartment', 'local_reportbuilder'),
-            'address' => get_string('useraddress', 'local_reportbuilder'),
-            'city' => get_string('usercity', 'local_reportbuilder'),
+            'firstname' => get_string('userfirstname', 'totara_reportbuilder'),
+            'lastname' => get_string('userlastname', 'totara_reportbuilder'),
+            'username' => get_string('username', 'totara_reportbuilder'),
+            'idnumber' => get_string('useridnumber', 'totara_reportbuilder'),
+            'id' => get_string('userid', 'totara_reportbuilder'),
+            'phone1' => get_string('userphone', 'totara_reportbuilder'),
+            'institution' => get_string('userinstitution', 'totara_reportbuilder'),
+            'department' => get_string('userdepartment', 'totara_reportbuilder'),
+            'address' => get_string('useraddress', 'totara_reportbuilder'),
+            'city' => get_string('usercity', 'totara_reportbuilder'),
         );
         foreach ($fields as $field => $name) {
             $columnoptions[] = new rb_column_option(
@@ -1094,7 +1105,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'country',
-            get_string('usercountry', 'local_reportbuilder'),
+            get_string('usercountry', 'totara_reportbuilder'),
             "$join.country",
             array(
                 'joins' => $join,
@@ -1117,17 +1128,17 @@ abstract class rb_base_source {
     protected function add_user_fields_to_filters(&$filteroptions) {
         // auto-generate filters for user fields
         $fields = array(
-            'fullname' => get_string('userfullname', 'local_reportbuilder'),
+            'fullname' => get_string('userfullname', 'totara_reportbuilder'),
             'firstname' => get_string('firstname'),
             'lastname' => get_string('lastname'),
             'username' => get_string('username'),
-            'idnumber' => get_string('useridnumber', 'local_reportbuilder'),
-            'phone1' => get_string('userphone', 'local_reportbuilder'),
-            'institution' => get_string('userinstitution', 'local_reportbuilder'),
-            'department' => get_string('userdepartment', 'local_reportbuilder'),
-            'address' => get_string('useraddress', 'local_reportbuilder'),
-            'city' => get_string('usercity', 'local_reportbuilder'),
-            'email' => get_string('useremail', 'local_reportbuilder'),
+            'idnumber' => get_string('useridnumber', 'totara_reportbuilder'),
+            'phone1' => get_string('userphone', 'totara_reportbuilder'),
+            'institution' => get_string('userinstitution', 'totara_reportbuilder'),
+            'department' => get_string('userdepartment', 'totara_reportbuilder'),
+            'address' => get_string('useraddress', 'totara_reportbuilder'),
+            'city' => get_string('usercity', 'totara_reportbuilder'),
+            'email' => get_string('useremail', 'totara_reportbuilder'),
         );
         foreach ($fields as $field => $name) {
             $filteroptions[] = new rb_filter_option(
@@ -1143,10 +1154,10 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'country',
-            get_string('usercountry', 'local_reportbuilder'),
+            get_string('usercountry', 'totara_reportbuilder'),
             'simpleselect',
             array(
-                'selectchoices' => get_list_of_countries(),
+                'selectchoices' => get_string_manager()->get_list_of_countries(),
                 'selectoptions' => array_merge($select_width_options, array('datatype' => 'text')),
             )
         );
@@ -1167,17 +1178,18 @@ abstract class rb_base_source {
      */
     protected function add_user_custom_fields_to_joinlist(&$joinlist,
         $join, $joinfield) {
-        global $CFG;
+        global $DB;
 
         // add all user custom fields to join list
-        if($custom_fields = get_records('user_info_field')) {
-            foreach($custom_fields as $custom_field) {
+        $custom_fields = $DB->get_records('user_info_field');
+        if (!empty($custom_fields)) {
+            foreach ($custom_fields as $custom_field) {
                 $id = $custom_field->id;
                 $key = "user_$id";
                 $joinlist[] = new rb_join(
                     $key,
                     'LEFT',
-                    $CFG->prefix . 'user_info_data',
+                    '{user_info_data}',
                     "$key.userid = $join.$joinfield AND $key.fieldid = $id",
                     REPORT_BUILDER_RELATION_ONE_TO_ONE,
                     $join
@@ -1198,10 +1210,12 @@ abstract class rb_base_source {
      * @return boolean True if user custom fields exist
      */
     protected function add_user_custom_fields_to_columns(&$columnoptions) {
+        global $DB;
+
         // auto-generate columns for each user custom field
-        if($custom_fields =
-            get_records('user_info_field')) {
-            foreach($custom_fields as $custom_field) {
+        $custom_fields = $DB->get_records('user_info_field');
+        if (!empty($custom_fields)) {
+            foreach ($custom_fields as $custom_field) {
                 $name = $custom_field->name;
                 $key = "user_$custom_field->id";
                 $columnoptions[] = new rb_column_option(
@@ -1227,8 +1241,11 @@ abstract class rb_base_source {
      * @return boolean True if user custom fields exist
      */
     protected function add_user_custom_fields_to_filters(&$filteroptions) {
-        if($custom_fields = get_records('user_info_field','','','','id,shortname,name')) {
-            foreach($custom_fields as $custom_field) {
+        global $DB;
+
+        $custom_fields = $DB->get_records('user_info_field', null, '', 'id, shortname, name');
+        if (!empty($custom_fields)) {
+            foreach ($custom_fields as $custom_field) {
                 $name = $custom_field->name;
                 $key = "user_$custom_field->id";
                 $filteroptions[] = new rb_filter_option(
@@ -1255,12 +1272,11 @@ abstract class rb_base_source {
      * @return boolean True
      */
     protected function add_course_table_to_joinlist(&$joinlist, $join, $field) {
-        global $CFG;
 
         $joinlist[] = new rb_join(
             'course',
             'LEFT',
-            $CFG->prefix . 'course',
+            '{course}',
             "course.id = $join.$field",
             REPORT_BUILDER_RELATION_ONE_TO_ONE,
             $join
@@ -1279,34 +1295,36 @@ abstract class rb_base_source {
      * @return True
      */
     protected function add_course_fields_to_columns(&$columnoptions, $join='course') {
+        global $DB;
+
         $columnoptions[] = new rb_column_option(
             'course',
             'fullname',
-            get_string('coursename', 'local_reportbuilder'),
+            get_string('coursename', 'totara_reportbuilder'),
             "$join.fullname",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'course',
             'courselink',
-            get_string('coursenamelinked', 'local_reportbuilder'),
+            get_string('coursenamelinked', 'totara_reportbuilder'),
             "$join.fullname",
             array(
                 'joins' => $join,
                 'displayfunc' => 'link_course',
-                'defaultheading' => get_string('coursename', 'local_reportbuilder'),
+                'defaultheading' => get_string('coursename', 'totara_reportbuilder'),
                 'extrafields' => array('course_id' => "$join.id", 'course_visible' => "$join.visible")
             )
         );
         $columnoptions[] = new rb_column_option(
             'course',
             'courselinkicon',
-            get_string('coursenamelinkedicon', 'local_reportbuilder'),
+            get_string('coursenamelinkedicon', 'totara_reportbuilder'),
             "$join.fullname",
             array(
                 'joins' => $join,
                 'displayfunc' => 'link_course_icon',
-                'defaultheading' => get_string('coursename', 'local_reportbuilder'),
+                'defaultheading' => get_string('coursename', 'totara_reportbuilder'),
                 'extrafields' => array(
                     'course_id' => "$join.id",
                     'course_icon' => "$join.icon",
@@ -1317,12 +1335,12 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'icon',
-            get_string('courseicon', 'local_reportbuilder'),
+            get_string('courseicon', 'totara_reportbuilder'),
             "$join.icon",
             array(
                 'joins' => $join,
                 'displayfunc' => 'course_icon',
-                'defaultheading' => get_string('courseicon', 'local_reportbuilder'),
+                'defaultheading' => get_string('courseicon', 'totara_reportbuilder'),
                 'extrafields' => array(
                     'course_name' => "$join.fullname",
                     'course_id' => "$join.id",
@@ -1332,28 +1350,28 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'shortname',
-            get_string('courseshortname', 'local_reportbuilder'),
+            get_string('courseshortname', 'totara_reportbuilder'),
             "$join.shortname",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'course',
             'idnumber',
-            get_string('courseidnumber', 'local_reportbuilder'),
+            get_string('courseidnumber', 'totara_reportbuilder'),
             "$join.idnumber",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'course',
             'id',
-            get_string('courseid', 'local_reportbuilder'),
+            get_string('courseid', 'totara_reportbuilder'),
             "$join.id",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'course',
             'startdate',
-            get_string('coursestartdate', 'local_reportbuilder'),
+            get_string('coursestartdate', 'totara_reportbuilder'),
             "$join.startdate",
             array(
                 'joins' => $join,
@@ -1363,11 +1381,11 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'name_and_summary',
-            get_string('coursenameandsummary', 'local_reportbuilder'),
+            get_string('coursenameandsummary', 'totara_reportbuilder'),
             // case used to merge even if one value is null
             "CASE WHEN $join.fullname IS NULL THEN $join.summary
                 WHEN $join.summary IS NULL THEN $join.fullname
-                ELSE " . sql_concat("$join.fullname", "'<br />'",
+                ELSE " . $DB->sql_concat("$join.fullname", "'" . html_writer::empty_tag('br') . "'",
                     "$join.summary") . ' END',
             array(
                 'joins' => $join,
@@ -1377,19 +1395,19 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'coursetypeicon',
-            get_string('coursetypeicon', 'local_reportbuilder'),
+            get_string('coursetypeicon', 'totara_reportbuilder'),
             "$join.coursetype",
             array(
                 'joins' => $join,
                 'displayfunc' => 'course_type_icon',
-                'defaultheading' => get_string('coursetypeicon', 'local_reportbuilder'),
+                'defaultheading' => get_string('coursetypeicon', 'totara_reportbuilder'),
             )
         );
         // add language option
         $columnoptions[] = new rb_column_option(
             'course',
             'language',
-            get_string('courselanguage', 'local_reportbuilder'),
+            get_string('courselanguage', 'totara_reportbuilder'),
             "$join.lang",
             array(
                 'joins' => $join,
@@ -1413,37 +1431,37 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'course',
             'fullname',
-            get_string('coursename', 'local_reportbuilder'),
+            get_string('coursename', 'totara_reportbuilder'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'course',
             'shortname',
-            get_string('courseshortname', 'local_reportbuilder'),
+            get_string('courseshortname', 'totara_reportbuilder'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'course',
             'idnumber',
-            get_string('courseidnumber', 'local_reportbuilder'),
+            get_string('courseidnumber', 'totara_reportbuilder'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'course',
             'startdate',
-            get_string('coursestartdate', 'local_reportbuilder'),
+            get_string('coursestartdate', 'totara_reportbuilder'),
             'date'
         );
         $filteroptions[] = new rb_filter_option(
             'course',
             'name_and_summary',
-            get_string('coursenameandsummary', 'local_reportbuilder'),
+            get_string('coursenameandsummary', 'totara_reportbuilder'),
             'textarea'
         );
         $filteroptions[] = new rb_filter_option(
             'course',
             'language',
-            get_string('courselanguage', 'local_reportbuilder'),
+            get_string('courselanguage', 'totara_reportbuilder'),
             'select',
             array(
                 'selectfunc' => 'course_languages',
@@ -1467,12 +1485,11 @@ abstract class rb_base_source {
      * @return boolean True
      */
     protected function add_program_table_to_joinlist(&$joinlist, $join, $field) {
-        global $CFG;
 
         $joinlist[] = new rb_join(
             'program',
             'LEFT',
-            $CFG->prefix . 'prog',
+            '{prog}',
             "program.id = $join.$field",
             REPORT_BUILDER_RELATION_ONE_TO_ONE,
             $join
@@ -1491,46 +1508,48 @@ abstract class rb_base_source {
      * @return True
      */
     protected function add_program_fields_to_columns(&$columnoptions, $join='program') {
+        global $DB;
+
         $columnoptions[] = new rb_column_option(
             'prog',
             'fullname',
-            get_string('programname','local_program'),
+            get_string('programname', 'totara_program'),
             "$join.fullname",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'prog',
             'shortname',
-            get_string('programshortname','local_program'),
+            get_string('programshortname', 'totara_program'),
             "$join.shortname",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'prog',
             'idnumber',
-            get_string('programidnumber','local_program'),
+            get_string('programidnumber', 'totara_program'),
             "$join.idnumber",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'prog',
             'id',
-            get_string('programid','local_program'),
+            get_string('programid', 'totara_program'),
             "$join.id",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'prog',
             'summary',
-            get_string('programsummary','local_program'),
-            sql_compare_text("$join.summary"),
+            get_string('programsummary', 'totara_program'),
+            $DB->sql_compare_text("$join.summary"),
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'prog',
             'availablefrom',
-            get_string('availablefrom','local_program'),
-            sql_compare_text("$join.availablefrom"),
+            get_string('availablefrom', 'totara_program'),
+            $DB->sql_compare_text("$join.availablefrom"),
             array(
                 'joins' => $join,
                 'displayfunc' => 'nice_date'
@@ -1539,8 +1558,8 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'prog',
             'availableuntil',
-            get_string('availableuntil','local_program'),
-            sql_compare_text("$join.availableuntil"),
+            get_string('availableuntil', 'totara_program'),
+            $DB->sql_compare_text("$join.availableuntil"),
             array(
                 'joins' => $join,
                 'displayfunc' => 'nice_date'
@@ -1549,12 +1568,12 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'prog',
             'proglinkicon',
-            get_string('prognamelinkedicon','local_program'),
+            get_string('prognamelinkedicon', 'totara_program'),
             "$join.fullname",
             array(
                 'joins' => $join,
                 'displayfunc' => 'link_program_icon',
-                'defaultheading' => get_string('programname', 'local_program'),
+                'defaultheading' => get_string('programname', 'totara_program'),
                 'extrafields' => array(
                     'program_id' => "$join.id",
                     'program_icon' => "$join.icon"
@@ -1576,37 +1595,37 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'prog',
             'fullname',
-            get_string('programname','local_program'),
+            get_string('programname', 'totara_program'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'prog',
             'shortname',
-            get_string('programshortname','local_program'),
+            get_string('programshortname', 'totara_program'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'prog',
             'idnumber',
-            get_string('programidnumber','local_program'),
+            get_string('programidnumber', 'totara_program'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'prog',
             'summary',
-            get_string('programsummary','local_program'),
+            get_string('programsummary', 'totara_program'),
             'textarea'
         );
         $filteroptions[] = new rb_filter_option(
             'prog',
             'availablefrom',
-            get_string('availablefrom','local_program'),
+            get_string('availablefrom', 'totara_program'),
             'date'
         );
         $filteroptions[] = new rb_filter_option(
             'prog',
             'availableuntil',
-            get_string('availableuntil','local_program'),
+            get_string('availableuntil', 'totara_program'),
             'date'
         );
         return true;
@@ -1624,17 +1643,18 @@ abstract class rb_base_source {
      */
     protected function add_course_custom_fields_to_joinlist(&$joinlist,
         $join, $joinfield) {
-        global $CFG;
+        global $DB;
 
         // add all course custom fields to join list
-        if($custom_fields = get_records('course_info_field')) {
-            foreach($custom_fields as $custom_field) {
+        $custom_fields = $DB->get_records('course_info_field');
+        if (!empty($custom_fields)) {
+            foreach ($custom_fields as $custom_field) {
                 $id = $custom_field->id;
                 $key = "course_$custom_field->id";
                 $joinlist[] = new rb_join(
                     $key,
                     'LEFT',
-                    $CFG->prefix . 'course_info_data',
+                    '{course_info_data}',
                     "$key.courseid = $join.$joinfield AND $key.fieldid = $id",
                     REPORT_BUILDER_RELATION_ONE_TO_ONE,
                     $join
@@ -1655,10 +1675,12 @@ abstract class rb_base_source {
      * @return boolean True if course custom fields exist
      */
     protected function add_course_custom_fields_to_columns(&$columnoptions) {
+        global $DB;
+
         // auto-generate columns for each course custom field
-        if($custom_fields =
-            get_records('course_info_field')) {
-            foreach($custom_fields as $custom_field) {
+        $custom_fields = $DB->get_records('course_info_field');
+        if (!empty($custom_fields)) {
+            foreach ($custom_fields as $custom_field) {
                 $name = $custom_field->fullname;
                 $key = "course_$custom_field->id";
                 $columnoptions[] = new rb_column_option(
@@ -1684,8 +1706,11 @@ abstract class rb_base_source {
      * @return boolean True if course custom fields exist
      */
     protected function add_course_custom_fields_to_filters(&$filteroptions) {
-        if($custom_fields = get_records('course_info_field','','','','id,shortname,fullname')) {
-            foreach($custom_fields as $custom_field) {
+        global $DB;
+
+        $custom_fields = $DB->get_records('course_info_field', null, '', 'id, shortname, fullname');
+        if (!empty($custom_fields)) {
+            foreach ($custom_fields as $custom_field) {
                 $name = $custom_field->fullname;
                 $key = "course_$custom_field->id";
                 $filteroptions[] = new rb_filter_option(
@@ -1715,12 +1740,10 @@ abstract class rb_base_source {
     protected function add_course_category_table_to_joinlist(&$joinlist,
         $join, $field) {
 
-        global $CFG;
-
         $joinlist[] = new rb_join(
             'course_category',
             'LEFT',
-            $CFG->prefix . 'course_categories',
+            '{course_categories}',
             "course_category.id = $join.$field",
             REPORT_BUILDER_RELATION_MANY_TO_ONE,
             $join
@@ -1747,26 +1770,26 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'course_category',
                 'name',
-                get_string('coursecategory', 'local_reportbuilder'),
+                get_string('coursecategory', 'totara_reportbuilder'),
                 "$catjoin.name",
                 array('joins' => $catjoin)
         );
         $columnoptions[] = new rb_column_option(
                 'course_category',
                 'namelink',
-                get_string('coursecategorylinked', 'local_reportbuilder'),
+                get_string('coursecategorylinked', 'totara_reportbuilder'),
                 "$catjoin.name",
                 array(
                     'joins' => $catjoin,
                     'displayfunc' => 'link_course_category',
-                    'defaultheading' => get_string('category', 'local_reportbuilder'),
+                    'defaultheading' => get_string('category', 'totara_reportbuilder'),
                     'extrafields' => array('cat_id' => "$catjoin.id", 'cat_visible' => "$catjoin.visible")
                 )
         );
         $columnoptions[] = new rb_column_option(
                 'course_category',
                 'id',
-                get_string('coursecategoryid', 'local_reportbuilder'),
+                get_string('coursecategoryid', 'totara_reportbuilder'),
                 "$coursejoin.category",
                 array('joins' => $coursejoin)
         );
@@ -1786,7 +1809,7 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'course_category',
             'id',
-            get_string('coursecategory', 'local_reportbuilder'),
+            get_string('coursecategory', 'totara_reportbuilder'),
             'select',
             array(
                 'selectfunc' => 'course_categories_list',
@@ -1813,12 +1836,12 @@ abstract class rb_base_source {
         global $CFG;
 
         // to get access to position type constants
-        require_once($CFG->dirroot . '/hierarchy/prefix/position/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
 
         $joinlist[] =new rb_join(
             'position_assignment',
             'LEFT',
-            $CFG->prefix . 'pos_assignment',
+            '{pos_assignment}',
             "(position_assignment.userid = $join.$field AND " .
             'position_assignment.type = ' . POSITION_TYPE_PRIMARY . ')',
             REPORT_BUILDER_RELATION_ONE_TO_ONE,
@@ -1828,7 +1851,7 @@ abstract class rb_base_source {
         $joinlist[] = new rb_join(
             'organisation',
             'LEFT',
-            $CFG->prefix . 'org',
+            '{org}',
             'organisation.id = position_assignment.organisationid',
             REPORT_BUILDER_RELATION_ONE_TO_ONE,
             'position_assignment'
@@ -1837,7 +1860,7 @@ abstract class rb_base_source {
         $joinlist[] = new rb_join(
             'position',
             'LEFT',
-            $CFG->prefix . 'pos',
+            '{pos}',
             'position.id = position_assignment.positionid',
             REPORT_BUILDER_RELATION_ONE_TO_ONE,
             'position_assignment'
@@ -1846,7 +1869,7 @@ abstract class rb_base_source {
         $joinlist[] = new rb_join(
                 'pos_type',
                 'LEFT',
-                $CFG->prefix . 'pos_type',
+                '{pos_type}',
                 'position.typeid = pos_type.id',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
                 'position'
@@ -1855,7 +1878,7 @@ abstract class rb_base_source {
         $joinlist[] = new rb_join(
                 'org_type',
                 'LEFT',
-                $CFG->prefix . 'org_type',
+                '{org_type}',
                 'organisation.typeid = org_type.id',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
                 'organisation'
@@ -1885,28 +1908,28 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'organisationid',
-            get_string('usersorgid', 'local_reportbuilder'),
+            get_string('usersorgid', 'totara_reportbuilder'),
             "$posassign.organisationid",
             array('joins' => $posassign, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'organisationpath',
-            get_string('usersorgpathids', 'local_reportbuilder'),
+            get_string('usersorgpathids', 'totara_reportbuilder'),
             "$org.path",
             array('joins' => $org, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'organisation',
-            get_string('usersorgname', 'local_reportbuilder'),
+            get_string('usersorgname', 'totara_reportbuilder'),
             "$org.fullname",
             array('joins' => $org)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'org_type',
-            get_string('organisationtype', 'local_reportbuilder'),
+            get_string('organisationtype', 'totara_reportbuilder'),
             'org_type.fullname',
             array(
                 'joins' => 'org_type'
@@ -1915,35 +1938,35 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'org_type_id',
-            get_string('organisationtypeid', 'local_reportbuilder'),
+            get_string('organisationtypeid', 'totara_reportbuilder'),
             'organisation.typeid',
             array('joins' => $org, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'positionid',
-            get_string('usersposid', 'local_reportbuilder'),
+            get_string('usersposid', 'totara_reportbuilder'),
             "$posassign.positionid",
             array('joins' => $posassign, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'positionpath',
-            get_string('userspospathids', 'local_reportbuilder'),
+            get_string('userspospathids', 'totara_reportbuilder'),
             "$pos.path",
             array('joins' => $pos, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'position',
-            get_string('userspos', 'local_reportbuilder'),
+            get_string('userspos', 'totara_reportbuilder'),
             "$pos.fullname",
             array('joins' => $pos)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'pos_type',
-            get_string('positiontype', 'local_reportbuilder'),
+            get_string('positiontype', 'totara_reportbuilder'),
             'pos_type.fullname',
             array(
                 'joins' => 'pos_type'
@@ -1952,14 +1975,14 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'pos_type_id',
-            get_string('positiontypeid', 'local_reportbuilder'),
+            get_string('positiontypeid', 'totara_reportbuilder'),
             'position.typeid',
             array('joins' => $pos, 'selectable' => false)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'title',
-            get_string('usersjobtitle', 'local_reportbuilder'),
+            get_string('usersjobtitle', 'totara_reportbuilder'),
             "$posassign.fullname",
             array('joins' => $posassign)
         );
@@ -1979,13 +2002,13 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'title',
-            get_string('usersjobtitle', 'local_reportbuilder'),
+            get_string('usersjobtitle', 'totara_reportbuilder'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'user',
             'organisationid',
-            get_string('participantscurrentorgbasic', 'local_reportbuilder'),
+            get_string('participantscurrentorgbasic', 'totara_reportbuilder'),
             'select',
             array(
                 'selectfunc' => 'organisations_list',
@@ -1995,13 +2018,13 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'organisationpath',
-            get_string('participantscurrentorg', 'local_reportbuilder'),
+            get_string('participantscurrentorg', 'totara_reportbuilder'),
             'org'
         );
         $filteroptions[] = new rb_filter_option(
             'user',
             'positionid',
-            get_string('participantscurrentposbasic', 'local_reportbuilder'),
+            get_string('participantscurrentposbasic', 'totara_reportbuilder'),
             'select',
             array(
                 'selectfunc' => 'positions_list',
@@ -2011,13 +2034,13 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'positionpath',
-            get_string('participantscurrentpos', 'local_reportbuilder'),
+            get_string('participantscurrentpos', 'totara_reportbuilder'),
             'pos'
         );
         $filteroptions[] = new rb_filter_option(
                 'user',
                 'pos_type_id',
-                get_string('positiontype', 'local_reportbuilder'),
+                get_string('positiontype', 'totara_reportbuilder'),
                 'select',
                 array(
                     'selectfunc' => 'position_type_list',
@@ -2027,7 +2050,7 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
                 'user',
                 'org_type_id',
-                get_string('organisationtype', 'local_reportbuilder'),
+                get_string('organisationtype', 'totara_reportbuilder'),
                 'select',
                 array(
                     'selectfunc' => 'organisation_type_list',
@@ -2041,6 +2064,10 @@ abstract class rb_base_source {
     /**
      * Converts a list to an array given a list and a separator
      * duplicate values are ignored
+     *
+     * Example;
+     * list_to_array('some-thing-some', '-'); =>
+     * array('some' => 'some', 'thing' => 'thing');
      *
      * @param string $list List of items
      * @param string $sep Symbol or string that separates list items
@@ -2067,9 +2094,9 @@ abstract class rb_base_source {
      * @param array $filteroptions - array of filters, passed by reference
      */
     protected function add_custom_fields_for($cf_prefix, $join, $joinfield,
-        array &$joinlist, array &$columnoptions, array &$filteroptions){
+        array &$joinlist, array &$columnoptions, array &$filteroptions) {
 
-        global $CFG;
+        global $DB;
 
         $seek = false;
         foreach ($joinlist as $object) {
@@ -2087,28 +2114,29 @@ abstract class rb_base_source {
         $datatable = $cf_prefix.'_info_data';
 
         // check if there are any visible custom fields of this type
-        $items = get_recordset($fieldtable,'hidden','0');
+        $items = $DB->get_recordset($fieldtable, array('hidden' => '0'));
         if (empty($items)) {
+            $items->close();
             return false;
         }
 
         $selfunc = rb_filter_option::select_width_limiter();
         foreach ($items as $record) {
-            $id   = $record['id'];
+            $id   = $record->id;
             $joinname = "{$cf_prefix}_{$id}";
             $value = "custom_field_{$id}";
-            $name = $record['fullname'];
+            $name = $record->fullname;
             $column_options = array('joins' => $joinname);
             $datatype = 'text';
             $filter_options = array();
 
-            if ($record['datatype'] == 'menu') {
+            if ($record->datatype == 'menu') {
                 $datatype = 'simpleselect';
-                $filter_options['selectchoices'] = $this->list_to_array($record['param1'],"\n");
+                $filter_options['selectchoices'] = $this->list_to_array($record->param1, "\n");
                 $filter_options['selectoptions'] = array('datatype' => 'text');
             }
 
-            if ($record['datatype'] == 'checkbox') {
+            if ($record->datatype == 'checkbox') {
                 $datatype = 'simpleselect';
                 $filter_options['selectchoices'] = array(0 => get_string('no'), 1 => get_string('yes'));
                 $filter_options['selectoptions'] = array('datatype' => 'text');
@@ -2117,7 +2145,7 @@ abstract class rb_base_source {
 
             $joinlist[] = new rb_join($joinname,
                                       'LEFT',
-                                      $CFG->prefix.$datatable,
+                                      "{{$datatable}}",
                                       "{$joinname}.{$joinfield} = {$join}.id AND {$joinname}.fieldid = {$id}",
                                       REPORT_BUILDER_RELATION_ONE_TO_ONE,
                                       $join
@@ -2137,6 +2165,7 @@ abstract class rb_base_source {
 
         }
 
+        $items->close();
 
         return true;
 
@@ -2223,7 +2252,7 @@ abstract class rb_base_source {
             $joinlist[] = new rb_join(
                 'manager_role_assignment',
                 'LEFT',
-                $CFG->prefix . 'role_assignments',
+                '{role_assignments}',
                 "(manager_role_assignment.id = $join.$field" .
                     ' AND manager_role_assignment.roleid = ' .
                     $managerroleid . ')',
@@ -2233,7 +2262,7 @@ abstract class rb_base_source {
             $joinlist[] = new rb_join(
                 'manager',
                 'LEFT',
-                $CFG->prefix . 'user',
+                '{user}',
                 'manager.id = manager_role_assignment.userid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
                 'manager_role_assignment'
@@ -2259,25 +2288,26 @@ abstract class rb_base_source {
      */
     protected function add_manager_fields_to_columns(&$columnoptions,
         $manager='manager') {
+        global $DB;
 
         $columnoptions[] = new rb_column_option(
             'user',
             'managername',
-            get_string('usersmanagername', 'local_reportbuilder'),
-            sql_fullname("$manager.firstname","$manager.lastname"),
+            get_string('usersmanagername', 'totara_reportbuilder'),
+            $DB->sql_fullname("$manager.firstname", "$manager.lastname"),
             array('joins' => $manager)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'managerid',
-            get_string('usersmanagerid', 'local_reportbuilder'),
+            get_string('usersmanagerid', 'totara_reportbuilder'),
             "$manager.id",
             array('joins' => $manager)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'manageridnumber',
-            get_string('usersmanageridnumber', 'local_reportbuilder'),
+            get_string('usersmanageridnumber', 'totara_reportbuilder'),
             "$manager.idnumber",
             array('joins' => $manager)
         );
@@ -2297,19 +2327,19 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'managername',
-            get_string('managername', 'local_reportbuilder'),
+            get_string('managername', 'totara_reportbuilder'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'user',
             'managerid',
-            get_string('usersmanagerid', 'local_reportbuilder'),
+            get_string('usersmanagerid', 'totara_reportbuilder'),
             'number'
         );
         $filteroptions[] = new rb_filter_option(
             'user',
             'manageridnumber',
-            get_string('usersmanageridnumber', 'local_reportbuilder'),
+            get_string('usersmanageridnumber', 'totara_reportbuilder'),
             'text'
         );
         return true;
@@ -2330,19 +2360,19 @@ abstract class rb_base_source {
     protected function add_course_tags_tables_to_joinlist(&$joinlist,
         $join, $field) {
 
-        global $CFG;
+        global $DB;
 
         $joinlist[] = new rb_join(
             'tagids',
             'LEFT',
             // subquery as table name
             "(SELECT crs.id AS cid, " .
-                sql_group_concat(sql_cast2char('t.id'),'|') .
-                " AS idlist FROM {$CFG->prefix}course crs
-                LEFT JOIN {$CFG->prefix}tag_instance ti
-                    ON crs.id=ti.itemid AND ti.itemtype='course'
-                LEFT JOIN {$CFG->prefix}tag t
-                    ON ti.tagid=t.id AND t.tagtype='official'
+                sql_group_concat(sql_cast2char('t.id'), '|') .
+                " AS idlist FROM {course} crs
+                LEFT JOIN {tag_instance} ti
+                    ON crs.id = ti.itemid AND ti.itemtype = 'course'
+                LEFT JOIN {tag} t
+                    ON ti.tagid = t.id AND t.tagtype = 'official'
                 GROUP BY crs.id)",
             "tagids.cid = $join.$field",
             REPORT_BUILDER_RELATION_ONE_TO_ONE,
@@ -2350,20 +2380,19 @@ abstract class rb_base_source {
         );
 
         // create a join for each official tag
-        if($tags = get_records('tag', 'tagtype', 'official')) {
-            foreach($tags as $tag) {
-                $tagid = $tag->id;
-                $name = "course_tag_$tagid";
-                $joinlist[] = new rb_join(
-                    $name,
-                    'LEFT',
-                    $CFG->prefix . 'tag_instance',
-                    "($name.itemid = $join.$field AND $name.tagid = $tagid " .
-                        "AND $name.itemtype='course')",
-                    REPORT_BUILDER_RELATION_ONE_TO_ONE,
-                    $join
-                );
-            }
+        $tags = $DB->get_records('tag', array('tagtype' => 'official'));
+        foreach ($tags as $tag) {
+            $tagid = $tag->id;
+            $name = "course_tag_$tagid";
+            $joinlist[] = new rb_join(
+                $name,
+                'LEFT',
+                '{tag_instance}',
+                "($name.itemid = $join.$field AND $name.tagid = $tagid " .
+                    "AND $name.itemtype = 'course')",
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                $join
+            );
         }
 
         return true;
@@ -2382,32 +2411,32 @@ abstract class rb_base_source {
      */
     protected function add_course_tag_fields_to_columns(&$columnoptions,
         $tagids='tagids') {
+        global $DB;
 
         $columnoptions[] = new rb_column_option(
             'course',
             'tagids',
-            get_string('coursetagids', 'local_reportbuilder'),
+            get_string('coursetagids', 'totara_reportbuilder'),
             "$tagids.idlist",
             array('joins' => $tagids, 'selectable' => false)
         );
 
         // create a on/off field for every official tag
-        if($tags = get_records('tag', 'tagtype', 'official')) {
-            foreach($tags as $tag) {
-                $tagid = $tag->id;
-                $name = $tag->name;
-                $join = "course_tag_$tagid";
-                $columnoptions[] = new rb_column_option(
-                    'tags',
-                    $join,
-                    get_string('taggedx', 'local_reportbuilder', $name),
-                    "CASE WHEN $join.id IS NOT NULL THEN 1 ELSE 0 END",
-                    array(
-                        'joins' => $join,
-                        'displayfunc' => 'yes_no',
-                    )
-                );
-            }
+        $tags = $DB->get_records('tag', array('tagtype' => 'official'));
+        foreach ($tags as $tag) {
+            $tagid = $tag->id;
+            $name = $tag->name;
+            $join = "course_tag_$tagid";
+            $columnoptions[] = new rb_column_option(
+                'tags',
+                $join,
+                get_string('taggedx', 'totara_reportbuilder', $name),
+                "CASE WHEN $join.id IS NOT NULL THEN 1 ELSE 0 END",
+                array(
+                    'joins' => $join,
+                    'displayfunc' => 'yes_no',
+                )
+            );
         }
         return true;
     }
@@ -2422,23 +2451,23 @@ abstract class rb_base_source {
      * @return True
      */
     protected function add_course_tag_fields_to_filters(&$filteroptions) {
+        global $DB;
 
         // create a filter for every official tag
-        if($tags = get_records('tag', 'tagtype', 'official')) {
-            foreach($tags as $tag) {
-                $tagid = $tag->id;
-                $name = $tag->name;
-                $join = "course_tag_$tagid";
-                $filteroptions[] = new rb_filter_option(
-                    'tags',
-                    $join,
-                    get_string('taggedx', 'local_reportbuilder', $name),
-                    'simpleselect',
-                    array('selectchoices' => array(
-                        1 => get_string('yes'), 0 => get_string('no'))
-                    )
-                );
-            }
+        $tags = $DB->get_records('tag', array('tagtype' => 'official'));
+        foreach ($tags as $tag) {
+            $tagid = $tag->id;
+            $name = $tag->name;
+            $join = "course_tag_{$tagid}";
+            $filteroptions[] = new rb_filter_option(
+                'tags',
+                $join,
+                get_string('taggedx', 'totara_reportbuilder', $name),
+                'simpleselect',
+                array('selectchoices' => array(
+                    1 => get_string('yes'), 0 => get_string('no'))
+                )
+            );
         }
         return true;
     }

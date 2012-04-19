@@ -7319,6 +7319,15 @@ function get_plugin_directory($plugintype, $name) {
         $plugintype = 'mod';
     }
 
+    if ($plugintype == 'rb_source') {
+        require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+        foreach (reportbuilder::find_source_dirs() as $dir) {
+            if (file_exists($dir.$plugintype.'_'.$name.'.php')) {
+                return $dir;
+            }
+        }
+    }
+
     $types = get_plugin_types(true);
     if (!array_key_exists($plugintype, $types)) {
         return NULL;
@@ -7394,6 +7403,9 @@ function normalize_component($component) {
             $plugin = $component;
         }
 
+    } else if (preg_match('/^rb_source_/', $component)) {
+        $type = 'rb_source';
+        $plugin = str_replace('rb_source_', '', $component);
     } else {
         list($type, $plugin) = explode('_', $component, 2);
         $plugintypes = get_plugin_types(false);

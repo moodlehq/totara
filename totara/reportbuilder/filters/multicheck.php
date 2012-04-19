@@ -1,6 +1,29 @@
-<?php //$Id$
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @package totara
+ * @subpackage reportbuilder
+ */
 
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
 
 /**
  * Generic filter based on a multiple checkboxes
@@ -33,9 +56,9 @@ class filter_multicheck extends filter_type {
      * @return array of comparison operators
      */
     function get_operators() {
-        return array(0 => get_string('isanyvalue','filters'),
-                     1 => get_string('matchesanyselected','filters'),
-                     2 => get_string('matchesallselected','filters'));
+        return array(0 => get_string('isanyvalue', 'filters'),
+                     1 => get_string('matchesanyselected', 'filters'),
+                     2 => get_string('matchesallselected', 'filters'));
     }
 
     /**
@@ -43,40 +66,40 @@ class filter_multicheck extends filter_type {
      * @param object $mform a MoodleForm object to setup
      */
     function setupForm(&$mform) {
-        global $SESSION;
+        global $SESSION, $OUTPUT;
         $sessionname = $this->_sessionname;
         $label = $this->_filter->label;
         $advanced = $this->_filter->advanced;
 
-        $mform->addElement('select', $this->_name.'_op', $label, $this->get_operators());
-        $mform->setHelpButton($this->_name.'_op', array('checkbox', $label, 'filters'));
+        $mform->addElement('select', $this->_name . '_op', $label, $this->get_operators());
+        $mform->addHelpButton($this->_name . '_op', 'filtercheckbox', 'filters');
 
         // this class is used by the CSS to arrange the checkboxes nicely
-        $mform->addElement('html', '<div class="multicheck-items">');
+        $mform->addElement('html', $OUTPUT->container_start('multicheck-items'));
         $objs = array();
-        foreach($this->_options as $id => $name) {
-            $objs[] =& $mform->createElement('advcheckbox', $this->_name.'['. $id .']', null, $name, array('group' => 1));
-            $mform->disabledIf($this->_name.'['.$id.']', $this->_name.'_op', 'eq', 0);
+        foreach ($this->_options as $id => $name) {
+            $objs[] =& $mform->createElement('advcheckbox', $this->_name . '[' . $id . ']', null, $name, array('group' => 1));
+            $mform->disabledIf($this->_name . '[' . $id . ']', $this->_name . '_op', 'eq', 0);
         }
-        $grp =& $mform->addElement('group', $this->_name.'_grp', null, $objs, '', false);
-        $mform->addElement('html', '</div>');
+        $mform->addGroup($objs, $this->_name . '_grp', '&nbsp;', '', false);
+        $mform->addElement('html', $OUTPUT->container_end());
         if (!is_null($this->_default)) {
             $mform->setDefault($this->_name, $this->_default);
         }
         if ($advanced) {
-            $mform->setAdvanced($this->_name.'_op');
-            $mform->setAdvanced($this->_name.'_grp');
+            $mform->setAdvanced($this->_name . '_op');
+            $mform->setAdvanced($this->_name . '_grp');
         }
 
         // set default values
-        if(array_key_exists($this->_name, $SESSION->{$sessionname})) {
+        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
             $defaults = $SESSION->{$sessionname}[$this->_name];
         }
         //TODO get rid of need for [0]
-        if(isset($defaults[0]['operator'])) {
-            $mform->setDefault($this->_name.'_op', $defaults[0]['operator']);
+        if (isset($defaults[0]['operator'])) {
+            $mform->setDefault($this->_name . '_op', $defaults[0]['operator']);
         }
-        if(isset($defaults[0]['value'])) {
+        if (isset($defaults[0]['value'])) {
             $mform->setDefault($this->_name, $defaults[0]['value']);
         }
                 // check for null case if
@@ -90,7 +113,7 @@ class filter_multicheck extends filter_type {
      */
     function check_data($formdata) {
         $field    = $this->_name;
-        $operator = $field.'_op';
+        $operator = $field . '_op';
 
         if (array_key_exists($field, $formdata) ) {
             return array('operator' => (int)$formdata->$operator,
@@ -103,9 +126,11 @@ class filter_multicheck extends filter_type {
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array containing filtering condition SQL clause and params
      */
     function get_sql_filter($data) {
+        global $DB;
+
         $operator = $data['operator'];
         $items    = $data['value'];
         $query    = $this->_filter->get_field();
@@ -119,28 +144,51 @@ class filter_multicheck extends filter_type {
                 break;
             default:
                 // return 1=1 instead of TRUE for MSSQL support
-                return ' 1=1 ';
+                return array(' 1=1 ', array());
         }
 
         // split by comma and look for any items
         // within list
         $res = array();
-        if(is_array($items)) {
-            foreach($items as $id => $selected) {
-                if($selected) {
-                    $res[] = "( $query LIKE '$id' OR " .
-                        "$query LIKE '%|$id' OR " .
-                        "$query LIKE '$id|%' OR " .
-                        "$query LIKE '%|$id|%' )\n";
+        $params = array();
+        if (is_array($items)) {
+            $count = 1;
+            foreach ($items as $id => $selected) {
+                if ($selected) {
+                    $uniqueparam = rb_unique_param("fmcequal_{$count}_");
+                    $equalslike = $DB->sql_like($query, ":{$uniqueparam}");
+                    $params[$uniqueparam] = $DB->sql_like_escape($id);
+                    $count++;
+
+                    $uniqueparam = rb_unique_param("fmcendswith_{$count}_");
+                    $endswithlike = $DB->sql_like($query, ":{$uniqueparam}");
+                    $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id);
+                    $count++;
+
+                    $uniqueparam = rb_unique_param("fmcstartswith_{$count}_");
+                    $startswithlike = $DB->sql_like($query, ":{$uniqueparam}");
+                    $params[$uniqueparam] = $DB->sql_like_escape($id) . '|%';
+                    $count++;
+
+                    $uniqueparam = rb_unique_param("fmccontains{$count}_");
+                    $containslike = $DB->sql_like($query, ":{$uniqueparam}");
+                    $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id) . '|%';
+                    $count++;
+
+                    $res[] = "( {$equalslike} OR " .
+                        "{$endswithlike} OR " .
+                        "{$startswithlike} OR " .
+                        "{$containslike} )\n";
                 }
             }
         }
         // none selected
-        if(count($res) == 0) {
+        if (count($res) == 0) {
             // using 1=0 instead of FALSE for MSSQL support
-            return ' 1=0 ';
+            return array(' 1=0 ', array());
         }
-        return '('.implode($glue,$res).')';
+
+        return array('(' . implode($glue, $res) . ')', $params);
     }
 
     /**
@@ -158,16 +206,16 @@ class filter_multicheck extends filter_type {
             return '';
         }
 
-        $a = new object();
+        $a = new stdClass();
         $a->label    = $label;
         $checked = array();
-        foreach($value as $name => $selected) {
-            if($selected) {
-                $checked[] = '"'.s($name).'"';
+        foreach ($value as $name => $selected) {
+            if ($selected) {
+                $checked[] = '"' . s($name) . '"';
             }
         }
         $a->value    = implode(', ', $checked);
-            //'"'.s($this->_options[$value]).'"';
+            //'"' . s($this->_options[$value]) . '"';
         $a->operator = $operators[$operator];
 
         return get_string('selectlabel', 'filters', $a);

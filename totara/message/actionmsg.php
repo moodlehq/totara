@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,12 +28,15 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot.'/message/lib.php');
+require_once($CFG->dirroot.'/totara/message/lib.php');
 
 require_login();
 
 if (isguestuser()) {
     redirect($CFG->wwwroot);
 }
+
+$PAGE->set_context(context_system::instance());
 
 /// Script parameters
 $returnto = optional_param('returnto', $CFG->wwwroot, PARAM_RAW);
@@ -86,7 +89,7 @@ $tab->head  = array(get_string('type', 'block_totara_alerts'),
                      get_string('from', 'block_totara_alerts'),
                      get_string('statement', 'block_totara_alerts'));
 
-$tab->set_attribute('class', 'fullwidth');
+$tab->attributes['class'] = 'fullwidth';
 $tab->data  = array();
 foreach ($ids as $msgid => $msg) {
     $metadata = $DB->get_record('message_metadata', array('messageid' => $msgid));
@@ -106,12 +109,12 @@ foreach ($ids as $msgid => $msg) {
         continue;
     }
 
-    $display = isset($metadata->msgtype) ? totara_msg_msgtype_text($metadata->msgtype) : array('icon' => '', 'text' => '');
+    $display = isset($metadata->msgtype) ? totara_message_msgtype_text($metadata->msgtype) : array('icon' => '', 'text' => '');
     $type = $display['icon'];
     $type_alt = $display['text'];
     $from = $DB->get_record('user', array('id' => $msg->useridfrom));
     $fromname = fullname($from);
-    $icon = html_writer::empty_tag('img', array('src' => totara_msg_icon_url($metadata->icon), 'class' => 'msgicon', 'alt' => format_string($msg->subject), 'title' => format_string($msg->subject)));
+    $icon = $OUTPUT->pix_icon('/msgicons/'.$metadata->icon, format_string($msg->subject), 'totara_core', array('class'=>'msgicon', 'title' => format_string($msg->subject)));
     $cells = array();
     $cell = new html_table_cell(html_writer::tag('div', $icon, array('id' => 'dismiss-type')));
     $cell->attributes['class'] = 'totara-msgs-action-right';

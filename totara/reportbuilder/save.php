@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -27,56 +27,56 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once('report_forms.php');
 
 require_login();
 
-$id = optional_param('id',null,PARAM_INT); // id for report to save
-$returnurl = $CFG->wwwroot.'/totara/reportbuilder/report.php?id='.$id;
+$id = optional_param('id', null, PARAM_INT); // id for report to save
+$returnurl = $CFG->wwwroot . '/totara/reportbuilder/report.php?id='.$id;
+
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url('/totara/reportbuilder/save.php', array('id' => $id));
 
 $report = new reportbuilder($id);
-if(!$report->is_capable($id)) {
-    error(get_string('nopermission','local_reportbuilder'));
+if (!$report->is_capable($id)) {
+    print_error('nopermission', 'totara_reportbuilder');
 }
 
-$mform = new report_builder_save_form(null, compact('id','report'));
+$mform = new report_builder_save_form(null, compact('id', 'report'));
 
 // form results check
 if ($mform->is_cancelled()) {
     redirect($returnurl);
 }
 if ($fromform = $mform->get_data()) {
-    if(empty($fromform->submitbutton)) {
-        print_error('error:unknownbuttonclicked', 'local_reportbuilder', $returnurl);
+    if (empty($fromform->submitbutton)) {
+        print_error('error:unknownbuttonclicked', 'totara_reportbuilder', $returnurl);
     }
     // handle form submission
-    $todb = new object();
+    $todb = new stdClass();
     $todb->reportid = $fromform->id;
     $todb->userid = $fromform->userid;
     $todb->search = $fromform->search;
     $todb->name = $fromform->name;
     $todb->ispublic = $fromform->ispublic;
-    if(insert_record('report_builder_saved', $todb)) {
-        redirect($CFG->wwwroot.'/totara/reportbuilder/savedsearches.php?id='.$id);
-    } else {
-        redirect($returnurl, get_string('error:couldnotsavesearch','local_reportbuilder'));
-    }
+    $DB->insert_record('report_builder_saved', $todb);
+    redirect($CFG->wwwroot . '/totara/reportbuilder/savedsearches.php?id='.$id);
 }
 
 $fullname = $report->fullname;
-$pagetitle = format_string(get_string('savesearch','local_reportbuilder').': '.$fullname);
-$navlinks[] = array('name' => get_string('report','local_reportbuilder'), 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => get_string('savesearch','local_reportbuilder'), 'link'=> '', 'type'=>'title');
+$pagetitle = format_string(get_string('savesearch', 'totara_reportbuilder').': '.$fullname);
 
-$navigation = build_navigation($navlinks);
-print_header_simple($pagetitle, '', $navigation, '', null, true);
+$PAGE->set_title($pagetitle);
+$PAGE->navbar->add(get_string('report', 'totara_reportbuilder'));
+$PAGE->navbar->add($fullname);
+$PAGE->navbar->add(get_string('savesearch', 'totara_reportbuilder'));
 
+echo $OUTPUT->header();
 
 $mform->display();
 
-print_footer();
+echo $OUTPUT->footer();
 
 
 ?>

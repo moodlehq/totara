@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -86,11 +86,15 @@ class rb_tasks_embedded extends rb_base_embedded {
 
         // only show tasks, not notifications
         $this->embeddedparams = array(
-            'name' => '\'totara_task\''
+            'name' => 'totara_task'
         );
         // also limited to single user
-        if(isset($userid)) {
+        if (isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
+        }
+        // also limited by role
+        if (isset($roleid)) {
+            $this->embeddedparams['roleid'] = $roleid;
         }
 
         parent::__construct();

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
  * @subpackage reportbuilder
  */
 
-require_once($CFG->dirroot.'/totara/reportbuilder/filters/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
 
 /**
  * Generic filter based on selecting multiple items from a hierarchy.
@@ -51,9 +51,9 @@ class filter_hierarchy_multi extends filter_type {
      * @return array of comparison operators
      */
     function get_operators() {
-        return array(0 => get_string('isanyvalue','filters'),
-                     1 => get_string('isequalto','filters'),
-                     2 => get_string('isnotequalto','filters'));
+        return array(0 => get_string('isanyvalue', 'filters'),
+                     1 => get_string('isequalto', 'filters'),
+                     2 => get_string('isnotequalto', 'filters'));
     }
 
     /**
@@ -67,10 +67,9 @@ class filter_hierarchy_multi extends filter_type {
         $advanced = $this->_filter->advanced;
         $type = $this->_type;
 
-        $mform->addElement('static', $this->_name.'_list', $label,
-            // container for currently selected items
-            '<div class="list-' . $this->_name . '">' .
-            '</div>' . display_choose_hierarchy_items_link($this->_name, $type));
+        // container for currently selected items
+        $content = html_writer::empty_tag('div', array('class' => 'list-' . $this->_name )) . display_choose_hierarchy_items_link($this->_name, $type);
+        $mform->addElement('static', $this->_name.'_list', $label, $content);
 
         if ($advanced) {
             $mform->setAdvanced($this->_name.'_grp');
@@ -90,14 +89,17 @@ class filter_hierarchy_multi extends filter_type {
     }
 
     function definition_after_data(&$mform) {
-        if ($ids = $mform->getElementValue($this->_name)) {
+        global $DB;
 
-            if ($items = get_records_select($this->_type, "id IN ($ids)")) {
-                $out = '<div class="list-' . $this->_name . '">';
+        if ($ids = $mform->getElementValue($this->_name)) {
+            list($isql, $iparams) = $DB->get_in_or_equal(explode(',', $ids));
+            $items = $DB->get_records_select($this->_type, "id {$isql}", $iparams);
+            if (!empty($items)) {
+                $out = html_writer::start_tag('div', array('class' => 'list-' . $this->_name ));
                 foreach ($items as $item) {
                     $out .= display_selected_hierarchy_item($item, $this->_name);
                 }
-                $out .= '</div>';
+                $out .= html_writer::end_tag('div');
 
                 // link to add items
                 $out .= display_choose_hierarchy_items_link($this->_name, $this->_type);
@@ -128,19 +130,23 @@ class filter_hierarchy_multi extends filter_type {
      * Returns the condition to be used with SQL where
      *
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array containing filtering condition SQL clause and params
      */
     function get_sql_filter($data) {
-        $items    = $data['value'];
+        global $DB;
+
+        $items    = explode(',', $data['value']);
         $query    = $this->_filter->get_field();
 
         // don't filter if none selected
         if (empty($items)) {
             // return 1=1 instead of TRUE for MSSQL support
-            return ' 1=1';
+            return array(' 1=1 ', array());
         }
+        list($insql, $inparams) = $DB->get_in_or_equal($items, SQL_PARAMS_NAMED,
+            rb_unique_param('fhm').'_');
 
-        return "$query IN ($items)";
+        return array("{$query} {$insql}", $inparams);
     }
 
     /**
@@ -149,24 +155,26 @@ class filter_hierarchy_multi extends filter_type {
      * @return string active filter label
      */
     function get_label($data) {
-        $value     = $data['value'];
+        global $DB;
+
+        $value     = explode(',', $data['value']);
         $label = $this->_filter->label;
 
         if (empty($value)) {
             return '';
         }
 
-        $a = new object();
+        $a = new stdClass();
         $a->label    = $label;
 
         $selected = array();
-        if ($items = get_records_select($this->_type, "id IN ($value)")) {
-            foreach ($items as $item) {
-                $selected[] = '"' . format_string($item->fullname) . '"';
-            }
+        list($isql, $iparams) = $DB->get_in_or_equal($value);
+        $items = $DB->get_records_select($this->_type, "id {$isql}", $params);
+        foreach ($items as $item) {
+            $selected[] = '"' . format_string($item->fullname) . '"';
         }
 
-        $orstring = get_string('or', 'local_reportbuilder');
+        $orstring = get_string('or', 'totara_reportbuilder');
         $a->value    = implode($orstring, $selected);
 
         return get_string('selectlabelnoop', 'filters', $a);
@@ -183,13 +191,16 @@ class filter_hierarchy_multi extends filter_type {
  * @return string HTML to display a selected item
  */
 function display_selected_hierarchy_item($item, $filtername) {
-    global $CFG;
+    global $OUTPUT;
+
     $deletestr = get_string('delete');
 
-    $out = '<div data-filtername="' . $filtername . '" data-id="' . $item->id .
-        '" class="multiselect-selected-item">' . format_string($item->fullname);
-    $out .= '<a href="#"><img class="delete-icon" alt="' . $deletestr . '" src="' . $CFG->pixpath . '/t/delete.gif" /></a>';
-    $out .= '</div>';
+    $out = html_writer::start_tag('div', array('data-filtername' =>  $filtername,
+        'data-id' => $item->id, 'class' => 'multiselect-selected-item'));
+    $out .= format_string($item->fullname);
+    $out .= html_writer::link('#', html_writer::empty_tag('img', array('class' => 'delete-icon',
+        'alt' => $deletestr, 'src' => $OUTPUT->pix_url('/t/delete'))));
+    $out .= html_writer::end_tag('div');
     return $out;
 }
 
@@ -201,7 +212,7 @@ function display_selected_hierarchy_item($item, $filtername) {
  * @return string HTML to display the link
  */
 function display_choose_hierarchy_items_link($filtername, $type) {
-
-    return '<div class="rb-' . $type . '-add-link"><a href="#" id="show-' . $filtername .
-        '-dialog">' . get_string('choose'.$type.'plural', 'local_reportbuilder') . '</a></div>';
+    return html_writer::tag('div', html_writer::link('#', get_string("choose{$type}plural", 'totara_reportbuilder'),
+        array('id' => "show-{$filtername}-dialog")),
+        array('class' => "rb-{$type}-add-link"));
 }

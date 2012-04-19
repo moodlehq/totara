@@ -1,14 +1,14 @@
-<?php // $Id$
+<?php
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /*
@@ -40,42 +40,44 @@
     define('REPORT_BUILDER_GROUPS_FAILED_INIT_TABLES', 5);
     define('REPORT_BUILDER_GROUPS_REPORTS_EXIST', 6);
 
-    global $USER;
-
-    $id = optional_param('id',null,PARAM_INT); // id for delete group
-    $d = optional_param('d',false, PARAM_BOOL); // delete group?
+    $id = optional_param('id', null, PARAM_INT); // id for delete group
+    $d = optional_param('d', false, PARAM_BOOL); // delete group?
     $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
 
     $returnurl = $CFG->wwwroot . '/totara/reportbuilder/groups.php';
 
-    admin_externalpage_setup('activitygroups');
+    admin_externalpage_setup('rbactivitygroups');
 
-    if($d && $confirm) {
+    $output = $PAGE->get_renderer('totara_reportbuilder');
+
+    if ($d && $confirm) {
         // delete an existing group
-        if(!confirm_sesskey()) {
-            totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
+        if (!confirm_sesskey()) {
+            totara_set_notification(get_string('error:bad_sesskey', 'totara_reportbuilder'), $returnurl);
         }
-        if(delete_group($id)) {
-            totara_set_notification(get_string('groupdeleted','local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
+        if (delete_group($id)) {
+            totara_set_notification(get_string('groupdeleted', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
         } else {
-            totara_set_notification(get_string('error:groupnotdeleted','local_reportbuilder'), $returnurl);
+            totara_set_notification(get_string('error:groupnotdeleted', 'totara_reportbuilder'), $returnurl);
         }
-    } else if($d) {
-        $reports = get_records_select('report_builder',
-            "source " . sql_ilike() . " '%grp_$id'");
-        if($reports) {
+    } else if ($d) {
+        $likesql = $DB->sql_like('source', '?');
+        $likeparam = '%' . $DB->sql_like_escape("grp_{$id}");
+        $reports = $DB->get_records_select('report_builder', $likesql, array($likeparam));
+        if ($reports) {
             // can't delete group when reports are using it
-            totara_set_notification(get_string('error:grouphasreports','local_reportbuilder'), $returnurl);
+            totara_set_notification(get_string('error:grouphasreports', 'totara_reportbuilder'), $returnurl);
             die;
         } else {
             // prompt to delete
-            admin_externalpage_print_header();
-            print_heading(get_string('activitygroups','local_reportbuilder'));
-            notice_yesno(get_string('groupconfirmdelete','local_reportbuilder'),
-                "groups.php?id={$id}&amp;d=1&amp;confirm=1&amp;" .
-                "sesskey={$USER->sesskey}", $returnurl);
+            echo $output->header();
+            echo $output->heading(get_string('activitygroups', 'totara_reportbuilder'));
+            echo $output->confirm(get_string('groupconfirmdelete', 'totara_reportbuilder'),
+                new moodle_url('/totara/reportbuilder/groups.php',
+                    array('id' => $id, 'd' => '1', 'confirm' => '1', 'sesskey' => $USER->sesskey)),
+                $returnurl);
 
-            print_footer();
+            echo $output->footer();
         }
         die;
     }
@@ -89,125 +91,74 @@
     }
     if ($fromform = $mform->get_data()) {
 
-        if(empty($fromform->submitbutton)) {
-            totara_set_notification(get_string('error:unknownbuttonclicked','local_reportbuilder'), $returnurl);
+        if (empty($fromform->submitbutton)) {
+            totara_set_notification(get_string('error:unknownbuttonclicked', 'totara_reportbuilder'), $returnurl);
         }
 
         $errorcode = 'error:groupnotcreated';
-        if($newid = create_group($fromform, $errorcode)) {
-            redirect($CFG->wwwroot.'/totara/reportbuilder/groupsettings.php?id=' .
+        if ($newid = create_group($fromform, $errorcode)) {
+            redirect($CFG->wwwroot . '/totara/reportbuilder/groupsettings.php?id=' .
                 $newid);
             die;
         } else {
-            totara_set_notification(get_string($errorcode,'local_reportbuilder'), $returnurl);
+            totara_set_notification(get_string($errorcode, 'totara_reportbuilder'), $returnurl);
             die;
         }
 
     }
 
-    admin_externalpage_print_header();
+    echo $output->header();
 
-    print_heading(get_string('activitygroups','local_reportbuilder'));
+    echo $output->heading(get_string('activitygroups', 'totara_reportbuilder'));
 
-    print '<p>' . get_string('activitygroupdesc','local_reportbuilder') . '</p>';
+    echo html_writer::tag('p', get_string('activitygroupdesc', 'totara_reportbuilder'));
 
-    $tableheader = array(get_string('name','local_reportbuilder'),
-                         get_string('tag'),
-                         get_string('baseitem','local_reportbuilder'),
-                         get_string('activities','local_reportbuilder'),
-                         get_string('reports','local_reportbuilder'),
-                         get_string('options','local_reportbuilder'));
+    $feedbackmoduleid = $DB->get_field('modules', 'id', array('name' => 'feedback'));
+    if ($feedbackmoduleid) {
 
-    $feedbackmoduleid = get_field('modules', 'id', 'name', 'feedback');
-    if($feedbackmoduleid) {
+        $position_sql = $DB->sql_position("'grp_'", 'source');
+        $substr_sql = $DB->sql_substr('source', "{$position_sql} + 4");
+        $likesql = $DB->sql_like('source', '?');
+        $likeparam = '%' . $DB->sql_like_escape('_grp_').'%';
 
-        $substr3rdparam = '';
-        if ($CFG->dbfamily == 'mssql') {
-            $substr3rdparam = ', len(source)';
-        }
         $sql = "
-            SELECT reports.groupid,g.*, assign.numitems, reports.numreports,
+            SELECT reports.groupid, g.*, assign.numitems, reports.numreports,
             f.name AS feedbackname, f.id AS feedbackid,
             c.fullname AS coursename, c.id AS courseid,
             cm.id AS cmid, tag.name as tagname
-            FROM {$CFG->prefix}report_builder_group g
-            LEFT JOIN {$CFG->prefix}feedback f
-            ON f.id = " . sql_cast_char2int('g.baseitem') . "
-            LEFT JOIN {$CFG->prefix}course c ON f.course = c.id
-            LEFT JOIN {$CFG->prefix}course_modules cm ON cm.course = c.id
-            AND cm.instance = f.id AND cm.module = $feedbackmoduleid
+            FROM {report_builder_group} g
+            LEFT JOIN {feedback} f
+            ON f.id = " . $DB->sql_cast_char2int('g.baseitem') . "
+            LEFT JOIN {course} c ON f.course = c.id
+            LEFT JOIN {course_modules} cm ON cm.course = c.id
+            AND cm.instance = f.id AND cm.module = ?
             LEFT JOIN (
-                SELECT groupid,COUNT(id) as numitems
-                FROM {$CFG->prefix}report_builder_group_assign
+                SELECT groupid, COUNT(id) as numitems
+                FROM {report_builder_group_assign}
                 GROUP BY groupid
             ) assign ON assign.groupid = g.id
             LEFT JOIN (
-                SELECT id,name
-                FROM {$CFG->prefix}tag
-                WHERE tagtype = 'official'
-            ) tag ON g.assigntype = 'tag' AND g.assignvalue = tag.id
+                SELECT id, name
+                FROM {tag}
+                WHERE tagtype = ?
+            ) tag ON g.assigntype = ? AND g.assignvalue = tag.id
             LEFT JOIN (
-                SELECT " . sql_substr() . "(source, " .
-                sql_position("'grp_'", "source"). " + 4{$substr3rdparam}) as groupid,
+                SELECT $substr_sql as groupid,
                 count(id) as numreports
-                FROM {$CFG->prefix}report_builder
-                WHERE source " . sql_ilike() . " '%_grp_%'
+                FROM {report_builder}
+                WHERE $likesql
                 GROUP BY groupid
-            ) reports ON " . sql_cast_char2int('reports.groupid') . " = g.id";
-        $groups = get_records_sql($sql);
+            ) reports ON " . $DB->sql_cast_char2int('reports.groupid') . " = g.id";
+        $params = array($feedbackmoduleid, 'official', 'tag', $likeparam);
+        $groups = $DB->get_records_sql($sql, $params);
     } else {
         $groups = false;
     }
 
-    if($groups) {
-        $data = array();
-        foreach($groups as $group) {
-            $row = array();
-            $strsettings = get_string('settings','local_reportbuilder');
-            $strdelete = get_string('delete','local_reportbuilder');
-            $strcron = get_string('refreshdataforthisgroup','local_reportbuilder');
-            $settings = '<a href="' . $CFG->wwwroot .
-                '/totara/reportbuilder/groupsettings.php?id=' . $group->id .
-                '" title="' . $strsettings . '">' .
-                '<img src="' . $CFG->pixpath . '/t/edit.gif" alt="' .
-                $strsettings . '"></a>';
-            $delete = '<a href="' . $CFG->wwwroot .
-                '/totara/reportbuilder/groups.php?d=1&amp;id=' . $group->id .
-                '" title="' . $strdelete . '">' .
-                '<img src="' . $CFG->pixpath . '/t/delete.gif" alt="' .
-                $strdelete . '"></a>';
-            $cron = link_to_popup_window(
-                $CFG->wwwroot . '/totara/reportbuilder/runcron.php?group=' .
-                $group->id . '&amp;sesskey=' . $USER->sesskey,
-                null,
-                '<img src="' . $CFG->pixpath . '/t/reload.gif" alt="' .
-                $strcron . '">',
-                500, 750, $strcron, null, true);
+    echo $output->activity_groups_table($groups);
 
-            $row[] = '<a href="' . $CFG->wwwroot .
-                '/totara/reportbuilder/groupsettings.php?id=' . $group->id .
-                '">' . $group->name . '</a>';
-            //$row[] = $group->preproc;
-            $row[] = $group->tagname;
-
-            $row[] = '<a href="' . $CFG->wwwroot . '/mod/feedback/view.php?id=' .
-                $group->cmid . '">' . $group->feedbackname . '</a>';
-            $row[] = ($group->numitems === null) ? 0 : $group->numitems;
-            $row[] = ($group->numreports === null) ? 0 : $group->numreports;
-            $row[] = "$settings &nbsp; $delete &nbsp; $cron";
-            $data[] = $row;
-        }
-
-        $table = new object();
-        $table->summary = '';
-        $table->head = $tableheader;
-        $table->data = $data;
-        print_table($table);
-    } else {
-        print '<p>' . get_string('nogroups','local_reportbuilder') . '</p>';
-    }
     $mform->display();
-    admin_externalpage_print_footer();
+    echo $output->footer();
 
 
 
@@ -221,45 +172,35 @@
  * @return boolean True if successful
  */
 function delete_group($id) {
+    global $DB;
     if (!$id) {
         return false;
     }
 
-    $preproc = get_field('report_builder_group', 'preproc', 'id', $id);
-    if(!$preproc) {
+    $preproc = $DB->get_field('report_builder_group', 'preproc', array('id' => $id));
+    if (!$preproc) {
         return false;
     }
     $pp = reportbuilder::get_preproc_object($preproc, $id);
-    if(!$pp) {
+    if (!$pp) {
         return false;
     }
     // try to drop group's tables
-    if(!$pp->drop_group_tables()) {
+    if (!$pp->drop_group_tables()) {
         return false;
     }
 
     // now get rid of any records about this group
-    begin_sql();
+    $transaction = $DB->start_delegated_transaction();
 
     // delete the group
-    if(!delete_records('report_builder_group', 'id', $id)) {
-        rollback_sql();
-        return false;
-    }
-
+    $DB->delete_records('report_builder_group', array('id' => $id));
     // delete the group assignments
-    if(!delete_records('report_builder_group_assign', 'groupid', $id)) {
-        rollback_sql();
-        return false;
-    }
-
+    $DB->delete_records('report_builder_group_assign', array('groupid' => $id));
     // delete any tracking records
-    if(!delete_records('report_builder_preproc_track', 'groupid', $id)) {
-        rollback_sql();
-        return false;
-    }
+    $DB->delete_records('report_builder_preproc_track', array('groupid' => $id));
 
-    commit_sql();
+    $transaction->allow_commit();
     return true;
 }
 
@@ -272,48 +213,43 @@ function delete_group($id) {
  * @return mixed ID of new group if successful, or false
  */
 function create_group($fromform, &$errorcode) {
-    // create new record here
-    $todb = new object();
-    $todb->name = addslashes($fromform->name);
-    $todb->baseitem = addslashes($fromform->baseitem);
-    $todb->preproc = addslashes($fromform->preproc);
-    $todb->assigntype = addslashes($fromform->assigntype);
-    $todb->assignvalue = addslashes($fromform->assignvalue);
+    global $DB;
 
-    begin_sql();
+    // create new record here
+    $todb = new stdClass();
+    $todb->name = $fromform->name;
+    $todb->baseitem = $fromform->baseitem;
+    $todb->preproc = $fromform->preproc;
+    $todb->assigntype = $fromform->assigntype;
+    $todb->assignvalue = $fromform->assignvalue;
+
+    $transaction = $DB->start_delegated_transaction();
 
     // first create the group
-    $newid = insert_record('report_builder_group', $todb);
-
+    $newid = $DB->insert_record('report_builder_group', $todb);
     if (!$newid) {
         $errorcode = 'error:groupnotcreated';
         return false;
     }
-
     // group's preprocessor must exist
     $pp = reportbuilder::get_preproc_object($fromform->preproc, $newid);
-    if(!$pp) {
-        rollback_sql();
+    if (!$pp) {
         $errorcode = 'error:groupnotcreatedpreproc';
         return false;
     }
-
     // initialize any tables required by the group's preprocessor
-    if(!$pp->is_initialized()) {
+    if (!$pp->is_initialized()) {
         $status = $pp->initialize_group($fromform->baseitem);
-        if(!$status) {
+        if (!$status) {
             $errorcode = 'error:groupnotcreatedinitfail';
-            rollback_sql();
             return false;
         }
     }
-
     // find any activities that use this tag and add them to the group
     // TODO should make use of transaction too but update_tag_grouping()
     // also uses transactions
     update_tag_grouping($newid);
+    $transaction->allow_commit();
 
-    commit_sql();
     return $newid;
-
 }

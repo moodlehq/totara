@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -118,7 +118,7 @@ class rb_filter_option {
      *
      * One common value for $selectoptions is:
      *
-     * <code>'selectoptions' => rb_filter_option::select_width_limiter(),</code>
+     * <code>'selectoptions' => rb_filter_option::select_width_limiter(), </code>
      *
      * Which uses the {@link rb_filter_option::select_width_limiter()} method
      * to restrict the size of the pulldown without cutting it off in Internet
@@ -173,7 +173,7 @@ class rb_filter_option {
         $this->filtertype = $filtertype;
 
         // assign optional properties
-        foreach($defaults as $property => $unused) {
+        foreach ($defaults as $property => $unused) {
             $this->$property = $options[$property];
         }
 
@@ -183,7 +183,7 @@ class rb_filter_option {
      * Returns an attribute variable used to limit the width of a pulldown
      *
      * This code is required to fix limited width pulldowns in IE. The
-     * if(document.all) condition limits the javascript to only affect IE.
+     * if (document.all) condition limits the javascript to only affect IE.
      *
      * @return array Array of the correct format to be used by a 'select'
      *               form element
@@ -191,9 +191,9 @@ class rb_filter_option {
     static function select_width_limiter() {
         return array(
             'class' => 'totara-limited-width-150',
-            'onMouseDown'=>"if(document.all) this.className='totara-expanded-width-150';",
-            'onBlur'=>"if(document.all) this.className='totara-limited-width-150';",
-            'onChange'=>"if(document.all) this.className='totara-limited-width-150';"
+            'onMouseDown' => "if (document.all) this.className = 'totara-expanded-width-150';",
+            'onBlur' => "if (document.all) this.className = 'totara-limited-width-150';",
+            'onChange' => "if (document.all) this.className = 'totara-limited-width-150';"
         );
     }
 

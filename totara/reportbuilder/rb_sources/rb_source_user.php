@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -40,11 +40,10 @@ class rb_source_user extends rb_base_source {
 
     /**
      * Constructor
-     * @global object $CFG
      */
     public function __construct() {
-        global $CFG;
-        $this->base = $CFG->prefix . 'user';
+        global $DB;
+        $this->base = '{user}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -53,7 +52,7 @@ class rb_source_user extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = array();
-        $this->staff_f2f = get_field('report_builder', 'id', 'shortname', 'staff_facetoface_sessions');
+        $this->staff_f2f = $DB->get_field('report_builder', 'id', array('shortname' => 'staff_facetoface_sessions'));
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_user');
 
         //Adding custom fields
@@ -76,18 +75,16 @@ class rb_source_user extends rb_base_source {
     /**
      * Creates the array of rb_join objects required for this->joinlist
      *
-     * @global object $CFG
      * @return array
      */
     private function define_joinlist() {
-        global $CFG;
 
         $joinlist = array(
             new rb_join(
                 'totara_stats_comp_achieved',
                 'LEFT',
                 "(SELECT userid, count(data2) AS number
-                    FROM {$CFG->prefix}block_totara_stats
+                    FROM {block_totara_stats}
                     WHERE eventtype = 4
                     GROUP BY userid)",
                 'base.id = totara_stats_comp_achieved.userid',
@@ -97,7 +94,7 @@ class rb_source_user extends rb_base_source {
                 'totara_stats_courses_started',
                 'LEFT',
                 "(SELECT userid, COUNT(DISTINCT data2) as number
-                    FROM {$CFG->prefix}block_totara_stats
+                    FROM {block_totara_stats}
                     WHERE eventtype = 2
                     GROUP BY userid)",
                 'base.id = totara_stats_courses_started.userid',
@@ -107,7 +104,7 @@ class rb_source_user extends rb_base_source {
                 'totara_stats_courses_completed',
                 'LEFT',
                 "(SELECT userid, count(DISTINCT data2) AS number
-                    FROM {$CFG->prefix}block_totara_stats
+                    FROM {block_totara_stats}
                     WHERE eventtype = 3
                     GROUP BY userid)",
                 'base.id = totara_stats_courses_completed.userid',
@@ -117,7 +114,7 @@ class rb_source_user extends rb_base_source {
                 'prog_extension_count',
                 'LEFT',
                 "(SELECT userid, count(*) as extensioncount
-                    FROM {$CFG->prefix}prog_extension pe
+                    FROM {prog_extension} pe
                     WHERE pe.userid = userid AND pe.status = 0
                     GROUP BY pe.userid)",
                 'base.id = prog_extension_count.userid',
@@ -139,6 +136,8 @@ class rb_source_user extends rb_base_source {
      * @return array
      */
     private function define_columnoptions() {
+        global $DB;
+
         $columnoptions = array();
         $this->add_user_fields_to_columns($columnoptions, 'base');
         $this->add_position_fields_to_columns($columnoptions);
@@ -158,7 +157,8 @@ class rb_source_user extends rb_base_source {
                                 'userpic_picture' => 'base.picture',
                                 'userpic_firstname' => 'base.firstname',
                                 'userpic_lastname' => 'base.lastname',
-                                'userpic_imagealt' => 'base.imagealt'
+                                'userpic_imagealt' => 'base.imagealt',
+                                'userpic_email' => 'base.email'
                             )
                         )
         );
@@ -216,7 +216,7 @@ class rb_source_user extends rb_base_source {
                         'user',
                         'namewithlinks',
                         get_string('usernamewithlearninglinks', 'rb_source_user'),
-                        sql_fullname("base.firstname", "base.lastname"),
+                        $DB->sql_fullname("base.firstname", "base.lastname"),
                         array(
                             'displayfunc' => 'user_with_links',
                             'defaultheading' => get_string('user', 'rb_source_user'),
@@ -233,7 +233,7 @@ class rb_source_user extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                         'user',
                         'extensionswithlink',
-                        get_string('extensions', 'local_program'),
+                        get_string('extensions', 'totara_program'),
                         'prog_extension_count.extensioncount',
                         array(
                             'joins' => 'prog_extension_count',
@@ -316,48 +316,57 @@ class rb_source_user extends rb_base_source {
      * @return string
      */
     public function rb_display_learning_icons($itemid, $row) {
-        global $CFG;
+        global $CFG, $OUTPUT;
 
         static $systemcontext;
         if (!isset($systemcontext)) {
-            $systemcontext = get_system_context();
+            $systemcontext = context_system::instance();
         }
 
-        $disp = '<span style="white-space:nowrap;">';
+        $disp = html_writer::start_tag('span', array('style' => 'white-space:nowrap;'));
 
         // Learning Records icon
-        $disp = '<a href="' . $CFG->wwwroot . '/totara/plan/record/courses.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/record.gif" title="' . get_string('learningrecords', 'local') . '" /></a>';
+        $disp .= html_writer::start_tag('a', array('href' => $CFG->wwwroot . '/totara/plan/record/courses.php?userid='.$itemid));
+        $disp .= html_writer::empty_tag('img',
+            array('src' => $OUTPUT->pix_url('/i/record', 'theme'), 'title' => get_string('learningrecords', 'totara_core')));
+        $disp .= html_writer::end_tag('a');
 
         // Face To Face Bookings icon
         if ($this->staff_f2f) {
-            $disp .= '<a href="' . $CFG->wwwroot . '/my/bookings.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/bookings.png" title="' . get_string('f2fbookings', 'local') . '" /></a>';
+            $disp .= html_writer::start_tag('a', array('href' => $CFG->wwwroot . '/my/bookings.php?userid='.$itemid));
+            $disp .= html_writer::empty_tag('img',
+                array('src=' => $OUTPUT->pix_url('i/bookings', 'theme'), 'title' => get_string('f2fbookings', 'totara_core')));
+            $disp .= html_writer::end_tag('a');
         }
 
         // Individual Development Plans icon
         if (has_capability('totara/plan:accessplan', $systemcontext)) {
-            $disp .= '<a href="'.$CFG->wwwroot.'/totara/plan/index.php?userid='.$itemid.'">';
-            $disp .= '<img src="'.$CFG->pixpath.'/i/plan.gif" title="'.get_string('learningplans', 'local_plan').'" />';
-            $disp .= '</a>';
+            $disp .= html_writer::start_tag('a', array('href' => $CFG->wwwroot . '/totara/plan/index.php?userid='.$itemid));
+            $disp .= html_writer::empty_tag('img',
+                array('src' => $OUTPUT->pix_url('i/plan', 'theme'), 'title' => get_string('learningplans', 'totara_plan')));
+            $disp .= html_writer::end_tag('a');
         }
 
-        $disp .= '</span>';
+        $disp .= html_writer::end_tag('span');
         return $disp;
     }
 
 
-    function rb_display_extension_link($extensioncount, $row) {
-        global $CFG;
+    function rb_display_extension_link($extensioncount, $row, $isexport) {
 
-        if (!empty($extensioncount)) {
-            return "<a href=\"{$CFG->wwwroot}/totara/program/manageextensions.php?userid={$row->user_id}\">{$extensioncount}</a>";
-        } else {
+        if (empty($extensioncount)) {
             return '0';
+        }
+        if (isset($row->user_id) && !$isexport) {
+            return html_writer::link("{$CFG->wwwroot}/totara/program/manageextensions.php?userid={$row->user_id}", $extensioncount);
+        } else {
+            return $extensioncount;
         }
     }
 
 
     function rb_display_user_with_links($user, $row) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $userid = $row->user_id;
 
         $picuser = new stdClass();
@@ -366,17 +375,19 @@ class rb_source_user extends rb_base_source {
         $picuser->imagealt = $row->userpic_imagealt;
         $picuser->firstname = $row->userpic_firstname;
         $picuser->lastname = $row->userpic_lastname;
-        $user_pic = print_user_picture($picuser, 1, null, null, true);
+        $picuser->email = $row->userpic_email;
+        $user_pic = $OUTPUT->user_picture($picuser, array('courseid' => 1));
 
         $recordstr = get_string('records', 'rb_source_user');
         $planstr = get_string('plans', 'rb_source_user');
         $profilestr = get_string('profile', 'rb_source_user');
         $bookingstr = get_string('bookings', 'rb_source_user');
 
-        $rol_link = "<a href=\"{$CFG->wwwroot}/totara/plan/record/courses.php?userid={$userid}\">{$recordstr}</a>";
-        $plan_link = "<a href=\"{$CFG->wwwroot}/totara/plan/index.php?userid={$userid}\">{$planstr}</a>";
-        $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$profilestr}</a>";
-        $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">{$bookingstr}</a>";
+        $rol_link = html_writer::link("{$CFG->wwwroot}/totara/plan/record/courses.php?userid={$userid}",
+            $recordstr);
+        $plan_link = html_writer::link("{$CFG->wwwroot}/totara/plan/index.php?userid={$userid}", $planstr);
+        $profile_link = html_writer::link("{$CFG->wwwroot}/user/view.php?id={$userid}", $profilestr);
+        $booking_link = html_writer::link("{$CFG->wwwroot}/my/bookings.php?userid={$userid}", $bookingstr);
 
         $show_plan_link = dp_can_view_users_plans($userid);
         $links = $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
@@ -384,17 +395,21 @@ class rb_source_user extends rb_base_source {
         $links .= $booking_link.'&nbsp;|&nbsp;';
         $links .= $rol_link;
 
-        $return = <<<EOF
-<table class="namewithlinks-layout">
-    <tr>
-        <td class="user-picture">{$user_pic}</td>
-        <td class="user-name">{$user}</td>
-    </tr>
-    <tr>
-        <td class="user-links" colspan="2">{$links}</td>
-    </tr>
-</table>
-EOF;
+        $table = new html_table();
+        $table->attributes['class'] = 'namewithlinks-layout';
+        $cells = array();
+        $cell = new html_table_cell($user_pic);
+        $cell->attributes['class'] = 'user-picture';
+        $cells[] = $cell;
+        $cell = new html_table_cell($user);
+        $cell->attributes['class'] = 'user-name';
+        $cells[] = $cell;
+        $table->data[] = new html_table_row($cells);
+        $cell = new html_table_cell($links);
+        $cell->attributes['class'] = 'user-links';
+        $cell->attributes['colspan'] = '2';
+        $table->data[] = new html_table_row(array($cell));
+        $return = html_writer::table($table);
 
         return $return;
     }

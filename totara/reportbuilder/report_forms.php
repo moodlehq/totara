@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -27,7 +27,7 @@
  */
 
 require_once "$CFG->dirroot/lib/formslib.php";
-include_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_base_content.php');
+include_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_content.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -42,28 +42,28 @@ class report_builder_new_form extends moodleform {
 
         $mform =& $this->_form;
 
-        $mform->addElement('header', 'general', get_string('newreport', 'local_reportbuilder'));
+        $mform->addElement('header', 'general', get_string('newreport', 'totara_reportbuilder'));
         $sources = reportbuilder::get_source_list();
-        if(count($sources)>0) {
+        if (count($sources) > 0) {
 
-            $mform->addElement('text', 'fullname', get_string('reportname', 'local_reportbuilder'), 'maxlength="255"');
+            $mform->addElement('text', 'fullname', get_string('reportname', 'totara_reportbuilder'), 'maxlength="255"');
             $mform->setType('fullname', PARAM_TEXT);
-            $mform->addRule('fullname',null,'required');
-            $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reportname','local_reportbuilder'),'local_reportbuilder'));
+            $mform->addRule('fullname', null, 'required');
+            $mform->addHelpButton('fullname', 'reportbuilderfullname', 'totara_reportbuilder');
 
-            $pick = array(0 => get_string('selectsource','local_reportbuilder'));
+            $pick = array(0 => get_string('selectsource', 'totara_reportbuilder'));
             $select = array_merge($pick, $sources);
-            $mform->addElement('select','source', get_string('source','local_reportbuilder'), $select);
+            $mform->addElement('select', 'source', get_string('source', 'totara_reportbuilder'), $select);
             // invalid if not set
-            $mform->addRule('source', get_string('error:mustselectsource','local_reportbuilder'), 'regex','/[^0]+/');
-            $mform->setHelpButton('source', array('reportbuildersource',get_string('source','local_reportbuilder'),'local_reportbuilder'));
+            $mform->addRule('source', get_string('error:mustselectsource', 'totara_reportbuilder'), 'regex', '/[^0]+/');
+            $mform->addHelpButton('source', 'reportbuildersource', 'totara_reportbuilder');
 
-            $mform->addElement('advcheckbox','hidden', get_string('hidden','local_reportbuilder'), '', null, array(0,1));
-            $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local_reportbuilder'),'local_reportbuilder'));
-            $this->add_action_buttons(true, get_string('createreport', 'local_reportbuilder'));
+            $mform->addElement('advcheckbox', 'hidden', get_string('hidden', 'totara_reportbuilder'), '', null, array(0, 1));
+            $mform->addHelpButton('hidden', 'reportbuilderhidden', 'totara_reportbuilder');
+            $this->add_action_buttons(true, get_string('createreport', 'totara_reportbuilder'));
 
         } else {
-            $mform->addElement('html', get_string('error:nosources','local_reportbuilder'));
+            $mform->addElement('html', get_string('error:nosources', 'totara_reportbuilder'));
         }
     }
 
@@ -75,48 +75,49 @@ class report_builder_new_form extends moodleform {
  */
 class report_builder_edit_form extends moodleform {
     function definition() {
-        global $CFG;
+        global $TEXTAREA_OPTIONS;
+
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
+
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'general', get_string('reportsettings', 'local_reportbuilder'));
+        $mform->addElement('header', 'general', get_string('reportsettings', 'totara_reportbuilder'));
 
-        $mform->addElement('text', 'fullname', get_string('reporttitle','local_reportbuilder'), array('size'=>'30'));
-        $mform->setDefault('fullname', $report->fullname);
+        $mform->addElement('text', 'fullname', get_string('reporttitle', 'totara_reportbuilder'), array('size' => '30'));
         $mform->setType('fullname', PARAM_TEXT);
-        $mform->addRule('fullname',null,'required');
-        $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reporttitle','local_reportbuilder'),'local_reportbuilder'));
+        $mform->addRule('fullname', null, 'required');
+        $mform->addHelpButton('fullname', 'reportbuilderfullname', 'totara_reportbuilder');
 
-        $mform->addElement('htmleditor', 'description', get_string('description'));
-        $mform->setDefault('description', $report->description);
-        $mform->setType('description', PARAM_CLEAN);
-        $mform->setHelpButton('description', array('reportbuilderdescription', get_string('description'),'local_reportbuilder'));
+        $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
+        $mform->setType('description_editor', PARAM_CLEANHTML);
+        $mform->addHelpButton('description_editor', 'reportbuilderdescription', 'totara_reportbuilder');
 
-        $mform->addElement('static', 'reportsource', get_string('source','local_reportbuilder'), $report->source);
-        $mform->setHelpButton('reportsource', array('reportbuildersource',get_string('source','local_reportbuilder'),'local_reportbuilder'));
+        $mform->addElement('static', 'reportsource', get_string('source', 'totara_reportbuilder'), $report->source);
+        $mform->addHelpButton('reportsource', 'reportbuildersource', 'totara_reportbuilder');
 
-        $mform->addElement('advcheckbox', 'hidden', get_string('hidden','local_reportbuilder'), '', null, array(0,1));
+        $mform->addElement('advcheckbox', 'hidden', get_string('hidden', 'totara_reportbuilder'), '', null, array(0, 1));
         $mform->setType('hidden', PARAM_INT);
-        $mform->setDefault('hidden', $report->hidden);
-        $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local_reportbuilder'),'local_reportbuilder'));
+        $mform->addHelpButton('hidden', 'reportbuilderhidden', 'totara_reportbuilder');
 
-        $mform->addElement('text', 'recordsperpage', get_string('recordsperpage','local_reportbuilder'), array('size'=>'6'));
-        $mform->setDefault('recordsperpage', $report->recordsperpage);
+        $mform->addElement('text', 'recordsperpage', get_string('recordsperpage', 'totara_reportbuilder'), array('size' => '6', 'maxlength' => 4));
         $mform->setType('recordsperpage', PARAM_INT);
-        $mform->addRule('recordsperpage',null,'numeric');
-        $mform->setHelpButton('recordsperpage', array('reportbuilderrecordsperpage',get_string('recordsperpage','local_reportbuilder'),'local_reportbuilder'));
+        $mform->addRule('recordsperpage', null, 'numeric');
+        $mform->addHelpButton('recordsperpage', 'reportbuilderrecordsperpage', 'totara_reportbuilder');
 
-        $reporttype = ($report->embeddedurl === null) ? get_string('usergenerated','local_reportbuilder') :
-            get_string('embedded', 'local_reportbuilder');
+        $reporttype = ($report->embeddedurl === null) ? get_string('usergenerated', 'totara_reportbuilder') :
+            get_string('embedded', 'totara_reportbuilder');
 
-        $mform->addElement('static', 'reporttype', get_string('reporttype', 'local_reportbuilder'), $reporttype);
+        $mform->addElement('static', 'reporttype', get_string('reporttype', 'totara_reportbuilder'), $reporttype);
 
-        $mform->addElement('hidden','id',$id);
+        $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden','source',$report->source);
+        $mform->addElement('hidden', 'source', $report->source);
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
+
+        // set the defaults
+        $this->set_data($report);
     }
 
 }
@@ -126,36 +127,36 @@ class report_builder_edit_form extends moodleform {
  */
 class report_builder_global_settings_form extends moodleform {
     function definition() {
-        global $CFG, $REPORT_BUILDER_EXPORT_OPTIONS;
+        global $REPORT_BUILDER_EXPORT_OPTIONS;
         $mform =& $this->_form;
 
-        $mform->addElement('header', 'settings', get_string('globalsettings', 'local_reportbuilder'));
+        $mform->addElement('header', 'settings', get_string('globalsettings', 'totara_reportbuilder'));
 
         $exportoptions = get_config('reportbuilder', 'exportoptions');
 
         $group = array();
         $oauthenabled = get_config('local_oauth', 'oauthenabled');
-        $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+        $sitecontext = context_system::instance();
         $oauthcap = has_capability('totara/oauth:negotiate', $sitecontext);
-        foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
+        foreach ($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
             // specific checks for fusion tables export
             if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {
                 continue;
             }
 
-            $group[] =& $mform->createElement('checkbox', 'export'.$option, '', get_string('export'.$option,'local_reportbuilder'));
-            if($exportoptions) {
+            $group[] =& $mform->createElement('checkbox', 'export'.$option, '', get_string('export'.$option, 'totara_reportbuilder'));
+            if ($exportoptions) {
                 // bitwise operation to see if bit for this export
                 // option is set
-                if(($exportoptions & $code) == $code) {
+                if (($exportoptions & $code) == $code) {
                     $mform->setDefault('export'.$option, 1);
                 } else {
                     $mform->setDefault('export'.$option, 0);
                 }
             }
         }
-        $mform->addGroup($group, 'exportoptions', get_string('exportoptions','local_reportbuilder'), '<br />', false);
-        $mform->setHelpButton('exportoptions', array('reportbuilderexportoptions',get_string('exportoptions','local_reportbuilder'),'local_reportbuilder'));
+        $mform->addGroup($group, 'exportoptions', get_string('exportoptions', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
+        $mform->addHelpButton('exportoptions', 'reportbuilderexportoptions', 'totara_reportbuilder');
 
         $this->add_action_buttons();
     }
@@ -168,25 +169,28 @@ class report_builder_global_settings_form extends moodleform {
  */
 class report_builder_edit_filters_form extends moodleform {
     function definition() {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'searchoptions', get_string('searchoptions', 'local_reportbuilder'));
+        $mform->addElement('header', 'searchoptions', get_string('searchoptions', 'totara_reportbuilder'));
 
-        $mform->setHelpButton('searchoptions', array('reportbuilderfilters',get_string('filters','local_reportbuilder'),'local_reportbuilder'));
+        $mform->addHelpButton('searchoptions', 'reportbuilderfilters', 'totara_reportbuilder');
 
-        $strmovedown = get_string('movedown','local_reportbuilder');
-        $strmoveup = get_string('moveup','local_reportbuilder');
-        $strdelete = get_string('delete','local_reportbuilder');
-        $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
+        $strmovedown = get_string('movedown', 'totara_reportbuilder');
+        $strmoveup = get_string('moveup', 'totara_reportbuilder');
+        $strdelete = get_string('delete', 'totara_reportbuilder');
+        $spacer = $OUTPUT->spacer(array('width' => 11, 'height' => 11));
 
-        if(isset($report->filteroptions) && is_array($report->filteroptions) && count($report->filteroptions)>0) {
-            $mform->addElement('html','<div>'.get_string('help:searchdesc','local_reportbuilder').'</div><br />');
+        if (isset($report->filteroptions) && is_array($report->filteroptions) && count($report->filteroptions) > 0) {
+            $mform->addElement('html', $OUTPUT->container(get_string('help:searchdesc', 'totara_reportbuilder')) .
+                html_writer::empty_tag('br'));
 
-            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('searchfield','local_reportbuilder').
-                '</th><th>'.get_string('advanced','local_reportbuilder').'</th><th>'.get_string('options','local_reportbuilder').'</th><tr>');
+            $mform->addElement('html', $OUTPUT->container_start('reportbuilderform') . html_writer::start_tag('table') .
+                html_writer::start_tag('tr') . html_writer::tag('th', get_string('searchfield', 'totara_reportbuilder')) .
+                html_writer::tag('th', get_string('advanced', 'totara_reportbuilder')) .
+                html_writer::tag('th', get_string('options', 'totara_reportbuilder')) . html_writer::end_tag('tr'));
 
             $filtersselect = $report->get_filters_select();
 
@@ -194,7 +198,7 @@ class report_builder_edit_filters_form extends moodleform {
                 $filters = $report->filters;
                 $filtercount = count($filters);
                 $i = 1;
-                foreach($filters as $index => $filter) {
+                foreach ($filters as $index => $filter) {
                     $row = array();
                     $type = $filter->type;
                     $value = $filter->value;
@@ -202,37 +206,47 @@ class report_builder_edit_filters_form extends moodleform {
                     $advanced = $filter->advanced;
                     $fid = $index;
 
-                    $mform->addElement('html','<tr fid="'.$fid.'"><td>');
-                    $mform->addElement('selectgroups', "filter{$fid}", '', $filtersselect, array('class'=>'filter_selector'));
+                    $mform->addElement('html', html_writer::start_tag('tr', array('fid' => $fid)) .
+                        html_writer::start_tag('td'));
+                    $mform->addElement('selectgroups', "filter{$fid}", '', $filtersselect, array('class' => 'filter_selector'));
                     $mform->setDefault("filter{$fid}", $field);
-                    $mform->addElement('html','</td><td>');
-                    $mform->addElement('checkbox',"advanced{$fid}",'');
-                    $mform->setDefault("advanced{$fid}",$advanced);
+                    $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+                    $mform->addElement('checkbox', "advanced{$fid}", '');
+                    $mform->setDefault("advanced{$fid}", $advanced);
 
-                    $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/filters.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'" class="deletefilterbtn"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
-                    if($i != 1) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/filters.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'" class="movefilterupbtn"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                    $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+                    $deleteurl = new moodle_url('/totara/reportbuilder/filters.php',
+                        array('d' => '1', 'id' => $id, 'fid' => $fid));
+                    $mform->addElement('html', html_writer::link($deleteurl, $OUTPUT->pix_icon('/t/delete', $strdelete),
+                        array('title' => $strdelete, 'class' => 'deletefilterbtn')));
+                    if ($i != 1) {
+                        $moveupurl = new moodle_url('/totara/reportbuilder/filters.php',
+                            array('m' => 'up', 'id' => $id, 'fid' => $fid));
+                        $mform->addElement('html', html_writer::link($moveupurl, $OUTPUT->pix_icon('/t/up', $strmoveup),
+                            array('title' => $strmoveup, 'class' => 'movefilterupbtn')));
                     } else {
                         $mform->addElement('html', $spacer);
                     }
-                    if($i != $filtercount) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/filters.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'" class="movefilterdownbtn"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                    if ($i != $filtercount) {
+                        $movedownurl = new moodle_url('/totara/reportbuilder/filters.php',
+                            array('m' => 'down', 'id' => $id, 'fid' => $fid));
+                        $mform->addElement('html', html_writer::link($movedownurl, $OUTPUT->pix_icon('/t/down', $strmovedown),
+                            array('title' => $strmovedown, 'class' => 'movefilterdownbtn')));
                     } else {
                         $mform->addElement('html', $spacer);
                     }
-                    $mform->addElement('html','</td></tr>');
+                    $mform->addElement('html', html_writer::end_tag('td') . html_writer::end_tag('tr'));
                     $i++;
                 }
             } else {
-                $mform->addElement('html','<p>'. get_string('nofiltersyet','local_reportbuilder').'</p>');
+                $mform->addElement('html', html_writer::tag('p', get_string('nofiltersyet', 'totara_reportbuilder')));
                 $filters = array();
             }
 
-            $mform->addElement('html','<tr><td>');
+            $mform->addElement('html', html_writer::start_tag('tr') . html_writer::start_tag('td'));
             $newfilterselect = array_merge(
                 array(
-                    get_string('new') => array(0 => get_string('addanotherfilter','local_reportbuilder'))
+                    get_string('new') => array(0 => get_string('addanotherfilter', 'totara_reportbuilder'))
                 ),
                 $filtersselect);
             // Remove already-added filters from the new filter selector
@@ -250,27 +264,27 @@ class report_builder_edit_filters_form extends moodleform {
             $newfilterselect = $cleanedfilterselect;
             unset($cleanednewfilterselect);
 
-            $mform->addElement('selectgroups','newfilter','',$newfilterselect, array('class'=>'new_filter_selector filter_selector'));
-            $mform->addElement('html','</td><td>');
-            $mform->addElement('checkbox','newadvanced','');
-            $mform->disabledIf('newadvanced','newfilter', 'eq', 0);
-            $mform->addElement('html','</td><td>');
-            $mform->addElement('html','</td></tr>');
-            $mform->addElement('html','</table></div>');
+            $mform->addElement('selectgroups', 'newfilter', '', $newfilterselect, array('class' => 'new_filter_selector filter_selector'));
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+            $mform->addElement('checkbox', 'newadvanced', '');
+            $mform->disabledIf('newadvanced', 'newfilter', 'eq', 0);
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::end_tag('tr'));
+            $mform->addElement('html', html_writer::end_tag('table') . $OUTPUT->container_end());
         } else {
-            $mform->addElement('html',"No filters found. Ask your developer to add filter options to the '{$report->source}' source.");
+            $mform->addElement('html', get_string('nofilteraskdeveloper', 'totara_reportbuilder', $report->source));
         }
 
-        $mform->addElement('hidden','id',$id);
+        $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden','source',$report->source);
+        $mform->addElement('hidden', 'source', $report->source);
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
 
         // remove the labels from the form elements
         $renderer =& $mform->defaultRenderer();
-        $select_elementtemplate = '<div class="fitem"><div class="felement fselectgroups">{element}</div></div>';
-        $check_elementtemplate = '<div class="fitem"><div class="felement fcheckbox">{element}</div></div>';
+        $select_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement fselectgroups'), 'fitem');
+        $check_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement fcheckbox'), 'fitem');
         $renderer->setElementTemplate($select_elementtemplate, 'newfilter');
         $renderer->setElementTemplate($check_elementtemplate, 'newadvanced');
         foreach ($filters as $index => $unused) {
@@ -292,93 +306,112 @@ class report_builder_edit_filters_form extends moodleform {
  */
 class report_builder_edit_columns_form extends moodleform {
     function definition() {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $strmovedown = get_string('movedown','local_reportbuilder');
-        $strmoveup = get_string('moveup','local_reportbuilder');
-        $strdelete = get_string('delete','local_reportbuilder');
+        $strmovedown = get_string('movedown', 'totara_reportbuilder');
+        $strmoveup = get_string('moveup', 'totara_reportbuilder');
+        $strdelete = get_string('delete', 'totara_reportbuilder');
         $strhide = get_string('hide');
         $strshow = get_string('show');
-        $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
+        $spacer = $OUTPUT->spacer(array('width' => 11, 'height' => 11));
 
-        $mform->addElement('header', 'reportcolumns', get_string('reportcolumns', 'local_reportbuilder'));
+        $mform->addElement('header', 'reportcolumns', get_string('reportcolumns', 'totara_reportbuilder'));
 
-        $mform->setHelpButton('reportcolumns', array('reportbuildercolumns',get_string('columns','local_reportbuilder'),'local_reportbuilder'));
+        $mform->addHelpButton('reportcolumns', 'reportbuildercolumns', 'totara_reportbuilder');
 
-        if(isset($report->columnoptions) && is_array($report->columnoptions) && count($report->columnoptions)>0) {
-
-
-            $mform->addElement('html','<div>'.get_string('help:columnsdesc','local_reportbuilder').'</div><br />');
+        if (isset($report->columnoptions) && is_array($report->columnoptions) && count($report->columnoptions) > 0) {
 
 
-            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('column','local_reportbuilder').
-                '</th><th colspan="2">'.get_string('customiseheading','local_reportbuilder').'</th><th>'.get_string('options','local_reportbuilder').'</th><tr>');
+            $mform->addElement('html', $OUTPUT->container(get_string('help:columnsdesc', 'totara_reportbuilder')) .
+                html_writer::empty_tag('br'));
+
+
+            $mform->addElement('html', $OUTPUT->container_start('reportbuilderform') . html_writer::start_tag('table') .
+                html_writer::start_tag('tr') . html_writer::tag('th', get_string('column', 'totara_reportbuilder')) .
+                html_writer::tag('th', get_string('customiseheading', 'totara_reportbuilder'), array('colspan' => 2)) .
+                html_writer::tag('th', get_string('options', 'totara_reportbuilder') . html_writer::end_tag('tr')));
 
             $columnsselect = $report->get_columns_select();
             $columnoptions = array();
 
-            if(isset($report->columns) && is_array($report->columns) && count($report->columns)>0) {
+            if (isset($report->columns) && is_array($report->columns) && count($report->columns) > 0) {
                 $columns = $report->columns;
                 $colcount = count($columns);
                 $i = 1;
-                foreach($columns as $index => $column) {
+                foreach ($columns as $index => $column) {
                     $columnoptions["{$column->type}_{$column->value}"] = $column->heading;
-                    if(!isset($column->required) || !$column->required) {
+                    if (!isset($column->required) || !$column->required) {
                         $row = array();
                         $type = $column->type;
                         $value = $column->value;
                         $field = "{$column->type}-{$column->value}";
                         $cid = $index;
-                        $mform->addElement('html','<tr colid="'.$cid.'"><td>');
-                        $mform->addElement('selectgroups',"column{$cid}",'',$columnsselect, array('class' => 'column_selector'));
+                        $mform->addElement('html', html_writer::start_tag('tr', array('colid' => $cid)) .
+                            html_writer::start_tag('td'));
+                        $mform->addElement('selectgroups', "column{$cid}", '', $columnsselect, array('class' => 'column_selector'));
                         $mform->setDefault("column{$cid}", $field);
-                        $mform->addElement('html','</td><td>');
+                        $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
 
-                        $mform->addElement('advcheckbox', "customheading{$cid}", '', '', array('class' => 'column_custom_heading_checkbox', 'group' => 0), array(0,1));
+                        $mform->addElement('advcheckbox', "customheading{$cid}", '', '', array('class' => 'column_custom_heading_checkbox', 'group' => 0), array(0, 1));
                         $mform->setDefault("customheading{$cid}", $column->customheading);
 
-                        $mform->addElement('html','</td><td>');
-                        $mform->addElement('text',"heading{$cid}",'','class="column_heading_text"');
+                        $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+                        $mform->addElement('text', "heading{$cid}", '', 'class="column_heading_text"');
                         $mform->setType("heading{$cid}", PARAM_TEXT);
-                        $mform->setDefault("heading{$cid}",$column->heading);
-                        $mform->addElement('html','</td><td>');
+                        $mform->setDefault("heading{$cid}", $column->heading);
+                        $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
                         // show/hide link
-                        if($column->hidden == 0) {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?h=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strhide.'" class="hidecolbtn"><img src="'.$CFG->pixpath.'/t/hide.gif" class="iconsmall" alt="'.$strhide.'" /></a>');
+                        if ($column->hidden == 0) {
+                            $hideurl = new moodle_url('/totara/reportbuilder/columns.php',
+                                array('h' => '1', 'id' => $id, 'cid' => $cid));
+                            $mform->addElement('html', html_writer::link($hideurl, $OUTPUT->pix_icon('/t/hide', $strhide),
+                                array('class' => 'hidecolbtn', 'title' => $strhide)));
                         } else {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?h=0&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strshow.'" class="showcolbtn"><img src="'.$CFG->pixpath.'/t/show.gif" class="iconsmall" alt="'.$strshow.'" /></a>');
+                            $showurl = new moodle_url('/totara/reportbuilder/columns.php',
+                                array('h' => '0', 'id' => $id, 'cid' => $cid));
+                            $mform->addElement('html', html_writer::link($showurl, $OUTPUT->pix_icon('/t/show', $strshow),
+                                array('class' => 'showcolbtn', 'title' => $strshow)));
                         }
                         // delete link
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'" class="deletecolbtn"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                        $delurl = new moodle_url('/totara/reportbuilder/columns.php',
+                            array('d' => '1', 'id' => $id, 'cid' => $cid));
+                        $mform->addElement('html', html_writer::link($delurl, $OUTPUT->pix_icon('/t/delete', $strdelete),
+                            array('class' => 'deletecolbtn', 'title' => $strdelete)));
                         // move up link
-                        if($i != 1) {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'" class="movecolupbtn"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                        if ($i != 1) {
+                            $moveupurl = new moodle_url('/totara/reportbuilder/columns.php',
+                                array('m' => 'up', 'id' => $id, 'cid' => $cid));
+                            $mform->addElement('html', html_writer::link($moveupurl, $OUTPUT->pix_icon('/t/up', $strmoveup),
+                                array('class' => 'movecolupbtn', 'title' => $strmoveup)));
                         } else {
                             $mform->addElement('html', $spacer);
                         }
 
                         // move down link
-                        if($i != $colcount) {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/totara/reportbuilder/columns.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'" class="movecoldownbtn"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                        if ($i != $colcount) {
+                            $movedownurl = new moodle_url('/totara/reportbuilder/columns.php',
+                                array('m' => 'down', 'id' => $id, 'cid' => $cid));
+                            $mform->addElement('html', html_writer::link($movedownurl, $OUTPUT->pix_icon('/t/down', $strmovedown),
+                                array('class' => 'movecoldownbtn', 'title' => $strmovedown)));
                         } else {
                             $mform->addElement('html', $spacer);
                         }
 
-                        $mform->addElement('html','</td></tr>');
+                        $mform->addElement('html', html_writer::end_tag('td') . html_writer::end_tag('tr'));
                         $i++;
                     }
                 }
             } else {
-                $mform->addElement('html','<p>'.get_string('nocolumnsyet','local_reportbuilder').'</p>');
+                $mform->addElement('html', html_writer::tag('p', get_string('nocolumnsyet', 'totara_reportbuilder')));
             }
 
-            $mform->addElement('html','<tr><td>');
+            $mform->addElement('html', html_writer::start_tag('tr') . html_writer::start_tag('td'));
             $newcolumnsselect = array_merge(
                 array(
-                    get_string('new') => array(0 => get_string('addanothercolumn','local_reportbuilder'))
+                    get_string('new') => array(0 => get_string('addanothercolumn', 'totara_reportbuilder'))
                 ),
                 $columnsselect);
             // Remove already-added cols from the new col selector
@@ -395,80 +428,81 @@ class report_builder_edit_columns_form extends moodleform {
             }
             $newcolumnsselect = $cleanednewcolselect;
             unset($cleanednewcolselect);
-            $mform->addElement('selectgroups','newcolumns','',$newcolumnsselect, array('class' => 'column_selector new_column_selector'));
-            $mform->addElement('html','</td><td>');
-            $mform->addElement('advcheckbox', "newcustomheading", '', '', array('id' => 'id_newcustomheading', 'class' => 'column_custom_heading_checkbox', 'group' => 0), array(0,1));
+            $mform->addElement('selectgroups', 'newcolumns', '', $newcolumnsselect, array('class' => 'column_selector new_column_selector'));
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+            $mform->addElement('advcheckbox', "newcustomheading", '', '', array('id' => 'id_newcustomheading', 'class' => 'column_custom_heading_checkbox', 'group' => 0), array(0, 1));
             $mform->setDefault("newcustomheading", 0);
-            $mform->addElement('html','</td><td>');
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
 
-            $mform->addElement('text','newheading','','class="column_heading_text"');
+            $mform->addElement('text', 'newheading', '', 'class="column_heading_text"');
             $mform->setType('newheading', PARAM_TEXT);
             // do manually as disabledIf doesn't play nicely with using JS to update heading values
-            // $mform->disabledIf('newheading','newcolumns', 'eq', 0);
-            $mform->addElement('html','</td><td>');
-            $mform->addElement('html','</td></tr>');
-            $mform->addElement('html','</table></div>');
+            // $mform->disabledIf('newheading', 'newcolumns', 'eq', 0);
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::end_tag('tr'));
+            $mform->addElement('html', html_writer::end_tag('table') . $OUTPUT->container_end());
 
 
             // if the report is referencing columns that don't exist in the
             // source, display them here so the user has the option to delete
             // them
-            if(count($report->badcolumns)) {
-                $mform->addElement('header', 'badcols', get_string('badcolumns', 'local_reportbuilder'));
-                $mform->addElement('html','<p>'.get_string('badcolumnsdesc','local_reportbuilder').'</p>');
+            if (count($report->badcolumns)) {
+                $mform->addElement('header', 'badcols', get_string('badcolumns', 'totara_reportbuilder'));
+                $mform->addElement('html', html_writer::tag('p', get_string('badcolumnsdesc', 'totara_reportbuilder')));
 
                 $mform->addElement('html',
-                    '<div class="reportbuilderform"><table><tr><th>' .
-                    get_string('type','local_reportbuilder') . '</th><th>' .
-                    get_string('value', 'local_reportbuilder') . '</th><th>' .
-                    get_string('heading','local_reportbuilder') . '</th><th>' .
-                    get_string('options','local_reportbuilder'). '</th><tr>');
-                foreach($report->badcolumns as $bad) {
+                    $OUTPUT->container_start('reportbuilderform') . html_writer::start_tag('table') . html_writer::start_tag('tr') .
+                    html_writer::tag('th', get_string('type', 'totara_reportbuilder')) .
+                    html_writer::tag('th', get_string('value', 'totara_reportbuilder')) .
+                    html_writer::tag('th', get_string('heading', 'totara_reportbuilder')) .
+                    html_writer::tag('th', get_string('options', 'totara_reportbuilder')) . html_writer::end_tag('tr'));
+                foreach ($report->badcolumns as $bad) {
+                    $deleteurl = new moodle_url('/totara/reportbuilder/columns.php',
+                        array('d' => '1', 'id' => $id, 'cid' => $bad['id']));
 
-                    $mform->addElement('html','<tr colid='.$bad['id'].'><td>' . $bad['type'] .
-                        '</td><td>' . $bad['value'] .
-                        '</td><td>' .$bad['heading'] . '</td><td>' .
-                        '<a href="' . $CFG->wwwroot .
-                        '/totara/reportbuilder/columns.php?d=1&amp;id=' . $id .
-                        '&amp;cid=' . $bad['id'] . '" title="' . $strdelete .
-                        '" class="deletecolbtn"><img src="' . $CFG->pixpath .
-                        '/t/delete.gif" class="iconsmall" alt="' . $strdelete
-                        . '" /></a></td></tr>');
+                    $mform->addElement('html', html_writer::start_tag('tr', array('colid' => $bad['id'])) .
+                        html_writer::tag('td', $bad['type']) .
+                        html_writer::tag('td', $bad['value']) .
+                        html_writer::tag('td', $bad['heading']) .
+                        html_writer::start_tag('td') .
+                        html_writer::link($deleteurl, $OUTPUT->pix_icon('/t/delete', $strdelete),
+                            array('title' => $strdelete, 'class' => 'deletecolbtn')) .
+                        html_writer::end_tag('td') . html_writer::end_tag('tr'));
                 }
-                $mform->addElement('html','</table></div>');
+                $mform->addElement('html', html_writer::end_tag('table') . $OUTPUT->container_end());
             }
 
 
-            $mform->addElement('header','sorting',get_string('sorting','local_reportbuilder'));
-            $mform->setHelpButton('sorting', array('reportbuildersorting',get_string('sorting','local_reportbuilder'),'local_reportbuilder'));
+            $mform->addElement('header', 'sorting', get_string('sorting', 'totara_reportbuilder'));
+            $mform->addHelpButton('sorting', 'reportbuildersorting', 'totara_reportbuilder');
 
-            $pick = array('' => get_string('noneselected','local_reportbuilder'));
+            $pick = array('' => get_string('noneselected', 'totara_reportbuilder'));
             $select = array_merge($pick, $columnoptions);
-            $mform->addElement('select','defaultsortcolumn', get_string('defaultsortcolumn','local_reportbuilder'), $select);
+            $mform->addElement('select', 'defaultsortcolumn', get_string('defaultsortcolumn', 'totara_reportbuilder'), $select);
             $mform->setDefault('defaultsortcolumn', $report->defaultsortcolumn);
 
 
             $radiogroup = array();
-            $radiogroup[] =& $mform->createElement('radio', 'defaultsortorder', '', get_string('ascending','local_reportbuilder'), SORT_ASC);
-            $radiogroup[] =& $mform->createElement('radio', 'defaultsortorder', '', get_string('descending','local_reportbuilder'), SORT_DESC);
-            $mform->addGroup($radiogroup, 'radiogroup', get_string('defaultsortorder','local_reportbuilder'), '<br />', false);
+            $radiogroup[] =& $mform->createElement('radio', 'defaultsortorder', '', get_string('ascending', 'totara_reportbuilder'), SORT_ASC);
+            $radiogroup[] =& $mform->createElement('radio', 'defaultsortorder', '', get_string('descending', 'totara_reportbuilder'), SORT_DESC);
+            $mform->addGroup($radiogroup, 'radiogroup', get_string('defaultsortorder', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
             $mform->setDefault('defaultsortorder', $report->defaultsortorder);
         } else {
 
-                $mform->addElement('html', get_string('error:nocolumns', 'local_reportbuilder', $report->source));
+                $mform->addElement('html', get_string('error:nocolumns', 'totara_reportbuilder', $report->source));
             }
 
-        $mform->addElement('hidden','id',$id);
+        $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden','source',$report->source);
+        $mform->addElement('hidden', 'source', $report->source);
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
 
         // remove the labels from the form elements
         $renderer =& $mform->defaultRenderer();
-        $select_elementtemplate = '<div class="fitem"><div class="felement fselectgroups">{element}</div></div>';
-        $check_elementtemplate = '<div class="fitem"><div class="felement fcheckbox">{element}</div></div>';
-        $text_elementtemplate = '<div class="fitem"><div class="felement ftext">{element}</div></div>';
+        $select_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement fselectgroups'), 'fitem');
+        $check_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement fcheckbox'), 'fitem');
+        $text_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement ftext'), 'fitem');
         $renderer->setElementTemplate($select_elementtemplate, 'newcolumns');
         $renderer->setElementTemplate($check_elementtemplate, 'newcustomheading');
         $renderer->setElementTemplate($text_elementtemplate, 'newheading');
@@ -496,7 +530,7 @@ class report_builder_edit_columns_form extends moodleform {
  */
 class report_builder_edit_content_form extends moodleform {
     function definition() {
-        global $CFG;
+        global $DB;
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
@@ -505,41 +539,41 @@ class report_builder_edit_content_form extends moodleform {
         $contentoptions = isset($report->contentoptions) ?
             $report->contentoptions : array();
 
-        $mform->addElement('header', 'contentheader', get_string('contentcontrols', 'local_reportbuilder'));
+        $mform->addElement('header', 'contentheader', get_string('contentcontrols', 'totara_reportbuilder'));
 
-        if(count($contentoptions)) {
-            if($report->embeddedurl !== null) {
-                $mform->addElement('html','<p>'.get_string('embeddedcontentnotes','local_reportbuilder').'</p>');
+        if (count($contentoptions)) {
+            if ($report->embeddedurl !== null) {
+                $mform->addElement('html', html_writer::tag('p', get_string('embeddedcontentnotes', 'totara_reportbuilder')));
             }
 
             $radiogroup = array();
-            $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('nocontentrestriction','local_reportbuilder'), 0);
-            $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany','local_reportbuilder'), 1);
-            $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionall','local_reportbuilder'), 2);
-            $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictcontent','local_reportbuilder'), '<br />', false);
-            $mform->setHelpButton('radiogroup', array('reportbuildercontentmode',get_string('restrictcontent','local_reportbuilder'),'local_reportbuilder'));
-            $mform->setDefault('contentenabled', get_field('report_builder', 'contentmode', 'id', $id));
+            $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('nocontentrestriction', 'totara_reportbuilder'), 0);
+            $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany', 'totara_reportbuilder'), 1);
+            $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionall', 'totara_reportbuilder'), 2);
+            $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictcontent', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
+            $mform->addHelpButton('radiogroup', 'reportbuildercontentmode', 'totara_reportbuilder');
+            $mform->setDefault('contentenabled', $DB->get_field('report_builder', 'contentmode', array('id' => $id)));
 
             // display any content restriction form sections that are enabled for
             // this source
-            foreach($contentoptions as $option) {
+            foreach ($contentoptions as $option) {
                 $classname = 'rb_' . $option->classname.'_content';
-                if(class_exists($classname)) {
+                if (class_exists($classname)) {
                     $obj = new $classname();
                     $obj->form_template($mform, $id, $option->title);
                 }
             }
 
-            $mform->addElement('hidden','id',$id);
+            $mform->addElement('hidden', 'id', $id);
             $mform->setType('id', PARAM_INT);
-            $mform->addElement('hidden','source',$report->source);
+            $mform->addElement('hidden', 'source', $report->source);
             $mform->setType('source', PARAM_TEXT);
             $this->add_action_buttons();
         } else {
             // there are no content restrictions for this source. Inform the user
             $mform->addElement('html',
                 get_string('error:nocontentrestrictions',
-                'local_reportbuilder', $report->source));
+                'totara_reportbuilder', $report->source));
         }
     }
 }
@@ -549,35 +583,35 @@ class report_builder_edit_content_form extends moodleform {
  */
 class report_builder_edit_access_form extends moodleform {
     function definition() {
-        global $CFG;
+        global $DB;
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'access', get_string('accesscontrols', 'local_reportbuilder'));
+        $mform->addElement('header', 'access', get_string('accesscontrols', 'totara_reportbuilder'));
 
-        if($report->embeddedurl !== null) {
-            $mform->addElement('html','<p>'. get_string('embeddedaccessnotes','local_reportbuilder').'</p>');
+        if ($report->embeddedurl !== null) {
+            $mform->addElement('html', html_writer::tag('p', get_string('embeddedaccessnotes', 'totara_reportbuilder')));
         }
         $radiogroup = array();
-        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('norestriction','local_reportbuilder'), 0);
-        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('withrestriction','local_reportbuilder'), 1);
-        $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictaccess','local_reportbuilder'), '<br />', false);
-        $mform->setDefault('accessenabled', get_field('report_builder', 'accessmode', 'id', $id));
-        $mform->setHelpButton('radiogroup', array('reportbuilderaccessmode',get_string('restrictaccess','local_reportbuilder'),'local_reportbuilder'));
+        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('norestriction', 'totara_reportbuilder'), 0);
+        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('withrestriction', 'totara_reportbuilder'), 1);
+        $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictaccess', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
+        $mform->setDefault('accessenabled', $DB->get_field('report_builder', 'accessmode', array('id' => $id)));
+        $mform->addHelpButton('radiogroup', 'reportbuilderaccessmode', 'totara_reportbuilder');
 
         // loop round classes, only considering classes that extend rb_base_access
-        foreach(get_declared_classes() as $class) {
-            if(is_subclass_of($class, 'rb_base_access')) {
+        foreach (get_declared_classes() as $class) {
+            if (is_subclass_of($class, 'rb_base_access')) {
                 $obj = new $class();
                 // add any form elements for this access option
                 $obj->form_template($mform, $id);
             }
         }
 
-        $mform->addElement('hidden','id',$id);
+        $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden','source',$report->source);
+        $mform->addElement('hidden', 'source', $report->source);
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
     }
@@ -593,14 +627,16 @@ class report_builder_edit_access_form extends moodleform {
  * @return array Array of errors to display on failure
  */
 function validate_shortname($data) {
+    global $DB;
     $errors = array();
 
-    if($foundreports = get_records('report_builder','shortname',$data['shortname'])) {
-        if(!empty($data['id'])) {
+    $foundreports = $DB->get_records('report_builder', array('shortname' => $data['shortname']));
+    if (count($foundreports)) {
+        if (!empty($data['id'])) {
             unset($foundreports[$data['id']]);
         }
-        if(!empty($foundreports)) {
-            $errors['shortname'] = get_string('shortnametaken','local_reportbuilder');
+        if (!empty($foundreports)) {
+            $errors['shortname'] = get_string('shortnametaken', 'totara_reportbuilder');
         }
     }
     return $errors;
@@ -617,27 +653,27 @@ function validate_shortname($data) {
  * @return array Array of errors to display on failure
  */
 function validate_unique_columns($data) {
+    global $DB;
     $errors = array();
 
     $id = $data['id'];
     $used_cols = array();
-    if($currentcols = get_records('report_builder_columns','reportid', $id)) {
-        foreach($currentcols as $col) {
-            $field = "column{$col->id}";
-            if(isset($data[$field])) {
-                if(array_key_exists($data[$field], $used_cols)) {
-                    $errors[$field] = get_string('norepeatcols','local_reportbuilder');
-                } else {
-                    $used_cols[$data[$field]] = 1;
-                }
+    $currentcols = $DB->get_records('report_builder_columns', array('reportid' => $id));
+    foreach ($currentcols as $col) {
+        $field = "column{$col->id}";
+        if (isset($data[$field])) {
+            if (array_key_exists($data[$field], $used_cols)) {
+                $errors[$field] = get_string('norepeatcols', 'totara_reportbuilder');
+            } else {
+                $used_cols[$data[$field]] = 1;
             }
         }
     }
 
     // also check new column if set
-    if(isset($data['newcolumns'])) {
-        if(array_key_exists($data['newcolumns'], $used_cols)) {
-            $errors['newcolumns'] = get_string('norepeatcols','local_reportbuilder');
+    if (isset($data['newcolumns'])) {
+        if (array_key_exists($data['newcolumns'], $used_cols)) {
+            $errors['newcolumns'] = get_string('norepeatcols', 'totara_reportbuilder');
         }
     }
     return $errors;
@@ -654,11 +690,11 @@ function validate_unique_columns($data) {
 function validate_none_empty_heading_columns($data) {
     $errors = array();
 
-    foreach($data as $key => $value) {
+    foreach ($data as $key => $value) {
         // only look at the heading fields
-        if(preg_match('/^heading\d+/', $key)) {
-            if(trim($value) == '') {
-                $errors[$key] = get_string('noemptycols', 'local_reportbuilder');
+        if (preg_match('/^heading\d+/', $key)) {
+            if (trim($value) == '') {
+                $errors[$key] = get_string('noemptycols', 'totara_reportbuilder');
             }
         }
     }
@@ -675,27 +711,27 @@ function validate_none_empty_heading_columns($data) {
  * @return array Array of errors to display on failure
  */
 function validate_unique_filters($data) {
+    global $DB;
     $errors = array();
 
     $id = $data['id'];
     $used_filters = array();
-    if($currentfilters = get_records('report_builder_filters','reportid', $id)) {
-        foreach($currentfilters as $filt) {
-            $field = "filter{$filt->id}";
-            if(isset($data[$field])) {
-                if(array_key_exists($data[$field], $used_filters)) {
-                    $errors[$field] = get_string('norepeatfilters','local_reportbuilder');
-                } else {
-                    $used_filters[$data[$field]] = 1;
-                }
+    $currentfilters = $DB->get_records('report_builder_filters', array('reportid' => $id));
+    foreach ($currentfilters as $filt) {
+        $field = "filter{$filt->id}";
+        if (isset($data[$field])) {
+            if (array_key_exists($data[$field], $used_filters)) {
+                $errors[$field] = get_string('norepeatfilters', 'totara_reportbuilder');
+            } else {
+                $used_filters[$data[$field]] = 1;
             }
         }
     }
 
     // also check new filter if set
-    if(isset($data['newfilter'])) {
-        if(array_key_exists($data['newfilter'], $used_filters)) {
-            $errors['newfilter'] = get_string('norepeatfilters','local_reportbuilder');
+    if (isset($data['newfilter'])) {
+        if (array_key_exists($data['newfilter'], $used_filters)) {
+            $errors['newfilter'] = get_string('norepeatfilters', 'totara_reportbuilder');
         }
     }
     return $errors;
@@ -707,7 +743,7 @@ function validate_unique_filters($data) {
  */
 class report_builder_save_form extends moodleform {
     function definition() {
-        global $CFG,$USER,$SESSION;
+        global $USER, $SESSION;
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
@@ -715,15 +751,15 @@ class report_builder_save_form extends moodleform {
         $shortname = $report->shortname;
         $filtername = 'filtering_'.$shortname;
         $searchsettings = serialize($SESSION->$filtername);
-        $params = implode('<br />',$filterparams);
+        $params = implode('<br />', $filterparams);
 
-        $mform->addElement('header', 'savesearch', get_string('createasavedsearch', 'local_reportbuilder'));
-        $mform->addElement('static', 'description', '', get_string('savedsearchdesc','local_reportbuilder'));
-        $mform->addElement('static', 'params', get_string('currentsearchparams','local_reportbuilder'), $params);
-        $mform->addElement('text','name', get_string('searchname','local_reportbuilder'));
+        $mform->addElement('header', 'savesearch', get_string('createasavedsearch', 'totara_reportbuilder'));
+        $mform->addElement('static', 'description', '', get_string('savedsearchdesc', 'totara_reportbuilder'));
+        $mform->addElement('static', 'params', get_string('currentsearchparams', 'totara_reportbuilder'), $params);
+        $mform->addElement('text', 'name', get_string('searchname', 'totara_reportbuilder'));
         $mform->setType('name', PARAM_TEXT);
-        $mform->addElement('advcheckbox', 'ispublic', get_string('publicallyavailable','local_reportbuilder'), '', null, array(0,1));
-        $mform->addElement('hidden','id',$id);
+        $mform->addElement('advcheckbox', 'ispublic', get_string('publicallyavailable', 'totara_reportbuilder'), '', null, array(0, 1));
+        $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'search', $searchsettings);
         $mform->setType('search', PARAM_TEXT);

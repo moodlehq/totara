@@ -36,8 +36,7 @@ class rb_source_cohort extends rb_base_source {
      * @global object $CFG
      */
     public function __construct() {
-        /* SCANMSG check table name for {} placeholders after reportbuilder merge */
-        $this->base = 'cohort';
+        $this->base = '{cohort}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -48,9 +47,6 @@ class rb_source_cohort extends rb_base_source {
         $this->requiredcolumns = array();
         $this->sourcetitle = get_string('cohort', 'totara_cohort');
 
-        $this->add_custom_user_fields($this->joinlist,
-                                      $this->columnoptions,
-                                      $this->filteroptions);
         parent::__construct();
     }
 
@@ -69,18 +65,18 @@ class rb_source_cohort extends rb_base_source {
     private function define_joinlist() {
         global $CFG;
 
-        /*SCANMSG : check this once reportbuilder patch is merged */
         $joinlist = array(
                         new rb_join(
                             'members', // table alias?
                             'LEFT', // type of join
-                            'cohort_members', // actual table name
+                            '{cohort_members}',
                             'base.id = members.cohortid', //how it is joined
                             REPORT_BUILDER_RELATION_ONE_TO_MANY
                         ),
         );
 
         $this->add_user_table_to_joinlist($joinlist, 'members', 'userid');
+        $this->add_user_custom_fields_to_joinlist($joinlist, 'members', 'userid');
         $this->add_position_tables_to_joinlist($joinlist, 'members', 'userid');
 
         return $joinlist;
@@ -103,6 +99,7 @@ class rb_source_cohort extends rb_base_source {
         );
 
         $this->add_user_fields_to_columns($columnoptions);
+        $this->add_user_custom_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
 
         return $columnoptions;
@@ -117,6 +114,7 @@ class rb_source_cohort extends rb_base_source {
         $filteroptions = array();
 
         $this->add_user_fields_to_filters($filteroptions);
+        $this->add_user_custom_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }
@@ -169,4 +167,3 @@ class rb_source_cohort extends rb_base_source {
 }
 
 // end of rb_source_user class
-

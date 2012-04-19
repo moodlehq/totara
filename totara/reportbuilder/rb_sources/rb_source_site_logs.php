@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
  * Copyright (C) 1999 onwards Martin Dougiamas
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -31,8 +31,7 @@ class rb_source_site_logs extends rb_base_source {
     public $defaultfilters, $requiredcolumns, $sourcetitle;
 
     function __construct() {
-        global $CFG;
-        $this->base = $CFG->prefix . 'log';
+        $this->base = '{log}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -61,7 +60,6 @@ class rb_source_site_logs extends rb_base_source {
     //
 
     function define_joinlist() {
-        global $CFG;
 
         $joinlist = array(
             // no none standard joins
@@ -83,6 +81,8 @@ class rb_source_site_logs extends rb_base_source {
     }
 
     function define_columnoptions() {
+        global $DB;
+
         $columnoptions = array(
             new rb_column_option(
                 'log',
@@ -114,13 +114,13 @@ class rb_source_site_logs extends rb_base_source {
                 'log',
                 'action',
                 get_string('action', 'rb_source_site_logs'),
-                sql_fullname('base.module','base.action')
+                $DB->sql_fullname('base.module', 'base.action')
             ),
             new rb_column_option(
                 'log',
                 'actionlink',
                 get_string('actionlink', 'rb_source_site_logs'),
-                sql_fullname('base.module','base.action'),
+                $DB->sql_fullname('base.module', 'base.action'),
                 array(
                     'displayfunc' => 'link_action',
                     'defaultheading' => get_string('action', 'rb_source_site_logs'),
@@ -129,8 +129,8 @@ class rb_source_site_logs extends rb_base_source {
             ),
             new rb_column_option(
                 'log',
+                'url',
                 get_string('url', 'rb_source_site_logs'),
-                'URL',
                 'base.url'
             ),
             new rb_column_option(
@@ -323,24 +323,23 @@ class rb_source_site_logs extends rb_base_source {
         global $CFG;
         $url = $row->log_url;
         $module = $row->log_module;
-        require_once($CFG->dirroot.'/course/lib.php');
+        require_once($CFG->dirroot . '/course/lib.php');
         $logurl = make_log_url($module, $url);
-        return "<a href=\"{$CFG->wwwroot}$logurl\">{$action}</a>";
+        return html_writer::link(new moodle_url($logurl), $action);
     }
 
     // convert IP address into a link to IP lookup page
     function rb_display_iplookup($ip, $row) {
         global $CFG;
-        if(isset($ip) && $ip != '' && isset($row->user_id)) {
-            return '<a href="' . $CFG->wwwroot . '/iplookup/index.php?ip=' . $ip .
-                '&amp;user=' . $row->user_id . '">' . $ip . '</a>';
-        }
-        else if ($ip && $ip != '') {
-            return '<a href="' . $CFG->wwwroot . '/iplookup/index.php?ip=' . $ip .
-                '">' . $ip . '</a>';
-        } else {
+        if (!isset($ip) || $ip == '') {
             return '';
         }
+        $params = array('id' => $ip);
+        if (isset($row->user_id)) {
+            $params['user'] = $row->user_id;
+        }
+        $url = new moodle_url('/iplookup/index.php', $params);
+        return html_writer::link($url, $ip);
     }
 
 

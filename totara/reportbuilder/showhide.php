@@ -2,13 +2,13 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 /**
@@ -27,26 +27,27 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 
 require_login();
+$PAGE->set_context(context_system::instance());
 
 $id = required_param('id', PARAM_INT);
 
 $report = new reportbuilder($id);
-print '<div id="column-checkboxes">';
+echo $OUTPUT->container_start(null, 'column-checkboxes');
 $count = 0;
-foreach($report->columns as $column) {
+foreach ($report->columns as $column) {
     // skip empty headings
-    if($column->heading == '') {
+    if ($column->heading == '') {
         continue;
     }
     $ident = "{$column->type}_{$column->value}";
-    print '<input type="checkbox" id="'. $ident .'" name="' . $ident . '">';
-    print '<label for="' . $ident . '">' . format_string($column->heading) . '</label><br />';
+    echo html_writer::empty_tag('input', array('type' => 'checkbox', 'id' => $ident, 'name' => $ident));
+    echo html_writer::tag('label', format_string($column->heading), array('for' => $ident)) . html_writer::empty_tag('br');
     $count++;
 }
-print '</div>';
+echo $OUTPUT->container_end();
 
 ?>
 <script type="text/javascript">
