@@ -31,6 +31,14 @@
  * Make sure you comment each section to clearly indicate where it is used
  */
 
+/* Override help link size */
+.helplink img {
+    height: 14px;
+    width: 14px;
+    /* offset image out of sight - only needed to preload hover state */
+    background: url([[pix:moodle|help-hover]]) 100 100 no-repeat;
+}
+
 
 /**
  * Totara toolbar - used by lib/totaratablelib.php
