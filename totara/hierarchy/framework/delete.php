@@ -84,7 +84,7 @@ if (!confirm_sesskey()) {
 if ($hierarchy->delete_framework()) {
     // Log
     add_to_log(SITEID, $prefix, 'framework delete', "framework/index.php?prefix=$prefix", "$framework->fullname (ID $framework->id)");
-    totara_set_notification(get_string($prefix.'deletedframework', 'totara_hierarchy', $framework->fullname), "{$CFG->wwwroot}/totara/hierarchy/framework/index.php?prefix=$prefix", array('style'=>'notifysuccess'));
+    totara_set_notification(get_string($prefix.'deletedframework', 'totara_hierarchy', $framework->fullname), "{$CFG->wwwroot}/totara/hierarchy/framework/index.php?prefix=$prefix", array('class' => 'notifysuccess'));
 } else {
     totara_set_notification(get_string($prefix.'error:deletedframework', 'totara_hierarchy', $framework->fullname), "{$CFG->wwwroot}/totara/hierarchy/framework/index.php?prefix=$prefix");
 }

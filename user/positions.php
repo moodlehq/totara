@@ -181,7 +181,7 @@ else {
         add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");
 
         // Display success message
-        totara_set_notification(get_string('positionsaved','position'), $currenturl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('positionsaved','position'), $currenturl, array('class' => 'notifysuccess'));
     }
 
     // Log

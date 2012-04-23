@@ -119,7 +119,7 @@ if ($frameworkform->is_cancelled()) {
     //fix the description field and redirect
     $frameworknew = file_postupdate_standard_editor($frameworknew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_hierarchy', $shortprefix.'_framework', $frameworknew->id);
     $DB->set_field($shortprefix.'_framework', 'description', $frameworknew->description, array('id' => $frameworknew->id));
-    totara_set_notification(get_string($prefix.$notification->text, 'totara_hierarchy', format_string($frameworknew->fullname)), "$CFG->wwwroot/totara/hierarchy/framework/index.php?prefix=$prefix", array('style' => 'notifysuccess'));
+    totara_set_notification(get_string($prefix.$notification->text, 'totara_hierarchy', format_string($frameworknew->fullname)), "$CFG->wwwroot/totara/hierarchy/framework/index.php?prefix=$prefix", array('class' => 'notifysuccess'));
 
 }
 

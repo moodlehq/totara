@@ -564,7 +564,7 @@ class dp_objective_component extends dp_base_component {
                 return $status;
             } elseif (!$ajax) {
                 if ($status) {
-                    totara_set_notification(get_string('objectivesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
+                    totara_set_notification(get_string('objectivesupdated','local_plan'), $currenturl, array('class' => 'notifysuccess'));
                 } else {
                     totara_set_notification(get_string('objectivesnotupdated','local_plan'), $currenturl);
                 }

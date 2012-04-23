@@ -180,7 +180,7 @@ class dp_program_component extends dp_base_component {
             // Unassign item
             if ($this->unassign_item($deleteitem)) {
                 add_to_log(SITEID, 'plan', 'removed program', "component.php?id={$this->plan->id}&amp;c=program", "{$deleteitem->fullname} (ID:{$deleteitem->id})");
-                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
+                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('class' => 'notifysuccess'));
             } else {
                 print_error('error:couldnotunassignitem', 'local_plan');
             }
@@ -389,7 +389,7 @@ class dp_program_component extends dp_base_component {
 
                     // Do not create notification or redirect if ajax request
                     if (!$ajax) {
-                        totara_set_notification(get_string('programsupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
+                        totara_set_notification(get_string('programsupdated','local_plan').$issuesnotification, $currenturl, array('class' => 'notifysuccess'));
                     }
                 } else {
                     // Do not create notification or redirect if ajax request

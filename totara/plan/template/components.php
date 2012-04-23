@@ -48,7 +48,7 @@ $returnurl = $CFG->wwwroot . '/totara/plan/template/components.php?id=' . $id;
 
 if($save){
     if(update_plan_component_name('componentname', $id)){
-        totara_set_notification(get_string('update_components_settings', 'local_plan'), $returnurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('update_components_settings', 'local_plan'), $returnurl, array('class' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:update_components_settings', 'local_plan'), $returnurl);
     }

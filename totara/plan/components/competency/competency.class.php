@@ -199,7 +199,7 @@ class dp_competency_component extends dp_base_component {
                     }
                 }
 
-                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
+                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('class' => 'notifysuccess'));
             } else {
                 totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);
             }
@@ -978,7 +978,7 @@ class dp_competency_component extends dp_base_component {
 
                     // Do not create notification or redirect if ajax request
                     if (!$ajax) {
-                        totara_set_notification(get_string('competenciesupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
+                        totara_set_notification(get_string('competenciesupdated','local_plan').$issuesnotification, $currenturl, array('class' => 'notifysuccess'));
                     }
                 } else {
                     // Do not create notification or redirect if ajax request

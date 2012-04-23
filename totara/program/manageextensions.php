@@ -155,7 +155,7 @@ if ($submitted && confirm_sesskey()) {
         } elseif ($update_fail_count > 0) {
             totara_set_notification(get_string('updateextensionfailcount', 'local_program', $update_fail_count), 'manageextensions.php?userid='.$userid);
         } else {
-            totara_set_notification(get_string('updateextensionsuccess', 'local_program'), 'manageextensions.php?userid='.$userid, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('updateextensionsuccess', 'local_program'), 'manageextensions.php?userid='.$userid, array('class' => 'notifysuccess'));
         }
     }
 }

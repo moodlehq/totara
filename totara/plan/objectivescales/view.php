@@ -83,7 +83,7 @@ if($delete) {
         }
 
         commit_sql();
-        totara_set_notification(get_string('deletedobjectivescalevalue', 'local_plan', format_string($objective->name)), $CFG->wwwroot.'/totara/plan/objectivescales/view.php?id='.$objective->id, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('deletedobjectivescalevalue', 'local_plan', format_string($objective->name)), $CFG->wwwroot.'/totara/plan/objectivescales/view.php?id='.$objective->id, array('class' => 'notifysuccess'));
 
     } else {
         $returnurl = "{$CFG->wwwroot}/totara/plan/objectivescales/view.php?id={$objective->id}";
@@ -188,7 +188,7 @@ if ($default) {
     if (!update_record('dp_objective_scale', $s)) {
         error(get_string('error:updateobjectivescale','local_plan'));
     } else {
-        totara_set_notification(get_string('objectivescaledefaultupdated', 'local_plan'), null, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('objectivescaledefaultupdated', 'local_plan'), null, array('class' => 'notifysuccess'));
         // Fetch the update scale record so it'll show up to the user.
         $objective = get_record('dp_objective_scale', 'id', $id);
     }

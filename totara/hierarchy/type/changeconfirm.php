@@ -171,7 +171,7 @@ if ($changeform->is_cancelled()) {
     $a->to = hierarchy_get_type_name($newtypeid, $shortprefix);
 
     totara_set_notification(get_string('reclassifysuccess' . $optype, 'totara_hierarchy', $a),
-        $returnurl, array('style' => 'notifysuccess'));
+        $returnurl, array('class' => 'notifysuccess'));
 
 }
 

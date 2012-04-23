@@ -80,7 +80,7 @@ if($confirm) {
 
     commit_sql();
     add_to_log(SITEID, 'plan', 'changed workflow', "template/workflow.php?id={$id}", "Template ID:{$id}");
-    totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('style' => 'notifysuccess'));
+    totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('class' => 'notifysuccess'));
 
 }
 
@@ -148,12 +148,12 @@ if ($fromform = $mform->get_data()) {
             );
         } else {
             //If no change and saving just show notification with no processing
-            totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('class' => 'notifysuccess'));
         }
     } else {
         // Add checking to this method
         set_field('dp_template', 'workflow', $workflow, 'id', $id);
-        totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('class' => 'notifysuccess'));
     }
 
 } else {

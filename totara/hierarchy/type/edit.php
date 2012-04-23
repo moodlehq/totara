@@ -102,7 +102,7 @@ if ($typeform->is_cancelled()) {
         } else {
             add_to_log(SITEID, $prefix, 'create type', "type/index.php?prefix=$prefix", "{$typenew->fullname} (ID {$typenew->id})");
             $notification->text = $prefix . 'createtype';
-            $notification->params = array('style' => 'notifysuccess');
+            $notification->params = array('class' => 'notifysuccess');
         }
     // Existing type
     } else {
@@ -112,7 +112,7 @@ if ($typeform->is_cancelled()) {
         } else {
             add_to_log(SITEID, $prefix, 'update type', "type/edit.php?id={$typenew->id}", "{$typenew->fullname}(ID {$typenew->id})");
             $notification->text = $prefix . 'updatetype';
-            $notification->params = array('style' => 'notifysuccess');
+            $notification->params = array('class' => 'notifysuccess');
         }
     }
     $typenew = file_postupdate_standard_editor($typenew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_hierarchy', $shortprefix.'_type', $typenew->id);

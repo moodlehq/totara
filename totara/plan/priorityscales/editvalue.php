@@ -113,7 +113,7 @@ if ($valueform->is_cancelled()) {
 
             totara_set_notification(get_string('priorityscalevalueadded', 'local_plan', format_string(stripslashes($valuenew->name))),
                 "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}",
-                array('style' => 'notifysuccess'));
+                array('class' => 'notifysuccess'));
         } else {
             totara_set_notification(get_string('error:createpriorityvalue', 'local_plan'),
                 "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$priorityscaleid}");
@@ -128,7 +128,7 @@ if ($valueform->is_cancelled()) {
 
             totara_set_notification(get_string('priorityscalevalueupdated', 'local_plan', format_string(stripslashes($valuenew->name))),
                 "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$valuenew->priorityscaleid}",
-                array('style' => 'notifysuccess'));
+                array('class' => 'notifysuccess'));
 
         } else {
             totara_set_notification(get_string('error:updatepriorityscalevalue', 'local_plan'),

@@ -81,7 +81,7 @@ unset($_SESSION['exceptions_removed']);
 $_SESSION['exceptions_resolved'] = true; // set a flag to indicate tat issues have been resolved
 
 if (count($failed_ids) == 0) {
-    totara_set_notification(get_string('successfullyresolvedexceptions','local_program'), null, array('style' => 'notifysuccess'));
+    totara_set_notification(get_string('successfullyresolvedexceptions','local_program'), null, array('class' => 'notifysuccess'));
 }
 else {
     totara_set_notification(get_string('failedtoresolve','local_program') . ': ' . implode(', ', $failed_ids));

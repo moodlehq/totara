@@ -153,7 +153,7 @@ if ($delete && $confirm) {
         }
 
         commit_sql();
-        totara_set_notification(get_string('deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php', array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('deletedp', 'local_plan'), $CFG->wwwroot.'/totara/plan/template/index.php', array('class' => 'notifysuccess'));
     }
 } else if ($delete) {
     if (!$template = get_record('dp_template', 'id', $delete)) {

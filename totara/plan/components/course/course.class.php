@@ -233,7 +233,7 @@ class dp_course_component extends dp_base_component {
             if ($this->unassign_item($deleteitem)) {
                 add_to_log(SITEID, 'plan', 'removed course', "component.php?id={$this->plan->id}&amp;c=course", "{$deleteitem->fullname} (ID:{$deleteitem->id})");
                 dp_plan_check_plan_complete(array($this->plan->id));
-                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
+                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('class' => 'notifysuccess'));
 
             } else {
                 print_error('error:couldnotunassignitem', 'local_plan');
@@ -804,7 +804,7 @@ class dp_course_component extends dp_base_component {
 
                     // Do not create notification or redirect if ajax request
                     if (!$ajax) {
-                        totara_set_notification(get_string('coursesupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
+                        totara_set_notification(get_string('coursesupdated','local_plan').$issuesnotification, $currenturl, array('class' => 'notifysuccess'));
                     }
                 } else {
                     // Do not create notification or redirect if ajax request

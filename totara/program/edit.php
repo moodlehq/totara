@@ -73,7 +73,7 @@ $editmessagesurl = "{$CFG->wwwroot}/totara/program/edit_messages.php?id={$progra
 $detailsform = new program_edit_form($currenturl, array('program'=>$program, 'action'=>$action, 'category'=>$category), 'post', '', array('name'=>'form_prog_details'));
 
 if ($detailsform->is_cancelled()) {
-    totara_set_notification(get_string('programupdatecancelled', 'local_program'), $viewurl, array('style' => 'notifysuccess'));
+    totara_set_notification(get_string('programupdatecancelled', 'local_program'), $viewurl, array('class' => 'notifysuccess'));
 }
 
 // Redirect to delete page if deleting
@@ -106,7 +106,7 @@ if ($data = $detailsform->get_data()) {
             if(isset($data->savechanges)) {
                 $nexturl = $viewurl;
             }
-            totara_set_notification(get_string('programdetailssaved', 'local_program'), $nexturl, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('programdetailssaved', 'local_program'), $nexturl, array('class' => 'notifysuccess'));
         }
     }
 

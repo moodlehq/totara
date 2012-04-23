@@ -106,7 +106,7 @@ if ($data = $form->get_data()) {
 
         $viewurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$newid}&amp;action=edit";
 
-        totara_set_notification(get_string('programcreatesuccess', 'local_program'), $viewurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('programcreatesuccess', 'local_program'), $viewurl, array('class' => 'notifysuccess'));
 
     }
 }

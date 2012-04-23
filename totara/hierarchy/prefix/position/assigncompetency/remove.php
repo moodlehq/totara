@@ -79,7 +79,7 @@ if ($delete) {
     $DB->delete_records('pos_competencies', array('id' => $id));
 
     add_to_log(SITEID, 'position', 'delete competency assignment', "item/view.php?id={$position}&amp;prefix=position", "$fullname (ID $assignment->id)");
-    totara_set_notification(get_string('positiondeletedassignedcompetency','totara_hierarchy'), $returnurl, array('style' => 'notifysuccess'));
+    totara_set_notification(get_string('positiondeletedassignedcompetency','totara_hierarchy'), $returnurl, array('class' => 'notifysuccess'));
 } else {
     /// Display page
     echo $OUTPUT->header();

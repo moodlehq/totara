@@ -83,7 +83,7 @@ if($delete) {
         }
 
         commit_sql();
-        totara_set_notification(get_string('deletedpriorityscalevalue', 'local_plan', format_string($value->name)), $CFG->wwwroot.'/totara/plan/priorityscales/view.php?id='.$priority->id, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('deletedpriorityscalevalue', 'local_plan', format_string($value->name)), $CFG->wwwroot.'/totara/plan/priorityscales/view.php?id='.$priority->id, array('class' => 'notifysuccess'));
     } else {
         $returnurl = "{$CFG->wwwroot}/totara/plan/priorityscales/view.php?id={$priority->id}";
         $deleteurl = "{$CFG->wwwroot}/totara/plan/priorityscales/view.php?id={$priority->id}&amp;delete={$delete}&amp;confirm=1&amp;sesskey=" . sesskey();
@@ -188,7 +188,7 @@ if ($default) {
     if (!update_record('dp_priority_scale', $s)) {
         error(get_string('error:updatingpriorityscale', 'local_plan'));
     } else {
-        totara_set_notification(get_string('priorityscaledefaultupdated', 'local_plan'), null, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('priorityscaledefaultupdated', 'local_plan'), null, array('class' => 'notifysuccess'));
         // Fetch the update scale record so it'll show up to the user.
         $priority = get_record('dp_priority_scale', 'id', $id);
     }

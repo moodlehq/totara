@@ -95,7 +95,7 @@ $messageseditform = new program_messages_edit_form($currenturl, array('program'=
 $messageseditform->_form->updateAttributes(array('class'=>''));
 
 if ($messageseditform->is_cancelled()) {
-    totara_set_notification(get_string('programupdatecancelled', 'local_program'), $overviewurl, array('style' => 'notifysuccess'));
+    totara_set_notification(get_string('programupdatecancelled', 'local_program'), $overviewurl, array('class' => 'notifysuccess'));
 }
 
 // if the form has not been submitted, fill in the saved values and defaults
@@ -126,7 +126,7 @@ if($data = $messageseditform->get_data()) {
         if( ! $programmessagemanager->save_messages($data)) {
             totara_set_notification(get_string('programupdatefail', 'local_program'), $currenturl);
         } else {
-            totara_set_notification(get_string('programmessagessaved', 'local_program'), 'edit_messages.php?id='.$id, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('programmessagessaved', 'local_program'), 'edit_messages.php?id='.$id, array('class' => 'notifysuccess'));
         }
     }
 

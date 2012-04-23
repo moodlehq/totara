@@ -65,7 +65,7 @@ if($d && $confirm) {
     }
     if ($deleteok) {
         commit_sql();
-        totara_set_notification(get_string('savedsearchdeleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('savedsearchdeleted','local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:savedsearchnotdeleted','local_reportbuilder'), $returnurl);
     }

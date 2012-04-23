@@ -311,7 +311,7 @@ class position extends hierarchy {
         $sql = "UPDATE {course_completions}
             SET positionid = NULL
             WHERE positionid {$items_sql}";
-        if (!$DB->execute($sql, $item_params)) {
+        if (!$DB->execute($sql, $items_params)) {
             return false;
         }
 

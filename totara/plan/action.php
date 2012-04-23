@@ -88,10 +88,10 @@ if (!empty($approve)) {
     if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
        $plan->set_status(DP_PLAN_STATUS_APPROVED, DP_PLAN_REASON_MANUAL_APPROVE);
        $plan->send_approved_alert();
-       totara_set_notification(get_string('planapproved', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+       totara_set_notification(get_string('planapproved', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
     } else {
         if (empty($ajax)) {
-            totara_set_notification(get_string('nopermission', 'local_plan'), $referer, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('nopermission', 'local_plan'), $referer, array('class' => 'notifysuccess'));
         }
     }
 }
@@ -104,7 +104,7 @@ if (!empty($decline)) {
     if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
         $plan->send_declined_alert();
         add_to_log(SITEID, 'plan', 'declined', "view.php?id={$plan->id}", $plan->name);
-        totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
     } else {
         if (empty($ajax)) {
             totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
@@ -131,7 +131,7 @@ if (!empty($approvalrequest)) {
                     totara_set_notification(get_string('nomanager', 'local_plan'), $referer);
                 }
             }
-            totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
             // @todo: send approval request email to relevant user(s)
         } else {
             if (empty($ajax)) {
@@ -160,7 +160,7 @@ if (!empty($approvalrequest)) {
             }
 
             if (empty($ajax)) {
-                totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+                totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
             }
 
         }
@@ -206,7 +206,7 @@ if (!empty($delete)) {
                 $plan->send_alert(true,'learningplan-remove.png','plan-remove-learner-short','plan-remove-learner-long');
             }
             add_to_log(SITEID, 'plan', 'deleted', "index.php?userid={$plan->userid}", "{$plan->name} (ID:{$plan->id})");
-            totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
         }
     } else {
         if (empty($ajax)) {
@@ -243,7 +243,7 @@ if (!empty($complete)) {
             $plan->set_status(DP_PLAN_STATUS_COMPLETE, DP_PLAN_REASON_MANUAL_COMPLETE);
             $plan->send_completion_alert();
             add_to_log(SITEID, 'plan', 'completed', "view.php?id={$plan->id}", $plan->name);
-            totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
         }
     } else {
         if (empty($ajax)) {
@@ -282,7 +282,7 @@ if (!empty($reactivate)) {
                 totara_set_notification(get_string('planreactivatefail', 'local_plan', $plan->name), $referer);
             } else {
                 add_to_log(SITEID, 'plan', 'reactivated', "view.php?id={$plan->id}", $plan->name);
-                totara_set_notification(get_string('planreactivatesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+                totara_set_notification(get_string('planreactivatesuccess', 'local_plan', $plan->name), $referer, array('class' => 'notifysuccess'));
             }
         }
 

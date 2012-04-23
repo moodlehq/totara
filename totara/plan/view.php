@@ -65,7 +65,7 @@ require_once('edit_form.php');
 $form = new plan_edit_form($currenturl, array('plan'=>$plan, 'action'=>$action));
 
 if ($form->is_cancelled()) {
-    totara_set_notification(get_string('planupdatecancelled', 'local_plan'), $viewurl, array('style' => 'notifysuccess'));
+    totara_set_notification(get_string('planupdatecancelled', 'local_plan'), $viewurl, array('class' => 'notifysuccess'));
 }
 
 if ($plan->get_setting('view') != DP_PERMISSION_ALLOW) {
@@ -89,7 +89,7 @@ if ($data = $form->get_data()) {
             print_error('error:nopermissions', 'local_plan');
         }
         if ($plan->delete()) {
-            totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), "{$CFG->wwwroot}/totara/plan/index.php?userid={$plan->userid}", array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), "{$CFG->wwwroot}/totara/plan/index.php?userid={$plan->userid}", array('class' => 'notifysuccess'));
         } else {
             totara_set_notification(get_string('plandeletefail', 'local_plan', $plan->name), $viewurl);
         }
@@ -106,7 +106,7 @@ if ($data = $form->get_data()) {
         }
         if ($plan->set_status(DP_PLAN_STATUS_COMPLETE, DP_PLAN_REASON_MANUAL_COMPLETE)) {
             $plan->send_completion_alert();
-            totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $viewurl, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $viewurl, array('class' => 'notifysuccess'));
         } else {
             totara_set_notification(get_string('plancompletefail', 'local_plan', $plan->name), $viewurl);
         }
@@ -123,7 +123,7 @@ if ($data = $form->get_data()) {
             totara_set_notification(get_string('planupdatefail', 'local_plan'), $editurl);
         }
 
-        totara_set_notification(get_string('planupdatesuccess', 'local_plan'), $viewurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('planupdatesuccess', 'local_plan'), $viewurl, array('class' => 'notifysuccess'));
     }
 
     // Reload plan to reflect any changes

@@ -77,7 +77,7 @@ if($fromform = $mform->get_data()){
 
     if($fromform->id){
         if($newid = add_scheduled_report($fromform)) {
-            totara_set_notification(get_string('updatescheduledreport','local_reportbuilder'), $myreportsurl, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('updatescheduledreport','local_reportbuilder'), $myreportsurl, array('class' => 'notifysuccess'));
         }
         else {
             totara_set_notification(get_string('error:updatescheduledreport','local_reportbuilder'), $returnurl);
@@ -85,7 +85,7 @@ if($fromform = $mform->get_data()){
     }
     else {
         if($newid = add_scheduled_report($fromform)) {
-            totara_set_notification(get_string('addedscheduledreport','local_reportbuilder'), $myreportsurl, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('addedscheduledreport','local_reportbuilder'), $myreportsurl, array('class' => 'notifysuccess'));
         }
         else {
             totara_set_notification(get_string('error:addscheduledreport','local_reportbuilder'), $returnurl);

@@ -50,7 +50,7 @@ if ($delete && $cohort->id) {
     if ($confirm and confirm_sesskey()) {
         $result = cohort_delete_cohort($cohort);
         if ($result) {
-            totara_set_notification(get_string('successfullydeleted','local_cohort'), $returnurl->out(), array('style'=>'notifysuccess'));
+            totara_set_notification(get_string('successfullydeleted','local_cohort'), $returnurl->out(), array('class' => 'notifysuccess'));
         }
         else {
             totara_set_notification(get_string('failedtodeleted','local_cohort'), $returnurl->out());

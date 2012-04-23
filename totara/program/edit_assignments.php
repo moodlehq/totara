@@ -73,7 +73,7 @@ if ($data = data_submitted()) {
     update_record('prog', $prog_update);
 
     if(isset($data->savechanges)) {
-        totara_set_notification(get_string('programassignmentssaved', 'local_program'), 'edit_assignments.php?id='.$id, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('programassignmentssaved', 'local_program'), 'edit_assignments.php?id='.$id, array('class' => 'notifysuccess'));
     }
 
 }

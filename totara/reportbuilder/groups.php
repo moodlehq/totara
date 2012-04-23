@@ -56,7 +56,7 @@
             totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
         }
         if(delete_group($id)) {
-            totara_set_notification(get_string('groupdeleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('groupdeleted','local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
         } else {
             totara_set_notification(get_string('error:groupnotdeleted','local_reportbuilder'), $returnurl);
         }

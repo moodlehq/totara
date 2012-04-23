@@ -96,4 +96,4 @@ $DB->delete_records('comp_scale_values', array('id' => $value->id));
 
 add_to_log(SITEID, 'competency', 'delete scale value', "prefix/competency/scale/view.php?id={$value->scaleid}&amp;prefix=competency", "$value->name (ID $value->id)");
 
-totara_set_notification(get_string('deletedcompetencyscalevalue', 'totara_hierarchy', format_string($value->name)), $returnurl, array('style' => 'notifysuccess'));
+totara_set_notification(get_string('deletedcompetencyscalevalue', 'totara_hierarchy', format_string($value->name)), $returnurl, array('class' => 'notifysuccess'));

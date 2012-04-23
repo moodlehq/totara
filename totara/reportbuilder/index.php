@@ -50,7 +50,7 @@
         }
         if(delete_report($id)) {
             add_to_log(SITEID, 'reportbuilder', $type . ' report', 'index.php', 'Report ID=' . $id);
-            totara_set_notification(get_string($type . 'report','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string($type . 'report','local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
 
         } else {
             totara_set_notification(get_string('no' . $type . 'report','local_reportbuilder'), $returnurl);

@@ -61,7 +61,7 @@ if($confirm) {
 
     if(update_record('dp_plan_objective', $todb)) {
         //@todo send notifications/emails
-        totara_set_notification(get_string('request'.$action,'local_plan'), $returnurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('request'.$action,'local_plan'), $returnurl, array('class' => 'notifysuccess'));
     } else {
         //@todo send notifications/emails
         totara_set_notification(get_string('requestnot'.$action, 'local_plan'), $returnurl);

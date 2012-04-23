@@ -54,7 +54,7 @@ if ($h !== null && isset($cid)) {
         $vis = $h ? 'Hide' : 'Show';
         add_to_log(SITEID, 'reportbuilder', 'update report', 'columns.php?id='. $id,
             $vis . ' Column: Report ID=' . $id . ', Column ID=' . $cid);
-        totara_set_notification(get_string('column_vis_updated','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('column_vis_updated','local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:column_vis_not_updated','local_reportbuilder'), $returnurl);
     }
@@ -70,7 +70,7 @@ if ($d and $confirm ) {
         if($report->delete_column($cid)) {
             add_to_log(SITEID, 'reportbuilder', 'update report', 'columns.php?id='. $id,
                 'Deleted Column: Report ID=' . $id . ', Column ID=' . $cid);
-            totara_set_notification(get_string('column_deleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('column_deleted','local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
         } else {
             totara_set_notification(get_string('error:column_not_deleted','local_reportbuilder'), $returnurl);
         }
@@ -95,7 +95,7 @@ if($m && isset($cid)) {
     if($report->move_column($cid, $m)) {
         add_to_log(SITEID, 'reportbuilder', 'update report', 'columns.php?id='. $id,
             'Moved Column: Report ID=' . $id . ', Column ID=' . $cid);
-        totara_set_notification(get_string('column_moved','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('column_moved','local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:column_not_moved','local_reportbuilder'), $returnurl);
     }
@@ -117,7 +117,7 @@ if ($fromform = $mform->get_data()) {
     if(build_columns($id, $fromform, $report)) {
         add_to_log(SITEID, 'reportbuilder', 'update report', 'columns.php?id='. $id,
             'Column Settings: Report ID=' . $id);
-        totara_set_notification(get_string('columns_updated','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('columns_updated','local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:columns_not_updated','local_reportbuilder'), $returnurl);
     }

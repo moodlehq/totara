@@ -210,7 +210,7 @@ if ($confirmdelete) {
         $a->items = $items;
         $message = get_string('xitemsdeleted', 'totara_hierarchy', $a);
         totara_set_notification($message, $returnurl,
-            array('style' => 'notifysuccess'));
+            array('class' => 'notifysuccess'));
     } else if ($deletecount == 0) {
         $message = get_string('error:nonedeleted', 'totara_hierarchy', $items);
         totara_set_notification($message, $formurl);
@@ -258,7 +258,7 @@ if ($confirmmove && $newparent !== false) {
         strtolower(get_string($prefix . 'plural', 'totara_hierarchy'));
 
     totara_set_notification(get_string('xitemsmoved', 'totara_hierarchy', $a),
-        $returnurl, array('style' => 'notifysuccess'));
+        $returnurl, array('class' => 'notifysuccess'));
 }
 
 $PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => $prefix)));

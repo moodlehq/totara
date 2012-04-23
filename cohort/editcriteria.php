@@ -77,7 +77,7 @@ if ($data = $editcriteriaform->get_data()) {
 
     try {
         cohort_add_dynamic_cohort($criteria);
-        totara_set_notification(get_string('successfullyaddedcohort','local_cohort'), $returnurl->out() , array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('successfullyaddedcohort','local_cohort'), $returnurl->out() , array('class' => 'notifysuccess'));
     }
     catch ( Exception $e ){
         totara_set_notification($e->getMessage(), $returnurl->out());

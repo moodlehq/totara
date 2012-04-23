@@ -46,7 +46,7 @@ if ($fromform = $mform->get_data()) {
     }
 
     if(update_global_settings($fromform)) {
-        totara_set_notification(get_string('globalsettingsupdated', 'local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('globalsettingsupdated', 'local_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:couldnotupdateglobalsettings','local_reportbuilder'), $returnurl);
     }

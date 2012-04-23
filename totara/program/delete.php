@@ -61,7 +61,7 @@ if ($program->delete()) {
         commit_sql();
     }
     $notification_url = "{$CFG->wwwroot}/course/category.php?id={$program->category}";
-    totara_set_notification(get_string('programdeletesuccess', 'local_program', $program->fullname), $notification_url, array('style' => 'notifysuccess'));
+    totara_set_notification(get_string('programdeletesuccess', 'local_program', $program->fullname), $notification_url, array('class' => 'notifysuccess'));
 } else {
     rollback_sql();
 }

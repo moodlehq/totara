@@ -144,7 +144,7 @@ if ($can_edit) {
         } else {
             // Fetch the update scale record so it'll show up to the user.
             $scale = $DB->get_record('comp_scale', array('id' => $id));
-            totara_set_notification(get_string('scaledefaultupdated', 'totara_hierarchy'), null, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('scaledefaultupdated', 'totara_hierarchy'), null, array('class' => 'notifysuccess'));
         }
     }
 }

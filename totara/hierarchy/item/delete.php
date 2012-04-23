@@ -95,7 +95,7 @@ if ($hierarchy->delete_hierarchy_item($item->id)) {
     add_to_log(SITEID, $prefix, 'delete item', "index.php?id={$framework->id}&amp;prefix={$prefix}", substr(strip_tags($item->fullname), 0, 200) . " (ID $item->id)");
     totara_set_notification(get_string('deleted'.$prefix, 'totara_hierarchy', format_string($item->fullname)),
         "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&frameworkid={$item->frameworkid}&page={$page}",
-        array('style' => 'notifysuccess'));
+        array('class' => 'notifysuccess'));
 } else {
     totara_set_notification(get_string($prefix.'error:deletedframework', 'totara_hierarchy', format_string($item->fullname)),
         "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&frameworkid={$item->frameworkid}&page={$page}");

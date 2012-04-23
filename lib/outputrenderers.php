@@ -623,7 +623,7 @@ class core_renderer extends renderer_base {
      * @return string HTML that you must output this, preferably immediately.
      */
     public function header() {
-        global $USER, $CFG;
+        global $USER, $CFG, $PAGE;
 
         if (session_is_loggedinas()) {
             $this->page->add_body_class('userloggedinas');
@@ -661,7 +661,9 @@ class core_renderer extends renderer_base {
         $this->opencontainers->push('header/footer', $footer);
         $this->page->set_state(moodle_page::STATE_IN_BODY);
 
-        return $header . $this->skip_link_target('maincontent');
+        $totararenderer = $PAGE->get_renderer('totara_core', null);
+        return $header . $this->skip_link_target('maincontent') .
+            $totararenderer->print_totara_notifications();
     }
 
     /**

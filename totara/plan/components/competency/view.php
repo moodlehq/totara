@@ -75,7 +75,7 @@ if ($data = data_submitted() && $canupdate) {
         }
 
         if ($deletions) {
-            totara_set_notification(get_string('selectedlinkedcoursesremovedfromcompetency', 'local_plan'), $currenturl, array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('selectedlinkedcoursesremovedfromcompetency', 'local_plan'), $currenturl, array('class' => 'notifysuccess'));
         } else {
             redirect($currenturl);
         }

@@ -64,7 +64,7 @@ if ($fromform = $mform->get_data()) {
         totara_set_notification(get_string('error:unknownbuttonclicked', 'local_plan'), $returnurl);
     }
     if (update_general_settings($id, $fromform)) {
-        totara_set_notification(get_string('update_general_settings', 'local_plan'), $returnurl, array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('update_general_settings', 'local_plan'), $returnurl, array('class' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:update_general_settings', 'local_plan'), $returnurl);
     }

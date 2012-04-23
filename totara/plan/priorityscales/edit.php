@@ -128,7 +128,7 @@ if ($mform->is_cancelled()) {
             add_to_log(SITEID, 'priorities', 'updated', "view.php?id=$prioritynew->id");
             totara_set_notification(get_string('priorityscaleupdated', 'local_plan', format_string(stripslashes($prioritynew->name))),
                 "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$prioritynew->id}",
-                array('style' => 'notifysuccess'));
+                array('class' => 'notifysuccess'));
         } else {
             error(get_string('error:updatingpriorityscale', 'local_plan'));
         }
@@ -138,7 +138,7 @@ if ($mform->is_cancelled()) {
     add_to_log(SITEID, 'priorities', 'added', "view.php?id=$prioritynew->id");
     totara_set_notification(get_string('priorityscaleadded', 'local_plan', format_string(stripslashes($prioritynew->name))),
         "$CFG->wwwroot/totara/plan/priorityscales/view.php?id={$prioritynew->id}",
-        array('style' => 'notifysuccess'));
+        array('class' => 'notifysuccess'));
 }
 
 /// Print Page

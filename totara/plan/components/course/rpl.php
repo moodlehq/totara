@@ -113,7 +113,7 @@ if ($fromform = $mform->get_data()) {
     totara_set_notification(
         get_string('rplupdated', 'local_plan'),
         $returnurl,
-        array('style'=>'notifysuccess')
+        array('class' => 'notifysuccess')
     );
 }
 

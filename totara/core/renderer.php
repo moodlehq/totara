@@ -509,4 +509,22 @@ class totara_core_renderer extends plugin_renderer_base {
         }
         return $output;
     }
+
+    /**
+     * Displaying notices at top of page
+     */
+    public function print_totara_notifications() {
+        $output = '';
+        // Display notifications set with totara_set_notification()
+        $notices = totara_get_notifications();
+        foreach ($notices as $notice) {
+            if (isset($notice['class'])) {
+                $output .= $this->output->notification($notice['message'], $notice['class']);
+            } else {
+                $output .= $this->output->notification($notice['message']);
+            }
+        }
+        return $output;
+    }
+
 }

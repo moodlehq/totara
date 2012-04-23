@@ -132,7 +132,7 @@ if ($mform->is_cancelled()) {
             totara_set_notification(get_string('objectivescaleupdated', 'local_plan',
                 format_string(stripslashes($objectivenew->name))),
                 "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$objectivenew->id}",
-                array('style' => 'notifysuccess'));
+                array('class' => 'notifysuccess'));
         } else {
             error(get_string('error:updateobjectivescale', 'local_plan'));
         }
@@ -142,7 +142,7 @@ if ($mform->is_cancelled()) {
     add_to_log(SITEID, 'objectives', 'added', "view.php?id=$objectivenew->id");
     totara_set_notification(get_string('objectivescaleadded', 'local_plan', format_string(stripslashes($objectivenew->name))),
         "$CFG->wwwroot/totara/plan/objectivescales/view.php?id={$objectivenew->id}",
-        array('style' => 'notifysuccess'));
+        array('class' => 'notifysuccess'));
 }
 
 /// Print Page

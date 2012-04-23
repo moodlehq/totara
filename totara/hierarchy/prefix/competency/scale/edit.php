@@ -124,7 +124,7 @@ if ($mform->is_cancelled()) {
         add_to_log(SITEID, 'competency', 'added scale', "prefix/competency/scale/view.php?id={$scalenew->id}&amp;prefix=competency", '');
         $notification->text = 'scaleadded';
         $notification->url = "$CFG->wwwroot/totara/hierarchy/prefix/competency/scale/view.php?id={$scalenew->id}&amp;prefix=competency";
-        $notification->params = array('style' => 'notifysuccess');
+        $notification->params = array('class' => 'notifysuccess');
     } else {
         // Existing scale
         $DB->update_record('comp_scale', $scalenew);
@@ -132,7 +132,7 @@ if ($mform->is_cancelled()) {
         add_to_log(SITEID, 'competency', 'update scale', "prefix/competency/scale/view.php?id={$scalenew->id}&amp;prefix=competency", '');
         $notification->text = 'scaleupdated';
         $notification->url = "$CFG->wwwroot/totara/hierarchy/prefix/competency/scale/view.php?id={$scalenew->id}&amp;prefix=competency";
-        $notification->params = array('style' => 'notifysuccess');
+        $notification->params = array('class' => 'notifysuccess');
     }
     //fix the description field and redirect
     $scalenew = file_postupdate_standard_editor($scalenew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_hierarchy', 'comp_scale', $scalenew->id);

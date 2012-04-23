@@ -74,7 +74,7 @@ if ($mform->is_cancelled()) {
 
     if ($new_ids = $hierarchy->add_multiple_hierarchy_items($formdata->parentid, $items_to_add, $frameworkid)) {
         add_to_log(SITEID, $prefix, 'bulk add', "index.php?id={$frameworkid}&amp;prefix={$prefix}", 'New IDs '. implode(',', $new_ids));
-        totara_set_notification(get_string('bulkaddsuccess', 'totara_hierarchy', count($new_ids)), "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$frameworkid}&amp;page={$page}", array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('bulkaddsuccess', 'totara_hierarchy', count($new_ids)), "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$frameworkid}&amp;page={$page}", array('class' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('bulkaddfailed', 'totara_hierarchy'), "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$frameworkid}&amp;page={$page}");
 

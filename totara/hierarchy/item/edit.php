@@ -131,7 +131,7 @@ if ($itemform->is_cancelled()) {
             add_to_log(SITEID, $prefix, 'added item', "item/view.php?id={$updateditem->id}&amp;prefix={$prefix}", substr(strip_tags($updateditem->fullname), 0, 200) . " (ID {$updateditem->id})");
             $notification->text = 'added';
             $notification->url = "{$CFG->wwwroot}/totara/hierarchy/item/view.php?prefix=$prefix&id={$updateditem->id}";
-            $notification->params = array('style' => 'notifysuccess');
+            $notification->params = array('class' => 'notifysuccess');
         } else {
             $notification->text = 'error:add';
             $notification->url = "{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix";
@@ -145,7 +145,7 @@ if ($itemform->is_cancelled()) {
         $transaction->allow_commit();
         $notification->text = 'updated';
         $notification->url = "{$CFG->wwwroot}/totara/hierarchy/item/view.php?prefix=$prefix&id={$itemnew->id}";
-        $notification->params = array('style' => 'notifysuccess');
+        $notification->params = array('class' => 'notifysuccess');
     }
     //fix the description field and redirect
     $itemnew = file_postupdate_standard_editor($itemnew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_hierarchy', $shortprefix, $itemnew->id);

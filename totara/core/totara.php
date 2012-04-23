@@ -34,8 +34,8 @@ if (!defined('MOODLE_INTERNAL')) {
  * Optionally supply a url for redirecting to before displaying the message
  * and/or an options array.
  *
- * Currently the options array only supports a 'style' entry for passing as
- * the second parameter to notify()
+ * Currently the options array only supports a 'class' entry for passing as
+ * the second parameter to notification()
  *
  * @param   string  $message    Message to display
  * @param   string  $redirect   Url to redirect to (optional)

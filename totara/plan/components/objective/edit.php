@@ -112,7 +112,7 @@ if ( $deleteyes ){
     if ( !$component->delete_objective($objectiveid) ){
         print_error('error:objectivedeleted', 'local_plan');
     } else {
-        totara_set_notification(get_string('objectivedeleted', 'local_plan'), $objallurl, array('style'=>'notifysuccess'));
+        totara_set_notification(get_string('objectivedeleted', 'local_plan'), $objallurl, array('class' => 'notifysuccess'));
     }
 } elseif ( $deleteno ) {
     redirect($objallurl);
@@ -139,7 +139,7 @@ if ( $deleteyes ){
         if (!$result){
             print_error('error:objectiveupdated', 'local_plan');
         } else {
-            totara_set_notification(get_string('objectivecreated', 'local_plan'), $objviewurl, array('style'=>'notifysuccess'));
+            totara_set_notification(get_string('objectivecreated', 'local_plan'), $objviewurl, array('class' => 'notifysuccess'));
         }
     } else {
 
@@ -178,7 +178,7 @@ if ( $deleteyes ){
 
             add_to_log(SITEID, 'plan', 'updated objective', "component.php?id={$record->planid}&amp;c=objective", $record->fullname);
             // now - back to the screen notifications ...
-            totara_set_notification(get_string('objectiveupdated', 'local_plan'), $objviewurl, array('style'=>'notifysuccess'));
+            totara_set_notification(get_string('objectiveupdated', 'local_plan'), $objviewurl, array('class' => 'notifysuccess'));
         }
 
     }

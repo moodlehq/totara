@@ -105,7 +105,7 @@ if($delete) {
 
         delete_records('dp_objective_scale_value', 'objscaleid', $scale->id); // Delete scale values
         delete_records('dp_objective_scale', 'id', $scale->id); // Delete scale itself
-        totara_set_notification(get_string('deletedobjectivescale', 'local_plan', format_string($scale->name)), $CFG->wwwroot.'/totara/plan/objectivescales/index.php', array('style' => 'notifysuccess'));
+        totara_set_notification(get_string('deletedobjectivescale', 'local_plan', format_string($scale->name)), $CFG->wwwroot.'/totara/plan/objectivescales/index.php', array('class' => 'notifysuccess'));
 
     } else {
         $returnurl = "{$CFG->wwwroot}/totara/plan/objectivescales/index.php";
