@@ -17,6 +17,8 @@ echo $OUTPUT->header();
 echo html_writer::link(new moodle_url('/theme/elements/'), '&laquo; Back to index');
 echo $OUTPUT->heading($strheading);
 
+echo html_writer::tag('p', 'The Totara Toolbar is currently only available on tables that use flexible_tables(), we need to decide if we should keep that requirement, and update other tables to use flexible_tables, or if we should allow toolbars to be generated independently for use in manually generated tables or those built using the html_table class.');
+
 $table = new totara_table('uniqueid');
 $table->attributes = array('class' => 'generaltable fullwidth');
 
