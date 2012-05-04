@@ -29,7 +29,7 @@ echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/co
 echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/lists.php'), 'Lists'));
 echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/tables.php'), 'Tables'));
 echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/forms.php'), 'Form elements'));
-echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/moodleforms.php'), 'Moodle form elements'));
+echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/mform.php'), 'Moodle form elements'));
 echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/images.php'), 'Images'));
 echo html_writer::end_tag('ul');
 echo $OUTPUT->heading('Totara specific elements', 3);
