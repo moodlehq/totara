@@ -16,55 +16,30 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
+echo html_writer::link(new moodle_url('/theme/elements/'), '&laquo; Back to index');
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();
-echo $OUTPUT->container('Currently lists have to be generated manually. See <a href="http://tracker.moodle.org/browse/MDL-31430">MDL-31430</a> for an attempt to get a new helper function into core.');
 
 echo $OUTPUT->container_start();
 echo $OUTPUT->heading('Unordered List', 3);
-echo html_writer::start_tag('ul');
-echo html_writer::tag('li', 'item one');
-echo html_writer::tag('li', 'item two');
-echo html_writer::tag('li', 'item three');
-echo html_writer::tag('li', 'item four');
-echo html_writer::tag('li', 'item five');
-echo html_writer::end_tag('ul');
+$items = array('item one', 'item two', 'item three', 'item four', 'item five');
+echo html_writer::alist($items);
 
 echo $OUTPUT->heading('Ordered List', 3);
-echo html_writer::start_tag('ol');
-echo html_writer::tag('li', 'item one');
-echo html_writer::tag('li', 'item two');
-echo html_writer::tag('li', 'item three');
-echo html_writer::tag('li', 'item four');
-echo html_writer::tag('li', 'item five');
-echo html_writer::end_tag('ol');
+echo html_writer::alist($items, null, 'ol');
 
 echo $OUTPUT->heading('Nested unordered List', 3);
-echo html_writer::start_tag('ul');
-echo html_writer::tag('li', 'item one');
-echo html_writer::tag('li', 'item two');
-echo html_writer::start_tag('ul');
-echo html_writer::tag('li', 'item two point one');
-echo html_writer::tag('li', 'item two point two');
-echo html_writer::end_tag('ul');
-echo html_writer::tag('li', 'item three');
-echo html_writer::tag('li', 'item four');
-echo html_writer::tag('li', 'item five');
-echo html_writer::end_tag('ul');
+$subitems = array('item two point one', 'item two point two');
+$sublist = html_writer::alist($subitems);
+$items = array('item one', "item two\n$sublist", 'item three', 'item four', 'item five');
+echo html_writer::alist($items);
+
 
 echo $OUTPUT->heading('Nested ordered List', 3);
-echo html_writer::start_tag('ol');
-echo html_writer::tag('li', 'item one');
-echo html_writer::tag('li', 'item two');
-echo html_writer::start_tag('ol');
-echo html_writer::tag('li', 'item two point one');
-echo html_writer::tag('li', 'item two point two');
-echo html_writer::end_tag('ol');
-echo html_writer::tag('li', 'item three');
-echo html_writer::tag('li', 'item four');
-echo html_writer::tag('li', 'item five');
-echo html_writer::end_tag('ol');
+$sublist = html_writer::alist($subitems, null, 'ol');
+$items = array('item one', "item two\n$sublist", 'item three', 'item four', 'item five');
+echo html_writer::alist($items, null, 'ol');
 
 echo $OUTPUT->heading('Deeply nested unordered List', 3);
 

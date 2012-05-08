@@ -22,6 +22,7 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
+echo html_writer::link(new moodle_url('/theme/elements/mform.php'), '&laquo; Back to moodle forms');
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();

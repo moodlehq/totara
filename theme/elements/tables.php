@@ -16,6 +16,8 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
+echo html_writer::link(new moodle_url('/theme/elements/'), '&laquo; Back to index');
+
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();
@@ -150,11 +152,11 @@ $row2->cells = array($head2, $cell3, $cell4);
 $table->data = array($row1, $row2);
 echo html_writer::table($table);
 
-echo $OUTPUT->heading('Turning off the default "generaltable" classes is not very easy', 4);
+echo $OUTPUT->heading('Turning off the default "generaltable" classes is not very easy, you have to override the class attribute on the table element. Note that setting any class, will by default remove the generaltable class', 4);
 
 $table = new html_table();
 $table->head = array('Name', 'Grade');
-$table->attributes = array('class' => "test"); // need some other class stop the "generaltable" class
+$table->attributes = array('class' => ""); // need some other class stop the "generaltable" class
 // but no easy way to do the same on the cells
 $table->head = array('Name', 'Grade');
 $table->data = array(
@@ -214,6 +216,20 @@ $table->data = array(
     array('Hermione Granger', '100%'),
 );
 echo html_writer::table($table);
+
+echo $OUTPUT->heading('You can specify \'hr\' as a row to get a horizontal rule that spans all columns. Note this only works if you have the table \'head\' defined!', 4);
+
+$table = new html_table();
+$table->head = array('Name', 'Grade');
+$table->data = array(
+    array('Harry Potter', '76%'),
+    array('Hermione Granger', '100%'),
+    'hr',
+    array('Harry Potter', '76%'),
+    array('Hermione Granger', '100%'),
+);
+echo html_writer::table($table);
+
 echo $OUTPUT->container_end();
 
 echo $OUTPUT->box_end();

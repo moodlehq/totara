@@ -27,6 +27,7 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
+echo html_writer::link(new moodle_url('/theme/elements/'), '&laquo; Back to index');
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();
