@@ -64,8 +64,13 @@ class customfield_define_base {
         $form->addElement('selectyesno', 'locked', get_string('locked', 'totara_customfield'));
         $form->addHelpButton('locked', 'customfieldlocked', 'totara_customfield');
 
-        $form->addElement('selectyesno', 'forceunique', get_string('forceunique', 'totara_customfield'));
-        $form->addHelpButton('forceunique', 'customfieldforceunique', 'totara_customfield');
+        //unique disabled for filepicker custom fields
+        if ($form->getElementValue('datatype') != 'file') {
+            $form->addElement('selectyesno', 'forceunique', get_string('forceunique', 'totara_customfield'));
+            $form->addHelpButton('forceunique', 'customfieldforceunique', 'totara_customfield');
+        } else {
+            $form->addElement('hidden', 'forceunique', '0');
+        }
 
         $form->addElement('selectyesno', 'hidden', get_string('visible', 'totara_customfield'));
         $form->addHelpButton('hidden', 'customfieldhidden', 'totara_customfield');

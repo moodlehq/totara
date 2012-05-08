@@ -210,6 +210,13 @@ echo $OUTPUT->heading('Feedback module - Fixed version number for feedback modul
 echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
+//turn off forceunique for any filepicker totara custom fields
+$tables = array('course', 'pos_type', 'org_type', 'comp_type');
+foreach ($tables as $table) {
+    $DB->execute("UPDATE {{$table}_info_field} SET forceunique = ? WHERE datatype = ?",
+    array(0, 'file'));
+}
+
 //Remove customfield data that is no longer associated with a course
 $customfield_ids = $DB->get_records_sql('SELECT DISTINCT cid.id from {course_info_data} cid LEFT JOIN {course} c ON cid.courseid = c.id WHERE c.id IS NULL');
 if (($num_records = count($customfield_ids)) > 0) {

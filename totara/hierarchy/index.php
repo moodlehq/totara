@@ -29,7 +29,6 @@ require_once($CFG->dirroot.'/totara/hierarchy/lib.php');
 require_once($CFG->dirroot.'/totara/core/searchlib.php');
 require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
-
 local_js(array(TOTARA_JS_PLACEHOLDER));
 
 define('DEFAULT_PAGE_SIZE', 50);
@@ -107,7 +106,7 @@ $frameworkid = $framework->id;
 
 // Setup page and check permissions
 admin_externalpage_setup($prefix.'manage', null, array('prefix' => $prefix, 'frameworkid' => $frameworkid));
-
+echo $OUTPUT->header();
 // build query now as we need the count for flexible tables
 $select = "SELECT hierarchy.*";
 $count = "SELECT COUNT(hierarchy.id)";
@@ -198,8 +197,6 @@ $records = $DB->get_recordset_sql($select.$from.$where.$order, $params, $table->
 
 $PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url('index.php', array('prefix' => $prefix)));
 $PAGE->navbar->add(format_string($framework->fullname));
-
-echo $OUTPUT->header();
 
 echo $OUTPUT->container($OUTPUT->action_link(
     new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => $prefix)), '&laquo; ' . get_string($prefix.'backtoallframeworks', 'totara_hierarchy')), 'back-link'

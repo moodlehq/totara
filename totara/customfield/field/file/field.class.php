@@ -28,7 +28,7 @@ class customfield_file extends customfield_base {
     function edit_load_item_data(&$item) {
         global $FILEPICKER_OPTIONS;
         $this->data = file_prepare_standard_filemanager($item, $this->inputname, $FILEPICKER_OPTIONS, $FILEPICKER_OPTIONS['context'],
-                                                           'totara_customfield', $this->prefix . '_filemgr', $item->id);
+                                                           'totara_customfield', $this->prefix . '_filemgr', $this->dataid);
     }
 
     /**
@@ -45,20 +45,22 @@ class customfield_file extends customfield_base {
             return;
         }
 
-        $itemnew = file_postupdate_standard_filemanager($itemnew, $this->inputname, $FILEPICKER_OPTIONS, $FILEPICKER_OPTIONS['context'],
-                                                                      'totara_customfield', $this->prefix . '_filemgr', $itemnew->id);
-
+        //like the texteditors, we need to manipulate the records first with dummy data to ensure we have an id, then update later
         $data = new stdClass();
         $data->{$prefix.'id'} = $itemnew->id;
         $data->fieldid      = $this->field->id;
-        $data->data = $itemnew->id;
-
-        if ($dataid = $DB->get_field($tableprefix.'_info_data', 'id', array($prefix.'id' => $itemnew->id, 'fieldid' => $data->fieldid))) {
+        $data->data = '';
+        if ($dataid = $DB->get_field($tableprefix.'_info_data', 'id', array('id' => $this->dataid, $prefix.'id' => $itemnew->id, 'fieldid' => $data->fieldid))) {
             $data->id = $dataid;
             $DB->update_record($tableprefix.'_info_data', $data);
         } else {
-            $DB->insert_record($tableprefix.'_info_data', $data);
+            $data->id = $DB->insert_record($tableprefix.'_info_data', $data);
         }
+        //process files, update the data record
+        $itemnew = file_postupdate_standard_filemanager($itemnew, $this->inputname, $FILEPICKER_OPTIONS, $FILEPICKER_OPTIONS['context'],
+                                                                      'totara_customfield', $this->prefix . '_filemgr', $data->id);
+        $data->data = $data->id;
+        $DB->update_record($tableprefix.'_info_data', $data);
 
     }
 
@@ -100,7 +102,7 @@ class customfield_file extends customfield_base {
         }
         $context = context_system::instance();
         $fs = get_file_storage();
-        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $itemid, null, false);
+        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $data, null, false);
         if (count($files)!=1) {
             return get_string('filenotfound', 'error');
         } else {

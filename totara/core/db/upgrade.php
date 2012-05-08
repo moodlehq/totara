@@ -288,6 +288,7 @@ function xmldb_totara_core_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012062900, 'totara_core');
     }
 
+
     if ($oldversion < 2012080100) {
         // readd totara specific course completion changes for anyone
         // who has already upgraded from moodle 2.2.2+
@@ -300,6 +301,14 @@ function xmldb_totara_core_upgrade($oldversion) {
         // Google fusion export will use repository/gdrive integration instead
         uninstall_plugin('totara', 'oauth');
         totara_upgrade_mod_savepoint(true, 2012080101, 'totara_core');
+    }
+    if ($oldversion < 2012081300) {
+        //turn off forceunique for any filepicker totara customfields
+        $tables = array('course', 'pos_type', 'org_type', 'comp_type');
+        foreach ($tables as $table) {
+            $DB->execute("UPDATE {{$table}_info_field} SET forceunique = ? WHERE datatype = ?", array(0, 'file'));
+        }
+        totara_upgrade_mod_savepoint(true, 2012081300, 'totara_core');
     }
 
     return true;

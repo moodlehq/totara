@@ -85,48 +85,6 @@ class customfield_textarea extends customfield_base {
     }
 
     /**
-    * Validate the form field from edit page
-    * @return  string  contains error message otherwise NULL
-    **/
-    function edit_validate_field($itemnew, $prefix, $tableprefix) {
-        global $DB;
-
-        $errors = array();
-        /// Check for uniqueness of data if required
-        if ($this->is_unique()) {
-            if ($prefix == 'course') {
-                // anywhere across the site
-                $data = $itemnew->{$this->inputname}['text'];
-                // check value, not key for menu items
-                if ($this->field->datatype == 'menu') {
-                    $data = $this->options[$data];
-                }
-                if ($data != '' && $DB->record_exists_select($tableprefix.'_info_data',
-                        "fieldid = ? AND " .
-                        $DB->sql_compare_text('data', 255) . ' = ' . $DB->sql_compare_text('?', 255) . ' AND ' .
-                        "courseid != ?", array($this->field->id, $data, $itemnew->id))) {
-
-                    $errors["{$this->inputname}"] = get_string('valuealreadyused');
-                }
-            } else {
-                // within same depth level
-                //may not exist if we have just set a type on an item
-                if (!isset($itemnew->{$this->inputname})) {
-                    return $errors;
-                }
-                if ($itemid = $DB->get_field_select($tableprefix.'_info_data', $prefix.'id',
-                        "fieldid = ? AND " . $DB->sql_compare_text('data', 255) . ' = ' . $DB->sql_compare_text('?', 255),
-                        array($this->field->id, $itemnew->{$this->inputname}['text']))) {
-                    if ($itemid != $itemnew->id) {
-                        $errors["{$this->inputname}"] = get_string('valuealreadyused');
-                    }
-                }
-            }
-        }
-        return $errors;
-    }
-
-    /**
     * Loads an object with data for this field ready for the edit form
      * form
     * @param   object a object

@@ -69,6 +69,14 @@ class field_form extends moodleform {
     function validation($data, $files) {
         return $this->field->define_validate($data, $files, $data['typeid'], $data['tableprefix']);
     }
+
+    //double-check that filepickers have unique set to off
+    function set_data($field) {
+        if($field->datatype == 'file' && $field->forceunique == 1) {
+            $field->forceunique = 0;
+        }
+        parent::set_data($field);
+    }
 }
 
 ?>

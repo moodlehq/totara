@@ -111,11 +111,11 @@ if ($changeform->is_cancelled()) {
 } else if ($data = $changeform->get_data()) {
     // process
 
-    $status = true;
+        $status = true;
         $transaction = $DB->start_delegated_transaction();
-
         // reassign data from old type (if there is any)
         if (isset($data->field)) {
+            $errors = array();
             foreach ($data->field as $oldfieldid => $newfieldid) {
                 if ($newfieldid == 0) {
                     // delete the data from all items, or just itemid (if specified)
@@ -129,6 +129,32 @@ if ($changeform->is_cancelled()) {
                     SET fieldid = {$newfieldid}
                     WHERE fieldid = ? {$cf_data_sql}";
                 $status = $status && $DB->execute($sql, array_merge(array($oldfieldid), $cf_data_params));
+                //now get all the new data and validate each field for uniqueness if required - in a transaction so all will be rolled back if we hit a validation error
+                $field = $DB->get_record($shortprefix.'_type_info_field', array('id' => $newfieldid));
+                $fieldrecords = $DB->get_records_sql("SELECT * FROM {{$shortprefix}_type_info_data} WHERE fieldid= ? {$cf_data_sql}", array_merge(array($newfieldid), $cf_data_params));
+                foreach ($fieldrecords as $record) {
+                    if (isset($field->forceunique) && $field->forceunique == 1) {
+                        $sql = "fieldid = ? AND " . $DB->sql_compare_text('data', 255) . ' = ?';
+                        if ($itemid) { $sql .=  "AND " . $prefix . "id != ?";}
+                        if ($DB->record_exists_select($shortprefix.'_type_info_data',
+                                                $sql,
+                                                array_merge(array($field->id, $record->data), $cf_data_params))) {
+                            $errors["{$field->fullname}"] = get_string('valuealreadyused');
+                            break;
+                        }
+                    }
+                }
+
+            }
+            if (!empty($errors)) {
+                foreach ($errors as $field => $val) {
+                    totara_set_notification("$field : " . $val);
+                }
+                $a = new stdClass();
+                $a->from = hierarchy_get_type_name($typeid, $shortprefix);
+                $a->to = hierarchy_get_type_name($newtypeid, $shortprefix);
+                $DB->force_transaction_rollback();
+                totara_set_notification(get_string('error:couldnotreclassify' . $optype, 'totara_hierarchy', $a), "$CFG->wwwroot/totara/hierarchy/index.php?prefix=$prefix");
             }
         }
         // update the type of all the items...

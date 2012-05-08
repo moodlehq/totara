@@ -32,8 +32,9 @@ class customfield_base {
 
     /// These 2 variables are really what we're interested in.
     /// Everything else can be extracted from them
-    var $fieldid;
-    var $itemid;
+    var $fieldid; //{tableprefix}_info_field field id
+    var $itemid; //hierarchy item id
+    var $dataid; //id field of the data record
     var $prefix;
     var $tableprefix;
     var $field;
@@ -143,34 +144,32 @@ class customfield_base {
      * @return  string  contains error message otherwise NULL
      **/
     function edit_validate_field($itemnew, $prefix, $tableprefix) {
-        global $DB;
+        global $DB, $TEXTAREA_OPTIONS, $FILEPICKER_OPTIONS;
 
         $errors = array();
         /// Check for uniqueness of data if required
         if ($this->is_unique()) {
-            $data = $itemnew->{$this->inputname};
-            // check value, not key for menu items
-            if ($this->field->datatype == 'menu') {
-                $data = $this->options[$data];
-            }
-            $select = "fieldid = ? AND " . $DB->sql_compare_text('data') . " = ?";
-            if ($prefix == 'course') {
-                if ($data != '' && $DB->record_exists_select($tableprefix.'_info_data',
-                    $select . " AND " . "courseid != ?",
-                    array($this->field->id, $data, $itemnew->id))) {
 
+            switch ($this->field->datatype) {
+                case 'menu':
+                    $data = $this->options[$itemnew->{$this->inputname}];
+                    break;
+                case 'textarea':
+                    $shortinputname = substr($this->inputname, 0, strlen($this->inputname)-7);
+                    $itemnew = file_postupdate_standard_editor($itemnew, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', $prefix, $itemnew->id);
+                    $data = $itemnew->{$shortinputname};
+                    break;
+                default:
+                    $data = $itemnew->{$this->inputname};
+            }
+
+            // search for a match
+            if ($data != '' && $DB->record_exists_select($tableprefix.'_info_data',
+                            "fieldid = ? AND " . $DB->sql_compare_text('data', 255) . ' = ? AND ' .
+                            $prefix . "id != ?",
+                            array($this->field->id, $data, $itemnew->id))) {
                     $errors["{$this->inputname}"] = get_string('valuealreadyused');
-                }
-            } else {
-                // within same type
-                $params = array($this->field->id, $data);
-                if ($itemid = $DB->get_field_select($tableprefix.'_info_data', $prefix.'id', $select, $params)) {
-                    if ($itemid != $itemnew->id) {
-                        $errors["{$this->inputname}"] = get_string('valuealreadyused');
-                    }
-                }
             }
-
         }
         return $errors;
     }
@@ -272,8 +271,9 @@ class customfield_base {
             $this->inputname = 'customfield_'.$field->shortname;
         }
         if (!empty($this->field)) {
-            if ($datafield = $DB->get_field($tableprefix.'_info_data', 'data', array($prefix.'id' => $this->itemid, 'fieldid' => $this->fieldid))) {
-                $this->data = $datafield;
+            if ($datarecord = $DB->get_record($tableprefix.'_info_data', array($prefix.'id' => $this->itemid, 'fieldid' => $this->fieldid), 'id, data')) {
+                $this->data = $datarecord->data;
+                $this->dataid = $datarecord->id;
             } else {
                 $this->data = $this->field->defaultdata;
             }

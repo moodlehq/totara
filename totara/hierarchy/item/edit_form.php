@@ -100,7 +100,7 @@ class item_edit_form extends moodleform {
             $mform->setType('description_editor', PARAM_CLEANHTML);
         }
 
-        if ($item->id && $item->typeid != 0) {
+        if ($item->id) {
 
             $group = array();
             // display current type (static)
@@ -115,20 +115,21 @@ class item_edit_form extends moodleform {
             // store the actual type ID
             $mform->addElement('hidden', 'typeid', $item->typeid);
 
-        } else if ($types) {
-            // new item
-            // show type picker if there are choices
-            $select = array('0' => '');
-            foreach ($types as $type) {
-                $select[$type->id] = $type->fullname;
-            }
-            $mform->addElement('select', 'typeid', get_string('type', 'totara_hierarchy'), $select, totara_select_width_limiter());
-            $mform->addHelpButton('typeid', $prefix.'type', 'totara_hierarchy');
         } else {
             // new item
-            // but no types exist
-            // default to 'unclassified'
-            $mform->addElement('hidden', 'typeid', '0');
+            if ($types) {
+                // show type picker if there are choices
+                $select = array('0' => '');
+                foreach ($types as $type) {
+                    $select[$type->id] = $type->fullname;
+                }
+                $mform->addElement('select', 'typeid', get_string('type', 'totara_hierarchy'), $select, totara_select_width_limiter());
+                $mform->addHelpButton('typeid', $prefix.'type', 'totara_hierarchy');
+            } else {
+                // no types exist
+                // default to 'unclassified'
+                $mform->addElement('hidden', 'typeid', '0');
+            }
         }
 
         /// Next show the custom fields if we're editing an existing items (otherwise we don't know the typeid)

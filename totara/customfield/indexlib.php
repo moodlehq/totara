@@ -169,6 +169,7 @@ function customfield_edit_field($id, $datatype, $typeid=0, $redirect, $tablepref
         $field->datatype = $datatype;
         $field->description = '';
         $field->defaultdata = '';
+        $field->forceunique = 0;
     }
 
     $displayadminheader = $prefix == 'type' ? 1 : 0;
