@@ -186,8 +186,8 @@ if (empty($CFG->version)) {
 }
 
 if ($version > $CFG->version
-            || !isset($CFG->totara_build)
-            || $TOTARA->build > $CFG->totara_build) {  // upgrade
+            || (isset($CFG->totara_build)
+            && $TOTARA->build > $CFG->totara_build)) {  // upgrade
 
     purge_all_caches();
     $PAGE->set_pagelayout('maintenance');
