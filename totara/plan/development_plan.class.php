@@ -1386,14 +1386,14 @@ class development_plan {
             $a = new stdClass;
             $a->learner = fullname($learner);
             $a->plan = s($this->name);
-            $event->subject = get_string_in_user_lang($manager, 'plan-request-manager-short', 'local_plan', $a);
-            $event->fullmessage = get_string_in_user_lang($manager, 'plan-request-manager-long', 'local_plan', $a);
-            $event->acceptbutton = get_string_in_user_lang($manager, 'approve', 'local_plan').' '.get_string_in_user_lang($manager, 'plan', 'local_plan');
-            $event->accepttext = get_string_in_user_lang($manager, 'approveplantext', 'local_plan');
-            $event->rejectbutton = get_string_in_user_lang($manager, 'decline', 'local_plan').' '.get_string_in_user_lang($manager, 'plan', 'local_plan');
-            $event->rejecttext = get_string_in_user_lang($manager, 'declineplantext', 'local_plan');
-            $event->infobutton = get_string_in_user_lang($manager, 'review', 'local_plan').' '.get_string_in_user_lang($manager, 'plan', 'local_plan');
-            $event->infotext = get_string_in_user_lang($manager, 'reviewplantext', 'local_plan');
+            $event->subject =      get_string('plan-request-manager-short', 'local_plan', $a, $manager->lang);
+            $event->fullmessage =  get_string('plan-request-manager-long', 'local_plan', $a, $manager->lang);
+            $event->acceptbutton = get_string('approve', 'local_plan', null, $manager->lang).' '.get_string('plan', 'local_plan', null, $manager->lang);
+            $event->accepttext =   get_string('approveplantext', 'local_plan', null, $manager->lang);
+            $event->rejectbutton = get_string('decline', 'local_plan', null, $manager->lang).' '.get_string('plan', 'local_plan', null, $manager->lang);
+            $event->rejecttext =   get_string('declineplantext', 'local_plan', null, $manager->lang);
+            $event->infobutton =   get_string('review', 'local_plan', null, $manager->lang).' '. get_string('plan', 'local_plan', null, $manager->lang);
+            $event->infotext =     get_string('reviewplantext', 'local_plan', null, $manager->lang);
             $event->data = $data;
 
             tm_workflow_send($event);
@@ -1441,7 +1441,7 @@ class development_plan {
             // Generate message
             if ($items) {
                 $total_items += count($items);
-                $message_data[] = count($items).' '. get_string_in_user_lang($manager, $comp->component, 'local_plan');
+                $message_data[] = count($items).' '. get_string($comp->component, 'local_plan', null, $manager->lang);
             }
         }
 
@@ -1456,14 +1456,14 @@ class development_plan {
         $a->learner = fullname($learner);
         $a->plan = s($this->name);
         $a->data = '<ul><li>'.implode($message_data, '</li><li>').'</li></ul>';
-        $event->subject = get_string_in_user_lang($manager, 'item-request-manager-short', 'local_plan', $a);
-        $event->fullmessage = get_string_in_user_lang($manager, 'item-request-manager-long', 'local_plan', $a);
+        $event->subject = get_string('item-request-manager-short', 'local_plan', $a, $manager->lang);
+        $event->fullmessage = get_string('item-request-manager-long', 'local_plan', $a, $manager->lang);
         unset($event->acceptbutton);
         unset($event->onaccept);
         unset($event->rejectbutton);
         unset($event->onreject);
-        $event->infobutton = get_string_in_user_lang($manager, 'review', 'local_plan').' '.get_string_in_user_lang($manager, 'items', 'local_plan');
-        $event->infotext = get_string_in_user_lang($manager, 'reviewitemstext', 'local_plan');
+        $event->infobutton = get_string('review', 'local_plan', null, $manager->lang).' '.get_string('items', 'local_plan', null, $manager->lang);
+        $event->infotext = get_string('reviewitemstext', 'local_plan', null, $manager->lang);
         $event->data = $data;
 
         tm_workflow_send($event);
@@ -1506,8 +1506,8 @@ class development_plan {
             $a->plan = $this->name;
             $a->manager = fullname($manager);
             $a->learner = fullname($learner);
-            $event->subject = get_string_in_user_lang($userto, $subjectstring,'local_plan',$a);
-            $event->fullmessage = get_string_in_user_lang($userto, $fullmessagestring,'local_plan',$a);
+            $event->subject = get_string($subjectstring,'local_plan',$a, $userto->lang);
+            $event->fullmessage = get_string($fullmessagestring,'local_plan',$a, $userto->lang);
 
             return tm_alert_send($event);
         } else {
@@ -1535,7 +1535,7 @@ class development_plan {
         $event->userto = $userto;
         $event->icon = 'learningplan-approve';
         $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
-        $event->fullmessage = get_string_in_user_lang($userto, 'planapproved', 'local_plan', $this->name);
+        $event->fullmessage = get_string('planapproved', 'local_plan', $this->name, $userto->lang);
         tm_alert_send($event);
     }
 
@@ -1559,7 +1559,7 @@ class development_plan {
         $event->userto = $userto;
         $event->icon = 'learningplan-decline';
         $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
-        $event->fullmessage = format_string(get_string_in_user_lang($userto, 'plandeclined', 'local_plan', $this->name));
+        $event->fullmessage = format_string(get_string('plandeclined', 'local_plan', $this->name, $userto->lang));
         tm_alert_send($event);
     }
 
@@ -1589,8 +1589,8 @@ class development_plan {
             $a = new stdClass();
             $a->learner = fullname($learner);
             $a->plan = $this->name;
-            $event->subject = get_string_in_user_lang($manager, 'plan-complete-manager-short','local_plan',$a);
-            $event->fullmessage = get_string_in_user_lang($manager, 'plan-complete-manager-long','local_plan',$a);
+            $event->subject = get_string('plan-complete-manager-short','local_plan',$a, $manager->lang);
+            $event->fullmessage = get_string('plan-complete-manager-long','local_plan',$a, $manager->lang);
             $event->roleid = $CFG->managerroleid;
             tm_alert_send($event);
         }
@@ -1600,7 +1600,7 @@ class development_plan {
         $event->userto = $learner;
         $event->icon = 'learningplan-complete';
         $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
-        $event->fullmessage = format_text(get_string_in_user_lang($learner, 'plancompletesuccess', 'local_plan', $this->name));
+        $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name, $learner->lang));
         tm_alert_send($event);
     }
 

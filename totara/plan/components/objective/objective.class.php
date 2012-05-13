@@ -493,9 +493,9 @@ class dp_objective_component extends dp_base_component {
                         $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
                         $updates .= $objheader;
                         $objprinted = true;
-                        $updates .= get_string_in_user_lang($currentuserobj, 'priority', 'local_plan').' - '.
-                            get_string_in_user_lang($currentuserobj, 'changedfromxtoy', 'local_plan',
-                            (object)array('before'=>$oldpriority, 'after'=>$newpriority))."<br>";
+                        $updates .= get_string('priority', 'local_plan', null, $currentuserobj->lang).' - '.
+                            get_string('changedfromxtoy', 'local_plan',
+                            (object)array('before'=>$oldpriority, 'after'=>$newpriority), $currentuserobj->lang)."<br>";
                     }
 
                     // duedate may have been updated
@@ -504,11 +504,11 @@ class dp_objective_component extends dp_base_component {
 
                         $updates .= $objprinted ? '' : $objheader;
                         $objprinted = true;
-                        $updates .= get_string_in_user_lang($currentuserobj, 'duedate', 'local_plan').' - '.
-                            get_string_in_user_lang($currentuserobj, 'changedfromxtoy', 'local_plan',
+                        $updates .= get_string('duedate', 'local_plan', null, $currentuserobj->lang).' - '.
+                            get_string('changedfromxtoy', 'local_plan',
                             (object)array('before'=>empty($orig_objectives[$itemid]->duedate) ? '' :
                                 userdate($orig_objectives[$itemid]->duedate, get_string('strftimedate'), $CFG->timezone, false),
-                                'after'=>userdate($record->duedate, get_string('strftimedate'), $CFG->timezone, false)))."<br>";
+                                'after'=>userdate($record->duedate, get_string('strftimedate'), $CFG->timezone, false)), $currentuserobj->lang)."<br>";
                     }
 
                     // proficiency may have been updated
@@ -520,9 +520,9 @@ class dp_objective_component extends dp_base_component {
                         $newprof = get_field('dp_objective_scale_value', 'name', 'id', $record->scalevalueid);
                         $updates .= $objprinted ? '' : $objheader;
                         $objprinted = true;
-                        $updates .= get_string_in_user_lang($currentuserobj, 'status', 'local_plan').' - '.
-                            get_string_in_user_lang($currentuserobj, 'changedfromxtoy', 'local_plan',
-                            (object)array('before'=>$oldprof, 'after'=>$newprof))."<br>";
+                        $updates .= get_string('status', 'local_plan', null, $currentuserobj->lang).' - '.
+                            get_string('changedfromxtoy', 'local_plan',
+                            (object)array('before'=>$oldprof, 'after'=>$newprof), $currentuserobj->lang)."<br>";
                     }
 
                     // approval status change
@@ -531,10 +531,10 @@ class dp_objective_component extends dp_base_component {
 
                         $approval = new object();
                         $text = $objheader;
-                        $text .= get_string_in_user_lang($currentuserobj, 'approval', 'local_plan').' - '.
-                            get_string_in_user_lang($currentuserobj, 'changedfromxtoy', 'local_plan',
+                        $text .= get_string('approval', 'local_plan', null, $currentuserobj->lang).' - '.
+                            get_string('changedfromxtoy', 'local_plan',
                             (object)array('before'=>dp_get_approval_status_from_code($orig_objectives[$itemid]->approved),
-                            'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                            'after'=>dp_get_approval_status_from_code($record->approved)), $currentuserobj->lang)."<br>";
                         $approval->text = $text;
                         $approval->itemname = $orig_objectives[$itemid]->fullname;
                         $approval->before = $orig_objectives[$itemid]->approved;
@@ -693,8 +693,8 @@ class dp_objective_component extends dp_base_component {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $event->subject = get_string_in_user_lang($manager, 'objectivedeleteshortmanager', 'local_plan', $this->current_user_link());
-                    $event->fullmessage = get_string_in_user_lang($manager, 'objectivedeletelongmanager', 'local_plan', $a);
+                    $event->subject = get_string('objectivedeleteshortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
+                    $event->fullmessage = get_string('objectivedeletelongmanager', 'local_plan', $a, $manager->lang);
                     $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
@@ -704,8 +704,8 @@ class dp_objective_component extends dp_base_component {
         else {
             $userto = get_record('user', 'id', $this->plan->userid);
             $event->userto = $userto;
-            $event->subject = get_string_in_user_lang($userto, 'objectivedeleteshortlearner', 'local_plan', $a->objective);
-            $event->fullmessage = get_string_in_user_lang($userto, 'objectivedeletelonglearner', 'local_plan', $a);
+            $event->subject = get_string('objectivedeleteshortlearner', 'local_plan', $a->objective, $userto->lang);
+            $event->fullmessage = get_string('objectivedeletelonglearner', 'local_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -737,8 +737,8 @@ class dp_objective_component extends dp_base_component {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $event->subject = get_string_in_user_lang($manager, 'objectivenewshortmanager', 'local_plan', $this->current_user_link());
-                    $event->fullmessage = get_string_in_user_lang($manager, 'objectivenewlongmanager', 'local_plan', $a);
+                    $event->subject = get_string('objectivenewshortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
+                    $event->fullmessage = get_string('objectivenewlongmanager', 'local_plan', $a, $manager->lang);
                     $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
@@ -748,8 +748,8 @@ class dp_objective_component extends dp_base_component {
         else {
             $userto = get_record('user', 'id', $this->plan->userid);
             $event->userto = $userto;
-            $event->subject = get_string_in_user_lang($userto, 'objectivenewshortlearner', 'local_plan', $fullname);
-            $event->fullmessage = get_string_in_user_lang($userto, 'objectivenewlonglearner', 'local_plan', $a);
+            $event->subject = get_string('objectivenewshortlearner', 'local_plan', $fullname, $userto->lang);
+            $event->fullmessage = get_string('objectivenewlonglearner', 'local_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -781,10 +781,10 @@ class dp_objective_component extends dp_base_component {
             if ($this->plan->is_active()) {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
-                    $a->field = get_string_in_user_lang($manager, 'objective'.$field, 'local_plan');
+                    $a->field = get_string('objective'.$field, 'local_plan', $manager->lang);
                     $event->userto = $manager;
-                    $event->subject = get_string_in_user_lang($manager, 'objectiveeditshortmanager', 'local_plan', $this->current_user_link());
-                    $event->fullmessage = get_string_in_user_lang($manager, 'objectiveeditlongmanager', 'local_plan', $a);
+                    $event->subject = get_string('objectiveeditshortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
+                    $event->fullmessage = get_string('objectiveeditlongmanager', 'local_plan', $a, $manager->lang);
                     $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
@@ -793,10 +793,10 @@ class dp_objective_component extends dp_base_component {
         // notify user that someone else did it
         else {
             $userto = get_record('user', 'id', $this->plan->userid);
-            $a->field = get_string_in_user_lang($userto, 'objective'.$field, 'local_plan');
+            $a->field = get_string('objective'.$field, 'local_plan', null, $userto->lang);
             $event->userto = $userto;
-            $event->subject = get_string_in_user_lang($userto, 'objectiveeditshortlearner', 'local_plan', $a->objective);
-            $event->fullmessage = get_string_in_user_lang($userto, 'objectiveeditlonglearner', 'local_plan', $a);
+            $event->subject = get_string('objectiveeditshortlearner', 'local_plan', $a->objective, $userto->lang);
+            $event->fullmessage = get_string('objectiveeditlonglearner', 'local_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -835,8 +835,8 @@ class dp_objective_component extends dp_base_component {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $event->subject = get_string_in_user_lang($manager, 'objective'.$status.'shortmanager', 'local_plan', $this->current_user_link());
-                    $event->fullmessage = get_string_in_user_lang($manager, 'objective'.$status.'longmanager', 'local_plan', $a);
+                    $event->subject = get_string('objective'.$status.'shortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
+                    $event->fullmessage = get_string('objective'.$status.'longmanager', 'local_plan', $a, $manager->lang);
                     $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
@@ -846,8 +846,8 @@ class dp_objective_component extends dp_base_component {
         else {
             $userto = get_record('user', 'id', $this->plan->userid);
             $event->userto = $userto;
-            $event->subject = get_string_in_user_lang($userto, 'objective'.$status.'shortlearner', 'local_plan', $a->objective);
-            $event->fullmessage = get_string_in_user_lang($userto, 'objective'.$status.'longlearner', 'local_plan', $a);
+            $event->subject = get_string('objective'.$status.'shortlearner', 'local_plan', $a->objective, $userto->lang);
+            $event->fullmessage = get_string('objective'.$status.'longlearner', 'local_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }

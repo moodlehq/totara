@@ -100,24 +100,11 @@ function sql_sequence($field, $items, $type=SQL_PARAMS_QM, $negate = false) {
 /**
  * Check if a specified language string already exists
  *
- * The arguments are the same as those given to get_string() with the
- * exception of $a which is not required
- *
- * @param string $identifier The key identifier for the language string
- * @param string $module Module where the key identifier is stored
- * @param array $extralocations Array of strings with other locations
- *                              to check for the string
- *
- * @return boolean True if string exists
+ * @deprecated Use string_exists() instead
  */
 function check_string($identifier, $module='', $extralocations=null) {
-    $result = @get_string($identifier, $module, null, $extralocations);
-
-    if ($result == '[[' . $identifier . ']]') {
-        return false;
-    } else {
-        return true;
-    }
+    debugging('The function check_string() is deprecated. Use string_exists() instead.');
+    return string_exists($identifier, $module);
 }
 
 

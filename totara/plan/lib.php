@@ -1280,11 +1280,11 @@ function plan_comment_add($comment) {
         $event->icon = $icon;
 
         if ($comment->commentarea == 'plan-overview') {
-            $subject = get_string_in_user_lang($userto, 'commentmsg:planoverview', 'local_plan', $msgobj);
-            $fullmsg = get_string_in_user_lang($userto, 'commentmsg:planoverviewdetail', 'local_plan', $msgobj);
+            $subject = get_string('commentmsg:planoverview', 'local_plan', $msgobj, $userto->lang);
+            $fullmsg = get_string('commentmsg:planoverviewdetail', 'local_plan', $msgobj, $userto->lang);
         } else {
-            $subject = get_string_in_user_lang($userto, 'commentmsg:componentitem', 'local_plan', $msgobj);
-            $fullmsg = get_string_in_user_lang($userto, 'commentmsg:componentitemdetail', 'local_plan', $msgobj);
+            $subject = get_string('commentmsg:componentitem', 'local_plan', $msgobj, $userto->lang);
+            $fullmsg = get_string('commentmsg:componentitemdetail', 'local_plan', $msgobj, $userto->lang);
         }
 
         $event->subject = $subject;

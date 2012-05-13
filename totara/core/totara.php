@@ -998,33 +998,13 @@ function totara_print_edit_button($settingname, $params = array()) {
 
 /**
  * Return a language string in the local language for a given user
- * @param object $user User to use to localize string
- * @param string $identifier The key identifier for the localized string
- * @param string $module The module where the key identifier is stored.
- * @param mixed $a An object, string or number that can be used within translation strings
- * @param array $extralocations An array of strings with other locations to look for string files
- * @return string The localized string.
+ *
+ * @deprecated Use get_string() with 4th parameter instead
  *
  */
 function get_string_in_user_lang($user, $identifier, $module='', $a=NULL, $extralocations=NULL) {
-    global $USER;
-
-    // $USER language not defined - just use current user's language
-    if (!isset($USER->lang)) {
-        return get_string($identifier, $module, $a, $extralocations);
-    }
-
-    // Store lang
-    $original_lang = $USER->lang;
-
-    // Set lang
-    $USER->lang = $user->lang;
-
-    $string = get_string($identifier, $module, $a, $extralocations);
-
-    $USER->lang = $original_lang;
-
-    return $string;
+    debugging('get_string_in_user_lang() is deprecated. Use get_string() with 4th param instead');
+    return get_string($identifier, $module, $a, $user->lang);
 }
 
 /**

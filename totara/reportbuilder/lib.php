@@ -41,7 +41,6 @@ require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_filter_option.php')
 require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_param.php');
 require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_param_option.php');
 require_once($CFG->dirroot.'/totara/reportbuilder/classes/rb_content_option.php');
-require_once($CFG->dirroot.'/totara/core/utils.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -2541,10 +2540,10 @@ class reportbuilder {
         foreach ($filters as $filter) {
             $langstr = 'type_' . $filter->type;
             // is there a type string in the source file?
-            if (check_string($langstr, 'rb_source_' . $sourcename)) {
+            if (string_exists($langstr, 'rb_source_' . $sourcename)) {
                 $section = get_string($langstr, 'rb_source_' . $sourcename);
             // how about in report builder?
-            } else if (check_string($langstr, 'local_reportbuilder')) {
+            } else if (string_exists($langstr, 'local_reportbuilder')) {
                 $section = get_string($langstr, 'local_reportbuilder');
             } else {
             // fall back on original approach to cope with dynamic types in feedback sources
@@ -2586,10 +2585,10 @@ class reportbuilder {
             }
             $langstr = 'type_' . $column->type;
             // is there a type string in the source file?
-            if (check_string($langstr, 'rb_source_' . $sourcename)) {
+            if (string_exists($langstr, 'rb_source_' . $sourcename)) {
                 $section = get_string($langstr, 'rb_source_' . $sourcename);
             // how about in report builder?
-            } else if (check_string($langstr, 'local_reportbuilder')) {
+            } else if (string_exists($langstr, 'local_reportbuilder')) {
                 $section = get_string($langstr, 'local_reportbuilder');
             } else {
             // fall back on original approach to cope with dynamic types in feedback sources
