@@ -28,8 +28,9 @@
  *
  */
 
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
+require_once($CFG->libdir . '/completionlib.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/dialog_content.class.php');
 require_once($CFG->dirroot . '/totara/core/searchlib.php');
@@ -37,6 +38,8 @@ require_once($CFG->dirroot . '/totara/core/searchlib.php');
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
 }
+
+global $OUTPUT, $PAGE;
 
 /**
  * How many search results to show before paginating
@@ -47,7 +50,8 @@ define('HIERARCHY_SEARCH_NUM_PER_PAGE', 50);
 
 $query = optional_param('query', null, PARAM_TEXT); // search query
 $page = optional_param('page', 0, PARAM_INT); // results page number
-
+$context = context_system::instance();
+$PAGE->set_context($context);
 $strsearch = get_string('search');
 #$stritemplural = get_string($prefix . 'plural', 'totara_hierarchy');
 $strqueryerror = get_string('queryerror', 'totara_hierarchy');
@@ -105,9 +109,11 @@ if (strlen($query)) {
         if ($results = $DB->get_records_sql($fields . $from . $where .
             $order, $sqlparams, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
 
-            $data = array('query' => urlencode(stripslashes($query)));
+            $data = array(
+                'query' => urlencode($query),
+            );
 
-            $url = new moodle_url('search.php', $data);
+            $url = new moodle_url('/totara/hierarchy/prefix/competency/evidenceitem/search.php', $data);
             $pagingbar = $OUTPUT->paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url);
             echo html_writer::tag('div', $pagingbar, array('class' => 'search-paging'));
 

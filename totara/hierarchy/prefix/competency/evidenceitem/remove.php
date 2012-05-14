@@ -22,7 +22,7 @@
  * @subpackage totara_hierarchy
  */
 
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/type/abstract.php');
@@ -74,10 +74,10 @@ if (!$course) {
 $compname = $DB->get_field('comp', 'fullname', array('id' => $item->competencyid));
 if (!$delete) {
     if (!$course) {
-        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, $compname) . html_writer::empty_tag('br') . html_writer::empty_tag('br');
+        $message = get_string('evidenceitemremovecheck', 'totara_hierarchy', $compname) . html_writer::empty_tag('br') . html_writer::empty_tag('br');
         $message .= $item->get_name() .' ('. $item->get_type().')';
     } else {
-        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, $item->get_name()) . html_writer::empty_tag('br') . html_writer::empty_tag('br');
+        $message = get_string('evidenceitemremovecheck', 'totara_hierarchy', $item->get_name()) . html_writer::empty_tag('br') . html_writer::empty_tag('br');
         $message .= format_string($compname .' ('. $item->get_type().')');
     }
 
@@ -111,7 +111,7 @@ $item->delete($competency);
 
 add_to_log(SITEID, 'competency', 'delete evidence', "item/view.php?id={$item->id}&amp;prefix=competency", $item->get_name()." (ID $item->id)");
 
-$message = get_string('removed'.$hierarchy->prefix.'evidenceitem', $hierarchy->prefix, format_string($compname .' ('. $item->get_type().')'));
+$message = get_string('removed'.$hierarchy->prefix.'evidenceitem', 'totara_hierarchy', format_string($compname .' ('. $item->get_type().')'));
 
 echo $OUTPUT->heading($message);
 echo $OUTPUT->continue_button($return);

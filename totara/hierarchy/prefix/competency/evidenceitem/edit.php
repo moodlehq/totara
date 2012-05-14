@@ -133,7 +133,7 @@ if ($nojs) {
     $dialog->load_courses($where);
 
     // Setup search
-    $dialog->search_code = '/hierarchy/prefix/competency/evidenceitem/search.php';
+    $dialog->search_code = '/totara/hierarchy/prefix/competency/evidenceitem/search.php';
 
     if (empty($CFG->competencyuseresourcelevelevidence)) {
         // Set selected items

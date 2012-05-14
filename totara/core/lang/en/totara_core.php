@@ -57,6 +57,17 @@ $string['searchcourses'] = 'Search Courses';
 $string['findcourses'] = 'Find Courses';
 $string['viewmyteam'] = 'View My Team';
 
+//Dialogs
+$string['browse'] = 'Browse';
+$string['currentlyselected'] = 'Currently selected';
+$string['error:dialognotreeitems'] = 'No items available';
+$string['error:morethanxitemsatthislevel'] = 'There are more than {$a} items at this level.';
+$string['invalidsearchtable'] = 'Invalid search table';
+$string['itemstoadd'] = 'Items to add';
+$string['noresultsfor'] = 'No results found for "{$a->query}".';
+$string['queryerror'] = 'Query error. No results found.';
+$string['search'] = 'Search';
+$string['trysearchinginstead'] = 'Try searching instead.';
 // My Course Completions block
 $string['courseprogress']='Course progress';
 $string['courseprogresshelp']='This specifies if the course progress block appears on the homepage';
@@ -186,5 +197,6 @@ $string['coursetype'] = 'Course Type';
 $string['elearning'] = 'E-learning';
 $string['blended'] = 'Blended';
 $string['facetoface'] = 'Face-to-face';
-
+//Button labels
+$string['save'] = 'Save';
 ?>

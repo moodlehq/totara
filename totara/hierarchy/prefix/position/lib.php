@@ -512,7 +512,7 @@ class position_assignment extends data_object {
      * @return object data_object instance or false if none found.
      */
     public static function fetch($params) {
-        return self::fetch_helper($this->table, get_class($this), $params);
+        return self::fetch_helper('pos_assignment', __CLASS__, $params);
     }
 
     public function save($managerchanged = true) {

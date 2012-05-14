@@ -123,9 +123,6 @@ class totara_dialog_content_competency_linkedcourses extends totara_dialog_conte
         // Should the dialog display hidden frameworks?
         $this->showhidden = $showhidden;
 
-        // Set lang file
-        $this->lang_file = $prefix;
-
         // Load framework
         $this->set_framework($frameworkid);
 

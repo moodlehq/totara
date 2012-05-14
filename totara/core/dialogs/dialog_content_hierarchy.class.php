@@ -126,8 +126,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
         $this->showhidden = $showhidden;
 
         // Set lang file
-        $this->lang_file = $prefix;
-
+        $this->lang_file = 'totara_hierarchy';
         // Load framework
         $this->set_framework($frameworkid);
 

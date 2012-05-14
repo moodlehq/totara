@@ -158,7 +158,7 @@ totaraDialog_handler_assignCourseEvidence.prototype.display_evidence = function(
         var new_table = $(response).filter('table');
 
         // Grab table
-        var table = $('div#content table#list-coursecompetency');
+        var table = $('table#list-coursecompetency');
 
         // If table found
         if (table.size()) {
@@ -166,7 +166,7 @@ totaraDialog_handler_assignCourseEvidence.prototype.display_evidence = function(
         }
         else {
             // Add new table
-            $('div#content div#coursecompetency-table-container').append(new_table);
+            $('div#coursecompetency-table-container').append(new_table);
         }
     }
 

@@ -59,9 +59,27 @@ function local_js($options = array()) {
     if (in_array(TOTARA_JS_DIALOG, $options)) {
 
         $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.7.2.custom.min.js');
-        $PAGE->requires->js('/totara/core/js/lib/dialog.js.php');
-        $PAGE->requires->js('/totara/core/js/lib/jquery.bgiframe.min.js');
 
+        // Load required strings into the JS global namespace in the form
+        // M.str.COMPONENT.IDENTIFIER, eg; M.str.totara_core['save']. Can also
+        // be accessed with M.util.get_string(IDENTIFIER, COMPONENT), use third
+        // arg for a single {$a} replacement. See /lib/outputrequirementslib.php
+        // for detail and limitations.
+        $PAGE->requires->string_for_js('save', 'totara_core');
+
+        // Include the totara_dialog JS module. Args supplied to the module's
+        // init method must be a php array (or null if none), the first index
+        // being a JSON formatted string of args, which are parsed into a config
+        // object stored in the module, eg; array('args'=>'{"id":' .$id. '}')
+        // which is then available via M.totara_dialog.config.id once the module
+        // has loaded. Further args can be supplied to the init method but are
+        // not JSON parsed, but are still available via the usual 'arguments'
+        // object of the init method.
+        $jsmodule = array(
+                'name' => 'totara_dialog',
+                'fullpath' => '/totara/core/js/lib/totara_dialog.js',
+                'requires' => array('json'));
+        $PAGE->requires->js_init_call('M.totara_dialog.init', null, false, $jsmodule);
     }
 
     // If treeview enabled
@@ -112,7 +130,7 @@ function local_js($options = array()) {
  * @return string Script contents to be included in the page
  */
 function build_datepicker_js($selector, $includetags = true, $dateformat=null) {
-    global $CFG;
+    global $OUTPUT;
     $out = '';
 
     if ($includetags) {
@@ -120,7 +138,7 @@ function build_datepicker_js($selector, $includetags = true, $dateformat=null) {
     }
 
     if (empty($dateformat)) {
-        $dateformat = get_string('datepickerdisplayformat');
+        $dateformat = get_string('datepickerdisplayformat', 'langconfig');
     }
     $button_img = $OUTPUT->pix_url('calendar', 'totara_core');
     // we are choosing to override the isRTL option here, instead float

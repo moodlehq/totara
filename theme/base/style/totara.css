@@ -102,3 +102,293 @@ body.dir-rtl .totaratable .toolbar-right-table {
     padding: 20px;
     text-align: center;
 }
+
+/*******************************************************************************
+ * Totara Dialog styles & jQuery UI skin overrides
+ ******************************************************************************/
+#ui-widget-overlay {
+    /* actually the underlay */
+    opacity: 0.5;
+}
+
+div.totara-dialog {
+    overflow:visible !important;
+    border: 1px solid #DDDDDD;
+    padding: 0.5em;
+
+}
+    div.totara-dialog div.ui-dialog-titlebar {
+        overflow: visible;
+        position: relative;
+    }
+    div.totara-dialog div.ui-dialog-content {
+        overflow: auto;
+    }
+    div.totara-dialog div.ui-dialog-content table.dialog-content {
+        height: 100%;
+        width: 100%;
+    }
+        /* Treeview and Select table cell */
+        div.totara-dialog div.ui-dialog-content table.dialog-content td.select {
+            padding-right: 10px;
+            vertical-align: top;
+            width: 70%;
+        }
+        div.totara-dialog div.ui-dialog-content .header p {
+            margin:0 0 5px 0;
+            font-weight:bold;
+        }
+        div.totara-dialog td.select div#dialog-tabs {
+            border: medium none;
+            height: 37px;
+            width: 100%;
+        }
+            div.totara-dialog td.select div#dialog-tabs ul.ui-tabs-nav {
+                margin: 0 0 10px;
+                padding: 0;
+            }
+            div.totara-dialog td.select #search-tab,
+            div.totara-dialog td.select #browse-tab {
+                border: medium none;
+            }
+            div.totara-dialog td.select #search-tab fieldset {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+                div.totara-dialog td.select #search-tab form.mform,
+                div.totara-dialog td.select #search-tab table#dialog-search-table {
+                    width: 100%;
+                }
+                    div.totara-dialog td.select select {
+                        width:100%;
+                    }
+                    div.totara-dialog td.select select,
+                    div.totara-dialog td.select #search-tab fieldset input,
+                    div.totara-dialog td.select #search-tab fieldset select,
+                    div.totara-dialog td.select #search-tab fieldset button {
+                        font-size: 0.85em;
+                    }
+                    div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox input {
+                        width: 95%;
+                    }
+
+            div.totara-dialog div.treeview-wrapper,
+            div.totara-dialog div#column-checkboxes {
+                margin-top: 5px;
+                overflow: auto;
+            }
+                div.totara-dialog ul.treeview li {
+                    min-height:16px;
+                    padding-top: 2px;
+                    font-size: 13px;
+                }
+                div.totara-dialog ul.treeview li span a {
+                    margin:0 5px;
+                    display:block;
+                }
+                div.totara-dialog ul.treeview li span.empty a {
+                    display:inline;
+                    margin:0;
+                }
+                div.totara-dialog ul.treeview li span.unclickable,
+                div.totara-dialog ul.treeview li span.unclickable a,
+                div.totara-dialog .selected span.unremovable a {
+                    color: #999999;
+                    cursor: text;
+                    text-decoration: none;
+                }
+                    div.totara-dialog ul.treeview span.deletebutton {
+                        display: none;
+                    }
+                div.totara-dialog .selected span.unremovable span.deletebutton,
+                div.totara-dialog .selected span.unremovable span.addbutton {
+                    background:none;
+                }
+
+        /* table cell containing results from td.select operations */
+        div.totara-dialog table.dialog-content td.selected {
+            border-left: 1px solid #CCCCCC;
+            padding-left: 10px;
+            vertical-align: top;
+            width: 30%;
+        }
+
+    div.totara-dialog .selected div.treeview-selected-item {
+        display: none !important;
+    }
+
+        div.totara-dialog .selected span {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 10px;
+            overflow: auto;
+            width: 100%;
+            word-break:break-all;
+        }
+            div.totara-dialog .selected span a {
+                cursor: text;
+                display: block;
+                float: left;
+                text-decoration: none;
+                width: 80%;
+                outline:none;
+                word-break:normal ;
+            }
+            div.totara-dialog .selected span span.addbutton,
+            div.totara-dialog .selected span span.deletebutton {
+                background: none repeat scroll 0 0 transparent;
+                cursor: pointer;
+                float: right;
+                display: inline; /* IE margin-doubling fix */
+                margin: 0;
+                overflow: hidden;
+                text-indent: -999px;
+                width: 10%;
+            }
+            /* Handle hovers */
+            div.totara-dialog .selected span:hover span.deletebutton {
+                background-image: url([[pix:totara_core|jquery_ui_dialog/ui-icons_000000_256x240]]);
+                background-position:-80px -128px;
+                background-repeat: no-repeat;
+            }
+            div.totara-dialog .selected span:hover span.addbutton {
+                background-image: url([[pix:moodle|t/add]]);
+                background-position: right center;
+                background-repeat: no-repeat;
+            }
+        div.totara-dialog .selected p {
+            font-weight: bold;
+            margin-bottom:10px;
+            padding:0;
+        }
+
+/* Dialog buttons */
+div.ui-dialog .ui-dialog-buttonpane button {
+    cursor: pointer;
+    float: right;
+}
+
+
+/* Misc Dialog parts */
+div.ui-dialog .totara-msgs-action-left {
+    width:15%;
+    font-weight:bold;
+    padding-right:10px;
+    text-align:right;
+    vertical-align:top;
+}
+div.ui-dialog .totara-msgs-action-right {
+    vertical-align:top;
+}
+
+/* Make none JS links look more like buttons */
+a.noscript-button {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #999;
+    background: #eee;
+    display: block;
+    width: 150px;
+    float: left;
+    text-align: center;
+}
+
+/* fix for add competency display width */
+#hierarchy-type-competency-evidence-add #mform1 {
+    width: 95%;
+}
+
+/** Competencies lightbox styling **/
+#evidence #available-evidence {
+    width: 40%;
+    border-left: 1px solid #ccc;
+    overflow: auto;
+    padding-left: 10px;
+}
+
+#evidence #available-evidence h3 {
+    margin: 0 0 0.5em;
+}
+
+#evidence #available-evidence ul {
+    font-size: 0.8em;
+    margin: 0.25em 0 1em;
+    list-style: none;
+    padding: 0;
+}
+
+#evidence #available-evidence ul li {
+    font-size: 1em;
+    padding-bottom: 0.25em;
+}
+
+/*******************************************************************************
+ * jQuery Treeview widget
+ ******************************************************************************/
+.treeview, .treeview ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.treeview ul {
+    background-color: white;
+    margin-top: 4px;
+}
+
+.treeview .hitarea {
+    background: url([[pix:totara_core|jquery_treeview/treeview-default]]) -64px -24px no-repeat;
+    height: 16px;
+    width: 16px;
+    margin-left: -16px;
+    float: left;
+    cursor: pointer;
+}
+/* fix for IE6 */
+* html .hitarea {
+    display: inline;
+    float:none;
+}
+
+.treeview li {
+    margin: 0;
+    padding: 3px 0pt 3px 16px;
+}
+
+.treeview a.selected {
+    background-color: #eee;
+}
+
+#treecontrol { margin: 1em 0; display: none; }
+
+.treeview li { background: url([[pix:totara_core|jquery_treeview/treeview-default-line]]) 0 0 no-repeat; }
+.treeview li.collapsable, .treeview li.expandable { background-position: 0 -176px; }
+
+.treeview .expandable-hitarea { background-position: -80px -2px; }
+
+.treeview li.last { background-position: 0 -1766px }
+.treeview li.lastCollapsable, .treeview li.lastExpandable { background-image: url([[pix:totara_core|jquery_treeview/treeview-default]]); }
+.treeview li.lastCollapsable { background-position: 0 -111px }
+.treeview li.lastExpandable { background-position: -32px -67px }
+
+.treeview div.lastCollapsable-hitarea, .treeview div.lastExpandable-hitarea { background-position: 0; }
+
+.treeview-red li { background-image: url([[pix:totara_core|jquery_treeview/treeview-red-line]]); }
+.treeview-red .hitarea, .treeview-red li.lastCollapsable, .treeview-red li.lastExpandable { background-image: url([[pix:totara_core|jquery_treeview/treeview-red]]); }
+
+.treeview-black li { background-image: url([[pix:totara_core|jquery_treeview/treeview-black-line]]); }
+.treeview-black .hitarea, .treeview-black li.lastCollapsable, .treeview-black li.lastExpandable { background-image: url([[pix:totara_core|jquery_treeview/treeview-black]]); }
+
+.treeview-gray li { background-image: url([[pix:totara_core|jquery_treeview/treeview-gray-line]]); }
+.treeview-gray .hitarea, .treeview-gray li.lastCollapsable, .treeview-gray li.lastExpandable { background-image: url([[pix:totara_core|jquery_treeview/treeview-gray]]); }
+
+.treeview-famfamfam li { background-image: url([[pix:totara_core|jquery_treeview/treeview-famfamfam-line]]); }
+.treeview-famfamfam .hitarea, .treeview-famfamfam li.lastCollapsable, .treeview-famfamfam li.lastExpandable { background-image: url([[pix:totara_core|jquery_treeview/treeview-famfamfam]]); }
+
+.filetree li { padding: 3px 0 2px 16px; }
+.filetree li { padding: 0 0 0 16px; }
+.filetree span.folder, .filetree span.file { padding: 1px 0 1px 16px; display: block; }
+.filetree span.folder { background: url([[pix:totara_core|jquery_treeview/folder]]) 0 0 no-repeat; }
+.filetree li.expandable span.folder { background: url([[pix:totara_core|jquery_treeview/folder-closed]]) 0 0 no-repeat; }
+.filetree span.file { background: url([[pix:totara_core|jquery_treeview/file]] 0 0 no-repeat; }

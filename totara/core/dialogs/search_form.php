@@ -44,7 +44,7 @@ class dialog_search_form extends moodleform {
         $formcounter++;
 
         // Search data
-        $query = stripslashes($this->_customdata['query']);
+        $query = $this->_customdata['query'];
 
         // Check if we are searching a hierarchy
         $hierarchy = false;
@@ -104,7 +104,7 @@ class dialog_search_form extends moodleform {
                 $frameworks = $hierarchy->get_frameworks(array(), $showhidden);
             }
 
-            $options = array(0 => get_string('allframeworks', 'hierarchy'));
+            $options = array(0 => get_string('allframeworks', 'totara_hierarchy'));
 
             if ($frameworks) {
                 foreach ($frameworks as $fw) {

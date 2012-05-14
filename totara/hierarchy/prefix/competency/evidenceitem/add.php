@@ -22,10 +22,9 @@
  * @subpackage totara_hierarchy
  */
 
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
-require_once('HTML/AJAX/JSON.php');
 
 
 ///
@@ -60,7 +59,7 @@ if (empty($CFG->competencyuseresourcelevelevidence)) {
 }
 
 // Check perms
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
+admin_externalpage_setup('competencymanage', '', array(), $CFG->wwwroot.'/totara/competency/edit.php');
 
 $sitecontext = context_system::instance();
 require_capability('totara/hierarchy:updatecompetency', $sitecontext);

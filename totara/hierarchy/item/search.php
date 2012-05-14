@@ -26,7 +26,7 @@
 /*
  * Page containing hierarchy item search results
  */
-require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
@@ -36,6 +36,7 @@ require_once($CFG->dirroot . '/totara/core/searchlib.php');
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
 }
+global $PAGE;
 
 /**
  * How many search results to show before paginating
@@ -56,15 +57,16 @@ if (!isset($frameworkid)) {
     $frameworkid = optional_param('frameworkid', 0, PARAM_INT); // specify framework to search
 }
 if (!isset($disabledlist)) {
-    $disabledlist = unserialize(stripslashes(optional_param('disabledlist', '', PARAM_TEXT))); // items to disable
+    $disabledlist = unserialize(optional_param('disabledlist', '', PARAM_TEXT)); // items to disable
 }
 if (!isset($templates)) {
     $templates = optional_param('templates', false, PARAM_BOOL); // search templates only
 }
+$context = context_system::instance();
+$PAGE->set_context($context);
 if (!isset($showhidden)) {
     $showhidden = optional_param('showhidden', false, PARAM_BOOL); // include hidden frameworks
     // check they have permissions on hidden frameworks in case parameter is changed manually
-    $context = context_system::instance();
     if ($showhidden && !has_capability('totara/hierarchy:update'.$prefix.'frameworks', $context)) {
         print_error('nopermviewhiddenframeworks', 'totara_hierarchy');
     }
@@ -105,7 +107,7 @@ if (strlen($query)) {
 
     $fields = 'SELECT i.id,i.fullname';
     $count = 'SELECT COUNT(*)';
-    $from = " FROM {$shortprefix} i
+    $from = " FROM {{$shortprefix}} i
         JOIN {{$shortprefix}_framework} f
         ON frameworkid = f.id";
     $order = ' ORDER BY frameworkid,sortthread';
@@ -143,14 +145,14 @@ if (strlen($query)) {
             $data = array('prefix' => $prefix,
                     'frameworkid' => $frameworkid,
                     'select' => $select,
-                    'query' => urlencode(stripslashes($query)),
-                    'disabledlist' => serialize($disabledlist),
+                    'query' => urlencode($query),
+                    'disabledlist' => $disabledlist,
                     'templates' => $templates,
             );
             $url = new moodle_url('/totara/hierarchy/item/search.php', $data);
             print html_writer::start_tag('div', array('class' => 'search-paging'));
             $pagingbar = new paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url);
-            $OUTPUT->render($pagingbar);
+            echo $OUTPUT->render($pagingbar);
             print html_writer::end_tag('div');
 
             $addbutton_html = new pix_icon('add', get_string('add'), 'theme', array('class' => 'addbutton'));
@@ -181,7 +183,7 @@ if (strlen($query)) {
         }
     } else {
         $params = new stdClass();
-        $params->query = stripslashes($query);
+        $params->query = $query;
         if ($frameworkid) {
             $errorstr = 'noresultsforinframework';
             $params->framework = $DB->get_field($shortprefix . '_framework', 'fullname', array('id' => $frameworkid));

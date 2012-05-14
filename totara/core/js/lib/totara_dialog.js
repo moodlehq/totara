@@ -1,5 +1,4 @@
-<?php
-/* Temp fix to sniff browser
+/*
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010-2012 Totara Learning Solutions LTD
@@ -20,22 +19,47 @@
  * @author Simon Coggins <simon.coggins@totaralms.com>
  * @author Eugene Venter <eugene@catalyst.net.nz>
  * @author Aaron Barnes <aaron.barnes@totaralms.com>
+ * @author Dave Wallace <dave.wallace@kineo.co.nz>
  * @package totara
  * @subpackage totara_core
  */
-require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-$ok_string = get_string('ok');
-$save_string = get_string('save');
-$cancel_string = get_string('cancel');
-?>
+M.totara_dialog = M.totara_dialog || {
 
+    Y: null,
+    // optional php params and defaults defined here, args passed to init method
+    // below will override these values
+    config: {},
 
-$(function() {
-    if ($.browser.mozilla) {
-        $('body').addClass('mozilla');
+    /**
+     * module initialisation method called by php js_init_call()
+     *
+     * @param object    YUI instance
+     * @param string    args supplied in JSON format
+     */
+    init: function(Y, args){
+        // save a reference to the Y instance (all of its dependencies included)
+        this.Y = Y;
+
+        // if defined, parse args into this module's config object
+        if (args) {
+            var jargs = Y.JSON.parse(args);
+            for (var a in jargs) {
+                if (Y.Object.owns(jargs, a)) {
+                    this.config[a] = jargs[a];
+                }
+            }
+        }
+
+        // check jQuery dependency and continue with setup
+        if (typeof $ === 'undefined') {
+            throw new Error('M.totara_dialog.init()-> jQuery dependency required for this module to function.');
+        }
     }
-});
+};
 
+if ($.browser.mozilla) {
+    $('body').addClass('mozilla');
+}
 
 // Setup
 var totaraDialogs = {};
@@ -123,10 +147,6 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
             obj.open();
         });
 
-        // fix for IE6 select z-index bug
-        if($.browser.msie && parseInt($.browser.version) == 6) {
-            $('.ui-dialog').bgiframe();
-        }
     }
 
 
@@ -397,8 +417,8 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
 
     // Setup object
     this.setup();
-}
 
+}
 
 /*****************************************************************************/
 /** totaraDialog_handler **/
@@ -961,7 +981,9 @@ totaraDialog_handler_treeview_multiselect_rb_filter.prototype.first_load = funct
     $('.multiselect-selected-item', addLink.parent('div').prev()).each(function(i, el) {
         var item_id = $(this).data('id');
         var item_name = $(this).text();
-        preselected += '<div class="treeview-selected-item"><span id="item_'+item_id+'"><a href="#">'+item_name+'</a><span class="deletebutton"><?php echo get_string('delete');?></span></span></div>';
+        preselected += '<div class="treeview-selected-item"><span id="item_'+item_id+'"><a href="#">'+item_name+'</a><span class="deletebutton">'
+                    + M.util.get_string('delete', 'totara_core')
+                    +'</span></span></div>';
         handler._toggle_items('item_'+item_id, false);
     });
     var selected_area = $('.selected', this._container)
@@ -1045,7 +1067,7 @@ totaraDialog_handler_treeview_singleselect.prototype.setup_delete = function() {
 
     var textel = $('#'+this.text_element_id);
     var idel = $('input[name='+this.value_element_name+']');
-    var deletebutton = $('<span class="dialog-singleselect-deletable">delete</span>');
+    var deletebutton = $('<span class="dialog-singleselect-deletable">'+M.util.get_string('delete', 'totara_core')+'</span>');
     var handler = this;
 
     // Setup handler
@@ -1400,19 +1422,20 @@ totaraDialog_handler_skeletalTreeview.prototype._make_selectable = function(elem
 totaraSingleSelectDialog = function(name, title, find_url, value_element, text_element, handler_extra, deletable) {
 
     var handler = new totaraDialog_handler_treeview_singleselect(value_element, text_element);
+    var buttonObj = {};
     if (deletable) {
         handler.setup_delete();
     }
     handler.external_function = handler_extra;
 
+    buttonObj[M.util.get_string('cancel', 'moodle')] = function() { handler._cancel() };
+    buttonObj[M.util.get_string('ok', 'moodle')] = function() { handler._save() };
+
     totaraDialogs[name] = new totaraDialog(
         name,
         'show-'+name+'-dialog',
         {
-            buttons: {
-                '<?php echo $cancel_string ?>': function() { handler._cancel() },
-                '<?php echo $ok_string ?>': function() { handler._save(); }
-            },
+            buttons: buttonObj,
             title: '<h2>'+title+'</h2>'
         },
         find_url,
@@ -1434,14 +1457,15 @@ totaraMultiSelectDialog = function(name, title, find_url, save_url) {
 
     var handler = new totaraDialog_handler_treeview_multiselect();
 
+    var buttonObj = {};
+    buttonObj[M.util.get_string('cancel', 'moodle')] = function() { handler._cancel() };
+    buttonObj[M.util.get_string('save', 'totara_core')] = function() { handler._save(save_url) };
+
     totaraDialogs[name] = new totaraDialog(
         name,
         'show-'+name+'-dialog',
         {
-            buttons: {
-                '<?php echo $cancel_string ?>': function() { handler._cancel() },
-                '<?php echo $save_string ?>': function() { handler._save(save_url) }
-            },
+            buttons: buttonObj,
             title: '<h2>'+title+'</h2>'
         },
         find_url,
@@ -1469,14 +1493,15 @@ totaraMultiSelectDialogRbFilter = function(name, title, find_url, save_url) {
 
     var handler = new totaraDialog_handler_treeview_multiselect_rb_filter();
 
+    var buttonObj = {};
+    buttonObj[M.util.get_string('cancel', 'moodle')] = function() { handler._cancel() };
+    buttonObj[M.util.get_string('save', 'totara_core')] = function() { handler._save(save_url) };
+
     totaraDialogs[name] = new totaraDialog(
         name,
         'show-'+name+'-dialog',
         {
-            buttons: {
-                '<?php echo $cancel_string ?>': function() { handler._cancel() },
-                '<?php echo $save_string ?>': function() { handler._save(save_url) }
-            },
+            buttons: buttonObj,
             title: '<h2>'+title+'</h2>'
         },
         find_url,

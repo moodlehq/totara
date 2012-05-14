@@ -31,6 +31,7 @@
 require_once("{$CFG->dirroot}/totara/hierarchy/lib.php");
 require_once("{$CFG->dirroot}/totara/hierarchy/prefix/competency/evidenceitem/type/abstract.php");
 require_once("{$CFG->dirroot}/totara/core/utils.php");
+require_once("{$CFG->dirroot}/totara/core/js/lib/setup.php");
 
 /**
  * Competency aggregation methods
@@ -414,19 +415,47 @@ class competency extends hierarchy {
 
         switch ($page) {
             case 'item/view':
-                $itemid = !(empty($item->id)) ? "?id={$item->id}" : '';
-                $PAGE->requires->js('/totara/core/js/competency.item.js.php'.$itemid);
+
+                $itemid = !(empty($item->id)) ? array('args'=>'{"id":'.$item->id.'}') : NULL;
+
+                // Include competency item js module
+                $PAGE->requires->strings_for_js(array('assignrelatedcompetencies',
+                        'assignnewevidenceitem','assigncoursecompletions'), 'totara_hierarchy');
+                $jsmodule = array(
+                        'name' => 'totara_competencyitem',
+                        'fullpath' => '/totara/core/js/competency.item.js',
+                        'requires' => array('json'));
+                $PAGE->requires->js_init_call('M.totara_competencyitem.init',
+                         $itemid, false, $jsmodule);
 
                 break;
             case 'template/view':
-                $itemid = !(empty($item->id)) ? "?id={$item->id}" : '';
-                $PAGE->requires->js('/totara/core/js/competency.template.js.php'.$itemid);
+
+                $itemid = !(empty($item->id)) ? array('args'=>'{"id":'.$item->id.'}') : NULL;
+
+                // Include competency template js module
+                $jsmodule = array(
+                        'name' => 'totara_competencytemplate',
+                        'fullpath' => '/totara/core/js/competency.template.js',
+                        'requires' => array('json'));
+                $PAGE->requires->js_init_call('M.totara_competencytemplate.init',
+                         $itemid, false, $jsmodule);
 
                 break;
             case 'item/add':
-                $PAGE->requires->js('/totara/core/js/competency.add.js.php');
-                $PAGE->requires->js('/totara/core/js/position.user.js.php?userid='.$USER->id);
+                $args = array('args'=>'{"userid":'.$USER->id.'}');
 
+                // Include competency add and position user js modules
+                // SCANMSG TODO: finish conversion of .js.php to .js
+//                $PAGE->requires->string_for_js('selectacompetencyframework', 'competency');
+                $jsmodule = array(
+                        'name' => 'totara_positionuser',
+                        'fullpath' => '/totara/core/js/position.user.js',
+                        'requires' => array('json'));
+                $PAGE->requires->js_init_call('M.totara_positionuser.init',
+                         $args, false, $jsmodule);
+
+//                $PAGE->requires->js('/totara/core/js/position.user.js.php?userid='.$USER->id);
                 break;
         }
     }

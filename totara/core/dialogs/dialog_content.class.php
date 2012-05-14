@@ -62,8 +62,7 @@ class totara_dialog_content {
      * @access  public
      * @var     string
      */
-    public $lang_file = 'dialog';
-
+    public $lang_file = 'totara_core';
 
     /**
      * PHP file to use for search tab content
@@ -214,9 +213,9 @@ class totara_dialog_content {
         $markup .= '<div id="dialog-tabs" class="dialog-content-select">';
 
         $markup .= '<ul class="tabs dialog-nobind">';
-        $markup .= '  <li><a href="#browse-tab">'.get_string('browse', 'dialog').'</a></li>';
+        $markup .= '  <li><a href="#browse-tab">'.get_string('browse', 'totara_core').'</a></li>';
         if (!empty($this->search_code)) {
-            $markup .= '  <li><a href="#search-tab">'.get_string('search', 'dialog').'</a></li>';
+            $markup .= '  <li><a href="#search-tab">'.get_string('search').'</a></li>';
         }
         $markup .= '</ul>';
 
@@ -305,9 +304,9 @@ class totara_dialog_content {
 
             if ($total > $maxitems) {
                 $html .= '<li class="last"><span class="empty">';
-                $html .= get_string('error:morethanxitemsatthislevel', 'dialog', $maxitems);
+                $html .= get_string('error:morethanxitemsatthislevel', 'totara_core', $maxitems);
                 $html .= ' <a href="#search-tab" onclick="$(\'#dialog-tabs\').tabs(\'select\', 1);return false;">';
-                $html .= get_string('trysearchinginstead', 'dialog');
+                $html .= get_string('trysearchinginstead', 'totara_core');
                 $html .= '</a>';
                 $html .= '</span></li>'.PHP_EOL;
             }

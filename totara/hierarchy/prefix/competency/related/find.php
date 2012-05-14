@@ -68,8 +68,9 @@ $s = optional_param('s', '', PARAM_TEXT);
 $urlparams = array('id' => $compid, 'frameworkid' => $frameworkid, 'nojs' => $nojs, 'returnurl' => urlencode($returnurl), 's' => $s);
 
 // Setup page
-admin_externalpage_setup('competencymanage', '', array(), $CFG->wwwroot.'/competency/related/add.php');
+admin_externalpage_setup('competencymanage', '', array(), $CFG->wwwroot.'/totara/competency/related/add.php');
 
+$alreadyselected = array();
 if ($alreadyrelated = comp_relation_get_relations($compid)) {
     list($alreadyrelated_sql, $alreadyrelated_params) = $DB->get_in_or_equal($alreadyrelated);
     $alreadyselected = $DB->get_records_select('comp', 'id ' . $alreadyrelated_sql, $alreadyrelated_params, '', 'id, fullname');

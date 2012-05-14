@@ -3833,6 +3833,14 @@ function create_course($data, $editoroptions = NULL) {
 }
 
 /**
+ * TODO SCANMSG
+ * method originally defined in same file in totara 1.x
+ **/
+function get_category_item_count($categoryids, $countcourses = true) {
+    return array();
+}
+
+/**
  * Update a course.
  *
  * Please note this functions does not verify any access control,
