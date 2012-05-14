@@ -30,5 +30,8 @@ $string['pluginname'] = 'Totara core';
 $string['organisation_typeicon'] = 'Organization type icon';
 $string['organisationatcompletion'] = 'Organization at completion';
 $string['organisationsarrow'] = 'Organizations >';
+$string['datepickerdisplayformat'] = 'mm/dd/yy';
+$string['datepickerplaceholder'] = 'mm/dd/yy'; //how the datepicker placeholder hint displays the default
+$string['datepickerparseformat'] = 'm/d/y'; //how php parses the datepicker dates to a timestamp (in totara_date_parse_from_format)
 
 ?>

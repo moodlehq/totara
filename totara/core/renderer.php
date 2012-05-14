@@ -115,12 +115,13 @@ class totara_core_renderer extends plugin_renderer_base {
         $content .= html_writer::end_tag('span');
         $content .= html_writer::end_tag('span');
         // Check if user has permissions to see details
+        /*TODO SCANMSG: re-enable when course completion merged
         if (completion_can_view_data($userid, $courseid)) {
             $url = new moodle_url("/blocks/completionstatus/details.php?course={$courseid}&user={$userid}");
             $attributes = array('href' => $url);
             $content = html_writer::tag('a', $content, $attributes);
         }
-
+        */
         return $content;
     }
 

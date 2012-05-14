@@ -22,10 +22,13 @@
  * @subpackage totara_hierarchy
  */
 
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_hierarchy.class.php');
 
 $userid = required_param('userid', PARAM_INT);
+
+$PAGE->set_context(context_system::instance());
+require_login();
 
 ///
 /// Setup / loading data

@@ -28,7 +28,7 @@
  *
  */
 
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/totara/core/searchlib.php');
 require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
@@ -48,6 +48,9 @@ define('HIERARCHY_SEARCH_NUM_PER_PAGE', 50);
 $query = optional_param('query', null, PARAM_TEXT); // search query
 $page = optional_param('page', 0, PARAM_INT); // results page number
 $userid = optional_param('userid', -1, PARAM_INT); // user being assigned a manager
+
+$PAGE->set_context(context_system::instance());
+require_login();
 
 $strsearch = get_string('search');
 $strqueryerror = get_string('queryerror', 'totara_hierarchy');
@@ -89,7 +92,7 @@ if (strlen($query)) {
 
     // Match search terms
     list($where_sql, $where_params) = user_search_get_keyword_where_clause($keywords);
-    $where .= " AND u.id <> ?";
+    $where = $where_sql . " AND u.id <> ?";
     $params = array_merge($where_params, array($userid));
 
     $total = $DB->count_records_sql($count . $from . $where, $params);
@@ -97,10 +100,10 @@ if (strlen($query)) {
 
     if ($total) {
         if ($results = $DB->get_records_sql($fields . $from . $where .
-            $order, array($userid), $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
+            $order, $params, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
 
             echo html_writer::tag('div', $OUTPUT->paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE,
-                    new moodle_url('prefix/position/assign/manager_search.php', array('query' => urlencode(stripslashes($query)))),
+                    new moodle_url('/totara/hierarchy/prefix/position/assign/manager_search.php', array('query' => $query)),
                     'page'), array('class' => "search-paging"));
 
             // Generate some treeview data
@@ -125,7 +128,7 @@ if (strlen($query)) {
         }
     } else {
         $params = new stdClass();
-        $params->query = stripslashes($query);
+        $params->query = $query;
         $errorstr = 'noresultsfor';
         print html_writer::tag('p', get_string($errorstr, 'totara_hierarchy', $params), array('class' => 'message'));
     }
@@ -153,7 +156,7 @@ function user_search_get_keyword_where_clause($keywords) {
 
     // exclude deleted users and guest user
     $returnsql = " WHERE $keyword_sql AND u.deleted = ? AND u.id != ?";
-    $returnparams = array_merge($keyword_params, array(0, guest_user()));
+    $returnparams = array_merge($keyword_params, array(0, guest_user()->id));
 
     return array($returnsql, $returnparams);
 }

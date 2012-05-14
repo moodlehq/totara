@@ -446,8 +446,6 @@ class competency extends hierarchy {
                 $args = array('args'=>'{"userid":'.$USER->id.'}');
 
                 // Include competency add and position user js modules
-                // SCANMSG TODO: finish conversion of .js.php to .js
-//                $PAGE->requires->string_for_js('selectacompetencyframework', 'competency');
                 $jsmodule = array(
                         'name' => 'totara_positionuser',
                         'fullpath' => '/totara/core/js/position.user.js',
@@ -455,7 +453,6 @@ class competency extends hierarchy {
                 $PAGE->requires->js_init_call('M.totara_positionuser.init',
                          $args, false, $jsmodule);
 
-//                $PAGE->requires->js('/totara/core/js/position.user.js.php?userid='.$USER->id);
                 break;
         }
     }

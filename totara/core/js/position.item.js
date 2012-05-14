@@ -23,12 +23,15 @@
  * @package totara
  * @subpackage totara_core
  */
-M.totara_positionuser = M.totara_positionuser || {
+M.totara_positionitem = M.totara_positionitem || {
 
     Y: null,
     // optional php params and defaults defined here, args passed to init method
     // below will override these values
-    config: {},
+    config: {
+        id:0,
+        frameworkid:0
+    },
 
     /**
      * module initialisation method called by php js_init_call()
@@ -37,6 +40,7 @@ M.totara_positionuser = M.totara_positionuser || {
      * @param string    args supplied in JSON format
      */
     init: function(Y, args){
+
         // save a reference to the Y instance (all of its dependencies included)
         this.Y = Y;
 
@@ -52,55 +56,37 @@ M.totara_positionuser = M.totara_positionuser || {
 
         // check jQuery dependency is available
         if (typeof $ === 'undefined') {
-            throw new Error('M.totara_positionuser.init()-> jQuery dependency required for this module to function.');
+            throw new Error('M.totara_positionitem.init()-> jQuery dependency required for this module to function.');
         }
 
         ///
-        /// Position dialog
+        /// Competency dialog
         ///
         (function() {
-            var url = M.cfg.wwwroot+'/totara/hierarchy/prefix/position/assign/';
-            totaraSingleSelectDialog(
-                'position',
-                M.util.get_string('chooseposition', 'totara_hierarchy') + M.totara_positionuser.config.dialog_display_position,
-                url+'position.php?',
-                'positionid',
-                'positiontitle'
+            var url = M.cfg.wwwroot+ '/totara/hierarchy/prefix/position/assigncompetency/';
+            var id = M.totara_positionitem.config.id;
+            var fid = M.totara_positionitem.config.frameworkid;
+            totaraMultiSelectDialog(
+                'assignedcompetencies',
+                M.util.get_string('assigncompetencies', 'totara_hierarchy'),
+                url+'find.php?assignto='+id+'&frameworkid='+fid+'&add=',
+                url+'assign.php?assignto='+id+'&frameworkid='+fid+'&deleteexisting=1&add='
             );
         })();
 
         ///
-        /// Organisation dialog
+        /// Template dialog
         ///
         (function() {
-            var url = M.cfg.wwwroot+'/totara/hierarchy/prefix/organisation/assign/';
-            totaraSingleSelectDialog(
-                'organisation',
-                M.util.get_string('chooseorganisation', 'totara_hierarchy') + M.totara_positionuser.config.dialog_display_organisation,
-                url+'find.php?',
-                'organisationid',
-                'organisationtitle',
-                undefined,
-                M.totara_positionuser.config.can_edit            // Make selection deletable
+            var url = M.cfg.wwwroot+ '/totara/hierarchy/prefix/position/assigncompetencytemplate/';
+            var id = M.totara_positionitem.config.id;
+            var fid = M.totara_positionitem.config.frameworkid;
+            totaraMultiSelectDialog(
+                'assignedcompetencytemplates',
+                M.util.get_string('assigncompetencytemplate', 'totara_hierarchy'),
+                url+'find.php?assignto='+id+'&frameworkid='+fid+'&add=',
+                url+'assign.php?assignto='+id+'&frameworkid='+fid+'&deleteexisting=1&add='
             );
         })();
-
-        ///
-        /// Manager dialog
-        ///
-        (function() {
-            var url = M.cfg.wwwroot+'/totara/hierarchy/prefix/position/assign/';
-
-            totaraSingleSelectDialog(
-                'manager',
-                M.util.get_string('choosemanager', 'totara_hierarchy') + M.totara_positionuser.config.dialog_display_manager,
-                url+'manager.php?userid='+M.totara_positionuser.config.userid,
-                'managerid',
-                'managertitle',
-                undefined,
-                M.totara_positionuser.config.can_edit            // Make selection deletable
-            );
-        })();
-
     }
 };

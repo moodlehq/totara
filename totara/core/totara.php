@@ -1101,26 +1101,28 @@ function assign_user_position($assignment, $unittest=false) {
         if ($old_managerid != $assignment->managerid) {
             $managerchanged = true;
         }
+        // TODO SCANMSG: Need to figure out how to re-add start time and end time into manager role assignment
+        //          now that the role_assignment record no longer has start/end fields. See:
+        //          http://docs.moodle.org/dev/New_enrolments_in_2.0
+        //          and mdl_enrol and mdl_user_enrolments
+
         // skip this bit during testing as we don't have all the required tables for role assignments
         if (!$unittest) {
+            // Get context
+            $context = get_context_instance(CONTEXT_USER, $assignment->userid);
+            // Get manager role id
+            $roleid = $CFG->managerroleid;
             // Delete role assignment if there was a manager but it changed
             if ($old_managerid && $managerchanged) {
-                role_unassign(null, null, null, null, null, $assignment->reportstoid);
+                role_unassign($roleid, $assignment->userid, $context->id);
             }
             // Create new role assignment if there is now and a manager but it changed
             if ($assignment->managerid && $managerchanged) {
-                // Get context
-                $context = context_user($assignment->userid);
-                // Get manager role id
-                $roleid = $CFG->managerroleid;
                 // Assign manager to user
                 $raid = role_assign(
                     $roleid,
                     $assignment->managerid,
-                    null,
-                    $context->id,
-                    (!$assignment->timevalidfrom ? 0 : $assignment->timevalidfrom),
-                    (!$assignment->timevalidto ? 0 : $assignment->timevalidto)
+                    $context->id
                 );
                 // update reportstoid
                 $assignment->reportstoid = $raid;
@@ -1128,7 +1130,8 @@ function assign_user_position($assignment, $unittest=false) {
         }
         // Store the date of this assignment
         require_once($CFG->dirroot.'/totara/program/lib.php');
-        prog_store_position_assignment($assignment);
+        //TODO SCANMSG: Uncomment once programs is merged
+        //prog_store_position_assignment($assignment);
         // Save assignment
         $assignment->save($managerchanged);
         $transaction->allow_commit();

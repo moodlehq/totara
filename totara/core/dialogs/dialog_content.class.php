@@ -390,7 +390,7 @@ class totara_dialog_content {
      * @return  string  Markup
      */
     public function generate_search_interface() {
-        global $CFG;
+        global $CFG, $PAGE;
 
         if (empty($this->search_code)) {
             return '';

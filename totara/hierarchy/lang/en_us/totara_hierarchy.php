@@ -1,5 +1,4 @@
 <?php
-
 $string['organisationaddedframework'] = 'The organization framework "{$a}" has been added';
 $string['addedorganisation'] = 'The organization "{$a}" has been added';
 $string['addmultipleneworganisation'] = 'Add multiple organizations';

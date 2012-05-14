@@ -46,5 +46,29 @@ M.totara_core = M.totara_core || {
                 }
             }
         }
+    },
+
+    /**
+     * sets up a jQuery datepicker based on provided selector, we intentionally
+     * override the isRTL option here, and float the datepicker fields left/right
+     * to get the picker to appear onthe correct side
+     *
+     * @param object    YUI instance
+     * @param string    selector to bind the datepicker instance to
+     * @param string    format for date display
+     * @param array     values to determine datepicker icon
+     * @param bool      langconfig text direction
+     */
+    build_datepicker: function(Y, selector, dateformat, button_img, direction){
+        $(selector).datepicker(
+            {
+                dateFormat: dateformat,
+                showOn: 'both',
+                buttonImage: M.util.image_url(button_img[0], button_img[1]),
+                buttonImageOnly: true,
+                constrainInput: true,
+                isRTL: direction
+            }
+        );
     }
 };

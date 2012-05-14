@@ -40,12 +40,14 @@ define('POSITION_TYPE_ASPIRATIONAL',    3);
 
 // List available position types
 // (Commented out unused types here)
+global $POSITION_TYPES;
 $POSITION_TYPES = array(
     POSITION_TYPE_PRIMARY       => 'primary',
     POSITION_TYPE_SECONDARY     => 'secondary',
     POSITION_TYPE_ASPIRATIONAL  => 'aspirational'
 );
 
+global $POSITION_CODES;
 $POSITION_CODES = array_flip($POSITION_TYPES);
 
 
@@ -83,8 +85,16 @@ class position extends hierarchy {
             TOTARA_JS_TREEVIEW
         ));
 
-        $PAGE->requires->js('/totara/core/js/position.item.js.php?id='.$item->id.'&frameworkid='.$item->frameworkid);
+        $args = array('args'=>'{"id":'.$item->id.',"frameworkid":'.$item->frameworkid.'}');
 
+        // Include position user js modules
+        $PAGE->requires->strings_for_js(array('assigncompetencies','assigncompetencytemplate'), 'totara_hierarchy');
+        $jsmodule = array(
+                'name' => 'totara_positionitem',
+                'fullpath' => '/totara/core/js/position.item.js',
+                'requires' => array('json'));
+        $PAGE->requires->js_init_call('M.totara_positionitem.init',
+                 $args, false, $jsmodule);
     }
 
     /**
@@ -569,11 +579,11 @@ class position_assignment extends data_object {
             $newpath = $this->managerpath;
 
             // Update child items
-            $length_sql = $DB->sql_length("/{$this->userid}/");
-            $position_sql = $DB->sql_position("/{$this->userid}/", 'managerpath');
+            $length_sql = $DB->sql_length("'/{$this->userid}/'");
+            $position_sql = $DB->sql_position("'/{$this->userid}/'", 'managerpath');
             $substr_sql = $DB->sql_substr('managerpath', "$position_sql + $length_sql");
 
-            $managerpath = $DB->sql_concat("{$newpath}/", $substr_sql);
+            $managerpath = $DB->sql_concat("'{$newpath}/'", $substr_sql);
             $like = $DB->sql_like('managerpath', '?');
             $sql = "UPDATE {pos_assignment}
                 SET managerpath = {$managerpath}

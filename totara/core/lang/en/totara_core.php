@@ -184,6 +184,8 @@ $string['competency_typeicon'] = 'Competency type icon';
 $string['organisation_typeicon'] = 'Organisation type icon';
 
 //Errors
+$string['error:courseidincorrect'] = 'Course id is incorrect.';
+$string['error:useridincorrect'] = 'User id is incorrect.';
 $string['error:norolesfound'] = 'No roles found';
 $string['error:notificationsparamtypewrong'] = 'Incorrect param type sent to Totara notifications';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
@@ -202,4 +204,7 @@ $string['blended'] = 'Blended';
 $string['facetoface'] = 'Face-to-face';
 //Button labels
 $string['save'] = 'Save';
+
+$string['pos_description'] = 'Description';
+$string['pos_description_help'] = 'Description of the position';
 ?>

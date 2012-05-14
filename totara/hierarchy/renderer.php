@@ -401,7 +401,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
             $out .= html_writer::start_tag('div', array('class' => 'singlebutton'));
             $out .= html_writer::start_tag('form', array('action' => $addurl, 'method' => 'get'));
             $out .= html_writer::start_tag('div');
-            $out .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => "show-".$displaytitle."dialog", 'value' => $add_button_text));
+            $out .= html_writer::empty_tag('input', array('type' => 'submit', 'id' => "show-".$displaytitle."-dialog", 'value' => $add_button_text));
             $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "assignto", 'value' => $itemid));
             $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "nojs", 'value' => '1'));
             $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "returnurl", 'value' => qualified_me()));

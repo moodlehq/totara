@@ -45,27 +45,29 @@ function local_js($options = array()) {
     global $CFG, $PAGE;
 
     // Include required javascript libraries
-    $PAGE->requires->js('/totara/core/js/lib/jquery-1.6.4.min.js');
+    // jQuery component and UI bundle found here: http://jqueryui.com/download
+    // Core, Widget, Position, Dialog, Tabs, Datepicker, Effects Core, Effects "Fade"
+    $PAGE->requires->js('/totara/core/js/lib/jquery-1.7.2.min.js');
 
 
     // If UI
     if (in_array(TOTARA_JS_UI, $options)) {
 
-        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.7.2.custom.min.js');
+        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.8.20.custom.min.js');
 
     }
 
     // If dialog
     if (in_array(TOTARA_JS_DIALOG, $options)) {
 
-        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.7.2.custom.min.js');
+        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.8.20.custom.min.js');
 
         // Load required strings into the JS global namespace in the form
         // M.str.COMPONENT.IDENTIFIER, eg; M.str.totara_core['save']. Can also
         // be accessed with M.util.get_string(IDENTIFIER, COMPONENT), use third
         // arg for a single {$a} replacement. See /lib/outputrequirementslib.php
         // for detail and limitations.
-        $PAGE->requires->string_for_js('save', 'totara_core');
+        $PAGE->requires->strings_for_js(array('save','delete'), 'totara_core');
 
         // Include the totara_dialog JS module. Args supplied to the module's
         // init method must be a php array (or null if none), the first index
@@ -92,7 +94,7 @@ function local_js($options = array()) {
     // If datepicker enabled
     if (in_array(TOTARA_JS_DATEPICKER, $options)) {
 
-        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.7.2.custom.min.js');
+        $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.8.20.custom.min.js');
 
         $lang = current_language();
 
@@ -130,38 +132,14 @@ function local_js($options = array()) {
  * @return string Script contents to be included in the page
  */
 function build_datepicker_js($selector, $includetags = true, $dateformat=null) {
-    global $OUTPUT;
-    $out = '';
-
-    if ($includetags) {
-        $out .= '<script type="text/javascript">';
-    }
-
+    global $PAGE;
     if (empty($dateformat)) {
         $dateformat = get_string('datepickerdisplayformat', 'totara_core');
     }
-    $button_img = $OUTPUT->pix_url('calendar', 'totara_core');
-    // we are choosing to override the isRTL option here, instead float
-    // the datepicker fields left/right to get the picker to appear on
-    // the correct side
-    $out .= <<<HEREDOC
-    $(function() {
-        $('{$selector}').datepicker(
-            {
-                dateFormat: '{$dateformat}',
-                showOn: 'both',
-                buttonImage: '{$button_img}',
-                buttonImageOnly: true,
-                constrainInput: true,
-                isRTL: false // positioning handled via CSS instead
-            }
-        );
-    });
-HEREDOC;
-    if ($includetags) {
-        $out .= '</script>';
-    }
-    return $out;
+    $button_img = array('calendar', 'totara_core');
+    $dir = (get_string('thisdirection', 'langconfig') == 'rtl');
+    $args = array($selector, $dateformat, $button_img, $dir);
+    $PAGE->requires->js_init_call('M.totara_core.build_datepicker', $args);
 }
 
 function build_search_interface($prefix, $frameworkid=0, $select=true,

@@ -210,6 +210,7 @@ $string['assignnewevidenceitem'] = 'Assign new evidence item';
 $string['competencybacktoallframeworks'] = 'Back to all competency frameworks';
 $string['cannotupdatedisplaysettings'] = 'Could not update display settings';
 $string['changeto'] = 'Change to';
+$string['formrequiresjs'] = 'This form requires Javascript to be enabled.';
 $string['clickfornonjsform'] = 'Click here for a non-javascript version of this form';
 $string['competencies'] = 'Competencies';
 $string['competencytemplates'] = 'Competency templates';
@@ -615,7 +616,19 @@ $string['positionerror:createtype'] = 'Error creating position type "{$a}"';
 $string['positionerror:deletedtype'] = 'Error deleting position type "{$a}".';
 $string['positionnotypes'] = 'No position types';
 $string['positiontypes'] = 'Position types';
+$string['useraspirationalposition'] = 'Aspirational Position';
 //Help strings
+$string['titlefullname_help'] = 'This is the full name of the position (job role) title';
+$string['titleshortname_help'] = 'This is the short name of the position (job role) title and can be used for display purposes. ';
+$string['chooseposition_help'] = 'Click **Choose position** to select the correct position (job role) for the user. This is useful for reporting purposes.';
+$string['useraspirationalposition_help'] = 'This is the target position the user will be progressing towards. Click **Choose position** to select the user\'s aspirational position from position framework(s) set up.';
+$string['chooseorganisation_help'] = 'Click **Choose organisation** to select where the user works in the organisation. This will be useful for reporting purposes.';
+$string['choosemanager_help'] = 'Click **Choose manager** to select the user\'s manager.
+
+If the name you are looking for does not appear in the list, a site administrator will need to ensure that the user has been assigned to the "Manager" role.';
+$string['startdate_help'] = 'Click the calendar icon to select the date the user started in that position.';
+$string['finishdate_help'] = 'Click the calendar icon to select the date the user finished in that position.';
+
 $string['fullnametype_help'] = 'Type full name';
 $string['positiontypedescription_help'] = 'A longer text description of the position type';
 $string['organisationtypedescription_help'] = 'A longer text description of the organisation type';

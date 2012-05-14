@@ -132,7 +132,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
 
         // Print error message then die if there are no frameworks
         if (empty($this->framework)) {
-            echo '<p>' . get_string('noframeworkssetup', $prefix) . '</p>';
+            echo '<p>' . get_string($prefix.'noframeworkssetup', 'totara_hierarchy') . '</p>';
             die();
         }
 

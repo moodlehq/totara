@@ -2086,8 +2086,37 @@ class global_navigation extends navigation_node {
             }
         }
 
-        // Link to users Positions page
-        $usernode->add(get_string('positions', 'totara_hierarchy'), new moodle_url('/user/positions.php', $baseargs));
+        $canview = false;
+        if (!empty($USER->id) && ($user->id == $USER->id)) {
+            // Can view own profile
+            $canview = true;
+        }
+        elseif (has_capability('moodle/user:viewdetails', $coursecontext)) {
+            $canview = true;
+        }
+        elseif (has_capability('moodle/user:viewdetails', $usercontext)) {
+            $canview = true;
+        }
+
+        if ($canview) {
+            // rewrite base args for position tab as 'id' needed for pos_assignment id
+            $posbaseargs = $baseargs;
+            if (isset($posbaseargs['id'])) {
+                $posbaseargs['user'] = $posbaseargs['id'];
+                unset($posbaseargs['id']);
+            }
+            $url = new moodle_url('/user/positions.php', array_merge($posbaseargs, array('type' => 'primary')));
+            // Link to users Positions page
+            $positions = $usernode->add(get_string('positions', 'totara_hierarchy'), $url, self::TYPE_CONTAINER);
+
+            require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
+            global $POSITION_TYPES;
+
+            foreach ($POSITION_TYPES as $ptype) {
+                $url = new moodle_url('/user/positions.php', array_merge($posbaseargs, array('type' => $ptype)));
+                $positions->add(get_string('type' . $ptype, 'totara_hierarchy'), $url, self::TYPE_USER);
+            }
+        }
 
         return true;
     }
