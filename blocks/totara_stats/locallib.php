@@ -1,12 +1,26 @@
 <?php
-/**
- * locallib.php for totara stats block
- *
- * @package   totara
- * @copyright 2010 Totara Learning Solutions Ltd
- * @author    Dan Marsden <dan@catalyst.net.nz>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+/*
+* This file is part of Totara LMS
+*
+* Copyright (C) 2010-2012 Totara Learning Solutions LTD
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* @author Dan Marsden <dan@catalyst.net.nz>
+* @package totara
+* @subpackage blocks_totara_stats
+*/
 
 define('STATS_EVENT_TIME_SPENT', 1);
 
@@ -30,6 +44,7 @@ define('STATS_EVENT_OBJ_ACHIEVED', 5);
  * @return boolean (result of insert_record)
  */
 function totara_stats_add_event($time, $userid, $eventtype, $data=null, $data2=null) {
+    global $DB;
     $newevent = new stdClass();
 
     $newevent->timestamp = $time;
@@ -38,7 +53,7 @@ function totara_stats_add_event($time, $userid, $eventtype, $data=null, $data2=n
     $newevent->data = $data; //string for events with more info.
     $newevent->data2 = $data2; //integer for timebased events to allow easy sql usage.
 
-    return insert_record('block_totara_stats', $newevent);
+    return $DB->insert_record('block_totara_stats', $newevent);
 }
 
 /**
@@ -50,7 +65,8 @@ function totara_stats_add_event($time, $userid, $eventtype, $data=null, $data2=n
  * @return boolean (result of insert_record)
  */
 function totara_stats_remove_event($userid, $eventtype, $data2) {
-    return delete_records('block_totara_stats', 'userid', $userid, 'eventtype', $eventtype, 'data2', $data2); 
+    global $DB;
+    return $DB->delete_records('block_totara_stats', array('userid' => $userid, 'eventtype' => $eventtype, 'data2' => $data2));
 }
 
 /**
@@ -81,61 +97,13 @@ function totara_stats_timespent($from, $to) {
 
                 $delta = $aLog->time - $lasttime[$aLog->userid];
                 if ($delta < $minutesbetweensession * MINSECS){
-                    $totalTime[$aLog->userid] =$totalTime[$aLog->userid] + $delta;
+                    $totalTime[$aLog->userid] = $totalTime[$aLog->userid] + $delta;
                 }
                 $lasttime[$aLog->userid] = $aLog->time;
             }
         }
+    $logs->close();
     return $totalTime;
-}
-
-/**
- * used to return stats for admin stats view
- *
- * @param object $user - Full $USER record (usually from $USER)
- * @return array
- */
-function totara_stats_admin_stats($user, $config=null) {
-    global $CFG;
-    //TODO - create a way of setting timeframes
-    $to = time();
-    $from = $to - (60*60*24*30); //30 days in the past.
-    $numhours = 12;
-    if (!empty($config->statlearnerhours_hours)) {
-        $numhours = (int)$config->statlearnerhours_hours;
-    }
-
-    $statssql = array();
-    if (empty($config) || !empty($config->statlearnerhours)) {
-        $statssql[1]->sql = "SELECT count(DISTINCT userid) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_TIME_SPENT. " AND timestamp > ".$from. " AND timestamp < ".$to.
-                            " GROUP BY userid HAVING sum(data2) > ".$numhours*60*60;
-        $statssql[1]->string = 'statlearnerhours';
-        $statssql[1]->stringparam->hours = $numhours; //extra params used by this particular query - could be configurable in future?
-    }
-
-    if (empty($config) || !empty($config->statcoursesstarted)) {
-        $statssql[2]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_COURSE_STARTED. " AND timestamp > ".$from. " AND timestamp < ".$to;
-        $statssql[2]->string = 'statcoursesstarted';
-    }
-    if (empty($config) || !empty($config->statcoursescompleted)) {
-        $statssql[3]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_COURSE_COMPLETE. " AND timestamp > ".$from. " AND timestamp < ".$to;
-        $statssql[3]->string = 'statcoursescompleted';
-    }
-    if (empty($config) || !empty($config->statcompachieved)) {
-        $statssql[4]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_COMP_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to;
-        $statssql[4]->string = 'statcompachieved';
-    }
-    if (empty($config) || !empty($config->statobjachieved)) {
-        $statssql[5]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_OBJ_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to;
-        $statssql[5]->string = 'statobjachieved';
-    }
-
-    return $statssql;
 }
 
 /**
@@ -145,7 +113,6 @@ function totara_stats_admin_stats($user, $config=null) {
  * @return array
  */
 function totara_stats_manager_stats($user, $config=null) {
-    global $CFG;
     //TODO - create a way of setting timeframes
     $to = time();
     $from = $to - (60*60*24*30); //30 days in the past.
@@ -154,63 +121,47 @@ function totara_stats_manager_stats($user, $config=null) {
         $numhours = (int)$config->statlearnerhours_hours;
     }
 
-
-    $managerroleid = $CFG->managerroleid;
-
-    //TODO: look to see if there's a more efficient way to manage this. - eg get list of userids, and pass userids into queries?
     //might need to be careful with length of sql query limit - list of userids could be very large.
 
     // return users with this user as manager
-    $usersql = " AND userid IN (SELECT c.instanceid as userid
-        FROM {$CFG->prefix}role_assignments ra
-        LEFT JOIN {$CFG->prefix}context c
-          ON c.id=ra.contextid
-        JOIN {$CFG->prefix}user u
-          ON u.id=c.instanceid
-        WHERE ra.roleid={$managerroleid}
-          AND ra.userid=".$user->id.
-        " AND c.contextlevel=30) ";
-
+    $commonsql = " AND timestamp > :from AND timestamp < :to
+        AND userid IN (SELECT DISTINCT userid FROM {pos_assignment} where managerid = :userid) ";
+    $params = array('from' => $from, 'to' => $to, 'userid' => $user->id);
 
     $statssql = array();
     if (empty($config) || !empty($config->statlearnerhours)) {
-        $statssql[1]->sql = "SELECT count(DISTINCT userid) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_TIME_SPENT. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql.
+        $statssql[1]->sql = "SELECT count(DISTINCT userid) FROM {block_totara_stats} ".
+                            "WHERE eventtype = ". STATS_EVENT_TIME_SPENT.$commonsql.
                             " GROUP BY userid HAVING sum(data2) > ".$numhours*60*60;
+        $statssql[1]->sqlparams = $params;
         $statssql[1]->string = 'statlearnerhours';
         $statssql[1]->stringparam->hours = $numhours; //extra params used by this particular query - could be configurable in future?
     }
     if (empty($config) || !empty($config->statcoursesstarted)) {
-        $statssql[2]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_COURSE_STARTED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql;
+        $statssql[2]->sql = "SELECT count(*) FROM {block_totara_stats} ".
+                            "WHERE eventtype = ". STATS_EVENT_COURSE_STARTED.$commonsql;
+        $statssql[2]->sqlparams = $params;
         $statssql[2]->string = 'statcoursesstarted';
     }
     if (empty($config) || !empty($config->statcoursescompleted)) {
-        $statssql[3]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_COURSE_COMPLETE. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql;
+        $statssql[3]->sql = "SELECT count(*) FROM {block_totara_stats} ".
+                            "WHERE eventtype = ". STATS_EVENT_COURSE_COMPLETE.$commonsql;
+        $statssql[3]->sqlparams = $params;
         $statssql[3]->string = 'statcoursescompleted';
     }
     if (empty($config) || !empty($config->statcompachieved)) {
-        $statssql[4]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_COMP_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql;
+        $statssql[4]->sql = "SELECT count(*) FROM {block_totara_stats} ".
+                            "WHERE eventtype = ". STATS_EVENT_COMP_ACHIEVED.$commonsql;
+        $statssql[4]->sqlparams = $params;
         $statssql[4]->string = 'statcompachieved';
     }
     if (empty($config) || !empty($config->statobjachieved)) {
-        $statssql[5]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_OBJ_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql;
+        $statssql[5]->sql = "SELECT count(*) FROM {block_totara_stats} ".
+                            "WHERE eventtype = ". STATS_EVENT_OBJ_ACHIEVED.$commonsql;
+        $statssql[5]->sqlparams = $params;
         $statssql[5]->string = 'statobjachieved';
     }
     return $statssql;
-}
-
-/**
- * used to return stats for user stats view
- *
- * @param object $user - Full $USER record (usually from $USER)
- * @return array
- */
-function totara_stats_user_stats($user, $config=null) {
-
 }
 
 /**
@@ -220,6 +171,7 @@ function totara_stats_user_stats($user, $config=null) {
  * @return array
  */
 function totara_stats_sql_helper($statsql) {
+    global $DB, $OUTPUT;
     $results = array();
     $i = 0;
     foreach ($statsql as $stat) {
@@ -227,9 +179,11 @@ function totara_stats_sql_helper($statsql) {
         if (!empty($stat->stringparam)) {
             $stringparam = $stat->stringparam;
         }
-
-        $stringparam->count = count_records_sql($stat->sql);
-        $results[$i] = get_string($stat->string, 'block_totara_stats', $stringparam);
+        $stringparam->count = $DB->count_records_sql($stat->sql, $stat->sqlparams);
+        $data = new stdClass();
+        $data->displaystring = get_string($stat->string, 'block_totara_stats', $stringparam);
+        $data->icon = $OUTPUT->pix_icon($stat->string, $data->displaystring, 'block_totara_stats');
+        $results[$i] = $data;
         $i++;
     }
     return $results;
@@ -244,15 +198,17 @@ function totara_stats_sql_helper($statsql) {
 function totara_stats_output($stats) {
     $return = '';
     if (!empty($stats)) {
-        $return = "<table><tbody>";
-	$counter = 0;
+        $table = new html_table();
         foreach ($stats as $key => $stat) {
-	    $class = ($counter % 2) ? 'noshade' : 'shade';
-	    $class .= ' stat' . $counter; //hack to uniquely identify the stats
-	    $counter++;
-            $return .= "<tr class=\"$class\"><td class=\"staticon\"></td><td class=\"stattext\"><p>".$stat."</p></td></tr>";
+            $rowclass = ($key % 2) ? 'noshade' : 'shade';
+            $cell1 = new html_table_cell($stat->icon);
+            $cell1->attributes['class'] = 'staticon';
+            $cell2 = new html_table_cell(html_writer::tag('p', $stat->displaystring));
+            $row = new html_table_row(array($cell1, $cell2));
+            $row->attributes['class'] = $rowclass;
+            $table->data[] = $row;
         }
-        $return .= "</tbody></table>";
+        $return = html_writer::table($table);
     }
     return $return;
 }
@@ -263,68 +219,23 @@ function totara_stats_output($stats) {
  * @param int $from - timestamp for start of stats generation
  * @param int $to - timestamp for end of stats generation
  * @param int $courseid (optional) - course id of stats to return
- * @return string
+ * @return recordset
  */
 function totara_stats_get_logs($from, $to, $courseid=null) {
-    global $CFG;
+    global $DB;
 
-    $courseclause = (!is_null($courseid)) ? " AND course = $courseid " : '' ;
-
-    $sql = "
-       SELECT
-         *
-       FROM
-         {$CFG->prefix}log
-       WHERE
-         time > $from AND
-         time < $to
-         $courseclause
-       ORDER BY userid, time";
-
-    if($rs = get_recordset_sql($sql)){
-        $logs = array();
-        while($log = rs_fetch_next_record($rs)){
-            $logs[] = $log;
-        }
-        rs_close($rs);
-        return $logs;
+    $parms = array($from, $to);
+    $courseclause = '';
+    if (!is_null($courseid)) {
+        $courseclause = " AND course = ? ";
+        $parms[]= $courseid;
     }
-    return array();
-}
 
-/**
- * returns role of user in dashlet page
- *
- * @param int $pageid
- * @return string rolename
- */
-function totara_stats_get_dashrole($pageid) {
-    global $CFG;
-    // get Role of user in this page.
-    $sql = "SELECT r.shortname
-            FROM {$CFG->prefix}dashb d
-            INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
-            INNER JOIN {$CFG->prefix}role r on d.roleid = r.id
-            WHERE di.id = {$pageid}";       // The pageid is the dashb instance id
-    $role = get_field_sql($sql);
-    return $role;
-}
+    $sql = "SELECT * FROM {log}
+            WHERE time > ? AND time < ?
+            $courseclause
+            ORDER BY userid, time";
 
-function totara_stats_build_sql($role, $user, $config=null) {
-    switch ($role) {
-    case 'admin' :
-    case 'administrator' :
-        $stats = totara_stats_admin_stats($user, $config);
-        break;
-    case 'manager' :
-        $stats = totara_stats_manager_stats($user, $config);
-        break;
-    case 'teacher' :
-    case 'trainer' :
-    case 'student' :
-    default:
-        $stats = totara_stats_user_stats($user, $config);
-        break;
-    }
-    return $stats;
+    $rs = $DB->get_recordset_sql($sql, $parms);
+    return $rs;
 }
