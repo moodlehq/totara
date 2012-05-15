@@ -227,7 +227,7 @@ class dp_program_component extends dp_base_component {
                         $duedateout = null;
                     }
                 } else {
-                    $datepattern = get_string('datepickerregexphp');
+                    $datepattern = get_string('datepickerregexphp', 'totara_core');
                     if (preg_match($datepattern, $duedate, $matches) == 0) {
                         // skip badly formatted date strings
                         $badduedates[] = $id;

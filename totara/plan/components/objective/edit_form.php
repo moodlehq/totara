@@ -108,10 +108,10 @@ class plan_objective_edit_form extends moodleform {
 
         // Due dates
         if ($duedateallow && ($duedatemode == DP_DUEDATES_OPTIONAL || $duedatemode == DP_DUEDATES_REQUIRED)) {
-            $mform->addElement('text', 'duedate', get_string('duedate', 'local_plan'), array('placeholder'=>get_string('datepickerplaceholder')));
+            $mform->addElement('text', 'duedate', get_string('duedate', 'local_plan'), array('placeholder'=>get_string('datepickerplaceholder', 'totara_core')));
             $mform->setType('duedate', PARAM_TEXT);
 
-            $mform->addRule('duedate', get_string('error:dateformat','local_plan', get_string('datepickerplaceholder')), 'regex', get_string('datepickerregexphp'));
+            $mform->addRule('duedate', get_string('error:dateformat','local_plan', get_string('datepickerplaceholder', 'totara_core')), 'regex', get_string('datepickerregexphp', 'totara_core'));
 
             // Whether to make the field optional
             if ($duedatemode == DP_DUEDATES_REQUIRED) {

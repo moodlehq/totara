@@ -103,10 +103,10 @@ totaraDialog_extension_handler.prototype._save = function() {
     var extensiontime = $('.extensiontime', this._container).val();
     var extensionreason = $('.extensionreason', this._container).val();
 
-    var dateformat = new RegExp("<?php echo get_string('datepickerregexjs'); ?>");
+    var dateformat = new RegExp("<?php echo get_string('datepickerregexjs', 'totara_core'); ?>");
 
     if (dateformat.test(extensiontime) == false) {
-        alert("<?php echo get_string('pleaseentervaliddate', 'local_program', get_string('datepickerplaceholder')); ?>");
+        alert("<?php echo get_string('pleaseentervaliddate', 'local_program', get_string('datepickerplaceholder', 'totara_core')); ?>");
     } else if (extensionreason=='') {
         alert("<?php echo get_string('pleaseentervalidreason', 'local_program'); ?>");
     } else {

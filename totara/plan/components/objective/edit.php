@@ -103,7 +103,7 @@ if ( $plancompleted ){
 
 $mform = $component->objective_form( $objectiveid );
 if (isset($objective->duedate)) {
-    $objective->duedate = userdate($objective->duedate, get_string('strftimedatenumeric'), $CFG->timezone, false);
+    $objective->duedate = userdate($objective->duedate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
 }
 $mform->set_data($objective);
 
@@ -133,7 +133,7 @@ if ( $deleteyes ){
                 $data->fullname,
                 isset($data->description)?$data->description:null,
                 isset($data->priority)?$data->priority:null,
-                isset($data->duedate)?totara_date_parse_from_format(get_string('datepickerparseformat'), $data->duedate):null,
+                isset($data->duedate)?totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate):null,
                 isset($data->scalevalueid)?$data->scalevalueid:null
         );
         if (!$result){
@@ -149,7 +149,7 @@ if ( $deleteyes ){
         $record->fullname = $data->fullname;
         $record->description = $data->description;
         $record->priority = isset($data->priority)?$data->priority:null;
-        $record->duedate = isset($data->duedate)? totara_date_parse_from_format(get_string('datepickerparseformat'), $data->duedate):null;
+        $record->duedate = isset($data->duedate)? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate):null;
         $record->scalevalueid = $data->scalevalueid;
         $record->approved = $component->approval_status_after_update();
 

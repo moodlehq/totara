@@ -118,7 +118,7 @@ if ($data = $form->get_data()) {
         }
         // Save plan data
         unset($data->startdate);
-        $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat'), $data->enddate);  // convert to timestamp
+        $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->enddate);  // convert to timestamp
         if (!update_record('dp_plan', $data)) {
             totara_set_notification(get_string('planupdatefail', 'local_plan'), $editurl);
         }
@@ -142,7 +142,7 @@ add_to_log(SITEID, 'plan', 'view', "view.php?id={$plan->id}", $plan->name);
 if ($plan->timecompleted) {
     $plan->enddate = userdate($plan->timecompleted, get_string('strftimedate'), $CFG->timezone, false);
 } else {
-    $plan->enddate = userdate($plan->enddate, get_string('strftimedatenumeric'), $CFG->timezone, false);
+    $plan->enddate = userdate($plan->enddate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false);
 }
 $form->set_data($plan);
 $form->display();

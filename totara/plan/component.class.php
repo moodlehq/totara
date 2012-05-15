@@ -1341,8 +1341,8 @@ abstract class dp_base_component {
      */
     function display_duedate_as_form($duedate, $name, $inputclass='', $itemid) {
         global $CFG;
-        $duedatestr = !empty($duedate) ? userdate($duedate, get_string('strftimedatenumeric'), $CFG->timezone, false) : '';
-        return '<input id="'.$name.'" type="text" name="'.$name.'" placeholder="' . get_string('datepickerplaceholder') . '" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\" />";
+        $duedatestr = !empty($duedate) ? userdate($duedate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) : '';
+        return '<input id="'.$name.'" type="text" name="'.$name.'" placeholder="' . get_string('datepickerplaceholder', 'totara_core') . '" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass."\" />";
     }
 
 

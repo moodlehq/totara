@@ -36,7 +36,7 @@ require_login();
 <div id="prog-completion-fixed-date">
     <label><?php echo get_string('completeby', 'local_program'); ?></label>
 
-    <input type="text" class="completiontime" name="completiontime" placeholder="<?php echo get_string('datepickerplaceholder'); ?>"/>
+    <input type="text" class="completiontime" name="completiontime" placeholder="<?php echo get_string('datepickerplaceholder', 'totara_core'); ?>"/>
 
     <button class="fixeddate" ><?php echo get_string('setfixedcompletiondate', 'local_program'); ?></button>
 </div>

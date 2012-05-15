@@ -84,7 +84,7 @@ if ($data = $form->get_data()) {
     if (isset($data->submitbutton)) {
         begin_sql();
 
-        $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat'), $data->enddate);  // convert to timestamp
+        $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->enddate);  // convert to timestamp
 
         // Set up the plan
         if (!$newid = insert_record('dp_plan', $data)) {

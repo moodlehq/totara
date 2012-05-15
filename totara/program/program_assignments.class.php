@@ -531,7 +531,7 @@ abstract class prog_assignment_category {
                 }
 
                 if ($object->completionevent == COMPLETION_EVENT_NONE) {
-                    $object->completiontime = totara_date_parse_from_format(get_string('datepickerparseformat'),$object->completiontime);
+                    $object->completiontime = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$object->completiontime);
                 }
                 else {
                     $parts = explode(' ',$object->completiontime);
@@ -648,7 +648,7 @@ abstract class prog_assignment_category {
                 // Completiontime must be a timestamp
 
                 // Print a date
-                $item->completiontime = trim( userdate($item->completiontime, get_string('strftimedatenumeric'), $CFG->timezone, false) );
+                $item->completiontime = trim( userdate($item->completiontime, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) );
                 $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
             }
             else {
@@ -697,7 +697,7 @@ abstract class prog_assignment_category {
             return get_string('completewithinevent','local_program',$a);
         }
         else {
-            $datepattern = get_string('datepickerregexphp');
+            $datepattern = get_string('datepickerregexphp', 'totara_core');
             if (preg_match($datepattern, $completiontime, $matches) == 0) {
                 return '';
             }
@@ -1654,7 +1654,7 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
         }
 
         // Check if the profile field contains a date in the lanconfig form...
-        $datepattern = get_string('datepickerregexphp');
+        $datepattern = get_string('datepickerregexphp', 'totara_core');
         if (preg_match($datepattern, $date, $matches) > 0) {
             list($day, $month, $year) = explode('/', $date);
             $date = $month.'/'.$day.'/'.$year;

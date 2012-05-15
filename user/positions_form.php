@@ -175,23 +175,23 @@ class user_position_assignment_form extends moodleform {
             }
 
             $group = array();
-            $group[] = $mform->createElement('text', 'timevalidfrom','', array('name'=>get_string('startdate', 'position'),'placeholder' => get_string('datepickerplaceholder')));
+            $group[] = $mform->createElement('text', 'timevalidfrom','', array('name'=>get_string('startdate', 'position'),'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
             $mform->addGroup($group, 'timevalidfrom_group', get_string('startdate', 'position'), array(' '), false);
             $mform->setType('timevalidfrom', PARAM_TEXT);
-            $mform->setDefault('timevalidfrom', get_string('datepickerdisplayformat','langconfig'));
+            $mform->setDefault('timevalidfrom', get_string('datepickerdisplayformat','totara_core'));
             $mform->setHelpButton('timevalidfrom_group', array('userpositionstartdate', get_string('startdate', 'position')), true);
 
             $group = array();
-            $group[] = $mform->createElement('text', 'timevalidto', '', array('name'=>get_string('finishdate', 'position'),'placeholder' => get_string('datepickerplaceholder')));
+            $group[] = $mform->createElement('text', 'timevalidto', '', array('name'=>get_string('finishdate', 'position'),'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
             $mform->addGroup($group, 'timevalidto_group', get_string('finishdate', 'position'), array(' '), false);
             $mform->setType('timevalidto', PARAM_TEXT);
-            $mform->setDefault('timevalidto', get_string('datepickerdisplayformat','langconfig'));
+            $mform->setDefault('timevalidto', get_string('datepickerdisplayformat','totara_core'));
             $mform->setHelpButton('managerselector', array('userpositionmanager', get_string('choosemanager', 'position')), true);
             $mform->setHelpButton('timevalidto_group', array('userpositionfinishdate', get_string('finishdate', 'position')), true);
 
-            $rule1['timevalidfrom'][] = array('Enter a valid date','regex' , get_string('datepickerregexphp'));
+            $rule1['timevalidfrom'][] = array('Enter a valid date','regex' , get_string('datepickerregexphp', 'totara_core'));
             $mform->addGroupRule('timevalidfrom_group', $rule1);
-            $rule2['timevalidto'][] = array('Enter a valid date','regex' , get_string('datepickerregexphp'));
+            $rule2['timevalidto'][] = array('Enter a valid date','regex' , get_string('datepickerregexphp', 'totara_core'));
             $mform->addGroupRule('timevalidto_group', $rule2);
         }
 
@@ -213,7 +213,7 @@ class user_position_assignment_form extends moodleform {
                 $mform->setDefault('timevalidfrom', '');
             }
             else {
-                $mform->setDefault('timevalidfrom', date(get_string('datepickerparseformat','langconfig'), $timevalidfromdateint));
+                $mform->setDefault('timevalidfrom', date(get_string('datepickerparseformat', 'totara_core'), $timevalidfromdateint));
             }
         }
 
@@ -227,7 +227,7 @@ class user_position_assignment_form extends moodleform {
                 $mform->setDefault('timevalidto', '');
             }
             else {
-                $mform->setDefault('timevalidto', date(get_string('datepickerparseformat','langconfig'), $timevalidtodateint));
+                $mform->setDefault('timevalidto', date(get_string('datepickerparseformat', 'totara_core'), $timevalidtodateint));
             }
         }
     }
@@ -287,16 +287,16 @@ class user_position_assignment_form extends moodleform {
         $result = array();
 
         $timevalidfromstr = isset($data['timevalidfrom'])?$data['timevalidfrom']:'';
-        $timevalidfrom = totara_date_parse_from_format(get_string('datepickerparseformat','langconfig'),$timevalidfromstr);
+        $timevalidfrom = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$timevalidfromstr);
         $timevalidtostr = isset($data['timevalidto'])?$data['timevalidto']:'';
-        $timevalidto = totara_date_parse_from_format(get_string('datepickerparseformat','langconfig'),$timevalidtostr);
+        $timevalidto = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$timevalidtostr);
 
         // Enforce valid dates
-        if ( false === $timevalidfrom && $timevalidfromstr !== get_string('datepickerdisplayformat','langconfig') && $timevalidfromstr !== '' ){
-            $result['timevalidfrom'] = get_string('error:dateformat','position', get_string('datepickerplaceholder'));
+        if ( false === $timevalidfrom && $timevalidfromstr !== get_string('datepickerdisplayformat', 'totara_core') && $timevalidfromstr !== '' ){
+            $result['timevalidfrom'] = get_string('error:dateformat','position', get_string('datepickerplaceholder', 'totara_core'));
         }
-        if ( false === $timevalidto && $timevalidtostr !== get_string('datepickerdisplayformat','langconfig') && $timevalidtostr !== '' ){
-            $result['timevalidto'] = get_string('error:dateformat','position', get_string('datepickerplaceholder'));
+        if ( false === $timevalidto && $timevalidtostr !== get_string('datepickerdisplayformat', 'totara_core') && $timevalidtostr !== '' ){
+            $result['timevalidto'] = get_string('error:dateformat','position', get_string('datepickerplaceholder', 'totara_core'));
         }
 
         // Enforce start date before finish date

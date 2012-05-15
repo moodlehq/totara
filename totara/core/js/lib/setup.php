@@ -138,7 +138,7 @@ function build_datepicker_js($selector, $includetags = true, $dateformat=null) {
     }
 
     if (empty($dateformat)) {
-        $dateformat = get_string('datepickerdisplayformat', 'langconfig');
+        $dateformat = get_string('datepickerdisplayformat', 'totara_core');
     }
     $button_img = $OUTPUT->pix_url('calendar', 'totara_core');
     // we are choosing to override the isRTL option here, instead float

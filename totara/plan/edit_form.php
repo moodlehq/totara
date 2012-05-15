@@ -87,9 +87,9 @@ class plan_edit_form extends moodleform {
         $mform->setDefault('name', $template->fullname);
         $mform->addElement('htmleditor', 'description', get_string('plandescription', 'local_plan'));
         $mform->setType('description', PARAM_CLEAN);
-        $mform->addElement('text', 'enddate', get_string('completiondate', 'local_plan'), array('placeholder'=>get_string('datepickerplaceholder')));
+        $mform->addElement('text', 'enddate', get_string('completiondate', 'local_plan'), array('placeholder'=>get_string('datepickerplaceholder', 'totara_core')));
         $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-        $mform->setDefault('enddate', userdate($template->enddate, get_string('strftimedatenumeric'), $CFG->timezone, false));
+        $mform->setDefault('enddate', userdate($template->enddate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false));
 
         if ($action == 'view') {
             $mform->hardFreeze(array('name', 'description', 'enddate'));
@@ -130,12 +130,12 @@ class plan_edit_form extends moodleform {
             $startdate = isset($data['startdate']) ? $data['startdate'] : '';
             $enddate = isset($data['enddate']) ? $data['enddate'] : '';
 
-            $datepattern = get_string('datepickerregexphp');
+            $datepattern = get_string('datepickerregexphp', 'totara_core');
             if (preg_match($datepattern, $enddate, $matches) == 0) {
-                $errstr = get_string('error:dateformat','local_plan', get_string('datepickerplaceholder'));
+                $errstr = get_string('error:dateformat','local_plan', get_string('datepickerplaceholder', 'totara_core'));
                 $result['enddate'] = $errstr;
                 unset($errstr);
-            } elseif ( $startdate > totara_date_parse_from_format(get_string('datepickerparseformat'), $enddate) && $startdate !== false && $enddate !== false ) {
+            } elseif ( $startdate > totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $enddate) && $startdate !== false && $enddate !== false ) {
                 // Enforce start date before finish date
                 $errstr = get_string('error:creationaftercompletion','local_plan');
                 $result['enddate'] = $errstr;

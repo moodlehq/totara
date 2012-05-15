@@ -612,9 +612,9 @@ totaraDialog_completion = function() {
         var completionevent = <?php echo COMPLETION_EVENT_NONE; ?>;
         var completioninstance = 0;
 
-        var dateformat = new RegExp("<?php echo get_string('datepickerregexjs'); ?>");
+        var dateformat = new RegExp("<?php echo get_string('datepickerregexjs', 'totara_core'); ?>");
         if (dateformat.test(completiontime) == false) {
-            alert("<?php echo get_string('pleaseentervaliddate', 'local_program', get_string('datepickerplaceholder')); ?>");
+            alert("<?php echo get_string('pleaseentervaliddate', 'local_program', get_string('datepickerplaceholder', 'totara_core')); ?>");
         }
         else {
             self.item.update_completiontime(completiontime, completionevent, completioninstance);

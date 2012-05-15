@@ -146,11 +146,11 @@ else {
     elseif ($data = $form->get_data()) {
         // Fix dates
         if (isset($data->timevalidfrom) && $data->timevalidfrom) {
-            $data->timevalidfrom = totara_date_parse_from_format(get_string('datepickerparseformat'),$data->timevalidfrom);
+            $data->timevalidfrom = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->timevalidfrom);
         }
 
         if (isset($data->timevalidto) && $data->timevalidto) {
-            $data->timevalidto = totara_date_parse_from_format(get_string('datepickerparseformat'),$data->timevalidto);
+            $data->timevalidto = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->timevalidto);
         }
 
         // Setup data
