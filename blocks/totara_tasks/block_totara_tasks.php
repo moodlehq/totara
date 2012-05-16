@@ -1,15 +1,29 @@
 <?PHP //$Id$
-  /*
-  * Totara Tasks
-  *
-  * @package blocks
-  * @subpackage totara_tasks
-  * @author: Piers Harding
-  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
-  * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
-  */
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Piers Harding <piers@catalyst.net.nz>
+ * @package totara
+ * @subpackage blocks_totara_tasks
+ */
 
 defined('MOODLE_INTERNAL') || die();
+require_once($CFG->dirroot.'/totara/message/messagelib.php');
 
 class block_totara_tasks extends block_base {
     function init() {
@@ -32,7 +46,7 @@ class block_totara_tasks extends block_base {
     }
 
     function get_content() {
-        global $CFG, $USER, $COURSE, $FULLME;
+        global $CFG, $FULLME, $DB, $OUTPUT, $PAGE;
 
         //cache block contents
         if ($this->content !== NULL) {
@@ -41,155 +55,133 @@ class block_totara_tasks extends block_base {
 
         $this->content = new stdClass;
 
-        // initialise jquery requirements
-        require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-        require_once($CFG->dirroot.'/local/js/lib/setup.php');
+        // initialise jquery and confirm requirements
+        require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+        require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
         $code = array();
         $code[] = TOTARA_JS_DIALOG;
-        $js = array();
         local_js($code);
-        $js['dismissmsg'] = $CFG->wwwroot.'/local/reportbuilder/confirm.js.php';
-        require_js(array_values($js));
+        $PAGE->requires->js_init_call('M.totara_message.init');
 
-      // just get the tasks for this user
-        $roleid = $this->current_roleid();
-        $role_assertion = '';
-         if ($roleid) {
-             $role_assertion = '?roleid='.$roleid;
-         }
-        $total = tm_messages_count('totara_task', false, $roleid);
-        $this->msgs = tm_messages_get('totara_task', 'timecreated DESC ', false, true, $roleid);
-        $count = is_array($this->msgs) ? count($this->msgs) : 0;
+        // just get the tasks for this user
+        $total = tm_messages_count('totara_task', false);
+        $this->msgs = tm_messages_get('totara_task', 'timecreated DESC ', false, true);
         $this->title = get_string('tasks', 'block_totara_tasks');
-        if($count) {
-            $this->title .= ' <span>' .
-                get_string('showingxofx', 'block_totara_tasks', array($count, $total)).'</span>';
-        } else {
-            $this->title .= ' <span>' . get_string('notasks', 'block_totara_tasks') . '</span>';
-        }
 
         if (empty($this->instance)) {
             return $this->content;
         }
 
         // now build the table of results
-        $this->content->text  .= '<table>';
+        $table = new html_table();
         if (!empty($this->msgs)) {
             $cnt = 0;
             foreach ($this->msgs as $msg) {
-                // status Icon
                 $cnt++;
-
-                $msgmeta = get_record('message_metadata', 'messageid', $msg->id);
-                $msgacceptdata = totara_msg_eventdata($msg->id, 'onaccept', $msgmeta);
-                $msgrejectdata = totara_msg_eventdata($msg->id, 'onreject', $msgmeta);
-                $msginfodata = totara_msg_eventdata($msg->id, 'oninfo', $msgmeta);
+                $msgmeta = $DB->get_record('message_metadata', array('messageid' => $msg->id));
+                $msgacceptdata = totara_message_eventdata($msg->id, 'onaccept', $msgmeta);
+                $msgrejectdata = totara_message_eventdata($msg->id, 'onreject', $msgmeta);
+                $msginfodata = totara_message_eventdata($msg->id, 'oninfo', $msgmeta);
 
                 // user name + link
                 $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$msg->useridfrom;
-                $from = get_record('user', 'id', $msg->useridfrom);
+                $from = $DB->get_record('user', array('id' => $msg->useridfrom));
                 $fromname = fullname($from);
 
                 // message creation time
-                $when = userdate($msg->timecreated, '%e %b %y');
+                $when = userdate($msg->timecreated, get_string('strftimedate', 'langconfig'));
 
                 // statement - multipart: user + statment + object
-                $bkgd = ($cnt % 2) ? 'shade' : 'noshade';
+                $rowbkgd = ($cnt % 2) ? 'shade' : 'noshade';
                 $msglink = !empty($msg->contexturl) ? $msg->contexturl : '';
-                $content  = "<tr class=\"".$bkgd."\">";
 
                 // Status icon
-                $content .= '<td class="status">';
-                $content .= !empty($msglink) ? '<a href="' . $msglink .'">' : '';
-                $content .= '<img class="msgicon" src="' . totara_msg_icon_url($msg->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
-                $content .= !empty($msglink) ? '</a>' : '';
-                $content .= '</td>';
+                $cells = array();
+                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'theme', array('class'=>'msgicon', 'title' => format_string($msg->subject)));
+                if (!empty($msglink)) {
+                    $url = new moodle_url($msglink);
+                    $attributes = array('href' => $url);
+                    $cellcontent = html_writer::tag('a', $icon, $attributes);
+                } else {
+                    $cellcontent = $icon;
+                }
+                $cell = new html_table_cell($cellcontent);
+                $cell->attributes['class'] = 'status';
+                $cells[] = $cell;
 
                 // Details
-                $content .= '<td class="statement"><p>';
-                $content .= !empty($msglink) ? '<a href="' . $msglink .'">' : '';
-                $content .= !empty($msg->subject) ? $msg->subject : $msg->fullmessage;
-                $content .= !empty($msglink) ? '</a>' : '';
-                $content .= '</p></td>';
+                $text = format_string($msg->subject ? $msg->subject : $msg->fullmessage);
+                if (!empty($msglink)) {
+                    $url = new moodle_url($msglink);
+                    $attributes = array('href' => $url);
+                    $cellcontent = html_writer::tag('a', $text, $attributes);
+                } else {
+                    $cellcontent = $text;
+                }
+                $cell = new html_table_cell($cellcontent);
+                $cell->attributes['class'] = 'statement';
+                $cells[] = $cell;
 
                 // Info icon/dialog
-                $content .= "<td class=\"action\">";
                 $detailbuttons = array();
                 // Add 'accept' button
                 if (!empty($msgacceptdata) && count((array)$msgacceptdata)) {
-                    $btn = new object();
+                    $btn = new stdClass();
                     $btn->text = !empty($msgacceptdata->acceptbutton) ?
                         $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_tasks');
-                    $btn->action = "{$CFG->wwwroot}/local/totara_msg/accept.php?id={$msg->id}";
+                    $btn->action = "{$CFG->wwwroot}/totara/message/accept.php?id={$msg->id}";
                     $btn->redirect = !empty($msgacceptdata->data['redirect']) ?
                         $msgacceptdata->data['redirect'] : $FULLME;
                     $detailbuttons[] = $btn;
                 }
                 // Add 'reject' button
                 if (!empty($msgrejectdata) && count((array)$msgrejectdata)) {
-                    $btn = new object();
+                    $btn = new stdClass();
                     $btn->text = !empty($msgrejectdata->rejectbutton) ?
                         $msgrejectdata->rejectbutton : get_string('onreject', 'block_totara_tasks');
-                    $btn->action = "{$CFG->wwwroot}/local/totara_msg/reject.php?id={$msg->id}";
+                    $btn->action = "{$CFG->wwwroot}/totara/message/reject.php?id={$msg->id}";
                     $btn->redirect = !empty($msgrejectdata->data['redirect']) ?
                         $msgrejectdata->data['redirect'] : $FULLME;
                     $detailbuttons[] = $btn;
                 }
                 // Add 'info' button
                 if (!empty($msginfodata) && count((array)$msginfodata)) {
-                    $btn = new object();
+                    $btn = new stdClass();
                     $btn->text = !empty($msginfodata->infobutton) ?
                         $msginfodata->infobutton : get_string('oninfo', 'block_totara_tasks');
-                    $btn->action = "{$CFG->wwwroot}/local/totara_msg/link.php?id={$msg->id}";
+                    $btn->action = "{$CFG->wwwroot}/totara/message/link.php?id={$msg->id}";
                     $btn->redirect = $msginfodata->data['redirect'];
                     $detailbuttons[] = $btn;
                 }
-                $detailjs = totara_msg_alert_popup($msg->id, $detailbuttons);
-                $content .= '<a id="detailtask'.$msg->id.'-dialog" href="' . $msglink . '"
-                    title="' . get_string('clickformoreinfo', 'block_totara_tasks') . '">';
-                $content .= '<img src="' . $CFG->themewww . '/' . $CFG->theme . '/pix/i/info.gif" />' . $detailjs . '</a>';
-                $content .= "</td>";
-                $content .= "</tr>";
-
-                $this->content->text .= $content;
+                $moreinfotext = get_string('clickformoreinfo', 'block_totara_tasks');
+                $icon = $OUTPUT->pix_icon('i/info', $moreinfotext, 'theme', array('class'=>'msgicon', 'title' => $moreinfotext, 'alt' => $moreinfotext));
+                $detailjs = totara_message_alert_popup($msg->id, $detailbuttons, 'detailtask');
+                $url = new moodle_url($msglink);
+                $attributes = array('href' => $url, 'id' => 'detailtask'.$msg->id.'-dialog');
+                $cellcontent = html_writer::tag('a', $icon, $attributes) . $detailjs;
+                $cell = new html_table_cell($cellcontent);
+                $cell->attributes['class'] = 'action';
+                $cells[] = $cell;
+                $row = new html_table_row($cells);
+                $row->attributes['class'] = $rowbkgd;
+                $table->data[] = $row;
             }
         }
-        $this->content->text .= '</table>';
+
+        $count = count($this->msgs);
+        if ($count) {
+            $this->content->text .= html_writer::tag('p', get_string('showingxofx', 'block_totara_tasks', array('count' => $count, 'total' => $total)));
+        }
+        else {
+            $this->content->text .= html_writer::tag('p', get_string('notasks', 'block_totara_tasks'));
+        }
+
+        $this->content->text .= html_writer::table($table);
         if (!empty($this->msgs)) {
-            $this->content->footer = '<div class="viewall"><a href="'.$CFG->wwwroot.'/local/totara_msg/tasks.php'.$role_assertion.'">'.
-                                     get_string('viewallnot', 'block_totara_tasks').'</a></div>';
+            $url = new moodle_url('/totara/message/tasks.php', array('sesskey' => sesskey()));
+            $link = html_writer::link($url, get_string('viewallnot', 'block_totara_tasks'));
+            $this->content->footer = html_writer::tag('div', $link, array('class' => 'viewall'));
         }
         return $this->content;
     }
-
-    /**
-    * Get the roleid for this dashlet context
-    * @return int roleid
-    **/
-    function current_roleid() {
-        global $CFG;
-        if (instance_is_dashlet($this)) {
-            // what dashlet role is this
-            $role = get_dashlet_role($this->instance->pageid);
-
-            switch ($role) {
-                case 'student':
-                    $roleid = $CFG->learnerroleid;
-                    break;
-                case 'manager':
-                    $roleid = $CFG->managerroleid;
-                    break;
-                default:
-                    $roleid = get_field('role', 'id', 'shortname', $role);
-                    break;
-            }
-
-            return $roleid;
-        }
-        else {
-            return false;
-        }
-    }
 }
-
-?>

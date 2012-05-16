@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Piers Harding <piers@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage message
  */
 
 /**
@@ -27,7 +27,6 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 require_once($CFG->dirroot.'/message/lib.php');
 
 require_login();
@@ -58,9 +57,9 @@ $ids = array();
 foreach ($msgids as $msgid) {
     // check message ownership
     if ($msgid) {
-        $message = get_record('message20', 'id', $msgid);
-        if (!$message || $message->useridto != $USER->id) {
-            print_error('notyours', 'local_totara_msg', $msgid);
+        $message = $DB->get_record('message', array('id' => $msgid));
+        if (!$message || $message->useridto != $USER->id || !confirm_sesskey()) {
+            print_error('notyours', 'totara_message', $msgid);
         }
         $ids[$msgid] = $message;
     }
@@ -78,19 +77,19 @@ else if ($reject) {
     // onreject the message and then return
     $action = 'reject';
 }
-print '<input type="hidden" name="'.$action.'" value="'.$action.'" />';
+print html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $action, 'value' => $action));
 
 // process the action
-print '<div id="totara-msgs-action"><table>';
-//print '<tr><th>'.get_string('status', 'block_totara_alerts').'</th><th>'.
-print '<tr><th>'.
-//                .get_string('urgency', 'block_totara_alerts').'</th><th>'.
-                get_string('type', 'block_totara_alerts').'</th><th>'.
-                get_string('from', 'block_totara_alerts').'</th><th>'.
-                get_string('statement', 'block_totara_alerts').'</th></tr>';
+print html_writer::start_tag('div', array('id' => 'totara-msgs-action'));
+$tab = new html_table();
+$tab->head  = array(get_string('type', 'block_totara_alerts'),
+                     get_string('from', 'block_totara_alerts'),
+                     get_string('statement', 'block_totara_alerts'));
 
+$tab->set_attribute('class', 'fullwidth');
+$tab->data  = array();
 foreach ($ids as $msgid => $msg) {
-    $metadata = get_record('message_metadata', 'messageid', $msgid);
+    $metadata = $DB->get_record('message_metadata', array('messageid' => $msgid));
 
     // cannot run reject on message with no onreject
     if ($reject && (!isset($metadata->onreject) || !$metadata->onreject)) {
@@ -102,30 +101,28 @@ foreach ($ids as $msgid => $msg) {
         continue;
     }
 
-
     // cannot run accept on message type LINK in bulk action
     if ($accept && isset($metadata->onaccept) && $metadata->msgtype == TOTARA_MSG_TYPE_LINK) {
         continue;
     }
 
-//    $display = isset($metadata->msgstatus) ? totara_msg_msgstatus_text($metadata->msgstatus) : array('icon' => '', 'text' => '');
-//    $status = $display['icon'];
-//    $status_alt = $display['text'];
-//    $display = isset($metadata->urgency) ? totara_msg_urgency_text($metadata->urgency) : array('icon' => '', 'text' => '');
-//    $urgency = $display['icon'];
-//    $urgency_alt = $display['text'];
     $display = isset($metadata->msgtype) ? totara_msg_msgtype_text($metadata->msgtype) : array('icon' => '', 'text' => '');
     $type = $display['icon'];
     $type_alt = $display['text'];
-    $from = get_record('user', 'id', $msg->useridfrom);
+    $from = $DB->get_record('user', array('id' => $msg->useridfrom));
     $fromname = fullname($from);
-    $icon = '<img class="msgicon" src="' . totara_msg_icon_url($metadata->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
-    print '<tr>';
-//    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$urgency}\" title=\"{$urgency_alt}\" alt=\"{$urgency_alt}\" /></div></td>";
-//    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'><img class=\"iconsmall\" src=\"{$type}\" alt=\"{$type_alt}\" /></div></td>";
-    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'>{$icon}</div></td>";
-    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-from'>{$fromname}</div></td>";
-    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-statement'>{$msg->fullmessage}</div></td>";
-    print "</tr>";
+    $icon = html_writer::empty_tag('img', array('src' => totara_msg_icon_url($metadata->icon), 'class' => 'msgicon', 'alt' => format_string($msg->subject), 'title' => format_string($msg->subject)));
+    $cells = array();
+    $cell = new html_table_cell(html_writer::tag('div', $icon, array('id' => 'dismiss-type')));
+    $cell->attributes['class'] = 'totara-msgs-action-right';
+    $cells []= $cell;
+    $cell = new html_table_cell(html_writer::tag('div', $fromname, array('id' => 'dismiss-from')));
+    $cell->attributes['class'] = 'totara-msgs-action-right';
+    $cells []= $cell;
+    $cell = new html_table_cell(html_writer::tag('div', $msg->fullmessage, array('id' => 'dismiss-statement')));
+    $cell->attributes['class'] = 'totara-msgs-action-right';
+    $cells []= $cell;
+    $tab->data[] = new html_table_row($cells);
 }
-print '</table></div>';
+print html_writer::table($tab);
+print html_writer::end_tag('div');

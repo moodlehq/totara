@@ -694,7 +694,6 @@ class dp_objective_component extends dp_base_component {
                     $event->userto = $manager;
                     $event->subject = get_string('objectivedeleteshortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
                     $event->fullmessage = get_string('objectivedeletelongmanager', 'local_plan', $a, $manager->lang);
-                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -738,7 +737,6 @@ class dp_objective_component extends dp_base_component {
                     $event->userto = $manager;
                     $event->subject = get_string('objectivenewshortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
                     $event->fullmessage = get_string('objectivenewlongmanager', 'local_plan', $a, $manager->lang);
-                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -784,7 +782,6 @@ class dp_objective_component extends dp_base_component {
                     $event->userto = $manager;
                     $event->subject = get_string('objectiveeditshortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
                     $event->fullmessage = get_string('objectiveeditlongmanager', 'local_plan', $a, $manager->lang);
-                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }
@@ -836,7 +833,6 @@ class dp_objective_component extends dp_base_component {
                     $event->userto = $manager;
                     $event->subject = get_string('objective'.$status.'shortmanager', 'local_plan', $this->current_user_link(), $manager->lang);
                     $event->fullmessage = get_string('objective'.$status.'longmanager', 'local_plan', $a, $manager->lang);
-                    $event->roleid = $CFG->managerroleid;
                     tm_alert_send($event);
                 }
             }

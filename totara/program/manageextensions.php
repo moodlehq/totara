@@ -71,7 +71,6 @@ if ($submitted && confirm_sesskey()) {
                 $messagedata = new stdClass();
                 $messagedata->userto           = $userto;
                 $messagedata->userfrom         = $userfrom;
-                $messagedata->roleid           = $roleid;
                 $messagedata->subject          = get_string('extensiondenied', 'local_program');;
                 $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
                 $messagedata->contexturlname   = get_string('launchprogram', 'local_program');
@@ -126,7 +125,6 @@ if ($submitted && confirm_sesskey()) {
                     $messagedata = new stdClass();
                     $messagedata->userto           = $userto;
                     $messagedata->userfrom         = $userfrom;
-                    $messagedata->roleid           = $roleid;
                     $messagedata->subject          = get_string('extensiongranted', 'local_program');
                     $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
                     $messagedata->contexturlname   = get_string('launchprogram', 'local_program');

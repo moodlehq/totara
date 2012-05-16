@@ -27,8 +27,6 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 //TODO: Uncomment once totara messages are finished
-//require_once ($CFG->dirroot . '/local/totara_msg/eventdata.class.php');
-//require_once ($CFG->dirroot.'/totara/totara_msg/messagelib.php');
 require_once ($CFG->dirroot.'/totara/plan/lib.php');
 
 
@@ -1380,7 +1378,6 @@ class development_plan {
             $event->userfrom = $learner;
             $event->contexturl = $this->get_display_url();
             $event->contexturlname = $this->name;
-            $event->roleid = $CFG->managerroleid;
             $event->icon = 'learningplan-request';
 
             $a = new stdClass;
@@ -1449,7 +1446,6 @@ class development_plan {
         $event->userfrom = $learner;
         $event->contexturl = "{$CFG->wwwroot}/totara/plan/approve.php?id={$this->id}";
         $event->contexturlname = $this->name;
-        $event->roleid = $CFG->managerroleid;
         $event->icon = 'learningplan-request';
 
         $a = new stdClass;
@@ -1483,10 +1479,10 @@ class development_plan {
         global $CFG;
         $manager = totara_get_manager($this->userid);
         $learner = get_record('user','id',$this->userid);
-        if ( $learner && $manager ){
-            require_once( $CFG->dirroot . '/local/totara_msg/eventdata.class.php' );
-            require_once( $CFG->dirroot . '/local/totara_msg/messagelib.php' );
-            if ( $tolearner ){
+        if ($learner && $manager){
+            require_once($CFG->dirroot . '/totara/message/eventdata.class.php');
+            require_once($CFG->dirroot . '/totara/message/messagelib.php');
+            if ($tolearner){
                 $userto = $learner;
                 $userfrom = $manager;
                 $roleid = $CFG->learnerroleid;
@@ -1499,7 +1495,6 @@ class development_plan {
             $event->userfrom = $userfrom;
             $event->contexturl = $this->get_display_url();
             $event->contexturlname = $this->name;
-            $event->roleid = $roleid;
             $event->icon = $icon;
 
             $a = new stdClass();
@@ -1591,7 +1586,6 @@ class development_plan {
             $a->plan = $this->name;
             $event->subject = get_string('plan-complete-manager-short','local_plan',$a, $manager->lang);
             $event->fullmessage = get_string('plan-complete-manager-long','local_plan',$a, $manager->lang);
-            $event->roleid = $CFG->managerroleid;
             tm_alert_send($event);
         }
 

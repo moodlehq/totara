@@ -110,7 +110,11 @@ function message_send($eventdata) {
         $savemessage->contexturlname = null;
     }
 
-    $savemessage->timecreated = time();
+    if (!isset($eventdata->timecreated)) {
+        $savemessage->timecreated = time();
+    } else {
+        $savemessage->timecreated = $eventdata->timecreated;
+    }
 
     // Fetch enabled processors
     $processors = get_message_processors(true);

@@ -57,30 +57,6 @@ function xmldb_totara_core_install() {
     //code from old postinst function:
     set_config('theme', 'totara');
     set_config("langmenu", 0);
-    /// Insert default records
-    $defaultdir = $CFG->dirroot.'/totara/core/db/default';
-    $includes = array();
-    if (is_dir($defaultdir)) {
-        // files installed in alphabetical order so use
-        // number prefix to set desired order
-        foreach (scandir($defaultdir) as $file) {
-            // exclude dot directories
-            if ($file == '.' || $file == '..') {
-                continue;
-            }
-            // not a php file
-            if (substr($file, -4) != '.php') {
-                continue;
-            }
-            // include default data file
-            $includes[] = $CFG->dirroot.'/totara/core/db/default/'.$file;
-        }
-    }
-    // sort so order of includes is known
-    sort($includes);
-    foreach ($includes as $include) {
-        include($include);
-    }
 
     // Create totara roles
     $manager             = $DB->get_record('role', array('shortname' => 'manager'));

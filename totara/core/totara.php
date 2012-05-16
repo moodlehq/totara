@@ -728,7 +728,7 @@ function totara_reset_stickyblocks($remove=false, $path='totara/core') {
  * @return boolean
  **/
 function instance_is_dashlet($dashlet) {
-    return ($dashlet->instance->pagetype == 'totara-dashboard' && $dashlet->instance->position == 'c');
+    return ((isset($dashlet->instance->pagetype) && $dashlet->instance->pagetype == 'totara-dashboard') && $dashlet->instance->position == 'c');
 }
 
 

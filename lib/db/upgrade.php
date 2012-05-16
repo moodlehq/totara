@@ -7035,7 +7035,7 @@ FROM
                 array('enrol_devplan', 'enrol_totara_devplan'),
                 array('local_comment', null),
                 array('local_cohort', 'totara_cohort'),
-                array('local_totara_msg', null),
+                array('local_totara_msg', 'totara_message'),
                 array('local_totara_alert', null),
                 array('local_totara_task', null),
                 array('block_addtoplan', 'block_totara_addtoplan'),

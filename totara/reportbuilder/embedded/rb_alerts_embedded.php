@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,7 +19,7 @@
  *
  * @author Simon Coggins <simonc@catalyst.net.nz>
  * @package totara
- * @subpackage reportbuilder 
+ * @subpackage reportbuilder
  */
 
 class rb_alerts_embedded extends rb_base_embedded {
@@ -30,12 +30,11 @@ class rb_alerts_embedded extends rb_base_embedded {
 
     public function __construct($data) {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
-        $roleid = array_key_exists('roleid', $data) ? $data['roleid'] : null;
 
-        $this->url = '/local/totara_msg/alerts.php';
+        $this->url = '/totara/message/alerts.php';
         $this->source = 'totaramessages';
         $this->shortname = 'alerts';
-        $this->fullname = get_string('alerts', 'local_totara_msg');
+        $this->fullname = get_string('alerts', 'totara_message');
         $this->columns = array(
             array(
                 'type' => 'message_values',
@@ -92,10 +91,6 @@ class rb_alerts_embedded extends rb_base_embedded {
         // also limited to single user
         if(isset($userid)) {
             $this->embeddedparams['userid'] = $userid;
-        }
-        // also limited by role
-        if(isset($roleid)) {
-            $this->embeddedparams['roleid'] = $roleid;
         }
 
         parent::__construct();

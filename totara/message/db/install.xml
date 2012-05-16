@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="totara/message/db" VERSION="20101229" COMMENT="XMLDB file for Moodle totara/message"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="message_metadata" COMMENT="type, status, and workflow additions to messages">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="messageid"/>
+        <FIELD NAME="messageid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="message that still needs some processing (on message table)" PREVIOUS="id" NEXT="msgtype"/>
+        <FIELD NAME="msgtype" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The message type" PREVIOUS="messageid" NEXT="msgstatus"/>
+        <FIELD NAME="msgstatus" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The message status" PREVIOUS="msgtype" NEXT="processorid"/>
+        <FIELD NAME="processorid" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The message processor id" PREVIOUS="msgstatus" NEXT="urgency"/>
+        <FIELD NAME="urgency" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The message urgency" PREVIOUS="processorid" NEXT="icon"/>
+        <FIELD NAME="icon" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="urgency" NEXT="onaccept"/>
+        <FIELD NAME="onaccept" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="serialised action on message acceptance" PREVIOUS="icon" NEXT="onreject"/>
+        <FIELD NAME="onreject" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="serialised action on message rejection" PREVIOUS="onaccept" NEXT="oninfo"/>
+        <FIELD NAME="oninfo" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="serialised action on message info" PREVIOUS="onreject"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="message" UNIQUE="true" FIELDS="messageid" COMMENT="enforce unique messageids"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

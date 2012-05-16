@@ -28,12 +28,13 @@ global $OUTPUT, $DB;
 
 require_once ("$CFG->dirroot/totara/core/db/utils.php");
 $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
-
+$success = get_string('success');
 //fix 1.1-series capabilities
 $result = totara_upgrade_capabilities();
 if ($result) {
     upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Capabilities upgraded from 1.1');
-    echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+    echo $OUTPUT->heading('Capabilities upgraded from 1.1');
+    echo $OUTPUT->notification($success, 'notifysuccess');
     print_upgrade_separator();
 } else {
     throw new upgrade_exception("Totara Upgrade Capabilities Failed", '1.1 to 2.2 upgrade');
@@ -44,7 +45,8 @@ $params = array('totara_quicklinks', 'quicklinks');
 $result = $result && $DB->execute($sql, $params);
 if ($result) {
     upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Totara Blocks renamed');
-    echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+    echo $OUTPUT->heading('Totara Blocks renamed');
+    echo $OUTPUT->notification($success, 'notifysuccess');
     print_upgrade_separator();
 } else {
     throw new upgrade_exception("Totara Set Block Names Failed", '1.1 to 2.2 upgrade');
@@ -82,7 +84,8 @@ foreach ($tables as $table) {
     }
 }
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Totara icon extensions fixed');
-echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+echo $OUTPUT->heading('Totara icon extensions fixed');
+echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
 // Changing nullability of char fields
@@ -104,7 +107,8 @@ totara_fix_nullable_charfield('errorlog', 'version', 'timeoccured', '255');
 totara_fix_nullable_charfield('errorlog', 'build', 'version', '255');
 totara_fix_nullable_charfield('errorlog', 'hash', 'details', '32');
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Change nullable character fields');
-echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+echo $OUTPUT->heading('Change nullable database fields');
+echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
 //Remove obsolete report heading table
@@ -113,7 +117,8 @@ if ($dbman->table_exists($table)) {
     $dbman->drop_table($table);
 }
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete report heading table');
-echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+echo $OUTPUT->heading('Remove obsolete report heading table');
+echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
 //remove obsolete category database tables
@@ -125,7 +130,8 @@ foreach ($removetables as $prefix) {
     }
 }
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete info_category tables');
-echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+echo $OUTPUT->heading('Remove obsolete info_category tables');
+echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
 // rename 'completedate' field to 'timeend' in 'course_completion_criteria'
@@ -134,7 +140,8 @@ $field = new xmldb_field('completedate', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED,
 $dbman->rename_field($table, $field, 'timeend');
 
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Course completion criteria field renamed');
-echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+echo $OUTPUT->heading('Course completion criteria field renamed');
+echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
 ?>

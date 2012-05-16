@@ -1274,9 +1274,6 @@ function plan_comment_add($comment) {
         $event->userto = $userto;
         $event->contexturl = $contexturl;
         $event->contexturlname = $contexturlname;
-        if (!empty($manager) && $sid == $manager->id) {
-            $event->roleid = $CFG->managerroleid;
-        }
         $event->icon = $icon;
 
         if ($comment->commentarea == 'plan-overview') {
