@@ -51,6 +51,11 @@ class cohort_edit_form extends moodleform {
         $mform->addElement('text', 'idnumber', get_string('idnumber', 'cohort'), 'maxlength="254" size="50"');
         $mform->setType('name', PARAM_RAW);
 
+        if (!$cohort->id) {
+            $mform->addElement('select', 'cohorttype', get_string('type', 'totara_cohort'), cohort::getCohortTypes());
+            $mform->addHelpButton('cohorttype', 'type', 'totara_cohort');
+        }
+
         $mform->addElement('editor', 'description_editor', get_string('description', 'cohort'), null, $editoroptions);
         $mform->setType('description_editor', PARAM_RAW);
 

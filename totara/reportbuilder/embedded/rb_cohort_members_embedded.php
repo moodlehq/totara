@@ -33,7 +33,7 @@ class rb_cohort_members_embedded extends rb_base_embedded {
         $this->url = '/cohort/members.php';
         $this->source = 'cohort';
         $this->shortname = 'cohort_members';
-        $this->fullname = get_string('cohortmembers', 'local_cohort');
+        $this->fullname = get_string('cohortmembers', 'totara_cohort');
         $this->columns = array(
             array(
                 'type' => 'user',
@@ -43,12 +43,12 @@ class rb_cohort_members_embedded extends rb_base_embedded {
         array(
                 'type' => 'user',
                 'value' => 'position',
-                'heading' => get_string('position','local_cohort')
+                'heading' => get_string('position','totara_cohort')
             ),
         array(
                 'type' => 'user',
                 'value' => 'organisation',
-                'heading' => get_string('organisation','local_cohort')
+                'heading' => get_string('organisation','totara_cohort')
             ),
         );
 

@@ -7034,7 +7034,7 @@ FROM
                 array('local_reportbuilder', 'totara_reportbuilder'),
                 array('enrol_devplan', 'enrol_totara_devplan'),
                 array('local_comment', null),
-                array('local_cohort', null),
+                array('local_cohort', 'totara_cohort'),
                 array('local_totara_msg', null),
                 array('local_totara_alert', null),
                 array('local_totara_task', null),

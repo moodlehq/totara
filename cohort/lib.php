@@ -25,6 +25,7 @@
  */
 
 require_once($CFG->dirroot . '/user/selector/lib.php');
+require($CFG->dirroot.'/totara/cohort/lib.php');
 
 /**
  * Add new cohort.
@@ -92,8 +93,9 @@ function cohort_delete_cohort($cohort) {
         // TODO: add component delete callback
     }
 
-    $DB->delete_records('cohort_members', array('cohortid'=>$cohort->id));
-    $DB->delete_records('cohort', array('id'=>$cohort->id));
+    $DB->delete_records('cohort_members', array('cohortid' => $cohort->id));
+    $DB->delete_records('cohort_criteria', array('cohortid' => $cohort->id));
+    $DB->delete_records('cohort', array('id' => $cohort->id));
 
     events_trigger('cohort_deleted', $cohort);
 }
@@ -206,8 +208,12 @@ function cohort_get_cohorts($contextid, $page = 0, $perpage = 25, $search = '') 
     $cohorts = array();
 
     // Add some additional sensible conditions
-    $tests = array('contextid = ?');
-    $params = array($contextid);
+    $tests = array();
+    $params = array();
+    if ($contextid) {
+        $tests = array('contextid = ?');
+        $params = array($contextid);
+    }
 
     if (!empty($search)) {
         $conditions = array(
@@ -215,19 +221,19 @@ function cohort_get_cohorts($contextid, $page = 0, $perpage = 25, $search = '') 
             'idnumber',
             'description',
         );
-        $searchparam = '%' . $search . '%';
-        foreach ($conditions as $key=>$condition) {
-            $conditions[$key] = $DB->sql_like($condition,"?", false);
+        $searchparam = '%' . $DB->sql_like_escape($search) . '%';
+        foreach ($conditions as $key => $condition) {
+            $conditions[$key] = $DB->sql_like($condition, "?", false);
             $params[] = $searchparam;
         }
         $tests[] = '(' . implode(' OR ', $conditions) . ')';
     }
-    $wherecondition = implode(' AND ', $tests);
+    $wherecondition = (empty($tests) ? '' : " WHERE " . implode(' AND ', $tests));
 
     $fields = 'SELECT *';
     $countfields = 'SELECT COUNT(1)';
     $sql = " FROM {cohort}
-             WHERE $wherecondition";
+             $wherecondition";
     $order = ' ORDER BY name ASC';
     $totalcohorts = $DB->count_records_sql($countfields . $sql, $params);
     $cohorts = $DB->get_records_sql($fields . $sql . $order, $params, $page*$perpage, $perpage);

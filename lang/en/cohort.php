@@ -58,3 +58,8 @@ $string['unknowncohort'] = 'Unknown cohort ({$a})!';
 $string['useradded'] = 'User added to cohort "{$a}"';
 $string['search'] = 'Search';
 $string['searchcohort'] = 'Search cohort';
+
+$string['error:cohortdoesnotexist'] = 'Cohort with id {$a} does not exist';
+$string['error:staticcannotsetcriteria'] = 'Cannot set criteria for static cohorts';
+$string['error:dynamiccritalreadyapplied'] = 'Dynamic cohort \'{$a}\' already has criteria applied';
+$string['error:doesnotexist'] = 'Cohort with this id does not exist';

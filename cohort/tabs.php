@@ -32,18 +32,18 @@ $activetwo = NULL;
 $toprow = array();
 
 $toprow[] = new tabobject('view', $CFG->wwwroot.'/cohort/view.php?id='.$cohort->id,
-            get_string('overview','local_cohort'));
+            get_string('overview', 'totara_cohort'));
 
 $toprow[] = new tabobject('edit', $CFG->wwwroot.'/cohort/edit.php?id='.$cohort->id,
-            get_string('editdetails','local_cohort'));
+            get_string('editdetails', 'totara_cohort'));
 
 
 $toprow[] = new tabobject('viewmembers', $CFG->wwwroot.'/cohort/members.php?id='.$cohort->id,
-    get_string('viewmembers','local_cohort'));
+    get_string('viewmembers', 'totara_cohort'));
 
 if ($cohort->cohorttype == cohort::TYPE_STATIC) {
     $toprow[] = new tabobject('editmembers', $CFG->wwwroot.'/cohort/assign.php?id='.$cohort->id,
-        get_string('editmembers','local_cohort'));
+        get_string('editmembers', 'totara_cohort'));
 }
 
 

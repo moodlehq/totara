@@ -23,29 +23,29 @@
  * @subpackage cohort
  */
 
-require_once('../config.php');
+require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
-require_once($CFG->dirroot.'/hierarchy/prefix/position/lib.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
 require_once($CFG->dirroot.'/cohort/editcriteria_form.php');
 
-$id        = required_param('id', PARAM_INT);
-$cohort = get_record('cohort','id',$id);
-$context = get_context_instance(CONTEXT_SYSTEM);
+$id      = required_param('id', PARAM_INT);
+$cohort  = $DB->get_record('cohort',array('id' => $id));
+$context = context_system::instance();
 
 admin_externalpage_setup('cohorts');
 
-require_capability('local/cohort:manage', $context);
+require_capability('moodle/cohort:manage', $context);
 
 if (!$cohort) {
-    error("Cohort with id $id does not exist");
+    print_error('error:cohordoesnotexist', 'cohort', '', $id);
 }
 if ($cohort->cohorttype == cohort::TYPE_STATIC) {
-    error("Cannot set criteria for static cohorts");
+    print_error('error:staticcannotsetcriteria', 'cohort');
 }
 if (cohort_criteria_already_set($cohort->id)) {
-    error("Dynamic cohort '{$cohort->name}' already has criteria applied");
+    print_error('error:dynamiccritalreadyapplied', 'cohort', '', $cohort->name);
 }
 
 // Setup custom javascript
@@ -54,13 +54,19 @@ local_js(array(
     TOTARA_JS_TREEVIEW
 ));
 
-require_js(
-    array(
-        $CFG->wwwroot.'/local/js/cohort.js.php',
-    )
-);
+$PAGE->requires->strings_for_js(array('cancel','continue'), 'moodle');
+$PAGE->requires->strings_for_js(array('chooseposition','chooseorganisation'), 'totara_hierarchy');
+$PAGE->requires->string_for_js('confirmdynamiccohortcreation', 'totara_cohort');
+$display_selected_position = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'position'));
+$display_selected_organisation = json_encode(dialog_display_currently_selected(get_string('currentlyselected', 'totara_core'), 'organisation'));
+$args = array('args'=>'{"display_selected_position":'.$display_selected_position.',"display_selected_organisation":'.$display_selected_organisation.'}');
+$jsmodule = array(
+        'name' => 'totara_cohort',
+        'fullpath' => '/totara/core/js/cohort.js',
+        'requires' => array('json'));
+$PAGE->requires->js_init_call('M.totara_cohort.init', $args, false, $jsmodule);
 
-$returnurl = new moodle_url($CFG->wwwroot .'/cohort/index.php');
+$returnurl = new moodle_url('/cohort/index.php');
 
 $editcriteriaform = new cohort_editcriteria_form(null, array('data'=>$cohort));
 
@@ -75,21 +81,16 @@ if ($data = $editcriteriaform->get_data()) {
     $criteria->organisationid = $data->organisationid;
     $criteria->orgincludechildren = isset($data->orgincludechildren) ? $data->orgincludechildren : 0;
 
-    try {
-        cohort_add_dynamic_cohort($criteria);
-        totara_set_notification(get_string('successfullyaddedcohort','local_cohort'), $returnurl->out() , array('class' => 'notifysuccess'));
-    }
-    catch ( Exception $e ){
-        totara_set_notification($e->getMessage(), $returnurl->out());
-    }
+    cohort_add_dynamic_cohort($criteria);
+    totara_set_notification(get_string('successfullyaddedcohort','totara_cohort'), $returnurl, array('class' => 'notifysuccess'));
 }
 
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
-$strheading = get_string('dynamiccohortcriteria', 'local_cohort');
+$strheading = get_string('dynamiccohortcriteria', 'totara_cohort');
 
-print_heading($strheading);
+echo $OUTPUT->heading($strheading);
 
 $editcriteriaform->display();
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();

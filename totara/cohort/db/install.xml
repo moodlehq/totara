@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/cohort/db" VERSION="20110620" COMMENT="XMLDB file for Moodle local/cohort"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="cohort_criteria" COMMENT="Criteria for the dynamic cohorts">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="cohortid"/>
+        <FIELD NAME="cohortid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="profilefield"/>
+        <FIELD NAME="profilefield" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="cohortid" NEXT="profilefieldvalues"/>
+        <FIELD NAME="profilefieldvalues" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="profilefield" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="profilefieldvalues" NEXT="positionincludechildren"/>
+        <FIELD NAME="positionincludechildren" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="positionid" NEXT="organisationid"/>
+        <FIELD NAME="organisationid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="positionincludechildren" NEXT="orgincludechildren"/>
+        <FIELD NAME="orgincludechildren" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="organisationid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="cohortid" UNIQUE="true" FIELDS="cohortid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

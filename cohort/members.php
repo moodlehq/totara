@@ -23,40 +23,45 @@
  * @subpackage cohort
  */
 
-require_once('../config.php');
+require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
-require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 
-$id        = optional_param('id', null, PARAM_INT);
+/*
+SCANMSG re-add once reportbuilder merged
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
+*/
+$id = optional_param('id', null, PARAM_INT);
 
 admin_externalpage_setup('cohorts');
 
-$context = get_context_instance(CONTEXT_SYSTEM);
-require_capability('local/cohort:manage', $context);
+$context = context_system::instance();
+require_capability('moodle/cohort:manage', $context);
 
 if (isset($id)) {
-    $cohort = get_record('cohort','id',$id);
+    $cohort = $DB->get_record('cohort',array('id' => $id));
     if (!$cohort) {
-        error('Cohort with this id does not exist');
+        print_error('error:doesnotexist', 'cohort');
     }
 }
+/*
+SCANMSG re-add once reportbuilder merged
+$report = reportbuilder_get_embedded_report('cohort_members', array('cohortid' => $id));
+*/
+$strheading = get_string('editcohort', 'totara_cohort');
 
-$report = reportbuilder_get_embedded_report('cohort_members',array('cohortid' => $id));
-
-$strheading = get_string('editcohort', 'local_cohort');
-
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
 if (isset($id)) {
-    print_heading(format_string($cohort->name));
-
+    echo $OUTPUT->heading(format_string($cohort->name));
     $currenttab = 'viewmembers';
     require_once('tabs.php');
 }
 
+/*
+SCANMSG re-add once reportbuilder merged
 $report->display_search();
 
 $report->display_table();
-
-admin_externalpage_print_footer();
+*/
+echo $OUTPUT->footer();

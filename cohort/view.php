@@ -23,7 +23,7 @@
  * @subpackage cohort
  */
 
-require_once('../config.php');
+require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
 
@@ -34,188 +34,144 @@ $confirm   = optional_param('confirm', 0, PARAM_BOOL);
 admin_externalpage_setup('cohorts');
 
 
-$context = get_context_instance(CONTEXT_SYSTEM);
-require_capability('local/cohort:manage', $context);
+$context = context_system::instance();
+require_capability('moodle/cohort:manage', $context);
 
-$cohort = get_record('cohort','id',$id);
+$cohort = $DB->get_record('cohort',array('id' => $id));
 if (!$cohort) {
-    error('Cohort with this id does not exist');
+    print_error('error:doesnotexist', 'cohort');
 }
 
-$membercount = count_records('cohort_members', 'cohortid', $cohort->id);
+$membercount = $DB->count_records('cohort_members', array('cohortid' => $cohort->id));
 
-$returnurl = new moodle_url($CFG->wwwroot .'/cohort/index.php');
+$returnurl = new moodle_url('/cohort/index.php');
 
 if ($delete && $cohort->id) {
     if ($confirm and confirm_sesskey()) {
         $result = cohort_delete_cohort($cohort);
-        if ($result) {
-            totara_set_notification(get_string('successfullydeleted','local_cohort'), $returnurl->out(), array('class' => 'notifysuccess'));
-        }
-        else {
-            totara_set_notification(get_string('failedtodeleted','local_cohort'), $returnurl->out());
-        }
+        totara_set_notification(get_string('successfullydeleted', 'totara_cohort'), $returnurl->out(), array('class' => 'notifysuccess'));
     }
 
-    $yesurl = new moodle_url($CFG->wwwroot .'/cohort/view.php', array('id'=>$cohort->id, 'delete'=>1, 'confirm'=>1,'sesskey'=>sesskey()));
-    $nourl = new moodle_url($CFG->wwwroot .'/cohort/view.php', array('id'=>$cohort->id));
+    $yesurl = new moodle_url('/cohort/view.php', array('id'=>$cohort->id, 'delete'=>1, 'confirm'=>1,'sesskey'=>sesskey()));
+    $nourl = new moodle_url('/cohort/view.php', array('id'=>$cohort->id));
 
-    $strheading = get_string('delcohort', 'local_cohort');
+    $strheading = get_string('delcohort', 'totara_cohort');
 
-    admin_externalpage_print_header();
+    echo $OUTPUT->header();
 
-    notice_yesno(get_string('delconfirm', 'local_cohort', format_string($cohort->name)),
-                         $yesurl->out(),
-                         $nourl->out());
-    admin_externalpage_print_footer();
+    $buttoncontinue = new single_button($yesurl->out(), get_string('yes'), 'post');
+    $buttoncancel   = new single_button($nourl->out(), get_string('no'), 'post');
+    echo $OUTPUT->confirm(get_string('delconfirm', 'totara_cohort', format_string($cohort->name)), $buttoncontinue, $buttoncancel);
+
+    echo $OUTPUT->footer();
     die();
 }
 
 
 
-$strheading = get_string('editcohort', 'local_cohort');
+$strheading = get_string('editcohort', 'totara_cohort');
 
 
-admin_externalpage_print_header();
+echo $OUTPUT->header();
 
-print_heading(format_string($cohort->name));
+
+echo $OUTPUT->heading(format_string($cohort->name));
 
 $currenttab = 'view';
 require_once('tabs.php');
-?>
 
-<div class="mform">
-    <fieldset>
-    <div class="fitem required alternate">
-        <div class="fitemtitle">
-            <?php echo get_string('type','local_cohort'); ?>
-        </div>
-        <div class="felement ftext">
-            <?php echo $cohort->cohorttype == cohort::TYPE_DYNAMIC ? get_string('dynamic','local_cohort') : get_string('set','local_cohort'); ?>
-        </div>
-    </div>
 
-    <div class="fitem required">
-        <div class="fitemtitle">
-            <?php echo get_string('idnumber','local_cohort'); ?>
-        </div>
-        <div class="felement ftext">
-            <?php echo $cohort->idnumber; ?>
-        </div>
-    </div>
+$out = '';
+$out .= html_writer::start_tag('div', array('class' => 'mform'));
+$out .= html_writer::start_tag('fieldset');
 
-    <div class="fitem required alternate">
-        <div class="fitemtitle">
-            <?php echo get_string('description','local_cohort'); ?>
-        </div>
-        <div class="felement ftext">
-            <?php echo $cohort->description; ?>
-        </div>
-    </div>
+$item = html_writer::tag('div', get_string('type', 'totara_cohort'), array('class' => 'fitemtitle'));
+$item .= html_writer::tag('div', ($cohort->cohorttype == cohort::TYPE_DYNAMIC) ? get_string('dynamic', 'totara_cohort') : get_string('set', 'totara_cohort'), array('class' => 'felement ftext'));
+$out .= $OUTPUT->container($item, 'fitem required alternate');
 
-    <div class="fitem required">
-        <div class="fitemtitle">
-            <?php echo get_string('members','local_cohort'); ?>
-        </div>
-        <div class="felement ftext">
-            <?php echo $membercount; ?>
-        </div>
-    </div>
-    </fieldset>
-</div>
+$item = html_writer::tag('div', get_string('idnumber', 'totara_cohort'), array('class' => 'fitemtitle'));
+$item .= html_writer::tag('div', $cohort->idnumber, array('class' => 'felement ftext'));
+$out .= $OUTPUT->container($item, 'fitem required ');
 
-<?php
-if ($cohort->cohorttype == cohort::TYPE_DYNAMIC):
+$item = html_writer::tag('div', get_string('description', 'totara_cohort'), array('class' => 'fitemtitle'));
+$item .= html_writer::tag('div', $cohort->description, array('class' => 'felement ftext'));
+$out .= $OUTPUT->container($item, 'fitem required alternate');
+
+$item = html_writer::tag('div', get_string('members', 'totara_cohort'), array('class' => 'fitemtitle'));
+$item .= html_writer::tag('div', $membercount, array('class' => 'felement ftext'));
+$out .= $OUTPUT->container($item, 'fitem required');
+
+$out .= html_writer::end_tag('fieldset') . html_writer::end_tag('div');
+
+if ($cohort->cohorttype == cohort::TYPE_DYNAMIC) {
     // Get the criteria
-    $criteria = get_record('cohort_criteria','cohortid',$cohort->id);
-?>
+    $criteria =$DB->get_record('cohort_criteria',array('cohortid' => $cohort->id));
+    $out .= $OUTPUT->heading(get_string('dynamiccohortcriterialower', 'totara_cohort'));
 
-<?php print_heading(get_string('dynamiccohortcriterialower','local_cohort')); ?>
+    $out .= html_writer::start_tag('div', array('class' => 'mform'));
+    $out .= html_writer::start_tag('fieldset');
 
-<div class="mform">
-    <fieldset>
-    <div class="fitem required alternate">
-        <div class="fitemtitle">
-            <?php echo get_string('userprofilefield','local_cohort'); ?>
-        </div>
-        <div class="felement ftext">
-            <?php
-            if (!empty($criteria)):
-                if (substr($criteria->profilefield, 0, 11) == 'customfield') {
-                    $fieldname = get_field('user_info_field', 'name', 'id', substr($criteria->profilefield, 11));
-                    if ($fieldname != false) {
-                        echo $fieldname;
-                    }
-                }
-                else {
-                    echo $criteria->profilefield;
-                }
-            echo '<br />';
-            echo get_string('values','local_cohort') . ': ' . $criteria->profilefieldvalues;
-            endif;
-            ?>
-        </div>
-    </div>
-    <div class="fitem required">
-        <div class="fitemtitle">
-            <?php echo get_string('position','local_cohort'); ?>
-        </div>
-        <div class="felement ftext">
-            <?php
-            if (!empty($criteria)):
-                $positionname =  get_field('pos', 'fullname', 'id', $criteria->positionid);
-            if ($positionname != false) {
-                echo $positionname;
-                if ($criteria->positionincludechildren) {
-                    echo ' - ' . get_string('childrenincluded','local_cohort');
-                }
+    $item = html_writer::tag('div', get_string('userprofilefield', 'totara_cohort'), array('class' => 'fitemtitle'));
+    $element = '';
+    if (!empty($criteria)) {
+        if (substr($criteria->profilefield, 0, 11) == 'customfield') {
+            $fieldname = $DB->get_field('user_info_field', 'name', array('id' => substr($criteria->profilefield, 11)));
+            if ($fieldname != false) {
+                $element .= $fieldname;
             }
-            endif;
-            ?>
-        </div>
-    </div>
-    <div class="fitem required alternate">
-        <div class="fitemtitle">
-            <?php echo get_string('organisation','local_cohort'); ?>
-        </div>
-        <div class="felement ftext">
-            <?php
-            if (!empty($criteria)):
-                $organisationname =  get_field('org', 'fullname', 'id', $criteria->organisationid);
-            if ($organisationname != false) {
-                echo $organisationname;
-                if ($criteria->orgincludechildren) {
-                    echo ' - ' . get_string('childrenincluded','local_cohort');
-                }
+        } else {
+            $element .= $criteria->profilefield;
+        }
+        $element .= html_writer::empty_tag('br');
+        $element .= get_string('profilefieldvalues', 'totara_cohort') . ': ' . $criteria->profilefieldvalues;
+    }
+    $item .= html_writer::tag('div', $element, array('class' => 'felement ftext'));
+    $out .= $OUTPUT->container($item, 'fitem required alternate');
+
+    $item = html_writer::tag('div', get_string('position', 'totara_cohort'), array('class' => 'fitemtitle'));
+    $element = '';
+    if (!empty($criteria)) {
+        $positionname =  $DB->get_field('pos', 'fullname', array('id' => $criteria->positionid));
+        if ($positionname != false) {
+            $element .= $positionname;
+            if ($criteria->positionincludechildren) {
+                $element .= ' - ' . get_string('childrenincluded', 'totara_cohort');
             }
-            endif;
-            ?>
-        </div>
-    </div>
-    </fieldset>
-</div>
+        }
+    }
+    $item .= html_writer::tag('div', $element, array('class' => 'felement ftext'));
+    $out .= $OUTPUT->container($item, 'fitem required');
 
-<?php endif; ?>
+    $item = html_writer::tag('div', get_string('organisation', 'totara_cohort'), array('class' => 'fitemtitle'));
+    $element = '';
+    if (!empty($criteria)) {
+        $organisationname =  $DB->get_field('org', 'fullname', array('id' => $criteria->organisationid));
+        if ($organisationname != false) {
+            $element .= $organisationname;
+            if ($criteria->orgincludechildren) {
+                $element .= ' - ' . get_string('childrenincluded', 'totara_cohort');
+            }
+        }
+    }
+    $item .= html_writer::tag('div', $element, array('class' => 'felement ftext'));
+    $out .= $OUTPUT->container($item, 'fitem required alternate');
 
-<div class="mform">
-    <fieldset>
-    <div class="fitem required">
-        <div class="fitemtitle">
-            &nbsp;
-        </div>
-        <div class="felement ftext">
-        <form>
-            <input type="hidden" name="delete" value="1" />
-            <input type="hidden" name="id" value="<?php echo $cohort->id; ?>" />
-            <input type="submit" value="<?php echo get_string('deletethiscohort','local_cohort'); ?>" />
-        </form>
-        </div>
-    </div>
-    </fieldset>
-</div>
+    $out .= html_writer::end_tag('fieldset') . html_writer::end_tag('div');
 
+} //end if cohort type is dynamic
 
-<?php
+$out .= html_writer::start_tag('div', array('class' => 'mform'));
+$out .= html_writer::start_tag('fieldset');
+$item = html_writer::tag('div', '&nbsp;', array('class' => 'fitemtitle'));
+$form = html_writer::start_tag('form');
+$form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'delete', 'value' => '1'));
+$form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $cohort->id));
+$form .= html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('deletethiscohort', 'totara_cohort')));
+$form .= html_writer::end_tag('form');
+$item .= html_writer::tag('div', $membercount, array('class' => 'felement ftext'));
+$out .= $OUTPUT->container($item, 'fitem required');
+$out .= html_writer::end_tag('fieldset') . html_writer::end_tag('div');
 
+echo $out;
 
-admin_externalpage_print_footer();
+echo $OUTPUT->footer();

@@ -81,7 +81,7 @@ $search .= html_writer::end_tag('div');
 $search .= html_writer::end_tag('form');
 echo $search;
 
-$cohorts = cohort_get_cohorts($context->id, $page, 25, $searchquery);
+$cohorts = cohort_get_cohorts(false, $page, 25, $searchquery);
 
 // output pagination bar
 $params = array('page' => $page);
@@ -96,13 +96,14 @@ echo $OUTPUT->paging_bar($cohorts['totalcohorts'], $page, 25, $baseurl);
 
 $data = array();
 foreach($cohorts['cohorts'] as $cohort) {
+    $type = ($cohort->cohorttype == cohort::TYPE_DYNAMIC) ? 'dynamic' : 'set';
     $line = array();
     $line[] = format_string($cohort->name);
     $line[] = $cohort->idnumber;
     $line[] = format_text($cohort->description, $cohort->descriptionformat);
 
     $line[] = $DB->count_records('cohort_members', array('cohortid'=>$cohort->id));
-
+    $line[] = get_string($type, 'totara_cohort');
     if (empty($cohort->component)) {
         $line[] = get_string('nocomponent', 'cohort');
     } else {
@@ -115,7 +116,8 @@ foreach($cohorts['cohorts'] as $cohort) {
             $buttons[] = html_writer::link(new moodle_url('/cohort/edit.php', array('id'=>$cohort->id, 'delete'=>1)), html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('t/delete'), 'alt'=>get_string('delete'), 'class'=>'iconsmall')));
             $buttons[] =  html_writer::link(new moodle_url('/cohort/edit.php', array('id'=>$cohort->id)), html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('t/edit'), 'alt'=>get_string('edit'), 'class'=>'iconsmall')));
         }
-        if ($manager or $canassign) {
+
+        if ($type == 'set' && ($manager or $canassign)) {
             $buttons[] = html_writer::link(new moodle_url('/cohort/assign.php', array('id'=>$cohort->id)), html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('i/users'), 'alt'=>get_string('assign', 'core_cohort'), 'class'=>'iconsmall')));
         }
     }
@@ -125,9 +127,9 @@ foreach($cohorts['cohorts'] as $cohort) {
 }
 $table = new html_table();
 $table->head  = array(get_string('name', 'cohort'), get_string('idnumber', 'cohort'), get_string('description', 'cohort'),
-                      get_string('memberscount', 'cohort'), get_string('component', 'cohort'), get_string('edit'));
-$table->size  = array('20%', '10%', '40%', '10%', '10%', '10%');
-$table->align = array('left', 'left', 'left', 'left','center', 'center');
+                      get_string('memberscount', 'cohort'), get_string('type', 'totara_cohort'), get_string('component', 'cohort'), get_string('edit'));
+$table->size  = array('20%', '10%', '25%', '10%', '10%', '10%', '15%');
+$table->align = array('left', 'left', 'left', 'left','left', 'center', 'center');
 $table->width = '80%';
 $table->data  = $data;
 echo html_writer::table($table);

@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010-2012 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -77,9 +77,9 @@ function totara_get_capability_upgrade_map() {
     'moodle/local:createcoursecustomfield' => array('newcap'=>'totara/core:createcoursecustomfield', 'component' => 'totara/core'),
     'moodle/local:deletecoursecustomfield' => array('newcap'=>'totara/core:deletecoursecustomfield', 'component' => 'totara/core'),
     'moodle/local:updatecoursecustomfield' => array('newcap'=>'totara/core:updatecoursecustomfield', 'component' => 'totara/core'),
-    'local/cohort:assign' => array('newcap'=>'totara/cohort:assign', 'component' => 'totara/cohort'),
-    'local/cohort:manage' => array('newcap'=>'totara/cohort:manage', 'component' => 'totara/cohort'),
-    'local/cohort:view' => array('newcap'=>'totara/cohort:view', 'component' => 'totara/cohort'),
+    'local/cohort:assign' => array('newcap'=>'moodle/cohort:assign', 'component' => 'moodle'),
+    'local/cohort:manage' => array('newcap'=>'moodle/cohort:manage', 'component' => 'moodle'),
+    'local/cohort:view' => array('newcap'=>'moodle/cohort:view', 'component' => 'moodle'),
     'local/dashboard:admin' => array('newcap'=>'totara/dashboard:admin', 'component' => 'totara/dashboard'),
     'local/dashboard:edit' => array('newcap'=>'totara/dashboard:edit', 'component' => 'totara/dashboard'),
     'local/dashboard:view' => array('newcap'=>'totara/dashboard:view', 'component' => 'totara/dashboard'),

@@ -23,8 +23,10 @@
  * @subpackage cohort
  */
 
-require_once('../config.php');
+require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once('lib.php');
+
+$PAGE->set_context(get_system_context());
 
 // Get the passed in parameters..
 $cohortname = required_param('cohortname',PARAM_TEXT);
@@ -41,7 +43,7 @@ $organisationid = optional_param('organisationid',0,PARAM_INT);
 $orgincludechildren = optional_param('orgincludechildren',false,PARAM_BOOL);
 
 if (empty($profilefield) && empty($positionid) && empty($organisationid)) {
-    echo '<div style="text-align:center;"><p>'. get_string('mustselectonecriteria','local_cohort') .'</p></div>';
+    echo $OUTPUT->container(html_writer::tag('p', get_string('mustselectonecriteria','totara_cohort')), array('style' => "text-align:center;"));
     die();
 }
 
@@ -54,17 +56,10 @@ $dynamic_cohort_users = new dynamic_cohort_users(
     $orgincludechildren
 );
 $num_users = $dynamic_cohort_users->get_count();
+
+$OUTPUT->container_start();
+echo html_writer::tag('p', get_string('abouttocreate','totara_cohort', $cohortname));
+echo html_writer::tag('p', get_string('thiscohortwillhave','totara_cohort', $num_users));
+echo html_writer::tag('p', get_string('cannoteditcohort','totara_cohort'));
+$OUTPUT->container_end();
 ?>
-
-<div style="text-align:center;">
-    <p>
-    <?php echo get_string('abouttocreate','local_cohort', $cohortname); ?>
-    </p>
-    <p>
-    <?php echo get_string('thiscohortwillhave','local_cohort', $num_users); ?>
-    </p>
-    <p>
-    <?php echo get_string('cannoteditcohort','local_cohort'); ?>
-    </p>
-</div>
-
