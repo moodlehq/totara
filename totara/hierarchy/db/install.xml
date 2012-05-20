@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="comp" COMMENT="Default comment for the table, please edit me" NEXT="comp_evidence">
+    <TABLE NAME="comp" COMMENT="Totara competencies" NEXT="comp_evidence">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
@@ -34,7 +34,7 @@
         <INDEX NAME="comp_par_ix" UNIQUE="false" FIELDS="parentid" PREVIOUS="comp_fra_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_evidence" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp" NEXT="comp_evidence_items">
+    <TABLE NAME="comp_evidence" COMMENT="Track current proficiency of a user in each competency" PREVIOUS="comp" NEXT="comp_evidence_items">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
@@ -61,7 +61,7 @@
         <INDEX NAME="compevid_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="compevid_rea_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_evidence_items" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_evidence" NEXT="comp_evidence_items_evidence">
+    <TABLE NAME="comp_evidence_items" COMMENT="A competency can be achieved by one or more forms of evidence" PREVIOUS="comp_evidence" NEXT="comp_evidence_items_evidence">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="competencyid"/>
         <FIELD NAME="competencyid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="itemtype"/>
@@ -82,7 +82,7 @@
         <INDEX NAME="compeviditem_ite_ix" UNIQUE="false" FIELDS="itemtype" PREVIOUS="compeviditem_ite2_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_evidence_items_evidence" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_evidence_items" NEXT="comp_framework">
+    <TABLE NAME="comp_evidence_items_evidence" COMMENT="Tracks historical progress towards a competency for each user" PREVIOUS="comp_evidence_items" NEXT="comp_framework">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
@@ -105,7 +105,7 @@
         <INDEX NAME="compeviditemevid_useite_ix" UNIQUE="false" FIELDS="userid, itemid" PREVIOUS="compeviditemevid_use_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_framework" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_evidence_items_evidence" NEXT="comp_relations">
+    <TABLE NAME="comp_framework" COMMENT="A collection of competencies that use a common competency scale" PREVIOUS="comp_evidence_items_evidence" NEXT="comp_relations">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
@@ -126,7 +126,7 @@
         <INDEX NAME="compfram_sor_uix" UNIQUE="true" FIELDS="sortorder"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_relations" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_framework" NEXT="comp_scale">
+    <TABLE NAME="comp_relations" COMMENT="Tracks relationships between competencies" PREVIOUS="comp_framework" NEXT="comp_scale">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="description"/>
         <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
@@ -137,7 +137,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="comp_scale" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_relations" NEXT="comp_scale_assignments">
+    <TABLE NAME="comp_scale" COMMENT="Competency scale represents the different levels of achievement of a competency" PREVIOUS="comp_relations" NEXT="comp_scale_assignments">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
@@ -150,7 +150,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="comp_scale_assignments" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_scale" NEXT="comp_scale_values">
+    <TABLE NAME="comp_scale_assignments" COMMENT="Tracks which scales are assigned to which competency frameworks" PREVIOUS="comp_scale" NEXT="comp_scale_values">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="scaleid"/>
         <FIELD NAME="scaleid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="frameworkid"/>
@@ -162,7 +162,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="comp_scale_values" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_scale_assignments" NEXT="comp_template">
+    <TABLE NAME="comp_scale_values" COMMENT="The individual values that make up a competency scale" PREVIOUS="comp_scale_assignments" NEXT="comp_template">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
         <FIELD NAME="name" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
@@ -179,7 +179,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="comp_template" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_scale_values" NEXT="comp_template_assignment">
+    <TABLE NAME="comp_template" COMMENT="A template is used to group competencies" PREVIOUS="comp_scale_values" NEXT="comp_template_assignment">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="frameworkid"/>
         <FIELD NAME="frameworkid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="fullname"/>
@@ -196,7 +196,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="comp_template_assignment" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_template" NEXT="comp_type">
+    <TABLE NAME="comp_template_assignment" COMMENT="Track competencies belonging to a template" PREVIOUS="comp_template" NEXT="comp_type">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="templateid"/>
         <FIELD NAME="templateid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="type"/>
@@ -209,7 +209,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="comp_type" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_template_assignment" NEXT="comp_type_info_category">
+    <TABLE NAME="comp_type" COMMENT="Competency types are used to manage custom fields" PREVIOUS="comp_template_assignment" NEXT="comp_type_info_data">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
@@ -228,18 +228,7 @@
         <INDEX NAME="comptype_idn_ix" UNIQUE="false" FIELDS="idnumber"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_type_info_category" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_type" NEXT="comp_type_info_data">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="sortorder"/>
-        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="name" NEXT="typeid"/>
-        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="comp_type_info_data" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_type_info_category" NEXT="comp_type_info_field">
+    <TABLE NAME="comp_type_info_data" COMMENT="Stores custom field data related to competencies" PREVIOUS="comp_type" NEXT="comp_type_info_field">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="data"/>
         <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="fieldid"/>
@@ -250,7 +239,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="comp_type_info_field" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_type_info_data" NEXT="pos">
+    <TABLE NAME="comp_type_info_field" COMMENT="Stores the custom fields for each competency type" PREVIOUS="comp_type_info_data" NEXT="pos">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>
@@ -275,7 +264,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="pos" COMMENT="Default comment for the table, please edit me" PREVIOUS="comp_type_info_field" NEXT="pos_assignment">
+    <TABLE NAME="pos" COMMENT="Totara positions" PREVIOUS="comp_type_info_field" NEXT="pos_assignment">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
@@ -299,7 +288,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="pos_assignment" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos" NEXT="pos_assignment_history">
+    <TABLE NAME="pos_assignment" COMMENT="Tracks a users current position assignments" PREVIOUS="pos" NEXT="pos_assignment_history">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fullname"/>
         <FIELD NAME="fullname" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
@@ -328,7 +317,7 @@
         <INDEX NAME="posassi_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="posassi_man_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="pos_assignment_history" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_assignment" NEXT="pos_competencies">
+    <TABLE NAME="pos_assignment_history" COMMENT="Tracks a users historical position assignments" PREVIOUS="pos_assignment" NEXT="pos_competencies">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fullname"/>
         <FIELD NAME="fullname" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
@@ -349,7 +338,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="pos_competencies" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_assignment_history" NEXT="pos_framework">
+    <TABLE NAME="pos_competencies" COMMENT="Tracks competencies assigned to a particular position" PREVIOUS="pos_assignment_history" NEXT="pos_framework">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="positionid"/>
         <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
@@ -363,7 +352,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="pos_framework" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_competencies" NEXT="pos_relations">
+    <TABLE NAME="pos_framework" COMMENT="A collection of positions" PREVIOUS="pos_competencies" NEXT="pos_relations">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
@@ -384,7 +373,7 @@
         <INDEX NAME="posfram_sor_uix" UNIQUE="true" FIELDS="sortorder"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="pos_relations" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_framework" NEXT="pos_type">
+    <TABLE NAME="pos_relations" COMMENT="Tracks relationships between positions" PREVIOUS="pos_framework" NEXT="pos_type">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="description"/>
         <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
@@ -395,7 +384,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="pos_type" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_relations" NEXT="pos_type_info_category">
+    <TABLE NAME="pos_type" COMMENT="Position types are used to manage custom fields" PREVIOUS="pos_relations" NEXT="pos_type_info_data">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
@@ -414,18 +403,7 @@
         <INDEX NAME="postype_idn_ix" UNIQUE="false" FIELDS="idnumber"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="pos_type_info_category" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_type" NEXT="pos_type_info_data">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="sortorder"/>
-        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="name" NEXT="typeid"/>
-        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="pos_type_info_data" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_type_info_category" NEXT="pos_type_info_field">
+    <TABLE NAME="pos_type_info_data" COMMENT="Stores custom field data related to positions" PREVIOUS="pos_type" NEXT="pos_type_info_field">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fieldid"/>
         <FIELD NAME="fieldid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="positionid"/>
@@ -436,7 +414,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="pos_type_info_field" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_type_info_data" NEXT="org">
+    <TABLE NAME="pos_type_info_field" COMMENT="Stores the custom fields for each position type" PREVIOUS="pos_type_info_data" NEXT="org">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>
@@ -461,7 +439,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="org" COMMENT="Default comment for the table, please edit me" PREVIOUS="pos_type_info_field" NEXT="org_competencies">
+    <TABLE NAME="org" COMMENT="Totara organisations" PREVIOUS="pos_type_info_field" NEXT="org_competencies">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
@@ -483,7 +461,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="org_competencies" COMMENT="Default comment for the table, please edit me" PREVIOUS="org" NEXT="org_framework">
+    <TABLE NAME="org_competencies" COMMENT="Track competencies assigned to a particular organisation" PREVIOUS="org" NEXT="org_framework">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="organisationid"/>
         <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
@@ -497,7 +475,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="org_framework" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_competencies" NEXT="org_relations">
+    <TABLE NAME="org_framework" COMMENT="A collection of organisations" PREVIOUS="org_competencies" NEXT="org_relations">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>
@@ -517,7 +495,7 @@
         <INDEX NAME="orgfram_sor_uix" UNIQUE="true" FIELDS="sortorder"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="org_relations" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_framework" NEXT="org_type">
+    <TABLE NAME="org_relations" COMMENT="Tracks relationships between organisations" PREVIOUS="org_framework" NEXT="org_type">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="description"/>
         <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="id1"/>
@@ -528,7 +506,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="org_type" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_relations" NEXT="org_type_info_category">
+    <TABLE NAME="org_type" COMMENT="Organisation types are used to manage custom fields" PREVIOUS="org_relations" NEXT="org_type_info_data">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
@@ -547,18 +525,7 @@
         <INDEX NAME="orgtype" UNIQUE="false" FIELDS="idnumber"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="org_type_info_category" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_type" NEXT="org_type_info_data">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="sortorder"/>
-        <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="name" NEXT="typeid"/>
-        <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="org_type_info_data" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_type_info_category" NEXT="org_type_info_field">
+    <TABLE NAME="org_type_info_data" COMMENT="Stores custom field data related to organisations" PREVIOUS="org_type" NEXT="org_type_info_field">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="data"/>
         <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="fieldid"/>
@@ -569,7 +536,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="org_type_info_field" COMMENT="Default comment for the table, please edit me" PREVIOUS="org_type_info_data">
+    <TABLE NAME="org_type_info_field" COMMENT="Stores the custom fields for each organisation type" PREVIOUS="org_type_info_data">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="typeid"/>

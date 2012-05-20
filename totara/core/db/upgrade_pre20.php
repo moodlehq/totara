@@ -70,7 +70,6 @@ echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
 print_upgrade_separator();
 
 // Changing nullability of char fields
-totara_fix_nullable_charfield('course_info_category', 'name', 'id', '255');
 totara_fix_nullable_charfield('course_info_field', 'shortname', 'fullname', '100');
 totara_fix_nullable_charfield('course_info_field', 'datatype', 'shortname', '255');
 totara_fix_nullable_charfield('oldpassword', 'hash', 'uid', '100');
@@ -96,6 +95,18 @@ if ($dbman->table_exists($table)) {
     $dbman->drop_table($table);
 }
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete report heading table');
+echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+print_upgrade_separator();
+
+//remove obsolete category database tables
+$removetables = array('course', 'comp_type', 'org_type', 'pos_type');
+foreach ($removetables as $prefix) {
+    $table = new xmldb_table($prefix . '_info_category');
+    if ($dbman->table_exists($table)) {
+        $dbman->drop_table($table);
+    }
+}
+upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete info_category tables');
 echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
 print_upgrade_separator();
 ?>

@@ -333,9 +333,6 @@ function cron_run() {
     cron_execute_plugin_type('report');
     mtrace('Finished admin reports');
 
-    mtrace('Starting totara modules');
-    cron_execute_plugin_type('totara', 'totara modules');
-    mtrace('Finished totara modules');
 
     mtrace('Starting main gradebook job...');
     grade_cron();
@@ -355,6 +352,8 @@ function cron_run() {
         mtrace('done');
     }
 
+    // cron for totara modules
+    cron_execute_plugin_type('totara', 'totara modules');
 
     if ($CFG->enableportfolios) {
         // Portfolio cron
