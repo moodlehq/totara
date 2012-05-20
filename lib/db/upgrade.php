@@ -7005,6 +7005,13 @@ FROM
             $data['value'] = $CFG->local_version;
             $DB->insert_record('config_plugins', $data);
 
+            // hierarchy was previously managed via local/ not local plugin
+            $data = array();
+            $data['plugin'] = 'totara_hierarchy';
+            $data['name'] = 'version';
+            $data['value'] = $CFG->local_version;
+            $DB->insert_record('config_plugins', $data);
+
             // Move old plugin version numbers to new locations
             $keychanges = array(
                 array('local_dashboard', 'totara_dashboard'),
