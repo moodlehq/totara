@@ -25,6 +25,26 @@
 function xmldb_totara_core_install() {
     global $CFG, $DB, $SITE;
 
+    $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
+
+    // add coursetype and icon fields to course table
+
+    $table = new xmldb_table('course');
+
+    $field = new xmldb_field('coursetype');
+    if (!$dbman->field_exists($table, $field)) {
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, null, null, null, null);
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('icon');
+    if (!$dbman->field_exists($table, $field)) {
+        $field->set_attributes(XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $dbman->add_field($table, $field);
+    }
+
+    // TODO: SCANMSG Need to look at the stuff below and figure out what is still needed
+
     //fix role_allow_assign
     $roles = $DB->get_records('role');
     // find administrator role (either admin or administrator)

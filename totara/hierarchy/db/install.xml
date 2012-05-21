@@ -23,8 +23,7 @@
         <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="depthlevel"/>
         <FIELD NAME="depthlevel" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="typeid"/>
         <FIELD NAME="typeid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="depthlevel" NEXT="sortthread"/>
-        <FIELD NAME="sortthread" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid" NEXT="testit"/>
-        <FIELD NAME="testit" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortthread"/>
+        <FIELD NAME="sortthread" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="typeid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -484,8 +483,9 @@
         <FIELD NAME="sortorder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="description" NEXT="visible"/>
         <FIELD NAME="visible" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="sortorder" NEXT="hidecustomfields"/>
         <FIELD NAME="hidecustomfields" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="visible" NEXT="timecreated"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="hidecustomfields" NEXT="usermodified"/>
-        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="fullname"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="hidecustomfields" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="fullname"/>
         <FIELD NAME="fullname" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="usermodified"/>
       </FIELDS>
       <KEYS>

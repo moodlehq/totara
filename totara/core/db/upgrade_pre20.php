@@ -27,8 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 global $OUTPUT, $DB;
 
 require_once ("$CFG->dirroot/totara/core/db/utils.php");
-
-$dbman = $DB->get_manager();
+$dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
 
 //fix 1.1-series capabilities
 $result = totara_upgrade_capabilities();
@@ -110,4 +109,14 @@ foreach ($removetables as $prefix) {
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete info_category tables');
 echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
 print_upgrade_separator();
+
+// rename 'completedate' field to 'timeend' in 'course_completion_criteria'
+$table = new xmldb_table('course_completion_criteria');
+$field = new xmldb_field('completedate', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, null, null, null, 'enrolperiod');
+$dbman->rename_field($table, $field, 'timeend');
+
+upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Course completion criteria field renamed');
+echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+print_upgrade_separator();
+
 ?>
