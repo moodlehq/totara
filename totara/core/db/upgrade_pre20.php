@@ -51,14 +51,15 @@ if ($result) {
     throw new upgrade_exception("Totara Set Block Names Failed", '1.1 to 2.2 upgrade');
 }
 
-//remove extensions from icons in database - 5 possible tables
+//remove extensions and spaces from icons in database - 5 possible tables
 $tables = array('course', 'prog', 'pos_type', 'org_type', 'comp_type');
 foreach ($tables as $table) {
-    $sql = "SELECT id, icon FROM
-                                {".$table."}
-                                WHERE (icon LIKE '%.gif' OR icon LIKE '%.png')";
-    $rs = $DB->get_records_sql($sql);
+    $like_sql = $DB->sql_like('icon', '?');
+    $sql = "SELECT id, icon FROM {{$table}}
+        WHERE ($like_sql OR $like_sql)";
+    $rs = $DB->get_records_sql($sql, array('%.gif', '%.png'));
     foreach ($rs as $r) {
+        $r->icon = str_replace(" ", "-", $r->icon);
         $r->icon = str_replace(".png", "", $r->icon);
         $r->icon = str_replace(".gif", "", $r->icon);
         $DB->update_record($table, $r);

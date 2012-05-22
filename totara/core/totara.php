@@ -202,7 +202,35 @@ function totara_display_course_progress_icon($userid, $courseid, $status) {
     return $content;
 }
 
-
+/**
+*  Adds the current icon and icon select dropdown to a moodle form
+*  replaces all the old totara/icon classes
+*
+* @access  public
+* @param   object $mform reference to moodle form object
+* @param   string $action form action - add, edit or view
+* @param   string $type program, course or message icons
+* @param   string $currenticon value currently stored in db
+* @return  void
+*/
+function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default') {
+    global $CFG, $OUTPUT;
+    //get all icons of this type from core
+    $iconhtml = $OUTPUT->pix_icon('/' . $type . 'icons/' . $currenticon, '', 'totara_core', array('class' => "course_icon", 'id' => "icon_preview"));
+    $mform->addElement('header', 'iconheader', get_string($type.'icon', 'totara_core'));
+    $mform->addElement('static', 'currenticon', get_string('currenticon', 'totara_core'), $iconhtml);
+    if ($action=='add' || $action=='edit') {
+        $path = $CFG->dirroot . '/totara/core/pix/' . $type . 'icons';
+        foreach (scandir($path) as $icon) {
+            if ($icon == '.' || $icon == '..') { continue;}
+            $iconfile = str_replace('.png', '', $icon);
+            $replace = array('.png' => '', '_' => ' ', '-' => ' ');
+            $iconname = strtr($icon, $replace);
+            $icons[$iconfile] = ucwords($iconname);
+        }
+        $mform->addElement('select', 'icon', get_string('icon', 'totara_core'), $icons);
+    }
+}
 /**
 * print out the Totara My Learning nav section
 */

@@ -26,6 +26,7 @@
 require_once('../config.php');
 require_once('lib.php');
 require_once('edit_form.php');
+require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 $id         = optional_param('id', 0, PARAM_INT);       // course id
 $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
@@ -61,6 +62,8 @@ if ($id) { // editing course
     require_login();
     print_error('needcoursecategroyid');
 }
+
+local_js(array(TOTARA_JS_ICON_PREVIEW));
 
 // Prepare course and the editor
 $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true);

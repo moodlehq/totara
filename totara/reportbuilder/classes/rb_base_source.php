@@ -465,33 +465,37 @@ abstract class rb_base_source {
     // convert a course name into a link to that course and shows
     // the course icon next to it
     function rb_display_link_course_icon($course, $row, $isexport = false) {
-        global $CFG;
+        global $OUTPUT;
         $courseid = $row->course_id;
         $courseicon = $row->course_icon;
-        $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? ' class="dimmed"' : '';
+        $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? 'dimmed' : '';
         $course = format_string($course);
         if ($isexport) {
             return $course;
         } else {
-            return "<a $cssclass href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($courseicon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\" />{$course}</a>";
+            $icon = $OUTPUT->pix_icon('/courseicons/' . $courseicon, $course, 'totara_core', array('class' => 'course_icon'));
+            $link = $OUTPUT->action_link(
+                new moodle_url('/course/view.php' . $this->component . '/view.php', array('id' => $courseid)),
+                $icon . $course, null, array('class' => $cssclass)
+            );
+            return $link;
         }
     }
 
     // display an icon based on the course icon field
     function rb_display_course_icon($icon, $row, $isexport = false) {
-        global $CFG;
-        $courseid = $row->course_id;
+        global $OUTPUT;
         $coursename = format_string($row->course_name);
         if ($isexport) {
             return $coursename;
         } else {
-            return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($icon)."&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\" />";
+            return $OUTPUT->pix_icon('/courseicons/' . $icon, $coursename, 'totara_core', array('class' => 'course_icon'));
         }
     }
 
     // display an icon for the course type
     function rb_display_course_type_icon($type, $row, $isexport = false) {
-        global $CFG;
+        global $OUTPUT;
 
         switch ($type) {
         case null:
@@ -508,7 +512,7 @@ abstract class rb_base_source {
             break;
         }
         $alt = get_string($image, 'rb_source_dp_course');
-        $icon = "<img title=\"{$alt}\" src=\"{$CFG->pixpath}/msgicons/{$image}" . '-regular.png' . "\"></img>";
+        $icon = $OUTPUT->pix_icon('/msgicons/' . $image . '-regular', $alt, 'totara_core', array('title' => $alt));
 
         if ($isexport) {
             // don't return icon if exporting to spreadsheet
@@ -692,10 +696,15 @@ abstract class rb_base_source {
 
 
     function rb_display_link_program_icon($program, $row) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $programid = $row->program_id;
         $programicon = $row->program_icon;
-        return "<a href=\"{$CFG->wwwroot}/totara/program/view.php?id={$programid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($programicon)."&amp;id=$programid&amp;size=small&amp;type=course\" alt=\"$program\" />{$program}</a>";
+        $icon = $OUTPUT->pix_icon('/programicons/' . $programicon, $program, 'totara_core', array('class' => 'course_icon'));
+        $link = $OUTPUT->action_link(
+            new moodle_url('/totara/program/view.php', array('id' => $programid)),
+            $icon . $program, null, array('class' => $cssclass)
+        );
+        return $link;
     }
 
 

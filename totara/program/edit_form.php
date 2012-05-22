@@ -23,7 +23,6 @@
  */
 
 require_once("{$CFG->libdir}/formslib.php");
-require_once($CFG->dirroot.'/totara/core/icon/program_icon.class.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -191,16 +190,10 @@ class program_edit_form extends moodleform {
             $mform->setType('endnote', PARAM_CLEAN);
         }
 
-        $program_icon = new program_icon();
 
-        $mform->addElement('header', 'iconheader', get_string('programicon', 'local_program'));
-        if ($action=='add' || $action=='edit') {
-            // Program Icons
-            $program_icon->add_to_form($program, $mform);
-            // END Program Icons
-        } else if ($action=='view') {
-            $mform->addElement('static', 'currenticon', get_string('currenticon', 'local_program'), $program_icon->display($program));
-        }
+        //replacement for old totara/core/icon classes
+        $program->icon = isset($program->icon) ? $program->icon : 'default';
+        totara_add_icon_picker($mform, $action, 'program', $program->icon);
 
         if($action == 'add') {
             $buttonarray = array();

@@ -652,7 +652,7 @@ class dp_program_component extends dp_base_component {
      * @return  string
      */
     public function display_item_name($item) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $approved = $this->is_item_approved($item->approved);
         $viewingasmanager = $this->plan->role == 'manager';
 
@@ -664,27 +664,17 @@ class dp_program_component extends dp_base_component {
         $prog = new program($item->programid);
         $accessible = $prog->is_accessible();
 
-        if($approved && $accessible) {
-            return '<img class="program_icon" src="' .
-                $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
-                '&amp;id=' . $item->programid .
-                '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
-                '" /><a href="' . $CFG->wwwroot .
-                '/totara/plan/components/' . $this->component.'/view.php?id=' .
-                $this->plan->id . '&amp;itemid=' . $item->id . $extraparams . '">' . format_string($item->fullname) .
-                '</a>';
+        $img = $OUTPUT->pix_icon('/programicons/' . $item->icon, format_string($item->fullname), 'totara_core');
+        if ($approved && $accessible) {
+            $link = $OUTPUT->action_link(
+                    new moodle_url('/totara/plan/components/' . $this->component . '/view.php',array('id' => $this->plan->id, 'itemid' => $item->id, 'userid' => $extraparams)),
+                    format_string($item->fullname)
+            );
+            return $img . $link;
         } elseif (!$approved && $accessible) {
-            return '<img class="program_icon" src="' .
-                $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
-                '&amp;id=' . $item->programid .
-                '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
-                '" />' . format_string($item->fullname);
+            return $img . format_string($item->fullname);
         } elseif (!$accessible) {
-            return '<img class="program_icon" src="' .
-                $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
-                '&amp;id=' . $item->programid .
-                '&amp;size=small&amp;type=program" alt="' . format_string($item->fullname).
-                '" />' . '<span class="inaccessible">' . format_string($item->fullname) . '</span>';
+            return $img . html_writer::tag('span', format_string($item->fullname), array('class' => 'inaccessible'));
         }
 
     }
@@ -696,7 +686,7 @@ class dp_program_component extends dp_base_component {
      * @return string HTML string to display the course information
      */
     function display_program_detail($progassid) {
-        global $CFG;
+        global $CFG, $OUTPUT;
 
         $sql = "SELECT pa.*, prog.*, pc.status AS programcompletion
                 FROM {$CFG->prefix}dp_plan_program_assign pa
@@ -705,14 +695,14 @@ class dp_program_component extends dp_base_component {
                 WHERE pa.id = $progassid";
         $item = get_record_sql($sql);
 
-        if(!$item) {
+        if (!$item) {
             return get_string('programnotfound', 'local_plan');
         }
 
         $out = '';
 
-        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$item->icon}&amp;id={$item->programid}&amp;size=small&amp;type=program\" alt=\"" . format_string($item->fullname) . "\">";
-        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
+        $icon = $OUTPUT->pix_icon("/programicons/" . $item->icon, format_string($item->fullname), 'totara_core');
+        $out .= $OUTPUT->heading($icon . format_string($item->fullname), 3);
 
         $program = new program($item->id);
 

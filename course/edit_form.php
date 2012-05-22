@@ -183,6 +183,15 @@ class course_edit_form extends moodleform {
             $mform->addElement('select', 'theme', get_string('forcetheme'), $themes);
         }
 
+        // Course Icons
+        if (empty($course->id)) {
+            $action = 'add';
+        } else {
+            $action = 'edit';
+        }
+        $course->icon = isset($course->icon) ? $course->icon : 'default';
+        totara_add_icon_picker($mform, $action, 'course', $course->icon);
+        // END Course Icons
 //--------------------------------------------------------------------------------
         enrol_course_edit_form($mform, $course, $context);
 

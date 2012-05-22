@@ -271,18 +271,20 @@ class rb_source_dp_program extends rb_base_source {
     }
 
     function rb_display_link_program_icon($programname, $row) {
-        global $CFG;
+        global $OUTPUT;
         $programid = $row->program_id;
         $programicon = $row->program_icon;
 
         $program = new program($programid);
-
-        $iconurl = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon=".urlencode($programicon)."&amp;id=$programid&amp;size=small&amp;type=program\" alt=\"$programname\" />";
+        $icon = $OUTPUT->pix_icon('/programicons/' . $programicon, $programname, 'totara_core',array('class' => 'course_icon'));
 
         if ($program->is_accessible()) {
-            $html = "<a href=\"{$CFG->wwwroot}/totara/program/view.php?id={$programid}\">{$iconurl}{$programname}</a>";
+            $html = $OUTPUT->action_link(
+                new moodle_url('/totara/program/view.php', array('id' => $programid)),
+                $icon . $programname
+            );
         } else {
-            $html = $iconurl.$programname;
+            $html = $icon . $programname;
         }
 
         return $html;

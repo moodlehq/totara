@@ -275,19 +275,18 @@ class dp_objective_component extends dp_base_component {
      * @return  string
      */
     function display_item_name($item) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $approved = $this->is_item_approved($item->approved);
 
-        $class = ($approved) ? '' : ' class="dimmed"';
-
+        $class = ($approved) ? '' : 'dimmed';
         $icon = $this->determine_item_icon($item);
-        return '<img class="objective_state_icon" src="' .
-            $CFG->wwwroot . '/local/icon/icon.php?icon=' . $icon .
-            '&amp;size=small&amp;type=msg" alt="' . format_string($item->fullname).
-            '"><a' . $class .' href="' . $CFG->wwwroot .
-            '/totara/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
-            '</a>';
+        $img = $OUTPUT->pix_icon("/msgicons/" . $icon, format_string($item->fullname), 'totara_core', array('class' => 'objective-state-icon'));
+        $link = $OUTPUT->action_link(
+                new moodle_url('/totara/plan/components/' . $this->component . '/view.php', array('id' => $this->plan->id, 'itemid' => $item->id)),
+                format_string($item->fullname), null, array('class' => $class)
+        );
+
+        return $img . $link;
     }
 
 
@@ -1059,7 +1058,7 @@ class dp_objective_component extends dp_base_component {
      * @return void
      */
     public function display_objective_detail($objectiveid){
-        global $CFG;
+        global $CFG, $OUTPUT;
 
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
         $objectivescaleid = $this->get_setting('objectivescale');
@@ -1087,7 +1086,7 @@ class dp_objective_component extends dp_base_component {
 SQL;
         $item = get_record_sql($sql);
 
-        if(!$item) {
+        if (!$item) {
             return get_string('error:objectivenotfound','local_plan');
         }
 
@@ -1097,11 +1096,12 @@ SQL;
         $priorityvalues = get_records('dp_priority_scale_value',
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
-        $out .= "<table><tr><td>";
         $icon = $this->determine_item_icon($item);
-        $icon = "<img class=\"objective_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"" . format_string($item->fullname) . "\">";
-        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
-        $out .= "</td></tr></table>";
+        $icon = $OUTPUT->pix_icon("/msgicons/" . $icon, format_string($item->fullname), 'totara_core', array('class' => 'objective_state_icon'));
+        $row = new html_table_row(array(new html_table_cell($OUTPUT->heading($icon . format_string($item->fullname), 3))));
+        $table = new html_table();
+        $table->data = array($row);
+        $out .= html_writer::table($table);
 
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
 

@@ -733,7 +733,7 @@ class multi_course_set extends course_set {
     }
 
     public function display($userid=null,$previous_sets=array(),$next_sets=array(),$accessible=true, $viewinganothersprogram=false) {
-        global $CFG, $USER;;
+        global $CFG, $USER, $OUTPUT;
 
         $out = '';
         $out .= '<fieldset>';
@@ -766,7 +766,7 @@ class multi_course_set extends course_set {
 
                 $row = array();
 
-                $coursedetails = '<img src="'.$CFG->wwwroot.'/local/icon/icon.php?icon='.$course->icon.'&amp;id='.$course->id.'&amp;size=small&amp;type=course" class="course_icon" />';
+                $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
 
                 if (($userid && $accessible) || ($accessible && $course->enrollable) || ($courserole && user_has_role_assignment($userid, $courserole->id, $coursecontext->id)) || is_siteadmin($USER->id)) {
                     $coursedetails .= '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.$course->fullname.'</a>';
@@ -1394,7 +1394,7 @@ class competency_course_set extends course_set {
     }
 
     public function display($userid=null,$previous_sets=array(),$next_sets=array(),$accessible=true, $viewinganothersprogram=false) {
-        global $CFG;
+        global $CFG, $OUTPUT;
 
         $out = '';
         $out .= '<fieldset>';
@@ -1427,8 +1427,9 @@ class competency_course_set extends course_set {
 
                 $row = array();
 
-                $coursedetails = '<img src="'.$CFG->wwwroot.'/local/icon/icon.php?icon='.$course->icon.'&amp;id='.$course->id.'&amp;size=small&amp;type=course" class="course_icon" />';
-                $coursedetails .= $accessible ? '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.$course->fullname.'</a>' : $course->fullname;
+                $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
+                $coursedetails .= $accessible ? html_writer::link('/course/view.php?id='.$course->id, $course->fullname) : $course->fullname;
+
                 $row[] = $coursedetails;
 
                 if ($accessible) {
@@ -1905,7 +1906,7 @@ class recurring_course_set extends course_set {
     }
 
     public function display($userid=null,$previous_sets=array(),$next_sets=array(),$accessible=true, $viewinganothersprogram=false) {
-        global $CFG;
+        global $CFG, $OUTPUT;
 
         $out = '';
         $out .= '<fieldset>';
@@ -1928,8 +1929,8 @@ class recurring_course_set extends course_set {
 
             $row = array();
 
-            $coursedetails = '<img src="'.$CFG->wwwroot.'/local/icon/icon.php?icon='.$course->icon.'&amp;id='.$course->id.'&amp;size=small&amp;type=course" class="course_icon" />';
-            $coursedetails .= $accessible ? '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.$course->fullname.'</a>' : $course->fullname;
+            $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
+            $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $course->fullname) : $course->fullname;
             $row[] = $coursedetails;
 
             if ($accessible) {

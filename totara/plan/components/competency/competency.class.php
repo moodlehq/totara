@@ -618,18 +618,18 @@ class dp_competency_component extends dp_base_component {
      * @return  string
      */
     public function display_item_name($item) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $approved = $this->is_item_approved($item->approved);
 
-        $class = ($approved) ? '' : ' class="dimmed"';
+        $class = ($approved) ? '' : 'dimmed';
         $icon = $this->determine_item_icon($item);
-        return '<img class="competency_state_icon" src="' .
-            $CFG->wwwroot . '/local/icon/icon.php?icon=' . $icon .
-            '&amp;size=small&amp;type=msg" alt="' . format_string($item->fullname).
-            '"><a' . $class .' href="' . $CFG->wwwroot .
-            '/totara/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
-            '</a>';
+        $img = $OUTPUT->pix_icon("/msgicons/" . $icon, format_string($item->fullname), 'totara_core', array('class' => 'competency-state-icon'));
+        $link = $OUTPUT->action_link(
+                new moodle_url('/totara/plan/components/' . $this->component . '/view.php',array('id' => $this->plan->id, 'itemid' => $item->id)),
+                format_string($item->fullname),null, array('class' => $class)
+        );
+
+        return $img . $link;
     }
 
 
@@ -653,7 +653,7 @@ class dp_competency_component extends dp_base_component {
      * @return string HTML string to display the competency information
      */
     function display_competency_detail($caid) {
-        global $CFG;
+        global $CFG, $OUTPUT;
 
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
@@ -681,8 +681,8 @@ class dp_competency_component extends dp_base_component {
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
         $icon = $this->determine_item_icon($item);
-        $icon = "<img class=\"competency_state_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"" . format_string($item->fullname) . "\">";
-        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
+        $icon = $OUTPUT->pix_icon("/msgicons/" . $icon, format_string($item->fullname), 'totara_core', array('class' => "competency_state_icon"));
+        $out .= $OUTPUT->heading($icon . format_string($item->fullname), 3);
         $out .= '<table border="0" class="planiteminfobox">';
         $out .= '<tr>';
         if ($priorityenabled && !empty($item->priority)) {

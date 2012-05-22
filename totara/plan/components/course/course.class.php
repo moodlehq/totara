@@ -488,26 +488,21 @@ class dp_course_component extends dp_base_component {
      * @return  string
      */
     public function display_item_name($item) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $approved = $this->is_item_approved($item->approved);
 
         if ($approved) {
             $class = '';
-            $launch = '<div class="plan-launch-course-button">' .
-                '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">'. get_string('launchcourse', 'local_plan') .'</a>' .
-                '</div>';
+            $launch = $OUTPUT->container($OUTPUT->action_link(new moodle_url('/course/view.php', array('id' => $item->courseid)), get_string('launchcourse', 'totara_plan')), "plan-launch-course-button");
         } else {
-            $class = ' class="dimmed"';
+            $class = 'dimmed';
             $launch = '';
         }
-        return '<img class="course_icon" src="' .
-            $CFG->wwwroot . '/local/icon/icon.php?icon=' . $item->icon .
-            '&amp;id=' . $item->courseid .
-            '&amp;size=small&amp;type=course" alt="' . format_string($item->fullname).
-            '" /><a' . $class .' href="' . $CFG->wwwroot .
-            '/totara/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $item->id . '">' . format_string($item->fullname) .
-            '</a>'. $launch;
+        $img = $OUTPUT->pix_icon("/courseicons/" . $item->icon, format_string($item->fullname), 'totara_core');
+        $url = new moodle_url('/totara/plan/components/' . $this->component . '/view.php', array('id' => $this->plan->id, 'itemid' => $item->id));
+        $link = $OUTPUT->action_link($url, format_string($item->fullname), null, array('class' => $class));
+
+        return $img . $link . $launch;
     }
 
 
@@ -518,7 +513,7 @@ class dp_course_component extends dp_base_component {
      * @return string HTML string to display the course information
      */
     function display_course_detail($caid) {
-        global $CFG;
+        global $CFG, $OUTPUT;
 
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
         $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
@@ -558,13 +553,13 @@ class dp_course_component extends dp_base_component {
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
         if ($this->is_item_approved($item->approved)) {
-            $out =  '<div class="plan-launch-course-button">' .
+            $out .=  '<div class="plan-launch-course-button">' .
                 '<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">'. get_string('launchcourse', 'local_plan') .'</a>' .
                 '</div>';
         }
 
-        $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon/icon.php?icon={$item->icon}&amp;id={$item->courseid}&amp;size=small&amp;type=course\" alt=\"" . format_string($item->fullname) . "\">";
-        $out .= '<h3>' . $icon . format_string($item->fullname) . '</h3>';
+        $icon = $OUTPUT->pix_icon('/courseicons/' . $item->icon, format_string($item->fullname), 'totara_core');
+        $out .= $OUTPUT->heading($icon . format_string($item->fullname), 3);
         $out .= '<table border="0" class="planiteminfobox">';
         $out .= "<tr>";
         if ($priorityenabled && !empty($item->priority)) {

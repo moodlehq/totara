@@ -29,8 +29,9 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
-require_once('edit_form.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
+require_once('edit_form.php');
+
 
 admin_externalpage_setup('manageprograms');
 
@@ -39,7 +40,8 @@ $categoryid = optional_param('category', 0, PARAM_INT); // course category - can
 //Javascript include
 local_js(array(
     TOTARA_JS_DATEPICKER,
-    TOTARA_JS_PLACEHOLDER
+    TOTARA_JS_PLACEHOLDER,
+    TOTARA_JS_ICON_PREVIEW
 ));
 
 if ($categoryid) { // creating new program in this category
