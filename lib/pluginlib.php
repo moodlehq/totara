@@ -500,7 +500,7 @@ class plugin_manager {
             // Totara:
             'totara' => array(
                 'core', 'customfield', 'dashboard', 'hierarchy', 'oauth', 'plan', 'program',
-                'reportbuilder', 'reportheading'
+                'reportbuilder'
             ),
 
             'webservice' => array(

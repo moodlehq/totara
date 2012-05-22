@@ -28,6 +28,8 @@ global $OUTPUT, $DB;
 
 require_once ("$CFG->dirroot/totara/core/db/utils.php");
 
+$dbman = $DB->get_manager();
+
 //fix 1.1-series capabilities
 $result = totara_upgrade_capabilities();
 if ($result) {
@@ -85,6 +87,15 @@ totara_fix_nullable_charfield('errorlog', 'version', 'timeoccured', '255');
 totara_fix_nullable_charfield('errorlog', 'build', 'version', '255');
 totara_fix_nullable_charfield('errorlog', 'hash', 'details', '32');
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Change nullable character fields');
+echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+print_upgrade_separator();
+
+//Remove obsolete report heading table
+$table = new xmldb_table('report_heading_items');
+if ($dbman->table_exists($table)) {
+    $dbman->drop_table($table);
+}
+upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete report heading table');
 echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
 print_upgrade_separator();
 ?>

@@ -90,7 +90,6 @@ $string['template'] = 'Template';
 $string['type'] = 'Type';
 
 // Report Headings
-$string['reportheading'] = 'Report heading block';
 $string['headingcolumnsdescription'] = 'The fields below define which data appear in the Report Heading Block. This block contains information about a specific user, and can appear in many locations throughout the site.';
 $string['editheading'] = 'Edit the Report Heading Block';
 $string['headingmissingvalue'] = 'Value to display if no data found';
@@ -132,8 +131,6 @@ $string['performinglocalpostinst'] = 'Local Post-installation setup';
 $string['localpostinstfailed'] = 'There was a problem setting up local modifications to this installation.';
 $string['totara11requiredupgradeversion'] = 'Totara 1.1.13';
 
-// Report Headings
-$string['reportheadings'] = 'Report Headings';
 $string['myreports'] = 'My Reports';
 $string['addanothercolumn'] = 'Add another column...';
 $string['error:couldnotupdatereport'] = 'Could not update report';
