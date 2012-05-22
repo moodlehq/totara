@@ -204,28 +204,6 @@ function totara_display_course_progress_icon($userid, $courseid, $status) {
 
 
 /**
- * adds guides block on the site admin pages.  designed to be called from local_postinst
- *
- * @return bool
- */
-function totara_add_guide_block_to_adminpages() {
-    global $DB, $SITE;
-
-        $b = (object)array(
-            'blockname'=> 'guides',
-            'parentcontextid' => $SITE->id,
-            'showinsubcontexts' => 0,
-            'pagetypepattern' => 'admin-*',
-            'subpagepattern' => '',
-            'defaultweight' => 1,
-            'configdata' => '',
-            'default-region' => 'side-pre'
-        );
-    $DB->insert_record('block_instances', $b);
-
-}
-
-/**
 * print out the Totara My Learning nav section
 */
 function totara_print_my_learning_nav() {

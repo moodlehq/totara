@@ -39,9 +39,6 @@ if ($result) {
 }
 //fix blocks where name has changed
 $sql = "UPDATE {block} SET name=? WHERE name=?";
-$params = array('totara_guides', 'guides');
-$result = $result && $DB->execute($sql, $params);
-$sql = "UPDATE {block} SET name=? WHERE name=?";
 $params = array('totara_quicklinks', 'quicklinks');
 $result = $result && $DB->execute($sql, $params);
 if ($result) {

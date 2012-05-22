@@ -7012,6 +7012,19 @@ FROM
             $data['value'] = $CFG->local_version;
             $DB->insert_record('config_plugins', $data);
 
+            // delete unwanted plugins (remove guides block instances and tables)
+            $DB->delete_records('block', array('name' => 'guides'));
+            $DB->delete_records('block_instances', array('blockname' => 'guides'));
+
+            $table = new xmldb_table('block_guides_guide');
+            if ($dbman->table_exists($table)) {
+                $dbman->drop_table($table);
+            }
+            $table = new xmldb_table('block_guides_guide_instance');
+            if ($dbman->table_exists($table)) {
+                $dbman->drop_table($table);
+            }
+
             // Move old plugin version numbers to new locations
             $keychanges = array(
                 array('local_dashboard', 'totara_dashboard'),
@@ -7026,7 +7039,6 @@ FROM
                 array('local_totara_alert', null),
                 array('local_totara_task', null),
                 array('block_addtoplan', 'block_totara_addtoplan'),
-                array('block_guides', 'block_totara_guides'),
                 array('block_quicklinks', 'block_totara_quicklinks')
             );
 

@@ -71,7 +71,6 @@ function xmldb_totara_core_install() {
     }
 
     totara_reset_frontpage_blocks();
-    totara_add_guide_block_to_adminpages();
 
     // set up frontpage
     set_config('frontpage', '');

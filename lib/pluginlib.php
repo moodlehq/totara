@@ -345,7 +345,7 @@ class plugin_manager {
                 'selfcompletion', 'settings', 'site_main_menu',
                 'social_activities', 'tag_flickr', 'tag_youtube', 'tags'
                 // Totara
-                , 'totara_addtoplan', 'totara_alerts', 'totara_guides',
+                , 'totara_addtoplan', 'totara_alerts',
                 'totara_my_learning_nav', 'totara_my_team_nav', 'totara_quicklinks',
                 'totara_recent_learning', 'totara_report_manager', 'totara_stats',
                 'totara_tasks'
